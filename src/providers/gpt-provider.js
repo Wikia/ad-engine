@@ -112,8 +112,15 @@ export default class Gpt {
 				sizeMapping.addSize(item.viewportSize, item.sizes);
 			});
 
-			gptSlot = googletag.defineSlot(adSlot.getAdUnit(), adSlot.getDefaultSizes(), adSlot.getId())
-				.addService(googletag.pubads())
+			if (adSlot.isOutOfPage()) {
+				gptSlot = googletag.defineOutOfPageSlot(adSlot.getAdUnit(), adSlot.getId());
+			} else if (adSlot.getDefaultSizes()) {
+				gptSlot = googletag.defineSlot(adSlot.getAdUnit(), adSlot.getDefaultSizes(), adSlot.getId())
+			} else {
+				throw 'Can\'t add slot - define default sizes or declare as out-of-page';
+			}
+
+			gptSlot.addService(googletag.pubads())
 				.setCollapseEmptyDiv(true)
 				.defineSizeMapping(sizeMapping.build())
 				.setTargeting('pos', adSlot.getSlotName())

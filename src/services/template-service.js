@@ -1,6 +1,6 @@
 'use strict';
 
-let templates = {};
+const templates = {};
 
 export default class TemplateService {
 	static register(name, template) {
