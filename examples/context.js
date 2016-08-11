@@ -54,6 +54,20 @@ Context.extend({
 			targeting: {
 				loc: 'hivi'
 			}
+		},
+		'high-impact': {
+			slotName: 'INVISIBLE_HIGH_IMPACT_2',
+			sizes:  [
+				{
+					viewportSize: [768, 0],
+					sizes: [[1, 1]]
+				}
+			],
+			defaultTemplate: 'interstitial',
+			targeting: {
+				loc: 'hivi'
+			},
+			outOfPage: true
 		}
 	},
 	state: {

@@ -4,6 +4,7 @@ import {makeLazyQueue} from './utils/lazy-queue';
 import AdSlot from './models/ad-slot';
 import Context from './services/context-service';
 import FloatingAd from './templates/floating-ad';
+import Interstitial from './templates/interstitial';
 import GptProvider from './providers/gpt-provider';
 import ScrollListener from './listeners/scroll-listener';
 import SlotService from './services/slot-service';

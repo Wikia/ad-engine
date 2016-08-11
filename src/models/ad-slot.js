@@ -77,6 +77,10 @@ export default class AdSlot {
 		return !!this.config.aboveTheFold;
 	}
 
+	isOutOfPage() {
+		return !!this.config.outOfPage;
+	}
+
 	isEnabled() {
 		return this.enabled;
 	}
