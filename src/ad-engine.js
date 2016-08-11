@@ -21,7 +21,6 @@ export default class AdEngine {
 		window.ads.runtime = window.ads.runtime || {};
 
 		TemplateService.register('floating-ad', FloatingAd);
-		TemplateService.register('interstitial', Interstitial);
 	}
 
 	init() {
