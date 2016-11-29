@@ -55,22 +55,29 @@ export default {
 		container.style.maxHeight = `${container.scrollHeight}px`;
 	},
 
+	calculateIframeAspectRatio(iframe) {
+		const height = iframe.contentWindow.document.body.scrollHeight,
+			width = iframe.contentWindow.document.body.scrollWidth;
+
+		return width / height;
+	},
+
 	makeResponsive(adSlot, aspectRatio = null) {
 		const slotContainer = this.getContainer(adSlot);
 
 		slotContainer.classList.add('slot-responsive');
 
-		this.onReady(adSlot, (iframe) => {
-			const container = iframe.parentElement;
-			if (!aspectRatio) {
-				const height = iframe.contentWindow.document.body.scrollHeight,
-					width = iframe.contentWindow.document.body.scrollWidth;
+		return new Promise((resolve) => {
+			this.onReady(adSlot, (iframe) => {
+				const container = iframe.parentElement;
+				if (!aspectRatio) {
+					aspectRatio = this.calculateIframeAspectRatio(iframe);
+				}
 
-				aspectRatio = width / height;
-			}
-
-			logger(logGroup, 'make responsive', adSlot.getId());
-			container.style.paddingBottom = `${100 / aspectRatio}%`;
+				logger(logGroup, 'make responsive', adSlot.getId());
+				container.style.paddingBottom = `${100 / aspectRatio}%`;
+				resolve(iframe);
+			});
 		});
 	},
 
