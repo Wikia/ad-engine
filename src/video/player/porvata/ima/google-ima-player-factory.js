@@ -10,6 +10,7 @@ class GoogleImaPlayer {
 		this.adsManager = null;
 		this.params = params;
 		this.mobileVideoAd = params.container.querySelector('video');
+		this.eventListeners = {};
 	}
 
 	setAdsManager(adsManager) {
@@ -18,6 +19,12 @@ class GoogleImaPlayer {
 	}
 
 	addEventListener(eventName, callback) {
+		if (eventName.indexOf('wikia') !== -1) {
+			this.eventListeners[eventName] = this.eventListeners[eventName] || [];
+			this.eventListeners[eventName].push(callback);
+			return;
+		}
+
 		if (this.isAdsManagerLoaded) {
 			this.adsManager.addEventListener(eventName, callback);
 		} else {
@@ -67,7 +74,11 @@ class GoogleImaPlayer {
 	}
 
 	dispatchEvent(eventName) {
-		this.adsManager.dispatchEvent(eventName);
+		if (this.eventListeners[eventName] && this.eventListeners[eventName].length > 0) {
+			this.eventListeners[eventName].forEach((callback) => {
+				callback({});
+			});
+		}
 	}
 
 	setStatus(newStatus) {

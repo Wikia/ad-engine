@@ -23,6 +23,7 @@ QUnit.module('Porvata test', {
 			},
 			ima: {
 				addEventListener: () => {},
+				dispatchEvent: () => {},
 				getAdsManager: () => mocks.adsManager,
 				getStatus: () => {},
 				playVideo: () => {},
@@ -30,7 +31,6 @@ QUnit.module('Porvata test', {
 				resize: () => {}
 			},
 			adsManager: {
-				dispatchEvent: () => {},
 				getRemainingTime: () => {},
 				getVolume: () => {},
 				pause: () => {},
@@ -63,6 +63,7 @@ QUnit.test('Player with proper interface and properties', (assert) => {
 
 QUnit.test('Player calls IMA API', (assert) => {
 	sinon.spy(mocks.ima, 'addEventListener');
+	sinon.spy(mocks.ima, 'dispatchEvent');
 	sinon.spy(mocks.ima, 'getStatus');
 	sinon.spy(mocks.ima, 'playVideo');
 	sinon.spy(mocks.ima, 'reload');

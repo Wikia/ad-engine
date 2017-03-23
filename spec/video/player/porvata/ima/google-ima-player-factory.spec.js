@@ -103,13 +103,3 @@ QUnit.test('Resize player using adsManager', (assert) => {
 	player.resize();
 	assert.ok(mocks.adsManager.resize.calledOnce);
 });
-
-QUnit.test('Dispatch event using adsManager', (assert) => {
-	sinon.spy(mocks.adsManager, 'dispatchEvent');
-
-	const player = GoogleImaPlayerFactory.create(mocks.adDisplayContainer, mocks.adsLoader, mocks.params);
-	player.setAdsManager(mocks.adsManager);
-
-	player.dispatchEvent();
-	assert.ok(mocks.adsManager.dispatchEvent.calledOnce);
-});

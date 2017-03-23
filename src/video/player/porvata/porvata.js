@@ -83,7 +83,7 @@ export class PorvataPlayer {
 		this.ima.getAdsManager().setVolume(volume);
 
 		// This is hack for Safari, because it can't dispatch original IMA event (volumeChange)
-		this.ima.getAdsManager().dispatchEvent('wikiaVolumeChange');
+		this.ima.dispatchEvent('wikiaVolumeChange');
 	}
 
 	updateVideoDOMElement(volume) {
@@ -166,10 +166,10 @@ export default class Porvata {
 				}
 
 				video.addEventListener('adCanPlay', () => {
-					video.ima.getAdsManager().dispatchEvent('wikiaAdStarted');
+					video.ima.dispatchEvent('wikiaAdStarted');
 				});
 				video.addEventListener('allAdsCompleted', () => {
-					video.ima.getAdsManager().dispatchEvent('wikiaAdCompleted');
+					video.ima.dispatchEvent('wikiaAdCompleted');
 					video.ima.setAutoPlay(false);
 					if (viewportListenerId) {
 						ViewportObserver.removeListener(viewportListenerId);
@@ -178,17 +178,17 @@ export default class Porvata {
 					isFirstPlay = false;
 				});
 				video.addEventListener('start', () => {
-					video.ima.getAdsManager().dispatchEvent('wikiaAdPlay');
+					video.ima.dispatchEvent('wikiaAdPlay');
 					if (!viewportListenerId) {
 						viewportListenerId = Porvata.addOnViewportChangeListener(params, inViewportCallback);
 					}
 				});
 				video.addEventListener('resume', () => {
-					video.ima.getAdsManager().dispatchEvent('wikiaAdPlay');
+					video.ima.dispatchEvent('wikiaAdPlay');
 					autoPaused = false;
 				});
 				video.addEventListener('pause', () => {
-					video.ima.getAdsManager().dispatchEvent('wikiaAdPause');
+					video.ima.dispatchEvent('wikiaAdPause');
 				});
 
 				if (params.autoPlay) {
