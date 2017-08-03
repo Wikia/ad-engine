@@ -1,8 +1,9 @@
 import GoogleImaPlayerFactory from './google-ima-player-factory';
 import ScriptLoader from '../../../../utils/script-loader';
 
-const imaLibraryUrl = '//imasdk.googleapis.com/js/sdkloader/ima3.js';
+// const imaLibraryUrl = '//imasdk.googleapis.com/js/sdkloader/ima3.js';
 // const imaLibraryUrl = 'http://community.wikia.com/__am/1490274398/groups/-/ima_js';
+const imaLibraryUrl = 'https://community.wikia.com/extensions/wikia/AdEngine/js/video/player/porvata/ima/20170219061519.js';
 
 function load() {
 	if (window.google && window.google.ima) {
