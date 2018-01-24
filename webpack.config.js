@@ -25,7 +25,6 @@ const environments = {
 			'ad-engine': './src/index.js'
 		},
 		devtool: 'source-map',
-		externals: Object.keys(pkg.dependencies),
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].js',
@@ -67,17 +66,36 @@ const environments = {
 	test: {}
 };
 
+const targets = {
+	amd: {
+		output: {
+			filename: '[name].amd.js',
+			library: 'ext.wikia.adEngine3',
+			libraryTarget: 'amd'
+		}
+	},
+	commonjs: {
+		externals: Object.keys(pkg.dependencies),
+		output: {
+			filename: '[name].js',
+			library: 'adEngine',
+			libraryTarget: 'commonjs2'
+		}
+	}
+};
+
 module.exports = function (env) {
 	const isProduction = (process.env.NODE_ENV === 'production') || (env && env.production);
 	const isTest = (env && env.test);
 
-	let environment = environments.development;
-
 	if (isProduction) {
-		environment = environments.production;
+		return [
+			merge(common, environments.production, targets.commonjs),
+			merge(common, environments.production, targets.amd)
+		];
 	} else if (isTest) {
-		environment = environments.test;
+		return merge(common, environments.test);
 	}
 
-	return merge(common, environment);
+	return merge(common, environments.development);
 };
