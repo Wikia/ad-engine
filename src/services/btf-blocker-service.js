@@ -1,6 +1,7 @@
 import { logger, makeLazyQueue } from '../utils';
 import { context } from './context-service';
 import { slotService } from './slot-service';
+import { messageBus } from './message-bus';
 
 const logGroup = 'btf-blocker';
 
@@ -30,6 +31,11 @@ class BtfBlockerService {
 	}
 
 	init() {
+		messageBus.register(
+			{ keys: ['disableBtf'], infinite: true },
+			this.disableBtf.bind(this)
+		);
+
 		makeLazyQueue(this.slotsQueue, ({ adSlot, fillInCallback }) => {
 			logger(logGroup, adSlot.getId(), 'Filling delayed BTF slot');
 			fillInCallback(adSlot);
@@ -41,6 +47,10 @@ class BtfBlockerService {
 				finishQueue.bind(this)();
 			}
 		} });
+	}
+
+	disableBtf({ disableBtf }) {
+		window.ads.runtime.disableBtf = Boolean(disableBtf);
 	}
 
 	push(adSlot, fillInCallback) {
