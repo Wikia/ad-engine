@@ -50,6 +50,7 @@ const environments = {
 	development: {
 		entry: {
 			'slots/animations': './examples/slots/animations/script.js',
+			'slots/btf-blocker': './examples/slots/btf-blocker/script.js',
 			'slots/empty-response': './examples/slots/empty-response/script.js',
 			'templates/floating-ad': './examples/templates/floating-ad/script.js',
 			'utils/adblock-detect': './examples/utils/adblock-detect/script.js',
