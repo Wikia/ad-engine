@@ -10,7 +10,7 @@
     "babel-runtime": "6.26.0",
     "blockadblock": "3.2.1",
     "core-decorators": "^0.20.0",
-    "events": "^1.1.1",
+    "eventemitter3": "3.0.1",
     "ismobilejs": "0.4.1",
     "lodash": "^4.17.4"
   },

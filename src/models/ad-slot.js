@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events';
+import EventEmitter from 'eventemitter3';
 import { context, slotTweaker, templateService } from '../services';
 import { stringBuilder } from '../utils';
 import { slotListener } from '../listeners';
