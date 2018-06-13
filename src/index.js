@@ -11,6 +11,7 @@ set(window, versionField, 'v<?= PACKAGE(version) ?>');
 utils.logger('ad-engine', 'v<?= PACKAGE(version) ?>');
 
 export * from './ad-engine';
+export * from './bidders';
 export * from './listeners';
 export * from './models';
 export * from './providers';

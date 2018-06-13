@@ -57,6 +57,7 @@ const environments = {
 	},
 	development: {
 		entry: {
+			'bidders/wikia-display': './examples/bidders/wikia-display/script.js',
 			'slots/animations': './examples/slots/animations/script.js',
 			'slots/block-btf': './examples/slots/block-btf/script.js',
 			'slots/btf-only': './examples/slots/btf-only/script.js',
