@@ -21,6 +21,7 @@ export class Rubicon extends BaseAdapter {
 
 		return {
 			code,
+			mediaType: 'video',
 			mediaTypes: {
 				video: {
 					playerSize: [640, 480]
@@ -40,7 +41,7 @@ export class Rubicon extends BaseAdapter {
 							playerWidth: '640',
 							playerHeight: '480',
 							size_id: sizeId,
-							language: targeting.lang
+							language: targeting.lang[0]
 						}
 					}
 				}

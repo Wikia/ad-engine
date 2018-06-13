@@ -1,4 +1,5 @@
 import { BaseAdapter } from './base-adapter';
+import { getTargeting } from './../prebid-helper';
 
 export class RubiconDisplay extends BaseAdapter {
 	constructor(options) {
@@ -14,6 +15,14 @@ export class RubiconDisplay extends BaseAdapter {
 	prepareConfigForAdUnit(code, {
 		siteId, zoneId, sizes, position, targeting
 	}) {
+		const pageTargeting = getTargeting(code);
+
+		Object
+			.keys(targeting || {})
+			.forEach((key) => {
+				pageTargeting[key] = targeting[key];
+			});
+
 		return {
 			code,
 			mediaTypes: {
@@ -31,7 +40,7 @@ export class RubiconDisplay extends BaseAdapter {
 						name: code,
 						position,
 						keywords: ['rp.fastlane'],
-						inventory: targeting
+						inventory: pageTargeting
 					}
 				}
 			]

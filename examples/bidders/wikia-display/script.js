@@ -33,7 +33,43 @@ bidders.requestBids({
 			},
 			appnexus: {
 				enabled: true,
-				slots: {}
+				slots: {
+					TOP_LEADERBOARD: {
+						sizes: [
+							[728, 90],
+							[970, 250]
+						],
+						position: 'atf'
+					},
+					TOP_RIGHT_BOXAD: {
+						sizes: [
+							[300, 250],
+							[300, 600]
+						],
+						position: 'atf'
+					},
+					BOTTOM_LEADERBOARD: {
+						sizes: [
+							[728, 90],
+							[970, 250]
+						],
+						position: 'btf'
+					},
+					INCONTENT_BOXAD_1: {
+						sizes: [
+							[160, 600],
+							[300, 600],
+							[300, 250]
+						],
+						position: 'hivi'
+					}
+				},
+				placements: {
+					atf: '11977073',
+					btf: '11977096',
+					hivi: '11977016',
+					other: '11969927'
+				}
 			},
 			appnexusAst: {
 				enabled: true,
@@ -226,7 +262,49 @@ bidders.requestBids({
 			},
 			rubiconDisplay: {
 				enabled: true,
-				slots: {}
+				slots: {
+					TOP_LEADERBOARD: {
+						sizes: [
+							[728, 90],
+							[970, 250]
+						],
+						targeting: { loc: ['top'] },
+						position: 'atf',
+						siteId: '148804',
+						zoneId: '704672'
+					},
+					TOP_RIGHT_BOXAD: {
+						sizes: [
+							[300, 250],
+							[300, 600]
+						],
+						targeting: { loc: ['top'] },
+						position: 'atf',
+						siteId: '148804',
+						zoneId: '704672'
+					},
+					INCONTENT_BOXAD_1: {
+						sizes: [
+							[160, 600],
+							[300, 600],
+							[300, 250]
+						],
+						targeting: { loc: ['hivi'] },
+						position: 'btf',
+						siteId: '148804',
+						zoneId: '704676'
+					},
+					BOTTOM_LEADERBOARD: {
+						sizes: [
+							[728, 90],
+							[970, 250]
+						],
+						targeting: { loc: ['footer'] },
+						position: 'btf',
+						siteId: '148804',
+						zoneId: '704674'
+					}
+				}
 			},
 			wikia: {
 				enabled: true,
@@ -280,11 +358,38 @@ bidders.requestBids({
 			},
 			appnexus: {
 				enabled: true,
-				slots: {}
+				slots: {
+					MOBILE_TOP_LEADERBOARD: {
+						sizes: [
+							[320, 50]
+						]
+					},
+					MOBILE_IN_CONTENT: {
+						sizes: [
+							[300, 250]
+						]
+					},
+					BOTTOM_LEADERBOARD: {
+						sizes: [
+							[300, 250],
+							[320, 50]
+						]
+					}
+				},
+				placements: {
+					ent: '9412992',
+					gaming: '9412993',
+					life: '9412994',
+					other: '9412994'
+				}
 			},
 			appnexusAst: {
 				enabled: true,
-				slots: {}
+				slots: {
+					MOBILE_IN_CONTENT: {
+						placementId: '11543173'
+					}
+				}
 			},
 			appnexusWebads: {
 				enabled: true,
@@ -466,7 +571,33 @@ bidders.requestBids({
 			},
 			rubiconDisplay: {
 				enabled: true,
-				slots: {}
+				slots: {
+					MOBILE_TOP_LEADERBOARD: {
+						sizes: [
+							[320, 50]
+						],
+						position: 'atf',
+						siteId: '23565',
+						zoneId: '87671'
+					},
+					MOBILE_IN_CONTENT: {
+						sizes: [
+							[300, 250]
+						],
+						position: 'btf',
+						siteId: '23565',
+						zoneId: '87671'
+					},
+					BOTTOM_LEADERBOARD: {
+						sizes: [
+							[300, 250],
+							[320, 50]
+						],
+						position: 'btf',
+						siteId: '23565',
+						zoneId: '87671'
+					}
+				}
 			},
 			wikia: {
 				enabled: true,

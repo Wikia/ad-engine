@@ -1,4 +1,5 @@
 import { BaseAdapter } from './base-adapter';
+import { queryString } from './../../../utils/query-string';
 
 export class AppnexusAst extends BaseAdapter {
 	constructor(options) {
@@ -9,7 +10,7 @@ export class AppnexusAst extends BaseAdapter {
 			appnexus: [this.bidderName]
 		};
 		this.debugPlacementId = '5768085';
-		this.isDebugMode = options.isDebugMode;
+		this.isDebugMode = queryString.get('appnexusast_debug_mode') === '1';
 	}
 
 	prepareConfigForAdUnit(code, { placementId }) {
