@@ -11,9 +11,9 @@ context.extend(adContext);
 // ToDo: integration with mobile-wiki
 // ToDo: lazy call
 // ToDo: logs
-// ToDo: Prebid config
 // ToDo: CMP module
 // ToDo: add tracking
+// ToDo: video demo page
 
 // CONFIG WIKIA
 bidders.requestBids({
