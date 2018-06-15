@@ -16,7 +16,7 @@ document.getElementById('addParagraph').addEventListener('click', () => {
 });
 
 document.getElementById('hideTopBoxad').addEventListener('click', () => {
-	document.getElementById('gpt-top-boxad').classList.add('hide');
+	document.getElementById('top_boxad').classList.add('hide');
 });
 
 adContext.listeners.slot.push({
