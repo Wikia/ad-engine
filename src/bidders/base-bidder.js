@@ -11,42 +11,12 @@ export class BaseBidder {
 		if (resetListener) {
 			resetListener(this.resetState);
 		}
+
+		this.onResponse = () => this.onResponseCall();
 	}
 
 	static responseCallback(callback) {
 		callback();
-	}
-
-	resetState() {
-		this.called = false;
-		this.response = false;
-		this.onResponseCallbacks = [];
-
-		makeLazyQueue(this.onResponseCallbacks, BaseBidder.responseCallback);
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	onResponse() {
-		// log('onResponse', 'debug', this.logGroup);
-		this.calculatePrices();
-		this.response = true;
-		this.onResponseCallbacks.start();
 	}
 
 	addResponseListener(callback) {
@@ -54,50 +24,13 @@ export class BaseBidder {
 	}
 
 	call() {
-		// log('call', 'debug', this.logGroup);
 		this.response = false;
 
-		if (!Object.keys) {
-			// log(['call', 'Module is not supported in IE8', this.name], 'debug', this.logGroup);
-			return;
+		if (this.callBids) {
+			this.callBids(this.onResponse);
 		}
 
-		this.call(this.onResponse);
 		this.called = true;
-	}
-
-	wasCalled() {
-		// log(['wasCalled', this.called], 'debug', this.logGroup);
-		return this.called;
-	}
-
-	getSlotParams(slotName, floorPrice) {
-		// log(['getSlotParams', slotName, this.called, this.response], 'debug', this.logGroup);
-
-		if (!this.called || !this.isSlotSupported(slotName)) {
-			// log(['getSlotParams', 'Not called or slot is not supported', slotName], 'debug', this.logGroup);
-
-			return {};
-		}
-
-		return this.getSlotParams(slotName, floorPrice);
-	}
-
-	getBestSlotPrice(slotName) {
-		if (this.getBestSlotPrice) {
-			return this.getBestSlotPrice(slotName);
-		}
-
-		return {};
-	}
-
-	getName() {
-		return this.name;
-	}
-
-	hasResponse() {
-		// log(['hasResponse', thisresponse], 'debug', this.logGroup);
-		return this.response;
 	}
 
 	createWithTimeout(func, msToTimeout = 2000) {
@@ -108,6 +41,55 @@ export class BaseBidder {
 		return Promise.race([new Promise(func), timeout]);
 	}
 
+	getName() {
+		return this.name;
+	}
+
+	getSlotBestPrice(slotName) {
+		if (this.getBestPrice) {
+			return this.getBestPrice(slotName);
+		}
+
+		return {};
+	}
+
+	getSlotTargetingParams(slotName, floorPrice) {
+		if (!this.called || !this.isSlotSupported(slotName) || !this.getTargetingParams) {
+			return {};
+		}
+
+		return this.getTargetingParams(slotName, floorPrice);
+	}
+
+	hasResponse() {
+		return this.response;
+	}
+
+	isSlotSupported(slotName) {
+		if (this.isSupported) {
+			return this.isSupported(slotName);
+		}
+
+		return false;
+	}
+
+	onResponseCall() {
+		// this.calculatePrices();
+		if (this.onResponseCallbacks) {
+			this.onResponseCallbacks.start();
+		}
+
+		this.response = true;
+	}
+
+	resetState() {
+		this.called = false;
+		this.response = false;
+		this.onResponseCallbacks = [];
+
+		makeLazyQueue(this.onResponseCallbacks, BaseBidder.responseCallback);
+	}
+
 	waitForResponse() {
 		return this.createWithTimeout((resolve) => {
 			if (this.hasResponse()) {
@@ -116,5 +98,9 @@ export class BaseBidder {
 				this.addResponseListener(resolve);
 			}
 		}, this.timeout);
+	}
+
+	wasCalled() {
+		return this.called;
 	}
 }

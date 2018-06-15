@@ -77,7 +77,7 @@ export function getPriorities() {
 }
 
 export function getAdapters(config) {
-	if (adapters.length === 0) {
+	if (adapters.length === 0 && config) {
 		setupAdapters(config);
 		registerAliases();
 	}

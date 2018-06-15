@@ -4,9 +4,107 @@ import adContext from '../../context';
 context.extend(adContext);
 
 // ToDo: on/off wgVars
+// ToDo: install and build Prebid
+// ToDo: passing bids
+// ToDo: tests
+// ToDo: A9 bidder
+// ToDo: integration with mobile-wiki
+// ToDo: lazy call
+// ToDo: logs
+// ToDo: Prebid config
+// ToDo: CMP module
+// ToDo: add tracking
 
-// CONFIG DESKTOP
+// CONFIG WIKIA
 bidders.requestBids({
+	config: {
+		prebid: {
+			aol: {
+				enabled: false,
+				slots: {}
+			},
+			appnexus: {
+				enabled: false,
+				slots: {}
+			},
+			appnexusAst: {
+				enabled: false,
+				slots: {}
+			},
+			appnexusWebads: {
+				enabled: false,
+				slots: {}
+			},
+			audienceNetwork: {
+				enabled: false,
+				slots: {}
+			},
+			beachfront: {
+				enabled: false,
+				slots: {}
+			},
+			indexExchange: {
+				enabled: false,
+				slots: {}
+			},
+			onemobile: {
+				enabled: false,
+				slots: {}
+			},
+			openx: {
+				enabled: false,
+				slots: {}
+			},
+			pubmatic: {
+				enabled: false,
+				slots: {}
+			},
+			rubicon: {
+				enabled: false,
+				slots: {}
+			},
+			rubiconDisplay: {
+				enabled: false,
+				slots: {}
+			},
+			wikia: {
+				enabled: true,
+				slots: {
+					top_leaderboard: {
+						sizes: [
+							[728, 90]
+						]
+					},
+					top_boxad: {
+						sizes: [
+							[300, 250]
+						]
+					},
+					bottom_leaderboard: {
+						sizes: [
+							[728, 90]
+						]
+					}
+				}
+			},
+			wikiaVideo: {
+				enabled: true,
+				slots: {
+					FEATURED: {},
+					INCONTENT_PLAYER: {}
+				}
+			}
+		},
+		a9: {
+			foo: 'bar'
+		}
+	},
+	resetListener: null,
+	timeout: 2000
+});
+
+// CONFIG DESKTOP ===============================================================================
+/* bidders.requestBids({
 	config: {
 		prebid: {
 			aol: {
@@ -307,12 +405,36 @@ bidders.requestBids({
 				}
 			},
 			wikia: {
-				enabled: true,
-				slots: {}
+				enabled: false,
+				slots: {
+					TOP_LEADERBOARD: {
+						sizes: [
+							[728, 90]
+						]
+					},
+					TOP_RIGHT_BOXAD: {
+						sizes: [
+							[300, 250]
+						]
+					},
+					INCONTENT_BOXAD_1: {
+						sizes: [
+							[300, 250]
+						]
+					},
+					BOTTOM_LEADERBOARD: {
+						sizes: [
+							[728, 90]
+						]
+					}
+				}
 			},
 			wikiaVideo: {
-				enabled: true,
-				slots: {}
+				enabled: false,
+				slots: {
+					FEATURED: {},
+					INCONTENT_PLAYER: {}
+				}
 			}
 		},
 		a9: {
@@ -321,10 +443,10 @@ bidders.requestBids({
 	},
 	resetListener: null,
 	timeout: 2000
-});
+}); */
 
 // CONFIG MOBILE ===============================================================================
-bidders.requestBids({
+/* bidders.requestBids({
 	config: {
 		prebid: {
 			aol: {
@@ -394,14 +516,12 @@ bidders.requestBids({
 			appnexusWebads: {
 				enabled: true,
 				slots: {
-					/* WIKIA_mLB_AS */
 					MOBILE_TOP_LEADERBOARD: {
 						placementId: '13104396',
 						sizes: [
 							[320, 50]
 						]
 					},
-					/* WIKIA_mIC_AS */
 					MOBILE_IN_CONTENT: {
 						placementId: '13104397',
 						sizes: [
@@ -410,7 +530,6 @@ bidders.requestBids({
 							[320, 50]
 						]
 					},
-					/* WIKIA_BLB_AS */
 					BOTTOM_LEADERBOARD: {
 						placementId: '13104398',
 						sizes: [
@@ -600,12 +719,31 @@ bidders.requestBids({
 				}
 			},
 			wikia: {
-				enabled: true,
-				slots: {}
+				enabled: false,
+				slots: {
+					MOBILE_TOP_LEADERBOARD: {
+						sizes: [
+							[320, 50]
+						]
+					},
+					MOBILE_IN_CONTENT: {
+						sizes: [
+							[300, 250]
+						]
+					},
+					BOTTOM_LEADERBOARD: {
+						sizes: [
+							[300, 250]
+						]
+					}
+				}
 			},
 			wikiaVideo: {
-				enabled: true,
-				slots: {}
+				enabled: false,
+				slots: {
+					FEATURED: {},
+					MOBILE_IN_CONTENT: {}
+				}
 			}
 		},
 		a9: {
@@ -614,6 +752,8 @@ bidders.requestBids({
 	},
 	resetListener: null,
 	timeout: 2000
-});
+}); */
+
+context.set('options.maxDelayTimeout', 2000);
 
 new AdEngine().init();

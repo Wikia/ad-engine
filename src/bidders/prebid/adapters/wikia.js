@@ -1,11 +1,18 @@
 import { BaseAdapter } from './base-adapter';
+import { queryString } from './../../../utils/query-string';
 
 export class Wikia extends BaseAdapter {
 	constructor(options) {
 		super(options);
 
 		this.bidderName = 'wikia';
-		this.price = options.price;
+		this.enabled = !!(queryString.get('wikia_adapter'));
+
+		if (this.enabled) {
+			this.price = this.getPrice();
+		}
+
+		this.create = () => this;
 	}
 
 	prepareConfigForAdUnit(code, { sizes }) {
@@ -22,6 +29,43 @@ export class Wikia extends BaseAdapter {
 				}
 			]
 		};
+	}
+
+	getSpec() {
+		return {
+			code: this.bidderName,
+			supportedMediaTypes: ['banner']
+		};
+	}
+
+	getPrice() {
+		const price = queryString.get('wikia_adapter');
+
+		return parseInt(price, 10) / 100;
+	}
+
+	callBids(bidRequest, addBidResponse, done) {
+		window.pbjs.que.push(() => {
+			this.addBids(bidRequest, addBidResponse, done);
+		});
+	}
+
+	addBids(bidRequest, addBidResponse, done) {
+		bidRequest.bids.forEach((bid) => {
+			const bidResponse = window.pbjs.createBid(1),
+				[width, height] = bid.sizes[0];
+
+			bidResponse.ad = this.getCreative(bid.sizes[0]);
+			bidResponse.bidderCode = bidRequest.bidderCode;
+			bidResponse.cpm = this.price;
+			bidResponse.ttl = 300;
+			bidResponse.mediaType = 'banner';
+			bidResponse.width = width;
+			bidResponse.height = height;
+
+			addBidResponse(bid.adUnitCode, bidResponse);
+			done();
+		});
 	}
 
 	getCreative(size) {
@@ -49,37 +93,5 @@ export class Wikia extends BaseAdapter {
 		creative.appendChild(details);
 
 		return creative.outerHTML;
-	}
-
-	addBids(bidRequest, addBidResponse, done) {
-		bidRequest.bids.forEach((bid) => {
-			const bidResponse = window.pbjs.createBid(1),
-				[width, height] = bid.sizes[0];
-
-			bidResponse.ad = this.getCreative(bid.sizes[0]);
-			bidResponse.bidderCode = bidRequest.bidderCode;
-			bidResponse.cpm = this.price;
-			bidResponse.ttl = 300;
-			bidResponse.mediaType = 'banner';
-			bidResponse.width = width;
-			bidResponse.height = height;
-
-			addBidResponse(bid.adUnitCode, bidResponse);
-			done();
-		});
-	}
-
-	create() {
-		return {
-			callBids: (bidRequest, addBidResponse, done) => {
-				window.pbjs.que.push(() => {
-					this.addBids(bidRequest, addBidResponse, done);
-				});
-			},
-			getSpec: () => ({
-				code: this.bidderName,
-				supportedMediaTypes: ['banner']
-			})
-		};
 	}
 }

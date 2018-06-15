@@ -4,7 +4,6 @@ import { Prebid } from './prebid/index';
 
 require('./../../lib/prebid.min');
 
-const logGroup = 'ext.wikia.adEngine.lookup.services';
 const bidIndex = {
 	a9: {
 		pos: 2,
@@ -16,71 +15,58 @@ const bidIndex = {
 	}
 };
 
-let bidMarker = ['x', 'x', 'x', 'x', 'x'];
-let biddersRegistry = {};
+let bidderMarker = ['x', 'x', 'x', 'x', 'x'];
+const biddersRegistry = {};
 
-function getParameters(slotName) {
-	if (!Object.keys) {
-		return;
-	}
-
-	let slotParams = {};
+function getBidParameters(slotName) {
 	let floorPrice = 0;
+	const slotParams = {};
 
 	if (biddersRegistry.prebid && biddersRegistry.prebid.wasCalled()) {
-		const prebidPrices = biddersRegistry.prebid.getBestSlotPrice(slotName);
-		// promote prebid on a tie
+		const prebidPrices = biddersRegistry.prebid.getSlotBestPrice(slotName);
+
 		floorPrice = Math.max.apply(
 			null,
-			Object.keys(prebidPrices)
-				.filter((key) =>
-					!isNaN(parseFloat(prebidPrices[key])) && parseFloat(prebidPrices[key]) > 0)
-				.map((key) => parseFloat(prebidPrices[key]))
+			Object
+				.keys(prebidPrices)
+				.filter(key => !isNaN(parseFloat(prebidPrices[key])) && parseFloat(prebidPrices[key]) > 0)
+				.map(key => parseFloat(prebidPrices[key]))
 		);
 	}
 
-	Object.keys(biddersRegistry).forEach(function (bidderName) {
+	Object.keys(biddersRegistry).forEach((bidderName) => {
 		const bidder = biddersRegistry[bidderName];
 
 		if (bidder && bidder.wasCalled()) {
-			const params = bidder.getSlotParams(slotName, floorPrice);
+			const params = bidder.getSlotTargetingParams(slotName, floorPrice);
 
-			Object.keys(params).forEach(function (key) {
-				slotParams[key] = params[key];
-			});
+			Object
+				.keys(params)
+				.forEach((key) => {
+					slotParams[key] = params[key];
+				});
 
 			if (bidder.hasResponse()) {
-				bidMarker = updateBidderMarker(bidder.getName(), bidMarker);
+				bidderMarker = updateBidderMarker(bidder.getName(), bidderMarker);
 			}
 		}
 	});
 
-	slotParams.bid = bidMarker.join('');
+	slotParams.bid = bidderMarker.join('');
 
 	return slotParams;
-}
-
-function updateBidderMarker(bidderName, bidMarker) {
-	if (!bidIndex[bidderName]) {
-		return bidMarker;
-	}
-
-	let bidder = bidIndex[bidderName];
-	bidMarker[bidder.pos] = bidder.char;
-
-	return bidMarker;
 }
 
 function getCurrentSlotPrices(slotName) {
 	const slotPrices = {};
 
-	Object.keys(biddersRegistry).forEach(function (bidderName) {
-		const bidder = biddersRegistry[bidderName];
+	Object.keys(biddersRegistry).forEach((bidder) => {
+		bidder = biddersRegistry[bidder];
 
 		if (bidder && bidder.isSlotSupported(slotName)) {
-			const priceFromBidder = bidder.getBestSlotPrice(slotName);
+			const priceFromBidder = bidder.getSlotBestPrice(slotName);
 
-			Object.keys(priceFromBidder).forEach(function (bidderName) {
+			Object.keys(priceFromBidder).forEach((bidderName) => {
 				slotPrices[bidderName] = priceFromBidder[bidderName];
 			});
 		}
@@ -88,20 +74,6 @@ function getCurrentSlotPrices(slotName) {
 
 	return slotPrices;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function requestBids({ config, resetListener, timeout }) {
 	if (config.prebid) {
 		biddersRegistry.prebid = new Prebid(config.prebid, resetListener, timeout);
@@ -113,6 +85,18 @@ function requestBids({ config, resetListener, timeout }) {
 	//}
 }
 
+function updateBidderMarker(bidderName, bidMarker) {
+	if (!bidIndex[bidderName]) {
+		return bidMarker;
+	}
+
+	const bidder = bidIndex[bidderName];
+	bidMarker[bidder.pos] = bidder.char;
+
+	return bidMarker;
+}
+
 export const bidders = {
-	requestBids
+	requestBids,
+	getBidParameters
 };

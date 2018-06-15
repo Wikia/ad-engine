@@ -1,12 +1,19 @@
 import { BaseAdapter } from './base-adapter';
 import { buildVastUrl } from './../../../video/vast-url-builder';
+import { queryString } from './../../../utils/query-string';
 
 export class WikiaVideo extends BaseAdapter {
 	constructor(options) {
 		super(options);
 
 		this.bidderName = 'wikiaVideo';
-		this.price = options.price;
+		this.enabled = !!(queryString.get('wikia_video_adapter'));
+
+		if (this.enabled) {
+			this.price = this.getPrice();
+		}
+
+		this.create = () => this;
 	}
 
 	prepareConfigForAdUnit(code) {
@@ -24,6 +31,25 @@ export class WikiaVideo extends BaseAdapter {
 				}
 			]
 		};
+	}
+
+	getSpec() {
+		return {
+			code: this.bidderName,
+			supportedMediaTypes: ['video']
+		};
+	}
+
+	getPrice() {
+		const price = queryString.get('wikia_video_adapter');
+
+		return parseInt(price, 10) / 100;
+	}
+
+	callBids(bidRequest, addBidResponse, done) {
+		window.pbjs.que.push(() => {
+			this.addBids(bidRequest, addBidResponse, done);
+		});
 	}
 
 	addBids(bidRequest, addBidResponse, done) {
@@ -51,19 +77,5 @@ export class WikiaVideo extends BaseAdapter {
 			addBidResponse(bid.adUnitCode, bidResponse);
 			done();
 		});
-	}
-
-	create() {
-		return {
-			callBids: (bidRequest, addBidResponse, done) => {
-				window.pbjs.que.push(() => {
-					this.addBids(bidRequest, addBidResponse, done);
-				});
-			},
-			getSpec: () => ({
-				code: this.bidderName,
-				supportedMediaTypes: ['banner']
-			})
-		};
 	}
 }
