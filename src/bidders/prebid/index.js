@@ -1,4 +1,5 @@
 import { BaseBidder } from './../base-bidder';
+import { queryString } from './../../utils/query-string';
 import { getPriorities } from './adapters-registry';
 import { getPrebidBestPrice} from './price-helper';
 import { getSettings } from './prebid-settings';
@@ -11,8 +12,32 @@ export class Prebid extends BaseBidder {
 		this.logGroup = 'prebid-bidder';
 		this.name = 'prebid';
 		this.adUnits = setupAdUnits(this.bidderConfig);
+		this.isCMPEnabled = false;
+		this.prebidConfig = {
+			debug: queryString.get('pbjs_debug') === '1',
+			enableSendAllBids: true,
+			bidderSequence: 'random',
+			bidderTimeout: this.timeout,
+			userSync: {
+				iframeEnabled: true,
+				enabledBidders: [],
+				syncDelay: 6000
+			}
+		};
 
-		// ToDo: CONFIG
+		if (this.isCMPEnabled) {
+			this.prebidConfig.consentManagement = {
+				cmpApi: 'iab',
+				timeout: this.timeout,
+				allowAuctionWithoutConsent: false
+			};
+		}
+
+		window.pbjs = window.pbjs || {};
+		window.pbjs.que = window.pbjs.que || [];
+		window.pbjs.que.push(() => {
+			window.pbjs.setConfig(this.prebidConfig);
+		});
 	}
 
 	static validResponseStatusCode = 1;

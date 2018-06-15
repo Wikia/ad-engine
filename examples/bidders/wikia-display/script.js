@@ -19,54 +19,6 @@ context.extend(adContext);
 bidders.requestBids({
 	config: {
 		prebid: {
-			aol: {
-				enabled: false,
-				slots: {}
-			},
-			appnexus: {
-				enabled: false,
-				slots: {}
-			},
-			appnexusAst: {
-				enabled: false,
-				slots: {}
-			},
-			appnexusWebads: {
-				enabled: false,
-				slots: {}
-			},
-			audienceNetwork: {
-				enabled: false,
-				slots: {}
-			},
-			beachfront: {
-				enabled: false,
-				slots: {}
-			},
-			indexExchange: {
-				enabled: false,
-				slots: {}
-			},
-			onemobile: {
-				enabled: false,
-				slots: {}
-			},
-			openx: {
-				enabled: false,
-				slots: {}
-			},
-			pubmatic: {
-				enabled: false,
-				slots: {}
-			},
-			rubicon: {
-				enabled: false,
-				slots: {}
-			},
-			rubiconDisplay: {
-				enabled: false,
-				slots: {}
-			},
 			wikia: {
 				enabled: true,
 				slots: {

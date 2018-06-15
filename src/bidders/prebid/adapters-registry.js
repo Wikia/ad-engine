@@ -13,8 +13,22 @@ import { RubiconDisplay } from './adapters/rubicon-display';
 import { Wikia } from './adapters/wikia';
 import { WikiaVideo } from './adapters/wikia-video';
 
-let adapters = [];
-let customAdapters = [];
+const adapters = [];
+const customAdapters = [];
+const availableAdapters = {
+	aol: Aol,
+	appnexus: Appnexus,
+	appnexusAst: AppnexusAst,
+	appnexusWebads: AppnexusWebads,
+	audienceNetwork: AudienceNetwork,
+	beachfront: Beachfront,
+	indexExchange: IndexExchange,
+	onemobile: Onemobile,
+	openx: Openx,
+	pubmatic: Pubmatic,
+	rubicon: Rubicon,
+	rubiconDisplay: RubiconDisplay
+};
 
 function registerAliases() {
 	adapters
@@ -34,29 +48,28 @@ function registerAliases() {
 }
 
 function setupAdapters(bidders) {
-	adapters = [
-		new Aol(bidders.aol),
-		new Appnexus(bidders.appnexus),
-		new AppnexusAst(bidders.appnexusAst),
-		new AppnexusWebads(bidders.appnexusWebads),
-		new AudienceNetwork(bidders.audienceNetwork),
-		new Beachfront(bidders.beachfront),
-		new IndexExchange(bidders.indexExchange),
-		new Onemobile(bidders.onemobile),
-		new Openx(bidders.openx),
-		new Pubmatic(bidders.pubmatic),
-		new Rubicon(bidders.rubicon),
-		new RubiconDisplay(bidders.rubiconDisplay)
-	];
-	customAdapters = [
-		new Wikia(bidders.wikia),
-		new WikiaVideo(bidders.wikiaVideo)
-	];
+	Object
+		.keys(availableAdapters)
+		.forEach((key) => {
+			if (bidders[key]) {
+				const adapter = new availableAdapters[key](bidders[key]);
 
-	setupCustomAdapters();
+				adapters.push(adapter);
+			}
+		});
+
+	setupCustomAdapters(bidders);
 }
 
-function setupCustomAdapters() {
+function setupCustomAdapters(bidders) {
+	if (bidders.wikia) {
+		customAdapters.push(new Wikia(bidders.wikia));
+	}
+
+	if (bidders.wikiaVideo) {
+		customAdapters.push(new WikiaVideo(bidders.wikiaVideo));
+	}
+
 	customAdapters.forEach((adapter) => {
 		adapters.push(adapter);
 
