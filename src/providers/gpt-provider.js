@@ -3,6 +3,7 @@ import { logger, defer } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { slotListener } from '../listeners';
+import { bidders } from './../bidders';
 import { events, slotService, slotDataParamsUpdater, trackingOptIn } from '../services';
 
 const logGroup = 'gpt-provider';
@@ -81,6 +82,9 @@ export class GptProvider {
 
 		this.applyTargetingParams(gptSlot, targeting);
 		slotDataParamsUpdater.updateOnCreate(adSlot, targeting);
+
+		const bidderTargeting = bidders.getBidParameters(adSlot.getSlotName());
+		this.applyTargetingParams(gptSlot, bidderTargeting);
 
 		window.googletag.display(adSlot.getSlotName());
 		definedSlots.push(gptSlot);
