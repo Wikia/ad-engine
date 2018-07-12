@@ -10,6 +10,7 @@ import {
 	slotTweaker,
 	slotService,
 	templateService,
+	trackingOptIn,
 	registerCustomAdLoader,
 	context,
 	messageBus
@@ -108,6 +109,7 @@ export class AdEngine {
 	}
 
 	init() {
+		trackingOptIn.readConsent();
 		this.setupProviders();
 		this.setupQueue();
 		btfBlockerService.init();
