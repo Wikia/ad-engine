@@ -4,7 +4,7 @@ context.set('options.trackingOptIn', null);
 
 const isCmpDefined = typeof utils.queryString.get('cmp') !== 'undefined',
 	optIn = utils.queryString.get('cmp') === '1';
-console.log(isCmpDefined, optIn,  utils.queryString.get('cmp-consent'));
+
 if (isCmpDefined) {
 	window.__cmp = function (cmd, param, cb) {
 		if (cmd === 'getConsentData') {
@@ -16,11 +16,11 @@ if (isCmpDefined) {
 		} else if (cmd === 'getVendorConsents') {
 			cb({
 				metadata: 'BOQu5naOQu5naCNABAAABRAAAAAAAA',
-				purposeConsents: Array.from({length: 5}).reduce((map, val, i) => {
+				purposeConsents: Array.from({ length: 5 }).reduce((map, val, i) => {
 					map[i + 1] = optIn;
 					return map;
 				}, {}),
-				vendorConsents: Array.from({length: 500}).reduce((map, val, i) => {
+				vendorConsents: Array.from({ length: 500 }).reduce((map, val, i) => {
 					map[i + 1] = optIn;
 					return map;
 				}, {})
