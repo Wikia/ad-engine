@@ -25,6 +25,8 @@ describe('gpt-provider', () => {
 			cb();
 		};
 
+		window.__cmp = () => {};
+
 		context.set('options.trackingOptIn', true);
 	});
 
