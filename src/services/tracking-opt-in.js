@@ -17,7 +17,7 @@ function readConsent() {
 			// we assume user opts in when he consents for at least one vendor
 			const optIn = Object.keys(consents.vendorConsents).filter(key => !!consents.vendorConsents[key]).length > 0;
 
-			context.set('options.trackingOptIn', optIn);
+			context.set('options.trackingOptIn', isOptInByQueryParam || optIn);
 		});
 	}
 }
