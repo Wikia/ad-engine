@@ -27,7 +27,6 @@
     },
     "globals": {
         "document": false,
-        "window": false,
-        "__cmp": false
+        "window": false
     }
 }
