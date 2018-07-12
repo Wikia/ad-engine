@@ -4,15 +4,11 @@ import { queryString } from '../utils/query-string';
 const isOptInByQueryParam = queryString.get('tracking-opt-in-status') === 'true';
 
 function isOptedIn() {
-	if (isOptInByQueryParam || typeof window.__cmp !== 'function') {
-		return true;
-	}
-
 	if (typeof context.get('options.trackingOptIn') === 'boolean') {
 		return context.get('options.trackingOptIn');
 	}
 
-	return false;
+	return isOptInByQueryParam || typeof window.__cmp !== 'function';
 }
 
 function readConsent() {

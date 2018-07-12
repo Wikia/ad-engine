@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { context } from '../../src/services/context-service';
 import { trackingOptIn } from '../../src/services/tracking-opt-in';
 
 let vendorConsents = 50;
@@ -22,6 +23,7 @@ function setupCmp() {
 describe('tracking-opt-in', () => {
 	beforeEach(() => {
 		delete window.__cmp;
+		context.set('options.trackingOptIn', null);
 		vendorConsents = 50;
 	});
 
