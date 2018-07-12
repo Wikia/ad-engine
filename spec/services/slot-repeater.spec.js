@@ -138,7 +138,6 @@ describe('slot-repeater', () => {
 		sibling.offsetTop = 300;
 
 		expect(repeater.onRenderEnded(adSlot)).to.be.false;
-		expect(context.get('events.pushOnScroll.ids.0')).to.equal('repeatable_boxad_2');
 	});
 
 	it('ad-slot is repeated when it is configured as repeatable and sibling is far away', () => {

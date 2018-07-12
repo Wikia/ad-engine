@@ -68,8 +68,14 @@ export class PorvataListener {
 	}
 
 	getData(eventName, errorCode) {
-		const imaAd = this.video && this.video.ima.getAdsManager() && this.video.ima.getAdsManager().getCurrentAd(),
-			{ contentType, creativeId, lineItemId } = vastParser.getAdInfo(imaAd);
+		const imaAd = this.video && this.video.ima.getAdsManager() && this.video.ima.getAdsManager().getCurrentAd();
+		let { contentType, creativeId, lineItemId } = vastParser.getAdInfo(imaAd);
+
+		if (!imaAd && this.video && this.video.container) {
+			contentType = this.video.container.getAttribute('data-vast-content-type');
+			creativeId = this.video.container.getAttribute('data-vast-creative-id');
+			lineItemId = this.video.container.getAttribute('data-vast-line-item-id');
+		}
 
 		return {
 			ad_error_code: errorCode,

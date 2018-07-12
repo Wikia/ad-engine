@@ -35,7 +35,8 @@ function getAdType(event, adSlot) {
 function getData(adSlot, { adType, event }) {
 	const data = {
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
-		status: adType || adSlot.getStatus(),
+		adType: adType || '',
+		status: adSlot.getStatus(),
 		page_width: window.document.body.scrollWidth || '',
 		time_bucket: (new Date()).getHours(),
 		timestamp: new Date().getTime(),

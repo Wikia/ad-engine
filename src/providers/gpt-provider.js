@@ -105,7 +105,10 @@ export class GptProvider {
 			if (typeof (value) === 'function') {
 				value = value();
 			}
-			result[key] = value;
+
+			if (value !== null) {
+				result[key] = value;
+			}
 		});
 
 		return result;
@@ -119,7 +122,10 @@ export class GptProvider {
 	@decorate(gptLazyMethod)
 	flush() {
 		if (definedSlots.length) {
-			window.googletag.pubads().refresh(definedSlots);
+			window.googletag.pubads().refresh(
+				definedSlots,
+				{ changeCorrelator: false }
+			);
 			definedSlots = [];
 		}
 	}

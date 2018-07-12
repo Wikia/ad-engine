@@ -15,10 +15,11 @@ if (!webhookUrl) {
 
 const webhook = new IncomingWebhook(webhookUrl);
 
-let message;
+let text;
+let attachments = [];
 
 if (failed) {
-	message = `:x: <!here|here>: Something went wrong during *${repositoryName}* release (<${buildUrl}|show log>)`;
+	text = `:x: <!here|here>: Something went wrong during *${repositoryName}* release (<${buildUrl}|show log>)`;
 } else {
 	const releaseLink = `<https://github.com/Wikia/${repositoryName}/releases/tag/v${version}|Release v${version}>`;
 	let diffLink = '';
@@ -27,10 +28,26 @@ if (failed) {
 		diffLink = `(<https://github.com/Wikia/${repositoryName}/compare/v${previousVersion}...v${version}|show diff>)`;
 	}
 
-	message = `New version of *${repositoryName}* has been released: ${releaseLink} ${diffLink}`;
+	text = `New version of *${repositoryName}* has been released: ${releaseLink} ${diffLink}`;
+	attachments = [
+		{
+			color: '#00acac',
+			text: 'Install new version in:',
+			actions: [
+				{
+					type: 'button',
+					text: 'ad-products',
+					url: `http://jenkins:8080/job/update_dependencies_adproducts/parambuild/?adengine_version=v${version}`
+				}
+			]
+		}
+	];
 }
 
-webhook.send(message, (error, response) => {
+webhook.send({
+	text,
+	attachments
+}, (error, response) => {
 	if (error) {
 		console.error(error);
 	} else {
