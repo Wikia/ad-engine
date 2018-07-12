@@ -67,6 +67,7 @@ const environments = {
 			'templates/floating-ad': './examples/templates/floating-ad/script.js',
 			'utils/block-detect': './examples/utils/block-detect/script.js',
 			'utils/browser-detect': './examples/utils/browser-detect/script.js',
+			'utils/cmp': './examples/utils/cmp/script.js',
 			'utils/device-detect': './examples/utils/device-detect/script.js',
 			'video/porvata': './examples/video/porvata/script.js'
 		},
