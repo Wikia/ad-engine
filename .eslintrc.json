@@ -19,6 +19,7 @@
             "error",
             {
                 "allow": [
+                    "__cmp",
                     "__useDefault"
                 ]
             }
