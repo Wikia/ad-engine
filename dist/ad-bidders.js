@@ -1111,6 +1111,52 @@ var kargo_Kargo = function (_BaseAdapter) {
 
 	return Kargo;
 }(base_adapter_BaseAdapter);
+// CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/lkqd.js
+
+
+
+
+
+
+
+var lkqd_Lkqd = function (_BaseAdapter) {
+	inherits_default()(Lkqd, _BaseAdapter);
+
+	function Lkqd(options) {
+		classCallCheck_default()(this, Lkqd);
+
+		var _this = possibleConstructorReturn_default()(this, (Lkqd.__proto__ || get_prototype_of_default()(Lkqd)).call(this, options));
+
+		_this.bidderName = 'lkqd';
+		return _this;
+	}
+
+	createClass_default()(Lkqd, [{
+		key: 'prepareConfigForAdUnit',
+		value: function prepareConfigForAdUnit(code, _ref) {
+			var placementId = _ref.placementId,
+			    siteId = _ref.siteId;
+
+			return {
+				code: code,
+				mediaTypes: {
+					video: {
+						playerSize: [640, 480]
+					}
+				},
+				bids: [{
+					bidder: this.bidderName,
+					params: {
+						siteId: siteId,
+						placementId: placementId
+					}
+				}]
+			};
+		}
+	}]);
+
+	return Lkqd;
+}(base_adapter_BaseAdapter);
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/onemobile.js
 
 
@@ -1837,6 +1883,7 @@ var wikia_video_WikiaVideo = function (_BaseAdapter) {
 
 
 
+
 var adapters_registry_adapters = [];
 var customAdapters = [];
 var availableAdapters = {
@@ -1847,6 +1894,7 @@ var availableAdapters = {
 	beachfront: beachfront_Beachfront,
 	indexExchange: index_exchange_IndexExchange,
 	kargo: kargo_Kargo,
+	lkqd: lkqd_Lkqd,
 	onemobile: onemobile_Onemobile,
 	openx: openx_Openx,
 	pubmatic: pubmatic_Pubmatic,

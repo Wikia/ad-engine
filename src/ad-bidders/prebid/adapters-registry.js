@@ -5,6 +5,7 @@ import { AudienceNetwork } from './adapters/audience-network';
 import { Beachfront } from './adapters/beachfront';
 import { IndexExchange } from './adapters/index-exchange';
 import { Kargo } from './adapters/kargo';
+import { Lkqd } from './adapters/lkqd';
 import { Onemobile } from './adapters/onemobile';
 import { Openx } from './adapters/openx';
 import { Pubmatic } from './adapters/pubmatic';
@@ -23,6 +24,7 @@ const availableAdapters = {
 	beachfront: Beachfront,
 	indexExchange: IndexExchange,
 	kargo: Kargo,
+	lkqd: Lkqd,
 	onemobile: Onemobile,
 	openx: Openx,
 	pubmatic: Pubmatic,
