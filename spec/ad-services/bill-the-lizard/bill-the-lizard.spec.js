@@ -291,6 +291,16 @@ describe('Bill the Lizard service', () => {
 
 			expect(response.result).to.equal(2);
 		});
+
+		it('should return prediction with status on_time for the first slot after not_used one', () => {
+			billTheLizard.statuses = {
+				foo_1: BillTheLizard.NOT_USED,
+			};
+
+			const response = billTheLizard.getPreviousPrediction(2, callIdBuilder, modelName);
+
+			expect(response.result).to.equal(2);
+		});
 	});
 
 	it('should not call service if it is disabled in context', () => {
