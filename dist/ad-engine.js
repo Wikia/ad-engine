@@ -2338,6 +2338,7 @@ var porvata_PorvataPlayer = function () {
 		this.params = params;
 		this.videoSettings = videoSettings;
 		this.isFloating = false;
+		this.wasInViewport = false;
 
 		var nativeFullscreen = porvata_nativeFullscreenOnElement(this.container);
 
@@ -2569,6 +2570,17 @@ var porvata_Porvata = function () {
 			});
 		}
 	}, {
+		key: 'dispatchEventWhenInViewport',
+		value: function dispatchEventWhenInViewport(video, eventName) {
+			if (video.wasInViewport) {
+				video.ima.dispatchEvent(eventName);
+			} else {
+				video.addEventListener('wikiaFirstTimeInViewport', function () {
+					video.ima.dispatchEvent(eventName);
+				});
+			}
+		}
+	}, {
 		key: 'inject',
 		value: function inject(params) {
 			var porvataListener = new porvata_listener_PorvataListener({
@@ -2606,6 +2618,8 @@ var porvata_Porvata = function () {
 				return new porvata_PorvataPlayer(ima, params, videoSettings);
 			}).then(function (video) {
 				function inViewportCallback(isVisible) {
+					video.wasInViewport = true;
+
 					// Play video automatically only for the first time
 					if (isVisible && !autoPlayed && params.autoPlay) {
 						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
@@ -2637,6 +2651,7 @@ var porvata_Porvata = function () {
 
 				video.addEventListener('adCanPlay', function () {
 					video.ima.dispatchEvent('wikiaAdStarted');
+					Porvata.dispatchEventWhenInViewport(video, 'wikiaInViewportWithOffer');
 				});
 				video.addEventListener('allAdsCompleted', function () {
 					if (video.isFullscreen()) {
@@ -2692,6 +2707,7 @@ var porvata_Porvata = function () {
 						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
 						viewportObserver.removeListener(viewportListenerId);
 					});
+					Porvata.dispatchEventWhenInViewport(video, 'wikiaInViewportWithoutOffer');
 				});
 
 				return video;
@@ -5906,8 +5922,8 @@ if (get_default()(window, versionField, null)) {
 }
 
 set_default()(window, versionField, 'v23.4.3');
-set_default()(window, commitField, '89a8cc68');
-logger('ad-engine', 'v23.4.3 (89a8cc68)');
+set_default()(window, commitField, 'eb3d1421');
+logger('ad-engine', 'v23.4.3 (eb3d1421)');
 
 
 
