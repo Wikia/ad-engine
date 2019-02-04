@@ -60,6 +60,7 @@ export class PorvataPlayer {
 		this.params = params;
 		this.videoSettings = videoSettings;
 		this.isFloating = false;
+		this.wasInViewport = false;
 
 		const nativeFullscreen = nativeFullscreenOnElement(this.container);
 
@@ -252,6 +253,16 @@ export class Porvata {
 		});
 	}
 
+	static dispatchEventWhenInViewport(video, eventName) {
+		if (video.wasInViewport) {
+			video.ima.dispatchEvent(eventName);
+		} else {
+			video.addEventListener('wikiaFirstTimeInViewport', () => {
+				video.ima.dispatchEvent(eventName);
+			});
+		}
+	}
+
 	static inject(params) {
 		const porvataListener = new PorvataListener({
 			adProduct: params.adProduct,
@@ -288,6 +299,8 @@ export class Porvata {
 			.then((ima) => new PorvataPlayer(ima, params, videoSettings))
 			.then((video) => {
 				function inViewportCallback(isVisible) {
+					video.wasInViewport = true;
+
 					// Play video automatically only for the first time
 					if (isVisible && !autoPlayed && params.autoPlay) {
 						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
@@ -319,6 +332,7 @@ export class Porvata {
 
 				video.addEventListener('adCanPlay', () => {
 					video.ima.dispatchEvent('wikiaAdStarted');
+					Porvata.dispatchEventWhenInViewport(video, 'wikiaInViewportWithOffer');
 				});
 				video.addEventListener('allAdsCompleted', () => {
 					if (video.isFullscreen()) {
@@ -374,6 +388,7 @@ export class Porvata {
 						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
 						viewportObserver.removeListener(viewportListenerId);
 					});
+					Porvata.dispatchEventWhenInViewport(video, 'wikiaInViewportWithoutOffer');
 				});
 
 				return video;

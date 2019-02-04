@@ -11,6 +11,7 @@ import { porvataTracker } from '@wikia/ad-products';
 import adContext from '../../context';
 
 const blockOutOfViewportPausing = utils.queryString.get('block_pausing') === '1';
+const forceEmptyOffer = utils.queryString.get('empty_offer') === '1';
 const container = document.getElementById('player');
 const params = {
 	adProduct: 'test-video',
@@ -32,7 +33,7 @@ if (blockOutOfViewportPausing) {
 }
 
 context.extend(adContext);
-context.set('targeting.artid', 292);
+context.set('targeting.artid', forceEmptyOffer ? 1000000 : 292);
 context.set('targeting.vertical', 'games');
 context.set('targeting.wpage', '100% Orange Juice');
 context.set('custom.device', utils.client.getDeviceType());
