@@ -2064,7 +2064,7 @@ function transformPriceFromBid(bid) {
 
 
 
-var dfpVideoBidders = [{ bidderCode: 'appnexusAst', contextKey: 'custom.appnexusDfp' }, { bidderCode: 'rubicon', contextKey: 'custom.rubiconDfp' }, { bidderCode: 'pubmatic', contextKey: 'custom.pubmaticDfp' }];
+var dfpVideoBidders = [{ bidderCode: 'appnexusAst', contextKey: 'custom.appnexusDfp' }, { bidderCode: 'lkqd', contextKey: 'custom.lkqdDfp' }, { bidderCode: 'rubicon', contextKey: 'custom.rubiconDfp' }, { bidderCode: 'pubmatic', contextKey: 'custom.pubmaticDfp' }];
 
 function getSettings() {
 	return {
