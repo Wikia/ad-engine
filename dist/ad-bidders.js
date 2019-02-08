@@ -1150,7 +1150,8 @@ var lkqd_Lkqd = function (_BaseAdapter) {
 					params: {
 						siteId: siteId,
 						placementId: placementId,
-						pageurl: window.location.hostname
+						pageurl: window.location.hostname,
+						output: 'svpaid'
 					}
 				}]
 			};
