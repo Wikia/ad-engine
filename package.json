@@ -75,11 +75,14 @@
 		"webpack-merge": "4.1.2"
 	},
 	"files": [
-		"dist/",
 		"lib/",
+		"maintenance/",
 		"src/",
+		".babelrc",
+		".npmrc",
 		"jsconfig.json",
-		"README.md"
+		"README.md",
+		"webpack.config.js"
 	],
 	"main": "./dist/ad-engine.js",
 	"nyc": {
