@@ -75,6 +75,7 @@
 		"webpack-merge": "4.1.2"
 	},
 	"files": [
+		"examples/",
 		"lib/",
 		"maintenance/",
 		"src/",
