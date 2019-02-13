@@ -106,7 +106,7 @@
 		"serve": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --inline --open --watch --content-base=./examples",
 		"tdd": "mocha-webpack -w --full-trace './spec/**/*.spec.js' -r jsdom-global/register --webpack-env.test",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-env.test",
-		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.js' -r jsdom-global/register --webpack-env.test --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
+		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-env.test --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
 		"watch": "./node_modules/webpack/bin/webpack.js --progress --colors --hide-modules --watch",
 		"wdio-desktop": "BABEL_ENV=test ./node_modules/.bin/wdio wdio.desktop.conf.js",
 		"wdio-mobile": "BABEL_ENV=test ./node_modules/.bin/wdio wdio.mobile.conf.js",
