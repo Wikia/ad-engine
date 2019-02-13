@@ -45,7 +45,7 @@ exports.config = {
 	},
 	mochaOpts: {
 		ui: 'bdd',
-		compilers: ['js:babel-core/register'],
+		compilers: ['js:@babel/register'],
 		timeout: 120000,
 	},
 	staticServerFolders: [{ mount: '/', path: './examples' }],
