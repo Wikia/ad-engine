@@ -1,4 +1,4 @@
-{
+export const videoData = {
 	"mediaid": "eHnTdMot",
 	"description": "Orphan Black is in its fifth and final season, but we understand if you still have trouble keeping the names of the clones straight. They're all brilliantly played by Tatiana Maslany, so it's easy to get them confused. Luckily, they each have distinct looks and personalities. Here's what you need to know about Sarah, Alison, Helena, Cosima and Rachel.",
 	"pubdate": 1497024295,
@@ -59,4 +59,4 @@
 	],
 	"link": "https://cdn.jwplayer.com/previews/eHnTdMot",
 	"duration": 75
-}
+};
