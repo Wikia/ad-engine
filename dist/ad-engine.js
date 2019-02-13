@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,130 +86,124 @@ module.exports = require("@babel/runtime/helpers/classCallCheck");
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/defineProperty");
+module.exports = require("@babel/runtime/helpers/getPrototypeOf");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/assertThisInitialized");
+module.exports = require("@babel/runtime/helpers/slicedToArray");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/getPrototypeOf");
+module.exports = require("core-decorators");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/slicedToArray");
+module.exports = require("@babel/runtime/helpers/applyDecoratedDescriptor");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("core-decorators");
+module.exports = require("@babel/runtime/helpers/inherits");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/applyDecoratedDescriptor");
+module.exports = require("@babel/runtime/helpers/possibleConstructorReturn");
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/inherits");
+module.exports = require("@babel/runtime/regenerator");
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/possibleConstructorReturn");
+module.exports = require("@babel/runtime/helpers/toConsumableArray");
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/regenerator");
+module.exports = require("@babel/runtime/helpers/typeof");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toConsumableArray");
+module.exports = require("@babel/runtime/helpers/get");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/typeof");
+module.exports = require("js-cookie");
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/get");
+module.exports = require("@babel/runtime/helpers/asyncToGenerator");
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports) {
 
-module.exports = require("js-cookie");
+module.exports = require("eventemitter3");
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/asyncToGenerator");
+module.exports = require("@babel/runtime/helpers/assertThisInitialized");
 
 /***/ }),
 /* 16 */
 /***/ (function(module, exports) {
 
-module.exports = require("eventemitter3");
+module.exports = require("current-device");
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = require("current-device");
+module.exports = require("lodash/set");
 
 /***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/set");
+module.exports = require("@babel/runtime/helpers/construct");
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/construct");
+module.exports = require("@babel/runtime/helpers/wrapNativeSuper");
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/wrapNativeSuper");
+module.exports = require("blockadblock");
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = require("blockadblock");
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
 module.exports = require("lodash/get");
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -257,11 +251,11 @@ __webpack_require__.d(utils_namespaceObject, "tryProperty", function() { return 
 __webpack_require__.d(utils_namespaceObject, "viewportObserver", function() { return viewportObserver; });
 
 // EXTERNAL MODULE: external "lodash/set"
-var set_ = __webpack_require__(18);
+var set_ = __webpack_require__(17);
 var set_default = /*#__PURE__*/__webpack_require__.n(set_);
 
 // EXTERNAL MODULE: external "lodash/get"
-var get_ = __webpack_require__(22);
+var get_ = __webpack_require__(21);
 var get_default = /*#__PURE__*/__webpack_require__.n(get_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/classCallCheck"
@@ -273,11 +267,11 @@ var createClass_ = __webpack_require__(0);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
 
 // EXTERNAL MODULE: external "current-device"
-var external_current_device_ = __webpack_require__(17);
+var external_current_device_ = __webpack_require__(16);
 var external_current_device_default = /*#__PURE__*/__webpack_require__.n(external_current_device_);
 
 // EXTERNAL MODULE: external "blockadblock"
-var external_blockadblock_ = __webpack_require__(21);
+var external_blockadblock_ = __webpack_require__(20);
 var external_blockadblock_default = /*#__PURE__*/__webpack_require__.n(external_blockadblock_);
 
 // CONCATENATED MODULE: ./src/ad-engine/utils/client.ts
@@ -574,7 +568,7 @@ function getDocumentVisibilityStatus() {
   return status;
 }
 // EXTERNAL MODULE: external "@babel/runtime/helpers/typeof"
-var typeof_ = __webpack_require__(12);
+var typeof_ = __webpack_require__(10);
 var typeof_default = /*#__PURE__*/__webpack_require__.n(typeof_);
 
 // CONCATENATED MODULE: ./src/ad-engine/utils/flow-control.ts
@@ -651,11 +645,11 @@ function createWithTimeout(func) {
   return Promise.race([new Promise(func), timeoutReject(msToTimeout)]);
 }
 // EXTERNAL MODULE: external "@babel/runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(5);
+var slicedToArray_ = __webpack_require__(3);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
 // EXTERNAL MODULE: external "js-cookie"
-var external_js_cookie_ = __webpack_require__(14);
+var external_js_cookie_ = __webpack_require__(12);
 var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
 
 // CONCATENATED MODULE: ./src/ad-engine/services/context-service.ts
@@ -1185,12 +1179,7 @@ function () {
 
   return IframeBuilder;
 }();
-// EXTERNAL MODULE: external "@babel/runtime/helpers/defineProperty"
-var defineProperty_ = __webpack_require__(2);
-var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty_);
-
 // CONCATENATED MODULE: ./src/ad-engine/utils/lazy-queue.ts
-
 
 
 
@@ -1239,11 +1228,9 @@ function () {
   function LazyQueue() {
     classCallCheck_default()(this, LazyQueue);
 
-    defineProperty_default()(this, "itemFlushCallbacks", []);
-
-    defineProperty_default()(this, "pushCommand", undefined);
-
-    defineProperty_default()(this, "items", []);
+    this.itemFlushCallbacks = [];
+    this.pushCommand = undefined;
+    this.items = [];
 
     for (var _len = arguments.length, items = new Array(_len), _key = 0; _key < _len; _key++) {
       items[_key] = arguments[_key];
@@ -1407,23 +1394,23 @@ function logger(logGroup) {
   }
 }
 // EXTERNAL MODULE: external "@babel/runtime/helpers/possibleConstructorReturn"
-var possibleConstructorReturn_ = __webpack_require__(9);
+var possibleConstructorReturn_ = __webpack_require__(7);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/getPrototypeOf"
-var getPrototypeOf_ = __webpack_require__(4);
+var getPrototypeOf_ = __webpack_require__(2);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/inherits"
-var inherits_ = __webpack_require__(8);
+var inherits_ = __webpack_require__(6);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/assertThisInitialized"
-var assertThisInitialized_ = __webpack_require__(3);
+var assertThisInitialized_ = __webpack_require__(15);
 var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/wrapNativeSuper"
-var wrapNativeSuper_ = __webpack_require__(20);
+var wrapNativeSuper_ = __webpack_require__(19);
 var wrapNativeSuper_default = /*#__PURE__*/__webpack_require__.n(wrapNativeSuper_);
 
 // CONCATENATED MODULE: ./src/ad-engine/utils/not-implemented-exception.ts
@@ -1575,11 +1562,11 @@ function () {
 
 var scriptLoader = new script_loader_ScriptLoader();
 // EXTERNAL MODULE: external "@babel/runtime/helpers/toConsumableArray"
-var toConsumableArray_ = __webpack_require__(11);
+var toConsumableArray_ = __webpack_require__(9);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray_);
 
 // EXTERNAL MODULE: external "eventemitter3"
-var external_eventemitter3_ = __webpack_require__(16);
+var external_eventemitter3_ = __webpack_require__(14);
 var external_eventemitter3_default = /*#__PURE__*/__webpack_require__.n(external_eventemitter3_);
 
 // CONCATENATED MODULE: ./src/ad-engine/video/vast-parser.ts
@@ -2692,15 +2679,14 @@ function () {
 
 
 // EXTERNAL MODULE: external "@babel/runtime/regenerator"
-var regenerator_ = __webpack_require__(10);
+var regenerator_ = __webpack_require__(8);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/asyncToGenerator"
-var asyncToGenerator_ = __webpack_require__(15);
+var asyncToGenerator_ = __webpack_require__(13);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator_);
 
 // CONCATENATED MODULE: ./src/ad-engine/listeners/twitch-listener.ts
-
 
 
 
@@ -2779,8 +2765,7 @@ function () {
 
   return TwitchListener;
 }();
-
-defineProperty_default()(twitch_listener_TwitchListener, "EVENTS", {
+twitch_listener_TwitchListener.EVENTS = {
   ended: 'closed',
   offline: 'offline',
   online: 'online',
@@ -2789,11 +2774,9 @@ defineProperty_default()(twitch_listener_TwitchListener, "EVENTS", {
   playback_blocked: 'playback_blocked',
   playing: 'playing',
   ready: 'ready'
-});
-
-defineProperty_default()(twitch_listener_TwitchListener, "LOG_GROUP", 'twitch-listener');
-
-defineProperty_default()(twitch_listener_TwitchListener, "PLAYER_NAME", 'twitch');
+};
+twitch_listener_TwitchListener.LOG_GROUP = 'twitch-listener';
+twitch_listener_TwitchListener.PLAYER_NAME = 'twitch';
 // CONCATENATED MODULE: ./src/ad-engine/video/player/twitch/embed/twitch-embed.ts
 
 var twitchLibraryUrl = '//player.twitch.tv/js/embed/v1.js';
@@ -2926,7 +2909,6 @@ function () {
 
 
 
-
 function porvata_listener_getListeners() {
   return context.get('listeners.porvata');
 }
@@ -3026,8 +3008,7 @@ function () {
 
   return PorvataListener;
 }();
-
-defineProperty_default()(porvata_listener_PorvataListener, "EVENTS", {
+porvata_listener_PorvataListener.EVENTS = {
   adCanPlay: 'ad_can_play',
   complete: 'completed',
   click: 'clicked',
@@ -3047,18 +3028,14 @@ defineProperty_default()(porvata_listener_PorvataListener, "EVENTS", {
   wikiaAdUnmute: 'unmute',
   wikiaInViewportWithOffer: 'in_viewport_with_offer',
   wikiaInViewportWithoutOffer: 'in_viewport_without_offer'
-});
-
-defineProperty_default()(porvata_listener_PorvataListener, "LOG_GROUP", 'porvata-listener');
-
-defineProperty_default()(porvata_listener_PorvataListener, "PLAYER_NAME", 'porvata');
+};
+porvata_listener_PorvataListener.LOG_GROUP = 'porvata-listener';
+porvata_listener_PorvataListener.PLAYER_NAME = 'porvata';
 // EXTERNAL MODULE: external "@babel/runtime/helpers/get"
-var helpers_get_ = __webpack_require__(13);
+var helpers_get_ = __webpack_require__(11);
 var helpers_get_default = /*#__PURE__*/__webpack_require__.n(helpers_get_);
 
 // CONCATENATED MODULE: ./src/ad-engine/services/events.ts
-
-
 
 
 
@@ -3087,25 +3064,15 @@ function (_EventEmitter) {
     }
 
     _this = possibleConstructorReturn_default()(this, (_getPrototypeOf2 = getPrototypeOf_default()(EventService)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "AD_SLOT_CREATED", Symbol('AD_SLOT_CREATED'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "AD_STACK_START", Symbol('AD_STACK_START'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "BEFORE_PAGE_CHANGE_EVENT", Symbol('BEFORE_PAGE_CHANGE_EVENT'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "PAGE_CHANGE_EVENT", Symbol('PAGE_CHANGE_EVENT'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "PAGE_RENDER_EVENT", Symbol('PAGE_RENDER_EVENT'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "VIDEO_AD_REQUESTED", Symbol('VIDEO_AD_REQUESTED'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "VIDEO_AD_ERROR", Symbol('VIDEO_AD_ERROR'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "VIDEO_AD_IMPRESSION", Symbol('VIDEO_AD_IMPRESSION'));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "VIDEO_AD_USED", Symbol('VIDEO_AD_USED'));
-
+    _this.AD_SLOT_CREATED = Symbol('AD_SLOT_CREATED');
+    _this.AD_STACK_START = Symbol('AD_STACK_START');
+    _this.BEFORE_PAGE_CHANGE_EVENT = Symbol('BEFORE_PAGE_CHANGE_EVENT');
+    _this.PAGE_CHANGE_EVENT = Symbol('PAGE_CHANGE_EVENT');
+    _this.PAGE_RENDER_EVENT = Symbol('PAGE_RENDER_EVENT');
+    _this.VIDEO_AD_REQUESTED = Symbol('VIDEO_AD_REQUESTED');
+    _this.VIDEO_AD_ERROR = Symbol('VIDEO_AD_ERROR');
+    _this.VIDEO_AD_IMPRESSION = Symbol('VIDEO_AD_IMPRESSION');
+    _this.VIDEO_AD_USED = Symbol('VIDEO_AD_USED');
     return _this;
   }
 
@@ -3477,11 +3444,11 @@ var slotListener = new slot_listener_SlotListener();
 
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/applyDecoratedDescriptor"
-var applyDecoratedDescriptor_ = __webpack_require__(7);
+var applyDecoratedDescriptor_ = __webpack_require__(5);
 var applyDecoratedDescriptor_default = /*#__PURE__*/__webpack_require__.n(applyDecoratedDescriptor_);
 
 // EXTERNAL MODULE: external "core-decorators"
-var external_core_decorators_ = __webpack_require__(6);
+var external_core_decorators_ = __webpack_require__(4);
 
 // CONCATENATED MODULE: ./src/ad-engine/providers/gpt-size-map.ts
 
@@ -3830,7 +3797,6 @@ function () {
 
 
 
-
 var prebidium_provider_dec, prebidium_provider_class, _temp;
 
 
@@ -3860,7 +3826,7 @@ function () {
   function PrebidiumProvider() {
     classCallCheck_default()(this, PrebidiumProvider);
 
-    defineProperty_default()(this, "iframeBuilder", new iframe_builder_IframeBuilder());
+    this.iframeBuilder = new iframe_builder_IframeBuilder();
   }
 
   createClass_default()(PrebidiumProvider, [{
@@ -3896,7 +3862,6 @@ function () {
 
 
 // CONCATENATED MODULE: ./src/ad-engine/models/ad-slot.ts
-
 
 
 
@@ -4187,22 +4152,14 @@ function (_EventEmitter) {
 
   return AdSlot;
 }(external_eventemitter3_default.a);
-
-defineProperty_default()(ad_slot_AdSlot, "PROPERTY_CHANGED_EVENT", 'propertyChanged');
-
-defineProperty_default()(ad_slot_AdSlot, "SLOT_LOADED_EVENT", 'slotLoaded');
-
-defineProperty_default()(ad_slot_AdSlot, "SLOT_VIEWED_EVENT", 'slotViewed');
-
-defineProperty_default()(ad_slot_AdSlot, "VIDEO_VIEWED_EVENT", 'videoViewed');
-
-defineProperty_default()(ad_slot_AdSlot, "LOG_GROUP", 'AdSlot');
-
-defineProperty_default()(ad_slot_AdSlot, "STATUS_SUCCESS", 'success');
-
-defineProperty_default()(ad_slot_AdSlot, "STATUS_COLLAPSE", 'collapse');
-
-defineProperty_default()(ad_slot_AdSlot, "STATUS_ERROR", 'error');
+ad_slot_AdSlot.PROPERTY_CHANGED_EVENT = 'propertyChanged';
+ad_slot_AdSlot.SLOT_LOADED_EVENT = 'slotLoaded';
+ad_slot_AdSlot.SLOT_VIEWED_EVENT = 'slotViewed';
+ad_slot_AdSlot.VIDEO_VIEWED_EVENT = 'videoViewed';
+ad_slot_AdSlot.LOG_GROUP = 'AdSlot';
+ad_slot_AdSlot.STATUS_SUCCESS = 'success';
+ad_slot_AdSlot.STATUS_COLLAPSE = 'collapse';
+ad_slot_AdSlot.STATUS_ERROR = 'error';
 // CONCATENATED MODULE: ./src/ad-engine/models/index.ts
 
 // CONCATENATED MODULE: ./src/ad-engine/services/slot-service.ts
@@ -4877,7 +4834,6 @@ var messageBus = new message_bus_MessageBus();
 
 
 
-
 var slot_tweaker_logGroup = 'slot-tweaker';
 var slot_tweaker_SlotTweaker =
 /*#__PURE__*/
@@ -5066,9 +5022,7 @@ function () {
 
   return SlotTweaker;
 }();
-
-defineProperty_default()(slot_tweaker_SlotTweaker, "SLOT_CLOSE_IMMEDIATELY", 'force-close');
-
+slot_tweaker_SlotTweaker.SLOT_CLOSE_IMMEDIATELY = 'force-close';
 var slotTweaker = new slot_tweaker_SlotTweaker();
 // CONCATENATED MODULE: ./src/ad-engine/services/slot-data-params-updater.ts
 
@@ -5480,7 +5434,7 @@ var viewportObserver = {
 
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/construct"
-var construct_ = __webpack_require__(19);
+var construct_ = __webpack_require__(18);
 var construct_default = /*#__PURE__*/__webpack_require__.n(construct_);
 
 // CONCATENATED MODULE: ./src/ad-engine/templates/floating-ad.ts
@@ -5787,9 +5741,9 @@ if (get_default()(window, versionField, null)) {
 
 set_default()(window, versionField, 'v23.11.2');
 
-set_default()(window, commitField, '02c409e3');
+set_default()(window, commitField, '9178acb1');
 
-logger('ad-engine', 'v23.11.2 (02c409e3)');
+logger('ad-engine', 'v23.11.2 (9178acb1)');
 
 
 

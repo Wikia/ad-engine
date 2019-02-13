@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -128,34 +128,28 @@ module.exports = require("@babel/runtime/helpers/assertThisInitialized");
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/defineProperty");
+module.exports = require("@babel/runtime/helpers/slicedToArray");
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/slicedToArray");
+module.exports = require("@babel/runtime/helpers/objectSpread");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/objectSpread");
+module.exports = require("core-decorators");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("core-decorators");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
 module.exports = require("@babel/runtime/helpers/applyDecoratedDescriptor");
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -181,7 +175,7 @@ var asyncToGenerator_ = __webpack_require__(7);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/objectSpread"
-var objectSpread_ = __webpack_require__(11);
+var objectSpread_ = __webpack_require__(10);
 var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/classCallCheck"
@@ -204,16 +198,7 @@ var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf_)
 var inherits_ = __webpack_require__(3);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/assertThisInitialized"
-var assertThisInitialized_ = __webpack_require__(8);
-var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized_);
-
-// EXTERNAL MODULE: external "@babel/runtime/helpers/defineProperty"
-var defineProperty_ = __webpack_require__(9);
-var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty_);
-
 // CONCATENATED MODULE: ./src/ad-bidders/wrappers/apstag.ts
-
 
 
 
@@ -247,8 +232,7 @@ function () {
   function Apstag() {
     classCallCheck_default()(this, Apstag);
 
-    defineProperty_default()(this, "renderImpEndCallbacks", []);
-
+    this.renderImpEndCallbacks = [];
     this.utils = ad_engine_["utils"];
     this.insertScript();
     this.configure();
@@ -530,8 +514,7 @@ function () {
 
   return Apstag;
 }();
-
-defineProperty_default()(apstag_Apstag, "instance", void 0);
+apstag_Apstag.instance = void 0;
 // CONCATENATED MODULE: ./src/ad-bidders/wrappers/cmp.ts
 
 
@@ -808,8 +791,6 @@ function () {
 
 
 
-
-
 var logGroup = 'A9';
 /**
  * @typedef {Object} A9SlotDefinition
@@ -831,9 +812,7 @@ function (_BaseBidder) {
     classCallCheck_default()(this, A9);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(A9).call(this, 'a9', bidderConfig, timeout));
-
-    defineProperty_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), "loaded", false);
-
+    _this.loaded = false;
     _this.isCMPEnabled = ad_engine_["context"].get('custom.isCMPEnabled');
     _this.amazonId = _this.bidderConfig.amazonId;
     _this.slots = _this.bidderConfig.slots;
@@ -1320,11 +1299,11 @@ function (_BaseBidder) {
   return A9;
 }(base_bidder_BaseBidder);
 // EXTERNAL MODULE: external "@babel/runtime/helpers/applyDecoratedDescriptor"
-var applyDecoratedDescriptor_ = __webpack_require__(13);
+var applyDecoratedDescriptor_ = __webpack_require__(12);
 var applyDecoratedDescriptor_default = /*#__PURE__*/__webpack_require__.n(applyDecoratedDescriptor_);
 
 // EXTERNAL MODULE: external "core-decorators"
-var external_core_decorators_ = __webpack_require__(12);
+var external_core_decorators_ = __webpack_require__(11);
 
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/base-adapter.ts
 
@@ -2194,8 +2173,12 @@ function (_BaseAdapter) {
   return RubiconDisplay;
 }(base_adapter_BaseAdapter);
 // EXTERNAL MODULE: external "@babel/runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(10);
+var slicedToArray_ = __webpack_require__(9);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
+
+// EXTERNAL MODULE: external "@babel/runtime/helpers/assertThisInitialized"
+var assertThisInitialized_ = __webpack_require__(8);
+var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized_);
 
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/wikia.ts
 
@@ -2709,7 +2692,6 @@ function getBidderUuid(bidResponse) {
 
 
 
-
 var _dec, _dec2, _dec3, _class, _class2, _temp;
 
 
@@ -2997,7 +2979,7 @@ function (_BaseBidder) {
   }]);
 
   return Prebid;
-}(base_bidder_BaseBidder), defineProperty_default()(_class2, "validResponseStatusCode", 1), defineProperty_default()(_class2, "errorResponseStatusCode", 2), _temp), (applyDecoratedDescriptor_default()(_class.prototype, "applyConfig", [_dec], Object.getOwnPropertyDescriptor(_class.prototype, "applyConfig"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "applySettings", [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, "applySettings"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "requestBids", [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, "requestBids"), _class.prototype)), _class));
+}(base_bidder_BaseBidder), _class2.validResponseStatusCode = 1, _class2.errorResponseStatusCode = 2, _temp), (applyDecoratedDescriptor_default()(_class.prototype, "applyConfig", [_dec], Object.getOwnPropertyDescriptor(_class.prototype, "applyConfig"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "applySettings", [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, "applySettings"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "requestBids", [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, "requestBids"), _class.prototype)), _class));
 // CONCATENATED MODULE: ./src/ad-bidders/index.ts
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bidders", function() { return ad_bidders_bidders; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Apstag", function() { return apstag_Apstag; });

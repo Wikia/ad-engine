@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -92,33 +92,27 @@ module.exports = require("@babel/runtime/helpers/classCallCheck");
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/defineProperty");
+module.exports = require("@babel/runtime/helpers/toConsumableArray");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toConsumableArray");
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
 module.exports = require("@babel/runtime/helpers/slicedToArray");
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(5);
+var slicedToArray_ = __webpack_require__(4);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/toConsumableArray"
-var toConsumableArray_ = __webpack_require__(4);
+var toConsumableArray_ = __webpack_require__(3);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray_);
 
 // EXTERNAL MODULE: external "@babel/runtime/helpers/classCallCheck"
@@ -128,10 +122,6 @@ var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck_)
 // EXTERNAL MODULE: external "@babel/runtime/helpers/createClass"
 var createClass_ = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
-
-// EXTERNAL MODULE: external "@babel/runtime/helpers/defineProperty"
-var defineProperty_ = __webpack_require__(3);
-var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty_);
 
 // EXTERNAL MODULE: external "@wikia/ad-engine"
 var ad_engine_ = __webpack_require__(0);
@@ -303,7 +293,6 @@ function () {
   return ProjectsHandler;
 }();
 // CONCATENATED MODULE: ./src/ad-services/bill-the-lizard/index.ts
-
 
 
 
@@ -756,19 +745,12 @@ function () {
 
   return BillTheLizard;
 }();
-
-defineProperty_default()(bill_the_lizard_BillTheLizard, "FAILURE", 'failure');
-
-defineProperty_default()(bill_the_lizard_BillTheLizard, "NOT_USED", 'not_used');
-
-defineProperty_default()(bill_the_lizard_BillTheLizard, "ON_TIME", 'on_time');
-
-defineProperty_default()(bill_the_lizard_BillTheLizard, "TIMEOUT", 'timeout');
-
-defineProperty_default()(bill_the_lizard_BillTheLizard, "TOO_LATE", 'too_late');
-
-defineProperty_default()(bill_the_lizard_BillTheLizard, "REUSED", 'reused');
-
+bill_the_lizard_BillTheLizard.FAILURE = 'failure';
+bill_the_lizard_BillTheLizard.NOT_USED = 'not_used';
+bill_the_lizard_BillTheLizard.ON_TIME = 'on_time';
+bill_the_lizard_BillTheLizard.TIMEOUT = 'timeout';
+bill_the_lizard_BillTheLizard.TOO_LATE = 'too_late';
+bill_the_lizard_BillTheLizard.REUSED = 'reused';
 var billTheLizard = new bill_the_lizard_BillTheLizard();
 // CONCATENATED MODULE: ./src/ad-services/confiant/index.ts
 
