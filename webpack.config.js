@@ -39,7 +39,7 @@ const common = {
 	module: {
 		rules: [
 			{
-				test: /.ts$/,
+				test: /\.(js|ts)$/,
 				use: 'babel-loader',
 				include: path.resolve(__dirname, 'src'),
 			},
@@ -73,6 +73,9 @@ const common = {
 				}),
 			},
 		],
+	},
+	resolve: {
+		extensions: ['.ts', '.js', '.json'],
 	},
 };
 
