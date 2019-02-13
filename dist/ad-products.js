@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,136 +80,172 @@ module.exports = require("@wikia/ad-engine");
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/createClass");
+module.exports = require("@babel/runtime-corejs2/helpers/createClass");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/regenerator");
+module.exports = require("@babel/runtime-corejs2/regenerator");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/classCallCheck");
+module.exports = require("@babel/runtime-corejs2/helpers/classCallCheck");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/asyncToGenerator");
+module.exports = require("@babel/runtime-corejs2/helpers/asyncToGenerator");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/getPrototypeOf");
+module.exports = require("@babel/runtime-corejs2/helpers/getPrototypeOf");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/inherits");
+module.exports = require("@babel/runtime-corejs2/helpers/inherits");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/possibleConstructorReturn");
+module.exports = require("@babel/runtime-corejs2/helpers/possibleConstructorReturn");
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/get");
+module.exports = require("@babel/runtime-corejs2/core-js/promise");
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toConsumableArray");
+module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/mapValues");
+module.exports = require("@babel/runtime-corejs2/helpers/get");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("eventemitter3");
+module.exports = require("@babel/runtime-corejs2/core-js/object/keys");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = {"CROSS":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19.707 4.293a.999.999 0 0 0-1.414 0L12 10.586 5.707 4.293a.999.999 0 1 0-1.414 1.414L10.586 12l-6.293 6.293a.999.999 0 1 0 1.414 1.414L12 13.414l6.293 6.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L13.414 12l6.293-6.293a.999.999 0 0 0 0-1.414\" fill-rule=\"evenodd\"/></svg>","LEARN_MORE":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><g stroke=\"none\" stroke-width=\"1\" fill-rule=\"evenodd\"><g transform=\"translate(-753.000000, -1764.000000)\" fill-rule=\"nonzero\"><g transform=\"translate(153.000000, 1746.000000)\"><g transform=\"translate(5.000000, 0.000000)\"><g transform=\"translate(459.000000, 0.000000)\"><g transform=\"translate(136.000000, 18.000000)\"><polygon points=\"24 0 15 0 18.4395 3.4395 9.033 12.846 11.154 14.967 20.5605 5.5605 24 9\"></polygon><path d=\"M19.5,24 L1.5,24 C0.672,24 0,23.328 0,22.5 L0,4.5 C0,3.672 0.672,3 1.5,3 L10.5,3 L10.5,6 L3,6 L3,21 L18,21 L18,13.5 L21,13.5 L21,22.5 C21,23.328 20.328,24 19.5,24 Z\"></path></g></g></g></g></g></g></svg>","PAUSE":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><g fill-rule=\"evenodd\"><rect width=\"7\" height=\"22\" rx=\"1\" x=\"3\" y=\"1\"></rect><rect x=\"14\" width=\"7\" height=\"22\" rx=\"1\" y=\"1\"></rect></g></svg>","PLAY":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19.69 12.6L5.143 22.867a.722.722 0 0 1-.753.05.733.733 0 0 1-.391-.65V1.733c0-.274.15-.524.391-.65a.724.724 0 0 1 .753.05l14.545 10.266a.734.734 0 0 1 0 1.201z\" fill-rule=\"evenodd\"></path></svg>","REPLAY":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 23c6.065 0 11-4.863 11-10.84a.992.992 0 0 0-1-.985c-.553 0-1 .44-1 .986 0 4.89-4.037 8.868-9 8.868s-9-3.978-9-8.868c0-4.89 4.037-8.869 9-8.869a8.991 8.991 0 0 1 6.975 3.292l-3.794-.501a.996.996 0 0 0-1.124.845.987.987 0 0 0 .858 1.108l5.946.785a.996.996 0 0 0 1.124-.845l.797-5.86a.987.987 0 0 0-.858-1.107.994.994 0 0 0-1.124.846l-.446 3.28A10.997 10.997 0 0 0 12 1.322c-6.065 0-11 4.862-11 10.839C1 18.137 5.935 23 12 23\" fill-rule=\"evenodd\"/></svg>","FULLSCREEN_OFF":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.5 9H8V2H5v4H1v3h4.5zm13 0H16V2h3v4h4v3h-4.5zm-13 6H8v7H5v-4H1v-3h4.5zm13 0H16v7h3v-4h4v-3h-4.5z\" fill-rule=\"evenodd\"/></svg>","FULLSCREEN_ON":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M21.5 22H23v-7h-3v4h-4v3h5.5zM23 3.5V9h-3V5h-4V2h7v1.5zm-22 17V15h3v4h4v3H1v-1.5zM2.5 2H1v7h3V5h4V2H2.5z\" fill-rule=\"evenodd\"/></svg>","VOLUME_OFF":"<svg viewBox=\"0 0 28 28\" xmlns=\"http://www.w3.org/2000/svg\"><defs><style>.cls-1{fill:#fff;opacity:0.4;}.cls-2{fill:#231f20;}</style></defs><title>sound_off_button</title><circle class=\"cls-1\" cx=\"14.06\" cy=\"13.96\" r=\"13.74\"/><path class=\"cls-2\" d=\"M16,2.93A13.07,13.07,0,1,1,2.93,16,13.08,13.08,0,0,1,16,2.93M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Z\" transform=\"translate(-2 -2)\"/><g id=\"Page-1\"><g id=\"Video-Player-Skin\"><g id=\"Video-Copy\"><g id=\"volume-off\"><path id=\"Shape\" class=\"cls-2\" d=\"M14.25,9.17l-3.79,4.11H6.84c-.78,0-1,.46-1,.89V17.7a1,1,0,0,0,1,1h3.65l3.79,4.18a1.09,1.09,0,0,0,.53.14,1,1,0,0,0,.5-.14,1,1,0,0,0,.5-.9V10a1,1,0,0,0-.5-.9,1.06,1.06,0,0,0-1,.05Z\" transform=\"translate(-2 -2)\"/><path id=\"Fill-1\" class=\"cls-2\" d=\"M22.91,16.21l3-3a.92.92,0,1,0-1.3-1.3l-3,3-3-3a.92.92,0,1,0-1.3,1.3l3,3-3,3a.92.92,0,1,0,1.3,1.3l3-3,3,3a.92.92,0,1,0,1.3-1.3Z\" transform=\"translate(-2 -2)\"/></g></g></g></g></svg>","VOLUME_ON":"<svg viewBox=\"0 0 28 28\" xmlns=\"http://www.w3.org/2000/svg\"><defs><style>.cls-1{fill:#fff;opacity:0.4;}.cls-2{fill:#231f20;}</style></defs><title>sound_on_button</title><circle class=\"cls-1\" cx=\"13.96\" cy=\"14.06\" r=\"13.74\"/><path class=\"cls-2\" d=\"M16,2.93A13.07,13.07,0,1,1,2.93,16,13.08,13.08,0,0,1,16,2.93M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Z\" transform=\"translate(-2 -2)\"/><g id=\"Page-1\"><g id=\"Video-Player-Skin\"><g id=\"Video-Copy\"><g id=\"volume\"><path id=\"Shape\" class=\"cls-2\" d=\"M14.24,9.17l-3.79,4.11H6.82c-.78,0-1,.46-1,.89V17.7a1,1,0,0,0,1,1h3.65l3.79,4.18a1.09,1.09,0,0,0,.53.14,1,1,0,0,0,.5-.14,1,1,0,0,0,.5-.9V10a1,1,0,0,0-.5-.9,1.06,1.06,0,0,0-1,.05Z\" transform=\"translate(-2 -2)\"/><path id=\"Shape-2\" data-name=\"Shape\" class=\"cls-2\" d=\"M19.18,19.33a4.39,4.39,0,0,0,0-6.19.71.71,0,0,0-1,1,3,3,0,0,1,0,4.19.71.71,0,0,0,1,1Z\" transform=\"translate(-2 -2)\"/><path id=\"Shape-3\" data-name=\"Shape\" class=\"cls-2\" d=\"M23.3,16.23a6.19,6.19,0,0,0-1.81-4.39.71.71,0,1,0-1,1,4.81,4.81,0,0,1,0,6.79.71.71,0,1,0,1,1,6.19,6.19,0,0,0,1.81-4.39Z\" transform=\"translate(-2 -2)\"/></g></g></g></g></svg>","HIVI_VOLUME_OFF":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6 8.007H1.347C.333 8.007 0 8.769 0 9.391v5.032C0 15.045.333 16 1.347 16H6l5.007 5.796c.215.132.454.205.693.205.24 0 .436-.063.65-.196.429-.265.65-.75.65-1.28V3.447c0-.53-.221-1.02-.65-1.284-.429-.265-.935-.187-1.365.078L6 8.007zM20.305 12l2.425-2.425a.922.922 0 1 0-1.306-1.305l-2.425 2.424-2.423-2.424a.923.923 0 0 0-1.306 1.305L17.695 12l-2.425 2.425a.922.922 0 1 0 1.306 1.304L19 13.306l2.425 2.423a.92.92 0 0 0 1.306 0 .922.922 0 0 0 0-1.304L20.305 12z\" fill-rule=\"evenodd\"></path></svg>","HIVI_VOLUME_ON":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><g fill-rule=\"evenodd\"><path d=\"M6 8.007H1.347C.333 8.007 0 8.769 0 9.391v5.032C0 15.045.333 16 1.347 16H6l5.007 5.796c.215.132.454.205.693.205.24 0 .436-.063.65-.196.429-.265.65-.75.65-1.28V3.447c0-.53-.221-1.02-.65-1.284-.429-.265-.935-.187-1.365.078L6 8.007zm11.612 8.524a5.858 5.858 0 0 0 0-8.253.944.944 0 0 0-1.337 1.332 3.97 3.97 0 0 1 0 5.59.943.943 0 1 0 1.337 1.331z\"></path><path d=\"M23.03 12.135c0-2.21-.859-4.292-2.418-5.857a.943.943 0 1 0-1.337 1.332 6.37 6.37 0 0 1 1.868 4.525 6.37 6.37 0 0 1-1.868 4.525.943.943 0 1 0 1.338 1.332 8.249 8.249 0 0 0 2.418-5.857z\"></path></g></svg>"}
+module.exports = require("@babel/runtime-corejs2/helpers/toConsumableArray");
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/assertThisInitialized");
+module.exports = require("@babel/runtime-corejs2/core-js/symbol");
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/throttle");
+module.exports = require("lodash/mapValues");
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/isFunction");
+module.exports = require("eventemitter3");
 
 /***/ }),
 /* 16 */
 /***/ (function(module, exports) {
 
-module.exports = require("js-cookie");
+module.exports = {"CROSS":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19.707 4.293a.999.999 0 0 0-1.414 0L12 10.586 5.707 4.293a.999.999 0 1 0-1.414 1.414L10.586 12l-6.293 6.293a.999.999 0 1 0 1.414 1.414L12 13.414l6.293 6.293a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414L13.414 12l6.293-6.293a.999.999 0 0 0 0-1.414\" fill-rule=\"evenodd\"/></svg>","LEARN_MORE":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><g stroke=\"none\" stroke-width=\"1\" fill-rule=\"evenodd\"><g transform=\"translate(-753.000000, -1764.000000)\" fill-rule=\"nonzero\"><g transform=\"translate(153.000000, 1746.000000)\"><g transform=\"translate(5.000000, 0.000000)\"><g transform=\"translate(459.000000, 0.000000)\"><g transform=\"translate(136.000000, 18.000000)\"><polygon points=\"24 0 15 0 18.4395 3.4395 9.033 12.846 11.154 14.967 20.5605 5.5605 24 9\"></polygon><path d=\"M19.5,24 L1.5,24 C0.672,24 0,23.328 0,22.5 L0,4.5 C0,3.672 0.672,3 1.5,3 L10.5,3 L10.5,6 L3,6 L3,21 L18,21 L18,13.5 L21,13.5 L21,22.5 C21,23.328 20.328,24 19.5,24 Z\"></path></g></g></g></g></g></g></svg>","PAUSE":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><g fill-rule=\"evenodd\"><rect width=\"7\" height=\"22\" rx=\"1\" x=\"3\" y=\"1\"></rect><rect x=\"14\" width=\"7\" height=\"22\" rx=\"1\" y=\"1\"></rect></g></svg>","PLAY":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19.69 12.6L5.143 22.867a.722.722 0 0 1-.753.05.733.733 0 0 1-.391-.65V1.733c0-.274.15-.524.391-.65a.724.724 0 0 1 .753.05l14.545 10.266a.734.734 0 0 1 0 1.201z\" fill-rule=\"evenodd\"></path></svg>","REPLAY":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12 23c6.065 0 11-4.863 11-10.84a.992.992 0 0 0-1-.985c-.553 0-1 .44-1 .986 0 4.89-4.037 8.868-9 8.868s-9-3.978-9-8.868c0-4.89 4.037-8.869 9-8.869a8.991 8.991 0 0 1 6.975 3.292l-3.794-.501a.996.996 0 0 0-1.124.845.987.987 0 0 0 .858 1.108l5.946.785a.996.996 0 0 0 1.124-.845l.797-5.86a.987.987 0 0 0-.858-1.107.994.994 0 0 0-1.124.846l-.446 3.28A10.997 10.997 0 0 0 12 1.322c-6.065 0-11 4.862-11 10.839C1 18.137 5.935 23 12 23\" fill-rule=\"evenodd\"/></svg>","FULLSCREEN_OFF":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.5 9H8V2H5v4H1v3h4.5zm13 0H16V2h3v4h4v3h-4.5zm-13 6H8v7H5v-4H1v-3h4.5zm13 0H16v7h3v-4h4v-3h-4.5z\" fill-rule=\"evenodd\"/></svg>","FULLSCREEN_ON":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M21.5 22H23v-7h-3v4h-4v3h5.5zM23 3.5V9h-3V5h-4V2h7v1.5zm-22 17V15h3v4h4v3H1v-1.5zM2.5 2H1v7h3V5h4V2H2.5z\" fill-rule=\"evenodd\"/></svg>","VOLUME_OFF":"<svg viewBox=\"0 0 28 28\" xmlns=\"http://www.w3.org/2000/svg\"><defs><style>.cls-1{fill:#fff;opacity:0.4;}.cls-2{fill:#231f20;}</style></defs><title>sound_off_button</title><circle class=\"cls-1\" cx=\"14.06\" cy=\"13.96\" r=\"13.74\"/><path class=\"cls-2\" d=\"M16,2.93A13.07,13.07,0,1,1,2.93,16,13.08,13.08,0,0,1,16,2.93M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Z\" transform=\"translate(-2 -2)\"/><g id=\"Page-1\"><g id=\"Video-Player-Skin\"><g id=\"Video-Copy\"><g id=\"volume-off\"><path id=\"Shape\" class=\"cls-2\" d=\"M14.25,9.17l-3.79,4.11H6.84c-.78,0-1,.46-1,.89V17.7a1,1,0,0,0,1,1h3.65l3.79,4.18a1.09,1.09,0,0,0,.53.14,1,1,0,0,0,.5-.14,1,1,0,0,0,.5-.9V10a1,1,0,0,0-.5-.9,1.06,1.06,0,0,0-1,.05Z\" transform=\"translate(-2 -2)\"/><path id=\"Fill-1\" class=\"cls-2\" d=\"M22.91,16.21l3-3a.92.92,0,1,0-1.3-1.3l-3,3-3-3a.92.92,0,1,0-1.3,1.3l3,3-3,3a.92.92,0,1,0,1.3,1.3l3-3,3,3a.92.92,0,1,0,1.3-1.3Z\" transform=\"translate(-2 -2)\"/></g></g></g></g></svg>","VOLUME_ON":"<svg viewBox=\"0 0 28 28\" xmlns=\"http://www.w3.org/2000/svg\"><defs><style>.cls-1{fill:#fff;opacity:0.4;}.cls-2{fill:#231f20;}</style></defs><title>sound_on_button</title><circle class=\"cls-1\" cx=\"13.96\" cy=\"14.06\" r=\"13.74\"/><path class=\"cls-2\" d=\"M16,2.93A13.07,13.07,0,1,1,2.93,16,13.08,13.08,0,0,1,16,2.93M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Z\" transform=\"translate(-2 -2)\"/><g id=\"Page-1\"><g id=\"Video-Player-Skin\"><g id=\"Video-Copy\"><g id=\"volume\"><path id=\"Shape\" class=\"cls-2\" d=\"M14.24,9.17l-3.79,4.11H6.82c-.78,0-1,.46-1,.89V17.7a1,1,0,0,0,1,1h3.65l3.79,4.18a1.09,1.09,0,0,0,.53.14,1,1,0,0,0,.5-.14,1,1,0,0,0,.5-.9V10a1,1,0,0,0-.5-.9,1.06,1.06,0,0,0-1,.05Z\" transform=\"translate(-2 -2)\"/><path id=\"Shape-2\" data-name=\"Shape\" class=\"cls-2\" d=\"M19.18,19.33a4.39,4.39,0,0,0,0-6.19.71.71,0,0,0-1,1,3,3,0,0,1,0,4.19.71.71,0,0,0,1,1Z\" transform=\"translate(-2 -2)\"/><path id=\"Shape-3\" data-name=\"Shape\" class=\"cls-2\" d=\"M23.3,16.23a6.19,6.19,0,0,0-1.81-4.39.71.71,0,1,0-1,1,4.81,4.81,0,0,1,0,6.79.71.71,0,1,0,1,1,6.19,6.19,0,0,0,1.81-4.39Z\" transform=\"translate(-2 -2)\"/></g></g></g></g></svg>","HIVI_VOLUME_OFF":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6 8.007H1.347C.333 8.007 0 8.769 0 9.391v5.032C0 15.045.333 16 1.347 16H6l5.007 5.796c.215.132.454.205.693.205.24 0 .436-.063.65-.196.429-.265.65-.75.65-1.28V3.447c0-.53-.221-1.02-.65-1.284-.429-.265-.935-.187-1.365.078L6 8.007zM20.305 12l2.425-2.425a.922.922 0 1 0-1.306-1.305l-2.425 2.424-2.423-2.424a.923.923 0 0 0-1.306 1.305L17.695 12l-2.425 2.425a.922.922 0 1 0 1.306 1.304L19 13.306l2.425 2.423a.92.92 0 0 0 1.306 0 .922.922 0 0 0 0-1.304L20.305 12z\" fill-rule=\"evenodd\"></path></svg>","HIVI_VOLUME_ON":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><g fill-rule=\"evenodd\"><path d=\"M6 8.007H1.347C.333 8.007 0 8.769 0 9.391v5.032C0 15.045.333 16 1.347 16H6l5.007 5.796c.215.132.454.205.693.205.24 0 .436-.063.65-.196.429-.265.65-.75.65-1.28V3.447c0-.53-.221-1.02-.65-1.284-.429-.265-.935-.187-1.365.078L6 8.007zm11.612 8.524a5.858 5.858 0 0 0 0-8.253.944.944 0 0 0-1.337 1.332 3.97 3.97 0 0 1 0 5.59.943.943 0 1 0 1.337 1.331z\"></path><path d=\"M23.03 12.135c0-2.21-.859-4.292-2.418-5.857a.943.943 0 1 0-1.337 1.332 6.37 6.37 0 0 1 1.868 4.525 6.37 6.37 0 0 1-1.868 4.525.943.943 0 1 0 1.338 1.332 8.249 8.249 0 0 0 2.418-5.857z\"></path></g></svg>"}
 
 /***/ }),
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/debounce");
+module.exports = require("@babel/runtime-corejs2/helpers/assertThisInitialized");
 
 /***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/isUndefined");
+module.exports = require("lodash/throttle");
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/toPlainObject");
+module.exports = require("lodash/isFunction");
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toArray");
+module.exports = require("@babel/runtime-corejs2/core-js/parse-float");
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/objectSpread");
+module.exports = require("js-cookie");
 
 /***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/slicedToArray");
+module.exports = require("lodash/debounce");
 
 /***/ }),
 /* 23 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash/isUndefined");
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash/toPlainObject");
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/toArray");
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/objectSpread");
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/array/is-array");
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
+
+/***/ }),
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -242,11 +278,11 @@ function setupNpaContext() {
   var optedOut = ad_engine_["trackingOptIn"].isOptedIn() ? 0 : 1;
   ad_engine_["context"].set('targeting.npa', optedOut.toString());
 }
-// EXTERNAL MODULE: external "@babel/runtime/helpers/classCallCheck"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/classCallCheck"
 var classCallCheck_ = __webpack_require__(3);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/createClass"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/createClass"
 var createClass_ = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
 
@@ -289,16 +325,23 @@ var navbarManager = new navbar_manager_NavbarManager();
 
 
 // EXTERNAL MODULE: ./src/ad-products/styles/styles.scss
-var styles = __webpack_require__(25);
+var styles = __webpack_require__(31);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
+var keys_ = __webpack_require__(11);
+var keys_default = /*#__PURE__*/__webpack_require__.n(keys_);
 
 // CONCATENATED MODULE: ./src/ad-products/common/product-info.ts
 
 
+
 function findSlotGroup(product) {
   var slotGroups = ad_engine_["context"].get('slotGroups');
-  var result = Object.keys(slotGroups).filter(function (name) {
+
+  var result = keys_default()(slotGroups).filter(function (name) {
     return slotGroups[name].indexOf(product) !== -1;
   });
+
   return result.length === 1 ? result[0] : null;
 }
 
@@ -523,39 +566,49 @@ function () {
 
   return Skin;
 }();
-// EXTERNAL MODULE: external "@babel/runtime/regenerator"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/regenerator"
 var regenerator_ = __webpack_require__(2);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/asyncToGenerator"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/asyncToGenerator"
 var asyncToGenerator_ = __webpack_require__(4);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/possibleConstructorReturn"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/possibleConstructorReturn"
 var possibleConstructorReturn_ = __webpack_require__(7);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/getPrototypeOf"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/getPrototypeOf"
 var getPrototypeOf_ = __webpack_require__(5);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/inherits"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/inherits"
 var inherits_ = __webpack_require__(6);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(22);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/promise"
+var promise_ = __webpack_require__(8);
+var promise_default = /*#__PURE__*/__webpack_require__.n(promise_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/slicedToArray"
+var slicedToArray_ = __webpack_require__(28);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/symbol"
+var symbol_ = __webpack_require__(13);
+var symbol_default = /*#__PURE__*/__webpack_require__.n(symbol_);
+
 // EXTERNAL MODULE: external "lodash/isFunction"
-var isFunction_ = __webpack_require__(15);
+var isFunction_ = __webpack_require__(19);
 var isFunction_default = /*#__PURE__*/__webpack_require__.n(isFunction_);
 
 // EXTERNAL MODULE: external "eventemitter3"
-var external_eventemitter3_ = __webpack_require__(11);
+var external_eventemitter3_ = __webpack_require__(15);
 var external_eventemitter3_default = /*#__PURE__*/__webpack_require__.n(external_eventemitter3_);
 
 // CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/stickiness.ts
+
+
 
 
 
@@ -574,7 +627,7 @@ function (_EventEmitter) {
   function Stickiness(adSlot) {
     var _this;
 
-    var customWhen = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Promise.resolve();
+    var customWhen = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : promise_default.a.resolve();
 
     classCallCheck_default()(this, Stickiness);
 
@@ -594,7 +647,7 @@ function (_EventEmitter) {
     };
 
     if (!isFunction_default()(_this.customWhen)) {
-      Promise.all([_this.customWhen]).then(function () {
+      promise_default.a.all([_this.customWhen]).then(function () {
         if (!_this.sticky) {
           _this.logger('Blocking stickiness');
 
@@ -753,7 +806,7 @@ function (_EventEmitter) {
                 this.applyStickiness();
                 this.logger('waiting for viewability and custom condition');
                 _context3.next = 4;
-                return Promise.all([!this.adSlot.isViewed() ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : Promise.resolve(), isFunction_default()(this.customWhen) ? this.customWhen() : this.customWhen]);
+                return promise_default.a.all([!this.adSlot.isViewed() ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : promise_default.a.resolve(), isFunction_default()(this.customWhen) ? this.customWhen() : this.customWhen]);
 
               case 4:
                 this.registerRevertStickiness();
@@ -777,20 +830,20 @@ function (_EventEmitter) {
   return Stickiness;
 }(external_eventemitter3_default.a);
 stickiness_Stickiness.LOG_GROUP = 'stickiness';
-stickiness_Stickiness.STICKINESS_CHANGE_EVENT = Symbol('stickinessChange');
-stickiness_Stickiness.CLOSE_CLICKED_EVENT = Symbol('closeClicked');
-stickiness_Stickiness.UNSTICK_IMMEDIATELY_EVENT = Symbol('unstickImmediately');
+stickiness_Stickiness.STICKINESS_CHANGE_EVENT = symbol_default()('stickinessChange');
+stickiness_Stickiness.CLOSE_CLICKED_EVENT = symbol_default()('closeClicked');
+stickiness_Stickiness.UNSTICK_IMMEDIATELY_EVENT = symbol_default()('unstickImmediately');
 stickiness_Stickiness.SLOT_STICKED_STATE = 'sticked';
 stickiness_Stickiness.SLOT_UNSTICKED_STATE = 'unsticked';
 stickiness_Stickiness.SLOT_STICKY_READY_STATE = 'sticky-ready';
 stickiness_Stickiness.SLOT_UNSTICK_IMMEDIATELY = 'force-unstick';
 stickiness_Stickiness.SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
-// EXTERNAL MODULE: external "@babel/runtime/helpers/toConsumableArray"
-var toConsumableArray_ = __webpack_require__(9);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/toConsumableArray"
+var toConsumableArray_ = __webpack_require__(12);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/get"
-var get_ = __webpack_require__(8);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/get"
+var get_ = __webpack_require__(10);
 var get_default = /*#__PURE__*/__webpack_require__.n(get_);
 
 // CONCATENATED MODULE: ./src/ad-products/templates/interface/ui-component.ts
@@ -884,10 +937,11 @@ function (_UiComponent) {
 
 
 // EXTERNAL MODULE: ./src/ad-products/templates/interface/icons.json
-var icons = __webpack_require__(12);
+var icons = __webpack_require__(16);
 var icons_default = /*#__PURE__*/__webpack_require__.n(icons);
 
 // CONCATENATED MODULE: ./src/ad-products/templates/interface/icons.ts
+
 
 var parser = new window.DOMParser();
 function createIcon(iconName) {
@@ -902,7 +956,7 @@ function createIcon(iconName) {
 
   return null;
 }
-var icons_icons = Object.keys(icons_default.a).reduce(function (map, name) {
+var icons_icons = keys_default()(icons_default.a).reduce(function (map, name) {
   map[name] = name;
   return map;
 }, {});
@@ -954,6 +1008,7 @@ function (_UiComponent) {
 
 
 // CONCATENATED MODULE: ./src/ad-products/templates/sticky-base.ts
+
 
 
 
@@ -1090,7 +1145,7 @@ function () {
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return stickyUntilSlotViewed && !_this3.adSlot.isViewed() ? ad_engine_["utils"].once(_this3.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : Promise.resolve();
+                  return stickyUntilSlotViewed && !_this3.adSlot.isViewed() ? ad_engine_["utils"].once(_this3.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : promise_default.a.resolve();
 
                 case 2:
                   _context.next = 4;
@@ -1724,12 +1779,16 @@ function (_UiComponent) {
 }(ui_component_UiComponent);
 
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/objectSpread"
-var objectSpread_ = __webpack_require__(21);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/array/is-array"
+var is_array_ = __webpack_require__(27);
+var is_array_default = /*#__PURE__*/__webpack_require__.n(is_array_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/objectSpread"
+var objectSpread_ = __webpack_require__(26);
 var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread_);
 
 // EXTERNAL MODULE: external "lodash/throttle"
-var throttle_ = __webpack_require__(14);
+var throttle_ = __webpack_require__(18);
 var throttle_default = /*#__PURE__*/__webpack_require__.n(throttle_);
 
 // CONCATENATED MODULE: ./src/ad-products/templates/interface/video/close-button.ts
@@ -1747,6 +1806,7 @@ function add(video, container) {
   add: add
 });
 // CONCATENATED MODULE: ./src/ad-products/templates/outstream/porvata-template.ts
+
 
 
 
@@ -1855,7 +1915,7 @@ function () {
       var _this2 = this;
 
       var resolveStatus = null;
-      var statusPromise = new Promise(function (resolve) {
+      var statusPromise = new promise_default.a(function (resolve) {
         resolveStatus = resolve;
       });
       video.addEventListener('wikiaAdsManagerLoaded', function () {
@@ -2502,6 +2562,8 @@ function setup(video, uiElements, params) {
 
 
 
+
+
 var uapCreativeId = DEFAULT_UAP_ID;
 var uapId = DEFAULT_UAP_ID;
 var uapType = DEFAULT_UAP_TYPE;
@@ -2737,7 +2799,8 @@ function setType(type) {
 
 function updateSlotsTargeting(lineItemId, creativeId) {
   var slots = ad_engine_["context"].get('slots');
-  Object.keys(slots).forEach(function (slotId) {
+
+  keys_default()(slots).forEach(function (slotId) {
     if (!slots[slotId].nonUapSlot) {
       ad_engine_["context"].set("slots.".concat(slotId, ".targeting.uap"), lineItemId);
       ad_engine_["context"].set("slots.".concat(slotId, ".targeting.uap_c"), creativeId);
@@ -2811,7 +2874,7 @@ var universalAdPackage = objectSpread_default()({}, constants_namespaceObject, {
   getType: getType,
   getUapId: getUapId,
   isVideoEnabled: function isVideoEnabled(params) {
-    var triggersArrayIsNotEmpty = Array.isArray(params.videoTriggers) && params.videoTriggers.length > 0;
+    var triggersArrayIsNotEmpty = is_array_default()(params.videoTriggers) && params.videoTriggers.length > 0;
     return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
   },
   loadVideoAd: loadVideoAd,
@@ -3129,8 +3192,12 @@ function (_StickyBase) {
 
   return StickyTLB;
 }(sticky_base_StickyBase);
-// EXTERNAL MODULE: external "@babel/runtime/helpers/toArray"
-var toArray_ = __webpack_require__(20);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/assign"
+var assign_ = __webpack_require__(9);
+var assign_default = /*#__PURE__*/__webpack_require__.n(assign_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/toArray"
+var toArray_ = __webpack_require__(25);
 var toArray_default = /*#__PURE__*/__webpack_require__.n(toArray_);
 
 // CONCATENATED MODULE: ./src/ad-products/templates/uap/resolved-state-switch.ts
@@ -3171,6 +3238,7 @@ var resolvedStateSwitch = {
 
 
 
+
 var DEFAULT_STATE = 'default';
 var RESOLVED_STATE = 'resolved';
 
@@ -3197,16 +3265,16 @@ function setState(state, params) {
     srcPropertyName = 'resolvedStateSrc';
   }
 
-  promises.push(Promise.resolve(params));
+  promises.push(promise_default.a.resolve(params));
   image1.element.src = image1[srcPropertyName];
-  promises.push(Promise.race([ad_engine_["utils"].once(image1.element, 'load'), ad_engine_["utils"].once(image1.element, 'error')]));
+  promises.push(promise_default.a.race([ad_engine_["utils"].once(image1.element, 'load'), ad_engine_["utils"].once(image1.element, 'error')]));
 
   if (image2 && image2[srcPropertyName]) {
     image2.element.src = image2[srcPropertyName];
-    promises.push(Promise.race([ad_engine_["utils"].once(image2.element, 'load'), ad_engine_["utils"].once(image2.element, 'error')]));
+    promises.push(promise_default.a.race([ad_engine_["utils"].once(image2.element, 'load'), ad_engine_["utils"].once(image2.element, 'error')]));
   }
 
-  return Promise.all(promises);
+  return promise_default.a.all(promises);
 }
 
 function setDefaultState(params) {
@@ -3266,11 +3334,12 @@ var resolvedState = {
       return setDefaultState(params);
     }
 
-    return Promise.resolve();
+    return promise_default.a.resolve();
   },
   isResolvedState: isResolvedState
 };
 // CONCATENATED MODULE: ./src/ad-products/templates/uap/video-settings.ts
+
 
 
 
@@ -3305,12 +3374,12 @@ function () {
   }, {
     key: "getParams",
     value: function getParams() {
-      return Object.assign({}, this.params);
+      return assign_default()({}, this.params);
     }
   }, {
     key: "updateParams",
     value: function updateParams(params) {
-      Object.assign(this.params, params);
+      assign_default()(this.params, params);
     }
   }, {
     key: "isAutoPlay",
@@ -3331,24 +3400,24 @@ function () {
 
   return VideoSettings;
 }();
-// EXTERNAL MODULE: external "@babel/runtime/helpers/assertThisInitialized"
-var assertThisInitialized_ = __webpack_require__(13);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/assertThisInitialized"
+var assertThisInitialized_ = __webpack_require__(17);
 var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized_);
 
 // EXTERNAL MODULE: external "lodash/toPlainObject"
-var toPlainObject_ = __webpack_require__(19);
+var toPlainObject_ = __webpack_require__(24);
 var toPlainObject_default = /*#__PURE__*/__webpack_require__.n(toPlainObject_);
 
 // EXTERNAL MODULE: external "lodash/isUndefined"
-var isUndefined_ = __webpack_require__(18);
+var isUndefined_ = __webpack_require__(23);
 var isUndefined_default = /*#__PURE__*/__webpack_require__.n(isUndefined_);
 
 // EXTERNAL MODULE: external "lodash/mapValues"
-var mapValues_ = __webpack_require__(10);
+var mapValues_ = __webpack_require__(14);
 var mapValues_default = /*#__PURE__*/__webpack_require__.n(mapValues_);
 
 // EXTERNAL MODULE: external "lodash/debounce"
-var debounce_ = __webpack_require__(17);
+var debounce_ = __webpack_require__(22);
 var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce_);
 
 // CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/theme.ts
@@ -3611,6 +3680,9 @@ hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY = 3000;
 
 
 
+
+
+
 var HIVI_RESOLVED_THRESHOLD = 0.995;
 var hivi_bfaa_BfaaHiviTheme =
 /*#__PURE__*/
@@ -3623,7 +3695,9 @@ function (_BigFancyAdHiviTheme) {
     classCallCheck_default()(this, BfaaHiviTheme);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(BfaaHiviTheme).call(this, adSlot, params));
-    Object.assign(assertThisInitialized_default()(assertThisInitialized_default()(_this)), toPlainObject_default()(new external_eventemitter3_default.a()));
+
+    assign_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), toPlainObject_default()(new external_eventemitter3_default.a()));
+
     _this.stickiness = null;
     _this.scrollListener = null;
     _this.video = null;
@@ -3833,10 +3907,10 @@ function (_BigFancyAdHiviTheme) {
         return "".concat(styleProperty.default - diff * state, "%");
       });
 
-      Object.assign(this.params.thumbnail.style, style);
+      assign_default()(this.params.thumbnail.style, style);
 
       if (this.video) {
-        Object.assign(this.video.container.style, style);
+        assign_default()(this.video.container.style, style);
 
         if (this.video.isFullscreen()) {
           this.video.container.style.height = '100%';
@@ -3871,7 +3945,7 @@ function (_BigFancyAdHiviTheme) {
         this.onResolvedStateScroll.cancel();
       }
 
-      return new Promise(function (resolve) {
+      return new promise_default.a(function (resolve) {
         if (immediately) {
           _this5.lock();
 
@@ -3939,10 +4013,10 @@ function (_BigFancyAdHiviTheme) {
               case 0:
                 _this$params = this.params, stickyAdditionalTime = _this$params.stickyAdditionalTime, stickyUntilVideoViewed = _this$params.stickyUntilVideoViewed;
                 stateResolved = ad_engine_["utils"].once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
-                videoViewed = stickyUntilVideoViewed ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].VIDEO_VIEWED_EVENT) : Promise.resolve();
+                videoViewed = stickyUntilVideoViewed ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].VIDEO_VIEWED_EVENT) : promise_default.a.resolve();
                 unstickDelay = isUndefined_default()(stickyAdditionalTime) ? hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY : stickyAdditionalTime;
                 _context.next = 6;
-                return Promise.all([stateResolved, videoViewed]);
+                return promise_default.a.all([stateResolved, videoViewed]);
 
               case 6:
                 _context.next = 8;
@@ -4053,8 +4127,10 @@ function (_BigFancyAdHiviTheme) {
 
   return BfaaHiviTheme;
 }(hivi_theme_BigFancyAdHiviTheme);
-hivi_bfaa_BfaaHiviTheme.RESOLVED_STATE_EVENT = Symbol('RESOLVED_STATE_EVENT');
+hivi_bfaa_BfaaHiviTheme.RESOLVED_STATE_EVENT = symbol_default()('RESOLVED_STATE_EVENT');
 // CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-bfab.ts
+
+
 
 
 
@@ -4171,7 +4247,7 @@ function (_BigFancyAdHiviTheme) {
       var _this3 = this;
 
       var resolvePromise = null;
-      var promise = new Promise(function (resolve) {
+      var promise = new promise_default.a(function (resolve) {
         resolvePromise = resolve;
       });
       var bfaa = ad_engine_["slotService"].get(this.config.bfaaSlotName);
@@ -4305,10 +4381,10 @@ function (_BigFancyAdHiviTheme) {
         return "".concat(styleProperty[state], "%");
       });
 
-      Object.assign(thumbnail.style, style);
+      assign_default()(thumbnail.style, style);
 
       if (this.video) {
-        Object.assign(this.video.container.style, style);
+        assign_default()(this.video.container.style, style);
       }
     }
     /**
@@ -5143,7 +5219,7 @@ function () {
 
 
 // EXTERNAL MODULE: external "js-cookie"
-var external_js_cookie_ = __webpack_require__(16);
+var external_js_cookie_ = __webpack_require__(21);
 var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
 
 // CONCATENATED MODULE: ./src/ad-products/tracking/video/player-event-emitter.ts
@@ -5216,6 +5292,7 @@ ad_engine_["events"].registerEvent('VIDEO_PLAYER_TRACKING_EVENT');
   }
 });
 // CONCATENATED MODULE: ./src/ad-products/tracking/video/jwplayer-tracker.ts
+
 
 
 
@@ -5335,7 +5412,8 @@ function () {
         _this.updateCreativeData(currentAd);
       });
       this.updatePlayerState();
-      Object.keys(trackingEventsMap).forEach(function (playerEvent) {
+
+      keys_default()(trackingEventsMap).forEach(function (playerEvent) {
         player.on(playerEvent, function (event) {
           var errorCode;
 
@@ -5360,6 +5438,7 @@ function () {
           }
         });
       });
+
       player.on('adError', function () {
         _this.updateCreativeData();
       });
@@ -5524,6 +5603,10 @@ var twitchTracker = new twitch_tracker_TwitchTracker();
 
 
 
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/parse-float"
+var parse_float_ = __webpack_require__(20);
+var parse_float_default = /*#__PURE__*/__webpack_require__.n(parse_float_);
+
 // CONCATENATED MODULE: ./src/ad-products/video/featured-video-f15s.ts
 
 var featured_video_f15s_logGroup = 'featured-video-f15s';
@@ -5555,6 +5638,8 @@ var featured_video_f15s_logGroup = 'featured-video-f15s';
   }
 });
 // CONCATENATED MODULE: ./src/ad-products/video/jwplayer-ads-factory.ts
+
+
 
 
 
@@ -5667,7 +5752,7 @@ function getVastUrl(slot, position, depth, correlator, slotTargeting) {
   return Object(ad_engine_["buildVastUrl"])(16 / 9, slot.getSlotName(), {
     correlator: correlator,
     vpos: position,
-    targeting: Object.assign({
+    targeting: assign_default()({
       passback: 'jwplayer',
       rv: calculateRV(depth)
     }, slotTargeting)
@@ -5807,7 +5892,8 @@ function create(options) {
       }
 
       var currentTime = data.currentTime;
-      var f15sTime = parseFloat(featured_video_f15s.getTime(currentMedia.mediaid));
+
+      var f15sTime = parse_float_default()(featured_video_f15s.getTime(currentMedia.mediaid));
 
       if (currentTime >= f15sTime && !f15sMidrollPlayed) {
         var vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
@@ -5941,8 +6027,8 @@ var jwplayerAdsFactory = {
 
 
 /***/ }),
-/* 24 */,
-/* 25 */
+/* 30 */,
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

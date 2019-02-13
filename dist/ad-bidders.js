@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,76 +80,106 @@ module.exports = require("@wikia/ad-engine");
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/createClass");
+module.exports = require("@babel/runtime-corejs2/helpers/createClass");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/classCallCheck");
+module.exports = require("@babel/runtime-corejs2/helpers/classCallCheck");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/inherits");
+module.exports = require("@babel/runtime-corejs2/helpers/inherits");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/getPrototypeOf");
+module.exports = require("@babel/runtime-corejs2/helpers/getPrototypeOf");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/possibleConstructorReturn");
+module.exports = require("@babel/runtime-corejs2/helpers/possibleConstructorReturn");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/regenerator");
+module.exports = require("@babel/runtime-corejs2/regenerator");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/asyncToGenerator");
+module.exports = require("@babel/runtime-corejs2/core-js/object/keys");
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/assertThisInitialized");
+module.exports = require("@babel/runtime-corejs2/helpers/asyncToGenerator");
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/slicedToArray");
+module.exports = require("@babel/runtime-corejs2/core-js/parse-int");
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/objectSpread");
+module.exports = require("@babel/runtime-corejs2/helpers/assertThisInitialized");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("core-decorators");
+module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/applyDecoratedDescriptor");
+module.exports = require("@babel/runtime-corejs2/helpers/objectSpread");
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("core-decorators");
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/applyDecoratedDescriptor");
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/object/get-own-property-descriptor");
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/promise");
+
+/***/ }),
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -163,38 +193,50 @@ __webpack_require__.d(prebid_helper_namespaceObject, "getTargeting", function() 
 __webpack_require__.d(prebid_helper_namespaceObject, "getWinningVideoBidBySlotName", function() { return getWinningVideoBidBySlotName; });
 __webpack_require__.d(prebid_helper_namespaceObject, "pushPrebid", function() { return pushPrebid; });
 
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/promise"
+var promise_ = __webpack_require__(17);
+var promise_default = /*#__PURE__*/__webpack_require__.n(promise_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/assign"
+var assign_ = __webpack_require__(13);
+var assign_default = /*#__PURE__*/__webpack_require__.n(assign_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
+var keys_ = __webpack_require__(7);
+var keys_default = /*#__PURE__*/__webpack_require__.n(keys_);
+
 // EXTERNAL MODULE: external "@wikia/ad-engine"
 var ad_engine_ = __webpack_require__(0);
 
-// EXTERNAL MODULE: external "@babel/runtime/regenerator"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/regenerator"
 var regenerator_ = __webpack_require__(6);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/asyncToGenerator"
-var asyncToGenerator_ = __webpack_require__(7);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/asyncToGenerator"
+var asyncToGenerator_ = __webpack_require__(8);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/objectSpread"
-var objectSpread_ = __webpack_require__(10);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/objectSpread"
+var objectSpread_ = __webpack_require__(12);
 var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/classCallCheck"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/classCallCheck"
 var classCallCheck_ = __webpack_require__(2);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/createClass"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/createClass"
 var createClass_ = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/possibleConstructorReturn"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/possibleConstructorReturn"
 var possibleConstructorReturn_ = __webpack_require__(5);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/getPrototypeOf"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/getPrototypeOf"
 var getPrototypeOf_ = __webpack_require__(4);
 var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/inherits"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/inherits"
 var inherits_ = __webpack_require__(3);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits_);
 
@@ -791,6 +833,7 @@ function () {
 
 
 
+
 var logGroup = 'A9';
 /**
  * @typedef {Object} A9SlotDefinition
@@ -816,7 +859,7 @@ function (_BaseBidder) {
     _this.isCMPEnabled = ad_engine_["context"].get('custom.isCMPEnabled');
     _this.amazonId = _this.bidderConfig.amazonId;
     _this.slots = _this.bidderConfig.slots;
-    _this.slotsNames = Object.keys(_this.slots);
+    _this.slotsNames = keys_default()(_this.slots);
     _this.bids = {};
     _this.priceMap = {};
     _this.slotNamesMap = {};
@@ -1260,7 +1303,7 @@ function (_BaseBidder) {
     value: function calculatePrices() {
       var _this6 = this;
 
-      return Object.keys(this.bids).forEach(function (slotName) {
+      return keys_default()(this.bids).forEach(function (slotName) {
         _this6.priceMap[slotName] = _this6.bids[slotName].amznbid;
       });
     }
@@ -1298,14 +1341,19 @@ function (_BaseBidder) {
 
   return A9;
 }(base_bidder_BaseBidder);
-// EXTERNAL MODULE: external "@babel/runtime/helpers/applyDecoratedDescriptor"
-var applyDecoratedDescriptor_ = __webpack_require__(12);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/get-own-property-descriptor"
+var get_own_property_descriptor_ = __webpack_require__(16);
+var get_own_property_descriptor_default = /*#__PURE__*/__webpack_require__.n(get_own_property_descriptor_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/applyDecoratedDescriptor"
+var applyDecoratedDescriptor_ = __webpack_require__(15);
 var applyDecoratedDescriptor_default = /*#__PURE__*/__webpack_require__.n(applyDecoratedDescriptor_);
 
 // EXTERNAL MODULE: external "core-decorators"
-var external_core_decorators_ = __webpack_require__(11);
+var external_core_decorators_ = __webpack_require__(14);
 
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/base-adapter.ts
+
 
 
 var base_adapter_BaseAdapter =
@@ -1326,7 +1374,7 @@ function () {
     value: function prepareAdUnits() {
       var _this = this;
 
-      return Object.keys(this.slots).map(function (slotName) {
+      return keys_default()(this.slots).map(function (slotName) {
         return _this.prepareConfigForAdUnit(slotName, _this.slots[slotName]);
       });
     }
@@ -1944,6 +1992,8 @@ function (_BaseAdapter) {
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/prebid-helper.ts
 
 
+
+
 var lazyLoadSlots = ['bottom_leaderboard'];
 
 function isSlotApplicable(code, lazyLoad) {
@@ -1987,7 +2037,8 @@ function getBidByAdId(adId) {
 
   if (!bids.length) {
     var responses = window.pbjs.getBidResponses();
-    Object.keys(responses).forEach(function (adUnit) {
+
+    keys_default()(responses).forEach(function (adUnit) {
       var adUnitsBids = responses[adUnit].bids.filter(function (bid) {
         return adId === bid.adId;
       });
@@ -2013,7 +2064,7 @@ function getPrebid() {
   return window.pbjs;
 }
 function getTargeting(slotName) {
-  return Object.assign({
+  return assign_default()({
     pos: [slotName]
   }, ad_engine_["context"].get('bidders.prebid.targeting') || {});
 }
@@ -2116,6 +2167,7 @@ function (_BaseAdapter) {
 
 
 
+
 var rubicon_display_RubiconDisplay =
 /*#__PURE__*/
 function (_BaseAdapter) {
@@ -2144,9 +2196,11 @@ function (_BaseAdapter) {
           position = _ref.position,
           targeting = _ref.targeting;
       var pageTargeting = getTargeting(code);
-      Object.keys(targeting || {}).forEach(function (key) {
+
+      keys_default()(targeting || {}).forEach(function (key) {
         pageTargeting[key] = targeting[key];
       });
+
       return {
         code: code,
         mediaTypes: {
@@ -2172,13 +2226,17 @@ function (_BaseAdapter) {
 
   return RubiconDisplay;
 }(base_adapter_BaseAdapter);
-// EXTERNAL MODULE: external "@babel/runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(9);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/slicedToArray"
+var slicedToArray_ = __webpack_require__(11);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/assertThisInitialized"
-var assertThisInitialized_ = __webpack_require__(8);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/assertThisInitialized"
+var assertThisInitialized_ = __webpack_require__(10);
 var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/parse-int"
+var parse_int_ = __webpack_require__(9);
+var parse_int_default = /*#__PURE__*/__webpack_require__.n(parse_int_);
 
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/wikia.ts
 
@@ -2190,9 +2248,10 @@ var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThi
 
 
 
+
 var price = ad_engine_["utils"].queryString.get('wikia_adapter');
-var limit = parseInt(ad_engine_["utils"].queryString.get('wikia_adapter_limit'), 10) || 99;
-var wikia_timeout = parseInt(ad_engine_["utils"].queryString.get('wikia_adapter_timeout'), 10) || 0;
+var limit = parse_int_default()(ad_engine_["utils"].queryString.get('wikia_adapter_limit'), 10) || 99;
+var wikia_timeout = parse_int_default()(ad_engine_["utils"].queryString.get('wikia_adapter_timeout'), 10) || 0;
 var useRandomPrice = ad_engine_["utils"].queryString.get('wikia_adapter_random') === '1';
 var wikia_Wikia =
 /*#__PURE__*/
@@ -2249,7 +2308,7 @@ function (_BaseAdapter) {
         return Math.floor(Math.random() * 2000) / 100;
       }
 
-      return parseInt(price, 10) / 100;
+      return parse_int_default()(price, 10) / 100;
     }
   }, {
     key: "callBids",
@@ -2327,9 +2386,10 @@ function (_BaseAdapter) {
 
 
 
+
 var wikia_video_price = ad_engine_["utils"].queryString.get('wikia_video_adapter');
-var wikia_video_limit = parseInt(ad_engine_["utils"].queryString.get('wikia_adapter_limit'), 10) || 99;
-var wikia_video_timeout = parseInt(ad_engine_["utils"].queryString.get('wikia_adapter_timeout'), 10) || 0;
+var wikia_video_limit = parse_int_default()(ad_engine_["utils"].queryString.get('wikia_adapter_limit'), 10) || 99;
+var wikia_video_timeout = parse_int_default()(ad_engine_["utils"].queryString.get('wikia_adapter_timeout'), 10) || 0;
 var wikia_video_useRandomPrice = ad_engine_["utils"].queryString.get('wikia_adapter_random') === '1';
 var wikia_video_WikiaVideo =
 /*#__PURE__*/
@@ -2386,7 +2446,7 @@ function (_BaseAdapter) {
         return Math.floor(Math.random() * 20);
       }
 
-      return parseInt(wikia_video_price, 10) / 100;
+      return parse_int_default()(wikia_video_price, 10) / 100;
     }
   }, {
     key: "getVastUrl",
@@ -2458,6 +2518,7 @@ function (_BaseAdapter) {
 
 
 
+
 var adapters_registry_adapters = [];
 var customAdapters = [];
 var availableAdapters = {
@@ -2482,7 +2543,8 @@ function registerAliases() {
   }).forEach(function (adapter) {
     window.pbjs.que.push(function () {
       var aliasMap = adapter.aliases;
-      Object.keys(aliasMap).forEach(function (bidderName) {
+
+      keys_default()(aliasMap).forEach(function (bidderName) {
         aliasMap[bidderName].forEach(function (alias) {
           window.pbjs.aliasBidder(bidderName, alias);
         });
@@ -2492,12 +2554,13 @@ function registerAliases() {
 }
 
 function setupAdapters(bidders) {
-  Object.keys(availableAdapters).forEach(function (key) {
+  keys_default()(availableAdapters).forEach(function (key) {
     if (bidders[key]) {
       var adapter = new availableAdapters[key](bidders[key]);
       adapters_registry_adapters.push(adapter);
     }
   });
+
   setupCustomAdapters(bidders);
 }
 
@@ -2685,6 +2748,7 @@ function getBidderUuid(bidResponse) {
   return isVideo ? bidResponse.videoCacheKey : 'disabled';
 }
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/index.ts
+
 
 
 
@@ -2979,12 +3043,15 @@ function (_BaseBidder) {
   }]);
 
   return Prebid;
-}(base_bidder_BaseBidder), _class2.validResponseStatusCode = 1, _class2.errorResponseStatusCode = 2, _temp), (applyDecoratedDescriptor_default()(_class.prototype, "applyConfig", [_dec], Object.getOwnPropertyDescriptor(_class.prototype, "applyConfig"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "applySettings", [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, "applySettings"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "requestBids", [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, "requestBids"), _class.prototype)), _class));
+}(base_bidder_BaseBidder), _class2.validResponseStatusCode = 1, _class2.errorResponseStatusCode = 2, _temp), (applyDecoratedDescriptor_default()(_class.prototype, "applyConfig", [_dec], get_own_property_descriptor_default()(_class.prototype, "applyConfig"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "applySettings", [_dec2], get_own_property_descriptor_default()(_class.prototype, "applySettings"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "requestBids", [_dec3], get_own_property_descriptor_default()(_class.prototype, "requestBids"), _class.prototype)), _class));
 // CONCATENATED MODULE: ./src/ad-bidders/index.ts
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bidders", function() { return ad_bidders_bidders; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Apstag", function() { return apstag_Apstag; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Cmp", function() { return cmp_Cmp; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cmp", function() { return cmp; });
+
+
+
 
 
 
@@ -3001,7 +3068,7 @@ ad_engine_["events"].on(ad_engine_["events"].VIDEO_AD_USED, function (adSlot) {
 });
 
 function applyTargetingParams(slotName, targeting) {
-  Object.keys(targeting).forEach(function (key) {
+  keys_default()(targeting).forEach(function (key) {
     return ad_engine_["context"].set("slots.".concat(slotName, ".targeting.").concat(key), targeting[key]);
   });
 }
@@ -3013,7 +3080,7 @@ function applyTargetingParams(slotName, targeting) {
 
 
 function forEachBidder(callback) {
-  Object.keys(biddersRegistry).forEach(function (bidderName) {
+  keys_default()(biddersRegistry).forEach(function (bidderName) {
     callback(biddersRegistry[bidderName]);
   });
 }
@@ -3023,7 +3090,8 @@ function getBidParameters(slotName) {
   forEachBidder(function (bidder) {
     if (bidder && bidder.wasCalled()) {
       var params = bidder.getSlotTargetingParams(slotName);
-      Object.assign(slotParams, params);
+
+      assign_default()(slotParams, params);
     }
   });
   return slotParams;
@@ -3034,7 +3102,8 @@ function getCurrentSlotPrices(slotName) {
   forEachBidder(function (bidder) {
     if (bidder && bidder.isSlotSupported(slotName)) {
       var priceFromBidder = bidder.getSlotBestPrice(slotName);
-      Object.keys(priceFromBidder).forEach(function (bidderName) {
+
+      keys_default()(priceFromBidder).forEach(function (bidderName) {
         slotPrices[bidderName] = priceFromBidder[bidderName];
       });
     }
@@ -3053,10 +3122,11 @@ function getDfpSlotPrices(slotName) {
 
 
 function hasAllResponses() {
-  var missingBidders = Object.keys(biddersRegistry).filter(function (bidderName) {
+  var missingBidders = keys_default()(biddersRegistry).filter(function (bidderName) {
     var bidder = biddersRegistry[bidderName];
     return !bidder.hasResponse();
   });
+
   return missingBidders.length === 0;
 }
 
@@ -3104,7 +3174,7 @@ function runOnBiddingReady(callback) {
   forEachBidder(function (bidder) {
     responses.push(bidder.waitForResponse());
   });
-  return Promise.all(responses).then(callback);
+  return promise_default.a.all(responses).then(callback);
 }
 
 function storeRealSlotPrices(slotName) {

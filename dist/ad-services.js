@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,53 +80,114 @@ module.exports = require("@wikia/ad-engine");
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/createClass");
+module.exports = require("@babel/runtime-corejs2/helpers/createClass");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/classCallCheck");
+module.exports = require("@babel/runtime-corejs2/helpers/classCallCheck");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/toConsumableArray");
+module.exports = require("@babel/runtime-corejs2/core-js/promise");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime/helpers/slicedToArray");
+module.exports = require("@babel/runtime-corejs2/core-js/object/keys");
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/parse-int");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/set");
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/toConsumableArray");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/object/entries");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
+
+/***/ }),
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(4);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/slicedToArray"
+var slicedToArray_ = __webpack_require__(10);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/toConsumableArray"
-var toConsumableArray_ = __webpack_require__(3);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/entries"
+var entries_ = __webpack_require__(9);
+var entries_default = /*#__PURE__*/__webpack_require__.n(entries_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/toConsumableArray"
+var toConsumableArray_ = __webpack_require__(8);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/classCallCheck"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/set"
+var set_ = __webpack_require__(7);
+var set_default = /*#__PURE__*/__webpack_require__.n(set_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/classCallCheck"
 var classCallCheck_ = __webpack_require__(2);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck_);
 
-// EXTERNAL MODULE: external "@babel/runtime/helpers/createClass"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/createClass"
 var createClass_ = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/parse-int"
+var parse_int_ = __webpack_require__(6);
+var parse_int_default = /*#__PURE__*/__webpack_require__.n(parse_int_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/assign"
+var assign_ = __webpack_require__(5);
+var assign_default = /*#__PURE__*/__webpack_require__.n(assign_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/promise"
+var promise_ = __webpack_require__(3);
+var promise_default = /*#__PURE__*/__webpack_require__.n(promise_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
+var keys_ = __webpack_require__(4);
+var keys_default = /*#__PURE__*/__webpack_require__.n(keys_);
 
 // EXTERNAL MODULE: external "@wikia/ad-engine"
 var ad_engine_ = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/ad-services/bill-the-lizard/executor.ts
+
 
 
 
@@ -186,7 +247,7 @@ function () {
     value: function executeMethods(models, response) {
       var _this = this;
 
-      Object.keys(response).forEach(function (modelName) {
+      keys_default()(response).forEach(function (modelName) {
         var result = response[modelName].result;
         var executableModel = models.find(function (model) {
           return model.name === modelName && model.executable;
@@ -212,6 +273,8 @@ function () {
   return Executor;
 }();
 // CONCATENATED MODULE: ./src/ad-services/bill-the-lizard/projects-handler.ts
+
+
 
 
 
@@ -264,9 +327,11 @@ function () {
 
       var projects = ad_engine_["context"].get('services.billTheLizard.projects');
       var projectParameters = ad_engine_["context"].get('services.billTheLizard.parameters');
-      var enabledProjectNames = Object.keys(projects).filter(function (name) {
+
+      var enabledProjectNames = keys_default()(projects).filter(function (name) {
         return _this.isEnabled(name) && projectNames.includes(name);
       });
+
       var models = [];
       var parameters = {};
       enabledProjectNames.forEach(function (name) {
@@ -277,7 +342,8 @@ function () {
             model.executable = isNextModelExecutable;
             isNextModelExecutable = false;
             models.push(model);
-            Object.assign(parameters, projectParameters[name]);
+
+            assign_default()(parameters, projectParameters[name]);
           } else {
             model.executable = false;
           }
@@ -293,6 +359,12 @@ function () {
   return ProjectsHandler;
 }();
 // CONCATENATED MODULE: ./src/ad-services/bill-the-lizard/index.ts
+
+
+
+
+
+
 
 
 
@@ -327,9 +399,11 @@ ad_engine_["events"].registerEvent('BILL_THE_LIZARD_RESPONSE');
 
 function buildQueryUrl(queryParameters) {
   var params = [];
-  Object.keys(queryParameters).forEach(function (key) {
+
+  keys_default()(queryParameters).forEach(function (key) {
     params.push("".concat(key, "=").concat(queryParameters[key]));
   });
+
   return encodeURI(params.join('&'));
 }
 /**
@@ -371,7 +445,7 @@ function httpRequest(host, endpoint) {
   request.timeout = timeout;
   openRequests.push(request);
   ad_engine_["utils"].logger(bill_the_lizard_logGroup, 'timeout configured to', request.timeout);
-  return new Promise(function (resolve, reject) {
+  return new promise_default.a(function (resolve, reject) {
     request.addEventListener('timeout', function () {
       reject(new Error('timeout'));
       ad_engine_["utils"].logger(bill_the_lizard_logGroup, 'timed out');
@@ -402,7 +476,7 @@ function httpRequest(host, endpoint) {
 function getQueryParameters(models, parameters) {
   var now = new Date();
   var day = now.getDay() - 1;
-  return Object.assign({}, {
+  return assign_default()({}, {
     models: models.map(function (model) {
       return model.name;
     }),
@@ -418,13 +492,14 @@ function getQueryParameters(models, parameters) {
 
 
 function overridePredictions(response) {
-  Object.keys(response).forEach(function (name) {
+  keys_default()(response).forEach(function (name) {
     var newValue = ad_engine_["utils"].queryString.get("bill.".concat(name));
 
     if (newValue) {
-      response[name].result = parseInt(newValue, 10);
+      response[name].result = parse_int_default()(newValue, 10);
     }
   });
+
   return response;
 }
 /**
@@ -440,7 +515,7 @@ function () {
 
     this.executor = new executor_Executor();
     this.projectsHandler = new projects_handler_ProjectsHandler();
-    this.targetedModelNames = new Set();
+    this.targetedModelNames = new set_default.a();
     this.callCounter = 0;
     this.predictions = [];
     this.statuses = {};
@@ -477,7 +552,7 @@ function () {
 
       if (!ad_engine_["context"].get('services.billTheLizard.enabled')) {
         ad_engine_["utils"].logger(bill_the_lizard_logGroup, 'disabled');
-        return new Promise(function (resolve, reject) {
+        return new promise_default.a(function (resolve, reject) {
           return reject(new Error('Disabled'));
         });
       }
@@ -498,7 +573,7 @@ function () {
       if (!models || models.length < 1) {
         ad_engine_["utils"].logger(bill_the_lizard_logGroup, 'no models to predict');
         this.statuses[callId] = BillTheLizard.NOT_USED;
-        return Promise.resolve({});
+        return promise_default.a.resolve({});
       } // update names of GAM targeted models
 
 
@@ -517,7 +592,7 @@ function () {
           _this.statuses[callId] = BillTheLizard.FAILURE;
         }
 
-        return Promise.reject(error);
+        return promise_default.a.reject(error);
       }).then(function (response) {
         return overridePredictions(response);
       }).then(function (response) {
@@ -582,13 +657,15 @@ function () {
     key: "getModelToResultMap",
     value: function getModelToResultMap(response) {
       var modelToResultMap = {};
-      Object.keys(response).forEach(function (modelName) {
+
+      keys_default()(response).forEach(function (modelName) {
         var result = response[modelName].result;
 
         if (typeof result !== 'undefined') {
           modelToResultMap[modelName] = result;
         }
       });
+
       return modelToResultMap;
     }
     /**
@@ -602,14 +679,15 @@ function () {
     value: function setTargeting() {
       var targeting = this.getTargeting();
 
-      if (Object.keys(targeting).length > 0) {
-        var serializedTargeting = Object.entries(targeting).map(function (_ref) {
+      if (keys_default()(targeting).length > 0) {
+        var serializedTargeting = entries_default()(targeting).map(function (_ref) {
           var _ref2 = slicedToArray_default()(_ref, 2),
               modelName = _ref2[0],
               result = _ref2[1];
 
           return "".concat(modelName, "_").concat(result);
         });
+
         ad_engine_["context"].set('targeting.btl', serializedTargeting);
         return serializedTargeting;
       }
@@ -756,6 +834,7 @@ var billTheLizard = new bill_the_lizard_BillTheLizard();
 
 
 
+
 var confiant_logGroup = 'confiant';
 var scriptDomain = 'clarium.global.ssl.fastly.net';
 /**
@@ -793,7 +872,7 @@ function () {
 
       if (!ad_engine_["context"].get('services.confiant.enabled') || !propertyId || !mapping || !activation) {
         ad_engine_["utils"].logger(confiant_logGroup, 'disabled');
-        return Promise.resolve();
+        return promise_default.a.resolve();
       }
 
       ad_engine_["utils"].logger(confiant_logGroup, 'loading'); // eslint-disable-next-line  no-underscore-dangle
@@ -825,6 +904,7 @@ function () {
 
 var confiant = new confiant_Confiant();
 // CONCATENATED MODULE: ./src/ad-services/geo-edge/index.ts
+
 
 
 
@@ -864,7 +944,7 @@ function () {
 
       if (!ad_engine_["context"].get('services.geoEdge.enabled') || !geoEdgeKey) {
         ad_engine_["utils"].logger(geo_edge_logGroup, 'disabled');
-        return Promise.resolve();
+        return promise_default.a.resolve();
       }
 
       ad_engine_["utils"].logger(geo_edge_logGroup, 'loading');
@@ -883,6 +963,8 @@ function () {
 
 var geoEdge = new geo_edge_GeoEdge();
 // CONCATENATED MODULE: ./src/ad-services/krux/index.ts
+
+
 
 
 
@@ -951,7 +1033,7 @@ function () {
 
       if (!ad_engine_["context"].get('services.krux.enabled') || !ad_engine_["context"].get('options.trackingOptIn')) {
         ad_engine_["utils"].logger(krux_logGroup, 'disabled');
-        return Promise.resolve();
+        return promise_default.a.resolve();
       }
 
       ad_engine_["utils"].logger(krux_logGroup, 'loading');
@@ -969,7 +1051,7 @@ function () {
   }, {
     key: "exportPageParams",
     value: function exportPageParams() {
-      Object.keys(ad_engine_["context"].get('targeting')).forEach(function (key) {
+      keys_default()(ad_engine_["context"].get('targeting')).forEach(function (key) {
         var value = ad_engine_["context"].get("targeting.".concat(key));
 
         if (value) {
@@ -1021,6 +1103,7 @@ var krux = new krux_Krux();
 
 
 
+
 var moat_yi_logGroup = 'moat-yi';
 ad_engine_["events"].registerEvent('MOAT_YI_READY');
 /**
@@ -1057,11 +1140,11 @@ function () {
 
       if (!ad_engine_["context"].get('services.moatYi.enabled') || !ad_engine_["context"].get('services.moatYi.partnerCode')) {
         ad_engine_["utils"].logger(moat_yi_logGroup, 'disabled');
-        return Promise.resolve();
+        return promise_default.a.resolve();
       }
 
       var moatYeildReadyResolve;
-      var promise = new Promise(function (resolve) {
+      var promise = new promise_default.a(function (resolve) {
         moatYeildReadyResolve = resolve;
       });
       ad_engine_["utils"].logger(moat_yi_logGroup, 'loading');

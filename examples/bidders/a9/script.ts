@@ -1,10 +1,11 @@
 import { AdEngine, context, events, utils } from '@wikia/ad-engine';
-import { bidders, apstag, cmp } from '@wikia/ad-bidders';
+import { bidders, Apstag, cmp } from '@wikia/ad-bidders';
 import { utils as adProductsUtils } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
 const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
+const apstag = Apstag.make();
 
 cmp.override((cmd, param, cb) => {
 	if (cmd === 'getConsentData') {

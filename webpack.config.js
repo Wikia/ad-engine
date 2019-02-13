@@ -24,14 +24,14 @@ function findExamplePages(startPath, filter) {
 		if (stat.isDirectory()) {
 			findExamplePages(filename, filter);
 		} else if (filename.indexOf(filter) >= 0) {
-			const shortName = filename.replace('examples/', '').replace('/script.js', '');
+			const shortName = filename.replace('examples/', '').replace('/script.ts', '');
 
 			examplePages[shortName] = `./${filename}`;
 		}
 	});
 }
 
-findExamplePages('./examples', 'script.js');
+findExamplePages('./examples', 'script.ts');
 
 const common = {
 	mode: 'development',
