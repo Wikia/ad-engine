@@ -1182,7 +1182,7 @@ function () {
 }();
 
 var moatYi = new moat_yi_MoatYi();
-// CONCATENATED MODULE: ./src/ad-services/nielsen/static-queue-script.ts
+// CONCATENATED MODULE: ./src/ad-services/nielsen/static-queue-script.js
 // NIELSEN CODE START
 // eslint-disable-next-line
 function initNielsenStaticQueue() {
