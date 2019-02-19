@@ -8,8 +8,9 @@ const groupName = 'slot-service';
 /** @type {Object.<string, AdSlot>} */
 const slots = {};
 
-let slotStates = {};
+let slotEvents = {};
 let slotStatuses = {};
+let slotStates = {};
 
 function isSlotInTheSameViewport(slotHeight, slotOffset, viewportHeight, elementId) {
 	const element = document.getElementById(elementId);
@@ -31,6 +32,7 @@ function isSlotInTheSameViewport(slotHeight, slotOffset, viewportHeight, element
 }
 
 events.on(events.PAGE_CHANGE_EVENT, () => {
+	slotEvents = {};
 	slotStates = {};
 	slotStatuses = {};
 });
@@ -54,6 +56,12 @@ class SlotService {
 
 		slotTweaker.addDefaultClasses(adSlot);
 		events.emit(events.AD_SLOT_CREATED, adSlot);
+
+		if (slotEvents[slotName]) {
+			adSlot.events.push(...slotEvents[slotName]);
+			delete slotEvents[slotName];
+		}
+		adSlot.events.flush();
 	}
 
 	/**
@@ -108,6 +116,28 @@ class SlotService {
 		Object.keys(slots).forEach((id) => {
 			callback(slots[id]);
 		});
+	}
+
+	/**
+	 *
+	 * @param {string} slotName
+	 * @param {string} eventName
+	 * @param {function} callback
+	 */
+	on(slotName, eventName, callback) {
+		const adSlot = this.get(slotName);
+		const event = {
+			name: eventName,
+			callback,
+		};
+
+		slotEvents[slotName] = slotEvents[slotName] || [];
+
+		if (adSlot) {
+			adSlot.events.push(event);
+		} else {
+			slotEvents[slotName].push(event);
+		}
 	}
 
 	/**

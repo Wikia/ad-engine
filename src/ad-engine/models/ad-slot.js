@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
-import { logger, stringBuilder } from '../utils';
+import { logger, stringBuilder, LazyQueue } from '../utils';
 import { slotListener } from '../listeners';
 import { ADX } from '../providers';
 
@@ -36,6 +36,10 @@ export class AdSlot extends EventEmitter {
 		this.viewed = false;
 		this.element = null;
 		this.status = null;
+		this.events = new LazyQueue();
+		this.events.onItemFlush((event) => {
+			this.on(event.name, event.callback);
+		});
 
 		this.creativeId = null;
 		this.creativeSize = null;
@@ -131,6 +135,7 @@ export class AdSlot extends EventEmitter {
 	setStatus(status = null) {
 		this.status = status;
 		if (status !== null) {
+			this.emit(status);
 			slotListener.emitStatusChanged(this);
 		}
 	}
