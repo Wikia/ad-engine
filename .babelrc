@@ -1,35 +1,53 @@
 {
 	"presets": [
-		["env", {
-			"targets": {
-				"browsers": ["last 2 versions", "safari >= 9.0", "ie 11", "> 2%"]
-			},
-			"modules": false
-		}]
+		[
+			"@babel/preset-env",
+			{
+				"targets": {
+					"browsers": ["last 2 versions", "safari >= 9.0", "ie 11", "> 2%"]
+				},
+				"modules": false
+			}
+		],
+		"@babel/preset-typescript"
 	],
 	"plugins": [
-		"transform-class-properties",
-		"transform-object-rest-spread",
-		"transform-decorators-legacy",
+		[
+			"@babel/plugin-proposal-decorators",
+			{
+				"legacy": true
+			}
+		],
+		[
+			"@babel/plugin-proposal-class-properties",
+			{
+				"loose": true
+			}
+		],
+		"@babel/plugin-proposal-object-rest-spread",
 		"syntax-trailing-function-commas",
-		["transform-runtime", {
-			"helpers": true,
-			"polyfill": true,
-			"regenerator": true,
-			"moduleName": "babel-runtime"
-		}],
-		"syntax-dynamic-import",
+		[
+			"@babel/plugin-transform-runtime",
+			{
+				"helpers": true,
+				"corejs": 2,
+				"regenerator": true
+			}
+		],
+		"@babel/plugin-syntax-dynamic-import",
 		"lodash"
 	],
 	"env": {
 		"test": {
 			"presets": [
-				["env",
-				{
-					"targets": {
-						"node": "current"
+				[
+					"@babel/preset-env",
+					{
+						"targets": {
+							"node": "current"
+						}
 					}
-				}]
+				]
 			]
 		}
 	}

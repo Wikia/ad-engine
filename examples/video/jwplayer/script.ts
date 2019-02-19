@@ -3,7 +3,7 @@ import { bidders } from '@wikia/ad-bidders';
 import { jwplayerAdsFactory } from '@wikia/ad-products';
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
-import video from './video';
+import * as videoData from './video-data.json';
 
 import '../../styles.scss';
 
@@ -68,7 +68,7 @@ bidders.requestBids({
 });
 
 biddersDelay.getPromise().then(() => {
-	const playlist = [video];
+	const playlist = [videoData];
 	const playerOptions = {
 		autoplay: utils.queryString.get('autoplay') !== '0',
 		mute: utils.queryString.get('mute') !== '0',
@@ -93,7 +93,7 @@ biddersDelay.getPromise().then(() => {
 		autoplay: playerOptions.autoplay,
 		featured: true,
 		slotName: 'featured',
-		videoId: video.mediaid,
+		videoId: videoData.mediaid,
 	});
 
 	window.wikiaJWPlayer('playerContainer', playerOptions, (player) => {

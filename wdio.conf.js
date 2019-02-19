@@ -4,7 +4,7 @@ const VisualRegressionCompare = require('wdio-visual-regression-service/compare'
 const md5 = require('js-md5');
 const networkCapture = require('./tests/common/network-capture');
 
-const AD_ENGINE_PORT = process.env.AD_ENGINE_PORT || 8080
+const AD_ENGINE_PORT = process.env.AD_ENGINE_PORT || 8080;
 
 function getScreenshotName(basePath) {
 	return function (context) {
@@ -45,7 +45,7 @@ exports.config = {
 	},
 	mochaOpts: {
 		ui: 'bdd',
-		compilers: ['js:babel-core/register'],
+		compilers: ['js:@babel/register'],
 		timeout: 120000,
 	},
 	staticServerFolders: [{ mount: '/', path: './examples' }],

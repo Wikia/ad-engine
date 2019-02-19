@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,79 +80,79 @@ module.exports = require("@wikia/ad-engine");
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/createClass");
+module.exports = require("@babel/runtime-corejs2/helpers/createClass");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/regenerator");
+module.exports = require("@babel/runtime-corejs2/regenerator");
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/classCallCheck");
+module.exports = require("@babel/runtime-corejs2/helpers/classCallCheck");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/asyncToGenerator");
+module.exports = require("@babel/runtime-corejs2/helpers/asyncToGenerator");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/core-js/object/get-prototype-of");
+module.exports = require("@babel/runtime-corejs2/helpers/getPrototypeOf");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/inherits");
+module.exports = require("@babel/runtime-corejs2/helpers/inherits");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/possibleConstructorReturn");
+module.exports = require("@babel/runtime-corejs2/helpers/possibleConstructorReturn");
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/core-js/promise");
+module.exports = require("@babel/runtime-corejs2/core-js/promise");
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/core-js/object/assign");
+module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/get");
+module.exports = require("@babel/runtime-corejs2/helpers/get");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/core-js/object/keys");
+module.exports = require("@babel/runtime-corejs2/core-js/object/keys");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/toConsumableArray");
+module.exports = require("@babel/runtime-corejs2/helpers/toConsumableArray");
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/core-js/symbol");
+module.exports = require("@babel/runtime-corejs2/core-js/symbol");
 
 /***/ }),
 /* 14 */
@@ -176,58 +176,76 @@ module.exports = {"CROSS":"<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/throttle");
+module.exports = require("@babel/runtime-corejs2/helpers/assertThisInitialized");
 
 /***/ }),
 /* 18 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/isFunction");
+module.exports = require("lodash/throttle");
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = require("js-cookie");
+module.exports = require("lodash/isFunction");
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/debounce");
+module.exports = require("@babel/runtime-corejs2/core-js/parse-float");
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/isUndefined");
+module.exports = require("js-cookie");
 
 /***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash/toPlainObject");
+module.exports = require("lodash/debounce");
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/toArray");
+module.exports = require("lodash/isUndefined");
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/extends");
+module.exports = require("lodash/toPlainObject");
 
 /***/ }),
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/helpers/slicedToArray");
+module.exports = require("@babel/runtime-corejs2/helpers/toArray");
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/objectSpread");
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/core-js/array/is-array");
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
+
+/***/ }),
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -254,344 +272,341 @@ __webpack_require__.d(constants_namespaceObject, "FAN_TAKEOVER_TYPES", function(
 // EXTERNAL MODULE: external "@wikia/ad-engine"
 var ad_engine_ = __webpack_require__(0);
 
-// CONCATENATED MODULE: ./src/ad-products/utils/npa.js
-
+// CONCATENATED MODULE: ./src/ad-products/utils/npa.ts
 
 function setupNpaContext() {
-	var optedOut = ad_engine_["trackingOptIn"].isOptedIn() ? 0 : 1;
-
-	ad_engine_["context"].set('targeting.npa', optedOut.toString());
+  var optedOut = ad_engine_["trackingOptIn"].isOptedIn() ? 0 : 1;
+  ad_engine_["context"].set('targeting.npa', optedOut.toString());
 }
-// EXTERNAL MODULE: external "babel-runtime/helpers/classCallCheck"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/classCallCheck"
 var classCallCheck_ = __webpack_require__(3);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck_);
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/createClass"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/createClass"
 var createClass_ = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
 
-// CONCATENATED MODULE: ./src/ad-products/utils/navbar-manager.js
+// CONCATENATED MODULE: ./src/ad-products/utils/navbar-manager.ts
 
 
-var navbar_manager_NavbarManager = function () {
-	function NavbarManager() {
-		classCallCheck_default()(this, NavbarManager);
-	}
+var navbar_manager_NavbarManager =
+/*#__PURE__*/
+function () {
+  function NavbarManager() {
+    classCallCheck_default()(this, NavbarManager);
+  }
 
-	createClass_default()(NavbarManager, [{
-		key: "setup",
-		value: function setup(config, container) {
-			if (!config.handleNavbar) {
-				return;
-			}
+  createClass_default()(NavbarManager, [{
+    key: "setup",
+    value: function setup(config, container) {
+      if (!config.handleNavbar) {
+        return;
+      }
 
-			var desktopNavbarWrapper = document.querySelector(config.desktopNavbarWrapperSelector);
-			var mobileNavbarWrapper = document.querySelector(config.mobileNavbarWrapperSelector);
-			var slotParent = container.parentNode;
-			var sibling = document.querySelector(config.slotSibling) || container.nextElementSibling;
+      var desktopNavbarWrapper = document.querySelector(config.desktopNavbarWrapperSelector);
+      var mobileNavbarWrapper = document.querySelector(config.mobileNavbarWrapperSelector);
+      var slotParent = container.parentNode;
+      var sibling = document.querySelector(config.slotSibling) || container.nextElementSibling;
 
-			if (mobileNavbarWrapper) {
-				slotParent.insertBefore(mobileNavbarWrapper, sibling);
-			}
+      if (mobileNavbarWrapper) {
+        slotParent.insertBefore(mobileNavbarWrapper, sibling);
+      }
 
-			if (desktopNavbarWrapper) {
-				slotParent.insertBefore(desktopNavbarWrapper, sibling);
-			}
-		}
-	}]);
+      if (desktopNavbarWrapper) {
+        slotParent.insertBefore(desktopNavbarWrapper, sibling);
+      }
+    }
+  }]);
 
-	return NavbarManager;
+  return NavbarManager;
 }();
-
 var navbarManager = new navbar_manager_NavbarManager();
-// CONCATENATED MODULE: ./src/ad-products/utils/index.js
+// CONCATENATED MODULE: ./src/ad-products/utils/index.ts
 
 
 // EXTERNAL MODULE: ./src/ad-products/styles/styles.scss
-var styles = __webpack_require__(28);
+var styles = __webpack_require__(31);
 
-// EXTERNAL MODULE: external "babel-runtime/core-js/object/keys"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
 var keys_ = __webpack_require__(11);
 var keys_default = /*#__PURE__*/__webpack_require__.n(keys_);
 
-// CONCATENATED MODULE: ./src/ad-products/common/product-info.js
+// CONCATENATED MODULE: ./src/ad-products/common/product-info.ts
 
 
 
 function findSlotGroup(product) {
-	var slotGroups = ad_engine_["context"].get('slotGroups');
-	var result = keys_default()(slotGroups).filter(function (name) {
-		return slotGroups[name].indexOf(product) !== -1;
-	});
+  var slotGroups = ad_engine_["context"].get('slotGroups');
 
-	return result.length === 1 ? result[0] : null;
+  var result = keys_default()(slotGroups).filter(function (name) {
+    return slotGroups[name].indexOf(product) !== -1;
+  });
+
+  return result.length === 1 ? result[0] : null;
 }
 
 function getGroup(product) {
-	return findSlotGroup(product.toUpperCase()) || 'OTHER';
+  return findSlotGroup(product.toUpperCase()) || 'OTHER';
 }
 
 function getAdProductInfo(slotName, loadedTemplate, loadedProduct) {
-	var product = slotName;
+  var product = slotName;
 
-	if (loadedProduct === 'abcd') {
-		product = 'ABCD';
-	} else if (loadedProduct === 'vuap') {
-		product = 'UAP_' + loadedTemplate.toUpperCase();
-	} else if (loadedProduct === 'incontent_veles') {
-		product = 'OUTSTREAM';
-	}
+  if (loadedProduct === 'abcd') {
+    product = 'ABCD';
+  } else if (loadedProduct === 'vuap') {
+    product = "UAP_".concat(loadedTemplate.toUpperCase());
+  } else if (loadedProduct === 'incontent_veles') {
+    product = 'OUTSTREAM';
+  }
 
-	return {
-		adGroup: getGroup(product),
-		adProduct: product.toLowerCase()
-	};
+  return {
+    adGroup: getGroup(product),
+    adProduct: product.toLowerCase()
+  };
 }
-// CONCATENATED MODULE: ./src/ad-products/common/index.js
+// CONCATENATED MODULE: ./src/ad-products/common/index.ts
 
-// CONCATENATED MODULE: ./src/ad-products/templates/floating-rail.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/floating-rail.ts
 
 
 
 var adsInRail = 2;
 var biggestAdSize = 600;
-
 var availableSpace = null;
+var floating_rail_FloatingRail =
+/*#__PURE__*/
+function () {
+  createClass_default()(FloatingRail, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'floatingRail';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        enabled: true,
+        railSelector: '#rail',
+        wrapperSelector: '#rail-wrapper',
+        startOffset: 0
+      };
+    }
+  }, {
+    key: "isEnabled",
+    value: function isEnabled() {
+      return ad_engine_["context"].get('templates.floatingRail.enabled') && ad_engine_["context"].get('state.isMobile') === false;
+    }
+  }]);
 
-var floating_rail_FloatingRail = function () {
-	createClass_default()(FloatingRail, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'floatingRail';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				enabled: true,
-				railSelector: '#rail',
-				wrapperSelector: '#rail-wrapper',
-				startOffset: 0
-			};
-		}
-	}, {
-		key: 'isEnabled',
-		value: function isEnabled() {
-			return ad_engine_["context"].get('templates.floatingRail.enabled') && ad_engine_["context"].get('state.isMobile') === false;
-		}
-	}]);
+  function FloatingRail() {
+    classCallCheck_default()(this, FloatingRail);
 
-	function FloatingRail() {
-		classCallCheck_default()(this, FloatingRail);
+    this.config = ad_engine_["context"].get('templates.floatingRail');
+    this.rail = document.querySelector(this.config.railSelector);
+    this.railWrapper = document.querySelector(this.config.wrapperSelector);
+  }
 
-		this.config = ad_engine_["context"].get('templates.floatingRail');
-		this.rail = document.querySelector(this.config.railSelector);
-		this.railWrapper = document.querySelector(this.config.wrapperSelector);
-	}
+  createClass_default()(FloatingRail, [{
+    key: "init",
+    value: function init(params) {
+      var _this = this;
 
-	createClass_default()(FloatingRail, [{
-		key: 'init',
-		value: function init(params) {
-			var _this = this;
+      this.params = params;
+      var offset = this.params.offset || 0;
 
-			this.params = params;
+      if (!this.railWrapper || !FloatingRail.isEnabled() || this.getAvailableSpace() === 0) {
+        return;
+      }
 
-			var offset = this.params.offset || 0;
+      var floatingSpace = Math.min(offset, this.getAvailableSpace());
+      ad_engine_["scrollListener"].addCallback(function () {
+        var start = _this.config.startOffset + ad_engine_["utils"].getTopOffset(_this.railWrapper);
+        var end = start + floatingSpace;
+        var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-			if (!this.railWrapper || !FloatingRail.isEnabled() || this.getAvailableSpace() === 0) {
-				return;
-			}
+        if (scrollPosition <= start) {
+          _this.rail.style.paddingTop = '';
 
-			var floatingSpace = Math.min(offset, this.getAvailableSpace());
+          _this.rail.classList.add('rail-static');
 
-			ad_engine_["scrollListener"].addCallback(function () {
-				var start = _this.config.startOffset + ad_engine_["utils"].getTopOffset(_this.railWrapper);
-				var end = start + floatingSpace;
-				var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+          _this.rail.classList.remove('rail-fixed');
+        } else if (scrollPosition >= end) {
+          _this.rail.style.paddingTop = "".concat(floatingSpace, "px");
 
-				if (scrollPosition <= start) {
-					_this.rail.style.paddingTop = '';
-					_this.rail.classList.add('rail-static');
-					_this.rail.classList.remove('rail-fixed');
-				} else if (scrollPosition >= end) {
-					_this.rail.style.paddingTop = floatingSpace + 'px';
-					_this.rail.classList.remove('rail-static');
-					_this.rail.classList.remove('rail-fixed');
-				} else {
-					_this.rail.style.paddingTop = '';
-					_this.rail.classList.remove('rail-static');
-					_this.rail.classList.add('rail-fixed');
-				}
-			});
-		}
-	}, {
-		key: 'getAvailableSpace',
-		value: function getAvailableSpace() {
-			if (availableSpace === null) {
-				var children = this.railWrapper.lastElementChild;
-				var childrenHeight = children.offsetTop + children.offsetHeight;
-				var space = this.railWrapper.offsetHeight;
+          _this.rail.classList.remove('rail-static');
 
-				availableSpace = Math.max(0, space - childrenHeight - adsInRail * biggestAdSize);
-			}
+          _this.rail.classList.remove('rail-fixed');
+        } else {
+          _this.rail.style.paddingTop = '';
 
-			return availableSpace;
-		}
-	}]);
+          _this.rail.classList.remove('rail-static');
 
-	return FloatingRail;
+          _this.rail.classList.add('rail-fixed');
+        }
+      });
+    }
+  }, {
+    key: "getAvailableSpace",
+    value: function getAvailableSpace() {
+      if (availableSpace === null) {
+        var children = this.railWrapper.lastElementChild;
+        var childrenHeight = children.offsetTop + children.offsetHeight;
+        var space = this.railWrapper.offsetHeight;
+        availableSpace = Math.max(0, space - childrenHeight - adsInRail * biggestAdSize);
+      }
+
+      return availableSpace;
+    }
+  }]);
+
+  return FloatingRail;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/skin.js
+// CONCATENATED MODULE: ./src/ad-products/templates/skin.ts
 
 
 
+var skin_Skin =
+/*#__PURE__*/
+function () {
+  createClass_default()(Skin, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'skin';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        bodyAdClass: 'has-background-ad',
+        onInit: function onInit() {},
+        wrapperSelector: '#ad-skin',
+        zIndex: 1
+      };
+    }
+  }]);
 
-var skin_Skin = function () {
-	createClass_default()(Skin, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'skin';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				bodyAdClass: 'has-background-ad',
-				onInit: function onInit() {},
-				wrapperSelector: '#ad-skin',
-				zIndex: 1
-			};
-		}
-	}]);
+  function Skin() {
+    classCallCheck_default()(this, Skin);
 
-	function Skin() {
-		classCallCheck_default()(this, Skin);
-
-		this.config = ad_engine_["context"].get('templates.skin');
-		this.adSkin = document.querySelector(this.config.wrapperSelector);
-	}
-
-	/**
-  * Initializes the Skin unit
-  *
-  * @param {Object} params
-  * @param {string} params.destUrl - URL to go when the background is clicked
-  * @param {string} params.skinImage - URL of the 1700x800 image to show in the background
-  * @param {string} params.backgroundColor - background color to use (rrggbb, without leading #)
-  * @param {string} [params.middleColor] - color to use in the middle (rrggbb, without leading #)
-  * @param {Array} params.pixels - URLs of tracking pixels to append when showing the skin
-  */
-
-
-	createClass_default()(Skin, [{
-		key: 'init',
-		value: function init(params) {
-			this.params = params;
-			this.params.adProduct = 'skin';
-
-			document.body.classList.add(this.config.bodyAdClass);
-			this.setAdSkinStyle(params.skinImage, params.backgroundColor);
-
-			this.adSkin.onclick = function () {
-				window.open(params.destUrl);
-			};
-
-			if (params.pixels) {
-				this.setTrackingPixels(params.pixels);
-			}
-
-			this.adSkin.classList.remove('hide');
-
-			this.config.onInit(this.params);
-		}
-
-		/**
-   * Sets styles for ad skin wrapper
+    this.config = ad_engine_["context"].get('templates.skin');
+    this.adSkin = document.querySelector(this.config.wrapperSelector);
+  }
+  /**
+   * Initializes the Skin unit
    *
-   * @param params
+   * @param {Object} params
+   * @param {string} params.destUrl - URL to go when the background is clicked
+   * @param {string} params.skinImage - URL of the 1700x800 image to show in the background
+   * @param {string} params.backgroundColor - background color to use (rrggbb, without leading #)
+   * @param {string} [params.middleColor] - color to use in the middle (rrggbb, without leading #)
+   * @param {Array} params.pixels - URLs of tracking pixels to append when showing the skin
    */
 
-	}, {
-		key: 'setAdSkinStyle',
-		value: function setAdSkinStyle(image, color) {
-			this.adSkin.style.position = 'fixed';
-			this.adSkin.style.height = '100%';
-			this.adSkin.style.width = '100%';
-			this.adSkin.style.left = 0;
-			this.adSkin.style.top = 0;
-			this.adSkin.style.zIndex = this.config.zIndex;
-			this.adSkin.style.cursor = 'pointer';
-			this.adSkin.style.background = 'url("' + image + '") no-repeat top center #' + color;
-		}
 
-		/**
-   * Goes through pixels array and adds 1x1 pixel images
-   *
-   * @param pixels
-   */
+  createClass_default()(Skin, [{
+    key: "init",
+    value: function init(params) {
+      this.params = params;
+      this.params.adProduct = 'skin';
+      document.body.classList.add(this.config.bodyAdClass);
+      this.setAdSkinStyle(params.skinImage, params.backgroundColor);
 
-	}, {
-		key: 'setTrackingPixels',
-		value: function setTrackingPixels(pixels) {
-			for (var i = 0, len = pixels.length; i < len; i += 1) {
-				var pixelUrl = pixels[i];
+      this.adSkin.onclick = function () {
+        window.open(params.destUrl);
+      };
 
-				if (pixelUrl) {
-					var pixelElement = document.createElement('img');
+      if (params.pixels) {
+        this.setTrackingPixels(params.pixels);
+      }
 
-					pixelElement.src = pixelUrl;
-					pixelElement.width = 1;
-					pixelElement.height = 1;
-					this.adSkin.appendChild(pixelElement);
-				}
-			}
-		}
-	}]);
+      this.adSkin.classList.remove('hide');
+      this.config.onInit(this.params);
+    }
+    /**
+     * Sets styles for ad skin wrapper
+     *
+     * @param params
+     */
 
-	return Skin;
+  }, {
+    key: "setAdSkinStyle",
+    value: function setAdSkinStyle(image, color) {
+      this.adSkin.style.position = 'fixed';
+      this.adSkin.style.height = '100%';
+      this.adSkin.style.width = '100%';
+      this.adSkin.style.left = 0;
+      this.adSkin.style.top = 0;
+      this.adSkin.style.zIndex = this.config.zIndex;
+      this.adSkin.style.cursor = 'pointer';
+      this.adSkin.style.background = "url(\"".concat(image, "\") no-repeat top center #").concat(color);
+    }
+    /**
+     * Goes through pixels array and adds 1x1 pixel images
+     *
+     * @param pixels
+     */
+
+  }, {
+    key: "setTrackingPixels",
+    value: function setTrackingPixels(pixels) {
+      for (var i = 0, len = pixels.length; i < len; i += 1) {
+        var pixelUrl = pixels[i];
+
+        if (pixelUrl) {
+          var pixelElement = document.createElement('img');
+          pixelElement.src = pixelUrl;
+          pixelElement.width = 1;
+          pixelElement.height = 1;
+          this.adSkin.appendChild(pixelElement);
+        }
+      }
+    }
+  }]);
+
+  return Skin;
 }();
-// EXTERNAL MODULE: external "babel-runtime/regenerator"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/regenerator"
 var regenerator_ = __webpack_require__(2);
 var regenerator_default = /*#__PURE__*/__webpack_require__.n(regenerator_);
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/asyncToGenerator"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/asyncToGenerator"
 var asyncToGenerator_ = __webpack_require__(4);
 var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerator_);
 
-// EXTERNAL MODULE: external "babel-runtime/core-js/object/get-prototype-of"
-var get_prototype_of_ = __webpack_require__(5);
-var get_prototype_of_default = /*#__PURE__*/__webpack_require__.n(get_prototype_of_);
-
-// EXTERNAL MODULE: external "babel-runtime/helpers/possibleConstructorReturn"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/possibleConstructorReturn"
 var possibleConstructorReturn_ = __webpack_require__(7);
 var possibleConstructorReturn_default = /*#__PURE__*/__webpack_require__.n(possibleConstructorReturn_);
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/inherits"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/getPrototypeOf"
+var getPrototypeOf_ = __webpack_require__(5);
+var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/inherits"
 var inherits_ = __webpack_require__(6);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits_);
 
-// EXTERNAL MODULE: external "babel-runtime/core-js/promise"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/promise"
 var promise_ = __webpack_require__(8);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise_);
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(25);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/slicedToArray"
+var slicedToArray_ = __webpack_require__(28);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
-// EXTERNAL MODULE: external "babel-runtime/core-js/symbol"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/symbol"
 var symbol_ = __webpack_require__(13);
 var symbol_default = /*#__PURE__*/__webpack_require__.n(symbol_);
 
 // EXTERNAL MODULE: external "lodash/isFunction"
-var isFunction_ = __webpack_require__(18);
+var isFunction_ = __webpack_require__(19);
 var isFunction_default = /*#__PURE__*/__webpack_require__.n(isFunction_);
 
 // EXTERNAL MODULE: external "eventemitter3"
 var external_eventemitter3_ = __webpack_require__(15);
 var external_eventemitter3_default = /*#__PURE__*/__webpack_require__.n(external_eventemitter3_);
 
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/stickiness.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/stickiness.ts
 
 
 
@@ -604,206 +619,215 @@ var external_eventemitter3_default = /*#__PURE__*/__webpack_require__.n(external
 
 
 
+var stickiness_Stickiness =
+/*#__PURE__*/
+function (_EventEmitter) {
+  inherits_default()(Stickiness, _EventEmitter);
 
+  function Stickiness(adSlot) {
+    var _this;
 
-var stickiness_Stickiness = function (_EventEmitter) {
-	inherits_default()(Stickiness, _EventEmitter);
+    var customWhen = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : promise_default.a.resolve();
 
-	function Stickiness(adSlot) {
-		var customWhen = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : promise_default.a.resolve();
+    classCallCheck_default()(this, Stickiness);
 
-		classCallCheck_default()(this, Stickiness);
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Stickiness).call(this));
+    _this.adSlot = adSlot;
+    _this.customWhen = customWhen;
+    _this.sticky = false;
+    _this.isStickinessBlocked = false;
+    _this.isRevertStickinessBlocked = false;
 
-		var _this = possibleConstructorReturn_default()(this, (Stickiness.__proto__ || get_prototype_of_default()(Stickiness)).call(this));
+    _this.logger = function () {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-		_this.adSlot = adSlot;
-		_this.customWhen = customWhen;
-		_this.sticky = false;
-		_this.isStickinessBlocked = false;
-		_this.isRevertStickinessBlocked = false;
-		_this.logger = function () {
-			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-				args[_key] = arguments[_key];
-			}
+      return ad_engine_["utils"].logger.apply(ad_engine_["utils"], [Stickiness.LOG_GROUP].concat(args));
+    };
 
-			return ad_engine_["utils"].logger.apply(ad_engine_["utils"], [Stickiness.LOG_GROUP].concat(args));
-		};
+    if (!isFunction_default()(_this.customWhen)) {
+      promise_default.a.all([_this.customWhen]).then(function () {
+        if (!_this.sticky) {
+          _this.logger('Blocking stickiness');
 
-		if (!isFunction_default()(_this.customWhen)) {
-			promise_default.a.all([_this.customWhen]).then(function () {
-				if (!_this.sticky) {
-					_this.logger('Blocking stickiness');
-					_this.isStickinessBlocked = true;
-				}
-			});
-		}
-		return _this;
-	}
+          _this.isStickinessBlocked = true;
+        }
+      });
+    }
 
-	createClass_default()(Stickiness, [{
-		key: 'run',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-				var _this2 = this;
+    return _this;
+  }
 
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								_context.next = 2;
-								return ad_engine_["slotTweaker"].onReady(this.adSlot);
+  createClass_default()(Stickiness, [{
+    key: "run",
+    value: function () {
+      var _run = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var _this2 = this;
 
-							case 2:
-								if (!document.hidden) {
-									_context.next = 5;
-									break;
-								}
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return ad_engine_["slotTweaker"].onReady(this.adSlot);
 
-								_context.next = 5;
-								return ad_engine_["utils"].once(window, 'visibilitychange');
+              case 2:
+                if (!document.hidden) {
+                  _context.next = 5;
+                  break;
+                }
 
-							case 5:
+                _context.next = 5;
+                return ad_engine_["utils"].once(window, 'visibilitychange');
 
-								this.adSlot.once('unstickImmediately', function () {
-									_this2.logger('Unsticking');
-									_this2.emit(Stickiness.UNSTICK_IMMEDIATELY_EVENT);
-									_this2.sticky = false;
-								});
+              case 5:
+                this.adSlot.once('unstickImmediately', function () {
+                  _this2.logger('Unsticking');
 
-								if (!this.isStickinessBlocked) {
-									this.onAdReady();
-								}
+                  _this2.emit(Stickiness.UNSTICK_IMMEDIATELY_EVENT);
 
-							case 7:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
+                  _this2.sticky = false;
+                });
 
-			function run() {
-				return _ref.apply(this, arguments);
-			}
+                if (!this.isStickinessBlocked) {
+                  this.onAdReady();
+                }
 
-			return run;
-		}()
-	}, {
-		key: 'isSticky',
-		value: function isSticky() {
-			return this.sticky;
-		}
-	}, {
-		key: 'applyStickiness',
-		value: function applyStickiness() {
-			if (!this.sticky) {
-				this.logger('Applying stickiness');
-				this.sticky = true;
-				this.emit(Stickiness.STICKINESS_CHANGE_EVENT, this.sticky);
-			} else {
-				this.logger('Stickiness is already applied');
-			}
-		}
-	}, {
-		key: 'revertStickiness',
-		value: function revertStickiness() {
-			if (this.sticky) {
-				this.logger('Reverting stickiness');
-				this.sticky = false;
-				this.emit(Stickiness.STICKINESS_CHANGE_EVENT, this.sticky);
-			} else {
-				this.logger('Stickiness is already reverted');
-			}
-		}
-	}, {
-		key: 'close',
-		value: function close() {
-			this.logger('Closing and removing stickiness');
-			this.sticky = false;
-			this.emit(Stickiness.CLOSE_CLICKED_EVENT, this.sticky);
-		}
-	}, {
-		key: 'registerRevertStickiness',
-		value: function () {
-			var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
-				return regenerator_default.a.wrap(function _callee2$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								this.logger('waiting for user interaction');
-								_context2.next = 3;
-								return ad_engine_["utils"].once(window, 'scroll');
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-							case 3:
-								_context2.next = 5;
-								return ad_engine_["utils"].wait();
+      function run() {
+        return _run.apply(this, arguments);
+      }
 
-							case 5:
-								if (!this.isRevertStickinessBlocked) {
-									this.revertStickiness();
-								} else {
-									this.registerRevertStickiness();
-								}
+      return run;
+    }()
+  }, {
+    key: "isSticky",
+    value: function isSticky() {
+      return this.sticky;
+    }
+  }, {
+    key: "applyStickiness",
+    value: function applyStickiness() {
+      if (!this.sticky) {
+        this.logger('Applying stickiness');
+        this.sticky = true;
+        this.emit(Stickiness.STICKINESS_CHANGE_EVENT, this.sticky);
+      } else {
+        this.logger('Stickiness is already applied');
+      }
+    }
+  }, {
+    key: "revertStickiness",
+    value: function revertStickiness() {
+      if (this.sticky) {
+        this.logger('Reverting stickiness');
+        this.sticky = false;
+        this.emit(Stickiness.STICKINESS_CHANGE_EVENT, this.sticky);
+      } else {
+        this.logger('Stickiness is already reverted');
+      }
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.logger('Closing and removing stickiness');
+      this.sticky = false;
+      this.emit(Stickiness.CLOSE_CLICKED_EVENT, this.sticky);
+    }
+  }, {
+    key: "registerRevertStickiness",
+    value: function () {
+      var _registerRevertStickiness = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee2() {
+        return regenerator_default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.logger('waiting for user interaction');
+                _context2.next = 3;
+                return ad_engine_["utils"].once(window, 'scroll');
 
-							case 6:
-							case 'end':
-								return _context2.stop();
-						}
-					}
-				}, _callee2, this);
-			}));
+              case 3:
+                _context2.next = 5;
+                return ad_engine_["utils"].wait();
 
-			function registerRevertStickiness() {
-				return _ref2.apply(this, arguments);
-			}
+              case 5:
+                if (!this.isRevertStickinessBlocked) {
+                  this.revertStickiness();
+                } else {
+                  this.registerRevertStickiness();
+                }
 
-			return registerRevertStickiness;
-		}()
-	}, {
-		key: 'blockRevertStickiness',
-		value: function blockRevertStickiness() {
-			this.isRevertStickinessBlocked = true;
-		}
-	}, {
-		key: 'unblockRevertStickiness',
-		value: function unblockRevertStickiness() {
-			this.isRevertStickinessBlocked = false;
-		}
-	}, {
-		key: 'onAdReady',
-		value: function () {
-			var _ref3 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
-				return regenerator_default.a.wrap(function _callee3$(_context3) {
-					while (1) {
-						switch (_context3.prev = _context3.next) {
-							case 0:
-								this.applyStickiness();
-								this.logger('waiting for viewability and custom condition');
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
 
-								_context3.next = 4;
-								return promise_default.a.all([!this.adSlot.isViewed() ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : promise_default.a.resolve(), isFunction_default()(this.customWhen) ? this.customWhen() : this.customWhen]);
+      function registerRevertStickiness() {
+        return _registerRevertStickiness.apply(this, arguments);
+      }
 
-							case 4:
+      return registerRevertStickiness;
+    }()
+  }, {
+    key: "blockRevertStickiness",
+    value: function blockRevertStickiness() {
+      this.isRevertStickinessBlocked = true;
+    }
+  }, {
+    key: "unblockRevertStickiness",
+    value: function unblockRevertStickiness() {
+      this.isRevertStickinessBlocked = false;
+    }
+  }, {
+    key: "onAdReady",
+    value: function () {
+      var _onAdReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee3() {
+        return regenerator_default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.applyStickiness();
+                this.logger('waiting for viewability and custom condition');
+                _context3.next = 4;
+                return promise_default.a.all([!this.adSlot.isViewed() ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : promise_default.a.resolve(), isFunction_default()(this.customWhen) ? this.customWhen() : this.customWhen]);
 
-								this.registerRevertStickiness();
+              case 4:
+                this.registerRevertStickiness();
 
-							case 5:
-							case 'end':
-								return _context3.stop();
-						}
-					}
-				}, _callee3, this);
-			}));
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
 
-			function onAdReady() {
-				return _ref3.apply(this, arguments);
-			}
+      function onAdReady() {
+        return _onAdReady.apply(this, arguments);
+      }
 
-			return onAdReady;
-		}()
-	}]);
+      return onAdReady;
+    }()
+  }]);
 
-	return Stickiness;
+  return Stickiness;
 }(external_eventemitter3_default.a);
 stickiness_Stickiness.LOG_GROUP = 'stickiness';
 stickiness_Stickiness.STICKINESS_CHANGE_EVENT = symbol_default()('stickinessChange');
@@ -814,46 +838,48 @@ stickiness_Stickiness.SLOT_UNSTICKED_STATE = 'unsticked';
 stickiness_Stickiness.SLOT_STICKY_READY_STATE = 'sticky-ready';
 stickiness_Stickiness.SLOT_UNSTICK_IMMEDIATELY = 'force-unstick';
 stickiness_Stickiness.SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
-// EXTERNAL MODULE: external "babel-runtime/helpers/toConsumableArray"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/toConsumableArray"
 var toConsumableArray_ = __webpack_require__(12);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray_);
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/get"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/get"
 var get_ = __webpack_require__(10);
 var get_default = /*#__PURE__*/__webpack_require__.n(get_);
 
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/ui-component.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/ui-component.ts
 
 
 
-var ui_component_UiComponent = function () {
-	createClass_default()(UiComponent, [{
-		key: "classNames",
-		get: function get() {
-			return this.props.classNames || [];
-		}
-	}]);
+var ui_component_UiComponent =
+/*#__PURE__*/
+function () {
+  createClass_default()(UiComponent, [{
+    key: "classNames",
+    get: function get() {
+      return this.props.classNames || [];
+    }
+  }]);
 
-	function UiComponent() {
-		var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  function UiComponent() {
+    var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-		classCallCheck_default()(this, UiComponent);
+    classCallCheck_default()(this, UiComponent);
 
-		this.props = props;
-	}
+    this.props = props;
+  }
 
-	createClass_default()(UiComponent, [{
-		key: "render",
-		value: function render() {
-			return document.createDocumentFragment();
-		}
-	}]);
+  createClass_default()(UiComponent, [{
+    key: "render",
+    value: function render() {
+      return document.createDocumentFragment();
+    }
+  }]);
 
-	return UiComponent;
+  return UiComponent;
 }();
 
 
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/button.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/button.ts
 
 
 
@@ -863,51 +889,50 @@ var ui_component_UiComponent = function () {
 
 
 
-var button_Button = function (_UiComponent) {
-	inherits_default()(Button, _UiComponent);
+var button_Button =
+/*#__PURE__*/
+function (_UiComponent) {
+  inherits_default()(Button, _UiComponent);
 
-	function Button() {
-		classCallCheck_default()(this, Button);
+  function Button() {
+    classCallCheck_default()(this, Button);
 
-		return possibleConstructorReturn_default()(this, (Button.__proto__ || get_prototype_of_default()(Button)).apply(this, arguments));
-	}
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(Button).apply(this, arguments));
+  }
 
-	createClass_default()(Button, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
+  createClass_default()(Button, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
 
-			var buttonElement = document.createElement('button');
+      var buttonElement = document.createElement('button');
+      this.classNames.forEach(function (className) {
+        return buttonElement.classList.add(className);
+      });
+      buttonElement.addEventListener('click', function (event) {
+        return _this.onClick(event);
+      });
+      return buttonElement;
+    }
+  }, {
+    key: "onClick",
+    value: function onClick(event) {
+      var onClick = this.props.onClick;
 
-			this.classNames.forEach(function (className) {
-				return buttonElement.classList.add(className);
-			});
-			buttonElement.addEventListener('click', function (event) {
-				return _this2.onClick(event);
-			});
+      if (typeof onClick === 'function') {
+        return onClick(event);
+      }
 
-			return buttonElement;
-		}
-	}, {
-		key: 'onClick',
-		value: function onClick(event) {
-			var onClick = this.props.onClick;
+      return undefined;
+    }
+  }, {
+    key: "classNames",
+    get: function get() {
+      return ['button-control'].concat(toConsumableArray_default()(get_default()(getPrototypeOf_default()(Button.prototype), "classNames", this)));
+    }
+  }]);
 
-
-			if (typeof onClick === 'function') {
-				return onClick(event);
-			}
-
-			return undefined;
-		}
-	}, {
-		key: 'classNames',
-		get: function get() {
-			return ['button-control'].concat(toConsumableArray_default()(get_default()(Button.prototype.__proto__ || get_prototype_of_default()(Button.prototype), 'classNames', this)));
-		}
-	}]);
-
-	return Button;
+  return Button;
 }(ui_component_UiComponent);
 
 
@@ -915,33 +940,27 @@ var button_Button = function (_UiComponent) {
 var icons = __webpack_require__(16);
 var icons_default = /*#__PURE__*/__webpack_require__.n(icons);
 
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/icons.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/icons.ts
 
 
 var parser = new window.DOMParser();
-
 function createIcon(iconName) {
-	var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var classNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-	if (icons_default.a[iconName]) {
-		var element = parser.parseFromString(icons_default.a[iconName], 'image/svg+xml').documentElement;
+  if (icons_default.a[iconName]) {
+    var element = parser.parseFromString(icons_default.a[iconName], 'image/svg+xml').documentElement; // IE 11 doesn't support classList nor className on SVG elements
 
-		// IE 11 doesn't support classList nor className on SVG elements
-		element.setAttribute('class', classNames.join(' '));
+    element.setAttribute('class', classNames.join(' '));
+    return element;
+  }
 
-		return element;
-	}
-
-	return null;
+  return null;
 }
-
 var icons_icons = keys_default()(icons_default.a).reduce(function (map, name) {
-	map[name] = name;
-
-	return map;
+  map[name] = name;
+  return map;
 }, {});
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/close-button.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/close-button.ts
 
 
 
@@ -953,41 +972,42 @@ var icons_icons = keys_default()(icons_default.a).reduce(function (map, name) {
 
 
 
-var close_button_CloseButton = function (_UiComponent) {
-	inherits_default()(CloseButton, _UiComponent);
+var close_button_CloseButton =
+/*#__PURE__*/
+function (_UiComponent) {
+  inherits_default()(CloseButton, _UiComponent);
 
-	function CloseButton() {
-		classCallCheck_default()(this, CloseButton);
+  function CloseButton() {
+    classCallCheck_default()(this, CloseButton);
 
-		return possibleConstructorReturn_default()(this, (CloseButton.__proto__ || get_prototype_of_default()(CloseButton)).apply(this, arguments));
-	}
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(CloseButton).apply(this, arguments));
+  }
 
-	createClass_default()(CloseButton, [{
-		key: 'render',
-		value: function render() {
-			var onClick = this.props.onClick;
-			var classNames = this.classNames;
+  createClass_default()(CloseButton, [{
+    key: "render",
+    value: function render() {
+      var onClick = this.props.onClick;
+      var classNames = this.classNames;
+      var button = new button_Button({
+        onClick: onClick,
+        classNames: classNames
+      }).render();
+      var closeIcon = createIcon(icons_icons.CROSS, ['icon']);
+      button.appendChild(closeIcon);
+      return button;
+    }
+  }, {
+    key: "classNames",
+    get: function get() {
+      return ['button-close'].concat(toConsumableArray_default()(get_default()(getPrototypeOf_default()(CloseButton.prototype), "classNames", this)));
+    }
+  }]);
 
-			var button = new button_Button({ onClick: onClick, classNames: classNames }).render();
-			var closeIcon = createIcon(icons_icons.CROSS, ['icon']);
-
-			button.appendChild(closeIcon);
-
-			return button;
-		}
-	}, {
-		key: 'classNames',
-		get: function get() {
-			return ['button-close'].concat(toConsumableArray_default()(get_default()(CloseButton.prototype.__proto__ || get_prototype_of_default()(CloseButton.prototype), 'classNames', this)));
-		}
-	}]);
-
-	return CloseButton;
+  return CloseButton;
 }(ui_component_UiComponent);
 
 
-// CONCATENATED MODULE: ./src/ad-products/templates/sticky-base.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/sticky-base.ts
 
 
 
@@ -998,229 +1018,223 @@ var close_button_CloseButton = function (_UiComponent) {
 
 
 var logGroup = 'sticky-base';
-
 /**
  * @abstract
  */
-var sticky_base_StickyBase = function () {
 
-	/**
-  * Base class for sticky ads
-  * @param {AdSlot} adSlot
-  */
-	function StickyBase(adSlot) {
-		classCallCheck_default()(this, StickyBase);
+var sticky_base_StickyBase =
+/*#__PURE__*/
+function () {
+  /**
+   * Base class for sticky ads
+   * @param {AdSlot} adSlot
+   */
+  function StickyBase(adSlot) {
+    classCallCheck_default()(this, StickyBase);
 
-		this.adSlot = adSlot;
-		this.container = this.adSlot.getElement();
-		this.lineId = adSlot.lineItemId.toString() || '';
-		this.lines = ad_engine_["context"].get('templates.' + this.getName() + '.lineItemIds') || [];
-		this.stickiness = null;
-		this.config = ad_engine_["context"].get('templates.' + this.getName());
-	}
-
-	/**
-  * @protected
-  */
-
-
-	createClass_default()(StickyBase, [{
-		key: 'setupStickiness',
-		value: function setupStickiness(params) {
-			var _this = this;
-
-			this.params = params;
-
-			this.adSlot.setConfigProperty('useGptOnloadEvent', true);
-			this.adSlot.onLoad().then(function () {
-				ad_engine_["utils"].logger(logGroup, _this.adSlot.getSlotName(), 'slot ready for stickiness');
-				_this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKY_READY_STATE);
-			});
-
-			this.addStickinessPlugin();
-		}
-
-		/**
-   * @abstract
+    this.adSlot = adSlot;
+    this.container = this.adSlot.getElement();
+    this.lineId = adSlot.lineItemId.toString() || '';
+    this.lines = ad_engine_["context"].get("templates.".concat(this.getName(), ".lineItemIds")) || [];
+    this.stickiness = null;
+    this.config = ad_engine_["context"].get("templates.".concat(this.getName()));
+  }
+  /**
    * @protected
    */
 
-	}, {
-		key: 'addStickinessPlugin',
-		value: function addStickinessPlugin() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
 
-		/**
-   * @protected
-   */
+  createClass_default()(StickyBase, [{
+    key: "setupStickiness",
+    value: function setupStickiness(params) {
+      var _this = this;
 
-	}, {
-		key: 'isEnabled',
-		value: function isEnabled() {
-			var isEnabledInContext = ad_engine_["context"].get('templates.' + this.getName() + '.enabled');
-			var isEnabled = isEnabledInContext && this.isLineAndGeo();
+      this.params = params;
+      this.adSlot.setConfigProperty('useGptOnloadEvent', true);
+      this.adSlot.onLoad().then(function () {
+        ad_engine_["utils"].logger(logGroup, _this.adSlot.getSlotName(), 'slot ready for stickiness');
 
-			if (isEnabled) {
-				ad_engine_["utils"].logger(logGroup, 'enabled with line item id ' + this.lineId);
-			}
+        _this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKY_READY_STATE);
+      });
+      this.addStickinessPlugin();
+    }
+    /**
+     * @abstract
+     * @protected
+     */
 
-			return isEnabled;
-		}
+  }, {
+    key: "addStickinessPlugin",
+    value: function addStickinessPlugin() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+    /**
+     * @protected
+     */
 
-		/**
-   * Returns template name.
-   * @abstract
-   * @protected
-   * @return {string}
-   */
+  }, {
+    key: "isEnabled",
+    value: function isEnabled() {
+      var isEnabledInContext = ad_engine_["context"].get("templates.".concat(this.getName(), ".enabled"));
+      var isEnabled = isEnabledInContext && this.isLineAndGeo();
 
-	}, {
-		key: 'getName',
-		value: function getName() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
+      if (isEnabled) {
+        ad_engine_["utils"].logger(logGroup, "enabled with line item id ".concat(this.lineId));
+      }
 
-		/**
-   * @private
-   */
+      return isEnabled;
+    }
+    /**
+     * Returns template name.
+     * @abstract
+     * @protected
+     * @return {string}
+     */
 
-	}, {
-		key: 'isLineAndGeo',
-		value: function isLineAndGeo() {
-			var _this2 = this;
+  }, {
+    key: "getName",
+    value: function getName() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+    /**
+     * @private
+     */
 
-			var found = this.lines.some(function (line) {
-				var _line$split = line.split(':', 2),
-				    _line$split2 = slicedToArray_default()(_line$split, 2),
-				    lineId = _line$split2[0],
-				    geo = _line$split2[1];
+  }, {
+    key: "isLineAndGeo",
+    value: function isLineAndGeo() {
+      var _this2 = this;
 
-				return lineId === _this2.lineId && (!geo || ad_engine_["utils"].isProperGeo([geo]));
-			});
+      var found = this.lines.some(function (line) {
+        var _line$split = line.split(':', 2),
+            _line$split2 = slicedToArray_default()(_line$split, 2),
+            lineId = _line$split2[0],
+            geo = _line$split2[1];
 
-			if (found) {
-				ad_engine_["utils"].logger(logGroup, 'line item ' + this.lineId + ' enabled in geo');
-			}
+        return lineId === _this2.lineId && (!geo || ad_engine_["utils"].isProperGeo([geo]));
+      });
 
-			return found;
-		}
+      if (found) {
+        ad_engine_["utils"].logger(logGroup, "line item ".concat(this.lineId, " enabled in geo"));
+      }
 
-		/**
-   * Runs logic which decides when to unstick the template.
-   * @protected
-   */
+      return found;
+    }
+    /**
+     * Runs logic which decides when to unstick the template.
+     * @protected
+     */
 
-	}, {
-		key: 'addUnstickLogic',
-		value: function addUnstickLogic() {
-			var _this3 = this;
+  }, {
+    key: "addUnstickLogic",
+    value: function addUnstickLogic() {
+      var _this3 = this;
 
-			var _config = this.config,
-			    stickyAdditionalTime = _config.stickyAdditionalTime,
-			    stickyUntilSlotViewed = _config.stickyUntilSlotViewed;
+      var _this$config = this.config,
+          stickyAdditionalTime = _this$config.stickyAdditionalTime,
+          stickyUntilSlotViewed = _this$config.stickyUntilSlotViewed;
 
-			var whenSlotViewedOrTimeout = function () {
-				var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-					return regenerator_default.a.wrap(function _callee$(_context) {
-						while (1) {
-							switch (_context.prev = _context.next) {
-								case 0:
-									_context.next = 2;
-									return stickyUntilSlotViewed && !_this3.adSlot.isViewed() ? ad_engine_["utils"].once(_this3.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : promise_default.a.resolve();
+      var whenSlotViewedOrTimeout =
+      /*#__PURE__*/
+      function () {
+        var _ref = asyncToGenerator_default()(
+        /*#__PURE__*/
+        regenerator_default.a.mark(function _callee() {
+          return regenerator_default.a.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _context.next = 2;
+                  return stickyUntilSlotViewed && !_this3.adSlot.isViewed() ? ad_engine_["utils"].once(_this3.adSlot, ad_engine_["AdSlot"].SLOT_VIEWED_EVENT) : promise_default.a.resolve();
 
-								case 2:
-									_context.next = 4;
-									return ad_engine_["utils"].wait(StickyBase.DEFAULT_UNSTICK_DELAY + stickyAdditionalTime);
+                case 2:
+                  _context.next = 4;
+                  return ad_engine_["utils"].wait(StickyBase.DEFAULT_UNSTICK_DELAY + stickyAdditionalTime);
 
-								case 4:
-								case 'end':
-									return _context.stop();
-							}
-						}
-					}, _callee, _this3);
-				}));
+                case 4:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, this);
+        }));
 
-				return function whenSlotViewedOrTimeout() {
-					return _ref.apply(this, arguments);
-				};
-			}();
+        return function whenSlotViewedOrTimeout() {
+          return _ref.apply(this, arguments);
+        };
+      }();
 
-			this.stickiness = new stickiness_Stickiness(this.adSlot, whenSlotViewedOrTimeout());
-		}
+      this.stickiness = new stickiness_Stickiness(this.adSlot, whenSlotViewedOrTimeout());
+    }
+    /**
+     * @protected
+     */
 
-		/**
-   * @protected
-   */
+  }, {
+    key: "addButton",
+    value: function addButton(rootElement, cb) {
+      this.button = new close_button_CloseButton({
+        classNames: ['button-unstick'],
+        onClick: cb
+      }).render();
+      rootElement.appendChild(this.button);
+    }
+    /**
+     * @protected
+     */
 
-	}, {
-		key: 'addButton',
-		value: function addButton(rootElement, cb) {
-			this.button = new close_button_CloseButton({
-				classNames: ['button-unstick'],
-				onClick: cb
-			}).render();
+  }, {
+    key: "removeButton",
+    value: function removeButton() {
+      this.button.remove();
+    }
+    /**
+     * @protected
+     */
 
-			rootElement.appendChild(this.button);
-		}
+  }, {
+    key: "addUnstickEvents",
+    value: function addUnstickEvents() {
+      var _this4 = this;
 
-		/**
-   * @protected
-   */
+      this.stickiness.on(stickiness_Stickiness.STICKINESS_CHANGE_EVENT, function (isSticky) {
+        return _this4.onStickinessChange(isSticky);
+      });
+      this.stickiness.on(stickiness_Stickiness.CLOSE_CLICKED_EVENT, function () {
+        return _this4.unstickImmediately();
+      });
+      this.stickiness.on(stickiness_Stickiness.UNSTICK_IMMEDIATELY_EVENT, function () {
+        return _this4.unstickImmediately();
+      });
+    }
+    /**
+     * @abstract
+     * @protected
+     */
 
-	}, {
-		key: 'removeButton',
-		value: function removeButton() {
-			this.button.remove();
-		}
+  }, {
+    key: "onStickinessChange",
+    value: function onStickinessChange(isSticky) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        isSticky: isSticky
+      });
+    }
+    /**
+     * @abstract
+     * @protected
+     */
 
-		/**
-   * @protected
-   */
+  }, {
+    key: "unstickImmediately",
+    value: function unstickImmediately() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+  }]);
 
-	}, {
-		key: 'addUnstickEvents',
-		value: function addUnstickEvents() {
-			var _this4 = this;
-
-			this.stickiness.on(stickiness_Stickiness.STICKINESS_CHANGE_EVENT, function (isSticky) {
-				return _this4.onStickinessChange(isSticky);
-			});
-			this.stickiness.on(stickiness_Stickiness.CLOSE_CLICKED_EVENT, function () {
-				return _this4.unstickImmediately();
-			});
-			this.stickiness.on(stickiness_Stickiness.UNSTICK_IMMEDIATELY_EVENT, function () {
-				return _this4.unstickImmediately();
-			});
-		}
-
-		/**
-   * @abstract
-   * @protected
-   */
-
-	}, {
-		key: 'onStickinessChange',
-		value: function onStickinessChange(isSticky) {
-			throw new ad_engine_["utils"].NotImplementedException({ isSticky: isSticky });
-		}
-
-		/**
-   * @abstract
-   * @protected
-   */
-
-	}, {
-		key: 'unstickImmediately',
-		value: function unstickImmediately() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
-	}]);
-
-	return StickyBase;
+  return StickyBase;
 }();
 sticky_base_StickyBase.DEFAULT_UNSTICK_DELAY = 2000;
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/constants.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/constants.ts
 var CSS_CLASSNAME_FADE_IN_ANIMATION = 'fade-in';
 var CSS_CLASSNAME_SLIDE_OUT_ANIMATION = 'slide-out';
 var CSS_CLASSNAME_STICKY_BFAA = 'sticky-bfaa';
@@ -1228,48 +1242,48 @@ var CSS_CLASSNAME_STICKY_BFAB = 'sticky-bfab';
 var CSS_CLASSNAME_STICKY_SLOT = 'sticky-slot';
 var CSS_CLASSNAME_STICKY_TEMPLATE = 'sticky-template';
 var CSS_TIMING_EASE_IN_CUBIC = 'cubic-bezier(0.55, 0.055, 0.675, 0.19)';
-var CSS_CLASSNAME_STICKY_IAB = 'sticky-iab';
-// Animation time is defined also in CSS, remember to change it in both places
+var CSS_CLASSNAME_STICKY_IAB = 'sticky-iab'; // Animation time is defined also in CSS, remember to change it in both places
+
 var SLIDE_OUT_TIME = 600;
 var FADE_IN_TIME = 400;
-
 var DEFAULT_UAP_ID = 'none';
 var DEFAULT_UAP_TYPE = 'none';
 var FAN_TAKEOVER_TYPES = ['uap', 'vuap'];
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/animate.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/animate.ts
 
 
 
+function animate(_x, _x2, _x3) {
+  return _animate.apply(this, arguments);
+}
 
-var animate = function () {
-	var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(container, className, duration) {
-		return regenerator_default.a.wrap(function _callee$(_context) {
-			while (1) {
-				switch (_context.prev = _context.next) {
-					case 0:
-						container.style.animationDuration = duration + 'ms';
-						container.classList.add(className);
-						_context.next = 4;
-						return ad_engine_["utils"].wait(duration);
+function _animate() {
+  _animate = asyncToGenerator_default()(
+  /*#__PURE__*/
+  regenerator_default.a.mark(function _callee(container, className, duration) {
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            container.style.animationDuration = "".concat(duration, "ms");
+            container.classList.add(className);
+            _context.next = 4;
+            return ad_engine_["utils"].wait(duration);
 
-					case 4:
-						container.classList.remove(className);
-						container.style.animationDuration = '';
+          case 4:
+            container.classList.remove(className);
+            container.style.animationDuration = '';
 
-					case 6:
-					case 'end':
-						return _context.stop();
-				}
-			}
-		}, _callee, this);
-	}));
-
-	return function animate(_x, _x2, _x3) {
-		return _ref.apply(this, arguments);
-	};
-}();
-// CONCATENATED MODULE: ./src/ad-products/templates/sticky-ad.js
-
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+  return _animate.apply(this, arguments);
+}
+// CONCATENATED MODULE: ./src/ad-products/templates/sticky-ad.ts
 
 
 
@@ -1283,470 +1297,455 @@ var animate = function () {
 
 
 var sticky_ad_logGroup = 'sticky-ad';
+var sticky_ad_StickyAd =
+/*#__PURE__*/
+function (_StickyBase) {
+  inherits_default()(StickyAd, _StickyBase);
 
-var sticky_ad_StickyAd = function (_StickyBase) {
-	inherits_default()(StickyAd, _StickyBase);
+  createClass_default()(StickyAd, [{
+    key: "containerDiv",
 
-	createClass_default()(StickyAd, [{
-		key: 'containerDiv',
+    /**
+     * @private
+     */
+    get: function get() {
+      return this.container.querySelector('div');
+    }
+  }], [{
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        enabled: true,
+        stickyAdditionalTime: 0,
+        stickyUntilSlotViewed: true,
+        handleNavbar: true,
+        navbarWrapperSelector: 'body > nav.navigation',
+        smartBannerSelector: null,
+        slotsIgnoringNavbar: []
+      };
+    }
+  }, {
+    key: "getName",
+    value: function getName() {
+      return 'stickyAd';
+    }
+  }]);
 
+  function StickyAd(adSlot) {
+    var _this;
 
-		/**
-   * @private
-   */
-		get: function get() {
-			return this.container.querySelector('div');
-		}
-	}], [{
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				enabled: true,
-				stickyAdditionalTime: 0,
-				stickyUntilSlotViewed: true,
-				handleNavbar: true,
-				navbarWrapperSelector: 'body > nav.navigation',
-				smartBannerSelector: null,
-				slotsIgnoringNavbar: []
-			};
-		}
-	}, {
-		key: 'getName',
-		value: function getName() {
-			return 'stickyAd';
-		}
-	}]);
+    classCallCheck_default()(this, StickyAd);
 
-	function StickyAd(adSlot) {
-		classCallCheck_default()(this, StickyAd);
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(StickyAd).call(this, adSlot));
+    _this.scrollListener = null;
+    _this.topOffset = 0;
+    _this.leftOffset = 0;
+    return _this;
+  }
 
-		var _this = possibleConstructorReturn_default()(this, (StickyAd.__proto__ || get_prototype_of_default()(StickyAd)).call(this, adSlot));
+  createClass_default()(StickyAd, [{
+    key: "init",
+    value: function init(params) {
+      var _this2 = this;
 
-		_this.scrollListener = null;
-		_this.topOffset = 0;
-		_this.leftOffset = 0;
-		return _this;
-	}
+      if (!this.isEnabled()) {
+        ad_engine_["utils"].logger(sticky_ad_logGroup, 'stickiness rejected');
+        this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKINESS_DISABLED);
+        return;
+      }
 
-	createClass_default()(StickyAd, [{
-		key: 'init',
-		value: function init(params) {
-			var _this2 = this;
+      this.setupStickiness(params);
+      this.setTopOffset();
+      this.setLeftOffset();
+      this.setupScrollListener();
+      window.addEventListener('resize', function () {
+        return _this2.setLeftOffset();
+      });
+    }
+    /**
+     * @private
+     */
 
-			if (!this.isEnabled()) {
-				ad_engine_["utils"].logger(sticky_ad_logGroup, 'stickiness rejected');
-				this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKINESS_DISABLED);
+  }, {
+    key: "setTopOffset",
+    value: function setTopOffset() {
+      if (this.config.handleNavbar && this.config.slotsIgnoringNavbar.indexOf(this.adSlot.getSlotName()) === -1) {
+        var navbarElement = document.querySelector(this.config.navbarWrapperSelector);
+        this.topOffset = navbarElement ? navbarElement.offsetHeight : 0;
 
-				return;
-			}
+        if (this.config.smartBannerSelector) {
+          var smartBannerElement = document.querySelector(this.config.smartBannerSelector);
+          this.topOffset += smartBannerElement ? smartBannerElement.offsetHeight : 0;
+        }
+      }
+    }
+    /**
+     * @private
+     */
 
-			this.setupStickiness(params);
-			this.setTopOffset();
-			this.setLeftOffset();
-			this.setupScrollListener();
-			window.addEventListener('resize', function () {
-				return _this2.setLeftOffset();
-			});
-		}
+  }, {
+    key: "setLeftOffset",
+    value: function setLeftOffset() {
+      this.leftOffset = ad_engine_["utils"].getLeftOffset(this.containerDiv.firstChild);
+    }
+    /**
+     * @private
+     */
 
-		/**
-   * @private
-   */
+  }, {
+    key: "setupScrollListener",
+    value: function setupScrollListener() {
+      var _this3 = this;
 
-	}, {
-		key: 'setTopOffset',
-		value: function setTopOffset() {
-			if (this.config.handleNavbar && this.config.slotsIgnoringNavbar.indexOf(this.adSlot.getSlotName()) === -1) {
-				var navbarElement = document.querySelector(this.config.navbarWrapperSelector);
+      var startOffset = ad_engine_["utils"].getTopOffset(this.containerDiv) - this.topOffset;
+      this.scrollListener = ad_engine_["scrollListener"].addCallback(function () {
+        var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-				this.topOffset = navbarElement ? navbarElement.offsetHeight : 0;
+        if (scrollPosition >= startOffset) {
+          _this3.stickiness.run();
 
-				if (this.config.smartBannerSelector) {
-					var smartBannerElement = document.querySelector(this.config.smartBannerSelector);
+          ad_engine_["utils"].logger(sticky_ad_logGroup, _this3.adSlot.getSlotName(), 'stickiness added');
+          ad_engine_["scrollListener"].removeCallback(_this3.scrollListener);
+        }
+      });
+    }
+    /**
+     * @protected
+     */
 
-					this.topOffset += smartBannerElement ? smartBannerElement.offsetHeight : 0;
-				}
-			}
-		}
+  }, {
+    key: "onStickinessChange",
+    value: function () {
+      var _onStickinessChange = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee(isSticky) {
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!isSticky) {
+                  _context.next = 4;
+                  break;
+                }
 
-		/**
-   * @private
-   */
+                this.onStick();
+                _context.next = 6;
+                break;
 
-	}, {
-		key: 'setLeftOffset',
-		value: function setLeftOffset() {
-			this.leftOffset = ad_engine_["utils"].getLeftOffset(this.containerDiv.firstChild);
-		}
+              case 4:
+                _context.next = 6;
+                return this.onUnstick();
 
-		/**
-   * @private
-   */
+              case 6:
+                ad_engine_["utils"].logger(sticky_ad_logGroup, 'stickiness changed', isSticky);
 
-	}, {
-		key: 'setupScrollListener',
-		value: function setupScrollListener() {
-			var _this3 = this;
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-			var startOffset = ad_engine_["utils"].getTopOffset(this.containerDiv) - this.topOffset;
+      function onStickinessChange(_x) {
+        return _onStickinessChange.apply(this, arguments);
+      }
 
-			this.scrollListener = ad_engine_["scrollListener"].addCallback(function () {
-				var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      return onStickinessChange;
+    }()
+    /**
+     * @protected
+     */
 
-				if (scrollPosition >= startOffset) {
-					_this3.stickiness.run();
-					ad_engine_["utils"].logger(sticky_ad_logGroup, _this3.adSlot.getSlotName(), 'stickiness added');
-					ad_engine_["scrollListener"].removeCallback(_this3.scrollListener);
-				}
-			});
-		}
+  }, {
+    key: "onUnstick",
+    value: function () {
+      var _onUnstick = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee2() {
+        return regenerator_default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
+                _context2.next = 3;
+                return animate(this.containerDiv, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
 
-		/**
-   * @protected
-   */
+              case 3:
+                this.removeStickyParameters();
+                animate(this.containerDiv, CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+                this.removeUnstickButton();
 
-	}, {
-		key: 'onStickinessChange',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(isSticky) {
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								if (!isSticky) {
-									_context.next = 4;
-									break;
-								}
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
 
-								this.onStick();
-								_context.next = 6;
-								break;
+      function onUnstick() {
+        return _onUnstick.apply(this, arguments);
+      }
 
-							case 4:
-								_context.next = 6;
-								return this.onUnstick();
+      return onUnstick;
+    }()
+    /**
+     * @private
+     */
 
-							case 6:
+  }, {
+    key: "removeStickyParameters",
+    value: function removeStickyParameters() {
+      this.container.classList.remove(CSS_CLASSNAME_STICKY_SLOT);
+      this.container.style.height = null;
+      this.containerDiv.style.top = null;
+      this.containerDiv.style.left = null;
+    }
+    /**
+     * @protected
+     */
 
-								ad_engine_["utils"].logger(sticky_ad_logGroup, 'stickiness changed', isSticky);
+  }, {
+    key: "onStick",
+    value: function onStick() {
+      this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
+      this.container.classList.add(CSS_CLASSNAME_STICKY_SLOT);
+      this.container.style.height = "".concat(this.containerDiv.offsetHeight, "px");
+      this.containerDiv.style.top = "".concat(this.topOffset, "px");
+      this.containerDiv.style.left = "".concat(this.leftOffset, "px");
+      this.addUnstickButton();
+    }
+    /**
+     * @protected
+     */
 
-							case 7:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
+  }, {
+    key: "unstickImmediately",
+    value: function unstickImmediately() {
+      if (this.stickiness) {
+        this.removeStickyParameters();
+        this.stickiness.sticky = false;
+        this.removeUnstickButton();
+        ad_engine_["utils"].logger(sticky_ad_logGroup, 'unstick immediately');
+      }
+    }
+    /**
+     * @protected
+     */
 
-			function onStickinessChange(_x) {
-				return _ref.apply(this, arguments);
-			}
+  }, {
+    key: "addStickinessPlugin",
+    value: function addStickinessPlugin() {
+      this.container.classList.add(CSS_CLASSNAME_STICKY_TEMPLATE);
+      this.addUnstickLogic();
+      this.addUnstickEvents();
+    }
+    /**
+     * @private
+     */
 
-			return onStickinessChange;
-		}()
+  }, {
+    key: "addUnstickButton",
+    value: function addUnstickButton() {
+      var _this4 = this;
 
-		/**
-   * @protected
-   */
+      this.addButton(this.adSlot.getElement().querySelector('div'), function () {
+        _this4.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICK_IMMEDIATELY);
 
-	}, {
-		key: 'onUnstick',
-		value: function () {
-			var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
-				return regenerator_default.a.wrap(function _callee2$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
-								_context2.next = 3;
-								return animate(this.containerDiv, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
+        _this4.stickiness.close();
+      });
+    }
+    /**
+     * @private
+     */
 
-							case 3:
-								this.removeStickyParameters();
-								animate(this.containerDiv, CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+  }, {
+    key: "removeUnstickButton",
+    value: function removeUnstickButton() {
+      this.removeButton();
+    }
+    /**
+     * Returns template name.
+     * @protected
+     * @return {string}
+     */
 
-								this.removeUnstickButton();
+  }, {
+    key: "getName",
+    value: function getName() {
+      return StickyAd.getName();
+    }
+  }]);
 
-							case 6:
-							case 'end':
-								return _context2.stop();
-						}
-					}
-				}, _callee2, this);
-			}));
-
-			function onUnstick() {
-				return _ref2.apply(this, arguments);
-			}
-
-			return onUnstick;
-		}()
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'removeStickyParameters',
-		value: function removeStickyParameters() {
-			this.container.classList.remove(CSS_CLASSNAME_STICKY_SLOT);
-			this.container.style.height = null;
-			this.containerDiv.style.top = null;
-			this.containerDiv.style.left = null;
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'onStick',
-		value: function onStick() {
-			this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
-			this.container.classList.add(CSS_CLASSNAME_STICKY_SLOT);
-			this.container.style.height = this.containerDiv.offsetHeight + 'px';
-			this.containerDiv.style.top = this.topOffset + 'px';
-			this.containerDiv.style.left = this.leftOffset + 'px';
-
-			this.addUnstickButton();
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'unstickImmediately',
-		value: function unstickImmediately() {
-			if (this.stickiness) {
-				this.removeStickyParameters();
-				this.stickiness.sticky = false;
-				this.removeUnstickButton();
-				ad_engine_["utils"].logger(sticky_ad_logGroup, 'unstick immediately');
-			}
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'addStickinessPlugin',
-		value: function addStickinessPlugin() {
-			this.container.classList.add(CSS_CLASSNAME_STICKY_TEMPLATE);
-			this.addUnstickLogic();
-			this.addUnstickEvents();
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'addUnstickButton',
-		value: function addUnstickButton() {
-			var _this4 = this;
-
-			this.addButton(this.adSlot.getElement().querySelector('div'), function () {
-				_this4.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICK_IMMEDIATELY);
-				_this4.stickiness.close();
-			});
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'removeUnstickButton',
-		value: function removeUnstickButton() {
-			this.removeButton();
-		}
-
-		/**
-   * Returns template name.
-   * @protected
-   * @return {string}
-   */
-
-	}, {
-		key: 'getName',
-		value: function getName() {
-			return StickyAd.getName();
-		}
-	}]);
-
-	return StickyAd;
+  return StickyAd;
 }(sticky_base_StickyBase);
-// CONCATENATED MODULE: ./src/ad-products/common/translations.js
+// CONCATENATED MODULE: ./src/ad-products/common/translations.ts
 var TRANSLATIONS = {
-	labels: {
-		en: {
-			advertisement: 'Advertisement',
-			'learn-more': 'Learn More'
-		},
-		ar: {
-			advertisement: 'إعلان'
-		},
-		bn: {
-			advertisement: 'বিজ্ঞাপন'
-		},
-		br: {
-			advertisement: 'Bomm bruderezh'
-		},
-		ca: {
-			advertisement: 'Anunci'
-		},
-		cs: {
-			advertisement: 'Reklama'
-		},
-		de: {
-			advertisement: 'Anzeige',
-			'learn-more': 'Erfahre mehr'
-		},
-		es: {
-			advertisement: 'Anuncio',
-			'learn-more': 'Conoce más'
-		},
-		eu: {
-			advertisement: 'Iragarkia'
-		},
-		fa: {
-			advertisement: 'تبلیغات'
-		},
-		fo: {
-			advertisement: 'Lýsing'
-		},
-		fr: {
-			advertisement: 'Publicité',
-			'learn-more': 'En savoir plus'
-		},
-		fy: {
-			advertisement: 'Advertinsje'
-		},
-		gl: {
-			advertisement: 'Anuncio'
-		},
-		gv: {
-			advertisement: 'Soilsheen'
-		},
-		he: {
-			advertisement: 'פרסומת'
-		},
-		hu: {
-			advertisement: 'Hirdetés'
-		},
-		id: {
-			advertisement: 'Iklan',
-			'learn-more': 'Baca Selengkapnya'
-		},
-		inh: {
-			advertisement: 'дебат'
-		},
-		it: {
-			advertisement: 'Pubblicità',
-			'learn-more': 'Ulteriori informazioni'
-		},
-		ja: {
-			advertisement: '広告',
-			'learn-more': 'もっと見る'
-		},
-		ko: {
-			advertisement: '광고'
-		},
-		krc: {
-			advertisement: 'Pеклама'
-		},
-		lb: {
-			advertisement: 'Reklamm'
-		},
-		mk: {
-			advertisement: 'Pеклама'
-		},
-		mr: {
-			advertisement: 'जाहिरात'
-		},
-		ms: {
-			advertisement: 'Iklan'
-		},
-		nl: {
-			advertisement: 'Advertentie',
-			'learn-more': 'Meer te weten komen'
-		},
-		no: {
-			advertisement: 'Reklame'
-		},
-		pl: {
-			advertisement: 'Reklama',
-			'learn-more': 'Czytaj więcej'
-		},
-		ps: {
-			advertisement: 'خبرتيا'
-		},
-		pt: {
-			advertisement: 'Anúncio',
-			'learn-more': 'Saiba Mais'
-		},
-		'roa-tara': {
-			advertisement: 'Pubblecetà'
-		},
-		ru: {
-			advertisement: 'Pеклама',
-			'learn-more': 'Узнать больше'
-		},
-		si: {
-			advertisement: 'ප්‍රචාරක දැන්වීම'
-		},
-		sl: {
-			advertisement: 'Oglas'
-		},
-		'sr-ec': {
-			advertisement: 'Pеклама'
-		},
-		sv: {
-			advertisement: 'Annons'
-		},
-		te: {
-			advertisement: 'వాణిజ్య ప్రకటన'
-		},
-		th: {
-			advertisement: 'การโฆษณา'
-		},
-		tr: {
-			advertisement: 'Reklam'
-		},
-		'tt-cyrl': {
-			advertisement: 'Pеклама'
-		},
-		uk: {
-			advertisement: 'Pеклама'
-		},
-		vi: {
-			advertisement: 'Quảng cáo'
-		},
-		'zh-hans': {
-			advertisement: '广告',
-			'learn-more': '了解更多'
-		},
-		'zh-hant': {
-			advertisement: '廣告',
-			'learn-more': '閱讀更多'
-		}
-	}
+  labels: {
+    en: {
+      advertisement: 'Advertisement',
+      'learn-more': 'Learn More'
+    },
+    ar: {
+      advertisement: 'إعلان'
+    },
+    bn: {
+      advertisement: 'বিজ্ঞাপন'
+    },
+    br: {
+      advertisement: 'Bomm bruderezh'
+    },
+    ca: {
+      advertisement: 'Anunci'
+    },
+    cs: {
+      advertisement: 'Reklama'
+    },
+    de: {
+      advertisement: 'Anzeige',
+      'learn-more': 'Erfahre mehr'
+    },
+    es: {
+      advertisement: 'Anuncio',
+      'learn-more': 'Conoce más'
+    },
+    eu: {
+      advertisement: 'Iragarkia'
+    },
+    fa: {
+      advertisement: 'تبلیغات'
+    },
+    fo: {
+      advertisement: 'Lýsing'
+    },
+    fr: {
+      advertisement: 'Publicité',
+      'learn-more': 'En savoir plus'
+    },
+    fy: {
+      advertisement: 'Advertinsje'
+    },
+    gl: {
+      advertisement: 'Anuncio'
+    },
+    gv: {
+      advertisement: 'Soilsheen'
+    },
+    he: {
+      advertisement: 'פרסומת'
+    },
+    hu: {
+      advertisement: 'Hirdetés'
+    },
+    id: {
+      advertisement: 'Iklan',
+      'learn-more': 'Baca Selengkapnya'
+    },
+    inh: {
+      advertisement: 'дебат'
+    },
+    it: {
+      advertisement: 'Pubblicità',
+      'learn-more': 'Ulteriori informazioni'
+    },
+    ja: {
+      advertisement: '広告',
+      'learn-more': 'もっと見る'
+    },
+    ko: {
+      advertisement: '광고'
+    },
+    krc: {
+      advertisement: 'Pеклама'
+    },
+    lb: {
+      advertisement: 'Reklamm'
+    },
+    mk: {
+      advertisement: 'Pеклама'
+    },
+    mr: {
+      advertisement: 'जाहिरात'
+    },
+    ms: {
+      advertisement: 'Iklan'
+    },
+    nl: {
+      advertisement: 'Advertentie',
+      'learn-more': 'Meer te weten komen'
+    },
+    no: {
+      advertisement: 'Reklame'
+    },
+    pl: {
+      advertisement: 'Reklama',
+      'learn-more': 'Czytaj więcej'
+    },
+    ps: {
+      advertisement: 'خبرتيا'
+    },
+    pt: {
+      advertisement: 'Anúncio',
+      'learn-more': 'Saiba Mais'
+    },
+    'roa-tara': {
+      advertisement: 'Pubblecetà'
+    },
+    ru: {
+      advertisement: 'Pеклама',
+      'learn-more': 'Узнать больше'
+    },
+    si: {
+      advertisement: 'ප්‍රචාරක දැන්වීම'
+    },
+    sl: {
+      advertisement: 'Oglas'
+    },
+    'sr-ec': {
+      advertisement: 'Pеклама'
+    },
+    sv: {
+      advertisement: 'Annons'
+    },
+    te: {
+      advertisement: 'వాణిజ్య ప్రకటన'
+    },
+    th: {
+      advertisement: 'การโฆษณา'
+    },
+    tr: {
+      advertisement: 'Reklam'
+    },
+    'tt-cyrl': {
+      advertisement: 'Pеклама'
+    },
+    uk: {
+      advertisement: 'Pеклама'
+    },
+    vi: {
+      advertisement: 'Quảng cáo'
+    },
+    'zh-hans': {
+      advertisement: '广告',
+      'learn-more': '了解更多'
+    },
+    'zh-hant': {
+      advertisement: '廣告',
+      'learn-more': '閱讀更多'
+    }
+  }
 };
-// CONCATENATED MODULE: ./src/ad-products/common/i18n.js
-
+// CONCATENATED MODULE: ./src/ad-products/common/i18n.ts
 
 
 var defaultLanguage = 'en';
-
 function getTranslation(category, key) {
-	var lang = ad_engine_["context"].get('options.contentLanguage');
-	var language = lang && typeof TRANSLATIONS[category][lang] !== 'undefined' ? lang : defaultLanguage;
-
-	return TRANSLATIONS[category][language][key] || TRANSLATIONS[category][defaultLanguage][key];
+  var lang = ad_engine_["context"].get('options.contentLanguage');
+  var language = lang && typeof TRANSLATIONS[category][lang] !== 'undefined' ? lang : defaultLanguage;
+  return TRANSLATIONS[category][language][key] || TRANSLATIONS[category][defaultLanguage][key];
 }
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/advertisement-label.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/advertisement-label.ts
 
 
 
@@ -1755,57 +1754,58 @@ function getTranslation(category, key) {
 
 
 
-var advertisement_label_AdvertisementLabel = function (_UiComponent) {
-	inherits_default()(AdvertisementLabel, _UiComponent);
+var advertisement_label_AdvertisementLabel =
+/*#__PURE__*/
+function (_UiComponent) {
+  inherits_default()(AdvertisementLabel, _UiComponent);
 
-	function AdvertisementLabel() {
-		classCallCheck_default()(this, AdvertisementLabel);
+  function AdvertisementLabel() {
+    classCallCheck_default()(this, AdvertisementLabel);
 
-		return possibleConstructorReturn_default()(this, (AdvertisementLabel.__proto__ || get_prototype_of_default()(AdvertisementLabel)).apply(this, arguments));
-	}
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(AdvertisementLabel).apply(this, arguments));
+  }
 
-	createClass_default()(AdvertisementLabel, [{
-		key: 'render',
-		value: function render() {
-			var label = document.createElement('div');
+  createClass_default()(AdvertisementLabel, [{
+    key: "render",
+    value: function render() {
+      var label = document.createElement('div');
+      label.innerText = getTranslation('labels', 'advertisement');
+      label.className = 'advertisement-label';
+      return label;
+    }
+  }]);
 
-			label.innerText = getTranslation('labels', 'advertisement');
-			label.className = 'advertisement-label';
-
-			return label;
-		}
-	}]);
-
-	return AdvertisementLabel;
+  return AdvertisementLabel;
 }(ui_component_UiComponent);
 
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/extends"
-var extends_ = __webpack_require__(24);
-var extends_default = /*#__PURE__*/__webpack_require__.n(extends_);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/array/is-array"
+var is_array_ = __webpack_require__(27);
+var is_array_default = /*#__PURE__*/__webpack_require__.n(is_array_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/objectSpread"
+var objectSpread_ = __webpack_require__(26);
+var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread_);
 
 // EXTERNAL MODULE: external "lodash/throttle"
-var throttle_ = __webpack_require__(17);
+var throttle_ = __webpack_require__(18);
 var throttle_default = /*#__PURE__*/__webpack_require__.n(throttle_);
 
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/close-button.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/close-button.ts
 function add(video, container) {
-	var closeButton = document.createElement('div');
-
-	closeButton.classList.add('close-ad');
-	closeButton.addEventListener('click', function (event) {
-		video.stop();
-		event.preventDefault();
-	});
-
-	container.appendChild(closeButton);
+  var closeButton = document.createElement('div');
+  closeButton.classList.add('close-ad');
+  closeButton.addEventListener('click', function (event) {
+    video.stop();
+    event.preventDefault();
+  });
+  container.appendChild(closeButton);
 }
 
 /* harmony default export */ var close_button = ({
-	add: add
+  add: add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/outstream/porvata-template.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/outstream/porvata-template.ts
 
 
 
@@ -1814,175 +1814,159 @@ function add(video, container) {
 
 var DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 var IMA_VPAID_INSECURE_MODE = 2;
+var porvata_template_PorvataTemplate =
+/*#__PURE__*/
+function () {
+  createClass_default()(PorvataTemplate, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'porvata3';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        isFloatingEnabled: true,
+        inViewportOffsetTop: 0,
+        inViewportOffsetBottom: 0,
+        onInit: function onInit() {}
+      };
+    }
+  }]);
 
-var porvata_template_PorvataTemplate = function () {
-	createClass_default()(PorvataTemplate, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'porvata3';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				isFloatingEnabled: true,
-				inViewportOffsetTop: 0,
-				inViewportOffsetBottom: 0,
-				onInit: function onInit() {}
-			};
-		}
-	}]);
+  function PorvataTemplate(adSlot) {
+    classCallCheck_default()(this, PorvataTemplate);
 
-	function PorvataTemplate(adSlot) {
-		classCallCheck_default()(this, PorvataTemplate);
+    this.adSlot = adSlot;
+    this.config = ad_engine_["context"].get('templates.porvata3');
+  }
 
-		this.adSlot = adSlot;
-		this.config = ad_engine_["context"].get('templates.porvata3');
-	}
+  createClass_default()(PorvataTemplate, [{
+    key: "init",
+    value: function init(params) {
+      var _this = this;
 
-	createClass_default()(PorvataTemplate, [{
-		key: 'init',
-		value: function init(params) {
-			var _this = this;
+      var slotName = this.adSlot.getSlotName();
 
-			var slotName = this.adSlot.getSlotName();
+      if (!this.adSlot.getElement().classList.contains('ad-slot')) {
+        this.adSlot.getElement().classList.add('ad-slot');
+      }
 
-			if (!this.adSlot.getElement().classList.contains('ad-slot')) {
-				this.adSlot.getElement().classList.add('ad-slot');
-			}
+      this.adSlot.getElement().classList.add('porvata3');
+      this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
+      this.isInsecureMode = params.vpaidMode === IMA_VPAID_INSECURE_MODE;
 
-			this.adSlot.getElement().classList.add('porvata3');
-			this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
+      if (!ad_engine_["Porvata"].isVideoAutoplaySupported()) {
+        return this.adSlot.collapse();
+      }
 
-			this.isInsecureMode = params.vpaidMode === IMA_VPAID_INSECURE_MODE;
+      params.viewportHookElement = this.adSlot.getElement();
 
-			if (!ad_engine_["Porvata"].isVideoAutoplaySupported()) {
-				return this.adSlot.collapse();
-			}
+      if (this.isInsecureMode) {
+        params.originalContainer = params.container;
+        params.container = this.createVideoContainer(slotName);
+      }
 
-			params.viewportHookElement = this.adSlot.getElement();
-			if (this.isInsecureMode) {
-				params.originalContainer = params.container;
-				params.container = this.createVideoContainer(slotName);
-			}
+      ad_engine_["slotTweaker"].collapse(this.adSlot);
+      this.config.onInit(this.adSlot, params, this.config);
+      return ad_engine_["slotTweaker"].makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO).then(function () {
+        return ad_engine_["Porvata"].inject(params).then(function (video) {
+          return _this.onReady(video, params);
+        });
+      });
+    }
+  }, {
+    key: "onReady",
+    value: function onReady(video, params) {
+      var slotElement = this.adSlot.getElement();
+      var template = selectTemplate(video.videoSettings);
+      var videoContainer = params.container;
 
-			ad_engine_["slotTweaker"].collapse(this.adSlot);
+      if (this.isInsecureMode) {
+        this.adjustVpaidPlayer(video, videoContainer);
+      }
 
-			this.config.onInit(this.adSlot, params, this.config);
+      slotElement.classList.add('porvata-outstream');
+      video.addEventListener('loaded', function () {
+        video.container.classList.remove('hide');
+      });
+      window.addEventListener('resize', function () {
+        if (!video.isFloating) {
+          var slotWidth = slotElement.clientWidth;
+          video.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
+        }
+      });
+      this.handleSlotStatus(video);
+      ad_engine_["events"].once(ad_engine_["events"].PAGE_CHANGE_EVENT, function () {
+        video.destroy();
+      });
+      setup(video, template, {
+        container: videoContainer,
+        inViewportOffsetTop: this.config.inViewportOffsetTop,
+        inViewportOffsetBottom: this.config.inViewportOffsetBottom,
+        isFloatingEnabled: this.config.isFloatingEnabled && params.enableInContentFloating,
+        slotName: params.slotName
+      });
+      return video;
+    }
+  }, {
+    key: "handleSlotStatus",
+    value: function handleSlotStatus(video) {
+      var _this2 = this;
 
-			return ad_engine_["slotTweaker"].makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO).then(function () {
-				return ad_engine_["Porvata"].inject(params).then(function (video) {
-					return _this.onReady(video, params);
-				});
-			});
-		}
-	}, {
-		key: 'onReady',
-		value: function onReady(video, params) {
-			var slotElement = this.adSlot.getElement();
-			var template = selectTemplate(video.videoSettings);
-			var videoContainer = params.container;
+      var resolveStatus = null;
+      var statusPromise = new promise_default.a(function (resolve) {
+        resolveStatus = resolve;
+      });
+      video.addEventListener('wikiaAdsManagerLoaded', function () {
+        _this2.adSlot.success();
 
-			if (this.isInsecureMode) {
-				this.adjustVpaidPlayer(video, videoContainer);
-			}
+        resolveStatus();
+      });
+      video.addEventListener('wikiaFirstTimeInViewport', function () {
+        statusPromise.then(function () {
+          var eventSuffix = _this2.adSlot.getStatus() === ad_engine_["AdSlot"].STATUS_SUCCESS ? 'WithOffer' : 'WithoutOffer';
+          video.ima.dispatchEvent("wikiaInViewport".concat(eventSuffix));
+        });
+      });
+      video.addEventListener('wikiaEmptyAd', function () {
+        _this2.adSlot.collapse();
 
-			slotElement.classList.add('porvata-outstream');
+        resolveStatus();
+      });
+    }
+  }, {
+    key: "adjustVpaidPlayer",
+    value: function adjustVpaidPlayer(video, container) {
+      var videoPlayer = container.querySelector('.video-player');
+      video.addEventListener('loaded', function () {
+        var ad = video.ima.getAdsManager().getCurrentAd();
 
-			video.addEventListener('loaded', function () {
-				video.container.classList.remove('hide');
-			});
+        if (ad && ad_engine_["Porvata"].isVpaid(ad.getContentType() || '')) {
+          container.classList.add('vpaid-enabled');
+          videoPlayer.classList.remove('hide');
+        }
+      });
+      video.addEventListener('allAdsCompleted', function () {
+        container.classList.add('hide');
+      });
+    }
+  }, {
+    key: "createVideoContainer",
+    value: function createVideoContainer() {
+      var container = document.createElement('div');
+      var displayWrapper = document.createElement('div');
+      container.classList.add('video-overlay');
+      displayWrapper.classList.add('video-display-wrapper');
+      container.appendChild(displayWrapper);
+      this.adSlot.getElement().appendChild(container);
+      return displayWrapper;
+    }
+  }]);
 
-			window.addEventListener('resize', function () {
-				if (!video.isFloating) {
-					var slotWidth = slotElement.clientWidth;
-
-					video.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
-				}
-			});
-
-			this.handleSlotStatus(video);
-
-			ad_engine_["events"].once(ad_engine_["events"].PAGE_CHANGE_EVENT, function () {
-				video.destroy();
-			});
-
-			setup(video, template, {
-				container: videoContainer,
-				inViewportOffsetTop: this.config.inViewportOffsetTop,
-				inViewportOffsetBottom: this.config.inViewportOffsetBottom,
-				isFloatingEnabled: this.config.isFloatingEnabled && params.enableInContentFloating,
-				slotName: params.slotName
-			});
-
-			return video;
-		}
-	}, {
-		key: 'handleSlotStatus',
-		value: function handleSlotStatus(video) {
-			var _this2 = this;
-
-			var resolveStatus = null;
-			var statusPromise = new promise_default.a(function (resolve) {
-				resolveStatus = resolve;
-			});
-
-			video.addEventListener('wikiaAdsManagerLoaded', function () {
-				_this2.adSlot.success();
-				resolveStatus();
-			});
-
-			video.addEventListener('wikiaFirstTimeInViewport', function () {
-				statusPromise.then(function () {
-					var eventSuffix = _this2.adSlot.getStatus() === ad_engine_["AdSlot"].STATUS_SUCCESS ? 'WithOffer' : 'WithoutOffer';
-
-					video.ima.dispatchEvent('wikiaInViewport' + eventSuffix);
-				});
-			});
-
-			video.addEventListener('wikiaEmptyAd', function () {
-				_this2.adSlot.collapse();
-				resolveStatus();
-			});
-		}
-	}, {
-		key: 'adjustVpaidPlayer',
-		value: function adjustVpaidPlayer(video, container) {
-			var videoPlayer = container.querySelector('.video-player');
-
-			video.addEventListener('loaded', function () {
-				var ad = video.ima.getAdsManager().getCurrentAd();
-
-				if (ad && ad_engine_["Porvata"].isVpaid(ad.getContentType() || '')) {
-					container.classList.add('vpaid-enabled');
-					videoPlayer.classList.remove('hide');
-				}
-			});
-
-			video.addEventListener('allAdsCompleted', function () {
-				container.classList.add('hide');
-			});
-		}
-	}, {
-		key: 'createVideoContainer',
-		value: function createVideoContainer() {
-			var container = document.createElement('div');
-			var displayWrapper = document.createElement('div');
-
-			container.classList.add('video-overlay');
-			displayWrapper.classList.add('video-display-wrapper');
-
-			container.appendChild(displayWrapper);
-			this.adSlot.getElement().appendChild(container);
-
-			return displayWrapper;
-		}
-	}]);
-
-	return PorvataTemplate;
+  return PorvataTemplate;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/dynamic-reveal.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/dynamic-reveal.ts
 
 
 /**
@@ -1991,275 +1975,257 @@ var porvata_template_PorvataTemplate = function () {
  * @param container Video container
  * @param params videoSettings parameters
  */
+
 function dynamic_reveal_add(video, container, params) {
-	var slot = ad_engine_["slotService"].get(params.slotName);
+  var slot = ad_engine_["slotService"].get(params.slotName);
+  var slotExpanded = false;
+  video.addEventListener('loaded', function () {
+    if (!slotExpanded) {
+      ad_engine_["slotTweaker"].expand(slot);
+      slotExpanded = true; // Delay dispatching event so it's run after browser really finish expanding the slot
+      // Value 1000ms is related to animation defined in _porvata.scss file
 
-	var slotExpanded = false;
+      setTimeout(function () {
+        video.ima.dispatchEvent('wikiaSlotExpanded');
+      }, 1000);
+    }
 
-	video.addEventListener('loaded', function () {
-		if (!slotExpanded) {
-			ad_engine_["slotTweaker"].expand(slot);
-			slotExpanded = true;
-
-			// Delay dispatching event so it's run after browser really finish expanding the slot
-			// Value 1000ms is related to animation defined in _porvata.scss file
-			setTimeout(function () {
-				video.ima.dispatchEvent('wikiaSlotExpanded');
-			}, 1000);
-		}
-
-		if (!video.isFloating) {
-			var slotWidth = slot.getElement().scrollWidth;
-
-			video.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
-		}
-	});
-
-	video.addEventListener('allAdsCompleted', function () {
-		ad_engine_["slotTweaker"].collapse(slot);
-		video.ima.dispatchEvent('wikiaSlotCollapsed');
-	});
+    if (!video.isFloating) {
+      var slotWidth = slot.getElement().scrollWidth;
+      video.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
+    }
+  });
+  video.addEventListener('allAdsCompleted', function () {
+    ad_engine_["slotTweaker"].collapse(slot);
+    video.ima.dispatchEvent('wikiaSlotCollapsed');
+  });
 }
 
 /* harmony default export */ var dynamic_reveal = ({
-	add: dynamic_reveal_add
+  add: dynamic_reveal_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/floating.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/floating.ts
 
 
 
 var FLOATING_CLASS_NAME = 'outstream-floating';
-
 /**
  * Makes the video element floating once main container is out of viewport
  * @param video Porvata video element
  * @param container Video container
  * @param params videoSettings parameters
  */
+
 function floating_add(video, container, params) {
-	if (!params.isFloatingEnabled) {
-		return;
-	}
+  if (!params.isFloatingEnabled) {
+    return;
+  }
 
-	var slotElement = ad_engine_["slotService"].get(params.slotName).getElement();
-	var videoOverlay = slotElement.querySelector('.video-overlay');
-	var videoWrapper = slotElement.querySelector('.video-display-wrapper');
+  var slotElement = ad_engine_["slotService"].get(params.slotName).getElement();
+  var videoOverlay = slotElement.querySelector('.video-overlay');
+  var videoWrapper = slotElement.querySelector('.video-display-wrapper');
+  video.addEventListener('wikiaSlotExpanded', function () {
+    var observer = ad_engine_["utils"].viewportObserver.addListener(videoOverlay, function (inViewport) {
+      if (inViewport) {
+        slotElement.classList.remove(FLOATING_CLASS_NAME);
+      } else {
+        slotElement.classList.add(FLOATING_CLASS_NAME);
+      }
 
-	video.addEventListener('wikiaSlotExpanded', function () {
-		var observer = ad_engine_["utils"].viewportObserver.addListener(videoOverlay, function (inViewport) {
-			if (inViewport) {
-				slotElement.classList.remove(FLOATING_CLASS_NAME);
-			} else {
-				slotElement.classList.add(FLOATING_CLASS_NAME);
-			}
+      video.isFloating = !inViewport;
+      var width = videoWrapper.offsetWidth;
+      video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
+    }, {
+      offsetTop: params.inViewportOffsetTop,
+      offsetBottom: params.inViewportOffsetBottom,
+      areaThreshold: 1
+    });
 
-			video.isFloating = !inViewport;
-			var width = videoWrapper.offsetWidth;
+    var disableFloating = function disableFloating() {
+      video.isFloating = false;
+      slotElement.classList.remove(FLOATING_CLASS_NAME);
+      ad_engine_["utils"].viewportObserver.removeListener(observer);
+      var width = videoWrapper.offsetWidth;
+      video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
+    };
 
-			video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
-		}, {
-			offsetTop: params.inViewportOffsetTop,
-			offsetBottom: params.inViewportOffsetBottom,
-			areaThreshold: 1
-		});
-		var disableFloating = function disableFloating() {
-			video.isFloating = false;
-			slotElement.classList.remove(FLOATING_CLASS_NAME);
-			ad_engine_["utils"].viewportObserver.removeListener(observer);
-			var width = videoWrapper.offsetWidth;
-
-			video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
-		};
-		var closeButton = new close_button_CloseButton({
-			onClick: disableFloating
-		});
-
-		videoWrapper.appendChild(closeButton.render());
-		video.addEventListener('wikiaAdCompleted', disableFloating);
-	});
+    var closeButton = new close_button_CloseButton({
+      onClick: disableFloating
+    });
+    videoWrapper.appendChild(closeButton.render());
+    video.addEventListener('wikiaAdCompleted', disableFloating);
+  });
 }
 
 /* harmony default export */ var floating = ({
-	add: floating_add
+  add: floating_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/learn-more.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/learn-more.ts
 
 
 
 function learn_more_add(video, container, params) {
-	var learnMore = document.createElement('div');
-	var icon = createIcon(icons_icons.LEARN_MORE, ['learn-more-icon', 'porvata-icon']);
-	var label = document.createElement('div');
-
-	label.innerText = getTranslation('labels', 'learn-more');
-	learnMore.appendChild(label);
-	learnMore.appendChild(icon);
-
-	learnMore.classList.add('learn-more');
-	learnMore.addEventListener('click', function () {
-		top.open(params.clickThroughURL, '_blank');
-	});
-
-	container.appendChild(learnMore);
+  var learnMore = document.createElement('div');
+  var icon = createIcon(icons_icons.LEARN_MORE, ['learn-more-icon', 'porvata-icon']);
+  var label = document.createElement('div');
+  label.innerText = getTranslation('labels', 'learn-more');
+  learnMore.appendChild(label);
+  learnMore.appendChild(icon);
+  learnMore.classList.add('learn-more');
+  learnMore.addEventListener('click', function () {
+    top.open(params.clickThroughURL, '_blank');
+  });
+  container.appendChild(learnMore);
 }
 
 /* harmony default export */ var learn_more = ({
-	add: learn_more_add
+  add: learn_more_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/pause-control.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/pause-control.ts
 
 
 function pause_control_add(video, container) {
-	var pauseButton = document.createElement('div');
-	var pauseIcon = createIcon(icons_icons.PAUSE, ['play-off-icon', 'porvata-icon', 'porvata-off-icon']);
-	var playIcon = createIcon(icons_icons.PLAY, ['play-on-icon', 'porvata-icon', 'porvata-on-icon']);
-
-	pauseButton.appendChild(playIcon);
-	pauseButton.appendChild(pauseIcon);
-
-	pauseButton.className = 'play-pause-button porvata-switchable-icon';
-	pauseButton.addEventListener('click', function () {
-		if (video.isPaused()) {
-			video.resume();
-		} else {
-			video.pause();
-		}
-	});
-	video.addEventListener('pause', function () {
-		pauseButton.classList.remove('is-on');
-	});
-	video.addEventListener('resume', function () {
-		pauseButton.classList.add('is-on');
-	});
-	video.addEventListener('start', function () {
-		pauseButton.classList.add('is-on');
-	});
-
-	container.appendChild(pauseButton);
+  var pauseButton = document.createElement('div');
+  var pauseIcon = createIcon(icons_icons.PAUSE, ['play-off-icon', 'porvata-icon', 'porvata-off-icon']);
+  var playIcon = createIcon(icons_icons.PLAY, ['play-on-icon', 'porvata-icon', 'porvata-on-icon']);
+  pauseButton.appendChild(playIcon);
+  pauseButton.appendChild(pauseIcon);
+  pauseButton.className = 'play-pause-button porvata-switchable-icon';
+  pauseButton.addEventListener('click', function () {
+    if (video.isPaused()) {
+      video.resume();
+    } else {
+      video.pause();
+    }
+  });
+  video.addEventListener('pause', function () {
+    pauseButton.classList.remove('is-on');
+  });
+  video.addEventListener('resume', function () {
+    pauseButton.classList.add('is-on');
+  });
+  video.addEventListener('start', function () {
+    pauseButton.classList.add('is-on');
+  });
+  container.appendChild(pauseButton);
 }
 
 /* harmony default export */ var pause_control = ({
-	add: pause_control_add
+  add: pause_control_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/pause-overlay.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/pause-overlay.ts
 function pause_overlay_add(video, container) {
-	var overlay = document.createElement('div');
-
-	overlay.classList.add('pause-overlay');
-	overlay.addEventListener('click', function () {
-		if (video.isPaused()) {
-			video.resume();
-		} else {
-			video.pause();
-		}
-	});
-
-	container.appendChild(overlay);
+  var overlay = document.createElement('div');
+  overlay.classList.add('pause-overlay');
+  overlay.addEventListener('click', function () {
+    if (video.isPaused()) {
+      video.resume();
+    } else {
+      video.pause();
+    }
+  });
+  container.appendChild(overlay);
 }
 
 /* harmony default export */ var pause_overlay = ({
-	add: pause_overlay_add
+  add: pause_overlay_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/progress-bar.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/progress-bar.ts
 
 
 function progress_bar_add(video, container) {
-	var progressBar = document.createElement('div');
-	var currentTime = document.createElement('div');
+  var progressBar = document.createElement('div');
+  var currentTime = document.createElement('div');
+  progressBar.classList.add('progress-bar');
+  currentTime.classList.add('current-time');
+  progressBar.appendChild(currentTime);
 
-	progressBar.classList.add('progress-bar');
-	currentTime.classList.add('current-time');
+  progressBar.pause = function () {
+    currentTime.style.width = "".concat(currentTime.offsetWidth / progressBar.offsetWidth * 100, "%");
+  };
 
-	progressBar.appendChild(currentTime);
+  progressBar.reset = function () {
+    currentTime.style.transitionDuration = '';
+    currentTime.style.width = '0';
+  };
 
-	progressBar.pause = function () {
-		currentTime.style.width = currentTime.offsetWidth / progressBar.offsetWidth * 100 + '%';
-	};
-	progressBar.reset = function () {
-		currentTime.style.transitionDuration = '';
-		currentTime.style.width = '0';
-	};
-	progressBar.rewind = function () {
-		var remainingTime = currentTime.style.transitionDuration;
+  progressBar.rewind = function () {
+    var remainingTime = currentTime.style.transitionDuration;
+    progressBar.reset();
+    ad_engine_["slotTweaker"].forceRepaint(currentTime);
+    currentTime.style.transitionDuration = remainingTime;
+  };
 
-		progressBar.reset();
-		ad_engine_["slotTweaker"].forceRepaint(currentTime);
-		currentTime.style.transitionDuration = remainingTime;
-	};
-	progressBar.start = function () {
-		var remainingTime = video.getRemainingTime();
+  progressBar.start = function () {
+    var remainingTime = video.getRemainingTime();
 
-		if (remainingTime) {
-			if (remainingTime > 0) {
-				currentTime.style.transitionDuration = remainingTime + 's';
-			}
-			ad_engine_["slotTweaker"].forceRepaint(currentTime);
-			currentTime.style.width = '100%';
-		} else {
-			currentTime.style.width = '0';
-		}
-	};
+    if (remainingTime) {
+      if (remainingTime > 0) {
+        currentTime.style.transitionDuration = "".concat(remainingTime, "s");
+      }
 
-	video.addEventListener('wikiaAdPlay', progressBar.start);
-	video.addEventListener('wikiaAdCompleted', progressBar.reset);
-	video.addEventListener('wikiaAdRestart', progressBar.rewind);
-	video.addEventListener('wikiaAdPause', progressBar.pause);
+      ad_engine_["slotTweaker"].forceRepaint(currentTime);
+      currentTime.style.width = '100%';
+    } else {
+      currentTime.style.width = '0';
+    }
+  };
 
-	container.appendChild(progressBar);
+  video.addEventListener('wikiaAdPlay', progressBar.start);
+  video.addEventListener('wikiaAdCompleted', progressBar.reset);
+  video.addEventListener('wikiaAdRestart', progressBar.rewind);
+  video.addEventListener('wikiaAdPause', progressBar.pause);
+  container.appendChild(progressBar);
 }
 
 /* harmony default export */ var progress_bar = ({
-	add: progress_bar_add
+  add: progress_bar_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/replay-overlay.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/replay-overlay.ts
 
 var replayOverlayClass = 'replay-overlay';
 
 function replay_overlay_add(video, container, params) {
-	var overlay = document.createElement('div');
+  var overlay = document.createElement('div');
+  overlay.classList.add(replayOverlayClass);
+  overlay.addEventListener('click', function () {
+    return video.play();
+  });
 
-	overlay.classList.add(replayOverlayClass);
-	overlay.addEventListener('click', function () {
-		return video.play();
-	});
+  if (!params.autoPlay) {
+    showOverlay(overlay, params);
+  }
 
-	if (!params.autoPlay) {
-		showOverlay(overlay, params);
-	}
+  video.addEventListener('wikiaAdCompleted', function () {
+    showOverlay(overlay, params);
+  });
 
-	video.addEventListener('wikiaAdCompleted', function () {
-		showOverlay(overlay, params);
-	});
+  if (video.params.theme && video.params.theme === 'hivi') {
+    var replayIcon = addReplayIcon(overlay);
 
-	if (video.params.theme && video.params.theme === 'hivi') {
-		var replayIcon = addReplayIcon(overlay);
+    if (!params.autoPlay) {
+      var playIcon = addPlayIcon(overlay);
+      replayIcon.style.display = 'none';
+      video.addEventListener('start', function () {
+        replayIcon.style.display = '';
+        playIcon.style.display = 'none';
+      });
+    }
 
-		if (!params.autoPlay) {
-			var playIcon = addPlayIcon(overlay);
-
-			replayIcon.style.display = 'none';
-
-			video.addEventListener('start', function () {
-				replayIcon.style.display = '';
-				playIcon.style.display = 'none';
-			});
-		}
-
-		container = video.params.thumbnail;
-		container.appendChild(overlay);
-	} else {
-		container.parentElement.insertBefore(overlay, container);
-	}
+    container = video.params.thumbnail;
+    container.appendChild(overlay);
+  } else {
+    container.parentElement.insertBefore(overlay, container);
+  }
 }
 
 function showOverlay(overlay, params) {
-	if (!params.container.classList.contains('theme-hivi')) {
-		overlay.style.width = overlay.style.width || getOverlayWidth(params);
-	}
-	// make overlay visible after ad finishes
-	overlay.style.display = 'block';
+  if (!params.container.classList.contains('theme-hivi')) {
+    overlay.style.width = overlay.style.width || getOverlayWidth(params);
+  } // make overlay visible after ad finishes
+
+
+  overlay.style.display = 'block';
 }
 /**
  * Basing on video width and total ad width compute width (in %)
@@ -2269,270 +2235,255 @@ function showOverlay(overlay, params) {
  * @param params
  * @return string in form '55%'
  */
-function getOverlayWidth(params) {
-	var adWidth = params.container.offsetWidth;
-	var videoWidth = params.hideWhenPlaying.offsetWidth;
 
-	return 100 * videoWidth / adWidth + '%';
+
+function getOverlayWidth(params) {
+  var adWidth = params.container.offsetWidth;
+  var videoWidth = params.hideWhenPlaying.offsetWidth;
+  return "".concat(100 * videoWidth / adWidth, "%");
 }
 
 function addReplayIcon(overlay) {
-	var replayIcon = createIcon(icons_icons.REPLAY, ['replay-icon', 'overlay-icon']);
-
-	overlay.appendChild(replayIcon);
-
-	return replayIcon;
+  var replayIcon = createIcon(icons_icons.REPLAY, ['replay-icon', 'overlay-icon']);
+  overlay.appendChild(replayIcon);
+  return replayIcon;
 }
 
 function addPlayIcon(overlay) {
-	var playIcon = createIcon(icons_icons.PLAY, ['play-icon', 'overlay-icon']);
-
-	overlay.appendChild(playIcon);
-
-	return playIcon;
+  var playIcon = createIcon(icons_icons.PLAY, ['play-icon', 'overlay-icon']);
+  overlay.appendChild(playIcon);
+  return playIcon;
 }
 
 /* harmony default export */ var replay_overlay = ({
-	add: replay_overlay_add
+  add: replay_overlay_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-animation.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-animation.ts
 var toggle_animation_duration = 400;
 var onAnimationClassName = 'on-animation';
 
 function resizeContainer(container, finalAspectRatio) {
-	container.style.height = container.offsetHeight + 'px';
-	container.style.height = container.offsetWidth / finalAspectRatio + 'px';
-
-	setTimeout(function () {
-		container.style.height = '';
-	}, toggle_animation_duration);
+  container.style.height = "".concat(container.offsetHeight, "px");
+  container.style.height = "".concat(container.offsetWidth / finalAspectRatio, "px");
+  setTimeout(function () {
+    container.style.height = '';
+  }, toggle_animation_duration);
 }
 
 function toggle(elementToShow, elementToHide) {
-	elementToHide.classList.add('hide');
-	elementToShow.classList.remove('hide');
+  elementToHide.classList.add('hide');
+  elementToShow.classList.remove('hide');
 }
 
 function hideVideo(video, params) {
-	resizeContainer(params.container, params.aspectRatio);
-	setTimeout(function () {
-		toggle(params.image, video.container);
-		params.container.classList.remove(onAnimationClassName);
-	}, toggle_animation_duration);
+  resizeContainer(params.container, params.aspectRatio);
+  setTimeout(function () {
+    toggle(params.image, video.container);
+    params.container.classList.remove(onAnimationClassName);
+  }, toggle_animation_duration);
 }
 
 function showVideo(video, params) {
-	params.container.classList.add(onAnimationClassName);
-	resizeContainer(params.container, params.videoAspectRatio);
-	toggle(video.container, params.image);
+  params.container.classList.add(onAnimationClassName);
+  resizeContainer(params.container, params.videoAspectRatio);
+  toggle(video.container, params.image);
 }
 
 function toggle_animation_add(video, container, params) {
-	video.addEventListener('wikiaAdStarted', function () {
-		showVideo(video, params);
-	});
-
-	video.addEventListener('wikiaAdCompleted', function () {
-		hideVideo(video, params);
-	});
+  video.addEventListener('wikiaAdStarted', function () {
+    showVideo(video, params);
+  });
+  video.addEventListener('wikiaAdCompleted', function () {
+    hideVideo(video, params);
+  });
 }
 
 /* harmony default export */ var toggle_animation = ({
-	add: toggle_animation_add,
-	duration: toggle_animation_duration
+  add: toggle_animation_add,
+  duration: toggle_animation_duration
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-fullscreen.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-fullscreen.ts
 
 
 function toggle_fullscreen_add(video, container) {
-	var toggleFullscreenButton = document.createElement('div');
-	var offIcon = createIcon(icons_icons.FULLSCREEN_OFF, ['fullscreen-off-icon', 'porvata-icon', 'porvata-off-icon']);
-	var onIcon = createIcon(icons_icons.FULLSCREEN_ON, ['fullscreen-on-icon', 'porvata-icon', 'porvata-on-icon']);
-
-	toggleFullscreenButton.appendChild(offIcon);
-	toggleFullscreenButton.appendChild(onIcon);
-
-	toggleFullscreenButton.className = 'toggle-fullscreen-button porvata-switchable-icon';
-	toggleFullscreenButton.addEventListener('click', function () {
-		video.toggleFullscreen();
-	});
-	video.addEventListener('wikiaFullscreenChange', function () {
-		if (video.isFullscreen()) {
-			toggleFullscreenButton.classList.add('is-on');
-		} else {
-			toggleFullscreenButton.classList.remove('is-on');
-		}
-	});
-	video.addEventListener('wikiaAdStop', function () {
-		if (video.isFullscreen()) {
-			video.toggleFullscreen();
-		}
-	});
-
-	container.appendChild(toggleFullscreenButton);
+  var toggleFullscreenButton = document.createElement('div');
+  var offIcon = createIcon(icons_icons.FULLSCREEN_OFF, ['fullscreen-off-icon', 'porvata-icon', 'porvata-off-icon']);
+  var onIcon = createIcon(icons_icons.FULLSCREEN_ON, ['fullscreen-on-icon', 'porvata-icon', 'porvata-on-icon']);
+  toggleFullscreenButton.appendChild(offIcon);
+  toggleFullscreenButton.appendChild(onIcon);
+  toggleFullscreenButton.className = 'toggle-fullscreen-button porvata-switchable-icon';
+  toggleFullscreenButton.addEventListener('click', function () {
+    video.toggleFullscreen();
+  });
+  video.addEventListener('wikiaFullscreenChange', function () {
+    if (video.isFullscreen()) {
+      toggleFullscreenButton.classList.add('is-on');
+    } else {
+      toggleFullscreenButton.classList.remove('is-on');
+    }
+  });
+  video.addEventListener('wikiaAdStop', function () {
+    if (video.isFullscreen()) {
+      video.toggleFullscreen();
+    }
+  });
+  container.appendChild(toggleFullscreenButton);
 }
 
 /* harmony default export */ var toggle_fullscreen = ({
-	add: toggle_fullscreen_add
+  add: toggle_fullscreen_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-thumbnail.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-thumbnail.ts
 function toggle_thumbnail_add(video, container, params) {
-	video.addEventListener('wikiaAdStarted', function () {
-		params.thumbnail.classList.add('hidden-state');
-	});
-
-	video.addEventListener('wikiaAdCompleted', function () {
-		params.thumbnail.classList.remove('hidden-state');
-	});
+  video.addEventListener('wikiaAdStarted', function () {
+    params.thumbnail.classList.add('hidden-state');
+  });
+  video.addEventListener('wikiaAdCompleted', function () {
+    params.thumbnail.classList.remove('hidden-state');
+  });
 }
 
 /* harmony default export */ var toggle_thumbnail = ({
-	add: toggle_thumbnail_add
+  add: toggle_thumbnail_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-ui.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-ui.ts
 
 var overlayTimeout = 5000;
 
 function toggle_ui_add(video, container, params) {
-	var timeout = null;
+  var timeout = null;
+  var isMobile = ad_engine_["utils"].client.isSmartphone() || ad_engine_["utils"].client.isTablet();
+  var overlay = document.createElement('div');
 
-	var isMobile = ad_engine_["utils"].client.isSmartphone() || ad_engine_["utils"].client.isTablet();
-	var overlay = document.createElement('div');
-	var setAutomaticToggle = function setAutomaticToggle() {
-		timeout = setTimeout(function () {
-			if (video.isPlaying()) {
-				video.container.classList.remove('ui-visible');
-			}
-		}, overlayTimeout);
-	};
+  var setAutomaticToggle = function setAutomaticToggle() {
+    timeout = setTimeout(function () {
+      if (video.isPlaying()) {
+        video.container.classList.remove('ui-visible');
+      }
+    }, overlayTimeout);
+  };
 
-	overlay.classList.add('toggle-ui-overlay');
-	if (isMobile) {
-		overlay.addEventListener('click', function () {
-			video.container.classList.toggle('ui-visible');
+  overlay.classList.add('toggle-ui-overlay');
 
-			clearTimeout(timeout);
-			setAutomaticToggle();
-		});
-		video.addEventListener('resume', setAutomaticToggle);
-	} else {
-		video.container.addEventListener('mouseenter', function () {
-			video.container.classList.add('ui-visible');
-		});
-		video.container.addEventListener('mouseleave', function () {
-			video.container.classList.remove('ui-visible');
-		});
-		overlay.addEventListener('click', function () {
-			top.open(params.clickThroughURL, '_blank');
-		});
-	}
+  if (isMobile) {
+    overlay.addEventListener('click', function () {
+      video.container.classList.toggle('ui-visible');
+      clearTimeout(timeout);
+      setAutomaticToggle();
+    });
+    video.addEventListener('resume', setAutomaticToggle);
+  } else {
+    video.container.addEventListener('mouseenter', function () {
+      video.container.classList.add('ui-visible');
+    });
+    video.container.addEventListener('mouseleave', function () {
+      video.container.classList.remove('ui-visible');
+    });
+    overlay.addEventListener('click', function () {
+      top.open(params.clickThroughURL, '_blank');
+    });
+  }
 
-	container.appendChild(overlay);
+  container.appendChild(overlay);
 }
 
 /* harmony default export */ var toggle_ui = ({
-	add: toggle_ui_add
+  add: toggle_ui_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-video.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/toggle-video.ts
 function toggle_video_add(video, container) {
-	video.addEventListener('wikiaAdStarted', function () {
-		container.classList.remove('hide');
-	});
-
-	video.addEventListener('wikiaAdCompleted', function () {
-		container.classList.add('hide');
-	});
+  video.addEventListener('wikiaAdStarted', function () {
+    container.classList.remove('hide');
+  });
+  video.addEventListener('wikiaAdCompleted', function () {
+    container.classList.add('hide');
+  });
 }
 
 /* harmony default export */ var toggle_video = ({
-	add: toggle_video_add
+  add: toggle_video_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/volume-control.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/volume-control.ts
 
 
 function createVolumeControl(params) {
-	var iconPrefix = params.theme === 'hivi' ? 'HIVI_' : '';
-	var volume = document.createElement('div');
-	var offIcon = createIcon(icons_icons[iconPrefix + 'VOLUME_OFF'], ['volume-off-icon', 'porvata-icon', 'porvata-off-icon']);
-	var onIcon = createIcon(icons_icons[iconPrefix + 'VOLUME_ON'], ['volume-on-icon', 'porvata-icon', 'porvata-on-icon']);
-
-	volume.className = 'volume-button porvata-switchable-icon hidden';
-	volume.appendChild(offIcon);
-	volume.appendChild(onIcon);
-
-	return volume;
+  var iconPrefix = params.theme === 'hivi' ? 'HIVI_' : '';
+  var volume = document.createElement('div');
+  var offIcon = createIcon(icons_icons["".concat(iconPrefix, "VOLUME_OFF")], ['volume-off-icon', 'porvata-icon', 'porvata-off-icon']);
+  var onIcon = createIcon(icons_icons["".concat(iconPrefix, "VOLUME_ON")], ['volume-on-icon', 'porvata-icon', 'porvata-on-icon']);
+  volume.className = 'volume-button porvata-switchable-icon hidden';
+  volume.appendChild(offIcon);
+  volume.appendChild(onIcon);
+  return volume;
 }
 
 function updateCurrentState(video, volumeControl) {
-	if (video.isMuted() || video.isMobilePlayerMuted()) {
-		volumeControl.classList.add('is-on');
-	} else {
-		volumeControl.classList.remove('is-on');
-	}
+  if (video.isMuted() || video.isMobilePlayerMuted()) {
+    volumeControl.classList.add('is-on');
+  } else {
+    volumeControl.classList.remove('is-on');
+  }
 
-	if (!video.isMobilePlayerMuted() && video.mobileVideoAd && video.mobileVideoAd.muted) {
-		video.updateVideoDOMElement(video.defaultVolume);
-	}
+  if (!video.isMobilePlayerMuted() && video.mobileVideoAd && video.mobileVideoAd.muted) {
+    video.updateVideoDOMElement(video.defaultVolume);
+  }
 }
 
 function volume_control_add(video, container) {
-	var volumeControl = createVolumeControl(video.params);
-
-	video.addEventListener('wikiaVolumeChange', function () {
-		updateCurrentState(video, volumeControl);
-	});
-
-	video.addEventListener('wikiaAdStarted', function () {
-		updateCurrentState(video, volumeControl);
-		volumeControl.classList.remove('hidden');
-	});
-
-	volumeControl.addEventListener('click', function (e) {
-		video.volumeToggle();
-		e.preventDefault();
-	});
-
-	container.appendChild(volumeControl);
+  var volumeControl = createVolumeControl(video.params);
+  video.addEventListener('wikiaVolumeChange', function () {
+    updateCurrentState(video, volumeControl);
+  });
+  video.addEventListener('wikiaAdStarted', function () {
+    updateCurrentState(video, volumeControl);
+    volumeControl.classList.remove('hidden');
+  });
+  volumeControl.addEventListener('click', function (e) {
+    video.volumeToggle();
+    e.preventDefault();
+  });
+  container.appendChild(volumeControl);
 }
 
 /* harmony default export */ var volume_control = ({
-	add: volume_control_add
+  add: volume_control_add
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/panel.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/panel.ts
 
 
 
-var panel_Panel = function () {
-	function Panel(className, uiElements) {
-		classCallCheck_default()(this, Panel);
+var panel_Panel =
+/*#__PURE__*/
+function () {
+  function Panel(className, uiElements) {
+    classCallCheck_default()(this, Panel);
 
-		this.uiElements = uiElements;
-		this.className = className;
-		this.panelContainer = null;
-	}
+    this.uiElements = uiElements;
+    this.className = className;
+    this.panelContainer = null;
+  }
 
-	createClass_default()(Panel, [{
-		key: 'add',
-		value: function add(video, container, params) {
-			var _this = this;
+  createClass_default()(Panel, [{
+    key: "add",
+    value: function add(video, container, params) {
+      var _this = this;
 
-			this.panelContainer = document.createElement('div');
-			this.panelContainer.className = this.className;
-			this.uiElements.forEach(function (uiElement) {
-				if (uiElement) {
-					uiElement.add(video, _this.panelContainer, params);
-				}
-			});
-			container.appendChild(this.panelContainer);
-		}
-	}]);
+      this.panelContainer = document.createElement('div');
+      this.panelContainer.className = this.className;
+      this.uiElements.forEach(function (uiElement) {
+        if (uiElement) {
+          uiElement.add(video, _this.panelContainer, params);
+        }
+      });
+      container.appendChild(this.panelContainer);
+    }
+  }]);
 
-	return Panel;
+  return Panel;
 }();
 
 
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/ui-template.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/ui-template.ts
 
 
 
@@ -2550,252 +2501,63 @@ var panel_Panel = function () {
 
 
 var ui_template_createBottomPanel = function createBottomPanel(_ref) {
-	var _ref$fullscreenAllowe = _ref.fullscreenAllowed,
-	    fullscreenAllowed = _ref$fullscreenAllowe === undefined ? true : _ref$fullscreenAllowe,
-	    _ref$theme = _ref.theme,
-	    theme = _ref$theme === undefined ? null : _ref$theme;
+  var _ref$fullscreenAllowe = _ref.fullscreenAllowed,
+      fullscreenAllowed = _ref$fullscreenAllowe === void 0 ? true : _ref$fullscreenAllowe,
+      _ref$theme = _ref.theme,
+      theme = _ref$theme === void 0 ? null : _ref$theme;
+  var isHiVi = theme === 'hivi';
+  var panelClassName = 'bottom-panel';
 
-	var isHiVi = theme === 'hivi';
-	var panelClassName = 'bottom-panel';
+  if (isHiVi) {
+    panelClassName += ' dynamic-panel';
+  }
 
-	if (isHiVi) {
-		panelClassName += ' dynamic-panel';
-	}
-
-	return new panel_Panel(panelClassName, [isHiVi ? pause_control : null, volume_control, isHiVi && fullscreenAllowed ? toggle_fullscreen : null]);
+  return new panel_Panel(panelClassName, [isHiVi ? pause_control : null, volume_control, isHiVi && fullscreenAllowed ? toggle_fullscreen : null]);
 };
 
 var ui_template_getTemplates = function getTemplates(params, videoSettings) {
-	return {
-		'auto-play': [progress_bar, pause_overlay, ui_template_createBottomPanel(params), toggle_animation],
-		default: [progress_bar, pause_overlay, ui_template_createBottomPanel(params), close_button, toggle_animation],
-		'split-left': [progress_bar, pause_overlay, ui_template_createBottomPanel(params), toggle_video, replay_overlay, !videoSettings.isAutoPlay() ? close_button : null],
-		'split-right': [progress_bar, pause_overlay, ui_template_createBottomPanel(params), toggle_video, replay_overlay, !videoSettings.isAutoPlay() ? close_button : null],
-		hivi: [progress_bar, ui_template_createBottomPanel(params), params.videoPlaceholderElement ? toggle_video : toggle_animation, toggle_thumbnail, toggle_ui, learn_more, params.videoPlaceholderElement ? replay_overlay : null],
-		'outstream-incontent': [dynamic_reveal, floating, progress_bar, volume_control]
-	};
+  return {
+    'auto-play': [progress_bar, pause_overlay, ui_template_createBottomPanel(params), toggle_animation],
+    default: [progress_bar, pause_overlay, ui_template_createBottomPanel(params), close_button, toggle_animation],
+    'split-left': [progress_bar, pause_overlay, ui_template_createBottomPanel(params), toggle_video, replay_overlay, !videoSettings.isAutoPlay() ? close_button : null],
+    'split-right': [progress_bar, pause_overlay, ui_template_createBottomPanel(params), toggle_video, replay_overlay, !videoSettings.isAutoPlay() ? close_button : null],
+    hivi: [progress_bar, ui_template_createBottomPanel(params), params.videoPlaceholderElement ? toggle_video : toggle_animation, toggle_thumbnail, toggle_ui, learn_more, params.videoPlaceholderElement ? replay_overlay : null],
+    'outstream-incontent': [dynamic_reveal, floating, progress_bar, volume_control]
+  };
 };
 
 function selectTemplate(videoSettings) {
-	var params = videoSettings.getParams();
-	var templates = ui_template_getTemplates(params, videoSettings);
-	var template = 'default';
+  var params = videoSettings.getParams();
+  var templates = ui_template_getTemplates(params, videoSettings);
+  var template = 'default';
 
-	if (params.type && params.type.indexOf('porvata') === 0) {
-		template = 'outstream-incontent';
-	} else if (params.theme === 'hivi') {
-		template = 'hivi';
-	} else if (videoSettings.isSplitLayout()) {
-		template = params.splitLayoutVideoPosition === 'right' ? 'split-right' : 'split-left';
-	} else if (videoSettings.isAutoPlay()) {
-		template = 'auto-play';
-	}
+  if (params.type && params.type.indexOf('porvata') === 0) {
+    template = 'outstream-incontent';
+  } else if (params.theme === 'hivi') {
+    template = 'hivi';
+  } else if (videoSettings.isSplitLayout()) {
+    template = params.splitLayoutVideoPosition === 'right' ? 'split-right' : 'split-left';
+  } else if (videoSettings.isAutoPlay()) {
+    template = 'auto-play';
+  }
 
-	return templates[template];
+  return templates[template];
 }
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/video-interface.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/video-interface.ts
 function setup(video, uiElements, params) {
-	uiElements.forEach(function (element) {
-		if (element) {
-			element.add(video, video.container, params);
-		}
-	});
+  uiElements.forEach(function (element) {
+    if (element) {
+      element.add(video, video.container, params);
+    }
+  });
 }
-// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/index.js
+// CONCATENATED MODULE: ./src/ad-products/templates/interface/video/index.ts
 
 
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/universal-ad-package.js
-
-
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/universal-ad-package.ts
 
 
 
-var loadPorvata = function () {
-	var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(videoSettings, slotContainer, imageContainer) {
-		var params, template, video;
-		return regenerator_default.a.wrap(function _callee$(_context) {
-			while (1) {
-				switch (_context.prev = _context.next) {
-					case 0:
-						params = videoSettings.getParams();
-						template = selectTemplate(videoSettings);
-
-
-						params.autoPlay = videoSettings.isAutoPlay();
-						videoSettings.updateParams(params);
-
-						_context.next = 6;
-						return ad_engine_["Porvata"].inject(params);
-
-					case 6:
-						video = _context.sent;
-
-
-						video.container.style.position = 'relative';
-						setup(video, template, {
-							autoPlay: videoSettings.isAutoPlay(),
-							image: imageContainer,
-							container: slotContainer,
-							thumbnail: params.thumbnail,
-							clickThroughURL: params.clickThroughURL,
-							aspectRatio: params.aspectRatio,
-							videoAspectRatio: params.videoAspectRatio,
-							hideWhenPlaying: params.videoPlaceholderElement || params.image,
-							splitLayoutVideoPosition: params.splitLayoutVideoPosition
-						});
-
-						video.addEventListener('wikiaAdCompleted', function () {
-							video.reload();
-						});
-
-						adjustVideoAdContainer(params);
-
-						return _context.abrupt('return', video);
-
-					case 12:
-					case 'end':
-						return _context.stop();
-				}
-			}
-		}, _callee, this);
-	}));
-
-	return function loadPorvata(_x, _x2, _x3) {
-		return _ref.apply(this, arguments);
-	};
-}();
-
-var loadTwitchPlayer = function () {
-	var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2(iframe, params) {
-		var channelName, player, options, twitchPlayer;
-		return regenerator_default.a.wrap(function _callee2$(_context2) {
-			while (1) {
-				switch (_context2.prev = _context2.next) {
-					case 0:
-						channelName = params.channelName, player = params.player;
-						options = {
-							height: '100%',
-							width: '100%',
-							channel: channelName
-						};
-
-
-						iframe.parentNode.insertBefore(player, iframe);
-
-						twitchPlayer = new ad_engine_["TwitchPlayer"](player, options, params);
-						_context2.next = 6;
-						return twitchPlayer.getPlayer();
-
-					case 6:
-
-						recalculateTwitchSize(params)();
-
-						return _context2.abrupt('return', twitchPlayer);
-
-					case 8:
-					case 'end':
-						return _context2.stop();
-				}
-			}
-		}, _callee2, this);
-	}));
-
-	return function loadTwitchPlayer(_x4, _x5) {
-		return _ref2.apply(this, arguments);
-	};
-}();
-
-var loadTwitchAd = function () {
-	var _ref3 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3(iframe, params) {
-		var player;
-		return regenerator_default.a.wrap(function _callee3$(_context3) {
-			while (1) {
-				switch (_context3.prev = _context3.next) {
-					case 0:
-						player = params.player;
-						_context3.next = 3;
-						return loadTwitchPlayer(iframe, params);
-
-					case 3:
-						window.addEventListener('resize', throttle_default()(recalculateTwitchSize(params), 250));
-						player.firstChild.id = 'twitchPlayerContainer';
-
-					case 5:
-					case 'end':
-						return _context3.stop();
-				}
-			}
-		}, _callee3, this);
-	}));
-
-	return function loadTwitchAd(_x6, _x7) {
-		return _ref3.apply(this, arguments);
-	};
-}();
-
-var loadVideoAd = function () {
-	var _ref4 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee4(videoSettings) {
-		var params, imageContainer, size, recalculateVideoSize, video;
-		return regenerator_default.a.wrap(function _callee4$(_context4) {
-			while (1) {
-				switch (_context4.prev = _context4.next) {
-					case 0:
-						recalculateVideoSize = function recalculateVideoSize(video) {
-							return function () {
-								var currentSize = getVideoSize(params.container, params, videoSettings);
-
-								video.resize(currentSize.width, currentSize.height);
-							};
-						};
-
-						params = videoSettings.getParams();
-						imageContainer = params.container.querySelector('div:last-of-type');
-						size = getVideoSize(params.container, params, videoSettings);
-
-
-						params.vastTargeting = {
-							passback: getType()
-						};
-						params.width = size.width;
-						params.height = size.height;
-						videoSettings.updateParams(params);
-
-						_context4.next = 10;
-						return loadPorvata(videoSettings, params.container, imageContainer);
-
-					case 10:
-						video = _context4.sent;
-
-
-						window.addEventListener('resize', throttle_default()(recalculateVideoSize(video), 250));
-
-						if (params.videoTriggerElement) {
-							params.videoTriggerElement.addEventListener('click', function () {
-								return video.play();
-							});
-						} else if (params.videoTriggers) {
-							params.videoTriggers.forEach(function (trigger) {
-								trigger.addEventListener('click', function () {
-									return video.play();
-								});
-							});
-						}
-
-						return _context4.abrupt('return', video);
-
-					case 14:
-					case 'end':
-						return _context4.stop();
-				}
-			}
-		}, _callee4, this);
-	}));
-
-	return function loadVideoAd(_x8) {
-		return _ref4.apply(this, arguments);
-	};
-}();
 
 
 
@@ -2807,151 +2569,320 @@ var uapId = DEFAULT_UAP_ID;
 var uapType = DEFAULT_UAP_TYPE;
 
 function getVideoSize(slot, params, videoSettings) {
-	var width = videoSettings.isSplitLayout() ? params.videoPlaceholderElement.offsetWidth : slot.clientWidth;
-	var height = width / params.videoAspectRatio;
-
-	return {
-		width: width,
-		height: height
-	};
+  var width = videoSettings.isSplitLayout() ? params.videoPlaceholderElement.offsetWidth : slot.clientWidth;
+  var height = width / params.videoAspectRatio;
+  return {
+    width: width,
+    height: height
+  };
 }
 
 function adjustVideoAdContainer(params) {
-	if (params.splitLayoutVideoPosition) {
-		var videoAdContainer = params.container.querySelector('.video-player');
+  if (params.splitLayoutVideoPosition) {
+    var videoAdContainer = params.container.querySelector('.video-player');
+    videoAdContainer.classList.add("video-player-".concat(params.splitLayoutVideoPosition));
+  }
+}
 
-		videoAdContainer.classList.add('video-player-' + params.splitLayoutVideoPosition);
-	}
+function loadPorvata(_x, _x2, _x3) {
+  return _loadPorvata.apply(this, arguments);
+}
+
+function _loadPorvata() {
+  _loadPorvata = asyncToGenerator_default()(
+  /*#__PURE__*/
+  regenerator_default.a.mark(function _callee(videoSettings, slotContainer, imageContainer) {
+    var params, template, video;
+    return regenerator_default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            params = videoSettings.getParams();
+            template = selectTemplate(videoSettings);
+            params.autoPlay = videoSettings.isAutoPlay();
+            videoSettings.updateParams(params);
+            _context.next = 6;
+            return ad_engine_["Porvata"].inject(params);
+
+          case 6:
+            video = _context.sent;
+            video.container.style.position = 'relative';
+            setup(video, template, {
+              autoPlay: videoSettings.isAutoPlay(),
+              image: imageContainer,
+              container: slotContainer,
+              thumbnail: params.thumbnail,
+              clickThroughURL: params.clickThroughURL,
+              aspectRatio: params.aspectRatio,
+              videoAspectRatio: params.videoAspectRatio,
+              hideWhenPlaying: params.videoPlaceholderElement || params.image,
+              splitLayoutVideoPosition: params.splitLayoutVideoPosition
+            });
+            video.addEventListener('wikiaAdCompleted', function () {
+              video.reload();
+            });
+            adjustVideoAdContainer(params);
+            return _context.abrupt("return", video);
+
+          case 12:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+  return _loadPorvata.apply(this, arguments);
 }
 
 function recalculateTwitchSize(params) {
-	return function () {
-		var adContainer = params.adContainer,
-		    clickArea = params.clickArea,
-		    player = params.player,
-		    twitchAspectRatio = params.twitchAspectRatio;
+  return function () {
+    var adContainer = params.adContainer,
+        clickArea = params.clickArea,
+        player = params.player,
+        twitchAspectRatio = params.twitchAspectRatio;
+    player.style.height = "".concat(adContainer.clientHeight, "px");
+    player.style.width = "".concat(player.clientHeight * twitchAspectRatio, "px");
+    clickArea.style.width = "".concat(params.adContainer.clientWidth - player.clientWidth, "px");
+  };
+}
 
+function loadTwitchPlayer(_x4, _x5) {
+  return _loadTwitchPlayer.apply(this, arguments);
+}
 
-		player.style.height = adContainer.clientHeight + 'px';
-		player.style.width = player.clientHeight * twitchAspectRatio + 'px';
-		clickArea.style.width = params.adContainer.clientWidth - player.clientWidth + 'px';
-	};
+function _loadTwitchPlayer() {
+  _loadTwitchPlayer = asyncToGenerator_default()(
+  /*#__PURE__*/
+  regenerator_default.a.mark(function _callee2(iframe, params) {
+    var channelName, player, options, twitchPlayer;
+    return regenerator_default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            channelName = params.channelName, player = params.player;
+            options = {
+              height: '100%',
+              width: '100%',
+              channel: channelName
+            };
+            iframe.parentNode.insertBefore(player, iframe);
+            twitchPlayer = new ad_engine_["TwitchPlayer"](player, options, params);
+            _context2.next = 6;
+            return twitchPlayer.getPlayer();
+
+          case 6:
+            recalculateTwitchSize(params)();
+            return _context2.abrupt("return", twitchPlayer);
+
+          case 8:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+  return _loadTwitchPlayer.apply(this, arguments);
+}
+
+function loadTwitchAd(_x6, _x7) {
+  return _loadTwitchAd.apply(this, arguments);
+}
+
+function _loadTwitchAd() {
+  _loadTwitchAd = asyncToGenerator_default()(
+  /*#__PURE__*/
+  regenerator_default.a.mark(function _callee3(iframe, params) {
+    var player;
+    return regenerator_default.a.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            player = params.player;
+            _context3.next = 3;
+            return loadTwitchPlayer(iframe, params);
+
+          case 3:
+            window.addEventListener('resize', throttle_default()(recalculateTwitchSize(params), 250));
+            player.firstChild.id = 'twitchPlayerContainer';
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+  return _loadTwitchAd.apply(this, arguments);
+}
+
+function loadVideoAd(_x8) {
+  return _loadVideoAd.apply(this, arguments);
+}
+
+function _loadVideoAd() {
+  _loadVideoAd = asyncToGenerator_default()(
+  /*#__PURE__*/
+  regenerator_default.a.mark(function _callee4(videoSettings) {
+    var params, imageContainer, size, recalculateVideoSize, video;
+    return regenerator_default.a.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            recalculateVideoSize = function _ref(video) {
+              return function () {
+                var currentSize = getVideoSize(params.container, params, videoSettings);
+                video.resize(currentSize.width, currentSize.height);
+              };
+            };
+
+            params = videoSettings.getParams();
+            imageContainer = params.container.querySelector('div:last-of-type');
+            size = getVideoSize(params.container, params, videoSettings);
+            params.vastTargeting = {
+              passback: getType()
+            };
+            params.width = size.width;
+            params.height = size.height;
+            videoSettings.updateParams(params);
+            _context4.next = 10;
+            return loadPorvata(videoSettings, params.container, imageContainer);
+
+          case 10:
+            video = _context4.sent;
+            window.addEventListener('resize', throttle_default()(recalculateVideoSize(video), 250));
+
+            if (params.videoTriggerElement) {
+              params.videoTriggerElement.addEventListener('click', function () {
+                return video.play();
+              });
+            } else if (params.videoTriggers) {
+              params.videoTriggers.forEach(function (trigger) {
+                trigger.addEventListener('click', function () {
+                  return video.play();
+                });
+              });
+            }
+
+            return _context4.abrupt("return", video);
+
+          case 14:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+  return _loadVideoAd.apply(this, arguments);
 }
 
 function getUapId() {
-	return uapId;
+  return uapId;
 }
 
 function getCreativeId() {
-	return uapCreativeId;
+  return uapCreativeId;
 }
 
 function setIds(lineItemId, creativeId) {
-	uapId = lineItemId || DEFAULT_UAP_ID;
-	uapCreativeId = creativeId || DEFAULT_UAP_ID;
-
-	updateSlotsTargeting(uapId, uapCreativeId);
+  uapId = lineItemId || DEFAULT_UAP_ID;
+  uapCreativeId = creativeId || DEFAULT_UAP_ID;
+  updateSlotsTargeting(uapId, uapCreativeId);
 }
 
 function getType() {
-	return uapType;
+  return uapType;
 }
 
 function setType(type) {
-	uapType = type;
+  uapType = type;
 }
 
 function updateSlotsTargeting(lineItemId, creativeId) {
-	var slots = ad_engine_["context"].get('slots');
+  var slots = ad_engine_["context"].get('slots');
 
-	keys_default()(slots).forEach(function (slotId) {
-		if (!slots[slotId].nonUapSlot) {
-			ad_engine_["context"].set('slots.' + slotId + '.targeting.uap', lineItemId);
-			ad_engine_["context"].set('slots.' + slotId + '.targeting.uap_c', creativeId);
-		}
-	});
+  keys_default()(slots).forEach(function (slotId) {
+    if (!slots[slotId].nonUapSlot) {
+      ad_engine_["context"].set("slots.".concat(slotId, ".targeting.uap"), lineItemId);
+      ad_engine_["context"].set("slots.".concat(slotId, ".targeting.uap_c"), creativeId);
+    }
+  });
 }
 
 function enableSlots(slotsToEnable) {
-	if (getType() !== 'abcd') {
-		slotsToEnable.forEach(function (slotName) {
-			ad_engine_["btfBlockerService"].unblock(slotName);
-		});
-	}
+  if (getType() !== 'abcd') {
+    slotsToEnable.forEach(function (slotName) {
+      ad_engine_["btfBlockerService"].unblock(slotName);
+    });
+  }
 }
 
 function disableSlots(slotsToDisable) {
-	slotsToDisable.forEach(function (slotName) {
-		ad_engine_["slotService"].disable(slotName);
-	});
+  slotsToDisable.forEach(function (slotName) {
+    ad_engine_["slotService"].disable(slotName);
+  });
 }
 
 function initSlot(params) {
-	var adSlot = ad_engine_["slotService"].get(params.slotName);
+  var adSlot = ad_engine_["slotService"].get(params.slotName);
+  params.container = adSlot.getElement();
 
-	params.container = adSlot.getElement();
+  if (params.isDarkTheme) {
+    params.container.classList.add('is-dark');
+  }
 
-	if (params.isDarkTheme) {
-		params.container.classList.add('is-dark');
-	}
-	if (params.isMobile) {
-		params.container.classList.add('is-mobile-layout');
-	}
-	if (ad_engine_["utils"].client.isSmartphone() || ad_engine_["utils"].client.isTablet()) {
-		params.container.classList.add('is-mobile-device');
-	}
+  if (params.isMobile) {
+    params.container.classList.add('is-mobile-layout');
+  }
+
+  if (ad_engine_["utils"].client.isSmartphone() || ad_engine_["utils"].client.isTablet()) {
+    params.container.classList.add('is-mobile-device');
+  }
 }
 
 function universal_ad_package_reset() {
-	setType(DEFAULT_UAP_TYPE);
-	setIds(DEFAULT_UAP_ID, DEFAULT_UAP_ID);
+  setType(DEFAULT_UAP_TYPE);
+  setIds(DEFAULT_UAP_ID, DEFAULT_UAP_ID);
 }
 
 function isFanTakeoverLoaded() {
-	return getUapId() !== DEFAULT_UAP_ID && FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1;
+  return getUapId() !== DEFAULT_UAP_ID && FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1;
 }
 
-var universalAdPackage = extends_default()({}, constants_namespaceObject, {
-	init: function init(params) {
-		var slotsToEnable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-		var slotsToDisable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+var universalAdPackage = objectSpread_default()({}, constants_namespaceObject, {
+  init: function init(params) {
+    var slotsToEnable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var slotsToDisable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+    var adProduct = 'uap';
 
-		var adProduct = 'uap';
+    if (this.isVideoEnabled(params)) {
+      adProduct = 'vuap';
+    }
 
-		if (this.isVideoEnabled(params)) {
-			adProduct = 'vuap';
-		}
+    params.adProduct = params.adProduct || adProduct;
+    setIds(params.uap, params.creativeId);
+    disableSlots(slotsToDisable);
+    enableSlots(slotsToEnable);
+    setType(params.adProduct);
 
-		params.adProduct = params.adProduct || adProduct;
-
-		setIds(params.uap, params.creativeId);
-		disableSlots(slotsToDisable);
-		enableSlots(slotsToEnable);
-		setType(params.adProduct);
-
-		if (params.slotName) {
-			initSlot(params);
-		}
-	},
-
-	initSlot: initSlot,
-	isFanTakeoverLoaded: isFanTakeoverLoaded,
-	getCreativeId: getCreativeId,
-	getType: getType,
-	getUapId: getUapId,
-	isVideoEnabled: function isVideoEnabled(params) {
-		var triggersArrayIsNotEmpty = Array.isArray(params.videoTriggers) && params.videoTriggers.length > 0;
-
-		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
-	},
-
-	loadVideoAd: loadVideoAd,
-	loadTwitchAd: loadTwitchAd,
-	reset: universal_ad_package_reset,
-	setType: setType
+    if (params.slotName) {
+      initSlot(params);
+    }
+  },
+  initSlot: initSlot,
+  isFanTakeoverLoaded: isFanTakeoverLoaded,
+  getCreativeId: getCreativeId,
+  getType: getType,
+  getUapId: getUapId,
+  isVideoEnabled: function isVideoEnabled(params) {
+    var triggersArrayIsNotEmpty = is_array_default()(params.videoTriggers) && params.videoTriggers.length > 0;
+    return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
+  },
+  loadVideoAd: loadVideoAd,
+  loadTwitchAd: loadTwitchAd,
+  reset: universal_ad_package_reset,
+  setType: setType
 });
-// CONCATENATED MODULE: ./src/ad-products/templates/sticky-tlb.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/sticky-tlb.ts
 
 
 
@@ -2969,324 +2900,307 @@ var universalAdPackage = extends_default()({}, constants_namespaceObject, {
 
 
 var sticky_tlb_logGroup = 'sticky-tlb';
+var sticky_tlb_StickyTLB =
+/*#__PURE__*/
+function (_StickyBase) {
+  inherits_default()(StickyTLB, _StickyBase);
 
-var sticky_tlb_StickyTLB = function (_StickyBase) {
-	inherits_default()(StickyTLB, _StickyBase);
+  function StickyTLB() {
+    classCallCheck_default()(this, StickyTLB);
 
-	function StickyTLB() {
-		classCallCheck_default()(this, StickyTLB);
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(StickyTLB).apply(this, arguments));
+  }
 
-		return possibleConstructorReturn_default()(this, (StickyTLB.__proto__ || get_prototype_of_default()(StickyTLB)).apply(this, arguments));
-	}
+  createClass_default()(StickyTLB, [{
+    key: "init",
+    value: function init(params) {
+      if (!this.isEnabled()) {
+        ad_engine_["utils"].logger(sticky_tlb_logGroup, 'stickiness rejected');
+        this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKINESS_DISABLED);
+        return;
+      }
 
-	createClass_default()(StickyTLB, [{
-		key: 'init',
-		value: function init(params) {
-			if (!this.isEnabled()) {
-				ad_engine_["utils"].logger(sticky_tlb_logGroup, 'stickiness rejected');
-				this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKINESS_DISABLED);
+      this.setupStickiness(params);
+      this.container.style.backgroundColor = '#000';
+      this.container.classList.add('bfaa-template');
+      this.config.onInit(this.adSlot, this.params, this.config);
+      this.onAdReady();
+    }
+    /**
+     * @private
+     */
 
-				return;
-			}
+  }, {
+    key: "onAdReady",
+    value: function () {
+      var _onAdReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.container.classList.add('theme-hivi');
+                this.addAdvertisementLabel();
+                this.config.mainContainer.style.paddingTop = "".concat(this.container.scrollHeight, "px");
+                this.config.mainContainer.classList.add('has-bfaa');
+                navbarManager.setup(this.config, this.container);
+                this.config.moveNavbar(this.container.scrollHeight, SLIDE_OUT_TIME);
 
-			this.setupStickiness(params);
+                if (!document.hidden) {
+                  _context.next = 9;
+                  break;
+                }
 
-			this.container.style.backgroundColor = '#000';
-			this.container.classList.add('bfaa-template');
+                _context.next = 9;
+                return ad_engine_["utils"].once(window, 'visibilitychange');
 
-			this.config.onInit(this.adSlot, this.params, this.config);
-			this.onAdReady();
-		}
+              case 9:
+                ad_engine_["utils"].logger(sticky_tlb_logGroup, 'ad ready');
 
-		/**
-   * @private
-   */
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-	}, {
-		key: 'onAdReady',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								this.container.classList.add('theme-hivi');
-								this.addAdvertisementLabel();
+      function onAdReady() {
+        return _onAdReady.apply(this, arguments);
+      }
 
-								this.config.mainContainer.style.paddingTop = this.container.scrollHeight + 'px';
-								this.config.mainContainer.classList.add('has-bfaa');
+      return onAdReady;
+    }()
+    /**
+     * @private
+     */
 
-								navbarManager.setup(this.config, this.container);
-								this.config.moveNavbar(this.container.scrollHeight, SLIDE_OUT_TIME);
+  }, {
+    key: "addAdvertisementLabel",
+    value: function addAdvertisementLabel() {
+      var advertisementLabel = new advertisement_label_AdvertisementLabel();
+      this.container.appendChild(advertisementLabel.render());
+    }
+    /**
+     * @protected
+     */
 
-								if (!document.hidden) {
-									_context.next = 9;
-									break;
-								}
+  }, {
+    key: "onStickinessChange",
+    value: function () {
+      var _onStickinessChange = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee2(isSticky) {
+        var stickinessBeforeCallback, stickinessAfterCallback;
+        return regenerator_default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                stickinessBeforeCallback = isSticky ? this.config.onBeforeStickBfaaCallback : this.config.onBeforeUnstickBfaaCallback;
+                stickinessAfterCallback = isSticky ? this.config.onAfterStickBfaaCallback : this.config.onAfterUnstickBfaaCallback;
+                stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
 
-								_context.next = 9;
-								return ad_engine_["utils"].once(window, 'visibilitychange');
+                if (!isSticky) {
+                  _context2.next = 7;
+                  break;
+                }
 
-							case 9:
+                this.onStick();
+                _context2.next = 9;
+                break;
 
-								ad_engine_["utils"].logger(sticky_tlb_logGroup, 'ad ready');
+              case 7:
+                _context2.next = 9;
+                return this.onUnstick();
 
-							case 10:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
+              case 9:
+                stickinessAfterCallback.call(this.config, this.adSlot, this.params);
+                ad_engine_["utils"].logger(sticky_tlb_logGroup, 'stickiness changed', isSticky);
 
-			function onAdReady() {
-				return _ref.apply(this, arguments);
-			}
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
 
-			return onAdReady;
-		}()
+      function onStickinessChange(_x) {
+        return _onStickinessChange.apply(this, arguments);
+      }
 
-		/**
-   * @private
-   */
+      return onStickinessChange;
+    }()
+    /**
+     * @protected
+     */
 
-	}, {
-		key: 'addAdvertisementLabel',
-		value: function addAdvertisementLabel() {
-			var advertisementLabel = new advertisement_label_AdvertisementLabel();
+  }, {
+    key: "onUnstick",
+    value: function () {
+      var _onUnstick = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee3() {
+        return regenerator_default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
+                this.config.moveNavbar(0, SLIDE_OUT_TIME);
+                _context3.next = 4;
+                return animate(this.container, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
 
-			this.container.appendChild(advertisementLabel.render());
-		}
+              case 4:
+                this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
+                this.container.classList.add('theme-resolved');
+                animate(this.container, CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
 
-		/**
-   * @protected
-   */
+              case 7:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
 
-	}, {
-		key: 'onStickinessChange',
-		value: function () {
-			var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2(isSticky) {
-				var stickinessBeforeCallback, stickinessAfterCallback;
-				return regenerator_default.a.wrap(function _callee2$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								stickinessBeforeCallback = isSticky ? this.config.onBeforeStickBfaaCallback : this.config.onBeforeUnstickBfaaCallback;
-								stickinessAfterCallback = isSticky ? this.config.onAfterStickBfaaCallback : this.config.onAfterUnstickBfaaCallback;
+      function onUnstick() {
+        return _onUnstick.apply(this, arguments);
+      }
 
+      return onUnstick;
+    }()
+    /**
+     * @protected
+     */
 
-								stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
+  }, {
+    key: "onStick",
+    value: function onStick() {
+      this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
+      this.container.classList.add(CSS_CLASSNAME_STICKY_BFAA);
+      this.addCloseButton();
+    }
+    /**
+     * @protected
+     */
 
-								if (!isSticky) {
-									_context2.next = 7;
-									break;
-								}
+  }, {
+    key: "unstickImmediately",
+    value: function unstickImmediately() {
+      this.config.moveNavbar(0, 0);
+      ad_engine_["scrollListener"].removeCallback(this.scrollListener);
+      this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
+      this.container.classList.add('theme-resolved');
+      this.stickiness.sticky = false;
+      this.config.mainContainer.style.paddingTop = '0';
+      this.container.classList.add('hide');
+      ad_engine_["utils"].logger(sticky_tlb_logGroup, 'unstick immediately');
+      this.removeCloseButton();
+    }
+    /**
+     * @protected
+     */
 
-								this.onStick();
-								_context2.next = 9;
-								break;
+  }, {
+    key: "addStickinessPlugin",
+    value: function addStickinessPlugin() {
+      this.container.classList.add(CSS_CLASSNAME_STICKY_IAB);
+      this.addUnstickLogic();
+      this.addUnstickEvents();
+      this.stickiness.run();
+      ad_engine_["utils"].logger(sticky_tlb_logGroup, this.adSlot.getSlotName(), 'stickiness added');
+    }
+    /**
+     * @private
+     */
 
-							case 7:
-								_context2.next = 9;
-								return this.onUnstick();
+  }, {
+    key: "addCloseButton",
+    value: function addCloseButton() {
+      var _this = this;
 
-							case 9:
+      this.addButton(this.container, function () {
+        _this.stickiness.close();
 
-								stickinessAfterCallback.call(this.config, this.adSlot, this.params);
-								ad_engine_["utils"].logger(sticky_tlb_logGroup, 'stickiness changed', isSticky);
+        _this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
+      });
+    }
+    /**
+     * @private
+     */
 
-							case 11:
-							case 'end':
-								return _context2.stop();
-						}
-					}
-				}, _callee2, this);
-			}));
+  }, {
+    key: "removeCloseButton",
+    value: function removeCloseButton() {
+      this.removeButton();
+    }
+    /**
+     * Returns template name.
+     * @protected
+     * @return {string}
+     */
 
-			function onStickinessChange(_x) {
-				return _ref2.apply(this, arguments);
-			}
+  }, {
+    key: "getName",
+    value: function getName() {
+      return StickyTLB.getName();
+    }
+    /**
+     * @protected
+     */
 
-			return onStickinessChange;
-		}()
+  }, {
+    key: "isEnabled",
+    value: function isEnabled() {
+      return get_default()(getPrototypeOf_default()(StickyTLB.prototype), "isEnabled", this).call(this) && this.container;
+    }
+  }], [{
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        enabled: true,
+        desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
+        mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
+        mainContainer: document.body,
+        handleNavbar: false,
+        stickyAdditionalTime: 0,
+        stickyUntilSlotViewed: true,
+        slotSibling: '.topic-header',
+        onInit: function onInit() {},
+        onBeforeStickBfaaCallback: function onBeforeStickBfaaCallback() {},
+        onAfterStickBfaaCallback: function onAfterStickBfaaCallback() {},
+        onBeforeUnstickBfaaCallback: function onBeforeUnstickBfaaCallback() {},
+        onAfterUnstickBfaaCallback: function onAfterUnstickBfaaCallback() {},
+        moveNavbar: function moveNavbar(offset) {
+          var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : SLIDE_OUT_TIME;
+          var navbarElement = document.querySelector('body > nav.navigation');
 
-		/**
-   * @protected
-   */
+          if (navbarElement) {
+            navbarElement.style.transition = offset ? '' : "top ".concat(time, "ms ").concat(universalAdPackage.CSS_TIMING_EASE_IN_CUBIC);
+            navbarElement.style.top = offset ? "".concat(offset, "px") : '';
+          }
+        }
+      };
+    }
+  }, {
+    key: "getName",
+    value: function getName() {
+      return 'stickyTLB';
+    }
+  }]);
 
-	}, {
-		key: 'onUnstick',
-		value: function () {
-			var _ref3 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
-				return regenerator_default.a.wrap(function _callee3$(_context3) {
-					while (1) {
-						switch (_context3.prev = _context3.next) {
-							case 0:
-								this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
-								this.config.moveNavbar(0, SLIDE_OUT_TIME);
-								_context3.next = 4;
-								return animate(this.container, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
-
-							case 4:
-								this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
-								this.container.classList.add('theme-resolved');
-								animate(this.container, CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
-
-							case 7:
-							case 'end':
-								return _context3.stop();
-						}
-					}
-				}, _callee3, this);
-			}));
-
-			function onUnstick() {
-				return _ref3.apply(this, arguments);
-			}
-
-			return onUnstick;
-		}()
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'onStick',
-		value: function onStick() {
-			this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
-			this.container.classList.add(CSS_CLASSNAME_STICKY_BFAA);
-
-			this.addCloseButton();
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'unstickImmediately',
-		value: function unstickImmediately() {
-			this.config.moveNavbar(0, 0);
-			ad_engine_["scrollListener"].removeCallback(this.scrollListener);
-			this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
-			this.container.classList.add('theme-resolved');
-			this.stickiness.sticky = false;
-			this.config.mainContainer.style.paddingTop = '0';
-			this.container.classList.add('hide');
-			ad_engine_["utils"].logger(sticky_tlb_logGroup, 'unstick immediately');
-
-			this.removeCloseButton();
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'addStickinessPlugin',
-		value: function addStickinessPlugin() {
-			this.container.classList.add(CSS_CLASSNAME_STICKY_IAB);
-			this.addUnstickLogic();
-			this.addUnstickEvents();
-			this.stickiness.run();
-			ad_engine_["utils"].logger(sticky_tlb_logGroup, this.adSlot.getSlotName(), 'stickiness added');
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'addCloseButton',
-		value: function addCloseButton() {
-			var _this2 = this;
-
-			this.addButton(this.container, function () {
-				_this2.stickiness.close();
-				_this2.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
-			});
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'removeCloseButton',
-		value: function removeCloseButton() {
-			this.removeButton();
-		}
-
-		/**
-   * Returns template name.
-   * @protected
-   * @return {string}
-   */
-
-	}, {
-		key: 'getName',
-		value: function getName() {
-			return StickyTLB.getName();
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'isEnabled',
-		value: function isEnabled() {
-			return get_default()(StickyTLB.prototype.__proto__ || get_prototype_of_default()(StickyTLB.prototype), 'isEnabled', this).call(this) && this.container;
-		}
-	}], [{
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				enabled: true,
-				desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
-				mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
-				mainContainer: document.body,
-				handleNavbar: false,
-				stickyAdditionalTime: 0,
-				stickyUntilSlotViewed: true,
-				slotSibling: '.topic-header',
-				onInit: function onInit() {},
-				onBeforeStickBfaaCallback: function onBeforeStickBfaaCallback() {},
-				onAfterStickBfaaCallback: function onAfterStickBfaaCallback() {},
-				onBeforeUnstickBfaaCallback: function onBeforeUnstickBfaaCallback() {},
-				onAfterUnstickBfaaCallback: function onAfterUnstickBfaaCallback() {},
-				moveNavbar: function moveNavbar(offset) {
-					var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : SLIDE_OUT_TIME;
-
-					var navbarElement = document.querySelector('body > nav.navigation');
-
-					if (navbarElement) {
-						navbarElement.style.transition = offset ? '' : 'top ' + time + 'ms ' + universalAdPackage.CSS_TIMING_EASE_IN_CUBIC;
-						navbarElement.style.top = offset ? offset + 'px' : '';
-					}
-				}
-			};
-		}
-	}, {
-		key: 'getName',
-		value: function getName() {
-			return 'stickyTLB';
-		}
-	}]);
-
-	return StickyTLB;
+  return StickyTLB;
 }(sticky_base_StickyBase);
-// EXTERNAL MODULE: external "babel-runtime/core-js/object/assign"
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/assign"
 var assign_ = __webpack_require__(9);
 var assign_default = /*#__PURE__*/__webpack_require__.n(assign_);
 
-// EXTERNAL MODULE: external "babel-runtime/helpers/toArray"
-var toArray_ = __webpack_require__(23);
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/toArray"
+var toArray_ = __webpack_require__(25);
 var toArray_default = /*#__PURE__*/__webpack_require__.n(toArray_);
 
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/resolved-state-switch.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/resolved-state-switch.ts
 
 
 var cacheKey = 'adEngine_resolvedStateCounter';
@@ -3294,34 +3208,32 @@ var cacheTtl = 24 * 3600;
 var resolved_state_switch_now = new Date();
 
 function createCacheKey() {
-	return cacheKey + '_' + universalAdPackage.getUapId();
+  return "".concat(cacheKey, "_").concat(universalAdPackage.getUapId());
 }
 
 function findRecordInCache() {
-	return ad_engine_["localCache"].get(createCacheKey());
+  return ad_engine_["localCache"].get(createCacheKey());
 }
 
 function wasDefaultStateSeen() {
-	var record = findRecordInCache();
+  var record = findRecordInCache(); // check for presence in localStorage and if present, make sure that we're
+  // not comparing to current session data - bfab that wants to load after bfaa
 
-	// check for presence in localStorage and if present, make sure that we're
-	// not comparing to current session data - bfab that wants to load after bfaa
-	return !!record && resolved_state_switch_now.getTime() !== record.lastSeenDate;
+  return !!record && resolved_state_switch_now.getTime() !== record.lastSeenDate;
 }
 
 function updateInformationAboutSeenDefaultStateAd() {
-	ad_engine_["localCache"].set(createCacheKey(), {
-		adId: universalAdPackage.getUapId(),
-		lastSeenDate: resolved_state_switch_now.getTime()
-	}, cacheTtl);
+  ad_engine_["localCache"].set(createCacheKey(), {
+    adId: universalAdPackage.getUapId(),
+    lastSeenDate: resolved_state_switch_now.getTime()
+  }, cacheTtl);
 }
 
 var resolvedStateSwitch = {
-	updateInformationAboutSeenDefaultStateAd: updateInformationAboutSeenDefaultStateAd,
-	wasDefaultStateSeen: wasDefaultStateSeen
+  updateInformationAboutSeenDefaultStateAd: updateInformationAboutSeenDefaultStateAd,
+  wasDefaultStateSeen: wasDefaultStateSeen
 };
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/resolved-state.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/resolved-state.ts
 
 
 
@@ -3331,176 +3243,173 @@ var DEFAULT_STATE = 'default';
 var RESOLVED_STATE = 'resolved';
 
 function getQueryParam() {
-	return ad_engine_["utils"].queryString.get('resolved_state', null);
+  return ad_engine_["utils"].queryString.get('resolved_state', null);
 }
 
 function isForcedByURLParam() {
-	return [true, 'true', '1'].indexOf(getQueryParam()) > -1;
+  return [true, 'true', '1'].indexOf(getQueryParam()) > -1;
 }
 
 function isBlockedByURLParam() {
-	return [false, 'blocked', 'false', '0'].indexOf(getQueryParam()) > -1;
+  return [false, 'blocked', 'false', '0'].indexOf(getQueryParam()) > -1;
 }
 
 function setState(state, params) {
-	var image1 = params.image1,
-	    image2 = params.image2;
+  var image1 = params.image1,
+      image2 = params.image2;
+  var promises = [];
+  var srcPropertyName = 'defaultStateSrc';
 
-	var promises = [];
-	var srcPropertyName = 'defaultStateSrc';
+  if (state === RESOLVED_STATE) {
+    params.aspectRatio = params.resolvedStateAspectRatio;
+    srcPropertyName = 'resolvedStateSrc';
+  }
 
-	if (state === RESOLVED_STATE) {
-		params.aspectRatio = params.resolvedStateAspectRatio;
-		srcPropertyName = 'resolvedStateSrc';
-	}
+  promises.push(promise_default.a.resolve(params));
+  image1.element.src = image1[srcPropertyName];
+  promises.push(promise_default.a.race([ad_engine_["utils"].once(image1.element, 'load'), ad_engine_["utils"].once(image1.element, 'error')]));
 
-	promises.push(promise_default.a.resolve(params));
-	image1.element.src = image1[srcPropertyName];
-	promises.push(promise_default.a.race([ad_engine_["utils"].once(image1.element, 'load'), ad_engine_["utils"].once(image1.element, 'error')]));
+  if (image2 && image2[srcPropertyName]) {
+    image2.element.src = image2[srcPropertyName];
+    promises.push(promise_default.a.race([ad_engine_["utils"].once(image2.element, 'load'), ad_engine_["utils"].once(image2.element, 'error')]));
+  }
 
-	if (image2 && image2[srcPropertyName]) {
-		image2.element.src = image2[srcPropertyName];
-		promises.push(promise_default.a.race([ad_engine_["utils"].once(image2.element, 'load'), ad_engine_["utils"].once(image2.element, 'error')]));
-	}
-
-	return promise_default.a.all(promises);
+  return promise_default.a.all(promises);
 }
 
 function setDefaultState(params) {
-	return setState(DEFAULT_STATE, params);
+  return setState(DEFAULT_STATE, params);
 }
 
 function resolved_state_setResolvedState(params) {
-	return setState(RESOLVED_STATE, params);
+  return setState(RESOLVED_STATE, params);
 }
 
 function templateSupportsResolvedState(params) {
-	return !!(params.image1 && params.image1.resolvedStateSrc) || params.theme === 'hivi';
+  return !!(params.image1 && params.image1.resolvedStateSrc) || params.theme === 'hivi';
 }
 
 function isResolvedState(params) {
-	var result = false;
+  var result = false;
 
-	if (params.resolvedStateForced) {
-		return true;
-	}
+  if (params.resolvedStateForced) {
+    return true;
+  }
 
-	if (templateSupportsResolvedState(params)) {
-		var showResolvedState = !isBlockedByURLParam();
-		var defaultStateSeen = true;
+  if (templateSupportsResolvedState(params)) {
+    var showResolvedState = !isBlockedByURLParam();
+    var defaultStateSeen = true;
 
-		if (showResolvedState) {
-			defaultStateSeen = resolvedStateSwitch.wasDefaultStateSeen() || isForcedByURLParam();
-		}
+    if (showResolvedState) {
+      defaultStateSeen = resolvedStateSwitch.wasDefaultStateSeen() || isForcedByURLParam();
+    }
 
-		result = showResolvedState && defaultStateSeen;
-	}
+    result = showResolvedState && defaultStateSeen;
+  }
 
-	return result;
+  return result;
 }
 
 var resolvedState = {
-	// This method is used by classic UAP only (not-HiVi)
-	// UAP:HiVi template does not support srcPropertyNames like defaultStateSrc
-	// UAP:HiVi switch images in uap/themes/hivi/hivi.js by swapping hidden-state class
-	// TODO: Remove this code once we get rid of old (classic) UAP
-	setImage: function setImage(videoSettings) {
-		var params = videoSettings.getParams();
+  // This method is used by classic UAP only (not-HiVi)
+  // UAP:HiVi template does not support srcPropertyNames like defaultStateSrc
+  // UAP:HiVi switch images in uap/themes/hivi/hivi.js by swapping hidden-state class
+  // TODO: Remove this code once we get rid of old (classic) UAP
+  setImage: function setImage(videoSettings) {
+    var params = videoSettings.getParams();
 
-		if (templateSupportsResolvedState(params)) {
-			if (videoSettings.isResolvedState()) {
-				return resolved_state_setResolvedState(params).then(function (_ref) {
-					var _ref2 = toArray_default()(_ref),
-					    updatedParams = _ref2[0],
-					    args = _ref2.slice(1);
+    if (templateSupportsResolvedState(params)) {
+      if (videoSettings.isResolvedState()) {
+        return resolved_state_setResolvedState(params).then(function (_ref) {
+          var _ref2 = toArray_default()(_ref),
+              updatedParams = _ref2[0],
+              args = _ref2.slice(1);
 
-					videoSettings.updateParams(updatedParams);
+          videoSettings.updateParams(updatedParams);
+          return [updatedParams].concat(toConsumableArray_default()(args));
+        });
+      }
 
-					return [updatedParams].concat(toConsumableArray_default()(args));
-				});
-			}
+      resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
+      return setDefaultState(params);
+    }
 
-			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
-
-			return setDefaultState(params);
-		}
-
-		return promise_default.a.resolve();
-	},
-
-	isResolvedState: isResolvedState
+    return promise_default.a.resolve();
+  },
+  isResolvedState: isResolvedState
 };
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/video-settings.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/video-settings.ts
 
 
 
 
+var video_settings_VideoSettings =
+/*#__PURE__*/
+function () {
+  function VideoSettings(params) {
+    classCallCheck_default()(this, VideoSettings);
 
-var video_settings_VideoSettings = function () {
-	function VideoSettings(params) {
-		classCallCheck_default()(this, VideoSettings);
+    this.params = params;
+    Object.defineProperty(this, 'resolvedState', {
+      value: resolvedState.isResolvedState(this.params),
+      writable: false
+    });
+    Object.defineProperty(this, 'autoPlay', {
+      value: this.detectAutoPlay(),
+      writable: false
+    });
+    Object.defineProperty(this, 'splitLayout', {
+      value: Boolean(params.splitLayoutVideoPosition),
+      writable: false
+    });
+  }
 
-		this.params = params;
+  createClass_default()(VideoSettings, [{
+    key: "detectAutoPlay",
+    value: function detectAutoPlay() {
+      var defaultStateAutoPlay = this.params.autoPlay && !this.resolvedState;
+      var resolvedStateAutoPlay = this.params.resolvedStateAutoPlay && this.resolvedState;
+      return Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
+    }
+  }, {
+    key: "getParams",
+    value: function getParams() {
+      return assign_default()({}, this.params);
+    }
+  }, {
+    key: "updateParams",
+    value: function updateParams(params) {
+      assign_default()(this.params, params);
+    }
+  }, {
+    key: "isAutoPlay",
+    value: function isAutoPlay() {
+      return this.autoPlay;
+    }
+  }, {
+    key: "isResolvedState",
+    value: function isResolvedState() {
+      return this.resolvedState;
+    }
+  }, {
+    key: "isSplitLayout",
+    value: function isSplitLayout() {
+      return this.splitLayout;
+    }
+  }]);
 
-		Object.defineProperty(this, 'resolvedState', {
-			value: resolvedState.isResolvedState(this.params),
-			writable: false
-		});
-
-		Object.defineProperty(this, 'autoPlay', {
-			value: this.detectAutoPlay(),
-			writable: false
-		});
-
-		Object.defineProperty(this, 'splitLayout', {
-			value: Boolean(params.splitLayoutVideoPosition),
-			writable: false
-		});
-	}
-
-	createClass_default()(VideoSettings, [{
-		key: 'detectAutoPlay',
-		value: function detectAutoPlay() {
-			var defaultStateAutoPlay = this.params.autoPlay && !this.resolvedState;
-			var resolvedStateAutoPlay = this.params.resolvedStateAutoPlay && this.resolvedState;
-
-			return Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
-		}
-	}, {
-		key: 'getParams',
-		value: function getParams() {
-			return assign_default()({}, this.params);
-		}
-	}, {
-		key: 'updateParams',
-		value: function updateParams(params) {
-			assign_default()(this.params, params);
-		}
-	}, {
-		key: 'isAutoPlay',
-		value: function isAutoPlay() {
-			return this.autoPlay;
-		}
-	}, {
-		key: 'isResolvedState',
-		value: function isResolvedState() {
-			return this.resolvedState;
-		}
-	}, {
-		key: 'isSplitLayout',
-		value: function isSplitLayout() {
-			return this.splitLayout;
-		}
-	}]);
-
-	return VideoSettings;
+  return VideoSettings;
 }();
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/assertThisInitialized"
+var assertThisInitialized_ = __webpack_require__(17);
+var assertThisInitialized_default = /*#__PURE__*/__webpack_require__.n(assertThisInitialized_);
+
 // EXTERNAL MODULE: external "lodash/toPlainObject"
-var toPlainObject_ = __webpack_require__(22);
+var toPlainObject_ = __webpack_require__(24);
 var toPlainObject_default = /*#__PURE__*/__webpack_require__.n(toPlainObject_);
 
 // EXTERNAL MODULE: external "lodash/isUndefined"
-var isUndefined_ = __webpack_require__(21);
+var isUndefined_ = __webpack_require__(23);
 var isUndefined_default = /*#__PURE__*/__webpack_require__.n(isUndefined_);
 
 // EXTERNAL MODULE: external "lodash/mapValues"
@@ -3508,11 +3417,10 @@ var mapValues_ = __webpack_require__(14);
 var mapValues_default = /*#__PURE__*/__webpack_require__.n(mapValues_);
 
 // EXTERNAL MODULE: external "lodash/debounce"
-var debounce_ = __webpack_require__(20);
+var debounce_ = __webpack_require__(22);
 var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce_);
 
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/theme.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/theme.ts
 
 
 
@@ -3521,71 +3429,74 @@ var debounce_default = /*#__PURE__*/__webpack_require__.n(debounce_);
 /**
  * @abstract
  */
-var theme_BigFancyAdTheme = function () {
-	function BigFancyAdTheme(adSlot, params) {
-		classCallCheck_default()(this, BigFancyAdTheme);
 
-		this.adSlot = adSlot;
-		this.container = this.adSlot.getElement();
-		this.config = ad_engine_["context"].get('templates.bfaa');
-		this.params = params;
-	}
+var theme_BigFancyAdTheme =
+/*#__PURE__*/
+function () {
+  function BigFancyAdTheme(adSlot, params) {
+    classCallCheck_default()(this, BigFancyAdTheme);
 
-	/**
-  @abstract
-  */
-
-
-	createClass_default()(BigFancyAdTheme, [{
-		key: 'onAdReady',
-		value: function onAdReady() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
-
-		/**
+    this.adSlot = adSlot;
+    this.container = this.adSlot.getElement();
+    this.config = ad_engine_["context"].get('templates.bfaa');
+    this.params = params;
+  }
+  /**
    @abstract
    */
 
-	}, {
-		key: 'adIsReady',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(videoSettings) {
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								throw new ad_engine_["utils"].NotImplementedException({ videoSettings: videoSettings });
 
-							case 1:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
+  createClass_default()(BigFancyAdTheme, [{
+    key: "onAdReady",
+    value: function onAdReady() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+    /**
+     @abstract
+     */
 
-			function adIsReady(_x) {
-				return _ref.apply(this, arguments);
-			}
+  }, {
+    key: "adIsReady",
+    value: function () {
+      var _adIsReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee(videoSettings) {
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                throw new ad_engine_["utils"].NotImplementedException({
+                  videoSettings: videoSettings
+                });
 
-			return adIsReady;
-		}()
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-		/**
-   * @abstract
-   */
+      function adIsReady(_x) {
+        return _adIsReady.apply(this, arguments);
+      }
 
-	}, {
-		key: 'onVideoReady',
-		value: function onVideoReady() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
-	}]);
+      return adIsReady;
+    }()
+    /**
+     * @abstract
+     */
 
-	return BigFancyAdTheme;
+  }, {
+    key: "onVideoReady",
+    value: function onVideoReady() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+  }]);
+
+  return BigFancyAdTheme;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-theme.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-theme.ts
 
 
 
@@ -3601,155 +3512,153 @@ var theme_BigFancyAdTheme = function () {
 /**
  * @abstract
  */
-var hivi_theme_BigFancyAdHiviTheme = function (_BigFancyAdTheme) {
-	inherits_default()(BigFancyAdHiviTheme, _BigFancyAdTheme);
 
-	function BigFancyAdHiviTheme() {
-		classCallCheck_default()(this, BigFancyAdHiviTheme);
+var hivi_theme_BigFancyAdHiviTheme =
+/*#__PURE__*/
+function (_BigFancyAdTheme) {
+  inherits_default()(BigFancyAdHiviTheme, _BigFancyAdTheme);
 
-		return possibleConstructorReturn_default()(this, (BigFancyAdHiviTheme.__proto__ || get_prototype_of_default()(BigFancyAdHiviTheme)).apply(this, arguments));
-	}
+  function BigFancyAdHiviTheme() {
+    classCallCheck_default()(this, BigFancyAdHiviTheme);
 
-	createClass_default()(BigFancyAdHiviTheme, [{
-		key: 'onAdReady',
-		value: function onAdReady() {
-			this.container.classList.add('theme-hivi');
-			this.addAdvertisementLabel();
-		}
-	}, {
-		key: 'adIsReady',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								return _context.abrupt('return', ad_engine_["slotTweaker"].makeResponsive(this.adSlot, this.params.aspectRatio));
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(BigFancyAdHiviTheme).apply(this, arguments));
+  }
 
-							case 1:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
+  createClass_default()(BigFancyAdHiviTheme, [{
+    key: "onAdReady",
+    value: function onAdReady() {
+      this.container.classList.add('theme-hivi');
+      this.addAdvertisementLabel();
+    }
+  }, {
+    key: "adIsReady",
+    value: function () {
+      var _adIsReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                return _context.abrupt("return", ad_engine_["slotTweaker"].makeResponsive(this.adSlot, this.params.aspectRatio));
 
-			function adIsReady() {
-				return _ref.apply(this, arguments);
-			}
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-			return adIsReady;
-		}()
-	}, {
-		key: 'addAdvertisementLabel',
-		value: function addAdvertisementLabel() {
-			var advertisementLabel = new advertisement_label_AdvertisementLabel();
+      function adIsReady() {
+        return _adIsReady.apply(this, arguments);
+      }
 
-			this.container.appendChild(advertisementLabel.render());
-		}
+      return adIsReady;
+    }()
+  }, {
+    key: "addAdvertisementLabel",
+    value: function addAdvertisementLabel() {
+      var advertisementLabel = new advertisement_label_AdvertisementLabel();
+      this.container.appendChild(advertisementLabel.render());
+    }
+    /**
+     * @protected
+     */
 
-		/**
-   * @protected
-   */
+  }, {
+    key: "addUnstickLogic",
+    value: function addUnstickLogic() {
+      var stateResolvedAndVideoViewed = this.getStateResolvedAndVideoViewed();
+      this.stickiness = new stickiness_Stickiness(this.adSlot, stateResolvedAndVideoViewed);
+    }
+    /**
+     * @abstract
+     * @protected
+     */
 
-	}, {
-		key: 'addUnstickLogic',
-		value: function addUnstickLogic() {
-			var stateResolvedAndVideoViewed = this.getStateResolvedAndVideoViewed();
+  }, {
+    key: "getStateResolvedAndVideoViewed",
+    value: function getStateResolvedAndVideoViewed() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+    /**
+     * @protected
+     */
 
-			this.stickiness = new stickiness_Stickiness(this.adSlot, stateResolvedAndVideoViewed);
-		}
+  }, {
+    key: "addUnstickButton",
+    value: function addUnstickButton() {
+      var _this = this;
 
-		/**
-   * @abstract
-   * @protected
-   */
+      var closeButton = new close_button_CloseButton({
+        classNames: ['button-unstick'],
+        onClick: function onClick() {
+          return _this.stickiness.close();
+        }
+      });
+      this.container.appendChild(closeButton.render());
+    }
+    /**
+     * @protected
+     */
 
-	}, {
-		key: 'getStateResolvedAndVideoViewed',
-		value: function getStateResolvedAndVideoViewed() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
+  }, {
+    key: "addUnstickEvents",
+    value: function addUnstickEvents() {
+      var _this2 = this;
 
-		/**
-   * @protected
-   */
+      this.stickiness.on(stickiness_Stickiness.STICKINESS_CHANGE_EVENT, function (isSticky) {
+        return _this2.onStickinessChange(isSticky);
+      });
+      this.stickiness.on(stickiness_Stickiness.CLOSE_CLICKED_EVENT, function () {
+        return _this2.onCloseClicked();
+      });
+      this.stickiness.on(stickiness_Stickiness.UNSTICK_IMMEDIATELY_EVENT, function (arg) {
+        return _this2.unstickImmediately(arg);
+      });
+    }
+    /**
+     * @abstract
+     * @protected
+     */
 
-	}, {
-		key: 'addUnstickButton',
-		value: function addUnstickButton() {
-			var _this2 = this;
+  }, {
+    key: "onStickinessChange",
+    value: function onStickinessChange(isSticky) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        isSticky: isSticky
+      });
+    }
+    /**
+     * @abstract
+     * @protected
+     * */
 
-			var closeButton = new close_button_CloseButton({
-				classNames: ['button-unstick'],
-				onClick: function onClick() {
-					return _this2.stickiness.close();
-				}
-			});
+  }, {
+    key: "onCloseClicked",
+    value: function onCloseClicked() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+    /**
+     * @abstract
+     * @protected
+     * @param stopVideo {boolean}
+     */
 
-			this.container.appendChild(closeButton.render());
-		}
+  }, {
+    key: "unstickImmediately",
+    value: function unstickImmediately(stopVideo) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        stopVideo: stopVideo
+      });
+    }
+  }]);
 
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'addUnstickEvents',
-		value: function addUnstickEvents() {
-			var _this3 = this;
-
-			this.stickiness.on(stickiness_Stickiness.STICKINESS_CHANGE_EVENT, function (isSticky) {
-				return _this3.onStickinessChange(isSticky);
-			});
-			this.stickiness.on(stickiness_Stickiness.CLOSE_CLICKED_EVENT, function () {
-				return _this3.onCloseClicked();
-			});
-			this.stickiness.on(stickiness_Stickiness.UNSTICK_IMMEDIATELY_EVENT, function (arg) {
-				return _this3.unstickImmediately(arg);
-			});
-		}
-
-		/**
-   * @abstract
-   * @protected
-   */
-
-	}, {
-		key: 'onStickinessChange',
-		value: function onStickinessChange(isSticky) {
-			throw new ad_engine_["utils"].NotImplementedException({ isSticky: isSticky });
-		}
-
-		/**
-   * @abstract
-   * @protected
-   * */
-
-	}, {
-		key: 'onCloseClicked',
-		value: function onCloseClicked() {
-			throw new ad_engine_["utils"].NotImplementedException();
-		}
-
-		/**
-   * @abstract
-   * @protected
-   * @param stopVideo {boolean}
-   */
-
-	}, {
-		key: 'unstickImmediately',
-		value: function unstickImmediately(stopVideo) {
-			throw new ad_engine_["utils"].NotImplementedException({ stopVideo: stopVideo });
-		}
-	}]);
-
-	return BigFancyAdHiviTheme;
+  return BigFancyAdHiviTheme;
 }(theme_BigFancyAdTheme);
 hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY = 3000;
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-bfaa.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-bfaa.ts
 
 
 
@@ -3775,465 +3684,451 @@ hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY = 3000;
 
 
 var HIVI_RESOLVED_THRESHOLD = 0.995;
+var hivi_bfaa_BfaaHiviTheme =
+/*#__PURE__*/
+function (_BigFancyAdHiviTheme) {
+  inherits_default()(BfaaHiviTheme, _BigFancyAdHiviTheme);
 
-var hivi_bfaa_BfaaHiviTheme = function (_BigFancyAdHiviTheme) {
-	inherits_default()(BfaaHiviTheme, _BigFancyAdHiviTheme);
+  function BfaaHiviTheme(adSlot, params) {
+    var _this;
 
-	function BfaaHiviTheme(adSlot, params) {
-		classCallCheck_default()(this, BfaaHiviTheme);
+    classCallCheck_default()(this, BfaaHiviTheme);
 
-		var _this = possibleConstructorReturn_default()(this, (BfaaHiviTheme.__proto__ || get_prototype_of_default()(BfaaHiviTheme)).call(this, adSlot, params));
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(BfaaHiviTheme).call(this, adSlot, params));
 
-		assign_default()(_this, toPlainObject_default()(new external_eventemitter3_default.a()));
+    assign_default()(assertThisInitialized_default()(assertThisInitialized_default()(_this)), toPlainObject_default()(new external_eventemitter3_default.a()));
 
-		_this.stickiness = null;
-		_this.scrollListener = null;
-		_this.video = null;
-		_this.isLocked = false;
-		_this.onResolvedStateScroll = null;
+    _this.stickiness = null;
+    _this.scrollListener = null;
+    _this.video = null;
+    _this.isLocked = false;
+    _this.onResolvedStateScroll = null;
 
-		if (_this.params.isSticky && _this.config.stickinessAllowed) {
-			_this.addStickinessPlugin();
-		}
+    if (_this.params.isSticky && _this.config.stickinessAllowed) {
+      _this.addStickinessPlugin();
+    }
 
-		if (!_this.config.defaultStateAllowed) {
-			_this.params.resolvedStateForced = true;
-		}
-		return _this;
-	}
+    if (!_this.config.defaultStateAllowed) {
+      _this.params.resolvedStateForced = true;
+    }
 
-	/**
-  * @private
-  */
-
-
-	createClass_default()(BfaaHiviTheme, [{
-		key: 'addStickinessPlugin',
-		value: function addStickinessPlugin() {
-			this.addUnstickLogic();
-			this.addUnstickButton();
-			this.addUnstickEvents();
-			this.stickiness.run();
-		}
-	}, {
-		key: 'onAdReady',
-		value: function onAdReady() {
-			var _this2 = this;
-
-			get_default()(BfaaHiviTheme.prototype.__proto__ || get_prototype_of_default()(BfaaHiviTheme.prototype), 'onAdReady', this).call(this);
-
-			if (resolvedState.isResolvedState(this.params)) {
-				this.setResolvedState(true);
-			} else {
-				resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
-				this.scrollListener = ad_engine_["scrollListener"].addCallback(function () {
-					return _this2.updateAdSizes();
-				});
-				// Manually run update on scroll once
-				this.updateAdSizes();
-			}
-		}
-	}, {
-		key: 'onVideoReady',
-		value: function onVideoReady(video) {
-			var _this3 = this;
-
-			this.video = video;
-			video.addEventListener('wikiaAdStarted', function () {
-				_this3.updateAdSizes();
-
-				if (!video.params.autoPlay) {
-					_this3.resetResolvedState();
-				}
-			});
-			video.addEventListener('wikiaAdCompleted', function () {
-				if (!_this3.isLocked) {
-					_this3.setResolvedState(true);
-				}
-			});
-			video.addEventListener('wikiaFullscreenChange', function () {
-				if (video.isFullscreen()) {
-					_this3.stickiness.blockRevertStickiness();
-					_this3.container.classList.add('theme-video-fullscreen');
-				} else {
-					_this3.stickiness.unblockRevertStickiness();
-					_this3.container.classList.remove('theme-video-fullscreen');
-					_this3.updateAdSizes();
-				}
-			});
-		}
-
-		/**
+    return _this;
+  }
+  /**
    * @private
    */
 
-	}, {
-		key: 'resetResolvedState',
-		value: function resetResolvedState() {
-			var offset = this.getHeightDifferenceBetweenStates();
-
-			if (this.isLocked && this.config.defaultStateAllowed && window.scrollY < offset) {
-				var aspectRatio = this.params.config.aspectRatio.default;
-
-				this.container.style.top = '';
-				this.config.mainContainer.style.paddingTop = 100 / aspectRatio + '%';
-
-				if (this.params.isSticky && this.config.stickinessAllowed) {
-					this.unstickImmediately(false);
-				}
-
-				this.unlock();
-				this.switchImagesInAd(false);
-				this.setResolvedState(false);
-				this.updateAdSizes();
-			}
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'lock',
-		value: function lock() {
-			var offset = this.getHeightDifferenceBetweenStates();
-
-			this.isLocked = true;
-			this.container.classList.add('theme-locked');
-			ad_engine_["scrollListener"].removeCallback(this.scrollListener);
-			this.adjustSizesToResolved(offset);
-			this.emit(BfaaHiviTheme.RESOLVED_STATE_EVENT);
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'unlock',
-		value: function unlock() {
-			var _this4 = this;
-
-			this.isLocked = false;
-			this.container.classList.remove('theme-locked');
-			this.scrollListener = ad_engine_["scrollListener"].addCallback(function () {
-				return _this4.updateAdSizes();
-			});
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'adjustSizesToResolved',
-		value: function adjustSizesToResolved(offset) {
-			if (this.adSlot.isEnabled()) {
-				var aspectRatio = this.params.config.aspectRatio.resolved;
-
-				this.container.style.top = '';
-				this.config.mainContainer.style.paddingTop = 100 / aspectRatio + '%';
-				ad_engine_["slotTweaker"].makeResponsive(this.adSlot, aspectRatio);
-				window.scrollBy(0, -Math.min(offset, window.scrollY));
-				this.updateAdSizes();
-			}
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'updateAdSizes',
-		value: function updateAdSizes() {
-			var _params$config = this.params.config,
-			    aspectRatio = _params$config.aspectRatio,
-			    state = _params$config.state;
-			var currentWidth = this.config.mainContainer.offsetWidth;
-
-			var isResolved = this.container.classList.contains('theme-resolved');
-			var maxHeight = currentWidth / aspectRatio.default;
-			var minHeight = currentWidth / aspectRatio.resolved;
-			var scrollY = window.scrollY || window.pageYOffset || 0;
-			var aspectScroll = this.isLocked ? minHeight : Math.max(minHeight, maxHeight - scrollY);
-			var currentAspectRatio = currentWidth / aspectScroll;
-			var aspectRatioDiff = aspectRatio.default - aspectRatio.resolved;
-			var currentDiff = aspectRatio.default - currentAspectRatio;
-			var currentState = 1 - (aspectRatioDiff - currentDiff) / aspectRatioDiff;
-			var heightDiff = state.height.default - state.height.resolved;
-			var heightFactor = (state.height.default - heightDiff * currentState) / 100;
-			var relativeHeight = aspectScroll * heightFactor;
-
-			this.adjustVideoSize(relativeHeight);
-
-			if (this.params.thumbnail) {
-				this.setThumbnailStyle(currentState);
-			}
-
-			if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
-				this.setResolvedState();
-			} else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
-				this.container.style.top = '';
-				this.switchImagesInAd(false);
-			}
-
-			return ad_engine_["slotTweaker"].makeResponsive(this.adSlot, currentAspectRatio);
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'adjustVideoSize',
-		value: function adjustVideoSize(relativeHeight) {
-			if (this.video && !this.video.isFullscreen()) {
-				this.video.container.style.width = this.params.videoAspectRatio * relativeHeight + 'px';
-			}
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'setThumbnailStyle',
-		value: function setThumbnailStyle(state) {
-			var style = mapValues_default()(this.params.config.state, function (styleProperty) {
-				var diff = styleProperty.default - styleProperty.resolved;
-
-				return styleProperty.default - diff * state + '%';
-			});
-
-			assign_default()(this.params.thumbnail.style, style);
-
-			if (this.video) {
-				assign_default()(this.video.container.style, style);
-
-				if (this.video.isFullscreen()) {
-					this.video.container.style.height = '100%';
-				}
-			}
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'setResolvedState',
-		value: function setResolvedState(immediately) {
-			var _this5 = this;
-
-			var isSticky = this.stickiness && this.stickiness.isSticky();
-			var width = this.container.offsetWidth;
-			var aspectRatio = this.params.config.aspectRatio;
-
-			var resolvedHeight = width / aspectRatio.resolved;
-			var offset = this.getHeightDifferenceBetweenStates();
-
-			if (isSticky) {
-				this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
-			} else {
-				this.container.style.top = Math.min(window.scrollY, offset) + 'px';
-			}
-
-			this.switchImagesInAd(true);
-
-			if (this.onResolvedStateScroll) {
-				window.removeEventListener('scroll', this.onResolvedStateScroll);
-				this.onResolvedStateScroll.cancel();
-			}
-
-			return new promise_default.a(function (resolve) {
-				if (immediately) {
-					_this5.lock();
-					resolve();
-				} else {
-					_this5.onResolvedStateScroll = debounce_default()(function () {
-						if (window.scrollY < offset) {
-							return;
-						}
-
-						window.removeEventListener('scroll', _this5.onResolvedStateScroll);
-						_this5.onResolvedStateScroll = null;
-						_this5.lock();
-						resolve();
-					}, 50);
-					window.addEventListener('scroll', _this5.onResolvedStateScroll);
-					_this5.onResolvedStateScroll();
-				}
-			});
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'getHeightDifferenceBetweenStates',
-		value: function getHeightDifferenceBetweenStates() {
-			var width = this.container.offsetWidth;
-			var aspectRatio = this.params.config.aspectRatio;
-
-
-			return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'switchImagesInAd',
-		value: function switchImagesInAd(isResolved) {
-			if (isResolved) {
-				this.container.classList.add('theme-resolved');
-				this.params.image2.element.classList.remove('hidden-state');
-			} else {
-				this.container.classList.remove('theme-resolved');
-				this.params.image2.element.classList.add('hidden-state');
-			}
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'getStateResolvedAndVideoViewed',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-				var _params, stickyAdditionalTime, stickyUntilVideoViewed, stateResolved, videoViewed, unstickDelay;
-
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								_params = this.params, stickyAdditionalTime = _params.stickyAdditionalTime, stickyUntilVideoViewed = _params.stickyUntilVideoViewed;
-								stateResolved = ad_engine_["utils"].once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
-								videoViewed = stickyUntilVideoViewed ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].VIDEO_VIEWED_EVENT) : promise_default.a.resolve();
-								unstickDelay = isUndefined_default()(stickyAdditionalTime) ? hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY : stickyAdditionalTime;
-								_context.next = 6;
-								return promise_default.a.all([stateResolved, videoViewed]);
-
-							case 6:
-								_context.next = 8;
-								return ad_engine_["utils"].wait(unstickDelay);
-
-							case 8:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
-
-			function getStateResolvedAndVideoViewed() {
-				return _ref.apply(this, arguments);
-			}
-
-			return getStateResolvedAndVideoViewed;
-		}()
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'onStickinessChange',
-		value: function () {
-			var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2(isSticky) {
-				var stickinessBeforeCallback, stickinessAfterCallback;
-				return regenerator_default.a.wrap(function _callee2$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								stickinessBeforeCallback = isSticky ? this.config.onBeforeStickBfaaCallback : this.config.onBeforeUnstickBfaaCallback;
-								stickinessAfterCallback = isSticky ? this.config.onAfterStickBfaaCallback : this.config.onAfterUnstickBfaaCallback;
-
-
-								stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
-
-								if (isSticky) {
-									_context2.next = 12;
-									break;
-								}
-
-								this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
-								this.config.moveNavbar(0, SLIDE_OUT_TIME);
-								_context2.next = 8;
-								return animate(this.adSlot.getElement(), CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
-
-							case 8:
-								this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
-								animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
-								_context2.next = 14;
-								break;
-
-							case 12:
-								this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
-								this.adSlot.getElement().classList.add(CSS_CLASSNAME_STICKY_BFAA);
-
-							case 14:
-
-								stickinessAfterCallback.call(this.config, this.adSlot, this.params);
-
-							case 15:
-							case 'end':
-								return _context2.stop();
-						}
-					}
-				}, _callee2, this);
-			}));
-
-			function onStickinessChange(_x) {
-				return _ref2.apply(this, arguments);
-			}
-
-			return onStickinessChange;
-		}()
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'onCloseClicked',
-		value: function onCloseClicked() {
-			this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
-			this.unstickImmediately();
-
-			this.config.mainContainer.style.paddingTop = '0';
-			this.adSlot.disable();
-			ad_engine_["slotTweaker"].hide(this.adSlot);
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'unstickImmediately',
-		value: function unstickImmediately() {
-			var stopVideo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-			ad_engine_["scrollListener"].removeCallback(this.scrollListener);
-			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
-
-			if (stopVideo && this.video && this.video.ima.getAdsManager()) {
-				this.video.stop();
-			}
-
-			this.config.moveNavbar(0, 0);
-			this.stickiness.sticky = false;
-		}
-	}]);
-
-	return BfaaHiviTheme;
+
+  createClass_default()(BfaaHiviTheme, [{
+    key: "addStickinessPlugin",
+    value: function addStickinessPlugin() {
+      this.addUnstickLogic();
+      this.addUnstickButton();
+      this.addUnstickEvents();
+      this.stickiness.run();
+    }
+  }, {
+    key: "onAdReady",
+    value: function onAdReady() {
+      var _this2 = this;
+
+      get_default()(getPrototypeOf_default()(BfaaHiviTheme.prototype), "onAdReady", this).call(this);
+
+      if (resolvedState.isResolvedState(this.params)) {
+        this.setResolvedState(true);
+      } else {
+        resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
+        this.scrollListener = ad_engine_["scrollListener"].addCallback(function () {
+          return _this2.updateAdSizes();
+        }); // Manually run update on scroll once
+
+        this.updateAdSizes();
+      }
+    }
+  }, {
+    key: "onVideoReady",
+    value: function onVideoReady(video) {
+      var _this3 = this;
+
+      this.video = video;
+      video.addEventListener('wikiaAdStarted', function () {
+        _this3.updateAdSizes();
+
+        if (!video.params.autoPlay) {
+          _this3.resetResolvedState();
+        }
+      });
+      video.addEventListener('wikiaAdCompleted', function () {
+        if (!_this3.isLocked) {
+          _this3.setResolvedState(true);
+        }
+      });
+      video.addEventListener('wikiaFullscreenChange', function () {
+        if (video.isFullscreen()) {
+          _this3.stickiness.blockRevertStickiness();
+
+          _this3.container.classList.add('theme-video-fullscreen');
+        } else {
+          _this3.stickiness.unblockRevertStickiness();
+
+          _this3.container.classList.remove('theme-video-fullscreen');
+
+          _this3.updateAdSizes();
+        }
+      });
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "resetResolvedState",
+    value: function resetResolvedState() {
+      var offset = this.getHeightDifferenceBetweenStates();
+
+      if (this.isLocked && this.config.defaultStateAllowed && window.scrollY < offset) {
+        var aspectRatio = this.params.config.aspectRatio.default;
+        this.container.style.top = '';
+        this.config.mainContainer.style.paddingTop = "".concat(100 / aspectRatio, "%");
+
+        if (this.params.isSticky && this.config.stickinessAllowed) {
+          this.unstickImmediately(false);
+        }
+
+        this.unlock();
+        this.switchImagesInAd(false);
+        this.setResolvedState(false);
+        this.updateAdSizes();
+      }
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "lock",
+    value: function lock() {
+      var offset = this.getHeightDifferenceBetweenStates();
+      this.isLocked = true;
+      this.container.classList.add('theme-locked');
+      ad_engine_["scrollListener"].removeCallback(this.scrollListener);
+      this.adjustSizesToResolved(offset);
+      this.emit(BfaaHiviTheme.RESOLVED_STATE_EVENT);
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "unlock",
+    value: function unlock() {
+      var _this4 = this;
+
+      this.isLocked = false;
+      this.container.classList.remove('theme-locked');
+      this.scrollListener = ad_engine_["scrollListener"].addCallback(function () {
+        return _this4.updateAdSizes();
+      });
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "adjustSizesToResolved",
+    value: function adjustSizesToResolved(offset) {
+      if (this.adSlot.isEnabled()) {
+        var aspectRatio = this.params.config.aspectRatio.resolved;
+        this.container.style.top = '';
+        this.config.mainContainer.style.paddingTop = "".concat(100 / aspectRatio, "%");
+        ad_engine_["slotTweaker"].makeResponsive(this.adSlot, aspectRatio);
+        window.scrollBy(0, -Math.min(offset, window.scrollY));
+        this.updateAdSizes();
+      }
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "updateAdSizes",
+    value: function updateAdSizes() {
+      var _this$params$config = this.params.config,
+          aspectRatio = _this$params$config.aspectRatio,
+          state = _this$params$config.state;
+      var currentWidth = this.config.mainContainer.offsetWidth;
+      var isResolved = this.container.classList.contains('theme-resolved');
+      var maxHeight = currentWidth / aspectRatio.default;
+      var minHeight = currentWidth / aspectRatio.resolved;
+      var scrollY = window.scrollY || window.pageYOffset || 0;
+      var aspectScroll = this.isLocked ? minHeight : Math.max(minHeight, maxHeight - scrollY);
+      var currentAspectRatio = currentWidth / aspectScroll;
+      var aspectRatioDiff = aspectRatio.default - aspectRatio.resolved;
+      var currentDiff = aspectRatio.default - currentAspectRatio;
+      var currentState = 1 - (aspectRatioDiff - currentDiff) / aspectRatioDiff;
+      var heightDiff = state.height.default - state.height.resolved;
+      var heightFactor = (state.height.default - heightDiff * currentState) / 100;
+      var relativeHeight = aspectScroll * heightFactor;
+      this.adjustVideoSize(relativeHeight);
+
+      if (this.params.thumbnail) {
+        this.setThumbnailStyle(currentState);
+      }
+
+      if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
+        this.setResolvedState();
+      } else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
+        this.container.style.top = '';
+        this.switchImagesInAd(false);
+      }
+
+      return ad_engine_["slotTweaker"].makeResponsive(this.adSlot, currentAspectRatio);
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "adjustVideoSize",
+    value: function adjustVideoSize(relativeHeight) {
+      if (this.video && !this.video.isFullscreen()) {
+        this.video.container.style.width = "".concat(this.params.videoAspectRatio * relativeHeight, "px");
+      }
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "setThumbnailStyle",
+    value: function setThumbnailStyle(state) {
+      var style = mapValues_default()(this.params.config.state, function (styleProperty) {
+        var diff = styleProperty.default - styleProperty.resolved;
+        return "".concat(styleProperty.default - diff * state, "%");
+      });
+
+      assign_default()(this.params.thumbnail.style, style);
+
+      if (this.video) {
+        assign_default()(this.video.container.style, style);
+
+        if (this.video.isFullscreen()) {
+          this.video.container.style.height = '100%';
+        }
+      }
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "setResolvedState",
+    value: function setResolvedState(immediately) {
+      var _this5 = this;
+
+      var isSticky = this.stickiness && this.stickiness.isSticky();
+      var width = this.container.offsetWidth;
+      var aspectRatio = this.params.config.aspectRatio;
+      var resolvedHeight = width / aspectRatio.resolved;
+      var offset = this.getHeightDifferenceBetweenStates();
+
+      if (isSticky) {
+        this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
+      } else {
+        this.container.style.top = "".concat(Math.min(window.scrollY, offset), "px");
+      }
+
+      this.switchImagesInAd(true);
+
+      if (this.onResolvedStateScroll) {
+        window.removeEventListener('scroll', this.onResolvedStateScroll);
+        this.onResolvedStateScroll.cancel();
+      }
+
+      return new promise_default.a(function (resolve) {
+        if (immediately) {
+          _this5.lock();
+
+          resolve();
+        } else {
+          _this5.onResolvedStateScroll = debounce_default()(function () {
+            if (window.scrollY < offset) {
+              return;
+            }
+
+            window.removeEventListener('scroll', _this5.onResolvedStateScroll);
+            _this5.onResolvedStateScroll = null;
+
+            _this5.lock();
+
+            resolve();
+          }, 50);
+          window.addEventListener('scroll', _this5.onResolvedStateScroll);
+
+          _this5.onResolvedStateScroll();
+        }
+      });
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "getHeightDifferenceBetweenStates",
+    value: function getHeightDifferenceBetweenStates() {
+      var width = this.container.offsetWidth;
+      var aspectRatio = this.params.config.aspectRatio;
+      return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "switchImagesInAd",
+    value: function switchImagesInAd(isResolved) {
+      if (isResolved) {
+        this.container.classList.add('theme-resolved');
+        this.params.image2.element.classList.remove('hidden-state');
+      } else {
+        this.container.classList.remove('theme-resolved');
+        this.params.image2.element.classList.add('hidden-state');
+      }
+    }
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "getStateResolvedAndVideoViewed",
+    value: function () {
+      var _getStateResolvedAndVideoViewed = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var _this$params, stickyAdditionalTime, stickyUntilVideoViewed, stateResolved, videoViewed, unstickDelay;
+
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this$params = this.params, stickyAdditionalTime = _this$params.stickyAdditionalTime, stickyUntilVideoViewed = _this$params.stickyUntilVideoViewed;
+                stateResolved = ad_engine_["utils"].once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
+                videoViewed = stickyUntilVideoViewed ? ad_engine_["utils"].once(this.adSlot, ad_engine_["AdSlot"].VIDEO_VIEWED_EVENT) : promise_default.a.resolve();
+                unstickDelay = isUndefined_default()(stickyAdditionalTime) ? hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY : stickyAdditionalTime;
+                _context.next = 6;
+                return promise_default.a.all([stateResolved, videoViewed]);
+
+              case 6:
+                _context.next = 8;
+                return ad_engine_["utils"].wait(unstickDelay);
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getStateResolvedAndVideoViewed() {
+        return _getStateResolvedAndVideoViewed.apply(this, arguments);
+      }
+
+      return getStateResolvedAndVideoViewed;
+    }()
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "onStickinessChange",
+    value: function () {
+      var _onStickinessChange = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee2(isSticky) {
+        var stickinessBeforeCallback, stickinessAfterCallback;
+        return regenerator_default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                stickinessBeforeCallback = isSticky ? this.config.onBeforeStickBfaaCallback : this.config.onBeforeUnstickBfaaCallback;
+                stickinessAfterCallback = isSticky ? this.config.onAfterStickBfaaCallback : this.config.onAfterUnstickBfaaCallback;
+                stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
+
+                if (isSticky) {
+                  _context2.next = 12;
+                  break;
+                }
+
+                this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
+                this.config.moveNavbar(0, SLIDE_OUT_TIME);
+                _context2.next = 8;
+                return animate(this.adSlot.getElement(), CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
+
+              case 8:
+                this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
+                animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+                _context2.next = 14;
+                break;
+
+              case 12:
+                this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
+                this.adSlot.getElement().classList.add(CSS_CLASSNAME_STICKY_BFAA);
+
+              case 14:
+                stickinessAfterCallback.call(this.config, this.adSlot, this.params);
+
+              case 15:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function onStickinessChange(_x) {
+        return _onStickinessChange.apply(this, arguments);
+      }
+
+      return onStickinessChange;
+    }()
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "onCloseClicked",
+    value: function onCloseClicked() {
+      this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
+      this.unstickImmediately();
+      this.config.mainContainer.style.paddingTop = '0';
+      this.adSlot.disable();
+      ad_engine_["slotTweaker"].hide(this.adSlot);
+    }
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "unstickImmediately",
+    value: function unstickImmediately() {
+      var stopVideo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      ad_engine_["scrollListener"].removeCallback(this.scrollListener);
+      this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
+
+      if (stopVideo && this.video && this.video.ima.getAdsManager()) {
+        this.video.stop();
+      }
+
+      this.config.moveNavbar(0, 0);
+      this.stickiness.sticky = false;
+    }
+  }]);
+
+  return BfaaHiviTheme;
 }(hivi_theme_BigFancyAdHiviTheme);
 hivi_bfaa_BfaaHiviTheme.RESOLVED_STATE_EVENT = symbol_default()('RESOLVED_STATE_EVENT');
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-bfab.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/hivi/hivi-bfab.ts
 
 
 
@@ -4252,380 +4147,373 @@ hivi_bfaa_BfaaHiviTheme.RESOLVED_STATE_EVENT = symbol_default()('RESOLVED_STATE_
 
 
 
+var hivi_bfab_BfabHiviTheme =
+/*#__PURE__*/
+function (_BigFancyAdHiviTheme) {
+  inherits_default()(BfabHiviTheme, _BigFancyAdHiviTheme);
 
+  function BfabHiviTheme(adSlot, params) {
+    var _this;
 
-var hivi_bfab_BfabHiviTheme = function (_BigFancyAdHiviTheme) {
-	inherits_default()(BfabHiviTheme, _BigFancyAdHiviTheme);
+    classCallCheck_default()(this, BfabHiviTheme);
 
-	function BfabHiviTheme(adSlot, params) {
-		classCallCheck_default()(this, BfabHiviTheme);
+    _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(BfabHiviTheme).call(this, adSlot, params));
+    _this.stickiness = null;
+    _this.video = null;
+    _this.config = ad_engine_["context"].get('templates.bfab');
+    return _this;
+  }
 
-		var _this = possibleConstructorReturn_default()(this, (BfabHiviTheme.__proto__ || get_prototype_of_default()(BfabHiviTheme)).call(this, adSlot, params));
+  createClass_default()(BfabHiviTheme, [{
+    key: "onAdReady",
+    value: function onAdReady() {
+      get_default()(getPrototypeOf_default()(BfabHiviTheme.prototype), "onAdReady", this).call(this);
 
-		_this.stickiness = null;
-		_this.video = null;
-		_this.config = ad_engine_["context"].get('templates.bfab');
-		return _this;
-	}
+      if (this.params.isSticky && this.config.stickinessAllowed) {
+        this.addStickinessPlugin();
+      }
 
-	createClass_default()(BfabHiviTheme, [{
-		key: 'onAdReady',
-		value: function onAdReady() {
-			get_default()(BfabHiviTheme.prototype.__proto__ || get_prototype_of_default()(BfabHiviTheme.prototype), 'onAdReady', this).call(this);
+      if (!this.config.defaultStateAllowed) {
+        this.params.resolvedStateForced = true;
+      }
 
-			if (this.params.isSticky && this.config.stickinessAllowed) {
-				this.addStickinessPlugin();
-			}
+      if (resolvedState.isResolvedState(this.params)) {
+        this.setResolvedState();
+      } else {
+        resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
+        this.updateAdSizes();
+        ad_engine_["slotTweaker"].makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
+      }
+    }
+    /**
+     * @private
+     */
 
-			if (!this.config.defaultStateAllowed) {
-				this.params.resolvedStateForced = true;
-			}
+  }, {
+    key: "addStickinessPlugin",
+    value: function () {
+      var _addStickinessPlugin = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var _this2 = this;
 
-			if (resolvedState.isResolvedState(this.params)) {
-				this.setResolvedState();
-			} else {
-				resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
-				this.updateAdSizes();
-				ad_engine_["slotTweaker"].makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
-			}
-		}
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.waitForScrollAndUnstickedBfaa();
 
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'addStickinessPlugin',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-				var _this2 = this;
-
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								_context.next = 2;
-								return this.waitForScrollAndUnstickedBfaa();
-
-							case 2:
-
-								if (!this.adSlot.isViewed()) {
-									this.addUnstickLogic();
-									this.addUnstickButton();
-									this.addUnstickEvents();
-									this.stickiness.run();
-
-									ad_engine_["scrollListener"].addCallback(function (event, id) {
-										var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-
-										if (scrollPosition <= _this2.config.unstickInstantlyBelowPosition) {
-											_this2.adSlot.emitEvent('top-conflict');
-											ad_engine_["scrollListener"].removeCallback(id);
-											_this2.stickiness.revertStickiness();
-										}
-									});
-								}
-
-							case 3:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
-
-			function addStickinessPlugin() {
-				return _ref.apply(this, arguments);
-			}
-
-			return addStickinessPlugin;
-		}()
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'waitForScrollAndUnstickedBfaa',
-		value: function waitForScrollAndUnstickedBfaa() {
-			var _this3 = this;
-
-			var resolvePromise = null;
-
-			var promise = new promise_default.a(function (resolve) {
-				resolvePromise = resolve;
-			});
-			var bfaa = ad_engine_["slotService"].get(this.config.bfaaSlotName);
-
-			ad_engine_["scrollListener"].addCallback(function (event, id) {
-				if (_this3.adSlot.isViewed()) {
-					ad_engine_["scrollListener"].removeCallback(id);
-
-					return;
-				}
-
-				var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-				var slotPosition = ad_engine_["utils"].getTopOffset(_this3.adSlot.getElement());
-				var isBfaaSticky = bfaa.getElement().classList.contains('sticky-bfaa');
-				var bfaaHeight = bfaa.getElement().offsetHeight;
-
-				if (isBfaaSticky && scrollPosition >= slotPosition - _this3.config.topThreshold - bfaaHeight) {
-					ad_engine_["scrollListener"].removeCallback(id);
-					_this3.adSlot.emitEvent('viewport-conflict');
-				} else if (scrollPosition >= slotPosition - _this3.config.topThreshold && !isBfaaSticky) {
-					ad_engine_["scrollListener"].removeCallback(id);
-					resolvePromise();
-				}
-			});
-
-			return promise;
-		}
-	}, {
-		key: 'onVideoReady',
-		value: function onVideoReady(video) {
-			var _this4 = this;
-
-			this.video = video;
-			video.addEventListener('wikiaAdStarted', function () {
-				return _this4.updateAdSizes();
-			});
-			video.addEventListener('wikiaAdCompleted', function () {
-				return _this4.setResolvedState();
-			});
-			video.addEventListener('wikiaFullscreenChange', function () {
-				if (video.isFullscreen()) {
-					_this4.stickiness.blockRevertStickiness();
-					_this4.container.classList.add('theme-video-fullscreen');
-				} else {
-					_this4.stickiness.unblockRevertStickiness();
-					_this4.container.classList.remove('theme-video-fullscreen');
-					_this4.updateAdSizes();
-				}
-			});
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'updateAdSizes',
-		value: function updateAdSizes() {
-			var state = resolvedState.isResolvedState(this.params) ? 'resolved' : 'default';
-			var stateHeight = this.params.config.state.height[state];
-			var relativeHeight = this.params.container.offsetHeight * (stateHeight / 100);
-
-			this.adjustVideoSize(relativeHeight);
-
-			if (this.params.thumbnail) {
-				this.setThumbnailStyle(state);
-			}
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'adjustVideoSize',
-		value: function adjustVideoSize(relativeHeight) {
-			if (this.video && !this.video.isFullscreen()) {
-				this.video.container.style.width = this.params.videoAspectRatio * relativeHeight + 'px';
-			}
-		}
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'setResolvedState',
-		value: function () {
-			var _ref2 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee2() {
-				var _params, config, image2;
-
-				return regenerator_default.a.wrap(function _callee2$(_context2) {
-					while (1) {
-						switch (_context2.prev = _context2.next) {
-							case 0:
-								_params = this.params, config = _params.config, image2 = _params.image2;
-
-
-								this.container.classList.add('theme-resolved');
-								image2.element.classList.remove('hidden-state');
-								_context2.next = 5;
-								return ad_engine_["slotTweaker"].makeResponsive(this.adSlot, config.aspectRatio.resolved);
-
-							case 5:
-
-								if (this.params.thumbnail) {
-									this.setThumbnailStyle('resolved');
-								}
-
-							case 6:
-							case 'end':
-								return _context2.stop();
-						}
-					}
-				}, _callee2, this);
-			}));
-
-			function setResolvedState() {
-				return _ref2.apply(this, arguments);
-			}
-
-			return setResolvedState;
-		}()
-
-		/**
-   * @private
-   */
-
-	}, {
-		key: 'setThumbnailStyle',
-		value: function setThumbnailStyle() {
-			var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'default';
-			var thumbnail = this.params.thumbnail;
-
-			var style = mapValues_default()(this.params.config.state, function (styleProperty) {
-				return styleProperty[state] + '%';
-			});
-
-			assign_default()(thumbnail.style, style);
-
-			if (this.video) {
-				assign_default()(this.video.container.style, style);
-			}
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'getStateResolvedAndVideoViewed',
-		value: function () {
-			var _ref3 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee3() {
-				return regenerator_default.a.wrap(function _callee3$(_context3) {
-					while (1) {
-						switch (_context3.prev = _context3.next) {
-							case 0:
-								_context3.next = 2;
-								return ad_engine_["utils"].wait(hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY);
-
-							case 2:
-							case 'end':
-								return _context3.stop();
-						}
-					}
-				}, _callee3, this);
-			}));
-
-			function getStateResolvedAndVideoViewed() {
-				return _ref3.apply(this, arguments);
-			}
-
-			return getStateResolvedAndVideoViewed;
-		}()
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'onStickinessChange',
-		value: function () {
-			var _ref4 = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee4(isSticky) {
-				var element;
-				return regenerator_default.a.wrap(function _callee4$(_context4) {
-					while (1) {
-						switch (_context4.prev = _context4.next) {
-							case 0:
-								element = this.adSlot.getElement();
-
-								if (isSticky) {
-									_context4.next = 12;
-									break;
-								}
-
-								if (!(this.adSlot.getStatus() !== 'top-conflict')) {
-									_context4.next = 5;
-									break;
-								}
-
-								_context4.next = 5;
-								return animate(this.adSlot.getElement(), CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
-
-							case 5:
-								this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
-								element.style.top = null;
-								element.parentNode.style.height = null;
-								element.classList.remove(CSS_CLASSNAME_STICKY_BFAB);
-								animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
-								_context4.next = 16;
-								break;
-
-							case 12:
-								this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
-								element.parentNode.style.height = element.offsetHeight + 'px';
-								element.classList.add(CSS_CLASSNAME_STICKY_BFAB);
-								element.style.top = this.config.topThreshold + 'px';
-
-							case 16:
-							case 'end':
-								return _context4.stop();
-						}
-					}
-				}, _callee4, this);
-			}));
-
-			function onStickinessChange(_x2) {
-				return _ref4.apply(this, arguments);
-			}
-
-			return onStickinessChange;
-		}()
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'onCloseClicked',
-		value: function onCloseClicked() {
-			this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
-			this.unstickImmediately();
-
-			this.adSlot.getElement().parentNode.style.height = null;
-			this.adSlot.disable();
-			ad_engine_["slotTweaker"].hide(this.adSlot);
-		}
-
-		/**
-   * @protected
-   */
-
-	}, {
-		key: 'unstickImmediately',
-		value: function unstickImmediately() {
-			var stopVideo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-			if (this.stickiness) {
-				this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAB);
-
-				if (stopVideo && this.video && this.video.ima.getAdsManager()) {
-					this.video.stop();
-				}
-
-				this.stickiness.sticky = false;
-			}
-		}
-	}]);
-
-	return BfabHiviTheme;
+              case 2:
+                if (!this.adSlot.isViewed()) {
+                  this.addUnstickLogic();
+                  this.addUnstickButton();
+                  this.addUnstickEvents();
+                  this.stickiness.run();
+                  ad_engine_["scrollListener"].addCallback(function (event, id) {
+                    var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
+                    if (scrollPosition <= _this2.config.unstickInstantlyBelowPosition) {
+                      _this2.adSlot.emitEvent('top-conflict');
+
+                      ad_engine_["scrollListener"].removeCallback(id);
+
+                      _this2.stickiness.revertStickiness();
+                    }
+                  });
+                }
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function addStickinessPlugin() {
+        return _addStickinessPlugin.apply(this, arguments);
+      }
+
+      return addStickinessPlugin;
+    }()
+    /**
+     * @private
+     */
+
+  }, {
+    key: "waitForScrollAndUnstickedBfaa",
+    value: function waitForScrollAndUnstickedBfaa() {
+      var _this3 = this;
+
+      var resolvePromise = null;
+      var promise = new promise_default.a(function (resolve) {
+        resolvePromise = resolve;
+      });
+      var bfaa = ad_engine_["slotService"].get(this.config.bfaaSlotName);
+      ad_engine_["scrollListener"].addCallback(function (event, id) {
+        if (_this3.adSlot.isViewed()) {
+          ad_engine_["scrollListener"].removeCallback(id);
+          return;
+        }
+
+        var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+        var slotPosition = ad_engine_["utils"].getTopOffset(_this3.adSlot.getElement());
+        var isBfaaSticky = bfaa.getElement().classList.contains('sticky-bfaa');
+        var bfaaHeight = bfaa.getElement().offsetHeight;
+
+        if (isBfaaSticky && scrollPosition >= slotPosition - _this3.config.topThreshold - bfaaHeight) {
+          ad_engine_["scrollListener"].removeCallback(id);
+
+          _this3.adSlot.emitEvent('viewport-conflict');
+        } else if (scrollPosition >= slotPosition - _this3.config.topThreshold && !isBfaaSticky) {
+          ad_engine_["scrollListener"].removeCallback(id);
+          resolvePromise();
+        }
+      });
+      return promise;
+    }
+  }, {
+    key: "onVideoReady",
+    value: function onVideoReady(video) {
+      var _this4 = this;
+
+      this.video = video;
+      video.addEventListener('wikiaAdStarted', function () {
+        return _this4.updateAdSizes();
+      });
+      video.addEventListener('wikiaAdCompleted', function () {
+        return _this4.setResolvedState();
+      });
+      video.addEventListener('wikiaFullscreenChange', function () {
+        if (video.isFullscreen()) {
+          _this4.stickiness.blockRevertStickiness();
+
+          _this4.container.classList.add('theme-video-fullscreen');
+        } else {
+          _this4.stickiness.unblockRevertStickiness();
+
+          _this4.container.classList.remove('theme-video-fullscreen');
+
+          _this4.updateAdSizes();
+        }
+      });
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "updateAdSizes",
+    value: function updateAdSizes() {
+      var state = resolvedState.isResolvedState(this.params) ? 'resolved' : 'default';
+      var stateHeight = this.params.config.state.height[state];
+      var relativeHeight = this.params.container.offsetHeight * (stateHeight / 100);
+      this.adjustVideoSize(relativeHeight);
+
+      if (this.params.thumbnail) {
+        this.setThumbnailStyle(state);
+      }
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "adjustVideoSize",
+    value: function adjustVideoSize(relativeHeight) {
+      if (this.video && !this.video.isFullscreen()) {
+        this.video.container.style.width = "".concat(this.params.videoAspectRatio * relativeHeight, "px");
+      }
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "setResolvedState",
+    value: function () {
+      var _setResolvedState = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee2() {
+        var _this$params, config, image2;
+
+        return regenerator_default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this$params = this.params, config = _this$params.config, image2 = _this$params.image2;
+                this.container.classList.add('theme-resolved');
+                image2.element.classList.remove('hidden-state');
+                _context2.next = 5;
+                return ad_engine_["slotTweaker"].makeResponsive(this.adSlot, config.aspectRatio.resolved);
+
+              case 5:
+                if (this.params.thumbnail) {
+                  this.setThumbnailStyle('resolved');
+                }
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function setResolvedState() {
+        return _setResolvedState.apply(this, arguments);
+      }
+
+      return setResolvedState;
+    }()
+    /**
+     * @private
+     */
+
+  }, {
+    key: "setThumbnailStyle",
+    value: function setThumbnailStyle() {
+      var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'default';
+      var thumbnail = this.params.thumbnail;
+
+      var style = mapValues_default()(this.params.config.state, function (styleProperty) {
+        return "".concat(styleProperty[state], "%");
+      });
+
+      assign_default()(thumbnail.style, style);
+
+      if (this.video) {
+        assign_default()(this.video.container.style, style);
+      }
+    }
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "getStateResolvedAndVideoViewed",
+    value: function () {
+      var _getStateResolvedAndVideoViewed = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee3() {
+        return regenerator_default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return ad_engine_["utils"].wait(hivi_theme_BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY);
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function getStateResolvedAndVideoViewed() {
+        return _getStateResolvedAndVideoViewed.apply(this, arguments);
+      }
+
+      return getStateResolvedAndVideoViewed;
+    }()
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "onStickinessChange",
+    value: function () {
+      var _onStickinessChange = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee4(isSticky) {
+        var element;
+        return regenerator_default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                element = this.adSlot.getElement();
+
+                if (isSticky) {
+                  _context4.next = 12;
+                  break;
+                }
+
+                if (!(this.adSlot.getStatus() !== 'top-conflict')) {
+                  _context4.next = 5;
+                  break;
+                }
+
+                _context4.next = 5;
+                return animate(this.adSlot.getElement(), CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
+
+              case 5:
+                this.adSlot.emitEvent(stickiness_Stickiness.SLOT_UNSTICKED_STATE);
+                element.style.top = null;
+                element.parentNode.style.height = null;
+                element.classList.remove(CSS_CLASSNAME_STICKY_BFAB);
+                animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+                _context4.next = 16;
+                break;
+
+              case 12:
+                this.adSlot.emitEvent(stickiness_Stickiness.SLOT_STICKED_STATE);
+                element.parentNode.style.height = "".concat(element.offsetHeight, "px");
+                element.classList.add(CSS_CLASSNAME_STICKY_BFAB);
+                element.style.top = "".concat(this.config.topThreshold, "px");
+
+              case 16:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function onStickinessChange(_x) {
+        return _onStickinessChange.apply(this, arguments);
+      }
+
+      return onStickinessChange;
+    }()
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "onCloseClicked",
+    value: function onCloseClicked() {
+      this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
+      this.unstickImmediately();
+      this.adSlot.getElement().parentNode.style.height = null;
+      this.adSlot.disable();
+      ad_engine_["slotTweaker"].hide(this.adSlot);
+    }
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "unstickImmediately",
+    value: function unstickImmediately() {
+      var stopVideo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      if (this.stickiness) {
+        this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAB);
+
+        if (stopVideo && this.video && this.video.ima.getAdsManager()) {
+          this.video.stop();
+        }
+
+        this.stickiness.sticky = false;
+      }
+    }
+  }]);
+
+  return BfabHiviTheme;
 }(hivi_theme_BigFancyAdHiviTheme);
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/classic/classic.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/classic/classic.ts
 
 
 
@@ -4643,156 +4531,158 @@ var hivi_bfab_BfabHiviTheme = function (_BigFancyAdHiviTheme) {
  * @abstract
  */
 
-var classic_BigFancyAdClassicTheme = function (_BigFancyAdTheme) {
-	inherits_default()(BigFancyAdClassicTheme, _BigFancyAdTheme);
+var classic_BigFancyAdClassicTheme =
+/*#__PURE__*/
+function (_BigFancyAdTheme) {
+  inherits_default()(BigFancyAdClassicTheme, _BigFancyAdTheme);
 
-	function BigFancyAdClassicTheme() {
-		classCallCheck_default()(this, BigFancyAdClassicTheme);
+  function BigFancyAdClassicTheme() {
+    classCallCheck_default()(this, BigFancyAdClassicTheme);
 
-		return possibleConstructorReturn_default()(this, (BigFancyAdClassicTheme.__proto__ || get_prototype_of_default()(BigFancyAdClassicTheme)).apply(this, arguments));
-	}
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(BigFancyAdClassicTheme).apply(this, arguments));
+  }
 
-	createClass_default()(BigFancyAdClassicTheme, [{
-		key: 'onAdReady',
-		value: function onAdReady() {
-			if (universalAdPackage.isVideoEnabled(this.params)) {
-				var videoSettings = new video_settings_VideoSettings(this.params);
+  createClass_default()(BigFancyAdClassicTheme, [{
+    key: "onAdReady",
+    value: function onAdReady() {
+      if (universalAdPackage.isVideoEnabled(this.params)) {
+        var videoSettings = new video_settings_VideoSettings(this.params);
 
-				if (videoSettings.isSplitLayout()) {
-					var theme = videoSettings.getParams().splitLayoutVideoPosition === 'right' ? 'theme-split-right' : 'theme-split-left';
+        if (videoSettings.isSplitLayout()) {
+          var theme = videoSettings.getParams().splitLayoutVideoPosition === 'right' ? 'theme-split-right' : 'theme-split-left';
+          this.params.container.classList.add(theme);
+        } else if (!videoSettings.isAutoPlay()) {
+          document.body.classList.add('ctp-vuap-loaded');
+        }
+      }
+    }
+  }, {
+    key: "adIsReady",
+    value: function () {
+      var _adIsReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee(videoSettings) {
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return resolvedState.setImage(videoSettings);
 
-					this.params.container.classList.add(theme);
-				} else if (!videoSettings.isAutoPlay()) {
-					document.body.classList.add('ctp-vuap-loaded');
-				}
-			}
-		}
-	}, {
-		key: 'adIsReady',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(videoSettings) {
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								_context.next = 2;
-								return resolvedState.setImage(videoSettings);
+              case 2:
+                return _context.abrupt("return", ad_engine_["slotTweaker"].makeResponsive(this.adSlot, this.params.aspectRatio));
 
-							case 2:
-								return _context.abrupt('return', ad_engine_["slotTweaker"].makeResponsive(this.adSlot, this.params.aspectRatio));
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-							case 3:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
+      function adIsReady(_x) {
+        return _adIsReady.apply(this, arguments);
+      }
 
-			function adIsReady(_x) {
-				return _ref.apply(this, arguments);
-			}
+      return adIsReady;
+    }()
+  }]);
 
-			return adIsReady;
-		}()
-	}]);
-
-	return BigFancyAdClassicTheme;
+  return BigFancyAdClassicTheme;
 }(theme_BigFancyAdTheme);
 
-var classic_BfaaTheme = function (_BigFancyAdClassicThe) {
-	inherits_default()(BfaaTheme, _BigFancyAdClassicThe);
+var classic_BfaaTheme =
+/*#__PURE__*/
+function (_BigFancyAdClassicThe) {
+  inherits_default()(BfaaTheme, _BigFancyAdClassicThe);
 
-	function BfaaTheme() {
-		classCallCheck_default()(this, BfaaTheme);
+  function BfaaTheme() {
+    classCallCheck_default()(this, BfaaTheme);
 
-		return possibleConstructorReturn_default()(this, (BfaaTheme.__proto__ || get_prototype_of_default()(BfaaTheme)).apply(this, arguments));
-	}
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(BfaaTheme).apply(this, arguments));
+  }
 
-	createClass_default()(BfaaTheme, [{
-		key: 'onVideoReady',
-		value: function onVideoReady(video) {
-			var _this3 = this;
+  createClass_default()(BfaaTheme, [{
+    key: "onVideoReady",
+    value: function onVideoReady(video) {
+      var _this = this;
 
-			if (!this.params.splitLayoutVideoPosition) {
-				video.addEventListener('wikiaAdStarted', function () {
-					_this3.recalculatePaddingTop(_this3.params.videoAspectRatio);
-				});
+      if (!this.params.splitLayoutVideoPosition) {
+        video.addEventListener('wikiaAdStarted', function () {
+          _this.recalculatePaddingTop(_this.params.videoAspectRatio);
+        });
+        video.addEventListener('wikiaAdCompleted', function () {
+          _this.recalculatePaddingTop(_this.params.aspectRatio);
+        });
+      }
+    }
+    /**
+     * @private
+     * @param finalAspectRatio
+     */
 
-				video.addEventListener('wikiaAdCompleted', function () {
-					_this3.recalculatePaddingTop(_this3.params.aspectRatio);
-				});
-			}
-		}
+  }, {
+    key: "recalculatePaddingTop",
+    value: function recalculatePaddingTop(finalAspectRatio) {
+      var _this2 = this;
 
-		/**
-   * @private
-   * @param finalAspectRatio
-   */
+      this.config.mainContainer.style.paddingTop = "".concat(100 / finalAspectRatio, "%");
+      this.container.style.height = "".concat(this.container.offsetHeight, "px"); // get offsetWidth from existing DOM element in order to force repaint
 
-	}, {
-		key: 'recalculatePaddingTop',
-		value: function recalculatePaddingTop(finalAspectRatio) {
-			var _this4 = this;
+      this.container.style.height = "".concat(this.container.offsetWidth / finalAspectRatio, "px");
+      setTimeout(function () {
+        // clear height so ad is responsive again
+        _this2.container.style.height = '';
+      }, toggle_animation.duration);
+    }
+  }]);
 
-			this.config.mainContainer.style.paddingTop = 100 / finalAspectRatio + '%';
-
-			this.container.style.height = this.container.offsetHeight + 'px';
-			// get offsetWidth from existing DOM element in order to force repaint
-			this.container.style.height = this.container.offsetWidth / finalAspectRatio + 'px';
-
-			setTimeout(function () {
-				// clear height so ad is responsive again
-				_this4.container.style.height = '';
-			}, toggle_animation.duration);
-		}
-	}]);
-
-	return BfaaTheme;
+  return BfaaTheme;
 }(classic_BigFancyAdClassicTheme);
+var classic_BfabTheme =
+/*#__PURE__*/
+function (_BigFancyAdClassicThe2) {
+  inherits_default()(BfabTheme, _BigFancyAdClassicThe2);
 
-var classic_BfabTheme = function (_BigFancyAdClassicThe2) {
-	inherits_default()(BfabTheme, _BigFancyAdClassicThe2);
+  function BfabTheme() {
+    classCallCheck_default()(this, BfabTheme);
 
-	function BfabTheme() {
-		classCallCheck_default()(this, BfabTheme);
+    return possibleConstructorReturn_default()(this, getPrototypeOf_default()(BfabTheme).apply(this, arguments));
+  }
 
-		return possibleConstructorReturn_default()(this, (BfabTheme.__proto__ || get_prototype_of_default()(BfabTheme)).apply(this, arguments));
-	}
-
-	return BfabTheme;
+  return BfabTheme;
 }(classic_BigFancyAdClassicTheme);
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/classic/index.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/classic/index.ts
 
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/factory.js
-
-
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/themes/factory.ts
 
 
 
 
-var factory_BigFancyAdThemeFactory = function () {
-	function BigFancyAdThemeFactory() {
-		classCallCheck_default()(this, BigFancyAdThemeFactory);
-	}
 
-	createClass_default()(BigFancyAdThemeFactory, [{
-		key: 'makeAboveTheme',
-		value: function makeAboveTheme(adSlot, params) {
-			return params.theme === 'hivi' ? new hivi_bfaa_BfaaHiviTheme(adSlot, params) : new classic_BfaaTheme(adSlot, params);
-		}
-	}, {
-		key: 'makeBelowTheme',
-		value: function makeBelowTheme(adSlot, params) {
-			return params.theme === 'hivi' ? new hivi_bfab_BfabHiviTheme(adSlot, params) : new classic_BfabTheme(adSlot, params);
-		}
-	}]);
+var factory_BigFancyAdThemeFactory =
+/*#__PURE__*/
+function () {
+  function BigFancyAdThemeFactory() {
+    classCallCheck_default()(this, BigFancyAdThemeFactory);
+  }
 
-	return BigFancyAdThemeFactory;
+  createClass_default()(BigFancyAdThemeFactory, [{
+    key: "makeAboveTheme",
+    value: function makeAboveTheme(adSlot, params) {
+      return params.theme === 'hivi' ? new hivi_bfaa_BfaaHiviTheme(adSlot, params) : new classic_BfaaTheme(adSlot, params);
+    }
+  }, {
+    key: "makeBelowTheme",
+    value: function makeBelowTheme(adSlot, params) {
+      return params.theme === 'hivi' ? new hivi_bfab_BfabHiviTheme(adSlot, params) : new classic_BfabTheme(adSlot, params);
+    }
+  }]);
+
+  return BigFancyAdThemeFactory;
 }();
-
 var bfaThemeFactory = new factory_BigFancyAdThemeFactory();
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/big-fancy-ad-above.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/big-fancy-ad-above.ts
 
 
 
@@ -4803,176 +4693,169 @@ var bfaThemeFactory = new factory_BigFancyAdThemeFactory();
 
 
 
+var big_fancy_ad_above_BigFancyAdAbove =
+/*#__PURE__*/
+function () {
+  createClass_default()(BigFancyAdAbove, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'bfaa';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
+        mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
+        mainContainer: document.body,
+        handleNavbar: false,
+        autoPlayAllowed: true,
+        defaultStateAllowed: true,
+        fullscreenAllowed: true,
+        stickinessAllowed: true,
+        slotSibling: '.topic-header',
+        slotsToEnable: ['bottom_leaderboard', 'incontent_boxad', 'top_boxad'],
+        onInit: function onInit() {},
+        onBeforeStickBfaaCallback: function onBeforeStickBfaaCallback() {},
+        onAfterStickBfaaCallback: function onAfterStickBfaaCallback() {},
+        onBeforeUnstickBfaaCallback: function onBeforeUnstickBfaaCallback() {},
+        onAfterUnstickBfaaCallback: function onAfterUnstickBfaaCallback() {},
+        moveNavbar: function moveNavbar(offset) {
+          var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : SLIDE_OUT_TIME;
+          var navbarElement = document.querySelector('body > nav.navigation');
 
-var big_fancy_ad_above_BigFancyAdAbove = function () {
-	createClass_default()(BigFancyAdAbove, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'bfaa';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
-				mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
-				mainContainer: document.body,
-				handleNavbar: false,
-				autoPlayAllowed: true,
-				defaultStateAllowed: true,
-				fullscreenAllowed: true,
-				stickinessAllowed: true,
-				slotSibling: '.topic-header',
-				slotsToEnable: ['bottom_leaderboard', 'incontent_boxad', 'top_boxad'],
-				onInit: function onInit() {},
-				onBeforeStickBfaaCallback: function onBeforeStickBfaaCallback() {},
-				onAfterStickBfaaCallback: function onAfterStickBfaaCallback() {},
-				onBeforeUnstickBfaaCallback: function onBeforeUnstickBfaaCallback() {},
-				onAfterUnstickBfaaCallback: function onAfterUnstickBfaaCallback() {},
-				moveNavbar: function moveNavbar(offset) {
-					var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : SLIDE_OUT_TIME;
+          if (navbarElement) {
+            navbarElement.style.transition = offset ? '' : "top ".concat(time, "ms ").concat(CSS_TIMING_EASE_IN_CUBIC);
+            navbarElement.style.top = offset ? "".concat(offset, "px") : '';
+          }
+        }
+      };
+    }
+    /**
+     * Constructor
+     *
+     * @param {object} adSlot
+     */
 
-					var navbarElement = document.querySelector('body > nav.navigation');
+  }]);
 
-					if (navbarElement) {
-						navbarElement.style.transition = offset ? '' : 'top ' + time + 'ms ' + CSS_TIMING_EASE_IN_CUBIC;
-						navbarElement.style.top = offset ? offset + 'px' : '';
-					}
-				}
-			};
-		}
+  function BigFancyAdAbove(adSlot) {
+    classCallCheck_default()(this, BigFancyAdAbove);
 
-		/**
-   * Constructor
-   *
-   * @param {object} adSlot
+    this.adSlot = adSlot;
+    this.config = ad_engine_["context"].get('templates.bfaa');
+    this.container = document.getElementById(this.adSlot.getSlotName());
+    this.videoSettings = null;
+    this.theme = null;
+  }
+  /**
+   * Initializes the BFAA unit
    */
 
-	}]);
 
-	function BigFancyAdAbove(adSlot) {
-		classCallCheck_default()(this, BigFancyAdAbove);
+  createClass_default()(BigFancyAdAbove, [{
+    key: "init",
+    value: function init(params) {
+      var _this = this;
 
-		this.adSlot = adSlot;
-		this.config = ad_engine_["context"].get('templates.bfaa');
-		this.container = document.getElementById(this.adSlot.getSlotName());
-		this.videoSettings = null;
-		this.theme = null;
-	}
+      this.params = params;
 
-	/**
-  * Initializes the BFAA unit
-  */
+      if (!this.container) {
+        return;
+      } // TODO Remove this hack when all mobile apps support autoplay and fullscreen
 
 
-	createClass_default()(BigFancyAdAbove, [{
-		key: 'init',
-		value: function init(params) {
-			var _this = this;
+      if (!this.config.autoPlayAllowed) {
+        this.params.autoPlay = false;
+        this.params.resolvedStateAutoPlay = false;
+      }
 
-			this.params = params;
+      this.params.fullscreenAllowed = this.config.fullscreenAllowed; // TODO: End of hack
 
-			if (!this.container) {
-				return;
-			}
+      universalAdPackage.init(this.params, this.config.slotsToEnable);
+      this.videoSettings = new video_settings_VideoSettings(this.params);
+      this.container.style.backgroundColor = this.getBackgroundColor();
+      this.container.classList.add('bfaa-template');
+      this.theme = bfaThemeFactory.makeAboveTheme(this.adSlot, this.params);
+      this.theme.adIsReady(this.videoSettings).then(function (iframe) {
+        return _this.onAdReady(iframe);
+      });
+      this.config.onInit(this.adSlot, this.params, this.config);
+    }
+  }, {
+    key: "getBackgroundColor",
+    value: function getBackgroundColor() {
+      var color = "#".concat(this.params.backgroundColor.replace('#', ''));
+      return this.params.backgroundColor ? color : '#000';
+    }
+  }, {
+    key: "onAdReady",
+    value: function () {
+      var _onAdReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee(iframe) {
+        var video;
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
+                this.config.mainContainer.classList.add('has-bfaa');
+                navbarManager.setup(this.config, this.container);
 
-			// TODO Remove this hack when all mobile apps support autoplay and fullscreen
-			if (!this.config.autoPlayAllowed) {
-				this.params.autoPlay = false;
-				this.params.resolvedStateAutoPlay = false;
-			}
-			this.params.fullscreenAllowed = this.config.fullscreenAllowed;
-			// TODO: End of hack
+                if (!document.hidden) {
+                  _context.next = 6;
+                  break;
+                }
 
-			universalAdPackage.init(this.params, this.config.slotsToEnable);
-			this.videoSettings = new video_settings_VideoSettings(this.params);
-			this.container.style.backgroundColor = this.getBackgroundColor();
-			this.container.classList.add('bfaa-template');
-			this.theme = bfaThemeFactory.makeAboveTheme(this.adSlot, this.params);
+                _context.next = 6;
+                return ad_engine_["utils"].once(window, 'visibilitychange');
 
-			this.theme.adIsReady(this.videoSettings).then(function (iframe) {
-				return _this.onAdReady(iframe);
-			});
+              case 6:
+                this.theme.onAdReady();
 
-			this.config.onInit(this.adSlot, this.params, this.config);
-		}
-	}, {
-		key: 'getBackgroundColor',
-		value: function getBackgroundColor() {
-			var color = '#' + this.params.backgroundColor.replace('#', '');
+                if (!universalAdPackage.isVideoEnabled(this.params)) {
+                  _context.next = 14;
+                  break;
+                }
 
-			return this.params.backgroundColor ? color : '#000';
-		}
-	}, {
-		key: 'onAdReady',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee(iframe) {
-				var video;
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
-								this.config.mainContainer.classList.add('has-bfaa');
+                _context.next = 10;
+                return ad_engine_["utils"].defer(universalAdPackage.loadVideoAd, this.videoSettings);
 
-								navbarManager.setup(this.config, this.container);
+              case 10:
+                video = _context.sent;
+                this.theme.onVideoReady(video);
+                _context.next = 17;
+                break;
 
-								if (!document.hidden) {
-									_context.next = 6;
-									break;
-								}
+              case 14:
+                if (!this.params.channelName) {
+                  _context.next = 17;
+                  break;
+                }
 
-								_context.next = 6;
-								return ad_engine_["utils"].once(window, 'visibilitychange');
+                _context.next = 17;
+                return ad_engine_["utils"].defer(universalAdPackage.loadTwitchAd, iframe, this.params);
 
-							case 6:
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-								this.theme.onAdReady();
+      function onAdReady(_x) {
+        return _onAdReady.apply(this, arguments);
+      }
 
-								if (!universalAdPackage.isVideoEnabled(this.params)) {
-									_context.next = 14;
-									break;
-								}
+      return onAdReady;
+    }()
+  }]);
 
-								_context.next = 10;
-								return ad_engine_["utils"].defer(universalAdPackage.loadVideoAd, this.videoSettings);
-
-							case 10:
-								video = _context.sent;
-
-
-								this.theme.onVideoReady(video);
-								_context.next = 17;
-								break;
-
-							case 14:
-								if (!this.params.channelName) {
-									_context.next = 17;
-									break;
-								}
-
-								_context.next = 17;
-								return ad_engine_["utils"].defer(universalAdPackage.loadTwitchAd, iframe, this.params);
-
-							case 17:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
-
-			function onAdReady(_x2) {
-				return _ref.apply(this, arguments);
-			}
-
-			return onAdReady;
-		}()
-	}]);
-
-	return BigFancyAdAbove;
+  return BigFancyAdAbove;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/big-fancy-ad-below.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/big-fancy-ad-below.ts
 
 
 
@@ -4981,363 +4864,353 @@ var big_fancy_ad_above_BigFancyAdAbove = function () {
 
 
 
+var big_fancy_ad_below_BigFancyAdBelow =
+/*#__PURE__*/
+function () {
+  createClass_default()(BigFancyAdBelow, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'bfab';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        autoPlayAllowed: true,
+        defaultStateAllowed: true,
+        fullscreenAllowed: true,
+        stickinessAllowed: false,
+        bfaaSlotName: 'top_leaderboard',
+        unstickInstantlyBelowPosition: 500,
+        topThreshold: 58,
+        onInit: function onInit() {}
+      };
+    }
+    /**
+     * Constructor
+     *
+     * @param {object} adSlot
+     */
 
-var big_fancy_ad_below_BigFancyAdBelow = function () {
-	createClass_default()(BigFancyAdBelow, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'bfab';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				autoPlayAllowed: true,
-				defaultStateAllowed: true,
-				fullscreenAllowed: true,
-				stickinessAllowed: false,
-				bfaaSlotName: 'top_leaderboard',
-				unstickInstantlyBelowPosition: 500,
-				topThreshold: 58,
-				onInit: function onInit() {}
-			};
-		}
+  }]);
 
-		/**
-   * Constructor
-   *
-   * @param {object} adSlot
+  function BigFancyAdBelow(adSlot) {
+    classCallCheck_default()(this, BigFancyAdBelow);
+
+    this.adSlot = adSlot;
+    this.config = ad_engine_["context"].get('templates.bfab');
+    this.container = document.getElementById(this.adSlot.getSlotName());
+    this.theme = null;
+    this.videoSettings = null;
+  }
+  /**
+   * Initializes the BFAB unit
    */
 
-	}]);
 
-	function BigFancyAdBelow(adSlot) {
-		classCallCheck_default()(this, BigFancyAdBelow);
+  createClass_default()(BigFancyAdBelow, [{
+    key: "init",
+    value: function init(params) {
+      var _this = this;
 
-		this.adSlot = adSlot;
-		this.config = ad_engine_["context"].get('templates.bfab');
-		this.container = document.getElementById(this.adSlot.getSlotName());
-		this.theme = null;
-		this.videoSettings = null;
-	}
+      this.params = params;
 
-	/**
-  * Initializes the BFAB unit
-  */
+      if (!this.container) {
+        return;
+      } // TODO Remove this hack when all mobile apps support autoplay and fullscreen
 
 
-	createClass_default()(BigFancyAdBelow, [{
-		key: 'init',
-		value: function init(params) {
-			var _this = this;
+      if (!this.config.autoPlayAllowed) {
+        this.params.autoPlay = false;
+        this.params.resolvedStateAutoPlay = false;
+      }
 
-			this.params = params;
+      this.params.fullscreenAllowed = this.config.fullscreenAllowed; // TODO: End of hack
 
-			if (!this.container) {
-				return;
-			}
+      universalAdPackage.initSlot(params);
+      this.container.classList.add('bfab-template');
+      this.videoSettings = new video_settings_VideoSettings(params);
+      this.theme = bfaThemeFactory.makeBelowTheme(this.adSlot, this.params);
+      this.theme.adIsReady(this.videoSettings).then(function () {
+        return _this.onAdReady();
+      });
+      this.config.onInit(this.adSlot, this.params, this.config);
+    }
+  }, {
+    key: "onAdReady",
+    value: function () {
+      var _onAdReady = asyncToGenerator_default()(
+      /*#__PURE__*/
+      regenerator_default.a.mark(function _callee() {
+        var video;
+        return regenerator_default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!document.hidden) {
+                  _context.next = 3;
+                  break;
+                }
 
-			// TODO Remove this hack when all mobile apps support autoplay and fullscreen
-			if (!this.config.autoPlayAllowed) {
-				this.params.autoPlay = false;
-				this.params.resolvedStateAutoPlay = false;
-			}
-			this.params.fullscreenAllowed = this.config.fullscreenAllowed;
-			// TODO: End of hack
+                _context.next = 3;
+                return ad_engine_["utils"].once(window, 'visibilitychange');
 
-			universalAdPackage.initSlot(params);
+              case 3:
+                this.theme.onAdReady();
 
-			this.container.classList.add('bfab-template');
-			this.videoSettings = new video_settings_VideoSettings(params);
-			this.theme = bfaThemeFactory.makeBelowTheme(this.adSlot, this.params);
+                if (!universalAdPackage.isVideoEnabled(this.params)) {
+                  _context.next = 9;
+                  break;
+                }
 
-			this.theme.adIsReady(this.videoSettings).then(function () {
-				return _this.onAdReady();
-			});
+                _context.next = 7;
+                return ad_engine_["utils"].defer(universalAdPackage.loadVideoAd, this.videoSettings);
 
-			this.config.onInit(this.adSlot, this.params, this.config);
-		}
-	}, {
-		key: 'onAdReady',
-		value: function () {
-			var _ref = asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-				var video;
-				return regenerator_default.a.wrap(function _callee$(_context) {
-					while (1) {
-						switch (_context.prev = _context.next) {
-							case 0:
-								if (!document.hidden) {
-									_context.next = 3;
-									break;
-								}
+              case 7:
+                video = _context.sent;
+                this.theme.onVideoReady(video);
 
-								_context.next = 3;
-								return ad_engine_["utils"].once(window, 'visibilitychange');
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-							case 3:
+      function onAdReady() {
+        return _onAdReady.apply(this, arguments);
+      }
 
-								this.theme.onAdReady();
+      return onAdReady;
+    }()
+  }]);
 
-								if (!universalAdPackage.isVideoEnabled(this.params)) {
-									_context.next = 9;
-									break;
-								}
-
-								_context.next = 7;
-								return ad_engine_["utils"].defer(universalAdPackage.loadVideoAd, this.videoSettings);
-
-							case 7:
-								video = _context.sent;
-
-
-								this.theme.onVideoReady(video);
-
-							case 9:
-							case 'end':
-								return _context.stop();
-						}
-					}
-				}, _callee, this);
-			}));
-
-			function onAdReady() {
-				return _ref.apply(this, arguments);
-			}
-
-			return onAdReady;
-		}()
-	}]);
-
-	return BigFancyAdBelow;
+  return BigFancyAdBelow;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/big-fancy-ad-in-player.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/big-fancy-ad-in-player.ts
 
 
 
 
+var big_fancy_ad_in_player_BigFancyAdInPlayer =
+/*#__PURE__*/
+function () {
+  createClass_default()(BigFancyAdInPlayer, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'bfp';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        slotsToDisable: [],
+        slotsToEnable: []
+      };
+    }
+  }]);
 
-var big_fancy_ad_in_player_BigFancyAdInPlayer = function () {
-	createClass_default()(BigFancyAdInPlayer, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'bfp';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				slotsToDisable: [],
-				slotsToEnable: []
-			};
-		}
-	}]);
+  function BigFancyAdInPlayer() {
+    classCallCheck_default()(this, BigFancyAdInPlayer);
 
-	function BigFancyAdInPlayer() {
-		classCallCheck_default()(this, BigFancyAdInPlayer);
-
-		this.config = ad_engine_["context"].get('templates.bfp');
-	}
-
-	/**
-  * Initializes the BFP unit
-  */
+    this.config = ad_engine_["context"].get('templates.bfp');
+  }
+  /**
+   * Initializes the BFP unit
+   */
 
 
-	createClass_default()(BigFancyAdInPlayer, [{
-		key: 'init',
-		value: function init(params) {
-			this.params = params;
+  createClass_default()(BigFancyAdInPlayer, [{
+    key: "init",
+    value: function init(params) {
+      this.params = params;
+      universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
+    }
+  }]);
 
-			universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
-		}
-	}]);
-
-	return BigFancyAdInPlayer;
+  return BigFancyAdInPlayer;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/roadblock.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/roadblock.ts
 
 
 
 
+var roadblock_Roadblock =
+/*#__PURE__*/
+function () {
+  createClass_default()(Roadblock, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'roadblock';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        slotsToEnable: [],
+        slotsToDisable: [],
+        onInit: function onInit() {}
+      };
+    }
+  }]);
 
-var roadblock_Roadblock = function () {
-	createClass_default()(Roadblock, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'roadblock';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				slotsToEnable: [],
-				slotsToDisable: [],
-				onInit: function onInit() {}
-			};
-		}
-	}]);
+  function Roadblock() {
+    classCallCheck_default()(this, Roadblock);
 
-	function Roadblock() {
-		classCallCheck_default()(this, Roadblock);
-
-		this.config = ad_engine_["context"].get('templates.roadblock');
-	}
-
-	/**
-  * Initializes the Roadblock unit
-  */
+    this.config = ad_engine_["context"].get('templates.roadblock');
+  }
+  /**
+   * Initializes the Roadblock unit
+   */
 
 
-	createClass_default()(Roadblock, [{
-		key: 'init',
-		value: function init(params) {
-			this.params = params;
-			this.params.adProduct = 'ruap';
-			universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
+  createClass_default()(Roadblock, [{
+    key: "init",
+    value: function init(params) {
+      this.params = params;
+      this.params.adProduct = 'ruap';
+      universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
 
-			if (this.config.onInit) {
-				this.config.onInit();
-			}
-		}
-	}]);
+      if (this.config.onInit) {
+        this.config.onInit();
+      }
+    }
+  }]);
 
-	return Roadblock;
+  return Roadblock;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/uap/index.js
+// CONCATENATED MODULE: ./src/ad-products/templates/uap/index.ts
 
 
 
 
 
 
-
-// CONCATENATED MODULE: ./src/ad-products/templates/out-of-page/floor-adhesion.js
-
+// CONCATENATED MODULE: ./src/ad-products/templates/out-of-page/floor-adhesion.ts
 
 
 
 
-var floor_adhesion_FloorAdhesion = function () {
-	createClass_default()(FloorAdhesion, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'floorAdhesion';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				onInit: function onInit() {}
-			};
-		}
-	}]);
+var floor_adhesion_FloorAdhesion =
+/*#__PURE__*/
+function () {
+  createClass_default()(FloorAdhesion, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'floorAdhesion';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        onInit: function onInit() {}
+      };
+    }
+  }]);
 
-	function FloorAdhesion(adSlot) {
-		classCallCheck_default()(this, FloorAdhesion);
+  function FloorAdhesion(adSlot) {
+    classCallCheck_default()(this, FloorAdhesion);
 
-		this.adSlot = adSlot;
-		this.config = ad_engine_["context"].get('templates.floorAdhesion');
-	}
+    this.adSlot = adSlot;
+    this.config = ad_engine_["context"].get('templates.floorAdhesion');
+  }
 
-	createClass_default()(FloorAdhesion, [{
-		key: 'init',
-		value: function init() {
-			var _this = this;
+  createClass_default()(FloorAdhesion, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
 
-			var wrapper = this.adSlot.getElement();
-			var closeButton = new close_button_CloseButton({
-				onClick: function onClick() {
-					ad_engine_["slotTweaker"].hide(_this.adSlot);
-					_this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
-					ad_engine_["utils"].logger(FloorAdhesion.getName(), 'closed');
-				}
-			});
+      var wrapper = this.adSlot.getElement();
+      var closeButton = new close_button_CloseButton({
+        onClick: function onClick() {
+          ad_engine_["slotTweaker"].hide(_this.adSlot);
 
-			this.config.onInit();
+          _this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
 
-			wrapper.appendChild(closeButton.render());
-			wrapper.classList.add('floor-adhesion');
-			wrapper.classList.add('out-of-page-template');
+          ad_engine_["utils"].logger(FloorAdhesion.getName(), 'closed');
+        }
+      });
+      this.config.onInit();
+      wrapper.appendChild(closeButton.render());
+      wrapper.classList.add('floor-adhesion');
+      wrapper.classList.add('out-of-page-template');
+      ad_engine_["slotTweaker"].adjustIframeByContentSize(this.adSlot);
+      ad_engine_["utils"].logger(FloorAdhesion.getName(), 'init');
+    }
+  }]);
 
-			ad_engine_["slotTweaker"].adjustIframeByContentSize(this.adSlot);
-
-			ad_engine_["utils"].logger(FloorAdhesion.getName(), 'init');
-		}
-	}]);
-
-	return FloorAdhesion;
+  return FloorAdhesion;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/out-of-page/interstitial.js
+// CONCATENATED MODULE: ./src/ad-products/templates/out-of-page/interstitial.ts
 
 
 
 
 
+var interstitial_Interstitial =
+/*#__PURE__*/
+function () {
+  createClass_default()(Interstitial, null, [{
+    key: "getName",
+    value: function getName() {
+      return 'interstitial';
+    }
+  }, {
+    key: "getDefaultConfig",
+    value: function getDefaultConfig() {
+      return {
+        onInit: function onInit() {}
+      };
+    }
+  }]);
 
-var interstitial_Interstitial = function () {
-	createClass_default()(Interstitial, null, [{
-		key: 'getName',
-		value: function getName() {
-			return 'interstitial';
-		}
-	}, {
-		key: 'getDefaultConfig',
-		value: function getDefaultConfig() {
-			return {
-				onInit: function onInit() {}
-			};
-		}
-	}]);
+  function Interstitial(adSlot) {
+    classCallCheck_default()(this, Interstitial);
 
-	function Interstitial(adSlot) {
-		classCallCheck_default()(this, Interstitial);
+    this.adSlot = adSlot;
+    this.config = ad_engine_["context"].get('templates.interstitial');
+  }
 
-		this.adSlot = adSlot;
-		this.config = ad_engine_["context"].get('templates.interstitial');
-	}
+  createClass_default()(Interstitial, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
 
-	createClass_default()(Interstitial, [{
-		key: 'init',
-		value: function init() {
-			var _this = this;
+      var wrapper = this.adSlot.getElement();
+      var closeButton = new close_button_CloseButton({
+        onClick: function onClick() {
+          document.documentElement.classList.remove('stop-scrolling');
+          ad_engine_["slotTweaker"].hide(_this.adSlot);
 
-			var wrapper = this.adSlot.getElement();
-			var closeButton = new close_button_CloseButton({
-				onClick: function onClick() {
-					document.documentElement.classList.remove('stop-scrolling');
-					ad_engine_["slotTweaker"].hide(_this.adSlot);
-					_this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
-					ad_engine_["utils"].logger(Interstitial.getName(), 'closed');
-				}
-			});
-			var label = new advertisement_label_AdvertisementLabel();
+          _this.adSlot.emitEvent(ad_engine_["SlotTweaker"].SLOT_CLOSE_IMMEDIATELY);
 
-			this.config.onInit();
+          ad_engine_["utils"].logger(Interstitial.getName(), 'closed');
+        }
+      });
+      var label = new advertisement_label_AdvertisementLabel();
+      this.config.onInit();
+      wrapper.appendChild(closeButton.render());
+      wrapper.appendChild(label.render());
+      wrapper.classList.add('interstitial');
+      wrapper.classList.add('out-of-page-template');
+      document.documentElement.classList.add('stop-scrolling');
+      ad_engine_["slotTweaker"].adjustIframeByContentSize(this.adSlot);
+      ad_engine_["utils"].logger(Interstitial.getName(), 'init');
+      ad_engine_["events"].once(ad_engine_["events"].BEFORE_PAGE_CHANGE_EVENT, function () {
+        document.documentElement.classList.remove('stop-scrolling');
+      });
+    }
+  }]);
 
-			wrapper.appendChild(closeButton.render());
-			wrapper.appendChild(label.render());
-			wrapper.classList.add('interstitial');
-			wrapper.classList.add('out-of-page-template');
-			document.documentElement.classList.add('stop-scrolling');
-
-			ad_engine_["slotTweaker"].adjustIframeByContentSize(this.adSlot);
-
-			ad_engine_["utils"].logger(Interstitial.getName(), 'init');
-
-			ad_engine_["events"].once(ad_engine_["events"].BEFORE_PAGE_CHANGE_EVENT, function () {
-				document.documentElement.classList.remove('stop-scrolling');
-			});
-		}
-	}]);
-
-	return Interstitial;
+  return Interstitial;
 }();
-// CONCATENATED MODULE: ./src/ad-products/templates/out-of-page/index.js
+// CONCATENATED MODULE: ./src/ad-products/templates/out-of-page/index.ts
 
 
-// CONCATENATED MODULE: ./src/ad-products/templates/outstream/index.js
+// CONCATENATED MODULE: ./src/ad-products/templates/outstream/index.ts
 
-// CONCATENATED MODULE: ./src/ad-products/templates/index.js
+// CONCATENATED MODULE: ./src/ad-products/templates/index.ts
 
 
 
@@ -5346,84 +5219,79 @@ var interstitial_Interstitial = function () {
 
 
 // EXTERNAL MODULE: external "js-cookie"
-var external_js_cookie_ = __webpack_require__(19);
+var external_js_cookie_ = __webpack_require__(21);
 var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
 
-// CONCATENATED MODULE: ./src/ad-products/tracking/video/player-event-emitter.js
-
+// CONCATENATED MODULE: ./src/ad-products/tracking/video/player-event-emitter.ts
 
 ad_engine_["events"].registerEvent('VIDEO_PLAYER_TRACKING_EVENT');
-
 /* harmony default export */ var player_event_emitter = ({
-	/**
-  * Emit single event
-  * @param {object} eventInfo
-  * @returns {void}
-  */
-	emit: function emit(eventInfo) {
-		if (!ad_engine_["context"].get('options.tracking.kikimora.player')) {
-			return;
-		}
+  /**
+   * Emit single event
+   * @param {object} eventInfo
+   * @returns {void}
+   */
+  emit: function emit(eventInfo) {
+    if (!ad_engine_["context"].get('options.tracking.kikimora.player')) {
+      return;
+    }
 
-		if (!eventInfo.ad_product || !eventInfo.player || !eventInfo.event_name) {
-			return;
-		}
+    if (!eventInfo.ad_product || !eventInfo.player || !eventInfo.event_name) {
+      return;
+    }
 
-		ad_engine_["events"].emit(ad_engine_["events"].VIDEO_PLAYER_TRACKING_EVENT, eventInfo);
-	}
+    ad_engine_["events"].emit(ad_engine_["events"].VIDEO_PLAYER_TRACKING_EVENT, eventInfo);
+  }
 });
-// CONCATENATED MODULE: ./src/ad-products/tracking/video/video-event-data-provider.js
-
+// CONCATENATED MODULE: ./src/ad-products/tracking/video/video-event-data-provider.ts
 
 /* harmony default export */ var video_event_data_provider = ({
-	/**
-  * Prepares data object for video events tracking
-  * @param {object} videoData
-  * @param {string} videoData.ad_product
-  * @param {string} videoData.event_name
-  * @param {string} videoData.player
-  * @param {string} videoData.position
-  * @param {string} [videoData.ad_error_code]
-  * @param {string} [videoData.audio]
-  * @param {string} [videoData.content_type]
-  * @param {string} [videoData.creative_id]
-  * @param {string} [videoData.ctp]
-  * @param {string} [videoData.line_item_id]
-  * @param {string} [videoData.user_block_autoplay]
-  * @param {string} [videoData.video_id]
-  * @returns {object}
-  */
-	getEventData: function getEventData(videoData) {
-		var now = new Date();
-		var slot = ad_engine_["slotService"].get(videoData.position);
-
-		return {
-			ad_error_code: videoData.ad_error_code,
-			ad_product: videoData.ad_product,
-			audio: videoData.audio ? 1 : 0,
-			browser: ad_engine_["utils"].client.getOperatingSystem() + ' ' + ad_engine_["utils"].client.getBrowser(),
-			content_type: videoData.content_type || '',
-			country: ad_engine_["utils"].getCountryCode() || '',
-			creative_id: videoData.creative_id || '',
-			ctp: videoData.ctp ? 1 : 0,
-			document_visibility: ad_engine_["utils"].getDocumentVisibilityStatus(),
-			event_name: videoData.event_name,
-			line_item_id: videoData.line_item_id || '',
-			player: videoData.player,
-			position: slot.getSlotName().toLowerCase(),
-			pv_number: ad_engine_["context"].get('options.pvNumber') || window.pvNumber || -1,
-			price: '',
-			skin: ad_engine_["context"].get('targeting.skin'),
-			timestamp: now.getTime(),
-			tz_offset: now.getTimezoneOffset(),
-			user_block_autoplay: videoData.user_block_autoplay || '',
-			video_id: videoData.video_id || '',
-			wsi: slot.targeting.wsi || ''
-		};
-	}
+  /**
+   * Prepares data object for video events tracking
+   * @param {object} videoData
+   * @param {string} videoData.ad_product
+   * @param {string} videoData.event_name
+   * @param {string} videoData.player
+   * @param {string} videoData.position
+   * @param {string} [videoData.ad_error_code]
+   * @param {string} [videoData.audio]
+   * @param {string} [videoData.content_type]
+   * @param {string} [videoData.creative_id]
+   * @param {string} [videoData.ctp]
+   * @param {string} [videoData.line_item_id]
+   * @param {string} [videoData.user_block_autoplay]
+   * @param {string} [videoData.video_id]
+   * @returns {object}
+   */
+  getEventData: function getEventData(videoData) {
+    var now = new Date();
+    var slot = ad_engine_["slotService"].get(videoData.position);
+    return {
+      ad_error_code: videoData.ad_error_code,
+      ad_product: videoData.ad_product,
+      audio: videoData.audio ? 1 : 0,
+      browser: "".concat(ad_engine_["utils"].client.getOperatingSystem(), " ").concat(ad_engine_["utils"].client.getBrowser()),
+      content_type: videoData.content_type || '',
+      country: ad_engine_["utils"].getCountryCode() || '',
+      creative_id: videoData.creative_id || '',
+      ctp: videoData.ctp ? 1 : 0,
+      document_visibility: ad_engine_["utils"].getDocumentVisibilityStatus(),
+      event_name: videoData.event_name,
+      line_item_id: videoData.line_item_id || '',
+      player: videoData.player,
+      position: slot.getSlotName().toLowerCase(),
+      pv_number: ad_engine_["context"].get('options.pvNumber') || window.pvNumber || -1,
+      price: '',
+      skin: ad_engine_["context"].get('targeting.skin'),
+      timestamp: now.getTime(),
+      tz_offset: now.getTimezoneOffset(),
+      user_block_autoplay: videoData.user_block_autoplay || '',
+      video_id: videoData.video_id || '',
+      wsi: slot.targeting.wsi || ''
+    };
+  }
 });
-// CONCATENATED MODULE: ./src/ad-products/tracking/video/jwplayer-tracker.js
-
+// CONCATENATED MODULE: ./src/ad-products/tracking/video/jwplayer-tracker.ts
 
 
 
@@ -5432,205 +5300,189 @@ ad_engine_["events"].registerEvent('VIDEO_PLAYER_TRACKING_EVENT');
 
 
 var trackingEventsMap = {
-	ready: 'ready',
-	adBlock: 'blocked',
-	adClick: 'clicked',
-	adRequest: 'loaded',
-	adError: 'error',
-	adImpression: 'impression',
-	adStarted: 'started',
-	adViewableImpression: 'viewable_impression',
-	adFirstQuartile: 'first_quartile',
-	adMidPoint: 'midpoint',
-	adThirdQuartile: 'third_quartile',
-	adComplete: 'completed',
-	adSkipped: 'skipped',
-	videoStart: 'content_started',
-	complete: 'content_completed'
+  ready: 'ready',
+  adBlock: 'blocked',
+  adClick: 'clicked',
+  adRequest: 'loaded',
+  adError: 'error',
+  adImpression: 'impression',
+  adStarted: 'started',
+  adViewableImpression: 'viewable_impression',
+  adFirstQuartile: 'first_quartile',
+  adMidPoint: 'midpoint',
+  adThirdQuartile: 'third_quartile',
+  adComplete: 'completed',
+  adSkipped: 'skipped',
+  videoStart: 'content_started',
+  complete: 'content_completed'
 };
-
 /**
  * Ads tracker for JWPlayer
  */
-var jwplayer_tracker_JWPlayerTracker = function () {
 
-	/**
-  * @param {Object} params
-  */
-	function JWPlayerTracker() {
-		var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-		classCallCheck_default()(this, JWPlayerTracker);
-
-		this.adProduct = params.adProduct || null;
-		this.audio = params.audio || false;
-		this.contentType = null;
-		this.creativeId = null;
-		this.ctp = params.ctp || false;
-		this.isCtpAudioUpdateEnabled = true;
-		this.lineItemId = null;
-		this.slotName = params.slotName;
-		this.userBlockAutoplay = params.userBlockAutoplay || null;
-		this.videoId = params.videoId || null;
-
-		this.emit('setup');
-	}
-
-	/**
-  * Update withCtp and withAudio based on player and slot
-  *
-  * @param {AdSlot | null} slot
-  */
-
-
-	createClass_default()(JWPlayerTracker, [{
-		key: 'updatePlayerState',
-		value: function updatePlayerState() {
-			var slot = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-			if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
-				this.ctp = !slot.config.autoplay;
-				this.audio = slot.config.audio;
-				this.isCtpAudioUpdateEnabled = false;
-			} else {
-				this.ctp = !this.playerInstance.getConfig().autostart;
-				this.audio = !this.playerInstance.getMute();
-			}
-		}
-
-		/**
-   * @returns {void}
-   */
-
-	}, {
-		key: 'updateVideoId',
-		value: function updateVideoId() {
-			var playlistItem = this.playerInstance.getPlaylist();
-			var playlistIndex = this.playerInstance.getPlaylistIndex();
-
-			this.videoId = playlistItem[playlistIndex].mediaid;
-		}
-
-		/**
-   * Update creative details
+var jwplayer_tracker_JWPlayerTracker =
+/*#__PURE__*/
+function () {
+  /**
    * @param {Object} params
-   * @returns {void}
+   */
+  function JWPlayerTracker() {
+    var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    classCallCheck_default()(this, JWPlayerTracker);
+
+    this.adProduct = params.adProduct || null;
+    this.audio = params.audio || false;
+    this.contentType = null;
+    this.creativeId = null;
+    this.ctp = params.ctp || false;
+    this.isCtpAudioUpdateEnabled = true;
+    this.lineItemId = null;
+    this.slotName = params.slotName;
+    this.userBlockAutoplay = params.userBlockAutoplay || null;
+    this.videoId = params.videoId || null;
+    this.emit('setup');
+  }
+  /**
+   * Update withCtp and withAudio based on player and slot
+   *
+   * @param {AdSlot | null} slot
    */
 
-	}, {
-		key: 'updateCreativeData',
-		value: function updateCreativeData() {
-			var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-			this.lineItemId = params.lineItemId;
-			this.creativeId = params.creativeId;
-			this.contentType = params.contentType;
-		}
+  createClass_default()(JWPlayerTracker, [{
+    key: "updatePlayerState",
+    value: function updatePlayerState() {
+      var slot = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-		/**
-   * Register event listeners on player
-   * @param {Object} player
-   * @returns {void}
-   */
+      if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
+        this.ctp = !slot.config.autoplay;
+        this.audio = slot.config.audio;
+        this.isCtpAudioUpdateEnabled = false;
+      } else {
+        this.ctp = !this.playerInstance.getConfig().autostart;
+        this.audio = !this.playerInstance.getMute();
+      }
+    }
+    /**
+     * @returns {void}
+     */
 
-	}, {
-		key: 'register',
-		value: function register(player) {
-			var _this = this;
+  }, {
+    key: "updateVideoId",
+    value: function updateVideoId() {
+      var playlistItem = this.playerInstance.getPlaylist();
+      var playlistIndex = this.playerInstance.getPlaylistIndex();
+      this.videoId = playlistItem[playlistIndex].mediaid;
+    }
+    /**
+     * Update creative details
+     * @param {Object} params
+     * @returns {void}
+     */
 
-			this.playerInstance = player;
+  }, {
+    key: "updateCreativeData",
+    value: function updateCreativeData() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.lineItemId = params.lineItemId;
+      this.creativeId = params.creativeId;
+      this.contentType = params.contentType;
+    }
+    /**
+     * Register event listeners on player
+     * @param {Object} player
+     * @returns {void}
+     */
 
-			this.updateVideoId();
+  }, {
+    key: "register",
+    value: function register(player) {
+      var _this = this;
 
-			this.emit('init');
+      this.playerInstance = player;
+      this.updateVideoId();
+      this.emit('init');
+      player.on('videoStart', function () {
+        _this.updateCreativeData();
+      });
+      player.on('adRequest', function (event) {
+        var currentAd = ad_engine_["vastParser"].getAdInfo(event.ima && event.ima.ad);
 
-			player.on('videoStart', function () {
-				_this.updateCreativeData();
-			});
+        _this.updateCreativeData(currentAd);
+      });
+      this.updatePlayerState();
 
-			player.on('adRequest', function (event) {
-				var currentAd = ad_engine_["vastParser"].getAdInfo(event.ima && event.ima.ad);
+      keys_default()(trackingEventsMap).forEach(function (playerEvent) {
+        player.on(playerEvent, function (event) {
+          var errorCode;
 
-				_this.updateCreativeData(currentAd);
-			});
+          if (['adRequest', 'adError', 'ready', 'videoStart'].indexOf(playerEvent) !== -1 && _this.isCtpAudioUpdateEnabled) {
+            var slot = ad_engine_["slotService"].get(_this.slotName);
 
-			this.updatePlayerState();
+            _this.updatePlayerState(slot);
+          }
 
-			keys_default()(trackingEventsMap).forEach(function (playerEvent) {
-				player.on(playerEvent, function (event) {
-					var errorCode = void 0;
+          if (playerEvent === 'adError') {
+            errorCode = event && event.code;
+          }
 
-					if (['adRequest', 'adError', 'ready', 'videoStart'].indexOf(playerEvent) !== -1 && _this.isCtpAudioUpdateEnabled) {
-						var slot = ad_engine_["slotService"].get(_this.slotName);
+          _this.emit(trackingEventsMap[playerEvent], errorCode); // Disable updating ctp and audio on video completed event
+          // It is a failsafe for the case where updating
+          // has not been disabled by calling updatePlayerState with VAST params
 
-						_this.updatePlayerState(slot);
-					}
 
-					if (playerEvent === 'adError') {
-						errorCode = event && event.code;
-					}
+          if (playerEvent === 'complete') {
+            _this.isCtpAudioUpdateEnabled = false;
+            _this.ctp = false;
+          }
+        });
+      });
 
-					_this.emit(trackingEventsMap[playerEvent], errorCode);
+      player.on('adError', function () {
+        _this.updateCreativeData();
+      });
+    }
+    /**
+     * Dispatch single event
+     * @param {string} eventName
+     * @param {int} errorCode
+     * @returns {void}
+     */
 
-					// Disable updating ctp and audio on video completed event
-					// It is a failsafe for the case where updating
-					// has not been disabled by calling updatePlayerState with VAST params
-					if (playerEvent === 'complete') {
-						_this.isCtpAudioUpdateEnabled = false;
-						_this.ctp = false;
-					}
-				});
-			});
+  }, {
+    key: "emit",
+    value: function emit(eventName) {
+      var errorCode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      this.userBlockAutoplay = -1;
+      var featuredVideoAutoplayCookie = external_js_cookie_default.a.get('featuredVideoAutoplay');
 
-			player.on('adError', function () {
-				_this.updateCreativeData();
-			});
-		}
+      if (['0', '1'].indexOf(featuredVideoAutoplayCookie) > -1) {
+        this.userBlockAutoplay = featuredVideoAutoplayCookie === '0' ? 1 : 0;
+      }
 
-		/**
-   * Dispatch single event
-   * @param {string} eventName
-   * @param {int} errorCode
-   * @returns {void}
-   */
+      var eventInfo = video_event_data_provider.getEventData({
+        ad_error_code: errorCode,
+        ad_product: this.adProduct,
+        audio: this.audio,
+        content_type: this.contentType,
+        creative_id: this.creativeId,
+        ctp: this.ctp,
+        event_name: eventName,
+        line_item_id: this.lineItemId,
+        player: JWPlayerTracker.PLAYER_NAME,
+        position: this.slotName,
+        user_block_autoplay: this.userBlockAutoplay,
+        video_id: this.videoId
+      });
+      player_event_emitter.emit(eventInfo);
+    }
+  }]);
 
-	}, {
-		key: 'emit',
-		value: function emit(eventName) {
-			var errorCode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-			this.userBlockAutoplay = -1;
-
-			var featuredVideoAutoplayCookie = external_js_cookie_default.a.get('featuredVideoAutoplay');
-
-			if (['0', '1'].indexOf(featuredVideoAutoplayCookie) > -1) {
-				this.userBlockAutoplay = featuredVideoAutoplayCookie === '0' ? 1 : 0;
-			}
-
-			var eventInfo = video_event_data_provider.getEventData({
-				ad_error_code: errorCode,
-				ad_product: this.adProduct,
-				audio: this.audio,
-				content_type: this.contentType,
-				creative_id: this.creativeId,
-				ctp: this.ctp,
-				event_name: eventName,
-				line_item_id: this.lineItemId,
-				player: JWPlayerTracker.PLAYER_NAME,
-				position: this.slotName,
-				user_block_autoplay: this.userBlockAutoplay,
-				video_id: this.videoId
-			});
-
-			player_event_emitter.emit(eventInfo);
-		}
-	}]);
-
-	return JWPlayerTracker;
+  return JWPlayerTracker;
 }();
 jwplayer_tracker_JWPlayerTracker.PLAYER_NAME = 'jwplayer';
-// CONCATENATED MODULE: ./src/ad-products/tracking/video/porvata-tracker.js
-
+// CONCATENATED MODULE: ./src/ad-products/tracking/video/porvata-tracker.ts
 
 
 
@@ -5640,59 +5492,56 @@ jwplayer_tracker_JWPlayerTracker.PLAYER_NAME = 'jwplayer';
  * Ads tracker for Porvata
  */
 
-var porvata_tracker_PorvataTracker = function () {
-	function PorvataTracker() {
-		classCallCheck_default()(this, PorvataTracker);
-	}
+var porvata_tracker_PorvataTracker =
+/*#__PURE__*/
+function () {
+  function PorvataTracker() {
+    classCallCheck_default()(this, PorvataTracker);
+  }
 
-	createClass_default()(PorvataTracker, [{
-		key: 'register',
+  createClass_default()(PorvataTracker, [{
+    key: "register",
 
-		/**
-   * Register event listeners on player
-   * @returns {void}
-   */
-		value: function register() {
-			var listener = {
-				/**
-     * Porvata event callback
-     * @param {string} eventName
-     * @param {Object} playerParams
-     * @param {Object} data
+    /**
+     * Register event listeners on player
      * @returns {void}
      */
-				onEvent: function onEvent(eventName, playerParams, data) {
-					var eventInfo = video_event_data_provider.getEventData(data);
+    value: function register() {
+      var listener = {
+        /**
+         * Porvata event callback
+         * @param {string} eventName
+         * @param {Object} playerParams
+         * @param {Object} data
+         * @returns {void}
+         */
+        onEvent: function onEvent(eventName, playerParams, data) {
+          var eventInfo = video_event_data_provider.getEventData(data);
+          player_event_emitter.emit(eventInfo);
+        }
+      };
+      ad_engine_["context"].push('listeners.porvata', listener);
+    }
+    /**
+     * Dispatch single event
+     * @param {string} eventName
+     * @param {int} errorCode
+     * @returns {void}
+     */
 
-					player_event_emitter.emit(eventInfo);
-				}
-			};
+  }, {
+    key: "emit",
+    value: function emit(eventName) {
+      var errorCode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      video_event_data_provider.emit(eventName, errorCode);
+    }
+  }]);
 
-			ad_engine_["context"].push('listeners.porvata', listener);
-		}
-
-		/**
-   * Dispatch single event
-   * @param {string} eventName
-   * @param {int} errorCode
-   * @returns {void}
-   */
-
-	}, {
-		key: 'emit',
-		value: function emit(eventName) {
-			var errorCode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-			video_event_data_provider.emit(eventName, errorCode);
-		}
-	}]);
-
-	return PorvataTracker;
+  return PorvataTracker;
 }();
 
 var porvataTracker = new porvata_tracker_PorvataTracker();
-// CONCATENATED MODULE: ./src/ad-products/tracking/video/twitch-tracker.js
-
+// CONCATENATED MODULE: ./src/ad-products/tracking/video/twitch-tracker.ts
 
 
 
@@ -5701,192 +5550,194 @@ var porvataTracker = new porvata_tracker_PorvataTracker();
 /**
  * Ads tracker for Twitch
  */
-var twitch_tracker_TwitchTracker = function () {
-	function TwitchTracker() {
-		classCallCheck_default()(this, TwitchTracker);
-	}
 
-	createClass_default()(TwitchTracker, [{
-		key: 'register',
+var twitch_tracker_TwitchTracker =
+/*#__PURE__*/
+function () {
+  function TwitchTracker() {
+    classCallCheck_default()(this, TwitchTracker);
+  }
 
-		/**
-   * Register event listeners on player
-   * @returns {void}
-   */
-		value: function register() {
-			var listener = {
-				/**
-     * Twitch event callback
-     * @param {string} eventName
-     * @param {Object} playerParams
-     * @param {Object} data
+  createClass_default()(TwitchTracker, [{
+    key: "register",
+
+    /**
+     * Register event listeners on player
      * @returns {void}
      */
-				onEvent: function onEvent(eventName, playerParams, data) {
-					var eventInfo = video_event_data_provider.getEventData(data);
+    value: function register() {
+      var listener = {
+        /**
+         * Twitch event callback
+         * @param {string} eventName
+         * @param {Object} playerParams
+         * @param {Object} data
+         * @returns {void}
+         */
+        onEvent: function onEvent(eventName, playerParams, data) {
+          var eventInfo = video_event_data_provider.getEventData(data);
+          player_event_emitter.emit(eventInfo);
+        }
+      };
+      ad_engine_["context"].push('listeners.twitch', listener);
+    }
+    /**
+     * Dispatch single event
+     * @param {string} eventName
+     * @param {int} errorCode
+     * @returns {void}
+     */
 
-					player_event_emitter.emit(eventInfo);
-				}
-			};
+  }, {
+    key: "emit",
+    value: function emit(eventName) {
+      var errorCode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      video_event_data_provider.emit(eventName, errorCode);
+    }
+  }]);
 
-			ad_engine_["context"].push('listeners.twitch', listener);
-		}
-
-		/**
-   * Dispatch single event
-   * @param {string} eventName
-   * @param {int} errorCode
-   * @returns {void}
-   */
-
-	}, {
-		key: 'emit',
-		value: function emit(eventName) {
-			var errorCode = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-			video_event_data_provider.emit(eventName, errorCode);
-		}
-	}]);
-
-	return TwitchTracker;
+  return TwitchTracker;
 }();
-
 var twitchTracker = new twitch_tracker_TwitchTracker();
-// CONCATENATED MODULE: ./src/ad-products/tracking/index.js
+// CONCATENATED MODULE: ./src/ad-products/tracking/index.ts
 
 
 
-// CONCATENATED MODULE: ./src/ad-products/video/featured-video-f15s.js
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/parse-float"
+var parse_float_ = __webpack_require__(20);
+var parse_float_default = /*#__PURE__*/__webpack_require__.n(parse_float_);
 
+// CONCATENATED MODULE: ./src/ad-products/video/featured-video-f15s.ts
 
 var featured_video_f15s_logGroup = 'featured-video-f15s';
-
 /* harmony default export */ var featured_video_f15s = ({
-	/**
-  * Checks if for given video we want the f15s experiment to be enabled
-  *
-  * @param {string} videoId a unique mediaId from JWPlayer instance
-  * @returns {boolean}
-  */
-	isEnabled: function isEnabled(videoId) {
-		if (!ad_engine_["context"].get('options.featuredVideo15sEnabled')) {
-			return false;
-		}
+  /**
+   * Checks if for given video we want the f15s experiment to be enabled
+   *
+   * @param {string} videoId a unique mediaId from JWPlayer instance
+   * @returns {boolean}
+   */
+  isEnabled: function isEnabled(videoId) {
+    if (!ad_engine_["context"].get('options.featuredVideo15sEnabled')) {
+      return false;
+    }
 
-		var adTime = this.getTime(videoId);
+    var adTime = this.getTime(videoId);
+    ad_engine_["utils"].logger(featured_video_f15s_logGroup, 'isEnabled (video id, time, enabled?)', videoId, adTime, !!adTime);
+    return !!adTime;
+  },
 
-		ad_engine_["utils"].logger(featured_video_f15s_logGroup, 'isEnabled (video id, time, enabled?)', videoId, adTime, !!adTime);
-
-		return !!adTime;
-	},
-
-
-	/**
-  * Returns time for an ad from the configuration
-  *
-  * @param {string} videoId a unique mediaId from JWPlayer instance
-  * @returns {*}
-  */
-	getTime: function getTime(videoId) {
-		return ad_engine_["context"].get('options.featuredVideo15sMap.' + videoId);
-	}
+  /**
+   * Returns time for an ad from the configuration
+   *
+   * @param {string} videoId a unique mediaId from JWPlayer instance
+   * @returns {*}
+   */
+  getTime: function getTime(videoId) {
+    return ad_engine_["context"].get("options.featuredVideo15sMap.".concat(videoId));
+  }
 });
-// CONCATENATED MODULE: ./src/ad-products/video/jwplayer-ads-factory.js
+// CONCATENATED MODULE: ./src/ad-products/video/jwplayer-ads-factory.ts
 
 
 
 
 
 var vastUrls = {
-	last: null,
-	preroll: null,
-	midroll: null,
-	postroll: null
-};
-// 21009	VAST_EMPTY_RESPONSE
+  last: null,
+  preroll: null,
+  midroll: null,
+  postroll: null
+}; // 21009	VAST_EMPTY_RESPONSE
+
 var EMPTY_VAST_CODE = 21009;
+
 var jwplayer_ads_factory_log = function log() {
-	for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-		args[_key] = arguments[_key];
-	}
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
 
-	return ad_engine_["utils"].logger.apply(ad_engine_["utils"], ['jwplayer-ads-factory'].concat(args));
+  return ad_engine_["utils"].logger.apply(ad_engine_["utils"], ['jwplayer-ads-factory'].concat(args));
 };
-
 /**
  * Calculate depth
  *
  * @param {number} depth
  * @returns {number}
  */
+
+
 function calculateRV(depth) {
-	var capping = ad_engine_["context"].get('options.video.adsOnNextVideoFrequency');
-
-	return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
+  var capping = ad_engine_["context"].get('options.video.adsOnNextVideoFrequency');
+  return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
 }
-
 /**
  * @param {number} depth
  * @returns {boolean}
  */
+
+
 function shouldPlayAdOnNextVideo(depth) {
-	var capping = ad_engine_["context"].get('options.video.adsOnNextVideoFrequency');
-
-	return ad_engine_["context"].get('options.video.playAdsOnNextVideo') && capping > 0 && (depth - 1) % capping === 0;
+  var capping = ad_engine_["context"].get('options.video.adsOnNextVideoFrequency');
+  return ad_engine_["context"].get('options.video.playAdsOnNextVideo') && capping > 0 && (depth - 1) % capping === 0;
 }
-
 /**
  * @param {number} depth
  * @returns {boolean}
  */
+
+
 function canAdBePlayed(depth) {
-	var isReplay = depth > 1;
-
-	return !isReplay || isReplay && shouldPlayAdOnNextVideo(depth);
+  var isReplay = depth > 1;
+  return !isReplay || isReplay && shouldPlayAdOnNextVideo(depth);
 }
-
 /**
  * @param {number} videoDepth
  * @returns {boolean}
  */
+
+
 function shouldPlayPreroll(videoDepth) {
-	return canAdBePlayed(videoDepth);
+  return canAdBePlayed(videoDepth);
 }
-
 /**
  * @param {number} videoDepth
  * @returns {boolean}
  */
+
+
 function shouldPlayMidroll(videoDepth) {
-	return ad_engine_["context"].get('options.video.isMidrollEnabled') && canAdBePlayed(videoDepth);
+  return ad_engine_["context"].get('options.video.isMidrollEnabled') && canAdBePlayed(videoDepth);
 }
-
 /**
  * @param {number} videoDepth
  * @returns {boolean}
  */
-function shouldPlayPostroll(videoDepth) {
-	return ad_engine_["context"].get('options.video.isPostrollEnabled') && canAdBePlayed(videoDepth);
-}
 
+
+function shouldPlayPostroll(videoDepth) {
+  return ad_engine_["context"].get('options.video.isPostrollEnabled') && canAdBePlayed(videoDepth);
+}
 /**
  * @param {string} placement
  * @param {string} vastUrl
  * @returns {void}
  */
-function setCurrentVast(placement, vastUrl) {
-	vastUrls[placement] = vastUrl;
-	vastUrls.last = vastUrl;
-}
 
+
+function setCurrentVast(placement, vastUrl) {
+  vastUrls[placement] = vastUrl;
+  vastUrls.last = vastUrl;
+}
 /**
  * @param {string} placement
  * @returns {string}
  */
-function getCurrentVast(placement) {
-	return vastUrls[placement] || vastUrls.last;
-}
 
+
+function getCurrentVast(placement) {
+  return vastUrls[placement] || vastUrls.last;
+}
 /**
  * @param {Object} slot
  * @param {string} position
@@ -5895,27 +5746,29 @@ function getCurrentVast(placement) {
  * @param {Object} slotTargeting
  * @returns {string}
  */
-function getVastUrl(slot, position, depth, correlator, slotTargeting) {
-	return Object(ad_engine_["buildVastUrl"])(16 / 9, slot.getSlotName(), {
-		correlator: correlator,
-		vpos: position,
-		targeting: assign_default()({
-			passback: 'jwplayer',
-			rv: calculateRV(depth)
-		}, slotTargeting)
-	});
-}
 
+
+function getVastUrl(slot, position, depth, correlator, slotTargeting) {
+  return Object(ad_engine_["buildVastUrl"])(16 / 9, slot.getSlotName(), {
+    correlator: correlator,
+    vpos: position,
+    targeting: assign_default()({
+      passback: 'jwplayer',
+      rv: calculateRV(depth)
+    }, slotTargeting)
+  });
+}
 /**
  * @param {Object} adSlot
  * @param {Object} vastParams
  */
-function updateSlotParams(adSlot, vastParams) {
-	adSlot.lineItemId = vastParams.lineItemId;
-	adSlot.creativeId = vastParams.creativeId;
-	adSlot.creativeSize = vastParams.size;
-}
 
+
+function updateSlotParams(adSlot, vastParams) {
+  adSlot.lineItemId = vastParams.lineItemId;
+  adSlot.creativeId = vastParams.creativeId;
+  adSlot.creativeSize = vastParams.size;
+}
 /**
  * Creates instance with ads schedule and tracking for JWPlayer
  * @param options
@@ -5927,250 +5780,233 @@ function updateSlotParams(adSlot, vastParams) {
  * @param [options.videoId] Id of initialized video
  * @returns {{register: register}}
  */
+
+
 function create(options) {
-	function register(player) {
-		var slotTargeting = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  function register(player) {
+    var slotTargeting = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var slot = ad_engine_["slotService"].get(slotName);
+    var adProduct = slot.config.trackingKey;
+    var videoElement = player && player.getContainer && player.getContainer();
+    var videoContainer = videoElement && videoElement.parentNode;
+    var targeting = slotTargeting;
+    var correlator;
+    var depth = 0;
+    var prerollPositionReached = false; // the flag is needed to avoid playing the same mid-roll
+    // in the very same second, so there is no race condition
+    // in JWPlayer when removing ad layer and going back to the video
+    // player.off('time') solves it but it also unregisters other event handlers
 
-		var slot = ad_engine_["slotService"].get(slotName);
-		var adProduct = slot.config.trackingKey;
-		var videoElement = player && player.getContainer && player.getContainer();
-		var videoContainer = videoElement && videoElement.parentNode;
-		var targeting = slotTargeting;
+    var f15sMidrollPlayed = false;
+    /** @type {string} */
 
-		var correlator = void 0;
-		var depth = 0;
-		var prerollPositionReached = false;
-		// the flag is needed to avoid playing the same mid-roll
-		// in the very same second, so there is no race condition
-		// in JWPlayer when removing ad layer and going back to the video
-		// player.off('time') solves it but it also unregisters other event handlers
-		var f15sMidrollPlayed = false;
-		/** @type {string} */
-		var lastBrokenAdPlayId = null;
+    var lastBrokenAdPlayId = null;
+    slot.element = videoContainer;
+    slot.setConfigProperty('audio', !player.getMute());
+    slot.setConfigProperty('autoplay', player.getConfig().autostart);
 
-		slot.element = videoContainer;
-		slot.setConfigProperty('audio', !player.getMute());
-		slot.setConfigProperty('autoplay', player.getConfig().autostart);
+    if (ad_engine_["context"].get('options.video.moatTracking.enabledForArticleVideos')) {
+      var partnerCode = ad_engine_["context"].get('options.video.moatTracking.articleVideosPartnerCode') || ad_engine_["context"].get('options.video.moatTracking.partnerCode');
+      player.on('adImpression', function (event) {
+        if (window.moatjw) {
+          window.moatjw.add({
+            adImpressionEvent: event,
+            partnerCode: partnerCode,
+            player: player
+          });
+        }
+      });
+    }
 
-		if (ad_engine_["context"].get('options.video.moatTracking.enabledForArticleVideos')) {
-			var partnerCode = ad_engine_["context"].get('options.video.moatTracking.articleVideosPartnerCode') || ad_engine_["context"].get('options.video.moatTracking.partnerCode');
+    player.on('adBlock', function () {
+      tracker.adProduct = adProduct;
+    });
+    player.on('beforePlay', function () {
+      var currentMedia = player.getPlaylistItem() || {};
+      targeting.v1 = currentMedia.mediaid;
+      tracker.updateVideoId();
 
-			player.on('adImpression', function (event) {
-				if (window.moatjw) {
-					window.moatjw.add({
-						adImpressionEvent: event,
-						partnerCode: partnerCode,
-						player: player
-					});
-				}
-			});
-		}
+      if (prerollPositionReached) {
+        return;
+      }
 
-		player.on('adBlock', function () {
-			tracker.adProduct = adProduct;
-		});
+      correlator = Math.round(Math.random() * 10000000000);
+      depth += 1;
+      slot.setConfigProperty('audio', !player.getMute());
+      slot.setConfigProperty('videoDepth', depth);
 
-		player.on('beforePlay', function () {
-			var currentMedia = player.getPlaylistItem() || {};
+      if (featured_video_f15s.isEnabled(currentMedia.mediaid)) {
+        prerollPositionReached = true;
+        return;
+      }
 
-			targeting.v1 = currentMedia.mediaid;
-			tracker.updateVideoId();
+      if (shouldPlayPreroll(depth)) {
+        tracker.adProduct = "".concat(adProduct, "-preroll");
+        /**
+         * Fill in slot handle
+         * @returns {void}
+         */
 
-			if (prerollPositionReached) {
-				return;
-			}
+        var fillInSlot = function fillInSlot() {
+          var vastUrl = getVastUrl(slot, 'preroll', depth, correlator, targeting);
+          setCurrentVast('preroll', vastUrl);
+          player.playAd(vastUrl);
+        };
 
-			correlator = Math.round(Math.random() * 10000000000);
-			depth += 1;
-			slot.setConfigProperty('audio', !player.getMute());
-			slot.setConfigProperty('videoDepth', depth);
+        if (options.featured) {
+          fillInSlot();
+        } else {
+          ad_engine_["btfBlockerService"].push(slot, fillInSlot);
+        }
+      }
 
-			if (featured_video_f15s.isEnabled(currentMedia.mediaid)) {
-				prerollPositionReached = true;
+      prerollPositionReached = true;
+    });
+    player.on('videoMidPoint', function () {
+      if (shouldPlayMidroll(depth)) {
+        var vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
+        tracker.adProduct = "".concat(adProduct, "-midroll");
+        slot.setConfigProperty('audio', !player.getMute());
+        setCurrentVast('midroll', vastUrl);
+        player.playAd(vastUrl);
+      }
+    });
+    player.on('beforeComplete', function () {
+      if (shouldPlayPostroll(depth)) {
+        var vastUrl = getVastUrl(slot, 'postroll', depth, correlator, targeting);
+        tracker.adProduct = "".concat(adProduct, "-postroll");
+        slot.setConfigProperty('audio', !player.getMute());
+        setCurrentVast('postroll', vastUrl);
+        player.playAd(vastUrl);
+      }
+    });
+    player.on('time', function (data) {
+      var currentMedia = player.getPlaylistItem() || {};
 
-				return;
-			}
+      if (f15sMidrollPlayed) {
+        return;
+      }
 
-			if (shouldPlayPreroll(depth)) {
-				tracker.adProduct = adProduct + '-preroll';
-				/**
-     * Fill in slot handle
-     * @returns {void}
-     */
-				var fillInSlot = function fillInSlot() {
-					var vastUrl = getVastUrl(slot, 'preroll', depth, correlator, targeting);
+      if (!featured_video_f15s.isEnabled(currentMedia.mediaid)) {
+        return;
+      }
 
-					setCurrentVast('preroll', vastUrl);
-					player.playAd(vastUrl);
-				};
+      var currentTime = data.currentTime;
 
-				if (options.featured) {
-					fillInSlot();
-				} else {
-					ad_engine_["btfBlockerService"].push(slot, fillInSlot);
-				}
-			}
+      var f15sTime = parse_float_default()(featured_video_f15s.getTime(currentMedia.mediaid));
 
-			prerollPositionReached = true;
-		});
+      if (currentTime >= f15sTime && !f15sMidrollPlayed) {
+        var vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
+        tracker.adProduct = "".concat(adProduct, "-midroll");
+        slot.setConfigProperty('audio', !player.getMute());
+        setCurrentVast('midroll', vastUrl);
+        player.playAd(vastUrl);
+        f15sMidrollPlayed = true;
+      }
+    });
+    player.on('complete', function () {
+      prerollPositionReached = false;
+      tracker.adProduct = adProduct;
+    });
+    player.on('adRequest', function (event) {
+      var vastParams = ad_engine_["vastParser"].parse(event.tag, {
+        imaAd: event.ima && event.ima.ad
+      });
+      ad_engine_["vastDebugger"].setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
+      ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_REQUESTED, slot);
+    });
+    player.on('adImpression', function (event) {
+      var vastParams = ad_engine_["vastParser"].parse(event.tag, {
+        imaAd: event.ima && event.ima.ad
+      });
+      updateSlotParams(slot, vastParams);
+      slot.setStatus(ad_engine_["AdSlot"].STATUS_SUCCESS);
+      ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_IMPRESSION, slot);
+    });
+    player.on('adError', function (event) {
+      var vastParams = ad_engine_["vastParser"].parse(event.tag, {
+        imaAd: event.ima && event.ima.ad
+      });
+      var adPlayId = event.adPlayId; // JWPlayer can fire adError multiple times for the same ad
 
-		player.on('videoMidPoint', function () {
-			if (shouldPlayMidroll(depth)) {
-				var vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
+      if (adPlayId && adPlayId === lastBrokenAdPlayId) {
+        return;
+      }
 
-				tracker.adProduct = adProduct + '-midroll';
-				slot.setConfigProperty('audio', !player.getMute());
-				setCurrentVast('midroll', vastUrl);
-				player.playAd(vastUrl);
-			}
-		});
+      lastBrokenAdPlayId = adPlayId;
+      jwplayer_ads_factory_log("ad error message: ".concat(event.message));
+      updateSlotParams(slot, vastParams);
+      ad_engine_["vastDebugger"].setVastAttributesFromVastParams(videoContainer, 'error', vastParams);
 
-		player.on('beforeComplete', function () {
-			if (shouldPlayPostroll(depth)) {
-				var vastUrl = getVastUrl(slot, 'postroll', depth, correlator, targeting);
+      if (event.adErrorCode === EMPTY_VAST_CODE) {
+        slot.setStatus(ad_engine_["AdSlot"].STATUS_COLLAPSE);
+      } else {
+        slot.setStatus(ad_engine_["AdSlot"].STATUS_ERROR);
+      }
 
-				tracker.adProduct = adProduct + '-postroll';
-				slot.setConfigProperty('audio', !player.getMute());
-				setCurrentVast('postroll', vastUrl);
-				player.playAd(vastUrl);
-			}
-		});
+      ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_ERROR, slot);
+    });
 
-		player.on('time', function (data) {
-			var currentMedia = player.getPlaylistItem() || {};
+    if (ad_engine_["context"].get('options.wad.hmdRec.enabled')) {
+      document.addEventListener('hdPlayerEvent', function (event) {
+        if (event.detail.slotStatus) {
+          updateSlotParams(slot, event.detail.slotStatus.vastParams);
+          slot.setStatus(event.detail.slotStatus.statusName);
+        }
 
-			if (f15sMidrollPlayed) {
-				return;
-			}
+        if (event.detail.name) {
+          tracker.emit(event.detail.name, event.detail.errorCode);
+        }
+      });
+    }
 
-			if (!featured_video_f15s.isEnabled(currentMedia.mediaid)) {
-				return;
-			}
+    tracker.register(player);
+  }
 
-			var currentTime = data.currentTime;
+  var slotName = options.slotName || (options.featured ? 'featured' : 'video');
+  var slot = ad_engine_["slotService"].get(slotName) || new ad_engine_["AdSlot"]({
+    id: slotName
+  });
 
-			var f15sTime = parseFloat(featured_video_f15s.getTime(currentMedia.mediaid));
+  if (!ad_engine_["slotService"].get(slotName)) {
+    ad_engine_["slotService"].add(slot);
+  }
 
-			if (currentTime >= f15sTime && !f15sMidrollPlayed) {
-				var vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
-
-				tracker.adProduct = adProduct + '-midroll';
-				slot.setConfigProperty('audio', !player.getMute());
-				setCurrentVast('midroll', vastUrl);
-				player.playAd(vastUrl);
-				f15sMidrollPlayed = true;
-			}
-		});
-
-		player.on('complete', function () {
-			prerollPositionReached = false;
-			tracker.adProduct = adProduct;
-		});
-
-		player.on('adRequest', function (event) {
-			var vastParams = ad_engine_["vastParser"].parse(event.tag, {
-				imaAd: event.ima && event.ima.ad
-			});
-
-			ad_engine_["vastDebugger"].setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
-			ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_REQUESTED, slot);
-		});
-
-		player.on('adImpression', function (event) {
-			var vastParams = ad_engine_["vastParser"].parse(event.tag, {
-				imaAd: event.ima && event.ima.ad
-			});
-
-			updateSlotParams(slot, vastParams);
-			slot.setStatus(ad_engine_["AdSlot"].STATUS_SUCCESS);
-			ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_IMPRESSION, slot);
-		});
-
-		player.on('adError', function (event) {
-			var vastParams = ad_engine_["vastParser"].parse(event.tag, {
-				imaAd: event.ima && event.ima.ad
-			});
-			var adPlayId = event.adPlayId;
-
-			// JWPlayer can fire adError multiple times for the same ad
-
-			if (adPlayId && adPlayId === lastBrokenAdPlayId) {
-				return;
-			}
-
-			lastBrokenAdPlayId = adPlayId;
-
-			jwplayer_ads_factory_log('ad error message: ' + event.message);
-			updateSlotParams(slot, vastParams);
-			ad_engine_["vastDebugger"].setVastAttributesFromVastParams(videoContainer, 'error', vastParams);
-
-			if (event.adErrorCode === EMPTY_VAST_CODE) {
-				slot.setStatus(ad_engine_["AdSlot"].STATUS_COLLAPSE);
-			} else {
-				slot.setStatus(ad_engine_["AdSlot"].STATUS_ERROR);
-			}
-			ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_ERROR, slot);
-		});
-
-		if (ad_engine_["context"].get('options.wad.hmdRec.enabled')) {
-			document.addEventListener('hdPlayerEvent', function (event) {
-				if (event.detail.slotStatus) {
-					updateSlotParams(slot, event.detail.slotStatus.vastParams);
-					slot.setStatus(event.detail.slotStatus.statusName);
-				}
-
-				if (event.detail.name) {
-					tracker.emit(event.detail.name, event.detail.errorCode);
-				}
-			});
-		}
-
-		tracker.register(player);
-	}
-
-	var slotName = options.slotName || (options.featured ? 'featured' : 'video');
-	var slot = ad_engine_["slotService"].get(slotName) || new ad_engine_["AdSlot"]({ id: slotName });
-
-	if (!ad_engine_["slotService"].get(slotName)) {
-		ad_engine_["slotService"].add(slot);
-	}
-
-	var tracker = new jwplayer_tracker_JWPlayerTracker({
-		adProduct: slot.config.trackingKey,
-		audio: options.audio,
-		ctp: !options.autoplay,
-		slotName: slotName,
-		videoId: options.videoId
-	});
-
-	return {
-		register: register
-	};
+  var tracker = new jwplayer_tracker_JWPlayerTracker({
+    adProduct: slot.config.trackingKey,
+    audio: options.audio,
+    ctp: !options.autoplay,
+    slotName: slotName,
+    videoId: options.videoId
+  });
+  return {
+    register: register
+  };
 }
 
 function loadMoatPlugin() {
-	ad_engine_["utils"].scriptLoader.loadScript(ad_engine_["context"].get('options.video.moatTracking.jwplayerPluginUrl'));
+  ad_engine_["utils"].scriptLoader.loadScript(ad_engine_["context"].get('options.video.moatTracking.jwplayerPluginUrl'));
 }
 
 var jwplayerAdsFactory = {
-	create: create,
-	getCurrentVast: getCurrentVast,
-	loadMoatPlugin: loadMoatPlugin
+  create: create,
+  getCurrentVast: getCurrentVast,
+  loadMoatPlugin: loadMoatPlugin
 };
-// CONCATENATED MODULE: ./src/ad-products/video/index.js
+// CONCATENATED MODULE: ./src/ad-products/video/index.ts
 
-// CONCATENATED MODULE: ./src/ad-products/index.js
+// CONCATENATED MODULE: ./src/ad-products/index.ts
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "getAdProductInfo", function() { return getAdProductInfo; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FloatingRail", function() { return floating_rail_FloatingRail; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Skin", function() { return skin_Skin; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StickyAd", function() { return sticky_ad_StickyAd; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StickyTLB", function() { return sticky_tlb_StickyTLB; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "universalAdPackage", function() { return universalAdPackage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "resolvedState", function() { return resolvedState; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BigFancyAdAbove", function() { return big_fancy_ad_above_BigFancyAdAbove; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BigFancyAdBelow", function() { return big_fancy_ad_below_BigFancyAdBelow; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BigFancyAdInPlayer", function() { return big_fancy_ad_in_player_BigFancyAdInPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Roadblock", function() { return roadblock_Roadblock; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "universalAdPackage", function() { return universalAdPackage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FloorAdhesion", function() { return floor_adhesion_FloorAdhesion; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Interstitial", function() { return interstitial_Interstitial; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DEFAULT_VIDEO_ASPECT_RATIO", function() { return DEFAULT_VIDEO_ASPECT_RATIO; });
@@ -6190,10 +6026,9 @@ var jwplayerAdsFactory = {
 
 
 
-
 /***/ }),
-/* 27 */,
-/* 28 */
+/* 30 */,
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
