@@ -1,8 +1,12 @@
+import { LazyQueue } from '../../src/ad-engine/utils/lazy-queue';
+
 const dataset = {};
 
 let offsetTop = 1000;
 
 export default {
+	events: new LazyQueue(),
+
 	getSlotName() {
 		return 'FAKE_AD';
 	},
