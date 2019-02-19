@@ -75,7 +75,6 @@
 		"webpack-merge": "4.1.2"
 	},
 	"files": [
-		"examples/",
 		"lib/",
 		"maintenance/",
 		"src/",
@@ -101,7 +100,7 @@
 		"prettier": "prettier --write '**/*.{js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
 		"preversion": "./maintenance/preversion.sh",
-		"postinstall": "echo '🍷 Building Wikia/ad-engine'",
+		"postinstall": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
 		"version": "./maintenance/version.sh",
 		"serve": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --inline --open --watch --content-base=./examples",
 		"tdd": "mocha-webpack -w --full-trace './spec/**/*.spec.js' -r jsdom-global/register --webpack-env.test",

@@ -15,6 +15,10 @@ const pkg = require('./package.json');
 const examplePages = {};
 
 function findExamplePages(startPath, filter) {
+	if (!fs.existsSync(startPath)) {
+		return;
+	}
+
 	const files = fs.readdirSync(startPath);
 
 	files.forEach((file) => {
@@ -47,12 +51,12 @@ const common = {
 				test: /\.json$/,
 				loader: 'json-loader',
 				type: 'javascript/auto',
-				exclude: /node_modules/,
+				exclude: [path.resolve(__dirname, 'node_modules')],
 			},
 			{
 				test: /\.s?css$/,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-				exclude: /node_modules/,
+				exclude: [path.resolve(__dirname, 'node_modules')],
 			},
 			{
 				test: path.resolve(__dirname, 'src/ad-engine/index.js'),
