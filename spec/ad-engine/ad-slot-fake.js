@@ -1,4 +1,4 @@
-import { LazyQueue } from '../../src/ad-engine/utils/lazy-queue';
+import { LazyQueue } from '@wikia/ad-engine/utils';
 
 const dataset = {};
 
