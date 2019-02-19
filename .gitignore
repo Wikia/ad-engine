@@ -1,6 +1,7 @@
 .idea
 .nyc_output
 env/
+dist/
 previous-package.json
 coverage
 examples/**/dist/*
