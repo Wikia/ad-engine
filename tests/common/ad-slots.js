@@ -12,6 +12,7 @@ class AdSlots {
 		this.repeatableBoxad = '#repeatable_boxad_';
 		this.incontentPlayer = '#incontent_player';
 		this.invisibleHighImpact = '#invisible_high_impact_2';
+		this.incontentNative = '#incontent_native';
 		this.railModule = '.rail-module';
 		this.leaderboardWidth = 728; // shared between leaderboards; fixed value
 		this.leaderboardHeight = 90; // shared between leaderboards; fixed value
@@ -108,6 +109,32 @@ class AdSlots {
 			result = false;
 			error += `Height incorrect: expected ${slotSize.height} to equal ${height}\n`;
 		}
+
+		return {
+			status: result,
+			capturedErrors: error,
+		};
+	}
+
+	/**
+	 * Checks whether adSlot element has given class names
+	 * @param adSlot slot to check class names
+	 * @param classNames list of element class names to check
+	 */
+	checkSlotClasses(adSlot, classNames = []) {
+		let result = true;
+		let error = '';
+		const classList = browser
+			.element(adSlot)
+			.getAttribute('class')
+			.split(' ');
+
+		classNames.forEach((className) => {
+			if (!classList.includes(className)) {
+				result = false;
+				error += `Missing class: expected ${adSlot} to have class ${className}\n`;
+			}
+		});
 
 		return {
 			status: result,

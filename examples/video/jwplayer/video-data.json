@@ -1,0 +1,62 @@
+{
+	"mediaid": "MT9YiMPV",
+	"description": " ",
+	"pubdate": 1497879184,
+	"tags": "test30s",
+	"image": "https://assets-jpcust.jwpsrv.com/thumbnails/MT9YiMPV-720.jpg",
+	"title": "Synthetic video ad test (all green video) 640x360 (.mp4)",
+	"sources": [
+		{
+			"type": "application/vnd.apple.mpegurl",
+			"file": "https://cdn.jwplayer.com/manifests/MT9YiMPV.m3u8"
+		},
+		{
+			"width": 320,
+			"height": 180,
+			"type": "video/mp4",
+			"file": "https://cdn.jwplayer.com/videos/MT9YiMPV-TI0yeHZW.mp4",
+			"label": "180p"
+		},
+		{
+			"width": 480,
+			"height": 270,
+			"type": "video/mp4",
+			"file": "https://cdn.jwplayer.com/videos/MT9YiMPV-DnzUC89Y.mp4",
+			"label": "270p"
+		},
+		{
+			"width": 720,
+			"height": 406,
+			"type": "video/mp4",
+			"file": "https://cdn.jwplayer.com/videos/MT9YiMPV-xhZUqUI6.mp4",
+			"label": "406p"
+		},
+		{
+			"width": 1280,
+			"height": 720,
+			"type": "video/mp4",
+			"file": "https://cdn.jwplayer.com/videos/MT9YiMPV-1lt3rSsE.mp4",
+			"label": "720p"
+		},
+		{
+			"type": "audio/mp4",
+			"file": "https://cdn.jwplayer.com/videos/MT9YiMPV-LiJWxqIn.m4a",
+			"label": "AAC Audio"
+		},
+		{
+			"width": 1920,
+			"height": 1080,
+			"type": "video/mp4",
+			"file": "https://cdn.jwplayer.com/videos/MT9YiMPV-cSpmBcaY.mp4",
+			"label": "1080p"
+		}
+	],
+	"tracks": [
+		{
+			"kind": "thumbnails",
+			"file": "https://cdn.jwplayer.com/strips/MT9YiMPV-120.vtt"
+		}
+	],
+	"link": "https://cdn.jwplayer.com/previews/MT9YiMPV",
+	"duration": 30
+}

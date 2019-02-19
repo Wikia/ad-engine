@@ -1,0 +1,45 @@
+a {
+	color: #000000;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.search-results {
+	padding: 5px;
+}
+
+.search-results-total {
+	margin-bottom: 30px;
+}
+
+.wikia-card {
+	display: block;
+	margin: 0 12px;
+	border-bottom: 1px solid #bed1cf;
+	font-family: Arial, sans-serif;
+}
+
+.wikia-card-item {
+	display: block;
+	text-decoration: none;
+	padding: 18px 0;
+	font-size: 14px;
+	margin: 0;
+	overflow-wrap: break-word;
+	text-align: left;
+}
+
+.wikia-card-title {
+	font-weight: 500;
+	margin-bottom: 4px;
+	color: #000000;
+	line-height: 17.5px;
+	text-align: left;
+}
+
+.wikia-card-description {
+	font-size: 12px;
+	color: #000000;
+	line-height: 15px;
+	text-align: left;
+}

@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"sourceMap": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"target": "es5",
+		"baseUrl": "./",
+		"resolveJsonModule": true,
+		"paths": {
+			"@wikia/*": ["src/*"]
+		},
+		"lib": ["es7", "dom", "es2017.object"]
+	},
+	"exclude": ["node_modules", "tmp"],
+	"include": ["./src/**/*"]
+}

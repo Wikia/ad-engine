@@ -79,7 +79,7 @@ describe('jwPlayer player', () => {
 		jwPlayer.waitForAdToChangeState(true);
 		helpers.waitForVideoAdToFinish(jwPlayer.prerollDuration);
 		jwPlayer.waitForAdToChangeState(false);
-		helpers.waitForVideoToProgress(40000);
+		helpers.waitForVideoToProgress(16000);
 		jwPlayer.waitForAdToChangeState(true);
 	});
 
@@ -89,7 +89,7 @@ describe('jwPlayer player', () => {
 		jwPlayer.waitForAdToChangeState(true);
 		helpers.waitForVideoAdToFinish(jwPlayer.prerollDuration);
 		jwPlayer.waitForAdToChangeState(false);
-		helpers.waitForVideoToProgress(80000);
+		helpers.waitForVideoToProgress(30000);
 		jwPlayer.waitForAdToChangeState(true);
 	});
 

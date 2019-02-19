@@ -28,7 +28,7 @@ class QueryStrings {
 			autoplay: 'autoplay',
 			mute: 'mute',
 			capping: 'capping',
-			f15n: 'f15s=eHnTdMot',
+			f15n: 'f15s=MT9YiMPV',
 			videoAdapter: 'wikia_video_adapter',
 		};
 		this.services = {

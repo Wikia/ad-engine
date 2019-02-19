@@ -27,6 +27,14 @@ describe('Common slots: top leaderboard', () => {
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 	});
 
+	it('Check if slot has default classes', () => {
+		const classAssertions = adSlots.checkSlotClasses(adSlots.topLeaderboard, [
+			'i-am-the-default-class-added-on-create',
+		]);
+
+		expect(classAssertions.status, classAssertions.capturedErrors).to.be.true;
+	});
+
 	it('Check if line item id is from the inhouse campaign', () => {
 		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
 		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(

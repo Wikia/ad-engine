@@ -28,14 +28,14 @@ function findExamplePages(startPath, filter) {
 		if (stat.isDirectory()) {
 			findExamplePages(filename, filter);
 		} else if (filename.indexOf(filter) >= 0) {
-			const shortName = filename.replace('examples/', '').replace('/script.js', '');
+			const shortName = filename.replace('examples/', '').replace('/script.ts', '');
 
 			examplePages[shortName] = `./${filename}`;
 		}
 	});
 }
 
-findExamplePages('./examples', 'script.js');
+findExamplePages('./examples', 'script.ts');
 
 const common = {
 	mode: 'development',
@@ -43,7 +43,7 @@ const common = {
 	module: {
 		rules: [
 			{
-				test: /.js$/,
+				test: /\.(js|ts)$/,
 				use: 'babel-loader',
 				include: path.resolve(__dirname, 'src'),
 			},
@@ -59,7 +59,7 @@ const common = {
 				exclude: [path.resolve(__dirname, 'node_modules')],
 			},
 			{
-				test: path.resolve(__dirname, 'src/ad-engine/index.js'),
+				test: path.resolve(__dirname, 'src/ad-engine/index.ts'),
 				loader: StringReplacePlugin.replace({
 					replacements: [
 						{
@@ -77,6 +77,9 @@ const common = {
 				}),
 			},
 		],
+	},
+	resolve: {
+		extensions: ['.ts', '.js', '.json'],
 	},
 };
 
@@ -133,7 +136,7 @@ const adEngine = {
 	config: {
 		mode: 'production',
 		entry: {
-			'ad-engine': './src/ad-engine/index.js',
+			'ad-engine': './src/ad-engine/index.ts',
 		},
 		devtool: 'source-map',
 		output: {
@@ -173,7 +176,7 @@ const adProducts = {
 	config: {
 		mode: 'production',
 		entry: {
-			'ad-products': './src/ad-products/index.js',
+			'ad-products': './src/ad-products/index.ts',
 		},
 		devtool: 'source-map',
 		output: {
@@ -221,7 +224,7 @@ const adBidders = {
 	config: {
 		mode: 'production',
 		entry: {
-			'ad-bidders': './src/ad-bidders/index.js',
+			'ad-bidders': './src/ad-bidders/index.ts',
 		},
 		devtool: 'source-map',
 		output: {
@@ -267,7 +270,7 @@ const adServices = {
 	config: {
 		mode: 'production',
 		entry: {
-			'ad-services': './src/ad-services/index.js',
+			'ad-services': './src/ad-services/index.ts',
 		},
 		devtool: 'source-map',
 		output: {
