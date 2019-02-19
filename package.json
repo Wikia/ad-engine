@@ -101,7 +101,7 @@
 		"prettier": "prettier --write '**/*.{js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
 		"preversion": "./maintenance/preversion.sh",
-		"postinstall": "npm run build --production",
+		"postinstall": "echo '🍷 Building Wikia/ad-engine'",
 		"version": "./maintenance/version.sh",
 		"serve": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --inline --open --watch --content-base=./examples",
 		"tdd": "mocha-webpack -w --full-trace './spec/**/*.spec.js' -r jsdom-global/register --webpack-env.test",
