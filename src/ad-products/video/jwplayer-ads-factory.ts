@@ -12,6 +12,17 @@ import {
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import featuredVideo15s from './featured-video-f15s';
 
+interface HdPlayerEvent extends CustomEvent {
+	detail: {
+		slotStatus?: {
+			vastParams: any,
+			statusName: string,
+		},
+		name?: string | null,
+		errorCode: number,
+	}
+}
+
 const vastUrls = {
 	last: null,
 	preroll: null,
@@ -142,7 +153,7 @@ function updateSlotParams(adSlot, vastParams) {
  * @returns {{register: register}}
  */
 function create(options) {
-	function register(player, slotTargeting = {}) {
+	function register(player, slotTargeting: {[key: string]: any} = {}) {
 		const slot = slotService.get(slotName);
 		const adProduct = slot.config.trackingKey;
 		const videoElement = player && player.getContainer && player.getContainer();
@@ -325,7 +336,7 @@ function create(options) {
 		});
 
 		if (context.get('options.wad.hmdRec.enabled')) {
-			document.addEventListener('hdPlayerEvent', (event) => {
+			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {
 				if (event.detail.slotStatus) {
 					updateSlotParams(slot, event.detail.slotStatus.vastParams);
 					slot.setStatus(event.detail.slotStatus.statusName);

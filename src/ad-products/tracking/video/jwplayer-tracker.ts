@@ -3,6 +3,16 @@ import { slotService, vastParser } from '@wikia/ad-engine';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 
+interface PlayerInstance {
+	[key: string]: any;
+}
+
+interface CreativeParams {
+	lineItemId?: string | null;
+	creativeId?: string | null;
+	contentType?: string | null;
+}
+
 const trackingEventsMap = {
 	ready: 'ready',
 	adBlock: 'blocked',
@@ -27,17 +37,25 @@ const trackingEventsMap = {
 export class JWPlayerTracker {
 	static PLAYER_NAME = 'jwplayer';
 
+	adProduct: string | null;
+	audio = false;
+	contentType: string | null = null;
+	creativeId: string | null = null;
+	ctp = false;
+	isCtpAudioUpdateEnabled = true;
+	lineItemId: string | null = null;
+	slotName: string;
+	userBlockAutoplay: 1 | 0 | -1 | null = null;
+	videoId: string | null = null;
+	playerInstance: PlayerInstance;
+
 	/**
 	 * @param {Object} params
 	 */
-	constructor(params = {}) {
+	constructor(params: {[key: string]: any} = {}) {
 		this.adProduct = params.adProduct || null;
 		this.audio = params.audio || false;
-		this.contentType = null;
-		this.creativeId = null;
 		this.ctp = params.ctp || false;
-		this.isCtpAudioUpdateEnabled = true;
-		this.lineItemId = null;
 		this.slotName = params.slotName;
 		this.userBlockAutoplay = params.userBlockAutoplay || null;
 		this.videoId = params.videoId || null;
@@ -76,7 +94,7 @@ export class JWPlayerTracker {
 	 * @param {Object} params
 	 * @returns {void}
 	 */
-	updateCreativeData(params = {}) {
+	updateCreativeData(params: CreativeParams = {}) {
 		this.lineItemId = params.lineItemId;
 		this.creativeId = params.creativeId;
 		this.contentType = params.contentType;
