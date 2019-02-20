@@ -112,8 +112,8 @@
 		"wdio-all": "npm run wdio-mobile; npm run wdio-desktop",
 		"allure": "cp -R ./tests/allure-results/report/history ./tests/allure-results | true && allure generate ./tests/allure-results --output ./tests/allure-results/report --clean && allure open ./tests/allure-results/report",
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
-		"check-types": "tsc --out /dev/null --module system",
-		"check-types:watch": "tsc --watch --out /dev/null --module system"
+		"check-types": "tsc -noEmit",
+		"check-types:watch": "tsc --watch -noEmit"
 	},
 	"husky": {
 		"hooks": {
