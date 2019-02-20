@@ -141,15 +141,12 @@ export class BillTheLizard {
 	static TOO_LATE = 'too_late';
 	static REUSED = 'reused';
 
-	constructor() {
-		this.executor = new Executor();
-		this.projectsHandler = new ProjectsHandler();
-		this.targetedModelNames = new Set();
-
-		this.callCounter = 0;
-		this.predictions = [];
-		this.statuses = {};
-	}
+	executor = new Executor();
+	projectsHandler = new ProjectsHandler();
+	targetedModelNames = new Set();
+	callCounter = 0;
+	predictions = [];
+	statuses = {};
 
 	reset() {
 		this.callCounter = 0;

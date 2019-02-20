@@ -6,9 +6,7 @@ const logGroup = 'project-handler';
  * Bill the Lizard projects handler
  */
 export class ProjectsHandler {
-	constructor() {
-		this.projects = {};
-	}
+	projects = {};
 
 	/**
 	 * Enables project by name

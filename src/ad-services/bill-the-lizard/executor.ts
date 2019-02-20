@@ -6,9 +6,7 @@ const logGroup = 'executor';
  * Bill the Lizard methods executor
  */
 export class Executor {
-	constructor() {
-		this.methods = {};
-	}
+	methods = {};
 
 	/**
 	 * Registeres new method
