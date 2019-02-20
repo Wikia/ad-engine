@@ -16,6 +16,7 @@
 		"lodash": "^4.17.4"
 	},
 	"devDependencies": {
+		"@alugha/ima": "1.1.2",
 		"@babel/cli": "^7.0.0",
 		"@babel/core": "^7.0.0",
 		"@babel/plugin-proposal-class-properties": "^7.0.0",
