@@ -204,15 +204,15 @@ function () {
 
     this.methods = {};
   }
-  /**
-   * Registeres new method
-   * @param {string} name
-   * @param {function} callback
-   */
-
 
   createClass_default()(Executor, [{
     key: "register",
+
+    /**
+     * Registeres new method
+     * @param {string} name
+     * @param {function} callback
+     */
     value: function register(name, callback) {
       ad_engine_["utils"].logger(logGroup, "method ".concat(name, " registered"));
       this.methods[name] = callback;
@@ -291,14 +291,14 @@ function () {
 
     this.projects = {};
   }
-  /**
-   * Enables project by name
-   * @param {string} name
-   */
-
 
   createClass_default()(ProjectsHandler, [{
     key: "enable",
+
+    /**
+     * Enables project by name
+     * @param {string} name
+     */
     value: function enable(name) {
       ad_engine_["utils"].logger(projects_handler_logGroup, "project ".concat(name, " enabled"));
       this.projects[name] = true;
@@ -389,8 +389,6 @@ function () {
 
 var bill_the_lizard_logGroup = 'bill-the-lizard';
 var openRequests = [];
-ad_engine_["events"].registerEvent('BILL_THE_LIZARD_REQUEST');
-ad_engine_["events"].registerEvent('BILL_THE_LIZARD_RESPONSE');
 /**
  * Builds query parameters for url
  * @param {Object} queryParameters (key-value pairs for query parameters)
@@ -1105,7 +1103,6 @@ var krux = new krux_Krux();
 
 
 var moat_yi_logGroup = 'moat-yi';
-ad_engine_["events"].registerEvent('MOAT_YI_READY');
 /**
  * Injects MOAT YI script
  * @returns {Promise}

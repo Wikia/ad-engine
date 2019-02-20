@@ -2191,8 +2191,6 @@ var prebid_logGroup = 'prebid';
 var prebid_loaded = false;
 window.pbjs = window.pbjs || {};
 window.pbjs.que = window.pbjs.que || [];
-ad_engine_["events"].registerEvent('BIDS_REFRESH');
-ad_engine_["events"].registerEvent('PREBID_LAZY_CALL');
 var prebid_Prebid = (_dec = Object(external_core_decorators_["decorate"])(postponeExecutionUntilPbjsLoads), _dec2 = Object(external_core_decorators_["decorate"])(postponeExecutionUntilPbjsLoads), _dec3 = Object(external_core_decorators_["decorate"])(postponeExecutionUntilPbjsLoads), (_class = (_temp = _class2 =
 /*#__PURE__*/
 function (_BaseBidder) {

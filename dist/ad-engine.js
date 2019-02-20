@@ -98,13 +98,13 @@ module.exports = require("@babel/runtime-corejs2/core-js/promise");
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/json/stringify");
+module.exports = require("@babel/runtime-corejs2/core-js/symbol");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/symbol");
+module.exports = require("@babel/runtime-corejs2/core-js/json/stringify");
 
 /***/ }),
 /* 6 */
@@ -729,7 +729,7 @@ function createWithTimeout(func) {
   return promise_default.a.race([new promise_default.a(func), timeout]);
 }
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/json/stringify"
-var stringify_ = __webpack_require__(4);
+var stringify_ = __webpack_require__(5);
 var stringify_default = /*#__PURE__*/__webpack_require__.n(stringify_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
@@ -897,7 +897,7 @@ function () {
   return Context;
 }();
 
-var context = new context_service_Context();
+var context_service_context = new context_service_Context();
 // CONCATENATED MODULE: ./src/ad-engine/utils/random.ts
 // TODO remove this module
 // It is a workaround for issue with mocking Math.random in our environment
@@ -974,7 +974,7 @@ function getCookieDomain() {
 
 function loadCookie() {
   readSessionId();
-  var cookie = external_js_cookie_default.a.get("".concat(context.get('options.session.id'), "_basset"));
+  var cookie = external_js_cookie_default.a.get("".concat(context_service_context.get('options.session.id'), "_basset"));
 
   if (cookie) {
     var cachedVariables = JSON.parse(cookie);
@@ -1002,7 +1002,7 @@ function synchronizeCookie() {
 }
 
 function setCookie(value) {
-  external_js_cookie_default.a.set("".concat(context.get('options.session.id'), "_basset"), value, {
+  external_js_cookie_default.a.set("".concat(context_service_context.get('options.session.id'), "_basset"), value, {
     maxAge: cacheMaxAge,
     expires: new Date(new Date().getTime() + cacheMaxAge),
     path: '/',
@@ -1157,12 +1157,12 @@ function resetSamplingCache() {
   cache = {};
 }
 function readSessionId() {
-  var sessionCookieName = context.get('options.session.cookieName') || sessionCookieDefault;
-  var sid = external_js_cookie_default.a.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
+  var sessionCookieName = context_service_context.get('options.session.cookieName') || sessionCookieDefault;
+  var sid = external_js_cookie_default.a.get(sessionCookieName) || context_service_context.get('options.session.id') || 'ae3';
   setSessionId(sid);
 }
 function setSessionId(sid) {
-  context.set('options.session.id', sid);
+  context_service_context.set('options.session.id', sid);
   cookieLoaded = false;
 }
 function getSamplingResults() {
@@ -1803,7 +1803,7 @@ var correlator = Math.round(Math.random() * 10000000000);
 function getCustomParameters(slot) {
   var extraTargeting = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  var params = assign_default()({}, context.get('targeting'), slot.getTargeting(), extraTargeting);
+  var params = assign_default()({}, context_service_context.get('targeting'), slot.getTargeting(), extraTargeting);
 
   return encodeURIComponent(keys_default()(params).filter(function (key) {
     return params[key];
@@ -1952,7 +1952,7 @@ function () {
     key: "init",
     value: function init(adsManager, container, viewMode, slicer1, slicer2) {
       var ids = {
-        partnerCode: context.get('options.video.moatTracking.partnerCode'),
+        partnerCode: context_service_context.get('options.video.moatTracking.partnerCode'),
         viewMode: viewMode,
         slicer1: slicer1,
         slicer2: slicer2
@@ -1997,7 +1997,7 @@ function createRequest(params) {
   } // DEPRECATED: options.porvata.audio.segment
 
 
-  var segment = context.get('options.porvata.audio.segment');
+  var segment = context_service_context.get('options.porvata.audio.segment');
 
   if (segment) {
     adSlot.setConfigProperty('audioSegment', params.autoPlay ? '' : segment);
@@ -2020,7 +2020,7 @@ function getRenderingSettings() {
   var adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
   var maximumRecommendedBitrate = 68000; // 2160p High Frame Rate
 
-  if (!context.get('state.isMobile')) {
+  if (!context_service_context.get('state.isMobile')) {
     adsRenderingSettings.bitrate = maximumRecommendedBitrate;
   }
 
@@ -2285,13 +2285,13 @@ var googleIma = {
 
 
 function getMoatTrackingStatus(params) {
-  var sampling = context.get('options.video.moatTracking.sampling');
+  var sampling = context_service_context.get('options.video.moatTracking.sampling');
 
   if (typeof params.moatTracking === 'boolean') {
     return params.moatTracking;
   }
 
-  if (!context.get('options.video.moatTracking.enabled')) {
+  if (!context_service_context.get('options.video.moatTracking.enabled')) {
     return false;
   }
 
@@ -2813,7 +2813,7 @@ var asyncToGenerator_default = /*#__PURE__*/__webpack_require__.n(asyncToGenerat
 
 
 function getListeners() {
-  return context.get('listeners.twitch');
+  return context_service_context.get('listeners.twitch');
 }
 
 var twitch_listener_TwitchListener =
@@ -3031,7 +3031,7 @@ function () {
 
 
 function porvata_listener_getListeners() {
-  return context.get('listeners.porvata');
+  return context_service_context.get('listeners.porvata');
 }
 
 var porvata_listener_PorvataListener =
@@ -3158,7 +3158,7 @@ var get_own_property_names_ = __webpack_require__(24);
 var get_own_property_names_default = /*#__PURE__*/__webpack_require__.n(get_own_property_names_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/symbol"
-var symbol_ = __webpack_require__(5);
+var symbol_ = __webpack_require__(4);
 var symbol_default = /*#__PURE__*/__webpack_require__.n(symbol_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/get"
@@ -3181,8 +3181,8 @@ var groupName = 'events';
 
 var events_EventService =
 /*#__PURE__*/
-function (_EventEmitter) {
-  inherits_default()(EventService, _EventEmitter);
+function (_EventEmitter$EventEm) {
+  inherits_default()(EventService, _EventEmitter$EventEm);
 
   function EventService() {
     var _getPrototypeOf2;
@@ -3205,6 +3205,12 @@ function (_EventEmitter) {
     _this.VIDEO_AD_ERROR = symbol_default()('VIDEO_AD_ERROR');
     _this.VIDEO_AD_IMPRESSION = symbol_default()('VIDEO_AD_IMPRESSION');
     _this.VIDEO_AD_USED = symbol_default()('VIDEO_AD_USED');
+    _this.BIDS_REFRESH = symbol_default()('BIDS_REFRESH');
+    _this.PREBID_LAZY_CALL = symbol_default()('PREBID_LAZY_CALL');
+    _this.VIDEO_PLAYER_TRACKING_EVENT = symbol_default()('VIDEO_PLAYER_TRACKING_EVENT');
+    _this.BILL_THE_LIZARD_REQUEST = symbol_default()('BILL_THE_LIZARD_REQUEST');
+    _this.BILL_THE_LIZARD_RESPONSE = symbol_default()('BILL_THE_LIZARD_RESPONSE');
+    _this.MOAT_YI_READY = symbol_default()('MOAT_YI_READY');
     return _this;
   }
 
@@ -3250,7 +3256,7 @@ function (_EventEmitter) {
       var _get2;
 
       if (!this.hasEvent(event)) {
-        throw new Error("Event \"".concat(event, "\" is not registered. Please register an event first."));
+        throw new Error("Event \"".concat(event.toString(), "\" is not registered. Please register an event first."));
       }
 
       for (var _len5 = arguments.length, args = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
@@ -3260,51 +3266,34 @@ function (_EventEmitter) {
       (_get2 = helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "emit", this)).call.apply(_get2, [this, event].concat(args));
 
       logger.apply(void 0, [groupName, 'emit', event].concat(args));
+      return true;
     }
   }, {
     key: "on",
-    value: function on(event) {
-      var _get3;
-
+    value: function on(event, fn, context) {
       if (!this.hasEvent(event)) {
         throw new Error("You can't listen for an event which is not registered yet.");
       }
 
-      for (var _len6 = arguments.length, args = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
-        args[_key6 - 1] = arguments[_key6];
-      }
-
-      (_get3 = helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "on", this)).call.apply(_get3, [this, event].concat(args));
+      return helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "on", this).call(this, event, fn, context);
     }
   }, {
     key: "addListener",
-    value: function addListener(event) {
-      var _get4;
-
+    value: function addListener(event, fn, context) {
       if (!this.hasEvent(event)) {
         throw new Error("You can't listen for an event which is not registered yet.");
       }
 
-      for (var _len7 = arguments.length, args = new Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
-        args[_key7 - 1] = arguments[_key7];
-      }
-
-      (_get4 = helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "addListener", this)).call.apply(_get4, [this, event].concat(args));
+      return helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "addListener", this).call(this, event, fn, context);
     }
   }, {
     key: "once",
-    value: function once(event) {
-      var _get5;
-
+    value: function once(event, fn, context) {
       if (!this.hasEvent(event)) {
         throw new Error("You can't listen for an event which is not registered yet.");
       }
 
-      for (var _len8 = arguments.length, args = new Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
-        args[_key8 - 1] = arguments[_key8];
-      }
-
-      (_get5 = helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "once", this)).call.apply(_get5, [this, event].concat(args));
+      return helpers_get_default()(getPrototypeOf_default()(EventService.prototype), "once", this).call(this, event, fn, context);
     }
   }, {
     key: "registerEvent",
@@ -3332,7 +3321,7 @@ function (_EventEmitter) {
   }]);
 
   return EventService;
-}(external_eventemitter3_default.a);
+}(external_eventemitter3_["EventEmitter"]);
 
 var events = new events_EventService();
 // CONCATENATED MODULE: ./src/ad-engine/listeners/scroll-listener.ts
@@ -3488,7 +3477,7 @@ function slot_listener_dispatch(methodName, adSlot) {
   var adInfo = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
   if (!slot_listener_listeners) {
-    slot_listener_listeners = context.get('listeners.slot').filter(function (listener) {
+    slot_listener_listeners = context_service_context.get('listeners.slot').filter(function (listener) {
       return !listener.isEnabled || listener.isEnabled();
     });
   }
@@ -3531,7 +3520,7 @@ function () {
           break;
       }
 
-      var slotsToPush = context.get("events.pushAfterRendered.".concat(adSlot.getSlotName()));
+      var slotsToPush = context_service_context.get("events.pushAfterRendered.".concat(adSlot.getSlotName()));
 
       if (slotsToPush) {
         slotsToPush.forEach(function (slotName) {
@@ -3676,7 +3665,7 @@ function () {
 
 function setupGptTargeting() {
   var tag = window.googletag.pubads();
-  var targeting = context.get('targeting');
+  var targeting = context_service_context.get('targeting');
 
   function setTargetingValue(key, value) {
     if (typeof value === 'undefined' || value === null) {
@@ -3698,7 +3687,7 @@ function setupGptTargeting() {
     setTargetingFromContext();
   });
   setTargetingFromContext();
-  context.onChange('targeting', function (trigger, value) {
+  context_service_context.onChange('targeting', function (trigger, value) {
     var segments = trigger.split('.');
     var key = segments[segments.length - 1];
     setTargetingValue(key, value);
@@ -3747,7 +3736,7 @@ function getAdSlotFromEvent(event) {
 function configure() {
   var tag = window.googletag.pubads();
 
-  if (!context.get('options.isSraDisabled')) {
+  if (!context_service_context.get('options.isSraDisabled')) {
     tag.enableSingleRequest();
   }
 
@@ -3817,7 +3806,7 @@ function () {
     value: function fillIn(adSlot) {
       var _this3 = this;
 
-      var adStack = context.get('state.adStack');
+      var adStack = context_service_context.get('state.adStack');
       btfBlockerService.push(adSlot, function () {
         _this3.fillInCallback.apply(_this3, arguments);
       });
@@ -4000,7 +3989,7 @@ function () {
   }, {
     key: "getAdId",
     value: function getAdId(adSlot) {
-      return context.get("slots.".concat(adSlot.getSlotName(), ".targeting.hb_adid"));
+      return context_service_context.get("slots.".concat(adSlot.getSlotName(), ".targeting.hb_adid"));
     }
   }]);
 
@@ -4050,7 +4039,7 @@ function (_EventEmitter) {
     classCallCheck_default()(this, AdSlot);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(AdSlot).call(this));
-    _this.config = context.get("slots.".concat(ad.id)) || {};
+    _this.config = context_service_context.get("slots.".concat(ad.id)) || {};
     _this.enabled = !_this.config.disabled;
     _this.viewed = false;
     _this.element = null;
@@ -4060,7 +4049,7 @@ function (_EventEmitter) {
     _this.lineItemId = null;
     _this.config.slotName = _this.config.slotName || ad.id;
     _this.config.targeting = _this.config.targeting || {};
-    _this.config.targeting.src = _this.config.targeting.src || context.get('src');
+    _this.config.targeting.src = _this.config.targeting.src || context_service_context.get('src');
     _this.config.targeting.pos = _this.config.targeting.pos || _this.getSlotName();
     _this.winningPbBidderDetails = null;
 
@@ -4093,7 +4082,7 @@ function (_EventEmitter) {
     key: "getAdUnit",
     value: function getAdUnit() {
       if (!this.adUnit) {
-        this.adUnit = stringBuilder.build(this.config.adUnit || context.get('adUnitId'), {
+        this.adUnit = stringBuilder.build(this.config.adUnit || context_service_context.get('adUnitId'), {
           slotConfig: this.config
         });
       }
@@ -4103,7 +4092,7 @@ function (_EventEmitter) {
   }, {
     key: "getVideoAdUnit",
     value: function getVideoAdUnit() {
-      return stringBuilder.build(this.config.videoAdUnit || context.get('vast.adUnitId'), {
+      return stringBuilder.build(this.config.videoAdUnit || context_service_context.get('vast.adUnitId'), {
         slotConfig: this.config
       });
     }
@@ -4217,12 +4206,12 @@ function (_EventEmitter) {
   }, {
     key: "getConfigProperty",
     value: function getConfigProperty(key) {
-      return context.get("slots.".concat(this.config.slotName, ".").concat(key));
+      return context_service_context.get("slots.".concat(this.config.slotName, ".").concat(key));
     }
   }, {
     key: "setConfigProperty",
     value: function setConfigProperty(key, value) {
-      context.set("slots.".concat(this.config.slotName, ".").concat(key), value);
+      context_service_context.set("slots.".concat(this.config.slotName, ".").concat(key), value);
     }
   }, {
     key: "onLoad",
@@ -4701,7 +4690,7 @@ function () {
     key: "remove",
     value: function remove(adSlot) {
       var slotName = adSlot.getSlotName();
-      context.removeListeners("slots.".concat(slotName));
+      context_service_context.removeListeners("slots.".concat(slotName));
       adSlot.disable('Marked for remove');
       delete slot_service_slots[slotName];
       delete slotStates[slotName];
@@ -4803,9 +4792,9 @@ function () {
           slot.disable();
         }
       } else if (state) {
-        context.set("slots.".concat(slotName, ".disabled"), false);
+        context_service_context.set("slots.".concat(slotName, ".disabled"), false);
       } else {
-        context.set("slots.".concat(slotName, ".disabled"), true);
+        context_service_context.set("slots.".concat(slotName, ".disabled"), true);
       }
 
       logger(slot_service_groupName, 'set state', slotName, state);
@@ -4840,7 +4829,7 @@ function () {
   }, {
     key: "getAtfSlotConfigs",
     value: function getAtfSlotConfigs() {
-      var slotConfigs = context.get('slots');
+      var slotConfigs = context_service_context.get('slots');
       return values_default()(slotConfigs).filter(function (config) {
         return ad_slot_AdSlot.isAboveTheFold(config);
       });
@@ -4905,7 +4894,7 @@ function () {
     value: function init() {
       var _this2 = this;
 
-      context.push('listeners.slot', {
+      context_service_context.push('listeners.slot', {
         onRenderEnded: function onRenderEnded(adSlot) {
           logger(btf_blocker_service_logGroup, adSlot.getSlotName(), 'Slot rendered');
 
@@ -4941,7 +4930,7 @@ function () {
   }, {
     key: "disableSecondCall",
     value: function disableSecondCall(unblockedSlots) {
-      var slots = context.get('slots');
+      var slots = context_service_context.get('slots');
       logger(btf_blocker_service_logGroup, 'second call queue disabled');
 
       keys_default()(slots).forEach(function (adSlotKey) {
@@ -5032,7 +5021,7 @@ function () {
       }
 
       var name = template.getName();
-      var config = context.get("templates.".concat(name)) || {};
+      var config = context_service_context.get("templates.".concat(name)) || {};
 
       if (typeof template.getDefaultConfig === 'function') {
         config = assign_default()(template.getDefaultConfig(), config);
@@ -5042,7 +5031,7 @@ function () {
         config = assign_default()(config, customConfig);
       }
 
-      context.set("templates.".concat(name), config);
+      context_service_context.set("templates.".concat(name), config);
       templates[name] = template;
     }
   }, {
@@ -5257,7 +5246,7 @@ function () {
     key: "updateOnCreate",
     value: function updateOnCreate(adSlot, targeting) {
       var sizes = adSlot.isOutOfPage() ? 'out-of-page' : new gpt_size_map_GptSizeMap(adSlot.getSizes()).toString();
-      slotTweaker.setDataParam(adSlot, 'gptPageParams', context.get('targeting'));
+      slotTweaker.setDataParam(adSlot, 'gptPageParams', context_service_context.get('targeting'));
       slotTweaker.setDataParam(adSlot, 'gptSlotParams', targeting);
       slotTweaker.setDataParam(adSlot, 'sizes', sizes);
     }
@@ -5300,7 +5289,7 @@ function insertNewSlot(slotName, nextSibling) {
   var container = document.createElement('div');
   container.id = slotName;
   nextSibling.parentNode.insertBefore(container, nextSibling);
-  context.push('events.pushOnScroll.ids', slotName);
+  context_service_context.push('events.pushOnScroll.ids', slotName);
   return container;
 }
 
@@ -5315,7 +5304,7 @@ function () {
     key: "inject",
     value: function inject(slotName) {
       var insertBelowScrollPosition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var config = context.get("slots.".concat(slotName));
+      var config = context_service_context.get("slots.".concat(slotName));
       var anchorElements = Array.prototype.slice.call(document.querySelectorAll(config.insertBeforeSelector));
       var conflictingElements = Array.prototype.slice.call(document.querySelectorAll(config.avoidConflictWith));
 
@@ -5371,12 +5360,12 @@ function repeatSlot(adSlot) {
     return false;
   }
 
-  context.set("slots.".concat(slotName), newSlotDefinition);
+  context_service_context.set("slots.".concat(slotName), newSlotDefinition);
 
   if (repeatConfig.updateProperties) {
     keys_default()(repeatConfig.updateProperties).forEach(function (key) {
       var value = typeof repeatConfig.updateProperties[key] === 'string' ? buildString(repeatConfig.updateProperties[key], newSlotDefinition) : repeatConfig.updateProperties[key];
-      context.set("slots.".concat(slotName, ".").concat(key), value);
+      context_service_context.set("slots.".concat(slotName, ".").concat(key), value);
     });
   }
 
@@ -5402,8 +5391,8 @@ function () {
   createClass_default()(SlotRepeater, [{
     key: "init",
     value: function init() {
-      if (context.get('options.slotRepeater')) {
-        context.push('listeners.slot', {
+      if (context_service_context.get('options.slotRepeater')) {
+        context_service_context.push('listeners.slot', {
           onRenderEnded: function onRenderEnded(adSlot) {
             if (adSlot.isEnabled() && adSlot.isRepeatable()) {
               return repeatSlot(adSlot);
@@ -5426,7 +5415,7 @@ var slotRepeater = new slot_repeater_SlotRepeater();
 var isOptInByQueryParam = query_string_queryString.get('tracking-opt-in-status') === 'true';
 
 function isOptedIn() {
-  return isOptInByQueryParam || context.get('options.trackingOptIn');
+  return isOptInByQueryParam || context_service_context.get('options.trackingOptIn');
 }
 
 var trackingOptIn = {
@@ -5467,7 +5456,7 @@ function () {
       if (matches) {
         matches.forEach(function (match) {
           var key = match.replace('{', '').replace('}', '');
-          var fallbackValue = context.get(key);
+          var fallbackValue = context_service_context.get(key);
           var keySegments = key.split('.');
           var index;
           var segment;
@@ -5748,7 +5737,7 @@ function () {
 
     classCallCheck_default()(this, AdEngine);
 
-    context.extend(config);
+    context_service_context.extend(config);
     this.started = false;
     window.ads = window.ads || {};
     window.ads.runtime = window.ads.runtime || {};
@@ -5766,7 +5755,7 @@ function () {
       this.setupProviders();
       this.setupAdStack();
       btfBlockerService.init();
-      registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
+      registerCustomAdLoader(context_service_context.get('options.customAdLoader.globalMethodName'));
       messageBus.init();
       slotTweaker.registerMessageListener();
       this.runAdQueue();
@@ -5781,7 +5770,7 @@ function () {
   }, {
     key: "setupProviders",
     value: function setupProviders() {
-      var providerName = context.get('state.provider');
+      var providerName = context_service_context.get('state.provider');
 
       switch (providerName) {
         case 'prebidium':
@@ -5802,7 +5791,7 @@ function () {
     value: function setupAdStack() {
       var _this2 = this;
 
-      this.adStack = context.get('state.adStack');
+      this.adStack = context_service_context.get('state.adStack');
 
       if (!this.adStack.start) {
         makeLazyQueue(this.adStack, function (ad) {
@@ -5822,15 +5811,15 @@ function () {
     value: function setupPushOnScrollQueue() {
       var _this3 = this;
 
-      if (context.get('events.pushOnScroll')) {
-        var pushOnScrollIds = context.get('events.pushOnScroll.ids');
+      if (context_service_context.get('events.pushOnScroll')) {
+        var pushOnScrollIds = context_service_context.get('events.pushOnScroll.ids');
 
         var pushOnScrollQueue = construct_default()(lazy_queue_LazyQueue, toConsumableArray_default()(pushOnScrollIds));
 
         pushOnScrollQueue.onItemFlush(function (id) {
-          scrollListener.addSlot(_this3.adStack, id, context.get('events.pushOnScroll.threshold'));
+          scrollListener.addSlot(_this3.adStack, id, context_service_context.get('events.pushOnScroll.threshold'));
         });
-        context.set('events.pushOnScroll.ids', pushOnScrollQueue);
+        context_service_context.set('events.pushOnScroll.ids', pushOnScrollQueue);
         pushOnScrollQueue.flush();
       }
     }
@@ -5846,7 +5835,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 delayModulesPromises = this.getDelayModulesPromises();
-                maxTimeout = context.get('options.maxDelayTimeout');
+                maxTimeout = context_service_context.get('options.maxDelayTimeout');
                 timeoutPromise = new promise_default.a(function (resolve) {
                   return setTimeout(resolve, maxTimeout);
                 });
@@ -5880,7 +5869,7 @@ function () {
   }, {
     key: "getDelayModulesPromises",
     value: function getDelayModulesPromises() {
-      var delayModules = context.get('delayModules') || [];
+      var delayModules = context_service_context.get('delayModules') || [];
       return delayModules.filter(function (delayModule) {
         return delayModule.isEnabled();
       }).map(function (delayModule) {
@@ -5918,7 +5907,7 @@ function () {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "setupGptTargeting", function() { return setupGptTargeting; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PrebidiumProvider", function() { return prebidium_provider_PrebidiumProvider; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "btfBlockerService", function() { return btfBlockerService; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "context", function() { return context; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "context", function() { return context_service_context; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "registerCustomAdLoader", function() { return registerCustomAdLoader; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "events", function() { return events; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "localCache", function() { return localCache; });
@@ -5954,9 +5943,9 @@ if (get_default()(window, versionField, null)) {
 
 set_default()(window, versionField, 'v23.14.0');
 
-set_default()(window, commitField, '7b3908c5');
+set_default()(window, commitField, '9fc94ec9');
 
-logger('ad-engine', 'v23.14.0 (7b3908c5)');
+logger('ad-engine', 'v23.14.0 (9fc94ec9)');
 
 
 

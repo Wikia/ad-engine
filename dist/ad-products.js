@@ -5224,7 +5224,6 @@ var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_
 
 // CONCATENATED MODULE: ./src/ad-products/tracking/video/player-event-emitter.ts
 
-ad_engine_["events"].registerEvent('VIDEO_PLAYER_TRACKING_EVENT');
 /* harmony default export */ var player_event_emitter = ({
   /**
    * Emit single event
@@ -5331,13 +5330,20 @@ function () {
 
     classCallCheck_default()(this, JWPlayerTracker);
 
-    this.adProduct = params.adProduct || null;
-    this.audio = params.audio || false;
+    this.adProduct = void 0;
+    this.audio = false;
     this.contentType = null;
     this.creativeId = null;
-    this.ctp = params.ctp || false;
+    this.ctp = false;
     this.isCtpAudioUpdateEnabled = true;
     this.lineItemId = null;
+    this.slotName = void 0;
+    this.userBlockAutoplay = null;
+    this.videoId = null;
+    this.playerInstance = void 0;
+    this.adProduct = params.adProduct || null;
+    this.audio = params.audio || false;
+    this.ctp = params.ctp || false;
     this.slotName = params.slotName;
     this.userBlockAutoplay = params.userBlockAutoplay || null;
     this.videoId = params.videoId || null;

@@ -4,27 +4,27 @@ import { logger } from '../utils';
 const groupName = 'events';
 
 class EventService extends EventEmitter.EventEmitter {
-	AD_SLOT_CREATED = 'AD_SLOT_CREATED';
-	AD_STACK_START = 'AD_STACK_START';
-	BEFORE_PAGE_CHANGE_EVENT = 'BEFORE_PAGE_CHANGE_EVENT';
-	PAGE_CHANGE_EVENT = 'PAGE_CHANGE_EVENT';
-	PAGE_RENDER_EVENT = 'PAGE_RENDER_EVENT';
+	AD_SLOT_CREATED = Symbol('AD_SLOT_CREATED');
+	AD_STACK_START = Symbol('AD_STACK_START');
+	BEFORE_PAGE_CHANGE_EVENT = Symbol('BEFORE_PAGE_CHANGE_EVENT');
+	PAGE_CHANGE_EVENT = Symbol('PAGE_CHANGE_EVENT');
+	PAGE_RENDER_EVENT = Symbol('PAGE_RENDER_EVENT');
 
 	// video events should happen in the order below
-	VIDEO_AD_REQUESTED = 'VIDEO_AD_REQUESTED';
-	VIDEO_AD_ERROR = 'VIDEO_AD_ERROR';
-	VIDEO_AD_IMPRESSION = 'VIDEO_AD_IMPRESSION';
-	VIDEO_AD_USED = 'VIDEO_AD_USED';
+	VIDEO_AD_REQUESTED = Symbol('VIDEO_AD_REQUESTED');
+	VIDEO_AD_ERROR = Symbol('VIDEO_AD_ERROR');
+	VIDEO_AD_IMPRESSION = Symbol('VIDEO_AD_IMPRESSION');
+	VIDEO_AD_USED = Symbol('VIDEO_AD_USED');
 
-	BIDS_REFRESH = 'BIDS_REFRESH';
-	PREBID_LAZY_CALL = 'PREBID_LAZY_CALL';
+	BIDS_REFRESH = Symbol('BIDS_REFRESH');
+	PREBID_LAZY_CALL = Symbol('PREBID_LAZY_CALL');
 
-	VIDEO_PLAYER_TRACKING_EVENT = 'VIDEO_PLAYER_TRACKING_EVENT';
+	VIDEO_PLAYER_TRACKING_EVENT = Symbol('VIDEO_PLAYER_TRACKING_EVENT');
 
-	BILL_THE_LIZARD_REQUEST = 'BILL_THE_LIZARD_REQUEST';
-	BILL_THE_LIZARD_RESPONSE = 'BILL_THE_LIZARD_RESPONSE';
+	BILL_THE_LIZARD_REQUEST = Symbol('BILL_THE_LIZARD_REQUEST');
+	BILL_THE_LIZARD_RESPONSE = Symbol('BILL_THE_LIZARD_RESPONSE');
 
-	MOAT_YI_READY = 'MOAT_YI_READY';
+	MOAT_YI_READY = Symbol('MOAT_YI_READY');
 
 	beforePageChange(...args) {
 		this.emit(this.BEFORE_PAGE_CHANGE_EVENT, ...args);
@@ -44,9 +44,9 @@ class EventService extends EventEmitter.EventEmitter {
 		);
 	}
 
-	emit(event: string, ...args: any[]): boolean {
+	emit(event: symbol, ...args: any[]): boolean {
 		if (!this.hasEvent(event)) {
-			throw new Error(`Event "${event}" is not registered. Please register an event first.`);
+			throw new Error(`Event "${event.toString()}" is not registered. Please register an event first.`);
 		}
 
 		super.emit(event, ...args);
@@ -55,7 +55,7 @@ class EventService extends EventEmitter.EventEmitter {
 		return true;
 	}
 
-	on(event: string, fn: EventEmitter.ListenerFn, context?: any) {
+	on(event: symbol, fn: EventEmitter.ListenerFn, context?: any) {
 		if (!this.hasEvent(event)) {
 			throw new Error("You can't listen for an event which is not registered yet.");
 		}
@@ -63,7 +63,7 @@ class EventService extends EventEmitter.EventEmitter {
 		return super.on(event, fn, context);
 	}
 
-	addListener(event: string, fn: EventEmitter.ListenerFn, context?: any) {
+	addListener(event: symbol, fn: EventEmitter.ListenerFn, context?: any) {
 		if (!this.hasEvent(event)) {
 			throw new Error("You can't listen for an event which is not registered yet.");
 		}
@@ -71,7 +71,7 @@ class EventService extends EventEmitter.EventEmitter {
 		return super.addListener(event, fn, context);
 	}
 
-	once(event: string, fn: EventEmitter.ListenerFn, context?: any) {
+	once(event: symbol, fn: EventEmitter.ListenerFn, context?: any) {
 		if (!this.hasEvent(event)) {
 			throw new Error("You can't listen for an event which is not registered yet.");
 		}
