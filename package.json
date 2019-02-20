@@ -101,6 +101,7 @@
 		"lintf": "eslint . --fix && ./maintenance/detect-incorrect-usages.sh",
 		"prettier": "prettier --write '**/*.{js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
+		"prepare": "echo 'This is a test'",
 		"preversion": "./maintenance/preversion.sh",
 		"version": "./maintenance/version.sh",
 		"serve": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --inline --open --watch --content-base=./examples",
