@@ -20,9 +20,6 @@ import { ProjectsHandler } from './projects-handler';
 const logGroup = 'bill-the-lizard';
 let openRequests = [];
 
-events.registerEvent('BILL_THE_LIZARD_REQUEST');
-events.registerEvent('BILL_THE_LIZARD_RESPONSE');
-
 /**
  * Builds query parameters for url
  * @param {Object} queryParameters (key-value pairs for query parameters)

@@ -1,7 +1,5 @@
 import { context, events } from '@wikia/ad-engine';
 
-events.registerEvent('VIDEO_PLAYER_TRACKING_EVENT');
-
 export default {
 	/**
 	 * Emit single event

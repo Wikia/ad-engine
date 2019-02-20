@@ -2,8 +2,6 @@ import { context, events, utils } from '@wikia/ad-engine';
 
 const logGroup = 'moat-yi';
 
-events.registerEvent('MOAT_YI_READY');
-
 /**
  * Injects MOAT YI script
  * @returns {Promise}

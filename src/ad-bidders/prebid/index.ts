@@ -34,9 +34,6 @@ let loaded = false;
 window.pbjs = window.pbjs || {};
 window.pbjs.que = window.pbjs.que || [];
 
-events.registerEvent('BIDS_REFRESH');
-events.registerEvent('PREBID_LAZY_CALL');
-
 export class Prebid extends BaseBidder {
 	static validResponseStatusCode = 1;
 	static errorResponseStatusCode = 2;
