@@ -1,4 +1,4 @@
-import { AdEngine, context, events } from '@wikia/ad-engine';
+import { AdEngine, context, events, eventService } from '@wikia/ad-engine';
 import { bidders } from '@wikia/ad-bidders';
 import { utils as adProductsUtils } from '@wikia/ad-products';
 import customContext from '../../context';
@@ -35,7 +35,7 @@ bidders.requestBids({
 	},
 });
 
-events.on(events.AD_SLOT_CREATED, (slot) => {
+eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 

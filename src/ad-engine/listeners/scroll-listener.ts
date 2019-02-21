@@ -1,4 +1,4 @@
-import { events } from '../services/events';
+import { events, eventService } from '../services/events';
 import { getTopOffset } from '../utils/dimensions';
 
 const callbacks = {};
@@ -60,7 +60,7 @@ class ScrollListener {
 
 		callbacks[id] = callback;
 
-		events.once(events.BEFORE_PAGE_CHANGE_EVENT, () => this.removeCallback(id));
+		eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => this.removeCallback(id));
 
 		return id;
 	}

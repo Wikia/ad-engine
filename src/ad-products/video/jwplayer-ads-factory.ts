@@ -4,6 +4,7 @@ import {
 	btfBlockerService,
 	context,
 	events,
+	eventService,
 	slotService,
 	utils,
 	vastDebugger,
@@ -297,7 +298,7 @@ function create(options) {
 			});
 
 			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
-			events.emit(events.VIDEO_AD_REQUESTED, slot);
+			eventService.emit(events.VIDEO_AD_REQUESTED, slot);
 		});
 
 		player.on('adImpression', (event) => {
@@ -307,7 +308,7 @@ function create(options) {
 
 			updateSlotParams(slot, vastParams);
 			slot.setStatus(AdSlot.STATUS_SUCCESS);
-			events.emit(events.VIDEO_AD_IMPRESSION, slot);
+			eventService.emit(events.VIDEO_AD_IMPRESSION, slot);
 		});
 
 		player.on('adError', (event) => {
@@ -332,7 +333,7 @@ function create(options) {
 			} else {
 				slot.setStatus(AdSlot.STATUS_ERROR);
 			}
-			events.emit(events.VIDEO_AD_ERROR, slot);
+			eventService.emit(events.VIDEO_AD_ERROR, slot);
 		});
 
 		if (context.get('options.wad.hmdRec.enabled')) {

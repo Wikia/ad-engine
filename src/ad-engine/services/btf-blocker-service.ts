@@ -1,7 +1,7 @@
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { slotService } from './slot-service';
-import { events } from './events';
+import { events, eventService } from './events';
 
 const logGroup = 'btf-blocker';
 
@@ -40,7 +40,7 @@ class BtfBlockerService {
 				}
 			},
 		});
-		events.on(events.PAGE_CHANGE_EVENT, () => {
+		eventService.on(events.PAGE_CHANGE_EVENT, () => {
 			this.resetState();
 		});
 	}

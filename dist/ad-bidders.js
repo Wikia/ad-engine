@@ -512,7 +512,7 @@ function (_BaseBidder) {
         _this4.onResponse();
 
         if (refresh) {
-          ad_engine_["events"].emit(ad_engine_["events"].BIDS_REFRESH);
+          ad_engine_["eventService"].emit(ad_engine_["events"].BIDS_REFRESH);
         }
       });
     }
@@ -2170,8 +2170,8 @@ function postponeExecutionUntilPbjsLoads(method) {
   };
 }
 
-ad_engine_["events"].on(ad_engine_["events"].VIDEO_AD_IMPRESSION, markWinningBidAsUsed);
-ad_engine_["events"].on(ad_engine_["events"].VIDEO_AD_ERROR, markWinningBidAsUsed);
+ad_engine_["eventService"].on(ad_engine_["events"].VIDEO_AD_IMPRESSION, markWinningBidAsUsed);
+ad_engine_["eventService"].on(ad_engine_["events"].VIDEO_AD_ERROR, markWinningBidAsUsed);
 
 function markWinningBidAsUsed(adSlot) {
   // Mark ad as rendered
@@ -2182,7 +2182,7 @@ function markWinningBidAsUsed(adSlot) {
       window.pbjs.markWinningBidAsUsed({
         adId: adId
       });
-      ad_engine_["events"].emit(ad_engine_["events"].VIDEO_AD_USED, adSlot);
+      ad_engine_["eventService"].emit(ad_engine_["events"].VIDEO_AD_USED, adSlot);
     }
   }
 }
@@ -2272,7 +2272,7 @@ function (_BaseBidder) {
       }
 
       if (this.isLazyLoadingEnabled) {
-        ad_engine_["events"].on(ad_engine_["events"].PREBID_LAZY_CALL, function () {
+        ad_engine_["eventService"].on(ad_engine_["events"].PREBID_LAZY_CALL, function () {
           _this3.lazyCall(bidsBackHandler);
         });
       }
@@ -2378,7 +2378,7 @@ function (_BaseBidder) {
       window.pbjs.que.push(function () {
         var refreshUsedBid = function refreshUsedBid(winningBid) {
           if (_this4.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-            ad_engine_["events"].emit(ad_engine_["events"].BIDS_REFRESH);
+            ad_engine_["eventService"].emit(ad_engine_["events"].BIDS_REFRESH);
 
             var adUnitsToRefresh = _this4.adUnits.filter(function (adUnit) {
               return adUnit.code === winningBid.adUnitCode && adUnit.bids && adUnit.bids[0] && adUnit.bids[0].bidder === winningBid.bidderCode;
@@ -2389,7 +2389,7 @@ function (_BaseBidder) {
         };
 
         window.pbjs.onEvent('bidWon', refreshUsedBid);
-        ad_engine_["events"].once(ad_engine_["events"].PAGE_CHANGE_EVENT, function () {
+        ad_engine_["eventService"].once(ad_engine_["events"].PAGE_CHANGE_EVENT, function () {
           window.pbjs.offEvent('bidWon', refreshUsedBid);
         });
       });
@@ -2425,10 +2425,10 @@ function (_BaseBidder) {
 var biddersRegistry = {};
 var realSlotPrices = {};
 var ad_bidders_logGroup = 'bidders';
-ad_engine_["events"].on(ad_engine_["events"].VIDEO_AD_REQUESTED, function (adSlot) {
+ad_engine_["eventService"].on(ad_engine_["events"].VIDEO_AD_REQUESTED, function (adSlot) {
   adSlot.updateWinningPbBidderDetails();
 });
-ad_engine_["events"].on(ad_engine_["events"].VIDEO_AD_USED, function (adSlot) {
+ad_engine_["eventService"].on(ad_engine_["events"].VIDEO_AD_USED, function (adSlot) {
   updateSlotTargeting(adSlot.getSlotName());
 });
 

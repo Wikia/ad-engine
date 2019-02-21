@@ -1,4 +1,4 @@
-import { AdSlot, context, events, Porvata, slotTweaker } from '@wikia/ad-engine';
+import { AdSlot, context, events, eventService, Porvata, slotTweaker } from '@wikia/ad-engine';
 import * as videoUserInterface from '../interface/video';
 import { getTranslation } from '../../common/i18n';
 
@@ -80,7 +80,7 @@ export class PorvataTemplate {
 
 		this.handleSlotStatus(video);
 
-		events.once(events.PAGE_CHANGE_EVENT, () => {
+		eventService.once(events.PAGE_CHANGE_EVENT, () => {
 			video.destroy();
 		});
 

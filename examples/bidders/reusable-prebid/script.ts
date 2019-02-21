@@ -1,4 +1,4 @@
-import { AdEngine, btfBlockerService, context, events, slotService, utils } from '@wikia/ad-engine';
+import { AdEngine, btfBlockerService, context, events, eventService, slotService, utils } from '@wikia/ad-engine';
 import { bidders } from '@wikia/ad-bidders';
 import { billTheLizard } from '@wikia/ad-services';
 import adContext from '../../context';
@@ -103,7 +103,7 @@ bidders.runOnBiddingReady(() => {
 	console.log('⛳ Prebid bidding completed');
 });
 
-events.on(events.AD_SLOT_CREATED, (slot) => {
+eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 

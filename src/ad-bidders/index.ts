@@ -1,4 +1,4 @@
-import { context, events, utils } from '@wikia/ad-engine';
+import { context, events, eventService, utils } from '@wikia/ad-engine';
 import { A9 } from './a9';
 import { Prebid } from './prebid';
 import * as prebidHelper from './prebid/prebid-helper';
@@ -8,11 +8,11 @@ const biddersRegistry = {};
 const realSlotPrices = {};
 const logGroup = 'bidders';
 
-events.on(events.VIDEO_AD_REQUESTED, (adSlot) => {
+eventService.on(events.VIDEO_AD_REQUESTED, (adSlot) => {
 	adSlot.updateWinningPbBidderDetails();
 });
 
-events.on(events.VIDEO_AD_USED, (adSlot) => {
+eventService.on(events.VIDEO_AD_USED, (adSlot) => {
 	updateSlotTargeting(adSlot.getSlotName());
 });
 

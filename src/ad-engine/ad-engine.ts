@@ -6,6 +6,7 @@ import {
 	btfBlockerService,
 	context,
 	events,
+	eventService,
 	messageBus,
 	registerCustomAdLoader,
 	slotRepeater,
@@ -27,7 +28,7 @@ export class AdEngine {
 
 		templateService.register(FloatingAd);
 
-		events.on(events.PAGE_CHANGE_EVENT, () => {
+		eventService.on(events.PAGE_CHANGE_EVENT, () => {
 			this.started = false;
 			this.setupAdStack();
 		});
@@ -129,7 +130,7 @@ export class AdEngine {
 	 */
 	startAdStack() {
 		if (!this.started) {
-			events.emit(events.AD_STACK_START);
+			eventService.emit(events.AD_STACK_START);
 			this.started = true;
 			this.adStack.start();
 		}

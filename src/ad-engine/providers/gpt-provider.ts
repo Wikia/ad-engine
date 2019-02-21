@@ -5,6 +5,7 @@ import {
 	btfBlockerService,
 	context,
 	events,
+	eventService,
 	slotDataParamsUpdater,
 	slotService,
 	trackingOptIn,
@@ -76,8 +77,8 @@ export class GptProvider {
 		setupGptTargeting();
 		configure();
 		this.setupNonPersonalizedAds();
-		events.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.destroySlots());
-		events.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
+		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.destroySlots());
+		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
 		initialized = true;
 	}
 

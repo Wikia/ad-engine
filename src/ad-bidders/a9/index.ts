@@ -1,4 +1,4 @@
-import { context, events, slotService, utils } from '@wikia/ad-engine';
+import { context, events, eventService, slotService, utils } from '@wikia/ad-engine';
 import { BaseBidder } from '../base-bidder';
 
 /**
@@ -119,7 +119,7 @@ export class A9 extends BaseBidder {
 
 				this.onResponse();
 				if (refresh) {
-					events.emit(events.BIDS_REFRESH);
+					eventService.emit(events.BIDS_REFRESH);
 				}
 			},
 		);

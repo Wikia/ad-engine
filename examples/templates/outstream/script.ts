@@ -1,6 +1,6 @@
-import { AdEngine, context, templateService, utils, events } from '@wikia/ad-engine';
+import { AdEngine, context, templateService, utils, events, eventService } from '@wikia/ad-engine';
 import { bidders } from '@wikia/ad-bidders';
-import { PorvataTemplate, porvataTracker } from '@wikia/ad-products';
+import { PorvataTemplate, porvataTracker, playerEvents } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -54,11 +54,11 @@ templateService.register(PorvataTemplate, {
 	inViewportOffsetTop: 58,
 });
 
-events.on(events.AD_SLOT_CREATED, (slot) => {
+eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-events.on(events.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
+eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 	const request = new window.XMLHttpRequest();
 	const queryUrl = Object.keys(eventInfo)
 		.map((key) => `${key}=${eventInfo[key]}`)

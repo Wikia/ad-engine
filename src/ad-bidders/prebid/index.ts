@@ -1,5 +1,5 @@
 import { decorate } from 'core-decorators';
-import { context, events, utils } from '@wikia/ad-engine';
+import { context, events, eventService, utils } from '@wikia/ad-engine';
 import { BaseBidder } from '../base-bidder';
 import { getPriorities } from './adapters-registry';
 import { getPrebidBestPrice } from './price-helper';
@@ -12,8 +12,8 @@ function postponeExecutionUntilPbjsLoads(method) {
 	};
 }
 
-events.on(events.VIDEO_AD_IMPRESSION, markWinningBidAsUsed);
-events.on(events.VIDEO_AD_ERROR, markWinningBidAsUsed);
+eventService.on(events.VIDEO_AD_IMPRESSION, markWinningBidAsUsed);
+eventService.on(events.VIDEO_AD_ERROR, markWinningBidAsUsed);
 
 function markWinningBidAsUsed(adSlot) {
 	// Mark ad as rendered
@@ -22,7 +22,7 @@ function markWinningBidAsUsed(adSlot) {
 	if (adId) {
 		if (window.pbjs && typeof window.pbjs.markWinningBidAsUsed === 'function') {
 			window.pbjs.markWinningBidAsUsed({ adId });
-			events.emit(events.VIDEO_AD_USED, adSlot);
+			eventService.emit(events.VIDEO_AD_USED, adSlot);
 		}
 	}
 }
@@ -104,7 +104,7 @@ export class Prebid extends BaseBidder {
 		}
 
 		if (this.isLazyLoadingEnabled) {
-			events.on(events.PREBID_LAZY_CALL, () => {
+			eventService.on(events.PREBID_LAZY_CALL, () => {
 				this.lazyCall(bidsBackHandler);
 			});
 		}
@@ -208,7 +208,7 @@ export class Prebid extends BaseBidder {
 		window.pbjs.que.push(() => {
 			const refreshUsedBid = (winningBid) => {
 				if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-					events.emit(events.BIDS_REFRESH);
+					eventService.emit(events.BIDS_REFRESH);
 					const adUnitsToRefresh = this.adUnits.filter(
 						(adUnit) =>
 							adUnit.code === winningBid.adUnitCode &&
@@ -222,7 +222,7 @@ export class Prebid extends BaseBidder {
 			};
 
 			window.pbjs.onEvent('bidWon', refreshUsedBid);
-			events.once(events.PAGE_CHANGE_EVENT, () => {
+			eventService.once(events.PAGE_CHANGE_EVENT, () => {
 				window.pbjs.offEvent('bidWon', refreshUsedBid);
 			});
 		});

@@ -1,7 +1,7 @@
 import { AdSlot } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
-import { events } from './events';
+import { events, eventService } from './events';
 import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
@@ -30,7 +30,7 @@ function isSlotInTheSameViewport(slotHeight, slotOffset, viewportHeight, element
 	return distance < viewportHeight;
 }
 
-events.on(events.PAGE_CHANGE_EVENT, () => {
+eventService.on(events.PAGE_CHANGE_EVENT, () => {
 	slotStates = {};
 	slotStatuses = {};
 });
@@ -53,7 +53,7 @@ class SlotService {
 		}
 
 		slotTweaker.addDefaultClasses(adSlot);
-		events.emit(events.AD_SLOT_CREATED, adSlot);
+		eventService.emit(events.AD_SLOT_CREATED, adSlot);
 	}
 
 	/**

@@ -67,7 +67,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -104,59 +104,65 @@ module.exports = require("@babel/runtime-corejs2/core-js/object/keys");
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
+module.exports = require("@babel/runtime-corejs2/core-js/symbol");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/parse-int");
+module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/set");
+module.exports = require("@babel/runtime-corejs2/core-js/parse-int");
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/helpers/toConsumableArray");
+module.exports = require("@babel/runtime-corejs2/core-js/set");
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/object/entries");
+module.exports = require("@babel/runtime-corejs2/helpers/toConsumableArray");
 
 /***/ }),
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
+module.exports = require("@babel/runtime-corejs2/core-js/object/entries");
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
+
+/***/ }),
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/slicedToArray"
-var slicedToArray_ = __webpack_require__(10);
+var slicedToArray_ = __webpack_require__(11);
 var slicedToArray_default = /*#__PURE__*/__webpack_require__.n(slicedToArray_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/entries"
-var entries_ = __webpack_require__(9);
+var entries_ = __webpack_require__(10);
 var entries_default = /*#__PURE__*/__webpack_require__.n(entries_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/toConsumableArray"
-var toConsumableArray_ = __webpack_require__(8);
+var toConsumableArray_ = __webpack_require__(9);
 var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/set"
-var set_ = __webpack_require__(7);
+var set_ = __webpack_require__(8);
 var set_default = /*#__PURE__*/__webpack_require__.n(set_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/classCallCheck"
@@ -168,11 +174,11 @@ var createClass_ = __webpack_require__(1);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/parse-int"
-var parse_int_ = __webpack_require__(6);
+var parse_int_ = __webpack_require__(7);
 var parse_int_default = /*#__PURE__*/__webpack_require__.n(parse_int_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/assign"
-var assign_ = __webpack_require__(5);
+var assign_ = __webpack_require__(6);
 var assign_default = /*#__PURE__*/__webpack_require__.n(assign_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/promise"
@@ -182,6 +188,10 @@ var promise_default = /*#__PURE__*/__webpack_require__.n(promise_);
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
 var keys_ = __webpack_require__(4);
 var keys_default = /*#__PURE__*/__webpack_require__.n(keys_);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/symbol"
+var symbol_ = __webpack_require__(5);
+var symbol_default = /*#__PURE__*/__webpack_require__.n(symbol_);
 
 // EXTERNAL MODULE: external "@wikia/ad-engine"
 var ad_engine_ = __webpack_require__(0);
@@ -372,6 +382,7 @@ function () {
 
 
 
+
 /**
  * @typedef {Object} ModelDefinition
  * @property {boolean|undefined} executable
@@ -389,6 +400,10 @@ function () {
 
 var bill_the_lizard_logGroup = 'bill-the-lizard';
 var openRequests = [];
+var events = {
+  BILL_THE_LIZARD_REQUEST: symbol_default()('BILL_THE_LIZARD_REQUEST'),
+  BILL_THE_LIZARD_RESPONSE: symbol_default()('BILL_THE_LIZARD_RESPONSE')
+};
 /**
  * Builds query parameters for url
  * @param {Object} queryParameters (key-value pairs for query parameters)
@@ -434,7 +449,7 @@ function httpRequest(host, endpoint) {
   var request = new window.XMLHttpRequest();
   var query = buildQueryUrl(queryParameters);
   var url = buildUrl(host, endpoint, query);
-  ad_engine_["events"].emit(ad_engine_["events"].BILL_THE_LIZARD_REQUEST, {
+  ad_engine_["eventService"].emit(events.BILL_THE_LIZARD_REQUEST, {
     query: query,
     callId: callId
   });
@@ -609,7 +624,7 @@ function () {
 
         _this.setTargeting();
 
-        ad_engine_["events"].emit(ad_engine_["events"].BILL_THE_LIZARD_RESPONSE, {
+        ad_engine_["eventService"].emit(events.BILL_THE_LIZARD_RESPONSE, {
           callId: callId,
           response: _this.serialize(callId)
         });
@@ -807,11 +822,12 @@ function () {
       }
 
       for (var backCounter = startId - 1; backCounter >= 1; backCounter--) {
-        var callId = callIdBuilder(backCounter);
-        var prevStatus = this.getResponseStatus(callId);
+        var _callId = callIdBuilder(backCounter);
+
+        var prevStatus = this.getResponseStatus(_callId);
 
         if (prevStatus === BillTheLizard.ON_TIME || prevStatus === BillTheLizard.TOO_LATE) {
-          return this.getPrediction(modelName, callId);
+          return this.getPrediction(modelName, _callId);
         }
       }
 
@@ -1102,7 +1118,11 @@ var krux = new krux_Krux();
 
 
 
+
 var moat_yi_logGroup = 'moat-yi';
+var moat_yi_events = {
+  MOAT_YI_READY: symbol_default()('MOAT_YI_READY')
+};
 /**
  * Injects MOAT YI script
  * @returns {Promise}
@@ -1169,7 +1189,7 @@ function () {
       if (window.moatPrebidApi && typeof window.moatPrebidApi.getMoatTargetingForPage === 'function') {
         var pageParams = window.moatPrebidApi.getMoatTargetingForPage() || {};
         ad_engine_["context"].set('targeting.m_data', pageParams.m_data);
-        ad_engine_["events"].emit(ad_engine_["events"].MOAT_YI_READY, "m_data=".concat(pageParams.m_data));
+        ad_engine_["eventService"].emit(moat_yi_events.MOAT_YI_READY, "m_data=".concat(pageParams.m_data));
         ad_engine_["utils"].logger(moat_yi_logGroup, 'moatYieldReady', pageParams);
       }
     }
@@ -1267,12 +1287,14 @@ function () {
 
 var nielsen = new nielsen_Nielsen();
 // CONCATENATED MODULE: ./src/ad-services/index.ts
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BillTheLizard", function() { return bill_the_lizard_BillTheLizard; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "billTheLizard", function() { return billTheLizard; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BillTheLizard", function() { return bill_the_lizard_BillTheLizard; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "billTheLizardEvents", function() { return events; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "confiant", function() { return confiant; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "geoEdge", function() { return geoEdge; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "krux", function() { return krux; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "moatYi", function() { return moatYi; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "moatYiEvents", function() { return moat_yi_events; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "nielsen", function() { return nielsen; });
 
 

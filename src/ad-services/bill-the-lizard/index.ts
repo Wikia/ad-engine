@@ -1,4 +1,4 @@
-import { context, events, utils } from '@wikia/ad-engine';
+import { context, eventService, utils } from '@wikia/ad-engine';
 import { Executor } from './executor';
 import { ProjectsHandler } from './projects-handler';
 
@@ -19,6 +19,21 @@ import { ProjectsHandler } from './projects-handler';
 
 const logGroup = 'bill-the-lizard';
 let openRequests = [];
+
+interface RequestEvent {
+	callId: string | number;
+	query: string;
+}
+
+interface ResponseEvent {
+	callId: string | number;
+	response: string;
+}
+
+export const events = {
+	BILL_THE_LIZARD_REQUEST: Symbol('BILL_THE_LIZARD_REQUEST'),
+	BILL_THE_LIZARD_RESPONSE: Symbol('BILL_THE_LIZARD_RESPONSE'),
+};
 
 /**
  * Builds query parameters for url
@@ -60,10 +75,10 @@ function httpRequest(host, endpoint, queryParameters = {}, timeout = 0, callId) 
 	const query = buildQueryUrl(queryParameters);
 	const url = buildUrl(host, endpoint, query);
 
-	events.emit(events.BILL_THE_LIZARD_REQUEST, {
+	eventService.emit(events.BILL_THE_LIZARD_REQUEST, {
 		query,
 		callId,
-	});
+	} as RequestEvent);
 
 	request.open('GET', url, true);
 	request.responseType = 'json';
@@ -230,10 +245,10 @@ export class BillTheLizard {
 
 				this.setTargeting();
 
-				events.emit(events.BILL_THE_LIZARD_RESPONSE, {
+				eventService.emit(events.BILL_THE_LIZARD_RESPONSE, {
 					callId,
 					response: this.serialize(callId),
-				});
+				} as ResponseEvent);
 
 				this.executor.executeMethods(models, response);
 
