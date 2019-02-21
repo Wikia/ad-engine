@@ -157,3 +157,5 @@ export const bidders = {
 	transformPriceFromBid,
 	updateSlotTargeting,
 };
+
+export * from './wrappers';

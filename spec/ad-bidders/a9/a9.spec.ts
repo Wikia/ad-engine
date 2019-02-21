@@ -1,8 +1,11 @@
+import sinon from 'sinon';
 import { expect } from 'chai';
 import { A9 } from '../../../src/ad-bidders/a9/index';
+import { Apstag } from '../../../src/ad-bidders/wrappers';
 
 describe('A9 bidder', () => {
 	let bidderConfig;
+	let apstagStub;
 
 	beforeEach(() => {
 		bidderConfig = {
@@ -17,6 +20,12 @@ describe('A9 bidder', () => {
 				},
 			},
 		};
+
+		apstagStub = sinon.stub(Apstag, 'make').returns({});
+	});
+
+	afterEach(() => {
+		apstagStub.restore();
 	});
 
 	it('configure display slot', () => {

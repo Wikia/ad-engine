@@ -3,6 +3,7 @@ export * from './dimensions';
 export * from './document';
 export * from './flow-control';
 export * from './geo';
+export * from './get-promise-and-execute-callback';
 export * from './iframe-builder';
 export * from './lazy-queue';
 export * from './logger';

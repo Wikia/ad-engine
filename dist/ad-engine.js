@@ -293,6 +293,7 @@ __webpack_require__.d(utils_namespaceObject, "getDocumentVisibilityStatus", func
 __webpack_require__.d(utils_namespaceObject, "wait", function() { return flow_control_wait; });
 __webpack_require__.d(utils_namespaceObject, "defer", function() { return flow_control_defer; });
 __webpack_require__.d(utils_namespaceObject, "once", function() { return flow_control_once; });
+__webpack_require__.d(utils_namespaceObject, "timeoutReject", function() { return timeoutReject; });
 __webpack_require__.d(utils_namespaceObject, "createWithTimeout", function() { return createWithTimeout; });
 __webpack_require__.d(utils_namespaceObject, "setGeoData", function() { return setGeoData; });
 __webpack_require__.d(utils_namespaceObject, "getCountryCode", function() { return getCountryCode; });
@@ -307,6 +308,7 @@ __webpack_require__.d(utils_namespaceObject, "setSessionId", function() { return
 __webpack_require__.d(utils_namespaceObject, "getSamplingResults", function() { return getSamplingResults; });
 __webpack_require__.d(utils_namespaceObject, "isProperGeo", function() { return isProperGeo; });
 __webpack_require__.d(utils_namespaceObject, "mapSamplingResults", function() { return mapSamplingResults; });
+__webpack_require__.d(utils_namespaceObject, "getPromiseAndExecuteCallback", function() { return getPromiseAndExecuteCallback; });
 __webpack_require__.d(utils_namespaceObject, "IframeBuilder", function() { return iframe_builder_IframeBuilder; });
 __webpack_require__.d(utils_namespaceObject, "makeLazyQueue", function() { return makeLazyQueue; });
 __webpack_require__.d(utils_namespaceObject, "LazyQueue", function() { return lazy_queue_LazyQueue; });
@@ -713,20 +715,25 @@ function flow_control_once(emitter, eventName) {
   });
 }
 /**
+ * @param {number} msToTimeout
+ * @returns {Promise}
+ */
+
+function timeoutReject(msToTimeout) {
+  return new promise_default.a(function (resolve, reject) {
+    setTimeout(reject, msToTimeout);
+  });
+}
+/**
  * Fires the Promise if function is fulfilled or timeout is reached
- *
  * @param {function} func
- * @param {int} msToTimeout
- *
+ * @param {number} msToTimeout
  * @returns {Promise}
  */
 
 function createWithTimeout(func) {
   var msToTimeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2000;
-  var timeout = new promise_default.a(function (resolve, reject) {
-    setTimeout(reject, msToTimeout);
-  });
-  return promise_default.a.race([new promise_default.a(func), timeout]);
+  return promise_default.a.race([new promise_default.a(func), timeoutReject(msToTimeout)]);
 }
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/json/stringify"
 var stringify_ = __webpack_require__(4);
@@ -1223,6 +1230,25 @@ var geo_module = {
   mapSamplingResults: mapSamplingResults
 };
 /* harmony default export */ var geo = (geo_module);
+// CONCATENATED MODULE: ./src/ad-engine/utils/get-promise-and-execute-callback.ts
+
+
+/**
+ * Returns promise and executes callback if present.
+ * @param {function} func - Function to from which a promise is made.
+ * @param {function=} callback
+ * @returns {Promise}
+ */
+function getPromiseAndExecuteCallback(func) {
+  var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var promise = new promise_default.a(func);
+
+  if (callback && typeof callback === 'function') {
+    promise.then(callback.bind(null, null), callback);
+  }
+
+  return promise;
+}
 // CONCATENATED MODULE: ./src/ad-engine/utils/iframe-builder.ts
 
 
@@ -4078,7 +4104,7 @@ function (_EventEmitter) {
       _this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
     });
 
-    _this.addAdClass();
+    _this.addClass(AdSlot.AD_CLASS);
 
     if (!_this.enabled) {
       slotTweaker.hide(assertThisInitialized_default()(assertThisInitialized_default()(_this)));
@@ -4315,13 +4341,16 @@ function (_EventEmitter) {
      */
 
   }, {
-    key: "addAdClass",
-    value: function addAdClass() {
+    key: "addClass",
+    value: function addClass(className) {
       var container = this.getElement();
 
       if (container) {
-        container.classList.add(AdSlot.AD_CLASS);
+        container.classList.add(className);
+        return true;
       }
+
+      return false;
     }
   }, {
     key: "targeting",
@@ -5688,6 +5717,7 @@ var viewportObserver = {
 
 
 
+
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/construct"
 var construct_ = __webpack_require__(27);
 var construct_default = /*#__PURE__*/__webpack_require__.n(construct_);
@@ -5995,11 +6025,11 @@ if (get_default()(window, versionField, null)) {
   window.console.warn('Multiple @wikia/ad-engine initializations. This may cause issues.');
 }
 
-set_default()(window, versionField, 'v23.14.0');
+set_default()(window, versionField, 'v24.0.0');
 
-set_default()(window, commitField, '8f274f47');
+set_default()(window, commitField, '9f19c209');
 
-logger('ad-engine', 'v23.14.0 (8f274f47)');
+logger('ad-engine', 'v24.0.0 (9f19c209)');
 
 
 

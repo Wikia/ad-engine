@@ -1,12 +1,13 @@
 import { AdEngine, context, events, utils } from '@wikia/ad-engine';
-import { bidders } from '@wikia/ad-bidders';
+import { bidders, Apstag, cmp } from '@wikia/ad-bidders';
 import { utils as adProductsUtils } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
 const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
+const apstag = Apstag.make();
 
-window.__cmp = function (cmd, param, cb) {
+cmp.override((cmd, param, cb) => {
 	if (cmd === 'getConsentData') {
 		cb(
 			{
@@ -38,7 +39,7 @@ window.__cmp = function (cmd, param, cb) {
 	} else {
 		cb(null, false);
 	}
-};
+});
 
 context.extend(customContext);
 context.set('targeting.artid', '266');
@@ -85,12 +86,12 @@ events.on(events.AD_SLOT_CREATED, (slot) => {
 window.bidders = bidders;
 
 document.getElementById('enableDebugMode').addEventListener('click', () => {
-	window.apstag.debug('enable');
+	apstag.enableDebug();
 	window.location.reload();
 });
 
 document.getElementById('disableDebugMode').addEventListener('click', () => {
-	window.apstag.debug('disable');
+	apstag.disableDebug();
 	window.location.reload();
 });
 

@@ -134,31 +134,31 @@ module.exports = require("@babel/runtime-corejs2/helpers/slicedToArray");
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
+module.exports = require("@babel/runtime-corejs2/helpers/objectSpread");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("core-decorators");
+module.exports = require("@babel/runtime-corejs2/core-js/object/assign");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/helpers/applyDecoratedDescriptor");
+module.exports = require("core-decorators");
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/core-js/object/get-own-property-descriptor");
+module.exports = require("@babel/runtime-corejs2/helpers/applyDecoratedDescriptor");
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports) {
 
-module.exports = require("@babel/runtime-corejs2/helpers/objectSpread");
+module.exports = require("@babel/runtime-corejs2/core-js/object/get-own-property-descriptor");
 
 /***/ }),
 /* 15 */
@@ -186,7 +186,7 @@ var promise_ = __webpack_require__(15);
 var promise_default = /*#__PURE__*/__webpack_require__.n(promise_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/assign"
-var assign_ = __webpack_require__(10);
+var assign_ = __webpack_require__(11);
 var assign_default = /*#__PURE__*/__webpack_require__.n(assign_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/keys"
@@ -195,6 +195,10 @@ var keys_default = /*#__PURE__*/__webpack_require__.n(keys_);
 
 // EXTERNAL MODULE: external "@wikia/ad-engine"
 var ad_engine_ = __webpack_require__(0);
+
+// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/objectSpread"
+var objectSpread_ = __webpack_require__(10);
+var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/classCallCheck"
 var classCallCheck_ = __webpack_require__(2);
@@ -216,16 +220,227 @@ var getPrototypeOf_default = /*#__PURE__*/__webpack_require__.n(getPrototypeOf_)
 var inherits_ = __webpack_require__(3);
 var inherits_default = /*#__PURE__*/__webpack_require__.n(inherits_);
 
+// CONCATENATED MODULE: ./src/ad-bidders/wrappers/apstag.ts
+
+
+
+var apstag_Apstag =
+/*#__PURE__*/
+function () {
+  createClass_default()(Apstag, null, [{
+    key: "make",
+
+    /**
+     * @private
+     */
+    value: function make() {
+      if (!Apstag.instance) {
+        Apstag.instance = new Apstag();
+      }
+
+      return Apstag.instance;
+    }
+    /**
+     * @private
+     */
+
+  }]);
+
+  /**
+   * @private
+   */
+  function Apstag() {
+    classCallCheck_default()(this, Apstag);
+
+    this.renderImpEndCallbacks = [];
+    this.renderImpHookPresent = false;
+    this.utils = ad_engine_["utils"];
+    this.insertScript();
+    this.configure();
+  }
+  /**
+   * @private
+   */
+
+
+  createClass_default()(Apstag, [{
+    key: "insertScript",
+    value: function insertScript() {
+      this.script = this.utils.scriptLoader.loadScript('//c.amazon-adsystem.com/aax2/apstag.js', 'text/javascript', true, 'first');
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "configure",
+    value: function configure() {
+      var _this = this;
+
+      window.apstag = window.apstag || {};
+      window.apstag._Q = window.apstag._Q || [];
+
+      if (typeof window.apstag.init === 'undefined') {
+        window.apstag.init = function () {
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+
+          _this.configureCommand('i', args);
+        };
+      }
+
+      if (typeof window.apstag.fetchBids === 'undefined') {
+        window.apstag.fetchBids = function () {
+          for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            args[_key2] = arguments[_key2];
+          }
+
+          _this.configureCommand('f', args);
+        };
+      }
+    }
+    /** @private */
+
+  }, {
+    key: "configureCommand",
+    value: function configureCommand(command, args) {
+      window.apstag._Q.push([command, args]);
+    }
+  }, {
+    key: "init",
+    value: function init(apsConfig) {
+      window.apstag.init(apsConfig);
+    }
+    /**
+     * @param {{slots: A9SlotDefinition[], timeout: number}} bidsConfig configuration of bids
+     * @param {function(object)} cb Callback receiving current bids
+     * @returns {!Promise} If `cb` has been omitted
+     */
+
+  }, {
+    key: "fetchBids",
+    value: function fetchBids(bidsConfig) {
+      var cb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      window.apstag.fetchBids(bidsConfig, function (currentBids) {
+        return cb(currentBids);
+      });
+    }
+  }, {
+    key: "targetingKeys",
+    value: function targetingKeys() {
+      return window.apstag.targetingKeys();
+    }
+  }, {
+    key: "enableDebug",
+    value: function enableDebug() {
+      window.apstag.debug('enable');
+    }
+  }, {
+    key: "disableDebug",
+    value: function disableDebug() {
+      window.apstag.debug('disable');
+    }
+    /**
+     * Executes callback each time after apstag.renderImp is called
+     * @param {function} callback
+     */
+
+  }, {
+    key: "onRenderImpEnd",
+    value: function onRenderImpEnd(callback) {
+      if (typeof callback !== 'function') {
+        throw new Error('onRenderImpEnd used with callback not being a function');
+      }
+
+      if (!this.renderImpHookPresent) {
+        this.addRenderImpHook();
+      }
+
+      this.renderImpEndCallbacks.push(callback);
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "addRenderImpHook",
+    value: function addRenderImpHook() {
+      var _this2 = this;
+
+      var original = window.apstag.renderImp;
+
+      window.apstag.renderImp = function () {
+        for (var _len3 = arguments.length, options = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+          options[_key3] = arguments[_key3];
+        }
+
+        original.apply(void 0, options);
+        var doc = options[0],
+            impId = options[1];
+
+        _this2.renderImpEndCallbacks.forEach(function (cb) {
+          return cb(doc, impId);
+        });
+      };
+    }
+  }]);
+
+  return Apstag;
+}();
+apstag_Apstag.instance = void 0;
+// CONCATENATED MODULE: ./src/ad-bidders/wrappers/cmp.ts
+
+
+var cmp_Cmp =
+/*#__PURE__*/
+function () {
+  function Cmp() {
+    classCallCheck_default()(this, Cmp);
+  }
+
+  createClass_default()(Cmp, [{
+    key: "getConsentData",
+
+    /**
+     * @param {*=} param
+     * @param {function(object)} cb Callback receiving current bids
+     */
+    value: function getConsentData(param, cb) {
+      window.__cmp('getConsentData', param, function (consentData) {
+        return cb(consentData);
+      });
+    }
+  }, {
+    key: "override",
+    value: function override(newCmp) {
+      window.__cmp = newCmp;
+    }
+  }, {
+    key: "exists",
+    get: function get() {
+      return !!window.__cmp;
+    }
+  }]);
+
+  return Cmp;
+}();
+var cmp = new cmp_Cmp();
+// CONCATENATED MODULE: ./src/ad-bidders/wrappers/index.ts
+
+
 // CONCATENATED MODULE: ./src/ad-bidders/base-bidder.ts
 
 
+
+/**
+ * @abstract
+ */
 
 var base_bidder_BaseBidder =
 /*#__PURE__*/
 function () {
   function BaseBidder(name, bidderConfig) {
-    var _this = this;
-
     var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2000;
 
     classCallCheck_default()(this, BaseBidder);
@@ -234,37 +449,52 @@ function () {
     this.logGroup = "".concat(name, "-bidder");
     this.bidderConfig = bidderConfig;
     this.timeout = timeout;
+    this.utils = ad_engine_["utils"];
+    this.context = ad_engine_["context"];
     this.resetState();
-
-    this.onResponse = function () {
-      return _this.onResponseCall();
-    };
-
-    ad_engine_["utils"].logger(this.logGroup, 'created');
+    this.utils.logger(this.logGroup, 'created');
   }
 
   createClass_default()(BaseBidder, [{
-    key: "addResponseListener",
-    value: function addResponseListener(callback) {
-      this.onResponseCallbacks.push(callback);
+    key: "resetState",
+    value: function resetState() {
+      var _this = this;
+
+      this.called = false;
+      this.response = false;
+      this.onResponseCallbacks = new ad_engine_["utils"].LazyQueue();
+      this.onResponseCallbacks.onItemFlush(function (callback) {
+        callback(_this.name);
+      });
     }
   }, {
     key: "call",
     value: function call() {
+      var _this2 = this;
+
       this.response = false;
       this.called = true;
+      this.callBids(function () {
+        return _this2.onBidResponse();
+      });
+      this.utils.logger(this.logGroup, 'called');
+    }
+    /**
+     * @protected
+     */
 
-      if (this.callBids) {
-        this.callBids(this.onResponse);
-      }
-
-      ad_engine_["utils"].logger(this.logGroup, 'called');
+  }, {
+    key: "onBidResponse",
+    value: function onBidResponse() {
+      this.response = true;
+      this.calculatePrices();
+      this.onResponseCallbacks.flush();
+      this.utils.logger(this.logGroup, 'respond');
     }
     /**
      * Returns bidder slot alias if available, otherwise slot name
-     *
+     * @protected
      * @param {string} slotName
-     *
      * @returns {string}
      */
 
@@ -273,66 +503,42 @@ function () {
     value: function getSlotAlias(slotName) {
       return ad_engine_["context"].get("slots.".concat(slotName, ".bidderAlias")) || slotName;
     }
+    /**
+     * @param {string} slotName
+     * @returns {{}}
+     */
+
   }, {
     key: "getSlotBestPrice",
     value: function getSlotBestPrice(slotName) {
-      if (this.getBestPrice) {
-        return this.getBestPrice(slotName);
-      }
-
-      return {};
+      return this.getBestPrice(slotName);
     }
+    /**
+     * @param {string} slotName
+     * @returns {{}}
+     */
+
   }, {
     key: "getSlotTargetingParams",
     value: function getSlotTargetingParams(slotName) {
-      if (!this.called || !this.isSlotSupported(slotName) || !this.getTargetingParams) {
+      if (!this.called || !this.isSlotSupported(slotName)) {
         return {};
       }
 
       return this.getTargetingParams(slotName);
     }
-  }, {
-    key: "hasResponse",
-    value: function hasResponse() {
-      return this.response;
-    }
-  }, {
-    key: "isSupported",
-    value: function isSupported() {
-      return false;
-    }
+    /**
+     * @param {string} slotName
+     * @returns {boolean}
+     */
+
   }, {
     key: "isSlotSupported",
     value: function isSlotSupported(slotName) {
       return this.isSupported(slotName);
     }
-  }, {
-    key: "onResponseCall",
-    value: function onResponseCall() {
-      this.response = true;
-
-      if (this.calculatePrices) {
-        this.calculatePrices();
-      }
-
-      this.onResponseCallbacks.flush();
-      ad_engine_["utils"].logger(this.logGroup, 'respond');
-    }
-  }, {
-    key: "resetState",
-    value: function resetState() {
-      var _this2 = this;
-
-      this.called = false;
-      this.response = false;
-      this.onResponseCallbacks = new ad_engine_["utils"].LazyQueue();
-      this.onResponseCallbacks.onItemFlush(function (callback) {
-        callback(_this2.name);
-      });
-    }
     /**
      * Fires the Promise if bidder replied or timeout is reached
-     *
      * @returns {Promise}
      */
 
@@ -341,7 +547,7 @@ function () {
     value: function waitForResponse() {
       var _this3 = this;
 
-      return ad_engine_["utils"].createWithTimeout(function (resolve) {
+      return this.utils.createWithTimeout(function (resolve) {
         if (_this3.hasResponse()) {
           resolve();
         } else {
@@ -350,8 +556,21 @@ function () {
       }, this.timeout);
     }
     /**
+     * @returns {boolean}
+     */
+
+  }, {
+    key: "hasResponse",
+    value: function hasResponse() {
+      return this.response;
+    }
+  }, {
+    key: "addResponseListener",
+    value: function addResponseListener(callback) {
+      this.onResponseCallbacks.push(callback);
+    }
+    /**
      * Check if bidder was called
-     *
      * @returns {boolean}
      */
 
@@ -359,6 +578,71 @@ function () {
     key: "wasCalled",
     value: function wasCalled() {
       return this.called;
+    }
+    /**
+     * @abstract
+     * @protected
+     */
+
+  }, {
+    key: "callBids",
+    value: function callBids(cb) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        cb: cb
+      });
+    }
+    /**
+     * @abstract
+     * @protected
+     */
+
+  }, {
+    key: "calculatePrices",
+    value: function calculatePrices() {
+      throw new ad_engine_["utils"].NotImplementedException();
+    }
+    /**
+     * @abstract
+     * @protected
+     * @param {string} slotName
+     * @returns {*|{}}
+     */
+
+  }, {
+    key: "getBestPrice",
+    value: function getBestPrice(slotName) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        slotName: slotName
+      });
+    }
+    /**
+     * @abstract
+     * @protected
+     * @param {string} slotName
+     * @returns {*|{}}
+     */
+
+  }, {
+    key: "getTargetingParams",
+    value: function getTargetingParams(slotName) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        slotName: slotName
+      });
+    }
+    /**
+     * Checks if slot with given name is supported by bidder.
+     * @abstract
+     * @protected
+     * @param {string} slotName
+     * @returns {boolean}
+     */
+
+  }, {
+    key: "isSupported",
+    value: function isSupported(slotName) {
+      throw new ad_engine_["utils"].NotImplementedException({
+        slotName: slotName
+      });
     }
   }]);
 
@@ -373,19 +657,21 @@ function () {
 
 
 
+
+
+var logGroup = 'A9';
 /**
  * @typedef {Object} A9SlotDefinition
  * @property {string} slotID
  * @property {string} slotName
  */
 
-var loaded = false;
-var logGroup = 'A9';
 var a9_A9 =
 /*#__PURE__*/
 function (_BaseBidder) {
   inherits_default()(A9, _BaseBidder);
 
+  /** @private */
   function A9(bidderConfig) {
     var _this;
 
@@ -394,6 +680,7 @@ function (_BaseBidder) {
     classCallCheck_default()(this, A9);
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(A9).call(this, 'a9', bidderConfig, timeout));
+    _this.loaded = false;
     _this.isCMPEnabled = ad_engine_["context"].get('custom.isCMPEnabled');
     _this.amazonId = _this.bidderConfig.amazonId;
     _this.slots = _this.bidderConfig.slots;
@@ -402,162 +689,18 @@ function (_BaseBidder) {
     _this.priceMap = {};
     _this.slotNamesMap = {};
     _this.targetingKeys = [];
+    _this.apstag = apstag_Apstag.make();
+    _this.cmp = cmp;
+    _this.utils = ad_engine_["utils"];
+    _this.events = ad_engine_["events"];
+    _this.slotService = ad_engine_["slotService"];
     _this.timeout = timeout;
-    _this.bidsRefreshing = ad_engine_["context"].get('bidders.a9.bidsRefreshing');
-    _this.isBidsRefreshingEnabled = _this.bidsRefreshing && _this.bidsRefreshing.enabled;
+    _this.bidsRefreshing = ad_engine_["context"].get('bidders.a9.bidsRefreshing') || {};
     _this.isRenderImpOverwritten = false;
     return _this;
   }
 
   createClass_default()(A9, [{
-    key: "calculatePrices",
-    value: function calculatePrices() {
-      var _this2 = this;
-
-      keys_default()(this.bids).forEach(function (slotName) {
-        _this2.priceMap[slotName] = _this2.bids[slotName].amznbid;
-      });
-    }
-  }, {
-    key: "callBids",
-    value: function callBids() {
-      var _this3 = this;
-
-      if (window.__cmp) {
-        window.__cmp('getConsentData', null, function (consentData) {
-          _this3.init(consentData);
-        });
-      } else {
-        this.init();
-      }
-    }
-  }, {
-    key: "init",
-    value: function init() {
-      var consentData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      if (!loaded) {
-        this.insertScript();
-        this.configureApstag();
-        var apsConfig = {
-          pubID: this.amazonId,
-          videoAdServer: 'DFP',
-          deals: !!this.bidderConfig.dealsEnabled
-        };
-
-        if (this.isCMPEnabled && consentData && consentData.consentData) {
-          apsConfig.gdpr = {
-            enabled: consentData.gdprApplies,
-            consent: consentData.consentData,
-            cmpTimeout: 5000
-          };
-        }
-
-        window.apstag.init(apsConfig);
-        loaded = true;
-      }
-
-      this.bids = {};
-      this.priceMap = {};
-      var a9Slots = this.getA9SlotsDefinitions(this.slotsNames);
-      this.fetchBids(a9Slots);
-    }
-    /**
-     * Fetches bids from A9.
-     *
-     * Calls this.onResponse() upon success.
-     *
-     * @param {A9SlotDefinition[]} slots
-     */
-
-  }, {
-    key: "fetchBids",
-    value: function fetchBids(slots) {
-      var _this4 = this;
-
-      var refresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      ad_engine_["utils"].logger(logGroup, 'fetching bids for slots', slots);
-      window.apstag.fetchBids({
-        slots: slots,
-        timeout: this.timeout
-      }, function (currentBids) {
-        ad_engine_["utils"].logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids); // overwrite window.apstag.renderImp on the first fetch
-
-        if (!_this4.isRenderImpOverwritten) {
-          _this4.overwriteRenderImp();
-
-          _this4.isRenderImpOverwritten = true;
-        }
-
-        currentBids.forEach(function (bid) {
-          var slotName = _this4.slotNamesMap[bid.slotID] || bid.slotID;
-          var bidTargeting = bid;
-          var keys = window.apstag.targetingKeys();
-
-          if (_this4.bidderConfig.dealsEnabled) {
-            keys = bid.helpers.targetingKeys;
-            bidTargeting = bid.targeting;
-          }
-
-          _this4.bids[slotName] = {};
-          keys.forEach(function (key) {
-            if (_this4.targetingKeys.indexOf(key) === -1) {
-              _this4.targetingKeys.push(key);
-            }
-
-            _this4.bids[slotName][key] = bidTargeting[key];
-          });
-        });
-
-        _this4.onResponse();
-
-        if (refresh) {
-          ad_engine_["events"].emit(ad_engine_["events"].BIDS_REFRESH);
-        }
-      });
-    }
-  }, {
-    key: "configureApstag",
-    value: function configureApstag() {
-      var _this5 = this;
-
-      window.apstag = window.apstag || {};
-      window.apstag._Q = window.apstag._Q || [];
-
-      if (typeof window.apstag.init === 'undefined') {
-        window.apstag.init = function () {
-          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-          }
-
-          _this5.configureApstagCommand('i', args);
-        };
-      }
-
-      if (typeof window.apstag.fetchBids === 'undefined') {
-        window.apstag.fetchBids = function () {
-          for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
-          }
-
-          _this5.configureApstagCommand('f', args);
-        };
-      }
-    }
-  }, {
-    key: "configureApstagCommand",
-    value: function configureApstagCommand(command, args) {
-      window.apstag._Q.push([command, args]);
-    }
-  }, {
-    key: "getBestPrice",
-    value: function getBestPrice(slotName) {
-      var slotAlias = this.getSlotAlias(slotName);
-      return this.priceMap[slotAlias] ? {
-        a9: this.priceMap[slotAlias]
-      } : {};
-    }
-  }, {
     key: "getPrices",
     value: function getPrices() {
       return this.priceMap;
@@ -568,73 +711,168 @@ function (_BaseBidder) {
       return this.targetingKeys;
     }
   }, {
-    key: "getTargetingParams",
-    value: function getTargetingParams(slotName) {
-      return this.bids[this.getSlotAlias(slotName)] || {};
+    key: "init",
+    value: function init() {
+      var consentData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.initIfNotLoaded(consentData);
+      this.bids = {};
+      this.priceMap = {};
+      var a9Slots = this.getA9SlotsDefinitions(this.slotsNames);
+      this.fetchBids(a9Slots);
     }
+    /**
+     * @private
+     * @param consentData
+     */
+
   }, {
-    key: "insertScript",
-    value: function insertScript() {
-      ad_engine_["utils"].scriptLoader.loadScript('//c.amazon-adsystem.com/aax2/apstag.js', 'text/javascript', true, 'first');
+    key: "initIfNotLoaded",
+    value: function initIfNotLoaded(consentData) {
+      if (!this.loaded) {
+        this.apstag.init(this.getApstagConfig(consentData));
+        this.loaded = true;
+      }
+    }
+    /**
+     * @private
+     * @param consentData
+     * @returns {{videoAdServer: string, deals: boolean, pubID: (*|string), gdpr: ()}}
+     */
+
+  }, {
+    key: "getApstagConfig",
+    value: function getApstagConfig(consentData) {
+      return objectSpread_default()({
+        pubID: this.amazonId,
+        videoAdServer: 'DFP',
+        deals: !!this.bidderConfig.dealsEnabled
+      }, this.getGdprIfApplicable(consentData));
+    }
+    /**
+     * @private
+     * @param consentData
+     * @returns {*}
+     */
+
+  }, {
+    key: "getGdprIfApplicable",
+    value: function getGdprIfApplicable(consentData) {
+      if (this.isCMPEnabled && consentData && consentData.consentData) {
+        return {
+          gdpr: {
+            enabled: consentData.gdprApplies,
+            consent: consentData.consentData,
+            cmpTimeout: 5000
+          }
+        };
+      }
+
+      return {};
+    }
+    /**
+     * Transforms slots names into A9 slot definitions.
+     * @param {string[]} slotsNames
+     * @returns {A9SlotDefinition[]}
+     */
+
+  }, {
+    key: "getA9SlotsDefinitions",
+    value: function getA9SlotsDefinitions(slotsNames) {
+      var _this2 = this;
+
+      return slotsNames.map(function (slotName) {
+        return _this2.getSlotAlias(slotName);
+      }).map(function (slotAlias) {
+        return _this2.createSlotDefinition(slotAlias);
+      }).filter(function (slot) {
+        return slot !== null;
+      });
+    }
+    /**
+     * Fetches bids from A9.
+     * Calls this.onBidResponse() upon success.
+     * @private
+     * @param {A9SlotDefinition[]} slots
+     * @param {boolean} refresh
+     */
+
+  }, {
+    key: "fetchBids",
+    value: function fetchBids(slots) {
+      var _this3 = this;
+
+      var refresh = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      ad_engine_["utils"].logger(logGroup, 'fetching bids for slots', slots);
+      this.apstag.fetchBids({
+        slots: slots,
+        timeout: this.timeout
+      }, function (currentBids) {
+        ad_engine_["utils"].logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
+
+        _this3.addApstagRenderImpHookOnFirstFetch();
+
+        currentBids.forEach(function (bid) {
+          var slotName = _this3.slotNamesMap[bid.slotID] || bid.slotID;
+
+          var _this3$getBidTargetin = _this3.getBidTargetingWithKeys(bid),
+              keys = _this3$getBidTargetin.keys,
+              bidTargeting = _this3$getBidTargetin.bidTargeting;
+
+          _this3.updateBidSlot(slotName, keys, bidTargeting);
+        });
+
+        _this3.onBidResponse();
+
+        if (refresh) {
+          _this3.events.emit(_this3.events.BIDS_REFRESH);
+        }
+      });
+    }
+    /**
+     * @private
+     */
+
+  }, {
+    key: "addApstagRenderImpHookOnFirstFetch",
+    value: function addApstagRenderImpHookOnFirstFetch() {
+      if (!this.isRenderImpOverwritten) {
+        this.isRenderImpOverwritten = true;
+        this.addApstagRenderImpHook();
+      }
     }
     /**
      * Wraps apstag.renderImp
-     *
      * Calls this.refreshBid() if bids refreshing is enabled.
+     * @private
      */
 
   }, {
-    key: "overwriteRenderImp",
-    value: function overwriteRenderImp() {
-      var _this6 = this;
+    key: "addApstagRenderImpHook",
+    value: function addApstagRenderImpHook() {
+      var _this4 = this;
 
       ad_engine_["utils"].logger(logGroup, 'overwriting window.apstag.renderImp');
+      this.apstag.onRenderImpEnd(function (doc, impId) {
+        if (!impId) {
+          ad_engine_["utils"].logger(logGroup, 'apstag.renderImp() called with 1 argument only');
+          return;
+        }
 
-      window.apstag.renderImp = function (original) {
-        return function (doc, impId) {
-          original(doc, impId);
+        var slot = _this4.getRenderedSlot(impId);
 
-          var slot = _this6.getRenderedSlot(impId);
+        var slotName = slot.getSlotName();
+        slot.addClass(A9.A9_CLASS);
+        ad_engine_["utils"].logger(logGroup, "bid used for slot ".concat(slotName));
+        delete _this4.bids[_this4.getSlotAlias(slotName)];
 
-          var slotName = slot.getSlotName();
-          ad_engine_["utils"].logger(logGroup, "bid used for slot ".concat(slotName));
-          delete _this6.bids[_this6.getSlotAlias(slotName)];
-
-          if (window.apstag.renderImp && _this6.isBidsRefreshingEnabled) {
-            _this6.refreshBid(slot);
-          }
-        };
-      }(window.apstag.renderImp);
-    }
-    /**
-     * Checks if slot with given name is supported by bidder.
-     *
-     * @param {string} slotName
-     * @returns {boolean}
-     */
-
-  }, {
-    key: "isSupported",
-    value: function isSupported(slotName) {
-      return !!this.slots[this.getSlotAlias(slotName)];
-    }
-    /**
-     * Checks if slot should be refreshed.
-     *
-     * @param {AdSlot} slot
-     * @returns {boolean}
-     */
-
-  }, {
-    key: "shouldRefreshSlot",
-    value: function shouldRefreshSlot(slot) {
-      return this.bidsRefreshing.slots.includes(this.getSlotAlias(slot.getSlotName()));
+        if (_this4.bidsRefreshing.enabled) {
+          _this4.refreshBid(slot);
+        }
+      });
     }
     /**
      * Returns slot which used bid with given impression id.
-     *
-     * @param {string | number} impId
-     * @returns {AdSlot | undefined }
+     * @private
      */
 
   }, {
@@ -650,8 +888,8 @@ function (_BaseBidder) {
     }
     /**
      * Refreshes bid for given slot.
-     *
-     * @param {string | number} impId
+     * @private
+     * @param {AdSlot} slot
      */
 
   }, {
@@ -669,47 +907,33 @@ function (_BaseBidder) {
       }
     }
     /**
-     * Transforms slots names into A9 slot definitions.
-     *
-     * @param {string[]} slotsNames
-     * @returns {A9SlotDefinition[]}
+     * Checks if slot should be refreshed.
+     * @private
+     * @param {AdSlot} slot
+     * @returns {boolean}
      */
 
   }, {
-    key: "getA9SlotsDefinitions",
-    value: function getA9SlotsDefinitions(slotsNames) {
-      var _this7 = this;
-
-      return slotsNames.map(function (slotName) {
-        return _this7.getSlotAlias(slotName);
-      }).map(function (slotAlias) {
-        return _this7.createSlotDefinition(slotAlias);
-      }).filter(function (slot) {
-        return slot !== null;
-      });
+    key: "shouldRefreshSlot",
+    value: function shouldRefreshSlot(slot) {
+      return this.bidsRefreshing.slots.includes(this.getSlotAlias(slot.getSlotName()));
     }
     /**
-     * Creates A9 slot definition from slot name.
-     *
-     * @param {string} slotName
+     * Creates A9 slot definition from slot alias.
+     * @param {string} slotAlias
      * @returns {A9SlotDefinition | null} Returns null i
      */
 
   }, {
     key: "createSlotDefinition",
-    value: function createSlotDefinition(slotName) {
-      var config = this.slots[slotName];
-      var slotID = config.slotId || slotName;
+    value: function createSlotDefinition(slotAlias) {
+      var config = this.slots[slotAlias];
+      var slotID = config.slotId || slotAlias;
       var definition = {
         slotID: slotID,
         slotName: slotID
       };
-
-      if (!ad_engine_["slotService"].getState(slotID)) {
-        return null;
-      }
-
-      this.slotNamesMap[slotID] = slotName;
+      this.slotNamesMap[slotID] = slotAlias;
 
       if (!this.bidderConfig.videoEnabled && config.type === 'video') {
         return null;
@@ -723,20 +947,124 @@ function (_BaseBidder) {
 
       return definition;
     }
+    /**
+     * @private
+     * @param bid
+     * @returns {*}
+     */
+
+  }, {
+    key: "getBidTargetingWithKeys",
+    value: function getBidTargetingWithKeys(bid) {
+      var bidTargeting = bid;
+      var keys = this.apstag.targetingKeys();
+
+      if (this.bidderConfig.dealsEnabled) {
+        keys = bid.helpers.targetingKeys;
+        bidTargeting = bid.targeting;
+      }
+
+      return {
+        keys: keys,
+        bidTargeting: bidTargeting
+      };
+    }
+    /**
+     * @private
+     * @param slotName
+     * @param keys
+     * @param bidTargeting
+     */
+
+  }, {
+    key: "updateBidSlot",
+    value: function updateBidSlot(slotName, keys, bidTargeting) {
+      var _this5 = this;
+
+      this.bids[slotName] = {};
+      keys.forEach(function (key) {
+        if (_this5.targetingKeys.indexOf(key) === -1) {
+          _this5.targetingKeys.push(key);
+        }
+
+        _this5.bids[slotName][key] = bidTargeting[key];
+      });
+    }
+    /**
+     * @protected
+     */
+
+  }, {
+    key: "callBids",
+    value: function callBids() {
+      var _this6 = this;
+
+      if (this.cmp.exists) {
+        this.cmp.getConsentData(null, function (consentData) {
+          _this6.init(consentData);
+        });
+      } else {
+        this.init();
+      }
+    }
+    /**
+     * @inheritDoc
+     */
+
+  }, {
+    key: "calculatePrices",
+    value: function calculatePrices() {
+      var _this7 = this;
+
+      return keys_default()(this.bids).forEach(function (slotName) {
+        _this7.priceMap[slotName] = _this7.bids[slotName].amznbid;
+      });
+    }
+    /**
+     * @inheritDoc
+     */
+
+  }, {
+    key: "getBestPrice",
+    value: function getBestPrice(slotName) {
+      var slotAlias = this.getSlotAlias(slotName);
+      return this.priceMap[slotAlias] ? {
+        a9: this.priceMap[slotAlias]
+      } : {};
+    }
+    /**
+     * @inheritDoc
+     */
+
+  }, {
+    key: "getTargetingParams",
+    value: function getTargetingParams(slotName) {
+      return this.bids[this.getSlotAlias(slotName)] || {};
+    }
+    /**
+     * @inheritDoc
+     */
+
+  }, {
+    key: "isSupported",
+    value: function isSupported(slotName) {
+      return !!this.slots[this.getSlotAlias(slotName)];
+    }
   }]);
 
   return A9;
 }(base_bidder_BaseBidder);
+a9_A9.A9_CLASS = 'a9-ad';
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/core-js/object/get-own-property-descriptor"
-var get_own_property_descriptor_ = __webpack_require__(13);
+var get_own_property_descriptor_ = __webpack_require__(14);
 var get_own_property_descriptor_default = /*#__PURE__*/__webpack_require__.n(get_own_property_descriptor_);
 
 // EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/applyDecoratedDescriptor"
-var applyDecoratedDescriptor_ = __webpack_require__(12);
+var applyDecoratedDescriptor_ = __webpack_require__(13);
 var applyDecoratedDescriptor_default = /*#__PURE__*/__webpack_require__.n(applyDecoratedDescriptor_);
 
 // EXTERNAL MODULE: external "core-decorators"
-var external_core_decorators_ = __webpack_require__(11);
+var external_core_decorators_ = __webpack_require__(12);
 
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/base-adapter.ts
 
@@ -1276,10 +1604,6 @@ function (_BaseAdapter) {
 
   return Openx;
 }(base_adapter_BaseAdapter);
-// EXTERNAL MODULE: external "@babel/runtime-corejs2/helpers/objectSpread"
-var objectSpread_ = __webpack_require__(14);
-var objectSpread_default = /*#__PURE__*/__webpack_require__.n(objectSpread_);
-
 // CONCATENATED MODULE: ./src/ad-bidders/prebid/adapters/pubmatic.ts
 
 
@@ -2188,7 +2512,7 @@ function markWinningBidAsUsed(adSlot) {
 }
 
 var prebid_logGroup = 'prebid';
-var prebid_loaded = false;
+var loaded = false;
 window.pbjs = window.pbjs || {};
 window.pbjs.que = window.pbjs.que || [];
 ad_engine_["events"].registerEvent('BIDS_REFRESH');
@@ -2259,6 +2583,10 @@ function (_BaseBidder) {
     value: function applySettings() {
       window.pbjs.bidderSettings = getSettings();
     }
+    /**
+     * @protected
+     */
+
   }, {
     key: "callBids",
     value: function callBids(bidsBackHandler) {
@@ -2279,10 +2607,14 @@ function (_BaseBidder) {
         });
       }
     }
+    /**
+     * @private
+     */
+
   }, {
     key: "insertScript",
     value: function insertScript() {
-      if (prebid_loaded) {
+      if (loaded) {
         return;
       }
 
@@ -2294,7 +2626,7 @@ function (_BaseBidder) {
       }
 
       ad_engine_["utils"].scriptLoader.loadScript(libraryUrl, 'text/javascript', true, 'first');
-      prebid_loaded = true;
+      loaded = true;
     }
   }, {
     key: "lazyCall",
@@ -2318,6 +2650,10 @@ function (_BaseBidder) {
         window.pbjs.removeAdUnit(adUnit.code);
       });
     }
+    /**
+     * @inheritDoc
+     */
+
   }, {
     key: "getBestPrice",
     value: function getBestPrice(slotName) {
@@ -2329,6 +2665,10 @@ function (_BaseBidder) {
     value: function getTargetingKeysToReset() {
       return ['hb_bidder', 'hb_adid', 'hb_pb', 'hb_size', 'hb_uuid'];
     }
+    /**
+     * @inheritDoc
+     */
+
   }, {
     key: "getTargetingParams",
     value: function getTargetingParams(slotName) {
@@ -2364,6 +2704,10 @@ function (_BaseBidder) {
 
       return slotParams || {};
     }
+    /**
+     * @inheritDoc
+     */
+
   }, {
     key: "isSupported",
     value: function isSupported(slotName) {
@@ -2410,12 +2754,24 @@ function (_BaseBidder) {
         bidsBackHandler: bidsBackHandler
       });
     }
+    /**
+     * @inheritDoc
+     */
+
+  }, {
+    key: "calculatePrices",
+    value: function calculatePrices() {
+      return null;
+    }
   }]);
 
   return Prebid;
 }(base_bidder_BaseBidder), _class2.validResponseStatusCode = 1, _class2.errorResponseStatusCode = 2, _temp), (applyDecoratedDescriptor_default()(_class.prototype, "applyConfig", [_dec], get_own_property_descriptor_default()(_class.prototype, "applyConfig"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "applySettings", [_dec2], get_own_property_descriptor_default()(_class.prototype, "applySettings"), _class.prototype), applyDecoratedDescriptor_default()(_class.prototype, "requestBids", [_dec3], get_own_property_descriptor_default()(_class.prototype, "requestBids"), _class.prototype)), _class));
 // CONCATENATED MODULE: ./src/ad-bidders/index.ts
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bidders", function() { return ad_bidders_bidders; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Apstag", function() { return apstag_Apstag; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Cmp", function() { return cmp_Cmp; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "cmp", function() { return cmp; });
 
 
 
@@ -2568,6 +2924,7 @@ var ad_bidders_bidders = {
   transformPriceFromBid: transformPriceFromBid,
   updateSlotTargeting: updateSlotTargeting
 };
+
 
 /***/ })
 /******/ ]);
