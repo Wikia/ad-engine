@@ -1,7 +1,6 @@
 /* global module, require */
 /* eslint-disable no-console, import/no-extraneous-dependencies */
 
-const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -65,13 +64,6 @@ const common = {
 						{
 							pattern: /<\?=[ \t]*PACKAGE\(([\w\-_.]*?)\)[ \t]*\?>/gi,
 							replacement: (match, p1) => get(pkg, p1),
-						},
-						{
-							pattern: /<\?=[ \t]*PACKAGE_REPO_COMMIT[ \t]*\?>/gi,
-							replacement: () =>
-								execSync('git rev-parse --short HEAD')
-									.toString()
-									.trim(),
 						},
 					],
 				}),
