@@ -79,6 +79,7 @@
 		"webpack-dev-server": "3.1.14"
 	},
 	"files": [
+		"dist/",
 		"lib/",
 		"maintenance/",
 		"src/",
