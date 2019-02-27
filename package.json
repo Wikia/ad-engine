@@ -95,7 +95,7 @@
 		]
 	},
 	"scripts": {
-		"build": "webpack --progress --colors --hide-modules && bash ./maintenance/build-bundle.sh",
+		"build": "webpack --progress --colors --hide-modules && ./maintenance/build-bundle.sh",
 		"ci-check": "npm run test && npm run lint",
 		"dev": "npm run serve",
 		"lint": "tslint --project . && ./maintenance/detect-incorrect-usages.sh",
