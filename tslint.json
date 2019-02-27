@@ -57,6 +57,7 @@
 		"unified-signatures": true,
 		"variable-name": false,
 		"no-implicit-dependencies": [true, ["@wikia/ad-engine"]],
+		"interface-name": [true, "never-prefix"],
 		"import-name": false,
 		"no-increment-decrement": false,
 		"increment-decrement": [true, "allow-post"],
