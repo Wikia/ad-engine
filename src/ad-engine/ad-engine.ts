@@ -1,7 +1,6 @@
-import { LazyQueue, logger, makeLazyQueue } from './utils';
-import { FloatingAd } from './templates';
-import { GptProvider, PrebidiumProvider } from './providers';
 import { scrollListener } from './listeners';
+import { AdSlot } from './models';
+import { GptProvider, PrebidiumProvider } from './providers';
 import {
 	btfBlockerService,
 	context,
@@ -13,7 +12,8 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { AdSlot } from './models';
+import { FloatingAd } from './templates';
+import { LazyQueue, logger, makeLazyQueue } from './utils';
 
 const logGroup = 'ad-engine';
 

@@ -12,14 +12,14 @@ export class BigFancyAdTheme {
 	}
 
 	/**
-	 @abstract
+	 * @abstract
 	 */
 	onAdReady() {
 		throw new utils.NotImplementedException();
 	}
 
 	/**
-	 @abstract
+	 * @abstract
 	 */
 	async adIsReady(videoSettings) {
 		throw new utils.NotImplementedException({ videoSettings });

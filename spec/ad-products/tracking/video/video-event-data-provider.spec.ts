@@ -1,7 +1,7 @@
 import { assert } from 'chai';
+import { AdSlot, context, slotService } from '../../../../src/ad-engine';
 import videoEventDataProvider from '../../../../src/ad-products/tracking/video/video-event-data-provider';
 import configMock from '../../../ad-engine/config-mock';
-import { AdSlot, context, slotService } from '../../../../src/ad-engine';
 
 describe('Video event data provider', () => {
 	beforeEach(() => {

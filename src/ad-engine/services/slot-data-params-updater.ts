@@ -1,6 +1,6 @@
 import { GptSizeMap } from '../providers';
-import { slotTweaker } from './slot-tweaker';
 import { context } from './context-service';
+import { slotTweaker } from './slot-tweaker';
 
 /**
  * Sets dataset properties on AdSlot container for debug purposes.

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import adSlotFake from '../ad-slot-fake';
 import { slotTweaker } from '../../../src/ad-engine/services/slot-tweaker';
+import adSlotFake from '../ad-slot-fake';
 
 describe('slot-tweaker', () => {
 	it('setDataParam accepts a string', () => {

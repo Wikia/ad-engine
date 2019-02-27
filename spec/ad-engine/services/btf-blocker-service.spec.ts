@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { spy, createSandbox } from 'sinon';
-import adSlotFake from '../ad-slot-fake';
+import { createSandbox, spy } from 'sinon';
 import { btfBlockerService } from '../../../src/ad-engine/services/btf-blocker-service';
 import { context } from '../../../src/ad-engine/services/context-service';
+import adSlotFake from '../ad-slot-fake';
 
 let atfSlot;
 let btfSlot;
@@ -22,9 +22,9 @@ describe('btf-blocker-service', () => {
 		btfBlockerService.init();
 		btfBlockerService.resetState();
 
-		atfSlot = Object.assign({}, adSlotFake);
+		atfSlot = { ...adSlotFake };
 		atfSlot.isFirstCall = () => true;
-		btfSlot = Object.assign({}, adSlotFake);
+		btfSlot = { ...adSlotFake };
 		btfSlot.isFirstCall = () => false;
 	});
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { context } from '../../../src/ad-engine/services/context-service';
 import { getSettings } from '../../../src/ad-bidders/prebid/prebid-settings';
+import { context } from '../../../src/ad-engine/services/context-service';
 
 describe('getBidderUuid', () => {
 	let bidResponse;

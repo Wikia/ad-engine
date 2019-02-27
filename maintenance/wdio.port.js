@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies, no-console */
 const portfinder = require('portfinder');
 
 const properties = {};

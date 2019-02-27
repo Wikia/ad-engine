@@ -1,6 +1,6 @@
 import { AdSlot, context, events, Porvata, slotTweaker } from '@wikia/ad-engine';
-import * as videoUserInterface from '../interface/video';
 import { getTranslation } from '../../common/i18n';
+import * as videoUserInterface from '../interface/video';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const IMA_VPAID_INSECURE_MODE = 2;

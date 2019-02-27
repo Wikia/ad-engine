@@ -1,4 +1,5 @@
 import { scrollListener, utils } from '@wikia/ad-engine';
+import { animate } from './interface/animate';
 import { StickyBase } from './sticky-base';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
@@ -9,7 +10,6 @@ import {
 	SLIDE_OUT_TIME,
 } from './uap/constants';
 import { Stickiness } from './uap/themes/hivi/stickiness';
-import { animate } from './interface/animate';
 
 const logGroup = 'sticky-ad';
 

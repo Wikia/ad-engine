@@ -1,16 +1,16 @@
-import EventEmitter from 'eventemitter3';
 import { AdSlot, scrollListener, SlotTweaker, slotTweaker, utils } from '@wikia/ad-engine';
-import { debounce, mapValues, isUndefined, toPlainObject } from 'lodash';
-import { resolvedState } from '../../resolved-state';
-import { resolvedStateSwitch } from '../../resolved-state-switch';
+import EventEmitter from 'eventemitter3';
+import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
+import { animate } from '../../../interface/animate';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAA,
-	SLIDE_OUT_TIME,
 	FADE_IN_TIME,
+	SLIDE_OUT_TIME,
 } from '../../constants';
-import { animate } from '../../../interface/animate';
+import { resolvedState } from '../../resolved-state';
+import { resolvedStateSwitch } from '../../resolved-state-switch';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
 

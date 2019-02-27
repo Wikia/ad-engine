@@ -28,7 +28,7 @@ export class VideoSettings {
 	}
 
 	getParams() {
-		return Object.assign({}, this.params);
+		return { ...this.params };
 	}
 
 	updateParams(params) {

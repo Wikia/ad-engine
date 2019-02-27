@@ -1,6 +1,6 @@
 import Button from './button';
+import { createIcon, icons } from './icons';
 import UiComponent from './ui-component';
-import { icons, createIcon } from './icons';
 
 export default class CloseButton extends UiComponent {
 	get classNames() {

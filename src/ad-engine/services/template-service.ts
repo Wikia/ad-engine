@@ -18,7 +18,7 @@ class TemplateService {
 		}
 
 		if (customConfig) {
-			config = Object.assign(config, customConfig);
+			config = { ...config, ...customConfig };
 		}
 
 		context.set(`templates.${name}`, config);

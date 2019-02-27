@@ -1,6 +1,6 @@
-import sinon from 'sinon';
-import { assert } from 'chai';
 import { context, PrebidiumProvider } from '@wikia/ad-engine';
+import { assert } from 'chai';
+import sinon from 'sinon';
 
 describe('PrebidiumProvider', () => {
 	let sandbox;

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { stringBuilder } from '../../../src/ad-engine/utils/string-builder';
 import { context } from '../../../src/ad-engine/services/context-service';
+import { stringBuilder } from '../../../src/ad-engine/utils/string-builder';
 
 describe('string-builder', () => {
 	beforeEach(() => {

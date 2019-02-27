@@ -5,7 +5,7 @@ const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot, extraTargeting = {}) {
-	const params = Object.assign({}, context.get('targeting'), slot.getTargeting(), extraTargeting);
+	const params = { ...context.get('targeting'), ...slot.getTargeting(), ...extraTargeting };
 
 	return encodeURIComponent(
 		Object.keys(params)

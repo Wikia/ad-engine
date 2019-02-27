@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { context } from '../../../src/ad-engine/services/context-service';
 import { getTargeting } from '../../../src/ad-bidders/prebid/prebid-helper';
+import { context } from '../../../src/ad-engine/services/context-service';
 
 describe('prebid helper', () => {
 	it('should return page level targeting with pos=slotName', () => {

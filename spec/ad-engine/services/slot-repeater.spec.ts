@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import adSlotFake from '../ad-slot-fake';
 import { context, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
+import adSlotFake from '../ad-slot-fake';
 
 describe('slot-repeater', () => {
 	let adSlot;
@@ -16,7 +16,7 @@ describe('slot-repeater', () => {
 		sandbox = sinon.createSandbox();
 		injectedContainer = {};
 		sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
-		adSlot = Object.assign({}, adSlotFake);
+		adSlot = { ...adSlotFake };
 
 		context.set('listeners.slot', []);
 		context.set('events.pushOnScroll.ids', []);

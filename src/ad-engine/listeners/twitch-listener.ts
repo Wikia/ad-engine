@@ -1,6 +1,6 @@
-import { logger } from '../utils';
-import { context, slotService } from '../services';
 import { AdSlot } from '../models';
+import { context, slotService } from '../services';
+import { logger } from '../utils';
 
 function getListeners() {
 	return context.get('listeners.twitch');

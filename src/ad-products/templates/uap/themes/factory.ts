@@ -1,6 +1,6 @@
+import { BfaaTheme, BfabTheme } from './classic';
 import { BfaaHiviTheme } from './hivi/hivi-bfaa';
 import { BfabHiviTheme } from './hivi/hivi-bfab';
-import { BfaaTheme, BfabTheme } from './classic';
 
 export class BigFancyAdThemeFactory {
 	makeAboveTheme(adSlot, params) {

@@ -1,6 +1,4 @@
 /* global browser */
-/* eslint-disable import/no-extraneous-dependencies */
-
 const merge = require('deepmerge');
 const wdioConf = require('./wdio.conf.js');
 

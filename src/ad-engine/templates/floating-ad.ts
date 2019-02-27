@@ -1,5 +1,5 @@
-import { getTopOffset } from '../utils';
 import { scrollListener } from '../listeners';
+import { getTopOffset } from '../utils';
 
 export class FloatingAd {
 	static getName() {

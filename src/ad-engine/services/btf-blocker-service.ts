@@ -1,7 +1,7 @@
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
-import { slotService } from './slot-service';
 import { events } from './events';
+import { slotService } from './slot-service';
 
 const logGroup = 'btf-blocker';
 

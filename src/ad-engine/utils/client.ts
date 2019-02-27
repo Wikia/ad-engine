@@ -1,6 +1,6 @@
 /* global BlockAdBlock */
-import currentDevice from 'current-device';
 import AdBlockDetect from 'blockadblock';
+import currentDevice from 'current-device';
 
 let bab = null;
 let browser = null;

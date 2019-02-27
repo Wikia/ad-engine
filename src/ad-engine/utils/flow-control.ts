@@ -33,7 +33,7 @@ export function once(emitter, eventName, options = {}) {
 		if (hasOnce) {
 			emitter.once(eventName, resolve);
 		} else if (hasAddEventListener) {
-			emitter.addEventListener(eventName, resolve, Object.assign({}, options, { once: true }));
+			emitter.addEventListener(eventName, resolve, { ...options, once: true });
 		} else {
 			reject(new Error('Emitter does not have `addEventListener` nor `once` method.'));
 		}
@@ -41,17 +41,21 @@ export function once(emitter, eventName, options = {}) {
 }
 
 /**
+ * @param {number} msToTimeout
+ * @returns {Promise}
+ */
+export function timeoutReject(msToTimeout) {
+	return new Promise((resolve, reject) => {
+		setTimeout(reject, msToTimeout);
+	});
+}
+
+/**
  * Fires the Promise if function is fulfilled or timeout is reached
- *
  * @param {function} func
- * @param {int} msToTimeout
- *
+ * @param {number} msToTimeout
  * @returns {Promise}
  */
 export function createWithTimeout(func, msToTimeout = 2000) {
-	const timeout = new Promise((resolve, reject) => {
-		setTimeout(reject, msToTimeout);
-	});
-
-	return Promise.race([new Promise(func), timeout]);
+	return Promise.race([new Promise(func), timeoutReject(msToTimeout)]);
 }

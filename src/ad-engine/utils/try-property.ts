@@ -1,4 +1,6 @@
 export function whichProperty(obj, properties = []) {
+	// TODO: replace with properties.find(...)
+	// tslint:disable-next-line
 	for (let i = 0; i < properties.length; i += 1) {
 		const property = properties[i];
 

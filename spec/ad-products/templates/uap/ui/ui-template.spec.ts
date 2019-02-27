@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { VideoSettings } from '../../../../../src/ad-products/templates/uap/video-settings';
-import { selectTemplate } from '../../../../../src/ad-products/templates/interface/video/ui-template';
 import CloseButton from '../../../../../src/ad-products/templates/interface/video/close-button';
 import ReplayOverlay from '../../../../../src/ad-products/templates/interface/video/replay-overlay';
+import { selectTemplate } from '../../../../../src/ad-products/templates/interface/video/ui-template';
+import { VideoSettings } from '../../../../../src/ad-products/templates/uap/video-settings';
 
 function getContainer() {
 	return document.createElement('div');

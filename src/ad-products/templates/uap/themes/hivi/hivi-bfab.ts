@@ -7,16 +7,16 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { mapValues } from 'lodash';
-import { resolvedState } from '../../resolved-state';
-import { resolvedStateSwitch } from '../../resolved-state-switch';
+import { animate } from '../../../interface/animate';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAB,
-	SLIDE_OUT_TIME,
 	FADE_IN_TIME,
+	SLIDE_OUT_TIME,
 } from '../../constants';
-import { animate } from '../../../interface/animate';
+import { resolvedState } from '../../resolved-state';
+import { resolvedStateSwitch } from '../../resolved-state-switch';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
 

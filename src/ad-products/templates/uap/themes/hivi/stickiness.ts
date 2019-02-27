@@ -1,6 +1,6 @@
+import { AdSlot, slotTweaker, utils } from '@wikia/ad-engine';
 import EventEmitter from 'eventemitter3';
 import { isFunction } from 'lodash';
-import { AdSlot, slotTweaker, utils } from '@wikia/ad-engine';
 
 export class Stickiness extends EventEmitter {
 	static LOG_GROUP = 'stickiness';

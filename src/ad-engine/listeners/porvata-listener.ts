@@ -1,6 +1,6 @@
-import { client, logger } from '../utils';
-import { context, slotService } from '../services';
 import { AdSlot } from '../models';
+import { context, slotService } from '../services';
+import { client, logger } from '../utils';
 import { vastParser } from '../video';
 
 function getListeners() {

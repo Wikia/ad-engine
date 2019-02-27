@@ -2,9 +2,7 @@ import { scrollListener, SlotTweaker, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../utils';
 import AdvertisementLabel from './interface/advertisement-label';
 import { animate } from './interface/animate';
-import { Stickiness } from './uap/themes/hivi/stickiness';
 import { StickyBase } from './sticky-base';
-import { universalAdPackage } from './uap/universal-ad-package';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
@@ -13,6 +11,8 @@ import {
 	FADE_IN_TIME,
 	SLIDE_OUT_TIME,
 } from './uap/constants';
+import { Stickiness } from './uap/themes/hivi/stickiness';
+import { universalAdPackage } from './uap/universal-ad-package';
 
 const logGroup = 'sticky-tlb';
 

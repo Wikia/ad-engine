@@ -1,3 +1,4 @@
+import { ADX } from '../providers';
 import { queryString } from '../utils';
 
 class VastParser {
@@ -9,7 +10,7 @@ class VastParser {
 		let value = '';
 
 		for (i = 0; i < possibleValues.length; i += 1) {
-			if (!isNaN(possibleValues[i])) {
+			if (!isNaN(parseInt(possibleValues[i], 10))) {
 				value = possibleValues[i];
 			}
 		}
@@ -35,6 +36,13 @@ class VastParser {
 
 			if (wrapperCreativeIds && wrapperCreativeIds.length) {
 				adInfo.creativeId = this.getLastNumber(wrapperCreativeIds);
+			}
+
+			const wrapperAdSystems = imaAd.getWrapperAdSystems() || [];
+
+			if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
+				adInfo.lineItemId = ADX;
+				adInfo.creativeId = ADX;
 			}
 		}
 

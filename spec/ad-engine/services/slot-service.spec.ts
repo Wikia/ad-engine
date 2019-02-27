@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import adSlotFake from '../ad-slot-fake';
-import { slotService } from '../../../src/ad-engine/services/slot-service';
 import { context } from '../../../src/ad-engine/services/context-service';
+import { slotService } from '../../../src/ad-engine/services/slot-service';
+import adSlotFake from '../ad-slot-fake';
 
 let adSlot;
 let elementProperties = {};
@@ -54,7 +54,7 @@ describe('slot-service', () => {
 				ownerDocument: {},
 			});
 
-		adSlot = Object.assign({}, adSlotFake);
+		adSlot = { ...adSlotFake };
 		adSlot.getViewportConflicts = () => ['foo-container'];
 		adSlot.hasDefinedViewportConflicts = () => true;
 	});

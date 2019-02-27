@@ -2,9 +2,9 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { AdSlot } from '../../../../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
-import ConfigMock from '../../../../config-mock';
-import { googleImaPlayerFactory } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-player-factory';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
+import { googleImaPlayerFactory } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-player-factory';
+import ConfigMock from '../../../../config-mock';
 
 let mocks = {};
 
@@ -58,7 +58,8 @@ describe('google-ima-player', () => {
 		};
 		window.google = {
 			ima: {
-				AdsRequest: function () {},
+				// tslint:disable-next-line
+				AdsRequest: function() {},
 				ViewMode: {
 					NORMAL: 0,
 				},

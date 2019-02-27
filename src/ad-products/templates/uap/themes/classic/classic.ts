@@ -1,9 +1,9 @@
 import { slotTweaker } from '@wikia/ad-engine';
-import { resolvedState } from '../../resolved-state';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
-import { BigFancyAdTheme } from '../theme';
+import { resolvedState } from '../../resolved-state';
 import { universalAdPackage } from '../../universal-ad-package';
 import { VideoSettings } from '../../video-settings';
+import { BigFancyAdTheme } from '../theme';
 
 /**
  * @abstract

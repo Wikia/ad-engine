@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { BfaaHiviTheme } from '../../../../../../src/ad-products/templates/uap/themes/hivi';
-import { resolvedState } from '../../../../../../src/ad-products/templates/uap/resolved-state';
 import { context, slotTweaker } from '../../../../../../src/ad-engine';
+import { resolvedState } from '../../../../../../src/ad-products/templates/uap/resolved-state';
+import { BfaaHiviTheme } from '../../../../../../src/ad-products/templates/uap/themes/hivi';
 
 function getSlotElement() {
 	return {

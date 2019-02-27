@@ -1,6 +1,6 @@
 import { assert } from 'chai';
-import sinon from 'sinon';
 import Cookies from 'js-cookie';
+import sinon from 'sinon';
 import * as geo from '../../../src/ad-engine/utils/geo';
 import Random from '../../../src/ad-engine/utils/random';
 

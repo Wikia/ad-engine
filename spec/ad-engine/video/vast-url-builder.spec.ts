@@ -84,6 +84,7 @@ describe('vast-url-builder', () => {
 	it('build URL with page, slotName level targeting and default wsi param', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
+		// tslint:disable-next-line:max-line-length
 		const custParams = /&cust_params=uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dtop_leaderboard/;
 
 		expect(vastUrl.match(custParams)).to.be.ok;

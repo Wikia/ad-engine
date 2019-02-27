@@ -2,6 +2,7 @@ import CloseButton from './close-button';
 import DynamicReveal from './dynamic-reveal';
 import Floating from './floating';
 import LearnMore from './learn-more';
+import Panel from './panel';
 import PauseControl from './pause-control';
 import PauseOverlay from './pause-overlay';
 import ProgressBar from './progress-bar';
@@ -12,7 +13,6 @@ import ToggleThumbnail from './toggle-thumbnail';
 import ToggleUI from './toggle-ui';
 import ToggleVideo from './toggle-video';
 import VolumeControl from './volume-control';
-import Panel from './panel';
 
 const createBottomPanel = ({ fullscreenAllowed = true, theme = null }) => {
 	const isHiVi = theme === 'hivi';

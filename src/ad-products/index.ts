@@ -1,5 +1,5 @@
-import * as utils from './utils';
 import './styles/styles.scss';
+import * as utils from './utils';
 
 export * from './common';
 export * from './templates';

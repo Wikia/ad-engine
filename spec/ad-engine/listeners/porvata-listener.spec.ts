@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { spy, createSandbox } from 'sinon';
-import { context } from '../../../src/ad-engine/services/context-service';
+import { createSandbox, spy } from 'sinon';
 import { PorvataListener } from '../../../src/ad-engine/listeners/porvata-listener';
+import { context } from '../../../src/ad-engine/services/context-service';
 import { slotService } from '../../../src/ad-engine/services/slot-service';
 
 function getListener() {
@@ -34,6 +34,7 @@ function mockImaVideo() {
 							},
 							getWrapperAdIds() {},
 							getWrapperCreativeIds() {},
+							getWrapperAdSystems() {},
 						};
 					},
 				};

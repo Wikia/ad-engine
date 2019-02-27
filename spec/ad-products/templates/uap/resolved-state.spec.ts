@@ -1,8 +1,8 @@
-import sinon from 'sinon';
 import { expect } from 'chai';
+import sinon from 'sinon';
+import { utils } from '../../../../src/ad-engine';
 import { resolvedState } from '../../../../src/ad-products/templates/uap/resolved-state';
 import { resolvedStateSwitch } from '../../../../src/ad-products/templates/uap/resolved-state-switch';
-import { utils } from '../../../../src/ad-engine';
 
 const ASPECT_RATIO = 1;
 const BIG_IMAGE = 'bigImage.png';

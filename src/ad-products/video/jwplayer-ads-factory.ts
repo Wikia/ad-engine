@@ -1,7 +1,7 @@
 import {
 	AdSlot,
-	buildVastUrl,
 	btfBlockerService,
+	buildVastUrl,
 	context,
 	events,
 	slotService,
@@ -110,13 +110,11 @@ function getVastUrl(slot, position, depth, correlator, slotTargeting) {
 	return buildVastUrl(16 / 9, slot.getSlotName(), {
 		correlator,
 		vpos: position,
-		targeting: Object.assign(
-			{
-				passback: 'jwplayer',
-				rv: calculateRV(depth),
-			},
-			slotTargeting,
-		),
+		targeting: {
+			passback: 'jwplayer',
+			rv: calculateRV(depth),
+			...slotTargeting,
+		},
 	});
 }
 

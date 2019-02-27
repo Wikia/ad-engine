@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { trackingOptIn } from '../../../src/ad-engine/services/tracking-opt-in';
 import { context } from '../../../src/ad-engine/services/context-service';
+import { trackingOptIn } from '../../../src/ad-engine/services/tracking-opt-in';
 
 describe('tracking-opt-in', () => {
 	it('is not opted in when main flag is disabled', () => {

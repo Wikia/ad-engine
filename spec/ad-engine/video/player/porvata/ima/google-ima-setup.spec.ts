@@ -1,16 +1,18 @@
 import { expect } from 'chai';
 import { AdSlot } from '../../../../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
-import ConfigMock from '../../../../config-mock';
-import { googleImaSetup } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-setup';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
+import { googleImaSetup } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-setup';
+import ConfigMock from '../../../../config-mock';
 
 describe('google-ima-setup', () => {
 	beforeEach(() => {
 		window.google = {
 			ima: {
-				AdsRenderingSettings: function () {},
-				AdsRequest: function () {},
+				// tslint:disable-next-line
+				AdsRenderingSettings: function() {},
+				// tslint:disable-next-line
+				AdsRequest: function() {},
 				ViewMode: {
 					NORMAL: 0,
 				},

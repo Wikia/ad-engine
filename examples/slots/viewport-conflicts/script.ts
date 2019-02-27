@@ -8,10 +8,10 @@ document.getElementById('addParagraph').addEventListener('click', () => {
 
 	paragraph.innerText =
 		'Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud ' +
-		'adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque apeirian usu ea. ' +
-		'Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei mollis suscipit corrumpit mei. No ' +
-		'iriure tincidunt sed, putent pertinax nec ad. No nihil vivendum disputationi sea, vel id enim vivendo, mea ' +
-		'tota intellegebat ut.';
+		'adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, ' +
+		'idque apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei ' +
+		'mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil ' +
+		'vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.';
 
 	article.appendChild(paragraph);
 });

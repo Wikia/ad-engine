@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import TemplateFake from '../template-fake';
 import { templateService } from '../../../src/ad-engine/services/template-service';
+import TemplateFake from '../template-fake';
 
 describe('template-service', () => {
 	it('call not existing template', () => {

@@ -1,6 +1,6 @@
 import { slotService, utils } from '@wikia/ad-engine';
-import CloseButton from '../close-button';
 import { DEFAULT_VIDEO_ASPECT_RATIO } from '../../outstream/porvata-template';
+import CloseButton from '../close-button';
 
 const FLOATING_CLASS_NAME = 'outstream-floating';
 

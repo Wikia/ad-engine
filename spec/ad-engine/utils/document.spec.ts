@@ -1,5 +1,5 @@
-import { expect } from 'chai';
 import { getDocumentVisibilityStatus, VISIBILITY_STATUS } from '@wikia/ad-engine/utils';
+import { expect } from 'chai';
 
 describe('document utils', () => {
 	let hidden;

@@ -1,9 +1,9 @@
 import { context, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../../utils';
-import { universalAdPackage } from './universal-ad-package';
-import { VideoSettings } from './video-settings';
 import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
 import { bfaThemeFactory } from './themes/factory';
+import { universalAdPackage } from './universal-ad-package';
+import { VideoSettings } from './video-settings';
 
 export class BigFancyAdAbove {
 	static getName() {

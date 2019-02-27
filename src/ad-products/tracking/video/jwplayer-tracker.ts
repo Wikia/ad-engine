@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
 import { slotService, vastParser } from '@wikia/ad-engine';
+import Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 

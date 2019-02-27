@@ -24,7 +24,7 @@ class Timer {
 	}
 
 	log(msg, ...args) {
-		// eslint-disable-next-line no-console
+		// tslint:disable-next-line:no-console
 		console.log(`%c ${msg}`, 'color: white; background: #6b5b95', this.now(), ...args);
 	}
 }

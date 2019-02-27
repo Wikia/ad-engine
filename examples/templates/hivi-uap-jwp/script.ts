@@ -1,4 +1,4 @@
-import { AdEngine, context, templateService, btfBlockerService } from '@wikia/ad-engine';
+import { AdEngine, btfBlockerService, context, templateService } from '@wikia/ad-engine';
 import { BigFancyAdInPlayer } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';

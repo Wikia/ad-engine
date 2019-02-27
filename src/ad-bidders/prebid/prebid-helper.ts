@@ -75,12 +75,10 @@ export function getPrebid() {
 }
 
 export function getTargeting(slotName) {
-	return Object.assign(
-		{
-			pos: [slotName],
-		},
-		context.get('bidders.prebid.targeting') || {},
-	);
+	return {
+		pos: [slotName],
+		...(context.get('bidders.prebid.targeting') || {}),
+	};
 }
 
 export function getWinningVideoBidBySlotName(slotName, allowedBidders) {

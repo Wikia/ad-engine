@@ -1,5 +1,4 @@
 import { decorate } from 'core-decorators';
-import { defer, logger } from '../utils';
 import { slotListener } from '../listeners';
 import {
 	btfBlockerService,
@@ -9,6 +8,7 @@ import {
 	slotService,
 	trackingOptIn,
 } from '../services';
+import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 
@@ -186,20 +186,21 @@ export class GptProvider {
 
 	destroySlots(slotNames) {
 		const allSlots = window.googletag.pubads().getSlots();
-		const slotsToDestroy =
-			slotNames && slotNames.length
-				? allSlots.filter((slot) => {
-					const slotId = slot.getSlotElementId();
+		let slotsToDestroy = allSlots;
 
-					if (!slotId) {
-						logger(logGroup, 'destroySlots', "slot doesn't return element id", slot);
-					} else if (slotNames.indexOf(slotId) > -1) {
-						return true;
-					}
+		if (slotNames && slotNames.length) {
+			slotsToDestroy = allSlots.filter((slot) => {
+				const slotId = slot.getSlotElementId();
 
-					return false;
-				  })
-				: allSlots;
+				if (!slotId) {
+					logger(logGroup, 'destroySlots', "slot doesn't return element id", slot);
+				} else if (slotNames.indexOf(slotId) > -1) {
+					return true;
+				}
+
+				return false;
+			});
+		}
 
 		if (slotsToDestroy.length) {
 			this.destroyGptSlots(slotsToDestroy);

@@ -1,7 +1,7 @@
 import { context, utils } from '@wikia/ad-engine';
+import { bfaThemeFactory } from './themes/factory';
 import { universalAdPackage } from './universal-ad-package';
 import { VideoSettings } from './video-settings';
-import { bfaThemeFactory } from './themes/factory';
 
 export class BigFancyAdBelow {
 	static getName() {

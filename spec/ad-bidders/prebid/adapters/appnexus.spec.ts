@@ -1,5 +1,5 @@
-import { expect } from 'chai';
 import { context } from '@wikia/ad-engine';
+import { expect } from 'chai';
 import { Appnexus } from '../../../../src/ad-bidders/prebid/adapters/appnexus';
 
 describe('Appnexus bidder adapter', () => {

@@ -1,5 +1,5 @@
-import sinon from 'sinon';
 import { expect } from 'chai';
+import sinon from 'sinon';
 import { context } from '../../../src/ad-engine/index';
 import { billTheLizard, BillTheLizard } from '../../../src/ad-services/bill-the-lizard';
 

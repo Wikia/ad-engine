@@ -6,13 +6,14 @@ const dummyVast =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +
 	'%26customTitle%3D100%25%20Orange%20Juice%3Dbar2&vpos=preroll';
 
-function getImaAd(wrapperIds = [], wrapperCreativeIds = []) {
+function getImaAd(wrapperIds = [], wrapperCreativeIds = [], getWrapperAdSystems = []) {
 	return {
 		getAdId: () => '000',
 		getContentType: () => 'text/javascript',
 		getCreativeId: () => '999',
 		getWrapperAdIds: () => wrapperIds,
 		getWrapperCreativeIds: () => wrapperCreativeIds,
+		getWrapperAdSystems: () => getWrapperAdSystems,
 	};
 }
 
@@ -98,5 +99,15 @@ describe('vast-parser', () => {
 
 		expect(adInfo.creativeId).to.equal('');
 		expect(adInfo.lineItemId).to.equal('');
+	});
+
+	it('current ad info from IMA object with AdX response', () => {
+		const adInfo = vastParser.getAdInfo(
+			getImaAd(['222', '333'], ['555', '666'], ['Wikia', 'AdSense/AdX']),
+		);
+
+		expect(adInfo.contentType).to.equal('text/javascript');
+		expect(adInfo.creativeId).to.equal('AdX');
+		expect(adInfo.lineItemId).to.equal('AdX');
 	});
 });

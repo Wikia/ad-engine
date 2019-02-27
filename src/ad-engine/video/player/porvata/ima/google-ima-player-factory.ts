@@ -1,5 +1,5 @@
-import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { vastDebugger } from '../../../vast-debugger';
+import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { googleImaSetup } from './google-ima-setup';
 
 function getVideoElement() {

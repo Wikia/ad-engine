@@ -28,7 +28,7 @@ function getSamplingLimits(value) {
 
 	samplingValue = samplingValue.replace(cacheMarker, '');
 
-	return Math.round(parseFloat(samplingValue) * precision) | 0; // eslint-disable-line no-bitwise
+	return Math.round(parseFloat(samplingValue) * precision) | 0;
 }
 
 function addResultToCache(name, result, samplingLimits, withCookie) {
@@ -96,7 +96,6 @@ function setCookie(value) {
 }
 
 function getResult(samplingLimits, name, withCookie) {
-	// eslint-disable-next-line no-bitwise
 	const randomValue = Math.round(Random.getRandom() * (precision * 100)) | 0;
 	const result = samplingLimits.some((value) => randomValue < value);
 

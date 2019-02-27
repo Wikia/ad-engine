@@ -34,9 +34,7 @@ class Confiant {
 
 		utils.logger(logGroup, 'loading');
 
-		// eslint-disable-next-line  no-underscore-dangle
 		window._clrm = window._clrm || {};
-		// eslint-disable-next-line  no-underscore-dangle
 		window._clrm.gpt = {
 			propertyId,
 			confiantCdn: scriptDomain,

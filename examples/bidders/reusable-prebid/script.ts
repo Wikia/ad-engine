@@ -1,5 +1,5 @@
-import { AdEngine, btfBlockerService, context, events, slotService, utils } from '@wikia/ad-engine';
 import { bidders } from '@wikia/ad-bidders';
+import { AdEngine, btfBlockerService, context, events, slotService, utils } from '@wikia/ad-engine';
 import { billTheLizard } from '@wikia/ad-services';
 import adContext from '../../context';
 
