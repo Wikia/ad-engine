@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import CloseButton from '../../../../../src/ad-products/templates/interface/video/close-button';
 import ReplayOverlay from '../../../../../src/ad-products/templates/interface/video/replay-overlay';
 import { selectTemplate } from '../../../../../src/ad-products/templates/interface/video/ui-template';

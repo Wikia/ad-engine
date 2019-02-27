@@ -42,7 +42,11 @@ const common = {
 			{
 				test: /\.(js|ts)$/,
 				use: 'babel-loader',
-				include: path.resolve(__dirname, 'src'),
+				include: [
+					path.resolve(__dirname, 'src'),
+					path.resolve(__dirname, 'spec'),
+					path.resolve(__dirname, 'examples'),
+				],
 			},
 			{
 				test: /\.json$/,

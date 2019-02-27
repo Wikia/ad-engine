@@ -5,11 +5,12 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"target": "es5",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 		"paths": {
-			"@wikia/*": ["src/*"]
+			"@wikia/*": ["src/*"],
+			"*": ["node_modules/*", "src/types/*"]
 		},
 		"lib": ["es7", "dom", "es2017.object"]
 	},

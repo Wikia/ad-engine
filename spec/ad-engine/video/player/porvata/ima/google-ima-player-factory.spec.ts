@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { AdSlot } from '../../../../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
