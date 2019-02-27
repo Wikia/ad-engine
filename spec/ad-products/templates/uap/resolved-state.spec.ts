@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { utils } from '../../../../src/ad-engine';
 import { resolvedState } from '../../../../src/ad-products/templates/uap/resolved-state';
 import { resolvedStateSwitch } from '../../../../src/ad-products/templates/uap/resolved-state-switch';

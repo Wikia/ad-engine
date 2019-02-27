@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { once } from '../../../src/ad-engine/utils/flow-control';
 
 const getMockObject = () => {

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { A9 } from '../../../src/ad-bidders/a9/index';
 import { Apstag } from '../../../src/ad-bidders/wrappers';
 

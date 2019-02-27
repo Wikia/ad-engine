@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { context, trackingOptIn } from '../../../src/ad-engine';
 import { setupNpaContext } from '../../../src/ad-products/utils/npa';
 

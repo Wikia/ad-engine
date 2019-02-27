@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { getTopOffset } from '../../../src/ad-engine/utils/dimensions';
 
 function getMockElement(params, frameElement = null, hidden = false) {

@@ -1,6 +1,6 @@
 import { IframeBuilder } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 
 describe('IFrameBuilder', () => {
 	let sandbox;

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { PorvataPlayer } from '../../../../../src/ad-engine/video/player/porvata/porvata';
 
 let mocks = {};

@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { WikiaVideo } from '../../../../src/ad-bidders/prebid/adapters/wikia-video';
 
 function getMocks() {
