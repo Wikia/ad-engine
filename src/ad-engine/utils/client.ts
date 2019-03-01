@@ -1,33 +1,32 @@
-/* global BlockAdBlock */
 import AdBlockDetect from 'blockadblock';
 import currentDevice from 'current-device';
 
-let bab = null;
-let browser = null;
-let operatingSystem = null;
-
 class Client {
-	isSmartphone() {
+	private bab: BlockAdBlock = null;
+	private browser: string = null;
+	private operatingSystem: string = null;
+
+	isSmartphone(): boolean {
 		return currentDevice.mobile();
 	}
 
-	isTablet() {
+	isTablet(): boolean {
 		return currentDevice.tablet();
 	}
 
-	isDesktop() {
+	isDesktop(): boolean {
 		return !this.isSmartphone() && !this.isTablet();
 	}
 
-	checkBlocking(enabled = null, disabled = null) {
-		if (bab === null) {
+	checkBlocking(enabled: () => void = null, disabled: () => void = null): void {
+		if (this.bab === null) {
 			if (typeof AdBlockDetect === 'undefined' || typeof BlockAdBlock === 'undefined') {
 				if (enabled !== null) enabled();
 
 				return;
 			}
 
-			bab = new BlockAdBlock({
+			this.bab = new BlockAdBlock({
 				checkOnLoad: false,
 				resetOnEnd: true,
 				loopCheckTime: 50,
@@ -35,13 +34,13 @@ class Client {
 			});
 		}
 
-		if (enabled !== null) bab.onDetected(enabled);
-		if (disabled !== null) bab.onNotDetected(disabled);
+		if (enabled !== null) this.bab.onDetected(enabled);
+		if (disabled !== null) this.bab.onNotDetected(disabled);
 
-		bab.check(true);
+		this.bab.check(true);
 	}
 
-	getDeviceType() {
+	getDeviceType(): string {
 		if (this.isTablet()) {
 			return 'tablet';
 		}
@@ -52,58 +51,58 @@ class Client {
 		return 'desktop';
 	}
 
-	getOperatingSystem() {
-		if (operatingSystem !== null) {
-			return operatingSystem;
+	getOperatingSystem(): string {
+		if (this.operatingSystem !== null) {
+			return this.operatingSystem;
 		}
 
 		const { userAgent } = window.navigator;
 
-		operatingSystem = 'unknown';
+		this.operatingSystem = 'unknown';
 		if (userAgent.indexOf('Win') !== -1) {
-			operatingSystem = 'Windows';
+			this.operatingSystem = 'Windows';
 		}
 		if (userAgent.indexOf('Mac') !== -1) {
-			operatingSystem = 'OSX';
+			this.operatingSystem = 'OSX';
 		}
 		if (userAgent.indexOf('Linux') !== -1) {
-			operatingSystem = 'Linux';
+			this.operatingSystem = 'Linux';
 		}
 		if (userAgent.indexOf('Android') !== -1) {
-			operatingSystem = 'Android';
+			this.operatingSystem = 'Android';
 		}
 		if (userAgent.indexOf('like Mac') !== -1) {
-			operatingSystem = 'iOS';
+			this.operatingSystem = 'iOS';
 		}
 
-		return operatingSystem;
+		return this.operatingSystem;
 	}
 
-	getBrowser() {
-		if (browser !== null) {
-			return browser;
+	getBrowser(): string {
+		if (this.browser !== null) {
+			return this.browser;
 		}
 
 		const { appName, appVersion, userAgent } = window.navigator;
-		let temp;
+		let temp: RegExpMatchArray;
 		let matches =
 			userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
 		if (/trident/i.test(matches[1])) {
 			temp = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
-			browser = `IE ${temp[1] || ''}`;
+			this.browser = `IE ${temp[1] || ''}`;
 
-			return browser;
+			return this.browser;
 		}
 		if (matches[1] === 'Chrome') {
 			temp = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
 			if (temp !== null) {
-				browser = temp
+				this.browser = temp
 					.slice(1)
 					.join(' ')
 					.replace('OPR', 'Opera');
 
-				return browser;
+				return this.browser;
 			}
 		}
 
@@ -112,9 +111,9 @@ class Client {
 		if (temp !== null) {
 			matches.splice(1, 1, temp[1]);
 		}
-		browser = matches.join(' ');
+		this.browser = matches.join(' ');
 
-		return browser;
+		return this.browser;
 	}
 }
 

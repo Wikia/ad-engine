@@ -8,6 +8,7 @@
 		"baseUrl": ".",
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
+		"noImplicitAny": false,
 		"paths": {
 			"@wikia/*": ["src/*"]
 		},

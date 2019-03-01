@@ -92,9 +92,9 @@ export class AdEngine {
 	}
 
 	async runAdQueue(): Promise<void> {
-		const delayModulesPromises = this.getDelayModulesPromises();
+		const delayModulesPromises: Promise<void>[] = this.getDelayModulesPromises();
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
-		const timeoutPromise = new Promise((resolve) => setTimeout(resolve, maxTimeout));
+		const timeoutPromise = new Promise<void>((resolve) => setTimeout(resolve, maxTimeout));
 
 		logger(logGroup, `Delay by ${delayModulesPromises.length} modules (${maxTimeout}ms timeout)`);
 
@@ -108,15 +108,15 @@ export class AdEngine {
 		const delayModules: DelayModule[] = context.get('delayModules') || [];
 
 		return delayModules
-			.filter((delayModule) => delayModule.isEnabled())
-			.map((delayModule) => {
+			.filter((delayModule: DelayModule) => delayModule.isEnabled())
+			.map((delayModule: DelayModule) => {
 				logger(logGroup, 'Register delay module', delayModule.getName());
 
 				return delayModule.getPromise();
 			});
 	}
 
-	private startAdStack() {
+	private startAdStack(): void {
 		if (!this.started) {
 			eventService.emit(events.AD_STACK_START);
 			this.started = true;
