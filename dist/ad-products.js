@@ -367,101 +367,6 @@ function getAdProductInfo(slotName, loadedTemplate, loadedProduct) {
 }
 // CONCATENATED MODULE: ./src/ad-products/common/index.ts
 
-// CONCATENATED MODULE: ./src/ad-products/templates/floating-rail.ts
-
-
-
-var adsInRail = 2;
-var biggestAdSize = 600;
-var availableSpace = null;
-var floating_rail_FloatingRail =
-/*#__PURE__*/
-function () {
-  createClass_default()(FloatingRail, null, [{
-    key: "getName",
-    value: function getName() {
-      return 'floatingRail';
-    }
-  }, {
-    key: "getDefaultConfig",
-    value: function getDefaultConfig() {
-      return {
-        enabled: true,
-        railSelector: '#rail',
-        wrapperSelector: '#rail-wrapper',
-        startOffset: 0
-      };
-    }
-  }, {
-    key: "isEnabled",
-    value: function isEnabled() {
-      return ad_engine_["context"].get('templates.floatingRail.enabled') && ad_engine_["context"].get('state.isMobile') === false;
-    }
-  }]);
-
-  function FloatingRail() {
-    classCallCheck_default()(this, FloatingRail);
-
-    this.config = ad_engine_["context"].get('templates.floatingRail');
-    this.rail = document.querySelector(this.config.railSelector);
-    this.railWrapper = document.querySelector(this.config.wrapperSelector);
-  }
-
-  createClass_default()(FloatingRail, [{
-    key: "init",
-    value: function init(params) {
-      var _this = this;
-
-      this.params = params;
-      var offset = this.params.offset || 0;
-
-      if (!this.railWrapper || !FloatingRail.isEnabled() || this.getAvailableSpace() === 0) {
-        return;
-      }
-
-      var floatingSpace = Math.min(offset, this.getAvailableSpace());
-      ad_engine_["scrollListener"].addCallback(function () {
-        var start = _this.config.startOffset + ad_engine_["utils"].getTopOffset(_this.railWrapper);
-        var end = start + floatingSpace;
-        var scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollPosition <= start) {
-          _this.rail.style.paddingTop = '';
-
-          _this.rail.classList.add('rail-static');
-
-          _this.rail.classList.remove('rail-fixed');
-        } else if (scrollPosition >= end) {
-          _this.rail.style.paddingTop = "".concat(floatingSpace, "px");
-
-          _this.rail.classList.remove('rail-static');
-
-          _this.rail.classList.remove('rail-fixed');
-        } else {
-          _this.rail.style.paddingTop = '';
-
-          _this.rail.classList.remove('rail-static');
-
-          _this.rail.classList.add('rail-fixed');
-        }
-      });
-    }
-  }, {
-    key: "getAvailableSpace",
-    value: function getAvailableSpace() {
-      if (availableSpace === null) {
-        var children = this.railWrapper.lastElementChild;
-        var childrenHeight = children.offsetTop + children.offsetHeight;
-        var space = this.railWrapper.offsetHeight;
-        availableSpace = Math.max(0, space - childrenHeight - adsInRail * biggestAdSize);
-      }
-
-      return availableSpace;
-    }
-  }]);
-
-  return FloatingRail;
-}();
 // CONCATENATED MODULE: ./src/ad-products/templates/skin.ts
 
 
@@ -5218,7 +5123,6 @@ function () {
 
 
 
-
 // EXTERNAL MODULE: external "js-cookie"
 var external_js_cookie_ = __webpack_require__(22);
 var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
@@ -6010,16 +5914,15 @@ var jwplayerAdsFactory = {
 
 // CONCATENATED MODULE: ./src/ad-products/index.ts
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "getAdProductInfo", function() { return getAdProductInfo; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FloatingRail", function() { return floating_rail_FloatingRail; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Skin", function() { return skin_Skin; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StickyAd", function() { return sticky_ad_StickyAd; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "StickyTLB", function() { return sticky_tlb_StickyTLB; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "universalAdPackage", function() { return universalAdPackage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "resolvedState", function() { return resolvedState; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BigFancyAdAbove", function() { return big_fancy_ad_above_BigFancyAdAbove; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BigFancyAdBelow", function() { return big_fancy_ad_below_BigFancyAdBelow; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BigFancyAdInPlayer", function() { return big_fancy_ad_in_player_BigFancyAdInPlayer; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Roadblock", function() { return roadblock_Roadblock; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "universalAdPackage", function() { return universalAdPackage; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "FloorAdhesion", function() { return floor_adhesion_FloorAdhesion; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Interstitial", function() { return interstitial_Interstitial; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DEFAULT_VIDEO_ASPECT_RATIO", function() { return DEFAULT_VIDEO_ASPECT_RATIO; });

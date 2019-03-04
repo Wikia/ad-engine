@@ -6408,9 +6408,9 @@ if (lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(window, versionField, null
 
 lodash_set__WEBPACK_IMPORTED_MODULE_0___default()(window, versionField, 'v25.0.3');
 
-lodash_set__WEBPACK_IMPORTED_MODULE_0___default()(window, commitField, '125aeed3');
+lodash_set__WEBPACK_IMPORTED_MODULE_0___default()(window, commitField, '6768a4f5');
 
-_utils__WEBPACK_IMPORTED_MODULE_2__["logger"]('ad-engine', 'v25.0.3 (125aeed3)');
+_utils__WEBPACK_IMPORTED_MODULE_2__["logger"]('ad-engine', 'v25.0.3 (6768a4f5)');
 
 
 

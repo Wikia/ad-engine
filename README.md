@@ -230,10 +230,10 @@ new AdEngine().init();
 Request immediately:
 
 ```html
-<div id="top_leaderboard">
+<div id="floor_adhesion">
 	<script>
 		window.adsQueue.push({
-			id: 'top_leaderboard'
+			id: 'floorAdhesion'
 		});
 	</script>
 </div>
@@ -314,43 +314,6 @@ Name: **bfab**
 #### Template parameters:
 
 Check Big Fancy Ad Above.
-
-### Floating rail
-
-Name: **floatingRail**
-
-#### Default config:
-
-```json
-{
-	"enabled": true,
-	"railSelector": "#rail",
-	"wrapperSelector": "#rail-wrapper",
-	"startOffset": 0
-}
-```
-
-Description:
-
-* enabled - decides whether template is usable
-* railSelector - element which is going to have `position: fixed`
-* wrapperSelector - rail wrapper
-* startOffset - decides when rail starts floating
-
-#### Template parameters:
-
-* offset - how long (in px) rail is going to be fixed
-
-#### Creative usage:
-
-```html
-<script>
-top.loadCustomAd && top.loadCustomAd({
-	type: 'floatingRail',
-	offset: 500
-});
-</script>
-```
 
 ## Run example pages
 
