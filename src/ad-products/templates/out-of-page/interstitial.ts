@@ -1,4 +1,4 @@
-import { context, events, SlotTweaker, slotTweaker, utils } from '@wikia/ad-engine';
+import { context, events, eventService, SlotTweaker, slotTweaker, utils } from '@wikia/ad-engine';
 import AdvertisementLabel from '../interface/advertisement-label';
 import CloseButton from '../interface/close-button';
 
@@ -42,7 +42,7 @@ export class Interstitial {
 
 		utils.logger(Interstitial.getName(), 'init');
 
-		events.once(events.BEFORE_PAGE_CHANGE_EVENT, () => {
+		eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => {
 			document.documentElement.classList.remove('stop-scrolling');
 		});
 	}

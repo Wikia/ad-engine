@@ -1,4 +1,4 @@
-import { context, events, utils } from '@wikia/ad-engine';
+import { context, eventService, utils } from '@wikia/ad-engine';
 import { Executor } from './executor';
 import { ProjectsHandler } from './projects-handler';
 
@@ -20,8 +20,20 @@ import { ProjectsHandler } from './projects-handler';
 const logGroup = 'bill-the-lizard';
 let openRequests = [];
 
-events.registerEvent('BILL_THE_LIZARD_REQUEST');
-events.registerEvent('BILL_THE_LIZARD_RESPONSE');
+interface RequestEvent {
+	callId: string | number;
+	query: string;
+}
+
+interface ResponseEvent {
+	callId: string | number;
+	response: string;
+}
+
+export const billTheLizardEvents = {
+	BILL_THE_LIZARD_REQUEST: Symbol('BILL_THE_LIZARD_REQUEST'),
+	BILL_THE_LIZARD_RESPONSE: Symbol('BILL_THE_LIZARD_RESPONSE'),
+};
 
 /**
  * Builds query parameters for url
@@ -63,10 +75,9 @@ function httpRequest(host, endpoint, queryParameters = {}, timeout = 0, callId) 
 	const query = buildQueryUrl(queryParameters);
 	const url = buildUrl(host, endpoint, query);
 
-	events.emit(events.BILL_THE_LIZARD_REQUEST, {
-		query,
-		callId,
-	});
+	const eventPayload: RequestEvent = { query, callId };
+
+	eventService.emit(billTheLizardEvents.BILL_THE_LIZARD_REQUEST, eventPayload);
 
 	request.open('GET', url, true);
 	request.responseType = 'json';
@@ -141,15 +152,12 @@ export class BillTheLizard {
 	static TOO_LATE = 'too_late';
 	static REUSED = 'reused';
 
-	constructor() {
-		this.executor = new Executor();
-		this.projectsHandler = new ProjectsHandler();
-		this.targetedModelNames = new Set();
-
-		this.callCounter = 0;
-		this.predictions = [];
-		this.statuses = {};
-	}
+	executor = new Executor();
+	projectsHandler = new ProjectsHandler();
+	targetedModelNames = new Set();
+	callCounter = 0;
+	predictions = [];
+	statuses = {};
 
 	reset() {
 		this.callCounter = 0;
@@ -233,10 +241,8 @@ export class BillTheLizard {
 
 				this.setTargeting();
 
-				events.emit(events.BILL_THE_LIZARD_RESPONSE, {
-					callId,
-					response: this.serialize(callId),
-				});
+				const eventPayload: ResponseEvent = { callId, response: this.serialize(callId) };
+				eventService.emit(billTheLizardEvents.BILL_THE_LIZARD_RESPONSE, eventPayload);
 
 				this.executor.executeMethods(models, response);
 
@@ -339,10 +345,9 @@ export class BillTheLizard {
 	 * If model name is given, it returns all predictions with models matching.
 	 * Model matches when raw name (without version) is matched.
 	 *
-	 * @param {string} [modelName]
 	 * @returns {PredictionDefinition[]}
 	 */
-	getPredictions(modelName) {
+	getPredictions(modelName?: string) {
 		const separator = ':';
 
 		if (modelName) {
@@ -370,10 +375,8 @@ export class BillTheLizard {
 
 	/**
 	 * Serializes all predictions
-	 * @param {number|string} [callId]
-	 * @returns {string}
 	 */
-	serialize(callId) {
+	serialize(callId?: number | string): string {
 		let { predictions } = this;
 
 		if (callId !== undefined) {

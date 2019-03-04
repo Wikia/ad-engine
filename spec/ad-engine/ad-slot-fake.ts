@@ -6,9 +6,26 @@ let offsetTop = 1000;
 
 export default {
 	events: new LazyQueue(),
+	name: 'FAKE_AD',
+	config: {
+		targeting: {
+			wsi: 'yyyy',
+			rv: 1,
+		},
+		disabled: false,
+		firstCall: true,
+	},
+
+	get enabled() {
+		return !this.config.disabled;
+	},
+
+	set enabled(value) {
+		this.config.disabled = !value;
+	},
 
 	getSlotName() {
-		return 'FAKE_AD';
+		return this.name;
 	},
 
 	getViewportConflicts() {
@@ -23,8 +40,20 @@ export default {
 		return false;
 	},
 
+	disable() {
+		this.enabled = false;
+	},
+
+	enable() {
+		this.enabled = true;
+	},
+
 	isEnabled() {
-		return true;
+		return this.enabled;
+	},
+
+	isFirstCall() {
+		return this.config.firstCall;
 	},
 
 	isRepeatable() {
@@ -58,12 +87,5 @@ export default {
 
 	setOffsetTop(offset) {
 		offsetTop = offset;
-	},
-
-	config: {
-		targeting: {
-			wsi: 'yyyy',
-			rv: 1,
-		},
 	},
 };

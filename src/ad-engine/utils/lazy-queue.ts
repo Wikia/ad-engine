@@ -1,18 +1,26 @@
 /**
  * @deprecated
- * @param queue
- * @param callback
  * Please use LazyQueue class instead
  */
-export function makeLazyQueue(queue, callback) {
+export interface OldLazyQueue<T = any> {
+	readonly length: number;
+	start(): void;
+	push(item: T): void;
+}
+
+/**
+ * @deprecated
+ * Please use LazyQueue class instead
+ */
+export function makeLazyQueue<T = any>(queue: T[], callback: (item: T) => void) {
 	if (typeof callback !== 'function') {
 		throw new Error('LazyQueue used with callback not being a function');
 	} else if (queue instanceof Array) {
-		queue.start = function () {
+		(queue as any).start = function () {
 			while (queue.length > 0) {
 				callback(queue.shift());
 			}
-			queue.push = function (item) {
+			(queue as any).push = function (item) {
 				callback(item);
 			};
 		};
@@ -21,83 +29,56 @@ export function makeLazyQueue(queue, callback) {
 	}
 }
 
-/**
- * example: https://stackblitz.com/edit/wikia-lazy-queue
- */
-export class LazyQueue {
+declare type LazyCallback<T> = (item: T) => void;
+declare type PushCommand<T> = (...items: T[]) => void;
+
+export class LazyQueue<T = any> {
 	get length() {
 		return this.items.length;
 	}
 
-	// itemFlushed = {}; // RxJs Subject
+	private itemFlushCallbacks: LazyCallback<T>[] = [];
+	private pushCommand: PushCommand<T>;
+	private items: T[] = [];
 
-	/**
-	 * @private
-	 */
-	itemFlushCallbacks = [];
-
-	/**
-	 * @private
-	 */
-	pushCommand = undefined;
-
-	/**
-	 * @private
-	 */
-	items = [];
-
-	constructor(...items) {
+	constructor(...items: T[]) {
 		this.items = [...items];
 		this.setPreFlushPush();
 	}
 
-	// old start
-	flush() {
+	flush(): void {
 		while (this.items.length > 0) {
 			this.emit(this.items.shift());
 		}
 		this.setPostFlushPush();
 	}
 
-	push(...items) {
+	push(...items: T[]): void {
 		this.pushCommand(...items);
 	}
 
-	/**
-	 * @param {function} callback
-	 */
-	onItemFlush(callback) {
+	onItemFlush(callback: LazyCallback<T>) {
 		if (typeof callback !== 'function') {
 			throw new Error('onItemFlush used with callback not being a function');
 		}
 		this.itemFlushCallbacks.push(callback);
 	}
 
-	/**
-	 * @private
-	 */
-	setPreFlushPush() {
-		this.pushCommand = (...items) => {
+	private setPreFlushPush(): void {
+		this.pushCommand = (...items: T[]) => {
 			this.items.push(...items);
 		};
 	}
 
-	/**
-	 * @private
-	 */
-	setPostFlushPush() {
-		this.pushCommand = (...items) => {
+	private setPostFlushPush(): void {
+		this.pushCommand = (...items: T[]) => {
 			items.forEach((item) => {
 				this.emit(item);
 			});
 		};
 	}
 
-	/**
-	 * @private
-	 */
-	emit(item) {
-		// this.flushed.next(item);
+	private emit(item: T): void {
 		this.itemFlushCallbacks.forEach((flushCallback) => {
 			flushCallback(item);
 		});

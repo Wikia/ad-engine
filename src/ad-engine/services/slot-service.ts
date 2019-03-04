@@ -1,16 +1,10 @@
-import { AdSlot } from '../models';
+import { AdSlot, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
-import { events } from './events';
+import { events, eventService } from './events';
 import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
-/** @type {Object.<string, AdSlot>} */
-const slots = {};
-
-let slotEvents = {};
-let slotStatuses = {};
-let slotStates = {};
 
 function isSlotInTheSameViewport(slotHeight, slotOffset, viewportHeight, elementId) {
 	const element = document.getElementById(elementId);
@@ -31,63 +25,64 @@ function isSlotInTheSameViewport(slotHeight, slotOffset, viewportHeight, element
 	return distance < viewportHeight;
 }
 
-events.on(events.PAGE_CHANGE_EVENT, () => {
-	slotEvents = {};
-	slotStates = {};
-	slotStatuses = {};
+eventService.on(events.PAGE_CHANGE_EVENT, () => {
+	slotService.slotEvents = {};
+	slotService.slotStates = {};
+	slotService.slotStatuses = {};
 });
 
 class SlotService {
+	slotEvents = {};
+	slotStatuses: { [key: string]: string | null } = {};
+	slotStates: { [key: string]: boolean | undefined } = {};
+	slots: { [key: string]: AdSlot } = {};
+
 	/**
 	 * Add new slot to register
-	 * @param {AdSlot} adSlot
 	 */
-	add(adSlot) {
+	add(adSlot: AdSlot) {
 		const slotName = adSlot.getSlotName();
 
-		slots[slotName] = adSlot;
+		this.slots[slotName] = adSlot;
 
-		if (slotStates[slotName] === false) {
-			adSlot.disable(slotStatuses[slotName]);
+		if (!this.slotStates[slotName] === false) {
+			adSlot.disable(this.slotStatuses[slotName]);
 		}
-		if (slotStates[slotName] === true) {
+		if (this.slotStates[slotName] === true) {
 			adSlot.enable();
 		}
 
 		slotTweaker.addDefaultClasses(adSlot);
-		events.emit(events.AD_SLOT_CREATED, adSlot);
+		eventService.emit(events.AD_SLOT_CREATED, adSlot);
 
-		if (slotEvents[slotName]) {
-			adSlot.events.push(...slotEvents[slotName]);
-			delete slotEvents[slotName];
+		if (this.slotEvents[slotName]) {
+			adSlot.events.push(...this.slotEvents[slotName]);
+			delete this.slotEvents[slotName];
 		}
 		adSlot.events.flush();
 	}
 
 	/**
 	 * Removes slot from register
-	 * @param {AdSlot} adSlot
 	 */
-	remove(adSlot) {
+	remove(adSlot: AdSlot) {
 		const slotName = adSlot.getSlotName();
 
 		context.removeListeners(`slots.${slotName}`);
 		adSlot.disable('Marked for remove');
-		delete slots[slotName];
-		delete slotStates[slotName];
-		delete slotStatuses[slotName];
+		delete this.slots[slotName];
+		delete this.slotStates[slotName];
+		delete this.slotStatuses[slotName];
 	}
 
 	/**
 	 * Get slot by its name or pos
-	 * @param id
-	 * @returns {AdSlot}
 	 */
-	get(id) {
+	get(id: string): AdSlot {
 		const [singleSlotName] = id.split(',');
 
-		if (slots[singleSlotName]) {
-			return slots[singleSlotName];
+		if (this.slots[singleSlotName]) {
+			return this.slots[singleSlotName];
 		}
 
 		// Find slots by first targeting.pos
@@ -113,66 +108,55 @@ class SlotService {
 	 * @param {function} callback
 	 */
 	forEach(callback) {
-		Object.keys(slots).forEach((id) => {
-			callback(slots[id]);
+		Object.keys(this.slots).forEach((id) => {
+			callback(this.slots[id]);
 		});
 	}
 
-	/**
-	 *
-	 * @param {string} slotName
-	 * @param {string} eventName
-	 * @param {function} callback
-	 */
-	on(slotName, eventName, callback) {
+	on(slotName: string, eventName: string, callback: () => void) {
 		const adSlot = this.get(slotName);
 		const event = {
 			name: eventName,
 			callback,
 		};
 
-		slotEvents[slotName] = slotEvents[slotName] || [];
+		this.slotEvents[slotName] = this.slotEvents[slotName] || [];
 
 		if (adSlot) {
 			adSlot.events.push(event);
 		} else {
-			slotEvents[slotName].push(event);
+			this.slotEvents[slotName].push(event);
 		}
 	}
 
 	/**
 	 * Enable slot by name (it isn't necessary to have given ad slot in register at this point)
-	 * @param {string} slotName
 	 */
-	enable(slotName) {
+	enable(slotName: string) {
 		this.setState(slotName, true);
 	}
 
 	/**
 	 * Disable slot by name (it isn't necessary to have given ad slot in register at this point)
-	 * @param {string} slotName
-	 * @param {null|string} status
 	 */
-	disable(slotName, status = null) {
+	disable(slotName: string, status: string | null = null) {
 		this.setState(slotName, false, status);
 	}
 
 	/**
 	 * Get current state of slot (it isn't necessary to have given ad slot in register at this point)
-	 * @param {string} slotName
-	 * @returns {boolean}
 	 */
-	getState(slotName) {
+	getState(slotName: string): boolean {
 		// Comparing with false in order to get truthy value for slot
 		// that wasn't disabled or enabled (in case when state is undefined)
-		return slotStates[slotName] !== false;
+		return this.slotStates[slotName] !== false;
 	}
 
-	setState(slotName, state, status = null) {
+	setState(slotName: string, state: boolean, status: string | null = null) {
 		const slot = this.get(slotName);
 
-		slotStates[slotName] = state;
-		slotStatuses[slotName] = status;
+		this.slotStates[slotName] = state;
+		this.slotStatuses[slotName] = status;
 
 		// After slot is created context should be read-only
 		if (slot) {
@@ -192,10 +176,8 @@ class SlotService {
 
 	/**
 	 * Checks whether ad slot has conflict with defined elements
-	 * @param {AdSlot} adSlot
-	 * @returns {boolean}
 	 */
-	hasViewportConflict(adSlot) {
+	hasViewportConflict(adSlot: AdSlot): boolean {
 		if (!adSlot.hasDefinedViewportConflicts() || adSlot.getElement() === null) {
 			return false;
 		}
@@ -215,14 +197,32 @@ class SlotService {
 		return hasConflict;
 	}
 
-	/**
-	 * Returns configuration of ATF slots.
-	 * @returns {Object[]} ATF slot configs
-	 */
-	getAtfSlotConfigs() {
-		const slotConfigs = context.get('slots');
+	get slotConfigsMap(): { [key: string]: SlotConfig } {
+		return context.get('slots');
+	}
 
-		return Object.values(slotConfigs).filter((config) => AdSlot.isAboveTheFold(config));
+	getAtfSlotNames(): string[] {
+		return Object.entries<SlotConfig>(this.slotConfigsMap)
+			.filter(([name, config]) => !!config.aboveTheFold)
+			.map(([name, config]) => name);
+	}
+
+	/**
+	 * Returns configuration of first call slots.
+	 */
+	getFirstCallSlotNames(): string[] {
+		return Object.entries(this.slotConfigsMap)
+			.filter(([name, config]) => !!config.firstCall)
+			.map(([name, config]) => name);
+	}
+
+	/**
+	 * Returns names of enabled slots.
+	 */
+	getEnabledSlotNames(): string[] {
+		return Object.entries(this.slotConfigsMap)
+			.filter(([name, config]) => !config.disabled)
+			.map(([name, config]) => name);
 	}
 }
 

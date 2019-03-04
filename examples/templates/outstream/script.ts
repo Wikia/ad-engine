@@ -1,6 +1,7 @@
 import { bidders } from '@wikia/ad-bidders';
-import { AdEngine, context, events, templateService, utils } from '@wikia/ad-engine';
-import { PorvataTemplate, porvataTracker } from '@wikia/ad-products';
+import { AdEngine, context, events, eventService, templateService, utils } from '@wikia/ad-engine';
+import { playerEvents, PorvataTemplate, porvataTracker } from '@wikia/ad-products';
+import { DelayModule } from '@wikia/types';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -26,7 +27,7 @@ context.push('listeners.porvata', {
 
 let resolveBidders;
 
-const biddersDelay = {
+const biddersDelay: DelayModule = {
 	isEnabled: () => true,
 	getName: () => 'bidders-delay',
 	getPromise: () =>
@@ -54,11 +55,11 @@ templateService.register(PorvataTemplate, {
 	inViewportOffsetTop: 58,
 });
 
-events.on(events.AD_SLOT_CREATED, (slot) => {
+eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-events.on(events.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
+eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 	const request = new window.XMLHttpRequest();
 	const queryUrl = Object.keys(eventInfo)
 		.map((key) => `${key}=${eventInfo[key]}`)

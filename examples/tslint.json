@@ -2,11 +2,7 @@
 	"extends": "../tslint.json",
 	"rules": {
 		"no-console": false,
-		"no-implicit-dependencies": [
-			true,
-			"dev",
-			["@wikia/ad-bidders", "@wikia/ad-engine", "@wikia/ad-products", "@wikia/ad-services"]
-		],
+		"no-implicit-dependencies": [true, "dev", ["@wikia"]],
 		"no-submodule-imports": false
 	}
 }

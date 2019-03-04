@@ -1,13 +1,15 @@
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
+import { SlotConfig } from '../../../src/ad-engine/models';
 import { btfBlockerService } from '../../../src/ad-engine/services/btf-blocker-service';
 import { context } from '../../../src/ad-engine/services/context-service';
 import adSlotFake from '../ad-slot-fake';
 
-let atfSlot;
-let btfSlot;
+let firstCallSlot;
+let secondCallSlot;
 let onRenderEndedCallback;
 let sandbox;
+let slotConfigs: { [key: string]: SlotConfig };
 
 describe('btf-blocker-service', () => {
 	beforeEach(() => {
@@ -15,86 +17,134 @@ describe('btf-blocker-service', () => {
 		sandbox.stub(context, 'push').callsFake((key, callbacks) => {
 			onRenderEndedCallback = callbacks.onRenderEnded;
 		});
+
+		const originalGet = context.get;
+		sandbox.stub(context, 'get').callsFake((key) => {
+			if (key === 'slots') {
+				return slotConfigs;
+			}
+
+			return originalGet(key);
+		});
+
 		window.ads = {
 			runtime: {},
 		};
 
-		btfBlockerService.init();
-		btfBlockerService.resetState();
+		firstCallSlot = {
+			...adSlotFake,
+			name: 'A',
+			config: {
+				...adSlotFake.config,
+				firstCall: true,
+			},
+		};
+		secondCallSlot = {
+			...adSlotFake,
+			name: 'B',
+			config: {
+				...adSlotFake.config,
+				firstCall: false,
+			},
+		};
+		slotConfigs = {};
+		slotConfigs[firstCallSlot.getSlotName()] = { ...firstCallSlot.config };
+		slotConfigs[secondCallSlot.getSlotName()] = { ...secondCallSlot.config };
 
-		atfSlot = { ...adSlotFake };
-		atfSlot.isFirstCall = () => true;
-		btfSlot = { ...adSlotFake };
-		btfSlot.isFirstCall = () => false;
+		btfBlockerService.resetState();
+		btfBlockerService.init();
 	});
 
 	afterEach(() => {
 		sandbox.restore();
 	});
 
-	it('should fill in ATF slot', () => {
+	it('should fill in first call slot', () => {
 		const fillInSpy = spy();
 
-		btfBlockerService.push(atfSlot, fillInSpy);
+		btfBlockerService.push(firstCallSlot, fillInSpy);
 
 		expect(fillInSpy.called).to.be.ok;
 	});
 
-	it('should not fill in BTF slot without ATF', () => {
+	it('should not fill in second call slot without first call called', () => {
 		const fillInSpy = spy();
 
-		btfBlockerService.push(btfSlot, fillInSpy);
+		btfBlockerService.push(secondCallSlot, fillInSpy);
 
 		expect(fillInSpy.called).to.not.be.ok;
 	});
 
-	it('should not fill in BTF slot until ATF rendered', () => {
-		const atfFillInSpy = spy();
-		const btfFillInSpy = spy();
+	it('should not fill in second call slot until first call rendered', () => {
+		const firstCallFillInSpy = spy();
+		const secondCallFillInSpy = spy();
 
-		btfBlockerService.push(atfSlot, atfFillInSpy);
-		btfBlockerService.push(btfSlot, btfFillInSpy);
+		btfBlockerService.push(firstCallSlot, firstCallFillInSpy);
+		btfBlockerService.push(secondCallSlot, secondCallFillInSpy);
 
-		expect(atfFillInSpy.called).to.be.ok;
-		expect(btfFillInSpy.called).to.not.be.ok;
+		expect(firstCallFillInSpy.called).to.be.ok;
+		expect(secondCallFillInSpy.called).to.not.be.ok;
 	});
 
-	it('should fill in BTF slot after ATF rendered', () => {
-		const atfFillInSpy = spy();
-		const btfFillInSpy = spy();
+	it('should fill in second call slot after first call slot is rendered', () => {
+		const firstCallFillInSpy = spy();
+		const secondCallFillInSpy = spy();
 
-		btfBlockerService.push(atfSlot, atfFillInSpy);
-		btfBlockerService.push(btfSlot, btfFillInSpy);
+		btfBlockerService.push(firstCallSlot, firstCallFillInSpy);
+		btfBlockerService.push(secondCallSlot, secondCallFillInSpy);
 
-		expect(atfFillInSpy.called).to.be.ok;
-		expect(btfFillInSpy.called).to.not.be.ok;
+		expect(firstCallFillInSpy.called).to.be.ok;
+		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		onRenderEndedCallback(atfSlot);
-		expect(btfFillInSpy.called).to.be.ok;
+		onRenderEndedCallback(firstCallSlot);
+		expect(secondCallFillInSpy.called).to.be.ok;
 	});
 
-	it('should not fill in BTF if it is disabled', () => {
-		const atfFillInSpy = spy();
-		const btfFillInSpy = spy();
+	it('should not fill in second call slot if it is disabled', () => {
+		const firstCallFillInSpy = spy();
+		const secondCallFillInSpy = spy();
 
-		btfSlot.isEnabled = () => false;
+		// Enabled/Disabled should come from a single source.
+		slotConfigs[secondCallSlot.getSlotName()].disabled = true;
+		secondCallSlot.isEnabled = () => false;
 
-		btfBlockerService.push(atfSlot, atfFillInSpy);
-		btfBlockerService.push(btfSlot, btfFillInSpy);
+		btfBlockerService.resetState();
+		btfBlockerService.init();
 
-		expect(atfFillInSpy.called).to.be.ok;
-		expect(btfFillInSpy.called).to.not.be.ok;
+		btfBlockerService.push(firstCallSlot, firstCallFillInSpy);
+		btfBlockerService.push(secondCallSlot, secondCallFillInSpy);
 
-		onRenderEndedCallback(atfSlot);
-		expect(btfFillInSpy.called).to.not.be.ok;
+		expect(firstCallFillInSpy.called).to.be.ok;
+		expect(secondCallFillInSpy.called).to.not.be.ok;
+
+		onRenderEndedCallback(firstCallSlot);
+		expect(secondCallFillInSpy.called).to.not.be.ok;
 	});
 
-	it('should fill in BTF slot when ATF is finished manually', () => {
+	it('should fill in second call slot when first call is finished manually', () => {
 		const fillInSpy = spy();
 
-		btfBlockerService.push(btfSlot, fillInSpy);
+		btfBlockerService.push(secondCallSlot, fillInSpy);
 		btfBlockerService.finishFirstCall();
 
 		expect(fillInSpy.called).to.be.ok;
+	});
+
+	it('should fill in second call slots if there are no first call slots', () => {
+		const firstCallFillInSpy = spy();
+		const secondCallFillInSpy = spy();
+
+		// Enabled/Disabled should come from a single source.
+		slotConfigs[firstCallSlot.getSlotName()].disabled = true;
+		firstCallSlot.isEnabled = () => false;
+
+		btfBlockerService.resetState();
+		btfBlockerService.init();
+
+		btfBlockerService.push(firstCallSlot, firstCallFillInSpy);
+		btfBlockerService.push(secondCallSlot, secondCallFillInSpy);
+
+		expect(firstCallFillInSpy.called).to.not.be.ok;
+		expect(secondCallFillInSpy.called).to.be.ok;
 	});
 });

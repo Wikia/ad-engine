@@ -1,3 +1,4 @@
+import { SlotConfig } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context } from '../../../src/ad-engine/services/context-service';
@@ -6,7 +7,7 @@ import adSlotFake from '../ad-slot-fake';
 
 let adSlot;
 let elementProperties = {};
-let slotConfigs;
+let slotConfigs: { [key: string]: Partial<SlotConfig> };
 
 function clearSlotServiceState() {
 	this.slots = {};
@@ -141,23 +142,66 @@ describe('slot-service', () => {
 		expect(slotService.getState('foo')).to.equals(false);
 	});
 
-	describe('getAtfSlotConfigs', () => {
+	describe('getAtfSlotNames', () => {
 		beforeEach(() => {
 			clearSlotServiceState.bind(slotService)();
 		});
 
-		it('should return only slots with aboveTheFold prop set to true', () => {
-			const expectedConfig = { name: 'ooz', aboveTheFold: true };
-
+		it('should return only first all slots', () => {
 			slotConfigs = {
-				slot_1: { name: 'foo' },
-				slot_2: { name: 'bar', aboveTheFold: false },
-				slot_3: expectedConfig,
+				A: { aboveTheFold: true, disabled: true },
+				B: { aboveTheFold: true, disabled: false },
+				C: { aboveTheFold: false, disabled: true },
+				D: { aboveTheFold: false, disabled: false },
 			};
-			const atfSlotConfigs = slotService.getAtfSlotConfigs();
 
-			expect(atfSlotConfigs.length).to.equals(1);
-			expect(atfSlotConfigs[0]).to.eql(expectedConfig);
+			const result = slotService.getAtfSlotNames();
+
+			expect(result.length).to.equals(2);
+			expect(result.includes('A')).to.equals(true);
+			expect(result.includes('B')).to.equals(true);
+		});
+	});
+
+	describe('getFirstCallSlotNames', () => {
+		beforeEach(() => {
+			clearSlotServiceState.bind(slotService)();
+		});
+
+		it('should return only first all slots', () => {
+			slotConfigs = {
+				A: { firstCall: true, disabled: true },
+				B: { firstCall: true, disabled: false },
+				C: { firstCall: false, disabled: true },
+				D: { firstCall: false, disabled: false },
+			};
+
+			const result = slotService.getFirstCallSlotNames();
+
+			expect(result.length).to.equals(2);
+			expect(result.includes('A')).to.equals(true);
+			expect(result.includes('B')).to.equals(true);
+		});
+	});
+
+	describe('getEnabledSlotNames', () => {
+		beforeEach(() => {
+			clearSlotServiceState.bind(slotService)();
+		});
+
+		it('should return only enabled slots', () => {
+			slotConfigs = {
+				A: { firstCall: true, disabled: true },
+				B: { firstCall: true, disabled: false },
+				C: { firstCall: false, disabled: true },
+				D: { firstCall: false, disabled: false },
+			};
+
+			const result = slotService.getEnabledSlotNames();
+
+			expect(result.length).to.equals(2);
+			expect(result.includes('B')).to.equals(true);
+			expect(result.includes('D')).to.equals(true);
 		});
 	});
 });

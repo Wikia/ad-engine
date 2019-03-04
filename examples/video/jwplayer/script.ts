@@ -1,6 +1,7 @@
 import { bidders } from '@wikia/ad-bidders';
-import { context, events, utils } from '@wikia/ad-engine';
-import { jwplayerAdsFactory } from '@wikia/ad-products';
+import { context, events, eventService, utils } from '@wikia/ad-engine';
+import { jwplayerAdsFactory, playerEvents } from '@wikia/ad-products';
+import { DelayModule } from '@wikia/types';
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
 import * as videoData from './video-data.json';
@@ -28,7 +29,7 @@ if (f15sVideoId) {
 	context.set(`options.featuredVideo15sMap.${f15sVideoId}`, 5.0);
 }
 
-events.on(events.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
+eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 	const request = new window.XMLHttpRequest();
 	const queryUrl = Object.keys(eventInfo)
 		.map((key) => `${key}=${eventInfo[key]}`)
@@ -38,13 +39,13 @@ events.on(events.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 	request.send();
 });
 
-events.on(events.AD_SLOT_CREATED, (slot) => {
+eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
 let resolveBidders;
 
-const biddersDelay = {
+const biddersDelay: DelayModule = {
 	isEnabled: () => true,
 	getName: () => 'bidders-delay',
 	getPromise: () =>

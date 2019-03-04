@@ -1,5 +1,5 @@
-import { AdEngine, context, events, utils } from '@wikia/ad-engine';
-import { billTheLizard } from '@wikia/ad-services';
+import { AdEngine, context, eventService, utils } from '@wikia/ad-engine';
+import { billTheLizard, billTheLizardEvents } from '@wikia/ad-services';
 import adContext from '../../context';
 
 const allPredictionsElement = document.getElementById('predictions-all');
@@ -34,7 +34,7 @@ function makeCall(lazyCallProject = null, callId) {
 	);
 }
 
-events.on(events.BILL_THE_LIZARD_REQUEST, (query) => {
+eventService.on(billTheLizardEvents.BILL_THE_LIZARD_REQUEST, (query) => {
 	console.log('⛳ bill-the-lizard requested', query);
 });
 

@@ -2,15 +2,14 @@
 	"compilerOptions": {
 		"outDir": "./dist/",
 		"sourceMap": true,
-		"module": "commonjs",
+		"module": "es2015",
 		"moduleResolution": "node",
 		"target": "es5",
 		"baseUrl": ".",
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 		"paths": {
-			"@wikia/*": ["src/*"],
-			"*": ["node_modules/*", "src/types/*"]
+			"@wikia/*": ["src/*"]
 		},
 		"lib": ["es7", "dom", "es2017.object"]
 	},

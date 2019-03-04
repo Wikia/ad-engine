@@ -1,8 +1,10 @@
-import { context, events, utils } from '@wikia/ad-engine';
+import { context, eventService, utils } from '@wikia/ad-engine';
 
 const logGroup = 'moat-yi';
 
-events.registerEvent('MOAT_YI_READY');
+export const moatYiEvents = {
+	MOAT_YI_READY: Symbol('MOAT_YI_READY'),
+};
 
 /**
  * Injects MOAT YI script
@@ -61,7 +63,7 @@ class MoatYi {
 			const pageParams = window.moatPrebidApi.getMoatTargetingForPage() || {};
 
 			context.set('targeting.m_data', pageParams.m_data);
-			events.emit(events.MOAT_YI_READY, `m_data=${pageParams.m_data}`);
+			eventService.emit(moatYiEvents.MOAT_YI_READY, `m_data=${pageParams.m_data}`);
 			utils.logger(logGroup, 'moatYieldReady', pageParams);
 		}
 	}

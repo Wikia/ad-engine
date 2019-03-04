@@ -4,6 +4,7 @@ import {
 	buildVastUrl,
 	context,
 	events,
+	eventService,
 	slotService,
 	utils,
 	vastDebugger,
@@ -11,6 +12,17 @@ import {
 } from '@wikia/ad-engine';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import featuredVideo15s from './featured-video-f15s';
+
+interface HdPlayerEvent extends CustomEvent {
+	detail: {
+		slotStatus?: {
+			vastParams: any;
+			statusName: string;
+		};
+		name?: string | null;
+		errorCode: number;
+	};
+}
 
 const vastUrls = {
 	last: null,
@@ -140,7 +152,7 @@ function updateSlotParams(adSlot, vastParams) {
  * @returns {{register: register}}
  */
 function create(options) {
-	function register(player, slotTargeting = {}) {
+	function register(player, slotTargeting: { [key: string]: any } = {}) {
 		const slot = slotService.get(slotName);
 		const adProduct = slot.config.trackingKey;
 		const videoElement = player && player.getContainer && player.getContainer();
@@ -284,7 +296,7 @@ function create(options) {
 			});
 
 			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
-			events.emit(events.VIDEO_AD_REQUESTED, slot);
+			eventService.emit(events.VIDEO_AD_REQUESTED, slot);
 		});
 
 		player.on('adImpression', (event) => {
@@ -294,7 +306,7 @@ function create(options) {
 
 			updateSlotParams(slot, vastParams);
 			slot.setStatus(AdSlot.STATUS_SUCCESS);
-			events.emit(events.VIDEO_AD_IMPRESSION, slot);
+			eventService.emit(events.VIDEO_AD_IMPRESSION, slot);
 		});
 
 		player.on('adError', (event) => {
@@ -319,13 +331,14 @@ function create(options) {
 			} else {
 				slot.setStatus(AdSlot.STATUS_ERROR);
 			}
-			events.emit(events.VIDEO_AD_ERROR, slot);
+			eventService.emit(events.VIDEO_AD_ERROR, slot);
 		});
 
 		if (context.get('options.wad.hmdRec.enabled')) {
-			document.addEventListener('hdPlayerEvent', (event) => {
+			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {
 				if (event.detail.slotStatus) {
 					updateSlotParams(slot, event.detail.slotStatus.vastParams);
+					tracker.updateCreativeData(event.detail.slotStatus.vastParams);
 					slot.setStatus(event.detail.slotStatus.statusName);
 				}
 

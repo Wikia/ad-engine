@@ -69,54 +69,6 @@ describe('ad-slot', () => {
 		});
 	});
 
-	describe('isFirstCall', () => {
-		/** @type {AdSlot} */
-		let adSlot;
-
-		beforeEach(() => {
-			adSlot = createAdSlot('top_leaderboard');
-		});
-
-		it('should return false if "firstCall" is undefined', () => {
-			adSlot.config.firstCall = undefined;
-			expect(adSlot.isFirstCall({})).to.equal(false);
-		});
-
-		it('should return false if "firstCall" is false', () => {
-			adSlot.config.firstCall = false;
-			expect(adSlot.isFirstCall()).to.equal(false);
-		});
-
-		it('should return true if "firstCall" is true', () => {
-			adSlot.config.firstCall = true;
-			expect(adSlot.isFirstCall()).to.equal(true);
-		});
-	});
-
-	describe('isAboveTheFold', () => {
-		/** @type {AdSlot} */
-		let adSlot;
-
-		beforeEach(() => {
-			adSlot = createAdSlot('top_leaderboard');
-		});
-
-		it('should return false if "aboveTheFold" is undefined', () => {
-			adSlot.config.aboveTheFold = undefined;
-			expect(AdSlot.isAboveTheFold({})).to.equal(false);
-		});
-
-		it('should return false if "aboveTheFold" is false', () => {
-			adSlot.config.aboveTheFold = false;
-			expect(AdSlot.isAboveTheFold({ aboveTheFold: false })).to.equal(false);
-		});
-
-		it('should return true if "aboveTheFold" is true', () => {
-			adSlot.config.aboveTheFold = true;
-			expect(AdSlot.isAboveTheFold({ aboveTheFold: true })).to.equal(true);
-		});
-	});
-
 	describe('updateWinningPbBidderDetails', () => {
 		/** @type {AdSlot} */
 		let adSlot;

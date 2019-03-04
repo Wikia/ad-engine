@@ -1,4 +1,4 @@
-import { AdSlot, context, events, slotService, utils } from '@wikia/ad-engine';
+import { AdSlot, context, events, eventService, slotService, utils } from '@wikia/ad-engine';
 import { BaseBidder } from '../base-bidder';
 import { Apstag, cmp } from '../wrappers';
 
@@ -133,7 +133,7 @@ export class A9 extends BaseBidder {
 
 			this.onBidResponse();
 			if (refresh) {
-				this.events.emit(this.events.BIDS_REFRESH);
+				eventService.emit(events.BIDS_REFRESH);
 			}
 		});
 	}
