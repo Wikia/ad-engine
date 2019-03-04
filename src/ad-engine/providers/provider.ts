@@ -1,5 +1,5 @@
 import { AdSlot } from '@wikia/ad-engine';
 
-export interface Provider {
-	fillIn(adSlot: AdSlot): void;
+export abstract class Provider {
+	abstract fillIn(adSlot: AdSlot): void;
 }
