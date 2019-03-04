@@ -1,6 +1,5 @@
-import { DelayModule } from '@wikia/types';
 import { scrollListener } from './listeners';
-import { AdSlot } from './models';
+import { AdSlot, DelayModule } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
 import {
 	btfBlockerService,

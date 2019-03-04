@@ -1,6 +1,11 @@
-import { AdEngine, btfBlockerService, context, templateService } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	btfBlockerService,
+	context,
+	DelayModule,
+	templateService,
+} from '@wikia/ad-engine';
 import { BigFancyAdInPlayer } from '@wikia/ad-products';
-import { DelayModule } from '@wikia/types';
 import customContext from '../../context';
 import '../../styles.scss';
 

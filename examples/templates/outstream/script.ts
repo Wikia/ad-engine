@@ -1,7 +1,14 @@
 import { bidders } from '@wikia/ad-bidders';
-import { AdEngine, context, events, eventService, templateService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	context,
+	DelayModule,
+	events,
+	eventService,
+	templateService,
+	utils,
+} from '@wikia/ad-engine';
 import { playerEvents, PorvataTemplate, porvataTracker } from '@wikia/ad-products';
-import { DelayModule } from '@wikia/types';
 import customContext from '../../context';
 import '../../styles.scss';
 

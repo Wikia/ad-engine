@@ -1,7 +1,6 @@
 import { Apstag, bidders, cmp } from '@wikia/ad-bidders';
-import { AdEngine, context, events, eventService, utils } from '@wikia/ad-engine';
+import { AdEngine, context, DelayModule, events, eventService, utils } from '@wikia/ad-engine';
 import { utils as adProductsUtils } from '@wikia/ad-products';
-import { DelayModule } from '@wikia/types';
 import customContext from '../../context';
 import '../../styles.scss';
 

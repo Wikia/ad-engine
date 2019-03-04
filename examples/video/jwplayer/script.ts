@@ -1,7 +1,6 @@
 import { bidders } from '@wikia/ad-bidders';
-import { context, events, eventService, utils } from '@wikia/ad-engine';
+import { context, DelayModule, events, eventService, utils } from '@wikia/ad-engine';
 import { jwplayerAdsFactory, playerEvents } from '@wikia/ad-products';
-import { DelayModule } from '@wikia/types';
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
 import * as videoData from './video-data.json';
