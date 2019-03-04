@@ -28,17 +28,17 @@ declare module 'current-device' {
 		tablet(): boolean;
 		desktop(): boolean;
 		television(): boolean;
+
 		portrait(): boolean;
 		landscape(): boolean;
+		onChangeOrientation(cb: (newOrientation: DeviceOrientation) => void): void;
 
 		noConflict(): CurrentDevice;
-
-		onChangeOrientation(cb: (newOrientation: DeviceOrientation) => void): void;
 	}
 
-	type DeviceOrientation = 'landscape' | 'portrait';
-	type DeviceType = 'mobile' | 'tablet' | 'desktop';
-	type OsType =
+	export type DeviceOrientation = 'landscape' | 'portrait' | 'unknown';
+	export type DeviceType = 'mobile' | 'tablet' | 'desktop' | 'unknown';
+	export type OsType =
 		| 'ios'
 		| 'iphone'
 		| 'ipad'
@@ -48,8 +48,9 @@ declare module 'current-device' {
 		| 'windows'
 		| 'fxos'
 		| 'meego'
-		| 'television';
+		| 'television'
+		| 'unknown';
 
-	const device: CurrentDevice;
-	export default device;
+	const instance: CurrentDevice;
+	export default instance;
 }
