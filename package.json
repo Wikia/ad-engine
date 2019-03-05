@@ -96,6 +96,8 @@
 	},
 	"scripts": {
 		"build": "./node_modules/webpack/bin/webpack.js --progress --colors --hide-modules && bash ./maintenance/build-bundle.sh",
+		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
+		"rules:test": "tslint --project 'maintenance/tslint-rules/tsconfig.test.json'",
 		"ci-check": "npm run test && npm run lint",
 		"dev": "npm run serve",
 		"lint": "tslint --project . && ./maintenance/detect-incorrect-usages.sh",

@@ -1,4 +1,5 @@
 {
+	"rulesDirectory": ["maintenance/tslint-rules/dist"],
 	"extends": [
 		"tslint:latest",
 		"tslint-config-airbnb",
