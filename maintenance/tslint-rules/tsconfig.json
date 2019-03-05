@@ -10,5 +10,5 @@
 		"noImplicitAny": true,
 		"noUnusedLocals": true
 	},
-	"exclude": ["./dist", "./test"]
+	"exclude": ["./dist", "./tests"]
 }

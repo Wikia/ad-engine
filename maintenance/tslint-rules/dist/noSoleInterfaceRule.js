@@ -12,29 +12,30 @@ Rule.STATEMENT_KINDS = [
     ts.SyntaxKind.InterfaceDeclaration,
     ts.SyntaxKind.TypeAliasDeclaration,
 ];
+Rule.IMPORT_KINDS = [ts.SyntaxKind.ImportDeclaration];
+Rule.FIX_STRING = '\nexport {}; // tslint no-sole-interface fix\n';
 exports.Rule = Rule;
 class NoSoleImportWalker extends Lint.RuleWalker {
     visitSourceFile(sourceFile) {
-        const statementsWithModifiers = this.getStatementsWithModifiers(sourceFile);
-        const interfacesAndTypes = this.getInterfacesAndTypes(statementsWithModifiers);
-        const imports = this.getImports(statementsWithModifiers);
-        if (statementsWithModifiers.length > 0 &&
-            statementsWithModifiers.length - imports.length === interfacesAndTypes.length) {
-            this.addFailureAtNode(sourceFile, Rule.FAILURE_STRING);
+        const kinds = this.getStatementKinds(sourceFile);
+        const interfacesAndTypes = this.getInterfacesAndTypes(kinds);
+        const imports = this.getImports(kinds);
+        if (kinds.length > 0 &&
+            interfacesAndTypes.length > 0 &&
+            kinds.length - imports.length === interfacesAndTypes.length) {
+            this.addFailureAt(sourceFile.getEnd(), sourceFile.getWidth(), Rule.FAILURE_STRING, this.createFix(sourceFile));
         }
     }
-    getInterfacesAndTypes(array) {
-        return array.filter((statementWithModifiers) => Rule.STATEMENT_KINDS.includes(statementWithModifiers.statement));
+    getStatementKinds(sourceFile) {
+        return sourceFile.statements.map((statement) => statement.kind);
     }
-    getImports(array) {
-        return array.filter((statementWithModifiers) => statementWithModifiers.statement === ts.SyntaxKind.ImportDeclaration);
+    getInterfacesAndTypes(kinds) {
+        return kinds.filter((kind) => Rule.STATEMENT_KINDS.includes(kind));
     }
-    getStatementsWithModifiers(sourceFile) {
-        return sourceFile.statements.map((statement) => ({
-            statement: statement.kind,
-            modifiers: (statement.modifiers &&
-                statement.modifiers.map((modifier) => modifier.kind)) ||
-                [],
-        }));
+    getImports(kinds) {
+        return kinds.filter((kind) => Rule.IMPORT_KINDS.includes(kind));
+    }
+    createFix(sourceFile) {
+        return new Lint.Replacement(sourceFile.getEnd(), sourceFile.getWidth(), Rule.FIX_STRING);
     }
 }

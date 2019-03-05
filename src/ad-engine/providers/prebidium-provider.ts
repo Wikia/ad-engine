@@ -1,5 +1,5 @@
-import { AdSlot } from '@wikia/ad-engine';
 import { decorate } from 'core-decorators';
+import { AdSlot } from '../models';
 import { context } from '../services';
 import { IframeBuilder, logger } from '../utils';
 import { Provider } from './provider';

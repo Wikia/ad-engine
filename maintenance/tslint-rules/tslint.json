@@ -2,6 +2,6 @@
 	"extends": "../../tslint.json",
 	"rules": {
 		"no-implicit-dependencies": [true, "dev"],
-		"no-sole-interface": true
+		"no-use-before-declare": false
 	}
 }

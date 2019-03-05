@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '../models';
 
 export interface Provider {
 	fillIn(adSlot: AdSlot): void;

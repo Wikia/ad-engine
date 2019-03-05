@@ -3,70 +3,55 @@ import * as ts from 'typescript';
 
 // GitHub Issue: https://github.com/babel/babel/issues/8361
 export class Rule extends Lint.Rules.AbstractRule {
-	public static FAILURE_STRING = 'Files with only interfaces and types are forbidden.';
+	static FAILURE_STRING = 'Files with only interfaces and types are forbidden.';
 
-	public static STATEMENT_KINDS: ts.SyntaxKind[] = [
+	static STATEMENT_KINDS: ts.SyntaxKind[] = [
 		ts.SyntaxKind.InterfaceDeclaration,
 		ts.SyntaxKind.TypeAliasDeclaration,
 	];
 
-	public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+	static IMPORT_KINDS: ts.SyntaxKind[] = [ts.SyntaxKind.ImportDeclaration];
+
+	static FIX_STRING = '\nexport {}; // tslint no-sole-interface fix\n';
+
+	apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
 		return this.applyWithWalker(new NoSoleImportWalker(sourceFile, this.getOptions()));
 	}
 }
 
 class NoSoleImportWalker extends Lint.RuleWalker {
-	public visitSourceFile(sourceFile: ts.SourceFile) {
-		const statementsWithModifiers = this.getStatementsWithModifiers(sourceFile);
-		const interfacesAndTypes = this.getInterfacesAndTypes(statementsWithModifiers);
-		const imports = this.getImports(statementsWithModifiers);
+	visitSourceFile(sourceFile: ts.SourceFile): void {
+		const kinds = this.getStatementKinds(sourceFile);
+		const interfacesAndTypes = this.getInterfacesAndTypes(kinds);
+		const imports = this.getImports(kinds);
 
 		if (
-			statementsWithModifiers.length > 0 &&
-			statementsWithModifiers.length - imports.length === interfacesAndTypes.length
+			kinds.length > 0 &&
+			interfacesAndTypes.length > 0 &&
+			kinds.length - imports.length === interfacesAndTypes.length
 		) {
-			this.addFailureAtNode(sourceFile, Rule.FAILURE_STRING);
+			this.addFailureAt(
+				sourceFile.getEnd(),
+				sourceFile.getWidth(),
+				Rule.FAILURE_STRING,
+				this.createFix(sourceFile),
+			);
 		}
 	}
 
-	private getInterfacesAndTypes(array: StatementWithModifiers[]) {
-		return array.filter((statementWithModifiers: StatementWithModifiers) =>
-			Rule.STATEMENT_KINDS.includes(statementWithModifiers.statement),
-		);
+	private getStatementKinds(sourceFile: ts.SourceFile): ts.SyntaxKind[] {
+		return sourceFile.statements.map((statement: ts.Statement) => statement.kind);
 	}
 
-	private getImports(array: StatementWithModifiers[]) {
-		return array.filter(
-			(statementWithModifiers: StatementWithModifiers) =>
-				statementWithModifiers.statement === ts.SyntaxKind.ImportDeclaration,
-		);
+	private getInterfacesAndTypes(kinds: ts.SyntaxKind[]): ts.SyntaxKind[] {
+		return kinds.filter((kind: ts.SyntaxKind) => Rule.STATEMENT_KINDS.includes(kind));
 	}
 
-	private getStatementsWithModifiers(sourceFile: ts.SourceFile): StatementWithModifiers[] {
-		return sourceFile.statements.map((statement: ts.Statement) => ({
-			statement: statement.kind,
-			modifiers:
-				(statement.modifiers &&
-					statement.modifiers.map((modifier: ts.Modifier) => modifier.kind)) ||
-				[],
-		}));
+	private getImports(kinds: ts.SyntaxKind[]): ts.SyntaxKind[] {
+		return kinds.filter((kind: ts.SyntaxKind) => Rule.IMPORT_KINDS.includes(kind));
+	}
+
+	private createFix(sourceFile: ts.SourceFile): Lint.Fix {
+		return new Lint.Replacement(sourceFile.getEnd(), sourceFile.getWidth(), Rule.FIX_STRING);
 	}
 }
-
-interface StatementWithModifiers {
-	statement: ts.SyntaxKind;
-	modifiers: ModifierKind[];
-}
-
-type ModifierKind =
-	| ts.SyntaxKind.AbstractKeyword
-	| ts.SyntaxKind.AsyncKeyword
-	| ts.SyntaxKind.ConstKeyword
-	| ts.SyntaxKind.DeclareKeyword
-	| ts.SyntaxKind.DefaultKeyword
-	| ts.SyntaxKind.ExportKeyword
-	| ts.SyntaxKind.PublicKeyword
-	| ts.SyntaxKind.PrivateKeyword
-	| ts.SyntaxKind.ProtectedKeyword
-	| ts.SyntaxKind.ReadonlyKeyword
-	| ts.SyntaxKind.StaticKeyword;
