@@ -535,8 +535,6 @@ function getElementOffset(element, offsetParameter) {
 }
 /**
  * Returns element's offset of given element from the top of the page
- * @param element DOM element
- * @returns {number}
  */
 
 
@@ -5290,7 +5288,11 @@ function () {
     value: function inject(slotName) {
       var insertBelowScrollPosition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var config = context.get("slots.".concat(slotName));
+      var minDistanceToTop = config.minDistanceFromTop || 0;
       var anchorElements = Array.prototype.slice.call(document.querySelectorAll(config.insertBeforeSelector));
+      anchorElements = anchorElements.filter(function (el) {
+        return getTopOffset(el) > minDistanceToTop;
+      });
       var conflictingElements = Array.prototype.slice.call(document.querySelectorAll(config.avoidConflictWith));
 
       if (insertBelowScrollPosition) {
@@ -5914,9 +5916,9 @@ if (get_default()(window, versionField, null)) {
 
 set_default()(window, versionField, 'v25.0.4');
 
-set_default()(window, commitField, '3912ce72');
+set_default()(window, commitField, '927c3611');
 
-logger('ad-engine', 'v25.0.4 (3912ce72)');
+logger('ad-engine', 'v25.0.4 (927c3611)');
 
 
 
