@@ -57,6 +57,7 @@ npm install github:Wikia/ad-engine#v14.0.0
 |`slots.{slot_name}.bidderAlias`|Ad slot name alias for getting bids that are assigned for different ad slot|string|✘|
 |`slots.{slot_name}.insertBelowScrollPosition`|Switch: insert ad slot below scroll|boolean|✘|
 |`slots.{slot_name}.insertBeforeSelector`|CSS selector where to put ad slot when it is going to be created once another slot is created (`events.pushAfterRendered` is required)|string|✘|
+|`slots.{slot_name}.minDistanceFromTop`|Minimum distance from top of the page where slot can be injected|number|✘|
 |`slots.{slot_name}.repeat`|Configuration for repeating ad slot|object|✘|
 |`slots.{slot_name}.repeat.additionalClasses`|CSS classes list for newly created slots|string|✘|
 |`slots.{slot_name}.repeat.index`|Index of repeated slot (should be set to 1)|integer|✔|

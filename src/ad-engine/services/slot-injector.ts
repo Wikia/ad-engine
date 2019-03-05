@@ -1,4 +1,4 @@
-import { logger } from '../utils';
+import { getTopOffset, logger } from '../utils';
 import { isInTheSameViewport } from '../utils/dimensions';
 import { context } from './context-service';
 
@@ -28,11 +28,13 @@ function insertNewSlot(slotName, nextSibling) {
 }
 
 class SlotInjector {
-	inject(slotName, insertBelowScrollPosition = false) {
+	inject(slotName: string, insertBelowScrollPosition = false) {
 		const config = context.get(`slots.${slotName}`);
+		const minDistanceToTop = config.minDistanceFromTop || 0;
 		let anchorElements = Array.prototype.slice.call(
 			document.querySelectorAll(config.insertBeforeSelector),
 		);
+		anchorElements = anchorElements.filter((el: Element) => getTopOffset(el) > minDistanceToTop);
 		const conflictingElements = Array.prototype.slice.call(
 			document.querySelectorAll(config.avoidConflictWith),
 		);

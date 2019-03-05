@@ -33,10 +33,8 @@ function getElementOffset(element, offsetParameter) {
 
 /**
  * Returns element's offset of given element from the top of the page
- * @param element DOM element
- * @returns {number}
  */
-export function getTopOffset(element) {
+export function getTopOffset(element: Element): number {
 	return getElementOffset(element, 'offsetTop');
 }
 
