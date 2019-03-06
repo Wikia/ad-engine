@@ -1,3 +1,5 @@
+import * as EventEmitter from 'eventemitter3';
+
 export const wait = (milliseconds = 0) =>
 	new Promise((resolve, reject) => {
 		if (typeof milliseconds !== 'number') {
@@ -9,7 +11,7 @@ export const wait = (milliseconds = 0) =>
 		setTimeout(resolve, milliseconds);
 	});
 
-export const defer = (fn, ...args) =>
+export const defer = (fn: (...args: any) => any, ...args: any) =>
 	new Promise((resolve, reject) => {
 		if (typeof fn !== 'function') {
 			reject(new Error('Expected a function.'));
@@ -20,10 +22,15 @@ export const defer = (fn, ...args) =>
 		setTimeout(() => resolve(fn(...args)), 0);
 	});
 
-export function once(emitter, eventName, options = {}) {
-	const isObject = typeof emitter === 'object';
-	const hasAddEventListener = isObject && typeof emitter.addEventListener === 'function';
-	const hasOnce = isObject && typeof emitter.once === 'function';
+export function once(
+	emitter: EventEmitter | Window,
+	eventName: string,
+	options = {},
+): Promise<any> {
+	const isObject: boolean = typeof emitter === 'object';
+	const hasAddEventListener: boolean =
+		isObject && typeof (emitter as Window).addEventListener === 'function';
+	const hasOnce: boolean = isObject && typeof (emitter as EventEmitter).once === 'function';
 
 	return new Promise((resolve, reject) => {
 		if (typeof options === 'boolean') {
@@ -31,20 +38,16 @@ export function once(emitter, eventName, options = {}) {
 		}
 
 		if (hasOnce) {
-			emitter.once(eventName, resolve);
+			(emitter as EventEmitter).once(eventName, resolve);
 		} else if (hasAddEventListener) {
-			emitter.addEventListener(eventName, resolve, { ...options, once: true });
+			(emitter as Window).addEventListener(eventName, resolve, { ...options, once: true });
 		} else {
 			reject(new Error('Emitter does not have `addEventListener` nor `once` method.'));
 		}
 	});
 }
 
-/**
- * @param {number} msToTimeout
- * @returns {Promise}
- */
-export function timeoutReject(msToTimeout) {
+export function timeoutReject(msToTimeout: number): Promise<any> {
 	return new Promise((resolve, reject) => {
 		setTimeout(reject, msToTimeout);
 	});
@@ -52,10 +55,7 @@ export function timeoutReject(msToTimeout) {
 
 /**
  * Fires the Promise if function is fulfilled or timeout is reached
- * @param {function} func
- * @param {number} msToTimeout
- * @returns {Promise}
  */
-export function createWithTimeout(func, msToTimeout = 2000) {
+export function createWithTimeout(func: () => any, msToTimeout = 2000): Promise<any> {
 	return Promise.race([new Promise(func), timeoutReject(msToTimeout)]);
 }

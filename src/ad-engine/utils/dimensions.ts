@@ -1,10 +1,11 @@
+type OffsetParameter = 'offsetHeight' | 'offsetLeft' | 'offsetTop' | 'offsetWidth';
+
 /**
  * Returns element's offset of given element depending on offset parameter name
- * @param element DOM element
+ * @param element
  * @param offsetParameter node element parameter to count overall offset
- * @returns {number}
  */
-function getElementOffset(element, offsetParameter) {
+function getElementOffset(element: HTMLElement, offsetParameter: OffsetParameter): number {
 	const elementWindow = element.ownerDocument.defaultView;
 	let currentElement = element;
 	let hideAgain = false;
@@ -17,7 +18,7 @@ function getElementOffset(element, offsetParameter) {
 
 	do {
 		topPos += currentElement[offsetParameter];
-		currentElement = currentElement.offsetParent;
+		currentElement = currentElement.offsetParent as HTMLElement;
 	} while (currentElement !== null);
 
 	if (hideAgain) {
@@ -25,7 +26,7 @@ function getElementOffset(element, offsetParameter) {
 	}
 
 	if (elementWindow && elementWindow.frameElement) {
-		topPos += getElementOffset(elementWindow.frameElement, offsetParameter);
+		topPos += getElementOffset(elementWindow.frameElement as HTMLElement, offsetParameter);
 	}
 
 	return topPos;
@@ -33,35 +34,29 @@ function getElementOffset(element, offsetParameter) {
 
 /**
  * Returns element's offset of given element from the top of the page
- * @param element DOM element
- * @returns {number}
  */
-export function getTopOffset(element) {
+export function getTopOffset(element: HTMLElement): number {
 	return getElementOffset(element, 'offsetTop');
 }
 
 /**
  * Returns element's offset of given element from the left of the page
- * @param element DOM element
- * @returns {number}
  */
-export function getLeftOffset(element) {
+export function getLeftOffset(element: HTMLElement): number {
 	return getElementOffset(element, 'offsetLeft');
 }
 
 /**
  * Returns client's viewport height
- * @returns {number}
  */
-export function getViewportHeight() {
+export function getViewportHeight(): number {
 	return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 }
 
 /**
  * Returns client's viewport width
- * @returns {number}
  */
-export function getViewportWidth() {
+export function getViewportWidth(): number {
 	return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 }
 
@@ -72,9 +67,13 @@ export function getViewportWidth() {
  * @param bottomOffset bottom offset that defines bottom margin of viewport
  * @param areaThreshold element area that needs to be in/outside viewport to decide whether element
  * is in the viewport
- * @returns {boolean}
  */
-export function isInViewport(element, topOffset = 0, bottomOffset = 0, areaThreshold = 0.5) {
+export function isInViewport(
+	element: HTMLElement,
+	topOffset = 0,
+	bottomOffset = 0,
+	areaThreshold = 0.5,
+): boolean {
 	const alwaysInViewportPositions = ['fixed', 'sticky'];
 	const elementPosition = window.getComputedStyle(element).position;
 
@@ -97,7 +96,10 @@ export function isInViewport(element, topOffset = 0, bottomOffset = 0, areaThres
 	);
 }
 
-export function isInTheSameViewport(element, elementsToCompare = []) {
+export function isInTheSameViewport(
+	element: HTMLElement,
+	elementsToCompare: HTMLElement[] = [],
+): boolean {
 	// According to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
 	// Hidden element does not have offsetParent
 	if (element.offsetParent === null) {
@@ -108,7 +110,7 @@ export function isInTheSameViewport(element, elementsToCompare = []) {
 	const elementOffset = getTopOffset(element);
 	const viewportHeight = getViewportHeight();
 
-	const conflicts = elementsToCompare.filter((conflictElement) => {
+	const conflicts = elementsToCompare.filter((conflictElement: HTMLElement) => {
 		if (
 			(element.previousSibling && element.previousSibling.isSameNode(conflictElement)) ||
 			(element.nextSibling && element.nextSibling.isSameNode(conflictElement))

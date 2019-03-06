@@ -1,4 +1,4 @@
-import EventEmitter from 'eventemitter3';
+import * as EventEmitter from 'eventemitter3';
 import { slotListener } from '../listeners';
 import { ADX } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';

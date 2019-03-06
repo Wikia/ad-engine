@@ -72,6 +72,10 @@
 			"severity": "warning",
 			"options": ["allow-declarations", "allow-named-functions"]
 		},
+		"typedef": {
+			"severity": "warning",
+			"options": ["call-signature"]
+		},
 		"no-shadowed-variable": {
 			"severity": "warning"
 		},

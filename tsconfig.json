@@ -5,13 +5,15 @@
 		"module": "es2015",
 		"moduleResolution": "node",
 		"target": "es5",
-		"baseUrl": ".",
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
+		"noImplicitAny": false,
+		"baseUrl": ".",
+		"typeRoots": ["node_modules/@types", "@types"],
 		"paths": {
 			"@wikia/*": ["src/*"]
 		},
 		"lib": ["es7", "dom", "es2017.object"]
 	},
-	"exclude": ["node_modules", "tmp", "dist"]
+	"exclude": ["node_modules", "tmp", "dist", "@types"]
 }

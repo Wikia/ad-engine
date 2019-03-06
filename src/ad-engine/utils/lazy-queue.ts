@@ -12,7 +12,7 @@ export interface OldLazyQueue<T = any> {
  * @deprecated
  * Please use LazyQueue class instead
  */
-export function makeLazyQueue<T = any>(queue: T[], callback: (item: T) => void) {
+export function makeLazyQueue<T = any>(queue: T[], callback: (item: T) => void): void {
 	if (typeof callback !== 'function') {
 		throw new Error('LazyQueue used with callback not being a function');
 	} else if (queue instanceof Array) {
@@ -33,7 +33,7 @@ declare type LazyCallback<T> = (item: T) => void;
 declare type PushCommand<T> = (...items: T[]) => void;
 
 export class LazyQueue<T = any> {
-	get length() {
+	get length(): number {
 		return this.items.length;
 	}
 
@@ -57,7 +57,7 @@ export class LazyQueue<T = any> {
 		this.pushCommand(...items);
 	}
 
-	onItemFlush(callback: LazyCallback<T>) {
+	onItemFlush(callback: LazyCallback<T>): void {
 		if (typeof callback !== 'function') {
 			throw new Error('onItemFlush used with callback not being a function');
 		}

@@ -3,13 +3,13 @@ import {
 	AdEngine,
 	btfBlockerService,
 	context,
+	DelayModule,
 	events,
 	eventService,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
 import { billTheLizard } from '@wikia/ad-services';
-import { DelayModule } from '@wikia/types';
 import adContext from '../../context';
 
 const contentTemplate = document.querySelector('.content-template').innerHTML;

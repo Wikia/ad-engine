@@ -1,3 +1,5 @@
+type VisibilityStatusType = 'visible' | 'hidden' | 'not_implemented';
+
 export const VISIBILITY_STATUS = {
 	visible: 'visible',
 	hidden: 'hidden',
@@ -6,10 +8,8 @@ export const VISIBILITY_STATUS = {
 
 /**
  * Returns document visibility status.
- *
- * @returns {string} 'visible'|'hidden'|'notImplemented'
  */
-export function getDocumentVisibilityStatus() {
+export function getDocumentVisibilityStatus(): VisibilityStatusType {
 	let status;
 
 	switch (document.hidden) {
@@ -23,5 +23,5 @@ export function getDocumentVisibilityStatus() {
 			status = VISIBILITY_STATUS.notImplemented;
 	}
 
-	return status;
+	return status as VisibilityStatusType;
 }
