@@ -5,31 +5,25 @@ import * as ts from 'typescript';
 export class Rule extends Lint.Rules.AbstractRule {
 	static FAILURE_STRING = 'Files with only interfaces and types are forbidden.';
 
-	static STATEMENT_KINDS: ts.SyntaxKind[] = [
+	static TYPE_KINDS: ts.SyntaxKind[] = [
 		ts.SyntaxKind.InterfaceDeclaration,
 		ts.SyntaxKind.TypeAliasDeclaration,
 	];
 
 	static IMPORT_KINDS: ts.SyntaxKind[] = [ts.SyntaxKind.ImportDeclaration];
 
-	static FIX_STRING = '\nexport {}; // tslint no-sole-interface fix\n';
+	static FIX_STRING = '\nexport {}; // tslint no-sole-types fix\n';
 
 	apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-		return this.applyWithWalker(new NoSoleImportWalker(sourceFile, this.getOptions()));
+		return this.applyWithWalker(new NoSoleTypesWalker(sourceFile, this.getOptions()));
 	}
 }
 
-class NoSoleImportWalker extends Lint.RuleWalker {
+class NoSoleTypesWalker extends Lint.RuleWalker {
 	visitSourceFile(sourceFile: ts.SourceFile): void {
-		const kinds = this.getStatementKinds(sourceFile);
-		const interfacesAndTypes = this.getInterfacesAndTypes(kinds);
-		const imports = this.getImports(kinds);
+		const onlyTypes: boolean = this.fileContainsOnlyTypes(sourceFile);
 
-		if (
-			kinds.length > 0 &&
-			interfacesAndTypes.length > 0 &&
-			kinds.length - imports.length === interfacesAndTypes.length
-		) {
+		if (onlyTypes) {
 			this.addFailureAt(
 				sourceFile.getEnd(),
 				sourceFile.getWidth(),
@@ -39,12 +33,22 @@ class NoSoleImportWalker extends Lint.RuleWalker {
 		}
 	}
 
+	private fileContainsOnlyTypes(sourceFile: ts.SourceFile): boolean {
+		const kinds: ts.SyntaxKind[] = this.getStatementKinds(sourceFile);
+
+		const statementsCount: number = kinds.length;
+		const typesCount: number = this.getInterfacesAndTypes(kinds).length;
+		const importsCount: number = this.getImports(kinds).length;
+
+		return statementsCount > 0 && typesCount > 0 && kinds.length - importsCount === typesCount;
+	}
+
 	private getStatementKinds(sourceFile: ts.SourceFile): ts.SyntaxKind[] {
 		return sourceFile.statements.map((statement: ts.Statement) => statement.kind);
 	}
 
 	private getInterfacesAndTypes(kinds: ts.SyntaxKind[]): ts.SyntaxKind[] {
-		return kinds.filter((kind: ts.SyntaxKind) => Rule.STATEMENT_KINDS.includes(kind));
+		return kinds.filter((kind: ts.SyntaxKind) => Rule.TYPE_KINDS.includes(kind));
 	}
 
 	private getImports(kinds: ts.SyntaxKind[]): ts.SyntaxKind[] {

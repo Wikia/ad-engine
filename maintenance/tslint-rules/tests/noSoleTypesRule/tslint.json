@@ -1,6 +1,6 @@
 {
 	"extends": "../tslint.json",
 	"rules": {
-		"no-sole-interface": true
+		"no-sole-types": true
 	}
 }

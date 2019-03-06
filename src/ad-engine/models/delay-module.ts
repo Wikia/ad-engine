@@ -4,4 +4,4 @@ export interface DelayModule {
 	getPromise: () => Promise<void>;
 }
 
-export {}; // tslint no-sole-interface fix
+export {}; // tslint no-sole-types fix

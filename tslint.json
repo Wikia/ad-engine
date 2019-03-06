@@ -7,7 +7,7 @@
 		"tslint-config-prettier"
 	],
 	"rules": {
-		"no-sole-interface": true,
+		"no-sole-types": true,
 		"no-unused-variable": true,
 		"max-line-length": [true, { "limit": 100, "ignore-pattern": "^import |^export {(.*?)} |http" }],
 		"ordered-imports": [

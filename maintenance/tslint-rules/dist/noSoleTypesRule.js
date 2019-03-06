@@ -2,35 +2,39 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Lint = require("tslint");
 const ts = require("typescript");
+// GitHub Issue: https://github.com/babel/babel/issues/8361
 class Rule extends Lint.Rules.AbstractRule {
     apply(sourceFile) {
-        return this.applyWithWalker(new NoSoleImportWalker(sourceFile, this.getOptions()));
+        return this.applyWithWalker(new NoSoleTypesWalker(sourceFile, this.getOptions()));
     }
 }
 Rule.FAILURE_STRING = 'Files with only interfaces and types are forbidden.';
-Rule.STATEMENT_KINDS = [
+Rule.TYPE_KINDS = [
     ts.SyntaxKind.InterfaceDeclaration,
     ts.SyntaxKind.TypeAliasDeclaration,
 ];
 Rule.IMPORT_KINDS = [ts.SyntaxKind.ImportDeclaration];
-Rule.FIX_STRING = '\nexport {}; // tslint no-sole-interface fix\n';
+Rule.FIX_STRING = '\nexport {}; // tslint no-sole-types fix\n';
 exports.Rule = Rule;
-class NoSoleImportWalker extends Lint.RuleWalker {
+class NoSoleTypesWalker extends Lint.RuleWalker {
     visitSourceFile(sourceFile) {
-        const kinds = this.getStatementKinds(sourceFile);
-        const interfacesAndTypes = this.getInterfacesAndTypes(kinds);
-        const imports = this.getImports(kinds);
-        if (kinds.length > 0 &&
-            interfacesAndTypes.length > 0 &&
-            kinds.length - imports.length === interfacesAndTypes.length) {
+        const onlyTypes = this.fileContainsOnlyTypes(sourceFile);
+        if (onlyTypes) {
             this.addFailureAt(sourceFile.getEnd(), sourceFile.getWidth(), Rule.FAILURE_STRING, this.createFix(sourceFile));
         }
+    }
+    fileContainsOnlyTypes(sourceFile) {
+        const kinds = this.getStatementKinds(sourceFile);
+        const statementsCount = kinds.length;
+        const typesCount = this.getInterfacesAndTypes(kinds).length;
+        const importsCount = this.getImports(kinds).length;
+        return statementsCount > 0 && typesCount > 0 && kinds.length - importsCount === typesCount;
     }
     getStatementKinds(sourceFile) {
         return sourceFile.statements.map((statement) => statement.kind);
     }
     getInterfacesAndTypes(kinds) {
-        return kinds.filter((kind) => Rule.STATEMENT_KINDS.includes(kind));
+        return kinds.filter((kind) => Rule.TYPE_KINDS.includes(kind));
     }
     getImports(kinds) {
         return kinds.filter((kind) => Rule.IMPORT_KINDS.includes(kind));
