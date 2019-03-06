@@ -3026,14 +3026,7 @@ ad_slot_AdSlot.STATUS_COLLAPSE = 'collapse';
 ad_slot_AdSlot.STATUS_ERROR = 'error';
 ad_slot_AdSlot.AD_CLASS = 'gpt-ad';
 // CONCATENATED MODULE: ./src/ad-engine/models/delay-module.ts
-
-var delay_module_DelayModule = function DelayModule() {
-  classCallCheck_default()(this, DelayModule);
-
-  this.isEnabled = void 0;
-  this.getName = void 0;
-  this.getPromise = void 0;
-};
+ // tslint no-sole-types fix
 // CONCATENATED MODULE: ./src/ad-engine/models/index.ts
 
 
@@ -5189,10 +5182,7 @@ function () {
   return PrebidiumProvider;
 }(), _temp), (applyDecoratedDescriptor_default()(prebidium_provider_class.prototype, "fillIn", [prebidium_provider_dec], get_own_property_descriptor_default()(prebidium_provider_class.prototype, "fillIn"), prebidium_provider_class.prototype)), prebidium_provider_class));
 // CONCATENATED MODULE: ./src/ad-engine/providers/provider.ts
-
-var provider_Provider = function Provider() {
-  classCallCheck_default()(this, Provider);
-};
+ // tslint no-sole-types fix
 // CONCATENATED MODULE: ./src/ad-engine/providers/index.ts
 
 
@@ -5859,13 +5849,11 @@ function () {
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "slotListener", function() { return slotListener; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "TwitchListener", function() { return twitch_listener_TwitchListener; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "AdSlot", function() { return ad_slot_AdSlot; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "DelayModule", function() { return delay_module_DelayModule; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "ADX", function() { return ADX; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GptProvider", function() { return gpt_provider_GptProvider; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "GptSizeMap", function() { return gpt_size_map_GptSizeMap; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "setupGptTargeting", function() { return setupGptTargeting; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "PrebidiumProvider", function() { return prebidium_provider_PrebidiumProvider; });
-/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "Provider", function() { return provider_Provider; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "btfBlockerService", function() { return btfBlockerService; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "context", function() { return context; });
 /* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "registerCustomAdLoader", function() { return registerCustomAdLoader; });
@@ -5904,9 +5892,9 @@ if (get_default()(window, versionField, null)) {
 
 set_default()(window, versionField, 'v25.0.6');
 
-set_default()(window, commitField, 'acf5d958');
+set_default()(window, commitField, '270c56f4');
 
-logger('ad-engine', 'v25.0.6 (acf5d958)');
+logger('ad-engine', 'v25.0.6 (270c56f4)');
 
 
 
