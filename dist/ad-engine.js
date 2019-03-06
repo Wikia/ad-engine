@@ -358,16 +358,15 @@ var external_current_device_default = /*#__PURE__*/__webpack_require__.n(externa
 
 
 
+var bab = null;
+var client_browser = null;
+var operatingSystem = null;
 
 var client_Client =
 /*#__PURE__*/
 function () {
   function Client() {
     classCallCheck_default()(this, Client);
-
-    this.bab = null;
-    this.browser = null;
-    this.operatingSystem = null;
   }
 
   createClass_default()(Client, [{
@@ -391,13 +390,13 @@ function () {
       var enabled = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var disabled = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-      if (this.bab === null) {
+      if (bab === null) {
         if (typeof external_blockadblock_default.a === 'undefined' || typeof BlockAdBlock === 'undefined') {
           if (enabled !== null) enabled();
           return;
         }
 
-        this.bab = new BlockAdBlock({
+        bab = new BlockAdBlock({
           checkOnLoad: false,
           resetOnEnd: true,
           loopCheckTime: 50,
@@ -405,9 +404,9 @@ function () {
         });
       }
 
-      if (enabled !== null) this.bab.onDetected(enabled);
-      if (disabled !== null) this.bab.onNotDetected(disabled);
-      this.bab.check(true);
+      if (enabled !== null) bab.onDetected(enabled);
+      if (disabled !== null) bab.onNotDetected(disabled);
+      bab.check(true);
     }
   }, {
     key: "getDeviceType",
@@ -425,40 +424,40 @@ function () {
   }, {
     key: "getOperatingSystem",
     value: function getOperatingSystem() {
-      if (this.operatingSystem !== null) {
-        return this.operatingSystem;
+      if (operatingSystem !== null) {
+        return operatingSystem;
       }
 
       var userAgent = window.navigator.userAgent;
-      this.operatingSystem = 'unknown';
+      operatingSystem = 'unknown';
 
       if (userAgent.indexOf('Win') !== -1) {
-        this.operatingSystem = 'Windows';
+        operatingSystem = 'Windows';
       }
 
       if (userAgent.indexOf('Mac') !== -1) {
-        this.operatingSystem = 'OSX';
+        operatingSystem = 'OSX';
       }
 
       if (userAgent.indexOf('Linux') !== -1) {
-        this.operatingSystem = 'Linux';
+        operatingSystem = 'Linux';
       }
 
       if (userAgent.indexOf('Android') !== -1) {
-        this.operatingSystem = 'Android';
+        operatingSystem = 'Android';
       }
 
       if (userAgent.indexOf('like Mac') !== -1) {
-        this.operatingSystem = 'iOS';
+        operatingSystem = 'iOS';
       }
 
-      return this.operatingSystem;
+      return operatingSystem;
     }
   }, {
     key: "getBrowser",
     value: function getBrowser() {
-      if (this.browser !== null) {
-        return this.browser;
+      if (client_browser !== null) {
+        return client_browser;
       }
 
       var _window$navigator = window.navigator,
@@ -470,16 +469,16 @@ function () {
 
       if (/trident/i.test(matches[1])) {
         temp = /\brv[ :]+(\d+)/g.exec(userAgent) || [];
-        this.browser = "IE ".concat(temp[1] || '');
-        return this.browser;
+        client_browser = "IE ".concat(temp[1] || '');
+        return client_browser;
       }
 
       if (matches[1] === 'Chrome') {
         temp = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
 
         if (temp !== null) {
-          this.browser = temp.slice(1).join(' ').replace('OPR', 'Opera');
-          return this.browser;
+          client_browser = temp.slice(1).join(' ').replace('OPR', 'Opera');
+          return client_browser;
         }
       }
 
@@ -490,8 +489,8 @@ function () {
         matches.splice(1, 1, temp[1]);
       }
 
-      this.browser = matches.join(' ');
-      return this.browser;
+      client_browser = matches.join(' ');
+      return client_browser;
     }
   }]);
 
@@ -5905,9 +5904,9 @@ if (get_default()(window, versionField, null)) {
 
 set_default()(window, versionField, 'v25.0.5');
 
-set_default()(window, commitField, 'f639f9e5');
+set_default()(window, commitField, 'cacb56ed');
 
-logger('ad-engine', 'v25.0.5 (f639f9e5)');
+logger('ad-engine', 'v25.0.5 (cacb56ed)');
 
 
 
