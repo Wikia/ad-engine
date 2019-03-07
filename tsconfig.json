@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outDir": "./dist/",
+		"outDir": "./dist",
 		"sourceMap": true,
 		"module": "es2015",
 		"moduleResolution": "node",
@@ -15,5 +15,5 @@
 		},
 		"lib": ["es7", "dom", "es2017.object"]
 	},
-	"exclude": ["node_modules", "tmp", "dist", "@types"]
+	"exclude": ["node_modules", "tmp", "dist", "@types", "maintenance/tslint-rules"]
 }

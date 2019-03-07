@@ -1,5 +1,7 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '../models';
 
-export abstract class Provider {
-	abstract fillIn(adSlot: AdSlot): void;
+export interface Provider {
+	fillIn(adSlot: AdSlot): void;
 }
+
+export {}; // tslint no-sole-types fix

@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "25.0.6",
+	"version": "25.0.7",
 	"description": "Wikia AdEngine",
 	"repository": {
 		"type": "git",
@@ -103,8 +103,8 @@
 		"build": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
 		"ci-check": "npm run test && npm run lint",
 		"dev": "npm run serve",
-		"lint": "tslint --project . && ./maintenance/detect-incorrect-usages.sh",
-		"lintf": "tslint --project . --fix && ./maintenance/detect-incorrect-usages.sh",
+		"lint": "tslint --project . && npm run rules:lint && ./maintenance/detect-incorrect-usages.sh",
+		"lintf": "tslint --project . --fix && npm run rules:lintf &&  ./maintenance/detect-incorrect-usages.sh",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
@@ -121,7 +121,11 @@
 		"allure": "cp -R ./tests/allure-results/report/history ./tests/allure-results | true && allure generate ./tests/allure-results --output ./tests/allure-results/report --clean && allure open ./tests/allure-results/report",
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
-		"check-types:watch": "tsc --watch -noEmit"
+		"check-types:watch": "tsc --watch -noEmit",
+		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
+		"rules:tests": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
+		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
+		"rules:lintf": "tslint --project 'maintenance/tslint-rules/tsconfig.json' --fix"
 	},
 	"husky": {
 		"hooks": {
@@ -142,7 +146,8 @@
 			]
 		},
 		"ignore": [
-			"**/dist/**/*"
+			"**/dist/**/*",
+			"maintenance/tslint-rules/tests/**/*"
 		]
 	}
 }
