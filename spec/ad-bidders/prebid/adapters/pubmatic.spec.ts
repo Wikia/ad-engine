@@ -87,6 +87,7 @@ describe('Pubmatic bidder adapter', () => {
 								maxduration: 30,
 								startdelay: 0,
 								playbackmethod: [2, 3],
+								api: [2],
 								protocols: [2, 3, 5, 6],
 								linearity: 1,
 								placement: 1,
