@@ -45,7 +45,7 @@ class SlotService {
 
 		this.slots[slotName] = adSlot;
 
-		if (!this.slotStates[slotName] === false) {
+		if (this.slotStates[slotName] === false) {
 			adSlot.disable(this.slotStatuses[slotName]);
 		}
 		if (this.slotStates[slotName] === true) {
