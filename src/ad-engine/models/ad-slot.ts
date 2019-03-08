@@ -53,6 +53,7 @@ export class AdSlot extends EventEmitter {
 			this.on(event.name, event.callback);
 		});
 
+		this.orderId = null;
 		this.creativeId = null;
 		this.creativeSize = null;
 		this.lineItemId = null;
@@ -253,6 +254,7 @@ export class AdSlot extends EventEmitter {
 			}
 		}
 
+		this.orderId = event.campaignId;
 		this.creativeId = creativeId;
 		this.lineItemId = lineItemId;
 		this.creativeSize = this.isOutOfPage() ? 'out-of-page' : event.size;

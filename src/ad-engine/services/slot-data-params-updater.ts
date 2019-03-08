@@ -17,6 +17,7 @@ class SlotDataParamsUpdater {
 	}
 
 	updateOnRenderEnd(adSlot) {
+		slotTweaker.setDataParam(adSlot, 'gptOrderId', adSlot.orderId);
 		slotTweaker.setDataParam(adSlot, 'gptCreativeId', adSlot.creativeId);
 		slotTweaker.setDataParam(adSlot, 'gptLineItemId', adSlot.lineItemId);
 		slotTweaker.setDataParam(adSlot, 'gptCreativeSize', adSlot.creativeSize);

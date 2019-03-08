@@ -38,6 +38,7 @@ function getData(adSlot, { adType, status }) {
 	return {
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
 		adType: adType || '',
+		order_id: adSlot.orderId,
 		creative_id: adSlot.creativeId,
 		creative_size:
 			Array.isArray(adSlot.creativeSize) && adSlot.creativeSize.length
