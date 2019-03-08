@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "25.3.0",
+	"version": "25.3.1",
 	"description": "Wikia AdEngine",
 	"repository": {
 		"type": "git",
@@ -89,6 +89,8 @@
 		".babelrc",
 		".npmrc",
 		"jsconfig.json",
+		"package.json",
+		"package-lock.json",
 		"README.md",
 		"webpack.config.js"
 	],
