@@ -29,6 +29,7 @@
 		"@babel/register": "^7.0.0",
 		"@slack/client": "4.1.0",
 		"@types/chai": "4.1.7",
+		"@types/doubleclick-gpt": "238.0.1",
 		"@types/mocha": "5.2.6",
 		"@types/sinon": "7.0.7",
 		"allure-commandline": "2.7.0",

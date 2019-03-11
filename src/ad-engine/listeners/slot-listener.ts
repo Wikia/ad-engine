@@ -74,7 +74,7 @@ function dispatch(methodName, adSlot, adInfo = {}) {
 }
 
 class SlotListener {
-	emitRenderEnded(event, adSlot) {
+	emitRenderEnded(event: googletag.events.SlotRenderEndedEvent, adSlot) {
 		const adType = getAdType(event, adSlot);
 
 		adSlot.updateOnRenderEnd(event);
