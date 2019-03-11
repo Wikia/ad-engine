@@ -88,7 +88,7 @@ export class AdSlot extends EventEmitter {
 		}
 	}
 
-	private logger = (...args) => logger(AdSlot.LOG_GROUP, ...args);
+	private logger = (...args: any[]) => logger(AdSlot.LOG_GROUP, ...args);
 
 	getAdUnit(): string {
 		if (!this.adUnit) {
