@@ -1,3 +1,4 @@
+import { AdSlot } from '@wikia/ad-engine';
 import { logger } from '../utils';
 import { messageBus } from './message-bus';
 import { slotService } from './slot-service';
@@ -170,10 +171,11 @@ export class SlotTweaker {
 		);
 	}
 
-	setDataParam(adSlot, attrName, data) {
+	setDataParam(adSlot: AdSlot, attrName: string, data: any): void {
 		const container = this.getContainer(adSlot);
-
-		container.dataset[attrName] = typeof data === 'string' ? data : JSON.stringify(data);
+		if (container) {
+			container.dataset[attrName] = typeof data === 'string' ? data : JSON.stringify(data);
+		}
 	}
 }
 
