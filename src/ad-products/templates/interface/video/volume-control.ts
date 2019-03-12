@@ -40,7 +40,7 @@ function add(video, container) {
 		updateCurrentState(video, volumeControl);
 	});
 
-	video.addEventListener('wikiaAdStarted', () => {
+	video.addEventListener('adCanPlay', () => {
 		updateCurrentState(video, volumeControl);
 		volumeControl.classList.remove('hidden');
 	});
