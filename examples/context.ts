@@ -1,6 +1,7 @@
 import { slotService, utils } from '@wikia/ad-engine';
 
 const disabledSlots = utils.queryString.get('disabled-slots');
+const cid = utils.queryString.get('cid');
 
 if (disabledSlots) {
 	disabledSlots.split(',').forEach((slotName) => slotService.disable(slotName));
@@ -358,6 +359,7 @@ export default {
 	},
 	targeting: {
 		ae3: '1',
+		cid: cid || null,
 		outstream: 'none',
 		s1: '_project43',
 		uap: 'none',

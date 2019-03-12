@@ -3,6 +3,7 @@ import { getTranslation } from '../../common/i18n';
 import * as videoUserInterface from '../interface/video';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
+export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
 export const IMA_VPAID_INSECURE_MODE = 2;
 
 export class PorvataTemplate {

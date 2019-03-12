@@ -101,6 +101,7 @@ $vpaid-z-index: 10;
 			position: absolute;
 			right: 0;
 			width: $outstream-button-size;
+			z-index: $controls-z-index;
 		}
 
 		.porvata-switchable-icon {
@@ -134,6 +135,7 @@ $vpaid-z-index: 10;
 				position: absolute;
 				top: 0;
 				width: 0;
+				z-index: $controls-z-index;
 
 				& > svg {
 					height: 14px;
@@ -154,10 +156,6 @@ $vpaid-z-index: 10;
 				position: fixed;
 				right: 20px;
 				width: 320px;
-			}
-
-			.video-player {
-				padding: 30px 0;
 			}
 		}
 	}
