@@ -1,6 +1,6 @@
 type VisibilityStatusType = 'visible' | 'hidden' | 'not_implemented';
 
-export const VISIBILITY_STATUS = {
+export const VISIBILITY_STATUS: { [key: string]: VisibilityStatusType } = {
 	visible: 'visible',
 	hidden: 'hidden',
 	notImplemented: 'not_implemented',
@@ -23,5 +23,5 @@ export function getDocumentVisibilityStatus(): VisibilityStatusType {
 			status = VISIBILITY_STATUS.notImplemented;
 	}
 
-	return status as VisibilityStatusType;
+	return status;
 }
