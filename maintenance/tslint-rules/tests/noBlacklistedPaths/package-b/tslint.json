@@ -1,10 +1,10 @@
 {
 	"extends": "../../tslint.json",
 	"rules": {
-		"no-cross-imports": [
+		"no-blacklisted-paths": [
 			true,
 			{
-				"blacklist": [ "package-b", "package-c" ]
+				"blacklist": [ "package-c" ]
 			}
 		]
 	}
