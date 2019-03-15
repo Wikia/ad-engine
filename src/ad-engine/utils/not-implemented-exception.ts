@@ -1,9 +1,10 @@
 export class NotImplementedException extends Error {
+	private parameters: {};
 	/**
 	 * @param parameters - pass here method input parameters as an object.
 	 * @param params - standard new Error() parameters, leave empty.
 	 */
-	constructor(parameters = {}, ...params) {
+	constructor(parameters = {}, ...params: string[]) {
 		params[0] = 'Not Implemented Exception';
 		// Pass remaining arguments (including vendor specific ones) to parent constructor
 		super(...params);
