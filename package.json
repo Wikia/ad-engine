@@ -106,8 +106,8 @@
 		"build": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
 		"ci-check": "npm run test && npm run lint",
 		"dev": "npm run serve",
-		"lint": "tslint --project . && npm run rules:lint && ./maintenance/detect-incorrect-usages.sh",
-		"lintf": "tslint --project . --fix && npm run rules:lintf &&  ./maintenance/detect-incorrect-usages.sh",
+		"lint": "tslint --project . && npm run rules:lint",
+		"lintf": "tslint --project . --fix && npm run rules:lintf",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
@@ -126,7 +126,7 @@
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
-		"rules:tests": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
+		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:lintf": "tslint --project 'maintenance/tslint-rules/tsconfig.json' --fix"
 	},
@@ -140,7 +140,6 @@
 			"*.ts": [
 				"prettier --write",
 				"tslint --fix",
-				"./maintenance/detect-incorrect-usages.sh",
 				"git add"
 			],
 			"*.{js,json,css,scss,html}": [
