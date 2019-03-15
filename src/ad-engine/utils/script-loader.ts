@@ -1,43 +1,43 @@
 class ScriptLoader {
 	/**
 	 * Creates <script> tag
-	 * @param {string} src
-	 * @param {string} type
-	 * @param {boolean} isAsync
-	 * @param {HTMLElement|string|null} node
-	 * @param {Object} parameters
-	 * @returns {HTMLScriptElement}
 	 */
-	createScript(src, type = 'text/javascript', isAsync = true, node = null, parameters = {}) {
-		const script = document.createElement('script');
-
-		node =
+	createScript(
+		src: string,
+		type = 'text/javascript',
+		isAsync = true,
+		node: HTMLElement | string = null,
+		parameters: {} = {},
+	): HTMLScriptElement {
+		const script: HTMLScriptElement = document.createElement('script');
+		const temp: ChildNode =
 			node === 'first'
 				? document.getElementsByTagName('script')[0]
-				: node || document.body.lastChild;
+				: (node as ChildNode) || document.body.lastChild;
+
 		script.async = isAsync;
 		script.type = type;
 		script.src = src;
 
 		Object.keys(parameters).forEach((parameter) => {
-			script[parameter] = parameters[parameter];
+			(script as any)[parameter] = (parameters as any)[parameter];
 		});
 
-		node.parentNode.insertBefore(script, node);
+		temp.parentNode.insertBefore(script, temp);
 
 		return script;
 	}
 
 	/**
 	 * Injects <script> tag
-	 * @param {string} src
-	 * @param {string} type
-	 * @param {boolean} isAsync
-	 * @param {HTMLElement|string|null} node
-	 * @param {Object} parameters
-	 * @returns {Promise<any>}
 	 */
-	loadScript(src, type = 'text/javascript', isAsync = true, node = null, parameters = {}) {
+	loadScript(
+		src: string,
+		type = 'text/javascript',
+		isAsync = true,
+		node: HTMLElement | string = null,
+		parameters: {} = {},
+	): Promise<Event> {
 		return new Promise((resolve, reject) => {
 			const script = this.createScript(src, type, isAsync, node, parameters);
 

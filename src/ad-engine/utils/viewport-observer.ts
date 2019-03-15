@@ -1,7 +1,17 @@
 import { scrollListener } from '../listeners';
 import { isInViewport } from './dimensions';
 
-function updateInViewport(listener) {
+interface Listener {
+	id?: string;
+	element: any;
+	callback: any;
+	offsetTop: any;
+	offsetBottom: any;
+	areaThreshold: any;
+	inViewport: any;
+}
+
+function updateInViewport(listener: Listener): void {
 	const newInViewport = isInViewport(
 		listener.element,
 		listener.offsetTop,
@@ -15,8 +25,8 @@ function updateInViewport(listener) {
 	}
 }
 
-function addListener(element, callback, params = {}) {
-	const listener = {
+function addListener(element: any, callback: any, params = {}) {
+	const listener: Listener = {
 		element,
 		callback,
 		offsetTop: params.offsetTop || 0,

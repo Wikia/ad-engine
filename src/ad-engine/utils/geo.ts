@@ -119,7 +119,7 @@ function setCookie(value: any): void {
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
-	const randomValue: number = Math.round(Random.getRandom() * (precision * 100)) | 0;
+	const randomValue: number = Math.round(Math.random() * (precision * 100)) | 0;
 	const result: boolean = samplingLimits.some((value) => randomValue < value);
 
 	if (name) {
