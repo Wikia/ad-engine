@@ -1,7 +1,7 @@
 {
 	"extends": "../../tslint.json",
 	"rules": {
-		"blacklisted-paths": [
+		"no-blacklisted-paths": [
 			true,
 			{
 				"blacklist": ["ad-bidders", "ad-engine", "ad-products", "ad-services"]
