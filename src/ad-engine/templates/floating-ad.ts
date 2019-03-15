@@ -1,3 +1,5 @@
+import { AdSlot } from '../models';
+
 import { scrollListener } from '../listeners';
 import { getTopOffset } from '../utils';
 
@@ -6,11 +8,13 @@ export class FloatingAd {
 		return 'floating-ad';
 	}
 
+	adSlot: AdSlot;
+
 	constructor(adSlot) {
 		this.adSlot = adSlot;
 	}
 
-	init() {
+	init(): void {
 		const slotNode = document.getElementById(this.adSlot.getSlotName());
 		let container;
 		let containerOffset;
@@ -33,10 +37,9 @@ export class FloatingAd {
 			end = containerOffset + container.offsetHeight - slotHeight;
 
 			start = containerOffset;
-			if (slotNode.previousElementSibling) {
-				start =
-					getTopOffset(slotNode.previousElementSibling) +
-					slotNode.previousElementSibling.offsetHeight;
+			const previousElementSibling = slotNode.previousElementSibling as HTMLElement | null;
+			if (previousElementSibling) {
+				start = getTopOffset(previousElementSibling) + previousElementSibling.offsetHeight;
 			}
 
 			space = end - start;
