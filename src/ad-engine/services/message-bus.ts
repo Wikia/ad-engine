@@ -1,9 +1,19 @@
 import { logger } from '../utils';
 
-const callbacks = [];
+type CallbackFn = (...args: any[]) => void;
+interface Match {
+	keys?: string[];
+	infinite?: boolean;
+}
+export interface MessageCallback {
+	match: Match;
+	fn: CallbackFn;
+}
+
+const callbacks: MessageCallback[] = [];
 const logGroup = 'message-bus';
 
-function isAdEngineMessage(message) {
+function isAdEngineMessage(message: any): boolean {
 	try {
 		return !!JSON.parse(message.data).AdEngine;
 	} catch (e) {
@@ -11,7 +21,7 @@ function isAdEngineMessage(message) {
 	}
 }
 
-function messageMatch(match, message) {
+function messageMatch(match: Match, message: MessageEvent): boolean {
 	let matching = true;
 
 	if (match.keys) {
@@ -25,9 +35,9 @@ function messageMatch(match, message) {
 	return matching;
 }
 
-function onMessage(message) {
+function onMessage(message: MessageEvent): void {
 	let i = 0;
-	let callback;
+	let callback: MessageCallback;
 
 	if (isAdEngineMessage(message)) {
 		logger(logGroup, 'Message received', message);
@@ -50,12 +60,12 @@ function onMessage(message) {
 }
 
 class MessageBus {
-	init() {
+	init(): void {
 		logger(logGroup, 'Register message listener');
 		window.addEventListener('message', onMessage);
 	}
 
-	register(match, callback) {
+	register(match: Match, callback: CallbackFn): void {
 		callbacks.push({
 			match,
 			fn: callback,

@@ -4,7 +4,10 @@ import { context } from './context-service';
 
 const logGroup = 'slot-repeater';
 
-function findNextSuitablePlace(anchorElements = [], conflictingElements = []) {
+function findNextSuitablePlace(
+	anchorElements: HTMLElement[] = [],
+	conflictingElements: HTMLElement[] = [],
+): HTMLElement | null {
 	let i;
 
 	for (i = 0; i < anchorElements.length; i += 1) {
@@ -16,7 +19,11 @@ function findNextSuitablePlace(anchorElements = [], conflictingElements = []) {
 	return null;
 }
 
-function insertNewSlot(slotName, nextSibling, disablePushOnScroll) {
+function insertNewSlot(
+	slotName: string,
+	nextSibling: HTMLElement,
+	disablePushOnScroll: boolean,
+): HTMLElement {
 	const container = document.createElement('div');
 
 	container.id = slotName;
@@ -31,7 +38,7 @@ function insertNewSlot(slotName, nextSibling, disablePushOnScroll) {
 }
 
 class SlotInjector {
-	inject(slotName) {
+	inject(slotName: string): HTMLElement | null {
 		const config = context.get(`slots.${slotName}`);
 		let anchorElements = Array.prototype.slice.call(
 			document.querySelectorAll(config.insertBeforeSelector),

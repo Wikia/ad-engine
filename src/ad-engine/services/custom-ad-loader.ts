@@ -1,7 +1,7 @@
 import { slotService } from './slot-service';
 import { templateService } from './template-service';
 
-export function registerCustomAdLoader(methodName) {
+export function registerCustomAdLoader(methodName: string): void {
 	window[methodName] = (params) => {
 		const slot = params.slotName ? slotService.get(params.slotName) : null;
 
