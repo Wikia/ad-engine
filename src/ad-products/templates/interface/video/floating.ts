@@ -1,5 +1,8 @@
 import { slotService, utils } from '@wikia/ad-engine';
-import { DEFAULT_VIDEO_ASPECT_RATIO } from '../../outstream/porvata-template';
+import {
+	DEFAULT_VIDEO_ASPECT_RATIO,
+	FLOATING_VIDEO_ASPECT_RATIO,
+} from '../../outstream/porvata-template';
 import CloseButton from '../close-button';
 
 const FLOATING_CLASS_NAME = 'outstream-floating';
@@ -31,8 +34,9 @@ function add(video, container, params) {
 
 				video.isFloating = !inViewport;
 				const width = videoWrapper.offsetWidth;
+				const aspectRatio = inViewport ? DEFAULT_VIDEO_ASPECT_RATIO : FLOATING_VIDEO_ASPECT_RATIO;
 
-				video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
+				video.resize(width, width / aspectRatio);
 			},
 			{
 				offsetTop: params.inViewportOffsetTop,
@@ -52,7 +56,7 @@ function add(video, container, params) {
 			onClick: disableFloating,
 		});
 
-		videoWrapper.appendChild(closeButton.render());
+		container.parentNode.insertBefore(closeButton.render(), container);
 		video.addEventListener('wikiaAdCompleted', disableFloating);
 	});
 }

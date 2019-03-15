@@ -14,7 +14,7 @@ function createVolumeControl(params) {
 		'porvata-on-icon',
 	]);
 
-	volume.className = 'volume-button porvata-switchable-icon hidden';
+	volume.className = 'volume-button porvata-switchable-icon';
 	volume.appendChild(offIcon);
 	volume.appendChild(onIcon);
 
@@ -42,7 +42,6 @@ function add(video, container) {
 
 	video.addEventListener('wikiaAdStarted', () => {
 		updateCurrentState(video, volumeControl);
-		volumeControl.classList.remove('hidden');
 	});
 
 	volumeControl.addEventListener('click', (e) => {
