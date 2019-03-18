@@ -133,6 +133,22 @@ export class SlotTweaker {
 		});
 	}
 
+	setLikhoStorage(likhoType: string): void {
+		const after24hTime = Date.now() + 24 * 3600;
+		const likhoStorage = JSON.parse(localStorage.getItem('likho')) || [];
+		const likhoTypeStoredElement = likhoStorage.find((x) => x.likhoType === likhoType);
+
+		if (likhoTypeStoredElement) {
+			likhoTypeStoredElement.expirationTime = after24hTime;
+		} else {
+			likhoStorage.push({
+				likhoType,
+				expirationTime: after24hTime,
+			});
+		}
+		localStorage.setItem('likho', JSON.stringify(likhoStorage));
+	}
+
 	registerMessageListener() {
 		messageBus.register(
 			{
@@ -166,6 +182,18 @@ export class SlotTweaker {
 						break;
 					default:
 						logger(logGroup, 'Unknown action', data.action);
+				}
+			},
+		);
+
+		messageBus.register(
+			{
+				keys: ['action', 'likhoType'],
+				infinite: true,
+			},
+			(data) => {
+				if (data.likhoType) {
+					this.setLikhoStorage(data.likhoType);
 				}
 			},
 		);
