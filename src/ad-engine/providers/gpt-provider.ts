@@ -1,6 +1,6 @@
-import { AdSlot, Targeting } from '@wikia/ad-engine';
 import { decorate } from 'core-decorators';
 import { slotListener } from '../listeners';
+import { AdSlot, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
