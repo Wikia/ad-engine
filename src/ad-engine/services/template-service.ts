@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '../models';
 import { logger } from '../utils/logger';
 import { context } from './context-service';
 

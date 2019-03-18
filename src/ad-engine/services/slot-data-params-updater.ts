@@ -1,4 +1,4 @@
-import { AdSlot, Targeting } from '@wikia/ad-engine';
+import { AdSlot, Targeting } from '../models';
 import { GptSizeMap } from '../providers';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';

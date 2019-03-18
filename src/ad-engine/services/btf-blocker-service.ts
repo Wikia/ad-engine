@@ -1,6 +1,6 @@
 import { intersection } from 'lodash';
 
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
