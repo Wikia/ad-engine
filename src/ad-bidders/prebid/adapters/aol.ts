@@ -1,14 +1,20 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Aol extends BaseAdapter {
+	static bidderName = 'aol';
+	network: string;
+
+	get bidderName(): string {
+		return Aol.bidderName;
+	}
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'aol';
 		this.network = options.network;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placement, alias, sizeId }) {
+	prepareConfigForAdUnit(code, { sizes, placement, alias, sizeId }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -20,10 +26,10 @@ export class Aol extends BaseAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						placement,
-						network: this.network,
 						alias,
+						placement,
 						sizeId,
+						network: this.network,
 					},
 				},
 			],

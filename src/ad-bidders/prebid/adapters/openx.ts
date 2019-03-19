@@ -1,14 +1,20 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Openx extends BaseAdapter {
+	static bidderName = 'openx';
+	delDomain: string;
+
+	get bidderName(): string {
+		return Openx.bidderName;
+	}
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'openx';
 		this.delDomain = options.delDomain;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, unit }) {
+	prepareConfigForAdUnit(code, { sizes, unit }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {

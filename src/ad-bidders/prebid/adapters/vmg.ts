@@ -1,7 +1,11 @@
 import { AdUnitConfig, BaseAdapter, BidderAdSlotConfig } from './base-adapter';
 
 export class Vmg extends BaseAdapter {
-	bidderName = 'vmg';
+	static bidderName = 'vmg';
+
+	get bidderName(): string {
+		return Vmg.bidderName;
+	}
 
 	prepareConfigForAdUnit(code: string, { sizes }: BidderAdSlotConfig): AdUnitConfig {
 		return {

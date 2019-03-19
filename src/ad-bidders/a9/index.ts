@@ -1,4 +1,12 @@
-import { AdSlot, context, events, eventService, slotService, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	DEFAULT_MAX_DELAY,
+	events,
+	eventService,
+	slotService,
+	utils,
+} from '@wikia/ad-engine';
 import { BaseBidder } from '../base-bidder';
 import { Apstag, cmp } from '../wrappers';
 
@@ -16,7 +24,7 @@ export class A9 extends BaseBidder {
 	/** @private */
 	loaded = false;
 
-	constructor(bidderConfig, timeout = 2000) {
+	constructor(bidderConfig, timeout = DEFAULT_MAX_DELAY) {
 		super('a9', bidderConfig, timeout);
 
 		this.isCMPEnabled = context.get('custom.isCMPEnabled');
@@ -41,7 +49,7 @@ export class A9 extends BaseBidder {
 		return this.priceMap;
 	}
 
-	getTargetingKeysToReset() {
+	getTargetingKeys() {
 		return this.targetingKeys;
 	}
 
