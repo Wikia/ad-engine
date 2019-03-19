@@ -1,5 +1,6 @@
 import { AdSlot } from '../models';
 import { logger } from '../utils';
+import { likhoExpirationService } from './likho';
 import { messageBus } from './message-bus';
 import { slotService } from './slot-service';
 
@@ -133,22 +134,6 @@ export class SlotTweaker {
 		});
 	}
 
-	setLikhoStorage(likhoType: string): void {
-		const after24hTime = Date.now() + 24 * 3600;
-		const likhoStorage = JSON.parse(localStorage.getItem('likho')) || [];
-		const likhoTypeStoredElement = likhoStorage.find((x) => x.likhoType === likhoType);
-
-		if (likhoTypeStoredElement) {
-			likhoTypeStoredElement.expirationTime = after24hTime;
-		} else {
-			likhoStorage.push({
-				likhoType,
-				expirationTime: after24hTime,
-			});
-		}
-		localStorage.setItem('likho', JSON.stringify(likhoStorage));
-	}
-
 	registerMessageListener() {
 		messageBus.register(
 			{
@@ -193,7 +178,7 @@ export class SlotTweaker {
 			},
 			(data) => {
 				if (data.likhoType) {
-					this.setLikhoStorage(data.likhoType);
+					likhoExpirationService.update(data.likhoType);
 				}
 			},
 		);
