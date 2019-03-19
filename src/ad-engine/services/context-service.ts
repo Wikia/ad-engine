@@ -122,7 +122,7 @@ class Context {
 	}
 
 	removeListeners(key: string): void {
-		Object.keys(onChangeCallbacks).forEach((contextKey) => {
+		Object.keys(onChangeCallbacks).forEach((contextKey: string) => {
 			if (contextKey === key || contextKey.indexOf(`${key}.`) === 0) {
 				delete onChangeCallbacks[contextKey];
 			}

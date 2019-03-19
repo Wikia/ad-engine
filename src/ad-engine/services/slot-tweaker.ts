@@ -102,7 +102,7 @@ export class SlotTweaker {
 		}
 
 		const container = this.getContainer(adSlot);
-		const element = container.querySelector('div[id*="_container_"] iframe');
+		const element = container.querySelector<HTMLIFrameElement>('div[id*="_container_"] iframe');
 
 		return new Promise<HTMLIFrameElement>((resolve, reject) => {
 			if (!element) {
@@ -110,7 +110,6 @@ export class SlotTweaker {
 			}
 
 			const iframe: HTMLIFrameElement = element as HTMLIFrameElement;
-
 			let iframeDocument = null;
 
 			try {

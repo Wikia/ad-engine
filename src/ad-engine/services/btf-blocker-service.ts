@@ -1,5 +1,4 @@
 import { intersection } from 'lodash';
-
 import { AdSlot } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';

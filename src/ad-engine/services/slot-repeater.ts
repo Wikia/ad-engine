@@ -10,7 +10,7 @@ interface SlotDefinition {
 	[key: string]: any;
 }
 
-function buildString(pattern: string, definition: SlotDefinition) {
+function buildString(pattern: string, definition: SlotDefinition): string {
 	return stringBuilder.build(pattern, {
 		slotConfig: definition,
 	});
