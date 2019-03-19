@@ -1,13 +1,13 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Kargo extends BaseAdapter {
-	constructor(options) {
-		super(options);
+	static bidderName = 'kargo';
 
-		this.bidderName = 'kargo';
+	get bidderName(): string {
+		return Kargo.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placementId }) {
+	prepareConfigForAdUnit(code, { sizes, placementId }): AdUnitConfig {
 		return {
 			code,
 			sizes,

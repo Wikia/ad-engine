@@ -1,25 +1,45 @@
 import { buildVastUrl, context, utils } from '@wikia/ad-engine';
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
 const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
+type CreateInstance = () => WikiaVideo;
+
 export class WikiaVideo extends BaseAdapter {
+	static bidderName = 'wikiaVideo';
+
+	static getVastUrl(width, height, slotName): string {
+		return buildVastUrl(width / height, slotName, {
+			videoAdUnitId: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.videoAdUnitId`),
+			customParams: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.customParams`),
+		});
+	}
+
+	limit: number;
+	useRandomPrice: boolean;
+	timeout: number;
+	create: CreateInstance;
+
+	get bidderName(): string {
+		return WikiaVideo.bidderName;
+	}
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'wikiaVideo';
 		this.enabled = !!price;
 		this.limit = limit;
 		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
+		this.isCustomBidAdapter = true;
 
 		this.create = () => this;
 	}
 
-	prepareConfigForAdUnit(code) {
+	prepareConfigForAdUnit(code): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -36,14 +56,14 @@ export class WikiaVideo extends BaseAdapter {
 		};
 	}
 
-	getSpec() {
+	getSpec(): { [key: string]: string | string[] } {
 		return {
 			code: this.bidderName,
 			supportedMediaTypes: ['video'],
 		};
 	}
 
-	getPrice() {
+	getPrice(): number {
 		if (this.useRandomPrice) {
 			return Math.floor(Math.random() * 20);
 		}
@@ -51,20 +71,13 @@ export class WikiaVideo extends BaseAdapter {
 		return parseInt(price, 10) / 100;
 	}
 
-	getVastUrl(width, height, slotName) {
-		return buildVastUrl(width / height, slotName, {
-			videoAdUnitId: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.videoAdUnitId`),
-			customParams: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.customParams`),
-		});
-	}
-
-	callBids(bidRequest, addBidResponse, done) {
+	callBids(bidRequest, addBidResponse, done): void {
 		window.pbjs.que.push(() => {
 			this.addBids(bidRequest, addBidResponse, done);
 		});
 	}
 
-	addBids(bidRequest, addBidResponse, done) {
+	addBids(bidRequest, addBidResponse, done): void {
 		setTimeout(() => {
 			bidRequest.bids.forEach((bid) => {
 				if (this.limit === 0) {
@@ -82,7 +95,7 @@ export class WikiaVideo extends BaseAdapter {
 				bidResponse.mediaType = 'video';
 				bidResponse.width = width;
 				bidResponse.height = height;
-				bidResponse.vastUrl = this.getVastUrl(width, height, slotName);
+				bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
 				bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
 
 				addBidResponse(bid.adUnitCode, bidResponse);

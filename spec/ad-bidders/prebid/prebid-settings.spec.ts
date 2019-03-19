@@ -1,37 +1,37 @@
+import { createAdapterSpecificSettings } from '@wikia/ad-bidders/prebid/prebid-settings';
+import { context } from '@wikia/ad-engine/services/context-service';
 import { expect } from 'chai';
-import { getSettings } from '../../../src/ad-bidders/prebid/prebid-settings';
-import { context } from '../../../src/ad-engine/services/context-service';
 
-describe('getBidderUuid', () => {
-	let bidResponse;
-	let getBidderUuid;
+describe('prebid settings', () => {
+	describe('createAdapterSpecificSettings', () => {
+		it('returns undefined when built it logic is disabled', () => {
+			context.set('bidders.prebid.useBuiltInTargetingLogic', false);
 
-	before(() => {
-		bidResponse = { bidderCode: 'rubicon', videoCacheKey: 'b' };
-		const settings = getSettings();
-		const hbUuid = settings.standard.adserverTargeting.find((x) => x.key === 'hb_uuid');
+			expect(createAdapterSpecificSettings([])).to.equal(undefined);
+		});
 
-		getBidderUuid = hbUuid.val;
-	});
+		it('returns settings rules based on adapters list', () => {
+			context.set('bidders.prebid.useBuiltInTargetingLogic', true);
 
-	it('should return videoCacheKey', () => {
-		context.set('custom.rubiconDfp', true);
-		const result = getBidderUuid(bidResponse);
+			const adapterSettings = createAdapterSpecificSettings([
+				{
+					bidderName: 'foo',
+				},
+				{
+					malformedAdapter: true,
+				},
+				{
+					bidderName: 'bar',
+				},
+			]);
 
-		expect(result).to.equal('b');
-	});
+			expect(Object.keys(adapterSettings).length).to.equal(2);
 
-	it('should return disabled (bidderCode)', () => {
-		context.set('custom.rubiconDfp', true);
-		const result = getBidderUuid({ ...bidResponse, bidderCode: undefined });
+			expect(adapterSettings.foo.adserverTargeting[0].key).to.equal('hb_deal_foo');
+			expect(adapterSettings.foo.suppressEmptyKeys).to.equal(true);
 
-		expect(result).to.equal('disabled');
-	});
-
-	it('should return disabled (context)', () => {
-		context.set('custom.rubiconDfp', false);
-		const result = getBidderUuid(bidResponse);
-
-		expect(result).to.equal('disabled');
+			expect(adapterSettings.bar.adserverTargeting[0].key).to.equal('hb_deal_bar');
+			expect(adapterSettings.bar.suppressEmptyKeys).to.equal(true);
+		});
 	});
 });

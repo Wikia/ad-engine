@@ -1,88 +1,17 @@
 import { utils } from '@wikia/ad-engine';
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
 const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
+type CreateInstance = () => Wikia;
+
 export class Wikia extends BaseAdapter {
-	constructor(options) {
-		super(options);
+	static bidderName = 'wikia';
 
-		this.bidderName = 'wikia';
-		this.enabled = !!price;
-		this.limit = limit;
-		this.useRandomPrice = useRandomPrice;
-		this.timeout = timeout;
-
-		this.create = () => this;
-	}
-
-	prepareConfigForAdUnit(code, { sizes }) {
-		return {
-			code,
-			mediaTypes: {
-				banner: {
-					sizes,
-				},
-			},
-			bids: [
-				{
-					bidder: this.bidderName,
-				},
-			],
-		};
-	}
-
-	getSpec() {
-		return {
-			code: this.bidderName,
-			supportedMediaTypes: ['banner'],
-		};
-	}
-
-	getPrice() {
-		if (this.useRandomPrice) {
-			return Math.floor(Math.random() * 2000) / 100;
-		}
-
-		return parseInt(price, 10) / 100;
-	}
-
-	callBids(bidRequest, addBidResponse, done) {
-		window.pbjs.que.push(() => {
-			this.addBids(bidRequest, addBidResponse, done);
-		});
-	}
-
-	addBids(bidRequest, addBidResponse, done) {
-		setTimeout(() => {
-			bidRequest.bids.forEach((bid) => {
-				if (this.limit === 0) {
-					return;
-				}
-
-				const bidResponse = window.pbjs.createBid(1);
-				const [width, height] = bid.sizes[0];
-				const cpm = this.getPrice();
-
-				bidResponse.ad = this.getCreative(bid.sizes[0], cpm);
-				bidResponse.bidderCode = bidRequest.bidderCode;
-				bidResponse.cpm = cpm;
-				bidResponse.ttl = 300;
-				bidResponse.mediaType = 'banner';
-				bidResponse.width = width;
-				bidResponse.height = height;
-
-				addBidResponse(bid.adUnitCode, bidResponse);
-				this.limit -= 1;
-			});
-			done();
-		}, this.timeout);
-	}
-
-	getCreative(size, cpm) {
+	static getCreative(size, cpm): string {
 		const creative = document.createElement('div');
 
 		creative.style.background = '#00b7e0';
@@ -107,5 +36,89 @@ export class Wikia extends BaseAdapter {
 		creative.appendChild(details);
 
 		return creative.outerHTML;
+	}
+
+	limit: number;
+	useRandomPrice: boolean;
+	timeout: number;
+	create: CreateInstance;
+
+	get bidderName(): string {
+		return Wikia.bidderName;
+	}
+
+	constructor(options) {
+		super(options);
+
+		this.enabled = !!price;
+		this.limit = limit;
+		this.useRandomPrice = useRandomPrice;
+		this.timeout = timeout;
+		this.isCustomBidAdapter = true;
+
+		this.create = () => this;
+	}
+
+	prepareConfigForAdUnit(code, { sizes }): AdUnitConfig {
+		return {
+			code,
+			mediaTypes: {
+				banner: {
+					sizes,
+				},
+			},
+			bids: [
+				{
+					bidder: this.bidderName,
+				},
+			],
+		};
+	}
+
+	getSpec(): { [key: string]: string | string[] } {
+		return {
+			code: this.bidderName,
+			supportedMediaTypes: ['banner'],
+		};
+	}
+
+	getPrice(): number {
+		if (this.useRandomPrice) {
+			return Math.floor(Math.random() * 2000) / 100;
+		}
+
+		return parseInt(price, 10) / 100;
+	}
+
+	callBids(bidRequest, addBidResponse, done): void {
+		window.pbjs.que.push(() => {
+			this.addBids(bidRequest, addBidResponse, done);
+		});
+	}
+
+	addBids(bidRequest, addBidResponse, done): void {
+		setTimeout(() => {
+			bidRequest.bids.forEach((bid) => {
+				if (this.limit === 0) {
+					return;
+				}
+
+				const bidResponse = window.pbjs.createBid(1);
+				const [width, height] = bid.sizes[0];
+				const cpm = this.getPrice();
+
+				bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
+				bidResponse.bidderCode = bidRequest.bidderCode;
+				bidResponse.cpm = cpm;
+				bidResponse.ttl = 300;
+				bidResponse.mediaType = 'banner';
+				bidResponse.width = width;
+				bidResponse.height = height;
+
+				addBidResponse(bid.adUnitCode, bidResponse);
+				this.limit -= 1;
+			});
+			done();
+		}, this.timeout);
 	}
 }

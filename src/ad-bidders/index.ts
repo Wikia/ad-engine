@@ -84,7 +84,7 @@ function hasAllResponses() {
 
 function resetTargetingKeys(slotName) {
 	forEachBidder((bidder) => {
-		bidder.getTargetingKeysToReset().forEach((key) => {
+		bidder.getTargetingKeys(slotName).forEach((key) => {
 			context.remove(`slots.${slotName}.targeting.${key}`);
 		});
 	});
