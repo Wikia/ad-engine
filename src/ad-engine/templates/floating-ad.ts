@@ -1,6 +1,5 @@
-import { AdSlot } from '../models';
-
 import { scrollListener } from '../listeners';
+import { AdSlot } from '../models';
 import { getTopOffset } from '../utils';
 
 export class FloatingAd {
@@ -8,11 +7,7 @@ export class FloatingAd {
 		return 'floating-ad';
 	}
 
-	adSlot: AdSlot;
-
-	constructor(adSlot) {
-		this.adSlot = adSlot;
-	}
+	constructor(public adSlot: AdSlot) {}
 
 	init(): void {
 		const slotNode = document.getElementById(this.adSlot.getSlotName());
