@@ -1,6 +1,6 @@
+import { WikiaVideo } from '@wikia/ad-bidders/prebid/adapters/wikia-video';
 import { assert, expect } from 'chai';
 import * as sinon from 'sinon';
-import { WikiaVideo } from '../../../../src/ad-bidders/prebid/adapters/wikia-video';
 
 function getMocks() {
 	const mocks = {
@@ -90,7 +90,7 @@ describe('WikiaVideo bidder adapter', () => {
 		const mocks = getMocks();
 
 		sinon.stub(global, 'setTimeout').callsFake(mocks.setTimeout);
-		sinon.stub(wikiaVideo, 'getVastUrl').returns(mocks.fakeVastUrl);
+		sinon.stub(WikiaVideo, 'getVastUrl').returns(mocks.fakeVastUrl);
 		sinon.stub(wikiaVideo, 'getPrice').returns(mocks.fakePrice);
 
 		wikiaVideo.addBids(mocks.bidsRequestMock, mocks.addBidResponseMock, mocks.done);

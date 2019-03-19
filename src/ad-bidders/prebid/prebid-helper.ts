@@ -1,7 +1,8 @@
 import { context, slotService } from '@wikia/ad-engine';
-import { getAdapters } from './adapters-registry';
+import { adaptersRegistry } from './adapters-registry';
 
 const lazyLoadSlots = ['bottom_leaderboard'];
+const videoType = 'video';
 
 function isSlotApplicable(code, lazyLoad) {
 	const isSlotLazy = lazyLoadSlots.indexOf(code) !== -1;
@@ -20,11 +21,10 @@ function isSlotApplicable(code, lazyLoad) {
 	return true;
 }
 
-export function setupAdUnits(adaptersConfig, lazyLoad = 'off') {
+export function setupAdUnits(lazyLoad = 'off') {
 	const adUnits = [];
-	const adapters = getAdapters(adaptersConfig);
 
-	adapters.forEach((adapter) => {
+	adaptersRegistry.getAdapters().forEach((adapter) => {
 		if (adapter && adapter.enabled) {
 			const adapterAdUnits = adapter.prepareAdUnits();
 
@@ -39,24 +39,25 @@ export function setupAdUnits(adaptersConfig, lazyLoad = 'off') {
 	return adUnits;
 }
 
-export function getBidByAdId(adId) {
-	if (!window.pbjs || typeof window.pbjs.getBidResponses !== 'function') {
+export function getBidUUID(adUnitCode: string, adId: string): string {
+	const bid = getBidByAdId(adUnitCode, adId);
+
+	if (bid && bid.mediaType === videoType) {
+		return bid.videoCacheKey;
+	}
+
+	return 'disabled';
+}
+
+export function getBidByAdId(adUnitCode, adId) {
+	if (!window.pbjs || typeof window.pbjs.getBidResponsesForAdUnitCode !== 'function') {
 		return null;
 	}
 
-	let bids = window.pbjs.getAllPrebidWinningBids().filter((bid) => adId === bid.adId);
+	const { bids } = window.pbjs.getBidResponsesForAdUnitCode(adUnitCode);
+	const foundBids = bids.filter((bid) => adId === bid.adId);
 
-	if (!bids.length) {
-		const responses = window.pbjs.getBidResponses();
-
-		Object.keys(responses).forEach((adUnit) => {
-			const adUnitsBids = responses[adUnit].bids.filter((bid) => adId === bid.adId);
-
-			bids = bids.concat(adUnitsBids);
-		});
-	}
-
-	return bids.length ? bids[0] : null;
+	return foundBids.length ? foundBids[0] : null;
 }
 
 export function getAvailableBidsByAdUnitCode(adUnitCode) {

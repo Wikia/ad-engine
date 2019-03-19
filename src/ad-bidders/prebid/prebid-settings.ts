@@ -1,18 +1,56 @@
 import { context } from '@wikia/ad-engine';
+import { adaptersRegistry } from './adapters-registry';
 import { transformPriceFromBid } from './price-helper';
 
-const dfpVideoBidders = [
-	{ bidderCode: 'appnexusAst', contextKey: 'custom.appnexusDfp' },
-	{ bidderCode: 'beachfront', contextKey: 'custom.beachfrontDfp' },
-	{ bidderCode: 'lkqd', contextKey: 'custom.lkqdDfp' },
-	{ bidderCode: 'rubicon', contextKey: 'custom.rubiconDfp' },
-	{ bidderCode: 'pubmatic', contextKey: 'custom.pubmaticDfp' },
-];
+interface PrebidSettings {
+	[key: string]: {
+		adserverTargeting: {
+			key: string;
+			val: (bidResponse: any) => string;
+		}[];
+		suppressEmptyKeys: boolean;
+	};
+}
 
-export function getSettings() {
+export interface PrebidTargeting {
+	hb_adid?: string;
+	hb_bidder?: string;
+	hb_pb?: string;
+	hb_size?: string;
+	[key: string]: string | string[];
+}
+
+export function createAdapterSpecificSettings(adaptersList): PrebidSettings | undefined {
+	const adaptersAdServerTargeting = {};
+
+	if (!context.get('bidders.prebid.useBuiltInTargetingLogic')) {
+		return;
+	}
+
+	adaptersList.forEach(({ bidderName }) => {
+		if (!bidderName) {
+			return;
+		}
+
+		adaptersAdServerTargeting[bidderName] = {
+			adserverTargeting: [
+				{
+					key: `hb_deal_${bidderName}`,
+					val: ({ dealId }) => {
+						return dealId;
+					},
+				},
+			],
+			suppressEmptyKeys: true,
+		};
+	});
+
+	return adaptersAdServerTargeting;
+}
+
+export function getSettings(): PrebidSettings {
 	return {
 		standard: {
-			alwaysUseBid: false,
 			adserverTargeting: [
 				{
 					key: 'hb_bidder',
@@ -30,19 +68,9 @@ export function getSettings() {
 					key: 'hb_size',
 					val: ({ size }) => size,
 				},
-				{
-					key: 'hb_uuid',
-					val: (bidResponse) => getBidderUuid(bidResponse),
-				},
 			],
+			suppressEmptyKeys: true,
 		},
+		...createAdapterSpecificSettings(adaptersRegistry.getAdapters()),
 	};
-}
-
-function getBidderUuid(bidResponse) {
-	const isVideo = dfpVideoBidders.some(
-		(video) => bidResponse.bidderCode === video.bidderCode && context.get(video.contextKey),
-	);
-
-	return isVideo ? bidResponse.videoCacheKey : 'disabled';
 }

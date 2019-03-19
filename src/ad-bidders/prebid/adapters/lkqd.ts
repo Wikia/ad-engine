@@ -1,13 +1,13 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Lkqd extends BaseAdapter {
-	constructor(options) {
-		super(options);
+	static bidderName = 'lkqd';
 
-		this.bidderName = 'lkqd';
+	get bidderName(): string {
+		return Lkqd.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { placementId, siteId }) {
+	prepareConfigForAdUnit(code, { placementId, siteId }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {

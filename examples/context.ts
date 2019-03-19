@@ -39,11 +39,20 @@ export default {
 		},
 		prebid: {
 			enabled: true,
+			useBuiltInTargetingLogic: true,
 			libraryUrl: '../../vendor/dist/prebid.min.js',
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				enabled: true,
 				slots: ['incontent_boxad'],
+			},
+			vmg: {
+				enabled: true,
+				slots: {
+					top_leaderboard: {
+						sizes: [[3, 3]],
+					},
+				},
 			},
 			wikia: {
 				enabled: true,

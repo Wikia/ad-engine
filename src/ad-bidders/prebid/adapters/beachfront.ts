@@ -1,17 +1,24 @@
 import { utils } from '@wikia/ad-engine';
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Beachfront extends BaseAdapter {
+	static bidderName = 'beachfront';
+	bidfloor = 0.01;
+	debugAppId: string;
+	isDebugMode: boolean;
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'beachfront';
-		this.bidfloor = 0.01;
 		this.debugAppId = options.debugAppId;
 		this.isDebugMode = utils.queryString.get('beachfront_debug_mode') === '1';
 	}
 
-	prepareConfigForAdUnit(code, { appId }) {
+	get bidderName(): string {
+		return Beachfront.bidderName;
+	}
+
+	prepareConfigForAdUnit(code, { appId }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
