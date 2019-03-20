@@ -9,10 +9,10 @@ export function whichProperty(obj: {} = {}, properties: string[] = []): string |
 }
 
 export function tryProperty(obj: {}, properties: string[] = []): boolean | undefined {
-	const property = whichProperty(obj, properties);
+	const property: string = whichProperty(obj, properties);
 
 	if (!!property) {
-		const propertyValue = (obj as any)[property];
+		const propertyValue: any = (obj as any)[property];
 
 		return typeof propertyValue === 'function' ? propertyValue.bind(obj) : propertyValue;
 	}

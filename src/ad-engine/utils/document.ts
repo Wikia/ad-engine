@@ -1,6 +1,8 @@
+import { Dictionary } from '../models';
+
 type VisibilityStatusType = 'visible' | 'hidden' | 'not_implemented';
 
-export const VISIBILITY_STATUS: { [key: string]: VisibilityStatusType } = {
+export const VISIBILITY_STATUS: Dictionary<VisibilityStatusType> = {
 	visible: 'visible',
 	hidden: 'hidden',
 	notImplemented: 'not_implemented',
@@ -10,7 +12,7 @@ export const VISIBILITY_STATUS: { [key: string]: VisibilityStatusType } = {
  * Returns document visibility status.
  */
 export function getDocumentVisibilityStatus(): VisibilityStatusType {
-	let status;
+	let status: VisibilityStatusType;
 
 	switch (document.hidden) {
 		case true:

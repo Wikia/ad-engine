@@ -3,6 +3,7 @@ import { slotListener } from '../listeners';
 import { ADX } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
 import { LazyQueue, logger, stringBuilder } from '../utils';
+import { Dictionary } from './dictionary';
 
 export interface Targeting {
 	hb_bidder?: string;
@@ -15,7 +16,7 @@ interface RepeatConfig {
 	index: number;
 	slotNamePattern: string;
 	limit: number;
-	updateProperties: { [key: string]: any };
+	updateProperties: Dictionary;
 	additionalClasses?: string;
 }
 

@@ -1,7 +1,7 @@
 import { queryString } from './query-string';
 
 function isSamplingIgnored(name: string): boolean {
-	const ignored = (queryString.get('ignored_samplers') || '').split(',');
+	const ignored: string[] = (queryString.get('ignored_samplers') || '').split(',');
 
 	return ignored.indexOf(name) !== -1;
 }

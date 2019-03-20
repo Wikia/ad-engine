@@ -1,6 +1,5 @@
 import * as Cookies from 'js-cookie';
-import { context } from '../services/context-service';
-import Random from './random';
+import { context } from '../services';
 
 const cacheMarker = '-cached';
 const cacheMaxAge = 30 * 60 * 1000;
@@ -30,6 +29,12 @@ export interface GeoData {
 	region: string;
 	country: string;
 	continent: string;
+}
+
+// TODO: Check if they are necessary
+export interface WikiaCookieAttributes extends Cookies.CookieAttributes {
+	overwrite: boolean;
+	maxAge: number;
 }
 
 function hasCache(countryList: string[]): boolean {
@@ -109,13 +114,15 @@ function synchronizeCookie(): void {
 }
 
 function setCookie(value: any): void {
-	Cookies.set(`${context.get('options.session.id')}_basset`, value, {
-		maxAge: cacheMaxAge,
+	const cookieAttributes: WikiaCookieAttributes = {
 		expires: new Date(new Date().getTime() + cacheMaxAge),
 		path: '/',
 		domain: getCookieDomain(),
 		overwrite: true,
-	});
+		maxAge: cacheMaxAge,
+	};
+
+	Cookies.set(`${context.get('options.session.id')}_basset`, value, cookieAttributes);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {

@@ -39,7 +39,7 @@ class ScriptLoader {
 		parameters: {} = {},
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
-			const script = this.createScript(src, type, isAsync, node, parameters);
+			const script: HTMLScriptElement = this.createScript(src, type, isAsync, node, parameters);
 
 			script.onload = resolve;
 			script.onerror = reject;

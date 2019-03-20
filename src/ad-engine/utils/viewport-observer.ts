@@ -1,18 +1,23 @@
 import { scrollListener } from '../listeners';
 import { isInViewport } from './dimensions';
 
-interface Listener {
+interface Listener extends ListenerParams {
 	id?: string;
-	element: any;
-	callback: any;
-	offsetTop: any;
-	offsetBottom: any;
-	areaThreshold: any;
-	inViewport: any;
+	element: HTMLElement;
+	callback: ListenerCallback;
+	inViewport: boolean;
+}
+
+type ListenerCallback = (inViewport: boolean) => void;
+
+interface ListenerParams {
+	offsetTop: number;
+	offsetBottom: number;
+	areaThreshold: number;
 }
 
 function updateInViewport(listener: Listener): void {
-	const newInViewport = isInViewport(
+	const newInViewport: boolean = isInViewport(
 		listener.element,
 		listener.offsetTop,
 		listener.offsetBottom,
@@ -25,7 +30,11 @@ function updateInViewport(listener: Listener): void {
 	}
 }
 
-function addListener(element: any, callback: any, params = {}) {
+function addListener(
+	element: HTMLElement,
+	callback: ListenerCallback,
+	params: Partial<ListenerParams> = {},
+): string {
 	const listener: Listener = {
 		element,
 		callback,
@@ -34,7 +43,7 @@ function addListener(element: any, callback: any, params = {}) {
 		areaThreshold: params.areaThreshold,
 		inViewport: false,
 	};
-	const updateCallback = () => {
+	const updateCallback: () => void = () => {
 		updateInViewport(listener);
 	};
 
@@ -44,7 +53,7 @@ function addListener(element: any, callback: any, params = {}) {
 	return listener.id;
 }
 
-function removeListener(listenerId) {
+function removeListener(listenerId: string): void {
 	scrollListener.removeCallback(listenerId);
 }
 
