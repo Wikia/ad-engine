@@ -31,7 +31,7 @@ function insertNewSlot(slotName, nextSibling, disablePushOnScroll) {
 }
 
 class SlotInjector {
-	inject(slotName) {
+	inject(slotName, dryRun = false) {
 		const config = context.get(`slots.${slotName}`);
 
 		let anchorElements = Array.prototype.slice.call(
@@ -59,6 +59,10 @@ class SlotInjector {
 			logger(logGroup, `There is not enough space for ${slotName}`);
 
 			return null;
+		}
+
+		if (dryRun) {
+			return true;
 		}
 
 		const disablePushOnScroll = config.repeat ? !!config.repeat.disablePushOnScroll : false;
