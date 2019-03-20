@@ -1,4 +1,15 @@
+import { Targeting } from '../models';
 import { context, slotService, trackingOptIn } from '../services';
+
+export interface VastOptions {
+	targeting?: Targeting;
+	videoAdUnitId?: string;
+	contentSourceId?: string;
+	customParams?: string;
+	videoId?: string;
+	numberOfAds?: number;
+	vpos?: string;
+}
 
 const availableVideoPositions = ['preroll', 'midroll', 'postroll'];
 const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
@@ -25,7 +36,7 @@ function getVideoSizes(slot) {
 	return '640x480';
 }
 
-export function buildVastUrl(aspectRatio, slotName, options = {}) {
+export function buildVastUrl(aspectRatio, slotName, options: VastOptions = {}) {
 	const params = [
 		'output=vast',
 		'env=vp',
