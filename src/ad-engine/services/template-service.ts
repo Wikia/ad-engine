@@ -26,7 +26,7 @@ class TemplateService {
 		templates[name] = template;
 	}
 
-	init(name: string, slot: AdSlot | null = null, params = {}): void {
+	init(name: string, slot: AdSlot = null, params = {}): void {
 		logger(logGroup, 'Load template', name, slot, params);
 
 		if (!templates[name]) {

@@ -71,7 +71,7 @@ export class SlotTweaker {
 
 	makeResponsive(
 		adSlot: AdSlot,
-		aspectRatio: number | null = null,
+		aspectRatio: number = null,
 		paddingBottom = true,
 	): Promise<HTMLIFrameElement> {
 		const slotContainer = this.getContainer(adSlot);

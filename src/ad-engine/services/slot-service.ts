@@ -144,7 +144,7 @@ class SlotService {
 	/**
 	 * Disable slot by name (it isn't necessary to have given ad slot in register at this point)
 	 */
-	disable(slotName: string, status: string | null = null): void {
+	disable(slotName: string, status: string = null): void {
 		this.setState(slotName, false, status);
 	}
 
@@ -157,7 +157,7 @@ class SlotService {
 		return this.slotStates[slotName] !== false;
 	}
 
-	setState(slotName: string, state: boolean, status: string | null = null): void {
+	setState(slotName: string, state: boolean, status: string = null): void {
 		const slot = this.get(slotName);
 
 		this.slotStates[slotName] = state;
