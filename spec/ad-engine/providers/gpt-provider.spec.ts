@@ -53,7 +53,7 @@ describe('gpt-provider', () => {
 		provider = new GptProvider();
 
 		expect(pubads.disableInitialLoad.called).to.be.true;
-		expect(pubads.enableSingleRequest.called).to.be.true;
+		expect(pubads.enableSingleRequest.called).to.be.false;
 		expect(pubads.addEventListener.calledThrice).to.be.true;
 		expect(pubads.setRequestNonPersonalizedAds.calledWith(0)).to.be.true;
 	});
@@ -65,21 +65,5 @@ describe('gpt-provider', () => {
 		provider.setupNonPersonalizedAds();
 
 		expect(pubads.setRequestNonPersonalizedAds.calledWith(1)).to.be.true;
-	});
-
-	it('should not enable Single Request Architecture if context.options.isSraDisabled is true', () => {
-		context.set('options.isSraDisabled', true);
-
-		provider = new GptProvider();
-
-		expect(pubads.enableSingleRequest.called).to.be.false;
-	});
-
-	it('should enable Single Request Architecture if context.options.isSraDisabled is false', () => {
-		context.set('options.isSraDisabled', false);
-
-		provider = new GptProvider();
-
-		expect(pubads.enableSingleRequest.called).to.be.true;
 	});
 });
