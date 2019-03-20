@@ -1,4 +1,4 @@
-import { context, Dictionary, SlotConfig } from '@wikia/ad-engine';
+import { context, Dictionary, SlotConfig, slotService } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import adSlotFake from '../ad-slot-fake';
