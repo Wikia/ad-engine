@@ -1,5 +1,5 @@
 class QueryString {
-	getValues(input = null) {
+	getValues(input = null): { [key: string]: string } | null {
 		const path = input || window.location.search.substr(1);
 		const queryParameters = {};
 		const queryString = path.split('&');

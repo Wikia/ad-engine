@@ -1,25 +1,43 @@
 import { ADX } from '../providers';
 import { queryString } from '../utils';
 
+export interface VideoAdInfo {
+	lineItemId?: string;
+	creativeId?: string;
+	contentType?: string;
+}
+
+export interface EventExtra {
+	imaAd?: google.ima.Ad;
+}
+
+export interface VastParams {
+	contentType: string;
+	creativeId: string;
+	customParams: { [key: string]: string };
+	lineItemId: string;
+	position: string;
+	size: string;
+}
+
 class VastParser {
 	/**
 	 * @private
 	 */
-	getLastNumber(possibleValues) {
-		let i;
+	getLastNumber(possibleValues: string[]): string {
 		let value = '';
 
-		for (i = 0; i < possibleValues.length; i += 1) {
-			if (!isNaN(parseInt(possibleValues[i], 10))) {
-				value = possibleValues[i];
+		possibleValues.forEach((curVal) => {
+			if (!isNaN(parseInt(curVal, 10))) {
+				value = curVal;
 			}
-		}
+		});
 
 		return value;
 	}
 
-	getAdInfo(imaAd) {
-		const adInfo = {};
+	getAdInfo(imaAd?: google.ima.Ad): VideoAdInfo {
+		const adInfo: VideoAdInfo = {};
 
 		if (imaAd) {
 			adInfo.lineItemId = imaAd.getAdId();
@@ -49,16 +67,16 @@ class VastParser {
 		return adInfo;
 	}
 
-	parse(vastUrl, extra = {}) {
+	parse(vastUrl: string, extra: EventExtra = {}): VastParams {
 		const currentAd = this.getAdInfo(extra.imaAd);
 		const vastParams = queryString.getValues(vastUrl.substr(1 + vastUrl.indexOf('?')));
 		const customParams = queryString.getValues(encodeURI(vastParams.cust_params));
 
 		return {
-			contentType: currentAd.contentType || extra.contentType,
-			creativeId: currentAd.creativeId || extra.creativeId,
+			contentType: currentAd.contentType,
+			creativeId: currentAd.creativeId,
 			customParams,
-			lineItemId: currentAd.lineItemId || extra.lineItemId,
+			lineItemId: currentAd.lineItemId,
 			position: vastParams.vpos,
 			size: vastParams.sz,
 		};
