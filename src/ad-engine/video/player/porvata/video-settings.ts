@@ -3,7 +3,7 @@ import { sampler } from '../../../utils';
 
 export interface VideoParams {
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
-	autoPlay?: undefined;
+	autoPlay?: boolean;
 	[key: string]: any;
 }
 
@@ -40,7 +40,7 @@ export class VideoSettings {
 		return this.params[key];
 	}
 
-	getContainer(): string | HTMLElement | undefined {
+	getContainer(): HTMLElement | undefined {
 		return this.get('container');
 	}
 

@@ -1,4 +1,5 @@
 import { scriptLoader } from '../../../../utils';
+import { VideoSettings } from '../video-settings';
 import { googleImaPlayerFactory } from './google-ima-player-factory';
 
 const imaLibraryUrl = '//imasdk.googleapis.com/js/sdkloader/ima3.js';
@@ -13,9 +14,9 @@ function load() {
 	return scriptLoader.loadScript(imaLibraryUrl);
 }
 
-function getPlayer(videoSettings) {
+function getPlayer(videoSettings: VideoSettings) {
 	const adDisplayContainer = new window.google.ima.AdDisplayContainer(videoSettings.getContainer());
-	const iframe = videoSettings.getContainer().querySelector('div > iframe');
+	const iframe = videoSettings.getContainer().querySelector('div > iframe') as HTMLIFrameElement;
 
 	// Reload iframe in order to make IMA work when user is moving back/forward to the page with
 	// player

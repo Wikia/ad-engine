@@ -1,29 +1,17 @@
-export function whichProperty(obj, properties = []) {
-	// TODO: replace with properties.find(...)
+export function whichProperty(
+	obj: { [key: string]: any },
+	properties: string[] = [],
+): string | undefined {
 	// tslint:disable-next-line
-	for (let i = 0; i < properties.length; i += 1) {
-		const property = properties[i];
-
-		if (typeof property !== 'string') {
-			throw new Error('property name must be a string');
-		}
-
-		if (property in obj) {
-			return property;
-		}
-	}
-
-	return null;
+	return properties.find((property) => property in obj);
 }
 
-export function tryProperty(obj, properties = []) {
+export function tryProperty(obj: { [key: string]: any }, properties: string[] = []) {
 	const property = whichProperty(obj, properties);
 
-	if (property !== null) {
+	if (property) {
 		const propertyValue = obj[property];
 
 		return typeof propertyValue === 'function' ? propertyValue.bind(obj) : propertyValue;
 	}
-
-	return null;
 }

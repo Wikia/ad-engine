@@ -1,17 +1,40 @@
-import { AdSlot, context, events, eventService, Porvata, slotTweaker } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	events,
+	eventService,
+	Porvata,
+	PorvataPlayer,
+	slotTweaker,
+} from '@wikia/ad-engine';
 import { getTranslation } from '../../common/i18n';
 import * as videoUserInterface from '../interface/video';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
-export const IMA_VPAID_INSECURE_MODE = 2;
+
+export interface PorvataTemplateParams {
+	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+	viewportHookElement?: HTMLElement;
+	container?: HTMLElement;
+	originalContainer: HTMLElement;
+	enableInContentFloating: boolean;
+	slotName: string;
+}
+
+export interface PorvataTemplateConfig {
+	isFloatingEnabled?: boolean;
+	inViewportOffsetTop?: number;
+	inViewportOffsetBottom?: number;
+	onInit?: (adSlot: AdSlot, params: PorvataTemplateParams, config: PorvataTemplateConfig) => void;
+}
 
 export class PorvataTemplate {
-	static getName() {
+	static getName(): string {
 		return 'porvata3';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): PorvataTemplateConfig {
 		return {
 			isFloatingEnabled: true,
 			inViewportOffsetTop: 0,
@@ -20,14 +43,14 @@ export class PorvataTemplate {
 		};
 	}
 
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	config: PorvataTemplateConfig;
+	isInsecureMode: boolean;
+
+	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.porvata3') || {};
 	}
 
-	init(params) {
-		const slotName = this.adSlot.getSlotName();
-
+	init(params: PorvataTemplateParams): Promise<PorvataPlayer> | void {
 		if (!this.adSlot.getElement().classList.contains('ad-slot')) {
 			this.adSlot.getElement().classList.add('ad-slot');
 		}
@@ -35,7 +58,7 @@ export class PorvataTemplate {
 		this.adSlot.getElement().classList.add('porvata3');
 		this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
 
-		this.isInsecureMode = params.vpaidMode === IMA_VPAID_INSECURE_MODE;
+		this.isInsecureMode = params.vpaidMode === google.ima.ImaSdkSettings.VpaidMode.INSECURE;
 
 		if (!Porvata.isVideoAutoplaySupported()) {
 			return this.adSlot.collapse();
@@ -44,7 +67,7 @@ export class PorvataTemplate {
 		params.viewportHookElement = this.adSlot.getElement();
 		if (this.isInsecureMode) {
 			params.originalContainer = params.container;
-			params.container = this.createVideoContainer(slotName);
+			params.container = this.createVideoContainer();
 		}
 
 		slotTweaker.collapse(this.adSlot);
@@ -56,7 +79,7 @@ export class PorvataTemplate {
 			.then(() => Porvata.inject(params).then((video) => this.onReady(video, params)));
 	}
 
-	onReady(video, params) {
+	onReady(video: PorvataPlayer, params: PorvataTemplateParams): PorvataPlayer {
 		const slotElement = this.adSlot.getElement();
 		const template = videoUserInterface.selectTemplate(video.videoSettings);
 		const videoContainer = params.container;
@@ -96,7 +119,7 @@ export class PorvataTemplate {
 		return video;
 	}
 
-	handleSlotStatus(video) {
+	handleSlotStatus(video: PorvataPlayer): void {
 		let resolveStatus = null;
 		const statusPromise = new Promise((resolve) => {
 			resolveStatus = resolve;
@@ -122,10 +145,11 @@ export class PorvataTemplate {
 		});
 	}
 
-	adjustVpaidPlayer(video, container) {
+	adjustVpaidPlayer(video: PorvataPlayer, container: HTMLVideoElement): void {
 		const videoPlayer = container.querySelector('.video-player');
 
 		video.addEventListener('loaded', () => {
+			// TODO: Does this even work?
 			const ad = video.ima.getAdsManager().getCurrentAd();
 
 			if (ad && Porvata.isVpaid(ad.getContentType() || '')) {
@@ -139,7 +163,7 @@ export class PorvataTemplate {
 		});
 	}
 
-	createVideoContainer() {
+	createVideoContainer(): HTMLElement {
 		const container = document.createElement('div');
 		const displayWrapper = document.createElement('div');
 
