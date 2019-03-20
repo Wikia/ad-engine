@@ -11,6 +11,14 @@ export interface Targeting {
 	pos: string;
 }
 
+interface RepeatConfig {
+	index: number;
+	slotNamePattern: string;
+	limit: number;
+	updateProperties: { [key: string]: any };
+	additionalClasses?: string;
+}
+
 export interface SlotConfig {
 	disabled?: boolean;
 	firstCall?: boolean;
@@ -19,7 +27,7 @@ export interface SlotConfig {
 
 	targeting: Targeting;
 	videoAdUnit?: string;
-	repeat?: boolean;
+	repeat?: RepeatConfig;
 	adUnit?: string;
 	sizes?: any;
 	videoSizes?: number[][];
@@ -59,7 +67,7 @@ export class AdSlot extends EventEmitter {
 	creativeSize: null | string | number[] = null;
 	lineItemId: null | string | number = null;
 	winningPbBidderDetails: null | WinningPbBidderDetails = null;
-	onLoadPromise = new Promise((resolve) => {
+	onLoadPromise = new Promise<HTMLIFrameElement>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
 	});
 
@@ -204,7 +212,7 @@ export class AdSlot extends EventEmitter {
 		context.set(`slots.${this.config.slotName}.${key}`, value);
 	}
 
-	onLoad(): Promise<{}> {
+	onLoad(): Promise<HTMLIFrameElement> {
 		return this.onLoadPromise;
 	}
 

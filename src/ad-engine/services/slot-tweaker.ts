@@ -10,11 +10,11 @@ export class SlotTweaker {
 	/** @readonly */
 	static SLOT_CLOSE_IMMEDIATELY = 'force-close';
 
-	forceRepaint(domElement) {
+	forceRepaint(domElement: HTMLElement): number {
 		return domElement.offsetWidth;
 	}
 
-	getContainer(adSlot) {
+	getContainer(adSlot: AdSlot): HTMLElement {
 		const container = adSlot.getElement();
 
 		if (!container) {
@@ -24,7 +24,7 @@ export class SlotTweaker {
 		return container;
 	}
 
-	addDefaultClasses(adSlot) {
+	addDefaultClasses(adSlot: AdSlot): void {
 		const container = this.getContainer(adSlot);
 		const defaultClasses = adSlot.getConfigProperty('defaultClasses') || [];
 
@@ -33,7 +33,7 @@ export class SlotTweaker {
 		}
 	}
 
-	hide(adSlot) {
+	hide(adSlot: AdSlot): void {
 		const container = this.getContainer(adSlot);
 
 		if (container) {
@@ -42,7 +42,7 @@ export class SlotTweaker {
 		}
 	}
 
-	show(adSlot) {
+	show(adSlot: AdSlot): void {
 		const container = this.getContainer(adSlot);
 
 		if (container) {
@@ -51,7 +51,7 @@ export class SlotTweaker {
 		}
 	}
 
-	collapse(adSlot) {
+	collapse(adSlot: AdSlot): void {
 		const container = this.getContainer(adSlot);
 
 		container.style.maxHeight = `${container.scrollHeight}px`;
@@ -60,7 +60,7 @@ export class SlotTweaker {
 		container.style.maxHeight = '0';
 	}
 
-	expand(adSlot) {
+	expand(adSlot: AdSlot): void {
 		const container = this.getContainer(adSlot);
 
 		container.style.maxHeight = `${container.offsetHeight}px`;
@@ -69,7 +69,11 @@ export class SlotTweaker {
 		container.style.maxHeight = `${container.scrollHeight}px`;
 	}
 
-	makeResponsive(adSlot, aspectRatio = null, paddingBottom = true) {
+	makeResponsive(
+		adSlot: AdSlot,
+		aspectRatio: number = null,
+		paddingBottom = true,
+	): Promise<HTMLIFrameElement> {
 		const slotContainer = this.getContainer(adSlot);
 
 		slotContainer.classList.add('slot-responsive');
@@ -93,19 +97,20 @@ export class SlotTweaker {
 		});
 	}
 
-	onReady(adSlot) {
+	onReady(adSlot: AdSlot): Promise<HTMLIFrameElement> {
 		if (adSlot.getConfigProperty('useGptOnloadEvent')) {
 			return adSlot.onLoad();
 		}
 
 		const container = this.getContainer(adSlot);
-		const iframe = container.querySelector('div[id*="_container_"] iframe');
+		const element = container.querySelector<HTMLIFrameElement>('div[id*="_container_"] iframe');
 
-		return new Promise((resolve, reject) => {
-			if (!iframe) {
+		return new Promise<HTMLIFrameElement>((resolve, reject) => {
+			if (!element) {
 				reject(new Error('Cannot find iframe element'));
 			}
 
+			const iframe: HTMLIFrameElement = element as HTMLIFrameElement;
 			let iframeDocument = null;
 
 			try {
@@ -122,19 +127,19 @@ export class SlotTweaker {
 		});
 	}
 
-	adjustIframeByContentSize(adSlot) {
+	adjustIframeByContentSize(adSlot: AdSlot): void {
 		this.onReady(adSlot).then((iframe) => {
 			const height = iframe.contentWindow.document.body.scrollHeight;
 			const width = iframe.contentWindow.document.body.scrollWidth;
 
-			iframe.width = width;
-			iframe.height = height;
+			iframe.width = width.toString();
+			iframe.height = height.toString();
 
 			logger(logGroup, 'adjust size', adSlot.getSlotName(), width, height);
 		});
 	}
 
-	registerMessageListener() {
+	registerMessageListener(): void {
 		messageBus.register(
 			{
 				keys: ['action', 'slotName'],
