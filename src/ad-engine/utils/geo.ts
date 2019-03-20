@@ -1,5 +1,5 @@
 import * as Cookies from 'js-cookie';
-import { context } from '../services';
+import { context } from '../services/context-service';
 
 const cacheMarker = '-cached';
 const cacheMaxAge = 30 * 60 * 1000;
