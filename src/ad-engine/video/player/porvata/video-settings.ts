@@ -1,7 +1,13 @@
 import { context } from '../../../services';
 import { sampler } from '../../../utils';
 
-function getMoatTrackingStatus(params) {
+export interface VideoParams {
+	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
+	autoPlay?: undefined;
+	[key: string]: any;
+}
+
+function getMoatTrackingStatus(params: VideoParams): boolean {
 	const sampling = context.get('options.video.moatTracking.sampling');
 
 	if (typeof params.moatTracking === 'boolean') {
@@ -24,24 +30,25 @@ function getMoatTrackingStatus(params) {
 }
 
 export class VideoSettings {
-	constructor(params = {}) {
-		this.params = params;
+	private readonly moatTracking: boolean;
+
+	constructor(private readonly params: VideoParams = {}) {
 		this.moatTracking = getMoatTrackingStatus(params);
 	}
 
-	get(key) {
+	get(key: string): any {
 		return this.params[key];
 	}
 
-	getContainer() {
+	getContainer(): string | HTMLElement | undefined {
 		return this.get('container');
 	}
 
-	getParams() {
+	getParams(): VideoParams {
 		return this.params;
 	}
 
-	getVpaidMode() {
+	getVpaidMode(): google.ima.ImaSdkSettings.VpaidMode {
 		if (typeof this.params.vpaidMode !== 'undefined') {
 			return this.params.vpaidMode;
 		}
@@ -49,11 +56,11 @@ export class VideoSettings {
 		return window.google.ima.ImaSdkSettings.VpaidMode.ENABLED;
 	}
 
-	isMoatTrackingEnabled() {
+	isMoatTrackingEnabled(): boolean {
 		return this.moatTracking;
 	}
 
-	isAutoPlay() {
+	isAutoPlay(): boolean | undefined {
 		return this.params.autoPlay;
 	}
 }
