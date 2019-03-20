@@ -7,7 +7,7 @@ class ScriptLoader {
 		type = 'text/javascript',
 		isAsync = true,
 		node: HTMLElement | string = null,
-		parameters: {} = {},
+		parameters = {},
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 		const temp: ChildNode =
@@ -36,7 +36,7 @@ class ScriptLoader {
 		type = 'text/javascript',
 		isAsync = true,
 		node: HTMLElement | string = null,
-		parameters: {} = {},
+		parameters = {},
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
 			const script: HTMLScriptElement = this.createScript(src, type, isAsync, node, parameters);

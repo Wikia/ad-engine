@@ -1,4 +1,4 @@
-export function whichProperty(obj: {} = {}, properties: string[] = []): string | undefined {
+export function whichProperty(obj = {}, properties: string[] = []): string | undefined {
 	return properties.find((property: string) => {
 		if (typeof property !== 'string') {
 			throw new Error('property name must be a string');
