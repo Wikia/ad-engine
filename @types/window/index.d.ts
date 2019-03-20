@@ -13,6 +13,7 @@ interface Window {
 	_clrm: CLRM;
 	grumi?: GeoEdgeConfig;
 	moatjw?: MoatJW;
+	Twitch?: any;
 }
 
 declare var NOLBUNDLE: any;
