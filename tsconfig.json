@@ -7,7 +7,7 @@
 		"target": "es5",
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
-		"noImplicitAny": true,
+		"noImplicitAny": false,
 		"baseUrl": ".",
 		"typeRoots": ["node_modules/@types", "@types"],
 		"paths": {
