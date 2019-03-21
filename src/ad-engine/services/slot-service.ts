@@ -6,7 +6,12 @@ import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
 
-function isSlotInTheSameViewport(slotHeight, slotOffset, viewportHeight, elementId) {
+function isSlotInTheSameViewport(
+	slotHeight: number,
+	slotOffset: number,
+	viewportHeight: number,
+	elementId: string,
+): boolean {
 	const element = document.getElementById(elementId);
 
 	// According to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
@@ -40,7 +45,7 @@ class SlotService {
 	/**
 	 * Add new slot to register
 	 */
-	add(adSlot: AdSlot) {
+	add(adSlot: AdSlot): void {
 		const slotName = adSlot.getSlotName();
 
 		this.slots[slotName] = adSlot;
@@ -65,7 +70,7 @@ class SlotService {
 	/**
 	 * Removes slot from register
 	 */
-	remove(adSlot: AdSlot) {
+	remove(adSlot: AdSlot): void {
 		const slotName = adSlot.getSlotName();
 
 		context.removeListeners(`slots.${slotName}`);
@@ -107,13 +112,13 @@ class SlotService {
 	 * Iterate over all defined slots
 	 * @param {function} callback
 	 */
-	forEach(callback) {
+	forEach(callback: (adSlot: AdSlot) => void): void {
 		Object.keys(this.slots).forEach((id) => {
 			callback(this.slots[id]);
 		});
 	}
 
-	on(slotName: string, eventName: string, callback: () => void) {
+	on(slotName: string, eventName: string, callback: () => void): void {
 		const adSlot = this.get(slotName);
 		const event = {
 			name: eventName,
@@ -132,14 +137,14 @@ class SlotService {
 	/**
 	 * Enable slot by name (it isn't necessary to have given ad slot in register at this point)
 	 */
-	enable(slotName: string) {
+	enable(slotName: string): void {
 		this.setState(slotName, true);
 	}
 
 	/**
 	 * Disable slot by name (it isn't necessary to have given ad slot in register at this point)
 	 */
-	disable(slotName: string, status: string | null = null) {
+	disable(slotName: string, status: string = null): void {
 		this.setState(slotName, false, status);
 	}
 
@@ -152,7 +157,7 @@ class SlotService {
 		return this.slotStates[slotName] !== false;
 	}
 
-	setState(slotName: string, state: boolean, status: string | null = null) {
+	setState(slotName: string, state: boolean, status: string = null): void {
 		const slot = this.get(slotName);
 
 		this.slotStates[slotName] = state;

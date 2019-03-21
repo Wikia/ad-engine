@@ -1,4 +1,10 @@
-const contextObject = {
+interface ContextObject {
+	[key: string]: any;
+}
+
+type ChangeCallback = (key: string, value: any) => void;
+
+const contextObject: ContextObject = {
 	adUnitId: '',
 	events: {},
 	delayModules: [],
@@ -35,9 +41,9 @@ const contextObject = {
 	},
 };
 
-const onChangeCallbacks = {};
+const onChangeCallbacks: { [key: string]: ChangeCallback[] } = {};
 
-function runCallbacks(trigger, key, newValue) {
+function runCallbacks(trigger: string, key: string, newValue: any): void {
 	if (!onChangeCallbacks[trigger]) {
 		return;
 	}
@@ -47,7 +53,7 @@ function runCallbacks(trigger, key, newValue) {
 	});
 }
 
-function triggerOnChange(key, segments, newValue) {
+function triggerOnChange(key: string, segments: string[], newValue: any): void {
 	let trigger = '';
 
 	segments.forEach((seg) => {
@@ -56,7 +62,7 @@ function triggerOnChange(key, segments, newValue) {
 	});
 }
 
-function segment(key, newValue, remove = false) {
+function segment(key: string, newValue?: any, remove = false): any {
 	const segments = key.split('.');
 	const segmentsCount = segments.length;
 	let seg = contextObject;
@@ -86,27 +92,23 @@ function segment(key, newValue, remove = false) {
 }
 
 class Context {
-	constructor() {
-		this.__useDefault = true;
-	}
-
-	extend(newContext) {
+	extend(newContext: ContextObject): void {
 		Object.assign(contextObject, newContext);
 	}
 
-	set(key, value) {
+	set(key: string, value: any): void {
 		segment(key, value);
 	}
 
-	get(key) {
+	get(key: string): any {
 		return segment(key);
 	}
 
-	remove(key) {
+	remove(key: string): void {
 		segment(key, null, true);
 	}
 
-	push(key, value) {
+	push(key: string, value: any): void {
 		const array = segment(key);
 
 		if (array) {
@@ -114,13 +116,13 @@ class Context {
 		}
 	}
 
-	onChange(key, callback) {
+	onChange(key: string, callback: ChangeCallback): void {
 		onChangeCallbacks[key] = onChangeCallbacks[key] || [];
 		onChangeCallbacks[key].push(callback);
 	}
 
-	removeListeners(key) {
-		Object.keys(onChangeCallbacks).forEach((contextKey) => {
+	removeListeners(key: string): void {
+		Object.keys(onChangeCallbacks).forEach((contextKey: string) => {
 			if (contextKey === key || contextKey.indexOf(`${key}.`) === 0) {
 				delete onChangeCallbacks[contextKey];
 			}
