@@ -21,7 +21,7 @@ class AdsLoader {
 	}
 }
 
-export function getIma() {
+export function getIma(): any {
 	return {
 		// tslint:disable-next-line
 		AdDisplayContainer: function() {

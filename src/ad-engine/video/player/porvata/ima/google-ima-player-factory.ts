@@ -56,8 +56,7 @@ export class GoogleImaPlayer {
 	}
 
 	setVastAttributes(status: string): void {
-		// TODO: Does it even work?
-		const currentAd =
+		const currentAd: google.ima.Ad =
 			this.adsManager && this.adsManager.getCurrentAd && this.adsManager.getCurrentAd();
 		const playerElement = this.params.container.querySelector('.video-player');
 

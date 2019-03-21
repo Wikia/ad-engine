@@ -14,9 +14,11 @@ export interface PorvataEventPayload {
 	line_item_id: string | number;
 	player: string;
 	position: string;
-	// @DEPRECATED
+	/** @deprecated */
 	browser: string;
+	/** @deprecated */
 	timestamp: number;
+	/** @deprecated */
 	tz_offset: number;
 }
 
@@ -25,8 +27,8 @@ export interface Listener {
 	onEvent(eventName: string, params: PorvataListenerParams, data: PorvataEventPayload): void;
 }
 
-function getListeners(): Listener[] | undefined {
-	return context.get('listeners.porvata');
+function getListeners(): Listener[] {
+	return context.get('listeners.porvata') || [];
 }
 
 export class PorvataListener {
@@ -63,7 +65,7 @@ export class PorvataListener {
 		);
 	}
 
-	logger = (...args) => logger(PorvataListener.LOG_GROUP, ...args);
+	logger = (...args: any[]): void => logger(PorvataListener.LOG_GROUP, ...args);
 
 	init(): void {
 		this.dispatch('init');
@@ -74,10 +76,10 @@ export class PorvataListener {
 		this.dispatch('ready');
 
 		Object.keys(PorvataListener.EVENTS).forEach((eventKey) => {
-			video.addEventListener(eventKey, (event) => {
+			video.addEventListener(eventKey, (event: google.ima.AdEvent) => {
 				let errorCode: google.ima.AdError.ErrorCode;
-				if ((event as any).getError) {
-					errorCode = ((event as any) as google.ima.AdErrorEvent).getError().getErrorCode();
+				if (event instanceof google.ima.AdErrorEvent) {
+					errorCode = event.getError().getErrorCode();
 				}
 				this.dispatch(PorvataListener.EVENTS[eventKey], errorCode);
 			});
@@ -100,12 +102,18 @@ export class PorvataListener {
 	}
 
 	getData(eventName: string, errorCode: google.ima.AdError.ErrorCode): PorvataEventPayload {
-		// TODO: Does it even work?
-		const imaAd =
+		let contentType: string;
+		let creativeId: string;
+		let lineItemId: string;
+		const imaAd: google.ima.Ad =
 			this.video && this.video.ima.getAdsManager() && this.video.ima.getAdsManager().getCurrentAd();
-		let { contentType, creativeId, lineItemId } = vastParser.getAdInfo(imaAd);
 
-		if (!imaAd && this.video && this.video.container) {
+		if (imaAd) {
+			const adInfo = vastParser.getAdInfo();
+			contentType = adInfo.contentType;
+			creativeId = adInfo.creativeId;
+			lineItemId = adInfo.lineItemId;
+		} else if (this.video && this.video.container) {
 			contentType = this.video.container.getAttribute('data-vast-content-type');
 			creativeId = this.video.container.getAttribute('data-vast-creative-id');
 			lineItemId = this.video.container.getAttribute('data-vast-line-item-id');

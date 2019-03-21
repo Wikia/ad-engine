@@ -2,9 +2,9 @@ import { ADX } from '../providers';
 import { queryString } from '../utils';
 
 export interface VideoAdInfo {
-	lineItemId?: string;
-	creativeId?: string;
-	contentType?: string;
+	lineItemId: string;
+	creativeId: string;
+	contentType: string;
 }
 
 export interface EventExtra {
@@ -37,46 +37,54 @@ class VastParser {
 	}
 
 	getAdInfo(imaAd?: google.ima.Ad): VideoAdInfo {
-		const adInfo: VideoAdInfo = {};
+		const adInfo: VideoAdInfo = {
+			lineItemId: imaAd.getAdId(),
+			creativeId: imaAd.getCreativeId(),
+			contentType: imaAd.getContentType(),
+		};
 
-		if (imaAd) {
-			adInfo.lineItemId = imaAd.getAdId();
-			adInfo.creativeId = imaAd.getCreativeId();
-			adInfo.contentType = imaAd.getContentType();
+		const wrapperAdIds = imaAd.getWrapperAdIds() || [];
 
-			const wrapperAdIds = imaAd.getWrapperAdIds() || [];
+		if (wrapperAdIds && wrapperAdIds.length) {
+			adInfo.lineItemId = this.getLastNumber(wrapperAdIds);
+		}
 
-			if (wrapperAdIds && wrapperAdIds.length) {
-				adInfo.lineItemId = this.getLastNumber(wrapperAdIds);
-			}
+		const wrapperCreativeIds = imaAd.getWrapperCreativeIds() || [];
 
-			const wrapperCreativeIds = imaAd.getWrapperCreativeIds() || [];
+		if (wrapperCreativeIds && wrapperCreativeIds.length) {
+			adInfo.creativeId = this.getLastNumber(wrapperCreativeIds);
+		}
 
-			if (wrapperCreativeIds && wrapperCreativeIds.length) {
-				adInfo.creativeId = this.getLastNumber(wrapperCreativeIds);
-			}
+		const wrapperAdSystems = imaAd.getWrapperAdSystems() || [];
 
-			const wrapperAdSystems = imaAd.getWrapperAdSystems() || [];
-
-			if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
-				adInfo.lineItemId = ADX;
-				adInfo.creativeId = ADX;
-			}
+		if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
+			adInfo.lineItemId = ADX;
+			adInfo.creativeId = ADX;
 		}
 
 		return adInfo;
 	}
 
 	parse(vastUrl: string, extra: EventExtra = {}): VastParams {
-		const currentAd = this.getAdInfo(extra.imaAd);
+		let contentType: string;
+		let creativeId: string;
+		let lineItemId: string;
 		const vastParams = queryString.getValues(vastUrl.substr(1 + vastUrl.indexOf('?')));
 		const customParams = queryString.getValues(encodeURI(vastParams.cust_params));
 
+		if (extra.imaAd) {
+			const currentAd = this.getAdInfo(extra.imaAd);
+
+			contentType = currentAd.contentType;
+			creativeId = currentAd.creativeId;
+			lineItemId = currentAd.lineItemId;
+		}
+
 		return {
-			contentType: currentAd.contentType,
-			creativeId: currentAd.creativeId,
+			contentType,
+			creativeId,
 			customParams,
-			lineItemId: currentAd.lineItemId,
+			lineItemId,
 			position: vastParams.vpos,
 			size: vastParams.sz,
 		};
