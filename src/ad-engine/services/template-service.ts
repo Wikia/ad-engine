@@ -1,3 +1,4 @@
+import { AdSlot } from '../models';
 import { logger } from '../utils/logger';
 import { context } from './context-service';
 
@@ -5,7 +6,7 @@ const logGroup = 'template-service';
 const templates = {};
 
 class TemplateService {
-	register(template, customConfig = null) {
+	register(template, customConfig = null): void {
 		if (typeof template.getName !== 'function') {
 			throw new Error('Template does not implement getName method.');
 		}
@@ -25,7 +26,7 @@ class TemplateService {
 		templates[name] = template;
 	}
 
-	init(name, slot = null, params = {}) {
+	init(name: string, slot: AdSlot = null, params = {}): void {
 		logger(logGroup, 'Load template', name, slot, params);
 
 		if (!templates[name]) {

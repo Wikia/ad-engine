@@ -1,16 +1,16 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class IndexExchange extends BaseAdapter {
-	constructor(options) {
-		super(options);
+	static bidderName = 'indexExchange';
+	aliases = {
+		ix: [IndexExchange.bidderName],
+	};
 
-		this.bidderName = 'indexExchange';
-		this.aliases = {
-			ix: [this.bidderName],
-		};
+	get bidderName(): string {
+		return IndexExchange.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, siteId }) {
+	prepareConfigForAdUnit(code, { sizes, siteId }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {

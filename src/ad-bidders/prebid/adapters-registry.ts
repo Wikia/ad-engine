@@ -1,100 +1,91 @@
-import { Aol } from './adapters/aol';
-import { Appnexus } from './adapters/appnexus';
-import { AppnexusAst } from './adapters/appnexus-ast';
-import { AudienceNetwork } from './adapters/audience-network';
-import { Beachfront } from './adapters/beachfront';
-import { IndexExchange } from './adapters/index-exchange';
-import { Kargo } from './adapters/kargo';
-import { Lkqd } from './adapters/lkqd';
-import { Onemobile } from './adapters/onemobile';
-import { Openx } from './adapters/openx';
-import { Pubmatic } from './adapters/pubmatic';
-import { Rubicon } from './adapters/rubicon';
-import { RubiconDisplay } from './adapters/rubicon-display';
-import { Vmg } from './adapters/vmg';
-import { Wikia } from './adapters/wikia';
-import { WikiaVideo } from './adapters/wikia-video';
+import { context } from '@wikia/ad-engine';
+import {
+	Aliases,
+	Aol,
+	Appnexus,
+	AppnexusAst,
+	AudienceNetwork,
+	BaseAdapter,
+	Beachfront,
+	IndexExchange,
+	Kargo,
+	Lkqd,
+	Onemobile,
+	Openx,
+	Pubmatic,
+	Rubicon,
+	RubiconDisplay,
+	Vmg,
+	Wikia,
+	WikiaVideo,
+} from './adapters';
 
-const adapters = [];
-const customAdapters = [];
-const availableAdapters = {
-	aol: Aol,
-	appnexus: Appnexus,
-	appnexusAst: AppnexusAst,
-	audienceNetwork: AudienceNetwork,
-	beachfront: Beachfront,
-	indexExchange: IndexExchange,
-	kargo: Kargo,
-	lkqd: Lkqd,
-	onemobile: Onemobile,
-	openx: Openx,
-	pubmatic: Pubmatic,
-	rubicon: Rubicon,
-	rubiconDisplay: RubiconDisplay,
-	vmg: Vmg,
-};
+class AdaptersRegistry {
+	private adapters = new Map<string, BaseAdapter>();
+	private availableAdapters = [
+		Aol,
+		Appnexus,
+		AppnexusAst,
+		AudienceNetwork,
+		Beachfront,
+		IndexExchange,
+		Kargo,
+		Lkqd,
+		Onemobile,
+		Openx,
+		Pubmatic,
+		RubiconDisplay,
+		Rubicon,
+		Vmg,
+		Wikia,
+		WikiaVideo,
+	];
 
-function registerAliases() {
-	adapters
-		.filter((adapter) => adapter.aliases)
-		.forEach((adapter) => {
-			window.pbjs.que.push(() => {
-				const aliasMap = adapter.aliases;
+	getAdapters(): Map<string, BaseAdapter> {
+		if (!this.adapters.size) {
+			const biddersConfig = context.get('bidders.prebid');
 
-				Object.keys(aliasMap).forEach((bidderName) => {
-					aliasMap[bidderName].forEach((alias) => {
-						window.pbjs.aliasBidder(bidderName, alias);
-					});
+			this.availableAdapters.forEach((adapter) => {
+				const adapterConfig = adapter && biddersConfig[adapter.bidderName];
+
+				if (adapterConfig) {
+					this.adapters.set(adapter.bidderName, new adapter(adapterConfig));
+				}
+			});
+		}
+
+		return this.adapters;
+	}
+
+	configureAdapters(): void {
+		this.getAdapters().forEach((adapter) => {
+			const aliasMap = adapter.aliases;
+
+			if (aliasMap) {
+				this.configureAliases(aliasMap);
+			}
+
+			if (adapter.isCustomBidAdapter) {
+				this.configureCustomAdapter(adapter.bidderName, adapter);
+			}
+		});
+	}
+
+	private configureAliases(aliasMap: Aliases): void {
+		window.pbjs.que.push(() => {
+			Object.keys(aliasMap).forEach((bidderName) => {
+				aliasMap[bidderName].forEach((alias) => {
+					window.pbjs.aliasBidder(bidderName, alias);
 				});
 			});
 		});
-}
-
-function setupAdapters(bidders) {
-	Object.keys(availableAdapters).forEach((key) => {
-		if (bidders[key]) {
-			const adapter = new availableAdapters[key](bidders[key]);
-
-			adapters.push(adapter);
-		}
-	});
-
-	setupCustomAdapters(bidders);
-}
-
-function setupCustomAdapters(bidders) {
-	if (bidders.wikia) {
-		customAdapters.push(new Wikia(bidders.wikia));
 	}
 
-	if (bidders.wikiaVideo) {
-		customAdapters.push(new WikiaVideo(bidders.wikiaVideo));
-	}
-
-	customAdapters.forEach((adapter) => {
-		adapters.push(adapter);
-
+	private configureCustomAdapter(bidderName: string, instance): void {
 		window.pbjs.que.push(() => {
-			window.pbjs.registerBidAdapter(adapter.create, adapter.bidderName);
+			window.pbjs.registerBidAdapter(instance.create, bidderName);
 		});
-	});
-}
-
-export function getPriorities() {
-	const priorities = {};
-
-	adapters.forEach((adapter) => {
-		priorities[adapter.bidderName] = adapter.priority || 1;
-	});
-
-	return priorities;
-}
-
-export function getAdapters(config) {
-	if (adapters.length === 0 && config) {
-		setupAdapters(config);
-		registerAliases();
 	}
-
-	return adapters;
 }
+
+export const adaptersRegistry = new AdaptersRegistry();

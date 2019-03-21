@@ -1,10 +1,10 @@
-import { context, utils } from '@wikia/ad-engine';
+import { context, DEFAULT_MAX_DELAY, utils } from '@wikia/ad-engine';
 
 /**
  * @abstract
  */
 export class BaseBidder {
-	constructor(name, bidderConfig, timeout = 2000) {
+	constructor(name, bidderConfig, timeout = DEFAULT_MAX_DELAY) {
 		this.name = name;
 		this.logGroup = `${name}-bidder`;
 		this.bidderConfig = bidderConfig;

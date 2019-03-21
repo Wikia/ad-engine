@@ -1,15 +1,21 @@
 import { context } from '@wikia/ad-engine';
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Appnexus extends BaseAdapter {
+	static bidderName = 'appnexus';
+	placements: { [key: string]: string };
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'appnexus';
 		this.placements = options.placements;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, position = 'mobile' }) {
+	get bidderName(): string {
+		return Appnexus.bidderName;
+	}
+
+	prepareConfigForAdUnit(code, { sizes, position = 'mobile' }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -28,13 +34,15 @@ export class Appnexus extends BaseAdapter {
 		};
 	}
 
-	getPlacement(position) {
+	getPlacement(position): string {
+		let placement = position;
+
 		if (position === 'mobile') {
 			const vertical = context.get('targeting.mappedVerticalName');
 
-			position = vertical && this.placements[vertical] ? vertical : 'other';
+			placement = vertical && this.placements[vertical] ? vertical : 'other';
 		}
 
-		return this.placements[position];
+		return this.placements[placement];
 	}
 }

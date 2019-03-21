@@ -1,3 +1,4 @@
+import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
@@ -5,13 +6,17 @@ import { slotInjector } from './slot-injector';
 
 const logGroup = 'slot-repeater';
 
-function buildString(pattern, definition) {
+interface SlotDefinition {
+	[key: string]: any;
+}
+
+function buildString(pattern: string, definition: SlotDefinition): string {
 	return stringBuilder.build(pattern, {
 		slotConfig: definition,
 	});
 }
 
-function repeatSlot(adSlot) {
+function repeatSlot(adSlot: AdSlot): boolean {
 	const newSlotDefinition = adSlot.getCopy();
 	const repeatConfig = newSlotDefinition.repeat;
 
@@ -53,10 +58,10 @@ function repeatSlot(adSlot) {
 }
 
 class SlotRepeater {
-	init() {
+	init(): void {
 		if (context.get('options.slotRepeater')) {
 			context.push('listeners.slot', {
-				onRenderEnded: (adSlot) => {
+				onRenderEnded: (adSlot: AdSlot) => {
 					if (adSlot.isEnabled() && adSlot.isRepeatable()) {
 						return repeatSlot(adSlot);
 					}

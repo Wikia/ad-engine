@@ -1,15 +1,21 @@
 import { utils } from '@wikia/ad-engine';
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class AudienceNetwork extends BaseAdapter {
+	static bidderName = 'audienceNetwork';
+	testMode = false;
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'audienceNetwork';
 		this.testMode = utils.queryString.get('audiencenetworktest') === 'true';
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placementId }) {
+	get bidderName(): string {
+		return AudienceNetwork.bidderName;
+	}
+
+	prepareConfigForAdUnit(code, { sizes, placementId }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -21,8 +27,8 @@ export class AudienceNetwork extends BaseAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						testMode: this.testMode,
 						placementId,
+						testMode: this.testMode,
 					},
 				},
 			],

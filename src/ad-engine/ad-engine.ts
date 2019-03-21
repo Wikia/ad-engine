@@ -18,6 +18,8 @@ import { LazyQueue, logger, makeLazyQueue, OldLazyQueue } from './utils';
 
 const logGroup = 'ad-engine';
 
+export const DEFAULT_MAX_DELAY = 2000;
+
 export class AdEngine {
 	started = false;
 	provider: Provider;

@@ -1,24 +1,45 @@
-export interface BidderAdSlotConfig {
-	sizes: number[][];
-}
-
 export interface AdUnitConfig {
+	bids: Bid[];
 	code: string;
-	mediaTypes: {
+	mediaType?: string;
+	mediaTypes?: {
 		banner?: {
 			sizes: number[][];
 		};
+		video?: {
+			context?: string;
+			playerSize: number[];
+		};
 	};
-	bids: Bid[];
+	sizes?: number[];
+}
+
+export interface Aliases {
+	[key: string]: string[];
 }
 
 export interface Bid {
 	bidder: string;
+	params?: { [key: string]: string | number | object | boolean };
+}
+
+export interface BidderAdSlotConfig {
+	appId?: string | number;
+	placementId?: string | number;
+	pos?: string;
+	size?: number[];
+	sizes?: number[][];
+	siteId?: string | number;
+	unit?: string;
 }
 
 export abstract class BaseAdapter {
+	static bidderName: string;
+	aliases?: Aliases;
+	isCustomBidAdapter = false;
+
 	enabled: boolean;
-	slots: boolean;
+	slots: any;
 
 	constructor({ enabled, slots }) {
 		this.enabled = enabled;
@@ -26,6 +47,8 @@ export abstract class BaseAdapter {
 	}
 
 	abstract prepareConfigForAdUnit(code: string, config: BidderAdSlotConfig): AdUnitConfig;
+
+	abstract get bidderName(): string;
 
 	prepareAdUnits(): AdUnitConfig[] {
 		return Object.keys(this.slots).map((slotName) =>

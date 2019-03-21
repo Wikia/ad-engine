@@ -1,14 +1,20 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter, Bid } from './base-adapter';
 
 export class Pubmatic extends BaseAdapter {
+	static bidderName = 'pubmatic';
+	publisherId: string;
+
+	get bidderName(): string {
+		return Pubmatic.bidderName;
+	}
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'pubmatic';
 		this.publisherId = options.publisherId;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, ids }) {
+	prepareConfigForAdUnit(code, { sizes, ids }): AdUnitConfig {
 		switch (code.toLowerCase()) {
 			case 'featured':
 			case 'incontent_player':
@@ -18,7 +24,7 @@ export class Pubmatic extends BaseAdapter {
 		}
 	}
 
-	getVideoConfig(code, ids) {
+	getVideoConfig(code, ids): AdUnitConfig {
 		const videoParams = {
 			video: {
 				mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
@@ -46,7 +52,7 @@ export class Pubmatic extends BaseAdapter {
 		};
 	}
 
-	getStandardConfig(code, sizes, ids) {
+	getStandardConfig(code, sizes, ids): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -58,7 +64,7 @@ export class Pubmatic extends BaseAdapter {
 		};
 	}
 
-	getBids(ids, params = {}) {
+	getBids(ids, params = {}): Bid[] {
 		return ids.map((adSlot) => ({
 			bidder: this.bidderName,
 			params: {

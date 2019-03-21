@@ -1,9 +1,9 @@
-import { context, events, eventService, utils } from '@wikia/ad-engine';
+import { context, DEFAULT_MAX_DELAY, events, eventService, utils } from '@wikia/ad-engine';
 import { decorate } from 'core-decorators';
 import { BaseBidder } from '../base-bidder';
-import { getPriorities } from './adapters-registry';
-import { getAvailableBidsByAdUnitCode, setupAdUnits } from './prebid-helper';
-import { getSettings } from './prebid-settings';
+import { adaptersRegistry } from './adapters-registry';
+import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
+import { getSettings, PrebidTargeting } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
 function postponeExecutionUntilPbjsLoads(method) {
@@ -28,6 +28,7 @@ function markWinningBidAsUsed(adSlot) {
 }
 
 const logGroup = 'prebid';
+const uuidKey = 'hb_uuid';
 
 let loaded = false;
 
@@ -38,20 +39,21 @@ export class Prebid extends BaseBidder {
 	static validResponseStatusCode = 1;
 	static errorResponseStatusCode = 2;
 
-	constructor(bidderConfig, timeout = 2000) {
+	constructor(bidderConfig, timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
 
 		this.insertScript();
+		adaptersRegistry.configureAdapters();
 
 		this.lazyLoaded = false;
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
 		this.isCMPEnabled = context.get('custom.isCMPEnabled');
-		this.adUnits = setupAdUnits(this.bidderConfig, this.isLazyLoadingEnabled ? 'pre' : 'off');
+		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		this.prebidConfig = {
 			debug:
 				utils.queryString.get('pbjs_debug') === '1' ||
 				utils.queryString.get('pbjs_debug') === 'true',
-			enableSendAllBids: true,
+			enableSendAllBids: false,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
@@ -167,44 +169,57 @@ export class Prebid extends BaseBidder {
 		return getPrebidBestPrice(slotAlias);
 	}
 
-	getTargetingKeysToReset() {
-		return ['hb_bidder', 'hb_adid', 'hb_pb', 'hb_size', 'hb_uuid'];
+	getTargetingKeys(slotName) {
+		const allTargetingKeys = Object.keys(context.get(`slots.${slotName}.targeting`) || {});
+
+		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	getTargetingParams(slotName) {
-		let slotParams = {};
-
+	getTargetingParams(slotName): PrebidTargeting {
 		const slotAlias = this.getSlotAlias(slotName);
-		const bids = getAvailableBidsByAdUnitCode(slotAlias);
+		let slotParams: PrebidTargeting = {};
 
-		if (bids.length) {
-			let bidParams = null;
-			const priorities = getPriorities();
+		if (context.get('bidders.prebid.useBuiltInTargetingLogic')) {
+			utils.logger(logGroup, 'Using built in targeting logic');
 
-			bids.forEach((param) => {
-				if (!bidParams) {
-					bidParams = param;
-				} else if (bidParams.cpm === param.cpm) {
-					if (priorities[bidParams.bidder] === priorities[param.bidder]) {
+			slotParams = window.pbjs.getAdserverTargetingForAdUnitCode([slotAlias]);
+		} else {
+			const bids = getAvailableBidsByAdUnitCode(slotAlias);
+
+			if (bids.length) {
+				let bidParams = null;
+
+				bids.forEach((param) => {
+					if (!bidParams) {
+						bidParams = param;
+					} else if (bidParams.cpm === param.cpm) {
 						bidParams = bidParams.timeToRespond > param.timeToRespond ? param : bidParams;
 					} else {
-						bidParams = priorities[bidParams.bidder] < priorities[param.bidder] ? param : bidParams;
+						bidParams = bidParams.cpm < param.cpm ? param : bidParams;
 					}
-				} else {
-					bidParams = bidParams.cpm < param.cpm ? param : bidParams;
+				});
+
+				if (bidParams) {
+					slotParams = bidParams.adserverTargeting;
 				}
-			});
-
-			if (bidParams) {
-				slotParams = bidParams.adserverTargeting;
 			}
+		}
 
-			// ADEN-7436: AppNexus hb_uuid fix
-			// (adserverTargeting params are being set before cache key is returned)
-			slotParams.hb_uuid = slotParams.hb_uuid || bidParams.videoCacheKey || 'disabled';
+		const { hb_adid: adId } = slotParams;
+
+		if (adId) {
+			const uuid = getBidUUID(slotAlias, adId);
+
+			if (uuid) {
+				// This is not calculated in prebid-settings for hb_uuid
+				// because AppNexus adapter is using external service to retrieve
+				// cache key and adserverTargeting is executed too early.
+				// We have to take it as late as possible.
+				slotParams[uuidKey] = uuid;
+			}
 		}
 
 		return slotParams || {};

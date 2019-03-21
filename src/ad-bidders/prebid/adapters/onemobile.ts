@@ -1,14 +1,20 @@
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Onemobile extends BaseAdapter {
+	static bidderName = 'onemobile';
+	siteId: string;
+
+	get bidderName(): string {
+		return Onemobile.bidderName;
+	}
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'onemobile';
 		this.siteId = options.siteId;
 	}
 
-	prepareConfigForAdUnit(code, { size, pos }) {
+	prepareConfigForAdUnit(code, { size, pos }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -20,8 +26,8 @@ export class Onemobile extends BaseAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						dcn: this.siteId,
 						pos,
+						dcn: this.siteId,
 					},
 				},
 			],

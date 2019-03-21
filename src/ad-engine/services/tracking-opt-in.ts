@@ -3,8 +3,8 @@ import { context } from './context-service';
 
 const isOptInByQueryParam = queryString.get('tracking-opt-in-status') === 'true';
 
-function isOptedIn() {
-	return isOptInByQueryParam || context.get('options.trackingOptIn');
+function isOptedIn(): boolean {
+	return isOptInByQueryParam || !!context.get('options.trackingOptIn');
 }
 
 export const trackingOptIn = {

@@ -1,16 +1,22 @@
 import { context } from '@wikia/ad-engine';
 import { getTargeting } from '../prebid-helper';
-import { BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Rubicon extends BaseAdapter {
+	static bidderName = 'rubicon';
+	accountId: number;
+
+	get bidderName(): string {
+		return Rubicon.bidderName;
+	}
+
 	constructor(options) {
 		super(options);
 
-		this.bidderName = 'rubicon';
 		this.accountId = options.accountId;
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }) {
+	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): AdUnitConfig {
 		if (code === 'featured' && !context.get('custom.rubiconInFV')) {
 			return null;
 		}
@@ -30,11 +36,11 @@ export class Rubicon extends BaseAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						accountId: this.accountId,
+						position,
 						siteId,
 						zoneId,
+						accountId: this.accountId,
 						name: code,
-						position,
 						inventory: targeting,
 						video: {
 							playerWidth: '640',
