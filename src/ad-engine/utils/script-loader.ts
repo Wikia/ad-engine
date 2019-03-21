@@ -7,7 +7,7 @@ class ScriptLoader {
 		type = 'text/javascript',
 		isAsync = true,
 		node: HTMLElement | string = null,
-		parameters = {},
+		parameters: Partial<HTMLScriptElement> = {},
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 		const temp: ChildNode =
@@ -20,7 +20,7 @@ class ScriptLoader {
 		script.src = src;
 
 		Object.keys(parameters).forEach((parameter) => {
-			(script as any)[parameter] = (parameters as any)[parameter];
+			script[parameter] = parameters[parameter];
 		});
 
 		temp.parentNode.insertBefore(script, temp);
@@ -36,7 +36,7 @@ class ScriptLoader {
 		type = 'text/javascript',
 		isAsync = true,
 		node: HTMLElement | string = null,
-		parameters = {},
+		parameters: Partial<HTMLScriptElement> = {},
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
 			const script: HTMLScriptElement = this.createScript(src, type, isAsync, node, parameters);

@@ -1,16 +1,10 @@
-interface StringMap {
-	[key: string]: string;
-}
+import { Dictionary } from '../models';
 
 class QueryString {
-	getValues(input?: string): StringMap {
+	getValues(input?: string): Dictionary<string> {
 		const path: string = input || window.location.search.substr(1);
 		const queryStringParameters: string[] = path.split('&');
-		const queryParameters: StringMap = {};
-
-		if (!queryStringParameters) {
-			return null;
-		}
+		const queryParameters: Dictionary<string> = {};
 
 		queryStringParameters.forEach((pair) => {
 			const [id, value] = pair.split('=');
