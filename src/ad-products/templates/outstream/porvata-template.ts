@@ -149,8 +149,7 @@ export class PorvataTemplate {
 		const videoPlayer = container.querySelector('.video-player');
 
 		video.addEventListener('loaded', () => {
-			// TODO: Does this even work?
-			const ad = video.ima.getAdsManager().getCurrentAd();
+			const ad: google.ima.Ad = video.ima.getAdsManager().getCurrentAd();
 
 			if (ad && Porvata.isVpaid(ad.getContentType() || '')) {
 				container.classList.add('vpaid-enabled');
