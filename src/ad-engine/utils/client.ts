@@ -1,4 +1,6 @@
-import AdBlockDetect from 'blockadblock';
+// blockadblock doesn't export anything meaningful
+// it sets blockAdBlock and BlockAdBlock properties on window
+import 'blockadblock';
 import currentDevice from 'current-device';
 
 let bab: BlockAdBlock = null;
@@ -18,26 +20,35 @@ class Client {
 		return !this.isSmartphone() && !this.isTablet();
 	}
 
-	checkBlocking(enabled: () => void = null, disabled: () => void = null): void {
-		if (bab === null) {
-			if (typeof AdBlockDetect === 'undefined' || typeof BlockAdBlock === 'undefined') {
-				if (enabled !== null) enabled();
+	checkBlocking(enabled: () => {}, disabled: () => {}): Promise<{}> {
+		return new Promise((resolve) => {
+			if (bab === null) {
+				if (typeof BlockAdBlock === 'undefined') {
+					resolve(true);
+					enabled();
 
-				return;
+					return;
+				}
+
+				bab = new BlockAdBlock({
+					checkOnLoad: false,
+					resetOnEnd: true,
+					loopCheckTime: 50,
+					loopMaxNumber: 5,
+				});
 			}
 
-			bab = new BlockAdBlock({
-				checkOnLoad: false,
-				resetOnEnd: true,
-				loopCheckTime: 50,
-				loopMaxNumber: 5,
+			bab.onDetected(() => {
+				resolve(true);
+				enabled();
 			});
-		}
+			bab.onNotDetected(() => {
+				resolve(false);
+				disabled();
+			});
 
-		if (enabled !== null) bab.onDetected(enabled);
-		if (disabled !== null) bab.onNotDetected(disabled);
-
-		bab.check(true);
+			bab.check(true);
+		});
 	}
 
 	getDeviceType(): string {
