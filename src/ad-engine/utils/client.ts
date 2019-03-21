@@ -20,7 +20,7 @@ class Client {
 		return !this.isSmartphone() && !this.isTablet();
 	}
 
-	checkBlocking(enabled: () => {}, disabled: () => {}): Promise<{}> {
+	checkBlocking(enabled = () => {}, disabled = () => {}): Promise<{}> {
 		return new Promise((resolve) => {
 			if (bab === null) {
 				if (typeof BlockAdBlock === 'undefined') {
