@@ -1,5 +1,6 @@
 import { decorate } from 'core-decorators';
 import { slotListener } from '../listeners';
+import { AdSlot, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
@@ -27,7 +28,13 @@ function postponeExecutionUntilGptLoads(method) {
 let definedSlots = [];
 let initialized = false;
 
-function getAdSlotFromEvent(event) {
+function getAdSlotFromEvent(
+	event:
+		| googletag.events.ImpressionViewableEvent
+		| googletag.events.SlotOnloadEvent
+		| googletag.events.SlotRenderEndedEvent
+		| googletag.events.slotVisibilityChangedEvent,
+) {
 	const id = event.slot.getSlotElementId();
 
 	return slotService.get(id);
@@ -38,36 +45,36 @@ function configure() {
 
 	tag.disableInitialLoad();
 
-	tag.addEventListener('slotOnload', (event) => {
+	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		slotListener.emitLoadedEvent(event, getAdSlotFromEvent(event));
 	});
 
-	tag.addEventListener('slotRenderEnded', (event) => {
+	tag.addEventListener('slotRenderEnded', (event: googletag.events.SlotRenderEndedEvent) => {
 		// IE doesn't allow us to inspect GPT iframe at this point.
 		// Let's launch our callback in a setTimeout instead.
 		defer(() => slotListener.emitRenderEnded(event, getAdSlotFromEvent(event)));
 	});
 
-	tag.addEventListener('impressionViewable', (event) => {
+	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
 		slotListener.emitImpressionViewable(event, getAdSlotFromEvent(event));
 	});
 	window.googletag.enableServices();
 }
 
 export class GptProvider implements Provider {
-	constructor(forceInit = false) {
-		window.googletag = window.googletag || {};
+	constructor() {
+		window.googletag = window.googletag || ({} as googletag.Googletag);
 		window.googletag.cmd = window.googletag.cmd || [];
 
-		this.init(forceInit);
+		this.init();
 	}
 
-	isInitialized() {
+	isInitialized(): boolean {
 		return initialized;
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
-	init() {
+	init(): void {
 		if (this.isInitialized()) {
 			return;
 		}
@@ -80,14 +87,14 @@ export class GptProvider implements Provider {
 		initialized = true;
 	}
 
-	setupNonPersonalizedAds() {
+	setupNonPersonalizedAds(): void {
 		const tag = window.googletag.pubads();
 
 		tag.setRequestNonPersonalizedAds(trackingOptIn.isOptedIn() ? 0 : 1);
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
-	fillIn(adSlot) {
+	fillIn(adSlot: AdSlot): void {
 		const adStack = context.get('state.adStack') || [];
 
 		btfBlockerService.push(adSlot, (...args) => {
@@ -99,7 +106,7 @@ export class GptProvider implements Provider {
 	}
 
 	/** @private */
-	fillInCallback(adSlot) {
+	fillInCallback(adSlot: AdSlot): void {
 		const targeting = this.parseTargetingParams(adSlot.getTargeting());
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
@@ -121,7 +128,7 @@ export class GptProvider implements Provider {
 	}
 
 	/** @private */
-	createGptSlot(adSlot, sizeMap) {
+	createGptSlot(adSlot: AdSlot, sizeMap: GptSizeMap) {
 		if (adSlot.isOutOfPage()) {
 			return window.googletag.defineOutOfPageSlot(adSlot.getAdUnit(), adSlot.getSlotName());
 		}
@@ -131,11 +138,11 @@ export class GptProvider implements Provider {
 			.defineSizeMapping(sizeMap.build());
 	}
 
-	applyTargetingParams(gptSlot, targeting) {
+	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting) {
 		Object.keys(targeting).forEach((key) => gptSlot.setTargeting(key, targeting[key]));
 	}
 
-	parseTargetingParams(targetingParams) {
+	parseTargetingParams(targetingParams: { [key: string]: any }): Targeting {
 		const result = {};
 
 		Object.keys(targetingParams).forEach((key) => {
@@ -150,16 +157,16 @@ export class GptProvider implements Provider {
 			}
 		});
 
-		return result;
+		return result as Targeting;
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
-	updateCorrelator() {
+	updateCorrelator(): void {
 		window.googletag.pubads().updateCorrelator();
 	}
 
 	/** @private */
-	flush() {
+	flush(): void {
 		if (definedSlots.length) {
 			window.googletag.pubads().refresh(definedSlots, { changeCorrelator: false });
 			definedSlots = [];
@@ -167,7 +174,7 @@ export class GptProvider implements Provider {
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
-	destroyGptSlots(gptSlots) {
+	destroyGptSlots(gptSlots: googletag.Slot[]): void {
 		logger(logGroup, 'destroySlots', gptSlots);
 
 		gptSlots.forEach((gptSlot) => {
@@ -183,7 +190,7 @@ export class GptProvider implements Provider {
 		}
 	}
 
-	destroySlots(slotNames) {
+	destroySlots(slotNames?: string[]): boolean {
 		const allSlots = window.googletag.pubads().getSlots();
 		let slotsToDestroy = allSlots;
 
@@ -203,8 +210,10 @@ export class GptProvider implements Provider {
 
 		if (slotsToDestroy.length) {
 			this.destroyGptSlots(slotsToDestroy);
-		} else {
-			logger(logGroup, 'destroySlots', 'no slots returned to destroy', allSlots, slotNames);
+			return true;
 		}
+
+		logger(logGroup, 'destroySlots', 'no slots returned to destroy', allSlots, slotNames);
+		return false;
 	}
 }

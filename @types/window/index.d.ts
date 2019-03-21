@@ -7,6 +7,12 @@ interface Window {
 		ima: typeof google.ima;
 	};
 	googletag: googletag.Googletag;
+	moatPrebidApi?: MoatPrebidApi;
+	moatYieldReady?: MoatYieldReady;
+	Krux?: KruxQueue;
+	_clrm: CLRM;
+	grumi?: GeoEdgeConfig;
+	moatjw?: MoatJW;
 }
 
 declare var NOLBUNDLE: any;

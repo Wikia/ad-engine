@@ -1,9 +1,11 @@
 import { intersection } from 'lodash';
-
+import { AdSlot } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
 import { slotService } from './slot-service';
+
+type FillInCallback = (adSlot: AdSlot) => void;
 
 const logGroup = 'btf-blocker';
 
@@ -19,7 +21,7 @@ class BtfBlockerService {
 	/**
 	 * @private
 	 */
-	resetState() {
+	resetState(): void {
 		this.firstCallEnded = false;
 		this.unblockedSlotNames = [];
 
@@ -36,7 +38,7 @@ class BtfBlockerService {
 		}
 	}
 
-	init() {
+	init(): void {
 		context.push('listeners.slot', {
 			onRenderEnded: (adSlot) => {
 				logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
@@ -58,7 +60,7 @@ class BtfBlockerService {
 		}
 	}
 
-	finishFirstCall() {
+	finishFirstCall(): void {
 		this.firstCallEnded = true;
 		logger(logGroup, 'first call queue finished');
 
@@ -71,8 +73,8 @@ class BtfBlockerService {
 		this.slotsQueue.flush();
 	}
 
-	private disableSecondCall(unblockedSlots) {
-		const slots = context.get('slots') || {};
+	private disableSecondCall(unblockedSlots: string[]): void {
+		const slots: { [key: string]: AdSlot } = context.get('slots') || {};
 
 		logger(logGroup, 'second call queue disabled');
 
@@ -85,7 +87,7 @@ class BtfBlockerService {
 		});
 	}
 
-	push(adSlot, fillInCallback) {
+	push(adSlot: AdSlot, fillInCallback: FillInCallback): void {
 		if (!this.firstCallEnded && !adSlot.isFirstCall()) {
 			this.slotsQueue.push({
 				adSlot,
@@ -100,13 +102,13 @@ class BtfBlockerService {
 		this.fillInSlotIfEnabled(adSlot, fillInCallback);
 	}
 
-	private disableAdSlotIfHasConflict(adSlot) {
+	private disableAdSlotIfHasConflict(adSlot: AdSlot): void {
 		if (slotService.hasViewportConflict(adSlot)) {
 			slotService.disable(adSlot.getSlotName(), 'viewport-conflict');
 		}
 	}
 
-	private fillInSlotIfEnabled(adSlot, fillInCallback) {
+	private fillInSlotIfEnabled(adSlot: AdSlot, fillInCallback: FillInCallback): void {
 		if (!adSlot.isEnabled()) {
 			logger(logGroup, adSlot.getSlotName(), 'Slot blocked', adSlot.getStatus());
 
@@ -117,7 +119,7 @@ class BtfBlockerService {
 		fillInCallback(adSlot);
 	}
 
-	unblock(slotName) {
+	unblock(slotName: string): void {
 		logger(logGroup, slotName, 'Unblocking slot');
 
 		this.unblockedSlotNames.push(slotName);

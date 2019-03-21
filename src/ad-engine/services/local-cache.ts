@@ -1,12 +1,17 @@
 /* global Storage */
 import { logger } from '../utils';
 
+interface CacheItem {
+	expires?: number;
+	data: any;
+}
+
 const logGroup = 'local-cache';
 
-let canUseStorage;
+let canUseStorage: boolean;
 
 class LocalCache {
-	canUseStorage() {
+	canUseStorage(): boolean {
 		if (typeof canUseStorage === 'undefined') {
 			canUseStorage = false;
 			if (window.localStorage) {
@@ -25,7 +30,7 @@ class LocalCache {
 					 * calls to LocalCache.set().
 					 */
 					try {
-						LocalCache.createPolyfill();
+						this.createPolyfill();
 						canUseStorage = true;
 					} catch (exception) {
 						logger(logGroup, 'Local Storage polyfill error: ', exception);
@@ -37,7 +42,7 @@ class LocalCache {
 		return canUseStorage;
 	}
 
-	createPolyfill() {
+	createPolyfill(): void {
 		logger(logGroup, 'Local Storage polyfill being created');
 		Storage.prototype.data = {};
 
@@ -58,41 +63,40 @@ class LocalCache {
 		};
 	}
 
-	get(key) {
+	get(key: string): any {
 		if (!this.canUseStorage()) {
 			return false;
 		}
 
-		let cacheItem = window.localStorage.getItem(key);
+		const cacheItem = window.localStorage.getItem(key);
 
 		if (cacheItem) {
 			// De-serialize
-			cacheItem = JSON.parse(cacheItem);
+			const unpacked: CacheItem = JSON.parse(cacheItem);
 
 			// Check if item has expired
-			if (this.isExpired(cacheItem)) {
+			if (this.isExpired(unpacked)) {
 				this.delete(key);
 
 				return false;
 			}
 
-			return cacheItem.data;
+			return unpacked.data;
 		}
 
 		return false;
 	}
 
-	set(key, value, expires = null) {
+	set(key: string, value: any, expires?: number): boolean {
 		if (!this.canUseStorage() || !this.isStorable(value)) {
 			return false;
 		}
 
-		const cacheItem = { data: value };
-		const expiresValue = parseInt(expires, 10);
+		const cacheItem: CacheItem = { data: value };
 
-		if (!isNaN(expiresValue)) {
+		if (expires) {
 			// Set expiration as a JS timestamp
-			cacheItem.expires = expiresValue * 1000 + Date.now();
+			cacheItem.expires = expires * 1000 + Date.now();
 		}
 
 		try {
@@ -105,7 +109,7 @@ class LocalCache {
 		return true;
 	}
 
-	delete(key) {
+	delete(key: string): void {
 		if (!this.canUseStorage()) {
 			return;
 		}
@@ -113,7 +117,7 @@ class LocalCache {
 		window.localStorage.removeItem(key);
 	}
 
-	isStorable(value) {
+	isStorable(value: any): boolean {
 		if (
 			// Functions might be a security risk
 			typeof value === 'function' ||
@@ -128,8 +132,11 @@ class LocalCache {
 		return true;
 	}
 
-	isExpired(cacheItem) {
-		return cacheItem.expires && Date.now() >= parseInt(cacheItem.expires, 10);
+	isExpired(cacheItem: CacheItem): boolean {
+		if (cacheItem.expires) {
+			return cacheItem.expires && Date.now() >= cacheItem.expires;
+		}
+		return false;
 	}
 }
 
