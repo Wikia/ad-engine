@@ -39,10 +39,18 @@ class VastParser {
 
 	getAdInfo(imaAd?: google.ima.Ad): VideoAdInfo {
 		const adInfo: VideoAdInfo = {
-			lineItemId: imaAd.getAdId(),
-			creativeId: imaAd.getCreativeId(),
-			contentType: imaAd.getContentType(),
+			lineItemId: undefined,
+			creativeId: undefined,
+			contentType: undefined,
 		};
+
+		if (!imaAd) {
+			return adInfo;
+		}
+
+		adInfo.lineItemId = imaAd.getAdId();
+		adInfo.creativeId = imaAd.getCreativeId();
+		adInfo.contentType = imaAd.getContentType();
 
 		const wrapperAdIds = imaAd.getWrapperAdIds() || [];
 
