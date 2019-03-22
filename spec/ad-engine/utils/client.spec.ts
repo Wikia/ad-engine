@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import { client } from '../../../src/ad-engine/utils/client';
 
 describe('client', () => {
-	it('checkBlocking works correctly', () => {
+	it('checkBlocking works correctly', async () => {
 		let blocker = false;
 		let notBlocked = false;
 
-		client.checkBlocking(
+		await client.checkBlocking(
 			() => {
 				blocker = true;
 			},
