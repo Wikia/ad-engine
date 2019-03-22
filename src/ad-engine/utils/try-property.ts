@@ -1,17 +1,23 @@
-export function whichProperty(
-	obj: { [key: string]: any },
-	properties: string[] = [],
-): string | undefined {
-	// tslint:disable-next-line
-	return properties.find((property) => property in obj);
+import { Dictionary } from '../models';
+
+export function whichProperty(obj: Dictionary = {}, properties: string[] = []): string | undefined {
+	return properties.find((property: string) => {
+		if (typeof property !== 'string') {
+			throw new Error('property name must be a string');
+		}
+
+		return property in obj;
+	});
 }
 
-export function tryProperty(obj: { [key: string]: any }, properties: string[] = []) {
-	const property = whichProperty(obj, properties);
+export function tryProperty(obj: Dictionary, properties: string[] = []): boolean | undefined {
+	const property: string = whichProperty(obj, properties);
 
-	if (property) {
-		const propertyValue = obj[property];
+	if (!!property) {
+		const propertyValue: any = obj[property];
 
 		return typeof propertyValue === 'function' ? propertyValue.bind(obj) : propertyValue;
 	}
+
+	return undefined;
 }

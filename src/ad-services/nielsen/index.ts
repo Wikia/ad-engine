@@ -1,9 +1,9 @@
 /* global NOLBUNDLE */
-import { context, utils } from '@wikia/ad-engine';
+import { context, Dictionary, utils } from '@wikia/ad-engine';
 import { initNielsenStaticQueue } from './static-queue-script';
 
 const logGroup = 'nielsen-dcr';
-const nlsnConfig: { [key: string]: any } = {};
+const nlsnConfig: Dictionary = {};
 
 /**
  * Creates Nielsen Static Queue Snippet
