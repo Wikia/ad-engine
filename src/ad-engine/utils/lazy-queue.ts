@@ -20,7 +20,7 @@ export function makeLazyQueue<T = any>(queue: T[], callback: (item: T) => void):
 			while (queue.length > 0) {
 				callback(queue.shift());
 			}
-			(queue as any).push = function (item) {
+			(queue as any).push = function (item: T) {
 				callback(item);
 			};
 		};

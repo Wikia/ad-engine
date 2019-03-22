@@ -77,7 +77,7 @@ export class StickyBase {
 		const found = this.lines.some((line) => {
 			const [lineId, geo] = line.split(':', 2);
 
-			return lineId === this.lineId && (!geo || utils.isProperGeo([geo]));
+			return lineId === this.lineId && (!geo || utils.geoService.isProperGeo([geo]));
 		});
 
 		if (found) {
