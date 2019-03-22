@@ -1,6 +1,6 @@
+import { AdSlot, Dictionary } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { AdSlot } from '../../../../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
 import { googleImaPlayerFactory } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-player-factory';
@@ -8,7 +8,7 @@ import { VideoSettings } from '../../../../../../src/ad-engine/video/player/porv
 import ConfigMock from '../../../../config-mock';
 import { getIma } from '../ima-factory';
 
-let mocks: { [key: string]: any } = {};
+let mocks: Dictionary = {};
 
 describe('google-ima-player', () => {
 	beforeEach(() => {

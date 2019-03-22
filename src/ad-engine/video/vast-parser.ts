@@ -1,3 +1,4 @@
+import { Dictionary } from '../models';
 import { ADX } from '../providers';
 import { queryString } from '../utils';
 
@@ -14,7 +15,7 @@ export interface EventExtra {
 export interface VastParams {
 	contentType: string;
 	creativeId: string;
-	customParams: { [key: string]: string };
+	customParams: Dictionary<string>;
 	lineItemId: string;
 	position: string;
 	size: string;
