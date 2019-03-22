@@ -109,7 +109,7 @@ export class PorvataListener {
 			this.video && this.video.ima.getAdsManager() && this.video.ima.getAdsManager().getCurrentAd();
 
 		if (imaAd) {
-			const adInfo = vastParser.getAdInfo();
+			const adInfo = vastParser.getAdInfo(imaAd);
 			contentType = adInfo.contentType;
 			creativeId = adInfo.creativeId;
 			lineItemId = adInfo.lineItemId;
