@@ -1,6 +1,5 @@
-import Cookies from 'js-cookie';
+import * as Cookies from 'js-cookie';
 import { context } from '../services/context-service';
-import Random from './random';
 
 const cacheMarker = '-cached';
 const cacheMaxAge = 30 * 60 * 1000;
@@ -10,36 +9,65 @@ const negativePrefix = 'non-';
 const precision = 10 ** 6;
 const samplingSeparator = '/';
 const sessionCookieDefault = 'tracking_session_id';
-let cache = {};
+let cache: CacheDictionary = {};
 let cookieLoaded = false;
-let geoData = null;
+let geoData: GeoData | {} = null;
 
-function hasCache(countryList) {
+export interface CacheDictionary {
+	[key: string]: CacheData;
+}
+
+export interface CacheData {
+	name: string;
+	group: 'A' | 'B';
+	limit: number;
+	result: boolean;
+	withCookie: boolean;
+}
+
+export interface GeoData {
+	region: string;
+	country: string;
+	continent: string;
+}
+
+// TODO: Check if they are necessary
+export interface WikiaCookieAttributes extends Cookies.CookieAttributes {
+	overwrite: boolean;
+	maxAge: number;
+}
+
+function hasCache(countryList: string[]): boolean {
 	return countryList.some((country) => country.indexOf(cacheMarker) !== -1);
 }
 
-function hasSampling(geo) {
-	return (value) =>
+function hasSampling(geo: string): (value: string) => boolean {
+	return (value: string) =>
 		value.indexOf(negativePrefix) !== 0 && value.indexOf(geo + samplingSeparator) > -1;
 }
 
-function getSamplingLimits(value) {
-	let [, samplingValue] = value.split(samplingSeparator);
+function getSamplingLimits(value: string): number {
+	let [, samplingValue]: string[] = value.split(samplingSeparator);
 
 	samplingValue = samplingValue.replace(cacheMarker, '');
 
 	return Math.round(parseFloat(samplingValue) * precision) | 0;
 }
 
-function addResultToCache(name, result, samplingLimits, withCookie) {
-	const [limitValue] = samplingLimits;
+function addResultToCache(
+	name: string,
+	result: boolean,
+	samplingLimits: number[],
+	withCookie: boolean,
+): void {
+	const [limitValue]: number[] = samplingLimits;
 
 	cache[name] = {
 		name,
-		group: result ? 'B' : 'A',
-		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 		result,
 		withCookie,
+		group: result ? 'B' : 'A',
+		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 	};
 
 	if (withCookie) {
@@ -47,21 +75,21 @@ function addResultToCache(name, result, samplingLimits, withCookie) {
 	}
 }
 
-function getCookieDomain() {
-	const domain = window.location.hostname.split('.');
+function getCookieDomain(): string | undefined {
+	const domain: string[] = window.location.hostname.split('.');
 
 	return domain.length > 1
 		? `.${domain[domain.length - 2]}.${domain[domain.length - 1]}`
 		: undefined;
 }
 
-function loadCookie() {
-	readSessionId();
+function loadCookie(): void {
+	geoService.readSessionId();
 
-	const cookie = Cookies.get(`${context.get('options.session.id')}_basset`);
+	const cookie: string = Cookies.get(`${context.get('options.session.id')}_basset`);
 
 	if (cookie) {
-		const cachedVariables = JSON.parse(cookie);
+		const cachedVariables: CacheDictionary = JSON.parse(cookie);
 
 		Object.keys(cachedVariables).forEach((variable) => {
 			cache[variable] = cachedVariables[variable];
@@ -73,8 +101,8 @@ function loadCookie() {
 	cookieLoaded = true;
 }
 
-function synchronizeCookie() {
-	const cachedVariables = {};
+function synchronizeCookie(): void {
+	const cachedVariables: CacheDictionary = {};
 
 	Object.keys(cache).forEach((variable) => {
 		if (cache[variable].withCookie) {
@@ -85,19 +113,21 @@ function synchronizeCookie() {
 	setCookie(JSON.stringify(cachedVariables));
 }
 
-function setCookie(value) {
-	Cookies.set(`${context.get('options.session.id')}_basset`, value, {
-		maxAge: cacheMaxAge,
+function setCookie(value: any): void {
+	const cookieAttributes: WikiaCookieAttributes = {
 		expires: new Date(new Date().getTime() + cacheMaxAge),
 		path: '/',
 		domain: getCookieDomain(),
 		overwrite: true,
-	});
+		maxAge: cacheMaxAge,
+	};
+
+	Cookies.set(`${context.get('options.session.id')}_basset`, value, cookieAttributes);
 }
 
-function getResult(samplingLimits, name, withCookie) {
-	const randomValue = Math.round(Random.getRandom() * (precision * 100)) | 0;
-	const result = samplingLimits.some((value) => randomValue < value);
+function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
+	const randomValue: number = Math.round(Math.random() * (precision * 100)) | 0;
+	const result: boolean = samplingLimits.some((value) => randomValue < value);
 
 	if (name) {
 		addResultToCache(name, result, samplingLimits, withCookie);
@@ -106,9 +136,9 @@ function getResult(samplingLimits, name, withCookie) {
 	return result;
 }
 
-function isSampledForGeo(countryList, geo, name) {
-	const countryListWithSampling = countryList.filter(hasSampling(geo));
-	const cachedWithCookie = hasCache(countryList);
+function isSampledForGeo(countryList: string[], geo: string, name: string): boolean {
+	const countryListWithSampling: string[] = countryList.filter(hasSampling(geo));
+	const cachedWithCookie: boolean = hasCache(countryList);
 
 	if (countryListWithSampling.length === 0) {
 		return false;
@@ -117,17 +147,16 @@ function isSampledForGeo(countryList, geo, name) {
 	return getResult(countryListWithSampling.map(getSamplingLimits), name, cachedWithCookie);
 }
 
-function containsEarth(countryList, name) {
+function containsEarth(countryList: string[], name: string): boolean {
 	return countryList.indexOf(earth) > -1 || isSampledForGeo(countryList, earth, name);
 }
 
 /**
  * Return geo data from cookie
- * @returns {Object}
  */
-function getGeoData() {
+function getGeoData(): GeoData | {} {
 	if (geoData === null) {
-		const jsonData = decodeURIComponent(Cookies.get('Geo'));
+		const jsonData: string = decodeURIComponent(Cookies.get('Geo'));
 
 		try {
 			geoData = JSON.parse(jsonData) || {};
@@ -140,61 +169,55 @@ function getGeoData() {
 }
 
 /**
- * Set geo data
- * @param {Object} data
- * @returns {void}
+ * @deprecated use geoService instead
  */
-export function setGeoData(data) {
+export function setGeoData(data: GeoData): void {
 	geoData = data;
 }
 
 /**
  * Return country code based on cookie
- * @returns {string}
+ * @deprecated use geoService instead
  */
-export function getCountryCode() {
-	return getGeoData().country;
+export function getCountryCode(): string {
+	return (getGeoData() as GeoData).country;
 }
 
 /**
  * Return continent code based on cookie
- * @returns {string}
+ * @deprecated use geoService instead
  */
-export function getContinentCode() {
-	return getGeoData().continent;
+export function getContinentCode(): string {
+	return (getGeoData() as GeoData).continent;
 }
 
 /**
  * Return region code based on cookie
- * @returns {*}
+ * @deprecated use geoService instead
  */
-export function getRegionCode() {
-	return getGeoData().region;
+export function getRegionCode(): string {
+	return (getGeoData() as GeoData).region;
 }
 
 /**
  * Checks whether current country (from cookie) is listed in array
- * @param {string[]} countryList
- * @param {string|undefined}name
- * @returns {boolean}
+ * @deprecated use geoService instead
  */
-export function isProperCountry(countryList = [], name) {
+export function isProperCountry(countryList: string[] = [], name?: string): boolean {
 	return !!(
 		countryList &&
 		countryList.indexOf &&
-		(countryList.indexOf(getCountryCode()) > -1 ||
-			isSampledForGeo(countryList, getCountryCode(), name))
+		(countryList.indexOf(geoService.getCountryCode()) > -1 ||
+			isSampledForGeo(countryList, geoService.getCountryCode(), name))
 	);
 }
 
 /**
  * Checks whether current regions (from cookie) is listed in array
- * @param {string[]} countryList
- * @param {string|undefined} name
- * @returns {boolean}
+ * @deprecated use geoService instead
  */
-export function isProperRegion(countryList = [], name) {
-	const code = `${getCountryCode()}-${getRegionCode()}`;
+export function isProperRegion(countryList: string[] = [], name?: string): boolean {
+	const code = `${geoService.getCountryCode()}-${geoService.getRegionCode()}`;
 
 	return !!(
 		countryList &&
@@ -203,19 +226,17 @@ export function isProperRegion(countryList = [], name) {
 	);
 }
 
-function containsContinent(countryList = [], name) {
-	const geo = `${earth}-${getContinentCode()}`;
+function containsContinent(countryList: string[] = [], name?: string): boolean {
+	const geo = `${earth}-${geoService.getContinentCode()}`;
 
 	return countryList.indexOf(geo) > -1 || isSampledForGeo(countryList, geo, name);
 }
 
 /**
  * Checks whether current continent (from cookie) is listed in array
- * @param {string[]} countryList
- * @param {string|undefined} name
- * @returns {boolean}
+ * @deprecated use geoService instead
  */
-export function isProperContinent(countryList = [], name) {
+export function isProperContinent(countryList: string[] = [], name?: string): boolean {
 	return !!(
 		countryList &&
 		countryList.indexOf &&
@@ -225,51 +246,61 @@ export function isProperContinent(countryList = [], name) {
 
 /**
  * Checks whether current geo is excluded in array (by using non- prefix)
- * @param {string[]} countryList
- * @returns {boolean}
  */
-function isGeoExcluded(countryList = []) {
+function isGeoExcluded(countryList: string[] = []): boolean {
 	return !!(
-		countryList.indexOf(`${negativePrefix}${getCountryCode()}`) > -1 ||
-		countryList.indexOf(`${negativePrefix}${getCountryCode()}-${getRegionCode()}`) > -1 ||
-		countryList.indexOf(`${negativePrefix}${earth}-${getContinentCode()}`) > -1
+		countryList.indexOf(`${negativePrefix}${geoService.getCountryCode()}`) > -1 ||
+		countryList.indexOf(
+			`${negativePrefix}${geoService.getCountryCode()}-${geoService.getRegionCode()}`,
+		) > -1 ||
+		countryList.indexOf(`${negativePrefix}${earth}-${geoService.getContinentCode()}`) > -1
 	);
 }
 
-function getResultLog(name) {
-	const entry = cache[name];
+function getResultLog(name: string): string {
+	const entry: CacheData = cache[name];
 
 	return `${entry.name}_${entry.group}_${entry.limit}`;
 }
 
-export function resetSamplingCache() {
+/**
+ * @deprecated use geoService instead
+ */
+export function resetSamplingCache(): void {
 	cache = {};
 }
 
-export function readSessionId() {
-	const sessionCookieName = context.get('options.session.cookieName') || sessionCookieDefault;
-	const sid = Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
+/**
+ * @deprecated use geoService instead
+ */
+export function readSessionId(): void {
+	const sessionCookieName: string =
+		context.get('options.session.cookieName') || sessionCookieDefault;
+	const sid: string = Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
 
-	setSessionId(sid);
+	geoService.setSessionId(sid);
 }
 
-export function setSessionId(sid) {
+/**
+ * @deprecated use geoService instead
+ */
+export function setSessionId(sid: string): void {
 	context.set('options.session.id', sid);
 	cookieLoaded = false;
 }
 
-export function getSamplingResults() {
+/**
+ * @deprecated use geoService instead
+ */
+export function getSamplingResults(): string[] {
 	return Object.keys(cache).map(getResultLog);
 }
 
 /**
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
- *
- * @param {string[]} countryList
- * @param {string|undefined} name
- * @returns {boolean}
+ * @deprecated use geoService instead
  */
-export function isProperGeo(countryList = [], name = undefined) {
+export function isProperGeo(countryList: string[] = [], name?: string): boolean {
 	if (!cookieLoaded) {
 		loadCookie();
 	}
@@ -282,32 +313,34 @@ export function isProperGeo(countryList = [], name = undefined) {
 		countryList &&
 		countryList.indexOf &&
 		!isGeoExcluded(countryList) &&
-		(isProperContinent(countryList, name) ||
-			isProperCountry(countryList, name) ||
-			isProperRegion(countryList, name))
+		(geoService.isProperContinent(countryList, name) ||
+			geoService.isProperCountry(countryList, name) ||
+			geoService.isProperRegion(countryList, name))
 	);
 }
 
 /**
  * Transform sampling results using supplied key-values map.
- *
- * @param {string[] | undefined} keyVals mapping
- * @returns {string[]}
+ * @deprecated use geoService instead
  */
-export function mapSamplingResults(keyVals) {
+export function mapSamplingResults(keyVals: string[] = []): string[] {
 	if (!keyVals || !keyVals.length) {
 		return [];
 	}
 
-	const labradorVariables = module.getSamplingResults();
+	const labradorVariables: string[] = geoService.getSamplingResults();
 
 	return keyVals
-		.map((keyVal) => keyVal.split(':'))
-		.filter((keyVal) => labradorVariables.indexOf(keyVal[0]) !== -1)
-		.map((keyVal) => keyVal[1]);
+		.map((keyVal: string) => keyVal.split(':'))
+		.filter(([lineId]: string[]) => labradorVariables.indexOf(lineId) !== -1)
+		.map(([lineId, geo]: string[]) => geo);
 }
 
-const module = {
+export const geoService = {
+	setGeoData,
+	isProperContinent,
+	isProperCountry,
+	isProperRegion,
 	getContinentCode,
 	getCountryCode,
 	getRegionCode,
@@ -318,5 +351,3 @@ const module = {
 	setSessionId,
 	mapSamplingResults,
 };
-
-export default module;

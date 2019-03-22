@@ -1,4 +1,4 @@
-import { buildVastUrl, context, utils } from '@wikia/ad-engine';
+import { buildVastUrl, context, Dictionary, utils } from '@wikia/ad-engine';
 import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
@@ -56,7 +56,7 @@ export class WikiaVideo extends BaseAdapter {
 		};
 	}
 
-	getSpec(): { [key: string]: string | string[] } {
+	getSpec(): Dictionary<string | string[]> {
 		return {
 			code: this.bidderName,
 			supportedMediaTypes: ['video'],

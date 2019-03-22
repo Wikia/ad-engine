@@ -1,5 +1,5 @@
 import { intersection } from 'lodash';
-import { AdSlot } from '../models';
+import { AdSlot, Dictionary } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
@@ -74,7 +74,7 @@ class BtfBlockerService {
 	}
 
 	private disableSecondCall(unblockedSlots: string[]): void {
-		const slots: { [key: string]: AdSlot } = context.get('slots') || {};
+		const slots: Dictionary<AdSlot> = context.get('slots') || {};
 
 		logger(logGroup, 'second call queue disabled');
 

@@ -1,6 +1,6 @@
 import { decorate } from 'core-decorators';
 import { slotListener } from '../listeners';
-import { AdSlot, Targeting } from '../models';
+import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
@@ -145,7 +145,7 @@ export class GptProvider implements Provider {
 		Object.keys(targeting).forEach((key) => gptSlot.setTargeting(key, targeting[key]));
 	}
 
-	parseTargetingParams(targetingParams: { [key: string]: any }): Targeting {
+	parseTargetingParams(targetingParams: Dictionary): Targeting {
 		const result = {};
 
 		Object.keys(targetingParams).forEach((key) => {

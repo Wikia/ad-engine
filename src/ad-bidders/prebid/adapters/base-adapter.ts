@@ -1,3 +1,5 @@
+import { Dictionary } from '@wikia/ad-engine';
+
 export interface AdUnitConfig {
 	bids: Bid[];
 	code: string;
@@ -20,7 +22,7 @@ export interface Aliases {
 
 export interface Bid {
 	bidder: string;
-	params?: { [key: string]: string | number | object | boolean };
+	params?: Dictionary<string | number | object | boolean>;
 }
 
 export interface BidderAdSlotConfig {
