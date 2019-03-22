@@ -5,7 +5,18 @@ import currentDevice from 'current-device';
 
 let bab: BlockAdBlock = null;
 let browser: string = null;
+let isBabInitialised = false;
 let operatingSystem: string = null;
+
+function setupBab(): void {
+	bab = new BlockAdBlock({
+		checkOnLoad: false,
+		resetOnEnd: true,
+		loopCheckTime: 50,
+		loopMaxNumber: 5,
+	});
+	isBabInitialised = true;
+}
 
 class Client {
 	isSmartphone(): boolean {
@@ -22,33 +33,30 @@ class Client {
 
 	checkBlocking(enabled = () => {}, disabled = () => {}): Promise<{}> {
 		return new Promise((resolve) => {
-			if (bab === null) {
+			if (!isBabInitialised) {
 				if (typeof BlockAdBlock === 'undefined') {
 					resolve(true);
-					enabled();
 
 					return;
 				}
-
-				bab = new BlockAdBlock({
-					checkOnLoad: false,
-					resetOnEnd: true,
-					loopCheckTime: 50,
-					loopMaxNumber: 5,
-				});
+				setupBab();
 			}
 
-			bab.onDetected(() => {
-				resolve(true);
-				enabled();
-			});
-			bab.onNotDetected(() => {
-				resolve(false);
-				disabled();
-			});
+			bab.onDetected(() => resolve(true));
+			bab.onNotDetected(() => resolve(false));
 
 			bab.check(true);
-		});
+		}).then(
+			(detected: boolean): boolean => {
+				if (detected) {
+					enabled();
+				} else {
+					disabled();
+				}
+
+				return detected;
+			},
+		);
 	}
 
 	getDeviceType(): string {
