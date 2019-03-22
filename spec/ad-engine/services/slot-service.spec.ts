@@ -1,13 +1,11 @@
-import { SlotConfig } from '@wikia/ad-engine';
+import { context, Dictionary, SlotConfig, slotService } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { context } from '../../../src/ad-engine/services/context-service';
-import { slotService } from '../../../src/ad-engine/services/slot-service';
 import adSlotFake from '../ad-slot-fake';
 
 let adSlot;
 let elementProperties = {};
-let slotConfigs: { [key: string]: Partial<SlotConfig> };
+let slotConfigs: Dictionary<Partial<SlotConfig>>;
 
 function clearSlotServiceState() {
 	this.slots = {};

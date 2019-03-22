@@ -1,4 +1,4 @@
-import { AdSlot, SlotConfig } from '../models';
+import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
@@ -38,9 +38,9 @@ eventService.on(events.PAGE_CHANGE_EVENT, () => {
 
 class SlotService {
 	slotEvents = {};
-	slotStatuses: { [key: string]: string | null } = {};
-	slotStates: { [key: string]: boolean | undefined } = {};
-	slots: { [key: string]: AdSlot } = {};
+	slotStatuses: Dictionary<string> = {};
+	slotStates: Dictionary<boolean> = {};
+	slots: Dictionary<AdSlot> = {};
 
 	/**
 	 * Add new slot to register
@@ -202,7 +202,7 @@ class SlotService {
 		return hasConflict;
 	}
 
-	get slotConfigsMap(): { [key: string]: SlotConfig } {
+	get slotConfigsMap(): Dictionary<SlotConfig> {
 		return context.get('slots') || {};
 	}
 

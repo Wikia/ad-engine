@@ -1,29 +1,23 @@
-export function whichProperty(obj, properties = []) {
-	// TODO: replace with properties.find(...)
-	// tslint:disable-next-line
-	for (let i = 0; i < properties.length; i += 1) {
-		const property = properties[i];
+import { Dictionary } from '../models';
 
+export function whichProperty(obj: Dictionary = {}, properties: string[] = []): string | undefined {
+	return properties.find((property: string) => {
 		if (typeof property !== 'string') {
 			throw new Error('property name must be a string');
 		}
 
-		if (property in obj) {
-			return property;
-		}
-	}
-
-	return null;
+		return property in obj;
+	});
 }
 
-export function tryProperty(obj, properties = []) {
-	const property = whichProperty(obj, properties);
+export function tryProperty(obj: Dictionary, properties: string[] = []): boolean | undefined {
+	const property: string = whichProperty(obj, properties);
 
-	if (property !== null) {
-		const propertyValue = obj[property];
+	if (!!property) {
+		const propertyValue: any = obj[property];
 
 		return typeof propertyValue === 'function' ? propertyValue.bind(obj) : propertyValue;
 	}
 
-	return null;
+	return undefined;
 }

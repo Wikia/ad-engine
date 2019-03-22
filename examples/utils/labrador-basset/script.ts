@@ -6,7 +6,7 @@ const instantGlobals = utils.queryString.getValues();
 const sessionId = utils.queryString.get('sessionid');
 const statuses = [];
 
-utils.setSessionId(sessionId || 't3st4d3ng1n3s3ss1on1d');
+utils.geoService.setSessionId(sessionId || 't3st4d3ng1n3s3ss1on1d');
 
 Object.keys(instantGlobals).forEach((variable) => {
 	if (variable.substr(0, 14) === 'InstantGlobals') {
@@ -16,9 +16,9 @@ Object.keys(instantGlobals).forEach((variable) => {
 			.replace(']', '')
 			.split(',');
 
-		statuses.push(`${name}: ${utils.isProperGeo(value, name) ? 'enabled' : 'disabled'}`);
+		statuses.push(`${name}: ${utils.geoService.isProperGeo(value, name) ? 'enabled' : 'disabled'}`);
 	}
 });
 
 preStatuses.innerText = statuses.join('\n');
-preGroups.innerText = utils.getSamplingResults();
+preGroups.innerText = utils.geoService.getSamplingResults();

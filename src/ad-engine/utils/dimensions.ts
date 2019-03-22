@@ -6,8 +6,8 @@ type OffsetParameter = 'offsetHeight' | 'offsetLeft' | 'offsetTop' | 'offsetWidt
  * @param offsetParameter node element parameter to count overall offset
  */
 function getElementOffset(element: HTMLElement, offsetParameter: OffsetParameter): number {
-	const elementWindow = element.ownerDocument.defaultView;
-	let currentElement = element;
+	const elementWindow: WindowProxy = element.ownerDocument.defaultView;
+	let currentElement: HTMLElement = element;
 	let hideAgain = false;
 	let topPos = 0;
 

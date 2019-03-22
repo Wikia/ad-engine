@@ -1,15 +1,13 @@
+import { btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
-import { SlotConfig } from '../../../src/ad-engine/models';
-import { btfBlockerService } from '../../../src/ad-engine/services/btf-blocker-service';
-import { context } from '../../../src/ad-engine/services/context-service';
 import adSlotFake from '../ad-slot-fake';
 
 let firstCallSlot;
 let secondCallSlot;
 let onRenderEndedCallback;
 let sandbox;
-let slotConfigs: { [key: string]: SlotConfig };
+let slotConfigs: Dictionary<SlotConfig>;
 
 describe('btf-blocker-service', () => {
 	beforeEach(() => {
