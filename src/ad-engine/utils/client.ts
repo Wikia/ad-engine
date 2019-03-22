@@ -3,7 +3,7 @@
 import 'blockadblock';
 import currentDevice from 'current-device';
 
-let bab: BlockAdBlock = null;
+let bab: BlockAdBlock;
 let browser: string = null;
 let isBabInitialised = false;
 let operatingSystem: string = null;
