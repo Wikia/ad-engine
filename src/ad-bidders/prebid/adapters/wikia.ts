@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { Dictionary, utils } from '@wikia/ad-engine';
 import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 const price = utils.queryString.get('wikia_adapter');
@@ -75,7 +75,7 @@ export class Wikia extends BaseAdapter {
 		};
 	}
 
-	getSpec(): { [key: string]: string | string[] } {
+	getSpec(): Dictionary<string | string[]> {
 		return {
 			code: this.bidderName,
 			supportedMediaTypes: ['banner'],

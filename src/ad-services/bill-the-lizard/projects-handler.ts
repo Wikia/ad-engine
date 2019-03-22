@@ -45,7 +45,7 @@ export class ProjectsHandler {
 			let isNextModelExecutable = true;
 
 			projects[name].forEach((model) => {
-				if (utils.isProperGeo(model.countries, model.name)) {
+				if (utils.geoService.isProperGeo(model.countries, model.name)) {
 					model.executable = isNextModelExecutable;
 					isNextModelExecutable = false;
 					models.push(model);

@@ -3,6 +3,7 @@ import {
 	btfBlockerService,
 	buildVastUrl,
 	context,
+	Dictionary,
 	events,
 	eventService,
 	slotService,
@@ -152,7 +153,7 @@ function updateSlotParams(adSlot, vastParams) {
  * @returns {{register: register}}
  */
 function create(options) {
-	function register(player, slotTargeting: { [key: string]: any } = {}) {
+	function register(player, slotTargeting: Dictionary = {}) {
 		const slot = slotService.get(slotName);
 		const adProduct = slot.config.trackingKey;
 		const videoElement = player && player.getContainer && player.getContainer();
