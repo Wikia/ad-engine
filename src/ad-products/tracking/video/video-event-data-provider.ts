@@ -22,13 +22,17 @@ export default {
 		const now = new Date();
 		const slot = slotService.get(videoData.position);
 
+		if (!slot) {
+			throw new Error(`Slot ${videoData.position} is not registered.`);
+		}
+
 		return {
 			ad_error_code: videoData.ad_error_code,
 			ad_product: videoData.ad_product,
 			audio: videoData.audio ? 1 : 0,
 			browser: `${utils.client.getOperatingSystem()} ${utils.client.getBrowser()}`,
 			content_type: videoData.content_type || '',
-			country: utils.getCountryCode() || '',
+			country: utils.geoService.getCountryCode() || '',
 			creative_id: videoData.creative_id || '',
 			ctp: videoData.ctp ? 1 : 0,
 			document_visibility: utils.getDocumentVisibilityStatus(),

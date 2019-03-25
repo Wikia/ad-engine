@@ -1,3 +1,5 @@
+import { Dictionary } from '../models';
+
 interface ContextObject {
 	[key: string]: any;
 }
@@ -41,7 +43,7 @@ const contextObject: ContextObject = {
 	},
 };
 
-const onChangeCallbacks: { [key: string]: ChangeCallback[] } = {};
+const onChangeCallbacks: Dictionary<ChangeCallback[]> = {};
 
 function runCallbacks(trigger: string, key: string, newValue: any): void {
 	if (!onChangeCallbacks[trigger]) {

@@ -1,9 +1,9 @@
-import { context } from '@wikia/ad-engine';
+import { context, Dictionary } from '@wikia/ad-engine';
 import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Appnexus extends BaseAdapter {
 	static bidderName = 'appnexus';
-	placements: { [key: string]: string };
+	placements: Dictionary<string>;
 
 	constructor(options) {
 		super(options);

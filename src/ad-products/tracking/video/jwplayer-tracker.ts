@@ -1,5 +1,5 @@
-import { slotService, vastParser } from '@wikia/ad-engine';
-import Cookies from 'js-cookie';
+import { Dictionary, slotService, vastParser } from '@wikia/ad-engine';
+import * as Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 
@@ -52,7 +52,7 @@ export class JWPlayerTracker {
 	/**
 	 * @param {Object} params
 	 */
-	constructor(params: { [key: string]: any } = {}) {
+	constructor(params: Dictionary = {}) {
 		this.adProduct = params.adProduct || null;
 		this.audio = params.audio || false;
 		this.ctp = params.ctp || false;

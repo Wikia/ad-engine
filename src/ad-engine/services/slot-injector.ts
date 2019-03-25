@@ -1,4 +1,4 @@
-import { logger } from '../utils';
+import { getTopOffset, getViewportHeight, logger } from '../utils';
 import { isInTheSameViewport } from '../utils/dimensions';
 import { context } from './context-service';
 
@@ -40,19 +40,26 @@ function insertNewSlot(
 class SlotInjector {
 	inject(slotName: string): HTMLElement | null {
 		const config = context.get(`slots.${slotName}`);
+
 		let anchorElements = Array.prototype.slice.call(
 			document.querySelectorAll(config.insertBeforeSelector),
 		);
-		const conflictingElements = Array.prototype.slice.call(
-			document.querySelectorAll(config.avoidConflictWith),
-		);
+
+		if (config.insertBelowFirstViewport) {
+			const viewportHeight = getViewportHeight();
+
+			anchorElements = anchorElements.filter((el) => getTopOffset(el) > viewportHeight);
+		}
 
 		if (config.repeat && config.repeat.insertBelowScrollPosition) {
 			const scrollPos = window.scrollY;
 
-			anchorElements = anchorElements.filter((el) => el.offsetTop > scrollPos);
+			anchorElements = anchorElements.filter((el) => getTopOffset(el) > scrollPos);
 		}
 
+		const conflictingElements = Array.prototype.slice.call(
+			document.querySelectorAll(config.avoidConflictWith),
+		);
 		const nextSibling = findNextSuitablePlace(anchorElements, conflictingElements);
 
 		if (!nextSibling) {

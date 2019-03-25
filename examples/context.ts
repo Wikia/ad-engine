@@ -210,6 +210,15 @@ export default {
 				loc: 'hivi',
 			},
 		},
+		injected_boxad: {
+			avoidConflictWith: null,
+			defaultSizes: [[300, 250]],
+			insertBeforeSelector: '.main h2',
+			insertBelowFirstViewport: true,
+			targeting: {
+				loc: 'hivi',
+			},
+		},
 		invisible_skin: {
 			sizes: [
 				{
