@@ -1,4 +1,4 @@
-import { AdSlot, scrollListener, slotTweaker, utils } from '@wikia/ad-engine';
+import { AdSlot, scrollListener, SlotTweaker, slotTweaker, utils } from '@wikia/ad-engine';
 import EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
 import { animate } from '../../../interface/animate';
@@ -329,7 +329,12 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	 * @protected
 	 */
 	onCloseClicked() {
+		this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		this.unstickImmediately();
+
+		this.config.mainContainer.style.paddingTop = '0';
+		this.adSlot.disable();
+		slotTweaker.hide(this.adSlot);
 	}
 
 	/**

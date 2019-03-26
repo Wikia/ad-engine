@@ -22,6 +22,10 @@ export default {
 		const now = new Date();
 		const slot = slotService.get(videoData.position);
 
+		if (!slot) {
+			throw new Error(`Slot ${videoData.position} is not registered.`);
+		}
+
 		return {
 			ad_error_code: videoData.ad_error_code,
 			ad_product: videoData.ad_product,
