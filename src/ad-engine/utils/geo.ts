@@ -168,42 +168,35 @@ function getGeoData(): GeoData | {} {
 	return geoData;
 }
 
-/**
- * @deprecated use geoService instead
- */
-export function setGeoData(data: GeoData): void {
+function setGeoData(data: GeoData): void {
 	geoData = data;
 }
 
 /**
  * Return country code based on cookie
- * @deprecated use geoService instead
  */
-export function getCountryCode(): string {
+function getCountryCode(): string {
 	return (getGeoData() as GeoData).country;
 }
 
 /**
  * Return continent code based on cookie
- * @deprecated use geoService instead
  */
-export function getContinentCode(): string {
+function getContinentCode(): string {
 	return (getGeoData() as GeoData).continent;
 }
 
 /**
  * Return region code based on cookie
- * @deprecated use geoService instead
  */
-export function getRegionCode(): string {
+function getRegionCode(): string {
 	return (getGeoData() as GeoData).region;
 }
 
 /**
  * Checks whether current country (from cookie) is listed in array
- * @deprecated use geoService instead
  */
-export function isProperCountry(countryList: string[] = [], name?: string): boolean {
+function isProperCountry(countryList: string[] = [], name?: string): boolean {
 	return !!(
 		countryList &&
 		countryList.indexOf &&
@@ -214,9 +207,8 @@ export function isProperCountry(countryList: string[] = [], name?: string): bool
 
 /**
  * Checks whether current regions (from cookie) is listed in array
- * @deprecated use geoService instead
  */
-export function isProperRegion(countryList: string[] = [], name?: string): boolean {
+function isProperRegion(countryList: string[] = [], name?: string): boolean {
 	const code = `${geoService.getCountryCode()}-${geoService.getRegionCode()}`;
 
 	return !!(
@@ -234,9 +226,8 @@ function containsContinent(countryList: string[] = [], name?: string): boolean {
 
 /**
  * Checks whether current continent (from cookie) is listed in array
- * @deprecated use geoService instead
  */
-export function isProperContinent(countryList: string[] = [], name?: string): boolean {
+function isProperContinent(countryList: string[] = [], name?: string): boolean {
 	return !!(
 		countryList &&
 		countryList.indexOf &&
@@ -263,17 +254,11 @@ function getResultLog(name: string): string {
 	return `${entry.name}_${entry.group}_${entry.limit}`;
 }
 
-/**
- * @deprecated use geoService instead
- */
-export function resetSamplingCache(): void {
+function resetSamplingCache(): void {
 	cache = {};
 }
 
-/**
- * @deprecated use geoService instead
- */
-export function readSessionId(): void {
+function readSessionId(): void {
 	const sessionCookieName: string =
 		context.get('options.session.cookieName') || sessionCookieDefault;
 	const sid: string = Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
@@ -281,26 +266,19 @@ export function readSessionId(): void {
 	geoService.setSessionId(sid);
 }
 
-/**
- * @deprecated use geoService instead
- */
-export function setSessionId(sid: string): void {
+function setSessionId(sid: string): void {
 	context.set('options.session.id', sid);
 	cookieLoaded = false;
 }
 
-/**
- * @deprecated use geoService instead
- */
-export function getSamplingResults(): string[] {
+function getSamplingResults(): string[] {
 	return Object.keys(cache).map(getResultLog);
 }
 
 /**
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
- * @deprecated use geoService instead
  */
-export function isProperGeo(countryList: string[] = [], name?: string): boolean {
+function isProperGeo(countryList: string[] = [], name?: string): boolean {
 	if (!cookieLoaded) {
 		loadCookie();
 	}
@@ -321,9 +299,8 @@ export function isProperGeo(countryList: string[] = [], name?: string): boolean 
 
 /**
  * Transform sampling results using supplied key-values map.
- * @deprecated use geoService instead
  */
-export function mapSamplingResults(keyVals: string[] = []): string[] {
+function mapSamplingResults(keyVals: string[] = []): string[] {
 	if (!keyVals || !keyVals.length) {
 		return [];
 	}
