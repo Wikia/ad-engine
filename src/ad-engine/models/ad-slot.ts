@@ -95,6 +95,7 @@ export class AdSlot extends EventEmitter {
 		if (!this.enabled) {
 			slotTweaker.hide(this);
 		}
+		this.events.flush();
 	}
 
 	private logger = (...args: any[]) => logger(AdSlot.LOG_GROUP, ...args);

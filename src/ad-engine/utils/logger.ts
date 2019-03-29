@@ -1,6 +1,7 @@
+import Cookies from 'js-cookie';
 import { queryString } from './query-string';
 
-const debugGroup = queryString.get('adengine_debug') || '';
+const debugGroup = queryString.get('adengine_debug') || Cookies.get('adengine_debug') || '';
 const groups = debugGroup.split(',');
 
 if (debugGroup !== '') {

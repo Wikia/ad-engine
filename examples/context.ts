@@ -23,7 +23,7 @@ export default {
 					sizes: [[728, 90]],
 					slotId: 'TOP_LEADERBOARD',
 				},
-				top_boxad: {
+				TOP_BOXAD: {
 					sizes: [[300, 250]],
 					slotId: 'TOP_BOXAD',
 				},
@@ -60,7 +60,7 @@ export default {
 					top_leaderboard: {
 						sizes: [[728, 90]],
 					},
-					top_boxad: {
+					TOP_BOXAD: {
 						sizes: [[300, 250]],
 					},
 					incontent_boxad: {
@@ -176,6 +176,7 @@ export default {
 		},
 		top_boxad: {
 			aboveTheFold: true,
+			bidderAlias: 'TOP_BOXAD',
 			sizes: [
 				{
 					viewportSize: [768, 0],
@@ -206,6 +207,15 @@ export default {
 			avoidConflictWith: '.repeatable-boxad',
 			defaultSizes: [[1, 1]],
 			insertBeforeSelector: '.main p',
+			targeting: {
+				loc: 'hivi',
+			},
+		},
+		injected_boxad: {
+			avoidConflictWith: null,
+			defaultSizes: [[300, 250]],
+			insertBeforeSelector: '.main h2',
+			insertBelowFirstViewport: true,
 			targeting: {
 				loc: 'hivi',
 			},

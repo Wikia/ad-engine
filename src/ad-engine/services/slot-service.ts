@@ -50,6 +50,11 @@ class SlotService {
 
 		this.slots[slotName] = adSlot;
 
+		if (this.slotEvents[slotName]) {
+			adSlot.events.push(...this.slotEvents[slotName]);
+			delete this.slotEvents[slotName];
+		}
+
 		if (this.slotStates[slotName] === false) {
 			adSlot.disable(this.slotStatuses[slotName]);
 		}
@@ -59,12 +64,6 @@ class SlotService {
 
 		slotTweaker.addDefaultClasses(adSlot);
 		eventService.emit(events.AD_SLOT_CREATED, adSlot);
-
-		if (this.slotEvents[slotName]) {
-			adSlot.events.push(...this.slotEvents[slotName]);
-			delete this.slotEvents[slotName];
-		}
-		adSlot.events.flush();
 	}
 
 	/**

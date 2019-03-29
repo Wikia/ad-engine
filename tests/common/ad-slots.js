@@ -9,6 +9,7 @@ class AdSlots {
 		this.bottomLeaderboard = '#bottom_leaderboard';
 		this.topBoxad = '#top_boxad';
 		this.incontentBoxad = '#incontent_boxad';
+		this.injectedBoxad = '#injected_boxad';
 		this.repeatableBoxad = '#repeatable_boxad_';
 		this.incontentPlayer = '#incontent_player';
 		this.invisibleHighImpact = '#invisible_high_impact_2';
@@ -18,6 +19,8 @@ class AdSlots {
 		this.leaderboardHeight = 90; // shared between leaderboards; fixed value
 		this.boxadWidth = 300; // shared between boxads; fixed value
 		this.boxadHeight = 250; // shared between boxads; fixed value
+		this.incontentWidth = 628; // shared between incontents; fixed value
+		this.incontentHeight = 250; // shared between incontents; fixed value
 		this.railModuleWidth = 300;
 		this.railModuleHeight = 600;
 		this.creativeIdAttribute = 'data-gpt-creative-id';

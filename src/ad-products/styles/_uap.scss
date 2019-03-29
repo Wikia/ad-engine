@@ -334,10 +334,6 @@ $ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 			}
 		}
 
-		.button-control .icon {
-			display: none;
-		}
-
 		.advertisement-label,
 		.button-control .icon,
 		.porvata-icon {
@@ -460,12 +456,6 @@ $ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 		right: 0;
 		top: auto;
 		transform: none;
-	}
-
-	&.sticky-bfaa {
-		.button-control .icon {
-			display: block;
-		}
 	}
 }
 
