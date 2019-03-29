@@ -1,4 +1,4 @@
-import { AdSlot, scrollListener, SlotTweaker, slotTweaker, utils } from '@wikia/ad-engine';
+import { AdSlot, scrollListener, slotTweaker, utils } from '@wikia/ad-engine';
 import EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
 import { animate } from '../../../interface/animate';
@@ -312,6 +312,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
 
 		if (!isSticky) {
+			this.removeUnstickButton();
 			this.adSlot.emitEvent(Stickiness.SLOT_UNSTICKED_STATE);
 			this.config.moveNavbar(0, SLIDE_OUT_TIME);
 			await animate(this.adSlot.getElement(), CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
@@ -329,12 +330,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	 * @protected
 	 */
 	onCloseClicked() {
-		this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		this.unstickImmediately();
-
-		this.config.mainContainer.style.paddingTop = '0';
-		this.adSlot.disable();
-		slotTweaker.hide(this.adSlot);
 	}
 
 	/**
@@ -348,7 +344,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			this.video.stop();
 		}
 
-		this.config.moveNavbar(0, 0);
+		this.config.onAfterUnstickBfaaCallback.call(this.config, this.adSlot, this.params);
 		this.stickiness.sticky = false;
+		this.removeUnstickButton();
 	}
 }

@@ -10,6 +10,8 @@ import { Stickiness } from './stickiness';
 export class BigFancyAdHiviTheme extends BigFancyAdTheme {
 	static DEFAULT_UNSTICK_DELAY = 3000;
 
+	closeButton: HTMLElement;
+
 	onAdReady() {
 		this.container.classList.add('theme-hivi');
 		this.addAdvertisementLabel();
@@ -46,12 +48,19 @@ export class BigFancyAdHiviTheme extends BigFancyAdTheme {
 	 * @protected
 	 */
 	addUnstickButton() {
-		const closeButton = new CloseButton({
+		this.closeButton = new CloseButton({
 			classNames: ['button-unstick'],
 			onClick: () => this.stickiness.close(),
-		});
+		}).render();
 
-		this.container.appendChild(closeButton.render());
+		this.container.appendChild(this.closeButton);
+	}
+
+	/**
+	 * @protected
+	 */
+	removeUnstickButton() {
+		this.closeButton.remove();
 	}
 
 	/**
