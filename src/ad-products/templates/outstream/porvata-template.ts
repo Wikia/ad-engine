@@ -58,7 +58,7 @@ export class PorvataTemplate {
 		this.adSlot.getElement().classList.add('porvata3');
 		this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
 
-		this.isInsecureMode = params.vpaidMode === google.ima.ImaSdkSettings.VpaidMode.INSECURE;
+		this.isInsecureMode = params.vpaidMode === window.google.ima.ImaSdkSettings.VpaidMode.INSECURE;
 
 		if (!Porvata.isVideoAutoplaySupported()) {
 			return this.adSlot.collapse();

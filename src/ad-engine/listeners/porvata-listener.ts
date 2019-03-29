@@ -78,7 +78,7 @@ export class PorvataListener {
 		Object.keys(PorvataListener.EVENTS).forEach((eventKey) => {
 			video.addEventListener(eventKey, (event: google.ima.AdEvent) => {
 				let errorCode: google.ima.AdError.ErrorCode;
-				if (event instanceof google.ima.AdErrorEvent) {
+				if (event instanceof window.google.ima.AdErrorEvent) {
 					errorCode = event.getError().getErrorCode();
 				}
 				this.dispatch(PorvataListener.EVENTS[eventKey], errorCode);
