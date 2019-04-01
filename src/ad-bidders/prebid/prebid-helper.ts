@@ -4,21 +4,26 @@ import { adaptersRegistry } from './adapters-registry';
 const lazyLoadSlots = ['bottom_leaderboard'];
 const videoType = 'video';
 
+function isUsedAsAlias(code) {
+	return Object.keys(context.get('slots')).some((slotName) => {
+		const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
+
+		return bidderAlias === code && slotService.getState(slotName);
+	});
+}
+
 function isSlotApplicable(code, lazyLoad) {
 	const isSlotLazy = lazyLoadSlots.indexOf(code) !== -1;
-
-	if (!slotService.getState(code)) {
-		return false;
-	}
-
-	if (
+	const isSlotLazyIgnored =
 		lazyLoad !== 'off' &&
-		((lazyLoad === 'pre' && isSlotLazy) || (lazyLoad === 'post' && !isSlotLazy))
-	) {
-		return false;
-	}
+		((lazyLoad === 'pre' && isSlotLazy) || (lazyLoad === 'post' && !isSlotLazy));
 
-	return true;
+	// This can be simplified once we get rid of uppercase slot names
+	const isSlotDisabled = context.get(`slots.${code}`)
+		? !slotService.getState(code)
+		: !isUsedAsAlias(code);
+
+	return !(isSlotDisabled || isSlotLazyIgnored);
 }
 
 export function setupAdUnits(lazyLoad = 'off') {

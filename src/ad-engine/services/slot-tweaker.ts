@@ -1,6 +1,6 @@
 import { AdSlot } from '../models';
 import { logger } from '../utils';
-import { likhoExpirationService } from './likho';
+import { likhoService, LikhoStorageElement } from './likho';
 import { messageBus } from './message-bus';
 import { slotService } from './slot-service';
 
@@ -181,9 +181,9 @@ export class SlotTweaker {
 				keys: ['action', 'likhoType'],
 				infinite: true,
 			},
-			(data) => {
+			(data: LikhoStorageElement) => {
 				if (data.likhoType) {
-					likhoExpirationService.update(data.likhoType);
+					likhoService.update(data.likhoType);
 				}
 			},
 		);
