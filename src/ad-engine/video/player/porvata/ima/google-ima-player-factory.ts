@@ -1,10 +1,13 @@
+import { Dictionary } from '../../../../models';
 import { vastDebugger } from '../../../vast-debugger';
 import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { VideoParams, VideoSettings } from '../video-settings';
 import { googleImaSetup } from './google-ima-setup';
 
+type VideoEvent = google.ima.AdEvent.Type | string;
+
 function getVideoElement(): HTMLVideoElement {
-	const videoElement = document.createElement('video');
+	const videoElement: HTMLVideoElement = document.createElement('video');
 
 	videoElement.setAttribute('preload', 'none');
 
@@ -15,7 +18,7 @@ export class GoogleImaPlayer {
 	status = '';
 	isAdsManagerLoaded = false;
 	adsManager: google.ima.AdsManager = null;
-	eventListeners = {};
+	eventListeners: Dictionary<((...args: any[]) => void)[]> = {};
 	vastUrl = '';
 	videoAd: HTMLVideoElement;
 
@@ -24,7 +27,6 @@ export class GoogleImaPlayer {
 		private adsLoader: google.ima.AdsLoader,
 		private params: VideoParams, // TODO: Add type
 	) {
-		this.adDisplayContainer = adDisplayContainer;
 		this.videoAd = params.container.querySelector('video');
 	}
 
@@ -32,13 +34,13 @@ export class GoogleImaPlayer {
 		this.vastUrl = vastUrl;
 	}
 
-	setAdsManager(adsManager): void {
+	setAdsManager(adsManager: google.ima.AdsManager): void {
 		this.adsManager = adsManager;
 		this.isAdsManagerLoaded = true;
 	}
 
-	addEventListener(eventName, callback): void {
-		if (eventName.indexOf('wikia') !== -1) {
+	addEventListener(eventName: VideoEvent, callback: () => void): void {
+		if ((eventName as string).indexOf('wikia') !== -1) {
 			this.eventListeners[eventName] = this.eventListeners[eventName] || [];
 			this.eventListeners[eventName].push(callback);
 
@@ -46,11 +48,11 @@ export class GoogleImaPlayer {
 		}
 
 		if (this.isAdsManagerLoaded) {
-			this.adsManager.addEventListener(eventName, callback);
+			this.adsManager.addEventListener(eventName as google.ima.AdEvent.Type, callback);
 		} else {
 			this.adsLoader.addEventListener(
 				window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-				() => this.adsManager.addEventListener(eventName, callback),
+				() => this.adsManager.addEventListener(eventName as google.ima.AdEvent.Type, callback),
 			);
 		}
 	}
@@ -58,7 +60,7 @@ export class GoogleImaPlayer {
 	setVastAttributes(status: string): void {
 		const currentAd: google.ima.Ad =
 			this.adsManager && this.adsManager.getCurrentAd && this.adsManager.getCurrentAd();
-		const playerElement = this.params.container.querySelector('.video-player');
+		const playerElement: HTMLVideoElement = this.params.container.querySelector('.video-player');
 
 		vastDebugger.setVastAttributes(playerElement, this.vastUrl, status, currentAd);
 	}
@@ -112,9 +114,9 @@ export class GoogleImaPlayer {
 	}
 
 	resize(width: number, height: number, isFullscreen = false): void {
-		const viewMode = window.google.ima.ViewMode;
+		const viewMode: typeof google.ima.ViewMode = window.google.ima.ViewMode;
 
-		if (this.adsManager) {
+		if (!!this.adsManager) {
 			this.adsManager.resize(
 				Math.round(width),
 				Math.round(height),
@@ -141,7 +143,7 @@ export class GoogleImaPlayer {
 		return this.status;
 	}
 
-	getAdsManager(): google.ima.AdsManager {
+	getAdsManager(): google.ima.AdsManager | null {
 		return this.adsManager;
 	}
 }
@@ -160,7 +162,7 @@ export const googleImaPlayerFactory = {
 			const container = videoSettings.getContainer();
 
 			player.videoAd.classList.add('porvata-video');
-			if (container) {
+			if (!!container) {
 				container.classList.add('porvata');
 			}
 		}
@@ -195,18 +197,21 @@ export const googleImaPlayerFactory = {
 			false,
 		);
 
-		adsLoader.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, (event) => {
-			const emptyVastErrorCode = window.google.ima.AdError.ErrorCode.VAST_EMPTY_RESPONSE;
+		adsLoader.addEventListener(
+			window.google.ima.AdErrorEvent.Type.AD_ERROR,
+			(event: google.ima.AdErrorEvent) => {
+				const emptyVastErrorCode = window.google.ima.AdError.ErrorCode.VAST_EMPTY_RESPONSE;
 
-			if (
-				typeof event.getError === 'function' &&
-				event.getError().getErrorCode() === emptyVastErrorCode
-			) {
-				player.dispatchEvent('wikiaEmptyAd');
-			}
+				if (
+					typeof event.getError === 'function' &&
+					event.getError().getErrorCode() === emptyVastErrorCode
+				) {
+					player.dispatchEvent('wikiaEmptyAd');
+				}
 
-			player.setVastAttributes('error');
-		});
+				player.setVastAttributes('error');
+			},
+		);
 
 		player.setVastUrl(adRequest.adTagUrl);
 		adsLoader.requestAds(adRequest);

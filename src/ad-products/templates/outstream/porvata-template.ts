@@ -5,6 +5,7 @@ import {
 	eventService,
 	Porvata,
 	PorvataPlayer,
+	PorvataTemplateParams,
 	slotTweaker,
 } from '@wikia/ad-engine';
 import { getTranslation } from '../../common/i18n';
@@ -12,15 +13,6 @@ import * as videoUserInterface from '../interface/video';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
-
-export interface PorvataTemplateParams {
-	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
-	viewportHookElement?: HTMLElement;
-	container?: HTMLElement;
-	originalContainer: HTMLElement;
-	enableInContentFloating: boolean;
-	slotName: string;
-}
 
 export interface PorvataTemplateConfig {
 	isFloatingEnabled?: boolean;
@@ -76,13 +68,15 @@ export class PorvataTemplate {
 
 		return slotTweaker
 			.makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO)
-			.then(() => Porvata.inject(params).then((video) => this.onReady(video, params)));
+			.then(() =>
+				Porvata.inject(params).then((video: PorvataPlayer) => this.onReady(video, params)),
+			);
 	}
 
 	onReady(video: PorvataPlayer, params: PorvataTemplateParams): PorvataPlayer {
-		const slotElement = this.adSlot.getElement();
-		const template = videoUserInterface.selectTemplate(video.videoSettings);
-		const videoContainer = params.container;
+		const slotElement: HTMLElement = this.adSlot.getElement();
+		const template: string = videoUserInterface.selectTemplate(video.videoSettings);
+		const videoContainer: HTMLElement = params.container;
 
 		if (this.isInsecureMode) {
 			this.adjustVpaidPlayer(video, videoContainer);
@@ -120,7 +114,7 @@ export class PorvataTemplate {
 	}
 
 	handleSlotStatus(video: PorvataPlayer): void {
-		let resolveStatus = null;
+		let resolveStatus: () => void = null;
 		const statusPromise = new Promise((resolve) => {
 			resolveStatus = resolve;
 		});
@@ -145,8 +139,8 @@ export class PorvataTemplate {
 		});
 	}
 
-	adjustVpaidPlayer(video: PorvataPlayer, container: HTMLVideoElement): void {
-		const videoPlayer = container.querySelector('.video-player');
+	adjustVpaidPlayer(video: PorvataPlayer, container: HTMLElement): void {
+		const videoPlayer = container.querySelector<HTMLVideoElement>('.video-player');
 
 		video.addEventListener('loaded', () => {
 			const ad: google.ima.Ad = video.ima.getAdsManager().getCurrentAd();
@@ -163,8 +157,8 @@ export class PorvataTemplate {
 	}
 
 	createVideoContainer(): HTMLElement {
-		const container = document.createElement('div');
-		const displayWrapper = document.createElement('div');
+		const container: HTMLElement = document.createElement('div');
+		const displayWrapper: HTMLElement = document.createElement('div');
 
 		container.classList.add('video-overlay');
 		displayWrapper.classList.add('video-display-wrapper');

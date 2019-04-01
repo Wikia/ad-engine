@@ -1,14 +1,14 @@
+import { Dictionary } from '../../../models';
 import { context } from '../../../services';
 import { sampler } from '../../../utils';
 
-export interface VideoParams {
+export interface VideoParams extends Dictionary {
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 	autoPlay?: boolean;
-	[key: string]: any;
 }
 
 function getMoatTrackingStatus(params: VideoParams): boolean {
-	const sampling = context.get('options.video.moatTracking.sampling');
+	const sampling: number = context.get('options.video.moatTracking.sampling');
 
 	if (typeof params.moatTracking === 'boolean') {
 		return params.moatTracking;
@@ -49,7 +49,7 @@ export class VideoSettings {
 	}
 
 	getVpaidMode(): google.ima.ImaSdkSettings.VpaidMode {
-		if (typeof this.params.vpaidMode !== 'undefined') {
+		if (!!this.params.vpaidMode) {
 			return this.params.vpaidMode;
 		}
 

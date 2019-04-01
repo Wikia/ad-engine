@@ -12,6 +12,36 @@ export interface PorvataListenerParams {
 	withCtp: boolean;
 }
 
+export interface VastTargeting {
+	passback: string;
+}
+
+export interface PorvataTemplateParams {
+	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+	viewportHookElement?: HTMLElement;
+	container: HTMLElement;
+	originalContainer: HTMLElement;
+	enableInContentFloating: boolean;
+	slotName: string;
+	viewportOffsetTop?: number;
+	viewportOffsetBottom?: number;
+	adProduct: string;
+	src: string;
+	autoPlay: boolean;
+	vastTargeting: VastTargeting;
+	blockOutOfViewportPausing: boolean;
+	startInViewportOnly: boolean;
+	onReady: (player: PorvataPlayer) => void;
+}
+
+interface NativeFullscreen {
+	enter: () => boolean | undefined;
+	exit: () => boolean | undefined;
+	addChangeListener: (listener: () => void) => void;
+	removeChangeListener: (listener: () => void) => void;
+	isSupported: () => boolean;
+}
+
 const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
 const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
 
@@ -59,7 +89,7 @@ const nativeFullscreenOnElement = (element) => {
 		addChangeListener,
 		removeChangeListener,
 		isSupported,
-	};
+	} as NativeFullscreen;
 };
 
 export class PorvataPlayer {
@@ -72,13 +102,7 @@ export class PorvataPlayer {
 	muteProtect: boolean;
 	readonly defaultVolume = 0.75;
 	readonly destroyCallbacks = new LazyQueue();
-	nativeFullscreen: {
-		enter: () => void;
-		exit: () => void;
-		addChangeListener: (listener: () => void) => void;
-		removeChangeListener: (listener: () => void) => void;
-		isSupported: () => boolean;
-	};
+	nativeFullscreen: NativeFullscreen;
 
 	constructor(
 		readonly ima: GoogleImaPlayer,
@@ -88,21 +112,21 @@ export class PorvataPlayer {
 		this.container = prepareVideoAdContainer(params);
 		this.mobileVideoAd = params.container.querySelector('video');
 
-		const nativeFullscreen = nativeFullscreenOnElement(this.container);
+		const nativeFullscreen: NativeFullscreen = nativeFullscreenOnElement(this.container);
 
 		this.fullscreen = Boolean(params.isFullscreen);
 		this.nativeFullscreen = nativeFullscreen;
 		this.width = params.width;
 		this.height = params.height;
 
-		this.destroyCallbacks.onItemFlush((callback) => callback());
+		this.destroyCallbacks.onItemFlush((callback: () => void) => callback());
 
 		if (nativeFullscreen.isSupported()) {
 			nativeFullscreen.addChangeListener(() => this.onFullscreenChange());
 		}
 	}
 
-	addEventListener(eventName: string, callback: (event: google.ima.AdEvent) => void): void {
+	addEventListener(eventName: string, callback: () => void): void {
 		this.ima.addEventListener(eventName, callback);
 	}
 
@@ -119,7 +143,7 @@ export class PorvataPlayer {
 	}
 
 	isMobilePlayerMuted(): boolean {
-		const mobileVideoAd = this.container.querySelector('video');
+		const mobileVideoAd = this.container.querySelector<HTMLVideoElement>('video');
 
 		return mobileVideoAd && mobileVideoAd.autoplay && mobileVideoAd.muted;
 	}
@@ -186,13 +210,14 @@ export class PorvataPlayer {
 	}
 
 	toggleFullscreen(): void {
-		const isFullscreen = this.isFullscreen();
-		const { nativeFullscreen } = this;
+		const isFullscreen: boolean = this.isFullscreen();
 
 		this.muteProtect = true;
 
-		if (nativeFullscreen.isSupported()) {
-			const toggleNativeFullscreen = isFullscreen ? nativeFullscreen.exit : nativeFullscreen.enter;
+		if (this.nativeFullscreen.isSupported()) {
+			const toggleNativeFullscreen = isFullscreen
+				? this.nativeFullscreen.exit
+				: this.nativeFullscreen.enter;
 
 			toggleNativeFullscreen();
 		} else {
@@ -269,22 +294,24 @@ export class Porvata {
 	 * @private
 	 * @returns listener id
 	 */
-	static addOnViewportChangeListener(params, listener: (isVisible: boolean) => void): number {
+	static addOnViewportChangeListener(
+		params: PorvataTemplateParams,
+		listener: (isVisible: boolean) => void,
+	): string {
 		return viewportObserver.addListener(params.viewportHookElement || params.container, listener, {
 			offsetTop: params.viewportOffsetTop || 0,
 			offsetBottom: params.viewportOffsetBottom || 0,
 		});
 	}
 
-	// TODO: Annotate inject params
-	static inject(params): Promise<PorvataPlayer> {
+	static inject(params: PorvataTemplateParams): Promise<PorvataPlayer> {
 		const porvataListener = new PorvataListener({
 			adProduct: params.adProduct,
 			position: params.slotName,
 			src: params.src,
 			withAudio: !params.autoPlay,
 			withCtp: !params.autoPlay,
-		} as PorvataListenerParams);
+		});
 
 		let isFirstPlay = true;
 		let autoPaused = false;
@@ -310,9 +337,9 @@ export class Porvata {
 		return googleIma
 			.load()
 			.then(() => googleIma.getPlayer(videoSettings))
-			.then((ima) => new PorvataPlayer(ima, params, videoSettings))
-			.then((video) => {
-				function inViewportCallback(isVisible) {
+			.then((ima: GoogleImaPlayer) => new PorvataPlayer(ima, params, videoSettings))
+			.then((video: PorvataPlayer) => {
+				function inViewportCallback(isVisible: boolean): void {
 					// Play video automatically only for the first time
 					if (isVisible && !autoPlayed && params.autoPlay) {
 						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
@@ -329,7 +356,7 @@ export class Porvata {
 					}
 				}
 
-				function setupAutoPlayMethod() {
+				function setupAutoPlayMethod(): void {
 					if (params.blockOutOfViewportPausing && !params.startInViewportOnly) {
 						if (params.autoPlay && !autoPlayed) {
 							autoPlayed = true;
@@ -405,14 +432,14 @@ export class Porvata {
 			});
 	}
 
-	static isVpaid(contentType): boolean {
+	static isVpaid(contentType: string): boolean {
 		return contentType === 'application/javascript';
 	}
 
 	static isVideoAutoplaySupported(): boolean {
-		const isAndroid = client.getOperatingSystem() === 'Android';
-		const browser = client.getBrowser().split(' ');
-		const isCompatibleChrome =
+		const isAndroid: boolean = client.getOperatingSystem() === 'Android';
+		const browser: string[] = client.getBrowser().split(' ');
+		const isCompatibleChrome: boolean =
 			browser[0].indexOf('Chrome') !== -1 && parseInt(browser[1], 10) >= 54;
 
 		return !isAndroid || isCompatibleChrome;

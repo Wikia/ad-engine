@@ -1,4 +1,4 @@
-import { Targeting } from '../models';
+import { AdSlot, Dictionary, Targeting } from '../models';
 import { context, slotService, trackingOptIn } from '../services';
 
 export interface VastOptions {
@@ -15,7 +15,7 @@ const availableVideoPositions = ['preroll', 'midroll', 'postroll'];
 const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator = Math.round(Math.random() * 10000000000);
 
-function getCustomParameters(slot, extraTargeting = {}) {
+function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
 	const params = { ...(context.get('targeting') || {}), ...slot.getTargeting(), ...extraTargeting };
 
 	return encodeURIComponent(
@@ -26,7 +26,7 @@ function getCustomParameters(slot, extraTargeting = {}) {
 	);
 }
 
-function getVideoSizes(slot) {
+function getVideoSizes(slot: AdSlot): string {
 	const sizes = slot.getVideoSizes();
 
 	if (sizes) {
@@ -36,7 +36,11 @@ function getVideoSizes(slot) {
 	return '640x480';
 }
 
-export function buildVastUrl(aspectRatio, slotName, options: VastOptions = {}) {
+export function buildVastUrl(
+	aspectRatio: number,
+	slotName: string,
+	options: VastOptions = {},
+): string {
 	const params = [
 		'output=vast',
 		'env=vp',
@@ -47,7 +51,7 @@ export function buildVastUrl(aspectRatio, slotName, options: VastOptions = {}) {
 		`description_url=${encodeURIComponent(window.location.href)}`,
 		`correlator=${correlator}`,
 	];
-	const slot = slotService.get(slotName);
+	const slot: AdSlot = slotService.get(slotName);
 
 	if (slot) {
 		params.push(`iu=${slot.getVideoAdUnit()}`);
