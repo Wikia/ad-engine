@@ -159,7 +159,7 @@ export const googleImaPlayerFactory = {
 		const videoElement: HTMLVideoElement = getVideoElement();
 
 		if (player.videoAd) {
-			const container = videoSettings.getContainer();
+			const container: HTMLElement | undefined = videoSettings.getContainer();
 
 			player.videoAd.classList.add('porvata-video');
 			if (!!container) {
@@ -169,9 +169,12 @@ export const googleImaPlayerFactory = {
 
 		adsLoader.addEventListener(
 			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-			(adsManagerLoadedEvent) => {
+			(adsManagerLoadedEvent: google.ima.AdsManagerLoadedEvent) => {
 				const renderingSettings = googleImaSetup.getRenderingSettings(videoSettings);
-				const adsManager = adsManagerLoadedEvent.getAdsManager(videoElement, renderingSettings);
+				const adsManager: google.ima.AdsManager = adsManagerLoadedEvent.getAdsManager(
+					videoElement,
+					renderingSettings,
+				);
 
 				player.setAdsManager(adsManager);
 

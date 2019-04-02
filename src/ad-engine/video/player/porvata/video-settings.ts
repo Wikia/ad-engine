@@ -5,6 +5,7 @@ import { sampler } from '../../../utils';
 export interface VideoParams extends Dictionary {
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 	autoPlay?: boolean;
+	loadVideoTimeout?: number;
 }
 
 function getMoatTrackingStatus(params: VideoParams): boolean {

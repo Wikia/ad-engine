@@ -67,7 +67,7 @@ describe('vast-parser', () => {
 
 	it('current ad info from IMA object', () => {
 		const adInfo = vastParser.parse(dummyVast, {
-			imaAd: getImaAd() as google.ima.Ad,
+			imaAd: getImaAd(),
 		});
 
 		expect(adInfo.contentType).to.equal('text/javascript');

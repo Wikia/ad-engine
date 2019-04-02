@@ -28,7 +28,7 @@ class VastParser {
 	getLastNumber(possibleValues: string[]): string {
 		let value = '';
 
-		possibleValues.forEach((curVal) => {
+		possibleValues.forEach((curVal: string) => {
 			if (!isNaN(parseInt(curVal, 10))) {
 				value = curVal;
 			}
@@ -52,19 +52,19 @@ class VastParser {
 		adInfo.creativeId = imaAd.getCreativeId();
 		adInfo.contentType = imaAd.getContentType();
 
-		const wrapperAdIds = imaAd.getWrapperAdIds() || [];
+		const wrapperAdIds: string[] = imaAd.getWrapperAdIds() || [];
 
 		if (wrapperAdIds && wrapperAdIds.length) {
 			adInfo.lineItemId = this.getLastNumber(wrapperAdIds);
 		}
 
-		const wrapperCreativeIds = imaAd.getWrapperCreativeIds() || [];
+		const wrapperCreativeIds: string[] = imaAd.getWrapperCreativeIds() || [];
 
 		if (wrapperCreativeIds && wrapperCreativeIds.length) {
 			adInfo.creativeId = this.getLastNumber(wrapperCreativeIds);
 		}
 
-		const wrapperAdSystems = imaAd.getWrapperAdSystems() || [];
+		const wrapperAdSystems: string[] = imaAd.getWrapperAdSystems() || [];
 
 		if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
 			adInfo.lineItemId = ADX;
@@ -78,8 +78,12 @@ class VastParser {
 		let contentType: string;
 		let creativeId: string;
 		let lineItemId: string;
-		const vastParams = queryString.getValues(vastUrl.substr(1 + vastUrl.indexOf('?')));
-		const customParams = queryString.getValues(encodeURI(vastParams.cust_params));
+		const vastParams: Dictionary<string> = queryString.getValues(
+			vastUrl.substr(1 + vastUrl.indexOf('?')),
+		);
+		const customParams: Dictionary<string> = queryString.getValues(
+			encodeURI(vastParams.cust_params),
+		);
 
 		if (extra.imaAd) {
 			const currentAd = this.getAdInfo(extra.imaAd);

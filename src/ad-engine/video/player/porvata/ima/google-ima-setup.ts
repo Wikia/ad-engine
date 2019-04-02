@@ -1,6 +1,7 @@
 import { context, slotService } from '../../../../services';
 import { logger, queryString } from '../../../../utils';
 import { buildVastUrl } from '../../../vast-url-builder';
+import { VideoParams } from '../video-settings';
 
 const logGroup = 'google-ima-setup';
 
@@ -48,7 +49,7 @@ function createRequest(params) {
 	return adsRequest;
 }
 
-function getRenderingSettings(params = {}) {
+function getRenderingSettings(params: Partial<VideoParams> = {}) {
 	const adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
 	const maximumRecommendedBitrate = 68000; // 2160p High Frame Rate
 

@@ -21,7 +21,7 @@ class AdsLoader {
 	}
 }
 
-export function getIma(): any {
+export function getIma(): typeof google.ima {
 	return {
 		// tslint:disable-next-line
 		AdDisplayContainer: function() {
@@ -43,5 +43,5 @@ export function getIma(): any {
 		ViewMode: {
 			Normal: 0,
 		},
-	};
+	} as any;
 }
