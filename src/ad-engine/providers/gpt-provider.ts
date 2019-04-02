@@ -43,9 +43,6 @@ function getAdSlotFromEvent(
 function configure() {
 	const tag = window.googletag.pubads();
 
-	if (!context.get('options.isSraDisabled')) {
-		tag.enableSingleRequest();
-	}
 	tag.disableInitialLoad();
 
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
