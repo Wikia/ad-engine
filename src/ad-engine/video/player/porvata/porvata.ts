@@ -126,7 +126,10 @@ export class PorvataPlayer {
 		}
 	}
 
-	addEventListener(eventName: string, callback: () => void): void {
+	addEventListener(
+		eventName: string,
+		callback: (event: google.ima.AdErrorEvent | google.ima.AdEvent) => void,
+	): void {
 		this.ima.addEventListener(eventName, callback);
 	}
 

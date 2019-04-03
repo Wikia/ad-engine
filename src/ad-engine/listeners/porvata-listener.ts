@@ -76,10 +76,10 @@ export class PorvataListener {
 		this.dispatch('ready');
 
 		Object.keys(PorvataListener.EVENTS).forEach((eventKey) => {
-			video.addEventListener(eventKey, (event: google.ima.AdEvent) => {
+			video.addEventListener(eventKey, (event: google.ima.AdEvent | google.ima.AdErrorEvent) => {
 				let errorCode: google.ima.AdError.ErrorCode;
-				if (event instanceof window.google.ima.AdErrorEvent) {
-					errorCode = event.getError().getErrorCode();
+				if ((event as any).getError) {
+					errorCode = (event as google.ima.AdErrorEvent).getError().getErrorCode();
 				}
 				this.dispatch(PorvataListener.EVENTS[eventKey], errorCode);
 			});

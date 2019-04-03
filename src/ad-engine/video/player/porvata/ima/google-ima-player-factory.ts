@@ -39,7 +39,10 @@ export class GoogleImaPlayer {
 		this.isAdsManagerLoaded = true;
 	}
 
-	addEventListener(eventName: VideoEvent, callback: () => void): void {
+	addEventListener(
+		eventName: VideoEvent,
+		callback: (event: google.ima.AdEvent | google.ima.AdErrorEvent) => void,
+	): void {
 		if ((eventName as string).indexOf('wikia') !== -1) {
 			this.eventListeners[eventName] = this.eventListeners[eventName] || [];
 			this.eventListeners[eventName].push(callback);
