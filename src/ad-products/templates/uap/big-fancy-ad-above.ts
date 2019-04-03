@@ -71,7 +71,7 @@ export class BigFancyAdAbove {
 		this.params.fullscreenAllowed = this.config.fullscreenAllowed;
 		// TODO: End of hack
 
-		universalAdPackage.init(this.params, this.config.slotsToEnable);
+		universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
 		this.videoSettings = new VideoSettings(this.params);
 		this.container.style.backgroundColor = this.getBackgroundColor();
 		this.container.classList.add('bfaa-template');

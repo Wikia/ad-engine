@@ -389,4 +389,5 @@ export default {
 			'/{networkId}/wka.life/_project43//{custom.namespace}/' +
 			'{slotConfig.targeting.src}/{slotConfig.slotName}',
 	},
+	templates: {},
 };
