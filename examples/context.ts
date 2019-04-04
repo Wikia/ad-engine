@@ -39,7 +39,6 @@ export default {
 		},
 		prebid: {
 			enabled: true,
-			useBuiltInTargetingLogic: true,
 			libraryUrl: '../../vendor/dist/prebid.min.js',
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
