@@ -1,6 +1,7 @@
 import { Dictionary } from '../../../models';
 import { context } from '../../../services';
 import { sampler } from '../../../utils';
+import { VpaidMode } from '../porvata';
 
 export interface VideoParams extends Dictionary {
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
@@ -54,7 +55,7 @@ export class VideoSettings {
 			return this.params.vpaidMode;
 		}
 
-		return window.google.ima.ImaSdkSettings.VpaidMode.ENABLED;
+		return VpaidMode.ENABLED;
 	}
 
 	isMoatTrackingEnabled(): boolean {

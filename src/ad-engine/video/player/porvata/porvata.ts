@@ -45,6 +45,12 @@ interface NativeFullscreen {
 const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
 const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
 
+export const VpaidMode = {
+	DISABLED: 0,
+	ENABLED: 1,
+	INSECURE: 2,
+};
+
 const prepareVideoAdContainer = (params) => {
 	const videoAdContainer = params.container.querySelector('div');
 

@@ -7,6 +7,7 @@ import {
 	PorvataPlayer,
 	PorvataTemplateParams,
 	slotTweaker,
+	VpaidMode,
 } from '@wikia/ad-engine';
 import { getTranslation } from '../../common/i18n';
 import * as videoUserInterface from '../interface/video';
@@ -50,7 +51,7 @@ export class PorvataTemplate {
 		this.adSlot.getElement().classList.add('porvata3');
 		this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
 
-		this.isInsecureMode = params.vpaidMode === window.google.ima.ImaSdkSettings.VpaidMode.INSECURE;
+		this.isInsecureMode = params.vpaidMode === VpaidMode.INSECURE;
 
 		if (!Porvata.isVideoAutoplaySupported()) {
 			return this.adSlot.collapse();
