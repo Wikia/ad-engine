@@ -175,6 +175,18 @@ export class Prebid extends BaseBidder {
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
 
+	getDealsTargetingFromBid(bid): PrebidTargeting {
+		const keyValueParis = {};
+
+		Object.keys(bid.adserverTargeting).forEach((key) => {
+			if (key.indexOf('hb_deal_') === 0) {
+				keyValueParis[key] = bid.adserverTargeting[key];
+			}
+		});
+
+		return keyValueParis;
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -202,14 +214,10 @@ export class Prebid extends BaseBidder {
 				}
 
 				// ... However we need to take care of all hb_deal_* keys manually then
-				Object.keys(param.adserverTargeting).forEach((key) => {
-					if (key.indexOf('hb_deal_') === 0) {
-						deals = {
-							...deals,
-							[key]: param.adserverTargeting[key],
-						};
-					}
-				});
+				deals = {
+					...deals,
+					...this.getDealsTargetingFromBid(param),
+				};
 			});
 
 			if (bidParams) {
