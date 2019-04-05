@@ -1,64 +1,103 @@
+import { Dictionary } from '../models';
 import { ADX } from '../providers';
 import { queryString } from '../utils';
+
+export interface VideoAdInfo {
+	lineItemId: string;
+	creativeId: string;
+	contentType: string;
+}
+
+export interface EventExtra {
+	imaAd?: google.ima.Ad;
+}
+
+export interface VastParams {
+	contentType: string;
+	creativeId: string;
+	customParams: Dictionary<string>;
+	lineItemId: string;
+	position: string;
+	size: string;
+}
 
 class VastParser {
 	/**
 	 * @private
 	 */
-	getLastNumber(possibleValues) {
-		let i;
+	getLastNumber(possibleValues: string[]): string {
 		let value = '';
 
-		for (i = 0; i < possibleValues.length; i += 1) {
-			if (!isNaN(parseInt(possibleValues[i], 10))) {
-				value = possibleValues[i];
+		possibleValues.forEach((curVal: string) => {
+			if (!isNaN(parseInt(curVal, 10))) {
+				value = curVal;
 			}
-		}
+		});
 
 		return value;
 	}
 
-	getAdInfo(imaAd) {
-		const adInfo = {};
+	getAdInfo(imaAd?: google.ima.Ad): VideoAdInfo {
+		const adInfo: VideoAdInfo = {
+			lineItemId: undefined,
+			creativeId: undefined,
+			contentType: undefined,
+		};
 
-		if (imaAd) {
-			adInfo.lineItemId = imaAd.getAdId();
-			adInfo.creativeId = imaAd.getCreativeId();
-			adInfo.contentType = imaAd.getContentType();
+		if (!imaAd) {
+			return adInfo;
+		}
 
-			const wrapperAdIds = imaAd.getWrapperAdIds() || [];
+		adInfo.lineItemId = imaAd.getAdId();
+		adInfo.creativeId = imaAd.getCreativeId();
+		adInfo.contentType = imaAd.getContentType();
 
-			if (wrapperAdIds && wrapperAdIds.length) {
-				adInfo.lineItemId = this.getLastNumber(wrapperAdIds);
-			}
+		const wrapperAdIds: string[] = imaAd.getWrapperAdIds() || [];
 
-			const wrapperCreativeIds = imaAd.getWrapperCreativeIds() || [];
+		if (wrapperAdIds && wrapperAdIds.length) {
+			adInfo.lineItemId = this.getLastNumber(wrapperAdIds);
+		}
 
-			if (wrapperCreativeIds && wrapperCreativeIds.length) {
-				adInfo.creativeId = this.getLastNumber(wrapperCreativeIds);
-			}
+		const wrapperCreativeIds: string[] = imaAd.getWrapperCreativeIds() || [];
 
-			const wrapperAdSystems = imaAd.getWrapperAdSystems() || [];
+		if (wrapperCreativeIds && wrapperCreativeIds.length) {
+			adInfo.creativeId = this.getLastNumber(wrapperCreativeIds);
+		}
 
-			if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
-				adInfo.lineItemId = ADX;
-				adInfo.creativeId = ADX;
-			}
+		const wrapperAdSystems: string[] = imaAd.getWrapperAdSystems() || [];
+
+		if (wrapperAdSystems && wrapperAdSystems.indexOf('AdSense/AdX') !== -1) {
+			adInfo.lineItemId = ADX;
+			adInfo.creativeId = ADX;
 		}
 
 		return adInfo;
 	}
 
-	parse(vastUrl, extra = {}) {
-		const currentAd = this.getAdInfo(extra.imaAd);
-		const vastParams = queryString.getValues(vastUrl.substr(1 + vastUrl.indexOf('?')));
-		const customParams = queryString.getValues(encodeURI(vastParams.cust_params));
+	parse(vastUrl: string, extra: EventExtra = {}): VastParams {
+		let contentType: string;
+		let creativeId: string;
+		let lineItemId: string;
+		const vastParams: Dictionary<string> = queryString.getValues(
+			vastUrl.substr(1 + vastUrl.indexOf('?')),
+		);
+		const customParams: Dictionary<string> = queryString.getValues(
+			encodeURI(vastParams.cust_params),
+		);
+
+		if (extra.imaAd) {
+			const currentAd = this.getAdInfo(extra.imaAd);
+
+			contentType = currentAd.contentType;
+			creativeId = currentAd.creativeId;
+			lineItemId = currentAd.lineItemId;
+		}
 
 		return {
-			contentType: currentAd.contentType || extra.contentType,
-			creativeId: currentAd.creativeId || extra.creativeId,
+			contentType,
+			creativeId,
 			customParams,
-			lineItemId: currentAd.lineItemId || extra.lineItemId,
+			lineItemId,
 			position: vastParams.vpos,
 			size: vastParams.sz,
 		};

@@ -1,17 +1,33 @@
-import { AdSlot, context, events, eventService, Porvata, slotTweaker } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	events,
+	eventService,
+	Porvata,
+	PorvataPlayer,
+	PorvataTemplateParams,
+	slotTweaker,
+	VpaidMode,
+} from '@wikia/ad-engine';
 import { getTranslation } from '../../common/i18n';
 import * as videoUserInterface from '../interface/video';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
-export const IMA_VPAID_INSECURE_MODE = 2;
+
+export interface PorvataTemplateConfig {
+	isFloatingEnabled: boolean;
+	inViewportOffsetTop: number;
+	inViewportOffsetBottom: number;
+	onInit: (adSlot: AdSlot, params: PorvataTemplateParams, config: PorvataTemplateConfig) => void;
+}
 
 export class PorvataTemplate {
-	static getName() {
+	static getName(): string {
 		return 'porvata3';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): PorvataTemplateConfig {
 		return {
 			isFloatingEnabled: true,
 			inViewportOffsetTop: 0,
@@ -20,14 +36,14 @@ export class PorvataTemplate {
 		};
 	}
 
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	config: PorvataTemplateConfig;
+	isInsecureMode: boolean;
+
+	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.porvata3') || {};
 	}
 
-	init(params) {
-		const slotName = this.adSlot.getSlotName();
-
+	init(params: PorvataTemplateParams): Promise<PorvataPlayer> | void {
 		if (!this.adSlot.getElement().classList.contains('ad-slot')) {
 			this.adSlot.getElement().classList.add('ad-slot');
 		}
@@ -35,7 +51,7 @@ export class PorvataTemplate {
 		this.adSlot.getElement().classList.add('porvata3');
 		this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
 
-		this.isInsecureMode = params.vpaidMode === IMA_VPAID_INSECURE_MODE;
+		this.isInsecureMode = params.vpaidMode === VpaidMode.INSECURE;
 
 		if (!Porvata.isVideoAutoplaySupported()) {
 			return this.adSlot.collapse();
@@ -44,7 +60,7 @@ export class PorvataTemplate {
 		params.viewportHookElement = this.adSlot.getElement();
 		if (this.isInsecureMode) {
 			params.originalContainer = params.container;
-			params.container = this.createVideoContainer(slotName);
+			params.container = this.createVideoContainer();
 		}
 
 		slotTweaker.collapse(this.adSlot);
@@ -53,13 +69,15 @@ export class PorvataTemplate {
 
 		return slotTweaker
 			.makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO)
-			.then(() => Porvata.inject(params).then((video) => this.onReady(video, params)));
+			.then(() =>
+				Porvata.inject(params).then((video: PorvataPlayer) => this.onReady(video, params)),
+			);
 	}
 
-	onReady(video, params) {
-		const slotElement = this.adSlot.getElement();
-		const template = videoUserInterface.selectTemplate(video.videoSettings);
-		const videoContainer = params.container;
+	onReady(video: PorvataPlayer, params: PorvataTemplateParams): PorvataPlayer {
+		const slotElement: HTMLElement = this.adSlot.getElement();
+		const template: string = videoUserInterface.selectTemplate(video.videoSettings);
+		const videoContainer: HTMLElement = params.container;
 
 		if (this.isInsecureMode) {
 			this.adjustVpaidPlayer(video, videoContainer);
@@ -96,8 +114,8 @@ export class PorvataTemplate {
 		return video;
 	}
 
-	handleSlotStatus(video) {
-		let resolveStatus = null;
+	handleSlotStatus(video: PorvataPlayer): void {
+		let resolveStatus: () => void = null;
 		const statusPromise = new Promise((resolve) => {
 			resolveStatus = resolve;
 		});
@@ -122,11 +140,11 @@ export class PorvataTemplate {
 		});
 	}
 
-	adjustVpaidPlayer(video, container) {
-		const videoPlayer = container.querySelector('.video-player');
+	adjustVpaidPlayer(video: PorvataPlayer, container: HTMLElement): void {
+		const videoPlayer = container.querySelector<HTMLVideoElement>('.video-player');
 
 		video.addEventListener('loaded', () => {
-			const ad = video.ima.getAdsManager().getCurrentAd();
+			const ad: google.ima.Ad = video.ima.getAdsManager().getCurrentAd();
 
 			if (ad && Porvata.isVpaid(ad.getContentType() || '')) {
 				container.classList.add('vpaid-enabled');
@@ -139,9 +157,9 @@ export class PorvataTemplate {
 		});
 	}
 
-	createVideoContainer() {
-		const container = document.createElement('div');
-		const displayWrapper = document.createElement('div');
+	createVideoContainer(): HTMLElement {
+		const container: HTMLElement = document.createElement('div');
+		const displayWrapper: HTMLElement = document.createElement('div');
 
 		container.classList.add('video-overlay');
 		displayWrapper.classList.add('video-display-wrapper');

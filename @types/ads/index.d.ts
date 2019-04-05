@@ -3,7 +3,7 @@ interface Ads {
 }
 
 interface Runtime {
-	disableBtf: boolean;
-	disableSecondCall: boolean;
-	unblockHighlyViewableSlots: boolean;
+	disableBtf?: boolean;
+	disableSecondCall?: boolean;
+	unblockHighlyViewableSlots?: boolean;
 }

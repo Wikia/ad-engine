@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { googleIma } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima';
+import { getIma } from '../ima-factory';
 
 let mocks;
 
@@ -8,15 +9,6 @@ describe('google-ima', () => {
 		mocks = {
 			adDisplayContainer: {
 				initialize: () => {},
-			},
-			adsLoader: {
-				addEventListener: () => {},
-				contentComplete: () => {},
-				getSettings: () => ({
-					setVpaidMode: () => {},
-				}),
-				removeEventListener: () => {},
-				requestAds: () => {},
 			},
 			domElement: {
 				style: {},
@@ -54,18 +46,7 @@ describe('google-ima', () => {
 			},
 		};
 		window.google = {
-			ima: {
-				// tslint:disable-next-line
-				AdDisplayContainer: function() {
-					return mocks.adDisplayContainer;
-				},
-				// tslint:disable-next-line
-				AdsLoader: function() {
-					return mocks.adsLoader;
-				},
-				// tslint:disable-next-line
-				AdsRequest: function() {},
-			},
+			ima: getIma(),
 		};
 	});
 

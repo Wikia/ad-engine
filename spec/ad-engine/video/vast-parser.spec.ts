@@ -6,7 +6,11 @@ const dummyVast =
 	'dummy.vast?sz=640x480&foo=bar&cust_params=foo1%3Dbar1%26foo2%3Dbar2' +
 	'%26customTitle%3D100%25%20Orange%20Juice%3Dbar2&vpos=preroll';
 
-function getImaAd(wrapperIds = [], wrapperCreativeIds = [], getWrapperAdSystems = []) {
+function getImaAd(
+	wrapperIds = [],
+	wrapperCreativeIds = [],
+	getWrapperAdSystems = [],
+): google.ima.Ad {
 	return {
 		getAdId: () => '000',
 		getContentType: () => 'text/javascript',
@@ -14,7 +18,7 @@ function getImaAd(wrapperIds = [], wrapperCreativeIds = [], getWrapperAdSystems 
 		getWrapperAdIds: () => wrapperIds,
 		getWrapperCreativeIds: () => wrapperCreativeIds,
 		getWrapperAdSystems: () => getWrapperAdSystems,
-	};
+	} as google.ima.Ad;
 }
 
 describe('vast-parser', () => {
@@ -61,24 +65,9 @@ describe('vast-parser', () => {
 		expect(adInfo.lineItemId).to.equal(undefined);
 	});
 
-	it('current ad info is passed from base object', () => {
-		const adInfo = vastParser.parse(dummyVast, {
-			contentType: 'video/mp4',
-			creativeId: '123',
-			lineItemId: '456',
-		});
-
-		expect(adInfo.contentType).to.equal('video/mp4');
-		expect(adInfo.creativeId).to.equal('123');
-		expect(adInfo.lineItemId).to.equal('456');
-	});
-
 	it('current ad info from IMA object', () => {
 		const adInfo = vastParser.parse(dummyVast, {
-			contentType: 'video/mp4',
-			creativeId: '123',
 			imaAd: getImaAd(),
-			lineItemId: '456',
 		});
 
 		expect(adInfo.contentType).to.equal('text/javascript');

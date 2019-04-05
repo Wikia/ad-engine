@@ -1,6 +1,6 @@
-import { vastParser } from './vast-parser';
+import { VastParams, vastParser } from './vast-parser';
 
-function setAttribute(element, attribute, value) {
+function setAttribute(element: HTMLElement, attribute?: string, value?: string): void {
 	if (!element || !value) {
 		return;
 	}
@@ -9,7 +9,11 @@ function setAttribute(element, attribute, value) {
 }
 
 class VastDebugger {
-	setVastAttributesFromVastParams(element, status, vastParams) {
+	setVastAttributesFromVastParams(
+		element: HTMLElement,
+		status: string,
+		vastParams: VastParams,
+	): void {
 		setAttribute(element, 'data-vast-content-type', vastParams.contentType);
 		setAttribute(element, 'data-vast-creative-id', vastParams.creativeId);
 		setAttribute(element, 'data-vast-line-item-id', vastParams.lineItemId);
@@ -19,10 +23,13 @@ class VastDebugger {
 		setAttribute(element, 'data-vast-params', JSON.stringify(vastParams.customParams));
 	}
 
-	setVastAttributes(element, vastUrl, status, imaAd) {
-		const vastParams = vastParser.parse(vastUrl, {
-			imaAd,
-		});
+	setVastAttributes(
+		element: HTMLElement,
+		vastUrl: string,
+		status: string,
+		imaAd: google.ima.Ad,
+	): void {
+		const vastParams: VastParams = vastParser.parse(vastUrl, { imaAd });
 
 		this.setVastAttributesFromVastParams(element, status, vastParams);
 	}

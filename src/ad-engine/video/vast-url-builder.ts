@@ -1,32 +1,51 @@
+import { AdSlot, Dictionary, Targeting } from '../models';
 import { context, slotService, trackingOptIn } from '../services';
 
-const availableVideoPositions = ['preroll', 'midroll', 'postroll'];
-const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
-const correlator = Math.round(Math.random() * 10000000000);
+export interface VastOptions {
+	targeting: Targeting;
+	videoAdUnitId: string;
+	contentSourceId: string;
+	customParams: string;
+	videoId: string;
+	numberOfAds: number;
+	vpos: string;
+}
 
-function getCustomParameters(slot, extraTargeting = {}) {
-	const params = { ...(context.get('targeting') || {}), ...slot.getTargeting(), ...extraTargeting };
+const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
+const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
+const correlator: number = Math.round(Math.random() * 10000000000);
+
+function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
+	const params: Dictionary = {
+		...(context.get('targeting') || {}),
+		...slot.getTargeting(),
+		...extraTargeting,
+	};
 
 	return encodeURIComponent(
 		Object.keys(params)
-			.filter((key) => params[key])
-			.map((key) => `${key}=${params[key]}`)
+			.filter((key: string) => params[key])
+			.map((key: string) => `${key}=${params[key]}`)
 			.join('&'),
 	);
 }
 
-function getVideoSizes(slot) {
-	const sizes = slot.getVideoSizes();
+function getVideoSizes(slot: AdSlot): string {
+	const sizes: number[][] = slot.getVideoSizes();
 
 	if (sizes) {
-		return sizes.map((size) => size.join('x')).join('|');
+		return sizes.map((size: number[]) => size.join('x')).join('|');
 	}
 
 	return '640x480';
 }
 
-export function buildVastUrl(aspectRatio, slotName, options = {}) {
-	const params = [
+export function buildVastUrl(
+	aspectRatio: number,
+	slotName: string,
+	options: Partial<VastOptions> = {},
+): string {
+	const params: string[] = [
 		'output=vast',
 		'env=vp',
 		'gdfp_req=1',
@@ -36,7 +55,7 @@ export function buildVastUrl(aspectRatio, slotName, options = {}) {
 		`description_url=${encodeURIComponent(window.location.href)}`,
 		`correlator=${correlator}`,
 	];
-	const slot = slotService.get(slotName);
+	const slot: AdSlot = slotService.get(slotName);
 
 	if (slot) {
 		params.push(`iu=${slot.getVideoAdUnit()}`);

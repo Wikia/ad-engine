@@ -1,4 +1,4 @@
-import { AdSlot } from '../models';
+import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils/logger';
 import { context } from './context-service';
 
@@ -26,11 +26,18 @@ class TemplateService {
 		templates[name] = template;
 	}
 
-	init(name: string, slot: AdSlot = null, params = {}): void {
+	init(name: string, slot: AdSlot = null, params: Dictionary = {}): void {
 		logger(logGroup, 'Load template', name, slot, params);
 
 		if (!templates[name]) {
 			throw new Error(`Template ${name} does not exist.`);
+		}
+
+		// override params.slotName by splitting it by comma
+		// and picking first occurrence so we can rely on it
+		// in used creative templates
+		if (params && (typeof params.slotName === 'string' || params.slotName instanceof String)) {
+			params.slotName = params.slotName.split(',').shift();
 		}
 
 		return new templates[name](slot).init(params);

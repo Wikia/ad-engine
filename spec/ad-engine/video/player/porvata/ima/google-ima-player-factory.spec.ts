@@ -1,12 +1,14 @@
+import { AdSlot, Dictionary } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { AdSlot } from '../../../../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
 import { googleImaPlayerFactory } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-player-factory';
+import { VideoSettings } from '../../../../../../src/ad-engine/video/player/porvata/video-settings';
 import ConfigMock from '../../../../config-mock';
+import { getIma } from '../ima-factory';
 
-let mocks = {};
+let mocks: Dictionary = {};
 
 describe('google-ima-player', () => {
 	beforeEach(() => {
@@ -57,13 +59,7 @@ describe('google-ima-player', () => {
 			},
 		};
 		window.google = {
-			ima: {
-				// tslint:disable-next-line
-				AdsRequest: function() {},
-				ViewMode: {
-					NORMAL: 0,
-				},
-			},
+			ima: getIma(),
 		};
 
 		context.extend(ConfigMock);
@@ -85,7 +81,7 @@ describe('google-ima-player', () => {
 		const player = googleImaPlayerFactory.create(
 			mocks.adDisplayContainer,
 			mocks.adsLoader,
-			mocks.videoSettings,
+			new VideoSettings(mocks.videoParams),
 		);
 
 		expect(player.videoAd.autoplay).to.be.ok;
@@ -124,7 +120,7 @@ describe('google-ima-player', () => {
 
 		player.setAdsManager(mocks.adsManager);
 
-		player.playVideo();
+		player.playVideo(640, 480);
 		expect(mocks.adDisplayContainer.initialize.calledOnce).to.be.ok;
 		expect(mocks.adsManager.init.calledOnce).to.be.ok;
 		expect(mocks.adsManager.start.calledOnce).to.be.ok;
@@ -141,7 +137,7 @@ describe('google-ima-player', () => {
 
 		player.setAdsManager(mocks.adsManager);
 
-		player.resize();
+		player.resize(640, 480);
 		expect(mocks.adsManager.resize.calledOnce).to.be.ok;
 	});
 });

@@ -1,8 +1,16 @@
+import { Dictionary } from '../../../models';
 import { context } from '../../../services';
 import { sampler } from '../../../utils';
+import { VpaidMode } from '../porvata';
 
-function getMoatTrackingStatus(params) {
-	const sampling = context.get('options.video.moatTracking.sampling');
+export interface VideoParams extends Dictionary {
+	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
+	autoPlay?: boolean;
+	loadVideoTimeout?: number;
+}
+
+function getMoatTrackingStatus(params: VideoParams): boolean {
+	const sampling: number = context.get('options.video.moatTracking.sampling');
 
 	if (typeof params.moatTracking === 'boolean') {
 		return params.moatTracking;
@@ -24,36 +32,37 @@ function getMoatTrackingStatus(params) {
 }
 
 export class VideoSettings {
-	constructor(params = {}) {
-		this.params = params;
+	private readonly moatTracking: boolean;
+
+	constructor(private readonly params: VideoParams = {}) {
 		this.moatTracking = getMoatTrackingStatus(params);
 	}
 
-	get(key) {
+	get(key: string): any {
 		return this.params[key];
 	}
 
-	getContainer() {
+	getContainer(): HTMLElement | undefined {
 		return this.get('container');
 	}
 
-	getParams() {
+	getParams(): VideoParams {
 		return this.params;
 	}
 
-	getVpaidMode() {
-		if (typeof this.params.vpaidMode !== 'undefined') {
+	getVpaidMode(): google.ima.ImaSdkSettings.VpaidMode {
+		if (!!this.params.vpaidMode) {
 			return this.params.vpaidMode;
 		}
 
-		return window.google.ima.ImaSdkSettings.VpaidMode.ENABLED;
+		return VpaidMode.ENABLED;
 	}
 
-	isMoatTrackingEnabled() {
+	isMoatTrackingEnabled(): boolean {
 		return this.moatTracking;
 	}
 
-	isAutoPlay() {
+	isAutoPlay(): boolean | undefined {
 		return this.params.autoPlay;
 	}
 }

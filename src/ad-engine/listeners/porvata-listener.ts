@@ -1,10 +1,34 @@
 import { AdSlot } from '../models';
 import { context, slotService } from '../services';
 import { client, logger } from '../utils';
-import { vastParser } from '../video';
+import { PorvataListenerParams, PorvataPlayer, vastParser } from '../video';
 
-function getListeners() {
-	return context.get('listeners.porvata');
+export interface PorvataEventPayload {
+	ad_error_code: google.ima.AdError.ErrorCode;
+	ad_product: string;
+	audio: 0 | 1;
+	content_type: string;
+	creative_id: string | number;
+	ctp: 0 | 1;
+	event_name: string;
+	line_item_id: string | number;
+	player: string;
+	position: string;
+	/** @deprecated */
+	browser: string;
+	/** @deprecated */
+	timestamp: number;
+	/** @deprecated */
+	tz_offset: number;
+}
+
+export interface Listener {
+	isEnabled(): void;
+	onEvent(eventName: string, params: PorvataListenerParams, data: PorvataEventPayload): void;
+}
+
+function getListeners(): Listener[] {
+	return context.get('listeners.porvata') || [];
 }
 
 export class PorvataListener {
@@ -32,32 +56,37 @@ export class PorvataListener {
 	static LOG_GROUP = 'porvata-listener';
 	static PLAYER_NAME = 'porvata';
 
-	constructor(params) {
-		this.params = params;
+	listeners: Listener[];
+	video: PorvataPlayer;
+
+	constructor(public params: PorvataListenerParams) {
 		this.listeners = getListeners().filter(
 			(listener) => !listener.isEnabled || listener.isEnabled(),
 		);
-		this.logger = (...args) => logger(PorvataListener.LOG_GROUP, ...args);
 	}
 
-	init() {
+	logger = (...args: any[]): void => logger(PorvataListener.LOG_GROUP, ...args);
+
+	init(): void {
 		this.dispatch('init');
 	}
 
-	registerVideoEvents(video) {
+	registerVideoEvents(video: PorvataPlayer): void {
 		this.video = video;
 		this.dispatch('ready');
 
 		Object.keys(PorvataListener.EVENTS).forEach((eventKey) => {
-			video.addEventListener(eventKey, (event) => {
-				const errorCode = event.getError && event.getError().getErrorCode();
-
+			video.addEventListener(eventKey, (event: google.ima.AdEvent | google.ima.AdErrorEvent) => {
+				let errorCode: google.ima.AdError.ErrorCode;
+				if ((event as any).getError) {
+					errorCode = (event as google.ima.AdErrorEvent).getError().getErrorCode();
+				}
 				this.dispatch(PorvataListener.EVENTS[eventKey], errorCode);
 			});
 		});
 	}
 
-	dispatch(eventName, errorCode = 0) {
+	dispatch(eventName: string, errorCode = 0): void {
 		const data = this.getData(eventName, errorCode);
 
 		this.logger(eventName, data);
@@ -72,12 +101,19 @@ export class PorvataListener {
 		}
 	}
 
-	getData(eventName, errorCode) {
-		const imaAd =
+	getData(eventName: string, errorCode: google.ima.AdError.ErrorCode): PorvataEventPayload {
+		let contentType: string;
+		let creativeId: string;
+		let lineItemId: string;
+		const imaAd: google.ima.Ad =
 			this.video && this.video.ima.getAdsManager() && this.video.ima.getAdsManager().getCurrentAd();
-		let { contentType, creativeId, lineItemId } = vastParser.getAdInfo(imaAd);
 
-		if (!imaAd && this.video && this.video.container) {
+		if (imaAd) {
+			const adInfo = vastParser.getAdInfo(imaAd);
+			contentType = adInfo.contentType;
+			creativeId = adInfo.creativeId;
+			lineItemId = adInfo.lineItemId;
+		} else if (this.video && this.video.container) {
 			contentType = this.video.container.getAttribute('data-vast-content-type');
 			creativeId = this.video.container.getAttribute('data-vast-creative-id');
 			lineItemId = this.video.container.getAttribute('data-vast-line-item-id');
