@@ -1,14 +1,20 @@
+import { Dictionary } from '../models';
 import { logger } from '../utils';
 
 const logGroup = 'gpt-size-map';
 
+export interface GptSizeMapping {
+	viewportSize: googletag.SingleSizeArray;
+	sizes: googletag.GeneralSize;
+}
+
 export class GptSizeMap {
-	constructor(sizeMap) {
+	constructor(private readonly sizeMap: GptSizeMapping[]) {
 		this.sizeMap = sizeMap || [];
 		logger(logGroup, this.sizeMap, 'creating new size map');
 	}
 
-	addSize(viewportSize, sizes) {
+	addSize(viewportSize: googletag.SingleSizeArray, sizes: googletag.GeneralSize): void {
 		logger(logGroup, viewportSize, sizes, 'adding new size mapping');
 		this.sizeMap.push({
 			viewportSize,
@@ -16,9 +22,10 @@ export class GptSizeMap {
 		});
 	}
 
-	build() {
+	build(): googletag.SizeMappingArray | null {
 		logger(logGroup, this.sizeMap, 'creating GPT size mapping builder');
-		const builder = window.googletag && window.googletag.sizeMapping();
+		const builder: googletag.SizeMappingBuilder | undefined =
+			window.googletag && window.googletag.sizeMapping();
 
 		if (!builder) {
 			logger(logGroup, 'cannot create GPT size mapping builder');
@@ -33,11 +40,11 @@ export class GptSizeMap {
 		return builder.build();
 	}
 
-	isEmpty() {
+	isEmpty(): boolean {
 		return !this.sizeMap.length;
 	}
 
-	mapAllSizes(callback) {
+	mapAllSizes(callback): GptSizeMap {
 		return new GptSizeMap(
 			this.sizeMap.map(({ viewportSize, sizes }, index) => {
 				const mappedSizes = callback(sizes, viewportSize, index);
@@ -52,9 +59,9 @@ export class GptSizeMap {
 		);
 	}
 
-	toString() {
+	toString(): string {
 		logger(logGroup, this.sizeMap, 'casting to string');
-		const map = {};
+		const map: Dictionary<googletag.GeneralSize> = {};
 
 		this.sizeMap.forEach(({ viewportSize, sizes }) => {
 			map[viewportSize.join('x')] = sizes;

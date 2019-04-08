@@ -1,28 +1,39 @@
 import { TwitchListener } from '../../../listeners/twitch-listener';
+import { Dictionary } from '../../../models';
 import { twitchEmbed } from './embed/twitch-embed';
 
+export interface TwitchOptions {
+	height: string;
+	width: string;
+	channel: string;
+}
+
 export class TwitchPlayer {
-	constructor(identifier, videoSettings, params) {
-		this.identifier = identifier;
-		this.videoSettings = videoSettings;
+	private player: any;
+
+	constructor(
+		private readonly identifier: string,
+		private readonly videoSettings: TwitchOptions,
+		private readonly params: Dictionary,
+	) {
 		this.params = params;
 	}
 
-	async getPlayer() {
+	async getPlayer(): Promise<any> {
 		this.player = await Twitch.inject(this.identifier, this.videoSettings, this.params);
 
 		return this.player;
 	}
 
-	addEventListener(eventName, callback) {
+	addEventListener(eventName: string, callback: () => void): void {
 		this.player.addEventListener(eventName, callback);
 	}
 
-	getIdentifier() {
+	getIdentifier(): string {
 		return this.identifier;
 	}
 
-	getVideoSettings() {
+	getVideoSettings(): TwitchOptions {
 		return this.videoSettings;
 	}
 }

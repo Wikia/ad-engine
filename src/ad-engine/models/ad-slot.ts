@@ -1,6 +1,6 @@
 import * as EventEmitter from 'eventemitter3';
 import { slotListener } from '../listeners';
-import { ADX } from '../providers';
+import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
 import { LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
@@ -30,7 +30,7 @@ export interface SlotConfig {
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
-	sizes?: any;
+	sizes?: GptSizeMapping[];
 	videoSizes?: number[][];
 	defaultSizes?: any;
 	viewportConflicts?: string[];
@@ -128,7 +128,7 @@ export class AdSlot extends EventEmitter {
 		return this.config.slotName;
 	}
 
-	getSizes(): string {
+	getSizes(): GptSizeMapping[] {
 		return this.config.sizes;
 	}
 

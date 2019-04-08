@@ -3,6 +3,7 @@ import {
 	context,
 	Porvata,
 	slotService,
+	TwitchOptions,
 	TwitchPlayer,
 	utils,
 } from '@wikia/ad-engine';
@@ -77,7 +78,7 @@ function recalculateTwitchSize(params) {
 
 async function loadTwitchPlayer(iframe, params) {
 	const { channelName, player } = params;
-	const options = {
+	const options: TwitchOptions = {
 		height: '100%',
 		width: '100%',
 		channel: channelName,

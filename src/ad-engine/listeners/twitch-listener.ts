@@ -1,8 +1,20 @@
 import { AdSlot } from '../models';
 import { context, slotService } from '../services';
 import { logger } from '../utils';
+import { VideoEventPayload, VideoListener, VideoParams } from './video-listeners';
 
-function getListeners() {
+export interface TwitchListenerParams extends VideoParams {
+	creativeId: number;
+	lineItemId: number;
+	slotName: string;
+	position: string;
+}
+
+export interface TwitchVideoListener extends VideoListener {
+	onEvent(eventName: string, params: TwitchListenerParams, data: VideoEventPayload): void;
+}
+
+function getListeners(): TwitchVideoListener[] {
 	return context.get('listeners.twitch');
 }
 
@@ -20,12 +32,16 @@ export class TwitchListener {
 	static LOG_GROUP = 'twitch-listener';
 	static PLAYER_NAME = 'twitch';
 
-	constructor(params) {
-		this.params = params;
+	private listeners: TwitchVideoListener[];
+
+	constructor(private params: TwitchListenerParams) {
 		this.listeners = getListeners().filter(
 			(listener) => !listener.isEnabled || listener.isEnabled(),
 		);
-		this.logger = (...args) => logger(TwitchListener.LOG_GROUP, ...args);
+	}
+
+	logger(...args: any[]): void {
+		logger(TwitchListener.LOG_GROUP, args);
 	}
 
 	init() {
@@ -48,14 +64,15 @@ export class TwitchListener {
 			listener.onEvent(eventName, this.params, data);
 		});
 
-		if (this.params.position && eventName === TwitchListener.EVENTS.viewable_impression) {
+		// FIXME: add TwitchListener.EVENTS.viewable_impression
+		if (this.params.position && eventName === (TwitchListener.EVENTS as any).viewable_impression) {
 			const adSlot = slotService.get(this.params.position);
 
 			adSlot.emit(AdSlot.VIDEO_VIEWED_EVENT);
 		}
 	}
 
-	getData(eventName) {
+	getData(eventName: string): VideoEventPayload {
 		return {
 			ad_product: this.params.adProduct,
 			creative_id: this.params.creativeId || 0,

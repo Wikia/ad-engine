@@ -62,7 +62,9 @@ export class GoogleImaPlayer {
 
 	setVastAttributes(status: string): void {
 		const currentAd: google.ima.Ad =
-			this.adsManager && this.adsManager.getCurrentAd && this.adsManager.getCurrentAd();
+			this.adsManager &&
+			(this.adsManager as any).getCurrentAd &&
+			(this.adsManager as any).getCurrentAd();
 		const playerElement: HTMLVideoElement = this.params.container.querySelector('.video-player');
 
 		vastDebugger.setVastAttributes(playerElement, this.vastUrl, status, currentAd);

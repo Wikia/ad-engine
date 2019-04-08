@@ -2,18 +2,13 @@ import { AdSlot } from '../models';
 import { context, slotService } from '../services';
 import { client, logger } from '../utils';
 import { PorvataListenerParams, PorvataPlayer, vastParser } from '../video';
+import { VideoEventPayload } from './video-listeners';
 
-export interface PorvataEventPayload {
+export interface PorvataEventPayload extends VideoEventPayload {
 	ad_error_code: google.ima.AdError.ErrorCode;
-	ad_product: string;
 	audio: 0 | 1;
 	content_type: string;
-	creative_id: string | number;
 	ctp: 0 | 1;
-	event_name: string;
-	line_item_id: string | number;
-	player: string;
-	position: string;
 	/** @deprecated */
 	browser: string;
 	/** @deprecated */
@@ -106,7 +101,9 @@ export class PorvataListener {
 		let creativeId: string;
 		let lineItemId: string;
 		const imaAd: google.ima.Ad =
-			this.video && this.video.ima.getAdsManager() && this.video.ima.getAdsManager().getCurrentAd();
+			this.video &&
+			this.video.ima.getAdsManager() &&
+			(this.video.ima.getAdsManager() as any).getCurrentAd();
 
 		if (imaAd) {
 			const adInfo = vastParser.getAdInfo(imaAd);
