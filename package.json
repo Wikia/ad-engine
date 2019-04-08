@@ -124,6 +124,7 @@
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
+		"check-types:ad-engine": "npm run check-types 2> /dev/null | grep src/ad-engine | grep -v npm",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
@@ -131,7 +132,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged"
+			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep src/ad-engine | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {
