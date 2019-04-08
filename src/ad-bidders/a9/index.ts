@@ -169,8 +169,8 @@ export class A9 extends BaseBidder {
 				return;
 			}
 
-			const slot = this.getRenderedSlot(impId);
-			const slotName = slot.getSlotName();
+			const slot: AdSlot = this.getRenderedSlot(impId);
+			const slotName: string = slot.getSlotName();
 
 			slot.addClass(A9.A9_CLASS);
 			utils.logger(logGroup, `bid used for slot ${slotName}`);
@@ -179,6 +179,8 @@ export class A9 extends BaseBidder {
 			if (this.bidsRefreshing.enabled) {
 				this.refreshBid(slot);
 			}
+
+			slot.updateWinningA9BidderDetails();
 		});
 	}
 
