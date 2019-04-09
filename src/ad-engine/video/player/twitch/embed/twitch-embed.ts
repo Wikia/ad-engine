@@ -1,4 +1,5 @@
 import { scriptLoader } from '../../../../utils';
+import { TwitchOptions } from '../twitch';
 
 const twitchLibraryUrl = '//player.twitch.tv/js/embed/v1.js';
 
@@ -14,7 +15,7 @@ function getLibrary(): any {
 	return window.Twitch;
 }
 
-function getPlayer(identifier, videoSettings): any {
+function getPlayer(identifier: string, videoSettings: TwitchOptions): any {
 	return new window.Twitch.Player(identifier, videoSettings);
 }
 

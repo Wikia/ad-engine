@@ -1,5 +1,4 @@
-import { TwitchListener } from '../../../listeners/twitch-listener';
-import { Dictionary } from '../../../models';
+import { TwitchListener, TwitchListenerParams } from '../../../listeners/twitch-listener';
 import { twitchEmbed } from './embed/twitch-embed';
 
 export interface TwitchOptions {
@@ -14,10 +13,8 @@ export class TwitchPlayer {
 	constructor(
 		private readonly identifier: string,
 		private readonly videoSettings: TwitchOptions,
-		private readonly params: Dictionary,
-	) {
-		this.params = params;
-	}
+		private readonly params: TwitchListenerParams,
+	) {}
 
 	async getPlayer(): Promise<any> {
 		this.player = await Twitch.inject(this.identifier, this.videoSettings, this.params);
@@ -39,7 +36,7 @@ export class TwitchPlayer {
 }
 
 export class Twitch {
-	static inject(identifier, videoSettings, params) {
+	static inject(identifier: string, videoSettings: TwitchOptions, params: TwitchListenerParams) {
 		const twitchListener = new TwitchListener(params);
 
 		twitchListener.init();
