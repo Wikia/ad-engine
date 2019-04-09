@@ -1,4 +1,4 @@
-import { context, slotService } from '../../../../services';
+import { context, localCache, slotService } from '../../../../services';
 import { logger, queryString } from '../../../../utils';
 import { buildVastUrl } from '../../../vast-url-builder';
 import { VideoParams } from '../video-settings';
@@ -6,7 +6,7 @@ import { VideoParams } from '../video-settings';
 const logGroup = 'google-ima-setup';
 
 function getOverriddenVast() {
-	if (queryString.get('porvata_override_vast') === '1') {
+	if (queryString.get('porvata_override_vast') === '1' && localCache.canUseStorage()) {
 		const vastXML = window.localStorage.getItem('porvata_vast');
 
 		logger(logGroup, 'Overridden VAST', vastXML);
