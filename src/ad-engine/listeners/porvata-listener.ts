@@ -1,28 +1,22 @@
 import { AdSlot } from '../models';
 import { context, slotService } from '../services';
-import { client, logger } from '../utils';
-import { PorvataListenerParams, PorvataPlayer, vastParser } from '../video';
-import { VideoEventPayload } from './video-listeners';
+import { logger } from '../utils';
+import { PorvataPlayer, vastParser } from '../video';
+import { VideoData, VideoEventListener } from './listeners';
 
-export interface PorvataEventPayload extends VideoEventPayload {
-	ad_error_code: google.ima.AdError.ErrorCode;
-	audio: 0 | 1;
-	content_type: string;
-	ctp: 0 | 1;
-	/** @deprecated */
-	browser: string;
-	/** @deprecated */
-	timestamp: number;
-	/** @deprecated */
-	tz_offset: number;
+export interface PorvataListenerParams {
+	adProduct: string;
+	position: string;
+	src: string;
+	withAudio: boolean;
+	withCtp: boolean;
 }
 
-export interface Listener {
-	isEnabled(): void;
-	onEvent(eventName: string, params: PorvataListenerParams, data: PorvataEventPayload): void;
+export interface PorvataEventListener extends VideoEventListener {
+	onEvent(eventName: string, params: PorvataListenerParams, data: VideoData): void;
 }
 
-function getListeners(): Listener[] {
+function getListeners(): PorvataEventListener[] {
 	return context.get('listeners.porvata') || [];
 }
 
@@ -51,7 +45,7 @@ export class PorvataListener {
 	static LOG_GROUP = 'porvata-listener';
 	static PLAYER_NAME = 'porvata';
 
-	listeners: Listener[];
+	listeners: PorvataEventListener[];
 	video: PorvataPlayer;
 
 	constructor(public params: PorvataListenerParams) {
@@ -96,7 +90,7 @@ export class PorvataListener {
 		}
 	}
 
-	getVideoData(eventName: string, errorCode: google.ima.AdError.ErrorCode): PorvataEventPayload {
+	getVideoData(eventName: string, errorCode: google.ima.AdError.ErrorCode): VideoData {
 		let contentType: string;
 		let creativeId: string;
 		let lineItemId: string;
@@ -116,23 +110,17 @@ export class PorvataListener {
 			lineItemId = this.video.container.getAttribute('data-vast-line-item-id');
 		}
 
-		const now = new Date();
-
 		return {
 			ad_error_code: errorCode,
 			ad_product: this.params.adProduct,
 			audio: this.params.withAudio ? 1 : 0,
 			content_type: contentType || '(none)',
-			creative_id: creativeId || 0,
+			creative_id: creativeId || '',
 			ctp: this.params.withCtp ? 1 : 0,
 			event_name: eventName,
-			line_item_id: lineItemId || 0,
+			line_item_id: lineItemId || '',
 			player: PorvataListener.PLAYER_NAME,
 			position: this.params.position ? this.params.position.toLowerCase() : '(none)',
-			// @DEPRECATED
-			browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
-			timestamp: now.getTime(),
-			tz_offset: now.getTimezoneOffset(),
 		};
 	}
 }

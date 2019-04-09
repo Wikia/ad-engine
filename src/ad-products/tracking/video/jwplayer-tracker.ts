@@ -1,4 +1,4 @@
-import { Dictionary, slotService, vastParser } from '@wikia/ad-engine';
+import { Dictionary, slotService, vastParser, VideoData } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
@@ -45,7 +45,7 @@ export class JWPlayerTracker {
 	isCtpAudioUpdateEnabled = true;
 	lineItemId: string | null = null;
 	slotName: string;
-	userBlockAutoplay: 1 | 0 | -1 | null = null;
+	userBlockAutoplay: 1 | 0 | -1 = -1;
 	videoId: string | null = null;
 	playerInstance: PlayerInstance;
 
@@ -158,20 +158,20 @@ export class JWPlayerTracker {
 		});
 	}
 
-	getVideoData(eventName: string, errorCode: number) {
+	getVideoData(eventName: string, errorCode: number): VideoData {
 		return {
 			ad_error_code: errorCode,
 			ad_product: this.adProduct,
-			audio: this.audio,
+			audio: this.audio ? 1 : 0,
 			content_type: this.contentType,
 			creative_id: this.creativeId,
-			ctp: this.ctp,
+			ctp: this.ctp ? 1 : 0,
 			event_name: eventName,
 			line_item_id: this.lineItemId,
 			player: JWPlayerTracker.PLAYER_NAME,
 			position: this.slotName,
 			user_block_autoplay: this.userBlockAutoplay,
-			video_id: this.videoId,
+			video_id: this.videoId || '',
 		};
 	}
 

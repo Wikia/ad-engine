@@ -1,4 +1,4 @@
-import { context, slotService, utils } from '@wikia/ad-engine';
+import { context, slotService, utils, VideoData, VideoEventData } from '@wikia/ad-engine';
 
 export default {
 	/**
@@ -18,7 +18,7 @@ export default {
 	 * @param {string} [videoData.video_id]
 	 * @returns {object}
 	 */
-	getEventData(videoData) {
+	getEventData(videoData: VideoData): VideoEventData {
 		const now = new Date();
 		const slot = slotService.get(videoData.position);
 
@@ -40,12 +40,12 @@ export default {
 			line_item_id: videoData.line_item_id || '',
 			player: videoData.player,
 			position: slot.getSlotName().toLowerCase(),
-			pv_number: context.get('options.pvNumber') || window.pvNumber || -1,
 			price: '',
+			pv_number: context.get('options.pvNumber') || window.pvNumber || -1,
 			skin: context.get('targeting.skin') || {},
 			timestamp: now.getTime(),
 			tz_offset: now.getTimezoneOffset(),
-			user_block_autoplay: videoData.user_block_autoplay || '',
+			user_block_autoplay: videoData.user_block_autoplay,
 			video_id: videoData.video_id || '',
 			wsi: slot.targeting.wsi || '',
 		};

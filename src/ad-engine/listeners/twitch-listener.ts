@@ -1,21 +1,23 @@
 import { AdSlot } from '../models';
 import { context, slotService } from '../services';
 import { logger } from '../utils';
-import { VideoEventPayload, VideoListener, VideoParams } from './video-listeners';
+import { TwitchPlayer } from '../video/player/twitch';
+import { VideoData, VideoEventListener } from './listeners';
 
-export interface TwitchListenerParams extends VideoParams {
-	creativeId: number;
-	lineItemId: number;
-	slotName: string;
+export interface TwitchListenerParams {
+	adProduct: string;
+	creativeId: string;
+	lineItemId: string;
 	position: string;
+	slotName: string;
 }
 
-export interface TwitchVideoListener extends VideoListener {
-	onEvent(eventName: string, params: TwitchListenerParams, data: VideoEventPayload): void;
+export interface TwitchEventListener extends VideoEventListener {
+	onEvent(eventName: string, params: TwitchListenerParams, data: VideoData): void;
 }
 
-function getListeners(): TwitchVideoListener[] {
-	return context.get('listeners.twitch');
+function getListeners(): TwitchEventListener[] {
+	return context.get('listeners.twitch') || [];
 }
 
 export class TwitchListener {
@@ -32,7 +34,7 @@ export class TwitchListener {
 	static LOG_GROUP = 'twitch-listener';
 	static PLAYER_NAME = 'twitch';
 
-	private listeners: TwitchVideoListener[];
+	private listeners: TwitchEventListener[];
 
 	constructor(private params: TwitchListenerParams) {
 		this.listeners = getListeners().filter(
@@ -44,11 +46,11 @@ export class TwitchListener {
 		logger(TwitchListener.LOG_GROUP, args);
 	}
 
-	init() {
+	init(): void {
 		this.dispatch('init');
 	}
 
-	registerTwitchEvents(player) {
+	registerTwitchEvents(player: TwitchPlayer): void {
 		Object.keys(TwitchListener.EVENTS).forEach((eventKey) => {
 			player.addEventListener(eventKey, () => {
 				this.dispatch(TwitchListener.EVENTS[eventKey]);
@@ -56,7 +58,7 @@ export class TwitchListener {
 		});
 	}
 
-	dispatch(eventName) {
+	dispatch(eventName: string): void {
 		const data = this.getVideoData(eventName);
 
 		this.logger(eventName, data);
@@ -72,12 +74,12 @@ export class TwitchListener {
 		}
 	}
 
-	getVideoData(eventName: string): VideoEventPayload {
+	getVideoData(eventName: string): VideoData {
 		return {
 			ad_product: this.params.adProduct,
-			creative_id: this.params.creativeId || 0,
+			creative_id: this.params.creativeId || '',
 			event_name: eventName,
-			line_item_id: this.params.lineItemId || 0,
+			line_item_id: this.params.lineItemId || '',
 			player: TwitchListener.PLAYER_NAME,
 			position: this.params.slotName || '(none)',
 		};

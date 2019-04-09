@@ -1,4 +1,4 @@
-import { context, eventService } from '@wikia/ad-engine';
+import { context, eventService, VideoEventData } from '@wikia/ad-engine';
 
 export const playerEvents = {
 	VIDEO_PLAYER_TRACKING_EVENT: Symbol('VIDEO_PLAYER_TRACKING_EVENT'),
@@ -10,7 +10,7 @@ export default {
 	 * @param {object} eventInfo
 	 * @returns {void}
 	 */
-	emit(eventInfo) {
+	emit(eventInfo: VideoEventData) {
 		if (!context.get('options.tracking.kikimora.player')) {
 			return;
 		}

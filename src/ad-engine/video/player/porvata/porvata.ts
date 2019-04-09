@@ -4,13 +4,6 @@ import { googleIma } from './ima/google-ima';
 import { GoogleImaPlayer } from './ima/google-ima-player-factory';
 import { VideoParams, VideoSettings } from './video-settings';
 
-export interface PorvataListenerParams extends VideoParams {
-	position: string;
-	src: string;
-	withAudio: boolean;
-	withCtp: boolean;
-}
-
 export interface VastTargeting {
 	passback: string;
 }
