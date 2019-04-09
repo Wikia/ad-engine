@@ -28,16 +28,6 @@ export class TwitchTracker {
 
 		context.push('listeners.twitch', listener);
 	}
-
-	/**
-	 * Dispatch single event
-	 * @param {string} eventName
-	 * @param {int} errorCode
-	 * @returns {void}
-	 */
-	emit(eventName, errorCode = 0) {
-		videoEventDataProvider.emit(eventName, errorCode);
-	}
 }
 
 export const twitchTracker = new TwitchTracker();

@@ -28,16 +28,6 @@ class PorvataTracker {
 
 		context.push('listeners.porvata', listener);
 	}
-
-	/**
-	 * Dispatch single event
-	 * @param {string} eventName
-	 * @param {int} errorCode
-	 * @returns {void}
-	 */
-	emit(eventName, errorCode = 0) {
-		videoEventDataProvider.emit(eventName, errorCode);
-	}
 }
 
 export const porvataTracker = new PorvataTracker();
