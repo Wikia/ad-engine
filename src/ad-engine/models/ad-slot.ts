@@ -10,6 +10,7 @@ export interface Targeting {
 	hb_pb?: number;
 	src: string;
 	pos: string;
+	wsi?: string;
 }
 
 interface RepeatConfig {
