@@ -51,7 +51,7 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () =>
 	it('Check if the ad is the inhouse one', () => {
 		hiviUapJwp.waitForAdsAfterDelayAndScrollToAdSlotOnMobile(adSlots.topBoxad);
 		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(browser.element(adSlots.topBoxad).getAttribute(adSlots.lineItemIdAttribute)).to.equal(
+		expect($(adSlots.topBoxad).getAttribute(adSlots.lineItemIdAttribute)).to.equal(
 			hiviUapJwp.inHouseLineItemId,
 			'Wrong ad loaded',
 		);
@@ -74,7 +74,7 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after clicking the
 
 	it('Check if slot was viewed', () => {
 		adSlots.waitForSlotViewed(adSlots.topBoxad);
-		expect(browser.element(adSlots.topBoxad).getAttribute(adSlots.resultAttribute)).to.equal(
+		expect($(adSlots.topBoxad).getAttribute(adSlots.resultAttribute)).to.equal(
 			adSlots.adLoaded,
 			'Top boxad slot failed to load',
 		);
@@ -82,7 +82,7 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after clicking the
 
 	it('Check if slot has UAP ad line item ID', () => {
 		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(browser.element(adSlots.topBoxad).getAttribute(adSlots.lineItemIdAttribute)).to.equal(
+		expect($(adSlots.topBoxad).getAttribute(adSlots.lineItemIdAttribute)).to.equal(
 			hiviUapJwp.uapLineItemId,
 			'Wrong ad loaded:',
 		);
@@ -142,7 +142,7 @@ describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after clicki
 
 	it('Check if slot was viewed', () => {
 		adSlots.waitForSlotViewed(adSlots.incontentBoxad);
-		expect(browser.element(adSlots.incontentBoxad).getAttribute(adSlots.resultAttribute)).to.equal(
+		expect($(adSlots.incontentBoxad).getAttribute(adSlots.resultAttribute)).to.equal(
 			adSlots.adLoaded,
 			'Incontent boxad slot failed to load',
 		);

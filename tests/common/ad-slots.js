@@ -70,7 +70,7 @@ class AdSlots {
 
 	waitForSlotViewed(adSlot) {
 		browser.waitUntil(
-			() => browser.element(adSlot).getAttribute(this.viewedAttribute) === this.adViewed,
+			() => $(adSlot).getAttribute(this.viewedAttribute) === this.adViewed,
 			timeouts.standard,
 			'Slot has not been viewed',
 			timeouts.interval,
@@ -84,7 +84,7 @@ class AdSlots {
 	 */
 	waitForSlotResult(adSlot, result) {
 		browser.waitUntil(
-			() => browser.element(adSlot).getAttribute(this.resultAttribute) === result,
+			() => $(adSlot).getAttribute(this.resultAttribute) === result,
 			timeouts.standard,
 			`Result mismatch: expected ${result}`,
 			timeouts.interval,

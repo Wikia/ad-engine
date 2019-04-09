@@ -31,11 +31,11 @@ describe('Delay ads page: top leaderboard', () => {
 		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
 		adSlots.waitForSlotViewed(adSlots.topLeaderboard);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
-		expect(browser.element(adSlots.topLeaderboard).getAttribute(adSlots.resultAttribute)).to.equal(
+		expect($(adSlots.topLeaderboard).getAttribute(adSlots.resultAttribute)).to.equal(
 			adSlots.adLoaded,
 			'Top leaderboard slot failed to load',
 		);
-		expect(browser.element(adSlots.topLeaderboard).getAttribute(adSlots.viewedAttribute)).to.equal(
+		expect($(adSlots.topLeaderboard).getAttribute(adSlots.viewedAttribute)).to.equal(
 			adSlots.adViewed,
 			'Top leaderboard slot has not been counted as viewed',
 		);
@@ -74,11 +74,11 @@ describe('Delay ads page: top boxad', () => {
 		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
 		adSlots.waitForSlotViewed(adSlots.topBoxad);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
-		expect(browser.element(adSlots.topBoxad).getAttribute(adSlots.resultAttribute)).to.equal(
+		expect($(adSlots.topBoxad).getAttribute(adSlots.resultAttribute)).to.equal(
 			adSlots.adLoaded,
 			'Top boxad slot failed to load',
 		);
-		expect(browser.element(adSlots.topBoxad).getAttribute(adSlots.viewedAttribute)).to.equal(
+		expect($(adSlots.topBoxad).getAttribute(adSlots.viewedAttribute)).to.equal(
 			adSlots.adViewed,
 			'Top boxad slot has not been counted as viewed',
 		);

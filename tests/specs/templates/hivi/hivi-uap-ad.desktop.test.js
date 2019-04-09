@@ -12,7 +12,6 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 	let videoFinishedDimensions;
 
 	before(() => {
-		helpers.setDefaultWindowSize();
 		hiviUap.openUapWithState(false, hiviUap.pageLink, adSlots.topLeaderboard);
 
 		defaultDimensions = adSlots.checkUAPSizeSlotRatio(
@@ -28,7 +27,6 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 		);
 		browser.scroll(0, 0).pause(timeouts.actions);
 		hiviUap.openUapWithState(true, hiviUap.pageLink);
-		helpers.setDefaultWindowSize();
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 
 		refreshDimensions = adSlots.checkUAPSizeSlotRatio(

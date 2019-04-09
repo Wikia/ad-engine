@@ -12,7 +12,6 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 	let videoFinishedDimensions;
 
 	before(() => {
-		helpers.setDefaultWindowSize();
 		hiviUapCtp.openUapWithState(false, hiviUapCtp.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 

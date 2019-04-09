@@ -13,7 +13,7 @@ describe('Floating rail ads page: floating rail', () => {
 
 	it('Check if rail scrolls with the content', () => {
 		helpers.slowScroll(500);
-		expect(browser.element(floatingRailAd.rail).getAttribute(helpers.classProperty)).to.equal(
+		expect($(floatingRailAd.rail).getAttribute(helpers.classProperty)).to.equal(
 			floatingRailAd.attributeRailScrolling,
 			'Rail did not scroll',
 		);

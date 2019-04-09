@@ -25,7 +25,6 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 		logs.length = 0;
 		await networkCapture.clearConsoleMessages(client);
 
-		await helpers.setDefaultWindowSize();
 	});
 
 	after(async () => {

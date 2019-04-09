@@ -11,7 +11,6 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 	let refreshDimensions;
 
 	before(() => {
-		helpers.setDefaultWindowSize();
 		hiviUapStatic.openUapWithState(false, hiviUapStatic.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 

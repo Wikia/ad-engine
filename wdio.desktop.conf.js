@@ -1,8 +1,10 @@
 /* global browser */
+/* eslint-disable import/no-extraneous-dependencies */
+
 const merge = require('deepmerge');
 const wdioConf = require('./wdio.conf.js');
 
-global.wdioEnvironment = 'desktop';
+global.envIsDesktop = true;
 
 exports.config = merge(
 	wdioConf.config,
@@ -11,21 +13,13 @@ exports.config = merge(
 		exclude: ['tests/specs/**/*.mobile.test.js'],
 		capabilities: [
 			{
+				maxInstances: 5,
 				browserName: 'chrome',
-				loggingPrefs: {
-					browser: 'ALL',
-				},
-				chromeOptions: {
-					args: ['--disable-dev-shm-usage', '--no-sandbox'],
-				},
+				"goog:chromeOptions": {
+					"args": [  "--window-size=1600,900","--disable-dev-shm-usage", "--no-sandbox", "--disable-infobars", "--disable-notifications" ],
+				}
 			},
 		],
-		before() {
-			browser.windowHandleSize({ width: 1600, height: 900 });
-		},
-		after() {
-			browser.windowHandleSize({ width: 1600, height: 900 });
-		},
 	},
 	{ clone: false },
 );

@@ -65,7 +65,7 @@ describe('Twitch ads page: player', () => {
 		browser.waitForEnabled(twitchAd.playPauseButton, timeouts.standard);
 		browser.click(twitchAd.playPauseButton);
 		expect(
-			browser.element(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute),
+			$(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute),
 		).to.include(twitchAd.playPauseButton.substring(1), 'Stream not playing');
 	});
 
@@ -74,7 +74,7 @@ describe('Twitch ads page: player', () => {
 		browser.waitForEnabled(twitchAd.unmuteButton, timeouts.standard);
 		browser.click(twitchAd.unmuteButton);
 		expect(
-			browser.element(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute),
+			$(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute),
 		).to.include(twitchAd.unmuteButton.substring(1), 'Stream not unmuted');
 	});
 

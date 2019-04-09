@@ -102,7 +102,7 @@ class Helpers {
 	 * @param adSlot ad slot that should receive the parameter
 	 */
 	waitForLineItemIdAttribute(adSlot) {
-		browser.waitForExist(adSlot, timeouts.standard);
+		$(adSlot).waitForExist(timeouts.standard);
 		browser.waitUntil(
 			() => this.isLineItemExisting(adSlot),
 			timeouts.standard,
@@ -117,7 +117,7 @@ class Helpers {
 	 * @returns {string}
 	 */
 	getLineItemId(adSlot) {
-		return browser.element(adSlot).getAttribute(adSlots.lineItemIdAttribute);
+		return $(adSlot).getAttribute(adSlots.lineItemIdAttribute);
 	}
 
 	isLineItemExisting(adSlot) {
@@ -130,7 +130,7 @@ class Helpers {
 	 * @returns {string}
 	 */
 	getCreativeId(adSlot) {
-		return browser.element(adSlot).getAttribute(adSlots.creativeIdAttribute);
+		return $(adSlot).getAttribute(adSlots.creativeIdAttribute);
 	}
 
 	isCreativeIdExisitng(adSlot) {
@@ -166,7 +166,7 @@ class Helpers {
 	 * @param frameID name of the frame to change focus to
 	 */
 	switchToFrame(frameID) {
-		const frame = browser.element(frameID).value;
+		const frame = $(frameID).value;
 
 		browser.frame(frame);
 	}
@@ -193,17 +193,6 @@ class Helpers {
 		}
 		browser.pause(timeouts.standard);
 		browser.switchTab(tabIds[0]);
-	}
-
-	/**
-	 * @param width
-	 * @param height
-	 */
-	setDefaultWindowSize(width = 1600, height = 900) {
-		browser.windowHandleSize({
-			width,
-			height,
-		});
 	}
 
 	checkVisualRegression(results) {
