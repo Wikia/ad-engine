@@ -17,6 +17,7 @@ interface Window {
 	Twitch?: any;
 	// No types easily available for pbjs.
 	pbjs?: any;
+	pvNumber?: number;
 }
 
 declare var NOLBUNDLE: any;
