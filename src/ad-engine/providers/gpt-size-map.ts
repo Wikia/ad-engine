@@ -9,8 +9,7 @@ export interface GptSizeMapping {
 }
 
 export class GptSizeMap {
-	constructor(private readonly sizeMap: GptSizeMapping[]) {
-		this.sizeMap = sizeMap || [];
+	constructor(private readonly sizeMap: GptSizeMapping[] = []) {
 		logger(logGroup, this.sizeMap, 'creating new size map');
 	}
 
