@@ -71,14 +71,12 @@ describe('porvata-listener', () => {
 		expect(eventName).to.equal('init');
 		expect(data.ad_error_code).to.equal(0);
 		expect(data.ad_product).to.equal('test-video');
-		expect(typeof data.browser).to.equal('string');
 		expect(data.content_type).to.equal('(none)');
-		expect(data.creative_id).to.equal(0);
+		expect(data.creative_id).to.equal('');
 		expect(data.event_name).to.equal('init');
-		expect(data.line_item_id).to.equal(0);
+		expect(data.line_item_id).to.equal('');
 		expect(data.player).to.equal('porvata');
 		expect(data.position).to.equal('abcd');
-		expect(typeof data.timestamp).to.equal('number');
 	});
 
 	it('dispatch Porvata event with video data', () => {
