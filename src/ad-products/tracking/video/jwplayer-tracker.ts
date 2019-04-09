@@ -158,6 +158,23 @@ export class JWPlayerTracker {
 		});
 	}
 
+	getVideoData(eventName: string, errorCode: number) {
+		return {
+			ad_error_code: errorCode,
+			ad_product: this.adProduct,
+			audio: this.audio,
+			content_type: this.contentType,
+			creative_id: this.creativeId,
+			ctp: this.ctp,
+			event_name: eventName,
+			line_item_id: this.lineItemId,
+			player: JWPlayerTracker.PLAYER_NAME,
+			position: this.slotName,
+			user_block_autoplay: this.userBlockAutoplay,
+			video_id: this.videoId,
+		};
+	}
+
 	/**
 	 * Dispatch single event
 	 * @param {string} eventName
@@ -173,20 +190,8 @@ export class JWPlayerTracker {
 			this.userBlockAutoplay = featuredVideoAutoplayCookie === '0' ? 1 : 0;
 		}
 
-		const eventInfo = videoEventDataProvider.getEventData({
-			ad_error_code: errorCode,
-			ad_product: this.adProduct,
-			audio: this.audio,
-			content_type: this.contentType,
-			creative_id: this.creativeId,
-			ctp: this.ctp,
-			event_name: eventName,
-			line_item_id: this.lineItemId,
-			player: JWPlayerTracker.PLAYER_NAME,
-			position: this.slotName,
-			user_block_autoplay: this.userBlockAutoplay,
-			video_id: this.videoId,
-		});
+		const videoData = this.getVideoData(eventName, errorCode);
+		const eventInfo = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
 	}

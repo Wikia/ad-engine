@@ -82,7 +82,7 @@ export class PorvataListener {
 	}
 
 	dispatch(eventName: string, errorCode = 0): void {
-		const data = this.getData(eventName, errorCode);
+		const data = this.getVideoData(eventName, errorCode);
 
 		this.logger(eventName, data);
 		this.listeners.forEach((listener) => {
@@ -96,7 +96,7 @@ export class PorvataListener {
 		}
 	}
 
-	getData(eventName: string, errorCode: google.ima.AdError.ErrorCode): PorvataEventPayload {
+	getVideoData(eventName: string, errorCode: google.ima.AdError.ErrorCode): PorvataEventPayload {
 		let contentType: string;
 		let creativeId: string;
 		let lineItemId: string;
