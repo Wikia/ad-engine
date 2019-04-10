@@ -7,12 +7,12 @@ class StaticFilesServerLauncher {
 		}
 
 		const { basename, mount, port } = staticFilesServerConfig;
+		const server = express();
 
-		this.server = express();
-		this.server.use(basename, express.static(mount));
+		server.use(basename, express.static(mount));
 
 		return new Promise((resolve, reject) => {
-			this.server.listen(port, (err) => {
+			server.listen(port, (err) => {
 				if (err) {
 					reject(err);
 					return;
