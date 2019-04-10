@@ -20,7 +20,7 @@ class TwitchTracker {
 			/**
 			 * Twitch event callback
 			 */
-			onEvent(eventName: string, playerParams: TwitchListenerParams, data: VideoData) {
+			onEvent(eventName: string, playerParams: TwitchListenerParams, data: VideoData): void {
 				const eventInfo: VideoEventData = videoEventDataProvider.getEventData(data);
 
 				playerEventEmitter.emit(eventInfo);

@@ -20,7 +20,7 @@ interface CreativeParams {
 	contentType?: string | null;
 }
 
-const trackingEventsMap = {
+const trackingEventsMap: Dictionary<string> = {
 	ready: 'ready',
 	adBlock: 'blocked',
 	adClick: 'clicked',
@@ -70,7 +70,7 @@ export class JWPlayerTracker {
 	/**
 	 * Update withCtp and withAudio based on player and slot
 	 */
-	updatePlayerState(slot: AdSlot | null = null) {
+	updatePlayerState(slot?: AdSlot): void {
 		if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
 			this.ctp = !slot.config.autoplay;
 			this.audio = slot.config.audio;
@@ -101,7 +101,7 @@ export class JWPlayerTracker {
 	 * Register event listeners on player
 	 * @param {Object} player
 	 */
-	register(player): void {
+	register(player: any): void {
 		this.playerInstance = player;
 
 		this.updateVideoId();
@@ -112,7 +112,7 @@ export class JWPlayerTracker {
 			this.updateCreativeData();
 		});
 
-		player.on('adRequest', (event) => {
+		player.on('adRequest', (event: any) => {
 			const currentAd = vastParser.getAdInfo(event.ima && event.ima.ad);
 
 			this.updateCreativeData(currentAd);
@@ -121,7 +121,7 @@ export class JWPlayerTracker {
 		this.updatePlayerState();
 
 		Object.keys(trackingEventsMap).forEach((playerEvent) => {
-			player.on(playerEvent, (event) => {
+			player.on(playerEvent, (event: any) => {
 				let errorCode;
 
 				if (
@@ -174,10 +174,10 @@ export class JWPlayerTracker {
 	/**
 	 * Dispatch single event
 	 */
-	emit(eventName: string, errorCode = 0) {
+	emit(eventName: string, errorCode = 0): void {
 		this.userBlockAutoplay = -1;
 
-		const featuredVideoAutoplayCookie = Cookies.get('featuredVideoAutoplay');
+		const featuredVideoAutoplayCookie: string | undefined = Cookies.get('featuredVideoAutoplay');
 
 		if (['0', '1'].indexOf(featuredVideoAutoplayCookie) > -1) {
 			this.userBlockAutoplay = featuredVideoAutoplayCookie === '0' ? 1 : 0;

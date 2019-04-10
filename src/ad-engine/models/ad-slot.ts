@@ -36,6 +36,9 @@ export interface SlotConfig {
 	defaultSizes?: any;
 	viewportConflicts?: string[];
 	outOfPage?: any;
+
+	audio?: boolean;
+	autoplay?: boolean;
 }
 
 export interface WinningPbBidderDetails {
