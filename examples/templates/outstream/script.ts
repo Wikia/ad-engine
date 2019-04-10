@@ -5,6 +5,7 @@ import {
 	DelayModule,
 	events,
 	eventService,
+	slotService,
 	templateService,
 	utils,
 } from '@wikia/ad-engine';
@@ -77,5 +78,12 @@ eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 });
 
 porvataTracker.register();
+
+document.addEventListener('keydown', (event) => {
+	if (event.key === 'd') {
+		const adSlot = slotService.get('incontent_player');
+		slotService.remove(adSlot);
+	}
+});
 
 new AdEngine().init();

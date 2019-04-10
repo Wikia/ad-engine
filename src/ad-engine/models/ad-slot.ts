@@ -51,6 +51,7 @@ export class AdSlot extends EventEmitter {
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static VIDEO_VIEWED_EVENT = 'videoViewed';
+	static DESTROYED_EVENT = 'slotDestroyed';
 
 	static LOG_GROUP = 'AdSlot';
 
@@ -208,6 +209,11 @@ export class AdSlot extends EventEmitter {
 		this.enabled = false;
 		this.setStatus(status);
 		slotTweaker.hide(this);
+	}
+
+	destroy(): void {
+		this.disable();
+		this.emit(AdSlot.DESTROYED_EVENT);
 	}
 
 	getConfigProperty(key): any {

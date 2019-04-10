@@ -73,7 +73,7 @@ class SlotService {
 		const slotName = adSlot.getSlotName();
 
 		context.removeListeners(`slots.${slotName}`);
-		adSlot.disable('Marked for remove');
+		adSlot.destroy();
 		delete this.slots[slotName];
 		delete this.slotStates[slotName];
 		delete this.slotStatuses[slotName];
