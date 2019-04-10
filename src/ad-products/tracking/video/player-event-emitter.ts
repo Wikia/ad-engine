@@ -7,10 +7,8 @@ export const playerEvents = {
 export default {
 	/**
 	 * Emit single event
-	 * @param {object} eventInfo
-	 * @returns {void}
 	 */
-	emit(eventInfo: VideoEventData) {
+	emit(eventInfo: VideoEventData): void {
 		if (!context.get('options.tracking.kikimora.player')) {
 			return;
 		}

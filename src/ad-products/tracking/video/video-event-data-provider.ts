@@ -1,4 +1,4 @@
-import { context, slotService, utils, VideoData, VideoEventData } from '@wikia/ad-engine';
+import { AdSlot, context, slotService, utils, VideoData, VideoEventData } from '@wikia/ad-engine';
 
 export default {
 	/**
@@ -19,8 +19,8 @@ export default {
 	 * @returns {object}
 	 */
 	getEventData(videoData: VideoData): VideoEventData {
-		const now = new Date();
-		const slot = slotService.get(videoData.position);
+		const now: Date = new Date();
+		const slot: AdSlot = slotService.get(videoData.position);
 
 		if (!slot) {
 			throw new Error(`Slot ${videoData.position} is not registered.`);

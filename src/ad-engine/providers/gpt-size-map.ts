@@ -52,7 +52,7 @@ export class GptSizeMap {
 	): GptSizeMap {
 		return new GptSizeMap(
 			this.sizeMap.map(({ viewportSize, sizes }, index) => {
-				const mappedSizes = callback(sizes, viewportSize, index);
+				const mappedSizes: googletag.GeneralSize = callback(sizes, viewportSize, index);
 
 				logger(logGroup, viewportSize, sizes, mappedSizes, 'mapping viewport sizes');
 

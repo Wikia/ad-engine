@@ -20,12 +20,8 @@ class PorvataTracker {
 		const listener: PorvataEventListener = {
 			/**
 			 * Porvata event callback
-			 * @param {string} eventName
-			 * @param {Object} playerParams
-			 * @param {Object} data
-			 * @returns {void}
 			 */
-			onEvent(eventName: string, playerParams: PorvataListenerParams, data: VideoData) {
+			onEvent(eventName: string, playerParams: PorvataListenerParams, data: VideoData): void {
 				const eventInfo: VideoEventData = videoEventDataProvider.getEventData(data);
 
 				playerEventEmitter.emit(eventInfo);

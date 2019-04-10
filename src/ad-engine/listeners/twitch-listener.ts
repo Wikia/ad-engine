@@ -59,7 +59,7 @@ export class TwitchListener {
 	}
 
 	dispatch(eventName: string): void {
-		const data = this.getVideoData(eventName);
+		const data: VideoData = this.getVideoData(eventName);
 
 		this.logger(eventName, data);
 		this.listeners.forEach((listener) => {

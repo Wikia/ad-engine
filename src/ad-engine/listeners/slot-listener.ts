@@ -38,7 +38,7 @@ function getAdType(event, adSlot) {
 	return AdSlot.STATUS_SUCCESS;
 }
 
-function getData(adSlot, additionalEventData: Partial<AdditionalEventData>) {
+function getData(adSlot: AdSlot, additionalEventData: Partial<AdditionalEventData>) {
 	const now = new Date();
 
 	return {

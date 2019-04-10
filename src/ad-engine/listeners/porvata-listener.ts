@@ -76,7 +76,7 @@ export class PorvataListener {
 	}
 
 	dispatch(eventName: string, errorCode = 0): void {
-		const data = this.getVideoData(eventName, errorCode);
+		const data: VideoData = this.getVideoData(eventName, errorCode);
 
 		this.logger(eventName, data);
 		this.listeners.forEach((listener) => {

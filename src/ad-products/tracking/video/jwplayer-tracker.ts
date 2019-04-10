@@ -1,4 +1,4 @@
-import { Dictionary, slotService, vastParser, VideoData } from '@wikia/ad-engine';
+import { Dictionary, slotService, vastParser, VideoData, VideoEventData } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
@@ -190,8 +190,8 @@ export class JWPlayerTracker {
 			this.userBlockAutoplay = featuredVideoAutoplayCookie === '0' ? 1 : 0;
 		}
 
-		const videoData = this.getVideoData(eventName, errorCode);
-		const eventInfo = videoEventDataProvider.getEventData(videoData);
+		const videoData: VideoData = this.getVideoData(eventName, errorCode);
+		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
 	}
