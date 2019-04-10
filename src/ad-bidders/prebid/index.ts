@@ -175,36 +175,56 @@ export class Prebid extends BaseBidder {
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
 
+	getDealsTargetingFromBid(bid): PrebidTargeting {
+		const keyValueParis = {};
+
+		Object.keys(bid.adserverTargeting).forEach((key) => {
+			if (key.indexOf('hb_deal_') === 0) {
+				keyValueParis[key] = bid.adserverTargeting[key];
+			}
+		});
+
+		return keyValueParis;
+	}
+
 	/**
 	 * @inheritDoc
 	 */
 	getTargetingParams(slotName): PrebidTargeting {
 		const slotAlias = this.getSlotAlias(slotName);
 		let slotParams: PrebidTargeting = {};
+		let deals: PrebidTargeting = {};
 
-		if (context.get('bidders.prebid.useBuiltInTargetingLogic')) {
-			utils.logger(logGroup, 'Using built in targeting logic');
+		// We are not using pbjs.getAdserverTargetingForAdUnitCode
+		// because it takes only last auction into account.
+		// We need to get all available bids (including old auctions)
+		// in order to keep still available, not refreshed adapters' bids...
+		const bids = getAvailableBidsByAdUnitCode(slotAlias);
 
-			slotParams = window.pbjs.getAdserverTargetingForAdUnitCode([slotAlias]);
-		} else {
-			const bids = getAvailableBidsByAdUnitCode(slotAlias);
+		if (bids.length) {
+			let bidParams = null;
 
-			if (bids.length) {
-				let bidParams = null;
-
-				bids.forEach((param) => {
-					if (!bidParams) {
-						bidParams = param;
-					} else if (bidParams.cpm === param.cpm) {
-						bidParams = bidParams.timeToRespond > param.timeToRespond ? param : bidParams;
-					} else {
-						bidParams = bidParams.cpm < param.cpm ? param : bidParams;
-					}
-				});
-
-				if (bidParams) {
-					slotParams = bidParams.adserverTargeting;
+			bids.forEach((param) => {
+				if (!bidParams) {
+					bidParams = param;
+				} else if (bidParams.cpm === param.cpm) {
+					bidParams = bidParams.timeToRespond > param.timeToRespond ? param : bidParams;
+				} else {
+					bidParams = bidParams.cpm < param.cpm ? param : bidParams;
 				}
+
+				// ... However we need to take care of all hb_deal_* keys manually then
+				deals = {
+					...deals,
+					...this.getDealsTargetingFromBid(param),
+				};
+			});
+
+			if (bidParams) {
+				slotParams = {
+					...deals,
+					...bidParams.adserverTargeting,
+				};
 			}
 		}
 
