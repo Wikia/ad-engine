@@ -49,6 +49,7 @@
 		"concat": "1.0.3",
 		"copy-webpack-plugin": "4.5.2",
 		"deepmerge": "2.2.1",
+		"express": "^4.16.2",
 		"husky": "1.1.4",
 		"js-md5": "0.7.3",
 		"jsdom": "11.11.0",
