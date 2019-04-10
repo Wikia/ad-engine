@@ -3,20 +3,6 @@ import { AdSlot, context, slotService, utils, VideoData, VideoEventData } from '
 export default {
 	/**
 	 * Prepares data object for video events tracking
-	 * @param {object} videoData
-	 * @param {string} videoData.ad_product
-	 * @param {string} videoData.event_name
-	 * @param {string} videoData.player
-	 * @param {string} videoData.position
-	 * @param {string} [videoData.ad_error_code]
-	 * @param {string} [videoData.audio]
-	 * @param {string} [videoData.content_type]
-	 * @param {string} [videoData.creative_id]
-	 * @param {string} [videoData.ctp]
-	 * @param {string} [videoData.line_item_id]
-	 * @param {string} [videoData.user_block_autoplay]
-	 * @param {string} [videoData.video_id]
-	 * @returns {object}
 	 */
 	getEventData(videoData: VideoData): VideoEventData {
 		const now: Date = new Date();

@@ -14,16 +14,11 @@ import videoEventDataProvider from './video-event-data-provider';
 class TwitchTracker {
 	/**
 	 * Register event listeners on player
-	 * @returns {void}
 	 */
 	register(): void {
 		const listener: TwitchEventListener = {
 			/**
 			 * Twitch event callback
-			 * @param {string} eventName
-			 * @param {Object} playerParams
-			 * @param {Object} data
-			 * @returns {void}
 			 */
 			onEvent(eventName: string, playerParams: TwitchListenerParams, data: VideoData) {
 				const eventInfo: VideoEventData = videoEventDataProvider.getEventData(data);

@@ -1,4 +1,11 @@
-import { Dictionary, slotService, vastParser, VideoData, VideoEventData } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	Dictionary,
+	slotService,
+	vastParser,
+	VideoData,
+	VideoEventData,
+} from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
@@ -49,9 +56,6 @@ export class JWPlayerTracker {
 	videoId: string | null = null;
 	playerInstance: PlayerInstance;
 
-	/**
-	 * @param {Object} params
-	 */
 	constructor(params: Dictionary = {}) {
 		this.adProduct = params.adProduct || null;
 		this.audio = params.audio || false;
@@ -65,10 +69,8 @@ export class JWPlayerTracker {
 
 	/**
 	 * Update withCtp and withAudio based on player and slot
-	 *
-	 * @param {AdSlot | null} slot
 	 */
-	updatePlayerState(slot = null) {
+	updatePlayerState(slot: AdSlot | null = null) {
 		if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
 			this.ctp = !slot.config.autoplay;
 			this.audio = slot.config.audio;
@@ -79,10 +81,7 @@ export class JWPlayerTracker {
 		}
 	}
 
-	/**
-	 * @returns {void}
-	 */
-	updateVideoId() {
+	updateVideoId(): void {
 		const playlistItem = this.playerInstance.getPlaylist();
 		const playlistIndex = this.playerInstance.getPlaylistIndex();
 
@@ -91,10 +90,8 @@ export class JWPlayerTracker {
 
 	/**
 	 * Update creative details
-	 * @param {Object} params
-	 * @returns {void}
 	 */
-	updateCreativeData(params: CreativeParams = {}) {
+	updateCreativeData(params: CreativeParams = {}): void {
 		this.lineItemId = params.lineItemId;
 		this.creativeId = params.creativeId;
 		this.contentType = params.contentType;
@@ -103,9 +100,8 @@ export class JWPlayerTracker {
 	/**
 	 * Register event listeners on player
 	 * @param {Object} player
-	 * @returns {void}
 	 */
-	register(player) {
+	register(player): void {
 		this.playerInstance = player;
 
 		this.updateVideoId();
@@ -177,11 +173,8 @@ export class JWPlayerTracker {
 
 	/**
 	 * Dispatch single event
-	 * @param {string} eventName
-	 * @param {int} errorCode
-	 * @returns {void}
 	 */
-	emit(eventName, errorCode = 0) {
+	emit(eventName: string, errorCode = 0) {
 		this.userBlockAutoplay = -1;
 
 		const featuredVideoAutoplayCookie = Cookies.get('featuredVideoAutoplay');

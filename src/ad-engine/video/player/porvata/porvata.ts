@@ -291,11 +291,7 @@ export class PorvataPlayer {
 }
 
 export class Porvata {
-	/**
-	 * @private
-	 * @returns listener id
-	 */
-	static addOnViewportChangeListener(
+	private static addOnViewportChangeListener(
 		params: PorvataTemplateParams,
 		listener: (isVisible: boolean) => void,
 	): string {
