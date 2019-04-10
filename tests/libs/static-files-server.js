@@ -1,3 +1,4 @@
+const logger = require('@wdio/logger');
 const express = require('express');
 
 class StaticFilesServerLauncher {
@@ -7,8 +8,10 @@ class StaticFilesServerLauncher {
 		}
 
 		const { basename, mount, port } = staticFilesServerConfig;
+		const log = logger.default('@wikia/static-files-server');
 		const server = express();
 
+		log.info(`Mounting "${mount}" directory on "${basename}"`);
 		server.use(basename, express.static(mount));
 
 		return new Promise((resolve, reject) => {
@@ -18,6 +21,7 @@ class StaticFilesServerLauncher {
 					return;
 				}
 
+				log.info(`Server is running on http://localhost:${port}`);
 				resolve();
 			});
 		});
