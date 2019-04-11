@@ -2,6 +2,12 @@ import { AdSlot } from '../models';
 import { context, slotInjector, slotTweaker } from '../services';
 import { client, logger } from '../utils';
 
+interface AdditionalEventData {
+	adType: string;
+	status: string;
+	event: googletag.events.SlotRenderEndedEvent;
+}
+
 const logGroup = 'slot-listener';
 
 let listeners = null;
@@ -32,12 +38,12 @@ function getAdType(event, adSlot) {
 	return AdSlot.STATUS_SUCCESS;
 }
 
-function getData(adSlot, { adType, status }) {
+function getData(adSlot: AdSlot, additionalEventData: Partial<AdditionalEventData>) {
 	const now = new Date();
 
 	return {
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
-		adType: adType || '',
+		adType: additionalEventData.adType || '',
 		order_id: adSlot.orderId,
 		creative_id: adSlot.creativeId,
 		creative_size:
@@ -45,7 +51,7 @@ function getData(adSlot, { adType, status }) {
 				? adSlot.creativeSize.join('x')
 				: adSlot.creativeSize,
 		line_item_id: adSlot.lineItemId,
-		status: status || adSlot.getStatus(),
+		status: additionalEventData.status || adSlot.getStatus(),
 		page_width: window.document.body.scrollWidth || '',
 		time_bucket: now.getHours(),
 		timestamp: now.getTime(),
@@ -54,7 +60,7 @@ function getData(adSlot, { adType, status }) {
 	};
 }
 
-function dispatch(methodName, adSlot, adInfo = {}) {
+function dispatch(methodName, adSlot, adInfo?: Partial<AdditionalEventData>) {
 	if (!listeners) {
 		listeners = context
 			.get('listeners.slot')

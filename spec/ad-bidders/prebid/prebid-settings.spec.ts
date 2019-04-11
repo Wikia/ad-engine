@@ -1,18 +1,9 @@
 import { createAdapterSpecificSettings } from '@wikia/ad-bidders/prebid/prebid-settings';
-import { context } from '@wikia/ad-engine/services/context-service';
 import { expect } from 'chai';
 
 describe('prebid settings', () => {
 	describe('createAdapterSpecificSettings', () => {
-		it('returns undefined when built it logic is disabled', () => {
-			context.set('bidders.prebid.useBuiltInTargetingLogic', false);
-
-			expect(createAdapterSpecificSettings([])).to.equal(undefined);
-		});
-
 		it('returns settings rules based on adapters list', () => {
-			context.set('bidders.prebid.useBuiltInTargetingLogic', true);
-
 			const adapterSettings = createAdapterSpecificSettings([
 				{
 					bidderName: 'foo',

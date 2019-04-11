@@ -13,7 +13,11 @@ interface Window {
 	_clrm: CLRM;
 	grumi?: GeoEdgeConfig;
 	moatjw?: MoatJW;
+	// No types available for Twitch embedded player.
 	Twitch?: any;
+	// No types easily available for pbjs.
+	pbjs?: any;
+	pvNumber?: number;
 }
 
 declare var NOLBUNDLE: any;

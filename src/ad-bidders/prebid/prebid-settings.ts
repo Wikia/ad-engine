@@ -1,4 +1,3 @@
-import { context } from '@wikia/ad-engine';
 import { adaptersRegistry } from './adapters-registry';
 import { transformPriceFromBid } from './price-helper';
 
@@ -22,10 +21,6 @@ export interface PrebidTargeting {
 
 export function createAdapterSpecificSettings(adaptersList): PrebidSettings | undefined {
 	const adaptersAdServerTargeting = {};
-
-	if (!context.get('bidders.prebid.useBuiltInTargetingLogic')) {
-		return;
-	}
 
 	adaptersList.forEach(({ bidderName }) => {
 		if (!bidderName) {

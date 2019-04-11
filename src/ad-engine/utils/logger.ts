@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie';
+import * as Cookies from 'js-cookie';
 import { queryString } from './query-string';
 
 const debugGroup = queryString.get('adengine_debug') || Cookies.get('adengine_debug') || '';
