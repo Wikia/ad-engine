@@ -20,7 +20,7 @@ function isSlotApplicable(code, lazyLoad) {
 
 	// This can be simplified once we get rid of uppercase slot names
 	const isSlotDisabled = context.get(`slots.${code}`)
-		? !slotService.getState(code)
+		? context.get(`slots.${code}.alwaysBid`) || !slotService.getState(code)
 		: !isUsedAsAlias(code);
 
 	return !(isSlotDisabled || isSlotLazyIgnored);
