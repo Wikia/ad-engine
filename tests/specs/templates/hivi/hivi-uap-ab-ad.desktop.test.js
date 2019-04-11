@@ -9,7 +9,7 @@ describe('HiVi UAP AB ads page with uap_c', () => {
 
 	before(() => {
 		helpers.navigateToUrl(hiviUapAb.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.slowScroll(7000);
 		adSlots.waitForSlotExpanded(adSlots.bottomLeaderboard);
 	});

@@ -9,12 +9,12 @@ describe('Outstream ads', () => {
 	let adStatus;
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if video is visible in viewport', () => {
 		browser.url(outstream.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForViewabillityCounted();
 		helpers.slowScroll(outstream.pageLength);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
@@ -23,19 +23,20 @@ describe('Outstream ads', () => {
 
 	it('Check if video is visible is floating', () => {
 		browser.url(outstream.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForViewabillityCounted();
 		helpers.slowScroll(outstream.pageLength);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 		helpers.waitForViewabillityCounted();
-		browser.scroll(0, 0).pause(timeouts.actions);
-		expect(browser.isVisible(outstream.floatingPlayer)).to.be.true;
+		helpers.slowScroll(-2000);
+		browser.pause(timeouts.actions);
+		expect($(outstream.floatingPlayer).isDisplayed()).to.be.true;
 	});
 
 	it('Check video with empty response', () => {
 		helpers.navigateToUrl(outstream.pageLink, queryStrings.getEmptyResponse(true));
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForViewabillityCounted();
 		helpers.slowScroll(outstream.pageLength);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);

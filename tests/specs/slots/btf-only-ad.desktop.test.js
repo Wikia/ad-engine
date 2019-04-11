@@ -9,8 +9,8 @@ describe('BTF Only ads page: incontent boxad', () => {
 
 	before(() => {
 		browser.url(btfOnlyAd.pageLink);
-		browser.waitForVisible(btfOnlyAd.finishQueueButton, timeouts.standard);
-		browser.click(btfOnlyAd.finishQueueButton);
+		$(btfOnlyAd.finishQueueButton).waitForDisplayed(timeouts.standard);
+		$(btfOnlyAd.finishQueueButton).click();
 		helpers.slowScroll(2500);
 		adSlots.waitForSlotExpanded(adSlots.incontentBoxad);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentBoxad);

@@ -43,19 +43,20 @@ class Helpers {
 	 * Scrolls by given number of pixels starting from the given element.
 	 * If no element is given, it scrolls from the top.
 	 * @param {number} px - number of pixels by which we want to scroll
-	 * @param scrollFromElement - element we want to scroll from
+	 * @param scrollFromThisElement - element we want to scroll from
 	 */
-	slowScroll(px, scrollFromElement = null) {
+	slowScroll(px, scrollFromThisElement = null) {
 		const step = px / valueToDivideBy;
 
-		if (scrollFromElement !== null) {
+		if (scrollFromThisElement !== null) {
+			$(scrollFromThisElement).scrollIntoView();
 			for (let i = step; i < px; i += step) {
-				browser.scroll(scrollFromElement, 0, i);
+				browser.execute(`window.scrollBy(0,${i})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		} else {
 			for (let i = step; i < px; i += step) {
-				browser.scroll(0, i);
+				browser.execute(`window.scrollBy(0,${i})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		}
@@ -67,18 +68,18 @@ class Helpers {
 
 	reloadPageAndWaitForSlot(adSlot) {
 		browser.refresh();
-		browser.waitForVisible(adSlot, timeouts.standard);
+		$(adSlot).waitForDisplayed(timeouts.standard);
 	}
 
 	openUrlAndWaitForSlot(url, adSlot) {
 		browser.url(url);
-		browser.waitForVisible(adSlot, timeouts.standard);
+		$(adSlot).waitForDisplayed(timeouts.standard);
 	}
 
 	refreshPageAndWaitForSlot(adSlot, timeout = timeouts.standard) {
 		browser.refresh();
 		browser.pause(timeout);
-		browser.waitForVisible(adSlot, timeout);
+		$(adSlot).waitForDisplayed(timeout);
 	}
 
 	waitForVideoAdToFinish(adDuration) {
@@ -91,10 +92,10 @@ class Helpers {
 
 	waitForValuesLoaded(field = false) {
 		if (field) {
-			return browser.waitUntil(() => browser.getText(field) !== 'Waiting...', timeouts.standard);
+			return browser.waitUntil(() => $(field).getText() !== 'Waiting...', timeouts.standard);
 		}
 
-		return browser.waitUntil(() => browser.getText(this.main) !== 'Waiting...', timeouts.standard);
+		return browser.waitUntil(() => $(this.main).getText() !== 'Waiting...', timeouts.standard);
 	}
 
 	/**
@@ -147,8 +148,8 @@ class Helpers {
 		let result = false;
 
 		this.waitForLineItemIdAttribute(adSlot);
-		browser.waitForEnabled(adSlot, timeouts.standard);
-		browser.click(adSlot);
+		$(adSlot).waitForEnabled(timeouts.standard);
+		$(adSlot).click();
 		this.switchToTab(1);
 		this.waitForUrl(url);
 
@@ -195,6 +196,7 @@ class Helpers {
 		browser.switchTab(tabIds[0]);
 	}
 
+	// TODO Visual
 	checkVisualRegression(results) {
 		results.forEach((result) => expect(result.isWithinMisMatchTolerance).to.be.ok);
 	}

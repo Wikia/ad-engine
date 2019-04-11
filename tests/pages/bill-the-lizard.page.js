@@ -20,37 +20,37 @@ class BillTheLizard {
 	}
 
 	getLastCallStatus() {
-		return browser.getText(this.lastCallStatus);
+		return $(this.lastCallStatus).getText();
 	}
 
 	getLastCallPredictions() {
-		return browser.getText(this.lastCallPredictions);
+		return $(this.lastCallPredictions).getText();
 	}
 
 	getSerializedValue() {
-		return browser.getText(this.serialized);
+		return $(this.serialized).getText();
 	}
 
 	getTargetingValue() {
-		return browser.getText(this.targeting);
+		return $(this.targeting).getText();
 	}
 
 	getAllPredictions() {
-		return browser.getText(this.allPredictions);
+		return $(this.allPredictions).getText();
 	}
 
 	getAllStatuses() {
-		return browser.getText(this.allStatuses);
+		return $(this.allStatuses).getText();
 	}
 
 	lazyLoadCheshireCat() {
-		browser.waitForEnabled(this.lazyCallCheshireCatButton, timeouts.standard);
-		browser.click(this.lazyCallCheshireCatButton);
+		$(this.lazyCallCheshireCatButton).waitForEnabled(timeouts.standard);
+		$(this.lazyCallCheshireCatButton).click();
 	}
 
 	lazyLoadCheshireCatWithId() {
-		browser.waitForEnabled(this.lazyCallCheshireCatWithIdButton, timeouts.standard);
-		browser.click(this.lazyCallCheshireCatWithIdButton);
+		$(this.lazyCallCheshireCatWithIdButton).waitForEnabled(timeouts.standard);
+		$(this.lazyCallCheshireCatWithIdButton).click();
 	}
 }
 

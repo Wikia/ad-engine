@@ -7,21 +7,21 @@ import { helpers } from '../../../common/helpers';
 describe('Desktop HiVi UAP JWP ads page: top leaderboard', () => {
 	beforeEach(() => {
 		browser.url(hiviUapJwp.pageLink);
-		browser.waitForVisible(hiviUapJwp.loadAdsButton, timeouts.standard);
+		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is existing, but the ad is not immediately visible', () => {
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		expect(
-			browser.isExisting(`${adSlots.topLeaderboard}${adSlots.resultAttribute}`),
+			$(`${adSlots.topLeaderboard}${adSlots.resultAttribute}`).isExisting(),
 			'Top leaderboard visible',
 		).to.be.false;
 	});
 
 	it('Check if top leaderboard does not load after manually finishing the queue', () => {
-		browser.click(hiviUapJwp.loadAdsButton);
-		browser.waitForExist(hiviUapJwp.staticFrame, timeouts.standard);
-		expect(browser.isExisting(adSlots.lineItemIdAttribute), 'Top leaderboard has been loaded').to.be
+		$(hiviUapJwp.loadAdsButton).click();
+		$(hiviUapJwp.staticFrame).waitForExist(timeouts.standard);
+		expect($(adSlots.lineItemIdAttribute).isExisting(), 'Top leaderboard has been loaded').to.be
 			.false;
 	});
 });
@@ -29,18 +29,18 @@ describe('Desktop HiVi UAP JWP ads page: top leaderboard', () => {
 describe('Desktop HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () => {
 	beforeEach(() => {
 		browser.url(hiviUapJwp.pageLink);
-		browser.waitForVisible(hiviUapJwp.loadAdsButton, timeouts.standard);
+		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if top boxad is existing, but not immediately visible', () => {
-		expect(browser.isExisting(`${adSlots.topBoxad}${adSlots.resultAttribute}`), 'Top boxad visible')
-			.to.be.false;
+		expect($(`${adSlots.topBoxad}${adSlots.resultAttribute}`).isExisting(), 'Top boxad visible').to
+			.be.false;
 	});
 
 	it('Check if the ad loaded after delay is visible and if it is the inhouse one', () => {
 		hiviUapJwp.waitToLoadAds();
 		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(browser.isVisibleWithinViewport(adSlots.topBoxad), 'Slot not in viewport').to.be.true;
+		expect($(adSlots.topBoxad).isDisplayedInViewport(), 'Slot not in viewport').to.be.true;
 	});
 
 	it('Check if the loaded ad is the inhouse one', () => {
@@ -52,7 +52,8 @@ describe('Desktop HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () =
 		);
 	});
 
-	it('Check visual regression in top boxad', () => {
+	// TODO Visual
+	xit('Check visual regression in top boxad', () => {
 		hiviUapJwp.waitToLoadAds();
 		browser.checkElement(adSlots.topBoxad);
 	});
@@ -61,12 +62,12 @@ describe('Desktop HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () =
 describe('Desktop HiVi UAP JWP ads page: top boxad (ads loaded after clicking the button)', () => {
 	before(() => {
 		browser.url(hiviUapJwp.pageLink);
-		browser.waitForVisible(hiviUapJwp.loadAdsButton, timeouts.standard);
-		browser.click(hiviUapJwp.loadAdsButton);
+		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
+		$(hiviUapJwp.loadAdsButton).click();
 	});
 
 	it('Check if top boxad shows up after clicking the button', () => {
-		expect(browser.isVisibleWithinViewport(adSlots.topBoxad), 'Slot not in viewport').to.be.true;
+		expect($(adSlots.topBoxad).isDisplayedInViewport(), 'Slot not in viewport').to.be.true;
 	});
 
 	it('Check if slot was viewed', () => {
@@ -84,7 +85,8 @@ describe('Desktop HiVi UAP JWP ads page: top boxad (ads loaded after clicking th
 		);
 	});
 
-	it('Check visual regression in top boxad', () => {
+	// TODO Visual
+	xit('Check visual regression in top boxad', () => {
 		browser.checkElement(adSlots.topBoxad);
 	});
 });
@@ -95,27 +97,28 @@ describe('Desktop HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)'
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is existing, but not immediately visible', () => {
 		helpers.slowScroll(1000);
-		browser.waitForExist(adSlots.incontentBoxad, timeouts.standard);
-		expect(browser.isVisibleWithinViewport(adSlots.incontentBoxad), 'Slot visible in viewport').to
-			.be.false;
+		$(adSlots.incontentBoxad).waitForExist(timeouts.standard);
+		expect($(adSlots.incontentBoxad).isDisplayedInViewport(), 'Slot visible in viewport').to.be
+			.false;
 	});
 
 	it('Check if the ad loaded after delay is the inhouse one', () => {
 		hiviUapJwp.waitForAdsAfterDelayAndScrollToAdSlotOnDesktop(adSlots.incontentBoxad);
 		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
-		expect(browser.isVisibleWithinViewport(adSlots.incontentBoxad)).to.be.true;
+		expect($(adSlots.incontentBoxad).isDisplayedInViewport()).to.be.true;
 		expect(helpers.getLineItemId(adSlots.incontentBoxad)).to.equal(
 			hiviUapJwp.inHouseLineItemId,
 			'Wrong ad loaded',
 		);
 	});
 
-	it('Check visual regression in incontent boxad', () => {
+	// TODO Visual
+	xit('Check visual regression in incontent boxad', () => {
 		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnDesktop(adSlots.incontentBoxad);
 		browser.checkElement(adSlots.incontentBoxad);
 	});
@@ -128,14 +131,12 @@ describe('Desktop HiVi UAP JWP ads page: incontent boxad (ads loaded after click
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot shows up after clicking the button', () => {
-		expect(
-			browser.isVisibleWithinViewport(adSlots.incontentBoxad),
-			'Incontent boxad not in viewport',
-		).to.be.true;
+		expect($(adSlots.incontentBoxad).isDisplayedInViewport(), 'Incontent boxad not in viewport').to
+			.be.true;
 	});
 
 	it('Check if slot was viewed', () => {
@@ -154,7 +155,8 @@ describe('Desktop HiVi UAP JWP ads page: incontent boxad (ads loaded after click
 		);
 	});
 
-	it('Check visual regression in incontent boxad', () => {
+	// TODO Visual
+	xit('Check visual regression in incontent boxad', () => {
 		browser.checkElement(adSlots.incontentBoxad);
 	});
 });

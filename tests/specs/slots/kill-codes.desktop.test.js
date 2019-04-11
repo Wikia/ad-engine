@@ -23,7 +23,7 @@ describe('Kill codes ads page', () => {
 
 	it('Check if ATF boxad slot is visible when disableSecondCall set to false', () => {
 		browser.url(`${blockBtfAd.pageLink}?disableSecondCall=false`, timeouts.standard);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
 		expect(adStatus.inViewport, 'Visible in viewport').to.be.true;
 	});

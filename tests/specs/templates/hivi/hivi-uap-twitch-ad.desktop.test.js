@@ -9,7 +9,7 @@ describe('Twitch ads page: top leaderboard', () => {
 
 	before(() => {
 		browser.url(twitchAd.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
 	});
 
@@ -35,7 +35,7 @@ describe('Twitch ads page: top leaderboard', () => {
 	});
 
 	it('Check if navbar is visible in viewport', () => {
-		expect(browser.isVisibleWithinViewport(helpers.navbar), 'Navbar not visible').to.be.true;
+		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
 	it('Check if redirect on click works', () => {
@@ -49,7 +49,7 @@ describe('Twitch ads page: player', () => {
 	});
 
 	beforeEach(() => {
-		browser.waitForVisible(twitchAd.twitchPlayer, timeouts.standard);
+		$(twitchAd.twitchPlayer).waitForDisplayed(timeouts.standard);
 	});
 
 	afterEach(() => {
@@ -57,31 +57,33 @@ describe('Twitch ads page: player', () => {
 	});
 
 	it('Check if Twitch player is visible', () => {
-		expect(browser.isVisibleWithinViewport(twitchAd.twitchPlayer), 'Player not visible').to.be.true;
+		expect($(twitchAd.twitchPlayer).isDisplayedInViewport(), 'Player not visible').to.be.true;
 	});
 
 	it('Check if playing the stream works', () => {
 		helpers.switchToFrame(twitchAd.twitchFrame);
-		browser.waitForEnabled(twitchAd.playPauseButton, timeouts.standard);
-		browser.click(twitchAd.playPauseButton);
-		expect(
-			$(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute),
-		).to.include(twitchAd.playPauseButton.substring(1), 'Stream not playing');
+		$(twitchAd.playPauseButton).waitForEnabled(timeouts.standard);
+		$(twitchAd.playPauseButton).click();
+		expect($(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute)).to.include(
+			twitchAd.playPauseButton.substring(1),
+			'Stream not playing',
+		);
 	});
 
 	it('Check if unmuting the stream works', () => {
 		helpers.switchToFrame(twitchAd.twitchFrame);
-		browser.waitForEnabled(twitchAd.unmuteButton, timeouts.standard);
-		browser.click(twitchAd.unmuteButton);
-		expect(
-			$(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute),
-		).to.include(twitchAd.unmuteButton.substring(1), 'Stream not unmuted');
+		$(twitchAd.unmuteButton).waitForEnabled(timeouts.standard);
+		$(twitchAd.unmuteButton).click();
+		expect($(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute)).to.include(
+			twitchAd.unmuteButton.substring(1),
+			'Stream not unmuted',
+		);
 	});
 
 	it('Check if clicking on Twitch button redirects to Twitch account with that stream', () => {
 		helpers.switchToFrame(twitchAd.twitchFrame);
-		browser.waitForEnabled(twitchAd.twitchButton, timeouts.standard);
-		browser.click(twitchAd.twitchButton);
+		$(twitchAd.twitchButton).waitForEnabled(timeouts.standard);
+		$(twitchAd.twitchButton).click();
 		helpers.switchToTab(1);
 		helpers.waitForUrl(twitchAd.twitchWord);
 		expect(browser.getUrl()).to.include(

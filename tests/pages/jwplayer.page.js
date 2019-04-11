@@ -24,21 +24,29 @@ class JWPlayer {
 	}
 
 	isAudioOn() {
-		browser.waitForExist(this.player, timeouts.standard);
-		if (browser.isExisting(`${this.soundToggle}${this.soundToggleOn}`)) {
+		$(this.player).waitForExist(timeouts.standard);
+		if ($(`${this.soundToggle}${this.soundToggleOn}`).isExisting()) {
 			return true;
 		}
-		browser.waitForExist(`${this.soundToggle}${this.soundToggleOff}`, timeouts.standard);
+		$(`${this.soundToggle}${this.soundToggleOff}`).waitForExist(timeouts.standard);
 
 		return false;
 	}
 
 	isAdVisible() {
-		browser.waitForExist(this.playerAdContainer, timeouts.standard);
-		if (browser.getAttribute(this.playerAdContainer, 'style').includes('visibility: visible')) {
+		$(this.playerAdContainer).waitForExist(timeouts.standard);
+		if (
+			$(this.playerAdContainer)
+				.getAttribute('style')
+				.includes('visibility: visible')
+		) {
 			return true;
 		}
-		if (browser.getAttribute(this.playerAdContainer, 'style').includes('visibility: hidden')) {
+		if (
+			$(this.playerAdContainer)
+				.getAttribute('style')
+				.includes('visibility: hidden')
+		) {
 			return false;
 		}
 

@@ -9,12 +9,11 @@ describe('Delay ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		browser.url(delayAd.pageLink);
-		browser.waitForVisible(delayAd.loadAdsButton, timeouts.standard);
+		$(delayAd.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is not immediately visible', () => {
-		browser.waitForExist(
-			`${adSlots.topLeaderboard}[${adSlots.resultAttribute}]`,
+		$(`${adSlots.topLeaderboard}[${adSlots.resultAttribute}]`).waitForExist(
 			timeouts.standard,
 			true,
 		);
@@ -27,8 +26,8 @@ describe('Delay ads page: top leaderboard', () => {
 	});
 
 	it('Check if slot shows up after clicking the button and if it was viewed', () => {
-		browser.click(delayAd.loadAdsButton);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(delayAd.loadAdsButton).click();
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 		adSlots.waitForSlotViewed(adSlots.topLeaderboard);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 		expect($(adSlots.topLeaderboard).getAttribute(adSlots.resultAttribute)).to.equal(
@@ -42,7 +41,7 @@ describe('Delay ads page: top leaderboard', () => {
 	});
 
 	it('Check if redirect on click works properly', () => {
-		browser.click(delayAd.loadAdsButton);
+		$(delayAd.loadAdsButton).click();
 		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 });
@@ -52,15 +51,11 @@ describe('Delay ads page: top boxad', () => {
 
 	beforeEach(() => {
 		browser.url(delayAd.pageLink);
-		browser.waitForVisible(delayAd.loadAdsButton, timeouts.standard);
+		$(delayAd.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is not immediately visible', () => {
-		browser.waitForExist(
-			`${adSlots.topBoxad}[${adSlots.resultAttribute}]`,
-			timeouts.standard,
-			true,
-		);
+		$(`${adSlots.topBoxad}[${adSlots.resultAttribute}]`).waitForExist(timeouts.standard, true);
 	});
 
 	it('Check if slot is visible in viewport after delay', () => {
@@ -70,7 +65,7 @@ describe('Delay ads page: top boxad', () => {
 	});
 
 	it('Check if slot shows up after clicking the button and if it was viewed', () => {
-		browser.click(delayAd.loadAdsButton);
+		$(delayAd.loadAdsButton).click();
 		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
 		adSlots.waitForSlotViewed(adSlots.topBoxad);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;

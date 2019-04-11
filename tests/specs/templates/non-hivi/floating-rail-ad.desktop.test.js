@@ -8,7 +8,7 @@ import networkCapture from '../../../common/network-capture';
 describe('Floating rail ads page: floating rail', () => {
 	before(() => {
 		browser.url(floatingRailAd.pageLink);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if rail scrolls with the content', () => {
@@ -17,15 +17,17 @@ describe('Floating rail ads page: floating rail', () => {
 			floatingRailAd.attributeRailScrolling,
 			'Rail did not scroll',
 		);
-		expect(browser.isVisibleWithinViewport(floatingRailAd.rail, 'Rail not in viewport')).to.be.true;
+		expect($(floatingRailAd.rail).isDisplayedInViewport(), 'Rail not in viewport').to.be.true;
 	});
 
-	it('Check visual regression in top boxad', () => {
+	// TODO Visual
+	xit('Check visual regression in top boxad', () => {
 		helpers.checkVisualRegression(browser.checkElement(adSlots.topBoxad));
 	});
 });
 
-describe('Floating rail ads page: top boxad requests', () => {
+// TODO Network
+xdescribe('Floating rail ads page: top boxad requests', () => {
 	let fetchedUrl;
 	const gatheredUrls = [];
 	let i = 0;
@@ -45,7 +47,7 @@ describe('Floating rail ads page: top boxad requests', () => {
 			}
 		});
 		await browser.url(floatingRailAd.pageLink);
-		await browser.waitForVisible(adSlots.railModule, timeouts.standard);
+		await $(adSlots.railModule).waitForDisplayed(timeouts.standard);
 		await browser.pause(timeouts.viewabillity);
 	});
 

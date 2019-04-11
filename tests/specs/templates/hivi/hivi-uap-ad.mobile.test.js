@@ -48,13 +48,13 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	beforeEach(() => {
 		helpers.closeNewTabs();
 		browser.url(hiviUap.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
-		browser.scroll(0, 0);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.slowScroll(-2000);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-5000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -78,7 +78,7 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	});
 
 	it('Check if navbar is visible in viewport', () => {
-		expect(browser.isVisibleWithinViewport(helpers.navbar), 'Navbar not visible').to.be.true;
+		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
 	it('Check redirect to new page', () => {
@@ -94,8 +94,8 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	});
 
 	it('Check closing top leaderboard after clicking the button', () => {
-		browser.waitForEnabled(hiviUap.closeLeaderboardButton, timeouts.standard);
-		browser.click(hiviUap.closeLeaderboardButton);
+		$(hiviUap.closeLeaderboardButton).waitForEnabled(timeouts.standard);
+		$(hiviUap.closeLeaderboardButton).click();
 		adSlots.waitForSlotCollapsed(adSlots.topLeaderboard);
 	});
 });
@@ -103,38 +103,32 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 	beforeEach(() => {
 		browser.url(hiviUap.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
-		browser.click(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`);
+		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).click();
 	});
 
 	it('Check if opening the full screen player works', () => {
-		browser.waitForEnabled(
-			`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`,
+		$(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`).waitForEnabled(
 			timeouts.standard,
 		);
-		browser.click(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`);
-		browser.waitForExist(hiviUap.fullScreen, timeouts.standard);
+		$(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`).click();
+		$(hiviUap.fullScreen).waitForExist(timeouts.standard);
 	});
 
 	it('Check if pausing the video works', () => {
-		browser.waitForEnabled(
-			`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`,
-			timeouts.standard,
-		);
-		browser.click(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`);
-		browser.waitForExist(
-			`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}${hiviUap.buttonIsOn}`,
+		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`).waitForEnabled(timeouts.standard);
+		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`).click();
+		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}${hiviUap.buttonIsOn}`).waitForExist(
 			timeouts.standard,
 			true,
 		);
 	});
 
 	it('Check if unmuting the video works', () => {
-		browser.waitForEnabled(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`, timeouts.standard);
-		browser.click(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`);
-		browser.waitForExist(
-			`${adSlots.topLeaderboard} ${hiviUap.volumeButton}${hiviUap.buttonIsOn}`,
+		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`).waitForEnabled(timeouts.standard);
+		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`).click();
+		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}${hiviUap.buttonIsOn}`).waitForExist(
 			timeouts.standard,
 			true,
 		);
@@ -142,20 +136,20 @@ describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 
 	it('Check if replaying the video works', () => {
 		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
-		browser.waitForExist(`${hiviUap.videoPlayer}${helpers.classHidden}`, timeouts.standard);
+		$(`${hiviUap.videoPlayer}${helpers.classHidden}`).waitForExist(timeouts.standard);
 		helpers.switchToFrame(hiviUap.topPlayerFrame);
-		browser.waitForVisible(hiviUap.replayOverlay, timeouts.standard);
-		browser.click(hiviUap.replayOverlay);
+		$(hiviUap.replayOverlay).waitForDisplayed(timeouts.standard);
+		$(hiviUap.replayOverlay).click();
 		browser.frame();
-		browser.waitForExist(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`, timeouts.standard);
+		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).waitForExist(timeouts.standard);
 	});
 });
 
 describe('Mobile HiVi UAP ads page: top boxad', () => {
 	beforeEach(() => {
 		browser.url(hiviUap.pageLink);
-		browser.scroll(0, 5000);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		helpers.slowScroll(5000);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -170,9 +164,9 @@ describe('Mobile HiVi UAP ads page: top boxad', () => {
 describe('Mobile HiVi UAP ads page: incontent boxad', () => {
 	beforeEach(() => {
 		browser.url(hiviUap.pageLink);
-		browser.scroll(adSlots.railModule);
-		browser.waitForVisible(adSlots.incontentBoxad, timeouts.standard);
-		browser.scroll(adSlots.incontentBoxad);
+		$(adSlots.railModule).scrollIntoView();
+		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
+		$(adSlots.incontentBoxad).scrollIntoView();
 	});
 
 	it('Check if line item id is from the same campaign', () => {

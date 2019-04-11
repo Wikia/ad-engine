@@ -8,7 +8,7 @@ import { adSlots } from '../../common/ad-slots';
 describe('It will test moat page', () => {
 	it('will test if cached value is stored', () => {
 		browser.url(moat.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForValuesLoaded();
 		expect(moat.getPageLevelParams()).to.equal(
 			'{"m_safety":"safe","m_categories":["moat_safe"],"m_data":"0"}',
@@ -17,14 +17,14 @@ describe('It will test moat page', () => {
 
 	it('will test disabled moat', () => {
 		helpers.navigateToUrl(moat.pageLink, queryStrings.getMoat(false));
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForViewabillityCounted();
 		expect(moat.getPageLevelParams()).to.include('Waiting');
 	});
 
 	it('will test delayed moat', () => {
 		helpers.navigateToUrl(moat.pageLink, queryStrings.getAdEngineDelay(1000));
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForViewabillityCounted();
 		helpers.waitForValuesLoaded();
 		expect(moat.getPageLevelParams()).to.equal(

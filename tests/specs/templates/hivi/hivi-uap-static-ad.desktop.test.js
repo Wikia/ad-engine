@@ -37,12 +37,12 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		browser.url(hiviUapStatic.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -70,7 +70,7 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	it('Check if navbar is visible in viewport', () => {
-		expect(browser.isVisibleWithinViewport(helpers.navbar), 'Navbar not visible').to.be.true;
+		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
 	it('Check if redirect on click works', () => {
@@ -78,29 +78,31 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	it('Check if closing top leaderboard works', () => {
-		browser.click(hiviUapStatic.closeLeaderboardButton);
+		$(hiviUapStatic.closeLeaderboardButton).click();
 		adSlots.waitForSlotCollapsedManually(adSlots.topLeaderboard);
 	});
 
-	it('Check visual regression in top leaderboard (default)', () => {
+	// TODO Visual
+	xit('Check visual regression in top leaderboard (default)', () => {
 		helpers.reloadPageAndWaitForSlot(adSlots.topLeaderboard);
-		browser.checkElement(adSlots.topLeaderboard);
+		$(adSlots.topLeaderboard).checkElement();
 	});
 
-	it('Check visual regression in top leaderboard (resolved)', () => {
+	// TODO Visual
+	xit('Check visual regression in top leaderboard (resolved)', () => {
 		helpers.refreshPageAndWaitForSlot(adSlots.topLeaderboard);
-		browser.checkElement(adSlots.topLeaderboard);
+		$(adSlots.topLeaderboard).checkElement();
 	});
 });
 
 describe('Desktop HiVi UAP static ads page: top boxad', () => {
 	before(() => {
 		browser.url(hiviUapStatic.pageLink);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -115,8 +117,8 @@ describe('Desktop HiVi UAP static ads page: top boxad', () => {
 describe('Desktop HiVi UAP static ads page: incontent boxad', () => {
 	before(() => {
 		browser.url(hiviUapStatic.pageLink);
-		browser.scroll(0, 1000);
-		browser.waitForVisible(adSlots.incontentBoxad, timeouts.standard);
+		helpers.slowScroll(1000);
+		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -146,7 +148,7 @@ describe('Desktop HiVi UAP static ads page: bottom leaderboard', () => {
 
 		hiviUapStatic.openUapWithState(true, hiviUapStatic.pageLink, adSlots.topLeaderboard);
 		helpers.slowScroll(7000);
-		browser.waitForVisible(adSlots.bottomLeaderboard, timeouts.standard);
+		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
 
 		refreshDimensions = adSlots.checkDerivativeSizeSlotRatio(
 			adSlots.bottomLeaderboard,
@@ -183,10 +185,11 @@ describe('Desktop HiVi UAP static ads page: bottom leaderboard', () => {
 		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 
-	it('Check visual regression in bottom leaderboard (resolved)', () => {
+	// TODO Visual
+	xit('Check visual regression in bottom leaderboard (resolved)', () => {
 		helpers.refreshPageAndWaitForSlot(adSlots.topLeaderboard);
-		browser.scroll(0, 7000);
-		browser.waitForVisible(adSlots.bottomLeaderboard, timeouts.standard);
+		helpers.slowScroll(7000);
+		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
 		browser.checkElement(adSlots.bottomLeaderboard);
 	});
 });

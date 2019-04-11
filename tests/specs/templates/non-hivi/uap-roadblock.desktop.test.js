@@ -14,7 +14,7 @@ describe('Desktop uap roadblock page: top leaderboard', () => {
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -30,27 +30,28 @@ describe('Desktop uap roadblock page: top leaderboard', () => {
 	});
 
 	it('Check if navbar is visible in viewport', () => {
-		expect(browser.isVisibleWithinViewport(helpers.navbar), 'Navbar not visible').to.be.true;
+		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
 	it('Check if redirect on click works', () => {
 		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 
-	it('Check visual regression in top leaderboard (resolved)', () => {
+	// TODO Visual
+	xit('Check visual regression in top leaderboard (resolved)', () => {
 		helpers.refreshPageAndWaitForSlot(adSlots.topLeaderboard);
-		browser.checkElement(adSlots.topLeaderboard);
+		$(adSlots.topLeaderboard).checkElement();
 	});
 });
 
 describe('Desktop uap roadblock page: top boxad', () => {
 	before(() => {
 		browser.url(uapRoadblock.pageLink);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	afterEach(() => {
-		browser.scroll(0, 0);
+		helpers.slowScroll(-2000);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
