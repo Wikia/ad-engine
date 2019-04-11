@@ -25,6 +25,7 @@ export interface SlotConfig {
 	disabled?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
+	alwaysBid?: boolean;
 	slotName?: string;
 
 	targeting: Targeting;

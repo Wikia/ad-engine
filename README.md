@@ -53,6 +53,7 @@ npm install github:Wikia/ad-engine#v14.0.0
 |`slots`|Ad slots definition|object|✔|
 |`slots.{slot_name}`|Single slot definition|object|✔|
 |`slots.{slot_name}.{anything}`|Ad slot definition may contain different properties and they will be available in `AdSlot.config` property|string|✘|
+|`slots.{slot_name}.alwaysBid`|Decides whether Prebid.js will always bid for this slot|boolean|✘|
 |`slots.{slot_name}.avoidConflictWith`|CSS selector that is going to be checked to prevent loading ad slot in the same viewport|string|✘|
 |`slots.{slot_name}.bidderAlias`|Ad slot name alias for getting bids that are assigned for different ad slot|string|✘|
 |`slots.{slot_name}.insertBelowScrollPosition`|Switch: insert ad slot below scroll|boolean|✘|
