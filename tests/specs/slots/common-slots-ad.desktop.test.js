@@ -101,9 +101,9 @@ describe('Common slots: rail module', () => {
 
 	before(() => {
 		browser.url(commonAds.pageLink);
-		helpers.slowScroll(250);
+		helpers.slowScroll(150);
 		$(adSlots.railModule).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.railModule);
+		adStatus = adSlots.getSlotStatus(adSlots.railModule, true);
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -117,7 +117,7 @@ describe('Common slots: rail module', () => {
 	});
 
 	it('Check if module is visible', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect(adStatus.inViewport, 'Not visible').to.be.true;
 	});
 });
 
@@ -128,7 +128,7 @@ describe('Common slots: incontent boxad', () => {
 		browser.url(commonAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentBoxad);
+		adStatus = adSlots.getSlotStatus(adSlots.incontentBoxad, true);
 	});
 
 	it('Check if dimensions are correct', () => {

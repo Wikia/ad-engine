@@ -144,21 +144,26 @@ class Helpers {
 	 * It checks redirect on click and returns result.
 	 * @param adSlot slot to click
 	 * @param url expected url
+	 * @param parentDomain starting url
 	 * @returns {boolean} returns false if there were no errors, else it returns true
 	 */
-	adRedirect(adSlot, url = this.clickThroughUrlDomain) {
+	adRedirect(adSlot, url = this.clickThroughUrlDomain, parentDomain) {
 		let result = false;
+		if (!parentDomain) {
+			parentDomain = browser.getUrl();
+		}
 
 		this.waitForLineItemIdAttribute(adSlot);
 		$(adSlot).waitForEnabled(timeouts.standard);
 		$(adSlot).click();
-		this.switchToTab(1);
+		browser.switchWindow(url);
 		this.waitForUrl(url);
 
 		if (browser.getUrl().includes(url)) {
 			result = true;
 		}
-		this.closeNewTabs();
+		browser.closeWindow();
+		browser.switchWindow(parentDomain);
 
 		return result;
 	}
