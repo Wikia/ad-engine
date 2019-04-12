@@ -90,12 +90,14 @@ class Helpers {
 		browser.pause(videoDuration);
 	}
 
-	waitForValuesLoaded(field = false) {
-		if (field) {
-			return browser.waitUntil(() => $(field).getText() !== 'Waiting...', timeouts.standard);
-		}
-
-		return browser.waitUntil(() => $(this.main).getText() !== 'Waiting...', timeouts.standard);
+	waitForValuesLoaded(field) {
+		return browser.waitUntil(
+			() =>
+				!$(field || this.main)
+					.getText()
+					.includes('Waiting...'),
+			timeouts.standard,
+		);
 	}
 
 	/**
