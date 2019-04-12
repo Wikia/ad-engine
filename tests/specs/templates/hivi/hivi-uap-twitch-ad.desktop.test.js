@@ -43,7 +43,8 @@ describe('Twitch ads page: top leaderboard', () => {
 	});
 });
 
-describe('Twitch ads page: player', () => {
+// TODO twitch redirect
+xdescribe('Twitch ads page: player', () => {
 	before(() => {
 		browser.url(twitchAd.pageLink);
 	});
@@ -67,16 +68,6 @@ describe('Twitch ads page: player', () => {
 		expect($(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute)).to.include(
 			twitchAd.playPauseButton.substring(1),
 			'Stream not playing',
-		);
-	});
-
-	it('Check if unmuting the stream works', () => {
-		helpers.switchToFrame(twitchAd.twitchFrame);
-		$(twitchAd.unmuteButton).waitForEnabled(timeouts.standard);
-		$(twitchAd.unmuteButton).click();
-		expect($(twitchAd.playerClass).getAttribute(twitchAd.buttonPressedAttribute)).to.include(
-			twitchAd.unmuteButton.substring(1),
-			'Stream not unmuted',
 		);
 	});
 

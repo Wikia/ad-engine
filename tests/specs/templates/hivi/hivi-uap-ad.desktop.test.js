@@ -108,48 +108,6 @@ describe('Desktop HiVi UAP ads page: video player in top leaderboard', () => {
 		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
 		browser.pause(timeouts.hover);
 	});
-
-	it('Check if opening the full screen player works properly', () => {
-		$(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`).waitForEnabled(
-			timeouts.standard,
-		);
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
-		browser.pause(timeouts.hover);
-		$(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`).click();
-		$(hiviUap.playerFullscreen).waitForDisplayed(timeouts.standard);
-	});
-
-	it('Check if pausing the video works properly', () => {
-		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`).waitForEnabled(timeouts.standard);
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
-		browser.pause(timeouts.hover);
-		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`).click();
-		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}${hiviUap.buttonIsOn}`).waitForExist(
-			timeouts.standard,
-			true,
-		);
-	});
-
-	it('Check if unmuting the video works properly', () => {
-		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`).waitForEnabled(timeouts.standard);
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
-		browser.pause(timeouts.hover);
-		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`).click();
-		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}${hiviUap.buttonIsOn}`).waitForExist(
-			timeouts.standard,
-			true,
-		);
-	});
-
-	it('Check if replaying the video works properly', () => {
-		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
-		$(`${hiviUap.videoPlayer}${helpers.classHidden}`).waitForExist(timeouts.standard);
-		helpers.switchToFrame(hiviUap.topPlayerFrame);
-		$(hiviUap.replayOverlay).waitForDisplayed(timeouts.standard);
-		$(hiviUap.replayOverlay).click();
-		browser.frame();
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).waitForExist(timeouts.standard);
-	});
 });
 
 describe('Desktop HiVi UAP ads page: top boxad', () => {
@@ -270,49 +228,5 @@ describe('Desktop HiVi UAP ads page: video player in bottom leaderboard', () => 
 	});
 	afterEach(() => {
 		helpers.slowScroll(-2000);
-	});
-
-	it('Check if opening the fullscreen player works properly', () => {
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.playerFullscreenButton}`).waitForEnabled(
-			timeouts.standard,
-		);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
-		browser.pause(timeouts.hover);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.playerFullscreenButton}`).click();
-		$(hiviUap.playerFullscreen).waitForDisplayed(timeouts.standard);
-	});
-
-	it('Check if pausing the video works properly', () => {
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.playPauseButton}`).waitForEnabled(timeouts.standard);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
-		browser.pause(timeouts.hover);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.playPauseButton}`).click();
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.playPauseButton}${hiviUap.buttonIsOn}`).waitForExist(
-			timeouts.standard,
-			true,
-		);
-	});
-
-	it('Check if unmuting the video works properly', () => {
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.volumeButton}`).waitForEnabled(timeouts.standard);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
-		browser.pause(timeouts.hover);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.volumeButton}`).click();
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.volumeButton}${hiviUap.buttonIsOn}`).isExisting(
-			timeouts.standard,
-			true,
-		);
-	});
-
-	it('Check if replaying the video works properly', () => {
-		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}${helpers.classHidden}`).waitForExist(
-			timeouts.standard,
-		);
-		helpers.switchToFrame(hiviUap.bottomPlayerFrame);
-		$(hiviUap.replayOverlay).waitForDisplayed(timeouts.standard);
-		$(hiviUap.replayOverlay).click();
-		browser.frame();
-		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).waitForExist(timeouts.standard);
 	});
 });

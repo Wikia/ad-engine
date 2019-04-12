@@ -234,8 +234,9 @@ class AdSlots {
 	 */
 	checkUAPSizeSlotRatio(adSlot, heightRatio) {
 		this.waitForSlotExpanded(adSlot);
+		let windowSize = browser.getWindowSize();
 
-		return this.checkSlotRatio(adSlot, browser.getViewportSize('width'), heightRatio);
+		return this.checkSlotRatio(adSlot, windowSize.width, heightRatio);
 	}
 
 	/**

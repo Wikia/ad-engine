@@ -105,43 +105,10 @@ describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 		browser.url(hiviUap.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).click();
 	});
 
-	it('Check if opening the full screen player works', () => {
-		$(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`).waitForEnabled(
-			timeouts.standard,
-		);
-		$(`${adSlots.topLeaderboard} ${hiviUap.playerFullscreenButton}`).click();
-		$(hiviUap.fullScreen).waitForExist(timeouts.standard);
-	});
-
-	it('Check if pausing the video works', () => {
-		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`).waitForEnabled(timeouts.standard);
-		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}`).click();
-		$(`${adSlots.topLeaderboard} ${hiviUap.playPauseButton}${hiviUap.buttonIsOn}`).waitForExist(
-			timeouts.standard,
-			true,
-		);
-	});
-
-	it('Check if unmuting the video works', () => {
-		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`).waitForEnabled(timeouts.standard);
-		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}`).click();
-		$(`${adSlots.topLeaderboard} ${hiviUap.volumeButton}${hiviUap.buttonIsOn}`).waitForExist(
-			timeouts.standard,
-			true,
-		);
-	});
-
-	it('Check if replaying the video works', () => {
-		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
-		$(`${hiviUap.videoPlayer}${helpers.classHidden}`).waitForExist(timeouts.standard);
-		helpers.switchToFrame(hiviUap.topPlayerFrame);
-		$(hiviUap.replayOverlay).waitForDisplayed(timeouts.standard);
-		$(hiviUap.replayOverlay).click();
-		browser.frame();
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).waitForExist(timeouts.standard);
+	it('Check if video player exist', () => {
+		expect($(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).isVisible()).to.be.true;
 	});
 });
 
