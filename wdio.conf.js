@@ -12,7 +12,7 @@ exports.config = {
 		video: ['./tests/specs/video/*.test.js'],
 	},
 	runner: 'local',
-	maxInstances: 10,
+	maxInstances: 5,
 	logLevel: 'error',
 	bail: 0,
 	baseUrl: `http://localhost:${AD_ENGINE_PORT}`,
