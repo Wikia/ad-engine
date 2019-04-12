@@ -4,11 +4,16 @@ import { timeouts } from '../../common/timeouts';
 import { adSlots } from '../../common/ad-slots';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
+import { jwPlayer } from '../../pages/jwplayer.page';
 
 describe('Porvata player', () => {
 	let adStatus;
+	before(() => {
+		browser.url(porvata.pageLink);
+	});
 
 	beforeEach(() => {
+		browser.switchWindow(porvata.pageLink);
 		browser.url(porvata.pageLink);
 		$(porvata.player).waitForDisplayed(timeouts.standard);
 		$(porvata.player).scrollIntoView();
@@ -33,13 +38,13 @@ describe('Porvata player', () => {
 
 	it('Check if redirect on click on default player works', () => {
 		$(porvata.player).click();
-		helpers.switchToTab(1);
+		browser.switchWindow(helpers.clickThroughUrlDomain);
 		helpers.waitForUrl(helpers.clickThroughUrlDomain);
 		expect(browser.getUrl()).to.include(
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		helpers.closeNewTabs();
+		browser.closeWindow();
 	});
 
 	it('Check if unmuting the video works', () => {

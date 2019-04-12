@@ -41,7 +41,6 @@ describe('jwPlayer player', () => {
 
 	it('Check if redirect on click on default player works', () => {
 		$(jwPlayer.player).click();
-		// helpers.switchToTab(1);
 		browser.switchWindow(helpers.clickThroughUrlDomain);
 		helpers.waitForUrl(helpers.clickThroughUrlDomain);
 		expect(browser.getUrl()).to.include(
