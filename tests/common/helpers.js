@@ -176,9 +176,7 @@ class Helpers {
 		// TODO remove this workaround after chromedriver update for opening new pages
 		browser.pause(timeouts.standard);
 
-		const tabIds = browser.getTabIds();
-
-		browser.switchTab(tabIds[tabId]);
+		browser.switchToFrame(tabId);
 	}
 
 	/**

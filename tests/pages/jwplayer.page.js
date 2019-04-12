@@ -8,11 +8,12 @@ class JWPlayer {
 		this.playButton = '.jw-icon-playback';
 		this.soundToggle = '.jw-icon-volume';
 		this.soundToggleOff = '.jw-off';
-		this.soundToggleOn = '.jw-full';
+		this.soundToggleOn = '.jw-svg-icon-volume-0';
 		this.fullscreenButton = '.jw-icon-fullscreen';
 		this.fullscreenPlayer = '.jw-flag-fullscreen';
 		this.videoIdle = '.jw-state-idle';
 		this.playerAdContainer = '#playerContainer_googima';
+		this.videoAd = '.jw-flag-ads';
 
 		this.prerollDuration = 30000;
 		this.midrollDuration = 30000;
@@ -33,28 +34,12 @@ class JWPlayer {
 		return false;
 	}
 
-	isAdVisible() {
+	isVideoAdVisible() {
 		$(this.playerAdContainer).waitForExist(timeouts.standard);
-		if (
-			$(this.playerAdContainer)
-				.getAttribute('style')
-				.includes('visibility: visible')
-		) {
-			return true;
-		}
-		if (
-			$(this.playerAdContainer)
-				.getAttribute('style')
-				.includes('visibility: hidden')
-		) {
-			return false;
-		}
-
-		return undefined;
+		return $(this.videoAd).isExisting();
 	}
-
 	waitForAdToChangeState(shouldAdBeVisible) {
-		browser.waitUntil(() => this.isAdVisible() === shouldAdBeVisible, timeouts.standard);
+		browser.waitUntil(() => this.isVideoAdVisible() === shouldAdBeVisible, timeouts.standard);
 	}
 }
 

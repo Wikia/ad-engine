@@ -15,9 +15,14 @@ describe('jwPlayer player', () => {
 	});
 
 	beforeEach(() => {
+		browser.switchWindow(jwPlayer.pageLink);
 		browser.url(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
+	});
+
+	afterEach(() => {
+		browser.switchWindow(jwPlayer.pageLink);
 	});
 
 	it('Check if player is visible', () => {
@@ -36,43 +41,19 @@ describe('jwPlayer player', () => {
 
 	it('Check if redirect on click on default player works', () => {
 		$(jwPlayer.player).click();
-		helpers.switchToTab(1);
+		// helpers.switchToTab(1);
+		browser.switchWindow(helpers.clickThroughUrlDomain);
 		helpers.waitForUrl(helpers.clickThroughUrlDomain);
 		expect(browser.getUrl()).to.include(
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		helpers.closeNewTabs();
-	});
-
-	it('Check if unmuting the video works', () => {
-		$(jwPlayer.player).moveTo();
-		browser.pause(500);
-		$(jwPlayer.soundToggle).waitForDisplayed(timeouts.standard);
-		$(jwPlayer.soundToggle).click();
-		$(`${jwPlayer.soundToggle}${jwPlayer.soundToggleOn}`).waitForExist(timeouts.standard);
-		expect(jwPlayer.isAudioOn()).to.be.true;
-	});
-
-	it('Check if opening full screen and redirect on fullscreen player works', () => {
-		$(jwPlayer.player).moveTo();
-		browser.pause(500);
-		$(jwPlayer.fullscreenButton).waitForDisplayed(timeouts.standard);
-		$(jwPlayer.fullscreenButton).click();
-		$(jwPlayer.fullscreenPlayer).waitForDisplayed(timeouts.standard);
-		$(jwPlayer.player).click();
-		helpers.switchToTab(1);
-		helpers.waitForUrl(helpers.clickThroughUrlDomain);
-		expect(browser.getUrl()).to.include(
-			helpers.clickThroughUrlDomain,
-			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
-		);
-		helpers.closeNewTabs();
+		browser.closeWindow();
 	});
 
 	it('Check if preroll works', () => {
 		$(jwPlayer.player).waitForExist(timeouts.standard);
-		expect(jwPlayer.isAdVisible()).to.be.true;
+		expect(jwPlayer.isVideoAdVisible()).to.be.true;
 	});
 
 	it('Check if midroll works', () => {
