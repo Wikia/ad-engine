@@ -171,7 +171,9 @@ class Helpers {
 		if (browser.getUrl().includes(url)) {
 			result = true;
 		}
-		browser.closeWindow();
+		if (browser.getUrl() !== parentDomain) {
+			browser.closeWindow();
+		}
 		browser.switchWindow(parentDomain);
 
 		return result;
@@ -185,7 +187,7 @@ class Helpers {
 	switchToFrame(frameID) {
 		const frame = $(frameID).value;
 
-		browser.frame(frame);
+		browser.switchToFrame(frame);
 	}
 
 	switchToTab(tabId = 1) {

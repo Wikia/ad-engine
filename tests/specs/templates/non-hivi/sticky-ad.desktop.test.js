@@ -23,15 +23,12 @@ xdescribe('sticky-ad template', () => {
 	});
 
 	beforeEach(async () => {
+		helpers.fastScroll(-2000);
 		logs.length = 0;
 		await networkCapture.clearConsoleMessages(client);
 
 		browser.url(stickyAd.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-1000);
 	});
 
 	after(async () => {

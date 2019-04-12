@@ -8,13 +8,10 @@ describe('Desktop uap roadblock page: top leaderboard', () => {
 	let adStatus;
 
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(uapRoadblock.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -46,12 +43,9 @@ describe('Desktop uap roadblock page: top leaderboard', () => {
 
 describe('Desktop uap roadblock page: top boxad', () => {
 	before(() => {
+		helpers.fastScroll(-2000);
 		browser.url(uapRoadblock.pageLink);
 		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if line item id is from the same campaign', () => {

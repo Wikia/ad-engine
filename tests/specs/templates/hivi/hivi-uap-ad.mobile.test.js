@@ -47,14 +47,11 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.closeNewTabs();
+		helpers.fastScroll(-5000);
 		browser.url(hiviUap.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.slowScroll(-2000);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-5000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -108,7 +105,7 @@ describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 	});
 
 	it('Check if video player exist', () => {
-		expect($(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).isVisible()).to.be.true;
+		expect($(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).isDisplayed()).to.be.true;
 	});
 });
 

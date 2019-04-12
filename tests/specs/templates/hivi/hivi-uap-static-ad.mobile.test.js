@@ -37,14 +37,10 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapStatic.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
-		helpers.slowScroll(-2000);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -93,13 +89,10 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 
 describe('Mobile HiVi UAP static ads page: top boxad', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-5000);
 		browser.url(hiviUapStatic.pageLink);
 		helpers.slowScroll(5000);
 		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if line item id is from the same campaign', () => {

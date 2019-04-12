@@ -26,12 +26,9 @@ describe('Mobile HiVi UAP JWP ads page: top leaderboard', () => {
 
 describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
 		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if top boxad is existing, but the ad is not immediately visible', () => {
@@ -58,12 +55,9 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () =>
 
 describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after clicking the button)', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
 		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnMobile(adSlots.topBoxad);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if top boxad shows up after clicking the button', () => {
@@ -89,11 +83,9 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after clicking the
 
 describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
 		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
-	});
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is existing, but not immediately visible', () => {
@@ -120,15 +112,12 @@ describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)',
 
 describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after clicking the button)', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
 		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnMobile(adSlots.railModule);
 		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
 		// separate scroll, because this slot is not immediately visible
 		$(adSlots.incontentBoxad).scrollIntoView();
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot shows up after clicking the button', () => {

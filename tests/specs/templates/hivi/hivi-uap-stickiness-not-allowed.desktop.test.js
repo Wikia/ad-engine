@@ -74,16 +74,13 @@ describe('Desktop HiVi UAP sticky ads page: bottom leaderboard', () => {
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.slowScroll(3000);
 		$(adSlots.bottomLeaderboard).waitForExist(timeouts.standard);
-		$(adSlots.bottomLeaderboard).scroll();
+		$(adSlots.bottomLeaderboard).scrollIntoView();
 		helpers.waitForVideoAdToFinish(hiviUapStickinessNotAllowed.videoDuration);
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-5000);
 		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard, true);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-5000);
 	});
 
 	it('Check if slot is visible in viewport', () => {

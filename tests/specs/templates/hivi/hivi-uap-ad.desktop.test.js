@@ -47,14 +47,10 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUap.pageLink);
-		helpers.slowScroll(-2000);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -218,6 +214,7 @@ describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
 
 describe('Desktop HiVi UAP ads page: video player in bottom leaderboard', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUap.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.slowScroll(8000);
@@ -225,8 +222,5 @@ describe('Desktop HiVi UAP ads page: video player in bottom leaderboard', () => 
 		helpers.waitToStartPlaying();
 		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
 		browser.pause(timeouts.hover);
-	});
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 });

@@ -92,11 +92,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-3000);
 		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard, true);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-3000);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -125,6 +122,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 
 	it('Check if redirect on click works properly', () => {
 		helpers.slowScroll(1000);
+		$(adSlots.bottomLeaderboard).scrollIntoView({ block: 'end' });
 		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 

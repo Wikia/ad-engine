@@ -50,11 +50,12 @@ xdescribe('Twitch ads page: player', () => {
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		$(twitchAd.twitchPlayer).waitForDisplayed(timeouts.standard);
 	});
 
 	afterEach(() => {
-		browser.frame();
+		browser.switchToFrame();
 	});
 
 	it('Check if Twitch player is visible', () => {

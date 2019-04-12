@@ -41,7 +41,7 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 		$(hiviUapCtp.videoContainer).waitForDisplayed(timeouts.standard);
 		$(hiviUapCtp.videoContainer).click();
 		helpers.waitForVideoAdToFinish(hiviUapCtp.videoDuration);
-		browser.frame();
+		browser.switchToFrame();
 		adSlots.waitForSlotResolved(adSlots.topLeaderboard, adSlots.resolvedDesktopRatio);
 
 		videoFinishedDimensions = adSlots.checkUAPSizeSlotRatio(
@@ -49,17 +49,14 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 			adSlots.resolvedDesktopRatio,
 		);
 
-		browser.frame();
+		browser.switchToFrame();
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapCtp.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is visible in viewport', () => {

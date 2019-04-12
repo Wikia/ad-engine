@@ -93,11 +93,8 @@ describe('Desktop HiVi UAP JWP ads page: top boxad (ads loaded after clicking th
 
 describe('Desktop HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot is existing, but not immediately visible', () => {
@@ -126,12 +123,9 @@ describe('Desktop HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)'
 
 describe('Desktop HiVi UAP JWP ads page: incontent boxad (ads loaded after clicking the button)', () => {
 	beforeEach(() => {
+		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
 		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnDesktop(adSlots.incontentBoxad);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	it('Check if slot shows up after clicking the button', () => {

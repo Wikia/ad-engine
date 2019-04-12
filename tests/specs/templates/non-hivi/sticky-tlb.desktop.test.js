@@ -24,6 +24,7 @@ xdescribe('sticky-tlb template', () => {
 	});
 
 	beforeEach(async () => {
+		helpers.fastScroll(-2000);
 		logs.length = 0;
 		await networkCapture.clearConsoleMessages(client);
 
@@ -32,10 +33,6 @@ xdescribe('sticky-tlb template', () => {
 			queryStrings.constructSingleGeoInstantGlobal('XX', 100),
 		);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
-	});
-
-	afterEach(() => {
-		helpers.slowScroll(-2000);
 	});
 
 	after(async () => {
