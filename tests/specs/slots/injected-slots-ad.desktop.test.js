@@ -11,7 +11,7 @@ describe('Injected slots: injected boxad', () => {
 		browser.url(injectedAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.injectedBoxad).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.injectedBoxad);
+		adStatus = adSlots.getSlotStatus(adSlots.injectedBoxad, true);
 	});
 
 	it('Check if dimensions are correct', () => {
