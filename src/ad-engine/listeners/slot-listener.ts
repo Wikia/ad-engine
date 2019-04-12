@@ -38,12 +38,12 @@ function getAdType(event, adSlot) {
 	return AdSlot.STATUS_SUCCESS;
 }
 
-function getData(adSlot: AdSlot, additionalEventData: Partial<AdditionalEventData>) {
+function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData>) {
 	const now = new Date();
 
 	return {
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
-		adType: additionalEventData.adType || '',
+		adType: adType || '',
 		order_id: adSlot.orderId,
 		creative_id: adSlot.creativeId,
 		creative_size:
@@ -51,7 +51,7 @@ function getData(adSlot: AdSlot, additionalEventData: Partial<AdditionalEventDat
 				? adSlot.creativeSize.join('x')
 				: adSlot.creativeSize,
 		line_item_id: adSlot.lineItemId,
-		status: additionalEventData.status || adSlot.getStatus(),
+		status: status || adSlot.getStatus(),
 		page_width: window.document.body.scrollWidth || '',
 		time_bucket: now.getHours(),
 		timestamp: now.getTime(),
@@ -60,7 +60,7 @@ function getData(adSlot: AdSlot, additionalEventData: Partial<AdditionalEventDat
 	};
 }
 
-function dispatch(methodName, adSlot, adInfo?: Partial<AdditionalEventData>) {
+function dispatch(methodName, adSlot, adInfo: Partial<AdditionalEventData> = {}) {
 	if (!listeners) {
 		listeners = context
 			.get('listeners.slot')
