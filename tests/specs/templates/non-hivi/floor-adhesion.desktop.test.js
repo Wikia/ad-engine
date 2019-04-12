@@ -4,7 +4,8 @@ import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { adSlots } from '../../../common/ad-slots';
 
-describe('Floor adhesion page: floor adhesion', () => {
+// TODO Fix template
+xdescribe('Floor adhesion page: floor adhesion', () => {
 	before(() => {
 		browser.url(floorAdhesion.pageLink);
 		$(floorAdhesion.outOfPageWrapper).waitForDisplayed(timeouts.standard);

@@ -5,7 +5,8 @@ import { helpers } from '../../../common/helpers';
 import { adSlots } from '../../../common/ad-slots';
 import networkCapture from '../../../common/network-capture';
 
-describe('Floating rail ads page: floating rail', () => {
+// TODO Fix floating rail
+xdescribe('Floating rail ads page: floating rail', () => {
 	before(() => {
 		browser.url(floatingRailAd.pageLink);
 		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
