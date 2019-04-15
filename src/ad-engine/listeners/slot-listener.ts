@@ -2,6 +2,12 @@ import { AdSlot } from '../models';
 import { context, slotInjector, slotTweaker } from '../services';
 import { client, logger } from '../utils';
 
+interface AdditionalEventData {
+	adType: string;
+	status: string;
+	event: googletag.events.SlotRenderEndedEvent;
+}
+
 const logGroup = 'slot-listener';
 
 let listeners = null;
@@ -32,7 +38,7 @@ function getAdType(event, adSlot) {
 	return AdSlot.STATUS_SUCCESS;
 }
 
-function getData(adSlot, { adType, status }) {
+function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData>) {
 	const now = new Date();
 
 	return {
@@ -54,7 +60,7 @@ function getData(adSlot, { adType, status }) {
 	};
 }
 
-function dispatch(methodName, adSlot, adInfo = {}) {
+function dispatch(methodName, adSlot, adInfo: Partial<AdditionalEventData> = {}) {
 	if (!listeners) {
 		listeners = context
 			.get('listeners.slot')

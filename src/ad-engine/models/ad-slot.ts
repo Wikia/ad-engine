@@ -1,6 +1,6 @@
 import * as EventEmitter from 'eventemitter3';
 import { slotListener } from '../listeners';
-import { ADX } from '../providers';
+import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
 import { LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
@@ -10,6 +10,7 @@ export interface Targeting {
 	hb_pb?: number;
 	src: string;
 	pos: string;
+	wsi?: string;
 }
 
 interface RepeatConfig {
@@ -30,11 +31,14 @@ export interface SlotConfig {
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
-	sizes?: any;
+	sizes?: GptSizeMapping[];
 	videoSizes?: number[][];
 	defaultSizes?: any;
 	viewportConflicts?: string[];
 	outOfPage?: any;
+
+	audio?: boolean;
+	autoplay?: boolean;
 }
 
 export interface WinningPbBidderDetails {
@@ -47,6 +51,7 @@ export class AdSlot extends EventEmitter {
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static VIDEO_VIEWED_EVENT = 'videoViewed';
+	static DESTROYED_EVENT = 'slotDestroyed';
 
 	static LOG_GROUP = 'AdSlot';
 
@@ -128,7 +133,7 @@ export class AdSlot extends EventEmitter {
 		return this.config.slotName;
 	}
 
-	getSizes(): string {
+	getSizes(): GptSizeMapping[] {
 		return this.config.sizes;
 	}
 
@@ -204,6 +209,11 @@ export class AdSlot extends EventEmitter {
 		this.enabled = false;
 		this.setStatus(status);
 		slotTweaker.hide(this);
+	}
+
+	destroy(): void {
+		this.disable();
+		this.emit(AdSlot.DESTROYED_EVENT);
 	}
 
 	getConfigProperty(key): any {
