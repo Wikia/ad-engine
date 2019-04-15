@@ -4,7 +4,7 @@ import { queryStrings } from './query-strings';
 import { adSlots } from './ad-slots';
 
 const valueToDivideBy = 10;
-const pauseBetweenScrolls = 250;
+const pauseBetweenScrolls = 500;
 const timeToStartPlaying = 3000;
 
 class Helpers {
@@ -43,21 +43,31 @@ class Helpers {
 	 * Scrolls by given number of pixels starting from the given element.
 	 * If no element is given, it scrolls from the top.
 	 * @param {number} px - number of pixels by which we want to scroll
-	 * @param scrollFromElement - element we want to scroll from
+	 * @param scrollFromThisElement - element we want to scroll from
 	 */
-	slowScroll(px, scrollFromElement = null) {
+	slowScroll(px, scrollFromThisElement = null) {
 		const step = px / valueToDivideBy;
 
-		if (scrollFromElement !== null) {
+		if (scrollFromThisElement !== null) {
+			$(scrollFromThisElement).scrollIntoView();
 			for (let i = step; i < px; i += step) {
-				browser.scroll(scrollFromElement, 0, i);
+				browser.execute(`window.scrollBy(0,${i})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		} else {
 			for (let i = step; i < px; i += step) {
-				browser.scroll(0, i);
+				browser.execute(`window.scrollBy(0,${i})`);
 				browser.pause(pauseBetweenScrolls);
 			}
+		}
+	}
+
+	fastScroll(px, scrollFromThisElement = null) {
+		if (scrollFromThisElement !== null) {
+			$(scrollFromThisElement).scrollIntoView();
+			browser.execute(`window.scrollBy(0,${px})`);
+		} else {
+			browser.execute(`window.scrollBy(0,${px})`);
 		}
 	}
 
@@ -67,18 +77,18 @@ class Helpers {
 
 	reloadPageAndWaitForSlot(adSlot) {
 		browser.refresh();
-		browser.waitForVisible(adSlot, timeouts.standard);
+		$(adSlot).waitForDisplayed(timeouts.standard);
 	}
 
 	openUrlAndWaitForSlot(url, adSlot) {
 		browser.url(url);
-		browser.waitForVisible(adSlot, timeouts.standard);
+		$(adSlot).waitForDisplayed(timeouts.standard);
 	}
 
 	refreshPageAndWaitForSlot(adSlot, timeout = timeouts.standard) {
 		browser.refresh();
 		browser.pause(timeout);
-		browser.waitForVisible(adSlot, timeout);
+		$(adSlot).waitForDisplayed(timeout);
 	}
 
 	waitForVideoAdToFinish(adDuration) {
@@ -89,12 +99,14 @@ class Helpers {
 		browser.pause(videoDuration);
 	}
 
-	waitForValuesLoaded(field = false) {
-		if (field) {
-			return browser.waitUntil(() => browser.getText(field) !== 'Waiting...', timeouts.standard);
-		}
-
-		return browser.waitUntil(() => browser.getText(this.main) !== 'Waiting...', timeouts.standard);
+	waitForValuesLoaded(field) {
+		return browser.waitUntil(
+			() =>
+				!$(field || this.main)
+					.getText()
+					.includes('Waiting...'),
+			timeouts.standard,
+		);
 	}
 
 	/**
@@ -102,7 +114,7 @@ class Helpers {
 	 * @param adSlot ad slot that should receive the parameter
 	 */
 	waitForLineItemIdAttribute(adSlot) {
-		browser.waitForExist(adSlot, timeouts.standard);
+		$(adSlot).waitForExist(timeouts.standard);
 		browser.waitUntil(
 			() => this.isLineItemExisting(adSlot),
 			timeouts.standard,
@@ -117,7 +129,7 @@ class Helpers {
 	 * @returns {string}
 	 */
 	getLineItemId(adSlot) {
-		return browser.element(adSlot).getAttribute(adSlots.lineItemIdAttribute);
+		return $(adSlot).getAttribute(adSlots.lineItemIdAttribute);
 	}
 
 	isLineItemExisting(adSlot) {
@@ -130,7 +142,7 @@ class Helpers {
 	 * @returns {string}
 	 */
 	getCreativeId(adSlot) {
-		return browser.element(adSlot).getAttribute(adSlots.creativeIdAttribute);
+		return $(adSlot).getAttribute(adSlots.creativeIdAttribute);
 	}
 
 	isCreativeIdExisitng(adSlot) {
@@ -141,21 +153,28 @@ class Helpers {
 	 * It checks redirect on click and returns result.
 	 * @param adSlot slot to click
 	 * @param url expected url
+	 * @param parentDomain starting url
 	 * @returns {boolean} returns false if there were no errors, else it returns true
 	 */
-	adRedirect(adSlot, url = this.clickThroughUrlDomain) {
+	adRedirect(adSlot, url = this.clickThroughUrlDomain, parentDomain) {
 		let result = false;
+		if (!parentDomain) {
+			parentDomain = browser.getUrl();
+		}
 
 		this.waitForLineItemIdAttribute(adSlot);
-		browser.waitForEnabled(adSlot, timeouts.standard);
-		browser.click(adSlot);
-		this.switchToTab(1);
+		$(adSlot).waitForEnabled(timeouts.standard);
+		$(adSlot).click();
+		browser.switchWindow(url);
 		this.waitForUrl(url);
 
 		if (browser.getUrl().includes(url)) {
 			result = true;
 		}
-		this.closeNewTabs();
+		if (browser.getUrl() !== parentDomain) {
+			browser.closeWindow();
+		}
+		browser.switchWindow(parentDomain);
 
 		return result;
 	}
@@ -166,18 +185,16 @@ class Helpers {
 	 * @param frameID name of the frame to change focus to
 	 */
 	switchToFrame(frameID) {
-		const frame = browser.element(frameID).value;
+		const frame = $(frameID).value;
 
-		browser.frame(frame);
+		browser.switchToFrame(frame);
 	}
 
 	switchToTab(tabId = 1) {
 		// TODO remove this workaround after chromedriver update for opening new pages
 		browser.pause(timeouts.standard);
 
-		const tabIds = browser.getTabIds();
-
-		browser.switchTab(tabIds[tabId]);
+		browser.switchToFrame(tabId);
 	}
 
 	/**
@@ -195,17 +212,7 @@ class Helpers {
 		browser.switchTab(tabIds[0]);
 	}
 
-	/**
-	 * @param width
-	 * @param height
-	 */
-	setDefaultWindowSize(width = 1600, height = 900) {
-		browser.windowHandleSize({
-			width,
-			height,
-		});
-	}
-
+	// TODO Visual
 	checkVisualRegression(results) {
 		results.forEach((result) => expect(result.isWithinMisMatchTolerance).to.be.ok);
 	}

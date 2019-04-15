@@ -7,7 +7,7 @@ class StickyTlb {
 	}
 
 	isAdSticked() {
-		return browser.isExisting(this.stickedAd) && !browser.isExisting(this.unstickedAd);
+		return $(this.stickedAd).isExisting() && !$(this.unstickedAd).isExisting();
 	}
 }
 

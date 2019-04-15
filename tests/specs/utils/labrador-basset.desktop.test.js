@@ -17,9 +17,9 @@ describe('It will test labrador-basset page', () => {
 			queryStrings.getSessionIdParam('cachedSession'),
 		);
 
-		browser.waitForVisible(labradorBasset.wgVariablesStatuses, timeouts.standard);
+		$(labradorBasset.wgVariablesStatuses).waitForDisplayed(timeouts.standard);
 
-		const currentValue = browser.getText(labradorBasset.wgVariablesStatuses);
+		const currentValue = $(labradorBasset.wgVariablesStatuses).getText();
 		const nonCachedLink = queryStrings.getUrl(
 			labradorBasset.pageLink,
 			queryStrings.constructInstantGlobal(
@@ -32,8 +32,8 @@ describe('It will test labrador-basset page', () => {
 
 		for (let i = 0; i < 50; i += 1) {
 			browser.url(nonCachedLink);
-			browser.waitForVisible(labradorBasset.wgVariablesStatuses, timeouts.standard);
-			expect(browser.getText(labradorBasset.wgVariablesStatuses)).to.equal(
+			$(labradorBasset.wgVariablesStatuses).waitForDisplayed(timeouts.standard);
+			expect($(labradorBasset.wgVariablesStatuses).getText()).to.equal(
 				currentValue,
 				'Incorrect Value',
 			);
@@ -52,8 +52,8 @@ describe('It will test labrador-basset page', () => {
 			queryStrings.getSessionIdParam('enabled'),
 		);
 
-		browser.waitForVisible(labradorBasset.wgVariablesStatuses, timeouts.standard);
-		expect(browser.getText(labradorBasset.wgVariablesStatuses)).to.equal(
+		$(labradorBasset.wgVariablesStatuses).waitForDisplayed(timeouts.standard);
+		expect($(labradorBasset.wgVariablesStatuses).getText()).to.equal(
 			'wgTestVariableAlpha: enabled',
 			'Incorrect Value',
 		);
@@ -71,8 +71,8 @@ describe('It will test labrador-basset page', () => {
 			queryStrings.getSessionIdParam('disabled'),
 		);
 
-		browser.waitForVisible(labradorBasset.wgVariablesStatuses, timeouts.standard);
-		expect(browser.getText(labradorBasset.wgVariablesStatuses)).to.equal(
+		$(labradorBasset.wgVariablesStatuses).waitForDisplayed(timeouts.standard);
+		expect($(labradorBasset.wgVariablesStatuses).getText()).to.equal(
 			'wgTestVariableAlpha: disabled',
 			'Incorrect Value',
 		);

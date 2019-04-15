@@ -43,7 +43,7 @@ class AdSlots {
 
 	waitForSlotExpanded(adSlot) {
 		browser.waitUntil(
-			() => browser.getElementSize(adSlot, 'height') > 0,
+			() => $(adSlot).getSize('height') > 0,
 			timeouts.standard,
 			'Element not expanded',
 			timeouts.interval,
@@ -52,7 +52,7 @@ class AdSlots {
 
 	waitForSlotCollapsedManually(adSlot) {
 		browser.waitUntil(
-			() => browser.getElementSize(adSlot, 'height') < 2,
+			() => $(adSlot).getSize('height') < 2,
 			timeouts.standard,
 			'Element not expanded',
 			timeouts.interval,
@@ -61,7 +61,7 @@ class AdSlots {
 
 	waitForSlotCollapsed(adSlot) {
 		browser.waitUntil(
-			() => browser.getAttribute(adSlot, this.resultAttribute) === this.adCollapsed,
+			() => $(adSlot).getAttribute(this.resultAttribute) === this.adCollapsed,
 			timeouts.standard,
 			'Slot did not collapse',
 			timeouts.interval,
@@ -70,7 +70,7 @@ class AdSlots {
 
 	waitForSlotViewed(adSlot) {
 		browser.waitUntil(
-			() => browser.element(adSlot).getAttribute(this.viewedAttribute) === this.adViewed,
+			() => $(adSlot).getAttribute(this.viewedAttribute) === this.adViewed,
 			timeouts.standard,
 			'Slot has not been viewed',
 			timeouts.interval,
@@ -84,7 +84,7 @@ class AdSlots {
 	 */
 	waitForSlotResult(adSlot, result) {
 		browser.waitUntil(
-			() => browser.element(adSlot).getAttribute(this.resultAttribute) === result,
+			() => $(adSlot).getAttribute(this.resultAttribute) === result,
 			timeouts.standard,
 			`Result mismatch: expected ${result}`,
 			timeouts.interval,
@@ -102,7 +102,7 @@ class AdSlots {
 	checkSlotSize(adSlot, width, height) {
 		let result = true;
 		let error = '';
-		const slotSize = browser.getElementSize(adSlot);
+		const slotSize = $(adSlot).getSize();
 
 		if (slotSize.width !== width) {
 			result = false;
@@ -127,8 +127,7 @@ class AdSlots {
 	checkSlotClasses(adSlot, classNames = []) {
 		let result = true;
 		let error = '';
-		const classList = browser
-			.element(adSlot)
+		const classList = $(adSlot)
 			.getAttribute('class')
 			.split(' ');
 
@@ -152,7 +151,7 @@ class AdSlots {
 	 * @returns {number} slot\'s height
 	 */
 	calculateHeightWithRatio(adSlot, heightRatio) {
-		const slotSize = browser.getElementSize(adSlot);
+		const slotSize = $(adSlot).getSize();
 
 		return slotSize.width / heightRatio;
 	}
@@ -170,7 +169,7 @@ class AdSlots {
 		let result = true;
 		let error = '';
 
-		const slotSize = browser.getElementSize(adSlot);
+		const slotSize = $(adSlot).getSize();
 
 		if (slotSize.width !== expectedWidth) {
 			result = false;
@@ -194,7 +193,7 @@ class AdSlots {
 	}
 
 	isSlotHeightRatioCorrect(adSlot, ratio) {
-		const slotActualHeight = browser.getElementSize(adSlot, 'height');
+		const slotActualHeight = $(adSlot).getSize('height');
 		const slotExpectedHeight = this.calculateHeightWithRatio(adSlot, ratio);
 
 		return slotActualHeight >= slotExpectedHeight - comparisonOffsetPx;
@@ -223,11 +222,7 @@ class AdSlots {
 	 * else returns true. captured errors: returns string with errors
 	 */
 	checkDerivativeSizeSlotRatio(adSlot, sizeDeterminant, heightRatio) {
-		return this.checkSlotRatio(
-			adSlot,
-			browser.getElementSize(sizeDeterminant, 'width'),
-			heightRatio,
-		);
+		return this.checkSlotRatio(adSlot, $(sizeDeterminant).getSize('width'), heightRatio);
 	}
 
 	/**
@@ -239,8 +234,9 @@ class AdSlots {
 	 */
 	checkUAPSizeSlotRatio(adSlot, heightRatio) {
 		this.waitForSlotExpanded(adSlot);
+		let windowSize = browser.getWindowSize();
 
-		return this.checkSlotRatio(adSlot, browser.getViewportSize('width'), heightRatio);
+		return this.checkSlotRatio(adSlot, windowSize.width, heightRatio);
 	}
 
 	/**
@@ -257,15 +253,15 @@ class AdSlots {
 	 * slot statuses
 	 */
 	getSlotStatus(adSlot, withScroll = false) {
-		browser.waitForExist(adSlot, timeouts.standard);
+		$(adSlot).waitForExist(timeouts.standard);
 		if (withScroll) {
-			browser.scroll(adSlot);
+			$(adSlot).scrollIntoView();
 		}
 
 		return {
-			visible: browser.isVisible(adSlot),
-			inViewport: browser.isVisibleWithinViewport(adSlot),
-			enabled: browser.isEnabled(adSlot),
+			visible: $(adSlot).isDisplayed(),
+			inViewport: $(adSlot).isDisplayedInViewport(),
+			enabled: $(adSlot).isEnabled(),
 		};
 	}
 }

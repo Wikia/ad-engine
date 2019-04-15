@@ -12,16 +12,16 @@ export class UtilsDetectors {
 
 	waitForDetectorToLoad() {
 		browser.waitUntil(
-			() => this.checkIfMessageLoaded(browser.getText(this.messageField)),
+			() => this.checkIfMessageLoaded($(this.messageField).getText()),
 			timeouts.standard,
 		);
 	}
 
 	getDetectorResponse() {
-		browser.waitForExist(this.messageField, timeouts.standard);
+		$(this.messageField).waitForExist(timeouts.standard);
 		this.waitForDetectorToLoad();
 
-		return browser.getText(this.messageField);
+		return $(this.messageField).getText();
 	}
 }
 

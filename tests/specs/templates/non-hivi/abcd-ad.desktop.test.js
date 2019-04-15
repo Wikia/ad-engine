@@ -12,7 +12,7 @@ describe('ABCD ads page: top leaderboard', () => {
 	});
 
 	beforeEach(() => {
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
 	});
 
@@ -38,7 +38,7 @@ describe('ABCD ads page: top leaderboard', () => {
 	});
 
 	it('Check if navbar is visible in viewport', () => {
-		expect(browser.isVisibleWithinViewport(helpers.navbar), 'Navbar not visible').to.be.true;
+		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
 	it('Check if redirect on click works', () => {
@@ -53,7 +53,7 @@ describe('ABCD ads page: video player in leaderboard', () => {
 		browser.url(abcdAd.pageLink);
 	});
 	beforeEach(() => {
-		browser.waitForVisible(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`, timeouts.standard);
+		$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`);
 		helpers.waitToStartPlaying();
 	});
@@ -63,12 +63,9 @@ describe('ABCD ads page: video player in leaderboard', () => {
 	});
 
 	it('Check if unmuting the video works properly', () => {
-		browser.moveToObject(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).pause(timeouts.hover);
-		browser.click(abcdAd.unmuteButton);
-		browser.waitForExist(
-			`${abcdAd.unmuteButton}${abcdAd.buttonIsOnClass}`,
-			timeouts.standard,
-			true,
-		);
+		$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).moveTo();
+		browser.pause(timeouts.hover);
+		$(abcdAd.unmuteButton).click();
+		$(`${abcdAd.unmuteButton}${abcdAd.buttonIsOnClass}`).waitForExist(timeouts.standard, true);
 	});
 });

@@ -7,7 +7,7 @@ import { helpers } from '../../../common/helpers';
 describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 	beforeEach(() => {
 		browser.url(hiviUapStickyBfab.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if the line item id is from the same campaign', () => {
@@ -22,7 +22,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 describe('Desktop HiVi UAP sticky BFAB ads page: top boxad', () => {
 	beforeEach(() => {
 		browser.url(hiviUapStickyBfab.pageLink);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -37,9 +37,9 @@ describe('Desktop HiVi UAP sticky BFAB ads page: top boxad', () => {
 describe('Desktop HiVi UAP sticky BFAB ads page: incontent boxad', () => {
 	beforeEach(() => {
 		browser.url(hiviUapStickyBfab.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard);
-		browser.scroll(0, 1000);
-		browser.waitForVisible(adSlots.incontentBoxad, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed();
+		helpers.slowScroll(1000);
+		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -59,7 +59,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 
 	before(() => {
 		hiviUapStickyBfab.openUapWithState(false, hiviUapStickyBfab.pageLink, adSlots.topLeaderboard);
-		browser.scroll(0, 3000);
+		helpers.slowScroll(3000);
 		adSlots.waitForSlotExpanded(adSlots.bottomLeaderboard);
 
 		defaultDimensions = adSlots.checkDerivativeSizeSlotRatio(
@@ -69,9 +69,9 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 		);
 
 		hiviUapStickyBfab.openUapWithState(true, hiviUapStickyBfab.pageLink, adSlots.topLeaderboard);
-		browser.scroll(0, 3000);
-		browser.waitForExist(adSlots.bottomLeaderboard, timeouts.standard);
-		browser.scroll(adSlots.bottomLeaderboard);
+		helpers.slowScroll(3000);
+		$(adSlots.bottomLeaderboard).waitForExist(timeouts.standard);
+		$(adSlots.bottomLeaderboard).scrollIntoView();
 
 		refreshDimensions = adSlots.checkDerivativeSizeSlotRatio(
 			adSlots.bottomLeaderboard,
@@ -79,10 +79,10 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 			adSlots.resolvedDesktopRatio,
 		);
 		browser.url(hiviUapStickyBfab.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
-		browser.scroll(0, 3000);
-		browser.waitForExist(adSlots.bottomLeaderboard, timeouts.standard);
-		browser.scroll(adSlots.bottomLeaderboard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.slowScroll(3000);
+		$(adSlots.bottomLeaderboard).waitForExist(timeouts.standard);
+		$(adSlots.bottomLeaderboard).scrollIntoView();
 		helpers.waitForVideoAdToFinish(hiviUapStickyBfab.videoDuration);
 
 		videoFinishedDimensions = adSlots.checkUAPSizeSlotRatio(
@@ -92,11 +92,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 	});
 
 	beforeEach(() => {
+		helpers.fastScroll(-3000);
 		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard, true);
-	});
-
-	afterEach(() => {
-		browser.scroll(0, 0);
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -124,19 +121,20 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 	});
 
 	it('Check if redirect on click works properly', () => {
-		browser.scroll(0, 1000);
+		helpers.slowScroll(1000);
+		$(adSlots.bottomLeaderboard).scrollIntoView({ block: 'end' });
 		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 
 	it('Check if slot is sticked', () => {
 		browser.refresh();
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		// TODO will not stick if scrolled earlier - problems with viewabillity counted?
 		helpers.waitToStartPlaying();
 		helpers.slowScroll(2500);
-		browser.waitForVisible(adSlots.bottomLeaderboard, timeouts.standard);
-		expect(browser.isVisibleWithinViewport(adSlots.bottomLeaderboard)).to.be.true;
+		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
+		expect($(adSlots.bottomLeaderboard).isDisplayedInViewport()).to.be.true;
 		helpers.slowScroll(500, adSlots.bottomLeaderboard);
-		expect(browser.isVisible(adSlots.bottomLeaderboard)).to.be.true;
+		expect($(adSlots.bottomLeaderboard).isDisplayed()).to.be.true;
 	});
 });

@@ -23,9 +23,7 @@ class AnimationsAd {
 	waitUntilCollapsed() {
 		browser.waitUntil(
 			() => {
-				const leaderboardStyle = browser
-					.element(adSlots.topLeaderboard)
-					.getAttribute(this.topLeaderboardStyle);
+				const leaderboardStyle = $(adSlots.topLeaderboard).getAttribute(this.topLeaderboardStyle);
 
 				return leaderboardStyle === this.collapsedAdMaxHeight;
 			},

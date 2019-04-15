@@ -8,11 +8,12 @@ class JWPlayer {
 		this.playButton = '.jw-icon-playback';
 		this.soundToggle = '.jw-icon-volume';
 		this.soundToggleOff = '.jw-off';
-		this.soundToggleOn = '.jw-full';
+		this.soundToggleOn = '.jw-svg-icon-volume-0';
 		this.fullscreenButton = '.jw-icon-fullscreen';
 		this.fullscreenPlayer = '.jw-flag-fullscreen';
 		this.videoIdle = '.jw-state-idle';
 		this.playerAdContainer = '#playerContainer_googima';
+		this.videoAd = '.jw-flag-ads';
 
 		this.prerollDuration = 30000;
 		this.midrollDuration = 30000;
@@ -24,29 +25,21 @@ class JWPlayer {
 	}
 
 	isAudioOn() {
-		browser.waitForExist(this.player, timeouts.standard);
-		if (browser.isExisting(`${this.soundToggle}${this.soundToggleOn}`)) {
+		$(this.player).waitForExist(timeouts.standard);
+		if ($(`${this.soundToggle}${this.soundToggleOn}`).isExisting()) {
 			return true;
 		}
-		browser.waitForExist(`${this.soundToggle}${this.soundToggleOff}`, timeouts.standard);
+		$(`${this.soundToggle}${this.soundToggleOff}`).waitForExist(timeouts.standard);
 
 		return false;
 	}
 
-	isAdVisible() {
-		browser.waitForExist(this.playerAdContainer, timeouts.standard);
-		if (browser.getAttribute(this.playerAdContainer, 'style').includes('visibility: visible')) {
-			return true;
-		}
-		if (browser.getAttribute(this.playerAdContainer, 'style').includes('visibility: hidden')) {
-			return false;
-		}
-
-		return undefined;
+	isVideoAdVisible() {
+		$(this.playerAdContainer).waitForExist(timeouts.standard);
+		return $(this.videoAd).isExisting();
 	}
-
 	waitForAdToChangeState(shouldAdBeVisible) {
-		browser.waitUntil(() => this.isAdVisible() === shouldAdBeVisible, timeouts.standard);
+		browser.waitUntil(() => this.isVideoAdVisible() === shouldAdBeVisible, timeouts.standard);
 	}
 }
 

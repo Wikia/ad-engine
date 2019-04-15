@@ -4,17 +4,22 @@ import { timeouts } from '../../common/timeouts';
 import { adSlots } from '../../common/ad-slots';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
+import { jwPlayer } from '../../pages/jwplayer.page';
 
 describe('Porvata player', () => {
 	let adStatus;
+	before(() => {
+		browser.url(porvata.pageLink);
+	});
 
 	beforeEach(() => {
+		browser.switchWindow(porvata.pageLink);
 		browser.url(porvata.pageLink);
-		browser.waitForVisible(porvata.player, timeouts.standard);
-		browser.scroll(porvata.player);
+		$(porvata.player).waitForDisplayed(timeouts.standard);
+		$(porvata.player).scrollIntoView();
 		adStatus = adSlots.getSlotStatus(porvata.player);
 		helpers.waitToStartPlaying();
-		browser.waitForExist(porvata.videoPlayerHidden, timeouts.standard, true);
+		$(porvata.videoPlayerHidden).waitForExist(timeouts.standard, true);
 	});
 
 	it('Check if player is visible', () => {
@@ -32,58 +37,33 @@ describe('Porvata player', () => {
 	});
 
 	it('Check if redirect on click on default player works', () => {
-		browser.click(porvata.player);
-		helpers.switchToTab(1);
+		$(porvata.player).click();
+		browser.switchWindow(helpers.clickThroughUrlDomain);
 		helpers.waitForUrl(helpers.clickThroughUrlDomain);
 		expect(browser.getUrl()).to.include(
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		helpers.closeNewTabs();
+		browser.closeWindow();
 	});
 
 	it('Check if unmuting the video works', () => {
-		browser.waitForVisible(porvata.unmuteButton, timeouts.standard);
-		browser.click(porvata.unmuteButton);
-		browser.waitForExist(`${porvata.unmuteButton}${porvata.iconHidden}`, timeouts.standard);
-	});
-
-	// TODO wf fix of ADEN-8239
-	xit('Check if opening full screen and redirect on fullscreen player works', () => {
-		browser.waitForVisible(porvata.fullscreenButton, timeouts.standard);
-		browser.click(porvata.fullscreenButton);
-		browser.waitForVisible(porvata.fullscreenPlayer, timeouts.standard);
-		helpers.waitForVideoToProgress(timeouts.standard);
-		browser.click(porvata.player);
-		helpers.switchToTab(1);
-		helpers.waitForUrl(helpers.clickThroughUrlDomain);
-		expect(browser.getUrl()).to.include(
-			helpers.clickThroughUrlDomain,
-			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
-		);
-		helpers.closeNewTabs();
-	});
-
-	// TODO wf fix of ADEN-8238
-	xit('Check if replaying the video works', () => {
-		browser.waitForExist(porvata.videoPlayerHidden, timeouts.standard, true);
-		helpers.waitForVideoAdToFinish(porvata.videoDuration);
-		browser.waitForExist(porvata.videoPlayerHidden, timeouts.standard);
-		browser.click(porvata.player);
-		browser.waitForExist(porvata.videoPlayerHidden, timeouts.standard, true);
+		$(porvata.unmuteButton).waitForDisplayed(timeouts.standard);
+		$(porvata.unmuteButton).click();
+		$(`${porvata.unmuteButton}${porvata.iconHidden}`).waitForExist(timeouts.standard);
 	});
 
 	it('Check if closing the player works', () => {
-		browser.waitForVisible(porvata.closePlayerButton, timeouts.standard);
-		browser.click(porvata.closePlayerButton);
-		browser.waitForExist(porvata.videoPlayerHidden, timeouts.standard);
+		$(porvata.closePlayerButton).waitForDisplayed(timeouts.standard);
+		$(porvata.closePlayerButton).click();
+		$(porvata.videoPlayerHidden).waitForExist(timeouts.standard);
 	});
 
 	it('Check if autoplay is disabled upon entering the page', () => {
 		helpers.navigateToUrl(porvata.pageLink, queryStrings.getAutoplay(false));
-		browser.waitForExist(porvata.player, timeouts.standard);
-		browser.scroll(porvata.player);
+		$(porvata.player).waitForExist(timeouts.standard);
+		$(porvata.player).scrollIntoView();
 		helpers.waitToStartPlaying();
-		browser.waitForExist(porvata.videoPlayerHidden, timeouts.standard);
+		$(porvata.videoPlayerHidden).waitForExist(timeouts.standard);
 	});
 });

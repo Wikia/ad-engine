@@ -7,7 +7,7 @@ import { adSlots } from '../../common/ad-slots';
 describe('It will test bill the lizard page', () => {
 	beforeEach(() => {
 		browser.url(billTheLizard.pageLink);
-		browser.waitForVisible(adSlots.topLeaderboard, timeouts.standard);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForValuesLoaded();
 	});
 
