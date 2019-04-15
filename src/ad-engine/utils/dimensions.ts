@@ -9,11 +9,20 @@ function getElementOffset(element: HTMLElement, offsetParameter: OffsetParameter
 	const elementWindow: WindowProxy = element.ownerDocument.defaultView;
 	let currentElement: HTMLElement = element;
 	let hideAgain = false;
+	const previousStyles: Partial<CSSStyleDeclaration> = {
+		display: '',
+		height: '',
+	};
 	let topPos = 0;
 
 	if (element.classList.contains('hide')) {
 		hideAgain = true;
+		previousStyles.display = element.style.display;
+		previousStyles.height = element.style.height;
+
 		element.classList.remove('hide');
+		element.style.display = 'block';
+		element.style.height = '1px';
 	}
 
 	do {
@@ -23,6 +32,8 @@ function getElementOffset(element: HTMLElement, offsetParameter: OffsetParameter
 
 	if (hideAgain) {
 		element.classList.add('hide');
+		element.style.display = previousStyles.display;
+		element.style.height = previousStyles.height;
 	}
 
 	if (elementWindow && elementWindow.frameElement) {
