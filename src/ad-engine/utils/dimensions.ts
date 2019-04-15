@@ -9,7 +9,7 @@ function getElementOffset(element: HTMLElement, offsetParameter: OffsetParameter
 	const elementWindow: WindowProxy = element.ownerDocument.defaultView;
 	let currentElement: HTMLElement = element;
 	let hideAgain = false;
-	const previousStyles = {
+	const previousStyles: Partial<CSSStyleDeclaration> = {
 		display: '',
 		height: '',
 	};
