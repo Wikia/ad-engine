@@ -14,27 +14,27 @@ class LocalCache {
 	canUseStorage(): boolean {
 		if (typeof canUseStorage === 'undefined') {
 			canUseStorage = false;
-			if (window.localStorage) {
-				try {
+			try {
+				if (window.localStorage) {
 					window.localStorage.setItem('test', '1');
 					window.localStorage.removeItem('test');
 					canUseStorage = true;
-				} catch (e) {
-					/* There are two known possibilities here:
-					 *
-					 * 1) The browser isn't allowing access due to a
-					 * privacy setting (which can happen in Safari).
-					 *
-					 * 2) The allowed disk space for storage is used
-					 * up. However, this is more likely to happen in
-					 * calls to LocalCache.set().
-					 */
-					try {
-						this.createPolyfill();
-						canUseStorage = true;
-					} catch (exception) {
-						logger(logGroup, 'Local Storage polyfill error: ', exception);
-					}
+				}
+			} catch (e) {
+				/* There are two known possibilities here:
+				 *
+				 * 1) The browser isn't allowing access due to a
+				 * privacy setting (which can happen in Safari).
+				 *
+				 * 2) The allowed disk space for storage is used
+				 * up. However, this is more likely to happen in
+				 * calls to LocalCache.set().
+				 */
+				try {
+					this.createPolyfill();
+					canUseStorage = true;
+				} catch (exception) {
+					logger(logGroup, 'Local Storage polyfill error: ', exception);
 				}
 			}
 		}
