@@ -1,17 +1,5 @@
-const path = require('path');
-const VisualRegressionCompare = require('wdio-visual-regression-service/compare');
-const md5 = require('js-md5');
-const networkCapture = require('./tests/common/network-capture');
-
+const StaticFilesServer = require('./tests/libs/static-files-server');
 const AD_ENGINE_PORT = process.env.AD_ENGINE_PORT || 8080;
-
-function getScreenshotName(basePath) {
-	return function(context) {
-		const hash = md5(context.test.parent + context.test.title);
-
-		return path.join(basePath, `${hash}.png`);
-	};
-}
 
 exports.config = {
 	suites: {
@@ -23,41 +11,25 @@ exports.config = {
 		utils: ['./tests/specs/utils/*.test.js'],
 		video: ['./tests/specs/video/*.test.js'],
 	},
+	runner: 'local',
 	maxInstances: 5,
-	sync: true,
 	logLevel: 'error',
-	coloredLogs: true,
-	deprecationWarnings: false,
 	bail: 0,
-	screenshotPath: './tests/errorScreenshots/',
 	baseUrl: `http://localhost:${AD_ENGINE_PORT}`,
 	waitforTimeout: 10000,
 	connectionRetryTimeout: 90000,
 	connectionRetryCount: 3,
-	services: [networkCapture, 'static-server', 'selenium-standalone', 'visual-regression'],
+	services: ['selenium-standalone', 'devtools', [StaticFilesServer]],
 	framework: 'mocha',
-	reporters: ['dot', 'allure'],
-	reporterOptions: {
-		allure: {
-			outputDir: 'tests/allure-results',
-		},
-	},
+	reporters: ['spec'],
 	mochaOpts: {
 		ui: 'bdd',
 		compilers: ['js:@babel/register'],
-		timeout: 120000,
+		timeout: 6000000,
 	},
-	staticServerFolders: [{ mount: '/', path: './examples' }],
-	staticServerPort: AD_ENGINE_PORT,
-	visualRegression: {
-		compare: new VisualRegressionCompare.LocalCompare({
-			referenceName: getScreenshotName(path.join(process.cwd(), 'tests/screenshots/reference')),
-			screenshotName: getScreenshotName(path.join(process.cwd(), 'tests/screenshots/current')),
-			diffName: getScreenshotName(path.join(process.cwd(), 'tests/screenshots/diff')),
-			misMatchTolerance: 5,
-		}),
-		viewportChangePause: 300,
-		viewports: [{ width: 1600, height: 900 }],
-		orientations: ['landscape'],
+	staticFilesServerConfig: {
+		basename: '/',
+		mount: './examples',
+		port: AD_ENGINE_PORT,
 	},
 };

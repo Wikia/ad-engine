@@ -6,11 +6,11 @@ class Krux {
 	}
 
 	getUserID() {
-		return browser.getText(this.idField);
+		return $(this.idField).getText();
 	}
 
 	getSegments() {
-		return browser.getText(this.segmentsField);
+		return $(this.segmentsField).getText();
 	}
 }
 

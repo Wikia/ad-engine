@@ -27,6 +27,7 @@ function getMockElement(params, frameElement = null, hidden = false) {
 				frameElement,
 			},
 		},
+		style: {},
 	};
 }
 

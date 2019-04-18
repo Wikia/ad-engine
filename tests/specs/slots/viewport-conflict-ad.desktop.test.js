@@ -7,15 +7,15 @@ import { helpers } from '../../common/helpers';
 describe('Viewport conflict ads page: top boxad', () => {
 	before(() => {
 		browser.url(viewportConflictAd.pageLink);
-		browser.waitForVisible(adSlots.topBoxad, timeouts.standard);
+		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if top boxad is hidden after clicking the button', () => {
-		browser.waitForVisible(viewportConflictAd.hideBoxadButton, timeouts.standard);
-		browser.click(viewportConflictAd.hideBoxadButton);
+		$(viewportConflictAd.hideBoxadButton).waitForDisplayed(timeouts.standard);
+		$(viewportConflictAd.hideBoxadButton).click();
 		adSlots.waitForSlotResult(adSlots.topBoxad, adSlots.adCollapsed);
-		expect(browser.isExisting(`${adSlots.topBoxad}${helpers.classHidden}`)).to.be.true;
-		expect(browser.isVisibleWithinViewport(adSlots.topBoxad)).to.be.false;
+		expect($(`${adSlots.topBoxad}${helpers.classHidden}`).isExisting()).to.be.true;
+		expect($(adSlots.topBoxad).isDisplayedInViewport()).to.be.false;
 	});
 });
 
@@ -25,12 +25,12 @@ describe('Viewport conflict ads page: bottom leaderboard', () => {
 	});
 
 	it('Check if slot is visible in viewport', () => {
-		browser.waitForVisible(viewportConflictAd.hideBoxadButton, timeouts.standard);
-		browser.waitForVisible(viewportConflictAd.addParagraphButton, timeouts.standard);
-		browser.click(viewportConflictAd.hideBoxadButton);
+		$(viewportConflictAd.hideBoxadButton).waitForDisplayed(timeouts.standard);
+		$(viewportConflictAd.addParagraphButton).waitForDisplayed(timeouts.standard);
+		$(viewportConflictAd.hideBoxadButton).click();
 		viewportConflictAd.addParagraphs(5);
-		browser.scroll(0, 2800);
+		helpers.slowScroll(2800);
 		adSlots.waitForSlotResult(adSlots.bottomLeaderboard, adSlots.adLoaded);
-		expect(browser.isVisibleWithinViewport(adSlots.bottomLeaderboard)).to.be.true;
+		expect($(adSlots.bottomLeaderboard).isDisplayedInViewport()).to.be.true;
 	});
 });

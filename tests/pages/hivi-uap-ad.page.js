@@ -26,7 +26,7 @@ export class HiviUap {
 	openUapWithState(resolved, url = browser.getUrl(), adSlot = null) {
 		helpers.navigateToUrl(url, queryStrings.getResolvedState(resolved));
 		if (adSlot) {
-			browser.waitForVisible(adSlot, timeouts.standard);
+			$(adSlot).waitForDisplayed(timeouts.standard);
 		}
 	}
 }

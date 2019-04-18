@@ -16,7 +16,7 @@ class ViewportConflictAd {
 			paragraphs = this.maxNewParagraphs;
 		}
 		for (let i = 0; i < paragraphs; i += 1) {
-			browser.click(this.addParagraphButton);
+			$(this.addParagraphButton).click();
 		}
 	}
 }

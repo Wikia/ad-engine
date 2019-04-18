@@ -16,8 +16,8 @@ class A9 {
 	}
 
 	enableA9Debug() {
-		browser.waitForEnabled(this.enableBidsButton, timeouts.standard);
-		browser.click(this.enableBidsButton);
+		$(this.enableBidsButton).waitForEnabled(timeouts.standard);
+		$(this.enableBidsButton).click();
 	}
 }
 

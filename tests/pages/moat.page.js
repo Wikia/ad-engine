@@ -5,7 +5,7 @@ class Moat {
 	}
 
 	getPageLevelParams() {
-		return browser.getText(this.pageParams);
+		return $(this.pageParams).getText();
 	}
 }
 

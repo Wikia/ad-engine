@@ -13,13 +13,16 @@ class DelayAd {
 	 */
 	waitToLoadAds() {
 		browser.waitUntil(
-			() => browser.getText(this.loadAdsButton).includes('Load ads ('),
+			() =>
+				$(this.loadAdsButton)
+					.getText()
+					.includes('Load ads ('),
 			timeouts.standard,
 			'Button not loaded',
 			timeouts.interval,
 		);
 		browser.waitUntil(
-			() => browser.getText(this.loadAdsButton) === 'Load ads',
+			() => $(this.loadAdsButton).getText() === 'Load ads',
 			loadAdTime,
 			'Ads not loaded',
 			timeouts.interval,

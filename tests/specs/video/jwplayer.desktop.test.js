@@ -10,14 +10,19 @@ describe('jwPlayer player', () => {
 
 	before(() => {
 		browser.url(jwPlayer.pageLink);
-		browser.waitForVisible(jwPlayer.player, timeouts.standard);
+		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(jwPlayer.player);
 	});
 
 	beforeEach(() => {
+		browser.switchWindow(jwPlayer.pageLink);
 		browser.url(jwPlayer.pageLink);
-		browser.waitForVisible(jwPlayer.player, timeouts.standard);
+		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
+	});
+
+	afterEach(() => {
+		browser.switchWindow(jwPlayer.pageLink);
 	});
 
 	it('Check if player is visible', () => {
@@ -35,47 +40,24 @@ describe('jwPlayer player', () => {
 	});
 
 	it('Check if redirect on click on default player works', () => {
-		browser.click(jwPlayer.player);
-		helpers.switchToTab(1);
+		$(jwPlayer.player).click();
+		browser.switchWindow(helpers.clickThroughUrlDomain);
 		helpers.waitForUrl(helpers.clickThroughUrlDomain);
 		expect(browser.getUrl()).to.include(
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		helpers.closeNewTabs();
-	});
-
-	it('Check if unmuting the video works', () => {
-		browser.moveToObject(jwPlayer.player).pause(500);
-		browser.waitForVisible(jwPlayer.soundToggle, timeouts.standard);
-		browser.click(jwPlayer.soundToggle);
-		browser.waitForExist(`${jwPlayer.soundToggle}${jwPlayer.soundToggleOn}`, timeouts.standard);
-		expect(jwPlayer.isAudioOn()).to.be.true;
-	});
-
-	it('Check if opening full screen and redirect on fullscreen player works', () => {
-		browser.moveToObject(jwPlayer.player).pause(500);
-		browser.waitForVisible(jwPlayer.fullscreenButton, timeouts.standard);
-		browser.click(jwPlayer.fullscreenButton);
-		browser.waitForVisible(jwPlayer.fullscreenPlayer, timeouts.standard);
-		browser.click(jwPlayer.player);
-		helpers.switchToTab(1);
-		helpers.waitForUrl(helpers.clickThroughUrlDomain);
-		expect(browser.getUrl()).to.include(
-			helpers.clickThroughUrlDomain,
-			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
-		);
-		helpers.closeNewTabs();
+		browser.closeWindow();
 	});
 
 	it('Check if preroll works', () => {
-		browser.waitForExist(jwPlayer.player, timeouts.standard);
-		expect(jwPlayer.isAdVisible()).to.be.true;
+		$(jwPlayer.player).waitForExist(timeouts.standard);
+		expect(jwPlayer.isVideoAdVisible()).to.be.true;
 	});
 
 	it('Check if midroll works', () => {
 		helpers.navigateToUrl(jwPlayer.pageLink, queryStrings.getMidroll(true));
-		browser.waitForExist(jwPlayer.player, timeouts.standard);
+		$(jwPlayer.player).waitForExist(timeouts.standard);
 		jwPlayer.waitForAdToChangeState(true);
 		helpers.waitForVideoAdToFinish(jwPlayer.prerollDuration);
 		jwPlayer.waitForAdToChangeState(false);
@@ -85,7 +67,7 @@ describe('jwPlayer player', () => {
 
 	it('Check if postroll works', () => {
 		helpers.navigateToUrl(jwPlayer.pageLink, queryStrings.getPostroll(true));
-		browser.waitForExist(jwPlayer.player, timeouts.standard);
+		$(jwPlayer.player).waitForExist(timeouts.standard);
 		jwPlayer.waitForAdToChangeState(true);
 		helpers.waitForVideoAdToFinish(jwPlayer.prerollDuration);
 		jwPlayer.waitForAdToChangeState(false);
@@ -95,7 +77,7 @@ describe('jwPlayer player', () => {
 
 	it('Check if f15n works', () => {
 		helpers.navigateToUrl(jwPlayer.pageLink, queryStrings.getF15n());
-		browser.waitForExist(jwPlayer.player, timeouts.standard);
+		$(jwPlayer.player).waitForExist(timeouts.standard);
 		jwPlayer.waitForAdToChangeState(false);
 		helpers.waitForVideoToProgress(10000);
 		jwPlayer.waitForAdToChangeState(true);
@@ -105,7 +87,7 @@ describe('jwPlayer player', () => {
 
 	it('Check if autoplay is disabled upon entering the page', () => {
 		helpers.navigateToUrl(jwPlayer.pageLink, queryStrings.getAutoplay(false));
-		browser.waitForVisible(jwPlayer.player, timeouts.standard);
-		expect(browser.isExisting(jwPlayer.videoIdle)).to.be.true;
+		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
+		expect($(jwPlayer.videoIdle).isExisting()).to.be.true;
 	});
 });

@@ -7,7 +7,7 @@ import { helpers } from '../../common/helpers';
 describe('Incontent native page: incontent native', () => {
 	before(() => {
 		browser.url(incontentNative.pageLink);
-		browser.waitForVisible(adSlots.incontentNative, timeouts.standard);
+		$(adSlots.incontentNative).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is visible in viewport', () => {

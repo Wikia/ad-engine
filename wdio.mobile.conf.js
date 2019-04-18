@@ -1,8 +1,10 @@
 /* global browser */
+/* eslint-disable import/no-extraneous-dependencies */
+
 const merge = require('deepmerge');
 const wdioConf = require('./wdio.conf.js');
 
-global.wdioEnvironment = 'mobile';
+global.envIsDesktop = false;
 
 exports.config = merge(
 	wdioConf.config,
@@ -11,20 +13,14 @@ exports.config = merge(
 		exclude: ['tests/specs/**/*.desktop.test.js'],
 		capabilities: [
 			{
+				maxInstances: 5,
 				browserName: 'chrome',
-				chromeOptions: {
-					mobileEmulation: {
-						deviceName: 'iPhone X',
-					},
-				},
-			},
+				"goog:chromeOptions": {
+					"args": [  "--window-size=1600,900", "--disable-infobars", "--disable-notifications" ],
+					"mobileEmulation": { "deviceName": "iPhone X" }
+				}
+			}
 		],
-		before() {
-			browser.windowHandleSize({ width: 1600, height: 900 });
-		},
-		after() {
-			browser.windowHandleSize({ width: 1600, height: 900 });
-		},
 	},
-	{ clone: false },
+	{clone: false},
 );

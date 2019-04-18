@@ -2,15 +2,16 @@ import { expect } from 'chai';
 import { adSlots } from '../../common/ad-slots';
 import { injectedAds } from '../../pages/injected-ad.page';
 import { timeouts } from '../../common/timeouts';
+import { helpers } from '../../common/helpers';
 
 describe('Injected slots: injected boxad', () => {
 	let adStatus;
 
 	before(() => {
 		browser.url(injectedAds.pageLink);
-		browser.scroll(0, 500);
-		browser.waitForVisible(adSlots.injectedBoxad, timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.injectedBoxad);
+		helpers.slowScroll(500);
+		$(adSlots.injectedBoxad).waitForDisplayed(timeouts.standard);
+		adStatus = adSlots.getSlotStatus(adSlots.injectedBoxad, true);
 	});
 
 	it('Check if dimensions are correct', () => {
