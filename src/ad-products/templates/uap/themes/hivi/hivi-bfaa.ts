@@ -266,7 +266,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		await utils.wait(unstickDelay);
 	}
 
-	protected async onStickinessChange(isSticky: boolean): void {
+	protected async onStickinessChange(isSticky: boolean): Promise<void> {
 		const stickinessBeforeCallback = isSticky
 			? this.config.onBeforeStickBfaaCallback
 			: this.config.onBeforeUnstickBfaaCallback;

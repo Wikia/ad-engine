@@ -1,16 +1,41 @@
-import { context, utils } from '@wikia/ad-engine';
+import { AdSlot, context, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../../utils';
 import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
 import { bfaThemeFactory } from './themes/factory';
-import { universalAdPackage } from './universal-ad-package';
+import { UapParams, universalAdPackage } from './universal-ad-package';
 import { VideoSettings } from './video-settings';
+
+export type StickinessCallback = (
+	config: BigFancyAdAboveConfig,
+	adSlot: AdSlot,
+	params: UapParams,
+) => void;
+
+export interface BigFancyAdAboveConfig {
+	desktopNavbarWrapperSelector: string;
+	mobileNavbarWrapperSelector: string;
+	mainContainer: HTMLElement;
+	handleNavbar: boolean;
+	autoPlayAllowed: boolean;
+	defaultStateAllowed: boolean;
+	fullscreenAllowed: boolean;
+	stickinessAllowed: boolean;
+	slotSibling: string;
+	slotsToEnable: string[];
+	onInit: (adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig) => void;
+	onBeforeStickBfaaCallback: StickinessCallback;
+	onAfterStickBfaaCallback: StickinessCallback;
+	onBeforeUnstickBfaaCallback: StickinessCallback;
+	onAfterUnstickBfaaCallback: StickinessCallback;
+	moveNavbar: (offset: number, time: number) => void;
+}
 
 export class BigFancyAdAbove {
 	static getName() {
 		return 'bfaa';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): BigFancyAdAboveConfig {
 		return {
 			desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
 			mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
@@ -28,7 +53,7 @@ export class BigFancyAdAbove {
 			onBeforeUnstickBfaaCallback: () => {},
 			onAfterUnstickBfaaCallback: () => {},
 			moveNavbar(offset, time = SLIDE_OUT_TIME) {
-				const navbarElement = document.querySelector('body > nav.navigation');
+				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
 
 				if (navbarElement) {
 					navbarElement.style.transition = offset
