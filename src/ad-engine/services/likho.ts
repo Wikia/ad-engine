@@ -1,5 +1,5 @@
 import { context } from './context-service';
-import { localCache } from './local-cache';
+import { storage } from './local-storage';
 
 export interface LikhoStorageElement {
 	likhoType: string;
@@ -39,21 +39,14 @@ export class LikhoService {
 	private save(likhoStorage: LikhoStorageElement[]): string[] {
 		const likhoTypes: string[] = likhoStorage.map((item: LikhoStorageElement) => item.likhoType);
 
-		if (localCache.canUseStorage()) {
-			localStorage.setItem('likho', JSON.stringify(likhoStorage));
-		}
-
+		storage.setItem('likho', likhoStorage);
 		context.set('targeting.likho', likhoTypes);
 
 		return likhoTypes;
 	}
 
 	private retrieve(): LikhoStorageElement[] {
-		if (localCache.canUseStorage()) {
-			return JSON.parse(localStorage.getItem('likho')) || [];
-		}
-
-		return [];
+		return storage.getItem<LikhoStorageElement[]>('likho') || [];
 	}
 }
 

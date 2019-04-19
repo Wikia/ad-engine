@@ -3,6 +3,17 @@ import { Dictionary } from '../models';
 class LocalStorage {
 	private fallbackStorage: Dictionary = {};
 
+	isAvailable(): boolean {
+		try {
+			window.localStorage.setItem('ae3-local-storage-test', '1');
+			window.localStorage.getItem('ae3-local-storage-test');
+			window.localStorage.removeItem('ae3-local-storage-test');
+			return true;
+		} catch (e) {
+			return false;
+		}
+	}
+
 	getItem<T>(key: string): T {
 		try {
 			let value = window.localStorage.getItem(key);
@@ -41,4 +52,4 @@ class LocalStorage {
 	}
 }
 
-export const localStorage = new LocalStorage();
+export const storage = new LocalStorage();
