@@ -21,8 +21,8 @@ function loadScript() {
  * @returns {string}
  */
 function getKruxData(key) {
-	if (localCache.canUseStorage()) {
-		return window.localStorage[key];
+	if (localCache.isAvailable()) {
+		return localCache.get(key);
 	}
 	if (window.navigator.cookieEnabled) {
 		const match = document.cookie.match(`${key}=([^;]*)`);

@@ -1,6 +1,6 @@
 import { Dictionary } from '../models';
 
-class LocalStorage {
+export class LocalStorage {
 	private fallbackStorage: Dictionary = {};
 
 	isAvailable(): boolean {
@@ -26,13 +26,14 @@ class LocalStorage {
 		}
 	}
 
-	setItem(key: string, input: {} | string): void {
+	setItem(key: string, input: {} | string): boolean {
 		const value: string = input instanceof Object ? JSON.stringify(input) : input;
 		try {
 			window.localStorage.setItem(key, value);
 		} catch (e) {
 			this.fallbackStorage[key] = value;
 		}
+		return true;
 	}
 
 	removeItem(key: string): void {
@@ -51,5 +52,3 @@ class LocalStorage {
 		}
 	}
 }
-
-export const storage = new LocalStorage();

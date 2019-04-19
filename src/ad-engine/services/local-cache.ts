@@ -1,141 +1,68 @@
 /* global Storage */
-import { logger } from '../utils';
+import { LocalStorage } from './local-storage';
 
-interface CacheItem {
+interface CacheItem<T = any> {
 	expires?: number;
-	data: any;
+	data: T;
 }
 
-const logGroup = 'local-cache';
-
-let canUseStorage: boolean;
-
 class LocalCache {
-	canUseStorage(): boolean {
-		if (typeof canUseStorage === 'undefined') {
-			canUseStorage = false;
-			try {
-				if (window.localStorage) {
-					window.localStorage.setItem('test', '1');
-					window.localStorage.removeItem('test');
-					canUseStorage = true;
-				}
-			} catch (e) {
-				/* There are two known possibilities here:
-				 *
-				 * 1) The browser isn't allowing access due to a
-				 * privacy setting (which can happen in Safari).
-				 *
-				 * 2) The allowed disk space for storage is used
-				 * up. However, this is more likely to happen in
-				 * calls to LocalCache.set().
-				 */
-				try {
-					this.createPolyfill();
-					canUseStorage = true;
-				} catch (exception) {
-					logger(logGroup, 'Local Storage polyfill error: ', exception);
-				}
-			}
-		}
+	private storage = new LocalStorage();
 
-		return canUseStorage;
+	isAvailable(): boolean {
+		return this.storage.isAvailable();
 	}
 
-	createPolyfill(): void {
-		logger(logGroup, 'Local Storage polyfill being created');
-		Storage.prototype.data = {};
-
-		Storage.prototype.setItem = function (id, val) {
-			this.data[id] = String(val);
-		};
-
-		Storage.prototype.getItem = function (id) {
-			return this.data[id] ? this.data[id] : null;
-		};
-
-		Storage.prototype.removeItem = function (id) {
-			delete this.data[id];
-		};
-
-		Storage.prototype.clear = function () {
-			this.data = {};
-		};
-	}
-
-	get(key: string): any {
-		if (!this.canUseStorage()) {
-			return false;
-		}
-
-		const cacheItem = window.localStorage.getItem(key);
+	// TODO: Should not return boolean if item expired
+	get<T = any>(key: string): T {
+		const cacheItem: CacheItem = this.storage.getItem<CacheItem>(key);
 
 		if (cacheItem) {
-			// De-serialize
-			const unpacked: CacheItem = JSON.parse(cacheItem);
-
 			// Check if item has expired
-			if (this.isExpired(unpacked)) {
+			if (this.isExpired(cacheItem)) {
 				this.delete(key);
 
-				return false;
+				return false as any;
 			}
 
-			return unpacked.data;
+			return cacheItem.data;
 		}
 
-		return false;
+		return false as any;
 	}
 
 	set(key: string, value: any, expires?: number): boolean {
-		if (!this.canUseStorage() || !this.isStorable(value)) {
+		if (!this.isStorable(value)) {
 			return false;
 		}
 
-		const cacheItem: CacheItem = { data: value };
+		const cacheItem: CacheItem = {
+			data: value,
+			expires: expires ? expires * 1000 + Date.now() : undefined,
+		};
 
-		if (expires) {
-			// Set expiration as a JS timestamp
-			cacheItem.expires = expires * 1000 + Date.now();
-		}
-
-		try {
-			window.localStorage.setItem(key, JSON.stringify(cacheItem));
-		} catch (e) {
-			// Local Storage is at capacity
-			return false;
-		}
+		this.storage.setItem(key, cacheItem);
 
 		return true;
 	}
 
 	delete(key: string): void {
-		if (!this.canUseStorage()) {
-			return;
-		}
-
-		window.localStorage.removeItem(key);
+		this.storage.removeItem(key);
 	}
 
-	isStorable(value: any): boolean {
-		if (
-			// Functions might be a security risk
-			typeof value === 'function' ||
-			// NaN
-			(typeof value === 'number' && isNaN(value)) ||
-			// undefined
-			typeof value === 'undefined'
-		) {
-			return false;
-		}
+	private isStorable(value: any): boolean {
+		const unstorableTypes: string[] = ['function', 'number', 'undefined'];
+		const isStorableType = !unstorableTypes.some((type) => typeof value === type);
+		const isNotNaN = !(typeof value === 'number' && isNaN(value));
 
-		return true;
+		return isStorableType && isNotNaN;
 	}
 
-	isExpired(cacheItem: CacheItem): boolean {
+	private isExpired(cacheItem: CacheItem): boolean {
 		if (cacheItem.expires) {
 			return cacheItem.expires && Date.now() >= cacheItem.expires;
 		}
+
 		return false;
 	}
 }

@@ -6,8 +6,8 @@ import { VideoParams } from '../video-settings';
 const logGroup = 'google-ima-setup';
 
 function getOverriddenVast() {
-	if (queryString.get('porvata_override_vast') === '1' && localCache.canUseStorage()) {
-		const vastXML = window.localStorage.getItem('porvata_vast');
+	if (queryString.get('porvata_override_vast') === '1' && localCache.isAvailable()) {
+		const vastXML = localCache.get('porvata_vast');
 
 		logger(logGroup, 'Overridden VAST', vastXML);
 
