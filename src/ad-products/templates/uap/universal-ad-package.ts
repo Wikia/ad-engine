@@ -1,7 +1,9 @@
 import {
+	AdSlot,
 	btfBlockerService,
 	context,
 	Porvata,
+	PorvataPlayer,
 	slotService,
 	TwitchOptions,
 	TwitchPlayer,
@@ -10,12 +12,87 @@ import {
 import { throttle } from 'lodash';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
+import { VideoSettings } from './video-settings';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
 let uapType = constants.DEFAULT_UAP_TYPE;
 
-function getVideoSize(slot, params, videoSettings) {
+export interface UapState<T> {
+	default: T;
+	resolved: T;
+}
+
+export type UapRatio = UapState<number>;
+
+export interface UapConfig {
+	aspectRatio: UapRatio;
+	background: UapState<string>;
+	video: {
+		thumb: string;
+	};
+	state: UapState<number>;
+}
+
+export interface UapImage {
+	element: HTMLImageElement;
+	background: string;
+}
+
+export interface VideoSize {
+	height: number;
+	width: number;
+}
+
+export interface UapParams {
+	adProduct: string;
+	player: HTMLElement;
+	container: HTMLElement;
+
+	isMobile: boolean;
+	config: UapConfig;
+
+	slotName: string;
+	src: string;
+	uap: string;
+	lineItemId: string;
+	creativeId: string;
+
+	isSticky: boolean;
+	backgroundColor: string;
+	autoPlay: boolean;
+	resolvedStateAutoPlay: boolean;
+
+	videoTriggers: any[];
+	videoPlaceholderElement: HTMLElement;
+	splitLayoutVideoPosition: string;
+
+	image1: UapImage;
+	image2: UapImage;
+	adContainer: HTMLElement;
+	thumbnail: string;
+
+	aspectRatio: number;
+	resolvedStateAspectRatio: number;
+	videoAspectRatio: number;
+	theme: string;
+	isDarkTheme: boolean;
+	stickyUntilVideoViewed: boolean;
+	stickyAdditionalTime: number;
+	blockOutOfViewportPausing: boolean;
+	restartOnUnmute: boolean;
+	clickThroughURL: string;
+	fullscreenable: boolean;
+
+	loadMedrecFromBTF: boolean;
+	moatTracking: number;
+}
+
+function getVideoSize(
+	slot: HTMLElement,
+	params: UapParams,
+	videoSettings: VideoSettings,
+): VideoSize {
 	const width = videoSettings.isSplitLayout()
 		? params.videoPlaceholderElement.offsetWidth
 		: slot.clientWidth;
@@ -35,7 +112,7 @@ function adjustVideoAdContainer(params) {
 	}
 }
 
-async function loadPorvata(videoSettings, slotContainer, imageContainer) {
+async function loadPorvata(videoSettings, slotContainer, imageContainer): Promise<PorvataPlayer> {
 	const params = videoSettings.getParams();
 	const template = videoUserInterface.selectTemplate(videoSettings);
 
@@ -103,10 +180,10 @@ async function loadTwitchAd(iframe, params) {
 	player.firstChild.id = 'twitchPlayerContainer';
 }
 
-async function loadVideoAd(videoSettings) {
+async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer> {
 	const params = videoSettings.getParams();
-	const imageContainer = params.container.querySelector('div:last-of-type');
-	const size = getVideoSize(params.container, params, videoSettings);
+	const imageContainer: HTMLElement = params.container.querySelector('div:last-of-type');
+	const size: VideoSize = getVideoSize(params.container, params, videoSettings);
 
 	params.vastTargeting = {
 		passback: getType(),
@@ -123,7 +200,7 @@ async function loadVideoAd(videoSettings) {
 		};
 	}
 
-	const video = await loadPorvata(videoSettings, params.container, imageContainer);
+	const video: PorvataPlayer = await loadPorvata(videoSettings, params.container, imageContainer);
 
 	window.addEventListener('resize', throttle(recalculateVideoSize(video), 250));
 
@@ -186,8 +263,8 @@ function disableSlots(slotsToDisable) {
 	});
 }
 
-function initSlot(params) {
-	const adSlot = slotService.get(params.slotName);
+function initSlot(params: UapParams): void {
+	const adSlot: AdSlot = slotService.get(params.slotName);
 
 	params.container = adSlot.getElement();
 
@@ -216,7 +293,7 @@ function isFanTakeoverLoaded() {
 
 export const universalAdPackage = {
 	...constants,
-	init(params, slotsToEnable = [], slotsToDisable = []) {
+	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
 		let adProduct = 'uap';
 
 		if (this.isVideoEnabled(params)) {
