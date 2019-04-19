@@ -194,7 +194,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	private setResolvedState(immediately: boolean): Promise<void> {
+	private setResolvedState(immediately?: boolean): Promise<void> {
 		const isSticky = this.stickiness && this.stickiness.isSticky();
 		const width = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
