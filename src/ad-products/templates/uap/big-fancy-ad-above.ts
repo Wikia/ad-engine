@@ -1,7 +1,9 @@
 import { AdSlot, context, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../../utils';
 import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
+import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
+import { BfaaHiviTheme } from './themes/hivi';
 import { UapParams, universalAdPackage } from './universal-ad-package';
 import { VideoSettings } from './video-settings';
 
@@ -22,6 +24,7 @@ export interface BigFancyAdAboveConfig {
 	stickinessAllowed: boolean;
 	slotSibling: string;
 	slotsToEnable: string[];
+	slotsToDisable?: string[];
 	onInit: (adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig) => void;
 	onBeforeStickBfaaCallback: StickinessCallback;
 	onAfterStickBfaaCallback: StickinessCallback;
@@ -65,23 +68,22 @@ export class BigFancyAdAbove {
 		};
 	}
 
-	/**
-	 * Constructor
-	 *
-	 * @param {object} adSlot
-	 */
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	config: BigFancyAdAboveConfig;
+	container: HTMLElement;
+	videoSettings: VideoSettings;
+	theme: BfaaTheme | BfaaHiviTheme = null;
+	params: UapParams;
+
+	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.bfaa') || {};
 		this.container = document.getElementById(this.adSlot.getSlotName());
 		this.videoSettings = null;
-		this.theme = null;
 	}
 
 	/**
 	 * Initializes the BFAA unit
 	 */
-	init(params) {
+	init(params: UapParams): void {
 		this.params = params;
 
 		if (!this.container) {
@@ -107,13 +109,13 @@ export class BigFancyAdAbove {
 		this.config.onInit(this.adSlot, this.params, this.config);
 	}
 
-	getBackgroundColor() {
+	getBackgroundColor(): string {
 		const color = `#${this.params.backgroundColor.replace('#', '')}`;
 
 		return this.params.backgroundColor ? color : '#000';
 	}
 
-	async onAdReady(iframe) {
+	async onAdReady(iframe: HTMLIFrameElement): Promise<void> {
 		this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
 		this.config.mainContainer.classList.add('has-bfaa');
 

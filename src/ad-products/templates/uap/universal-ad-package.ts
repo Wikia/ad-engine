@@ -83,9 +83,13 @@ export interface UapParams {
 	restartOnUnmute: boolean;
 	clickThroughURL: string;
 	fullscreenable: boolean;
+	fullscreenAllowed: boolean;
 
 	loadMedrecFromBTF: boolean;
 	moatTracking: number;
+
+	// Twitch params
+	channelName: string;
 }
 
 function getVideoSize(
@@ -172,12 +176,12 @@ async function loadTwitchPlayer(iframe, params) {
 	return twitchPlayer;
 }
 
-async function loadTwitchAd(iframe, params) {
+async function loadTwitchAd(iframe: HTMLIFrameElement, params: UapParams): Promise<void> {
 	const { player } = params;
 
 	await loadTwitchPlayer(iframe, params);
 	window.addEventListener('resize', throttle(recalculateTwitchSize(params), 250));
-	player.firstChild.id = 'twitchPlayerContainer';
+	(player.firstChild as HTMLElement).id = 'twitchPlayerContainer';
 }
 
 async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer> {
