@@ -34,7 +34,7 @@ export interface BigFancyAdAboveConfig {
 }
 
 export class BigFancyAdAbove {
-	static getName() {
+	static getName(): string {
 		return 'bfaa';
 	}
 
@@ -70,14 +70,13 @@ export class BigFancyAdAbove {
 
 	config: BigFancyAdAboveConfig;
 	container: HTMLElement;
-	videoSettings: VideoSettings;
+	videoSettings: VideoSettings = null;
 	theme: BfaaTheme | BfaaHiviTheme = null;
 	params: UapParams;
 
 	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.bfaa') || {};
 		this.container = document.getElementById(this.adSlot.getSlotName());
-		this.videoSettings = null;
 	}
 
 	/**
