@@ -22,7 +22,7 @@ function loadScript() {
  */
 function getKruxData(key) {
 	if (localCache.isAvailable()) {
-		return localCache.get(key);
+		return window.localStorage[key];
 	}
 	if (window.navigator.cookieEnabled) {
 		const match = document.cookie.match(`${key}=([^;]*)`);

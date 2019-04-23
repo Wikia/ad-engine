@@ -27,43 +27,39 @@ describe('Krux service', () => {
 		});
 
 		it('import user data and return user id from old key name', () => {
-			const stub = sinon.stub(localCache, 'get').returns('foo');
+			window.localStorage.kxuser = 'foo';
 
 			krux.importUserData();
 
 			expect(krux.getUserId()).to.equal('foo');
-			stub.restore();
 		});
 
 		it('import user data and return user id from old key name', () => {
-			const stub = sinon.stub(localCache, 'get').returns('foo');
+			window.localStorage.kxwikia_user = 'foo';
 
 			krux.importUserData();
 
 			expect(krux.getUserId()).to.equal('foo');
-			stub.restore();
 		});
 
 		it('import user data and return segments for old key name', () => {
-			const stub = sinon.stub(localCache, 'get').returns('abc,bar,zxc');
+			window.localStorage.kxsegs = 'abc,bar,zxc';
 
 			krux.importUserData();
 
 			expect(krux.getSegments()[0]).to.equal('abc');
 			expect(krux.getSegments()[1]).to.equal('bar');
 			expect(krux.getSegments()[2]).to.equal('zxc');
-			stub.restore();
 		});
 
 		it('import user data and return segments for old key name', () => {
-			const stub = sinon.stub(localCache, 'get').returns('abc,bar,zxc');
+			window.localStorage.kxsegs = 'abc,bar,zxc';
 
 			krux.importUserData();
 
 			expect(krux.getSegments()[0]).to.equal('abc');
 			expect(krux.getSegments()[1]).to.equal('bar');
 			expect(krux.getSegments()[2]).to.equal('zxc');
-			stub.restore();
 		});
 
 		it('export context targeting to krux', () => {
@@ -79,12 +75,11 @@ describe('Krux service', () => {
 		});
 
 		it('import user data failes when there is no local storage', () => {
-			const stub = sinon.stub(localCache, 'get').returns('foo');
+			window.localStorage.kxuser = 'foo';
 
 			krux.importUserData();
 
 			expect(krux.getUserId()).to.equal(null);
-			stub.restore();
 		});
 	});
 });
