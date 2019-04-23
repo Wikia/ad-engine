@@ -20,16 +20,16 @@ export default {
 			amazonId: '3115',
 			slots: {
 				top_leaderboard: {
-					sizes: [[728, 90]],
 					slotId: 'TOP_LEADERBOARD',
+					sizes: [[728, 90]],
 				},
 				TOP_BOXAD: {
-					sizes: [[300, 250]],
 					slotId: 'TOP_BOXAD',
+					sizes: [[300, 250]],
 				},
 				featured: {
-					type: 'video',
 					slotId: 'FEATURED',
+					type: 'video',
 				},
 				incontent_boxad: {
 					slotId: 'MOBILE_IN_CONTENT',

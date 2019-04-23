@@ -39,7 +39,6 @@ export class A9 extends BaseBidder {
 		this.cmp = cmp;
 		this.utils = utils;
 		this.events = events;
-		this.slotService = slotService;
 		this.timeout = timeout;
 		this.bidsRefreshing = context.get('bidders.a9.bidsRefreshing') || {};
 		this.isRenderImpOverwritten = false;
@@ -115,6 +114,7 @@ export class A9 extends BaseBidder {
 	getA9SlotsDefinitions(slotsNames) {
 		return slotsNames
 			.map((slotName) => this.getSlotAlias(slotName))
+			.filter((slotAlias) => this.isSlotEnabled(slotAlias))
 			.map((slotAlias) => this.createSlotDefinition(slotAlias))
 			.filter((slot) => slot !== null);
 	}
@@ -334,5 +334,25 @@ export class A9 extends BaseBidder {
 	 */
 	isSupported(slotName) {
 		return !!this.slots[this.getSlotAlias(slotName)];
+	}
+
+	/**
+	 * Checks whether given A9 slot definition is used by alias
+	 * @private
+	 * @param {string} slotID
+	 * @returns {boolean}
+	 */
+	isSlotEnabled(slotID) {
+		const someEnabledByAlias = Object.keys(context.get('slots')).some((slotName) => {
+			const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
+
+			return bidderAlias === slotID && slotService.getState(slotName);
+		});
+
+		const slotConfig = context.get(`slots.${slotID}`);
+
+		return slotConfig && Object.keys(slotConfig).length > 0
+			? slotService.getState(slotID)
+			: someEnabledByAlias;
 	}
 }
