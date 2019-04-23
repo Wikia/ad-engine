@@ -31,7 +31,9 @@ export interface UapConfig {
 	video: {
 		thumb: string;
 	};
-	state: UapState<number>;
+	state: {
+		height: UapState<number>;
+	};
 }
 
 export interface UapImage {
@@ -45,48 +47,42 @@ export interface VideoSize {
 }
 
 export interface UapParams {
-	adProduct: string;
-	player: HTMLElement;
-	container: HTMLElement;
-
-	isMobile: boolean;
-	config: UapConfig;
-
-	slotName: string;
-	src: string;
-	uap: string;
-	lineItemId: string;
-	creativeId: string;
-
-	isSticky: boolean;
-	backgroundColor: string;
-	autoPlay: boolean;
-	resolvedStateAutoPlay: boolean;
-
-	videoTriggers: any[];
-	videoPlaceholderElement: HTMLElement;
-	splitLayoutVideoPosition: string;
-
-	image1: UapImage;
-	image2: UapImage;
 	adContainer: HTMLElement;
-	thumbnail: string;
-
+	adProduct: string;
 	aspectRatio: number;
-	resolvedStateAspectRatio: number;
-	videoAspectRatio: number;
-	theme: string;
-	isDarkTheme: boolean;
-	stickyUntilVideoViewed: boolean;
-	stickyAdditionalTime: number;
+	autoPlay: boolean;
+	backgroundColor: string;
 	blockOutOfViewportPausing: boolean;
-	restartOnUnmute: boolean;
 	clickThroughURL: string;
+	config: UapConfig;
+	container: HTMLElement;
+	creativeId: string;
 	fullscreenable: boolean;
 	fullscreenAllowed: boolean;
-
+	image1: UapImage;
+	image2: UapImage;
+	isDarkTheme: boolean;
+	isMobile: boolean;
+	isSticky: boolean;
+	lineItemId: string;
 	loadMedrecFromBTF: boolean;
 	moatTracking: number;
+	player: HTMLElement;
+	resolvedStateAspectRatio: number;
+	resolvedStateAutoPlay: boolean;
+	resolvedStateForced?: boolean;
+	restartOnUnmute: boolean;
+	slotName: string;
+	splitLayoutVideoPosition: string;
+	src: string;
+	stickyAdditionalTime: number;
+	stickyUntilVideoViewed: boolean;
+	theme: string;
+	thumbnail: HTMLElement;
+	uap: string;
+	videoAspectRatio: number;
+	videoPlaceholderElement: HTMLElement;
+	videoTriggers: any[];
 
 	// Twitch params
 	channelName: string;
