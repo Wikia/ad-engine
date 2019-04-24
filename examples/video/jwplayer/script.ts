@@ -12,6 +12,7 @@ const f15sVideoId = utils.queryString.get('f15s');
 context.extend(adContext);
 context.set('targeting.artid', utils.queryString.get('force-ad-error') === '1' ? 528 : 355);
 context.set('targeting.skin', 'oasis');
+context.set('targeting.topics', ['foo', 'bar', 'test']);
 context.set('custom.device', utils.client.getDeviceType());
 context.set('custom.adLayout', 'article');
 context.set('options.tracking.kikimora.player', true);
