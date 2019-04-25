@@ -1,7 +1,15 @@
-import { AdSlot, PorvataPlayer, scrollListener, slotTweaker, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	Dictionary,
+	PorvataPlayer,
+	scrollListener,
+	slotTweaker,
+	utils,
+} from '@wikia/ad-engine';
 import * as EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
 import { animate } from '../../../interface/animate';
+import { StickinessCallback } from '../../big-fancy-ad-above';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
@@ -11,7 +19,7 @@ import {
 } from '../../constants';
 import { resolvedState } from '../../resolved-state';
 import { resolvedStateSwitch } from '../../resolved-state-switch';
-import { UapParams } from '../../universal-ad-package';
+import { UapParams, UapState } from '../../universal-ad-package';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
 
@@ -20,9 +28,9 @@ const HIVI_RESOLVED_THRESHOLD = 0.995;
 export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	static RESOLVED_STATE_EVENT = Symbol('RESOLVED_STATE_EVENT');
 
-	stickiness: Stickiness = null;
-	scrollListener: string = null;
-	video: PorvataPlayer = null;
+	stickiness: Stickiness;
+	scrollListener: string;
+	video: PorvataPlayer;
 	isLocked = false;
 	onResolvedStateScroll: {
 		(): void;
@@ -89,10 +97,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private resetResolvedState(): void {
-		const offset = this.getHeightDifferenceBetweenStates();
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
 		if (this.isLocked && this.config.defaultStateAllowed && window.scrollY < offset) {
-			const aspectRatio = this.params.config.aspectRatio.default;
+			const aspectRatio: number = this.params.config.aspectRatio.default;
 
 			this.container.style.top = '';
 			this.config.mainContainer.style.paddingTop = `${100 / aspectRatio}%`;
@@ -109,7 +117,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private lock(): void {
-		const offset = this.getHeightDifferenceBetweenStates();
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
 		this.isLocked = true;
 		this.container.classList.add('theme-locked');
@@ -138,9 +146,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 	private updateAdSizes(): Promise<HTMLElement> {
 		const { aspectRatio, state } = this.params.config;
-		const {
-			mainContainer: { offsetWidth: currentWidth },
-		} = this.config;
+		const currentWidth: number = this.config.mainContainer.offsetWidth;
 		const isResolved = this.container.classList.contains('theme-resolved');
 		const maxHeight = currentWidth / aspectRatio.default;
 		const minHeight = currentWidth / aspectRatio.resolved;
@@ -177,11 +183,14 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private setThumbnailStyle(state: number): void {
-		const style = mapValues(this.params.config.state, (styleProperty) => {
-			const diff = styleProperty.default - styleProperty.resolved;
+		const style: Dictionary = mapValues(
+			this.params.config.state,
+			(styleProperty: UapState<number>) => {
+				const diff: number = styleProperty.default - styleProperty.resolved;
 
-			return `${styleProperty.default - diff * state}%`;
-		});
+				return `${styleProperty.default - diff * state}%`;
+			},
+		);
 
 		Object.assign(this.params.thumbnail.style, style);
 
@@ -195,11 +204,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private setResolvedState(immediately?: boolean): Promise<void> {
-		const isSticky = this.stickiness && this.stickiness.isSticky();
-		const width = this.container.offsetWidth;
+		const isSticky: boolean = this.stickiness && this.stickiness.isSticky();
+		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
-		const resolvedHeight = width / aspectRatio.resolved;
-		const offset = this.getHeightDifferenceBetweenStates();
+		const resolvedHeight: number = width / aspectRatio.resolved;
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
 		if (isSticky) {
 			this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
@@ -236,7 +245,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private getHeightDifferenceBetweenStates(): number {
-		const width = this.container.offsetWidth;
+		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
 
 		return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
@@ -254,11 +263,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 	protected async getStateResolvedAndVideoViewed(): Promise<void> {
 		const { stickyAdditionalTime, stickyUntilVideoViewed } = this.params;
-		const stateResolved = utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
-		const videoViewed = stickyUntilVideoViewed
+		const stateResolved: Promise<void> = utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
+		const videoViewed: Promise<void> = stickyUntilVideoViewed
 			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
 			: Promise.resolve();
-		const unstickDelay = isUndefined(stickyAdditionalTime)
+		const unstickDelay: number = isUndefined(stickyAdditionalTime)
 			? BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY
 			: stickyAdditionalTime;
 
@@ -267,10 +276,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	protected async onStickinessChange(isSticky: boolean): Promise<void> {
-		const stickinessBeforeCallback = isSticky
+		const stickinessBeforeCallback: StickinessCallback = isSticky
 			? this.config.onBeforeStickBfaaCallback
 			: this.config.onBeforeUnstickBfaaCallback;
-		const stickinessAfterCallback = isSticky
+		const stickinessAfterCallback: StickinessCallback = isSticky
 			? this.config.onAfterStickBfaaCallback
 			: this.config.onAfterUnstickBfaaCallback;
 

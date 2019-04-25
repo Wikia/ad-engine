@@ -17,10 +17,10 @@ export class Stickiness extends EventEmitter {
 	static SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
 
 	sticky = false;
-	isStickinessBlocked = false;
-	isRevertStickinessBlocked = false;
+	private isStickinessBlocked = false;
+	private isRevertStickinessBlocked = false;
 
-	constructor(public adSlot: AdSlot, private customWhen: CustomWhen = Promise.resolve()) {
+	constructor(private adSlot: AdSlot, private customWhen: CustomWhen = Promise.resolve()) {
 		super();
 
 		if (!isFunction(this.customWhen)) {

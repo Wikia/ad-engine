@@ -93,7 +93,7 @@ function getVideoSize(
 	params: UapParams,
 	videoSettings: VideoSettings,
 ): VideoSize {
-	const width = videoSettings.isSplitLayout()
+	const width: number = videoSettings.isSplitLayout()
 		? params.videoPlaceholderElement.offsetWidth
 		: slot.clientWidth;
 	const height = width / params.videoAspectRatio;

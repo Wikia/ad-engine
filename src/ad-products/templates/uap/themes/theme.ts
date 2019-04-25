@@ -8,9 +8,9 @@ import { VideoSettings } from '../video-settings';
  */
 export class BigFancyAdTheme {
 	container: HTMLElement;
-	config: BigFancyAdAboveConfig;
+	protected config: BigFancyAdAboveConfig;
 
-	constructor(public adSlot: AdSlot, public params: UapParams) {
+	constructor(protected adSlot: AdSlot, protected params: UapParams) {
 		this.container = this.adSlot.getElement();
 		this.config = context.get('templates.bfaa') || {};
 	}

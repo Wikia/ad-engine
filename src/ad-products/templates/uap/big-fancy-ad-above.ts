@@ -55,7 +55,7 @@ export class BigFancyAdAbove {
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
 			onAfterUnstickBfaaCallback: () => {},
-			moveNavbar(offset, time = SLIDE_OUT_TIME) {
+			moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {
 				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
 
 				if (navbarElement) {
@@ -74,7 +74,7 @@ export class BigFancyAdAbove {
 	theme: BfaaTheme | BfaaHiviTheme = null;
 	params: UapParams;
 
-	constructor(public adSlot: AdSlot) {
+	constructor(private adSlot: AdSlot) {
 		this.config = context.get('templates.bfaa') || {};
 		this.container = document.getElementById(this.adSlot.getSlotName());
 	}
