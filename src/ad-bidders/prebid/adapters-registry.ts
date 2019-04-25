@@ -41,6 +41,10 @@ class AdaptersRegistry {
 		WikiaVideo,
 	];
 
+	getAdapter(bidderName: string): BaseAdapter {
+		return this.getAdapters().get(bidderName);
+	}
+
 	getAdapters(): Map<string, BaseAdapter> {
 		if (!this.adapters.size) {
 			const biddersConfig = context.get('bidders.prebid');

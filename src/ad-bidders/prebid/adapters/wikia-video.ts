@@ -1,5 +1,5 @@
 import { buildVastUrl, context, Dictionary, utils } from '@wikia/ad-engine';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
@@ -22,6 +22,7 @@ export class WikiaVideo extends BaseAdapter {
 	useRandomPrice: boolean;
 	timeout: number;
 	create: CreateInstance;
+	maxCpm = EXTENDED_MAX_CPM;
 
 	get bidderName(): string {
 		return WikiaVideo.bidderName;

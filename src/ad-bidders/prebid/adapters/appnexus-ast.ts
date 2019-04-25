@@ -1,5 +1,5 @@
 import { utils } from '@wikia/ad-engine';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class AppnexusAst extends BaseAdapter {
 	static bidderName = 'appnexusAst';
@@ -9,6 +9,7 @@ export class AppnexusAst extends BaseAdapter {
 
 	debugPlacementId: string;
 	isDebugMode: boolean;
+	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);

@@ -1,10 +1,11 @@
 import { context } from '@wikia/ad-engine';
 import { getTargeting } from '../prebid-helper';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class Rubicon extends BaseAdapter {
 	static bidderName = 'rubicon';
 	accountId: number;
+	maxCpm = EXTENDED_MAX_CPM;
 
 	get bidderName(): string {
 		return Rubicon.bidderName;
