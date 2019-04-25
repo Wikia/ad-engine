@@ -77,7 +77,12 @@ export function getPrebidBestPrice(slotName) {
 }
 
 export function transformPriceFromBid(bid) {
-	const maxCpm = adaptersRegistry.getAdapter(bid.bidderCode).maxCpm || DEFAULT_MAX_CPM;
+	const bidder = adaptersRegistry.getAdapter(bid.bidderCode);
+	let maxCpm = DEFAULT_MAX_CPM;
+
+	if (bidder && bidder.maxCpm) {
+		maxCpm = bidder.maxCpm;
+	}
 
 	return transformPriceFromCpm(bid.cpm, maxCpm);
 }

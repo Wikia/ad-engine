@@ -41,7 +41,7 @@ class AdaptersRegistry {
 		WikiaVideo,
 	];
 
-	getAdapter(bidderName: string): BaseAdapter {
+	getAdapter(bidderName: string): BaseAdapter | undefined {
 		return this.getAdapters().get(bidderName);
 	}
 
