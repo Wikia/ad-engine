@@ -39,21 +39,14 @@ export class LikhoService {
 	private save(likhoStorage: LikhoStorageElement[]): string[] {
 		const likhoTypes: string[] = likhoStorage.map((item: LikhoStorageElement) => item.likhoType);
 
-		if (localCache.canUseStorage()) {
-			localStorage.setItem('likho', JSON.stringify(likhoStorage));
-		}
-
+		localCache.set('likho', likhoStorage);
 		context.set('targeting.likho', likhoTypes);
 
 		return likhoTypes;
 	}
 
 	private retrieve(): LikhoStorageElement[] {
-		if (localCache.canUseStorage()) {
-			return JSON.parse(localStorage.getItem('likho')) || [];
-		}
-
-		return [];
+		return localCache.get<LikhoStorageElement[]>('likho') || [];
 	}
 }
 
