@@ -1,5 +1,5 @@
 {
-	"rulesDirectory": ["maintenance/tslint-rules/dist"],
+	"rulesDirectory": ["maintenance/tslint-rules/dist", "node_modules/tslint-ban-snippets/dist/lib"],
 	"extends": [
 		"tslint:latest",
 		"tslint-config-airbnb",
@@ -107,7 +107,22 @@
 		},
 		"no-default-export": {
 			"severity": "warning"
-		}
+		},
+		"tsl-ban-snippets": [
+			true,
+			{
+				"banned": [
+					{
+						"snippets": ["localStorage"],
+						"excludePaths": [
+							"/spec/ad-services/krux/krux.spec.ts",
+							"/src/ad-engine/services/local-storage.ts",
+							"/src/ad-services/krux/index.ts"
+						]
+					}
+				]
+			}
+		]
 	},
 	"exclude": ["dist/", "lib/", "node_modules/", "jspm_packages/"]
 }
