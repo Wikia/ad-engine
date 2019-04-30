@@ -11,8 +11,8 @@ export const wait = (milliseconds = 0) =>
 		setTimeout(resolve, milliseconds);
 	});
 
-export const defer = (fn: (...args: any) => any, ...args: any) =>
-	new Promise((resolve, reject) => {
+export function defer<T>(fn: (...args: any) => T, ...args: any): Promise<T> {
+	return new Promise((resolve, reject) => {
 		if (typeof fn !== 'function') {
 			reject(new Error('Expected a function.'));
 
@@ -21,6 +21,7 @@ export const defer = (fn: (...args: any) => any, ...args: any) =>
 
 		setTimeout(() => resolve(fn(...args)), 0);
 	});
+}
 
 export function once(
 	emitter: EventEmitter | Window,

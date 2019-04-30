@@ -1,16 +1,44 @@
-import { context, utils } from '@wikia/ad-engine';
+import { AdSlot, context, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../../utils';
 import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
+import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
-import { universalAdPackage } from './universal-ad-package';
+import { BfaaHiviTheme } from './themes/hivi';
+import { UapParams, universalAdPackage } from './universal-ad-package';
 import { VideoSettings } from './video-settings';
 
+export type StickinessCallback = (
+	config: BigFancyAdAboveConfig,
+	adSlot: AdSlot,
+	params: UapParams,
+) => void;
+
+export interface BigFancyAdAboveConfig {
+	desktopNavbarWrapperSelector: string;
+	mobileNavbarWrapperSelector: string;
+	mainContainer: HTMLElement;
+	handleNavbar: boolean;
+	autoPlayAllowed: boolean;
+	defaultStateAllowed: boolean;
+	fullscreenAllowed: boolean;
+	stickinessAllowed: boolean;
+	slotSibling: string;
+	slotsToEnable: string[];
+	slotsToDisable?: string[];
+	onInit: (adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig) => void;
+	onBeforeStickBfaaCallback: StickinessCallback;
+	onAfterStickBfaaCallback: StickinessCallback;
+	onBeforeUnstickBfaaCallback: StickinessCallback;
+	onAfterUnstickBfaaCallback: StickinessCallback;
+	moveNavbar: (offset: number, time: number) => void;
+}
+
 export class BigFancyAdAbove {
-	static getName() {
+	static getName(): string {
 		return 'bfaa';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): BigFancyAdAboveConfig {
 		return {
 			desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
 			mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
@@ -27,8 +55,8 @@ export class BigFancyAdAbove {
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
 			onAfterUnstickBfaaCallback: () => {},
-			moveNavbar(offset, time = SLIDE_OUT_TIME) {
-				const navbarElement = document.querySelector('body > nav.navigation');
+			moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {
+				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
 
 				if (navbarElement) {
 					navbarElement.style.transition = offset
@@ -40,23 +68,21 @@ export class BigFancyAdAbove {
 		};
 	}
 
-	/**
-	 * Constructor
-	 *
-	 * @param {object} adSlot
-	 */
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	config: BigFancyAdAboveConfig;
+	container: HTMLElement;
+	videoSettings: VideoSettings = null;
+	theme: BfaaTheme | BfaaHiviTheme = null;
+	params: UapParams;
+
+	constructor(private adSlot: AdSlot) {
 		this.config = context.get('templates.bfaa') || {};
 		this.container = document.getElementById(this.adSlot.getSlotName());
-		this.videoSettings = null;
-		this.theme = null;
 	}
 
 	/**
 	 * Initializes the BFAA unit
 	 */
-	init(params) {
+	init(params: UapParams): void {
 		this.params = params;
 
 		if (!this.container) {
@@ -82,13 +108,13 @@ export class BigFancyAdAbove {
 		this.config.onInit(this.adSlot, this.params, this.config);
 	}
 
-	getBackgroundColor() {
+	getBackgroundColor(): string {
 		const color = `#${this.params.backgroundColor.replace('#', '')}`;
 
 		return this.params.backgroundColor ? color : '#000';
 	}
 
-	async onAdReady(iframe) {
+	async onAdReady(iframe: HTMLIFrameElement): Promise<void> {
 		this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
 		this.config.mainContainer.classList.add('has-bfaa');
 

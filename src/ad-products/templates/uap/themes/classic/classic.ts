@@ -1,4 +1,4 @@
-import { slotTweaker } from '@wikia/ad-engine';
+import { PorvataPlayer, slotTweaker } from '@wikia/ad-engine';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
 import { resolvedState } from '../../resolved-state';
 import { universalAdPackage } from '../../universal-ad-package';
@@ -9,12 +9,12 @@ import { BigFancyAdTheme } from '../theme';
  * @abstract
  */
 class BigFancyAdClassicTheme extends BigFancyAdTheme {
-	onAdReady() {
+	onAdReady(): void {
 		if (universalAdPackage.isVideoEnabled(this.params)) {
-			const videoSettings = new VideoSettings(this.params);
+			const videoSettings: VideoSettings = new VideoSettings(this.params);
 
 			if (videoSettings.isSplitLayout()) {
-				const theme =
+				const theme: string =
 					videoSettings.getParams().splitLayoutVideoPosition === 'right'
 						? 'theme-split-right'
 						: 'theme-split-left';
@@ -26,7 +26,7 @@ class BigFancyAdClassicTheme extends BigFancyAdTheme {
 		}
 	}
 
-	async adIsReady(videoSettings) {
+	async adIsReady(videoSettings: VideoSettings): Promise<HTMLIFrameElement> {
 		await resolvedState.setImage(videoSettings);
 
 		return slotTweaker.makeResponsive(this.adSlot, this.params.aspectRatio);
@@ -34,7 +34,7 @@ class BigFancyAdClassicTheme extends BigFancyAdTheme {
 }
 
 export class BfaaTheme extends BigFancyAdClassicTheme {
-	onVideoReady(video) {
+	onVideoReady(video: PorvataPlayer): void {
 		if (!this.params.splitLayoutVideoPosition) {
 			video.addEventListener('wikiaAdStarted', () => {
 				this.recalculatePaddingTop(this.params.videoAspectRatio);
@@ -46,11 +46,7 @@ export class BfaaTheme extends BigFancyAdClassicTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 * @param finalAspectRatio
-	 */
-	recalculatePaddingTop(finalAspectRatio) {
+	private recalculatePaddingTop(finalAspectRatio: number): void {
 		this.config.mainContainer.style.paddingTop = `${100 / finalAspectRatio}%`;
 
 		this.container.style.height = `${this.container.offsetHeight}px`;
