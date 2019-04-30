@@ -3,14 +3,14 @@ import { utils } from '@wikia/ad-engine';
 const overlayTimeout = 5000;
 
 function add(video, container, params) {
-	let timeout = null;
-	let isFading = false;
+	let removeVisibilityTimeout = null;
+	let fadeOutTimeout = null;
 
 	const isMobile = utils.client.isSmartphone() || utils.client.isTablet();
 	const overlay = document.createElement('div');
 	const panel = document.getElementsByClassName('dynamic-panel')[0] as HTMLElement;
 	const setAutomaticToggle = () => {
-		timeout = setTimeout(() => {
+		removeVisibilityTimeout = setTimeout(() => {
 			if (video.isPlaying()) {
 				video.container.classList.remove('ui-visible');
 			}
@@ -18,33 +18,20 @@ function add(video, container, params) {
 	};
 
 	function fadeOut(): void {
-		isFading = true;
-		setTimeout(() => fadeOutEffect(overlay), 3000);
-		setTimeout(() => fadeOutEffect(panel), 3000);
-		setTimeout(() => {
-			if (isFading && overlay.style.opacity === '0' && panel.style.opacity === '0') {
-				video.container.classList.remove('ui-visible');
-			}
+		fadeOutTimeout = setTimeout(() => {
+			overlay.classList.add('fading');
+			panel.classList.add('fading');
+		}, 3000);
+		removeVisibilityTimeout = setTimeout(() => {
+			video.container.classList.remove('ui-visible');
 		}, 4000);
 	}
 
-	function fadeOutEffect(element: HTMLElement): void {
-		const fadeEffect = setInterval(() => {
-			if (!element.style.opacity) {
-				element.style.opacity = '1';
-			}
-			if (isFading && parseFloat(element.style.opacity) > 0) {
-				element.style.opacity = (parseFloat(element.style.opacity) - 0.01).toString();
-			} else {
-				clearInterval(fadeEffect);
-			}
-		}, 10);
-	}
-
 	function resetFadeOut(): void {
-		isFading = false;
-		overlay.style.opacity = '1';
-		panel.style.opacity = '1';
+		clearTimeout(removeVisibilityTimeout);
+		clearTimeout(fadeOutTimeout);
+		overlay.classList.remove('fading');
+		panel.classList.remove('fading');
 	}
 
 	overlay.classList.add('toggle-ui-overlay');
@@ -52,7 +39,7 @@ function add(video, container, params) {
 		overlay.addEventListener('click', () => {
 			video.container.classList.toggle('ui-visible');
 
-			clearTimeout(timeout);
+			clearTimeout(removeVisibilityTimeout);
 			setAutomaticToggle();
 		});
 		video.addEventListener('resume', setAutomaticToggle);
