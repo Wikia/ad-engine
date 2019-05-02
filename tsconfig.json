@@ -6,6 +6,7 @@
 		"sourceMap": true,
 		"declaration": true,
 		"declarationDir": "dist/types",
+		"allowJs": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"resolveJsonModule": true,
