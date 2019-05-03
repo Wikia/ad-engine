@@ -93,17 +93,18 @@
 		"webpack-merge": "4.1.2"
 	},
 	"files": [
+		"@types/",
 		"dist/",
 		"lib/",
+		"configs/",
 		"maintenance/",
 		"src/",
 		".babelrc",
-		".npmrc",
-		"jsconfig.json",
 		"package.json",
-		"package-lock.json",
-		"README.md",
-		"webpack.config.js"
+		"webpack.config.js",
+		"rollup.config.js",
+		"tslint.json",
+		"tslint.app.json"
 	],
 	"main": "./dist/ad-engine.js",
 	"module": "dist/index.es5.js",
