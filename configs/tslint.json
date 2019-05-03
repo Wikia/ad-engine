@@ -1,8 +1,5 @@
 {
-	"rulesDirectory": [
-		"../maintenance/tslint-rules/dist",
-		"../node_modules/tslint-ban-snippets/dist/lib"
-	],
+	"rulesDirectory": ["../maintenance/tslint-rules/dist"],
 	"extends": [
 		"tslint:latest",
 		"tslint-config-airbnb",
@@ -61,7 +58,7 @@
 		"triple-equals": [true, "allow-null-check"],
 		"unified-signatures": true,
 		"variable-name": false,
-		"no-implicit-dependencies": [true, ["@wikia/ad-engine"]],
+		"no-implicit-dependencies": true,
 		"interface-name": [true, "never-prefix"],
 		"import-name": false,
 		"no-increment-decrement": false,
