@@ -49,6 +49,7 @@
 		"concat": "1.0.3",
 		"copy-webpack-plugin": "4.5.2",
 		"deepmerge": "2.2.1",
+		"dts-bundle": "git://github.com/bielik20/dts-bundle.git#release",
 		"express": "^4.16.2",
 		"husky": "1.1.4",
 		"js-md5": "0.7.3",
@@ -95,6 +96,7 @@
 	"files": [
 		"@types/",
 		"dist/",
+		"modules/",
 		"lib/",
 		"configs/",
 		"maintenance/",

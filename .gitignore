@@ -3,6 +3,7 @@
 .rpt2_cache
 env/
 dist/
+modules/
 previous-package.json
 coverage
 examples/**/dist/*

@@ -4,7 +4,7 @@ import sourceMaps from 'rollup-plugin-sourcemaps';
 import postcss from 'rollup-plugin-postcss';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
-import { tscpaths } from './maintenance/rollup-plugins';
+import { tscpaths, dtsBundle } from './maintenance/rollup-plugins';
 
 const pkg = require('./package.json');
 const includeTypes = !process.env.NO_TYPES;
@@ -30,6 +30,16 @@ const corePlugins = [
 	postcss({ extract: true }),
 ];
 
+const typesPlugins = includeTypes
+	? [
+			dtsBundle({ main: 'dist/types/ad-engine/index.d.ts', out: 'modules/ad-engine.d.ts' }),
+			dtsBundle({ main: 'dist/types/ad-products/index.d.ts', out: 'modules/ad-products.d.ts' }),
+			dtsBundle({ main: 'dist/types/ad-bidders/index.d.ts', out: 'modules/ad-bidders.d.ts' }),
+			dtsBundle({ main: 'dist/types/ad-services/index.d.ts', out: 'modules/ad-services.d.ts' }),
+			tscpaths({ out: 'modules' }),
+	  ]
+	: [];
+
 const targets = {
 	esm: {
 		...common,
@@ -45,6 +55,28 @@ const targets = {
 				tsconfigOverride: { compilerOptions: { declaration: includeTypes } },
 			}),
 			tscpaths({ out: 'dist/types' }),
+		],
+	},
+
+	modules: {
+		...common,
+		input: {
+			'ad-engine': `src/ad-engine/index.ts`,
+			'ad-products': `src/ad-products/index.ts`,
+			'ad-bidders': `src/ad-bidders/index.ts`,
+			'ad-services': `src/ad-services/index.ts`,
+		},
+		output: { dir: 'modules', format: 'esm', sourcemap: true },
+		// Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
+		external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
+		plugins: [
+			...corePlugins,
+			typescript({
+				check: false,
+				useTsconfigDeclarationDir: true,
+				tsconfigOverride: { compilerOptions: { declaration: includeTypes } },
+			}),
+			...typesPlugins,
 		],
 	},
 };
