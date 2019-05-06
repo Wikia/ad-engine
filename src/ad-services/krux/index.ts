@@ -21,7 +21,7 @@ function loadScript() {
  * @returns {string}
  */
 function getKruxData(key) {
-	if (localCache.canUseStorage()) {
+	if (localCache.isAvailable()) {
 		return window.localStorage[key];
 	}
 	if (window.navigator.cookieEnabled) {

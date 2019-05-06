@@ -16,33 +16,6 @@ function getListener() {
 	};
 }
 
-function mockImaVideo() {
-	return {
-		ima: {
-			getAdsManager() {
-				return {
-					getCurrentAd() {
-						return {
-							getAdId() {
-								return 765;
-							},
-							getCreativeId() {
-								return 123;
-							},
-							getContentType() {
-								return 'video/mp4';
-							},
-							getWrapperAdIds() {},
-							getWrapperCreativeIds() {},
-							getWrapperAdSystems() {},
-						};
-					},
-				};
-			},
-		},
-	};
-}
-
 let customListener;
 let sandbox;
 
@@ -79,19 +52,30 @@ describe('porvata-listener', () => {
 		expect(data.position).to.equal('abcd');
 	});
 
-	it('dispatch Porvata event with video data', () => {
-		const listener = new PorvataListener({ adProduct: 'test-video' });
+	describe('init', () => {
+		it('should dispatch Porvata event with ad data extracted from video container', () => {
+			const listener = new PorvataListener({ adProduct: 'test-video' });
+			listener.video = {
+				container: {
+					getAttribute: (attr: string): string => {
+						return {
+							'data-vast-content-type': 'content1',
+							'data-vast-creative-id': 'creative1',
+							'data-vast-line-item-id': 'line1',
+						}[attr];
+					},
+				},
+			};
 
-		listener.video = mockImaVideo();
-		listener.init();
+			listener.init();
 
-		expect(customListener.dispatchedEvents.length).to.equal(1);
+			expect(customListener.dispatchedEvents.length).to.equal(1);
 
-		const { data } = customListener.dispatchedEvents[0];
-
-		expect(data.content_type).to.equal('video/mp4');
-		expect(data.creative_id).to.equal(123);
-		expect(data.line_item_id).to.equal(765);
+			const { data } = customListener.dispatchedEvents[0];
+			expect(data.content_type).to.equal('content1');
+			expect(data.creative_id).to.equal('creative1');
+			expect(data.line_item_id).to.equal('line1');
+		});
 	});
 
 	it('dispatch video viewed event on ad-slot', () => {

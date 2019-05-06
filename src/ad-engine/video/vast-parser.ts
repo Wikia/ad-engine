@@ -15,7 +15,7 @@ export interface EventExtra {
 export interface VastParams {
 	contentType: string;
 	creativeId: string;
-	customParams: Dictionary<string>;
+	customParams: Dictionary<string | string[]>;
 	lineItemId: string;
 	position: string;
 	size: string;

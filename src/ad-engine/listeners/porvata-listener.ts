@@ -67,16 +67,21 @@ export class PorvataListener {
 		Object.keys(PorvataListener.EVENTS).forEach((eventKey) => {
 			video.addEventListener(eventKey, (event: google.ima.AdEvent | google.ima.AdErrorEvent) => {
 				let errorCode: google.ima.AdError.ErrorCode;
+				let currentAd: google.ima.Ad;
+
 				if ((event as any).getError) {
 					errorCode = (event as google.ima.AdErrorEvent).getError().getErrorCode();
 				}
-				this.dispatch(PorvataListener.EVENTS[eventKey], errorCode);
+				if ((event as google.ima.AdEvent).getAd) {
+					currentAd = (event as google.ima.AdEvent).getAd();
+				}
+				this.dispatch(PorvataListener.EVENTS[eventKey], errorCode, currentAd);
 			});
 		});
 	}
 
-	dispatch(eventName: string, errorCode = 0): void {
-		const data: VideoData = this.getVideoData(eventName, errorCode);
+	dispatch(eventName: string, errorCode = 0, currentAd?: google.ima.Ad): void {
+		const data: VideoData = this.getVideoData(eventName, errorCode, currentAd);
 
 		this.logger(eventName, data);
 		this.listeners.forEach((listener) => {
@@ -90,17 +95,17 @@ export class PorvataListener {
 		}
 	}
 
-	getVideoData(eventName: string, errorCode: google.ima.AdError.ErrorCode): VideoData {
+	getVideoData(
+		eventName: string,
+		errorCode: google.ima.AdError.ErrorCode,
+		currentAd?: google.ima.Ad,
+	): VideoData {
 		let contentType: string;
 		let creativeId: string;
 		let lineItemId: string;
-		const imaAd: google.ima.Ad =
-			this.video &&
-			this.video.ima.getAdsManager() &&
-			(this.video.ima.getAdsManager() as any).getCurrentAd();
 
-		if (imaAd) {
-			const adInfo = vastParser.getAdInfo(imaAd);
+		if (currentAd) {
+			const adInfo = vastParser.getAdInfo(currentAd);
 			contentType = adInfo.contentType;
 			creativeId = adInfo.creativeId;
 			lineItemId = adInfo.lineItemId;

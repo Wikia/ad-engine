@@ -1,5 +1,8 @@
 import { Dictionary } from '@wikia/ad-engine';
 
+export const DEFAULT_MAX_CPM = 20;
+export const EXTENDED_MAX_CPM = 50;
+
 export interface AdUnitConfig {
 	bids: Bid[];
 	code: string;
@@ -39,6 +42,7 @@ export abstract class BaseAdapter {
 	static bidderName: string;
 	aliases?: Aliases;
 	isCustomBidAdapter = false;
+	maxCpm = DEFAULT_MAX_CPM;
 
 	enabled: boolean;
 	slots: any;

@@ -81,36 +81,70 @@ describe('ad-slot', () => {
 			adSlot.config.targeting = targeting;
 		});
 
-		it('should have winningPbBidderDetails set to null initially', () => {
-			expect(adSlot.winningPbBidderDetails).to.be.null;
+		it('should have winningBidderDetails set to null initially', () => {
+			expect(adSlot.winningBidderDetails).to.be.null;
 		});
 
-		it('should set winningPbBidderDetails if both bidder and bidder price are available', () => {
+		it('should set winningBidderDetails if both bidder and bidder price are available', () => {
 			targeting.hb_bidder = 'bidder';
 			targeting.hb_pb = 20;
 
 			adSlot.updateWinningPbBidderDetails();
 
-			expect(adSlot.winningPbBidderDetails).to.deep.equal({
+			expect(adSlot.winningBidderDetails).to.deep.equal({
 				name: targeting.hb_bidder,
 				price: targeting.hb_pb,
 			});
 		});
 
-		it('should not set winningPbBidderDetails if only bidder is available', () => {
+		it('should not set winningBidderDetails if only bidder is available', () => {
 			targeting.hb_bidder = 'bidder';
 
 			adSlot.updateWinningPbBidderDetails(targeting);
 
-			expect(adSlot.winningPbBidderDetails).to.be.null;
+			expect(adSlot.winningBidderDetails).to.be.null;
 		});
 
-		it('should not set winningPbBidderDetails if only bidder price is available', () => {
+		it('should not set winningBidderDetails if only bidder price is available', () => {
 			targeting.hb_pb = 20;
 
 			adSlot.updateWinningPbBidderDetails(targeting);
 
-			expect(adSlot.winningPbBidderDetails).to.be.null;
+			expect(adSlot.winningBidderDetails).to.be.null;
+		});
+	});
+
+	describe('updateWinningA9BidderDetails', () => {
+		/** @type {AdSlot} */
+		let adSlot;
+		/** @type {Object} */
+		let targeting;
+
+		beforeEach(() => {
+			adSlot = createAdSlot('top_leaderboard');
+			targeting = {};
+			adSlot.config.targeting = targeting;
+		});
+
+		it('should have winningBidderDetails set to null initially', () => {
+			expect(adSlot.winningBidderDetails).to.be.null;
+		});
+
+		it('should set winningBidderDetails if a9 price is available', () => {
+			targeting.amznbid = 'foobar';
+
+			adSlot.updateWinningA9BidderDetails();
+
+			expect(adSlot.winningBidderDetails).to.deep.equal({
+				name: 'a9',
+				price: targeting.amznbid,
+			});
+		});
+
+		it('should not set winningBidderDetails if bid price is not available', () => {
+			adSlot.updateWinningA9BidderDetails();
+
+			expect(adSlot.winningBidderDetails).to.be.null;
 		});
 	});
 });

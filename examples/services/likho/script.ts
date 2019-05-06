@@ -1,4 +1,4 @@
-import { AdEngine, context } from '@wikia/ad-engine';
+import { AdEngine, context, localCache } from '@wikia/ad-engine';
 import { utils } from '@wikia/ad-products';
 import { likhoService } from '../../../src/ad-engine/services';
 import customContext from '../../context';
@@ -33,6 +33,6 @@ utils.setupNpaContext();
 new AdEngine().init();
 
 document.getElementById('reset').addEventListener('click', () => {
-	localStorage.removeItem('likho');
+	localCache.delete('likho');
 	console.log(`💾 Likho storage: reset`);
 });

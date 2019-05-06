@@ -60,11 +60,7 @@ export class GoogleImaPlayer {
 		}
 	}
 
-	setVastAttributes(status: string): void {
-		const currentAd: google.ima.Ad =
-			this.adsManager &&
-			(this.adsManager as any).getCurrentAd &&
-			(this.adsManager as any).getCurrentAd();
+	setVastAttributes(status: string, currentAd?: google.ima.Ad): void {
 		const playerElement: HTMLVideoElement = this.params.container.querySelector('.video-player');
 
 		vastDebugger.setVastAttributes(playerElement, this.vastUrl, status, currentAd);
@@ -195,8 +191,9 @@ export const googleImaPlayerFactory = {
 
 				player.dispatchEvent('wikiaAdsManagerLoaded');
 
-				adsManager.addEventListener(window.google.ima.AdEvent.Type.LOADED, () =>
-					player.setVastAttributes('success'),
+				adsManager.addEventListener(
+					window.google.ima.AdEvent.Type.LOADED,
+					(event: google.ima.AdEvent) => player.setVastAttributes('success', event.getAd()),
 				);
 				adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
 					player.setVastAttributes('error'),

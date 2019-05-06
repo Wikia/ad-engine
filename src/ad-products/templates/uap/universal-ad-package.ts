@@ -1,7 +1,9 @@
 import {
+	AdSlot,
 	btfBlockerService,
 	context,
 	Porvata,
+	PorvataPlayer,
 	slotService,
 	TwitchOptions,
 	TwitchPlayer,
@@ -10,13 +12,88 @@ import {
 import { throttle } from 'lodash';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
+import { VideoSettings } from './video-settings';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
 let uapType = constants.DEFAULT_UAP_TYPE;
 
-function getVideoSize(slot, params, videoSettings) {
-	const width = videoSettings.isSplitLayout()
+export interface UapState<T> {
+	default: T;
+	resolved: T;
+}
+
+export type UapRatio = UapState<number>;
+
+export interface UapConfig {
+	aspectRatio: UapRatio;
+	background: UapState<string>;
+	video: {
+		thumb: string;
+	};
+	state: {
+		height: UapState<number>;
+	};
+}
+
+export interface UapImage {
+	element: HTMLImageElement;
+	background: string;
+}
+
+export interface VideoSize {
+	height: number;
+	width: number;
+}
+
+export interface UapParams {
+	adContainer: HTMLElement;
+	adProduct: string;
+	aspectRatio: number;
+	autoPlay: boolean;
+	backgroundColor: string;
+	blockOutOfViewportPausing: boolean;
+	clickThroughURL: string;
+	config: UapConfig;
+	container: HTMLElement;
+	creativeId: string;
+	fullscreenable: boolean;
+	fullscreenAllowed: boolean;
+	image1: UapImage;
+	image2: UapImage;
+	isDarkTheme: boolean;
+	isMobile: boolean;
+	isSticky: boolean;
+	lineItemId: string;
+	loadMedrecFromBTF: boolean;
+	moatTracking: number;
+	player: HTMLElement;
+	resolvedStateAspectRatio: number;
+	resolvedStateAutoPlay: boolean;
+	resolvedStateForced?: boolean;
+	restartOnUnmute: boolean;
+	slotName: string;
+	splitLayoutVideoPosition: string;
+	src: string;
+	stickyAdditionalTime: number;
+	stickyUntilVideoViewed: boolean;
+	theme: string;
+	thumbnail: HTMLElement;
+	uap: string;
+	videoAspectRatio: number;
+	videoPlaceholderElement: HTMLElement;
+	videoTriggers: any[];
+
+	// Twitch params
+	channelName: string;
+}
+
+function getVideoSize(
+	slot: HTMLElement,
+	params: UapParams,
+	videoSettings: VideoSettings,
+): VideoSize {
+	const width: number = videoSettings.isSplitLayout()
 		? params.videoPlaceholderElement.offsetWidth
 		: slot.clientWidth;
 	const height = width / params.videoAspectRatio;
@@ -35,7 +112,7 @@ function adjustVideoAdContainer(params) {
 	}
 }
 
-async function loadPorvata(videoSettings, slotContainer, imageContainer) {
+async function loadPorvata(videoSettings, slotContainer, imageContainer): Promise<PorvataPlayer> {
 	const params = videoSettings.getParams();
 	const template = videoUserInterface.selectTemplate(videoSettings);
 
@@ -95,18 +172,18 @@ async function loadTwitchPlayer(iframe, params) {
 	return twitchPlayer;
 }
 
-async function loadTwitchAd(iframe, params) {
+async function loadTwitchAd(iframe: HTMLIFrameElement, params: UapParams): Promise<void> {
 	const { player } = params;
 
 	await loadTwitchPlayer(iframe, params);
 	window.addEventListener('resize', throttle(recalculateTwitchSize(params), 250));
-	player.firstChild.id = 'twitchPlayerContainer';
+	(player.firstChild as HTMLElement).id = 'twitchPlayerContainer';
 }
 
-async function loadVideoAd(videoSettings) {
+async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer> {
 	const params = videoSettings.getParams();
-	const imageContainer = params.container.querySelector('div:last-of-type');
-	const size = getVideoSize(params.container, params, videoSettings);
+	const imageContainer: HTMLElement = params.container.querySelector('div:last-of-type');
+	const size: VideoSize = getVideoSize(params.container, params, videoSettings);
 
 	params.vastTargeting = {
 		passback: getType(),
@@ -123,7 +200,7 @@ async function loadVideoAd(videoSettings) {
 		};
 	}
 
-	const video = await loadPorvata(videoSettings, params.container, imageContainer);
+	const video: PorvataPlayer = await loadPorvata(videoSettings, params.container, imageContainer);
 
 	window.addEventListener('resize', throttle(recalculateVideoSize(video), 250));
 
@@ -186,8 +263,8 @@ function disableSlots(slotsToDisable) {
 	});
 }
 
-function initSlot(params) {
-	const adSlot = slotService.get(params.slotName);
+function initSlot(params: UapParams): void {
+	const adSlot: AdSlot = slotService.get(params.slotName);
 
 	params.container = adSlot.getElement();
 
@@ -216,7 +293,7 @@ function isFanTakeoverLoaded() {
 
 export const universalAdPackage = {
 	...constants,
-	init(params, slotsToEnable = [], slotsToDisable = []) {
+	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
 		let adProduct = 'uap';
 
 		if (this.isVideoEnabled(params)) {

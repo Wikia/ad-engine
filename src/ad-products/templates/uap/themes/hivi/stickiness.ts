@@ -1,6 +1,8 @@
 import { AdSlot, slotTweaker, utils } from '@wikia/ad-engine';
-import EventEmitter from 'eventemitter3';
+import * as EventEmitter from 'eventemitter3';
 import { isFunction } from 'lodash';
+
+export type CustomWhen = (() => Promise<void>) | Promise<void>;
 
 export class Stickiness extends EventEmitter {
 	static LOG_GROUP = 'stickiness';
@@ -14,15 +16,12 @@ export class Stickiness extends EventEmitter {
 	static SLOT_UNSTICK_IMMEDIATELY = 'force-unstick';
 	static SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
 
-	constructor(adSlot, customWhen = Promise.resolve()) {
-		super();
+	sticky = false;
+	private isStickinessBlocked = false;
+	private isRevertStickinessBlocked = false;
 
-		this.adSlot = adSlot;
-		this.customWhen = customWhen;
-		this.sticky = false;
-		this.isStickinessBlocked = false;
-		this.isRevertStickinessBlocked = false;
-		this.logger = (...args) => utils.logger(Stickiness.LOG_GROUP, ...args);
+	constructor(private adSlot: AdSlot, private customWhen: CustomWhen = Promise.resolve()) {
+		super();
 
 		if (!isFunction(this.customWhen)) {
 			Promise.all([this.customWhen]).then(() => {
@@ -34,7 +33,11 @@ export class Stickiness extends EventEmitter {
 		}
 	}
 
-	async run() {
+	logger(...args: any[]): void {
+		utils.logger(Stickiness.LOG_GROUP, ...args);
+	}
+
+	async run(): Promise<void> {
 		await slotTweaker.onReady(this.adSlot);
 
 		if (document.hidden) {
@@ -52,11 +55,11 @@ export class Stickiness extends EventEmitter {
 		}
 	}
 
-	isSticky() {
+	isSticky(): boolean {
 		return this.sticky;
 	}
 
-	applyStickiness() {
+	applyStickiness(): void {
 		if (!this.sticky) {
 			this.logger('Applying stickiness');
 			this.sticky = true;
@@ -66,7 +69,7 @@ export class Stickiness extends EventEmitter {
 		}
 	}
 
-	revertStickiness() {
+	revertStickiness(): void {
 		if (this.sticky) {
 			this.logger('Reverting stickiness');
 			this.sticky = false;
@@ -76,13 +79,13 @@ export class Stickiness extends EventEmitter {
 		}
 	}
 
-	close() {
+	close(): void {
 		this.logger('Closing and removing stickiness');
 		this.sticky = false;
 		this.emit(Stickiness.CLOSE_CLICKED_EVENT, this.sticky);
 	}
 
-	async registerRevertStickiness() {
+	async registerRevertStickiness(): Promise<void> {
 		this.logger('waiting for user interaction');
 		await utils.once(window, 'scroll');
 		// wait for callback that are triggered after scroll event (eg. 'wikiaFullscreenChange')
@@ -94,15 +97,15 @@ export class Stickiness extends EventEmitter {
 		}
 	}
 
-	blockRevertStickiness() {
+	blockRevertStickiness(): void {
 		this.isRevertStickinessBlocked = true;
 	}
 
-	unblockRevertStickiness() {
+	unblockRevertStickiness(): void {
 		this.isRevertStickinessBlocked = false;
 	}
 
-	async onAdReady() {
+	async onAdReady(): Promise<void> {
 		this.applyStickiness();
 		this.logger('waiting for viewability and custom condition');
 

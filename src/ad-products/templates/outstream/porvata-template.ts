@@ -143,8 +143,8 @@ export class PorvataTemplate {
 	adjustVpaidPlayer(video: PorvataPlayer, container: HTMLElement): void {
 		const videoPlayer = container.querySelector<HTMLVideoElement>('.video-player');
 
-		video.addEventListener('loaded', () => {
-			const ad: google.ima.Ad = video.ima.getAdsManager().getCurrentAd();
+		video.addEventListener('loaded', (event: google.ima.AdEvent) => {
+			const ad: google.ima.Ad = event.getAd();
 
 			if (ad && Porvata.isVpaid(ad.getContentType() || '')) {
 				container.classList.add('vpaid-enabled');

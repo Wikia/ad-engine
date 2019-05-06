@@ -6,6 +6,7 @@ import { LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
+	amznbid?: string;
 	hb_bidder?: string;
 	hb_pb?: number;
 	src: string;
@@ -41,9 +42,9 @@ export interface SlotConfig {
 	autoplay?: boolean;
 }
 
-export interface WinningPbBidderDetails {
+export interface WinningBidderDetails {
 	name: string;
-	price: number;
+	price: number | string;
 }
 
 export class AdSlot extends EventEmitter {
@@ -65,6 +66,7 @@ export class AdSlot extends EventEmitter {
 	viewed = false;
 	element: null | HTMLElement = null;
 	status: null | string = null;
+	isEmpty = true;
 	enabled: boolean;
 	events: LazyQueue;
 	adUnit: string;
@@ -72,7 +74,7 @@ export class AdSlot extends EventEmitter {
 	creativeId: null | string | number = null;
 	creativeSize: null | string | number[] = null;
 	lineItemId: null | string | number = null;
-	winningPbBidderDetails: null | WinningPbBidderDetails = null;
+	winningBidderDetails: null | WinningBidderDetails = null;
 	onLoadPromise = new Promise<HTMLIFrameElement>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
 	});
@@ -252,12 +254,23 @@ export class AdSlot extends EventEmitter {
 
 	updateWinningPbBidderDetails(): void {
 		if (this.targeting.hb_bidder && this.targeting.hb_pb) {
-			this.winningPbBidderDetails = {
+			this.winningBidderDetails = {
 				name: this.targeting.hb_bidder,
 				price: this.targeting.hb_pb,
 			};
 		} else {
-			this.winningPbBidderDetails = null;
+			this.winningBidderDetails = null;
+		}
+	}
+
+	updateWinningA9BidderDetails(): void {
+		if (this.targeting.amznbid) {
+			this.winningBidderDetails = {
+				name: 'a9',
+				price: this.targeting.amznbid,
+			};
+		} else {
+			this.winningBidderDetails = null;
 		}
 	}
 
@@ -268,6 +281,8 @@ export class AdSlot extends EventEmitter {
 
 		let creativeId: string | number = event.creativeId;
 		let lineItemId: string | number = event.lineItemId;
+
+		this.isEmpty = event.isEmpty;
 
 		if (!event.isEmpty && event.slot) {
 			const resp = event.slot.getResponseInformation();

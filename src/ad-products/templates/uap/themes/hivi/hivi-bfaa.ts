@@ -1,7 +1,15 @@
-import { AdSlot, scrollListener, slotTweaker, utils } from '@wikia/ad-engine';
-import EventEmitter from 'eventemitter3';
+import {
+	AdSlot,
+	Dictionary,
+	PorvataPlayer,
+	scrollListener,
+	slotTweaker,
+	utils,
+} from '@wikia/ad-engine';
+import * as EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
 import { animate } from '../../../interface/animate';
+import { StickinessCallback } from '../../big-fancy-ad-above';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
@@ -11,6 +19,7 @@ import {
 } from '../../constants';
 import { resolvedState } from '../../resolved-state';
 import { resolvedStateSwitch } from '../../resolved-state-switch';
+import { UapParams, UapState } from '../../universal-ad-package';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
 
@@ -19,15 +28,18 @@ const HIVI_RESOLVED_THRESHOLD = 0.995;
 export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	static RESOLVED_STATE_EVENT = Symbol('RESOLVED_STATE_EVENT');
 
-	constructor(adSlot, params) {
+	stickiness: Stickiness;
+	scrollListener: string;
+	video: PorvataPlayer;
+	isLocked = false;
+	onResolvedStateScroll: {
+		(): void;
+		cancel: () => void;
+	} = null;
+
+	constructor(public adSlot: AdSlot, params: UapParams) {
 		super(adSlot, params);
 		Object.assign(this, toPlainObject(new EventEmitter()));
-
-		this.stickiness = null;
-		this.scrollListener = null;
-		this.video = null;
-		this.isLocked = false;
-		this.onResolvedStateScroll = null;
 
 		if (this.params.isSticky && this.config.stickinessAllowed) {
 			this.addStickinessPlugin();
@@ -38,17 +50,14 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	addStickinessPlugin() {
+	private addStickinessPlugin(): void {
 		this.addUnstickLogic();
 		this.addUnstickButton();
 		this.addUnstickEvents();
 		this.stickiness.run();
 	}
 
-	onAdReady() {
+	onAdReady(): void {
 		super.onAdReady();
 
 		if (resolvedState.isResolvedState(this.params)) {
@@ -61,7 +70,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	onVideoReady(video) {
+	onVideoReady(video: PorvataPlayer): void {
 		this.video = video;
 		video.addEventListener('wikiaAdStarted', () => {
 			this.updateAdSizes();
@@ -87,14 +96,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		});
 	}
 
-	/**
-	 * @private
-	 */
-	resetResolvedState() {
-		const offset = this.getHeightDifferenceBetweenStates();
+	private resetResolvedState(): void {
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
 		if (this.isLocked && this.config.defaultStateAllowed && window.scrollY < offset) {
-			const aspectRatio = this.params.config.aspectRatio.default;
+			const aspectRatio: number = this.params.config.aspectRatio.default;
 
 			this.container.style.top = '';
 			this.config.mainContainer.style.paddingTop = `${100 / aspectRatio}%`;
@@ -110,11 +116,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	lock() {
-		const offset = this.getHeightDifferenceBetweenStates();
+	private lock(): void {
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
 		this.isLocked = true;
 		this.container.classList.add('theme-locked');
@@ -123,19 +126,13 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.emit(BfaaHiviTheme.RESOLVED_STATE_EVENT);
 	}
 
-	/**
-	 * @private
-	 */
-	unlock() {
+	private unlock(): void {
 		this.isLocked = false;
 		this.container.classList.remove('theme-locked');
 		this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
 	}
 
-	/**
-	 * @private
-	 */
-	adjustSizesToResolved(offset) {
+	private adjustSizesToResolved(offset: number): void {
 		if (this.adSlot.isEnabled()) {
 			const aspectRatio = this.params.config.aspectRatio.resolved;
 
@@ -147,14 +144,9 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	updateAdSizes() {
+	private updateAdSizes(): Promise<HTMLElement> {
 		const { aspectRatio, state } = this.params.config;
-		const {
-			mainContainer: { offsetWidth: currentWidth },
-		} = this.config;
+		const currentWidth: number = this.config.mainContainer.offsetWidth;
 		const isResolved = this.container.classList.contains('theme-resolved');
 		const maxHeight = currentWidth / aspectRatio.default;
 		const minHeight = currentWidth / aspectRatio.resolved;
@@ -184,24 +176,21 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		return slotTweaker.makeResponsive(this.adSlot, currentAspectRatio);
 	}
 
-	/**
-	 * @private
-	 */
-	adjustVideoSize(relativeHeight) {
+	private adjustVideoSize(relativeHeight: number): void {
 		if (this.video && !this.video.isFullscreen()) {
 			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	setThumbnailStyle(state) {
-		const style = mapValues(this.params.config.state, (styleProperty) => {
-			const diff = styleProperty.default - styleProperty.resolved;
+	private setThumbnailStyle(state: number): void {
+		const style: Dictionary = mapValues(
+			this.params.config.state,
+			(styleProperty: UapState<number>) => {
+				const diff: number = styleProperty.default - styleProperty.resolved;
 
-			return `${styleProperty.default - diff * state}%`;
-		});
+				return `${styleProperty.default - diff * state}%`;
+			},
+		);
 
 		Object.assign(this.params.thumbnail.style, style);
 
@@ -214,15 +203,12 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	setResolvedState(immediately) {
-		const isSticky = this.stickiness && this.stickiness.isSticky();
-		const width = this.container.offsetWidth;
+	private setResolvedState(immediately?: boolean): Promise<void> {
+		const isSticky: boolean = this.stickiness && this.stickiness.isSticky();
+		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
-		const resolvedHeight = width / aspectRatio.resolved;
-		const offset = this.getHeightDifferenceBetweenStates();
+		const resolvedHeight: number = width / aspectRatio.resolved;
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
 		if (isSticky) {
 			this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
@@ -258,20 +244,14 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		});
 	}
 
-	/**
-	 * @private
-	 */
-	getHeightDifferenceBetweenStates() {
-		const width = this.container.offsetWidth;
+	private getHeightDifferenceBetweenStates(): number {
+		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
 
 		return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
 	}
 
-	/**
-	 * @private
-	 */
-	switchImagesInAd(isResolved) {
+	private switchImagesInAd(isResolved: boolean): void {
 		if (isResolved) {
 			this.container.classList.add('theme-resolved');
 			this.params.image2.element.classList.remove('hidden-state');
@@ -281,16 +261,13 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @protected
-	 */
-	async getStateResolvedAndVideoViewed() {
+	protected async getStateResolvedAndVideoViewed(): Promise<void> {
 		const { stickyAdditionalTime, stickyUntilVideoViewed } = this.params;
-		const stateResolved = utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
-		const videoViewed = stickyUntilVideoViewed
+		const stateResolved: Promise<void> = utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
+		const videoViewed: Promise<void> = stickyUntilVideoViewed
 			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
 			: Promise.resolve();
-		const unstickDelay = isUndefined(stickyAdditionalTime)
+		const unstickDelay: number = isUndefined(stickyAdditionalTime)
 			? BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY
 			: stickyAdditionalTime;
 
@@ -298,14 +275,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		await utils.wait(unstickDelay);
 	}
 
-	/**
-	 * @protected
-	 */
-	async onStickinessChange(isSticky) {
-		const stickinessBeforeCallback = isSticky
+	protected async onStickinessChange(isSticky: boolean): Promise<void> {
+		const stickinessBeforeCallback: StickinessCallback = isSticky
 			? this.config.onBeforeStickBfaaCallback
 			: this.config.onBeforeUnstickBfaaCallback;
-		const stickinessAfterCallback = isSticky
+		const stickinessAfterCallback: StickinessCallback = isSticky
 			? this.config.onAfterStickBfaaCallback
 			: this.config.onAfterUnstickBfaaCallback;
 
@@ -326,17 +300,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		stickinessAfterCallback.call(this.config, this.adSlot, this.params);
 	}
 
-	/**
-	 * @protected
-	 */
-	onCloseClicked() {
+	protected onCloseClicked(): void {
 		this.unstickImmediately();
 	}
 
-	/**
-	 * @protected
-	 */
-	unstickImmediately(stopVideo = true) {
+	protected unstickImmediately(stopVideo = true): void {
 		scrollListener.removeCallback(this.scrollListener);
 		this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 

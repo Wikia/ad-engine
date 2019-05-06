@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { context, localCache } from '../../../src/ad-engine/index';
+import { context, localCache } from '../../../src/ad-engine';
 import { krux } from '../../../src/ad-services/krux';
 
 describe('Krux service', () => {
@@ -16,69 +16,70 @@ describe('Krux service', () => {
 	});
 
 	afterEach(() => {
+		localCache.isAvailable.restore();
 		delete window.localStorage;
 		delete window.kruxDartParam_foo;
 	});
 
-	it('import user data and return user id from old key name', () => {
-		sinon.stub(localCache, 'canUseStorage').returns(true);
-		window.localStorage.kxuser = 'foo';
+	describe('local storage available', () => {
+		beforeEach(() => {
+			sinon.stub(localCache, 'isAvailable').returns(true);
+		});
 
-		krux.importUserData();
+		it('import user data and return user id from old key name', () => {
+			window.localStorage.kxuser = 'foo';
 
-		expect(krux.getUserId()).to.equal('foo');
-		localCache.canUseStorage.restore();
+			krux.importUserData();
+
+			expect(krux.getUserId()).to.equal('foo');
+		});
+
+		it('import user data and return user id from old key name', () => {
+			window.localStorage.kxwikia_user = 'foo';
+
+			krux.importUserData();
+
+			expect(krux.getUserId()).to.equal('foo');
+		});
+
+		it('import user data and return segments for old key name', () => {
+			window.localStorage.kxsegs = 'abc,bar,zxc';
+
+			krux.importUserData();
+
+			expect(krux.getSegments()[0]).to.equal('abc');
+			expect(krux.getSegments()[1]).to.equal('bar');
+			expect(krux.getSegments()[2]).to.equal('zxc');
+		});
+
+		it('import user data and return segments for old key name', () => {
+			window.localStorage.kxsegs = 'abc,bar,zxc';
+
+			krux.importUserData();
+
+			expect(krux.getSegments()[0]).to.equal('abc');
+			expect(krux.getSegments()[1]).to.equal('bar');
+			expect(krux.getSegments()[2]).to.equal('zxc');
+		});
+
+		it('export context targeting to krux', () => {
+			krux.exportPageParams();
+
+			expect(window.kruxDartParam_foo).to.equal('bar');
+		});
 	});
 
-	it('import user data and return user id from old key name', () => {
-		sinon.stub(localCache, 'canUseStorage').returns(true);
-		window.localStorage.kxwikia_user = 'foo';
+	describe('local storage not available', () => {
+		beforeEach(() => {
+			sinon.stub(localCache, 'isAvailable').returns(false);
+		});
 
-		krux.importUserData();
+		it('import user data failes when there is no local storage', () => {
+			window.localStorage.kxuser = 'foo';
 
-		expect(krux.getUserId()).to.equal('foo');
-		localCache.canUseStorage.restore();
-	});
+			krux.importUserData();
 
-	it('import user data and return segments for old key name', () => {
-		sinon.stub(localCache, 'canUseStorage').returns(true);
-		window.localStorage.kxsegs = 'abc,bar,zxc';
-
-		krux.importUserData();
-
-		expect(krux.getSegments()[0]).to.equal('abc');
-		expect(krux.getSegments()[1]).to.equal('bar');
-		expect(krux.getSegments()[2]).to.equal('zxc');
-		localCache.canUseStorage.restore();
-	});
-
-	it('import user data and return segments for old key name', () => {
-		sinon.stub(localCache, 'canUseStorage').returns(true);
-		window.localStorage.kxwikia_segs = 'abc,bar,zxc';
-
-		krux.importUserData();
-
-		expect(krux.getSegments()[0]).to.equal('abc');
-		expect(krux.getSegments()[1]).to.equal('bar');
-		expect(krux.getSegments()[2]).to.equal('zxc');
-		localCache.canUseStorage.restore();
-	});
-
-	it('export context targeting to krux', () => {
-		sinon.stub(localCache, 'canUseStorage').returns(true);
-		krux.exportPageParams();
-
-		expect(window.kruxDartParam_foo).to.equal('bar');
-		localCache.canUseStorage.restore();
-	});
-
-	it('import user data failes when there is no local storage', () => {
-		sinon.stub(localCache, 'canUseStorage').returns(false);
-		window.localStorage.kxuser = 'foo';
-
-		krux.importUserData();
-
-		expect(krux.getUserId()).to.equal(null);
-		localCache.canUseStorage.restore();
+			expect(krux.getUserId()).to.equal(null);
+		});
 	});
 });
