@@ -3,14 +3,14 @@ import { utils } from '@wikia/ad-engine';
 const overlayTimeout = 5000;
 
 function add(video, container, params) {
-	let removeVisibilityTimeout = null;
-	let fadeOutTimeout = null;
+	let removeVisibilityTimeout: number;
+	let fadeOutTimeout: number;
 
 	const isMobile = utils.client.isSmartphone() || utils.client.isTablet();
 	const overlay = document.createElement('div');
 	const panel = document.getElementsByClassName('dynamic-panel')[0] as HTMLElement;
 	const setAutomaticToggle = () => {
-		removeVisibilityTimeout = setTimeout(() => {
+		removeVisibilityTimeout = window.setTimeout(() => {
 			if (video.isPlaying()) {
 				video.container.classList.remove('ui-visible');
 			}
@@ -18,11 +18,11 @@ function add(video, container, params) {
 	};
 
 	function fadeOut(): void {
-		fadeOutTimeout = setTimeout(() => {
+		fadeOutTimeout = window.setTimeout(() => {
 			overlay.classList.add('fading');
 			panel.classList.add('fading');
 		}, 3000);
-		removeVisibilityTimeout = setTimeout(() => {
+		removeVisibilityTimeout = window.setTimeout(() => {
 			video.container.classList.remove('ui-visible');
 		}, 4000);
 	}
