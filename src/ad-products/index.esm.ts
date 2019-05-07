@@ -1,6 +1,5 @@
 // This file exist to provide different name for utils
 
-import './styles/styles.scss';
 import * as productsUtils from './utils';
 
 export * from './common';

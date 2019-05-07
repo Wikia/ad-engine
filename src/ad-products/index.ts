@@ -1,4 +1,3 @@
-import './styles/styles.scss';
 import * as utils from './utils';
 
 export * from './common';
