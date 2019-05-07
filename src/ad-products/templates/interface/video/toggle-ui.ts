@@ -44,6 +44,9 @@ function add(video, container, params) {
 		});
 		video.addEventListener('resume', setAutomaticToggle);
 	} else {
+		video.container.classList.add('ui-visible');
+		fadeOut();
+
 		video.container.addEventListener('mouseenter', () => {
 			video.container.classList.add('ui-visible');
 			resetFadeOut();
