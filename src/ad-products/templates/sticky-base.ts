@@ -92,16 +92,16 @@ export class StickyBase {
 	 * @protected
 	 */
 	addUnstickLogic() {
-		const { stickyAdditionalTime, stickyDefaultTime, stickyUntilSlotViewed } = this.config;
+		const {
+			stickyAdditionalTime,
+			stickyDefaultTime = StickyBase.DEFAULT_UNSTICK_DELAY,
+			stickyUntilSlotViewed,
+		} = this.config;
 		const whenSlotViewedOrTimeout = async () => {
-			const unstickTime =
-				stickyAdditionalTime +
-				(stickyDefaultTime !== undefined ? stickyDefaultTime : StickyBase.DEFAULT_UNSTICK_DELAY);
-
 			await (stickyUntilSlotViewed && !this.adSlot.isViewed()
 				? utils.once(this.adSlot, AdSlot.SLOT_VIEWED_EVENT)
 				: Promise.resolve());
-			await utils.wait(unstickTime);
+			await utils.wait(stickyDefaultTime + stickyAdditionalTime);
 		};
 
 		this.stickiness = new Stickiness(this.adSlot, whenSlotViewedOrTimeout());
