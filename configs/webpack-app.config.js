@@ -1,12 +1,8 @@
-const path = require('path');
 const webpack = require('webpack');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const babelConfig = require('./babel-app.config');
 
-const ROOT = path.resolve(__dirname, 'src');
-const DESTINATION = path.resolve(__dirname, `dist`);
-
-module.exports = (env, argv) => {
+module.exports = (env, argv, ROOT, DESTINATION) => {
 	return {
 		mode: 'development',
 		context: ROOT,
@@ -47,7 +43,7 @@ module.exports = (env, argv) => {
 				 * LOADERS
 				 *****************/
 				{
-					test: /\.ts$/,
+					test: /\.(js|ts)$/,
 					exclude: [/node_modules/],
 					use: [
 						{
@@ -60,19 +56,6 @@ module.exports = (env, argv) => {
 									babelrc: false /* Important line */,
 									...babelConfig,
 								},
-							},
-						},
-					],
-				},
-				{
-					test: /\.js$/,
-					exclude: [/node_modules/],
-					use: [
-						{
-							loader: 'babel-loader',
-							options: {
-								...babelConfig,
-								plugins: [],
 							},
 						},
 					],
