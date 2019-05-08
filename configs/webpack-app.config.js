@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const babelConfig = require('./babel-app.config');
+const pkg = require('../package');
 
 module.exports = (env, argv, ROOT, DESTINATION) => {
 	const tsconfig = env.TSCONFIG || 'tsconfig.json';
@@ -63,9 +64,12 @@ module.exports = (env, argv, ROOT, DESTINATION) => {
 					],
 				},
 
+				/****************
+				 * AD ENGINE - DIST LOADER
+				 *****************/
 				{
 					test: /\.js$/,
-					include: [/node_modules/],
+					include: [new RegExp(`${pkg.name}/${pkg.module}`)],
 					use: [
 						{
 							loader: 'babel-loader',
