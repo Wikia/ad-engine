@@ -1,5 +1,3 @@
-import './version-log';
-
 export * from './ad-engine';
 export * from './listeners';
 export * from './models';

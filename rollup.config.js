@@ -6,7 +6,6 @@ import json from 'rollup-plugin-json';
 import { classToPure, tscpaths } from './maintenance/rollup-plugins';
 
 const pkg = require('./package.json');
-const includeTypes = !process.env.NO_TYPES;
 
 const targets = {
 	esm: {
@@ -31,7 +30,6 @@ const targets = {
 			typescript({
 				check: false,
 				useTsconfigDeclarationDir: true,
-				tsconfigOverride: { compilerOptions: { declaration: includeTypes } },
 			}),
 			tscpaths({ out: 'dist/types' }),
 			classToPure(),

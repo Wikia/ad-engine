@@ -1,5 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
+	"sideEffects": false,
 	"version": "29.2.4",
 	"description": "Wikia AdEngine",
 	"repository": {
@@ -122,9 +123,8 @@
 		"build": "npm run build:rollup && npm run build:webpack",
 		"build:webpack": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
 		"build:rollup": "rollup -c rollup.config.js",
-		"watch:rollup": "npm run build:rollup -- -w --environment",
-		"watch:rollup:no-types": "npm run watch:esm -- --environment NO_TYPES",
-		"watch": "./node_modules/webpack/bin/webpack.js --progress --colors --hide-modules --watch",
+		"watch:rollup": "npm run build:rollup -- -w",
+		"watch:webpack": "./node_modules/webpack/bin/webpack.js --progress --colors --hide-modules --watch",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "tslint --project . && npm run rules:lint",
 		"lintf": "tslint --project . --fix && npm run rules:lintf",
