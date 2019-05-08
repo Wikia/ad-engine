@@ -31,6 +31,7 @@
 		"@types/chai": "4.1.7",
 		"@types/doubleclick-gpt": "238.0.1",
 		"@types/js-cookie": "2.2.1",
+		"@types/lodash": "4.14.124",
 		"@types/mocha": "5.2.6",
 		"@types/sinon": "7.0.7",
 		"@wdio/cli": "5.7.10",
