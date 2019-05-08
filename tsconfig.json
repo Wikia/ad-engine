@@ -13,10 +13,7 @@
 		"noImplicitAny": false,
 		"baseUrl": "src",
 		"paths": {
-			"@wikia/ad-engine": ["ad-engine"],
-			"@wikia/ad-bidders": ["ad-bidders"],
-			"@wikia/ad-products": ["ad-products"],
-			"@wikia/ad-services": ["ad-services"]
+			"@wikia/ad-engine": ["ad-engine"]
 		},
 		"typeRoots": ["node_modules/@types", "@types"]
 	},

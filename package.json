@@ -1,6 +1,5 @@
 {
 	"name": "@wikia/ad-engine",
-	"sideEffects": false,
 	"version": "29.2.4",
 	"description": "Wikia AdEngine",
 	"repository": {
