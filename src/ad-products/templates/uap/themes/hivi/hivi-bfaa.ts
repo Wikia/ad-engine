@@ -223,7 +223,9 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			this.onResolvedStateScroll.cancel();
 		}
 
-		this.config.onResolvedStateSwitchCallback(this.config, this.adSlot, this.params);
+		if (this.config.onResolvedStateSwitchCallback) {
+			this.config.onResolvedStateSwitchCallback(this.config, this.adSlot, this.params);
+		}
 
 		return new Promise((resolve) => {
 			if (immediately) {
