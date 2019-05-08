@@ -111,8 +111,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 			this.unlock();
 			this.switchImagesInAd(false);
-			this.setResolvedState(false);
 			this.updateAdSizes();
+
+			if (this.config.onResolvedStateResetCallback) {
+				this.config.onResolvedStateResetCallback(this.config, this.adSlot, this.params);
+			}
 		}
 	}
 
@@ -223,8 +226,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			this.onResolvedStateScroll.cancel();
 		}
 
-		if (this.config.onResolvedStateSwitchCallback) {
-			this.config.onResolvedStateSwitchCallback(this.config, this.adSlot, this.params);
+		if (this.config.onResolvedStateSetCallback) {
+			this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
 		}
 
 		return new Promise((resolve) => {
