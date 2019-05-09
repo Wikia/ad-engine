@@ -16,4 +16,4 @@ export class BigFancyAdThemeFactory {
 	}
 }
 
-export const bfaThemeFactory = /*@__PURE__*/ new BigFancyAdThemeFactory();
+export const bfaThemeFactory = new BigFancyAdThemeFactory();

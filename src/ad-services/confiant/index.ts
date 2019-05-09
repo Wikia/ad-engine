@@ -52,4 +52,4 @@ class Confiant {
 	}
 }
 
-export const confiant = /*@__PURE__*/ new Confiant();
+export const confiant = new Confiant();

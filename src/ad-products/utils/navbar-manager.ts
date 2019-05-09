@@ -19,4 +19,4 @@ export class NavbarManager {
 	}
 }
 
-export const navbarManager = /*@__PURE__*/ new NavbarManager();
+export const navbarManager = new NavbarManager();

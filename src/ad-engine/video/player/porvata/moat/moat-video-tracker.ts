@@ -22,4 +22,4 @@ class MoatVideoTracker {
 	}
 }
 
-export const moatVideoTracker = /*@__PURE__*/ new MoatVideoTracker();
+export const moatVideoTracker = new MoatVideoTracker();

@@ -92,4 +92,4 @@ class AdaptersRegistry {
 	}
 }
 
-export const adaptersRegistry = /*@__PURE__*/ new AdaptersRegistry();
+export const adaptersRegistry = new AdaptersRegistry();

@@ -67,4 +67,4 @@ class LocalCache {
 	}
 }
 
-export const localCache = /*@__PURE__*/ new LocalCache();
+export const localCache = new LocalCache();

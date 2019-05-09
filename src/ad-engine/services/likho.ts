@@ -50,4 +50,4 @@ export class LikhoService {
 	}
 }
 
-export const likhoService = /*@__PURE__*/ new LikhoService();
+export const likhoService = new LikhoService();

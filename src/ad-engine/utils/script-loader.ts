@@ -47,4 +47,4 @@ class ScriptLoader {
 	}
 }
 
-export const scriptLoader = /*@__PURE__*/ new ScriptLoader();
+export const scriptLoader = new ScriptLoader();

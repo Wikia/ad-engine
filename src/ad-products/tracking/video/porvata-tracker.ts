@@ -31,4 +31,4 @@ class PorvataTracker {
 	}
 }
 
-export const porvataTracker = /*@__PURE__*/ new PorvataTracker();
+export const porvataTracker = new PorvataTracker();

@@ -127,4 +127,4 @@ class BtfBlockerService {
 	}
 }
 
-export const btfBlockerService = /*@__PURE__*/ new BtfBlockerService();
+export const btfBlockerService = new BtfBlockerService();

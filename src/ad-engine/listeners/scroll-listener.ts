@@ -70,4 +70,4 @@ class ScrollListener {
 	}
 }
 
-export const scrollListener = /*@__PURE__*/ new ScrollListener();
+export const scrollListener = new ScrollListener();

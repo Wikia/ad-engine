@@ -37,4 +37,4 @@ class StringBuilder {
 	}
 }
 
-export const stringBuilder = /*@__PURE__*/ new StringBuilder();
+export const stringBuilder = new StringBuilder();

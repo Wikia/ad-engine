@@ -414,4 +414,4 @@ export class BillTheLizard {
 	}
 }
 
-export const billTheLizard = /*@__PURE__*/ new BillTheLizard();
+export const billTheLizard = new BillTheLizard();

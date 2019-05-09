@@ -230,4 +230,4 @@ class SlotService {
 	}
 }
 
-export const slotService = /*@__PURE__*/ new SlotService();
+export const slotService = new SlotService();

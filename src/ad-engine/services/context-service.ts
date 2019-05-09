@@ -132,4 +132,4 @@ class Context {
 	}
 }
 
-export const context = /*@__PURE__*/ new Context();
+export const context = new Context();

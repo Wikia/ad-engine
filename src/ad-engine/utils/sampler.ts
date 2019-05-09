@@ -16,4 +16,4 @@ class Sampler {
 	}
 }
 
-export const sampler = /*@__PURE__*/ new Sampler();
+export const sampler = new Sampler();

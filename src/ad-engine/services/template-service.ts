@@ -44,4 +44,4 @@ class TemplateService {
 	}
 }
 
-export const templateService = /*@__PURE__*/ new TemplateService();
+export const templateService = new TemplateService();
