@@ -1,87 +1,54 @@
-const webpack = require('webpack');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const babelConfig = require('./babel-app.config');
-const pkg = require('../package');
 
-module.exports = (env, argv, ROOT, DESTINATION) => {
-	const tsconfig = env.TSCONFIG || 'tsconfig.json';
+module.exports.getPreLoaders = () => {
+	return [
+		{
+			enforce: 'pre',
+			test: /\.js$/,
+			use: 'source-map-loader',
+		},
+		{
+			enforce: 'pre',
+			test: /\.ts$/,
+			exclude: /node_modules/,
+			use: 'tslint-loader',
+		},
+	];
+};
 
+module.exports.getTypeScriptLoader = (include, tsconfig) => {
 	return {
-		mode: 'development',
-		context: ROOT,
-
-		entry: {
-			main: './index.ts',
-		},
-
-		output: {
-			filename: '[name].bundle.js',
-			path: DESTINATION,
-		},
-
-		resolve: {
-			extensions: ['.ts', '.js'],
-			modules: [ROOT, 'node_modules'],
-			plugins: [new TsConfigPathsPlugin({ configFileName: tsconfig })],
-		},
-
-		module: {
-			rules: [
-				/****************
-				 * PRE-LOADERS
-				 *****************/
-				{
-					enforce: 'pre',
-					test: /\.js$/,
-					use: 'source-map-loader',
+		test: /\.(js|ts)$/,
+		include: include,
+		exclude: [/node_modules/],
+		use: [
+			{
+				loader: 'awesome-typescript-loader',
+				options: {
+					configFileName: tsconfig,
+					useBabel: true,
+					babelCore: '@babel/core',
+					babelOptions: {
+						babelrc: false /* Important line */,
+						...babelConfig,
+					},
 				},
-				{
-					enforce: 'pre',
-					test: /\.ts$/,
-					exclude: /node_modules/,
-					use: 'tslint-loader',
-				},
+			},
+		],
+	};
+};
 
-				/****************
-				 * LOADERS
-				 *****************/
-				{
-					test: /\.(js|ts)$/,
-					exclude: [/node_modules/],
-					use: [
-						{
-							loader: 'awesome-typescript-loader',
-							options: {
-								configFileName: tsconfig,
-								useBabel: true,
-								babelCore: '@babel/core',
-								babelOptions: {
-									babelrc: false /* Important line */,
-									...babelConfig,
-								},
-							},
-						},
-					],
+module.exports.getAdEngineLoader = () => {
+	return {
+		test: /\.js$/,
+		include: [new RegExp(`ad-engine/dist/index.es5.js`)],
+		use: [
+			{
+				loader: 'babel-loader',
+				options: {
+					...babelConfig,
 				},
-
-				/****************
-				 * AD ENGINE - DIST LOADER
-				 *****************/
-				{
-					test: /\.js$/,
-					include: [new RegExp(`${pkg.name}/${pkg.module}`)],
-					use: [
-						{
-							loader: 'babel-loader',
-							options: {
-								...babelConfig,
-							},
-						},
-					],
-				},
-			],
-		},
-
-		devtool: argv.mode === 'production' ? 'source-map' : 'cheap-module-source-map',
+			},
+		],
 	};
 };
