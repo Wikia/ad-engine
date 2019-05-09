@@ -3,7 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 import json from 'rollup-plugin-json';
-import { classToPure, tscpaths } from './maintenance/rollup-plugins';
+import { adEngineVersion, classToPure, tscpaths } from './maintenance/rollup-plugins';
 
 const pkg = require('./package.json');
 
@@ -33,6 +33,7 @@ const targets = {
 			}),
 			tscpaths({ out: 'dist/types' }),
 			classToPure(),
+			adEngineVersion(pkg.name, pkg.version),
 		],
 	},
 };

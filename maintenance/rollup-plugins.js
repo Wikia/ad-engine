@@ -22,3 +22,16 @@ export function tscpaths(options) {
 		},
 	};
 }
+
+export function adEngineVersion(name, version) {
+	return {
+		renderChunk(code) {
+			return {
+				code: code
+					.replace(/<\?= PACKAGE\(name\) \?>/g, name)
+					.replace(/<\?= PACKAGE\(version\) \?>/g, version),
+				map: null,
+			};
+		},
+	};
+}
