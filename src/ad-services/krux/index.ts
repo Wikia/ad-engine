@@ -107,4 +107,4 @@ class Krux {
 	}
 }
 
-export const krux = new Krux();
+export const krux = /*@__PURE__*/ new Krux();

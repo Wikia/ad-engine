@@ -31,4 +31,4 @@ class TwitchTracker {
 	}
 }
 
-export const twitchTracker = new TwitchTracker();
+export const twitchTracker = /*@__PURE__*/ new TwitchTracker();

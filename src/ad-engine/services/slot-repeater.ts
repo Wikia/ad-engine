@@ -73,4 +73,4 @@ class SlotRepeater {
 	}
 }
 
-export const slotRepeater = new SlotRepeater();
+export const slotRepeater = /*@__PURE__*/ new SlotRepeater();

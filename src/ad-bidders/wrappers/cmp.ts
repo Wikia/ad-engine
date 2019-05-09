@@ -16,4 +16,4 @@ export class Cmp {
 	}
 }
 
-export const cmp = new Cmp();
+export const cmp = /*@__PURE__*/ new Cmp();

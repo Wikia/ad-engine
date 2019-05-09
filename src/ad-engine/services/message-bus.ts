@@ -73,4 +73,4 @@ class MessageBus {
 	}
 }
 
-export const messageBus = new MessageBus();
+export const messageBus = /*@__PURE__*/ new MessageBus();

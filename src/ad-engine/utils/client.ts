@@ -136,4 +136,4 @@ class Client {
 	}
 }
 
-export const client = new Client();
+export const client = /*@__PURE__*/ new Client();

@@ -130,4 +130,4 @@ class SlotListener {
 	}
 }
 
-export const slotListener = new SlotListener();
+export const slotListener = /*@__PURE__*/ new SlotListener();

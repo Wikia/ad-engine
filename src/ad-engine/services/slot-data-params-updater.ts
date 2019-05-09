@@ -25,4 +25,4 @@ class SlotDataParamsUpdater {
 	}
 }
 
-export const slotDataParamsUpdater = new SlotDataParamsUpdater();
+export const slotDataParamsUpdater = /*@__PURE__*/ new SlotDataParamsUpdater();

@@ -69,4 +69,4 @@ class MoatYi {
 	}
 }
 
-export const moatYi = new MoatYi();
+export const moatYi = /*@__PURE__*/ new MoatYi();

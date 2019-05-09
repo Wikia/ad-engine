@@ -104,4 +104,4 @@ class VastParser {
 	}
 }
 
-export const vastParser = new VastParser();
+export const vastParser = /*@__PURE__*/ new VastParser();

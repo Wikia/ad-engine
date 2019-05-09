@@ -59,4 +59,4 @@ class Nielsen {
 	}
 }
 
-export const nielsen = new Nielsen();
+export const nielsen = /*@__PURE__*/ new Nielsen();

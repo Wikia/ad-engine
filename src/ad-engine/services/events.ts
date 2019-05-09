@@ -27,4 +27,4 @@ class EventService extends EventEmitter.EventEmitter {
 	}
 }
 
-export const eventService = new EventService();
+export const eventService = /*@__PURE__*/ new EventService();

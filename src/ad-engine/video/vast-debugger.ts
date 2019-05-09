@@ -52,4 +52,4 @@ class VastDebugger {
 	}
 }
 
-export const vastDebugger = new VastDebugger();
+export const vastDebugger = /*@__PURE__*/ new VastDebugger();

@@ -197,4 +197,4 @@ export class SlotTweaker {
 	}
 }
 
-export const slotTweaker = new SlotTweaker();
+export const slotTweaker = /*@__PURE__*/ new SlotTweaker();

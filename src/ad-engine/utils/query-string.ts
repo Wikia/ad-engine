@@ -28,4 +28,4 @@ class QueryString {
 	}
 }
 
-export const queryString = new QueryString();
+export const queryString = /*@__PURE__*/ new QueryString();

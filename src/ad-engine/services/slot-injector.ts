@@ -77,4 +77,4 @@ class SlotInjector {
 	}
 }
 
-export const slotInjector = new SlotInjector();
+export const slotInjector = /*@__PURE__*/ new SlotInjector();
