@@ -25,6 +25,7 @@ export class StickyTLB extends StickyBase {
 			mainContainer: document.body,
 			handleNavbar: false,
 			stickyAdditionalTime: 0,
+			stickyDefaultTime: 0,
 			stickyUntilSlotViewed: true,
 			slotSibling: '.topic-header',
 			onInit: () => {},
