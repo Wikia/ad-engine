@@ -57,5 +57,8 @@
 				]
 			}
 		]
+	},
+	"linterOptions": {
+		"exclude": ["dist/", "lib/", "node_modules/", "jspm_packages/", "src/**/*.js"]
 	}
 }

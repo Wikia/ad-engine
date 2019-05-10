@@ -7,7 +7,6 @@
 		"tslint-config-prettier"
 	],
 	"rules": {
-		"no-unused-variable": true,
 		"max-line-length": [true, { "limit": 100, "ignore-pattern": "^import |^export {(.*?)} |http" }],
 		"ordered-imports": [
 			true,
@@ -86,11 +85,13 @@
 		"no-this-assignment": true,
 		"max-classes-per-file": true,
 		"no-default-export": true,
-		"no-submodule-imports": false,
+		"no-submodule-imports": true,
 		"object-literal-sort-keys": false
 	},
 	"jsRules": {
 		"object-literal-sort-keys": false
 	},
-	"exclude": ["dist/", "lib/", "node_modules/", "jspm_packages/"]
+	"linterOptions": {
+		"exclude": ["dist/", "lib/", "node_modules/", "jspm_packages/"]
+	}
 }
