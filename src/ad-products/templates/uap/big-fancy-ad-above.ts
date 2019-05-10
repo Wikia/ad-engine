@@ -30,6 +30,8 @@ export interface BigFancyAdAboveConfig {
 	onAfterStickBfaaCallback: StickinessCallback;
 	onBeforeUnstickBfaaCallback: StickinessCallback;
 	onAfterUnstickBfaaCallback: StickinessCallback;
+	onResolvedStateSetCallback: StickinessCallback;
+	onResolvedStateResetCallback: StickinessCallback;
 	moveNavbar: (offset: number, time: number) => void;
 }
 
@@ -55,6 +57,8 @@ export class BigFancyAdAbove {
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
 			onAfterUnstickBfaaCallback: () => {},
+			onResolvedStateSetCallback: () => {},
+			onResolvedStateResetCallback: () => {},
 			moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {
 				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
 

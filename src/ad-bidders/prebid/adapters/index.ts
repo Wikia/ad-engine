@@ -1,7 +1,6 @@
 export * from './aol';
 export * from './appnexus';
 export * from './appnexus-ast';
-export * from './audience-network';
 export * from './base-adapter';
 export * from './beachfront';
 export * from './index-exchange';
