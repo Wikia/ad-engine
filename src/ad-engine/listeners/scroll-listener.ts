@@ -1,21 +1,21 @@
 import { events, eventService } from '../services/events';
 import { getTopOffset, OldLazyQueue } from '../utils';
-import { AdStackElement } from './../models';
+import { AdStackElement, Dictionary } from './../models';
 
-const callbacks = {};
+const callbacks: Dictionary = {};
 
-function getUniqueId() {
+function getUniqueId(): string {
 	return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 }
 
-function pushSlot(adStack: OldLazyQueue<AdStackElement>, node: HTMLElement) {
+function pushSlot(adStack: OldLazyQueue<AdStackElement>, node: HTMLElement): void {
 	adStack.push({
 		id: node.id,
 	});
 }
 
 class ScrollListener {
-	init() {
+	init(): void {
 		let requestAnimationFrameHandleAdded = false;
 
 		document.addEventListener('scroll', (event) => {
@@ -33,7 +33,7 @@ class ScrollListener {
 		});
 	}
 
-	addSlot(adStack, id, threshold = 0) {
+	addSlot(adStack: OldLazyQueue<AdStackElement>, id: string, threshold = 0): void {
 		const node = document.getElementById(id);
 
 		if (!node) {
@@ -56,7 +56,7 @@ class ScrollListener {
 		});
 	}
 
-	addCallback(callback) {
+	addCallback(callback: (event: Event, id: string) => void): string {
 		const id = getUniqueId();
 
 		callbacks[id] = callback;
@@ -66,7 +66,7 @@ class ScrollListener {
 		return id;
 	}
 
-	removeCallback(id) {
+	removeCallback(id: string): void {
 		delete callbacks[id];
 	}
 }
