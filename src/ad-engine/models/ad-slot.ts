@@ -223,11 +223,11 @@ export class AdSlot extends EventEmitter {
 		this.emit(AdSlot.DESTROYED_EVENT);
 	}
 
-	getConfigProperty(key): any {
+	getConfigProperty(key: string): any {
 		return context.get(`slots.${this.config.slotName}.${key}`);
 	}
 
-	setConfigProperty(key, value): void {
+	setConfigProperty(key: string, value: any): void {
 		context.set(`slots.${this.config.slotName}.${key}`, value);
 	}
 
@@ -242,7 +242,7 @@ export class AdSlot extends EventEmitter {
 		const templateNames = this.getConfigProperty('defaultTemplates');
 
 		if (templateNames && templateNames.length) {
-			templateNames.forEach((templateName) => templateService.init(templateName, this));
+			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
 	}
 
