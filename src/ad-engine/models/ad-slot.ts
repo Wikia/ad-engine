@@ -6,9 +6,10 @@ import { LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
+	[key: string]: googletag.NamedSize;
 	amznbid?: string;
 	hb_bidder?: string;
-	hb_pb?: number;
+	hb_pb?: string;
 	src: string;
 	pos: string;
 	wsi?: string;
