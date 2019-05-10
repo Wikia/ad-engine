@@ -1,5 +1,6 @@
 import { events, eventService } from '../services/events';
-import { getTopOffset } from '../utils/dimensions';
+import { getTopOffset, OldLazyQueue } from '../utils';
+import { AdStackElement } from './../models';
 
 const callbacks = {};
 
@@ -7,7 +8,7 @@ function getUniqueId() {
 	return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 }
 
-function pushSlot(adStack, node) {
+function pushSlot(adStack: OldLazyQueue<AdStackElement>, node: HTMLElement) {
 	adStack.push({
 		id: node.id,
 	});

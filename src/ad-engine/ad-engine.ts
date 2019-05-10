@@ -1,5 +1,5 @@
 import { scrollListener } from './listeners';
-import { AdSlot, DelayModule } from './models';
+import { AdSlot, AdStackElement, DelayModule } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
 import {
 	btfBlockerService,
@@ -23,9 +23,9 @@ export const DEFAULT_MAX_DELAY = 2000;
 export class AdEngine {
 	started = false;
 	provider: Provider;
-	adStack: OldLazyQueue<string>;
+	adStack: OldLazyQueue<AdStackElement>;
 
-	constructor(config = null) {
+	constructor(config: any = null) {
 		context.extend(config);
 
 		window.ads = window.ads || ({} as Ads);
@@ -70,7 +70,7 @@ export class AdEngine {
 	private setupAdStack(): void {
 		this.adStack = context.get('state.adStack');
 		if (!this.adStack.start) {
-			makeLazyQueue<string>(this.adStack as any, (ad: string) => {
+			makeLazyQueue<AdStackElement>(this.adStack as any, (ad) => {
 				const adSlot = new AdSlot(ad);
 
 				slotService.add(adSlot);

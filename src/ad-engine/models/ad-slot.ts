@@ -43,6 +43,10 @@ export interface SlotConfig {
 	autoplay?: boolean;
 }
 
+export interface AdStackElement {
+	id: string;
+}
+
 export interface WinningBidderDetails {
 	name: string;
 	price: number | string;
@@ -80,7 +84,7 @@ export class AdSlot extends EventEmitter {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
 	});
 
-	constructor(ad) {
+	constructor(ad: AdStackElement) {
 		super();
 
 		this.config = context.get(`slots.${ad.id}`) || {};
