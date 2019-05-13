@@ -1,12 +1,9 @@
 import { PorvataListener } from '../../../listeners';
 import { client, LazyQueue, tryProperty, viewportObserver, whichProperty } from '../../../utils';
+import { Targeting } from './../../../models';
 import { googleIma } from './ima/google-ima';
 import { GoogleImaPlayer } from './ima/google-ima-player-factory';
 import { VideoParams, VideoSettings } from './video-settings';
-
-export interface VastTargeting {
-	passback: string;
-}
 
 export interface PorvataTemplateParams {
 	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
@@ -20,7 +17,7 @@ export interface PorvataTemplateParams {
 	adProduct: string;
 	src: string;
 	autoPlay: boolean;
-	vastTargeting: VastTargeting;
+	vastTargeting: Targeting;
 	blockOutOfViewportPausing: boolean;
 	startInViewportOnly: boolean;
 	onReady: (player: PorvataPlayer) => void;

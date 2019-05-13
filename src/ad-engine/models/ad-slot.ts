@@ -10,8 +10,8 @@ export interface Targeting {
 	amznbid?: string;
 	hb_bidder?: string;
 	hb_pb?: string;
-	src: string;
-	pos: string;
+	src?: string;
+	pos?: string;
 	wsi?: string;
 }
 
