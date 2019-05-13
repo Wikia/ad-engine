@@ -9,18 +9,18 @@ interface AdditionalEventData {
 }
 
 export interface AdSlotData {
-	browser?: string;
-	time_bucket?: number;
-	timestamp?: number;
-	tz_offset?: number;
-	adType?: string;
-	status?: string;
-	creative_id?: string | number;
-	creative_size?: string | number[];
-	line_item_id?: string | number;
-	order_id?: string | number;
-	page_width?: string | number;
-	viewport_height?: number;
+	browser: string;
+	time_bucket: number;
+	timestamp: number;
+	tz_offset: number;
+	adType: string;
+	status: string;
+	creative_id: string | number;
+	creative_size: string | number[];
+	line_item_id: string | number;
+	order_id: string | number;
+	page_width: string | number;
+	viewport_height: number;
 }
 
 const logGroup = 'slot-listener';
