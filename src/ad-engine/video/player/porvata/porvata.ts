@@ -40,7 +40,7 @@ export const VpaidMode = {
 	INSECURE: 2,
 };
 
-const prepareVideoAdContainer = (params) => {
+const prepareVideoAdContainer = (params: VideoParams) => {
 	const videoAdContainer = params.container.querySelector('div');
 
 	videoAdContainer.classList.add('video-player');
@@ -49,7 +49,7 @@ const prepareVideoAdContainer = (params) => {
 	return videoAdContainer;
 };
 
-const nativeFullscreenOnElement = (element) => {
+const nativeFullscreenOnElement = (element: HTMLElement) => {
 	const enter = tryProperty(element, [
 		'webkitRequestFullscreen',
 		'mozRequestFullScreen',
@@ -244,7 +244,7 @@ export class PorvataPlayer {
 		this.ima.dispatchEvent('wikiaFullscreenChange');
 	}
 
-	updateVideoDOMElement(volume): void {
+	updateVideoDOMElement(volume: number): void {
 		if (this.mobileVideoAd) {
 			this.mobileVideoAd.muted = volume === 0;
 			this.mobileVideoAd.volume = volume;
@@ -310,7 +310,7 @@ export class Porvata {
 		let isFirstPlay = true;
 		let autoPaused = false;
 		let autoPlayed = false;
-		let viewportListenerId = null;
+		let viewportListenerId: string = null;
 
 		function muteFirstPlay(video: PorvataPlayer): void {
 			video.addEventListener('loaded', () => {
