@@ -8,15 +8,24 @@ interface AdditionalEventData {
 	event: googletag.events.SlotRenderEndedEvent;
 }
 
+interface AdSlotListener {
+	[key: string]: (adSlot?: AdSlot, data?: any) => void;
+	isEnabled?: () => boolean;
+	onCustomEvent?: () => void;
+	onImpressionViewable?: () => void;
+	onRenderEnded?: () => void;
+	onStatusChanged?: () => void;
+}
+
 const logGroup = 'slot-listener';
 
-let listeners = null;
+let listeners: AdSlotListener[] = null;
 
-function getIframe(adSlot) {
+function getIframe(adSlot: AdSlot): HTMLIFrameElement {
 	return adSlot.getElement().querySelector('div[id*="_container_"] iframe');
 }
 
-function getAdType(event, adSlot) {
+function getAdType(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot) {
 	const iframe = getIframe(adSlot);
 
 	let isIframeAccessible = false;
@@ -60,11 +69,11 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 	};
 }
 
-function dispatch(methodName, adSlot, adInfo: Partial<AdditionalEventData> = {}) {
+function dispatch(methodName: string, adSlot: AdSlot, adInfo: Partial<AdditionalEventData> = {}) {
 	if (!listeners) {
 		listeners = context
 			.get('listeners.slot')
-			.filter((listener) => !listener.isEnabled || listener.isEnabled());
+			.filter((listener: AdSlotListener) => !listener.isEnabled || listener.isEnabled());
 	}
 
 	const data = getData(adSlot, adInfo);
@@ -80,7 +89,7 @@ function dispatch(methodName, adSlot, adInfo: Partial<AdditionalEventData> = {})
 }
 
 class SlotListener {
-	emitRenderEnded(event: googletag.events.SlotRenderEndedEvent, adSlot) {
+	emitRenderEnded(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot) {
 		const adType = getAdType(event, adSlot);
 
 		adSlot.updateOnRenderEnd(event);
@@ -100,7 +109,7 @@ class SlotListener {
 		const slotsToPush = context.get(`events.pushAfterRendered.${adSlot.getSlotName()}`);
 
 		if (slotsToPush) {
-			slotsToPush.forEach((slotName) => {
+			slotsToPush.forEach((slotName: string) => {
 				slotInjector.inject(slotName);
 			});
 		}
@@ -108,24 +117,24 @@ class SlotListener {
 		dispatch('onRenderEnded', adSlot, { adType, event });
 	}
 
-	emitLoadedEvent(event, adSlot) {
+	emitLoadedEvent(event: googletag.events.SlotOnloadEvent, adSlot: AdSlot) {
 		adSlot.emit(AdSlot.SLOT_LOADED_EVENT);
 		dispatch('onLoaded', adSlot);
 		slotTweaker.setDataParam(adSlot, 'slotLoaded', true);
 	}
 
-	emitImpressionViewable(event, adSlot) {
+	emitImpressionViewable(event: googletag.events.ImpressionViewableEvent, adSlot: AdSlot) {
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 		dispatch('onImpressionViewable', adSlot);
 		slotTweaker.setDataParam(adSlot, 'slotViewed', true);
 	}
 
-	emitStatusChanged(adSlot) {
+	emitStatusChanged(adSlot: AdSlot) {
 		slotTweaker.setDataParam(adSlot, 'slotResult', adSlot.getStatus());
 		dispatch('onStatusChanged', adSlot);
 	}
 
-	emitCustomEvent(event, adSlot) {
+	emitCustomEvent(event: null | string, adSlot: AdSlot) {
 		dispatch('onCustomEvent', adSlot, { status: event });
 	}
 }
