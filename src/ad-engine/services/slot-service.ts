@@ -6,6 +6,11 @@ import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
 
+interface SlotEvent {
+	callback: () => void;
+	name: string;
+}
+
 function isSlotInTheSameViewport(
 	slotHeight: number,
 	slotOffset: number,
@@ -37,7 +42,7 @@ eventService.on(events.PAGE_CHANGE_EVENT, () => {
 });
 
 class SlotService {
-	slotEvents = {};
+	slotEvents: Dictionary<SlotEvent[]> = {};
 	slotStatuses: Dictionary<string> = {};
 	slotStates: Dictionary<boolean> = {};
 	slots: Dictionary<AdSlot> = {};
@@ -90,7 +95,7 @@ class SlotService {
 		}
 
 		// Find slots by first targeting.pos
-		let slotByPos = null;
+		let slotByPos: AdSlot = null;
 
 		this.forEach((slot) => {
 			if (slotByPos !== null) {
@@ -119,9 +124,9 @@ class SlotService {
 
 	on(slotName: string, eventName: string, callback: () => void): void {
 		const adSlot = this.get(slotName);
-		const event = {
-			name: eventName,
+		const event: SlotEvent = {
 			callback,
+			name: eventName,
 		};
 
 		this.slotEvents[slotName] = this.slotEvents[slotName] || [];
