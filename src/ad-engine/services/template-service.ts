@@ -1,12 +1,12 @@
 import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils/logger';
-import { context } from './context-service';
+import { context } from './';
 
 const logGroup = 'template-service';
-const templates = {};
+const templates: Dictionary = {};
 
 class TemplateService {
-	register(template, customConfig = null): void {
+	register(template: any, customConfig: any = null): void {
 		if (typeof template.getName !== 'function') {
 			throw new Error('Template does not implement getName method.');
 		}
