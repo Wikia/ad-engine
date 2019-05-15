@@ -1,6 +1,7 @@
 import { utils } from '@wikia/ad-engine';
 
-const overlayTimeout = 5000;
+const FADE_OUT_TIMEOUT = 3000;
+const FADE_OUT_ANIMATION_TIME = 1000;
 
 function add(video, container, params) {
 	let removeVisibilityTimeout: number;
@@ -9,22 +10,15 @@ function add(video, container, params) {
 	const isMobile = utils.client.isSmartphone() || utils.client.isTablet();
 	const overlay = document.createElement('div');
 	const panel = document.getElementsByClassName('dynamic-panel')[0] as HTMLElement;
-	const setAutomaticToggle = () => {
-		removeVisibilityTimeout = window.setTimeout(() => {
-			if (video.isPlaying()) {
-				video.container.classList.remove('ui-visible');
-			}
-		}, overlayTimeout);
-	};
 
 	function fadeOut(): void {
 		fadeOutTimeout = window.setTimeout(() => {
 			overlay.classList.add('fading');
 			panel.classList.add('fading');
-		}, 3000);
+		}, FADE_OUT_TIMEOUT);
 		removeVisibilityTimeout = window.setTimeout(() => {
 			video.container.classList.remove('ui-visible');
-		}, 4000);
+		}, FADE_OUT_TIMEOUT + FADE_OUT_ANIMATION_TIME);
 	}
 
 	function resetFadeOut(): void {
@@ -36,13 +30,20 @@ function add(video, container, params) {
 
 	overlay.classList.add('toggle-ui-overlay');
 	if (isMobile) {
+		video.container.classList.add('ui-visible');
+		fadeOut();
+
 		overlay.addEventListener('click', () => {
 			video.container.classList.toggle('ui-visible');
 
+			resetFadeOut();
 			clearTimeout(removeVisibilityTimeout);
-			setAutomaticToggle();
+			if (video.isPlaying()) {
+				fadeOut();
+			}
 		});
-		video.addEventListener('resume', setAutomaticToggle);
+		video.addEventListener('resume', fadeOut);
+		video.addEventListener('pause', resetFadeOut);
 	} else {
 		video.container.classList.add('ui-visible');
 		fadeOut();
