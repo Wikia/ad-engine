@@ -69,12 +69,12 @@ export class ScrollListener {
 
 		this.addCallback(
 			(event: string, callbackId: string): void => {
-				const scrollPosition =
+				const scrollPosition: number =
 					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
 				if (threshold !== undefined) {
-					const slotPosition = getTopOffset(node);
-					const viewPortHeight = getViewportHeight();
+					const slotPosition: number = getTopOffset(node);
+					const viewPortHeight: number = getViewportHeight();
 
 					if (scrollPosition + viewPortHeight > slotPosition - threshold) {
 						this.removeCallback(callbackId);
@@ -91,7 +91,7 @@ export class ScrollListener {
 	}
 
 	addCallback(callback: ScrollListenerCallback): string {
-		const id = this.getUniqueId();
+		const id: string = this.getUniqueId();
 
 		this.callbacks[id] = callback;
 
