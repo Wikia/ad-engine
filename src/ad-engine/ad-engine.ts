@@ -25,7 +25,7 @@ export class AdEngine {
 	provider: Provider;
 	adStack: OldLazyQueue<AdStackElement>;
 
-	constructor(config: any = null) {
+	constructor(config = null) {
 		context.extend(config);
 
 		window.ads = window.ads || ({} as Ads);
