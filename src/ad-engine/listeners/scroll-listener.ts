@@ -1,4 +1,3 @@
-import { isUndefined } from 'lodash';
 import { AdStackPayload, Dictionary } from '../';
 import { events, eventService } from '../services/events';
 import { getTopOffset, getViewportHeight } from '../utils/dimensions';
@@ -20,7 +19,7 @@ export class ScrollListener {
 			if (!requestAnimationFrameHandleAdded) {
 				window.requestAnimationFrame(() => {
 					requestAnimationFrameHandleAdded = false;
-					Object.keys(this.callbacks).forEach((id) => {
+					Object.keys(this.callbacks).forEach((id: string) => {
 						if (typeof this.callbacks[id] === 'function') {
 							this.callbacks[id](event.type, id);
 						}
@@ -54,13 +53,13 @@ export class ScrollListener {
 			return;
 		}
 
-		if (isUndefined(threshold) && isUndefined(distanceFromTop)) {
+		if (threshold === undefined && distanceFromTop === undefined) {
 			logger(this.serviceName, 'either threshold or distanceFromTop must be initialised');
 
 			return;
 		}
 
-		if (!isUndefined(threshold) && !isUndefined(distanceFromTop)) {
+		if (threshold !== undefined && distanceFromTop !== undefined) {
 			logger(this.serviceName, 'either threshold or distanceFromTop can be initialised, not both');
 
 			return;
@@ -73,7 +72,7 @@ export class ScrollListener {
 				const scrollPosition =
 					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-				if (!isUndefined(threshold)) {
+				if (threshold !== undefined) {
 					const slotPosition = getTopOffset(node);
 					const viewPortHeight = getViewportHeight();
 
