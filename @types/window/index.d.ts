@@ -2,7 +2,7 @@
 ///<reference path="../../node_modules/@alugha/ima/typings/ima.d.ts"/>
 
 interface Window {
-	[key: string]: any;
+	AdEngine_adType?: any;
 	ads?: Ads;
 	google: {
 		ima: typeof google.ima;

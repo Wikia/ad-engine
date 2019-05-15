@@ -40,7 +40,7 @@ export const VpaidMode = {
 	INSECURE: 2,
 };
 
-const prepareVideoAdContainer = (params: VideoParams) => {
+const prepareVideoAdContainer = (params: VideoParams): HTMLElement => {
 	const videoAdContainer = params.container.querySelector('div');
 
 	videoAdContainer.classList.add('video-player');
@@ -49,7 +49,7 @@ const prepareVideoAdContainer = (params: VideoParams) => {
 	return videoAdContainer;
 };
 
-const nativeFullscreenOnElement = (element: HTMLElement) => {
+const nativeFullscreenOnElement = (element: HTMLElement): NativeFullscreen => {
 	const enter = tryProperty(element, [
 		'webkitRequestFullscreen',
 		'mozRequestFullScreen',

@@ -1,4 +1,4 @@
-import { AdSlot } from '../models';
+import { AdSlot, Dictionary } from '../models';
 import { context, slotInjector, slotTweaker } from '../services';
 import { client, logger } from '../utils';
 
@@ -9,13 +9,20 @@ interface AdditionalEventData {
 }
 
 interface AdSlotListener {
-	[key: string]: (adSlot?: AdSlot, data?: any) => void;
 	isEnabled?: () => boolean;
-	onCustomEvent?: () => void;
-	onImpressionViewable?: () => void;
-	onRenderEnded?: () => void;
-	onStatusChanged?: () => void;
+	onCustomEvent?: (adSlot: AdSlot, data: Dictionary) => void;
+	onImpressionViewable?: (adSlot: AdSlot, data: Dictionary) => void;
+	onLoaded?: (adSlot: AdSlot, data: Dictionary) => void;
+	onRenderEnded?: (adSlot: AdSlot, data: Dictionary) => void;
+	onStatusChanged?: (adSlot: AdSlot, data: Dictionary) => void;
 }
+
+type SlotListenerMethod =
+	| 'onCustomEvent'
+	| 'onImpressionViewable'
+	| 'onLoaded'
+	| 'onRenderEnded'
+	| 'onStatusChanged';
 
 const logGroup = 'slot-listener';
 
@@ -25,7 +32,7 @@ function getIframe(adSlot: AdSlot): HTMLIFrameElement {
 	return adSlot.getElement().querySelector('div[id*="_container_"] iframe');
 }
 
-function getAdType(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot) {
+function getAdType(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot): string {
 	const iframe = getIframe(adSlot);
 
 	let isIframeAccessible = false;
@@ -47,7 +54,7 @@ function getAdType(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot)
 	return AdSlot.STATUS_SUCCESS;
 }
 
-function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData>) {
+function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData>): Dictionary {
 	const now = new Date();
 
 	return {
@@ -69,7 +76,11 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 	};
 }
 
-function dispatch(methodName: string, adSlot: AdSlot, adInfo: Partial<AdditionalEventData> = {}) {
+function dispatch(
+	methodName: SlotListenerMethod,
+	adSlot: AdSlot,
+	adInfo: Partial<AdditionalEventData> = {},
+): void {
 	if (!listeners) {
 		listeners = context
 			.get('listeners.slot')
@@ -89,7 +100,7 @@ function dispatch(methodName: string, adSlot: AdSlot, adInfo: Partial<Additional
 }
 
 class SlotListener {
-	emitRenderEnded(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot) {
+	emitRenderEnded(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot): void {
 		const adType = getAdType(event, adSlot);
 
 		adSlot.updateOnRenderEnd(event);
@@ -117,24 +128,24 @@ class SlotListener {
 		dispatch('onRenderEnded', adSlot, { adType, event });
 	}
 
-	emitLoadedEvent(event: googletag.events.SlotOnloadEvent, adSlot: AdSlot) {
+	emitLoadedEvent(event: googletag.events.SlotOnloadEvent, adSlot: AdSlot): void {
 		adSlot.emit(AdSlot.SLOT_LOADED_EVENT);
 		dispatch('onLoaded', adSlot);
 		slotTweaker.setDataParam(adSlot, 'slotLoaded', true);
 	}
 
-	emitImpressionViewable(event: googletag.events.ImpressionViewableEvent, adSlot: AdSlot) {
+	emitImpressionViewable(event: googletag.events.ImpressionViewableEvent, adSlot: AdSlot): void {
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 		dispatch('onImpressionViewable', adSlot);
 		slotTweaker.setDataParam(adSlot, 'slotViewed', true);
 	}
 
-	emitStatusChanged(adSlot: AdSlot) {
+	emitStatusChanged(adSlot: AdSlot): void {
 		slotTweaker.setDataParam(adSlot, 'slotResult', adSlot.getStatus());
 		dispatch('onStatusChanged', adSlot);
 	}
 
-	emitCustomEvent(event: null | string, adSlot: AdSlot) {
+	emitCustomEvent(event: null | string, adSlot: AdSlot): void {
 		dispatch('onCustomEvent', adSlot, { status: event });
 	}
 }
