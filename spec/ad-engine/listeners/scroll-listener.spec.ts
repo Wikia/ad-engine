@@ -1,16 +1,17 @@
-import { ScrollListener } from '@wikia/ad-engine';
+import { AdStackPayload, ScrollListener } from '@wikia/ad-engine';
+import { OldLazyQueue } from '@wikia/ad-engine/utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 describe('ScrollListener', () => {
 	let scrollListener: ScrollListener;
 	let getElementByIdStub;
-	let adStack: any[];
+	let adStack: OldLazyQueue<AdStackPayload>;
 	let addCallbackStub;
 
 	beforeEach(() => {
 		scrollListener = new ScrollListener();
-		adStack = [];
+		adStack = [] as any;
 		getElementByIdStub = sinon.stub(document, 'getElementById');
 		getElementByIdStub.callsFake(() => 'fakeNode');
 		addCallbackStub = sinon.stub(scrollListener, 'addCallback');
@@ -27,7 +28,7 @@ describe('ScrollListener', () => {
 			getElementByIdStub.callsFake(() => null);
 
 			scrollListener.addSlot(adStack, 'nodeId', { threshold: 5 });
-			scrollListener.addSlot(adStack, 'nodeId', { distancefromtop: 10 });
+			scrollListener.addSlot(adStack, 'nodeId', { distanceFromTop: 10 });
 
 			expect(addCallbackStub.called).to.be.false;
 		});
