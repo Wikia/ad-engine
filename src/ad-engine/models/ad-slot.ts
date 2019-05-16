@@ -1,4 +1,5 @@
 import * as EventEmitter from 'eventemitter3';
+import { AdStackPayload } from '../';
 import { slotListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
@@ -43,10 +44,6 @@ export interface SlotConfig {
 	autoplay?: boolean;
 }
 
-export interface AdStackElement {
-	id: string;
-}
-
 export interface WinningBidderDetails {
 	name: string;
 	price: number | string;
@@ -84,7 +81,7 @@ export class AdSlot extends EventEmitter {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
 	});
 
-	constructor(ad: AdStackElement) {
+	constructor(ad: AdStackPayload) {
 		super();
 
 		this.config = context.get(`slots.${ad.id}`) || {};
