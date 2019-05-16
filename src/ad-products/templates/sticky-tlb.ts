@@ -78,7 +78,8 @@ export class StickyTLB extends StickyBase {
 		this.config.mainContainer.classList.add('has-bfaa');
 
 		navbarManager.setup(this.config, this.container);
-		this.config.moveNavbar(this.container.scrollHeight, SLIDE_OUT_TIME);
+		debugger;
+		this.config.moveNavbar(this.container.scrollHeight, SLIDE_OUT_TIME); // this does the gap
 
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
