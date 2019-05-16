@@ -50,6 +50,11 @@ if (failed) {
 					text: 'mobile-wiki',
 					url: `${jenkinsUrl}/job/update_dependencies_mobilewiki/parambuild/?adengine_version=v${version}`,
 				},
+				{
+					type: 'button',
+					text: 'gamepedia-ads',
+					url: `${jenkinsUrl}/job/update_dependencies_gamepedia_ads/parambuild/?adengine_version=v${version}`,
+				},
 			],
 		},
 	];
