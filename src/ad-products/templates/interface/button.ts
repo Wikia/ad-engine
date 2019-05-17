@@ -1,17 +1,17 @@
-import UiComponent from './ui-component';
+import { UiComponent } from './ui-component';
 
-export default class Button extends UiComponent {
-	get classNames() {
-		return ['button-control', ...super.classNames];
-	}
-
-	render() {
+export class Button extends UiComponent {
+	render(): HTMLButtonElement {
 		const buttonElement = document.createElement('button');
 
-		this.classNames.forEach((className) => buttonElement.classList.add(className));
+		this.getClassNames().forEach((className) => buttonElement.classList.add(className));
 		buttonElement.addEventListener('click', (event) => this.onClick(event));
 
 		return buttonElement;
+	}
+
+	getClassNames(): string[] {
+		return ['button-control', ...super.getClassNames()];
 	}
 
 	onClick(event) {

@@ -1,13 +1,12 @@
-export default class UiComponent {
-	get classNames() {
-		return this.props.classNames || [];
-	}
-
+export abstract class UiComponent {
 	constructor(props = {}) {
 		this.props = props;
+		this.id = Math.floor(Math.random() * 100);
 	}
 
-	render() {
-		return document.createDocumentFragment();
+	abstract render(): HTMLElement;
+
+	getClassNames(): string[] {
+		return this.props.classNames || [];
 	}
 }
