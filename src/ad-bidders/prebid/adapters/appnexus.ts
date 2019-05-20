@@ -15,7 +15,7 @@ export class Appnexus extends BaseAdapter {
 		return Appnexus.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, position = 'mobile' }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes, placementId, position = 'mobile' }): AdUnitConfig {
 		return {
 			code,
 			mediaTypes: {
@@ -27,7 +27,7 @@ export class Appnexus extends BaseAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						placementId: this.getPlacement(position),
+						placementId: placementId || this.getPlacement(position),
 					},
 				},
 			],

@@ -1,64 +1,99 @@
+import { AdStackPayload, Dictionary } from '../';
 import { events, eventService } from '../services/events';
-import { getTopOffset } from '../utils/dimensions';
+import { getTopOffset, getViewportHeight } from '../utils/dimensions';
+import { OldLazyQueue } from '../utils/lazy-queue';
+import { logger } from '../utils/logger';
 
-const callbacks = {};
+type ScrollListenerCallback = (event: string, callbackId: string) => void;
 
-function getUniqueId() {
-	return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
-}
+export class ScrollListener {
+	readonly serviceName = 'scroll-listener';
+	private callbacks: Dictionary<ScrollListenerCallback> = {};
 
-function pushSlot(adStack, node) {
-	adStack.push({
-		id: node.id,
-	});
-}
-
-class ScrollListener {
 	init() {
+		this.callbacks = {};
+
 		let requestAnimationFrameHandleAdded = false;
 
-		document.addEventListener('scroll', (event) => {
+		document.addEventListener('scroll', (event: Event) => {
 			if (!requestAnimationFrameHandleAdded) {
 				window.requestAnimationFrame(() => {
 					requestAnimationFrameHandleAdded = false;
-					Object.keys(callbacks).forEach((id) => {
-						if (typeof callbacks[id] === 'function') {
-							callbacks[id](event, id);
+					Object.keys(this.callbacks).forEach((id: string) => {
+						if (typeof this.callbacks[id] === 'function') {
+							this.callbacks[id](event.type, id);
 						}
 					});
 				});
 				requestAnimationFrameHandleAdded = true;
 			}
 		});
+		logger(this.serviceName, 'Service initialised.');
 	}
 
-	addSlot(adStack, id, threshold = 0) {
+	/**
+	 *
+	 * @param adStack AdStack to push the slot to.
+	 * @param id ID of the AdSlot to push
+	 * @param threshold slot will be pushed `threshold`px before it appears in viewport
+	 * @param distanceFromTop slot will be pushed after scrolling `distanceFromTop`px
+	 *
+	 * Only one parameter can be supplied: threshold or distanceFromTop
+	 */
+	addSlot(
+		adStack: OldLazyQueue<AdStackPayload>,
+		id: string,
+		{ threshold, distanceFromTop }: { threshold?: number; distanceFromTop?: number } = {},
+	): void {
 		const node = document.getElementById(id);
 
 		if (!node) {
+			logger(this.serviceName, `Node with id ${id} not found.`);
+
 			return;
 		}
 
-		this.addCallback((event, callbackId) => {
-			const scrollPosition =
-				window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-			const slotPosition = getTopOffset(node);
-			const viewPortHeight = Math.max(
-				document.documentElement.clientHeight,
-				window.innerHeight || 0,
-			);
+		if (threshold === undefined && distanceFromTop === undefined) {
+			logger(this.serviceName, 'either threshold or distanceFromTop must be initialised');
 
-			if (scrollPosition + viewPortHeight > slotPosition - threshold) {
-				this.removeCallback(callbackId);
-				pushSlot(adStack, node);
-			}
-		});
+			return;
+		}
+
+		if (threshold !== undefined && distanceFromTop !== undefined) {
+			logger(this.serviceName, 'either threshold or distanceFromTop can be initialised, not both');
+
+			return;
+		}
+
+		logger(this.serviceName, `Add slot ${id}.`);
+
+		this.addCallback(
+			(event: string, callbackId: string): void => {
+				const scrollPosition: number =
+					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
+				if (threshold !== undefined) {
+					const slotPosition: number = getTopOffset(node);
+					const viewPortHeight: number = getViewportHeight();
+
+					if (scrollPosition + viewPortHeight > slotPosition - threshold) {
+						this.removeCallback(callbackId);
+						this.pushSlot(adStack, node);
+					}
+				} else {
+					if (scrollPosition > distanceFromTop) {
+						this.removeCallback(callbackId);
+						this.pushSlot(adStack, node);
+					}
+				}
+			},
+		);
 	}
 
-	addCallback(callback) {
-		const id = getUniqueId();
+	addCallback(callback: ScrollListenerCallback): string {
+		const id: string = this.getUniqueId();
 
-		callbacks[id] = callback;
+		this.callbacks[id] = callback;
 
 		eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => this.removeCallback(id));
 
@@ -66,7 +101,18 @@ class ScrollListener {
 	}
 
 	removeCallback(id) {
-		delete callbacks[id];
+		delete this.callbacks[id];
+	}
+
+	getUniqueId(): string {
+		return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
+	}
+
+	pushSlot(adStack: OldLazyQueue<AdStackPayload>, node: HTMLElement) {
+		logger(this.serviceName, `Push slot ${node.id} to adStack.`);
+		adStack.push({
+			id: node.id,
+		});
 	}
 }
 

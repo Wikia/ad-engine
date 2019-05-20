@@ -16,6 +16,10 @@ import {
 import { FloatingAd } from './templates';
 import { LazyQueue, logger, makeLazyQueue, OldLazyQueue } from './utils';
 
+export interface AdStackPayload {
+	id: string;
+}
+
 const logGroup = 'ad-engine';
 
 export const DEFAULT_MAX_DELAY = 2000;
@@ -23,7 +27,7 @@ export const DEFAULT_MAX_DELAY = 2000;
 export class AdEngine {
 	started = false;
 	provider: Provider;
-	adStack: OldLazyQueue<string>;
+	adStack: OldLazyQueue<AdStackPayload>;
 
 	constructor(config = null) {
 		context.extend(config);
@@ -85,7 +89,9 @@ export class AdEngine {
 			const pushOnScrollQueue = new LazyQueue<string>(...pushOnScrollIds);
 
 			pushOnScrollQueue.onItemFlush((id: string) => {
-				scrollListener.addSlot(this.adStack, id, context.get('events.pushOnScroll.threshold'));
+				scrollListener.addSlot(this.adStack, id, {
+					threshold: context.get('events.pushOnScroll.threshold') || 0,
+				});
 			});
 			context.set('events.pushOnScroll.ids', pushOnScrollQueue);
 			pushOnScrollQueue.flush();
