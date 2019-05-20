@@ -16,7 +16,7 @@ export interface AdSlotData {
 	adType: string;
 	status: string;
 	creative_id: string | number;
-	creative_size: string | number[];
+	creative_size: string;
 	line_item_id: string | number;
 	order_id: string | number;
 	page_width: string | number;
@@ -61,10 +61,9 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 		adType: adType || '',
 		order_id: adSlot.orderId,
 		creative_id: adSlot.creativeId,
-		creative_size:
-			Array.isArray(adSlot.creativeSize) && adSlot.creativeSize.length
-				? adSlot.creativeSize.join('x')
-				: adSlot.creativeSize,
+		creative_size: Array.isArray(adSlot.creativeSize)
+			? adSlot.creativeSize.join('x')
+			: adSlot.creativeSize,
 		line_item_id: adSlot.lineItemId,
 		status: status || adSlot.getStatus(),
 		page_width: window.document.body.scrollWidth || '',

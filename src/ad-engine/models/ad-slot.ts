@@ -12,6 +12,7 @@ export interface Targeting {
 	src: string;
 	pos: string;
 	wsi?: string;
+	rv?: string;
 }
 
 interface RepeatConfig {
