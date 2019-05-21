@@ -25,7 +25,7 @@ export class GoogleImaPlayer {
 	constructor(
 		private adDisplayContainer: google.ima.AdDisplayContainer,
 		private adsLoader: google.ima.AdsLoader,
-		private params: VideoParams, // TODO: Add type
+		private params: VideoParams,
 	) {
 		this.videoAd = params.container.querySelector('video');
 	}

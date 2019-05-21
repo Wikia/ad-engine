@@ -74,7 +74,7 @@ export class AdEngine {
 	private setupAdStack(): void {
 		this.adStack = context.get('state.adStack');
 		if (!this.adStack.start) {
-			makeLazyQueue<string>(this.adStack as any, (ad: string) => {
+			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
 
 				slotService.add(adSlot);

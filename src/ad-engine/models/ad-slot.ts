@@ -1,4 +1,5 @@
 import * as EventEmitter from 'eventemitter3';
+import { AdStackPayload } from '../';
 import { slotListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
@@ -6,12 +7,14 @@ import { LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
+	[key: string]: googletag.NamedSize;
 	amznbid?: string;
 	hb_bidder?: string;
-	hb_pb?: number;
-	src: string;
-	pos: string;
+	hb_pb?: string;
+	src?: string;
+	pos?: string;
 	wsi?: string;
+	rv?: number;
 }
 
 interface RepeatConfig {
@@ -79,7 +82,7 @@ export class AdSlot extends EventEmitter {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
 	});
 
-	constructor(ad) {
+	constructor(ad: AdStackPayload) {
 		super();
 
 		this.config = context.get(`slots.${ad.id}`) || {};
@@ -218,11 +221,11 @@ export class AdSlot extends EventEmitter {
 		this.emit(AdSlot.DESTROYED_EVENT);
 	}
 
-	getConfigProperty(key): any {
+	getConfigProperty(key: string): any {
 		return context.get(`slots.${this.config.slotName}.${key}`);
 	}
 
-	setConfigProperty(key, value): void {
+	setConfigProperty(key: string, value: any): void {
 		context.set(`slots.${this.config.slotName}.${key}`, value);
 	}
 
@@ -237,7 +240,7 @@ export class AdSlot extends EventEmitter {
 		const templateNames = this.getConfigProperty('defaultTemplates');
 
 		if (templateNames && templateNames.length) {
-			templateNames.forEach((templateName) => templateService.init(templateName, this));
+			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
 	}
 

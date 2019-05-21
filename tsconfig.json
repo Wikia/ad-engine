@@ -13,7 +13,7 @@
 		"paths": {
 			"@wikia/*": ["src/*"]
 		},
-		"lib": ["es7", "dom", "es2017.object"]
+		"lib": ["dom", "es2017.object", "es7"]
 	},
 	"exclude": ["node_modules", "tmp", "dist", "@types", "maintenance/tslint-rules"]
 }

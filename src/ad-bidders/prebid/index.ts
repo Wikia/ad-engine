@@ -6,8 +6,8 @@ import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid
 import { getSettings, PrebidTargeting } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
-function postponeExecutionUntilPbjsLoads(method) {
-	return function (...args) {
+function postponeExecutionUntilPbjsLoads(method: (...args: any[]) => void) {
+	return function (...args: any[]) {
 		return window.pbjs.que.push(() => method.apply(this, args));
 	};
 }

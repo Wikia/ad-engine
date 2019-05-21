@@ -1,12 +1,19 @@
-import { Dictionary } from '../../../models';
+import { Dictionary, Targeting } from '../../../models';
 import { context } from '../../../services';
 import { sampler } from '../../../utils';
 import { VpaidMode } from '../porvata';
 
 export interface VideoParams extends Dictionary {
-	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 	autoPlay?: boolean;
+	container?: HTMLElement;
+	height?: number;
 	loadVideoTimeout?: number;
+	slotName?: string;
+	width?: number;
+	vastResponse?: string;
+	vastTargeting?: Targeting;
+	vastUrl?: string;
+	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 }
 
 function getMoatTrackingStatus(params: VideoParams): boolean {
