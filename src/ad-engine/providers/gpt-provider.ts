@@ -19,13 +19,13 @@ const logGroup = 'gpt-provider';
 
 export const ADX = 'AdX';
 
-function postponeExecutionUntilGptLoads(method) {
-	return function (...args) {
+function postponeExecutionUntilGptLoads(method: () => void) {
+	return function (...args: any) {
 		return window.googletag.cmd.push(() => method.apply(this, args));
 	};
 }
 
-let definedSlots = [];
+let definedSlots: googletag.Slot[] = [];
 let initialized = false;
 
 function getAdSlotFromEvent(
@@ -143,7 +143,7 @@ export class GptProvider implements Provider {
 	}
 
 	parseTargetingParams(targetingParams: Dictionary): Targeting {
-		const result = {};
+		const result: Dictionary = {};
 
 		Object.keys(targetingParams).forEach((key) => {
 			let value = targetingParams[key];

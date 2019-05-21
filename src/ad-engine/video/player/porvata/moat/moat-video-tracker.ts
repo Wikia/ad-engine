@@ -5,12 +5,18 @@ import { initMoatTracking } from './moat-video-tracker-script';
 const logGroup = 'moat-video-tracker';
 
 class MoatVideoTracker {
-	init(adsManager, container, viewMode, slicer1, slicer2) {
+	init(
+		adsManager: google.ima.AdsManager,
+		container: HTMLElement,
+		viewMode: google.ima.ViewMode,
+		slicer1: string,
+		slicer2: string,
+	) {
 		const ids = {
-			partnerCode: context.get('options.video.moatTracking.partnerCode'),
-			viewMode,
 			slicer1,
 			slicer2,
+			viewMode,
+			partnerCode: context.get('options.video.moatTracking.partnerCode'),
 		};
 
 		try {

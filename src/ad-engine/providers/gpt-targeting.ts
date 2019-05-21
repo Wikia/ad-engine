@@ -1,10 +1,13 @@
 import { context, events, eventService } from '../services';
 
-export function setupGptTargeting() {
+export function setupGptTargeting(): void {
 	const tag = window.googletag.pubads();
 	const targeting = context.get('targeting') || {};
 
-	function setTargetingValue(key, value) {
+	function setTargetingValue(
+		key: string,
+		value: string | string[] | (() => string | string[]),
+	): void {
 		if (typeof value === 'undefined' || value === null) {
 			tag.clearTargeting(key);
 		} else if (typeof value === 'function') {
@@ -14,7 +17,7 @@ export function setupGptTargeting() {
 		}
 	}
 
-	function setTargetingFromContext() {
+	function setTargetingFromContext(): void {
 		Object.keys(targeting).forEach((key) => {
 			setTargetingValue(key, targeting[key]);
 		});

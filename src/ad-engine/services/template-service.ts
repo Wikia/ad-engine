@@ -1,12 +1,13 @@
 import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils/logger';
-import { context } from './context-service';
+import { context } from './';
 
 const logGroup = 'template-service';
-const templates = {};
 
 class TemplateService {
-	register(template, customConfig = null): void {
+	private templates: Dictionary = {};
+
+	register(template: any, customConfig: any = null): void {
 		if (typeof template.getName !== 'function') {
 			throw new Error('Template does not implement getName method.');
 		}
@@ -23,13 +24,13 @@ class TemplateService {
 		}
 
 		context.set(`templates.${name}`, config);
-		templates[name] = template;
+		this.templates[name] = template;
 	}
 
 	init(name: string, slot: AdSlot = null, params: Dictionary = {}): void {
 		logger(logGroup, 'Load template', name, slot, params);
 
-		if (!templates[name]) {
+		if (!this.templates[name]) {
 			throw new Error(`Template ${name} does not exist.`);
 		}
 
@@ -40,7 +41,7 @@ class TemplateService {
 			params.slotName = params.slotName.split(',').shift();
 		}
 
-		return new templates[name](slot).init(params);
+		return new this.templates[name](slot).init(params);
 	}
 }
 

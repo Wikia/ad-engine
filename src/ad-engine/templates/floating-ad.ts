@@ -3,7 +3,7 @@ import { AdSlot } from '../models';
 import { getTopOffset } from '../utils';
 
 export class FloatingAd {
-	static getName() {
+	static getName(): string {
 		return 'floating-ad';
 	}
 
@@ -26,7 +26,7 @@ export class FloatingAd {
 			const scrollPosition =
 				window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-			container = slotNode.parentNode;
+			container = slotNode.parentNode as HTMLElement;
 			containerOffset = getTopOffset(container);
 			slotHeight = slotNode.offsetHeight;
 			end = containerOffset + container.offsetHeight - slotHeight;

@@ -10,7 +10,7 @@ export class ScrollListener {
 	readonly serviceName = 'scroll-listener';
 	private callbacks: Dictionary<ScrollListenerCallback> = {};
 
-	init() {
+	init(): void {
 		this.callbacks = {};
 
 		let requestAnimationFrameHandleAdded = false;
@@ -100,7 +100,7 @@ export class ScrollListener {
 		return id;
 	}
 
-	removeCallback(id) {
+	removeCallback(id: string): void {
 		delete this.callbacks[id];
 	}
 
@@ -108,7 +108,7 @@ export class ScrollListener {
 		return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
 	}
 
-	pushSlot(adStack: OldLazyQueue<AdStackPayload>, node: HTMLElement) {
+	pushSlot(adStack: OldLazyQueue<AdStackPayload>, node: HTMLElement): void {
 		logger(this.serviceName, `Push slot ${node.id} to adStack.`);
 		adStack.push({
 			id: node.id,

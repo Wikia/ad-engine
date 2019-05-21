@@ -50,7 +50,7 @@ export class StickyTLB extends StickyBase {
 		return 'stickyTLB';
 	}
 
-	init(params) {
+	async init(params) {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'stickiness rejected');
 			this.adSlot.emitEvent(Stickiness.SLOT_STICKINESS_DISABLED);
@@ -63,7 +63,9 @@ export class StickyTLB extends StickyBase {
 		this.container.style.backgroundColor = '#000';
 		this.container.classList.add('bfaa-template');
 
-		this.config.onInit(this.adSlot, this.params, this.config);
+		try {
+			await this.config.onInit(this.adSlot, this.params, this.config);
+		} catch (e) {}
 		this.onAdReady();
 	}
 
