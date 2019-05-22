@@ -114,6 +114,11 @@ export class GptProvider implements Provider {
 		gptSlot.addService(window.googletag.pubads()).setCollapseEmptyDiv(true);
 
 		this.applyTargetingParams(gptSlot, targeting);
+
+		if (adSlot.getConfigProperty('forceSafeFrame')) {
+			this.forceSafeFrame(gptSlot);
+		}
+
 		slotDataParamsUpdater.updateOnCreate(adSlot, targeting);
 		adSlot.updateWinningPbBidderDetails();
 
@@ -140,6 +145,13 @@ export class GptProvider implements Provider {
 
 	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting) {
 		Object.keys(targeting).forEach((key) => gptSlot.setTargeting(key, targeting[key]));
+	}
+
+	forceSafeFrame(gptSlot: googletag.Slot) {
+		gptSlot.setForceSafeFrame(true);
+		gptSlot.setSafeFrameConfig({
+			sandbox: true,
+		});
 	}
 
 	parseTargetingParams(targetingParams: Dictionary): Targeting {

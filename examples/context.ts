@@ -189,6 +189,14 @@ export default {
 				},
 			},
 		},
+		floor_adhesion: {
+			outOfPage: false,
+			targeting: {
+				loc: 'footer',
+			},
+			defaultTemplates: ['floorAdhesion'],
+			defaultSizes: [[728, 90]],
+		},
 		incontent_boxad: {
 			sizes: [
 				{
