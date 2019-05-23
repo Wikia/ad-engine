@@ -93,7 +93,6 @@
 		"webpack-merge": "4.1.2"
 	},
 	"files": [
-		"@types/",
 		"dist/",
 		"lib/",
 		"configs/",
