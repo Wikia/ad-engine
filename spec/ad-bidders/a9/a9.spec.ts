@@ -11,11 +11,9 @@ describe('A9 bidder', () => {
 		bidderConfig = {
 			slots: {
 				top_leaderboard: {
-					slotId: 'TOP_LEADERBOARD',
 					sizes: [[728, 90]],
 				},
 				featured: {
-					slotId: 'FEATURED',
 					type: 'video',
 				},
 			},

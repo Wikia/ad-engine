@@ -235,7 +235,7 @@ export class A9 extends BaseBidder {
 	 */
 	createSlotDefinition(slotAlias) {
 		const config = this.slots[slotAlias];
-		const slotID = config.slotId || slotAlias;
+		const slotID = slotAlias.toUpperCase();
 		const definition = {
 			slotID,
 			slotName: slotID,
