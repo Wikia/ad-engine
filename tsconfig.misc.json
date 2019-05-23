@@ -6,5 +6,5 @@
 			"@wikia/*": ["src/*"]
 		}
 	},
-	"include": ["spec", "examples"]
+	"include": ["spec", "examples", "src"]
 }
