@@ -35,8 +35,8 @@ describe('A9 bidder', () => {
 		);
 
 		expect(definition).to.deep.equal({
-			slotID: 'TOP_LEADERBOARD',
-			slotName: 'TOP_LEADERBOARD',
+			slotID: 'top_leaderboard',
+			slotName: 'top_leaderboard',
 			sizes: [[728, 90]],
 		});
 	});
@@ -57,8 +57,8 @@ describe('A9 bidder', () => {
 
 		expect(definition).to.deep.equal({
 			mediaType: 'video',
-			slotID: 'FEATURED',
-			slotName: 'FEATURED',
+			slotID: 'featured',
+			slotName: 'featured',
 		});
 	});
 });
