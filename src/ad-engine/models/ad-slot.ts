@@ -3,7 +3,7 @@ import { AdStackPayload } from '../';
 import { slotListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
-import { LazyQueue, logger, stringBuilder } from '../utils';
+import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
@@ -205,6 +205,10 @@ export class AdSlot extends EventEmitter {
 
 	getCopy(): SlotConfig {
 		return JSON.parse(JSON.stringify(this.config));
+	}
+
+	getTopOffset(): number {
+		return getTopOffset(this.getElement());
 	}
 
 	enable(): void {
