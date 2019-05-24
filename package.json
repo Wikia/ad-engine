@@ -122,7 +122,7 @@
 		"build": "npm run build:webpack && npm run build:rollup",
 		"build:webpack": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
 		"build:rollup": "rollup -c rollup.config.js",
-		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
+		"build:examples": "webpack --progress --colors --hide-modules --config webpack.examples.js",
 		"watch:webpack": "webpack --progress --colors --hide-modules --watch",
 		"watch:rollup": "npm run build:rollup -- -w",
 		"ci-check": "npm run test && npm run lint",

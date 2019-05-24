@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const StringReplacePlugin = require('string-replace-webpack-plugin');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const path = require('path');
@@ -26,8 +27,17 @@ module.exports = (TSCONFIG) => ({
 				include: INCLUDE,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
+			{
+				test: path.resolve(__dirname, 'src/ad-engine/index.ts'),
+				loader: StringReplacePlugin.replace({
+					replacements: [
+						{
+							pattern: /<\?=[ \t]*PACKAGE\(([\w\-_.]*?)\)[ \t]*\?>/gi,
+							replacement: (match, p1) => get(pkg, p1),
+						},
+					],
+				}),
+			},
 		],
 	},
-
-	plugins: [new MiniCssExtractPlugin({ filename: 'styles.css' })],
 });
