@@ -117,11 +117,12 @@
 	},
 	"scripts": {
 		"dev": "npm run serve",
-		"serve": "webpack-dev-server --progress --colors --inline --open --watch --content-base=./examples --config webpack.examples.js",
+		"serve": "webpack-dev-server --progress --colors --inline --open --watch --content-base=./examples --config webpack.dev.js",
 		"prebuild": "rm -rf dist",
 		"build": "npm run build:webpack && npm run build:rollup",
 		"build:webpack": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
 		"build:rollup": "rollup -c rollup.config.js",
+		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
 		"watch:webpack": "webpack --progress --colors --hide-modules --watch",
 		"watch:rollup": "npm run build:rollup -- -w",
 		"ci-check": "npm run test && npm run lint",
