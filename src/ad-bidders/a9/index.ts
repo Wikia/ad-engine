@@ -72,8 +72,6 @@ export class A9 extends BaseBidder {
 	cmp: Cmp = cmp;
 	isRenderImpOverwritten = false;
 	priceMap: PriceMap = {};
-	// map of slot id to slot alias
-	slotNamesMap: Dictionary<string> = {};
 	targetingKeys: string[] = [];
 
 	amazonId: string;
@@ -172,7 +170,7 @@ export class A9 extends BaseBidder {
 			this.addApstagRenderImpHookOnFirstFetch();
 
 			currentBids.forEach((bid) => {
-				const slotName: string = this.slotNamesMap[bid.slotID] || bid.slotID;
+				const slotName = bid.slotID;
 				const { keys, bidTargeting } = this.getBidTargetingWithKeys(bid);
 
 				this.updateBidSlot(slotName, keys, bidTargeting);
@@ -258,13 +256,10 @@ export class A9 extends BaseBidder {
 	 */
 	createSlotDefinition(slotAlias: string): A9SlotDefinition | null {
 		const config: A9SlotConfig = this.slots[slotAlias];
-		const slotID: string = config.slotId || slotAlias;
 		const definition: A9SlotDefinition = {
-			slotID,
-			slotName: slotID,
+			slotID: slotAlias,
+			slotName: slotAlias,
 		};
-
-		this.slotNamesMap[slotID] = slotAlias;
 
 		if (!this.bidderConfig.videoEnabled && config.type === 'video') {
 			return null;
