@@ -85,13 +85,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		});
 		const bfaa = slotService.get(this.config.bfaaSlotName);
 
-		scrollListener.addCallback((event, id) => {
-			if (this.adSlot.isViewed()) {
-				scrollListener.removeCallback(id);
-
-				return;
-			}
-
+		const cbId = scrollListener.addCallback((event, id) => {
 			const scrollPosition =
 				window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 			const slotPosition = utils.getTopOffset(this.adSlot.getElement());
@@ -105,6 +99,9 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 				scrollListener.removeCallback(id);
 				resolvePromise();
 			}
+		});
+		this.adSlot.viewed.then(() => {
+			scrollListener.removeCallback(cbId);
 		});
 
 		return promise;

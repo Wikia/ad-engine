@@ -98,19 +98,22 @@ export class SlotTweaker {
 	}
 
 	onReady(adSlot: AdSlot): Promise<HTMLIFrameElement> {
-		if (adSlot.getConfigProperty('useGptOnloadEvent')) {
-			return adSlot.onLoad();
-		}
+		function getIframe(): HTMLIFrameElement {
+			const iframe = adSlot.getIframe();
 
-		const container = this.getContainer(adSlot);
-		const element = container.querySelector<HTMLIFrameElement>('div[id*="_container_"] iframe');
-
-		return new Promise<HTMLIFrameElement>((resolve, reject) => {
-			if (!element) {
-				reject(new Error('Cannot find iframe element'));
+			if (!iframe) {
+				throw new Error('Cannot find iframe element');
 			}
 
-			const iframe: HTMLIFrameElement = element as HTMLIFrameElement;
+			return iframe;
+		}
+
+		if (adSlot.getConfigProperty('useGptOnloadEvent')) {
+			return adSlot.loaded.then(getIframe);
+		}
+
+		return new Promise<HTMLIFrameElement>((resolve) => {
+			const iframe: HTMLIFrameElement = getIframe();
 			let iframeDocument = null;
 
 			try {

@@ -7,7 +7,7 @@ export default class CloseButton extends UiComponent {
 		return ['button-close', ...super.classNames];
 	}
 
-	render() {
+	render(): HTMLElement {
 		const { onClick } = this.props;
 		const { classNames } = this;
 		const button = new Button({ onClick, classNames }).render();
