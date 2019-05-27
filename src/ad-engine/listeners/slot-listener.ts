@@ -43,12 +43,8 @@ const logGroup = 'slot-listener';
 
 let listeners: AdSlotListener[] = null;
 
-function getIframe(adSlot: AdSlot): HTMLIFrameElement {
-	return adSlot.getElement().querySelector('div[id*="_container_"] iframe');
-}
-
 function getAdType(event: googletag.events.SlotRenderEndedEvent, adSlot: AdSlot): string {
-	const iframe = getIframe(adSlot);
+	const iframe = adSlot.getIframe();
 
 	let isIframeAccessible = false;
 
@@ -139,6 +135,7 @@ class SlotListener {
 		}
 
 		dispatch('onRenderEnded', adSlot, { adType, event });
+		adSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
 	}
 
 	emitLoadedEvent(event: googletag.events.SlotOnloadEvent, adSlot: AdSlot): void {

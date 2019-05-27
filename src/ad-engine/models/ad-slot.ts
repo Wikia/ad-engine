@@ -7,7 +7,6 @@ import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
-	[key: string]: googletag.NamedSize;
 	amznbid?: string;
 	hb_bidder?: string;
 	hb_pb?: string;
@@ -16,6 +15,7 @@ export interface Targeting {
 	wsi?: string;
 	// @ts-ignore
 	rv?: number;
+	[key: string]: googletag.NamedSize | number;
 }
 
 interface RepeatConfig {
@@ -55,6 +55,7 @@ export class AdSlot extends EventEmitter {
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
+	static SLOT_RENDERED_EVENT = 'slotRendered';
 	static VIDEO_VIEWED_EVENT = 'videoViewed';
 	static DESTROYED_EVENT = 'slotDestroyed';
 
@@ -66,8 +67,8 @@ export class AdSlot extends EventEmitter {
 
 	static AD_CLASS = 'gpt-ad';
 
+	private slotViewed = false;
 	config: SlotConfig;
-	viewed = false;
 	element: null | HTMLElement = null;
 	status: null | string = null;
 	isEmpty = true;
@@ -79,8 +80,14 @@ export class AdSlot extends EventEmitter {
 	creativeSize: null | string | number[] = null;
 	lineItemId: null | string | number = null;
 	winningBidderDetails: null | WinningBidderDetails = null;
-	onLoadPromise = new Promise<HTMLIFrameElement>((resolve) => {
+	loaded = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
+	});
+	rendered = new Promise<void>((resolve) => {
+		this.once(AdSlot.SLOT_RENDERED_EVENT, resolve);
+	});
+	viewed = new Promise<void>((resolve) => {
+		this.once(AdSlot.SLOT_VIEWED_EVENT, resolve);
 	});
 
 	constructor(ad: AdStackPayload) {
@@ -99,7 +106,7 @@ export class AdSlot extends EventEmitter {
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
 
 		this.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-			this.viewed = true;
+			this.slotViewed = true;
 		});
 
 		this.addClass(AdSlot.AD_CLASS);
@@ -127,12 +134,22 @@ export class AdSlot extends EventEmitter {
 		});
 	}
 
-	getElement(): HTMLElement {
+	getElement(): HTMLElement | null {
 		if (!this.element) {
 			this.element = document.getElementById(this.getSlotName());
 		}
 
 		return this.element;
+	}
+
+	getIframe(): HTMLIFrameElement | null {
+		const element = this.getElement();
+
+		if (!element) {
+			return null;
+		}
+
+		return element.querySelector<HTMLIFrameElement>('div[id*="_container_"] iframe');
 	}
 
 	getSlotName(): string {
@@ -192,7 +209,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	isViewed(): boolean {
-		return this.viewed;
+		return this.slotViewed;
 	}
 
 	isRepeatable(): boolean {
@@ -232,10 +249,6 @@ export class AdSlot extends EventEmitter {
 
 	setConfigProperty(key: string, value: any): void {
 		context.set(`slots.${this.config.slotName}.${key}`, value);
-	}
-
-	onLoad(): Promise<HTMLIFrameElement> {
-		return this.onLoadPromise;
 	}
 
 	success(status: string = AdSlot.STATUS_SUCCESS): void {
