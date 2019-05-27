@@ -1,10 +1,11 @@
-export abstract class UiComponent {
-	constructor(props = {}) {
-		this.props = props;
-		this.id = Math.floor(Math.random() * 100);
-	}
+import { Dictionary } from '@wikia/ad-engine';
 
-	abstract render(): HTMLElement;
+export class UiComponent {
+	constructor(protected props: Dictionary = {}) {}
+
+	render(): HTMLElement | DocumentFragment {
+		return document.createDocumentFragment();
+	}
 
 	getClassNames(): string[] {
 		return this.props.classNames || [];
