@@ -1,4 +1,4 @@
-import { AdSlot, context, utils } from '@wikia/ad-engine';
+import { AdSlot, context, Dictionary, utils } from '@wikia/ad-engine';
 import CloseButton from './interface/close-button';
 import { Stickiness } from './uap/themes/hivi/stickiness';
 
@@ -10,27 +10,29 @@ const logGroup = 'sticky-base';
 export class StickyBase {
 	static DEFAULT_UNSTICK_DELAY = 2000;
 
+	protected container: HTMLElement;
+	protected lineId: string;
+	protected lines: string[];
+	protected stickiness: Stickiness;
+	protected config: Dictionary;
+	protected params: Dictionary;
+	protected button: HTMLElement;
+
 	/**
 	 * Base class for sticky ads
-	 * @param {AdSlot} adSlot
 	 */
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	constructor(protected adSlot: AdSlot) {
 		this.container = this.adSlot.getElement();
 		this.lineId = adSlot.lineItemId.toString() || '';
 		this.lines = context.get(`templates.${this.getName()}.lineItemIds`) || [];
-		this.stickiness = null;
 		this.config = context.get(`templates.${this.getName()}`) || {};
 	}
 
-	/**
-	 * @protected
-	 */
-	setupStickiness(params) {
+	protected setupStickiness(params: Dictionary): void {
 		this.params = params;
 
 		this.adSlot.setConfigProperty('useGptOnloadEvent', true);
-		this.adSlot.onLoad().then(() => {
+		this.adSlot.loaded.then(() => {
 			utils.logger(logGroup, this.adSlot.getSlotName(), 'slot ready for stickiness');
 			this.adSlot.emitEvent(Stickiness.SLOT_STICKY_READY_STATE);
 		});
@@ -40,18 +42,14 @@ export class StickyBase {
 
 	/**
 	 * @abstract
-	 * @protected
 	 */
-	addStickinessPlugin() {
+	protected addStickinessPlugin(): void {
 		throw new utils.NotImplementedException();
 	}
 
-	/**
-	 * @protected
-	 */
-	isEnabled() {
-		const isEnabledInContext = context.get(`templates.${this.getName()}.enabled`);
-		const isEnabled = isEnabledInContext && this.isLineAndGeo();
+	protected isEnabled(): boolean {
+		const isEnabledInContext: boolean = context.get(`templates.${this.getName()}.enabled`);
+		const isEnabled: boolean = isEnabledInContext && this.isLineAndGeo();
 
 		if (isEnabled) {
 			utils.logger(logGroup, `enabled with line item id ${this.lineId}`);
@@ -63,18 +61,13 @@ export class StickyBase {
 	/**
 	 * Returns template name.
 	 * @abstract
-	 * @protected
-	 * @return {string}
 	 */
-	getName() {
+	protected getName(): string {
 		throw new utils.NotImplementedException();
 	}
 
-	/**
-	 * @private
-	 */
-	isLineAndGeo() {
-		const found = this.lines.some((line) => {
+	private isLineAndGeo(): boolean {
+		const found: boolean = this.lines.some((line) => {
 			const [lineId, geo] = line.split(':', 2);
 
 			return lineId === this.lineId && (!geo || utils.geoService.isProperGeo([geo]));
@@ -89,17 +82,16 @@ export class StickyBase {
 
 	/**
 	 * Runs logic which decides when to unstick the template.
-	 * @protected
 	 */
-	addUnstickLogic() {
+	protected addUnstickLogic(): void {
 		const {
 			stickyAdditionalTime,
 			stickyDefaultTime = StickyBase.DEFAULT_UNSTICK_DELAY,
 			stickyUntilSlotViewed,
 		} = this.config;
 		const whenSlotViewedOrTimeout = async () => {
-			await (stickyUntilSlotViewed && !this.adSlot.isViewed()
-				? utils.once(this.adSlot, AdSlot.SLOT_VIEWED_EVENT)
+			await (stickyUntilSlotViewed
+				? this.adSlot.loaded.then(() => this.adSlot.viewed)
 				: Promise.resolve());
 			await utils.wait(stickyDefaultTime + stickyAdditionalTime);
 		};
@@ -107,10 +99,7 @@ export class StickyBase {
 		this.stickiness = new Stickiness(this.adSlot, whenSlotViewedOrTimeout());
 	}
 
-	/**
-	 * @protected
-	 */
-	addButton(rootElement, cb) {
+	protected addButton(rootElement, cb): void {
 		this.button = new CloseButton({
 			classNames: ['button-unstick'],
 			onClick: cb,
@@ -119,17 +108,11 @@ export class StickyBase {
 		rootElement.appendChild(this.button);
 	}
 
-	/**
-	 * @protected
-	 */
-	removeButton() {
+	protected removeButton(): void {
 		this.button.remove();
 	}
 
-	/**
-	 * @protected
-	 */
-	addUnstickEvents() {
+	protected addUnstickEvents(): void {
 		this.stickiness.on(Stickiness.STICKINESS_CHANGE_EVENT, (isSticky) =>
 			this.onStickinessChange(isSticky),
 		);
@@ -139,17 +122,15 @@ export class StickyBase {
 
 	/**
 	 * @abstract
-	 * @protected
 	 */
-	onStickinessChange(isSticky) {
+	protected onStickinessChange(isSticky: boolean): void {
 		throw new utils.NotImplementedException({ isSticky });
 	}
 
 	/**
 	 * @abstract
-	 * @protected
 	 */
-	unstickImmediately() {
+	protected unstickImmediately(): void {
 		throw new utils.NotImplementedException();
 	}
 }

@@ -29,6 +29,7 @@ class Browsi {
 		}
 
 		utils.logger(logGroup, 'loading');
+		window.buildAdUnitString = utils.stringBuilder.build;
 
 		return loadScript().then(() => {
 			utils.logger(logGroup, 'ready');

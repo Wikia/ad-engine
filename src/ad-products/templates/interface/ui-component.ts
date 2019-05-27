@@ -1,13 +1,13 @@
+import { Dictionary } from '@wikia/ad-engine';
+
 export default class UiComponent {
-	get classNames() {
+	get classNames(): string[] {
 		return this.props.classNames || [];
 	}
 
-	constructor(props = {}) {
-		this.props = props;
-	}
+	constructor(protected props: Dictionary = {}) {}
 
-	render() {
+	render(): HTMLElement | DocumentFragment {
 		return document.createDocumentFragment();
 	}
 }
