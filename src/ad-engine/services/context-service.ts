@@ -30,6 +30,11 @@ const contextObject: ContextObject = {
 		slotRepeater: false,
 		trackingOptIn: false,
 	},
+	service: {
+		instantConfig: {
+			endpoint: '//services.wikia-dev.pl/icbm/api/config',
+		},
+	},
 	slots: {},
 	src: 'gpt',
 	state: {
