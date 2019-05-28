@@ -30,6 +30,7 @@ export interface Bid {
 
 export interface BidderAdSlotConfig {
 	appId?: string | number;
+	inScreen?: string;
 	placementId?: string | number;
 	pos?: string;
 	size?: number[];
