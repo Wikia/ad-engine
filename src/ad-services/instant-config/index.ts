@@ -4,29 +4,12 @@ import { get } from 'lodash';
 const logGroup = 'instant-config';
 const instantGlobalsQueryParamPrefix = 'InstantGlobals';
 
-type Variable = boolean | string | string[] | number | number[] | object | null;
+type ConfigValue = boolean | string | string[] | number | number[] | object | null;
 interface Config {
-	[key: string]: Variable;
+	[key: string]: ConfigValue;
 }
 
-const parseValue = (value: string): Variable => {
-	if (value === 'true' || value === 'false') {
-		return value === 'true';
-	}
-
-	const intValue = parseInt(value, 10);
-	if (value === `${intValue}`) {
-		return intValue;
-	}
-
-	try {
-		return JSON.parse(value);
-	} catch (ignore) {
-		return value || null;
-	}
-};
-
-const overrideInstantConfig = (config: Config): Config => {
+export const overrideInstantConfig = (config: Config): Config => {
 	const newConfig = {};
 	const queryParams = utils.queryString.getValues();
 
@@ -37,10 +20,13 @@ const overrideInstantConfig = (config: Config): Config => {
 		.map((instantGlobalKey) => {
 			const [, key] = instantGlobalKey.split('.');
 
-			return key;
+			return {
+				instantGlobalKey,
+				key,
+			};
 		})
-		.forEach((key) => {
-			newConfig[key] = parseValue(queryParams[`${instantGlobalsQueryParamPrefix}.${key}`]);
+		.forEach(({ instantGlobalKey, key }) => {
+			newConfig[key] = utils.queryString.parseValue(queryParams[instantGlobalKey]);
 		});
 
 	return { ...config, ...newConfig };
@@ -52,7 +38,7 @@ const overrideInstantConfig = (config: Config): Config => {
 class InstantConfig {
 	config: Config = null;
 
-	async get(variableName: string, defaultValue: Variable = null): Promise<Variable> {
+	async get(variableName: string, defaultValue: ConfigValue = null): Promise<ConfigValue> {
 		const config = await this.getConfig();
 
 		return config[variableName] || defaultValue;

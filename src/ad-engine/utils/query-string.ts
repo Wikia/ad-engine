@@ -1,5 +1,7 @@
 import { Dictionary } from '../models';
 
+type QueryValue = boolean | string | string[] | number | number[] | object | null;
+
 class QueryString {
 	getValues(input?: string): Dictionary<string> {
 		const path: string = input || window.location.search.substr(1);
@@ -25,6 +27,23 @@ class QueryString {
 
 	isUrlParamSet(param: string): boolean {
 		return !!parseInt(this.get(param), 10);
+	}
+
+	parseValue(value: string): QueryValue {
+		if (value === 'true' || value === 'false') {
+			return value === 'true';
+		}
+
+		const intValue = parseInt(value, 10);
+		if (value === `${intValue}`) {
+			return intValue;
+		}
+
+		try {
+			return JSON.parse(value);
+		} catch (ignore) {
+			return value || null;
+		}
 	}
 }
 
