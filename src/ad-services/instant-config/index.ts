@@ -72,9 +72,14 @@ class InstantConfig {
 				utils.logger(logGroup, 'errored');
 			});
 			request.onreadystatechange = function () {
-				if (this.readyState === 4 && this.status === 200) {
-					utils.logger(logGroup, 'has response', this.response);
-					resolve(this.response);
+				if (this.readyState === 4) {
+					if (this.status === 200) {
+						utils.logger(logGroup, 'has response', this.response);
+						resolve(this.response);
+					} else {
+						utils.logger(logGroup, 'did not respond successfully', this.response);
+						resolve(fallbackConfig);
+					}
 				}
 			};
 			request.send();
