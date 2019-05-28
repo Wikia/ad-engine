@@ -110,9 +110,7 @@ export class Stickiness extends EventEmitter {
 		this.logger('waiting for viewability and custom condition');
 
 		await Promise.all([
-			!this.adSlot.isViewed()
-				? utils.once(this.adSlot, AdSlot.SLOT_VIEWED_EVENT)
-				: Promise.resolve(),
+			this.adSlot.viewed,
 			isFunction(this.customWhen) ? this.customWhen() : this.customWhen,
 		]);
 

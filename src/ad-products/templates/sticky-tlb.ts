@@ -1,8 +1,9 @@
-import { scrollListener, SlotTweaker, utils } from '@wikia/ad-engine';
+import { Dictionary, SlotTweaker, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../utils';
 import AdvertisementLabel from './interface/advertisement-label';
 import { animate } from './interface/animate';
 import { StickyBase } from './sticky-base';
+import { StickinessCallback } from './uap/big-fancy-ad-above';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
@@ -46,11 +47,11 @@ export class StickyTLB extends StickyBase {
 		};
 	}
 
-	static getName() {
+	static getName(): string {
 		return 'stickyTLB';
 	}
 
-	async init(params) {
+	async init(params: Dictionary): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'stickiness rejected');
 			this.adSlot.emitEvent(Stickiness.SLOT_STICKINESS_DISABLED);
@@ -69,10 +70,7 @@ export class StickyTLB extends StickyBase {
 		this.onAdReady();
 	}
 
-	/**
-	 * @private
-	 */
-	async onAdReady() {
+	protected async onAdReady(): Promise<void> {
 		this.container.classList.add('theme-hivi');
 		this.addAdvertisementLabel();
 
@@ -89,23 +87,17 @@ export class StickyTLB extends StickyBase {
 		utils.logger(logGroup, 'ad ready');
 	}
 
-	/**
-	 * @private
-	 */
-	addAdvertisementLabel() {
-		const advertisementLabel = new AdvertisementLabel();
+	protected addAdvertisementLabel(): void {
+		const advertisementLabel: AdvertisementLabel = new AdvertisementLabel();
 
 		this.container.appendChild(advertisementLabel.render());
 	}
 
-	/**
-	 * @protected
-	 */
-	async onStickinessChange(isSticky) {
-		const stickinessBeforeCallback = isSticky
+	protected async onStickinessChange(isSticky: boolean): Promise<void> {
+		const stickinessBeforeCallback: StickinessCallback = isSticky
 			? this.config.onBeforeStickBfaaCallback
 			: this.config.onBeforeUnstickBfaaCallback;
-		const stickinessAfterCallback = isSticky
+		const stickinessAfterCallback: StickinessCallback = isSticky
 			? this.config.onAfterStickBfaaCallback
 			: this.config.onAfterUnstickBfaaCallback;
 
@@ -121,10 +113,7 @@ export class StickyTLB extends StickyBase {
 		utils.logger(logGroup, 'stickiness changed', isSticky);
 	}
 
-	/**
-	 * @protected
-	 */
-	async onUnstick() {
+	protected async onUnstick(): Promise<void> {
 		this.adSlot.emitEvent(Stickiness.SLOT_UNSTICKED_STATE);
 		this.config.moveNavbar(0, SLIDE_OUT_TIME);
 		await animate(this.container, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
@@ -133,22 +122,15 @@ export class StickyTLB extends StickyBase {
 		animate(this.container, CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
 	}
 
-	/**
-	 * @protected
-	 */
-	onStick() {
+	protected onStick(): void {
 		this.adSlot.emitEvent(Stickiness.SLOT_STICKED_STATE);
 		this.container.classList.add(CSS_CLASSNAME_STICKY_BFAA);
 
 		this.addCloseButton();
 	}
 
-	/**
-	 * @protected
-	 */
-	unstickImmediately() {
+	protected unstickImmediately(): void {
 		this.config.moveNavbar(0, 0);
-		scrollListener.removeCallback(this.scrollListener);
 		this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 		this.container.classList.add('theme-resolved');
 		this.stickiness.sticky = false;
@@ -159,10 +141,7 @@ export class StickyTLB extends StickyBase {
 		this.removeCloseButton();
 	}
 
-	/**
-	 * @protected
-	 */
-	addStickinessPlugin() {
+	protected addStickinessPlugin(): void {
 		this.container.classList.add(CSS_CLASSNAME_STICKY_IAB);
 		this.addUnstickLogic();
 		this.addUnstickEvents();
@@ -170,36 +149,25 @@ export class StickyTLB extends StickyBase {
 		utils.logger(logGroup, this.adSlot.getSlotName(), 'stickiness added');
 	}
 
-	/**
-	 * @private
-	 */
-	addCloseButton() {
+	protected addCloseButton(): void {
 		this.addButton(this.container, () => {
 			this.stickiness.close();
 			this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		});
 	}
 
-	/**
-	 * @private
-	 */
-	removeCloseButton() {
+	protected removeCloseButton(): void {
 		this.removeButton();
 	}
 
 	/**
 	 * Returns template name.
-	 * @protected
-	 * @return {string}
 	 */
-	getName() {
+	protected getName(): string {
 		return StickyTLB.getName();
 	}
 
-	/**
-	 * @protected
-	 */
-	isEnabled() {
-		return super.isEnabled() && this.container;
+	protected isEnabled(): boolean {
+		return super.isEnabled() && !!this.container;
 	}
 }

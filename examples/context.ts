@@ -20,19 +20,15 @@ export default {
 			amazonId: '3115',
 			slots: {
 				top_leaderboard: {
-					slotId: 'TOP_LEADERBOARD',
 					sizes: [[728, 90]],
 				},
-				TOP_BOXAD: {
-					slotId: 'TOP_BOXAD',
+				top_boxad: {
 					sizes: [[300, 250]],
 				},
 				featured: {
-					slotId: 'FEATURED',
 					type: 'video',
 				},
 				incontent_boxad: {
-					slotId: 'MOBILE_IN_CONTENT',
 					sizes: [[300, 250]],
 				},
 			},
@@ -175,7 +171,6 @@ export default {
 		},
 		top_boxad: {
 			aboveTheFold: true,
-			bidderAlias: 'TOP_BOXAD',
 			sizes: [
 				{
 					viewportSize: [768, 0],
