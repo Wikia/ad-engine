@@ -4,6 +4,7 @@
 interface Window {
 	AdEngine_adType?: any;
 	ads?: Ads;
+	buildAdUnitString?: (string, any) => string;
 	google: {
 		ima: typeof google.ima;
 	};
