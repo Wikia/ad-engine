@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { helpers } from '../../common/helpers';
 import { instantConfig } from '../../pages/instant-config.page';
 
-describe('It will test instant config page', () => {
+describe('Instant Config', () => {
 	beforeEach(() => {
 		browser.url(instantConfig.pageLink);
 	});
 
-	it('test example query params', () => {
+	it('should read query params from URL and override configuration', () => {
 		instantConfig.enableTestQueryParams();
 		helpers.waitForValuesLoaded(instantConfig.configPlaceholder);
 		const config = instantConfig.getConfig();
@@ -22,7 +22,7 @@ describe('It will test instant config page', () => {
 		});
 	});
 
-	it('test fallback config', () => {
+	it('should use fallback configuration on broken connection', () => {
 		instantConfig.enableBrokenConfigRequest();
 		helpers.waitForValuesLoaded(instantConfig.configPlaceholder);
 		const config = instantConfig.getConfig();
@@ -30,7 +30,7 @@ describe('It will test instant config page', () => {
 		expect(config['thisIsValueFromFallbackConfig']).to.equal(true);
 	});
 
-	it('test overriding config', () => {
+	it('should override fallback config with query params on broken connection', () => {
 		instantConfig.enableBrokenConfigRequest();
 		browser.url(`${browser.getUrl()}&InstantGlobals.thisIsValueFromFallbackConfig=false`);
 		helpers.waitForValuesLoaded(instantConfig.configPlaceholder);
