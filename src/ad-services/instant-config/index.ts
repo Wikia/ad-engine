@@ -40,9 +40,7 @@ class InstantConfig {
 
 	async getConfig(): Promise<Config> {
 		if (!this.configPromise) {
-			this.configPromise = new Promise((resolve) => {
-				this.fetchInstantConfig().then((config) => resolve(config));
-			});
+			this.configPromise = this.fetchInstantConfig();
 		}
 
 		return this.configPromise;
