@@ -4,8 +4,8 @@ import { get } from 'lodash';
 const logGroup = 'instant-config';
 const instantGlobalsQueryParamPrefix = 'InstantGlobals';
 
-type ConfigValue = boolean | string | string[] | number | number[] | object | null;
-interface Config {
+export type ConfigValue = boolean | string | string[] | number | number[] | object | null;
+export interface Config {
 	[key: string]: ConfigValue;
 }
 
@@ -36,27 +36,19 @@ export const overrideInstantConfig = (config: Config): Config => {
  * InstantConfig service
  */
 class InstantConfig {
-	config: Config = null;
-
-	async get(variableName: string, defaultValue: ConfigValue = null): Promise<ConfigValue> {
-		const config = await this.getConfig();
-
-		if (typeof config[variableName] === 'undefined') {
-			return defaultValue;
-		}
-
-		return config[variableName];
-	}
+	configPromise: Promise<Config> = null;
 
 	async getConfig(): Promise<Config> {
-		if (!this.config) {
-			this.config = await this.fetchInstantConfig();
+		if (!this.configPromise) {
+			this.configPromise = new Promise((resolve) => {
+				this.fetchInstantConfig().then((config) => resolve(config));
+			});
 		}
 
-		return this.config;
+		return this.configPromise;
 	}
 
-	private fetchInstantConfig(): Promise<Config> {
+	private async fetchInstantConfig(): Promise<Config> {
 		const request = new XMLHttpRequest();
 		const url = context.get('services.instantConfig.endpoint');
 		const fallbackConfigKey =

@@ -4,10 +4,9 @@ import { utils } from '../../../src/ad-engine';
 import { instantConfig, overrideInstantConfig } from '../../../src/ad-services/instant-config';
 
 describe('Instant Config service', () => {
-	const config = {
+	const configPromise = Promise.resolve({
 		foo: 'bar',
-		falsy: false,
-	};
+	});
 
 	beforeEach(() => {
 		const queryInstantGlobals = {
@@ -15,38 +14,22 @@ describe('Instant Config service', () => {
 			'InstantGlobals.bar': 'false',
 		};
 
-		instantConfig.config = config;
+		instantConfig.configPromise = configPromise;
 		sinon.stub(utils.queryString, 'getValues');
 		utils.queryString.getValues.returns(queryInstantGlobals);
 	});
 
 	afterEach(() => {
-		instantConfig.config = null;
+		instantConfig.configPromise = null;
 		utils.queryString.getValues.restore();
 	});
 
 	it('gets defined config', async () => {
 		const value = await instantConfig.getConfig();
 
-		expect(value).to.equal(config);
-	});
-
-	it('gets single value from config', async () => {
-		const value = await instantConfig.get('foo');
-
-		expect(value).to.equal('bar');
-	});
-
-	it('default value overrides undefined values', async () => {
-		const value = await instantConfig.get('iShouldBeNotDefined', 'osiemdziesiąt trzy');
-
-		expect(value).to.equal('osiemdziesiąt trzy');
-	});
-
-	it('default value does not override falsy values while using getter', async () => {
-		const value = await instantConfig.get('falsy', 'osiemdziesiąt trzy');
-
-		expect(value).to.equal(false);
+		expect(value).to.deep.equal({
+			foo: 'bar',
+		});
 	});
 
 	it('overrides config using query params', () => {
