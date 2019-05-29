@@ -1,5 +1,5 @@
 import { AdSlot, context, Dictionary, utils } from '@wikia/ad-engine';
-import CloseButton from './interface/close-button';
+import { CloseButton } from './interface/close-button';
 import { Stickiness } from './uap/themes/hivi/stickiness';
 
 const logGroup = 'sticky-base';
