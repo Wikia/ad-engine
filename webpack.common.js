@@ -28,7 +28,7 @@ module.exports = (TSCONFIG) => ({
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
 			{
-				test: path.resolve(__dirname, 'src/ad-engine/index.ts'),
+				test: path.resolve(__dirname, 'src/ad-engine/log-version.ts'),
 				loader: StringReplacePlugin.replace({
 					replacements: [
 						{

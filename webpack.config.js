@@ -60,7 +60,7 @@ const common = {
 				exclude: [path.resolve(__dirname, 'node_modules')],
 			},
 			{
-				test: path.resolve(__dirname, 'src/ad-engine/index.ts'),
+				test: path.resolve(__dirname, 'src/ad-engine/log-version.ts'),
 				loader: StringReplacePlugin.replace({
 					replacements: [
 						{
