@@ -4,7 +4,7 @@ import { get } from 'lodash';
 const logGroup = 'instant-config';
 const instantGlobalsQueryParamPrefix = 'InstantGlobals';
 
-export type ConfigValue = boolean | string | string[] | number | number[] | object | null;
+export type ConfigValue = boolean | string | string[] | number | number[] | object;
 export interface Config {
 	[key: string]: ConfigValue;
 }
