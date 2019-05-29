@@ -75,6 +75,7 @@ export class AdSlot extends EventEmitter {
 	enabled: boolean;
 	events: LazyQueue;
 	adUnit: string;
+	advertiserId: null | string = null;
 	orderId: null | string | number = null;
 	creativeId: null | string | number = null;
 	creativeSize: null | string | number[] = null;
@@ -310,6 +311,7 @@ export class AdSlot extends EventEmitter {
 
 			if (resp) {
 				this.orderId = resp.campaignId;
+				this.advertiserId = resp.advertiserId;
 				if (event.sourceAgnosticCreativeId && event.sourceAgnosticLineItemId) {
 					this.logger('set line item and creative id to source agnostic values');
 					creativeId = event.sourceAgnosticCreativeId;
