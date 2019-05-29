@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"module": "es2015",
+		"target": "es5",
+		"lib": ["es2015", "dom", "scripthost"],
+		"typeRoots": ["node_modules/@types", "@types"]
+	},
+	"exclude": ["node_modules", "@types"]
+}
