@@ -6,6 +6,7 @@ import { instantConfig, overrideInstantConfig } from '../../../src/ad-services/i
 describe('Instant Config service', () => {
 	const config = {
 		foo: 'bar',
+		falsy: false,
 	};
 
 	beforeEach(() => {
@@ -34,6 +35,18 @@ describe('Instant Config service', () => {
 		const value = await instantConfig.get('foo');
 
 		expect(value).to.equal('bar');
+	});
+
+	it('default value overrides undefined values', async () => {
+		const value = await instantConfig.get('iShouldBeNotDefined', 'osiemdziesiąt trzy');
+
+		expect(value).to.equal('osiemdziesiąt trzy');
+	});
+
+	it('default value does not override falsy values while using getter', async () => {
+		const value = await instantConfig.get('falsy', 'osiemdziesiąt trzy');
+
+		expect(value).to.equal(false);
 	});
 
 	it('overrides config using query params', () => {

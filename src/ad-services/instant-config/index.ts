@@ -41,11 +41,15 @@ class InstantConfig {
 	async get(variableName: string, defaultValue: ConfigValue = null): Promise<ConfigValue> {
 		const config = await this.getConfig();
 
-		return config[variableName] || defaultValue;
+		if (typeof config[variableName] === 'undefined') {
+			return defaultValue;
+		}
+
+		return config[variableName];
 	}
 
 	async getConfig(): Promise<Config> {
-		if (this.config === null) {
+		if (!this.config) {
 			this.config = await this.fetchInstantConfig();
 		}
 
