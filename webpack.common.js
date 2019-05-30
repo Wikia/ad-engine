@@ -1,8 +1,10 @@
+const path = require('path');
+const get = require('lodash/get');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StringReplacePlugin = require('string-replace-webpack-plugin');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
-const path = require('path');
+const pkg = require('./package.json');
 
 const INCLUDE = [
 	path.resolve(__dirname, 'src'),
