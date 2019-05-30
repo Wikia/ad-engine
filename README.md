@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-npm install github:Wikia/ad-engine#v14.0.0
+npm install github:Wikia/ad-engine
 ```
 
 ## Available packages
@@ -12,6 +12,15 @@ npm install github:Wikia/ad-engine#v14.0.0
 * `@wikia/ad-engine/dist/ad-bidders` - **Prebid.js** and **A9** integrations (requires: `@wikia/ad-engine`)
 * `@wikia/ad-engine/dist/ad-products` - all FANDOM ad products like **Universal Ad Package** (requires: `@wikia/ad-engine`)
 * `@wikia/ad-engine/dist/ad-services` - integrations with external services, i.e. **Bill the Lizard** (requires: `@wikia/ad-engine`)
+
+### Tree Shakeable version
+
+When using this version import everything from `@wikia/ad-engine`. Dead code should be eliminated during webpack compilation.
+
+It is the one in `dist/index.es5.js`. It is compiled to es5 without polyfills and lodash plugin.
+To compile it in your desired application import `getAdEngineLoader` from `configs/webpack-app.config.js` and add to your webpack loaders array.
+
+ 
 
 ## Context description
 
@@ -351,6 +360,19 @@ top.loadCustomAd && top.loadCustomAd({
 });
 </script>
 ```
+
+## Run build
+
+To build entire lib just use `npm run build` - it will create all three versions:
+* tree shakeable with single entry point
+  * can be built with `npm run build:rollup`
+  * can be watched with `npm run watch:rollup`
+* legacy with 4 different exports
+  * can be built with `npm run build:webpack`
+  * can be watched with `npm run build:webpack`
+* `global.bundle.js` to include everything to window.
+  * can be build with `npm run build:webpack`
+  * cannot be watched
 
 ## Run example pages
 

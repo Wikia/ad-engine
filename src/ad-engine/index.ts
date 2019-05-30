@@ -1,14 +1,7 @@
-import { get, set } from 'lodash';
+import { logVersion } from './log-version';
 import * as utils from './utils';
 
-const versionField = 'ads.adEngineVersion';
-
-if (get(window, versionField, null)) {
-	window.console.warn('Multiple <?= PACKAGE(name) ?> initializations. This may cause issues.');
-}
-
-set(window, versionField, 'v<?= PACKAGE(version) ?>');
-utils.logger('ad-engine', 'v<?= PACKAGE(version) ?>');
+logVersion();
 
 export * from './ad-engine';
 export * from './listeners';

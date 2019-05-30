@@ -1,4 +1,4 @@
-import svgs from './icons.json';
+import * as svgs from './icons-data.json';
 
 const parser = new window.DOMParser();
 
