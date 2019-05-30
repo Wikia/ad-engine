@@ -72,6 +72,7 @@ export interface UapParams {
 	resolvedStateAutoPlay: boolean;
 	resolvedStateForced?: boolean;
 	restartOnUnmute: boolean;
+	slotsSet: 'default' | 'bfaa-only' | 'bfaa-top_boxad';
 	slotName: string;
 	splitLayoutVideoPosition: string;
 	src: string;
@@ -249,7 +250,12 @@ function updateSlotsTargeting(lineItemId, creativeId) {
 	});
 }
 
-function enableSlots(slotsToEnable) {
+function enableSlots(slotsToEnable: string[] = [], slotsSet: string = 'default'): void {
+	if (slotsSet === 'bfaa-only') {
+		window.ads.runtime.disableSecondCall = true;
+	} else if (slotsSet === 'bfaa-top_boxad') {
+		slotsToEnable = ['top_boxad'];
+	}
 	if (getType() !== 'abcd') {
 		slotsToEnable.forEach((slotName) => {
 			btfBlockerService.unblock(slotName);
@@ -304,7 +310,7 @@ export const universalAdPackage = {
 
 		setIds(params.uap, params.creativeId);
 		disableSlots(slotsToDisable);
-		enableSlots(slotsToEnable);
+		enableSlots(slotsToEnable, params.slotsSet);
 		setType(params.adProduct);
 
 		if (params.slotName) {
