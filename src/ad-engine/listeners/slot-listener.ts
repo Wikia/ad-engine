@@ -25,6 +25,7 @@ type SlotListenerMethod =
 	| 'onStatusChanged';
 
 export interface AdSlotData {
+	advertiser_id: string;
 	browser: string;
 	time_bucket: number;
 	timestamp: number;
@@ -71,6 +72,7 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 	return {
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
 		adType: adType || '',
+		advertiser_id: adSlot.advertiserId,
 		order_id: adSlot.orderId,
 		creative_id: adSlot.creativeId,
 		creative_size: Array.isArray(adSlot.creativeSize)
