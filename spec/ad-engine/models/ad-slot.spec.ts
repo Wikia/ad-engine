@@ -1,3 +1,4 @@
+import { Dictionary } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../src/ad-engine/services/context-service';
@@ -115,10 +116,8 @@ describe('ad-slot', () => {
 	});
 
 	describe('updateWinningA9BidderDetails', () => {
-		/** @type {AdSlot} */
-		let adSlot;
-		/** @type {Object} */
-		let targeting;
+		let adSlot: AdSlot;
+		let targeting: Dictionary;
 
 		beforeEach(() => {
 			adSlot = createAdSlot('top_leaderboard');
@@ -145,6 +144,20 @@ describe('ad-slot', () => {
 			adSlot.updateWinningA9BidderDetails();
 
 			expect(adSlot.winningBidderDetails).to.be.null;
+		});
+	});
+
+	describe('getTopOffset', () => {
+		let adSlot: AdSlot;
+
+		beforeEach(() => {
+			adSlot = createAdSlot('top_leaderboard');
+		});
+
+		it('should return null if getElement returns null', () => {
+			adSlot.getElement = () => null;
+
+			expect(adSlot.getTopOffset()).to.equal(null);
 		});
 	});
 });
