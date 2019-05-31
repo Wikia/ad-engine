@@ -11,17 +11,13 @@ class BuildBundle {
 	}
 
 	run(compilation, callback) {
-		const distFiles = [
-			'./dist/adEngine.global.js',
-			'./dist/adProducts.global.js',
-			'./dist/adBidders.global.js',
-			'./dist/adServices.global.js',
-			'./lib/prebid.min.js',
-		];
+		Object.keys(this.options.files).forEach((key) => {
+			concat(this.options.files[key], key);
+		});
 
-		concat(distFiles, './dist/global-bundle.js');
 		callback();
-		console.log('\n', 'Global Bundle created!', '\n');
+
+		console.log('\n', 'Build Bundle completed!', '\n');
 	}
 }
 

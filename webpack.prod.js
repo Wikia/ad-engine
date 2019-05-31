@@ -27,7 +27,7 @@ const production = {
 	plugins: [
 		new BuildBundlePlugin({
 			files: {
-				'global-bundle.js': [
+				'dist/global-bundle.js': [
 					'dist/adEngine.global.js',
 					'dist/adProducts.global.js',
 					'dist/adBidders.global.js',
