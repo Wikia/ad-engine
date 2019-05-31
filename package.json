@@ -121,7 +121,7 @@
 		"prebuild": "rm -rf dist",
 		"build": "npm run build:webpack && npm run build:rollup",
 		"build:webpack": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
-		"build:prod": "webpack --progress --colors --hide-modules --config webpack.prod.js && node ./maintenance/build-bundle.js",
+		"build:prod": "webpack --progress --colors --hide-modules --config webpack.prod.js",
 		"build:rollup": "rollup -c rollup.config.js",
 		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
 		"watch:webpack": "webpack --progress --colors --hide-modules --watch",
