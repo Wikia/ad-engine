@@ -1,4 +1,5 @@
-import { context, slotTweaker, SlotTweaker, utils } from '@wikia/ad-engine';
+import { AdSlot, context, slotTweaker, SlotTweaker, utils } from '@wikia/ad-engine';
+import AdvertisementLabel from '../interface/advertisement-label';
 import { CloseButton } from '../interface/close-button';
 
 export class FloorAdhesion {
@@ -12,8 +13,7 @@ export class FloorAdhesion {
 		};
 	}
 
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.floorAdhesion') || {};
 	}
 
@@ -21,15 +21,17 @@ export class FloorAdhesion {
 		const wrapper = this.adSlot.getElement();
 		const closeButton = new CloseButton({
 			onClick: () => {
-				slotTweaker.hide(this.adSlot);
+				this.adSlot.hide();
 				this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 				utils.logger(FloorAdhesion.getName(), 'closed');
 			},
 		});
+		const label = new AdvertisementLabel();
 
 		this.config.onInit();
 
 		wrapper.appendChild(closeButton.render());
+		wrapper.appendChild(label.render());
 		wrapper.classList.add('floor-adhesion');
 		wrapper.classList.add('out-of-page-template');
 
