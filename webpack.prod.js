@@ -1,13 +1,29 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 const production = {
 	mode: 'production',
 
-	devtool: 'source-map',
+	entry: {
+		adEngine: './src/ad-engine/index.ts',
+		adProducts: './src/ad-products/index.ts',
+		adBidders: './src/ad-bidders/index.ts',
+		adServices: './src/ad-services/index.ts',
+	},
 
-	plugins: [new MiniCssExtractPlugin({ filename: 'styles.css' })],
+	externals: {
+		'@wikia/ad-engine': {
+			window: ['Wikia', 'adEngine'],
+		},
+	},
+
+	output: {
+		filename: '[name].global.js',
+		library: ['Wikia', '[name]'],
+		libraryTarget: 'window',
+	},
+
+	devtool: 'source-map',
 };
 
 module.exports = merge(common('tsconfig.json'), production);

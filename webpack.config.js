@@ -1,19 +1,12 @@
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 const adEngine = {
 	mode: 'production',
 	entry: {
-		'ad-engine': './src/ad-engine/index.ts',
+		adEngine: './src/ad-engine/index.ts',
 	},
 	devtool: 'source-map',
-	plugins: [
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production'),
-		}),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-	],
 	output: {
 		filename: '[name].global.js',
 		library: ['Wikia', 'adEngine'],
@@ -24,15 +17,9 @@ const adEngine = {
 const adProducts = {
 	mode: 'production',
 	entry: {
-		'ad-products': './src/ad-products/index.ts',
+		adProducts: './src/ad-products/index.ts',
 	},
 	devtool: 'source-map',
-	plugins: [
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production'),
-		}),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-	],
 	externals: {
 		'@wikia/ad-engine': {
 			window: ['Wikia', 'adEngine'],
@@ -48,15 +35,9 @@ const adProducts = {
 const adBidders = {
 	mode: 'production',
 	entry: {
-		'ad-bidders': './src/ad-bidders/index.ts',
+		adBidders: './src/ad-bidders/index.ts',
 	},
 	devtool: 'source-map',
-	plugins: [
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production'),
-		}),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-	],
 	externals: {
 		'@wikia/ad-engine': {
 			window: ['Wikia', 'adEngine'],
@@ -72,15 +53,9 @@ const adBidders = {
 const adServices = {
 	mode: 'production',
 	entry: {
-		'ad-services': './src/ad-services/index.ts',
+		adServices: './src/ad-services/index.ts',
 	},
 	devtool: 'source-map',
-	plugins: [
-		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production'),
-		}),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-	],
 	externals: {
 		'@wikia/ad-engine': {
 			window: ['Wikia', 'adEngine'],
