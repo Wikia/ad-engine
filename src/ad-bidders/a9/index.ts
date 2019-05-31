@@ -33,6 +33,7 @@ export class A9 extends BaseBidder {
 		this.slotsNames = Object.keys(this.slots);
 		this.bids = {};
 		this.priceMap = {};
+		this.slotNamesMap = {};
 		this.targetingKeys = [];
 		this.apstag = Apstag.make();
 		this.cmp = cmp;
@@ -132,7 +133,7 @@ export class A9 extends BaseBidder {
 			this.addApstagRenderImpHookOnFirstFetch();
 
 			currentBids.forEach((bid) => {
-				const slotName = bid.slotID;
+				const slotName = this.slotNamesMap[bid.slotID] || bid.slotID;
 				const { keys, bidTargeting } = this.getBidTargetingWithKeys(bid);
 
 				this.updateBidSlot(slotName, keys, bidTargeting);
@@ -234,10 +235,13 @@ export class A9 extends BaseBidder {
 	 */
 	createSlotDefinition(slotAlias) {
 		const config = this.slots[slotAlias];
+		const slotID = config.slotId || slotAlias;
 		const definition = {
-			slotID: slotAlias,
-			slotName: slotAlias,
+			slotID,
+			slotName: slotID,
 		};
+
+		this.slotNamesMap[slotID] = slotAlias;
 
 		if (!this.bidderConfig.videoEnabled && config.type === 'video') {
 			return null;

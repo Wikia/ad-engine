@@ -20,15 +20,19 @@ export default {
 			amazonId: '3115',
 			slots: {
 				top_leaderboard: {
+					slotId: 'TOP_LEADERBOARD',
 					sizes: [[728, 90]],
 				},
-				top_boxad: {
+				TOP_BOXAD: {
+					slotId: 'TOP_BOXAD',
 					sizes: [[300, 250]],
 				},
 				featured: {
+					slotId: 'FEATURED',
 					type: 'video',
 				},
 				incontent_boxad: {
+					slotId: 'MOBILE_IN_CONTENT',
 					sizes: [[300, 250]],
 				},
 			},
@@ -40,14 +44,6 @@ export default {
 			bidsRefreshing: {
 				enabled: true,
 				slots: ['incontent_boxad'],
-			},
-			vmg: {
-				enabled: true,
-				slots: {
-					top_leaderboard: {
-						sizes: [[3, 3]],
-					},
-				},
 			},
 			wikia: {
 				enabled: true,
@@ -62,6 +58,9 @@ export default {
 						sizes: [[300, 250]],
 					},
 					bottom_leaderboard: {
+						sizes: [[728, 90]],
+					},
+					floor_adhesion: {
 						sizes: [[728, 90]],
 					},
 				},
@@ -171,6 +170,7 @@ export default {
 		},
 		top_boxad: {
 			aboveTheFold: true,
+			bidderAlias: 'TOP_BOXAD',
 			sizes: [
 				{
 					viewportSize: [768, 0],
