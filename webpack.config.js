@@ -77,57 +77,6 @@ const common = {
 	},
 };
 
-const development = {
-	entry: examplePages,
-	devtool: 'cheap-module-eval-source-map',
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				commons: {
-					name: 'vendor',
-					filename: '[name]/dist/vendor.js',
-					chunks: 'all',
-				},
-			},
-		},
-	},
-	output: {
-		path: path.resolve(__dirname, 'examples'),
-		filename: '[name]/dist/bundle.js',
-	},
-	plugins: [
-		new MiniCssExtractPlugin({ filename: '[name]/dist/styles.css' }),
-		new StringReplacePlugin(),
-		new CopyWebpackPlugin([
-			{ from: path.resolve(__dirname, 'lib/prebid.min.js'), to: 'vendor/dist/prebid.min.js' },
-		]),
-	],
-	resolve: {
-		alias: {
-			[pkg.name]: path.join(__dirname, 'src/ad-engine'),
-			'@wikia/ad-bidders': path.join(__dirname, 'src/ad-bidders'),
-			'@wikia/ad-products': path.join(__dirname, 'src/ad-products'),
-			'@wikia/ad-services': path.join(__dirname, 'src/ad-services'),
-		},
-	},
-};
-
-const wdioTest = {
-	devtool: null,
-	optimization: null,
-};
-
-const test = {
-	resolve: {
-		alias: {
-			[pkg.name]: path.join(__dirname, 'src/ad-engine'),
-			'@wikia/ad-bidders': path.join(__dirname, 'src/ad-bidders'),
-			'@wikia/ad-products': path.join(__dirname, 'src/ad-products'),
-			'@wikia/ad-services': path.join(__dirname, 'src/ad-services'),
-		},
-	},
-};
-
 const adEngine = {
 	config: {
 		mode: 'production',
@@ -307,29 +256,15 @@ const adServices = {
 	},
 };
 
-module.exports = function(env) {
-	const isProduction = process.env.NODE_ENV === 'production' || (env && env.production);
-	const isWdioTest = env && env['wdio-test'];
-	const isTest = env && env.test;
-
-	if (isProduction) {
-		return [
-			merge(common, adEngine.config, adEngine.targets.window),
-			merge(common, adEngine.config, adEngine.targets.commonjs),
-			merge(common, adProducts.config, adProducts.targets.window),
-			merge(common, adProducts.config, adProducts.targets.commonjs),
-			merge(common, adBidders.config, adBidders.targets.commonjs),
-			merge(common, adBidders.config, adBidders.targets.window),
-			merge(common, adServices.config, adServices.targets.commonjs),
-			merge(common, adServices.config, adServices.targets.window),
-		];
-	}
-	if (isTest) {
-		return merge(common, test);
-	}
-	if (isWdioTest) {
-		return merge(common, development, wdioTest);
-	}
-
-	return merge(common, development);
+module.exports = function() {
+	return [
+		merge(common, adEngine.config, adEngine.targets.window),
+		merge(common, adEngine.config, adEngine.targets.commonjs),
+		merge(common, adProducts.config, adProducts.targets.window),
+		merge(common, adProducts.config, adProducts.targets.commonjs),
+		merge(common, adBidders.config, adBidders.targets.commonjs),
+		merge(common, adBidders.config, adBidders.targets.window),
+		merge(common, adServices.config, adServices.targets.commonjs),
+		merge(common, adServices.config, adServices.targets.window),
+	];
 };
