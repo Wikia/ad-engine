@@ -3,6 +3,7 @@ $out-of-page-z-index: 5000101;
 .out-of-page-template {
 	align-items: center;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	position: fixed;
 	width: 100%;
@@ -38,6 +39,12 @@ $out-of-page-z-index: 5000101;
 	bottom: 0;
 	// needed for Safari 9 - it doesn't position elements from the left by default
 	left: 0;
+	text-align: center;
+
+	.advertisement-label {
+		width: 100%;
+		color: white;
+	}
 }
 
 .interstitial {
