@@ -9,31 +9,6 @@ const StringReplacePlugin = require('string-replace-webpack-plugin');
 const get = require('lodash/get');
 const pkg = require('./package.json');
 
-const examplePages = {};
-
-function findExamplePages(startPath, filter) {
-	if (!fs.existsSync(startPath)) {
-		return;
-	}
-
-	const files = fs.readdirSync(startPath);
-
-	files.forEach((file) => {
-		const filename = path.join(startPath, file);
-		const stat = fs.lstatSync(filename);
-
-		if (stat.isDirectory()) {
-			findExamplePages(filename, filter);
-		} else if (filename.indexOf(filter) >= 0) {
-			const shortName = filename.replace('examples/', '').replace('/script.ts', '');
-
-			examplePages[shortName] = `./${filename}`;
-		}
-	});
-}
-
-findExamplePages('./examples', 'script.ts');
-
 const common = {
 	mode: 'development',
 	context: __dirname,
@@ -96,17 +71,6 @@ const adEngine = {
 		],
 	},
 	targets: {
-		commonjs: {
-			externals: Object.keys(pkg.dependencies).map((key) => new RegExp(`^${key}`)),
-			output: {
-				filename: '[name].js',
-				library: 'adEngine',
-				libraryTarget: 'commonjs2',
-			},
-			optimization: {
-				minimize: false,
-			},
-		},
 		window: {
 			output: {
 				filename: '[name].global.js',
@@ -136,19 +100,6 @@ const adProducts = {
 		],
 	},
 	targets: {
-		commonjs: {
-			externals: Object.keys(pkg.dependencies)
-				.map((key) => new RegExp(`^${key}`))
-				.concat([/^@wikia\/ad-engine/]),
-			output: {
-				filename: '[name].js',
-				library: 'adEngine',
-				libraryTarget: 'commonjs2',
-			},
-			optimization: {
-				minimize: false,
-			},
-		},
 		window: {
 			externals: {
 				'@wikia/ad-engine': {
@@ -182,19 +133,6 @@ const adBidders = {
 		],
 	},
 	targets: {
-		commonjs: {
-			externals: Object.keys(pkg.dependencies)
-				.map((key) => new RegExp(`^${key}`))
-				.concat([/^@wikia\/ad-engine/]),
-			output: {
-				filename: '[name].js',
-				library: 'adEngine',
-				libraryTarget: 'commonjs2',
-			},
-			optimization: {
-				minimize: false,
-			},
-		},
 		window: {
 			externals: {
 				'@wikia/ad-engine': {
@@ -228,19 +166,6 @@ const adServices = {
 		],
 	},
 	targets: {
-		commonjs: {
-			externals: Object.keys(pkg.dependencies)
-				.map((key) => new RegExp(`^${key}`))
-				.concat([/^@wikia\/ad-engine/]),
-			output: {
-				filename: '[name].js',
-				library: 'adEngine',
-				libraryTarget: 'commonjs2',
-			},
-			optimization: {
-				minimize: false,
-			},
-		},
 		window: {
 			externals: {
 				'@wikia/ad-engine': {
@@ -259,12 +184,8 @@ const adServices = {
 module.exports = function() {
 	return [
 		merge(common, adEngine.config, adEngine.targets.window),
-		merge(common, adEngine.config, adEngine.targets.commonjs),
 		merge(common, adProducts.config, adProducts.targets.window),
-		merge(common, adProducts.config, adProducts.targets.commonjs),
-		merge(common, adBidders.config, adBidders.targets.commonjs),
 		merge(common, adBidders.config, adBidders.targets.window),
-		merge(common, adServices.config, adServices.targets.commonjs),
 		merge(common, adServices.config, adServices.targets.window),
 	];
 };
