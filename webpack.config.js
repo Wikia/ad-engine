@@ -52,7 +52,7 @@ const common = {
 const adEngine = {
 	mode: 'production',
 	entry: {
-		adEngine: './src/ad-engine/index.ts',
+		'ad-engine': './src/ad-engine/index.ts',
 	},
 	devtool: 'source-map',
 	output: {
@@ -65,7 +65,7 @@ const adEngine = {
 const adProducts = {
 	mode: 'production',
 	entry: {
-		adProducts: './src/ad-products/index.ts',
+		'ad-products': './src/ad-products/index.ts',
 	},
 	devtool: 'source-map',
 	externals: {
@@ -83,7 +83,7 @@ const adProducts = {
 const adBidders = {
 	mode: 'production',
 	entry: {
-		adBidders: './src/ad-bidders/index.ts',
+		'ad-bidders': './src/ad-bidders/index.ts',
 	},
 	devtool: 'source-map',
 	externals: {
@@ -101,7 +101,7 @@ const adBidders = {
 const adServices = {
 	mode: 'production',
 	entry: {
-		adServices: './src/ad-services/index.ts',
+		'ad-services': './src/ad-services/index.ts',
 	},
 	devtool: 'source-map',
 	externals: {

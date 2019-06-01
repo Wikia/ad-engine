@@ -1,9 +1,9 @@
 const concat = require('concat');
 const distFiles = [
-	'./dist/adEngine.global.js',
-	'./dist/adProducts.global.js',
-	'./dist/adBidders.global.js',
-	'./dist/adServices.global.js',
+	'./dist/ad-engine.global.js',
+	'./dist/ad-products.global.js',
+	'./dist/ad-bidders.global.js',
+	'./dist/ad-services.global.js',
 	'./lib/prebid.min.js',
 ];
 
