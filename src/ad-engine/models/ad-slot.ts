@@ -341,7 +341,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	/**
-	 * Appends gpt-ad class to adSlot node.
+	 * Appends class to adSlot node.
 	 */
 	addClass(className: string): boolean {
 		const container = this.getElement();
@@ -356,7 +356,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	/**
-	 * Removes gpt-ad class from adSlot node.
+	 * Removes class from adSlot node.
 	 */
 	removeClass(className: string): boolean {
 		const container = this.getElement();
