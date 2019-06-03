@@ -380,8 +380,8 @@ export class AdSlot extends EventEmitter {
 
 		if (added) {
 			logger(AdSlot.LOG_GROUP, 'hide', this.getSlotName());
+			this.emit(AdSlot.HIDDEN_EVENT);
 		}
-		this.emit(AdSlot.HIDDEN_EVENT);
 	}
 
 	/**
@@ -394,7 +394,7 @@ export class AdSlot extends EventEmitter {
 
 		if (removed) {
 			logger(AdSlot.LOG_GROUP, 'show', this.getSlotName());
+			this.emit(AdSlot.SHOWED_EVENT);
 		}
-		this.emit(AdSlot.SHOWED_EVENT);
 	}
 }
