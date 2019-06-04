@@ -295,7 +295,7 @@ export class A9 extends BaseBidder {
 	 * @protected
 	 */
 	callBids() {
-		if (this.cmp.exists) {
+		if (this.isCMPEnabled && this.cmp.exists) {
 			this.cmp.getConsentData(null, (consentData) => {
 				this.init(consentData);
 			});
