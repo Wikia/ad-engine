@@ -47,7 +47,10 @@ class SlotInjector {
 		 * to config key map because Symbol cannot be iterated over using any for loop
 		 */
 		eventService.on(events.AD_SLOT_CREATED, (adSlot) => {
-			const slotsToPush = context.get(`events.pushAfterCreated.${adSlot.getSlotName()}`) || [];
+			const slotsToPush: string[] = this.getPushAfterSlots(
+				'pushAfterCreated',
+				adSlot.getSlotName(),
+			);
 
 			slotsToPush.forEach((slotName: string) => {
 				const slotElement = this.inject(slotName, true);
@@ -61,12 +64,22 @@ class SlotInjector {
 		});
 
 		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
-			const slotsToPush = context.get(`events.pushAfterRendered.${adSlot.getSlotName()}`) || [];
+			const slotsToPush: string[] = this.getPushAfterSlots(
+				'pushAfterRendered',
+				adSlot.getSlotName(),
+			);
 
 			slotsToPush.forEach((slotName: string) => {
 				this.inject(slotName);
 			});
 		});
+	}
+
+	private getPushAfterSlots(
+		after: 'pushAfterRendered' | 'pushAfterCreated',
+		slotName: string,
+	): string[] {
+		return context.get(`events.${after}.${slotName}`) || [];
 	}
 
 	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
