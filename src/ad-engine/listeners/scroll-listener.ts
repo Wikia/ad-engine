@@ -1,7 +1,7 @@
-import { AdStackPayload, Dictionary } from '../';
+import { Dictionary } from '../';
 import { events, eventService } from '../services/events';
+import { slotService } from '../services/slot-service';
 import { getTopOffset, getViewportHeight } from '../utils/dimensions';
-import { OldLazyQueue } from '../utils/lazy-queue';
 import { logger } from '../utils/logger';
 
 type ScrollListenerCallback = (event: string, callbackId: string) => void;
@@ -33,7 +33,6 @@ export class ScrollListener {
 
 	/**
 	 *
-	 * @param adStack AdStack to push the slot to.
 	 * @param id ID of the AdSlot to push
 	 * @param threshold slot will be pushed `threshold`px before it appears in viewport
 	 * @param distanceFromTop slot will be pushed after scrolling `distanceFromTop`px
@@ -41,7 +40,6 @@ export class ScrollListener {
 	 * Only one parameter can be supplied: threshold or distanceFromTop
 	 */
 	addSlot(
-		adStack: OldLazyQueue<AdStackPayload>,
 		id: string,
 		{ threshold, distanceFromTop }: { threshold?: number; distanceFromTop?: number } = {},
 	): void {
@@ -78,12 +76,12 @@ export class ScrollListener {
 
 					if (scrollPosition + viewPortHeight > slotPosition - threshold) {
 						this.removeCallback(callbackId);
-						this.pushSlot(adStack, node);
+						slotService.pushSlot(node);
 					}
 				} else {
 					if (scrollPosition > distanceFromTop) {
 						this.removeCallback(callbackId);
-						this.pushSlot(adStack, node);
+						slotService.pushSlot(node);
 					}
 				}
 			},
@@ -106,13 +104,6 @@ export class ScrollListener {
 
 	getUniqueId(): string {
 		return ((1 + Math.random()) * 0x1000000).toString(16).substring(1);
-	}
-
-	pushSlot(adStack: OldLazyQueue<AdStackPayload>, node: HTMLElement): void {
-		logger(this.serviceName, `Push slot ${node.id} to adStack.`);
-		adStack.push({
-			id: node.id,
-		});
 	}
 }
 

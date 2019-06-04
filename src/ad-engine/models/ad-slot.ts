@@ -1,8 +1,8 @@
 import * as EventEmitter from 'eventemitter3';
-import { AdStackPayload } from '../';
+import { AdStackPayload, eventService } from '../';
 import { slotListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
-import { context, slotDataParamsUpdater, slotTweaker, templateService } from '../services';
+import { context, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
@@ -396,5 +396,15 @@ export class AdSlot extends EventEmitter {
 			logger(AdSlot.LOG_GROUP, 'show', this.getSlotName());
 			this.emit(AdSlot.SHOWED_EVENT);
 		}
+	}
+
+	/**
+	 * Pass all events through eventService before emitting directly from slot.
+	 */
+	emit(event: string | symbol, ...args: any[]): boolean {
+		const result = super.emit(event, ...args);
+
+		eventService.emit(event, this);
+		return result;
 	}
 }

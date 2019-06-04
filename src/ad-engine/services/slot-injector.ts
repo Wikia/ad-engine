@@ -1,6 +1,9 @@
+import { AdSlot } from '../models';
 import { getTopOffset, getViewportHeight, logger } from '../utils';
 import { isInTheSameViewport } from '../utils/dimensions';
 import { context } from './context-service';
+import { events, eventService } from './events';
+import { slotService } from './slot-service';
 
 const logGroup = 'slot-repeater';
 
@@ -38,7 +41,35 @@ function insertNewSlot(
 }
 
 class SlotInjector {
-	inject(slotName: string): HTMLElement | null {
+	constructor() {
+		/**
+		 * I did not create an automated way to build this code from event name
+		 * to config key map because Symbol cannot be iterated over using any for loop
+		 */
+		eventService.on(events.AD_SLOT_CREATED, (adSlot) => {
+			const slotsToPush = context.get(`events.pushAfterCreated.${adSlot.getSlotName()}`) || [];
+
+			slotsToPush.forEach((slotName: string) => {
+				const slotElement = this.inject(slotName, true);
+
+				if (slotElement) {
+					slotService.pushSlot(slotElement);
+				} else {
+					logger(logGroup, `Could not inject slot ${slotName}.`);
+				}
+			});
+		});
+
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+			const slotsToPush = context.get(`events.pushAfterRendered.${adSlot.getSlotName()}`) || [];
+
+			slotsToPush.forEach((slotName: string) => {
+				this.inject(slotName);
+			});
+		});
+	}
+
+	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
 		const config = context.get(`slots.${slotName}`);
 
 		let anchorElements = Array.prototype.slice.call(
@@ -68,7 +99,9 @@ class SlotInjector {
 			return null;
 		}
 
-		const disablePushOnScroll = config.repeat ? !!config.repeat.disablePushOnScroll : false;
+		if (disablePushOnScroll === undefined) {
+			disablePushOnScroll = config.repeat ? !!config.repeat.disablePushOnScroll : false;
+		}
 		const container = insertNewSlot(slotName, nextSibling, disablePushOnScroll);
 
 		logger(logGroup, 'Inject slot', slotName);

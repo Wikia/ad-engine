@@ -1,9 +1,9 @@
 import { decorate } from 'core-decorators';
+import { getAdStack } from '..';
 import { slotListener } from '../listeners';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
-	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -95,7 +95,7 @@ export class GptProvider implements Provider {
 
 	@decorate(postponeExecutionUntilGptLoads)
 	fillIn(adSlot: AdSlot): void {
-		const adStack = context.get('state.adStack') || [];
+		const adStack = getAdStack() || [];
 
 		btfBlockerService.push(adSlot, (...args) => {
 			this.fillInCallback(...args);

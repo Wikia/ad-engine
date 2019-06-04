@@ -6,12 +6,10 @@ import * as sinon from 'sinon';
 describe('ScrollListener', () => {
 	let scrollListener: ScrollListener;
 	let getElementByIdStub;
-	let adStack: OldLazyQueue<AdStackPayload>;
 	let addCallbackStub;
 
 	beforeEach(() => {
 		scrollListener = new ScrollListener();
-		adStack = [] as any;
 		getElementByIdStub = sinon.stub(document, 'getElementById');
 		getElementByIdStub.callsFake(() => 'fakeNode');
 		addCallbackStub = sinon.stub(scrollListener, 'addCallback');
@@ -27,33 +25,33 @@ describe('ScrollListener', () => {
 		it('should not call addCallback if node with provided ID cannot be found', () => {
 			getElementByIdStub.callsFake(() => null);
 
-			scrollListener.addSlot(adStack, 'nodeId', { threshold: 5 });
-			scrollListener.addSlot(adStack, 'nodeId', { distanceFromTop: 10 });
+			scrollListener.addSlot('nodeId', { threshold: 5 });
+			scrollListener.addSlot('nodeId', { distanceFromTop: 10 });
 
 			expect(addCallbackStub.called).to.be.false;
 		});
 
 		it('should not call addCallback if both threshold and distanceFromTop are missing', () => {
-			scrollListener.addSlot(adStack, 'nodeId');
-			scrollListener.addSlot(adStack, 'nodeId', {});
+			scrollListener.addSlot('nodeId');
+			scrollListener.addSlot('nodeId', {});
 
 			expect(addCallbackStub.called).to.be.false;
 		});
 
 		it('should not call addCallback if both threshold and distanceFromTop are supplied', () => {
-			scrollListener.addSlot(adStack, 'nodeId', { threshold: 20, distanceFromTop: 10 });
+			scrollListener.addSlot('nodeId', { threshold: 20, distanceFromTop: 10 });
 
 			expect(addCallbackStub.called).to.be.false;
 		});
 
 		it('should call scrollListener.addCallback if only distanceFromTop is supplied', () => {
-			scrollListener.addSlot(adStack, 'nodeId', { distanceFromTop: 10 });
+			scrollListener.addSlot('nodeId', { distanceFromTop: 10 });
 
 			expect(addCallbackStub.called).to.be.true;
 		});
 
 		it('should call scrollListener.addCallback if only threshold is supplied', () => {
-			scrollListener.addSlot(adStack, 'nodeId', { threshold: 10 });
+			scrollListener.addSlot('nodeId', { threshold: 10 });
 
 			expect(addCallbackStub.called).to.be.true;
 		});
