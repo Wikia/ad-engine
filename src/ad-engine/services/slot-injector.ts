@@ -112,7 +112,7 @@ class SlotInjector {
 			return null;
 		}
 
-		if (disablePushOnScroll === undefined) {
+		if (typeof disablePushOnScroll !== 'boolean') {
 			disablePushOnScroll = config.repeat ? !!config.repeat.disablePushOnScroll : false;
 		}
 		const container = insertNewSlot(slotName, nextSibling, disablePushOnScroll);
