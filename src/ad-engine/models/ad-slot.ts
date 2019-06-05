@@ -407,4 +407,20 @@ export class AdSlot extends EventEmitter {
 		eventService.emit(event, this);
 		return result;
 	}
+
+	/**
+	 * Return names of slots which should be injected into DOM
+	 * and pushed into ad stack queue after slot is created.
+	 */
+	getSlotsToPushAfterCreated(): string[] {
+		return context.get(`events.pushAfterCreated.${this.getSlotName()}`) || [];
+	}
+
+	/**
+	 * Return names of slots which should be injected into DOM
+	 * after slot is rendered.
+	 */
+	getSlotsToInjectAfterRendered(): string[] {
+		return context.get(`events.pushAfterRendered.${this.getSlotName()}`) || [];
+	}
 }
