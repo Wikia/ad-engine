@@ -47,7 +47,7 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`events.pushOnScroll.threshold`|Top margin (in px) when slot is going to be requested (once user reach given position)|integer|✘|
 |`events.pushAfterCreated`|Creates defined slots once another slot is created|object|✘|
 |`events.pushAfterCreated.{slot_name}`|List of ad slot names to create once {slot_name} is created|array|✘|
-|`events.pushAfterRendered`|Creates defined slots once another slot is rendered|object|✘|
+|`events.pushAfterRendered`|Creates defined slots once another slot is rendered and lazy-loads them|object|✘|
 |`events.pushAfterRendered.{slot_name}`|List of ad slot names to create once {slot_name} is rendered|array|✘|
 |`listeners`|List of listeners registered in the ad-engine|object|✘|
 |`listeners.porvata`|Porvata listeners objects (available methods: `isEnabled`, `onEvent`)|array|✘|
