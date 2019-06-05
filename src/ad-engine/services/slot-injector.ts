@@ -46,7 +46,7 @@ class SlotInjector {
 		 * I did not create an automated way to build this code from event name
 		 * to config key map because Symbol cannot be iterated over using any for loop
 		 */
-		eventService.on(events.AD_SLOT_CREATED, (adSlot) => {
+		eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
 			const slotsToPush: string[] = this.getPushAfterSlots(
 				'pushAfterCreated',
 				adSlot.getSlotName(),
@@ -63,7 +63,7 @@ class SlotInjector {
 			});
 		});
 
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
 			const slotsToPush: string[] = this.getPushAfterSlots(
 				'pushAfterRendered',
 				adSlot.getSlotName(),
