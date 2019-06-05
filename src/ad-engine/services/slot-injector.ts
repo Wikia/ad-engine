@@ -42,15 +42,8 @@ function insertNewSlot(
 
 class SlotInjector {
 	constructor() {
-		/**
-		 * I did not create an automated way to build this code from event name
-		 * to config key map because Symbol cannot be iterated over using any for loop
-		 */
 		eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
-			const slotsToPush: string[] = this.getPushAfterSlots(
-				'pushAfterCreated',
-				adSlot.getSlotName(),
-			);
+			const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
 
 			slotsToPush.forEach((slotName: string) => {
 				const slotElement = this.inject(slotName, true);
@@ -58,28 +51,18 @@ class SlotInjector {
 				if (slotElement) {
 					slotService.pushSlot(slotElement);
 				} else {
-					logger(logGroup, `Could not inject slot ${slotName}.`);
+					logger(logGroup, `Could not push slot ${slotName}.`);
 				}
 			});
 		});
 
 		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
-			const slotsToPush: string[] = this.getPushAfterSlots(
-				'pushAfterRendered',
-				adSlot.getSlotName(),
-			);
+			const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
 
-			slotsToPush.forEach((slotName: string) => {
+			slotsToInject.forEach((slotName: string) => {
 				this.inject(slotName);
 			});
 		});
-	}
-
-	private getPushAfterSlots(
-		after: 'pushAfterRendered' | 'pushAfterCreated',
-		slotName: string,
-	): string[] {
-		return context.get(`events.${after}.${slotName}`) || [];
 	}
 
 	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
