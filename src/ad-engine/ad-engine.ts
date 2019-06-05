@@ -20,7 +20,7 @@ export interface AdStackPayload {
 	id: string;
 }
 
-export function getAdStack(): OldLazyQueue<AdStackPayload> | undefined {
+export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return context.get('state.adStack');
 }
 
