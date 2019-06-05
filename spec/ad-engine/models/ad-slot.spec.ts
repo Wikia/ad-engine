@@ -1,5 +1,5 @@
 import { Dictionary } from '@wikia/ad-engine';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../src/ad-engine/services/context-service';
 import ConfigMock from '../config-mock';
@@ -158,6 +158,64 @@ describe('ad-slot', () => {
 			adSlot.getElement = () => null;
 
 			expect(adSlot.getTopOffset()).to.equal(null);
+		});
+	});
+
+	describe('getSlotsToPushAfterCreated', () => {
+		let adSlot: AdSlot;
+
+		beforeEach(() => {
+			adSlot = createAdSlot('top_leaderboard');
+		});
+
+		afterEach(() => {
+			context.remove('events.pushAfterCreated');
+		});
+
+		it('should return an empty array if slots are not defined', () => {
+			context.remove('events.pushAfterCreated');
+
+			const result = adSlot.getSlotsToPushAfterCreated();
+
+			assert.deepEqual(result, []);
+		});
+
+		it('should return slots defined in context at events.pushAfterCreated.top_leaderboard', () => {
+			const expectedValue = ['foo', 'bar'];
+			context.set('events.pushAfterCreated.top_leaderboard', ['foo', 'bar']);
+
+			const result = adSlot.getSlotsToPushAfterCreated();
+
+			assert.deepEqual(result, expectedValue);
+		});
+	});
+
+	describe('getSlotsToInjectAfterRendered', () => {
+		let adSlot: AdSlot;
+
+		beforeEach(() => {
+			adSlot = createAdSlot('top_leaderboard');
+		});
+
+		afterEach(() => {
+			context.remove('events.pushAfterRendered');
+		});
+
+		it('should return an empty array if slots are not defined', () => {
+			context.remove('events.pushAfterRendered');
+
+			const result = adSlot.getSlotsToInjectAfterRendered();
+
+			assert.deepEqual(result, []);
+		});
+
+		it('should return slots defined in context at events.pushAfterRendered.top_leaderboard', () => {
+			const expectedValue = ['foo', 'bar'];
+			context.set('events.pushAfterRendered.top_leaderboard', ['foo', 'bar']);
+
+			const result = adSlot.getSlotsToInjectAfterRendered();
+
+			assert.deepEqual(result, expectedValue);
 		});
 	});
 });
