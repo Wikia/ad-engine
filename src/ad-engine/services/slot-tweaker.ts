@@ -7,25 +7,14 @@ import { slotService } from './slot-service';
 const logGroup = 'slot-tweaker';
 
 export class SlotTweaker {
-	/** @readonly */
-	static SLOT_CLOSE_IMMEDIATELY = 'force-close';
+	static readonly SLOT_CLOSE_IMMEDIATELY = 'force-close';
 
 	forceRepaint(domElement: HTMLElement): number {
 		return domElement.offsetWidth;
 	}
 
-	getContainer(adSlot: AdSlot): HTMLElement {
-		const container = adSlot.getElement();
-
-		if (!container) {
-			logger(logGroup, 'cannot find container', adSlot.getSlotName());
-		}
-
-		return container;
-	}
-
 	addDefaultClasses(adSlot: AdSlot): void {
-		const container = this.getContainer(adSlot);
+		const container = adSlot.getElement();
 		const defaultClasses = adSlot.getConfigProperty('defaultClasses') || [];
 
 		if (container && defaultClasses.length) {
@@ -33,26 +22,8 @@ export class SlotTweaker {
 		}
 	}
 
-	hide(adSlot: AdSlot): void {
-		const container = this.getContainer(adSlot);
-
-		if (container) {
-			logger(logGroup, 'hide', adSlot.getSlotName());
-			container.classList.add('hide');
-		}
-	}
-
-	show(adSlot: AdSlot): void {
-		const container = this.getContainer(adSlot);
-
-		if (container) {
-			logger(logGroup, 'show', adSlot.getSlotName());
-			container.classList.remove('hide');
-		}
-	}
-
 	collapse(adSlot: AdSlot): void {
-		const container = this.getContainer(adSlot);
+		const container = adSlot.getElement();
 
 		container.style.maxHeight = `${container.scrollHeight}px`;
 		this.forceRepaint(container);
@@ -61,7 +32,7 @@ export class SlotTweaker {
 	}
 
 	expand(adSlot: AdSlot): void {
-		const container = this.getContainer(adSlot);
+		const container = adSlot.getElement();
 
 		container.style.maxHeight = `${container.offsetHeight}px`;
 		container.classList.remove('hide');
@@ -74,7 +45,7 @@ export class SlotTweaker {
 		aspectRatio: number = null,
 		paddingBottom = true,
 	): Promise<HTMLIFrameElement> {
-		const slotContainer = this.getContainer(adSlot);
+		const slotContainer = adSlot.getElement();
 
 		slotContainer.classList.add('slot-responsive');
 
@@ -165,10 +136,10 @@ export class SlotTweaker {
 						this.collapse(adSlot);
 						break;
 					case 'hide':
-						this.hide(adSlot);
+						adSlot.hide();
 						break;
 					case 'show':
-						this.show(adSlot);
+						adSlot.show();
 						break;
 					case 'make-responsive':
 						this.makeResponsive(adSlot, data.aspectRatio);
@@ -193,7 +164,7 @@ export class SlotTweaker {
 	}
 
 	setDataParam(adSlot: AdSlot, attrName: string, data: any): void {
-		const container = this.getContainer(adSlot);
+		const container = adSlot.getElement();
 		if (container) {
 			container.dataset[attrName] = typeof data === 'string' ? data : JSON.stringify(data);
 		}

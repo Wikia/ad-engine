@@ -1,4 +1,12 @@
-import { context, events, eventService, SlotTweaker, slotTweaker, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	events,
+	eventService,
+	SlotTweaker,
+	slotTweaker,
+	utils,
+} from '@wikia/ad-engine';
 import AdvertisementLabel from '../interface/advertisement-label';
 import { CloseButton } from '../interface/close-button';
 
@@ -13,8 +21,7 @@ export class Interstitial {
 		};
 	}
 
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.interstitial') || {};
 	}
 
@@ -23,7 +30,7 @@ export class Interstitial {
 		const closeButton = new CloseButton({
 			onClick: () => {
 				document.documentElement.classList.remove('stop-scrolling');
-				slotTweaker.hide(this.adSlot);
+				this.adSlot.hide();
 				this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 				utils.logger(Interstitial.getName(), 'closed');
 			},
