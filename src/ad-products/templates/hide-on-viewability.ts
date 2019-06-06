@@ -1,4 +1,4 @@
-import { AdSlot, context, slotTweaker, utils } from '@wikia/ad-engine';
+import { AdSlot, context, utils } from '@wikia/ad-engine';
 
 const CSS_TIMING_EASE_IN_CUBIC = 'cubic-bezier(0.55, 0.055, 0.675, 0.19)';
 const SLIDE_OUT_TIME = 600;
@@ -62,7 +62,7 @@ export class HideOnViewability {
 				this.config.hideAnimation(adSlot, this.config);
 
 				setTimeout(() => {
-					slotTweaker.hide(adSlot);
+					adSlot.hide();
 				}, SLOT_HIDE_TIME);
 			}, this.config.additionalHideTime || 0);
 		});

@@ -58,6 +58,8 @@ export class AdSlot extends EventEmitter {
 	static SLOT_RENDERED_EVENT = 'slotRendered';
 	static VIDEO_VIEWED_EVENT = 'videoViewed';
 	static DESTROYED_EVENT = 'slotDestroyed';
+	static HIDDEN_EVENT = 'slotHidden';
+	static SHOWED_EVENT = 'slotShowed';
 
 	static LOG_GROUP = 'AdSlot';
 
@@ -66,6 +68,7 @@ export class AdSlot extends EventEmitter {
 	static STATUS_ERROR = 'error';
 
 	static AD_CLASS = 'gpt-ad';
+	static HIDDEN_CLASS = 'hide';
 
 	private slotViewed = false;
 	config: SlotConfig;
@@ -112,7 +115,7 @@ export class AdSlot extends EventEmitter {
 
 		this.addClass(AdSlot.AD_CLASS);
 		if (!this.enabled) {
-			slotTweaker.hide(this);
+			this.hide();
 		}
 		this.events.flush();
 	}
@@ -243,7 +246,7 @@ export class AdSlot extends EventEmitter {
 	disable(status: null | string = null): void {
 		this.enabled = false;
 		this.setStatus(status);
-		slotTweaker.hide(this);
+		this.hide();
 	}
 
 	destroy(): void {
@@ -260,7 +263,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	success(status: string = AdSlot.STATUS_SUCCESS): void {
-		slotTweaker.show(this);
+		this.show();
 		this.setStatus(status);
 
 		const templateNames = this.getConfigProperty('defaultTemplates');
@@ -271,7 +274,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
-		slotTweaker.hide(this);
+		this.hide();
 		this.setStatus(status);
 	}
 
@@ -338,7 +341,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	/**
-	 * Appends gpt-ad class to adSlot node.
+	 * Appends class to adSlot node.
 	 */
 	addClass(className: string): boolean {
 		const container = this.getElement();
@@ -350,5 +353,48 @@ export class AdSlot extends EventEmitter {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Removes class from adSlot node.
+	 */
+	removeClass(className: string): boolean {
+		const container = this.getElement();
+
+		if (container) {
+			container.classList.remove(className);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Hides adSlot.
+	 *
+	 * Adds class AdSlot.HIDDEN_CLASS to adSlot's element.
+	 */
+	hide() {
+		const added = this.addClass(AdSlot.HIDDEN_CLASS);
+
+		if (added) {
+			logger(AdSlot.LOG_GROUP, 'hide', this.getSlotName());
+			this.emit(AdSlot.HIDDEN_EVENT);
+		}
+	}
+
+	/**
+	 * Shows adSlot.
+	 *
+	 * Removes class AdSlot.HIDDEN_CLASS from adSlot's element.
+	 */
+	show(): void {
+		const removed = this.removeClass(AdSlot.HIDDEN_CLASS);
+
+		if (removed) {
+			logger(AdSlot.LOG_GROUP, 'show', this.getSlotName());
+			this.emit(AdSlot.SHOWED_EVENT);
+		}
 	}
 }
