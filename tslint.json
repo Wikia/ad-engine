@@ -2,7 +2,6 @@
 	"rulesDirectory": ["node_modules/tslint-ban-snippets/dist/lib"],
 	"extends": "./configs/tslint.json",
 	"rules": {
-		"no-sole-types": true,
 		"no-implicit-dependencies": [true, ["@wikia/ad-engine"]],
 		"only-arrow-functions": {
 			"severity": "warning",

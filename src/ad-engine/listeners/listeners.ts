@@ -37,5 +37,3 @@ export interface VideoEventListener {
 
 	onEvent(eventName: string, params: Dictionary, data: VideoData): void;
 }
-
-export {}; // tslint no-sole-types fix
