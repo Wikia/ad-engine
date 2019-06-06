@@ -37,7 +37,7 @@ export class Interstitial {
 		});
 		const label = new AdvertisementLabel();
 
-		this.config.onInit();
+		this.config.onInit(this.adSlot);
 
 		wrapper.appendChild(closeButton.render());
 		wrapper.appendChild(label.render());

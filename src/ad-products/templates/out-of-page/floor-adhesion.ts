@@ -26,7 +26,7 @@ export class FloorAdhesion {
 			},
 		});
 
-		this.config.onInit();
+		this.config.onInit(this.adSlot);
 
 		wrapper.appendChild(closeButton.render());
 		wrapper.classList.add('floor-adhesion');
