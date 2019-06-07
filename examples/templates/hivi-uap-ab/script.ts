@@ -1,5 +1,10 @@
 import { AdEngine, context, templateService } from '@wikia/ad-engine';
-import { BigFancyAdAbove, BigFancyAdBelow, FloatingRail, utils } from '@wikia/ad-products';
+import {
+	BigFancyAdAbove,
+	BigFancyAdBelow,
+	FloatingRail,
+	setupNpaContext,
+} from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -12,7 +17,7 @@ if (document.body.offsetWidth < 728) {
 	context.set('targeting.skin', 'fandom_mobile');
 }
 
-utils.setupNpaContext();
+setupNpaContext();
 
 templateService.register(BigFancyAdAbove);
 templateService.register(BigFancyAdBelow);

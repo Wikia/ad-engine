@@ -1,5 +1,5 @@
 import { AdEngine, context, templateService } from '@wikia/ad-engine';
-import { Roadblock, Skin, utils } from '@wikia/ad-products';
+import { Roadblock, setupNpaContext, Skin } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -13,7 +13,7 @@ if (document.body.offsetWidth < 728) {
 	context.set('targeting.skin', 'fandom_mobile');
 }
 
-utils.setupNpaContext();
+setupNpaContext();
 
 templateService.register(Skin);
 templateService.register(Roadblock, {

@@ -7,7 +7,7 @@ import {
 	eventService,
 	templateService,
 } from '@wikia/ad-engine';
-import { FloorAdhesion, utils as adProductsUtils } from '@wikia/ad-products';
+import { FloorAdhesion, setupNpaContext } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -18,7 +18,7 @@ context.extend(customContext);
 
 templateService.register(FloorAdhesion);
 
-adProductsUtils.setupNpaContext();
+setupNpaContext();
 
 let resolveBidders;
 

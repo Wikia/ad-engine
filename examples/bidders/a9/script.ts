@@ -1,6 +1,6 @@
 import { Apstag, bidders, cmp } from '@wikia/ad-bidders';
 import { AdEngine, context, DelayModule, events, eventService, utils } from '@wikia/ad-engine';
-import { utils as adProductsUtils } from '@wikia/ad-products';
+import { setupNpaContext } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -48,7 +48,7 @@ context.set('bidders.a9.dealsEnabled', utils.queryString.get('deals') === '1');
 context.set('bidders.a9.bidsRefreshing.enabled', utils.queryString.get('refreshing') === '1');
 context.set('bidders.a9.bidsRefreshing.slots', ['incontent_boxad']);
 
-adProductsUtils.setupNpaContext();
+setupNpaContext();
 
 let resolveBidders;
 

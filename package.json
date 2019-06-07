@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "33.0.1",
+	"version": "34.0.0",
 	"description": "Wikia AdEngine",
 	"repository": {
 		"type": "git",
@@ -106,7 +106,7 @@
 		"tslint.json",
 		"tslint.app.json"
 	],
-	"main": "./dist/ad-engine.js",
+	"main": "dist/index.es5.js",
 	"module": "dist/index.es5.js",
 	"types": "dist/types/index.d.ts",
 	"nyc": {
@@ -119,12 +119,9 @@
 		"dev": "npm run serve",
 		"serve": "webpack-dev-server --progress --colors --inline --open --watch --content-base=./examples --config webpack.dev.js",
 		"prebuild": "rm -rf dist",
-		"build": "npm run build:webpack && npm run build:rollup",
-		"build:webpack": "webpack --progress --colors --hide-modules && node ./maintenance/build-bundle.js",
-		"build:rollup": "rollup -c rollup.config.js",
+		"build": "rollup -c rollup.config.js",
 		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
-		"watch:webpack": "webpack --progress --colors --hide-modules --watch",
-		"watch:rollup": "npm run build:rollup -- -w",
+		"watch": "npm run build:rollup -- -w",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "tslint --project . && npm run rules:lint",
 		"lintf": "tslint --project . --fix && npm run rules:lintf",
@@ -133,9 +130,9 @@
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
 		"preversion": "./maintenance/preversion.sh",
 		"version": "./maintenance/version.sh",
-		"tdd": "mocha-webpack -w --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-env.test",
-		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-env.test",
-		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-env.test --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
+		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js",
+		"test:watch": "npm run test -- -w",
+		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
 		"wdio-desktop": "BABEL_ENV=test wdio wdio.desktop.conf.js",
 		"wdio-mobile": "BABEL_ENV=test wdio wdio.mobile.conf.js",
 		"wdio-all": "npm run wdio-mobile; npm run wdio-desktop",
@@ -143,7 +140,7 @@
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
-		"check-types:ad-engine": "npm run check-types 2> /dev/null | grep src/ad-engine | grep -v npm",
+		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e @types | grep -v npm",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
@@ -151,7 +148,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep src/ad-engine | grep -v npm; then exit 1; fi"
+			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e @types | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {

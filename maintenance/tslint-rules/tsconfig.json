@@ -1,12 +1,9 @@
 {
-	"extends": "../../tsconfig.misc.json",
+	"extends": "../../configs/tsconfig.json",
 	"compilerOptions": {
 		"outDir": "./dist",
-		"declarationDir": "./dist",
 		"module": "commonjs",
 		"target": "esnext",
-		"allowJs": false,
-		"sourceMap": false,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
 		"noImplicitAny": true,
