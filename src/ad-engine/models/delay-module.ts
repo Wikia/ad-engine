@@ -3,5 +3,3 @@ export interface DelayModule {
 	getName: () => string;
 	getPromise: () => Promise<void>;
 }
-
-export {}; // tslint no-sole-types fix
