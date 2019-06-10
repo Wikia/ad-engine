@@ -1,3 +1,4 @@
+import { getAdStack } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
@@ -232,6 +233,19 @@ class SlotService {
 		return Object.entries(this.slotConfigsMap)
 			.filter(([name, config]) => !config.disabled)
 			.map(([name, config]) => name);
+	}
+
+	pushSlot(node: HTMLElement): void {
+		const adStack = getAdStack();
+
+		if (adStack) {
+			logger(groupName, `Push slot ${node.id} to adStack.`);
+			adStack.push({
+				id: node.id,
+			});
+		} else {
+			logger(groupName, `Could not push slot ${node.id} because adStack is not present.`);
+		}
 	}
 }
 

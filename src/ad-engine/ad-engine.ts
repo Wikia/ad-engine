@@ -20,6 +20,10 @@ export interface AdStackPayload {
 	id: string;
 }
 
+export function getAdStack(): OldLazyQueue<AdStackPayload> {
+	return context.get('state.adStack');
+}
+
 const logGroup = 'ad-engine';
 
 export const DEFAULT_MAX_DELAY = 2000;
@@ -72,7 +76,7 @@ export class AdEngine {
 	}
 
 	private setupAdStack(): void {
-		this.adStack = context.get('state.adStack');
+		this.adStack = getAdStack();
 		if (!this.adStack.start) {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
@@ -89,7 +93,7 @@ export class AdEngine {
 			const pushOnScrollQueue = new LazyQueue<string>(...pushOnScrollIds);
 
 			pushOnScrollQueue.onItemFlush((id: string) => {
-				scrollListener.addSlot(this.adStack, id, {
+				scrollListener.addSlot(id, {
 					threshold: context.get('events.pushOnScroll.threshold') || 0,
 				});
 			});

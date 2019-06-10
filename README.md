@@ -46,7 +46,9 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`events.pushOnScroll`|Creates defined slots on scroll|object|✘|
 |`events.pushOnScroll.ids`|List of ad slot names|array|✘|
 |`events.pushOnScroll.threshold`|Top margin (in px) when slot is going to be requested (once user reach given position)|integer|✘|
-|`events.pushAfterRendered`|Creates defined slots once another slot is rendered|object|✘|
+|`events.pushAfterCreated`|Creates defined slots once another slot is created|object|✘|
+|`events.pushAfterCreated.{slot_name}`|List of ad slot names to create once {slot_name} is created|array|✘|
+|`events.pushAfterRendered`|Creates defined slots once another slot is rendered and lazy-loads them|object|✘|
 |`events.pushAfterRendered.{slot_name}`|List of ad slot names to create once {slot_name} is rendered|array|✘|
 |`listeners`|List of listeners registered in the ad-engine|object|✘|
 |`listeners.porvata`|Porvata listeners objects (available methods: `isEnabled`, `onEvent`)|array|✘|
@@ -66,7 +68,7 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`slots.{slot_name}.avoidConflictWith`|CSS selector that is going to be checked to prevent loading ad slot in the same viewport|string|✘|
 |`slots.{slot_name}.bidderAlias`|Ad slot name alias for getting bids that are assigned for different ad slot|string|✘|
 |`slots.{slot_name}.insertBelowScrollPosition`|Switch: insert ad slot below scroll|boolean|✘|
-|`slots.{slot_name}.insertBeforeSelector`|CSS selector where to put ad slot when it is going to be created once another slot is created (`events.pushAfterRendered` is required)|string|✘|
+|`slots.{slot_name}.insertBeforeSelector`|CSS selector where to put ad slot when it is going to be created once another slot is created (`events.pushAfterRendered` or `events.pushAfterCreated` is required)|string|✘|
 |`slots.{slot_name}.repeat`|Configuration for repeating ad slot|object|✘|
 |`slots.{slot_name}.repeat.additionalClasses`|CSS classes list for newly created slots|string|✘|
 |`slots.{slot_name}.repeat.index`|Index of repeated slot (should be set to 1)|integer|✔|

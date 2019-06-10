@@ -88,4 +88,10 @@ export default {
 	setOffsetTop(offset) {
 		offsetTop = offset;
 	},
+	getSlotsToPushAfterCreated() {
+		return [];
+	},
+	getSlotsToInjectAfterRendered() {
+		return [];
+	},
 };

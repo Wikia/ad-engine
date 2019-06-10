@@ -128,14 +128,6 @@ class SlotListener {
 				adSlot.success();
 		}
 
-		const slotsToPush = context.get(`events.pushAfterRendered.${adSlot.getSlotName()}`);
-
-		if (slotsToPush) {
-			slotsToPush.forEach((slotName: string) => {
-				slotInjector.inject(slotName);
-			});
-		}
-
 		dispatch('onRenderEnded', adSlot, { adType, event });
 		adSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
 	}
