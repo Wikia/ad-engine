@@ -3,7 +3,7 @@ import { AdStackPayload, eventService } from '../';
 import { slotListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
-import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
+import { getTopOffset, LazyQueue, logger, stringBuilder, viewportObserver } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
@@ -30,6 +30,7 @@ export interface SlotConfig {
 	disabled?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
+	trackOverscrolled?: boolean;
 	slotName?: string;
 
 	targeting: Targeting;
@@ -71,6 +72,8 @@ export class AdSlot extends EventEmitter {
 	static HIDDEN_CLASS = 'hide';
 
 	private slotViewed = false;
+	private wasInViewport = false;
+
 	config: SlotConfig;
 	element: null | HTMLElement = null;
 	status: null | string = null;
@@ -78,12 +81,14 @@ export class AdSlot extends EventEmitter {
 	enabled: boolean;
 	events: LazyQueue;
 	adUnit: string;
+	overscrolledListener?: string;
 	advertiserId: null | string = null;
 	orderId: null | string | number = null;
 	creativeId: null | string | number = null;
 	creativeSize: null | string | number[] = null;
 	lineItemId: null | string | number = null;
 	winningBidderDetails: null | WinningBidderDetails = null;
+
 	loaded = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
 	});
@@ -271,6 +276,10 @@ export class AdSlot extends EventEmitter {
 		if (templateNames && templateNames.length) {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
+
+		if (this.config.trackOverscrolled) {
+			this.watchForOverscrolled();
+		}
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
@@ -282,6 +291,23 @@ export class AdSlot extends EventEmitter {
 		if (eventName !== null) {
 			slotListener.emitCustomEvent(eventName, this);
 		}
+	}
+
+	watchForOverscrolled() {
+		this.overscrolledListener = viewportObserver.addListener(this.getElement(), (inViewport) => {
+			if (this.isViewed()) {
+				viewportObserver.removeListener(this.overscrolledListener);
+				return;
+			}
+
+			if (inViewport) {
+				this.wasInViewport = inViewport;
+				return;
+			}
+
+			viewportObserver.removeListener(this.overscrolledListener);
+			this.emitEvent('overscrolled');
+		});
 	}
 
 	updateWinningPbBidderDetails(): void {
