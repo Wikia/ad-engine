@@ -51,12 +51,12 @@ class Helpers {
 		if (scrollFromThisElement !== null) {
 			$(scrollFromThisElement).scrollIntoView();
 			for (let i = step; i < px; i += step) {
-				browser.execute(`window.scrollBy(0,${i})`);
+				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		} else {
 			for (let i = step; i < px; i += step) {
-				browser.execute(`window.scrollBy(0,${i})`);
+				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		}
