@@ -95,6 +95,7 @@ export class AdSlot extends EventEmitter {
 	});
 	viewed = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_VIEWED_EVENT, resolve);
+		this.once(AdSlot.VIDEO_VIEWED_EVENT, resolve);
 	});
 
 	constructor(ad: AdStackPayload) {
@@ -112,7 +113,7 @@ export class AdSlot extends EventEmitter {
 		this.config.targeting.src = this.config.targeting.src || context.get('src');
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
 
-		this.once(AdSlot.SLOT_VIEWED_EVENT, () => {
+		this.viewed.then(() => {
 			this.slotViewed = true;
 		});
 
