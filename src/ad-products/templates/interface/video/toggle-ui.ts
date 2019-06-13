@@ -38,9 +38,6 @@ function add(video, container, params) {
 	});
 
 	if (isMobile) {
-		video.container.classList.add('ui-visible');
-		fadeOut();
-
 		overlay.addEventListener('click', () => {
 			video.container.classList.toggle('ui-visible');
 			resetFadeOut();
@@ -53,9 +50,6 @@ function add(video, container, params) {
 		video.addEventListener('resume', fadeOut);
 		video.addEventListener('pause', resetFadeOut);
 	} else {
-		video.container.classList.add('ui-visible');
-		fadeOut();
-
 		video.container.addEventListener('mouseenter', () => {
 			video.container.classList.add('ui-visible');
 			resetFadeOut();
