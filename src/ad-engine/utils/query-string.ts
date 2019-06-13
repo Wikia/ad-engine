@@ -42,6 +42,9 @@ class QueryString {
 		try {
 			return JSON.parse(value);
 		} catch (ignore) {
+			if (value.startsWith('[') && value.endsWith(']')) {
+				return value.slice(1, -1).split(',');
+			}
 			return value || null;
 		}
 	}
