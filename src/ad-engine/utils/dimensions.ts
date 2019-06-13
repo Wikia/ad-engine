@@ -5,8 +5,6 @@ export interface ElementOffset {
 
 /**
  * Returns element's offset of given element depending on offset parameter name
- * @param element
- * @param offsetParameter node element parameter to count overall offset
  */
 export function getElementOffset(element: HTMLElement): ElementOffset {
 	let hideAgain = false;
