@@ -80,6 +80,10 @@ export default {
 			dataset,
 			offsetHeight: 300,
 			offsetTop,
+			getBoundingClientRect: () => ({
+				top: offsetTop + 300,
+				left: 0,
+			}),
 			offsetParent: null,
 			ownerDocument: {},
 		};
