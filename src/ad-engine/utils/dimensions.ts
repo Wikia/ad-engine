@@ -1,19 +1,19 @@
-type OffsetParameter = 'offsetHeight' | 'offsetLeft' | 'offsetTop' | 'offsetWidth';
+export interface ElementOffset {
+	top: number;
+	left: number;
+}
 
 /**
  * Returns element's offset of given element depending on offset parameter name
  * @param element
  * @param offsetParameter node element parameter to count overall offset
  */
-export function getElementOffset(element: HTMLElement, offsetParameter: OffsetParameter): number {
-	const elementWindow: WindowProxy = element.ownerDocument.defaultView;
-	let currentElement: HTMLElement = element;
+export function getElementOffset(element: HTMLElement): ElementOffset {
 	let hideAgain = false;
 	const previousStyles: Partial<CSSStyleDeclaration> = {
 		display: '',
 		height: '',
 	};
-	let topPos = 0;
 
 	if (element.classList.contains('hide')) {
 		hideAgain = true;
@@ -25,10 +25,7 @@ export function getElementOffset(element: HTMLElement, offsetParameter: OffsetPa
 		element.style.height = '1px';
 	}
 
-	do {
-		topPos += currentElement[offsetParameter];
-		currentElement = currentElement.offsetParent as HTMLElement;
-	} while (currentElement !== null);
+	const offset = calculateOffset(element);
 
 	if (hideAgain) {
 		element.classList.add('hide');
@@ -36,37 +33,33 @@ export function getElementOffset(element: HTMLElement, offsetParameter: OffsetPa
 		element.style.height = previousStyles.height;
 	}
 
-	if (elementWindow && elementWindow.frameElement) {
-		topPos += getElementOffset(elementWindow.frameElement as HTMLElement, offsetParameter);
-	}
-
-	return topPos;
-}
-
-/**
- * Returns element's offset of given element from the top of the page
- */
-export function getTopOffset(element: HTMLElement): number {
-	return getElementOffset(element, 'offsetTop');
-}
-
-/**
- * Returns element's offset of given element from the left of the page
- */
-export function getLeftOffset(element: HTMLElement): number {
-	return getElementOffset(element, 'offsetLeft');
+	return offset;
 }
 
 /**
  * The result of this helpers is equal to jQuery's $.offset()
  * @see https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
  */
-export function getElementOffsetFromDocument(element: HTMLElement): { top: number; left: number } {
+function calculateOffset(element: HTMLElement): ElementOffset {
 	const rect = element.getBoundingClientRect();
 	const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 	const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
 	return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+}
+
+/**
+ * Returns element's offset of given element from the top of the page
+ */
+export function getTopOffset(element: HTMLElement): number {
+	return getElementOffset(element).top;
+}
+
+/**
+ * Returns element's offset of given element from the left of the page
+ */
+export function getLeftOffset(element: HTMLElement): number {
+	return getElementOffset(element).left;
 }
 
 /**
