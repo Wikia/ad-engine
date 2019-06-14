@@ -323,5 +323,6 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.config.onAfterUnstickBfaaCallback.call(this.config, this.adSlot, this.params);
 		this.stickiness.sticky = false;
 		this.removeUnstickButton();
+		this.setResolvedState(true);
 	}
 }
