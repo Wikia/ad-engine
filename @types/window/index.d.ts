@@ -5,6 +5,7 @@ interface Window {
 	AdEngine_adType?: any;
 	ads?: Ads;
 	buildAdUnitString?: (arg0: string, arg1: any) => string;
+	confiant?: Confiant;
 	google: {
 		ima: typeof google.ima;
 	};
@@ -12,7 +13,6 @@ interface Window {
 	moatPrebidApi?: MoatPrebidApi;
 	moatYieldReady?: MoatYieldReady;
 	Krux?: KruxQueue;
-	_clrm: CLRM;
 	moatjw?: MoatJW;
 	// No types available for Twitch embedded player.
 	Twitch?: any;

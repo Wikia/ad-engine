@@ -1,14 +1,14 @@
 import { context, utils } from '@wikia/ad-engine';
 
 const logGroup = 'confiant';
-const scriptDomain = 'clarium.global.ssl.fastly.net';
+const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
 
 /**
  * Injects Confiant script
  * @returns {Promise}
  */
-function loadScript() {
-	const confiantLibraryUrl = `//${scriptDomain}/gpt/a/wrap.js`;
+function loadScript(propertyId: string): Promise<Event> {
+	const confiantLibraryUrl = `//${scriptDomain}/${propertyId}/gpt_and_prebid/config.js`;
 
 	return utils.scriptLoader.loadScript(confiantLibraryUrl, 'text/javascript', true, 'first');
 }
@@ -21,12 +21,10 @@ class Confiant {
 	 * Requests service and injects script tag
 	 * @returns {Promise}
 	 */
-	call() {
-		const propertyId = context.get('services.confiant.propertyId');
-		const mapping = context.get('services.confiant.mapping');
-		const activation = context.get('services.confiant.activation');
+	call(): Promise<void> {
+		const propertyId: string = context.get('services.confiant.propertyId');
 
-		if (!context.get('services.confiant.enabled') || !propertyId || !mapping || !activation) {
+		if (!context.get('services.confiant.enabled') || !propertyId) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -34,19 +32,9 @@ class Confiant {
 
 		utils.logger(logGroup, 'loading');
 
-		window._clrm = window._clrm || {};
-		window._clrm.gpt = {
-			propertyId,
-			confiantCdn: scriptDomain,
-			sandbox: 0,
-			mapping,
-			activation,
-			callback: (...args) => {
-				utils.logger(logGroup, args);
-			},
-		};
+		window.confiant = window.confiant || {};
 
-		return loadScript().then(() => {
+		return loadScript(propertyId).then(() => {
 			utils.logger(logGroup, 'ready');
 		});
 	}
