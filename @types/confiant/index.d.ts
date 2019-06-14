@@ -1,10 +1,13 @@
-interface CLRM {
-	gpt?: {
-		propertyId: string;
-		confiantCdn: string;
-		sandbox: number;
-		mapping: any;
-		activation: any;
-		callback: (...args: any[]) => void;
-	};
+interface Confiant {
+	enable_integrations?: string[];
+	prebidExcludeBidders?: string[];
+	prebidNameSpace?: string;
+	callback?: (
+		blockingType: any,
+		blockingId: any,
+		isBlocked: any,
+		wrapperId: any,
+		tagId: any,
+		impressionData: any,
+	) => void;
 }
