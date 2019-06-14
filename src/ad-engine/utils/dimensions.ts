@@ -23,7 +23,7 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
 		element.style.height = '1px';
 	}
 
-	const offset = calculateOffset(element);
+	const offset: ElementOffset = calculateOffset(element);
 
 	if (hideAgain) {
 		element.classList.add('hide');
