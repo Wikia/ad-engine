@@ -12,6 +12,7 @@ describe('Instant Config service', () => {
 		const queryInstantGlobals = {
 			'InstantGlobals.foo': 'bar',
 			'InstantGlobals.bar': 'false',
+			'InstantGlobals.oldGlobal': '[XX,PL/50,CZ/20-cached]',
 		};
 
 		instantConfig.configPromise = configPromise;
@@ -38,10 +39,11 @@ describe('Instant Config service', () => {
 			old: 'value',
 		});
 
-		expect(newConfig).to.deep.equal({
+		expect(newConfig).to.deep.include({
 			bar: false,
 			foo: 'bar',
 			old: 'value',
 		});
+		expect(newConfig['oldGlobal']).to.deep.equal(['XX', 'PL/50', 'CZ/20-cached']);
 	});
 });
