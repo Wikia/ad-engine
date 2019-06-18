@@ -477,6 +477,7 @@ body.ctp-vuap-loaded {
 }
 
 .gpt-ad.bfaa-template {
+	height: auto; // max-content is not supported by IE/Edge
 	height: max-content;
 	left: 0;
 	overflow: hidden;
