@@ -32,6 +32,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	scrollListener: string;
 	video: PorvataPlayer;
 	isLocked = false;
+	isClosed = false;
 	onResolvedStateScroll: {
 		(): void;
 		cancel: () => void;
@@ -73,6 +74,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	onVideoReady(video: PorvataPlayer): void {
 		this.video = video;
 		video.addEventListener('wikiaAdStarted', () => {
+			if (this.isClosed) {
+				video.stop();
+				return;
+			}
+
 			this.updateAdSizes();
 
 			if (!video.params.autoPlay) {
@@ -308,6 +314,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	protected onCloseClicked(): void {
+		this.isClosed = true;
 		this.unstickImmediately();
 	}
 
