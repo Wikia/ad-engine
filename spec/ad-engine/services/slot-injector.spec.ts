@@ -13,6 +13,7 @@ describe('slot-repeater', () => {
 
 	beforeEach(() => {
 		elementProperties = {
+			getBoundingClientRect: () => ({ top: 0, left: 0 }),
 			offsetParent: {
 				offsetTop: 0,
 				offsetParent: null,
@@ -20,6 +21,7 @@ describe('slot-repeater', () => {
 		};
 
 		conflictingElement = {
+			getBoundingClientRect: () => ({ top: 0, left: 0 }),
 			classList: {
 				contains: () => {},
 			},
@@ -33,6 +35,7 @@ describe('slot-repeater', () => {
 		};
 
 		placeholder = {
+			getBoundingClientRect: () => ({ top: 0, left: 0 }),
 			classList: {
 				contains: () => {},
 			},
@@ -67,7 +70,7 @@ describe('slot-repeater', () => {
 	});
 
 	it('slot container is injected when conflictingElement is far away', () => {
-		conflictingElement.offsetTop = 100;
+		conflictingElement.getBoundingClientRect = () => ({ top: 2000, left: 0 });
 
 		expect(slotInjector.inject('incontent_player')).to.not.equal(null);
 		expect(context.get('events.pushOnScroll.ids.0')).to.equal('incontent_player');

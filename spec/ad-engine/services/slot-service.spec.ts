@@ -47,8 +47,8 @@ describe('slot-service', () => {
 				classList: {
 					contains: () => {},
 				},
+				getBoundingClientRect: () => ({ top: 0, left: 0 } as any),
 				offsetHeight: 300,
-				offsetTop: 100,
 				offsetParent: elementProperties.offsetParent,
 				ownerDocument: {},
 			});
