@@ -16,6 +16,7 @@ function add(video, container, params) {
 			overlay.classList.add('fading');
 			panel.classList.add('fading');
 		}, FADE_OUT_TIMEOUT);
+
 		removeVisibilityTimeout = window.setTimeout(() => {
 			video.container.classList.remove('ui-visible');
 		}, FADE_OUT_TIMEOUT + FADE_OUT_ANIMATION_TIME);
@@ -24,37 +25,40 @@ function add(video, container, params) {
 	function resetFadeOut(): void {
 		clearTimeout(removeVisibilityTimeout);
 		clearTimeout(fadeOutTimeout);
+
 		overlay.classList.remove('fading');
 		panel.classList.remove('fading');
 	}
 
 	overlay.classList.add('toggle-ui-overlay');
-	if (isMobile) {
+	video.addEventListener('start', () => {
 		video.container.classList.add('ui-visible');
+		resetFadeOut();
 		fadeOut();
+	});
 
+	if (isMobile) {
 		overlay.addEventListener('click', () => {
 			video.container.classList.toggle('ui-visible');
-
 			resetFadeOut();
-			clearTimeout(removeVisibilityTimeout);
+
 			if (video.isPlaying()) {
 				fadeOut();
 			}
 		});
+
 		video.addEventListener('resume', fadeOut);
 		video.addEventListener('pause', resetFadeOut);
 	} else {
-		video.container.classList.add('ui-visible');
-		fadeOut();
-
 		video.container.addEventListener('mouseenter', () => {
 			video.container.classList.add('ui-visible');
 			resetFadeOut();
 		});
+
 		video.container.addEventListener('mouseleave', () => {
 			fadeOut();
 		});
+
 		overlay.addEventListener('click', () => {
 			top.open(params.clickThroughURL, '_blank');
 		});

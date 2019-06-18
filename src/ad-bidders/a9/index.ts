@@ -128,6 +128,12 @@ export class A9 extends BaseBidder {
 	 */
 	fetchBids(slots, refresh = false) {
 		utils.logger(logGroup, 'fetching bids for slots', slots);
+
+		if (!slots || slots.length === 0) {
+			utils.logger(logGroup, 'there is no slots to fetch bids');
+			return;
+		}
+
 		this.apstag.fetchBids({ slots, timeout: this.timeout }, (currentBids) => {
 			utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 			this.addApstagRenderImpHookOnFirstFetch();

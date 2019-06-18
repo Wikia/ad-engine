@@ -25,6 +25,7 @@ export class StickyBase {
 		this.container = this.adSlot.getElement();
 		this.lineId = adSlot.lineItemId.toString() || '';
 		this.lines = context.get(`templates.${this.getName()}.lineItemIds`) || [];
+		this.lines = this.lines.map((el) => el.toString());
 		this.config = context.get(`templates.${this.getName()}`) || {};
 	}
 
