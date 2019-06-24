@@ -19,6 +19,7 @@ interface Window {
 	// No types easily available for pbjs.
 	pbjs?: any;
 	pvNumber?: number;
+	pvUID?: string;
 }
 
 declare var NOLBUNDLE: any;

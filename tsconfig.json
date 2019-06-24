@@ -13,7 +13,8 @@
 		"noImplicitAny": false,
 		"baseUrl": "src",
 		"paths": {
-			"@wikia/ad-engine": ["ad-engine"]
+			"@wikia/ad-engine": ["ad-engine"],
+			"@wikia/ad-tracking": ["ad-tracking"]
 		},
 		"typeRoots": ["node_modules/@types", "@types"]
 	},

@@ -1,4 +1,4 @@
-import { context, events, eventService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, events, eventService, utils } from '@wikia/ad-engine';
 import { A9 } from './a9';
 import { Prebid } from './prebid';
 import * as prebidHelper from './prebid/prebid-helper';
@@ -47,7 +47,7 @@ function getBidParameters(slotName) {
 	return slotParams;
 }
 
-function getCurrentSlotPrices(slotName) {
+function getCurrentSlotPrices(slotName): Dictionary<string> {
 	const slotPrices = {};
 
 	forEachBidder((bidder) => {
@@ -63,7 +63,7 @@ function getCurrentSlotPrices(slotName) {
 	return slotPrices;
 }
 
-function getDfpSlotPrices(slotName) {
+function getDfpSlotPrices(slotName): Dictionary<string> {
 	return realSlotPrices[slotName] || {};
 }
 
@@ -158,4 +158,5 @@ export const bidders = {
 	updateSlotTargeting,
 };
 
+export * from './tracking';
 export * from './wrappers';
