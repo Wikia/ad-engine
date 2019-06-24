@@ -2,6 +2,8 @@ import { context, eventService, utils } from '@wikia/ad-engine';
 import { Executor } from './executor';
 import { ProjectsHandler } from './projects-handler';
 
+export * from './slot-bill-the-lizard-tracking-middleware';
+
 /**
  * @typedef {Object} ModelDefinition
  * @property {boolean|undefined} executable
