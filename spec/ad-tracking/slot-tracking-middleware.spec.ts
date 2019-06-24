@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { AdSlot, context } from '../../src/ad-engine';
-import { slotTrackingMiddleware } from '../../src/ad-tracking';
+import { AdInfoContext, slotTrackingMiddleware } from '../../src/ad-tracking';
 
 describe('slot-tracking-middleware', () => {
 	const sandbox = sinon.createSandbox();
 	let adSlot: AdSlot;
+	let nextSpy: sinon.SinonSpy;
+	let adInfoContext: AdInfoContext;
 
 	beforeEach(() => {
 		sandbox.stub(window, 'performance').value({
@@ -30,20 +32,23 @@ describe('slot-tracking-middleware', () => {
 		adSlot = new AdSlot({ id: 'foo' });
 	});
 
-	afterEach(() => {
-		sandbox.restore();
-	});
-
-	it('returns all general keys for tracking', () => {
-		const context = {
+	beforeEach(() => {
+		adInfoContext = {
 			data: {
 				previous: 'value',
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
 
-		slotTrackingMiddleware(context, nextSpy);
+		nextSpy = sinon.spy();
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
+	it('returns all general keys for tracking', () => {
+		slotTrackingMiddleware(adInfoContext, nextSpy);
 
 		expect(Object.keys(nextSpy.getCall(0).args[0].data)).to.deep.equal([
 			'previous',
@@ -77,15 +82,7 @@ describe('slot-tracking-middleware', () => {
 	});
 
 	it('returns general info for tracking', () => {
-		const context = {
-			data: {
-				previous: 'value',
-			},
-			slot: adSlot,
-		};
-		const nextSpy = sinon.spy();
-
-		slotTrackingMiddleware(context, nextSpy);
+		slotTrackingMiddleware(adInfoContext, nextSpy);
 
 		const { data } = nextSpy.getCall(0).args[0];
 
@@ -109,5 +106,17 @@ describe('slot-tracking-middleware', () => {
 		expect(data['page_layout']).to.equal('pos_top=null');
 		expect(data['pv']).to.equal(5);
 		expect(data['scroll_y']).to.equal(0);
+	});
+
+	it('returns rounded pos_top in page_layout field', () => {
+		const stub = sinon.stub(adSlot, 'getTopOffset').callsFake(() => 20.111);
+
+		slotTrackingMiddleware(adInfoContext, nextSpy);
+
+		const { data } = nextSpy.getCall(0).args[0];
+
+		expect(data['page_layout']).to.equal('pos_top=20');
+
+		stub.reset();
 	});
 });

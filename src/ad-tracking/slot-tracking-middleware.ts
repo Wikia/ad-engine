@@ -15,6 +15,11 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 	const keyVals: Dictionary<string> = {
 		likho: (context.get('targeting.likho') || []).join('|'),
 	};
+	let topOffset = slot.getTopOffset();
+
+	if (typeof topOffset === 'number') {
+		topOffset = Math.round(topOffset);
+	}
 
 	return next({
 		slot,
@@ -41,7 +46,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			kv_top: context.get('targeting.top') || '',
 			labrador: utils.geoService.getSamplingResults().join(';'),
 			opt_in: checkOptIn(),
-			page_layout: `pos_top=${slot.getTopOffset()}`,
+			page_layout: `pos_top=${topOffset}`,
 			page_width: window.document.body.scrollWidth || '',
 			pv: window.pvNumber || '',
 			pv_unique_id: window.pvUID || '',
