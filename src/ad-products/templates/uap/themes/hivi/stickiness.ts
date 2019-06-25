@@ -22,15 +22,6 @@ export class Stickiness extends EventEmitter {
 
 	constructor(private adSlot: AdSlot, private customWhen: CustomWhen = Promise.resolve()) {
 		super();
-
-		if (!isFunction(this.customWhen)) {
-			Promise.all([this.customWhen]).then(() => {
-				if (!this.sticky) {
-					this.logger('Blocking stickiness');
-					this.isStickinessBlocked = true;
-				}
-			});
-		}
 	}
 
 	logger(...args: any[]): void {
@@ -42,6 +33,15 @@ export class Stickiness extends EventEmitter {
 
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
+		}
+
+		if (!isFunction(this.customWhen)) {
+			Promise.all([this.customWhen]).then(() => {
+				if (!this.sticky) {
+					this.logger('Blocking stickiness');
+					this.isStickinessBlocked = true;
+				}
+			});
 		}
 
 		this.adSlot.once('unstickImmediately', () => {
