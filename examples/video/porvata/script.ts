@@ -2,12 +2,13 @@ import {
 	AdSlot,
 	context,
 	eventService,
+	playerEvents,
 	Porvata,
+	porvataTracker,
 	scrollListener,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
-import { playerEvents, porvataTracker } from '@wikia/ad-products';
 import adContext from '../../context';
 
 const blockOutOfViewportPausing = utils.queryString.get('block_pausing') === '1';

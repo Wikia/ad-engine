@@ -1,11 +1,18 @@
-import { bidders } from '@wikia/ad-bidders';
-import { context, DelayModule, events, eventService, utils } from '@wikia/ad-engine';
-import { jwplayerAdsFactory, playerEvents } from '@wikia/ad-products';
+import {
+	bidders,
+	context,
+	DelayModule,
+	events,
+	eventService,
+	jwplayerAdsFactory,
+	playerEvents,
+	utils,
+} from '@wikia/ad-engine';
+// tslint:disable-next-line:no-submodule-imports
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
-import * as videoData from './video-data.json';
-
 import '../../styles.scss';
+import * as videoData from './video-data.json';
 
 const f15sVideoId = utils.queryString.get('f15s');
 

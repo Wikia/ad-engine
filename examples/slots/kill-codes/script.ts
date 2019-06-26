@@ -1,5 +1,4 @@
-import { AdEngine } from '@wikia/ad-engine';
-import * as utils from '@wikia/ad-engine/utils';
+import { AdEngine, utils } from '@wikia/ad-engine';
 import context from '../../context';
 
 const disableBtf = utils.queryString.get('disableBtf') || false;

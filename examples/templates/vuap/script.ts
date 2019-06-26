@@ -1,5 +1,10 @@
-import { AdEngine, templateService } from '@wikia/ad-engine';
-import { BigFancyAdAbove, BigFancyAdBelow, FloatingRail } from '@wikia/ad-products';
+import {
+	AdEngine,
+	BigFancyAdAbove,
+	BigFancyAdBelow,
+	FloatingRail,
+	templateService,
+} from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

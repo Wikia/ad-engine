@@ -1,5 +1,4 @@
-import { AdEngine, context, templateService } from '@wikia/ad-engine';
-import { FloorAdhesion } from '@wikia/ad-products';
+import { AdEngine, context, FloorAdhesion, templateService } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

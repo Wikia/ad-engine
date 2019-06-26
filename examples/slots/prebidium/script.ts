@@ -1,6 +1,12 @@
-import { bidders } from '@wikia/ad-bidders';
-import { AdEngine, context, DelayModule, events, eventService } from '@wikia/ad-engine';
-import { setupNpaContext } from '@wikia/ad-products';
+import {
+	AdEngine,
+	bidders,
+	context,
+	DelayModule,
+	events,
+	eventService,
+	setupNpaContext,
+} from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

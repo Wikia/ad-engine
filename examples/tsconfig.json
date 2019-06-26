@@ -1,10 +1,4 @@
 {
 	"extends": "../tsconfig.json",
-	"compilerOptions": {
-		"paths": {
-			"@ad-engine/core": ["src/ad-engine"],
-			"@wikia/*": ["src/*"]
-		}
-	},
 	"include": ["."]
 }

@@ -1,6 +1,7 @@
-import { bidders } from '@wikia/ad-bidders';
 import {
 	AdEngine,
+	bidders,
+	billTheLizard,
 	btfBlockerService,
 	context,
 	DelayModule,
@@ -9,7 +10,6 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
-import { billTheLizard } from '@wikia/ad-services';
 import adContext from '../../context';
 
 const contentTemplate = document.querySelector('.content-template').innerHTML;

@@ -1,6 +1,4 @@
-import { AdEngine, context, localCache } from '@wikia/ad-engine';
-import { setupNpaContext } from '@wikia/ad-products';
-import { likhoService } from '../../../src/ad-engine/services';
+import { AdEngine, context, likhoService, localCache, setupNpaContext } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

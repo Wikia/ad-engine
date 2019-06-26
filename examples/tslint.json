@@ -2,7 +2,12 @@
 	"extends": "../tslint.json",
 	"rules": {
 		"no-console": false,
-		"no-implicit-dependencies": [true, "dev", ["@wikia"]],
-		"no-submodule-imports": false
+		"no-implicit-dependencies": [true, "dev", ["@wikia/ad-engine"]],
+		"no-blacklisted-paths": [
+			true,
+			{
+				"blacklist": ["src"]
+			}
+		]
 	}
 }

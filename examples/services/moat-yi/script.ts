@@ -1,5 +1,4 @@
-import { AdEngine, context, utils } from '@wikia/ad-engine';
-import { moatYi } from '@wikia/ad-services';
+import { AdEngine, context, moatYi, utils } from '@wikia/ad-engine';
 import adContext from '../../context';
 
 const isMoatEnabled = utils.queryString.get('moat-yi-disabled') !== '1';

@@ -1,5 +1,11 @@
-import { AdEngine, context, eventService, utils } from '@wikia/ad-engine';
-import { billTheLizard, billTheLizardEvents } from '@wikia/ad-services';
+import {
+	AdEngine,
+	billTheLizard,
+	billTheLizardEvents,
+	context,
+	eventService,
+	utils,
+} from '@wikia/ad-engine';
 import adContext from '../../context';
 
 const allPredictionsElement = document.getElementById('predictions-all');
