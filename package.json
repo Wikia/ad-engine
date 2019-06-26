@@ -138,6 +138,7 @@
 		"preversion": "./maintenance/preversion.sh",
 		"version": "./maintenance/version.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js",
+		"test:gp": "mocha-webpack --full-trace './platforms/gamepedia/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.platforms.js --webpack-env.PLATFORM=gamepedia",
 		"test:watch": "npm run test -- -w",
 		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
 		"wdio-desktop": "BABEL_ENV=test wdio wdio.desktop.conf.js",
