@@ -6,8 +6,6 @@ const common = require('./webpack.common.js');
 const { examplePages } = require('./maintenance/examples-pages');
 
 const development = {
-	mode: 'development',
-
 	entry: examplePages,
 
 	output: {

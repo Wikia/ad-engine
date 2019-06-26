@@ -5,8 +5,6 @@ const common = require('./webpack.common.js');
 
 const platforms = ({ platform }) => {
 	return {
-		mode: 'development',
-
 		entry: path.resolve(__dirname, `platforms/${platform}/index.ts`),
 
 		output: {

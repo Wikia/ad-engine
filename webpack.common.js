@@ -14,6 +14,8 @@ const include = [
 ];
 
 module.exports = ({ tsconfig, transpileOnly, reportFiles }) => ({
+	mode: 'development',
+
 	context: __dirname,
 
 	resolve: {
