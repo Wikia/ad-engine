@@ -5,7 +5,7 @@ const common = require('./webpack.common.js');
 
 const platforms = ({ platform }) => {
 	return {
-		mode: 'production',
+		mode: 'development',
 
 		entry: path.resolve(__dirname, `platforms/${platform}/index.ts`),
 
@@ -19,6 +19,11 @@ const platforms = ({ platform }) => {
 		performance: {
 			maxAssetSize: 270000,
 			maxEntrypointSize: 290000,
+		},
+
+		devServer: {
+			port: 9000,
+			inline: false,
 		},
 
 		devtool: 'source-map',

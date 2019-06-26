@@ -33,6 +33,12 @@ const development = {
 			},
 		},
 	},
+
+	devServer: {
+		inline: true,
+		open: true,
+		contentBase: path.resolve(__dirname, 'examples'),
+	},
 };
 
 module.exports = merge(
