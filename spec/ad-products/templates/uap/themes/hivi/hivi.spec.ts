@@ -21,6 +21,7 @@ function getAdSlotObject() {
 		getElement: () => getSlotElement(),
 		getSlotName: () => 'top_leaderboard',
 		isEnabled: () => true,
+		show: () => {},
 	};
 }
 
