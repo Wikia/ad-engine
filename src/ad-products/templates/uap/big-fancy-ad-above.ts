@@ -132,6 +132,7 @@ export class BigFancyAdAbove {
 		}
 
 		this.theme.onAdReady();
+		this.adSlot.show();
 
 		if (universalAdPackage.isVideoEnabled(this.params)) {
 			// defers for proper rendering
