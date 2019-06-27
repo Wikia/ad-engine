@@ -3,7 +3,6 @@ import * as utils from './utils';
 
 logVersion();
 
-export * from './log-version';
 export * from './ad-engine';
 export * from './listeners';
 export * from './models';
