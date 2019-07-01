@@ -178,7 +178,7 @@ export class StickyAd extends StickyBase {
 	 */
 	addUnstickButton() {
 		this.addButton(this.adSlot.getElement().querySelector('div'), () => {
-			this.adSlot.emitEvent(Stickiness.SLOT_UNSTICK_IMMEDIATELY);
+			this.adSlot.emitEvent(Stickiness.SLOT_FORCE_UNSTICK);
 			this.stickiness.close();
 		});
 	}
