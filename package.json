@@ -148,7 +148,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e @types | grep -v npm; then exit 1; fi"
+			"pre-commit": "\nlint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e @types | grep -v npm; then exit 1; fi &&  if npm run check-types 2> /dev/null | grep -e src/ad-bidders -e @types | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {
