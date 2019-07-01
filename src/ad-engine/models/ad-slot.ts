@@ -100,7 +100,6 @@ export class AdSlot extends EventEmitter {
 	});
 	viewed = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_VIEWED_EVENT, resolve);
-		this.once(AdSlot.VIDEO_VIEWED_EVENT, resolve);
 	});
 
 	constructor(ad: AdStackPayload) {
@@ -279,7 +278,9 @@ export class AdSlot extends EventEmitter {
 	}
 
 	success(status: string = AdSlot.STATUS_SUCCESS): void {
-		this.show();
+		if (!this.getConfigProperty('showManually')) {
+			this.show();
+		}
 		this.setStatus(status);
 
 		const templateNames = this.getConfigProperty('defaultTemplates');

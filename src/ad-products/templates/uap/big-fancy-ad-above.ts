@@ -93,6 +93,9 @@ export class BigFancyAdAbove {
 			return;
 		}
 
+		this.adSlot.setConfigProperty('showManually', true);
+		this.adSlot.hide();
+
 		// TODO Remove this hack when all mobile apps support autoplay and fullscreen
 		if (!this.config.autoPlayAllowed) {
 			this.params.autoPlay = false;
@@ -129,6 +132,7 @@ export class BigFancyAdAbove {
 		}
 
 		this.theme.onAdReady();
+		this.adSlot.show();
 
 		if (universalAdPackage.isVideoEnabled(this.params)) {
 			// defers for proper rendering
