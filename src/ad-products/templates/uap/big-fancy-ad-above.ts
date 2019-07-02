@@ -125,6 +125,10 @@ export class BigFancyAdAbove {
 		this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
 		this.config.mainContainer.classList.add('has-bfaa');
 
+		// Ad has to be shown after iframe is ready (and slot is expanded to responsive)
+		// However it has to be visible before adjusting navbar position...
+		this.adSlot.show();
+
 		navbarManager.setup(this.config, this.container);
 
 		if (document.hidden) {
@@ -132,7 +136,6 @@ export class BigFancyAdAbove {
 		}
 
 		this.theme.onAdReady();
-		this.adSlot.show();
 
 		if (universalAdPackage.isVideoEnabled(this.params)) {
 			// defers for proper rendering
