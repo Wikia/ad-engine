@@ -9,7 +9,7 @@ export const slotBillTheLizardStatusTrackingMiddleware: utils.Middleware<AdInfoC
 		slot,
 		data: {
 			...data,
-			btl: slot.getConfigProperty('btlStatus') || '',
+			btl: slot.getConfigProperty('btlStatus') || 'not_used',
 		},
 	});
 };
