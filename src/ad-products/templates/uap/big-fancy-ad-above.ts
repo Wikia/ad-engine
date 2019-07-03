@@ -56,7 +56,9 @@ export class BigFancyAdAbove {
 			onBeforeStickBfaaCallback: () => {},
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
-			onAfterUnstickBfaaCallback: () => {},
+			onAfterUnstickBfaaCallback() {
+				this.moveNavbar(0, 0);
+			},
 			onResolvedStateSetCallback: () => {},
 			onResolvedStateResetCallback: () => {},
 			moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {
