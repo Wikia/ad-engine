@@ -80,7 +80,6 @@ export class AdSlot extends EventEmitter {
 	config: SlotConfig;
 	element: null | HTMLElement = null;
 	status: null | string = null;
-	btlStatus: null;
 	isEmpty = true;
 	enabled: boolean;
 	events: LazyQueue;
