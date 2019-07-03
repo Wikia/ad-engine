@@ -44,7 +44,7 @@ export function getPrebidBestPrice(slotName: string): Dictionary<string> {
 	const bestPrices: Dictionary<number> = {};
 
 	if (window.pbjs && window.pbjs.getBidResponsesForAdUnitCode) {
-		const slotBids = window.pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
+		const slotBids: PrebidBid[] = window.pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
 
 		adaptersRegistry.getAdapters().forEach((adapter) => {
 			bestPrices[adapter.bidderName] = 0;

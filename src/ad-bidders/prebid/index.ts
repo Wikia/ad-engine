@@ -22,6 +22,8 @@ interface PrebidConfig extends BidderConfig {
 
 export interface PrebidBid {
 	cpm: number;
+	status: string;
+	bidderCode: string;
 	timeToRespond: number;
 	getStatusCode: () => number;
 }
@@ -165,7 +167,7 @@ export class Prebid extends BaseBidder {
 
 		this.lazyLoaded = true;
 
-		const adUnitsLazy = setupAdUnits('post');
+		const adUnitsLazy: AdUnitConfig[] = setupAdUnits('post');
 
 		if (adUnitsLazy.length > 0) {
 			this.requestBids(adUnitsLazy, bidsBackHandler);
@@ -181,13 +183,15 @@ export class Prebid extends BaseBidder {
 	}
 
 	getBestPrice(slotName: string): Dictionary<string> {
-		const slotAlias = this.getSlotAlias(slotName);
+		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return getPrebidBestPrice(slotAlias);
 	}
 
 	getTargetingKeys(slotName: string): string[] {
-		const allTargetingKeys = Object.keys(context.get(`slots.${slotName}.targeting`) || {});
+		const allTargetingKeys: string[] = Object.keys(
+			context.get(`slots.${slotName}.targeting`) || {},
+		);
 
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}

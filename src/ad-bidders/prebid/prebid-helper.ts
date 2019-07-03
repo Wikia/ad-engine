@@ -29,7 +29,7 @@ function isSlotApplicable(code, lazyLoad) {
 }
 
 export function setupAdUnits(lazyLoad = 'off'): AdUnitConfig[] {
-	const adUnits = [];
+	const adUnits: AdUnitConfig[] = [];
 
 	adaptersRegistry.getAdapters().forEach((adapter) => {
 		if (adapter && adapter.enabled) {
