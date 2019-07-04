@@ -6,6 +6,7 @@ export const CSS_CLASSNAME_STICKY_SLOT = 'sticky-slot';
 export const CSS_CLASSNAME_STICKY_TEMPLATE = 'sticky-template';
 export const CSS_TIMING_EASE_IN_CUBIC = 'cubic-bezier(0.55, 0.055, 0.675, 0.19)';
 export const CSS_CLASSNAME_STICKY_IAB = 'sticky-iab';
+export const CSS_CLASSNAME_THEME_RESOLVED = 'theme-resolved';
 // Animation time is defined also in CSS, remember to change it in both places
 export const SLIDE_OUT_TIME = 600;
 export const FADE_IN_TIME = 400;

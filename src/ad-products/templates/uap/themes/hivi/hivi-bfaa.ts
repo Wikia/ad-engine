@@ -14,6 +14,7 @@ import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAA,
+	CSS_CLASSNAME_THEME_RESOLVED,
 	FADE_IN_TIME,
 	SLIDE_OUT_TIME,
 } from '../../constants';
@@ -157,7 +158,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	private updateAdSizes(): Promise<HTMLElement> {
 		const { aspectRatio, state } = this.params.config;
 		const currentWidth: number = this.config.mainContainer.offsetWidth;
-		const isResolved = this.container.classList.contains('theme-resolved');
+		const isResolved = this.container.classList.contains(CSS_CLASSNAME_THEME_RESOLVED);
 		const maxHeight = currentWidth / aspectRatio.default;
 		const minHeight = currentWidth / aspectRatio.resolved;
 		const scrollY = window.scrollY || window.pageYOffset || 0;
@@ -267,10 +268,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 	private switchImagesInAd(isResolved: boolean): void {
 		if (isResolved) {
-			this.container.classList.add('theme-resolved');
+			this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
 			this.params.image2.element.classList.remove('hidden-state');
 		} else {
-			this.container.classList.remove('theme-resolved');
+			this.container.classList.remove(CSS_CLASSNAME_THEME_RESOLVED);
 			this.params.image2.element.classList.add('hidden-state');
 		}
 	}

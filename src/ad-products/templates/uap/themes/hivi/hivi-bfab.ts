@@ -12,6 +12,7 @@ import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAB,
+	CSS_CLASSNAME_THEME_RESOLVED,
 	FADE_IN_TIME,
 	SLIDE_OUT_TIME,
 } from '../../constants';
@@ -153,7 +154,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 	async setResolvedState() {
 		const { config, image2 } = this.params;
 
-		this.container.classList.add('theme-resolved');
+		this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
 		image2.element.classList.remove('hidden-state');
 		await slotTweaker.makeResponsive(this.adSlot, config.aspectRatio.resolved);
 
