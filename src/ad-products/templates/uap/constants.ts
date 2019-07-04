@@ -1,5 +1,6 @@
 export const CSS_CLASSNAME_FADE_IN_ANIMATION = 'fade-in';
 export const CSS_CLASSNAME_SLIDE_OUT_ANIMATION = 'slide-out';
+export const CSS_CLASSNAME_BFAA_PINNED = 'bfaa-pinned';
 export const CSS_CLASSNAME_STICKY_BFAA = 'sticky-bfaa';
 export const CSS_CLASSNAME_STICKY_BFAB = 'sticky-bfab';
 export const CSS_CLASSNAME_STICKY_SLOT = 'sticky-slot';

@@ -1,5 +1,7 @@
+import { CSS_CLASSNAME_BFAA_PINNED } from '../templates/uap/constants';
+
 export class NavbarManager {
-	setup(config, container) {
+	setup(config, container): void {
 		if (!config.handleNavbar) {
 			return;
 		}
@@ -20,3 +22,15 @@ export class NavbarManager {
 }
 
 export const navbarManager = new NavbarManager();
+
+export function setNavbarPin(navbar: HTMLElement, pin: boolean): void {
+	if (pin) {
+		navbar.classList.add(CSS_CLASSNAME_BFAA_PINNED);
+	} else {
+		navbar.classList.remove(CSS_CLASSNAME_BFAA_PINNED);
+	}
+}
+
+export function getNavbarHeight(navbar?: HTMLElement): number {
+	return navbar ? navbar.clientHeight : 0;
+}
