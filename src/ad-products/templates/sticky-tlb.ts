@@ -9,6 +9,7 @@ import {
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAA,
 	CSS_CLASSNAME_STICKY_IAB,
+	CSS_CLASSNAME_THEME_RESOLVED,
 	FADE_IN_TIME,
 	SLIDE_OUT_TIME,
 } from './uap/constants';
@@ -118,7 +119,7 @@ export class StickyTLB extends StickyBase {
 		this.config.moveNavbar(0, SLIDE_OUT_TIME);
 		await animate(this.container, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
 		this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
-		this.container.classList.add('theme-resolved');
+		this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
 		animate(this.container, CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
 	}
 
@@ -132,7 +133,7 @@ export class StickyTLB extends StickyBase {
 	protected unstickImmediately(): void {
 		this.config.moveNavbar(0, 0);
 		this.container.classList.remove(CSS_CLASSNAME_STICKY_BFAA);
-		this.container.classList.add('theme-resolved');
+		this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
 		this.stickiness.sticky = false;
 		this.config.mainContainer.style.paddingTop = '0';
 		this.container.classList.add('hide');
