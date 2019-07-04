@@ -1,6 +1,5 @@
 import { AdSlot, context, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../../utils';
-import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
 import { BfaaHiviTheme } from './themes/hivi';
@@ -56,21 +55,10 @@ export class BigFancyAdAbove {
 			onBeforeStickBfaaCallback: () => {},
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
-			onAfterUnstickBfaaCallback() {
-				this.moveNavbar(0, 0);
-			},
+			onAfterUnstickBfaaCallback() {},
 			onResolvedStateSetCallback: () => {},
 			onResolvedStateResetCallback: () => {},
-			moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {
-				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
-
-				if (navbarElement) {
-					navbarElement.style.transition = offset
-						? ''
-						: `top ${time}ms ${CSS_TIMING_EASE_IN_CUBIC}`;
-					navbarElement.style.top = offset ? `${offset}px` : '';
-				}
-			},
+			moveNavbar() {},
 		};
 	}
 

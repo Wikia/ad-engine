@@ -1,5 +1,6 @@
 import { AdEngine, context, templateService } from '@wikia/ad-engine';
 import { BigFancyAdAbove, BigFancyAdBelow, FloatingRail } from '@wikia/ad-products';
+import { getConfig as getBigFancyAdAboveConfig } from '../../big-fancy-ad-above-config';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -12,17 +13,19 @@ if (document.body.offsetWidth < 728) {
 	context.set('targeting.skin', 'fandom_mobile');
 }
 
-templateService.register(BigFancyAdAbove);
-templateService.register(BigFancyAdBelow);
+templateService.register(BigFancyAdAbove, {
+	...getBigFancyAdAboveConfig(),
+	autoPlayAllowed: false,
+	defaultStateAllowed: false,
+	fullscreenAllowed: false,
+	stickinessAllowed: false,
+	mainContainer: document.querySelector('.header'),
+});
+templateService.register(BigFancyAdBelow, {
+	autoPlayAllowed: false,
+	defaultStateAllowed: false,
+	fullscreenAllowed: false,
+});
 templateService.register(FloatingRail);
-
-context.set('templates.bfaa.autoPlayAllowed', false);
-context.set('templates.bfaa.defaultStateAllowed', false);
-context.set('templates.bfaa.fullscreenAllowed', false);
-context.set('templates.bfaa.stickinessAllowed', false);
-context.set('templates.bfab.autoPlayAllowed', false);
-context.set('templates.bfab.defaultStateAllowed', false);
-context.set('templates.bfab.fullscreenAllowed', false);
-context.set('templates.bfaa.mainContainer', document.querySelector('.header'));
 
 new AdEngine().init();
