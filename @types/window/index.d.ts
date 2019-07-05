@@ -2,6 +2,7 @@
 ///<reference path="../../node_modules/@alugha/ima/typings/ima.d.ts"/>
 
 interface Window {
+	__cmp?: WindowCMP;
 	AdEngine_adType?: any;
 	ads?: Ads;
 	buildAdUnitString?: (arg0: string, arg1: any) => string;
@@ -20,6 +21,7 @@ interface Window {
 	pbjs?: any;
 	pvNumber?: number;
 	pvUID?: string;
+	apstag?: Apstag;
 }
 
 declare var NOLBUNDLE: any;

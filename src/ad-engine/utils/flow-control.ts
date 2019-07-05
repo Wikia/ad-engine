@@ -57,6 +57,6 @@ export function timeoutReject(msToTimeout: number): Promise<any> {
 /**
  * Fires the Promise if function is fulfilled or timeout is reached
  */
-export function createWithTimeout(func: () => any, msToTimeout = 2000): Promise<any> {
+export function createWithTimeout(func: (...args: any) => any, msToTimeout = 2000): Promise<any> {
 	return Promise.race([new Promise(func), timeoutReject(msToTimeout)]);
 }
