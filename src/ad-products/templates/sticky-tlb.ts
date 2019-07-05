@@ -1,5 +1,5 @@
 import { Dictionary, SlotTweaker, utils } from '@wikia/ad-engine';
-import { navbarManager } from '../utils';
+import { setupNavbar } from '../utils';
 import AdvertisementLabel from './interface/advertisement-label';
 import { animate } from './interface/animate';
 import { StickyBase } from './sticky-base';
@@ -78,7 +78,7 @@ export class StickyTLB extends StickyBase {
 		this.config.mainContainer.style.paddingTop = `${this.container.scrollHeight}px`;
 		this.config.mainContainer.classList.add('has-bfaa');
 
-		navbarManager.setup(this.config, this.container);
+		setupNavbar(this.config, this.container);
 		this.config.moveNavbar(this.container.scrollHeight, SLIDE_OUT_TIME);
 
 		if (document.hidden) {
