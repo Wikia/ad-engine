@@ -1,5 +1,5 @@
 import { AdSlot, context, utils } from '@wikia/ad-engine';
-import { navbarManager } from '../../utils';
+import { setupNavbar } from '../../utils';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
 import { BfaaHiviTheme } from './themes/hivi';
@@ -119,7 +119,7 @@ export class BigFancyAdAbove {
 		// However it has to be visible before adjusting navbar position...
 		this.adSlot.show();
 
-		navbarManager.setup(this.config, this.container);
+		setupNavbar(this.config, this.container);
 
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');

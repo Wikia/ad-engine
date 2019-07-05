@@ -84,9 +84,7 @@ export function getViewportWidth(): number {
  */
 export function isInViewport(
 	element: HTMLElement,
-	topOffset = 0,
-	bottomOffset = 0,
-	areaThreshold = 0.5,
+	{ topOffset = 0, bottomOffset = 0, areaThreshold = 0.5 } = {},
 ): boolean {
 	const alwaysInViewportPositions = ['fixed', 'sticky'];
 	const elementPosition = window.getComputedStyle(element).position;
