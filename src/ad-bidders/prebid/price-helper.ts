@@ -59,7 +59,7 @@ export function getPrebidBestPrice(slotName: string): Dictionary<string> {
 	}
 
 	return mapValues(bestPrices, (price: number) => {
-		return price === 0 ? '0' : price.toFixed(2);
+		return price === 0 ? '' : price.toFixed(2);
 	});
 }
 
