@@ -1,20 +1,27 @@
-import { context, DEFAULT_MAX_DELAY, utils } from '@wikia/ad-engine';
+import { context, DEFAULT_MAX_DELAY, Dictionary, utils } from '@wikia/ad-engine';
+import { LazyQueue } from '../ad-engine/utils';
+
+export interface BidderConfig {
+	enabled: boolean;
+}
 
 /**
  * @abstract
  */
 export class BaseBidder {
-	constructor(name, bidderConfig, timeout = DEFAULT_MAX_DELAY) {
-		this.name = name;
+	logGroup: string;
+	called = false;
+	response = false;
+	onResponseCallbacks: LazyQueue;
+
+	constructor(
+		public name: string,
+		public bidderConfig: BidderConfig,
+		public timeout: number = DEFAULT_MAX_DELAY,
+	) {
 		this.logGroup = `${name}-bidder`;
-		this.bidderConfig = bidderConfig;
-		this.timeout = timeout;
-		this.utils = utils;
-		this.context = context;
-
 		this.resetState();
-
-		this.utils.logger(this.logGroup, 'created');
+		utils.logger(this.logGroup, 'created');
 	}
 
 	resetState() {
@@ -27,50 +34,36 @@ export class BaseBidder {
 		});
 	}
 
-	call() {
+	call(): void {
 		this.response = false;
 		this.called = true;
 
 		this.callBids(() => this.onBidResponse());
 
-		this.utils.logger(this.logGroup, 'called');
+		utils.logger(this.logGroup, 'called');
 	}
 
-	/**
-	 * @protected
-	 */
-	onBidResponse() {
+	protected onBidResponse(): void {
 		this.response = true;
 
 		this.calculatePrices();
 		this.onResponseCallbacks.flush();
 
-		this.utils.logger(this.logGroup, 'respond');
+		utils.logger(this.logGroup, 'respond');
 	}
 
 	/**
 	 * Returns bidder slot alias if available, otherwise slot name
-	 * @protected
-	 * @param {string} slotName
-	 * @returns {string}
 	 */
-	getSlotAlias(slotName) {
+	protected getSlotAlias(slotName: string): string {
 		return context.get(`slots.${slotName}.bidderAlias`) || slotName;
 	}
 
-	/**
-	 * @param {string} slotName
-	 * @returns {{}}
-	 */
-	getSlotBestPrice(slotName) {
+	getSlotBestPrice(slotName: string): Dictionary<number | string> {
 		return this.getBestPrice(slotName);
 	}
 
-	/**
-	 * @param {string} slotName
-	 * @returns {{}}
-	 */
-	getSlotTargetingParams(slotName) {
+	getSlotTargetingParams(slotName: string): Dictionary {
 		if (!this.called || !this.isSlotSupported(slotName)) {
 			return {};
 		}
@@ -78,20 +71,15 @@ export class BaseBidder {
 		return this.getTargetingParams(slotName);
 	}
 
-	/**
-	 * @param {string} slotName
-	 * @returns {boolean}
-	 */
-	isSlotSupported(slotName) {
+	isSlotSupported(slotName: string): boolean {
 		return this.isSupported(slotName);
 	}
 
 	/**
 	 * Fires the Promise if bidder replied or timeout is reached
-	 * @returns {Promise}
 	 */
-	waitForResponse() {
-		return this.utils.createWithTimeout((resolve) => {
+	waitForResponse(): Promise<void> {
+		return utils.createWithTimeout((resolve) => {
 			if (this.hasResponse()) {
 				resolve();
 			} else {
@@ -100,69 +88,62 @@ export class BaseBidder {
 		}, this.timeout);
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
-	hasResponse() {
+	hasResponse(): boolean {
 		return this.response;
 	}
 
-	addResponseListener(callback) {
+	addResponseListener(callback: (...args: any[]) => void): void {
 		this.onResponseCallbacks.push(callback);
 	}
 
 	/**
 	 * Check if bidder was called
-	 * @returns {boolean}
 	 */
-	wasCalled() {
+	wasCalled(): boolean {
 		return this.called;
 	}
 
 	/**
 	 * @abstract
-	 * @protected
 	 */
-	callBids(cb) {
+	protected callBids(cb?: (...args: any[]) => any): void {
 		throw new utils.NotImplementedException({ cb });
 	}
 
 	/**
 	 * @abstract
-	 * @protected
 	 */
-	calculatePrices() {
+	protected calculatePrices(): void {
 		throw new utils.NotImplementedException();
 	}
 
 	/**
 	 * @abstract
-	 * @protected
-	 * @param {string} slotName
-	 * @returns {*|{}}
 	 */
-	getBestPrice(slotName) {
+	protected getBestPrice(slotName: string): Dictionary<number | string> {
 		throw new utils.NotImplementedException({ slotName });
 	}
 
 	/**
 	 * @abstract
-	 * @protected
-	 * @param {string} slotName
-	 * @returns {*|{}}
 	 */
-	getTargetingParams(slotName) {
+	protected getTargetingParams(slotName: string): Dictionary {
 		throw new utils.NotImplementedException({ slotName });
 	}
 
 	/**
 	 * Checks if slot with given name is supported by bidder.
 	 * @abstract
-	 * @protected
-	 * @param {string} slotName
-	 * @returns {boolean}
 	 */
-	isSupported(slotName) {
+	protected isSupported(slotName: string): boolean {
 		throw new utils.NotImplementedException({ slotName });
 	}
+}
+
+export type BidsBackHandler = (...args: any[]) => void;
+
+export interface BidsRefreshing {
+	enabled: boolean;
+	slots: string[];
+	bidsBackHandler: BidsBackHandler;
 }

@@ -14,22 +14,15 @@ export class Apstag {
 		return Apstag.instance;
 	}
 
-	/**
-	 * @private
-	 */
-	renderImpEndCallbacks = [];
-
-	/**
-	 * @private
-	 * @type {boolean}
-	 */
-	renderImpHookPresent = false;
+	private renderImpEndCallbacks = [];
+	private renderImpHookPresent = false;
+	private script: Promise<Event>;
+	utils = utils;
 
 	/**
 	 * @private
 	 */
 	constructor() {
-		this.utils = utils;
 		this.insertScript();
 		this.configure();
 	}
@@ -50,8 +43,7 @@ export class Apstag {
 	 * @private
 	 */
 	configure() {
-		window.apstag = window.apstag || {};
-		window.apstag._Q = window.apstag._Q || [];
+		window.apstag = window.apstag || { _Q: [] };
 
 		if (typeof window.apstag.init === 'undefined') {
 			window.apstag.init = (...args) => {
@@ -84,7 +76,7 @@ export class Apstag {
 		window.apstag.fetchBids(bidsConfig, (currentBids) => cb(currentBids));
 	}
 
-	targetingKeys() {
+	targetingKeys(): string[] {
 		return window.apstag.targetingKeys();
 	}
 
