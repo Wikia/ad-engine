@@ -1,5 +1,7 @@
 import { context, slotService } from '@wikia/ad-engine';
+import { AdUnitConfig } from './adapters';
 import { adaptersRegistry } from './adapters-registry';
+import { PrebidBid } from './index';
 
 const lazyLoadSlots = ['bottom_leaderboard'];
 const videoType = 'video';
@@ -26,8 +28,8 @@ function isSlotApplicable(code, lazyLoad) {
 	return !(isSlotDisabled || isSlotLazyIgnored);
 }
 
-export function setupAdUnits(lazyLoad = 'off') {
-	const adUnits = [];
+export function setupAdUnits(lazyLoad = 'off'): AdUnitConfig[] {
+	const adUnits: AdUnitConfig[] = [];
 
 	adaptersRegistry.getAdapters().forEach((adapter) => {
 		if (adapter && adapter.enabled) {
@@ -65,7 +67,7 @@ export function getBidByAdId(adUnitCode, adId) {
 	return foundBids.length ? foundBids[0] : null;
 }
 
-export function getAvailableBidsByAdUnitCode(adUnitCode) {
+export function getAvailableBidsByAdUnitCode(adUnitCode: string): PrebidBid[] {
 	let bids = [];
 
 	if (window.pbjs && typeof window.pbjs.getBidResponsesForAdUnitCode === 'function') {

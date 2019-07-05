@@ -97,7 +97,7 @@ export class StickyBase {
 			await utils.wait(stickyDefaultTime + stickyAdditionalTime);
 		};
 
-		this.stickiness = new Stickiness(this.adSlot, whenSlotViewedOrTimeout());
+		this.stickiness = new Stickiness(this.adSlot, whenSlotViewedOrTimeout(), stickyUntilSlotViewed);
 	}
 
 	protected addButton(rootElement, cb): void {

@@ -1,13 +1,35 @@
-import { context, DEFAULT_MAX_DELAY, events, eventService, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	DEFAULT_MAX_DELAY,
+	Dictionary,
+	events,
+	eventService,
+	utils,
+} from '@wikia/ad-engine';
 import { decorate } from 'core-decorators';
-import { BaseBidder } from '../base-bidder';
+import { BaseBidder, BidderConfig, BidsBackHandler, BidsRefreshing } from '../base-bidder';
+import { AdUnitConfig } from './adapters';
 import { adaptersRegistry } from './adapters-registry';
 import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
 import { getSettings, PrebidTargeting } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
-function postponeExecutionUntilPbjsLoads(method: (...args: any[]) => void) {
-	return function (...args: any[]) {
+interface PrebidConfig extends BidderConfig {
+	lazyLoadingEnabled?: boolean;
+	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
+}
+
+export interface PrebidBid {
+	cpm: number;
+	status: string;
+	bidderCode: string;
+	timeToRespond: number;
+	getStatusCode: () => number;
+}
+
+function postponeExecutionUntilPbjsLoads(method: (...T: any[]) => void): (...T) => void {
+	return function (...args: any[]): void {
 		return window.pbjs.que.push(() => method.apply(this, args));
 	};
 }
@@ -15,9 +37,9 @@ function postponeExecutionUntilPbjsLoads(method: (...args: any[]) => void) {
 eventService.on(events.VIDEO_AD_IMPRESSION, markWinningBidAsUsed);
 eventService.on(events.VIDEO_AD_ERROR, markWinningBidAsUsed);
 
-function markWinningBidAsUsed(adSlot) {
+function markWinningBidAsUsed(adSlot: AdSlot): void {
 	// Mark ad as rendered
-	const adId = context.get(`slots.${adSlot.getSlotName()}.targeting.hb_adid`);
+	const adId: string = context.get(`slots.${adSlot.getSlotName()}.targeting.hb_adid`);
 
 	if (adId) {
 		if (window.pbjs && typeof window.pbjs.markWinningBidAsUsed === 'function') {
@@ -39,13 +61,19 @@ export class Prebid extends BaseBidder {
 	static validResponseStatusCode = 1;
 	static errorResponseStatusCode = 2;
 
-	constructor(bidderConfig, timeout = DEFAULT_MAX_DELAY) {
+	adUnits: AdUnitConfig[];
+	isCMPEnabled: boolean;
+	isLazyLoadingEnabled: boolean;
+	lazyLoaded = false;
+	prebidConfig: Dictionary;
+	bidsRefreshing: BidsRefreshing;
+
+	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
 
 		this.insertScript();
 		adaptersRegistry.configureAdapters();
 
-		this.lazyLoaded = false;
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
 		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
@@ -86,21 +114,18 @@ export class Prebid extends BaseBidder {
 	}
 
 	@decorate(postponeExecutionUntilPbjsLoads)
-	applyConfig(config) {
+	applyConfig(config: Dictionary): void {
 		window.pbjs.setConfig(config);
 	}
 
 	@decorate(postponeExecutionUntilPbjsLoads)
-	applySettings() {
+	applySettings(): void {
 		window.pbjs.bidderSettings = getSettings();
 	}
 
-	/**
-	 * @protected
-	 */
-	callBids(bidsBackHandler) {
+	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = setupAdUnits(this.bidderConfig, this.isLazyLoadingEnabled ? 'pre' : 'off');
+			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		}
 
 		if (this.adUnits.length > 0) {
@@ -115,10 +140,7 @@ export class Prebid extends BaseBidder {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	insertScript() {
+	private insertScript(): void {
 		if (loaded) {
 			return;
 		}
@@ -138,14 +160,14 @@ export class Prebid extends BaseBidder {
 		loaded = true;
 	}
 
-	lazyCall(bidsBackHandler) {
+	lazyCall(bidsBackHandler: (...args: any[]) => void): void {
 		if (this.lazyLoaded) {
 			return;
 		}
 
 		this.lazyLoaded = true;
 
-		const adUnitsLazy = setupAdUnits(this.bidderConfig, 'post');
+		const adUnitsLazy: AdUnitConfig[] = setupAdUnits('post');
 
 		if (adUnitsLazy.length > 0) {
 			this.requestBids(adUnitsLazy, bidsBackHandler);
@@ -154,44 +176,40 @@ export class Prebid extends BaseBidder {
 		}
 	}
 
-	removeAdUnits() {
+	removeAdUnits(): void {
 		(window.pbjs.adUnits || []).forEach((adUnit) => {
 			window.pbjs.removeAdUnit(adUnit.code);
 		});
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	getBestPrice(slotName) {
-		const slotAlias = this.getSlotAlias(slotName);
+	getBestPrice(slotName: string): Dictionary<string> {
+		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return getPrebidBestPrice(slotAlias);
 	}
 
-	getTargetingKeys(slotName) {
-		const allTargetingKeys = Object.keys(context.get(`slots.${slotName}.targeting`) || {});
+	getTargetingKeys(slotName: string): string[] {
+		const allTargetingKeys: string[] = Object.keys(
+			context.get(`slots.${slotName}.targeting`) || {},
+		);
 
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
 
-	getDealsTargetingFromBid(bid): PrebidTargeting {
-		const keyValueParis = {};
+	getDealsTargetingFromBid(bid: Dictionary): PrebidTargeting {
+		const keyValuePairs: Dictionary = {};
 
 		Object.keys(bid.adserverTargeting).forEach((key) => {
 			if (key.indexOf('hb_deal_') === 0) {
-				keyValueParis[key] = bid.adserverTargeting[key];
+				keyValuePairs[key] = bid.adserverTargeting[key];
 			}
 		});
 
-		return keyValueParis;
+		return keyValuePairs;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	getTargetingParams(slotName): PrebidTargeting {
-		const slotAlias = this.getSlotAlias(slotName);
+	getTargetingParams(slotName: string): PrebidTargeting {
+		const slotAlias: string = this.getSlotAlias(slotName);
 		let slotParams: PrebidTargeting = {};
 		let deals: PrebidTargeting = {};
 
@@ -199,7 +217,7 @@ export class Prebid extends BaseBidder {
 		// because it takes only last auction into account.
 		// We need to get all available bids (including old auctions)
 		// in order to keep still available, not refreshed adapters' bids...
-		const bids = getAvailableBidsByAdUnitCode(slotAlias);
+		const bids: PrebidBid[] = getAvailableBidsByAdUnitCode(slotAlias);
 
 		if (bids.length) {
 			let bidParams = null;
@@ -231,7 +249,7 @@ export class Prebid extends BaseBidder {
 		const { hb_adid: adId } = slotParams;
 
 		if (adId) {
-			const uuid = getBidUUID(slotAlias, adId);
+			const uuid: string = getBidUUID(slotAlias, adId);
 
 			if (uuid) {
 				// This is not calculated in prebid-settings for hb_uuid
@@ -245,16 +263,13 @@ export class Prebid extends BaseBidder {
 		return slotParams || {};
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	isSupported(slotName) {
-		const slotAlias = this.getSlotAlias(slotName);
+	isSupported(slotName: string): boolean {
+		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return this.adUnits && this.adUnits.some((adUnit) => adUnit.code === slotAlias);
 	}
 
-	registerBidsRefreshing() {
+	registerBidsRefreshing(): void {
 		window.pbjs.que.push(() => {
 			const refreshUsedBid = (winningBid) => {
 				if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
@@ -279,7 +294,11 @@ export class Prebid extends BaseBidder {
 	}
 
 	@decorate(postponeExecutionUntilPbjsLoads)
-	requestBids(adUnits, bidsBackHandler, withRemove = undefined) {
+	requestBids(
+		adUnits: AdUnitConfig[],
+		bidsBackHandler: BidsBackHandler,
+		withRemove?: () => void,
+	): void {
 		if (withRemove) {
 			withRemove();
 		}
