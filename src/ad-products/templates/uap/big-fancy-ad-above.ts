@@ -1,5 +1,5 @@
 import { AdSlot, context, utils } from '@wikia/ad-engine';
-import { navbarManager } from '../../utils';
+import { setupNavbar } from '../../utils';
 import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
@@ -125,7 +125,7 @@ export class BigFancyAdAbove {
 		this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
 		this.config.mainContainer.classList.add('has-bfaa');
 
-		navbarManager.setup(this.config, this.container);
+		setupNavbar(this.config, this.container);
 
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
