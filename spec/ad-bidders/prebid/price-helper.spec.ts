@@ -1,17 +1,18 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { PrebidBid } from '../../../src/ad-bidders/prebid';
-import { BaseAdapter } from '../../../src/ad-bidders/prebid/adapters';
+import { BaseAdapter, DEFAULT_MAX_CPM } from '../../../src/ad-bidders/prebid/adapters';
 import { adaptersRegistry } from '../../../src/ad-bidders/prebid/adapters-registry';
 import {
 	getPrebidBestPrice,
+	transformPriceFromBid,
 	transformPriceFromCpm,
 } from '../../../src/ad-bidders/prebid/price-helper';
 import { PrebidBidFactory } from './prebid-bid.factory';
 
 describe('transformPriceFromCpm', () => {
 	it('should return bucket from price converted to string with two decimal places', () => {
-		const testVectors = [
+		const testVectors: [number, string][] = [
 			[0.01, '0.01'],
 			[0.02, '0.01'],
 			[0.05, '0.05'],
@@ -133,5 +134,43 @@ describe('getPrebidBestPrice', () => {
 		result = getPrebidBestPrice(bidderName);
 
 		expect(result).to.deep.equal({ [bidderName]: '19.50' });
+	});
+});
+
+describe('transformPriceFromBid', () => {
+	let adapter: BaseAdapter;
+	let sandbox;
+
+	beforeEach(() => {
+		sandbox = sinon.createSandbox();
+		adapter = {} as BaseAdapter;
+		sandbox.stub(adaptersRegistry, 'getAdapter').returns(adapter);
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
+	it(`should round price to ${DEFAULT_MAX_CPM} if maxCpm is not present on adapter`, () => {
+		const result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 20.01 }));
+
+		expect(result).to.equal('20.00');
+	});
+
+	it('should round price to adapter.maxCpm if present', () => {
+		// maxCpm must be greater than 20.
+		let result;
+		adapter.maxCpm = 10;
+
+		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 20.01 }));
+		expect(result).to.equal('20.00');
+
+		adapter.maxCpm = 100;
+
+		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 23.01 }));
+		expect(result).to.equal('23.00');
+
+		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 140.01 }));
+		expect(result).to.equal('100.00');
 	});
 });
