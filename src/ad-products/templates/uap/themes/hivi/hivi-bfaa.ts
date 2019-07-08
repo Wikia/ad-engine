@@ -319,23 +319,29 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.unstickImmediately();
 	}
 
-	protected unstickImmediately(stopVideo = true): void {
+	protected unstickImmediately(shouldVideoStop = true): void {
 		this.adSlot.emitEvent(Stickiness.SLOT_UNSTICK_IMMEDIATELY);
 		scrollListener.removeCallback(this.scrollListener);
 		this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 
-		if (stopVideo) {
-			if (this.video && this.video.ima.getAdsManager()) {
-				this.video.stop();
-			} else {
-				this.stopNextVideo = true;
-			}
-
-			this.setResolvedState(true);
+		if (shouldVideoStop) {
+			this.stopVideoPlayback();
 		}
 
 		this.config.onAfterUnstickBfaaCallback.call(this.config, this.adSlot, this.params);
 		this.stickiness.sticky = false;
 		this.removeUnstickButton();
+	}
+
+	private stopVideoPlayback() {
+		if (this.video && this.video.ima.getAdsManager()) {
+			if (this.video.isPlaying()) {
+				this.video.stop();
+			}
+		} else {
+			this.stopNextVideo = true;
+		}
+
+		this.setResolvedState(true);
 	}
 }
