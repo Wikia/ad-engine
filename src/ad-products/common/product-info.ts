@@ -1,4 +1,4 @@
-import { context } from '@ad-engine/core';
+import { context } from '@wikia/ad-engine';
 
 function findSlotGroup(product) {
 	const slotGroups = context.get('slotGroups') || {};

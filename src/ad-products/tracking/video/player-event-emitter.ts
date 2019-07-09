@@ -1,4 +1,4 @@
-import { context, eventService, VideoEventData } from '@ad-engine/core';
+import { context, eventService, VideoEventData } from '@wikia/ad-engine';
 
 export const playerEvents = {
 	VIDEO_PLAYER_TRACKING_EVENT: Symbol('VIDEO_PLAYER_TRACKING_EVENT'),

@@ -1,4 +1,4 @@
-import { context, localCache, utils } from '@ad-engine/core';
+import { context, localCache, utils } from '@wikia/ad-engine';
 
 const logGroup = 'krux';
 

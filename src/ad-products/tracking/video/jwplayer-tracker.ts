@@ -5,7 +5,7 @@ import {
 	vastParser,
 	VideoData,
 	VideoEventData,
-} from '@ad-engine/core';
+} from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';

@@ -5,7 +5,7 @@ import {
 	scrollListener,
 	slotTweaker,
 	utils,
-} from '@ad-engine/core';
+} from '@wikia/ad-engine';
 import * as EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
 import { animate } from '../../../interface/animate';

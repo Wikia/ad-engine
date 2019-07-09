@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { utils } from '@wikia/ad-engine';
 
 export async function animate(container, className, duration) {
 	container.style.animationDuration = `${duration}ms`;

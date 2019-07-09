@@ -1,4 +1,4 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary } from '@wikia/ad-engine';
 
 export const DEFAULT_MAX_CPM = 20;
 export const EXTENDED_MAX_CPM = 50;

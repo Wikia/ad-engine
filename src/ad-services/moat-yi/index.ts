@@ -1,4 +1,4 @@
-import { context, eventService, utils } from '@ad-engine/core';
+import { context, eventService, utils } from '@wikia/ad-engine';
 
 const logGroup = 'moat-yi';
 

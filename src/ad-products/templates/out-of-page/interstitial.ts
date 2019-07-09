@@ -6,7 +6,7 @@ import {
 	SlotTweaker,
 	slotTweaker,
 	utils,
-} from '@ad-engine/core';
+} from '@wikia/ad-engine';
 import AdvertisementLabel from '../interface/advertisement-label';
 import { CloseButton } from '../interface/close-button';
 

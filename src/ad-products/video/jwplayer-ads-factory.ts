@@ -10,7 +10,7 @@ import {
 	utils,
 	vastDebugger,
 	vastParser,
-} from '@ad-engine/core';
+} from '@wikia/ad-engine';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import featuredVideo15s from './featured-video-f15s';
 

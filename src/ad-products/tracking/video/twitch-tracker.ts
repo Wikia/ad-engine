@@ -4,7 +4,7 @@ import {
 	TwitchListenerParams,
 	VideoData,
 	VideoEventData,
-} from '@ad-engine/core';
+} from '@wikia/ad-engine';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 

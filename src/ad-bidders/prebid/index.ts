@@ -1,4 +1,4 @@
-import { context, DEFAULT_MAX_DELAY, events, eventService, utils } from '@ad-engine/core';
+import { context, DEFAULT_MAX_DELAY, events, eventService, utils } from '@wikia/ad-engine';
 import { decorate } from 'core-decorators';
 import { BaseBidder } from '../base-bidder';
 import { adaptersRegistry } from './adapters-registry';

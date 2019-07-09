@@ -1,4 +1,4 @@
-import { scrollListener, utils } from '@ad-engine/core';
+import { scrollListener, utils } from '@wikia/ad-engine';
 import { animate } from './interface/animate';
 import { StickyBase } from './sticky-base';
 import {

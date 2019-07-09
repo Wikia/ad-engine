@@ -1,4 +1,4 @@
-import { context, slotService } from '@ad-engine/core';
+import { context, slotService } from '@wikia/ad-engine';
 import { adaptersRegistry } from './adapters-registry';
 
 const lazyLoadSlots = ['bottom_leaderboard'];

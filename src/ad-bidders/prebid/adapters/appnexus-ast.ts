@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { utils } from '@wikia/ad-engine';
 import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class AppnexusAst extends BaseAdapter {

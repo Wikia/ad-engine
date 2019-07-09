@@ -1,4 +1,4 @@
-import { context } from '@ad-engine/core';
+import { context } from '@wikia/ad-engine';
 
 export class Skin {
 	static getName() {

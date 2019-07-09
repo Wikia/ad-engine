@@ -1,4 +1,4 @@
-import { AdSlot, context, utils } from '@ad-engine/core';
+import { AdSlot, context, utils } from '@wikia/ad-engine';
 import { navbarManager } from '../../utils';
 import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
 import { BfaaTheme } from './themes/classic';
