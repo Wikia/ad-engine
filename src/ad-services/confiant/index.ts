@@ -1,4 +1,4 @@
-import { context, utils } from '@wikia/ad-engine';
+import { context, slotService, utils } from '@wikia/ad-engine';
 
 const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
@@ -11,6 +11,20 @@ function loadScript(propertyId: string): Promise<Event> {
 	const confiantLibraryUrl = `//${scriptDomain}/${propertyId}/gpt_and_prebid/config.js`;
 
 	return utils.scriptLoader.loadScript(confiantLibraryUrl, 'text/javascript', true, 'first');
+}
+
+/**
+ * Confiant blocking callback tracking parameters to DW
+ */
+function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impressionData): void {
+	if (impressionData && impressionData.dfp) {
+		const slotName = impressionData.dfp.s;
+		const adSlot = slotService.get(slotName);
+
+		if (adSlot) {
+			adSlot.emitEvent(`confiant-${blockingType}`);
+		}
+	}
 }
 
 /**
@@ -33,6 +47,7 @@ class Confiant {
 		utils.logger(logGroup, 'loading');
 
 		window.confiant = window.confiant || {};
+		window.confiant.callback = trackBlock;
 
 		return loadScript(propertyId).then(() => {
 			utils.logger(logGroup, 'ready');

@@ -54,12 +54,16 @@ export function getPrebidBestPrice(slotName: string): Dictionary<string> {
 			if (isValidPrice(bid) && bid.status !== 'rendered') {
 				const { bidderCode, cpm } = bid;
 				const cmpPrice = Math.max(bestPrices[bidderCode] || 0, roundCpm(cpm, DEFAULT_MAX_CPM));
+
+				if (cmpPrice > 0) {
+					bestPrices[bidderCode] = cmpPrice;
+				}
 			}
 		});
 	}
 
 	return mapValues(bestPrices, (price: number) => {
-		return price === 0 ? '0' : price.toFixed(2);
+		return price === 0 ? '' : price.toFixed(2);
 	});
 }
 
