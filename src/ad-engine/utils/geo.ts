@@ -11,7 +11,7 @@ const samplingSeparator = '/';
 const sessionCookieDefault = 'tracking_session_id';
 let cache: CacheDictionary = {};
 let cookieLoaded = false;
-let geoData: GeoData | {} = null;
+const geoData: GeoData | {} = null;
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -152,45 +152,24 @@ function containsEarth(countryList: string[], name: string): boolean {
 }
 
 /**
- * Return geo data from cookie
- */
-function getGeoData(): GeoData | {} {
-	if (geoData === null) {
-		const jsonData: string = decodeURIComponent(Cookies.get('Geo'));
-
-		try {
-			geoData = JSON.parse(jsonData) || {};
-		} catch (e) {
-			geoData = {};
-		}
-	}
-
-	return geoData;
-}
-
-function setGeoData(data: GeoData): void {
-	geoData = data;
-}
-
-/**
  * Return country code based on cookie
  */
-function getCountryCode(): string {
-	return (getGeoData() as GeoData).country;
+function getCountryCode(): string | undefined {
+	return context.get('geo.country');
 }
 
 /**
  * Return continent code based on cookie
  */
-function getContinentCode(): string {
-	return (getGeoData() as GeoData).continent;
+function getContinentCode(): string | undefined {
+	return context.get('geo.continent');
 }
 
 /**
  * Return region code based on cookie
  */
-function getRegionCode(): string {
-	return (getGeoData() as GeoData).region;
+function getRegionCode(): string | undefined {
+	return context.get('geo.region');
 }
 
 /**
@@ -314,7 +293,6 @@ function mapSamplingResults(keyVals: string[] = []): string[] {
 }
 
 export const geoService = {
-	setGeoData,
 	isProperContinent,
 	isProperCountry,
 	isProperRegion,

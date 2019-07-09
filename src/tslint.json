@@ -1,6 +1,6 @@
 {
 	"extends": "../tslint.json",
 	"rules": {
-		"no-implicit-dependencies": [true, ["@wikia/ad-engine"]]
+		"no-implicit-dependencies": [true, ["@wikia/ad-engine", "@wikia/ad-tracking"]]
 	}
 }

@@ -7,6 +7,7 @@ export * from './get-promise-and-execute-callback';
 export * from './iframe-builder';
 export * from './lazy-queue';
 export * from './logger';
+export * from './middleware';
 export * from './not-implemented-exception';
 export * from './query-string';
 export * from './sampler';

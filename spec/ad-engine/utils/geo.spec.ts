@@ -2,17 +2,15 @@ import { geoService } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
 import * as Cookies from 'js-cookie';
 import * as sinon from 'sinon';
+import { context } from '../../../src/ad-engine/services';
 
 describe('Geo', () => {
 	let sandbox;
 
 	beforeEach(() => {
-		geoService.setGeoData({
-			city: 'Poznan',
-			country: 'PL',
-			continent: 'EU',
-			region: '72',
-		});
+		context.set('geo.continent', 'EU');
+		context.set('geo.country', 'PL');
+		context.set('geo.region', '72');
 
 		sandbox = sinon.sandbox.create();
 		sandbox.stub(Math, 'random');
@@ -73,6 +71,26 @@ describe('Geo', () => {
 		assert.notOk(geoService.isProperGeo(['XX', 'non-PL']));
 		assert.ok(geoService.isProperGeo(['XX', 'non-XX-SA']));
 		assert.notOk(geoService.isProperGeo(['XX', 'non-XX-EU']));
+	});
+
+	it('geoService.isProperGeo test - lack of region and continent', () => {
+		context.set('geo.continent', null);
+		context.set('geo.region', null);
+		assert.ok(geoService.isProperGeo(['PL']));
+		assert.notOk(geoService.isProperGeo(['PL-72']));
+		assert.notOk(geoService.isProperGeo(['DE']));
+		assert.notOk(geoService.isProperGeo(['EU']));
+	});
+
+	it('geoService.isProperGeo test - lack of all geos', () => {
+		context.set('geo.continent', null);
+		context.set('geo.country', null);
+		context.set('geo.region', null);
+		assert.notOk(geoService.isProperGeo(['PL']));
+		assert.notOk(geoService.isProperGeo(['PL-72']));
+		assert.notOk(geoService.isProperGeo(['DE']));
+		assert.notOk(geoService.isProperGeo(['EU']));
+		assert.ok(geoService.isProperGeo(['XX']));
 	});
 
 	it('samples traffic for earth', () => {

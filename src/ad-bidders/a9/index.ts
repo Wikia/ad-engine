@@ -2,57 +2,101 @@ import {
 	AdSlot,
 	context,
 	DEFAULT_MAX_DELAY,
+	Dictionary,
 	events,
 	eventService,
+	SlotConfig,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
-import { BaseBidder } from '../base-bidder';
-import { Apstag, cmp } from '../wrappers';
+import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
+import { Apstag, Cmp, cmp } from '../wrappers';
+
+type PriceMap = Dictionary<string>;
+
+interface ApstagConfig extends Partial<A9GDPR> {
+	pubID: string;
+	videoAdServer: 'DFP';
+	deals: boolean;
+}
+
+interface ConsentData {
+	gdprApplies?: boolean;
+	consentData?: string;
+}
+
+interface A9GDPR {
+	gdpr: {
+		enabled: boolean;
+		consent: string;
+		cmpTimeout: number;
+	};
+}
+
+interface A9Config extends BidderConfig {
+	amazonId: string;
+	dealsEnabled: boolean;
+	slots: Dictionary<A9SlotConfig>;
+	videoEnabled: boolean;
+	bidsRefreshing: BidsRefreshing;
+}
+
+interface A9SlotConfig {
+	sizes: number[][];
+	type: 'display' | 'video';
+	slotId?: string;
+}
+
+interface A9Bids {
+	[slotName: string]: {
+		[targetingKey: string]: string;
+	};
+}
+
+interface A9SlotDefinition {
+	slotID: string;
+	slotName: string;
+	mediaType?: 'display' | 'video';
+	sizes?: number[][];
+}
 
 const logGroup = 'A9';
-
-/**
- * @typedef {Object} A9SlotDefinition
- * @property {string} slotID
- * @property {string} slotName
- */
 
 export class A9 extends BaseBidder {
 	static A9_CLASS = 'a9-ad';
 
-	/** @private */
-	loaded = false;
+	private loaded = false;
 
-	constructor(bidderConfig, timeout = DEFAULT_MAX_DELAY) {
+	apstag: Apstag = Apstag.make();
+	bids: A9Bids = {};
+	cmp: Cmp = cmp;
+	isRenderImpOverwritten = false;
+	priceMap: PriceMap = {};
+	// map of slot id to slot alias
+	slotNamesMap: Dictionary<string> = {};
+	targetingKeys: string[] = [];
+
+	amazonId: string;
+	bidsRefreshing: Partial<BidsRefreshing>;
+	isCMPEnabled: boolean;
+	slots: Dictionary<A9SlotConfig>;
+	slotsNames: string[];
+
+	constructor(public bidderConfig: A9Config, public timeout: number = DEFAULT_MAX_DELAY) {
 		super('a9', bidderConfig, timeout);
 
 		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.amazonId = this.bidderConfig.amazonId;
 		this.slots = this.bidderConfig.slots;
 		this.slotsNames = Object.keys(this.slots);
-		this.bids = {};
-		this.priceMap = {};
-		this.slotNamesMap = {};
-		this.targetingKeys = [];
-		this.apstag = Apstag.make();
-		this.cmp = cmp;
-		this.utils = utils;
-		this.events = events;
-		this.timeout = timeout;
 		this.bidsRefreshing = context.get('bidders.a9.bidsRefreshing') || {};
-		this.isRenderImpOverwritten = false;
 	}
 
-	getPrices() {
-		return this.priceMap;
-	}
-
-	getTargetingKeys() {
+	getTargetingKeys(): string[] {
 		return this.targetingKeys;
 	}
 
-	init(consentData = {}) {
+	init(consentData: ConsentData = {}): void {
 		this.initIfNotLoaded(consentData);
 
 		this.bids = {};
@@ -62,11 +106,7 @@ export class A9 extends BaseBidder {
 		this.fetchBids(a9Slots);
 	}
 
-	/**
-	 * @private
-	 * @param consentData
-	 */
-	initIfNotLoaded(consentData) {
+	private initIfNotLoaded(consentData: ConsentData): void {
 		if (!this.loaded) {
 			this.apstag.init(this.getApstagConfig(consentData));
 			this.loaded = true;
@@ -74,11 +114,9 @@ export class A9 extends BaseBidder {
 	}
 
 	/**
-	 * @private
-	 * @param consentData
 	 * @returns {{videoAdServer: string, deals: boolean, pubID: (*|string), gdpr: ()}}
 	 */
-	getApstagConfig(consentData) {
+	private getApstagConfig(consentData: ConsentData): ApstagConfig {
 		return {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
@@ -92,7 +130,7 @@ export class A9 extends BaseBidder {
 	 * @param consentData
 	 * @returns {*}
 	 */
-	getGdprIfApplicable(consentData) {
+	getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
 		if (this.isCMPEnabled && consentData && consentData.consentData) {
 			return {
 				gdpr: {
@@ -108,25 +146,20 @@ export class A9 extends BaseBidder {
 
 	/**
 	 * Transforms slots names into A9 slot definitions.
-	 * @param {string[]} slotsNames
-	 * @returns {A9SlotDefinition[]}
 	 */
-	getA9SlotsDefinitions(slotsNames) {
+	getA9SlotsDefinitions(slotsNames: string[]): A9SlotDefinition[] {
 		return slotsNames
-			.map((slotName) => this.getSlotAlias(slotName))
-			.filter((slotAlias) => this.isSlotEnabled(slotAlias))
-			.map((slotAlias) => this.createSlotDefinition(slotAlias))
+			.map((slotName: string) => this.getSlotAlias(slotName))
+			.filter((slotAlias: string) => this.isSlotEnabled(slotAlias))
+			.map((slotAlias: string) => this.createSlotDefinition(slotAlias))
 			.filter((slot) => slot !== null);
 	}
 
 	/**
 	 * Fetches bids from A9.
 	 * Calls this.onBidResponse() upon success.
-	 * @private
-	 * @param {A9SlotDefinition[]} slots
-	 * @param {boolean} refresh
 	 */
-	fetchBids(slots, refresh = false) {
+	private fetchBids(slots: A9SlotDefinition[], refresh = false): void {
 		utils.logger(logGroup, 'fetching bids for slots', slots);
 
 		if (!slots || slots.length === 0) {
@@ -139,7 +172,7 @@ export class A9 extends BaseBidder {
 			this.addApstagRenderImpHookOnFirstFetch();
 
 			currentBids.forEach((bid) => {
-				const slotName = this.slotNamesMap[bid.slotID] || bid.slotID;
+				const slotName: string = this.slotNamesMap[bid.slotID] || bid.slotID;
 				const { keys, bidTargeting } = this.getBidTargetingWithKeys(bid);
 
 				this.updateBidSlot(slotName, keys, bidTargeting);
@@ -152,10 +185,7 @@ export class A9 extends BaseBidder {
 		});
 	}
 
-	/**
-	 * @private
-	 */
-	addApstagRenderImpHookOnFirstFetch() {
+	private addApstagRenderImpHookOnFirstFetch(): void {
 		if (!this.isRenderImpOverwritten) {
 			this.isRenderImpOverwritten = true;
 			this.addApstagRenderImpHook();
@@ -165,9 +195,8 @@ export class A9 extends BaseBidder {
 	/**
 	 * Wraps apstag.renderImp
 	 * Calls this.refreshBid() if bids refreshing is enabled.
-	 * @private
 	 */
-	addApstagRenderImpHook() {
+	private addApstagRenderImpHook(): void {
 		utils.logger(logGroup, 'overwriting window.apstag.renderImp');
 		this.apstag.onRenderImpEnd((doc, impId) => {
 			if (!impId) {
@@ -192,31 +221,24 @@ export class A9 extends BaseBidder {
 
 	/**
 	 * Returns slot which used bid with given impression id.
-	 * @private
 	 */
-	getRenderedSlot(impId: string | number): AdSlot {
-		let renderedSlot;
-
-		slotService.forEach((slot) => {
-			if (slot.getTargeting().amzniid === impId) {
-				renderedSlot = slot;
-			}
-		});
-
-		return renderedSlot;
+	private getRenderedSlot(impId: string | number): AdSlot | undefined {
+		return Object.values(slotService.slots).filter(
+			(slot: AdSlot) => slot.getTargeting().amzniid === impId,
+		)[0];
 	}
 
 	/**
 	 * Refreshes bid for given slot.
-	 * @private
-	 * @param {AdSlot} slot
 	 */
-	refreshBid(slot) {
+	private refreshBid(slot: AdSlot): void {
 		if (!this.shouldRefreshSlot(slot)) {
 			return;
 		}
 
-		const slotDef = this.createSlotDefinition(this.getSlotAlias(slot.getSlotName()));
+		const slotDef: A9SlotDefinition = this.createSlotDefinition(
+			this.getSlotAlias(slot.getSlotName()),
+		);
 
 		if (slotDef) {
 			utils.logger(logGroup, 'refresh bids for slot', slotDef);
@@ -226,23 +248,18 @@ export class A9 extends BaseBidder {
 
 	/**
 	 * Checks if slot should be refreshed.
-	 * @private
-	 * @param {AdSlot} slot
-	 * @returns {boolean}
 	 */
-	shouldRefreshSlot(slot) {
+	private shouldRefreshSlot(slot: AdSlot): boolean {
 		return this.bidsRefreshing.slots.includes(this.getSlotAlias(slot.getSlotName()));
 	}
 
 	/**
 	 * Creates A9 slot definition from slot alias.
-	 * @param {string} slotAlias
-	 * @returns {A9SlotDefinition | null} Returns null i
 	 */
-	createSlotDefinition(slotAlias) {
-		const config = this.slots[slotAlias];
-		const slotID = config.slotId || slotAlias;
-		const definition = {
+	createSlotDefinition(slotAlias: string): A9SlotDefinition | null {
+		const config: A9SlotConfig = this.slots[slotAlias];
+		const slotID: string = config.slotId || slotAlias;
+		const definition: A9SlotDefinition = {
 			slotID,
 			slotName: slotID,
 		};
@@ -262,13 +279,12 @@ export class A9 extends BaseBidder {
 	}
 
 	/**
-	 * @private
 	 * @param bid
 	 * @returns {*}
 	 */
-	getBidTargetingWithKeys(bid) {
-		let bidTargeting = bid;
-		let keys = this.apstag.targetingKeys();
+	private getBidTargetingWithKeys(bid: Dictionary): { keys: string[]; bidTargeting: Dictionary } {
+		let bidTargeting: Dictionary = bid;
+		let keys: string[] = this.apstag.targetingKeys();
 
 		if (this.bidderConfig.dealsEnabled) {
 			keys = bid.helpers.targetingKeys;
@@ -281,13 +297,7 @@ export class A9 extends BaseBidder {
 		};
 	}
 
-	/**
-	 * @private
-	 * @param slotName
-	 * @param keys
-	 * @param bidTargeting
-	 */
-	updateBidSlot(slotName, keys, bidTargeting) {
+	private updateBidSlot(slotName: string, keys: string[], bidTargeting: Dictionary): void {
 		this.bids[slotName] = {};
 		keys.forEach((key) => {
 			if (this.targetingKeys.indexOf(key) === -1) {
@@ -297,10 +307,7 @@ export class A9 extends BaseBidder {
 		});
 	}
 
-	/**
-	 * @protected
-	 */
-	callBids() {
+	protected callBids(): void {
 		if (this.isCMPEnabled && this.cmp.exists) {
 			this.cmp.getConsentData(null, (consentData) => {
 				this.init(consentData);
@@ -310,52 +317,37 @@ export class A9 extends BaseBidder {
 		}
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	calculatePrices() {
-		return Object.keys(this.bids).forEach((slotName) => {
+	calculatePrices(): void {
+		Object.keys(this.bids).forEach((slotName) => {
 			this.priceMap[slotName] = this.bids[slotName].amznbid;
 		});
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	getBestPrice(slotName) {
-		const slotAlias = this.getSlotAlias(slotName);
+	getBestPrice(slotName: string): { a9?: string } {
+		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return this.priceMap[slotAlias] ? { a9: this.priceMap[slotAlias] } : {};
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	getTargetingParams(slotName) {
+	getTargetingParams(slotName: string): Dictionary {
 		return this.bids[this.getSlotAlias(slotName)] || {};
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-	isSupported(slotName) {
+	isSupported(slotName: string): boolean {
 		return !!this.slots[this.getSlotAlias(slotName)];
 	}
 
 	/**
 	 * Checks whether given A9 slot definition is used by alias
-	 * @private
-	 * @param {string} slotID
-	 * @returns {boolean}
 	 */
-	isSlotEnabled(slotID) {
-		const someEnabledByAlias = Object.keys(context.get('slots')).some((slotName) => {
-			const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
+	private isSlotEnabled(slotID: string): boolean {
+		const someEnabledByAlias: boolean = Object.keys(context.get('slots')).some((slotName) => {
+			const bidderAlias: string = context.get(`slots.${slotName}.bidderAlias`);
 
 			return bidderAlias === slotID && slotService.getState(slotName);
 		});
 
-		const slotConfig = context.get(`slots.${slotID}`);
+		const slotConfig: SlotConfig = context.get(`slots.${slotID}`);
 
 		return slotConfig && Object.keys(slotConfig).length > 0
 			? slotService.getState(slotID)

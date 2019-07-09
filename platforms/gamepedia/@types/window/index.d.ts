@@ -1,7 +1,5 @@
 interface Window {
-	__cmp?: any;
 	__cmpStored?: any;
-	// ads: Ads;
 	mw?: any;
 	RLQ?: any;
 	XMLHttpRequest?: any;

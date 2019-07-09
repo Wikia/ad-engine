@@ -2,6 +2,8 @@ import { context, eventService, utils } from '@wikia/ad-engine';
 import { Executor } from './executor';
 import { ProjectsHandler } from './projects-handler';
 
+export * from './slot-bill-the-lizard-tracking-middleware';
+
 /**
  * @typedef {Object} ModelDefinition
  * @property {boolean|undefined} executable
@@ -71,7 +73,7 @@ function buildUrl(host, endpoint, query) {
  * @returns {Promise}
  */
 function httpRequest(host, endpoint, queryParameters = {}, timeout = 0, callId) {
-	const request = new window.XMLHttpRequest();
+	const request = new XMLHttpRequest();
 	const query = buildQueryUrl(queryParameters);
 	const url = buildUrl(host, endpoint, query);
 

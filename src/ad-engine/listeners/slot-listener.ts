@@ -1,5 +1,5 @@
 import { AdSlot, Dictionary } from '../models';
-import { context, slotInjector, slotTweaker } from '../services';
+import { context, eventService, slotInjector, slotTweaker } from '../services';
 import { client, logger } from '../utils';
 
 interface AdditionalEventData {
@@ -88,6 +88,8 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 	};
 }
 
+// TODO: Consider removing context::listeners object and usages in favour of
+//       slot-tracker.ts and events.ts
 function dispatch(
 	methodName: SlotListenerMethod,
 	adSlot: AdSlot,
@@ -146,10 +148,12 @@ class SlotListener {
 
 	emitStatusChanged(adSlot: AdSlot): void {
 		slotTweaker.setDataParam(adSlot, 'slotResult', adSlot.getStatus());
+		eventService.emit(AdSlot.SLOT_STATUS_CHANGED, adSlot);
 		dispatch('onStatusChanged', adSlot);
 	}
 
 	emitCustomEvent(event: null | string, adSlot: AdSlot): void {
+		eventService.emit(AdSlot.CUSTOM_EVENT, adSlot, { status: event });
 		dispatch('onCustomEvent', adSlot, { status: event });
 	}
 }

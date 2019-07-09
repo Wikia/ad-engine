@@ -1,18 +1,22 @@
 import {
 	AdEngine,
+	AdInfoContext,
 	BigFancyAdAbove,
 	BigFancyAdBelow,
 	context,
 	FloatingRail,
 	setupNpaContext,
+	slotPropertiesTrackingMiddleware,
+	slotTracker,
+	slotTrackingMiddleware,
 	templateService,
 } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '455';
-
 context.extend(customContext);
+context.set('targeting.artid', '455');
+context.set('options.tracking.slot.status', true);
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);
@@ -24,5 +28,14 @@ setupNpaContext();
 templateService.register(BigFancyAdAbove);
 templateService.register(BigFancyAdBelow);
 templateService.register(FloatingRail);
+
+// Register slot tracker
+slotTracker
+	.add(slotTrackingMiddleware)
+	.add(slotPropertiesTrackingMiddleware)
+	.register(({ data, slot }: AdInfoContext) => {
+		// Trigger event tracking
+		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
+	});
 
 new AdEngine().init();

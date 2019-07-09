@@ -2,11 +2,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { getTopOffset } from '../../../src/ad-engine/utils';
 
-function mockWindow(top: number, left = 0): void {
-	sinon.stub(window, 'pageXOffset').value(left);
-	sinon.stub(window, 'pageYOffset').value(top);
-}
-
 function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 	return {
 		classList: {
@@ -23,15 +18,24 @@ function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 }
 
 describe('dimensions', () => {
+	const sandbox = sinon.createSandbox();
+
+	beforeEach(() => {
+		sandbox.stub(window, 'pageXOffset').value(0);
+		sandbox.stub(window, 'pageYOffset').value(200);
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('getTopOffset of single element', () => {
-		mockWindow(200);
 		const element = getMockElement(-150);
 
 		expect(getTopOffset(element)).to.equal(50);
 	});
 
 	it('getTopOffset of hidden element', () => {
-		mockWindow(200);
 		const element = getMockElement(100, 0, true);
 		const adSpy = sinon.spy(element.classList, 'add');
 		const removeSpy = sinon.spy(element.classList, 'remove');

@@ -82,7 +82,7 @@ class BtfBlockerService {
 			const slotConfig = slots[adSlotKey];
 
 			if (!slotConfig.firstCall && unblockedSlots.indexOf(adSlotKey) === -1) {
-				slotService.disable(adSlotKey, 'blocked');
+				slotService.disable(adSlotKey, AdSlot.STATUS_BLOCKED);
 			}
 		});
 	}
@@ -104,7 +104,7 @@ class BtfBlockerService {
 
 	private disableAdSlotIfHasConflict(adSlot: AdSlot): void {
 		if (slotService.hasViewportConflict(adSlot)) {
-			slotService.disable(adSlot.getSlotName(), 'viewport-conflict');
+			slotService.disable(adSlot.getSlotName(), AdSlot.STATUS_VIEWPORT_CONFLICT);
 		}
 	}
 
