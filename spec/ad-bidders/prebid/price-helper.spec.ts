@@ -165,6 +165,9 @@ describe('transformPriceFromBid', () => {
 		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 20.01 }));
 		expect(result).to.equal('20.00');
 
+		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 12.53 }));
+		expect(result).to.equal('12.50');
+
 		adapter.maxCpm = 100;
 
 		result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 23.01 }));
