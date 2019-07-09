@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
-describe('AdsSetup', () => {
-	it('init', () => {
+describe('Index', () => {
+	it('mock spec', () => {
 		expect(true).to.equal(true);
 	});
 });
