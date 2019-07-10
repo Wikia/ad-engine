@@ -73,7 +73,7 @@ describe('getPrebidBestPrice', () => {
 	it('should return empty object if window.pbjs does not exist', () => {
 		delete window.pbjs;
 
-		const result = getPrebidBestPrice('bidderA');
+		const result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({});
 	});
@@ -82,7 +82,7 @@ describe('getPrebidBestPrice', () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
 		bids = [];
 
-		const result = getPrebidBestPrice('bidderA');
+		const result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '' });
 	});
@@ -92,17 +92,17 @@ describe('getPrebidBestPrice', () => {
 		const bid = PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 });
 		bids = [bid];
 
-		const result = getPrebidBestPrice(bidderName);
+		const result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '1.00' });
 	});
 
 	it('should not take rendered bids into consideration', () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
-		const bid = PrebidBidFactory.getBid({ bidderCode: bidderName, status: 'rendered' });
+		const bid = PrebidBidFactory.getBid({ cpm: 0.05, bidderCode: bidderName, status: 'rendered' });
 		bids = [bid];
 
-		const result = getPrebidBestPrice(bidderName);
+		const result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '' });
 	});
@@ -116,22 +116,47 @@ describe('getPrebidBestPrice', () => {
 			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
 		];
 
-		const result = getPrebidBestPrice(bidderName);
+		const result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '20.00' });
+	});
+
+	it('should work correctly with a more complex case (many bidders, rendered slots, no bids)', () => {
+		const otherBidderName = 'bidderB';
+
+		adapters.set(bidderName, { bidderName } as BaseAdapter);
+		adapters.set(otherBidderName, { bidderName: otherBidderName } as BaseAdapter);
+		adapters.set('bidderC', { bidderName: 'bidderC' } as BaseAdapter);
+
+		bids = [
+			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
+			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
+			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20, status: 'rendered' }),
+			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
+			PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 2, status: 'rendered' }),
+			PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 14 }),
+		];
+
+		const result = getPrebidBestPrice('someSlot');
+
+		expect(result).to.deep.equal({
+			[bidderName]: '8.00',
+			[otherBidderName]: '14.00',
+			bidderC: '',
+		});
 	});
 
 	it('should round cpm', () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
 		bids = [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.03 })];
 
-		let result = getPrebidBestPrice(bidderName);
+		let result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '0.01' });
 
 		bids = [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 19.99 })];
 
-		result = getPrebidBestPrice(bidderName);
+		result = getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '19.50' });
 	});
@@ -151,7 +176,7 @@ describe('transformPriceFromBid', () => {
 		sandbox.restore();
 	});
 
-	it(`should round price to ${DEFAULT_MAX_CPM} if maxCpm is not present on adapter`, () => {
+	it(`should round price to DEFAULT_MAX_CPM (${DEFAULT_MAX_CPM}) if maxCpm is not present on adapter`, () => {
 		const result = transformPriceFromBid(PrebidBidFactory.getBid({ cpm: 20.01 }));
 
 		expect(result).to.equal('20.00');
