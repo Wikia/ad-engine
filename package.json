@@ -129,7 +129,6 @@
 		"format": "npm run prettier && npm run lintf",
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
 		"preversion": "./maintenance/preversion.sh",
-		"version": "./maintenance/version.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js",
 		"test:watch": "npm run test -- -w",
 		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
