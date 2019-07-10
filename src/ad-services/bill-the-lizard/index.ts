@@ -73,7 +73,7 @@ function buildUrl(host, endpoint, query) {
  * @returns {Promise}
  */
 function httpRequest(host, endpoint, queryParameters = {}, timeout = 0, callId) {
-	const request = new window.XMLHttpRequest();
+	const request = new XMLHttpRequest();
 	const query = buildQueryUrl(queryParameters);
 	const url = buildUrl(host, endpoint, query);
 
