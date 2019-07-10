@@ -1,8 +1,6 @@
 import { context, Dictionary, events, eventService, utils } from '@wikia/ad-engine';
 import { A9 } from './a9';
-import { BidsBackHandler } from './base-bidder';
 import { Prebid } from './prebid';
-import { AdUnitConfig } from './prebid/adapters';
 import * as prebidHelper from './prebid/prebid-helper';
 import { transformPriceFromBid } from './prebid/price-helper';
 

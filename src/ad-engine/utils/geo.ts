@@ -11,7 +11,6 @@ const samplingSeparator = '/';
 const sessionCookieDefault = 'tracking_session_id';
 let cache: CacheDictionary = {};
 let cookieLoaded = false;
-const geoData: GeoData | {} = null;
 
 export interface CacheDictionary {
 	[key: string]: CacheData;

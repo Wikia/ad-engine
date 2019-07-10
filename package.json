@@ -156,6 +156,7 @@
 			"*.ts": [
 				"prettier --write",
 				"tslint --fix",
+				"npm run check-types:selected",
 				"git add"
 			],
 			"*.{js,json,css,scss,html}": [
