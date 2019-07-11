@@ -334,7 +334,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private stopVideoPlayback() {
-		if (this.video && this.video.ima.getAdsManager()) {
+		if (this.video && this.video.ima.getAdsManager() && this.video.ima.status) {
 			if (this.video.isPlaying()) {
 				this.video.stop();
 			}
