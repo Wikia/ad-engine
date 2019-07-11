@@ -27,7 +27,6 @@
 		"@babel/preset-env": "^7.0.0",
 		"@babel/preset-typescript": "7.1.0",
 		"@babel/register": "^7.0.0",
-		"@slack/client": "4.1.0",
 		"@types/chai": "4.1.7",
 		"@types/doubleclick-gpt": "238.0.1",
 		"@types/js-cookie": "2.2.1",
