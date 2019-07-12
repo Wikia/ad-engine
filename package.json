@@ -1,10 +1,10 @@
 {
 	"name": "@wikia/ad-engine",
+	"version": "38.1.4",
+	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
 	],
-	"version": "38.1.2",
-	"description": "Wikia AdEngine",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Wikia/AdEngine"
