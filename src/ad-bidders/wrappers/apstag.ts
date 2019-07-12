@@ -16,7 +16,6 @@ export class Apstag {
 
 	private renderImpEndCallbacks = [];
 	private renderImpHookPresent = false;
-	private script: Promise<Event>;
 	utils = utils;
 
 	/**
@@ -31,7 +30,7 @@ export class Apstag {
 	 * @private
 	 */
 	insertScript() {
-		this.script = this.utils.scriptLoader.loadScript(
+		this.utils.scriptLoader.loadScript(
 			'//c.amazon-adsystem.com/aax2/apstag.js',
 			'text/javascript',
 			true,

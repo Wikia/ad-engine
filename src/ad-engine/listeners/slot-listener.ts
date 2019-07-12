@@ -1,5 +1,5 @@
 import { AdSlot, Dictionary } from '../models';
-import { context, eventService, slotInjector, slotTweaker } from '../services';
+import { context, eventService, slotTweaker } from '../services';
 import { client, logger } from '../utils';
 
 interface AdditionalEventData {

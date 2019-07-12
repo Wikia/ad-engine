@@ -1,6 +1,6 @@
 export class NotImplementedException extends Error {
-	// tslint:disable-next-line: no-unused-variable
-	private parameters: {};
+	// @ts-ignore
+	private parameters: object;
 
 	/**
 	 * @param parameters - pass here method input parameters as an object.
