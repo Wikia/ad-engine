@@ -9,6 +9,7 @@
 		"resolveJsonModule": true,
 		"noImplicitAny": false,
 		"baseUrl": ".",
+		"noUnusedLocals": true,
 		"paths": {
 			"@ad-engine/core": ["src/ad-engine"],
 			"@wikia/ad-engine": ["src/index.ts"],

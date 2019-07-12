@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "38.1.4",
+	"version": "38.1.5",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
@@ -147,7 +147,7 @@
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
-		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e platforms -e @types | grep -v npm",
+		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms -e @types | grep -v npm",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
@@ -155,7 +155,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e platforms -e @types | grep -v npm; then exit 1; fi"
+			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms -e @types | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {
@@ -163,6 +163,7 @@
 			"*.ts": [
 				"prettier --write",
 				"tslint --fix",
+				"npm run check-types:selected",
 				"git add"
 			],
 			"*.{js,json,css,scss,html}": [
