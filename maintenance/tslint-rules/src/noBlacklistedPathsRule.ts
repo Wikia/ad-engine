@@ -26,7 +26,7 @@ class NoBlacklistedPathsWalker extends Lint.RuleWalker {
 
 	private isForbiddenImport(importText: string, blacklist: string[]): boolean {
 		return blacklist.some((forbiddenImport: string) => {
-			return importText.includes(`/${forbiddenImport}`);
+			return importText.includes(`${forbiddenImport}`);
 		});
 	}
 }
