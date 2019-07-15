@@ -17,12 +17,11 @@ interface ListenerParams {
 }
 
 function updateInViewport(listener: Listener): void {
-	const newInViewport: boolean = isInViewport(
-		listener.element,
-		listener.offsetTop,
-		listener.offsetBottom,
-		listener.areaThreshold,
-	);
+	const newInViewport: boolean = isInViewport(listener.element, {
+		topOffset: listener.offsetTop,
+		bottomOffset: listener.offsetBottom,
+		areaThreshold: listener.areaThreshold,
+	});
 
 	if (newInViewport !== listener.inViewport) {
 		listener.callback(newInViewport);

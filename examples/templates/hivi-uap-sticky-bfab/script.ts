@@ -5,6 +5,7 @@ import {
 	FloatingRail,
 	setupNpaContext,
 } from '@wikia/ad-products';
+import { getConfig as getBigFancyAdAboveConfig } from '../../big-fancy-ad-above-config';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -28,7 +29,7 @@ context.push('listeners.slot', {
 	},
 });
 
-templateService.register(BigFancyAdAbove);
+templateService.register(BigFancyAdAbove, getBigFancyAdAboveConfig());
 templateService.register(BigFancyAdBelow, {
 	stickinessAllowed: true,
 });

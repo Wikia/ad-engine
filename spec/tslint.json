@@ -2,7 +2,6 @@
 	"extends": "../tslint.json",
 	"rules": {
 		"no-console": false,
-		"no-unused-variable": false,
 		"no-unused-expression": false,
 		"no-implicit-dependencies": [true, "dev", ["@wikia"]],
 		"no-submodule-imports": false,
