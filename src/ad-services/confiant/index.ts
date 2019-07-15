@@ -1,4 +1,4 @@
-import { context, slotService, utils } from '@wikia/ad-engine';
+import { context, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';

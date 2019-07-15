@@ -1,4 +1,4 @@
-import { slotService, slotTweaker } from '@wikia/ad-engine';
+import { slotService, slotTweaker } from '@ad-engine/core';
 import { DEFAULT_VIDEO_ASPECT_RATIO } from '../../outstream/porvata-template';
 
 /**

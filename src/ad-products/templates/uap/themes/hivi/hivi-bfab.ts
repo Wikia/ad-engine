@@ -5,7 +5,7 @@ import {
 	slotTweaker,
 	SlotTweaker,
 	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { animate } from '../../../interface/animate';
 import {

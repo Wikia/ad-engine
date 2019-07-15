@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { utils } from '@ad-engine/core';
 
 export class Apstag {
 	/**

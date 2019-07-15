@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { utils } from '@ad-engine/core';
 import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Beachfront extends BaseAdapter {

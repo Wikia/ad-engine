@@ -1,4 +1,4 @@
-import { context, Dictionary, events, eventService, utils } from '@wikia/ad-engine';
+import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
 import { A9 } from './a9';
 import { Prebid } from './prebid';
 import * as prebidHelper from './prebid/prebid-helper';

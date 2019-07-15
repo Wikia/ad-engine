@@ -1,4 +1,4 @@
-import { context, DEFAULT_MAX_DELAY, Dictionary, utils } from '@wikia/ad-engine';
+import { context, DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
 import { LazyQueue } from '../ad-engine/utils';
 
 export interface BidderConfig {

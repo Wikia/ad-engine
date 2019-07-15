@@ -1,4 +1,4 @@
-import { context } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
 import { getTargeting } from '../prebid-helper';
 import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 

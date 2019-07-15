@@ -1,4 +1,4 @@
-import { context, Dictionary, utils } from '@wikia/ad-engine';
+import { context, Dictionary, utils } from '@ad-engine/core';
 import { AdInfoContext } from './slot-tracker';
 
 function checkOptIn(): string {

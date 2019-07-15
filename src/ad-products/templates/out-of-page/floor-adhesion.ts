@@ -1,4 +1,4 @@
-import { AdSlot, context, slotTweaker, SlotTweaker, utils } from '@wikia/ad-engine';
+import { AdSlot, context, slotTweaker, SlotTweaker, utils } from '@ad-engine/core';
 import { CloseButton } from '../interface/close-button';
 
 export class FloorAdhesion {

@@ -1,4 +1,4 @@
-import { context, Dictionary } from '@wikia/ad-engine';
+import { context, Dictionary } from '@ad-engine/core';
 import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
 export class Appnexus extends BaseAdapter {

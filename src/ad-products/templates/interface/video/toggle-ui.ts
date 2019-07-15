@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { utils } from '@ad-engine/core';
 
 const FADE_OUT_TIMEOUT = 3000;
 const FADE_OUT_ANIMATION_TIME = 1000;

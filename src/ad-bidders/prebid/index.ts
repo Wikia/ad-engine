@@ -6,7 +6,7 @@ import {
 	events,
 	eventService,
 	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { decorate } from 'core-decorators';
 import { BaseBidder, BidderConfig, BidsBackHandler, BidsRefreshing } from '../base-bidder';
 import { AdUnitConfig } from './adapters';

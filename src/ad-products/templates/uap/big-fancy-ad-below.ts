@@ -1,4 +1,4 @@
-import { context, utils } from '@wikia/ad-engine';
+import { context, utils } from '@ad-engine/core';
 import { bfaThemeFactory } from './themes/factory';
 import { universalAdPackage } from './universal-ad-package';
 import { VideoSettings } from './video-settings';

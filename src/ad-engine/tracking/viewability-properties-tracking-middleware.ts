@@ -1,4 +1,4 @@
-import { AdViewabilityContext } from '@wikia/ad-tracking';
+import { AdViewabilityContext } from '@ad-engine/tracking';
 import { Middleware } from '../utils';
 
 export const viewabilityPropertiesTrackingMiddleware: Middleware<AdViewabilityContext> = (

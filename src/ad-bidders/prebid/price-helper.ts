@@ -1,4 +1,4 @@
-import { Dictionary } from '@wikia/ad-engine';
+import { Dictionary } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
 import { DEFAULT_MAX_CPM } from './adapters/base-adapter';

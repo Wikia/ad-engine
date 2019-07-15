@@ -1,4 +1,4 @@
-import { Dictionary, SlotTweaker, utils } from '@wikia/ad-engine';
+import { Dictionary, SlotTweaker, utils } from '@ad-engine/core';
 import { setupNavbar } from '../utils';
 import AdvertisementLabel from './interface/advertisement-label';
 import { animate } from './interface/animate';

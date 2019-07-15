@@ -11,9 +11,9 @@
 		"baseUrl": ".",
 		"noUnusedLocals": true,
 		"paths": {
-			"@ad-engine/core": ["src/ad-engine"],
 			"@wikia/ad-engine": ["src/index.ts"],
-			"@wikia/ad-tracking": ["src/ad-tracking"]
+			"@ad-engine/core": ["src/ad-engine"],
+			"@ad-engine/tracking": ["src/ad-tracking"]
 		},
 		"typeRoots": ["node_modules/@types", "@types"]
 	},

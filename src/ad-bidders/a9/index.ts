@@ -8,7 +8,7 @@ import {
 	SlotConfig,
 	slotService,
 	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
 import { Apstag, Cmp, cmp } from '../wrappers';
 
