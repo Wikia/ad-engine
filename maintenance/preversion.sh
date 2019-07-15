@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-touch maintenance/previous-package.json
-
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [ $CURRENT_BRANCH != "dev" ]; then
@@ -12,5 +10,3 @@ fi
 
 npm run test
 npm run lint
-
-cat package.json > maintenance/previous-package.json
