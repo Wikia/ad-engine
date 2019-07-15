@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "38.1.5",
+	"version": "39.0.2",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
@@ -31,7 +31,6 @@
 		"@babel/preset-env": "^7.0.0",
 		"@babel/preset-typescript": "7.1.0",
 		"@babel/register": "^7.0.0",
-		"@slack/client": "4.1.0",
 		"@types/chai": "4.1.7",
 		"@types/doubleclick-gpt": "238.0.1",
 		"@types/js-cookie": "2.2.1",
@@ -135,7 +134,6 @@
 		"format": "npm run prettier && npm run lintf",
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
 		"preversion": "./maintenance/preversion.sh",
-		"version": "./maintenance/version.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js",
 		"test:gp": "mocha-webpack --full-trace './platforms/gamepedia/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.platforms.js --webpack-env.PLATFORM=gamepedia",
 		"test:watch": "npm run test -- -w",

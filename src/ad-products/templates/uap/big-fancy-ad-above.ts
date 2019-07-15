@@ -1,6 +1,5 @@
 import { AdSlot, context, utils } from '@wikia/ad-engine';
-import { navbarManager } from '../../utils';
-import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from './constants';
+import { setupNavbar } from '../../utils';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
 import { BfaaHiviTheme } from './themes/hivi';
@@ -56,19 +55,10 @@ export class BigFancyAdAbove {
 			onBeforeStickBfaaCallback: () => {},
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
-			onAfterUnstickBfaaCallback: () => {},
+			onAfterUnstickBfaaCallback() {},
 			onResolvedStateSetCallback: () => {},
 			onResolvedStateResetCallback: () => {},
-			moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {
-				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
-
-				if (navbarElement) {
-					navbarElement.style.transition = offset
-						? ''
-						: `top ${time}ms ${CSS_TIMING_EASE_IN_CUBIC}`;
-					navbarElement.style.top = offset ? `${offset}px` : '';
-				}
-			},
+			moveNavbar() {},
 		};
 	}
 
@@ -125,14 +115,17 @@ export class BigFancyAdAbove {
 		this.config.mainContainer.style.paddingTop = iframe.parentElement.style.paddingBottom;
 		this.config.mainContainer.classList.add('has-bfaa');
 
-		navbarManager.setup(this.config, this.container);
+		// Ad has to be shown after iframe is ready (and slot is expanded to responsive)
+		// However it has to be visible before adjusting navbar position...
+		this.adSlot.show();
+
+		setupNavbar(this.config, this.container);
 
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
 		}
 
 		this.theme.onAdReady();
-		this.adSlot.show();
 
 		if (universalAdPackage.isVideoEnabled(this.params)) {
 			// defers for proper rendering

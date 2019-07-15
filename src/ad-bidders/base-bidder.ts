@@ -11,6 +11,7 @@ export interface BidderConfig {
 export class BaseBidder {
 	logGroup: string;
 	called = false;
+	w;
 	response = false;
 	onResponseCallbacks: LazyQueue;
 
