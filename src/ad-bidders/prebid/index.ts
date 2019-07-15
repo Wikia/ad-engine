@@ -8,7 +8,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { decorate } from 'core-decorators';
-import { BaseBidder, BidderConfig, BidsBackHandler, BidsRefreshing } from '../base-bidder';
+import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
 import { AdUnitConfig } from './adapters';
 import { adaptersRegistry } from './adapters-registry';
 import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
@@ -296,7 +296,7 @@ export class Prebid extends BaseBidder {
 	@decorate(postponeExecutionUntilPbjsLoads)
 	requestBids(
 		adUnits: AdUnitConfig[],
-		bidsBackHandler: BidsBackHandler,
+		bidsBackHandler: (...args: any[]) => void,
 		withRemove?: () => void,
 	): void {
 		if (withRemove) {

@@ -140,10 +140,8 @@ export class BaseBidder {
 	}
 }
 
-export type BidsBackHandler = (...args: any[]) => void;
-
 export interface BidsRefreshing {
 	enabled: boolean;
 	slots: string[];
-	bidsBackHandler: BidsBackHandler;
+	bidsBackHandler: (...args: any[]) => void;
 }
