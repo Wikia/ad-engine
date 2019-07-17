@@ -1,5 +1,4 @@
-import { AdEngine, context, templateService } from '@wikia/ad-engine';
-import { StickyAd } from '@wikia/ad-products';
+import { AdEngine, context, StickyAd, templateService } from '@wikia/ad-engine';
 import adContext from '../../context';
 
 context.extend(adContext);

@@ -1,5 +1,4 @@
-import { context, utils } from '@wikia/ad-engine';
-import { instantConfig } from '@wikia/ad-services';
+import { context, instantConfig, utils } from '@wikia/ad-engine';
 import { set } from 'lodash';
 import adContext from '../../context';
 

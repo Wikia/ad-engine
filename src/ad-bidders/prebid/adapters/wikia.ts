@@ -1,4 +1,4 @@
-import { Dictionary, utils } from '@wikia/ad-engine';
+import { Dictionary, utils } from '@ad-engine/core';
 import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 const price = utils.queryString.get('wikia_adapter');

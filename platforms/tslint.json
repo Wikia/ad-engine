@@ -1,0 +1,12 @@
+{
+	"extends": "../configs/tslint.json",
+	"rules": {
+		"no-implicit-dependencies": [true, "dev", ["@wikia/ad-engine"]],
+		"no-blacklisted-paths": [
+			true,
+			{
+				"blacklist": ["src"]
+			}
+		]
+	}
+}

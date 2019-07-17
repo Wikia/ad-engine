@@ -1,5 +1,4 @@
-import { AdEngine, context, templateService } from '@wikia/ad-engine';
-import { Interstitial } from '@wikia/ad-products';
+import { AdEngine, context, Interstitial, templateService } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

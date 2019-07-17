@@ -1,5 +1,5 @@
-import { Dictionary, utils } from '@wikia/ad-engine';
-import { AdInfoContext } from '@wikia/ad-tracking';
+import { Dictionary, utils } from '@ad-engine/core';
+import { AdInfoContext } from '@ad-engine/tracking';
 import { bidders } from '../';
 
 function getBiddersPrices(slotName: string): Dictionary<string> {

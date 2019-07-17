@@ -8,7 +8,7 @@ import {
 	TwitchOptions,
 	TwitchPlayer,
 	utils,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { throttle } from 'lodash';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';

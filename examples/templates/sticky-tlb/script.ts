@@ -1,5 +1,4 @@
-import { AdEngine, context, templateService, utils } from '@wikia/ad-engine';
-import { StickyTLB } from '@wikia/ad-products';
+import { AdEngine, context, StickyTLB, templateService, utils } from '@wikia/ad-engine';
 import customContext from '../../context';
 
 const disabled = utils.queryString.get('disabled') === '1';

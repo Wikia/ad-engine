@@ -2,22 +2,21 @@
 	"extends": "./configs/tsconfig.json",
 	"compilerOptions": {
 		"outDir": "dist",
-		"lib": ["es2015", "es2016", "es2017", "dom"],
 		"sourceMap": true,
-		"declaration": true,
-		"declarationDir": "dist/types",
 		"allowJs": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"resolveJsonModule": true,
 		"noImplicitAny": false,
-		"baseUrl": "src",
+		"baseUrl": ".",
 		"noUnusedLocals": true,
 		"paths": {
-			"@wikia/ad-engine": ["ad-engine"],
-			"@wikia/ad-tracking": ["ad-tracking"]
+			"@wikia/ad-engine": ["src/index.ts"],
+			"@ad-engine/core": ["src/ad-engine"],
+			"@ad-engine/tracking": ["src/ad-tracking"]
 		},
 		"typeRoots": ["node_modules/@types", "@types"]
 	},
-	"include": ["src"]
+	"include": ["src", "spec", "platforms", "examples"],
+	"exclude": ["**/dist/**/*"]
 }

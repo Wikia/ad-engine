@@ -1,4 +1,4 @@
-import { context, slotService } from '@wikia/ad-engine';
+import { context, slotService } from '@ad-engine/core';
 import { AdUnitConfig } from './adapters';
 import { adaptersRegistry } from './adapters-registry';
 import { PrebidBid } from './index';

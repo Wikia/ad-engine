@@ -1,4 +1,4 @@
-import { AdSlot, context, eventService, utils } from '@wikia/ad-engine';
+import { AdSlot, context, eventService, utils } from '@ad-engine/core';
 
 export interface AdInfoContext {
 	data: any;

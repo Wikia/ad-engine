@@ -1,4 +1,4 @@
-import { context, utils } from '@wikia/ad-engine';
+import { context, utils } from '@ad-engine/core';
 import { get } from 'lodash';
 
 const logGroup = 'instant-config';

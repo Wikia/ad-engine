@@ -6,27 +6,35 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const pkg = require('./package.json');
 
-const INCLUDE = [
+const include = [
 	path.resolve(__dirname, 'src'),
 	path.resolve(__dirname, 'examples'),
 	path.resolve(__dirname, 'spec'),
+	path.resolve(__dirname, 'platforms'),
 ];
 
-module.exports = (TSCONFIG) => ({
+module.exports = ({ tsconfig, transpileOnly, reportFiles }) => ({
+	mode: 'development',
+
 	context: __dirname,
 
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
-		modules: [...INCLUDE, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ configFileName: TSCONFIG })],
+		modules: [...include, 'node_modules'],
+		plugins: [new TsConfigPathsPlugin({ configFileName: tsconfig })],
 	},
 
 	module: {
 		rules: [
-			getTypeScriptLoader(INCLUDE, TSCONFIG, true),
+			getTypeScriptLoader({
+				include,
+				tsconfig,
+				reportFiles,
+				transpileOnly,
+			}),
 			{
 				test: /\.s?css$/,
-				include: INCLUDE,
+				include,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
 			{

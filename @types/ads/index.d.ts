@@ -6,4 +6,5 @@ interface Runtime {
 	disableBtf?: boolean;
 	disableSecondCall?: boolean;
 	unblockHighlyViewableSlots?: boolean;
+	bab?: any;
 }

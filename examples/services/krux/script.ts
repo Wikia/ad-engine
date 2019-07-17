@@ -1,5 +1,4 @@
-import { AdEngine, context, utils } from '@wikia/ad-engine';
-import { krux } from '@wikia/ad-services';
+import { AdEngine, context, krux, utils } from '@wikia/ad-engine';
 import adContext from '../../context';
 
 const isKruxEnabled = utils.queryString.get('krux-disabled') !== '1';

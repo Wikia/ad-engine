@@ -1,22 +1,19 @@
-import { slotBiddersTrackingMiddleware } from '@wikia/ad-bidders';
 import {
 	AdEngine,
+	AdInfoContext,
 	AdSlot,
+	AdViewabilityContext,
 	context,
-	eventService,
+	slotBiddersTrackingMiddleware,
+	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotService,
-	viewabilityPropertiesTrackingMiddleware,
-} from '@wikia/ad-engine';
-import { slotBillTheLizardStatusTrackingMiddleware } from '@wikia/ad-services';
-import {
-	AdInfoContext,
-	AdViewabilityContext,
 	slotTracker,
 	slotTrackingMiddleware,
+	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
-} from '@wikia/ad-tracking';
+} from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

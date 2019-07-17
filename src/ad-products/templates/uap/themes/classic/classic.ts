@@ -1,4 +1,4 @@
-import { PorvataPlayer, slotTweaker } from '@wikia/ad-engine';
+import { PorvataPlayer, slotTweaker } from '@ad-engine/core';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
 import { resolvedState } from '../../resolved-state';
 import { universalAdPackage } from '../../universal-ad-package';

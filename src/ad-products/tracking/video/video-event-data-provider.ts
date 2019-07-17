@@ -1,4 +1,4 @@
-import { AdSlot, context, slotService, utils, VideoData, VideoEventData } from '@wikia/ad-engine';
+import { AdSlot, context, slotService, utils, VideoData, VideoEventData } from '@ad-engine/core';
 
 export default {
 	/**

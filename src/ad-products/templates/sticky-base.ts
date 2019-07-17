@@ -1,4 +1,4 @@
-import { AdSlot, context, Dictionary, utils } from '@wikia/ad-engine';
+import { AdSlot, context, Dictionary, utils } from '@ad-engine/core';
 import { CloseButton } from './interface/close-button';
 import { Stickiness } from './uap/themes/hivi/stickiness';
 

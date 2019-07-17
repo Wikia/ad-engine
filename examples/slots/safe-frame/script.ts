@@ -1,13 +1,14 @@
-import { bidders } from '@wikia/ad-bidders';
 import {
 	AdEngine,
+	bidders,
 	context,
 	DelayModule,
 	events,
 	eventService,
+	FloorAdhesion,
+	setupNpaContext,
 	templateService,
 } from '@wikia/ad-engine';
-import { FloorAdhesion, setupNpaContext } from '@wikia/ad-products';
 import customContext from '../../context';
 import '../../styles.scss';
 

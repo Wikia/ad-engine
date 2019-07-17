@@ -1,4 +1,4 @@
-import { slotTweaker } from '@wikia/ad-engine';
+import { slotTweaker } from '@ad-engine/core';
 
 function add(video, container) {
 	const progressBar = document.createElement('div');

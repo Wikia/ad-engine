@@ -1,4 +1,4 @@
-import { context, scrollListener, utils } from '@wikia/ad-engine';
+import { context, scrollListener, utils } from '@ad-engine/core';
 
 const adsInRail = 2;
 const biggestAdSize = 600;

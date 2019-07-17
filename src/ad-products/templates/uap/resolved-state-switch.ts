@@ -1,4 +1,4 @@
-import { localCache } from '@wikia/ad-engine';
+import { localCache } from '@ad-engine/core';
 import { universalAdPackage } from './universal-ad-package';
 
 const cacheKey = 'adEngine_resolvedStateCounter';

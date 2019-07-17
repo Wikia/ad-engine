@@ -6,8 +6,6 @@ const common = require('./webpack.common.js');
 const { examplePages } = require('./maintenance/examples-pages');
 
 const development = {
-	mode: 'development',
-
 	entry: examplePages,
 
 	output: {
@@ -33,6 +31,15 @@ const development = {
 			},
 		},
 	},
+
+	devServer: {
+		inline: true,
+		open: true,
+		contentBase: path.resolve(__dirname, 'examples'),
+	},
 };
 
-module.exports = merge(common('tsconfig.misc.json'), development);
+module.exports = merge(
+	common({ tsconfig: 'examples/tsconfig.json', transpileOnly: true }),
+	development,
+);

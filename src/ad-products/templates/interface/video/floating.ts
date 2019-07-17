@@ -1,4 +1,4 @@
-import { slotService, utils } from '@wikia/ad-engine';
+import { slotService, utils } from '@ad-engine/core';
 import {
 	DEFAULT_VIDEO_ASPECT_RATIO,
 	FLOATING_VIDEO_ASPECT_RATIO,

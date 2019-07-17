@@ -1,7 +1,10 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "39.0.2",
+	"version": "39.1.0",
 	"description": "Wikia AdEngine",
+	"sideEffects": [
+		"*.scss"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Wikia/AdEngine"
@@ -13,7 +16,8 @@
 		"current-device": "0.7.8",
 		"eventemitter3": "3.0.1",
 		"js-cookie": "2.2.0",
-		"lodash": "^4.17.4"
+		"lodash": "^4.17.4",
+		"query-string": "6.8.0"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
@@ -115,11 +119,13 @@
 		]
 	},
 	"scripts": {
-		"dev": "npm run serve",
-		"serve": "webpack-dev-server --progress --colors --inline --open --watch --content-base=./examples --config webpack.dev.js",
+		"serve": "npm run dev",
+		"dev": "webpack-dev-server --progress --config webpack.dev.js",
+		"dev:gp": "webpack-dev-server --progress --config webpack.platforms.js --env.PLATFORM=gamepedia",
 		"prebuild": "rm -rf dist",
 		"build": "rollup -c rollup.config.js",
 		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
+		"build:gp": "webpack --config webpack.platforms.js --env.PLATFORM=gamepedia -p",
 		"watch": "npm run build -- -w",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "tslint --project . && npm run rules:lint",
@@ -129,6 +135,7 @@
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
 		"preversion": "./maintenance/preversion.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js",
+		"test:gp": "mocha-webpack --full-trace './platforms/gamepedia/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.platforms.js --webpack-env.PLATFORM=gamepedia",
 		"test:watch": "npm run test -- -w",
 		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
 		"wdio-desktop": "BABEL_ENV=test wdio wdio.desktop.conf.js",
@@ -138,7 +145,7 @@
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
-		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e @types | grep -v npm",
+		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms -e @types | grep -v npm",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
@@ -146,7 +153,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e @types | grep -v npm; then exit 1; fi"
+			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms -e @types | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {

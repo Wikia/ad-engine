@@ -13,7 +13,6 @@ export interface Targeting {
 	src?: string;
 	pos?: string;
 	wsi?: string;
-	// @ts-ignore
 	rv?: number;
 	[key: string]: googletag.NamedSize | number;
 }

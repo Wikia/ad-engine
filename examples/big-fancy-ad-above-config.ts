@@ -1,4 +1,6 @@
-import { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } from '@wikia/ad-engine';
+import { universalAdPackage } from '@wikia/ad-engine';
+
+const { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } = universalAdPackage;
 
 export const getConfig = () => ({
 	moveNavbar(offset: number, time: number = SLIDE_OUT_TIME) {

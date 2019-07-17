@@ -8,7 +8,7 @@ import {
 	PorvataTemplateParams,
 	slotTweaker,
 	VpaidMode,
-} from '@wikia/ad-engine';
+} from '@ad-engine/core';
 import { getTranslation } from '../../common/i18n';
 import * as videoUserInterface from '../interface/video';
 

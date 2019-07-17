@@ -1,5 +1,4 @@
-import { AdEngine, templateService } from '@wikia/ad-engine';
-import { FloatingRail } from '@wikia/ad-products';
+import { AdEngine, FloatingRail, templateService } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 

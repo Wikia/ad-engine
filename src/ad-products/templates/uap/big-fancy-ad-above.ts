@@ -1,4 +1,4 @@
-import { AdSlot, context, utils } from '@wikia/ad-engine';
+import { AdSlot, context, utils } from '@ad-engine/core';
 import { setupNavbar } from '../../utils';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';

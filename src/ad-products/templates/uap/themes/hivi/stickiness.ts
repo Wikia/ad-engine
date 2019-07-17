@@ -1,4 +1,4 @@
-import { AdSlot, slotTweaker, utils } from '@wikia/ad-engine';
+import { AdSlot, slotTweaker, utils } from '@ad-engine/core';
 import * as EventEmitter from 'eventemitter3';
 import { isFunction } from 'lodash';
 

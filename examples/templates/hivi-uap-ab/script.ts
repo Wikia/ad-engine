@@ -1,10 +1,12 @@
-import { AdEngine, context, templateService } from '@wikia/ad-engine';
 import {
+	AdEngine,
 	BigFancyAdAbove,
 	BigFancyAdBelow,
+	context,
 	FloatingRail,
 	setupNpaContext,
-} from '@wikia/ad-products';
+	templateService,
+} from '@wikia/ad-engine';
 import { getConfig as getBigFancyAdAboveConfig } from '../../big-fancy-ad-above-config';
 import customContext from '../../context';
 import '../../styles.scss';

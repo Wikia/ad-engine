@@ -1,4 +1,4 @@
-import { context } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
 import { universalAdPackage } from './universal-ad-package';
 
 export class Roadblock {

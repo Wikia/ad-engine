@@ -4,7 +4,7 @@
 		"no-blacklisted-paths": [
 			true,
 			{
-				"blacklist": [ "package-b" ]
+				"blacklist": ["/package-b"]
 			}
 		]
 	}

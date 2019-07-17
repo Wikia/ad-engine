@@ -20,6 +20,8 @@ interface Window {
 	// No types easily available for pbjs.
 	pbjs?: any;
 	pvNumber?: number;
+	pvNumberGlobal?: number;
+	adsQueue?: any;
 	pvUID?: string;
 	apstag?: Apstag;
 }

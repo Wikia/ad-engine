@@ -1,16 +1,17 @@
 import {
 	AdEngine,
-	context,
-	slotPropertiesTrackingMiddleware,
-	templateService,
-} from '@wikia/ad-engine';
-import {
+	AdInfoContext,
 	BigFancyAdAbove,
 	BigFancyAdBelow,
+	context,
 	FloatingRail,
 	setupNpaContext,
-} from '@wikia/ad-products';
-import { AdInfoContext, slotTracker, slotTrackingMiddleware } from '@wikia/ad-tracking';
+	slotPropertiesTrackingMiddleware,
+	slotTracker,
+	slotTrackingMiddleware,
+	templateService,
+} from '@wikia/ad-engine';
+
 import { getConfig as getBigFancyAdAboveConfig } from '../../big-fancy-ad-above-config';
 import customContext from '../../context';
 import '../../styles.scss';

@@ -1,4 +1,4 @@
-import { AdSlot, context, utils } from '@wikia/ad-engine';
+import { AdSlot, context, utils } from '@ad-engine/core';
 
 const CSS_TIMING_EASE_IN_CUBIC = 'cubic-bezier(0.55, 0.055, 0.675, 0.19)';
 const SLIDE_OUT_TIME = 600;
