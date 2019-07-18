@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { postmessageTrackerPage } from '../../pages/postmessage-tracker';
 import { timeouts } from '../../common/timeouts';
 
