@@ -1,3 +1,54 @@
-.test-class {
-	font-style: italic;
+@import 'src/ad-products/styles/styles.scss';
+
+.has-bfaa {
+	padding-top: 0 !important;
+
+	#content div#atflb {
+		min-height: 0 !important;
+		min-width: 0 !important;
+	}
+
+	#mobileatflb {
+		bottom: inherit;
+		position: fixed;
+	}
+
+	.header-container {
+		position: fixed;
+		width: 100vw;
+
+		&.bfaa-pinned {
+			position: absolute;
+			opacity: 1 !important;
+		}
+	}
+}
+
+// Desktop disable ads
+html.disable-ads {
+	#pageWrapper {
+		#atflb,
+		#btflb {
+			display: none !important;
+		}
+	}
+
+	footer#curse-footer div.ad-placement {
+		display: none;
+	}
+}
+
+// Mobile disable ads
+.editor-overlay .gpt-ad {
+	display: none;
+}
+
+// Fix mobile navbar width
+.gpt-ad.bfaa-template.sticky-bfaa {
+	width: 100vw;
+}
+
+// Fix mobile navigation gray area
+.primary-navigation-enabled {
+	margin-top: 0 !important;
 }
