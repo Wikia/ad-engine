@@ -1,4 +1,4 @@
-import { context, instantConfig, setupNpaContext, utils } from '@wikia/ad-engine';
+import { context, instantConfig, setupNpaContext, slotInjector, utils } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import { get, set } from 'lodash';
 import { biddersContext } from './bidders/bidders-context';
@@ -6,7 +6,11 @@ import { cmpWrapper } from './cmp/cmp-wrapper';
 import { slotsContext } from './slots';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
-import { registerSlotTracker, registerViewabilityTracker } from './tracking/tracker';
+import {
+	registerPorvataTracker,
+	registerSlotTracker,
+	registerViewabilityTracker,
+} from './tracking/tracker';
 
 const fallbackInstantConfig = {
 	wgAdDriverA9BidderCountries: ['XX'],
@@ -36,6 +40,7 @@ class AdsSetup {
 		setupNpaContext();
 		templateRegistry.registerTemplates();
 
+		registerPorvataTracker();
 		registerSlotTracker();
 		registerViewabilityTracker();
 	}
@@ -50,6 +55,7 @@ class AdsSetup {
 		context.set('state.isMobile', isMobile);
 		context.set('state.deviceType', utils.client.getDeviceType());
 
+		context.set('options.tracking.kikimora.player', true);
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
 
@@ -119,6 +125,7 @@ class AdsSetup {
 		slotsContext.setupStates();
 
 		this.updateWadContext();
+		this.injectIncontentPlayer();
 	}
 
 	private setupPageLevelTargeting(wikiContext): void {
@@ -156,6 +163,17 @@ class AdsSetup {
 		const country: string = decodeURIComponent(Cookies.get('cdmgeo'));
 
 		context.set('geo.country', country.toUpperCase());
+	}
+
+	private injectIncontentPlayer(): void {
+		const isVideo =
+			!!document.getElementById('mf-video') ||
+			!!document.getElementById('twitchnet-liveontwitch') ||
+			!!document.getElementById('ds_cpp');
+
+		if (!isVideo) {
+			slotInjector.inject('incontent_player');
+		}
 	}
 }
 

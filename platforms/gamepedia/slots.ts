@@ -1,4 +1,4 @@
-import { context, slotService } from '@wikia/ad-engine';
+import { context, getAdProductInfo, slotService, utils } from '@wikia/ad-engine';
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
@@ -8,6 +8,21 @@ class SlotsContext {
 		definedViewportSizes.forEach((sizeMap) => {
 			sizeMap.sizes.push(size);
 		});
+	}
+
+	setupSlotVideoAdUnit(adSlot: any, params: any): void {
+		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
+		const adUnit = utils.stringBuilder.build(
+			context.get(`slots.${adSlot.getSlotName()}.videoAdUnit`) || context.get('vast.adUnitId'),
+			{
+				slotConfig: {
+					group: adProductInfo.adGroup,
+					adProduct: adProductInfo.adProduct,
+				},
+			},
+		);
+
+		context.set(`slots.${adSlot.getSlotName()}.videoAdUnit`, adUnit);
 	}
 
 	generate(): any {
@@ -84,6 +99,20 @@ class SlotsContext {
 					rv: 1,
 				},
 			},
+			incontent_player: {
+				avoidConflictWith: '.repeatable-boxad',
+				disabled: true,
+				autoplay: true,
+				audio: false,
+				group: 'HiVi',
+				defaultSizes: [[1, 1]],
+				insertBeforeSelector: '#mw-content-text > .mw-parser-output > h2',
+				insertBelowFirstViewport: true,
+				targeting: {
+					loc: 'middle',
+					rv: 1,
+				},
+			},
 		};
 	}
 
@@ -93,12 +122,13 @@ class SlotsContext {
 		this.setState('cdm-zone-03', true);
 		this.setState('cdm-zone-04', !context.get('state.isMobile'));
 		this.setState('cdm-zone-06', true);
+		this.setState('incontent_player', true, true);
 	}
 
-	private setState(slotName: string, state: boolean): void {
+	private setState(slotName: string, state: boolean, skipCheck: boolean = false): void {
 		const element = document.getElementById(slotName);
 
-		slotService.setState(slotName, !!element && state);
+		slotService.setState(slotName, (!!element || skipCheck) && state);
 	}
 }
 
