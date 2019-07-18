@@ -71,19 +71,3 @@ function callExternals(): void {
 
 	// ToDo: other externals
 }
-
-function waitForBiddersResolve(): Promise<void | {}> {
-	if (!context.get('state.showAds')) {
-		return Promise.resolve();
-	}
-
-	const timeout = new Promise((resolve) => {
-		setTimeout(resolve, context.get('options.maxDelayTimeout'));
-	});
-
-	return Promise.race([timeout, biddersDelay.getPromise()]);
-}
-
-function waitForAdStackResolve(): Promise<(void | {})[]> {
-	return Promise.all([waitForBiddersResolve()]);
-}

@@ -15,8 +15,8 @@ const platforms = ({ platform }) => {
 		plugins: [new MiniCssExtractPlugin({ filename: 'styles.css' })],
 
 		performance: {
-			maxAssetSize: 270000,
-			maxEntrypointSize: 290000,
+			maxAssetSize: 310000,
+			maxEntrypointSize: 330000,
 		},
 
 		devServer: {

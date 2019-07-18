@@ -251,6 +251,7 @@ class CmpWrapper {
 
 		utils.logger(logGroup, 'Overwriting original CMP module');
 		window.__cmpStored = window.__cmp;
+		// @ts-ignore
 		window.__cmp = (method: string, data: any, callback: any) => {
 			const consentData = {
 				gdprApplies: true,
