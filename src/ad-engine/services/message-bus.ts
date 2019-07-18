@@ -69,12 +69,20 @@ function onMessage(message: MessageEvent): void {
 }
 
 class MessageBus {
+	private isInitialized = false;
+
 	init(): void {
+		if (this.isInitialized) {
+			return;
+		}
+
 		logger(logGroup, 'Register message listener');
 		window.addEventListener('message', onMessage, false);
+		this.isInitialized = true;
 	}
 
 	register<T>(match: Match, callback: CallbackFn<T>): void {
+		this.init(); // idempotent, can be called with each register call
 		callbacks.push({
 			match,
 			fn: callback,
