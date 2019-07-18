@@ -16,7 +16,7 @@ const logGroup = 'message-bus';
 function isAdEngineMessage(message: any): boolean {
 	const data = getDataFromMessage(message);
 
-	return !!data.AdEngine;
+	return !!data && !!data.AdEngine;
 }
 
 function getDataFromMessage(message: any): any {
