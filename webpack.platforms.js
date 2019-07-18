@@ -22,6 +22,7 @@ const platforms = ({ platform }) => {
 		devServer: {
 			port: 9000,
 			inline: false,
+			contentBase: `dist/${platform}`,
 		},
 
 		devtool: 'source-map',
