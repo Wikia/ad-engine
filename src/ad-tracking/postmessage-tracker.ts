@@ -17,29 +17,25 @@ export interface TrackingPayload {
  * For example use, check examples /tracking/postmessage-tracker/.
  */
 class PostmessageTrackingTracker {
-	private middlewareService = new utils.MiddlewareService<any>();
-
+	// TODO: Add TrackingFilter middleware!
 	register(callback: utils.Middleware<TrackingPayload>) {
 		if (!this.isEnabled()) {
 			return;
 		}
-
+		// idempotent so can be called multiple times
 		messageBus.register<TrackingPayload>(
 			{ keys: ['payload', 'target'], infinite: true },
 			(message) => {
-
 				if (!this.isTrackingMessage(message)) {
 					return;
 				}
 
-				this.middlewareService.execute(
-					{
-						target: message.target,
-						payload: message.payload,
-					},
-					callback,
-				);
-		});
+				callback({
+					target: message.target,
+					payload: message.payload,
+				});
+			},
+		);
 	}
 
 	private isTrackingMessage(message: TrackingPayload): boolean {
