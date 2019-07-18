@@ -4,6 +4,7 @@ import { slotListener } from '../listeners';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
+	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -58,6 +59,11 @@ function configure() {
 	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
 		slotListener.emitImpressionViewable(event, getAdSlotFromEvent(event));
 	});
+
+	if (context.get('options.gamLazyLoading.enabled')) {
+		logger('GAM lazy loading', 'GAM lazy loading enabled');
+	}
+
 	window.googletag.enableServices();
 }
 
