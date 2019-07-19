@@ -1,4 +1,11 @@
-import { context, getAdProductInfo, slotService, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	getAdProductInfo,
+	slotService,
+	utils,
+	VideoParams,
+} from '@wikia/ad-engine';
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
@@ -10,7 +17,7 @@ class SlotsContext {
 		});
 	}
 
-	setupSlotVideoAdUnit(adSlot: any, params: any): void {
+	setupSlotVideoAdUnit(adSlot: AdSlot, params: VideoParams): void {
 		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
 		const adUnit = utils.stringBuilder.build(
 			context.get(`slots.${adSlot.getSlotName()}.videoAdUnit`) || context.get('vast.adUnitId'),
@@ -100,7 +107,6 @@ class SlotsContext {
 				},
 			},
 			incontent_player: {
-				avoidConflictWith: '.repeatable-boxad',
 				disabled: true,
 				autoplay: true,
 				audio: false,
