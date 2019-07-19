@@ -53,16 +53,16 @@ export class HideOnViewability {
 			return;
 		}
 
-		Promise.race([this.registerViewabilityListener(this.adSlot), this.registerTimeoutHide()]).then(
+		Promise.race([this.getViewabilityPromise(this.adSlot), this.getTimeoutHidePromise()]).then(
 			() => {
 				this.hideSlot(this.adSlot);
 			},
 		);
 	}
 
-	private registerViewabilityListener(adSlot: AdSlot): Promise<void> {
+	private getViewabilityPromise(adSlot: AdSlot): Promise<void> {
 		return new Promise((resolve) => {
-			adSlot.on(AdSlot.SLOT_VIEWED_EVENT, () => {
+			adSlot.viewed.then(() => {
 				setTimeout(() => {
 					utils.logger(HideOnViewability.getName(), 'viewability Promise resolved');
 					resolve();
@@ -71,7 +71,7 @@ export class HideOnViewability {
 		});
 	}
 
-	private registerTimeoutHide(): Promise<void> {
+	private getTimeoutHidePromise(): Promise<void> {
 		return new Promise((resolve) => {
 			if (this.config.timeoutHideTime) {
 				setTimeout(() => {
