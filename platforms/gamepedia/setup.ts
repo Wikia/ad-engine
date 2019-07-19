@@ -21,6 +21,7 @@ const fallbackInstantConfig = {
 	wgAdDriverIndexExchangeBidderCountries: ['XX'],
 	wgAdDriverLABradorTestCountries: ['PL/40-cached'],
 	wgAdDriverOpenXPrebidBidderCountries: ['XX'],
+	wgAdDriverOutstreamSlotCountries: [],
 	wgAdDriverPrebidBidderCountries: ['XX'],
 	wgAdDriverPubMaticBidderCountries: ['XX'],
 	wgAdDriverRubiconDisplayPrebidCountries: ['XX'],
@@ -59,6 +60,11 @@ class AdsSetup {
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
 
+		context.set(
+			'options.video.isOutstreamEnabled',
+			this.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
+		);
+
 		context.set('bidders', biddersContext.generate());
 
 		if (this.isGeoEnabled('wgAdDriverA9BidderCountries')) {
@@ -80,6 +86,7 @@ class AdsSetup {
 				'bidders.prebid.openx.enabled',
 				this.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
 			);
+
 			context.set(
 				'bidders.prebid.pubmatic.enabled',
 				this.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
