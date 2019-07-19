@@ -6,21 +6,20 @@
 npm install github:Wikia/ad-engine
 ```
 
+## Platforms
+
+### Gamepedia
+
+* `npm run dev:gp` - to serve gamepedia on port 9000
+* `npm run build:gp` - to create production build of gamepedia
+* `npm run test:gp` - to run unit tests of gamepedia
+
 ## Available packages
 
-* `@wikia/ad-engine` - contains whole logic connected to integration with DFP
-* `@wikia/ad-engine/dist/ad-bidders` - **Prebid.js** and **A9** integrations (requires: `@wikia/ad-engine`)
-* `@wikia/ad-engine/dist/ad-products` - all FANDOM ad products like **Universal Ad Package** (requires: `@wikia/ad-engine`)
-* `@wikia/ad-engine/dist/ad-services` - integrations with external services, i.e. **Bill the Lizard** (requires: `@wikia/ad-engine`)
-
-### Tree Shakeable version
-
-When using this version import everything from `@wikia/ad-engine`. Dead code should be eliminated during webpack compilation.
+Import everything from `@wikia/ad-engine`. Dead code should be eliminated during webpack compilation.
 
 It is the one in `dist/index.es5.js`. It is compiled to es5 without polyfills and lodash plugin.
 To compile it in your desired application import `getAdEngineLoader` from `configs/webpack-app.config.js` and add to your webpack loaders array.
-
- 
 
 ## Context description
 
