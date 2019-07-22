@@ -48,3 +48,26 @@ export interface A9SlotDefinition {
 	mediaType?: 'display' | 'video';
 	sizes?: number[][];
 }
+
+export interface A9Bid {
+	slotID: string;
+	mediaType: string;
+	size: string;
+	targeting: A9Targeting;
+	helpers: {
+		targetingKeys: string[];
+	};
+}
+
+export type A9Targeting = {
+	amzniid: string;
+	amznbid: string;
+	amznp: string;
+	amznsz: string;
+	amzniid_sp: string;
+	amznbid_sp: string;
+	amznp_sp: string;
+	amznsz_sp: string;
+	amzndeal_sp: string;
+	amzndeals?: string[];
+} & { [key: string]: string };

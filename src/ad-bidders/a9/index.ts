@@ -12,6 +12,7 @@ import {
 import { BaseBidder, BidsRefreshing } from '../base-bidder';
 import { Apstag, Cmp, cmp } from '../wrappers';
 import {
+	A9Bid,
 	A9Bids,
 	A9Config,
 	A9GDPR,
@@ -120,7 +121,7 @@ export class A9 extends BaseBidder {
 			return;
 		}
 
-		const currentBids = await this.apstag.fetchBids({ slots, timeout: this.timeout });
+		const currentBids: A9Bid[] = await this.apstag.fetchBids({ slots, timeout: this.timeout });
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 		this.addApstagRenderImpHookOnFirstFetch();
@@ -154,7 +155,7 @@ export class A9 extends BaseBidder {
 	 */
 	private addApstagRenderImpHook(): void {
 		utils.logger(logGroup, 'overwriting window.apstag.renderImp');
-		this.apstag.onRenderImpEnd((doc, impId) => {
+		this.apstag.onRenderImpEnd((doc: HTMLDocument, impId: string) => {
 			if (!impId) {
 				utils.logger(logGroup, 'apstag.renderImp() called with 1 argument only');
 				return;
@@ -235,7 +236,7 @@ export class A9 extends BaseBidder {
 	}
 
 	private async getBidTargetingWithKeys(
-		bid: Dictionary,
+		bid: A9Bid,
 	): Promise<{ keys: string[]; bidTargeting: Dictionary }> {
 		let bidTargeting: Dictionary = bid;
 		let keys: string[] = await this.apstag.targetingKeys();

@@ -1,5 +1,5 @@
 import { utils } from '@ad-engine/core';
-import { A9BidConfig } from '../a9/types';
+import { A9Bid, A9BidConfig } from '../a9/types';
 
 export class Apstag {
 	private static instance: Apstag;
@@ -68,7 +68,7 @@ export class Apstag {
 		window.apstag.init(apsConfig);
 	}
 
-	async fetchBids(bidsConfig: A9BidConfig): Promise<any> {
+	async fetchBids(bidsConfig: A9BidConfig): Promise<A9Bid[]> {
 		await this.script;
 
 		return new Promise((resolve) => {
@@ -95,8 +95,7 @@ export class Apstag {
 	/**
 	 * Executes callback each time after apstag.renderImp is called
 	 */
-	// TODO: add types to callback arguments
-	async onRenderImpEnd(callback: (doc: any, impId: any) => void): Promise<void> {
+	async onRenderImpEnd(callback: (doc: HTMLDocument, impId: string) => void): Promise<void> {
 		if (typeof callback !== 'function') {
 			throw new Error('onRenderImpEnd used with callback not being a function');
 		}
