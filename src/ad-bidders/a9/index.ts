@@ -125,13 +125,14 @@ export class A9 extends BaseBidder {
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 		this.addApstagRenderImpHookOnFirstFetch();
 
-		// TODO: replace with map
-		for (const bid of currentBids) {
-			const slotName: string = this.slotNamesMap[bid.slotID] || bid.slotID;
-			const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
+		await Promise.all(
+			currentBids.map(async (bid) => {
+				const slotName: string = this.slotNamesMap[bid.slotID] || bid.slotID;
+				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
-			this.updateBidSlot(slotName, keys, bidTargeting);
-		}
+				this.updateBidSlot(slotName, keys, bidTargeting);
+			}),
+		);
 
 		this.onBidResponse();
 
