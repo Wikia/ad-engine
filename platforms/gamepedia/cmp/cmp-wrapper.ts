@@ -1,7 +1,7 @@
 import { utils } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 
-const CMP_LIBRARY_URL = '//cdm.cursecdn.com/js/cmp/cmp.bundle.js';
+const CMP_LIBRARY_URL = '//cdm.cursecdn.com/js/cmp/cmp-04-22/cmp.bundle.js';
 const optOutConsentString = 'BOhn5_-Ohn5_-ABABAENCVAAAAAn6AAA';
 const logGroup = 'cmp-wrapper';
 
