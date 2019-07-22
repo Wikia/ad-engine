@@ -129,10 +129,11 @@ class AdsSetup {
 		context.set('options.geoRequiresConsent', cmpWrapper.geoRequiresConsent(country));
 		context.set('options.trackingOptIn', isOptedIn);
 
+		this.injectIncontentPlayer();
+
 		slotsContext.setupStates();
 
 		this.updateWadContext();
-		this.injectIncontentPlayer();
 	}
 
 	private setupPageLevelTargeting(wikiContext): void {
