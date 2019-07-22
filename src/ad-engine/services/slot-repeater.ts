@@ -58,26 +58,22 @@ function repeatSlot(adSlot: AdSlot): boolean {
 	return false;
 }
 
+function handleSlotRepeating(adSlot: AdSlot): boolean {
+	if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+		return repeatSlot(adSlot);
+	}
+
+	return false;
+}
+
 class SlotRepeater {
 	init(): void {
 		if (context.get('options.slotRepeater')) {
 			if (context.get('options.gamLazyLoading.enabled')) {
-				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
-					if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-						return repeatSlot(adSlot);
-					}
-
-					return false;
-				});
+				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => handleSlotRepeating(adSlot));
 			} else {
 				context.push('listeners.slot', {
-					onRenderEnded: (adSlot: AdSlot) => {
-						if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-							return repeatSlot(adSlot);
-						}
-
-						return false;
-					},
+					onRenderEnded: (adSlot: AdSlot) => handleSlotRepeating(adSlot),
 				});
 			}
 		}
