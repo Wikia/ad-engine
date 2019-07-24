@@ -71,7 +71,7 @@ class SlotsContext {
 				bidderAlias: '02_MR',
 				group: '02_MR',
 				targeting: {
-					loc: 'middle',
+					loc: 'top',
 					zne: '02',
 					rv: 1,
 				},
