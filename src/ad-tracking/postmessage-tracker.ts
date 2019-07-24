@@ -53,7 +53,7 @@ export class PostmessageTracker {
 		return this;
 	}
 
-	register<T>(callback: utils.Middleware<T>) {
+	register<T>(callback: utils.Middleware<T>): this {
 		if (!this.isEnabled()) {
 			return;
 		}
