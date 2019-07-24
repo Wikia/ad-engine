@@ -7,10 +7,9 @@ export function getPubmaticContext(device: DeviceMode): any {
 			publisherId: '156260',
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 150], [970, 250]],
+					sizes: [[728, 90], [970, 250]],
 					ids: [
 						'Desktop_TopLeaderboard_728x90_Gamepedia',
-						'Desktop_TopLeaderboard_970x150_Gamepedia',
 						'Desktop_TopLeaderboard_970x250_Gamepedia',
 					],
 				},
