@@ -1,4 +1,12 @@
-import { context, instantConfig, setupNpaContext, slotInjector, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	instantConfig,
+	setupNpaContext,
+	slotInjector,
+	slotService,
+	utils,
+} from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import { get, set } from 'lodash';
 import { biddersContext } from './bidders/bidders-context';
@@ -174,14 +182,36 @@ class AdsSetup {
 	}
 
 	private injectIncontentPlayer(): void {
+		const slotName = 'incontent_player';
+
 		const isVideo =
 			!!document.getElementById('mf-video') ||
 			!!document.getElementById('twitchnet-liveontwitch') ||
 			!!document.getElementById('ds_cpp');
 
-		if (!isVideo) {
-			slotInjector.inject('incontent_player');
+		if (isVideo) {
+			return;
 		}
+
+		if (!document.getElementById('cdm-zone-02')) {
+			this.initiateIncontentPlayer(slotName);
+		}
+
+		slotService.on('cdm-zone-02', AdSlot.STATUS_SUCCESS, () => {
+			if (!!document.querySelector('.porvata3')) {
+				return;
+			}
+			this.initiateIncontentPlayer(slotName);
+		});
+
+		slotService.on('cdm-zone-02', AdSlot.STATUS_COLLAPSE, () => {
+			this.initiateIncontentPlayer(slotName);
+		});
+	}
+
+	private initiateIncontentPlayer(slotName: string): void {
+		slotInjector.inject(slotName);
+		slotsContext.setState(slotName, context.get('options.video.isOutstreamEnabled'));
 	}
 }
 
