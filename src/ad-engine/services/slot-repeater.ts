@@ -2,6 +2,7 @@ import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
+import { events, eventService } from './events';
 import { slotInjector } from './slot-injector';
 
 const logGroup = 'slot-repeater';
@@ -57,18 +58,24 @@ function repeatSlot(adSlot: AdSlot): boolean {
 	return false;
 }
 
+function handleSlotRepeating(adSlot: AdSlot): boolean {
+	if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+		return repeatSlot(adSlot);
+	}
+
+	return false;
+}
+
 class SlotRepeater {
 	init(): void {
 		if (context.get('options.slotRepeater')) {
-			context.push('listeners.slot', {
-				onRenderEnded: (adSlot: AdSlot) => {
-					if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-						return repeatSlot(adSlot);
-					}
-
-					return false;
-				},
-			});
+			if (context.get('options.gamLazyLoading.enabled')) {
+				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => handleSlotRepeating(adSlot));
+			} else {
+				context.push('listeners.slot', {
+					onRenderEnded: (adSlot: AdSlot) => handleSlotRepeating(adSlot),
+				});
+			}
 		}
 	}
 }
