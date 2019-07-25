@@ -5,6 +5,7 @@ import * as sinon from 'sinon';
 import { utils } from '../../../src/ad-engine';
 
 describe('Instant Config service', () => {
+	let getValuesStub: sinon.SinonStub;
 	const configPromise = Promise.resolve({
 		foo: 'bar',
 	});
@@ -17,13 +18,13 @@ describe('Instant Config service', () => {
 		};
 
 		instantConfigLoader.configPromise = configPromise;
-		sinon.stub(utils.queryString, 'getValues');
-		utils.queryString.getValues.returns(queryInstantGlobals);
+		getValuesStub = sinon.stub(utils.queryString, 'getValues');
+		getValuesStub.returns(queryInstantGlobals);
 	});
 
 	afterEach(() => {
 		instantConfigLoader.configPromise = null;
-		utils.queryString.getValues.restore();
+		getValuesStub.restore();
 	});
 
 	it('gets defined config', async () => {
