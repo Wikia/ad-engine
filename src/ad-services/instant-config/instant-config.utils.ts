@@ -1,9 +1,9 @@
 import { utils } from '@ad-engine/core';
-import { Config } from './instant-config.models';
+import { InstantConfigResult } from './instant-config.models';
 
 const instantGlobalsQueryParamPrefix = 'InstantGlobals';
 
-export const overrideInstantConfig = (config: Config): Config => {
+export const overrideInstantConfig = (config: InstantConfigResult): InstantConfigResult => {
 	const newConfig = {};
 	const queryParams = utils.queryString.getValues();
 

@@ -1,14 +1,14 @@
 import { context, utils } from '@ad-engine/core';
 import { get } from 'lodash';
-import { Config } from './instant-config.models';
+import { InstantConfigResult } from './instant-config.models';
 import { overrideInstantConfig } from './instant-config.utils';
 
 const logGroup = 'instant-config-loader';
 
 class InstantConfigLoader {
-	configPromise: Promise<Config> = null;
+	configPromise: Promise<InstantConfigResult> = null;
 
-	async getConfig(): Promise<Config> {
+	async getConfig(): Promise<InstantConfigResult> {
 		if (!this.configPromise) {
 			this.configPromise = this.fetchInstantConfig();
 		}
@@ -16,7 +16,7 @@ class InstantConfigLoader {
 		return this.configPromise;
 	}
 
-	private async fetchInstantConfig(): Promise<Config> {
+	private async fetchInstantConfig(): Promise<InstantConfigResult> {
 		const request = new XMLHttpRequest();
 		const url = context.get('services.instantConfig.endpoint');
 		const fallbackConfigKey =
