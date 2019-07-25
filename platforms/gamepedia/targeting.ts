@@ -25,10 +25,19 @@ function getSkin(wikiContext): string {
 	return wikiSkin;
 }
 
+function getDomain(): string {
+	const hostname = window.location.hostname.toLowerCase();
+	const pieces = hostname.split('.');
+	const np = pieces.length;
+
+	return `${pieces[np - 2]}${pieces[np - 1]}`;
+}
+
 export const targeting = {
 	getPageLevelTargeting(wikiContext: any = {}): any {
 		const pageTargeting: Dictionary<string> = {
 			artid: wikiContext.wgArticleId,
+			dmn: getDomain(),
 			pName: wikiContext.wgPageName,
 			pv: window.pvNumber && window.pvNumber.toString(),
 			s0: 'gaming',
