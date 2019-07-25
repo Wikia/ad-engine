@@ -67,6 +67,8 @@ export class PorvataTemplate {
 
 		this.config.onInit(this.adSlot, params, this.config);
 
+		context.set('options.video.porvataLoaded', true);
+
 		return slotTweaker
 			.makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO)
 			.then(() =>

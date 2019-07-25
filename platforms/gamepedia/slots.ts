@@ -67,7 +67,6 @@ class SlotsContext {
 			},
 			'cdm-zone-02': {
 				aboveTheFold: true,
-				disabled: true,
 				autoplay: true,
 				audio: false,
 				defaultSizes: [[300, 250], [300, 600]],

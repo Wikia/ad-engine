@@ -182,29 +182,30 @@ class AdsSetup {
 	}
 
 	private injectIncontentPlayer(): void {
-		const slotName = 'incontent_player';
-		const isVideo =
+		const icpSlotName = 'incontent_player';
+		const slotCheck = 'cdm-zone-02';
+
+		if (
 			!!document.getElementById('mf-video') ||
 			!!document.getElementById('twitchnet-liveontwitch') ||
-			!!document.getElementById('ds_cpp');
-
-		if (isVideo) {
+			!!document.getElementById('ds_cpp')
+		) {
 			return;
 		}
 
-		if (!document.getElementById('cdm-zone-02')) {
-			this.initiateIncontentPlayer(slotName);
+		if (!document.getElementById(slotCheck)) {
+			this.initiateIncontentPlayer(icpSlotName);
 		}
 
-		slotService.on('cdm-zone-02', AdSlot.STATUS_SUCCESS, () => {
-			if (!!document.querySelector('.porvata3')) {
+		slotService.on(slotCheck, AdSlot.STATUS_SUCCESS, () => {
+			if (!!context.get('options.video.porvataLoaded')) {
 				return;
 			}
-			this.initiateIncontentPlayer(slotName);
+			this.initiateIncontentPlayer(icpSlotName);
 		});
 
-		slotService.on('cdm-zone-02', AdSlot.STATUS_COLLAPSE, () => {
-			this.initiateIncontentPlayer(slotName);
+		slotService.on(slotCheck, AdSlot.STATUS_COLLAPSE, () => {
+			this.initiateIncontentPlayer(icpSlotName);
 		});
 	}
 
