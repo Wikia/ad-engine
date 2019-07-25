@@ -1,9 +1,9 @@
-import { context, PorvataTemplateConfig } from '@wikia/ad-engine';
+import { PorvataTemplateConfig } from '@wikia/ad-engine';
 import { slotsContext } from '../slots';
 
 export function getPorvataConfig(): PorvataTemplateConfig {
 	return {
-		isFloatingEnabled: !context.get('state.isMobile'),
+		isFloatingEnabled: false,
 		inViewportOffsetTop: 0,
 		inViewportOffsetBottom: 0,
 		onInit: (adSlot, params) => {

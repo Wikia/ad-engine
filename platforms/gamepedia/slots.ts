@@ -131,6 +131,7 @@ class SlotsContext {
 		this.setState('cdm-zone-03', true);
 		this.setState('cdm-zone-04', !context.get('state.isMobile'));
 		this.setState('cdm-zone-06', true);
+		this.setState('incontent_player', context.get('options.video.isOutstreamEnabled'));
 	}
 
 	setState(slotName: string, state: boolean): void {

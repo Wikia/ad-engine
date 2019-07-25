@@ -183,7 +183,6 @@ class AdsSetup {
 
 	private injectIncontentPlayer(): void {
 		const slotName = 'incontent_player';
-
 		const isVideo =
 			!!document.getElementById('mf-video') ||
 			!!document.getElementById('twitchnet-liveontwitch') ||
