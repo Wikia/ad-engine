@@ -376,6 +376,10 @@ export default {
 			enabled: true,
 			partnerCode: 'wikiaprebidheader490634422386',
 		},
+		viewabilityCounter: {
+			enabled: true,
+			ignoredSlots: ['featured', 'outstream'],
+		},
 	},
 	state: {
 		adStack: window.adsQueue,

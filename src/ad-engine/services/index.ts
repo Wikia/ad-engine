@@ -4,6 +4,7 @@ export * from './custom-ad-loader';
 export * from './events';
 export * from './likho';
 export * from './local-cache';
+export * from './local-storage';
 export * from './message-bus';
 export * from './slot-data-params-updater';
 export * from './slot-injector';
