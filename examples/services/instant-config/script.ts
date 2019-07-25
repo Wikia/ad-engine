@@ -1,4 +1,4 @@
-import { context, instantConfig, utils } from '@wikia/ad-engine';
+import { context, instantConfigLoader, utils } from '@wikia/ad-engine';
 import { set } from 'lodash';
 import adContext from '../../context';
 
@@ -16,7 +16,7 @@ if (utils.queryString.isUrlParamSet('break-config')) {
 	context.set('services.instantConfig.endpoint', '//example.com');
 }
 
-instantConfig.getConfig().then((config) => {
+instantConfigLoader.getConfig().then((config) => {
 	configPlaceholder.innerText = JSON.stringify(config, null, '\t');
 	set(window, 'exposedInstantConfig', config);
 });

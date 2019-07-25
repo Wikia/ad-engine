@@ -1,4 +1,10 @@
-import { context, instantConfig, setupNpaContext, slotInjector, utils } from '@wikia/ad-engine';
+import {
+	context,
+	instantConfigLoader,
+	setupNpaContext,
+	slotInjector,
+	utils,
+} from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 import { get, set } from 'lodash';
 import { biddersContext } from './bidders/bidders-context';
@@ -35,7 +41,7 @@ class AdsSetup {
 
 	async configure(wikiContext, isOptedIn): Promise<void> {
 		set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
-		this.instantGlobals = await instantConfig.getConfig();
+		this.instantGlobals = await instantConfigLoader.getConfig();
 
 		this.setupAdContext(wikiContext, isOptedIn);
 		setupNpaContext();

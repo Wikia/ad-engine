@@ -3,12 +3,9 @@ import { get } from 'lodash';
 import { Config } from './instant-config.models';
 import { overrideInstantConfig } from './instant-config.utils';
 
-const logGroup = 'instant-config';
+const logGroup = 'instant-config-loader';
 
-/**
- * InstantConfig service
- */
-class InstantConfig {
+class InstantConfigLoader {
 	configPromise: Promise<Config> = null;
 
 	async getConfig(): Promise<Config> {
@@ -54,4 +51,4 @@ class InstantConfig {
 	}
 }
 
-export const instantConfig = new InstantConfig();
+export const instantConfigLoader = new InstantConfigLoader();

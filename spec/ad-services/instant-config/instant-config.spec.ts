@@ -1,4 +1,4 @@
-import { instantConfig } from '@wikia/ad-services/instant-config/instant-config.loader';
+import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { overrideInstantConfig } from '@wikia/ad-services/instant-config/instant-config.utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -16,18 +16,18 @@ describe('Instant Config service', () => {
 			'InstantGlobals.oldGlobal': '[XX,PL/50,CZ/20-cached]',
 		};
 
-		instantConfig.configPromise = configPromise;
+		instantConfigLoader.configPromise = configPromise;
 		sinon.stub(utils.queryString, 'getValues');
 		utils.queryString.getValues.returns(queryInstantGlobals);
 	});
 
 	afterEach(() => {
-		instantConfig.configPromise = null;
+		instantConfigLoader.configPromise = null;
 		utils.queryString.getValues.restore();
 	});
 
 	it('gets defined config', async () => {
-		const value = await instantConfig.getConfig();
+		const value = await instantConfigLoader.getConfig();
 
 		expect(value).to.deep.equal({
 			foo: 'bar',
