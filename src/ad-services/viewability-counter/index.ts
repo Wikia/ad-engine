@@ -30,7 +30,8 @@ class ViewabilityCounter {
 	updateStatus(type: ViewabilityStatus, slotName: string): void {
 		if (
 			!context.get('services.viewabilityCounter.enabled') ||
-			context.get('services.viewabilityCounter.ignoredSlots').indexOf(slotName) !== -1
+			(context.get('services.viewabilityCounter.ignoredSlots') &&
+				context.get('services.viewabilityCounter.ignoredSlots').indexOf(slotName) !== -1)
 		) {
 			return;
 		}
@@ -44,7 +45,7 @@ class ViewabilityCounter {
 	}
 
 	/**
-	 * Pass slot name go get it's viewability or undefined to get all slots viewability
+	 * Pass slot name to get it's viewability or undefined to get all slots viewability
 	 */
 	getViewability(slotName: string = ''): string {
 		let viewability = 0.5;
