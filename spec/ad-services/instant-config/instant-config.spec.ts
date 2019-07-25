@@ -1,7 +1,8 @@
+import { instantConfig } from '@wikia/ad-services/instant-config/instant-config.loader';
+import { overrideInstantConfig } from '@wikia/ad-services/instant-config/instant-config.utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { utils } from '../../../src/ad-engine';
-import { instantConfig, overrideInstantConfig } from '../../../src/ad-services/instant-config';
 
 describe('Instant Config service', () => {
 	const configPromise = Promise.resolve({
