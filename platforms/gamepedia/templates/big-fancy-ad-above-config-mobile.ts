@@ -24,7 +24,13 @@ export function getBfaaConfigMobile(): any {
 		adSlot: null,
 		templateParams: null,
 		updateNavbarOnScroll: null,
-		slotsToDisable: ['cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
+		slotsToDisable: [
+			'cdm-zone-02',
+			'cdm-zone-03',
+			'cdm-zone-04',
+			'cdm-zone-06',
+			'incontent_player',
+		],
 		navbarElement: null,
 		navbarManager: null,
 
