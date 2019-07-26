@@ -1,4 +1,4 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary, utils } from '@ad-engine/core';
 import { instantConfigLoader } from './instant-config.loader';
 import { InstantConfigResult } from './instant-config.models';
 
@@ -27,5 +27,17 @@ export class InstantConfigService {
 		}
 
 		return defaultValue;
+	}
+
+	/**
+	 * Use only for legacy wgAdDriver keys
+	 * @deprecated
+	 */
+	isGeoEnabled(key: string): boolean {
+		if (!key.startsWith('wgAdDriver')) {
+			throw new Error('This method should be only used for legacy wgAdDriver keys');
+		}
+
+		return utils.geoService.isProperGeo(this.get(key), key);
 	}
 }

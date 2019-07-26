@@ -13,11 +13,11 @@ export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfig
 	browsers?: string[];
 
 	/**
-	 * Can be negated.
-	 * @default []
-	 * @example [ "non-US", "PL-72", "XX-AF" ]
+	 * String to match domain.
+	 * @default *
+	 * @example [ "sandbox-adeng01" ]
 	 */
-	regions?: string[];
+	domains?: string[];
 
 	/**
 	 * Can be negated.
@@ -27,11 +27,11 @@ export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfig
 	devices?: string[];
 
 	/**
-	 * String to match domain.
-	 * @default *
-	 * @example [ "sandbox-adeng01" ]
+	 * Can be negated.
+	 * @default []
+	 * @example [ "non-US", "PL-72", "XX-AF" ]
 	 */
-	domains?: string[];
+	regions?: string[];
 
 	/**
 	 * Floating point from 0 to 100.
@@ -46,5 +46,12 @@ export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfig
 	 */
 	samplingCache?: boolean;
 
-	value: T;
+	/**
+	 * @default true
+	 */
+	value?: T;
 }
+
+export const negativePrefix = 'non-';
+export const cacheSuffix = '-cached';
+export const samplingSeparator = '/';

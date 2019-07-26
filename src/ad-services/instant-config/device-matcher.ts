@@ -1,5 +1,5 @@
 import { utils } from '@ad-engine/core';
-import { InstantConfigGroup } from './instant-config.models';
+import { InstantConfigGroup, negativePrefix } from './instant-config.models';
 
 export class DeviceMatcher {
 	currentDevice: utils.DeviceType = utils.client.getDeviceType();
@@ -9,7 +9,7 @@ export class DeviceMatcher {
 			return true;
 		}
 
-		if (devices.includes(`non-${this.currentDevice}`)) {
+		if (devices.includes(`${negativePrefix}${this.currentDevice}`)) {
 			return false;
 		}
 
@@ -19,8 +19,8 @@ export class DeviceMatcher {
 	}
 
 	private mapDevice(device): { negated: boolean; device: any } {
-		return device.startsWith('non-')
-			? { device: device.replace('non-', ''), negated: true }
+		return device.startsWith(negativePrefix)
+			? { device: device.replace(negativePrefix, ''), negated: true }
 			: { device, negated: false };
 	}
 }
