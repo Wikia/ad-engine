@@ -59,6 +59,10 @@ describe('Instant Config Interpreter', () => {
 		});
 	});
 
+	it('should return true if no value');
+
+	it('should receive correct arguments');
+
 	it('should fail for either matcher', () => {
 		const input = {
 			babDetection: [{ value: true }],
@@ -85,6 +89,7 @@ describe('Instant Config Interpreter', () => {
 
 	function mockResponses(...responses: MatchersResponses[]): void {
 		responses.forEach((response, index) => {
+			// TODO: Somehow call those methods in here if previous value is false.
 			browserIsValidStub.onCall(index).returns(response[0]);
 			deviceIsValidStub.onCall(index).returns(response[1]);
 			domainIsValidStub.onCall(index).returns(response[2]);
