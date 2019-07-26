@@ -10,9 +10,6 @@ describe('Domain Matcher', () => {
 
 	it('should work for empty', () => {
 		expect(domainMatcher.isValid()).to.be.true;
-	});
-
-	it('should work for empty array', () => {
 		expect(domainMatcher.isValid([])).to.be.true;
 	});
 

@@ -10,10 +10,12 @@ import { DomainMatcher } from './matchers/domain-matcher';
 import { RegionMatcher } from './matchers/region-matcher';
 
 export class InstantConfigInterpreter {
-	private readonly browserMatcher = new BrowserMatcher();
-	private readonly deviceMatcher = new DeviceMatcher();
-	private readonly domainMatcher = new DomainMatcher();
-	private readonly regionMatcher = new RegionMatcher();
+	constructor(
+		private readonly browserMatcher = new BrowserMatcher(),
+		private readonly deviceMatcher = new DeviceMatcher(),
+		private readonly domainMatcher = new DomainMatcher(),
+		private readonly regionMatcher = new RegionMatcher(),
+	) {}
 
 	getValues(
 		instantConfig: InstantConfigResult,
@@ -33,6 +35,19 @@ export class InstantConfigInterpreter {
 	}
 
 	private getValue(key: string, groups: InstantConfigGroup[]): InstantConfigValue {
-		return { message: 'getValue', key, groups };
+		const correct = groups.find((group, index) => {
+			return (
+				this.browserMatcher.isValid(group.browsers) &&
+				this.deviceMatcher.isValid(group.devices) &&
+				this.domainMatcher.isValid(group.domains) &&
+				this.regionMatcher.isValid(group, `${key}-${index}`)
+			);
+		});
+
+		if (typeof correct !== 'undefined') {
+			return typeof correct.value !== 'undefined' ? correct.value : true;
+		}
+
+		return false;
 	}
 }

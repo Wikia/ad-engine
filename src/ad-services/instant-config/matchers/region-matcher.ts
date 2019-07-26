@@ -2,9 +2,8 @@ import { utils } from '@ad-engine/core';
 import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-config.models';
 
 // TODO: Move sampling and cache on top of the group. Make so that cache works per group.
-// TODO: Key should be ${configName}-${groupIndex}
 export class RegionMatcher {
-	isValid(config: InstantConfigGroup, key?: string): boolean {
+	isValid(config: InstantConfigGroup, id?: string): boolean {
 		let validRegions: string[] = this.filterOutInvalidRegions(config.regions || []);
 
 		if ('sampling' in config) {
@@ -15,7 +14,7 @@ export class RegionMatcher {
 			}
 		}
 
-		return utils.geoService.isProperGeo(validRegions, key);
+		return utils.geoService.isProperGeo(validRegions, id);
 	}
 
 	private filterOutInvalidRegions(regions: string[]): string[] {
