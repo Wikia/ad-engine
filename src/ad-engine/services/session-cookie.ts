@@ -8,9 +8,9 @@ interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 
 class SessionCookie {
 	private readonly cacheMaxAge = 30 * 60 * 1000;
-	private readonly prefix: string = '';
 	private readonly sessionCookieDefault = 'tracking_session_id';
 	private keysSeen = [];
+	private prefix = '';
 
 	constructor() {
 		this.prefix = this.readSessionId();
@@ -36,6 +36,7 @@ class SessionCookie {
 	}
 
 	setSessionId(sid: string): void {
+		this.prefix = sid;
 		context.set('options.session.id', sid);
 	}
 

@@ -206,6 +206,10 @@ function resetSamplingCache(): void {
 	cache = {};
 }
 
+function resetStorage(): void {
+	cookieLoaded = false;
+}
+
 function getSamplingResults(): string[] {
 	return Object.keys(cache).map(getResultLog);
 }
@@ -258,5 +262,6 @@ export const geoService = {
 	getSamplingResults,
 	isProperGeo,
 	resetSamplingCache,
+	resetStorage,
 	mapSamplingResults,
 };

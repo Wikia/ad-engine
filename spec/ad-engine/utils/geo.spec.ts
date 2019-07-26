@@ -413,6 +413,8 @@ describe('Geo', () => {
 		);
 
 		sessionCookie.setSessionId('test');
+		geoService.resetStorage();
+
 		Math.random.returns(1);
 		assert.ok(geoService.isProperGeo(['PL/50-cached'], 'basset'));
 

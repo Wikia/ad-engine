@@ -7,6 +7,7 @@ const sessionId = utils.queryString.get('sessionid');
 const statuses = [];
 
 sessionCookie.setSessionId(sessionId || 't3st4d3ng1n3s3ss1on1d');
+utils.geoService.resetStorage();
 
 Object.keys(instantGlobals).forEach((variable) => {
 	if (variable.substr(0, 14) === 'InstantGlobals') {
