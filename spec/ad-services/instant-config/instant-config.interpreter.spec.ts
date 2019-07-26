@@ -6,6 +6,8 @@ import { RegionMatcher } from '@wikia/ad-services/instant-config/matchers/region
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
+type MatchersResponses = [boolean, boolean, boolean, boolean];
+
 describe('Instant Config Interpreter', () => {
 	let interpreter: InstantConfigInterpreter;
 	const browserMatcher = new BrowserMatcher();
@@ -41,21 +43,28 @@ describe('Instant Config Interpreter', () => {
 		const instantConfig = {
 			wgAdDriverA9BidderCountries: ['XX'],
 			a9BidderCountries: [{ value: false }],
+			babDetection: [{ value: true }],
 		};
 		const instantGlobals = {
 			wgAdDriverA9BidderCountries: ['PL'],
 			wgAdDriverA9DealsCountries: ['PL'],
 		};
 
-		browserIsValidStub.returns(true);
-		deviceIsValidStub.returns(true);
-		domainIsValidStub.returns(true);
-		regionIsValidStub.returns(true);
-
+		mockResponses([true, true, true, true], [true, true, false, true]);
 		expect(interpreter.getValues(instantConfig, instantGlobals)).to.deep.equal({
 			wgAdDriverA9BidderCountries: ['XX'],
 			wgAdDriverA9DealsCountries: ['PL'],
 			a9BidderCountries: false,
+			babDetection: false,
 		});
 	});
+
+	function mockResponses(...responses: MatchersResponses[]): void {
+		responses.forEach((response, index) => {
+			browserIsValidStub.onCall(index).returns(response[0]);
+			deviceIsValidStub.onCall(index).returns(response[1]);
+			domainIsValidStub.onCall(index).returns(response[2]);
+			regionIsValidStub.onCall(index).returns(response[3]);
+		});
+	}
 });
