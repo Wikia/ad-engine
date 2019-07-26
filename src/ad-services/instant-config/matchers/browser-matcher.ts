@@ -1,21 +1,31 @@
 import { utils } from '@ad-engine/core';
-import { InstantConfigGroup, negativePrefix } from '../instant-config.models';
-import { extractNegation } from './negation-extractor';
+import { InstantConfigGroup } from '../instant-config.models';
+import { extractNegation, NegationObject } from './negation-extractor';
 
 export class BrowserMatcher {
-	currentBrowser: string = utils.client.getBrowser();
+	currentBrowser: string = utils.client.getBrowser().toLowerCase();
 
 	isProperBrowser(browsers: InstantConfigGroup['browsers'] = []): boolean {
+		const browserObjects = browsers
+			.map((browser) => browser.toLowerCase())
+			.map((browser) => extractNegation(browser));
+
 		if (browsers.length === 0) {
 			return true;
 		}
 
-		if (browsers.includes(`${negativePrefix}${this.currentBrowser}`)) {
+		if (this.isCurrentNegated(browserObjects)) {
 			return false;
 		}
 
-		return browsers
-			.map((device) => extractNegation(device))
-			.some((object) => this.currentBrowser.includes(object.value) !== object.negated);
+		return browserObjects.some(
+			(object) => this.currentBrowser.includes(object.value) !== object.negated,
+		);
+	}
+
+	private isCurrentNegated(browserObjects: NegationObject[]): boolean {
+		return browserObjects.some(
+			(object) => this.currentBrowser.includes(object.value) && object.negated,
+		);
 	}
 }

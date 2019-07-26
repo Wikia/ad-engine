@@ -10,12 +10,16 @@ export class DeviceMatcher {
 			return true;
 		}
 
-		if (devices.includes(`${negativePrefix}${this.currentDevice}`)) {
+		if (this.isCurrentNegated(devices)) {
 			return false;
 		}
 
 		return devices
 			.map((device) => extractNegation(device))
 			.some((object) => (object.value === this.currentDevice) !== object.negated);
+	}
+
+	private isCurrentNegated(devices: InstantConfigGroup['devices']): boolean {
+		return devices.includes(`${negativePrefix}${this.currentDevice}`);
 	}
 }

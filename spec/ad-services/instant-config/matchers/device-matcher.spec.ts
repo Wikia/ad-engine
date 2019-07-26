@@ -34,7 +34,7 @@ describe('Device Matcher', () => {
 			expect(deviceMatcher.isProperDevice(['non-desktop'])).to.be.false;
 		});
 
-		it('should not work for non-smartphone', () => {
+		it('should work for non-smartphone', () => {
 			expect(deviceMatcher.isProperDevice(['non-smartphone'])).to.be.true;
 		});
 
