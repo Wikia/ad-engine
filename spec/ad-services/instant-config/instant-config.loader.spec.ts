@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { utils } from '../../../src/ad-engine';
 
-describe('Instant Config service', () => {
+describe('Instant Config Loader', () => {
 	let getValuesStub: sinon.SinonStub;
 	const configPromise = Promise.resolve({
 		foo: 'bar',
