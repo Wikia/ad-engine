@@ -1,5 +1,4 @@
-import { context, events, eventService } from '@ad-engine/core';
-import { setAverageSessionScrollSpeed } from './utils';
+import { context, events, eventService, scrollSpeedCalculator } from '@ad-engine/core';
 
 class ScrollTracker {
 	scrollSpeedTrackingStarted: boolean;
@@ -13,7 +12,7 @@ class ScrollTracker {
 	/**
 	 * Init scroll speed tracking when enabled
 	 */
-	initScrollSpeedTracking(applicationAreaClass) {
+	initScrollSpeedTracking(applicationAreaClass: string): void {
 		if (!context.get('options.scrollSpeedTracking')) {
 			return;
 		}
@@ -27,7 +26,7 @@ class ScrollTracker {
 	/**
 	 * Track scrollY to DW in in three 2s-periods
 	 */
-	trackScrollSpeedToDW() {
+	trackScrollSpeedToDW(): void {
 		if (this.scrollSpeedTrackingStarted) {
 			return;
 		}
@@ -45,7 +44,7 @@ class ScrollTracker {
 				}
 				if (time === Math.max(...timesToTrack)) {
 					const newSpeedRecord = scrollY - startScrollY;
-					setAverageSessionScrollSpeed(newSpeedRecord);
+					scrollSpeedCalculator.setAverageSessionScrollSpeed(newSpeedRecord);
 				}
 			}, time * 1000);
 		});
@@ -54,8 +53,8 @@ class ScrollTracker {
 	/**
 	 * Remove scroll tracking from the page
 	 */
-	resetScrollSpeedTracking() {
-		const applicationArea = document.getElementsByClassName('application-wrapper')[0];
+	resetScrollSpeedTracking(applicationAreaClass: string): void {
+		const applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
 		clearTimeout(this.timer);
 		applicationArea.removeEventListener('touchstart', () => this.trackScrollSpeedToDW());
 	}
