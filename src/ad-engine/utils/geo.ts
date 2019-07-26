@@ -1,16 +1,13 @@
-import * as Cookies from 'js-cookie';
-import { context } from '../services/context-service';
+import { context, LocalStorage, sessionCookie } from '../services';
 
 const cacheMarker = '-cached';
-const cacheMaxAge = 30 * 60 * 1000;
 const earth = 'XX';
 const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
-const sessionCookieDefault = 'tracking_session_id';
 let cache: CacheDictionary = {};
-let cookieLoaded = false;
+let cookieStorage = null;
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -28,12 +25,6 @@ export interface GeoData {
 	region: string;
 	country: string;
 	continent: string;
-}
-
-// TODO: Check if they are necessary
-export interface WikiaCookieAttributes extends Cookies.CookieAttributes {
-	overwrite: boolean;
-	maxAge: number;
 }
 
 function hasCache(countryList: string[]): boolean {
@@ -74,30 +65,18 @@ function addResultToCache(
 	}
 }
 
-function getCookieDomain(): string | undefined {
-	const domain: string[] = window.location.hostname.split('.');
-
-	return domain.length > 1
-		? `.${domain[domain.length - 2]}.${domain[domain.length - 1]}`
-		: undefined;
-}
-
 function loadCookie(): void {
-	geoService.readSessionId();
+	cookieStorage = new LocalStorage(sessionCookie);
 
-	const cookie: string = Cookies.get(`${context.get('options.session.id')}_basset`);
+	const cachedVariables: CacheDictionary = cookieStorage.getItem('basset');
 
-	if (cookie) {
-		const cachedVariables: CacheDictionary = JSON.parse(cookie);
-
+	if (cachedVariables) {
 		Object.keys(cachedVariables).forEach((variable) => {
 			cache[variable] = cachedVariables[variable];
 		});
 
-		setCookie(cookie);
+		cookieStorage.setItem('basset', cachedVariables);
 	}
-
-	cookieLoaded = true;
 }
 
 function synchronizeCookie(): void {
@@ -109,19 +88,7 @@ function synchronizeCookie(): void {
 		}
 	});
 
-	setCookie(JSON.stringify(cachedVariables));
-}
-
-function setCookie(value: any): void {
-	const cookieAttributes: WikiaCookieAttributes = {
-		expires: new Date(new Date().getTime() + cacheMaxAge),
-		path: '/',
-		domain: getCookieDomain(),
-		overwrite: true,
-		maxAge: cacheMaxAge,
-	};
-
-	Cookies.set(`${context.get('options.session.id')}_basset`, value, cookieAttributes);
+	cookieStorage.setItem('basset', cachedVariables);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
@@ -236,19 +203,6 @@ function resetSamplingCache(): void {
 	cache = {};
 }
 
-function readSessionId(): void {
-	const sessionCookieName: string =
-		context.get('options.session.cookieName') || sessionCookieDefault;
-	const sid: string = Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
-
-	geoService.setSessionId(sid);
-}
-
-function setSessionId(sid: string): void {
-	context.set('options.session.id', sid);
-	cookieLoaded = false;
-}
-
 function getSamplingResults(): string[] {
 	return Object.keys(cache).map(getResultLog);
 }
@@ -257,7 +211,7 @@ function getSamplingResults(): string[] {
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
  */
 function isProperGeo(countryList: string[] = [], name?: string): boolean {
-	if (!cookieLoaded) {
+	if (!sessionStorage) {
 		loadCookie();
 	}
 
@@ -301,7 +255,5 @@ export const geoService = {
 	getSamplingResults,
 	isProperGeo,
 	resetSamplingCache,
-	readSessionId,
-	setSessionId,
 	mapSamplingResults,
 };

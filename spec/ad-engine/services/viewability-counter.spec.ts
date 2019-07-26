@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import { context } from '../../../src/ad-engine/index';
-import { viewabilityCounter } from '../../../src/ad-services/viewability-counter';
+import { viewabilityCounter } from '../../../src/ad-engine/services/viewability-counter';
 
-describe.only('Viewability counter service', () => {
+describe('Viewability counter service', () => {
 	beforeEach(() => {
-		context.set('services.viewabilityCounter.enabled', true);
-		context.set('services.viewabilityCounter.ignoredSlots', ['ignoredSlot']);
+		context.set('options.viewabilityCounter.enabled', true);
+		context.set('options.viewabilityCounter.ignoredSlots', ['ignoredSlot']);
 	});
 
 	it('viewability is counted properly', () => {

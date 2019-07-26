@@ -121,6 +121,10 @@ export default {
 		},
 		slotRepeater: true,
 		trackingOptIn: false,
+		viewabilityCounter: {
+			enabled: true,
+			ignoredSlots: ['featured', 'outstream'],
+		},
 	},
 	listeners: {
 		twitch: [
@@ -375,10 +379,6 @@ export default {
 		moatYi: {
 			enabled: true,
 			partnerCode: 'wikiaprebidheader490634422386',
-		},
-		viewabilityCounter: {
-			enabled: true,
-			ignoredSlots: ['featured', 'outstream'],
 		},
 	},
 	state: {

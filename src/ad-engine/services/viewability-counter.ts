@@ -1,4 +1,6 @@
-import { context, Dictionary, LocalStorage, utils } from '@ad-engine/core';
+import { Dictionary } from '../models';
+import { logger } from '../utils';
+import { context, LocalStorage } from './';
 
 type ViewabilityStatus = 'loaded' | 'viewed';
 
@@ -29,14 +31,14 @@ class ViewabilityCounter {
 	 */
 	updateStatus(type: ViewabilityStatus, slotName: string): void {
 		if (
-			!context.get('services.viewabilityCounter.enabled') ||
-			(context.get('services.viewabilityCounter.ignoredSlots') &&
-				context.get('services.viewabilityCounter.ignoredSlots').indexOf(slotName) !== -1)
+			!context.get('options.viewabilityCounter.enabled') ||
+			(context.get('options.viewabilityCounter.ignoredSlots') &&
+				context.get('options.viewabilityCounter.ignoredSlots').includes(slotName))
 		) {
 			return;
 		}
 
-		utils.logger(logGroup, 'storing viewability status', type, slotName);
+		logger(logGroup, 'storing viewability status', type, slotName);
 
 		this.counters[`${type}Counter`][slotName] =
 			(this.counters[`${type}Counter`][slotName] || 0) + 1;
