@@ -1,4 +1,6 @@
-import { context, LocalStorage, sessionCookie } from '../services';
+import { context } from '../services/context-service';
+import { LocalStorage } from '../services/local-storage';
+import { sessionCookie } from '../services/session-cookie';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -6,8 +8,9 @@ const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
+const cookieStorage = new LocalStorage(sessionCookie);
 let cache: CacheDictionary = {};
-let cookieStorage = null;
+let cookieLoaded = false;
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -66,8 +69,6 @@ function addResultToCache(
 }
 
 function loadCookie(): void {
-	cookieStorage = new LocalStorage(sessionCookie);
-
 	const cachedVariables: CacheDictionary = cookieStorage.getItem('basset');
 
 	if (cachedVariables) {
@@ -77,6 +78,8 @@ function loadCookie(): void {
 
 		cookieStorage.setItem('basset', cachedVariables);
 	}
+
+	cookieLoaded = true;
 }
 
 function synchronizeCookie(): void {
@@ -211,7 +214,7 @@ function getSamplingResults(): string[] {
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
  */
 function isProperGeo(countryList: string[] = [], name?: string): boolean {
-	if (!sessionStorage) {
+	if (!cookieLoaded) {
 		loadCookie();
 	}
 

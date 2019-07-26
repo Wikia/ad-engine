@@ -1,38 +1,42 @@
 import * as Cookies from 'js-cookie';
-import { context } from './';
+import { context } from './context-service';
 
 interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 	overwrite: boolean;
 	maxAge: number;
 }
 
-const cacheMaxAge = 30 * 60 * 1000;
-const keysSeen = [];
-const sessionCookieDefault = 'tracking_session_id';
-
-function getCookieDomain(): string | undefined {
-	const domain: string[] = window.location.hostname.split('.');
-
-	return domain.length > 1
-		? `.${domain[domain.length - 2]}.${domain[domain.length - 1]}`
-		: undefined;
-}
-
-function readSessionId(): string {
-	const sessionCookieName: string =
-		context.get('options.session.cookieName') || sessionCookieDefault;
-	const sid: string = Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
-
-	context.set('options.session.id', sid);
-
-	return sid;
-}
-
 class SessionCookie {
+	private readonly cacheMaxAge = 30 * 60 * 1000;
 	private readonly prefix: string = '';
+	private readonly sessionCookieDefault = 'tracking_session_id';
+	private keysSeen = [];
 
 	constructor() {
-		this.prefix = readSessionId();
+		this.prefix = this.readSessionId();
+	}
+
+	private getCookieDomain(): string | undefined {
+		const domain: string[] = window.location.hostname.split('.');
+
+		return domain.length > 1
+			? `.${domain[domain.length - 2]}.${domain[domain.length - 1]}`
+			: undefined;
+	}
+
+	private readSessionId(): string {
+		const sessionCookieName: string =
+			context.get('options.session.cookieName') || this.sessionCookieDefault;
+		const sid: string =
+			Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
+
+		this.setSessionId(sid);
+
+		return sid;
+	}
+
+	setSessionId(sid: string): void {
+		context.set('options.session.id', sid);
 	}
 
 	getItem(key: string): string {
@@ -41,15 +45,15 @@ class SessionCookie {
 
 	setItem(key: string, input: {} | string): boolean {
 		const cookieAttributes: WikiaCookieAttributes = {
-			expires: new Date(new Date().getTime() + cacheMaxAge),
+			expires: new Date(new Date().getTime() + this.cacheMaxAge),
 			path: '/',
-			domain: getCookieDomain(),
+			domain: this.getCookieDomain(),
 			overwrite: true,
-			maxAge: cacheMaxAge,
+			maxAge: this.cacheMaxAge,
 		};
 
-		if (!keysSeen.includes(key)) {
-			keysSeen.push(key);
+		if (!this.keysSeen.includes(key)) {
+			this.keysSeen.push(key);
 		}
 
 		Cookies.set(`${this.prefix}_${key}`, input, cookieAttributes);
@@ -60,12 +64,12 @@ class SessionCookie {
 	removeItem(key: string): void {
 		Cookies.remove(`${this.prefix}_${key}`, {
 			path: '/',
-			domain: getCookieDomain(),
+			domain: this.getCookieDomain(),
 		});
 	}
 
 	clear(): void {
-		keysSeen.forEach((key) => {
+		this.keysSeen.forEach((key) => {
 			this.removeItem(key);
 		});
 	}

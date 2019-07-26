@@ -1,6 +1,8 @@
 import { Dictionary } from '../models';
 import { logger } from '../utils';
-import { context, LocalStorage } from './';
+import { context } from './context-service';
+import { LocalStorage } from './local-storage';
+import { sessionCookie } from './session-cookie';
 
 type ViewabilityStatus = 'loaded' | 'viewed';
 
@@ -17,7 +19,7 @@ class ViewabilityCounter {
 	/**
 	 * Non pv volatile storage
 	 */
-	private storage = new LocalStorage(window.sessionStorage);
+	private storage = new LocalStorage(sessionCookie);
 
 	constructor() {
 		this.counters = this.storage.getItem('viewabilityCountData') || {
