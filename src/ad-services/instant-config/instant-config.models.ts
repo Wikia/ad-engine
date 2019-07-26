@@ -13,7 +13,7 @@ export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfig
 	browsers?: string[];
 
 	/**
-	 * String to match domain.
+	 * String to match hostname.
 	 * @default *
 	 * @example [ "sandbox-adeng01" ]
 	 */
@@ -22,7 +22,7 @@ export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfig
 	/**
 	 * Can be negated.
 	 * @default *
-	 * @example [ "desktop" ]
+	 * @example [ "desktop", "non-smartphone" ]
 	 */
 	devices?: string[];
 
