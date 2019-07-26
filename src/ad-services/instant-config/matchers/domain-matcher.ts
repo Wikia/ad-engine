@@ -1,7 +1,7 @@
 import { InstantConfigGroup } from '../instant-config.models';
 
 export class DomainMatcher {
-	isProperDomain(domains: InstantConfigGroup['domains'] = []): boolean {
+	isValid(domains: InstantConfigGroup['domains'] = []): boolean {
 		if (domains.length === 0) {
 			return true;
 		}

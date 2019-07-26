@@ -22,29 +22,29 @@ describe('Device Matcher', () => {
 		});
 
 		it('should work for empty', () => {
-			expect(deviceMatcher.isProperDevice()).to.be.true;
-			expect(deviceMatcher.isProperDevice([])).to.be.true;
+			expect(deviceMatcher.isValid()).to.be.true;
+			expect(deviceMatcher.isValid([])).to.be.true;
 		});
 
 		it('should work for desktop', () => {
-			expect(deviceMatcher.isProperDevice(['desktop'])).to.be.true;
+			expect(deviceMatcher.isValid(['desktop'])).to.be.true;
 		});
 
 		it('should not work for non-desktop', () => {
-			expect(deviceMatcher.isProperDevice(['non-desktop'])).to.be.false;
+			expect(deviceMatcher.isValid(['non-desktop'])).to.be.false;
 		});
 
 		it('should work for non-smartphone', () => {
-			expect(deviceMatcher.isProperDevice(['non-smartphone'])).to.be.true;
+			expect(deviceMatcher.isValid(['non-smartphone'])).to.be.true;
 		});
 
 		it('should not work for complex non', () => {
-			expect(deviceMatcher.isProperDevice(['non-desktop', 'non-smartphone'])).to.be.false;
-			expect(deviceMatcher.isProperDevice(['non-smartphone', 'non-desktop'])).to.be.false;
+			expect(deviceMatcher.isValid(['non-desktop', 'non-smartphone'])).to.be.false;
+			expect(deviceMatcher.isValid(['non-smartphone', 'non-desktop'])).to.be.false;
 		});
 
 		it('should work for complex non', () => {
-			expect(deviceMatcher.isProperDevice(['non-tablet', 'non-smartphone'])).to.be.true;
+			expect(deviceMatcher.isValid(['non-tablet', 'non-smartphone'])).to.be.true;
 		});
 	});
 });

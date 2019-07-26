@@ -9,22 +9,22 @@ describe('Domain Matcher', () => {
 	});
 
 	it('should work for empty', () => {
-		expect(domainMatcher.isProperDomain()).to.be.true;
+		expect(domainMatcher.isValid()).to.be.true;
 	});
 
 	it('should work for empty array', () => {
-		expect(domainMatcher.isProperDomain([])).to.be.true;
+		expect(domainMatcher.isValid([])).to.be.true;
 	});
 
 	it('should work for multiple', () => {
-		expect(domainMatcher.isProperDomain(['aaa', 'bbb'])).to.be.true;
+		expect(domainMatcher.isValid(['aaa', 'bbb'])).to.be.true;
 	});
 
 	it('should work for single', () => {
-		expect(domainMatcher.isProperDomain(['aaa'])).to.be.true;
+		expect(domainMatcher.isValid(['aaa'])).to.be.true;
 	});
 
 	it('should not work for single', () => {
-		expect(domainMatcher.isProperDomain(['bbb'])).to.be.false;
+		expect(domainMatcher.isValid(['bbb'])).to.be.false;
 	});
 });

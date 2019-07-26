@@ -4,7 +4,7 @@ import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-c
 // TODO: Move sampling and cache on top of the group. Make so that cache works per group.
 // TODO: Key should be ${configName}-${groupIndex}
 export class RegionMatcher {
-	isProperRegion(config: InstantConfigGroup, key?: string): boolean {
+	isValid(config: InstantConfigGroup, key?: string): boolean {
 		let validRegions: string[] = this.filterOutInvalidRegions(config.regions || []);
 
 		if ('sampling' in config) {

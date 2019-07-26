@@ -5,7 +5,7 @@ import { extractNegation } from './negation-extractor';
 export class DeviceMatcher {
 	currentDevice: utils.DeviceType = utils.client.getDeviceType();
 
-	isProperDevice(devices: InstantConfigGroup['devices'] = []): boolean {
+	isValid(devices: InstantConfigGroup['devices'] = []): boolean {
 		if (devices.length === 0) {
 			return true;
 		}

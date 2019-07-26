@@ -22,33 +22,33 @@ describe('Browser Matcher', () => {
 		});
 
 		it('should work for empty', () => {
-			expect(browserMatcher.isProperBrowser()).to.be.true;
-			expect(browserMatcher.isProperBrowser([])).to.be.true;
+			expect(browserMatcher.isValid()).to.be.true;
+			expect(browserMatcher.isValid([])).to.be.true;
 		});
 
 		it('should work for chrome', () => {
-			expect(browserMatcher.isProperBrowser(['chrome'])).to.be.true;
+			expect(browserMatcher.isValid(['chrome'])).to.be.true;
 		});
 
 		it('should be case insensitive', () => {
-			expect(browserMatcher.isProperBrowser(['cHrOme'])).to.be.true;
+			expect(browserMatcher.isValid(['cHrOme'])).to.be.true;
 		});
 
 		it('should not work for non-chrome', () => {
-			expect(browserMatcher.isProperBrowser(['non-chrome'])).to.be.false;
+			expect(browserMatcher.isValid(['non-chrome'])).to.be.false;
 		});
 
 		it('should work for non-safari', () => {
-			expect(browserMatcher.isProperBrowser(['non-safari'])).to.be.true;
+			expect(browserMatcher.isValid(['non-safari'])).to.be.true;
 		});
 
 		it('should not work for complex non', () => {
-			expect(browserMatcher.isProperBrowser(['non-chrome', 'non-safari'])).to.be.false;
-			expect(browserMatcher.isProperBrowser(['non-safari', 'non-chrome'])).to.be.false;
+			expect(browserMatcher.isValid(['non-chrome', 'non-safari'])).to.be.false;
+			expect(browserMatcher.isValid(['non-safari', 'non-chrome'])).to.be.false;
 		});
 
 		it('should work for complex non', () => {
-			expect(browserMatcher.isProperBrowser(['non-firefox', 'non-safari'])).to.be.true;
+			expect(browserMatcher.isValid(['non-firefox', 'non-safari'])).to.be.true;
 		});
 	});
 });
