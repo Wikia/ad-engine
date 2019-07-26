@@ -1,5 +1,5 @@
 import { utils } from '@ad-engine/core';
-import { cacheSuffix, InstantConfigGroup, samplingSeparator } from './instant-config.models';
+import { cacheSuffix, InstantConfigGroup, samplingSeparator } from '../instant-config.models';
 
 // TODO: Move sampling and cache on top of the group. Make so that cache works per group.
 // TODO: Key should be ${configName}-${groupIndex}

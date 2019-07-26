@@ -1,5 +1,5 @@
 import { utils } from '@wikia/ad-engine';
-import { DeviceMatcher } from '@wikia/ad-services/instant-config/device-matcher';
+import { DeviceMatcher } from '@wikia/ad-services/instant-config/matchers/device-matcher';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

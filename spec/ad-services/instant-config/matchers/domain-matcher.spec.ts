@@ -1,4 +1,4 @@
-import { DomainMatcher } from '@wikia/ad-services/instant-config/domain-matcher';
+import { DomainMatcher } from '@wikia/ad-services/instant-config/matchers/domain-matcher';
 import { expect } from 'chai';
 
 describe('Domain Matcher', () => {
