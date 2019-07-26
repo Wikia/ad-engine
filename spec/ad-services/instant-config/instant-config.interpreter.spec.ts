@@ -59,6 +59,30 @@ describe('Instant Config Interpreter', () => {
 		});
 	});
 
+	it('should fail for either matcher', () => {
+		const input = {
+			babDetection: [{ value: true }],
+		};
+		const expectedOutput = {
+			babDetection: false,
+		};
+
+		mockResponses(
+			[false, true, true, true],
+			[true, false, true, true],
+			[true, true, false, true],
+			[true, true, true, false],
+			[false, false, false, false],
+			[true, true, true, true],
+		);
+		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues(input)).to.deep.equal({ babDetection: true });
+	});
+
 	function mockResponses(...responses: MatchersResponses[]): void {
 		responses.forEach((response, index) => {
 			browserIsValidStub.onCall(index).returns(response[0]);

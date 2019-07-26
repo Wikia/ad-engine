@@ -39,12 +39,12 @@ export class InstantConfigInterpreter {
 
 	private getValue(key: string, groups: InstantConfigGroup[]): InstantConfigValue {
 		const correct = groups.find((group, index) => {
-			return (
-				this.browserMatcher.isValid(group.browsers) &&
-				this.deviceMatcher.isValid(group.devices) &&
-				this.domainMatcher.isValid(group.domains) &&
-				this.regionMatcher.isValid(group, `${key}-${index}`)
-			);
+			const browser = this.browserMatcher.isValid(group.browsers);
+			const device = this.deviceMatcher.isValid(group.devices);
+			const domain = this.domainMatcher.isValid(group.domains);
+			const region = this.regionMatcher.isValid(group, `${key}-${index}`);
+
+			return browser && device && domain && region;
 		});
 
 		if (typeof correct !== 'undefined') {
