@@ -61,6 +61,8 @@ describe('Instant Config Interpreter', () => {
 
 	it('should return true if no value');
 
+	it('should return value of first correct group');
+
 	it('should receive correct arguments');
 
 	it('should fail for either matcher', () => {
