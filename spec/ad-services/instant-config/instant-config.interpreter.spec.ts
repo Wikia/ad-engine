@@ -88,12 +88,27 @@ describe('Instant Config Interpreter', () => {
 	});
 
 	function mockResponses(...responses: MatchersResponses[]): void {
-		responses.forEach((response, index) => {
-			// TODO: Somehow call those methods in here if previous value is false.
-			browserIsValidStub.onCall(index).returns(response[0]);
-			deviceIsValidStub.onCall(index).returns(response[1]);
-			domainIsValidStub.onCall(index).returns(response[2]);
-			regionIsValidStub.onCall(index).returns(response[3]);
+		let browserCounter = 0;
+		let deviceCounter = 0;
+		let domainCounter = 0;
+		let regionCounter = 0;
+
+		responses.forEach((response) => {
+			browserIsValidStub.onCall(browserCounter++).returns(response[0]);
+			if (response[0] === false) {
+				return;
+			}
+
+			deviceIsValidStub.onCall(deviceCounter++).returns(response[1]);
+			if (response[1] === false) {
+				return;
+			}
+
+			domainIsValidStub.onCall(domainCounter++).returns(response[2]);
+			if (response[2] === false) {
+				return;
+			}
+			regionIsValidStub.onCall(regionCounter++).returns(response[3]);
 		});
 	}
 });
