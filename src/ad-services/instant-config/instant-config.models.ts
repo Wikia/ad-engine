@@ -1,7 +1,7 @@
 export type InstantConfigValue = boolean | string | string[] | number | number[] | object;
 
-export interface InstantConfigResult {
-	[key: string]: InstantConfigValue | InstantConfigGroup;
+export interface InstantConfigResponse {
+	[key: string]: InstantConfigValue | InstantConfigGroup[];
 }
 
 export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfigValue> {

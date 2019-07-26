@@ -1,7 +1,7 @@
 import { Dictionary } from '@ad-engine/core';
 import {
 	InstantConfigGroup,
-	InstantConfigResult,
+	InstantConfigResponse,
 	InstantConfigValue,
 } from './instant-config.models';
 import { BrowserMatcher } from './matchers/browser-matcher';
@@ -18,10 +18,13 @@ export class InstantConfigInterpreter {
 	) {}
 
 	getValues(
-		instantConfig: InstantConfigResult,
-		instantGlobals: Dictionary = {},
+		instantConfig: InstantConfigResponse,
+		instantGlobals: Dictionary<InstantConfigValue> = {},
 	): Dictionary<InstantConfigValue> {
-		const combined: Dictionary<InstantConfigValue> = { ...instantGlobals, ...instantConfig };
+		const combined: InstantConfigResponse = {
+			...instantGlobals,
+			...instantConfig,
+		};
 
 		return Object.keys(combined)
 			.map((key) => ({ key, value: combined[key] }))
