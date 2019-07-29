@@ -16,6 +16,7 @@ export function registerPostmessageTrackingTracker(): void {
 
 			switch (target) {
 				case TrackingTarget.GoogleAnalytics:
+					break; // There is no tracking to Google Analytics yet
 				case TrackingTarget.DataWarehouse:
 					const dataWarehouseTracker = new DataWarehouseTracker();
 					dataWarehouseTracker.track(payload);
