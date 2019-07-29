@@ -1,25 +1,18 @@
-import { Dictionary } from '../models';
+import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
+import { events, eventService } from './events';
 import { LocalStorage } from './local-storage';
 import { sessionCookie } from './session-cookie';
 
-type ViewabilityStatus = 'loaded' | 'viewed';
+type StatusType = 'loaded' | 'viewed';
 
-const logGroup = 'viewability-service';
+const logGroup = 'viewability-counter';
 
-/**
- * Viewability Counter service handler
- */
 class ViewabilityCounter {
-	/**
-	 * Stores slots viewability counters for current pageview
-	 */
 	private readonly counters: Dictionary<Dictionary<number>>;
-	/**
-	 * Non pv volatile storage
-	 */
 	private storage = new LocalStorage(sessionCookie);
+	private loaded = false;
 
 	constructor() {
 		this.counters = this.storage.getItem('viewabilityCountData') || {
@@ -28,35 +21,49 @@ class ViewabilityCounter {
 		};
 	}
 
-	/**
-	 * Save in storage impression or viewability change
-	 */
-	updateStatus(type: ViewabilityStatus, slotName: string): void {
+	init(): void {
+		if (this.loaded) {
+			return;
+		}
+
+		this.loaded = true;
+
+		eventService.on(events.AD_SLOT_CREATED, (slot: AdSlot) => {
+			const id = slot.getConfigProperty('viewabilityCounterId') || slot.getSlotName();
+
+			slot.loaded.then(() => {
+				this.incrementStatusCounter('loaded', id);
+			});
+
+			slot.viewed.then(() => {
+				this.incrementStatusCounter('viewed', id);
+			});
+		});
+	}
+
+	incrementStatusCounter(type: StatusType, counterId: string): void {
 		if (
 			!context.get('options.viewabilityCounter.enabled') ||
 			(context.get('options.viewabilityCounter.ignoredSlots') &&
-				context.get('options.viewabilityCounter.ignoredSlots').includes(slotName))
+				context.get('options.viewabilityCounter.ignoredSlots').includes(counterId))
 		) {
 			return;
 		}
 
-		logger(logGroup, 'storing viewability status', type, slotName);
+		logger(logGroup, 'storing viewability status', type, counterId);
 
-		this.counters[`${type}Counter`][slotName] =
-			(this.counters[`${type}Counter`][slotName] || 0) + 1;
+		this.counters[`${type}Counter`][counterId] =
+			(this.counters[`${type}Counter`][counterId] || 0) + 1;
 
 		this.storage.setItem('viewabilityCountData', this.counters);
 	}
 
-	/**
-	 * Pass slot name to get it's viewability or undefined to get all slots viewability
-	 */
-	getViewability(slotName: string = ''): string {
+	getViewability(counterId: string = ''): string {
 		let viewability = 0.5;
 
-		if (slotName) {
-			viewability = this.counters.loadedCounter[slotName]
-				? (this.counters.viewedCounter[slotName] || 0) / this.counters.loadedCounter[slotName]
+		if (counterId) {
+			viewability = this.counters.loadedCounter[counterId]
+				? (this.counters.viewedCounter[counterId] || 0) / this.counters.loadedCounter[counterId]
 				: viewability;
 		} else if (Object.keys(this.counters.loadedCounter).length) {
 			let loaded = 0;

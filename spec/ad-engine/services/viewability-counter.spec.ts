@@ -12,59 +12,59 @@ describe('Viewability counter service', () => {
 		expect(viewabilityCounter.getViewability()).to.equal('0.500');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.500');
 
-		viewabilityCounter.updateStatus('loaded', 'ignoredSlot');
+		viewabilityCounter.incrementStatusCounter('loaded', 'ignoredSlot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('0.500');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.500');
 
-		viewabilityCounter.updateStatus('loaded', 'otherSlot');
+		viewabilityCounter.incrementStatusCounter('loaded', 'otherSlot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('0.000');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.500');
 
-		viewabilityCounter.updateStatus('viewed', 'otherSlot');
+		viewabilityCounter.incrementStatusCounter('viewed', 'otherSlot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('1.000');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.500');
 
-		viewabilityCounter.updateStatus('loaded', 'slot');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('0.500');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.000');
 
-		viewabilityCounter.updateStatus('viewed', 'slot');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('1.000');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('1.000');
 
-		viewabilityCounter.updateStatus('loaded', 'slot1');
-		viewabilityCounter.updateStatus('loaded', 'slot2');
-		viewabilityCounter.updateStatus('loaded', 'slot3');
-		viewabilityCounter.updateStatus('loaded', 'slot4');
-		viewabilityCounter.updateStatus('loaded', 'slot5');
-		viewabilityCounter.updateStatus('loaded', 'slot6');
-		viewabilityCounter.updateStatus('loaded', 'slot');
-		viewabilityCounter.updateStatus('loaded', 'otherSlot');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot1');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot2');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot3');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot4');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot5');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot6');
+		viewabilityCounter.incrementStatusCounter('loaded', 'slot');
+		viewabilityCounter.incrementStatusCounter('loaded', 'otherSlot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('0.200');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.500');
 		expect(viewabilityCounter.getViewability('otherSlot')).to.equal('0.500');
 		expect(viewabilityCounter.getViewability('slot1')).to.equal('0.000');
 
-		viewabilityCounter.updateStatus('viewed', 'slot1');
-		viewabilityCounter.updateStatus('viewed', 'slot2');
-		viewabilityCounter.updateStatus('viewed', 'slot3');
-		viewabilityCounter.updateStatus('viewed', 'slot4');
-		viewabilityCounter.updateStatus('viewed', 'slot5');
-		viewabilityCounter.updateStatus('viewed', 'otherSlot');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot1');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot2');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot3');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot4');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot5');
+		viewabilityCounter.incrementStatusCounter('viewed', 'otherSlot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('0.800');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('0.500');
 		expect(viewabilityCounter.getViewability('otherSlot')).to.equal('1.000');
 		expect(viewabilityCounter.getViewability('slot1')).to.equal('1.000');
 
-		viewabilityCounter.updateStatus('viewed', 'slot6');
-		viewabilityCounter.updateStatus('viewed', 'slot');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot6');
+		viewabilityCounter.incrementStatusCounter('viewed', 'slot');
 
 		expect(viewabilityCounter.getViewability()).to.equal('1.000');
 		expect(viewabilityCounter.getViewability('slot')).to.equal('1.000');
