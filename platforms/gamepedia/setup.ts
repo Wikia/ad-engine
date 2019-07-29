@@ -14,6 +14,7 @@ import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
 import {
 	registerPorvataTracker,
+	registerPostmessageTrackingTracker,
 	registerSlotTracker,
 	registerViewabilityTracker,
 } from './tracking/tracker';
@@ -50,6 +51,7 @@ class AdsSetup {
 		registerPorvataTracker();
 		registerSlotTracker();
 		registerViewabilityTracker();
+		registerPostmessageTrackingTracker();
 	}
 
 	private setupAdContext(wikiContext, isOptedIn = false): void {
