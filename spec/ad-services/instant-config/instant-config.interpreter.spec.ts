@@ -39,6 +39,36 @@ describe('Instant Config Interpreter', () => {
 		regionIsValidStub.restore();
 	});
 
+	it('should not change wgAdDriver', () => {
+		const instantConfig = {};
+		const instantGlobals = {
+			wgAdDriverA9BidderCountries: ['PL'],
+			wgAdDriverA9DealsCountries: ['PL'],
+		};
+
+		expect(interpreter.getValues(instantConfig, instantGlobals)).to.deep.equal({
+			wgAdDriverA9BidderCountries: ['PL'],
+			wgAdDriverA9DealsCountries: ['PL'],
+		});
+		expect(browserIsValidStub.getCalls().length).to.equal(0);
+	});
+
+	it('should overwrite wgAdDriver', () => {
+		const instantConfig = {
+			wgAdDriverA9BidderCountries: ['XX'],
+		};
+		const instantGlobals = {
+			wgAdDriverA9BidderCountries: ['PL'],
+			wgAdDriverA9DealsCountries: ['PL'],
+		};
+
+		expect(interpreter.getValues(instantConfig, instantGlobals)).to.deep.equal({
+			wgAdDriverA9BidderCountries: ['XX'],
+			wgAdDriverA9DealsCountries: ['PL'],
+		});
+		expect(browserIsValidStub.getCalls().length).to.equal(0);
+	});
+
 	it('should return correct values', () => {
 		const instantConfig = {
 			wgAdDriverA9BidderCountries: ['XX'],
@@ -55,22 +85,59 @@ describe('Instant Config Interpreter', () => {
 			wgAdDriverA9BidderCountries: ['XX'],
 			wgAdDriverA9DealsCountries: ['PL'],
 			a9BidderCountries: false,
-			babDetection: false,
+			babDetection: undefined,
 		});
 	});
 
-	it('should return true if no value');
+	it('should return true if no value', () => {
+		const instantConfig = { babDetection: [{}] };
 
-	it('should return value of first correct group');
+		mockResponses([true, true, true, true]);
+		expect(interpreter.getValues(instantConfig).babDetection).to.equal(true);
+	});
 
-	it('should receive correct arguments');
+	it('should return value of the first correct group', () => {
+		const instantConfig = {
+			babDetection: [{ value: 1 }, { value: 2 }, { value: 3 }],
+		};
+
+		mockResponses([false, true, true, true], [true, true, true, true], [true, true, true, true]);
+
+		expect(interpreter.getValues(instantConfig).babDetection).to.equal(2);
+		expect(browserIsValidStub.getCalls().length).to.equal(2);
+	});
+
+	it('should receive correct arguments', () => {
+		const instantConfig = {
+			babDetection: [
+				{
+					browsers: ['Chrome', 'Firefox'],
+					devices: ['desktop'],
+					domains: ['fandom.com'],
+					regions: ['PL'],
+					sampling: 30,
+					cache: true,
+					value: true,
+				},
+			],
+		};
+
+		mockResponses([true, true, true, true]);
+		interpreter.getValues(instantConfig);
+
+		expect(browserIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].browsers);
+		expect(deviceIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].devices);
+		expect(domainIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].domains);
+		expect(regionIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0]);
+		expect(regionIsValidStub.firstCall.args[1]).to.equal('babDetection-0');
+	});
 
 	it('should fail for either matcher', () => {
 		const input = {
 			babDetection: [{ value: true }],
 		};
 		const expectedOutput = {
-			babDetection: false,
+			babDetection: undefined,
 		};
 
 		mockResponses(

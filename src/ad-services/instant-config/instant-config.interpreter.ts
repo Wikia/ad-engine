@@ -51,6 +51,6 @@ export class InstantConfigInterpreter {
 			return typeof correct.value !== 'undefined' ? correct.value : true;
 		}
 
-		return false;
+		return undefined;
 	}
 }
