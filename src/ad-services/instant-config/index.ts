@@ -1,1 +1,1 @@
-export * from './instant-config.loader';
+export * from './instant-config.service';

@@ -1,5 +1,6 @@
-import { context, instantConfigLoader, utils } from '@wikia/ad-engine';
+import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { instantConfigLoader } from '../../../src/ad-services/instant-config/instant-config.loader';
 import adContext from '../../context';
 
 const breakConfigButton = document.getElementById('break-config');
@@ -20,6 +21,11 @@ instantConfigLoader.getConfig().then((config) => {
 	configPlaceholder.innerText = JSON.stringify(config, null, '\t');
 	set(window, 'exposedInstantConfig', config);
 });
+
+// InstantConfigService.init().then((config) => {
+// 	configPlaceholder.innerText = JSON.stringify(config['repository'], null, '\t');
+// 	set(window, 'exposedInstantConfig', config['repository']);
+// });
 
 breakConfigButton.addEventListener('click', () => {
 	window.location.href = `?break-config=1`;

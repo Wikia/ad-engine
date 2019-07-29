@@ -1,12 +1,12 @@
 import {
 	context,
-	instantConfigLoader,
+	InstantConfigService,
 	setupNpaContext,
 	slotInjector,
 	utils,
 } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
-import { get, set } from 'lodash';
+import { set } from 'lodash';
 import { biddersContext } from './bidders/bidders-context';
 import { cmpWrapper } from './cmp/cmp-wrapper';
 import { slotsContext } from './slots';
@@ -37,11 +37,11 @@ const fallbackInstantConfig = {
 };
 
 class AdsSetup {
-	private instantGlobals = {};
+	private instantConfig: InstantConfigService;
 
 	async configure(wikiContext, isOptedIn): Promise<void> {
 		set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
-		this.instantGlobals = await instantConfigLoader.getConfig();
+		this.instantConfig = await InstantConfigService.init();
 
 		this.setupAdContext(wikiContext, isOptedIn);
 		setupNpaContext();
@@ -68,38 +68,41 @@ class AdsSetup {
 
 		context.set(
 			'options.video.isOutstreamEnabled',
-			this.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
+			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
 		context.set('bidders', biddersContext.generate());
 
-		if (this.isGeoEnabled('wgAdDriverA9BidderCountries')) {
+		if (this.instantConfig.isGeoEnabled('wgAdDriverA9BidderCountries')) {
 			context.set('bidders.a9.enabled', true);
-			context.set('bidders.a9.dealsEnabled', this.isGeoEnabled('wgAdDriverA9DealsCountries'));
+			context.set(
+				'bidders.a9.dealsEnabled',
+				this.instantConfig.isGeoEnabled('wgAdDriverA9DealsCountries'),
+			);
 		}
 
-		if (this.isGeoEnabled('wgAdDriverPrebidBidderCountries')) {
+		if (this.instantConfig.isGeoEnabled('wgAdDriverPrebidBidderCountries')) {
 			context.set('bidders.prebid.enabled', true);
 			context.set(
 				'bidders.prebid.appnexus.enabled',
-				this.isGeoEnabled('wgAdDriverAppNexusBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverAppNexusBidderCountries'),
 			);
 			context.set(
 				'bidders.prebid.indexExchange.enabled',
-				this.isGeoEnabled('wgAdDriverIndexExchangeBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverIndexExchangeBidderCountries'),
 			);
 			context.set(
 				'bidders.prebid.openx.enabled',
-				this.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
 			);
 
 			context.set(
 				'bidders.prebid.pubmatic.enabled',
-				this.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
 			);
 			context.set(
 				'bidders.prebid.rubicon_display.enabled',
-				this.isGeoEnabled('wgAdDriverRubiconDisplayPrebidCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverRubiconDisplayPrebidCountries'),
 			);
 		}
 
@@ -108,11 +111,11 @@ class AdsSetup {
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
 		);
 
-		this.isGeoEnabled('wgAdDriverLABradorTestCountries');
+		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
 
-		if (get(this.instantGlobals, 'wgAdDriverTestCommunities', []).includes(wikiContext.wgDBname)) {
+		if (this.instantConfig.get('wgAdDriverTestCommunities', []).includes(wikiContext.wgDBname)) {
 			context.set('src', 'test');
 		}
 
@@ -125,10 +128,7 @@ class AdsSetup {
 
 		// ToDo: rest of context
 
-		context.set(
-			'options.maxDelayTimeout',
-			get(this.instantGlobals, 'wgAdDriverDelayTimeout', 2000),
-		);
+		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
 		const country = context.get('targeting.geo');
 
@@ -152,15 +152,11 @@ class AdsSetup {
 
 	private updateWadContext(): void {
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.isGeoEnabled('wgAdDriverBabDetection'));
-	}
-
-	private isGeoEnabled(key: string): boolean {
-		return utils.geoService.isProperGeo(this.instantGlobals[key], key);
+		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
 	}
 
 	private isUapAllowed(): boolean {
-		let uapRestriction = this.instantGlobals['wgAdDriverUapRestriction'];
+		let uapRestriction = this.instantConfig.get('wgAdDriverUapRestriction');
 		const queryParam = utils.queryString.get('uap-pv-restriction');
 
 		if (typeof queryParam !== 'undefined') {
@@ -170,7 +166,7 @@ class AdsSetup {
 		const isUapAllowed =
 			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test';
 
-		return isUapAllowed && this.isGeoEnabled('wgAdDriverUapCountries');
+		return isUapAllowed && this.instantConfig.isGeoEnabled('wgAdDriverUapCountries');
 	}
 
 	private setUpGeoData(): void {
