@@ -56,7 +56,7 @@ export const registerViewabilityTracker = () => {
 		});
 };
 
-export function registerPostmessageTrackingTracker(): void {
+export const registerPostmessageTrackingTracker = () => {
 	const postmessageTracker = new PostmessageTracker(['payload', 'target']);
 
 	postmessageTracker
@@ -66,7 +66,15 @@ export function registerPostmessageTrackingTracker(): void {
 
 			switch (target) {
 				case TrackingTarget.GoogleAnalytics:
-					break; // There is no tracking to Google Analytics yet
+					window.ga(
+						'tracker1.send',
+						'event',
+						payload.category,
+						payload.action,
+						payload.label,
+						payload.value.toString(),
+					);
+					break;
 				case TrackingTarget.DataWarehouse:
 					const dataWarehouseTracker = new DataWarehouseTracker();
 					dataWarehouseTracker.track(payload);
@@ -75,4 +83,4 @@ export function registerPostmessageTrackingTracker(): void {
 					break;
 			}
 		});
-}
+};

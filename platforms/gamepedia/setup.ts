@@ -66,6 +66,7 @@ class AdsSetup {
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
 		context.set('options.trackingOptIn', isOptedIn);
+		context.set('options.tracking.postmessage', true);
 
 		context.set(
 			'options.video.isOutstreamEnabled',
