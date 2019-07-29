@@ -182,8 +182,8 @@ class AdsSetup {
 	}
 
 	private injectIncontentPlayer(): void {
-		const icpSlotName = 'incontent_player';
-		const slotCheck = 'cdm-zone-02';
+		const incontentPlayerSlotName = 'incontent_player';
+		const porvataAlternativeSlotsName = 'cdm-zone-02';
 
 		if (
 			!!document.getElementById('mf-video') ||
@@ -193,19 +193,19 @@ class AdsSetup {
 			return;
 		}
 
-		if (!document.getElementById(slotCheck)) {
-			this.initiateIncontentPlayer(icpSlotName);
+		if (!document.getElementById(porvataAlternativeSlotsName)) {
+			this.initiateIncontentPlayer(incontentPlayerSlotName);
 		}
 
-		slotService.on(slotCheck, AdSlot.STATUS_SUCCESS, () => {
+		slotService.on(porvataAlternativeSlotsName, AdSlot.STATUS_SUCCESS, () => {
 			if (!!context.get('options.video.porvataLoaded')) {
 				return;
 			}
-			this.initiateIncontentPlayer(icpSlotName);
+			this.initiateIncontentPlayer(incontentPlayerSlotName);
 		});
 
-		slotService.on(slotCheck, AdSlot.STATUS_COLLAPSE, () => {
-			this.initiateIncontentPlayer(icpSlotName);
+		slotService.on(porvataAlternativeSlotsName, AdSlot.STATUS_COLLAPSE, () => {
+			this.initiateIncontentPlayer(incontentPlayerSlotName);
 		});
 	}
 
