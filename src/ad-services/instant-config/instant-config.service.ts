@@ -4,7 +4,7 @@ import { instantConfigLoader } from './instant-config.loader';
 import { InstantConfigValue } from './instant-config.models';
 
 export class InstantConfigService {
-	static instancePromise: Promise<InstantConfigService>;
+	private static instancePromise: Promise<InstantConfigService>;
 
 	static async init(globals: Dictionary = {}): Promise<InstantConfigService> {
 		if (!InstantConfigService.instancePromise) {
