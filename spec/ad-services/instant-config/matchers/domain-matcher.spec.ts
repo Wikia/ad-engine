@@ -1,11 +1,18 @@
 import { DomainMatcher } from '@wikia/ad-services/instant-config/matchers/domain-matcher';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 describe('Domain Matcher', () => {
+	let hostnameStub: sinon.SinonStub;
 	const domainMatcher = new DomainMatcher();
 
 	before(() => {
-		(global as any).window = { location: { hostname: 'example-aaa.com' } };
+		hostnameStub = sinon.stub(window, 'location');
+		hostnameStub.value({ hostname: 'example-aaa.com' });
+	});
+
+	after(() => {
+		hostnameStub.restore();
 	});
 
 	it('should work for empty', () => {
