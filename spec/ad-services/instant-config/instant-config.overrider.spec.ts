@@ -1,9 +1,11 @@
 import { Dictionary, utils } from '@wikia/ad-engine';
-import { overrideInstantConfig } from '@wikia/ad-services/instant-config/instant-config.utils';
+import { InstantConfigOverrider } from '@wikia/ad-services/instant-config/instant-config.overrider';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-describe('Override Instant Config', () => {
+describe('Instant Config Overrider', () => {
+	const overrider = new InstantConfigOverrider();
+
 	let getQueryParamsStub: sinon.SinonStub;
 
 	beforeEach(() => {
@@ -31,7 +33,7 @@ describe('Override Instant Config', () => {
 
 		beforeEach(() => {
 			getQueryParamsStub.returns(queryParams);
-			result = overrideInstantConfig(configResponse);
+			result = overrider.override(configResponse);
 		});
 
 		it('should wrap new instant config from query into XX regions group', () => {
@@ -71,7 +73,7 @@ describe('Override Instant Config', () => {
 
 			getQueryParamsStub.returns(queryParamsTypes);
 
-			const result = overrideInstantConfig({});
+			const result = overrider.override({});
 
 			expect(result['wgAdDriverBoolean']).to.equal(false);
 			expect(result['wgAdDriverString']).to.equal('exampleString');

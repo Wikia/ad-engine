@@ -2,6 +2,7 @@ import { Dictionary, utils } from '@ad-engine/core';
 import { InstantConfigInterpreter } from './instant-config.interpreter';
 import { instantConfigLoader } from './instant-config.loader';
 import { InstantConfigValue } from './instant-config.models';
+import { InstantConfigOverrider } from './instant-config.overrider';
 
 const logGroup = 'instant-config-service';
 
@@ -12,6 +13,7 @@ export class InstantConfigService {
 		if (!InstantConfigService.instancePromise) {
 			InstantConfigService.instancePromise = instantConfigLoader
 				.getConfig()
+				.then((config) => new InstantConfigOverrider().override(config))
 				.then((config) => new InstantConfigInterpreter().getValues(config, globals))
 				.then((values) => new InstantConfigService(values));
 		}

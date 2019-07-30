@@ -1,12 +1,11 @@
 import { context, utils } from '@ad-engine/core';
 import { get } from 'lodash';
 import { InstantConfigResponse } from './instant-config.models';
-import { overrideInstantConfig } from './instant-config.utils';
 
 const logGroup = 'instant-config-loader';
 
 class InstantConfigLoader {
-	configPromise: Promise<InstantConfigResponse> = null;
+	private configPromise: Promise<InstantConfigResponse> = null;
 
 	async getConfig(): Promise<InstantConfigResponse> {
 		if (!this.configPromise) {
@@ -47,7 +46,7 @@ class InstantConfigLoader {
 				}
 			};
 			request.send();
-		}).then(overrideInstantConfig);
+		});
 	}
 }
 

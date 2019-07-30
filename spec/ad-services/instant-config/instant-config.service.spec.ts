@@ -1,6 +1,7 @@
 import { utils } from '@wikia/ad-engine';
 import { InstantConfigInterpreter } from '@wikia/ad-services/instant-config/instant-config.interpreter';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
+import { InstantConfigOverrider } from '@wikia/ad-services/instant-config/instant-config.overrider';
 import { InstantConfigService } from '@wikia/ad-services/instant-config/instant-config.service';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -8,15 +9,18 @@ import * as sinon from 'sinon';
 describe('Instant Config Service', () => {
 	let getConfigStub: sinon.SinonStub;
 	let getValuesStub: sinon.SinonStub;
+	let overrideStub: sinon.SinonStub;
 
 	beforeEach(() => {
 		getConfigStub = sinon.stub(instantConfigLoader, 'getConfig');
 		getValuesStub = sinon.stub(InstantConfigInterpreter.prototype, 'getValues');
+		overrideStub = sinon.stub(InstantConfigOverrider.prototype, 'override');
 	});
 
 	afterEach(() => {
 		getConfigStub.restore();
 		getValuesStub.restore();
+		overrideStub.restore();
 		InstantConfigService['instancePromise'] = undefined;
 	});
 
@@ -30,9 +34,18 @@ describe('Instant Config Service', () => {
 			expect(instantConfigService.get('testKey')).to.equal('testValue');
 		});
 
+		it('should pass InstantConfig to InstantConfigOverrider', async () => {
+			getConfigStub.returns(Promise.resolve({ config: true }));
+
+			await InstantConfigService.init();
+
+			expect(overrideStub.firstCall.args).to.deep.equal([{ config: true }]);
+		});
+
 		it('should pass InstantConfig to InstantConfigInterpreter', async () => {
 			getConfigStub.returns(Promise.resolve({ config: true }));
 			getValuesStub.returns({});
+			overrideStub.callsFake((input) => input);
 
 			await InstantConfigService.init();
 
@@ -42,6 +55,7 @@ describe('Instant Config Service', () => {
 		it('should pass InstantConfig and InstantGlobals to InstantConfigInterpreter', async () => {
 			getConfigStub.returns(Promise.resolve({ config: true }));
 			getValuesStub.returns({});
+			overrideStub.callsFake((input) => input);
 
 			await InstantConfigService.init({ globals: true });
 
@@ -70,6 +84,7 @@ describe('Instant Config Service', () => {
 
 		beforeEach(async () => {
 			getConfigStub.returns(Promise.resolve({}));
+			overrideStub.callsFake((input) => input);
 			getValuesStub.returns(repository);
 			instance = await InstantConfigService.init();
 		});

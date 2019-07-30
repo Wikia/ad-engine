@@ -1,52 +1,124 @@
-import { utils } from '@wikia/ad-engine';
+import { context, Dictionary } from '@wikia/ad-engine';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
-import { overrideInstantConfig } from '@wikia/ad-services/instant-config/instant-config.utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-// TODO: This should be testing Instant Config Loader not overrideInstantConfig
 describe('Instant Config Loader', () => {
-	let getValuesStub: sinon.SinonStub;
-	const configPromise = Promise.resolve({
-		foo: 'bar',
-	});
+	let callCount: number;
+	let xhr: sinon.SinonFakeXMLHttpRequestStatic;
+	let request: sinon.SinonFakeXMLHttpRequest;
+	let contextGetStub: sinon.SinonStub;
+	let contextRepo: Dictionary<string>;
 
 	beforeEach(() => {
-		const queryInstantGlobals = {
-			'InstantGlobals.foo': 'bar',
-			'InstantGlobals.bar': 'false',
-			'InstantGlobals.wgAdDriverGlobal': '[XX,PL/50,CZ/20-cached]',
+		contextRepo = {
+			'services.instantConfig.endpoint': 'http://endpoint.com',
+			'services.instantConfig.fallbackConfigKey': 'fallback_config_key',
 		};
+		contextGetStub = sinon.stub(context, 'get');
+		contextGetStub.callsFake((key) => contextRepo[key]);
 
-		instantConfigLoader.configPromise = configPromise;
-		getValuesStub = sinon.stub(utils.queryString, 'getValues');
-		getValuesStub.returns(queryInstantGlobals);
+		callCount = 0;
+		xhr = sinon.useFakeXMLHttpRequest();
+		xhr.onCreate = (_xhr) => {
+			callCount++;
+			request = _xhr;
+		};
 	});
 
 	afterEach(() => {
-		instantConfigLoader.configPromise = null;
-		getValuesStub.restore();
+		instantConfigLoader['configPromise'] = null;
+		contextGetStub.restore();
+		xhr.restore();
 	});
 
-	it('gets defined config', async () => {
-		const value = await instantConfigLoader.getConfig();
+	it('should get config', async () => {
+		const promise = instantConfigLoader.getConfig();
 
+		request.setStatus(200);
+		request.setResponseHeaders({ 'Content-Type': 'application/json' });
+		request.setResponseBody(
+			JSON.stringify({
+				foo: 'bar',
+			}),
+		);
+
+		const value = await promise;
+
+		expect(request.async).to.equal(true);
+		expect(request.status).to.equal(200);
+		expect(request.method).to.equal('GET');
+		expect(request.url).to.equal('http://endpoint.com');
 		expect(value).to.deep.equal({
 			foo: 'bar',
 		});
 	});
 
-	it('overrides config using query params', () => {
-		const newConfig = overrideInstantConfig({
-			foo: 'this value should be overridden',
-			old: 'value',
-		});
+	it('should return fallback if status !== 200', async () => {
+		window['fallback_config_key'] = { a: 'a' };
 
-		expect(newConfig).to.deep.include({
-			bar: [{ regions: ['XX'], value: false }],
-			foo: [{ regions: ['XX'], value: 'bar' }],
-			old: 'value',
-		});
-		expect(newConfig['wgAdDriverGlobal']).to.deep.equal(['XX', 'PL/50', 'CZ/20-cached']);
+		const promise = instantConfigLoader.getConfig();
+
+		request.setStatus(201);
+		request.setResponseHeaders({ 'Content-Type': 'application/json' });
+		request.setResponseBody(
+			JSON.stringify({
+				foo: 'bar',
+			}),
+		);
+
+		const value = await promise;
+
+		expect(value).to.deep.equal({ a: 'a' });
+	});
+
+	it('should return fallback if error', async () => {
+		window['fallback_config_key'] = { a: 'a' };
+
+		const promise = instantConfigLoader.getConfig();
+
+		request.error();
+
+		const value = await promise;
+
+		expect(value).to.deep.equal({ a: 'a' });
+	});
+
+	it('should be called once', async () => {
+		const promise1 = instantConfigLoader.getConfig();
+		const promise2 = instantConfigLoader.getConfig();
+
+		request.setStatus(200);
+		request.setResponseHeaders({ 'Content-Type': 'application/json' });
+		request.setResponseBody(
+			JSON.stringify({
+				foo: 'bar',
+			}),
+		);
+
+		await promise1;
+		await promise2;
+
+		expect(callCount).to.equal(1);
+	});
+
+	it('should get endpoint from context', async () => {
+		instantConfigLoader.getConfig();
+
+		expect(contextGetStub.getCalls().length).to.equal(2);
+		expect(contextGetStub.firstCall.args[0]).to.equal('services.instantConfig.endpoint');
+	});
+
+	it('should get fallback from fallbackInstantConfig', async () => {
+		delete contextRepo['services.instantConfig.fallbackConfigKey'];
+		window['fallbackInstantConfig'] = { b: 'b' };
+
+		const promise = instantConfigLoader.getConfig();
+
+		request.error();
+
+		const value = await promise;
+
+		expect(value).to.deep.equal({ b: 'b' });
 	});
 });
