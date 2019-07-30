@@ -28,6 +28,7 @@ breakConfigButton.addEventListener('click', () => {
 
 testParamsButton.addEventListener('click', () => {
 	const testParams = [
+		'InstantGlobals.thisIsValueFromTestParams="It will be wrapped in regions XX group"',
 		'InstantGlobals.wgAdDriverBoolean=false',
 		'InstantGlobals.wgAdDriverString=exampleString',
 		'InstantGlobals.wgAdDriverStrings=["strings","in","the","array"]',
