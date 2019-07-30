@@ -12,17 +12,17 @@ export function overrideInstantConfig(config: InstantConfigResponse): InstantCon
 
 	return Object.keys(queryParams)
 		.filter((paramKey: string) => paramKey.startsWith(instantGlobalsQueryParamPrefix))
-		.map((instantGlobalKey) => {
-			const [, key] = instantGlobalKey.split('.');
+		.map((paramKey) => {
+			const [, key] = paramKey.split('.');
 
 			return {
-				instantGlobalKey,
+				paramKey,
 				key,
 			};
 		})
-		.map(({ instantGlobalKey, key }) => ({
+		.map(({ paramKey, key }) => ({
 			key,
-			value: utils.queryString.parseValue(queryParams[instantGlobalKey]),
+			value: utils.queryString.parseValue(queryParams[paramKey]),
 		}))
 		.map(({ key, value }) => ({
 			key,
