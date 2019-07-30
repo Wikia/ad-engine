@@ -4,6 +4,7 @@ import { overrideInstantConfig } from '@wikia/ad-services/instant-config/instant
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
+// TODO: This should be testing Instant Config Loader not overrideInstantConfig
 describe('Instant Config Loader', () => {
 	let getValuesStub: sinon.SinonStub;
 	const configPromise = Promise.resolve({
@@ -14,7 +15,7 @@ describe('Instant Config Loader', () => {
 		const queryInstantGlobals = {
 			'InstantGlobals.foo': 'bar',
 			'InstantGlobals.bar': 'false',
-			'InstantGlobals.oldGlobal': '[XX,PL/50,CZ/20-cached]',
+			'InstantGlobals.wgAdDriverGlobal': '[XX,PL/50,CZ/20-cached]',
 		};
 
 		instantConfigLoader.configPromise = configPromise;
@@ -42,10 +43,10 @@ describe('Instant Config Loader', () => {
 		});
 
 		expect(newConfig).to.deep.include({
-			bar: false,
-			foo: 'bar',
+			bar: [{ regions: ['XX'], value: false }],
+			foo: [{ regions: ['XX'], value: 'bar' }],
 			old: 'value',
 		});
-		expect(newConfig['oldGlobal']).to.deep.equal(['XX', 'PL/50', 'CZ/20-cached']);
+		expect(newConfig['wgAdDriverGlobal']).to.deep.equal(['XX', 'PL/50', 'CZ/20-cached']);
 	});
 });
