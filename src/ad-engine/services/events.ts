@@ -19,7 +19,7 @@ export const events = {
 	BIDS_REFRESH: Symbol('BIDS_REFRESH'),
 	PREBID_LAZY_CALL: Symbol('PREBID_LAZY_CALL'),
 
-	TRACK_SCROLL_Y: Symbol('TRACK_SCROLL_Y'),
+	SCROLL_TRACKING_TIME_CHANGED: Symbol('SCROLL_TRACKING_TIME_CHANGED'),
 };
 
 class EventService extends EventEmitter.EventEmitter {

@@ -1,44 +1,31 @@
 import { context, events, eventService, scrollSpeedCalculator } from '@ad-engine/core';
 
 class ScrollTracker {
-	scrollSpeedTrackingStarted: boolean;
-	timer: NodeJS.Timer;
+	applicationArea: Element | null = null;
+	timer: NodeJS.Timer | null = null;
 
-	constructor() {
-		this.scrollSpeedTrackingStarted = false;
-		this.timer = null;
-	}
-
-	/**
-	 * Init scroll speed tracking when enabled
-	 */
 	initScrollSpeedTracking(applicationAreaClass: string): void {
 		if (!context.get('options.scrollSpeedTracking')) {
 			return;
 		}
 
-		const applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
+		this.applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
 
-		this.scrollSpeedTrackingStarted = false;
-		applicationArea.addEventListener('touchstart', () => this.trackScrollSpeedToDW());
+		if (this.applicationArea) {
+			this.applicationArea.addEventListener('touchstart', () => this.dispatchScrollSpeedEvents(), {
+				once: true,
+			});
+		}
 	}
 
-	/**
-	 * Track scrollY to DW in in three 2s-periods
-	 */
-	trackScrollSpeedToDW(): void {
-		if (this.scrollSpeedTrackingStarted) {
-			return;
-		}
-
+	dispatchScrollSpeedEvents(): void {
 		const timesToTrack = [0, 2, 4];
 		let startScrollY = 0;
-		this.scrollSpeedTrackingStarted = true;
 
 		timesToTrack.forEach((time) => {
 			this.timer = setTimeout(() => {
 				const scrollY = window.scrollY || window.pageYOffset;
-				eventService.emit(events.TRACK_SCROLL_Y, time, scrollY);
+				eventService.emit(events.SCROLL_TRACKING_TIME_CHANGED, time, scrollY);
 				if (time === Math.min(...timesToTrack)) {
 					startScrollY = scrollY;
 				}
@@ -50,13 +37,13 @@ class ScrollTracker {
 		});
 	}
 
-	/**
-	 * Remove scroll tracking from the page
-	 */
-	resetScrollSpeedTracking(applicationAreaClass: string): void {
-		const applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
+	resetScrollSpeedTracking(): void {
+		if (!this.applicationArea) {
+			return;
+		}
+
 		clearTimeout(this.timer);
-		applicationArea.removeEventListener('touchstart', () => this.trackScrollSpeedToDW());
+		this.applicationArea.removeEventListener('touchstart', this.dispatchScrollSpeedEvents);
 	}
 }
 
