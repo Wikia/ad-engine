@@ -3,6 +3,8 @@ import { InstantConfigInterpreter } from './instant-config.interpreter';
 import { instantConfigLoader } from './instant-config.loader';
 import { InstantConfigValue } from './instant-config.models';
 
+const logGroup = 'instant-config-service';
+
 export class InstantConfigService {
 	private static instancePromise: Promise<InstantConfigService>;
 
@@ -17,7 +19,9 @@ export class InstantConfigService {
 		return InstantConfigService.instancePromise;
 	}
 
-	private constructor(private repository: Dictionary<InstantConfigValue> = {}) {}
+	private constructor(private repository: Dictionary<InstantConfigValue> = {}) {
+		utils.logger(logGroup, 'instantiated with', this.repository);
+	}
 
 	get<T extends InstantConfigValue>(key: string, defaultValue: T = null): T {
 		if (key in this.repository) {

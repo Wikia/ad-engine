@@ -28,13 +28,13 @@ breakConfigButton.addEventListener('click', () => {
 
 testParamsButton.addEventListener('click', () => {
 	const testParams = [
-		'InstantGlobals.thisIsValueFromTestParams="It will be wrapped in regions XX group"',
+		'InstantGlobals.thisIsValueFromTestParams="WrappedInXX"',
 		'InstantGlobals.wgAdDriverBoolean=false',
 		'InstantGlobals.wgAdDriverString=exampleString',
 		'InstantGlobals.wgAdDriverStrings=["strings","in","the","array"]',
 		'InstantGlobals.wgAdDriverNumber=42',
 		'InstantGlobals.wgAdDriverNumbers=[4, 8, 15, 16, 23, 42]',
-		'InstantGlobals.wgAdDriverObject={"this":{"is":{"more":{"complex":"json","is it?": 1}}}}',
+		'InstantGlobals.wgAdDriverObject={"that":{"is":{"more":{"complex":"json","is it?": 1}}}}',
 	].join('&');
 
 	window.location.href = `?${testParams}`;
