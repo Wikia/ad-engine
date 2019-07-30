@@ -3,7 +3,7 @@ import { InstantConfigGroup } from '../instant-config.models';
 import { extractNegation, NegationObject } from './negation-extractor';
 
 export class BrowserMatcher {
-	currentBrowser: string = utils.client.getBrowser().toLowerCase();
+	private currentBrowser: string = utils.client.getBrowser().toLowerCase();
 
 	isValid(browsers: InstantConfigGroup['browsers'] = []): boolean {
 		const browserObjects = browsers

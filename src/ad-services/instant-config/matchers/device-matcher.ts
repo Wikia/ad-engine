@@ -1,25 +1,29 @@
 import { utils } from '@ad-engine/core';
-import { InstantConfigGroup, negativePrefix } from '../instant-config.models';
-import { extractNegation } from './negation-extractor';
+import { InstantConfigGroup } from '../instant-config.models';
+import { extractNegation, NegationObject } from './negation-extractor';
 
 export class DeviceMatcher {
-	currentDevice: utils.DeviceType = utils.client.getDeviceType();
+	private currentDevice: utils.DeviceType = utils.client.getDeviceType();
 
 	isValid(devices: InstantConfigGroup['devices'] = []): boolean {
-		if (devices.length === 0) {
+		const deviceObjects = devices
+			.map((browser) => browser.toLowerCase())
+			.map((browser) => extractNegation(browser));
+
+		if (deviceObjects.length === 0) {
 			return true;
 		}
 
-		if (this.isCurrentNegated(devices)) {
+		if (this.isCurrentNegated(deviceObjects)) {
 			return false;
 		}
 
-		return devices
-			.map((device) => extractNegation(device))
-			.some((object) => (object.value === this.currentDevice) !== object.negated);
+		return deviceObjects.some((object) => (object.value === this.currentDevice) !== object.negated);
 	}
 
-	private isCurrentNegated(devices: InstantConfigGroup['devices']): boolean {
-		return devices.includes(`${negativePrefix}${this.currentDevice}`);
+	private isCurrentNegated(deviceObjects: NegationObject[]): boolean {
+		return deviceObjects.some(
+			(object) => this.currentDevice.includes(object.value) && object.negated,
+		);
 	}
 }
