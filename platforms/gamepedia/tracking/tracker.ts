@@ -72,7 +72,7 @@ export const registerPostmessageTrackingTracker = () => {
 						payload.category,
 						payload.action,
 						payload.label,
-						payload.value.toString(),
+						typeof payload.value === 'number' ? payload.value.toString() : payload.value,
 					);
 					break;
 				case TrackingTarget.DataWarehouse:
