@@ -212,11 +212,11 @@ export class A9 extends BaseBidder {
 	/**
 	 * Creates A9 slot definition from slot alias.
 	 */
-	createSlotDefinition(slotAlias: string): A9SlotDefinition | null {
-		const config: A9SlotConfig = this.slots[slotAlias];
+	createSlotDefinition(slotName: string): A9SlotDefinition | null {
+		const config: A9SlotConfig = this.slots[slotName];
 		const definition: A9SlotDefinition = {
-			slotID: slotAlias,
-			slotName: slotAlias,
+			slotID: slotName,
+			slotName,
 		};
 
 		if (!this.bidderConfig.videoEnabled && config.type === 'video') {
