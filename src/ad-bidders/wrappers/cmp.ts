@@ -1,17 +1,15 @@
 export class Cmp {
-	get exists() {
+	get exists(): boolean {
 		return !!window.__cmp;
 	}
 
-	/**
-	 * @param {*=} param
-	 * @param {function(object)} cb Callback receiving current bids
-	 */
-	getConsentData(param, cb) {
-		window.__cmp('getConsentData', param, (consentData) => cb(consentData));
+	getConsentData(param?: unknown): Promise<ConsentData> {
+		return new Promise((resolve) => {
+			window.__cmp('getConsentData', param, (consentData) => resolve(consentData));
+		});
 	}
 
-	override(newCmp) {
+	override(newCmp: WindowCMP): void {
 		window.__cmp = newCmp;
 	}
 }
