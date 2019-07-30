@@ -1,16 +1,17 @@
 import { utils } from '@ad-engine/core';
-import { InstantConfigResponse } from './instant-config.models';
+import {
+	InstantConfigGroup,
+	InstantConfigResponse,
+	InstantConfigValue,
+} from './instant-config.models';
 
 const instantGlobalsQueryParamPrefix = 'InstantGlobals';
 
-export const overrideInstantConfig = (config: InstantConfigResponse): InstantConfigResponse => {
-	const newConfig = {};
+export function overrideInstantConfig(config: InstantConfigResponse): InstantConfigResponse {
 	const queryParams = utils.queryString.getValues();
 
-	Object.keys(queryParams)
-		.filter((instantGlobalKey: string) => {
-			return instantGlobalKey.indexOf(instantGlobalsQueryParamPrefix) === 0;
-		})
+	return Object.keys(queryParams)
+		.filter((paramKey: string) => paramKey.startsWith(instantGlobalsQueryParamPrefix))
 		.map((instantGlobalKey) => {
 			const [, key] = instantGlobalKey.split('.');
 
@@ -19,9 +20,22 @@ export const overrideInstantConfig = (config: InstantConfigResponse): InstantCon
 				key,
 			};
 		})
-		.forEach(({ instantGlobalKey, key }) => {
-			newConfig[key] = utils.queryString.parseValue(queryParams[instantGlobalKey]);
-		});
+		.map(({ instantGlobalKey, key }) => ({
+			key,
+			value: utils.queryString.parseValue(queryParams[instantGlobalKey]),
+		}))
+		.map(({ key, value }) => ({
+			key,
+			value: key.startsWith('wgAdDriver') ? value : wrapValueInXXRegions(value),
+		}))
+		.reduce((newConfig, { key, value }) => ({ ...newConfig, [key]: value }), config);
+}
 
-	return { ...config, ...newConfig };
-};
+function wrapValueInXXRegions(value: InstantConfigValue): InstantConfigGroup[] {
+	return [
+		{
+			value,
+			regions: ['XX'],
+		},
+	];
+}

@@ -1,8 +1,8 @@
+import { utils } from '@wikia/ad-engine';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { overrideInstantConfig } from '@wikia/ad-services/instant-config/instant-config.utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { utils } from '../../../src/ad-engine';
 
 describe('Instant Config Loader', () => {
 	let getValuesStub: sinon.SinonStub;
