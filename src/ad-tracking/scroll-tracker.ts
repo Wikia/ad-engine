@@ -2,6 +2,7 @@ import { context, events, eventService, scrollSpeedCalculator } from '@ad-engine
 
 class ScrollTracker {
 	applicationArea: Element | null = null;
+	listener: () => void | null = null;
 	timer: NodeJS.Timer | null = null;
 
 	initScrollSpeedTracking(applicationAreaClass: string): void {
@@ -12,9 +13,8 @@ class ScrollTracker {
 		this.applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
 
 		if (this.applicationArea) {
-			this.applicationArea.addEventListener('touchstart', () => this.dispatchScrollSpeedEvents(), {
-				once: true,
-			});
+			this.listener = () => this.dispatchScrollSpeedEvents();
+			this.applicationArea.addEventListener('touchstart', this.listener, { once: true });
 		}
 	}
 
@@ -43,7 +43,7 @@ class ScrollTracker {
 		}
 
 		clearTimeout(this.timer);
-		this.applicationArea.removeEventListener('touchstart', this.dispatchScrollSpeedEvents);
+		this.applicationArea.removeEventListener('touchstart', this.listener);
 	}
 }
 
