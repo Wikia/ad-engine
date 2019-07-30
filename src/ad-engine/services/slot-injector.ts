@@ -35,6 +35,10 @@ function insertNewSlot(
 
 	if (!disablePushOnScroll) {
 		context.push('events.pushOnScroll.ids', slotName);
+	} else {
+		context.get('state.adStack').push({
+			id: slotName,
+		});
 	}
 
 	return container;
