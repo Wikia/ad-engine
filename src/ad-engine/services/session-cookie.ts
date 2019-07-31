@@ -24,7 +24,7 @@ class SessionCookie {
 			: undefined;
 	}
 
-	private readSessionId(): string {
+	readSessionId(): string {
 		const sessionCookieName: string =
 			context.get('options.session.cookieName') || this.sessionCookieDefault;
 		const sid: string =
