@@ -17,15 +17,29 @@ export class Stickiness extends EventEmitter {
 	static SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
 
 	sticky = false;
+	private stickyConditions = [];
 	private isStickinessBlocked = false;
 	private isRevertStickinessBlocked = false;
 
 	constructor(
 		private adSlot: AdSlot,
 		private customWhen: CustomWhen = Promise.resolve(),
-		public waitForViewed = true,
+		private waitForViewed = true,
 	) {
 		super();
+
+		this.customWhen = isFunction(this.customWhen) ? this.customWhen() : this.customWhen;
+		this.stickyConditions = [this.customWhen];
+		if (this.waitForViewed) {
+			this.stickyConditions.push(this.adSlot.viewed);
+		}
+
+		Promise.all(this.stickyConditions).then(() => {
+			if (!this.sticky) {
+				this.logger('Blocking stickiness');
+				this.isStickinessBlocked = true;
+			}
+		});
 	}
 
 	logger(...args: any[]): void {
@@ -39,24 +53,7 @@ export class Stickiness extends EventEmitter {
 			await utils.once(window, 'visibilitychange');
 		}
 
-		if (!isFunction(this.customWhen)) {
-			Promise.all([this.customWhen]).then(() => {
-				if (!this.sticky) {
-					this.logger('Blocking stickiness');
-					this.isStickinessBlocked = true;
-				}
-			});
-		}
-
-		this.adSlot.once('unstickImmediately', () => {
-			this.logger('Unsticking');
-			this.emit(Stickiness.UNSTICK_IMMEDIATELY_EVENT);
-			this.sticky = false;
-		});
-
-		if (!this.isStickinessBlocked) {
-			this.onAdReady();
-		}
+		this.onAdReady();
 	}
 
 	isSticky(): boolean {
@@ -110,15 +107,20 @@ export class Stickiness extends EventEmitter {
 	}
 
 	async onAdReady(): Promise<void> {
+		if (this.isStickinessBlocked) {
+			return Promise.resolve();
+		}
+
+		this.adSlot.once('unstickImmediately', () => {
+			this.logger('Unsticking');
+			this.emit(Stickiness.UNSTICK_IMMEDIATELY_EVENT);
+			this.sticky = false;
+		});
+
 		this.applyStickiness();
 		this.logger('waiting for viewability and custom condition');
 
-		const conditions = [isFunction(this.customWhen) ? this.customWhen() : this.customWhen];
-		if (this.waitForViewed) {
-			conditions.push(this.adSlot.viewed);
-		}
-
-		await Promise.all(conditions);
+		await Promise.all(this.stickyConditions);
 
 		this.registerRevertStickiness();
 	}

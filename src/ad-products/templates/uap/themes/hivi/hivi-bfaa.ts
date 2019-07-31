@@ -31,6 +31,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 	stickiness: Stickiness;
 	scrollListener: string;
+	stickListener: string;
 	video: PorvataPlayer;
 	isLocked = false;
 	stopNextVideo = false;
@@ -56,7 +57,18 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.addUnstickLogic();
 		this.addUnstickButton();
 		this.addUnstickEvents();
-		this.stickiness.run();
+
+		utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT).then(() => {
+			this.stickListener = scrollListener.addCallback(() => {
+				const scrollPosition =
+					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
+				if (scrollPosition >= 0) {
+					this.stickiness.run();
+					scrollListener.removeCallback(this.stickListener);
+				}
+			});
+		});
 	}
 
 	onAdReady(): void {
@@ -276,9 +288,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	protected async getStateResolvedAndVideoViewed(): Promise<void> {
+	protected async getVideoViewedAndTimeout(): Promise<void> {
 		const { stickyAdditionalTime, stickyUntilVideoViewed } = this.params;
-		const stateResolved: Promise<void> = utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT);
 		const videoViewed: Promise<void> = stickyUntilVideoViewed
 			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
 			: Promise.resolve();
@@ -286,7 +297,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			? BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY
 			: stickyAdditionalTime;
 
-		await Promise.all([stateResolved, videoViewed]);
+		await videoViewed;
 		await utils.wait(unstickDelay);
 	}
 
