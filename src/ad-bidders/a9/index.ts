@@ -9,56 +9,18 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
-import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
+import { BaseBidder, BidsRefreshing } from '../base-bidder';
 import { Apstag, Cmp, cmp } from '../wrappers';
-
-type PriceMap = Dictionary<string>;
-
-interface ApstagConfig extends Partial<A9GDPR> {
-	pubID: string;
-	videoAdServer: 'DFP';
-	deals: boolean;
-}
-
-interface ConsentData {
-	gdprApplies?: boolean;
-	consentData?: string;
-}
-
-interface A9GDPR {
-	gdpr: {
-		enabled: boolean;
-		consent: string;
-		cmpTimeout: number;
-	};
-}
-
-interface A9Config extends BidderConfig {
-	amazonId: string;
-	dealsEnabled: boolean;
-	slots: Dictionary<A9SlotConfig>;
-	videoEnabled: boolean;
-	bidsRefreshing: BidsRefreshing;
-}
-
-interface A9SlotConfig {
-	sizes: number[][];
-	type: 'display' | 'video';
-	slotId?: string;
-}
-
-interface A9Bids {
-	[slotName: string]: {
-		[targetingKey: string]: string;
-	};
-}
-
-interface A9SlotDefinition {
-	slotID: string;
-	slotName: string;
-	mediaType?: 'display' | 'video';
-	sizes?: number[][];
-}
+import {
+	A9Bid,
+	A9Bids,
+	A9Config,
+	A9GDPR,
+	A9SlotConfig,
+	A9SlotDefinition,
+	ApstagConfig,
+	PriceMap,
+} from './types';
 
 const logGroup = 'A9';
 
@@ -68,6 +30,7 @@ export class A9 extends BaseBidder {
 	private loaded = false;
 
 	apstag: Apstag = Apstag.make();
+	// TODO: Discuss with jbj, and think of better name for interface
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
 	isRenderImpOverwritten = false;
@@ -113,9 +76,6 @@ export class A9 extends BaseBidder {
 		}
 	}
 
-	/**
-	 * @returns {{videoAdServer: string, deals: boolean, pubID: (*|string), gdpr: ()}}
-	 */
 	private getApstagConfig(consentData: ConsentData): ApstagConfig {
 		return {
 			pubID: this.amazonId,
@@ -125,12 +85,7 @@ export class A9 extends BaseBidder {
 		};
 	}
 
-	/**
-	 * @private
-	 * @param consentData
-	 * @returns {*}
-	 */
-	getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
+	private getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
 		if (this.isCMPEnabled && consentData && consentData.consentData) {
 			return {
 				gdpr: {
@@ -159,7 +114,7 @@ export class A9 extends BaseBidder {
 	 * Fetches bids from A9.
 	 * Calls this.onBidResponse() upon success.
 	 */
-	private fetchBids(slots: A9SlotDefinition[], refresh = false): void {
+	private async fetchBids(slots: A9SlotDefinition[], refresh = false): Promise<void> {
 		utils.logger(logGroup, 'fetching bids for slots', slots);
 
 		if (!slots || slots.length === 0) {
@@ -167,22 +122,25 @@ export class A9 extends BaseBidder {
 			return;
 		}
 
-		this.apstag.fetchBids({ slots, timeout: this.timeout }, (currentBids) => {
-			utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
-			this.addApstagRenderImpHookOnFirstFetch();
+		const currentBids: A9Bid[] = await this.apstag.fetchBids({ slots, timeout: this.timeout });
 
-			currentBids.forEach((bid) => {
+		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
+		this.addApstagRenderImpHookOnFirstFetch();
+
+		await Promise.all(
+			currentBids.map(async (bid) => {
 				const slotName: string = this.slotNamesMap[bid.slotID] || bid.slotID;
-				const { keys, bidTargeting } = this.getBidTargetingWithKeys(bid);
+				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
 				this.updateBidSlot(slotName, keys, bidTargeting);
-			});
+			}),
+		);
 
-			this.onBidResponse();
-			if (refresh) {
-				eventService.emit(events.BIDS_REFRESH);
-			}
-		});
+		this.onBidResponse();
+
+		if (refresh) {
+			eventService.emit(events.BIDS_REFRESH);
+		}
 	}
 
 	private addApstagRenderImpHookOnFirstFetch(): void {
@@ -198,7 +156,7 @@ export class A9 extends BaseBidder {
 	 */
 	private addApstagRenderImpHook(): void {
 		utils.logger(logGroup, 'overwriting window.apstag.renderImp');
-		this.apstag.onRenderImpEnd((doc, impId) => {
+		this.apstag.onRenderImpEnd((doc: HTMLDocument, impId: string) => {
 			if (!impId) {
 				utils.logger(logGroup, 'apstag.renderImp() called with 1 argument only');
 				return;
@@ -278,16 +236,14 @@ export class A9 extends BaseBidder {
 		return definition;
 	}
 
-	/**
-	 * @param bid
-	 * @returns {*}
-	 */
-	private getBidTargetingWithKeys(bid: Dictionary): { keys: string[]; bidTargeting: Dictionary } {
+	private async getBidTargetingWithKeys(
+		bid: A9Bid,
+	): Promise<{ keys: string[]; bidTargeting: Dictionary }> {
 		let bidTargeting: Dictionary = bid;
-		let keys: string[] = this.apstag.targetingKeys();
+		let keys: string[] = await this.apstag.targetingKeys();
 
 		if (this.bidderConfig.dealsEnabled) {
-			keys = bid.helpers.targetingKeys;
+			keys = await bid.helpers.targetingKeys;
 			bidTargeting = bid.targeting;
 		}
 
@@ -307,11 +263,11 @@ export class A9 extends BaseBidder {
 		});
 	}
 
-	protected callBids(): void {
+	protected async callBids(): Promise<void> {
 		if (this.isCMPEnabled && this.cmp.exists) {
-			this.cmp.getConsentData(null, (consentData) => {
-				this.init(consentData);
-			});
+			const consentData = await this.cmp.getConsentData();
+
+			this.init(consentData);
 		} else {
 			this.init();
 		}
