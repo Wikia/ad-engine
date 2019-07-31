@@ -9,7 +9,7 @@ import { DeviceMatcher } from './matchers/device-matcher';
 import { DomainMatcher } from './matchers/domain-matcher';
 import { RegionMatcher } from './matchers/region-matcher';
 
-const logGroup = 'instant-config-service';
+const logGroup = 'instant-config-interpreter';
 
 export class InstantConfigInterpreter {
 	constructor(
