@@ -4,7 +4,23 @@ export interface InstantConfigResponse {
 	[key: string]: InstantConfigValue | InstantConfigGroup[];
 }
 
-export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfigValue> {
+export interface InstantConfigSamplingCache {
+	/**
+	 * Floating point from 0 to 100.
+	 * @default null
+	 * @example 50.75
+	 */
+	sampling?: number;
+
+	/**
+	 * @default false
+	 * @example true
+	 */
+	samplingCache?: boolean;
+}
+
+export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfigValue>
+	extends InstantConfigSamplingCache {
 	/**
 	 * Can be negated.
 	 * @default *
@@ -32,19 +48,6 @@ export interface InstantConfigGroup<T extends InstantConfigValue = InstantConfig
 	 * @example [ "non-US", "PL-72", "XX-AF" ]
 	 */
 	regions?: string[];
-
-	/**
-	 * Floating point from 0 to 100.
-	 * @default null
-	 * @example 50.75
-	 */
-	sampling?: number;
-
-	/**
-	 * @default false
-	 * @example true
-	 */
-	samplingCache?: boolean;
 
 	/**
 	 * @default true

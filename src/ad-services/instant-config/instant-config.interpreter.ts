@@ -8,10 +8,13 @@ import { BrowserMatcher } from './matchers/browser-matcher';
 import { DeviceMatcher } from './matchers/device-matcher';
 import { DomainMatcher } from './matchers/domain-matcher';
 import { RegionMatcher } from './matchers/region-matcher';
+import { SamplingCacheManager } from './matchers/sampling-cache.manager';
 
 const logGroup = 'instant-config-interpreter';
 
 export class InstantConfigInterpreter {
+	private readonly samplingCache = new SamplingCacheManager();
+
 	constructor(
 		private readonly browserMatcher = new BrowserMatcher(),
 		private readonly deviceMatcher = new DeviceMatcher(),
@@ -42,19 +45,22 @@ export class InstantConfigInterpreter {
 	}
 
 	private getValue(key: string, groups: InstantConfigGroup[]): InstantConfigValue {
-		const correct = groups.find((group, index) => {
-			return (
-				this.browserMatcher.isValid(group.browsers) &&
-				this.deviceMatcher.isValid(group.devices) &&
-				this.domainMatcher.isValid(group.domains) &&
-				this.regionMatcher.isValid(group, `${key}-${index}`)
-			);
-		});
+		const correct = groups.find((group, index) =>
+			this.samplingCache.apply(`${key}-${index}`, group, this.getPredicate(group)),
+		);
 
 		if (typeof correct !== 'undefined') {
 			return typeof correct.value !== 'undefined' ? correct.value : true;
 		}
 
 		return undefined;
+	}
+
+	private getPredicate(group): () => boolean {
+		return () =>
+			this.browserMatcher.isValid(group.browsers) &&
+			this.deviceMatcher.isValid(group.devices) &&
+			this.domainMatcher.isValid(group.domains) &&
+			this.regionMatcher.isValid(group);
 	}
 }
