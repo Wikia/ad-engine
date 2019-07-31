@@ -64,8 +64,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
 				if (scrollPosition >= 0) {
-					this.stickiness.run();
 					scrollListener.removeCallback(this.stickListener);
+					this.stickiness.run();
 				}
 			});
 		});
@@ -227,17 +227,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private setResolvedState(immediately?: boolean): Promise<void> {
-		const isSticky: boolean = this.stickiness && this.stickiness.isSticky();
-		const width: number = this.container.offsetWidth;
-		const { aspectRatio } = this.params.config;
-		const resolvedHeight: number = width / aspectRatio.resolved;
 		const offset: number = this.getHeightDifferenceBetweenStates();
-
-		if (isSticky) {
-			this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
-		} else {
-			this.container.style.top = `${Math.min(window.scrollY, offset)}px`;
-		}
 
 		this.switchImagesInAd(true);
 
@@ -319,11 +309,20 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 			animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
 		} else {
+			this.stickNavbar();
 			this.adSlot.emitEvent(Stickiness.SLOT_STICKED_STATE);
 			this.adSlot.getElement().classList.add(CSS_CLASSNAME_STICKY_BFAA);
 		}
 
 		stickinessAfterCallback.call(this.config, this.adSlot, this.params);
+	}
+
+	private stickNavbar(): void {
+		const width: number = this.container.offsetWidth;
+		const { aspectRatio } = this.params.config;
+		const resolvedHeight: number = width / aspectRatio.resolved;
+
+		this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
 	}
 
 	protected onCloseClicked(): void {
