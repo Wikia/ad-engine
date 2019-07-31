@@ -1,4 +1,4 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary, utils } from '@ad-engine/core';
 import {
 	InstantConfigGroup,
 	InstantConfigResponse,
@@ -8,6 +8,8 @@ import { BrowserMatcher } from './matchers/browser-matcher';
 import { DeviceMatcher } from './matchers/device-matcher';
 import { DomainMatcher } from './matchers/domain-matcher';
 import { RegionMatcher } from './matchers/region-matcher';
+
+const logGroup = 'instant-config-service';
 
 export class InstantConfigInterpreter {
 	constructor(
@@ -25,6 +27,8 @@ export class InstantConfigInterpreter {
 			...instantGlobals,
 			...instantConfig,
 		};
+
+		utils.logger(logGroup, 'get values called with', combined);
 
 		return Object.keys(combined)
 			.map((key) => ({ key, value: combined[key] }))
