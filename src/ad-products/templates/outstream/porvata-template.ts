@@ -63,7 +63,7 @@ export class PorvataTemplate {
 			params.container = this.createVideoContainer();
 		}
 
-		if (!this.adSlot.config.disableAnimations) {
+		if (!this.adSlot.config.disableExpandAnimation) {
 			slotTweaker.collapse(this.adSlot);
 		}
 

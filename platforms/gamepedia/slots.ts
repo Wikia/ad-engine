@@ -69,7 +69,7 @@ class SlotsContext {
 				aboveTheFold: true,
 				autoplay: true,
 				audio: false,
-				disableAnimations: true,
+				disableExpandAnimation: true,
 				defaultSizes: [[300, 250], [300, 600]],
 				bidderAlias: '02_MR',
 				group: '02_MR',
