@@ -1,12 +1,13 @@
 import * as Cookies from 'js-cookie';
 import { context } from './context-service';
+import { StorageEndpoint } from './local-storage';
 
 interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 	overwrite: boolean;
 	maxAge: number;
 }
 
-class SessionCookie {
+class SessionCookie implements StorageEndpoint {
 	private readonly cacheMaxAge = 30 * 60 * 1000;
 	private readonly sessionCookieDefault = 'tracking_session_id';
 	private keysSeen = [];
@@ -44,7 +45,7 @@ class SessionCookie {
 		return Cookies.get(`${this.prefix}_${key}`);
 	}
 
-	setItem(key: string, input: {} | string): boolean {
+	setItem(key: string, input: string): void {
 		const cookieAttributes: WikiaCookieAttributes = {
 			expires: new Date(new Date().getTime() + this.cacheMaxAge),
 			path: '/',
@@ -58,8 +59,6 @@ class SessionCookie {
 		}
 
 		Cookies.set(`${this.prefix}_${key}`, input, cookieAttributes);
-
-		return true;
 	}
 
 	removeItem(key: string): void {

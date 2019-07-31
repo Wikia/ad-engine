@@ -1,9 +1,16 @@
 import { Dictionary } from '../models';
 
+export interface StorageEndpoint {
+	getItem: (key: string) => string;
+	setItem: (key: string, input: string) => void;
+	removeItem: (key: string) => void;
+	clear: () => void;
+}
+
 export class LocalStorage {
 	private fallbackStorage: Dictionary = {};
 
-	constructor(private storage: any = window.localStorage) {}
+	constructor(private storage: StorageEndpoint = window.localStorage) {}
 
 	isAvailable(): boolean {
 		try {
