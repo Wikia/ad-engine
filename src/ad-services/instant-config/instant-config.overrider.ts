@@ -27,7 +27,7 @@ export class InstantConfigOverrider {
 			}))
 			.map(({ key, value }) => ({
 				key,
-				value: key.startsWith('wgAdDriver') ? value : this.wrapValueInXXRegions(value),
+				value: key.startsWith('wg') ? value : this.wrapValueInXXRegions(value),
 			}))
 			.reduce((newConfig, { key, value }) => ({ ...newConfig, [key]: value }), config);
 	}

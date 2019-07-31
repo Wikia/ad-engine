@@ -33,7 +33,7 @@ export class InstantConfigInterpreter {
 		return Object.keys(combined)
 			.map((key) => ({ key, value: combined[key] }))
 			.map(({ key, value }) => {
-				if (key.startsWith('wgAdDriver')) {
+				if (key.startsWith('wg')) {
 					return { key, value };
 				}
 				return { key, value: this.getValue(key, value as InstantConfigGroup[]) };
