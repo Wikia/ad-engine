@@ -69,6 +69,8 @@ function addResultToCache(
 }
 
 function loadCookie(): void {
+	sessionCookie.readSessionId();
+
 	const cachedVariables: CacheDictionary = cookieStorage.getItem('basset');
 
 	if (cachedVariables) {
