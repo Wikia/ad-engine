@@ -170,25 +170,6 @@ function isProperGeo(countryList: string[] = [], name?: string): boolean {
 	);
 }
 
-// TODO: Remove
-function resetSamplingCache(): void {}
-
-// TODO: Remove, ask Damian if needed
-function resetStorage(): void {}
-
-// TODO: Remove
-function getSamplingResults(): string[] {
-	return;
-}
-
-/**
- * Transform sampling results using supplied key-values map.
- */
-// TODO: Remove
-function mapSamplingResults(keyVals: string[] = []): string[] {
-	return;
-}
-
 export const geoService = {
 	isProperContinent,
 	isProperCountry,
@@ -196,9 +177,5 @@ export const geoService = {
 	getContinentCode,
 	getCountryCode,
 	getRegionCode,
-	getSamplingResults,
 	isProperGeo,
-	resetSamplingCache,
-	resetStorage,
-	mapSamplingResults,
 };

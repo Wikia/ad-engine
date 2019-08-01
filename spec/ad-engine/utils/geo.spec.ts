@@ -21,7 +21,6 @@ describe('Geo', () => {
 	});
 
 	afterEach(() => {
-		geoService.resetSamplingCache();
 		sandbox.restore();
 	});
 
