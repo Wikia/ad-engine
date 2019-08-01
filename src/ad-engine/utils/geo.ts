@@ -1,6 +1,6 @@
 import { context } from '../services/context-service';
-import { LocalStorage } from '../services/local-storage';
 import { sessionCookie } from '../services/session-cookie';
+import { UniversalStorage } from '../services/universal-storage';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -8,7 +8,7 @@ const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
-const cookieStorage = new LocalStorage(sessionCookie);
+const cookieStorage = new UniversalStorage(sessionCookie);
 let cache: CacheDictionary = {};
 let cookieLoaded = false;
 
