@@ -3,6 +3,7 @@ import { BrowserMatcher } from '@wikia/ad-services/instant-config/matchers/brows
 import { DeviceMatcher } from '@wikia/ad-services/instant-config/matchers/device-matcher';
 import { DomainMatcher } from '@wikia/ad-services/instant-config/matchers/domain-matcher';
 import { RegionMatcher } from '@wikia/ad-services/instant-config/matchers/region-matcher';
+import { SamplingCacheManager } from '@wikia/ad-services/instant-config/matchers/sampling-cache.manager';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -18,8 +19,11 @@ describe('Instant Config Interpreter', () => {
 	let domainIsValidStub: sinon.SinonStub;
 	const regionMatcher = new RegionMatcher();
 	let regionIsValidStub: sinon.SinonStub;
+	let samplingCacheApplyStub: sinon.SinonStub;
 
 	beforeEach(() => {
+		samplingCacheApplyStub = sinon.stub(SamplingCacheManager.prototype, 'apply');
+		samplingCacheApplyStub.callsFake((a, b, predicate) => predicate());
 		browserIsValidStub = sinon.stub(browserMatcher, 'isValid');
 		deviceIsValidStub = sinon.stub(deviceMatcher, 'isValid');
 		domainIsValidStub = sinon.stub(domainMatcher, 'isValid');
@@ -33,6 +37,7 @@ describe('Instant Config Interpreter', () => {
 	});
 
 	afterEach(() => {
+		samplingCacheApplyStub.restore();
 		browserIsValidStub.restore();
 		deviceIsValidStub.restore();
 		domainIsValidStub.restore();
@@ -128,8 +133,7 @@ describe('Instant Config Interpreter', () => {
 		expect(browserIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].browsers);
 		expect(deviceIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].devices);
 		expect(domainIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].domains);
-		expect(regionIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0]);
-		expect(regionIsValidStub.firstCall.args[1]).to.equal('babDetection-0');
+		expect(regionIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].regions);
 	});
 
 	it('should fail for either matcher', () => {

@@ -17,41 +17,17 @@ describe('Region Matcher', () => {
 	});
 
 	it('should work for empty', () => {
-		regionMatcher.isValid({});
+		regionMatcher.isValid();
+		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal([]);
+	});
 
+	it('should work for empty array', () => {
+		regionMatcher.isValid([]);
 		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal([]);
 	});
 
 	it('should filter out invalid', () => {
-		regionMatcher.isValid({
-			regions: ['XX/25-cached', 'US-cached', 'PL/25', 'non-PL', 'UK'],
-		});
-
-		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal(['non-PL', 'UK']);
-	});
-
-	it('should apply sampling', () => {
-		regionMatcher.isValid({ regions: ['non-PL', 'UK'], sampling: 12.45 });
-
-		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal(['non-PL/12.45', 'UK/12.45']);
-	});
-
-	it('should apply sampling with cache', () => {
-		regionMatcher.isValid({
-			regions: ['non-PL', 'UK'],
-			sampling: 12.45,
-			samplingCache: true,
-		});
-
-		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal([
-			'non-PL/12.45-cached',
-			'UK/12.45-cached',
-		]);
-	});
-
-	it('should not apply cache without sampling', () => {
-		regionMatcher.isValid({ regions: ['non-PL', 'UK'], samplingCache: true });
-
+		regionMatcher.isValid(['XX/25-cached', 'US-cached', 'PL/25', 'non-PL', 'UK']);
 		expect(isProperGeoStub.getCall(0).args[0]).to.deep.equal(['non-PL', 'UK']);
 	});
 });

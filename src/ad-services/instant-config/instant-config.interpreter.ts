@@ -61,6 +61,6 @@ export class InstantConfigInterpreter {
 			this.browserMatcher.isValid(group.browsers) &&
 			this.deviceMatcher.isValid(group.devices) &&
 			this.domainMatcher.isValid(group.domains) &&
-			this.regionMatcher.isValid(group);
+			this.regionMatcher.isValid(group.regions);
 	}
 }
