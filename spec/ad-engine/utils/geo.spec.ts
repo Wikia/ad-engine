@@ -2,7 +2,7 @@ import { geoService } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
 import * as Cookies from 'js-cookie';
 import * as sinon from 'sinon';
-import { context } from '../../../src/ad-engine/services';
+import { context, sessionCookie } from '../../../src/ad-engine/services';
 
 describe('Geo', () => {
 	let sandbox;
@@ -412,7 +412,9 @@ describe('Geo', () => {
 			}),
 		);
 
-		geoService.setSessionId('test');
+		sessionCookie.setSessionId('test');
+		geoService.resetStorage();
+
 		Math.random.returns(1);
 		assert.ok(geoService.isProperGeo(['PL/50-cached'], 'basset'));
 
