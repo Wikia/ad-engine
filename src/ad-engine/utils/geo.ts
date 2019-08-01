@@ -1,6 +1,5 @@
 import { context } from '../services/context-service';
-import { sessionCookie } from '../services/session-cookie';
-import { UniversalStorage } from '../services/universal-storage';
+import { CacheData, geoCacheStorage } from '../services/geo-cache-storage';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -8,26 +7,6 @@ const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
-// TODO: Remove
-const cookieStorage = new UniversalStorage(sessionCookie);
-// TODO: Remove
-let cache: CacheDictionary = {};
-// TODO: Remove
-let cookieLoaded = false;
-
-// TODO: Remove
-export interface CacheDictionary {
-	[key: string]: CacheData;
-}
-
-// TODO: Remove
-export interface CacheData {
-	name: string;
-	group: 'A' | 'B';
-	limit: number;
-	result: boolean;
-	withCookie: boolean;
-}
 
 export interface GeoData {
 	region: string;
@@ -52,7 +31,6 @@ function getSamplingLimits(value: string): number {
 	return Math.round(parseFloat(samplingValue) * precision) | 0;
 }
 
-// TODO: Change so that it uses GeoCacheStorage
 function addResultToCache(
 	name: string,
 	result: boolean,
@@ -61,7 +39,7 @@ function addResultToCache(
 ): void {
 	const [limitValue]: number[] = samplingLimits;
 
-	cache[name] = {
+	const data: CacheData = {
 		name,
 		result,
 		withCookie,
@@ -69,37 +47,7 @@ function addResultToCache(
 		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 	};
 
-	if (withCookie) {
-		synchronizeCookie();
-	}
-}
-
-// TODO: Remove
-function loadCookie(): void {
-	const cachedVariables: CacheDictionary = cookieStorage.getItem('basset');
-
-	if (cachedVariables) {
-		Object.keys(cachedVariables).forEach((variable) => {
-			cache[variable] = cachedVariables[variable];
-		});
-
-		cookieStorage.setItem('basset', cachedVariables);
-	}
-
-	cookieLoaded = true;
-}
-
-// TODO: Remove
-function synchronizeCookie(): void {
-	const cachedVariables: CacheDictionary = {};
-
-	Object.keys(cache).forEach((variable) => {
-		if (cache[variable].withCookie) {
-			cachedVariables[variable] = cache[variable];
-		}
-	});
-
-	cookieStorage.setItem('basset', cachedVariables);
+	geoCacheStorage.set(data, name);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
@@ -204,37 +152,12 @@ function isGeoExcluded(countryList: string[] = []): boolean {
 	);
 }
 
-// TODO: Remove
-function getResultLog(name: string): string {
-	const entry: CacheData = cache[name];
-
-	return `${entry.name}_${entry.group}_${entry.limit}`;
-}
-
-// TODO: Remove
-function resetSamplingCache(): void {
-	cache = {};
-}
-
-// TODO: Remove, ask Damian if needed
-function resetStorage(): void {
-	cookieLoaded = false;
-}
-
-function getSamplingResults(): string[] {
-	return Object.keys(cache).map(getResultLog);
-}
-
 /**
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
  */
 function isProperGeo(countryList: string[] = [], name?: string): boolean {
-	if (!cookieLoaded) {
-		loadCookie();
-	}
-
-	if (name !== undefined && typeof cache[name] !== 'undefined') {
-		return cache[name].result;
+	if (name !== undefined && typeof geoCacheStorage.get(name) !== 'undefined') {
+		return geoCacheStorage.get(name).result;
 	}
 
 	return !!(
@@ -247,20 +170,23 @@ function isProperGeo(countryList: string[] = [], name?: string): boolean {
 	);
 }
 
+// TODO: Remove
+function resetSamplingCache(): void {}
+
+// TODO: Remove, ask Damian if needed
+function resetStorage(): void {}
+
+// TODO: Remove
+function getSamplingResults(): string[] {
+	return;
+}
+
 /**
  * Transform sampling results using supplied key-values map.
  */
+// TODO: Remove
 function mapSamplingResults(keyVals: string[] = []): string[] {
-	if (!keyVals || !keyVals.length) {
-		return [];
-	}
-
-	const labradorVariables: string[] = geoService.getSamplingResults();
-
-	return keyVals
-		.map((keyVal: string) => keyVal.split(':'))
-		.filter(([lineId]: string[]) => labradorVariables.indexOf(lineId) !== -1)
-		.map(([lineId, geo]: string[]) => geo);
+	return;
 }
 
 export const geoService = {

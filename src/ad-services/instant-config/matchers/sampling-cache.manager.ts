@@ -27,7 +27,7 @@ export class SamplingCacheManager {
 			limit: samplingResult ? samplingCache.sampling : 100 - samplingCache.sampling,
 		};
 
-		this.geoCacheStorage.add(cacheData, id);
+		this.geoCacheStorage.set(cacheData, id);
 
 		return samplingResult;
 	}

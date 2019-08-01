@@ -25,7 +25,7 @@ class GeoCacheStorage {
 		return this.cacheStorage[id];
 	}
 
-	add(data: CacheData, id: string): void {
+	set(data: CacheData, id: string): void {
 		this.cacheStorage[id] = data;
 
 		if (data.withCookie) {
@@ -47,6 +47,22 @@ class GeoCacheStorage {
 
 	resetCache(): void {
 		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
+	}
+
+	/**
+	 * Transform sampling results using supplied key-values map.
+	 */
+	mapSamplingResults(keyVals: string[] = []): string[] {
+		if (!keyVals || !keyVals.length) {
+			return [];
+		}
+
+		const labradorVariables: string[] = this.getSamplingResults();
+
+		return keyVals
+			.map((keyVal: string) => keyVal.split(':'))
+			.filter(([lineId]: string[]) => labradorVariables.includes(lineId))
+			.map(([lineId, geo]: string[]) => geo);
 	}
 
 	getSamplingResults(): string[] {
