@@ -48,7 +48,7 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 	const container = slotInjector.inject(slotName);
 
-	if (context.get('options.gamLazyLoading.enabled')) {
+	if (!!container && context.get('options.gamLazyLoading.enabled')) {
 		context.get('state.adStack').push({
 			id: slotName,
 		});
