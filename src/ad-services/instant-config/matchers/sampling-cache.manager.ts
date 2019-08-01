@@ -1,30 +1,15 @@
-import { sessionCookie, UniversalStorage } from '@ad-engine/core';
+import { CacheData, geoCacheStorage } from '@ad-engine/core';
 import { InstantConfigSamplingCache } from '../instant-config.models';
 
-interface CacheDictionary {
-	[key: string]: CacheData;
-}
-
-interface CacheData {
-	name: string;
-	group: 'A' | 'B';
-	limit: number;
-	result: boolean;
-	withCookie: boolean;
-}
-
 export class SamplingCacheManager {
-	private readonly cookieStorage = new UniversalStorage(sessionCookie);
-	private readonly cacheStorage: CacheDictionary;
+	private readonly geoCacheStorage = geoCacheStorage;
 	private readonly precision = 10 ** 6;
 
-	constructor() {
-		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
-	}
-
 	apply(id: string, samplingCache: InstantConfigSamplingCache, predicate: () => boolean): boolean {
-		if (typeof this.cacheStorage[id] !== 'undefined') {
-			return this.cacheStorage[id].result;
+		const cached = this.geoCacheStorage.get(id);
+
+		if (typeof cached !== 'undefined') {
+			return cached.result;
 		}
 
 		const value = predicate();
@@ -34,7 +19,6 @@ export class SamplingCacheManager {
 		}
 
 		const samplingResult = this.getSamplingResult(samplingCache.sampling);
-
 		const cacheData: CacheData = {
 			name: id,
 			result: samplingResult,
@@ -43,8 +27,7 @@ export class SamplingCacheManager {
 			limit: samplingResult ? samplingCache.sampling : 100 - samplingCache.sampling,
 		};
 
-		// cache
-		//
+		this.geoCacheStorage.add(cacheData, id);
 
 		return samplingResult;
 	}

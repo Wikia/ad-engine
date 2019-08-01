@@ -8,14 +8,19 @@ const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
+// TODO: Remove
 const cookieStorage = new UniversalStorage(sessionCookie);
+// TODO: Remove
 let cache: CacheDictionary = {};
+// TODO: Remove
 let cookieLoaded = false;
 
+// TODO: Remove
 export interface CacheDictionary {
 	[key: string]: CacheData;
 }
 
+// TODO: Remove
 export interface CacheData {
 	name: string;
 	group: 'A' | 'B';
@@ -47,6 +52,7 @@ function getSamplingLimits(value: string): number {
 	return Math.round(parseFloat(samplingValue) * precision) | 0;
 }
 
+// TODO: Change so that it uses GeoCacheStorage
 function addResultToCache(
 	name: string,
 	result: boolean,
@@ -68,6 +74,7 @@ function addResultToCache(
 	}
 }
 
+// TODO: Remove
 function loadCookie(): void {
 	const cachedVariables: CacheDictionary = cookieStorage.getItem('basset');
 
@@ -82,6 +89,7 @@ function loadCookie(): void {
 	cookieLoaded = true;
 }
 
+// TODO: Remove
 function synchronizeCookie(): void {
 	const cachedVariables: CacheDictionary = {};
 
@@ -196,16 +204,19 @@ function isGeoExcluded(countryList: string[] = []): boolean {
 	);
 }
 
+// TODO: Remove
 function getResultLog(name: string): string {
 	const entry: CacheData = cache[name];
 
 	return `${entry.name}_${entry.group}_${entry.limit}`;
 }
 
+// TODO: Remove
 function resetSamplingCache(): void {
 	cache = {};
 }
 
+// TODO: Remove, ask Damian if needed
 function resetStorage(): void {
 	cookieLoaded = false;
 }

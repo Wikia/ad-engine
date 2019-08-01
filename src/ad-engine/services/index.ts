@@ -2,6 +2,7 @@ export * from './btf-blocker-service';
 export * from './context-service';
 export * from './custom-ad-loader';
 export * from './events';
+export * from './geo-cache-storage';
 export * from './likho';
 export * from './local-cache';
 export * from './universal-storage';
