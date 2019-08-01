@@ -67,6 +67,9 @@ class SlotsContext {
 			},
 			'cdm-zone-02': {
 				aboveTheFold: true,
+				autoplay: true,
+				audio: false,
+				disableExpandAnimation: true,
 				defaultSizes: [[300, 250], [300, 600]],
 				bidderAlias: '02_MR',
 				group: '02_MR',
@@ -131,7 +134,7 @@ class SlotsContext {
 		this.setState('incontent_player', context.get('options.video.isOutstreamEnabled'));
 	}
 
-	private setState(slotName: string, state: boolean): void {
+	setState(slotName: string, state: boolean): void {
 		const element = document.getElementById(slotName);
 
 		slotService.setState(slotName, !!element && state);

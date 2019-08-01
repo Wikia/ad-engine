@@ -46,6 +46,7 @@ class GeoCacheStorage {
 	}
 
 	resetCache(): void {
+		sessionCookie.readSessionId();
 		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
 	}
 

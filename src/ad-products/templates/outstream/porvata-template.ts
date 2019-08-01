@@ -63,9 +63,13 @@ export class PorvataTemplate {
 			params.container = this.createVideoContainer();
 		}
 
-		slotTweaker.collapse(this.adSlot);
+		if (!this.adSlot.config.disableExpandAnimation) {
+			slotTweaker.collapse(this.adSlot);
+		}
 
 		this.config.onInit(this.adSlot, params, this.config);
+
+		context.set('options.video.porvataLoaded', true);
 
 		return slotTweaker
 			.makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO)
