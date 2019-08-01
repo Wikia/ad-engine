@@ -1,0 +1,1 @@
+describe('Geo Cache Storage', () => {});
