@@ -125,8 +125,6 @@ class AdsSetup {
 			slotsContext.addSlotSize('cdm-zone-01', uapSize);
 		}
 
-		// ToDo: rest of context
-
 		context.set(
 			'options.maxDelayTimeout',
 			get(this.instantGlobals, 'wgAdDriverDelayTimeout', 2000),
@@ -136,6 +134,9 @@ class AdsSetup {
 
 		context.set('options.geoRequiresConsent', cmpWrapper.geoRequiresConsent(country));
 		context.set('options.trackingOptIn', isOptedIn);
+
+		// ToDo: Here we need to paste Bielik's magic method
+		context.set('services.confiant.enabled', false);
 
 		this.injectIncontentPlayer();
 

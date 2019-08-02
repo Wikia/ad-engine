@@ -23,6 +23,10 @@ export const basicContext = {
 	},
 	slots: {},
 	services: {
+		confiant: {
+			enabled: false,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',

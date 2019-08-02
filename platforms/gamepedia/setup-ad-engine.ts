@@ -1,4 +1,12 @@
-import { AdEngine, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	bidders,
+	confiant,
+	context,
+	events,
+	eventService,
+	utils,
+} from '@wikia/ad-engine';
 import { biddersDelay } from './bidders/bidders-delay';
 import { adsSetup } from './setup';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
@@ -69,5 +77,5 @@ function callExternals(): void {
 		responseListener: biddersDelay.markAsReady,
 	});
 
-	// ToDo: other externals
+	confiant.call();
 }
