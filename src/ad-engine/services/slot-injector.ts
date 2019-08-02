@@ -26,12 +26,17 @@ function insertNewSlot(
 	slotName: string,
 	nextSibling: HTMLElement,
 	disablePushOnScroll: boolean,
+	disablePush: boolean,
 ): HTMLElement {
 	const container = document.createElement('div');
 
 	container.id = slotName;
 
 	nextSibling.parentNode.insertBefore(container, nextSibling);
+
+	if (disablePush) {
+		return;
+	}
 
 	if (!disablePushOnScroll) {
 		context.push('events.pushOnScroll.ids', slotName);
@@ -69,7 +74,11 @@ class SlotInjector {
 		});
 	}
 
-	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
+	inject(
+		slotName: string,
+		disablePushOnScroll?: boolean,
+		disablePush?: boolean,
+	): HTMLElement | null {
 		const config = context.get(`slots.${slotName}`);
 
 		let anchorElements = Array.prototype.slice.call(
@@ -102,7 +111,7 @@ class SlotInjector {
 		if (typeof disablePushOnScroll !== 'boolean') {
 			disablePushOnScroll = config.repeat ? !!config.repeat.disablePushOnScroll : false;
 		}
-		const container = insertNewSlot(slotName, nextSibling, disablePushOnScroll);
+		const container = insertNewSlot(slotName, nextSibling, disablePushOnScroll, disablePush);
 
 		logger(logGroup, 'Inject slot', slotName);
 

@@ -105,6 +105,13 @@ class AdsSetup {
 			);
 		}
 
+		if (
+			this.isGeoEnabled('wgAdDriverPorvataDirectCountries') &&
+			!this.isGeoEnabled('wgAdDriverVelesCountries')
+		) {
+			context.set('options.veles.directPorvata', true);
+		}
+
 		context.set(
 			'bidders.enabled',
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
@@ -210,7 +217,7 @@ class AdsSetup {
 	}
 
 	private initiateIncontentPlayer(slotName: string): void {
-		slotInjector.inject(slotName);
+		slotInjector.inject(slotName, null, context.get('options.veles.directPorvata'));
 		slotsContext.setState(slotName, context.get('options.video.isOutstreamEnabled'));
 	}
 }
