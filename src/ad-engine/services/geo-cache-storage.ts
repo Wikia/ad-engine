@@ -25,8 +25,8 @@ class GeoCacheStorage {
 		return this.cacheStorage[id];
 	}
 
-	set(data: CacheData, id: string): void {
-		this.cacheStorage[id] = data;
+	set(data: CacheData): void {
+		this.cacheStorage[data.name] = data;
 
 		if (data.withCookie) {
 			this.synchronizeCookie();

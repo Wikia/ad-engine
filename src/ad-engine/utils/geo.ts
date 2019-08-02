@@ -47,7 +47,7 @@ function addResultToCache(
 		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 	};
 
-	geoCacheStorage.set(data, name);
+	geoCacheStorage.set(data);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {

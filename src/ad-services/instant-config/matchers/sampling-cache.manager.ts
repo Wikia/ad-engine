@@ -22,12 +22,12 @@ export class SamplingCacheManager {
 		const cacheData: CacheData = {
 			name: id,
 			result: samplingResult,
-			withCookie: samplingCache.samplingCache,
+			withCookie: !!samplingCache.samplingCache,
 			group: samplingResult ? 'B' : 'A',
-			limit: samplingResult ? samplingCache.sampling : 100 - samplingCache.sampling,
+			limit: +(samplingResult ? samplingCache.sampling : 100 - samplingCache.sampling).toFixed(6),
 		};
 
-		this.geoCacheStorage.set(cacheData, id);
+		this.geoCacheStorage.set(cacheData);
 
 		return samplingResult;
 	}
