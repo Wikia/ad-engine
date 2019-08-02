@@ -160,6 +160,20 @@ describe('Instant Config Interpreter', () => {
 		expect(interpreter.getValues(input)).to.deep.equal({ babDetection: true });
 	});
 
+	it('should pass correct arguments to samplingCache', () => {
+		const instantConfig = { babDetection: [{}] };
+
+		mockResponses([true, true, true, true]);
+		interpreter.getValues(instantConfig);
+
+		const [id, group, predicate] = samplingCacheApplyStub.getCalls()[0].args;
+
+		expect(samplingCacheApplyStub.getCalls().length).to.equal(1);
+		expect(id).to.equal('babDetection-0');
+		expect(group).to.deep.equal({});
+		expect(typeof predicate).to.equal('function');
+	});
+
 	function mockResponses(...responses: MatchersResponses[]): void {
 		let browserCounter = 0;
 		let deviceCounter = 0;

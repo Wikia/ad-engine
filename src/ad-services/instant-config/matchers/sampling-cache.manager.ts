@@ -12,7 +12,7 @@ export class SamplingCacheManager {
 			return cached.result;
 		}
 
-		const value = predicate();
+		const value: boolean = predicate();
 
 		if (typeof samplingCache.sampling !== 'number' || value === false) {
 			return value;
