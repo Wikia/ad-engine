@@ -15,21 +15,22 @@ class ScrollSpeedCalculator {
 	/**
 	 * Takes number of pageviews where it was possible to count scroll speed
 	 */
-	getCurrentValidScrollSpeedPageViews(): number {
-		const pageViews = this.storage.getItem<string>('validScrollSpeedPageViews') || '0';
-		return parseInt(pageViews, 10);
+	getScrollSpeedRecordsNumber(): number {
+		const scrollRecords = this.storage.getItem<string>('scrollSpeedRecordsNumber') || '0';
+		return parseInt(scrollRecords, 10);
 	}
 
 	/**
 	 * Set calculate average scroll speed during session
 	 */
-	setAverageSessionScrollSpeed(newSpeedRecord: number): void {
+	setAverageSessionScrollSpeed(pageSpeeds: number[]): void {
+		const newSpeedRecord = pageSpeeds.reduce((a, b) => a + b, 0) / pageSpeeds.length;
 		const scrollSpeed = this.getAverageSessionScrollSpeed();
-		const pageViews = this.getCurrentValidScrollSpeedPageViews();
-		const newScrollSpeed = (scrollSpeed * pageViews + newSpeedRecord) / (pageViews + 1);
+		const scrollRecords = this.getScrollSpeedRecordsNumber();
+		const newScrollSpeed = (scrollSpeed * scrollRecords + newSpeedRecord) / (scrollRecords + 1);
 
 		this.storage.setItem('averageScrollSpeed', Math.round(newScrollSpeed).toString());
-		this.storage.setItem('validScrollSpeedPageViews', (pageViews + 1).toString());
+		this.storage.setItem('scrollSpeedRecordsNumber', (scrollRecords + 1).toString());
 	}
 }
 

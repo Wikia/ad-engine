@@ -4,6 +4,7 @@ class ScrollTracker {
 	applicationArea: Element | null = null;
 	listener: () => void | null = null;
 	timer: NodeJS.Timer | null = null;
+	speeds: number[] = [];
 
 	initScrollSpeedTracking(applicationAreaClass: string): void {
 		if (!context.get('options.scrollSpeedTracking')) {
@@ -20,19 +21,19 @@ class ScrollTracker {
 
 	dispatchScrollSpeedEvents(): void {
 		const timesToTrack = [0, 2, 4];
-		let startScrollY = 0;
+		let prevScrollY = 0;
 
 		timesToTrack.forEach((time) => {
 			this.timer = setTimeout(() => {
 				const scrollY = window.scrollY || window.pageYOffset;
+
 				eventService.emit(events.SCROLL_TRACKING_TIME_CHANGED, time, scrollY);
 				if (time === Math.min(...timesToTrack)) {
-					startScrollY = scrollY;
+					this.speeds = [];
+				} else {
+					this.speeds.push(Math.abs(scrollY - prevScrollY));
 				}
-				if (time === Math.max(...timesToTrack)) {
-					const newSpeedRecord = Math.abs(scrollY - startScrollY);
-					scrollSpeedCalculator.setAverageSessionScrollSpeed(newSpeedRecord);
-				}
+				prevScrollY = scrollY;
 			}, time * 1000);
 		});
 	}
@@ -44,6 +45,9 @@ class ScrollTracker {
 
 		clearTimeout(this.timer);
 		this.applicationArea.removeEventListener('touchstart', this.listener);
+		if (this.speeds.length) {
+			scrollSpeedCalculator.setAverageSessionScrollSpeed(this.speeds);
+		}
 	}
 }
 
