@@ -121,6 +121,10 @@ export default {
 		},
 		slotRepeater: true,
 		trackingOptIn: false,
+		viewabilityCounter: {
+			enabled: true,
+			ignoredSlots: ['featured', 'outstream'],
+		},
 	},
 	listeners: {
 		twitch: [
