@@ -30,7 +30,7 @@ class ScrollTracker {
 					startScrollY = scrollY;
 				}
 				if (time === Math.max(...timesToTrack)) {
-					const newSpeedRecord = scrollY - startScrollY;
+					const newSpeedRecord = Math.abs(scrollY - startScrollY);
 					scrollSpeedCalculator.setAverageSessionScrollSpeed(newSpeedRecord);
 				}
 			}, time * 1000);
