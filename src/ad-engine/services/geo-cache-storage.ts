@@ -21,6 +21,11 @@ class GeoCacheStorage {
 		this.resetCache();
 	}
 
+	resetCache(): void {
+		sessionCookie.readSessionId();
+		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
+	}
+
 	get(id: string): CacheData {
 		return this.cacheStorage[id];
 	}
@@ -43,11 +48,6 @@ class GeoCacheStorage {
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
 		this.cookieStorage.setItem('basset', cacheDictionaryWithCookie);
-	}
-
-	resetCache(): void {
-		sessionCookie.readSessionId();
-		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
 	}
 
 	/**
