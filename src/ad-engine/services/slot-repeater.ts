@@ -47,6 +47,12 @@ function repeatSlot(adSlot: AdSlot): boolean {
 	}
 
 	const container = slotInjector.inject(slotName);
+
+	if (!!container && context.get('options.gamLazyLoading.enabled')) {
+		context.get('state.adStack').push({
+			id: slotName,
+		});
+	}
 	const additionalClasses = repeatConfig.additionalClasses || '';
 
 	if (container !== null) {
