@@ -136,6 +136,7 @@ $ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 	}
 
 	.button-unstick {
+		display: none;
 		padding: $hivi-uap-button-border-space;
 		position: absolute;
 		top: 0;
@@ -145,6 +146,11 @@ $ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 		@media #{$breakpoint-m-up} {
 			right: 17px;
 		}
+	}
+
+	&.sticky-bfaa .button-unstick,
+	&.sticky-bfab .button-unstick {
+		display: block;
 	}
 
 	.replay-overlay,
