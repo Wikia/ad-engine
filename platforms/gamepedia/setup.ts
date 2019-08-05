@@ -7,10 +7,8 @@ import {
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
-import * as Cookies from 'js-cookie';
 import { get, set } from 'lodash';
 import { biddersContext } from './bidders/bidders-context';
-import { cmpWrapper } from './cmp/cmp-wrapper';
 import { slotsContext } from './slots';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
@@ -57,8 +55,6 @@ class AdsSetup {
 	private setupAdContext(wikiContext, isOptedIn = false): void {
 		const isMobile = !utils.client.isDesktop();
 
-		this.setUpGeoData();
-
 		context.set('wiki', wikiContext);
 		context.set('state.showAds', true);
 		context.set('state.isMobile', isMobile);
@@ -67,6 +63,7 @@ class AdsSetup {
 		context.set('options.tracking.kikimora.player', true);
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
+		context.set('options.trackingOptIn', isOptedIn);
 
 		context.set(
 			'options.video.isOutstreamEnabled',
@@ -132,11 +129,6 @@ class AdsSetup {
 			get(this.instantGlobals, 'wgAdDriverDelayTimeout', 2000),
 		);
 
-		const country = context.get('targeting.geo');
-
-		context.set('options.geoRequiresConsent', cmpWrapper.geoRequiresConsent(country));
-		context.set('options.trackingOptIn', isOptedIn);
-
 		this.injectIncontentPlayer();
 
 		slotsContext.setupStates();
@@ -173,12 +165,6 @@ class AdsSetup {
 			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test';
 
 		return isUapAllowed && this.isGeoEnabled('wgAdDriverUapCountries');
-	}
-
-	private setUpGeoData(): void {
-		const country: string = decodeURIComponent(Cookies.get('cdmgeo'));
-
-		context.set('geo.country', country.toUpperCase());
 	}
 
 	private injectIncontentPlayer(): void {
