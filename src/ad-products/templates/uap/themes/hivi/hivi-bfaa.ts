@@ -25,6 +25,7 @@ import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
 
 const HIVI_RESOLVED_THRESHOLD = 0.995;
+const logGroup = 'hivi-bfaa';
 
 export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	static RESOLVED_STATE_EVENT = Symbol('RESOLVED_STATE_EVENT');
@@ -279,7 +280,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	protected async getVideoViewedAndTimeout(): Promise<void> {
+		const { stickyUntilSlotViewed } = this.config;
 		const { stickyAdditionalTime, stickyUntilVideoViewed } = this.params;
+		const slotViewed: Promise<void> = stickyUntilSlotViewed
+			? this.adSlot.loaded.then(() => this.adSlot.viewed)
+			: Promise.resolve();
 		const videoViewed: Promise<void> = stickyUntilVideoViewed
 			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
 			: Promise.resolve();
@@ -287,8 +292,14 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			? BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY
 			: stickyAdditionalTime;
 
+		await slotViewed;
+		utils.logger(logGroup, 'static slot viewed');
+
 		await videoViewed;
+		utils.logger(logGroup, 'video slot viewed');
+
 		await utils.wait(unstickDelay);
+		utils.logger(logGroup, 'slot timeout reached');
 	}
 
 	protected async onStickinessChange(isSticky: boolean): Promise<void> {
