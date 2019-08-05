@@ -1,3 +1,4 @@
+import * as Cookies from 'js-cookie';
 import { context } from '../services/context-service';
 import { CacheData, geoCacheStorage } from '../services/geo-cache-storage';
 
@@ -9,9 +10,26 @@ const precision = 10 ** 6;
 const samplingSeparator = '/';
 
 export interface GeoData {
-	region: string;
-	country: string;
-	continent: string;
+	region?: string;
+	country?: string;
+	continent?: string;
+}
+
+function setUpGeoData(): GeoData {
+	const jsonData = decodeURIComponent(Cookies.get('Geo'));
+	let geoData: GeoData = {};
+
+	try {
+		geoData = JSON.parse(jsonData) || {};
+	} catch (e) {
+		// Stay with {} value
+	}
+
+	context.set('geo.region', geoData.region);
+	context.set('geo.country', geoData.country);
+	context.set('geo.continent', geoData.continent);
+
+	return geoData;
 }
 
 function hasCache(countryList: string[]): boolean {
@@ -171,6 +189,7 @@ function isProperGeo(countryList: string[] = [], name?: string): boolean {
 }
 
 export const geoService = {
+	setUpGeoData,
 	isProperContinent,
 	isProperCountry,
 	isProperRegion,

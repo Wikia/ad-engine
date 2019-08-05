@@ -18,46 +18,9 @@ export enum CmpPolicy {
  * Wraps all functionality for the consent management system
  */
 class CmpWrapper {
-	/**
-	 * Make an AJAX request to the Curse geo service
-	 */
-	static callGeoService(): Promise<string> {
-		const url = `${window.location.protocol}//geoservice.curse.com/geo/get`;
-
-		return new Promise((resolve, reject) => {
-			try {
-				const xmlhttp: XMLHttpRequest = window.XMLHttpRequest
-					? new XMLHttpRequest() // IE7+, Firefox, Chrdw
-					: new ActiveXObject('Microsoft.XMLHTTP'); // IE6, IE5
-
-				xmlhttp.open('GET', url, true);
-				xmlhttp.setRequestHeader('Content-type', 'application/json');
-				xmlhttp.timeout = 2000;
-				xmlhttp.withCredentials = true;
-
-				xmlhttp.onload = () => {
-					if (xmlhttp.status < 200 || xmlhttp.status >= 300) {
-						reject(xmlhttp.responseText);
-					} else {
-						resolve(xmlhttp.responseText);
-					}
-				};
-
-				xmlhttp.onerror = (ev) => {
-					reject(`Error performing GET to url "${url}"`);
-				};
-
-				xmlhttp.send();
-			} catch (err) {
-				reject('Ajax request threw exception');
-			}
-		});
-	}
-
 	cmpReady = false;
 	gdprConsent = false;
 	gdprConsentPolicy: CmpPolicy = CmpPolicy.detect;
-	userGeo = Cookies.get('cdmgeo');
 
 	/**
 	 * Initialize the CMP system
@@ -282,38 +245,6 @@ class CmpWrapper {
 			callback(consentData);
 		};
 		window.__cmp.receiveMessage = window.__cmpStored.receiveMessage;
-	}
-
-	/**
-	 * Checks user geo and returns as a lowercase string with country ISO code
-	 */
-	getGeo(): Promise<string> {
-		if (this.userGeo) {
-			// Cookie was set, instantly resolve
-			return new Promise<string>((resolve, reject) => {
-				resolve(this.userGeo);
-			});
-		}
-
-		return CmpWrapper.callGeoService()
-			.then(
-				(response) => {
-					const config = JSON.parse(response);
-
-					this.userGeo =
-						config.Status !== 'FAILURE' ? config.Range.CountryCode.toLowerCase() : 'us';
-
-					utils.logger(logGroup, `Geoservice response: ${this.userGeo}`);
-					Cookies.set('cdmgeo', this.userGeo, { expires: 30 });
-				},
-				() => {
-					this.userGeo = '';
-					utils.logger(logGroup, 'GeoService error');
-				},
-			)
-			.then(() => {
-				return this.userGeo;
-			});
 	}
 
 	/**
