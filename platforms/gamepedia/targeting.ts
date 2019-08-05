@@ -34,6 +34,7 @@ function getDomain(): string {
 }
 
 export const targeting = {
+	getDomain,
 	getPageLevelTargeting(wikiContext: any = {}): any {
 		const pageTargeting: Dictionary<string> = {
 			artid: wikiContext.wgArticleId,
