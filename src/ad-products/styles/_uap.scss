@@ -492,7 +492,7 @@ body.ctp-vuap-loaded {
 	top: 0;
 
 	&.theme-hivi:not(.theme-resolved):not(.sticky-bfaa),
-	&.theme-hivi.theme-resolved:not(.theme-locked) {
+	&.theme-hivi.theme-resolved:not(.theme-locked):not(.sticky-iab) {
 		position: fixed;
 		top: 0;
 	}
