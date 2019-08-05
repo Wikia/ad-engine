@@ -1,4 +1,4 @@
-import { context, Dictionary, utils } from '@ad-engine/core';
+import { context, Dictionary, geoCacheStorage, utils } from '@ad-engine/core';
 import { AdInfoContext } from './slot-tracker';
 
 function checkOptIn(): string {
@@ -44,7 +44,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			kv_s2: context.get('targeting.s2') || '',
 			kv_skin: context.get('targeting.skin') || '',
 			kv_top: context.get('targeting.top') || '',
-			labrador: utils.geoService.getSamplingResults().join(';'),
+			labrador: geoCacheStorage.getSamplingResults().join(';'),
 			opt_in: checkOptIn(),
 			page_layout: `pos_top=${topOffset}`,
 			page_width: window.document.body.scrollWidth || '',

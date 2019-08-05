@@ -1,13 +1,13 @@
 import * as Cookies from 'js-cookie';
 import { context } from './context-service';
-import { StorageEndpoint } from './local-storage';
+import { StorageProvider } from './universal-storage';
 
 interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 	overwrite: boolean;
 	maxAge: number;
 }
 
-class SessionCookie implements StorageEndpoint {
+class SessionCookie implements StorageProvider {
 	private readonly cacheMaxAge = 30 * 60 * 1000;
 	private readonly sessionCookieDefault = 'tracking_session_id';
 	private keysSeen = [];

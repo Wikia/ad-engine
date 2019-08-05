@@ -2,8 +2,8 @@ import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
-import { LocalStorage } from './local-storage';
 import { sessionCookie } from './session-cookie';
+import { UniversalStorage } from './universal-storage';
 
 type StatusType = 'loaded' | 'viewed';
 
@@ -11,7 +11,7 @@ const logGroup = 'viewability-counter';
 
 class ViewabilityCounter {
 	private readonly counters: Dictionary<Dictionary<number>>;
-	private storage = new LocalStorage(sessionCookie);
+	private storage = new UniversalStorage(sessionCookie);
 	private loaded = false;
 
 	constructor() {

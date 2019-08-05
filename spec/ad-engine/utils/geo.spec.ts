@@ -2,23 +2,25 @@ import { geoService } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
 import * as Cookies from 'js-cookie';
 import * as sinon from 'sinon';
-import { context, sessionCookie } from '../../../src/ad-engine/services';
+import { context, geoCacheStorage, sessionCookie } from '../../../src/ad-engine/services';
 
 describe('Geo', () => {
-	let sandbox;
+	let sandbox: sinon.SinonSandbox;
+	let randomStub: sinon.SinonStub;
+	let cookiesGetStub: sinon.SinonStub;
 
 	beforeEach(() => {
 		context.set('geo.continent', 'EU');
 		context.set('geo.country', 'PL');
 		context.set('geo.region', '72');
 
-		sandbox = sinon.sandbox.create();
-		sandbox.stub(Math, 'random');
-		sandbox.stub(Cookies, 'get');
+		sandbox = sinon.createSandbox();
+		randomStub = sandbox.stub(Math, 'random');
+		cookiesGetStub = sandbox.stub(Cookies, 'get');
+		geoCacheStorage.resetCache();
 	});
 
 	afterEach(() => {
-		geoService.resetSamplingCache();
 		sandbox.restore();
 	});
 
@@ -94,292 +96,292 @@ describe('Geo', () => {
 	});
 
 	it('samples traffic for earth', () => {
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['XX/100']));
 
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.ok(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.notOk(geoService.isProperGeo(['non-XX/50']));
 
-		Math.random.returns(0.49);
+		randomStub.returns(0.49);
 		assert.ok(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.499999);
+		randomStub.returns(0.499999);
 		assert.ok(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.6);
+		randomStub.returns(0.6);
 		assert.notOk(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.8);
+		randomStub.returns(0.8);
 		assert.notOk(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.99);
+		randomStub.returns(0.99);
 		assert.notOk(geoService.isProperGeo(['XX/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['XX/50']));
 	});
 
 	it('samples traffic for continent', () => {
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['XX-EU/100']));
 
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.ok(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.notOk(geoService.isProperGeo(['non-XX-EU/50']));
 
-		Math.random.returns(0.49);
+		randomStub.returns(0.49);
 		assert.ok(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.499999);
+		randomStub.returns(0.499999);
 		assert.ok(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.6);
+		randomStub.returns(0.6);
 		assert.notOk(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.8);
+		randomStub.returns(0.8);
 		assert.notOk(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.99);
+		randomStub.returns(0.99);
 		assert.notOk(geoService.isProperGeo(['XX-EU/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['XX-EU/50']));
 	});
 
 	it('samples traffic for country', () => {
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['PL/100']));
 
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.ok(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.notOk(geoService.isProperGeo(['non-PL/50']));
 
-		Math.random.returns(0.49);
+		randomStub.returns(0.49);
 		assert.ok(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.499999);
+		randomStub.returns(0.499999);
 		assert.ok(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.6);
+		randomStub.returns(0.6);
 		assert.notOk(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.8);
+		randomStub.returns(0.8);
 		assert.notOk(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.99);
+		randomStub.returns(0.99);
 		assert.notOk(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['PL/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['non-PL/50']));
 	});
 
 	it('samples traffic for region', () => {
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['PL-72/100']));
 
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.ok(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.notOk(geoService.isProperGeo(['non-PL-72/50']));
 
-		Math.random.returns(0.49);
+		randomStub.returns(0.49);
 		assert.ok(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.6);
+		randomStub.returns(0.6);
 		assert.notOk(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.8);
+		randomStub.returns(0.8);
 		assert.notOk(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.99);
+		randomStub.returns(0.99);
 		assert.notOk(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['PL-72/50']));
 
-		Math.random.returns(0.999999);
+		randomStub.returns(0.999999);
 		assert.notOk(geoService.isProperGeo(['non-PL-72/50']));
 	});
 
 	it('samples traffic with storing results in cache', () => {
-		Math.random.returns(0.1);
+		randomStub.returns(0.1);
 		assert.ok(geoService.isProperGeo(['PL/50'], 'test'));
 		assert.ok(geoService.isProperGeo(['PL/50'], 'A'));
 
-		Math.random.returns(0.3);
+		randomStub.returns(0.3);
 		assert.ok(geoService.isProperGeo(['PL/50'], 'test'));
 		assert.ok(geoService.isProperGeo(['PL/50'], 'B'));
 
-		Math.random.returns(0.49);
+		randomStub.returns(0.49);
 		assert.ok(geoService.isProperGeo(['PL/50'], 'test'));
 		assert.ok(geoService.isProperGeo(['PL/50'], 'C'));
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.ok(geoService.isProperGeo(['PL/50'], 'test'));
 		assert.notOk(geoService.isProperGeo(['PL/50'], 'D'));
 
-		Math.random.returns(0.9);
+		randomStub.returns(0.9);
 		assert.ok(geoService.isProperGeo(['PL/50'], 'test'));
 		assert.notOk(geoService.isProperGeo(['PL/50'], 'E'));
 	});
 
 	it('samples only specific geos', () => {
-		Math.random.returns(0.3);
+		randomStub.returns(0.3);
 		assert.notOk(geoService.isProperGeo(['PL-11/50']));
 
-		Math.random.returns(0.3);
+		randomStub.returns(0.3);
 		assert.notOk(geoService.isProperGeo(['XX-ZZ/50']));
 
-		Math.random.returns(0.3);
+		randomStub.returns(0.3);
 		assert.notOk(geoService.isProperGeo(['ZZ/50']));
 
-		Math.random.returns(0.6);
+		randomStub.returns(0.6);
 		assert.notOk(geoService.isProperGeo(['ZZ/50']));
 
-		Math.random.returns(0.9);
+		randomStub.returns(0.9);
 		assert.notOk(geoService.isProperGeo(['ZZ/50']));
 	});
 
 	it('samples fractions', () => {
-		Math.random.returns(0.0009);
+		randomStub.returns(0.0009);
 		assert.ok(geoService.isProperGeo(['PL/0.1']));
 
-		Math.random.returns(0.001);
+		randomStub.returns(0.001);
 		assert.notOk(geoService.isProperGeo(['PL/0.1']));
 
-		Math.random.returns(0.001);
+		randomStub.returns(0.001);
 		assert.ok(geoService.isProperGeo(['PL/0.2']));
 
-		Math.random.returns(0.002);
+		randomStub.returns(0.002);
 		assert.notOk(geoService.isProperGeo(['PL/0.2']));
 
-		Math.random.returns(0.003);
+		randomStub.returns(0.003);
 		assert.notOk(geoService.isProperGeo(['PL/0.2']));
 	});
 
 	it('returns cached values', () => {
 		geoService.isProperGeo(['PL/50']);
-		assert.deepEqual(geoService.getSamplingResults(), []);
-		geoService.resetSamplingCache();
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), []);
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['PL/10'], 'test'));
-		assert.deepEqual(geoService.getSamplingResults(), ['test_A_90']);
-		geoService.resetSamplingCache();
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_A_90']);
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.01);
+		randomStub.returns(0.01);
 		assert.ok(geoService.isProperGeo(['PL/10'], 'test'));
-		assert.deepEqual(geoService.getSamplingResults(), ['test_B_10']);
-		geoService.resetSamplingCache();
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_B_10']);
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.0001);
+		randomStub.returns(0.0001);
 		assert.ok(geoService.isProperGeo(['PL/0.1'], 'test'));
-		assert.deepEqual(geoService.getSamplingResults(), ['test_B_0.1']);
-		geoService.resetSamplingCache();
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_B_0.1']);
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.5);
+		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['PL/0.1'], 'test'));
-		assert.deepEqual(geoService.getSamplingResults(), ['test_A_99.9']);
-		geoService.resetSamplingCache();
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_A_99.9']);
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.15);
+		randomStub.returns(0.15);
 		assert.ok(geoService.isProperGeo(['PL/25'], 'CAT'));
 		assert.notOk(geoService.isProperGeo(['PL/10'], 'DOG'));
-		assert.deepEqual(geoService.getSamplingResults(), ['CAT_B_25', 'DOG_A_90']);
-		geoService.resetSamplingCache();
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['CAT_B_25', 'DOG_A_90']);
+		geoCacheStorage.resetCache();
 	});
 
 	it('blocks sampled countries before sample', () => {
-		Math.random.returns(0.15);
+		randomStub.returns(0.15);
 		assert.notOk(geoService.isProperGeo(['PL/25', 'non-PL'], 'test'));
 	});
 
 	it('eliminates JS floating point discrepancy', () => {
-		Math.random.returns(0.8);
+		randomStub.returns(0.8);
 		geoService.isProperGeo(['PL/57'], 'TEST');
-		assert.deepEqual(geoService.getSamplingResults(), ['TEST_A_43']);
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_A_43']);
 
-		geoService.resetSamplingCache();
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.3);
+		randomStub.returns(0.3);
 		geoService.isProperGeo(['PL/57'], 'TEST');
-		assert.deepEqual(geoService.getSamplingResults(), ['TEST_B_57']);
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_B_57']);
 
-		geoService.resetSamplingCache();
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.56876436787446);
+		randomStub.returns(0.56876436787446);
 		geoService.isProperGeo(['PL/99.9'], 'TEST');
-		assert.deepEqual(geoService.getSamplingResults(), ['TEST_B_99.9']);
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_B_99.9']);
 
-		geoService.resetSamplingCache();
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.9990001);
+		randomStub.returns(0.9990001);
 		geoService.isProperGeo(['PL/99.9'], 'TEST');
-		assert.deepEqual(geoService.getSamplingResults(), ['TEST_A_0.1']);
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_A_0.1']);
 	});
 
 	it('supports small values (to 0.000001 precision)', () => {
-		Math.random.returns(0.000000001);
+		randomStub.returns(0.000000001);
 		geoService.isProperGeo(['PL/0.000001'], 'TEST');
-		assert.deepEqual(geoService.getSamplingResults(), ['TEST_B_0.000001']);
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_B_0.000001']);
 
-		geoService.resetSamplingCache();
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(0.3);
+		randomStub.returns(0.3);
 		geoService.isProperGeo(['PL/0.000001'], 'TEST');
-		assert.deepEqual(geoService.getSamplingResults(), ['TEST_A_99.999999']);
+		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_A_99.999999']);
 	});
 
 	it('returns empty string if argument is undefined', () => {
-		const result = geoService.mapSamplingResults();
+		const result = geoCacheStorage.mapSamplingResults();
 
 		assert(Array.isArray(result));
 		assert.equal(result.length, 0);
 	});
 
 	it('returns empty string if argument is an empty array', () => {
-		const result = geoService.mapSamplingResults([]);
+		const result = geoCacheStorage.mapSamplingResults([]);
 
 		assert(Array.isArray(result));
 		assert.equal(result.length, 0);
@@ -395,12 +397,12 @@ describe('Geo', () => {
 			'OOZ_B_99:ooz_b',
 		];
 
-		sinon.stub(geoService, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
-		assert.deepEqual(geoService.mapSamplingResults(wfKeyVals), ['foo_a', 'bar_b']);
+		sandbox.stub(geoCacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
+		assert.deepEqual(geoCacheStorage.mapSamplingResults(wfKeyVals), ['foo_a', 'bar_b']);
 	});
 
 	it('returns proper cached basset variables', () => {
-		Cookies.get.returns(
+		cookiesGetStub.returns(
 			JSON.stringify({
 				basset: {
 					name: 'basset',
@@ -413,12 +415,12 @@ describe('Geo', () => {
 		);
 
 		sessionCookie.setSessionId('test');
-		geoService.resetStorage();
+		geoCacheStorage.resetCache();
 
-		Math.random.returns(1);
+		randomStub.returns(1);
 		assert.ok(geoService.isProperGeo(['PL/50-cached'], 'basset'));
 
-		Math.random.returns(0);
+		randomStub.returns(0);
 		assert.ok(geoService.isProperGeo(['PL/50-cached'], 'basset'));
 	});
 });

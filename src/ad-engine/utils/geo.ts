@@ -1,7 +1,6 @@
 import * as Cookies from 'js-cookie';
 import { context } from '../services/context-service';
-import { LocalStorage } from '../services/local-storage';
-import { sessionCookie } from '../services/session-cookie';
+import { CacheData, geoCacheStorage } from '../services/geo-cache-storage';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -9,21 +8,6 @@ const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
-const cookieStorage = new LocalStorage(sessionCookie);
-let cache: CacheDictionary = {};
-let cookieLoaded = false;
-
-export interface CacheDictionary {
-	[key: string]: CacheData;
-}
-
-export interface CacheData {
-	name: string;
-	group: 'A' | 'B';
-	limit: number;
-	result: boolean;
-	withCookie: boolean;
-}
 
 export interface GeoData {
 	region?: string;
@@ -73,7 +57,7 @@ function addResultToCache(
 ): void {
 	const [limitValue]: number[] = samplingLimits;
 
-	cache[name] = {
+	const data: CacheData = {
 		name,
 		result,
 		withCookie,
@@ -81,37 +65,7 @@ function addResultToCache(
 		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 	};
 
-	if (withCookie) {
-		synchronizeCookie();
-	}
-}
-
-function loadCookie(): void {
-	sessionCookie.readSessionId();
-
-	const cachedVariables: CacheDictionary = cookieStorage.getItem('basset');
-
-	if (cachedVariables) {
-		Object.keys(cachedVariables).forEach((variable) => {
-			cache[variable] = cachedVariables[variable];
-		});
-
-		cookieStorage.setItem('basset', cachedVariables);
-	}
-
-	cookieLoaded = true;
-}
-
-function synchronizeCookie(): void {
-	const cachedVariables: CacheDictionary = {};
-
-	Object.keys(cache).forEach((variable) => {
-		if (cache[variable].withCookie) {
-			cachedVariables[variable] = cache[variable];
-		}
-	});
-
-	cookieStorage.setItem('basset', cachedVariables);
+	geoCacheStorage.set(data);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
@@ -216,34 +170,12 @@ function isGeoExcluded(countryList: string[] = []): boolean {
 	);
 }
 
-function getResultLog(name: string): string {
-	const entry: CacheData = cache[name];
-
-	return `${entry.name}_${entry.group}_${entry.limit}`;
-}
-
-function resetSamplingCache(): void {
-	cache = {};
-}
-
-function resetStorage(): void {
-	cookieLoaded = false;
-}
-
-function getSamplingResults(): string[] {
-	return Object.keys(cache).map(getResultLog);
-}
-
 /**
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
  */
 function isProperGeo(countryList: string[] = [], name?: string): boolean {
-	if (!cookieLoaded) {
-		loadCookie();
-	}
-
-	if (name !== undefined && typeof cache[name] !== 'undefined') {
-		return cache[name].result;
+	if (name !== undefined && typeof geoCacheStorage.get(name) !== 'undefined') {
+		return geoCacheStorage.get(name).result;
 	}
 
 	return !!(
@@ -256,22 +188,6 @@ function isProperGeo(countryList: string[] = [], name?: string): boolean {
 	);
 }
 
-/**
- * Transform sampling results using supplied key-values map.
- */
-function mapSamplingResults(keyVals: string[] = []): string[] {
-	if (!keyVals || !keyVals.length) {
-		return [];
-	}
-
-	const labradorVariables: string[] = geoService.getSamplingResults();
-
-	return keyVals
-		.map((keyVal: string) => keyVal.split(':'))
-		.filter(([lineId]: string[]) => labradorVariables.indexOf(lineId) !== -1)
-		.map(([lineId, geo]: string[]) => geo);
-}
-
 export const geoService = {
 	setUpGeoData,
 	isProperContinent,
@@ -280,9 +196,5 @@ export const geoService = {
 	getContinentCode,
 	getCountryCode,
 	getRegionCode,
-	getSamplingResults,
 	isProperGeo,
-	resetSamplingCache,
-	resetStorage,
-	mapSamplingResults,
 };

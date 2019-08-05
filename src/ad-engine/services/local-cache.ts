@@ -1,5 +1,5 @@
 /* global Storage */
-import { LocalStorage } from './local-storage';
+import { UniversalStorage } from './universal-storage';
 
 interface CacheItem<T = any> {
 	expires?: number;
@@ -7,7 +7,7 @@ interface CacheItem<T = any> {
 }
 
 class LocalCache {
-	private storage = new LocalStorage();
+	private storage = new UniversalStorage();
 
 	isAvailable(): boolean {
 		return this.storage.isAvailable();
