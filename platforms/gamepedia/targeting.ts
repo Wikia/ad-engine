@@ -37,7 +37,7 @@ export const targeting = {
 	getDomain,
 	getPageLevelTargeting(wikiContext: any = {}): any {
 		const pageTargeting: Dictionary<string> = {
-			artid: wikiContext.wgArticleId,
+			artid: wikiContext.wgArticleId.toString(),
 			dmn: getDomain(),
 			pName: wikiContext.wgPageName,
 			pv: window.pvNumber && window.pvNumber.toString(),
