@@ -1,4 +1,12 @@
-import { AdEngine, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	bidders,
+	context,
+	events,
+	eventService,
+	geoCacheStorage,
+	utils,
+} from '@wikia/ad-engine';
 import { biddersDelay } from './bidders/bidders-delay';
 import { adsSetup } from './setup';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
@@ -57,7 +65,7 @@ function startAdEngine(): void {
 }
 
 function trackLabradorValues(): void {
-	const labradorPropValue = utils.geoService.getSamplingResults().join(';');
+	const labradorPropValue = geoCacheStorage.getSamplingResults().join(';');
 
 	if (labradorPropValue) {
 		PageTracker.trackProp('labrador', labradorPropValue);
