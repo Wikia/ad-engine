@@ -1,15 +1,24 @@
 import { assert } from 'chai';
+import * as sinon from 'sinon';
 import { AdSlot, context, slotService } from '../../../../src/ad-engine';
 import videoEventDataProvider from '../../../../src/ad-products/tracking/video/video-event-data-provider';
 import configMock from '../../../ad-engine/config-mock';
 
 describe('Video event data provider', () => {
+	const sandbox = sinon.createSandbox();
+
 	beforeEach(() => {
+		sandbox.stub(document, 'hidden').get(() => undefined);
 		context.extend(configMock);
 		context.set('targeting.skin', 'ae3');
 		context.set('slots.incontent_player.targeting.wsi', 'xxx1');
 		slotService.add(new AdSlot({ id: 'incontent_player' }));
 		window.pvNumber = 5;
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+		delete window['pvNumber'];
 	});
 
 	it('returns list of values to track', () => {

@@ -1,11 +1,17 @@
 import { getDocumentVisibilityStatus, VISIBILITY_STATUS } from '@wikia/ad-engine/utils';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 describe('document utils', () => {
 	let hidden;
+	const sandbox = sinon.createSandbox();
 
 	before(() => {
-		Object.defineProperty(document, 'hidden', { get: () => hidden });
+		sandbox.stub(document, 'hidden').get(() => hidden);
+	});
+
+	after(() => {
+		sandbox.restore();
 	});
 
 	it('include document_hidden=1 if document is hidden', () => {
