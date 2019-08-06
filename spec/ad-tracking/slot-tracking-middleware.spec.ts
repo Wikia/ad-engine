@@ -63,6 +63,7 @@ describe('slot-tracking-middleware', () => {
 			'country',
 			'device',
 			'document_visibility',
+			'is_uap',
 			'key_vals',
 			'kv_ah',
 			'kv_esrb',

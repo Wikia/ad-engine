@@ -7,6 +7,7 @@ export * from './likho';
 export * from './local-cache';
 export * from './universal-storage';
 export * from './message-bus';
+export * from './scroll-speed-calculator';
 export * from './session-cookie';
 export * from './slot-data-params-updater';
 export * from './slot-injector';
