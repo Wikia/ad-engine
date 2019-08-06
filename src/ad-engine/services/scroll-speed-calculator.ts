@@ -1,8 +1,8 @@
-import { LocalStorage } from './local-storage';
 import { sessionCookie } from './session-cookie';
+import { UniversalStorage } from './universal-storage';
 
 class ScrollSpeedCalculator {
-	private storage = new LocalStorage(sessionCookie);
+	private storage = new UniversalStorage(sessionCookie);
 
 	/**
 	 * Takes average scroll speed from session, default: 0
