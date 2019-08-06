@@ -1,8 +1,14 @@
-import { context, instantConfig, setupNpaContext, slotInjector, utils } from '@wikia/ad-engine';
-import * as Cookies from 'js-cookie';
-import { get, set } from 'lodash';
+import {
+	AdSlot,
+	context,
+	InstantConfigService,
+	setupNpaContext,
+	slotInjector,
+	slotService,
+	utils,
+} from '@wikia/ad-engine';
+import { set } from 'lodash';
 import { biddersContext } from './bidders/bidders-context';
-import { cmpWrapper } from './cmp/cmp-wrapper';
 import { slotsContext } from './slots';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
@@ -31,11 +37,11 @@ const fallbackInstantConfig = {
 };
 
 class AdsSetup {
-	private instantGlobals = {};
+	private instantConfig: InstantConfigService;
 
 	async configure(wikiContext, isOptedIn): Promise<void> {
 		set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
-		this.instantGlobals = await instantConfig.getConfig();
+		this.instantConfig = await InstantConfigService.init();
 
 		this.setupAdContext(wikiContext, isOptedIn);
 		setupNpaContext();
@@ -49,8 +55,6 @@ class AdsSetup {
 	private setupAdContext(wikiContext, isOptedIn = false): void {
 		const isMobile = !utils.client.isDesktop();
 
-		this.setUpGeoData();
-
 		context.set('wiki', wikiContext);
 		context.set('state.showAds', true);
 		context.set('state.isMobile', isMobile);
@@ -59,41 +63,45 @@ class AdsSetup {
 		context.set('options.tracking.kikimora.player', true);
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
+		context.set('options.trackingOptIn', isOptedIn);
 
 		context.set(
 			'options.video.isOutstreamEnabled',
-			this.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
+			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
 		context.set('bidders', biddersContext.generate());
 
-		if (this.isGeoEnabled('wgAdDriverA9BidderCountries')) {
+		if (this.instantConfig.isGeoEnabled('wgAdDriverA9BidderCountries')) {
 			context.set('bidders.a9.enabled', true);
-			context.set('bidders.a9.dealsEnabled', this.isGeoEnabled('wgAdDriverA9DealsCountries'));
+			context.set(
+				'bidders.a9.dealsEnabled',
+				this.instantConfig.isGeoEnabled('wgAdDriverA9DealsCountries'),
+			);
 		}
 
-		if (this.isGeoEnabled('wgAdDriverPrebidBidderCountries')) {
+		if (this.instantConfig.isGeoEnabled('wgAdDriverPrebidBidderCountries')) {
 			context.set('bidders.prebid.enabled', true);
 			context.set(
 				'bidders.prebid.appnexus.enabled',
-				this.isGeoEnabled('wgAdDriverAppNexusBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverAppNexusBidderCountries'),
 			);
 			context.set(
 				'bidders.prebid.indexExchange.enabled',
-				this.isGeoEnabled('wgAdDriverIndexExchangeBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverIndexExchangeBidderCountries'),
 			);
 			context.set(
 				'bidders.prebid.openx.enabled',
-				this.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
 			);
 
 			context.set(
 				'bidders.prebid.pubmatic.enabled',
-				this.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
 			);
 			context.set(
 				'bidders.prebid.rubicon_display.enabled',
-				this.isGeoEnabled('wgAdDriverRubiconDisplayPrebidCountries'),
+				this.instantConfig.isGeoEnabled('wgAdDriverRubiconDisplayPrebidCountries'),
 			);
 		}
 
@@ -102,11 +110,11 @@ class AdsSetup {
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
 		);
 
-		this.isGeoEnabled('wgAdDriverLABradorTestCountries');
+		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
 
-		if (get(this.instantGlobals, 'wgAdDriverTestCommunities', []).includes(wikiContext.wgDBname)) {
+		if (this.instantConfig.get('wgAdDriverTestCommunities', []).includes(wikiContext.wgDBname)) {
 			context.set('src', 'test');
 		}
 
@@ -119,15 +127,7 @@ class AdsSetup {
 
 		// ToDo: rest of context
 
-		context.set(
-			'options.maxDelayTimeout',
-			get(this.instantGlobals, 'wgAdDriverDelayTimeout', 2000),
-		);
-
-		const country = context.get('targeting.geo');
-
-		context.set('options.geoRequiresConsent', cmpWrapper.geoRequiresConsent(country));
-		context.set('options.trackingOptIn', isOptedIn);
+		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
 		this.injectIncontentPlayer();
 
@@ -146,15 +146,11 @@ class AdsSetup {
 
 	private updateWadContext(): void {
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.isGeoEnabled('wgAdDriverBabDetection'));
-	}
-
-	private isGeoEnabled(key: string): boolean {
-		return utils.geoService.isProperGeo(this.instantGlobals[key], key);
+		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
 	}
 
 	private isUapAllowed(): boolean {
-		let uapRestriction = this.instantGlobals['wgAdDriverUapRestriction'];
+		let uapRestriction = this.instantConfig.get('wgAdDriverUapRestriction');
 		const queryParam = utils.queryString.get('uap-pv-restriction');
 
 		if (typeof queryParam !== 'undefined') {
@@ -164,24 +160,40 @@ class AdsSetup {
 		const isUapAllowed =
 			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test';
 
-		return isUapAllowed && this.isGeoEnabled('wgAdDriverUapCountries');
-	}
-
-	private setUpGeoData(): void {
-		const country: string = decodeURIComponent(Cookies.get('cdmgeo'));
-
-		context.set('geo.country', country.toUpperCase());
+		return isUapAllowed && this.instantConfig.isGeoEnabled('wgAdDriverUapCountries');
 	}
 
 	private injectIncontentPlayer(): void {
-		const isVideo =
+		const incontentPlayerSlotName = 'incontent_player';
+		const porvataAlternativeSlotsName = 'cdm-zone-02';
+
+		if (
 			!!document.getElementById('mf-video') ||
 			!!document.getElementById('twitchnet-liveontwitch') ||
-			!!document.getElementById('ds_cpp');
-
-		if (!isVideo) {
-			slotInjector.inject('incontent_player');
+			!!document.getElementById('ds_cpp')
+		) {
+			return;
 		}
+
+		if (!document.getElementById(porvataAlternativeSlotsName)) {
+			this.initiateIncontentPlayer(incontentPlayerSlotName);
+		}
+
+		slotService.on(porvataAlternativeSlotsName, AdSlot.STATUS_SUCCESS, () => {
+			if (!!context.get('options.video.porvataLoaded')) {
+				return;
+			}
+			this.initiateIncontentPlayer(incontentPlayerSlotName);
+		});
+
+		slotService.on(porvataAlternativeSlotsName, AdSlot.STATUS_COLLAPSE, () => {
+			this.initiateIncontentPlayer(incontentPlayerSlotName);
+		});
+	}
+
+	private initiateIncontentPlayer(slotName: string): void {
+		slotInjector.inject(slotName);
+		slotsContext.setState(slotName, context.get('options.video.isOutstreamEnabled'));
 	}
 }
 

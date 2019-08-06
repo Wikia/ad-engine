@@ -1,13 +1,22 @@
 import { Dictionary } from '../models';
 
-export class LocalStorage {
+export interface StorageProvider {
+	getItem: (key: string) => string;
+	setItem: (key: string, input: string) => void;
+	removeItem: (key: string) => void;
+	clear: () => void;
+}
+
+export class UniversalStorage {
 	private fallbackStorage: Dictionary = {};
+
+	constructor(private provider: StorageProvider = window.localStorage) {}
 
 	isAvailable(): boolean {
 		try {
-			window.localStorage.setItem('ae3-local-storage-test', '1');
-			window.localStorage.getItem('ae3-local-storage-test');
-			window.localStorage.removeItem('ae3-local-storage-test');
+			this.provider.setItem('ae3-provider-storage-test', '1');
+			this.provider.getItem('ae3-provider-storage-test');
+			this.provider.removeItem('ae3-provider-storage-test');
 			return true;
 		} catch (e) {
 			return false;
@@ -16,7 +25,7 @@ export class LocalStorage {
 
 	getItem<T>(key: string): T {
 		try {
-			let value = window.localStorage.getItem(key);
+			let value = this.provider.getItem(key);
 			try {
 				value = JSON.parse(value);
 			} catch {}
@@ -29,7 +38,7 @@ export class LocalStorage {
 	setItem(key: string, input: {} | string): boolean {
 		const value: string = input instanceof Object ? JSON.stringify(input) : input;
 		try {
-			window.localStorage.setItem(key, value);
+			this.provider.setItem(key, value);
 		} catch (e) {
 			this.fallbackStorage[key] = value;
 		}
@@ -38,7 +47,7 @@ export class LocalStorage {
 
 	removeItem(key: string): void {
 		try {
-			return window.localStorage.removeItem(key);
+			return this.provider.removeItem(key);
 		} catch (e) {
 			delete this.fallbackStorage[key];
 		}
@@ -46,7 +55,7 @@ export class LocalStorage {
 
 	clear(): void {
 		try {
-			window.localStorage.clear();
+			this.provider.clear();
 		} catch (e) {
 			this.fallbackStorage = {};
 		}

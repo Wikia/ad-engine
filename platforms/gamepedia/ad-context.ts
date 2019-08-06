@@ -35,7 +35,6 @@ export const basicContext = {
 	},
 	targeting: {
 		ae3: '1',
-		outstream: 'none',
 		skin: 'gamepedia',
 		uap: 'none',
 		uap_c: 'none',

@@ -27,6 +27,7 @@ interface RepeatConfig {
 
 export interface SlotConfig {
 	disabled?: boolean;
+	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
 	trackOverscrolled?: boolean;
