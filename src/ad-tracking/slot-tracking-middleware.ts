@@ -30,6 +30,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			country: (utils.geoService.getCountryCode() || '').toUpperCase(),
 			device: utils.client.getDeviceType(),
 			document_visibility: utils.getDocumentVisibilityStatus(),
+			is_uap: slot.getConfigProperty('targeting.uap') ? 1 : 0,
 			key_vals: Object.keys(keyVals)
 				.filter((key) => keyVals[key])
 				.map((key) => `${key}=${keyVals[key]}`)
