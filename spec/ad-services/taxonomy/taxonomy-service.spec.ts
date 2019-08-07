@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context } from '../../../src/ad-engine';
-import { TaxonomyService } from '../../../src/ad-services/taxonomy/taxonomy-service';
+import { taxonomyService } from '../../../src/ad-services/taxonomy/taxonomy-service';
 import {
 	AdTags,
 	taxonomyServiceLoader,
@@ -9,7 +9,6 @@ import {
 
 describe('Taxonomy service', () => {
 	const sandbox = sinon.createSandbox();
-	let taxonomyService;
 	let getAdTagsStub;
 
 	const adTags: AdTags = {
@@ -21,7 +20,6 @@ describe('Taxonomy service', () => {
 		getAdTagsStub = sandbox.stub(taxonomyServiceLoader, 'getAdTags').callsFake(() => {
 			return Promise.resolve(adTags);
 		});
-		taxonomyService = new TaxonomyService(taxonomyServiceLoader);
 	});
 
 	afterEach(() => {

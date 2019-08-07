@@ -7,8 +7,6 @@ export class TaxonomyService implements DelayModule {
 	private delayPromise: Promise<void> = null;
 	private resolveDelayPromise: () => void = null;
 
-	constructor(public taxonomyServiceLoader) {}
-
 	async configurePageLevelTargeting(): Promise<AdTags> {
 		if (this.delayPromise === null) {
 			this.configureDelayPromise();
@@ -19,7 +17,7 @@ export class TaxonomyService implements DelayModule {
 			return {};
 		}
 
-		const adTags: AdTags = await this.taxonomyServiceLoader.getAdTags();
+		const adTags: AdTags = await taxonomyServiceLoader.getAdTags();
 
 		utils.logger(logGroup, 'taxonomy ad tags', adTags);
 
@@ -59,4 +57,4 @@ export class TaxonomyService implements DelayModule {
 	}
 }
 
-export const taxonomyService = new TaxonomyService(taxonomyServiceLoader);
+export const taxonomyService = new TaxonomyService();
