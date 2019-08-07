@@ -73,14 +73,15 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
 		adType: adType || '',
 		advertiser_id: adSlot.advertiserId,
-		order_id: adSlot.orderId.toString(),
-		creative_id: adSlot.creativeId.toString(),
+		order_id: adSlot.orderId && adSlot.orderId.toString(),
+		creative_id: adSlot.creativeId && adSlot.creativeId.toString(),
 		creative_size: Array.isArray(adSlot.creativeSize)
 			? adSlot.creativeSize.join('x')
 			: adSlot.creativeSize,
-		line_item_id: adSlot.lineItemId.toString(),
+		line_item_id: adSlot.lineItemId && adSlot.lineItemId.toString(),
 		status: status || adSlot.getStatus(),
-		page_width: window.document.body.scrollWidth.toString() || '',
+		page_width:
+			(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
 		time_bucket: now.getHours(),
 		timestamp: now.getTime(),
 		tz_offset: now.getTimezoneOffset(),
