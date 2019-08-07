@@ -1,29 +1,15 @@
-import {
-	context,
-	NavbarManager,
-	scrollListener,
-	slotTweaker,
-	universalAdPackage,
-	utils,
-} from '@wikia/ad-engine';
+import { context, NavbarManager, slotTweaker, universalAdPackage, utils } from '@wikia/ad-engine';
 
-const {
-	CSS_CLASSNAME_STICKY_BFAA,
-	CSS_TIMING_EASE_IN_CUBIC,
-	FADE_IN_TIME,
-	SLIDE_OUT_TIME,
-} = universalAdPackage;
+const { CSS_TIMING_EASE_IN_CUBIC, FADE_IN_TIME, SLIDE_OUT_TIME } = universalAdPackage;
 
 export function getBfaaConfigMobile(): any {
 	return {
-		adjustPageMarginOnScroll: null,
 		autoPlayAllowed: true,
 		defaultStateAllowed: true,
 		fullscreenAllowed: true,
 		stickinessAllowed: true,
 		adSlot: null,
 		templateParams: null,
-		updateNavbarOnScroll: null,
 		slotsToDisable: [
 			'cdm-zone-02',
 			'cdm-zone-03',
@@ -43,12 +29,8 @@ export function getBfaaConfigMobile(): any {
 
 			slotTweaker.onReady(adSlot).then(() => {
 				this.adjustPageMargin();
-				this.adjustPageMarginOnScroll = scrollListener.addCallback(() => this.adjustPageMargin());
 
-				const container = this.adSlot.getElement();
-
-				// For unknown reasons container.offsetHeight is a little bit different before setTimeout
-				setTimeout(() => this.moveNavbar(this.isSticky() ? container.offsetHeight : 0));
+				this.moveNavbar(2 - this.navbarManager.getHeight());
 			});
 
 			// On navigation to search - hide UAP
@@ -74,12 +56,14 @@ export function getBfaaConfigMobile(): any {
 		},
 
 		onAfterStickBfaaCallback(): void {
-			this.updateNavbarPosition();
-			this.updateNavbarOnScroll = scrollListener.addCallback(() => this.updateNavbarPosition());
+			const aspectRatio = this.getSlotRatio(true);
+
+			this.navbarElement.style.setProperty('position', 'fixed');
+			this.navbarElement.style.setProperty('top', `calc(${100 / aspectRatio}vw)`);
+			this.removeSlotMargin();
 		},
 
 		onBeforeUnstickBfaaCallback(): void {
-			scrollListener.removeCallback(this.adjustPageMarginOnScroll);
 			Object.assign(this.navbarElement.style, {
 				transition:
 					`top ${SLIDE_OUT_TIME}ms ${CSS_TIMING_EASE_IN_CUBIC}, ` +
@@ -90,29 +74,21 @@ export function getBfaaConfigMobile(): any {
 		},
 
 		onAfterUnstickBfaaCallback(): void {
-			scrollListener.removeCallback(this.updateNavbarOnScroll);
-			this.updateNavbarPosition();
+			this.moveNavbar(0);
 			this.navbarManager.setPinned(true);
 			this.setTopMargin(this.navbarElement, `-${this.navbarElement.offsetHeight}px`);
 			Object.assign(this.adSlot.getElement().parentNode.style, {
 				position: 'absolute',
 			});
 			this.adjustPageMargin(true);
-			this.adjustSlotMargin();
+			this.adjustSlotMargin(true);
+			this.navbarElement.style.setProperty('position', '');
 			this.navbarElement.style.setProperty('top', '');
 		},
 
 		onResolvedStateSetCallback(): void {
-			scrollListener.removeCallback(this.adjustPageMarginOnScroll);
-
 			this.adjustPageMargin(true);
-			this.adjustSlotMargin();
-
-			if (this.isSticky()) {
-				const aspectRatio = this.getSlotRatio(true);
-
-				this.navbarElement.style.setProperty('top', `calc(${100 / aspectRatio}vw)`);
-			}
+			this.adjustSlotMargin(true);
 		},
 
 		onResolvedStateResetCallback(): void {
@@ -124,12 +100,6 @@ export function getBfaaConfigMobile(): any {
 			const container: HTMLElement = this.adSlot.getElement();
 
 			return container.classList.contains('theme-resolved');
-		},
-
-		isSticky(): boolean {
-			const container: HTMLElement = this.adSlot.getElement();
-
-			return container.classList.contains(CSS_CLASSNAME_STICKY_BFAA);
 		},
 
 		getSlotRatio(resolved: boolean): number {
@@ -148,18 +118,21 @@ export function getBfaaConfigMobile(): any {
 			);
 		},
 
-		adjustSlotMargin(): void {
-			if (!this.isSticky()) {
-				const container: HTMLElement = this.adSlot.getElement();
-				const { top, left } = utils.getElementOffset(container);
+		adjustSlotMargin(resolved?: boolean): void {
+			const aspectRatio = this.getSlotRatio(resolved);
+			const container: HTMLElement = this.adSlot.getElement();
 
-				const currentMarginTop: number = parseInt(container.style.marginTop, 10) || 0;
-				const currentMarginLeft: number = parseInt(container.style.marginLeft, 10) || 0;
+			const { left } = utils.getElementOffset(container);
+			const currentMarginTop: number = parseInt(container.style.marginTop, 10) || 0;
+			const currentMarginLeft: number = parseInt(container.style.marginLeft, 10) || 0;
 
-				container.style.setProperty('margin-top', `${currentMarginTop - top}px`);
-				container.style.setProperty('margin-left', `${currentMarginLeft - left}px`);
-				container.style.setProperty('width', `100vw`);
-			}
+			container.style.setProperty(
+				'margin-top',
+				`calc(-${100 / aspectRatio}% - ${this.navbarManager.getHeight() + currentMarginTop}px)`,
+				'important',
+			);
+			container.style.setProperty('margin-left', `${currentMarginLeft - left}px`, 'important');
+			container.style.setProperty('width', '100vw', 'important');
 		},
 
 		setTopMargin(element: HTMLElement, value: string): void {
@@ -172,12 +145,6 @@ export function getBfaaConfigMobile(): any {
 			container.style.removeProperty('margin-top');
 		},
 
-		updateNavbarPosition(): void {
-			const container = this.adSlot.getElement();
-
-			this.moveNavbar(this.isSticky() ? container.offsetHeight : 0);
-		},
-
 		moveNavbar(offset: number, animationTime?: number): void {
 			// UGLY HACK
 			// Control navbar movement to avoid side-effects.
@@ -185,6 +152,7 @@ export function getBfaaConfigMobile(): any {
 			if (animationTime) {
 				return;
 			}
+
 			this.navbarElement.style.top = offset ? `${offset}px` : '';
 		},
 	};
