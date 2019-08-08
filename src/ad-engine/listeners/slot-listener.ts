@@ -32,11 +32,11 @@ export interface AdSlotData {
 	tz_offset: number;
 	adType: string;
 	status: string;
-	creative_id: string | number;
+	creative_id: string;
 	creative_size: string;
-	line_item_id: string | number;
-	order_id: string | number;
-	page_width: string | number;
+	line_item_id: string;
+	order_id: string;
+	page_width: string;
 	viewport_height: number;
 }
 
@@ -73,14 +73,15 @@ function getData(adSlot: AdSlot, { adType, status }: Partial<AdditionalEventData
 		browser: `${client.getOperatingSystem()} ${client.getBrowser()}`,
 		adType: adType || '',
 		advertiser_id: adSlot.advertiserId,
-		order_id: adSlot.orderId,
-		creative_id: adSlot.creativeId,
+		order_id: adSlot.orderId && adSlot.orderId.toString(),
+		creative_id: adSlot.creativeId && adSlot.creativeId.toString(),
 		creative_size: Array.isArray(adSlot.creativeSize)
 			? adSlot.creativeSize.join('x')
 			: adSlot.creativeSize,
-		line_item_id: adSlot.lineItemId,
+		line_item_id: adSlot.lineItemId && adSlot.lineItemId.toString(),
 		status: status || adSlot.getStatus(),
-		page_width: window.document.body.scrollWidth || '',
+		page_width:
+			(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
 		time_bucket: now.getHours(),
 		timestamp: now.getTime(),
 		tz_offset: now.getTimezoneOffset(),
