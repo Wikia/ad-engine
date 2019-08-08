@@ -1,4 +1,4 @@
-import { context, Dictionary, utils } from '@ad-engine/core';
+import { context, Dictionary, geoCacheStorage, utils } from '@ad-engine/core';
 import { AdInfoContext } from './slot-tracker';
 
 function checkOptIn(): string {
@@ -30,6 +30,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			country: (utils.geoService.getCountryCode() || '').toUpperCase(),
 			device: utils.client.getDeviceType(),
 			document_visibility: utils.getDocumentVisibilityStatus(),
+			is_uap: slot.getConfigProperty('targeting.uap') ? 1 : 0,
 			key_vals: Object.keys(keyVals)
 				.filter((key) => keyVals[key])
 				.map((key) => `${key}=${keyVals[key]}`)
@@ -44,7 +45,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			kv_s2: context.get('targeting.s2') || '',
 			kv_skin: context.get('targeting.skin') || '',
 			kv_top: context.get('targeting.top') || '',
-			labrador: utils.geoService.getSamplingResults().join(';'),
+			labrador: geoCacheStorage.getSamplingResults().join(';'),
 			opt_in: checkOptIn(),
 			page_layout: `pos_top=${topOffset}`,
 			page_width: window.document.body.scrollWidth || '',

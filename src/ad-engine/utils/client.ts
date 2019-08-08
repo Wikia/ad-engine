@@ -8,6 +8,8 @@ let browser: string = null;
 let isBabInitialised = false;
 let operatingSystem: string = null;
 
+export type DeviceType = 'tablet' | 'smartphone' | 'desktop';
+
 function setupBab(): void {
 	bab = new BlockAdBlock({
 		checkOnLoad: false,
@@ -59,7 +61,7 @@ class Client {
 		);
 	}
 
-	getDeviceType(): string {
+	getDeviceType(): DeviceType {
 		if (this.isTablet()) {
 			return 'tablet';
 		}

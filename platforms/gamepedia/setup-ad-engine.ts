@@ -1,10 +1,11 @@
 import {
 	AdEngine,
 	bidders,
-	confiant,
+  confiant,
 	context,
 	events,
 	eventService,
+	geoCacheStorage,
 	utils,
 } from '@wikia/ad-engine';
 import { biddersDelay } from './bidders/bidders-delay';
@@ -65,7 +66,7 @@ function startAdEngine(): void {
 }
 
 function trackLabradorValues(): void {
-	const labradorPropValue = utils.geoService.getSamplingResults().join(';');
+	const labradorPropValue = geoCacheStorage.getSamplingResults().join(';');
 
 	if (labradorPropValue) {
 		PageTracker.trackProp('labrador', labradorPropValue);
