@@ -1,7 +1,7 @@
 import {
 	AdEngine,
 	bidders,
-  confiant,
+	confiant,
 	context,
 	events,
 	eventService,
