@@ -63,8 +63,8 @@ function configure() {
 	if (context.get('options.gamLazyLoading.enabled')) {
 		logger('GAM lazy loading', 'GAM lazy loading enabled');
 		window.googletag.pubads().enableLazyLoad({
-			fetchMarginPercent: 200,
-			renderMarginPercent: 100,
+			fetchMarginPercent: context.get('options.gamLazyLoading.fetchMarginPercent') || 400,
+			renderMarginPercent: context.get('options.gamLazyLoading.renderMarginPercent') || 200,
 			mobileScaling: 1.0,
 		});
 	}
