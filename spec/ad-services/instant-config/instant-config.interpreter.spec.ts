@@ -94,11 +94,11 @@ describe('Instant Config Interpreter', () => {
 		});
 	});
 
-	it('should return true if no value', () => {
+	it('should return undefined if no value', () => {
 		const instantConfig = { babDetection: [{}] };
 
 		mockResponses([true, true, true, true]);
-		expect(interpreter.getValues(instantConfig).babDetection).to.equal(true);
+		expect(interpreter.getValues(instantConfig).babDetection).to.equal(undefined);
 	});
 
 	it('should return value of the first correct group', () => {
