@@ -35,6 +35,7 @@ describe('Taxonomy service', () => {
 		expect(fetchedAdTags).to.deep.equal({
 			esrb: ['foo', 'bar'],
 		});
+		expect(context.get('targeting.txn')).to.equal('1');
 		expect(context.get('targeting.esrb')).to.deep.equal(['foo', 'bar']);
 	});
 

@@ -17,10 +17,13 @@ export class TaxonomyService implements DelayModule {
 			return {};
 		}
 
+		context.set('targeting.txn', '-1');
+
 		const adTags: AdTags = await taxonomyServiceLoader.getAdTags();
 
 		utils.logger(logGroup, 'taxonomy ad tags', adTags);
 
+		context.set('targeting.txn', '1');
 		Object.keys(adTags).forEach((key) => {
 			context.set(`targeting.${key}`, adTags[key]);
 		});
