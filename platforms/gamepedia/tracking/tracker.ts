@@ -3,10 +3,14 @@ import {
 	eventService,
 	playerEvents,
 	porvataTracker,
+	PostmessageTracker,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTracker,
 	slotTrackingMiddleware,
+	TrackingMessage,
+	trackingPayloadValidationMiddleware,
+	TrackingTarget,
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
@@ -49,5 +53,34 @@ export const registerViewabilityTracker = () => {
 		.add(viewabilityPropertiesTrackingMiddleware)
 		.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, viewabilityUrl);
+		});
+};
+
+export const registerPostmessageTrackingTracker = () => {
+	const postmessageTracker = new PostmessageTracker(['payload', 'target']);
+
+	postmessageTracker
+		.add(trackingPayloadValidationMiddleware)
+		.register<TrackingMessage>((message) => {
+			const { target, payload } = message;
+
+			switch (target) {
+				case TrackingTarget.GoogleAnalytics:
+					window.ga(
+						'tracker1.send',
+						'event',
+						payload.category,
+						payload.action,
+						payload.label,
+						typeof payload.value === 'number' ? payload.value.toString() : payload.value,
+					);
+					break;
+				case TrackingTarget.DataWarehouse:
+					const dataWarehouseTracker = new DataWarehouseTracker();
+					dataWarehouseTracker.track(payload);
+					break;
+				default:
+					break;
+			}
 		});
 };

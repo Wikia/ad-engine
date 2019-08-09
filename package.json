@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "41.2.3",
+	"version": "41.2.4",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
