@@ -64,13 +64,16 @@ function updateSrcParameter(isBabDetected): void {
  */
 function trackDetection(isBabDetected): void {
 	const dataWarehouseTracker = new DataWarehouseTracker();
-	markAsReady();
 
 	utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
 
 	setRuntimeParams(isBabDetected);
 	updateSrcParameter(isBabDetected);
 	dispatchDetectionEvent(isBabDetected);
+
+	context.set('options.wad.blocking', isBabDetected);
+
+	markAsReady();
 
 	dataWarehouseTracker.track({
 		category: 'ads-babdetector-detection',

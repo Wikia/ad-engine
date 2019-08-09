@@ -58,6 +58,7 @@ class AdsSetup {
 		context.set('wiki', wikiContext);
 		context.set('state.showAds', true);
 		context.set('state.isMobile', isMobile);
+		context.set('state.isLogged', !!wikiContext.wgUserId);
 		context.set('state.deviceType', utils.client.getDeviceType());
 
 		context.set('options.tracking.kikimora.player', true);
@@ -145,8 +146,15 @@ class AdsSetup {
 	}
 
 	private updateWadContext(): void {
+		const babEnabled = this.instantConfig.get('icBabDetection');
+
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
+		context.set('options.wad.enabled', babEnabled);
+
+		if (!context.get('state.isLogged') && babEnabled) {
+			// BT rec
+			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+		}
 	}
 
 	private isUapAllowed(): boolean {

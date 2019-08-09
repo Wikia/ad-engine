@@ -1,6 +1,7 @@
 import {
 	AdEngine,
 	bidders,
+	btRec,
 	context,
 	events,
 	eventService,
@@ -50,6 +51,9 @@ function startAdEngine(): void {
 
 	engine.init();
 	babDetection.run();
+	babDetection.getPromise().then(() => {
+		btRec.run();
+	});
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {

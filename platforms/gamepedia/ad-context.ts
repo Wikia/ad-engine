@@ -20,6 +20,70 @@ export const basicContext = {
 			globalMethodName: 'loadCustomAd',
 		},
 		maxDelayTimeout: 2000,
+		wad: {
+			enabled: false,
+			blocking: false,
+			btRec: {
+				enabled: false,
+				placementsMap: {
+					'cdm-zone-01': {
+						uid: '5d49e52d0a-188',
+						style: {
+							'z-index': '100',
+						},
+						size: {
+							width: 728,
+							height: 90,
+						},
+						lazy: false,
+					},
+					'cdm-zone-02': {
+						uid: '5d49e534b1-188',
+						style: {
+							'z-index': '100',
+						},
+						size: {
+							width: 300,
+							height: 250,
+						},
+						lazy: false,
+					},
+					'cdm-zone-03': {
+						uid: '5d49e53f6b-188',
+						style: {
+							'z-index': '100',
+						},
+						size: {
+							width: 300,
+							height: 250,
+						},
+						lazy: false,
+					},
+					'cdm-zone-04': {
+						uid: '5d49e5469d-188',
+						style: {
+							'z-index': '100',
+						},
+						size: {
+							width: 728,
+							height: 90,
+						},
+						lazy: false,
+					},
+					'cdm-zone-06': {
+						uid: '5d49e54f25-188',
+						style: {
+							'z-index': '100',
+						},
+						size: {
+							width: 300,
+							height: 250,
+						},
+						lazy: false,
+					},
+				},
+			},
+		},
 	},
 	slots: {},
 	services: {
