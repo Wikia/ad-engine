@@ -34,12 +34,7 @@ export class Stickiness extends EventEmitter {
 			this.stickyConditions.push(this.adSlot.viewed);
 		}
 
-		Promise.all(this.stickyConditions).then(() => {
-			if (!this.sticky) {
-				this.logger('Blocking stickiness');
-				this.isStickinessBlocked = true;
-			}
-		});
+		this.registerStickinessBlocking();
 	}
 
 	logger(...args: any[]): void {
@@ -96,6 +91,15 @@ export class Stickiness extends EventEmitter {
 		} else {
 			this.registerRevertStickiness();
 		}
+	}
+
+	registerStickinessBlocking(): void {
+		Promise.all(this.stickyConditions).then(() => {
+			if (!this.sticky) {
+				this.logger('Blocking stickiness');
+				this.isStickinessBlocked = true;
+			}
+		});
 	}
 
 	blockRevertStickiness(): void {
