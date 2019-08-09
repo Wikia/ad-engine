@@ -25,8 +25,8 @@ export class InstantConfigService {
 		utils.logger(logGroup, 'instantiated with', this.repository);
 	}
 
-	get<T extends InstantConfigValue>(key: string, defaultValue: T = null): T {
-		if (key in this.repository) {
+	get<T extends InstantConfigValue>(key: string, defaultValue: T = undefined): T {
+		if (key in this.repository && this.repository[key] !== undefined) {
 			return this.repository[key] as any;
 		}
 
