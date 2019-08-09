@@ -80,6 +80,7 @@ describe('Instant Config Service', () => {
 			scrollTimeout: { first: 10, next: 30 },
 			wgAdDriverA9BidderCountries: ['PL'],
 			aiBidder: true,
+			undefinedTest: undefined,
 		};
 
 		beforeEach(async () => {
@@ -100,12 +101,20 @@ describe('Instant Config Service', () => {
 				expect(instance.get('aiBidder', false)).to.equal(true);
 			});
 
-			it('should return null if key does not exist', () => {
-				expect(instance.get('doesNotExist')).to.equal(null);
+			it('should return undefined if key does not exist', () => {
+				expect(instance.get('doesNotExist')).to.equal(undefined);
 			});
 
 			it('should return default if key does not exist', () => {
 				expect(instance.get('doesNotExist', 'it is ok')).to.equal('it is ok');
+			});
+
+			it('should return undefined if key has undefined value', () => {
+				expect(instance.get('undefinedTest')).to.equal(undefined);
+			});
+
+			it('should return default if key has undefined value', () => {
+				expect(instance.get('undefinedTest', 'it is ok')).to.equal('it is ok');
 			});
 		});
 
