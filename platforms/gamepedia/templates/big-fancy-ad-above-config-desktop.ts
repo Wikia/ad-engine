@@ -11,6 +11,7 @@ import {
 import { editModeManager } from '../utils/edit-mode-manager';
 
 const { CSS_TIMING_EASE_IN_CUBIC, FADE_IN_TIME, SLIDE_OUT_TIME } = universalAdPackage;
+const navbarBorderSize = 1;
 
 export function getBfaaConfigDesktop(): any {
 	return {
@@ -109,7 +110,7 @@ export function getBfaaConfigDesktop(): any {
 		setPageMargin(aspectRatio: number): void {
 			this.config.mainContainer.style.setProperty(
 				'margin-top',
-				`calc(${100 / aspectRatio}% + ${this.navbarManager.getHeight() - 1}px)`,
+				`calc(${100 / aspectRatio}% + ${this.navbarManager.getHeight() - navbarBorderSize}px)`,
 				'important',
 			);
 
@@ -144,10 +145,11 @@ export function getBfaaConfigDesktop(): any {
 			const { left } = utils.getElementOffset(container);
 			const currentMarginTop: number = parseInt(container.style.marginTop, 10) || 0;
 			const currentMarginLeft: number = parseInt(container.style.marginLeft, 10) || 0;
+			const navbarPosition = this.navbarManager.getHeight() - navbarBorderSize + currentMarginTop;
 
 			container.style.setProperty(
 				'margin-top',
-				`calc(-${100 / aspectRatio}% - ${this.navbarManager.getHeight() - 1 + currentMarginTop}px)`,
+				`calc(-${100 / aspectRatio}% - ${navbarPosition}px)`,
 				'important',
 			);
 			container.style.setProperty('margin-left', `${currentMarginLeft - left}px`, 'important');

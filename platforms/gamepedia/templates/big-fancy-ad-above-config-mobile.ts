@@ -1,6 +1,7 @@
 import { context, NavbarManager, slotTweaker, universalAdPackage, utils } from '@wikia/ad-engine';
 
 const { CSS_TIMING_EASE_IN_CUBIC, FADE_IN_TIME, SLIDE_OUT_TIME } = universalAdPackage;
+const navbarBorderSize = 1;
 
 export function getBfaaConfigMobile(): any {
 	return {
@@ -30,7 +31,7 @@ export function getBfaaConfigMobile(): any {
 			slotTweaker.onReady(adSlot).then(() => {
 				this.adjustPageMargin();
 
-				this.moveNavbar(2 - this.navbarManager.getHeight());
+				this.moveNavbar(navbarBorderSize * 2 - this.navbarManager.getHeight());
 			});
 
 			// On navigation to search - hide UAP
@@ -114,7 +115,7 @@ export function getBfaaConfigMobile(): any {
 
 			this.setTopMargin(
 				this.config.mainContainer,
-				`calc(${100 / aspectRatio}vw + ${this.navbarManager.getHeight() - 1}px)`,
+				`calc(${100 / aspectRatio}vw + ${this.navbarManager.getHeight() - navbarBorderSize}px)`,
 			);
 		},
 
