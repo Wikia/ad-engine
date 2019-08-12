@@ -12,26 +12,21 @@ interface BTPlacementConfig {
 	lazy?: boolean;
 }
 
-/**
- * Injects BT script
- */
-function loadScript(): Promise<Event> {
-	const btLibraryUrl = `//${scriptDomain}/galleryloader.js`;
-
-	return utils.scriptLoader.loadScript(btLibraryUrl, 'text/javascript', false, document.head
-		.lastChild as HTMLElement);
+interface BTLoader {
+	clearThrough: () => void;
 }
 
 /**
  * BT service handler
  */
 class BTRec {
+	private bt: BTLoader = null;
 	private placementsMap: Dictionary<BTPlacementConfig>;
 
 	/**
 	 * Runs BT rec service and injects code
 	 */
-	run(): Promise<void> {
+	async run(): Promise<void> {
 		this.placementsMap = context.get('options.wad.btRec.placementsMap') || {};
 
 		if (!context.get('options.wad.btRec.enabled') || !context.get('options.wad.blocking')) {
@@ -45,14 +40,29 @@ class BTRec {
 		this.markAdSlots();
 
 		if (!isDebug) {
-			loadScript().then(this.triggerScript);
+			await this.loadScript();
+
+			this.bt = (window as any).BT;
+
+			this.triggerScript();
 		}
+	}
+
+	/**
+	 * Mark ad slots as ready for rec operations
+	 */
+	private markAdSlots(): void {
+		Object.keys(this.placementsMap).forEach((key) => {
+			if (!this.placementsMap[key].lazy) {
+				this.duplicateSlot(key);
+			}
+		});
 	}
 
 	/**
 	 * Duplicates slots before rec code execution
 	 */
-	duplicateSlot(slotName: string): Node | boolean {
+	private duplicateSlot(slotName: string): Node | boolean {
 		const slot = document.getElementById(slotName);
 
 		if (slot) {
@@ -91,29 +101,21 @@ class BTRec {
 	}
 
 	/**
-	 * Returns slot uid for given slot name
+	 * Injects BT script
 	 */
-	getPlacementId(slotName: string): string {
-		return this.placementsMap[slotName].uid || '';
-	}
+	private loadScript(): Promise<Event> {
+		const btLibraryUrl = `//${scriptDomain}/galleryloader.js`;
 
-	/**
-	 * Mark ad slots as ready for rec operations
-	 */
-	markAdSlots(): void {
-		Object.keys(this.placementsMap).forEach((key) => {
-			if (!this.placementsMap[key].lazy) {
-				this.duplicateSlot(key);
-			}
-		});
+		return utils.scriptLoader.loadScript(btLibraryUrl, 'text/javascript', false, document.head
+			.lastChild as HTMLElement);
 	}
 
 	/**
 	 * Force trigger of BT code
 	 */
-	triggerScript(): void {
-		if (!isDebug && window && window.BT && window.BT.clearThrough) {
-			window.BT.clearThrough();
+	private triggerScript(): void {
+		if (!isDebug && this.bt && this.bt.clearThrough) {
+			this.bt.clearThrough();
 		}
 	}
 }

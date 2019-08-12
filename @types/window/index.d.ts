@@ -7,7 +7,6 @@ interface Window {
 	ads?: Ads;
 	adsQueue?: any;
 	apstag?: Apstag;
-	BT: any;
 	buildAdUnitString?: (arg0: string, arg1: any) => string;
 	confiant?: Confiant;
 	google: {
