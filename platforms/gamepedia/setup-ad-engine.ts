@@ -6,6 +6,7 @@ import {
 	events,
 	eventService,
 	geoCacheStorage,
+	taxonomyService,
 	utils,
 } from '@wikia/ad-engine';
 import { biddersDelay } from './bidders/bidders-delay';
@@ -27,6 +28,7 @@ export async function setupAdEngine(isOptedIn): Promise<void> {
 
 	context.push('delayModules', babDetection);
 	context.push('delayModules', biddersDelay);
+	context.push('delayModules', taxonomyService);
 
 	eventService.on(events.AD_SLOT_CREATED, (slot) => {
 		utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
@@ -81,5 +83,5 @@ function callExternals(): void {
 		responseListener: biddersDelay.markAsReady,
 	});
 
-	// ToDo: other externals
+	taxonomyService.configurePageLevelTargeting();
 }

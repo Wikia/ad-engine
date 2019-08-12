@@ -91,6 +91,9 @@ export const basicContext = {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
+		taxonomy: {
+			enabled: false,
+		},
 	},
 	src: 'gamepedia',
 	state: {
