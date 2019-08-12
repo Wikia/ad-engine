@@ -6,6 +6,12 @@ import { slotService } from './slot-service';
 
 const logGroup = 'slot-tweaker';
 
+interface SlotActionMessage {
+	action: string;
+	slotName: string;
+	aspectRatio?: number;
+}
+
 export class SlotTweaker {
 	static readonly SLOT_CLOSE_IMMEDIATELY = 'force-close';
 
@@ -114,7 +120,7 @@ export class SlotTweaker {
 	}
 
 	registerMessageListener(): void {
-		messageBus.register(
+		messageBus.register<SlotActionMessage>(
 			{
 				keys: ['action', 'slotName'],
 				infinite: true,

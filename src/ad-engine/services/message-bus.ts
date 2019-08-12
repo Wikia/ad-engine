@@ -1,31 +1,40 @@
 import { logger } from '../utils';
 
-type CallbackFn = (...args: any[]) => void;
+type CallbackFn<T> = (args: T) => void;
 interface Match {
 	keys?: string[];
 	infinite?: boolean;
 }
 export interface MessageCallback {
 	match: Match;
-	fn: CallbackFn;
+	fn: CallbackFn<any>;
 }
 
 const callbacks: MessageCallback[] = [];
 const logGroup = 'message-bus';
 
 function isAdEngineMessage(message: any): boolean {
-	try {
-		return !!JSON.parse(message.data).AdEngine;
-	} catch (e) {
-		return false;
+	const data = getDataFromMessage(message);
+
+	return !!data && !!data.AdEngine;
+}
+
+function getDataFromMessage(message: any): any {
+	if (typeof message.data === 'string') {
+		try {
+			return JSON.parse(message.data);
+		} catch (e) {
+			return undefined;
+		}
 	}
+	return message.data;
 }
 
 function messageMatch(match: Match, message: MessageEvent): boolean {
 	let matching = true;
 
 	if (match.keys) {
-		const data = JSON.parse(message.data).AdEngine;
+		const data = getDataFromMessage(message).AdEngine;
 
 		match.keys.forEach((key) => {
 			matching = matching && data[key];
@@ -47,7 +56,7 @@ function onMessage(message: MessageEvent): void {
 			if (messageMatch(callback.match, message)) {
 				logger(logGroup, 'Matching message', message, callback);
 
-				callback.fn(JSON.parse(message.data).AdEngine);
+				callback.fn(getDataFromMessage(message).AdEngine);
 
 				if (!callback.match.infinite) {
 					callbacks.splice(i, 1);
@@ -60,12 +69,20 @@ function onMessage(message: MessageEvent): void {
 }
 
 class MessageBus {
+	private isInitialized = false;
+
 	init(): void {
+		if (this.isInitialized) {
+			return;
+		}
+
 		logger(logGroup, 'Register message listener');
-		window.addEventListener('message', onMessage);
+		window.addEventListener('message', onMessage, false);
+		this.isInitialized = true;
 	}
 
-	register(match: Match, callback: CallbackFn): void {
+	register<T>(match: Match, callback: CallbackFn<T>): void {
+		this.init(); // idempotent, can be called with each register call
 		callbacks.push({
 			match,
 			fn: callback,
