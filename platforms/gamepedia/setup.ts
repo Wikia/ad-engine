@@ -113,6 +113,9 @@ class AdsSetup {
 			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
 		);
 
+		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
+		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
+
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
@@ -128,9 +131,8 @@ class AdsSetup {
 			slotsContext.addSlotSize('cdm-zone-01', uapSize);
 		}
 
-		// ToDo: rest of context
-
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 
 		this.injectIncontentPlayer();
 
