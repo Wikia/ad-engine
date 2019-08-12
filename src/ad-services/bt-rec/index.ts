@@ -2,8 +2,6 @@ import { context, Dictionary, utils } from '@ad-engine/core';
 
 const logGroup = 'bt-loader';
 const isDebug = utils.queryString.isUrlParamSet('bt-rec-debug');
-const placementClass = 'bt-uid-tg';
-const scriptDomain = 'wikia-inc-com.videoplayerhub.com';
 
 interface BTPlacementConfig {
 	uid: string;
@@ -20,7 +18,7 @@ interface BTLoader {
  * BT service handler
  */
 class BTRec {
-	private bt: BTLoader = null;
+	private bt: BTLoader;
 	private placementsMap: Dictionary<BTPlacementConfig>;
 
 	/**
@@ -63,6 +61,7 @@ class BTRec {
 	 * Duplicates slots before rec code execution
 	 */
 	private duplicateSlot(slotName: string): Node | boolean {
+		const placementClass = 'bt-uid-tg';
 		const slot = document.getElementById(slotName);
 
 		if (slot) {
@@ -104,6 +103,7 @@ class BTRec {
 	 * Injects BT script
 	 */
 	private loadScript(): Promise<Event> {
+		const scriptDomain = 'wikia-inc-com.videoplayerhub.com';
 		const btLibraryUrl = `//${scriptDomain}/galleryloader.js`;
 
 		return utils.scriptLoader.loadScript(btLibraryUrl, 'text/javascript', false, document.head
