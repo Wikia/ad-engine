@@ -50,7 +50,7 @@ export class InstantConfigInterpreter {
 		);
 
 		if (typeof correct !== 'undefined') {
-			return typeof correct.value !== 'undefined' ? correct.value : true;
+			return correct.value;
 		}
 
 		return undefined;
