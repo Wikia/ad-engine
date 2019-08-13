@@ -11,7 +11,6 @@ import {
 	taxonomyService,
 	utils,
 } from '@wikia/ad-engine';
-
 import { adsSetup } from './setup-context';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
 import { trackBab } from './tracking/bab-tracker';
