@@ -1,28 +1,13 @@
 import { babDetection, biddersDelay } from '@platforms/shared';
-import {
-	AdEngine,
-	bidders,
-	btRec,
-	confiant,
-	context,
-	events,
-	eventService,
-	geoCacheStorage,
-	taxonomyService,
-	utils,
-} from '@wikia/ad-engine';
-
+import { AdEngine, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
 import { adsSetup } from './setup-context';
-import { hideAllAdSlots } from './templates/hide-all-ad-slots';
-import { trackBab } from './tracking/bab-tracker';
-import { PageTracker } from './tracking/page-tracker';
-import { editModeManager } from './utils/edit-mode-manager';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 const logGroup = 'ad-engine';
 
 export async function setupAdEngine(isOptedIn: boolean): Promise<void> {
-	const wikiContext = window.mw ? window.mw.config.values : {};
+	// TODO: Add actual context
+	const wikiContext = {};
 
 	await adsSetup.configure(wikiContext, isOptedIn);
 
@@ -30,7 +15,6 @@ export async function setupAdEngine(isOptedIn: boolean): Promise<void> {
 
 	context.push('delayModules', babDetection);
 	context.push('delayModules', biddersDelay);
-	context.push('delayModules', taxonomyService);
 
 	eventService.on(events.AD_SLOT_CREATED, (slot) => {
 		utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
@@ -38,14 +22,11 @@ export async function setupAdEngine(isOptedIn: boolean): Promise<void> {
 	});
 
 	if (context.get('state.showAds')) {
-		editModeManager.onActivate(() => hideAllAdSlots());
 		callExternals();
 		startAdEngine();
 	} else {
-		hideAllAdSlots();
+		// TODO: Hide All Ad Slots
 	}
-
-	trackLabradorValues();
 }
 
 function startAdEngine(): void {
@@ -54,14 +35,7 @@ function startAdEngine(): void {
 	const engine = new AdEngine();
 
 	engine.init();
-
-	babDetection.run().then((isBabDetected) => {
-		trackBab(isBabDetected);
-
-		if (isBabDetected) {
-			btRec.run();
-		}
-	});
+	babDetection.run();
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
@@ -76,20 +50,10 @@ function startAdEngine(): void {
 	context.push('state.adStack', { id: 'cdm-zone-06' });
 }
 
-function trackLabradorValues(): void {
-	const labradorPropValue = geoCacheStorage.getSamplingResults().join(';');
-
-	if (labradorPropValue) {
-		PageTracker.trackProp('labrador', labradorPropValue);
-	}
-}
-
 function callExternals(): void {
 	bidders.requestBids({
 		responseListener: biddersDelay.markAsReady,
 	});
 
-	confiant.call();
-
-	taxonomyService.configurePageLevelTargeting();
+	// ToDo: other externals
 }

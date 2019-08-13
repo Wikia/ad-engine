@@ -1,3 +1,4 @@
+import { biddersContext, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -8,8 +9,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import { biddersContext } from './bidders/bidders-context';
-import { slotsContext } from './slots';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
 import {
@@ -37,10 +36,10 @@ const fallbackInstantConfig = {
 	wgAdDriverUapRestriction: 1,
 };
 
-class AdsSetup {
+class ContextSetup {
 	private instantConfig: InstantConfigService;
 
-	async configure(wikiContext, isOptedIn): Promise<void> {
+	async configure(wikiContext, isOptedIn: boolean): Promise<void> {
 		set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 		this.instantConfig = await InstantConfigService.init();
 
@@ -132,9 +131,8 @@ class AdsSetup {
 			slotsContext.addSlotSize('cdm-zone-01', uapSize);
 		}
 
-		// ToDo: rest of context
-
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 
 		this.injectIncontentPlayer();
 
@@ -211,4 +209,4 @@ class AdsSetup {
 	}
 }
 
-export const adsSetup = new AdsSetup();
+export const adsSetup = new ContextSetup();

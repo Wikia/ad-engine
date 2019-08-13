@@ -21,6 +21,7 @@ export interface BigFancyAdAboveConfig {
 	defaultStateAllowed: boolean;
 	fullscreenAllowed: boolean;
 	stickinessAllowed: boolean;
+	stickyUntilSlotViewed: boolean;
 	slotSibling: string;
 	slotsToEnable: string[];
 	slotsToDisable?: string[];
@@ -49,6 +50,7 @@ export class BigFancyAdAbove {
 			defaultStateAllowed: true,
 			fullscreenAllowed: true,
 			stickinessAllowed: true,
+			stickyUntilSlotViewed: true,
 			slotSibling: '.topic-header',
 			slotsToEnable: ['bottom_leaderboard', 'incontent_boxad', 'top_boxad'],
 			onInit: () => {},

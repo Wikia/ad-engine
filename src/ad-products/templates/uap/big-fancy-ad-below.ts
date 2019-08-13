@@ -14,6 +14,7 @@ export class BigFancyAdBelow {
 			defaultStateAllowed: true,
 			fullscreenAllowed: true,
 			stickinessAllowed: false,
+			stickyUntilSlotViewed: true,
 			bfaaSlotName: 'top_leaderboard',
 			unstickInstantlyBelowPosition: 500,
 			topThreshold: 58,

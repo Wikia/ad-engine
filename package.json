@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "41.3.0",
+	"version": "41.6.0",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
@@ -121,11 +121,13 @@
 	"scripts": {
 		"serve": "npm run dev",
 		"dev": "webpack-dev-server --progress --config webpack.dev.js",
-		"dev:gp": "webpack-dev-server --progress --config webpack.platforms.js --env.PLATFORM=gamepedia",
+		"dev:gp": "webpack-dev-server --progress --config webpack.platforms.js --env.PLATFORM=gamepedia --port=9000",
+		"dev:mf": "webpack-dev-server --progress --config webpack.platforms.js --env.PLATFORM=mutfut --port=9100",
 		"prebuild": "rm -rf dist",
 		"build": "rollup -c rollup.config.js",
 		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
 		"build:gp": "webpack --config webpack.platforms.js --env.PLATFORM=gamepedia -p",
+		"build:mf": "webpack --config webpack.platforms.js --env.PLATFORM=mutfut -p",
 		"watch": "npm run build -- -w",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "tslint --project . && npm run rules:lint",

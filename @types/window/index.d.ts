@@ -3,6 +3,7 @@
 
 interface Window {
 	__cmp?: WindowCMP;
+	XMLHttpRequest?: any;
 	AdEngine_adType?: any;
 	ads?: Ads;
 	adsQueue?: any;

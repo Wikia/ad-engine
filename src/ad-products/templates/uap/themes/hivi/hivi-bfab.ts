@@ -183,7 +183,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 	/**
 	 * @protected
 	 */
-	async getStateResolvedAndVideoViewed() {
+	async getVideoViewedAndTimeout() {
 		await utils.wait(BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY);
 	}
 
