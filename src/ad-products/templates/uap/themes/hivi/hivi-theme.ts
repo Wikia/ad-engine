@@ -31,16 +31,17 @@ export class BigFancyAdHiviTheme extends BigFancyAdTheme {
 	 * @protected
 	 */
 	addUnstickLogic() {
-		const stateResolvedAndVideoViewed = this.getStateResolvedAndVideoViewed();
+		const { stickyUntilSlotViewed } = this.config;
+		const videoViewedAndTimeout = this.getVideoViewedAndTimeout();
 
-		this.stickiness = new Stickiness(this.adSlot, stateResolvedAndVideoViewed);
+		this.stickiness = new Stickiness(this.adSlot, videoViewedAndTimeout, stickyUntilSlotViewed);
 	}
 
 	/**
 	 * @abstract
 	 * @protected
 	 */
-	getStateResolvedAndVideoViewed() {
+	getVideoViewedAndTimeout() {
 		throw new utils.NotImplementedException();
 	}
 

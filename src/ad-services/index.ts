@@ -1,4 +1,5 @@
 export * from './bill-the-lizard';
+export * from './bt-rec';
 export * from './browsi';
 export * from './confiant';
 export * from './instant-config';

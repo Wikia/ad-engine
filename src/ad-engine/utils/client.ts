@@ -33,7 +33,7 @@ class Client {
 		return !this.isSmartphone() && !this.isTablet();
 	}
 
-	checkBlocking(enabled = () => {}, disabled = () => {}): Promise<{}> {
+	checkBlocking(enabled = () => {}, disabled = () => {}): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!isBabInitialised) {
 				if (typeof BlockAdBlock === 'undefined') {

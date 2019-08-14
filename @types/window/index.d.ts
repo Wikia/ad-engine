@@ -3,8 +3,11 @@
 
 interface Window {
 	__cmp?: WindowCMP;
+	XMLHttpRequest?: any;
 	AdEngine_adType?: any;
 	ads?: Ads;
+	adsQueue?: any;
+	apstag?: Apstag;
 	buildAdUnitString?: (arg0: string, arg1: any) => string;
 	confiant?: Confiant;
 	google: {
@@ -21,9 +24,7 @@ interface Window {
 	pbjs?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
-	adsQueue?: any;
 	pvUID?: string;
-	apstag?: Apstag;
 }
 
 declare var NOLBUNDLE: any;

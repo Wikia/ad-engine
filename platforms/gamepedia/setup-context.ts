@@ -1,3 +1,4 @@
+import { biddersContext, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -8,8 +9,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import { biddersContext } from './bidders/bidders-context';
-import { slotsContext } from './slots';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
 import {
@@ -37,10 +36,10 @@ const fallbackInstantConfig = {
 	wgAdDriverUapRestriction: 1,
 };
 
-class AdsSetup {
+class ContextSetup {
 	private instantConfig: InstantConfigService;
 
-	async configure(wikiContext, isOptedIn): Promise<void> {
+	async configure(wikiContext, isOptedIn: boolean): Promise<void> {
 		set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 		this.instantConfig = await InstantConfigService.init();
 
@@ -60,6 +59,7 @@ class AdsSetup {
 		context.set('wiki', wikiContext);
 		context.set('state.showAds', true);
 		context.set('state.isMobile', isMobile);
+		context.set('state.isLogged', !!wikiContext.wgUserId);
 		context.set('state.deviceType', utils.client.getDeviceType());
 
 		context.set('options.tracking.kikimora.player', true);
@@ -150,8 +150,15 @@ class AdsSetup {
 	}
 
 	private updateWadContext(): void {
+		const babEnabled = this.instantConfig.get('icBabDetection');
+
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
+		context.set('options.wad.enabled', babEnabled);
+
+		if (!context.get('state.isLogged') && babEnabled) {
+			// BT rec
+			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+		}
 	}
 
 	private isUapAllowed(): boolean {
@@ -202,4 +209,4 @@ class AdsSetup {
 	}
 }
 
-export const adsSetup = new AdsSetup();
+export const adsSetup = new ContextSetup();
