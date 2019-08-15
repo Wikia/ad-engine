@@ -376,6 +376,9 @@ export default {
 			enabled: true,
 			id: 'KPSUiAKl',
 		},
+		taxonomy: {
+			enabled: false,
+		},
 		moatYi: {
 			enabled: true,
 			partnerCode: 'wikiaprebidheader490634422386',

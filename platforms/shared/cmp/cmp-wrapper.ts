@@ -207,13 +207,15 @@ class CmpWrapper {
 	 * Store and replace original CMP with temporary opting-out version
 	 */
 	overwriteCmp(): void {
+		let cmpStored: WindowCMP;
+
 		window.__cmp('getConsentData', null, () => {
 			utils.logger(logGroup, 'Restoring original CMP module');
-			window.__cmp = window.__cmpStored;
+			window.__cmp = cmpStored;
 		});
 
 		utils.logger(logGroup, 'Overwriting original CMP module');
-		window.__cmpStored = window.__cmp;
+		cmpStored = window.__cmp;
 		// @ts-ignore
 		window.__cmp = (method: string, data: any, callback: any) => {
 			const consentData = {
@@ -244,7 +246,7 @@ class CmpWrapper {
 
 			callback(consentData);
 		};
-		window.__cmp.receiveMessage = window.__cmpStored.receiveMessage;
+		window.__cmp.receiveMessage = cmpStored.receiveMessage;
 	}
 
 	/**

@@ -1,4 +1,4 @@
-import { DeviceMode } from '../models/device-mode';
+import { DeviceMode, getDeviceMode } from '../models/device-mode';
 import { getA9Context } from './repository/a9';
 import { getAppNexusContext } from './repository/app-nexus';
 import { getIndexExchangeContext } from './repository/index-exchange';
@@ -8,7 +8,7 @@ import { getRubiconContext } from './repository/rubicon';
 import { getWikiaContext } from './repository/wikia';
 
 class BiddersContext {
-	private mode: DeviceMode = window.matchMedia('(max-width: 840px)').matches ? 'mobile' : 'desktop';
+	private mode: DeviceMode = getDeviceMode();
 
 	generate(): any {
 		return {

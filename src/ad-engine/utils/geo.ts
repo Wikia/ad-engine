@@ -17,19 +17,15 @@ export interface GeoData {
 
 function setUpGeoData(): GeoData {
 	const jsonData = decodeURIComponent(Cookies.get('Geo'));
-	let geoData: GeoData = {};
 
 	try {
-		geoData = JSON.parse(jsonData) || {};
-	} catch (e) {
-		// Stay with {} value
-	}
+		const geoData: GeoData = JSON.parse(jsonData) || {};
+		context.set('geo.region', geoData.region);
+		context.set('geo.country', geoData.country);
+		context.set('geo.continent', geoData.continent);
+	} catch (e) {}
 
-	context.set('geo.region', geoData.region);
-	context.set('geo.country', geoData.country);
-	context.set('geo.continent', geoData.continent);
-
-	return geoData;
+	return context.get('geo');
 }
 
 function hasCache(countryList: string[]): boolean {
