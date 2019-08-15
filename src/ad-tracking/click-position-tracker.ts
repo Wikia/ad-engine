@@ -4,8 +4,14 @@ export interface ClickPositionContext {
 	data: any;
 }
 
+interface Coordinates {
+	x: number;
+	y: number;
+}
+
 class ClickPositionTracker {
 	private middlewareService = new utils.MiddlewareService<ClickPositionContext>();
+	private logGroup = 'click-position-tracker';
 
 	add(middleware: utils.Middleware<ClickPositionContext>): this {
 		this.middlewareService.add(middleware);
@@ -15,17 +21,16 @@ class ClickPositionTracker {
 
 	handleClickEvent(
 		callback: utils.Middleware<ClickPositionContext>,
-		event: MouseEvent,
-		slotWidth: number,
-		slotHeight: number,
+		event: Coordinates,
+		elementWidth: number,
+		elementHeight: number,
 	): void {
-		const y = event.clientY - window.innerHeight + slotHeight;
 		this.middlewareService.execute(
 			{
 				data: {
 					category: 'click_position',
 					action: 'click',
-					label: `size=${slotWidth}x${slotHeight}|x=${event.clientX}|y=${y}`,
+					label: `size=${elementWidth}x${elementHeight}|x=${event.x}|y=${event.y}`,
 				},
 			},
 			callback,
@@ -50,22 +55,40 @@ class ClickPositionTracker {
 		callback: utils.Middleware<ClickPositionContext>,
 		slotName: string,
 	): void {
-		const adUnit = utils.stringBuilder.build(context.get('adUnitId'), {
-			...context,
-			slotConfig: context.get(`slots.${slotName}`),
-		});
-		const slot = document.getElementById(slotName);
-		const iframeId = `google_ads_iframe_${adUnit}_0`;
-		const iframeWrapper = document.getElementById(iframeId) as HTMLIFrameElement;
-		const iframe = iframeWrapper.contentWindow.document.body as HTMLElement;
+		const slot = slotService.get(slotName);
+		const iframeElement = slot.getIframe();
+		const slotElement = slot.getElement();
 
-		if (iframeWrapper && iframe) {
-			iframeWrapper.addEventListener('click', (e) =>
-				this.handleClickEvent(callback, e, slot.offsetWidth, slot.offsetHeight),
-			);
-			iframe.addEventListener('click', (e) =>
-				this.handleClickEvent(callback, e, slot.offsetWidth, slot.offsetHeight),
-			);
+		if (!slot || !iframeElement) {
+			utils.logger(this.logGroup, `Slot ${slotName} has no iframe.`);
+			return;
+		}
+
+		if (!typeof iframeElement.contentWindow) {
+			utils.logger(this.logGroup, `Slot ${slotName} is served in safeframe.`);
+			return;
+		}
+		const iframeBody = iframeElement.contentWindow.document.body as HTMLElement;
+
+		if (iframeBody && slotElement) {
+			slotElement.addEventListener('click', (e: MouseEvent) => {
+				const y = e.clientY - window.innerHeight + slotElement.offsetHeight;
+
+				this.handleClickEvent(
+					callback,
+					{ x: e.clientX, y },
+					slotElement.offsetWidth,
+					slotElement.offsetHeight,
+				);
+			});
+			iframeBody.addEventListener('click', (e: MouseEvent) => {
+				this.handleClickEvent(
+					callback,
+					{ x: e.clientX, y: e.clientY },
+					iframeElement.offsetWidth,
+					iframeElement.offsetHeight,
+				);
+			});
 		}
 	}
 }
