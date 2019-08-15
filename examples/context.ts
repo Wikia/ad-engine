@@ -194,7 +194,7 @@ export default {
 				loc: 'footer',
 			},
 			defaultTemplates: ['floorAdhesion'],
-			defaultSizes: [[728, 90]],
+			defaultSizes: [[300, 50]],
 		},
 		incontent_boxad: {
 			sizes: [
