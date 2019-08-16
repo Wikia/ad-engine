@@ -1,4 +1,5 @@
-import { Prebid, PrebidBid } from '../../../src/ad-bidders/prebid';
+import { Prebid } from '@wikia/ad-bidders/prebid';
+import { PrebidBid } from '@wikia/ad-engine/services/prebid-wrapper';
 
 export class PrebidBidFactory {
 	static readonly fakeBid: PrebidBid = {

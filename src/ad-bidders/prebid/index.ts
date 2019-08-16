@@ -5,6 +5,8 @@ import {
 	Dictionary,
 	events,
 	eventService,
+	PrebidBid,
+	PrebidTargeting,
 	utils,
 } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
@@ -12,32 +14,12 @@ import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
 import { AdUnitConfig } from './adapters';
 import { adaptersRegistry } from './adapters-registry';
 import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
-import { getSettings, PrebidTargeting } from './prebid-settings';
+import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
 interface PrebidConfig extends BidderConfig {
 	lazyLoadingEnabled?: boolean;
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
-}
-
-export interface PrebidBid {
-	cpm: number;
-	status: string;
-	bidderCode: string;
-	timeToRespond: number;
-	getStatusCode: () => number;
-	width: number;
-	height: number;
-	statusMessage:
-		| 'Pending'
-		| 'Bid available'
-		| 'Bid returned empty or error response'
-		| 'Bid timed out';
-	adId: string;
-	requestId: string;
-	mediaType: 'banner';
-	source: unknown;
-	getSize: () => string; // ${width}x${height}
 }
 
 function postponeExecutionUntilPbjsLoads(method: (...T: any[]) => void): (...T) => void {

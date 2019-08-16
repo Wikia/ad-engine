@@ -1,43 +1,85 @@
-import { context, Dictionary, utils } from '@ad-engine/core';
-import { BaseAdapter } from '../prebid/adapters';
-import { PrebidSettings } from '../prebid/prebid-settings';
+import { Dictionary } from '../models/dictionary';
+import { logger, scriptLoader } from '../utils';
+import { context } from './context-service';
 
 const logGroup = 'prebid-wrapper';
 
-interface MarkBidRequest {
+interface PrebidMarkBidRequest {
 	adId: string;
 	adUnitCode?: string;
 }
 
-interface AdUnit {
+interface PrebidAdUnit {
 	code: string;
 	sizes: number[] | [number, number][];
-	bids: Bid[];
-	mediaTypes?: MediaTypes;
+	bids: PrebidBidder[];
+	mediaTypes?: PrebidMediaTypes;
 	labelAny?: string[];
 	labelAll?: string[];
 }
 
-interface MediaTypes {
+interface PrebidMediaTypes {
 	banner: {};
 	native: {};
 	video: {};
 }
 
-interface Bid {
+interface PrebidBidder {
 	bidder: string;
 	params: {};
 	labelAny?: string[];
 	labelAll?: string[];
 }
 
-interface RequestOptions {
+export interface PrebidBid {
+	cpm: number;
+	status: string;
+	bidderCode: string;
+	timeToRespond: number;
+	getStatusCode: () => number;
+	width: number;
+	height: number;
+	statusMessage:
+		| 'Pending'
+		| 'Bid available'
+		| 'Bid returned empty or error response'
+		| 'Bid timed out';
+	adId: string;
+	requestId: string;
+	mediaType: 'banner';
+	source: unknown;
+	/**
+	 * ${width}x${height}
+	 */
+	getSize: () => string;
+}
+
+interface PrebidRequestOptions {
 	bidsBackHandler?: () => void;
 	timeout?: number;
-	adUnits?: AdUnit[];
+	adUnits?: PrebidAdUnit[];
 	adUnitCodes?: string[];
 	labels?: string[];
 	auctionId?: string;
+}
+
+export interface PrebidSettings {
+	[key: string]: {
+		adserverTargeting: {
+			key: string;
+			val: (bidResponse: any) => string;
+		}[];
+		suppressEmptyKeys: boolean;
+	};
+}
+
+export interface PrebidTargeting {
+	hb_adid?: string;
+	hb_bidder?: string;
+	hb_pb?: string;
+	hb_size?: string;
+
+	[key: string]: string | string[];
 }
 
 window.pbjs = window.pbjs || {};
@@ -64,23 +106,20 @@ export class PrebidWrapper {
 		const libraryUrl = context.get('bidders.prebid.libraryUrl');
 
 		if (libraryUrl) {
-			utils.scriptLoader.loadScript(libraryUrl, 'text/javascript', true, 'first');
+			scriptLoader.loadScript(libraryUrl, 'text/javascript', true, 'first');
 		} else {
-			utils.logger(
-				logGroup,
-				'Prebid library URL not defined. Assuming that window.pbjs will be loaded.',
-			);
+			logger(logGroup, 'Prebid library URL not defined. Assuming that window.pbjs will be loaded.');
 		}
 
 		this.script = new Promise((resolve) => window.pbjs.que.push(() => resolve()));
 	}
 
-	async requestBids(requestOptions: RequestOptions): Promise<void> {
+	async requestBids(requestOptions: PrebidRequestOptions): Promise<void> {
 		await this.script;
 		window.pbjs.requestBids(requestOptions);
 	}
 
-	async getAdUnits(): Promise<AdUnit[]> {
+	async getAdUnits(): Promise<PrebidAdUnit[]> {
 		await this.script;
 
 		return window.pbjs.adUnits || [];
@@ -96,17 +135,18 @@ export class PrebidWrapper {
 		window.pbjs.aliasBidder(bidderCode, alias);
 	}
 
-	async registerBidAdapter(bidderAdaptor: () => BaseAdapter, bidderCode: string) {
+	// TODO: add types from http://prebid.org/dev-docs/bidder-adaptor.html#creating-the-adapter
+	async registerBidAdapter(bidderAdaptor: () => {}, bidderCode: string) {
 		await this.script;
 		window.pbjs.registerBidAdapter(bidderAdaptor, bidderCode);
 	}
 
-	async markWinningBidAsUsed(markBidRequest: MarkBidRequest): Promise<void> {
+	async markWinningBidAsUsed(markBidRequest: PrebidMarkBidRequest): Promise<void> {
 		await this.script;
 		window.pbjs.markWinningBidAsUsed(markBidRequest);
 	}
 
-	async getBidResponsesForAdUnitCode(adUnitCode: string): Promise<Bid[]> {
+	async getBidResponsesForAdUnitCode(adUnitCode: string): Promise<PrebidBidder[]> {
 		await this.script;
 
 		return window.pbjs.getBidResponsesForAdUnitCode(adUnitCode);
@@ -122,8 +162,7 @@ export class PrebidWrapper {
 		window.pbjs.bidderSettings = settings;
 	}
 
-	// TODO unknown = PrebidBid
-	async createBid(statusCode: string): Promise<unknown> {
+	async createBid(statusCode: string): Promise<PrebidBid> {
 		await this.script;
 		return window.pbjs.createBid(statusCode);
 	}

@@ -1,7 +1,6 @@
-import { context, slotService } from '@ad-engine/core';
+import { context, PrebidBid, slotService } from '@ad-engine/core';
 import { AdUnitConfig } from './adapters';
 import { adaptersRegistry } from './adapters-registry';
-import { PrebidBid } from './index';
 
 const lazyLoadSlots = ['bottom_leaderboard'];
 const videoType = 'video';

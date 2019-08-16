@@ -1,13 +1,13 @@
-import { expect } from 'chai';
-import * as sinon from 'sinon';
-import { PrebidBid } from '../../../src/ad-bidders/prebid';
-import { BaseAdapter, DEFAULT_MAX_CPM } from '../../../src/ad-bidders/prebid/adapters';
-import { adaptersRegistry } from '../../../src/ad-bidders/prebid/adapters-registry';
+import { BaseAdapter, DEFAULT_MAX_CPM } from '@wikia/ad-bidders/prebid/adapters';
+import { adaptersRegistry } from '@wikia/ad-bidders/prebid/adapters-registry';
 import {
 	getPrebidBestPrice,
 	transformPriceFromBid,
 	transformPriceFromCpm,
-} from '../../../src/ad-bidders/prebid/price-helper';
+} from '@wikia/ad-bidders/prebid/price-helper';
+import { PrebidBid } from '@wikia/ad-engine/services/prebid-wrapper';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
 import { PrebidBidFactory } from './prebid-bid.factory';
 
 describe('transformPriceFromCpm', () => {

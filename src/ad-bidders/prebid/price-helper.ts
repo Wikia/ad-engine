@@ -1,8 +1,8 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary, PrebidBid } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
 import { DEFAULT_MAX_CPM } from './adapters/base-adapter';
-import { Prebid, PrebidBid } from './index';
+import { Prebid } from './index';
 
 function isValidPrice(bid: PrebidBid): boolean {
 	return bid.getStatusCode && bid.getStatusCode() === Prebid.validResponseStatusCode;
