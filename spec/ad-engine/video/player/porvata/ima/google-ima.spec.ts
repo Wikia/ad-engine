@@ -1,5 +1,5 @@
+import { GoogleIma } from '@wikia/ad-engine/video/player/porvata/ima/google-ima';
 import { expect } from 'chai';
-import { googleIma } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima';
 import { getIma } from '../ima-factory';
 
 let mocks;
@@ -50,7 +50,8 @@ describe('google-ima', () => {
 		};
 	});
 
-	it('create player using factory', () => {
+	it('create player using factory', async () => {
+		const googleIma = await GoogleIma.init();
 		const player = googleIma.getPlayer(mocks.videoSettings);
 
 		expect(typeof player.playVideo).to.equal('function');

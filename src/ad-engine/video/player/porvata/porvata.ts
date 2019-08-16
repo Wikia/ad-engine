@@ -1,8 +1,8 @@
 import { PorvataListener } from '../../../listeners';
 import { client, LazyQueue, tryProperty, viewportObserver, whichProperty } from '../../../utils';
 import { Targeting } from './../../../models';
-import { googleIma } from './ima/google-ima';
-import { GoogleImaPlayer } from './ima/google-ima-player-factory';
+import { GoogleIma } from './ima/google-ima';
+import { GoogleImaPlayer } from './ima/google-ima-player';
 import { VideoParams, VideoSettings } from './video-settings';
 
 export interface PorvataTemplateParams {
@@ -328,9 +328,8 @@ export class Porvata {
 
 		porvataListener.init();
 
-		return googleIma
-			.load()
-			.then(() => googleIma.getPlayer(videoSettings))
+		return GoogleIma.init()
+			.then((googleIma) => googleIma.getPlayer(videoSettings))
 			.then((ima: GoogleImaPlayer) => new PorvataPlayer(ima, params, videoSettings))
 			.then((video: PorvataPlayer) => {
 				function inViewportCallback(isVisible: boolean): void {
