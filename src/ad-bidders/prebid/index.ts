@@ -26,6 +26,18 @@ export interface PrebidBid {
 	bidderCode: string;
 	timeToRespond: number;
 	getStatusCode: () => number;
+	width: number;
+	height: number;
+	statusMessage:
+		| 'Pending'
+		| 'Bid available'
+		| 'Bid returned empty or error response'
+		| 'Bid timed out';
+	adId: string;
+	requestId: string;
+	mediaType: 'banner';
+	source: unknown;
+	getSize: () => string; // ${width}x${height}
 }
 
 function postponeExecutionUntilPbjsLoads(method: (...T: any[]) => void): (...T) => void {
@@ -312,7 +324,7 @@ export class Prebid extends BaseBidder {
 	/**
 	 * @inheritDoc
 	 */
-	calculatePrices() {
-		return null;
+	calculatePrices(): void {
+		return;
 	}
 }

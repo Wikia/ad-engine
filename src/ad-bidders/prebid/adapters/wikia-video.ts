@@ -6,8 +6,6 @@ const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
 const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
-type CreateInstance = () => WikiaVideo;
-
 export class WikiaVideo extends BaseAdapter {
 	static bidderName = 'wikiaVideo';
 
@@ -21,7 +19,6 @@ export class WikiaVideo extends BaseAdapter {
 	limit: number;
 	useRandomPrice: boolean;
 	timeout: number;
-	create: CreateInstance;
 	maxCpm = EXTENDED_MAX_CPM;
 
 	get bidderName(): string {
@@ -36,8 +33,6 @@ export class WikiaVideo extends BaseAdapter {
 		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
 		this.isCustomBidAdapter = true;
-
-		this.create = () => this;
 	}
 
 	prepareConfigForAdUnit(code): AdUnitConfig {

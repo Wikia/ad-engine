@@ -25,7 +25,7 @@ export class BaseBidder {
 		utils.logger(this.logGroup, 'created');
 	}
 
-	resetState() {
+	resetState(): void {
 		this.called = false;
 		this.response = false;
 

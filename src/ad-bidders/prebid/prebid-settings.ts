@@ -1,7 +1,7 @@
 import { adaptersRegistry } from './adapters-registry';
 import { transformPriceFromBid } from './price-helper';
 
-interface PrebidSettings {
+export interface PrebidSettings {
 	[key: string]: {
 		adserverTargeting: {
 			key: string;

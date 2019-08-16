@@ -85,9 +85,9 @@ class AdaptersRegistry {
 		});
 	}
 
-	private configureCustomAdapter(bidderName: string, instance): void {
+	private configureCustomAdapter(bidderName: string, instance: BaseAdapter): void {
 		window.pbjs.que.push(() => {
-			window.pbjs.registerBidAdapter(instance.create, bidderName);
+			window.pbjs.registerBidAdapter(() => instance, bidderName);
 		});
 	}
 }
