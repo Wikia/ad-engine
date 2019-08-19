@@ -2,7 +2,6 @@ import { Dictionary } from '../models/dictionary';
 import {
 	PrebidAdUnit,
 	PrebidBid,
-	PrebidBidder,
 	PrebidMarkBidRequest,
 	PrebidRequestOptions,
 	PrebidSettings,
@@ -76,7 +75,7 @@ export class PrebidWrapper {
 		window.pbjs.markWinningBidAsUsed(markBidRequest);
 	}
 
-	async getBidResponsesForAdUnitCode(adUnitCode: string): Promise<PrebidBidder[]> {
+	async getBidResponsesForAdUnitCode(adUnitCode: string): Promise<{ bids: PrebidBid[] }> {
 		await this.script;
 
 		return window.pbjs.getBidResponsesForAdUnitCode(adUnitCode);

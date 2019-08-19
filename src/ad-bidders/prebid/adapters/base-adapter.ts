@@ -1,31 +1,10 @@
-import { Dictionary } from '@ad-engine/core';
+import { PrebidAdUnit } from '@ad-engine/core';
 
 export const DEFAULT_MAX_CPM = 20;
 export const EXTENDED_MAX_CPM = 50;
 
-export interface AdUnitConfig {
-	bids: Bid[];
-	code: string;
-	mediaType?: string;
-	mediaTypes?: {
-		banner?: {
-			sizes: number[][];
-		};
-		video?: {
-			context?: string;
-			playerSize: number[];
-		};
-	};
-	sizes?: number[];
-}
-
 export interface Aliases {
 	[key: string]: string[];
-}
-
-export interface Bid {
-	bidder: string;
-	params?: Dictionary<string | number | object | boolean>;
 }
 
 export interface BidderAdSlotConfig {
@@ -34,7 +13,7 @@ export interface BidderAdSlotConfig {
 	placementId?: string | number;
 	pos?: string;
 	size?: number[];
-	sizes?: number[][];
+	sizes?: [number, number][];
 	siteId?: string | number;
 	unit?: string;
 }
@@ -53,11 +32,11 @@ export abstract class BaseAdapter {
 		this.slots = slots;
 	}
 
-	abstract prepareConfigForAdUnit(code: string, config: BidderAdSlotConfig): AdUnitConfig;
+	abstract prepareConfigForAdUnit(code: string, config: BidderAdSlotConfig): PrebidAdUnit;
 
 	abstract get bidderName(): string;
 
-	prepareAdUnits(): AdUnitConfig[] {
+	prepareAdUnits(): PrebidAdUnit[] {
 		return Object.keys(this.slots).map((slotName) =>
 			this.prepareConfigForAdUnit(slotName, this.slots[slotName]),
 		);

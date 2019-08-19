@@ -1,5 +1,5 @@
-import { utils } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { PrebidAdUnit, utils } from '@ad-engine/core';
+import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class AppnexusAst extends BaseAdapter {
 	static bidderName = 'appnexusAst';
@@ -22,7 +22,7 @@ export class AppnexusAst extends BaseAdapter {
 		return AppnexusAst.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { placementId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { placementId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -43,6 +43,7 @@ export class AppnexusAst extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

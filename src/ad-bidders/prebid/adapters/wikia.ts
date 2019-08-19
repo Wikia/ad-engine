@@ -1,5 +1,5 @@
-import { Dictionary, utils } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { Dictionary, PrebidAdUnit, PrebidWrapper, utils } from '@ad-engine/core';
+import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
@@ -40,6 +40,7 @@ export class Wikia extends BaseAdapter {
 	useRandomPrice: boolean;
 	timeout: number;
 	maxCpm = EXTENDED_MAX_CPM;
+	private pbjs = PrebidWrapper.make();
 
 	get bidderName(): string {
 		return Wikia.bidderName;
@@ -55,7 +56,7 @@ export class Wikia extends BaseAdapter {
 		this.isCustomBidAdapter = true;
 	}
 
-	prepareConfigForAdUnit(code, { sizes }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -66,8 +67,10 @@ export class Wikia extends BaseAdapter {
 			bids: [
 				{
 					bidder: this.bidderName,
+					params: {},
 				},
 			],
+			sizes: [],
 		};
 	}
 
@@ -87,33 +90,35 @@ export class Wikia extends BaseAdapter {
 	}
 
 	callBids(bidRequest, addBidResponse, done): void {
-		window.pbjs.que.push(() => {
-			this.addBids(bidRequest, addBidResponse, done);
-		});
+		this.addBids(bidRequest, addBidResponse, done);
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		setTimeout(() => {
-			bidRequest.bids.forEach((bid) => {
-				if (this.limit === 0) {
-					return;
-				}
+		setTimeout(async () => {
+			await Promise.all(
+				bidRequest.bids.map(async (bid) => {
+					if (this.limit === 0) {
+						return;
+					}
 
-				const bidResponse = window.pbjs.createBid(1);
-				const [width, height] = bid.sizes[0];
-				const cpm = this.getPrice();
+					const bidResponse = await this.pbjs.createBid('1');
+					const [width, height] = bid.sizes[0];
+					const cpm = this.getPrice();
 
-				bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
-				bidResponse.bidderCode = bidRequest.bidderCode;
-				bidResponse.cpm = cpm;
-				bidResponse.ttl = 300;
-				bidResponse.mediaType = 'banner';
-				bidResponse.width = width;
-				bidResponse.height = height;
+					// @ts-ignore
+					bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
+					bidResponse.bidderCode = bidRequest.bidderCode;
+					bidResponse.cpm = cpm;
+					// @ts-ignore
+					bidResponse.ttl = 300;
+					bidResponse.mediaType = 'banner';
+					bidResponse.width = width;
+					bidResponse.height = height;
 
-				addBidResponse(bid.adUnitCode, bidResponse);
-				this.limit -= 1;
-			});
+					addBidResponse(bid.adUnitCode, bidResponse);
+					this.limit -= 1;
+				}),
+			);
 			done();
 		}, this.timeout);
 	}

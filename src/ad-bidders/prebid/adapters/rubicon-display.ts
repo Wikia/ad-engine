@@ -1,5 +1,6 @@
+import { PrebidAdUnit } from '@ad-engine/core';
 import { getTargeting } from '../prebid-helper';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { BaseAdapter } from './base-adapter';
 
 export class RubiconDisplay extends BaseAdapter {
 	static bidderName = 'rubicon_display';
@@ -19,7 +20,7 @@ export class RubiconDisplay extends BaseAdapter {
 		this.accountId = options.accountId;
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizes, position, targeting }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { siteId, zoneId, sizes, position, targeting }): PrebidAdUnit {
 		const pageTargeting = getTargeting(code);
 
 		Object.keys(targeting || {}).forEach((key) => {
@@ -47,6 +48,7 @@ export class RubiconDisplay extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

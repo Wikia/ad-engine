@@ -1,4 +1,5 @@
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdUnit } from '@ad-engine/core';
+import { BaseAdapter } from './base-adapter';
 
 export class Kargo extends BaseAdapter {
 	static bidderName = 'kargo';
@@ -7,7 +8,7 @@ export class Kargo extends BaseAdapter {
 		return Kargo.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placementId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes, placementId }): PrebidAdUnit {
 		return {
 			code,
 			sizes,

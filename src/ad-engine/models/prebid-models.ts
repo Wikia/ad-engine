@@ -1,3 +1,5 @@
+import { Dictionary } from './dictionary';
+
 export interface PrebidMarkBidRequest {
 	adId: string;
 	adUnitCode?: string;
@@ -7,20 +9,26 @@ export interface PrebidAdUnit {
 	code: string;
 	sizes: number[] | [number, number][];
 	bids: PrebidBidder[];
-	mediaTypes?: PrebidMediaTypes;
+	mediaType?: string; // should not be here
+	mediaTypes?: Partial<PrebidMediaTypes>;
 	labelAny?: string[];
 	labelAll?: string[];
 }
 
 interface PrebidMediaTypes {
-	banner: {};
+	banner: {
+		sizes: [number, number][];
+	};
 	native: {};
-	video: {};
+	video: {
+		context?: string;
+		playerSize: number[];
+	};
 }
 
 export interface PrebidBidder {
 	bidder: string;
-	params: {};
+	params: Dictionary<string | number | object | boolean>;
 	labelAny?: string[];
 	labelAll?: string[];
 }
@@ -40,8 +48,9 @@ export interface PrebidBid {
 		| 'Bid timed out';
 	adId: string;
 	requestId: string;
-	mediaType: 'banner';
+	mediaType: string;
 	source: unknown;
+	videoCacheKey: string; // should not be here
 	/**
 	 * ${width}x${height}
 	 */

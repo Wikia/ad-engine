@@ -1,5 +1,12 @@
-import { buildVastUrl, context, Dictionary, utils } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import {
+	buildVastUrl,
+	context,
+	Dictionary,
+	PrebidAdUnit,
+	PrebidWrapper,
+	utils,
+} from '@ad-engine/core';
+import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
@@ -20,6 +27,7 @@ export class WikiaVideo extends BaseAdapter {
 	useRandomPrice: boolean;
 	timeout: number;
 	maxCpm = EXTENDED_MAX_CPM;
+	private pbjs = PrebidWrapper.make();
 
 	get bidderName(): string {
 		return WikiaVideo.bidderName;
@@ -35,7 +43,7 @@ export class WikiaVideo extends BaseAdapter {
 		this.isCustomBidAdapter = true;
 	}
 
-	prepareConfigForAdUnit(code): AdUnitConfig {
+	prepareConfigForAdUnit(code): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -47,8 +55,10 @@ export class WikiaVideo extends BaseAdapter {
 			bids: [
 				{
 					bidder: this.bidderName,
+					params: {},
 				},
 			],
+			sizes: [],
 		};
 	}
 
@@ -68,35 +78,38 @@ export class WikiaVideo extends BaseAdapter {
 	}
 
 	callBids(bidRequest, addBidResponse, done): void {
-		window.pbjs.que.push(() => {
-			this.addBids(bidRequest, addBidResponse, done);
-		});
+		this.addBids(bidRequest, addBidResponse, done);
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		setTimeout(() => {
-			bidRequest.bids.forEach((bid) => {
-				if (this.limit === 0) {
-					return;
-				}
+		setTimeout(async () => {
+			await Promise.all(
+				bidRequest.bids.map(async (bid) => {
+					if (this.limit === 0) {
+						return;
+					}
 
-				const bidResponse = window.pbjs.createBid(1);
-				const [width, height] = bid.sizes[0];
-				const slotName = bid.adUnitCode;
+					const bidResponse = await this.pbjs.createBid('1');
+					const [width, height] = bid.sizes[0];
+					const slotName = bid.adUnitCode;
 
-				bidResponse.bidderCode = bidRequest.bidderCode;
-				bidResponse.cpm = this.getPrice();
-				bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
-				bidResponse.ttl = 300;
-				bidResponse.mediaType = 'video';
-				bidResponse.width = width;
-				bidResponse.height = height;
-				bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
-				bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
+					bidResponse.bidderCode = bidRequest.bidderCode;
+					bidResponse.cpm = this.getPrice();
+					// @ts-ignore
+					bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
+					// @ts-ignore
+					bidResponse.ttl = 300;
+					bidResponse.mediaType = 'video';
+					bidResponse.width = width;
+					bidResponse.height = height;
+					// @ts-ignore
+					bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
+					bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
 
-				addBidResponse(bid.adUnitCode, bidResponse);
-				this.limit -= 1;
-			});
+					addBidResponse(bid.adUnitCode, bidResponse);
+					this.limit -= 1;
+				}),
+			);
 
 			done();
 		}, this.timeout);

@@ -279,13 +279,13 @@ export class A9 extends BaseBidder {
 		});
 	}
 
-	getBestPrice(slotName: string): { a9?: string } {
+	async getBestPrice(slotName: string): Promise<{ a9?: string }> {
 		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return this.priceMap[slotAlias] ? { a9: this.priceMap[slotAlias] } : {};
 	}
 
-	getTargetingParams(slotName: string): Dictionary {
+	async getTargetingParams(slotName: string): Promise<Dictionary> {
 		return this.bids[this.getSlotAlias(slotName)] || {};
 	}
 

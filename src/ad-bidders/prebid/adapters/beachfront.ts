@@ -1,5 +1,5 @@
-import { utils } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdUnit, utils } from '@ad-engine/core';
+import { BaseAdapter } from './base-adapter';
 
 export class Beachfront extends BaseAdapter {
 	static bidderName = 'beachfront';
@@ -18,7 +18,7 @@ export class Beachfront extends BaseAdapter {
 		return Beachfront.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { appId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { appId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -36,6 +36,7 @@ export class Beachfront extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

@@ -2,9 +2,9 @@ import { Dictionary, utils } from '@ad-engine/core';
 import { AdInfoContext } from '@ad-engine/tracking';
 import { bidders } from '../';
 
-function getBiddersPrices(slotName: string): Dictionary<string> {
+async function getBiddersPrices(slotName: string): Promise<Dictionary<string>> {
 	const realSlotPrices: Dictionary<string> = bidders.getDfpSlotPrices(slotName);
-	const currentSlotPrices: Dictionary<string> = bidders.getCurrentSlotPrices(slotName);
+	const currentSlotPrices: Dictionary<string> = await bidders.getCurrentSlotPrices(slotName);
 
 	function transformBidderPrice(bidderName: string): string {
 		if (realSlotPrices && realSlotPrices[bidderName]) {
@@ -38,7 +38,7 @@ function getBiddersPrices(slotName: string): Dictionary<string> {
 	};
 }
 
-export const slotBiddersTrackingMiddleware: utils.Middleware<AdInfoContext> = (
+export const slotBiddersTrackingMiddleware: utils.Middleware<AdInfoContext> = async (
 	{ data, slot },
 	next,
 ) => {
@@ -49,7 +49,7 @@ export const slotBiddersTrackingMiddleware: utils.Middleware<AdInfoContext> = (
 
 			bidder_won: slot.winningBidderDetails ? slot.winningBidderDetails.name : '',
 			bidder_won_price: slot.winningBidderDetails ? slot.winningBidderDetails.price : '',
-			...getBiddersPrices(slot.getSlotName()),
+			...(await getBiddersPrices(slot.getSlotName())),
 		},
 	});
 };

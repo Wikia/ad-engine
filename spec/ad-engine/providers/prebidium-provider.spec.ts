@@ -32,11 +32,11 @@ describe('PrebidiumProvider', () => {
 	describe('fillIn', () => {
 		let adSlot;
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			adSlot = {
 				getSlotName: () => mock.slotName,
 			};
-			prebidiumProvider.fillIn(adSlot);
+			await prebidiumProvider.fillIn(adSlot);
 		});
 
 		it('should call renderAd', () => {

@@ -1,5 +1,5 @@
-import { context, Dictionary } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { context, Dictionary, PrebidAdUnit } from '@ad-engine/core';
+import { BaseAdapter } from './base-adapter';
 
 export class Appnexus extends BaseAdapter {
 	static bidderName = 'appnexus';
@@ -15,7 +15,7 @@ export class Appnexus extends BaseAdapter {
 		return Appnexus.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placementId, position = 'mobile' }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes, placementId, position = 'mobile' }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -31,6 +31,7 @@ export class Appnexus extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 

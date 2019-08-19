@@ -1,4 +1,5 @@
-import { AdUnitConfig, BaseAdapter, BidderAdSlotConfig } from './base-adapter';
+import { PrebidAdUnit } from '@ad-engine/core';
+import { BaseAdapter, BidderAdSlotConfig } from './base-adapter';
 
 export class Vmg extends BaseAdapter {
 	static bidderName = 'vmg';
@@ -7,7 +8,7 @@ export class Vmg extends BaseAdapter {
 		return Vmg.bidderName;
 	}
 
-	prepareConfigForAdUnit(code: string, { sizes }: BidderAdSlotConfig): AdUnitConfig {
+	prepareConfigForAdUnit(code: string, { sizes }: BidderAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -18,8 +19,10 @@ export class Vmg extends BaseAdapter {
 			bids: [
 				{
 					bidder: this.bidderName,
+					params: {},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

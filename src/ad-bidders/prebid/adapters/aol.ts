@@ -1,4 +1,5 @@
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdUnit } from '@ad-engine/core';
+import { BaseAdapter } from './base-adapter';
 
 export class Aol extends BaseAdapter {
 	static bidderName = 'aol';
@@ -14,7 +15,7 @@ export class Aol extends BaseAdapter {
 		this.network = options.network;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placement, alias, sizeId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes, placement, alias, sizeId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -33,6 +34,7 @@ export class Aol extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

@@ -1,4 +1,5 @@
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdUnit } from '@ad-engine/core';
+import { BaseAdapter } from './base-adapter';
 
 export class Lkqd extends BaseAdapter {
 	static bidderName = 'lkqd';
@@ -7,7 +8,7 @@ export class Lkqd extends BaseAdapter {
 		return Lkqd.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { placementId, siteId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { placementId, siteId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -26,6 +27,7 @@ export class Lkqd extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

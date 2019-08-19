@@ -1,6 +1,6 @@
-import { context } from '@ad-engine/core';
+import { context, PrebidAdUnit } from '@ad-engine/core';
 import { getTargeting } from '../prebid-helper';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class Rubicon extends BaseAdapter {
 	static bidderName = 'rubicon';
@@ -17,7 +17,7 @@ export class Rubicon extends BaseAdapter {
 		this.accountId = options.accountId;
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): PrebidAdUnit {
 		if (code === 'featured' && !context.get('custom.rubiconInFV')) {
 			return null;
 		}
@@ -52,6 +52,7 @@ export class Rubicon extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }

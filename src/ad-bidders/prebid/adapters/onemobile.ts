@@ -1,4 +1,5 @@
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdUnit } from '@ad-engine/core';
+import { BaseAdapter } from './base-adapter';
 
 export class Onemobile extends BaseAdapter {
 	static bidderName = 'onemobile';
@@ -14,7 +15,7 @@ export class Onemobile extends BaseAdapter {
 		this.siteId = options.siteId;
 	}
 
-	prepareConfigForAdUnit(code, { size, pos }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { size, pos }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -31,6 +32,7 @@ export class Onemobile extends BaseAdapter {
 					},
 				},
 			],
+			sizes: [],
 		};
 	}
 }
