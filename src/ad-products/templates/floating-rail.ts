@@ -5,6 +5,16 @@ const biggestAdSize = 600;
 
 let availableSpace = null;
 
+interface FloatingRailConfig {
+	railSelector: string;
+	startOffset: number;
+	wrapperSelector: string;
+}
+
+interface FloatingRailParams {
+	offset?: number;
+}
+
 export class FloatingRail {
 	static getName() {
 		return 'floatingRail';
@@ -22,6 +32,11 @@ export class FloatingRail {
 	static isEnabled() {
 		return context.get('templates.floatingRail.enabled') && context.get('state.isMobile') === false;
 	}
+
+	config: FloatingRailConfig;
+	params: FloatingRailParams;
+	rail: HTMLElement;
+	railWrapper: HTMLElement;
 
 	constructor() {
 		this.config = context.get('templates.floatingRail') || {};
@@ -64,7 +79,7 @@ export class FloatingRail {
 
 	getAvailableSpace() {
 		if (availableSpace === null) {
-			const children = this.railWrapper.lastElementChild;
+			const children = this.railWrapper.lastElementChild as HTMLElement;
 			const childrenHeight = children.offsetTop + children.offsetHeight;
 			const space = this.railWrapper.offsetHeight;
 
