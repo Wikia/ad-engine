@@ -1,10 +1,8 @@
-import { Dictionary, PrebidWrapper } from '@ad-engine/core';
+import { Dictionary, pbjsFactory } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
 import { DEFAULT_MAX_CPM } from './adapters/base-adapter';
 import { Prebid } from './index';
-
-const pbjs = PrebidWrapper.make();
 
 function isValidPrice(bid: PrebidBid): boolean {
 	return bid.getStatusCode && bid.getStatusCode() === Prebid.validResponseStatusCode;
@@ -43,8 +41,9 @@ export function transformPriceFromCpm(cpm: number, maxCpm: number = DEFAULT_MAX_
 }
 
 export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<string>> {
+	const pbjs: Pbjs = await pbjsFactory.init();
 	const bestPrices: Dictionary<number> = {};
-	const slotBids: PrebidBid[] = (await pbjs.getBidResponsesForAdUnitCode(slotName)).bids || [];
+	const slotBids: PrebidBid[] = pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
 
 	adaptersRegistry.getAdapters().forEach((adapter) => {
 		bestPrices[adapter.bidderName] = 0;

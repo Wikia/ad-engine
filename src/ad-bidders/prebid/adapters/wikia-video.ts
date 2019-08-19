@@ -1,4 +1,4 @@
-import { buildVastUrl, context, Dictionary, PrebidWrapper, utils } from '@ad-engine/core';
+import { buildVastUrl, context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
 import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
@@ -20,7 +20,6 @@ export class WikiaVideo extends BaseAdapter {
 	useRandomPrice: boolean;
 	timeout: number;
 	maxCpm = EXTENDED_MAX_CPM;
-	private pbjs = PrebidWrapper.make();
 
 	get bidderName(): string {
 		return WikiaVideo.bidderName;
@@ -76,33 +75,33 @@ export class WikiaVideo extends BaseAdapter {
 
 	addBids(bidRequest, addBidResponse, done): void {
 		setTimeout(async () => {
-			await Promise.all(
-				bidRequest.bids.map(async (bid) => {
-					if (this.limit === 0) {
-						return;
-					}
+			const pbjs: Pbjs = await pbjsFactory.init();
 
-					const bidResponse = await this.pbjs.createBid('1');
-					const [width, height] = bid.sizes[0];
-					const slotName = bid.adUnitCode;
+			bidRequest.bids.forEach((bid) => {
+				if (this.limit === 0) {
+					return;
+				}
 
-					bidResponse.bidderCode = bidRequest.bidderCode;
-					bidResponse.cpm = this.getPrice();
-					// @ts-ignore
-					bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
-					// @ts-ignore
-					bidResponse.ttl = 300;
-					bidResponse.mediaType = 'video';
-					bidResponse.width = width;
-					bidResponse.height = height;
-					// @ts-ignore
-					bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
-					bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
+				const bidResponse = pbjs.createBid('1');
+				const [width, height] = bid.sizes[0];
+				const slotName = bid.adUnitCode;
 
-					addBidResponse(bid.adUnitCode, bidResponse);
-					this.limit -= 1;
-				}),
-			);
+				bidResponse.bidderCode = bidRequest.bidderCode;
+				bidResponse.cpm = this.getPrice();
+				// @ts-ignore
+				bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
+				// @ts-ignore
+				bidResponse.ttl = 300;
+				bidResponse.mediaType = 'video';
+				bidResponse.width = width;
+				bidResponse.height = height;
+				// @ts-ignore
+				bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
+				bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
+
+				addBidResponse(bid.adUnitCode, bidResponse);
+				this.limit -= 1;
+			});
 
 			done();
 		}, this.timeout);

@@ -1,4 +1,4 @@
-import { context, PrebidWrapper } from '@ad-engine/core';
+import { context, pbjsFactory } from '@ad-engine/core';
 import {
 	Aliases,
 	Aol,
@@ -21,7 +21,6 @@ import {
 } from './adapters';
 
 class AdaptersRegistry {
-	private pbjs = PrebidWrapper.make();
 	private adapters = new Map<string, BaseAdapter>();
 	private availableAdapters = [
 		Aol,
@@ -77,15 +76,17 @@ class AdaptersRegistry {
 	}
 
 	private async configureAliases(aliasMap: Aliases): Promise<void> {
-		await Promise.all(
-			Object.keys(aliasMap).map((bidderName) =>
-				Promise.all(aliasMap[bidderName].map((alias) => this.pbjs.aliasBidder(bidderName, alias))),
-			),
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		Object.keys(aliasMap).forEach((bidderName) =>
+			aliasMap[bidderName].forEach((alias) => pbjs.aliasBidder(bidderName, alias)),
 		);
 	}
 
-	private configureCustomAdapter(bidderName: string, instance: BaseAdapter): Promise<void> {
-		return this.pbjs.registerBidAdapter(() => instance, bidderName);
+	private async configureCustomAdapter(bidderName: string, instance: BaseAdapter): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return pbjs.registerBidAdapter(() => instance, bidderName);
 	}
 }
 

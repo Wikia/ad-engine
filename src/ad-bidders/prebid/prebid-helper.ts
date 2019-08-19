@@ -1,9 +1,8 @@
-import { context, PrebidWrapper, slotService } from '@ad-engine/core';
+import { context, pbjsFactory, slotService } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
 
 const lazyLoadSlots = ['bottom_leaderboard'];
 const videoType = 'video';
-const pbjs = PrebidWrapper.make();
 
 function isUsedAsAlias(code) {
 	return Object.keys(context.get('slots')).some((slotName) => {
@@ -56,14 +55,16 @@ export async function getBidUUID(adUnitCode: string, adId: string): Promise<stri
 }
 
 async function getBidByAdId(adUnitCode, adId): Promise<PrebidBid> {
-	const { bids } = await pbjs.getBidResponsesForAdUnitCode(adUnitCode);
+	const pbjs: Pbjs = await pbjsFactory.init();
+	const { bids } = pbjs.getBidResponsesForAdUnitCode(adUnitCode);
 	const foundBids = bids.filter((bid) => adId === bid.adId);
 
 	return foundBids.length ? foundBids[0] : null;
 }
 
 export async function getAvailableBidsByAdUnitCode(adUnitCode: string): Promise<PrebidBid[]> {
-	let bids = (await pbjs.getBidResponsesForAdUnitCode(adUnitCode)).bids || [];
+	const pbjs: Pbjs = await pbjsFactory.init();
+	let bids = pbjs.getBidResponsesForAdUnitCode(adUnitCode).bids || [];
 	bids = bids.filter((bid) => bid.status !== 'rendered');
 
 	return bids;

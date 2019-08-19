@@ -5,7 +5,7 @@ import {
 	Dictionary,
 	events,
 	eventService,
-	PrebidWrapper,
+	pbjsFactory,
 	utils,
 } from '@ad-engine/core';
 import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
@@ -25,10 +25,11 @@ eventService.on(events.VIDEO_AD_ERROR, markWinningBidAsUsed);
 async function markWinningBidAsUsed(adSlot: AdSlot): Promise<void> {
 	// Mark ad as rendered
 	const adId: string = context.get(`slots.${adSlot.getSlotName()}.targeting.hb_adid`);
-	const pbjs = PrebidWrapper.make();
 
 	if (adId) {
-		await pbjs.markWinningBidAsUsed({ adId });
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		pbjs.markWinningBidAsUsed({ adId });
 		eventService.emit(events.VIDEO_AD_USED, adSlot);
 	}
 }
@@ -45,7 +46,6 @@ export class Prebid extends BaseBidder {
 	lazyLoaded = false;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
-	private pbjs = PrebidWrapper.make();
 
 	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
@@ -87,12 +87,16 @@ export class Prebid extends BaseBidder {
 		}
 	}
 
-	applyConfig(config: Dictionary): Promise<void> {
-		return this.pbjs.setConfig(config);
+	async applyConfig(config: Dictionary): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return pbjs.setConfig(config);
 	}
 
-	applySettings(): Promise<void> {
-		return this.pbjs.setBidderSettings(getSettings());
+	async applySettings(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return pbjs.setBidderSettings(getSettings());
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
@@ -129,9 +133,10 @@ export class Prebid extends BaseBidder {
 	}
 
 	async removeAdUnits(): Promise<void> {
-		const adUnits = await this.pbjs.getAdUnits();
+		const pbjs: Pbjs = await pbjsFactory.init();
+		const adUnits = pbjs.getAdUnits();
 
-		await Promise.all(adUnits.map((adUnit) => this.pbjs.removeAdUnit(adUnit.code)));
+		adUnits.forEach((adUnit) => pbjs.removeAdUnit(adUnit.code));
 	}
 
 	getBestPrice(slotName: string): Promise<Dictionary<string>> {
@@ -222,6 +227,8 @@ export class Prebid extends BaseBidder {
 	}
 
 	async registerBidsRefreshing(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
 		const refreshUsedBid = (winningBid) => {
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				eventService.emit(events.BIDS_REFRESH);
@@ -237,13 +244,13 @@ export class Prebid extends BaseBidder {
 			}
 		};
 
-		await this.pbjs.onEvent('bidWon', refreshUsedBid);
+		pbjs.onEvent('bidWon', refreshUsedBid);
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
-			this.pbjs.offEvent('bidWon', refreshUsedBid);
+			pbjs.offEvent('bidWon', refreshUsedBid);
 		});
 	}
 
-	requestBids(
+	async requestBids(
 		adUnits: PrebidAdUnit[],
 		bidsBackHandler: (...args: any[]) => void,
 		withRemove?: () => void,
@@ -252,7 +259,9 @@ export class Prebid extends BaseBidder {
 			withRemove();
 		}
 
-		return this.pbjs.requestBids({
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		pbjs.requestBids({
 			adUnits,
 			bidsBackHandler,
 		});
