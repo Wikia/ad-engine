@@ -38,6 +38,7 @@ describe('Beachfront bidder adapter', () => {
 						},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});

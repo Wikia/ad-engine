@@ -7,6 +7,7 @@ import {
 } from '@wikia/ad-bidders/prebid/price-helper';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { PbjsStub, stubPbjs } from '../../ad-engine/services/pbjs.stub';
 import { PrebidBidFactory } from './prebid-bid.factory';
 
 describe('transformPriceFromCpm', () => {
@@ -48,19 +49,14 @@ describe('transformPriceFromCpm', () => {
 });
 
 describe('getPrebidBestPrice', () => {
-	let bids: PrebidBid[];
 	let adapters: Map<string, BaseAdapter>;
-	let sandbox;
+	let sandbox: sinon.SinonSandbox;
+	let pbjsStub: PbjsStub;
 	const bidderName = 'bidderA';
 
 	beforeEach(() => {
 		sandbox = sinon.createSandbox();
-		bids = [];
-		window.pbjs = {
-			getBidResponsesForAdUnitCode() {
-				return { bids };
-			},
-		};
+		pbjsStub = stubPbjs(sandbox).pbjsStub;
 		adapters = new Map();
 		sandbox.stub(adaptersRegistry, 'getAdapters').returns(adapters);
 	});
@@ -69,17 +65,8 @@ describe('getPrebidBestPrice', () => {
 		sandbox.restore();
 	});
 
-	it('should return empty object if window.pbjs does not exist', async () => {
-		delete window.pbjs;
-
-		const result = await getPrebidBestPrice('someSlot');
-
-		expect(result).to.deep.equal({});
-	});
-
 	it('should return empty string if there is no price for bidder', async () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
-		bids = [];
 
 		const result = await getPrebidBestPrice('someSlot');
 
@@ -89,7 +76,8 @@ describe('getPrebidBestPrice', () => {
 	it('should round to 2 decimal places', async () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
 		const bid = PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 });
-		bids = [bid];
+
+		pbjsStub.getBidResponsesForAdUnitCode.returns({ bids: [bid] });
 
 		const result = await getPrebidBestPrice('someSlot');
 
@@ -99,7 +87,8 @@ describe('getPrebidBestPrice', () => {
 	it('should not take rendered bids into consideration', async () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
 		const bid = PrebidBidFactory.getBid({ cpm: 0.05, bidderCode: bidderName, status: 'rendered' });
-		bids = [bid];
+
+		pbjsStub.getBidResponsesForAdUnitCode.returns({ bids: [bid] });
 
 		const result = await getPrebidBestPrice('someSlot');
 
@@ -108,12 +97,14 @@ describe('getPrebidBestPrice', () => {
 
 	it('should select highest price', async () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
-		bids = [
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20 }),
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
-		];
+		pbjsStub.getBidResponsesForAdUnitCode.returns({
+			bids: [
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20 }),
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
+			],
+		});
 
 		const result = await getPrebidBestPrice('someSlot');
 
@@ -126,15 +117,16 @@ describe('getPrebidBestPrice', () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
 		adapters.set(otherBidderName, { bidderName: otherBidderName } as BaseAdapter);
 		adapters.set('bidderC', { bidderName: 'bidderC' } as BaseAdapter);
-
-		bids = [
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20, status: 'rendered' }),
-			PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
-			PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 2, status: 'rendered' }),
-			PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 14 }),
-		];
+		pbjsStub.getBidResponsesForAdUnitCode.returns({
+			bids: [
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20, status: 'rendered' }),
+				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
+				PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 2, status: 'rendered' }),
+				PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 14 }),
+			],
+		});
 
 		const result = await getPrebidBestPrice('someSlot');
 
@@ -147,13 +139,17 @@ describe('getPrebidBestPrice', () => {
 
 	it('should round cpm', async () => {
 		adapters.set(bidderName, { bidderName } as BaseAdapter);
-		bids = [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.03 })];
+		pbjsStub.getBidResponsesForAdUnitCode.returns({
+			bids: [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.03 })],
+		});
 
 		let result = await getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({ [bidderName]: '0.01' });
 
-		bids = [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 19.99 })];
+		pbjsStub.getBidResponsesForAdUnitCode.returns({
+			bids: [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 19.99 })],
+		});
 
 		result = await getPrebidBestPrice('someSlot');
 

@@ -43,6 +43,7 @@ describe('Aol bidder adapter', () => {
 						},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});

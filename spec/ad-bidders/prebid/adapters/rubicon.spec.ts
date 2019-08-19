@@ -55,6 +55,7 @@ describe('Rubicon bidder adapter', () => {
 						},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});

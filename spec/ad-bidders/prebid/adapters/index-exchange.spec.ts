@@ -45,6 +45,7 @@ describe('IndexExchange bidder adapter', () => {
 						},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});

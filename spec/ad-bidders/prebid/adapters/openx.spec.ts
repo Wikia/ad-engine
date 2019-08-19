@@ -39,6 +39,7 @@ describe('Openx bidder adapter', () => {
 						},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});

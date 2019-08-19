@@ -31,8 +31,10 @@ describe('Wikia bidder adapter', () => {
 				bids: [
 					{
 						bidder: 'wikia',
+						params: {},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});

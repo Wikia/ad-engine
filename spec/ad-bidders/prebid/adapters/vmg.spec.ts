@@ -32,8 +32,10 @@ describe('VMG bidder adapter', () => {
 				bids: [
 					{
 						bidder: 'vmg',
+						params: {},
 					},
 				],
+				sizes: [],
 			},
 		]);
 	});
