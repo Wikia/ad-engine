@@ -6,6 +6,7 @@ const biggestAdSize = 600;
 let availableSpace = null;
 
 interface FloatingRailConfig {
+	enabled: boolean;
 	railSelector: string;
 	startOffset: number;
 	wrapperSelector: string;
@@ -16,11 +17,11 @@ interface FloatingRailParams {
 }
 
 export class FloatingRail {
-	static getName() {
+	static getName(): string {
 		return 'floatingRail';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): FloatingRailConfig {
 		return {
 			enabled: true,
 			railSelector: '#rail',
@@ -29,8 +30,10 @@ export class FloatingRail {
 		};
 	}
 
-	static isEnabled() {
-		return context.get('templates.floatingRail.enabled') && context.get('state.isMobile') === false;
+	static isEnabled(): boolean {
+		return (
+			!!context.get('templates.floatingRail.enabled') && context.get('state.isMobile') === false
+		);
 	}
 
 	config: FloatingRailConfig;
@@ -44,21 +47,21 @@ export class FloatingRail {
 		this.railWrapper = document.querySelector(this.config.wrapperSelector);
 	}
 
-	init(params) {
+	init(params): void {
 		this.params = params;
 
-		const offset = this.params.offset || 0;
+		const offset: number = this.params.offset || 0;
 
 		if (!this.railWrapper || !FloatingRail.isEnabled() || this.getAvailableSpace() === 0) {
 			return;
 		}
 
-		const floatingSpace = Math.min(offset, this.getAvailableSpace());
+		const floatingSpace: number = Math.min(offset, this.getAvailableSpace());
 
 		scrollListener.addCallback(() => {
-			const start = this.config.startOffset + utils.getTopOffset(this.railWrapper);
-			const end = start + floatingSpace;
-			const scrollPosition =
+			const start: number = this.config.startOffset + utils.getTopOffset(this.railWrapper);
+			const end: number = start + floatingSpace;
+			const scrollPosition: number =
 				window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
 			if (scrollPosition <= start) {
@@ -77,11 +80,11 @@ export class FloatingRail {
 		});
 	}
 
-	getAvailableSpace() {
+	getAvailableSpace(): number {
 		if (availableSpace === null) {
 			const children = this.railWrapper.lastElementChild as HTMLElement;
 			const childrenHeight = children.offsetTop + children.offsetHeight;
-			const space = this.railWrapper.offsetHeight;
+			const space: number = this.railWrapper.offsetHeight;
 
 			availableSpace = Math.max(0, space - childrenHeight - adsInRail * biggestAdSize);
 		}
