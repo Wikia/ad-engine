@@ -1,4 +1,3 @@
-import { PrebidAdUnit, PrebidBidder } from '@ad-engine/core';
 import { BaseAdapter } from './base-adapter';
 
 export class Pubmatic extends BaseAdapter {

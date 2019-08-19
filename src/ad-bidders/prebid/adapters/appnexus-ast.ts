@@ -1,4 +1,4 @@
-import { PrebidAdUnit, utils } from '@ad-engine/core';
+import { utils } from '@ad-engine/core';
 import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class AppnexusAst extends BaseAdapter {

@@ -5,7 +5,6 @@ import {
 	transformPriceFromBid,
 	transformPriceFromCpm,
 } from '@wikia/ad-bidders/prebid/price-helper';
-import { PrebidBid } from '@wikia/ad-engine/models/prebid-models';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { PrebidBidFactory } from './prebid-bid.factory';

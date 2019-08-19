@@ -1,11 +1,9 @@
-import { Dictionary } from './dictionary';
-
-export interface PrebidMarkBidRequest {
+interface PrebidMarkBidRequest {
 	adId: string;
 	adUnitCode?: string;
 }
 
-export interface PrebidAdUnit {
+interface PrebidAdUnit {
 	code: string;
 	sizes: number[] | [number, number][];
 	bids: PrebidBidder[];
@@ -26,14 +24,14 @@ interface PrebidMediaTypes {
 	};
 }
 
-export interface PrebidBidder {
+interface PrebidBidder {
 	bidder: string;
-	params: Dictionary<string | number | object | boolean>;
+	params: {};
 	labelAny?: string[];
 	labelAll?: string[];
 }
 
-export interface PrebidBid {
+interface PrebidBid {
 	cpm: number;
 	status: string;
 	bidderCode: string;
@@ -57,7 +55,7 @@ export interface PrebidBid {
 	getSize: () => string;
 }
 
-export interface PrebidRequestOptions {
+interface PrebidRequestOptions {
 	bidsBackHandler?: () => void;
 	timeout?: number;
 	adUnits?: PrebidAdUnit[];
@@ -66,7 +64,7 @@ export interface PrebidRequestOptions {
 	auctionId?: string;
 }
 
-export interface PrebidSettings {
+interface PrebidSettings {
 	[key: string]: {
 		adserverTargeting: {
 			key: string;
@@ -76,11 +74,39 @@ export interface PrebidSettings {
 	};
 }
 
-export interface PrebidTargeting {
+interface PrebidTargeting {
 	hb_adid?: string;
 	hb_bidder?: string;
 	hb_pb?: string;
 	hb_size?: string;
 
 	[key: string]: string | string[];
+}
+
+interface Pbjs {
+	requestBids(requestOptions: PrebidRequestOptions): void;
+
+	getAdUnits(): PrebidAdUnit[];
+
+	removeAdUnit(adUnitCode: string): void;
+
+	aliasBidder(bidderCode: string, alias: string): void;
+
+	registerBidAdapter(bidderAdaptor: () => {}, bidderCode: string): void;
+
+	markWinningBidAsUsed(markBidRequest: PrebidMarkBidRequest): void;
+
+	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBid[] };
+
+	setConfig(config: {}): void;
+
+	setBidderSettings(settings: PrebidSettings): void;
+
+	createBid(statusCode: string): PrebidBid;
+
+	renderAd(doc: HTMLDocument, id: string): void;
+
+	onEvent(name: string, callback: (...args: any[]) => void): void;
+
+	offEvent(name: string, callback: (...args: any[]) => void): void;
 }

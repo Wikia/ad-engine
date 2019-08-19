@@ -1,4 +1,4 @@
-import { context, PrebidAdUnit, PrebidBid, PrebidWrapper, slotService } from '@ad-engine/core';
+import { context, PrebidWrapper, slotService } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
 
 const lazyLoadSlots = ['bottom_leaderboard'];

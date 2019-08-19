@@ -1,4 +1,3 @@
-import { PrebidAdUnit } from '@ad-engine/core';
 import { BaseAdapter, BidderAdSlotConfig } from './base-adapter';
 
 export class Vmg extends BaseAdapter {

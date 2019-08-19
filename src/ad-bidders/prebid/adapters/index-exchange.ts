@@ -1,4 +1,3 @@
-import { PrebidAdUnit } from '@ad-engine/core';
 import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 export class IndexExchange extends BaseAdapter {

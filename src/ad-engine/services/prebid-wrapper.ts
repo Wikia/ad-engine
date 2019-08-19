@@ -1,11 +1,4 @@
 import { Dictionary } from '../models/dictionary';
-import {
-	PrebidAdUnit,
-	PrebidBid,
-	PrebidMarkBidRequest,
-	PrebidRequestOptions,
-	PrebidSettings,
-} from '../models/prebid-models';
 import { logger, scriptLoader } from '../utils';
 import { context } from './context-service';
 

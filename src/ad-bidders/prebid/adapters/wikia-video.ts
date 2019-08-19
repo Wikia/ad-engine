@@ -1,11 +1,4 @@
-import {
-	buildVastUrl,
-	context,
-	Dictionary,
-	PrebidAdUnit,
-	PrebidWrapper,
-	utils,
-} from '@ad-engine/core';
+import { buildVastUrl, context, Dictionary, PrebidWrapper, utils } from '@ad-engine/core';
 import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');

@@ -1,4 +1,4 @@
-import { context, Dictionary, PrebidAdUnit } from '@ad-engine/core';
+import { context, Dictionary } from '@ad-engine/core';
 import { BaseAdapter } from './base-adapter';
 
 export class Appnexus extends BaseAdapter {

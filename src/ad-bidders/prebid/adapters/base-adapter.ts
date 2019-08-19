@@ -1,5 +1,3 @@
-import { PrebidAdUnit } from '@ad-engine/core';
-
 export const DEFAULT_MAX_CPM = 20;
 export const EXTENDED_MAX_CPM = 50;
 

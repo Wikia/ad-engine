@@ -1,4 +1,4 @@
-import { Dictionary, PrebidBid, PrebidWrapper } from '@ad-engine/core';
+import { Dictionary, PrebidWrapper } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
 import { DEFAULT_MAX_CPM } from './adapters/base-adapter';

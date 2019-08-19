@@ -1,4 +1,3 @@
-import { PrebidSettings } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
 import { transformPriceFromBid } from './price-helper';
 

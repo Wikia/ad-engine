@@ -1,4 +1,3 @@
-import { PrebidAdUnit } from '@ad-engine/core';
 import { getTargeting } from '../prebid-helper';
 import { BaseAdapter } from './base-adapter';
 

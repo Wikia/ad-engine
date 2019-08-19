@@ -5,9 +5,6 @@ import {
 	Dictionary,
 	events,
 	eventService,
-	PrebidAdUnit,
-	PrebidBid,
-	PrebidTargeting,
 	PrebidWrapper,
 	utils,
 } from '@ad-engine/core';

@@ -1,4 +1,3 @@
-import { PrebidAdUnit } from '@ad-engine/core';
 import { BaseAdapter } from './base-adapter';
 
 export class Lkqd extends BaseAdapter {

@@ -1,4 +1,4 @@
-import { PrebidAdUnit, utils } from '@ad-engine/core';
+import { utils } from '@ad-engine/core';
 import { BaseAdapter } from './base-adapter';
 
 export class Beachfront extends BaseAdapter {

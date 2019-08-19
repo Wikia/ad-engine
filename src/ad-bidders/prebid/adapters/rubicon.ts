@@ -1,4 +1,4 @@
-import { context, PrebidAdUnit } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
 import { getTargeting } from '../prebid-helper';
 import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
