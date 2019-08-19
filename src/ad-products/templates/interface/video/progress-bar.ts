@@ -1,8 +1,15 @@
-import { slotTweaker } from '@ad-engine/core';
+import { PorvataPlayer, slotTweaker } from '@ad-engine/core';
 
-function add(video, container) {
-	const progressBar = document.createElement('div');
-	const currentTime = document.createElement('div');
+interface ProgressBarElement extends HTMLDivElement {
+	pause?: () => void;
+	reset?: () => void;
+	rewind?: () => void;
+	start?: () => void;
+}
+
+function add(video: PorvataPlayer, container: HTMLElement) {
+	const progressBar: ProgressBarElement = document.createElement('div');
+	const currentTime: HTMLDivElement = document.createElement('div');
 
 	progressBar.classList.add('progress-bar');
 	currentTime.classList.add('current-time');
@@ -17,14 +24,14 @@ function add(video, container) {
 		currentTime.style.width = '0';
 	};
 	progressBar.rewind = () => {
-		const remainingTime = currentTime.style.transitionDuration;
+		const remainingTime: string = currentTime.style.transitionDuration;
 
 		progressBar.reset();
 		slotTweaker.forceRepaint(currentTime);
 		currentTime.style.transitionDuration = remainingTime;
 	};
 	progressBar.start = () => {
-		const remainingTime = video.getRemainingTime();
+		const remainingTime: number = video.getRemainingTime();
 
 		if (remainingTime) {
 			if (remainingTime > 0) {
