@@ -301,17 +301,6 @@ export default {
 				'/{networkId}/wka1a.{slotConfig.group}/{slotConfig.lowerSlotName}' +
 				'/{custom.device}/ae-{custom.adLayout}/_example',
 		},
-		incontent_native: {
-			aboveTheFold: true,
-			firstCall: true,
-			lowerSlotName: 'incontent_native',
-			group: 'NATIVE',
-			sizes: [],
-			defaultSizes: ['fluid'],
-			targeting: {
-				loc: 'top',
-			},
-		},
 	},
 	services: {
 		billTheLizard: {
