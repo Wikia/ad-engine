@@ -24,13 +24,15 @@ class ClickPositionTracker {
 		event: Coordinates,
 		elementWidth: number,
 		elementHeight: number,
+		source: string,
 	): void {
 		this.middlewareService.execute(
 			{
 				data: {
 					category: 'click_position',
 					action: 'click',
-					label: `size=${elementWidth}x${elementHeight}|x=${event.x}|y=${event.y}`,
+					label:
+						`size=${elementWidth}x${elementHeight}` + `|x=${event.x}|y=${event.y}|source=${source}`,
 				},
 			},
 			callback,
@@ -58,6 +60,7 @@ class ClickPositionTracker {
 		const slot = slotService.get(slotName);
 		const iframeElement = slot.getIframe();
 		const slotElement = slot.getElement();
+		const elementHeight = slotElement.offsetHeight;
 
 		if (!slot || !iframeElement) {
 			utils.logger(this.logGroup, `Slot ${slotName} has no iframe.`);
@@ -72,13 +75,14 @@ class ClickPositionTracker {
 
 		if (iframeBody && slotElement) {
 			slotElement.addEventListener('click', (e: MouseEvent) => {
-				const y = e.clientY - window.innerHeight + slotElement.offsetHeight;
+				const y = e.clientY - window.innerHeight + elementHeight;
 
 				this.handleClickEvent(
 					callback,
 					{ x: e.clientX, y },
 					slotElement.offsetWidth,
 					slotElement.offsetHeight,
+					'slot',
 				);
 			});
 			iframeBody.addEventListener('click', (e: MouseEvent) => {
@@ -87,6 +91,7 @@ class ClickPositionTracker {
 					{ x: e.clientX, y: e.clientY },
 					iframeElement.offsetWidth,
 					iframeElement.offsetHeight,
+					'iframe',
 				);
 			});
 		}
