@@ -12,13 +12,14 @@ describe('Instant Config', () => {
 		helpers.waitForValuesLoaded(instantConfig.configPlaceholder);
 		const config = instantConfig.getConfig();
 
-		expect(config['boolean']).to.equal(false);
-		expect(config['number']).to.equal(42);
-		expect(config['numbers']).to.deep.equal([4, 8, 15, 16, 23, 42]);
-		expect(config['string']).to.equal('exampleString');
-		expect(config['strings']).to.deep.equal(['strings', 'in', 'the', 'array']);
-		expect(config['object']).to.deep.equal({
-			this: { is: { more: { complex: 'json', 'is it?': 1 } } },
+		expect(config['wgAdDriverBoolean']).to.equal(false);
+		expect(config['wgAdDriverNumber']).to.equal(42);
+		expect(config['wgAdDriverNumbers']).to.deep.equal([4, 8, 15, 16, 23, 42]);
+		expect(config['thisIsValueFromTestParams']).to.equal('WrappedInXX');
+		expect(config['wgAdDriverString']).to.equal('exampleString');
+		expect(config['wgAdDriverStrings']).to.deep.equal(['strings', 'in', 'the', 'array']);
+		expect(config['wgAdDriverObject']).to.deep.equal({
+			that: { is: { more: { complex: 'json', 'is it?': 1 } } },
 		});
 	});
 
@@ -27,15 +28,18 @@ describe('Instant Config', () => {
 		helpers.waitForValuesLoaded(instantConfig.configPlaceholder);
 		const config = instantConfig.getConfig();
 
-		expect(config['thisIsValueFromFallbackConfig']).to.equal(true);
+		expect(config['wgAdDriverThisIsValueFromFallbackConfig']).to.equal(true);
 	});
 
 	it('should override fallback config with query params on broken connection', () => {
 		instantConfig.enableBrokenConfigRequest();
-		browser.url(`${browser.getUrl()}&InstantGlobals.thisIsValueFromFallbackConfig=false`);
+		helpers.navigateToUrl(
+			instantConfig.pageLink,
+			'InstantGlobals.wgAdDriverThisIsValueFromFallbackConfig=false',
+		);
 		helpers.waitForValuesLoaded(instantConfig.configPlaceholder);
 		const config = instantConfig.getConfig();
 
-		expect(config['thisIsValueFromFallbackConfig']).to.equal(false);
+		expect(config['wgAdDriverThisIsValueFromFallbackConfig']).to.equal(false);
 	});
 });
