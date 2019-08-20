@@ -3,8 +3,8 @@ import { context } from './context-service';
 
 const logGroup = 'pbjs-factory';
 
-window.pbjs = window.pbjs || {};
-window.pbjs.que = window.pbjs.que || [];
+(window as any).pbjs = (window as any).pbjs || {};
+(window as any).pbjs.que = (window as any).pbjs.que || [];
 
 class PbjsFactory {
 	private instancePromise: Promise<Pbjs>;
@@ -23,7 +23,7 @@ class PbjsFactory {
 			}
 
 			this.instancePromise = new Promise((resolve) =>
-				window.pbjs.que.push(() => resolve(window.pbjs)),
+				(window as any).pbjs.que.push(() => resolve((window as any).pbjs)),
 			);
 		}
 
