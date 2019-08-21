@@ -1,12 +1,19 @@
 import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 
-export interface ClickPositionContext {
-	data: any;
-}
-
-interface Coordinates {
+interface ClickPayload {
 	x: number;
 	y: number;
+	elementWidth: number;
+	elementHeight: number;
+	source: string;
+}
+
+export interface ClickPositionContext {
+	data: {
+		category: string;
+		action: string;
+		label: string;
+	};
 }
 
 class ClickPositionTracker {
@@ -20,11 +27,8 @@ class ClickPositionTracker {
 	}
 
 	handleClickEvent(
-		callback: utils.Middleware<ClickPositionContext>,
-		event: Coordinates,
-		elementWidth: number,
-		elementHeight: number,
-		source: string,
+		middleware: utils.Middleware<ClickPositionContext>,
+		clickPayload: ClickPayload,
 	): void {
 		this.middlewareService.execute(
 			{
@@ -32,10 +36,11 @@ class ClickPositionTracker {
 					category: 'click_position',
 					action: 'click',
 					label:
-						`size=${elementWidth}x${elementHeight}` + `|x=${event.x}|y=${event.y}|source=${source}`,
+						`size=${clickPayload.elementWidth}x${clickPayload.elementHeight}` +
+						`|x=${clickPayload.x}|y=${clickPayload.y}|source=${clickPayload.source}`,
 				},
 			},
-			callback,
+			middleware,
 		);
 	}
 
@@ -43,24 +48,25 @@ class ClickPositionTracker {
 		return context.get(`slots.${slotName}.clickPositionTracking`);
 	}
 
-	register(callback: utils.Middleware<ClickPositionContext>, slotName: string): void {
+	register(middleware: utils.Middleware<ClickPositionContext>, slotName: string): void {
 		if (!this.isEnabled(slotName)) {
 			return;
 		}
 
 		slotService.on(slotName, AdSlot.SLOT_RENDERED_EVENT, () => {
-			this.addClickTrackingListeners(callback, slotName);
+			this.addClickTrackingListeners(middleware, slotName);
 		});
 	}
 
 	addClickTrackingListeners(
-		callback: utils.Middleware<ClickPositionContext>,
+		middleware: utils.Middleware<ClickPositionContext>,
 		slotName: string,
 	): void {
-		const slot = slotService.get(slotName);
-		const iframeElement = slot.getIframe();
-		const slotElement = slot.getElement();
-		const elementHeight = slotElement.offsetHeight;
+		const slot: AdSlot = slotService.get(slotName);
+		const iframeElement: HTMLIFrameElement = slot.getIframe();
+		const slotElement: HTMLElement = slot.getElement();
+		const elementHeight: number = slotElement.offsetHeight;
+		const elementWidth: number = slotElement.offsetWidth;
 
 		if (!slot || !iframeElement) {
 			utils.logger(this.logGroup, `Slot ${slotName} has no iframe.`);
@@ -71,28 +77,28 @@ class ClickPositionTracker {
 			utils.logger(this.logGroup, `Slot ${slotName} is served in safeframe.`);
 			return;
 		}
-		const iframeBody = iframeElement.contentWindow.document.body as HTMLElement;
+		const iframeBody: HTMLElement = iframeElement.contentWindow.document.body;
 
 		if (iframeBody && slotElement) {
 			slotElement.addEventListener('click', (e: MouseEvent) => {
-				const y = e.clientY - window.innerHeight + elementHeight;
+				const y: number = e.clientY - window.innerHeight + elementHeight;
 
-				this.handleClickEvent(
-					callback,
-					{ x: e.clientX, y },
-					slotElement.offsetWidth,
-					slotElement.offsetHeight,
-					'slot',
-				);
+				this.handleClickEvent(middleware, {
+					source: 'slot',
+					x: e.clientX,
+					elementHeight,
+					elementWidth,
+					y,
+				});
 			});
 			iframeBody.addEventListener('click', (e: MouseEvent) => {
-				this.handleClickEvent(
-					callback,
-					{ x: e.clientX, y: e.clientY },
-					iframeElement.offsetWidth,
-					iframeElement.offsetHeight,
-					'iframe',
-				);
+				this.handleClickEvent(middleware, {
+					source: 'iframe',
+					x: e.clientX,
+					y: e.clientY,
+					elementHeight,
+					elementWidth,
+				});
 			});
 		}
 	}

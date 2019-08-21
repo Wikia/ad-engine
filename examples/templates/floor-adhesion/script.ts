@@ -1,7 +1,6 @@
 import {
 	AdEngine,
 	clickPositionTracker,
-	clickPositionTrackingMiddleware,
 	context,
 	FloorAdhesion,
 	templateService,
@@ -18,9 +17,10 @@ context.extend(customContext);
 templateService.register(FloorAdhesion);
 
 function registerClickPositionTracker() {
-	clickPositionTracker
-		.add(clickPositionTrackingMiddleware)
-		.register(({ data }) => console.log(['🖱️ click on: ', data.label]), 'floor_adhesion');
+	clickPositionTracker.register(
+		({ data }) => console.log(['🖱️ click on: ', data.label]),
+		'floor_adhesion',
+	);
 }
 
 new AdEngine().init();
