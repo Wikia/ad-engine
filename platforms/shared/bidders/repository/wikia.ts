@@ -31,6 +31,9 @@ export function getWikiaContext(device: DeviceMode): any {
 				'02_MR': {
 					sizes: [[300, 250]],
 				},
+				'03_PF': {
+					sizes: [[300, 250]],
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 				},
