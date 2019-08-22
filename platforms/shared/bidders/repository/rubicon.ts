@@ -76,6 +76,15 @@ export function getRubiconContext(device: DeviceMode): any {
 					siteId: '260250',
 					zoneId: '1289082',
 				},
+				'03_PF': {
+					sizes: [[300, 250]],
+					targeting: {
+						loc: ['footer'],
+					},
+					position: 'btf',
+					siteId: '260250',
+					zoneId: '1386698',
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					targeting: {

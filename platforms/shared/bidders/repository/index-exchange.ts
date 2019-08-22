@@ -39,6 +39,10 @@ export function getIndexExchangeContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					siteId: '367529',
 				},
+				'03_PF': {
+					sizes: [[300, 250]],
+					siteId: '399604',
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					siteId: '367530',

@@ -47,6 +47,10 @@ export function getPubmaticContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					ids: ['Mobile_Incontent_300x250_Gamepedia'],
 				},
+				'03_PF': {
+					sizes: [[300, 250]],
+					ids: ['Mobile_PF_Footer_300x250_Gamepedia'],
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					ids: ['Mobile_Footer_300x250_Gamepedia'],

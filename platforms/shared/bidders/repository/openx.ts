@@ -41,6 +41,10 @@ export function getOpenXContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					unit: '540774858',
 				},
+				'03_PF': {
+					sizes: [[300, 250]],
+					unit: '540820350',
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					unit: '540774859',
