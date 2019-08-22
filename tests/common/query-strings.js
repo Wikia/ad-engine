@@ -11,6 +11,7 @@ class QueryStrings {
 			enabledGeo: 'enabled-geo',
 			forceEmptyResponse: 'force-empty-response',
 			disableFloating: 'floating',
+			directPorvata: 'porvata-direct',
 		};
 		this.bidders = {
 			price: 'wikia_adapter',
@@ -169,6 +170,12 @@ class QueryStrings {
 		const on = enabled ? '1' : '0';
 
 		return `${this.bidders.deals}=${on}`;
+	}
+
+	getPorvataDirect(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.utils.directPorvata}=${on}`;
 	}
 
 	getSessionIdParam(parameter) {

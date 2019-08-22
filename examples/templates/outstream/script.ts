@@ -5,7 +5,9 @@ import {
 	DelayModule,
 	events,
 	eventService,
+	fillerService,
 	playerEvents,
+	PorvataFiller,
 	PorvataTemplate,
 	porvataTracker,
 	slotService,
@@ -20,6 +22,10 @@ context.extend(customContext);
 context.set('targeting.artid', '503');
 context.set('slots.incontent_boxad.disabled', false);
 context.set('options.tracking.kikimora.player', true);
+
+if (utils.queryString.get('porvata-direct') === '1') {
+	context.set('slots.incontent_player.customFiller', 'porvata');
+}
 
 context.push('listeners.slot', {
 	onStatusChanged: (adSlot) => {
@@ -64,6 +70,8 @@ templateService.register(PorvataTemplate, {
 	isFloatingEnabled: utils.queryString.get('floating') !== '0',
 	inViewportOffsetTop: 58,
 });
+
+fillerService.register(new PorvataFiller());
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
