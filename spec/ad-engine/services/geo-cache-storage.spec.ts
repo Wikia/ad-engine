@@ -111,12 +111,12 @@ describe('Geo Cache Storage', () => {
 		it('should return array', () => {
 			getItemStub.returns({
 				first: {
-					name: 'first',
+					name: 'first-1',
 					limit: 45,
 					group: 'B',
 				},
 				second: {
-					name: 'second',
+					name: 'second-2',
 					limit: 90.09,
 					group: 'A',
 				},
