@@ -100,7 +100,7 @@ class ContextSetup {
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
-		context.patch('targeting', getPageLevelTargeting());
+		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
 		this.injectIncontentPlayer();

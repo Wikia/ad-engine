@@ -112,18 +112,6 @@ class Context {
 		segment(key, value);
 	}
 
-	patch(key: string, value: any): void {
-		if (Array.isArray(value)) {
-			return this.set(key, value);
-		}
-		if (typeof value === 'object') {
-			return Object.keys(value).forEach((elKey) => {
-				context.set(`${key}.${elKey}`, value[elKey]);
-			});
-		}
-		this.set(key, value);
-	}
-
 	get(key: string): any {
 		return segment(key);
 	}

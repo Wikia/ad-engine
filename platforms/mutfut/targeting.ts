@@ -2,12 +2,23 @@ import { Dictionary, utils } from '@wikia/ad-engine';
 
 export function getPageLevelTargeting(): Dictionary<string> {
 	const domain = getDomain();
-
-	return {
-		dmn: `${domain.name}${domain.tld}`,
+	const cid = utils.queryString.get('cid');
+	const targeting: Dictionary<string> = {
+		ae3: '1',
+		skin: 'turf',
+		uap: 'none',
+		uap_c: 'none',
+		s0: 'gaming',
 		s1: domain.name,
-		cid: utils.queryString.get('cid'),
+		s2: 'main',
+		dmn: `${domain.name}${domain.tld}`,
 	};
+
+	if (cid !== undefined) {
+		targeting.cid = cid;
+	}
+
+	return targeting;
 }
 
 function getDomain(): { name: string; tld: string } {

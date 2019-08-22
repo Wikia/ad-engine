@@ -34,14 +34,7 @@ export const basicContext = {
 		adStack: [],
 		isMobile: false,
 	},
-	targeting: {
-		ae3: '1',
-		skin: 'turf',
-		uap: 'none',
-		uap_c: 'none',
-		s0: 'gaming',
-		s2: 'main',
-	},
+	targeting: {},
 	vast: {
 		adUnitId:
 			'/{custom.dfpId}/sports/{slotConfig.group}/{state.deviceType}/' +
