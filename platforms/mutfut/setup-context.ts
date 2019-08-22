@@ -100,9 +100,7 @@ class ContextSetup {
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
-
-		this.setupPageLevelTargeting();
-
+		context.patch('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
 		this.injectIncontentPlayer();
@@ -110,14 +108,6 @@ class ContextSetup {
 		slotsContext.setupStates();
 
 		this.updateWadContext();
-	}
-
-	private setupPageLevelTargeting(): void {
-		const pageLevelParams = getPageLevelTargeting();
-
-		Object.keys(pageLevelParams).forEach((key) => {
-			context.set(`targeting.${key}`, pageLevelParams[key]);
-		});
 	}
 
 	private updateWadContext(): void {
