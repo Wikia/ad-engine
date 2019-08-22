@@ -9,11 +9,9 @@ interface ClickPayload {
 }
 
 export interface ClickPositionContext {
-	data: {
-		category: string;
-		action: string;
-		label: string;
-	};
+	category: string;
+	action: string;
+	label: string;
 }
 
 class ClickPositionTracker {
@@ -26,28 +24,6 @@ class ClickPositionTracker {
 		return this;
 	}
 
-	handleClickEvent(
-		middleware: utils.Middleware<ClickPositionContext>,
-		clickPayload: ClickPayload,
-	): void {
-		this.middlewareService.execute(
-			{
-				data: {
-					category: 'click_position',
-					action: 'click',
-					label:
-						`size=${clickPayload.elementWidth}x${clickPayload.elementHeight}` +
-						`|x=${clickPayload.x}|y=${clickPayload.y}|source=${clickPayload.source}`,
-				},
-			},
-			middleware,
-		);
-	}
-
-	isEnabled(slotName: string): boolean {
-		return context.get(`slots.${slotName}.clickPositionTracking`);
-	}
-
 	register(middleware: utils.Middleware<ClickPositionContext>, slotName: string): void {
 		if (!this.isEnabled(slotName)) {
 			return;
@@ -58,7 +34,11 @@ class ClickPositionTracker {
 		});
 	}
 
-	addClickTrackingListeners(
+	private isEnabled(slotName: string): boolean {
+		return context.get(`slots.${slotName}.clickPositionTracking`);
+	}
+
+	private addClickTrackingListeners(
 		middleware: utils.Middleware<ClickPositionContext>,
 		slotName: string,
 	): void {
@@ -101,6 +81,22 @@ class ClickPositionTracker {
 				});
 			});
 		}
+	}
+
+	private handleClickEvent(
+		middleware: utils.Middleware<ClickPositionContext>,
+		clickPayload: ClickPayload,
+	): void {
+		this.middlewareService.execute(
+			{
+				category: 'click_position',
+				action: 'click',
+				label:
+					`size=${clickPayload.elementWidth}x${clickPayload.elementHeight}` +
+					`|x=${clickPayload.x}|y=${clickPayload.y}|source=${clickPayload.source}`,
+			},
+			middleware,
+		);
 	}
 }
 
