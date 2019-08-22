@@ -18,7 +18,7 @@ templateService.register(FloorAdhesion);
 
 function registerClickPositionTracker() {
 	clickPositionTracker.register(
-		({ data }) => console.log(['🖱️ click on: ', data.label]),
+		(data) => console.log(['🖱️ click on: ', data.label]),
 		'floor_adhesion',
 	);
 }
