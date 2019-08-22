@@ -39,6 +39,10 @@ export function getAppNexusContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					placementId: '15976892',
 				},
+				'03_PF': {
+					sizes: [[300, 250]],
+					placementId: '16666469',
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					placementId: '15976893',
