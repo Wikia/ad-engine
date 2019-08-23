@@ -14,7 +14,7 @@ export interface Icons {
 	HIVI_VOLUME_ON: string;
 }
 
-const parser: DOMParser = new DOMParser();
+const parser: DOMParser = new window.DOMParser();
 
 export function createIcon(iconName: string, classNames: string[] = []): HTMLElement | null {
 	if (svgs[iconName]) {
