@@ -21,7 +21,7 @@ describe('Outstream ads', () => {
 		expect(adStatus.visible, 'Not in viewport').to.be.true;
 	});
 
-	it('Check if video is visible is floating', () => {
+	it('Check if video is visible while floating', () => {
 		browser.url(outstream.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 		helpers.waitForViewabillityCounted(timeouts.standard);
