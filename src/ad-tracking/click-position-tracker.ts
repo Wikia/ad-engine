@@ -18,12 +18,6 @@ class ClickPositionTracker {
 	private middlewareService = new utils.MiddlewareService<ClickPositionContext>();
 	private logGroup = 'click-position-tracker';
 
-	add(middleware: utils.Middleware<ClickPositionContext>): this {
-		this.middlewareService.add(middleware);
-
-		return this;
-	}
-
 	register(middleware: utils.Middleware<ClickPositionContext>, slotName: string): void {
 		if (!this.isEnabled(slotName)) {
 			return;
@@ -64,20 +58,20 @@ class ClickPositionTracker {
 				const y: number = e.clientY - window.innerHeight + elementHeight;
 
 				this.handleClickEvent(middleware, {
-					source: 'slot',
-					x: e.clientX,
 					elementHeight,
 					elementWidth,
 					y,
+					x: e.clientX,
+					source: 'slot',
 				});
 			});
 			iframeBody.addEventListener('click', (e: MouseEvent) => {
 				this.handleClickEvent(middleware, {
-					source: 'iframe',
-					x: e.clientX,
-					y: e.clientY,
 					elementHeight,
 					elementWidth,
+					y: e.clientY,
+					x: e.clientX,
+					source: 'iframe',
 				});
 			});
 		}
