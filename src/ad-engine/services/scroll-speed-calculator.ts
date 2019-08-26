@@ -1,7 +1,19 @@
 import { SessionCookie } from './session-cookie';
 
-class ScrollSpeedCalculator {
+export class ScrollSpeedCalculator {
+	private static instance: ScrollSpeedCalculator;
+
+	static make(): ScrollSpeedCalculator {
+		if (!ScrollSpeedCalculator.instance) {
+			ScrollSpeedCalculator.instance = new ScrollSpeedCalculator();
+		}
+
+		return ScrollSpeedCalculator.instance;
+	}
+
 	private sessionCookie = SessionCookie.make();
+
+	private constructor() {}
 
 	/**
 	 * Takes average scroll speed from session, default: 0
@@ -32,5 +44,3 @@ class ScrollSpeedCalculator {
 		this.sessionCookie.setItem('scrollSpeedRecordsNumber', (scrollRecords + 1).toString());
 	}
 }
-
-export const scrollSpeedCalculator = new ScrollSpeedCalculator();

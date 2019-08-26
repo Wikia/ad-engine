@@ -1,10 +1,11 @@
-import { context, events, eventService, scrollSpeedCalculator } from '@ad-engine/core';
+import { context, events, eventService, ScrollSpeedCalculator } from '@ad-engine/core';
 
 class ScrollTracker {
 	applicationArea: Element | null = null;
 	listener: () => void | null = null;
 	timer: NodeJS.Timer | null = null;
 	speeds: number[] = [];
+	private scrollSpeedCalculator = ScrollSpeedCalculator.make();
 
 	initScrollSpeedTracking(applicationAreaClass: string): void {
 		if (!context.get('options.scrollSpeedTracking')) {
@@ -46,7 +47,7 @@ class ScrollTracker {
 		clearTimeout(this.timer);
 		this.applicationArea.removeEventListener('touchstart', this.listener);
 		if (this.speeds.length) {
-			scrollSpeedCalculator.setAverageSessionScrollSpeed(this.speeds);
+			this.scrollSpeedCalculator.setAverageSessionScrollSpeed(this.speeds);
 		}
 	}
 }
