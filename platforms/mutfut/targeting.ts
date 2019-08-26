@@ -1,59 +1,33 @@
-import { Dictionary, utils } from '@wikia/ad-engine';
+import { Targeting, utils } from '@wikia/ad-engine';
 
-function getPageType(wg): string {
-	if (wg.wgIsMainPage) {
-		return 'main';
+export function getPageLevelTargeting(): Partial<Targeting> {
+	const domain = getDomain();
+	const cid = utils.queryString.get('cid');
+	const targeting: Partial<Targeting> = {
+		ae3: '1',
+		skin: 'turf',
+		uap: 'none',
+		uap_c: 'none',
+		s0: 'gaming',
+		s1: domain.name,
+		s2: 'main',
+		dmn: `${domain.name}${domain.tld}`,
+	};
+
+	if (cid !== undefined) {
+		targeting.cid = cid;
 	}
 
-	if (wg.wgIsArticle) {
-		return 'article';
-	}
-
-	return 'unknown';
+	return targeting;
 }
 
-function getSkin(wikiContext): string {
-	let wikiSkin = wikiContext.skin || 'unknown';
-	const skins = ['hydra', 'minerva'];
-
-	skins.forEach((skin) => {
-		if (wikiSkin.includes(skin)) {
-			wikiSkin = skin;
-		}
-	});
-
-	return wikiSkin;
-}
-
-function getDomain(): string {
+function getDomain(): { name: string; tld: string } {
 	const hostname = window.location.hostname.toLowerCase();
 	const pieces = hostname.split('.');
 	const np = pieces.length;
 
-	return `${pieces[np - 2]}${pieces[np - 1]}`;
+	return {
+		name: pieces[np - 2],
+		tld: pieces[np - 1],
+	};
 }
-
-export const targeting = {
-	getDomain,
-	getPageLevelTargeting(wikiContext: any = {}): any {
-		const pageTargeting: Dictionary<string> = {
-			artid: wikiContext.wgArticleId,
-			dmn: getDomain(),
-			pName: wikiContext.wgPageName,
-			pv: window.pvNumber && window.pvNumber.toString(),
-			s0: 'gaming',
-			s1: wikiContext.wgDBname,
-			s2: getPageType(wikiContext),
-			sdName: wikiContext.wgDBname,
-			skin: getSkin(wikiContext),
-		};
-
-		const cid = utils.queryString.get('cid');
-
-		if (cid !== undefined) {
-			pageTargeting.cid = cid;
-		}
-
-		return pageTargeting;
-	},
-};
