@@ -13,15 +13,15 @@ export interface CacheData {
 	withCookie: boolean;
 }
 
-class GeoCacheStorage {
-	private static instance: GeoCacheStorage;
+export class InstantConfigCacheStorage {
+	private static instance: InstantConfigCacheStorage;
 
-	static make(): GeoCacheStorage {
-		if (!GeoCacheStorage.instance) {
-			GeoCacheStorage.instance = new GeoCacheStorage();
+	static make(): InstantConfigCacheStorage {
+		if (!InstantConfigCacheStorage.instance) {
+			InstantConfigCacheStorage.instance = new InstantConfigCacheStorage();
 		}
 
-		return GeoCacheStorage.instance;
+		return InstantConfigCacheStorage.instance;
 	}
 
 	private readonly cookieStorage = new UniversalStorage(sessionCookie);
@@ -92,5 +92,3 @@ class GeoCacheStorage {
 		return nameHyphenIndex !== -1 ? name.substring(0, nameHyphenIndex) : name;
 	}
 }
-
-export const geoCacheStorage = GeoCacheStorage.make();

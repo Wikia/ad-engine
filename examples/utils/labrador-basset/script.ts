@@ -1,13 +1,14 @@
-import { geoCacheStorage, sessionCookie, utils } from '@wikia/ad-engine';
+import { InstantConfigCacheStorage, sessionCookie, utils } from '@wikia/ad-engine';
 
 const preStatuses = document.getElementById('statuses');
 const preGroups = document.getElementById('groups');
 const instantGlobals = utils.queryString.getValues();
 const sessionId = utils.queryString.get('sessionid');
 const statuses = [];
+const cacheStorage = InstantConfigCacheStorage.make();
 
 sessionCookie.setSessionId(sessionId || 't3st4d3ng1n3s3ss1on1d');
-geoCacheStorage.resetCache();
+cacheStorage.resetCache();
 
 Object.keys(instantGlobals).forEach((variable) => {
 	if (variable.substr(0, 14) === 'InstantGlobals') {
@@ -22,4 +23,4 @@ Object.keys(instantGlobals).forEach((variable) => {
 });
 
 preStatuses.innerText = statuses.join('\n');
-preGroups.innerText = geoCacheStorage.getSamplingResults();
+preGroups.innerText = cacheStorage.getSamplingResults();
