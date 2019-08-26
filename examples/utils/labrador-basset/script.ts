@@ -1,4 +1,4 @@
-import { InstantConfigCacheStorage, sessionCookie, utils } from '@wikia/ad-engine';
+import { InstantConfigCacheStorage, SessionCookie, utils } from '@wikia/ad-engine';
 
 const preStatuses = document.getElementById('statuses');
 const preGroups = document.getElementById('groups');
@@ -6,6 +6,7 @@ const instantGlobals = utils.queryString.getValues();
 const sessionId = utils.queryString.get('sessionid');
 const statuses = [];
 const cacheStorage = InstantConfigCacheStorage.make();
+const sessionCookie = SessionCookie.make();
 
 sessionCookie.setSessionId(sessionId || 't3st4d3ng1n3s3ss1on1d');
 cacheStorage.resetCache();

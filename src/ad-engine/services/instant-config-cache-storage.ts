@@ -1,5 +1,4 @@
-import { sessionCookie } from '../services/session-cookie';
-import { UniversalStorage } from '../services/universal-storage';
+import { SessionCookie } from '../services/session-cookie';
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -24,7 +23,7 @@ export class InstantConfigCacheStorage {
 		return InstantConfigCacheStorage.instance;
 	}
 
-	private readonly cookieStorage = new UniversalStorage(sessionCookie);
+	private readonly sessionCookie = SessionCookie.make();
 	private cacheStorage: CacheDictionary;
 
 	private constructor() {
@@ -32,7 +31,7 @@ export class InstantConfigCacheStorage {
 	}
 
 	resetCache(): void {
-		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
+		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
 	}
 
 	get(id: string): CacheData {
@@ -56,7 +55,7 @@ export class InstantConfigCacheStorage {
 			.filter(({ key, value }) => value.withCookie)
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
-		this.cookieStorage.setItem('basset', cacheDictionaryWithCookie);
+		this.sessionCookie.setItem('basset', cacheDictionaryWithCookie);
 	}
 
 	/**

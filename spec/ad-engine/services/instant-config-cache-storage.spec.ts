@@ -2,8 +2,7 @@ import {
 	CacheData,
 	InstantConfigCacheStorage,
 } from '@wikia/ad-engine/services/instant-config-cache-storage';
-import { sessionCookie } from '@wikia/ad-engine/services/session-cookie';
-import { UniversalStorage } from '@wikia/ad-engine/services/universal-storage';
+import { SessionCookie } from '@wikia/ad-engine/services/session-cookie';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy, SinonStub } from 'sinon';
 
@@ -15,9 +14,9 @@ describe('Instant Config Cache Storage', () => {
 	let readSessionIdSpy: SinonSpy;
 
 	beforeEach(() => {
-		getItemStub = sandbox.stub(UniversalStorage.prototype, 'getItem');
-		setItemStub = sandbox.stub(UniversalStorage.prototype, 'setItem');
-		readSessionIdSpy = sandbox.spy(sessionCookie, 'readSessionId');
+		getItemStub = sandbox.stub(SessionCookie.prototype, 'getItem');
+		setItemStub = sandbox.stub(SessionCookie.prototype, 'setItem');
+		readSessionIdSpy = sandbox.spy(SessionCookie.prototype, 'readSessionId');
 
 		cacheStorage.resetCache();
 		readSessionIdSpy.resetHistory();

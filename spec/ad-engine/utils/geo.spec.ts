@@ -2,9 +2,10 @@ import { geoService } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
 import * as Cookies from 'js-cookie';
 import * as sinon from 'sinon';
-import { context, InstantConfigCacheStorage, sessionCookie } from '../../../src/ad-engine/services';
+import { context, InstantConfigCacheStorage, SessionCookie } from '../../../src/ad-engine/services';
 
 describe('Geo', () => {
+	const sessionCookie = SessionCookie.make();
 	const cacheStorage = InstantConfigCacheStorage.make();
 	let sandbox: sinon.SinonSandbox;
 	let randomStub: sinon.SinonStub;

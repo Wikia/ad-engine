@@ -3,7 +3,7 @@ import { context } from './context-service';
 import { CookieStorageAdapter } from './cookie-storage-adapter';
 import { UniversalStorage } from './universal-storage';
 
-class SessionCookie {
+export class SessionCookie {
 	private static instance: SessionCookie;
 
 	static make(): SessionCookie {
@@ -18,7 +18,7 @@ class SessionCookie {
 	private readonly sessionCookieDefault = 'tracking_session_id';
 	private prefix = '';
 
-	constructor() {
+	private constructor() {
 		this.prefix = this.readSessionId();
 	}
 
@@ -42,7 +42,7 @@ class SessionCookie {
 		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 
-	setItem(key: string, input: string): void {
+	setItem(key: string, input: {} | string): void {
 		this.storage.setItem(`${this.prefix}_${key}`, input);
 	}
 
@@ -54,5 +54,3 @@ class SessionCookie {
 		this.storage.clear();
 	}
 }
-
-export const sessionCookie = new SessionCookie();

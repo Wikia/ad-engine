@@ -2,8 +2,7 @@ import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
-import { sessionCookie } from './session-cookie';
-import { UniversalStorage } from './universal-storage';
+import { SessionCookie } from './session-cookie';
 
 type StatusType = 'loaded' | 'viewed';
 
@@ -11,11 +10,11 @@ const logGroup = 'viewability-counter';
 
 class ViewabilityCounter {
 	private readonly counters: Dictionary<Dictionary<number>>;
-	private storage = new UniversalStorage(sessionCookie);
+	private sessionCookie = SessionCookie.make();
 	private loaded = false;
 
 	constructor() {
-		this.counters = this.storage.getItem('viewabilityCountData') || {
+		this.counters = this.sessionCookie.getItem('viewabilityCountData') || {
 			loadedCounter: {},
 			viewedCounter: {},
 		};
@@ -55,7 +54,7 @@ class ViewabilityCounter {
 		this.counters[`${type}Counter`][counterId] =
 			(this.counters[`${type}Counter`][counterId] || 0) + 1;
 
-		this.storage.setItem('viewabilityCountData', this.counters);
+		this.sessionCookie.setItem('viewabilityCountData', this.counters);
 	}
 
 	getViewability(counterId: string = ''): string {
