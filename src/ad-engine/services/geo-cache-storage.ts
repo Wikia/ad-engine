@@ -14,15 +14,24 @@ export interface CacheData {
 }
 
 class GeoCacheStorage {
+	private static instance: GeoCacheStorage;
+
+	static make(): GeoCacheStorage {
+		if (!GeoCacheStorage.instance) {
+			GeoCacheStorage.instance = new GeoCacheStorage();
+		}
+
+		return GeoCacheStorage.instance;
+	}
+
 	private readonly cookieStorage = new UniversalStorage(sessionCookie);
 	private cacheStorage: CacheDictionary;
 
-	constructor() {
+	private constructor() {
 		this.resetCache();
 	}
 
 	resetCache(): void {
-		sessionCookie.readSessionId();
 		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
 	}
 
@@ -84,4 +93,4 @@ class GeoCacheStorage {
 	}
 }
 
-export const geoCacheStorage = new GeoCacheStorage();
+export const geoCacheStorage = GeoCacheStorage.make();
