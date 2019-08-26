@@ -1,28 +1,25 @@
 import * as Cookies from 'js-cookie';
 import { context } from './context-service';
-import { StorageProvider } from './universal-storage';
+import { CookieStorageAdapter } from './cookie-storage-adapter';
+import { UniversalStorage } from './universal-storage';
 
-interface WikiaCookieAttributes extends Cookies.CookieAttributes {
-	overwrite: boolean;
-	maxAge: number;
-}
+class SessionCookie {
+	private static instance: SessionCookie;
 
-class SessionCookie implements StorageProvider {
-	private readonly cacheMaxAge = 30 * 60 * 1000;
+	static make(): SessionCookie {
+		if (!SessionCookie.instance) {
+			SessionCookie.instance = new SessionCookie();
+		}
+
+		return SessionCookie.instance;
+	}
+
+	private readonly storage = new UniversalStorage(new CookieStorageAdapter());
 	private readonly sessionCookieDefault = 'tracking_session_id';
-	private keysSeen = [];
 	private prefix = '';
 
 	constructor() {
 		this.prefix = this.readSessionId();
-	}
-
-	private getCookieDomain(): string | undefined {
-		const domain: string[] = window.location.hostname.split('.');
-
-		return domain.length > 1
-			? `.${domain[domain.length - 2]}.${domain[domain.length - 1]}`
-			: undefined;
 	}
 
 	readSessionId(): string {
@@ -41,37 +38,20 @@ class SessionCookie implements StorageProvider {
 		context.set('options.session.id', sid);
 	}
 
-	getItem(key: string): string {
-		return Cookies.get(`${this.prefix}_${key}`);
+	getItem<T>(key: string): T {
+		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 
 	setItem(key: string, input: string): void {
-		const cookieAttributes: WikiaCookieAttributes = {
-			expires: new Date(new Date().getTime() + this.cacheMaxAge),
-			path: '/',
-			domain: this.getCookieDomain(),
-			overwrite: true,
-			maxAge: this.cacheMaxAge,
-		};
-
-		if (!this.keysSeen.includes(key)) {
-			this.keysSeen.push(key);
-		}
-
-		Cookies.set(`${this.prefix}_${key}`, input, cookieAttributes);
+		this.storage.setItem(`${this.prefix}_${key}`, input);
 	}
 
 	removeItem(key: string): void {
-		Cookies.remove(`${this.prefix}_${key}`, {
-			path: '/',
-			domain: this.getCookieDomain(),
-		});
+		this.storage.removeItem(`${this.prefix}_${key}`);
 	}
 
 	clear(): void {
-		this.keysSeen.forEach((key) => {
-			this.removeItem(key);
-		});
+		this.storage.clear();
 	}
 }
 
