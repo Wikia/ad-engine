@@ -111,19 +111,28 @@ describe('Geo Cache Storage', () => {
 		it('should return array', () => {
 			getItemStub.returns({
 				first: {
-					name: 'first',
+					name: 'first-1',
 					limit: 45,
 					group: 'B',
 				},
 				second: {
-					name: 'second',
+					name: 'second-2',
 					limit: 90.09,
+					group: 'A',
+				},
+				third: {
+					name: 'third',
+					limit: 10,
 					group: 'A',
 				},
 			});
 			geoCacheStorage.resetCache();
 
-			expect(geoCacheStorage.getSamplingResults()).to.deep.equal(['first_B_45', 'second_A_90.09']);
+			expect(geoCacheStorage.getSamplingResults()).to.deep.equal([
+				'first_B_45',
+				'second_A_90.09',
+				'third_A_10',
+			]);
 		});
 	});
 
