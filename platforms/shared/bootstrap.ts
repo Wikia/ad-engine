@@ -7,7 +7,7 @@ export async function bootstrapAndGetCmpConsent(): Promise<boolean> {
 	context.set('custom.isCMPEnabled', cmpWrapper.geoRequiresConsent(geo));
 	context.set('options.geoRequiresConsent', cmpWrapper.geoRequiresConsent(geo));
 
-	await cmpWrapper.init();
+	await cmpWrapper.init(geo);
 
 	return cmpWrapper.getConsent(geo);
 }

@@ -1,8 +1,8 @@
 import { utils } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 
-const CMP_LIBRARY_URL = '//cdm.cursecdn.com/js/cmp/cmp-04-22/cmp.bundle.js';
-const optOutConsentString = 'BOhn5_-Ohn5_-ABABAENCVAAAAAn6AAA';
+const CMP_LIBRARY_URL = '//cdm.cursecdn.com/js/cmp/tracking-opt-in.min.js';
+const optOutConsentString = 'BOl8T5MOl8T5MCNACAENCiAAAAAp6A';
 const logGroup = 'cmp-wrapper';
 
 /**
@@ -19,6 +19,7 @@ export enum CmpPolicy {
  */
 class CmpWrapper {
 	cmpReady = false;
+	cmpModal: any;
 	gdprConsent = false;
 	gdprConsentPolicy: CmpPolicy = CmpPolicy.detect;
 
@@ -26,93 +27,33 @@ class CmpWrapper {
 	 * Initialize the CMP system
 	 * Returns a Promise fulfilled when the CMP library is ready for use
 	 */
-	init(): Promise<void> {
-		((w: any, document) => {
-			if (!w.__cmp) {
-				w.__cmp = (() => {
-					const listen = w.attachEvent || window.addEventListener;
-
-					listen(
-						'message',
-						(event: any) => {
-							w.__cmp.receiveMessage(event);
-						},
-						false,
-					);
-
-					function addLocatorFrame(): void {
-						if (!w.frames['__cmpLocator']) {
-							if (document.body) {
-								const frame = document.createElement('iframe');
-
-								frame.style.display = 'none';
-								frame.name = '__cmpLocator';
-
-								document.body.appendChild(frame);
-							} else {
-								setTimeout(addLocatorFrame, 5);
-							}
-						}
-					}
-
-					addLocatorFrame();
-
-					const commandQueue: any[] = [];
-					const cmp: any = (command: string, parameter: any, callback: any) => {
-						if (command === 'ping') {
-							if (callback) {
-								callback({
-									gdprAppliesGlobally: !!(
-										w.__cmp &&
-										w.__cmp.config &&
-										w.__cmp.config.storeConsentGlobally
-									),
-									cmpLoaded: false,
-								});
-							}
-						} else {
-							commandQueue.push({
-								command,
-								parameter,
-								callback,
-							});
-						}
-					};
-
-					cmp.commandQueue = commandQueue;
-					cmp.receiveMessage = (event: any) => {
-						const data = event && event.data && event.data.__cmpCall;
-
-						if (data) {
-							commandQueue.push({
-								event,
-								callId: data.callId,
-								command: data.command,
-								parameter: data.parameter,
-							});
-						}
-					};
-					cmp.config = {
-						logging: 'debug',
-					};
-
-					return cmp;
-				})();
-			}
-		})(window, document);
-
+	init(country: string): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			window.__cmp('addEventListener', 'cmpReady', () => {
+			// In case it fails to load, we'll resolve after 2s
+			setTimeout(() => {
+				utils.logger(logGroup, 'Timeout waiting for CMP to load');
+				resolve();
+			}, 2000);
+
+			utils.scriptLoader.loadScript(CMP_LIBRARY_URL).then(() => {
+				utils.logger(logGroup, 'CMP Loaded');
+
 				this.cmpReady = true;
+				this.cmpModal = window.trackingOptIn.default({
+					country,
+					onAcceptTracking: () => {
+						utils.logger(logGroup, 'GDPR Consent');
+						this.gdprConsent = true;
+					},
+					onRejectTracking: () => {
+						utils.logger(logGroup, 'GDPR Non-consent');
+						this.gdprConsent = false;
+					},
+					zIndex: 9999999,
+				});
+
 				resolve();
 			});
-
-			// In case it fails to load, we'll resolve after 1s
-			setTimeout(() => {
-				resolve();
-			}, 1000);
-
-			utils.scriptLoader.loadScript(CMP_LIBRARY_URL);
 		});
 	}
 
@@ -226,20 +167,20 @@ class CmpWrapper {
 			if (method === 'getConsentData') {
 				consentData['consentData'] = optOutConsentString;
 			} else if (method === 'getVendorConsents') {
-				consentData['cmpId'] = 1;
-				consentData['cmpVersion'] = 1;
+				consentData['cmpId'] = 141;
+				consentData['cmpVersion'] = 2;
 				consentData['consentLanguage'] = 'en';
 				consentData['consentScreen'] = 0;
 				consentData['cookieVersion'] = 1;
 				consentData['created'] = new Date().toJSON();
 				consentData['globalVendorListVersion'] = undefined;
 				consentData['lastUpdated'] = new Date().toJSON();
-				consentData['maxVendorId'] = 638;
+				consentData['maxVendorId'] = 670;
 				consentData['metadata'] = optOutConsentString;
 				consentData['publisherVendorsVersion'] = undefined;
 				consentData['purposeConsents'] = {};
 				consentData['vendorConsents'] = {};
-				consentData['vendorListVersion'] = 149;
+				consentData['vendorListVersion'] = 162;
 			} else {
 				return;
 			}
