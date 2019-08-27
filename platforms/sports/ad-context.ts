@@ -1,8 +1,7 @@
-// TODO: Replace gamepedia with mutfut
 export const basicContext = {
 	adUnitId:
-		'/{custom.dfpId}/gamepedia/{slotConfig.group}/{state.deviceType}/' +
-		'{targeting.skin}-{targeting.s2}/_gp_wiki-gamepedia',
+		'/{custom.dfpId}/sports/{slotConfig.group}/{state.deviceType}/' +
+		'{targeting.skin}-{targeting.s2}/_{targeting.s1}-{targeting.s0}',
 	custom: {
 		dfpId: '5441',
 	},
@@ -25,25 +24,21 @@ export const basicContext = {
 	slots: {},
 	services: {
 		instantConfig: {
+			// TODO: ADEN-9188 app = sports / muthead,futhead
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
 	},
-	src: 'gamepedia',
+	src: 'sports',
 	state: {
 		adStack: [],
 		isMobile: false,
 	},
-	targeting: {
-		ae3: '1',
-		skin: 'gamepedia',
-		uap: 'none',
-		uap_c: 'none',
-	},
+	targeting: {},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/gamepedia/{slotConfig.group}/{state.deviceType}/' +
-			'{targeting.skin}-{targeting.s2}/_gp_wiki-gamepedia',
+			'/{custom.dfpId}/sports/{slotConfig.group}/{state.deviceType}/' +
+			'{targeting.skin}-{targeting.s2}/{targeting.s1}-{targeting.s0}',
 	},
 	templates: {},
 };
