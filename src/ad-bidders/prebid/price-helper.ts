@@ -49,23 +49,23 @@ export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<s
 		bestPrices[adapter.bidderName] = 0;
 	});
 
-	slotBids.forEach((bid) => {
-		if (isValidPrice(bid) && bid.status !== 'rendered') {
+	slotBids
+		.filter((bid) => isValidPrice(bid) && bid.status !== 'rendered')
+		.forEach((bid) => {
 			const { bidderCode, cpm } = bid;
 			const cmpPrice = Math.max(bestPrices[bidderCode] || 0, roundCpm(cpm, DEFAULT_MAX_CPM));
 
 			if (cmpPrice > 0) {
 				bestPrices[bidderCode] = cmpPrice;
 			}
-		}
-	});
+		});
 
 	return mapValues(bestPrices, (price: number) => {
 		return price === 0 ? '' : price.toFixed(2);
 	});
 }
 
-export function transformPriceFromBid(bid) {
+export function transformPriceFromBid(bid): string {
 	const bidder = adaptersRegistry.getAdapter(bid.bidderCode);
 	let maxCpm = DEFAULT_MAX_CPM;
 
