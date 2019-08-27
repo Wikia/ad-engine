@@ -8,12 +8,22 @@ type StatusType = 'loaded' | 'viewed';
 
 const logGroup = 'viewability-counter';
 
-class ViewabilityCounter {
+export class ViewabilityCounter {
+	private static instance: ViewabilityCounter;
+
+	static make(): ViewabilityCounter {
+		if (!ViewabilityCounter.instance) {
+			ViewabilityCounter.instance = new ViewabilityCounter();
+		}
+
+		return ViewabilityCounter.instance;
+	}
+
 	private readonly counters: Dictionary<Dictionary<number>>;
 	private sessionCookie = SessionCookie.make();
 	private loaded = false;
 
-	constructor() {
+	private constructor() {
 		this.counters = this.sessionCookie.getItem('viewabilityCountData') || {
 			loadedCounter: {},
 			viewedCounter: {},
@@ -79,5 +89,3 @@ class ViewabilityCounter {
 		return Number(viewability).toFixed(3);
 	}
 }
-
-export const viewabilityCounter = new ViewabilityCounter();
