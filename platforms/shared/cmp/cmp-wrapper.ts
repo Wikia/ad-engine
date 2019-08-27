@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { context, utils } from '@wikia/ad-engine';
 import * as Cookies from 'js-cookie';
 
 const CMP_LIBRARY_URL = '//cdm.cursecdn.com/js/cmp/tracking-opt-in.min.js';
@@ -28,6 +28,11 @@ class CmpWrapper {
 	 * Returns a Promise fulfilled when the CMP library is ready for use
 	 */
 	init(country: string): Promise<void> {
+		const consentRequired = this.geoRequiresConsent(country);
+
+		context.set('custom.isCMPEnabled', consentRequired);
+		context.set('options.geoRequiresConsent', consentRequired);
+
 		return new Promise<void>((resolve, reject) => {
 			// In case it fails to load, we'll resolve after 2s
 			setTimeout(() => {
@@ -145,57 +150,11 @@ class CmpWrapper {
 	}
 
 	/**
-	 * Store and replace original CMP with temporary opting-out version
-	 */
-	overwriteCmp(): void {
-		let cmpStored: WindowCMP;
-
-		window.__cmp('getConsentData', null, () => {
-			utils.logger(logGroup, 'Restoring original CMP module');
-			window.__cmp = cmpStored;
-		});
-
-		utils.logger(logGroup, 'Overwriting original CMP module');
-		cmpStored = window.__cmp;
-		// @ts-ignore
-		window.__cmp = (method: string, data: any, callback: any) => {
-			const consentData = {
-				gdprApplies: true,
-				hasGlobalScope: false,
-			};
-
-			if (method === 'getConsentData') {
-				consentData['consentData'] = optOutConsentString;
-			} else if (method === 'getVendorConsents') {
-				consentData['cmpId'] = 141;
-				consentData['cmpVersion'] = 2;
-				consentData['consentLanguage'] = 'en';
-				consentData['consentScreen'] = 0;
-				consentData['cookieVersion'] = 1;
-				consentData['created'] = new Date().toJSON();
-				consentData['globalVendorListVersion'] = undefined;
-				consentData['lastUpdated'] = new Date().toJSON();
-				consentData['maxVendorId'] = 670;
-				consentData['metadata'] = optOutConsentString;
-				consentData['publisherVendorsVersion'] = undefined;
-				consentData['purposeConsents'] = {};
-				consentData['vendorConsents'] = {};
-				consentData['vendorListVersion'] = 162;
-			} else {
-				return;
-			}
-
-			callback(consentData);
-		};
-		window.__cmp.receiveMessage = cmpStored.receiveMessage;
-	}
-
-	/**
 	 * Returns whether a given geo requires GDPR consent
 	 *
 	 * @param geo The geo to check for GDPR consent
 	 */
-	geoRequiresConsent(geo: string): boolean {
+	private geoRequiresConsent(geo: string): boolean {
 		const upperGeo = geo.toUpperCase();
 		const euGeos: string[] = [
 			'AT',
@@ -254,6 +213,52 @@ class CmpWrapper {
 		this.gdprConsent = true;
 
 		return false;
+	}
+
+	/**
+	 * Store and replace original CMP with temporary opting-out version
+	 */
+	private overwriteCmp(): void {
+		let cmpStored: WindowCMP;
+
+		window.__cmp('getConsentData', null, () => {
+			utils.logger(logGroup, 'Restoring original CMP module');
+			window.__cmp = cmpStored;
+		});
+
+		utils.logger(logGroup, 'Overwriting original CMP module');
+		cmpStored = window.__cmp;
+		// @ts-ignore
+		window.__cmp = (method: string, data: any, callback: any) => {
+			const consentData = {
+				gdprApplies: true,
+				hasGlobalScope: false,
+			};
+
+			if (method === 'getConsentData') {
+				consentData['consentData'] = optOutConsentString;
+			} else if (method === 'getVendorConsents') {
+				consentData['cmpId'] = 141;
+				consentData['cmpVersion'] = 2;
+				consentData['consentLanguage'] = 'en';
+				consentData['consentScreen'] = 0;
+				consentData['cookieVersion'] = 1;
+				consentData['created'] = new Date().toJSON();
+				consentData['globalVendorListVersion'] = undefined;
+				consentData['lastUpdated'] = new Date().toJSON();
+				consentData['maxVendorId'] = 670;
+				consentData['metadata'] = optOutConsentString;
+				consentData['publisherVendorsVersion'] = undefined;
+				consentData['purposeConsents'] = {};
+				consentData['vendorConsents'] = {};
+				consentData['vendorListVersion'] = 162;
+			} else {
+				return;
+			}
+
+			callback(consentData);
+		};
+		window.__cmp.receiveMessage = cmpStored.receiveMessage;
 	}
 }
 
