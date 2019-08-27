@@ -9,7 +9,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import { targeting } from './targeting';
+import { getPageLevelTargeting } from './targeting';
 
 const fallbackInstantConfig = {
 	wgAdDriverA9BidderCountries: ['XX'],
@@ -32,18 +32,17 @@ const fallbackInstantConfig = {
 class ContextSetup {
 	private instantConfig: InstantConfigService;
 
-	async configure(wikiContext, isOptedIn: boolean): Promise<void> {
+	async configure(isOptedIn: boolean): Promise<void> {
 		set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 		this.instantConfig = await InstantConfigService.init();
 
-		this.setupAdContext(wikiContext, isOptedIn);
+		this.setupAdContext(isOptedIn);
 		setupNpaContext();
 	}
 
-	private setupAdContext(wikiContext, isOptedIn = false): void {
+	private setupAdContext(isOptedIn = false): void {
 		const isMobile = getDeviceMode() === 'mobile';
 
-		context.set('wiki', wikiContext);
 		context.set('state.showAds', true);
 		context.set('state.isMobile', isMobile);
 		context.set('state.deviceType', utils.client.getDeviceType());
@@ -101,20 +100,7 @@ class ContextSetup {
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
-
-		if (this.instantConfig.get('wgAdDriverTestCommunities', []).includes(wikiContext.wgDBname)) {
-			context.set('src', 'test');
-		}
-
-		this.setupPageLevelTargeting(context.get('wiki'));
-
-		if (this.isUapAllowed()) {
-			const uapSize: [number, number] = isMobile ? [2, 2] : [3, 3];
-			slotsContext.addSlotSize('cdm-zone-01', uapSize);
-		}
-
-		// ToDo: rest of context
-
+		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
 		this.injectIncontentPlayer();
@@ -124,31 +110,9 @@ class ContextSetup {
 		this.updateWadContext();
 	}
 
-	private setupPageLevelTargeting(wikiContext): void {
-		const pageLevelParams = targeting.getPageLevelTargeting(wikiContext);
-
-		Object.keys(pageLevelParams).forEach((key) => {
-			context.set(`targeting.${key}`, pageLevelParams[key]);
-		});
-	}
-
 	private updateWadContext(): void {
 		// BlockAdBlock detection
 		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
-	}
-
-	private isUapAllowed(): boolean {
-		let uapRestriction = this.instantConfig.get('wgAdDriverUapRestriction');
-		const queryParam = utils.queryString.get('uap-pv-restriction');
-
-		if (typeof queryParam !== 'undefined') {
-			uapRestriction = parseInt(queryParam, 10);
-		}
-
-		const isUapAllowed =
-			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test';
-
-		return isUapAllowed && this.instantConfig.isGeoEnabled('wgAdDriverUapCountries');
 	}
 
 	private injectIncontentPlayer(): void {
