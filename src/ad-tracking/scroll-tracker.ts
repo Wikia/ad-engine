@@ -1,11 +1,23 @@
 import { context, events, eventService, ScrollSpeedCalculator } from '@ad-engine/core';
 
-class ScrollTracker {
-	applicationArea: Element | null = null;
-	listener: () => void | null = null;
-	timer: NodeJS.Timer | null = null;
-	speeds: number[] = [];
+export class ScrollTracker {
+	private static instance: ScrollTracker;
+
+	static make(): ScrollTracker {
+		if (!ScrollTracker.instance) {
+			ScrollTracker.instance = new ScrollTracker();
+		}
+
+		return ScrollTracker.instance;
+	}
+
+	private applicationArea: Element;
+	private listener: () => void;
+	private timer: NodeJS.Timer;
+	private speeds: number[] = [];
 	private scrollSpeedCalculator = ScrollSpeedCalculator.make();
+
+	private constructor() {}
 
 	initScrollSpeedTracking(applicationAreaClass: string): void {
 		if (!context.get('options.scrollSpeedTracking')) {
@@ -20,7 +32,7 @@ class ScrollTracker {
 		}
 	}
 
-	dispatchScrollSpeedEvents(): void {
+	private dispatchScrollSpeedEvents(): void {
 		const timesToTrack = [0, 2, 4];
 		let prevScrollY = 0;
 
@@ -51,5 +63,3 @@ class ScrollTracker {
 		}
 	}
 }
-
-export const scrollTracker = new ScrollTracker();
