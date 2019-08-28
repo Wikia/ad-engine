@@ -68,6 +68,11 @@ class CmpWrapper {
 				return;
 			}
 
+			if (!this.cmpReady) {
+				resolve(false);
+				return;
+			}
+
 			// Nothing is needed if the geo does not require consent
 			if (!this.cmpModal.geoRequiresTrackingConsent()) {
 				this.gdprConsent = true;
@@ -77,11 +82,6 @@ class CmpWrapper {
 
 			if (this.cmpModal.hasUserConsented() === undefined) {
 				this.overwriteCmp();
-				resolve(false);
-				return;
-			}
-
-			if (!this.cmpReady) {
 				resolve(false);
 				return;
 			}
