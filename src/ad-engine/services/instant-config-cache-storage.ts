@@ -31,6 +31,7 @@ export class InstantConfigCacheStorage {
 	}
 
 	resetCache(): void {
+		this.sessionCookie.readSessionId();
 		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
 	}
 
