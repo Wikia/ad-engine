@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	context,
 	getAdProductInfo,
+	InstantConfigService,
 	slotService,
 	utils,
 	VideoParams,
@@ -15,6 +16,20 @@ class SlotsContext {
 		definedViewportSizes.forEach((sizeMap) => {
 			sizeMap.sizes.push(size);
 		});
+	}
+
+	isUapAllowed(instantConfig: InstantConfigService): boolean {
+		let uapRestriction = instantConfig.get('wgAdDriverUapRestriction');
+		const queryParam = utils.queryString.get('uap-pv-restriction');
+
+		if (typeof queryParam !== 'undefined') {
+			uapRestriction = parseInt(queryParam, 10);
+		}
+
+		const isUapAllowed =
+			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test';
+
+		return isUapAllowed && instantConfig.isGeoEnabled('wgAdDriverUapCountries');
 	}
 
 	setupSlotVideoAdUnit(adSlot: AdSlot, params: VideoParams): void {

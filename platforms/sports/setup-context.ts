@@ -10,6 +10,7 @@ import {
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
 import { getPageLevelTargeting } from './targeting';
+import { templateRegistry } from './templates/templates-registry';
 
 const fallbackInstantConfig = {
 	wgAdDriverA9BidderCountries: ['XX'],
@@ -38,6 +39,7 @@ class ContextSetup {
 
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
+		templateRegistry.registerTemplates();
 	}
 
 	private setupAdContext(isOptedIn = false): void {
@@ -102,6 +104,11 @@ class ContextSetup {
 		context.set('slots', slotsContext.generate());
 		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+
+		if (slotsContext.isUapAllowed(this.instantConfig)) {
+			const uapSize: [number, number] = isMobile ? [2, 2] : [3, 3];
+			slotsContext.addSlotSize('cdm-zone-01', uapSize);
+		}
 
 		this.injectIncontentPlayer();
 
