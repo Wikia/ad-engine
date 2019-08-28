@@ -1,7 +1,7 @@
 import { slotsContext } from '@platforms/shared';
-import { AdSlot, UapParams } from '@wikia/ad-engine';
+import { AdSlot, BigFancyAdBelowConfig, UapParams } from '@wikia/ad-engine';
 
-export function getBfabConfig(): any {
+export function getBfabConfig(): BigFancyAdBelowConfig {
 	return {
 		autoPlayAllowed: true,
 		defaultStateAllowed: true,

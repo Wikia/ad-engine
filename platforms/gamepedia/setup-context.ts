@@ -1,4 +1,4 @@
-import { biddersContext, slotsContext } from '@platforms/shared';
+import { biddersContext, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -126,10 +126,7 @@ class ContextSetup {
 
 		this.setupPageLevelTargeting(context.get('wiki'));
 
-		if (slotsContext.isUapAllowed(this.instantConfig)) {
-			const uapSize: [number, number] = isMobile ? [2, 2] : [3, 3];
-			slotsContext.addSlotSize('cdm-zone-01', uapSize);
-		}
+		uapHelper.configureUap(this.instantConfig);
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));

@@ -19,27 +19,22 @@ const {
 	SLIDE_OUT_TIME,
 } = universalAdPackage;
 
-export function getBfaaConfig(): any {
+export function getBfaaConfig(): BigFancyAdAboveConfig {
 	return {
 		adSlot: null,
 		autoPlayAllowed: true,
 		defaultStateAllowed: true,
 		fullscreenAllowed: true,
 		stickinessAllowed: true,
-		templateParams: null,
 		slotsToDisable: ['cdm-zone-06', 'incontent_player'],
 		slotsToEnable: ['cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04'],
-		navbarElement: null,
 		navbarManager: null,
 		navbarScrollListener: null,
-		enabled: true,
 
 		onInit(adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig): void {
 			this.adSlot = adSlot;
-			this.templateParams = params;
 			this.config = config || context.get('templates.bfaa') || {};
-			this.navbarElement = document.querySelector('.header');
-			this.navbarManager = new NavbarManager(this.navbarElement);
+			this.navbarManager = new NavbarManager(document.querySelector('.header'));
 
 			context.set('slots.cdm-zone-04.defaultSizes', [[3, 3]]);
 			slotsContext.setupSlotVideoAdUnit(adSlot, params);
@@ -58,7 +53,7 @@ export function getBfaaConfig(): any {
 		onBeforeUnstickBfaaCallback(): void {
 			scrollListener.removeCallback(this.navbarScrollListener);
 
-			Object.assign(this.navbarElement.style, {
+			this.navbarManager.applyStyles({
 				transition:
 					`top ${SLIDE_OUT_TIME}ms ${CSS_TIMING_EASE_IN_CUBIC}, ` +
 					`opacity ${FADE_IN_TIME}ms ${CSS_TIMING_EASE_IN_CUBIC}`,
@@ -67,7 +62,7 @@ export function getBfaaConfig(): any {
 		},
 
 		onAfterUnstickBfaaCallback(): void {
-			Object.assign(this.navbarElement.style, {
+			this.navbarManager.applyStyles({
 				top: '',
 			});
 
@@ -77,7 +72,6 @@ export function getBfaaConfig(): any {
 
 		onResolvedStateSetCallback(): void {
 			this.updateNavbar();
-			requestAnimationFrame(() => this.updateNavbar());
 		},
 
 		updateNavbar(): void {
@@ -87,13 +81,7 @@ export function getBfaaConfig(): any {
 			const isResolved = container.classList.contains(CSS_CLASSNAME_THEME_RESOLVED);
 
 			this.navbarManager.setPinned((isInViewport && !isSticky) || !isResolved);
-			this.moveNavbar(isSticky && isResolved ? container.offsetHeight : 0);
-		},
-
-		moveNavbar(offset: number): void {
-			if (this.navbarElement) {
-				this.navbarElement.style.top = offset ? `${offset}px` : '';
-			}
+			this.navbarManager.moveNavbar(isSticky && isResolved ? container.offsetHeight : 0);
 		},
 	};
 }

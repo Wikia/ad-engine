@@ -1,4 +1,4 @@
-import { biddersContext, getDeviceMode, slotsContext } from '@platforms/shared';
+import { biddersContext, getDeviceMode, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -105,13 +105,9 @@ class ContextSetup {
 		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
-		if (slotsContext.isUapAllowed(this.instantConfig)) {
-			const uapSize: [number, number] = isMobile ? [2, 2] : [3, 3];
-			slotsContext.addSlotSize('cdm-zone-01', uapSize);
-		}
-
 		this.injectIncontentPlayer();
 
+		uapHelper.configureUap(this.instantConfig);
 		slotsContext.setupStates();
 
 		this.updateWadContext();
