@@ -15,7 +15,6 @@ const fallbackInstantConfig = {
 	wgAdDriverA9BidderCountries: ['XX'],
 	wgAdDriverA9DealsCountries: ['XX'],
 	wgAdDriverAppNexusBidderCountries: ['XX'],
-	wgAdDriverBabDetection: ['XX'],
 	wgAdDriverDelayTimeout: 2000,
 	wgAdDriverIndexExchangeBidderCountries: ['XX'],
 	wgAdDriverLABradorTestCountries: ['PL/40-cached'],
@@ -112,7 +111,7 @@ class ContextSetup {
 
 	private updateWadContext(): void {
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
+		context.set('options.wad.enabled', this.instantConfig.get('icBabDetection'));
 	}
 
 	private injectIncontentPlayer(): void {

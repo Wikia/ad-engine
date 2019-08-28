@@ -22,7 +22,6 @@ const fallbackInstantConfig = {
 	wgAdDriverA9BidderCountries: ['XX'],
 	wgAdDriverA9DealsCountries: ['XX'],
 	wgAdDriverAppNexusBidderCountries: ['XX'],
-	wgAdDriverBabDetection: ['XX'],
 	wgAdDriverDelayTimeout: 2000,
 	wgAdDriverIndexExchangeBidderCountries: ['XX'],
 	wgAdDriverLABradorTestCountries: ['PL/40-cached'],
