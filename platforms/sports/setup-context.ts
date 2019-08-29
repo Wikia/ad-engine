@@ -1,4 +1,4 @@
-import { biddersContext, getDeviceMode, slotsContext } from '@platforms/shared';
+import { biddersContext, getDeviceMode, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -11,6 +11,7 @@ import {
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
+import { templateRegistry } from './templates/templates-registry';
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
@@ -21,6 +22,7 @@ class ContextSetup {
 
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
+		templateRegistry.registerTemplates();
 	}
 
 	private setupAdContext(isOptedIn = false): void {
@@ -88,6 +90,7 @@ class ContextSetup {
 
 		this.injectIncontentPlayer();
 
+		uapHelper.configureUap(this.instantConfig);
 		slotsContext.setupStates();
 
 		this.updateWadContext();
