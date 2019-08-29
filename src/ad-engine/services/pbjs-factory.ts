@@ -9,7 +9,7 @@ const logGroup = 'pbjs-factory';
 class PbjsFactory {
 	private instancePromise: Promise<Pbjs>;
 
-	async init(): Promise<Pbjs> {
+	init(): Promise<Pbjs> {
 		if (!this.instancePromise) {
 			const libraryUrl = context.get('bidders.prebid.libraryUrl');
 
