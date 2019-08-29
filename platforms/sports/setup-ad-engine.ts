@@ -6,10 +6,7 @@ const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 const logGroup = 'ad-engine';
 
 export async function setupAdEngine(isOptedIn: boolean): Promise<void> {
-	// TODO: Add actual context
-	const wikiContext = {};
-
-	await adsSetup.configure(wikiContext, isOptedIn);
+	await adsSetup.configure(isOptedIn);
 
 	// ToDo: video and recovery
 
@@ -46,8 +43,8 @@ function startAdEngine(): void {
 	context.push('state.adStack', { id: 'cdm-zone-01' });
 	context.push('state.adStack', { id: 'cdm-zone-02' });
 	context.push('state.adStack', { id: 'cdm-zone-03' });
-	context.push('state.adStack', { id: 'cdm-zone-04' });
 	context.push('state.adStack', { id: 'cdm-zone-06' });
+	context.push('events.pushOnScroll.ids', 'cdm-zone-04');
 }
 
 function callExternals(): void {

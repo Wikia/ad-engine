@@ -1,3 +1,4 @@
+export * from './click-position-tracker';
 export * from './scroll-tracker';
 export * from './slot-tracker';
 export * from './slot-tracking-middleware';
