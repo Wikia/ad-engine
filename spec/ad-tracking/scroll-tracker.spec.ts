@@ -12,7 +12,6 @@ import { createSandbox, SinonFakeTimers, SinonStub } from 'sinon';
 
 describe('ScrollTracker', () => {
 	const sandbox = createSandbox();
-	let getElementsStub: SinonStub;
 	let contextGetStub: SinonStub;
 	let clock: SinonFakeTimers;
 	let emittedEvents: any[];
@@ -29,8 +28,7 @@ describe('ScrollTracker', () => {
 	beforeEach(() => {
 		contextGetStub = sandbox.stub(context, 'get').returns(true);
 		emittedEvents = [];
-		getElementsStub = sandbox.stub(document, 'getElementsByClassName');
-		getElementsStub.callsFake((className) => {
+		sandbox.stub(document, 'getElementsByClassName').callsFake((className) => {
 			return (
 				{
 					fake: [buildFakeElement()],
