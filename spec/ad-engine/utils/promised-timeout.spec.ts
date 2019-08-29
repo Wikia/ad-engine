@@ -36,7 +36,7 @@ describe('buildPromisedTimeout', () => {
 		await Promise.resolve();
 		expect(resolved).to.equal(false);
 
-		clock.tick(201);
+		clock.tick(200);
 		await Promise.resolve();
 		expect(resolved).to.equal(true);
 	});
@@ -73,7 +73,7 @@ describe('buildPromisedTimeout', () => {
 
 		timeout.cancel();
 
-		clock.tick(201);
+		clock.tick(200);
 		await Promise.resolve();
 		expect(result).to.equal(0);
 	});
