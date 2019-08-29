@@ -52,20 +52,22 @@ export class ScrollTracker {
 	}
 
 	private async dispatchScrollSpeedEvents(): Promise<void> {
-		this.timers = this.timesToTrack.map(utils.buildPromisedTimeout).map(({ cancel, promise }) => ({
-			cancel,
-			promise: promise.then((time) => {
-				const measurement: SpeedMeasurement = {
-					time,
-					distance: this.distance,
-				};
+		this.timers = this.timesToTrack
+			.map((time) => utils.buildPromisedTimeout(time))
+			.map(({ cancel, promise }) => ({
+				cancel,
+				promise: promise.then((time) => {
+					const measurement: SpeedMeasurement = {
+						time,
+						distance: this.distance,
+					};
 
-				eventService.emit(events.SCROLL_TRACKING_TIME_CHANGED, time, this.scrollY);
-				this.prevScrollY = this.scrollY;
+					eventService.emit(events.SCROLL_TRACKING_TIME_CHANGED, time, this.scrollY);
+					this.prevScrollY = this.scrollY;
 
-				return measurement;
-			}),
-		}));
+					return measurement;
+				}),
+			}));
 
 		const measurements: SpeedMeasurement[] = await Promise.all(
 			this.timers.map((timer) => timer.promise),
