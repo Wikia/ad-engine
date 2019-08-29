@@ -1,5 +1,6 @@
 import {
 	AdEngine,
+	AdSlot,
 	bidders,
 	context,
 	DelayModule,
@@ -27,11 +28,10 @@ if (utils.queryString.get('porvata-direct') === '1') {
 	context.set('slots.incontent_player.customFiller', 'porvata');
 }
 
-context.push('listeners.slot', {
-	onStatusChanged: (adSlot) => {
-		console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold');
-	},
+eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
+	console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold');
 });
+
 context.push('listeners.porvata', {
 	onEvent: (eventName) => {
 		console.log(`🎬 Porvata: %c${eventName}`, 'font-weight: bold');
