@@ -2,6 +2,13 @@ import { utils } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, SinonFakeTimers, SinonSandbox } from 'sinon';
 
+/**
+ * The use of Promise.resolve() is required for testing Promise-based code.
+ * See https://stackoverflow.com/questions/55440400/
+ * testing-that-promise-resolved-not-until-timeout-sinon-chai#
+ * for explanation.
+ */
+
 describe('buildPromisedTimeout', () => {
 	let sandbox: SinonSandbox;
 	let clock: SinonFakeTimers;
