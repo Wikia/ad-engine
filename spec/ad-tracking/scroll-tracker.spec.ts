@@ -125,7 +125,7 @@ describe('ScrollTracker', () => {
 		expect(emittedEvents.length).to.equal(1);
 	});
 
-	it('should call scrollSpeedCalculator.getAverageSessionScrollSpeed once timeouts complete', async () => {
+	it('should call scrollSpeedCalculator.setAverageSessionScrollSpeed once timeouts complete', async () => {
 		const setAvgSpeedStub = sandbox.stub(scrollSpeedCalculator, 'setAverageSessionScrollSpeed');
 		const scrolls = [10, 400];
 		const scrollYStub = sandbox.stub(window, 'scrollY').value(scrolls[0]);
@@ -144,5 +144,23 @@ describe('ScrollTracker', () => {
 		await Promise.resolve();
 
 		expect(setAvgSpeedStub.calledWith([scrolls[1] - scrolls[0]])).to.equal(true);
+	});
+
+	it('should not call scrollSpeedCalculator.setAverageSessionScrollSpeed if one timer is cancelled', async () => {
+		const setAvgSpeedStub = sandbox.stub(scrollSpeedCalculator, 'setAverageSessionScrollSpeed');
+		const tracker = new ScrollTracker([0, 200, 1000], 'fake');
+
+		tracker.initScrollSpeedTracking();
+
+		clock.tick(500);
+		await Promise.resolve();
+
+		eventService.emit(events.BEFORE_PAGE_CHANGE_EVENT);
+
+		clock.tick(700);
+		await Promise.resolve();
+		await Promise.resolve();
+
+		expect(setAvgSpeedStub.notCalled).to.equal(true);
 	});
 });
