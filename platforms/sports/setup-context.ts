@@ -9,7 +9,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import { fallbackInstantConfig } from './fallback-config';
+import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 
 class ContextSetup {
