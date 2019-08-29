@@ -9,24 +9,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { fallbackInstantConfig } from './fallback-config';
 import { getPageLevelTargeting } from './targeting';
-
-const fallbackInstantConfig = {
-	wgAdDriverA9BidderCountries: ['XX'],
-	wgAdDriverA9DealsCountries: ['XX'],
-	wgAdDriverAppNexusBidderCountries: ['XX'],
-	wgAdDriverDelayTimeout: 2000,
-	wgAdDriverIndexExchangeBidderCountries: ['XX'],
-	wgAdDriverLABradorTestCountries: ['PL/40-cached'],
-	wgAdDriverOpenXPrebidBidderCountries: ['XX'],
-	wgAdDriverOutstreamSlotCountries: [],
-	wgAdDriverPrebidBidderCountries: ['XX'],
-	wgAdDriverPubMaticBidderCountries: ['XX'],
-	wgAdDriverRubiconDisplayPrebidCountries: ['XX'],
-	wgAdDriverTestCommunities: ['cdm_gamepedia', 'project43'],
-	wgAdDriverUapCountries: ['XX'],
-	wgAdDriverUapRestriction: 1,
-};
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
