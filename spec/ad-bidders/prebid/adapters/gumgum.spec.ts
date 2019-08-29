@@ -38,7 +38,6 @@ describe('GumGum bidder adapter', () => {
 						},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});

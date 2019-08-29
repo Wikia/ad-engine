@@ -21,7 +21,6 @@ export class Vmg extends BaseAdapter {
 					params: {},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

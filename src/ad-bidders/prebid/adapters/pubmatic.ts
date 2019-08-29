@@ -49,7 +49,6 @@ export class Pubmatic extends BaseAdapter {
 				},
 			},
 			bids: this.getBids(ids, videoParams),
-			sizes: [],
 		};
 	}
 
@@ -62,7 +61,6 @@ export class Pubmatic extends BaseAdapter {
 				},
 			},
 			bids: this.getBids(ids),
-			sizes: [],
 		};
 	}
 

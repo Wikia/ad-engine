@@ -52,7 +52,6 @@ export class Rubicon extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

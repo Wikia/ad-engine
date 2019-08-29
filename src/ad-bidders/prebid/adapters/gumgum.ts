@@ -23,7 +23,6 @@ export class Gumgum extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

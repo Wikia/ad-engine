@@ -39,7 +39,6 @@ describe('Onemobile bidder adapter', () => {
 						},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});

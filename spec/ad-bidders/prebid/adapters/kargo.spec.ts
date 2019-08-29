@@ -5,6 +5,7 @@ describe('Kargo bidder adapter', () => {
 	it('can be enabled', () => {
 		const kargo = new Kargo({
 			enabled: true,
+			slots: {},
 		});
 
 		expect(kargo.enabled).to.equal(true);

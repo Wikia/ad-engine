@@ -45,7 +45,6 @@ describe('WikiaVideo bidder adapter', () => {
 						params: {},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});

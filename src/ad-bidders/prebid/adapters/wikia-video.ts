@@ -50,7 +50,6 @@ export class WikiaVideo extends BaseAdapter {
 					params: {},
 				},
 			],
-			sizes: [],
 		};
 	}
 

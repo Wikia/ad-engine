@@ -26,7 +26,6 @@ export class Lkqd extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

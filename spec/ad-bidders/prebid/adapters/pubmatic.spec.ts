@@ -49,7 +49,6 @@ describe('Pubmatic bidder adapter', () => {
 						},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});
@@ -96,7 +95,6 @@ describe('Pubmatic bidder adapter', () => {
 						},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});

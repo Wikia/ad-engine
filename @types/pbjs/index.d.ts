@@ -5,7 +5,7 @@ interface PrebidMarkBidRequest {
 
 interface PrebidAdUnit {
 	code: string;
-	sizes: number[] | [number, number][];
+	sizes?: number[] | [number, number][];
 	bids: PrebidBidder[];
 	mediaType?: string; // should not be here
 	mediaTypes?: Partial<PrebidMediaTypes>;

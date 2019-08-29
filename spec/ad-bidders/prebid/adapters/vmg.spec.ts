@@ -35,7 +35,6 @@ describe('VMG bidder adapter', () => {
 						params: {},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});

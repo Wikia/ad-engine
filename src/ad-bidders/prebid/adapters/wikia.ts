@@ -69,7 +69,6 @@ export class Wikia extends BaseAdapter {
 					params: {},
 				},
 			],
-			sizes: [],
 		};
 	}
 

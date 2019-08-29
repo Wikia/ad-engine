@@ -33,7 +33,6 @@ export class Aol extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

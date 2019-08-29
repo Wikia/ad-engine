@@ -31,7 +31,6 @@ export class Onemobile extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

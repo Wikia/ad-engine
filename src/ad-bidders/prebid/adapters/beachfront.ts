@@ -36,7 +36,6 @@ export class Beachfront extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

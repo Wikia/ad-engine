@@ -26,7 +26,6 @@ export class IndexExchange extends BaseAdapter {
 					size,
 				},
 			})),
-			sizes: [],
 		};
 	}
 }

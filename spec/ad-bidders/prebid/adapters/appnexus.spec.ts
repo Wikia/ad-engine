@@ -43,7 +43,6 @@ describe('Appnexus bidder adapter', () => {
 						},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});
@@ -78,7 +77,6 @@ describe('Appnexus bidder adapter', () => {
 						},
 					},
 				],
-				sizes: [],
 			},
 		]);
 	});

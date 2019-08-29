@@ -43,7 +43,6 @@ export class AppnexusAst extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }

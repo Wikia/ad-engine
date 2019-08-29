@@ -31,7 +31,6 @@ export class Openx extends BaseAdapter {
 					},
 				},
 			],
-			sizes: [],
 		};
 	}
 }
