@@ -9,7 +9,6 @@ export class ScrollTracker {
 	private applicationArea: Element;
 	private listener: () => void;
 	private timers: utils.PromisedTimeout<SpeedMeasurement>[];
-	private measurements: SpeedMeasurement[] = [];
 	private prevScrollY = 0;
 
 	get scrollY(): number {
@@ -52,16 +51,15 @@ export class ScrollTracker {
 		this.applicationArea.removeEventListener('touchstart', this.listener);
 	}
 
-	private dispatchScrollSpeedEvents(): void {
-		this.timers = this.timesToTrack.map(utils.buildPromisedTimeout).map((timer) => ({
-			...timer,
-			promise: timer.promise.then((time) => {
+	private async dispatchScrollSpeedEvents(): Promise<void> {
+		this.timers = this.timesToTrack.map(utils.buildPromisedTimeout).map(({ cancel, promise }) => ({
+			cancel,
+			promise: promise.then((time) => {
 				const measurement: SpeedMeasurement = {
 					time,
 					distance: this.distance,
 				};
 
-				this.measurements.push(measurement);
 				eventService.emit(events.SCROLL_TRACKING_TIME_CHANGED, time, this.scrollY);
 				this.prevScrollY = this.scrollY;
 
@@ -69,15 +67,17 @@ export class ScrollTracker {
 			}),
 		}));
 
-		Promise.all(this.timers.map((timer) => timer.promise))
-			.then(() => this.finishScrollSpeedTracking())
-			.then(() =>
-				scrollSpeedCalculator.setAverageSessionScrollSpeed(
-					this.measurements
-						.filter((measurement) => measurement.time > 0)
-						.map((measurement) => measurement.distance),
-				),
-			);
+		const measurements: SpeedMeasurement[] = await Promise.all(
+			this.timers.map((timer) => timer.promise),
+		);
+
+		this.finishScrollSpeedTracking();
+
+		scrollSpeedCalculator.setAverageSessionScrollSpeed(
+			measurements
+				.filter((measurement) => measurement.time > 0)
+				.map((measurement) => measurement.distance),
+		);
 	}
 
 	private finishScrollSpeedTracking(): void {
