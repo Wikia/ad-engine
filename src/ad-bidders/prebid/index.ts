@@ -19,10 +19,10 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-eventService.on(events.VIDEO_AD_IMPRESSION, markWinningBidAsUsed);
-eventService.on(events.VIDEO_AD_ERROR, markWinningBidAsUsed);
+eventService.on(events.VIDEO_AD_IMPRESSION, markWinningVideoBidAsUsed);
+eventService.on(events.VIDEO_AD_ERROR, markWinningVideoBidAsUsed);
 
-async function markWinningBidAsUsed(adSlot: AdSlot): Promise<void> {
+async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	// Mark ad as rendered
 	const adId: string = context.get(`slots.${adSlot.getSlotName()}.targeting.hb_adid`);
 
