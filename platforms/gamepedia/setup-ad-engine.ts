@@ -1,6 +1,7 @@
 import { babDetection, biddersDelay } from '@platforms/shared';
 import {
 	AdEngine,
+	AdSlot,
 	bidders,
 	btRec,
 	confiant,
@@ -62,10 +63,8 @@ function startAdEngine(): void {
 		}
 	});
 
-	context.push('listeners.slot', {
-		onRenderEnded: (slot) => {
-			slot.getElement().classList.remove('default-height');
-		},
+	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
+		slot.getElement().classList.remove('default-height');
 	});
 
 	context.push('state.adStack', { id: 'cdm-zone-01' });

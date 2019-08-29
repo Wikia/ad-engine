@@ -1,5 +1,5 @@
 import { babDetection, biddersDelay } from '@platforms/shared';
-import { AdEngine, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
+import { AdEngine, AdSlot, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
 import { adsSetup } from './setup-context';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
@@ -34,10 +34,8 @@ function startAdEngine(): void {
 	engine.init();
 	babDetection.run();
 
-	context.push('listeners.slot', {
-		onRenderEnded: (slot) => {
-			slot.getElement().classList.remove('default-height');
-		},
+	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
+		slot.getElement().classList.remove('default-height');
 	});
 
 	context.push('state.adStack', { id: 'cdm-zone-01' });
