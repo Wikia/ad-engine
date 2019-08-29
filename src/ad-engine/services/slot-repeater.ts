@@ -78,9 +78,9 @@ class SlotRepeater {
 			if (context.get('options.gamLazyLoading.enabled')) {
 				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => handleSlotRepeating(adSlot));
 			} else {
-				context.push('listeners.slot', {
-					onRenderEnded: (adSlot: AdSlot) => handleSlotRepeating(adSlot),
-				});
+				eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) =>
+					handleSlotRepeating(adSlot),
+				);
 			}
 		}
 	}
