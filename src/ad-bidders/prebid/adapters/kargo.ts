@@ -10,7 +10,11 @@ export class Kargo extends BaseAdapter {
 	prepareConfigForAdUnit(code, { sizes, placementId }): PrebidAdUnit {
 		return {
 			code,
-			sizes,
+			mediaTypes: {
+				banner: {
+					sizes,
+				},
+			},
 			bids: [
 				{
 					bidder: this.bidderName,

@@ -25,7 +25,11 @@ describe('Kargo bidder adapter', () => {
 		expect(kargo.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
-				sizes: [[300, 250]],
+				mediaTypes: {
+					banner: {
+						sizes: [[300, 250]],
+					},
+				},
 				bids: [
 					{
 						bidder: 'kargo',
