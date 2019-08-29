@@ -1,7 +1,7 @@
 import { utils } from '@ad-engine/core';
-import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
-export class AppnexusAst extends BaseAdapter {
+export class AppnexusAst extends PrebidAdapter {
 	static bidderName = 'appnexusAst';
 	aliases = {
 		appnexus: [AppnexusAst.bidderName],

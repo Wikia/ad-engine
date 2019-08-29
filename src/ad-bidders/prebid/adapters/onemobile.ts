@@ -1,6 +1,6 @@
-import { BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Onemobile extends BaseAdapter {
+export class Onemobile extends PrebidAdapter {
 	static bidderName = 'onemobile';
 	siteId: string;
 

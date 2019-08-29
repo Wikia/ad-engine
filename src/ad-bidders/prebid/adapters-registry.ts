@@ -1,10 +1,8 @@
-import { context, pbjsFactory } from '@ad-engine/core';
+import { Aliases, context, pbjsFactory } from '@ad-engine/core';
 import {
-	Aliases,
 	Aol,
 	Appnexus,
 	AppnexusAst,
-	BaseAdapter,
 	Beachfront,
 	Gumgum,
 	IndexExchange,
@@ -19,9 +17,10 @@ import {
 	Wikia,
 	WikiaVideo,
 } from './adapters';
+import { PrebidAdapter } from './prebid-adapter';
 
 class AdaptersRegistry {
-	private adapters = new Map<string, BaseAdapter>();
+	private adapters = new Map<string, PrebidAdapter>();
 	private availableAdapters = [
 		Aol,
 		Appnexus,
@@ -41,11 +40,11 @@ class AdaptersRegistry {
 		WikiaVideo,
 	];
 
-	getAdapter(bidderName: string): BaseAdapter | undefined {
+	getAdapter(bidderName: string): PrebidAdapter | undefined {
 		return this.getAdapters().get(bidderName);
 	}
 
-	getAdapters(): Map<string, BaseAdapter> {
+	getAdapters(): Map<string, PrebidAdapter> {
 		if (!this.adapters.size) {
 			const biddersConfig = context.get('bidders.prebid');
 
@@ -83,7 +82,7 @@ class AdaptersRegistry {
 		);
 	}
 
-	private async configureCustomAdapter(bidderName: string, instance: BaseAdapter): Promise<void> {
+	private async configureCustomAdapter(bidderName: string, instance: PrebidAdapter): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		return pbjs.registerBidAdapter(() => instance, bidderName);

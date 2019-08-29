@@ -1,7 +1,7 @@
+import { PrebidAdapter } from '../prebid-adapter';
 import { getTargeting } from '../prebid-helper';
-import { BaseAdapter } from './base-adapter';
 
-export class RubiconDisplay extends BaseAdapter {
+export class RubiconDisplay extends PrebidAdapter {
 	static bidderName = 'rubicon_display';
 	aliases = {
 		rubicon: [RubiconDisplay.bidderName],

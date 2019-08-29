@@ -9,7 +9,7 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
-import { BaseBidder, BidsRefreshing } from '../base-bidder';
+import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag, Cmp, cmp } from '../wrappers';
 import {
 	A9Bid,
@@ -22,9 +22,9 @@ import {
 	PriceMap,
 } from './types';
 
-const logGroup = 'A9';
+const logGroup = 'A9Provider';
 
-export class A9 extends BaseBidder {
+export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
 
 	private loaded = false;
@@ -165,7 +165,7 @@ export class A9 extends BaseBidder {
 			const slot: AdSlot = this.getRenderedSlot(impId);
 			const slotName: string = slot.getSlotName();
 
-			slot.addClass(A9.A9_CLASS);
+			slot.addClass(A9Provider.A9_CLASS);
 			utils.logger(logGroup, `bid used for slot ${slotName}`);
 			delete this.bids[this.getSlotAlias(slotName)];
 

@@ -1,6 +1,6 @@
-import { BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Pubmatic extends BaseAdapter {
+export class Pubmatic extends PrebidAdapter {
 	static bidderName = 'pubmatic';
 	publisherId: string;
 

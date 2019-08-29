@@ -1,7 +1,7 @@
 import { context, Dictionary } from '@ad-engine/core';
-import { BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Appnexus extends BaseAdapter {
+export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
 	placements: Dictionary<string>;
 

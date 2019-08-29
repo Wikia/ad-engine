@@ -8,7 +8,7 @@ import {
 	pbjsFactory,
 	utils,
 } from '@ad-engine/core';
-import { BaseBidder, BidderConfig, BidsRefreshing } from '../base-bidder';
+import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -36,7 +36,7 @@ async function markWinningBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 const uuidKey = 'hb_uuid';
 
-export class Prebid extends BaseBidder {
+export class PrebidProvider extends BidderProvider {
 	static validResponseStatusCode = 1;
 	static errorResponseStatusCode = 2;
 

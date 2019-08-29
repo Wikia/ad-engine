@@ -1,6 +1,6 @@
-import { BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Openx extends BaseAdapter {
+export class Openx extends PrebidAdapter {
 	static bidderName = 'openx';
 	delDomain: string;
 

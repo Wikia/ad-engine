@@ -1,12 +1,12 @@
 import { Dictionary, pbjsFactory, utils } from '@ad-engine/core';
-import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
 const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
-export class Wikia extends BaseAdapter {
+export class Wikia extends PrebidAdapter {
 	static bidderName = 'wikia';
 
 	static getCreative(size, cpm): string {

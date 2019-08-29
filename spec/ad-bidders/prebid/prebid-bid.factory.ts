@@ -1,4 +1,4 @@
-import { Prebid } from '@wikia/ad-bidders/prebid';
+import { PrebidProvider } from '@wikia/ad-bidders/prebid';
 
 export class PrebidBidFactory {
 	static readonly fakeBid: PrebidBid = {
@@ -6,7 +6,7 @@ export class PrebidBidFactory {
 		status: 'available',
 		bidderCode: 'bidderA',
 		timeToRespond: 2000,
-		getStatusCode: () => Prebid.validResponseStatusCode,
+		getStatusCode: () => PrebidProvider.validResponseStatusCode,
 	} as PrebidBid;
 
 	static getBid(bid: Partial<PrebidBid>): PrebidBid {

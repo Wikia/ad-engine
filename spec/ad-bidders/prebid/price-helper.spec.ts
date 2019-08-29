@@ -1,5 +1,5 @@
-import { BaseAdapter, DEFAULT_MAX_CPM } from '@wikia/ad-bidders/prebid/adapters';
 import { adaptersRegistry } from '@wikia/ad-bidders/prebid/adapters-registry';
+import { DEFAULT_MAX_CPM, PrebidAdapter } from '@wikia/ad-bidders/prebid/prebid-adapter';
 import {
 	getPrebidBestPrice,
 	transformPriceFromBid,
@@ -49,7 +49,7 @@ describe('transformPriceFromCpm', () => {
 });
 
 describe('getPrebidBestPrice', () => {
-	let adapters: Map<string, BaseAdapter>;
+	let adapters: Map<string, PrebidAdapter>;
 	let sandbox: sinon.SinonSandbox;
 	let pbjsStub: PbjsStub;
 	const bidderName = 'bidderA';
@@ -66,7 +66,7 @@ describe('getPrebidBestPrice', () => {
 	});
 
 	it('should return empty string if there is no price for bidder', async () => {
-		adapters.set(bidderName, { bidderName } as BaseAdapter);
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 
 		const result = await getPrebidBestPrice('someSlot');
 
@@ -74,7 +74,7 @@ describe('getPrebidBestPrice', () => {
 	});
 
 	it('should round to 2 decimal places', async () => {
-		adapters.set(bidderName, { bidderName } as BaseAdapter);
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 		const bid = PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 });
 
 		pbjsStub.getBidResponsesForAdUnitCode.returns({ bids: [bid] });
@@ -85,7 +85,7 @@ describe('getPrebidBestPrice', () => {
 	});
 
 	it('should not take rendered bids into consideration', async () => {
-		adapters.set(bidderName, { bidderName } as BaseAdapter);
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 		const bid = PrebidBidFactory.getBid({ cpm: 0.05, bidderCode: bidderName, status: 'rendered' });
 
 		pbjsStub.getBidResponsesForAdUnitCode.returns({ bids: [bid] });
@@ -96,7 +96,7 @@ describe('getPrebidBestPrice', () => {
 	});
 
 	it('should select highest price', async () => {
-		adapters.set(bidderName, { bidderName } as BaseAdapter);
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 		pbjsStub.getBidResponsesForAdUnitCode.returns({
 			bids: [
 				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
@@ -114,9 +114,9 @@ describe('getPrebidBestPrice', () => {
 	it('should work correctly with a more complex case (many bidders, rendered slots, no bids)', async () => {
 		const otherBidderName = 'bidderB';
 
-		adapters.set(bidderName, { bidderName } as BaseAdapter);
-		adapters.set(otherBidderName, { bidderName: otherBidderName } as BaseAdapter);
-		adapters.set('bidderC', { bidderName: 'bidderC' } as BaseAdapter);
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
+		adapters.set(otherBidderName, { bidderName: otherBidderName } as PrebidAdapter);
+		adapters.set('bidderC', { bidderName: 'bidderC' } as PrebidAdapter);
 		pbjsStub.getBidResponsesForAdUnitCode.returns({
 			bids: [
 				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
@@ -138,7 +138,7 @@ describe('getPrebidBestPrice', () => {
 	});
 
 	it('should round cpm', async () => {
-		adapters.set(bidderName, { bidderName } as BaseAdapter);
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 		pbjsStub.getBidResponsesForAdUnitCode.returns({
 			bids: [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.03 })],
 		});
@@ -158,12 +158,12 @@ describe('getPrebidBestPrice', () => {
 });
 
 describe('transformPriceFromBid', () => {
-	let adapter: BaseAdapter;
+	let adapter: PrebidAdapter;
 	let sandbox;
 
 	beforeEach(() => {
 		sandbox = sinon.createSandbox();
-		adapter = {} as BaseAdapter;
+		adapter = {} as PrebidAdapter;
 		sandbox.stub(adaptersRegistry, 'getAdapter').returns(adapter);
 	});
 

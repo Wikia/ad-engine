@@ -1,6 +1,6 @@
-import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
-export class IndexExchange extends BaseAdapter {
+export class IndexExchange extends PrebidAdapter {
 	static bidderName = 'indexExchange';
 	aliases = {
 		ix: [IndexExchange.bidderName],

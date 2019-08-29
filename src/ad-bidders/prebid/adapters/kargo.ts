@@ -1,6 +1,6 @@
-import { BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Kargo extends BaseAdapter {
+export class Kargo extends PrebidAdapter {
 	static bidderName = 'kargo';
 
 	get bidderName(): string {

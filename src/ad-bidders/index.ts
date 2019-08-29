@@ -1,15 +1,15 @@
 import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
-import { A9 } from './a9';
-import { Prebid } from './prebid';
+import { A9Provider } from './a9';
+import { PrebidProvider } from './prebid';
 import * as prebidHelper from './prebid/prebid-helper';
 import { transformPriceFromBid } from './prebid/price-helper';
 
-interface BiddersRegistry {
-	a9?: A9;
-	prebid?: Prebid;
+interface BiddersProviders {
+	a9?: A9Provider;
+	prebid?: PrebidProvider;
 }
 
-const biddersRegistry: BiddersRegistry = {};
+const biddersProviders: BiddersProviders = {};
 const realSlotPrices = {};
 const logGroup = 'bidders';
 
@@ -27,17 +27,17 @@ function applyTargetingParams(slotName, targeting): void {
 	);
 }
 
-function getAllBidders(): (A9 | Prebid)[] {
-	return Object.values(biddersRegistry);
+function getBiddersProviders(): (A9Provider | PrebidProvider)[] {
+	return Object.values(biddersProviders);
 }
 
 async function getBidParameters(slotName): Promise<Dictionary> {
 	const slotParams = {};
 
 	await Promise.all(
-		getAllBidders().map(async (bidder) => {
-			if (bidder && bidder.wasCalled()) {
-				const params = await bidder.getSlotTargetingParams(slotName);
+		getBiddersProviders().map(async (provider) => {
+			if (provider && provider.wasCalled()) {
+				const params = await provider.getSlotTargetingParams(slotName);
 
 				Object.assign(slotParams, params);
 			}
@@ -51,9 +51,9 @@ async function getCurrentSlotPrices(slotName): Promise<Dictionary<string>> {
 	const slotPrices = {};
 
 	await Promise.all(
-		getAllBidders().map(async (bidder) => {
-			if (bidder && bidder.isSlotSupported(slotName)) {
-				const priceFromBidder = await bidder.getSlotBestPrice(slotName);
+		getBiddersProviders().map(async (provider) => {
+			if (provider && provider.isSlotSupported(slotName)) {
+				const priceFromBidder = await provider.getSlotBestPrice(slotName);
 
 				Object.keys(priceFromBidder).forEach((bidderName) => {
 					slotPrices[bidderName] = priceFromBidder[bidderName];
@@ -75,18 +75,18 @@ function getDfpSlotPrices(slotName): Dictionary<string> {
  * @returns {boolean}
  */
 function hasAllResponses(): boolean {
-	const missingBidders = Object.keys(biddersRegistry).filter((bidderName) => {
-		const bidder = biddersRegistry[bidderName];
+	const missingBidders = Object.keys(biddersProviders).filter((providerName) => {
+		const provider = biddersProviders[providerName];
 
-		return !bidder.hasResponse();
+		return !provider.hasResponse();
 	});
 
 	return missingBidders.length === 0;
 }
 
 function resetTargetingKeys(slotName): void {
-	getAllBidders().forEach((bidder) => {
-		bidder.getTargetingKeys(slotName).forEach((key) => {
+	getBiddersProviders().forEach((provider) => {
+		provider.getTargetingKeys(slotName).forEach((key) => {
 			context.remove(`slots.${slotName}.targeting.${key}`);
 		});
 	});
@@ -98,19 +98,19 @@ function requestBids({ responseListener = null }): void {
 	const config = context.get('bidders') || {};
 
 	if (config.prebid && config.prebid.enabled) {
-		biddersRegistry.prebid = new Prebid(config.prebid, config.timeout);
+		biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
 	}
 
 	if (config.a9 && config.a9.enabled) {
-		biddersRegistry.a9 = new A9(config.a9, config.timeout);
+		biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
 	}
 
-	getAllBidders().forEach((bidder) => {
+	getBiddersProviders().forEach((provider) => {
 		if (responseListener) {
-			bidder.addResponseListener(responseListener);
+			provider.addResponseListener(responseListener);
 		}
 
-		bidder.call();
+		provider.call();
 	});
 }
 
@@ -120,8 +120,8 @@ function requestBids({ responseListener = null }): void {
 function runOnBiddingReady(callback: () => void): Promise<void> {
 	const responses = [];
 
-	getAllBidders().forEach((bidder) => {
-		responses.push(bidder.waitForResponse());
+	getBiddersProviders().forEach((provider) => {
+		responses.push(provider.waitForResponse());
 	});
 
 	return Promise.all(responses).then(callback);

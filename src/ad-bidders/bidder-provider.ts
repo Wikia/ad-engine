@@ -11,7 +11,7 @@ export interface BidsRefreshing {
 	bidsBackHandler: (...args: any[]) => void;
 }
 
-export abstract class BaseBidder {
+export abstract class BidderProvider {
 	logGroup: string;
 	called = false;
 	w;

@@ -1,11 +1,9 @@
+import { Aliases } from '@ad-engine/core';
+
 export const DEFAULT_MAX_CPM = 20;
 export const EXTENDED_MAX_CPM = 50;
 
-export interface Aliases {
-	[key: string]: string[];
-}
-
-export interface BidderAdSlotConfig {
+export interface PrebidAdSlotConfig {
 	appId?: string | number;
 	inScreen?: string;
 	placementId?: string | number;
@@ -16,7 +14,7 @@ export interface BidderAdSlotConfig {
 	unit?: string;
 }
 
-export abstract class BaseAdapter {
+export abstract class PrebidAdapter {
 	static bidderName: string;
 	aliases?: Aliases;
 	isCustomBidAdapter = false;
@@ -30,7 +28,7 @@ export abstract class BaseAdapter {
 		this.slots = slots;
 	}
 
-	abstract prepareConfigForAdUnit(code: string, config: BidderAdSlotConfig): PrebidAdUnit;
+	abstract prepareConfigForAdUnit(code: string, config: PrebidAdSlotConfig): PrebidAdUnit;
 
 	abstract get bidderName(): string;
 

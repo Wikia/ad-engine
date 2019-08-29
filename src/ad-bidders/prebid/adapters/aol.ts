@@ -1,6 +1,6 @@
-import { BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Aol extends BaseAdapter {
+export class Aol extends PrebidAdapter {
 	static bidderName = 'aol';
 	network: string;
 

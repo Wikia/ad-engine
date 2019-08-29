@@ -1,8 +1,8 @@
 import { context } from '@ad-engine/core';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { getTargeting } from '../prebid-helper';
-import { BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
 
-export class Rubicon extends BaseAdapter {
+export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
 	accountId: number;
 	maxCpm = EXTENDED_MAX_CPM;

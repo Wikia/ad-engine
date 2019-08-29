@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { A9 } from '../../../src/ad-bidders/a9/index';
+import { A9Provider } from '../../../src/ad-bidders/a9/index';
 import { Apstag } from '../../../src/ad-bidders/wrappers';
 
-describe('A9 bidder', () => {
+describe('A9Provider', () => {
 	let bidderConfig;
 	let apstagStub;
 
@@ -29,7 +29,7 @@ describe('A9 bidder', () => {
 	});
 
 	it('configure display slot', () => {
-		const a9 = new A9(bidderConfig);
+		const a9 = new A9Provider(bidderConfig);
 
 		const definition = a9.createSlotDefinition(
 			'top_leaderboard',
@@ -44,7 +44,7 @@ describe('A9 bidder', () => {
 	});
 
 	it('do not configure video slot when video is disabled', () => {
-		const a9 = new A9(bidderConfig);
+		const a9 = new A9Provider(bidderConfig);
 
 		const definition = a9.createSlotDefinition('featured', bidderConfig.slots.featured);
 
@@ -53,7 +53,7 @@ describe('A9 bidder', () => {
 
 	it('configure video slot when video is enabled', () => {
 		bidderConfig.videoEnabled = true;
-		const a9 = new A9(bidderConfig);
+		const a9 = new A9Provider(bidderConfig);
 
 		const definition = a9.createSlotDefinition('featured', bidderConfig.slots.featured);
 

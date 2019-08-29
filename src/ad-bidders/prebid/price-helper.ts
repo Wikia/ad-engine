@@ -1,11 +1,11 @@
 import { Dictionary, pbjsFactory } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
-import { DEFAULT_MAX_CPM } from './adapters/base-adapter';
-import { Prebid } from './index';
+import { PrebidProvider } from './index';
+import { DEFAULT_MAX_CPM } from './prebid-adapter';
 
 function isValidPrice(bid: PrebidBid): boolean {
-	return bid.getStatusCode && bid.getStatusCode() === Prebid.validResponseStatusCode;
+	return bid.getStatusCode && bid.getStatusCode() === PrebidProvider.validResponseStatusCode;
 }
 
 /**
