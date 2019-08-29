@@ -55,8 +55,8 @@ async function getCurrentSlotPrices(slotName): Promise<Dictionary<string>> {
 			if (provider && provider.isSlotSupported(slotName)) {
 				const priceFromBidder = await provider.getSlotBestPrice(slotName);
 
-				Object.keys(priceFromBidder).forEach((bidderName) => {
-					slotPrices[bidderName] = priceFromBidder[bidderName];
+				Object.keys(priceFromBidder).forEach((adapterName) => {
+					slotPrices[adapterName] = priceFromBidder[adapterName];
 				});
 			}
 		}),

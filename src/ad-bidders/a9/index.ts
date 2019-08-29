@@ -30,7 +30,6 @@ export class A9Provider extends BidderProvider {
 	private loaded = false;
 
 	apstag: Apstag = Apstag.make();
-	// TODO: Discuss with jbj, and think of better name for interface
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
 	isRenderImpOverwritten = false;
