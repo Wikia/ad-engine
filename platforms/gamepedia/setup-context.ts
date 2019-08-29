@@ -1,4 +1,4 @@
-import { biddersContext, slotsContext } from '@platforms/shared';
+import { biddersContext, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -126,10 +126,7 @@ class ContextSetup {
 
 		this.setupPageLevelTargeting(context.get('wiki'));
 
-		if (this.isUapAllowed()) {
-			const uapSize: [number, number] = isMobile ? [2, 2] : [3, 3];
-			slotsContext.addSlotSize('cdm-zone-01', uapSize);
-		}
+		uapHelper.configureUap(this.instantConfig);
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
@@ -159,20 +156,6 @@ class ContextSetup {
 			// BT rec
 			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
 		}
-	}
-
-	private isUapAllowed(): boolean {
-		let uapRestriction = this.instantConfig.get('wgAdDriverUapRestriction');
-		const queryParam = utils.queryString.get('uap-pv-restriction');
-
-		if (typeof queryParam !== 'undefined') {
-			uapRestriction = parseInt(queryParam, 10);
-		}
-
-		const isUapAllowed =
-			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test';
-
-		return isUapAllowed && this.instantConfig.isGeoEnabled('wgAdDriverUapCountries');
 	}
 
 	private injectIncontentPlayer(): void {

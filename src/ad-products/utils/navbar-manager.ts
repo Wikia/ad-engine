@@ -1,3 +1,4 @@
+import { Dictionary } from '@ad-engine/core';
 import { CSS_CLASSNAME_BFAA_PINNED } from '../templates/uap/constants';
 
 // CHANGE-CANDIDATE: this method looks like it does not belong in ad-engine
@@ -23,18 +24,25 @@ export function setupNavbar(config, container: HTMLElement): void {
 export class NavbarManager {
 	constructor(private navbar: HTMLElement) {}
 
+	applyStyles(styles: Dictionary<string>): void {
+		Object.assign(this.navbar.style, styles);
+	}
+
+	getHeight(): number {
+		return this.navbar ? this.navbar.clientHeight : 0;
+	}
+
+	moveNavbar(offset: number): void {
+		if (this.navbar) {
+			this.navbar.style.top = offset ? `${offset}px` : '';
+		}
+	}
+
 	setPinned(pinned: boolean): void {
 		if (pinned) {
 			this.navbar.classList.add(CSS_CLASSNAME_BFAA_PINNED);
 		} else {
 			this.navbar.classList.remove(CSS_CLASSNAME_BFAA_PINNED);
 		}
-	}
-
-	/**
-	 * Checks and returns page navigation bar height
-	 */
-	getHeight(): number {
-		return this.navbar ? this.navbar.clientHeight : 0;
 	}
 }
