@@ -75,13 +75,13 @@ function getDfpSlotPrices(slotName): Dictionary<string> {
  * @returns {boolean}
  */
 function hasAllResponses(): boolean {
-	const missingBidders = Object.keys(biddersProviders).filter((providerName) => {
+	const missingProviders = Object.keys(biddersProviders).filter((providerName) => {
 		const provider = biddersProviders[providerName];
 
 		return !provider.hasResponse();
 	});
 
-	return missingBidders.length === 0;
+	return missingProviders.length === 0;
 }
 
 function resetTargetingKeys(slotName): void {
