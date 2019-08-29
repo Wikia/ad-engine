@@ -64,7 +64,7 @@ export class Pubmatic extends PrebidAdapter {
 		};
 	}
 
-	getBids(ids, params = {}): PrebidBidder[] {
+	getBids(ids, params = {}): PrebidBid[] {
 		return ids.map((adSlot) => ({
 			bidder: this.bidderName,
 			params: {

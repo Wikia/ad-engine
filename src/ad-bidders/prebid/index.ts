@@ -174,7 +174,7 @@ export class PrebidProvider extends BidderProvider {
 		// because it takes only last auction into account.
 		// We need to get all available bids (including old auctions)
 		// in order to keep still available, not refreshed adapters' bids...
-		const bids: PrebidBid[] = await getAvailableBidsByAdUnitCode(slotAlias);
+		const bids: PrebidBidResponse[] = await getAvailableBidsByAdUnitCode(slotAlias);
 
 		if (bids.length) {
 			let bidParams = null;

@@ -5,7 +5,7 @@ interface PrebidMarkBidRequest {
 
 interface PrebidAdUnit {
 	code: string;
-	bids: PrebidBidder[];
+	bids: PrebidBid[];
 	mediaType?: string; // should not be here
 	mediaTypes?: Partial<PrebidMediaTypes>;
 	labelAny?: string[];
@@ -23,14 +23,14 @@ interface PrebidMediaTypes {
 	};
 }
 
-interface PrebidBidder {
+interface PrebidBid {
 	bidder: string;
 	params: {};
 	labelAny?: string[];
 	labelAll?: string[];
 }
 
-interface PrebidBid {
+interface PrebidBidResponse {
 	cpm: number;
 	status: string;
 	bidderCode: string;
@@ -95,13 +95,13 @@ interface Pbjs {
 
 	markWinningBidAsUsed(markBidRequest: PrebidMarkBidRequest): void;
 
-	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBid[] };
+	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBidResponse[] };
 
 	setConfig(config: {}): void;
 
 	setBidderSettings(settings: PrebidSettings): void;
 
-	createBid(statusCode: string): PrebidBid;
+	createBid(statusCode: string): PrebidBidResponse;
 
 	renderAd(doc: HTMLDocument, id: string): void;
 

@@ -4,7 +4,7 @@ import { adaptersRegistry } from './adapters-registry';
 import { PrebidProvider } from './index';
 import { DEFAULT_MAX_CPM } from './prebid-adapter';
 
-function isValidPrice(bid: PrebidBid): boolean {
+function isValidPrice(bid: PrebidBidResponse): boolean {
 	return bid.getStatusCode && bid.getStatusCode() === PrebidProvider.validResponseStatusCode;
 }
 
@@ -43,7 +43,7 @@ export function transformPriceFromCpm(cpm: number, maxCpm: number = DEFAULT_MAX_
 export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<string>> {
 	const pbjs: Pbjs = await pbjsFactory.init();
 	const bestPrices: Dictionary<number> = {};
-	const slotBids: PrebidBid[] = pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
+	const slotBids: PrebidBidResponse[] = pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
 
 	adaptersRegistry.getAdapters().forEach((adapter) => {
 		bestPrices[adapter.bidderName] = 0;
