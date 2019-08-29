@@ -3,7 +3,7 @@ export interface PromisedTimeout<T> {
 	promise: Promise<T>;
 }
 
-export function buildPromisedTimeout(time): PromisedTimeout<number> {
+export function buildPromisedTimeout(time: number): PromisedTimeout<number> {
 	let timeoutId;
 	const promise = new Promise<number>((resolve) => {
 		timeoutId = setTimeout(() => resolve(time), time);

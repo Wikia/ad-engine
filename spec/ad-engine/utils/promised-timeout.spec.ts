@@ -1,10 +1,10 @@
 import { utils } from '@wikia/ad-engine';
 import { expect } from 'chai';
-import { createSandbox, SinonSandbox } from 'sinon';
+import { createSandbox, SinonFakeTimers, SinonSandbox } from 'sinon';
 
 describe('buildPromisedTimeout', () => {
 	let sandbox: SinonSandbox;
-	let clock;
+	let clock: SinonFakeTimers;
 
 	beforeEach(() => {
 		sandbox = createSandbox();
@@ -35,7 +35,7 @@ describe('buildPromisedTimeout', () => {
 	});
 
 	it('should resolve to timeout time', async () => {
-		let result;
+		let result: number;
 		const time = 1000;
 		const timeout: utils.PromisedTimeout<number> = utils.buildPromisedTimeout(time);
 
