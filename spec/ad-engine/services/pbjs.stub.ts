@@ -5,15 +5,15 @@ export type PbjsStub = { [key in keyof Pbjs]: SinonStub };
 
 export function createPbjsStub(sandbox: SinonSandbox): PbjsStub {
 	return {
+		bidderSettings: sandbox.stub(),
+		adUnits: sandbox.stub(),
 		requestBids: sandbox.stub(),
-		getAdUnits: sandbox.stub().returns([]),
 		removeAdUnit: sandbox.stub(),
 		aliasBidder: sandbox.stub(),
 		registerBidAdapter: sandbox.stub(),
 		markWinningBidAsUsed: sandbox.stub(),
 		getBidResponsesForAdUnitCode: sandbox.stub().returns({ bids: [] }),
 		setConfig: sandbox.stub(),
-		setBidderSettings: sandbox.stub(),
 		createBid: sandbox.stub().returns({}),
 		renderAd: sandbox.stub(),
 		onEvent: sandbox.stub(),

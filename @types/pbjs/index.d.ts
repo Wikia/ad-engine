@@ -83,9 +83,11 @@ interface PrebidTargeting {
 }
 
 interface Pbjs {
-	requestBids(requestOptions: PrebidRequestOptions): void;
+	adUnits: PrebidAdUnit[];
 
-	getAdUnits(): PrebidAdUnit[];
+	bidderSettings: PrebidSettings;
+
+	requestBids(requestOptions: PrebidRequestOptions): void;
 
 	removeAdUnit(adUnitCode: string): void;
 
@@ -98,8 +100,6 @@ interface Pbjs {
 	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBidResponse[] };
 
 	setConfig(config: {}): void;
-
-	setBidderSettings(settings: PrebidSettings): void;
 
 	createBid(statusCode: string): PrebidBidResponse;
 

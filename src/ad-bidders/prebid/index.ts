@@ -96,7 +96,7 @@ export class PrebidProvider extends BidderProvider {
 	async applySettings(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
-		return pbjs.setBidderSettings(getSettings());
+		pbjs.bidderSettings = getSettings();
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
@@ -134,9 +134,8 @@ export class PrebidProvider extends BidderProvider {
 
 	async removeAdUnits(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
-		const adUnits = pbjs.getAdUnits();
 
-		adUnits.forEach((adUnit) => pbjs.removeAdUnit(adUnit.code));
+		(pbjs.adUnits || []).forEach((adUnit) => pbjs.removeAdUnit(adUnit.code));
 	}
 
 	getBestPrice(slotName: string): Promise<Dictionary<string>> {
