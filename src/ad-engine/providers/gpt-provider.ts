@@ -1,6 +1,5 @@
 import { decorate } from 'core-decorators';
 import { getAdStack } from '..';
-import { slotStateEmitter } from '../listeners';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
@@ -9,6 +8,7 @@ import {
 	eventService,
 	slotDataParamsUpdater,
 	slotService,
+	slotStateEmitter,
 	trackingOptIn,
 } from '../services';
 import { defer, logger } from '../utils';

@@ -1,5 +1,5 @@
+import { eventService, slotTweaker } from '.';
 import { AdSlot } from '../models';
-import { eventService, slotTweaker } from '../services';
 import { logger } from '../utils';
 
 const logGroup = 'slot-state-emitter';

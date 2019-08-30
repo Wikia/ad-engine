@@ -1,8 +1,8 @@
 import * as EventEmitter from 'eventemitter3';
 import { AdStackPayload, eventService } from '../';
-import { overscrollListener, slotStateEmitter } from '../listeners';
+import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
-import { context, slotDataParamsUpdater, templateService } from '../services';
+import { context, slotDataParamsUpdater, slotStateEmitter, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 

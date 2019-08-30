@@ -14,6 +14,7 @@ export * from './slot-data-params-updater';
 export * from './slot-injector';
 export * from './slot-repeater';
 export * from './slot-service';
+export * from './slot-state-emitter';
 export * from './slot-tweaker';
 export * from './template-service';
 export * from './tracking-opt-in';
