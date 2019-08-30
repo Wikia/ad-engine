@@ -8,7 +8,6 @@ import {
 	eventService,
 	slotDataParamsUpdater,
 	slotService,
-	slotStateEmitter,
 	trackingOptIn,
 } from '../services';
 import { defer, logger } from '../utils';
@@ -47,17 +46,26 @@ function configure() {
 	tag.disableInitialLoad();
 
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
-		slotStateEmitter.emitLoadedEvent(event, getAdSlotFromEvent(event));
+		const adSlot = getAdSlotFromEvent(event);
+
+		adSlot.emit(AdSlot.SLOT_LOADED_EVENT);
 	});
 
 	tag.addEventListener('slotRenderEnded', (event: googletag.events.SlotRenderEndedEvent) => {
 		// IE doesn't allow us to inspect GPT iframe at this point.
 		// Let's launch our callback in a setTimeout instead.
-		defer(() => slotStateEmitter.emitRenderEnded(event, getAdSlotFromEvent(event)));
+		defer(() => {
+			const adSlot = getAdSlotFromEvent(event);
+			const adType = getAdType(event, adSlot.getIframe());
+
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, event, adType);
+		});
 	});
 
 	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
-		slotStateEmitter.emitImpressionViewable(event, getAdSlotFromEvent(event));
+		const adSlot = getAdSlotFromEvent(event);
+
+		adSlot.emit(AdSlot.SLOT_LOADED_EVENT);
 	});
 
 	if (context.get('options.gamLazyLoading.enabled')) {
@@ -70,6 +78,29 @@ function configure() {
 	}
 
 	window.googletag.enableServices();
+}
+
+function getAdType(
+	event: googletag.events.SlotRenderEndedEvent,
+	iframe: HTMLIFrameElement | null,
+): string {
+	let isIframeAccessible = false;
+
+	if (event.isEmpty) {
+		return AdSlot.STATUS_COLLAPSE;
+	}
+
+	try {
+		isIframeAccessible = !!iframe.contentWindow.document.querySelector;
+	} catch (e) {
+		logger(logGroup, 'getAdType', 'iframe is not accessible');
+	}
+
+	if (isIframeAccessible && iframe.contentWindow.AdEngine_adType) {
+		return iframe.contentWindow.AdEngine_adType;
+	}
+
+	return AdSlot.STATUS_SUCCESS;
 }
 
 export class GptProvider implements Provider {
