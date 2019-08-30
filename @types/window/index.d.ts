@@ -19,8 +19,6 @@ interface Window {
 	moatYieldReady?: MoatYieldReady;
 	Krux?: KruxQueue;
 	moatjw?: MoatJW;
-	// No types available for Twitch embedded player.
-	Twitch?: any;
 	// No types easily available for pbjs.
 	pbjs?: any;
 	pvNumber?: number;
