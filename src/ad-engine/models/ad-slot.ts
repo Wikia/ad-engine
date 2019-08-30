@@ -1,6 +1,6 @@
 import * as EventEmitter from 'eventemitter3';
 import { AdStackPayload, eventService } from '../';
-import { overscrollListener, slotListener } from '../listeners';
+import { overscrollListener, slotStateEmitter } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
@@ -216,7 +216,7 @@ export class AdSlot extends EventEmitter {
 		this.status = status;
 		if (status !== null) {
 			this.emit(status);
-			slotListener.emitStatusChanged(this);
+			slotStateEmitter.emitStatusChanged(this);
 		}
 	}
 
@@ -302,7 +302,7 @@ export class AdSlot extends EventEmitter {
 
 	emitEvent(eventName: null | string = null): void {
 		if (eventName !== null) {
-			slotListener.emitCustomEvent(eventName, this);
+			slotStateEmitter.emitCustomEvent(eventName, this);
 		}
 	}
 

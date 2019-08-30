@@ -1,6 +1,6 @@
 import { decorate } from 'core-decorators';
 import { getAdStack } from '..';
-import { slotListener } from '../listeners';
+import { slotStateEmitter } from '../listeners';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
@@ -47,17 +47,17 @@ function configure() {
 	tag.disableInitialLoad();
 
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
-		slotListener.emitLoadedEvent(event, getAdSlotFromEvent(event));
+		slotStateEmitter.emitLoadedEvent(event, getAdSlotFromEvent(event));
 	});
 
 	tag.addEventListener('slotRenderEnded', (event: googletag.events.SlotRenderEndedEvent) => {
 		// IE doesn't allow us to inspect GPT iframe at this point.
 		// Let's launch our callback in a setTimeout instead.
-		defer(() => slotListener.emitRenderEnded(event, getAdSlotFromEvent(event)));
+		defer(() => slotStateEmitter.emitRenderEnded(event, getAdSlotFromEvent(event)));
 	});
 
 	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
-		slotListener.emitImpressionViewable(event, getAdSlotFromEvent(event));
+		slotStateEmitter.emitImpressionViewable(event, getAdSlotFromEvent(event));
 	});
 
 	if (context.get('options.gamLazyLoading.enabled')) {
