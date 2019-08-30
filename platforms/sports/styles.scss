@@ -1,0 +1,32 @@
+@import 'src/ad-products/styles/styles.scss';
+
+.slideout-open {
+	.has-bfaa {
+		background-color: #0d0f10;
+	}
+
+	#cdm-zone-01 {
+		display: none;
+	}
+}
+
+.has-bfaa {
+	.header {
+		&.bfaa-pinned {
+			position: relative;
+		}
+	}
+
+	.header.bfaa-pinned + .site-bg {
+		padding-top: 0;
+	}
+
+	.slideout-panel {
+		position: unset;
+	}
+
+	.gdm--banner {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
