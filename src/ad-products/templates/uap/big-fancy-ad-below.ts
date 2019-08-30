@@ -1,14 +1,26 @@
-import { context, utils } from '@ad-engine/core';
+import { AdSlot, context, utils } from '@ad-engine/core';
 import { bfaThemeFactory } from './themes/factory';
-import { universalAdPackage } from './universal-ad-package';
+import { UapParams, universalAdPackage } from './universal-ad-package';
 import { VideoSettings } from './video-settings';
+
+export interface BigFancyAdBelowConfig {
+	autoPlayAllowed?: boolean;
+	defaultStateAllowed?: boolean;
+	fullscreenAllowed?: boolean;
+	stickinessAllowed?: boolean;
+	stickyUntilSlotViewed?: boolean;
+	bfaaSlotName?: string;
+	unstickInstantlyBelowPosition?: number;
+	topThreshold?: number;
+	onInit: (adSlot: AdSlot, params: UapParams, config: BigFancyAdBelowConfig) => void;
+}
 
 export class BigFancyAdBelow {
 	static getName() {
 		return 'bfab';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): BigFancyAdBelowConfig {
 		return {
 			autoPlayAllowed: true,
 			defaultStateAllowed: true,
