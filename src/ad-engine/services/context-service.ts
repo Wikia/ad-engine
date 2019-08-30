@@ -13,7 +13,6 @@ const contextObject: ContextObject = {
 	listeners: {
 		twitch: [],
 		porvata: [],
-		slot: [],
 	},
 	options: {
 		customAdLoader: {
