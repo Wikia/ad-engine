@@ -1,11 +1,11 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary, pbjsFactory } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
-import { DEFAULT_MAX_CPM } from './adapters/base-adapter';
-import { Prebid, PrebidBid } from './index';
+import { PrebidProvider } from './index';
+import { DEFAULT_MAX_CPM } from './prebid-adapter';
 
-function isValidPrice(bid: PrebidBid): boolean {
-	return bid.getStatusCode && bid.getStatusCode() === Prebid.validResponseStatusCode;
+function isValidPrice(bid: PrebidBidResponse): boolean {
+	return bid.getStatusCode && bid.getStatusCode() === PrebidProvider.validResponseStatusCode;
 }
 
 /**
@@ -40,34 +40,32 @@ export function transformPriceFromCpm(cpm: number, maxCpm: number = DEFAULT_MAX_
 	return roundCpm(cpm, maxCpm).toFixed(2);
 }
 
-export function getPrebidBestPrice(slotName: string): Dictionary<string> {
+export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<string>> {
+	const pbjs: Pbjs = await pbjsFactory.init();
 	const bestPrices: Dictionary<number> = {};
+	const slotBids: PrebidBidResponse[] = pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
 
-	if (window.pbjs && window.pbjs.getBidResponsesForAdUnitCode) {
-		const slotBids: PrebidBid[] = window.pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
+	adaptersRegistry.getAdapters().forEach((adapter) => {
+		bestPrices[adapter.bidderName] = 0;
+	});
 
-		adaptersRegistry.getAdapters().forEach((adapter) => {
-			bestPrices[adapter.bidderName] = 0;
-		});
+	slotBids
+		.filter((bid) => isValidPrice(bid) && bid.status !== 'rendered')
+		.forEach((bid) => {
+			const { bidderCode, cpm } = bid;
+			const cmpPrice = Math.max(bestPrices[bidderCode] || 0, roundCpm(cpm, DEFAULT_MAX_CPM));
 
-		slotBids.forEach((bid) => {
-			if (isValidPrice(bid) && bid.status !== 'rendered') {
-				const { bidderCode, cpm } = bid;
-				const cmpPrice = Math.max(bestPrices[bidderCode] || 0, roundCpm(cpm, DEFAULT_MAX_CPM));
-
-				if (cmpPrice > 0) {
-					bestPrices[bidderCode] = cmpPrice;
-				}
+			if (cmpPrice > 0) {
+				bestPrices[bidderCode] = cmpPrice;
 			}
 		});
-	}
 
 	return mapValues(bestPrices, (price: number) => {
 		return price === 0 ? '' : price.toFixed(2);
 	});
 }
 
-export function transformPriceFromBid(bid) {
+export function transformPriceFromBid(bid): string {
 	const bidder = adaptersRegistry.getAdapter(bid.bidderCode);
 	let maxCpm = DEFAULT_MAX_CPM;
 

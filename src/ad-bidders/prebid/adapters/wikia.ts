@@ -1,14 +1,12 @@
-import { Dictionary, utils } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { Dictionary, pbjsFactory, utils } from '@ad-engine/core';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
 const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
-type CreateInstance = () => Wikia;
-
-export class Wikia extends BaseAdapter {
+export class Wikia extends PrebidAdapter {
 	static bidderName = 'wikia';
 
 	static getCreative(size, cpm): string {
@@ -41,7 +39,6 @@ export class Wikia extends BaseAdapter {
 	limit: number;
 	useRandomPrice: boolean;
 	timeout: number;
-	create: CreateInstance;
 	maxCpm = EXTENDED_MAX_CPM;
 
 	get bidderName(): string {
@@ -56,11 +53,9 @@ export class Wikia extends BaseAdapter {
 		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
 		this.isCustomBidAdapter = true;
-
-		this.create = () => this;
 	}
 
-	prepareConfigForAdUnit(code, { sizes }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -71,6 +66,7 @@ export class Wikia extends BaseAdapter {
 			bids: [
 				{
 					bidder: this.bidderName,
+					params: {},
 				},
 			],
 		};
@@ -92,25 +88,27 @@ export class Wikia extends BaseAdapter {
 	}
 
 	callBids(bidRequest, addBidResponse, done): void {
-		window.pbjs.que.push(() => {
-			this.addBids(bidRequest, addBidResponse, done);
-		});
+		this.addBids(bidRequest, addBidResponse, done);
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		setTimeout(() => {
-			bidRequest.bids.forEach((bid) => {
+		setTimeout(async () => {
+			const pbjs: Pbjs = await pbjsFactory.init();
+
+			bidRequest.bids.map((bid) => {
 				if (this.limit === 0) {
 					return;
 				}
 
-				const bidResponse = window.pbjs.createBid(1);
+				const bidResponse = pbjs.createBid('1');
 				const [width, height] = bid.sizes[0];
 				const cpm = this.getPrice();
 
+				// @ts-ignore
 				bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
 				bidResponse.bidderCode = bidRequest.bidderCode;
 				bidResponse.cpm = cpm;
+				// @ts-ignore
 				bidResponse.ttl = 300;
 				bidResponse.mediaType = 'banner';
 				bidResponse.width = width;

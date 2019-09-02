@@ -4,6 +4,7 @@ export * from './custom-ad-loader';
 export * from './events';
 export * from './filler-service';
 export * from './instant-config-cache-storage';
+export * from './pbjs-factory';
 export * from './likho';
 export * from './local-cache';
 export * from './message-bus';

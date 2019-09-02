@@ -1,15 +1,16 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonFakeTimers, spy } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models';
 import { context } from '../../../src/ad-engine/services';
 import { slotPropertiesTrackingMiddleware } from '../../../src/ad-engine/tracking';
 
 describe('slot-properties-tracking-middleware', () => {
-	const sandbox = sinon.createSandbox();
-	const clock = sinon.useFakeTimers();
+	const sandbox = createSandbox();
+	let clock: SinonFakeTimers;
 	let adSlot: AdSlot;
 
 	beforeEach(() => {
+		clock = sandbox.useFakeTimers();
 		sandbox.stub(window, 'performance').value({
 			timing: {
 				connectStart: 250,
@@ -31,7 +32,6 @@ describe('slot-properties-tracking-middleware', () => {
 
 	afterEach(() => {
 		sandbox.restore();
-		clock.restore();
 	});
 
 	it('returns all info about slot for tracking', () => {
@@ -44,7 +44,7 @@ describe('slot-properties-tracking-middleware', () => {
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
+		const nextSpy = sandbox.spy();
 
 		slotPropertiesTrackingMiddleware(context, nextSpy);
 
@@ -71,7 +71,7 @@ describe('slot-properties-tracking-middleware', () => {
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
+		const nextSpy = sandbox.spy();
 
 		slotPropertiesTrackingMiddleware(context, nextSpy);
 
