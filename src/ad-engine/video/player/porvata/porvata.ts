@@ -348,7 +348,8 @@ export class PorvataFiller implements SlotFiller {
 		this.porvataParams.slotName = adSlot.getSlotName();
 
 		templateService.init(this.porvataParams.type, adSlot, this.porvataParams);
-		adSlot.emitEvent(AdSlot.STATUS_SUCCESS);
+		adSlot.setConfigProperty('trackEachStatus', true);
+		adSlot.success();
 	}
 
 	getContainer(): HTMLElement {
