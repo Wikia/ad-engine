@@ -1,13 +1,13 @@
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Lkqd extends BaseAdapter {
+export class Lkqd extends PrebidAdapter {
 	static bidderName = 'lkqd';
 
 	get bidderName(): string {
 		return Lkqd.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { placementId, siteId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { placementId, siteId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

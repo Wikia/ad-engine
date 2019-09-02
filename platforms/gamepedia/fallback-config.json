@@ -1,0 +1,51 @@
+{
+	"wgAdDriverDelayTimeout": 2000,
+	"icConfiant": [
+		{
+			"apps": ["gamepedia"],
+			"value": true
+		}
+	],
+	"wgAdDriverUapRestriction": 1,
+	"icBTRec": [
+		{
+			"apps": ["gamepedia"],
+			"devices": ["desktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"wgAdDriverIndexExchangeBidderCountries": ["XX"],
+	"wgAdDriverBabDetection": ["XX"],
+	"wgAdDriverRubiconDisplayPrebidCountries": ["XX"],
+	"wgAdDriverPubMaticBidderCountries": ["XX"],
+	"wgAdDriverTestCommunities": ["cdm_gamepedia", "project43"],
+	"wgAdDriverAppNexusBidderCountries": ["XX"],
+	"wgAdDriverPrebidBidderCountries": ["XX"],
+	"wgAdDriverUapCountries": ["XX"],
+	"icTaxonomyAdTags": [
+		{
+			"apps": ["gamepedia"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icBabDetection": [
+		{
+			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"wgAdDriverA9DealsCountries": ["XX"],
+	"wgAdDriverOutstreamSlotCountries": null,
+	"wgAdDriverA9BidderCountries": ["XX"],
+	"wgAdDriverOpenXPrebidBidderCountries": ["XX"],
+	"wgAdDriverLABradorTestCountries": ["PL/40-cached"],
+	"icPorvataDirect": [
+		{
+			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"value": false
+		}
+	]
+}

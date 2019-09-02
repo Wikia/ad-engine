@@ -12,7 +12,6 @@ const contextObject: ContextObject = {
 	delayModules: [],
 	listeners: {
 		porvata: [],
-		slot: [],
 	},
 	options: {
 		customAdLoader: {

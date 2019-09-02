@@ -1,19 +1,16 @@
 import { context, PrebidiumProvider } from '@wikia/ad-engine';
+import { IframeBuilder } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonSandbox } from 'sinon';
+import { PbjsStub, stubPbjs } from '../services/pbjs.stub';
 
 describe('PrebidiumProvider', () => {
-	let sandbox;
-	let prebidiumProvider;
-	const stub = {
-		context: {
-			get: undefined,
-		},
-		que: {
-			push: undefined,
-		},
-		renderAd: undefined,
+	let sandbox: SinonSandbox;
+	let prebidiumProvider: PrebidiumProvider;
+	const contextStub = {
+		get: undefined,
 	};
+	let pbjsStub: PbjsStub;
 	const mock = {
 		doc: 'mock_document',
 		adId: 'mock_ad_id',
@@ -21,62 +18,49 @@ describe('PrebidiumProvider', () => {
 	};
 
 	beforeEach(() => {
-		sandbox = sinon.sandbox.create();
+		sandbox = createSandbox();
 		prebidiumProvider = new PrebidiumProvider();
 
 		stubIframeBuilder();
-		stub.context.get = sandbox.stub(context, 'get').returns(mock.adId);
-		stubPbjs();
-	});
-
-	describe('fillIn', () => {
-		let adSlot;
-
-		beforeEach(() => {
-			adSlot = {
-				getSlotName: () => mock.slotName,
-			};
-			prebidiumProvider.fillIn(adSlot);
-		});
-
-		it('should call renderAd', () => {
-			const [doc, adId] = stub.renderAd.getCall(0).args;
-
-			assert(stub.renderAd.calledOnce);
-			assert.equal(doc, mock.doc);
-			assert.equal(adId, mock.adId);
-		});
-
-		it('should be postponed until pbjs loads', () => {
-			assert(stub.que.push.calledOnce);
-		});
-
-		it('should call context get with correct argument', () => {
-			const argument = stub.context.get.getCall(0).args[0];
-
-			assert(stub.context.get.calledOnce);
-			assert.equal(argument, `slots.${mock.slotName}.targeting.hb_adid`);
-		});
+		contextStub.get = sandbox.stub(context, 'get').returns(mock.adId);
+		pbjsStub = stubPbjs(sandbox).pbjsStub;
 	});
 
 	afterEach(() => {
 		sandbox.restore();
 	});
 
-	function stubIframeBuilder() {
-		sandbox.stub(prebidiumProvider.iframeBuilder, 'create').returns({
+	describe('fillIn', () => {
+		let adSlot;
+
+		beforeEach(async () => {
+			adSlot = {
+				getSlotName: () => mock.slotName,
+			};
+			await prebidiumProvider.fillIn(adSlot);
+		});
+
+		it('should call renderAd', () => {
+			const [doc, adId] = pbjsStub.renderAd.getCall(0).args;
+
+			assert(pbjsStub.renderAd.calledOnce);
+			assert.equal(doc, mock.doc);
+			assert.equal(adId, mock.adId);
+		});
+
+		it('should call context get with correct argument', () => {
+			const argument = contextStub.get.getCall(0).args[0];
+
+			assert(contextStub.get.calledOnce);
+			assert.equal(argument, `slots.${mock.slotName}.targeting.hb_adid`);
+		});
+	});
+
+	function stubIframeBuilder(): void {
+		sandbox.stub(IframeBuilder.prototype, 'create').returns({
 			contentWindow: {
 				document: mock.doc,
 			},
-		});
-	}
-
-	function stubPbjs() {
-		window.pbjs = {
-			renderAd: () => {},
-			que: [],
-		};
-		stub.renderAd = sandbox.stub(window.pbjs, 'renderAd');
-		stub.que.push = sandbox.stub(window.pbjs.que, 'push').callsFake((method) => method());
+		} as any);
 	}
 });

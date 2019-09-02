@@ -1,6 +1,6 @@
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
-export class IndexExchange extends BaseAdapter {
+export class IndexExchange extends PrebidAdapter {
 	static bidderName = 'indexExchange';
 	aliases = {
 		ix: [IndexExchange.bidderName],
@@ -11,7 +11,7 @@ export class IndexExchange extends BaseAdapter {
 		return IndexExchange.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, siteId }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes, siteId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

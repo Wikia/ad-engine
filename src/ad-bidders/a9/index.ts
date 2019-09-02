@@ -9,7 +9,7 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
-import { BaseBidder, BidsRefreshing } from '../base-bidder';
+import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag, Cmp, cmp } from '../wrappers';
 import {
 	A9Bid,
@@ -22,15 +22,14 @@ import {
 	PriceMap,
 } from './types';
 
-const logGroup = 'A9';
+const logGroup = 'A9Provider';
 
-export class A9 extends BaseBidder {
+export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
 
 	private loaded = false;
 
 	apstag: Apstag = Apstag.make();
-	// TODO: Discuss with jbj, and think of better name for interface
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
 	isRenderImpOverwritten = false;
@@ -165,7 +164,7 @@ export class A9 extends BaseBidder {
 			const slot: AdSlot = this.getRenderedSlot(impId);
 			const slotName: string = slot.getSlotName();
 
-			slot.addClass(A9.A9_CLASS);
+			slot.addClass(A9Provider.A9_CLASS);
 			utils.logger(logGroup, `bid used for slot ${slotName}`);
 			delete this.bids[this.getSlotAlias(slotName)];
 
@@ -279,13 +278,13 @@ export class A9 extends BaseBidder {
 		});
 	}
 
-	getBestPrice(slotName: string): { a9?: string } {
+	async getBestPrice(slotName: string): Promise<{ a9?: string }> {
 		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return this.priceMap[slotAlias] ? { a9: this.priceMap[slotAlias] } : {};
 	}
 
-	getTargetingParams(slotName: string): Dictionary {
+	async getTargetingParams(slotName: string): Promise<Dictionary> {
 		return this.bids[this.getSlotAlias(slotName)] || {};
 	}
 

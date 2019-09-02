@@ -1,14 +1,12 @@
-import { buildVastUrl, context, Dictionary, utils } from '@ad-engine/core';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { buildVastUrl, context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
 const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
-type CreateInstance = () => WikiaVideo;
-
-export class WikiaVideo extends BaseAdapter {
+export class WikiaVideo extends PrebidAdapter {
 	static bidderName = 'wikiaVideo';
 
 	static getVastUrl(width, height, slotName): string {
@@ -21,7 +19,6 @@ export class WikiaVideo extends BaseAdapter {
 	limit: number;
 	useRandomPrice: boolean;
 	timeout: number;
-	create: CreateInstance;
 	maxCpm = EXTENDED_MAX_CPM;
 
 	get bidderName(): string {
@@ -36,11 +33,9 @@ export class WikiaVideo extends BaseAdapter {
 		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
 		this.isCustomBidAdapter = true;
-
-		this.create = () => this;
 	}
 
-	prepareConfigForAdUnit(code): AdUnitConfig {
+	prepareConfigForAdUnit(code): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -52,6 +47,7 @@ export class WikiaVideo extends BaseAdapter {
 			bids: [
 				{
 					bidder: this.bidderName,
+					params: {},
 				},
 			],
 		};
@@ -73,29 +69,32 @@ export class WikiaVideo extends BaseAdapter {
 	}
 
 	callBids(bidRequest, addBidResponse, done): void {
-		window.pbjs.que.push(() => {
-			this.addBids(bidRequest, addBidResponse, done);
-		});
+		this.addBids(bidRequest, addBidResponse, done);
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		setTimeout(() => {
+		setTimeout(async () => {
+			const pbjs: Pbjs = await pbjsFactory.init();
+
 			bidRequest.bids.forEach((bid) => {
 				if (this.limit === 0) {
 					return;
 				}
 
-				const bidResponse = window.pbjs.createBid(1);
+				const bidResponse = pbjs.createBid('1');
 				const [width, height] = bid.sizes[0];
 				const slotName = bid.adUnitCode;
 
 				bidResponse.bidderCode = bidRequest.bidderCode;
 				bidResponse.cpm = this.getPrice();
+				// @ts-ignore
 				bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
+				// @ts-ignore
 				bidResponse.ttl = 300;
 				bidResponse.mediaType = 'video';
 				bidResponse.width = width;
 				bidResponse.height = height;
+				// @ts-ignore
 				bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
 				bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
 

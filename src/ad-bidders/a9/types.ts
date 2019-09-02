@@ -1,5 +1,5 @@
 import { Dictionary } from '@ad-engine/core';
-import { BidderConfig, BidsRefreshing } from '../base-bidder';
+import { BidderConfig, BidsRefreshing } from '../bidder-provider';
 
 export type PriceMap = Dictionary<string>;
 

@@ -1,24 +1,6 @@
 import { adaptersRegistry } from './adapters-registry';
 import { transformPriceFromBid } from './price-helper';
 
-interface PrebidSettings {
-	[key: string]: {
-		adserverTargeting: {
-			key: string;
-			val: (bidResponse: any) => string;
-		}[];
-		suppressEmptyKeys: boolean;
-	};
-}
-
-export interface PrebidTargeting {
-	hb_adid?: string;
-	hb_bidder?: string;
-	hb_pb?: string;
-	hb_size?: string;
-	[key: string]: string | string[];
-}
-
 export function createAdapterSpecificSettings(adaptersList): PrebidSettings | undefined {
 	const adaptersAdServerTargeting = {};
 
