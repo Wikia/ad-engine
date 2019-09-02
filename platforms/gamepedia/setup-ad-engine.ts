@@ -64,7 +64,7 @@ function startAdEngine(): void {
 	});
 
 	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
-		slot.getElement().classList.remove('default-height');
+		slot.removeClass('default-height');
 	});
 
 	context.push('state.adStack', { id: 'cdm-zone-01' });
