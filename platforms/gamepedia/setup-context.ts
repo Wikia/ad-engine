@@ -9,6 +9,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import * as fallbackInstantConfig from './fallback-config.json';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
 import {
@@ -17,24 +18,6 @@ import {
 	registerSlotTracker,
 	registerViewabilityTracker,
 } from './tracking/tracker';
-
-const fallbackInstantConfig = {
-	wgAdDriverA9BidderCountries: ['XX'],
-	wgAdDriverA9DealsCountries: ['XX'],
-	wgAdDriverAppNexusBidderCountries: ['XX'],
-	wgAdDriverBabDetection: ['XX'],
-	wgAdDriverDelayTimeout: 2000,
-	wgAdDriverIndexExchangeBidderCountries: ['XX'],
-	wgAdDriverLABradorTestCountries: ['PL/40-cached'],
-	wgAdDriverOpenXPrebidBidderCountries: ['XX'],
-	wgAdDriverOutstreamSlotCountries: [],
-	wgAdDriverPrebidBidderCountries: ['XX'],
-	wgAdDriverPubMaticBidderCountries: ['XX'],
-	wgAdDriverRubiconDisplayPrebidCountries: ['XX'],
-	wgAdDriverTestCommunities: ['cdm_gamepedia', 'project43'],
-	wgAdDriverUapCountries: ['XX'],
-	wgAdDriverUapRestriction: 1,
-};
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
