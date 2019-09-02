@@ -41,7 +41,7 @@ describe('slot-bidders-tracking-middleware', () => {
 		sandbox.restore();
 	});
 
-	it('returns bidders info for tracking', () => {
+	it('returns bidders info for tracking', async () => {
 		bidders.getDfpSlotPrices.returns({
 			wikia: 20.0,
 			indexExchange: 1.0,
@@ -69,7 +69,7 @@ describe('slot-bidders-tracking-middleware', () => {
 		};
 		const nextSpy = sinon.spy();
 
-		slotBiddersTrackingMiddleware(context, nextSpy);
+		await slotBiddersTrackingMiddleware(context, nextSpy);
 
 		expect(nextSpy.getCall(0).args[0].data).to.deep.equal({
 			previous: 'value',
@@ -94,7 +94,7 @@ describe('slot-bidders-tracking-middleware', () => {
 		});
 	});
 
-	it('returns bidders current slot prices when there were no price at the time of ad request', () => {
+	it('returns bidders current slot prices when there were no price at the time of ad request', async () => {
 		const context = {
 			data: {
 				previous: 'value',
@@ -103,7 +103,7 @@ describe('slot-bidders-tracking-middleware', () => {
 		};
 		const nextSpy = sinon.spy();
 
-		slotBiddersTrackingMiddleware(context, nextSpy);
+		await slotBiddersTrackingMiddleware(context, nextSpy);
 
 		expect(nextSpy.getCall(0).args[0].data).to.deep.equal({
 			previous: 'value',

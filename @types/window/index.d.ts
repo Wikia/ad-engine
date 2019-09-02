@@ -21,8 +21,6 @@ interface Window {
 	moatjw?: MoatJW;
 	// No types available for Twitch embedded player.
 	Twitch?: any;
-	// No types easily available for pbjs.
-	pbjs?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;

@@ -1,15 +1,15 @@
 import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
-import { A9 } from './a9';
-import { Prebid } from './prebid';
+import { A9Provider } from './a9';
+import { PrebidProvider } from './prebid';
 import * as prebidHelper from './prebid/prebid-helper';
 import { transformPriceFromBid } from './prebid/price-helper';
 
-interface BiddersRegistry {
-	a9?: A9;
-	prebid?: Prebid;
+interface BiddersProviders {
+	a9?: A9Provider;
+	prebid?: PrebidProvider;
 }
 
-const biddersRegistry: BiddersRegistry = {};
+const biddersProviders: BiddersProviders = {};
 const realSlotPrices = {};
 const logGroup = 'bidders';
 
@@ -21,49 +21,46 @@ eventService.on(events.VIDEO_AD_USED, (adSlot) => {
 	updateSlotTargeting(adSlot.getSlotName());
 });
 
-function applyTargetingParams(slotName, targeting) {
+function applyTargetingParams(slotName, targeting): void {
 	Object.keys(targeting).forEach((key) =>
 		context.set(`slots.${slotName}.targeting.${key}`, targeting[key]),
 	);
 }
 
-/**
- * Executes callback function on each enabled bidder
- *
- * @param {function} callback
- */
-function forEachBidder(callback) {
-	Object.keys(biddersRegistry).forEach((bidderName) => {
-		callback(biddersRegistry[bidderName]);
-	});
+function getBiddersProviders(): (A9Provider | PrebidProvider)[] {
+	return Object.values(biddersProviders);
 }
 
-function getBidParameters(slotName) {
+async function getBidParameters(slotName): Promise<Dictionary> {
 	const slotParams = {};
 
-	forEachBidder((bidder) => {
-		if (bidder && bidder.wasCalled()) {
-			const params = bidder.getSlotTargetingParams(slotName);
+	await Promise.all(
+		getBiddersProviders().map(async (provider) => {
+			if (provider && provider.wasCalled()) {
+				const params = await provider.getSlotTargetingParams(slotName);
 
-			Object.assign(slotParams, params);
-		}
-	});
+				Object.assign(slotParams, params);
+			}
+		}),
+	);
 
 	return slotParams;
 }
 
-function getCurrentSlotPrices(slotName): Dictionary<string> {
+async function getCurrentSlotPrices(slotName): Promise<Dictionary<string>> {
 	const slotPrices = {};
 
-	forEachBidder((bidder) => {
-		if (bidder && bidder.isSlotSupported(slotName)) {
-			const priceFromBidder = bidder.getSlotBestPrice(slotName);
+	await Promise.all(
+		getBiddersProviders().map(async (provider) => {
+			if (provider && provider.isSlotSupported(slotName)) {
+				const priceFromBidder = await provider.getSlotBestPrice(slotName);
 
-			Object.keys(priceFromBidder).forEach((bidderName) => {
-				slotPrices[bidderName] = priceFromBidder[bidderName];
-			});
-		}
-	});
+				Object.keys(priceFromBidder).forEach((adapterName) => {
+					slotPrices[adapterName] = priceFromBidder[adapterName];
+				});
+			}
+		}),
+	);
 
 	return slotPrices;
 }
@@ -77,19 +74,19 @@ function getDfpSlotPrices(slotName): Dictionary<string> {
  *
  * @returns {boolean}
  */
-function hasAllResponses() {
-	const missingBidders = Object.keys(biddersRegistry).filter((bidderName) => {
-		const bidder = biddersRegistry[bidderName];
+function hasAllResponses(): boolean {
+	const missingProviders = Object.keys(biddersProviders).filter((providerName) => {
+		const provider = biddersProviders[providerName];
 
-		return !bidder.hasResponse();
+		return !provider.hasResponse();
 	});
 
-	return missingBidders.length === 0;
+	return missingProviders.length === 0;
 }
 
-function resetTargetingKeys(slotName) {
-	forEachBidder((bidder) => {
-		bidder.getTargetingKeys(slotName).forEach((key) => {
+function resetTargetingKeys(slotName): void {
+	getBiddersProviders().forEach((provider) => {
+		provider.getTargetingKeys(slotName).forEach((key) => {
 			context.remove(`slots.${slotName}.targeting.${key}`);
 		});
 	});
@@ -97,51 +94,47 @@ function resetTargetingKeys(slotName) {
 	utils.logger(logGroup, 'resetTargetingKeys', slotName);
 }
 
-function requestBids({ responseListener = null }) {
+function requestBids({ responseListener = null }): void {
 	const config = context.get('bidders') || {};
 
 	if (config.prebid && config.prebid.enabled) {
-		biddersRegistry.prebid = new Prebid(config.prebid, config.timeout);
+		biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
 	}
 
 	if (config.a9 && config.a9.enabled) {
-		biddersRegistry.a9 = new A9(config.a9, config.timeout);
+		biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
 	}
 
-	forEachBidder((bidder) => {
+	getBiddersProviders().forEach((provider) => {
 		if (responseListener) {
-			bidder.addResponseListener(responseListener);
+			provider.addResponseListener(responseListener);
 		}
 
-		bidder.call();
+		provider.call();
 	});
 }
 
 /**
  * Executes callback function if bidding is finished or timeout is reached
- *
- * @param {function} callback
- *
- * @returns {Promise}
  */
-function runOnBiddingReady(callback) {
+function runOnBiddingReady(callback: () => void): Promise<void> {
 	const responses = [];
 
-	forEachBidder((bidder) => {
-		responses.push(bidder.waitForResponse());
+	getBiddersProviders().forEach((provider) => {
+		responses.push(provider.waitForResponse());
 	});
 
 	return Promise.all(responses).then(callback);
 }
 
-function storeRealSlotPrices(slotName) {
-	realSlotPrices[slotName] = getCurrentSlotPrices(slotName);
+async function storeRealSlotPrices(slotName): Promise<void> {
+	realSlotPrices[slotName] = await getCurrentSlotPrices(slotName);
 }
 
-function updateSlotTargeting(slotName) {
-	const bidderTargeting = getBidParameters(slotName);
+async function updateSlotTargeting(slotName): Promise<Dictionary> {
+	const bidderTargeting = await getBidParameters(slotName);
 
-	storeRealSlotPrices(slotName);
+	await storeRealSlotPrices(slotName);
 
 	resetTargetingKeys(slotName);
 	applyTargetingParams(slotName, bidderTargeting);
