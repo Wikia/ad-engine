@@ -9,26 +9,9 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
-
-const fallbackInstantConfig = {
-	wgAdDriverA9BidderCountries: ['XX'],
-	wgAdDriverA9DealsCountries: ['XX'],
-	wgAdDriverAppNexusBidderCountries: ['XX'],
-	wgAdDriverBabDetection: ['XX'],
-	wgAdDriverDelayTimeout: 2000,
-	wgAdDriverIndexExchangeBidderCountries: ['XX'],
-	wgAdDriverLABradorTestCountries: ['PL/40-cached'],
-	wgAdDriverOpenXPrebidBidderCountries: ['XX'],
-	wgAdDriverOutstreamSlotCountries: [],
-	wgAdDriverPrebidBidderCountries: ['XX'],
-	wgAdDriverPubMaticBidderCountries: ['XX'],
-	wgAdDriverRubiconDisplayPrebidCountries: ['XX'],
-	wgAdDriverTestCommunities: ['cdm_gamepedia', 'project43'],
-	wgAdDriverUapCountries: ['XX'],
-	wgAdDriverUapRestriction: 1,
-};
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
@@ -115,7 +98,7 @@ class ContextSetup {
 
 	private updateWadContext(): void {
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.instantConfig.isGeoEnabled('wgAdDriverBabDetection'));
+		context.set('options.wad.enabled', this.instantConfig.get('icBabDetection'));
 	}
 
 	private injectIncontentPlayer(): void {

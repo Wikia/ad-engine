@@ -5,17 +5,20 @@ export interface BidderConfig {
 	enabled: boolean;
 }
 
-/**
- * @abstract
- */
-export class BaseBidder {
+export interface BidsRefreshing {
+	enabled: boolean;
+	slots: string[];
+	bidsBackHandler: (...args: any[]) => void;
+}
+
+export abstract class BidderProvider {
 	logGroup: string;
 	called = false;
 	w;
 	response = false;
 	onResponseCallbacks: LazyQueue;
 
-	constructor(
+	protected constructor(
 		public name: string,
 		public bidderConfig: BidderConfig,
 		public timeout: number = DEFAULT_MAX_DELAY,
@@ -25,7 +28,7 @@ export class BaseBidder {
 		utils.logger(this.logGroup, 'created');
 	}
 
-	resetState() {
+	resetState(): void {
 		this.called = false;
 		this.response = false;
 
@@ -60,13 +63,13 @@ export class BaseBidder {
 		return context.get(`slots.${slotName}.bidderAlias`) || slotName;
 	}
 
-	getSlotBestPrice(slotName: string): Dictionary<number | string> {
+	getSlotBestPrice(slotName: string): Promise<Dictionary<number | string>> {
 		return this.getBestPrice(slotName);
 	}
 
-	getSlotTargetingParams(slotName: string): Dictionary {
+	getSlotTargetingParams(slotName: string): Promise<Dictionary> {
 		if (!this.called || !this.isSlotSupported(slotName)) {
-			return {};
+			return Promise.resolve({});
 		}
 
 		return this.getTargetingParams(slotName);
@@ -104,45 +107,13 @@ export class BaseBidder {
 		return this.called;
 	}
 
-	/**
-	 * @abstract
-	 */
-	protected callBids(cb?: (...args: any[]) => any): void {
-		throw new utils.NotImplementedException({ cb });
-	}
+	protected abstract callBids(cb?: (...args: any[]) => any): void;
 
-	/**
-	 * @abstract
-	 */
-	protected calculatePrices(): void {
-		throw new utils.NotImplementedException();
-	}
+	protected abstract calculatePrices(): void;
 
-	/**
-	 * @abstract
-	 */
-	protected getBestPrice(slotName: string): Dictionary<number | string> {
-		throw new utils.NotImplementedException({ slotName });
-	}
+	protected abstract getBestPrice(slotName: string): Promise<Dictionary<number | string>>;
 
-	/**
-	 * @abstract
-	 */
-	protected getTargetingParams(slotName: string): Dictionary {
-		throw new utils.NotImplementedException({ slotName });
-	}
+	protected abstract getTargetingParams(slotName: string): Promise<Dictionary>;
 
-	/**
-	 * Checks if slot with given name is supported by bidder.
-	 * @abstract
-	 */
-	protected isSupported(slotName: string): boolean {
-		throw new utils.NotImplementedException({ slotName });
-	}
-}
-
-export interface BidsRefreshing {
-	enabled: boolean;
-	slots: string[];
-	bidsBackHandler: (...args: any[]) => void;
+	protected abstract isSupported(slotName: string): boolean;
 }
