@@ -10,6 +10,10 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 	context.set('bidders.a9.enabled', instantConfig.get('icA9Bidder'));
 	context.set('bidders.a9.dealsEnabled', instantConfig.get('icA9Deals'));
 	context.set('bidders.a9.videoEnabled', instantConfig.get('icA9VideoBidder') && hasFeaturedVideo);
+	context.set(
+		'bidders.a9.bidsRefreshing.enabled',
+		instantConfig.get('icA9BidRefreshing') && context.get('options.slotRepeater'),
+	);
 
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
