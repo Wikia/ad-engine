@@ -19,15 +19,12 @@ export class ViewabilityCounter {
 		return ViewabilityCounter.instance;
 	}
 
-	private readonly counters: Dictionary<Dictionary<number>>;
+	private counters: Dictionary<Dictionary<number>>;
 	private sessionCookie = SessionCookie.make();
 	private loaded = false;
 
 	private constructor() {
-		this.counters = this.sessionCookie.getItem('viewabilityCountData') || {
-			loadedCounter: {},
-			viewedCounter: {},
-		};
+		this.readCounters();
 	}
 
 	init(): void {
@@ -61,6 +58,7 @@ export class ViewabilityCounter {
 
 		logger(logGroup, 'storing viewability status', type, counterId);
 
+		this.readCounters();
 		this.counters[`${type}Counter`][counterId] =
 			(this.counters[`${type}Counter`][counterId] || 0) + 1;
 
@@ -69,6 +67,8 @@ export class ViewabilityCounter {
 
 	getViewability(counterId: string = ''): string {
 		let viewability = 0.5;
+
+		this.readCounters();
 
 		if (counterId) {
 			viewability = this.counters.loadedCounter[counterId]
@@ -87,5 +87,16 @@ export class ViewabilityCounter {
 		}
 
 		return Number(viewability).toFixed(3);
+	}
+
+	/**
+	 * Has to be run before every read/write in case there are multiple instances of AdEngine running.
+	 * For example in 2 separate tabs.
+	 */
+	private readCounters(): void {
+		this.counters = this.sessionCookie.getItem('viewabilityCountData') || {
+			loadedCounter: {},
+			viewedCounter: {},
+		};
 	}
 }
