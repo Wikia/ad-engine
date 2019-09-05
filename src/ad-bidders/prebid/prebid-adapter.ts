@@ -1,18 +1,8 @@
 import { Aliases } from '@ad-engine/core';
+import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 export const DEFAULT_MAX_CPM = 20;
 export const EXTENDED_MAX_CPM = 50;
-
-export interface PrebidAdSlotConfig {
-	appId?: string | number;
-	inScreen?: string;
-	placementId?: string | number;
-	pos?: string;
-	size?: number[];
-	sizes?: [number, number][];
-	siteId?: string | number;
-	unit?: string;
-}
 
 export abstract class PrebidAdapter {
 	static bidderName: string;
@@ -23,7 +13,7 @@ export abstract class PrebidAdapter {
 	enabled: boolean;
 	slots: any;
 
-	constructor({ enabled, slots }) {
+	constructor({ enabled, slots }: PrebidAdapterConfig) {
 		this.enabled = enabled;
 		this.slots = slots;
 	}
