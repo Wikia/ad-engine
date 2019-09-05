@@ -1,22 +1,15 @@
 import { Context, InstantConfigService } from '@wikia/ad-engine';
 
 export function setupBidders(instantConfig: InstantConfigService, context: Context): void {
-	context.set(
-		'custom.beachfrontDfp',
-		instantConfig.isGeoEnabled('wgAdDriverBeachfrontDfpCountries'),
-	); // delete
-	context.set('custom.lkqdDfp', instantConfig.isGeoEnabled('wgAdDriverLkqdBidderCountries')); // delete
-	context.set('custom.pubmaticDfp', instantConfig.isGeoEnabled('wgAdDriverPubMaticDfpCountries')); // delete
-
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
-
-	context.set('bidders.a9.enabled', instantConfig.get('icA9Bidder'));
-	context.set('bidders.a9.dealsEnabled', instantConfig.get('icA9Deals'));
-	context.set('bidders.a9.videoEnabled', instantConfig.get('icA9VideoBidder') && hasFeaturedVideo);
 
 	if (hasFeaturedVideo) {
 		context.set('templates.stickyTLB.enabled', false);
 	}
+
+	context.set('bidders.a9.enabled', instantConfig.get('icA9Bidder'));
+	context.set('bidders.a9.dealsEnabled', instantConfig.get('icA9Deals'));
+	context.set('bidders.a9.videoEnabled', instantConfig.get('icA9VideoBidder') && hasFeaturedVideo);
 
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
