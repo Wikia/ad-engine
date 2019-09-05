@@ -1,6 +1,6 @@
 import { Context, InstantConfigService } from '@wikia/ad-engine';
 
-export function setupBidders(instantConfig: InstantConfigService, context: Context): void {
+export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 
 	if (hasFeaturedVideo) {
@@ -16,7 +16,7 @@ export function setupBidders(instantConfig: InstantConfigService, context: Conte
 		context.set('bidders.prebid.aol.enabled', instantConfig.get('icPrebidAol'));
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.beachfront.enabled', instantConfig.get('icPrebidBeachfront'));
-		context.set('bidders.prebid.gumgum.enabled', instantConfig.get('icGumGum'));
+		context.set('bidders.prebid.gumgum.enabled', instantConfig.get('icPrebidGumGum'));
 		context.set('bidders.prebid.indexExchange.enabled', instantConfig.get('icPrebidIndexExchange'));
 		context.set('bidders.prebid.kargo.enabled', instantConfig.get('icPrebidKargo'));
 		context.set('bidders.prebid.lkqd.enabled', instantConfig.get('icPrebidLkqd'));
@@ -24,28 +24,15 @@ export function setupBidders(instantConfig: InstantConfigService, context: Conte
 		context.set('bidders.prebid.openx.enabled', instantConfig.get('icPrebidOpenX'));
 		context.set('bidders.prebid.pubmatic.enabled', instantConfig.get('icPrebidPubmatic'));
 		context.set('bidders.prebid.vmg.enabled', instantConfig.get('icPrebidVmg'));
-		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexus'));
+		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
 		context.set(
 			'bidders.prebid.rubicon_display.enabled',
-			instantConfig.get('icPrebidRubiconDisplay'),
+			instantConfig.get('icPrebidRubiconVideo'),
 		);
-
-		const s1 = context.get('wiki.targeting.wikiIsTop1000')
-			? context.get('targeting.s1')
-			: 'not a top1k wiki';
-
-		context.set('bidders.prebid.targeting', {
-			src: ['gpt'],
-			s0: [context.get('targeting.s0') || ''],
-			s1: [s1],
-			s2: [context.get('targeting.s2') || ''],
-			lang: [context.get('targeting.wikiLanguage') || 'en'],
-		});
 
 		context.set('bidders.prebid.bidsRefreshing.enabled', context.get('options.slotRepeater'));
 		context.set('custom.rubiconInFV', instantConfig.get('icPrebidRubicon') && hasFeaturedVideo);
-		context.set('custom.isCMPEnabled', true);
 
 		if (!instantConfig.get('icPrebidLkqdOutstream')) {
 			context.remove('bidders.prebid.lkqd.slots.INCONTENT_PLAYER');
@@ -55,4 +42,9 @@ export function setupBidders(instantConfig: InstantConfigService, context: Conte
 			context.remove('bidders.prebid.pubmatic.slots.INCONTENT_PLAYER');
 		}
 	}
+
+	context.set(
+		'bidders.enabled',
+		context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
+	);
 }
