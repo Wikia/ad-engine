@@ -32,7 +32,10 @@ function startAdEngine(): void {
 	const engine = new AdEngine();
 
 	engine.init();
-	babDetection.run();
+
+	if (babDetection.isEnabled()) {
+		babDetection.run();
+	}
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
