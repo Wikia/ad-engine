@@ -5,6 +5,7 @@ import {
 	btRec,
 	confiant,
 	context,
+	durationMedia,
 	events,
 	eventService,
 	InstantConfigCacheStorage,
@@ -90,6 +91,7 @@ function callExternals(): void {
 	});
 
 	confiant.call();
+	durationMedia.call();
 
 	taxonomyService.configurePageLevelTargeting();
 }
