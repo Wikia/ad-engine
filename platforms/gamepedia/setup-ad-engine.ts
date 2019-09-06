@@ -5,9 +5,10 @@ import {
 	btRec,
 	confiant,
 	context,
+	durationMedia,
 	events,
 	eventService,
-	geoCacheStorage,
+	InstantConfigCacheStorage,
 	taxonomyService,
 	utils,
 } from '@wikia/ad-engine';
@@ -54,13 +55,15 @@ function startAdEngine(): void {
 
 	engine.init();
 
-	babDetection.run().then((isBabDetected) => {
-		trackBab(isBabDetected);
+	if (babDetection.isEnabled()) {
+		babDetection.run().then((isBabDetected) => {
+			trackBab(isBabDetected);
 
-		if (isBabDetected) {
-			btRec.run();
-		}
-	});
+			if (isBabDetected) {
+				btRec.run();
+			}
+		});
+	}
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
@@ -76,7 +79,8 @@ function startAdEngine(): void {
 }
 
 function trackLabradorValues(): void {
-	const labradorPropValue = geoCacheStorage.getSamplingResults().join(';');
+	const cacheStorage = InstantConfigCacheStorage.make();
+	const labradorPropValue = cacheStorage.getSamplingResults().join(';');
 
 	if (labradorPropValue) {
 		PageTracker.trackProp('labrador', labradorPropValue);
@@ -89,6 +93,7 @@ function callExternals(): void {
 	});
 
 	confiant.call();
+	durationMedia.call();
 
 	taxonomyService.configurePageLevelTargeting();
 }

@@ -1,7 +1,9 @@
+import { ScrollSpeedCalculator } from '@wikia/ad-engine/services/scroll-speed-calculator';
 import { expect } from 'chai';
-import { scrollSpeedCalculator } from '../../../src/ad-engine/services/scroll-speed-calculator';
 
 describe('Scroll speed calculator', () => {
+	const scrollSpeedCalculator = ScrollSpeedCalculator.make();
+
 	it('session scroll speed and page views are 0 at the beginning', () => {
 		expect(scrollSpeedCalculator.getAverageSessionScrollSpeed()).to.equal(0);
 		expect(scrollSpeedCalculator.getScrollSpeedRecordsNumber()).to.equal(0);

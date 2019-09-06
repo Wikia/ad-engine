@@ -1,8 +1,9 @@
 import { expect } from 'chai';
-import { context } from '../../../src/ad-engine/index';
-import { viewabilityCounter } from '../../../src/ad-engine/services/viewability-counter';
+import { context, ViewabilityCounter } from '../../../src/ad-engine/index';
 
 describe('Viewability counter service', () => {
+	const viewabilityCounter = ViewabilityCounter.make();
+
 	beforeEach(() => {
 		context.set('options.viewabilityCounter.enabled', true);
 		context.set('options.viewabilityCounter.ignoredSlots', ['ignoredSlot']);
