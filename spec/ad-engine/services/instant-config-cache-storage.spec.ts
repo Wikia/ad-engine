@@ -1,21 +1,24 @@
-import { CacheData, geoCacheStorage } from '@wikia/ad-engine/services/geo-cache-storage';
-import { sessionCookie } from '@wikia/ad-engine/services/session-cookie';
-import { UniversalStorage } from '@wikia/ad-engine/services/universal-storage';
+import {
+	CacheData,
+	InstantConfigCacheStorage,
+} from '@wikia/ad-engine/services/instant-config-cache-storage';
+import { SessionCookie } from '@wikia/ad-engine/services/session-cookie';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy, SinonStub } from 'sinon';
 
-describe('Geo Cache Storage', () => {
+describe('Instant Config Cache Storage', () => {
 	const sandbox = createSandbox();
+	const cacheStorage = InstantConfigCacheStorage.make();
 	let getItemStub: SinonStub;
 	let setItemStub: SinonStub;
 	let readSessionIdSpy: SinonSpy;
 
 	beforeEach(() => {
-		getItemStub = sandbox.stub(UniversalStorage.prototype, 'getItem');
-		setItemStub = sandbox.stub(UniversalStorage.prototype, 'setItem');
-		readSessionIdSpy = sandbox.spy(sessionCookie, 'readSessionId');
+		getItemStub = sandbox.stub(SessionCookie.prototype, 'getItem');
+		setItemStub = sandbox.stub(SessionCookie.prototype, 'setItem');
+		readSessionIdSpy = sandbox.spy(SessionCookie.prototype, 'readSessionId');
 
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 		readSessionIdSpy.resetHistory();
 		getItemStub.resetHistory();
 	});
@@ -25,18 +28,10 @@ describe('Geo Cache Storage', () => {
 	});
 
 	describe('resetCache', () => {
-		it('should readSessionId', () => {
-			expect(readSessionIdSpy.getCalls().length).to.equal(0);
-
-			geoCacheStorage.resetCache();
-
-			expect(readSessionIdSpy.getCalls().length).to.equal(1);
-		});
-
 		it('should read from storage', () => {
 			expect(getItemStub.getCalls().length).to.equal(0);
 
-			geoCacheStorage.resetCache();
+			cacheStorage.resetCache();
 
 			expect(getItemStub.getCalls().length).to.equal(1);
 			expect(getItemStub.getCalls()[0].args[0]).to.equal('basset');
@@ -45,13 +40,16 @@ describe('Geo Cache Storage', () => {
 
 	describe('get', () => {
 		it('should return undefined', () => {
-			expect(geoCacheStorage.get('not defined')).to.equal(undefined);
+			expect(cacheStorage.get('not defined')).to.equal(undefined);
 		});
 
 		it('should return value', () => {
 			getItemStub.returns({ testId: { name: 'testId', result: true } });
-			geoCacheStorage.resetCache();
-			expect(geoCacheStorage.get('testId')).to.deep.equal({ name: 'testId', result: true });
+			cacheStorage.resetCache();
+			expect(cacheStorage.get('testId')).to.deep.equal({
+				name: 'testId',
+				result: true,
+			});
 		});
 	});
 
@@ -69,32 +67,32 @@ describe('Geo Cache Storage', () => {
 		};
 
 		it('should save data only to cache', () => {
-			geoCacheStorage.set(cacheData);
+			cacheStorage.set(cacheData);
 
-			expect(geoCacheStorage.get('testId')).to.equal(cacheData);
+			expect(cacheStorage.get('testId')).to.equal(cacheData);
 			expect(setItemStub.getCalls().length).to.equal(0);
 		});
 
 		it('should save data to cache and cookie', () => {
-			geoCacheStorage.set(cookieData);
+			cacheStorage.set(cookieData);
 
-			expect(geoCacheStorage.get('testId')).to.equal(cookieData);
+			expect(cacheStorage.get('testId')).to.equal(cookieData);
 			expect(setItemStub.getCalls().length).to.equal(1);
 			expect(setItemStub.getCalls()[0].args[0]).to.equal('basset');
 			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({ testId: cookieData });
 		});
 
 		it('should save some to cache and some to cache and cookie', () => {
-			geoCacheStorage.set({ ...cookieData, name: 'test1' });
+			cacheStorage.set({ ...cookieData, name: 'test1' });
 			expect(setItemStub.getCalls().length).to.equal(1);
 			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({
 				test1: { ...cookieData, name: 'test1' },
 			});
 
-			geoCacheStorage.set({ ...cacheData, name: 'test2' });
+			cacheStorage.set({ ...cacheData, name: 'test2' });
 			expect(setItemStub.getCalls().length).to.equal(1);
 
-			geoCacheStorage.set({ ...cookieData, name: 'test2' });
+			cacheStorage.set({ ...cookieData, name: 'test2' });
 			expect(setItemStub.getCalls().length).to.equal(2);
 			expect(setItemStub.getCalls()[1].args[1]).to.deep.equal({
 				test1: { ...cookieData, name: 'test1' },
@@ -105,7 +103,7 @@ describe('Geo Cache Storage', () => {
 
 	describe('getSamplingResults', () => {
 		it('should return empty array', () => {
-			expect(geoCacheStorage.getSamplingResults()).to.deep.equal([]);
+			expect(cacheStorage.getSamplingResults()).to.deep.equal([]);
 		});
 
 		it('should return array', () => {
@@ -126,9 +124,9 @@ describe('Geo Cache Storage', () => {
 					group: 'A',
 				},
 			});
-			geoCacheStorage.resetCache();
+			cacheStorage.resetCache();
 
-			expect(geoCacheStorage.getSamplingResults()).to.deep.equal([
+			expect(cacheStorage.getSamplingResults()).to.deep.equal([
 				'first_B_45',
 				'second_A_90.09',
 				'third_A_10',
@@ -138,8 +136,8 @@ describe('Geo Cache Storage', () => {
 
 	describe('mapSamplingResults', () => {
 		it('should return empty array', () => {
-			expect(geoCacheStorage.mapSamplingResults()).to.deep.equal([]);
-			expect(geoCacheStorage.mapSamplingResults([])).to.deep.equal([]);
+			expect(cacheStorage.mapSamplingResults()).to.deep.equal([]);
+			expect(cacheStorage.mapSamplingResults([])).to.deep.equal([]);
 		});
 
 		it('should select dfp labrador key-vals', () => {
@@ -152,8 +150,8 @@ describe('Geo Cache Storage', () => {
 				'OOZ_B_99:ooz_b',
 			];
 
-			sandbox.stub(geoCacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
-			expect(geoCacheStorage.mapSamplingResults(wfKeyVals)).to.deep.equal(['foo_a', 'bar_b']);
+			sandbox.stub(cacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
+			expect(cacheStorage.mapSamplingResults(wfKeyVals)).to.deep.equal(['foo_a', 'bar_b']);
 		});
 	});
 });
