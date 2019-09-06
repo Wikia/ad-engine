@@ -1,5 +1,6 @@
 import { decorate } from 'core-decorators';
-import { getAdStack } from '..';
+// tslint:disable-next-line:no-blacklisted-paths
+import { getAdStack } from '../ad-engine';
 import { slotListener } from '../listeners';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
@@ -22,7 +23,10 @@ export const ADX = 'AdX';
 
 function postponeExecutionUntilGptLoads(method: () => void) {
 	return function (...args: any) {
-		return window.googletag.cmd.push(() => method.apply(this, args));
+		// TODO: remove this hack in https://wikia-inc.atlassian.net/browse/ADEN-9254
+		setTimeout(() => {
+			return window.googletag.cmd.push(() => method.apply(this, args));
+		});
 	};
 }
 

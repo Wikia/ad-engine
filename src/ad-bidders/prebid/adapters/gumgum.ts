@@ -1,13 +1,13 @@
-import { AdUnitConfig, BaseAdapter, BidderAdSlotConfig } from './base-adapter';
+import { PrebidAdapter, PrebidAdSlotConfig } from '../prebid-adapter';
 
-export class Gumgum extends BaseAdapter {
+export class Gumgum extends PrebidAdapter {
 	static bidderName = 'gumgum';
 
 	get bidderName(): string {
 		return Gumgum.bidderName;
 	}
 
-	prepareConfigForAdUnit(code: string, { sizes, inScreen }: BidderAdSlotConfig): AdUnitConfig {
+	prepareConfigForAdUnit(code: string, { sizes, inScreen }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

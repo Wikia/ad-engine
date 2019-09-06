@@ -5,6 +5,7 @@ describe('IndexExchange bidder adapter', () => {
 	it('can be enabled', () => {
 		const indexExchange = new IndexExchange({
 			enabled: true,
+			slots: {},
 		});
 
 		expect(indexExchange.enabled).to.equal(true);

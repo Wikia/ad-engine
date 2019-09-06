@@ -1,7 +1,7 @@
+import { PrebidAdapter } from '../prebid-adapter';
 import { getTargeting } from '../prebid-helper';
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
 
-export class RubiconDisplay extends BaseAdapter {
+export class RubiconDisplay extends PrebidAdapter {
 	static bidderName = 'rubicon_display';
 	aliases = {
 		rubicon: [RubiconDisplay.bidderName],
@@ -19,7 +19,7 @@ export class RubiconDisplay extends BaseAdapter {
 		this.accountId = options.accountId;
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizes, position, targeting }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { siteId, zoneId, sizes, position, targeting }): PrebidAdUnit {
 		const pageTargeting = getTargeting(code);
 
 		Object.keys(targeting || {}).forEach((key) => {

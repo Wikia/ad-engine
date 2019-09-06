@@ -1,7 +1,5 @@
-import { context, slotService } from '@ad-engine/core';
-import { AdUnitConfig } from './adapters';
+import { context, pbjsFactory, slotService } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
-import { PrebidBid } from './index';
 
 const lazyLoadSlots = ['bottom_leaderboard'];
 const videoType = 'video';
@@ -28,8 +26,8 @@ function isSlotApplicable(code, lazyLoad) {
 	return !(isSlotDisabled || isSlotLazyIgnored);
 }
 
-export function setupAdUnits(lazyLoad = 'off'): AdUnitConfig[] {
-	const adUnits: AdUnitConfig[] = [];
+export function setupAdUnits(lazyLoad = 'off'): PrebidAdUnit[] {
+	const adUnits: PrebidAdUnit[] = [];
 
 	adaptersRegistry.getAdapters().forEach((adapter) => {
 		if (adapter && adapter.enabled) {
@@ -46,8 +44,8 @@ export function setupAdUnits(lazyLoad = 'off'): AdUnitConfig[] {
 	return adUnits;
 }
 
-export function getBidUUID(adUnitCode: string, adId: string): string {
-	const bid = getBidByAdId(adUnitCode, adId);
+export async function getBidUUID(adUnitCode: string, adId: string): Promise<string> {
+	const bid = await getBidByAdId(adUnitCode, adId);
 
 	if (bid && bid.mediaType === videoType) {
 		return bid.videoCacheKey;
@@ -56,30 +54,22 @@ export function getBidUUID(adUnitCode: string, adId: string): string {
 	return 'disabled';
 }
 
-export function getBidByAdId(adUnitCode, adId) {
-	if (!window.pbjs || typeof window.pbjs.getBidResponsesForAdUnitCode !== 'function') {
-		return null;
-	}
-
-	const { bids } = window.pbjs.getBidResponsesForAdUnitCode(adUnitCode);
+async function getBidByAdId(adUnitCode, adId): Promise<PrebidBidResponse> {
+	const pbjs: Pbjs = await pbjsFactory.init();
+	const { bids } = pbjs.getBidResponsesForAdUnitCode(adUnitCode);
 	const foundBids = bids.filter((bid) => adId === bid.adId);
 
 	return foundBids.length ? foundBids[0] : null;
 }
 
-export function getAvailableBidsByAdUnitCode(adUnitCode: string): PrebidBid[] {
-	let bids = [];
-
-	if (window.pbjs && typeof window.pbjs.getBidResponsesForAdUnitCode === 'function') {
-		bids = window.pbjs.getBidResponsesForAdUnitCode(adUnitCode).bids || [];
-		bids = bids.filter((bid) => bid.status !== 'rendered');
-	}
+export async function getAvailableBidsByAdUnitCode(
+	adUnitCode: string,
+): Promise<PrebidBidResponse[]> {
+	const pbjs: Pbjs = await pbjsFactory.init();
+	let bids = pbjs.getBidResponsesForAdUnitCode(adUnitCode).bids || [];
+	bids = bids.filter((bid) => bid.status !== 'rendered');
 
 	return bids;
-}
-
-export function getPrebid() {
-	return window.pbjs;
 }
 
 export function getTargeting(slotName) {
@@ -87,31 +77,4 @@ export function getTargeting(slotName) {
 		pos: [slotName],
 		...(context.get('bidders.prebid.targeting') || {}),
 	};
-}
-
-export function getWinningVideoBidBySlotName(slotName, allowedBidders) {
-	if (!window.pbjs || !window.pbjs.getBidResponsesForAdUnitCode) {
-		return null;
-	}
-
-	const bids = window.pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
-
-	return bids
-		.filter((bid) => {
-			const canUseThisBidder = !allowedBidders || allowedBidders.indexOf(bid.bidderCode) !== -1;
-			const hasVast = bid.vastUrl || bid.vastContent;
-
-			return canUseThisBidder && hasVast && bid.cpm > 0;
-		})
-		.reduce((previousBid, currentBid) => {
-			if (previousBid === null || currentBid.cpm > previousBid.cpm) {
-				return currentBid;
-			}
-
-			return previousBid;
-		}, null);
-}
-
-export function pushPrebid(callback) {
-	window.pbjs.que.push(callback);
 }
