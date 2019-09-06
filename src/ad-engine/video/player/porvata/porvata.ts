@@ -1,8 +1,11 @@
 import { PorvataListener } from '../../../listeners';
+import { AdSlot, Targeting } from '../../../models';
+import { context } from '../../../services/context-service';
+import { SlotFiller } from '../../../services/filler-service';
+import { templateService } from '../../../services/template-service';
 import { client, LazyQueue, tryProperty, viewportObserver, whichProperty } from '../../../utils';
-import { Targeting } from './../../../models';
-import { googleIma } from './ima/google-ima';
-import { GoogleImaPlayer } from './ima/google-ima-player-factory';
+import { GoogleIma } from './ima/google-ima';
+import { GoogleImaPlayer } from './ima/google-ima-player';
 import { VideoParams, VideoSettings } from './video-settings';
 
 export interface PorvataTemplateParams {
@@ -21,6 +24,27 @@ export interface PorvataTemplateParams {
 	blockOutOfViewportPausing: boolean;
 	startInViewportOnly: boolean;
 	onReady: (player: PorvataPlayer) => void;
+}
+
+export interface PorvataGamParams {
+	container: HTMLElement;
+	slotName: string;
+	type: string;
+	theme: string;
+	adProduct: string;
+	autoPlay: boolean;
+	startInViewportOnly: boolean;
+	blockOutOfViewportPausing: boolean;
+	enableInContentFloating: boolean;
+	width: number;
+	height: number;
+	src: string;
+	lineItemId: string;
+	creativeId: string;
+	trackingDisabled: boolean;
+	loadVideoTimeout: number;
+	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+	vastTargeting: Targeting;
 }
 
 interface NativeFullscreen {
@@ -287,6 +311,55 @@ export class PorvataPlayer {
 	}
 }
 
+export class PorvataFiller implements SlotFiller {
+	private containerId = 'playerContainer';
+	private porvataParams: PorvataGamParams = {
+		container: null,
+		slotName: '',
+		type: 'porvata3',
+		theme: 'hivi',
+		adProduct: 'incontent_veles',
+		autoPlay: true,
+		startInViewportOnly: true,
+		blockOutOfViewportPausing: true,
+		enableInContentFloating: false,
+		width: 1,
+		height: 1,
+		src: context.get('src'),
+		lineItemId: '',
+		creativeId: '',
+		trackingDisabled: false,
+		loadVideoTimeout: 30000,
+		vpaidMode: 2,
+		vastTargeting: {
+			passback: 'veles',
+			pos: 'outstream',
+		},
+	};
+
+	fill(adSlot: AdSlot): void {
+		const player = document.createElement('div');
+		player.setAttribute('id', this.containerId);
+
+		adSlot.getElement().appendChild(player);
+
+		this.porvataParams.vastTargeting.src = context.get('src');
+		this.porvataParams.container = player;
+		this.porvataParams.slotName = adSlot.getSlotName();
+
+		templateService.init(this.porvataParams.type, adSlot, this.porvataParams);
+		adSlot.emitEvent(AdSlot.STATUS_SUCCESS);
+	}
+
+	getContainer(): HTMLElement {
+		return document.getElementById(this.containerId);
+	}
+
+	getName(): string {
+		return 'porvata';
+	}
+}
+
 export class Porvata {
 	private static addOnViewportChangeListener(
 		params: PorvataTemplateParams,
@@ -328,9 +401,8 @@ export class Porvata {
 
 		porvataListener.init();
 
-		return googleIma
-			.load()
-			.then(() => googleIma.getPlayer(videoSettings))
+		return GoogleIma.init()
+			.then((googleIma) => googleIma.getPlayer(videoSettings))
 			.then((ima: GoogleImaPlayer) => new PorvataPlayer(ima, params, videoSettings))
 			.then((video: PorvataPlayer) => {
 				function inViewportCallback(isVisible: boolean): void {

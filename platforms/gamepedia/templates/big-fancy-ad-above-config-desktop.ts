@@ -3,7 +3,6 @@ import {
 	BigFancyAdAboveConfig,
 	context,
 	NavbarManager,
-	scrollListener,
 	slotTweaker,
 	UapParams,
 	universalAdPackage,
@@ -11,16 +10,11 @@ import {
 } from '@wikia/ad-engine';
 import { editModeManager } from '../utils/edit-mode-manager';
 
-const {
-	CSS_CLASSNAME_STICKY_BFAA,
-	CSS_TIMING_EASE_IN_CUBIC,
-	FADE_IN_TIME,
-	SLIDE_OUT_TIME,
-} = universalAdPackage;
+const { CSS_TIMING_EASE_IN_CUBIC, FADE_IN_TIME, SLIDE_OUT_TIME } = universalAdPackage;
+const navbarBorderSize = 1;
 
 export function getBfaaConfigDesktop(): any {
 	return {
-		adjustPageMarginOnScroll: null,
 		autoPlayAllowed: true,
 		defaultStateAllowed: true,
 		fullscreenAllowed: true,
@@ -28,7 +22,6 @@ export function getBfaaConfigDesktop(): any {
 		stickinessAllowed: true,
 		adSlot: null,
 		templateParams: null,
-		updateNavbarOnScroll: null,
 		slotsToDisable: [
 			'cdm-zone-02',
 			'cdm-zone-03',
@@ -51,24 +44,20 @@ export function getBfaaConfigDesktop(): any {
 
 			slotTweaker.onReady(adSlot).then(() => {
 				this.adjustPageMargin();
-				this.adjustPageMarginOnScroll = scrollListener.addCallback(() => this.adjustPageMargin());
+
 				editModeManager.onActivate(() => {
 					this.enabled = false;
 					this.adSlot.destroy();
 					this.adjustPageMargin();
-					this.updateNavbar();
 				});
 			});
 		},
 
 		onAfterStickBfaaCallback(): void {
-			this.updateNavbar();
-			this.updateNavbarOnScroll = scrollListener.addCallback(() => this.updateNavbar());
+			this.removeSlotMargin();
 		},
 
 		onBeforeUnstickBfaaCallback(): void {
-			scrollListener.removeCallback(this.adjustPageMarginOnScroll);
-
 			Object.assign(this.navbarElement.style, {
 				transition:
 					`top ${SLIDE_OUT_TIME}ms ${CSS_TIMING_EASE_IN_CUBIC}, ` +
@@ -79,11 +68,6 @@ export function getBfaaConfigDesktop(): any {
 		},
 
 		onAfterUnstickBfaaCallback(): void {
-			if (this.updateNavbarOnScroll) {
-				scrollListener.removeCallback(this.updateNavbarOnScroll);
-				this.updateNavbarOnScroll = null;
-			}
-
 			if (this.navbarElement) {
 				this.navbarElement.style.position = 'absolute';
 			}
@@ -94,13 +78,12 @@ export function getBfaaConfigDesktop(): any {
 			});
 
 			this.navbarManager.setPinned(false);
-			this.adjustPageMargin(true);
-			this.adjustSlotMargin();
+			this.adjustSlotMargin(true);
 		},
 
 		onResolvedStateSetCallback(): void {
 			this.adjustPageMargin(true);
-			this.adjustSlotMargin();
+			this.adjustSlotMargin(true);
 		},
 
 		onResolvedStateResetCallback(): void {
@@ -127,7 +110,7 @@ export function getBfaaConfigDesktop(): any {
 		setPageMargin(aspectRatio: number): void {
 			this.config.mainContainer.style.setProperty(
 				'margin-top',
-				`calc(${100 / aspectRatio}% + ${this.navbarManager.getHeight() - 1}px)`,
+				`calc(${100 / aspectRatio}% + ${this.navbarManager.getHeight() - navbarBorderSize}px)`,
 				'important',
 			);
 
@@ -151,46 +134,32 @@ export function getBfaaConfigDesktop(): any {
 			this.config.globalSuggestionsElement.style.removeProperty('transform');
 		},
 
-		adjustSlotMargin(): void {
-			const container = this.adSlot.getElement();
-			const isSticky = container.classList.contains(CSS_CLASSNAME_STICKY_BFAA);
-
-			this.enabled ? this.setSlotMargin(isSticky, container) : this.removeSlotMargin();
+		adjustSlotMargin(resolved: boolean): void {
+			this.enabled ? this.setSlotMargin(resolved) : this.removeSlotMargin();
 		},
 
-		setSlotMargin(isSticky: boolean, container: HTMLElement): void {
-			if (!isSticky) {
-				const { top, left } = utils.getElementOffset(container);
+		setSlotMargin(resolved: boolean): void {
+			const aspectRatio = this.getSlotRatio(resolved);
+			const container: HTMLElement = this.adSlot.getElement();
 
-				const currentMarginTop: number = parseInt(container.style.marginTop, 10) || 0;
-				const currentMarginLeft: number = parseInt(container.style.marginLeft, 10) || 0;
+			const { left } = utils.getElementOffset(container);
+			const currentMarginTop: number = parseInt(container.style.marginTop, 10) || 0;
+			const currentMarginLeft: number = parseInt(container.style.marginLeft, 10) || 0;
+			const navbarPosition = this.navbarManager.getHeight() - navbarBorderSize + currentMarginTop;
 
-				container.style.setProperty('margin-top', `${currentMarginTop - top}px`, 'important');
-				container.style.setProperty('margin-left', `${currentMarginLeft - left}px`, 'important');
-				container.style.setProperty('width', `100vw`, 'important');
-			}
+			container.style.setProperty(
+				'margin-top',
+				`calc(-${100 / aspectRatio}% - ${navbarPosition}px)`,
+				'important',
+			);
+			container.style.setProperty('margin-left', `${currentMarginLeft - left}px`, 'important');
+			container.style.setProperty('width', '100vw', 'important');
 		},
 
 		removeSlotMargin(): void {
 			const container = this.adSlot.getElement();
 
 			container.style.removeProperty('margin-top');
-		},
-
-		updateNavbar(): void {
-			const container = this.adSlot.getElement();
-			const isResolved = container.classList.contains('theme-resolved');
-
-			if (isResolved) {
-				const isSticky = container.classList.contains(CSS_CLASSNAME_STICKY_BFAA);
-				const isInViewport = utils.isInViewport(container);
-
-				this.navbarManager.setPinned(isInViewport && isSticky);
-				this.moveNavbar(isSticky ? container.offsetHeight : 0);
-
-				scrollListener.removeCallback(this.updateNavbarOnScroll);
-				this.updateNavbarOnScroll = null;
-			}
 		},
 
 		moveNavbar(offset: number): void {

@@ -1,4 +1,4 @@
-import { context, instantConfig, utils } from '@wikia/ad-engine';
+import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { set } from 'lodash';
 import adContext from '../../context';
 
@@ -9,16 +9,17 @@ const testParamsButton = document.getElementById('test-params');
 context.extend(adContext);
 
 set(window, 'fallbackConfig', {
-	thisIsValueFromFallbackConfig: true,
+	thisIsValueFromFallbackConfig: [{ regions: ['XX'] }],
+	wgAdDriverThisIsValueFromFallbackConfig: true,
 });
 
 if (utils.queryString.isUrlParamSet('break-config')) {
 	context.set('services.instantConfig.endpoint', '//example.com');
 }
 
-instantConfig.getConfig().then((config) => {
-	configPlaceholder.innerText = JSON.stringify(config, null, '\t');
-	set(window, 'exposedInstantConfig', config);
+InstantConfigService.init().then((config) => {
+	configPlaceholder.innerText = JSON.stringify(config['repository'], null, '\t');
+	set(window, 'exposedInstantConfig', config['repository']);
 });
 
 breakConfigButton.addEventListener('click', () => {
@@ -27,12 +28,13 @@ breakConfigButton.addEventListener('click', () => {
 
 testParamsButton.addEventListener('click', () => {
 	const testParams = [
-		'InstantGlobals.boolean=false',
-		'InstantGlobals.string=exampleString',
-		'InstantGlobals.strings=["strings","in","the","array"]',
-		'InstantGlobals.number=42',
-		'InstantGlobals.numbers=[4, 8, 15, 16, 23, 42]',
-		'InstantGlobals.object={"this":{"is":{"more":{"complex":"json","is it?": 1}}}}',
+		'InstantGlobals.thisIsValueFromTestParams="WrappedInXX"',
+		'InstantGlobals.wgAdDriverBoolean=false',
+		'InstantGlobals.wgAdDriverString=exampleString',
+		'InstantGlobals.wgAdDriverStrings=["strings","in","the","array"]',
+		'InstantGlobals.wgAdDriverNumber=42',
+		'InstantGlobals.wgAdDriverNumbers=[4, 8, 15, 16, 23, 42]',
+		'InstantGlobals.wgAdDriverObject={"that":{"is":{"more":{"complex":"json","is it?": 1}}}}',
 	].join('&');
 
 	window.location.href = `?${testParams}`;

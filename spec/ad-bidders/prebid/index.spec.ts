@@ -1,4 +1,4 @@
-import { Prebid } from '@wikia/ad-bidders/prebid/index';
+import { PrebidProvider } from '@wikia/ad-bidders/prebid/index';
 import { context } from '@wikia/ad-engine/services/context-service';
 import { expect } from 'chai';
 
@@ -9,14 +9,14 @@ const bidderConfig = {
 	},
 };
 
-describe('Prebid bidder', () => {
+describe('PrebidProvider bidder', () => {
 	it('can be initialized', () => {
-		new Prebid(bidderConfig);
+		new PrebidProvider(bidderConfig);
 	});
 
 	describe('getTargetingKeys', () => {
 		it('returns all pbjs keys to reset', () => {
-			const prebid = new Prebid(bidderConfig);
+			const prebid = new PrebidProvider(bidderConfig);
 
 			context.set('slots.top_leaderboard.targeting', {
 				src: 'foo',
@@ -33,7 +33,7 @@ describe('Prebid bidder', () => {
 
 	describe('getDealsTargetingFromBid', () => {
 		it('returns all hb_deal_* key-values', () => {
-			const prebid = new Prebid(bidderConfig);
+			const prebid = new PrebidProvider(bidderConfig);
 
 			const targeting = prebid.getDealsTargetingFromBid({
 				adserverTargeting: {

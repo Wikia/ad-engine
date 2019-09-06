@@ -3,10 +3,14 @@
 
 interface Window {
 	__cmp?: WindowCMP;
+	XMLHttpRequest?: any;
 	AdEngine_adType?: any;
 	ads?: Ads;
+	adsQueue?: any;
+	apstag?: Apstag;
 	buildAdUnitString?: (arg0: string, arg1: any) => string;
 	confiant?: Confiant;
+	DOMParser: typeof DOMParser;
 	google: {
 		ima: typeof google.ima;
 	};
@@ -17,13 +21,9 @@ interface Window {
 	moatjw?: MoatJW;
 	// No types available for Twitch embedded player.
 	Twitch?: any;
-	// No types easily available for pbjs.
-	pbjs?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
-	adsQueue?: any;
 	pvUID?: string;
-	apstag?: Apstag;
 }
 
 declare var NOLBUNDLE: any;

@@ -1,23 +1,18 @@
+import { bootstrapAndGetCmpConsent } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { basicContext } from './ad-context';
-import { cmpWrapper } from './cmp/cmp-wrapper';
 import { setupAdEngine } from './setup-ad-engine';
 import './styles.scss';
 
 // RLQ may not exist as AdEngine is loading independently from Resource Loader
 window.RLQ = window.RLQ || [];
-window.RLQ.push(() => {
+window.RLQ.push(async () => {
 	// AdEngine has to wait for Track extension
-	window.mw.loader.using('ext.track.scripts').then(() => {
-		cmpWrapper.getGeo().then((geo) => {
-			context.extend(basicContext);
+	await window.mw.loader.using('ext.track.scripts');
 
-			context.set('custom.isCMPEnabled', cmpWrapper.geoRequiresConsent(geo));
-			context.set('targeting.geo', geo.toUpperCase());
+	context.extend(basicContext);
 
-			cmpWrapper.init().then(() => {
-				cmpWrapper.getConsent(geo).then((response) => setupAdEngine(response));
-			});
-		});
-	});
+	const consent: boolean = await bootstrapAndGetCmpConsent();
+
+	setupAdEngine(consent);
 });

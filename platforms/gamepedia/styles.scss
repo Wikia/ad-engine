@@ -9,12 +9,12 @@
 	}
 
 	#mobileatflb {
+		position: relative;
 		bottom: inherit;
-		position: fixed;
 	}
 
 	.header-container {
-		position: fixed;
+		position: absolute;
 		width: 100vw;
 
 		&.bfaa-pinned {

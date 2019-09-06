@@ -1,5 +1,5 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
-import { setupNavbar } from '../../utils';
+import { NavbarManager, setupNavbar } from '../../utils';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
 import { BfaaHiviTheme } from './themes/hivi';
@@ -13,25 +13,30 @@ export type StickinessCallback = (
 ) => void;
 
 export interface BigFancyAdAboveConfig {
-	desktopNavbarWrapperSelector: string;
-	mobileNavbarWrapperSelector: string;
-	mainContainer: HTMLElement;
-	handleNavbar: boolean;
-	autoPlayAllowed: boolean;
-	defaultStateAllowed: boolean;
-	fullscreenAllowed: boolean;
-	stickinessAllowed: boolean;
-	slotSibling: string;
-	slotsToEnable: string[];
+	adSlot?: AdSlot;
+	desktopNavbarWrapperSelector?: string;
+	mobileNavbarWrapperSelector?: string;
+	mainContainer?: HTMLElement;
+	navbarManager?: NavbarManager;
+	navbarScrollListener?: string;
+	handleNavbar?: boolean;
+	autoPlayAllowed?: boolean;
+	defaultStateAllowed?: boolean;
+	fullscreenAllowed?: boolean;
+	stickinessAllowed?: boolean;
+	stickyUntilSlotViewed?: boolean;
+	slotSibling?: string;
+	slotsToEnable?: string[];
 	slotsToDisable?: string[];
 	onInit: (adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig) => void;
-	onBeforeStickBfaaCallback: StickinessCallback;
-	onAfterStickBfaaCallback: StickinessCallback;
-	onBeforeUnstickBfaaCallback: StickinessCallback;
-	onAfterUnstickBfaaCallback: StickinessCallback;
-	onResolvedStateSetCallback: StickinessCallback;
-	onResolvedStateResetCallback: StickinessCallback;
-	moveNavbar: (offset: number, time: number) => void;
+	onBeforeStickBfaaCallback?: StickinessCallback;
+	onAfterStickBfaaCallback?: StickinessCallback;
+	onBeforeUnstickBfaaCallback?: StickinessCallback;
+	onAfterUnstickBfaaCallback?: StickinessCallback;
+	onResolvedStateSetCallback?: StickinessCallback;
+	onResolvedStateResetCallback?: StickinessCallback;
+	moveNavbar?: (offset: number, time: number) => void;
+	updateNavbar?: () => void;
 }
 
 export class BigFancyAdAbove {
@@ -49,6 +54,7 @@ export class BigFancyAdAbove {
 			defaultStateAllowed: true,
 			fullscreenAllowed: true,
 			stickinessAllowed: true,
+			stickyUntilSlotViewed: true,
 			slotSibling: '.topic-header',
 			slotsToEnable: ['bottom_leaderboard', 'incontent_boxad', 'top_boxad'],
 			onInit: () => {},

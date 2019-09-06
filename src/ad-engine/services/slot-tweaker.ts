@@ -1,10 +1,17 @@
 import { AdSlot } from '../models';
-import { logger } from '../utils';
+import { isIframe, logger } from '../utils';
+import { fillerService } from './filler-service';
 import { likhoService, LikhoStorageElement } from './likho';
 import { messageBus } from './message-bus';
 import { slotService } from './slot-service';
 
 const logGroup = 'slot-tweaker';
+
+interface SlotActionMessage {
+	action: string;
+	slotName: string;
+	aspectRatio?: number;
+}
 
 export class SlotTweaker {
 	static readonly SLOT_CLOSE_IMMEDIATELY = 'force-close';
@@ -40,35 +47,40 @@ export class SlotTweaker {
 		container.style.maxHeight = `${container.scrollHeight}px`;
 	}
 
-	makeResponsive(
+	async makeResponsive(
 		adSlot: AdSlot,
 		aspectRatio: number = null,
 		paddingBottom = true,
-	): Promise<HTMLIFrameElement> {
+	): Promise<HTMLIFrameElement | HTMLElement> {
 		const slotContainer = adSlot.getElement();
+		let container: HTMLElement;
 
 		slotContainer.classList.add('slot-responsive');
 
-		return this.onReady(adSlot).then((iframe) => {
-			const container = iframe.parentElement;
+		const element = await this.onReady(adSlot);
 
+		if (isIframe(element)) {
 			if (!aspectRatio) {
-				const height = iframe.contentWindow.document.body.scrollHeight;
-				const width = iframe.contentWindow.document.body.scrollWidth;
+				const height = element.contentWindow.document.body.scrollHeight;
+				const width = element.contentWindow.document.body.scrollWidth;
 
 				aspectRatio = width / height;
 			}
+			container = element.parentElement;
+		} else {
+			container = element;
+		}
 
-			logger(logGroup, 'make responsive', adSlot.getSlotName());
-			if (paddingBottom) {
-				container.style.paddingBottom = `${100 / aspectRatio}%`;
-			}
+		logger(logGroup, 'make responsive', adSlot.getSlotName());
 
-			return iframe;
-		});
+		if (paddingBottom) {
+			container.style.paddingBottom = `${100 / aspectRatio}%`;
+		}
+
+		return element;
 	}
 
-	onReady(adSlot: AdSlot): Promise<HTMLIFrameElement> {
+	onReady(adSlot: AdSlot): Promise<HTMLIFrameElement | HTMLElement> {
 		function getIframe(): HTMLIFrameElement {
 			const iframe = adSlot.getIframe();
 
@@ -77,6 +89,17 @@ export class SlotTweaker {
 			}
 
 			return iframe;
+		}
+
+		function getContainer(fillerName: string): HTMLElement {
+			return fillerService.get(fillerName).getContainer();
+		}
+
+		if (adSlot.getConfigProperty('customFiller')) {
+			return new Promise<HTMLElement>((resolve) => {
+				const container = getContainer(adSlot.getConfigProperty('customFiller'));
+				resolve(container);
+			});
 		}
 
 		if (adSlot.getConfigProperty('useGptOnloadEvent')) {
@@ -101,20 +124,23 @@ export class SlotTweaker {
 		});
 	}
 
-	adjustIframeByContentSize(adSlot: AdSlot): void {
-		this.onReady(adSlot).then((iframe) => {
-			const height = iframe.contentWindow.document.body.scrollHeight;
-			const width = iframe.contentWindow.document.body.scrollWidth;
+	async adjustIframeByContentSize(adSlot: AdSlot): Promise<HTMLIFrameElement | HTMLElement> {
+		const element = await this.onReady(adSlot);
 
-			iframe.width = width.toString();
-			iframe.height = height.toString();
+		if (isIframe(element)) {
+			const height = element.contentWindow.document.body.scrollHeight;
+			const width = element.contentWindow.document.body.scrollWidth;
 
+			element.width = width.toString();
+			element.height = height.toString();
 			logger(logGroup, 'adjust size', adSlot.getSlotName(), width, height);
-		});
+		}
+
+		return element;
 	}
 
 	registerMessageListener(): void {
-		messageBus.register(
+		messageBus.register<SlotActionMessage>(
 			{
 				keys: ['action', 'slotName'],
 				infinite: true,

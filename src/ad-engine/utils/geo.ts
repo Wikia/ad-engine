@@ -1,39 +1,31 @@
 import * as Cookies from 'js-cookie';
 import { context } from '../services/context-service';
+import { CacheData, geoCacheStorage } from '../services/geo-cache-storage';
 
 const cacheMarker = '-cached';
-const cacheMaxAge = 30 * 60 * 1000;
 const earth = 'XX';
 const negativePrefix = 'non-';
 // precision to 0.00000001 (or 0.000001%) of traffic
 const precision = 10 ** 6;
 const samplingSeparator = '/';
-const sessionCookieDefault = 'tracking_session_id';
-let cache: CacheDictionary = {};
-let cookieLoaded = false;
-
-export interface CacheDictionary {
-	[key: string]: CacheData;
-}
-
-export interface CacheData {
-	name: string;
-	group: 'A' | 'B';
-	limit: number;
-	result: boolean;
-	withCookie: boolean;
-}
 
 export interface GeoData {
-	region: string;
-	country: string;
-	continent: string;
+	region?: string;
+	country?: string;
+	continent?: string;
 }
 
-// TODO: Check if they are necessary
-export interface WikiaCookieAttributes extends Cookies.CookieAttributes {
-	overwrite: boolean;
-	maxAge: number;
+function setUpGeoData(): GeoData {
+	const jsonData = decodeURIComponent(Cookies.get('Geo'));
+
+	try {
+		const geoData: GeoData = JSON.parse(jsonData) || {};
+		context.set('geo.region', geoData.region);
+		context.set('geo.country', geoData.country);
+		context.set('geo.continent', geoData.continent);
+	} catch (e) {}
+
+	return context.get('geo');
 }
 
 function hasCache(countryList: string[]): boolean {
@@ -61,7 +53,7 @@ function addResultToCache(
 ): void {
 	const [limitValue]: number[] = samplingLimits;
 
-	cache[name] = {
+	const data: CacheData = {
 		name,
 		result,
 		withCookie,
@@ -69,59 +61,7 @@ function addResultToCache(
 		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 	};
 
-	if (withCookie) {
-		synchronizeCookie();
-	}
-}
-
-function getCookieDomain(): string | undefined {
-	const domain: string[] = window.location.hostname.split('.');
-
-	return domain.length > 1
-		? `.${domain[domain.length - 2]}.${domain[domain.length - 1]}`
-		: undefined;
-}
-
-function loadCookie(): void {
-	geoService.readSessionId();
-
-	const cookie: string = Cookies.get(`${context.get('options.session.id')}_basset`);
-
-	if (cookie) {
-		const cachedVariables: CacheDictionary = JSON.parse(cookie);
-
-		Object.keys(cachedVariables).forEach((variable) => {
-			cache[variable] = cachedVariables[variable];
-		});
-
-		setCookie(cookie);
-	}
-
-	cookieLoaded = true;
-}
-
-function synchronizeCookie(): void {
-	const cachedVariables: CacheDictionary = {};
-
-	Object.keys(cache).forEach((variable) => {
-		if (cache[variable].withCookie) {
-			cachedVariables[variable] = cache[variable];
-		}
-	});
-
-	setCookie(JSON.stringify(cachedVariables));
-}
-
-function setCookie(value: any): void {
-	const cookieAttributes: WikiaCookieAttributes = {
-		expires: new Date(new Date().getTime() + cacheMaxAge),
-		path: '/',
-		domain: getCookieDomain(),
-		overwrite: true,
-		maxAge: cacheMaxAge,
-	};
-
-	Cookies.set(`${context.get('options.session.id')}_basset`, value, cookieAttributes);
+	geoCacheStorage.set(data);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
@@ -226,43 +166,12 @@ function isGeoExcluded(countryList: string[] = []): boolean {
 	);
 }
 
-function getResultLog(name: string): string {
-	const entry: CacheData = cache[name];
-
-	return `${entry.name}_${entry.group}_${entry.limit}`;
-}
-
-function resetSamplingCache(): void {
-	cache = {};
-}
-
-function readSessionId(): void {
-	const sessionCookieName: string =
-		context.get('options.session.cookieName') || sessionCookieDefault;
-	const sid: string = Cookies.get(sessionCookieName) || context.get('options.session.id') || 'ae3';
-
-	geoService.setSessionId(sid);
-}
-
-function setSessionId(sid: string): void {
-	context.set('options.session.id', sid);
-	cookieLoaded = false;
-}
-
-function getSamplingResults(): string[] {
-	return Object.keys(cache).map(getResultLog);
-}
-
 /**
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
  */
 function isProperGeo(countryList: string[] = [], name?: string): boolean {
-	if (!cookieLoaded) {
-		loadCookie();
-	}
-
-	if (name !== undefined && typeof cache[name] !== 'undefined') {
-		return cache[name].result;
+	if (name !== undefined && typeof geoCacheStorage.get(name) !== 'undefined') {
+		return geoCacheStorage.get(name).result;
 	}
 
 	return !!(
@@ -275,33 +184,13 @@ function isProperGeo(countryList: string[] = [], name?: string): boolean {
 	);
 }
 
-/**
- * Transform sampling results using supplied key-values map.
- */
-function mapSamplingResults(keyVals: string[] = []): string[] {
-	if (!keyVals || !keyVals.length) {
-		return [];
-	}
-
-	const labradorVariables: string[] = geoService.getSamplingResults();
-
-	return keyVals
-		.map((keyVal: string) => keyVal.split(':'))
-		.filter(([lineId]: string[]) => labradorVariables.indexOf(lineId) !== -1)
-		.map(([lineId, geo]: string[]) => geo);
-}
-
 export const geoService = {
+	setUpGeoData,
 	isProperContinent,
 	isProperCountry,
 	isProperRegion,
 	getContinentCode,
 	getCountryCode,
 	getRegionCode,
-	getSamplingResults,
 	isProperGeo,
-	resetSamplingCache,
-	readSessionId,
-	setSessionId,
-	mapSamplingResults,
 };

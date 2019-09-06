@@ -1,15 +1,27 @@
-import { AdEngine, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
-import { biddersDelay } from './bidders/bidders-delay';
-import { adsSetup } from './setup';
+import { babDetection, biddersDelay } from '@platforms/shared';
+import {
+	AdEngine,
+	bidders,
+	btRec,
+	confiant,
+	context,
+	durationMedia,
+	events,
+	eventService,
+	geoCacheStorage,
+	taxonomyService,
+	utils,
+} from '@wikia/ad-engine';
+import { adsSetup } from './setup-context';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
+import { trackBab } from './tracking/bab-tracker';
 import { PageTracker } from './tracking/page-tracker';
 import { editModeManager } from './utils/edit-mode-manager';
-import { babDetection } from './wad/bab-detection';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 const logGroup = 'ad-engine';
 
-export async function setupAdEngine(isOptedIn): Promise<void> {
+export async function setupAdEngine(isOptedIn: boolean): Promise<void> {
 	const wikiContext = window.mw ? window.mw.config.values : {};
 
 	await adsSetup.configure(wikiContext, isOptedIn);
@@ -18,6 +30,7 @@ export async function setupAdEngine(isOptedIn): Promise<void> {
 
 	context.push('delayModules', babDetection);
 	context.push('delayModules', biddersDelay);
+	context.push('delayModules', taxonomyService);
 
 	eventService.on(events.AD_SLOT_CREATED, (slot) => {
 		utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
@@ -41,7 +54,14 @@ function startAdEngine(): void {
 	const engine = new AdEngine();
 
 	engine.init();
-	babDetection.run();
+
+	babDetection.run().then((isBabDetected) => {
+		trackBab(isBabDetected);
+
+		if (isBabDetected) {
+			btRec.run();
+		}
+	});
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
@@ -57,7 +77,7 @@ function startAdEngine(): void {
 }
 
 function trackLabradorValues(): void {
-	const labradorPropValue = utils.geoService.getSamplingResults().join(';');
+	const labradorPropValue = geoCacheStorage.getSamplingResults().join(';');
 
 	if (labradorPropValue) {
 		PageTracker.trackProp('labrador', labradorPropValue);
@@ -69,5 +89,8 @@ function callExternals(): void {
 		responseListener: biddersDelay.markAsReady,
 	});
 
-	// ToDo: other externals
+	confiant.call();
+	durationMedia.call();
+
+	taxonomyService.configurePageLevelTargeting();
 }

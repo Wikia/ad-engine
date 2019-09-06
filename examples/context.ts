@@ -117,6 +117,10 @@ export default {
 		},
 		slotRepeater: true,
 		trackingOptIn: false,
+		viewabilityCounter: {
+			enabled: true,
+			ignoredSlots: ['featured', 'outstream'],
+		},
 	},
 	listeners: {
 		twitch: [
@@ -185,7 +189,7 @@ export default {
 				loc: 'footer',
 			},
 			defaultTemplates: ['floorAdhesion'],
-			defaultSizes: [[728, 90]],
+			defaultSizes: [[300, 50]],
 		},
 		incontent_boxad: {
 			sizes: [
@@ -292,17 +296,6 @@ export default {
 				'/{networkId}/wka1a.{slotConfig.group}/{slotConfig.lowerSlotName}' +
 				'/{custom.device}/ae-{custom.adLayout}/_example',
 		},
-		incontent_native: {
-			aboveTheFold: true,
-			firstCall: true,
-			lowerSlotName: 'incontent_native',
-			group: 'NATIVE',
-			sizes: [],
-			defaultSizes: ['fluid'],
-			targeting: {
-				loc: 'top',
-			},
-		},
 	},
 	services: {
 		billTheLizard: {
@@ -360,12 +353,15 @@ export default {
 			timeout: 2000,
 		},
 		instantConfig: {
-			endpoint: 'https://services.wikia-dev.pl/icbm/api/config',
+			endpoint: 'https://services.wikia-dev.pl/icbm/api/config?app=oasis',
 			fallbackConfigKey: 'fallbackConfig',
 		},
 		krux: {
 			enabled: true,
 			id: 'KPSUiAKl',
+		},
+		taxonomy: {
+			enabled: false,
 		},
 		moatYi: {
 			enabled: true,

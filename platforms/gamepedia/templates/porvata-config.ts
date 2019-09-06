@@ -1,5 +1,5 @@
+import { slotsContext } from '@platforms/shared';
 import { PorvataTemplateConfig } from '@wikia/ad-engine';
-import { slotsContext } from '../slots';
 
 export function getPorvataConfig(): PorvataTemplateConfig {
 	return {

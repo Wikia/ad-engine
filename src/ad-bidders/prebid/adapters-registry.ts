@@ -1,10 +1,8 @@
-import { context } from '@ad-engine/core';
+import { Aliases, context, pbjsFactory } from '@ad-engine/core';
 import {
-	Aliases,
 	Aol,
 	Appnexus,
 	AppnexusAst,
-	BaseAdapter,
 	Beachfront,
 	Gumgum,
 	IndexExchange,
@@ -19,9 +17,10 @@ import {
 	Wikia,
 	WikiaVideo,
 } from './adapters';
+import { PrebidAdapter } from './prebid-adapter';
 
 class AdaptersRegistry {
-	private adapters = new Map<string, BaseAdapter>();
+	private adapters = new Map<string, PrebidAdapter>();
 	private availableAdapters = [
 		Aol,
 		Appnexus,
@@ -41,11 +40,11 @@ class AdaptersRegistry {
 		WikiaVideo,
 	];
 
-	getAdapter(bidderName: string): BaseAdapter | undefined {
+	getAdapter(bidderName: string): PrebidAdapter | undefined {
 		return this.getAdapters().get(bidderName);
 	}
 
-	getAdapters(): Map<string, BaseAdapter> {
+	getAdapters(): Map<string, PrebidAdapter> {
 		if (!this.adapters.size) {
 			const biddersConfig = context.get('bidders.prebid');
 
@@ -75,20 +74,18 @@ class AdaptersRegistry {
 		});
 	}
 
-	private configureAliases(aliasMap: Aliases): void {
-		window.pbjs.que.push(() => {
-			Object.keys(aliasMap).forEach((bidderName) => {
-				aliasMap[bidderName].forEach((alias) => {
-					window.pbjs.aliasBidder(bidderName, alias);
-				});
-			});
-		});
+	private async configureAliases(aliasMap: Aliases): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		Object.keys(aliasMap).forEach((bidderName) =>
+			aliasMap[bidderName].forEach((alias) => pbjs.aliasBidder(bidderName, alias)),
+		);
 	}
 
-	private configureCustomAdapter(bidderName: string, instance): void {
-		window.pbjs.que.push(() => {
-			window.pbjs.registerBidAdapter(instance.create, bidderName);
-		});
+	private async configureCustomAdapter(bidderName: string, instance: PrebidAdapter): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return pbjs.registerBidAdapter(() => instance, bidderName);
 	}
 }
 
