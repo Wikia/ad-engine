@@ -1,5 +1,5 @@
+import { Kargo } from '@wikia/ad-bidders/prebid/adapters/kargo';
 import { expect } from 'chai';
-import { Kargo } from '../../../../src/ad-bidders/prebid/adapters/kargo';
 
 describe('Kargo bidder adapter', () => {
 	it('can be enabled', () => {

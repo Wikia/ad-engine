@@ -1,5 +1,5 @@
+import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
 import { expect } from 'chai';
-import { Rubicon } from '../../../../src/ad-bidders/prebid/adapters/rubicon';
 
 describe('Rubicon bidder adapter', () => {
 	it('can be enabled', () => {

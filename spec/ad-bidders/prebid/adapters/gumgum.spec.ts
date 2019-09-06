@@ -1,5 +1,5 @@
+import { Gumgum } from '@wikia/ad-bidders/prebid/adapters/gumgum';
 import { expect } from 'chai';
-import { Gumgum } from '../../../../src/ad-bidders/prebid/adapters/gumgum';
 
 describe('GumGum bidder adapter', () => {
 	it('can be enabled', () => {

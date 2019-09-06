@@ -35,7 +35,7 @@ export class RubiconDisplay extends PrebidAdapter {
 			},
 			bids: [
 				{
-					bidder: RubiconDisplay.bidderName,
+					bidder: this.bidderName,
 					params: {
 						position,
 						siteId,
