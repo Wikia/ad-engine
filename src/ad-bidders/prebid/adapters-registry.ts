@@ -48,7 +48,7 @@ class AdaptersRegistry {
 
 	getAdapters(): Map<string, PrebidAdapter> {
 		if (!this.adapters.size) {
-			const biddersConfig: PrebidConfig = context.get('bidders.prebid');
+			const biddersConfig: PrebidConfig = context.get('bidders.prebid') || {};
 
 			this.availableAdapters.forEach((AdapterType) => {
 				const adapterConfig = biddersConfig[AdapterType.bidderName];
