@@ -113,6 +113,7 @@ class ContextSetup {
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
+		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 
 		this.injectIncontentPlayer();
 
