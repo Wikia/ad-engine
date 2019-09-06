@@ -1,5 +1,4 @@
-import { sessionCookie } from '../services/session-cookie';
-import { UniversalStorage } from '../services/universal-storage';
+import { SessionCookie } from '../services/session-cookie';
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -13,17 +12,27 @@ export interface CacheData {
 	withCookie: boolean;
 }
 
-class GeoCacheStorage {
-	private readonly cookieStorage = new UniversalStorage(sessionCookie);
+export class InstantConfigCacheStorage {
+	private static instance: InstantConfigCacheStorage;
+
+	static make(): InstantConfigCacheStorage {
+		if (!InstantConfigCacheStorage.instance) {
+			InstantConfigCacheStorage.instance = new InstantConfigCacheStorage();
+		}
+
+		return InstantConfigCacheStorage.instance;
+	}
+
+	private readonly sessionCookie = SessionCookie.make();
 	private cacheStorage: CacheDictionary;
 
-	constructor() {
+	private constructor() {
 		this.resetCache();
 	}
 
 	resetCache(): void {
-		sessionCookie.readSessionId();
-		this.cacheStorage = this.cookieStorage.getItem('basset') || {};
+		this.sessionCookie.readSessionId();
+		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
 	}
 
 	get(id: string): CacheData {
@@ -47,7 +56,7 @@ class GeoCacheStorage {
 			.filter(({ key, value }) => value.withCookie)
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
-		this.cookieStorage.setItem('basset', cacheDictionaryWithCookie);
+		this.sessionCookie.setItem('basset', cacheDictionaryWithCookie);
 	}
 
 	/**
@@ -83,5 +92,3 @@ class GeoCacheStorage {
 		return nameHyphenIndex !== -1 ? name.substring(0, nameHyphenIndex) : name;
 	}
 }
-
-export const geoCacheStorage = new GeoCacheStorage();
