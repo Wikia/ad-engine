@@ -1,4 +1,5 @@
 import { Rubicon } from '@wikia/ad-bidders/prebid/adapters/rubicon';
+import { context } from '@wikia/ad-engine/services/context-service';
 import { expect } from 'chai';
 
 describe('Rubicon bidder adapter', () => {
@@ -24,6 +25,11 @@ describe('Rubicon bidder adapter', () => {
 			},
 		});
 
+		context.set('bidders.prebid.targeting', {
+			foo: 1,
+			bar: 'test',
+		});
+
 		expect(rubicon.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
@@ -44,6 +50,8 @@ describe('Rubicon bidder adapter', () => {
 							name: 'mobile_in_content',
 							position: 'btf',
 							inventory: {
+								bar: 'test',
+								foo: 1,
 								pos: ['mobile_in_content'],
 							},
 							video: {

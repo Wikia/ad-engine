@@ -1,6 +1,5 @@
 import { context } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
-import { getTargeting } from '../prebid-helper';
 
 export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
@@ -22,7 +21,7 @@ export class Rubicon extends PrebidAdapter {
 			return null;
 		}
 
-		const targeting = getTargeting(code);
+		const targeting = this.getTargeting(code);
 
 		return {
 			code,

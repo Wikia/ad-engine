@@ -1,4 +1,4 @@
-import { Aliases } from '@ad-engine/core';
+import { Aliases, context } from '@ad-engine/core';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 export const DEFAULT_MAX_CPM = 20;
@@ -26,5 +26,12 @@ export abstract class PrebidAdapter {
 		return Object.keys(this.slots).map((slotName) =>
 			this.prepareConfigForAdUnit(slotName, this.slots[slotName]),
 		);
+	}
+
+	protected getTargeting(slotName) {
+		return {
+			pos: [slotName],
+			...(context.get('bidders.prebid.targeting') || {}),
+		};
 	}
 }

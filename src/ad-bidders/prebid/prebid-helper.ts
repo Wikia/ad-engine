@@ -73,13 +73,6 @@ export async function getAvailableBidsByAdUnitCode(
 	return bids;
 }
 
-export function getTargeting(slotName) {
-	return {
-		pos: [slotName],
-		...(context.get('bidders.prebid.targeting') || {}),
-	};
-}
-
 export function isPrebidAdapterConfig(
 	config: PrebidAdapterConfig | any,
 ): config is PrebidAdapterConfig {
