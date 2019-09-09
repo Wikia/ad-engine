@@ -33,14 +33,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 
 		context.set('bidders.prebid.bidsRefreshing.enabled', context.get('options.slotRepeater'));
 		context.set('custom.rubiconInFV', instantConfig.get('icPrebidRubicon') && hasFeaturedVideo);
-
-		if (!instantConfig.get('icPrebidLkqdOutstream')) {
-			context.remove('bidders.prebid.lkqd.slots.INCONTENT_PLAYER');
-		}
-
-		if (!instantConfig.get('icPrebidPubmaticOutstream')) {
-			context.remove('bidders.prebid.pubmatic.slots.INCONTENT_PLAYER');
-		}
 	}
 
 	context.set(
