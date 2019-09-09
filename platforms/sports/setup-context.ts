@@ -90,7 +90,7 @@ class ContextSetup {
 
 		this.injectIncontentPlayer();
 
-		uapHelper.configureUap(this.instantConfig);
+		uapHelper.configureUap();
 		slotsContext.setupStates();
 
 		this.updateWadContext();
