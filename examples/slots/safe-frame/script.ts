@@ -1,6 +1,7 @@
 import {
 	AdEngine,
 	bidders,
+	clickPositionTracker,
 	context,
 	DelayModule,
 	events,
@@ -14,6 +15,7 @@ import '../../styles.scss';
 
 customContext.targeting.artid = '173';
 customContext.slots.floor_adhesion.forceSafeFrame = true;
+customContext.slots.floor_adhesion.clickPositionTracking = true;
 
 context.extend(customContext);
 
@@ -31,6 +33,13 @@ const biddersDelay: DelayModule = {
 			resolveBidders = resolve;
 		}),
 };
+
+function registerClickPositionTracker() {
+	clickPositionTracker.register(
+		(data) => console.log(['🖱️ click on: ', data.label]),
+		'floor_adhesion',
+	);
+}
 
 context.push('delayModules', biddersDelay);
 
@@ -50,3 +59,5 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 });
 
 new AdEngine().init();
+
+registerClickPositionTracker();
