@@ -28,7 +28,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
 		context.set(
 			'bidders.prebid.rubicon_display.enabled',
-			instantConfig.get('icPrebidRubiconVideo'),
+			instantConfig.get('icPrebidRubiconDisplay'),
 		);
 
 		context.set('bidders.prebid.bidsRefreshing.enabled', context.get('options.slotRepeater'));
