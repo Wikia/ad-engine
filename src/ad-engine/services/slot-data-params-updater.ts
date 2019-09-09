@@ -1,5 +1,4 @@
 import { AdSlot, Targeting } from '../models';
-import { GptSizeMap } from '../providers';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
 
@@ -8,13 +7,8 @@ import { slotTweaker } from './slot-tweaker';
  */
 class SlotDataParamsUpdater {
 	updateOnCreate(adSlot: AdSlot, targeting: Targeting): void {
-		const sizes = adSlot.isOutOfPage()
-			? 'out-of-page'
-			: new GptSizeMap(adSlot.getSizes()).toString();
-
 		slotTweaker.setDataParam(adSlot, 'gptPageParams', context.get('targeting'));
 		slotTweaker.setDataParam(adSlot, 'gptSlotParams', targeting);
-		slotTweaker.setDataParam(adSlot, 'sizes', sizes);
 	}
 
 	updateOnRenderEnd(adSlot: AdSlot): void {
