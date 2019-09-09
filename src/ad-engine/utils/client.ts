@@ -136,6 +136,12 @@ class Client {
 
 		return browser;
 	}
+
+	isSteamPlatform(): boolean {
+		const { userAgent } = window.navigator;
+
+		return userAgent.toLowerCase().indexOf('steam') > -1;
+	}
 }
 
 export const client = new Client();
