@@ -127,13 +127,6 @@ export default {
 		},
 	},
 	listeners: {
-		twitch: [
-			{
-				onEvent(eventName, params, data) {
-					console.log('🗣 Twitch listener: onEvent', eventName, data);
-				},
-			},
-		],
 		porvata: [
 			{
 				onEvent(eventName, params, data) {

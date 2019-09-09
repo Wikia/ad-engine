@@ -5,8 +5,6 @@ import {
 	Porvata,
 	PorvataPlayer,
 	slotService,
-	TwitchOptions,
-	TwitchPlayer,
 	utils,
 } from '@ad-engine/core';
 import { throttle } from 'lodash';
@@ -83,9 +81,6 @@ export interface UapParams {
 	videoAspectRatio: number;
 	videoPlaceholderElement: HTMLElement;
 	videoTriggers: any[];
-
-	// Twitch params
-	channelName: string;
 }
 
 function getVideoSize(
@@ -141,43 +136,6 @@ async function loadPorvata(videoSettings, slotContainer, imageContainer): Promis
 	adjustVideoAdContainer(params);
 
 	return video;
-}
-
-function recalculateTwitchSize(params) {
-	return () => {
-		const { adContainer, clickArea, player, twitchAspectRatio } = params;
-
-		player.style.height = `${adContainer.clientHeight}px`;
-		player.style.width = `${player.clientHeight * twitchAspectRatio}px`;
-		clickArea.style.width = `${params.adContainer.clientWidth - player.clientWidth}px`;
-	};
-}
-
-async function loadTwitchPlayer(iframe, params) {
-	const { channelName, player } = params;
-	const options: TwitchOptions = {
-		height: '100%',
-		width: '100%',
-		channel: channelName,
-	};
-
-	iframe.parentNode.insertBefore(player, iframe);
-
-	const twitchPlayer = new TwitchPlayer(player, options, params);
-
-	await twitchPlayer.getPlayer();
-
-	recalculateTwitchSize(params)();
-
-	return twitchPlayer;
-}
-
-async function loadTwitchAd(iframe: HTMLIFrameElement, params: UapParams): Promise<void> {
-	const { player } = params;
-
-	await loadTwitchPlayer(iframe, params);
-	window.addEventListener('resize', throttle(recalculateTwitchSize(params), 250));
-	(player.firstChild as HTMLElement).id = 'twitchPlayerContainer';
 }
 
 async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer> {
@@ -323,7 +281,6 @@ export const universalAdPackage = {
 		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
 	},
 	loadVideoAd,
-	loadTwitchAd,
 	reset,
 	setType,
 };
