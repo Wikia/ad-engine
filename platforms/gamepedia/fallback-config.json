@@ -16,7 +16,6 @@
 		}
 	],
 	"wgAdDriverIndexExchangeBidderCountries": ["XX"],
-	"wgAdDriverBabDetection": ["XX"],
 	"wgAdDriverRubiconDisplayPrebidCountries": ["XX"],
 	"wgAdDriverPubMaticBidderCountries": ["XX"],
 	"wgAdDriverTestCommunities": ["cdm_gamepedia", "project43"],

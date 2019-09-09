@@ -1,12 +1,12 @@
-import { CacheData, geoCacheStorage } from '@ad-engine/core';
+import { CacheData, InstantConfigCacheStorage } from '@ad-engine/core';
 import { InstantConfigSamplingCache } from '../instant-config.models';
 
 export class SamplingCacheManager {
-	private readonly geoCacheStorage = geoCacheStorage;
+	private readonly cacheStorage = InstantConfigCacheStorage.make();
 	private readonly precision = 10 ** 6;
 
 	apply(id: string, samplingCache: InstantConfigSamplingCache, predicate: () => boolean): boolean {
-		const cached = this.geoCacheStorage.get(id);
+		const cached = this.cacheStorage.get(id);
 
 		if (typeof cached !== 'undefined') {
 			return cached.result;
@@ -27,7 +27,7 @@ export class SamplingCacheManager {
 			limit: +(samplingResult ? samplingCache.sampling : 100 - samplingCache.sampling).toFixed(6),
 		};
 
-		this.geoCacheStorage.set(cacheData);
+		this.cacheStorage.set(cacheData);
 
 		return samplingResult;
 	}

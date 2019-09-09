@@ -32,7 +32,10 @@ function startAdEngine(): void {
 	const engine = new AdEngine();
 
 	engine.init();
-	babDetection.run();
+
+	if (babDetection.isEnabled()) {
+		babDetection.run();
+	}
 
 	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
 		slot.removeClass('default-height');

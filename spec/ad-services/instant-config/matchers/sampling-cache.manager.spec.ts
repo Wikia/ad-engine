@@ -1,4 +1,4 @@
-import { geoCacheStorage } from '@wikia/ad-engine/services/geo-cache-storage';
+import { InstantConfigCacheStorage } from '@wikia/ad-engine/services/instant-config-cache-storage';
 import { SamplingCacheManager } from '@wikia/ad-services/instant-config/matchers/sampling-cache.manager';
 import { expect } from 'chai';
 import { createSandbox, SinonExpectation, SinonStub } from 'sinon';
@@ -13,8 +13,8 @@ describe('Sampling Cache Manager', () => {
 
 	beforeEach(() => {
 		randomStub = sandbox.stub(Math, 'random');
-		storageGetStub = sandbox.stub(geoCacheStorage, 'get');
-		storageSetStub = sandbox.stub(geoCacheStorage, 'set');
+		storageGetStub = sandbox.stub(InstantConfigCacheStorage.prototype, 'get');
+		storageSetStub = sandbox.stub(InstantConfigCacheStorage.prototype, 'set');
 		predicate = sandbox.mock();
 	});
 
