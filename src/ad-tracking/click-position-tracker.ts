@@ -53,7 +53,7 @@ class ClickPositionTracker {
 			return;
 		}
 		const iframeBody: HTMLElement = iframeElement.contentWindow.document.body;
-		const frameType = iframeElement.dataset.isSafeframe === 'true' ? 'safe' : 'regular';
+		const frameType = slot.getFrameType();
 
 		if (iframeBody && slotElement) {
 			slotElement.addEventListener('click', (e: MouseEvent) => {
