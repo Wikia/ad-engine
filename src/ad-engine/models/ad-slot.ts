@@ -103,7 +103,7 @@ export class AdSlot extends EventEmitter {
 	rendered = new Promise<void>((resolve) => {
 		this.once(
 			AdSlot.SLOT_RENDERED_EVENT,
-			(adType: string, event: googletag.events.SlotRenderEndedEvent) => {
+			(event: googletag.events.SlotRenderEndedEvent, adType: string) => {
 				this.updateOnRenderEnd(event, adType);
 
 				resolve();
