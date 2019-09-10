@@ -1,5 +1,4 @@
 import { PrebidAdapter } from '../prebid-adapter';
-import { getTargeting } from '../prebid-helper';
 
 export class RubiconDisplay extends PrebidAdapter {
 	static bidderName = 'rubicon_display';
@@ -20,7 +19,7 @@ export class RubiconDisplay extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { siteId, zoneId, sizes, position, targeting }): PrebidAdUnit {
-		const pageTargeting = getTargeting(code);
+		const pageTargeting = this.getTargeting(code);
 
 		Object.keys(targeting || {}).forEach((key) => {
 			pageTargeting[key] = targeting[key];
@@ -35,7 +34,7 @@ export class RubiconDisplay extends PrebidAdapter {
 			},
 			bids: [
 				{
-					bidder: RubiconDisplay.bidderName,
+					bidder: this.bidderName,
 					params: {
 						position,
 						siteId,

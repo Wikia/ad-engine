@@ -1,5 +1,5 @@
+import { IndexExchange } from '@wikia/ad-bidders/prebid/adapters/index-exchange';
 import { expect } from 'chai';
-import { IndexExchange } from '../../../../src/ad-bidders/prebid/adapters/index-exchange';
 
 describe('IndexExchange bidder adapter', () => {
 	it('can be enabled', () => {

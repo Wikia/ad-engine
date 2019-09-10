@@ -4,9 +4,6 @@ import { expect } from 'chai';
 
 const bidderConfig = {
 	lazyLoadingEnabled: false,
-	bidsRefreshing: {
-		enabled: false,
-	},
 };
 
 describe('PrebidProvider bidder', () => {

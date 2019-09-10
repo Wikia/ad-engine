@@ -55,13 +55,15 @@ function startAdEngine(): void {
 
 	engine.init();
 
-	babDetection.run().then((isBabDetected) => {
-		trackBab(isBabDetected);
+	if (babDetection.isEnabled()) {
+		babDetection.run().then((isBabDetected) => {
+			trackBab(isBabDetected);
 
-		if (isBabDetected) {
-			btRec.run();
-		}
-	});
+			if (isBabDetected) {
+				btRec.run();
+			}
+		});
+	}
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
