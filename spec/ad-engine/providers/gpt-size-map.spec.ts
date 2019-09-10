@@ -1,7 +1,12 @@
 import { expect } from 'chai';
 import { GptSizeMap } from '../../../src/ad-engine/providers/gpt-size-map';
+import { context } from '../../../src/ad-engine/services/context-service';
 
 describe('gpt-size-map', () => {
+	after(() => {
+		context.removeListeners('targeting');
+	});
+
 	it('provides information about emptiness', () => {
 		const sizes = [{ viewportSize: [728, 0], sizes: [[728, 90]] }];
 
