@@ -30,7 +30,7 @@ function loadContent() {
 context.extend(adContext);
 context.set('slots.repeatable_boxad_1.repeat.limit', limit);
 
-eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
+eventService.on(AdSlot.SLOT_STATUS_CHANGED, async (adSlot) => {
 	const slotName = adSlot.getSlotName();
 	const realSlotPrices = bidders.getDfpSlotPrices(slotName);
 	const currentSlotPrices = await bidders.getCurrentSlotPrices(slotName);
