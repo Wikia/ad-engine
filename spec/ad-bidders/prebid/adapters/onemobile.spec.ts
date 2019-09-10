@@ -1,5 +1,5 @@
+import { Onemobile } from '@wikia/ad-bidders/prebid/adapters/onemobile';
 import { expect } from 'chai';
-import { Onemobile } from '../../../../src/ad-bidders/prebid/adapters/onemobile';
 
 describe('Onemobile bidder adapter', () => {
 	it('can be enabled', () => {

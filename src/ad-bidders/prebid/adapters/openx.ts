@@ -1,6 +1,6 @@
-import { AdUnitConfig, BaseAdapter } from './base-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 
-export class Openx extends BaseAdapter {
+export class Openx extends PrebidAdapter {
 	static bidderName = 'openx';
 	delDomain: string;
 
@@ -14,7 +14,7 @@ export class Openx extends BaseAdapter {
 		this.delDomain = options.delDomain;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, unit }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { sizes, unit }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

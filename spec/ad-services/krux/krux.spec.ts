@@ -1,9 +1,11 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox } from 'sinon';
 import { context, localCache } from '../../../src/ad-engine';
 import { krux } from '../../../src/ad-services/krux';
 
 describe('Krux service', () => {
+	const sandbox = createSandbox();
+
 	beforeEach(() => {
 		window.localStorage = {};
 		context.set('services.krux', {
@@ -16,14 +18,14 @@ describe('Krux service', () => {
 	});
 
 	afterEach(() => {
-		localCache.isAvailable.restore();
+		sandbox.restore();
 		delete window.localStorage;
 		delete window.kruxDartParam_foo;
 	});
 
 	describe('local storage available', () => {
 		beforeEach(() => {
-			sinon.stub(localCache, 'isAvailable').returns(true);
+			sandbox.stub(localCache, 'isAvailable').returns(true);
 		});
 
 		it('import user data and return user id from old key name', () => {
@@ -71,7 +73,7 @@ describe('Krux service', () => {
 
 	describe('local storage not available', () => {
 		beforeEach(() => {
-			sinon.stub(localCache, 'isAvailable').returns(false);
+			sandbox.stub(localCache, 'isAvailable').returns(false);
 		});
 
 		it('import user data failes when there is no local storage', () => {

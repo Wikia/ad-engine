@@ -45,17 +45,20 @@ describe('gpt-provider', () => {
 		isInitializedCb.reset();
 	});
 
-	it('initialise and setup gpt provider', () => {
+	it('initialise and setup gpt provider', (done) => {
 		isInitializedCb.callThrough();
 
 		provider = new GptProvider();
 		provider = new GptProvider();
 		provider = new GptProvider();
 
-		expect(pubads.disableInitialLoad.called).to.be.true;
-		expect(pubads.enableSingleRequest.called).to.be.false;
-		expect(pubads.addEventListener.calledThrice).to.be.true;
-		expect(pubads.setRequestNonPersonalizedAds.calledWith(0)).to.be.true;
+		setTimeout(() => {
+			expect(pubads.disableInitialLoad.called).to.be.true;
+			expect(pubads.enableSingleRequest.called).to.be.false;
+			expect(pubads.addEventListener.calledThrice).to.be.true;
+			expect(pubads.setRequestNonPersonalizedAds.calledWith(0)).to.be.true;
+			done();
+		});
 	});
 
 	it('initialise with non personalized ads when tracking in is disabled', () => {

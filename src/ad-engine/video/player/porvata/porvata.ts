@@ -1,11 +1,11 @@
 import { PorvataListener } from '../../../listeners';
+import { AdSlot, Targeting } from '../../../models';
 import { context } from '../../../services/context-service';
 import { SlotFiller } from '../../../services/filler-service';
 import { templateService } from '../../../services/template-service';
 import { client, LazyQueue, tryProperty, viewportObserver, whichProperty } from '../../../utils';
-import { AdSlot, Targeting } from './../../../models';
-import { googleIma } from './ima/google-ima';
-import { GoogleImaPlayer } from './ima/google-ima-player-factory';
+import { GoogleIma } from './ima/google-ima';
+import { GoogleImaPlayer } from './ima/google-ima-player';
 import { VideoParams, VideoSettings } from './video-settings';
 
 export interface PorvataTemplateParams {
@@ -348,6 +348,7 @@ export class PorvataFiller implements SlotFiller {
 		this.porvataParams.slotName = adSlot.getSlotName();
 
 		templateService.init(this.porvataParams.type, adSlot, this.porvataParams);
+		adSlot.setConfigProperty('trackEachStatus', true);
 	}
 
 	getContainer(): HTMLElement {
@@ -400,9 +401,8 @@ export class Porvata {
 
 		porvataListener.init();
 
-		return googleIma
-			.load()
-			.then(() => googleIma.getPlayer(videoSettings))
+		return GoogleIma.init()
+			.then((googleIma) => googleIma.getPlayer(videoSettings))
 			.then((ima: GoogleImaPlayer) => new PorvataPlayer(ima, params, videoSettings))
 			.then((video: PorvataPlayer) => {
 				function inViewportCallback(isVisible: boolean): void {

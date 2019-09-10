@@ -1,6 +1,6 @@
 import * as Cookies from 'js-cookie';
 import { context } from '../services/context-service';
-import { CacheData, geoCacheStorage } from '../services/geo-cache-storage';
+import { CacheData, InstantConfigCacheStorage } from '../services/instant-config-cache-storage';
 
 const cacheMarker = '-cached';
 const earth = 'XX';
@@ -51,8 +51,8 @@ function addResultToCache(
 	samplingLimits: number[],
 	withCookie: boolean,
 ): void {
+	const cacheStorage = InstantConfigCacheStorage.make();
 	const [limitValue]: number[] = samplingLimits;
-
 	const data: CacheData = {
 		name,
 		result,
@@ -61,7 +61,7 @@ function addResultToCache(
 		limit: (result ? limitValue : precision * 100 - limitValue) / precision,
 	};
 
-	geoCacheStorage.set(data);
+	cacheStorage.set(data);
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
@@ -170,8 +170,10 @@ function isGeoExcluded(countryList: string[] = []): boolean {
  * Checks whether current geo (from cookie) is listed in array and it's not excluded
  */
 function isProperGeo(countryList: string[] = [], name?: string): boolean {
-	if (name !== undefined && typeof geoCacheStorage.get(name) !== 'undefined') {
-		return geoCacheStorage.get(name).result;
+	const cacheStorage = InstantConfigCacheStorage.make();
+
+	if (name !== undefined && typeof cacheStorage.get(name) !== 'undefined') {
+		return cacheStorage.get(name).result;
 	}
 
 	return !!(

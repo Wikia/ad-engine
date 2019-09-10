@@ -32,7 +32,10 @@ function startAdEngine(): void {
 	const engine = new AdEngine();
 
 	engine.init();
-	babDetection.run();
+
+	if (babDetection.isEnabled()) {
+		babDetection.run();
+	}
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
@@ -43,8 +46,8 @@ function startAdEngine(): void {
 	context.push('state.adStack', { id: 'cdm-zone-01' });
 	context.push('state.adStack', { id: 'cdm-zone-02' });
 	context.push('state.adStack', { id: 'cdm-zone-03' });
-	context.push('state.adStack', { id: 'cdm-zone-04' });
 	context.push('state.adStack', { id: 'cdm-zone-06' });
+	context.push('events.pushOnScroll.ids', 'cdm-zone-04');
 }
 
 function callExternals(): void {
