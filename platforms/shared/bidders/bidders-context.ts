@@ -1,16 +1,23 @@
 import { DeviceMode, getDeviceMode } from '../models/device-mode';
-import { getA9Context } from './repository/a9';
-import { getAppNexusContext } from './repository/app-nexus';
-import { getIndexExchangeContext } from './repository/index-exchange';
-import { getOpenXContext } from './repository/openx';
-import { getPubmaticContext } from './repository/pubmatic';
-import { getRubiconContext } from './repository/rubicon';
 import { getWikiaContext } from './repository/wikia';
 
 class BiddersContext {
 	private mode: DeviceMode = getDeviceMode();
 
-	generate(): any {
+	private getBidderContext(generatorCallback): any {
+		return generatorCallback ? generatorCallback(this.mode) : undefined;
+	}
+
+	generate(bidders: any = {}): any {
+		const {
+			getA9Context,
+			getAppNexusContext,
+			getIndexExchangeContext,
+			getOpenXContext,
+			getPubmaticContext,
+			getRubiconContext,
+		} = bidders;
+
 		return {
 			enabled: false,
 			timeout: 2000,
@@ -19,7 +26,7 @@ class BiddersContext {
 				dealsEnabled: false,
 				videoEnabled: false,
 				amazonId: '3115',
-				slots: getA9Context(this.mode),
+				slots: this.getBidderContext(getA9Context),
 			},
 			prebid: {
 				enabled: false,
@@ -30,11 +37,11 @@ class BiddersContext {
 					enabled: false,
 					slots: [],
 				},
-				appnexus: getAppNexusContext(this.mode),
-				indexExchange: getIndexExchangeContext(this.mode),
-				openx: getOpenXContext(this.mode),
-				pubmatic: getPubmaticContext(this.mode),
-				rubicon_display: getRubiconContext(this.mode),
+				appnexus: this.getBidderContext(getAppNexusContext),
+				indexExchange: this.getBidderContext(getIndexExchangeContext),
+				openx: this.getBidderContext(getOpenXContext),
+				pubmatic: this.getBidderContext(getPubmaticContext),
+				rubicon_display: this.getBidderContext(getRubiconContext),
 				wikia: getWikiaContext(this.mode),
 			},
 		};

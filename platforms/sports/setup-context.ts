@@ -19,6 +19,12 @@ import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
 
+import { getA9Context } from './bidders/a9';
+import { getAppNexusContext } from './bidders/app-nexus';
+import { getOpenXContext } from './bidders/openx';
+import { getPubmaticContext } from './bidders/pubmatic';
+import { getRubiconContext } from './bidders/rubicon';
+
 class ContextSetup {
 	private instantConfig: InstantConfigService;
 
@@ -48,7 +54,16 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set('bidders', biddersContext.generate());
+		context.set(
+			'bidders',
+			biddersContext.generate({
+				getA9Context,
+				getAppNexusContext,
+				getOpenXContext,
+				getPubmaticContext,
+				getRubiconContext,
+			}),
+		);
 		setupBidders(context, this.instantConfig);
 
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');

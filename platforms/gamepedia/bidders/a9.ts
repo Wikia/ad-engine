@@ -1,4 +1,4 @@
-import { DeviceMode } from '../../models/device-mode';
+import { DeviceMode } from '@platforms/shared';
 
 export function getA9Context(device: DeviceMode): any {
 	const context = {

@@ -19,6 +19,13 @@ import {
 	registerViewabilityTracker,
 } from './tracking/tracker';
 
+import { getA9Context } from './bidders/a9';
+import { getAppNexusContext } from './bidders/app-nexus';
+import { getIndexExchangeContext } from './bidders/index-exchange';
+import { getOpenXContext } from './bidders/openx';
+import { getPubmaticContext } from './bidders/pubmatic';
+import { getRubiconContext } from './bidders/rubicon';
+
 class ContextSetup {
 	private instantConfig: InstantConfigService;
 
@@ -56,7 +63,17 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set('bidders', biddersContext.generate());
+		context.set(
+			'bidders',
+			biddersContext.generate({
+				getA9Context,
+				getAppNexusContext,
+				getIndexExchangeContext,
+				getOpenXContext,
+				getPubmaticContext,
+				getRubiconContext,
+			}),
+		);
 		setupBidders(context, this.instantConfig);
 
 		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
