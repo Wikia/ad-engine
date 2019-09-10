@@ -72,7 +72,9 @@ class ContextSetup {
 
 		this.setupPageLevelTargeting(context.get('wiki'));
 
-		uapHelper.configureUap(this.instantConfig);
+		if (uapHelper.isUapAllowed(this.instantConfig.get('icUapRestriction'))) {
+			uapHelper.configureUap();
+		}
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
