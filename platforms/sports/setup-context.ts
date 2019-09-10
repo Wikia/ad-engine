@@ -9,6 +9,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { registerSlotTracker } from '../shared/tracking/tracker';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
@@ -23,6 +24,8 @@ class ContextSetup {
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
 		templateRegistry.registerTemplates();
+
+		registerSlotTracker();
 	}
 
 	private setupAdContext(isOptedIn = false): void {

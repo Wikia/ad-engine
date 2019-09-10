@@ -9,15 +9,15 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import * as fallbackInstantConfig from './fallback-config.json';
-import { targeting } from './targeting';
-import { templateRegistry } from './templates/templates-registry';
 import {
 	registerPorvataTracker,
 	registerPostmessageTrackingTracker,
 	registerSlotTracker,
 	registerViewabilityTracker,
-} from './tracking/tracker';
+} from '../shared/tracking/tracker';
+import * as fallbackInstantConfig from './fallback-config.json';
+import { targeting } from './targeting';
+import { templateRegistry } from './templates/templates-registry';
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;

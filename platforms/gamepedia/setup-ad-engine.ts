@@ -12,10 +12,10 @@ import {
 	taxonomyService,
 	utils,
 } from '@wikia/ad-engine';
+import { trackBab } from '../shared/tracking/bab-tracker';
+import { PageTracker } from '../shared/tracking/page-tracker';
 import { adsSetup } from './setup-context';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
-import { trackBab } from './tracking/bab-tracker';
-import { PageTracker } from './tracking/page-tracker';
 import { editModeManager } from './utils/edit-mode-manager';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
