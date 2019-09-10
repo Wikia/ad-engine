@@ -1,5 +1,5 @@
+import { Beachfront } from '@wikia/ad-bidders/prebid/adapters/beachfront';
 import { expect } from 'chai';
-import { Beachfront } from '../../../../src/ad-bidders/prebid/adapters/beachfront';
 
 describe('Beachfront bidder adapter', () => {
 	it('can be enabled', () => {
