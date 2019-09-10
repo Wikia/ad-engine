@@ -24,15 +24,15 @@ export class DataWarehouseTracker {
 			pv_number: window.pvNumber,
 			pv_number_global: window.pvNumberGlobal,
 			pv_unique_id: window.pvUID,
-			beacon: window.beacon_id || 'gp_undefined',
-			ck: context.get('wiki.dsSiteKey'),
-			lc: context.get('wiki.wgUserLanguage'),
-			s: context.get('targeting.skin'),
+			beacon: window.beacon_id || 'undefined',
+			ck: context.get('wiki.dsSiteKey') || 'undefined',
+			lc: context.get('wiki.wgUserLanguage') || 'undefined',
+			s: context.get('targeting.skin') || 'undefined',
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
-			a: context.get('targeting.artid'),
-			x: context.get('targeting.DBName'),
-			n: context.get('targeting.namespaceNumber'),
+			a: context.get('targeting.artid') || -1,
+			x: context.get('targeting.DBName') || 'undefined',
+			n: context.get('targeting.namespaceNumber') || -1,
 		};
 	}
 
