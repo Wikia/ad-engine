@@ -103,7 +103,7 @@ function segment(key: string, newValue?: any, remove = false): any {
 	return seg[lastKey];
 }
 
-class Context {
+export class Context {
 	extend(newContext: ContextObject): void {
 		Object.assign(contextObject, newContext);
 	}

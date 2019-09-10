@@ -24,8 +24,7 @@ export const basicContext = {
 	slots: {},
 	services: {
 		instantConfig: {
-			// TODO: ADEN-9188 app = sports / muthead,futhead
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=gamepedia',
+			endpoint: 'https://services.wikia.com/icbm/api/config?app=sports',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
 	},

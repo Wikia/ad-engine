@@ -1,5 +1,5 @@
+import { Openx } from '@wikia/ad-bidders/prebid/adapters/openx';
 import { expect } from 'chai';
-import { Openx } from '../../../../src/ad-bidders/prebid/adapters/openx';
 
 describe('Openx bidder adapter', () => {
 	it('can be enabled', () => {

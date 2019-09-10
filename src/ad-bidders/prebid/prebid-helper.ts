@@ -1,10 +1,11 @@
 import { context, pbjsFactory, slotService } from '@ad-engine/core';
 import { adaptersRegistry } from './adapters-registry';
+import { PrebidAdapterConfig } from './prebid-models';
 
 const lazyLoadSlots = ['bottom_leaderboard'];
 const videoType = 'video';
 
-function isUsedAsAlias(code) {
+function isUsedAsAlias(code): boolean {
 	return Object.keys(context.get('slots')).some((slotName) => {
 		const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
 
@@ -12,7 +13,7 @@ function isUsedAsAlias(code) {
 	});
 }
 
-function isSlotApplicable(code, lazyLoad) {
+function isSlotApplicable(code, lazyLoad): boolean {
 	const isSlotLazy = lazyLoadSlots.indexOf(code) !== -1;
 	const isSlotLazyIgnored =
 		lazyLoad !== 'off' &&
@@ -72,9 +73,15 @@ export async function getAvailableBidsByAdUnitCode(
 	return bids;
 }
 
-export function getTargeting(slotName) {
-	return {
-		pos: [slotName],
-		...(context.get('bidders.prebid.targeting') || {}),
-	};
+export function isPrebidAdapterConfig(
+	config: PrebidAdapterConfig | any,
+): config is PrebidAdapterConfig {
+	if (!(typeof config === 'object')) {
+		return false;
+	}
+
+	const hasEnabledField = typeof config.enabled === 'boolean';
+	const hasSlotsDictionary = typeof config.slots === 'object';
+
+	return hasEnabledField && hasSlotsDictionary;
 }
