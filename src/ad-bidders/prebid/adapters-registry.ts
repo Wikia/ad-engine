@@ -18,6 +18,8 @@ import {
 	WikiaVideo,
 } from './adapters';
 import { PrebidAdapter } from './prebid-adapter';
+import { isPrebidAdapterConfig } from './prebid-helper';
+import { PrebidConfig } from './prebid-models';
 
 class AdaptersRegistry {
 	private adapters = new Map<string, PrebidAdapter>();
@@ -46,13 +48,13 @@ class AdaptersRegistry {
 
 	getAdapters(): Map<string, PrebidAdapter> {
 		if (!this.adapters.size) {
-			const biddersConfig = context.get('bidders.prebid');
+			const biddersConfig: PrebidConfig = context.get('bidders.prebid');
 
-			this.availableAdapters.forEach((adapter) => {
-				const adapterConfig = adapter && biddersConfig[adapter.bidderName];
+			this.availableAdapters.forEach((AdapterType) => {
+				const adapterConfig = biddersConfig[AdapterType.bidderName];
 
-				if (adapterConfig) {
-					this.adapters.set(adapter.bidderName, new adapter(adapterConfig));
+				if (isPrebidAdapterConfig(adapterConfig)) {
+					this.adapters.set(AdapterType.bidderName, new AdapterType(adapterConfig));
 				}
 			});
 		}
