@@ -1,5 +1,5 @@
+import { AppnexusAst } from '@wikia/ad-bidders/prebid/adapters/appnexus-ast';
 import { expect } from 'chai';
-import { AppnexusAst } from '../../../../src/ad-bidders/prebid/adapters/appnexus-ast';
 
 describe('AppnexusAst bidder adapter', () => {
 	it('can be enabled', () => {
