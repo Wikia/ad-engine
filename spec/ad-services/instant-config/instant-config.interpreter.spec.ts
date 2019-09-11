@@ -51,7 +51,8 @@ describe('Instant Config Interpreter', () => {
 			wgAdDriverA9DealsCountries: ['PL'],
 		};
 
-		expect(interpreter.getValues(instantConfig, instantGlobals)).to.deep.equal({
+		interpreter.init(instantConfig, instantGlobals);
+		expect(interpreter.getValues()).to.deep.equal({
 			wgAdDriverA9BidderCountries: ['PL'],
 			wgAdDriverA9DealsCountries: ['PL'],
 		});
@@ -67,7 +68,8 @@ describe('Instant Config Interpreter', () => {
 			wgAdDriverA9DealsCountries: ['PL'],
 		};
 
-		expect(interpreter.getValues(instantConfig, instantGlobals)).to.deep.equal({
+		interpreter.init(instantConfig, instantGlobals);
+		expect(interpreter.getValues()).to.deep.equal({
 			wgAdDriverA9BidderCountries: ['XX'],
 			wgAdDriverA9DealsCountries: ['PL'],
 		});
@@ -86,7 +88,8 @@ describe('Instant Config Interpreter', () => {
 		};
 
 		mockResponses([true, true, true, true], [true, true, false, true]);
-		expect(interpreter.getValues(instantConfig, instantGlobals)).to.deep.equal({
+		interpreter.init(instantConfig, instantGlobals);
+		expect(interpreter.getValues()).to.deep.equal({
 			wgAdDriverA9BidderCountries: ['XX'],
 			wgAdDriverA9DealsCountries: ['PL'],
 			a9BidderCountries: false,
@@ -98,7 +101,8 @@ describe('Instant Config Interpreter', () => {
 		const instantConfig = { babDetection: [{}] };
 
 		mockResponses([true, true, true, true]);
-		expect(interpreter.getValues(instantConfig).babDetection).to.equal(undefined);
+		interpreter.init(instantConfig);
+		expect(interpreter.getValues().babDetection).to.equal(undefined);
 	});
 
 	it('should return value of the first correct group', () => {
@@ -108,7 +112,8 @@ describe('Instant Config Interpreter', () => {
 
 		mockResponses([false, true, true, true], [true, true, true, true], [true, true, true, true]);
 
-		expect(interpreter.getValues(instantConfig).babDetection).to.equal(2);
+		interpreter.init(instantConfig);
+		expect(interpreter.getValues().babDetection).to.equal(2);
 		expect(browserIsValidStub.getCalls().length).to.equal(2);
 	});
 
@@ -128,7 +133,9 @@ describe('Instant Config Interpreter', () => {
 		};
 
 		mockResponses([true, true, true, true]);
-		interpreter.getValues(instantConfig);
+
+		interpreter.init(instantConfig);
+		interpreter.getValues();
 
 		expect(browserIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].browsers);
 		expect(deviceIsValidStub.firstCall.args[0]).to.equal(instantConfig.babDetection[0].devices);
@@ -152,19 +159,21 @@ describe('Instant Config Interpreter', () => {
 			[false, false, false, false],
 			[true, true, true, true],
 		);
-		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
-		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
-		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
-		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
-		expect(interpreter.getValues(input)).to.deep.equal(expectedOutput);
-		expect(interpreter.getValues(input)).to.deep.equal({ babDetection: true });
+		interpreter.init(input);
+		expect(interpreter.getValues()).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues()).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues()).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues()).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues()).to.deep.equal(expectedOutput);
+		expect(interpreter.getValues()).to.deep.equal({ babDetection: true });
 	});
 
 	it('should pass correct arguments to samplingCache', () => {
 		const instantConfig = { babDetection: [{}] };
 
 		mockResponses([true, true, true, true]);
-		interpreter.getValues(instantConfig);
+		interpreter.init(instantConfig);
+		interpreter.getValues();
 
 		const [id, group, predicate] = samplingCacheApplyStub.getCalls()[0].args;
 
