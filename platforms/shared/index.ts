@@ -6,4 +6,8 @@ export * from './bidders/setup-bidders';
 export * from './cmp/cmp-wrapper';
 export * from './models/device-mode';
 export * from './templates/uap-helper';
+export * from './tracking/bab-tracker';
+export * from './tracking/data-warehouse';
+export * from './tracking/page-tracker';
+export * from './tracking/tracker';
 export * from './wad/bab-detection';

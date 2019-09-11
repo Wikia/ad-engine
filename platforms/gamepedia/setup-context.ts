@@ -1,4 +1,13 @@
-import { biddersContext, setupBidders, slotsContext, uapHelper } from '@platforms/shared';
+import {
+	biddersContext,
+	registerPorvataTracker,
+	registerPostmessageTrackingTracker,
+	registerSlotTracker,
+	registerViewabilityTracker,
+	setupBidders,
+	slotsContext,
+	uapHelper,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -9,12 +18,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import {
-	registerPorvataTracker,
-	registerPostmessageTrackingTracker,
-	registerSlotTracker,
-	registerViewabilityTracker,
-} from '../shared/tracking/tracker';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';

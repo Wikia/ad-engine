@@ -1,4 +1,4 @@
-import { babDetection, biddersDelay } from '@platforms/shared';
+import { babDetection, biddersDelay, PageTracker, trackBab } from '@platforms/shared';
 import {
 	AdEngine,
 	bidders,
@@ -12,8 +12,6 @@ import {
 	taxonomyService,
 	utils,
 } from '@wikia/ad-engine';
-import { trackBab } from '../shared/tracking/bab-tracker';
-import { PageTracker } from '../shared/tracking/page-tracker';
 import { adsSetup } from './setup-context';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
 import { editModeManager } from './utils/edit-mode-manager';

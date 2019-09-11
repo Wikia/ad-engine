@@ -1,6 +1,7 @@
 import {
 	biddersContext,
 	getDeviceMode,
+	registerSlotTracker,
 	setupBidders,
 	slotsContext,
 	uapHelper,
@@ -15,7 +16,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
-import { registerSlotTracker } from '../shared/tracking/tracker';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
