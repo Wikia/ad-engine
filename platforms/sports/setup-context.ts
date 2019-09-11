@@ -1,10 +1,4 @@
-import {
-	biddersContext,
-	getDeviceMode,
-	setupBidders,
-	slotsContext,
-	uapHelper,
-} from '@platforms/shared';
+import { getDeviceMode, setupBidders, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -15,15 +9,11 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { setA9AdapterConfig } from './bidders/a9';
+import { setPrebidAdaptersConfig } from './bidders/prebid';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
-
-import { getA9Context } from './bidders/a9';
-import { getAppNexusContext } from './bidders/app-nexus';
-import { getOpenXContext } from './bidders/openx';
-import { getPubmaticContext } from './bidders/pubmatic';
-import { getRubiconContext } from './bidders/rubicon';
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
@@ -54,16 +44,8 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set(
-			'bidders',
-			biddersContext.generate({
-				getA9Context,
-				getAppNexusContext,
-				getOpenXContext,
-				getPubmaticContext,
-				getRubiconContext,
-			}),
-		);
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig();
 		setupBidders(context, this.instantConfig);
 
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');

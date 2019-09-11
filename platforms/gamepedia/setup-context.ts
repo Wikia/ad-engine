@@ -1,4 +1,4 @@
-import { biddersContext, setupBidders, slotsContext, uapHelper } from '@platforms/shared';
+import { setupBidders, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -9,6 +9,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { setA9AdapterConfig } from './bidders/a9';
+import { setPrebidAdaptersConfig } from './bidders/prebid';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
@@ -18,13 +20,6 @@ import {
 	registerSlotTracker,
 	registerViewabilityTracker,
 } from './tracking/tracker';
-
-import { getA9Context } from './bidders/a9';
-import { getAppNexusContext } from './bidders/app-nexus';
-import { getIndexExchangeContext } from './bidders/index-exchange';
-import { getOpenXContext } from './bidders/openx';
-import { getPubmaticContext } from './bidders/pubmatic';
-import { getRubiconContext } from './bidders/rubicon';
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
@@ -63,17 +58,8 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set(
-			'bidders',
-			biddersContext.generate({
-				getA9Context,
-				getAppNexusContext,
-				getIndexExchangeContext,
-				getOpenXContext,
-				getPubmaticContext,
-				getRubiconContext,
-			}),
-		);
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig();
 		setupBidders(context, this.instantConfig);
 
 		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));

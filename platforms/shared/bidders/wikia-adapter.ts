@@ -1,4 +1,4 @@
-import { DeviceMode } from '../../models/device-mode';
+import { DeviceMode } from '../models/device-mode';
 
 export function getWikiaContext(device: DeviceMode): any {
 	const context = {
