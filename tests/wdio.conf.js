@@ -24,6 +24,7 @@ exports.config = {
 		port: AD_ENGINE_PORT,
 	},
 	before: function() {
+		// Makes tsconfig-paths use correct tsconfig
 		process.env.TS_NODE_PROJECT = 'tests/tsconfig.json';
 		require('ts-node').register({ files: true, project: 'tests/tsconfig.json' });
 	},
