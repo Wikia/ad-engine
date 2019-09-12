@@ -101,7 +101,7 @@ interface Pbjs {
 
 	setConfig(config: {}): void;
 
-	createBid(statusCode: string): PrebidBidResponse;
+	createBid(statusCode: number): PrebidBidResponse;
 
 	renderAd(doc: HTMLDocument, id: string): void;
 
