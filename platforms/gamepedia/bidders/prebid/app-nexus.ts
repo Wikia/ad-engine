@@ -1,29 +1,29 @@
-import { DeviceMode } from '../../models/device-mode';
+import { DeviceMode } from '@platforms/shared';
 
-export function getIndexExchangeContext(device: DeviceMode): any {
+export function getAppNexusContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
 			slots: {
 				'01_LB': {
 					sizes: [[728, 90], [970, 150], [970, 250]],
-					siteId: '367523',
+					placementId: '15976818',
 				},
 				'02_MR': {
 					sizes: [[300, 250], [300, 600]],
-					siteId: '367524',
+					placementId: '15976819',
 				},
 				'03_PF': {
 					sizes: [[300, 250]],
-					siteId: '367527',
+					placementId: '15976832',
 				},
 				'04_BLB': {
 					sizes: [[728, 90]],
-					siteId: '367526',
+					placementId: '15976830',
 				},
 				'06_FMR': {
 					sizes: [[300, 250]],
-					siteId: '367525',
+					placementId: '15976820',
 				},
 			},
 		},
@@ -33,19 +33,19 @@ export function getIndexExchangeContext(device: DeviceMode): any {
 			slots: {
 				'01_LB': {
 					sizes: [[320, 50]],
-					siteId: '367528',
+					placementId: '15976871',
 				},
 				'02_MR': {
 					sizes: [[300, 250]],
-					siteId: '367529',
+					placementId: '15976892',
 				},
 				'03_PF': {
 					sizes: [[300, 250]],
-					siteId: '399604',
+					placementId: '16666469',
 				},
 				'06_FMR': {
 					sizes: [[300, 250]],
-					siteId: '367530',
+					placementId: '15976893',
 				},
 			},
 		},

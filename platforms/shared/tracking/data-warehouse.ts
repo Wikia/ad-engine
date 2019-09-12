@@ -20,19 +20,19 @@ export class DataWarehouseTracker {
 	 */
 	private static getDatawarehouseParams(): TrackingParams {
 		return {
-			session_id: window.session_id,
+			session_id: window.session_id || 'unknown',
 			pv_number: window.pvNumber,
 			pv_number_global: window.pvNumberGlobal,
 			pv_unique_id: window.pvUID,
-			beacon: window.beacon_id || 'gp_undefined',
-			ck: context.get('wiki.dsSiteKey'),
-			lc: context.get('wiki.wgUserLanguage'),
-			s: context.get('targeting.skin'),
+			beacon: window.beacon_id || 'unknown',
+			ck: context.get('wiki.dsSiteKey') || 'unknown',
+			lc: context.get('wiki.wgUserLanguage') || 'unknown',
+			s: context.get('targeting.skin') || 'unknown',
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
-			a: context.get('targeting.artid'),
-			x: context.get('targeting.DBName'),
-			n: context.get('targeting.namespaceNumber'),
+			a: context.get('targeting.artid') || -1,
+			x: context.get('targeting.DBName') || 'unknown',
+			n: context.get('targeting.namespaceNumber') || -1,
 		};
 	}
 
