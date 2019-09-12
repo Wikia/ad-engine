@@ -1,4 +1,4 @@
-const StaticFilesServer = require('./tests/libs/static-files-server');
+const StaticFilesServer = require('./libs/static-files-server');
 const AD_ENGINE_PORT = process.env.AD_ENGINE_PORT || 8080;
 
 exports.config = {
