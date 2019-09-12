@@ -3,11 +3,9 @@
 	"compilerOptions": {
 		"declaration": true,
 		"declarationDir": "../dist/types",
-		"compilerOptions": {
-			"paths": {
-				"@ad-engine/core": ["src/ad-engine"],
-				"@ad-engine/tracking": ["src/ad-tracking"]
-			}
+		"paths": {
+			"@ad-engine/core": ["src/ad-engine"],
+			"@ad-engine/tracking": ["src/ad-tracking"]
 		}
 	},
 	"include": ["."]
