@@ -1,6 +1,7 @@
 import { context, utils } from '@wikia/ad-engine';
 
-const trackingOptInLibraryUrl = '//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v2.0.6/tracking-opt-in.min.js';
+const trackingOptInLibraryUrl =
+	'//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v2.0.6/tracking-opt-in.min.js';
 const optOutConsentString = 'BOl8T5MOl8T5MCNACAENCiAAAAAp6A';
 const logGroup = 'cmp-wrapper';
 
@@ -29,7 +30,7 @@ class CmpWrapper {
 				utils.logger(logGroup, 'Modal library loaded');
 
 				this.cmpReady = true;
-				this.cmpModal = window.trackingOptIn.default({
+				this.cmpModal = (window as any).trackingOptIn.default({
 					country,
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');

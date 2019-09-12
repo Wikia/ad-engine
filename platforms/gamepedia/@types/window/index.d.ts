@@ -6,7 +6,6 @@ interface Window {
 	) => void;
 	mw: MediaWiki;
 	RLQ?: any;
-	trackingOptIn: any;
 	pvUID?: string;
 	wgCookiePath?: string;
 	beacon_id?: string;
