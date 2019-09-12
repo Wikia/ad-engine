@@ -100,7 +100,7 @@ export class Wikia extends PrebidAdapter {
 					return;
 				}
 
-				const bidResponse = pbjs.createBid('1');
+				const bidResponse = pbjs.createBid(1);
 				const [width, height] = bid.sizes[0];
 				const cpm = this.getPrice();
 
