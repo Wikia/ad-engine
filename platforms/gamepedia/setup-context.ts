@@ -1,5 +1,4 @@
 import {
-	biddersContext,
 	registerPorvataTracker,
 	registerPostmessageTrackingTracker,
 	registerSlotTracker,
@@ -18,6 +17,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { setA9AdapterConfig } from './bidders/a9';
+import { setPrebidAdaptersConfig } from './bidders/prebid';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
@@ -59,7 +60,8 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set('bidders', biddersContext.generate());
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig();
 		setupBidders(context, this.instantConfig);
 
 		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
