@@ -4,9 +4,6 @@
 		"no-implicit-dependencies": false,
 		"no-submodule-imports": false,
 		"no-unused-expression": false,
-		"typedef": {
-			"severity": "warning",
-			"options": ["call-signature"]
-		}
+		"typedef": false
 	}
 }
