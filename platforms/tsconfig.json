@@ -1,3 +1,10 @@
 {
-	"extends": "../tsconfig.json"
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"@wikia/ad-engine": ["src/index.ts"],
+			"@platforms/shared": ["platforms/shared/index.ts"]
+		}
+	},
+	"include": ["."]
 }
