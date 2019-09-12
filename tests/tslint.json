@@ -1,7 +1,12 @@
 {
 	"extends": "../configs/tslint.json",
 	"rules": {
-		"no-implicit-dependencies": [true, "dev"],
-		"no-unused-expression": false
+		"no-implicit-dependencies": false,
+		"no-submodule-imports": false,
+		"no-unused-expression": false,
+		"typedef": {
+			"severity": "warning",
+			"options": ["call-signature"]
+		}
 	}
 }
