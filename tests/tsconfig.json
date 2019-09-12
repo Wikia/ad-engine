@@ -3,8 +3,7 @@
 		"allowJs": true,
 		"baseUrl": ".",
 		"paths": {
-			"*": ["./*"],
-			"src/*": ["./src/*"]
+			"*": ["./*"]
 		},
 		"types": ["node", "@wdio/sync", "webdriverio", "@wdio/mocha-framework"]
 	},
