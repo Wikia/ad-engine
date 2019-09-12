@@ -15,12 +15,15 @@ exports.config = {
 	reporters: ['spec'],
 	mochaOpts: {
 		ui: 'bdd',
-		compilers: ['js:@babel/register'],
+		require: ['tsconfig-paths/register'],
 		timeout: 6000000,
 	},
 	staticFilesServerConfig: {
 		basename: '/',
 		mount: './examples',
 		port: AD_ENGINE_PORT,
+	},
+	before: function() {
+		require('ts-node').register({ files: true, project: 'tests/tsconfig.json' });
 	},
 };
