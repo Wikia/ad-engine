@@ -30,7 +30,6 @@ class ContextSetup {
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
 		templateRegistry.registerTemplates();
-
 		registerSlotTracker();
 	}
 
