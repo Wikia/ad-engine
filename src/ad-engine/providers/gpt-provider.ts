@@ -69,7 +69,7 @@ function configure() {
 	tag.addEventListener('impressionViewable', (event: googletag.events.ImpressionViewableEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 
-		adSlot.emit(AdSlot.SLOT_LOADED_EVENT);
+		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 	});
 
 	if (context.get('options.gamLazyLoading.enabled')) {
