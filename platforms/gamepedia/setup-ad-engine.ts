@@ -1,4 +1,4 @@
-import { babDetection, biddersDelay } from '@platforms/shared';
+import { babDetection, biddersDelay, PageTracker, trackBab } from '@platforms/shared';
 import {
 	AdEngine,
 	bidders,
@@ -14,8 +14,6 @@ import {
 } from '@wikia/ad-engine';
 import { adsSetup } from './setup-context';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
-import { trackBab } from './tracking/bab-tracker';
-import { PageTracker } from './tracking/page-tracker';
 import { editModeManager } from './utils/edit-mode-manager';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';

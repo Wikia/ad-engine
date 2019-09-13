@@ -1,7 +1,14 @@
-import { DeviceMode } from '../../models/device-mode';
+import { DeviceMode, getDeviceMode } from '@platforms/shared';
+import { context } from '@wikia/ad-engine';
 
-export function getA9Context(device: DeviceMode): any {
-	const context = {
+export function setA9AdapterConfig(): void {
+	const mode: DeviceMode = getDeviceMode();
+
+	context.set('bidders.a9.slots', getA9Context(mode));
+}
+
+function getA9Context(device: DeviceMode): any {
+	const a9Context = {
 		desktop: {
 			'01_LB': {
 				sizes: [[728, 90], [970, 150], [970, 250]],
@@ -36,5 +43,5 @@ export function getA9Context(device: DeviceMode): any {
 		},
 	};
 
-	return context[device];
+	return a9Context[device];
 }
