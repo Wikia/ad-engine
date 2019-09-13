@@ -5,6 +5,7 @@ interface ClickPayload {
 	y: number;
 	elementWidth: number;
 	elementHeight: number;
+	frameType: string;
 	source: string;
 }
 
@@ -52,6 +53,7 @@ class ClickPositionTracker {
 			return;
 		}
 		const iframeBody: HTMLElement = iframeElement.contentWindow.document.body;
+		const frameType = slot.getFrameType();
 
 		if (iframeBody && slotElement) {
 			slotElement.addEventListener('click', (e: MouseEvent) => {
@@ -60,6 +62,7 @@ class ClickPositionTracker {
 				this.handleClickEvent(middleware, {
 					elementHeight,
 					elementWidth,
+					frameType,
 					y,
 					x: e.clientX,
 					source: 'slot',
@@ -69,6 +72,7 @@ class ClickPositionTracker {
 				this.handleClickEvent(middleware, {
 					elementHeight,
 					elementWidth,
+					frameType,
 					y: e.clientY,
 					x: e.clientX,
 					source: 'iframe',
@@ -87,7 +91,8 @@ class ClickPositionTracker {
 				action: 'click',
 				label:
 					`size=${clickPayload.elementWidth}x${clickPayload.elementHeight}` +
-					`|x=${clickPayload.x}|y=${clickPayload.y}|source=${clickPayload.source}`,
+					`|x=${clickPayload.x}|y=${clickPayload.y}|source=${clickPayload.source}` +
+					`|frame=${clickPayload.frameType}`,
 			},
 			middleware,
 		);

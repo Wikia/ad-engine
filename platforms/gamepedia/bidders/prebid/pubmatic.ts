@@ -1,4 +1,4 @@
-import { DeviceMode } from '../../models/device-mode';
+import { DeviceMode } from '@platforms/shared';
 
 export function getPubmaticContext(device: DeviceMode): any {
 	const context = {

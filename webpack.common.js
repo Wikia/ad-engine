@@ -13,7 +13,7 @@ const include = [
 	path.resolve(__dirname, 'platforms'),
 ];
 
-module.exports = ({ tsconfig, transpileOnly, reportFiles }) => ({
+module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 	mode: 'development',
 
 	context: __dirname,
@@ -21,7 +21,7 @@ module.exports = ({ tsconfig, transpileOnly, reportFiles }) => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ configFileName: tsconfig })],
+		plugins: [new TsConfigPathsPlugin({ configFileName: tsconfigPaths })],
 	},
 
 	module: {

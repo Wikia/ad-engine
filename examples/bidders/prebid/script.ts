@@ -1,11 +1,17 @@
 import {
 	AdEngine,
+	AdInfoContext,
 	bidders,
 	context,
 	DelayModule,
 	events,
 	eventService,
 	setupNpaContext,
+	slotBiddersTrackingMiddleware,
+	slotBillTheLizardStatusTrackingMiddleware,
+	slotPropertiesTrackingMiddleware,
+	slotTracker,
+	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
@@ -50,5 +56,17 @@ bidders
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
+
+// Tracking
+context.set('options.tracking.slot.status', true);
+slotTracker
+	.add(slotTrackingMiddleware)
+	.add(slotPropertiesTrackingMiddleware)
+	.add(slotBiddersTrackingMiddleware)
+	.add(slotBillTheLizardStatusTrackingMiddleware)
+	.register(({ data, slot }: AdInfoContext) => {
+		// Trigger event tracking
+		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
+	});
 
 new AdEngine().init();
