@@ -1,6 +1,6 @@
 import { Dictionary, SlotTweaker, utils } from '@ad-engine/core';
 import { setupNavbar } from '../utils';
-import AdvertisementLabel from './interface/advertisement-label';
+import { AdvertisementLabel } from './interface/advertisement-label';
 import { animate } from './interface/animate';
 import { StickyBase } from './sticky-base';
 import { StickinessCallback } from './uap/big-fancy-ad-above';

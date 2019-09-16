@@ -1,8 +1,9 @@
+import { VideoSettings } from '../../uap/video-settings';
 import CloseButton from './close-button';
 import DynamicReveal from './dynamic-reveal';
 import Floating from './floating';
 import LearnMore from './learn-more';
-import Panel from './panel';
+import { Panel } from './panel';
 import PauseControl from './pause-control';
 import PauseOverlay from './pause-overlay';
 import ProgressBar from './progress-bar';
@@ -60,7 +61,7 @@ const getTemplates = (params, videoSettings) => ({
 	'outstream-incontent': [DynamicReveal, Floating, ProgressBar, VolumeControl],
 });
 
-export function selectTemplate(videoSettings) {
+export function selectTemplate(videoSettings: VideoSettings) {
 	const params = videoSettings.getParams();
 	const templates = getTemplates(params, videoSettings);
 	let template = 'default';

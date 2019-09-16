@@ -1,7 +1,7 @@
 const duration = 400;
 const onAnimationClassName = 'on-animation';
 
-function resizeContainer(container, finalAspectRatio) {
+function resizeContainer(container, finalAspectRatio): void {
 	container.style.height = `${container.offsetHeight}px`;
 	container.style.height = `${container.offsetWidth / finalAspectRatio}px`;
 
@@ -10,12 +10,12 @@ function resizeContainer(container, finalAspectRatio) {
 	}, duration);
 }
 
-function toggle(elementToShow, elementToHide) {
+function toggle(elementToShow, elementToHide): void {
 	elementToHide.classList.add('hide');
 	elementToShow.classList.remove('hide');
 }
 
-function hideVideo(video, params) {
+function hideVideo(video, params): void {
 	resizeContainer(params.container, params.aspectRatio);
 	setTimeout(() => {
 		toggle(params.image, video.container);
@@ -23,13 +23,13 @@ function hideVideo(video, params) {
 	}, duration);
 }
 
-function showVideo(video, params) {
+function showVideo(video, params): void {
 	params.container.classList.add(onAnimationClassName);
 	resizeContainer(params.container, params.videoAspectRatio);
 	toggle(video.container, params.image);
 }
 
-function add(video, container, params) {
+function add(video, container, params): void {
 	video.addEventListener('wikiaAdStarted', () => {
 		showVideo(video, params);
 	});

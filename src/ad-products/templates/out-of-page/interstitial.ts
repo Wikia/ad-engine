@@ -7,7 +7,7 @@ import {
 	slotTweaker,
 	utils,
 } from '@ad-engine/core';
-import AdvertisementLabel from '../interface/advertisement-label';
+import { AdvertisementLabel } from '../interface/advertisement-label';
 import { CloseButton } from '../interface/close-button';
 
 export class Interstitial {

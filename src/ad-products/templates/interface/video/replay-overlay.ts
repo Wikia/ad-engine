@@ -2,7 +2,7 @@ import { createIcon, icons } from '../icons';
 
 const replayOverlayClass = 'replay-overlay';
 
-function add(video, container, params) {
+function add(video, container, params): void {
 	const overlay = document.createElement('div');
 
 	overlay.classList.add(replayOverlayClass);

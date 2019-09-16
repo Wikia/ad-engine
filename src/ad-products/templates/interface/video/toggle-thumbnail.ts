@@ -1,4 +1,4 @@
-function add(video, container, params) {
+function add(video, container, params): void {
 	video.addEventListener('wikiaAdStarted', () => {
 		params.thumbnail.classList.add('hidden-state');
 	});
