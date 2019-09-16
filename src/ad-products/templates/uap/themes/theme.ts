@@ -1,12 +1,9 @@
-import { AdSlot, context, PorvataPlayer, utils } from '@ad-engine/core';
+import { AdSlot, context, PorvataPlayer } from '@ad-engine/core';
 import { BigFancyAdAboveConfig } from '../big-fancy-ad-above';
 import { UapParams } from '../universal-ad-package';
 import { VideoSettings } from '../video-settings';
 
-/**
- * @abstract
- */
-export class BigFancyAdTheme {
+export abstract class BigFancyAdTheme {
 	container: HTMLElement;
 	protected config: BigFancyAdAboveConfig;
 
@@ -15,24 +12,9 @@ export class BigFancyAdTheme {
 		this.config = context.get('templates.bfaa') || {};
 	}
 
-	/**
-	 * @abstract
-	 */
-	onAdReady(): void {
-		throw new utils.NotImplementedException();
-	}
+	abstract onAdReady(): void;
 
-	/**
-	 * @abstract
-	 */
-	async adIsReady(videoSettings: VideoSettings): Promise<void> {
-		throw new utils.NotImplementedException({ videoSettings });
-	}
+	abstract adIsReady(videoSettings: VideoSettings): Promise<HTMLIFrameElement | HTMLElement>;
 
-	/**
-	 * @abstract
-	 */
-	onVideoReady(video: PorvataPlayer): void {
-		throw new utils.NotImplementedException();
-	}
+	abstract onVideoReady(video: PorvataPlayer): void;
 }

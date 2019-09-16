@@ -5,10 +5,7 @@ import { universalAdPackage } from '../../universal-ad-package';
 import { VideoSettings } from '../../video-settings';
 import { BigFancyAdTheme } from '../theme';
 
-/**
- * @abstract
- */
-class BigFancyAdClassicTheme extends BigFancyAdTheme {
+abstract class BigFancyAdClassicTheme extends BigFancyAdTheme {
 	onAdReady(): void {
 		if (universalAdPackage.isVideoEnabled(this.params)) {
 			const videoSettings: VideoSettings = new VideoSettings(this.params);
@@ -26,7 +23,7 @@ class BigFancyAdClassicTheme extends BigFancyAdTheme {
 		}
 	}
 
-	async adIsReady(videoSettings: VideoSettings): Promise<HTMLIFrameElement> {
+	async adIsReady(videoSettings: VideoSettings): Promise<HTMLIFrameElement | HTMLElement> {
 		await resolvedState.setImage(videoSettings);
 
 		return slotTweaker.makeResponsive(this.adSlot, this.params.aspectRatio);
