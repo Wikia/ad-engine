@@ -24,7 +24,6 @@ const logGroup = 'hivi-bfaa';
 export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	static RESOLVED_STATE_EVENT = Symbol('RESOLVED_STATE_EVENT');
 
-	stickiness: Stickiness;
 	scrollListener: string;
 	stickListener: string;
 	video: PorvataPlayer;
@@ -53,17 +52,19 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.addUnstickButton();
 		this.addUnstickEvents();
 
-		utils.once(this, BfaaHiviTheme.RESOLVED_STATE_EVENT).then(() => {
-			this.stickListener = scrollListener.addCallback(() => {
-				const scrollPosition =
-					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+		utils
+			.once((this as any) as EventEmitter, (BfaaHiviTheme.RESOLVED_STATE_EVENT as any) as string)
+			.then(() => {
+				this.stickListener = scrollListener.addCallback(() => {
+					const scrollPosition =
+						window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-				if (scrollPosition >= 0) {
-					scrollListener.removeCallback(this.stickListener);
-					this.stickiness.run();
-				}
+					if (scrollPosition >= 0) {
+						scrollListener.removeCallback(this.stickListener);
+						this.stickiness.run();
+					}
+				});
 			});
-		});
 	}
 
 	onAdReady(): void {
@@ -141,7 +142,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.container.classList.add('theme-locked');
 		scrollListener.removeCallback(this.scrollListener);
 		this.adjustSizesToResolved(offset);
-		this.emit(BfaaHiviTheme.RESOLVED_STATE_EVENT);
+		((this as any) as EventEmitter).emit(BfaaHiviTheme.RESOLVED_STATE_EVENT);
 	}
 
 	private unlock(): void {
@@ -335,11 +336,11 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.unstickImmediately();
 	}
 
-	protected unstickImmediately(shouldVideoStop = true): void {
+	protected unstickImmediately(stopVideo = false): void {
 		scrollListener.removeCallback(this.scrollListener);
 		this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 
-		if (shouldVideoStop) {
+		if (stopVideo) {
 			this.stopVideoPlayback();
 		}
 

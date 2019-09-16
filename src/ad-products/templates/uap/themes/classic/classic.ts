@@ -1,12 +1,20 @@
-import { slotTweaker } from '@ad-engine/core';
+import { AdSlot, context, slotTweaker } from '@ad-engine/core';
 import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
+import { BigFancyAdAboveConfig } from '../../big-fancy-ad-above';
 import { resolvedState } from '../../resolved-state';
 import { UapVideoSettings } from '../../uap-video-settings';
-import { universalAdPackage } from '../../universal-ad-package';
+import { UapParams, universalAdPackage } from '../../universal-ad-package';
 import { BigFancyAdTheme } from '../theme';
 
 abstract class BigFancyAdClassicTheme extends BigFancyAdTheme {
+	protected config: BigFancyAdAboveConfig;
+
+	constructor(adSlot: AdSlot, params: UapParams) {
+		super(adSlot, params);
+		this.config = context.get('templates.bfaa') || {};
+	}
+
 	onAdReady(): void {
 		if (universalAdPackage.isVideoEnabled(this.params)) {
 			const videoSettings: UapVideoSettings = new UapVideoSettings(this.params);
@@ -58,4 +66,8 @@ export class BfaaTheme extends BigFancyAdClassicTheme {
 	}
 }
 
-export class BfabTheme extends BigFancyAdClassicTheme {}
+export class BfabTheme extends BigFancyAdClassicTheme {
+	onVideoReady(video: PorvataPlayer): void {
+		// something should be here
+	}
+}

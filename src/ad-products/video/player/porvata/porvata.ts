@@ -121,7 +121,7 @@ export class PorvataPlayer {
 
 	constructor(
 		readonly ima: GoogleImaPlayer,
-		private params: VideoParams,
+		public params: VideoParams,
 		public videoSettings: VideoSettings,
 	) {
 		this.container = prepareVideoAdContainer(params);

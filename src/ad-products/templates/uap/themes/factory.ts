@@ -3,13 +3,13 @@ import { BfaaHiviTheme } from './hivi/hivi-bfaa';
 import { BfabHiviTheme } from './hivi/hivi-bfab';
 
 export class BigFancyAdThemeFactory {
-	makeAboveTheme(adSlot, params) {
+	makeAboveTheme(adSlot, params): BfaaHiviTheme | BfaaTheme {
 		return params.theme === 'hivi'
 			? new BfaaHiviTheme(adSlot, params)
 			: new BfaaTheme(adSlot, params);
 	}
 
-	makeBelowTheme(adSlot, params) {
+	makeBelowTheme(adSlot, params): BfabHiviTheme | BfabTheme {
 		return params.theme === 'hivi'
 			? new BfabHiviTheme(adSlot, params)
 			: new BfabTheme(adSlot, params);
