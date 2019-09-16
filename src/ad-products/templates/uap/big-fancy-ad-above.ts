@@ -1,8 +1,7 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
 import { NavbarManager, setupNavbar } from '../../utils';
-import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
-import { BfaaHiviTheme } from './themes/hivi';
+import { BigFancyAdTheme } from './themes/theme';
 import { UapVideoSettings } from './uap-video-settings';
 import { UapParams, universalAdPackage } from './universal-ad-package';
 
@@ -71,7 +70,7 @@ export class BigFancyAdAbove {
 	config: BigFancyAdAboveConfig;
 	container: HTMLElement;
 	videoSettings: UapVideoSettings = null;
-	theme: BfaaTheme | BfaaHiviTheme = null;
+	theme: BigFancyAdTheme = null;
 	params: UapParams;
 
 	constructor(private adSlot: AdSlot) {
