@@ -3,8 +3,8 @@ import { NavbarManager, setupNavbar } from '../../utils';
 import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
 import { BfaaHiviTheme } from './themes/hivi';
+import { UapVideoSettings } from './uap-video-settings';
 import { UapParams, universalAdPackage } from './universal-ad-package';
-import { VideoSettings } from './video-settings';
 
 export type StickinessCallback = (
 	config: BigFancyAdAboveConfig,
@@ -70,7 +70,7 @@ export class BigFancyAdAbove {
 
 	config: BigFancyAdAboveConfig;
 	container: HTMLElement;
-	videoSettings: VideoSettings = null;
+	videoSettings: UapVideoSettings = null;
 	theme: BfaaTheme | BfaaHiviTheme = null;
 	params: UapParams;
 
@@ -101,7 +101,7 @@ export class BigFancyAdAbove {
 		// TODO: End of hack
 
 		universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
-		this.videoSettings = new VideoSettings(this.params);
+		this.videoSettings = new UapVideoSettings(this.params);
 		this.container.style.backgroundColor = this.getBackgroundColor();
 		this.container.classList.add('bfaa-template');
 		this.theme = bfaThemeFactory.makeAboveTheme(this.adSlot, this.params);

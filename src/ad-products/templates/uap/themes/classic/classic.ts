@@ -1,14 +1,14 @@
 import { PorvataPlayer, slotTweaker } from '@ad-engine/core';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
 import { resolvedState } from '../../resolved-state';
+import { UapVideoSettings } from '../../uap-video-settings';
 import { universalAdPackage } from '../../universal-ad-package';
-import { VideoSettings } from '../../video-settings';
 import { BigFancyAdTheme } from '../theme';
 
 abstract class BigFancyAdClassicTheme extends BigFancyAdTheme {
 	onAdReady(): void {
 		if (universalAdPackage.isVideoEnabled(this.params)) {
-			const videoSettings: VideoSettings = new VideoSettings(this.params);
+			const videoSettings: UapVideoSettings = new UapVideoSettings(this.params);
 
 			if (videoSettings.isSplitLayout()) {
 				const theme: string =
@@ -23,7 +23,7 @@ abstract class BigFancyAdClassicTheme extends BigFancyAdTheme {
 		}
 	}
 
-	async adIsReady(videoSettings: VideoSettings): Promise<HTMLIFrameElement | HTMLElement> {
+	async adIsReady(videoSettings: UapVideoSettings): Promise<HTMLIFrameElement | HTMLElement> {
 		await resolvedState.setImage(videoSettings);
 
 		return slotTweaker.makeResponsive(this.adSlot, this.params.aspectRatio);

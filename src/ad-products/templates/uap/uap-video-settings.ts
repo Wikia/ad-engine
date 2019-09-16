@@ -1,6 +1,6 @@
 import { resolvedState } from './resolved-state';
 
-export class VideoSettings {
+export class UapVideoSettings {
 	constructor(params) {
 		this.params = params;
 

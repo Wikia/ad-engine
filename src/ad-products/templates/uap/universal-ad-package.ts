@@ -12,7 +12,7 @@ import {
 import { throttle } from 'lodash';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
-import { VideoSettings } from './video-settings';
+import { UapVideoSettings } from './uap-video-settings';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
@@ -91,7 +91,7 @@ export interface UapParams {
 function getVideoSize(
 	slot: HTMLElement,
 	params: UapParams,
-	videoSettings: VideoSettings,
+	videoSettings: UapVideoSettings,
 ): VideoSize {
 	const width: number = videoSettings.isSplitLayout()
 		? params.videoPlaceholderElement.offsetWidth
@@ -180,7 +180,7 @@ async function loadTwitchAd(iframe: HTMLIFrameElement, params: UapParams): Promi
 	(player.firstChild as HTMLElement).id = 'twitchPlayerContainer';
 }
 
-async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer> {
+async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlayer> {
 	const params = videoSettings.getParams();
 	const imageContainer: HTMLElement = params.container.querySelector('div:last-of-type');
 	const size: VideoSize = getVideoSize(params.container, params, videoSettings);

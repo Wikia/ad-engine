@@ -1,7 +1,7 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
 import { bfaThemeFactory } from './themes/factory';
+import { UapVideoSettings } from './uap-video-settings';
 import { UapParams, universalAdPackage } from './universal-ad-package';
-import { VideoSettings } from './video-settings';
 
 export interface BigFancyAdBelowConfig {
 	autoPlayAllowed?: boolean;
@@ -68,7 +68,7 @@ export class BigFancyAdBelow {
 		universalAdPackage.initSlot(params);
 
 		this.container.classList.add('bfab-template');
-		this.videoSettings = new VideoSettings(params);
+		this.videoSettings = new UapVideoSettings(params);
 		this.theme = bfaThemeFactory.makeBelowTheme(this.adSlot, this.params);
 
 		this.theme.adIsReady(this.videoSettings).then(() => this.onAdReady());
