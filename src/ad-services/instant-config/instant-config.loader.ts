@@ -20,7 +20,7 @@ class InstantConfigLoader {
 		const url = context.get('services.instantConfig.endpoint');
 		const fallbackConfigKey =
 			context.get('services.instantConfig.fallbackConfigKey') || 'fallbackInstantConfig';
-		const fallbackConfig = get(window, fallbackConfigKey, {});
+		const fallbackConfig: InstantConfigResponse = get(window, fallbackConfigKey, {}) as any;
 
 		request.open('GET', url, true);
 		request.responseType = 'json';

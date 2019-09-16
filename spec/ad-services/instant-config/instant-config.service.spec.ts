@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { eventService, InstantConfigCacheStorage, utils } from '@wikia/ad-engine';
 import { InstantConfigInterpreter } from '@wikia/ad-services/instant-config/instant-config.interpreter';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { InstantConfigOverrider } from '@wikia/ad-services/instant-config/instant-config.overrider';
@@ -7,21 +7,24 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 describe('Instant Config Service', () => {
+	let sandbox;
+	let initInterpreterStub: sinon.SinonStub;
 	let getConfigStub: sinon.SinonStub;
 	let getValuesStub: sinon.SinonStub;
 	let overrideStub: sinon.SinonStub;
 
 	beforeEach(() => {
-		getConfigStub = sinon.stub(instantConfigLoader, 'getConfig');
-		getValuesStub = sinon.stub(InstantConfigInterpreter.prototype, 'getValues');
-		overrideStub = sinon.stub(InstantConfigOverrider.prototype, 'override');
+		sandbox = sinon.createSandbox();
+		getConfigStub = sandbox.stub(instantConfigLoader, 'getConfig');
+		initInterpreterStub = sandbox.stub(InstantConfigInterpreter.prototype, 'init').returnsThis();
+		getValuesStub = sandbox.stub(InstantConfigInterpreter.prototype, 'getValues');
+		overrideStub = sandbox.stub(InstantConfigOverrider.prototype, 'override');
 	});
 
 	afterEach(() => {
-		getConfigStub.restore();
-		getValuesStub.restore();
-		overrideStub.restore();
+		sandbox.restore();
 		InstantConfigService['instancePromise'] = undefined;
+		eventService.removeAllListeners(InstantConfigCacheStorage.CACHE_RESET_EVENT);
 	});
 
 	describe('static init', () => {
@@ -49,7 +52,7 @@ describe('Instant Config Service', () => {
 
 			await InstantConfigService.init();
 
-			expect(getValuesStub.firstCall.args).to.deep.equal([{ config: true }, {}]);
+			expect(initInterpreterStub.firstCall.args).to.deep.equal([{ config: true }, {}]);
 		});
 
 		it('should pass InstantConfig and InstantGlobals to InstantConfigInterpreter', async () => {
@@ -59,7 +62,10 @@ describe('Instant Config Service', () => {
 
 			await InstantConfigService.init({ globals: true });
 
-			expect(getValuesStub.firstCall.args).to.deep.equal([{ config: true }, { globals: true }]);
+			expect(initInterpreterStub.firstCall.args).to.deep.equal([
+				{ config: true },
+				{ globals: true },
+			]);
 		});
 
 		it('should call getConfig only once', async () => {
@@ -70,6 +76,19 @@ describe('Instant Config Service', () => {
 			await InstantConfigService.init();
 
 			expect(getConfigStub.getCalls().length).to.equal(1);
+		});
+
+		it('should call getValues twice after emitting reset event', async () => {
+			getConfigStub.returns(Promise.resolve({}));
+			getValuesStub.returns({});
+
+			await InstantConfigService.init();
+
+			expect(getValuesStub.getCalls().length).to.equal(1);
+
+			eventService.emit(InstantConfigCacheStorage.CACHE_RESET_EVENT);
+
+			expect(getValuesStub.getCalls().length).to.equal(2);
 		});
 	});
 

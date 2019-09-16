@@ -13,6 +13,7 @@ import { SamplingCacheManager } from './matchers/sampling-cache.manager';
 const logGroup = 'instant-config-interpreter';
 
 export class InstantConfigInterpreter {
+	private configResponse: InstantConfigResponse = {};
 	private readonly samplingCache = new SamplingCacheManager();
 
 	constructor(
@@ -22,19 +23,23 @@ export class InstantConfigInterpreter {
 		private readonly regionMatcher = new RegionMatcher(),
 	) {}
 
-	getValues(
+	init(
 		instantConfig: InstantConfigResponse,
 		instantGlobals: Dictionary<InstantConfigValue> = {},
-	): Dictionary<InstantConfigValue> {
-		const combined: InstantConfigResponse = {
+	): this {
+		this.configResponse = {
 			...instantGlobals,
 			...instantConfig,
 		};
 
-		utils.logger(logGroup, 'get values called with', combined);
+		return this;
+	}
 
-		return Object.keys(combined)
-			.map((key) => ({ key, value: combined[key] }))
+	getValues(): Dictionary<InstantConfigValue> {
+		utils.logger(logGroup, 'get values called with', this.configResponse);
+
+		return Object.keys(this.configResponse)
+			.map((key) => ({ key, value: this.configResponse[key] }))
 			.map(({ key, value }) => {
 				if (key.startsWith('wg')) {
 					return { key, value };
