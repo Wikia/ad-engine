@@ -29,7 +29,6 @@ export function getRubiconContext(device: DeviceMode): any {
 					targeting: {
 						loc: ['middle'],
 					},
-					position: 'btf',
 					siteId: '280244',
 					zoneId: '1398248',
 				},
@@ -38,7 +37,6 @@ export function getRubiconContext(device: DeviceMode): any {
 					targeting: {
 						loc: ['footer'],
 					},
-					position: 'btf',
 					siteId: '280244',
 					zoneId: '1398250',
 				},
@@ -47,7 +45,6 @@ export function getRubiconContext(device: DeviceMode): any {
 					targeting: {
 						loc: ['hivi'],
 					},
-					position: 'btf',
 					siteId: '280244',
 					zoneId: '1398254',
 				},
@@ -81,7 +78,6 @@ export function getRubiconContext(device: DeviceMode): any {
 					targeting: {
 						loc: ['footer'],
 					},
-					position: 'btf',
 					siteId: '280246',
 					zoneId: '1398260',
 				},
@@ -90,7 +86,6 @@ export function getRubiconContext(device: DeviceMode): any {
 					targeting: {
 						loc: ['hivi'],
 					},
-					position: 'btf',
 					siteId: '280246',
 					zoneId: '1398264',
 				},
