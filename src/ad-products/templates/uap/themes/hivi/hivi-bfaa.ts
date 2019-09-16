@@ -1,13 +1,7 @@
-import {
-	AdSlot,
-	Dictionary,
-	PorvataPlayer,
-	scrollListener,
-	slotTweaker,
-	utils,
-} from '@ad-engine/core';
+import { AdSlot, Dictionary, scrollListener, slotTweaker, utils } from '@ad-engine/core';
 import * as EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
+import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import { animate } from '../../../interface/animate';
 import { StickinessCallback } from '../../big-fancy-ad-above';
 import {

@@ -1,7 +1,11 @@
-import { VideoData, VideoEventListener } from '../../../listeners/listeners';
-import { AdSlot } from '../../../models';
-import { context, slotService } from '../../../services';
-import { logger } from '../../../utils';
+import {
+	AdSlot,
+	context,
+	slotService,
+	utils,
+	VideoData,
+	VideoEventListener,
+} from '@ad-engine/core';
 import { TwitchPlayer } from './index';
 
 export interface TwitchListenerParams {
@@ -43,7 +47,7 @@ export class TwitchListener {
 	}
 
 	logger(...args: any[]): void {
-		logger(TwitchListener.LOG_GROUP, args);
+		utils.logger(TwitchListener.LOG_GROUP, args);
 	}
 
 	init(): void {

@@ -1,6 +1,4 @@
-import { AdSlot } from '../../../../models';
-import { slotService } from '../../../../services';
-import { scriptLoader } from '../../../../utils';
+import { AdSlot, slotService, utils } from '@ad-engine/core';
 import { VideoSettings } from '../video-settings';
 import { GoogleImaPlayer } from './google-ima-player';
 import { googleImaPlayerFactory } from './google-ima-player-factory';
@@ -12,7 +10,7 @@ export class GoogleIma {
 		if (!GoogleIma.instance) {
 			GoogleIma.instance = new Promise(async (resolve) => {
 				if (!(window.google && window.google.ima)) {
-					await scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js');
+					await utils.scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js');
 				}
 
 				resolve(new GoogleIma());

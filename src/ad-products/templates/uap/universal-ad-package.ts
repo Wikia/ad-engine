@@ -1,15 +1,7 @@
-import {
-	AdSlot,
-	btfBlockerService,
-	context,
-	Porvata,
-	PorvataPlayer,
-	slotService,
-	TwitchOptions,
-	TwitchPlayer,
-	utils,
-} from '@ad-engine/core';
+import { AdSlot, btfBlockerService, context, slotService, utils } from '@ad-engine/core';
 import { throttle } from 'lodash';
+import { Porvata, PorvataPlayer } from '../../video/player/porvata/porvata';
+import { TwitchOptions, TwitchPlayer } from '../../video/player/twitch';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
 import { UapVideoSettings } from './uap-video-settings';

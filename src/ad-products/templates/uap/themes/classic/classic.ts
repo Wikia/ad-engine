@@ -1,4 +1,5 @@
-import { PorvataPlayer, slotTweaker } from '@ad-engine/core';
+import { slotTweaker } from '@ad-engine/core';
+import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
 import { resolvedState } from '../../resolved-state';
 import { UapVideoSettings } from '../../uap-video-settings';

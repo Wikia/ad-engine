@@ -1,4 +1,4 @@
-import { GoogleIma } from '@wikia/ad-engine/video/player/porvata/ima/google-ima';
+import { GoogleIma } from '@wikia/ad-products/video/player/porvata/ima/google-ima';
 import { expect } from 'chai';
 import { getIma } from '../ima-factory';
 

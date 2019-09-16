@@ -3,7 +3,7 @@ lib/**/*
 node_modules/**/*
 jspm_packages/
 **/allure-results/**/*
-src/ad-engine/video/player/porvata/moat/moat-video-tracker-script.js
+src/ad-products/video/player/porvata/moat/moat-video-tracker-script.js
 src/ad-services/nielsen/static-queue-script.js
 package-lock.json
 

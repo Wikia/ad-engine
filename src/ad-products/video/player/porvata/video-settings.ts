@@ -1,6 +1,4 @@
-import { Dictionary, Targeting } from '../../../models';
-import { context } from '../../../services';
-import { sampler } from '../../../utils';
+import { context, Dictionary, Targeting, utils } from '@ad-engine/core';
 import { VpaidMode } from './porvata';
 
 export interface VideoParams extends Dictionary {
@@ -32,7 +30,7 @@ function getMoatTrackingStatus(params: VideoParams): boolean {
 	}
 
 	if (sampling > 0) {
-		return sampler.sample('moat_video_tracking', sampling);
+		return utils.sampler.sample('moat_video_tracking', sampling);
 	}
 
 	return false;

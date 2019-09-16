@@ -1,4 +1,5 @@
-import { AdSlot, context, PorvataPlayer } from '@ad-engine/core';
+import { AdSlot, context } from '@ad-engine/core';
+import { PorvataPlayer } from '../../../video/player/porvata/porvata';
 import { BigFancyAdAboveConfig } from '../big-fancy-ad-above';
 import { UapVideoSettings } from '../uap-video-settings';
 import { UapParams } from '../universal-ad-package';

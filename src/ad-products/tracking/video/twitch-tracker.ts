@@ -1,10 +1,8 @@
+import { context, VideoData, VideoEventData } from '@ad-engine/core';
 import {
-	context,
 	TwitchEventListener,
 	TwitchListenerParams,
-	VideoData,
-	VideoEventData,
-} from '@ad-engine/core';
+} from '../../video/player/twitch/twitch-listener';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 

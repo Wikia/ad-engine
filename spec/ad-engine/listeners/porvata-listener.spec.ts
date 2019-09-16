@@ -1,4 +1,4 @@
-import { PorvataListener } from '@wikia/ad-engine/video/player/porvata/porvata-listener';
+import { PorvataListener } from '@wikia/ad-products/video/player/porvata/porvata-listener';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 import { context } from '../../../src/ad-engine/services/context-service';
