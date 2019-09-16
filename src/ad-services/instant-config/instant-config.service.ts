@@ -1,4 +1,4 @@
-import { Dictionary, utils } from '@ad-engine/core';
+import { Dictionary, eventService, InstantConfigCacheStorage, utils } from '@ad-engine/core';
 import { InstantConfigInterpreter } from './instant-config.interpreter';
 import { instantConfigLoader } from './instant-config.loader';
 import { InstantConfigValue } from './instant-config.models';
@@ -14,15 +14,22 @@ export class InstantConfigService {
 			InstantConfigService.instancePromise = instantConfigLoader
 				.getConfig()
 				.then((config) => new InstantConfigOverrider().override(config))
-				.then((config) => new InstantConfigInterpreter().getValues(config, globals))
-				.then((values) => new InstantConfigService(values));
+				.then((config) => new InstantConfigInterpreter().init(config, globals))
+				.then((interpreter) => new InstantConfigService(interpreter));
 		}
 
 		return InstantConfigService.instancePromise;
 	}
 
-	private constructor(private repository: Dictionary<InstantConfigValue> = {}) {
+	private repository: Dictionary<InstantConfigValue>;
+
+	private constructor(private interpreter: InstantConfigInterpreter) {
+		this.repository = this.interpreter.getValues();
 		utils.logger(logGroup, 'instantiated with', this.repository);
+
+		eventService.on(InstantConfigCacheStorage.CACHE_RESET_EVENT, () => {
+			this.repository = this.interpreter.getValues();
+		});
 	}
 
 	get<T extends InstantConfigValue>(key: string, defaultValue: T = undefined): T {

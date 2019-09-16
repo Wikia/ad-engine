@@ -1,3 +1,4 @@
+import { eventService } from '../services/events';
 import { SessionCookie } from '../services/session-cookie';
 
 export interface CacheDictionary {
@@ -13,6 +14,8 @@ export interface CacheData {
 }
 
 export class InstantConfigCacheStorage {
+	static CACHE_RESET_EVENT = Symbol('INSTANT_CONFIG_CACHE_RESET_EVENT');
+
 	private static instance: InstantConfigCacheStorage;
 
 	static make(): InstantConfigCacheStorage {
@@ -33,6 +36,7 @@ export class InstantConfigCacheStorage {
 	resetCache(): void {
 		this.sessionCookie.readSessionId();
 		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
+		eventService.emit(InstantConfigCacheStorage.CACHE_RESET_EVENT);
 	}
 
 	get(id: string): CacheData {

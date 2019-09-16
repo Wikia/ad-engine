@@ -347,6 +347,14 @@ export class PorvataFiller implements SlotFiller {
 		this.porvataParams.container = player;
 		this.porvataParams.slotName = adSlot.getSlotName();
 
+		const options = adSlot.getConfigProperty('customFillerOptions');
+
+		if (options) {
+			Object.keys(options).forEach((option) => {
+				this.porvataParams[option] = options[option];
+			});
+		}
+
 		templateService.init(this.porvataParams.type, adSlot, this.porvataParams);
 		adSlot.setConfigProperty('trackEachStatus', true);
 	}
