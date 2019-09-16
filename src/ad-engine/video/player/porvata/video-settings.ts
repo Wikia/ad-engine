@@ -1,7 +1,7 @@
 import { Dictionary, Targeting } from '../../../models';
 import { context } from '../../../services';
 import { sampler } from '../../../utils';
-import { VpaidMode } from '../porvata';
+import { VpaidMode } from './porvata';
 
 export interface VideoParams extends Dictionary {
 	autoPlay?: boolean;

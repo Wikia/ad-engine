@@ -1,4 +1,3 @@
-import { PorvataListener } from '../../../listeners';
 import { AdSlot, Targeting } from '../../../models';
 import { context } from '../../../services/context-service';
 import { SlotFiller } from '../../../services/filler-service';
@@ -6,6 +5,7 @@ import { templateService } from '../../../services/template-service';
 import { client, LazyQueue, tryProperty, viewportObserver, whichProperty } from '../../../utils';
 import { GoogleIma } from './ima/google-ima';
 import { GoogleImaPlayer } from './ima/google-ima-player';
+import { PorvataListener } from './porvata-listener';
 import { VideoParams, VideoSettings } from './video-settings';
 
 export interface PorvataTemplateParams {

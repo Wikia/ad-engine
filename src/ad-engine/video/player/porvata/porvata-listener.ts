@@ -1,8 +1,8 @@
-import { AdSlot } from '../models';
-import { context, slotService } from '../services';
-import { logger } from '../utils';
-import { PorvataPlayer, vastParser } from '../video';
-import { VideoData, VideoEventListener } from './listeners';
+import { VideoData, VideoEventListener } from '../../../listeners/listeners';
+import { AdSlot } from '../../../models';
+import { context, slotService } from '../../../services';
+import { logger } from '../../../utils';
+import { PorvataPlayer, vastParser } from '../../index';
 
 export interface PorvataListenerParams {
 	adProduct: string;

@@ -1,5 +1,5 @@
-import { TwitchListener, TwitchListenerParams } from '../../../listeners/twitch-listener';
 import { twitchEmbed } from './embed/twitch-embed';
+import { TwitchListener, TwitchListenerParams } from './twitch-listener';
 
 export interface TwitchOptions {
 	height: string;
@@ -35,7 +35,7 @@ export class TwitchPlayer {
 	}
 }
 
-export class Twitch {
+class Twitch {
 	static inject(identifier: string, videoSettings: TwitchOptions, params: TwitchListenerParams) {
 		const twitchListener = new TwitchListener(params);
 
