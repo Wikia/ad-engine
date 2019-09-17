@@ -44,7 +44,7 @@ class ContextSetup {
 		const isMobile = !utils.client.isDesktop();
 
 		context.set('wiki', wikiContext);
-		context.set('state.showAds', true);
+		context.set('state.showAds', !utils.client.isSteamPlatform());
 		context.set('state.isMobile', isMobile);
 		context.set('state.isLogged', !!wikiContext.wgUserId);
 		context.set('state.deviceType', utils.client.getDeviceType());
