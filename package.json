@@ -143,7 +143,7 @@
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
-		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms | grep -v npm",
+		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ -e platforms | grep -v npm",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
@@ -151,7 +151,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms | grep -v npm; then exit 1; fi"
+			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ -e platforms | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {
