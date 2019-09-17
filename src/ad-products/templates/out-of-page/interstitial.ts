@@ -9,20 +9,23 @@ import {
 } from '@ad-engine/core';
 import { AdvertisementLabel } from '../interface/advertisement-label';
 import { CloseButton } from '../interface/close-button';
-import { TemplatesConfig } from '../models';
+
+export interface InterstitialConfig {
+	onInit: (adSlot: AdSlot) => void;
+}
 
 export class Interstitial {
 	static getName(): string {
 		return 'interstitial';
 	}
 
-	static getDefaultConfig(): TemplatesConfig {
+	static getDefaultConfig(): InterstitialConfig {
 		return {
 			onInit: () => {},
 		};
 	}
 
-	private config: TemplatesConfig;
+	private config: InterstitialConfig;
 
 	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.interstitial') || {};

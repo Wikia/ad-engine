@@ -67,11 +67,11 @@ export class BigFancyAdAbove {
 		};
 	}
 
-	config: BigFancyAdAboveConfig;
-	container: HTMLElement;
-	videoSettings: UapVideoSettings = null;
-	theme: BigFancyAdTheme = null;
-	params: UapParams;
+	private config: BigFancyAdAboveConfig;
+	private container: HTMLElement;
+	private videoSettings: UapVideoSettings;
+	private theme: BigFancyAdTheme;
+	private params: UapParams;
 
 	constructor(private adSlot: AdSlot) {
 		this.config = context.get('templates.bfaa') || {};
@@ -105,7 +105,9 @@ export class BigFancyAdAbove {
 		this.container.classList.add('bfaa-template');
 		this.theme = bfaThemeFactory.makeAboveTheme(this.adSlot, this.params);
 
-		this.theme.adIsReady(this.videoSettings).then((iframe) => this.onAdReady(iframe));
+		this.theme
+			.adIsReady(this.videoSettings)
+			.then((iframe: HTMLIFrameElement) => this.onAdReady(iframe));
 
 		this.config.onInit(this.adSlot, this.params, this.config);
 	}

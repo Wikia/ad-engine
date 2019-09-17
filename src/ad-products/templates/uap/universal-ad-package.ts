@@ -76,6 +76,15 @@ export interface UapParams {
 	videoPlaceholderElement: HTMLElement;
 	videoTriggers: any[];
 
+	// Video
+	vastTargeting: {
+		passback: string;
+	};
+	videoTriggerElement: HTMLVideoElement;
+
+	height: number;
+	width: number;
+
 	// Twitch params
 	channelName: string;
 }
@@ -96,7 +105,7 @@ function getVideoSize(
 	};
 }
 
-function adjustVideoAdContainer(params) {
+function adjustVideoAdContainer(params: UapParams): void {
 	if (params.splitLayoutVideoPosition) {
 		const videoAdContainer = params.container.querySelector('.video-player');
 
@@ -135,7 +144,7 @@ async function loadPorvata(videoSettings, slotContainer, imageContainer): Promis
 	return video;
 }
 
-function recalculateTwitchSize(params) {
+function recalculateTwitchSize(params): () => void {
 	return () => {
 		const { adContainer, clickArea, player, twitchAspectRatio } = params;
 
@@ -145,7 +154,7 @@ function recalculateTwitchSize(params) {
 	};
 }
 
-async function loadTwitchPlayer(iframe, params) {
+async function loadTwitchPlayer(iframe: HTMLIFrameElement, params): Promise<TwitchPlayer> {
 	const { channelName, player } = params;
 	const options: TwitchOptions = {
 		height: '100%',
@@ -184,7 +193,7 @@ async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlay
 	params.height = size.height;
 	videoSettings.updateParams(params);
 
-	function recalculateVideoSize(video) {
+	function recalculateVideoSize(video): () => void {
 		return () => {
 			const currentSize = getVideoSize(params.container, params, videoSettings);
 
@@ -207,30 +216,30 @@ async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlay
 	return video;
 }
 
-function getUapId() {
+function getUapId(): string {
 	return uapId;
 }
 
-function getCreativeId() {
+function getCreativeId(): string {
 	return uapCreativeId;
 }
 
-function setIds(lineItemId, creativeId) {
+function setIds(lineItemId, creativeId): void {
 	uapId = lineItemId || constants.DEFAULT_UAP_ID;
 	uapCreativeId = creativeId || constants.DEFAULT_UAP_ID;
 
 	updateSlotsTargeting(uapId, uapCreativeId);
 }
 
-function getType() {
+function getType(): string {
 	return uapType;
 }
 
-function setType(type) {
+function setType(type): void {
 	uapType = type;
 }
 
-function updateSlotsTargeting(lineItemId, creativeId) {
+function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
@@ -241,7 +250,7 @@ function updateSlotsTargeting(lineItemId, creativeId) {
 	});
 }
 
-function enableSlots(slotsToEnable) {
+function enableSlots(slotsToEnable): void {
 	if (getType() !== 'abcd') {
 		slotsToEnable.forEach((slotName) => {
 			btfBlockerService.unblock(slotName);
@@ -249,7 +258,7 @@ function enableSlots(slotsToEnable) {
 	}
 }
 
-function disableSlots(slotsToDisable) {
+function disableSlots(slotsToDisable): void {
 	slotsToDisable.forEach((slotName) => {
 		slotService.disable(slotName);
 	});
@@ -271,12 +280,12 @@ function initSlot(params: UapParams): void {
 	}
 }
 
-function reset() {
+function reset(): void {
 	setType(constants.DEFAULT_UAP_TYPE);
 	setIds(constants.DEFAULT_UAP_ID, constants.DEFAULT_UAP_ID);
 }
 
-function isFanTakeoverLoaded() {
+function isFanTakeoverLoaded(): boolean {
 	return (
 		getUapId() !== constants.DEFAULT_UAP_ID &&
 		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1

@@ -5,15 +5,15 @@ const cacheKey = 'adEngine_resolvedStateCounter';
 const cacheTtl = 24 * 3600;
 const now = new Date();
 
-function createCacheKey() {
+function createCacheKey(): string {
 	return `${cacheKey}_${universalAdPackage.getUapId()}`;
 }
 
-function findRecordInCache() {
+function findRecordInCache(): any {
 	return localCache.get(createCacheKey());
 }
 
-function wasDefaultStateSeen() {
+function wasDefaultStateSeen(): boolean {
 	const record = findRecordInCache();
 
 	// check for presence in localStorage and if present, make sure that we're
@@ -21,7 +21,7 @@ function wasDefaultStateSeen() {
 	return !!record && now.getTime() !== record.lastSeenDate;
 }
 
-function updateInformationAboutSeenDefaultStateAd() {
+function updateInformationAboutSeenDefaultStateAd(): void {
 	localCache.set(
 		createCacheKey(),
 		{

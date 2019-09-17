@@ -1,19 +1,22 @@
 import { AdSlot, context, slotTweaker, SlotTweaker, utils } from '@ad-engine/core';
 import { CloseButton } from '../interface/close-button';
-import { TemplatesConfig } from '../models';
+
+export interface FloorAdhesionConfig {
+	onInit: (adSlot: AdSlot) => void;
+}
 
 export class FloorAdhesion {
 	static getName(): string {
 		return 'floorAdhesion';
 	}
 
-	static getDefaultConfig(): TemplatesConfig {
+	static getDefaultConfig(): FloorAdhesionConfig {
 		return {
 			onInit: () => {},
 		};
 	}
 
-	private config: TemplatesConfig;
+	private config: FloorAdhesionConfig;
 
 	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.floorAdhesion') || {};

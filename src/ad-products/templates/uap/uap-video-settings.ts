@@ -1,49 +1,41 @@
 import { resolvedState } from './resolved-state';
+import { UapParams } from './universal-ad-package';
 
 export class UapVideoSettings {
-	constructor(params) {
-		this.params = params;
+	private readonly resolvedState: boolean;
+	private readonly autoPlay: boolean;
+	private readonly splitLayout: string;
 
-		Object.defineProperty(this, 'resolvedState', {
-			value: resolvedState.isResolvedState(this.params),
-			writable: false,
-		});
-
-		Object.defineProperty(this, 'autoPlay', {
-			value: this.detectAutoPlay(),
-			writable: false,
-		});
-
-		Object.defineProperty(this, 'splitLayout', {
-			value: Boolean(params.splitLayoutVideoPosition),
-			writable: false,
-		});
+	constructor(private params: UapParams) {
+		this.resolvedState = resolvedState.isResolvedState(this.params);
+		this.autoPlay = this.detectAutoPlay();
+		this.splitLayout = params.splitLayoutVideoPosition;
 	}
 
-	detectAutoPlay() {
+	detectAutoPlay(): boolean {
 		const defaultStateAutoPlay = this.params.autoPlay && !this.resolvedState;
 		const resolvedStateAutoPlay = this.params.resolvedStateAutoPlay && this.resolvedState;
 
 		return Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
 	}
 
-	getParams() {
+	getParams(): UapParams {
 		return { ...this.params };
 	}
 
-	updateParams(params) {
+	updateParams(params: UapParams): void {
 		Object.assign(this.params, params);
 	}
 
-	isAutoPlay() {
+	isAutoPlay(): boolean {
 		return this.autoPlay;
 	}
 
-	isResolvedState() {
+	isResolvedState(): boolean {
 		return this.resolvedState;
 	}
 
-	isSplitLayout() {
+	isSplitLayout(): string {
 		return this.splitLayout;
 	}
 }
