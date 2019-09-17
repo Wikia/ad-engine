@@ -27,7 +27,7 @@ export function once(
 	emitter: EventEmitter | HTMLElement | Window,
 	eventName: string,
 	options = {},
-): Promise<any> | Promise<Event> {
+): Promise<any | Event> {
 	const isObject: boolean = typeof emitter === 'object';
 	const hasAddEventListener: boolean =
 		isObject && typeof (emitter as HTMLElement).addEventListener === 'function';

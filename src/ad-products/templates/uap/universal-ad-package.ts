@@ -81,6 +81,7 @@ export interface UapParams {
 		passback: string;
 	};
 	videoTriggerElement: HTMLVideoElement;
+	type: string;
 
 	height: number;
 	width: number;

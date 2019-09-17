@@ -1,3 +1,4 @@
+import { VideoSettings } from '../../../video/player/porvata/video-settings';
 import { UapVideoSettings } from '../../uap/uap-video-settings';
 import CloseButton from './close-button';
 import DynamicReveal from './dynamic-reveal';
@@ -61,7 +62,7 @@ const getTemplates = (params, videoSettings) => ({
 	'outstream-incontent': [DynamicReveal, Floating, ProgressBar, VolumeControl],
 });
 
-export function selectTemplate(videoSettings: UapVideoSettings) {
+export function selectTemplate(videoSettings: VideoSettings | UapVideoSettings) {
 	const params = videoSettings.getParams();
 	const templates = getTemplates(params, videoSettings);
 	let template = 'default';
@@ -70,7 +71,7 @@ export function selectTemplate(videoSettings: UapVideoSettings) {
 		template = 'outstream-incontent';
 	} else if (params.theme === 'hivi') {
 		template = 'hivi';
-	} else if (videoSettings.isSplitLayout()) {
+	} else if ((videoSettings as UapVideoSettings).isSplitLayout()) {
 		template = params.splitLayoutVideoPosition === 'right' ? 'split-right' : 'split-left';
 	} else if (videoSettings.isAutoPlay()) {
 		template = 'auto-play';
