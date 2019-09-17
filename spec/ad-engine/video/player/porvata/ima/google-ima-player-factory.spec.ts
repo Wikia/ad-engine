@@ -3,8 +3,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
-import { googleImaPlayerFactory } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-player-factory';
-import { VideoSettings } from '../../../../../../src/ad-engine/video/player/porvata/video-settings';
+import { googleImaPlayerFactory } from '../../../../../../src/ad-products/video/player/porvata/ima/google-ima-player-factory';
+import { VideoSettings } from '../../../../../../src/ad-products/video/player/porvata/video-settings';
 import ConfigMock from '../../../../config-mock';
 import { getIma } from '../ima-factory';
 

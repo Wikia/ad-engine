@@ -1,18 +1,10 @@
-import {
-	AdSlot,
-	btfBlockerService,
-	context,
-	Porvata,
-	PorvataPlayer,
-	slotService,
-	TwitchOptions,
-	TwitchPlayer,
-	utils,
-} from '@ad-engine/core';
+import { AdSlot, btfBlockerService, context, slotService, utils } from '@ad-engine/core';
 import { throttle } from 'lodash';
+import { Porvata, PorvataPlayer } from '../../video/player/porvata/porvata';
+import { TwitchOptions, TwitchPlayer } from '../../video/player/twitch';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
-import { VideoSettings } from './video-settings';
+import { UapVideoSettings } from './uap-video-settings';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
@@ -84,6 +76,16 @@ export interface UapParams {
 	videoPlaceholderElement: HTMLElement;
 	videoTriggers: any[];
 
+	// Video
+	vastTargeting: {
+		passback: string;
+	};
+	videoTriggerElement: HTMLVideoElement;
+	type: string;
+
+	height: number;
+	width: number;
+
 	// Twitch params
 	channelName: string;
 }
@@ -91,7 +93,7 @@ export interface UapParams {
 function getVideoSize(
 	slot: HTMLElement,
 	params: UapParams,
-	videoSettings: VideoSettings,
+	videoSettings: UapVideoSettings,
 ): VideoSize {
 	const width: number = videoSettings.isSplitLayout()
 		? params.videoPlaceholderElement.offsetWidth
@@ -104,7 +106,7 @@ function getVideoSize(
 	};
 }
 
-function adjustVideoAdContainer(params) {
+function adjustVideoAdContainer(params: UapParams): void {
 	if (params.splitLayoutVideoPosition) {
 		const videoAdContainer = params.container.querySelector('.video-player');
 
@@ -143,7 +145,7 @@ async function loadPorvata(videoSettings, slotContainer, imageContainer): Promis
 	return video;
 }
 
-function recalculateTwitchSize(params) {
+function recalculateTwitchSize(params): () => void {
 	return () => {
 		const { adContainer, clickArea, player, twitchAspectRatio } = params;
 
@@ -153,7 +155,7 @@ function recalculateTwitchSize(params) {
 	};
 }
 
-async function loadTwitchPlayer(iframe, params) {
+async function loadTwitchPlayer(iframe: HTMLIFrameElement, params): Promise<TwitchPlayer> {
 	const { channelName, player } = params;
 	const options: TwitchOptions = {
 		height: '100%',
@@ -180,7 +182,7 @@ async function loadTwitchAd(iframe: HTMLIFrameElement, params: UapParams): Promi
 	(player.firstChild as HTMLElement).id = 'twitchPlayerContainer';
 }
 
-async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer> {
+async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlayer> {
 	const params = videoSettings.getParams();
 	const imageContainer: HTMLElement = params.container.querySelector('div:last-of-type');
 	const size: VideoSize = getVideoSize(params.container, params, videoSettings);
@@ -192,7 +194,7 @@ async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer>
 	params.height = size.height;
 	videoSettings.updateParams(params);
 
-	function recalculateVideoSize(video) {
+	function recalculateVideoSize(video): () => void {
 		return () => {
 			const currentSize = getVideoSize(params.container, params, videoSettings);
 
@@ -215,30 +217,30 @@ async function loadVideoAd(videoSettings: VideoSettings): Promise<PorvataPlayer>
 	return video;
 }
 
-function getUapId() {
+function getUapId(): string {
 	return uapId;
 }
 
-function getCreativeId() {
+function getCreativeId(): string {
 	return uapCreativeId;
 }
 
-function setIds(lineItemId, creativeId) {
+function setIds(lineItemId, creativeId): void {
 	uapId = lineItemId || constants.DEFAULT_UAP_ID;
 	uapCreativeId = creativeId || constants.DEFAULT_UAP_ID;
 
 	updateSlotsTargeting(uapId, uapCreativeId);
 }
 
-function getType() {
+function getType(): string {
 	return uapType;
 }
 
-function setType(type) {
+function setType(type): void {
 	uapType = type;
 }
 
-function updateSlotsTargeting(lineItemId, creativeId) {
+function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
@@ -249,7 +251,7 @@ function updateSlotsTargeting(lineItemId, creativeId) {
 	});
 }
 
-function enableSlots(slotsToEnable) {
+function enableSlots(slotsToEnable): void {
 	if (getType() !== 'abcd') {
 		slotsToEnable.forEach((slotName) => {
 			btfBlockerService.unblock(slotName);
@@ -257,7 +259,7 @@ function enableSlots(slotsToEnable) {
 	}
 }
 
-function disableSlots(slotsToDisable) {
+function disableSlots(slotsToDisable): void {
 	slotsToDisable.forEach((slotName) => {
 		slotService.disable(slotName);
 	});
@@ -279,12 +281,12 @@ function initSlot(params: UapParams): void {
 	}
 }
 
-function reset() {
+function reset(): void {
 	setType(constants.DEFAULT_UAP_TYPE);
 	setIds(constants.DEFAULT_UAP_ID, constants.DEFAULT_UAP_ID);
 }
 
-function isFanTakeoverLoaded() {
+function isFanTakeoverLoaded(): boolean {
 	return (
 		getUapId() !== constants.DEFAULT_UAP_ID &&
 		constants.FAN_TAKEOVER_TYPES.indexOf(getType()) !== -1

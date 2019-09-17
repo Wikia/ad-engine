@@ -1,4 +1,4 @@
-function add(video, container) {
+function add(video, container): void {
 	const closeButton = document.createElement('div');
 
 	closeButton.classList.add('close-ad');

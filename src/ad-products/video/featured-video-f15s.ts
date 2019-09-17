@@ -5,11 +5,8 @@ const logGroup = 'featured-video-f15s';
 export default {
 	/**
 	 * Checks if for given video we want the f15s experiment to be enabled
-	 *
-	 * @param {string} videoId a unique mediaId from JWPlayer instance
-	 * @returns {boolean}
 	 */
-	isEnabled(videoId) {
+	isEnabled(videoId: string): boolean {
 		if (!context.get('options.featuredVideo15sEnabled')) {
 			return false;
 		}
@@ -23,11 +20,8 @@ export default {
 
 	/**
 	 * Returns time for an ad from the configuration
-	 *
-	 * @param {string} videoId a unique mediaId from JWPlayer instance
-	 * @returns {*}
 	 */
-	getTime(videoId) {
+	getTime(videoId: string): number {
 		return context.get(`options.featuredVideo15sMap.${videoId}`);
 	},
 };

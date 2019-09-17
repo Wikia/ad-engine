@@ -1,7 +1,7 @@
 import { getTranslation } from '../../../common/i18n';
 import { createIcon, icons } from '../icons';
 
-function add(video, container, params) {
+function add(video, container, params): void {
 	const learnMore = document.createElement('div');
 	const icon = createIcon(icons.LEARN_MORE, ['learn-more-icon', 'porvata-icon']);
 	const label = document.createElement('div');

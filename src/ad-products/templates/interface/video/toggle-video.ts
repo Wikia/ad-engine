@@ -1,4 +1,4 @@
-function add(video, container) {
+function add(video, container): void {
 	video.addEventListener('wikiaAdStarted', () => {
 		container.classList.remove('hide');
 	});

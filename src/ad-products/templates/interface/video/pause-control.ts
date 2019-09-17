@@ -1,6 +1,6 @@
 import { createIcon, icons } from '../icons';
 
-function add(video, container) {
+function add(video, container): void {
 	const pauseButton = document.createElement('div');
 	const pauseIcon = createIcon(icons.PAUSE, ['play-off-icon', 'porvata-icon', 'porvata-off-icon']);
 	const playIcon = createIcon(icons.PLAY, ['play-on-icon', 'porvata-icon', 'porvata-on-icon']);
