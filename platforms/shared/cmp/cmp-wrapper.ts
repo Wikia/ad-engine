@@ -1,7 +1,6 @@
 import { context, utils } from '@wikia/ad-engine';
 
-const trackingOptInLibraryUrl = '//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v2.0.6/tracking-opt-in.min.js';
-const optOutConsentString = 'BOl8T5MOl8T5MCNACAENCiAAAAAp6A';
+const trackingOptInLibraryUrl = '//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v2.1.0/tracking-opt-in.min.js';
 const logGroup = 'cmp-wrapper';
 
 /**
@@ -10,7 +9,6 @@ const logGroup = 'cmp-wrapper';
 class CmpWrapper {
 	cmpReady = false;
 	cmpModal: any;
-	cmpStored: WindowCMP = null;
 	gdprConsent = false;
 
 	/**
@@ -31,15 +29,14 @@ class CmpWrapper {
 				this.cmpReady = true;
 				this.cmpModal = window.trackingOptIn.default({
 					country,
+					disableConsentQueue: true,
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
 						this.gdprConsent = true;
-						this.restoreCmp();
 					},
 					onRejectTracking: () => {
 						utils.logger(logGroup, 'GDPR Non-consent');
 						this.gdprConsent = false;
-						this.restoreCmp();
 					},
 					zIndex: 9999999,
 				});
@@ -81,7 +78,6 @@ class CmpWrapper {
 			}
 
 			if (this.cmpModal.hasUserConsented() === undefined) {
-				this.overwriteCmp();
 				resolve(false);
 				return;
 			}
@@ -92,56 +88,6 @@ class CmpWrapper {
 			resolve(this.gdprConsent);
 			return;
 		});
-	}
-
-	/**
-	 * Restore original CMP version
-	 */
-	private restoreCmp(): void {
-		if (this.cmpStored) {
-			utils.logger(logGroup, 'Restoring original CMP module');
-			window.__cmp = this.cmpStored;
-		}
-	}
-
-	/**
-	 * Store and replace original CMP with temporary opting-out version
-	 */
-	private overwriteCmp(): void {
-		utils.logger(logGroup, 'Overwriting original CMP module');
-		this.cmpStored = window.__cmp;
-
-		// @ts-ignore
-		window.__cmp = (method: string, data: any, callback: any) => {
-			const consentData = {
-				gdprApplies: true,
-				hasGlobalScope: false,
-			};
-
-			if (method === 'getConsentData') {
-				consentData['consentData'] = optOutConsentString;
-			} else if (method === 'getVendorConsents') {
-				consentData['cmpId'] = 141;
-				consentData['cmpVersion'] = 2;
-				consentData['consentLanguage'] = 'en';
-				consentData['consentScreen'] = 0;
-				consentData['cookieVersion'] = 1;
-				consentData['created'] = new Date().toJSON();
-				consentData['globalVendorListVersion'] = undefined;
-				consentData['lastUpdated'] = new Date().toJSON();
-				consentData['maxVendorId'] = 670;
-				consentData['metadata'] = optOutConsentString;
-				consentData['publisherVendorsVersion'] = undefined;
-				consentData['purposeConsents'] = {};
-				consentData['vendorConsents'] = {};
-				consentData['vendorListVersion'] = 162;
-			} else {
-				return;
-			}
-
-			callback(consentData);
-		};
-		window.__cmp.receiveMessage = this.cmpStored.receiveMessage;
 	}
 }
 
