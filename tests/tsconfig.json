@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": ".",
+		"lib": ["es2015", "es2016", "es2017", "dom", "scripthost"],
+		"paths": {
+			"*": ["./*"]
+		},
+		"types": ["node", "@wdio/sync", "webdriverio", "@wdio/mocha-framework"]
+	},
+	"include": ["./**/*.js", "./**/*.ts"]
+}

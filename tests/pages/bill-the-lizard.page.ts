@@ -1,23 +1,19 @@
-import { timeouts } from '../common/timeouts';
+import { timeouts } from 'common/timeouts';
 
 class BillTheLizard {
-	constructor() {
-		this.pageLink = 'services/bill-the-lizard/';
-		this.lastCallStatus = '#status';
-		this.lastCallPredictions = '#predictions';
-		this.serialized = '#serialized';
-		this.targeting = '#targeting';
-		this.allPredictions = '#predictions-all';
-		this.allStatuses = '#status-all';
-
-		this.projects = {
-			queenOfHears: 'queen_of_hearts',
-			cheshireCat: 'cheshirecat',
-		};
-
-		this.lazyCallCheshireCatButton = '#lazyCallCat';
-		this.lazyCallCheshireCatWithIdButton = '#lazyCallCatWithId';
-	}
+	pageLink = 'services/bill-the-lizard/';
+	lastCallStatus = '#status';
+	lastCallPredictions = '#predictions';
+	serialized = '#serialized';
+	targeting = '#targeting';
+	allPredictions = '#predictions-all';
+	allStatuses = '#status-all';
+	projects = {
+		queenOfHears: 'queen_of_hearts',
+		cheshireCat: 'cheshirecat',
+	};
+	lazyCallCheshireCatButton = '#lazyCallCat';
+	lazyCallCheshireCatWithIdButton = '#lazyCallCatWithId';
 
 	getLastCallStatus() {
 		return $(this.lastCallStatus).getText();
