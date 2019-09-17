@@ -15,12 +15,7 @@
 			"value": true
 		}
 	],
-	"wgAdDriverIndexExchangeBidderCountries": ["XX"],
-	"wgAdDriverRubiconDisplayPrebidCountries": ["XX"],
-	"wgAdDriverPubMaticBidderCountries": ["XX"],
 	"wgAdDriverTestCommunities": ["cdm_gamepedia", "project43"],
-	"wgAdDriverAppNexusBidderCountries": ["XX"],
-	"wgAdDriverPrebidBidderCountries": ["XX"],
 	"wgAdDriverUapCountries": ["XX"],
 	"icTaxonomyAdTags": [
 		{
@@ -36,10 +31,7 @@
 			"value": true
 		}
 	],
-	"wgAdDriverA9DealsCountries": ["XX"],
 	"wgAdDriverOutstreamSlotCountries": null,
-	"wgAdDriverA9BidderCountries": ["XX"],
-	"wgAdDriverOpenXPrebidBidderCountries": ["XX"],
 	"wgAdDriverLABradorTestCountries": ["PL/40-cached"],
 	"icPorvataDirect": [
 		{
