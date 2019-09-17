@@ -7,7 +7,6 @@
 		"tslint-config-prettier"
 	],
 	"rules": {
-		"max-line-length": [true, { "limit": 100, "ignore-pattern": "^import |^export {(.*?)} |http" }],
 		"ordered-imports": [
 			true,
 			{

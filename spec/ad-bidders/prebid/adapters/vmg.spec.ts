@@ -1,5 +1,5 @@
+import { Vmg } from '@wikia/ad-bidders/prebid/adapters/vmg';
 import { expect } from 'chai';
-import { Vmg } from '../../../../src/ad-bidders/prebid/adapters/vmg';
 
 describe('VMG bidder adapter', () => {
 	it('can be enabled', () => {

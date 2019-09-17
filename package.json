@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "43.0.3",
+	"version": "45.4.0",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
@@ -23,12 +23,8 @@
 		"@alugha/ima": "1.1.2",
 		"@babel/cli": "^7.0.0",
 		"@babel/core": "^7.0.0",
-		"@babel/plugin-proposal-class-properties": "^7.0.0",
-		"@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-		"@babel/plugin-syntax-dynamic-import": "^7.0.0",
 		"@babel/plugin-transform-runtime": "^7.0.0",
 		"@babel/preset-env": "^7.0.0",
-		"@babel/register": "^7.0.0",
 		"@types/chai": "4.1.7",
 		"@types/doubleclick-gpt": "238.0.1",
 		"@types/js-cookie": "2.2.1",
@@ -46,7 +42,6 @@
 		"awesome-typescript-loader": "5.2.1",
 		"babel-loader": "^8.0.0",
 		"babel-plugin-lodash": "^3.3.2",
-		"babel-plugin-syntax-trailing-function-commas": "6.22.0",
 		"chai": "^4.1.2",
 		"chrome-remote-interface": "0.26.1",
 		"concat": "1.0.3",
@@ -81,13 +76,16 @@
 		"selenium-standalone": "6.15.2",
 		"sinon": "4.1.4",
 		"string-replace-webpack-plugin": "0.1.3",
+		"ts-node": "8.3.0",
+		"tsconfig-paths": "3.8.0",
 		"tscpaths": "git://github.com/bielik20/tscpaths.git#release",
+		"tslib": "1.10.0",
 		"tslint": "5.12.1",
 		"tslint-ban-snippets": "2.1.0",
 		"tslint-config-airbnb": "5.11.1",
 		"tslint-config-prettier": "1.18.0",
 		"tslint-eslint-rules": "5.4.0",
-		"typescript": "3.3.3",
+		"typescript": "3.6.3",
 		"webdriverio": "5.7.9",
 		"webpack": "4.5.0",
 		"webpack-cli": "2.0.14",
@@ -138,14 +136,14 @@
 		"test:gp": "mocha-webpack --full-trace './platforms/gamepedia/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.platforms.js --webpack-env.PLATFORM=gamepedia",
 		"test:watch": "npm run test -- -w",
 		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.spec.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
-		"wdio-desktop": "BABEL_ENV=test wdio wdio.desktop.conf.js",
-		"wdio-mobile": "BABEL_ENV=test wdio wdio.mobile.conf.js",
+		"wdio-desktop": "BABEL_ENV=test wdio tests/wdio.desktop.conf.js",
+		"wdio-mobile": "BABEL_ENV=test wdio tests/wdio.mobile.conf.js",
 		"wdio-all": "npm run wdio-mobile; npm run wdio-desktop",
 		"allure": "cp -R ./tests/allure-results/report/history ./tests/allure-results | true && allure generate ./tests/allure-results --output ./tests/allure-results/report --clean && allure open ./tests/allure-results/report",
 		"allure-clear": "find ./tests/allure-results/ -name *attachment.json -delete; find ./tests/allure-results/ -name *testsuite.xml -delete; find ./tests/allure-results/ -name *attachment.png -delete",
 		"check-types": "tsc -noEmit",
 		"check-types:watch": "tsc --watch -noEmit",
-		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms -e @types | grep -v npm",
+		"check-types:selected": "npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms | grep -v npm",
 		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
 		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
 		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
@@ -153,7 +151,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms -e @types | grep -v npm; then exit 1; fi"
+			"pre-commit": "lint-staged && if npm run check-types 2> /dev/null | grep -e src/ad-engine -e src/ad-bidders -e src/ad-services -e src/ad-tracking -e platforms | grep -v npm; then exit 1; fi"
 		}
 	},
 	"lint-staged": {

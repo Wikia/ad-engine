@@ -1,4 +1,12 @@
-import { biddersContext, slotsContext, uapHelper } from '@platforms/shared';
+import {
+	registerPorvataTracker,
+	registerPostmessageTrackingTracker,
+	registerSlotTracker,
+	registerViewabilityTracker,
+	setupBidders,
+	slotsContext,
+	uapHelper,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -9,15 +17,11 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { setA9AdapterConfig } from './bidders/a9';
+import { setPrebidAdaptersConfig } from './bidders/prebid';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { targeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
-import {
-	registerPorvataTracker,
-	registerPostmessageTrackingTracker,
-	registerSlotTracker,
-	registerViewabilityTracker,
-} from './tracking/tracker';
 
 class ContextSetup {
 	private instantConfig: InstantConfigService;
@@ -56,45 +60,9 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set('bidders', biddersContext.generate());
-
-		if (this.instantConfig.isGeoEnabled('wgAdDriverA9BidderCountries')) {
-			context.set('bidders.a9.enabled', true);
-			context.set(
-				'bidders.a9.dealsEnabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverA9DealsCountries'),
-			);
-		}
-
-		if (this.instantConfig.isGeoEnabled('wgAdDriverPrebidBidderCountries')) {
-			context.set('bidders.prebid.enabled', true);
-			context.set(
-				'bidders.prebid.appnexus.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverAppNexusBidderCountries'),
-			);
-			context.set(
-				'bidders.prebid.indexExchange.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverIndexExchangeBidderCountries'),
-			);
-			context.set(
-				'bidders.prebid.openx.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
-			);
-
-			context.set(
-				'bidders.prebid.pubmatic.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
-			);
-			context.set(
-				'bidders.prebid.rubicon_display.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverRubiconDisplayPrebidCountries'),
-			);
-		}
-
-		context.set(
-			'bidders.enabled',
-			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
-		);
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig();
+		setupBidders(context, this.instantConfig);
 
 		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
@@ -109,7 +77,9 @@ class ContextSetup {
 
 		this.setupPageLevelTargeting(context.get('wiki'));
 
-		uapHelper.configureUap(this.instantConfig);
+		if (uapHelper.isUapAllowed(this.instantConfig.get('icUapRestriction'))) {
+			uapHelper.configureUap();
+		}
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));

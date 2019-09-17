@@ -1,4 +1,5 @@
-import { PrebidAdapter, PrebidAdSlotConfig } from '../prebid-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Gumgum extends PrebidAdapter {
 	static bidderName = 'gumgum';

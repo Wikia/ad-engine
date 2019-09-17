@@ -1,5 +1,5 @@
+import { Pubmatic } from '@wikia/ad-bidders/prebid/adapters/pubmatic';
 import { expect } from 'chai';
-import { Pubmatic } from '../../../../src/ad-bidders/prebid/adapters/pubmatic';
 
 describe('Pubmatic bidder adapter', () => {
 	it('can be enabled', () => {

@@ -1,4 +1,4 @@
-const StaticFilesServer = require('./tests/libs/static-files-server');
+const StaticFilesServer = require('./libs/static-files-server');
 const AD_ENGINE_PORT = process.env.AD_ENGINE_PORT || 8080;
 
 exports.config = {
@@ -15,12 +15,17 @@ exports.config = {
 	reporters: ['spec'],
 	mochaOpts: {
 		ui: 'bdd',
-		compilers: ['js:@babel/register'],
+		require: ['tsconfig-paths/register'],
 		timeout: 6000000,
 	},
 	staticFilesServerConfig: {
 		basename: '/',
 		mount: './examples',
 		port: AD_ENGINE_PORT,
+	},
+	before: function() {
+		// Makes tsconfig-paths use correct tsconfig
+		process.env.TS_NODE_PROJECT = 'tests/tsconfig.json';
+		require('ts-node').register({ files: true, project: 'tests/tsconfig.json' });
 	},
 };
