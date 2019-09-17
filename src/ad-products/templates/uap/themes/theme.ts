@@ -1,5 +1,5 @@
 import { AdSlot } from '@ad-engine/core';
-import { PorvataPlayer } from '../../..';
+import { PorvataPlayer } from '../../../video/player/porvata/porvata';
 import { UapVideoSettings } from '../uap-video-settings';
 import { UapParams } from '../universal-ad-package';
 
