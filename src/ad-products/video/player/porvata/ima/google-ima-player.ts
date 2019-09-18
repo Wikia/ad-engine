@@ -1,5 +1,4 @@
-import { Dictionary } from '../../../../models';
-import { vastDebugger } from '../../../vast-debugger';
+import { Dictionary, vastDebugger } from '@ad-engine/core';
 import { VideoParams } from '../video-settings';
 import { googleImaSetup } from './google-ima-setup';
 

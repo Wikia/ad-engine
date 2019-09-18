@@ -1,4 +1,4 @@
-import { scriptLoader } from '../../../../utils';
+import { utils } from '@ad-engine/core';
 import { TwitchOptions } from '../twitch';
 
 const twitchLibraryUrl = '//player.twitch.tv/js/embed/v1.js';
@@ -8,7 +8,7 @@ function load(): Promise<Event | void> {
 		return Promise.resolve();
 	}
 
-	return scriptLoader.loadScript(twitchLibraryUrl);
+	return utils.scriptLoader.loadScript(twitchLibraryUrl);
 }
 
 function getLibrary(): any {

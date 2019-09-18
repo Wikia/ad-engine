@@ -44,6 +44,7 @@ export interface SlotConfig {
 	viewportConflicts?: string[];
 	outOfPage?: any;
 
+	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
 }

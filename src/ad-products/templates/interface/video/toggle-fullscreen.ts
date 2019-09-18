@@ -1,6 +1,6 @@
 import { createIcon, icons } from '../icons';
 
-function add(video, container) {
+function add(video, container): void {
 	const toggleFullscreenButton = document.createElement('div');
 	const offIcon = createIcon(icons.FULLSCREEN_OFF, [
 		'fullscreen-off-icon',

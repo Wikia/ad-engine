@@ -1,11 +1,7 @@
-import { PorvataListener } from '../../../listeners';
-import { AdSlot, Targeting } from '../../../models';
-import { context } from '../../../services/context-service';
-import { SlotFiller } from '../../../services/filler-service';
-import { templateService } from '../../../services/template-service';
-import { client, LazyQueue, tryProperty, viewportObserver, whichProperty } from '../../../utils';
+import { AdSlot, context, SlotFiller, Targeting, templateService, utils } from '@ad-engine/core';
 import { GoogleIma } from './ima/google-ima';
 import { GoogleImaPlayer } from './ima/google-ima-player';
+import { PorvataListener } from './porvata-listener';
 import { VideoParams, VideoSettings } from './video-settings';
 
 export interface PorvataTemplateParams {
@@ -74,20 +70,20 @@ const prepareVideoAdContainer = (params: VideoParams): HTMLElement => {
 };
 
 const nativeFullscreenOnElement = (element: HTMLElement): NativeFullscreen => {
-	const enter = tryProperty(element, [
+	const enter = utils.tryProperty(element, [
 		'webkitRequestFullscreen',
 		'mozRequestFullScreen',
 		'msRequestFullscreen',
 		'requestFullscreen',
 	]);
-	const exit = tryProperty(document, [
+	const exit = utils.tryProperty(document, [
 		'webkitExitFullscreen',
 		'mozCancelFullScreen',
 		'msExitFullscreen',
 		'exitFullscreen',
 	]);
 	const fullscreenChangeEvent = (
-		whichProperty(document, [
+		utils.whichProperty(document, [
 			'onwebkitfullscreenchange',
 			'onmozfullscreenchange',
 			'onmsfullscreenchange',
@@ -120,12 +116,12 @@ export class PorvataPlayer {
 	height: number;
 	muteProtect: boolean;
 	readonly defaultVolume = 0.75;
-	readonly destroyCallbacks = new LazyQueue();
+	readonly destroyCallbacks = new utils.LazyQueue();
 	nativeFullscreen: NativeFullscreen;
 
 	constructor(
 		readonly ima: GoogleImaPlayer,
-		private params: VideoParams,
+		public params: VideoParams,
 		public videoSettings: VideoSettings,
 	) {
 		this.container = prepareVideoAdContainer(params);
@@ -373,10 +369,14 @@ export class Porvata {
 		params: PorvataTemplateParams,
 		listener: (isVisible: boolean) => void,
 	): string {
-		return viewportObserver.addListener(params.viewportHookElement || params.container, listener, {
-			offsetTop: params.viewportOffsetTop || 0,
-			offsetBottom: params.viewportOffsetBottom || 0,
-		});
+		return utils.viewportObserver.addListener(
+			params.viewportHookElement || params.container,
+			listener,
+			{
+				offsetTop: params.viewportOffsetTop || 0,
+				offsetBottom: params.viewportOffsetBottom || 0,
+			},
+		);
 	}
 
 	static inject(params: PorvataTemplateParams): Promise<PorvataPlayer> {
@@ -454,7 +454,7 @@ export class Porvata {
 					video.ima.setAutoPlay(false);
 					video.ima.dispatchEvent('wikiaAdCompleted');
 					if (viewportListenerId) {
-						viewportObserver.removeListener(viewportListenerId);
+						utils.viewportObserver.removeListener(viewportListenerId);
 						viewportListenerId = null;
 					}
 					isFirstPlay = false;
@@ -479,7 +479,7 @@ export class Porvata {
 				});
 				video.addOnDestroyCallback(() => {
 					if (viewportListenerId) {
-						viewportObserver.removeListener(viewportListenerId);
+						utils.viewportObserver.removeListener(viewportListenerId);
 						viewportListenerId = null;
 					}
 				});
@@ -498,7 +498,7 @@ export class Porvata {
 				video.addEventListener('wikiaEmptyAd', () => {
 					viewportListenerId = Porvata.addOnViewportChangeListener(params, () => {
 						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
-						viewportObserver.removeListener(viewportListenerId);
+						utils.viewportObserver.removeListener(viewportListenerId);
 					});
 				});
 
@@ -511,8 +511,8 @@ export class Porvata {
 	}
 
 	static isVideoAutoplaySupported(): boolean {
-		const isAndroid: boolean = client.getOperatingSystem() === 'Android';
-		const browser: string[] = client.getBrowser().split(' ');
+		const isAndroid: boolean = utils.client.getOperatingSystem() === 'Android';
+		const browser: string[] = utils.client.getBrowser().split(' ');
 		const isCompatibleChrome: boolean =
 			browser[0].indexOf('Chrome') !== -1 && parseInt(browser[1], 10) >= 54;
 

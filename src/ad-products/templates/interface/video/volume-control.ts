@@ -1,6 +1,6 @@
 import { createIcon, icons } from '../icons';
 
-function createVolumeControl(params) {
+function createVolumeControl(params): HTMLDivElement {
 	const iconPrefix = params.theme === 'hivi' ? 'HIVI_' : '';
 	const volume = document.createElement('div');
 	const offIcon = createIcon(icons[`${iconPrefix}VOLUME_OFF`], [
@@ -21,7 +21,7 @@ function createVolumeControl(params) {
 	return volume;
 }
 
-function updateCurrentState(video, volumeControl) {
+function updateCurrentState(video, volumeControl): void {
 	if (video.isMuted() || video.isMobilePlayerMuted()) {
 		volumeControl.classList.add('is-on');
 	} else {
@@ -33,7 +33,7 @@ function updateCurrentState(video, volumeControl) {
 	}
 }
 
-function add(video, container) {
+function add(video, container): void {
 	const volumeControl = createVolumeControl(video.params);
 
 	video.addEventListener('wikiaVolumeChange', () => {

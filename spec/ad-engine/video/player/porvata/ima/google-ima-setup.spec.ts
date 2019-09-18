@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { AdSlot } from '../../../../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../../../../src/ad-engine/services/context-service';
 import { slotService } from '../../../../../../src/ad-engine/services/slot-service';
-import { googleImaSetup } from '../../../../../../src/ad-engine/video/player/porvata/ima/google-ima-setup';
+import { googleImaSetup } from '../../../../../../src/ad-products/video/player/porvata/ima/google-ima-setup';
 import ConfigMock from '../../../../config-mock';
 
 describe('google-ima-setup', () => {

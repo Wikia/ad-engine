@@ -7,7 +7,7 @@ import { DEFAULT_VIDEO_ASPECT_RATIO } from '../../outstream/porvata-template';
  * @param container Video container
  * @param params videoSettings parameters
  */
-function add(video, container, params) {
+function add(video, container, params): void {
 	const slot = slotService.get(params.slotName);
 
 	let slotExpanded = false;

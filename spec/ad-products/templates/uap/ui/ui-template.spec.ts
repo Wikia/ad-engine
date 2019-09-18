@@ -1,9 +1,9 @@
+import { UapVideoSettings } from '@wikia/ad-products/templates/uap/uap-video-settings';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import CloseButton from '../../../../../src/ad-products/templates/interface/video/close-button';
 import ReplayOverlay from '../../../../../src/ad-products/templates/interface/video/replay-overlay';
 import { selectTemplate } from '../../../../../src/ad-products/templates/interface/video/ui-template';
-import { VideoSettings } from '../../../../../src/ad-products/templates/uap/video-settings';
 
 function getContainer() {
 	return document.createElement('div');
@@ -11,7 +11,7 @@ function getContainer() {
 
 describe('UITemplate', () => {
 	it('Should show close button element if there is no autoplay and there is no split screen', () => {
-		const videoSettings = new VideoSettings({ autoPlay: true, container: getContainer() });
+		const videoSettings = new UapVideoSettings({ autoPlay: true, container: getContainer() });
 
 		sinon.stub(videoSettings, 'isAutoPlay');
 		videoSettings.isAutoPlay.returns(false);
@@ -24,7 +24,7 @@ describe('UITemplate', () => {
 	});
 
 	it('Should hide close button element if there is autoplay for not split ad', () => {
-		const videoSettings = new VideoSettings({ container: getContainer() });
+		const videoSettings = new UapVideoSettings({ container: getContainer() });
 
 		sinon.stub(videoSettings, 'isAutoPlay');
 		videoSettings.isAutoPlay.returns(true);
@@ -37,7 +37,7 @@ describe('UITemplate', () => {
 	});
 
 	it('Should hide close button element if there is auto play for split ad', () => {
-		const videoSettings = new VideoSettings({ container: getContainer() });
+		const videoSettings = new UapVideoSettings({ container: getContainer() });
 
 		sinon.stub(videoSettings, 'isAutoPlay');
 		videoSettings.isAutoPlay.returns(true);
@@ -50,7 +50,7 @@ describe('UITemplate', () => {
 	});
 
 	it('Should show replay button and close for click to play and split', () => {
-		const videoSettings = new VideoSettings({ container: getContainer() });
+		const videoSettings = new UapVideoSettings({ container: getContainer() });
 
 		sinon.stub(videoSettings, 'isAutoPlay');
 		videoSettings.isAutoPlay.returns(false);

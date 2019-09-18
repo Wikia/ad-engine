@@ -1,5 +1,5 @@
 import { context } from '@ad-engine/core';
-import { universalAdPackage } from './universal-ad-package';
+import { UapParams, universalAdPackage } from './universal-ad-package';
 
 export interface RoadblockTemplateConfig {
 	slotsToEnable: string[];
@@ -20,7 +20,8 @@ export class Roadblock {
 		};
 	}
 
-	config: RoadblockTemplateConfig;
+	private config: RoadblockTemplateConfig;
+	private params: UapParams;
 
 	constructor() {
 		this.config = context.get('templates.roadblock') || {};
@@ -29,7 +30,7 @@ export class Roadblock {
 	/**
 	 * Initializes the Roadblock unit
 	 */
-	init(params: {}): void {
+	init(params: UapParams): void {
 		this.params = params;
 		this.params.adProduct = 'ruap';
 		universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);

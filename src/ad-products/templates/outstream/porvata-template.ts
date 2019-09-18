@@ -1,15 +1,11 @@
+import { AdSlot, context, events, eventService, slotTweaker } from '@ad-engine/core';
+import { getTranslation } from '../../common/i18n';
 import {
-	AdSlot,
-	context,
-	events,
-	eventService,
 	Porvata,
 	PorvataPlayer,
 	PorvataTemplateParams,
-	slotTweaker,
 	VpaidMode,
-} from '@ad-engine/core';
-import { getTranslation } from '../../common/i18n';
+} from '../../video/player/porvata/porvata';
 import * as videoUserInterface from '../interface/video';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
