@@ -32,7 +32,7 @@ const targets = {
 			// https://github.com/rollup/rollup-plugin-node-resolve#usage
 			sourceMaps(),
 			// Resolve source maps to the original source
-			typescript({ check: false, useTsconfigDeclarationDir: true, tsconfig: TSCONFIG }),
+			typescript({ useTsconfigDeclarationDir: true, tsconfig: TSCONFIG }),
 			classToPure(),
 			tscpaths({ out: 'dist/types' }),
 			adEngineVersion(pkg.name, pkg.version),

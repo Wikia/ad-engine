@@ -1,5 +1,7 @@
+/* tslint:disable:no-blacklisted-paths */
 // This file is used in all platforms so mind your imports
-import { Context, InstantConfigService } from '@wikia/ad-engine';
+import { Context } from '../../../src/ad-engine/services/context-service';
+import { InstantConfigService } from '../../../src/ad-services/instant-config/instant-config.service';
 
 export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');

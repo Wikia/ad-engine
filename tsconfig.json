@@ -3,7 +3,6 @@
 	"compilerOptions": {
 		"outDir": "dist",
 		"sourceMap": true,
-		"allowJs": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"resolveJsonModule": true,
