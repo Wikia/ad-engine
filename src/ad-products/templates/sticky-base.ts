@@ -80,9 +80,8 @@ export abstract class StickyBase {
 			stickyUntilSlotViewed,
 		} = this.config;
 		const whenSlotViewedOrTimeout = async () => {
-			await (stickyUntilSlotViewed
-				? this.adSlot.loaded.then(() => this.adSlot.viewed)
-				: Promise.resolve());
+			await this.adSlot.loaded;
+			await (stickyUntilSlotViewed ? this.adSlot.viewed : Promise.resolve());
 			await utils.wait(stickyDefaultTime + stickyAdditionalTime);
 		};
 
