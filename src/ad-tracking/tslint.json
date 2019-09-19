@@ -8,6 +8,7 @@
 					"/ad-bidders",
 					"/ad-products",
 					"/ad-services",
+					"@ad-engine/services",
 					"/ad-tracking",
 					"@ad-engine/tracking"
 				]

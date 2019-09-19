@@ -12,6 +12,7 @@
 		"paths": {
 			"@wikia/ad-engine": ["src/index.ts"],
 			"@ad-engine/core": ["src/ad-engine"],
+			"@ad-engine/services": ["src/ad-services"],
 			"@ad-engine/tracking": ["src/ad-tracking"],
 			"@platforms/shared": ["platforms/shared/index.ts"]
 		},
