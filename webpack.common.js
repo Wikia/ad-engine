@@ -32,8 +32,8 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 		rules: [
 			getTypeScriptLoader({
 				include,
-				tsconfig,
-				// reportFiles,
+				tsconfig: 'tsconfig.json',
+				reportFiles: ['src/**/*.ts', 'platforms/**/*.ts'],
 				// transpileOnly,
 			}),
 			{
