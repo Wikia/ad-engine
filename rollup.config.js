@@ -34,7 +34,7 @@ const targets = {
 			// Resolve source maps to the original source
 			typescript({ useTsconfigDeclarationDir: true, tsconfig: TSCONFIG }),
 			classToPure(),
-			tscpaths({ out: 'dist/types' }),
+			tscpaths({ out: 'dist/types', project: TSCONFIG }),
 			adEngineVersion(pkg.name, pkg.version),
 		],
 	},
