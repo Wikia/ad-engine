@@ -21,6 +21,7 @@ module.exports.getTypeScriptLoader = ({
 	tsconfig,
 	transpileOnly = false,
 	reportFiles,
+	paths,
 }) => {
 	return {
 		test: /\.(js|ts)$/,
@@ -30,6 +31,7 @@ module.exports.getTypeScriptLoader = ({
 			{
 				loader: 'awesome-typescript-loader',
 				options: {
+					paths,
 					reportFiles,
 					transpileOnly,
 					configFileName: tsconfig,

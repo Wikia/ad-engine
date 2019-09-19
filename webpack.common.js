@@ -34,6 +34,13 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 				include,
 				tsconfig: 'tsconfig.json',
 				reportFiles: ['src/**/*.ts', 'platforms/**/*.ts'],
+				paths: {
+					'@wikia/ad-engine': ['src/index.ts'],
+					'@ad-engine/core': ['src/ad-engine'],
+					'@ad-engine/services': ['src/ad-services'],
+					'@ad-engine/tracking': ['src/ad-tracking'],
+					'@platforms/shared': ['platforms/shared/index.ts'],
+				},
 				// transpileOnly,
 			}),
 			{
@@ -55,3 +62,5 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 		],
 	},
 });
+
+function mergePaths(configs) {}

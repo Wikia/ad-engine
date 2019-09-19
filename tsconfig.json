@@ -9,13 +9,6 @@
 		"noImplicitAny": false,
 		"baseUrl": ".",
 		"noUnusedLocals": true,
-		"paths": {
-			"@wikia/ad-engine": ["src/index.ts"],
-			"@ad-engine/core": ["src/ad-engine"],
-			"@ad-engine/services": ["src/ad-services"],
-			"@ad-engine/tracking": ["src/ad-tracking"],
-			"@platforms/shared": ["platforms/shared/index.ts"]
-		},
 		"typeRoots": ["node_modules/@types", "@types"]
 	},
 	"include": ["src", "spec", "platforms", "examples"],
