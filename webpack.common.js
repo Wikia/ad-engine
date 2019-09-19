@@ -2,19 +2,26 @@ const path = require('path');
 const get = require('lodash/get');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StringReplacePlugin = require('string-replace-webpack-plugin');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
+const { mergeCompilerOptionsPaths } = require('./configs/utils');
 const pkg = require('./package.json');
 
 const include = [
 	path.resolve(__dirname, 'src'),
-	// path.resolve(__dirname, 'examples'),
-	// path.resolve(__dirname, 'spec'),
 	path.resolve(__dirname, 'platforms'),
+	path.resolve(__dirname, 'examples'),
+	path.resolve(__dirname, 'spec'),
 ];
 
-module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
+const tsconfigs = [
+	path.resolve(__dirname, 'src/tsconfig.json'),
+	path.resolve(__dirname, 'platforms/tsconfig.json'),
+	path.resolve(__dirname, 'examples/tsconfig.json'),
+	path.resolve(__dirname, 'spec/tsconfig.json'),
+];
+
+module.exports = () => ({
 	mode: 'development',
 
 	context: __dirname,
@@ -22,26 +29,15 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [
-			new TsconfigPathsPlugin({ configFile: 'src/tsconfig.json' }),
-			new TsconfigPathsPlugin({ configFile: 'platforms/tsconfig.json' }),
-		],
+		plugins: tsconfigs.map((configFile) => new TsconfigPathsPlugin({ configFile })),
 	},
 
 	module: {
 		rules: [
 			getTypeScriptLoader({
 				include,
-				tsconfig: 'tsconfig.json',
 				reportFiles: ['src/**/*.ts', 'platforms/**/*.ts'],
-				paths: {
-					'@wikia/ad-engine': ['src/index.ts'],
-					'@ad-engine/core': ['src/ad-engine'],
-					'@ad-engine/services': ['src/ad-services'],
-					'@ad-engine/tracking': ['src/ad-tracking'],
-					'@platforms/shared': ['platforms/shared/index.ts'],
-				},
-				// transpileOnly,
+				paths: mergeCompilerOptionsPaths(tsconfigs),
 			}),
 			{
 				test: /\.s?css$/,
@@ -62,5 +58,3 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 		],
 	},
 });
-
-function mergePaths(configs) {}

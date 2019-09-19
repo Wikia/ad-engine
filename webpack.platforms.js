@@ -29,12 +29,5 @@ const platforms = ({ platform }) => {
 };
 
 module.exports = ({ PLATFORM }) => {
-	return merge(
-		common({
-			tsconfig: `platforms/${PLATFORM}/tsconfig.json`,
-			tsconfigPaths: 'tsconfig.json',
-			reportFiles: [`platforms/${PLATFORM}/**/*.ts`],
-		}),
-		platforms({ platform: PLATFORM }),
-	);
+	return merge(common(), platforms({ platform: PLATFORM }));
 };
