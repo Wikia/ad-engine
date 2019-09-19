@@ -3,13 +3,14 @@ const get = require('lodash/get');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StringReplacePlugin = require('string-replace-webpack-plugin');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const pkg = require('./package.json');
 
 const include = [
 	path.resolve(__dirname, 'src'),
-	path.resolve(__dirname, 'examples'),
-	path.resolve(__dirname, 'spec'),
+	// path.resolve(__dirname, 'examples'),
+	// path.resolve(__dirname, 'spec'),
 	path.resolve(__dirname, 'platforms'),
 ];
 
@@ -21,7 +22,10 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ configFileName: tsconfigPaths })],
+		plugins: [
+			new TsconfigPathsPlugin({ configFile: 'src/tsconfig.json' }),
+			new TsconfigPathsPlugin({ configFile: 'platforms/tsconfig.json' }),
+		],
 	},
 
 	module: {
@@ -29,8 +33,8 @@ module.exports = ({ tsconfig, tsconfigPaths, transpileOnly, reportFiles }) => ({
 			getTypeScriptLoader({
 				include,
 				tsconfig,
-				reportFiles,
-				transpileOnly,
+				// reportFiles,
+				// transpileOnly,
 			}),
 			{
 				test: /\.s?css$/,
