@@ -1,6 +1,6 @@
 export const basicContext = {
 	adUnitId:
-		'/{custom.dfpId}/sports/{slotConfig.group}/{state.deviceType}/' +
+		'/{custom.dfpId}/cports/{slotConfig.group}/{state.deviceType}/' +
 		'{targeting.skin}-{targeting.s2}/_{targeting.s1}-{targeting.s0}',
 	custom: {
 		dfpId: '5441',
@@ -22,6 +22,9 @@ export const basicContext = {
 		maxDelayTimeout: 2000,
 	},
 	slots: {},
+	slotGroups: {
+		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+	},
 	services: {
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=sports',
@@ -39,8 +42,8 @@ export const basicContext = {
 	},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/sports/{slotConfig.group}/{state.deviceType}/' +
-			'{targeting.skin}-{targeting.s2}/{targeting.s1}-{targeting.s0}',
+			'/{custom.dfpId}/cports/{slotConfig.adProduct}/{state.deviceType}/' +
+			'{targeting.skin}-{targeting.s2}/_{targeting.s1}-{targeting.s0}',
 	},
 	templates: {},
 };

@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import { context, NavbarManager, slotTweaker, universalAdPackage, utils } from '@wikia/ad-engine';
 
 const { CSS_TIMING_EASE_IN_CUBIC, FADE_IN_TIME, SLIDE_OUT_TIME } = universalAdPackage;
@@ -27,6 +28,8 @@ export function getBfaaConfigMobile(): any {
 			this.config = config || context.get('templates.bfaa') || {};
 			this.navbarElement = document.getElementsByClassName('header-container')[0];
 			this.navbarManager = new NavbarManager(this.navbarElement);
+
+			slotsContext.setupSlotVideoAdUnit(adSlot, params);
 
 			slotTweaker.onReady(adSlot).then(() => {
 				this.adjustPageMargin();
