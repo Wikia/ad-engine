@@ -5,7 +5,7 @@ import { timeouts } from '../../../common/timeouts';
 import { network } from '../../../common/network';
 
 // TODO fix network capture
-describe('Desktop HiVi UAP ads page: top leaderboard', () => {
+describe.skip('Desktop HiVi UAP ads page: top leaderboard', () => {
 	const logs = [];
 
 	before(() => {
@@ -30,6 +30,7 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 		browser.pause(5000);
 		logs.forEach((log) => {
 			console.log(log);
+			console.log(log.text.includes('👁 Custom listener: onImpressionViewable top_leaderboard'));
 		});
 	});
 
