@@ -2,7 +2,7 @@ const path = require('path');
 const get = require('lodash/get');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StringReplacePlugin = require('string-replace-webpack-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
@@ -29,7 +29,11 @@ module.exports = () => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: tsconfigs.map((configFile) => new TsconfigPathsPlugin({ configFile })),
+		plugins: [
+			new TsConfigPathsPlugin({
+				paths: mergeCompilerOptionsPaths(tsconfigs),
+			}),
+		],
 	},
 
 	module: {
