@@ -14,13 +14,11 @@ export class Button extends UiComponent {
 		return ['button-control', ...super.getClassNames()];
 	}
 
-	onClick(event) {
+	onClick(event): void {
 		const { onClick } = this.props;
 
 		if (typeof onClick === 'function') {
-			return onClick(event);
+			onClick(event);
 		}
-
-		return undefined;
 	}
 }

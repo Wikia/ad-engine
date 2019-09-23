@@ -3,7 +3,7 @@ import { TRANSLATIONS } from './translations';
 
 const defaultLanguage = 'en';
 
-export function getTranslation(category, key) {
+export function getTranslation(category: string, key: string): string {
 	const lang = context.get('options.contentLanguage');
 	const language =
 		lang && typeof TRANSLATIONS[category][lang] !== 'undefined' ? lang : defaultLanguage;

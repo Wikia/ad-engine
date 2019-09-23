@@ -37,7 +37,7 @@ class ContextSetup {
 	private setupAdContext(isOptedIn = false): void {
 		const isMobile = getDeviceMode() === 'mobile';
 
-		context.set('state.showAds', true);
+		context.set('state.showAds', !utils.client.isSteamPlatform());
 		context.set('state.isMobile', isMobile);
 		context.set('state.deviceType', utils.client.getDeviceType());
 

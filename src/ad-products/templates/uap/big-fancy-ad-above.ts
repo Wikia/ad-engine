@@ -1,10 +1,9 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
 import { NavbarManager, setupNavbar } from '../../utils';
-import { BfaaTheme } from './themes/classic';
 import { bfaThemeFactory } from './themes/factory';
-import { BfaaHiviTheme } from './themes/hivi';
+import { BigFancyAdTheme } from './themes/theme';
+import { UapVideoSettings } from './uap-video-settings';
 import { UapParams, universalAdPackage } from './universal-ad-package';
-import { VideoSettings } from './video-settings';
 
 export type StickinessCallback = (
 	config: BigFancyAdAboveConfig,
@@ -68,11 +67,11 @@ export class BigFancyAdAbove {
 		};
 	}
 
-	config: BigFancyAdAboveConfig;
-	container: HTMLElement;
-	videoSettings: VideoSettings = null;
-	theme: BfaaTheme | BfaaHiviTheme = null;
-	params: UapParams;
+	private config: BigFancyAdAboveConfig;
+	private container: HTMLElement;
+	private videoSettings: UapVideoSettings;
+	private theme: BigFancyAdTheme;
+	private params: UapParams;
 
 	constructor(private adSlot: AdSlot) {
 		this.config = context.get('templates.bfaa') || {};
@@ -101,12 +100,14 @@ export class BigFancyAdAbove {
 		// TODO: End of hack
 
 		universalAdPackage.init(this.params, this.config.slotsToEnable, this.config.slotsToDisable);
-		this.videoSettings = new VideoSettings(this.params);
+		this.videoSettings = new UapVideoSettings(this.params);
 		this.container.style.backgroundColor = this.getBackgroundColor();
 		this.container.classList.add('bfaa-template');
 		this.theme = bfaThemeFactory.makeAboveTheme(this.adSlot, this.params);
 
-		this.theme.adIsReady(this.videoSettings).then((iframe) => this.onAdReady(iframe));
+		this.theme
+			.adIsReady(this.videoSettings)
+			.then((iframe: HTMLIFrameElement) => this.onAdReady(iframe));
 
 		this.config.onInit(this.adSlot, this.params, this.config);
 	}

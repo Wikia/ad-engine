@@ -1,5 +1,4 @@
-import { context } from '../../../../services';
-import { logger } from '../../../../utils';
+import { context, utils } from '@ad-engine/core';
 import { initMoatTracking } from './moat-video-tracker-script';
 
 const logGroup = 'moat-video-tracker';
@@ -11,7 +10,7 @@ class MoatVideoTracker {
 		viewMode: google.ima.ViewMode,
 		slicer1: string,
 		slicer2: string,
-	) {
+	): void {
 		const ids = {
 			slicer1,
 			slicer2,
@@ -21,9 +20,9 @@ class MoatVideoTracker {
 
 		try {
 			initMoatTracking(adsManager, ids, container);
-			logger(logGroup, 'MOAT video tracking initialized');
+			utils.logger(logGroup, 'MOAT video tracking initialized');
 		} catch (error) {
-			logger(logGroup, 'MOAT video tracking initalization error', error);
+			utils.logger(logGroup, 'MOAT video tracking initalization error', error);
 		}
 	}
 }

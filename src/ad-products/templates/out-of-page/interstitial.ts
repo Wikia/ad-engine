@@ -7,25 +7,31 @@ import {
 	slotTweaker,
 	utils,
 } from '@ad-engine/core';
-import AdvertisementLabel from '../interface/advertisement-label';
+import { AdvertisementLabel } from '../interface/advertisement-label';
 import { CloseButton } from '../interface/close-button';
 
+export interface InterstitialConfig {
+	onInit: (adSlot: AdSlot) => void;
+}
+
 export class Interstitial {
-	static getName() {
+	static getName(): string {
 		return 'interstitial';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): InterstitialConfig {
 		return {
 			onInit: () => {},
 		};
 	}
 
+	private config: InterstitialConfig;
+
 	constructor(public adSlot: AdSlot) {
 		this.config = context.get('templates.interstitial') || {};
 	}
 
-	init() {
+	init(): void {
 		const wrapper = this.adSlot.getElement();
 		const closeButton = new CloseButton({
 			onClick: () => {

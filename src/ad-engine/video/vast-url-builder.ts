@@ -2,6 +2,7 @@ import { AdSlot, Dictionary, Targeting } from '../models';
 import { context, slotService, trackingOptIn } from '../services';
 
 export interface VastOptions {
+	correlator: number;
 	targeting: Targeting;
 	videoAdUnitId: string;
 	contentSourceId: string;
