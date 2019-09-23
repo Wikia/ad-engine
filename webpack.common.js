@@ -14,12 +14,12 @@ const include = [
 	path.resolve(__dirname, 'spec'),
 ];
 
-const tsconfigs = [
+const paths = mergeCompilerOptionsPaths([
 	path.resolve(__dirname, 'src/tsconfig.json'),
 	path.resolve(__dirname, 'platforms/tsconfig.json'),
 	path.resolve(__dirname, 'examples/tsconfig.json'),
 	path.resolve(__dirname, 'spec/tsconfig.json'),
-];
+]);
 
 module.exports = () => ({
 	mode: 'development',
@@ -29,19 +29,15 @@ module.exports = () => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [
-			new TsConfigPathsPlugin({
-				paths: mergeCompilerOptionsPaths(tsconfigs),
-			}),
-		],
+		plugins: [new TsConfigPathsPlugin({ paths })],
 	},
 
 	module: {
 		rules: [
 			getTypeScriptLoader({
 				include,
+				paths,
 				reportFiles: ['src/**/*.ts', 'platforms/**/*.ts'],
-				paths: mergeCompilerOptionsPaths(tsconfigs),
 			}),
 			{
 				test: /\.s?css$/,
