@@ -10,6 +10,7 @@ describe('Outstream ads', () => {
 	let adStatus;
 
 	beforeEach(() => {
+		network.enableCapturing(outstream.callForPlayer);
 		helpers.fastScroll(-2000);
 	});
 
@@ -44,9 +45,16 @@ describe('Outstream ads', () => {
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.false;
 	});
+
+	it('Check if call for player is sent to GAM', () => {
+		expect(
+			network.checkIfHasResponse(outstream.porvataSlot),
+			'Call for player not registered in network tab',
+		).to.be.true;
+	});
 });
 
-describe.only('Outstream ads - Direct Porvata', () => {
+describe('Outstream ads - Direct Porvata', () => {
 	let adStatus;
 
 	before(() => {
