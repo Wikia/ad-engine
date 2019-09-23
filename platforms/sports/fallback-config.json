@@ -9,7 +9,7 @@
 	"wgAdDriverUapRestriction": 1,
 	"icBTRec": [
 		{
-			"apps": ["gamepedia"],
+			"apps": ["sports"],
 			"devices": ["desktop"],
 			"regions": ["XX"],
 			"value": true
