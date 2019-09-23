@@ -2,9 +2,11 @@ import { geoService } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
 import * as Cookies from 'js-cookie';
 import * as sinon from 'sinon';
-import { context, geoCacheStorage, sessionCookie } from '../../../src/ad-engine/services';
+import { context, InstantConfigCacheStorage, SessionCookie } from '../../../src/ad-engine/services';
 
 describe('Geo', () => {
+	const sessionCookie = SessionCookie.make();
+	const cacheStorage = InstantConfigCacheStorage.make();
 	let sandbox: sinon.SinonSandbox;
 	let randomStub: sinon.SinonStub;
 	let cookiesGetStub: sinon.SinonStub;
@@ -17,7 +19,7 @@ describe('Geo', () => {
 		sandbox = sinon.createSandbox();
 		randomStub = sandbox.stub(Math, 'random');
 		cookiesGetStub = sandbox.stub(Cookies, 'get');
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 	});
 
 	afterEach(() => {
@@ -302,34 +304,34 @@ describe('Geo', () => {
 
 	it('returns cached values', () => {
 		geoService.isProperGeo(['PL/50']);
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), []);
-		geoCacheStorage.resetCache();
+		assert.deepEqual(cacheStorage.getSamplingResults(), []);
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['PL/10'], 'test'));
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_A_90']);
-		geoCacheStorage.resetCache();
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['test_A_90']);
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.01);
 		assert.ok(geoService.isProperGeo(['PL/10'], 'test'));
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_B_10']);
-		geoCacheStorage.resetCache();
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['test_B_10']);
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.0001);
 		assert.ok(geoService.isProperGeo(['PL/0.1'], 'test'));
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_B_0.1']);
-		geoCacheStorage.resetCache();
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['test_B_0.1']);
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.5);
 		assert.notOk(geoService.isProperGeo(['PL/0.1'], 'test'));
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['test_A_99.9']);
-		geoCacheStorage.resetCache();
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['test_A_99.9']);
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.15);
 		assert.ok(geoService.isProperGeo(['PL/25'], 'CAT'));
 		assert.notOk(geoService.isProperGeo(['PL/10'], 'DOG'));
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['CAT_B_25', 'DOG_A_90']);
-		geoCacheStorage.resetCache();
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['CAT_B_25', 'DOG_A_90']);
+		cacheStorage.resetCache();
 	});
 
 	it('blocks sampled countries before sample', () => {
@@ -340,48 +342,48 @@ describe('Geo', () => {
 	it('eliminates JS floating point discrepancy', () => {
 		randomStub.returns(0.8);
 		geoService.isProperGeo(['PL/57'], 'TEST');
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_A_43']);
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['TEST_A_43']);
 
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.3);
 		geoService.isProperGeo(['PL/57'], 'TEST');
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_B_57']);
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['TEST_B_57']);
 
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.56876436787446);
 		geoService.isProperGeo(['PL/99.9'], 'TEST');
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_B_99.9']);
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['TEST_B_99.9']);
 
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.9990001);
 		geoService.isProperGeo(['PL/99.9'], 'TEST');
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_A_0.1']);
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['TEST_A_0.1']);
 	});
 
 	it('supports small values (to 0.000001 precision)', () => {
 		randomStub.returns(0.000000001);
 		geoService.isProperGeo(['PL/0.000001'], 'TEST');
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_B_0.000001']);
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['TEST_B_0.000001']);
 
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 
 		randomStub.returns(0.3);
 		geoService.isProperGeo(['PL/0.000001'], 'TEST');
-		assert.deepEqual(geoCacheStorage.getSamplingResults(), ['TEST_A_99.999999']);
+		assert.deepEqual(cacheStorage.getSamplingResults(), ['TEST_A_99.999999']);
 	});
 
 	it('returns empty string if argument is undefined', () => {
-		const result = geoCacheStorage.mapSamplingResults();
+		const result = cacheStorage.mapSamplingResults();
 
 		assert(Array.isArray(result));
 		assert.equal(result.length, 0);
 	});
 
 	it('returns empty string if argument is an empty array', () => {
-		const result = geoCacheStorage.mapSamplingResults([]);
+		const result = cacheStorage.mapSamplingResults([]);
 
 		assert(Array.isArray(result));
 		assert.equal(result.length, 0);
@@ -397,8 +399,8 @@ describe('Geo', () => {
 			'OOZ_B_99:ooz_b',
 		];
 
-		sandbox.stub(geoCacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
-		assert.deepEqual(geoCacheStorage.mapSamplingResults(wfKeyVals), ['foo_a', 'bar_b']);
+		sandbox.stub(cacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
+		assert.deepEqual(cacheStorage.mapSamplingResults(wfKeyVals), ['foo_a', 'bar_b']);
 	});
 
 	it('returns proper cached basset variables', () => {
@@ -415,7 +417,7 @@ describe('Geo', () => {
 		);
 
 		sessionCookie.setSessionId('test');
-		geoCacheStorage.resetCache();
+		cacheStorage.resetCache();
 
 		randomStub.returns(1);
 		assert.ok(geoService.isProperGeo(['PL/50-cached'], 'basset'));

@@ -1,10 +1,11 @@
+import { Kargo } from '@wikia/ad-bidders/prebid/adapters/kargo';
 import { expect } from 'chai';
-import { Kargo } from '../../../../src/ad-bidders/prebid/adapters/kargo';
 
 describe('Kargo bidder adapter', () => {
 	it('can be enabled', () => {
 		const kargo = new Kargo({
 			enabled: true,
+			slots: {},
 		});
 
 		expect(kargo.enabled).to.equal(true);
@@ -24,7 +25,11 @@ describe('Kargo bidder adapter', () => {
 		expect(kargo.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
-				sizes: [[300, 250]],
+				mediaTypes: {
+					banner: {
+						sizes: [[300, 250]],
+					},
+				},
 				bids: [
 					{
 						bidder: 'kargo',

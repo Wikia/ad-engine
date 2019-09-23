@@ -1,8 +1,7 @@
 import { context } from '@ad-engine/core';
-import { getTargeting } from '../prebid-helper';
-import { AdUnitConfig, BaseAdapter, EXTENDED_MAX_CPM } from './base-adapter';
+import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
-export class Rubicon extends BaseAdapter {
+export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
 	accountId: number;
 	maxCpm = EXTENDED_MAX_CPM;
@@ -17,12 +16,12 @@ export class Rubicon extends BaseAdapter {
 		this.accountId = options.accountId;
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): AdUnitConfig {
+	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): PrebidAdUnit {
 		if (code === 'featured' && !context.get('custom.rubiconInFV')) {
 			return null;
 		}
 
-		const targeting = getTargeting(code);
+		const targeting = this.getTargeting(code);
 
 		return {
 			code,

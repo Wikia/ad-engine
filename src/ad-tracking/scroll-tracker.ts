@@ -1,4 +1,4 @@
-import { context, events, eventService, scrollSpeedCalculator, utils } from '@ad-engine/core';
+import { context, events, eventService, ScrollSpeedCalculator, utils } from '@ad-engine/core';
 
 interface SpeedMeasurement {
 	time: number;
@@ -6,9 +6,21 @@ interface SpeedMeasurement {
 }
 
 export class ScrollTracker {
+	private static instance: ScrollTracker;
+
+	static make(): ScrollTracker {
+		if (!ScrollTracker.instance) {
+			ScrollTracker.instance = new ScrollTracker();
+		}
+
+		return ScrollTracker.instance;
+	}
+
 	private applicationArea: Element;
 	private listener: () => void;
 	private timers: utils.PromisedTimeout<SpeedMeasurement>[];
+	private timesToTrack = [0, 2, 4];
+	private scrollSpeedCalculator = ScrollSpeedCalculator.make();
 	private prevScrollY = 0;
 
 	get scrollY(): number {
@@ -19,15 +31,13 @@ export class ScrollTracker {
 		return Math.abs(this.scrollY - this.prevScrollY);
 	}
 
+	private constructor() {}
+
 	/**
-	 *
-	 * @param timesToTrack Time points (in ms) at which speed is recorder
 	 * @param applicationAreaClass Class name of area upon which touchstart event triggers tracking
 	 */
-	constructor(private timesToTrack: number[], private applicationAreaClass: string) {}
-
-	initScrollSpeedTracking(): void {
-		this.applicationArea = document.getElementsByClassName(this.applicationAreaClass)[0];
+	initScrollSpeedTracking(applicationAreaClass: string): void {
+		this.applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
 
 		if (this.isEnabled()) {
 			this.addTouchStartListener();
@@ -40,15 +50,6 @@ export class ScrollTracker {
 
 	private isEnabled(): boolean {
 		return !!context.get('options.scrollSpeedTracking') && !!this.applicationArea;
-	}
-
-	private addTouchStartListener(): void {
-		this.listener = () => this.dispatchScrollSpeedEvents();
-		this.applicationArea.addEventListener('touchstart', this.listener, { once: true });
-	}
-
-	private removeTouchStartListener(): void {
-		this.applicationArea.removeEventListener('touchstart', this.listener);
 	}
 
 	private async dispatchScrollSpeedEvents(): Promise<void> {
@@ -75,7 +76,7 @@ export class ScrollTracker {
 
 		this.finishScrollSpeedTracking();
 
-		scrollSpeedCalculator.setAverageSessionScrollSpeed(
+		this.scrollSpeedCalculator.setAverageSessionScrollSpeed(
 			measurements
 				.filter((measurement) => measurement.time > 0)
 				.map((measurement) => measurement.distance),
@@ -85,5 +86,14 @@ export class ScrollTracker {
 	private finishScrollSpeedTracking(): void {
 		this.timers.forEach((timer) => timer.cancel());
 		this.removeTouchStartListener();
+	}
+
+	private addTouchStartListener(): void {
+		this.listener = () => this.dispatchScrollSpeedEvents();
+		this.applicationArea.addEventListener('touchstart', this.listener, { once: true });
+	}
+
+	private removeTouchStartListener(): void {
+		this.applicationArea.removeEventListener('touchstart', this.listener);
 	}
 }

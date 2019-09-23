@@ -1,7 +1,8 @@
 import { AdSlot, context, utils } from '@ad-engine/core';
 import { bfaThemeFactory } from './themes/factory';
+import { BigFancyAdTheme } from './themes/theme';
+import { UapVideoSettings } from './uap-video-settings';
 import { UapParams, universalAdPackage } from './universal-ad-package';
-import { VideoSettings } from './video-settings';
 
 export interface BigFancyAdBelowConfig {
 	autoPlayAllowed?: boolean;
@@ -16,7 +17,7 @@ export interface BigFancyAdBelowConfig {
 }
 
 export class BigFancyAdBelow {
-	static getName() {
+	static getName(): string {
 		return 'bfab';
 	}
 
@@ -34,23 +35,21 @@ export class BigFancyAdBelow {
 		};
 	}
 
-	/**
-	 * Constructor
-	 *
-	 * @param {object} adSlot
-	 */
-	constructor(adSlot) {
-		this.adSlot = adSlot;
+	private config: BigFancyAdBelowConfig;
+	private container: HTMLElement;
+	private theme: BigFancyAdTheme;
+	private videoSettings: UapVideoSettings;
+	private params: UapParams;
+
+	constructor(private adSlot: AdSlot) {
 		this.config = context.get('templates.bfab') || {};
 		this.container = document.getElementById(this.adSlot.getSlotName());
-		this.theme = null;
-		this.videoSettings = null;
 	}
 
 	/**
 	 * Initializes the BFAB unit
 	 */
-	init(params) {
+	init(params: UapParams): void {
 		this.params = params;
 
 		if (!this.container) {
@@ -68,7 +67,7 @@ export class BigFancyAdBelow {
 		universalAdPackage.initSlot(params);
 
 		this.container.classList.add('bfab-template');
-		this.videoSettings = new VideoSettings(params);
+		this.videoSettings = new UapVideoSettings(params);
 		this.theme = bfaThemeFactory.makeBelowTheme(this.adSlot, this.params);
 
 		this.theme.adIsReady(this.videoSettings).then(() => this.onAdReady());
@@ -76,7 +75,7 @@ export class BigFancyAdBelow {
 		this.config.onInit(this.adSlot, this.params, this.config);
 	}
 
-	async onAdReady() {
+	async onAdReady(): Promise<void> {
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
 		}

@@ -44,6 +44,7 @@ export interface SlotConfig {
 	viewportConflicts?: string[];
 	outOfPage?: any;
 
+	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
 }
@@ -163,6 +164,16 @@ export class AdSlot extends EventEmitter {
 		}
 
 		return element.querySelector<HTMLIFrameElement>('div[id*="_container_"] iframe');
+	}
+
+	getFrameType(): 'safe' | 'regular' | null {
+		const iframe = this.getIframe();
+
+		if (!iframe) {
+			return null;
+		}
+
+		return iframe.dataset.isSafeframe === 'true' ? 'safe' : 'regular';
 	}
 
 	// Main position is the first value defined in the "pos" key-value (targeting)

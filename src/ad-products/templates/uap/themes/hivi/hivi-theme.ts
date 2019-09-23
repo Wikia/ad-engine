@@ -1,54 +1,48 @@
-import { slotTweaker, utils } from '@ad-engine/core';
-import AdvertisementLabel from '../../../interface/advertisement-label';
+import { AdSlot, context, slotTweaker } from '@ad-engine/core';
+import { AdvertisementLabel } from '../../../interface/advertisement-label';
 import { CloseButton } from '../../../interface/close-button';
+import { BigFancyAdAboveConfig } from '../../big-fancy-ad-above';
+import { UapParams } from '../../universal-ad-package';
 import { BigFancyAdTheme } from '../theme';
-import { Stickiness } from './stickiness';
+import { CustomWhen, Stickiness } from './stickiness';
 
-/**
- * @abstract
- */
-export class BigFancyAdHiviTheme extends BigFancyAdTheme {
+export abstract class BigFancyAdHiviTheme extends BigFancyAdTheme {
 	static DEFAULT_UNSTICK_DELAY = 3000;
 
 	closeButton: HTMLElement;
+	protected stickiness: Stickiness;
+	protected config: BigFancyAdAboveConfig;
 
-	onAdReady() {
+	constructor(adSlot: AdSlot, params: UapParams) {
+		super(adSlot, params);
+		this.config = context.get('templates.bfaa') || {};
+	}
+
+	onAdReady(): void {
 		this.container.classList.add('theme-hivi');
 		this.addAdvertisementLabel();
 	}
 
-	async adIsReady() {
+	async adIsReady(): Promise<HTMLIFrameElement | HTMLElement> {
 		return slotTweaker.makeResponsive(this.adSlot, this.params.aspectRatio);
 	}
 
-	addAdvertisementLabel() {
+	addAdvertisementLabel(): void {
 		const advertisementLabel = new AdvertisementLabel();
 
 		this.container.appendChild(advertisementLabel.render());
 	}
 
-	/**
-	 * @protected
-	 */
-	addUnstickLogic() {
+	protected addUnstickLogic(): void {
 		const { stickyUntilSlotViewed } = this.config;
 		const videoViewedAndTimeout = this.getVideoViewedAndTimeout();
 
 		this.stickiness = new Stickiness(this.adSlot, videoViewedAndTimeout, stickyUntilSlotViewed);
 	}
 
-	/**
-	 * @abstract
-	 * @protected
-	 */
-	getVideoViewedAndTimeout() {
-		throw new utils.NotImplementedException();
-	}
+	protected abstract getVideoViewedAndTimeout(): CustomWhen;
 
-	/**
-	 * @protected
-	 */
-	addUnstickButton() {
+	protected addUnstickButton(): void {
 		this.closeButton = new CloseButton({
 			classNames: ['button-unstick'],
 			onClick: () => this.stickiness.close(),
@@ -57,17 +51,11 @@ export class BigFancyAdHiviTheme extends BigFancyAdTheme {
 		this.container.appendChild(this.closeButton);
 	}
 
-	/**
-	 * @protected
-	 */
-	removeUnstickButton() {
+	protected removeUnstickButton(): void {
 		this.closeButton.remove();
 	}
 
-	/**
-	 * @protected
-	 */
-	addUnstickEvents() {
+	protected addUnstickEvents(): void {
 		this.stickiness.on(Stickiness.STICKINESS_CHANGE_EVENT, (isSticky) =>
 			this.onStickinessChange(isSticky),
 		);
@@ -75,28 +63,9 @@ export class BigFancyAdHiviTheme extends BigFancyAdTheme {
 		this.stickiness.on(Stickiness.UNSTICK_IMMEDIATELY_EVENT, (arg) => this.unstickImmediately(arg));
 	}
 
-	/**
-	 * @abstract
-	 * @protected
-	 */
-	onStickinessChange(isSticky) {
-		throw new utils.NotImplementedException({ isSticky });
-	}
+	protected abstract onStickinessChange(isSticky: boolean): void;
 
-	/**
-	 * @abstract
-	 * @protected
-	 */
-	onCloseClicked() {
-		throw new utils.NotImplementedException();
-	}
+	protected abstract onCloseClicked(): void;
 
-	/**
-	 * @abstract
-	 * @protected
-	 * @param stopVideo {boolean}
-	 */
-	unstickImmediately(stopVideo) {
-		throw new utils.NotImplementedException({ stopVideo });
-	}
+	protected abstract unstickImmediately(stopVideo: boolean): void;
 }

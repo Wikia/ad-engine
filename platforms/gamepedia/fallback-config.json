@@ -1,0 +1,42 @@
+{
+	"wgAdDriverDelayTimeout": 2000,
+	"icConfiant": [
+		{
+			"apps": ["gamepedia"],
+			"value": true
+		}
+	],
+	"wgAdDriverUapRestriction": 1,
+	"icBTRec": [
+		{
+			"apps": ["gamepedia"],
+			"devices": ["desktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"wgAdDriverTestCommunities": ["cdm_gamepedia", "project43"],
+	"wgAdDriverUapCountries": ["XX"],
+	"icTaxonomyAdTags": [
+		{
+			"apps": ["gamepedia"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icBabDetection": [
+		{
+			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"wgAdDriverOutstreamSlotCountries": null,
+	"wgAdDriverLABradorTestCountries": ["PL/40-cached"],
+	"icPorvataDirect": [
+		{
+			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"value": false
+		}
+	]
+}

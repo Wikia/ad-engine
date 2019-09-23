@@ -1,6 +1,6 @@
 import { utils } from '@ad-engine/core';
 
-export async function animate(container, className, duration) {
+export async function animate(container, className, duration): Promise<void> {
 	container.style.animationDuration = `${duration}ms`;
 	container.classList.add(className);
 	await utils.wait(duration);
