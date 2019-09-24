@@ -5,6 +5,7 @@
 		"declarationDir": "../dist/types",
 		"paths": {
 			"@ad-engine/core": ["src/ad-engine"],
+			"@ad-engine/services": ["src/ad-services"],
 			"@ad-engine/tracking": ["src/ad-tracking"]
 		}
 	},

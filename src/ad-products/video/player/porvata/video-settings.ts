@@ -12,6 +12,9 @@ export interface VideoParams extends Dictionary {
 	vastTargeting?: Targeting;
 	vastUrl?: string;
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
+	moatTracking?: boolean;
+	type?: string;
+	adProduct?: string;
 }
 
 function getMoatTrackingStatus(params: VideoParams): boolean {
@@ -37,7 +40,7 @@ function getMoatTrackingStatus(params: VideoParams): boolean {
 }
 
 export class VideoSettings {
-	private readonly moatTracking: boolean;
+	readonly moatTracking: boolean;
 
 	constructor(private readonly params: VideoParams = {}) {
 		this.moatTracking = getMoatTrackingStatus(params);

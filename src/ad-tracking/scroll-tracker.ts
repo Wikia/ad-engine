@@ -47,7 +47,7 @@ export class ScrollTracker {
 					this.speeds.push(Math.abs(scrollY - prevScrollY));
 				}
 				prevScrollY = scrollY;
-			}, time * 1000);
+			}, time * 1000) as any;
 		});
 	}
 
