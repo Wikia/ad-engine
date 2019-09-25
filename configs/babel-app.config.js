@@ -1,16 +1,5 @@
+// Removed @babel/preset-env due to https://github.com/babel/babel/issues/10271#issuecomment-528379505
 module.exports = {
-	presets: [
-		[
-			'@babel/preset-env',
-			{
-				targets: {
-					browsers: ['last 2 versions', 'safari >= 9.0', 'ie 11', '> 2%'],
-				},
-				modules: false,
-			},
-		],
-	],
-
 	plugins: [
 		[
 			'@babel/plugin-transform-runtime',

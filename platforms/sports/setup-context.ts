@@ -1,14 +1,9 @@
-import {
-	getDeviceMode,
-	registerSlotTracker,
-	setupBidders,
-	slotsContext,
-	uapHelper,
-} from '@platforms/shared';
+import { getDeviceMode, registerSlotTracker, slotsContext, uapHelper } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
 	InstantConfigService,
+	setupBidders,
 	setupNpaContext,
 	slotInjector,
 	slotService,

@@ -1,6 +1,9 @@
 {
 	"extends": "../tslint.json",
 	"rules": {
-		"no-implicit-dependencies": [true, ["@ad-engine/core", "@ad-engine/tracking"]]
+		"no-implicit-dependencies": [
+			true,
+			["@ad-engine/core", "@ad-engine/services", "@ad-engine/tracking"]
+		]
 	}
 }
