@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	BigFancyAdAboveConfig,
@@ -41,6 +42,8 @@ export function getBfaaConfigDesktop(): any {
 			this.navbarElement = document.getElementById('netbar');
 			this.navbarManager = new NavbarManager(this.navbarElement);
 			this.globalSuggestionsElement = document.querySelector('body > .suggestions');
+
+			slotsContext.setupSlotVideoAdUnit(adSlot, params);
 
 			slotTweaker.onReady(adSlot).then(() => {
 				this.adjustPageMargin();

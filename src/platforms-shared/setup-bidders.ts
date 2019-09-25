@@ -1,5 +1,5 @@
-// This file is used in all platforms so mind your imports
-import { Context, InstantConfigService } from '@wikia/ad-engine';
+import { Context } from '@ad-engine/core';
+import { InstantConfigService } from '@ad-engine/services';
 
 export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');

@@ -82,6 +82,9 @@ export const basicContext = {
 		},
 	},
 	slots: {},
+	slotGroups: {
+		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+	},
 	services: {
 		confiant: {
 			enabled: false,
@@ -112,7 +115,7 @@ export const basicContext = {
 	},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/gamepedia/{slotConfig.group}/{state.deviceType}/' +
+			'/{custom.dfpId}/gamepedia/{slotConfig.adProduct}/{state.deviceType}/' +
 			'{targeting.skin}-{targeting.s2}/_gp_wiki-gamepedia',
 	},
 	templates: {},
