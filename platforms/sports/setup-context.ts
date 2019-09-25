@@ -65,8 +65,15 @@ class ContextSetup {
 	}
 
 	private updateWadContext(): void {
+		const babEnabled = this.instantConfig.get('icBabDetection');
+
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.instantConfig.get('icBabDetection'));
+		context.set('options.wad.enabled', babEnabled);
+
+		if (babEnabled) {
+			// BT rec
+			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+		}
 	}
 
 	private injectIncontentPlayer(): void {
