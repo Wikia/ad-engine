@@ -15,7 +15,7 @@ export function setPrebidAdaptersConfig(app: string): void {
 	context.set('bidders.prebid.pubmatic', getPubmaticContext(app, mode));
 	context.set('bidders.prebid.wikia', getWikiaContext(mode));
 
-	// Temporary till we get SSP params for Rubicon
+	// Temporary till we get SSP params for Futhead from Rubicon
 	if (app === 'muthead') {
 		context.set('bidders.prebid.rubicon_display', getRubiconContext(app, mode));
 	}
