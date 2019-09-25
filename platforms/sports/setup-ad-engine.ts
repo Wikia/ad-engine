@@ -1,5 +1,5 @@
-import { babDetection, biddersDelay } from '@platforms/shared';
-import { AdEngine, bidders, context, events, eventService, utils } from '@wikia/ad-engine';
+import { babDetection, biddersDelay, trackBab } from '@platforms/shared';
+import { AdEngine, bidders, btRec, context, events, eventService, utils } from '@wikia/ad-engine';
 import { adsSetup } from './setup-context';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
@@ -34,7 +34,13 @@ function startAdEngine(): void {
 	engine.init();
 
 	if (babDetection.isEnabled()) {
-		babDetection.run();
+		babDetection.run().then((isBabDetected) => {
+			trackBab(isBabDetected);
+
+			if (isBabDetected) {
+				btRec.run();
+			}
+		});
 	}
 
 	context.push('listeners.slot', {
