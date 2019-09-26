@@ -28,6 +28,11 @@
 	.slideout-panel {
 		position: unset;
 	}
+
+	.gdm--banner {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 
 .site-futhead.has-bfaa {
@@ -47,11 +52,6 @@
 
 	.navbar.navbar-futhead.bfaa-pinned {
 		position: relative;
-	}
-
-	.gdm--banner {
-		margin-top: 0;
-		margin-bottom: 0;
 	}
 
 	.main-content.homepage,
