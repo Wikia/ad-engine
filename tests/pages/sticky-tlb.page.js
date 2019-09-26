@@ -2,7 +2,7 @@ class StickyTlb {
 	constructor() {
 		this.pageLink = 'templates/sticky-tlb/';
 		this.stickedAd = '.sticky-bfaa';
-		this.unstickedAd = '.heme-resolved';
+		this.unstickedAd = '.theme-resolved';
 		this.classUnstickButton = '.button-unstick';
 	}
 

@@ -10,6 +10,7 @@ class Network {
 		browser.addListener('Page.frameNavigated', ({ frame }) => {
 			if (frame && !frame.parentId) {
 				this.clearResponses();
+				this.clearLogs();
 			}
 		});
 	}
@@ -35,9 +36,22 @@ class Network {
 		this.listener = null;
 	}
 
+	enableLogCapturing() {
+		browser.cdp('Log', 'enable');
+	}
+
+	disableLogCapturing() {
+		browser.cdp('Log', 'disable');
+		this.clearLogs();
+	}
+
 	captureConsole() {
-		this.logs.push(browser.cdp('Log', 'enable'));
-		// this.logs.push(browser.cdp('Log', 'messageAdded'));
+		browser.on('Log.entryAdded', (entry) => {
+			this.logs.push(entry.entry);
+		});
+		browser.on('Console.messageAdded', (entry) => {
+			this.logs.push(entry.message);
+		});
 	}
 
 	returnConsole() {
@@ -45,6 +59,10 @@ class Network {
 	}
 
 	clearResponses() {
+		this.responses = [];
+	}
+
+	clearLogs() {
 		this.responses = [];
 	}
 
@@ -73,6 +91,10 @@ class Network {
 
 	checkIfHasResponse(...keys) {
 		return this.responses.some((response) => keys.every((key) => response.url.includes(key)));
+	}
+
+	checkIfMessageIsInLogs(key) {
+		return this.logs.some((entry) => entry.text.includes(key));
 	}
 
 	getQueryValues(requestFilter, queryKey) {
