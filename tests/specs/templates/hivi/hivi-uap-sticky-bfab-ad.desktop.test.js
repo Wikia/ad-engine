@@ -114,8 +114,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.bottomLeaderboard);
-		expect(helpers.getLineItemId(adSlots.bottomLeaderboard)).to.equal(
+		slots.bottomLeaderboard.waitForLineItemIdAttribute();
+		expect(slots.bottomLeaderboard.lineItemId).to.equal(
 			hiviUapStickyBfab.secondCall,
 			'Line item ID mismatch',
 		);
@@ -123,7 +123,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 
 	it('Check if redirect on click works properly', () => {
 		helpers.slowScroll(1000);
-		$(adSlots.bottomLeaderboard).scrollIntoView({ block: 'end' });
+		slots.bottomLeaderboard.scrollIntoView();
 		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 
