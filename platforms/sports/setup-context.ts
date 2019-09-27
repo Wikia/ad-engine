@@ -46,15 +46,15 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		setA9AdapterConfig();
-		setPrebidAdaptersConfig();
-		setupBidders(context, this.instantConfig);
-
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
 		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig(context.get('targeting.s1'));
+		setupBidders(context, this.instantConfig);
 
 		this.injectIncontentPlayer();
 
