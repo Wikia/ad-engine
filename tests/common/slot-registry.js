@@ -1,4 +1,5 @@
 import { AdSlot } from './ad-slot';
+import { commonAds } from '../pages/common-ad.page';
 
 const slotsContext = {
 	mobile: {
@@ -41,38 +42,51 @@ const slotsContext = {
 			isLazyLoaded: true,
 			slotName: 'bottom_leaderboard',
 		},
-		featured: {
-			scrollTrigger: '.featured-video',
-			slotName: 'featured',
-		},
-		floorAdhesion: {
-			slotName: 'floor_adhesion',
-		},
-		adSkin: {
-			slotName: 'ad-skin',
-		},
-		hiviLeaderboard: {
-			slotName: 'hivi_leaderboard',
-		},
 		incontentBoxad: {
-			scrollTrigger: '#WikiaAdInContentPlaceHolder',
-			slotName: 'incontent_boxad_1',
+			scrollTrigger: commonAds.railModule,
+			slotName: 'incontent_boxad',
+		},
+		injectedBoxad: {
+			scrollTrigger: commonAds.railModule,
+			slotName: 'injected_boxad',
 		},
 		incontentPlayer: {
 			isLazyLoaded: true,
 			slotName: 'incontent_player',
 		},
-		invisibleHighImpact2: {
+		invisibleHighImpact: {
 			slotName: 'invisible_high_impact_2',
-		},
-		invisibleSkin: {
-			slotName: 'invisible_skin',
 		},
 		topBoxad: {
 			slotName: 'top_boxad',
 		},
 		topLeaderboard: {
 			slotName: 'top_leaderboard',
+		},
+		repeatableBoxad1: {
+			scrollTrigger: commonAds.railModule,
+			slotName: 'repeatable_boxad_1',
+		},
+		repeatableBoxad2: {
+			slotName: 'repeatable_boxad_2',
+		},
+		repeatableBoxad3: {
+			slotName: 'repeatable_boxad_3',
+		},
+		repeatableBoxad4: {
+			slotName: 'repeatable_boxad_4',
+		},
+		repeatableBoxad5: {
+			slotName: 'repeatable_boxad_5',
+		},
+		repeatableBoxad6: {
+			slotName: 'repeatable_boxad_6',
+		},
+		repeatableBoxad7: {
+			slotName: 'repeatable_boxad_7',
+		},
+		repeatableBoxad8: {
+			slotName: 'repeatable_boxad_8',
 		},
 	},
 };

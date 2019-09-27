@@ -1,5 +1,5 @@
 import { helpers } from '../common/helpers';
-import { adSlots } from '../common/ad-slots';
+import { slots } from '../common/slot-registry';
 
 class RepeatableSlots {
 	constructor() {
@@ -15,13 +15,8 @@ class RepeatableSlots {
 		helpers.slowScroll(distance, currentBoxad);
 	}
 
-	/**
-	 * Provides parameter to set number of ad slots to load
-	 * @param {number} slotNumber - slots to load
-	 * @returns {string} parameter with number of slots
-	 */
-	getRepeatableSlot(slotNumber) {
-		return `${adSlots.repeatableBoxad}${slotNumber}`;
+	getRepeatableSlotSelector(slotNumber) {
+		return `${slots.repeatableBoxad.selector}${slotNumber}`;
 	}
 }
 
