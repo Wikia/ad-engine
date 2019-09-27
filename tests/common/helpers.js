@@ -4,6 +4,7 @@ import { queryStrings } from './query-strings';
 import { adSlots } from './ad-slots';
 
 const valueToDivideBy = 10;
+const pauseBetweenScrollsShort = 100;
 const pauseBetweenScrolls = 500;
 const timeToStartPlaying = 3000;
 
@@ -59,6 +60,14 @@ class Helpers {
 				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
+		}
+	}
+
+	mediumScroll(px) {
+		const step = px / valueToDivideBy;
+		for (let i = step; i < px; i += step) {
+			browser.execute(`window.scrollBy(0,${step})`);
+			browser.pause(pauseBetweenScrollsShort);
 		}
 	}
 
