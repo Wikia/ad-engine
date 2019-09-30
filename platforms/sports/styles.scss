@@ -50,11 +50,16 @@
 		min-height: 43px;
 	}
 
+	.site-header {
+		margin-bottom: 0;
+	}
+
 	.navbar.navbar-futhead.bfaa-pinned {
 		position: relative;
 	}
 
 	.main-content.homepage,
+	.content-header,
 	.futhead-gdm {
 		position: unset;
 	}
