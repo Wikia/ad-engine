@@ -401,6 +401,12 @@ export class BillTheLizard {
 	 */
 	getPreviousPrediction(startId, callIdBuilder, modelName) {
 		if (startId <= 1) {
+			const prevStatus = this.getResponseStatus('top_boxad');
+
+			if (prevStatus === BillTheLizard.ON_TIME || prevStatus === BillTheLizard.TOO_LATE) {
+				return this.getPrediction(modelName, 'top_boxad');
+			}
+
 			return undefined;
 		}
 		for (let backCounter = startId - 1; backCounter >= 1; backCounter--) {
