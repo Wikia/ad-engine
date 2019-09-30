@@ -68,57 +68,27 @@ function repeatSlot(adSlot: AdSlot): boolean {
 	return false;
 }
 
-function handleSlotRepeating(adSlot: AdSlot): boolean {
-	if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-		return repeatSlot(adSlot);
-	}
-
-	return false;
-}
-
-async function injectNextSlot(adSlot: AdSlot): Promise<boolean> {
-	const adProduct: string = adSlot.config.adProduct;
-
-	if (adProduct === 'top_boxad') {
-		await context.get(`bidders.prebid.bidsRefreshing.incontent_boxad_1.finished`);
-		slotInjector.inject('incontent_boxad_1');
-		context.push('state.adStack', { id: 'incontent_boxad_1' });
-		return false;
-	}
-	if (adProduct.indexOf('incontent_boxad') !== 0) {
-		return false;
-	}
-
-	return handleSlotRepeatingWhenBidsRefreshed(adSlot);
-}
-
-async function handleSlotRepeatingWhenBidsRefreshed(adSlot: AdSlot): Promise<boolean> {
-	const adProduct: string = adSlot.config.adProduct;
-	const currentBoxadNumber: number = parseInt(adProduct.split('_').pop(), 10);
-	const nextBoxad = `incontent_boxad_${currentBoxadNumber + 1}`;
-
-	logger(logGroup, `repeating waiting: ${nextBoxad}`);
-	await context.get(`bidders.prebid.bidsRefreshing.${nextBoxad}.finished`);
-	logger(logGroup, `repeating started: ${nextBoxad}`);
-
-	return handleSlotRepeating(adSlot);
-}
-
 class SlotRepeater {
 	init(): void {
 		if (context.get('options.slotRepeater')) {
 			if (context.get('options.gamLazyLoading.enabled')) {
-				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => handleSlotRepeating(adSlot));
-			} else if (context.get('options.nonLazyIncontents.enabled')) {
-				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
-					adSlot.loaded.then(() => injectNextSlot(adSlot));
-				});
-			} else {
+				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) =>
+					this.handleSlotRepeating(adSlot),
+				);
+			} else if (!context.get('options.nonLazyIncontents.enabled')) {
 				context.push('listeners.slot', {
-					onRenderEnded: (adSlot: AdSlot) => handleSlotRepeating(adSlot),
+					onRenderEnded: (adSlot: AdSlot) => this.handleSlotRepeating(adSlot),
 				});
 			}
 		}
+	}
+
+	handleSlotRepeating(adSlot: AdSlot): boolean {
+		if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+			return repeatSlot(adSlot);
+		}
+
+		return false;
 	}
 }
 

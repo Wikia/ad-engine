@@ -46,7 +46,6 @@ export class PrebidProvider extends BidderProvider {
 	lazyLoaded = false;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
-	incontentsCounter: number;
 
 	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
@@ -72,7 +71,6 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-		this.incontentsCounter = 0;
 
 		if (this.isCMPEnabled) {
 			this.prebidConfig.consentManagement = {
@@ -231,18 +229,7 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const refreshUsedBid = (winningBid) => {
-			if (winningBid.adUnitCode === 'mobile_in_content') {
-				this.incontentsCounter += 1;
-			}
-			context.set(
-				`bidders.prebid.bidsRefreshing.incontent_boxad_${this.incontentsCounter}.finished`,
-				new Promise((resolve) => {
-					context.set(
-						`bidders.prebid.bidsRefreshing.incontent_boxad_${this.incontentsCounter}.resolve`,
-						resolve,
-					);
-				}),
-			);
+			eventService.emit(events.BIDS_REFRESH_STARTED, winningBid.adUnitCode);
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				eventService.emit(events.BIDS_REFRESH);
 				const adUnitsToRefresh = this.adUnits.filter(
@@ -251,11 +238,6 @@ export class PrebidProvider extends BidderProvider {
 						adUnit.bids &&
 						adUnit.bids[0] &&
 						adUnit.bids[0].bidder === winningBid.bidderCode,
-				);
-
-				utils.logger(
-					'bids-refreshing',
-					`refresh started for incontent_boxad_${this.incontentsCounter}`,
 				);
 				this.requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler);
 			}
