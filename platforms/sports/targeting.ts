@@ -9,7 +9,7 @@ export function getPageLevelTargeting(): Partial<Targeting> {
 		uap: 'none',
 		uap_c: 'none',
 		s0: 'gaming',
-		s1: domain.app,
+		s1: domain.app !== 'fandom-dev' ? domain.app : 'muthead',
 		s2: 'main',
 		dmn: `${domain.name}${domain.tld}`,
 	};
