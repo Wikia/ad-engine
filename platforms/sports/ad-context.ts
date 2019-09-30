@@ -1,7 +1,7 @@
 export const basicContext = {
 	adUnitId:
 		'/{custom.dfpId}/cports/{slotConfig.group}/{state.deviceType}/' +
-		'{targeting.skin}-{targeting.s2}/_{targeting.s1}-{targeting.s0}',
+		'{targeting.skin}-{targeting.s2}/_{targeting.s1}',
 	custom: {
 		dfpId: '5441',
 	},
