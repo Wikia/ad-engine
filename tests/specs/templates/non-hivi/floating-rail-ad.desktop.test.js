@@ -3,10 +3,10 @@ import { floatingRailAd } from '../../../pages/floating-rail-ad.page';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { adSlots } from '../../../common/ad-slots';
-import networkCapture from '../../../common/network-capture';
+import { network } from '../../../common/network';
 
 // TODO Fix floating rail
-xdescribe('Floating rail ads page: floating rail', () => {
+describe.skip('Floating rail ads page: floating rail', () => {
 	before(() => {
 		browser.url(floatingRailAd.pageLink);
 		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
@@ -22,53 +22,47 @@ xdescribe('Floating rail ads page: floating rail', () => {
 	});
 
 	// TODO Visual
-	xit('Check visual regression in top boxad', () => {
+	it.skip('Check visual regression in top boxad', () => {
 		helpers.checkVisualRegression(browser.checkElement(adSlots.topBoxad));
 	});
 });
 
-// TODO Network
-xdescribe('Floating rail ads page: top boxad requests', () => {
+describe('Floating rail ads page: top boxad requests', () => {
 	let fetchedUrl;
-	const gatheredUrls = [];
 	let i = 0;
-	let client;
 
-	before(async () => {
-		client = await networkCapture.getClient();
-		const pattern = RegExp(adSlots.floatingRailTopBoxadRequestPattern);
+	before(() => {
+		network.enableCapturing('ads?');
+		network.clearResponses();
 
-		client.on('Network.responseReceived', (params) => {
-			const { url } = params.response;
-
-			if (pattern.test(url)) {
-				fetchedUrl = url.replace(adSlots.floatingRailTopBoxadReplaceRegexp, '');
-				gatheredUrls[i] = fetchedUrl;
-				i += 1;
-			}
-		});
-		await browser.url(floatingRailAd.pageLink);
-		await $(adSlots.railModule).waitForDisplayed(timeouts.standard);
-		await browser.pause(timeouts.viewabillity);
+		browser.url(floatingRailAd.pageLink);
+		$(adSlots.railModule).waitForDisplayed(timeouts.standard);
+		browser.pause(timeouts.viewabillity);
 	});
 
 	after(() => {
-		networkCapture.closeClient(client);
+		network.disableCapturing();
 	});
 
-	it('Check position of the slot', () => {
-		expect(gatheredUrls[0]).to.include('pos%3Dtop_boxad');
-	});
+	describe('Turn on capturing', () => {
+		before(() => {
+			network.waitForResponse('top_boxad');
+		});
 
-	it('Check if ad is not from UAP', () => {
-		expect(gatheredUrls[0]).to.include('uap%3Dnone');
-	});
+		it('Check position of the slot', () => {
+			expect(network.checkIfHasResponse(encodeURIComponent(`pos=top_boxad`))).to.be.true;
+		});
 
-	it('Check slot size in response', () => {
-		expect(gatheredUrls[0]).to.include('prev_iu_szs=300x250');
-	});
+		it('Check if ad is not from UAP', () => {
+			expect(network.checkIfHasResponse(encodeURIComponent(`uap=none`))).to.be.true;
+		});
 
-	it('Check positioning of the slot', () => {
-		expect(gatheredUrls[0]).to.include('prev_scp=loc%3Dtop');
+		it('Check slot size in response', () => {
+			expect(network.checkIfHasResponse(`&sz=300x250`)).to.be.true;
+		});
+
+		it('Check positioning of the slot', () => {
+			expect(network.checkIfHasResponse(`scp=loc%3Dtop`)).to.be.true;
+		});
 	});
 });

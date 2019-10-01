@@ -16,12 +16,7 @@ module.exports.getPreLoaders = () => {
 	];
 };
 
-module.exports.getTypeScriptLoader = ({
-	include,
-	tsconfig,
-	transpileOnly = false,
-	reportFiles,
-}) => {
+module.exports.getTypeScriptLoader = ({ include, ...options }) => {
 	return {
 		test: /\.(js|ts)$/,
 		include: include,
@@ -30,9 +25,7 @@ module.exports.getTypeScriptLoader = ({
 			{
 				loader: 'awesome-typescript-loader',
 				options: {
-					reportFiles,
-					transpileOnly,
-					configFileName: tsconfig,
+					...options,
 					useBabel: true,
 					babelCore: '@babel/core',
 					babelOptions: {

@@ -9,7 +9,7 @@ export function getPageLevelTargeting(): Partial<Targeting> {
 		uap: 'none',
 		uap_c: 'none',
 		s0: 'gaming',
-		s1: domain.name,
+		s1: domain.app,
 		s2: 'main',
 		dmn: `${domain.name}${domain.tld}`,
 	};
@@ -21,13 +21,13 @@ export function getPageLevelTargeting(): Partial<Targeting> {
 	return targeting;
 }
 
-function getDomain(): { name: string; tld: string } {
+function getDomain(): { name: string; app: string; tld: string } {
 	const hostname = window.location.hostname.toLowerCase();
-	const pieces = hostname.split('.');
-	const np = pieces.length;
+	const pieces = hostname.split('.').filter((piece) => piece !== 'www');
 
 	return {
-		name: pieces[np - 2],
-		tld: pieces[np - 1],
+		name: pieces.slice(0, -1).join(''),
+		app: pieces[pieces.length - 2],
+		tld: pieces.slice(-1).join(''),
 	};
 }

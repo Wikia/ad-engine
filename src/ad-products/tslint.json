@@ -4,7 +4,7 @@
 		"no-blacklisted-paths": [
 			true,
 			{
-				"blacklist": ["/ad-bidders", "/ad-products", "/ad-services"]
+				"blacklist": ["/ad-bidders", "/ad-products", "/ad-services", "@ad-engine/services"]
 			}
 		]
 	}

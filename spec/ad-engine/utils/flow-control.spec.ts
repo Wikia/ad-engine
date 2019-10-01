@@ -1,27 +1,29 @@
+import { once } from '@wikia/ad-engine/utils/flow-control';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-import { once } from '../../../src/ad-engine/utils/flow-control';
+import { createSandbox, SinonSandbox } from 'sinon';
 
-const getMockObject = () => {
+function getHtmlElementStub(sandbox: SinonSandbox): any {
 	let eventCallback;
 
 	return {
-		addEventListener: (name, callback) => {
+		addEventListener: sandbox.stub().callsFake((name, callback) => {
 			eventCallback = callback;
-		},
-		runCallback: (...args) => {
+		}),
+		runCallback: sandbox.stub().callsFake((...args) => {
 			eventCallback(...args);
-		},
+		}),
 	};
-};
-let object;
+}
 
 describe('Flow control - once', () => {
-	beforeEach(() => {
-		object = getMockObject();
+	const sandbox = createSandbox();
+
+	afterEach(() => {
+		sandbox.restore();
 	});
 
 	it('once returns a promise', () => {
+		const object = getHtmlElementStub(sandbox);
 		const promise = once(object, 'xxx');
 
 		expect(typeof promise.then === 'function').to.be.ok;
@@ -29,10 +31,11 @@ describe('Flow control - once', () => {
 	});
 
 	it('once calls event subscribe method', () => {
-		sinon.spy(object, 'addEventListener');
+		const object = getHtmlElementStub(sandbox);
 
 		once(object, 'xxx');
 		object.runCallback();
 		expect(object.addEventListener.calledWith('xxx')).to.be.ok;
+		expect(true).to.equal(true);
 	});
 });

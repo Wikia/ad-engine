@@ -1,12 +1,24 @@
 import { PrebidProvider } from '@wikia/ad-bidders/prebid/index';
 import { context } from '@wikia/ad-engine/services/context-service';
 import { expect } from 'chai';
+import { createSandbox } from 'sinon';
+import { stubPbjs } from '../../ad-engine/services/pbjs.stub';
 
 const bidderConfig = {
 	lazyLoadingEnabled: false,
 };
 
 describe('PrebidProvider bidder', () => {
+	const sandbox = createSandbox();
+
+	beforeEach(() => {
+		stubPbjs(sandbox);
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('can be initialized', () => {
 		new PrebidProvider(bidderConfig);
 	});

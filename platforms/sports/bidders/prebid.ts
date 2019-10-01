@@ -6,13 +6,17 @@ import { getOpenXContext } from './prebid/openx';
 import { getPubmaticContext } from './prebid/pubmatic';
 import { getRubiconContext } from './prebid/rubicon';
 
-export function setPrebidAdaptersConfig(): void {
+export function setPrebidAdaptersConfig(app: string): void {
 	const mode: DeviceMode = getDeviceMode();
 
-	context.set('bidders.prebid.appnexus', getAppNexusContext(mode));
-	context.set('bidders.prebid.indexExchange', getIndexExchangeContext(mode));
-	context.set('bidders.prebid.openx', getOpenXContext(mode));
-	context.set('bidders.prebid.pubmatic', getPubmaticContext(mode));
-	context.set('bidders.prebid.rubicon_display', getRubiconContext(mode));
+	context.set('bidders.prebid.appnexus', getAppNexusContext(app, mode));
+	context.set('bidders.prebid.indexExchange', getIndexExchangeContext(app, mode));
+	context.set('bidders.prebid.openx', getOpenXContext(app, mode));
+	context.set('bidders.prebid.pubmatic', getPubmaticContext(app, mode));
 	context.set('bidders.prebid.wikia', getWikiaContext(mode));
+
+	// Temporary till we get SSP params for Futhead from Rubicon
+	if (app === 'muthead') {
+		context.set('bidders.prebid.rubicon_display', getRubiconContext(app, mode));
+	}
 }
