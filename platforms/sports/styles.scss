@@ -46,6 +46,13 @@
 		}
 	}
 
+	&.fixed-page-nav {
+		.page-navigation {
+			position: unset;
+			box-shadow: unset;
+		}
+	}
+
 	.header {
 		min-height: 43px;
 	}
