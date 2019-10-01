@@ -126,8 +126,10 @@ describe('ScrollTracker', () => {
 	});
 
 	it('should call scrollSpeedCalculator.setAverageSessionScrollSpeed once timeouts complete', async () => {
-		const scrollSpeedCalculator = ScrollSpeedCalculator.make();
-		const setAvgSpeedStub = sandbox.stub(scrollSpeedCalculator, 'setAverageSessionScrollSpeed');
+		const setAvgSpeedStub = sandbox.stub(
+			ScrollSpeedCalculator.prototype,
+			'setAverageSessionScrollSpeed',
+		);
 		const scrolls = [10, 400];
 		const scrollYStub = sandbox.stub(window, 'scrollY').value(scrolls[0]);
 
@@ -148,8 +150,10 @@ describe('ScrollTracker', () => {
 	});
 
 	it('should not call scrollSpeedCalculator.setAverageSessionScrollSpeed if one timer is cancelled', async () => {
-		const scrollSpeedCalculator = ScrollSpeedCalculator.make();
-		const setAvgSpeedStub = sandbox.stub(scrollSpeedCalculator, 'setAverageSessionScrollSpeed');
+		const setAvgSpeedStub = sandbox.stub(
+			ScrollSpeedCalculator.prototype,
+			'setAverageSessionScrollSpeed',
+		);
 		const tracker = new ScrollTracker([0, 200, 1000], 'fake');
 
 		tracker.initScrollSpeedTracking();
