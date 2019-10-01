@@ -58,7 +58,7 @@ export interface UapParams {
 	isSticky: boolean;
 	lineItemId: string;
 	loadMedrecFromBTF: boolean;
-	moatTracking: number;
+	moatTracking: boolean;
 	player: HTMLElement;
 	resolvedStateAspectRatio: number;
 	resolvedStateAutoPlay: boolean;

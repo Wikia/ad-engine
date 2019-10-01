@@ -39,11 +39,4 @@ const development = {
 	},
 };
 
-module.exports = merge(
-	common({
-		tsconfig: 'examples/tsconfig.json',
-		tsconfigPaths: 'tsconfig.json',
-		transpileOnly: true,
-	}),
-	development,
-);
+module.exports = merge(common(), development);

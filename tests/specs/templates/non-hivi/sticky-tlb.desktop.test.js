@@ -4,29 +4,17 @@ import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { queryStrings } from '../../../common/query-strings';
-import networkCapture from '../../../common/network-capture';
+import { network } from '../../../common/network';
 
-// TODO Network capture
-xdescribe('sticky-tlb template', () => {
-	let client;
-	const logs = [];
-
-	before(async () => {
-		client = await networkCapture.getClient();
-
-		client.on('Log.entryAdded', (entry) => {
-			logs.push(entry.entry);
-		});
-
-		client.on('Console.messageAdded', (entry) => {
-			logs.push(entry.message);
-		});
+describe('sticky-tlb template', () => {
+	before(() => {
+		network.enableLogCapturing();
+		network.captureConsole();
 	});
 
-	beforeEach(async () => {
+	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		logs.length = 0;
-		await networkCapture.clearConsoleMessages(client);
+		network.clearLogs();
 
 		helpers.navigateToUrl(
 			stickyTlb.pageLink,
@@ -35,19 +23,19 @@ xdescribe('sticky-tlb template', () => {
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 	});
 
-	after(async () => {
-		await networkCapture.closeClient(client);
+	after(() => {
+		network.disableLogCapturing();
 	});
 
 	it('should stick and unstick', () => {
-		helpers.slowScroll(500);
+		helpers.fastScroll(5);
 		expect(stickyTlb.isAdSticked()).to.be.true;
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(1000);
+		helpers.slowScroll(600);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
-		expect(networkCapture.logsIncludesMessage('force-unstick', logs, 'any', true)).to.be.false;
-		expect(networkCapture.logsIncludesMessage('force-close', logs, 'any', true)).to.be.false;
+		expect(network.checkIfMessageIsInLogs('unsticked')).to.be.true;
+		expect(network.checkIfMessageIsInLogs('force-unstick')).to.be.false;
 	});
 
 	it('should not stick if viewability is counted', () => {
@@ -55,8 +43,8 @@ xdescribe('sticky-tlb template', () => {
 		helpers.slowScroll(500);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
-		expect(networkCapture.logsIncludesMessage('force-unstick', logs, 'any', true)).to.be.false;
-		expect(networkCapture.logsIncludesMessage('force-close', logs, 'any', true)).to.be.false;
+		expect(network.checkIfMessageIsInLogs('unsticked')).to.be.true;
+		expect(network.checkIfMessageIsInLogs('force-unstick')).to.be.false;
 	});
 
 	it('should not stick if geo is set to 0', () => {
@@ -68,38 +56,37 @@ xdescribe('sticky-tlb template', () => {
 		helpers.slowScroll(500);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
-		expect(networkCapture.logsIncludesMessage('force-unstick', logs, 'any', true)).to.be.false;
-		expect(networkCapture.logsIncludesMessage('force-close', logs, 'any', true)).to.be.false;
+		expect(network.checkIfMessageIsInLogs('unsticked'), 'Unsticked event recored').to.be.false;
+		expect(network.checkIfMessageIsInLogs('force-unstick'), 'Force-unstick event recorded').to.be
+			.false;
 	});
 
 	it('should unstick if close button is clicked', () => {
-		const message = 'Custom listener: onCustomEvent top_leaderboard force-close';
+		const message = 'onCustomEvent top_leaderboard force-close';
 
-		helpers.slowScroll(200);
+		helpers.mediumScroll(100);
 		expect(stickyTlb.isAdSticked()).to.be.true;
-		$(`${stickyTlb.classUnstickButton}`).click();
+		$(stickyTlb.classUnstickButton).click();
 		browser.pause(timeouts.actions);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		browser.waitUntil(
-			() => networkCapture.logsIncludesMessage(message, logs, 'log', true),
+			() => network.checkIfMessageIsInLogs(message),
 			2000,
-			`Logs should contain message: "${message}".\nLogs are: ${JSON.stringify(logs)}`,
+			`Logs should contain message: ${message}`,
 		);
-
-		expect(networkCapture.logsIncludesMessage('force-unstick', logs, 'any', true)).to.be.false;
 	});
 
-	it('should emit "stickiness-disabled event" if stickiness is disabled', () => {
+	it.only('should emit "stickiness-disabled event" if stickiness is disabled', () => {
 		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
 
 		browser.url(`${stickyTlb.pageLink}?disabled=1`);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
 
 		browser.waitUntil(
-			() => networkCapture.logsIncludesMessage(message, logs, 'log', true),
+			() => network.checkIfMessageIsInLogs(message),
 			2000,
-			`Logs should contain message: "${message}".\nLogs are: ${JSON.stringify(logs)}`,
+			`Logs should contain message: ${message}`,
 		);
 	});
 });
