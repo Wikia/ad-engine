@@ -6,20 +6,9 @@ interface SpeedMeasurement {
 }
 
 export class ScrollTracker {
-	private static instance: ScrollTracker;
-
-	static make(): ScrollTracker {
-		if (!ScrollTracker.instance) {
-			ScrollTracker.instance = new ScrollTracker();
-		}
-
-		return ScrollTracker.instance;
-	}
-
 	private applicationArea: Element;
 	private listener: () => void;
 	private timers: utils.PromisedTimeout<SpeedMeasurement>[];
-	private timesToTrack = [0, 2, 4];
 	private scrollSpeedCalculator = ScrollSpeedCalculator.make();
 	private prevScrollY = 0;
 
@@ -31,13 +20,14 @@ export class ScrollTracker {
 		return Math.abs(this.scrollY - this.prevScrollY);
 	}
 
-	private constructor() {}
-
 	/**
+	 * @param timesToTrack Array of values for milliseconds after which scroll speed should be tracked
 	 * @param applicationAreaClass Class name of area upon which touchstart event triggers tracking
 	 */
-	initScrollSpeedTracking(applicationAreaClass: string): void {
-		this.applicationArea = document.getElementsByClassName(applicationAreaClass)[0];
+	constructor(private timesToTrack: number[], private applicationAreaClass: string) {}
+
+	initScrollSpeedTracking(): void {
+		this.applicationArea = document.getElementsByClassName(this.applicationAreaClass)[0];
 
 		if (this.isEnabled()) {
 			this.addTouchStartListener();
