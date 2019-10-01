@@ -2,6 +2,7 @@ import { context, events, eventService, ScrollSpeedCalculator } from '@wikia/ad-
 import { ScrollTracker } from '@wikia/ad-tracking';
 import { expect } from 'chai';
 import { createSandbox, SinonFakeTimers, SinonStub } from 'sinon';
+import { stubScrollSpeedCalculator } from '../ad-engine/services/scroll-speed-calculator.stub';
 
 /**
  * The use of Promise.resolve() is required for testing Promise-based code.
@@ -126,10 +127,7 @@ describe('ScrollTracker', () => {
 	});
 
 	it('should call scrollSpeedCalculator.setAverageSessionScrollSpeed once timeouts complete', async () => {
-		const setAvgSpeedStub = sandbox.stub(
-			ScrollSpeedCalculator.prototype,
-			'setAverageSessionScrollSpeed',
-		);
+		const { scrollSpeedCalculatorStub } = stubScrollSpeedCalculator(sandbox);
 		const scrolls = [10, 400];
 		const scrollYStub = sandbox.stub(window, 'scrollY').value(scrolls[0]);
 
@@ -145,15 +143,15 @@ describe('ScrollTracker', () => {
 		clock.tick(700);
 		await Promise.resolve();
 		await Promise.resolve();
+		await Promise.resolve();
 
-		expect(setAvgSpeedStub.calledWith([scrolls[1] - scrolls[0]])).to.equal(true);
+		expect(scrollSpeedCalculatorStub.setAverageSessionScrollSpeed.getCall(0).args[0]).to.deep.equal(
+			[scrolls[1] - scrolls[0]],
+		);
 	});
 
 	it('should not call scrollSpeedCalculator.setAverageSessionScrollSpeed if one timer is cancelled', async () => {
-		const setAvgSpeedStub = sandbox.stub(
-			ScrollSpeedCalculator.prototype,
-			'setAverageSessionScrollSpeed',
-		);
+		const { scrollSpeedCalculatorStub } = stubScrollSpeedCalculator(sandbox);
 		const tracker = new ScrollTracker([0, 200, 1000], 'fake');
 
 		tracker.initScrollSpeedTracking();
@@ -166,7 +164,8 @@ describe('ScrollTracker', () => {
 		clock.tick(700);
 		await Promise.resolve();
 		await Promise.resolve();
+		await Promise.resolve();
 
-		expect(setAvgSpeedStub.notCalled).to.equal(true);
+		expect(scrollSpeedCalculatorStub.setAverageSessionScrollSpeed.notCalled).to.equal(true);
 	});
 });
