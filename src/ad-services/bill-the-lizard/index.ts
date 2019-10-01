@@ -400,6 +400,8 @@ export class BillTheLizard {
 	 * @returns {number | undefined}
 	 */
 	getPreviousPrediction(startId, callIdBuilder, modelName) {
+		const slotName = context.get('options.cheshireCatFirstSlot');
+
 		if (startId < 1) {
 			return undefined;
 		}
@@ -412,10 +414,11 @@ export class BillTheLizard {
 			}
 		}
 
-		const prevStatus = this.getResponseStatus('top_boxad');
-
-		if (prevStatus === BillTheLizard.ON_TIME || prevStatus === BillTheLizard.TOO_LATE) {
-			return this.getPrediction(modelName, 'top_boxad');
+		if (slotName) {
+			const prevStatus = this.getResponseStatus(slotName);
+			if (prevStatus === BillTheLizard.ON_TIME || prevStatus === BillTheLizard.TOO_LATE) {
+				return this.getPrediction(modelName, slotName);
+			}
 		}
 
 		return undefined;
