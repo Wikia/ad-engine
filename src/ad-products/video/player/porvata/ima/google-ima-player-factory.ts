@@ -43,6 +43,15 @@ class GoogleImaPlayerFactory {
 					);
 				}
 
+				// if IAS enabled, context.get? {
+				// iasVideoTracker.init(
+				// 	google,
+				// 	adsManager,
+				// 	videoSettings.getContainer(),
+				// 	config?
+				//  );
+				// }
+
 				player.dispatchEvent('wikiaAdsManagerLoaded');
 
 				adsManager.addEventListener(
