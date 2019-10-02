@@ -34,3 +34,50 @@
 		margin-bottom: 0;
 	}
 }
+
+.site-futhead.has-bfaa {
+	&.with-mobile-nav {
+		#cdm-zone-01 {
+			display: none;
+		}
+
+		.navbar.navbar-futhead.bfaa-pinned {
+			position: fixed;
+		}
+	}
+
+	&.fixed-page-nav {
+		.page-navigation {
+			position: unset;
+			box-shadow: unset;
+		}
+	}
+
+	.header {
+		min-height: 43px;
+	}
+
+	.site-header {
+		margin-bottom: 0;
+	}
+
+	.navbar.navbar-futhead.bfaa-pinned {
+		position: relative;
+	}
+
+	.main-content.homepage,
+	.content-header,
+	.futhead-gdm {
+		position: unset;
+	}
+
+	.homepage .futhead-gdm,
+	.futhead-gdm.headliner {
+		min-height: 0;
+		margin-bottom: 0 !important;
+	}
+
+	.gpt-ad.bfaa-template {
+		max-width: 100vw;
+	}
+}
