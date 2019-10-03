@@ -1,4 +1,4 @@
-import { babDetection, biddersDelay } from '@platforms/shared';
+import { babDetection, biddersDelay, PageTracker, trackBab } from '@platforms/shared';
 import {
 	AdEngine,
 	bidders,
@@ -8,14 +8,12 @@ import {
 	durationMedia,
 	events,
 	eventService,
-	geoCacheStorage,
+	InstantConfigCacheStorage,
 	taxonomyService,
 	utils,
 } from '@wikia/ad-engine';
 import { adsSetup } from './setup-context';
 import { hideAllAdSlots } from './templates/hide-all-ad-slots';
-import { trackBab } from './tracking/bab-tracker';
-import { PageTracker } from './tracking/page-tracker';
 import { editModeManager } from './utils/edit-mode-manager';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
@@ -55,13 +53,15 @@ function startAdEngine(): void {
 
 	engine.init();
 
-	babDetection.run().then((isBabDetected) => {
-		trackBab(isBabDetected);
+	if (babDetection.isEnabled()) {
+		babDetection.run().then((isBabDetected) => {
+			trackBab(isBabDetected);
 
-		if (isBabDetected) {
-			btRec.run();
-		}
-	});
+			if (isBabDetected) {
+				btRec.run();
+			}
+		});
+	}
 
 	context.push('listeners.slot', {
 		onRenderEnded: (slot) => {
@@ -77,7 +77,8 @@ function startAdEngine(): void {
 }
 
 function trackLabradorValues(): void {
-	const labradorPropValue = geoCacheStorage.getSamplingResults().join(';');
+	const cacheStorage = InstantConfigCacheStorage.make();
+	const labradorPropValue = cacheStorage.getSamplingResults().join(';');
 
 	if (labradorPropValue) {
 		PageTracker.trackProp('labrador', labradorPropValue);

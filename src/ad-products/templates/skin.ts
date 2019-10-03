@@ -1,11 +1,47 @@
 import { context } from '@ad-engine/core';
 
+export interface SkinConfig {
+	bodyAdClass: string;
+	onInit: (params: SkinParams) => void;
+	wrapperSelector: string;
+	zIndex: number;
+}
+
+export interface SkinParams {
+	adProduct: string;
+
+	/**
+	 * URL to go when the background is clicked
+	 */
+	destUrl: string;
+
+	/**
+	 * URL of the 1700x800 image to show in the background
+	 */
+	skinImage: string;
+
+	/**
+	 * background color to use (rrggbb, without leading #)
+	 */
+	backgroundColor: string;
+
+	/**
+	 * color to use in the middle (rrggbb, without leading #)
+	 */
+	middleColor: string;
+
+	/**
+	 * URLs of tracking pixels to append when showing the skin
+	 */
+	pixels: string[];
+}
+
 export class Skin {
-	static getName() {
+	static getName(): string {
 		return 'skin';
 	}
 
-	static getDefaultConfig() {
+	static getDefaultConfig(): SkinConfig {
 		return {
 			bodyAdClass: 'has-background-ad',
 			onInit: () => {},
@@ -14,6 +50,10 @@ export class Skin {
 		};
 	}
 
+	private config: SkinConfig;
+	private adSkin: HTMLElement;
+	private params: SkinParams;
+
 	constructor() {
 		this.config = context.get('templates.skin') || {};
 		this.adSkin = document.querySelector(this.config.wrapperSelector);
@@ -21,22 +61,15 @@ export class Skin {
 
 	/**
 	 * Initializes the Skin unit
-	 *
-	 * @param {Object} params
-	 * @param {string} params.destUrl - URL to go when the background is clicked
-	 * @param {string} params.skinImage - URL of the 1700x800 image to show in the background
-	 * @param {string} params.backgroundColor - background color to use (rrggbb, without leading #)
-	 * @param {string} [params.middleColor] - color to use in the middle (rrggbb, without leading #)
-	 * @param {Array} params.pixels - URLs of tracking pixels to append when showing the skin
 	 */
-	init(params) {
+	init(params: SkinParams): void {
 		this.params = params;
 		this.params.adProduct = 'skin';
 
 		document.body.classList.add(this.config.bodyAdClass);
 		this.setAdSkinStyle(params.skinImage, params.backgroundColor);
 
-		this.adSkin.onclick = function () {
+		this.adSkin.onclick = () => {
 			window.open(params.destUrl);
 		};
 
@@ -51,16 +84,14 @@ export class Skin {
 
 	/**
 	 * Sets styles for ad skin wrapper
-	 *
-	 * @param params
 	 */
-	setAdSkinStyle(image, color) {
+	setAdSkinStyle(image: string, color: string): void {
 		this.adSkin.style.position = 'fixed';
 		this.adSkin.style.height = '100%';
 		this.adSkin.style.width = '100%';
-		this.adSkin.style.left = 0;
-		this.adSkin.style.top = 0;
-		this.adSkin.style.zIndex = this.config.zIndex;
+		this.adSkin.style.left = '0';
+		this.adSkin.style.top = '0';
+		this.adSkin.style.zIndex = this.config.zIndex.toString();
 		this.adSkin.style.cursor = 'pointer';
 		this.adSkin.style.background = `url("${image}") no-repeat top center #${color}`;
 	}
@@ -70,7 +101,7 @@ export class Skin {
 	 *
 	 * @param pixels
 	 */
-	setTrackingPixels(pixels) {
+	setTrackingPixels(pixels: string[]): void {
 		for (let i = 0, len = pixels.length; i < len; i += 1) {
 			const pixelUrl = pixels[i];
 

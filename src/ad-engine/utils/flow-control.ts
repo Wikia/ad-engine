@@ -24,13 +24,13 @@ export function defer<T>(fn: (...args: any) => T, ...args: any): Promise<T> {
 }
 
 export function once(
-	emitter: EventEmitter | Window,
+	emitter: EventEmitter | HTMLElement | Window,
 	eventName: string,
 	options = {},
-): Promise<any> {
+): Promise<any | Event> {
 	const isObject: boolean = typeof emitter === 'object';
 	const hasAddEventListener: boolean =
-		isObject && typeof (emitter as Window).addEventListener === 'function';
+		isObject && typeof (emitter as HTMLElement).addEventListener === 'function';
 	const hasOnce: boolean = isObject && typeof (emitter as EventEmitter).once === 'function';
 
 	return new Promise((resolve, reject) => {
@@ -41,7 +41,7 @@ export function once(
 		if (hasOnce) {
 			(emitter as EventEmitter).once(eventName, resolve);
 		} else if (hasAddEventListener) {
-			(emitter as Window).addEventListener(eventName, resolve, { ...options, once: true });
+			(emitter as HTMLElement).addEventListener(eventName, resolve, { ...options, once: true });
 		} else {
 			reject(new Error('Emitter does not have `addEventListener` nor `once` method.'));
 		}

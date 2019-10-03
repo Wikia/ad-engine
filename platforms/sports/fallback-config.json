@@ -9,14 +9,13 @@
 	"wgAdDriverUapRestriction": 1,
 	"icBTRec": [
 		{
-			"apps": ["gamepedia"],
+			"apps": ["sports"],
 			"devices": ["desktop"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"wgAdDriverIndexExchangeBidderCountries": ["XX"],
-	"wgAdDriverBabDetection": ["XX"],
 	"wgAdDriverRubiconDisplayPrebidCountries": ["XX"],
 	"wgAdDriverPubMaticBidderCountries": ["XX"],
 	"wgAdDriverTestCommunities": ["cdm_gamepedia", "project43"],

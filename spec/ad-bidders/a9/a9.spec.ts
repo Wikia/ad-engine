@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox } from 'sinon';
 import { A9Provider } from '../../../src/ad-bidders/a9/index';
 import { Apstag } from '../../../src/ad-bidders/wrappers';
 
 describe('A9Provider', () => {
+	const sandbox = createSandbox();
 	let bidderConfig;
-	let apstagStub;
 
 	beforeEach(() => {
 		bidderConfig = {
@@ -19,20 +19,17 @@ describe('A9Provider', () => {
 			},
 		};
 
-		apstagStub = sinon.stub(Apstag, 'make').returns({});
+		sandbox.stub(Apstag, 'make').returns({} as Apstag);
 	});
 
 	afterEach(() => {
-		apstagStub.restore();
+		sandbox.restore();
 	});
 
 	it('configure display slot', () => {
 		const a9 = new A9Provider(bidderConfig);
 
-		const definition = a9.createSlotDefinition(
-			'top_leaderboard',
-			bidderConfig.slots.top_leaderboard,
-		);
+		const definition = a9.createSlotDefinition('top_leaderboard');
 
 		expect(definition).to.deep.equal({
 			slotID: 'top_leaderboard',
@@ -44,7 +41,7 @@ describe('A9Provider', () => {
 	it('do not configure video slot when video is disabled', () => {
 		const a9 = new A9Provider(bidderConfig);
 
-		const definition = a9.createSlotDefinition('featured', bidderConfig.slots.featured);
+		const definition = a9.createSlotDefinition('featured');
 
 		expect(definition).to.equal(null);
 	});
@@ -53,7 +50,7 @@ describe('A9Provider', () => {
 		bidderConfig.videoEnabled = true;
 		const a9 = new A9Provider(bidderConfig);
 
-		const definition = a9.createSlotDefinition('featured', bidderConfig.slots.featured);
+		const definition = a9.createSlotDefinition('featured');
 
 		expect(definition).to.deep.equal({
 			mediaType: 'video',

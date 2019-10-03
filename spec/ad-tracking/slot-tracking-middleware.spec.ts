@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { AdSlot, context, geoCacheStorage } from '../../src/ad-engine';
+import { AdSlot, context, InstantConfigCacheStorage } from '../../src/ad-engine';
 import { AdInfoContext, slotTrackingMiddleware } from '../../src/ad-tracking';
 
 describe('slot-tracking-middleware', () => {
@@ -15,7 +15,9 @@ describe('slot-tracking-middleware', () => {
 				connectStart: 250,
 			},
 		});
-		sandbox.stub(geoCacheStorage, 'getSamplingResults').returns(['FOO_A_1', 'BAR_B_99']);
+		sandbox
+			.stub(InstantConfigCacheStorage.prototype, 'getSamplingResults')
+			.returns(['FOO_A_1', 'BAR_B_99']);
 		sandbox.stub(document, 'hidden').get(() => undefined);
 		window.pvNumber = 5;
 

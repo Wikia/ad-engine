@@ -4,10 +4,7 @@ import { Stickiness } from './uap/themes/hivi/stickiness';
 
 const logGroup = 'sticky-base';
 
-/**
- * @abstract
- */
-export class StickyBase {
+export abstract class StickyBase {
 	static DEFAULT_UNSTICK_DELAY = 2000;
 
 	protected container: HTMLElement;
@@ -23,7 +20,7 @@ export class StickyBase {
 	 */
 	constructor(protected adSlot: AdSlot) {
 		this.container = this.adSlot.getElement();
-		this.lineId = adSlot.lineItemId.toString() || '';
+		this.lineId = this.adSlot.lineItemId.toString() || '';
 		this.lines = context.get(`templates.${this.getName()}.lineItemIds`) || [];
 		this.lines = this.lines.map((el) => el.toString());
 		this.config = context.get(`templates.${this.getName()}`) || {};
@@ -41,12 +38,7 @@ export class StickyBase {
 		this.addStickinessPlugin();
 	}
 
-	/**
-	 * @abstract
-	 */
-	protected addStickinessPlugin(): void {
-		throw new utils.NotImplementedException();
-	}
+	protected abstract addStickinessPlugin(): void;
 
 	protected isEnabled(): boolean {
 		const isEnabledInContext: boolean = context.get(`templates.${this.getName()}.enabled`);
@@ -61,11 +53,8 @@ export class StickyBase {
 
 	/**
 	 * Returns template name.
-	 * @abstract
 	 */
-	protected getName(): string {
-		throw new utils.NotImplementedException();
-	}
+	protected abstract getName(): string;
 
 	private isLineAndGeo(): boolean {
 		const found: boolean = this.lines.some((line) => {
@@ -91,9 +80,8 @@ export class StickyBase {
 			stickyUntilSlotViewed,
 		} = this.config;
 		const whenSlotViewedOrTimeout = async () => {
-			await (stickyUntilSlotViewed
-				? this.adSlot.loaded.then(() => this.adSlot.viewed)
-				: Promise.resolve());
+			await this.adSlot.loaded;
+			await (stickyUntilSlotViewed ? this.adSlot.viewed : Promise.resolve());
 			await utils.wait(stickyDefaultTime + stickyAdditionalTime);
 		};
 
@@ -121,17 +109,7 @@ export class StickyBase {
 		this.stickiness.on(Stickiness.UNSTICK_IMMEDIATELY_EVENT, () => this.unstickImmediately());
 	}
 
-	/**
-	 * @abstract
-	 */
-	protected onStickinessChange(isSticky: boolean): void {
-		throw new utils.NotImplementedException({ isSticky });
-	}
+	protected abstract onStickinessChange(isSticky: boolean): void;
 
-	/**
-	 * @abstract
-	 */
-	protected unstickImmediately(): void {
-		throw new utils.NotImplementedException();
-	}
+	protected abstract unstickImmediately(): void;
 }

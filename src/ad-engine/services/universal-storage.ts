@@ -1,10 +1,10 @@
 import { Dictionary } from '../models';
 
 export interface StorageProvider {
-	getItem: (key: string) => string;
-	setItem: (key: string, input: string) => void;
-	removeItem: (key: string) => void;
-	clear: () => void;
+	getItem(key: string): string;
+	setItem(key: string, input: string): void;
+	removeItem(key: string): void;
+	clear(): void;
 }
 
 export class UniversalStorage {

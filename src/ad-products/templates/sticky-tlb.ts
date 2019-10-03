@@ -1,6 +1,6 @@
 import { Dictionary, SlotTweaker, utils } from '@ad-engine/core';
 import { setupNavbar } from '../utils';
-import AdvertisementLabel from './interface/advertisement-label';
+import { AdvertisementLabel } from './interface/advertisement-label';
 import { animate } from './interface/animate';
 import { StickyBase } from './sticky-base';
 import { StickinessCallback } from './uap/big-fancy-ad-above';
@@ -18,8 +18,26 @@ import { universalAdPackage } from './uap/universal-ad-package';
 
 const logGroup = 'sticky-tlb';
 
+export interface StickyTlbConfig {
+	enabled: boolean;
+	desktopNavbarWrapperSelector: string;
+	mobileNavbarWrapperSelector: string;
+	mainContainer: HTMLElement;
+	handleNavbar: false;
+	stickyAdditionalTime: number;
+	stickyDefaultTime: number;
+	stickyUntilSlotViewed: boolean;
+	slotSibling: string;
+	onInit: () => void;
+	onBeforeStickBfaaCallback: () => void;
+	onAfterStickBfaaCallback: () => void;
+	onBeforeUnstickBfaaCallback: () => void;
+	onAfterUnstickBfaaCallback: () => void;
+	moveNavbar: (offset: string, time: number) => void;
+}
+
 export class StickyTLB extends StickyBase {
-	static getDefaultConfig() {
+	static getDefaultConfig(): StickyTlbConfig {
 		return {
 			enabled: true,
 			desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
@@ -35,8 +53,8 @@ export class StickyTLB extends StickyBase {
 			onAfterStickBfaaCallback: () => {},
 			onBeforeUnstickBfaaCallback: () => {},
 			onAfterUnstickBfaaCallback: () => {},
-			moveNavbar(offset, time = SLIDE_OUT_TIME) {
-				const navbarElement = document.querySelector('body > nav.navigation');
+			moveNavbar(offset, time = SLIDE_OUT_TIME): void {
+				const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
 
 				if (navbarElement) {
 					navbarElement.style.transition = offset

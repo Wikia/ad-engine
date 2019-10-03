@@ -1,14 +1,24 @@
-import { biddersContext, getDeviceMode, slotsContext, uapHelper } from '@platforms/shared';
+import {
+	getDeviceMode,
+	registerPorvataTracker,
+	registerSlotTracker,
+	registerViewabilityTracker,
+	slotsContext,
+	uapHelper,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	context,
 	InstantConfigService,
+	setupBidders,
 	setupNpaContext,
 	slotInjector,
 	slotService,
 	utils,
 } from '@wikia/ad-engine';
 import { set } from 'lodash';
+import { setA9AdapterConfig } from './bidders/a9';
+import { setPrebidAdaptersConfig } from './bidders/prebid';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { getPageLevelTargeting } from './targeting';
 import { templateRegistry } from './templates/templates-registry';
@@ -23,12 +33,16 @@ class ContextSetup {
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
 		templateRegistry.registerTemplates();
+
+		registerPorvataTracker();
+		registerSlotTracker();
+		registerViewabilityTracker();
 	}
 
 	private setupAdContext(isOptedIn = false): void {
 		const isMobile = getDeviceMode() === 'mobile';
 
-		context.set('state.showAds', true);
+		context.set('state.showAds', !utils.client.isSteamPlatform());
 		context.set('state.isMobile', isMobile);
 		context.set('state.deviceType', utils.client.getDeviceType());
 
@@ -42,63 +56,34 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		context.set('bidders', biddersContext.generate());
-
-		if (this.instantConfig.isGeoEnabled('wgAdDriverA9BidderCountries')) {
-			context.set('bidders.a9.enabled', true);
-			context.set(
-				'bidders.a9.dealsEnabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverA9DealsCountries'),
-			);
-		}
-
-		if (this.instantConfig.isGeoEnabled('wgAdDriverPrebidBidderCountries')) {
-			context.set('bidders.prebid.enabled', true);
-			context.set(
-				'bidders.prebid.appnexus.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverAppNexusBidderCountries'),
-			);
-			context.set(
-				'bidders.prebid.indexExchange.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverIndexExchangeBidderCountries'),
-			);
-			context.set(
-				'bidders.prebid.openx.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverOpenXPrebidBidderCountries'),
-			);
-
-			context.set(
-				'bidders.prebid.pubmatic.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverPubMaticBidderCountries'),
-			);
-			context.set(
-				'bidders.prebid.rubicon_display.enabled',
-				this.instantConfig.isGeoEnabled('wgAdDriverRubiconDisplayPrebidCountries'),
-			);
-		}
-
-		context.set(
-			'bidders.enabled',
-			context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
-		);
-
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
 		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig(context.get('targeting.s1'));
+		setupBidders(context, this.instantConfig);
+
 		this.injectIncontentPlayer();
 
-		uapHelper.configureUap(this.instantConfig);
+		uapHelper.configureUap();
 		slotsContext.setupStates();
 
 		this.updateWadContext();
 	}
 
 	private updateWadContext(): void {
+		const babEnabled = this.instantConfig.get('icBabDetection');
+
 		// BlockAdBlock detection
-		context.set('options.wad.enabled', this.instantConfig.get('icBabDetection'));
+		context.set('options.wad.enabled', babEnabled);
+
+		if (babEnabled) {
+			// BT rec
+			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+		}
 	}
 
 	private injectIncontentPlayer(): void {

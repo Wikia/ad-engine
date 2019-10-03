@@ -9,6 +9,7 @@ import {
 	slotService,
 	utils,
 	vastDebugger,
+	VastParams,
 	vastParser,
 } from '@ad-engine/core';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
@@ -25,6 +26,15 @@ interface HdPlayerEvent extends CustomEvent {
 	};
 }
 
+interface JwPlayerAdsFactoryOptions {
+	adProduct: string;
+	slotName: string;
+	audio: boolean;
+	autoplay: boolean;
+	featured: boolean;
+	videoId: string;
+}
+
 const vastUrls = {
 	last: null,
 	preroll: null,
@@ -37,21 +47,14 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
 /**
  * Calculate depth
- *
- * @param {number} depth
- * @returns {number}
  */
-function calculateRV(depth) {
+function calculateRV(depth: number): number {
 	const capping = context.get('options.video.adsOnNextVideoFrequency');
 
 	return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
 }
 
-/**
- * @param {number} depth
- * @returns {boolean}
- */
-function shouldPlayAdOnNextVideo(depth) {
+function shouldPlayAdOnNextVideo(depth: number): boolean {
 	const capping = context.get('options.video.adsOnNextVideoFrequency');
 
 	return (
@@ -59,67 +62,40 @@ function shouldPlayAdOnNextVideo(depth) {
 	);
 }
 
-/**
- * @param {number} depth
- * @returns {boolean}
- */
-function canAdBePlayed(depth) {
+function canAdBePlayed(depth: number): boolean {
 	const isReplay = depth > 1;
 
 	return !isReplay || (isReplay && shouldPlayAdOnNextVideo(depth));
 }
 
-/**
- * @param {number} videoDepth
- * @returns {boolean}
- */
-function shouldPlayPreroll(videoDepth) {
+function shouldPlayPreroll(videoDepth: number): boolean {
 	return canAdBePlayed(videoDepth);
 }
 
-/**
- * @param {number} videoDepth
- * @returns {boolean}
- */
-function shouldPlayMidroll(videoDepth) {
+function shouldPlayMidroll(videoDepth: number): boolean {
 	return context.get('options.video.isMidrollEnabled') && canAdBePlayed(videoDepth);
 }
 
-/**
- * @param {number} videoDepth
- * @returns {boolean}
- */
-function shouldPlayPostroll(videoDepth) {
+function shouldPlayPostroll(videoDepth: number): boolean {
 	return context.get('options.video.isPostrollEnabled') && canAdBePlayed(videoDepth);
 }
 
-/**
- * @param {string} placement
- * @param {string} vastUrl
- * @returns {void}
- */
-function setCurrentVast(placement, vastUrl) {
+function setCurrentVast(placement: string, vastUrl: string): void {
 	vastUrls[placement] = vastUrl;
 	vastUrls.last = vastUrl;
 }
 
-/**
- * @param {string} placement
- * @returns {string}
- */
-function getCurrentVast(placement) {
+function getCurrentVast(placement: string): string {
 	return vastUrls[placement] || vastUrls.last;
 }
 
-/**
- * @param {Object} slot
- * @param {string} position
- * @param {number} depth
- * @param {number} correlator
- * @param {Object} slotTargeting
- * @returns {string}
- */
-function getVastUrl(slot, position, depth, correlator, slotTargeting) {
+function getVastUrl(
+	slot: AdSlot,
+	position: string,
+	depth: number,
+	correlator: number,
+	slotTargeting: object,
+): string {
 	return buildVastUrl(16 / 9, slot.getSlotName(), {
 		correlator,
 		vpos: position,
@@ -131,11 +107,7 @@ function getVastUrl(slot, position, depth, correlator, slotTargeting) {
 	});
 }
 
-/**
- * @param {Object} adSlot
- * @param {Object} vastParams
- */
-function updateSlotParams(adSlot, vastParams) {
+function updateSlotParams(adSlot: AdSlot, vastParams: VastParams): void {
 	adSlot.lineItemId = vastParams.lineItemId;
 	adSlot.creativeId = vastParams.creativeId;
 	adSlot.creativeSize = vastParams.size;
@@ -143,19 +115,13 @@ function updateSlotParams(adSlot, vastParams) {
 
 /**
  * Creates instance with ads schedule and tracking for JWPlayer
- * @param options
- * @param options.adProduct Base ad product name
- * @param options.slotName Slot name for video ads
- * @param [options.audio] Initial state of audio of created player
- * @param [options.autoplay] Initial state of autoplay of created player
- * @param [options.featured] Decides about ad slot used in the video
- * @param [options.videoId] Id of initialized video
- * @returns {{register: register}}
  */
-function create(options) {
-	function register(player, slotTargeting: Dictionary = {}) {
-		const slot = slotService.get(slotName);
-		const adProduct = slot.config.trackingKey;
+function create(
+	options: JwPlayerAdsFactoryOptions,
+): { register: (player, slotTargeting?: Dictionary) => void } {
+	function register(player, slotTargeting: Dictionary = {}): void {
+		const adSlot = slotService.get(slotName);
+		const adProduct = adSlot.config.trackingKey;
 		const videoElement = player && player.getContainer && player.getContainer();
 		const videoContainer = videoElement && videoElement.parentNode;
 		const targeting = slotTargeting;
@@ -171,9 +137,9 @@ function create(options) {
 		/** @type {string} */
 		let lastBrokenAdPlayId = null;
 
-		slot.element = videoContainer;
-		slot.setConfigProperty('audio', !player.getMute());
-		slot.setConfigProperty('autoplay', player.getConfig().autostart);
+		adSlot.element = videoContainer;
+		adSlot.setConfigProperty('audio', !player.getMute());
+		adSlot.setConfigProperty('autoplay', player.getConfig().autostart);
 
 		if (context.get('options.video.moatTracking.enabledForArticleVideos')) {
 			const partnerCode =
@@ -183,9 +149,9 @@ function create(options) {
 			player.on('adImpression', (event) => {
 				if (window.moatjw) {
 					window.moatjw.add({
-						adImpressionEvent: event,
 						partnerCode,
 						player,
+						adImpressionEvent: event,
 					});
 				}
 			});
@@ -207,8 +173,8 @@ function create(options) {
 
 			correlator = Math.round(Math.random() * 10000000000);
 			depth += 1;
-			slot.setConfigProperty('audio', !player.getMute());
-			slot.setConfigProperty('videoDepth', depth);
+			adSlot.setConfigProperty('audio', !player.getMute());
+			adSlot.setConfigProperty('videoDepth', depth);
 
 			if (featuredVideo15s.isEnabled(currentMedia.mediaid)) {
 				prerollPositionReached = true;
@@ -223,7 +189,7 @@ function create(options) {
 				 * @returns {void}
 				 */
 				const fillInSlot = () => {
-					const vastUrl = getVastUrl(slot, 'preroll', depth, correlator, targeting);
+					const vastUrl = getVastUrl(adSlot, 'preroll', depth, correlator, targeting);
 
 					setCurrentVast('preroll', vastUrl);
 					player.playAd(vastUrl);
@@ -232,7 +198,7 @@ function create(options) {
 				if (options.featured) {
 					fillInSlot();
 				} else {
-					btfBlockerService.push(slot, fillInSlot);
+					btfBlockerService.push(adSlot, fillInSlot);
 				}
 			}
 
@@ -241,10 +207,10 @@ function create(options) {
 
 		player.on('videoMidPoint', () => {
 			if (shouldPlayMidroll(depth)) {
-				const vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
+				const vastUrl = getVastUrl(adSlot, 'midroll', depth, correlator, targeting);
 
 				tracker.adProduct = `${adProduct}-midroll`;
-				slot.setConfigProperty('audio', !player.getMute());
+				adSlot.setConfigProperty('audio', !player.getMute());
 				setCurrentVast('midroll', vastUrl);
 				player.playAd(vastUrl);
 			}
@@ -252,10 +218,10 @@ function create(options) {
 
 		player.on('beforeComplete', () => {
 			if (shouldPlayPostroll(depth)) {
-				const vastUrl = getVastUrl(slot, 'postroll', depth, correlator, targeting);
+				const vastUrl = getVastUrl(adSlot, 'postroll', depth, correlator, targeting);
 
 				tracker.adProduct = `${adProduct}-postroll`;
-				slot.setConfigProperty('audio', !player.getMute());
+				adSlot.setConfigProperty('audio', !player.getMute());
 				setCurrentVast('postroll', vastUrl);
 				player.playAd(vastUrl);
 			}
@@ -273,13 +239,13 @@ function create(options) {
 			}
 
 			const { currentTime } = data;
-			const f15sTime = parseFloat(featuredVideo15s.getTime(currentMedia.mediaid));
+			const f15sTime = featuredVideo15s.getTime(currentMedia.mediaid);
 
 			if (currentTime >= f15sTime && !f15sMidrollPlayed) {
-				const vastUrl = getVastUrl(slot, 'midroll', depth, correlator, targeting);
+				const vastUrl = getVastUrl(adSlot, 'midroll', depth, correlator, targeting);
 
 				tracker.adProduct = `${adProduct}-midroll`;
-				slot.setConfigProperty('audio', !player.getMute());
+				adSlot.setConfigProperty('audio', !player.getMute());
 				setCurrentVast('midroll', vastUrl);
 				player.playAd(vastUrl);
 				f15sMidrollPlayed = true;
@@ -297,7 +263,7 @@ function create(options) {
 			});
 
 			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
-			eventService.emit(events.VIDEO_AD_REQUESTED, slot);
+			eventService.emit(events.VIDEO_AD_REQUESTED, adSlot);
 		});
 
 		player.on('adImpression', (event) => {
@@ -305,9 +271,9 @@ function create(options) {
 				imaAd: event.ima && event.ima.ad,
 			});
 
-			updateSlotParams(slot, vastParams);
-			slot.setStatus(AdSlot.STATUS_SUCCESS);
-			eventService.emit(events.VIDEO_AD_IMPRESSION, slot);
+			updateSlotParams(adSlot, vastParams);
+			adSlot.setStatus(AdSlot.STATUS_SUCCESS);
+			eventService.emit(events.VIDEO_AD_IMPRESSION, adSlot);
 		});
 
 		player.on('adError', (event) => {
@@ -324,23 +290,23 @@ function create(options) {
 			lastBrokenAdPlayId = adPlayId;
 
 			log(`ad error message: ${event.message}`);
-			updateSlotParams(slot, vastParams);
+			updateSlotParams(adSlot, vastParams);
 			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'error', vastParams);
 
 			if (event.adErrorCode === EMPTY_VAST_CODE) {
-				slot.setStatus(AdSlot.STATUS_COLLAPSE);
+				adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
 			} else {
-				slot.setStatus(AdSlot.STATUS_ERROR);
+				adSlot.setStatus(AdSlot.STATUS_ERROR);
 			}
-			eventService.emit(events.VIDEO_AD_ERROR, slot);
+			eventService.emit(events.VIDEO_AD_ERROR, adSlot);
 		});
 
 		if (context.get('options.wad.hmdRec.enabled')) {
 			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {
 				if (event.detail.slotStatus) {
-					updateSlotParams(slot, event.detail.slotStatus.vastParams);
+					updateSlotParams(adSlot, event.detail.slotStatus.vastParams);
 					tracker.updateCreativeData(event.detail.slotStatus.vastParams);
-					slot.setStatus(event.detail.slotStatus.statusName);
+					adSlot.setStatus(event.detail.slotStatus.statusName);
 				}
 
 				if (event.detail.name) {
@@ -360,10 +326,10 @@ function create(options) {
 	}
 
 	const tracker = new JWPlayerTracker({
+		slotName,
 		adProduct: slot.config.trackingKey,
 		audio: options.audio,
 		ctp: !options.autoplay,
-		slotName,
 		videoId: options.videoId,
 	});
 
@@ -372,7 +338,7 @@ function create(options) {
 	};
 }
 
-function loadMoatPlugin() {
+function loadMoatPlugin(): void {
 	utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
 }
 

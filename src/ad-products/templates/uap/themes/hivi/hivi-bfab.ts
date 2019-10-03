@@ -7,7 +7,9 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { mapValues } from 'lodash';
+import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import { animate } from '../../../interface/animate';
+import { BigFancyAdBelowConfig } from '../../big-fancy-ad-below';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
@@ -22,15 +24,16 @@ import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
 
 export class BfabHiviTheme extends BigFancyAdHiviTheme {
+	protected config: BigFancyAdBelowConfig;
+	private video: PorvataPlayer;
+
 	constructor(adSlot, params) {
 		super(adSlot, params);
 
-		this.stickiness = null;
-		this.video = null;
 		this.config = context.get('templates.bfab') || {};
 	}
 
-	onAdReady() {
+	onAdReady(): void {
 		super.onAdReady();
 
 		if (this.params.isSticky && this.config.stickinessAllowed) {
@@ -50,10 +53,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	async addStickinessPlugin() {
+	private async addStickinessPlugin(): Promise<void> {
 		await this.waitForScrollAndUnstickedBfaa();
 
 		if (!this.adSlot.isViewed()) {
@@ -75,10 +75,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	waitForScrollAndUnstickedBfaa() {
+	private waitForScrollAndUnstickedBfaa(): Promise<unknown> {
 		let resolvePromise = null;
 
 		const promise = new Promise((resolve) => {
@@ -108,7 +105,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		return promise;
 	}
 
-	onVideoReady(video) {
+	onVideoReady(video: PorvataPlayer): void {
 		this.video = video;
 		video.addEventListener('wikiaAdStarted', () => this.updateAdSizes());
 		video.addEventListener('wikiaAdCompleted', () => this.setResolvedState());
@@ -124,10 +121,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		});
 	}
 
-	/**
-	 * @private
-	 */
-	updateAdSizes() {
+	private updateAdSizes(): void {
 		const state = resolvedState.isResolvedState(this.params) ? 'resolved' : 'default';
 		const stateHeight = this.params.config.state.height[state];
 		const relativeHeight = this.params.container.offsetHeight * (stateHeight / 100);
@@ -139,19 +133,13 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	adjustVideoSize(relativeHeight) {
+	private adjustVideoSize(relativeHeight): void {
 		if (this.video && !this.video.isFullscreen()) {
 			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	async setResolvedState() {
+	private async setResolvedState(): Promise<void> {
 		const { config, image2 } = this.params;
 
 		this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
@@ -163,10 +151,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @private
-	 */
-	setThumbnailStyle(state = 'default') {
+	private setThumbnailStyle(state = 'default'): void {
 		const { thumbnail } = this.params;
 		const style = mapValues(
 			this.params.config.state,
@@ -180,18 +165,12 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	/**
-	 * @protected
-	 */
-	async getVideoViewedAndTimeout() {
+	protected async getVideoViewedAndTimeout(): Promise<void> {
 		await utils.wait(BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY);
 	}
 
-	/**
-	 * @protected
-	 */
-	async onStickinessChange(isSticky) {
-		const element = this.adSlot.getElement();
+	protected async onStickinessChange(isSticky: boolean): Promise<void> {
+		const element: HTMLElement = this.adSlot.getElement();
 
 		if (!isSticky) {
 			if (this.adSlot.getStatus() !== 'top-conflict') {
@@ -199,33 +178,27 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 			}
 			this.adSlot.emitEvent(Stickiness.SLOT_UNSTICKED_STATE);
 			element.style.top = null;
-			element.parentNode.style.height = null;
+			(element.parentNode as HTMLElement).style.height = null;
 			element.classList.remove(CSS_CLASSNAME_STICKY_BFAB);
 			animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
 		} else {
 			this.adSlot.emitEvent(Stickiness.SLOT_STICKED_STATE);
-			element.parentNode.style.height = `${element.offsetHeight}px`;
+			(element.parentNode as HTMLElement).style.height = `${element.offsetHeight}px`;
 			element.classList.add(CSS_CLASSNAME_STICKY_BFAB);
 			element.style.top = `${this.config.topThreshold}px`;
 		}
 	}
 
-	/**
-	 * @protected
-	 */
-	onCloseClicked() {
+	protected onCloseClicked(): void {
 		this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		this.unstickImmediately();
 
-		this.adSlot.getElement().parentNode.style.height = null;
+		(this.adSlot.getElement().parentNode as HTMLElement).style.height = null;
 		this.adSlot.disable();
 		this.adSlot.hide();
 	}
 
-	/**
-	 * @protected
-	 */
-	unstickImmediately(stopVideo = true) {
+	protected unstickImmediately(stopVideo = false): void {
 		if (this.stickiness) {
 			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAB);
 

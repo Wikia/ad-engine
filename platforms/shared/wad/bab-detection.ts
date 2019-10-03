@@ -53,18 +53,16 @@ class BabDetection {
 	 * Starts WAD rec detection
 	 */
 	async run(): Promise<boolean> {
-		if (this.isEnabled()) {
-			const isBabDetected: boolean = await utils.client.checkBlocking();
+		const isBabDetected: boolean = await utils.client.checkBlocking();
 
-			utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
+		utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
 
-			this.setRuntimeParams(isBabDetected);
-			this.updateSrcParameter(isBabDetected);
-			this.dispatchDetectionEvent(isBabDetected);
-			this.markAsReady();
+		this.setRuntimeParams(isBabDetected);
+		this.updateSrcParameter(isBabDetected);
+		this.dispatchDetectionEvent(isBabDetected);
+		this.markAsReady();
 
-			return isBabDetected;
-		}
+		return isBabDetected;
 	}
 
 	/**

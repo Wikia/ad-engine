@@ -13,14 +13,14 @@ const FLOATING_CLASS_NAME = 'outstream-floating';
  * @param container Video container
  * @param params videoSettings parameters
  */
-function add(video, container, params) {
+function add(video, container, params): void {
 	if (!params.isFloatingEnabled) {
 		return;
 	}
 
 	const slotElement = slotService.get(params.slotName).getElement();
-	const videoOverlay = slotElement.querySelector('.video-overlay');
-	const videoWrapper = slotElement.querySelector('.video-display-wrapper');
+	const videoOverlay: HTMLElement = slotElement.querySelector('.video-overlay');
+	const videoWrapper: HTMLElement = slotElement.querySelector('.video-display-wrapper');
 
 	video.addEventListener('wikiaSlotExpanded', () => {
 		const observer = utils.viewportObserver.addListener(

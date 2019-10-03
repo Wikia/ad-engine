@@ -16,7 +16,7 @@ export class HiviUap {
 			'iframe[id="google_ads_iframe_/5441/wka.life/_project43//article/test/bottom_leaderboard_0"]';
 		this.replayOverlay = '.replay-overlay';
 		this.buttonIsOn = '.is-on';
-		this.closeLeaderboardButton = 'button';
+		this.closeLeaderboardButton = '.button-unstick';
 		this.fullScreen = '.stop-scrolling';
 		this.firstCall = '4466763538'; // applies only to top leaderboard
 		this.secondCall = '4511050296'; // top and incontent boxad and bottom leaderboard

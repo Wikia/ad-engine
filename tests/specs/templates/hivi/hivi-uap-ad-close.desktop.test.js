@@ -2,64 +2,32 @@ import { expect } from 'chai';
 import { hiviUap } from '../../../pages/hivi-uap-ad.page';
 import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
-import networkCapture from '../../../common/network-capture';
+import { network } from '../../../common/network';
+import { helpers } from '../../../common/helpers';
 
-// TODO fix network capture
-xdescribe('Desktop HiVi UAP ads page: top leaderboard', () => {
-	let client;
-	const logs = [];
-
-	before(async () => {
-		client = await networkCapture.getClient();
-
-		client.on('Log.entryAdded', (entry) => {
-			logs.push(entry.entry);
-		});
-
-		client.on('Console.messageAdded', (entry) => {
-			logs.push(entry.message);
-		});
+describe('Desktop HiVi UAP ads page: top leaderboard', () => {
+	before(() => {
+		network.enableLogCapturing();
+		network.captureConsole();
+		network.clearLogs();
 	});
 
-	beforeEach(async () => {
-		logs.length = 0;
-		await networkCapture.clearConsoleMessages(client);
+	after(() => {
+		network.disableLogCapturing();
 	});
 
-	after(async () => {
-		await networkCapture.closeClient(client);
-	});
-
-	// TODO fix network capture
-	xit('resolved: should log message to console that force-close event was triggered by TLB', () => {
-		const message = 'Custom listener: onCustomEvent top_leaderboard force-close';
-
-		hiviUap.openUapWithState(true, hiviUap.pageLink, adSlots.topLeaderboard);
-		$('.button-unstick').waitForDisplayed(timeouts.standard);
-
-		$('.button-unstick').click();
-		browser.waitUntil(
-			() => networkCapture.logsIncludesMessage(message, logs, 'log', true),
-			2000,
-			`Logs should contain message: "${message}".\nLogs are: ${JSON.stringify(logs)}`,
-		);
-		expect(networkCapture.logsIncludesMessage('force-unstick', logs, 'any', true));
-	});
-
-	// TODO fix network capture
-	xit('unresolved: should log message to console that force-close event was triggered by TLB', () => {
-		const message = 'Custom listener: onCustomEvent top_leaderboard force-close';
+	it('unresolved: should log message to console that force-close event was triggered by TLB', () => {
+		const message = 'onCustomEvent top_leaderboard force-unstick';
 
 		hiviUap.openUapWithState(false, hiviUap.pageLink, adSlots.topLeaderboard);
-		$('.button-unstick').waitForDisplayed(timeouts.standard);
+		helpers.mediumScroll(600);
+		$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
 
-		$('.button-unstick').click();
+		$(hiviUap.closeLeaderboardButton).click();
 		browser.waitUntil(
-			() => networkCapture.logsIncludesMessage(message, logs, 'log', true),
+			() => network.checkIfMessageIsInLogs(message),
 			2000,
-			`Logs should contain message: "${message}".\nLogs are: ${JSON.stringify(logs)}`,
+			`Logs should contain message: ${message}`,
 		);
-
-		expect(networkCapture.logsIncludesMessage('force-unstick', logs, 'any', true)).to.be.false;
 	});
 });

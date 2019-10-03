@@ -1,38 +1,18 @@
-import { AdSlot, context, PorvataPlayer, utils } from '@ad-engine/core';
-import { BigFancyAdAboveConfig } from '../big-fancy-ad-above';
+import { AdSlot } from '@ad-engine/core';
+import { PorvataPlayer } from '../../../video/player/porvata/porvata';
+import { UapVideoSettings } from '../uap-video-settings';
 import { UapParams } from '../universal-ad-package';
-import { VideoSettings } from '../video-settings';
 
-/**
- * @abstract
- */
-export class BigFancyAdTheme {
+export abstract class BigFancyAdTheme {
 	container: HTMLElement;
-	protected config: BigFancyAdAboveConfig;
 
 	constructor(protected adSlot: AdSlot, protected params: UapParams) {
 		this.container = this.adSlot.getElement();
-		this.config = context.get('templates.bfaa') || {};
 	}
 
-	/**
-	 * @abstract
-	 */
-	onAdReady(): void {
-		throw new utils.NotImplementedException();
-	}
+	abstract onAdReady(): void;
 
-	/**
-	 * @abstract
-	 */
-	async adIsReady(videoSettings: VideoSettings): Promise<void> {
-		throw new utils.NotImplementedException({ videoSettings });
-	}
+	abstract adIsReady(videoSettings: UapVideoSettings): Promise<HTMLIFrameElement | HTMLElement>;
 
-	/**
-	 * @abstract
-	 */
-	onVideoReady(video: PorvataPlayer): void {
-		throw new utils.NotImplementedException();
-	}
+	abstract onVideoReady(video: PorvataPlayer): void;
 }

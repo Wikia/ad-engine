@@ -1,9 +1,11 @@
-import { AdEngine, context, viewabilityCounter } from '@wikia/ad-engine';
+import { AdEngine, context, ViewabilityCounter } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 
 context.extend(customContext);
 context.set('slots.bottom_leaderboard.disabled', false);
+
+const viewabilityCounter = ViewabilityCounter.make();
 
 viewabilityCounter.init();
 

@@ -4,6 +4,7 @@ import { queryStrings } from './query-strings';
 import { adSlots } from './ad-slots';
 
 const valueToDivideBy = 10;
+const pauseBetweenScrollsShort = 100;
 const pauseBetweenScrolls = 500;
 const timeToStartPlaying = 3000;
 
@@ -59,6 +60,14 @@ class Helpers {
 				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
+		}
+	}
+
+	mediumScroll(px) {
+		const step = px / valueToDivideBy;
+		for (let i = step; i < px; i += step) {
+			browser.execute(`window.scrollBy(0,${step})`);
+			browser.pause(pauseBetweenScrollsShort);
 		}
 	}
 
@@ -201,15 +210,14 @@ class Helpers {
 	 * Closes all the tabs but the first one and switches back to it.
 	 */
 	closeNewTabs() {
-		const tabIds = browser.getTabIds();
+		const handles = browser.getWindowHandles();
+		const mainWindow = handles.shift();
 
-		if (tabIds.length > 1) {
-			for (let i = 1; i <= tabIds.length - 1; i += 1) {
-				browser.close(i);
-			}
-		}
-		browser.pause(timeouts.standard);
-		browser.switchTab(tabIds[0]);
+		handles.forEach((window) => {
+			browser.switchToWindow(window);
+			browser.closeWindow();
+		});
+		browser.switchToWindow(mainWindow);
 	}
 
 	// TODO Visual

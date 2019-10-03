@@ -1,0 +1,9 @@
+{
+	"extends": "../configs/tslint.json",
+	"rules": {
+		"no-implicit-dependencies": false,
+		"no-submodule-imports": false,
+		"no-unused-expression": false,
+		"typedef": false
+	}
+}

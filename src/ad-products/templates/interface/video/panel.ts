@@ -1,11 +1,11 @@
-export default class Panel {
-	constructor(className, uiElements) {
-		this.uiElements = uiElements;
-		this.className = className;
+export class Panel {
+	private panelContainer: HTMLDivElement;
+
+	constructor(private className, private uiElements) {
 		this.panelContainer = null;
 	}
 
-	add(video, container, params) {
+	add(video, container, params): void {
 		this.panelContainer = document.createElement('div');
 		this.panelContainer.className = this.className;
 		this.uiElements.forEach((uiElement) => {
