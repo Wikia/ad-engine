@@ -399,7 +399,7 @@ export class BillTheLizard {
 	 * @param {string} modelName
 	 * @returns {number | undefined}
 	 */
-	getPreviousPrediction(startId, callIdBuilder, modelName) {
+	getLastReusablePrediction(modelName) {
 		return this.getPredictions(modelName)
 			.filter((prediction) => {
 				const status = this.getResponseStatus(prediction.callId);
