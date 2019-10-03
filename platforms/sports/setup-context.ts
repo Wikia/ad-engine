@@ -1,4 +1,11 @@
-import { getDeviceMode, registerSlotTracker, slotsContext, uapHelper } from '@platforms/shared';
+import {
+	getDeviceMode,
+	registerPorvataTracker,
+	registerSlotTracker,
+	registerViewabilityTracker,
+	slotsContext,
+	uapHelper,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -26,7 +33,10 @@ class ContextSetup {
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
 		templateRegistry.registerTemplates();
+
+		registerPorvataTracker();
 		registerSlotTracker();
+		registerViewabilityTracker();
 	}
 
 	private setupAdContext(isOptedIn = false): void {
