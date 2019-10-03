@@ -400,19 +400,13 @@ export class BillTheLizard {
 	 * @returns {number | undefined}
 	 */
 	getPreviousPrediction(startId, callIdBuilder, modelName) {
-		if (startId < 1) {
-			return undefined;
-		}
+		return this.getPredictions(modelName)
+			.filter((prediction) => {
+				const status = this.getResponseStatus(prediction.callId);
 
-		for (let backCounter = startId - 1; backCounter >= 0; backCounter--) {
-			const callId = callIdBuilder(backCounter);
-			const prevStatus = this.getResponseStatus(callId);
-
-			if (prevStatus === BillTheLizard.ON_TIME || prevStatus === BillTheLizard.TOO_LATE) {
-				return this.getPrediction(modelName, callId);
-			}
-		}
-		return undefined;
+				return status === BillTheLizard.ON_TIME || status === BillTheLizard.TOO_LATE;
+			})
+			.pop();
 	}
 }
 
