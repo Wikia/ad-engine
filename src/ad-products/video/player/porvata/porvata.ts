@@ -1,4 +1,13 @@
-import { AdSlot, context, SlotFiller, Targeting, templateService, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	context,
+	events,
+	eventService,
+	SlotFiller,
+	Targeting,
+	templateService,
+	utils,
+} from '@ad-engine/core';
 import { GoogleIma } from './ima/google-ima';
 import { GoogleImaPlayer } from './ima/google-ima-player';
 import { PorvataListener } from './porvata-listener';
@@ -445,6 +454,7 @@ export class Porvata {
 
 				video.addEventListener('adCanPlay', () => {
 					video.ima.dispatchEvent('wikiaAdStarted');
+					eventService.emit(events.VIDEO_AD_IMPRESSION);
 				});
 				video.addEventListener('allAdsCompleted', () => {
 					if (video.isFullscreen()) {
