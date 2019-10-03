@@ -400,12 +400,11 @@ export class BillTheLizard {
 	 * @returns {number | undefined}
 	 */
 	getPreviousPrediction(startId, callIdBuilder, modelName) {
-		const firstSlotName = context.get('options.cheshireCatFirstSlot');
-
 		if (startId < 1) {
 			return undefined;
 		}
-		for (let backCounter = startId - 1; backCounter >= 1; backCounter--) {
+
+		for (let backCounter = startId - 1; backCounter >= 0; backCounter--) {
 			const callId = callIdBuilder(backCounter);
 			const prevStatus = this.getResponseStatus(callId);
 
@@ -413,14 +412,6 @@ export class BillTheLizard {
 				return this.getPrediction(modelName, callId);
 			}
 		}
-
-		if (firstSlotName) {
-			const prevStatus = this.getResponseStatus(firstSlotName);
-			if (prevStatus === BillTheLizard.ON_TIME || prevStatus === BillTheLizard.TOO_LATE) {
-				return this.getPrediction(modelName, firstSlotName);
-			}
-		}
-
 		return undefined;
 	}
 }
