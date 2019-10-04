@@ -5,6 +5,11 @@ import { billTheLizard } from '../../pages/bill-the-lizard.page';
 import { adSlots } from '../../common/ad-slots';
 
 describe('It will test bill the lizard page', () => {
+	before(() => {
+		browser.url(billTheLizard.pageLink);
+		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+	});
+
 	beforeEach(() => {
 		browser.url(billTheLizard.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
