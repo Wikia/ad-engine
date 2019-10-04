@@ -34,8 +34,6 @@ export class A9Provider extends BidderProvider {
 	cmp: Cmp = cmp;
 	isRenderImpOverwritten = false;
 	priceMap: PriceMap = {};
-	// map of slot id to slot alias
-	slotNamesMap: Dictionary<string> = {};
 	targetingKeys: string[] = [];
 
 	amazonId: string;
@@ -128,7 +126,7 @@ export class A9Provider extends BidderProvider {
 
 		await Promise.all(
 			currentBids.map(async (bid) => {
-				const slotName: string = this.slotNamesMap[bid.slotID] || bid.slotID;
+				const slotName: string = bid.slotID;
 				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
 				this.updateBidSlot(slotName, keys, bidTargeting);
@@ -213,15 +211,12 @@ export class A9Provider extends BidderProvider {
 	/**
 	 * Creates A9 slot definition from slot alias.
 	 */
-	createSlotDefinition(slotAlias: string): A9SlotDefinition | null {
-		const config: A9SlotConfig = this.slots[slotAlias];
-		const slotID: string = config.slotId || slotAlias;
+	createSlotDefinition(slotName: string): A9SlotDefinition | null {
+		const config: A9SlotConfig = this.slots[slotName];
 		const definition: A9SlotDefinition = {
-			slotID,
-			slotName: slotID,
+			slotID: slotName,
+			slotName,
 		};
-
-		this.slotNamesMap[slotID] = slotAlias;
 
 		if (!this.bidderConfig.videoEnabled && config.type === 'video') {
 			return null;
