@@ -46,6 +46,11 @@ const contextObject: ContextObject = {
 				partnerCode: 'wikiaimajsint377461931603',
 				sampling: 1,
 			},
+			iasTracking: {
+				enabled: true,
+				anId: 'TBD',
+				sampling: 1,
+			},
 		},
 		slotRepeater: false,
 		trackingOptIn: false,

@@ -118,6 +118,11 @@ export default {
 				partnerCode: 'wikiaimajsint377461931603',
 				sampling: 1,
 			},
+			iasTracking: {
+				enabled: true,
+				anId: 'TBD',
+				campId: 'TBD',
+			},
 		},
 		slotRepeater: true,
 		trackingOptIn: false,

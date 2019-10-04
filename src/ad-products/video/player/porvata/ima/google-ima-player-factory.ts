@@ -1,3 +1,4 @@
+import { iasVideoTracker } from '../ias/ias-video-tracker';
 import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { VideoSettings } from '../video-settings';
 import { GoogleImaPlayer } from './google-ima-player';
@@ -43,14 +44,9 @@ class GoogleImaPlayerFactory {
 					);
 				}
 
-				// if IAS enabled, context.get? {
-				// iasVideoTracker.init(
-				// 	google,
-				// 	adsManager,
-				// 	videoSettings.getContainer(),
-				// 	config?
-				//  );
-				// }
+				if (videoSettings.isIasTrackingEnabled()) {
+					iasVideoTracker.init();
+				}
 
 				player.dispatchEvent('wikiaAdsManagerLoaded');
 

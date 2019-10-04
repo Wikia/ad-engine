@@ -1,16 +1,15 @@
 import { context, utils } from '@ad-engine/core';
-import { initIASTracking } from './ias-video-tracker-script';
 
 const logGroup = 'ias-video-tracking';
 
+function loadScript() {
+	const anId = context.get('options.video.iasTracking.anid');
+	utils.logger(logGroup, 'testing');
+}
+
 class IasVideoTracker {
-	init(google, adsManager, videoElement, config): void {
-		try {
-			initIasTracking(google, adsManager, videoElement, config);
-			utils.logger(logGroup, 'IAS video tracking initialized');
-		} catch (error) {
-			utils.logger(logGroup, 'IAS video tracking initalization error', error);
-		}
+	init(): void {
+		loadScript();
 	}
 }
 
