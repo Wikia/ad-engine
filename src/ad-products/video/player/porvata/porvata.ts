@@ -4,6 +4,7 @@ import {
 	events,
 	eventService,
 	SlotFiller,
+	slotService,
 	Targeting,
 	templateService,
 	utils,
@@ -454,7 +455,7 @@ export class Porvata {
 
 				video.addEventListener('adCanPlay', () => {
 					video.ima.dispatchEvent('wikiaAdStarted');
-					eventService.emit(events.VIDEO_AD_IMPRESSION);
+					eventService.emit(events.VIDEO_AD_IMPRESSION, slotService.get(params.slotName));
 				});
 				video.addEventListener('allAdsCompleted', () => {
 					if (video.isFullscreen()) {

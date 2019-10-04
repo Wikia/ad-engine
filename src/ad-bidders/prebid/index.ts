@@ -23,10 +23,6 @@ eventService.on(events.VIDEO_AD_IMPRESSION, markWinningVideoBidAsUsed);
 eventService.on(events.VIDEO_AD_ERROR, markWinningVideoBidAsUsed);
 
 async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
-	if (!adSlot) {
-		return;
-	}
-
 	// Mark ad as rendered
 	const adId: string = context.get(`slots.${adSlot.getSlotName()}.targeting.hb_adid`);
 
