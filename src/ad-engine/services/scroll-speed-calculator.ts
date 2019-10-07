@@ -25,6 +25,7 @@ export class ScrollSpeedCalculator {
 
 	/**
 	 * Takes number of pageviews where it was possible to count scroll speed
+	 * @private
 	 */
 	getScrollSpeedRecordsNumber(): number {
 		const scrollRecords = this.sessionCookie.getItem<string>('scrollSpeedRecordsNumber') || '0';

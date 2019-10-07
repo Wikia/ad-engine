@@ -1,4 +1,11 @@
-import { getDeviceMode, registerSlotTracker, slotsContext, uapHelper } from '@platforms/shared';
+import {
+	getDeviceMode,
+	registerPorvataTracker,
+	registerSlotTracker,
+	registerViewabilityTracker,
+	slotsContext,
+	uapHelper,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -26,7 +33,10 @@ class ContextSetup {
 		this.setupAdContext(isOptedIn);
 		setupNpaContext();
 		templateRegistry.registerTemplates();
+
+		registerPorvataTracker();
 		registerSlotTracker();
+		registerViewabilityTracker();
 	}
 
 	private setupAdContext(isOptedIn = false): void {
@@ -46,15 +56,15 @@ class ContextSetup {
 			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
 		);
 
-		setA9AdapterConfig();
-		setPrebidAdaptersConfig();
-		setupBidders(context, this.instantConfig);
-
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
 
 		context.set('slots', slotsContext.generate());
 		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+
+		setA9AdapterConfig();
+		setPrebidAdaptersConfig(context.get('targeting.s1'));
+		setupBidders(context, this.instantConfig);
 
 		this.injectIncontentPlayer();
 

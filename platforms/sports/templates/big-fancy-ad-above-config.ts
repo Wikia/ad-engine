@@ -34,7 +34,11 @@ export function getBfaaConfig(): BigFancyAdAboveConfig {
 		onInit(adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig): void {
 			this.adSlot = adSlot;
 			this.config = config || context.get('templates.bfaa') || {};
-			this.navbarManager = new NavbarManager(document.querySelector('.header'));
+			this.navbarManager = new NavbarManager(
+				document.querySelector(
+					context.get('targeting.s1') === 'muthead' ? '.header' : '.navbar.navbar-futhead',
+				),
+			);
 
 			context.set('slots.cdm-zone-04.defaultSizes', [[3, 3]]);
 			slotsContext.setupSlotVideoAdUnit(adSlot, params);
@@ -47,6 +51,7 @@ export function getBfaaConfig(): BigFancyAdAboveConfig {
 		},
 
 		onAfterStickBfaaCallback(): void {
+			this.updateNavbar();
 			this.navbarManager.setPinned(false);
 		},
 
