@@ -14,6 +14,7 @@ interface Window {
 	google: {
 		ima: typeof google.ima;
 	};
+	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	moatPrebidApi?: MoatPrebidApi;
 	moatYieldReady?: MoatYieldReady;

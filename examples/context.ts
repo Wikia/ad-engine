@@ -119,9 +119,11 @@ export default {
 				sampling: 1,
 			},
 			iasTracking: {
-				enabled: true,
-				anId: 'TBD',
-				campId: 'TBD',
+				enabled: false,
+				config: {
+					anId: 'TBD',
+					campId: 'TBD',
+				},
 			},
 		},
 		slotRepeater: true,

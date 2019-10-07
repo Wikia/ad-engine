@@ -1,4 +1,5 @@
-import { iasVideoTracker } from '../ias/ias-video-tracker';
+import { context } from '@ad-engine/core';
+import { IasTrackingParams, iasVideoTracker } from '../ias/ias-video-tracker';
 import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { VideoSettings } from '../video-settings';
 import { GoogleImaPlayer } from './google-ima-player';
@@ -45,7 +46,8 @@ class GoogleImaPlayerFactory {
 				}
 
 				if (videoSettings.isIasTrackingEnabled()) {
-					iasVideoTracker.init();
+					const config: IasTrackingParams = context.get('options.video.iasTracking.config');
+					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), config);
 				}
 
 				player.dispatchEvent('wikiaAdsManagerLoaded');
