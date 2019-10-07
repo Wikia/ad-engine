@@ -8,7 +8,6 @@ interface Window {
 	ads?: Ads;
 	adsQueue?: any;
 	apstag?: Apstag;
-	buildAdUnitString?: (arg0: string, arg1: any) => string;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
 	google: {
