@@ -30,7 +30,7 @@ window.Krux =
 		window.Krux.q.push(args);
 	});
 window.Krux.q = window.Krux.q || [];
-//  Krux('ns:wikia','admEvent', 'M-FnMTsI', {event_type:'default'});
+
 class Krux {
 	call(): Promise<void> {
 		if (!context.get('services.krux.enabled') || !context.get('options.trackingOptIn')) {
@@ -48,12 +48,18 @@ class Krux {
 	}
 
 	fireEvent(eventId: string, parameters: Dictionary = null): void {
+		if (!context.get('services.krux.enabled') || !context.get('options.trackingOptIn')) {
+			utils.logger(logGroup, 'event not sent, krux disabled');
+		}
+
 		const account: string = context.get('services.krux.account');
 
 		window.Krux(account, 'admEvent', eventId, {
 			event_type: 'default',
 			...parameters,
 		});
+
+		utils.logger(logGroup, 'event sent', eventId, parameters);
 	}
 
 	exportPageParams(): void {
