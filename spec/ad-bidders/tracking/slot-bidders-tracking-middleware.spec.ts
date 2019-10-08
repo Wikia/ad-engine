@@ -34,6 +34,8 @@ describe('slot-bidders-tracking-middleware', () => {
 			beachfront: 15.0,
 			kargo: 17.0,
 			lkqd: 18.0,
+			gumgum: 19.0,
+			'33across': 20.0,
 		});
 	});
 
@@ -59,6 +61,8 @@ describe('slot-bidders-tracking-middleware', () => {
 			beachfront: 15.0,
 			kargo: 17.0,
 			lkqd: 18.0,
+			gumgum: 19.0,
+			'33across': 20.0,
 		});
 
 		const context = {
@@ -91,6 +95,8 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_15: 15.0,
 			bidder_17: 17.0,
 			bidder_18: 18.0,
+			bidder_19: 19.0,
+			bidder_20: 20.0,
 		});
 	});
 
@@ -125,6 +131,8 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_15: '15not_used',
 			bidder_17: '17not_used',
 			bidder_18: '18not_used',
+			bidder_19: '19not_used',
+			bidder_20: '20not_used',
 		});
 	});
 });
