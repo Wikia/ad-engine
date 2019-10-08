@@ -115,4 +115,7 @@ context.get('listeners.slot').push({
 	onStatusChanged: (adSlot, data) => {
 		console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold', data);
 	},
+	onForceCloseClick: () => {
+		eventService.emit(playerEvents.SLOT_CLOSE_IMMEDIATELY, this.adSlot);
+	},
 });

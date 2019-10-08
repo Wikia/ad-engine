@@ -25,6 +25,7 @@ const trackingEventsMap: Dictionary<string> = {
 	adBlock: 'blocked',
 	adClick: 'clicked',
 	adRequest: 'loaded',
+	jwplayerClosed: 'force-close',
 	adError: 'error',
 	adImpression: 'impression',
 	adStarted: 'started',

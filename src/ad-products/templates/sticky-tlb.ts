@@ -1,4 +1,4 @@
-import { Dictionary, SlotTweaker, utils } from '@ad-engine/core';
+import { Dictionary, eventService, SlotTweaker, utils } from '@ad-engine/core';
 import { setupNavbar } from '../utils';
 import { AdvertisementLabel } from './interface/advertisement-label';
 import { animate } from './interface/animate';
@@ -172,6 +172,7 @@ export class StickyTLB extends StickyBase {
 		this.addButton(this.container, () => {
 			this.stickiness.close();
 			this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
+			eventService.emit(SlotTweaker.SLOT_CLOSE_IMMEDIATELY, this.adSlot);
 		});
 	}
 

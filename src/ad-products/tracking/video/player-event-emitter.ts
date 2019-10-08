@@ -2,6 +2,7 @@ import { context, eventService, VideoEventData } from '@ad-engine/core';
 
 export const playerEvents = {
 	VIDEO_PLAYER_TRACKING_EVENT: Symbol('VIDEO_PLAYER_TRACKING_EVENT'),
+	SLOT_CLOSE_IMMEDIATELY: 'force-close',
 };
 
 export default {
@@ -17,6 +18,11 @@ export default {
 			return;
 		}
 
-		eventService.emit(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, eventInfo);
+		if (eventInfo.event_name === 'force-close') {
+			eventInfo.position = 'featured';
+			eventService.emit(playerEvents.SLOT_CLOSE_IMMEDIATELY, eventInfo);
+		} else {
+			eventService.emit(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, eventInfo);
+		}
 	},
 };

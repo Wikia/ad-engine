@@ -1,5 +1,6 @@
 import {
 	context,
+	eventService,
 	scrollListener,
 	slotService,
 	slotTweaker,
@@ -191,6 +192,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 
 	protected onCloseClicked(): void {
 		this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
+		eventService.emit(SlotTweaker.SLOT_CLOSE_IMMEDIATELY, this.adSlot);
 		this.unstickImmediately();
 
 		(this.adSlot.getElement().parentNode as HTMLElement).style.height = null;
