@@ -20,6 +20,7 @@ export interface PrebidAdSlotConfig {
 	inScreen?: string;
 	placementId?: string | number;
 	pos?: string;
+	productId?: string;
 	size?: number[];
 	sizes?: [number, number][];
 	unit?: string;
