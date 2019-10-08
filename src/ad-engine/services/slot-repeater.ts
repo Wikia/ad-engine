@@ -72,12 +72,12 @@ class SlotRepeater {
 	init(): void {
 		if (context.get('options.slotRepeater')) {
 			if (context.get('options.gamLazyLoading.enabled')) {
-				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) =>
-					this.handleSlotRepeating(adSlot),
-				);
+				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
+					return this.handleSlotRepeating(adSlot);
+				});
 			} else if (!context.get('options.nonLazyIncontents.enabled')) {
-				context.push('listeners.slot', {
-					onRenderEnded: (adSlot: AdSlot) => this.handleSlotRepeating(adSlot),
+				eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+					return this.handleSlotRepeating(adSlot);
 				});
 			}
 		}

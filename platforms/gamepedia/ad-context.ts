@@ -11,10 +11,6 @@ export const basicContext = {
 			threshold: 100,
 		},
 	},
-	listeners: {
-		porvata: [],
-		slot: [],
-	},
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',

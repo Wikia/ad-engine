@@ -1,3 +1,4 @@
+// tslint:disable:tsl-ban-snippets
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, localCache } from '../../../src/ad-engine';

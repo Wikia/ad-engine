@@ -31,9 +31,7 @@ const contextObject: ContextObject = {
 	events: {},
 	delayModules: [],
 	listeners: {
-		twitch: [],
 		porvata: [],
-		slot: [],
 	},
 	options: {
 		customAdLoader: {

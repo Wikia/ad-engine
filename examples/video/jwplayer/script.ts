@@ -1,4 +1,5 @@
 import {
+	AdSlot,
 	bidders,
 	context,
 	DelayModule,
@@ -111,8 +112,6 @@ biddersDelay.getPromise().then(() => {
 	jwplayerAdsFactory.loadMoatPlugin();
 });
 
-context.get('listeners.slot').push({
-	onStatusChanged: (adSlot, data) => {
-		console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold', data);
-	},
+eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
+	console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold');
 });

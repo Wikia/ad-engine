@@ -1,4 +1,11 @@
-import { AdEngine, btfBlockerService, context, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	AdSlot,
+	btfBlockerService,
+	context,
+	eventService,
+	utils,
+} from '@wikia/ad-engine';
 import adContext from '../../context';
 
 const contentTemplate = document.querySelector('.content-template').innerHTML;
@@ -14,10 +21,8 @@ function loadContent() {
 	mainContainer.appendChild(newContent);
 }
 
-adContext.listeners.slot.push({
-	onStatusChanged: (adSlot, data) => {
-		console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold', data);
-	},
+eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
+	console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold');
 });
 
 context.extend(adContext);
