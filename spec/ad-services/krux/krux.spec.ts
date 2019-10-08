@@ -93,12 +93,12 @@ describe('Krux service', () => {
 		it('fires krux admEvent', () => {
 			krux.fireEvent('foo');
 
-			expect(globalKruxMock.calledOnce).to.be.ok;
+			expect(globalKruxMock.calledOnce).to.be.true;
 			expect(
 				globalKruxMock.calledWith('ns:foo', 'admEvent', 'foo', {
 					event_type: 'default',
 				}),
-			).to.be.ok;
+			).to.be.true;
 		});
 	});
 });
