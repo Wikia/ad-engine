@@ -1,13 +1,9 @@
-import { context, localCache, utils } from '@ad-engine/core';
+import { context, Dictionary, localCache, utils } from '@ad-engine/core';
 
 const logGroup = 'krux';
 
-/**
- * Injects Krux script
- * @returns {Promise}
- */
-function loadScript() {
-	const kruxId = context.get('services.krux.id');
+function loadScript(): Promise<Event> {
+	const kruxId: string = context.get('services.krux.id');
 	const kruxLibraryUrl = `//cdn.krxd.net/controltag?confid=${kruxId}`;
 
 	return utils.scriptLoader.loadScript(kruxLibraryUrl, 'text/javascript', true, 'first', {
@@ -15,12 +11,7 @@ function loadScript() {
 	});
 }
 
-/**
- * Gets Krux data from localStorage
- * @param {string} key
- * @returns {string}
- */
-function getKruxData(key) {
+function getKruxData(key: string): string {
 	if (localCache.isAvailable()) {
 		return window.localStorage[key];
 	}
@@ -35,20 +26,13 @@ function getKruxData(key) {
 
 window.Krux =
 	window.Krux ||
-	function (...args) {
+	((...args: any[]): void => {
 		window.Krux.q.push(args);
-	};
+	});
 window.Krux.q = window.Krux.q || [];
 
-/**
- * Krux service handler
- */
 class Krux {
-	/**
-	 * Requests service, saves user id and segments in context and exports page level params
-	 * @returns {Promise}
-	 */
-	call() {
+	call(): Promise<void> {
 		if (!context.get('services.krux.enabled') || !context.get('options.trackingOptIn')) {
 			utils.logger(logGroup, 'disabled');
 
@@ -63,11 +47,22 @@ class Krux {
 		});
 	}
 
-	/**
-	 * Export page level params to Krux
-	 * @returns {void}
-	 */
-	exportPageParams() {
+	fireEvent(eventId: string, parameters: Dictionary = null): void {
+		if (!context.get('services.krux.enabled') || !context.get('options.trackingOptIn')) {
+			utils.logger(logGroup, 'event not sent, krux disabled');
+		}
+
+		const account: string = context.get('services.krux.account');
+
+		window.Krux(account, 'admEvent', eventId, {
+			event_type: 'default',
+			...parameters,
+		});
+
+		utils.logger(logGroup, 'event sent', eventId, parameters);
+	}
+
+	exportPageParams(): void {
 		Object.keys(context.get('targeting') || {}).forEach((key) => {
 			const value = context.get(`targeting.${key}`);
 
@@ -77,11 +72,7 @@ class Krux {
 		});
 	}
 
-	/**
-	 * Imports Krux data from localStorage
-	 * @returns {void}
-	 */
-	importUserData() {
+	importUserData(): void {
 		const user = getKruxData('kxuser') || getKruxData('kxwikia_user');
 		const segments = getKruxData('kxsegs') || getKruxData('kxwikia_segs');
 
@@ -90,19 +81,11 @@ class Krux {
 		utils.logger(logGroup, 'data set', user, segments);
 	}
 
-	/**
-	 * Returns Krux user ID
-	 * @returns {string}
-	 */
-	getUserId() {
+	getUserId(): string | null {
 		return context.get('targeting.kuid') || null;
 	}
 
-	/**
-	 * Returns Krux segments
-	 * @returns {string[]}
-	 */
-	getSegments() {
+	getSegments(): string[] {
 		return context.get('targeting.ksg') || [];
 	}
 }
