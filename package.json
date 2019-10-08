@@ -154,7 +154,7 @@
 		"linters": {
 			"*.ts": [
 				"prettier --write",
-				"tslint --fix",
+				"tslint --project . --fix",
 				"git add"
 			],
 			"*.{js,json,css,scss,html}": [
