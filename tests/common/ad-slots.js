@@ -79,13 +79,15 @@ class AdSlots {
 	/**
 	 * Waits for the adslot\'s "data-slot-result" attribute to receive desired parameter.
 	 * @param adSlot slot to receive the parameter
-	 * @param result parameter that result should equal to
+	 * @param expectedResult parameter that result should equal to
 	 */
-	waitForSlotResult(adSlot, result) {
+	waitForSlotResult(adSlot, expectedResult) {
 		browser.waitUntil(
-			() => $(adSlot).getAttribute(this.resultAttribute) === result,
+			() => $(adSlot).getAttribute(this.resultAttribute) === expectedResult,
 			timeouts.standard,
-			`Result mismatch: expected ${result}`,
+			`Result mismatch: expected ${expectedResult}, got ${$(adSlot).getAttribute(
+				this.resultAttribute,
+			)}`,
 			timeouts.interval,
 		);
 	}
