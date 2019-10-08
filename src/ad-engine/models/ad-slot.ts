@@ -26,6 +26,7 @@ interface RepeatConfig {
 }
 
 export interface SlotConfig {
+	adProduct: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
@@ -410,7 +411,7 @@ export class AdSlot extends EventEmitter {
 	 *
 	 * Adds class AdSlot.HIDDEN_CLASS to adSlot's element.
 	 */
-	hide() {
+	hide(): void {
 		const added = this.addClass(AdSlot.HIDDEN_CLASS);
 
 		if (added) {
