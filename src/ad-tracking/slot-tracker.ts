@@ -11,6 +11,8 @@ class SlotTracker {
 		AdSlot.STATUS_BLOCKED,
 		AdSlot.STATUS_ERROR,
 		AdSlot.STATUS_VIEWPORT_CONFLICT,
+		AdSlot.STATUS_HIVI_COLLAPSE,
+		AdSlot.STATUS_CLOSED_BY_PORVATA,
 	];
 
 	private middlewareService = new utils.MiddlewareService<AdInfoContext>();

@@ -26,6 +26,7 @@ interface RepeatConfig {
 }
 
 export interface SlotConfig {
+	adProduct: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
@@ -73,6 +74,8 @@ export class AdSlot extends EventEmitter {
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
+	static STATUS_HIVI_COLLAPSE = 'hivi-collapse';
+	static STATUS_CLOSED_BY_PORVATA = 'closed-by-porvata';
 
 	static AD_CLASS = 'gpt-ad';
 	static HIDDEN_CLASS = 'hide';
@@ -408,7 +411,7 @@ export class AdSlot extends EventEmitter {
 	 *
 	 * Adds class AdSlot.HIDDEN_CLASS to adSlot's element.
 	 */
-	hide() {
+	hide(): void {
 		const added = this.addClass(AdSlot.HIDDEN_CLASS);
 
 		if (added) {
