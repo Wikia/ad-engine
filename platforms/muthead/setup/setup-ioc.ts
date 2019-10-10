@@ -6,10 +6,12 @@ import {
 	CommonContextSetup,
 	CommonStateSetup,
 	ContextSetup,
+	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	CurseUapSetup,
 	DelayModulesSetup,
+	DynamicSlotsSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	SportsAdsMode,
@@ -42,6 +44,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);
+	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
 
 	return container;
 }

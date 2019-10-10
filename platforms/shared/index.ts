@@ -25,6 +25,8 @@ export * from './setup/state/slots/_slots-state.setup';
 export * from './setup/state/slots/curse-slots-state.setup';
 export * from './setup/state/bidders/_bidders-state.setup';
 export * from './setup/state/bidders/common-bidders-state.setup';
+export * from './setup/dynamic-slots/_dynamic-slots.setup';
+export * from './setup/dynamic-slots/curse-dynamic-slots.setup';
 export * from './modes/no-ads/_no-ads.mode';
 export * from './modes/ads/_ads.mode';
 export * from './modes/ads/sports-ads.mode';

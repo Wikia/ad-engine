@@ -1,10 +1,17 @@
 import { AdSlot, context, slotInjector, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../slots/slots-context';
+import { slotsContext } from '../../slots/slots-context';
+import { DynamicSlotsSetup } from './_dynamic-slots.setup';
 
 @Injectable()
-export class IncontentPlayerInjector {
-	injectIncontentPlayer(): void {
+export class CurseDynamicSlotsSetup implements DynamicSlotsSetup {
+	constructor() {}
+
+	configureDynamicSlots(): void {
+		this.injectIncontentPlayer();
+	}
+
+	private injectIncontentPlayer(): void {
 		const incontentPlayerSlotName = 'incontent_player';
 		const porvataAlternativeSlotsName = 'cdm-zone-02';
 

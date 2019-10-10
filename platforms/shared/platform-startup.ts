@@ -4,7 +4,7 @@ import { AdsMode } from './modes/ads/_ads.mode';
 import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
 import { ContextSetup } from './setup/context/_context.setup';
 import { DelayModulesSetup } from './setup/delay-modules-setup';
-import { IncontentPlayerInjector } from './setup/inject-incontent-player';
+import { DynamicSlotsSetup } from './setup/dynamic-slots/_dynamic-slots.setup';
 import { StateSetup } from './setup/state/_state.setup';
 import { TemplateSetup } from './templates/template-setup';
 import { LabradorTracker } from './tracking/labrador-tracker';
@@ -22,9 +22,9 @@ export class PlatformStartup {
 	constructor(
 		private contextSetup: ContextSetup,
 		private stateSetup: StateSetup,
+		private dynamicSlotsSetup: DynamicSlotsSetup,
 		private trackingRegistry: TrackingRegistry,
 		private templateSetup: TemplateSetup,
-		private incontentPlayerInjector: IncontentPlayerInjector,
 		private delayModulesSetup: DelayModulesSetup,
 		private labradorTracker: LabradorTracker,
 		private noAdsMode: NoAdsMode,
@@ -34,8 +34,8 @@ export class PlatformStartup {
 	configure(args: PlatformStartupArgs): void {
 		this.contextSetup.configureContext(args.isOptedIn);
 		this.stateSetup.configureState(args.isMobile);
+		this.dynamicSlotsSetup.configureDynamicSlots();
 
-		this.incontentPlayerInjector.injectIncontentPlayer();
 		this.templateSetup.registerTemplates();
 		this.trackingRegistry.registerTrackers();
 		this.labradorTracker.trackLabradorValues();
