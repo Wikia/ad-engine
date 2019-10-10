@@ -10,7 +10,5 @@ export class SportsAdEnginePreStarter implements AdEnginePreStarter {
 		bidders.requestBids({
 			responseListener: biddersDelay.markAsReady,
 		});
-
-		// ToDo: other externals
 	}
 }
