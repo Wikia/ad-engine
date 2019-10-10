@@ -1,9 +1,17 @@
 import {
 	BiddersConfigSetup,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
 	CommonContextSetup,
+	CommonStateSetup,
 	ContextSetup,
+	CurseSlotsContextSetup,
+	CurseSlotsStateSetup,
 	DelayModulesSetup,
 	PlatformAdsMode,
+	SlotsContextSetup,
+	SlotsStateSetup,
+	StateSetup,
 	TargetingSetup,
 	TemplateSetup,
 } from '@platforms/shared';
@@ -30,6 +38,10 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
 	container.bind(PlatformAdsMode).to(SportsAdsMode);
 	container.bind(ContextSetup).to(CommonContextSetup);
+	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
+	container.bind(StateSetup).to(CommonStateSetup);
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
+	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 
 	return container;
 }

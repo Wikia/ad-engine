@@ -1,21 +1,6 @@
-import { context, Context } from '@ad-engine/core';
+import { Context } from '@ad-engine/core';
 import { InstantConfigService } from '@ad-engine/services';
-import { Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
-export class BiddersStateSetup {
-	constructor(private instantConfig: InstantConfigService) {}
-
-	setBiddersStateContext(): void {
-		setupBidders(context, this.instantConfig);
-	}
-}
-
-/**
- * @deprecated use BiddersStateSetup class instead
- * @param context
- * @param instantConfig
- */
 export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 

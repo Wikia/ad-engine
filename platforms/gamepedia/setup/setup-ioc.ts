@@ -1,11 +1,19 @@
 import {
 	BiddersConfigSetup,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
 	CommonContextSetup,
+	CommonStateSetup,
 	ContextSetup,
+	CurseSlotsContextSetup,
+	CurseSlotsStateSetup,
 	DelayModulesSetup,
 	LabradorTracker,
 	PlatformAdsMode,
 	PlatformNoAdsMode,
+	SlotsContextSetup,
+	SlotsStateSetup,
+	StateSetup,
 	TargetingSetup,
 	TemplateSetup,
 	WikiContextSetup,
@@ -37,6 +45,10 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(PlatformAdsMode).to(GamepediaAdsMode);
 	container.bind(LabradorTracker).to(GamepediaLabradorTracker);
 	container.bind(ContextSetup).to(CommonContextSetup);
+	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
+	container.bind(StateSetup).to(CommonStateSetup);
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
+	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 
 	return container;
 }
