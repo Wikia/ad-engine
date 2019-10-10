@@ -7,6 +7,7 @@ import {
 	ContextSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
+	CurseUapSetup,
 	DelayModulesSetup,
 	LabradorTracker,
 	PlatformAdsMode,
@@ -16,6 +17,7 @@ import {
 	StateSetup,
 	TargetingSetup,
 	TemplateSetup,
+	UapSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
 import { context, InstantConfigService } from '@wikia/ad-engine';
@@ -49,6 +51,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
+	container.bind(UapSetup).to(CurseUapSetup);
 
 	return container;
 }

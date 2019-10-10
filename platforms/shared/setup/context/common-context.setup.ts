@@ -1,11 +1,11 @@
 import { context, InstantConfigService, setupNpaContext } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { BiddersConfigSetup } from '../../bidders/bidders-config-setup';
-import { TargetingSetup } from '.././targeting-setup';
-import { WikiContextSetup } from '.././wiki-context-setup';
-import { UapSetup } from '../uap-setup';
 import { ContextSetup } from './_context.setup';
+import { BiddersConfigSetup } from './bidders/_bidders-config.setup';
 import { SlotsContextSetup } from './slots/_slots-context.setup';
+import { TargetingSetup } from './targeting/_targeting.setup';
+import { UapSetup } from './uap/_uap.setup';
+import { WikiContextSetup } from './wiki/_wiki-context-setup';
 
 @Injectable()
 export class CommonContextSetup implements ContextSetup {
@@ -19,7 +19,7 @@ export class CommonContextSetup implements ContextSetup {
 	) {}
 
 	configureContext(isOptedIn = false): void {
-		this.wikiContextSetup.setWikiContext();
+		this.wikiContextSetup.configureWikiContext();
 		this.setOptionsContext(isOptedIn);
 		this.setServicesContext();
 		this.setMiscContext();

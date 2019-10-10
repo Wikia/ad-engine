@@ -7,6 +7,7 @@ import {
 	ContextSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
+	CurseUapSetup,
 	DelayModulesSetup,
 	PlatformAdsMode,
 	SlotsContextSetup,
@@ -14,6 +15,7 @@ import {
 	StateSetup,
 	TargetingSetup,
 	TemplateSetup,
+	UapSetup,
 } from '@platforms/shared';
 import {
 	SportsAdsMode,
@@ -42,6 +44,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
+	container.bind(UapSetup).to(CurseUapSetup);
 
 	return container;
 }
