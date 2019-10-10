@@ -389,8 +389,6 @@ export class AdSlot extends EventEmitter {
 
 		switch (adType) {
 			case AdSlot.STATUS_COLLAPSE:
-				this.collapse();
-				break;
 			case AdSlot.STATUS_FORCE_COLLAPSED:
 				this.collapse(adType);
 				break;
