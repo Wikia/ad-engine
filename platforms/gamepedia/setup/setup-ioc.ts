@@ -5,6 +5,7 @@ import {
 	CommonBiddersStateSetup,
 	CommonContextSetup,
 	CommonStateSetup,
+	CommonTrackingSetup,
 	ContextSetup,
 	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
@@ -12,13 +13,13 @@ import {
 	CurseUapSetup,
 	DelayModulesSetup,
 	DynamicSlotsSetup,
-	LabradorTracker,
 	NoAdsMode,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	StateSetup,
 	TargetingSetup,
 	TemplatesSetup,
+	TrackingSetup,
 	UapSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -28,7 +29,6 @@ import { set } from 'lodash';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { GamepediaNoAdsMode } from '../modes/gamepedia-no-ads.mode';
 import { GamepediaAdsMode } from '../modes/gampedia-ads.mode';
-import { GamepediaLabradorTracker } from '../tracking/labrador-tracker';
 import { GamepediaBiddersConfigSetup } from './context/bidders/gamepedia-bidders-config.setup';
 import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
@@ -47,7 +47,6 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(DelayModulesSetup).to(GamepediaDelayModulesSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(AdsMode).to(GamepediaAdsMode);
-	container.bind(LabradorTracker).to(GamepediaLabradorTracker);
 	container.bind(ContextSetup).to(CommonContextSetup);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(StateSetup).to(CommonStateSetup);
@@ -55,6 +54,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);
 	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
+	container.bind(TrackingSetup).to(CommonTrackingSetup);
 
 	return container;
 }

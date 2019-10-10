@@ -5,6 +5,7 @@ import {
 	CommonBiddersStateSetup,
 	CommonContextSetup,
 	CommonStateSetup,
+	CommonTrackingSetup,
 	ContextSetup,
 	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
@@ -15,16 +16,17 @@ import {
 	SlotsContextSetup,
 	SlotsStateSetup,
 	SportsAdsMode,
+	SportsTemplatesSetup,
 	StateSetup,
 	TargetingSetup,
 	TemplatesSetup,
+	TrackingSetup,
 	UapSetup,
 } from '@platforms/shared';
 import { SportsDelayModulesSetup } from '@platforms/shared-sports';
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { SportsTemplatesSetup } from '../../shared/setup/templates/sports-templates.setup';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { FutheadBiddersConfigSetup } from './context/bidders/futhead-bidders-config.setup';
 import { FutheadTargetingSetup } from './context/targeting/futhead-targeting.setup';
@@ -46,6 +48,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);
 	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
+	container.bind(TrackingSetup).to(CommonTrackingSetup);
 
 	return container;
 }

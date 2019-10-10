@@ -1,6 +1,7 @@
 import {
 	Dictionary,
 	eventService,
+	InstantConfigCacheStorage,
 	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
@@ -16,19 +17,22 @@ import {
 	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { DataWarehouseTracker } from './data-warehouse';
+import { DataWarehouseTracker } from '../../tracking/data-warehouse';
+import { PageTracker } from '../../tracking/page-tracker';
+import { TrackingSetup } from './_tracking.setup';
 
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 
 @Injectable()
-export class TrackingRegistry {
-	registerTrackers(): void {
+export class CommonTrackingSetup implements TrackingSetup {
+	configureTracking(): void {
 		this.porvataTracker();
 		this.slotTracker();
 		this.viewabilityTracker();
 		this.postmessageTrackingTracker();
+		this.labradorTracker();
 	}
 
 	private porvataTracker(): void {
@@ -93,5 +97,14 @@ export class TrackingRegistry {
 						break;
 				}
 			});
+	}
+
+	private labradorTracker(): void {
+		const cacheStorage = InstantConfigCacheStorage.make();
+		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
+
+		if (labradorPropValue) {
+			PageTracker.trackProp('labrador', labradorPropValue);
+		}
 	}
 }

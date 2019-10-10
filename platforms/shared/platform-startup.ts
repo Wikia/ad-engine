@@ -7,8 +7,7 @@ import { DelayModulesSetup } from './setup/delay-modules-setup';
 import { DynamicSlotsSetup } from './setup/dynamic-slots/_dynamic-slots.setup';
 import { StateSetup } from './setup/state/_state.setup';
 import { TemplatesSetup } from './setup/templates/_templates.setup';
-import { LabradorTracker } from './tracking/labrador-tracker';
-import { TrackingRegistry } from './tracking/tracking-registry';
+import { TrackingSetup } from './setup/tracking/_tracking.setup';
 
 const logGroup = 'ad-engine';
 
@@ -24,9 +23,8 @@ export class PlatformStartup {
 		private stateSetup: StateSetup,
 		private dynamicSlotsSetup: DynamicSlotsSetup,
 		private templatesSetup: TemplatesSetup,
-		private trackingRegistry: TrackingRegistry,
+		private trackingSetup: TrackingSetup,
 		private delayModulesSetup: DelayModulesSetup,
-		private labradorTracker: LabradorTracker,
 		private noAdsMode: NoAdsMode,
 		private adsMode: AdsMode,
 	) {}
@@ -36,9 +34,8 @@ export class PlatformStartup {
 		this.stateSetup.configureState(args.isMobile);
 		this.dynamicSlotsSetup.configureDynamicSlots();
 		this.templatesSetup.configureTemplates();
+		this.trackingSetup.configureTracking();
 
-		this.trackingRegistry.registerTrackers();
-		this.labradorTracker.trackLabradorValues();
 		this.delayModulesSetup.setupDelayModules();
 		this.configureEventService();
 	}
