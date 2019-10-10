@@ -1,8 +1,10 @@
 import {
 	AdEngine,
+	AdSlot,
 	BigFancyAdAbove,
 	BigFancyAdBelow,
 	context,
+	eventService,
 	FloatingRail,
 	setupNpaContext,
 	templateService,
@@ -23,13 +25,12 @@ if (document.body.offsetWidth < 728) {
 
 setupNpaContext();
 
-context.push('listeners.slot', {
-	onStatusChanged: (adSlot) => {
-		console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold');
-	},
-	onImpressionViewable: (adSlot) => {
-		console.log(`⛳ ${adSlot.getSlotName()}: %cviewed`, 'font-weight: bold');
-	},
+eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
+	console.log(`⛳ ${adSlot.getSlotName()}: %c${adSlot.getStatus()}`, 'font-weight: bold');
+});
+
+eventService.on(AdSlot.SLOT_VIEWED_EVENT, (adSlot) => {
+	console.log(`⛳ ${adSlot.getSlotName()}: %cviewed`, 'font-weight: bold');
 });
 
 templateService.register(BigFancyAdAbove, getBigFancyAdAboveConfig());

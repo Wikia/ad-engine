@@ -1,11 +1,12 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { context, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
+import { context, eventService, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
 import adSlotFake from '../ad-slot-fake';
 
 describe('slot-repeater', () => {
 	let adSlot;
 	let injectedContainer;
+	let handleSlotRepeating;
 	let sandbox;
 
 	afterEach(() => {
@@ -15,44 +16,44 @@ describe('slot-repeater', () => {
 	beforeEach(() => {
 		sandbox = sinon.createSandbox();
 		injectedContainer = {};
+		handleSlotRepeating = null;
 		sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
 		adSlot = { ...adSlotFake };
+		sandbox.stub(eventService, 'on').callsFake((key, callback) => {
+			handleSlotRepeating = callback;
+		});
 
-		context.set('listeners.slot', []);
 		context.set('events.pushOnScroll.ids', []);
 		context.set('options.slotRepeater', true);
+		context.set('slots.adStack', []);
 	});
 
-	it('listener is not added when option is disabled', () => {
+	it('ad-slot is not repeated when option is disabled', () => {
 		context.set('options.slotRepeater', false);
 
 		slotRepeater.init();
 
-		expect(context.get('listeners.slot').length).to.equal(0);
+		expect(handleSlotRepeating).to.equal(null);
 	});
 
 	it('ad-slot is not repeated when it is disabled', () => {
 		slotRepeater.init();
 
-		const repeater = context.get('listeners.slot.0');
-
 		adSlot.isEnabled = () => false;
 
-		expect(repeater.onRenderEnded(adSlot)).to.be.false;
+		eventService.emit('fake_render_event', adSlot);
+
+		expect(handleSlotRepeating(adSlot)).to.be.false;
 	});
 
 	it('ad-slot is not repeated when it is not configured as repeatable', () => {
 		slotRepeater.init();
 
-		const repeater = context.get('listeners.slot.0');
-
-		expect(repeater.onRenderEnded(adSlot)).to.be.false;
+		expect(handleSlotRepeating(adSlot)).to.be.false;
 	});
 
 	it('ad-slot is repeated when it is configured as repeatable', () => {
 		slotRepeater.init();
-
-		const repeater = context.get('listeners.slot.0');
 
 		adSlot.isRepeatable = () => true;
 		adSlot.config.repeat = {
@@ -65,13 +66,11 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		expect(repeater.onRenderEnded(adSlot)).to.be.true;
+		expect(handleSlotRepeating(adSlot)).to.be.true;
 	});
 
 	it('ad-slot is not repeated when it is configured as repeatable but limit is reached', () => {
 		slotRepeater.init();
-
-		const repeater = context.get('listeners.slot.0');
 
 		adSlot.isRepeatable = () => true;
 		adSlot.config.repeat = {
@@ -84,13 +83,11 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		expect(repeater.onRenderEnded(adSlot)).to.be.false;
+		expect(handleSlotRepeating(adSlot)).to.be.false;
 	});
 
 	it('ad-slot is not repeated when it is configured as repeatable and sibling is too close', () => {
 		slotRepeater.init();
-
-		const repeater = context.get('listeners.slot.0');
 
 		adSlot.isRepeatable = () => true;
 		adSlot.config.repeat = {
@@ -104,13 +101,11 @@ describe('slot-repeater', () => {
 		};
 		injectedContainer = null;
 
-		expect(repeater.onRenderEnded(adSlot)).to.be.false;
+		expect(handleSlotRepeating(adSlot)).to.be.false;
 	});
 
 	it('ad-slot is repeated when it is configured as repeatable and sibling is far away', () => {
 		slotRepeater.init();
-
-		const repeater = context.get('listeners.slot.0');
 
 		adSlot.isRepeatable = () => true;
 		adSlot.config.repeat = {
@@ -123,6 +118,6 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		expect(repeater.onRenderEnded(adSlot)).to.be.true;
+		expect(handleSlotRepeating(adSlot)).to.be.true;
 	});
 });

@@ -1,5 +1,6 @@
 import { Aliases, context, pbjsFactory } from '@ad-engine/core';
 import {
+	Across,
 	Aol,
 	Appnexus,
 	AppnexusAst,
@@ -24,6 +25,7 @@ import { PrebidConfig } from './prebid-models';
 class AdaptersRegistry {
 	private adapters = new Map<string, PrebidAdapter>();
 	private availableAdapters = [
+		Across,
 		Aol,
 		Appnexus,
 		AppnexusAst,
