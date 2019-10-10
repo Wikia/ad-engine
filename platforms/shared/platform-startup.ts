@@ -28,8 +28,8 @@ export class PlatformStartup {
 	) {}
 
 	configure(args: PlatformStartupArgs): void {
-		this.contextSetup.configureContext(args.isOptedIn);
-		this.stateSetup.configureState(args.isMobile);
+		this.contextSetup.configureContext(args.isOptedIn, args.isMobile);
+		this.stateSetup.configureState();
 		this.dynamicSlotsSetup.configureDynamicSlots();
 		this.templatesSetup.configureTemplates();
 		this.trackingSetup.configureTracking();

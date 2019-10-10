@@ -1,3 +1,3 @@
 export class ContextSetup {
-	configureContext(isOptedIn = false): void {}
+	configureContext(isOptedIn: boolean, isMobile: boolean): void {}
 }

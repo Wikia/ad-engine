@@ -1,4 +1,4 @@
-import { context, InstantConfigService, setupNpaContext } from '@wikia/ad-engine';
+import { context, InstantConfigService, setupNpaContext, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { ContextSetup } from './_context.setup';
 import { A9ConfigSetup } from './a9/_a9-config.setup';
@@ -20,8 +20,9 @@ export class CommonContextSetup implements ContextSetup {
 		private uapSetup: UapSetup,
 	) {}
 
-	configureContext(isOptedIn = false): void {
+	configureContext(isOptedIn = false, isMobile = false): void {
 		this.wikiContextSetup.configureWikiContext();
+		this.setBaseState(isMobile);
 		this.setOptionsContext(isOptedIn);
 		this.setServicesContext();
 		this.setMiscContext();
@@ -31,6 +32,13 @@ export class CommonContextSetup implements ContextSetup {
 		this.a9ConfigSetup.configureA9Context();
 		this.uapSetup.configureUap();
 		setupNpaContext();
+	}
+
+	private setBaseState(isMobile: boolean): void {
+		context.set('state.isMobile', isMobile);
+		context.set('state.showAds', !utils.client.isSteamPlatform());
+		context.set('state.deviceType', utils.client.getDeviceType());
+		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
 
 	private setOptionsContext(isOptedIn: boolean): void {
