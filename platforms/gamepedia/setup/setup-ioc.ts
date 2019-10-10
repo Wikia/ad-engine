@@ -1,6 +1,6 @@
 import {
+	A9ConfigSetup,
 	AdsMode,
-	BiddersConfigSetup,
 	BiddersStateSetup,
 	CommonBiddersStateSetup,
 	CommonContextSetup,
@@ -31,7 +31,7 @@ import * as fallbackInstantConfig from '../fallback-config.json';
 import { GamepediaNoAdsMode } from '../modes/gamepedia-no-ads.mode';
 import { GamepediaAdsMode } from '../modes/gampedia-ads.mode';
 import { GamepediaDelayModulesSetup } from './ad-engine-runner/delay-modules/delay-modules.setup';
-import { GamepediaBiddersConfigSetup } from './context/bidders/gamepedia-bidders-config.setup';
+import { GamepediaA9ConfigSetup } from './context/a9/gamepedia-a9-config.setup';
 import { GamepediaPrebidConfigSetup } from './context/prebid/gamepedia-prebid-config.setup';
 import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
@@ -44,7 +44,6 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(WikiContextSetup).to(GamepediaWikiContextSetup);
 	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
-	container.bind(BiddersConfigSetup).to(GamepediaBiddersConfigSetup);
 	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);
 	container.bind(DelayModulesSetup).to(GamepediaDelayModulesSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
@@ -58,6 +57,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(GamepediaPrebidConfigSetup);
+	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
 
 	return container;
 }

@@ -4,7 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class FutheadTargetingSetup implements TargetingSetup {
-	setTargetingContext(): void {
+	configureTargetingContext(): void {
 		context.set('targeting', this.getPageLevelTargeting());
 	}
 

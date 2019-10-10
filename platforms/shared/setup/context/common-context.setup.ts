@@ -1,7 +1,7 @@
 import { context, InstantConfigService, setupNpaContext } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { ContextSetup } from './_context.setup';
-import { BiddersConfigSetup } from './bidders/_bidders-config.setup';
+import { A9ConfigSetup } from './a9/_a9-config.setup';
 import { PrebidConfigSetup } from './prebid/_prebid-config.setup';
 import { SlotsContextSetup } from './slots/_slots-context.setup';
 import { TargetingSetup } from './targeting/_targeting.setup';
@@ -15,8 +15,8 @@ export class CommonContextSetup implements ContextSetup {
 		private instantConfig: InstantConfigService,
 		private targetingSetup: TargetingSetup,
 		private slotsContextSetup: SlotsContextSetup,
-		private biddersConfigSetup: BiddersConfigSetup,
 		private prebidConfigSetup: PrebidConfigSetup,
+		private a9ConfigSetup: A9ConfigSetup,
 		private uapSetup: UapSetup,
 	) {}
 
@@ -25,10 +25,10 @@ export class CommonContextSetup implements ContextSetup {
 		this.setOptionsContext(isOptedIn);
 		this.setServicesContext();
 		this.setMiscContext();
-		this.targetingSetup.setTargetingContext();
+		this.targetingSetup.configureTargetingContext();
 		this.slotsContextSetup.configureSlotsContext();
-		this.biddersConfigSetup.setBiddersConfigContext();
 		this.prebidConfigSetup.configurePrebidContext();
+		this.a9ConfigSetup.configureA9Context();
 		this.uapSetup.configureUap();
 		setupNpaContext();
 	}

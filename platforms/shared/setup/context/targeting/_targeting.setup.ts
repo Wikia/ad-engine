@@ -1,3 +1,3 @@
 export class TargetingSetup {
-	setTargetingContext(): void {}
+	configureTargetingContext(): void {}
 }
