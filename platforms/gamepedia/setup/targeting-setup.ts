@@ -11,7 +11,6 @@ export class GamepediaTargetingSetup implements TargetingSetup {
 	private getPageLevelTargeting(): Partial<Targeting> {
 		const wikiContext = context.get('wiki') || {};
 		const pageTargeting: Dictionary<string> = {
-			ae3: '1',
 			uap: 'none',
 			uap_c: 'none',
 			artid: wikiContext.wgArticleId && wikiContext.wgArticleId.toString(),
