@@ -6,7 +6,11 @@ export interface AdInfoContext {
 }
 
 class SlotTracker {
-	onRenderEndedStatusToTrack = [AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_SUCCESS];
+	onRenderEndedStatusToTrack = [
+		AdSlot.STATUS_COLLAPSE,
+		AdSlot.STATUS_FORCE_COLLAPSED,
+		AdSlot.STATUS_SUCCESS,
+	];
 	onChangeStatusToTrack = [
 		AdSlot.STATUS_BLOCKED,
 		AdSlot.STATUS_ERROR,

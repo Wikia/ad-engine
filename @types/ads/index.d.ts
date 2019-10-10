@@ -8,3 +8,5 @@ interface Runtime {
 	unblockHighlyViewableSlots?: boolean;
 	bab?: any;
 }
+
+type ManualAdType = 'collapse' | 'force_collapsed' | 'forced_success' | 'manual';

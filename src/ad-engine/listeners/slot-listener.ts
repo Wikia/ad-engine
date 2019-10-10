@@ -121,8 +121,11 @@ class SlotListener {
 		adSlot.updateOnRenderEnd(event);
 
 		switch (adType) {
-			case 'collapse':
+			case AdSlot.STATUS_COLLAPSE:
 				adSlot.collapse();
+				break;
+			case AdSlot.STATUS_FORCE_COLLAPSED:
+				adSlot.collapse(adType);
 				break;
 			case 'manual':
 				adSlot.setStatus(adType);
