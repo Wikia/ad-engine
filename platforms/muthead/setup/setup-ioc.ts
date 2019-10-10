@@ -1,4 +1,5 @@
 import {
+	AdsMode,
 	BiddersConfigSetup,
 	BiddersStateSetup,
 	CommonBiddersStateSetup,
@@ -9,19 +10,15 @@ import {
 	CurseSlotsStateSetup,
 	CurseUapSetup,
 	DelayModulesSetup,
-	PlatformAdsMode,
 	SlotsContextSetup,
 	SlotsStateSetup,
+	SportsAdsMode,
 	StateSetup,
 	TargetingSetup,
 	TemplateSetup,
 	UapSetup,
 } from '@platforms/shared';
-import {
-	SportsAdsMode,
-	SportsDelayModulesSetup,
-	SportsTemplateSetup,
-} from '@platforms/shared-sports';
+import { SportsDelayModulesSetup, SportsTemplateSetup } from '@platforms/shared-sports';
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
@@ -38,7 +35,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(BiddersConfigSetup).to(MutheadBiddersConfigSetup);
 	container.bind(TemplateSetup).to(SportsTemplateSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
-	container.bind(PlatformAdsMode).to(SportsAdsMode);
+	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(ContextSetup).to(CommonContextSetup);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(StateSetup).to(CommonStateSetup);

@@ -1,9 +1,11 @@
-import { biddersDelay, PlatformAdsMode, startAdEngine } from '@platforms/shared';
 import { bidders, context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { biddersDelay } from '../../bidders/bidders-delay';
+import { startAdEngine } from '../start-ad-engine';
+import { AdsMode } from './_ads.mode';
 
 @Injectable()
-export class SportsAdsMode implements PlatformAdsMode {
+export class SportsAdsMode implements AdsMode {
 	handleAds(): void {
 		this.callExternals();
 		startAdEngine();

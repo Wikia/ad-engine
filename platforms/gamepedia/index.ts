@@ -1,7 +1,7 @@
 import { bootstrapAndGetCmpConsent } from '@platforms/shared';
 import { context, utils } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
-import { PlatformStartup } from '../shared/setup/platform-startup';
+import { PlatformStartup } from '../shared/platform-startup';
 import { basicContext } from './ad-context';
 import { setupIoc } from './setup/setup-ioc';
 import './styles.scss';

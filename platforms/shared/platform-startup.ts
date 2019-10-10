@@ -1,14 +1,14 @@
 import { bidders, context, events, eventService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { TemplateSetup } from '../templates/template-setup';
-import { LabradorTracker } from '../tracking/labrador-tracker';
-import { TrackingRegistry } from '../tracking/tracking-registry';
-import { ContextSetup } from './context/_context.setup';
-import { DelayModulesSetup } from './delay-modules-setup';
-import { IncontentPlayerInjector } from './inject-incontent-player';
-import { PlatformAdsMode } from './platform-ads-mode';
-import { PlatformNoAdsMode } from './platform-no-ads-mode';
-import { StateSetup } from './state/_state.setup';
+import { AdsMode } from './modes/ads/_ads.mode';
+import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
+import { ContextSetup } from './setup/context/_context.setup';
+import { DelayModulesSetup } from './setup/delay-modules-setup';
+import { IncontentPlayerInjector } from './setup/inject-incontent-player';
+import { StateSetup } from './setup/state/_state.setup';
+import { TemplateSetup } from './templates/template-setup';
+import { LabradorTracker } from './tracking/labrador-tracker';
+import { TrackingRegistry } from './tracking/tracking-registry';
 
 const logGroup = 'ad-engine';
 
@@ -27,8 +27,8 @@ export class PlatformStartup {
 		private incontentPlayerInjector: IncontentPlayerInjector,
 		private delayModulesSetup: DelayModulesSetup,
 		private labradorTracker: LabradorTracker,
-		private noAdsMode: PlatformNoAdsMode,
-		private adsMode: PlatformAdsMode,
+		private noAdsMode: NoAdsMode,
+		private adsMode: AdsMode,
 	) {}
 
 	configure(args: PlatformStartupArgs): void {
