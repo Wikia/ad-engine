@@ -29,10 +29,10 @@ import { set } from 'lodash';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { GamepediaNoAdsMode } from '../modes/gamepedia-no-ads.mode';
 import { GamepediaAdsMode } from '../modes/gampedia-ads.mode';
+import { GamepediaDelayModulesSetup } from './ad-engine-runner/delay-modules/delay-modules.setup';
 import { GamepediaBiddersConfigSetup } from './context/bidders/gamepedia-bidders-config.setup';
 import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
-import { GamepediaDelayModulesSetup } from './delay-modules-setup';
 import { GamepediaTemplatesSetup } from './templates/gamepedia-templates.setup';
 
 export async function setupIoc(): Promise<Container> {

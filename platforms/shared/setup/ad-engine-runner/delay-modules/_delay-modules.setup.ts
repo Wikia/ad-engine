@@ -1,3 +1,3 @@
 export class DelayModulesSetup {
-	setupDelayModules(): void {}
+	configureDelayModules(): void {}
 }

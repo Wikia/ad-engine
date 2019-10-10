@@ -16,6 +16,7 @@ import {
 	SlotsContextSetup,
 	SlotsStateSetup,
 	SportsAdsMode,
+	SportsDelayModulesSetup,
 	SportsTemplatesSetup,
 	StateSetup,
 	TargetingSetup,
@@ -23,7 +24,6 @@ import {
 	TrackingSetup,
 	UapSetup,
 } from '@platforms/shared';
-import { SportsDelayModulesSetup } from '@platforms/shared-sports';
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
