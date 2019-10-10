@@ -31,5 +31,5 @@ export * from './modes/no-ads/_no-ads.mode';
 export * from './modes/ads/_ads.mode';
 export * from './modes/ads/sports-ads.mode';
 export * from './modes/start-ad-engine';
-export * from './templates/template-setup';
+export * from './setup/templates/_templates.setup';
 export * from './utils/get-domain';

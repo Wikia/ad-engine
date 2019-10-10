@@ -17,13 +17,14 @@ import {
 	SportsAdsMode,
 	StateSetup,
 	TargetingSetup,
-	TemplateSetup,
+	TemplatesSetup,
 	UapSetup,
 } from '@platforms/shared';
-import { SportsDelayModulesSetup, SportsTemplateSetup } from '@platforms/shared-sports';
+import { SportsDelayModulesSetup } from '@platforms/shared-sports';
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
+import { SportsTemplatesSetup } from '../../shared/setup/templates/sports-templates.setup';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { FutheadBiddersConfigSetup } from './context/bidders/futhead-bidders-config.setup';
 import { FutheadTargetingSetup } from './context/targeting/futhead-targeting.setup';
@@ -35,7 +36,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(TargetingSetup).to(FutheadTargetingSetup);
 	container.bind(BiddersConfigSetup).to(FutheadBiddersConfigSetup);
-	container.bind(TemplateSetup).to(SportsTemplateSetup);
+	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(ContextSetup).to(CommonContextSetup);

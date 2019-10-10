@@ -6,7 +6,7 @@ import { ContextSetup } from './setup/context/_context.setup';
 import { DelayModulesSetup } from './setup/delay-modules-setup';
 import { DynamicSlotsSetup } from './setup/dynamic-slots/_dynamic-slots.setup';
 import { StateSetup } from './setup/state/_state.setup';
-import { TemplateSetup } from './templates/template-setup';
+import { TemplatesSetup } from './setup/templates/_templates.setup';
 import { LabradorTracker } from './tracking/labrador-tracker';
 import { TrackingRegistry } from './tracking/tracking-registry';
 
@@ -23,8 +23,8 @@ export class PlatformStartup {
 		private contextSetup: ContextSetup,
 		private stateSetup: StateSetup,
 		private dynamicSlotsSetup: DynamicSlotsSetup,
+		private templatesSetup: TemplatesSetup,
 		private trackingRegistry: TrackingRegistry,
-		private templateSetup: TemplateSetup,
 		private delayModulesSetup: DelayModulesSetup,
 		private labradorTracker: LabradorTracker,
 		private noAdsMode: NoAdsMode,
@@ -35,8 +35,8 @@ export class PlatformStartup {
 		this.contextSetup.configureContext(args.isOptedIn);
 		this.stateSetup.configureState(args.isMobile);
 		this.dynamicSlotsSetup.configureDynamicSlots();
+		this.templatesSetup.configureTemplates();
 
-		this.templateSetup.registerTemplates();
 		this.trackingRegistry.registerTrackers();
 		this.labradorTracker.trackLabradorValues();
 		this.delayModulesSetup.setupDelayModules();

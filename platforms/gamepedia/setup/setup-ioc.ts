@@ -18,7 +18,7 @@ import {
 	SlotsStateSetup,
 	StateSetup,
 	TargetingSetup,
-	TemplateSetup,
+	TemplatesSetup,
 	UapSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -28,12 +28,12 @@ import { set } from 'lodash';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { GamepediaNoAdsMode } from '../modes/gamepedia-no-ads.mode';
 import { GamepediaAdsMode } from '../modes/gampedia-ads.mode';
-import { GamepediaTemplateSetup } from '../templates/templates-setup';
 import { GamepediaLabradorTracker } from '../tracking/labrador-tracker';
 import { GamepediaBiddersConfigSetup } from './context/bidders/gamepedia-bidders-config.setup';
 import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
 import { GamepediaDelayModulesSetup } from './delay-modules-setup';
+import { GamepediaTemplatesSetup } from './templates/gamepedia-templates.setup';
 
 export async function setupIoc(): Promise<Container> {
 	const container = new Container();
@@ -43,7 +43,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(WikiContextSetup).to(GamepediaWikiContextSetup);
 	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
 	container.bind(BiddersConfigSetup).to(GamepediaBiddersConfigSetup);
-	container.bind(TemplateSetup).to(GamepediaTemplateSetup);
+	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);
 	container.bind(DelayModulesSetup).to(GamepediaDelayModulesSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(AdsMode).to(GamepediaAdsMode);
