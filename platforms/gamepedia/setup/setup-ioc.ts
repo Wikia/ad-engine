@@ -1,10 +1,9 @@
 import {
-	AdEnginePreStarter,
-	AdStackSetup,
 	BiddersConfigSetup,
 	DelayModulesSetup,
 	LabradorTracker,
-	NoAdsHandler,
+	PlatformAdsMode,
+	PlatformNoAdsMode,
 	TargetingSetup,
 	TemplateSetup,
 	WikiContextSetup,
@@ -16,10 +15,9 @@ import { GamepediaBiddersConfigSetup } from '../bidders/bidders-config-setup';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { GamepediaTemplateSetup } from '../templates/templates-setup';
 import { GamepediaLabradorTracker } from '../tracking/labrador-tracker';
-import { GamepediaAdEnginePreStarter } from './ad-engine-prestarter';
-import { GamepediaAdStackSetup } from './ad-stack-setup';
+import { GamepediaAdsMode } from './ads-mode';
 import { GamepediaDelayModulesSetup } from './delay-modules-setup';
-import { GamepediaNoAdsHandler } from './no-ads-handler';
+import { GamepediaNoAdsMode } from './no-ads-mode';
 import { GamepediaTargetingSetup } from './targeting-setup';
 import { GamepediaWikiContextSetup } from './wiki-context-setup';
 
@@ -33,9 +31,8 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(BiddersConfigSetup).to(GamepediaBiddersConfigSetup);
 	container.bind(TemplateSetup).to(GamepediaTemplateSetup);
 	container.bind(DelayModulesSetup).to(GamepediaDelayModulesSetup);
-	container.bind(AdStackSetup).to(GamepediaAdStackSetup);
-	container.bind(AdEnginePreStarter).to(GamepediaAdEnginePreStarter);
-	container.bind(NoAdsHandler).to(GamepediaNoAdsHandler);
+	container.bind(PlatformNoAdsMode).to(GamepediaNoAdsMode);
+	container.bind(PlatformAdsMode).to(GamepediaAdsMode);
 	container.bind(LabradorTracker).to(GamepediaLabradorTracker);
 
 	return container;

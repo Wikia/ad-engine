@@ -1,14 +1,12 @@
 import {
-	AdEnginePreStarter,
-	AdStackSetup,
 	BiddersConfigSetup,
 	DelayModulesSetup,
+	PlatformAdsMode,
 	TargetingSetup,
 	TemplateSetup,
 } from '@platforms/shared';
 import {
-	SportsAdEnginePreStarter,
-	SportsAdStackSetup,
+	SportsAdsMode,
 	SportsDelayModulesSetup,
 	SportsTemplateSetup,
 } from '@platforms/shared-sports';
@@ -28,8 +26,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(BiddersConfigSetup).to(FutheadBiddersConfigSetup);
 	container.bind(TemplateSetup).to(SportsTemplateSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
-	container.bind(AdStackSetup).to(SportsAdStackSetup);
-	container.bind(AdEnginePreStarter).to(SportsAdEnginePreStarter);
+	container.bind(PlatformAdsMode).to(SportsAdsMode);
 
 	return container;
 }

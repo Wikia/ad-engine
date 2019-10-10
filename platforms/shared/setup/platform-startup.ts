@@ -1,8 +1,6 @@
 import {
-	AdEngine,
 	bidders,
 	BiddersStateSetup,
-	btRec,
 	context,
 	events,
 	eventService,
@@ -13,16 +11,13 @@ import { Injectable } from '@wikia/dependency-injection';
 import { BiddersConfigSetup } from '../bidders/bidders-config-setup';
 import { SlotsSetup } from '../slots/slots-setup';
 import { TemplateSetup } from '../templates/template-setup';
-import { trackBab } from '../tracking/bab-tracker';
 import { LabradorTracker } from '../tracking/labrador-tracker';
 import { TrackingRegistry } from '../tracking/tracking-registry';
-import { babDetection } from '../wad/bab-detection';
-import { AdEnginePreStarter } from './ad-engine-prestarter';
-import { AdStackSetup } from './ad-stack-setup';
 import { DelayModulesSetup } from './delay-modules-setup';
 import { IncontentPlayerInjector } from './inject-incontent-player';
-import { NoAdsHandler } from './no-ads-handler';
+import { PlatformAdsMode } from './platform-ads-mode';
 import { PlatformContextSetup } from './platform-context-setup';
+import { PlatformNoAdsMode } from './platform-no-ads-mode';
 import { TargetingSetup } from './targeting-setup';
 import { UapSetup } from './uap-setup';
 import { WikiContextSetup } from './wiki-context-setup';
@@ -44,9 +39,8 @@ export class PlatformStartup {
 		private incontentPlayerInjector: IncontentPlayerInjector,
 		private delayModulesSetup: DelayModulesSetup,
 		private labradorTracker: LabradorTracker,
-		private adStackSetup: AdStackSetup,
-		private adEnginePreStarter: AdEnginePreStarter,
-		private noAdsHandler: NoAdsHandler,
+		private noAdsMode: PlatformNoAdsMode,
+		private adsMode: PlatformAdsMode,
 	) {}
 
 	configure({ isOptedIn = false, isMobile = false }): void {
@@ -79,37 +73,9 @@ export class PlatformStartup {
 
 	run(): void {
 		if (context.get('state.showAds')) {
-			this.adEnginePreStarter.runPreStartActions();
-			this.startAdEngine();
-			this.adStackSetup.setAdStack();
+			this.adsMode.handleAds();
 		} else {
-			this.noAdsHandler.handleNoAdsScenario();
+			this.noAdsMode.handleNoAds();
 		}
-	}
-
-	private startAdEngine(): void {
-		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
-
-		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
-
-		const engine = new AdEngine();
-
-		engine.init();
-
-		if (babDetection.isEnabled()) {
-			babDetection.run().then((isBabDetected) => {
-				trackBab(isBabDetected);
-
-				if (isBabDetected) {
-					btRec.run();
-				}
-			});
-		}
-
-		context.push('listeners.slot', {
-			onRenderEnded: (slot) => {
-				slot.getElement().classList.remove('default-height');
-			},
-		});
 	}
 }
