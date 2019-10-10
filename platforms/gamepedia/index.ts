@@ -14,8 +14,10 @@ window.RLQ.push(async () => {
 
 	context.extend(basicContext);
 
-	const consent: boolean = await bootstrapAndGetCmpConsent();
-	const container: Container = await setupIoc();
+	const [consent, container]: [boolean, Container] = await Promise.all([
+		bootstrapAndGetCmpConsent(),
+		setupIoc(),
+	]);
 	const platformStartup = container.get(PlatformStartup);
 
 	platformStartup.configure({ isOptedIn: consent, isMobile: !utils.client.isDesktop() });
