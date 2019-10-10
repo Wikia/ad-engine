@@ -3,8 +3,7 @@
 	"compilerOptions": {
 		"paths": {
 			"@wikia/ad-engine": ["src/index.ts"],
-			"@platforms/shared": ["platforms/shared/index.ts"],
-			"@platforms/shared-sports": ["platforms/shared-sports/index.ts"]
+			"@platforms/shared": ["platforms/shared/index.ts"]
 		}
 	},
 	"include": ["."]
