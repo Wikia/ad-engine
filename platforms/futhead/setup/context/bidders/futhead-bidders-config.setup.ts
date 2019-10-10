@@ -1,10 +1,10 @@
 import { BiddersConfigSetup } from '@platforms/shared';
+import { setA9AdapterConfig } from '@platforms/shared-sports';
 import { Injectable } from '@wikia/dependency-injection';
-import { setA9AdapterConfig } from './a9';
-import { setPrebidAdaptersConfig } from './prebid';
+import { setPrebidAdaptersConfig } from '../../../bidders/prebid';
 
 @Injectable()
-export class GamepediaBiddersConfigSetup implements BiddersConfigSetup {
+export class FutheadBiddersConfigSetup implements BiddersConfigSetup {
 	setBiddersConfigContext(): void {
 		setA9AdapterConfig();
 		setPrebidAdaptersConfig();

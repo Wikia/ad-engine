@@ -1,7 +1,7 @@
 import { BiddersConfigSetup } from '@platforms/shared';
 import { setA9AdapterConfig } from '@platforms/shared-sports';
 import { Injectable } from '@wikia/dependency-injection';
-import { setPrebidAdaptersConfig } from './prebid';
+import { setPrebidAdaptersConfig } from '../../../bidders/prebid';
 
 @Injectable()
 export class MutheadBiddersConfigSetup implements BiddersConfigSetup {

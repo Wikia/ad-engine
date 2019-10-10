@@ -1,6 +1,6 @@
 import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../../../slots/slots';
+import { slotsContext } from '../../../slots/slots-context';
 import { UapSetup } from './_uap.setup';
 
 @Injectable()

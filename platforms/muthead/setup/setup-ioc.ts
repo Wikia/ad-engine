@@ -25,9 +25,9 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { MutheadBiddersConfigSetup } from '../bidders/bidders-config-setup';
 import * as fallbackInstantConfig from '../fallback-config.json';
-import { MutheadTargetingSetup } from './targeting-setup';
+import { MutheadBiddersConfigSetup } from './context/bidders/muthead-bidders-config.setup';
+import { MutheadTargetingSetup } from './targeting/muthead-targeting.setup';
 
 export async function setupIoc(): Promise<Container> {
 	const container = new Container();

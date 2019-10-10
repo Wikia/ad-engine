@@ -23,15 +23,15 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { GamepediaBiddersConfigSetup } from '../bidders/bidders-config-setup';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { GamepediaTemplateSetup } from '../templates/templates-setup';
 import { GamepediaLabradorTracker } from '../tracking/labrador-tracker';
 import { GamepediaAdsMode } from './ads-mode';
+import { GamepediaBiddersConfigSetup } from './context/bidders/gamepedia-bidders-config.setup';
+import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
+import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
 import { GamepediaDelayModulesSetup } from './delay-modules-setup';
 import { GamepediaNoAdsMode } from './no-ads-mode';
-import { GamepediaTargetingSetup } from './targeting-setup';
-import { GamepediaWikiContextSetup } from './wiki-context-setup';
 
 export async function setupIoc(): Promise<Container> {
 	const container = new Container();
