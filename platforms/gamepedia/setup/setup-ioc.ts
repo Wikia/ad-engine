@@ -14,6 +14,7 @@ import {
 	DelayModulesSetup,
 	DynamicSlotsSetup,
 	NoAdsMode,
+	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	StateSetup,
@@ -31,6 +32,7 @@ import { GamepediaNoAdsMode } from '../modes/gamepedia-no-ads.mode';
 import { GamepediaAdsMode } from '../modes/gampedia-ads.mode';
 import { GamepediaDelayModulesSetup } from './ad-engine-runner/delay-modules/delay-modules.setup';
 import { GamepediaBiddersConfigSetup } from './context/bidders/gamepedia-bidders-config.setup';
+import { GamepediaPrebidConfigSetup } from './context/prebid/gamepedia-prebid-config.setup';
 import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
 import { GamepediaTemplatesSetup } from './templates/gamepedia-templates.setup';
@@ -55,6 +57,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(UapSetup).to(CurseUapSetup);
 	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
+	container.bind(PrebidConfigSetup).to(GamepediaPrebidConfigSetup);
 
 	return container;
 }

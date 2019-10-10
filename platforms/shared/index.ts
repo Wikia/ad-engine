@@ -21,6 +21,7 @@ export * from './setup/context/slots/_slots-context.setup';
 export * from './setup/context/slots/curse-slots-context-setup';
 export * from './setup/context/uap/_uap.setup';
 export * from './setup/context/uap/curse-uap.setup';
+export * from './setup/context/prebid/_prebid-config.setup';
 export * from './setup/state/_state.setup';
 export * from './setup/state/common-state-setup';
 export * from './setup/state/slots/_slots-state.setup';

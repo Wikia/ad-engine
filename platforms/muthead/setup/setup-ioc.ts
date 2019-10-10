@@ -13,6 +13,7 @@ import {
 	CurseUapSetup,
 	DelayModulesSetup,
 	DynamicSlotsSetup,
+	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	SportsAdsMode,
@@ -29,6 +30,7 @@ import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from '../fallback-config.json';
 import { MutheadBiddersConfigSetup } from './context/bidders/muthead-bidders-config.setup';
+import { MutheadPrebidConfigSetup } from './context/prebid/muthead-prebid-config.setup';
 import { MutheadTargetingSetup } from './targeting/muthead-targeting.setup';
 
 export async function setupIoc(): Promise<Container> {
@@ -49,6 +51,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(UapSetup).to(CurseUapSetup);
 	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
+	container.bind(PrebidConfigSetup).to(MutheadPrebidConfigSetup);
 
 	return container;
 }

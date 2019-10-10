@@ -2,6 +2,7 @@ import { context, InstantConfigService, setupNpaContext } from '@wikia/ad-engine
 import { Injectable } from '@wikia/dependency-injection';
 import { ContextSetup } from './_context.setup';
 import { BiddersConfigSetup } from './bidders/_bidders-config.setup';
+import { PrebidConfigSetup } from './prebid/_prebid-config.setup';
 import { SlotsContextSetup } from './slots/_slots-context.setup';
 import { TargetingSetup } from './targeting/_targeting.setup';
 import { UapSetup } from './uap/_uap.setup';
@@ -15,6 +16,7 @@ export class CommonContextSetup implements ContextSetup {
 		private targetingSetup: TargetingSetup,
 		private slotsContextSetup: SlotsContextSetup,
 		private biddersConfigSetup: BiddersConfigSetup,
+		private prebidConfigSetup: PrebidConfigSetup,
 		private uapSetup: UapSetup,
 	) {}
 
@@ -26,6 +28,7 @@ export class CommonContextSetup implements ContextSetup {
 		this.targetingSetup.setTargetingContext();
 		this.slotsContextSetup.configureSlotsContext();
 		this.biddersConfigSetup.setBiddersConfigContext();
+		this.prebidConfigSetup.configurePrebidContext();
 		this.uapSetup.configureUap();
 		setupNpaContext();
 	}
