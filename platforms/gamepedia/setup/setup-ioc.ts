@@ -1,5 +1,7 @@
 import {
 	BiddersConfigSetup,
+	CommonContextSetup,
+	ContextSetup,
 	DelayModulesSetup,
 	LabradorTracker,
 	PlatformAdsMode,
@@ -34,6 +36,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(PlatformNoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(PlatformAdsMode).to(GamepediaAdsMode);
 	container.bind(LabradorTracker).to(GamepediaLabradorTracker);
+	container.bind(ContextSetup).to(CommonContextSetup);
 
 	return container;
 }

@@ -16,5 +16,7 @@ export * from './setup/targeting-setup';
 export * from './setup/start-ad-engine';
 export * from './setup/wiki-context-setup';
 export * from './setup/platform-startup';
+export * from './setup/context/_context.setup';
+export * from './setup/context/common-context.setup';
 export * from './templates/template-setup';
 export * from './utils/get-domain';

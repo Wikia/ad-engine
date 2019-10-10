@@ -1,5 +1,7 @@
 import {
 	BiddersConfigSetup,
+	CommonContextSetup,
+	ContextSetup,
 	DelayModulesSetup,
 	PlatformAdsMode,
 	TargetingSetup,
@@ -27,6 +29,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(TemplateSetup).to(SportsTemplateSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
 	container.bind(PlatformAdsMode).to(SportsAdsMode);
+	container.bind(ContextSetup).to(CommonContextSetup);
 
 	return container;
 }
