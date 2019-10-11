@@ -30,7 +30,6 @@ export * from './setup/state/slots/curse-slots-state.setup';
 export * from './setup/state/bidders/_bidders-state.setup';
 export * from './setup/state/bidders/common-bidders-state.setup';
 export * from './setup/dynamic-slots/_dynamic-slots.setup';
-export * from './setup/dynamic-slots/curse-dynamic-slots.setup';
 export * from './setup/templates/_templates.setup';
 export * from './setup/templates/sports-templates.setup';
 export * from './setup/tracking/_tracking.setup';

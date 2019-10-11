@@ -7,12 +7,10 @@ import {
 	CommonStateSetup,
 	CommonTrackingSetup,
 	ContextSetup,
-	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	CurseUapSetup,
 	DelayModulesSetup,
-	DynamicSlotsSetup,
 	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
@@ -48,7 +46,6 @@ export async function setupMutheadIoc(): Promise<Container> {
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);
-	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(MutheadPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(SportsA9ConfigSetup);

@@ -1,10 +1,9 @@
+import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
 import { AdSlot, context, slotInjector, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../../slots/slots-context';
-import { DynamicSlotsSetup } from './_dynamic-slots.setup';
 
 @Injectable()
-export class CurseDynamicSlotsSetup implements DynamicSlotsSetup {
+export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
 	constructor() {}
 
 	configureDynamicSlots(): void {

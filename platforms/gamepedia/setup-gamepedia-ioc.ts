@@ -7,7 +7,6 @@ import {
 	CommonStateSetup,
 	CommonTrackingSetup,
 	ContextSetup,
-	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	CurseUapSetup,
@@ -35,6 +34,7 @@ import { GamepediaA9ConfigSetup } from './setup/context/a9/gamepedia-a9-config.s
 import { GamepediaPrebidConfigSetup } from './setup/context/prebid/gamepedia-prebid-config.setup';
 import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './setup/context/wiki/gamepedia-wiki-context.setup';
+import { GamepediaDynamicSlotsSetup } from './setup/dynamic-slots/gamepedia-dynamic-slots.setup';
 import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
 
 export async function setupGamepediaIoc(): Promise<Container> {
@@ -54,7 +54,7 @@ export async function setupGamepediaIoc(): Promise<Container> {
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);
-	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
+	container.bind(DynamicSlotsSetup).to(GamepediaDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(GamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
