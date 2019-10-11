@@ -29,16 +29,16 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import * as fallbackInstantConfig from '../fallback-config.json';
-import { MutheadPrebidConfigSetup } from './context/prebid/muthead-prebid-config.setup';
-import { MutheadTargetingSetup } from './targeting/muthead-targeting.setup';
+import * as fallbackInstantConfig from './fallback-config.json';
+import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
+import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
 
-export async function setupIoc(): Promise<Container> {
+export async function setupFutheadIoc(): Promise<Container> {
 	const container = new Container();
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
-	container.bind(TargetingSetup).to(MutheadTargetingSetup);
+	container.bind(TargetingSetup).to(FutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
@@ -50,7 +50,7 @@ export async function setupIoc(): Promise<Container> {
 	container.bind(UapSetup).to(CurseUapSetup);
 	container.bind(DynamicSlotsSetup).to(CurseDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
-	container.bind(PrebidConfigSetup).to(MutheadPrebidConfigSetup);
+	container.bind(PrebidConfigSetup).to(FutheadPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(SportsA9ConfigSetup);
 
 	return container;

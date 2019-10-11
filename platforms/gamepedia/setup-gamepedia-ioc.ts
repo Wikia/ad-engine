@@ -27,17 +27,17 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import * as fallbackInstantConfig from '../fallback-config.json';
-import { GamepediaNoAdsMode } from '../modes/gamepedia-no-ads.mode';
-import { GamepediaAdsMode } from '../modes/gampedia-ads.mode';
-import { GamepediaDelayModulesSetup } from './ad-engine-runner/delay-modules/delay-modules.setup';
-import { GamepediaA9ConfigSetup } from './context/a9/gamepedia-a9-config.setup';
-import { GamepediaPrebidConfigSetup } from './context/prebid/gamepedia-prebid-config.setup';
-import { GamepediaTargetingSetup } from './context/targeting/gamepedia-targeting.setup';
-import { GamepediaWikiContextSetup } from './context/wiki/gamepedia-wiki-context.setup';
-import { GamepediaTemplatesSetup } from './templates/gamepedia-templates.setup';
+import * as fallbackInstantConfig from './fallback-config.json';
+import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';
+import { GamepediaAdsMode } from './modes/gampedia-ads.mode';
+import { GamepediaDelayModulesSetup } from './setup/ad-engine-runner/delay-modules/delay-modules.setup';
+import { GamepediaA9ConfigSetup } from './setup/context/a9/gamepedia-a9-config.setup';
+import { GamepediaPrebidConfigSetup } from './setup/context/prebid/gamepedia-prebid-config.setup';
+import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
+import { GamepediaWikiContextSetup } from './setup/context/wiki/gamepedia-wiki-context.setup';
+import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
 
-export async function setupIoc(): Promise<Container> {
+export async function setupGamepediaIoc(): Promise<Container> {
 	const container = new Container();
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);

@@ -3,7 +3,7 @@ import { context, utils } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { PlatformStartup } from '../shared/platform-startup';
 import { basicContext } from './ad-context';
-import { setupIoc } from './setup/setup-ioc';
+import { setupGamepediaIoc } from './setup-gamepedia-ioc';
 import './styles.scss';
 
 // RLQ may not exist as AdEngine is loading independently from Resource Loader
@@ -16,7 +16,7 @@ window.RLQ.push(async () => {
 
 	const [consent, container]: [boolean, Container] = await Promise.all([
 		bootstrapAndGetCmpConsent(),
-		setupIoc(),
+		setupGamepediaIoc(),
 	]);
 	const platformStartup = container.get(PlatformStartup);
 

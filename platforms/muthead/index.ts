@@ -2,7 +2,7 @@ import { bootstrapAndGetCmpConsent, getDeviceMode, PlatformStartup } from '@plat
 import { context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { setupIoc } from './setup/setup-ioc';
+import { setupMutheadIoc } from './setup-muthead-ioc';
 import './styles.scss';
 
 async function start(): Promise<void> {
@@ -10,7 +10,7 @@ async function start(): Promise<void> {
 
 	const [consent, container]: [boolean, Container] = await Promise.all([
 		bootstrapAndGetCmpConsent(),
-		setupIoc(),
+		setupMutheadIoc(),
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
