@@ -102,16 +102,12 @@ describe('Common slots: rail module', () => {
 	before(() => {
 		browser.url(commonAds.pageLink);
 		helpers.slowScroll(150);
-		$(adSlots.railModule).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.railModule, true);
+		$(commonAds.railModule).waitForDisplayed(timeouts.standard);
+		adStatus = adSlots.getSlotStatus(commonAds.railModule, true);
 	});
 
 	it('Check if dimensions are correct', () => {
-		const dimensions = adSlots.checkSlotSize(
-			adSlots.railModule,
-			adSlots.railModuleWidth,
-			adSlots.railModuleHeight,
-		);
+		const dimensions = adSlots.checkSlotSize(adSlots.railModuleWidth);
 
 		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
 	});
