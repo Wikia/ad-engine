@@ -1,5 +1,6 @@
 import {
 	AdEngine,
+	AdSlot,
 	bidders,
 	billTheLizard,
 	btfBlockerService,
@@ -28,32 +29,31 @@ function loadContent() {
 
 context.extend(adContext);
 context.set('slots.repeatable_boxad_1.repeat.limit', limit);
-context.push('listeners.slot', {
-	onStatusChanged: async (adSlot) => {
-		const slotName = adSlot.getSlotName();
-		const realSlotPrices = bidders.getDfpSlotPrices(slotName);
-		const currentSlotPrices = await bidders.getCurrentSlotPrices(slotName);
 
-		function transformBidderPrice(bidderName) {
-			if (realSlotPrices && realSlotPrices[bidderName]) {
-				return realSlotPrices[bidderName];
-			}
+eventService.on(AdSlot.SLOT_STATUS_CHANGED, async (adSlot) => {
+	const slotName = adSlot.getSlotName();
+	const realSlotPrices = bidders.getDfpSlotPrices(slotName);
+	const currentSlotPrices = await bidders.getCurrentSlotPrices(slotName);
 
-			if (currentSlotPrices && currentSlotPrices[bidderName]) {
-				return `${currentSlotPrices[bidderName]}not_used`;
-			}
-
-			return '';
+	function transformBidderPrice(bidderName) {
+		if (realSlotPrices && realSlotPrices[bidderName]) {
+			return realSlotPrices[bidderName];
 		}
 
-		const price = transformBidderPrice('wikia');
-
-		if (price) {
-			console.log(`⛳ ${slotName}: wikia adapter price is %c$${price}`, 'font-weight: bold');
-		} else {
-			console.log(`⛳ ${slotName}: wikia adapter responded %ctoo late`, 'font-weight: bold');
+		if (currentSlotPrices && currentSlotPrices[bidderName]) {
+			return `${currentSlotPrices[bidderName]}not_used`;
 		}
-	},
+
+		return '';
+	}
+
+	const price = transformBidderPrice('wikia');
+
+	if (price) {
+		console.log(`⛳ ${slotName}: wikia adapter price is %c$${price}`, 'font-weight: bold');
+	} else {
+		console.log(`⛳ ${slotName}: wikia adapter responded %ctoo late`, 'font-weight: bold');
+	}
 });
 
 if (enabledProjects) {
@@ -74,7 +74,7 @@ if (enabledProjects) {
 	});
 
 	context.set('bidders.prebid.bidsRefreshing.bidsBackHandler', () => {
-		billTheLizard.call(['cheshirecat']);
+		billTheLizard.call(['cheshirecat'], null);
 	});
 }
 

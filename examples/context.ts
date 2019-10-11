@@ -20,19 +20,15 @@ export default {
 			amazonId: '3115',
 			slots: {
 				top_leaderboard: {
-					slotId: 'TOP_LEADERBOARD',
 					sizes: [[728, 90]],
 				},
-				TOP_BOXAD: {
-					slotId: 'TOP_BOXAD',
+				top_boxad: {
 					sizes: [[300, 250]],
 				},
 				featured: {
-					slotId: 'FEATURED',
 					type: 'video',
 				},
 				incontent_boxad: {
-					slotId: 'MOBILE_IN_CONTENT',
 					sizes: [[300, 250]],
 				},
 			},
@@ -127,30 +123,10 @@ export default {
 		},
 	},
 	listeners: {
-		twitch: [
-			{
-				onEvent(eventName, params, data) {
-					console.log('🗣 Twitch listener: onEvent', eventName, data);
-				},
-			},
-		],
 		porvata: [
 			{
 				onEvent(eventName, params, data) {
 					console.log(`🗣 Custom listener: onEvent ${eventName}`, data);
-				},
-			},
-		],
-		slot: [
-			{
-				onRenderEnded(adSlot) {
-					console.log(`💸 Custom listener: onRenderEnded ${adSlot.getSlotName()}`);
-				},
-				onImpressionViewable(adSlot) {
-					console.log(`👁 Custom listener: onImpressionViewable ${adSlot.getSlotName()}`);
-				},
-				onCustomEvent(adSlot, data) {
-					console.log(`👁 Custom listener: onCustomEvent ${adSlot.getSlotName()} ${data.status}`);
 				},
 			},
 		],
@@ -174,7 +150,6 @@ export default {
 		},
 		top_boxad: {
 			aboveTheFold: true,
-			bidderAlias: 'TOP_BOXAD',
 			sizes: [
 				{
 					viewportSize: [768, 0],

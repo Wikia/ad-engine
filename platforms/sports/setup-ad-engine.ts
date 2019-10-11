@@ -1,5 +1,14 @@
 import { babDetection, biddersDelay, trackBab } from '@platforms/shared';
-import { AdEngine, bidders, btRec, context, events, eventService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	AdSlot,
+	bidders,
+	btRec,
+	context,
+	events,
+	eventService,
+	utils,
+} from '@wikia/ad-engine';
 import { adsSetup } from './setup-context';
 
 const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
@@ -43,10 +52,8 @@ function startAdEngine(): void {
 		});
 	}
 
-	context.push('listeners.slot', {
-		onRenderEnded: (slot) => {
-			slot.getElement().classList.remove('default-height');
-		},
+	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
+		slot.removeClass('default-height');
 	});
 
 	context.push('state.adStack', { id: 'cdm-zone-01' });

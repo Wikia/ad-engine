@@ -54,7 +54,6 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`events.pushAfterRendered.{slot_name}`|List of ad slot names to create once {slot_name} is rendered|array|✘|
 |`listeners`|List of listeners registered in the ad-engine|object|✘|
 |`listeners.porvata`|Porvata listeners objects (available methods: `isEnabled`, `onEvent`)|array|✘|
-|`listeners.slot`|Porvata listeners objects (available methods: `isEnabled`, `onRenderEnded`, `onStatusChanged`)|array|✘|
 |`networkId`|DFP network ID that can be used in ad units|string|✘|
 |`options`|General configuration of ad-engine services|object|✔|
 |`options.customAdLoader.globalMethodName`|`top.{method_name}` will execute defined creative templates|string|✔|
@@ -111,8 +110,7 @@ export default customContext = {
 		}
 	},
 	listeners: {
-		porvata: [],
-		slot: []
+		porvata: []
 	},
 	options: {
 		maxDelayTimeout: 2000,

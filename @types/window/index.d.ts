@@ -8,7 +8,6 @@ interface Window {
 	ads?: Ads;
 	adsQueue?: any;
 	apstag?: Apstag;
-	buildAdUnitString?: (arg0: string, arg1: any) => string;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
 	google: {
@@ -19,8 +18,6 @@ interface Window {
 	moatYieldReady?: MoatYieldReady;
 	Krux?: KruxQueue;
 	moatjw?: MoatJW;
-	// No types available for Twitch embedded player.
-	Twitch?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;

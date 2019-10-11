@@ -11,11 +11,9 @@ describe('A9Provider', () => {
 		bidderConfig = {
 			slots: {
 				top_leaderboard: {
-					slotId: 'TOP_LEADERBOARD',
 					sizes: [[728, 90]],
 				},
 				featured: {
-					slotId: 'FEATURED',
 					type: 'video',
 				},
 			},
@@ -34,8 +32,8 @@ describe('A9Provider', () => {
 		const definition = a9.createSlotDefinition('top_leaderboard');
 
 		expect(definition).to.deep.equal({
-			slotID: 'TOP_LEADERBOARD',
-			slotName: 'TOP_LEADERBOARD',
+			slotID: 'top_leaderboard',
+			slotName: 'top_leaderboard',
 			sizes: [[728, 90]],
 		});
 	});
@@ -56,8 +54,8 @@ describe('A9Provider', () => {
 
 		expect(definition).to.deep.equal({
 			mediaType: 'video',
-			slotID: 'FEATURED',
-			slotName: 'FEATURED',
+			slotID: 'featured',
+			slotName: 'featured',
 		});
 	});
 });

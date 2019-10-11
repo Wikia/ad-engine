@@ -19,16 +19,8 @@ class ScriptLoader {
 		script.type = type;
 		script.src = src;
 
-		if (parameters.dataset) {
-			Object.keys(parameters.dataset).forEach((parameter) => {
-				script.setAttribute(`data-${parameter}`, parameters.dataset[parameter]);
-			});
-		}
-
 		Object.keys(parameters).forEach((parameter) => {
-			if (parameter !== 'dataset') {
-				script[parameter] = parameters[parameter];
-			}
+			script[parameter] = parameters[parameter];
 		});
 
 		temp.parentNode.insertBefore(script, temp);
