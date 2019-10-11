@@ -61,6 +61,7 @@ class ContextSetup {
 		context.set('slots', slotsContext.generate());
 		context.set('targeting', getPageLevelTargeting());
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 
 		setA9AdapterConfig();
 		setPrebidAdaptersConfig(context.get('targeting.s1'));

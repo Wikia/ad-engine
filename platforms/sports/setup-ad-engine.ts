@@ -4,6 +4,7 @@ import {
 	AdSlot,
 	bidders,
 	btRec,
+	confiant,
 	context,
 	events,
 	eventService,
@@ -68,5 +69,5 @@ function callExternals(): void {
 		responseListener: biddersDelay.markAsReady,
 	});
 
-	// ToDo: other externals
+	confiant.call();
 }
