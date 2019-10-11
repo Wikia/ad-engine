@@ -4,6 +4,7 @@ import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { adSlots } from '../../../common/ad-slots';
 import { network } from '../../../common/network';
+import { commonAds } from '../../../pages/common-ad.page';
 
 // TODO Fix floating rail
 describe.skip('Floating rail ads page: floating rail', () => {
@@ -36,7 +37,7 @@ describe('Floating rail ads page: top boxad requests', () => {
 		network.clearResponses();
 
 		browser.url(floatingRailAd.pageLink);
-		$(adSlots.railModule).waitForDisplayed(timeouts.standard);
+		$(commonAds.railModule).waitForDisplayed(timeouts.standard);
 		browser.pause(timeouts.viewabillity);
 	});
 
