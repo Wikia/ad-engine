@@ -10,7 +10,7 @@ export function getPageLevelTargeting(): Partial<Targeting> {
 		uap_c: 'none',
 		s0: 'gaming',
 		s1: domain.app,
-		s2: 'main',
+		s2: getPageType(),
 		dmn: `${domain.name}${domain.tld}`,
 	};
 
@@ -30,4 +30,10 @@ function getDomain(): { name: string; app: string; tld: string } {
 		app: pieces[pieces.length - 2],
 		tld: pieces.slice(-1).join(''),
 	};
+}
+
+function getPageType(): string {
+	const pathName = window.location.pathname;
+
+	return !pathName || pathName === '/' ? 'home' : 'main';
 }
