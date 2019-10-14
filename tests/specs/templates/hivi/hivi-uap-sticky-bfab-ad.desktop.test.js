@@ -3,6 +3,7 @@ import { hiviUapStickyBfab } from '../../../pages/hivi-uap-sticky-bfab-ad.page';
 import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
+import { slots } from '../../../common/slot-registry';
 
 describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 	beforeEach(() => {
@@ -113,8 +114,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.bottomLeaderboard);
-		expect(helpers.getLineItemId(adSlots.bottomLeaderboard)).to.equal(
+		slots.bottomLeaderboard.waitForLineItemIdAttribute();
+		expect(slots.bottomLeaderboard.lineItemId).to.equal(
 			hiviUapStickyBfab.secondCall,
 			'Line item ID mismatch',
 		);
@@ -122,19 +123,18 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 
 	it('Check if redirect on click works properly', () => {
 		helpers.slowScroll(1000);
-		$(adSlots.bottomLeaderboard).scrollIntoView({ block: 'end' });
+		slots.bottomLeaderboard.scrollIntoView();
 		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 
 	it('Check if slot is sticked', () => {
 		browser.refresh();
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
-		// TODO will not stick if scrolled earlier - problems with viewabillity counted?
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitToStartPlaying();
-		helpers.slowScroll(2500);
-		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
-		expect($(adSlots.bottomLeaderboard).isDisplayedInViewport()).to.be.true;
-		helpers.slowScroll(500, adSlots.bottomLeaderboard);
-		expect($(adSlots.bottomLeaderboard).isDisplayed()).to.be.true;
+		helpers.mediumScroll(2500);
+		slots.bottomLeaderboard.scrollIntoView();
+		expect(slots.bottomLeaderboard.isDisplayedInViewport()).to.be.true;
+		helpers.mediumScroll(500);
+		slots.bottomLeaderboard.waitForDisplayed();
 	});
 });
