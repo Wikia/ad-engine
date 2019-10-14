@@ -1,6 +1,5 @@
 import {
 	context,
-	eventService,
 	scrollListener,
 	slotService,
 	slotTweaker,

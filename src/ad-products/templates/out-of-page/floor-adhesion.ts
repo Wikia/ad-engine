@@ -1,4 +1,4 @@
-import { AdSlot, context, eventService, slotTweaker, SlotTweaker, utils } from '@ad-engine/core';
+import { AdSlot, context, slotTweaker, SlotTweaker, utils } from '@ad-engine/core';
 import { CloseButton } from '../interface/close-button';
 
 export interface FloorAdhesionConfig {
