@@ -40,13 +40,11 @@ class BtfBlockerService {
 	}
 
 	init(): void {
-		context.push('listeners.slot', {
-			onRenderEnded: (adSlot) => {
-				logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
-				if (!this.firstCallEnded && adSlot.isFirstCall()) {
-					this.finishFirstCall();
-				}
-			},
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+			logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
+			if (!this.firstCallEnded && adSlot.isFirstCall()) {
+				this.finishFirstCall();
+			}
 		});
 		eventService.on(events.PAGE_CHANGE_EVENT, () => {
 			this.resetState();

@@ -1,20 +1,23 @@
-import { btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	btfBlockerService,
+	context,
+	Dictionary,
+	eventService,
+	SlotConfig,
+} from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 import adSlotFake from '../ad-slot-fake';
 
 let firstCallSlot;
 let secondCallSlot;
-let onRenderEndedCallback;
 let sandbox;
 let slotConfigs: Dictionary<SlotConfig>;
 
 describe('btf-blocker-service', () => {
 	beforeEach(() => {
 		sandbox = createSandbox();
-		sandbox.stub(context, 'push').callsFake((key, callbacks) => {
-			onRenderEndedCallback = callbacks.onRenderEnded;
-		});
 
 		const originalGet = context.get;
 		sandbox.stub(context, 'get').callsFake((key) => {
@@ -94,7 +97,7 @@ describe('btf-blocker-service', () => {
 		expect(firstCallFillInSpy.called).to.be.ok;
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		onRenderEndedCallback(firstCallSlot);
+		eventService.emit(AdSlot.SLOT_RENDERED_EVENT, firstCallSlot);
 		expect(secondCallFillInSpy.called).to.be.ok;
 	});
 
@@ -115,7 +118,7 @@ describe('btf-blocker-service', () => {
 		expect(firstCallFillInSpy.called).to.be.ok;
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		onRenderEndedCallback(firstCallSlot);
+		eventService.emit(AdSlot.SLOT_RENDERED_EVENT, firstCallSlot);
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 	});
 

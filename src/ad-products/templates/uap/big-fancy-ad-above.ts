@@ -139,9 +139,6 @@ export class BigFancyAdAbove {
 			const video = await utils.defer(universalAdPackage.loadVideoAd, this.videoSettings);
 
 			this.theme.onVideoReady(video);
-		} else if (this.params.channelName) {
-			// defers for proper rendering
-			await utils.defer(universalAdPackage.loadTwitchAd, iframe, this.params);
 		}
 	}
 }

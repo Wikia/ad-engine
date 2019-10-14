@@ -3,6 +3,7 @@ import { hiviUap } from '../../../pages/hivi-uap-ad.page';
 import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
+import { commonAds } from '../../../pages/common-ad.page';
 
 describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	let adStatus;
@@ -128,7 +129,7 @@ describe('Mobile HiVi UAP ads page: top boxad', () => {
 describe('Mobile HiVi UAP ads page: incontent boxad', () => {
 	beforeEach(() => {
 		browser.url(hiviUap.pageLink);
-		$(adSlots.railModule).scrollIntoView();
+		$(commonAds.railModule).scrollIntoView();
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 		$(adSlots.incontentBoxad).scrollIntoView();
 	});

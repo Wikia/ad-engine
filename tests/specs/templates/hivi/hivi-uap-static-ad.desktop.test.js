@@ -75,6 +75,7 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	it('Check if closing top leaderboard works', () => {
+		helpers.mediumScroll(10);
 		$(hiviUapStatic.closeLeaderboardButton).click();
 		adSlots.waitForSlotCollapsedManually(adSlots.topLeaderboard);
 	});

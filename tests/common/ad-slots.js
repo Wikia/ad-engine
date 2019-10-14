@@ -13,7 +13,7 @@ class AdSlots {
 		this.repeatableBoxad = '#repeatable_boxad_';
 		this.incontentPlayer = '#incontent_player';
 		this.invisibleHighImpact = '#invisible_high_impact_2';
-		this.railModule = '.rail-module';
+
 		this.leaderboardWidth = 728; // shared between leaderboards; fixed value
 		this.leaderboardHeight = 90; // shared between leaderboards; fixed value
 		this.boxadWidth = 300; // shared between boxads; fixed value
@@ -79,13 +79,15 @@ class AdSlots {
 	/**
 	 * Waits for the adslot\'s "data-slot-result" attribute to receive desired parameter.
 	 * @param adSlot slot to receive the parameter
-	 * @param result parameter that result should equal to
+	 * @param expectedResult parameter that result should equal to
 	 */
-	waitForSlotResult(adSlot, result) {
+	waitForSlotResult(adSlot, expectedResult) {
 		browser.waitUntil(
-			() => $(adSlot).getAttribute(this.resultAttribute) === result,
+			() => $(adSlot).getAttribute(this.resultAttribute) === expectedResult,
 			timeouts.standard,
-			`Result mismatch: expected ${result}`,
+			`Result mismatch: expected ${expectedResult}, got ${$(adSlot).getAttribute(
+				this.resultAttribute,
+			)}`,
 			timeouts.interval,
 		);
 	}

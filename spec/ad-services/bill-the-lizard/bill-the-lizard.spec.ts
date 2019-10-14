@@ -238,8 +238,7 @@ describe('Bill the Lizard service', () => {
 		});
 	});
 
-	describe('getPreviousPrediction', () => {
-		const callIdBuilder = (cId) => `foo_${cId}`;
+	describe('getLastReusablePrediction', () => {
 		const modelName = 'bar';
 
 		beforeEach(() => {
@@ -255,24 +254,18 @@ describe('Bill the Lizard service', () => {
 			};
 		});
 
-		it('should return undefined if startId is smaller than 2', () => {
-			expect(billTheLizard.getPreviousPrediction(-1, callIdBuilder, modelName)).to.be.undefined;
-			expect(billTheLizard.getPreviousPrediction(0, callIdBuilder, modelName)).to.be.undefined;
-			expect(billTheLizard.getPreviousPrediction(1, callIdBuilder, modelName)).to.be.undefined;
+		it('should return last reusable prediction', () => {
+			expect(billTheLizard.getLastReusablePrediction(modelName).result).to.equal(3);
 		});
 
-		it('should return first prediction if startId is equal to or greater than 2', () => {
-			expect(billTheLizard.getPreviousPrediction(2, callIdBuilder, modelName).result).to.equal(1);
-		});
-
-		it('should return undefined if no previous prediction has status on_time or too_late', () => {
+		it('should return undefined if no previous predictions have status on_time or too_late', () => {
 			billTheLizard.statuses = {
 				foo_1: BillTheLizard.NOT_USED,
 				foo_2: BillTheLizard.NOT_USED,
 				foo_3: BillTheLizard.NOT_USED,
 			};
 
-			const response = billTheLizard.getPreviousPrediction(4, callIdBuilder, modelName);
+			const response = billTheLizard.getLastReusablePrediction(modelName);
 
 			expect(response).to.be.undefined;
 		});
@@ -284,7 +277,7 @@ describe('Bill the Lizard service', () => {
 				foo_3: BillTheLizard.NOT_USED,
 			};
 
-			const response = billTheLizard.getPreviousPrediction(4, callIdBuilder, modelName);
+			const response = billTheLizard.getLastReusablePrediction(modelName);
 
 			expect(response.result).to.equal(2);
 		});
@@ -296,7 +289,7 @@ describe('Bill the Lizard service', () => {
 				foo_3: BillTheLizard.NOT_USED,
 			};
 
-			const response = billTheLizard.getPreviousPrediction(4, callIdBuilder, modelName);
+			const response = billTheLizard.getLastReusablePrediction(modelName);
 
 			expect(response.result).to.equal(2);
 		});

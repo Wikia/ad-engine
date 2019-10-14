@@ -12,6 +12,7 @@ describe('Viewport conflict ads page: top boxad', () => {
 
 	it('Check if top boxad is hidden after clicking the button', () => {
 		$(viewportConflictAd.hideBoxadButton).waitForDisplayed(timeouts.standard);
+		browser.pause(timeouts.actions);
 		$(viewportConflictAd.hideBoxadButton).click();
 		adSlots.waitForSlotResult(adSlots.topBoxad, adSlots.adCollapsed);
 		expect($(`${adSlots.topBoxad}${helpers.classHidden}`).isExisting()).to.be.true;

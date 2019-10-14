@@ -18,8 +18,6 @@ interface Window {
 	moatYieldReady?: MoatYieldReady;
 	Krux?: KruxQueue;
 	moatjw?: MoatJW;
-	// No types available for Twitch embedded player.
-	Twitch?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
