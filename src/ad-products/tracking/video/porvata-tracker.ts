@@ -22,7 +22,6 @@ class PorvataTracker {
 			 */
 			onEvent(eventName: string, playerParams: PorvataListenerParams, data: VideoData): void {
 				const eventInfo: VideoEventData = videoEventDataProvider.getEventData(data);
-
 				playerEventEmitter.emit(eventInfo);
 			},
 		};

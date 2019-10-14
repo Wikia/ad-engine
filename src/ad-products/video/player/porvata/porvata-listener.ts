@@ -1,6 +1,7 @@
 import {
 	AdSlot,
 	context,
+	eventService,
 	slotService,
 	utils,
 	vastParser,
@@ -44,6 +45,7 @@ export class PorvataListener {
 		wikiaAdStop: 'closed',
 		wikiaAdMute: 'mute',
 		wikiaAdUnmute: 'unmute',
+		wikiaXClick: 'force_close',
 		wikiaInViewportWithOffer: 'in_viewport_with_offer',
 		wikiaInViewportWithoutOffer: 'in_viewport_without_offer',
 	};
@@ -97,6 +99,10 @@ export class PorvataListener {
 			const adSlot = slotService.get(this.params.position);
 
 			adSlot.emit(AdSlot.VIDEO_VIEWED_EVENT);
+		} else if (this.params.position && eventName === PorvataListener.EVENTS.wikiaXClick) {
+			const adSlot = slotService.get(this.params.position);
+
+			eventService.emit(PorvataListener.EVENTS.wikiaXClick, adSlot);
 		}
 	}
 

@@ -51,6 +51,7 @@ function add(video, container, params): void {
 			const width = videoWrapper.offsetWidth;
 
 			video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
+			video.ima.dispatchEvent('wikiaXCLick');
 		};
 		const closeButton = new CloseButton({
 			onClick: disableFloating,
