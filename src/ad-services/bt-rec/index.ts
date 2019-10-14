@@ -76,13 +76,16 @@ class BTRec {
 			node.dataset['style'] = '';
 
 			if (placement.style) {
+				const customStyle = {};
+
 				Object.keys(placement.style).forEach((key) => {
 					node.dataset['style'] += `${key}: ${placement.style[key]};`;
-
-					if (isDebug) {
-						node.style[key] = placement.style[key];
-					}
+					customStyle[key] = placement.style[key];
 				});
+
+				if (isDebug) {
+					Object.assign(node.style, customStyle);
+				}
 			}
 
 			if (isDebug) {
