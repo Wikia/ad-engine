@@ -2,6 +2,7 @@ import { context, eventService, VideoEventData } from '@ad-engine/core';
 
 export const playerEvents = {
 	VIDEO_PLAYER_TRACKING_EVENT: Symbol('VIDEO_PLAYER_TRACKING_EVENT'),
+	PLAYER_X_CLICK: Symbol('PLAYER_X_CLICK'),
 };
 
 export default {
