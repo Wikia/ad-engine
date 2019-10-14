@@ -172,7 +172,6 @@ export class StickyTLB extends StickyBase {
 		this.addButton(this.container, () => {
 			this.stickiness.close();
 			this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
-			eventService.emit(SlotTweaker.SLOT_CLOSE_IMMEDIATELY, this.adSlot);
 		});
 	}
 

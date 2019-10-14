@@ -43,7 +43,6 @@ export class FloorAdhesion {
 			onClick: () => {
 				this.adSlot.hide();
 				this.adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
-				eventService.emit(SlotTweaker.SLOT_CLOSE_IMMEDIATELY, this.adSlot);
 				utils.logger(FloorAdhesion.getName(), 'closed');
 			},
 		}).render();

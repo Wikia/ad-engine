@@ -1,4 +1,4 @@
-import { eventService, slotService, utils } from '@ad-engine/core';
+import { eventService, slotService, SlotTweaker, utils } from '@ad-engine/core';
 import { playerEvents } from '../../../tracking';
 import {
 	DEFAULT_VIDEO_ASPECT_RATIO,
@@ -53,7 +53,7 @@ function add(video, container, params): void {
 			const width = videoWrapper.offsetWidth;
 
 			video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
-			eventService.emit(playerEvents.PLAYER_X_CLICK, adSlot);
+			adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		};
 		const closeButton = new CloseButton({
 			onClick: disableFloating,
