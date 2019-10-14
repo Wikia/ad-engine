@@ -55,7 +55,7 @@ class SlotsContext {
 					},
 					{
 						viewportSize: [0, 0],
-						sizes: [[320, 50]],
+						sizes: [[320, 50], [320, 100]],
 						mobileViewport: true,
 					},
 				],

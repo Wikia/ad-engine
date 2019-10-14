@@ -3,6 +3,7 @@ import { hiviUapJwp } from '../../../pages/hivi-uap-jwp-ad.page';
 import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
+import { commonAds } from '../../../pages/common-ad.page';
 
 describe('Mobile HiVi UAP JWP ads page: top leaderboard', () => {
 	beforeEach(() => {
@@ -97,7 +98,7 @@ describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)',
 	});
 
 	it('Check if the ad loaded after delay is the inhouse one', () => {
-		hiviUapJwp.waitForAdsAfterDelayAndScrollToAdSlotOnMobile(adSlots.railModule);
+		hiviUapJwp.waitForAdsAfterDelayAndScrollToAdSlotOnMobile(commonAds.railModule);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 		// separate scroll, because this slot is not immediately visible
 		$(adSlots.incontentBoxad).scrollIntoView();
@@ -114,7 +115,7 @@ describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after clicki
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
 		browser.url(hiviUapJwp.pageLink);
-		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnMobile(adSlots.railModule);
+		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnMobile(commonAds.railModule);
 		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
 		// separate scroll, because this slot is not immediately visible
 		$(adSlots.incontentBoxad).scrollIntoView();

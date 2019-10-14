@@ -10,11 +10,11 @@ describe('Repeatable slots ads', () => {
 
 	before(() => {
 		browser.url(repeatableSlots.pageLink);
-		adStatus = adSlots.getSlotStatus(repeatableSlots.getRepeatableSlot(1));
+		adStatus = adSlots.getSlotStatus(repeatableSlots.getRepeatableSlotSelector(1));
 	});
 
 	beforeEach(() => {
-		$(repeatableSlots.getRepeatableSlot(1)).waitForDisplayed(timeouts.standard);
+		$(repeatableSlots.getRepeatableSlotSelector(1)).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if first boxad is visible', () => {
@@ -30,17 +30,17 @@ describe('Repeatable slots ads', () => {
 			queryStrings.getLimitOfSlots(numberOfSlots),
 			queryStrings.getLengthOfContent(lengthOfContent),
 		);
-		$(repeatableSlots.getRepeatableSlot(1)).waitForDisplayed(timeouts.standard);
+		$(repeatableSlots.getRepeatableSlotSelector(1)).waitForDisplayed(timeouts.standard);
 		for (let i = 1; i < numberOfSlots; i += 1) {
-			repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlot(i));
+			repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(i));
 			expect(
-				$(repeatableSlots.getRepeatableSlot(i + 1)).isDisplayed(),
+				$(repeatableSlots.getRepeatableSlotSelector(i + 1)).isDisplayed(),
 				`Slot number ${i + 1} is not visible`,
 			).to.be.true;
 		}
-		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlot(numberOfSlots));
+		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(numberOfSlots));
 		expect(
-			$(repeatableSlots.getRepeatableSlot(numberOfSlots + 1)).isDisplayed(),
+			$(repeatableSlots.getRepeatableSlotSelector(numberOfSlots + 1)).isDisplayed(),
 			'Slot not visible',
 		).to.be.false;
 	});
@@ -53,35 +53,35 @@ describe('Repeatable slots ads', () => {
 			repeatableSlots.pageLink,
 			queryStrings.getLengthOfContent(lengthOfContent),
 		);
-		$(repeatableSlots.getRepeatableSlot(1)).waitForDisplayed(timeouts.standard);
+		$(repeatableSlots.getRepeatableSlotSelector(1)).waitForDisplayed(timeouts.standard);
 		for (let i = 1; i < numberOfSlots; i += 1) {
-			repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlot(i));
+			repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(i));
 			expect(
-				$(repeatableSlots.getRepeatableSlot(i + 1)).isExisting(),
+				$(repeatableSlots.getRepeatableSlotSelector(i + 1)).isExisting(),
 				`Slot number ${i + 1} is not visible`,
 			).to.be.true;
-			$(repeatableSlots.getRepeatableSlot(i + 1)).scrollIntoView();
+			$(repeatableSlots.getRepeatableSlotSelector(i + 1)).scrollIntoView();
 			browser.pause(timeouts.actions);
 			expect(
-				$(repeatableSlots.getRepeatableSlot(i + 1)).isDisplayedInViewport(),
+				$(repeatableSlots.getRepeatableSlotSelector(i + 1)).isDisplayedInViewport(),
 				`Slot number ${i + 1} is not visible`,
 			).to.be.true;
 		}
-		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlot(numberOfSlots));
+		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(numberOfSlots));
 		expect(
-			$(repeatableSlots.getRepeatableSlot(numberOfSlots + 1)).isDisplayed(),
+			$(repeatableSlots.getRepeatableSlotSelector(numberOfSlots + 1)).isDisplayed(),
 			'Slot not visible',
 		).to.be.false;
 	});
 
 	it('Check if there is at least one viewport between slots', () => {
 		helpers.navigateToUrl(repeatableSlots.pageLink, queryStrings.getLengthOfContent());
-		$(repeatableSlots.getRepeatableSlot(1)).waitForDisplayed(timeouts.standard);
-		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlot(1));
-		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlot(2));
-		expect($(repeatableSlots.getRepeatableSlot(3)).isDisplayed()).to.be.true;
-		helpers.slowScroll(adSlots.boxadHeight + 2, repeatableSlots.getRepeatableSlot(2));
-		expect($(repeatableSlots.getRepeatableSlot(2)).isDisplayedInViewport()).to.be.false;
-		expect($(repeatableSlots.getRepeatableSlot(3)).isDisplayedInViewport()).to.be.false;
+		$(repeatableSlots.getRepeatableSlotSelector(1)).waitForDisplayed(timeouts.standard);
+		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(1));
+		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(2));
+		expect($(repeatableSlots.getRepeatableSlotSelector(3)).isDisplayed()).to.be.true;
+		helpers.slowScroll(adSlots.boxadHeight + 2, repeatableSlots.getRepeatableSlotSelector(2));
+		expect($(repeatableSlots.getRepeatableSlotSelector(2)).isDisplayedInViewport()).to.be.false;
+		expect($(repeatableSlots.getRepeatableSlotSelector(3)).isDisplayedInViewport()).to.be.false;
 	});
 });
