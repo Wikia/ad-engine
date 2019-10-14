@@ -86,12 +86,12 @@ class BTRec {
 			}
 
 			if (isDebug) {
-				node.style.width = `${placement.size.width}px`;
-				node.style.height = `${placement.size.height}px`;
-				node.style.background = '#00D6D6';
-				node.style.display = 'inline-block';
+				node.style.setProperty('width', `${placement.size.width}px`);
+				node.style.setProperty('height', `${placement.size.height}px`);
+				node.style.setProperty('background', '#00D6D6');
+				node.style.setProperty('display', 'inline-block');
 			} else {
-				node.style.display = 'none';
+				node.style.setProperty('display', 'none');
 			}
 
 			slot.parentNode.insertBefore(node, slot.previousSibling);
