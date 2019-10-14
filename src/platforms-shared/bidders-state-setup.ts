@@ -30,7 +30,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			instantConfig.get('icPrebidRubiconDisplay'),
 		);
 
-		context.set('bidders.prebid.bidsRefreshing.enabled', true);
 		context.set('custom.rubiconInFV', instantConfig.get('icPrebidRubicon') && hasFeaturedVideo);
 	}
 
