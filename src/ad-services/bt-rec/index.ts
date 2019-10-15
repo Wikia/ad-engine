@@ -49,15 +49,8 @@ class BTRec {
 	/**
 	 * Checks if BT rec is enabled
 	 */
-	isEnabled() {
+	isEnabled(): boolean {
 		return context.get('options.wad.btRec.enabled') && context.get('options.wad.blocking');
-	}
-
-	/**
-	 * Get slot BT placement uid
-	 */
-	getPlacementId(slotName) {
-		return this.placementsMap[slotName].uid || '';
 	}
 
 	/**
@@ -100,6 +93,13 @@ class BTRec {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get slot BT placement uid
+	 */
+	getPlacementId(slotName): string {
+		return this.placementsMap[slotName].uid || '';
 	}
 
 	/**
