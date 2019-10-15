@@ -1,0 +1,83 @@
+@import 'src/ad-products/styles/styles.scss';
+
+.gdm__wrapper {
+	text-align: center;
+}
+
+.slideout-open {
+	.has-bfaa {
+		background-color: #0d0f10;
+	}
+
+	#cdm-zone-01 {
+		display: none;
+	}
+}
+
+.has-bfaa {
+	.header {
+		&.bfaa-pinned {
+			position: relative;
+		}
+	}
+
+	.header.bfaa-pinned + .site-bg {
+		padding-top: 0;
+	}
+
+	.slideout-panel {
+		position: unset;
+	}
+
+	.gdm--banner {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+.site-futhead.has-bfaa {
+	&.with-mobile-nav {
+		#cdm-zone-01 {
+			display: none;
+		}
+
+		.navbar.navbar-futhead.bfaa-pinned {
+			position: fixed;
+		}
+	}
+
+	&.fixed-page-nav {
+		.page-navigation {
+			position: unset;
+			box-shadow: unset;
+		}
+	}
+
+	.header {
+		min-height: 43px;
+	}
+
+	.site-header {
+		margin-bottom: 0;
+	}
+
+	.navbar.navbar-futhead.bfaa-pinned {
+		position: relative;
+	}
+
+	.main-content.homepage,
+	.content-header,
+	.futhead-gdm {
+		position: unset;
+	}
+
+	.homepage .futhead-gdm,
+	.futhead-gdm.headliner {
+		min-height: 0;
+		margin-bottom: 0 !important;
+	}
+
+	.gpt-ad.bfaa-template {
+		max-width: 100vw;
+	}
+}
