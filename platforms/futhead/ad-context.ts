@@ -91,7 +91,7 @@ export const basicContext = {
 	},
 	services: {
 		instantConfig: {
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=sports',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=futhead',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
 	},
