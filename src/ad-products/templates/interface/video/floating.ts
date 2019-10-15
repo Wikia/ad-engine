@@ -1,5 +1,4 @@
 import { slotService, SlotTweaker, utils } from '@ad-engine/core';
-import { playerEvents } from '../../../tracking';
 import {
 	DEFAULT_VIDEO_ASPECT_RATIO,
 	FLOATING_VIDEO_ASPECT_RATIO,
