@@ -1,6 +1,7 @@
 class CommonAds {
 	constructor() {
 		this.pageLink = 'slots/common-slots/';
+		this.railModule = '.rail-module';
 	}
 }
 
