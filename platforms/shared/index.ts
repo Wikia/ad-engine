@@ -39,3 +39,4 @@ export * from './modes/ads/_ads.mode';
 export * from './modes/ads/sports-ads.mode';
 export * from './modes/start-ad-engine';
 export * from './utils/get-domain';
+export * from './utils/get-page-type';
