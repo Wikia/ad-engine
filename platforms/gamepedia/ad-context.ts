@@ -107,12 +107,6 @@ export const basicContext = {
 		adStack: [],
 		isMobile: false,
 	},
-	targeting: {
-		ae3: '1',
-		skin: 'gamepedia',
-		uap: 'none',
-		uap_c: 'none',
-	},
 	vast: {
 		adUnitId:
 			'/{custom.dfpId}/gamepedia/{slotConfig.adProduct}/{state.deviceType}/' +
