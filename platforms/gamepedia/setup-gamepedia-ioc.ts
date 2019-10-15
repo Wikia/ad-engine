@@ -1,0 +1,63 @@
+import {
+	A9ConfigSetup,
+	AdsMode,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
+	CommonContextSetup,
+	CommonStateSetup,
+	CommonTrackingSetup,
+	ContextSetup,
+	CurseSlotsContextSetup,
+	CurseSlotsStateSetup,
+	CurseUapSetup,
+	DelayModulesSetup,
+	DynamicSlotsSetup,
+	NoAdsMode,
+	PrebidConfigSetup,
+	SlotsContextSetup,
+	SlotsStateSetup,
+	StateSetup,
+	TargetingSetup,
+	TemplatesSetup,
+	TrackingSetup,
+	UapSetup,
+	WikiContextSetup,
+} from '@platforms/shared';
+import { context, InstantConfigService } from '@wikia/ad-engine';
+import { Container } from '@wikia/dependency-injection';
+import { set } from 'lodash';
+import * as fallbackInstantConfig from './fallback-config.json';
+import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';
+import { GamepediaAdsMode } from './modes/gampedia-ads.mode';
+import { GamepediaDelayModulesSetup } from './setup/ad-engine-runner/delay-modules/delay-modules.setup';
+import { GamepediaA9ConfigSetup } from './setup/context/a9/gamepedia-a9-config.setup';
+import { GamepediaPrebidConfigSetup } from './setup/context/prebid/gamepedia-prebid-config.setup';
+import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
+import { GamepediaWikiContextSetup } from './setup/context/wiki/gamepedia-wiki-context.setup';
+import { GamepediaDynamicSlotsSetup } from './setup/dynamic-slots/gamepedia-dynamic-slots.setup';
+import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
+
+export async function setupGamepediaIoc(): Promise<Container> {
+	const container = new Container();
+
+	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
+	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(WikiContextSetup).to(GamepediaWikiContextSetup);
+	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
+	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);
+	container.bind(DelayModulesSetup).to(GamepediaDelayModulesSetup);
+	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
+	container.bind(AdsMode).to(GamepediaAdsMode);
+	container.bind(ContextSetup).to(CommonContextSetup);
+	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
+	container.bind(StateSetup).to(CommonStateSetup);
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
+	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
+	container.bind(UapSetup).to(CurseUapSetup);
+	container.bind(DynamicSlotsSetup).to(GamepediaDynamicSlotsSetup);
+	container.bind(TrackingSetup).to(CommonTrackingSetup);
+	container.bind(PrebidConfigSetup).to(GamepediaPrebidConfigSetup);
+	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
+
+	return container;
+}
