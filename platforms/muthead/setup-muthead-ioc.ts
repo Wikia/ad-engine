@@ -1,7 +1,9 @@
 import {
 	A9ConfigSetup,
+	AdEngineRunnerSetup,
 	AdsMode,
 	BiddersStateSetup,
+	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
 	CommonContextSetup,
 	CommonStateSetup,
@@ -39,6 +41,7 @@ export async function setupMutheadIoc(): Promise<Container> {
 	container.bind(TargetingSetup).to(MutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
+	container.bind(AdEngineRunnerSetup).to(CommonAdEngineRunnerSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(ContextSetup).to(CommonContextSetup);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);

@@ -90,6 +90,10 @@ export const basicContext = {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	services: {
+		durationMedia: {
+			enabled: false,
+			siteId: '1068',
+		},
 		confiant: {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
