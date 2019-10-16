@@ -1,12 +1,13 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { DynamicSlotsSetup, slotsContext, UapSetup } from '@platforms/shared';
 import { AdSlot, context, slotInjector, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
-	constructor() {}
+	constructor(private uapSetup: UapSetup) {}
 
 	configureDynamicSlots(): void {
+		this.uapSetup.configureUap();
 		this.injectIncontentPlayer();
 	}
 

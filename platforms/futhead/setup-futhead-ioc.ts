@@ -12,6 +12,7 @@ import {
 	CurseSlotsContextSetup,
 	CurseUapSetup,
 	DelayModulesSetup,
+	DynamicSlotsSetup,
 	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
@@ -28,6 +29,7 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
+import { SportsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/sports-dynamic-slots.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
@@ -52,6 +54,7 @@ export async function setupFutheadIoc(): Promise<Container> {
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(FutheadPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(SportsA9ConfigSetup);
+	container.bind(DynamicSlotsSetup).to(SportsDynamicSlotsSetup);
 
 	return container;
 }
