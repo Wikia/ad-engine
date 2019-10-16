@@ -9,4 +9,4 @@ interface Runtime {
 	bab?: any;
 }
 
-type ManualAdType = 'collapse' | 'force_collapsed' | 'forced_success' | 'manual';
+type ManualAdType = 'collapse' | 'forced_collapse' | 'forced_success' | 'manual';
