@@ -1,4 +1,4 @@
-import { bidders, context } from '@wikia/ad-engine';
+import { bidders, context, durationMedia } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { biddersDelay } from '../../bidders/bidders-delay';
 import { startAdEngine } from '../start-ad-engine';
@@ -16,6 +16,8 @@ export class SportsAdsMode implements AdsMode {
 		bidders.requestBids({
 			responseListener: biddersDelay.markAsReady,
 		});
+
+		durationMedia.call();
 	}
 
 	private setAdStack(): void {
