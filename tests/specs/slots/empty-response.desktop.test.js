@@ -3,6 +3,7 @@ import { emptyResponse } from '../../pages/empty-response.page';
 import { adSlots } from '../../common/ad-slots';
 import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
+import { slots } from '../../common/slot-registry';
 
 describe('Empty response page: top leaderboard', () => {
 	let adStatus;
