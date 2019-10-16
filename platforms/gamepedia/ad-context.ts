@@ -95,7 +95,7 @@ export const basicContext = {
 			siteId: '1066',
 		},
 		instantConfig: {
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=gamepedia',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
 		taxonomy: {
