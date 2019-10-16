@@ -1,8 +1,8 @@
 import { UapRestrictor } from '@platforms/shared';
+import { context } from '@wikia/ad-engine';
 
 export class MutheadUapRestrictor implements UapRestrictor {
 	isUapAllowed(): boolean {
-		// TODO: Add restriction on old muthead
-		return true;
+		return context.get('targeting.s2') !== 'old';
 	}
 }
