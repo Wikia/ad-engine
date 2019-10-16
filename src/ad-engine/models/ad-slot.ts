@@ -71,6 +71,7 @@ export class AdSlot extends EventEmitter {
 
 	static STATUS_BLOCKED = 'blocked';
 	static STATUS_COLLAPSE = 'collapse';
+	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
@@ -387,8 +388,9 @@ export class AdSlot extends EventEmitter {
 		slotDataParamsUpdater.updateOnRenderEnd(this);
 
 		switch (adType) {
-			case 'collapse':
-				this.collapse();
+			case AdSlot.STATUS_COLLAPSE:
+			case AdSlot.STATUS_FORCED_COLLAPSE:
+				this.collapse(adType);
 				break;
 			case 'manual':
 				this.setStatus(adType);
