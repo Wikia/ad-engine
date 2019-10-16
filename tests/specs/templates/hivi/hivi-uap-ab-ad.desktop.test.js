@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { hiviUapAb } from '../../../pages/hivi-uap-ab-ad.page';
 import { adSlots } from '../../../common/ad-slots';
-import { timeouts } from '../../../common/timeouts';
+import { slots } from '../../../common/slot-registry';
 import { helpers } from '../../../common/helpers';
 
 describe('HiVi UAP AB ads page with uap_c', () => {
@@ -9,7 +9,7 @@ describe('HiVi UAP AB ads page with uap_c', () => {
 
 	before(() => {
 		helpers.navigateToUrl(hiviUapAb.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(7000);
 		adSlots.waitForSlotExpanded(adSlots.bottomLeaderboard);
 	});

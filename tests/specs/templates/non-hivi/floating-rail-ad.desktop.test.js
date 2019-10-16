@@ -3,14 +3,15 @@ import { floatingRailAd } from '../../../pages/floating-rail-ad.page';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { network } from '../../../common/network';
 import { commonAds } from '../../../pages/common-ad.page';
 
 // TODO Fix floating rail
 describe.skip('Floating rail ads page: floating rail', () => {
 	before(() => {
-		browser.url(floatingRailAd.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(floatingRailAd.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if rail scrolls with the content', () => {
@@ -29,14 +30,11 @@ describe.skip('Floating rail ads page: floating rail', () => {
 });
 
 describe('Floating rail ads page: top boxad requests', () => {
-	let fetchedUrl;
-	let i = 0;
-
 	before(() => {
 		network.enableCapturing('ads?');
 		network.clearResponses();
 
-		browser.url(floatingRailAd.pageLink);
+		helpers.navigateToUrl(floatingRailAd.pageLink);
 		$(commonAds.railModule).waitForDisplayed(timeouts.standard);
 		browser.pause(timeouts.viewabillity);
 	});

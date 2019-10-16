@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { hiviUapCtp } from '../../../pages/hivi-uap-ctp-ad.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 
@@ -35,8 +36,8 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 			adSlots.resolvedDesktopRatio,
 		);
 
-		browser.url(hiviUapCtp.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapCtp.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.switchToFrame(hiviUapCtp.topPlayerFrame);
 		$(hiviUapCtp.videoContainer).waitForDisplayed(timeouts.standard);
 		$(hiviUapCtp.videoContainer).click();
@@ -54,8 +55,8 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapCtp.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapCtp.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
 
@@ -104,8 +105,8 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 
 describe('Desktop HiVi UAP CTP ads page: video player in top leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUapCtp.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapCtp.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	it('Check if video is visible', () => {
@@ -115,8 +116,8 @@ describe('Desktop HiVi UAP CTP ads page: video player in top leaderboard', () =>
 
 describe('Desktop HiVi UAP CTP ads page: top boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUapCtp.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapCtp.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -130,7 +131,7 @@ describe('Desktop HiVi UAP CTP ads page: top boxad', () => {
 
 describe('Desktop HiVi UAP CTP ads page: incontent boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUapCtp.pageLink);
+		helpers.navigateToUrl(hiviUapCtp.pageLink);
 		helpers.slowScroll(1000);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 	});
@@ -218,7 +219,7 @@ describe('Desktop HiVi UAP CTP ads page: bottom leaderboard', () => {
 
 describe('Desktop HiVi UAP CTP ads page: video player in bottom leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUapCtp.pageLink);
+		helpers.navigateToUrl(hiviUapCtp.pageLink);
 		helpers.slowScroll(7000);
 	});
 

@@ -4,9 +4,9 @@ import { timeouts } from '../../../common/timeouts';
 import { adSlots } from '../../../common/ad-slots';
 
 // TODO Fix template
-xdescribe('Interstitial page: interstitial', () => {
+describe.skip('Interstitial page: interstitial', () => {
 	before(() => {
-		browser.url(interstitial.pageLink);
+		helpers.navigateToUrl(interstitial.pageLink);
 		$(interstitial.outOfPageWrapper).waitForDisplayed(timeouts.standard);
 	});
 

@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { hiviUap } from '../../../pages/hivi-uap-ad.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { commonAds } from '../../../pages/common-ad.page';
@@ -13,7 +14,7 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	let videoFinishedDimensions;
 
 	before(() => {
-		browser.url(hiviUap.pageLink);
+		helpers.navigateToUrl(hiviUap.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 
 		defaultDimensions = adSlots.checkUAPSizeSlotRatio(
@@ -49,8 +50,8 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	beforeEach(() => {
 		helpers.closeNewTabs();
 		helpers.fastScroll(-5000);
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(-2000);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
@@ -100,8 +101,8 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 
 describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitToStartPlaying();
 	});
 
@@ -112,9 +113,9 @@ describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 
 describe('Mobile HiVi UAP ads page: top boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUap.pageLink);
+		helpers.navigateToUrl(hiviUap.pageLink);
 		helpers.slowScroll(5000);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -128,7 +129,7 @@ describe('Mobile HiVi UAP ads page: top boxad', () => {
 
 describe('Mobile HiVi UAP ads page: incontent boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUap.pageLink);
+		helpers.navigateToUrl(hiviUap.pageLink);
 		$(commonAds.railModule).scrollIntoView();
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 		$(adSlots.incontentBoxad).scrollIntoView();

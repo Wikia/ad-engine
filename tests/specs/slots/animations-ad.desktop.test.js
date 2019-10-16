@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import { animationsAd } from '../../pages/animations-ad.page';
 import { adSlots } from '../../common/ad-slots';
-import { timeouts } from '../../common/timeouts';
+import { slots } from '../../common/slot-registry';
 
 describe('Animations ad page: top leaderboard', () => {
 	before(() => {
-		browser.url(animationsAd.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(animationsAd.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	it('Check if top leaderboard disappears after 6 seconds', () => {

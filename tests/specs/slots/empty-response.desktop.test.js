@@ -7,7 +7,7 @@ describe('Empty response page: top leaderboard', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(emptyResponse.pageLink);
+		helpers.navigateToUrl(emptyResponse.pageLink);
 		$(emptyResponse.article).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
@@ -22,7 +22,7 @@ describe('Empty response page: top boxad', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(emptyResponse.pageLink);
+		helpers.navigateToUrl(emptyResponse.pageLink);
 		$(emptyResponse.article).waitForDisplayed(timeouts.standard);
 		adSlots.waitForSlotResult(adSlots.topBoxad, adSlots.adCollapsed);
 		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);

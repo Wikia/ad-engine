@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { outstream } from '../../../pages/outstream.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { queryStrings } from '../../../common/query-strings';
@@ -15,8 +16,8 @@ describe('Outstream ads', () => {
 	});
 
 	it('Check if video is visible in viewport', () => {
-		browser.url(outstream.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(outstream.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForViewabillityCounted(timeouts.standard);
 		helpers.slowScroll(outstream.pageLength);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
@@ -24,8 +25,8 @@ describe('Outstream ads', () => {
 	});
 
 	it('Check if video is visible while floating', () => {
-		browser.url(outstream.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(outstream.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForViewabillityCounted(timeouts.standard);
 		helpers.slowScroll(outstream.pageLength);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
@@ -39,7 +40,7 @@ describe('Outstream ads', () => {
 
 	it('Check video with empty response', () => {
 		helpers.navigateToUrl(outstream.pageLink, queryStrings.getEmptyResponse(true));
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForViewabillityCounted();
 		helpers.slowScroll(outstream.pageLength);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);

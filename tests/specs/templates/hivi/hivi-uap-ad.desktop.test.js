@@ -3,6 +3,7 @@ import { hiviUap } from '../../../pages/hivi-uap-ad.page';
 import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
+import { slots } from '../../../common/slot-registry';
 
 describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 	let adStatus;
@@ -35,7 +36,7 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 			adSlots.resolvedDesktopRatio,
 		);
 
-		browser.url(hiviUap.pageLink);
+		helpers.navigateToUrl(hiviUap.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
 		adSlots.waitForSlotResolved(adSlots.topLeaderboard, adSlots.resolvedDesktopRatio);
@@ -48,8 +49,8 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
 
@@ -98,8 +99,8 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 
 describe('Desktop HiVi UAP ads page: video player in top leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitToStartPlaying();
 		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
 		browser.pause(timeouts.hover);
@@ -108,8 +109,8 @@ describe('Desktop HiVi UAP ads page: video player in top leaderboard', () => {
 
 describe('Desktop HiVi UAP ads page: top boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -123,7 +124,7 @@ describe('Desktop HiVi UAP ads page: top boxad', () => {
 
 describe('Desktop HiVi UAP ads page: incontent boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUap.pageLink);
+		helpers.navigateToUrl(hiviUap.pageLink);
 		helpers.slowScroll(1000);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 	});
@@ -145,7 +146,7 @@ describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
 
 	before(() => {
 		hiviUap.openUapWithState(false, hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(7000);
 		adSlots.waitForSlotExpanded(adSlots.bottomLeaderboard);
 
@@ -156,7 +157,7 @@ describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
 		);
 
 		hiviUap.openUapWithState(true, hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(7000);
 		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
 
@@ -166,8 +167,8 @@ describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
 			adSlots.resolvedDesktopRatio,
 		);
 
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.reloadPageAndWaitForSlot(adSlots.topLeaderboard);
 		helpers.slowScroll(7000);
 		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
@@ -215,8 +216,8 @@ describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
 describe('Desktop HiVi UAP ads page: video player in bottom leaderboard', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUap.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUap.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(8000);
 		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();

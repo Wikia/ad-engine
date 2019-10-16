@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { hiviUapStatic } from '../../../pages/hivi-uap-static-ad.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 
@@ -11,7 +12,7 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 	let refreshDimensions;
 
 	before(() => {
-		browser.url(hiviUapStatic.pageLink);
+		helpers.navigateToUrl(hiviUapStatic.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
 
 		defaultDimensions = adSlots.checkUAPSizeSlotRatio(
@@ -38,8 +39,8 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapStatic.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStatic.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
 
@@ -82,7 +83,7 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	// TODO Visual
-	xit('Check visual regression in top leaderboard', () => {
+	it.skip('Check visual regression in top leaderboard', () => {
 		browser.checkElement(adSlots.topLeaderboard);
 	});
 });
@@ -90,9 +91,9 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 describe('Mobile HiVi UAP static ads page: top boxad', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-5000);
-		browser.url(hiviUapStatic.pageLink);
+		helpers.navigateToUrl(hiviUapStatic.pageLink);
 		helpers.slowScroll(5000);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {

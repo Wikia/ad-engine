@@ -9,7 +9,7 @@ describe('Repeatable slots ads', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(repeatableSlots.pageLink);
+		helpers.navigateToUrl(repeatableSlots.pageLink);
 		adStatus = adSlots.getSlotStatus(repeatableSlots.getRepeatableSlotSelector(1));
 	});
 

@@ -90,7 +90,7 @@ class Helpers {
 	}
 
 	openUrlAndWaitForSlot(url, adSlot) {
-		browser.url(url);
+		this.navigateToUrl(url);
 		$(adSlot).waitForDisplayed(timeouts.standard);
 	}
 

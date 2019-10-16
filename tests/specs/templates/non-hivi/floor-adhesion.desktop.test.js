@@ -5,9 +5,9 @@ import { helpers } from '../../../common/helpers';
 import { adSlots } from '../../../common/ad-slots';
 
 // TODO Fix template
-xdescribe('Floor adhesion page: floor adhesion', () => {
+describe.skip('Floor adhesion page: floor adhesion', () => {
 	before(() => {
-		browser.url(floorAdhesion.pageLink);
+		helpers.navigateToUrl(floorAdhesion.pageLink);
 		$(floorAdhesion.outOfPageWrapper).waitForDisplayed(timeouts.standard);
 	});
 

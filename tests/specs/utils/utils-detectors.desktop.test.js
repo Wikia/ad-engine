@@ -5,17 +5,17 @@ import { browserDetect } from '../../pages/browser-detect.page';
 
 describe('It will test utils - detectors', () => {
 	it('will check block detect', () => {
-		browser.url(blockDetect.pageLink);
+		helpers.navigateToUrl(blockDetect.pageLink);
 		expect(blockDetect.getDetectorResponse()).to.include('disabled');
 	});
 
 	it('will check browser detect', () => {
-		browser.url(browserDetect.pageLink);
+		helpers.navigateToUrl(browserDetect.pageLink);
 		expect(browserDetect.getDetectorResponse()).to.include('Chrome');
 	});
 
 	it('will check device detect', () => {
-		browser.url(deviceDetect.pageLink);
+		helpers.navigateToUrl(deviceDetect.pageLink);
 		expect(deviceDetect.getDetectorResponse()).to.include('desktop');
 	});
 });

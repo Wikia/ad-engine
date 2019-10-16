@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { commonAds } from '../../pages/common-ad.page';
 import { adSlots } from '../../common/ad-slots';
+import { slots } from '../../common/slot-registry';
 import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 
@@ -8,8 +9,8 @@ describe('Common slots: top leaderboard', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(commonAds.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(commonAds.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
 	});
 
@@ -37,7 +38,7 @@ describe('Common slots: top leaderboard', () => {
 
 	it('Check if line item id is from the inhouse campaign', () => {
 		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
-		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(
+		expect(slots.topLeaderboard.lineItemId).to.equal(
 			adSlots.inhouseLineItemId,
 			'Line item ID mismatch',
 		);
@@ -48,8 +49,8 @@ describe('Common slots: top leaderboard', () => {
 	});
 
 	//TODO visual
-	xit('Check visual regression in top leaderboard', () => {
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+	it.skip('Check visual regression in top leaderboard', () => {
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.checkVisualRegression(browser.checkElement(adSlots.topLeaderboard));
 	});
 });
@@ -58,8 +59,8 @@ describe('Common slots: top boxad', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(commonAds.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(commonAds.pageLink);
+		slots.topBoxad.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
 	});
 
@@ -90,8 +91,8 @@ describe('Common slots: top boxad', () => {
 	});
 
 	//TODO visual
-	xit('Check visual regression in top boxad', () => {
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+	it.skip('Check visual regression in top boxad', () => {
+		slots.topBoxad.waitForDisplayed();
 		browser.checkElement(adSlots.topBoxad);
 	});
 });
@@ -100,7 +101,7 @@ describe('Common slots: rail module', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(commonAds.pageLink);
+		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(150);
 		$(commonAds.railModule).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(commonAds.railModule, true);
@@ -121,7 +122,7 @@ describe('Common slots: incontent boxad', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(commonAds.pageLink);
+		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.incontentBoxad, true);
@@ -154,7 +155,7 @@ describe('Common slots: incontent boxad', () => {
 	});
 
 	// TODO Visual
-	xit('Check visual regression in incontent boxad', () => {
+	it.skip('Check visual regression in incontent boxad', () => {
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 		browser.checkElement(adSlots.incontentBoxad);
 	});
@@ -164,7 +165,7 @@ describe('Common slots: bottom leaderboard', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(commonAds.pageLink);
+		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(6000);
 		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
 	});

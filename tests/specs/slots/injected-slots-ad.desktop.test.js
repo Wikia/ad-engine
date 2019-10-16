@@ -8,7 +8,7 @@ describe('Injected slots: injected boxad', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(injectedAds.pageLink);
+		helpers.navigateToUrl(injectedAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.injectedBoxad).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(adSlots.injectedBoxad, true);

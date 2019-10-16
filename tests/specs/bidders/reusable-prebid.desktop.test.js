@@ -5,19 +5,19 @@ import { slots } from '../../common/slot-registry';
 
 describe('Bidders: Reusable prebid template', () => {
 	it('Check if wikia adapter creative is not rendered when there are no bids', () => {
-		browser.url(reusablePrebid.getLinkWithWikiaAdapterParameters());
+		helpers.navigateToUrl(reusablePrebid.getLinkWithWikiaAdapterParameters());
 
 		asserts.assertInhouseCampaign(slots.topLeaderboard);
 	});
 
 	it('Check if wikia adapter creative is rendered', () => {
-		browser.url(reusablePrebid.getLinkWithWikiaAdapterParameters(1410));
+		helpers.navigateToUrl(reusablePrebid.getLinkWithWikiaAdapterParameters(1410));
 
 		asserts.assertWikiaAdapterCampaign(slots.topLeaderboard);
 	});
 
 	it('Check if wikia adapter creative is rendered for lazy loaded slot when prebid timeouts at the beginning', () => {
-		browser.url(reusablePrebid.getLinkWithWikiaAdapterParameters(1410, 0, true, 3000));
+		helpers.navigateToUrl(reusablePrebid.getLinkWithWikiaAdapterParameters(1410, 0, true, 3000));
 
 		asserts.assertInhouseCampaign(slots.topLeaderboard);
 
@@ -28,7 +28,7 @@ describe('Bidders: Reusable prebid template', () => {
 	});
 
 	it('Check if wikia adapter creative is not rendered when limit of bids is reached', () => {
-		browser.url(reusablePrebid.getLinkWithWikiaAdapterParameters(1410, 3, true));
+		helpers.navigateToUrl(reusablePrebid.getLinkWithWikiaAdapterParameters(1410, 3, true));
 
 		asserts.assertWikiaAdapterCampaign(slots.topLeaderboard);
 		asserts.assertWikiaAdapterCampaign(slots.repeatableBoxad1);

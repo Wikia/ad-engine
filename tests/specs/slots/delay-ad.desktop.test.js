@@ -3,17 +3,18 @@ import { delayAd } from '../../pages/delay-ad.page';
 import { adSlots } from '../../common/ad-slots';
 import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
+import { slots } from '../../common/slot-registry';
 
 describe('Delay ads page: top leaderboard', () => {
 	let adStatus;
 
 	beforeEach(() => {
-		browser.url(delayAd.pageLink);
+		helpers.navigateToUrl(delayAd.pageLink);
 		$(delayAd.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is not immediately visible', () => {
-		$(`${adSlots.topLeaderboard}[${adSlots.resultAttribute}]`).waitForExist(
+		$(`${slots.topLeaderboard.selector}[${adSlots.resultAttribute}]`).waitForExist(
 			timeouts.standard,
 			true,
 		);
@@ -27,7 +28,7 @@ describe('Delay ads page: top leaderboard', () => {
 
 	it('Check if slot shows up after clicking the button and if it was viewed', () => {
 		$(delayAd.loadAdsButton).click();
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 		adSlots.waitForSlotViewed(adSlots.topLeaderboard);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 		expect($(adSlots.topLeaderboard).getAttribute(adSlots.resultAttribute)).to.equal(
@@ -50,7 +51,7 @@ describe('Delay ads page: top boxad', () => {
 	let adStatus;
 
 	beforeEach(() => {
-		browser.url(delayAd.pageLink);
+		helpers.navigateToUrl(delayAd.pageLink);
 		$(delayAd.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 

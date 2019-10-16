@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { stickyTlb } from '../../../pages/sticky-tlb.page';
-import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { queryStrings } from '../../../common/query-strings';
@@ -20,7 +20,7 @@ describe('sticky-tlb template', () => {
 			stickyTlb.pageLink,
 			queryStrings.constructSingleGeoInstantGlobal('XX', 100),
 		);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	after(() => {
@@ -80,8 +80,8 @@ describe('sticky-tlb template', () => {
 	it.only('should emit "stickiness-disabled event" if stickiness is disabled', () => {
 		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
 
-		browser.url(`${stickyTlb.pageLink}?disabled=1`);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(`${stickyTlb.pageLink}?disabled=1`);
+		slots.topLeaderboard.waitForDisplayed();
 
 		browser.waitUntil(
 			() => network.checkIfMessageIsInLogs(message),

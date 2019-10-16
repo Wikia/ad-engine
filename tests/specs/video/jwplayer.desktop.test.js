@@ -9,14 +9,14 @@ describe('jwPlayer player', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(jwPlayer.pageLink);
+		helpers.navigateToUrl(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		adStatus = adSlots.getSlotStatus(jwPlayer.player);
 	});
 
 	beforeEach(() => {
 		browser.switchWindow(jwPlayer.pageLink);
-		browser.url(jwPlayer.pageLink);
+		helpers.navigateToUrl(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
 	});

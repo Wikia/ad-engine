@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { hiviUapStatic } from '../../../pages/hivi-uap-static-ad.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 
@@ -37,8 +38,8 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapStatic.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStatic.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
 	});
 
@@ -81,13 +82,13 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	// TODO Visual
-	xit('Check visual regression in top leaderboard (default)', () => {
+	it.skip('Check visual regression in top leaderboard (default)', () => {
 		helpers.reloadPageAndWaitForSlot(adSlots.topLeaderboard);
 		$(adSlots.topLeaderboard).checkElement();
 	});
 
 	// TODO Visual
-	xit('Check visual regression in top leaderboard (resolved)', () => {
+	it.skip('Check visual regression in top leaderboard (resolved)', () => {
 		helpers.refreshPageAndWaitForSlot(adSlots.topLeaderboard);
 		$(adSlots.topLeaderboard).checkElement();
 	});
@@ -96,8 +97,8 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 describe('Desktop HiVi UAP static ads page: top boxad', () => {
 	before(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapStatic.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStatic.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -111,7 +112,7 @@ describe('Desktop HiVi UAP static ads page: top boxad', () => {
 
 describe('Desktop HiVi UAP static ads page: incontent boxad', () => {
 	before(() => {
-		browser.url(hiviUapStatic.pageLink);
+		helpers.navigateToUrl(hiviUapStatic.pageLink);
 		helpers.slowScroll(1000);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
 	});
@@ -181,7 +182,7 @@ describe('Desktop HiVi UAP static ads page: bottom leaderboard', () => {
 	});
 
 	// TODO Visual
-	xit('Check visual regression in bottom leaderboard (resolved)', () => {
+	it.skip('Check visual regression in bottom leaderboard (resolved)', () => {
 		helpers.refreshPageAndWaitForSlot(adSlots.topLeaderboard);
 		helpers.slowScroll(7000);
 		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);

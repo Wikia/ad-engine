@@ -1,18 +1,19 @@
 import { expect } from 'chai';
 import { hiviUapJwp } from '../../../pages/hivi-uap-jwp-ad.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { commonAds } from '../../../pages/common-ad.page';
 
 describe('Mobile HiVi UAP JWP ads page: top leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUapJwp.pageLink);
+		helpers.navigateToUrl(hiviUapJwp.pageLink);
 		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is existing, but the ad is not immediately visible', () => {
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		expect($(`${adSlots.topLeaderboard}${adSlots.resultAttribute}`).isExisting(), 'Ad is visible')
 			.to.be.false;
 	});
@@ -28,12 +29,12 @@ describe('Mobile HiVi UAP JWP ads page: top leaderboard', () => {
 describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapJwp.pageLink);
+		helpers.navigateToUrl(hiviUapJwp.pageLink);
 		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if top boxad is existing, but the ad is not immediately visible', () => {
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 		expect($(`${adSlots.topBoxad}${adSlots.resultAttribute}`).isExisting(), 'Ad is visible').to.be
 			.false;
 	});
@@ -57,7 +58,7 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after 10s)', () =>
 describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after clicking the button)', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapJwp.pageLink);
+		helpers.navigateToUrl(hiviUapJwp.pageLink);
 		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnMobile(adSlots.topBoxad);
 	});
 
@@ -85,7 +86,7 @@ describe('Mobile HiVi UAP JWP ads page: top boxad (ads loaded after clicking the
 describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapJwp.pageLink);
+		helpers.navigateToUrl(hiviUapJwp.pageLink);
 		$(hiviUapJwp.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
@@ -114,7 +115,7 @@ describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after 10s)',
 describe('Mobile HiVi UAP JWP ads page: incontent boxad (ads loaded after clicking the button)', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
-		browser.url(hiviUapJwp.pageLink);
+		helpers.navigateToUrl(hiviUapJwp.pageLink);
 		hiviUapJwp.waitForAdsAfterClickAndScrollToAdSlotOnMobile(commonAds.railModule);
 		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
 		// separate scroll, because this slot is not immediately visible

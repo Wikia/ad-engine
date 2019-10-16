@@ -1,13 +1,14 @@
 import { expect } from 'chai';
 import { hiviUapStickinessNotAllowed } from '../../../pages/hivi-uap-stickiness-not-allowed.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 
 describe('Desktop HiVi UAP sticky ads page: top leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUapStickinessNotAllowed.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStickinessNotAllowed.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	it('Check if the line item id is from the same campaign', () => {
@@ -21,8 +22,8 @@ describe('Desktop HiVi UAP sticky ads page: top leaderboard', () => {
 
 describe('Desktop HiVi UAP sticky ads page: top boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUapStickinessNotAllowed.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStickinessNotAllowed.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -36,7 +37,7 @@ describe('Desktop HiVi UAP sticky ads page: top boxad', () => {
 
 describe('Desktop HiVi UAP sticky ads page: incontent boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUapStickinessNotAllowed.pageLink);
+		helpers.navigateToUrl(hiviUapStickinessNotAllowed.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed();
 		helpers.slowScroll(1000);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
@@ -70,8 +71,8 @@ describe('Desktop HiVi UAP sticky ads page: bottom leaderboard', () => {
 			helpers.wrapper,
 			adSlots.resolvedDesktopRatio,
 		);
-		browser.url(hiviUapStickinessNotAllowed.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStickinessNotAllowed.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(3000);
 		$(adSlots.bottomLeaderboard).waitForExist(timeouts.standard);
 		$(adSlots.bottomLeaderboard).scrollIntoView();
@@ -106,7 +107,7 @@ describe('Desktop HiVi UAP sticky ads page: bottom leaderboard', () => {
 
 	it('Check if slot is sticked', () => {
 		browser.refresh();
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitToStartPlaying();
 		helpers.slowScroll(2500);
 		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);

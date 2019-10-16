@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { abcdAd } from '../../../pages/abcd-ad.page';
 import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 
@@ -8,11 +9,11 @@ describe('ABCD ads page: top leaderboard', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(abcdAd.pageLink);
+		helpers.navigateToUrl(abcdAd.pageLink);
 	});
 
 	beforeEach(() => {
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
 	});
 
@@ -50,7 +51,7 @@ describe('ABCD ads page: video player in leaderboard', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(abcdAd.pageLink);
+		helpers.navigateToUrl(abcdAd.pageLink);
 	});
 	beforeEach(() => {
 		$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).waitForDisplayed(timeouts.standard);

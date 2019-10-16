@@ -1,13 +1,14 @@
 import { expect } from 'chai';
 import { viewportConflictAd } from '../../pages/viewport-conflict-ad.page';
 import { adSlots } from '../../common/ad-slots';
+import { slots } from '../../common/slot-registry';
 import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 
 describe('Viewport conflict ads page: top boxad', () => {
 	before(() => {
-		browser.url(viewportConflictAd.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(viewportConflictAd.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if top boxad is hidden after clicking the button', () => {
@@ -22,7 +23,7 @@ describe('Viewport conflict ads page: top boxad', () => {
 
 describe('Viewport conflict ads page: bottom leaderboard', () => {
 	beforeEach(() => {
-		browser.url(viewportConflictAd.pageLink);
+		helpers.navigateToUrl(viewportConflictAd.pageLink);
 	});
 
 	it('Check if slot is visible in viewport', () => {

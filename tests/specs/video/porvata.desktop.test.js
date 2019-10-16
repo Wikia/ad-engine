@@ -4,17 +4,16 @@ import { timeouts } from '../../common/timeouts';
 import { adSlots } from '../../common/ad-slots';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
-import { jwPlayer } from '../../pages/jwplayer.page';
 
 describe('Porvata player', () => {
 	let adStatus;
 	before(() => {
-		browser.url(porvata.pageLink);
+		helpers.navigateToUrl(porvata.pageLink);
 	});
 
 	beforeEach(() => {
 		browser.switchWindow(porvata.pageLink);
-		browser.url(porvata.pageLink);
+		helpers.navigateToUrl(porvata.pageLink);
 		$(porvata.player).waitForDisplayed(timeouts.standard);
 		$(porvata.player).scrollIntoView();
 		adStatus = adSlots.getSlotStatus(porvata.player);

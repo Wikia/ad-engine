@@ -8,7 +8,7 @@ describe('BTF Only ads page: incontent boxad', () => {
 	let adStatus;
 
 	before(() => {
-		browser.url(btfOnlyAd.pageLink);
+		helpers.navigateToUrl(btfOnlyAd.pageLink);
 		$(btfOnlyAd.finishQueueButton).waitForDisplayed(timeouts.standard);
 		$(btfOnlyAd.finishQueueButton).click();
 		helpers.slowScroll(2500);

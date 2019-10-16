@@ -7,8 +7,8 @@ import { slots } from '../../../common/slot-registry';
 
 describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 	beforeEach(() => {
-		browser.url(hiviUapStickyBfab.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStickyBfab.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	it('Check if the line item id is from the same campaign', () => {
@@ -22,8 +22,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 
 describe('Desktop HiVi UAP sticky BFAB ads page: top boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUapStickyBfab.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStickyBfab.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -37,7 +37,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: top boxad', () => {
 
 describe('Desktop HiVi UAP sticky BFAB ads page: incontent boxad', () => {
 	beforeEach(() => {
-		browser.url(hiviUapStickyBfab.pageLink);
+		helpers.navigateToUrl(hiviUapStickyBfab.pageLink);
 		$(adSlots.topLeaderboard).waitForDisplayed();
 		helpers.slowScroll(1000);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
@@ -79,8 +79,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 			helpers.wrapper,
 			adSlots.resolvedDesktopRatio,
 		);
-		browser.url(hiviUapStickyBfab.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(hiviUapStickyBfab.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(3000);
 		$(adSlots.bottomLeaderboard).waitForExist(timeouts.standard);
 		$(adSlots.bottomLeaderboard).scrollIntoView();
