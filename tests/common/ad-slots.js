@@ -239,32 +239,6 @@ class AdSlots {
 
 		return this.checkSlotRatio(adSlot, windowSize.width, heightRatio);
 	}
-
-	/**
-	 * Checks slot\'s status after making sure it exists in the code.
-	 * Returns information about visibility in general, visibility in viewport and about being
-	 * enabled.
-	 * @param adSlot slot to wait for
-	 * @param withScroll optional scroll to element
-	 * @returns {{
-	 * visible: (Boolean|Boolean[]),
-	 * inViewport: (Boolean|Boolean[]),
-	 * enabled: (Boolean|Boolean[]),
-	 * }}
-	 * slot statuses
-	 */
-	getSlotStatus(adSlot, withScroll = false) {
-		$(adSlot).waitForExist(timeouts.standard);
-		if (withScroll) {
-			$(adSlot).scrollIntoView();
-		}
-
-		return {
-			visible: $(adSlot).isDisplayed(),
-			inViewport: $(adSlot).isDisplayedInViewport(),
-			enabled: $(adSlot).isEnabled(),
-		};
-	}
 }
 
 export const adSlots = new AdSlots();

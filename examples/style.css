@@ -48,6 +48,20 @@ pre {
 	height: auto;
 }
 
+.navigation {
+	position: sticky;
+	top: 0;
+	padding: 0.8em;
+	cursor: default;
+	color: #eee;
+	background: linear-gradient(0, rgba(216, 112, 147, 0.94), #d87093);
+	text-align: center;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	font-size: 1.3em;
+	letter-spacing: 0.5em;
+	z-index: 5000100;
+}
+
 .top-leaderboard,
 .top-boxad,
 .incontent-boxad,

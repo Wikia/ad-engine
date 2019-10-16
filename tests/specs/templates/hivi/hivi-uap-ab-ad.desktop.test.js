@@ -15,7 +15,7 @@ describe('HiVi UAP AB ads page with uap_c', () => {
 	});
 
 	beforeEach(() => {
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard);
+		adStatus = slots.bottomLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {

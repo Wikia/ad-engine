@@ -4,13 +4,14 @@ import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 import { adSlots } from '../../common/ad-slots';
+import { slots } from '../../common/slot-registry';
 
 describe('Repeatable slots ads', () => {
 	let adStatus;
 
 	before(() => {
 		helpers.navigateToUrl(repeatableSlots.pageLink);
-		adStatus = adSlots.getSlotStatus(repeatableSlots.getRepeatableSlotSelector(1));
+		adStatus = slots.repeatableBoxad1.status;
 	});
 
 	beforeEach(() => {

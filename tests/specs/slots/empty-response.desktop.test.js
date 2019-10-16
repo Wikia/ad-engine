@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { emptyResponse } from '../../pages/empty-response.page';
 import { adSlots } from '../../common/ad-slots';
 import { timeouts } from '../../common/timeouts';
+import { helpers } from '../../common/helpers';
 
 describe('Empty response page: top leaderboard', () => {
 	let adStatus;
@@ -9,7 +10,7 @@ describe('Empty response page: top leaderboard', () => {
 	before(() => {
 		helpers.navigateToUrl(emptyResponse.pageLink);
 		$(emptyResponse.article).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if slot is not visible', () => {
@@ -25,7 +26,7 @@ describe('Empty response page: top boxad', () => {
 		helpers.navigateToUrl(emptyResponse.pageLink);
 		$(emptyResponse.article).waitForDisplayed(timeouts.standard);
 		adSlots.waitForSlotResult(adSlots.topBoxad, adSlots.adCollapsed);
-		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
+		adStatus = slots.topBoxad.status;
 	});
 
 	it('Check if slot is not visible', () => {

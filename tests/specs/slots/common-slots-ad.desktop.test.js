@@ -11,7 +11,7 @@ describe('Common slots: top leaderboard', () => {
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		slots.topLeaderboard.waitForDisplayed();
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -61,7 +61,7 @@ describe('Common slots: top boxad', () => {
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		slots.topBoxad.waitForDisplayed();
-		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
+		adStatus = slots.topBoxad.status;
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -104,17 +104,16 @@ describe('Common slots: rail module', () => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(150);
 		$(commonAds.railModule).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(commonAds.railModule, true);
 	});
 
 	it('Check if dimensions are correct', () => {
-		const dimensions = adSlots.checkSlotSize(adSlots.railModuleWidth);
+		const dimensions = adSlots.checkSlotSize(commonAds.railModule, adSlots.railModuleWidth);
 
 		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
 	});
 
 	it('Check if module is visible', () => {
-		expect(adStatus.inViewport, 'Not visible').to.be.true;
+		expect($(commonAds.railModule.isDisplayedInViewport()), 'Not visible').to.be.true;
 	});
 });
 
@@ -125,7 +124,8 @@ describe('Common slots: incontent boxad', () => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentBoxad, true);
+		slots.topBoxad.scrollIntoView();
+		adStatus = slots.topBoxad.status;
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -177,7 +177,8 @@ describe('Common slots: bottom leaderboard', () => {
 			adSlots.leaderboardHeight,
 		);
 
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard);
+		adStatus = slots.bottomLeaderboard.status;
+
 		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
 	});
 

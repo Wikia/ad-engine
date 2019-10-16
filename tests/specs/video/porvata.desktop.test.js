@@ -6,7 +6,6 @@ import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 
 describe('Porvata player', () => {
-	let adStatus;
 	before(() => {
 		helpers.navigateToUrl(porvata.pageLink);
 	});
@@ -16,13 +15,12 @@ describe('Porvata player', () => {
 		helpers.navigateToUrl(porvata.pageLink);
 		$(porvata.player).waitForDisplayed(timeouts.standard);
 		$(porvata.player).scrollIntoView();
-		adStatus = adSlots.getSlotStatus(porvata.player);
 		helpers.waitToStartPlaying();
 		$(porvata.videoPlayerHidden).waitForExist(timeouts.standard, true);
 	});
 
 	it('Check if player is visible', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect($(porvata.player).isDisplayedInViewport(), 'Not in viewport').to.be.true;
 	});
 
 	it('Check if dimensions are correct', () => {

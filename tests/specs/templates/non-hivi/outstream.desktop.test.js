@@ -20,7 +20,8 @@ describe('Outstream ads', () => {
 		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForViewabillityCounted(timeouts.standard);
 		helpers.slowScroll(outstream.pageLength);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
+		slots.incontentPlayer.scrollIntoView();
+		adStatus = slots.incontentPlayer.status;
 		expect(adStatus.visible, 'Not in viewport').to.be.true;
 	});
 
@@ -29,7 +30,8 @@ describe('Outstream ads', () => {
 		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForViewabillityCounted(timeouts.standard);
 		helpers.slowScroll(outstream.pageLength);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
+		slots.incontentPlayer.scrollIntoView();
+		adStatus = slots.incontentPlayer.status;
 		expect($(adSlots.incontentPlayer).isDisplayed(), 'Incontent not visible').to.be.true;
 		helpers.waitForViewabillityCounted(timeouts.actions);
 		helpers.fastScroll(-2000);
@@ -43,7 +45,8 @@ describe('Outstream ads', () => {
 		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForViewabillityCounted();
 		helpers.slowScroll(outstream.pageLength);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
+		slots.incontentPlayer.scrollIntoView();
+		adStatus = slots.incontentPlayer.status;
 		expect(adStatus.inViewport, 'Not in viewport').to.be.false;
 	});
 
@@ -63,7 +66,8 @@ describe('Outstream ads - Direct Porvata', () => {
 		helpers.fastScroll(-2000);
 		helpers.navigateToUrl(outstream.pageLink, queryStrings.getPorvataDirect(true));
 		helpers.slowScroll(outstream.pageLength);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentPlayer, true);
+		slots.incontentPlayer.scrollIntoView();
+		adStatus = slots.incontentPlayer.status;
 	});
 
 	it('Check if Direct Porvata player is visible', () => {

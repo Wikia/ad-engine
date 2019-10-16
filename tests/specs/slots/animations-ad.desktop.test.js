@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { animationsAd } from '../../pages/animations-ad.page';
 import { adSlots } from '../../common/ad-slots';
 import { slots } from '../../common/slot-registry';
+import { helpers } from '../../common/helpers';
 
 describe('Animations ad page: top leaderboard', () => {
 	before(() => {

@@ -94,7 +94,8 @@ describe('Desktop HiVi UAP sticky BFAB ads page: bottom leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.fastScroll(-3000);
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard, true);
+		slots.bottomLeaderboard.scrollIntoView();
+		adStatus = slots.bottomLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {

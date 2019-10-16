@@ -6,12 +6,9 @@ import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 
 describe('jwPlayer player', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(jwPlayer.player);
 	});
 
 	beforeEach(() => {
@@ -26,7 +23,7 @@ describe('jwPlayer player', () => {
 	});
 
 	it('Check if player is visible', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect($(jwPlayer.player).isDisplayedInViewport(), 'Not in viewport').to.be.true;
 	});
 
 	it('Check if dimensions are correct', () => {

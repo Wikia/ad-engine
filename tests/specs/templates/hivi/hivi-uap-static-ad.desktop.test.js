@@ -40,7 +40,7 @@ describe('Desktop HiVi UAP static ads page: top leaderboard', () => {
 		helpers.fastScroll(-2000);
 		helpers.navigateToUrl(hiviUapStatic.pageLink);
 		slots.topLeaderboard.waitForDisplayed();
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -154,7 +154,7 @@ describe('Desktop HiVi UAP static ads page: bottom leaderboard', () => {
 	});
 
 	beforeEach(() => {
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard);
+		adStatus = slots.bottomLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {

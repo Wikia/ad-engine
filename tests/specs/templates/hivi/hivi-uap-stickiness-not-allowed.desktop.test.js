@@ -81,7 +81,8 @@ describe('Desktop HiVi UAP sticky ads page: bottom leaderboard', () => {
 
 	beforeEach(() => {
 		helpers.fastScroll(-5000);
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard, true);
+		slots.bottomLeaderboard.scrollIntoView();
+		adStatus = slots.bottomLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {

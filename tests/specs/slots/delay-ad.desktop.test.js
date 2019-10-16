@@ -22,7 +22,7 @@ describe('Delay ads page: top leaderboard', () => {
 
 	it('Check if slot is visible in viewport after delay', () => {
 		delayAd.waitToLoadAds();
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
+		adStatus = slots.topLeaderboard.status;
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 	});
 
@@ -61,13 +61,13 @@ describe('Delay ads page: top boxad', () => {
 
 	it('Check if slot is visible in viewport after delay', () => {
 		delayAd.waitToLoadAds();
-		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
+		adStatus = slots.topBoxad.status;
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 	});
 
 	it('Check if slot shows up after clicking the button and if it was viewed', () => {
 		$(delayAd.loadAdsButton).click();
-		adStatus = adSlots.getSlotStatus(adSlots.topBoxad);
+		adStatus = slots.topBoxad.status;
 		adSlots.waitForSlotViewed(adSlots.topBoxad);
 		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 		expect($(adSlots.topBoxad).getAttribute(adSlots.resultAttribute)).to.equal(

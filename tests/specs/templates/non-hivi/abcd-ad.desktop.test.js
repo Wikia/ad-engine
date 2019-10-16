@@ -14,7 +14,7 @@ describe('ABCD ads page: top leaderboard', () => {
 
 	beforeEach(() => {
 		slots.topLeaderboard.waitForDisplayed();
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -48,19 +48,19 @@ describe('ABCD ads page: top leaderboard', () => {
 });
 
 describe('ABCD ads page: video player in leaderboard', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(abcdAd.pageLink);
 	});
 	beforeEach(() => {
 		$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`);
 		helpers.waitToStartPlaying();
 	});
 
 	it('Check if player is visible', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect(
+			$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).isDisplayedInViewport(),
+			'Not in viewport',
+		).to.be.true;
 	});
 
 	it('Check if unmuting the video works properly', () => {

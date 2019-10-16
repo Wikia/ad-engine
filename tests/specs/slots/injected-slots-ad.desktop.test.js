@@ -3,6 +3,7 @@ import { adSlots } from '../../common/ad-slots';
 import { injectedAds } from '../../pages/injected-ad.page';
 import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
+import { slots } from '../../common/slot-registry';
 
 describe('Injected slots: injected boxad', () => {
 	let adStatus;
@@ -11,7 +12,8 @@ describe('Injected slots: injected boxad', () => {
 		helpers.navigateToUrl(injectedAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.injectedBoxad).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(adSlots.injectedBoxad, true);
+		slots.injectedBoxad.scrollIntoView();
+		adStatus = slots.injectedBoxad.status;
 	});
 
 	it('Check if dimensions are correct', () => {

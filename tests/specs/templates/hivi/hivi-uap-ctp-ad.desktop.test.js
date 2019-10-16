@@ -57,7 +57,7 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 		helpers.fastScroll(-2000);
 		helpers.navigateToUrl(hiviUapCtp.pageLink);
 		slots.topLeaderboard.waitForDisplayed();
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {
@@ -185,7 +185,7 @@ describe('Desktop HiVi UAP CTP ads page: bottom leaderboard', () => {
 	});
 
 	beforeEach(() => {
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard);
+		adStatus = slots.bottomLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {

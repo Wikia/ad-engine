@@ -41,7 +41,7 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 		helpers.fastScroll(-2000);
 		helpers.navigateToUrl(hiviUapStatic.pageLink);
 		slots.topLeaderboard.waitForDisplayed();
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {

@@ -1,5 +1,6 @@
 import { helpers } from '../common/helpers';
 import { slots } from '../common/slot-registry';
+import { adSlots } from '../common/ad-slots';
 
 class RepeatableSlots {
 	constructor() {
@@ -16,7 +17,7 @@ class RepeatableSlots {
 	}
 
 	getRepeatableSlotSelector(slotNumber) {
-		return `${slots.repeatableBoxad.selector}${slotNumber}`;
+		return `${adSlots.repeatableBoxad}${slotNumber}`;
 	}
 }
 

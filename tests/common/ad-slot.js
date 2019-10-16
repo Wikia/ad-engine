@@ -45,6 +45,14 @@ export class AdSlot {
 		);
 	}
 
+	get status() {
+		return {
+			visible: this.element.isDisplayed(),
+			inViewport: this.element.isDisplayedInViewport(),
+			enabled: this.element.isEnabled,
+		};
+	}
+
 	constructor(config) {
 		this.config = config;
 	}

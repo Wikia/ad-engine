@@ -13,7 +13,7 @@ describe('BTF Only ads page: incontent boxad', () => {
 		$(btfOnlyAd.finishQueueButton).click();
 		helpers.slowScroll(2500);
 		adSlots.waitForSlotExpanded(adSlots.incontentBoxad);
-		adStatus = adSlots.getSlotStatus(adSlots.incontentBoxad);
+		adStatus = slots.incontentBoxad.status;
 	});
 
 	it('Check if boxad is visible and in viewport after clicking on the button', () => {

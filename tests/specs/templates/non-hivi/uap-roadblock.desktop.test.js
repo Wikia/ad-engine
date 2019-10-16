@@ -11,7 +11,7 @@ describe('Desktop uap roadblock page: top leaderboard', () => {
 		helpers.fastScroll(-2000);
 		helpers.navigateToUrl(uapRoadblock.pageLink);
 		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
-		adStatus = adSlots.getSlotStatus(adSlots.topLeaderboard, true);
+		adStatus = slots.topLeaderboard.status;
 	});
 
 	it('Check if slot is visible in viewport', () => {
