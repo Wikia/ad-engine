@@ -25,12 +25,14 @@ import {
 	TargetingSetup,
 	TemplatesSetup,
 	TrackingSetup,
+	UapRestrictor,
 	UapSetup,
 } from '@platforms/shared';
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import { SportsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/sports-dynamic-slots.setup';
+import { MutheadUapRestrictor } from './dynamic-slots/uap/uap-restrictor/muthead-uap-restrictor';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
 import { MutheadTargetingSetup } from './setup/targeting/muthead-targeting.setup';
@@ -55,6 +57,7 @@ export async function setupMutheadIoc(): Promise<Container> {
 	container.bind(PrebidConfigSetup).to(MutheadPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(SportsA9ConfigSetup);
 	container.bind(DynamicSlotsSetup).to(SportsDynamicSlotsSetup);
+	container.bind(UapRestrictor).to(MutheadUapRestrictor);
 
 	return container;
 }
