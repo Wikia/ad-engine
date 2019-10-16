@@ -4,7 +4,6 @@ import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
-	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -71,15 +70,6 @@ function configure() {
 
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 	});
-
-	if (context.get('options.gamLazyLoading.enabled')) {
-		logger('GAM lazy loading', 'GAM lazy loading enabled');
-		window.googletag.pubads().enableLazyLoad({
-			fetchMarginPercent: context.get('options.gamLazyLoading.fetchMarginPercent') || 400,
-			renderMarginPercent: context.get('options.gamLazyLoading.renderMarginPercent') || 200,
-			mobileScaling: 1.0,
-		});
-	}
 
 	window.googletag.enableServices();
 }
