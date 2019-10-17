@@ -12,13 +12,11 @@ describe('Bidders: A9 template', () => {
 	});
 
 	it('Check if wikia adapter creative is rendered', () => {
-		helpers.navigateToUrl(a9.pageLink);
 		helpers.navigateToUrl(a9.pageLink, queryStrings.getPrice(2000));
 		asserts.assertWikiaAdapterCampaign(slots.topLeaderboard);
 	});
 
 	it('Check disabling top leaderboard', () => {
-		helpers.navigateToUrl(a9.pageLink);
 		helpers.navigateToUrl(
 			a9.pageLink,
 			queryStrings.getTurnedOffSlots(a9.availableSlots.topLeaderboard),
@@ -27,7 +25,6 @@ describe('Bidders: A9 template', () => {
 	});
 
 	it('Check disabling top boxad', () => {
-		helpers.navigateToUrl(a9.pageLink);
 		helpers.navigateToUrl(a9.pageLink, queryStrings.getTurnedOffSlots(a9.availableSlots.topBoxad));
 		expect(slots.topBoxad.lineItemId).to.be.null;
 	});

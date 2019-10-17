@@ -21,8 +21,8 @@ describe('Bidders: Reusable prebid template', () => {
 
 		asserts.assertInhouseCampaign(slots.topLeaderboard);
 
-		browser.pause(4000);
-		helpers.slowScroll(5000);
+		browser.pause(1500);
+		helpers.mediumScroll(5000);
 
 		asserts.assertWikiaAdapterCampaign(slots.repeatableBoxad2);
 	});
@@ -33,7 +33,7 @@ describe('Bidders: Reusable prebid template', () => {
 		asserts.assertWikiaAdapterCampaign(slots.topLeaderboard);
 		asserts.assertWikiaAdapterCampaign(slots.repeatableBoxad1);
 
-		helpers.slowScroll(5000);
+		helpers.mediumScroll(5000);
 
 		asserts.assertInhouseCampaign(slots.repeatableBoxad2);
 	});
