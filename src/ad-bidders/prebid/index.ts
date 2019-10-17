@@ -81,10 +81,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		this.applyConfig(this.prebidConfig);
-
-		if (this.bidsRefreshing.enabled) {
-			this.registerBidsRefreshing();
-		}
+		this.registerBidsRefreshing();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
