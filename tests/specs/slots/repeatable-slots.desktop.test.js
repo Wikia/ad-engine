@@ -46,7 +46,7 @@ describe('Repeatable slots ads', () => {
 		).to.be.false;
 	});
 
-	it.only('Check if 8th boxad is visible', () => {
+	it('Check if 8th boxad is visible', () => {
 		const lengthOfContent = 10;
 		const expectedSlots = [
 			slots.repeatableBoxad1,
@@ -83,7 +83,7 @@ describe('Repeatable slots ads', () => {
 		helpers.mediumScroll(2250); //move to variable
 		slots.repeatableBoxad3.waitForExist();
 		slots.repeatableBoxad3.scrollIntoView();
-		helpers.mediumScroll(adSlots.boxadHeight + 10);
+		helpers.mediumScroll(adSlots.boxadHeight + 50);
 
 		expect(slots.repeatableBoxad2.isDisplayedInViewport()).to.be.false;
 		expect(slots.repeatableBoxad3.isDisplayedInViewport()).to.be.false;
