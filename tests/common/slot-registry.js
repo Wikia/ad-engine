@@ -88,6 +88,12 @@ const slotsContext = {
 		repeatableBoxad8: {
 			slotName: 'repeatable_boxad_8',
 		},
+		repeatableBoxad9: {
+			slotName: 'repeatable_boxad_9',
+		},
+		repeatableBoxad10: {
+			slotName: 'repeatable_boxad_10',
+		},
 	},
 };
 
