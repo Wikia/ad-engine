@@ -80,10 +80,7 @@ describe('Common slots: top boxad', () => {
 
 	it('Check if line item id is from the inhouse campaign', () => {
 		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(helpers.getLineItemId(adSlots.topBoxad)).to.equal(
-			adSlots.inhouseLineItemId,
-			'Line item ID mismatch',
-		);
+		expect(slots.topBoxad.lineItemId).to.equal(adSlots.inhouseLineItemId, 'Line item ID mismatch');
 	});
 
 	it('Check if redirect on click works', () => {
@@ -127,7 +124,7 @@ describe('Common slots: incontent boxad', () => {
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(500);
-		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
+		slots.incontentBoxad.waitForDisplayed();
 		slots.topBoxad.scrollIntoView();
 		adStatus = slots.topBoxad.status;
 	});
@@ -148,7 +145,7 @@ describe('Common slots: incontent boxad', () => {
 
 	it('Check if line item id is from the inhouse campaign', () => {
 		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
-		expect(helpers.getLineItemId(adSlots.incontentBoxad)).to.equal(
+		expect(slots.incontentBoxad.lineItemId).to.equal(
 			adSlots.inhouseLineItemId,
 			'Line item ID mismatch',
 		);
@@ -160,7 +157,7 @@ describe('Common slots: incontent boxad', () => {
 
 	// TODO Visual
 	it.skip('Check visual regression in incontent boxad', () => {
-		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
+		slots.incontentBoxad.waitForDisplayed();
 		browser.checkElement(adSlots.incontentBoxad);
 	});
 });
@@ -170,8 +167,8 @@ describe('Common slots: bottom leaderboard', () => {
 
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
-		helpers.slowScroll(6000);
-		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.bottomLeaderboard.scrollIntoView();
+		slots.bottomLeaderboard.waitForDisplayed();
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -192,7 +189,7 @@ describe('Common slots: bottom leaderboard', () => {
 
 	it('Check if line item id is from the inhouse campaign', () => {
 		helpers.waitForLineItemIdAttribute(adSlots.bottomLeaderboard);
-		expect(helpers.getLineItemId(adSlots.bottomLeaderboard)).to.equal(
+		expect(slots.bottomLeaderboard.lineItemId).to.equal(
 			adSlots.inhouseLineItemId,
 			'Line item ID mismatch',
 		);

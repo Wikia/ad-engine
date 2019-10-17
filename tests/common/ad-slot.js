@@ -99,17 +99,23 @@ export class AdSlot {
 		this.element.waitForExist(timeout);
 	}
 
-	scrollIntoView() {
+	scrollIntoView(overrideScrollTrigger = false) {
 		// Element has to be visible in order to scroll into it
 		// In case of hidden slot by default we need to define
 		// surrounding visible element
-		const selector = this.config.scrollTrigger || this.selector;
+		let selector;
+
+		if (!overrideScrollTrigger) {
+			selector = this.config.scrollTrigger || this.selector;
+		} else {
+			selector = this.selector;
+		}
 
 		$(selector).scrollIntoView();
-		helpers.mediumScroll(-navbarPage.height);
+		helpers.mediumScroll(-navbarPage.height - 10);
 		// Trigger real scroll for lazy-loaded slots
 		if (this.config.isLazyLoaded) {
-			helpers.slowScroll(10);
+			helpers.mediumScroll(10);
 		}
 	}
 

@@ -29,6 +29,10 @@ export class HiviUap {
 			$(adSlot).waitForDisplayed(timeouts.standard);
 		}
 	}
+
+	closeLeaderboard() {
+		$(this.closeLeaderboardButton).click();
+	}
 }
 
 export const hiviUap = new HiviUap();
