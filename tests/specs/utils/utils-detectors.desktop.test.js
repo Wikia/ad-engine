@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { blockDetect } from '../../pages/block-detect.page';
 import { deviceDetect } from '../../pages/device-detect.page';
 import { browserDetect } from '../../pages/browser-detect.page';
+import { helpers } from '../../common/helpers';
 
 describe('It will test utils - detectors', () => {
 	it('will check block detect', () => {

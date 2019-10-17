@@ -20,18 +20,17 @@ describe('It will test labrador-basset page', () => {
 		$(labradorBasset.wgVariablesStatuses).waitForDisplayed(timeouts.standard);
 
 		const currentValue = $(labradorBasset.wgVariablesStatuses).getText();
-		const nonCachedLink = queryStrings.getUrl(
-			labradorBasset.pageLink,
-			queryStrings.constructInstantGlobal(
-				queryStrings.instantGlobals.labradorTestVariableAlpha,
-				'XX',
-				50,
-			),
-			queryStrings.getSessionIdParam('cachedSession'),
-		);
 
 		for (let i = 0; i < 50; i += 1) {
-			browser.url(nonCachedLink);
+			helpers.navigateToUrl(
+				labradorBasset.pageLink,
+				queryStrings.constructInstantGlobal(
+					queryStrings.instantGlobals.labradorTestVariableAlpha,
+					'XX',
+					50,
+				),
+				queryStrings.getSessionIdParam('cachedSession'),
+			);
 			$(labradorBasset.wgVariablesStatuses).waitForDisplayed(timeouts.standard);
 			expect($(labradorBasset.wgVariablesStatuses).getText()).to.equal(
 				currentValue,
