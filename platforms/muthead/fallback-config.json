@@ -2,49 +2,88 @@
 	"wgAdDriverDelayTimeout": 2000,
 	"icConfiant": [
 		{
-			"apps": ["gamepedia"],
+			"apps": ["muthead"],
+			"value": false
+		}
+	],
+	"icPrebidRubiconDisplay": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
 			"value": true
 		}
 	],
-	"wgAdDriverUapRestriction": 1,
+	"icPrebidAppNexus": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidPubmatic": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
 	"icBTRec": [
 		{
-			"apps": ["sports"],
+			"apps": ["futhead", "muthead", "sports"],
 			"devices": ["desktop"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
-	"wgAdDriverIndexExchangeBidderCountries": ["XX"],
-	"wgAdDriverRubiconDisplayPrebidCountries": ["XX"],
-	"wgAdDriverPubMaticBidderCountries": ["XX"],
-	"wgAdDriverTestCommunities": ["cdm_gamepedia", "project43"],
-	"wgAdDriverAppNexusBidderCountries": ["XX"],
-	"wgAdDriverPrebidBidderCountries": ["XX"],
-	"wgAdDriverUapCountries": ["XX"],
-	"icTaxonomyAdTags": [
+	"icPrebid": [
 		{
-			"apps": ["gamepedia"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidOpenX": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"wgAdDriverUapCountries": ["XX"],
+	"icPrebidIndexExchange": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icBabDetection": [
 		{
-			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
-	"wgAdDriverA9DealsCountries": ["XX"],
-	"wgAdDriverOutstreamSlotCountries": null,
-	"wgAdDriverA9BidderCountries": ["XX"],
-	"wgAdDriverOpenXPrebidBidderCountries": ["XX"],
-	"wgAdDriverLABradorTestCountries": ["PL/40-cached"],
-	"icPorvataDirect": [
+	"icIASPorvataTracking": [
 		{
-			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"sampling": 10.0,
 			"value": false
+		}
+	],
+	"icA9Deals": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icA9Bidder": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"regions": ["XX"],
+			"value": true
 		}
 	]
 }
