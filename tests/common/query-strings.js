@@ -39,6 +39,10 @@ class QueryStrings {
 			adEngineDelay: 'adengine-delay',
 			enabledProjects: 'enabled-project',
 		};
+		this.killCodes = {
+			disableBtf: 'disableBtf',
+			disableSecondCall: 'disableSecondCall',
+		};
 	}
 
 	/**
@@ -176,6 +180,17 @@ class QueryStrings {
 		const on = enabled ? '1' : '0';
 
 		return `${this.utils.directPorvata}=${on}`;
+	}
+
+	disableBtf(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.killCodes.disableBtf}=${on}`;
+	}
+	disableSecondCall(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.killCodes.disableSecondCall}=${on}`;
 	}
 
 	getSessionIdParam(parameter) {

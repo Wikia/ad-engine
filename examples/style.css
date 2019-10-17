@@ -155,6 +155,13 @@ pre {
 	text-shadow: 1px 1px 1px #a01b1b;
 }
 
+.rail-module {
+	background: #1bbab4;
+	height: 600px;
+	line-height: 600px;
+	margin-top: 15px;
+}
+
 #incontent_player {
 	margin: 0 auto;
 	width: 320px;

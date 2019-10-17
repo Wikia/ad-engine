@@ -77,12 +77,16 @@ describe('Repeatable slots ads', () => {
 
 	it('Check if there is at least one viewport between slots', () => {
 		helpers.navigateToUrl(repeatableSlots.pageLink, queryStrings.getLengthOfContent());
-		$(repeatableSlots.getRepeatableSlotSelector(1)).waitForDisplayed(timeouts.standard);
-		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(1));
-		repeatableSlots.scrollBetweenBoxads(repeatableSlots.getRepeatableSlotSelector(2));
-		expect($(repeatableSlots.getRepeatableSlotSelector(3)).isDisplayed()).to.be.true;
-		helpers.slowScroll(adSlots.boxadHeight + 2, repeatableSlots.getRepeatableSlotSelector(2));
-		expect($(repeatableSlots.getRepeatableSlotSelector(2)).isDisplayedInViewport()).to.be.false;
-		expect($(repeatableSlots.getRepeatableSlotSelector(3)).isDisplayedInViewport()).to.be.false;
+		slots.repeatableBoxad1.waitForDisplayed();
+		slots.repeatableBoxad1.scrollIntoView();
+		helpers.mediumScroll(2250); //move to variable
+		slots.repeatableBoxad2.waitForExist();
+		slots.repeatableBoxad2.scrollIntoView();
+		helpers.mediumScroll(2250); //move to variable
+		slots.repeatableBoxad3.waitForExist();
+		slots.repeatableBoxad3.scrollIntoView();
+		helpers.mediumScroll(adSlots.boxadHeight + 10);
+		expect(slots.repeatableBoxad2.isDisplayedInViewport()).to.be.false;
+		expect(slots.repeatableBoxad3.isDisplayedInViewport()).to.be.false;
 	});
 });

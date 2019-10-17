@@ -1,56 +1,49 @@
 import { expect } from 'chai';
 import { blockBtfAd } from '../../pages/kill-codes.page';
-import { adSlots } from '../../common/ad-slots';
 import { slots } from '../../common/slot-registry';
 import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
+import { queryStrings } from '../../common/query-strings';
 
 describe('Kill codes ads page', () => {
-	let adStatus;
-
-	it('Check if BTF boxad slot is visible when disableBtf set to false', () => {
-		helpers.navigateToUrl(`${blockBtfAd.pageLink}?disableBtf=false`, timeouts.standard);
+	it.only('Check if BTF boxad slot is visible when disableBtf set to false', () => {
+		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(false));
 		helpers.slowScroll(2000);
 		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
-		expect(adStatus.inViewport, 'Visible in viewport').to.be.true;
+		expect(slots.topBoxad.isDisplayed(), 'Top boxad not visible').to.be.true;
 	});
 
 	it('Check if BTF boxad slot is hidden when disableBtf set to true', () => {
-		helpers.navigateToUrl(`${blockBtfAd.pageLink}?disableBtf=true`, timeouts.standard);
+		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(true));
 		helpers.slowScroll(2000);
 		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
-		expect(adStatus.inViewport, 'Visible in viewport').to.be.false;
+		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 	});
 
 	it('Check if ATF boxad slot is visible when disableSecondCall set to false', () => {
-		helpers.navigateToUrl(`${blockBtfAd.pageLink}?disableSecondCall=false`, timeouts.standard);
+		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableSecondCall(false));
 		slots.topBoxad.waitForDisplayed();
 		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
-		expect(adStatus.inViewport, 'Visible in viewport').to.be.true;
+		expect(slots.topBoxad.isDisplayed(), 'Top boxad not visible').to.be.true;
 	});
 
 	it('Check if ATF boxad slot is hidden when disableSecondCall set to true', () => {
-		helpers.navigateToUrl(`${blockBtfAd.pageLink}?disableSecondCall=true`, timeouts.standard);
+		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableSecondCall(true));
 		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
-		expect(adStatus.inViewport, 'Visible in viewport').to.be.false;
+		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 	});
 
 	it('Check if ATF and BTF boxads are hidden when both flags set to true', () => {
 		helpers.navigateToUrl(
-			`${blockBtfAd.pageLink}?disableSecondCall=true&disableBtf=true`,
-			timeouts.standard,
+			blockBtfAd.pageLink,
+			queryStrings.disableBtf(true),
+			queryStrings.disableSecondCall(true),
 		);
 		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
-		expect(adStatus.inViewport, 'Visible in viewport').to.be.false;
+		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 
 		helpers.slowScroll(2000);
 		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
-		expect(adStatus.inViewport, 'Visible in viewport').to.be.false;
+		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 	});
 });

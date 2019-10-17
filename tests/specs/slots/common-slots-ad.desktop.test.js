@@ -107,13 +107,17 @@ describe('Common slots: rail module', () => {
 	});
 
 	it('Check if dimensions are correct', () => {
-		const dimensions = adSlots.checkSlotSize(commonAds.railModule, adSlots.railModuleWidth);
+		const dimensions = adSlots.checkSlotSize(
+			commonAds.railModule,
+			adSlots.railModuleWidth,
+			adSlots.railModuleHeight,
+		);
 
 		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
 	});
 
 	it('Check if module is visible', () => {
-		expect($(commonAds.railModule.isDisplayedInViewport()), 'Not visible').to.be.true;
+		expect($(commonAds.railModule).isDisplayedInViewport(), 'Not visible').to.be.true;
 	});
 });
 

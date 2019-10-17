@@ -6,14 +6,11 @@ import { helpers } from '../../common/helpers';
 import { slots } from '../../common/slot-registry';
 
 describe('Injected slots: injected boxad', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(injectedAds.pageLink);
 		helpers.slowScroll(500);
 		$(adSlots.injectedBoxad).waitForDisplayed(timeouts.standard);
 		slots.injectedBoxad.scrollIntoView();
-		adStatus = slots.injectedBoxad.status;
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -24,9 +21,5 @@ describe('Injected slots: injected boxad', () => {
 		);
 
 		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if module is visible', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
 	});
 });

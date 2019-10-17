@@ -105,8 +105,8 @@ export class AdSlot {
 		// surrounding visible element
 		const selector = this.config.scrollTrigger || this.selector;
 
-		$(selector).scrollIntoView(false);
-		browser.execute(`window.scrollBy(0, ${-navbarPage.height})`);
+		$(selector).scrollIntoView();
+		helpers.mediumScroll(-navbarPage.height);
 		// Trigger real scroll for lazy-loaded slots
 		if (this.config.isLazyLoaded) {
 			helpers.slowScroll(10);
