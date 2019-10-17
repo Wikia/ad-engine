@@ -80,10 +80,6 @@ describe('HiVi UAP sticky BFAB: bottom leaderboard Impact state: ', () => {
 		);
 	});
 
-	it.skip('Check if redirect on click works properly', () => {
-		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
-	});
-
 	it('Check if slot is sticked', () => {
 		browser.refresh();
 		slots.topLeaderboard.waitForDisplayed();
@@ -119,10 +115,6 @@ describe('HiVi UAP sticky BFAB: bottom leaderboard Resolved state: ', () => {
 			hiviUapStickyBfab.secondCall,
 			'Line item ID mismatch',
 		);
-	});
-
-	it.skip('Check if redirect on click works properly', () => {
-		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 
 	it('Check if slot is sticked', () => {

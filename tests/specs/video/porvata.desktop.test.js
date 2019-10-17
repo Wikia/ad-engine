@@ -11,7 +11,7 @@ describe('Porvata player', () => {
 	});
 
 	beforeEach(() => {
-		browser.switchWindow(porvata.pageLink);
+		helpers.closeNewTabs();
 		helpers.navigateToUrl(porvata.pageLink);
 		$(porvata.player).waitForDisplayed(timeouts.standard);
 		$(porvata.player).scrollIntoView();
@@ -41,7 +41,7 @@ describe('Porvata player', () => {
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		browser.closeWindow();
+		helpers.closeNewTabs();
 	});
 
 	it('Check if unmuting the video works', () => {

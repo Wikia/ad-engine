@@ -12,14 +12,10 @@ describe('jwPlayer player', () => {
 	});
 
 	beforeEach(() => {
-		browser.switchWindow(jwPlayer.pageLink);
+		helpers.closeNewTabs();
 		helpers.navigateToUrl(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
-	});
-
-	afterEach(() => {
-		browser.switchWindow(jwPlayer.pageLink);
 	});
 
 	it('Check if player is visible', () => {
@@ -44,7 +40,7 @@ describe('jwPlayer player', () => {
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		browser.closeWindow();
+		helpers.closeNewTabs();
 	});
 
 	it('Check if preroll works', () => {
