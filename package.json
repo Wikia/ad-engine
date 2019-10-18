@@ -54,7 +54,7 @@
 		"jsdom": "11.11.0",
 		"jsdom-global": "^3.0.2",
 		"json-loader": "0.5.7",
-		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.6.1",
+		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
 		"lint-staged": "8.0.5",
 		"mini-css-extract-plugin": "0.4.0",
 		"mocha": "4.1.0",
