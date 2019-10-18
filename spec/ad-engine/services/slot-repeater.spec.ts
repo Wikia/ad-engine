@@ -24,16 +24,7 @@ describe('slot-repeater', () => {
 		});
 
 		context.set('events.pushOnScroll.ids', []);
-		context.set('options.slotRepeater', true);
 		context.set('slots.adStack', []);
-	});
-
-	it('ad-slot is not repeated when option is disabled', () => {
-		context.set('options.slotRepeater', false);
-
-		slotRepeater.init();
-
-		expect(handleSlotRepeating).to.equal(null);
 	});
 
 	it('ad-slot is not repeated when it is disabled', () => {

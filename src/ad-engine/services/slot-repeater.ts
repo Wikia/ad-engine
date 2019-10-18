@@ -66,7 +66,7 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 class SlotRepeater {
 	init(): void {
-		if (context.get('options.slotRepeater') && !context.get('options.nonLazyLoading.enabled')) {
+		if (!context.get('options.nonLazyLoading.enabled')) {
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
 				return this.handleSlotRepeating(adSlot);
 			});

@@ -332,6 +332,10 @@ export default {
 			},
 			timeout: 2000,
 		},
+		confiant: {
+			enabled: true,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
 		instantConfig: {
 			endpoint: 'https://services.wikia-dev.pl/icbm/api/config?app=oasis',
 			fallbackConfigKey: 'fallbackConfig',

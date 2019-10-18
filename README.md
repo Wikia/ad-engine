@@ -41,7 +41,6 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`bidders.prebid.{bidder_name}`|Single bidder definitions|object|✔|
 |`bidders.prebid.{bidder_name}.enabled`|Decides whether given bidder will be requested on page|boolean|✔|
 |`bidders.prebid.{bidder_name}.slots`|Slots definitions (specific for each bidder)|object|✔|
-|`bidders.prebid.bidsRefreshing.enabled`|Decides whether Prebid should refresh bids|boolean|✘|
 |`bidders.prebid.bidsRefreshing.slots`|Decides which slots should be refreshed by Prebid|string[]|✘|
 |`custom.isCMPEnabled`|Enables or disables GDPR data in Prebid and A9 requests|boolean|✘|
 |`events`|Configuration for ad engine events|object|✘|

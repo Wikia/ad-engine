@@ -90,8 +90,16 @@ export const basicContext = {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	services: {
+		durationMedia: {
+			enabled: false,
+			siteId: '1069',
+		},
+		confiant: {
+			enabled: false,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
 		instantConfig: {
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=sports',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=muthead',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
 	},
