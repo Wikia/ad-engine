@@ -33,6 +33,7 @@ class QueryStrings {
 			videoAdapter: 'wikia_video_adapter',
 		};
 		this.services = {
+			confiant: 'confiant-disabled',
 			krux: 'krux-disabled',
 			trackingOptIn: 'tracking-opt-in',
 			moat: 'moat-yi-disabled',
@@ -142,6 +143,12 @@ class QueryStrings {
 		const on = enabled ? '0' : '1';
 
 		return `${this.services.krux}=${on}`;
+	}
+
+	getConfiant(enabled) {
+		const on = enabled ? '0' : '1';
+
+		return `${this.services.confiant}=${on}`;
 	}
 
 	getTrackingOptIn(enabled) {
