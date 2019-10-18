@@ -112,7 +112,7 @@ export class AdSlot {
 		}
 
 		$(selector).scrollIntoView();
-		helpers.mediumScroll(-navbarPage.height - 10);
+		helpers.scrollUpByNavbarHeight();
 		// Trigger real scroll for lazy-loaded slots
 		if (this.config.isLazyLoaded) {
 			helpers.mediumScroll(10);

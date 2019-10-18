@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { timeouts } from './timeouts';
 import { queryStrings } from './query-strings';
 import { adSlots } from './ad-slots';
+import { navbarPage } from '../pages/navbar.page';
 
 const valueToDivideBy = 10;
 const pauseBetweenScrollsShort = 100;
@@ -51,12 +52,12 @@ class Helpers {
 
 		if (scrollFromThisElement !== null) {
 			$(scrollFromThisElement).scrollIntoView();
-			for (let i = step; i < px; i += step) {
+			for (let i = step; Math.abs(i) < Math.abs(px); i += step) {
 				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		} else {
-			for (let i = step; i < px; i += step) {
+			for (let i = step; Math.abs(i) < Math.abs(px); i += step) {
 				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
@@ -65,7 +66,7 @@ class Helpers {
 
 	mediumScroll(px) {
 		const step = px / valueToDivideBy;
-		for (let i = step; i < px; i += step) {
+		for (let i = step; Math.abs(i) < Math.abs(px); i += step) {
 			browser.execute(`window.scrollBy(0,${step})`);
 			browser.pause(pauseBetweenScrollsShort);
 		}
@@ -78,6 +79,10 @@ class Helpers {
 		} else {
 			browser.execute(`window.scrollBy(0,${px})`);
 		}
+	}
+
+	scrollUpByNavbarHeight() {
+		this.mediumScroll(-navbarPage.height - 5);
 	}
 
 	waitToStartPlaying() {
