@@ -68,8 +68,8 @@ describe('HiVi UAP sticky BFAB: bottom leaderboard Impact state: ', () => {
 	});
 
 	it('Check if impact dimensions are correct', () => {
-		expect(slots.bottomLeaderboard.getAspectRatio()).to.be.above(3.9);
-		expect(slots.bottomLeaderboard.getAspectRatio()).to.be.below(4.1);
+		expect(slots.bottomLeaderboard.aspectRatio).to.be.above(3.9);
+		expect(slots.bottomLeaderboard.aspectRatio).to.be.below(4.1);
 	});
 
 	it('Check if line item id is from the same campaign', () => {
@@ -105,8 +105,8 @@ describe('HiVi UAP sticky BFAB: bottom leaderboard Resolved state: ', () => {
 	});
 
 	it('Check if resolved dimensions are correct', () => {
-		expect(slots.bottomLeaderboard.getAspectRatio()).to.be.above(9.9);
-		expect(slots.bottomLeaderboard.getAspectRatio()).to.be.below(10.1);
+		expect(slots.bottomLeaderboard.aspectRatio).to.be.above(9.9);
+		expect(slots.bottomLeaderboard.aspectRatio).to.be.below(10.1);
 	});
 
 	it('Check if line item id is from the same campaign', () => {

@@ -34,6 +34,10 @@ export class AdSlot {
 		return this.element.getSize();
 	}
 
+	get slotParams() {
+		return this.element.getAttribute('data-gpt-slot-params');
+	}
+
 	get iframeId() {
 		return $(`${this.element} iframe[id^="google_ads_iframe_/5441/"]`).value;
 	}
@@ -51,6 +55,18 @@ export class AdSlot {
 			inViewport: this.element.isDisplayedInViewport(),
 			enabled: this.element.isEnabled,
 		};
+	}
+
+	get aspectRatio() {
+		return this.element.width / this.element.height;
+	}
+
+	get height() {
+		return this.element.getSize('height');
+	}
+
+	get width() {
+		return this.element.getSize('width');
 	}
 
 	constructor(config) {
@@ -90,7 +106,15 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.lineItemId !== null,
 			timeouts.standard,
-			`Element has no line item.`,
+			`Element has no line item id`,
+			timeouts.interval,
+		);
+	}
+	waitForCreativedIDAttribute() {
+		browser.waitUntil(
+			() => this.creativeId !== null,
+			timeouts.standard,
+			`Element has no creatice ID`,
 			timeouts.interval,
 		);
 	}
@@ -117,18 +141,6 @@ export class AdSlot {
 		if (this.config.isLazyLoaded) {
 			helpers.mediumScroll(10);
 		}
-	}
-
-	getAspectRatio() {
-		return this.getWidth() / this.getHeight();
-	}
-
-	getHeight() {
-		return this.element.getSize('height');
-	}
-
-	getWidth() {
-		return this.element.getSize('width');
 	}
 
 	/**

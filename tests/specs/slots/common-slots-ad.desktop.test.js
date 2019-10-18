@@ -163,8 +163,6 @@ describe('Common slots: incontent boxad', () => {
 });
 
 describe('Common slots: bottom leaderboard', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		slots.bottomLeaderboard.scrollIntoView();
@@ -178,13 +176,11 @@ describe('Common slots: bottom leaderboard', () => {
 			adSlots.leaderboardHeight,
 		);
 
-		adStatus = slots.bottomLeaderboard.status;
-
 		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
 	});
 
-	it('Check if slot is visible in viewport', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+	it('Check if slot is visible', () => {
+		expect(slots.bottomLeaderboard.isDisplayed(), 'Not displayed').to.be.true;
 	});
 
 	it('Check if line item id is from the inhouse campaign', () => {

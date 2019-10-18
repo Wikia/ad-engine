@@ -40,6 +40,7 @@ const slotsContext = {
 	desktop: {
 		bottomLeaderboard: {
 			isLazyLoaded: true,
+			scrollTrigger: 'footer',
 			slotName: 'bottom_leaderboard',
 		},
 		incontentBoxad: {

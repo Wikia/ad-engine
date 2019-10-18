@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { repeatableSlots } from '../../pages/repeatable-slots.page';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
-import { adSlots } from '../../common/ad-slots';
 import { slots } from '../../common/slot-registry';
+import { navbarPage } from '../../pages/navbar.page';
 
 describe('Repeatable slots ads', () => {
 	before(() => {
@@ -75,13 +75,11 @@ describe('Repeatable slots ads', () => {
 		helpers.navigateToUrl(repeatableSlots.pageLink, queryStrings.getLengthOfContent());
 		slots.repeatableBoxad1.waitForDisplayed();
 		slots.repeatableBoxad1.scrollIntoView();
-		helpers.mediumScroll(2250); //move to variable
-		slots.repeatableBoxad2.waitForExist();
+		helpers.mediumScroll(3000); //move to variable
 		slots.repeatableBoxad2.scrollIntoView();
-		helpers.mediumScroll(2250); //move to variable
-		slots.repeatableBoxad3.waitForExist();
-		slots.repeatableBoxad3.scrollIntoView();
-		helpers.mediumScroll(adSlots.boxadHeight + 50);
+
+		$(slots.repeatableBoxad3.selector).scrollIntoView({ block: 'end' });
+		helpers.fastScroll(-slots.repeatableBoxad3.height);
 
 		expect(slots.repeatableBoxad2.isDisplayedInViewport()).to.be.false;
 		expect(slots.repeatableBoxad3.isDisplayedInViewport()).to.be.false;
