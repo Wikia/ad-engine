@@ -8,28 +8,28 @@
 	],
 	"icPrebidRubiconDisplay": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icPrebidAppNexus": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icPrebidPubmatic": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icBTRec": [
 		{
-			"apps": ["futhead", "muthead", "sports"],
+			"apps": ["futhead", "muthead"],
 			"devices": ["desktop"],
 			"regions": ["XX"],
 			"value": true
@@ -37,14 +37,14 @@
 	],
 	"icPrebid": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icPrebidOpenX": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
@@ -52,21 +52,21 @@
 	"wgAdDriverUapCountries": ["XX"],
 	"icPrebidIndexExchange": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icBabDetection": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icIASPorvataTracking": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"sampling": 10.0,
 			"value": false
@@ -74,14 +74,14 @@
 	],
 	"icA9Deals": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icA9Bidder": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "sports"],
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
