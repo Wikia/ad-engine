@@ -18,6 +18,10 @@ export function getOpenXContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					unit: '540835246',
 				},
+				'04_BLB': {
+					sizes: [[728, 90]],
+					unit: '540880820',
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					unit: '540835249',
