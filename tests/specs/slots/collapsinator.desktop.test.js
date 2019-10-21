@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { collapsinator } from '../../pages/collapsinator.page';
 import { adSlots } from '../../common/ad-slots';
-import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 import { network } from '../../common/network';
 
@@ -17,7 +16,7 @@ describe('Collapsinator ads page', () => {
 	beforeEach(() => {
 		network.clearLogs();
 
-		browser.url(`${collapsinator.pageLink}?cid=${collapsinator.cidParameter}`, timeouts.standard);
+		helpers.navigateToUrl(collapsinator.pageLink, `cid=${collapsinator.cidParameter}`);
 		helpers.mediumScroll(2000);
 
 		tbAdStatus = adSlots.getSlotStatus(adSlots.topBoxad, true);
