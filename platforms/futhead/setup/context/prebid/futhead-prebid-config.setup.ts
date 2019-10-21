@@ -5,6 +5,7 @@ import { getAppNexusContext } from '../../../bidders/prebid/app-nexus';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
+import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 
 @Injectable()
 export class FutheadPrebidConfigSetup implements PrebidConfigSetup {
@@ -16,5 +17,6 @@ export class FutheadPrebidConfigSetup implements PrebidConfigSetup {
 		context.set('bidders.prebid.openx', getOpenXContext(mode));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(mode));
 		context.set('bidders.prebid.wikia', getWikiaContext(mode));
+		context.set('bidders.prebid.rubicon_display', getRubiconContext(mode));
 	}
 }

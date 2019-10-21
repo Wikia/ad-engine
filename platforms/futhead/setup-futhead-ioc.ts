@@ -10,6 +10,7 @@ import {
 	CommonTrackingSetup,
 	ContextSetup,
 	CurseSlotsContextSetup,
+	CurseSlotsStateSetup,
 	CurseUapSetup,
 	DelayModulesSetup,
 	DynamicSlotsSetup,
@@ -33,7 +34,6 @@ import { SportsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/sports-dy
 import * as fallbackInstantConfig from './fallback-config.json';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
-import { FutheadSlotsStateSetup } from './setup/state/slots/futhead-slots-state.setup';
 
 export async function setupFutheadIoc(): Promise<Container> {
 	const container = new Container();
@@ -49,7 +49,7 @@ export async function setupFutheadIoc(): Promise<Container> {
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
-	container.bind(SlotsStateSetup).to(FutheadSlotsStateSetup);
+	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(FutheadPrebidConfigSetup);
