@@ -5,7 +5,6 @@ import { A9ConfigSetup } from './a9/_a9-config.setup';
 import { PrebidConfigSetup } from './prebid/_prebid-config.setup';
 import { SlotsContextSetup } from './slots/_slots-context.setup';
 import { TargetingSetup } from './targeting/_targeting.setup';
-import { UapSetup } from './uap/_uap.setup';
 import { WikiContextSetup } from './wiki/_wiki-context-setup';
 
 @Injectable()
@@ -17,7 +16,6 @@ export class CommonContextSetup implements ContextSetup {
 		private slotsContextSetup: SlotsContextSetup,
 		private prebidConfigSetup: PrebidConfigSetup,
 		private a9ConfigSetup: A9ConfigSetup,
-		private uapSetup: UapSetup,
 	) {}
 
 	configureContext(isOptedIn = false, isMobile = false): void {
@@ -30,7 +28,6 @@ export class CommonContextSetup implements ContextSetup {
 		this.slotsContextSetup.configureSlotsContext();
 		this.prebidConfigSetup.configurePrebidContext();
 		this.a9ConfigSetup.configureA9Context();
-		this.uapSetup.configureUap();
 		setupNpaContext();
 	}
 

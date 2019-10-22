@@ -22,6 +22,7 @@ import {
 	TargetingSetup,
 	TemplatesSetup,
 	TrackingSetup,
+	UapRestrictor,
 	UapSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -37,6 +38,7 @@ import { GamepediaPrebidConfigSetup } from './setup/context/prebid/gamepedia-pre
 import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
 import { GamepediaWikiContextSetup } from './setup/context/wiki/gamepedia-wiki-context.setup';
 import { GamepediaDynamicSlotsSetup } from './setup/dynamic-slots/gamepedia-dynamic-slots.setup';
+import { GamepediaUapRestrictor } from './setup/dynamic-slots/uap/uap-restrictor/gamepedia-uap-restrictor';
 import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
 
 export async function setupGamepediaIoc(): Promise<Container> {
@@ -61,6 +63,7 @@ export async function setupGamepediaIoc(): Promise<Container> {
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(GamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
+	container.bind(UapRestrictor).to(GamepediaUapRestrictor);
 
 	return container;
 }
