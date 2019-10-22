@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
 
 export class DelayModulesSetup {
 	constructor() {
-		const warnGroup = 'DelayModulesSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'DelayModulesSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureDelayModules(): void {}

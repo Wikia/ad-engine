@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
 
 export class UapSetup {
 	constructor() {
-		const warnGroup = 'UapSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'UapSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureUap(): void {}

@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
 
 export class TargetingSetup {
 	constructor() {
-		const warnGroup = 'TargetingSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'TargetingSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureTargetingContext(): void {}

@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
 
 export class TrackingSetup {
 	constructor() {
-		const warnGroup = 'TrackingSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'TemplatesSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureTracking(): void {}

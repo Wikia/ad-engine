@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
 
 export class SlotsContextSetup {
 	constructor() {
-		const warnGroup = 'SlotsContextSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'SlotsContextSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureSlotsContext(): void {}

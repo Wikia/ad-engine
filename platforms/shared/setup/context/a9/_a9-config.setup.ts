@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
 
 export class A9ConfigSetup {
 	constructor() {
-		const warnGroup = 'A9ConfigSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'A9ConfigSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureA9Context(): void {}

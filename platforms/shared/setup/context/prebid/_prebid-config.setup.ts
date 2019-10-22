@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
 
 export class PrebidConfigSetup {
 	constructor() {
-		const warnGroup = 'PrebidConfigSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'PrebidConfigSetup';
+		iocDefaultWarning(className);
 	}
 
 	configurePrebidContext(): void {}

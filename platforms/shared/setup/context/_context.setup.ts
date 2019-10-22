@@ -1,9 +1,9 @@
-import { utils } from '@wikia/ad-engine';
+import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
 
 export class ContextSetup {
 	constructor() {
-		const warnGroup = 'ContextSetup';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'ContextSetup';
+		iocDefaultWarning(className);
 	}
 
 	configureContext(isOptedIn: boolean, isMobile: boolean): void {}

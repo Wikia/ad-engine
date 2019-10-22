@@ -1,11 +1,11 @@
-import { utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
 
 @Injectable()
 export class NoAdsMode {
 	constructor() {
-		const warnGroup = 'NoAdsMode';
-		utils.warner('##### IOC - you are not implementing:', warnGroup);
+		const className = 'NoAdsMode';
+		iocDefaultWarning(className);
 	}
 
 	handleNoAds(): void {}
