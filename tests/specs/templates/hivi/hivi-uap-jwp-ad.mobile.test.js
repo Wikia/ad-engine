@@ -14,8 +14,10 @@ describe('Mobile HiVi UAP JWP ads page: top leaderboard', () => {
 
 	it('Check if slot is existing, but the ad is not immediately visible', () => {
 		slots.topLeaderboard.waitForDisplayed();
-		expect($(`${adSlots.topLeaderboard}${adSlots.resultAttribute}`).isExisting(), 'Ad is visible')
-			.to.be.false;
+		expect(
+			$(`${slots.topLeaderboard.selector}${adSlots.resultAttribute}`).isExisting(),
+			'Ad is visible',
+		).to.be.false;
 	});
 
 	it('Check if top leaderboard does not load after manually finishing the queue', () => {

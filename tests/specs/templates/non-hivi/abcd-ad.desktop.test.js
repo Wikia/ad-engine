@@ -52,19 +52,19 @@ describe('ABCD ads page: video player in leaderboard', () => {
 		helpers.navigateToUrl(abcdAd.pageLink);
 	});
 	beforeEach(() => {
-		$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).waitForDisplayed(timeouts.standard);
+		$(`${slots.topLeaderboard.selector} ${abcdAd.videoPlayer}`).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
 	});
 
 	it('Check if player is visible', () => {
 		expect(
-			$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).isDisplayedInViewport(),
+			$(`${slots.topLeaderboard.selector} ${abcdAd.videoPlayer}`).isDisplayedInViewport(),
 			'Not in viewport',
 		).to.be.true;
 	});
 
 	it('Check if unmuting the video works properly', () => {
-		$(`${adSlots.topLeaderboard} ${abcdAd.videoPlayer}`).moveTo();
+		$(`${slots.topLeaderboard.selector} ${abcdAd.videoPlayer}`).moveTo();
 		browser.pause(timeouts.hover);
 		$(abcdAd.unmuteButton).click();
 		$(`${abcdAd.unmuteButton}${abcdAd.buttonIsOnClass}`).waitForExist(timeouts.standard, true);

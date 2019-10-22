@@ -14,7 +14,7 @@ describe('Desktop HiVi UAP JWP ads page: top leaderboard', () => {
 	it('Check if slot is existing, but the ad is not immediately visible', () => {
 		slots.topLeaderboard.waitForDisplayed();
 		expect(
-			$(`${adSlots.topLeaderboard}${adSlots.resultAttribute}`).isExisting(),
+			$(`${slots.topLeaderboard.selector}${adSlots.resultAttribute}`).isExisting(),
 			'Top leaderboard visible',
 		).to.be.false;
 	});

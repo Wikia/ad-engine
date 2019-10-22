@@ -4,215 +4,17 @@ import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { slots } from '../../../common/slot-registry';
-
-describe('Desktop HiVi UAP ads page: top leaderboard', () => {
-	let adStatus;
-	let defaultDimensions;
-	let scrollDimensions;
-	let refreshDimensions;
-	let videoFinishedDimensions;
-
-	before(() => {
-		hiviUap.openUapWithState(false, hiviUap.pageLink, adSlots.topLeaderboard);
-
-		defaultDimensions = adSlots.checkUAPSizeSlotRatio(
-			adSlots.topLeaderboard,
-			adSlots.defaultDesktopRatio,
-		);
-
-		helpers.slowScroll(500);
-
-		scrollDimensions = adSlots.checkUAPSizeSlotRatio(
-			adSlots.topLeaderboard,
-			adSlots.resolvedDesktopRatio,
-		);
-		helpers.slowScroll(-2000);
-		browser.pause(timeouts.actions);
-		hiviUap.openUapWithState(true, hiviUap.pageLink);
-		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
-
-		refreshDimensions = adSlots.checkUAPSizeSlotRatio(
-			adSlots.topLeaderboard,
-			adSlots.resolvedDesktopRatio,
-		);
-
-		helpers.navigateToUrl(hiviUap.pageLink);
-		adSlots.waitForSlotExpanded(adSlots.topLeaderboard);
-		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
-		adSlots.waitForSlotResolved(adSlots.topLeaderboard, adSlots.resolvedDesktopRatio);
-
-		videoFinishedDimensions = adSlots.checkUAPSizeSlotRatio(
-			adSlots.topLeaderboard,
-			adSlots.resolvedDesktopRatio,
-		);
-	});
-
-	beforeEach(() => {
-		helpers.fastScroll(-2000);
-		helpers.navigateToUrl(hiviUap.pageLink);
-		slots.topLeaderboard.waitForDisplayed();
-		adStatus = slots.topLeaderboard.status;
-	});
-
-	it('Check if slot is visible in viewport', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
-	});
-
-	it('Check if default dimensions are correct', () => {
-		expect(defaultDimensions.status, defaultDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if resolved dimensions after scroll are correct', () => {
-		expect(scrollDimensions.status, scrollDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if resolved dimensions after refresh are correct', () => {
-		expect(refreshDimensions.status, refreshDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if resolved dimensions after video finished playing are correct', () => {
-		expect(videoFinishedDimensions.status, videoFinishedDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if navbar is visible in viewport', () => {
-		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
-	});
-
-	it('Check if redirect on click works', () => {
-		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
-	});
-
-	it('Check if the line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
-		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(
-			hiviUap.firstCall,
-			'Line item ID mismatch',
-		);
-	});
-
-	it('Check if closing top leaderboard works properly', () => {
-		$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
-		$(hiviUap.closeLeaderboardButton).click();
-		adSlots.waitForSlotCollapsedManually(adSlots.topLeaderboard);
-	});
-});
+import { queryStrings } from '../../../common/query-strings';
 
 describe('Desktop HiVi UAP ads page: video player in top leaderboard', () => {
 	beforeEach(() => {
 		helpers.navigateToUrl(hiviUap.pageLink);
 		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitToStartPlaying();
-		$(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
+		$(`${slots.topLeaderboard.selector} ${hiviUap.videoPlayer}`).moveTo();
 		browser.pause(timeouts.hover);
 	});
 });
-
-describe('Desktop HiVi UAP ads page: top boxad', () => {
-	beforeEach(() => {
-		helpers.navigateToUrl(hiviUap.pageLink);
-		slots.topBoxad.waitForDisplayed();
-	});
-
-	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(helpers.getLineItemId(adSlots.topBoxad)).to.equal(
-			hiviUap.secondCall,
-			'Line item ID mismatch',
-		);
-	});
-});
-
-describe('Desktop HiVi UAP ads page: incontent boxad', () => {
-	beforeEach(() => {
-		helpers.navigateToUrl(hiviUap.pageLink);
-		helpers.slowScroll(1000);
-		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
-	});
-
-	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
-		expect(helpers.getLineItemId(adSlots.incontentBoxad)).to.equal(
-			hiviUap.secondCall,
-			'Line item ID mismatch',
-		);
-	});
-});
-
-describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
-	let adStatus;
-	let defaultDimensions;
-	let refreshDimensions;
-	let videoFinishedDimensions;
-
-	before(() => {
-		hiviUap.openUapWithState(false, hiviUap.pageLink);
-		slots.topLeaderboard.waitForDisplayed();
-		helpers.slowScroll(7000);
-		adSlots.waitForSlotExpanded(adSlots.bottomLeaderboard);
-
-		defaultDimensions = adSlots.checkDerivativeSizeSlotRatio(
-			adSlots.bottomLeaderboard,
-			helpers.wrapper,
-			adSlots.defaultDesktopRatio,
-		);
-
-		hiviUap.openUapWithState(true, hiviUap.pageLink);
-		slots.topLeaderboard.waitForDisplayed();
-		helpers.slowScroll(7000);
-		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
-
-		refreshDimensions = adSlots.checkDerivativeSizeSlotRatio(
-			adSlots.bottomLeaderboard,
-			helpers.wrapper,
-			adSlots.resolvedDesktopRatio,
-		);
-
-		helpers.navigateToUrl(hiviUap.pageLink);
-		slots.topLeaderboard.waitForDisplayed();
-		helpers.reloadPageAndWaitForSlot(adSlots.topLeaderboard);
-		helpers.slowScroll(7000);
-		$(adSlots.bottomLeaderboard).waitForDisplayed(timeouts.standard);
-		helpers.waitForVideoAdToFinish(hiviUap.videoDuration);
-
-		videoFinishedDimensions = adSlots.checkUAPSizeSlotRatio(
-			adSlots.topLeaderboard,
-			adSlots.resolvedDesktopRatio,
-		);
-	});
-
-	beforeEach(() => {
-		adStatus = slots.bottomLeaderboard.status;
-	});
-
-	it('Check if slot is visible in viewport', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
-	});
-
-	it('Check if default dimensions are correct', () => {
-		expect(defaultDimensions.status, defaultDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if resolved dimensions after refresh are correct', () => {
-		expect(refreshDimensions.status, refreshDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if resolved dimensions after video finished are correct', () => {
-		expect(videoFinishedDimensions.status, videoFinishedDimensions.capturedErrors).to.be.true;
-	});
-
-	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.bottomLeaderboard);
-		expect(helpers.getLineItemId(adSlots.bottomLeaderboard)).to.equal(
-			hiviUap.secondCall,
-			'Line item ID mismatch',
-		);
-	});
-
-	it('Check if redirect on click works properly', () => {
-		expect(helpers.adRedirect(adSlots.bottomLeaderboard), 'Wrong link after redirect').to.be.true;
-	});
-});
-
 describe('Desktop HiVi UAP ads page: video player in bottom leaderboard', () => {
 	beforeEach(() => {
 		helpers.fastScroll(-2000);
@@ -223,5 +25,97 @@ describe('Desktop HiVi UAP ads page: video player in bottom leaderboard', () => 
 		helpers.waitToStartPlaying();
 		$(`${adSlots.bottomLeaderboard} ${hiviUap.videoPlayer}`).moveTo();
 		browser.pause(timeouts.hover);
+	});
+});
+
+describe.only('Desktop HiVi UAP Impact state', () => {
+	describe('Top Leaderboard', () => {
+		before(() => {
+			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
+			slots.topLeaderboard.waitForDisplayed();
+			browser.pause(timeouts.actions); // TODO Fix
+		});
+
+		it('Check if slot is visible in viewport', () => {
+			expect(slots.topLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
+		});
+
+		it('Check if impact dimensions are correct', () => {
+			expect(slots.topLeaderboard.calculateApectRatio()).to.be.above(3.9);
+			expect(slots.topLeaderboard.calculateApectRatio()).to.be.below(4.1);
+		});
+
+		it('Check if line item id is from the same campaign', () => {
+			slots.topLeaderboard.waitForLineItemIdAttribute();
+			expect(slots.topLeaderboard.lineItemId).to.equal(hiviUap.firstCall, 'Line item ID mismatch');
+		});
+
+		it('Check if closing top leaderboard works properly', () => {
+			browser.refresh();
+			slots.topLeaderboard.waitForDisplayed();
+			helpers.mediumScroll(1000);
+			$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
+			$(hiviUap.closeLeaderboardButton).click();
+			helpers.mediumScroll(50);
+			expect(slots.topLeaderboard.isDisplayedInViewport()).to.be.false;
+		});
+	});
+	describe('Top Boxad', () => {
+		beforeEach(() => {
+			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
+			slots.topBoxad.waitForDisplayed();
+		});
+
+		it('Check if line item id is from the same campaign', () => {
+			slots.topBoxad.waitForLineItemIdAttribute();
+			expect(slots.topBoxad.lineItemId).to.equal(hiviUap.secondCall, 'Line item ID mismatch');
+		});
+	});
+
+	describe('Incontent Boxad', () => {
+		beforeEach(() => {
+			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
+			slots.incontentBoxad.scrollIntoView();
+			slots.incontentBoxad.waitForDisplayed();
+		});
+
+		it('Check if line item id is from the same campaign', () => {
+			slots.incontentBoxad.waitForLineItemIdAttribute();
+			expect(slots.incontentBoxad.lineItemId).to.equal(hiviUap.secondCall, 'Line item ID mismatch');
+		});
+	});
+
+	describe('Desktop HiVi UAP ads page: bottom leaderboard', () => {
+		before(() => {
+			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
+			slots.bottomLeaderboard.scrollIntoView();
+		});
+
+		it('Check if slot is visible in viewport', () => {
+			expect(slots.bottomLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
+		});
+
+		it('Check if impact dimensions are correct', () => {
+			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.above(3.9);
+			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.below(4.1);
+		});
+
+		it('Check if line item id is from the same campaign', () => {
+			slots.bottomLeaderboard.waitForLineItemIdAttribute();
+			expect(slots.bottomLeaderboard.lineItemId).to.equal(
+				hiviUap.secondCall,
+				'Line item ID mismatch',
+			);
+		});
+
+		it('Check if closing top leaderboard works properly', () => {
+			browser.refresh();
+			slots.topLeaderboard.waitForDisplayed();
+			helpers.mediumScroll(1000);
+			$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
+			$(hiviUap.closeLeaderboardButton).click();
+			helpers.mediumScroll(50);
+			expect(slots.topLeaderboard.isDisplayedInViewport()).to.be.false;
+		});
 	});
 });

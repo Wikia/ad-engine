@@ -53,12 +53,8 @@ export class AdSlot {
 		return {
 			visible: this.element.isDisplayed(),
 			inViewport: this.element.isDisplayedInViewport(),
-			enabled: this.element.isEnabled,
+			enabled: this.element.isEnabled(),
 		};
-	}
-
-	get aspectRatio() {
-		return this.element.width / this.element.height;
 	}
 
 	get height() {
@@ -71,6 +67,10 @@ export class AdSlot {
 
 	constructor(config) {
 		this.config = config;
+	}
+
+	calculateApectRatio() {
+		return this.width / this.height;
 	}
 
 	hasChildren() {

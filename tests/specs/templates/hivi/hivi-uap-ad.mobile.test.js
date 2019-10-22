@@ -107,7 +107,7 @@ describe('Mobile HiVi UAP ads page: video player in top leaderboard', () => {
 	});
 
 	it('Check if video player exist', () => {
-		expect($(`${adSlots.topLeaderboard} ${hiviUap.videoPlayer}`).isDisplayed()).to.be.true;
+		expect($(`${slots.topLeaderboard.selector} ${hiviUap.videoPlayer}`).isDisplayed()).to.be.true;
 	});
 });
 
