@@ -1,4 +1,4 @@
-import { slotService, utils } from '@ad-engine/core';
+import { slotService, SlotTweaker, utils } from '@ad-engine/core';
 import {
 	DEFAULT_VIDEO_ASPECT_RATIO,
 	FLOATING_VIDEO_ASPECT_RATIO,
@@ -18,7 +18,8 @@ function add(video, container, params): void {
 		return;
 	}
 
-	const slotElement = slotService.get(params.slotName).getElement();
+	const adSlot = slotService.get(params.slotName);
+	const slotElement = adSlot.getElement();
 	const videoOverlay: HTMLElement = slotElement.querySelector('.video-overlay');
 	const videoWrapper: HTMLElement = slotElement.querySelector('.video-display-wrapper');
 
@@ -51,6 +52,7 @@ function add(video, container, params): void {
 			const width = videoWrapper.offsetWidth;
 
 			video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
+			adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		};
 		const closeButton = new CloseButton({
 			onClick: disableFloating,
