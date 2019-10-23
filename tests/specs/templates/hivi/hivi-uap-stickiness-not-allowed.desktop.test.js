@@ -19,7 +19,6 @@ describe('Desktop HiVi UAP sticky ads page: top leaderboard', () => {
 			isAboveTheViewport: true,
 		};
 
-		console.log(browser.getWindowSize());
 		helpers.mediumScroll(1000);
 		hiviPage.assertHiViStaticFanTakeoverAdSlot(expectedState);
 	});
