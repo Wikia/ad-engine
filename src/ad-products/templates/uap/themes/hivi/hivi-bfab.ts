@@ -198,7 +198,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		this.adSlot.hide();
 	}
 
-	protected unstickImmediately(stopVideo = false): void {
+	protected unstickImmediately(stopVideo = true): void {
 		if (this.stickiness) {
 			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAB);
 

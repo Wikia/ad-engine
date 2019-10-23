@@ -1,7 +1,11 @@
 {
 	"extends": "../configs/tslint.json",
 	"rules": {
-		"no-implicit-dependencies": [true, "dev", ["@wikia/ad-engine", "@platforms/shared"]],
+		"no-implicit-dependencies": [
+			true,
+			"dev",
+			["@wikia/ad-engine", "@platforms/shared", "@platforms/shared-sports"]
+		],
 		"no-blacklisted-paths": [
 			true,
 			{

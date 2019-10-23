@@ -1,7 +1,9 @@
 import { bootstrapAndGetCmpConsent } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, utils } from '@wikia/ad-engine';
+import { Container } from '@wikia/dependency-injection';
+import { PlatformStartup } from '../shared/platform-startup';
 import { basicContext } from './ad-context';
-import { setupAdEngine } from './setup-ad-engine';
+import { setupGamepediaIoc } from './setup-gamepedia-ioc';
 import './styles.scss';
 
 // RLQ may not exist as AdEngine is loading independently from Resource Loader
@@ -12,7 +14,12 @@ window.RLQ.push(async () => {
 
 	context.extend(basicContext);
 
-	const consent: boolean = await bootstrapAndGetCmpConsent();
+	const [consent, container]: [boolean, Container] = await Promise.all([
+		bootstrapAndGetCmpConsent(),
+		setupGamepediaIoc(),
+	]);
+	const platformStartup = container.get(PlatformStartup);
 
-	setupAdEngine(consent);
+	platformStartup.configure({ isOptedIn: consent, isMobile: !utils.client.isDesktop() });
+	platformStartup.run();
 });

@@ -4,7 +4,7 @@
 interface Window {
 	__cmp?: WindowCMP;
 	XMLHttpRequest?: any;
-	AdEngine_adType?: any;
+	AdEngine_adType?: ManualAdType;
 	ads?: Ads;
 	adsQueue?: any;
 	apstag?: Apstag;
@@ -19,8 +19,6 @@ interface Window {
 	moatYieldReady?: MoatYieldReady;
 	Krux?: KruxQueue;
 	moatjw?: MoatJW;
-	// No types available for Twitch embedded player.
-	Twitch?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;

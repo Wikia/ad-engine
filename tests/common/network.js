@@ -38,10 +38,12 @@ class Network {
 
 	enableLogCapturing() {
 		browser.cdp('Log', 'enable');
+		browser.cdp('Console', 'enable');
 	}
 
 	disableLogCapturing() {
 		browser.cdp('Log', 'disable');
+		browser.cdp('Console', 'disable');
 		this.clearLogs();
 	}
 

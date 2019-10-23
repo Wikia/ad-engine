@@ -1,6 +1,6 @@
 import * as EventEmitter from 'eventemitter3';
-import { AdStackPayload, eventService } from '../';
-import { overscrollListener, slotListener } from '../listeners';
+import { AdStackPayload, eventService, slotTweaker } from '../';
+import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
@@ -71,6 +71,7 @@ export class AdSlot extends EventEmitter {
 
 	static STATUS_BLOCKED = 'blocked';
 	static STATUS_COLLAPSE = 'collapse';
+	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
@@ -98,13 +99,28 @@ export class AdSlot extends EventEmitter {
 	trackOnStatusChanged = false;
 
 	loaded = new Promise<void>((resolve) => {
-		this.once(AdSlot.SLOT_LOADED_EVENT, resolve);
+		this.once(AdSlot.SLOT_LOADED_EVENT, () => {
+			slotTweaker.setDataParam(this, 'slotLoaded', true);
+
+			resolve();
+		});
 	});
 	rendered = new Promise<void>((resolve) => {
-		this.once(AdSlot.SLOT_RENDERED_EVENT, resolve);
+		this.once(
+			AdSlot.SLOT_RENDERED_EVENT,
+			(event: googletag.events.SlotRenderEndedEvent, adType: string) => {
+				this.updateOnRenderEnd(event, adType);
+
+				resolve();
+			},
+		);
 	});
 	viewed = new Promise<void>((resolve) => {
-		this.once(AdSlot.SLOT_VIEWED_EVENT, resolve);
+		this.once(AdSlot.SLOT_VIEWED_EVENT, () => {
+			slotTweaker.setDataParam(this, 'slotViewed', true);
+
+			resolve();
+		});
 	});
 
 	constructor(ad: AdStackPayload) {
@@ -230,7 +246,9 @@ export class AdSlot extends EventEmitter {
 		this.status = status;
 		if (status !== null) {
 			this.emit(status);
-			slotListener.emitStatusChanged(this);
+
+			slotTweaker.setDataParam(this, 'slotResult', this.getStatus());
+			this.emit(AdSlot.SLOT_STATUS_CHANGED);
 		}
 	}
 
@@ -314,12 +332,6 @@ export class AdSlot extends EventEmitter {
 		this.setStatus(status);
 	}
 
-	emitEvent(eventName: null | string = null): void {
-		if (eventName !== null) {
-			slotListener.emitCustomEvent(eventName, this);
-		}
-	}
-
 	updateWinningPbBidderDetails(): void {
 		if (this.targeting.hb_bidder && this.targeting.hb_pb) {
 			this.winningBidderDetails = {
@@ -342,7 +354,7 @@ export class AdSlot extends EventEmitter {
 		}
 	}
 
-	updateOnRenderEnd(event: googletag.events.SlotRenderEndedEvent): void {
+	private updateOnRenderEnd(event: googletag.events.SlotRenderEndedEvent, adType: string): void {
 		if (!event) {
 			return;
 		}
@@ -374,6 +386,18 @@ export class AdSlot extends EventEmitter {
 		this.creativeSize = this.isOutOfPage() ? 'out-of-page' : event.size;
 
 		slotDataParamsUpdater.updateOnRenderEnd(this);
+
+		switch (adType) {
+			case AdSlot.STATUS_COLLAPSE:
+			case AdSlot.STATUS_FORCED_COLLAPSE:
+				this.collapse(adType);
+				break;
+			case 'manual':
+				this.setStatus(adType);
+				break;
+			default:
+				this.success();
+		}
 	}
 
 	/**
@@ -415,7 +439,6 @@ export class AdSlot extends EventEmitter {
 		const added = this.addClass(AdSlot.HIDDEN_CLASS);
 
 		if (added) {
-			logger(AdSlot.LOG_GROUP, 'hide', this.getSlotName());
 			this.emit(AdSlot.HIDDEN_EVENT);
 		}
 	}
@@ -429,7 +452,6 @@ export class AdSlot extends EventEmitter {
 		const removed = this.removeClass(AdSlot.HIDDEN_CLASS);
 
 		if (removed) {
-			logger(AdSlot.LOG_GROUP, 'show', this.getSlotName());
 			this.emit(AdSlot.SHOWED_EVENT);
 		}
 	}
@@ -440,8 +462,17 @@ export class AdSlot extends EventEmitter {
 	emit(event: string | symbol, ...args: any[]): boolean {
 		const result = super.emit(event, ...args);
 
-		eventService.emit(event, this);
+		eventService.emit(event, this, ...args);
+
+		this.logger(this.getSlotName(), event, result, ...args);
+
 		return result;
+	}
+
+	emitEvent(eventName: null | string = null): void {
+		if (eventName !== null) {
+			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
+		}
 	}
 
 	/**

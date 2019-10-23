@@ -6,11 +6,16 @@ const isOptedIn = utils.queryString.get('tracking-opt-in') !== '0';
 
 context.extend(adContext);
 context.set('services.krux.enabled', isKruxEnabled);
+context.set('services.krux.account', 'ns:wikia');
 context.set('options.trackingOptIn', isOptedIn);
 
 krux.call().then(() => {
 	document.getElementById('user').innerText = krux.getUserId();
 	document.getElementById('segments').innerText = krux.getSegments().join('\n');
+});
+
+document.getElementById('fireEvent').addEventListener('click', () => {
+	krux.fireEvent('M-FnMTsI');
 });
 
 setTimeout(() => {

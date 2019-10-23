@@ -32,7 +32,7 @@ export class InstantConfigService {
 		});
 	}
 
-	get<T extends InstantConfigValue>(key: string, defaultValue: T = undefined): T {
+	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T {
 		if (key in this.repository && this.repository[key] !== undefined) {
 			return this.repository[key] as any;
 		}

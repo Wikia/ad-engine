@@ -130,30 +130,10 @@ export default {
 		},
 	},
 	listeners: {
-		twitch: [
-			{
-				onEvent(eventName, params, data) {
-					console.log('🗣 Twitch listener: onEvent', eventName, data);
-				},
-			},
-		],
 		porvata: [
 			{
 				onEvent(eventName, params, data) {
 					console.log(`🗣 Custom listener: onEvent ${eventName}`, data);
-				},
-			},
-		],
-		slot: [
-			{
-				onRenderEnded(adSlot) {
-					console.log(`💸 Custom listener: onRenderEnded ${adSlot.getSlotName()}`);
-				},
-				onImpressionViewable(adSlot) {
-					console.log(`👁 Custom listener: onImpressionViewable ${adSlot.getSlotName()}`);
-				},
-				onCustomEvent(adSlot, data) {
-					console.log(`👁 Custom listener: onCustomEvent ${adSlot.getSlotName()} ${data.status}`);
 				},
 			},
 		],
@@ -358,6 +338,10 @@ export default {
 				},
 			},
 			timeout: 2000,
+		},
+		confiant: {
+			enabled: true,
+			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
 		},
 		instantConfig: {
 			endpoint: 'https://services.wikia-dev.pl/icbm/api/config?app=oasis',
