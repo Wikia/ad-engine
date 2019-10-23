@@ -17,6 +17,10 @@ export function getIndexExchangeContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					siteId: '410303',
 				},
+				'04_BLB': {
+					sizes: [[728, 90]],
+					siteId: '421784',
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					siteId: '410304',

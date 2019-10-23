@@ -18,6 +18,10 @@ export function getPubmaticContext(device: DeviceMode): any {
 					sizes: [[300, 250]],
 					ids: ['Desktop_Footer_300x250_Futhead'],
 				},
+				'04_BLB': {
+					sizes: [[728, 90]],
+					ids: ['Desktop_Footer_728x90_Futhead'],
+				},
 				'06_FMR': {
 					sizes: [[300, 250]],
 					ids: ['Desktop_SecondRightSticky_300x250_Futhead'],
