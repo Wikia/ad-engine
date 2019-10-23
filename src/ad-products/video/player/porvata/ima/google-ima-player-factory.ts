@@ -47,6 +47,25 @@ class GoogleImaPlayerFactory {
 
 				if (videoSettings.isIasTrackingEnabled()) {
 					const config: IasTrackingParams = context.get('options.video.iasTracking.config');
+
+					// ToDo: remove
+					// tslint:disable-next-line
+					console.log('typ', typeof google);
+					// tslint:disable-next-line
+					console.log('typ', typeof adsManager);
+					// tslint:disable-next-line
+					console.log('typ', typeof videoSettings.getContainer());
+					// tslint:disable-next-line
+					console.log('typ', typeof config);
+					// tslint:disable-next-line
+					console.log('json', JSON.stringify(google));
+					// tslint:disable-next-line
+					console.log('json', JSON.stringify(adsManager));
+					// tslint:disable-next-line
+					console.log('json', JSON.stringify(videoSettings.getContainer()));
+					// tslint:disable-next-line
+					console.log('json', JSON.stringify(config));
+
 					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), config);
 				}
 
