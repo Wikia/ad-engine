@@ -107,6 +107,41 @@ export class HiviPage {
 
 		expect(this.isVideoPaused(slot.selector)).to.equal(!isVideoPlaying, 'Video playback state');
 	}
+
+	assertHiViStaticFanTakeoverAdSlot({
+		slot = slots.topLeaderboard,
+		aspectRatio,
+		isCloseButtonDisplayed,
+		isSticked,
+		isAboveTheViewport,
+	}) {
+		expect(slot.isDisplayed(), `${slot.slotName} is not displayed`).to.be.true;
+		expect(this.isSticked(slot)).to.equal(isSticked, `${slot.slotName} stickiness state`);
+		expect(this.isAboveTheViewport(slot)).to.equal(
+			isAboveTheViewport,
+			`${slot.slotName} viewport position state`,
+		);
+		expect(slot.calculateApectRatio()).to.be.within(
+			aspectRatio - 0.1,
+			aspectRatio + 0.1,
+			`${slot.slotName} has incorrect ratio`,
+		);
+
+		if (isSticked) {
+			expect(navbarPage.position).to.be.within(
+				slot.height - 0.1,
+				slot.height + 0.1,
+				'Navbar in incorrect position',
+			);
+		} else {
+			expect(navbarPage.relativePosition).to.equal(0, 'Navbar not on the top of the page');
+		}
+
+		expect($(this.closeButtonSelector).isDisplayed()).to.equal(
+			isCloseButtonDisplayed,
+			'Close button state',
+		);
+	}
 }
 
 export const hiviPage = new HiviPage();
