@@ -27,7 +27,7 @@ export function getBfaaConfig(): BigFancyAdAboveConfig {
 		fullscreenAllowed: true,
 		stickinessAllowed: true,
 		slotsToDisable: ['cdm-zone-06', 'incontent_player'],
-		slotsToEnable: ['cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04'],
+		slotsToEnable: ['cdm-zone-02', 'cdm-zone-04'],
 		navbarManager: null,
 		navbarScrollListener: null,
 
