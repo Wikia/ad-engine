@@ -10,7 +10,7 @@ describe('Desktop HiVi UAP Impact state', () => {
 		before(() => {
 			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
 			slots.topLeaderboard.waitForDisplayed();
-			browser.pause(timeouts.actions); // TODO Fix
+			browser.pause(timeouts.actions);
 		});
 
 		it('Check if slot is visible in viewport', () => {
@@ -114,7 +114,7 @@ describe('Desktop HiVi UAP Resolved state', () => {
 		before(() => {
 			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(true));
 			slots.topLeaderboard.waitForDisplayed();
-			browser.pause(timeouts.actions); // TODO Fix
+			browser.pause(timeouts.actions);
 		});
 
 		it('Check if slot is visible in viewport', () => {

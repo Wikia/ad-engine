@@ -1,9 +1,9 @@
-import { expect } from 'chai';
 import { hiviUap } from '../../../pages/hivi-uap-ad.page';
-import { adSlots } from '../../../common/ad-slots';
 import { timeouts } from '../../../common/timeouts';
 import { network } from '../../../common/network';
 import { helpers } from '../../../common/helpers';
+import { queryStrings } from '../../../common/query-strings';
+import { slots } from '../../../common/slot-registry';
 
 describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 	before(() => {
@@ -16,11 +16,12 @@ describe('Desktop HiVi UAP ads page: top leaderboard', () => {
 		network.disableLogCapturing();
 	});
 
-	it('unresolved: should log message to console that force-close event was triggered by TLB', () => {
-		const message = 'onCustomEvent top_leaderboard force-unstick';
+	it('Impact: should log message to console that force-close event was triggered by TLB', () => {
+		const message = 'Slot tracker: top_leaderboard force-unstick ';
 
-		hiviUap.openUapWithState(false, hiviUap.pageLink, adSlots.topLeaderboard);
-		helpers.mediumScroll(600);
+		helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
+		slots.topLeaderboard.waitForDisplayed();
+		helpers.mediumScroll(400);
 		$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
 
 		$(hiviUap.closeLeaderboardButton).click();
