@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../utils/ioc-default-warning';
 
 export class ContextSetup {
 	constructor() {
-		const className = 'ContextSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('ContextSetup');
 	}
 
 	configureContext(isOptedIn: boolean, isMobile: boolean): void {}

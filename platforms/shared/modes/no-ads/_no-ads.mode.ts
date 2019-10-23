@@ -1,11 +1,10 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../utils/ioc-default-warning';
 
 @Injectable()
 export class NoAdsMode {
 	constructor() {
-		const className = 'NoAdsMode';
-		iocDefaultWarning(className);
+		iocDefaultWarning('NoAdsMode');
 	}
 
 	handleNoAds(): void {}

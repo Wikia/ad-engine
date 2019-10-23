@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class A9ConfigSetup {
 	constructor() {
-		const className = 'A9ConfigSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('A9ConfigSetup');
 	}
 
 	configureA9Context(): void {}

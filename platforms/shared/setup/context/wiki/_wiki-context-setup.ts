@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class WikiContextSetup {
 	constructor() {
-		const className = 'WikiContextSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('WikiContextSetup');
 	}
 
 	configureWikiContext(): void {}

@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class PrebidConfigSetup {
 	constructor() {
-		const className = 'PrebidConfigSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('PrebidConfigSetup');
 	}
 
 	configurePrebidContext(): void {}

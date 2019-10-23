@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class DelayModulesSetup {
 	constructor() {
-		const className = 'DelayModulesSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('DelayModulesSetup');
 	}
 
 	configureDelayModules(): void {}

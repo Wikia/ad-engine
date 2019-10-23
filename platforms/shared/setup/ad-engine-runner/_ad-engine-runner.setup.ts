@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../utils/ioc-default-warning';
 
 export class AdEngineRunnerSetup {
 	constructor() {
-		const className = 'AdEngineRunnerSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('AdEngineRunnerSetup');
 	}
 
 	configureAdEngineRunner(): void {}

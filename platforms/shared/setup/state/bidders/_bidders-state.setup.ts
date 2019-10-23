@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class BiddersStateSetup {
 	constructor() {
-		const className = 'DynamicSlotsSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('DynamicSlotsSetup');
 	}
 
 	configureBiddersState(): void {}

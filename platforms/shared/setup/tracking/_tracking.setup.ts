@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../utils/ioc-default-warning';
 
 export class TrackingSetup {
 	constructor() {
-		const className = 'TemplatesSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('TemplatesSetup');
 	}
 
 	configureTracking(): void {}

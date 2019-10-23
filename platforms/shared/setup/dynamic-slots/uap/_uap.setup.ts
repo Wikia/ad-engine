@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class UapSetup {
 	constructor() {
-		const className = 'UapSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('UapSetup');
 	}
 
 	configureUap(): void {}

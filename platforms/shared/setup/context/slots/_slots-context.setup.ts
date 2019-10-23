@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class SlotsContextSetup {
 	constructor() {
-		const className = 'SlotsContextSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('SlotsContextSetup');
 	}
 
 	configureSlotsContext(): void {}

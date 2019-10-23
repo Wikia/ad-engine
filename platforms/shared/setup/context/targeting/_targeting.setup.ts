@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
 
 export class TargetingSetup {
 	constructor() {
-		const className = 'TargetingSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('TargetingSetup');
 	}
 
 	configureTargetingContext(): void {}

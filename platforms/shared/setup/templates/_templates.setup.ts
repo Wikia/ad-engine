@@ -1,9 +1,8 @@
-import { iocDefaultWarning } from '../../utils/iocDefaultWarning';
+import { iocDefaultWarning } from '../../utils/ioc-default-warning';
 
 export class TemplatesSetup {
 	constructor() {
-		const className = 'TemplatesSetup';
-		iocDefaultWarning(className);
+		iocDefaultWarning('TemplatesSetup');
 	}
 
 	configureTemplates(): void {}
