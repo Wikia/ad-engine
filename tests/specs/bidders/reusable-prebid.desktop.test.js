@@ -22,7 +22,7 @@ describe('Bidders: Reusable prebid template', () => {
 		asserts.assertInhouseCampaign(slots.topLeaderboard);
 
 		browser.pause(1500);
-		helpers.mediumScroll(5000);
+		helpers.slowScroll(5000);
 
 		asserts.assertWikiaAdapterCampaign(slots.repeatableBoxad2);
 	});
