@@ -1,5 +1,3 @@
-import { timeouts } from '../common/timeouts';
-
 export class HiviUapAb {
 	constructor() {
 		this.pageLink = 'templates/hivi-uap-ab/';
@@ -13,11 +11,8 @@ export class HiviUapAb {
 
 		browser.waitUntil(() => {
 			currentSlotParams = JSON.parse($(slot.selector).getAttribute('data-gpt-slot-params'));
-			console.log(currentSlotParams);
-			console.log('/////');
 			return !!currentSlotParams.uap_c;
 		});
-		console.log(currentSlotParams.uap_c);
 
 		return currentSlotParams.uap_c;
 	}
