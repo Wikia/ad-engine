@@ -58,13 +58,13 @@ class GoogleImaPlayerFactory {
 					// tslint:disable-next-line
 					console.log('typ', typeof config);
 					// tslint:disable-next-line
-					console.log('json', JSON.stringify(google));
+					console.log('json', google);
 					// tslint:disable-next-line
-					console.log('json', JSON.stringify(adsManager));
+					console.log('json', adsManager);
 					// tslint:disable-next-line
-					console.log('json', JSON.stringify(videoSettings.getContainer()));
+					console.log('json', videoSettings.getContainer());
 					// tslint:disable-next-line
-					console.log('json', JSON.stringify(config));
+					console.log('json', config);
 
 					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), config);
 				}
