@@ -83,18 +83,18 @@ export class HiviPage {
 			isAboveTheViewport,
 			`${slot.slotName} viewport position state`,
 		);
-		expect(slot.calculateApectRatio()).to.be.above(
+		expect(slot.calculateApectRatio()).to.be.within(
 			aspectRatio - 0.1,
-			`${slot.slotName} has incorrect ratio`,
-		);
-		expect(slot.calculateApectRatio()).to.be.below(
 			aspectRatio + 0.1,
 			`${slot.slotName} has incorrect ratio`,
 		);
 
 		if (isSticked) {
-			expect(navbarPage.position).to.be.above(slot.height - 0.1, 'Navbar in incorrect position');
-			expect(navbarPage.position).to.be.below(slot.height + 0.1, 'Navbar in incorrect position');
+			expect(navbarPage.position).to.be.within(
+				slot.height - 0.1,
+				slot.height + 0.1,
+				'Navbar in incorrect position',
+			);
 		} else {
 			expect(navbarPage.position).to.equal(0, 'Navbar not on the top of the page');
 		}

@@ -18,8 +18,7 @@ describe('Desktop HiVi UAP Impact state', () => {
 		});
 
 		it('Check if impact dimensions are correct', () => {
-			expect(slots.topLeaderboard.calculateApectRatio()).to.be.above(3.9);
-			expect(slots.topLeaderboard.calculateApectRatio()).to.be.below(4.1);
+			expect(slots.topLeaderboard.calculateApectRatio()).to.be.within(3.9, 4.1);
 		});
 
 		it('Check if line item id is from the same campaign', () => {
@@ -83,8 +82,7 @@ describe('Desktop HiVi UAP Impact state', () => {
 		});
 
 		it('Check if impact dimensions are correct', () => {
-			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.above(3.9);
-			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.below(4.1);
+			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.within(3.9, 4.1);
 		});
 
 		it('Check if line item id is from the same campaign', () => {
@@ -122,8 +120,7 @@ describe('Desktop HiVi UAP Resolved state', () => {
 		});
 
 		it('Check if impact dimensions are correct', () => {
-			expect(slots.topLeaderboard.calculateApectRatio()).to.be.above(9.9);
-			expect(slots.topLeaderboard.calculateApectRatio()).to.be.below(10.1);
+			expect(slots.topLeaderboard.calculateApectRatio()).to.be.within(9.9, 10.1);
 		});
 
 		it('Check if line item id is from the same campaign', () => {
@@ -187,8 +184,7 @@ describe('Desktop HiVi UAP Resolved state', () => {
 		});
 
 		it('Check if impact dimensions are correct', () => {
-			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.above(9.9);
-			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.below(10.1);
+			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.within(9.9, 10.1);
 		});
 
 		it('Check if line item id is from the same campaign', () => {

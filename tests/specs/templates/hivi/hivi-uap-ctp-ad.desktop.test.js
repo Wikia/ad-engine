@@ -24,7 +24,7 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 		hiviPage.assertHiViFanTakeoverAdSlot(expectedState);
 	});
 
-	it.only('load page and do nothing', () => {
+	it('load page and click play button', () => {
 		const expectedState = {
 			aspectRatio: hiviPage.desktopImpactAspectRatio,
 			isCloseButtonDisplayed: false,
