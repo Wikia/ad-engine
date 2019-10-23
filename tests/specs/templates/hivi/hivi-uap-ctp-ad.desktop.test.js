@@ -35,7 +35,7 @@ describe('Desktop HiVi UAP CTP ads page: top leaderboard', () => {
 			isAudioEnabled: true,
 		};
 
-		hiviPage.waitForVideoToProgress(1000);
+		slots.topLeaderboard.waitForDisplayed();
 		hiviPage.clickReplay(slots.topLeaderboard);
 		hiviPage.waitForVideoToProgress(1000);
 		hiviPage.assertHiViFanTakeoverAdSlot(expectedState);
