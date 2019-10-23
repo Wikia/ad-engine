@@ -13,7 +13,6 @@ describe('sticky-tlb template', () => {
 	});
 
 	beforeEach(() => {
-		helpers.fastScroll(-2000);
 		network.clearLogs();
 
 		helpers.navigateToUrl(
@@ -31,7 +30,7 @@ describe('sticky-tlb template', () => {
 		helpers.fastScroll(5);
 		expect(stickyTlb.isAdSticked()).to.be.true;
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(600);
+		helpers.mediumScroll(600);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		expect(network.checkIfMessageIsInLogs('unsticked')).to.be.true;
@@ -40,7 +39,7 @@ describe('sticky-tlb template', () => {
 
 	it('should not stick if viewability is counted', () => {
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		expect(network.checkIfMessageIsInLogs('unsticked')).to.be.true;
@@ -53,7 +52,7 @@ describe('sticky-tlb template', () => {
 			queryStrings.constructSingleGeoInstantGlobal('XX', 0.00000001),
 		);
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		expect(network.checkIfMessageIsInLogs('unsticked'), 'Unsticked event recored').to.be.false;

@@ -37,7 +37,7 @@ describe('Common slots: top leaderboard', () => {
 	});
 
 	it('Check if line item id is from the inhouse campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
+		slots.topLeaderboard.waitForLineItemIdAttribute();
 		expect(slots.topLeaderboard.lineItemId).to.equal(
 			adSlots.inhouseLineItemId,
 			'Line item ID mismatch',
@@ -47,21 +47,12 @@ describe('Common slots: top leaderboard', () => {
 	it('Check if redirect on click works properly', () => {
 		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
-
-	//TODO visual
-	it.skip('Check visual regression in top leaderboard', () => {
-		slots.topLeaderboard.waitForDisplayed();
-		helpers.checkVisualRegression(browser.checkElement(adSlots.topLeaderboard));
-	});
 });
 
 describe('Common slots: top boxad', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		slots.topBoxad.waitForDisplayed();
-		adStatus = slots.topBoxad.status;
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -75,28 +66,20 @@ describe('Common slots: top boxad', () => {
 	});
 
 	it('Check if slot is visible in viewport', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect(slots.topBoxad.isDisplayedInViewport(), 'Not in viewport').to.be.true;
 	});
 
 	it('Check if line item id is from the inhouse campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
+		slots.topBoxad.waitForLineItemIdAttribute();
 		expect(slots.topBoxad.lineItemId).to.equal(adSlots.inhouseLineItemId, 'Line item ID mismatch');
 	});
 
 	it('Check if redirect on click works', () => {
 		expect(helpers.adRedirect(adSlots.topBoxad), 'Wrong link after redirect').to.be.true;
 	});
-
-	//TODO visual
-	it.skip('Check visual regression in top boxad', () => {
-		slots.topBoxad.waitForDisplayed();
-		browser.checkElement(adSlots.topBoxad);
-	});
 });
 
 describe('Common slots: rail module', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
 		helpers.slowScroll(150);
@@ -119,14 +102,11 @@ describe('Common slots: rail module', () => {
 });
 
 describe('Common slots: incontent boxad', () => {
-	let adStatus;
-
 	before(() => {
 		helpers.navigateToUrl(commonAds.pageLink);
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		slots.incontentBoxad.waitForDisplayed();
-		slots.topBoxad.scrollIntoView();
-		adStatus = slots.topBoxad.status;
+		slots.incontentBoxad.scrollIntoView();
 	});
 
 	it('Check if dimensions are correct', () => {
@@ -140,25 +120,15 @@ describe('Common slots: incontent boxad', () => {
 	});
 
 	it('Check if slot is visible in viewport', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect(slots.topBoxad.isDisplayedInViewport(), 'Not in viewport').to.be.true;
 	});
 
 	it('Check if line item id is from the inhouse campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
+		slots.incontentBoxad.waitForLineItemIdAttribute();
 		expect(slots.incontentBoxad.lineItemId).to.equal(
 			adSlots.inhouseLineItemId,
 			'Line item ID mismatch',
 		);
-	});
-
-	it('Check if redirect on click works properly', () => {
-		expect(helpers.adRedirect(adSlots.incontentBoxad), 'Wrong link after redirect').to.be.true;
-	});
-
-	// TODO Visual
-	it.skip('Check visual regression in incontent boxad', () => {
-		slots.incontentBoxad.waitForDisplayed();
-		browser.checkElement(adSlots.incontentBoxad);
 	});
 });
 
@@ -184,7 +154,7 @@ describe('Common slots: bottom leaderboard', () => {
 	});
 
 	it('Check if line item id is from the inhouse campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.bottomLeaderboard);
+		slots.bottomLeaderboard.waitForLineItemIdAttribute();
 		expect(slots.bottomLeaderboard.lineItemId).to.equal(
 			adSlots.inhouseLineItemId,
 			'Line item ID mismatch',

@@ -61,8 +61,8 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
-		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(
+		slots.topLeaderboard.waitForLineItemIdAttribute();
+		expect(slots.topLeaderboard.lineItemId).to.equal(
 			hiviUapStatic.firstCall,
 			'Line item ID mismatch',
 		);
@@ -97,11 +97,8 @@ describe('Mobile HiVi UAP static ads page: top boxad', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(helpers.getLineItemId(adSlots.topBoxad)).to.equal(
-			hiviUapStatic.secondCall,
-			'Line item ID mismatch',
-		);
+		slots.topBoxad.waitForLineItemIdAttribute();
+		expect(slots.topBoxad.lineItemId).to.equal(hiviUapStatic.secondCall, 'Line item ID mismatch');
 	});
 });
 
@@ -112,8 +109,8 @@ describe('Mobile HiVi UAP static ads page: incontent boxad', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
-		expect(helpers.getLineItemId(adSlots.incontentBoxad)).to.equal(
+		slots.incontentBoxad.waitForLineItemIdAttribute();
+		expect(slots.incontentBoxad.lineItemId).to.equal(
 			hiviUapStatic.secondCall,
 			'Line item ID mismatch',
 		);

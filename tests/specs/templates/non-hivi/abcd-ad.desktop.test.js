@@ -31,8 +31,8 @@ describe('ABCD ads page: top leaderboard', () => {
 	});
 
 	it('Check if line item id is from the proper campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
-		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(
+		slots.topLeaderboard.waitForLineItemIdAttribute();
+		expect(slots.topLeaderboard.lineItemId).to.equal(
 			abcdAd.topLeaderboardLineItemId,
 			'Line item ID mismatch',
 		);

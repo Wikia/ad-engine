@@ -85,11 +85,8 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 	});
 
 	it('Check if the line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topLeaderboard);
-		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(
-			hiviUap.firstCall,
-			'Line item ID mismatch',
-		);
+		slots.topLeaderboard.waitForLineItemIdAttribute();
+		expect(slots.topLeaderboard.lineItemId).to.equal(hiviUap.firstCall, 'Line item ID mismatch');
 	});
 
 	it('Check closing top leaderboard after clicking the button', () => {
@@ -119,11 +116,8 @@ describe('Mobile HiVi UAP ads page: top boxad', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.topBoxad);
-		expect(helpers.getLineItemId(adSlots.topBoxad)).to.equal(
-			hiviUap.secondCall,
-			'Line item ID mismatch',
-		);
+		slots.topBoxad.waitForLineItemIdAttribute();
+		expect(slots.topBoxad.lineItemId).to.equal(hiviUap.secondCall, 'Line item ID mismatch');
 	});
 });
 
@@ -136,10 +130,7 @@ describe('Mobile HiVi UAP ads page: incontent boxad', () => {
 	});
 
 	it('Check if line item id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.incontentBoxad);
-		expect(helpers.getLineItemId(adSlots.incontentBoxad)).to.equal(
-			hiviUap.secondCall,
-			'Line item ID mismatch',
-		);
+		slots.incontentBoxad.waitForLineItemIdAttribute();
+		expect(slots.incontentBoxad.lineItemId).to.equal(hiviUap.secondCall, 'Line item ID mismatch');
 	});
 });
