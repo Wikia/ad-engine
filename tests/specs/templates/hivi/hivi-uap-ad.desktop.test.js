@@ -38,8 +38,7 @@ describe('Desktop HiVi UAP Impact state', () => {
 			browser.refresh();
 			slots.topLeaderboard.waitForDisplayed();
 			helpers.mediumScroll(1000);
-			$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
-			$(hiviUap.closeLeaderboardButton).click();
+			hiviUap.closeLeaderboard();
 			helpers.mediumScroll(50);
 			expect(slots.topLeaderboard.isDisplayedInViewport()).to.be.false;
 		});
@@ -75,18 +74,26 @@ describe('Desktop HiVi UAP Impact state', () => {
 			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(false));
 			slots.topLeaderboard.waitForDisplayed();
 			helpers.mediumScroll(500);
-			$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
-			$(hiviUap.closeLeaderboardButton).click();
+			hiviUap.closeLeaderboard();
 			slots.bottomLeaderboard.scrollIntoView();
 			slots.bottomLeaderboard.scrollIntoView(true);
+			helpers.mediumScroll(150);
 		});
 
-		it('Check if slot is visible in viewport', () => {
-			expect(slots.bottomLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
-		});
+		it('should check the state', () => {
+			const expectedState = {
+				aspectRatio: hiviPage.desktopImpactAspectRatio,
+				isCloseButtonDisplayed: false,
+				isReplayButtonDisplayed: false,
+				isSticked: false,
+				isAboveTheViewport: false,
+				isVideoPlaying: true,
+				isAudioEnabled: false,
+				slot: slots.bottomLeaderboard,
+			};
 
-		it('Check if impact dimensions are correct', () => {
-			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.within(3.9, 4.1);
+			hiviPage.waitForVideoToProgress(1000, slots.bottomLeaderboard);
+			hiviPage.assertHiViFanTakeoverAdSlot(expectedState);
 		});
 
 		it('Check if line item id is from the same campaign', () => {
@@ -95,18 +102,6 @@ describe('Desktop HiVi UAP Impact state', () => {
 				hiviUap.secondCall,
 				'Line item ID mismatch',
 			);
-		});
-		it('Check if video player is displayed', () => {
-			helpers.waitToStartPlaying();
-
-			expect($(`${slots.bottomLeaderboard.selector} ${hiviUap.videoPlayer}`).isDisplayed()).to.be
-				.true;
-		});
-
-		it('Check if video is displayed', () => {
-			helpers.waitToStartPlaying();
-			expect($(`${slots.bottomLeaderboard.selector} ${hiviUap.videoPlayer}`).isDisplayed()).to.be
-				.true;
 		});
 	});
 });
@@ -143,8 +138,7 @@ describe('Desktop HiVi UAP Resolved state', () => {
 			browser.refresh();
 			slots.topLeaderboard.waitForDisplayed();
 			helpers.mediumScroll(1000);
-			$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
-			$(hiviUap.closeLeaderboardButton).click();
+			hiviUap.closeLeaderboard();
 			helpers.mediumScroll(50);
 			expect(slots.topLeaderboard.isDisplayedInViewport()).to.be.false;
 		});
@@ -179,18 +173,26 @@ describe('Desktop HiVi UAP Resolved state', () => {
 			helpers.navigateToUrl(hiviUap.pageLink, queryStrings.getResolvedState(true));
 			slots.topLeaderboard.waitForDisplayed();
 			helpers.mediumScroll(500);
-			$(hiviUap.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
-			$(hiviUap.closeLeaderboardButton).click();
+			hiviUap.closeLeaderboard();
 			slots.bottomLeaderboard.scrollIntoView();
 			slots.bottomLeaderboard.scrollIntoView(true);
+			helpers.mediumScroll(150);
 		});
 
-		it('Check if slot is visible in viewport', () => {
-			expect(slots.bottomLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
-		});
+		it('should check the state', () => {
+			const expectedState = {
+				aspectRatio: hiviPage.desktopResolvedAspectRatio,
+				isCloseButtonDisplayed: false,
+				isReplayButtonDisplayed: false,
+				isSticked: false,
+				isAboveTheViewport: false,
+				isVideoPlaying: true,
+				isAudioEnabled: false,
+				slot: slots.bottomLeaderboard,
+			};
 
-		it('Check if impact dimensions are correct', () => {
-			expect(slots.bottomLeaderboard.calculateApectRatio()).to.be.within(9.9, 10.1);
+			hiviPage.waitForVideoToProgress(1000, slots.bottomLeaderboard);
+			hiviPage.assertHiViFanTakeoverAdSlot(expectedState);
 		});
 
 		it('Check if line item id is from the same campaign', () => {
@@ -199,12 +201,6 @@ describe('Desktop HiVi UAP Resolved state', () => {
 				hiviUap.secondCall,
 				'Line item ID mismatch',
 			);
-		});
-		it('Check if video player is displayed', () => {
-			helpers.waitToStartPlaying();
-
-			expect($(`${slots.bottomLeaderboard.selector} ${hiviUap.videoPlayer}`).isDisplayed()).to.be
-				.true;
 		});
 	});
 });

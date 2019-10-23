@@ -43,10 +43,7 @@ export class AdSlot {
 	}
 
 	get relativeLocationToViewport() {
-		return browser.execute(
-			(givenSelector) => document.querySelector(givenSelector).getBoundingClientRect().y,
-			this.selector,
-		);
+		return helpers.getRelativeLocationToViewport(this.selector);
 	}
 
 	get status() {

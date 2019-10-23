@@ -55,7 +55,7 @@ export class HiviPage {
 		browser.switchToFrame(slot.element.$(this.videoIframe));
 		$(this.replayButtonSelector).waitForExist(timeouts.standard);
 		$(this.replayButtonSelector).click();
-		this.waitForVideoToProgress(5000);
+		this.waitForVideoToProgress(5000, slot);
 		browser.switchToFrame(null);
 	}
 
@@ -63,8 +63,8 @@ export class HiviPage {
 		browser.pause(timeout);
 	}
 
-	waitForVideoToProgress(videoDuration) {
-		$(this.hiddenVideoSelector).waitForExist(timeouts.standard, true);
+	waitForVideoToProgress(videoDuration, slot = slots.topLeaderboard) {
+		$(`${slot.selector} ${this.hiddenVideoSelector}`).waitForExist(timeouts.standard, true);
 		browser.pause(videoDuration);
 	}
 
@@ -96,7 +96,7 @@ export class HiviPage {
 				'Navbar in incorrect position',
 			);
 		} else {
-			expect(navbarPage.position).to.equal(0, 'Navbar not on the top of the page');
+			expect(navbarPage.relativePosition).to.equal(0, 'Navbar not on the top of the page');
 		}
 
 		expect($(this.closeButtonSelector).isDisplayed()).to.equal(

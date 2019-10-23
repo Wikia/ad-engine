@@ -31,6 +31,7 @@ export class HiviUap {
 	}
 
 	closeLeaderboard() {
+		$(this.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
 		$(this.closeLeaderboardButton).click();
 	}
 }

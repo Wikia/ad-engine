@@ -137,6 +137,13 @@ class Helpers {
 		);
 	}
 
+	getRelativeLocationToViewport(selector) {
+		return browser.execute(
+			(givenSelector) => document.querySelector(givenSelector).getBoundingClientRect().y,
+			selector,
+		);
+	}
+
 	/**
 	 * Returns line item ID of the given slot.
 	 * @param adSlot slot to get line item ID from
