@@ -58,22 +58,6 @@ class AdSlots {
 	}
 
 	/**
-	 * Waits for the adslot\'s "data-slot-result" attribute to receive desired parameter.
-	 * @param adSlot slot to receive the parameter
-	 * @param expectedResult parameter that result should equal to
-	 */
-	waitForSlotResult(adSlot, expectedResult) {
-		browser.waitUntil(
-			() => $(adSlot).getAttribute(this.resultAttribute) === expectedResult,
-			timeouts.standard,
-			`Result mismatch: expected ${expectedResult}, got ${$(adSlot).getAttribute(
-				this.resultAttribute,
-			)}`,
-			timeouts.interval,
-		);
-	}
-
-	/**
 	 * Calculates height based on the actual width and given ratio.
 	 * @param adSlot slot to measure
 	 * @param heightRatio ratio to use as a divider

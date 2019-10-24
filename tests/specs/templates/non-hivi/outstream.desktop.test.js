@@ -59,13 +59,6 @@ describe('Outstream ads - Direct Porvata', () => {
 		slots.incontentPlayer.scrollIntoView();
 	});
 
-	it.skip('Check if Direct Porvata player is visible', () => {
-		expect(
-			$(`${slots.incontentPlayer.selector} ${outstream.videoPlayer}`).isDisplayed(),
-			'Incontent not visible',
-		).to.be.true;
-	});
-
 	it('Check if Direct Porvata is loaded directly', () => {
 		expect(network.checkIfHasResponse(outstream.porvataSlot)).to.be.false;
 	});

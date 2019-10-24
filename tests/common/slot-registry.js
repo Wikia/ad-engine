@@ -4,7 +4,7 @@ import { commonAds } from '../pages/common-ad.page';
 const slotsContext = {
 	mobile: {
 		bottomLeaderboard: {
-			scrollTrigger: '.bottom-leaderboard',
+			scrollTrigger: 'footer',
 			slotName: 'bottom_leaderboard',
 		},
 		featured: {
@@ -16,8 +16,8 @@ const slotsContext = {
 		},
 		incontentBoxad: {
 			position: 'incontent_boxad',
-			scrollTrigger: '.incontent-boxad,.incontent-boxad-1',
-			slotName: 'incontent_boxad_1',
+			scrollTrigger: '.rail-module',
+			slotName: 'incontent_boxad',
 		},
 		incontentPlayer: {
 			slotName: 'incontent_player',
