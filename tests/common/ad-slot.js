@@ -170,7 +170,9 @@ export class AdSlot {
 
 	waitForSlotViewed() {
 		browser.waitUntil(
-			() => this.element.getAttribute(this.viewedAttribute) === 'true',
+			() => {
+				return this.element.getAttribute(this.viewedAttribute) === 'true';
+			},
 			timeouts.standard,
 			'Slot has not been viewed',
 			timeouts.interval,

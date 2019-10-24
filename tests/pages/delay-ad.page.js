@@ -32,6 +32,11 @@ class DelayAd {
 			timeouts.interval,
 		);
 	}
+
+	loadAds() {
+		$(this.loadAdsButton).waitForDisplayed(timeouts.standard);
+		$(this.loadAdsButton).click();
+	}
 }
 
 export const delayAd = new DelayAd();
