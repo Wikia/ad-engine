@@ -13,8 +13,6 @@ class AdSlots {
 		this.incontentPlayer = '#incontent_player';
 		this.invisibleHighImpact = '#invisible_high_impact_2';
 
-		this.incontentWidth = 628; // shared between incontents; fixed value
-		this.incontentHeight = 250; // shared between incontents; fixed value
 		this.resultAttribute = 'data-slot-result';
 		this.viewedAttribute = 'data-slot-viewed';
 		this.adLoaded = 'success';
@@ -74,34 +72,6 @@ class AdSlots {
 			)}`,
 			timeouts.interval,
 		);
-	}
-
-	/**
-	 * Checks the slot\'s dimensions. Returns result and (if present) error messages.
-	 * @param adSlot slot dimensions are taken from
-	 * @param width slot\'s width
-	 * @param height slot\'s height
-	 * @returns {{status: boolean, capturedErrors: string}} status: true if there were no errors,
-	 * false if errors were found; capturedErrors: error message.
-	 */
-	checkSlotSize(adSlot, width, height) {
-		let result = true;
-		let error = '';
-		const slotSize = $(adSlot).getSize();
-
-		if (slotSize.width !== width) {
-			result = false;
-			error += `Width incorrect: expected ${slotSize.width} to equal ${width}\n`;
-		}
-		if (slotSize.height !== height) {
-			result = false;
-			error += `Height incorrect: expected ${slotSize.height} to equal ${height}\n`;
-		}
-
-		return {
-			status: result,
-			capturedErrors: error,
-		};
 	}
 
 	/**

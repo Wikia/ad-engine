@@ -5,45 +5,34 @@ import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 import { slots } from '../../common/slot-registry';
 
-describe('Delay ads page: top leaderboard', () => {
-	let adStatus;
-
+describe.only('Delay ads page: top leaderboard', () => {
 	beforeEach(() => {
 		helpers.navigateToUrl(delayAd.pageLink);
 		$(delayAd.loadAdsButton).waitForDisplayed(timeouts.standard);
 	});
 
 	it('Check if slot is not immediately visible', () => {
-		$(`${slots.topLeaderboard.selector}[${adSlots.resultAttribute}]`).waitForExist(
-			timeouts.standard,
-			true,
-		);
+		expect(slots.topLeaderboard.hasChildren()).to.be.false;
 	});
 
 	it('Check if slot is visible in viewport after delay', () => {
 		delayAd.waitToLoadAds();
-		adStatus = slots.topLeaderboard.status;
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect(slots.topLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
 	});
 
 	it('Check if slot shows up after clicking the button and if it was viewed', () => {
 		$(delayAd.loadAdsButton).click();
 		slots.topBoxad.waitForDisplayed();
-		adSlots.waitForSlotViewed(adSlots.topLeaderboard);
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
-		expect($(adSlots.topLeaderboard).getAttribute(adSlots.resultAttribute)).to.equal(
-			adSlots.adLoaded,
+		slots.topLeaderboard.waitForSlotViewed();
+		expect(slots.topLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
+		expect(slots.topLeaderboard.getAttribute(delayAd.resultAttribute)).to.equal(
+			delayAd.adLoaded,
 			'Top leaderboard slot failed to load',
 		);
-		expect($(adSlots.topLeaderboard).getAttribute(adSlots.viewedAttribute)).to.equal(
-			adSlots.adViewed,
+		expect(slots.topLeaderboard.getAttribute(delayAd.viewedAttribute)).to.equal(
+			delayAd.adViewed,
 			'Top leaderboard slot has not been counted as viewed',
 		);
-	});
-
-	it('Check if redirect on click works properly', () => {
-		$(delayAd.loadAdsButton).click();
-		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
 	});
 });
 

@@ -4,6 +4,7 @@ import { timeouts } from './timeouts';
 
 export class AdSlot {
 	resultAttribute = 'data-slot-result';
+	viewedAttribute = 'data-slot-viewed';
 
 	get element() {
 		return $(this.selector);
@@ -165,5 +166,14 @@ export class AdSlot {
 				`Expected ${this.resultAttribute} to equal "${expected}" but it is ${result}.`,
 			);
 		}
+	}
+
+	waitForSlotViewed() {
+		browser.waitUntil(
+			() => this.element.getAttribute(this.viewedAttribute) === 'true',
+			timeouts.standard,
+			'Slot has not been viewed',
+			timeouts.interval,
+		);
 	}
 }

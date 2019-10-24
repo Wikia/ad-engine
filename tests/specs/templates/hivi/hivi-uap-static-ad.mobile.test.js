@@ -72,19 +72,10 @@ describe('Mobile HiVi UAP static ads page: top leaderboard', () => {
 		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
-	it('Check if redirect on tap works', () => {
-		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
-	});
-
 	it('Check if closing top leaderboard works', () => {
 		$(hiviUapStatic.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
 		$(hiviUapStatic.closeLeaderboardButton).click();
 		adSlots.waitForSlotCollapsedManually(adSlots.topLeaderboard);
-	});
-
-	// TODO Visual
-	it.skip('Check visual regression in top leaderboard', () => {
-		browser.checkElement(adSlots.topLeaderboard);
 	});
 });
 

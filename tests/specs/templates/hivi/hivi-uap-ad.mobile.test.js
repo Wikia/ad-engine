@@ -80,10 +80,6 @@ describe('Mobile HiVi UAP ads page: top leaderboard', () => {
 		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
 
-	it('Check redirect to new page', () => {
-		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
-	});
-
 	it('Check if the line item id is from the same campaign', () => {
 		slots.topLeaderboard.waitForLineItemIdAttribute();
 		expect(slots.topLeaderboard.lineItemId).to.equal(hiviUap.firstCall, 'Line item ID mismatch');

@@ -134,36 +134,6 @@ class Helpers {
 	}
 
 	/**
-	 * It checks redirect on click and returns result.
-	 * @param adSlot slot to click
-	 * @param url expected url
-	 * @param parentDomain starting url
-	 * @returns {boolean} returns false if there were no errors, else it returns true
-	 */
-	adRedirect(adSlot, url = this.clickThroughUrlDomain, parentDomain) {
-		let result = false;
-		if (!parentDomain) {
-			parentDomain = browser.getUrl();
-		}
-
-		this.waitForLineItemIdAttribute(adSlot);
-		$(adSlot).waitForEnabled(timeouts.standard);
-		$(adSlot).click();
-		browser.switchWindow(url);
-		this.waitForUrl(url);
-
-		if (browser.getUrl().includes(url)) {
-			result = true;
-		}
-		if (browser.getUrl() !== parentDomain) {
-			browser.closeWindow();
-		}
-		browser.switchWindow(parentDomain);
-
-		return result;
-	}
-
-	/**
 	 * Switches focus to a given frame. If you want to go back to default frame, use browser.frame()
 	 * instead.
 	 * @param frameID name of the frame to change focus to

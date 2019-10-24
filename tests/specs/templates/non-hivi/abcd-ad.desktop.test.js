@@ -41,10 +41,6 @@ describe('ABCD ads page: top leaderboard', () => {
 	it('Check if navbar is visible in viewport', () => {
 		expect($(helpers.navbar).isDisplayedInViewport(), 'Navbar not visible').to.be.true;
 	});
-
-	it('Check if redirect on click works', () => {
-		expect(helpers.adRedirect(adSlots.topLeaderboard), 'Wrong link after redirect').to.be.true;
-	});
 });
 
 describe('ABCD ads page: video player in leaderboard', () => {
