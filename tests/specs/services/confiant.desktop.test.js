@@ -3,6 +3,7 @@ import { confiant } from '../../pages/confiant.page';
 import { network } from '../../common/network';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
+import { slots } from '../../common/slot-registry';
 
 describe('It will test Confiant page', () => {
 	before(() => {
