@@ -14,7 +14,7 @@ describe.skip('Floating rail ads page: floating rail', () => {
 	});
 
 	it('Check if rail scrolls with the content', () => {
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		expect($(floatingRailAd.rail).getAttribute(helpers.classProperty)).to.equal(
 			floatingRailAd.attributeRailScrolling,
 			'Rail did not scroll',
