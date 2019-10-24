@@ -1,22 +1,21 @@
 import { expect } from 'chai';
 import { adSlots } from './ad-slots';
-import { helpers } from './helpers';
 
 class Asserts {
-	assertSlotLineItemId(slotName, expectedLineItemId) {
-		helpers.waitForLineItemIdAttribute(slotName);
-		expect(helpers.getLineItemId(slotName)).to.equal(expectedLineItemId, 'Line item ID mismatch');
+	assertSlotLineItemId(slot, expectedLineItemId) {
+		slot.waitForLineItemIdAttribute();
+		expect(slot.lineItemId).to.equal(expectedLineItemId, 'Line item ID mismatch');
 	}
 
-	assertInhouseCampaign(slotName) {
-		this.assertSlotLineItemId(slotName, adSlots.inhouseLineItemId);
+	assertInhouseCampaign(slot) {
+		this.assertSlotLineItemId(slot, adSlots.inhouseLineItemId);
 	}
 
-	assertWikiaAdapterCampaign(slotName) {
-		this.assertSlotLineItemId(slotName, adSlots.wikiaAdapterLineItemId);
+	assertWikiaAdapterCampaign(slot) {
+		this.assertSlotLineItemId(slot, adSlots.wikiaAdapterLineItemId);
 	}
-	assertAmazonCampaign(slotName) {
-		this.assertSlotLineItemId(slotName, adSlots.amazonLineItemId);
+	assertAmazonCampaign(slot) {
+		this.assertSlotLineItemId(slot, adSlots.amazonLineItemId);
 	}
 }
 

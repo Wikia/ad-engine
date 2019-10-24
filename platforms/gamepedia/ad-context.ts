@@ -11,10 +11,6 @@ export const basicContext = {
 			threshold: 100,
 		},
 	},
-	listeners: {
-		porvata: [],
-		slot: [],
-	},
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
@@ -99,7 +95,7 @@ export const basicContext = {
 			siteId: '1066',
 		},
 		instantConfig: {
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=gamepedia',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
 		taxonomy: {
@@ -110,12 +106,6 @@ export const basicContext = {
 	state: {
 		adStack: [],
 		isMobile: false,
-	},
-	targeting: {
-		ae3: '1',
-		skin: 'gamepedia',
-		uap: 'none',
-		uap_c: 'none',
 	},
 	vast: {
 		adUnitId:

@@ -27,7 +27,7 @@ class BTRec {
 	async run(): Promise<void> {
 		this.placementsMap = context.get('options.wad.btRec.placementsMap') || {};
 
-		if (!context.get('options.wad.btRec.enabled') || !context.get('options.wad.blocking')) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -47,20 +47,16 @@ class BTRec {
 	}
 
 	/**
-	 * Mark ad slots as ready for rec operations
+	 * Checks if BT rec is enabled
 	 */
-	private markAdSlots(): void {
-		Object.keys(this.placementsMap).forEach((key) => {
-			if (!this.placementsMap[key].lazy) {
-				this.duplicateSlot(key);
-			}
-		});
+	isEnabled(): boolean {
+		return context.get('options.wad.btRec.enabled') && context.get('options.wad.blocking');
 	}
 
 	/**
 	 * Duplicates slots before rec code execution
 	 */
-	private duplicateSlot(slotName: string): Node | boolean {
+	duplicateSlot(slotName: string): Node | boolean {
 		const placementClass = 'bt-uid-tg';
 		const slot = document.getElementById(slotName);
 
@@ -69,7 +65,7 @@ class BTRec {
 			const node = document.createElement('span');
 
 			node.classList.add(placementClass);
-			node.dataset['uid'] = placement.uid;
+			node.dataset['uid'] = this.getPlacementId(slotName);
 			node.dataset['style'] = '';
 
 			if (placement.style) {
@@ -77,18 +73,18 @@ class BTRec {
 					node.dataset['style'] += `${key}: ${placement.style[key]};`;
 
 					if (isDebug) {
-						node.style[key] = placement.style[key];
+						node.style.setProperty(key, placement.style[key]);
 					}
 				});
 			}
 
 			if (isDebug) {
-				node.style.width = `${placement.size.width}px`;
-				node.style.height = `${placement.size.height}px`;
-				node.style.background = '#00D6D6';
-				node.style.display = 'inline-block';
+				node.style.setProperty('width', `${placement.size.width}px`);
+				node.style.setProperty('height', `${placement.size.height}px`);
+				node.style.setProperty('background', '#00D6D6');
+				node.style.setProperty('display', 'inline-block');
 			} else {
-				node.style.display = 'none';
+				node.style.setProperty('display', 'none');
 			}
 
 			slot.parentNode.insertBefore(node, slot.previousSibling);
@@ -100,6 +96,33 @@ class BTRec {
 	}
 
 	/**
+	 * Get slot BT placement uid
+	 */
+	getPlacementId(slotName): string {
+		return this.placementsMap[slotName].uid || '';
+	}
+
+	/**
+	 * Force trigger of BT code
+	 */
+	triggerScript(): void {
+		if (!isDebug && this.bt && this.bt.clearThrough) {
+			this.bt.clearThrough();
+		}
+	}
+
+	/**
+	 * Mark ad slots as ready for rec operations
+	 */
+	private markAdSlots(): void {
+		Object.keys(this.placementsMap).forEach((key) => {
+			if (!this.placementsMap[key].lazy) {
+				this.duplicateSlot(key);
+			}
+		});
+	}
+
+	/**
 	 * Injects BT script
 	 */
 	private loadScript(): Promise<Event> {
@@ -108,15 +131,6 @@ class BTRec {
 
 		return utils.scriptLoader.loadScript(btLibraryUrl, 'text/javascript', false, document.head
 			.lastChild as HTMLElement);
-	}
-
-	/**
-	 * Force trigger of BT code
-	 */
-	private triggerScript(): void {
-		if (!isDebug && this.bt && this.bt.clearThrough) {
-			this.bt.clearThrough();
-		}
 	}
 }
 

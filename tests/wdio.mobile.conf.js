@@ -5,6 +5,7 @@ const merge = require('deepmerge');
 const wdioConf = require('./wdio.conf.js');
 
 global.envIsDesktop = false;
+global.platform = 'mobile';
 
 exports.config = merge(
 	wdioConf.config,

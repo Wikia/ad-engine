@@ -1,1 +1,1 @@
-export * from './setup-bidders';
+export * from './bidders-state-setup';

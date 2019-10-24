@@ -2,7 +2,7 @@ import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
-import { events, eventService } from './events';
+import { eventService } from './events';
 import { slotInjector } from './slot-injector';
 
 const logGroup = 'slot-repeater';
@@ -48,7 +48,7 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 	const container = slotInjector.inject(slotName);
 
-	if (!!container && context.get('options.gamLazyLoading.enabled')) {
+	if (!!container && context.get('options.nonLazyLoading.enabled')) {
 		context.get('state.adStack').push({
 			id: slotName,
 		});
@@ -64,25 +64,21 @@ function repeatSlot(adSlot: AdSlot): boolean {
 	return false;
 }
 
-function handleSlotRepeating(adSlot: AdSlot): boolean {
-	if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-		return repeatSlot(adSlot);
-	}
-
-	return false;
-}
-
 class SlotRepeater {
 	init(): void {
-		if (context.get('options.slotRepeater')) {
-			if (context.get('options.gamLazyLoading.enabled')) {
-				eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => handleSlotRepeating(adSlot));
-			} else {
-				context.push('listeners.slot', {
-					onRenderEnded: (adSlot: AdSlot) => handleSlotRepeating(adSlot),
-				});
-			}
+		if (!context.get('options.nonLazyLoading.enabled')) {
+			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+				return this.handleSlotRepeating(adSlot);
+			});
 		}
+	}
+
+	handleSlotRepeating(adSlot: AdSlot): boolean {
+		if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+			return repeatSlot(adSlot);
+		}
+
+		return false;
 	}
 }
 

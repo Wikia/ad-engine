@@ -1,4 +1,4 @@
 interface KruxQueue {
-	(): any;
+	(...args: any[]): any;
 	q?: any[];
 }

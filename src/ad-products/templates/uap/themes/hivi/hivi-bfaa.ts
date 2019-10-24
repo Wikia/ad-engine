@@ -336,7 +336,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		this.unstickImmediately();
 	}
 
-	protected unstickImmediately(stopVideo = false): void {
+	protected unstickImmediately(stopVideo = true): void {
 		scrollListener.removeCallback(this.scrollListener);
 		this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 
