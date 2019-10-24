@@ -1,21 +1,18 @@
 import { expect } from 'chai';
 import { blockBtfAd } from '../../pages/kill-codes.page';
 import { slots } from '../../common/slot-registry';
-import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 
 describe('Kill codes ads page', () => {
 	it.only('Check if BTF boxad slot is visible when disableBtf set to false', () => {
 		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(false));
-		helpers.slowScroll(2000);
 		slots.topBoxad.scrollIntoView();
 		expect(slots.topBoxad.isDisplayed(), 'Top boxad not visible').to.be.true;
 	});
 
 	it('Check if BTF boxad slot is hidden when disableBtf set to true', () => {
 		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(true));
-		helpers.slowScroll(2000);
 		slots.topBoxad.scrollIntoView();
 		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 	});
@@ -42,7 +39,6 @@ describe('Kill codes ads page', () => {
 		slots.topBoxad.scrollIntoView();
 		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 
-		helpers.slowScroll(2000);
 		slots.topBoxad.scrollIntoView();
 		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
 	});

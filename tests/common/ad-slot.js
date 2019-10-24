@@ -5,6 +5,8 @@ import { timeouts } from './timeouts';
 export class AdSlot {
 	resultAttribute = 'data-slot-result';
 	viewedAttribute = 'data-slot-viewed';
+	adCollapsed = 'collapse';
+	adLoaded = 'success';
 
 	get element() {
 		return $(this.selector);
@@ -177,5 +179,13 @@ export class AdSlot {
 			'Slot has not been viewed',
 			timeouts.interval,
 		);
+	}
+
+	waitForSlotCollapsed() {
+		this.waitForSlotResult(this.adCollapsed);
+	}
+
+	waitForSlotLoaded() {
+		this.waitForSlotResult(this.adLoaded);
 	}
 }

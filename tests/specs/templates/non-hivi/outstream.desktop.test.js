@@ -12,7 +12,6 @@ describe('Outstream ads', () => {
 
 	beforeEach(() => {
 		network.enableCapturing(outstream.callForPlayer);
-		helpers.fastScroll(-2000);
 	});
 
 	it('Check if video is visible in viewport', () => {

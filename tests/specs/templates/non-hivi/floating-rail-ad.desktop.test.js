@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { floatingRailAd } from '../../../pages/floating-rail-ad.page';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
-import { adSlots } from '../../../common/ad-slots';
 import { slots } from '../../../common/slot-registry';
 import { network } from '../../../common/network';
 import { commonAds } from '../../../pages/common-ad.page';
@@ -21,11 +20,6 @@ describe.skip('Floating rail ads page: floating rail', () => {
 			'Rail did not scroll',
 		);
 		expect($(floatingRailAd.rail).isDisplayedInViewport(), 'Rail not in viewport').to.be.true;
-	});
-
-	// TODO Visual
-	it.skip('Check visual regression in top boxad', () => {
-		helpers.checkVisualRegression(browser.checkElement(adSlots.topBoxad));
 	});
 });
 

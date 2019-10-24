@@ -3,7 +3,6 @@ import { repeatableSlots } from '../../pages/repeatable-slots.page';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 import { slots } from '../../common/slot-registry';
-import { navbarPage } from '../../pages/navbar.page';
 
 describe('Repeatable slots ads', () => {
 	before(() => {
