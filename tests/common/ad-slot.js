@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { navbarPage } from '../pages/navbar.page';
 import { helpers } from './helpers';
 import { timeouts } from './timeouts';
 
@@ -64,6 +63,10 @@ export class AdSlot {
 
 	constructor(config) {
 		this.config = config;
+	}
+
+	getAttribute(attribute) {
+		return this.element.getAttribute(attribute);
 	}
 
 	calculateApectRatio() {

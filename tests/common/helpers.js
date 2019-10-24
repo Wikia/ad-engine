@@ -105,6 +105,10 @@ class Helpers {
 		$(adSlot).waitForDisplayed(timeout);
 	}
 
+	waitForAnimations() {
+		browser.pause(timeouts.actions);
+	}
+
 	waitForVideoAdToFinish(adDuration) {
 		browser.pause(adDuration);
 	}
