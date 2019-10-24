@@ -11,7 +11,6 @@ describe('sticky-ad template', () => {
 		network.captureConsole();
 	});
 	beforeEach(() => {
-		helpers.fastScroll(-2000);
 		network.clearLogs();
 
 		helpers.navigateToUrl(stickyAd.pageLink);
