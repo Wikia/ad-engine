@@ -37,7 +37,7 @@ describe('Repeatable slots ads', () => {
 		expectedSlots.forEach((slot) => {
 			slot.scrollIntoView();
 			slot.waitForDisplayed();
-			helpers.mediumScroll(2250); //move to variable
+			helpers.mediumScroll(repeatableSlots.distanceBetweenSlots); //move to variable
 		});
 
 		expect(slots.repeatableBoxad5.isDisplayed(), '9th slot is visible').to.be.false;
@@ -64,7 +64,7 @@ describe('Repeatable slots ads', () => {
 		expectedSlots.forEach((slot) => {
 			slot.scrollIntoView();
 			slot.waitForDisplayed();
-			helpers.mediumScroll(2250); //move to variable
+			helpers.mediumScroll(repeatableSlots.distanceBetweenSlots);
 		});
 
 		expect(slots.repeatableBoxad9.isDisplayed(), '9th slot is visible').to.be.false;
@@ -74,7 +74,7 @@ describe('Repeatable slots ads', () => {
 		helpers.navigateToUrl(repeatableSlots.pageLink, queryStrings.getLengthOfContent());
 		slots.repeatableBoxad1.waitForDisplayed();
 		slots.repeatableBoxad1.scrollIntoView();
-		helpers.mediumScroll(3000); //move to variable
+		helpers.mediumScroll(repeatableSlots.viewportDistance);
 		slots.repeatableBoxad2.scrollIntoView();
 
 		$(slots.repeatableBoxad3.selector).scrollIntoView({ block: 'end' });
