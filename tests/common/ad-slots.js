@@ -10,34 +10,18 @@ class AdSlots {
 		this.topBoxad = '#top_boxad';
 		this.incontentBoxad = '#incontent_boxad';
 		this.injectedBoxad = '#injected_boxad';
-		this.repeatableBoxad = '#repeatable_boxad_';
 		this.incontentPlayer = '#incontent_player';
 		this.invisibleHighImpact = '#invisible_high_impact_2';
 
-		this.leaderboardWidth = 728; // shared between leaderboards; fixed value
-		this.leaderboardHeight = 90; // shared between leaderboards; fixed value
-		this.boxadWidth = 300; // shared between boxads; fixed value
-		this.boxadHeight = 250; // shared between boxads; fixed value
 		this.incontentWidth = 628; // shared between incontents; fixed value
 		this.incontentHeight = 250; // shared between incontents; fixed value
-		this.railModuleWidth = 300;
-		this.railModuleHeight = 600;
-		this.creativeIdAttribute = 'data-gpt-creative-id';
-		this.lineItemIdAttribute = 'data-gpt-line-item-id';
 		this.resultAttribute = 'data-slot-result';
 		this.viewedAttribute = 'data-slot-viewed';
 		this.adLoaded = 'success';
 		this.adViewed = 'true';
 		this.adCollapsed = 'collapse';
-		this.inhouseLineItemId = '271491732';
-		this.wikiaAdapterLineItemId = '321546972';
-		this.amazonLineItemId = '4397742201';
-		this.defaultDesktopRatio = 4;
-		this.resolvedDesktopRatio = 10;
 		this.defaultMobileRatio = 1.77;
 		this.resolvedMobileRatio = 3;
-		this.floatingRailTopBoxadRequestPattern = '.*gampad\\/ads\\?.*top_boxad';
-		this.floatingRailTopBoxadReplaceRegexp = /.*gampad\/ads\?/;
 	}
 
 	waitForSlotExpanded(adSlot) {
@@ -121,31 +105,6 @@ class AdSlots {
 	}
 
 	/**
-	 * Checks whether adSlot element has given class names
-	 * @param adSlot slot to check class names
-	 * @param classNames list of element class names to check
-	 */
-	checkSlotClasses(adSlot, classNames = []) {
-		let result = true;
-		let error = '';
-		const classList = $(adSlot)
-			.getAttribute('class')
-			.split(' ');
-
-		classNames.forEach((className) => {
-			if (!classList.includes(className)) {
-				result = false;
-				error += `Missing class: expected ${adSlot} to have class ${className}\n`;
-			}
-		});
-
-		return {
-			status: result,
-			capturedErrors: error,
-		};
-	}
-
-	/**
 	 * Calculates height based on the actual width and given ratio.
 	 * @param adSlot slot to measure
 	 * @param heightRatio ratio to use as a divider
@@ -212,18 +171,6 @@ class AdSlots {
 			'Dimensions not changed',
 			timeouts.interval,
 		);
-	}
-
-	/**
-	 * Checks slot ratio based on a given derivative value.
-	 * @param adSlot slot to measure
-	 * @param sizeDeterminant derivative value for the slot (CSS selector, e.g. wrapper)
-	 * @param heightRatio ratio value for height of the slot
-	 * @returns {{status: boolean, capturedErrors: string}} returns false if no errors were found,
-	 * else returns true. captured errors: returns string with errors
-	 */
-	checkDerivativeSizeSlotRatio(adSlot, sizeDeterminant, heightRatio) {
-		return this.checkSlotRatio(adSlot, $(sizeDeterminant).getSize('width'), heightRatio);
 	}
 
 	/**

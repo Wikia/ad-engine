@@ -1,25 +1,18 @@
 import { expect } from 'chai';
-import { adSlots } from '../../common/ad-slots';
 import { injectedAds } from '../../pages/injected-ad.page';
-import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 import { slots } from '../../common/slot-registry';
 
 describe('Injected slots: injected boxad', () => {
 	before(() => {
 		helpers.navigateToUrl(injectedAds.pageLink);
-		helpers.slowScroll(500);
-		$(adSlots.injectedBoxad).waitForDisplayed(timeouts.standard);
+		helpers.mediumScroll(500);
 		slots.injectedBoxad.scrollIntoView();
+		slots.injectedBoxad.waitForDisplayed();
 	});
 
 	it('Check if dimensions are correct', () => {
-		const dimensions = adSlots.checkSlotSize(
-			adSlots.injectedBoxad,
-			adSlots.incontentWidth,
-			adSlots.incontentHeight,
-		);
-
-		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
+		expect(slots.injectedBoxad.size.height).to.equal(injectedAds.injectedBoxadData.height);
+		expect(slots.injectedBoxad.size.width).to.equal(injectedAds.injectedBoxadData.width);
 	});
 });

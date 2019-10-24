@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { timeouts } from './timeouts';
 import { queryStrings } from './query-strings';
-import { adSlots } from './ad-slots';
 import { navbarPage } from '../pages/navbar.page';
 
 const valueToDivideBy = 10;
@@ -127,51 +126,11 @@ class Helpers {
 		);
 	}
 
-	/**
-	 * Waits until the ad slot to receive its line item id parameter.
-	 * @param adSlot ad slot that should receive the parameter
-	 */
-	waitForLineItemIdAttribute(adSlot) {
-		$(adSlot).waitForExist(timeouts.standard);
-		browser.waitUntil(
-			() => this.isLineItemExisting(adSlot),
-			timeouts.standard,
-			'No line item id attribute',
-			timeouts.interval,
-		);
-	}
-
 	getRelativeLocationToViewport(selector) {
 		return browser.execute(
 			(givenSelector) => document.querySelector(givenSelector).getBoundingClientRect().y,
 			selector,
 		);
-	}
-
-	/**
-	 * Returns line item ID of the given slot.
-	 * @param adSlot slot to get line item ID from
-	 * @returns {string}
-	 */
-	getLineItemId(adSlot) {
-		return $(adSlot).getAttribute(adSlots.lineItemIdAttribute);
-	}
-
-	isLineItemExisting(adSlot) {
-		return !!this.getLineItemId(adSlot);
-	}
-
-	/**
-	 * Returns creative ID of the given slot.
-	 * @param adSlot slot to get line item ID from
-	 * @returns {string}
-	 */
-	getCreativeId(adSlot) {
-		return $(adSlot).getAttribute(adSlots.creativeIdAttribute);
-	}
-
-	isCreativeIdExisitng(adSlot) {
-		return !!this.getCreativeId(adSlot);
 	}
 
 	/**
