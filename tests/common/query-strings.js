@@ -6,6 +6,7 @@ class QueryStrings {
 		this.utils = {
 			resolved: 'resolved_state',
 			cb: 'cb',
+			cid: 'cid',
 			contentLength: 'content_length',
 			sessionId: 'sessionid',
 			enabledGeo: 'enabled-geo',
@@ -113,6 +114,10 @@ class QueryStrings {
 
 	getPrice(price) {
 		return `${this.bidders.price}=${price}`;
+	}
+
+	getCampaign(cid) {
+		return `${this.utils.cid}=${cid}`;
 	}
 
 	getLimit(limit) {

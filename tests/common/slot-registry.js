@@ -64,6 +64,9 @@ const slotsContext = {
 		topLeaderboard: {
 			slotName: 'top_leaderboard',
 		},
+		floorAdhesion: {
+			slotName: 'floor_adhesion',
+		},
 		repeatableBoxad1: {
 			scrollTrigger: commonAds.railModule,
 			slotName: 'repeatable_boxad_1',
