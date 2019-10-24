@@ -4,8 +4,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class FutheadTargetingSetup implements TargetingSetup {
-	squadPageRegex = /\/\d+\/squads\/\d+/;
-
 	configureTargetingContext(): void {
 		context.set('targeting', this.getPageLevelTargeting());
 	}
@@ -31,6 +29,7 @@ export class FutheadTargetingSetup implements TargetingSetup {
 	}
 
 	private isSquadPage(): boolean {
-		return !!window.location.pathname.match(this.squadPageRegex);
+		const squadPageRegex = /\/\d+\/squads\/\d+/;
+		return !!window.location.pathname.match(squadPageRegex);
 	}
 }
