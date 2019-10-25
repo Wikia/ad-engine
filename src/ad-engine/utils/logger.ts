@@ -17,3 +17,13 @@ export function logger(logGroup: string, ...logValues: any[]): void {
 		window.console.info(logGroup, logValues);
 	}
 }
+
+export function warner(warnGroup: string, ...warnValues: any[]): void {
+	if (debugGroup === '') {
+		return;
+	}
+
+	if (debugGroup === '1' || groups.indexOf(warnGroup) !== -1) {
+		window.console.warn(warnGroup, warnValues);
+	}
+}
