@@ -51,15 +51,23 @@ class GoogleImaPlayerFactory {
 					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), config);
 				}
 
-				player.dispatchEvent('wikiaAdsManagerLoaded');
-
 				adsManager.addEventListener(
 					window.google.ima.AdEvent.Type.LOADED,
-					(event: google.ima.AdEvent) => player.setVastAttributes('success', event.getAd()),
+					(event: google.ima.AdEvent) => {
+						// tslint:disable-next-line
+						console.log('ias loaded success');
+						player.setVastAttributes('success', event.getAd());
+					},
 				);
 				adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
 					player.setVastAttributes('error'),
 				);
+
+				setTimeout(() => {
+					// tslint:disable-next-line
+					console.log('ias wikiaAdsManagerLoaded');
+					player.dispatchEvent('wikiaAdsManagerLoaded');
+				}, 2000);
 			},
 			false,
 		);

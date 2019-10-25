@@ -28,7 +28,8 @@ class IasVideoTracker {
 	): void {
 		loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
-
+			// tslint:disable-next-line
+			console.log('ias loaded and init');
 			window.googleImaVansAdapter.init(google, adsManager, videoElement, config);
 		});
 	}
