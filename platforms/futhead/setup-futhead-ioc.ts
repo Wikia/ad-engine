@@ -27,7 +27,7 @@ import {
 	TrackingSetup,
 	UapSetup,
 } from '@platforms/shared';
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import { babDetection, context, InhibitorsRegistry, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import { SportsDynamicSlotsSetup } from '../shared/setup/dynamic-slots/sports-dynamic-slots.setup';
@@ -40,6 +40,8 @@ export async function setupFutheadIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection]));
+
 	container.bind(TargetingSetup).to(FutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);

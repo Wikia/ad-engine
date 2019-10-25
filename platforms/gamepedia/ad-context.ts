@@ -19,6 +19,7 @@ export const basicContext = {
 		wad: {
 			enabled: false,
 			blocking: false,
+			blockingSrc: 'gamepedia-rec',
 			btRec: {
 				enabled: false,
 				placementsMap: {
