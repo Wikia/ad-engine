@@ -126,7 +126,7 @@ class Helpers {
 		);
 	}
 
-	getRelativeLocationToViewport(selector) {
+	getLocationRelativeToViewport(selector) {
 		return browser.execute(
 			(givenSelector) => document.querySelector(givenSelector).getBoundingClientRect().y,
 			selector,

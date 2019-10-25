@@ -39,7 +39,7 @@ export class HiviPage {
 		$(this.closeButtonSelector).waitForDisplayed(timeouts.standard);
 		$(this.closeButtonSelector).click();
 		$(this.closeButtonSelector).waitForDisplayed(timeouts.standard, true);
-		this.waitForVideoTransofrmation(2000);
+		this.waitForVideoTransformation(2000);
 	}
 
 	isReplayDisplayed(slot) {
@@ -59,12 +59,12 @@ export class HiviPage {
 		browser.switchToFrame(null);
 	}
 
-	waitForVideoTransofrmation(timeout = timeouts.actions) {
+	waitForVideoTransformation(timeout = timeouts.actions) {
 		browser.pause(timeout);
 	}
 
 	waitForVideoToProgress(videoDuration, slot = slots.topLeaderboard) {
-		$(`${slot.selector} ${this.hiddenVideoSelector}`).waitForExist(timeouts.standard, true);
+		slot.element.$(this.hiddenVideoSelector).waitForExist(timeouts.standard, true);
 		browser.pause(videoDuration);
 	}
 
@@ -83,7 +83,7 @@ export class HiviPage {
 			isAboveTheViewport,
 			`${slot.slotName} viewport position state`,
 		);
-		expect(slot.calculateApectRatio()).to.be.within(
+		expect(slot.aspectRatio).to.be.within(
 			aspectRatio - 0.1,
 			aspectRatio + 0.1,
 			`${slot.slotName} has incorrect ratio`,
@@ -121,7 +121,7 @@ export class HiviPage {
 			isAboveTheViewport,
 			`${slot.slotName} viewport position state`,
 		);
-		expect(slot.calculateApectRatio()).to.be.within(
+		expect(slot.aspectRatio).to.be.within(
 			aspectRatio - 0.1,
 			aspectRatio + 0.1,
 			`${slot.slotName} has incorrect ratio`,

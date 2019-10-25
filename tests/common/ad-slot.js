@@ -45,7 +45,7 @@ export class AdSlot {
 	}
 
 	get relativeLocationToViewport() {
-		return helpers.getRelativeLocationToViewport(this.selector);
+		return helpers.getLocationRelativeToViewport(this.selector);
 	}
 
 	get status() {
@@ -64,16 +64,16 @@ export class AdSlot {
 		return this.element.getSize('width');
 	}
 
+	get aspectRatio() {
+		return this.width / this.height;
+	}
+
 	constructor(config) {
 		this.config = config;
 	}
 
 	getAttribute(attribute) {
 		return this.element.getAttribute(attribute);
-	}
-
-	calculateApectRatio() {
-		return this.width / this.height;
 	}
 
 	hasChildren() {
@@ -100,7 +100,7 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.isDisplayedInViewport(),
 			timeout,
-			`Element not displayed in viewport.`,
+			'Element not displayed in viewport',
 			timeouts.interval,
 		);
 	}
@@ -109,7 +109,7 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.lineItemId !== null,
 			timeouts.standard,
-			`Element has no line item id`,
+			'Element has no line item id',
 			timeouts.interval,
 		);
 	}
@@ -117,7 +117,7 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.creativeId !== null,
 			timeouts.standard,
-			`Element has no creatice ID`,
+			'Element has no creatice ID',
 			timeouts.interval,
 		);
 	}
@@ -132,10 +132,10 @@ export class AdSlot {
 		// surrounding visible element
 		let selector;
 
-		if (!overrideScrollTrigger) {
-			selector = this.config.scrollTrigger || this.selector;
-		} else {
+		if (overrideScrollTrigger) {
 			selector = this.selector;
+		} else {
+			selector = this.config.scrollTrigger || this.selector;
 		}
 
 		$(selector).scrollIntoView();
@@ -172,9 +172,7 @@ export class AdSlot {
 
 	waitForSlotViewed() {
 		browser.waitUntil(
-			() => {
-				return this.element.getAttribute(this.viewedAttribute) === 'true';
-			},
+			() => this.element.getAttribute(this.viewedAttribute) === 'true',
 			timeouts.standard,
 			'Slot has not been viewed',
 			timeouts.interval,

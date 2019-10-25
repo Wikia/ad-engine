@@ -25,7 +25,7 @@ describe('Loaded with click', () => {
 		delayAd.loadAds();
 	});
 
-	it('Top leaderboard after clicking the button', () => {
+	it('top leaderboard is loaded after clicking the button', () => {
 		slots.topLeaderboard.waitForSlotViewed();
 		expect(slots.topLeaderboard.isDisplayedInViewport(), 'Not in viewport').to.be.true;
 		expect(slots.topLeaderboard.getAttribute(delayAd.resultAttribute)).to.equal(
@@ -38,7 +38,7 @@ describe('Loaded with click', () => {
 		);
 	});
 
-	it('Top boxad after clicking the button', () => {
+	it('top boxad is loaded after clicking the button', () => {
 		slots.topBoxad.waitForDisplayed();
 		slots.topBoxad.waitForSlotViewed();
 		expect(slots.topBoxad.isDisplayedInViewport(), 'Not in viewport').to.be.true;

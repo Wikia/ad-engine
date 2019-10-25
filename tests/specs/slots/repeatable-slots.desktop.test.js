@@ -37,7 +37,7 @@ describe('Repeatable slots ads', () => {
 		expectedSlots.forEach((slot) => {
 			slot.scrollIntoView();
 			slot.waitForDisplayed();
-			helpers.mediumScroll(repeatableSlots.distanceBetweenSlots); //move to variable
+			helpers.mediumScroll(repeatableSlots.distanceBetweenSlots);
 		});
 
 		expect(slots.repeatableBoxad5.isDisplayed(), '9th slot is visible').to.be.false;

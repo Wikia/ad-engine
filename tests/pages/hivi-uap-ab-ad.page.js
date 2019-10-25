@@ -10,7 +10,7 @@ export class HiviUapAb {
 		let currentSlotParams;
 
 		browser.waitUntil(() => {
-			currentSlotParams = JSON.parse($(slot.selector).getAttribute('data-gpt-slot-params'));
+			currentSlotParams = JSON.parse(slot.getAttribute('data-gpt-slot-params'));
 			return !!currentSlotParams.uap_c;
 		});
 

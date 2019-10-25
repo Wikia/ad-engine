@@ -19,7 +19,7 @@ describe('ABCD ads page: top leaderboard', () => {
 	});
 
 	it('Check if dimensions are correct', () => {
-		expect(slots.topLeaderboard.calculateApectRatio()).to.equal(abcdAd.abcdLeaderboardRatio);
+		expect(slots.topLeaderboard.aspectRatio).to.equal(abcdAd.abcdLeaderboardRatio);
 	});
 
 	it('Check if line item id is from the proper campaign', () => {
@@ -40,19 +40,19 @@ describe('ABCD ads page: video player in leaderboard', () => {
 		helpers.navigateToUrl(abcdAd.pageLink);
 	});
 	beforeEach(() => {
-		$(`${slots.topLeaderboard.selector} ${abcdAd.videoPlayer}`).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.element.$(abcdAd.videoPlayer).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
 	});
 
 	it('Check if player is visible', () => {
 		expect(
-			$(`${slots.topLeaderboard.selector} ${abcdAd.videoPlayer}`).isDisplayedInViewport(),
+			slots.topLeaderboard.element.$(abcdAd.videoPlayer).isDisplayedInViewport(),
 			'Not in viewport',
 		).to.be.true;
 	});
 
 	it('Check if unmuting the video works properly', () => {
-		$(`${slots.topLeaderboard.selector} ${abcdAd.videoPlayer}`).moveTo();
+		slots.topLeaderboard.element.$(abcdAd.videoPlayer).moveTo();
 		helpers.waitForAnimations();
 		$(abcdAd.unmuteButton).click();
 		$(`${abcdAd.unmuteButton}${abcdAd.buttonIsOnClass}`).waitForExist(timeouts.standard, true);

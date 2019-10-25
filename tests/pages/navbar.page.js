@@ -14,7 +14,7 @@ class NavbarPage {
 	}
 
 	get relativePosition() {
-		return helpers.getRelativeLocationToViewport(this.selector);
+		return helpers.getLocationRelativeToViewport(this.selector);
 	}
 
 	get height() {

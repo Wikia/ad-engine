@@ -5,7 +5,7 @@ import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 
 describe('Kill codes ads page', () => {
-	it.only('Check if BTF boxad slot is visible when disableBtf set to false', () => {
+	it('Check if BTF boxad slot is visible when disableBtf set to false', () => {
 		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(false));
 		slots.topBoxad.scrollIntoView();
 		expect(slots.topBoxad.isDisplayed(), 'Top boxad not visible').to.be.true;
