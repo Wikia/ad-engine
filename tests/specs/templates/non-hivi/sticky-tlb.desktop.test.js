@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { stickyTlb } from '../../../pages/sticky-tlb.page';
-import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { queryStrings } from '../../../common/query-strings';
@@ -13,14 +13,13 @@ describe('sticky-tlb template', () => {
 	});
 
 	beforeEach(() => {
-		helpers.fastScroll(-2000);
 		network.clearLogs();
 
 		helpers.navigateToUrl(
 			stickyTlb.pageLink,
 			queryStrings.constructSingleGeoInstantGlobal('XX', 100),
 		);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	after(() => {
@@ -31,7 +30,7 @@ describe('sticky-tlb template', () => {
 		helpers.fastScroll(5);
 		expect(stickyTlb.isAdSticked()).to.be.true;
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(600);
+		helpers.mediumScroll(600);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		expect(network.checkIfMessageIsInLogs('unsticked')).to.be.true;
@@ -40,7 +39,7 @@ describe('sticky-tlb template', () => {
 
 	it('should not stick if viewability is counted', () => {
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		expect(network.checkIfMessageIsInLogs('unsticked')).to.be.true;
@@ -53,7 +52,7 @@ describe('sticky-tlb template', () => {
 			queryStrings.constructSingleGeoInstantGlobal('XX', 0.00000001),
 		);
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		expect(stickyTlb.isAdSticked()).to.be.false;
 
 		expect(network.checkIfMessageIsInLogs('unsticked'), 'Unsticked event recored').to.be.false;
@@ -80,8 +79,8 @@ describe('sticky-tlb template', () => {
 	it.only('should emit "stickiness-disabled event" if stickiness is disabled', () => {
 		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
 
-		browser.url(`${stickyTlb.pageLink}?disabled=1`);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(`${stickyTlb.pageLink}?disabled=1`);
+		slots.topLeaderboard.waitForDisplayed();
 
 		browser.waitUntil(
 			() => network.checkIfMessageIsInLogs(message),

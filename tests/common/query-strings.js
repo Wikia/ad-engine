@@ -6,6 +6,7 @@ class QueryStrings {
 		this.utils = {
 			resolved: 'resolved_state',
 			cb: 'cb',
+			cid: 'cid',
 			contentLength: 'content_length',
 			sessionId: 'sessionid',
 			enabledGeo: 'enabled-geo',
@@ -39,6 +40,10 @@ class QueryStrings {
 			moat: 'moat-yi-disabled',
 			adEngineDelay: 'adengine-delay',
 			enabledProjects: 'enabled-project',
+		};
+		this.killCodes = {
+			disableBtf: 'disableBtf',
+			disableSecondCall: 'disableSecondCall',
 		};
 	}
 
@@ -109,6 +114,10 @@ class QueryStrings {
 
 	getPrice(price) {
 		return `${this.bidders.price}=${price}`;
+	}
+
+	getCampaign(cid) {
+		return `${this.utils.cid}=${cid}`;
 	}
 
 	getLimit(limit) {
@@ -183,6 +192,17 @@ class QueryStrings {
 		const on = enabled ? '1' : '0';
 
 		return `${this.utils.directPorvata}=${on}`;
+	}
+
+	disableBtf(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.killCodes.disableBtf}=${on}`;
+	}
+	disableSecondCall(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.killCodes.disableSecondCall}=${on}`;
 	}
 
 	getSessionIdParam(parameter) {

@@ -3,8 +3,7 @@ import { confiant } from '../../pages/confiant.page';
 import { network } from '../../common/network';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
-import { adSlots } from '../../common/ad-slots';
-import { timeouts } from '../../common/timeouts';
+import { slots } from '../../common/slot-registry';
 
 describe('It will test Confiant page', () => {
 	before(() => {
@@ -23,13 +22,13 @@ describe('It will test Confiant page', () => {
 
 	it('will check if script is loaded', () => {
 		helpers.navigateToUrl(confiant.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 		expect(network.checkIfHasResponse(confiant.configFile), 'config not loaded').to.be.true;
 	});
 
 	it('should check console logs', () => {
 		helpers.navigateToUrl(confiant.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 		browser.waitUntil(
 			() => network.checkIfMessageIsInLogs(confiant.blockedAdLog),
 			2000,
@@ -39,7 +38,7 @@ describe('It will test Confiant page', () => {
 
 	it('will test disabled confiant', () => {
 		helpers.navigateToUrl(confiant.pageLink, queryStrings.getConfiant(false));
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		slots.topBoxad.waitForDisplayed();
 		expect(network.checkIfHasResponse(confiant.configFile)).to.be.false;
 	});
 });

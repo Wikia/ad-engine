@@ -1,3 +1,5 @@
+import { timeouts } from '../common/timeouts';
+
 class PostmessageTrackerPage {
 	constructor() {
 		this.pageLink = 'tracking/postmessage-tracker/';
@@ -9,6 +11,14 @@ class PostmessageTrackerPage {
 
 	getMessageCount() {
 		return $(this.counterSelector).getText();
+	}
+
+	checkNumberOfMessages(expectedNumber, errorMessage = 'Incorrect number') {
+		browser.waitUntil(
+			() => this.getMessageCount() === `${expectedNumber}`,
+			timeouts.standard,
+			errorMessage,
+		);
 	}
 }
 

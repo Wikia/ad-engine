@@ -1,42 +1,29 @@
 import { expect } from 'chai';
 import { jwPlayer } from '../../pages/jwplayer.page';
 import { timeouts } from '../../common/timeouts';
-import { adSlots } from '../../common/ad-slots';
 import { helpers } from '../../common/helpers';
 import { queryStrings } from '../../common/query-strings';
 
 describe('jwPlayer player', () => {
-	let adStatus;
-
 	before(() => {
-		browser.url(jwPlayer.pageLink);
+		helpers.navigateToUrl(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
-		adStatus = adSlots.getSlotStatus(jwPlayer.player);
 	});
 
 	beforeEach(() => {
-		browser.switchWindow(jwPlayer.pageLink);
-		browser.url(jwPlayer.pageLink);
+		helpers.closeNewTabs();
+		helpers.navigateToUrl(jwPlayer.pageLink);
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
 		helpers.waitToStartPlaying();
 	});
 
-	afterEach(() => {
-		browser.switchWindow(jwPlayer.pageLink);
-	});
-
 	it('Check if player is visible', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
+		expect($(jwPlayer.player).isDisplayedInViewport(), 'Not in viewport').to.be.true;
 	});
 
 	it('Check if dimensions are correct', () => {
-		const dimensions = adSlots.checkSlotSize(
-			jwPlayer.player,
-			jwPlayer.playerWidth,
-			jwPlayer.playerHeight,
-		);
-
-		expect(dimensions.status, dimensions.capturedErrors).to.be.true;
+		expect($(jwPlayer.player).getSize('height')).to.equal(jwPlayer.playerHeight);
+		expect($(jwPlayer.player).getSize('width')).to.equal(jwPlayer.playerWidth);
 	});
 
 	it('Check if redirect on click on default player works', () => {
@@ -47,7 +34,7 @@ describe('jwPlayer player', () => {
 			helpers.clickThroughUrlDomain,
 			`Wrong page loaded: expected ${helpers.clickThroughUrlDomain}`,
 		);
-		browser.closeWindow();
+		helpers.closeNewTabs();
 	});
 
 	it('Check if preroll works', () => {

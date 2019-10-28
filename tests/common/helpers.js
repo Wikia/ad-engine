@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { timeouts } from './timeouts';
 import { queryStrings } from './query-strings';
-import { adSlots } from './ad-slots';
+import { navbarPage } from '../pages/navbar.page';
 
 const valueToDivideBy = 10;
 const pauseBetweenScrollsShort = 100;
@@ -51,12 +51,12 @@ class Helpers {
 
 		if (scrollFromThisElement !== null) {
 			$(scrollFromThisElement).scrollIntoView();
-			for (let i = step; i < px; i += step) {
+			for (let i = step; Math.abs(i) < Math.abs(px); i += step) {
 				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
 		} else {
-			for (let i = step; i < px; i += step) {
+			for (let i = step; Math.abs(i) < Math.abs(px); i += step) {
 				browser.execute(`window.scrollBy(0,${step})`);
 				browser.pause(pauseBetweenScrolls);
 			}
@@ -65,7 +65,7 @@ class Helpers {
 
 	mediumScroll(px) {
 		const step = px / valueToDivideBy;
-		for (let i = step; i < px; i += step) {
+		for (let i = step; Math.abs(i) < Math.abs(px); i += step) {
 			browser.execute(`window.scrollBy(0,${step})`);
 			browser.pause(pauseBetweenScrollsShort);
 		}
@@ -80,6 +80,10 @@ class Helpers {
 		}
 	}
 
+	scrollUpByNavbarHeight() {
+		this.mediumScroll(-navbarPage.height - 5);
+	}
+
 	waitToStartPlaying() {
 		browser.pause(timeToStartPlaying);
 	}
@@ -90,7 +94,7 @@ class Helpers {
 	}
 
 	openUrlAndWaitForSlot(url, adSlot) {
-		browser.url(url);
+		this.navigateToUrl(url);
 		$(adSlot).waitForDisplayed(timeouts.standard);
 	}
 
@@ -98,6 +102,10 @@ class Helpers {
 		browser.refresh();
 		browser.pause(timeout);
 		$(adSlot).waitForDisplayed(timeout);
+	}
+
+	waitForAnimations() {
+		browser.pause(timeouts.actions);
 	}
 
 	waitForVideoAdToFinish(adDuration) {
@@ -118,74 +126,11 @@ class Helpers {
 		);
 	}
 
-	/**
-	 * Waits until the ad slot to receive its line item id parameter.
-	 * @param adSlot ad slot that should receive the parameter
-	 */
-	waitForLineItemIdAttribute(adSlot) {
-		$(adSlot).waitForExist(timeouts.standard);
-		browser.waitUntil(
-			() => this.isLineItemExisting(adSlot),
-			timeouts.standard,
-			'No line item id attribute',
-			timeouts.interval,
+	getLocationRelativeToViewport(selector) {
+		return browser.execute(
+			(givenSelector) => document.querySelector(givenSelector).getBoundingClientRect().y,
+			selector,
 		);
-	}
-
-	/**
-	 * Returns line item ID of the given slot.
-	 * @param adSlot slot to get line item ID from
-	 * @returns {string}
-	 */
-	getLineItemId(adSlot) {
-		return $(adSlot).getAttribute(adSlots.lineItemIdAttribute);
-	}
-
-	isLineItemExisting(adSlot) {
-		return !!this.getLineItemId(adSlot);
-	}
-
-	/**
-	 * Returns creative ID of the given slot.
-	 * @param adSlot slot to get line item ID from
-	 * @returns {string}
-	 */
-	getCreativeId(adSlot) {
-		return $(adSlot).getAttribute(adSlots.creativeIdAttribute);
-	}
-
-	isCreativeIdExisitng(adSlot) {
-		return !!this.getCreativeId(adSlot);
-	}
-
-	/**
-	 * It checks redirect on click and returns result.
-	 * @param adSlot slot to click
-	 * @param url expected url
-	 * @param parentDomain starting url
-	 * @returns {boolean} returns false if there were no errors, else it returns true
-	 */
-	adRedirect(adSlot, url = this.clickThroughUrlDomain, parentDomain) {
-		let result = false;
-		if (!parentDomain) {
-			parentDomain = browser.getUrl();
-		}
-
-		this.waitForLineItemIdAttribute(adSlot);
-		$(adSlot).waitForEnabled(timeouts.standard);
-		$(adSlot).click();
-		browser.switchWindow(url);
-		this.waitForUrl(url);
-
-		if (browser.getUrl().includes(url)) {
-			result = true;
-		}
-		if (browser.getUrl() !== parentDomain) {
-			browser.closeWindow();
-		}
-		browser.switchWindow(parentDomain);
-
-		return result;
 	}
 
 	/**

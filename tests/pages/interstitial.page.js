@@ -1,10 +1,16 @@
+import { slots } from '../common/slot-registry';
+import { timeouts } from '../common/timeouts';
+
 class Interstitial {
 	constructor() {
 		this.pageLink = 'templates/interstitial/';
-		this.outOfPageWrapper = '.out-of-page-template';
-		this.advertisementLabel = `${this.outOfPageWrapper}.interstitial > .button-close`;
-		this.closeButton = `${this.outOfPageWrapper}.interstitial > .button-close`;
+		this.closeButton = `${slots.invisibleHighImpact.selector} .button-close`;
 		this.stopScrolling = '.stop-scrolling';
+	}
+
+	closeInterstitial() {
+		$(interstitial.closeButton).waitForDisplayed(timeouts.standard);
+		$(interstitial.closeButton).click();
 	}
 }
 

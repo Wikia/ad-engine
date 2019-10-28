@@ -1,40 +1,30 @@
 import { expect } from 'chai';
 import { floorAdhesion } from '../../../pages/floor-adhesion.page';
-import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
-import { adSlots } from '../../../common/ad-slots';
+import { queryStrings } from '../../../common/query-strings';
+import { slots } from '../../../common/slot-registry';
 
-// TODO Fix template
-xdescribe('Floor adhesion page: floor adhesion', () => {
-	before(() => {
-		browser.url(floorAdhesion.pageLink);
-		$(floorAdhesion.outOfPageWrapper).waitForDisplayed(timeouts.standard);
+describe('Floor adhesion page: floor adhesion', () => {
+	beforeEach(() => {
+		helpers.navigateToUrl(floorAdhesion.pageLink, queryStrings.getCampaign(floorAdhesion.cid));
+		slots.floorAdhesion.waitForDisplayed();
 	});
 
 	it('Check if floor adhesion scrolls with the viewport', () => {
-		$(floorAdhesion.closeButton).waitForDisplayed(timeouts.standard);
+		expect(slots.floorAdhesion.isDisplayedInViewport(), 'Slot is not in the viewport').to.be.true;
 
-		expect(
-			$(adSlots.invisibleHighImpact).isDisplayedInViewport(),
-			'Floor adhesion not in the viewport',
-		).to.be.true;
-		helpers.slowScroll(1500);
-		expect(
-			$(adSlots.invisibleHighImpact).isDisplayedInViewport(),
-			'Floor adhesion not in the viewport',
-		).to.be.true;
+		helpers.mediumScroll(1500);
+
+		expect(slots.floorAdhesion.isDisplayedInViewport(), 'Slot is not in the viewport after scroll')
+			.to.be.true;
 	});
 
 	it('Check if floor adhesion disappears after clicking close button', () => {
-		expect(
-			$(adSlots.invisibleHighImpact).isDisplayedInViewport(),
-			'Floor adhesion not in the viewport',
-		).to.be.true;
+		expect(slots.floorAdhesion.isDisplayedInViewport(), 'Slot is not in the viewport').to.be.true;
 
 		$(floorAdhesion.closeButton).click();
-		expect(
-			$(adSlots.invisibleHighImpact).isDisplayedInViewport(),
-			'Floor adhesion is in the viewport',
-		).to.be.false;
+
+		expect(slots.floorAdhesion.isDisplayedInViewport(), 'Slot is still in the viewport').to.be
+			.false;
 	});
 });

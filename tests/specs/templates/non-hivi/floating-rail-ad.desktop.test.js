@@ -2,41 +2,33 @@ import { expect } from 'chai';
 import { floatingRailAd } from '../../../pages/floating-rail-ad.page';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
-import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { network } from '../../../common/network';
 import { commonAds } from '../../../pages/common-ad.page';
 
 // TODO Fix floating rail
 describe.skip('Floating rail ads page: floating rail', () => {
 	before(() => {
-		browser.url(floatingRailAd.pageLink);
-		$(adSlots.topBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(floatingRailAd.pageLink);
+		slots.topBoxad.waitForDisplayed();
 	});
 
 	it('Check if rail scrolls with the content', () => {
-		helpers.slowScroll(500);
+		helpers.mediumScroll(500);
 		expect($(floatingRailAd.rail).getAttribute(helpers.classProperty)).to.equal(
 			floatingRailAd.attributeRailScrolling,
 			'Rail did not scroll',
 		);
 		expect($(floatingRailAd.rail).isDisplayedInViewport(), 'Rail not in viewport').to.be.true;
 	});
-
-	// TODO Visual
-	it.skip('Check visual regression in top boxad', () => {
-		helpers.checkVisualRegression(browser.checkElement(adSlots.topBoxad));
-	});
 });
 
 describe('Floating rail ads page: top boxad requests', () => {
-	let fetchedUrl;
-	let i = 0;
-
 	before(() => {
 		network.enableCapturing('ads?');
 		network.clearResponses();
 
-		browser.url(floatingRailAd.pageLink);
+		helpers.navigateToUrl(floatingRailAd.pageLink);
 		$(commonAds.railModule).waitForDisplayed(timeouts.standard);
 		browser.pause(timeouts.viewabillity);
 	});

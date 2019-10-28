@@ -7,7 +7,7 @@ import { slots } from '../../common/slot-registry';
 
 describe('Bidders: Prebid template', () => {
 	it('Check if wikia adapter creative is not rendered when there are no bids', () => {
-		browser.url(prebid.pageLink);
+		helpers.navigateToUrl(prebid.pageLink);
 		asserts.assertInhouseCampaign(slots.topLeaderboard);
 	});
 

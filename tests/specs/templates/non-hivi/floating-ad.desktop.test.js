@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import { floatingAd } from '../../../pages/floating-ad.page';
-import { adSlots } from '../../../common/ad-slots';
 import { helpers } from '../../../common/helpers';
-import { timeouts } from '../../../common/timeouts';
+import { slots } from '../../../common/slot-registry';
 
 describe('Floating ad page: incontent boxad', () => {
 	before(() => {
-		browser.url(floatingAd.pageLink);
-		helpers.slowScroll(1000);
-		$(adSlots.incontentBoxad).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(floatingAd.pageLink);
+		helpers.mediumScroll(1000);
+		slots.incontentBoxad.waitForDisplayed();
 	});
 
 	it('Check if slot scrolls with the page', () => {
-		helpers.slowScroll(2500);
-		expect($(`${adSlots.incontentBoxad}${floatingAd.pinnedTopClass}`).isExisting()).to.be.false;
+		helpers.mediumScroll(2500);
+		expect(slots.incontentBoxad.element.$(floatingAd.pinnedTopClass).isExisting()).to.be.false;
+		expect(slots.incontentBoxad.isDisplayedInViewport()).to.be.true;
 	});
 });

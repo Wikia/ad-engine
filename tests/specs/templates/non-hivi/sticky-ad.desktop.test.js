@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { stickyAd } from '../../../pages/sticky-ad.page';
-import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { network } from '../../../common/network';
@@ -11,11 +11,10 @@ describe('sticky-ad template', () => {
 		network.captureConsole();
 	});
 	beforeEach(() => {
-		helpers.fastScroll(-2000);
 		network.clearLogs();
 
-		browser.url(stickyAd.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(stickyAd.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	after(() => {
@@ -64,8 +63,8 @@ describe('sticky-ad template', () => {
 	it('should emit "stickiness-disabled event" if stickiness is disabled', () => {
 		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
 
-		browser.url(`${stickyAd.pageLink}?disabled=1`);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(`${stickyAd.pageLink}?disabled=1`);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(200);
 
 		browser.waitUntil(

@@ -4,7 +4,7 @@ import { instantConfig } from '../../pages/instant-config.page';
 
 describe('Instant Config', () => {
 	beforeEach(() => {
-		browser.url(instantConfig.pageLink);
+		helpers.navigateToUrl(instantConfig.pageLink);
 	});
 
 	it('should read query params from URL and override configuration', () => {

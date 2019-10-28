@@ -1,10 +1,12 @@
 import { expect } from 'chai';
-import { navbarPage } from '../pages/navbar.page';
 import { helpers } from './helpers';
 import { timeouts } from './timeouts';
 
 export class AdSlot {
 	resultAttribute = 'data-slot-result';
+	viewedAttribute = 'data-slot-viewed';
+	adCollapsed = 'collapse';
+	adLoaded = 'success';
 
 	get element() {
 		return $(this.selector);
@@ -34,19 +36,44 @@ export class AdSlot {
 		return this.element.getSize();
 	}
 
+	get slotParams() {
+		return this.element.getAttribute('data-gpt-slot-params');
+	}
+
 	get iframeId() {
 		return $(`${this.element} iframe[id^="google_ads_iframe_/5441/"]`).value;
 	}
 
 	get relativeLocationToViewport() {
-		return browser.execute(
-			(givenSelector) => document.querySelector(givenSelector).getBoundingClientRect().y,
-			this.selector,
-		);
+		return helpers.getLocationRelativeToViewport(this.selector);
+	}
+
+	get status() {
+		return {
+			visible: this.element.isDisplayed(),
+			inViewport: this.element.isDisplayedInViewport(),
+			enabled: this.element.isEnabled(),
+		};
+	}
+
+	get height() {
+		return this.element.getSize('height');
+	}
+
+	get width() {
+		return this.element.getSize('width');
+	}
+
+	get aspectRatio() {
+		return this.width / this.height;
 	}
 
 	constructor(config) {
 		this.config = config;
+	}
+
+	getAttribute(attribute) {
+		return this.element.getAttribute(attribute);
 	}
 
 	hasChildren() {
@@ -73,7 +100,7 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.isDisplayedInViewport(),
 			timeout,
-			`Element not displayed in viewport.`,
+			'Element not displayed in viewport',
 			timeouts.interval,
 		);
 	}
@@ -82,7 +109,15 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.lineItemId !== null,
 			timeouts.standard,
-			`Element has no line item.`,
+			'Element has no line item id',
+			timeouts.interval,
+		);
+	}
+	waitForCreativedIDAttribute() {
+		browser.waitUntil(
+			() => this.creativeId !== null,
+			timeouts.standard,
+			'Element has no creatice ID',
 			timeouts.interval,
 		);
 	}
@@ -91,30 +126,24 @@ export class AdSlot {
 		this.element.waitForExist(timeout);
 	}
 
-	scrollIntoView() {
+	scrollIntoView(overrideScrollTrigger = false) {
 		// Element has to be visible in order to scroll into it
 		// In case of hidden slot by default we need to define
 		// surrounding visible element
-		const selector = this.config.scrollTrigger || this.selector;
+		let selector;
 
-		$(selector).scrollIntoView(false);
-		browser.execute(`window.scrollBy(0, ${-navbarPage.height})`);
+		if (overrideScrollTrigger) {
+			selector = this.selector;
+		} else {
+			selector = this.config.scrollTrigger || this.selector;
+		}
+
+		$(selector).scrollIntoView();
+		helpers.scrollUpByNavbarHeight();
 		// Trigger real scroll for lazy-loaded slots
 		if (this.config.isLazyLoaded) {
-			helpers.slowScroll(10);
+			helpers.mediumScroll(10);
 		}
-	}
-
-	getAspectRatio() {
-		return this.getWidth() / this.getHeight();
-	}
-
-	getHeight() {
-		return this.element.getSize('height');
-	}
-
-	getWidth() {
-		return this.element.getSize('width');
 	}
 
 	/**
@@ -139,5 +168,22 @@ export class AdSlot {
 				`Expected ${this.resultAttribute} to equal "${expected}" but it is ${result}.`,
 			);
 		}
+	}
+
+	waitForSlotViewed() {
+		browser.waitUntil(
+			() => this.element.getAttribute(this.viewedAttribute) === 'true',
+			timeouts.standard,
+			'Slot has not been viewed',
+			timeouts.interval,
+		);
+	}
+
+	waitForSlotCollapsed() {
+		this.waitForSlotResult(this.adCollapsed);
+	}
+
+	waitForSlotLoaded() {
+		this.waitForSlotResult(this.adLoaded);
 	}
 }

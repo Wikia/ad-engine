@@ -23,6 +23,7 @@ context.set('options.tracking.slot.status', true);
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);
 	context.set('targeting.skin', 'fandom_mobile');
+	context.set('slots.bottom_leaderboard.viewportConflicts', []);
 }
 
 setupNpaContext();
