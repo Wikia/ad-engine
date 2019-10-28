@@ -5,7 +5,7 @@ const logGroup = 'ias-video-tracking';
 export interface IasTrackingParams {
 	anId: string;
 	campId: string;
-	chanId?: string; // ad unit id
+	chanId?: string;
 	pubOrder?: any;
 	placementId?: string;
 	pubCreative?: string;

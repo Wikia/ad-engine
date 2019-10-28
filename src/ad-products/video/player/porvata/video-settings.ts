@@ -45,11 +45,7 @@ function getIasTrackingStatus(params: VideoParams): boolean {
 		return params.iasTracking;
 	}
 
-	if (!context.get('options.video.iasTracking.enabled')) {
-		return false;
-	}
-
-	return true;
+	return !!context.get('options.video.iasTracking.enabled');
 }
 
 export class VideoSettings {
