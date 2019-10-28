@@ -14,6 +14,7 @@ import {
 } from '@ad-engine/core';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import featuredVideo15s from './featured-video-f15s';
+import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
 interface HdPlayerEvent extends CustomEvent {
 	detail: {
@@ -154,6 +155,16 @@ function create(
 						adImpressionEvent: event,
 					});
 				}
+			});
+		}
+
+		if (context.get('options.video.iasTracking.enabled')) {
+			const iasConfig = context.get('options.video.iasTracking.config');
+
+			player.on('adsManager', (event) => {
+				const { adsManager, videoElement } = event;
+
+				iasVideoTracker.init(window.google, adsManager, videoElement, iasConfig);
 			});
 		}
 
