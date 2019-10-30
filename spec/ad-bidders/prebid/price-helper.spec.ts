@@ -1,5 +1,6 @@
 import { adaptersRegistry } from '@wikia/ad-bidders/prebid/adapters-registry';
 import { DEFAULT_MAX_CPM, PrebidAdapter } from '@wikia/ad-bidders/prebid/prebid-adapter';
+import { getAvailableBidsByAdUnitCode } from '@wikia/ad-bidders/prebid/prebid-helper';
 import {
 	getPrebidBestPrice,
 	transformPriceFromBid,
@@ -73,17 +74,6 @@ describe('getPrebidBestPrice', () => {
 		expect(result).to.deep.equal({ [bidderName]: '' });
 	});
 
-	it('should round to 2 decimal places', async () => {
-		adapters.set(bidderName, { bidderName } as PrebidAdapter);
-		const bid = PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 });
-
-		pbjsStub.getBidResponsesForAdUnitCode.returns({ bids: [bid] });
-
-		const result = await getPrebidBestPrice('someSlot');
-
-		expect(result).to.deep.equal({ [bidderName]: '1.00' });
-	});
-
 	it('should not take rendered bids into consideration', async () => {
 		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 		const bid = PrebidBidFactory.getBid({ cpm: 0.05, bidderCode: bidderName, status: 'rendered' });
@@ -99,10 +89,26 @@ describe('getPrebidBestPrice', () => {
 		adapters.set(bidderName, { bidderName } as PrebidAdapter);
 		pbjsStub.getBidResponsesForAdUnitCode.returns({
 			bids: [
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20 }),
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 1,
+					adserverTargeting: { hb_pb: '1.00' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 0.5,
+					adserverTargeting: { hb_pb: '0.50' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 20,
+					adserverTargeting: { hb_pb: '20.00' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 8,
+					adserverTargeting: { hb_pb: '8.00' },
+				}),
 			],
 		});
 
@@ -119,12 +125,38 @@ describe('getPrebidBestPrice', () => {
 		adapters.set('bidderC', { bidderName: 'bidderC' } as PrebidAdapter);
 		pbjsStub.getBidResponsesForAdUnitCode.returns({
 			bids: [
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 1 }),
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.5 }),
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 20, status: 'rendered' }),
-				PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 8 }),
-				PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 2, status: 'rendered' }),
-				PrebidBidFactory.getBid({ bidderCode: otherBidderName, cpm: 14 }),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 1.01,
+					adserverTargeting: { hb_pb: '1.00' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 0.51,
+					adserverTargeting: { hb_pb: '0.50' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 20,
+					adserverTargeting: { hb_pb: '20.00' },
+					status: 'rendered',
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 8.01,
+					adserverTargeting: { hb_pb: '8.00' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: otherBidderName,
+					cpm: 2,
+					adserverTargeting: { hb_pb: '2.00' },
+					status: 'rendered',
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: otherBidderName,
+					cpm: 14.01,
+					adserverTargeting: { hb_pb: '14.00' },
+				}),
 			],
 		});
 
@@ -135,25 +167,6 @@ describe('getPrebidBestPrice', () => {
 			[otherBidderName]: '14.00',
 			bidderC: '',
 		});
-	});
-
-	it('should round cpm', async () => {
-		adapters.set(bidderName, { bidderName } as PrebidAdapter);
-		pbjsStub.getBidResponsesForAdUnitCode.returns({
-			bids: [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 0.03 })],
-		});
-
-		let result = await getPrebidBestPrice('someSlot');
-
-		expect(result).to.deep.equal({ [bidderName]: '0.01' });
-
-		pbjsStub.getBidResponsesForAdUnitCode.returns({
-			bids: [PrebidBidFactory.getBid({ bidderCode: bidderName, cpm: 19.99 })],
-		});
-
-		result = await getPrebidBestPrice('someSlot');
-
-		expect(result).to.deep.equal({ [bidderName]: '19.50' });
 	});
 });
 

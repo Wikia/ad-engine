@@ -10,7 +10,7 @@ import {
 } from '@ad-engine/core';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
-import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
+import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
@@ -34,12 +34,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	}
 }
 
-const uuidKey = 'hb_uuid';
-
 export class PrebidProvider extends BidderProvider {
-	static validResponseStatusCode = 1;
-	static errorResponseStatusCode = 2;
-
 	adUnits: PrebidAdUnit[];
 	isCMPEnabled: boolean;
 	isLazyLoadingEnabled: boolean;
@@ -149,71 +144,10 @@ export class PrebidProvider extends BidderProvider {
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
 
-	getDealsTargetingFromBid(bid: Dictionary): PrebidTargeting {
-		const keyValuePairs: Dictionary = {};
-
-		Object.keys(bid.adserverTargeting).forEach((key) => {
-			if (key.indexOf('hb_deal_') === 0) {
-				keyValuePairs[key] = bid.adserverTargeting[key];
-			}
-		});
-
-		return keyValuePairs;
-	}
-
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
 		const slotAlias: string = this.getSlotAlias(slotName);
-		let slotParams: PrebidTargeting = {};
-		let deals: PrebidTargeting = {};
 
-		// We are not using pbjs.getAdserverTargetingForAdUnitCode
-		// because it takes only last auction into account.
-		// We need to get all available bids (including old auctions)
-		// in order to keep still available, not refreshed adapters' bids...
-		const bids: PrebidBidResponse[] = await getAvailableBidsByAdUnitCode(slotAlias);
-
-		if (bids.length) {
-			let bidParams = null;
-
-			bids.forEach((param) => {
-				if (!bidParams) {
-					bidParams = param;
-				} else if (bidParams.cpm === param.cpm) {
-					bidParams = bidParams.timeToRespond > param.timeToRespond ? param : bidParams;
-				} else {
-					bidParams = bidParams.cpm < param.cpm ? param : bidParams;
-				}
-
-				// ... However we need to take care of all hb_deal_* keys manually then
-				deals = {
-					...deals,
-					...this.getDealsTargetingFromBid(param),
-				};
-			});
-
-			if (bidParams) {
-				slotParams = {
-					...deals,
-					...bidParams.adserverTargeting,
-				};
-			}
-		}
-
-		const { hb_adid: adId } = slotParams;
-
-		if (adId) {
-			const uuid: string = await getBidUUID(slotAlias, adId);
-
-			if (uuid) {
-				// This is not calculated in prebid-settings for hb_uuid
-				// because AppNexus adapter is using external service to retrieve
-				// cache key and adserverTargeting is executed too early.
-				// We have to take it as late as possible.
-				slotParams[uuidKey] = uuid;
-			}
-		}
-
-		return slotParams || {};
+		return getWinningBid(slotAlias);
 	}
 
 	isSupported(slotName: string): boolean {

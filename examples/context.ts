@@ -150,6 +150,7 @@ export default {
 		},
 		top_boxad: {
 			aboveTheFold: true,
+			bidderAlias: 'TOP_BOXAD',
 			sizes: [
 				{
 					viewportSize: [768, 0],
