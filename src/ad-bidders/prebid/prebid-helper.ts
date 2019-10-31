@@ -1,4 +1,5 @@
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
+import { isObject } from 'util';
 import { adaptersRegistry } from './adapters-registry';
 import { PrebidAdapterConfig } from './prebid-models';
 
@@ -88,6 +89,7 @@ export async function getWinningBid(
 ): Promise<PrebidTargeting> {
 	let slotParams: PrebidTargeting = {};
 	let deals: PrebidTargeting = {};
+	const priceFloor: Dictionary<string> = context.get('bidders.prebid.priceFloor');
 
 	// We are not using pbjs.getAdserverTargetingForAdUnitCode
 	// because it takes only last auction into account.
@@ -101,6 +103,13 @@ export async function getWinningBid(
 		bids.forEach((param) => {
 			if (bidderName && bidderName !== param.bidderCode) {
 				// Do nothing if we filter by bidders
+			} else if (
+				priceFloor &&
+				isObject(priceFloor) &&
+				priceFloor[`${param.width}x${param.height}`] &&
+				param.cpm < parseFloat(priceFloor[`${param.width}x${param.height}`])
+			) {
+				// Do nothing if bid not meets floor rule
 			} else if (!bidParams) {
 				bidParams = param;
 			} else if (bidParams.cpm === param.cpm) {
