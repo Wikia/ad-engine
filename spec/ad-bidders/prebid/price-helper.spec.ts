@@ -1,11 +1,11 @@
 import { adaptersRegistry } from '@wikia/ad-bidders/prebid/adapters-registry';
 import { DEFAULT_MAX_CPM, PrebidAdapter } from '@wikia/ad-bidders/prebid/prebid-adapter';
-import { getAvailableBidsByAdUnitCode } from '@wikia/ad-bidders/prebid/prebid-helper';
 import {
 	getPrebidBestPrice,
 	transformPriceFromBid,
 	transformPriceFromCpm,
 } from '@wikia/ad-bidders/prebid/price-helper';
+import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { PbjsStub, stubPbjs } from '../../ad-engine/services/pbjs.stub';
@@ -117,6 +117,41 @@ describe('getPrebidBestPrice', () => {
 		expect(result).to.deep.equal({ [bidderName]: '20.00' });
 	});
 
+	it('should select highest price above the floor price', async () => {
+		adapters.set(bidderName, { bidderName } as PrebidAdapter);
+		pbjsStub.getBidResponsesForAdUnitCode.returns({
+			bids: [
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 1,
+					width: 300,
+					height: 250,
+					adserverTargeting: { hb_pb: '1.00' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 0.5,
+					width: 300,
+					height: 250,
+					adserverTargeting: { hb_pb: '0.50' },
+				}),
+				PrebidBidFactory.getBid({
+					bidderCode: bidderName,
+					cpm: 2,
+					width: 300,
+					height: 600,
+					adserverTargeting: { hb_pb: '2.00' },
+				}),
+			],
+		});
+
+		context.set('bidders.prebid.priceFloor', { '300x600': 3.5 });
+
+		const result = await getPrebidBestPrice('someSlot');
+
+		expect(result).to.deep.equal({ [bidderName]: '1.00' });
+	});
+
 	it('should work correctly with a more complex case (many bidders, rendered slots, no bids)', async () => {
 		const otherBidderName = 'bidderB';
 
@@ -128,42 +163,56 @@ describe('getPrebidBestPrice', () => {
 				PrebidBidFactory.getBid({
 					bidderCode: bidderName,
 					cpm: 1.01,
+					width: 300,
+					height: 250,
 					adserverTargeting: { hb_pb: '1.00' },
 				}),
 				PrebidBidFactory.getBid({
 					bidderCode: bidderName,
 					cpm: 0.51,
+					width: 300,
+					height: 250,
 					adserverTargeting: { hb_pb: '0.50' },
 				}),
 				PrebidBidFactory.getBid({
 					bidderCode: bidderName,
 					cpm: 20,
+					width: 300,
+					height: 250,
 					adserverTargeting: { hb_pb: '20.00' },
 					status: 'rendered',
 				}),
 				PrebidBidFactory.getBid({
 					bidderCode: bidderName,
 					cpm: 8.01,
+					width: 300,
+					height: 600,
 					adserverTargeting: { hb_pb: '8.00' },
 				}),
 				PrebidBidFactory.getBid({
 					bidderCode: otherBidderName,
 					cpm: 2,
+					width: 300,
+					height: 250,
 					adserverTargeting: { hb_pb: '2.00' },
 					status: 'rendered',
 				}),
 				PrebidBidFactory.getBid({
 					bidderCode: otherBidderName,
 					cpm: 14.01,
+					width: 300,
+					height: 250,
 					adserverTargeting: { hb_pb: '14.00' },
 				}),
 			],
 		});
 
+		context.set('bidders.prebid.priceFloor', { '300x600': 9.5 });
+
 		const result = await getPrebidBestPrice('someSlot');
 
 		expect(result).to.deep.equal({
-			[bidderName]: '8.00',
+			[bidderName]: '1.00',
 			[otherBidderName]: '14.00',
 			bidderC: '',
 		});

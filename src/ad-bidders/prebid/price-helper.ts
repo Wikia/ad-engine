@@ -40,11 +40,11 @@ export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<s
 	const bestPrices: Dictionary<number> = {};
 	const prebidAdapters = adaptersRegistry.getAdapters();
 
-	for (const [key, value] of Array.from(prebidAdapters.entries())) {
-		const winningBid = await getWinningBid(slotName, value.bidderName);
+	for (const adapter of Array.from(prebidAdapters.entries())) {
+		const winningBid = await getWinningBid(slotName, adapter[1].bidderName);
 		const { hb_pb } = winningBid;
 
-		bestPrices[value.bidderName] = hb_pb ? parseFloat(hb_pb) : 0;
+		bestPrices[adapter[1].bidderName] = hb_pb ? parseFloat(hb_pb) : 0;
 	}
 
 	return mapValues(bestPrices, (price: number) => {
