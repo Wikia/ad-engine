@@ -31,6 +31,10 @@ context.set(
 	'options.video.adsOnNextVideoFrequency',
 	parseInt(utils.queryString.get('capping'), 10) || 3,
 );
+context.set(
+	'options.video.iasTracking.enabled',
+	utils.queryString.get('enable_IAS_tracking') === '1',
+);
 
 if (f15sVideoId) {
 	context.set('options.featuredVideo15sEnabled', true);
