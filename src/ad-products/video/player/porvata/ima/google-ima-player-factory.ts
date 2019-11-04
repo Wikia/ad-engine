@@ -1,3 +1,5 @@
+import { context } from '@ad-engine/core';
+import { IasTrackingParams, iasVideoTracker } from '../ias/ias-video-tracker';
 import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { VideoSettings } from '../video-settings';
 import { GoogleImaPlayer } from './google-ima-player';
@@ -22,6 +24,10 @@ class GoogleImaPlayerFactory {
 			}
 		}
 
+		if (videoSettings.isIasTrackingEnabled()) {
+			iasVideoTracker.loadScript();
+		}
+
 		adsLoader.addEventListener(
 			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
 			(adsManagerLoadedEvent: google.ima.AdsManagerLoadedEvent) => {
@@ -41,6 +47,12 @@ class GoogleImaPlayerFactory {
 						videoSettings.get('src'),
 						`${videoSettings.get('adProduct')}/${videoSettings.get('slotName')}`,
 					);
+				}
+
+				if (videoSettings.isIasTrackingEnabled()) {
+					const iasConfig: IasTrackingParams = context.get('options.video.iasTracking.config');
+
+					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), iasConfig);
 				}
 
 				player.dispatchEvent('wikiaAdsManagerLoaded');

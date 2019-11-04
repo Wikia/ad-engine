@@ -33,6 +33,10 @@ if (blockOutOfViewportPausing) {
 }
 
 context.extend(adContext);
+context.set(
+	'options.video.iasTracking.enabled',
+	utils.queryString.get('enable_IAS_tracking') === '1',
+);
 context.set('targeting.artid', 292);
 context.set('targeting.vertical', 'games');
 context.set('targeting.wpage', '100% Orange Juice');

@@ -5,6 +5,7 @@ export interface VideoParams extends Dictionary {
 	autoPlay?: boolean;
 	container?: HTMLElement;
 	height?: number;
+	iasTracking?: boolean;
 	loadVideoTimeout?: number;
 	slotName?: string;
 	width?: number;
@@ -39,11 +40,21 @@ function getMoatTrackingStatus(params: VideoParams): boolean {
 	return false;
 }
 
+function getIasTrackingStatus(params: VideoParams): boolean {
+	if (typeof params.iasTracking === 'boolean') {
+		return params.iasTracking;
+	}
+
+	return !!context.get('options.video.iasTracking.enabled');
+}
+
 export class VideoSettings {
 	readonly moatTracking: boolean;
+	readonly iasTracking: boolean;
 
 	constructor(private readonly params: VideoParams = {}) {
 		this.moatTracking = getMoatTrackingStatus(params);
+		this.iasTracking = getIasTrackingStatus(params);
 	}
 
 	get(key: string): any {
@@ -64,6 +75,10 @@ export class VideoSettings {
 		}
 
 		return VpaidMode.ENABLED;
+	}
+
+	isIasTrackingEnabled(): boolean {
+		return this.iasTracking;
 	}
 
 	isMoatTrackingEnabled(): boolean {

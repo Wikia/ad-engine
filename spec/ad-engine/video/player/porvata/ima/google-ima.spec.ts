@@ -43,6 +43,12 @@ describe('google-ima', () => {
 				getVpaidMode() {
 					return 2;
 				},
+				isMoatTrackingEnabled() {
+					return false;
+				},
+				isIasTrackingEnabled() {
+					return false;
+				},
 			},
 		};
 		window.google = {
