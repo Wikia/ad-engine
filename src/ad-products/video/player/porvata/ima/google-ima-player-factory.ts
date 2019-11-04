@@ -24,9 +24,13 @@ class GoogleImaPlayerFactory {
 			}
 		}
 
+		if (videoSettings.isIasTrackingEnabled()) {
+			iasVideoTracker.loadScript();
+		}
+
 		adsLoader.addEventListener(
 			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-			async (adsManagerLoadedEvent: google.ima.AdsManagerLoadedEvent) => {
+			(adsManagerLoadedEvent: google.ima.AdsManagerLoadedEvent) => {
 				const renderingSettings = googleImaSetup.getRenderingSettings(videoSettings);
 				const adsManager: google.ima.AdsManager = adsManagerLoadedEvent.getAdsManager(
 					videoElement,
@@ -46,9 +50,9 @@ class GoogleImaPlayerFactory {
 				}
 
 				if (videoSettings.isIasTrackingEnabled()) {
-					const config: IasTrackingParams = context.get('options.video.iasTracking.config');
+					const iasConfig: IasTrackingParams = context.get('options.video.iasTracking.config');
 
-					await iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), config);
+					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), iasConfig);
 				}
 
 				player.dispatchEvent('wikiaAdsManagerLoaded');

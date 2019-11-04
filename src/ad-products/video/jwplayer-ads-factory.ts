@@ -162,10 +162,12 @@ function create(
 		if (context.get('options.video.iasTracking.enabled')) {
 			const iasConfig = context.get('options.video.iasTracking.config');
 
-			player.on('adsManager', (event) => {
-				const { adsManager, videoElement } = event;
+			iasVideoTracker.loadScript();
 
-				iasVideoTracker.init(window.google, adsManager, videoElement, iasConfig);
+			player.on('adsManager', (event) => {
+				const { adsManager, videoElement: videoNode } = event;
+
+				iasVideoTracker.init(window.google, adsManager, videoNode, iasConfig);
 			});
 		}
 

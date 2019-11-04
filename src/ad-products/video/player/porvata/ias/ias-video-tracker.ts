@@ -1,5 +1,6 @@
 import { utils } from '@ad-engine/core';
 
+const scriptUrl = '//static.adsafeprotected.com/vans-adapter-google-ima.js';
 const logGroup = 'ias-video-tracking';
 
 export interface IasTrackingParams {
@@ -13,20 +14,24 @@ export interface IasTrackingParams {
 	custom?: any;
 }
 
-function loadScript() {
-	const url = `//static.adsafeprotected.com/vans-adapter-google-ima.js`;
-
-	return utils.scriptLoader.loadScript(url, 'text/javascript', true, 'first');
-}
-
 class IasVideoTracker {
+	private scriptPromise = null;
+
+	loadScript(): void {
+		this.scriptPromise = utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first');
+	}
+
 	init(
 		google,
 		adsManager: google.ima.AdsManager,
 		videoElement: HTMLElement,
 		config: IasTrackingParams,
 	): void {
-		loadScript().then(() => {
+		if (this.scriptPromise === null) {
+			this.loadScript();
+		}
+
+		this.scriptPromise.then(() => {
 			utils.logger(logGroup, 'ready');
 
 			window.googleImaVansAdapter.init(google, adsManager, videoElement, config);
