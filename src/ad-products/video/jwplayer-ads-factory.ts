@@ -136,6 +136,7 @@ function create(
 		// player.off('time') solves it but it also unregisters other event handlers
 		let f15sMidrollPlayed = false;
 		/** @type {string} */
+		let lastRequestedVastUrl = null;
 		let lastBrokenAdPlayId = null;
 
 		adSlot.element = videoContainer;
@@ -273,6 +274,8 @@ function create(
 				imaAd: event.ima && event.ima.ad,
 			});
 
+			lastRequestedVastUrl = event.tag;
+
 			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
 			eventService.emit(events.VIDEO_AD_REQUESTED, adSlot);
 		});
@@ -288,7 +291,7 @@ function create(
 		});
 
 		player.on('adError', (event) => {
-			const vastParams = vastParser.parse(event.tag, {
+			const vastParams = vastParser.parse(event.tag || lastRequestedVastUrl, {
 				imaAd: event.ima && event.ima.ad,
 			});
 			const { adPlayId } = event;

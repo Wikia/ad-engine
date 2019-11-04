@@ -79,7 +79,7 @@ class VastParser {
 		let creativeId: string;
 		let lineItemId: string;
 		const vastParams: Dictionary<string> = queryString.getValues(
-			vastUrl.substr(1 + vastUrl.indexOf('?')),
+			vastUrl ? vastUrl.substr(1 + vastUrl.indexOf('?')) : '?',
 		);
 		const customParams: Dictionary<string> = queryString.getValues(
 			encodeURI(vastParams.cust_params),
