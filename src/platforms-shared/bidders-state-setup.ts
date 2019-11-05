@@ -22,6 +22,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.onemobile.enabled', instantConfig.get('icPrebidOneMobile'));
 		context.set('bidders.prebid.openx.enabled', instantConfig.get('icPrebidOpenX'));
 		context.set('bidders.prebid.pubmatic.enabled', instantConfig.get('icPrebidPubmatic'));
+		context.set('bidders.prebid.teads.enabled', instantConfig.get('icPrebidTeads'));
 		context.set('bidders.prebid.vmg.enabled', instantConfig.get('icPrebidVmg'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
