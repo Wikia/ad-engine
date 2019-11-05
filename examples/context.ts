@@ -47,7 +47,7 @@ export default {
 					top_leaderboard: {
 						sizes: [[728, 90]],
 					},
-					TOP_BOXAD: {
+					top_boxad: {
 						sizes: [[300, 250]],
 					},
 					incontent_boxad: {
@@ -157,7 +157,6 @@ export default {
 		},
 		top_boxad: {
 			aboveTheFold: true,
-			bidderAlias: 'TOP_BOXAD',
 			sizes: [
 				{
 					viewportSize: [768, 0],
