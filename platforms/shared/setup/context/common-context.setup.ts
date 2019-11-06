@@ -79,5 +79,8 @@ export class CommonContextSetup implements ContextSetup {
 		}
 
 		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
+
+		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
+		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
 	}
 }

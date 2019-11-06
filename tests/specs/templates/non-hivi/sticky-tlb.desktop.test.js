@@ -61,7 +61,7 @@ describe('sticky-tlb template', () => {
 	});
 
 	it('should unstick if close button is clicked', () => {
-		const message = 'onCustomEvent top_leaderboard force-close';
+		const message = '👁 top_leaderboard custom event: force-close';
 
 		helpers.mediumScroll(100);
 		expect(stickyTlb.isAdSticked()).to.be.true;
@@ -77,9 +77,9 @@ describe('sticky-tlb template', () => {
 	});
 
 	it.only('should emit "stickiness-disabled event" if stickiness is disabled', () => {
-		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
+		const message = '👁 top_leaderboard custom event: stickiness-disabled';
 
-		helpers.navigateToUrl(`${stickyTlb.pageLink}?disabled=1`);
+		helpers.navigateToUrl(stickyTlb.pageLink, 'disabled=1');
 		slots.topLeaderboard.waitForDisplayed();
 
 		browser.waitUntil(

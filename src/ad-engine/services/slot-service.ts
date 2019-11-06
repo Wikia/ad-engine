@@ -8,7 +8,7 @@ import { slotTweaker } from './slot-tweaker';
 const groupName = 'slot-service';
 
 interface SlotEvent {
-	callback: () => void;
+	callback: (event?: any) => void;
 	name: string;
 }
 
@@ -123,7 +123,7 @@ class SlotService {
 		});
 	}
 
-	on(slotName: string, eventName: string, callback: () => void): void {
+	on(slotName: string, eventName: string, callback: (payload?: any) => void): void {
 		const adSlot = this.get(slotName);
 		const event: SlotEvent = {
 			callback,

@@ -44,7 +44,7 @@ describe('sticky-ad template', () => {
 	});
 
 	it('should unstick if close button is clicked', () => {
-		const message = 'Custom listener: onCustomEvent top_leaderboard force-unstick';
+		const message = '👁 top_leaderboard custom event: force-unstick';
 
 		helpers.mediumScroll(200);
 		$(stickyAd.stickedSlot).waitForExist(timeouts.standard);
@@ -54,16 +54,18 @@ describe('sticky-ad template', () => {
 		browser.waitUntil(
 			() => network.checkIfMessageIsInLogs(message),
 			2000,
-			`Logs should contain message: ${message}`,
+			`Logs should contain message: ${message}, instead they contain ${network.logs.map(
+				(entry) => entry.text,
+			)}`,
 		);
 
 		expect(network.checkIfMessageIsInLogs('force-close')).to.be.false;
 	});
 
 	it('should emit "stickiness-disabled event" if stickiness is disabled', () => {
-		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
+		const message = '👁 top_leaderboard custom event: stickiness-disabled';
 
-		helpers.navigateToUrl(`${stickyAd.pageLink}?disabled=1`);
+		helpers.navigateToUrl(stickyAd.pageLink, 'disabled=1');
 		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(200);
 

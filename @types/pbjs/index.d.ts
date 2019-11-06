@@ -52,6 +52,7 @@ interface PrebidBidResponse {
 	 * ${width}x${height}
 	 */
 	getSize: () => string;
+	adserverTargeting: PrebidTargeting;
 }
 
 interface PrebidRequestOptions {
