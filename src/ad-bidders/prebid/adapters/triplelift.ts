@@ -8,7 +8,10 @@ export class Triplelift extends PrebidAdapter {
 		return Triplelift.bidderName;
 	}
 
-	prepareConfigForAdUnit(code: string, { sizes, inventoryCode }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(
+		code: string,
+		{ sizes, inventoryCodes }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -16,14 +19,12 @@ export class Triplelift extends PrebidAdapter {
 					sizes,
 				},
 			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						inventoryCode,
-					},
+			bids: sizes.map((inventoryCode) => ({
+				bidder: this.bidderName,
+				params: {
+					inventoryCode,
 				},
-			],
+			})),
 		};
 	}
 }
