@@ -19,7 +19,7 @@ export class Triplelift extends PrebidAdapter {
 					sizes,
 				},
 			},
-			bids: sizes.map((inventoryCode) => ({
+			bids: inventoryCodes.map((inventoryCode) => ({
 				bidder: this.bidderName,
 				params: {
 					inventoryCode,
