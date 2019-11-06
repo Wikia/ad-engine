@@ -7,14 +7,14 @@ import { queryStrings } from '../../common/query-strings';
 describe('Kill codes ads page', () => {
 	it('Check if BTF boxad slot is visible when disableBtf set to false', () => {
 		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(false));
-		slots.topBoxad.scrollIntoView();
-		expect(slots.topBoxad.isDisplayed(), 'Top boxad not visible').to.be.true;
+		slots.incontentBoxad.scrollIntoView();
+		expect(slots.incontentBoxad.isDisplayed(), 'Incontent boxad not visible').to.be.true;
 	});
 
 	it('Check if BTF boxad slot is hidden when disableBtf set to true', () => {
 		helpers.navigateToUrl(blockBtfAd.pageLink, queryStrings.disableBtf(true));
-		slots.topBoxad.scrollIntoView();
-		expect(slots.topBoxad.isDisplayed(), 'Top boxad is visible').to.be.false;
+		slots.incontentBoxad.scrollIntoView();
+		expect(slots.incontentBoxad.isDisplayed(), 'Incontent boxad is visible').to.be.false;
 	});
 
 	it('Check if ATF boxad slot is visible when disableSecondCall set to false', () => {
