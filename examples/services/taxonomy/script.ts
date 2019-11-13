@@ -3,10 +3,12 @@ import adContext from '../../context';
 
 const isEnabled = utils.queryString.get('taxonomy-disabled') !== '1';
 const communityId = utils.queryString.get('community-id') || 'aa746ead3a810cdf7dd11b4779c53009';
+const pageArticleId = utils.queryString.get('page-article-id');
 
 context.extend(adContext);
 context.set('services.taxonomy.enabled', isEnabled);
 context.set('services.taxonomy.communityId', communityId);
+context.set('services.taxonomy.pageArticleId', pageArticleId);
 context.push('delayModules', taxonomyService);
 
 taxonomyService.configurePageLevelTargeting().then((adTags) => {

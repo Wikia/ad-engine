@@ -20,6 +20,8 @@ export class TaxonomyService implements DelayModule {
 		context.set('targeting.txn', '-1');
 
 		const adTags: AdTags = await taxonomyServiceLoader.getAdTags();
+		const comixologyTag: string = await taxonomyServiceLoader.getComixologyTag();
+		adTags['txn_comics'] = [comixologyTag];
 
 		utils.logger(logGroup, 'taxonomy ad tags', adTags);
 
