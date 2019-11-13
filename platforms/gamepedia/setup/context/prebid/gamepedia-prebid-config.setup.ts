@@ -6,6 +6,7 @@ import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange'
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
+import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 
 @Injectable()
 export class GamepediaPrebidConfigSetup implements PrebidConfigSetup {
@@ -17,6 +18,7 @@ export class GamepediaPrebidConfigSetup implements PrebidConfigSetup {
 		context.set('bidders.prebid.openx', getOpenXContext(mode));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(mode));
 		context.set('bidders.prebid.rubicon_display', getRubiconContext(mode));
+		context.set('bidders.prebid.triplelift', getTripleliftContext(mode));
 		context.set('bidders.prebid.wikia', getWikiaContext(mode));
 	}
 }
