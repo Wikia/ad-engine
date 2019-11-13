@@ -1,5 +1,6 @@
 import * as utils from '../../../ad-engine/utils';
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Teads extends PrebidAdapter {
 	static bidderName = 'teads';
@@ -20,7 +21,7 @@ export class Teads extends PrebidAdapter {
 		return Teads.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { pageId, placementId }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { pageId, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
