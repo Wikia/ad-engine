@@ -9,14 +9,18 @@ const logGroup = 'cmp-wrapper';
  */
 class CmpWrapper {
 	cmpReady = false;
-	cmpModal: any;
+	consentInstances: any;
+	ccpaSignal = false;
 	gdprConsent = false;
 
 	/**
 	 * Initialize the CMP system
 	 * Returns a Promise fulfilled when the CMP library is ready for use
 	 */
-	init(country: string): Promise<void> {
+	init(geoData: utils.GeoData): Promise<void> {
+		const country = geoData.country;
+		const region = geoData.region;
+
 		return new Promise<void>((resolve, reject) => {
 			// In case it fails to load, we'll resolve after 2s
 			setTimeout(() => {
@@ -28,8 +32,9 @@ class CmpWrapper {
 				utils.logger(logGroup, 'Modal library loaded');
 
 				this.cmpReady = true;
-				this.cmpModal = window.trackingOptIn.default({
+				this.consentInstances = window.trackingOptIn.default({
 					country,
+					region,
 					disableConsentQueue: true,
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
@@ -42,7 +47,7 @@ class CmpWrapper {
 					zIndex: 9999999,
 				});
 
-				const consentRequired = this.cmpModal.geoRequiresTrackingConsent();
+				const consentRequired = this.consentInstances.gdpr.geoRequiresTrackingConsent();
 
 				context.set('custom.isCMPEnabled', consentRequired);
 				context.set('options.geoRequiresConsent', consentRequired);
@@ -72,21 +77,30 @@ class CmpWrapper {
 			}
 
 			// Nothing is needed if the geo does not require consent
-			if (!this.cmpModal.geoRequiresTrackingConsent()) {
+			if (
+				!this.consentInstances.gdpr.geoRequiresTrackingConsent() &&
+				!this.consentInstances.ccpa.geoRequiresUserSignal()
+			) {
 				this.gdprConsent = true;
 				resolve(true);
 				return;
 			}
 
-			if (this.cmpModal.hasUserConsented() === undefined) {
+			if (
+				this.consentInstances.gdpr.hasUserConsented() === undefined &&
+				this.consentInstances.ccpa.hasUserProvidedSignal() === undefined
+			) {
 				resolve(false);
 				return;
 			}
 
-			this.gdprConsent = this.cmpModal.hasUserConsented();
-			utils.logger(logGroup, `User consent: ${this.gdprConsent}`);
+			this.gdprConsent = this.consentInstances.gdpr.hasUserConsented();
+			this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
 
-			resolve(this.gdprConsent);
+			utils.logger(logGroup, `User consent: ${this.gdprConsent}`);
+			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
+
+			resolve(this.gdprConsent && !this.ccpaSignal);
 			return;
 		});
 	}
