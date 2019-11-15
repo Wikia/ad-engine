@@ -36,6 +36,7 @@ class CmpWrapper {
 					country,
 					region,
 					disableConsentQueue: true,
+					enableCCPAinit: !!utils.queryString.get('icUSPrivacyApi'),
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
 						this.gdprConsent = true;
@@ -79,7 +80,7 @@ class CmpWrapper {
 			// Nothing is needed if the geo does not require consent
 			if (
 				!this.consentInstances.gdpr.geoRequiresTrackingConsent() &&
-				!this.consentInstances.ccpa.geoRequiresUserSignal()
+				(!this.consentInstances.ccpa || !this.consentInstances.ccpa.geoRequiresUserSignal())
 			) {
 				this.gdprConsent = true;
 				resolve(true);
@@ -88,6 +89,7 @@ class CmpWrapper {
 
 			if (
 				this.consentInstances.gdpr.hasUserConsented() === undefined &&
+				this.consentInstances.ccpa &&
 				this.consentInstances.ccpa.hasUserProvidedSignal() === undefined
 			) {
 				resolve(false);
@@ -95,7 +97,8 @@ class CmpWrapper {
 			}
 
 			this.gdprConsent = this.consentInstances.gdpr.hasUserConsented();
-			this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
+			this.ccpaSignal =
+				this.consentInstances.ccpa && this.consentInstances.ccpa.hasUserProvidedSignal();
 
 			utils.logger(logGroup, `User consent: ${this.gdprConsent}`);
 			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
