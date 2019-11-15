@@ -38,6 +38,11 @@ export class TaxonomyService implements DelayModule {
 			this.configureDelayPromise();
 		}
 
+		if (!this.isGettingComixologyTagEnabled()) {
+			this.resolveDelayPromise();
+			return {};
+		}
+
 		const isComicsRelated: string = await taxonomyServiceLoader.getComixologyTag();
 		const comixologyTag: AdTags = { txn_comics: [isComicsRelated] };
 
@@ -68,6 +73,10 @@ export class TaxonomyService implements DelayModule {
 
 	isEnabled(): boolean {
 		return context.get('services.taxonomy.enabled');
+	}
+
+	isGettingComixologyTagEnabled() {
+		return context.get('services.taxonomy.comixology.enabled');
 	}
 
 	private configureDelayPromise() {
