@@ -62,6 +62,7 @@ export class TaxonomyServiceLoader {
 			'https://services.fandom.com/knowledge-graph/community/{communityId}/{pageArticleId}/comixology';
 		const communityId = context.get('services.taxonomy.communityId');
 		const pageArticleId = context.get('services.taxonomy.pageArticleId');
+
 		const url = utils.stringBuilder.build(endpoint, {
 			communityId,
 			pageArticleId,

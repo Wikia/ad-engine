@@ -20,8 +20,6 @@ export class TaxonomyService implements DelayModule {
 		context.set('targeting.txn', '-1');
 
 		const adTags: AdTags = await taxonomyServiceLoader.getAdTags();
-		const comixologyTag: string = await taxonomyServiceLoader.getComixologyTag();
-		adTags['txn_comics'] = [comixologyTag];
 
 		utils.logger(logGroup, 'taxonomy ad tags', adTags);
 
@@ -33,6 +31,23 @@ export class TaxonomyService implements DelayModule {
 		this.resolveDelayPromise();
 
 		return adTags;
+	}
+
+	async configureComixologyTargeting(): Promise<AdTags> {
+		if (this.delayPromise === null) {
+			this.configureDelayPromise();
+		}
+
+		const isComicsRelated: string = await taxonomyServiceLoader.getComixologyTag();
+		const comixologyTag: AdTags = { txn_comics: [isComicsRelated] };
+
+		utils.logger(logGroup, 'taxonomy comixology tag', comixologyTag);
+
+		context.set('targeting.txn_comics', comixologyTag['txn_comics']);
+
+		this.resolveDelayPromise();
+
+		return comixologyTag;
 	}
 
 	getPromise(): Promise<void> {
