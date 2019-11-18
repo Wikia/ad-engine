@@ -1,4 +1,9 @@
-import { bootstrapAndGetCmpConsent, getDeviceMode, PlatformStartup } from '@platforms/shared';
+import {
+	bootstrapAndGetCmpConsent,
+	ensureGeoCookie,
+	getDeviceMode,
+	PlatformStartup,
+} from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -9,7 +14,7 @@ async function start(): Promise<void> {
 	context.extend(basicContext);
 
 	const [consent, container]: [boolean, Container] = await Promise.all([
-		bootstrapAndGetCmpConsent(),
+		ensureGeoCookie().then(() => bootstrapAndGetCmpConsent()),
 		setupFutheadIoc(),
 	]);
 	const platformStartup = container.get(PlatformStartup);
