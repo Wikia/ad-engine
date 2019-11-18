@@ -5,7 +5,6 @@ import {
 	BiddersStateSetup,
 	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
-	CommonStateSetup,
 	CommonTrackingSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
@@ -16,7 +15,6 @@ import {
 	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
-	StateSetup,
 	TargetingSetup,
 	TemplatesSetup,
 	TrackingSetup,
@@ -52,7 +50,6 @@ export async function setupGamepediaIoc(): Promise<Container> {
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(AdsMode).to(GamepediaAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
-	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);

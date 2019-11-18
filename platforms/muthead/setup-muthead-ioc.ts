@@ -5,7 +5,6 @@ import {
 	BiddersStateSetup,
 	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
-	CommonStateSetup,
 	CommonTrackingSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
@@ -19,7 +18,6 @@ import {
 	SportsAdsMode,
 	SportsDelayModulesSetup,
 	SportsTemplatesSetup,
-	StateSetup,
 	TargetingSetup,
 	TemplatesSetup,
 	TrackingSetup,
@@ -46,7 +44,6 @@ export async function setupMutheadIoc(): Promise<Container> {
 	container.bind(AdEngineRunnerSetup).to(CommonAdEngineRunnerSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
-	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
 	container.bind(UapSetup).to(CurseUapSetup);

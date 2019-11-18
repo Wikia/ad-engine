@@ -10,7 +10,8 @@ import { TargetingSetup } from './setup/context/_targeting.setup';
 import { WikiContextSetup } from './setup/context/_wiki-context.setup';
 import { BaseContextSetup } from './setup/context/base-context.setup';
 import { DynamicSlotsSetup } from './setup/dynamic-slots/_dynamic-slots.setup';
-import { StateSetup } from './setup/state/_state.setup';
+import { BiddersStateSetup } from './setup/state/bidders/_bidders-state.setup';
+import { SlotsStateSetup } from './setup/state/slots/_slots-state.setup';
 import { TemplatesSetup } from './setup/templates/_templates.setup';
 import { TrackingSetup } from './setup/tracking/_tracking.setup';
 
@@ -29,7 +30,9 @@ export class PlatformStartup {
 		private prebidConfigSetup: PrebidConfigSetup,
 		private a9ConfigSetup: A9ConfigSetup,
 		// ---
-		private stateSetup: StateSetup,
+		private slotsStateSetup: SlotsStateSetup,
+		private biddersStateSetup: BiddersStateSetup,
+		// ---
 		private dynamicSlotsSetup: DynamicSlotsSetup,
 		private templatesSetup: TemplatesSetup,
 		private trackingSetup: TrackingSetup,
@@ -46,8 +49,10 @@ export class PlatformStartup {
 		this.slotsContextSetup.configureSlotsContext();
 		this.prebidConfigSetup.configurePrebidContext();
 		this.a9ConfigSetup.configureA9Context();
+		// State
+		this.slotsStateSetup.configureSlotsState();
+		this.biddersStateSetup.configureBiddersState();
 		//
-		this.stateSetup.configureState();
 		this.dynamicSlotsSetup.configureDynamicSlots();
 		this.templatesSetup.configureTemplates();
 		this.trackingSetup.configureTracking();

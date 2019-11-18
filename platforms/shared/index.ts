@@ -20,8 +20,6 @@ export * from './setup/context/slots/curse-slots-context-setup';
 export * from './setup/context/_prebid-config.setup';
 export * from './setup/context/_a9-config.setup';
 export * from './setup/context/a9/sports-a9-config.setup';
-export * from './setup/state/_state.setup';
-export * from './setup/state/common-state-setup';
 export * from './setup/state/slots/_slots-state.setup';
 export * from './setup/state/slots/curse-slots-state.setup';
 export * from './setup/state/bidders/_bidders-state.setup';
