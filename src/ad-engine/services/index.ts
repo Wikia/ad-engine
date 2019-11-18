@@ -10,6 +10,7 @@ export * from './local-cache';
 export * from './message-bus';
 export * from './scroll-speed-calculator';
 export * from './session-cookie';
+export * from './cookie-storage-adapter';
 export * from './slot-data-params-updater';
 export * from './slot-injector';
 export * from './slot-repeater';
