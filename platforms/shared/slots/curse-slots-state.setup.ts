@@ -1,7 +1,7 @@
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../../../slots/slots-context';
-import { SlotsStateSetup } from './_slots-state.setup';
+import { SlotsStateSetup } from '../setup/_slots-state.setup';
+import { slotsContext } from './slots-context';
 
 @Injectable()
 export class CurseSlotsStateSetup implements SlotsStateSetup {

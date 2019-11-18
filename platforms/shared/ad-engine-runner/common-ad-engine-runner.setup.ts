@@ -1,7 +1,7 @@
 import { bidders, events, eventService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { AdEngineRunnerSetup } from './_ad-engine-runner.setup';
-import { DelayModulesSetup } from './delay-modules/_delay-modules.setup';
+import { AdEngineRunnerSetup } from '../setup/_ad-engine-runner.setup';
+import { DelayModulesSetup } from '../setup/_delay-modules.setup';
 
 const logGroup = 'ad-engine';
 

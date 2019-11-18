@@ -17,9 +17,9 @@ import {
 	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { DataWarehouseTracker } from '../../tracking/data-warehouse';
-import { PageTracker } from '../../tracking/page-tracker';
-import { TrackingSetup } from './_tracking.setup';
+import { TrackingSetup } from '../setup/_tracking.setup';
+import { DataWarehouseTracker } from './data-warehouse';
+import { PageTracker } from './page-tracker';
 
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
