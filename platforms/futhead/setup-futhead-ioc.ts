@@ -5,10 +5,8 @@ import {
 	BiddersStateSetup,
 	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
-	CommonContextSetup,
 	CommonStateSetup,
 	CommonTrackingSetup,
-	ContextSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	CurseUapSetup,
@@ -45,7 +43,6 @@ export async function setupFutheadIoc(): Promise<Container> {
 	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
 	container.bind(AdEngineRunnerSetup).to(CommonAdEngineRunnerSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
-	container.bind(ContextSetup).to(CommonContextSetup);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);

@@ -3,7 +3,12 @@ import { Injectable } from '@wikia/dependency-injection';
 import { AdsMode } from './modes/ads/_ads.mode';
 import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
 import { AdEngineRunnerSetup } from './setup/ad-engine-runner/_ad-engine-runner.setup';
-import { ContextSetup } from './setup/context/_context.setup';
+import { A9ConfigSetup } from './setup/context/_a9-config.setup';
+import { PrebidConfigSetup } from './setup/context/_prebid-config.setup';
+import { SlotsContextSetup } from './setup/context/_slots-context.setup';
+import { TargetingSetup } from './setup/context/_targeting.setup';
+import { WikiContextSetup } from './setup/context/_wiki-context.setup';
+import { BaseContextSetup } from './setup/context/base-context.setup';
 import { DynamicSlotsSetup } from './setup/dynamic-slots/_dynamic-slots.setup';
 import { StateSetup } from './setup/state/_state.setup';
 import { TemplatesSetup } from './setup/templates/_templates.setup';
@@ -17,7 +22,13 @@ export interface PlatformStartupArgs {
 @Injectable()
 export class PlatformStartup {
 	constructor(
-		private contextSetup: ContextSetup,
+		private wikiContextSetup: WikiContextSetup,
+		private baseContextSetup: BaseContextSetup,
+		private targetingSetup: TargetingSetup,
+		private slotsContextSetup: SlotsContextSetup,
+		private prebidConfigSetup: PrebidConfigSetup,
+		private a9ConfigSetup: A9ConfigSetup,
+		// ---
 		private stateSetup: StateSetup,
 		private dynamicSlotsSetup: DynamicSlotsSetup,
 		private templatesSetup: TemplatesSetup,
@@ -28,7 +39,14 @@ export class PlatformStartup {
 	) {}
 
 	configure(args: PlatformStartupArgs): void {
-		this.contextSetup.configureContext(args.isOptedIn, args.isMobile);
+		// Context
+		this.wikiContextSetup.configureWikiContext();
+		this.baseContextSetup.configureBaseContext(args.isOptedIn, args.isMobile);
+		this.targetingSetup.configureTargetingContext();
+		this.slotsContextSetup.configureSlotsContext();
+		this.prebidConfigSetup.configurePrebidContext();
+		this.a9ConfigSetup.configureA9Context();
+		//
 		this.stateSetup.configureState();
 		this.dynamicSlotsSetup.configureDynamicSlots();
 		this.templatesSetup.configureTemplates();

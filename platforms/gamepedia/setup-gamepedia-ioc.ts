@@ -5,10 +5,8 @@ import {
 	BiddersStateSetup,
 	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
-	CommonContextSetup,
 	CommonStateSetup,
 	CommonTrackingSetup,
-	ContextSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	CurseUapSetup,
@@ -53,7 +51,6 @@ export async function setupGamepediaIoc(): Promise<Container> {
 	container.bind(AdEngineRunnerSetup).to(CommonAdEngineRunnerSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(AdsMode).to(GamepediaAdsMode);
-	container.bind(ContextSetup).to(CommonContextSetup);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(StateSetup).to(CommonStateSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);

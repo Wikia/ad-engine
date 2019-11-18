@@ -1,4 +1,4 @@
-import { iocDefaultWarning } from '../../../utils/ioc-default-warning';
+import { iocDefaultWarning } from '../../utils/ioc-default-warning';
 
 export class TargetingSetup {
 	constructor() {

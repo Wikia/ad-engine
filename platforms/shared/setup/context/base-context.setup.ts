@@ -1,33 +1,15 @@
 import { context, InstantConfigService, setupNpaContext, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { ContextSetup } from './_context.setup';
-import { A9ConfigSetup } from './a9/_a9-config.setup';
-import { PrebidConfigSetup } from './prebid/_prebid-config.setup';
-import { SlotsContextSetup } from './slots/_slots-context.setup';
-import { TargetingSetup } from './targeting/_targeting.setup';
-import { WikiContextSetup } from './wiki/_wiki-context-setup';
 
 @Injectable()
-export class CommonContextSetup implements ContextSetup {
-	constructor(
-		private wikiContextSetup: WikiContextSetup,
-		private instantConfig: InstantConfigService,
-		private targetingSetup: TargetingSetup,
-		private slotsContextSetup: SlotsContextSetup,
-		private prebidConfigSetup: PrebidConfigSetup,
-		private a9ConfigSetup: A9ConfigSetup,
-	) {}
+export class BaseContextSetup {
+	constructor(private instantConfig: InstantConfigService) {}
 
-	configureContext(isOptedIn = false, isMobile = false): void {
-		this.wikiContextSetup.configureWikiContext();
+	configureBaseContext(isOptedIn = false, isMobile = false): void {
 		this.setBaseState(isMobile);
 		this.setOptionsContext(isOptedIn);
 		this.setServicesContext();
 		this.setMiscContext();
-		this.targetingSetup.configureTargetingContext();
-		this.slotsContextSetup.configureSlotsContext();
-		this.prebidConfigSetup.configurePrebidContext();
-		this.a9ConfigSetup.configureA9Context();
 		setupNpaContext();
 	}
 
