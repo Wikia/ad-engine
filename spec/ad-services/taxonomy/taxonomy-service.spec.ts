@@ -63,3 +63,46 @@ describe('Taxonomy service', () => {
 		expect(taxonomyService.getName()).to.equal('taxonomy-service');
 	});
 });
+
+describe('Taxonomy service - comics tag', () => {
+	const sandbox = sinon.createSandbox();
+	let geComicsTagStub;
+
+	const comicsTag = '[1]';
+
+	beforeEach(() => {
+		context.set('services.taxonomy.comics.enabled', true);
+		geComicsTagStub = sandbox.stub(taxonomyServiceLoader, 'getComicsTag').callsFake(() => {
+			return Promise.resolve(comicsTag);
+		});
+	});
+
+	afterEach(() => {
+		context.remove('services.taxonomy.comics.enabled');
+		sandbox.restore();
+	});
+
+	it('does not fetch comics tag when service is disabled', async () => {
+		context.set('services.taxonomy.comics.enabled', false);
+
+		const fetchedComicsTag = await taxonomyService.configureComicsTargeting();
+
+		expect(geComicsTagStub.called).to.be.false;
+		expect(fetchedComicsTag).to.deep.equal({});
+	});
+
+	it('fetched comics tag resolves delay promise', async () => {
+		let delayResolved = false;
+		taxonomyService.getPromise().then(() => {
+			delayResolved = true;
+		});
+
+		await taxonomyService.configureComicsTargeting();
+
+		expect(delayResolved).to.be.true;
+	});
+
+	it('is named delay module', async () => {
+		expect(taxonomyService.getName()).to.equal('taxonomy-service');
+	});
+});
