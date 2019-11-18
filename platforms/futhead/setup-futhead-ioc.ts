@@ -3,19 +3,16 @@ import {
 	AdEngineRunnerSetup,
 	AdsMode,
 	BiddersStateSetup,
-	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
-	DelayModulesSetup,
 	DynamicSlotsSetup,
 	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	SportsA9ConfigSetup,
 	SportsAdsMode,
-	SportsDelayModulesSetup,
 	SportsTemplatesSetup,
 	TargetingSetup,
 	TemplatesSetup,
@@ -24,6 +21,7 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
+import { FutheadAdEngineRunnerSetup } from './ad-engine-runner/futhead-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
@@ -36,8 +34,7 @@ export async function setupFutheadIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(TargetingSetup).to(FutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
-	container.bind(DelayModulesSetup).to(SportsDelayModulesSetup);
-	container.bind(AdEngineRunnerSetup).to(CommonAdEngineRunnerSetup);
+	container.bind(AdEngineRunnerSetup).to(FutheadAdEngineRunnerSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);

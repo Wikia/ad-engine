@@ -3,12 +3,10 @@ import {
 	AdEngineRunnerSetup,
 	AdsMode,
 	BiddersStateSetup,
-	CommonAdEngineRunnerSetup,
 	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
-	DelayModulesSetup,
 	DynamicSlotsSetup,
 	NoAdsMode,
 	PrebidConfigSetup,
@@ -22,10 +20,10 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
+import { GamepediaAdEngineRunnerSetup } from './ad-engine-runner/muthead-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
 import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';
-import { GamepediaDelayModulesSetup } from './setup/ad-engine-runner/delay-modules/delay-modules.setup';
 import { GamepediaA9ConfigSetup } from './setup/context/a9/gamepedia-a9-config.setup';
 import { GamepediaPrebidConfigSetup } from './setup/context/prebid/gamepedia-prebid-config.setup';
 import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
@@ -41,8 +39,7 @@ export async function setupGamepediaIoc(): Promise<Container> {
 	container.bind(WikiContextSetup).to(GamepediaWikiContextSetup);
 	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
 	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);
-	container.bind(DelayModulesSetup).to(GamepediaDelayModulesSetup);
-	container.bind(AdEngineRunnerSetup).to(CommonAdEngineRunnerSetup);
+	container.bind(AdEngineRunnerSetup).to(GamepediaAdEngineRunnerSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(AdsMode).to(GamepediaAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
