@@ -5,6 +5,7 @@ import { BiddersStateSetup } from './_bidders-state.setup';
 @Injectable()
 export class CommonBiddersStateSetup implements BiddersStateSetup {
 	constructor(private instantConfig: InstantConfigService) {}
+
 	configureBiddersState(): void {
 		setupBidders(context, this.instantConfig);
 	}

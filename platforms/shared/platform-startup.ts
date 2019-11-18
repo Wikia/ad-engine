@@ -34,6 +34,7 @@ export class PlatformStartup {
 		private biddersStateSetup: BiddersStateSetup,
 		// ---
 		private dynamicSlotsSetup: DynamicSlotsSetup,
+		// ---
 		private templatesSetup: TemplatesSetup,
 		private trackingSetup: TrackingSetup,
 		private adEngineRunnerSetup: AdEngineRunnerSetup,
@@ -52,8 +53,9 @@ export class PlatformStartup {
 		// State
 		this.slotsStateSetup.configureSlotsState();
 		this.biddersStateSetup.configureBiddersState();
-		//
+		// Dynamic Slots
 		this.dynamicSlotsSetup.configureDynamicSlots();
+		//
 		this.templatesSetup.configureTemplates();
 		this.trackingSetup.configureTracking();
 		this.adEngineRunnerSetup.configureAdEngineRunner();
