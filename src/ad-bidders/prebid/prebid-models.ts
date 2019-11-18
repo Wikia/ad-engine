@@ -16,12 +16,13 @@ export interface PrebidAdapterConfig {
 
 export interface PrebidAdSlotConfig {
 	appId?: string | number;
-	siteId?: string | number;
 	inScreen?: string;
 	inventoryCodes?: string[];
+	pageId?: string;
 	placementId?: string | number;
 	pos?: string;
 	productId?: string;
+	siteId?: string | number;
 	size?: number[];
 	sizes?: [number, number][];
 	unit?: string;
