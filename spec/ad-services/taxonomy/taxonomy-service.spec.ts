@@ -82,6 +82,16 @@ describe('Taxonomy service - comics tag', () => {
 		sandbox.restore();
 	});
 
+	it('configures fetched comics tag in context targeting', async () => {
+		const fetchedComicsTag = await taxonomyService.configureComicsTargeting();
+
+		expect(geComicsTagStub.called).to.be.true;
+		expect(fetchedComicsTag).to.deep.equal({
+			txn_comics: ['[1]'],
+		});
+		expect(context.get('targeting.txn_comics')).to.deep.equal(['[1]']);
+	});
+
 	it('does not fetch comics tag when service is disabled', async () => {
 		context.set('services.taxonomy.comics.enabled', false);
 
