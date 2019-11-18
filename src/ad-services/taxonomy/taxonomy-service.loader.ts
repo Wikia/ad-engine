@@ -10,7 +10,7 @@ export interface AdTags {
 
 export class TaxonomyServiceLoader {
 	adTagsPromise: Promise<AdTags> = null;
-	comixologyTagPromise: Promise<string> = null;
+	comicsTagPromise: Promise<string> = null;
 
 	async getAdTags(): Promise<AdTags> {
 		if (!this.adTagsPromise) {
@@ -49,15 +49,15 @@ export class TaxonomyServiceLoader {
 			});
 	}
 
-	async getComixologyTag(): Promise<string> {
-		if (!this.comixologyTagPromise) {
-			this.comixologyTagPromise = this.fetchComixologyTag();
+	async getComicsTag(): Promise<string> {
+		if (!this.comicsTagPromise) {
+			this.comicsTagPromise = this.fetchComicsTag();
 		}
 
-		return this.comixologyTagPromise;
+		return this.comicsTagPromise;
 	}
 
-	private async fetchComixologyTag(): Promise<string> {
+	private async fetchComicsTag(): Promise<string> {
 		const endpoint =
 			'https://services.fandom.com/knowledge-graph/community/{communityId}/{pageArticleId}/comixology';
 		const communityId = context.get('services.taxonomy.communityId');
@@ -83,10 +83,10 @@ export class TaxonomyServiceLoader {
 					return {};
 				},
 			)
-			.then((comixologyTag: string) => {
-				utils.logger(logGroup, 'comixology tag fetched', comixologyTag);
+			.then((comicsTag: string) => {
+				utils.logger(logGroup, 'comics tag fetched', comicsTag);
 
-				return comixologyTag;
+				return comicsTag;
 			});
 	}
 }

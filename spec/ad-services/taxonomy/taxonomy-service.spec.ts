@@ -50,7 +50,7 @@ describe('Taxonomy service', () => {
 
 	it('fetched ad tags resolves delay promise', async () => {
 		let delayResolved = false;
-		taxonomyService.getAdTagsPromise().then(() => {
+		taxonomyService.getPromise().then(() => {
 			delayResolved = true;
 		});
 

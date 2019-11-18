@@ -33,26 +33,26 @@ export class TaxonomyService implements DelayModule {
 		return adTags;
 	}
 
-	async configureComixologyTargeting(): Promise<AdTags> {
+	async configureComicsTargeting(): Promise<AdTags> {
 		if (this.delayPromise === null) {
 			this.configureDelayPromise();
 		}
 
-		if (!this.isGettingComixologyTagEnabled()) {
+		if (!this.isGettingComicsTagEnabled()) {
 			this.resolveDelayPromise();
 			return {};
 		}
 
-		const isComicsRelated: string = await taxonomyServiceLoader.getComixologyTag();
-		const comixologyTag: AdTags = { txn_comics: [isComicsRelated] };
+		const isComicsRelated: string = await taxonomyServiceLoader.getComicsTag();
+		const comicsTag: AdTags = { txn_comics: [isComicsRelated] };
 
-		utils.logger(logGroup, 'taxonomy comixology tag', comixologyTag);
+		utils.logger(logGroup, 'taxonomy comics tag', comicsTag);
 
-		context.set('targeting.txn_comics', comixologyTag['txn_comics']);
+		context.set('targeting.txn_comics', comicsTag['txn_comics']);
 
 		this.resolveDelayPromise();
 
-		return comixologyTag;
+		return comicsTag;
 	}
 
 	getPromise(): Promise<void> {
@@ -75,8 +75,8 @@ export class TaxonomyService implements DelayModule {
 		return context.get('services.taxonomy.enabled');
 	}
 
-	isGettingComixologyTagEnabled() {
-		return context.get('services.taxonomy.comixology.enabled');
+	isGettingComicsTagEnabled() {
+		return context.get('services.taxonomy.comics.enabled');
 	}
 
 	private configureDelayPromise() {
