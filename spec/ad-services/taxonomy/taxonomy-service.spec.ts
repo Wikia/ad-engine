@@ -66,13 +66,13 @@ describe('Taxonomy service', () => {
 
 describe('Taxonomy service - comics tag', () => {
 	const sandbox = sinon.createSandbox();
-	let geComicsTagStub;
+	let getComicsTagStub;
 
 	const comicsTag = '[1]';
 
 	beforeEach(() => {
 		context.set('services.taxonomy.comics.enabled', true);
-		geComicsTagStub = sandbox.stub(taxonomyServiceLoader, 'getComicsTag').callsFake(() => {
+		getComicsTagStub = sandbox.stub(taxonomyServiceLoader, 'getComicsTag').callsFake(() => {
 			return Promise.resolve(comicsTag);
 		});
 	});
@@ -85,7 +85,7 @@ describe('Taxonomy service - comics tag', () => {
 	it('configures fetched comics tag in context targeting', async () => {
 		const fetchedComicsTag = await taxonomyService.configureComicsTargeting();
 
-		expect(geComicsTagStub.called).to.be.true;
+		expect(getComicsTagStub.called).to.be.true;
 		expect(fetchedComicsTag).to.deep.equal({
 			txn_comics: ['[1]'],
 		});
@@ -97,8 +97,8 @@ describe('Taxonomy service - comics tag', () => {
 
 		const fetchedComicsTag = await taxonomyService.configureComicsTargeting();
 
-		expect(geComicsTagStub.called).to.be.false;
-		expect(fetchedComicsTag).to.deep.equal({});
+		expect(getComicsTagStub.called).to.be.false;
+		expect(fetchedComicsTag).to.be.an('object').that.is.empty;
 	});
 
 	it('fetched comics tag resolves delay promise', async () => {

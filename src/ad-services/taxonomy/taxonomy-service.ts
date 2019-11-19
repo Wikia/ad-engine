@@ -2,6 +2,7 @@ import { context, DelayModule, utils } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
 
 const logGroup = 'taxonomy-service';
+const comicsLogGroup = 'taxonomy-comics-service';
 
 export class TaxonomyService implements DelayModule {
 	private delayPromise: Promise<void> = null;
@@ -46,7 +47,7 @@ export class TaxonomyService implements DelayModule {
 		const isComicsRelated: string = await taxonomyServiceLoader.getComicsTag();
 		const comicsTag: AdTags = { txn_comics: [isComicsRelated] };
 
-		utils.logger(logGroup, 'taxonomy comics tag', comicsTag);
+		utils.logger(comicsLogGroup, 'taxonomy comics tag', comicsTag);
 
 		context.set('targeting.txn_comics', comicsTag['txn_comics']);
 

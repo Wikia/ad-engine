@@ -3,6 +3,7 @@ import { context, utils } from '@ad-engine/core';
 const defaultEndpoint =
 	'https://services.fandom.com/knowledge-graph/communities/{communityId}/ad-tags';
 const logGroup = 'taxonomy-service-loader';
+const comicsLogGroup = 'taxonomy-comics-service-loader';
 
 export interface AdTags {
 	[key: string]: string[];
@@ -35,10 +36,13 @@ export class TaxonomyServiceLoader {
 
 						return response.json();
 					}
+					utils.logger(logGroup, `response status: ${response.status}`);
 
 					return {};
 				},
 				() => {
+					utils.logger(logGroup, 'rejected');
+
 					return {};
 				},
 			)
@@ -72,19 +76,22 @@ export class TaxonomyServiceLoader {
 			.then(
 				(response: Response) => {
 					if (response.status === 200) {
-						utils.logger(logGroup, 'successful response');
+						utils.logger(comicsLogGroup, 'successful response');
 
 						return response.json();
 					}
+					utils.logger(comicsLogGroup, `response status: ${response.status}`);
 
 					return {};
 				},
 				() => {
+					utils.logger(comicsLogGroup, 'rejected');
+
 					return {};
 				},
 			)
 			.then((comicsTag: string) => {
-				utils.logger(logGroup, 'comics tag fetched', comicsTag);
+				utils.logger(comicsLogGroup, 'Comics tag fetched', comicsTag);
 
 				return comicsTag;
 			});
