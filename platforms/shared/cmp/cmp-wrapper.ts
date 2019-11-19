@@ -36,7 +36,7 @@ class CmpWrapper {
 					country,
 					region,
 					disableConsentQueue: true,
-					enableCCPAinit: !!utils.queryString.get('icUSPrivacyApi'),
+					enableCCPAinit: utils.queryString.get('icUSPrivacyApi') === '1',
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
 						this.gdprConsent = true;
