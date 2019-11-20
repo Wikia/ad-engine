@@ -96,6 +96,11 @@ export class TaxonomyServiceLoader {
 				return comicsTag;
 			});
 	}
+
+	reset(): void {
+		this.adTagsPromise = null;
+		this.comicsTagPromise = null;
+	}
 }
 
 export const taxonomyServiceLoader = new TaxonomyServiceLoader();
