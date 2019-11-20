@@ -29,8 +29,8 @@ export class PlatformStartup {
 
 	configure(args: PlatformStartupArgs): void {
 		this.contextSetup.configureContext(args.isOptedIn, args.isMobile);
-		this.stateSetup.configureState();
 		this.dynamicSlotsSetup.configureDynamicSlots();
+		this.stateSetup.configureState();
 		this.templatesSetup.configureTemplates();
 		this.trackingSetup.configureTracking();
 		this.adEngineRunnerSetup.configureAdEngineRunner();

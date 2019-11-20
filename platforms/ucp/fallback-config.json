@@ -1,0 +1,87 @@
+{
+	"wgAdDriverDelayTimeout": 2000,
+	"icConfiant": [
+		{
+			"apps": ["ucp"],
+			"value": false
+		}
+	],
+	"icPrebidRubiconDisplay": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidAppNexus": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidPubmatic": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidTriplelift": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"value": false
+		}
+	],
+	"icPrebid": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidOpenX": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"wgAdDriverUapCountries": ["XX"],
+	"icPrebidIndexExchange": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icBabDetection": [
+		{
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icIASPorvataTracking": [
+		{
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"sampling": 10.0,
+			"value": false
+		}
+	],
+	"icA9Deals": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icA9Bidder": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis", "ucp"],
+			"regions": ["XX"],
+			"value": true
+		}
+	]
+}
