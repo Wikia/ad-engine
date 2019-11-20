@@ -98,7 +98,6 @@ export class TaxonomyServiceLoader {
 	}
 
 	reset(): void {
-		this.adTagsPromise = null;
 		this.comicsTagPromise = null;
 	}
 }
