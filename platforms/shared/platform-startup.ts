@@ -46,9 +46,9 @@ export class PlatformStartup {
 		this.slotsContextSetup.configureSlotsContext();
 		this.prebidConfigSetup.configurePrebidContext();
 		this.a9ConfigSetup.configureA9Context();
+		this.dynamicSlotsSetup.configureDynamicSlots();
 		this.slotsStateSetup.configureSlotsState();
 		this.biddersStateSetup.configureBiddersState();
-		this.dynamicSlotsSetup.configureDynamicSlots();
 		this.templatesSetup.configureTemplates();
 		this.trackingSetup.configureTracking();
 		this.adEngineRunnerSetup.configureAdEngineRunner();
