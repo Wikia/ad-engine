@@ -99,6 +99,7 @@ export class TaxonomyServiceLoader {
 
 	reset(): void {
 		this.comicsTagPromise = null;
+		context.remove('targeting.txn_comics');
 	}
 }
 
