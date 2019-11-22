@@ -80,6 +80,11 @@ export class TaxonomyService implements DelayModule {
 		return context.get('services.taxonomy.comics.enabled');
 	}
 
+	reset(): void {
+		taxonomyServiceLoader.resetComicsTagPromise();
+		context.remove('targeting.txn_comics');
+	}
+
 	private configureDelayPromise() {
 		this.delayPromise = new Promise((resolve) => {
 			this.resolveDelayPromise = resolve;

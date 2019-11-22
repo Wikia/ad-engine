@@ -13,6 +13,10 @@ export class TaxonomyServiceLoader {
 	adTagsPromise: Promise<AdTags> = null;
 	comicsTagPromise: Promise<string> = null;
 
+	resetComicsTagPromise() {
+		this.comicsTagPromise = null;
+	}
+
 	async getAdTags(): Promise<AdTags> {
 		if (!this.adTagsPromise) {
 			this.adTagsPromise = this.fetchAdTags();
@@ -95,11 +99,6 @@ export class TaxonomyServiceLoader {
 
 				return comicsTag;
 			});
-	}
-
-	reset(): void {
-		this.comicsTagPromise = null;
-		context.remove('targeting.txn_comics');
 	}
 }
 
