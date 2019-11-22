@@ -6,6 +6,7 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectTopLeaderboardPlaceholder();
 		this.injectTopBoxadPlaceholder();
+		this.injectBottomLeaderboardPlaceholder();
 	}
 
 	private injectTopLeaderboardPlaceholder(): void {
@@ -24,5 +25,13 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 
 		topBoxadWrapper.id = 'top_boxad';
 		parentElement.insertBefore(topBoxadWrapper, container);
+	}
+
+	private injectBottomLeaderboardPlaceholder(): void {
+		const container = document.querySelector('.WikiaMainContentContainer');
+		const bottomLeadeboardWrapper = document.createElement('div');
+
+		bottomLeadeboardWrapper.id = 'bottom_leaderboard';
+		container.appendChild(bottomLeadeboardWrapper);
 	}
 }
