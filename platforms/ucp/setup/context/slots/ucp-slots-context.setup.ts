@@ -12,6 +12,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
+				nextSibling: '',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
@@ -34,6 +35,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
+				nextSibling: '.WikiaPage',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -67,6 +69,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
+				nextSibling: '.rcs-container',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [[300, 250], [300, 600], [300, 1050]],
@@ -78,9 +81,10 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 			invisible_skin: {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,
-				slotNameSuffix: '',
 				group: 'PX',
+				nextSibling: '',
 				options: {},
+				slotNameSuffix: '',
 				slotShortcut: 'x',
 				sizes: [
 					{
@@ -99,6 +103,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
 				group: 'HiVi',
+				nextSibling: '',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
@@ -126,6 +131,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
+				nextSibling: '.mcf-en',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -151,6 +157,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				disabled: true,
 				slotNameSuffix: '',
 				group: 'HiVi',
+				nextSibling: '',
 				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -165,6 +172,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
+				nextSibling: '',
 				options: {},
 				targeting: {
 					loc: 'footer',
@@ -177,6 +185,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
+				nextSibling: '',
 				options: {},
 				outOfPage: true,
 				targeting: {
@@ -189,6 +198,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				slotNameSuffix: '',
 				nonUapSlot: true,
 				group: 'VIDEO',
+				nextSibling: '',
 				lowerSlotName: 'featured',
 				videoSizes: [[640, 480]],
 				targeting: {
