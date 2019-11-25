@@ -4,7 +4,7 @@ interface MediaWiki {
 	};
 
 	loader: {
-		using: (input: string) => Promise<void>;
+		enqueue: (modules: string[], success: () => void, failure?: () => void) => void;
 	};
 
 	hook(eventName: string): Hook;

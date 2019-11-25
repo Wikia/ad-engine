@@ -10,15 +10,16 @@ import './styles.scss';
 window.RLQ = window.RLQ || [];
 window.RLQ.push(async () => {
 	// AdEngine has to wait for Track extension
-	await window.mw.loader.using('ext.track.scripts');
-	context.extend(basicContext);
+	window.mw.loader.enqueue(['ext.track.scripts'], async () => {
+		context.extend(basicContext);
 
-	const [consent, container]: [boolean, Container, ...any[]] = await Promise.all([
-		ensureGeoCookie().then(() => bootstrapAndGetCmpConsent()),
-		setupGamepediaIoc(),
-	]);
-	const platformStartup = container.get(PlatformStartup);
+		const [consent, container]: [boolean, Container, ...any[]] = await Promise.all([
+			ensureGeoCookie().then(() => bootstrapAndGetCmpConsent()),
+			setupGamepediaIoc(),
+		]);
+		const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isOptedIn: consent, isMobile: !utils.client.isDesktop() });
-	platformStartup.run();
+		platformStartup.configure({ isOptedIn: consent, isMobile: !utils.client.isDesktop() });
+		platformStartup.run();
+	});
 });
