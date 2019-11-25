@@ -1,13 +1,22 @@
-import { DynamicSlotsSetup, slotsContext, UapSetup } from '@platforms/shared';
-import { AdSlot, context, slotInjector, slotService } from '@wikia/ad-engine';
+import { CurseUapSetup, DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import {
+	AdSlot,
+	context,
+	InstantConfigService,
+	slotInjector,
+	slotService,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
-	constructor(private uapSetup: UapSetup) {}
+	constructor(private uapSetup: CurseUapSetup, private instantConfig: InstantConfigService) {}
 
 	configureDynamicSlots(): void {
-		this.uapSetup.configureUap();
+		if (this.isUapAllowed()) {
+			this.uapSetup.configureUap();
+		}
 		this.injectIncontentPlayer();
 	}
 
@@ -42,5 +51,18 @@ export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
 	private initiateIncontentPlayer(slotName: string): void {
 		slotInjector.inject(slotName);
 		slotsContext.setState(slotName, context.get('options.video.isOutstreamEnabled'));
+	}
+
+	private isUapAllowed(): boolean {
+		let uapRestriction = this.instantConfig.get('icUapRestriction') || 0;
+		const queryParam = utils.queryString.get('uap-pv-restriction');
+
+		if (typeof queryParam !== 'undefined') {
+			uapRestriction = parseInt(queryParam, 10);
+		}
+
+		return (
+			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test'
+		);
 	}
 }

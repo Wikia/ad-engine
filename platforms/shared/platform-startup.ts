@@ -2,12 +2,18 @@ import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdsMode } from './modes/ads/_ads.mode';
 import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
-import { AdEngineRunnerSetup } from './setup/ad-engine-runner/_ad-engine-runner.setup';
-import { ContextSetup } from './setup/context/_context.setup';
-import { DynamicSlotsSetup } from './setup/dynamic-slots/_dynamic-slots.setup';
-import { StateSetup } from './setup/state/_state.setup';
-import { TemplatesSetup } from './setup/templates/_templates.setup';
-import { TrackingSetup } from './setup/tracking/_tracking.setup';
+import { A9ConfigSetup } from './setup/_a9-config.setup';
+import { AdEngineRunnerSetup } from './setup/_ad-engine-runner.setup';
+import { BaseContextSetup } from './setup/_base-context.setup';
+import { BiddersStateSetup } from './setup/_bidders-state.setup';
+import { DynamicSlotsSetup } from './setup/_dynamic-slots.setup';
+import { PrebidConfigSetup } from './setup/_prebid-config.setup';
+import { SlotsContextSetup } from './setup/_slots-context.setup';
+import { SlotsStateSetup } from './setup/_slots-state.setup';
+import { TargetingSetup } from './setup/_targeting.setup';
+import { TemplatesSetup } from './setup/_templates.setup';
+import { TrackingSetup } from './setup/_tracking.setup';
+import { WikiContextSetup } from './setup/_wiki-context.setup';
 
 export interface PlatformStartupArgs {
 	isOptedIn: boolean;
@@ -17,8 +23,14 @@ export interface PlatformStartupArgs {
 @Injectable()
 export class PlatformStartup {
 	constructor(
-		private contextSetup: ContextSetup,
-		private stateSetup: StateSetup,
+		private wikiContextSetup: WikiContextSetup,
+		private baseContextSetup: BaseContextSetup,
+		private targetingSetup: TargetingSetup,
+		private slotsContextSetup: SlotsContextSetup,
+		private prebidConfigSetup: PrebidConfigSetup,
+		private a9ConfigSetup: A9ConfigSetup,
+		private slotsStateSetup: SlotsStateSetup,
+		private biddersStateSetup: BiddersStateSetup,
 		private dynamicSlotsSetup: DynamicSlotsSetup,
 		private templatesSetup: TemplatesSetup,
 		private trackingSetup: TrackingSetup,
@@ -28,9 +40,15 @@ export class PlatformStartup {
 	) {}
 
 	configure(args: PlatformStartupArgs): void {
-		this.contextSetup.configureContext(args.isOptedIn, args.isMobile);
+		this.wikiContextSetup.configureWikiContext();
+		this.baseContextSetup.configureBaseContext(args.isOptedIn, args.isMobile);
+		this.targetingSetup.configureTargetingContext();
+		this.slotsContextSetup.configureSlotsContext();
+		this.prebidConfigSetup.configurePrebidContext();
+		this.a9ConfigSetup.configureA9Context();
 		this.dynamicSlotsSetup.configureDynamicSlots();
-		this.stateSetup.configureState();
+		this.slotsStateSetup.configureSlotsState();
+		this.biddersStateSetup.configureBiddersState();
 		this.templatesSetup.configureTemplates();
 		this.trackingSetup.configureTracking();
 		this.adEngineRunnerSetup.configureAdEngineRunner();
