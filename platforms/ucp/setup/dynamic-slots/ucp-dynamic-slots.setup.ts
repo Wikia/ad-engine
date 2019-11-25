@@ -11,8 +11,9 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	private injectSlots(): void {
 		const slots = context.get('slots');
 		Object.values(slots).forEach((slot) => {
-			if (slot.nextSibling) {
-				insertNewSlot(slot.adProduct, document.querySelector(slot.nextSibling), false);
+			const { nextSibling, adProduct }: any = slot;
+			if (nextSibling) {
+				insertNewSlot(adProduct, document.querySelector(nextSibling), true);
 			}
 		});
 	}
