@@ -1,5 +1,5 @@
 export interface JWPlayerEvent {
-	client: string;
+	client: 'vast' | 'googima';
 	placement: number;
 	viewable: number;
 	adposition: string;
@@ -16,11 +16,11 @@ export interface JWPlayerEvent {
 	description: string;
 	creativeAdId: string;
 	adId: string;
-	universalAdId: UniversalAdId2[];
+	universalAdId: UniversalAdId[];
 	type: string;
 }
 
-interface UniversalAdId2 {
+interface UniversalAdId {
 	universalAdIdRegistry: string;
 	universalAdIdValue: string;
 }
@@ -34,7 +34,7 @@ interface UserRequestContext {
 	requestType: string;
 	vpaidMode: string;
 	playerVersion: string;
-	adPosition: string;
+	adPosition: 'pre' | 'mid' | 'post';
 	adTagUrl: string;
 }
 
@@ -70,7 +70,7 @@ interface G {
 	title: string;
 	traffickingParameters: string;
 	uiElements: any[];
-	universalAdIds: UniversalAdId[];
+	universalAdIds: GUniversalAdId[];
 	universalAdIdRegistry: string;
 	universalAdIdValue: string;
 	vpaid: boolean;
@@ -80,7 +80,7 @@ interface G {
 	vastMediaWidth: number;
 }
 
-interface UniversalAdId {
+interface GUniversalAdId {
 	adIdRegistry: string;
 	adIdValue: string;
 }

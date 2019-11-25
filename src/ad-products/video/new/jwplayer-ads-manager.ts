@@ -18,4 +18,11 @@ export class JWPlayerAdsManager {
 	// getConfig -> autostart
 	// getPlaylistItem
 	// playAd()
+
+	// events
+	// adImpression -> event, ima (x), tag (/)
+	// adsManager (x) -> adsManager, videoElement
+	// adRequest -> ima (x), tag (/)
+	// adError -> ima, tag (/), adPlayId (x), message (/), adErrorCode (x)
+	// hdPlayerEvent (x) -> details.slotStatus.{vastParams, statusName}, details.name, details.errorCode
 }
