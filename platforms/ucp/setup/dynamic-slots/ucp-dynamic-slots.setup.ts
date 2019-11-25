@@ -1,5 +1,5 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
-import { context, insertNewSlot } from '@wikia/ad-engine';
+import { context, insertNewSlot, SlotConfig } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -9,11 +9,10 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private injectSlots(): void {
-		const slots = context.get('slots');
-		Object.values(slots).forEach((slot) => {
-			const { nextSibling, adProduct }: any = slot;
-			if (nextSibling) {
-				insertNewSlot(adProduct, document.querySelector(nextSibling), true);
+		const slots: { [key: string]: SlotConfig } = context.get('slots');
+		Object.keys(slots).forEach((slotName) => {
+			if (slots[slotName].nextSiblingSelector) {
+				insertNewSlot(slotName, document.querySelector(slots[slotName].nextSiblingSelector), true);
 			}
 		});
 	}
