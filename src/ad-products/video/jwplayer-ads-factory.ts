@@ -4,6 +4,7 @@ import {
 	context,
 	events,
 	eventService,
+	setAttributes,
 	slotService,
 	utils,
 	vastDebugger,
@@ -13,7 +14,7 @@ import {
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
-interface VideoTargeting {
+export interface VideoTargeting {
 	plist?: string;
 	videoTags?: string | string[]; // not sure about `string`
 	v1?: string;
@@ -30,7 +31,7 @@ interface HdPlayerEvent extends CustomEvent {
 	};
 }
 
-interface JwPlayerAdsFactoryOptions {
+export interface JwPlayerAdsFactoryOptions {
 	adProduct: string;
 	slotName: string;
 	audio: boolean;
@@ -227,7 +228,10 @@ function create(
 
 			lastRequestedVastUrl = event.tag;
 
-			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
+			setAttributes(
+				videoContainer,
+				vastDebugger.getVastAttributesFromVastParams('success', vastParams),
+			);
 			eventService.emit(events.VIDEO_AD_REQUESTED, adSlot);
 		});
 
@@ -256,7 +260,10 @@ function create(
 
 			log(`ad error message: ${event.message}`);
 			updateSlotParams(adSlot, vastParams);
-			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'error', vastParams);
+			setAttributes(
+				videoContainer,
+				vastDebugger.getVastAttributesFromVastParams('error', vastParams),
+			);
 
 			if (event.adErrorCode === EMPTY_VAST_CODE) {
 				adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
@@ -303,7 +310,7 @@ function create(
 	};
 }
 
-function loadMoatPlugin(): void {
+export function loadMoatPlugin(): void {
 	utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
 }
 

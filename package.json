@@ -19,7 +19,8 @@
 		"eventemitter3": "3.0.1",
 		"js-cookie": "2.2.0",
 		"lodash": "^4.17.4",
-		"query-string": "6.8.0"
+		"query-string": "6.8.0",
+		"rxjs": "6.5.3"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",

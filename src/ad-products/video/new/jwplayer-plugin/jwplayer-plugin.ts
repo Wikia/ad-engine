@@ -1,7 +1,8 @@
-import { JWPlayer } from './jwplayer-interfaces/jwplayer';
-import { JWPlayerConfig } from './jwplayer-interfaces/jwplayer-config';
+import { JWPlayer } from './jwplayer';
+import { JWPlayerConfig } from './jwplayer-config';
 
 export class JWPlayerAdEnginePlugin {
+	// @ts-ignore
 	constructor(private player: JWPlayer, private config: JWPlayerConfig, private div: HTMLElement) {
 		this.run();
 	}
