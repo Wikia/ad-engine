@@ -8,7 +8,7 @@ import './styles.scss';
 
 // RLQ may not exist as AdEngine is loading independently from Resource Loader
 window.RLQ = window.RLQ || [];
-window.RLQ.push(async () => {
+window.RLQ.push(() => {
 	// AdEngine has to wait for Track extension
 	window.mw.loader.enqueue(['ext.track.scripts'], async () => {
 		context.extend(basicContext);
