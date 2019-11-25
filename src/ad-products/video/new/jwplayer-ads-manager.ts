@@ -1,50 +1,53 @@
 import { AdSlot, slotService } from '@ad-engine/core';
 import { Communicator, ofType } from '@wikia/post-quecast';
 import { Observable } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
-import { JwPlayerAdsFactoryOptions, loadMoatPlugin } from '../jwplayer-ads-factory';
-import { SetupJWPlayerAction } from './jwplayer-actions';
+import { JwPlayerAdsFactoryOptions, loadMoatPlugin, VideoTargeting } from '../jwplayer-ads-factory';
+import { JWPlayerReadyAction, SetupJWPlayerAction } from './jwplayer-actions';
 
 export class JWPlayerAdsManager {
 	private communicator = new Communicator();
-	private adSlot: AdSlot;
-	// @ts-ignore
-	private tracker: JWPlayerTracker;
 
-	run() {
-		this.onSetupPlayer().subscribe();
+	async run() {
+		const { adSlot, tracker } = await this.onSetupPlayer().toPromise();
+		const slotTargeting = await this.onPlayerReady().toPromise();
 	}
 
-	private onSetupPlayer(): Observable<any> {
+	private onSetupPlayer(): Observable<{ adSlot: AdSlot; tracker: JWPlayerTracker }> {
 		return this.communicator.actions$.pipe(
 			ofType('[JWPlayer] setup player'),
 			take(1),
 			map((action: SetupJWPlayerAction) => action.payload),
-			tap((options: JwPlayerAdsFactoryOptions) => {
+			map((options: JwPlayerAdsFactoryOptions) => {
 				const slotName = options.slotName || (options.featured ? 'featured' : 'video');
-
-				this.adSlot = slotService.get(slotName) || new AdSlot({ id: slotName });
+				const adSlot = slotService.get(slotName) || new AdSlot({ id: slotName });
 
 				if (!slotService.get(slotName)) {
-					slotService.add(this.adSlot);
+					slotService.add(adSlot);
 				}
 
 				loadMoatPlugin();
 
-				this.tracker = new JWPlayerTracker({
+				const tracker = new JWPlayerTracker({
 					slotName,
-					adProduct: this.adSlot.config.trackingKey,
+					adProduct: adSlot.config.trackingKey,
 					audio: options.audio,
 					ctp: !options.autoplay,
 					videoId: options.videoId,
 				});
+
+				return { adSlot, tracker };
 			}),
 		);
 	}
 
-	onPlayerReady(): Observable<any> {
-		return this.communicator.actions$;
+	private onPlayerReady(): Observable<VideoTargeting> {
+		return this.communicator.actions$.pipe(
+			ofType('[JWPlayer] player ready'),
+			take(1),
+			map((action: JWPlayerReadyAction) => action.payload || {}),
+		);
 	}
 
 	// on
