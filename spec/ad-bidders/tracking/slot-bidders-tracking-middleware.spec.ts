@@ -37,6 +37,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			gumgum: 19.0,
 			'33across': 20.0,
 			triplelift: 21.0,
+			teads: 22.0,
 		});
 	});
 
@@ -65,6 +66,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			gumgum: 19.0,
 			'33across': 20.0,
 			triplelift: 21.0,
+			teads: 22.0,
 		});
 
 		const context = {
@@ -100,6 +102,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_19: 19.0,
 			bidder_20: 20.0,
 			bidder_21: 21.0,
+			bidder_22: 22.0,
 		});
 	});
 
@@ -137,6 +140,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_19: '19not_used',
 			bidder_20: '20not_used',
 			bidder_21: '21not_used',
+			bidder_22: '22not_used',
 		});
 	});
 });
