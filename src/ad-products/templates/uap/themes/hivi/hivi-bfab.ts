@@ -47,10 +47,15 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		if (resolvedState.isResolvedState(this.params)) {
 			this.setResolvedState();
 		} else {
+			const { image1 } = this.params;
+
+			image1.element.classList.remove('hidden-state');
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.updateAdSizes();
 			slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
 		}
+
+		setTimeout(() => this.addImagesAnimation());
 	}
 
 	private async addStickinessPlugin(): Promise<void> {
