@@ -1,8 +1,10 @@
 import { AdSlot } from '@ad-engine/core';
-import { Communicator, ofType } from '@wikia/post-quecast';
-import { Observable } from 'rxjs';
+import { Communicator } from '@wikia/post-quecast';
+import { merge, Observable } from 'rxjs';
+import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { VideoTargeting } from '../jwplayer-ads-factory';
+import { jwpAdError } from './jwplayer-actions';
 
 export class JWPlayerAd {
 	constructor(
@@ -12,9 +14,11 @@ export class JWPlayerAd {
 		private communicator: Communicator,
 	) {}
 
-	run(): Observable<any> {}
+	run(): Observable<any> {
+		return merge(this.onAdError());
+	}
 
-	private onAdError() {
-		this.communicator.actions$.pipe(ofType('[JWPlayer Internal] adError'));
+	private onAdError(): Observable<any> {
+		return this.communicator.actions$.pipe(ofType(jwpAdError));
 	}
 }

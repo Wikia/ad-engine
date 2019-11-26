@@ -1,3 +1,4 @@
+import { action, props } from 'ts-action';
 import { JwPlayerAdsFactoryOptions, VideoTargeting } from '../jwplayer-ads-factory';
 import { JWPlayerEventParams } from './jwplayer-plugin/jwplayer';
 
@@ -10,13 +11,12 @@ export interface JWPlayerBeforePlayPayload {
 	mediaid: string; // from playlist item
 }
 
-export interface JWPlayerReadyAction {
-	type: '[JWPlayer] player ready';
-	options: JwPlayerAdsFactoryOptions;
-	targeting: VideoTargeting;
-}
+export const jwpReady = action(
+	'[JWPlayer] player ready',
+	props<{ options: JwPlayerAdsFactoryOptions; targeting: VideoTargeting }>(),
+);
 
-export interface JWPlayerAdErrorAction {
-	type: '[JWPlayer Internal] adError';
-	event: JWPlayerEventParams['adError'];
-}
+export const jwpAdError = action(
+	'[JWPlayer Internal] adError',
+	props<{ event: JWPlayerEventParams['adError'] }>(),
+);

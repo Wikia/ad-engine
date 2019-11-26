@@ -2,30 +2,30 @@ import { JWPlayerConfig } from './jwplayer-config';
 import { JWPlayerEvent } from './jwplayer-event';
 import { JWPlayerListItem } from './jwplayer-list-item';
 
-interface AdProgressParam {
+export interface AdProgressParam {
 	client: 'vast' | 'googima';
 	creativetype: string;
 	tag: string;
 }
 
-interface AdCompanionsParam {
+export interface AdCompanionsParam {
 	companions: any[];
 	tag: string;
 }
 
-interface AdErrorParam {
+export interface AdErrorParam {
 	message: string;
 	tag: string;
 }
 
-interface AdRequestParam {
+export interface AdRequestParam {
 	adposition: 'pre' | 'mid' | 'post';
 	client: 'vast' | 'googima';
 	offset: 'pre' | 'mid' | 'post';
 	tag: string;
 }
 
-interface AdImpressionParam {
+export interface AdImpressionParam {
 	adposition: 'pre' | 'mid' | 'post';
 	adsystem: string;
 	adtitle: string;
@@ -39,38 +39,38 @@ interface AdImpressionParam {
 	wrapper: any[];
 }
 
-interface AdScheduleParam {
+export interface AdScheduleParam {
 	tag: string;
 	client: string;
 	adbreaks: object[];
 }
 
-interface AdStartedParam {
+export interface AdStartedParam {
 	creativetype: string;
 	tag: string;
 }
 
-interface AdPlayParam {
+export interface AdPlayParam {
 	creativetype: string;
 	newstate: string;
 	oldstate: string;
 	tag: string;
 }
 
-interface BufferParam {
+export interface BufferParam {
 	newstate: string;
 	oldstate: string;
 	reason: 'loading' | 'complete' | 'stalled' | 'error';
 }
 
-interface BufferChangeParam {
+export interface BufferChangeParam {
 	duration: number;
 	bufferPercent: number;
 	position: number;
 	metadata: any;
 }
 
-interface AdTimeParam {
+export interface AdTimeParam {
 	client: 'vast' | 'googima';
 	creativetype: string;
 	duration: number;
@@ -79,113 +79,113 @@ interface AdTimeParam {
 	tag: string;
 }
 
-interface AdsManagerParam {
+export interface AdsManagerParam {
 	adsManager: unknown;
 	videoElement: HTMLElement;
 }
 
-interface AudioTracksParam {
+export interface AudioTracksParam {
 	levels: any[];
 }
 
-interface CaptionsChangedParam {
+export interface CaptionsChangedParam {
 	currentTrack: number;
 }
 
-interface CaptionsListParam {
+export interface CaptionsListParam {
 	tracks: any[];
 }
 
-interface AudioTrackChangedParam {
+export interface AudioTrackChangedParam {
 	currentTrack: number;
 }
 
-interface MetadataParam {
+export interface MetadataParam {
 	metadata: any;
 }
 
-interface ControlsParam {
+export interface ControlsParam {
 	controls: boolean;
 }
 
-interface ErrorParam {
+export interface ErrorParam {
 	message: string;
 }
 
-interface FullscreenParam {
+export interface FullscreenParam {
 	fullscreen: boolean;
 }
 
-interface IdleParam {
+export interface IdleParam {
 	oldstate: 'buffering' | 'playing' | 'paused';
 }
 
-interface LevelsChangedParam {
+export interface LevelsChangedParam {
 	currentQuality: number;
 }
 
-interface MuteParam {
+export interface MuteParam {
 	mute: boolean;
 }
 
-interface VolumeParam {
+export interface VolumeParam {
 	volume: boolean;
 }
 
-interface PlayParam {
+export interface PlayParam {
 	oldstate: 'buffering' | 'playing';
 	viewable: 0 | 1;
 }
 
-interface PlaylistParam {
+export interface PlaylistParam {
 	playlist: any[];
 }
 
-interface PlaylistItemParam {
+export interface PlaylistItemParam {
 	index: number;
 	item: any;
 }
 
-interface ReadyParam {
+export interface ReadyParam {
 	setupTime: number;
 	viewable: 0 | 1;
 }
 
-interface ResizeParam {
+export interface ResizeParam {
 	width: number;
 	height: number;
 }
 
-interface VisualQualityParam {
+export interface VisualQualityParam {
 	mode: string;
 	label: string;
 	reason: string;
 }
 
-interface LevelsParam {
+export interface LevelsParam {
 	width: number;
 	levels: any[];
 }
 
-interface SeekParam {
+export interface SeekParam {
 	position: number;
 	offset: number;
 }
 
-interface TimeParam {
+export interface TimeParam {
 	duration: number;
 	position: number;
 	viewable: 0 | 1;
 }
 
-interface FirstFrameParam {
+export interface FirstFrameParam {
 	loadTime: number;
 	viewable: 0 | 1;
 }
 
 type EventCallback<T> = (param: T) => void;
 
-interface CastParam {
+export interface CastParam {
 	available: boolean;
 	active: boolean;
 	deviceName: string;
@@ -235,7 +235,7 @@ export interface JWPlayerEventParams {
 	time: TimeParam;
 }
 
-type NoParamEvent =
+export type NoParamEvent =
 	| 'adBlock'
 	| 'beforeComplete'
 	| 'videoMidPoint'
