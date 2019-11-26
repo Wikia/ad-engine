@@ -8,9 +8,8 @@ import './styles.scss';
 
 // RLQ may not exist as AdEngine is loading independently from Resource Loader
 window.RLQ = window.RLQ || [];
-window.RLQ.push(async () => {
-	// AdEngine has to wait for Track extension
-	await window.mw.loader.using('ext.track.scripts');
+
+const load = async () => {
 	context.extend(basicContext);
 
 	const [consent, container]: [boolean, Container, ...any[]] = await Promise.all([
@@ -21,4 +20,17 @@ window.RLQ.push(async () => {
 
 	platformStartup.configure({ isOptedIn: consent, isMobile: !utils.client.isDesktop() });
 	platformStartup.run();
+};
+
+window.RLQ.push(() => {
+	// AdEngine has to wait for Track extension
+	/*
+	 mw.loader.using is no longer available in MediaWiki 1.33
+	 Remove once https://gitlab.com/hydrawiki/hydra/issues/5087 is finished.
+	*/
+	if (window.mw.loader.using) {
+		window.mw.loader.using('ext.track.scripts').then(load);
+	} else {
+		window.mw.loader.enqueue(['ext.track.scripts'], load);
+	}
 });

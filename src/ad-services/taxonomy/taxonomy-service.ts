@@ -2,6 +2,7 @@ import { context, DelayModule, utils } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
 
 const logGroup = 'taxonomy-service';
+const comicsLogGroup = 'taxonomy-comics-service';
 
 export class TaxonomyService implements DelayModule {
 	private delayPromise: Promise<void> = null;
@@ -33,6 +34,28 @@ export class TaxonomyService implements DelayModule {
 		return adTags;
 	}
 
+	async configureComicsTargeting(): Promise<AdTags> {
+		if (this.delayPromise === null) {
+			this.configureDelayPromise();
+		}
+
+		if (!this.isGettingComicsTagEnabled()) {
+			this.resolveDelayPromise();
+			return {};
+		}
+
+		const isComicsRelated: string = await taxonomyServiceLoader.getComicsTag();
+		const comicsTag: AdTags = { txn_comics: [isComicsRelated] };
+
+		utils.logger(comicsLogGroup, 'taxonomy comics tag', comicsTag);
+
+		context.set('targeting.txn_comics', comicsTag['txn_comics']);
+
+		this.resolveDelayPromise();
+
+		return comicsTag;
+	}
+
 	getPromise(): Promise<void> {
 		if (this.delayPromise === null) {
 			this.configureDelayPromise();
@@ -51,6 +74,15 @@ export class TaxonomyService implements DelayModule {
 
 	isEnabled(): boolean {
 		return context.get('services.taxonomy.enabled');
+	}
+
+	isGettingComicsTagEnabled() {
+		return context.get('services.taxonomy.comics.enabled');
+	}
+
+	reset(): void {
+		taxonomyServiceLoader.resetComicsTagPromise();
+		context.remove('targeting.txn_comics');
 	}
 
 	private configureDelayPromise() {
