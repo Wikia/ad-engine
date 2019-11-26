@@ -7,8 +7,10 @@ import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { JwPlayerAdsFactoryOptions, loadMoatPlugin, VideoTargeting } from '../jwplayer-ads-factory';
 import { jwpReady } from './jwplayer-actions';
 import { JWPlayerAd } from './jwplayer-ad';
+import { JWPlayer } from './jwplayer-plugin/jwplayer';
 
 interface PlayerReadyResult {
+	player: JWPlayer;
 	adSlot: AdSlot;
 	tracker: JWPlayerTracker;
 	slotTargeting: VideoTargeting;
@@ -36,11 +38,12 @@ export class JWPlayerAdsManager {
 		);
 
 		const createValues$ = playerReady$.pipe(
-			map((action) => {
-				const adSlot = this.createAdSlot(action.options);
-				const tracker = this.createTracker(action.options, adSlot);
+			map(({ options, targeting, playerKey }) => {
+				const adSlot = this.createAdSlot(options);
+				const tracker = this.createTracker(options, adSlot);
+				const player: JWPlayer = window[playerKey];
 
-				return { adSlot, tracker, slotTargeting: action.targeting };
+				return { player, adSlot, tracker, slotTargeting: targeting };
 			}),
 		);
 
@@ -68,8 +71,13 @@ export class JWPlayerAdsManager {
 		});
 	}
 
-	private createJWPlayerAd({ adSlot, tracker, slotTargeting }: PlayerReadyResult): JWPlayerAd {
-		return new JWPlayerAd(adSlot, tracker, slotTargeting, this.communicator);
+	private createJWPlayerAd({
+		player,
+		adSlot,
+		tracker,
+		slotTargeting,
+	}: PlayerReadyResult): JWPlayerAd {
+		return new JWPlayerAd(adSlot, tracker, slotTargeting, player);
 	}
 
 	// on

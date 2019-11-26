@@ -234,7 +234,7 @@ export interface JWPlayerEventParams {
 	time: TimeParam;
 }
 
-export type NoParamEvent =
+export type JWPlayerNoParamEvent =
 	| 'adBlock'
 	| 'beforeComplete'
 	| 'videoMidPoint'
@@ -254,18 +254,18 @@ export interface JWPlayer {
 		event: TEvent,
 		callback: EventCallback<JWPlayerEventParams[TEvent]>,
 	): void;
-	on(event: NoParamEvent, callback: () => void): void;
+	on(event: JWPlayerNoParamEvent, callback: () => void): void;
 	once<TEvent extends keyof JWPlayerEventParams>(
 		event: TEvent,
 		callback: EventCallback<JWPlayerEventParams[TEvent]>,
 	): void;
-	once(event: NoParamEvent, callback: () => void): void;
-	off(event: keyof JWPlayerEventParams | NoParamEvent): void;
+	once(event: JWPlayerNoParamEvent, callback: () => void): void;
+	off(event: keyof JWPlayerEventParams | JWPlayerNoParamEvent): void;
 	trigger<TEvent extends keyof JWPlayerEventParams>(
 		event: TEvent,
 		args: JWPlayerEventParams[TEvent],
 	): void;
-	trigger(event: NoParamEvent): void;
+	trigger(event: JWPlayerNoParamEvent): void;
 	pause(state?: boolean): void;
 	pauseAd(tag: string): void;
 	play(state?: boolean): void;
