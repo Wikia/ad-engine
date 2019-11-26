@@ -1,22 +1,28 @@
 import { AdSlot, slotService } from '@ad-engine/core';
 import { Communicator, ofType } from '@wikia/post-quecast';
 import { merge, Observable } from 'rxjs';
-import { filter, map, take, tap } from 'rxjs/operators';
+import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { JwPlayerAdsFactoryOptions, loadMoatPlugin, VideoTargeting } from '../jwplayer-ads-factory';
 import { JWPlayerReadyAction } from './jwplayer-actions';
+import { JWPlayerAd } from './jwplayer-ad';
 
 export class JWPlayerAdsManager {
 	private communicator = new Communicator();
 
-	async run() {
-		const { adSlot, tracker, slotTargeting } = await this.onPlayerReady().toPromise();
+	run() {
+		this.onPlayerReady()
+			.pipe(
+				map(({ adSlot, tracker, slotTargeting }) => new JWPlayerAd(adSlot, tracker, slotTargeting)),
+				mergeMap((jwplayerAd) => jwplayerAd.run()),
+			)
+			.subscribe();
 	}
 
 	private onPlayerReady(): Observable<{
-		slotTargeting: VideoTargeting;
-		tracker: JWPlayerTracker;
 		adSlot: AdSlot;
+		tracker: JWPlayerTracker;
+		slotTargeting: VideoTargeting;
 	}> {
 		const playerReady$ = this.communicator.actions$.pipe(ofType('[JWPlayer] player ready'));
 
