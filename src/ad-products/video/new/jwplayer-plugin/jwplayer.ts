@@ -192,7 +192,7 @@ interface CastParam {
 	type: 'cast';
 }
 
-interface EventParams {
+export interface JWPlayerEventParams {
 	adClick: AdProgressParam;
 	adCompanions: AdCompanionsParam;
 	adComplete: AdProgressParam;
@@ -251,18 +251,21 @@ export interface JWPlayer {
 	getPlaylist(): JWPlayerListItem[];
 	getPlaylistItem(index?: number): JWPlayerListItem;
 	getContainer(): HTMLElement;
-	on<TEvent extends keyof EventParams>(
+	on<TEvent extends keyof JWPlayerEventParams>(
 		event: TEvent,
-		callback: EventCallback<EventParams[TEvent]>,
+		callback: EventCallback<JWPlayerEventParams[TEvent]>,
 	): void;
 	on(event: NoParamEvent, callback: () => void): void;
-	once<TEvent extends keyof EventParams>(
+	once<TEvent extends keyof JWPlayerEventParams>(
 		event: TEvent,
-		callback: EventCallback<EventParams[TEvent]>,
+		callback: EventCallback<JWPlayerEventParams[TEvent]>,
 	): void;
 	once(event: NoParamEvent, callback: () => void): void;
-	off(event: keyof EventParams | NoParamEvent): void;
-	trigger<TEvent extends keyof EventParams>(event: TEvent, args: EventParams[TEvent]): void;
+	off(event: keyof JWPlayerEventParams | NoParamEvent): void;
+	trigger<TEvent extends keyof JWPlayerEventParams>(
+		event: TEvent,
+		args: JWPlayerEventParams[TEvent],
+	): void;
 	trigger(event: NoParamEvent): void;
 	pause(state?: boolean): void;
 	pauseAd(tag: string): void;

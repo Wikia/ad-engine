@@ -7,23 +7,25 @@ import { JwPlayerAdsFactoryOptions, loadMoatPlugin, VideoTargeting } from '../jw
 import { JWPlayerReadyAction } from './jwplayer-actions';
 import { JWPlayerAd } from './jwplayer-ad';
 
+interface PlayerReadyResult {
+	adSlot: AdSlot;
+	tracker: JWPlayerTracker;
+	slotTargeting: VideoTargeting;
+}
+
 export class JWPlayerAdsManager {
 	private communicator = new Communicator();
 
 	run() {
 		this.onPlayerReady()
 			.pipe(
-				map(({ adSlot, tracker, slotTargeting }) => new JWPlayerAd(adSlot, tracker, slotTargeting)),
+				map((result) => this.createJWPlayerAd(result)),
 				mergeMap((jwplayerAd) => jwplayerAd.run()),
 			)
 			.subscribe();
 	}
 
-	private onPlayerReady(): Observable<{
-		adSlot: AdSlot;
-		tracker: JWPlayerTracker;
-		slotTargeting: VideoTargeting;
-	}> {
+	private onPlayerReady(): Observable<PlayerReadyResult> {
 		const playerReady$ = this.communicator.actions$.pipe(ofType('[JWPlayer] player ready'));
 
 		const loadPlugin$ = playerReady$.pipe(
@@ -63,6 +65,10 @@ export class JWPlayerAdsManager {
 			ctp: !options.autoplay,
 			videoId: options.videoId,
 		});
+	}
+
+	private createJWPlayerAd({ adSlot, tracker, slotTargeting }: PlayerReadyResult): JWPlayerAd {
+		return new JWPlayerAd(adSlot, tracker, slotTargeting, this.communicator);
 	}
 
 	// on
