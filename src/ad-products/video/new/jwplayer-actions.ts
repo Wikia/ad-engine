@@ -20,3 +20,8 @@ export const jwpAdError = action(
 	'[JWPlayer Internal] adError',
 	props<{ event: JWPlayerEventParams['adError'] }>(),
 );
+
+export const jwpAdRequest = action(
+	'[JWPlayer Internal] adRequest',
+	props<{ event: JWPlayerEventParams['adRequest'] }>(),
+);

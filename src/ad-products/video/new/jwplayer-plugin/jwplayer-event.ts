@@ -26,7 +26,7 @@ interface UniversalAdId {
 }
 
 interface Ima {
-	ad: Ad;
+	ad: google.ima.Ad;
 	userRequestContext: UserRequestContext;
 }
 
@@ -36,60 +36,4 @@ interface UserRequestContext {
 	playerVersion: string;
 	adPosition: 'pre' | 'mid' | 'post';
 	adTagUrl: string;
-}
-
-interface Ad {
-	g: G;
-}
-
-interface G {
-	adId: string;
-	adPodInfo: AdPodInfo;
-	adQueryId: string;
-	adSystem: string;
-	adWrapperCreativeIds: any[];
-	adWrapperIds: any[];
-	adWrapperSystems: any[];
-	advertiserName: string;
-	apiFramework?: any;
-	clickThroughUrl: string;
-	contentType: string;
-	creativeAdId: string;
-	creativeId: string;
-	dealId: string;
-	description: string;
-	disableUi: boolean;
-	duration: number;
-	height: number;
-	linear: boolean;
-	mediaUrl?: any;
-	minSuggestedDuration: number;
-	skippable: boolean;
-	skipTimeOffset: number;
-	surveyUrl?: any;
-	title: string;
-	traffickingParameters: string;
-	uiElements: any[];
-	universalAdIds: GUniversalAdId[];
-	universalAdIdRegistry: string;
-	universalAdIdValue: string;
-	vpaid: boolean;
-	width: number;
-	vastMediaBitrate: number;
-	vastMediaHeight: number;
-	vastMediaWidth: number;
-}
-
-interface GUniversalAdId {
-	adIdRegistry: string;
-	adIdValue: string;
-}
-
-interface AdPodInfo {
-	podIndex: number;
-	timeOffset: number;
-	totalAds: number;
-	adPosition: number;
-	isBumper: boolean;
-	maxDuration: number;
 }
