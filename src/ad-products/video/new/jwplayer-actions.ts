@@ -9,12 +9,8 @@ export interface JWPlayerBeforePlayPayload {
 	mediaid: string; // from playlist item
 }
 
-export interface SetupJWPlayerAction {
-	type: '[JWPlayer] setup player';
-	payload: JwPlayerAdsFactoryOptions;
-}
-
 export interface JWPlayerReadyAction {
 	type: '[JWPlayer] player ready';
-	payload: VideoTargeting;
+	options: JwPlayerAdsFactoryOptions;
+	targeting: VideoTargeting;
 }
