@@ -11,8 +11,8 @@ import { merge, Observable } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { VideoTargeting } from '../jwplayer-ads-factory';
-import { createJWPlayerStreams } from './jwplayer-actions';
 import { JWPlayer, JWPlayerEventParams } from './jwplayer-plugin/jwplayer';
+import { createJWPlayerStreams } from './jwplayer-streams';
 import { EMPTY_VAST_CODE, updateSlotParams } from './jwplayer-utils';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
