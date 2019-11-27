@@ -9,15 +9,15 @@ import {
 } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
-import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
-import { VideoTargeting } from '../jwplayer-ads-factory';
-import { JWPlayer, JWPlayerEventParams } from './jwplayer-plugin/jwplayer';
-import { createJWPlayerStreams } from './jwplayer-streams';
-import { EMPTY_VAST_CODE, updateSlotParams } from './jwplayer-utils';
+import { JWPlayerTracker } from '../../../tracking/video/jwplayer-tracker';
+import { VideoTargeting } from '../../jwplayer-ads-factory';
+import { JWPlayer, JWPlayerEventParams } from '../jwplayer-plugin/jwplayer';
+import { createJWPlayerStreams } from '../jwplayer-streams';
+import { EMPTY_VAST_CODE, updateSlotParams } from '../jwplayer-utils';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
-export class JWPlayerAd {
+export class JWPlayerHandler {
 	constructor(
 		private adSlot: AdSlot,
 		private tracker: JWPlayerTracker,

@@ -6,7 +6,7 @@ import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { JwPlayerAdsFactoryOptions, loadMoatPlugin, VideoTargeting } from '../jwplayer-ads-factory';
 import { jwpReady } from './jwplayer-actions';
-import { JWPlayerAd } from './jwplayer-ad';
+import { JWPlayerHandler } from './jwplayer-handlers/jwplayer-handler';
 import { JWPlayer } from './jwplayer-plugin/jwplayer';
 
 interface PlayerReadyResult {
@@ -16,7 +16,7 @@ interface PlayerReadyResult {
 	slotTargeting: VideoTargeting;
 }
 
-export class JWPlayerAdsManager {
+export class JWPlayerManager {
 	private communicator = new Communicator();
 
 	run() {
@@ -81,8 +81,8 @@ export class JWPlayerAdsManager {
 		adSlot,
 		tracker,
 		slotTargeting,
-	}: PlayerReadyResult): JWPlayerAd {
-		return new JWPlayerAd(adSlot, tracker, slotTargeting, player);
+	}: PlayerReadyResult): JWPlayerHandler {
+		return new JWPlayerHandler(adSlot, tracker, slotTargeting, player);
 	}
 
 	// on
