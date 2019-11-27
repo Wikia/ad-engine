@@ -1,19 +1,11 @@
-import {
-	AdSlot,
-	events,
-	eventService,
-	setAttributes,
-	utils,
-	vastDebugger,
-	vastParser,
-} from '@ad-engine/core';
+import { AdSlot, events, eventService, setAttributes, utils, vastDebugger } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, tap } from 'rxjs/operators';
 import { JWPlayerTracker } from '../../../tracking/video/jwplayer-tracker';
 import { VideoTargeting } from '../../jwplayer-ads-factory';
 import { JWPlayer, JWPlayerEventParams } from '../jwplayer-plugin/jwplayer';
 import { createJWPlayerStreams } from '../jwplayer-streams';
-import { EMPTY_VAST_CODE, updateSlotParams } from '../jwplayer-utils';
+import { EMPTY_VAST_CODE, supplementVastParams, updateSlotParams } from '../jwplayer-utils';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
@@ -27,18 +19,14 @@ export class JWPlayerHandler {
 
 	run(): Observable<any> {
 		const streams = createJWPlayerStreams(this.jwplayer);
-		return merge(this.onAdError(streams.adError$));
+
+		return merge(this.onAdError(streams.adError$), this.onAdRequest(streams.adRequest$));
 	}
 
 	private onAdError(stream$: Observable<JWPlayerEventParams['adError']>): Observable<any> {
 		return stream$.pipe(
 			distinctUntilChanged((a, b) => a.adPlayId === b.adPlayId),
-			map((event) => ({
-				event,
-				vastParams: vastParser.parse(event.tag, {
-					imaAd: event.ima && event.ima.ad,
-				}),
-			})),
+			supplementVastParams(),
 			tap(({ event, vastParams }) => {
 				log(`ad error message: ${event.message}`);
 				updateSlotParams(this.adSlot, vastParams);
@@ -54,6 +42,19 @@ export class JWPlayerHandler {
 				}
 
 				eventService.emit(events.VIDEO_AD_ERROR, this.adSlot);
+			}),
+		);
+	}
+
+	private onAdRequest(stream$: Observable<JWPlayerEventParams['adRequest']>): Observable<any> {
+		return stream$.pipe(
+			supplementVastParams(),
+			tap(({ vastParams }) => {
+				setAttributes(
+					this.adSlot.element,
+					vastDebugger.getVastAttributesFromVastParams('success', vastParams),
+				);
+				eventService.emit(events.VIDEO_AD_REQUESTED, this.adSlot);
 			}),
 		);
 	}
