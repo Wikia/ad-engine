@@ -15,6 +15,7 @@ export interface AdCompanionsParam {
 
 export interface AdErrorParam {
 	message: string;
+	adErrorCode?: number;
 }
 
 export interface AdRequestParam {

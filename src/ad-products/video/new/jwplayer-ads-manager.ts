@@ -39,9 +39,9 @@ export class JWPlayerAdsManager {
 
 		const createValues$ = playerReady$.pipe(
 			map(({ options, targeting, playerKey }) => {
-				const adSlot = this.createAdSlot(options);
-				const tracker = this.createTracker(options, adSlot);
 				const player: JWPlayer = window[playerKey];
+				const adSlot = this.createAdSlot(options, player);
+				const tracker = this.createTracker(options, adSlot);
 
 				return { player, adSlot, tracker, slotTargeting: targeting };
 			}),
@@ -50,9 +50,14 @@ export class JWPlayerAdsManager {
 		return merge(loadPlugin$, createValues$);
 	}
 
-	private createAdSlot(options: JwPlayerAdsFactoryOptions): AdSlot {
+	private createAdSlot(options: JwPlayerAdsFactoryOptions, player: JWPlayer): AdSlot {
 		const slotName = options.slotName || (options.featured ? 'featured' : 'video');
 		const adSlot = slotService.get(slotName) || new AdSlot({ id: slotName });
+		const videoElement = player && player.getContainer && player.getContainer();
+
+		adSlot.element = videoElement && (videoElement.parentNode as HTMLElement);
+		adSlot.setConfigProperty('audio', !player.getMute());
+		adSlot.setConfigProperty('autoplay', player.getConfig().autostart);
 
 		if (!slotService.get(slotName)) {
 			slotService.add(adSlot);
