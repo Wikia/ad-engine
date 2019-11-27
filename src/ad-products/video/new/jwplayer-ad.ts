@@ -39,22 +39,22 @@ export class JWPlayerAd {
 					imaAd: event.ima && event.ima.ad,
 				}),
 			})),
-			tap(({ event }) => log(`ad error message: ${event.message}`)),
-			tap(({ vastParams }) => updateSlotParams(this.adSlot, vastParams)),
-			tap(({ vastParams }) =>
+			tap(({ event, vastParams }) => {
+				log(`ad error message: ${event.message}`);
+				updateSlotParams(this.adSlot, vastParams);
 				setAttributes(
 					this.adSlot.element,
 					vastDebugger.getVastAttributesFromVastParams('error', vastParams),
-				),
-			),
-			tap(({ event }) => {
+				);
+
 				if (event.adErrorCode === EMPTY_VAST_CODE) {
 					this.adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
 				} else {
 					this.adSlot.setStatus(AdSlot.STATUS_ERROR);
 				}
+
+				eventService.emit(events.VIDEO_AD_ERROR, this.adSlot);
 			}),
-			tap(() => eventService.emit(events.VIDEO_AD_ERROR, this.adSlot)),
 		);
 	}
 }
