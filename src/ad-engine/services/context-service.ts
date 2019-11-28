@@ -46,6 +46,7 @@ const contextObject: ContextObject = {
 			},
 		},
 		slotRepeater: false,
+		optOutSale: false,
 		trackingOptIn: false,
 	},
 	geo: {

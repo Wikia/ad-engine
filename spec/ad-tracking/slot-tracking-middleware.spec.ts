@@ -79,6 +79,7 @@ describe('slot-tracking-middleware', () => {
 			'kv_top',
 			'labrador',
 			'opt_in',
+			'opt_out_sale',
 			'page_layout',
 			'page_width',
 			'pv',
@@ -112,6 +113,7 @@ describe('slot-tracking-middleware', () => {
 		expect(data['kv_top']).to.equal('1k');
 		expect(data['labrador']).to.equal('FOO_A_1;BAR_B_99');
 		expect(data['opt_in']).to.equal('');
+		expect(data['opt_out_sale']).to.equal('');
 		expect(data['page_layout']).to.equal('pos_top=null');
 		expect(data['pv']).to.equal(5);
 		expect(data['scroll_y']).to.equal(0);
