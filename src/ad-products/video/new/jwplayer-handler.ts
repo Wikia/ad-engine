@@ -3,13 +3,8 @@ import { merge, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayerStreams } from './jwplayer-streams';
-import {
-	EMPTY_VAST_CODE,
-	shouldPlayMidroll,
-	shouldPlayPostroll,
-	shouldPlayPreroll,
-} from './jwplayer-utils';
 
+const EMPTY_VAST_CODE = 21009;
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
 /**
@@ -88,21 +83,21 @@ export class JWPlayerHandler {
 				this.helper.updateVideoId();
 				this.adSlot.setConfigProperty('videoDepth', depth);
 			}),
-			filter(({ depth }) => shouldPlayPreroll(depth)),
+			filter(({ depth }) => this.helper.shouldPlayPreroll(depth)),
 			tap(({ depth, correlator }) => this.helper.playVideoAd('preroll', depth, correlator)),
 		);
 	}
 
 	private videoMidPoint(): Observable<any> {
 		return this.streams.videoMidPoint$.pipe(
-			filter(({ depth }) => shouldPlayMidroll(depth)),
+			filter(({ depth }) => this.helper.shouldPlayMidroll(depth)),
 			tap(({ depth, correlator }) => this.helper.playVideoAd('midroll', depth, correlator)),
 		);
 	}
 
 	private beforeComplete(): Observable<any> {
 		return this.streams.beforeComplete$.pipe(
-			filter(({ depth }) => shouldPlayPostroll(depth)),
+			filter(({ depth }) => this.helper.shouldPlayPostroll(depth)),
 			tap(({ depth, correlator }) => this.helper.playVideoAd('postroll', depth, correlator)),
 		);
 	}
