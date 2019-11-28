@@ -19,6 +19,9 @@ export interface JWPlayerStreams {
 	complete$: Observable<void>;
 }
 
+/**
+ * Describes streams (event sources) and their relations
+ */
 export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 	const adRequest$ = createStream(jwplayer, 'adRequest').pipe(supplementVastParams());
 	const adError$ = createStream(jwplayer, 'adError').pipe(

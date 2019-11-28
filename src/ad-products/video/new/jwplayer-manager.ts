@@ -1,13 +1,15 @@
-import { AdSlot, slotService } from '@ad-engine/core';
+import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 import { Communicator } from '@wikia/post-quecast';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
-import { JwPlayerAdsFactoryOptions, loadMoatPlugin, VideoTargeting } from '../jwplayer-ads-factory';
+import { JwPlayerAdsFactoryOptions, VideoTargeting } from '../jwplayer-ads-factory';
 import { jwpReady } from './jwplayer-actions';
-import { JWPlayerHandler } from './jwplayer-handlers/jwplayer-handler';
+import { JWPlayerHandler } from './jwplayer-handler';
+import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayer } from './jwplayer-plugin/jwplayer';
+import { createJWPlayerStreams } from './jwplayer-streams';
 
 interface PlayerReadyResult {
 	player: JWPlayer;
@@ -33,7 +35,7 @@ export class JWPlayerManager {
 
 		const loadPlugin$: Observable<any> = playerReady$.pipe(
 			take(1),
-			tap(() => loadMoatPlugin()),
+			tap(() => this.loadMoatPlugin()),
 			filter(() => false),
 		);
 
@@ -82,7 +84,14 @@ export class JWPlayerManager {
 		tracker,
 		slotTargeting,
 	}: PlayerReadyResult): JWPlayerHandler {
-		return new JWPlayerHandler(adSlot, tracker, slotTargeting, player);
+		const helper = new JWPlayerHelper(adSlot, tracker, slotTargeting, player);
+		const streams = createJWPlayerStreams(player);
+
+		return new JWPlayerHandler(adSlot, streams, helper);
+	}
+
+	private loadMoatPlugin(): void {
+		utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
 	}
 
 	// on

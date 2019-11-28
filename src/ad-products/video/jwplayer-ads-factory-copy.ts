@@ -1,4 +1,4 @@
-import { AdSlot, context, slotService, utils, VastParams } from '@ad-engine/core';
+import { AdSlot, context, slotService, VastParams } from '@ad-engine/core';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
@@ -42,12 +42,6 @@ function create(
 ): { register: (player, slotTargeting?: VideoTargeting) => void } {
 	function register(player): void {
 		const adSlot = slotService.get(slotName);
-		const videoElement = player && player.getContainer && player.getContainer();
-		const videoContainer = videoElement && videoElement.parentNode;
-
-		adSlot.element = videoContainer;
-		adSlot.setConfigProperty('audio', !player.getMute());
-		adSlot.setConfigProperty('autoplay', player.getConfig().autostart);
 
 		if (context.get('options.video.iasTracking.enabled')) {
 			const iasConfig = context.get('options.video.iasTracking.config');
@@ -98,11 +92,6 @@ function create(
 	};
 }
 
-export function loadMoatPlugin(): void {
-	utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
-}
-
 export const jwplayerAdsFactory = {
 	create,
-	loadMoatPlugin,
 };
