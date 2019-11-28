@@ -1,31 +1,9 @@
-import { AdSlot, VastParams, vastParser } from '@ad-engine/core';
+import { context, VastParams, vastParser } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JWPlayerEvent } from './jwplayer-plugin/jwplayer-event';
 
 export const EMPTY_VAST_CODE = 21009;
-
-export function updateSlotParams(adSlot: AdSlot, vastParams: VastParams): void {
-	adSlot.lineItemId = vastParams.lineItemId;
-	adSlot.creativeId = vastParams.creativeId;
-	adSlot.creativeSize = vastParams.size;
-}
-
-// export function playVideoAd(
-// 	position: 'midroll' | 'postroll' | 'preroll',
-// 	adSlot: AdSlot,
-// 	tracker: JWPlayerTracker,
-// 	slotTargeting: VideoTargeting,
-// 	jwplayer: JWPlayer,
-// ) {
-// 	tracker.adProduct = `${adSlot.config.trackingKey}-${position}`;
-// 	adSlot.setConfigProperty('audio', !jwplayer.getMute());
-//
-// 	const vastUrl = getVastUrl(adSlot, position, depth, correlator, slotTargeting);
-//
-// 	setCurrentVast(position, vastUrl);
-// 	jwplayer.playAd(vastUrl);
-// }
 
 export function supplementVastParams<T extends JWPlayerEvent>(): (
 	source: Observable<T>,
@@ -39,4 +17,30 @@ export function supplementVastParams<T extends JWPlayerEvent>(): (
 				}),
 			})),
 		);
+}
+
+export function shouldPlayAdOnNextVideo(depth: number): boolean {
+	const capping = context.get('options.video.adsOnNextVideoFrequency');
+
+	return (
+		context.get('options.video.playAdsOnNextVideo') && capping > 0 && (depth - 1) % capping === 0
+	);
+}
+
+export function canAdBePlayed(depth: number): boolean {
+	const isReplay = depth > 1;
+
+	return !isReplay || (isReplay && shouldPlayAdOnNextVideo(depth));
+}
+
+export function shouldPlayPreroll(videoDepth: number): boolean {
+	return canAdBePlayed(videoDepth);
+}
+
+export function shouldPlayMidroll(videoDepth: number): boolean {
+	return context.get('options.video.isMidrollEnabled') && canAdBePlayed(videoDepth);
+}
+
+export function shouldPlayPostroll(videoDepth: number): boolean {
+	return context.get('options.video.isPostrollEnabled') && canAdBePlayed(videoDepth);
 }

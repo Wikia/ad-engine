@@ -38,75 +38,6 @@ export interface JwPlayerAdsFactoryOptions {
 	videoId: string;
 }
 
-const vastUrls = {
-	last: null,
-	preroll: null,
-	midroll: null,
-	postroll: null,
-};
-
-/**
- * Calculate depth
- */
-function calculateRV(depth: number): number {
-	const capping = context.get('options.video.adsOnNextVideoFrequency');
-
-	return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
-}
-
-function shouldPlayAdOnNextVideo(depth: number): boolean {
-	const capping = context.get('options.video.adsOnNextVideoFrequency');
-
-	return (
-		context.get('options.video.playAdsOnNextVideo') && capping > 0 && (depth - 1) % capping === 0
-	);
-}
-
-function canAdBePlayed(depth: number): boolean {
-	const isReplay = depth > 1;
-
-	return !isReplay || (isReplay && shouldPlayAdOnNextVideo(depth));
-}
-
-function shouldPlayPreroll(videoDepth: number): boolean {
-	return canAdBePlayed(videoDepth);
-}
-
-function shouldPlayMidroll(videoDepth: number): boolean {
-	return context.get('options.video.isMidrollEnabled') && canAdBePlayed(videoDepth);
-}
-
-function shouldPlayPostroll(videoDepth: number): boolean {
-	return context.get('options.video.isPostrollEnabled') && canAdBePlayed(videoDepth);
-}
-
-function setCurrentVast(placement: string, vastUrl: string): void {
-	vastUrls[placement] = vastUrl;
-	vastUrls.last = vastUrl;
-}
-
-function getCurrentVast(placement: string): string {
-	return vastUrls[placement] || vastUrls.last;
-}
-
-function getVastUrl(
-	slot: AdSlot,
-	position: string,
-	depth: number,
-	correlator: number,
-	slotTargeting: object,
-): string {
-	return buildVastUrl(16 / 9, slot.getSlotName(), {
-		correlator,
-		vpos: position,
-		targeting: {
-			passback: 'jwplayer',
-			rv: calculateRV(depth),
-			...slotTargeting,
-		},
-	});
-}
-
 function updateSlotParams(adSlot: AdSlot, vastParams: VastParams): void {
 	adSlot.lineItemId = vastParams.lineItemId;
 	adSlot.creativeId = vastParams.creativeId;
@@ -119,16 +50,10 @@ function updateSlotParams(adSlot: AdSlot, vastParams: VastParams): void {
 function create(
 	options: JwPlayerAdsFactoryOptions,
 ): { register: (player, slotTargeting?: VideoTargeting) => void } {
-	function register(player, slotTargeting: VideoTargeting = {}): void {
+	function register(player): void {
 		const adSlot = slotService.get(slotName);
-		const adProduct = adSlot.config.trackingKey;
 		const videoElement = player && player.getContainer && player.getContainer();
 		const videoContainer = videoElement && videoElement.parentNode;
-		const targeting = slotTargeting;
-
-		let correlator;
-		let depth = 0;
-		let prerollPositionReached = false;
 
 		adSlot.element = videoContainer;
 		adSlot.setConfigProperty('audio', !player.getMute());
@@ -161,58 +86,6 @@ function create(
 				iasVideoTracker.init(window.google, adsManager, videoNode, iasConfig);
 			});
 		}
-
-		player.on('adBlock', () => {
-			tracker.adProduct = adProduct;
-		});
-
-		player.on('beforePlay', () => {
-			const currentMedia = player.getPlaylistItem() || {};
-
-			targeting.v1 = currentMedia.mediaid;
-			tracker.updateVideoId();
-
-			if (prerollPositionReached) {
-				return;
-			}
-
-			correlator = Math.round(Math.random() * 10000000000);
-			depth += 1;
-			adSlot.setConfigProperty('videoDepth', depth);
-
-			if (shouldPlayPreroll(depth)) {
-				playVideoAd('preroll');
-			}
-
-			prerollPositionReached = true;
-		});
-
-		function playVideoAd(position: 'midroll' | 'postroll' | 'preroll') {
-			tracker.adProduct = `${adProduct}-${position}`;
-			adSlot.setConfigProperty('audio', !player.getMute());
-
-			const vastUrl = getVastUrl(adSlot, position, depth, correlator, targeting);
-
-			setCurrentVast(position, vastUrl);
-			player.playAd(vastUrl);
-		}
-
-		player.on('videoMidPoint', () => {
-			if (shouldPlayMidroll(depth)) {
-				playVideoAd('midroll');
-			}
-		});
-
-		player.on('beforeComplete', () => {
-			if (shouldPlayPostroll(depth)) {
-				playVideoAd('postroll');
-			}
-		});
-
-		player.on('complete', () => {
-			prerollPositionReached = false;
-			tracker.adProduct = adProduct;
-		});
 
 		player.on('adImpression', (event) => {
 			const vastParams = vastParser.parse(event.tag, {
@@ -267,6 +140,5 @@ export function loadMoatPlugin(): void {
 
 export const jwplayerAdsFactory = {
 	create,
-	getCurrentVast,
 	loadMoatPlugin,
 };

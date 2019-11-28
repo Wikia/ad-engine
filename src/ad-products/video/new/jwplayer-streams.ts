@@ -7,6 +7,8 @@ import { JWPlayerListItem } from './jwplayer-plugin/jwplayer-list-item';
 export interface JWPlayerStreams {
 	adRequest$: Observable<JWPlayerEventParams['adRequest']>;
 	adError$: Observable<JWPlayerEventParams['adError']>;
+	adImpression$: Observable<JWPlayerEventParams['adImpression']>;
+	adBlock$: Observable<void>;
 	beforePlay$: Observable<{ depth: number; correlator: number }>;
 	videoMidPoint$: Observable<{ depth: number; correlator: number }>;
 	beforeComplete$: Observable<{ depth: number; correlator: number }>;
@@ -16,9 +18,10 @@ export interface JWPlayerStreams {
 export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 	const adRequest$ = createStream(jwplayer, 'adRequest');
 	const adError$ = createStream(jwplayer, 'adError').pipe(ensureEventTag(adRequest$));
+	const adImpression$ = createStream(jwplayer, 'adImpression');
+	const adBlock$ = createStream(jwplayer, 'adBlock');
 	const beforePlay$ = createStream(jwplayer, 'beforePlay').pipe(
-		map(() => jwplayer.getPlaylistItem() || ({} as JWPlayerListItem)),
-		distinctUntilChanged((a, b) => a.mediaid === b.mediaid),
+		onlyOncePerVideo(jwplayer),
 		scan(
 			({ correlator, depth }) => ({
 				correlator: Math.round(Math.random() * 10000000000),
@@ -40,6 +43,8 @@ export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 	return {
 		adError$,
 		adRequest$,
+		adImpression$,
+		adBlock$,
 		beforePlay$,
 		videoMidPoint$,
 		beforeComplete$,
@@ -65,5 +70,17 @@ function ensureEventTag<T>(
 		source.pipe(
 			withLatestFrom(base$),
 			map(([adError, adRequest]) => _merge(adRequest, adError)),
+		);
+}
+
+function onlyOncePerVideo<T>(jwplayer: JWPlayer): (source: Observable<T>) => Observable<T> {
+	return (source: Observable<T>) =>
+		source.pipe(
+			map((payload) => ({
+				payload,
+				playlistItem: jwplayer.getPlaylistItem() || ({} as JWPlayerListItem),
+			})),
+			distinctUntilChanged((a, b) => a.playlistItem.mediaid === b.playlistItem.mediaid),
+			map(({ payload }) => payload),
 		);
 }
