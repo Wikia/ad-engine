@@ -17,17 +17,17 @@ export class JWPlayerHandler {
 		private helper: JWPlayerHelper,
 	) {}
 
-	run(): Observable<any> {
+	handle(): Observable<any> {
 		return merge(
-			this.adError(),
 			this.adRequest(),
+			this.adError(),
 			this.adImpression(),
-			this.adsManager(),
-			this.complete(),
 			this.adBlock(),
+			this.adsManager(),
 			this.beforePlay(),
 			this.videoMidPoint(),
 			this.beforeComplete(),
+			this.complete(),
 		);
 	}
 

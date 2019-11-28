@@ -20,11 +20,11 @@ interface PlayerReadyResult {
 export class JWPlayerManager {
 	private communicator = new Communicator();
 
-	run() {
+	manage(): void {
 		this.onPlayerReady()
 			.pipe(
 				map((result) => this.createJWPlayerAd(result)),
-				mergeMap((handler) => handler.run()),
+				mergeMap((handler) => handler.handle()),
 			)
 			.subscribe();
 	}
