@@ -4,7 +4,6 @@ import {
 	context,
 	events,
 	eventService,
-	setAttributes,
 	utils,
 	vastDebugger,
 	VastParams,
@@ -51,11 +50,8 @@ export class JWPlayerHandler {
 		return stream$.pipe(
 			tap(({ event, vastParams }) => {
 				log(`ad error message: ${event.message}`);
-				this.updateSlotParams(vastParams);
-				setAttributes(
-					this.adSlot.element,
-					vastDebugger.getVastAttributesFromVastParams('error', vastParams),
-				);
+				this.setAdSlotParams(vastParams);
+				this.setAdSlotElementAttributes(vastParams);
 
 				if (event.adErrorCode === EMPTY_VAST_CODE) {
 					this.adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
@@ -71,10 +67,7 @@ export class JWPlayerHandler {
 	private adRequest(stream$: JWPlayerStreams['adRequest$']): Observable<any> {
 		return stream$.pipe(
 			tap(({ vastParams }) => {
-				setAttributes(
-					this.adSlot.element,
-					vastDebugger.getVastAttributesFromVastParams('success', vastParams),
-				);
+				this.setAdSlotElementAttributes(vastParams);
 				eventService.emit(events.VIDEO_AD_REQUESTED, this.adSlot);
 			}),
 		);
@@ -83,7 +76,7 @@ export class JWPlayerHandler {
 	private adImpression(stream$: JWPlayerStreams['adImpression$']): Observable<any> {
 		return stream$.pipe(
 			tap(({ vastParams }) => {
-				this.updateSlotParams(vastParams);
+				this.setAdSlotParams(vastParams);
 				this.adSlot.setStatus(AdSlot.STATUS_SUCCESS);
 				eventService.emit(events.VIDEO_AD_IMPRESSION, this.adSlot);
 			}),
@@ -93,11 +86,11 @@ export class JWPlayerHandler {
 	}
 
 	private complete(stream$: JWPlayerStreams['complete$']): Observable<any> {
-		return stream$.pipe(tap(() => (this.tracker.adProduct = this.adSlot.config.slotName)));
+		return stream$.pipe(tap(() => this.resetTrackerAdProduct()));
 	}
 
 	private adBlock(stream$: JWPlayerStreams['adBlock$']): Observable<any> {
-		return stream$.pipe(tap(() => (this.tracker.adProduct = this.adSlot.config.slotName)));
+		return stream$.pipe(tap(() => this.resetTrackerAdProduct()));
 	}
 
 	private beforePlay(stream$: JWPlayerStreams['beforePlay$']): Observable<any> {
@@ -146,10 +139,23 @@ export class JWPlayerHandler {
 		});
 	}
 
-	private updateSlotParams(vastParams: VastParams): void {
+	private resetTrackerAdProduct(): void {
+		this.tracker.adProduct = this.adSlot.config.slotName;
+	}
+
+	private setAdSlotParams(vastParams: VastParams): void {
 		this.adSlot.lineItemId = vastParams.lineItemId;
 		this.adSlot.creativeId = vastParams.creativeId;
 		this.adSlot.creativeSize = vastParams.size;
+	}
+
+	private setAdSlotElementAttributes(vastParams: VastParams): void {
+		const attributes = vastDebugger.getVastAttributesFromVastParams('success', vastParams);
+		const element = this.adSlot.element;
+
+		Object.keys(attributes)
+			.map((key) => ({ key, value: attributes[key] }))
+			.forEach(({ key, value }) => element.setAttribute(key, value));
 	}
 
 	private playVideoAd(

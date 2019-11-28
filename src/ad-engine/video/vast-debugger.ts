@@ -1,11 +1,5 @@
 import { VastParams, vastParser } from './vast-parser';
 
-export function setAttributes(element: HTMLElement, attributes: VastAttributes): void {
-	Object.keys(attributes)
-		.map((key) => ({ key, value: attributes[key] }))
-		.forEach(({ key, value }) => element.setAttribute(key, value));
-}
-
 export interface VastAttributes {
 	'data-vast-content-type': string;
 	'data-vast-creative-id': string;

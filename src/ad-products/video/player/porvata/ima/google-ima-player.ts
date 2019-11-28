@@ -1,4 +1,4 @@
-import { Dictionary, setAttributes, vastDebugger } from '@ad-engine/core';
+import { Dictionary, vastDebugger } from '@ad-engine/core';
 import { VideoParams } from '../video-settings';
 import { googleImaSetup } from './google-ima-setup';
 
@@ -52,8 +52,11 @@ export class GoogleImaPlayer {
 
 	setVastAttributes(status: string, currentAd?: google.ima.Ad): void {
 		const playerElement: HTMLVideoElement = this.params.container.querySelector('.video-player');
+		const attributes = vastDebugger.getVastAttributes(this.vastUrl, status, currentAd);
 
-		setAttributes(playerElement, vastDebugger.getVastAttributes(this.vastUrl, status, currentAd));
+		Object.keys(attributes)
+			.map((key) => ({ key, value: attributes[key] }))
+			.forEach(({ key, value }) => playerElement.setAttribute(key, value));
 	}
 
 	setAutoPlay(value: boolean): void {

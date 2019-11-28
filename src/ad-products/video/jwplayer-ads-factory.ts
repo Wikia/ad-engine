@@ -4,9 +4,9 @@ import {
 	context,
 	events,
 	eventService,
-	setAttributes,
 	slotService,
 	utils,
+	VastAttributes,
 	vastDebugger,
 	VastParams,
 	vastParser,
@@ -49,6 +49,12 @@ const vastUrls = {
 // 21009	VAST_EMPTY_RESPONSE
 const EMPTY_VAST_CODE = 21009;
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
+
+function setAttributes(element: HTMLElement, attributes: VastAttributes): void {
+	Object.keys(attributes)
+		.map((key) => ({ key, value: attributes[key] }))
+		.forEach(({ key, value }) => element.setAttribute(key, value));
+}
 
 /**
  * Calculate depth
