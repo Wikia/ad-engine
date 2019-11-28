@@ -153,6 +153,7 @@ class TrackingOptInWrapper {
 			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
 			context.set('options.optOutSale', this.ccpaSignal);
 
+			resolve();
 			return;
 		});
 	}
