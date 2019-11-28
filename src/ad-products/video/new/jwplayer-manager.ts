@@ -4,8 +4,7 @@ import { merge, Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
-import { JwPlayerAdsFactoryOptions, VideoTargeting } from '../jwplayer-ads-factory';
-import { jwpReady } from './jwplayer-actions';
+import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
 import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayer } from './jwplayer-plugin/jwplayer';
@@ -25,7 +24,7 @@ export class JWPlayerManager {
 		this.onPlayerReady()
 			.pipe(
 				map((result) => this.createJWPlayerAd(result)),
-				mergeMap((jwplayerAd) => jwplayerAd.run()),
+				mergeMap((handler) => handler.run()),
 			)
 			.subscribe();
 	}
@@ -44,6 +43,8 @@ export class JWPlayerManager {
 				const player: JWPlayer = window[playerKey];
 				const adSlot = this.createAdSlot(options, player);
 				const tracker = this.createTracker(options, adSlot);
+
+				tracker.register(player); // TODO: need to handle it separately
 
 				return { player, adSlot, tracker, slotTargeting: targeting };
 			}),
@@ -93,27 +94,4 @@ export class JWPlayerManager {
 	private loadMoatPlugin(): void {
 		utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
 	}
-
-	// on
-	// // adImpression,
-	// // adsManager,
-	// // adBlock,
-	// // beforePlay,
-	// // videoMidPoint,
-	// // beforeComplete,
-	// // complete,
-	// // adRequest
-	// // adImpression,
-	// // adError
-	// getMute
-	// getConfig -> autostart
-	// getPlaylistItem
-	// playAd()
-
-	// events
-	// adImpression -> event, ima (x), tag (/)
-	// adsManager (x) -> adsManager, videoElement
-	// adRequest -> ima (x), tag (/)
-	// adError -> ima, tag (/), adPlayId (x), message (/), adErrorCode (x)
-	// hdPlayerEvent (x) -> details.slotStatus.{vastParams, statusName}, details.name, details.errorCode
 }

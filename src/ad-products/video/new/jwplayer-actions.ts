@@ -1,13 +1,18 @@
 import { action, props } from 'ts-action';
-import { JwPlayerAdsFactoryOptions, VideoTargeting } from '../jwplayer-ads-factory';
 
-export interface JWPlayerPayload {
-	autostart: boolean; // from config
-	mute: boolean; // from getMute
+export interface VideoTargeting {
+	plist?: string;
+	videoTags?: string | string[]; // not sure about `string`
+	v1?: string;
 }
 
-export interface JWPlayerBeforePlayPayload {
-	mediaid: string; // from playlist item
+export interface JwPlayerAdsFactoryOptions {
+	adProduct: string;
+	slotName: string;
+	audio: boolean;
+	autoplay: boolean;
+	featured: boolean;
+	videoId: string;
 }
 
 export const jwpReady = action(

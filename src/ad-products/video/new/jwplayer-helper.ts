@@ -1,7 +1,7 @@
 import { AdSlot, buildVastUrl, context, vastDebugger, VastParams } from '@ad-engine/core';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
-import { VideoTargeting } from '../jwplayer-ads-factory';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
+import { VideoTargeting } from './jwplayer-actions';
 import { JWPlayer, JWPlayerEventParams } from './jwplayer-plugin/jwplayer';
 
 /**

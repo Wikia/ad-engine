@@ -14,7 +14,7 @@ import {
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
-export interface VideoTargeting {
+interface VideoTargeting {
 	plist?: string;
 	videoTags?: string | string[]; // not sure about `string`
 	v1?: string;
@@ -31,7 +31,7 @@ interface HdPlayerEvent extends CustomEvent {
 	};
 }
 
-export interface JwPlayerAdsFactoryOptions {
+interface JwPlayerAdsFactoryOptions {
 	adProduct: string;
 	slotName: string;
 	audio: boolean;
