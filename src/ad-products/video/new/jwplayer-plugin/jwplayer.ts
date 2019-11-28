@@ -80,7 +80,7 @@ export interface AdTimeParam {
 }
 
 export interface AdsManagerParam {
-	adsManager: unknown;
+	adsManager: google.ima.AdsManager;
 	videoElement: HTMLElement;
 }
 

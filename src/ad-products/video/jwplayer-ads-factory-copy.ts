@@ -1,6 +1,5 @@
 import { AdSlot, context, slotService, VastParams } from '@ad-engine/core';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
-import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
 export interface VideoTargeting {
 	plist?: string;
@@ -42,18 +41,6 @@ function create(
 ): { register: (player, slotTargeting?: VideoTargeting) => void } {
 	function register(player): void {
 		const adSlot = slotService.get(slotName);
-
-		if (context.get('options.video.iasTracking.enabled')) {
-			const iasConfig = context.get('options.video.iasTracking.config');
-
-			iasVideoTracker.loadScript();
-
-			player.on('adsManager', (event) => {
-				const { adsManager, videoElement: videoNode } = event;
-
-				iasVideoTracker.init(window.google, adsManager, videoNode, iasConfig);
-			});
-		}
 
 		if (context.get('options.wad.hmdRec.enabled')) {
 			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {

@@ -13,6 +13,7 @@ export interface JWPlayerStreams {
 	adError$: Observable<{ event: JWPlayerEventParams['adError']; vastParams: VastParams }>;
 	adImpression$: Observable<{ event: JWPlayerEventParams['adImpression']; vastParams: VastParams }>;
 	adBlock$: Observable<void>;
+	adsManager$: Observable<JWPlayerEventParams['adsManager']>;
 	beforePlay$: Observable<{ depth: number; correlator: number }>;
 	videoMidPoint$: Observable<{ depth: number; correlator: number }>;
 	beforeComplete$: Observable<{ depth: number; correlator: number }>;
@@ -23,31 +24,33 @@ export interface JWPlayerStreams {
  * Describes streams (event sources) and their relations
  */
 export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
-	const adRequest$ = createStream(jwplayer, 'adRequest').pipe(supplementVastParams());
-	const adError$ = createStream(jwplayer, 'adError').pipe(
+	const adRequest$ = createJwpStream(jwplayer, 'adRequest').pipe(supplementVastParams());
+	const adError$ = createJwpStream(jwplayer, 'adError').pipe(
 		onlyOncePerVideo(jwplayer),
 		supplementVastParams(),
 		ensureEventTag(adRequest$),
 	);
-	const adImpression$ = createStream(jwplayer, 'adImpression').pipe(supplementVastParams());
-	const adBlock$ = createStream(jwplayer, 'adBlock');
-	const beforePlay$ = createStream(jwplayer, 'beforePlay').pipe(
+	const adImpression$ = createJwpStream(jwplayer, 'adImpression').pipe(supplementVastParams());
+	const adBlock$ = createJwpStream(jwplayer, 'adBlock');
+	const adsManager$ = createJwpStream(jwplayer, 'adsManager');
+	const beforePlay$ = createJwpStream(jwplayer, 'beforePlay').pipe(
 		onlyOncePerVideo(jwplayer),
 		scanCorrelatorDepth(),
 	);
-	const videoMidPoint$ = createStream(jwplayer, 'videoMidPoint').pipe(
+	const videoMidPoint$ = createJwpStream(jwplayer, 'videoMidPoint').pipe(
 		supplementCorrelatorDepth(beforePlay$),
 	);
-	const beforeComplete$ = createStream(jwplayer, 'beforeComplete').pipe(
+	const beforeComplete$ = createJwpStream(jwplayer, 'beforeComplete').pipe(
 		supplementCorrelatorDepth(beforePlay$),
 	);
-	const complete$ = createStream(jwplayer, 'complete');
+	const complete$ = createJwpStream(jwplayer, 'complete');
 
 	return {
 		adError$,
 		adRequest$,
 		adImpression$,
 		adBlock$,
+		adsManager$,
 		beforePlay$,
 		videoMidPoint$,
 		beforeComplete$,
@@ -55,7 +58,7 @@ export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 	};
 }
 
-function createStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>(
+function createJwpStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>(
 	jwplayer: JWPlayer,
 	event: TEvent,
 ): Observable<TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : void> {

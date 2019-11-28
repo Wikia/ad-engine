@@ -1,6 +1,7 @@
 import { AdSlot, buildVastUrl, context, vastDebugger, VastParams } from '@ad-engine/core';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { VideoTargeting } from '../jwplayer-ads-factory';
+import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from './jwplayer-plugin/jwplayer';
 
 /**
@@ -28,6 +29,20 @@ export class JWPlayerHelper {
 			player: this.jwplayer,
 			adImpressionEvent: event,
 		});
+	}
+
+	isIasTrackingEnabled(): boolean {
+		return context.get('options.video.iasTracking.enabled');
+	}
+
+	loadIasTracker(): void {
+		iasVideoTracker.loadScript();
+	}
+
+	initIasVideoTracking({ adsManager, videoElement }: JWPlayerEventParams['adsManager']): void {
+		const iasConfig = context.get('options.video.iasTracking.config');
+
+		iasVideoTracker.init(window.google, adsManager, videoElement, iasConfig);
 	}
 
 	resetTrackerAdProduct(): void {

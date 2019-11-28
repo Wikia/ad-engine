@@ -1,5 +1,5 @@
 import { AdSlot, events, eventService, utils } from '@ad-engine/core';
-import { merge, Observable } from 'rxjs';
+import { EMPTY, merge, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayerStreams } from './jwplayer-streams';
@@ -22,6 +22,7 @@ export class JWPlayerHandler {
 			this.adError(),
 			this.adRequest(),
 			this.adImpression(),
+			this.adsManager(),
 			this.complete(),
 			this.adBlock(),
 			this.beforePlay(),
@@ -69,12 +70,22 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private complete(): Observable<any> {
-		return this.streams.complete$.pipe(tap(() => this.helper.resetTrackerAdProduct()));
-	}
-
 	private adBlock(): Observable<any> {
 		return this.streams.adBlock$.pipe(tap(() => this.helper.resetTrackerAdProduct()));
+	}
+
+	private adsManager(): Observable<any> {
+		if (!this.helper.isIasTrackingEnabled()) {
+			return EMPTY;
+		}
+
+		this.helper.loadIasTracker();
+
+		return this.streams.adsManager$.pipe(tap((event) => this.helper.initIasVideoTracking(event)));
+	}
+
+	private complete(): Observable<any> {
+		return this.streams.complete$.pipe(tap(() => this.helper.resetTrackerAdProduct()));
 	}
 
 	private beforePlay(): Observable<any> {
