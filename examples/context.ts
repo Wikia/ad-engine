@@ -365,7 +365,6 @@ export default {
 		provider: 'gpt',
 	},
 	targeting: {
-		ae3: '1',
 		cid: cid || null,
 		outstream: 'none',
 		s1: '_project43',
