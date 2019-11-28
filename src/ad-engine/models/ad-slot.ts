@@ -35,6 +35,7 @@ export interface SlotConfig {
 	trackOverscrolled?: boolean;
 	slotName?: string;
 	nextSiblingSelector?: string;
+	parentContainerSelector?: string;
 
 	targeting: Targeting;
 	videoAdUnit?: string;
