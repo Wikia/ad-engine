@@ -1,14 +1,4 @@
-import {
-	AdSlot,
-	buildVastUrl,
-	context,
-	events,
-	eventService,
-	slotService,
-	utils,
-	VastParams,
-	vastParser,
-} from '@ad-engine/core';
+import { AdSlot, context, slotService, utils, VastParams } from '@ad-engine/core';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
@@ -59,22 +49,6 @@ function create(
 		adSlot.setConfigProperty('audio', !player.getMute());
 		adSlot.setConfigProperty('autoplay', player.getConfig().autostart);
 
-		if (context.get('options.video.moatTracking.enabledForArticleVideos')) {
-			const partnerCode =
-				context.get('options.video.moatTracking.articleVideosPartnerCode') ||
-				context.get('options.video.moatTracking.partnerCode');
-
-			player.on('adImpression', (event) => {
-				if (window.moatjw) {
-					window.moatjw.add({
-						partnerCode,
-						player,
-						adImpressionEvent: event,
-					});
-				}
-			});
-		}
-
 		if (context.get('options.video.iasTracking.enabled')) {
 			const iasConfig = context.get('options.video.iasTracking.config');
 
@@ -86,16 +60,6 @@ function create(
 				iasVideoTracker.init(window.google, adsManager, videoNode, iasConfig);
 			});
 		}
-
-		player.on('adImpression', (event) => {
-			const vastParams = vastParser.parse(event.tag, {
-				imaAd: event.ima && event.ima.ad,
-			});
-
-			updateSlotParams(adSlot, vastParams);
-			adSlot.setStatus(AdSlot.STATUS_SUCCESS);
-			eventService.emit(events.VIDEO_AD_IMPRESSION, adSlot);
-		});
 
 		if (context.get('options.wad.hmdRec.enabled')) {
 			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {

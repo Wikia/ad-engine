@@ -1,23 +1,6 @@
-import { context, VastParams, vastParser } from '@ad-engine/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { JWPlayerEvent } from './jwplayer-plugin/jwplayer-event';
+import { context } from '@ad-engine/core';
 
 export const EMPTY_VAST_CODE = 21009;
-
-export function supplementVastParams<T extends JWPlayerEvent>(): (
-	source: Observable<T>,
-) => Observable<{ event: T; vastParams: VastParams }> {
-	return (source) =>
-		source.pipe(
-			map((event) => ({
-				event,
-				vastParams: vastParser.parse(event.tag, {
-					imaAd: event.ima && event.ima.ad,
-				}),
-			})),
-		);
-}
 
 export function shouldPlayAdOnNextVideo(depth: number): boolean {
 	const capping = context.get('options.video.adsOnNextVideoFrequency');

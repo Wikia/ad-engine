@@ -10,17 +10,16 @@ import {
 	VastParams,
 } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
-import { distinctUntilChanged, filter, tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { JWPlayerTracker } from '../../../tracking/video/jwplayer-tracker';
 import { VideoTargeting } from '../../jwplayer-ads-factory';
-import { JWPlayer } from '../jwplayer-plugin/jwplayer';
+import { JWPlayer, JWPlayerEventParams } from '../jwplayer-plugin/jwplayer';
 import { createJWPlayerStreams, JWPlayerStreams } from '../jwplayer-streams';
 import {
 	EMPTY_VAST_CODE,
 	shouldPlayMidroll,
 	shouldPlayPostroll,
 	shouldPlayPreroll,
-	supplementVastParams,
 } from '../jwplayer-utils';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -39,6 +38,7 @@ export class JWPlayerHandler {
 		return merge(
 			this.adError(streams.adError$),
 			this.adRequest(streams.adRequest$),
+			this.adImpression(streams.adImpression$),
 			this.complete(streams.complete$),
 			this.adBlock(streams.adBlock$),
 			this.beforePlay(streams.beforePlay$),
@@ -49,8 +49,6 @@ export class JWPlayerHandler {
 
 	private adError(stream$: JWPlayerStreams['adError$']): Observable<any> {
 		return stream$.pipe(
-			distinctUntilChanged((a, b) => a.adPlayId === b.adPlayId),
-			supplementVastParams(),
 			tap(({ event, vastParams }) => {
 				log(`ad error message: ${event.message}`);
 				this.updateSlotParams(vastParams);
@@ -72,7 +70,6 @@ export class JWPlayerHandler {
 
 	private adRequest(stream$: JWPlayerStreams['adRequest$']): Observable<any> {
 		return stream$.pipe(
-			supplementVastParams(),
 			tap(({ vastParams }) => {
 				setAttributes(
 					this.adSlot.element,
@@ -84,7 +81,15 @@ export class JWPlayerHandler {
 	}
 
 	private adImpression(stream$: JWPlayerStreams['adImpression$']): Observable<any> {
-		return stream$.pipe();
+		return stream$.pipe(
+			tap(({ vastParams }) => {
+				this.updateSlotParams(vastParams);
+				this.adSlot.setStatus(AdSlot.STATUS_SUCCESS);
+				eventService.emit(events.VIDEO_AD_IMPRESSION, this.adSlot);
+			}),
+			filter(() => this.isMoatTrackingEnabled()),
+			tap(({ event }) => this.trackMoat(event)),
+		);
 	}
 
 	private complete(stream$: JWPlayerStreams['complete$']): Observable<any> {
@@ -124,6 +129,22 @@ export class JWPlayerHandler {
 	}
 
 	// #################
+
+	private isMoatTrackingEnabled(): boolean {
+		return context.get('options.video.moatTracking.enabledForArticleVideos') && !!window.moatjw;
+	}
+
+	private trackMoat(event: JWPlayerEventParams['adImpression']): void {
+		const partnerCode =
+			context.get('options.video.moatTracking.articleVideosPartnerCode') ||
+			context.get('options.video.moatTracking.partnerCode');
+
+		window.moatjw.add({
+			partnerCode,
+			player: this.jwplayer,
+			adImpressionEvent: event,
+		});
+	}
 
 	private updateSlotParams(vastParams: VastParams): void {
 		this.adSlot.lineItemId = vastParams.lineItemId;
