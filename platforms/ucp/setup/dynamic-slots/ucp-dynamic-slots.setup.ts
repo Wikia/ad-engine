@@ -3,9 +3,9 @@ import {
 	btRec,
 	context,
 	Dictionary,
+	FmrRotator,
 	insertNewSlot,
 	SlotConfig,
-	SlotRotator,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -18,7 +18,7 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	): void {
 		const container = document.createElement('div');
 		const prefix = slotNamePattern.replace(slotNamePattern.match(/({.*})/g)[0], '');
-		const rotator = new SlotRotator(slotName, prefix, btRec);
+		const rotator = new FmrRotator(slotName, prefix, btRec);
 
 		container.id = slotName;
 		parentContainer.appendChild(container);

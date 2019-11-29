@@ -10,7 +10,7 @@ import {
 import { universalAdPackage } from '../templates/uap';
 import { NavbarManager } from './navbar-manager';
 
-export class SlotRotator {
+export class FmrRotator {
 	private btRecStatus = false;
 	private nextSlotName: string;
 	private currentAdSlot: AdSlot;
