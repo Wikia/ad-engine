@@ -10,22 +10,22 @@ import {
 import { universalAdPackage } from '../templates/uap';
 import { NavbarManager } from './navbar-manager';
 
-export class FmrRotator {
-	btRecStatus = false;
-	nextSlotName: string;
-	currentAdSlot: AdSlot;
-	recirculationElement: HTMLElement;
-	refreshInfo = {
+export class SlotRotator {
+	private btRecStatus = false;
+	private nextSlotName: string;
+	private currentAdSlot: AdSlot;
+	private recirculationElement: HTMLElement;
+	private refreshInfo = {
 		delayDisabled: false,
 		recSlotViewed: 2000,
 		refreshDelay: 10000,
 		refreshLimit: 20,
 		startPosition: 0,
 	};
-	navbarManager = new NavbarManager(document.getElementById('globalNavigation'));
-	rotatorListener: string;
-	recSelector: string;
-	currentRecNode: HTMLElement;
+	private navbarManager = new NavbarManager(document.getElementById('globalNavigation'));
+	private rotatorListener: string;
+	private recSelector: string;
+	private currentRecNode: HTMLElement;
 
 	constructor(private slotName: string, private fmrPrefix: string, private btRec) {}
 
