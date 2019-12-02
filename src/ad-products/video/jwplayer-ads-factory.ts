@@ -16,17 +16,6 @@ import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
 import featuredVideo15s from './featured-video-f15s';
 import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
 
-interface HdPlayerEvent extends CustomEvent {
-	detail: {
-		slotStatus?: {
-			vastParams: any;
-			statusName: string;
-		};
-		name?: string | null;
-		errorCode: number;
-	};
-}
-
 interface JwPlayerAdsFactoryOptions {
 	adProduct: string;
 	slotName: string;
@@ -210,7 +199,13 @@ function create(
 				};
 
 				if (options.featured) {
-					fillInSlot();
+					if (context.get('options.video.iasTracking.enabled')) {
+						iasVideoTracker.loadScript().then(() => {
+							fillInSlot();
+						});
+					} else {
+						fillInSlot();
+					}
 				} else {
 					btfBlockerService.push(adSlot, fillInSlot);
 				}
@@ -316,20 +311,6 @@ function create(
 			}
 			eventService.emit(events.VIDEO_AD_ERROR, adSlot);
 		});
-
-		if (context.get('options.wad.hmdRec.enabled')) {
-			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {
-				if (event.detail.slotStatus) {
-					updateSlotParams(adSlot, event.detail.slotStatus.vastParams);
-					tracker.updateCreativeData(event.detail.slotStatus.vastParams);
-					adSlot.setStatus(event.detail.slotStatus.statusName);
-				}
-
-				if (event.detail.name) {
-					tracker.emit(event.detail.name, event.detail.errorCode);
-				}
-			});
-		}
 
 		tracker.register(player);
 	}
