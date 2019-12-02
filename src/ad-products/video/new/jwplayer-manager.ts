@@ -1,6 +1,6 @@
 import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 import { Communicator } from '@wikia/post-quecast';
-import { merge, Observable } from 'rxjs';
+import { merge, Observable, of } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
@@ -21,6 +21,10 @@ export class JWPlayerManager {
 	private communicator = new Communicator();
 
 	manage(): void {
+		of(1)
+			.pipe(mergeMap(() => merge(of('manage - first'), of('manage - second'))))
+			.subscribe(console.warn);
+
 		this.onPlayerReady()
 			.pipe(
 				map((result) => this.createJWPlayerAd(result)),
