@@ -73,11 +73,14 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		if (resolvedState.isResolvedState(this.params)) {
 			this.setResolvedState(true);
 		} else {
+			this.setResolvedState(false);
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
 			// Manually run update on scroll once
 			this.updateAdSizes();
 		}
+
+		setTimeout(() => this.addImagesAnimation());
 	}
 
 	onVideoReady(video: PorvataPlayer): void {
@@ -267,10 +270,20 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	private switchImagesInAd(isResolved: boolean): void {
 		if (isResolved) {
 			this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
-			this.params.image2.element.classList.remove('hidden-state');
 		} else {
 			this.container.classList.remove(CSS_CLASSNAME_THEME_RESOLVED);
-			this.params.image2.element.classList.add('hidden-state');
+		}
+
+		if (this.params.image2 && this.params.image2.background) {
+			if (isResolved) {
+				this.params.image2.element.classList.remove('hidden-state');
+				this.params.image1.element.classList.add('hidden-state');
+			} else {
+				this.params.image2.element.classList.add('hidden-state');
+				this.params.image1.element.classList.remove('hidden-state');
+			}
+		} else {
+			this.params.image1.element.classList.remove('hidden-state');
 		}
 	}
 
