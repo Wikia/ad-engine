@@ -22,7 +22,7 @@ function findNextSuitablePlace(
 	return null;
 }
 
-export function insertNewSlot(
+function insertNewSlot(
 	slotName: string,
 	nextSibling: HTMLElement,
 	disablePushOnScroll: boolean,
