@@ -69,7 +69,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				nextSiblingSelector: '.rcs-container',
+				nextSiblingSelector: '.rcs-container, .wikia-rail-inner',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [[300, 250], [300, 600], [300, 1050]],
