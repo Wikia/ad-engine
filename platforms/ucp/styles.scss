@@ -1,5 +1,19 @@
+.main-page-tag-rcs {
+	display: flex;
+	flex-direction: column;
+}
+
 #top_leaderboard {
 	padding: 10px 0;
+
+	> div {
+		text-align: center;
+	}
+}
+
+#bottom_leaderboard {
+	padding: 20px 0;
+	margin: 0 auto;
 
 	> div {
 		text-align: center;

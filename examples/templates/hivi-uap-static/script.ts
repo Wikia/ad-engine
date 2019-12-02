@@ -10,9 +10,14 @@ import { getConfig as getBigFancyAdAboveConfig } from '../../big-fancy-ad-above-
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '480';
-
 context.extend(customContext);
+
+const cid = context.get('targeting.cid');
+
+if (!cid) {
+	context.set('targeting.cid', 'adeng-uap-hivi-static-dev');
+}
+context.set('options.tracking.slot.status', true);
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);

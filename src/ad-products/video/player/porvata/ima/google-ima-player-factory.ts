@@ -39,6 +39,14 @@ class GoogleImaPlayerFactory {
 
 				player.setAdsManager(adsManager);
 
+				adsManager.addEventListener(
+					window.google.ima.AdEvent.Type.LOADED,
+					(event: google.ima.AdEvent) => player.setVastAttributes('success', event.getAd()),
+				);
+				adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
+					player.setVastAttributes('error'),
+				);
+
 				if (videoSettings.isMoatTrackingEnabled()) {
 					moatVideoTracker.init(
 						adsManager,
@@ -52,18 +60,14 @@ class GoogleImaPlayerFactory {
 				if (videoSettings.isIasTrackingEnabled()) {
 					const iasConfig: IasTrackingParams = context.get('options.video.iasTracking.config');
 
-					iasVideoTracker.init(google, adsManager, videoSettings.getContainer(), iasConfig);
+					iasVideoTracker
+						.init(google, adsManager, videoSettings.getContainer(), iasConfig)
+						.then(() => {
+							player.dispatchEvent('wikiaAdsManagerLoaded');
+						});
+				} else {
+					player.dispatchEvent('wikiaAdsManagerLoaded');
 				}
-
-				player.dispatchEvent('wikiaAdsManagerLoaded');
-
-				adsManager.addEventListener(
-					window.google.ima.AdEvent.Type.LOADED,
-					(event: google.ima.AdEvent) => player.setVastAttributes('success', event.getAd()),
-				);
-				adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
-					player.setVastAttributes('error'),
-				);
 			},
 			false,
 		);

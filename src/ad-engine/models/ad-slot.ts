@@ -34,6 +34,7 @@ export interface SlotConfig {
 	aboveTheFold?: boolean;
 	trackOverscrolled?: boolean;
 	slotName?: string;
+	nextSiblingSelector?: string;
 
 	targeting: Targeting;
 	videoAdUnit?: string;

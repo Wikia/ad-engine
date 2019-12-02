@@ -64,13 +64,18 @@ function getParams() {
 		videoPlaceholderElement: {},
 		splitLayoutVideoPosition: 'right',
 		image1: {
-			element: {},
+			element: {
+				classList: {
+					add: () => {},
+				},
+			},
 			background: 'default-state-image.jpg',
 		},
 		image2: {
 			element: {
 				classList: {
 					contains: () => false,
+					add: () => {},
 					remove: () => {},
 				},
 			},
