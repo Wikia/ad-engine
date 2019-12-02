@@ -85,10 +85,10 @@ export class JWPlayerManager {
 		tracker,
 		slotTargeting,
 	}: PlayerReadyResult): JWPlayerHandler {
-		const helper = new JWPlayerHelper(adSlot, tracker, slotTargeting, player);
 		const streams = createJWPlayerStreams(player);
+		const helper = new JWPlayerHelper(adSlot, tracker, slotTargeting, player);
 
-		return new JWPlayerHandler(adSlot, streams, helper);
+		return new JWPlayerHandler(streams, helper);
 	}
 
 	private loadMoatPlugin(): void {

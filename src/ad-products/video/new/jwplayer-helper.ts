@@ -1,8 +1,18 @@
-import { AdSlot, buildVastUrl, context, vastDebugger, VastParams } from '@ad-engine/core';
+import {
+	AdSlot,
+	buildVastUrl,
+	context,
+	events,
+	eventService,
+	vastDebugger,
+	VastParams,
+} from '@ad-engine/core';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { VideoTargeting } from './jwplayer-actions';
 import { JWPlayer, JWPlayerEventParams } from './jwplayer-plugin/jwplayer';
+
+const EMPTY_VAST_CODE = 21009;
 
 /**
  * Describes how things are done
@@ -49,13 +59,13 @@ export class JWPlayerHelper {
 		this.tracker.adProduct = this.adSlot.config.slotName;
 	}
 
-	setAdSlotParams(vastParams: VastParams): void {
+	setSlotParams(vastParams: VastParams): void {
 		this.adSlot.lineItemId = vastParams.lineItemId;
 		this.adSlot.creativeId = vastParams.creativeId;
 		this.adSlot.creativeSize = vastParams.size;
 	}
 
-	setAdSlotElementAttributes(vastParams: VastParams): void {
+	setSlotElementAttributes(vastParams: VastParams): void {
 		const attributes = vastDebugger.getVastAttributesFromVastParams('success', vastParams);
 		const element = this.adSlot.element;
 
@@ -64,11 +74,34 @@ export class JWPlayerHelper {
 			.forEach(({ key, value }) => element.setAttribute(key, value));
 	}
 
+	emitVideoAdError(adErrorCode: number): void {
+		if (adErrorCode === EMPTY_VAST_CODE) {
+			this.adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
+		} else {
+			this.adSlot.setStatus(AdSlot.STATUS_ERROR);
+		}
+
+		eventService.emit(events.VIDEO_AD_ERROR, this.adSlot);
+	}
+
+	emitVideoAdRequest(): void {
+		eventService.emit(events.VIDEO_AD_REQUESTED, this.adSlot);
+	}
+
+	emitVideoAdImpression(): void {
+		this.adSlot.setStatus(AdSlot.STATUS_SUCCESS);
+		eventService.emit(events.VIDEO_AD_IMPRESSION, this.adSlot);
+	}
+
 	updateVideoId(): void {
 		const { mediaid } = this.jwplayer.getPlaylistItem() || {};
 
 		this.slotTargeting.v1 = mediaid;
 		this.tracker.updateVideoId();
+	}
+
+	updateVideoDepth(depth: number): void {
+		this.adSlot.setConfigProperty('videoDepth', depth);
 	}
 
 	shouldPlayPreroll(videoDepth: number): boolean {
