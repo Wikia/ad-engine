@@ -219,14 +219,7 @@
                 "oasis"
             ],
             "regions": [
-                "AU",
-                "CA",
-                "DE",
-                "GB",
-                "NZ",
-                "PL",
-                "UK",
-                "XX-EU"
+                "XX"
             ],
             "value": true
         }
