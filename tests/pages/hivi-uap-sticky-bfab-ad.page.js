@@ -7,6 +7,8 @@ class HiviUapStickyBfab extends HiviUap {
 		this.videoPlayer = '.video-player.video-player-right';
 		this.bottomContent = '.bottom-content';
 		this.footer = 'footer';
+		this.firstCall = '4466763538';
+		this.secondCall = '4511050296';
 	}
 }
 
