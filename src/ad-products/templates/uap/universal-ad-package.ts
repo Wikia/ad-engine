@@ -29,7 +29,7 @@ export interface UapConfig {
 
 export interface UapImage {
 	element: HTMLImageElement;
-	background: string;
+	background?: string;
 }
 
 export interface VideoSize {
@@ -51,7 +51,7 @@ export interface UapParams {
 	fullscreenable: boolean;
 	fullscreenAllowed: boolean;
 	image1: UapImage;
-	image2: UapImage;
+	image2?: UapImage;
 	isDarkTheme: boolean;
 	isMobile: boolean;
 	isSticky: boolean;

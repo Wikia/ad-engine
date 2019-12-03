@@ -17,11 +17,17 @@ export interface IasTrackingParams {
 class IasVideoTracker {
 	private scriptPromise: Promise<Event>;
 
-	loadScript(): void {
+	loadScript(): Promise<Event> {
 		if (!!this.scriptPromise) {
-			return;
+			this.scriptPromise = utils.scriptLoader.loadScript(
+				scriptUrl,
+				'text/javascript',
+				true,
+				'first',
+			);
 		}
-		this.scriptPromise = utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first');
+
+		return this.scriptPromise;
 	}
 
 	init(
@@ -29,10 +35,8 @@ class IasVideoTracker {
 		adsManager: google.ima.AdsManager,
 		videoElement: HTMLElement,
 		config: IasTrackingParams,
-	): void {
-		this.loadScript();
-
-		this.scriptPromise.then(() => {
+	): Promise<void> {
+		return this.loadScript().then(() => {
 			utils.logger(logGroup, 'ready');
 
 			window.googleImaVansAdapter.init(google, adsManager, videoElement, config);

@@ -20,17 +20,6 @@ interface VideoTargeting {
 	v1?: string;
 }
 
-interface HdPlayerEvent extends CustomEvent {
-	detail: {
-		slotStatus?: {
-			vastParams: any;
-			statusName: string;
-		};
-		name?: string | null;
-		errorCode: number;
-	};
-}
-
 interface JwPlayerAdsFactoryOptions {
 	adProduct: string;
 	slotName: string;
@@ -194,7 +183,13 @@ function create(
 			adSlot.setConfigProperty('videoDepth', depth);
 
 			if (shouldPlayPreroll(depth)) {
-				playVideoAd('preroll');
+				if (context.get('options.video.iasTracking.enabled')) {
+					iasVideoTracker.loadScript().then(() => {
+						playVideoAd('preroll');
+					});
+				} else {
+					playVideoAd('preroll');
+				}
 			}
 
 			prerollPositionReached = true;
@@ -278,20 +273,6 @@ function create(
 			}
 			eventService.emit(events.VIDEO_AD_ERROR, adSlot);
 		});
-
-		if (context.get('options.wad.hmdRec.enabled')) {
-			document.addEventListener('hdPlayerEvent', (event: HdPlayerEvent) => {
-				if (event.detail.slotStatus) {
-					updateSlotParams(adSlot, event.detail.slotStatus.vastParams);
-					tracker.updateCreativeData(event.detail.slotStatus.vastParams);
-					adSlot.setStatus(event.detail.slotStatus.statusName);
-				}
-
-				if (event.detail.name) {
-					tracker.emit(event.detail.name, event.detail.errorCode);
-				}
-			});
-		}
 
 		tracker.register(player);
 	}

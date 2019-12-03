@@ -1,6 +1,7 @@
 import { utils } from '@ad-engine/core';
-import { EMPTY, merge, Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { EMPTY, merge, Observable, of } from 'rxjs';
+import { filter, mergeMap, tap } from 'rxjs/operators';
+import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayerHelper } from './jwplayer-helper';
 import { JWPlayerStreams } from './jwplayer-streams';
 
@@ -78,6 +79,12 @@ export class JWPlayerHandler {
 				this.helper.updateVideoDepth(depth);
 			}),
 			filter(({ depth }) => this.helper.shouldPlayPreroll(depth)),
+			mergeMap((payload) => {
+				if (this.helper.isIasTrackingEnabled()) {
+					return iasVideoTracker.loadScript().then(() => payload);
+				}
+				return of(payload);
+			}),
 			tap(({ depth, correlator }) => this.helper.playVideoAd('preroll', depth, correlator)),
 		);
 	}
