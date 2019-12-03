@@ -41,12 +41,18 @@ export class JWPlayerHelper {
 		});
 	}
 
-	isIasTrackingEnabled(): boolean {
-		return context.get('options.video.iasTracking.enabled');
+	async awaitIasTracking<T>(payload: T): Promise<T> {
+		if (!this.isIasTrackingEnabled()) {
+			return payload;
+		}
+
+		await iasVideoTracker.loadScript();
+
+		return payload;
 	}
 
-	loadIasTracker(): void {
-		iasVideoTracker.loadScript();
+	isIasTrackingEnabled(): boolean {
+		return context.get('options.video.iasTracking.enabled');
 	}
 
 	initIasVideoTracking({ adsManager, videoElement }: JWPlayerEventParams['adsManager']): void {

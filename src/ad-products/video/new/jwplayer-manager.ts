@@ -4,6 +4,7 @@ import { merge, Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
+import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
 import { JWPlayerHelper } from './jwplayer-helper';
@@ -34,7 +35,10 @@ export class JWPlayerManager {
 
 		const loadPlugin$: Observable<any> = playerReady$.pipe(
 			take(1),
-			tap(() => this.loadMoatPlugin()),
+			tap(() => {
+				this.loadMoatPlugin();
+				this.loadIasTrackerIfEnabled();
+			}),
 			filter(() => false),
 		);
 
@@ -93,5 +97,11 @@ export class JWPlayerManager {
 
 	private loadMoatPlugin(): void {
 		utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
+	}
+
+	private loadIasTrackerIfEnabled(): void {
+		if (context.get('options.video.iasTracking.enabled')) {
+			iasVideoTracker.loadScript();
+		}
 	}
 }
