@@ -163,7 +163,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 50.0,
+            "sampling": 100.0,
             "value": true
         }
     ],

@@ -55,8 +55,8 @@ export class HiviPage {
 		browser.switchToFrame(slot.element.$(this.videoIframe));
 		$(this.replayButtonSelector).waitForExist(timeouts.standard);
 		$(this.replayButtonSelector).click();
-		this.waitForVideoToProgress(5000, slot);
 		browser.switchToFrame(null);
+		this.waitForVideoToProgress(5000, slot);
 	}
 
 	waitForVideoTransformation(timeout = timeouts.actions) {

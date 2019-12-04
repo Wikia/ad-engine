@@ -1,5 +1,5 @@
 import {
-	bootstrapAndGetCmpConsent,
+	bootstrapAndGetConsent,
 	ensureGeoCookie,
 	getDeviceMode,
 	PlatformStartup,
@@ -13,13 +13,13 @@ import './styles.scss';
 async function start(): Promise<void> {
 	context.extend(basicContext);
 
-	const [consent, container]: [boolean, Container, ...any[]] = await Promise.all([
-		ensureGeoCookie().then(() => bootstrapAndGetCmpConsent()),
+	const [container]: [Container, ...any[]] = await Promise.all([
 		setupMutheadIoc(),
+		ensureGeoCookie().then(() => bootstrapAndGetConsent()),
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isOptedIn: consent, isMobile: getDeviceMode() === 'mobile' });
+	platformStartup.configure({ isMobile: getDeviceMode() === 'mobile' });
 	platformStartup.run();
 }
 

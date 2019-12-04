@@ -117,7 +117,7 @@ export class AdSlot {
 		browser.waitUntil(
 			() => this.creativeId !== null,
 			timeouts.standard,
-			'Element has no creatice ID',
+			'Element has no creative ID',
 			timeouts.interval,
 		);
 	}

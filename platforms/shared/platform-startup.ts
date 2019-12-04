@@ -16,7 +16,6 @@ import { TrackingSetup } from './setup/_tracking.setup';
 import { WikiContextSetup } from './setup/_wiki-context.setup';
 
 export interface PlatformStartupArgs {
-	isOptedIn: boolean;
 	isMobile: boolean;
 }
 
@@ -41,7 +40,7 @@ export class PlatformStartup {
 
 	configure(args: PlatformStartupArgs): void {
 		this.wikiContextSetup.configureWikiContext();
-		this.baseContextSetup.configureBaseContext(args.isOptedIn, args.isMobile);
+		this.baseContextSetup.configureBaseContext(args.isMobile);
 		this.targetingSetup.configureTargetingContext();
 		this.slotsContextSetup.configureSlotsContext();
 		this.prebidConfigSetup.configurePrebidContext();
