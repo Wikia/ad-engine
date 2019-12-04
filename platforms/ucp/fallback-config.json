@@ -108,7 +108,7 @@
 	"icTaxonomyComicsTag": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
-			"regions": ["PL"],
+			"regions": ["PL", "US"],
 			"value": true
 		}
 	],
@@ -137,8 +137,8 @@
 	"icPorvataDirect": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
-			"sampling": 100.0,
-			"value": false
+			"regions": ["XX-SA"],
+			"value": true
 		}
 	],
 	"icIASVideoTracking": [

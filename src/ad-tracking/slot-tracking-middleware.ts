@@ -9,6 +9,14 @@ function checkOptIn(): string {
 	return '';
 }
 
+function checkOptOutSale(): string {
+	if (context.get('options.geoRequiresSignal')) {
+		return context.get('options.optOutSale') ? 'yes' : 'no';
+	}
+
+	return '';
+}
+
 export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, slot }, next) => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
@@ -48,6 +56,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			kv_top: context.get('targeting.top') || '',
 			labrador: cacheStorage.getSamplingResults().join(';'),
 			opt_in: checkOptIn(),
+			opt_out_sale: checkOptOutSale(),
 			page_layout: `pos_top=${topOffset}`,
 			page_width:
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',

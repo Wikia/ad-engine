@@ -1,16 +1,23 @@
-import { context, InstantConfigService, setupNpaContext, utils } from '@wikia/ad-engine';
+import {
+	context,
+	InstantConfigService,
+	setupNpaContext,
+	setupRdpContext,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BaseContextSetup {
 	constructor(private instantConfig: InstantConfigService) {}
 
-	configureBaseContext(isOptedIn = false, isMobile = false): void {
+	configureBaseContext(isMobile = false): void {
 		this.setBaseState(isMobile);
-		this.setOptionsContext(isOptedIn);
+		this.setOptionsContext();
 		this.setServicesContext();
 		this.setMiscContext();
 		setupNpaContext();
+		setupRdpContext();
 	}
 
 	private setBaseState(isMobile: boolean): void {
@@ -20,12 +27,11 @@ export class BaseContextSetup {
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
 
-	private setOptionsContext(isOptedIn: boolean): void {
+	private setOptionsContext(): void {
 		context.set('options.tracking.kikimora.player', true);
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
-		context.set('options.trackingOptIn', isOptedIn);
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set(
 			'options.video.isOutstreamEnabled',

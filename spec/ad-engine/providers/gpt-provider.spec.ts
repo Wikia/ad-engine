@@ -25,6 +25,7 @@ describe('gpt-provider', () => {
 			disableInitialLoad: spy(),
 			enableSingleRequest: spy(),
 			setRequestNonPersonalizedAds: spy(),
+			setPrivacySettings: spy(),
 			setTargeting: spy(),
 		};
 
@@ -68,5 +69,14 @@ describe('gpt-provider', () => {
 		provider.setupNonPersonalizedAds();
 
 		expect(pubads.setRequestNonPersonalizedAds.calledWith(1)).to.be.true;
+	});
+
+	it('initialise with restrict data processing when user opt-out from data sale', () => {
+		context.set('options.optOutSale', true);
+
+		provider = new GptProvider();
+		provider.setupRestrictDataProcessing();
+
+		expect(pubads.setPrivacySettings.calledWith({ restrictDataProcessing: true })).to.be.true;
 	});
 });
