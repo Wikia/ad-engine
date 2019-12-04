@@ -103,7 +103,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
 				group: 'HiVi',
-				parentContainerSelector: '.main-page-tag-rcs',
+				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],

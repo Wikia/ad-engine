@@ -1,6 +1,8 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
 import { btRec, context, Dictionary, FmrRotator, SlotConfig } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { Communicator, ofType } from '@wikia/post-quecast';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
@@ -23,15 +25,20 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
-		const isSupportedPageType = !!document.getElementById('recirculation-rail');
+		const communicator = new Communicator();
 
-		if (isSupportedPageType) {
-			this.appendRotatingSlot(
-				'incontent_boxad_1',
-				slotConfig.repeat.slotNamePattern,
-				document.querySelector(slotConfig.parentContainerSelector),
-			);
-		}
+		communicator.actions$
+			.pipe(
+				ofType('[Rail] Ready'),
+				take(1),
+			)
+			.subscribe(() => {
+				this.appendRotatingSlot(
+					'incontent_boxad_1',
+					slotConfig.repeat.slotNamePattern,
+					document.querySelector(slotConfig.parentContainerSelector),
+				);
+			});
 	}
 
 	private appendRotatingSlot(
