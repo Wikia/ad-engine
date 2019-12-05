@@ -18,7 +18,7 @@ class IasVideoTracker {
 	private scriptPromise: Promise<Event>;
 
 	loadScript(): Promise<Event> {
-		if (!!this.scriptPromise) {
+		if (!this.scriptPromise) {
 			this.scriptPromise = utils.scriptLoader.loadScript(
 				scriptUrl,
 				'text/javascript',
