@@ -116,18 +116,6 @@ interface Plugins {
 	wikiaSettings: WikiaSettings;
 	wikiaSharing: WikiaSharing;
 	wikiaWatermark: Intl;
-	'//ssl.p.jwpcdn.com/player/plugins/googima/v/8.7.6/googima.js': Sslpjwpcdncomplayerpluginsgoogimav876googimajs;
-	'//ssl.p.jwpcdn.com/player/v/8.11.8/jwpsrv.js': Intl;
-}
-
-interface Sslpjwpcdncomplayerpluginsgoogimav876googimajs {
-	autoplayadsmuted: boolean;
-	vpaidcontrols: boolean;
-	admessage: string;
-	cuetext: string;
-	skipmessage: string;
-	skiptext: string;
-	setLocale: string;
 }
 
 interface WikiaSharing {
