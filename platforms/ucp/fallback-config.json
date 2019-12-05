@@ -255,7 +255,7 @@
 	"icPrebidTeads": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
-			"regions": ["IN"],
+			"regions": ["US-IN"],
 			"value": true
 		}
 	],
