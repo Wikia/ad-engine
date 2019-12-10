@@ -20,6 +20,10 @@ interface PrebidMediaTypes {
 	video: {
 		context?: string;
 		playerSize: number[];
+		mimes?: string[];
+		api?: number[];
+		maxduration?: number;
+		protocols?: number[];
 	};
 }
 

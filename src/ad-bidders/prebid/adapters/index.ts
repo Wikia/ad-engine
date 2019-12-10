@@ -3,6 +3,7 @@ export * from './aol';
 export * from './appnexus';
 export * from './appnexus-ast';
 export * from './beachfront';
+export * from './criteo';
 export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
