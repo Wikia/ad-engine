@@ -16,6 +16,6 @@ export interface JwPlayerAdsFactoryOptions {
 }
 
 export const jwpReady = action(
-	'[JWPlayer] player ready',
+	'[JWPlayer] Player Ready',
 	props<{ options: JwPlayerAdsFactoryOptions; targeting: VideoTargeting; playerKey: string }>(),
 );
