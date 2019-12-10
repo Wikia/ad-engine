@@ -1,4 +1,4 @@
-import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
+import { context, Dictionary, events, eventService, trackingOptIn, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 import * as prebidHelper from './prebid/prebid-helper';
@@ -101,7 +101,7 @@ function requestBids({ responseListener = null }): void {
 		biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
 	}
 
-	if (config.a9 && config.a9.enabled) {
+	if (config.a9 && config.a9.enabled && !trackingOptIn.isOptOutSale()) {
 		biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
 	}
 
