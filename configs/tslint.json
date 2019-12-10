@@ -84,7 +84,7 @@
 		"no-this-assignment": true,
 		"max-classes-per-file": true,
 		"no-default-export": true,
-		"no-submodule-imports": true,
+		"no-submodule-imports": [true, "rxjs"],
 		"object-literal-sort-keys": false
 	},
 	"jsRules": {
