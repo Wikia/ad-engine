@@ -1,6 +1,8 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
-import { context, Dictionary, SlotConfig } from '@wikia/ad-engine';
+import { btRec, context, Dictionary, FmrRotator, SlotConfig } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { Communicator, ofType } from '@wikia/post-quecast';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
@@ -19,6 +21,38 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 				);
 			}
 		});
+		this.appendIncontentBoxad(slots['incontent_boxad_1']);
+	}
+
+	private appendIncontentBoxad(slotConfig: SlotConfig): void {
+		const communicator = new Communicator();
+
+		communicator.actions$
+			.pipe(
+				ofType('[Rail] Ready'),
+				take(1),
+			)
+			.subscribe(() => {
+				this.appendRotatingSlot(
+					'incontent_boxad_1',
+					slotConfig.repeat.slotNamePattern,
+					document.querySelector(slotConfig.parentContainerSelector),
+				);
+			});
+	}
+
+	private appendRotatingSlot(
+		slotName: string,
+		slotNamePattern: string,
+		parentContainer: HTMLElement,
+	): void {
+		const container = document.createElement('div');
+		const prefix = slotNamePattern.replace(slotNamePattern.match(/({.*})/g)[0], '');
+		const rotator = new FmrRotator(slotName, prefix, btRec);
+
+		container.id = slotName;
+		parentContainer.appendChild(container);
+		rotator.rotateSlot();
 	}
 
 	private insertSlot(

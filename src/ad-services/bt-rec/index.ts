@@ -56,7 +56,7 @@ class BTRec {
 	/**
 	 * Duplicates slots before rec code execution
 	 */
-	duplicateSlot(slotName: string): Node | boolean {
+	duplicateSlot(slotName: string): HTMLElement | boolean {
 		const placementClass = 'bt-uid-tg';
 		const slot = document.getElementById(slotName);
 

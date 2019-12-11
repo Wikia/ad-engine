@@ -16,6 +16,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
 		context.set('bidders.prebid.beachfront.enabled', instantConfig.get('icPrebidBeachfront'));
+		context.set('bidders.prebid.criteo.enabled', instantConfig.get('icPrebidCriteo'));
 		context.set('bidders.prebid.gumgum.enabled', instantConfig.get('icPrebidGumGum'));
 		context.set('bidders.prebid.indexExchange.enabled', instantConfig.get('icPrebidIndexExchange'));
 		context.set('bidders.prebid.kargo.enabled', instantConfig.get('icPrebidKargo'));

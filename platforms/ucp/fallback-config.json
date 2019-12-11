@@ -109,7 +109,7 @@
 		{
 			"apps": ["mobile-wiki", "oasis"],
 			"regions": ["PL", "US"],
-			"value": true
+			"value": false
 		}
 	],
 	"icPrebidSizePriceFloorRule": [
@@ -137,8 +137,8 @@
 	"icPorvataDirect": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
-			"regions": ["XX-SA"],
-			"value": true
+			"regions": ["XX"],
+			"value": false
 		}
 	],
 	"icIASVideoTracking": [
@@ -249,13 +249,6 @@
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidTeads": [
-		{
-			"apps": ["mobile-wiki", "oasis"],
-			"regions": ["US-IN"],
 			"value": true
 		}
 	],
