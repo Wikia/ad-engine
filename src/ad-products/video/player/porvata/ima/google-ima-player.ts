@@ -51,12 +51,10 @@ export class GoogleImaPlayer {
 	}
 
 	setVastAttributes(status: string, currentAd?: google.ima.Ad): void {
-		const playerElement: HTMLVideoElement = this.params.container.querySelector('.video-player');
+		const element: HTMLVideoElement = this.params.container.querySelector('.video-player');
 		const attributes = vastDebugger.getVastAttributes(this.vastUrl, status, currentAd);
 
-		Object.keys(attributes)
-			.map((key) => ({ key, value: attributes[key] }))
-			.forEach(({ key, value }) => playerElement.setAttribute(key, value));
+		Object.keys(attributes).forEach((key) => element.setAttribute(key, attributes[key]));
 	}
 
 	setAutoPlay(value: boolean): void {

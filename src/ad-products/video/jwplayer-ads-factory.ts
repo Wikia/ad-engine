@@ -40,9 +40,7 @@ const EMPTY_VAST_CODE = 21009;
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
 function setAttributes(element: HTMLElement, attributes: VastAttributes): void {
-	Object.keys(attributes)
-		.map((key) => ({ key, value: attributes[key] }))
-		.forEach(({ key, value }) => element.setAttribute(key, value));
+	Object.keys(attributes).forEach((key) => element.setAttribute(key, attributes[key]));
 }
 
 /**

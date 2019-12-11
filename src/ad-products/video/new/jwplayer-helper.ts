@@ -75,9 +75,7 @@ export class JWPlayerHelper {
 		const attributes = vastDebugger.getVastAttributesFromVastParams('success', vastParams);
 		const element = this.adSlot.element;
 
-		Object.keys(attributes)
-			.map((key) => ({ key, value: attributes[key] }))
-			.forEach(({ key, value }) => element.setAttribute(key, value));
+		Object.keys(attributes).forEach((key) => element.setAttribute(key, attributes[key]));
 	}
 
 	emitVideoAdError(adErrorCode: number): void {
