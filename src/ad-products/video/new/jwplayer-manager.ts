@@ -1,7 +1,7 @@
-import { AdSlot, context, slotService, utils } from '@ad-engine/core';
+import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
 import { Communicator } from '@wikia/post-quecast';
-import { merge, Observable } from 'rxjs';
-import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
@@ -31,18 +31,12 @@ export class JWPlayerManager {
 	}
 
 	private onPlayerReady(): Observable<PlayerReadyResult> {
-		const playerReady$ = this.communicator.actions$.pipe(ofType(jwpReady));
-
-		const loadPlugin$: Observable<any> = playerReady$.pipe(
-			take(1),
-			tap(() => {
+		return this.communicator.actions$.pipe(
+			ofType(jwpReady),
+			tapOnce(() => {
 				this.loadMoatPlugin();
 				this.loadIasTrackerIfEnabled();
 			}),
-			filter(() => false),
-		);
-
-		const createValues$ = playerReady$.pipe(
 			map(({ options, targeting, playerKey }) => {
 				const player: JWPlayer = window[playerKey];
 				const adSlot = this.createAdSlot(options, player);
@@ -53,8 +47,6 @@ export class JWPlayerManager {
 				return { player, adSlot, tracker, slotTargeting: targeting };
 			}),
 		);
-
-		return merge(loadPlugin$, createValues$);
 	}
 
 	private createAdSlot(options: JwPlayerAdsFactoryOptions, player: JWPlayer): AdSlot {
