@@ -1,12 +1,10 @@
-import { VastParams, vastParser } from '@ad-engine/core';
+import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, scan, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from './jwplayer-plugin/jwplayer';
 import { JWPlayerEvent } from './jwplayer-plugin/jwplayer-event';
 import { JWPlayerListItem } from './jwplayer-plugin/jwplayer-list-item';
-
-type RxJsOperator<TSource, TResult> = (source: Observable<TSource>) => Observable<TResult>;
 
 export interface VideoDepth {
 	depth: number;
