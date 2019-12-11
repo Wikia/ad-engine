@@ -8,15 +8,25 @@ import { JWPlayerListItem } from './jwplayer-plugin/jwplayer-list-item';
 
 type RxJsOperator<TSource, TResult> = (source: Observable<TSource>) => Observable<TResult>;
 
+export interface VideoDepth {
+	depth: number;
+	correlator: number;
+}
+
+export interface VastParamsEventUnion<TEvent> {
+	event: TEvent;
+	vastParams: VastParams;
+}
+
 export interface JWPlayerStreams {
-	adRequest$: Observable<{ event: JWPlayerEventParams['adRequest']; vastParams: VastParams }>;
-	adError$: Observable<{ event: JWPlayerEventParams['adError']; vastParams: VastParams }>;
-	adImpression$: Observable<{ event: JWPlayerEventParams['adImpression']; vastParams: VastParams }>;
+	adRequest$: Observable<VastParamsEventUnion<JWPlayerEventParams['adRequest']>>;
+	adError$: Observable<VastParamsEventUnion<JWPlayerEventParams['adError']>>;
+	adImpression$: Observable<VastParamsEventUnion<JWPlayerEventParams['adImpression']>>;
 	adBlock$: Observable<void>;
 	adsManager$: Observable<JWPlayerEventParams['adsManager']>;
-	beforePlay$: Observable<{ depth: number; correlator: number }>;
-	videoMidPoint$: Observable<{ depth: number; correlator: number }>;
-	beforeComplete$: Observable<{ depth: number; correlator: number }>;
+	beforePlay$: Observable<VideoDepth>;
+	videoMidPoint$: Observable<VideoDepth>;
+	beforeComplete$: Observable<VideoDepth>;
 	complete$: Observable<void>;
 }
 
@@ -27,8 +37,8 @@ export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 	const adRequest$ = createJwpStream(jwplayer, 'adRequest').pipe(supplementVastParams());
 	const adError$ = createJwpStream(jwplayer, 'adError').pipe(
 		onlyOncePerVideo(jwplayer),
-		supplementVastParams(),
 		ensureEventTag(adRequest$),
+		supplementVastParams(),
 	);
 	const adImpression$ = createJwpStream(jwplayer, 'adImpression').pipe(supplementVastParams());
 	const adBlock$ = createJwpStream(jwplayer, 'adBlock');
@@ -67,17 +77,7 @@ function createJwpStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoPa
 	});
 }
 
-function ensureEventTag<T>(adRequest$: JWPlayerStreams['adRequest$']): RxJsOperator<T, T> {
-	const base$ = merge(of({ event: { event: { tag: null } } }), adRequest$);
-
-	return (source: Observable<T>) =>
-		source.pipe(
-			withLatestFrom(base$),
-			map(([adError, adRequest]) => _merge(adRequest, adError)),
-		);
-}
-
-function scanCorrelatorDepth<T>(): RxJsOperator<T, { depth: number; correlator: number }> {
+function scanCorrelatorDepth<T>(): RxJsOperator<T, VideoDepth> {
 	return (source: Observable<T>) =>
 		source.pipe(
 			scan(
@@ -92,7 +92,7 @@ function scanCorrelatorDepth<T>(): RxJsOperator<T, { depth: number; correlator: 
 
 function supplementCorrelatorDepth<T>(
 	beforePlay$: JWPlayerStreams['beforePlay$'],
-): RxJsOperator<T, { depth: number; correlator: number }> {
+): RxJsOperator<T, VideoDepth> {
 	return (source: Observable<T>) =>
 		source.pipe(
 			withLatestFrom(beforePlay$),
@@ -112,11 +112,23 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 		);
 }
 
-function supplementVastParams<T extends JWPlayerEvent>(): RxJsOperator<
-	T,
-	{ event: T; vastParams: VastParams }
-> {
-	return (source) =>
+function ensureEventTag<T extends JWPlayerEvent>(
+	adRequest$: JWPlayerStreams['adRequest$'],
+): RxJsOperator<T, T> {
+	const base$ = merge(
+		of({ event: { tag: null } }),
+		adRequest$.pipe(map((adRequest) => adRequest.event)),
+	);
+
+	return (source: Observable<T>) =>
+		source.pipe(
+			withLatestFrom(base$),
+			map(([jwplayerEvent, adRequestEvent]) => _merge(adRequestEvent, jwplayerEvent)),
+		);
+}
+
+function supplementVastParams<T extends JWPlayerEvent>(): RxJsOperator<T, VastParamsEventUnion<T>> {
+	return (source: Observable<T>) =>
 		source.pipe(
 			map((event) => ({
 				event,
