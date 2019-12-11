@@ -46,7 +46,11 @@ export class JWPlayerHelper {
 			return payload;
 		}
 
-		await iasVideoTracker.loadScript();
+		try {
+			await iasVideoTracker.loadScript();
+		} catch (e) {
+			console.error(e);
+		}
 
 		return payload;
 	}
