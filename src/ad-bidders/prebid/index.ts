@@ -36,7 +36,6 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
-	isCMPEnabled: boolean;
 	isLazyLoadingEnabled: boolean;
 	lazyLoaded = false;
 	prebidConfig: Dictionary;
@@ -47,7 +46,6 @@ export class PrebidProvider extends BidderProvider {
 		adaptersRegistry.configureAdapters();
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		this.prebidConfig = {
 			debug:
@@ -66,14 +64,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-
-		if (this.isCMPEnabled) {
-			this.prebidConfig.consentManagement = {
-				cmpApi: 'iab',
-				timeout: this.timeout,
-				allowAuctionWithoutConsent: false,
-			};
-		}
+		this.prebidConfig = this.configureConsent(this.prebidConfig);
 
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
@@ -89,6 +80,30 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.bidderSettings = getSettings();
+	}
+
+	configureConsent(config: Dictionary): Dictionary {
+		const isCMPEnabled: boolean = context.get('custom.isCMPEnabled');
+		const usapiEnabled: boolean = utils.queryString.get('icUSPrivacyApi') === '1';
+
+		if (isCMPEnabled || usapiEnabled) {
+			const gdprConfig = {
+				cmpApi: 'iab',
+				timeout: this.timeout,
+				allowAuctionWithoutConsent: false,
+			};
+			const uspConfig = {
+				cmpApi: 'iab',
+				timeout: 100,
+			};
+
+			config.consentManagement = {
+				gdpr: isCMPEnabled ? gdprConfig : undefined,
+				usp: usapiEnabled ? uspConfig : undefined,
+			};
+		}
+
+		return config;
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
