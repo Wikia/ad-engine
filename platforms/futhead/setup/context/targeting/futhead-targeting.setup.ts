@@ -19,6 +19,7 @@ export class FutheadTargetingSetup implements TargetingSetup {
 			s1: 'futhead',
 			s2: this.isSquadPage() ? 'squad' : getPageType(),
 			dmn: `${domain.name}${domain.tld}`,
+			geo: utils.geoService.getCountryCode() || 'none',
 		};
 
 		if (cid !== undefined) {
