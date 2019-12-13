@@ -35,7 +35,8 @@ export default {
 		},
 		prebid: {
 			enabled: true,
-			libraryUrl: '../../vendor/dist/prebid.min.js',
+			libraryUrl:
+				'https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.0/20191213.min.js',
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				enabled: true,

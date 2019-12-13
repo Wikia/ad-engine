@@ -20,7 +20,7 @@ const contextObject: ContextObject = {
 		prebid: {
 			enabled: false,
 			libraryUrl:
-				'https://slot1.fandom.com/__am/155542168020822/one/minify%3D1/extensions/wikia/AdEngine3/dist/vendors/prebid.js',
+				'https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.0/20191213.min.js',
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				enabled: false,

@@ -13,12 +13,7 @@ const development = {
 		filename: '[name]/dist/bundle.js',
 	},
 
-	plugins: [
-		new MiniCssExtractPlugin({ filename: '[name]/dist/styles.css' }),
-		new CopyWebpackPlugin([
-			{ from: path.resolve(__dirname, 'lib/prebid.min.js'), to: 'vendor/dist/prebid.min.js' },
-		]),
-	],
+	plugins: [new MiniCssExtractPlugin({ filename: '[name]/dist/styles.css' })],
 
 	optimization: {
 		splitChunks: {
