@@ -12,12 +12,16 @@ import {
 	slotPropertiesTrackingMiddleware,
 	slotTracker,
 	slotTrackingMiddleware,
+	utils,
 } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 
+const sendAllBidsEnabled = utils.queryString.get('send_all_bids') === '1';
+
 context.extend(customContext);
 context.set('slots.bottom_leaderboard.disabled', false);
+context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 
 setupNpaContext();
 
