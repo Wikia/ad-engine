@@ -8,6 +8,7 @@ import {
 	events,
 	eventService,
 	setupNpaContext,
+	setupRdpContext,
 	slotBiddersTrackingMiddleware,
 	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
@@ -58,6 +59,7 @@ context.extend(customContext);
 context.set('slots.bottom_leaderboard.disabled', false);
 
 setupNpaContext();
+setupRdpContext();
 
 let resolveBidders;
 
