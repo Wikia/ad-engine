@@ -54,7 +54,7 @@ class TrackingOptInWrapper {
 				);
 				context.set(
 					'options.geoRequiresSignal',
-					this.consentInstances.ccpa && this.consentInstances.ccpa.geoRequiresUserSignal(),
+					this.consentInstances.ccpa.geoRequiresUserSignal(),
 				);
 
 				resolve();
@@ -129,24 +129,20 @@ class TrackingOptInWrapper {
 			}
 
 			// Nothing is needed if the geo does not require any consent
-			if (!this.consentInstances.ccpa || !this.consentInstances.ccpa.geoRequiresUserSignal()) {
+			if (!this.consentInstances.ccpa.geoRequiresUserSignal()) {
 				this.ccpaSignal = false;
 				context.set('options.optOutSale', false);
 				resolve();
 				return;
 			}
 
-			if (
-				this.consentInstances.ccpa &&
-				this.consentInstances.ccpa.hasUserProvidedSignal() === undefined
-			) {
+			if (this.consentInstances.ccpa.hasUserProvidedSignal() === undefined) {
 				context.set('options.optOutSale', true);
 				resolve();
 				return;
 			}
 
-			this.ccpaSignal =
-				this.consentInstances.ccpa && this.consentInstances.ccpa.hasUserProvidedSignal();
+			this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
 
 			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
 			context.set('options.optOutSale', this.ccpaSignal);
