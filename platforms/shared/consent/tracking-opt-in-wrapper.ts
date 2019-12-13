@@ -31,14 +31,12 @@ class TrackingOptInWrapper {
 			utils.scriptLoader.loadScript(trackingOptInLibraryUrl).then(() => {
 				utils.logger(logGroup, 'Modal library loaded');
 
-				const usapiEnabled = utils.queryString.get('icUSPrivacyApi') === '1';
-
 				this.libraryReady = true;
 				this.consentInstances = window.trackingOptIn.default({
 					country,
 					region,
 					disableConsentQueue: true,
-					enableCCPAinit: usapiEnabled,
+					enableCCPAinit: true,
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
 						this.gdprConsent = true;
@@ -50,14 +48,14 @@ class TrackingOptInWrapper {
 					zIndex: 9999999,
 				});
 
-				const consentRequired = this.consentInstances.gdpr.geoRequiresTrackingConsent();
-				const signalRequired =
-					this.consentInstances.ccpa && this.consentInstances.ccpa.geoRequiresUserSignal();
-
-				context.set('custom.isCMPEnabled', consentRequired);
-				context.set('custom.isUSAPIEnabled', usapiEnabled);
-				context.set('options.geoRequiresConsent', consentRequired);
-				context.set('options.geoRequiresSignal', signalRequired);
+				context.set(
+					'options.geoRequiresConsent',
+					this.consentInstances.gdpr.geoRequiresTrackingConsent(),
+				);
+				context.set(
+					'options.geoRequiresSignal',
+					this.consentInstances.ccpa && this.consentInstances.ccpa.geoRequiresUserSignal(),
+				);
 
 				resolve();
 			});

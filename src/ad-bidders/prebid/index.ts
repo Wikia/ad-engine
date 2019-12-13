@@ -9,6 +9,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
+import { Cmp, cmp } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -38,6 +39,7 @@ export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
 	isLazyLoadingEnabled: boolean;
 	lazyLoaded = false;
+	cmp: Cmp = cmp;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
 
@@ -64,7 +66,20 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-		this.prebidConfig = this.configureConsent(this.prebidConfig);
+
+		if (this.cmp.exists) {
+			this.prebidConfig.consentManagement = {
+				gdpr: {
+					cmpApi: 'iab',
+					timeout: this.timeout,
+					allowAuctionWithoutConsent: false,
+				},
+				usp: {
+					cmpApi: 'iab',
+					timeout: 100,
+				},
+			};
+		}
 
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
@@ -80,30 +95,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.bidderSettings = getSettings();
-	}
-
-	configureConsent(config: Dictionary): Dictionary {
-		const isCMPEnabled: boolean = context.get('custom.isCMPEnabled');
-		const usapiEnabled: boolean = utils.queryString.get('icUSPrivacyApi') === '1';
-
-		if (isCMPEnabled || usapiEnabled) {
-			const gdprConfig = {
-				cmpApi: 'iab',
-				timeout: this.timeout,
-				allowAuctionWithoutConsent: false,
-			};
-			const uspConfig = {
-				cmpApi: 'iab',
-				timeout: 100,
-			};
-
-			config.consentManagement = {
-				gdpr: isCMPEnabled ? gdprConfig : undefined,
-				usp: usapiEnabled ? uspConfig : undefined,
-			};
-		}
-
-		return config;
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
