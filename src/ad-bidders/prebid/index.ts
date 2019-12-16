@@ -68,17 +68,26 @@ export class PrebidProvider extends BidderProvider {
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		if (this.cmp.exists) {
-			this.prebidConfig.consentManagement = {
-				gdpr: {
+			// ToDo: remove it once Prebid v2.44.0 transition will be done
+			if (context.get('bidders.prebid.libraryUrl')) {
+				this.prebidConfig.consentManagement = {
 					cmpApi: 'iab',
 					timeout: this.timeout,
 					allowAuctionWithoutConsent: false,
-				},
-				usp: {
-					cmpApi: 'iab',
-					timeout: 100,
-				},
-			};
+				};
+			} else {
+				this.prebidConfig.consentManagement = {
+					gdpr: {
+						cmpApi: 'iab',
+						timeout: this.timeout,
+						allowAuctionWithoutConsent: false,
+					},
+					usp: {
+						cmpApi: 'iab',
+						timeout: 100,
+					},
+				};
+			}
 		}
 
 		this.applyConfig(this.prebidConfig);

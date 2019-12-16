@@ -48,7 +48,6 @@
 		"chai": "^4.1.2",
 		"chrome-remote-interface": "0.28.0",
 		"concat": "1.0.3",
-		"copy-webpack-plugin": "4.5.2",
 		"deepmerge": "2.2.1",
 		"express": "^4.16.2",
 		"husky": "1.1.4",
