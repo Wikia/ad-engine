@@ -22,6 +22,7 @@ export class GamepediaTargetingSetup implements TargetingSetup {
 			s2: this.getPageType(wikiContext),
 			sdName: wikiContext.wgDBname,
 			skin: this.getSkin(wikiContext),
+			geo: utils.geoService.getCountryCode() || 'none',
 		};
 
 		const cid = utils.queryString.get('cid');
