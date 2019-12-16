@@ -104,10 +104,6 @@ class QueryStrings {
 		return `${this.video.mute}=${capping}`;
 	}
 
-	getF15n() {
-		return `${this.video.f15n}`;
-	}
-
 	getCacheBuster(cb = Date.now()) {
 		return `${this.utils.cb}=${cb}`;
 	}

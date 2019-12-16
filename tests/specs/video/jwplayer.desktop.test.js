@@ -62,16 +62,6 @@ describe('jwPlayer player', () => {
 		jwPlayer.waitForAdToChangeState(true);
 	});
 
-	it('Check if f15n works', () => {
-		helpers.navigateToUrl(jwPlayer.pageLink, queryStrings.getF15n());
-		$(jwPlayer.player).waitForExist(timeouts.standard);
-		jwPlayer.waitForAdToChangeState(false);
-		helpers.waitForVideoToProgress(10000);
-		jwPlayer.waitForAdToChangeState(true);
-		helpers.waitForVideoAdToFinish(jwPlayer.f15nDuration);
-		jwPlayer.waitForAdToChangeState(false);
-	});
-
 	it('Check if autoplay is disabled upon entering the page', () => {
 		helpers.navigateToUrl(jwPlayer.pageLink, queryStrings.getAutoplay(false));
 		$(jwPlayer.player).waitForDisplayed(timeouts.standard);
