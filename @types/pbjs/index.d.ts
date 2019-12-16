@@ -22,6 +22,7 @@ interface PrebidMediaTypes {
 		playerSize: number[];
 		mimes?: string[];
 		api?: number[];
+		linearity?: number;
 		maxduration?: number;
 		protocols?: number[];
 	};
