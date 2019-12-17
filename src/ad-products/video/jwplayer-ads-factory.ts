@@ -1,20 +1,24 @@
 import {
 	AdSlot,
-	btfBlockerService,
 	buildVastUrl,
 	context,
-	Dictionary,
 	events,
 	eventService,
 	slotService,
 	utils,
+	VastAttributes,
 	vastDebugger,
 	VastParams,
 	vastParser,
 } from '@ad-engine/core';
 import { JWPlayerTracker } from '../tracking/video/jwplayer-tracker';
-import featuredVideo15s from './featured-video-f15s';
 import { iasVideoTracker } from './player/porvata/ias/ias-video-tracker';
+
+interface VideoTargeting {
+	plist?: string;
+	videoTags?: string | string[]; // not sure about `string`
+	v1?: string;
+}
 
 interface JwPlayerAdsFactoryOptions {
 	adProduct: string;
@@ -34,6 +38,10 @@ const vastUrls = {
 // 21009	VAST_EMPTY_RESPONSE
 const EMPTY_VAST_CODE = 21009;
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
+
+function setAttributes(element: HTMLElement, attributes: VastAttributes): void {
+	Object.keys(attributes).forEach((key) => element.setAttribute(key, attributes[key]));
+}
 
 /**
  * Calculate depth
@@ -108,8 +116,8 @@ function updateSlotParams(adSlot: AdSlot, vastParams: VastParams): void {
  */
 function create(
 	options: JwPlayerAdsFactoryOptions,
-): { register: (player, slotTargeting?: Dictionary) => void } {
-	function register(player, slotTargeting: Dictionary = {}): void {
+): { register: (player, slotTargeting?: VideoTargeting) => void } {
+	function register(player, slotTargeting: VideoTargeting = {}): void {
 		const adSlot = slotService.get(slotName);
 		const adProduct = adSlot.config.trackingKey;
 		const videoElement = player && player.getContainer && player.getContainer();
@@ -119,14 +127,8 @@ function create(
 		let correlator;
 		let depth = 0;
 		let prerollPositionReached = false;
-		// the flag is needed to avoid playing the same mid-roll
-		// in the very same second, so there is no race condition
-		// in JWPlayer when removing ad layer and going back to the video
-		// player.off('time') solves it but it also unregisters other event handlers
-		let f15sMidrollPlayed = false;
-		/** @type {string} */
-		let lastRequestedVastUrl = null;
-		let lastBrokenAdPlayId = null;
+		let lastRequestedVastUrl: string = null;
+		let lastBrokenAdPlayId: string = null;
 
 		adSlot.element = videoContainer;
 		adSlot.setConfigProperty('audio', !player.getMute());
@@ -176,88 +178,40 @@ function create(
 
 			correlator = Math.round(Math.random() * 10000000000);
 			depth += 1;
-			adSlot.setConfigProperty('audio', !player.getMute());
 			adSlot.setConfigProperty('videoDepth', depth);
 
-			if (featuredVideo15s.isEnabled(currentMedia.mediaid)) {
-				prerollPositionReached = true;
-
-				return;
-			}
-
 			if (shouldPlayPreroll(depth)) {
-				tracker.adProduct = `${adProduct}-preroll`;
-				/**
-				 * Fill in slot handle
-				 * @returns {void}
-				 */
-				const fillInSlot = () => {
-					const vastUrl = getVastUrl(adSlot, 'preroll', depth, correlator, targeting);
-
-					setCurrentVast('preroll', vastUrl);
-					player.playAd(vastUrl);
-				};
-
-				if (options.featured) {
-					if (context.get('options.video.iasTracking.enabled')) {
-						iasVideoTracker.loadScript().then(() => {
-							fillInSlot();
-						});
-					} else {
-						fillInSlot();
-					}
+				if (context.get('options.video.iasTracking.enabled')) {
+					iasVideoTracker.loadScript().then(() => {
+						playVideoAd('preroll');
+					});
 				} else {
-					btfBlockerService.push(adSlot, fillInSlot);
+					playVideoAd('preroll');
 				}
 			}
 
 			prerollPositionReached = true;
 		});
 
+		function playVideoAd(position: 'midroll' | 'postroll' | 'preroll') {
+			tracker.adProduct = `${adProduct}-${position}`;
+			adSlot.setConfigProperty('audio', !player.getMute());
+
+			const vastUrl = getVastUrl(adSlot, position, depth, correlator, targeting);
+
+			setCurrentVast(position, vastUrl);
+			player.playAd(vastUrl);
+		}
+
 		player.on('videoMidPoint', () => {
 			if (shouldPlayMidroll(depth)) {
-				const vastUrl = getVastUrl(adSlot, 'midroll', depth, correlator, targeting);
-
-				tracker.adProduct = `${adProduct}-midroll`;
-				adSlot.setConfigProperty('audio', !player.getMute());
-				setCurrentVast('midroll', vastUrl);
-				player.playAd(vastUrl);
+				playVideoAd('midroll');
 			}
 		});
 
 		player.on('beforeComplete', () => {
 			if (shouldPlayPostroll(depth)) {
-				const vastUrl = getVastUrl(adSlot, 'postroll', depth, correlator, targeting);
-
-				tracker.adProduct = `${adProduct}-postroll`;
-				adSlot.setConfigProperty('audio', !player.getMute());
-				setCurrentVast('postroll', vastUrl);
-				player.playAd(vastUrl);
-			}
-		});
-
-		player.on('time', (data) => {
-			const currentMedia = player.getPlaylistItem() || {};
-
-			if (f15sMidrollPlayed) {
-				return;
-			}
-
-			if (!featuredVideo15s.isEnabled(currentMedia.mediaid)) {
-				return;
-			}
-
-			const { currentTime } = data;
-			const f15sTime = featuredVideo15s.getTime(currentMedia.mediaid);
-
-			if (currentTime >= f15sTime && !f15sMidrollPlayed) {
-				const vastUrl = getVastUrl(adSlot, 'midroll', depth, correlator, targeting);
-
-				tracker.adProduct = `${adProduct}-midroll`;
-				adSlot.setConfigProperty('audio', !player.getMute());
-				setCurrentVast('midroll', vastUrl);
-				player.playAd(vastUrl);
-				f15sMidrollPlayed = true;
+				playVideoAd('postroll');
 			}
 		});
 
@@ -273,7 +227,10 @@ function create(
 
 			lastRequestedVastUrl = event.tag;
 
-			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'success', vastParams);
+			setAttributes(
+				videoContainer,
+				vastDebugger.getVastAttributesFromVastParams('success', vastParams),
+			);
 			eventService.emit(events.VIDEO_AD_REQUESTED, adSlot);
 		});
 
@@ -302,7 +259,10 @@ function create(
 
 			log(`ad error message: ${event.message}`);
 			updateSlotParams(adSlot, vastParams);
-			vastDebugger.setVastAttributesFromVastParams(videoContainer, 'error', vastParams);
+			setAttributes(
+				videoContainer,
+				vastDebugger.getVastAttributesFromVastParams('error', vastParams),
+			);
 
 			if (event.adErrorCode === EMPTY_VAST_CODE) {
 				adSlot.setStatus(AdSlot.STATUS_COLLAPSE);
@@ -335,7 +295,7 @@ function create(
 	};
 }
 
-function loadMoatPlugin(): void {
+export function loadMoatPlugin(): void {
 	utils.scriptLoader.loadScript(context.get('options.video.moatTracking.jwplayerPluginUrl'));
 }
 

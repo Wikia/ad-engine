@@ -9,6 +9,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
+import { Cmp, cmp } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -36,9 +37,9 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
-	isCMPEnabled: boolean;
 	isLazyLoadingEnabled: boolean;
 	lazyLoaded = false;
+	cmp: Cmp = cmp;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
 
@@ -47,7 +48,6 @@ export class PrebidProvider extends BidderProvider {
 		adaptersRegistry.configureAdapters();
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		this.prebidConfig = {
 			debug:
@@ -67,12 +67,27 @@ export class PrebidProvider extends BidderProvider {
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
-		if (this.isCMPEnabled) {
-			this.prebidConfig.consentManagement = {
-				cmpApi: 'iab',
-				timeout: this.timeout,
-				allowAuctionWithoutConsent: false,
-			};
+		if (this.cmp.exists) {
+			// ToDo: remove it once Prebid v2.44.0 transition will be done
+			if (context.get('bidders.prebid.libraryUrl')) {
+				this.prebidConfig.consentManagement = {
+					cmpApi: 'iab',
+					timeout: this.timeout,
+					allowAuctionWithoutConsent: false,
+				};
+			} else {
+				this.prebidConfig.consentManagement = {
+					gdpr: {
+						cmpApi: 'iab',
+						timeout: this.timeout,
+						allowAuctionWithoutConsent: false,
+					},
+					usp: {
+						cmpApi: 'iab',
+						timeout: 100,
+					},
+				};
+			}
 		}
 
 		this.applyConfig(this.prebidConfig);

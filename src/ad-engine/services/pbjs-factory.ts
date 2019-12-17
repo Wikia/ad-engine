@@ -1,6 +1,8 @@
 import { logger, scriptLoader } from '../utils';
 import { context } from './context-service';
 
+const prebidLibraryUrl =
+	'//origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.0/20191213.min.js';
 const logGroup = 'pbjs-factory';
 
 (window as any).pbjs = (window as any).pbjs || {};
@@ -13,17 +15,14 @@ class PbjsFactory {
 		if (!this.instancePromise) {
 			const libraryUrl = context.get('bidders.prebid.libraryUrl');
 
-			if (libraryUrl) {
-				scriptLoader.loadScript(libraryUrl, 'text/javascript', true, 'first');
-			} else {
-				logger(
-					logGroup,
-					'Prebid library URL not defined. Assuming that window.pbjs will be loaded.',
-				);
-			}
+			scriptLoader.loadScript(libraryUrl || prebidLibraryUrl, 'text/javascript', true, 'first');
 
 			this.instancePromise = new Promise((resolve) =>
-				(window as any).pbjs.que.push(() => resolve((window as any).pbjs)),
+				(window as any).pbjs.que.push(() => {
+					logger(logGroup, 'Prebid library loaded');
+
+					resolve((window as any).pbjs);
+				}),
 			);
 		}
 

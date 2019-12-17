@@ -18,7 +18,6 @@ class JWPlayer {
 		this.prerollDuration = 30000;
 		this.midrollDuration = 30000;
 		this.postrollDuration = 30000;
-		this.f15nDuration = 15000;
 		this.videoDuration = 75000;
 		this.playerWidth = 628;
 		this.playerHeight = 353;

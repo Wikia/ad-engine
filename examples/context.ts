@@ -35,7 +35,6 @@ export default {
 		},
 		prebid: {
 			enabled: true,
-			libraryUrl: '../../vendor/dist/prebid.min.js',
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				enabled: true,
