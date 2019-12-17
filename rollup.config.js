@@ -19,7 +19,11 @@ const targets = {
 		output: { file: pkg.module, format: 'esm', sourcemap: true },
 		watch: { include: 'src/**' },
 		// Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-		external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
+		external: [
+			...Object.keys(pkg.dependencies || {}),
+			...Object.keys(pkg.peerDependencies || {}),
+			'rxjs/operators',
+		],
 		plugins: [
 			instanceToPure(),
 			json(),

@@ -192,7 +192,9 @@
                 "oasis"
             ],
             "regions": [
-                "PL"
+                "XX-AS",
+                "XX-EU",
+                "XX-SA"
             ],
             "value": true
         }

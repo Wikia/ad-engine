@@ -1,19 +1,17 @@
 import { VastParams, vastParser } from './vast-parser';
 
-function setAttribute(element: HTMLElement, attribute?: string, value?: string): void {
-	if (!element || !value) {
-		return;
-	}
-
-	element.setAttribute(attribute, value);
+export interface VastAttributes {
+	'data-vast-content-type': string;
+	'data-vast-creative-id': string;
+	'data-vast-line-item-id': string;
+	'data-vast-position': string;
+	'data-vast-size': string;
+	'data-vast-status': string;
+	'data-vast-params': string;
 }
 
 class VastDebugger {
-	setVastAttributesFromVastParams(
-		element: HTMLElement,
-		status: string,
-		vastParams: VastParams,
-	): void {
+	getVastAttributesFromVastParams(status: string, vastParams: VastParams): VastAttributes {
 		const customParams = vastParams.customParams;
 		const targeting = {};
 
@@ -31,24 +29,21 @@ class VastDebugger {
 			targeting[key] = value;
 		});
 
-		setAttribute(element, 'data-vast-content-type', vastParams.contentType);
-		setAttribute(element, 'data-vast-creative-id', vastParams.creativeId);
-		setAttribute(element, 'data-vast-line-item-id', vastParams.lineItemId);
-		setAttribute(element, 'data-vast-position', vastParams.position);
-		setAttribute(element, 'data-vast-size', vastParams.size);
-		setAttribute(element, 'data-vast-status', status);
-		setAttribute(element, 'data-vast-params', JSON.stringify(targeting));
+		return {
+			'data-vast-content-type': vastParams.contentType,
+			'data-vast-creative-id': vastParams.creativeId,
+			'data-vast-line-item-id': vastParams.lineItemId,
+			'data-vast-position': vastParams.position,
+			'data-vast-size': vastParams.size,
+			'data-vast-status': status,
+			'data-vast-params': JSON.stringify(targeting),
+		};
 	}
 
-	setVastAttributes(
-		element: HTMLElement,
-		vastUrl: string,
-		status: string,
-		imaAd?: google.ima.Ad,
-	): void {
+	getVastAttributes(vastUrl: string, status: string, imaAd?: google.ima.Ad): VastAttributes {
 		const vastParams: VastParams = vastParser.parse(vastUrl, { imaAd });
 
-		this.setVastAttributesFromVastParams(element, status, vastParams);
+		return this.getVastAttributesFromVastParams(status, vastParams);
 	}
 }
 
