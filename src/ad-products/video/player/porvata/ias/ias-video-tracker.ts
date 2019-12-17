@@ -15,10 +15,10 @@ export interface IasTrackingParams {
 }
 
 class IasVideoTracker {
-	private scriptPromise = null;
+	private scriptPromise: Promise<Event>;
 
-	loadScript(): Promise<void> {
-		if (this.scriptPromise === null) {
+	loadScript(): Promise<Event> {
+		if (!this.scriptPromise) {
 			this.scriptPromise = utils.scriptLoader.loadScript(
 				scriptUrl,
 				'text/javascript',
