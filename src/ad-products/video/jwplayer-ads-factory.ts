@@ -152,10 +152,10 @@ function create(
 
 		if (context.get('options.video.iasTracking.enabled')) {
 			const iasConfig = context.get('options.video.iasTracking.config');
-			const targeting = slotService.get(slotName).getTargeting();
-			iasConfig.custom = targeting.src;
-			iasConfig.custom2 = targeting.pos;
-			iasConfig.custom3 = targeting.loc;
+			const { src, pos, loc } = slotService.get(slotName).getTargeting();
+			iasConfig.custom = src;
+			iasConfig.custom2 = pos;
+			iasConfig.custom3 = loc;
 
 			iasVideoTracker.loadScript();
 

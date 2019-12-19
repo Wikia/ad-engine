@@ -59,10 +59,10 @@ class GoogleImaPlayerFactory {
 
 				if (videoSettings.isIasTrackingEnabled()) {
 					const iasConfig: IasTrackingParams = context.get('options.video.iasTracking.config');
-					const targeting = slotService.get(videoSettings.get('slotName')).getTargeting();
-					iasConfig.custom = targeting.src;
-					iasConfig.custom2 = targeting.pos;
-					iasConfig.custom3 = targeting.loc;
+					const { src, pos, loc } = slotService.get(videoSettings.get('slotName')).getTargeting();
+					iasConfig.custom = src;
+					iasConfig.custom2 = pos;
+					iasConfig.custom3 = loc;
 
 					iasVideoTracker
 						.init(google, adsManager, videoSettings.getContainer(), iasConfig)
