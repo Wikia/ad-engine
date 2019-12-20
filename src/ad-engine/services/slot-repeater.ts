@@ -47,12 +47,6 @@ function repeatSlot(adSlot: AdSlot): boolean {
 	}
 
 	const container = slotInjector.inject(slotName);
-
-	if (!!container && context.get('options.nonLazyLoading.enabled')) {
-		context.get('state.adStack').push({
-			id: slotName,
-		});
-	}
 	const additionalClasses = repeatConfig.additionalClasses || '';
 
 	if (container !== null) {
@@ -66,19 +60,13 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 class SlotRepeater {
 	init(): void {
-		if (!context.get('options.nonLazyLoading.enabled')) {
-			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
-				return this.handleSlotRepeating(adSlot);
-			});
-		}
-	}
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+			if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+				return repeatSlot(adSlot);
+			}
 
-	handleSlotRepeating(adSlot: AdSlot): boolean {
-		if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-			return repeatSlot(adSlot);
-		}
-
-		return false;
+			return false;
+		});
 	}
 }
 
