@@ -1,6 +1,6 @@
 import { DeviceMode } from '@platforms/shared';
 
-export function getIndexExchangeContext(device: DeviceMode): any {
+export function getNoBidContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
