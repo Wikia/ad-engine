@@ -7,23 +7,23 @@ export function getNoBidContext(device: DeviceMode): any {
 			slots: {
 				'01_LB': {
 					sizes: [[728, 90], [970, 250]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'02_MR': {
 					sizes: [[300, 250], [300, 600]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'03_PF': {
 					sizes: [[300, 250]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'04_BLB': {
 					sizes: [[728, 90]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'06_FMR': {
 					sizes: [[300, 250]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 			},
 		},
@@ -33,19 +33,19 @@ export function getNoBidContext(device: DeviceMode): any {
 			slots: {
 				'01_LB': {
 					sizes: [[320, 50]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'02_MR': {
 					sizes: [[300, 250]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'03_PF': {
 					sizes: [[300, 250]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 				'06_FMR': {
 					sizes: [[300, 250]],
-					siteId: '21872987314',
+					siteId: '21874833814',
 				},
 			},
 		},
