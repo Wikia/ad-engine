@@ -175,7 +175,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const refreshUsedBid = (winningBid) => {
-			eventService.emit(events.BIDS_REFRESH_STARTED, winningBid.adUnitCode);
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				eventService.emit(events.BIDS_REFRESH);
 				const adUnitsToRefresh = this.adUnits.filter(
