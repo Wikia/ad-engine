@@ -1,262 +1,313 @@
-import { AdSlot, context, scrollListener, slotTweaker, utils } from '@ad-engine/core';
-import { Communicator } from '@wikia/post-quecast';
+/* tslint:disable */
+import { AdSlot, Dictionary, scrollListener, slotTweaker, utils } from '@ad-engine/core';
 import * as EventEmitter from 'eventemitter3';
-import { isUndefined, mapValues } from 'lodash';
-import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
-import { filter, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
 import { FSM, ReduxExtensionConnector } from 'state-charts';
-import { BigFancyAdAboveConfig, PorvataPlayer, resolvedState, UapRatio } from '../../../..';
-import { AdvertisementLabel } from '../../../interface/advertisement-label';
+import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
+import { animate } from '../../../interface/animate';
+import { StickinessCallback } from '../../big-fancy-ad-above';
 import {
-	CSS_CLASSNAME_IMPACT_BFAA,
+	CSS_CLASSNAME_FADE_IN_ANIMATION,
+	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAA,
 	CSS_CLASSNAME_THEME_RESOLVED,
+	FADE_IN_TIME,
 	SLIDE_OUT_TIME,
 } from '../../constants';
-import { UapVideoSettings } from '../../uap-video-settings';
+import { resolvedState } from '../../resolved-state';
+import { resolvedStateSwitch } from '../../resolved-state-switch';
 import { UapParams, UapState } from '../../universal-ad-package';
-import { BigFancyAdTheme } from '../theme';
 import { BigFancyAdHiviTheme } from './hivi-theme';
-
-const HIVI_RESOLVED_THRESHOLD = 0.995;
-export const MOVE_NAVBAR = '[UAP HiVi BFAA] move navbar';
-export const SET_BODY_PADDING_TOP = '[UAP HiVi BFAA] set body padding top';
-
-type State = any;
-
-const STATES = {
-	IMPACT: 'impact',
-	INITIAL: 'initial',
-	RESOLVED: 'resolved',
-	STICKY: 'sticky',
-};
-const ACTIONS = {
-	IMPACT: 'impact',
-	RESOLVE: 'resolve',
-	RESET: 'reset',
-	UNSTICK: 'unstick',
-	CLOSE: 'close-click',
-	STICK: 'stick',
-};
+import { Stickiness } from './stickiness';
 
 const bfaaStates = [
 	{
-		name: STATES.INITIAL,
-		transitions: [
-			{ action: ACTIONS.IMPACT, to: STATES.IMPACT },
-			{ action: ACTIONS.RESOLVE, to: STATES.RESOLVED },
-			{ action: ACTIONS.STICK, to: STATES.STICKY },
-		],
+		name: 'initial',
+		transitions: [{ action: 'impact', to: 'impact' }, { action: 'resolve', to: 'resolved' }],
 	},
 	{
-		name: STATES.RESOLVED,
-		transitions: [
-			{ action: ACTIONS.STICK, to: STATES.STICKY },
-			{ action: ACTIONS.IMPACT, to: STATES.IMPACT },
-		],
+		name: 'resolved',
+		transitions: [{ action: 'stick', to: 'sticky' }, { action: 'reset', to: 'impact' }],
 	},
 	{
-		name: STATES.STICKY,
-		transitions: [
-			{ action: ACTIONS.RESOLVE, to: STATES.RESOLVED },
-			{ action: ACTIONS.CLOSE, to: STATES.RESOLVED },
-		],
+		name: 'sticky',
+		transitions: [{ action: 'unstick', to: 'resolved' }, { action: 'close-click', to: 'resolved' }],
 	},
 	{
-		name: STATES.IMPACT,
-		transitions: [
-			{ action: ACTIONS.STICK, to: STATES.STICKY },
-			{ action: ACTIONS.RESOLVE, to: STATES.RESOLVED },
-		],
+		name: 'impact',
+		transitions: [{ action: 'stick', to: 'sticky' }, { action: 'resolve', to: 'resolved' }],
 	},
 ];
 const bfaaEmitter = new EventEmitter();
-const communicator = new Communicator();
 
 const bfaaFsm = new FSM(
 	bfaaEmitter,
 	bfaaStates,
 	bfaaStates.find((state) => state.name === 'initial'),
 );
-/* tslint:disable */
 new ReduxExtensionConnector(bfaaFsm, '[UAP BFAA] ');
+bfaaFsm.init();
 
-function createScrollObservable(): Observable<any> {
-	return new Observable((observer) => {
-		const listenerId = scrollListener.addCallback(() => {
-			observer.next();
-		});
+const HIVI_RESOLVED_THRESHOLD = 0.995;
+const logGroup = 'hivi-bfaa';
 
-		return () => scrollListener.removeCallback(listenerId);
-	});
-}
+export class BfaaHiviTheme extends BigFancyAdHiviTheme {
+	static RESOLVED_STATE_EVENT = Symbol('RESOLVED_STATE_EVENT');
 
-const entering$ = new Subject<State>();
-const leaving$ = new Subject<State>();
-
-bfaaEmitter.on(FSM.events.enter, (state: State) => {
-	entering$.next(state);
-});
-
-bfaaEmitter.on(FSM.events.leave, (state: State) => {
-	leaving$.next(state);
-});
-
-export class BfaaHiviTheme extends BigFancyAdTheme {
-	protected config: BigFancyAdAboveConfig;
+	scrollListener: string;
+	stickListener: string;
 	video: PorvataPlayer;
-	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
+	isLocked = false;
+	stopNextVideo = false;
+	onResolvedStateScroll: {
+		(): void;
+		cancel: () => void;
+	} = null;
 
-	constructor(protected adSlot: AdSlot, public params: UapParams) {
+	constructor(public adSlot: AdSlot, params: UapParams) {
 		super(adSlot, params);
-		this.config = context.get('templates.bfaa') || {};
+		Object.assign(this, toPlainObject(new EventEmitter()));
 
-		// ENTER - UI
-		bfaaEmitter.on(FSM.events.enter, (state: State) => {
-			if (state.name === STATES.INITIAL) {
-				this.startStickiness();
-			}
-			if (state.name === STATES.RESOLVED) {
-				slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.resolved);
-				this.switchImagesInAd(true);
-				this.adSlot.addClass(CSS_CLASSNAME_THEME_RESOLVED);
+		if (this.params.isSticky && this.config.stickinessAllowed) {
+			this.addStickinessPlugin();
+		}
 
-				this.updateAdSizes();
-
-				this.setBodyPaddingTop(`${100 / this.currentAspectRatio}%`);
-				this.moveNavbar(0, 0);
-			}
-
-			if (state.name === STATES.IMPACT) {
-				this.adSlot.addClass(CSS_CLASSNAME_IMPACT_BFAA);
-				slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
-				this.switchImagesInAd(false);
-
-				this.updateAdSizes();
-				// TODO: Update body padding
-
-				createScrollObservable()
-					.pipe(takeUntil(leaving$))
-					.subscribe(() => {
-						// TODO: Update body padding
-						this.updateAdSizes();
-					});
-			}
-			if (state.name === STATES.STICKY) {
-				this.adSlot.addClass(CSS_CLASSNAME_STICKY_BFAA);
-				this.stickNavbar();
-			}
-		});
-
-		// LEAVE - UI
-		bfaaEmitter.on(FSM.events.leave, (state: State) => {
-			if (state.name === STATES.RESOLVED) {
-				this.adSlot.removeClass(CSS_CLASSNAME_THEME_RESOLVED);
-			}
-
-			if (state.name === STATES.STICKY) {
-				this.adSlot.removeClass(CSS_CLASSNAME_STICKY_BFAA);
-			}
-
-			if (state.name === STATES.IMPACT) {
-				this.adSlot.removeClass(CSS_CLASSNAME_IMPACT_BFAA);
-			}
-		});
-
-		// ENTER - STATE
-		bfaaEmitter.on(FSM.events.enter, (state: State) => {
-			if (state.name === STATES.RESOLVED) {
-				// Stick on scroll only if not viewable and not timeout
-				this.viewableAndTimeoutRunning$
-					.pipe(
-						filter((running) => !!running),
-						switchMap(() => {
-							return createScrollObservable().pipe(
-								takeUntil(this.viewableAndTimeoutRunning$.pipe(filter((running) => !running))),
-								takeUntil(leaving$),
-							);
-						}),
-					)
-					.subscribe(() => bfaaFsm.dispatch(ACTIONS.STICK));
-			}
-
-			if (state.name === STATES.STICKY) {
-				// Unstick on scroll only if viewable and timeout
-				this.viewableAndTimeoutRunning$
-					.pipe(
-						filter((running) => !running),
-						takeUntil(leaving$),
-						switchMap(() => createScrollObservable()),
-						take(1),
-					)
-					.subscribe(() => bfaaFsm.dispatch(ACTIONS.RESOLVE));
-			}
-
-			if (state.name === STATES.IMPACT) {
-				// When smaller than HIVI_RESOLVED_THRESHOLD
-				createScrollObservable()
-					.pipe(
-						takeUntil(leaving$),
-						filter(() => this.currentState >= HIVI_RESOLVED_THRESHOLD),
-						take(1),
-						withLatestFrom(this.viewableAndTimeoutRunning$),
-					)
-					.subscribe(([_, running]) => {
-						if (running) {
-							// if not timeout and not viewable
-							bfaaFsm.dispatch(ACTIONS.STICK);
-						} else {
-							// if timeout and viewable
-							bfaaFsm.dispatch(ACTIONS.RESOLVE);
-						}
-					});
-			}
-		});
-
-		// LEAVE - STATE
-		bfaaEmitter.on(FSM.events.leave, (state: State) => {
-			if (state.name === STATES.STICKY) {
-				communicator.dispatch({ type: MOVE_NAVBAR, payload: { height: 0, time: SLIDE_OUT_TIME } });
-			}
-		});
-
-		bfaaFsm.init();
+		if (!this.config.defaultStateAllowed) {
+			this.params.resolvedStateForced = true;
+		}
 	}
 
-	// This is run first
-	adIsReady(videoSettings: UapVideoSettings): Promise<HTMLIFrameElement | HTMLElement> {
-		resolvedState.isResolvedState(this.params)
-			? bfaaFsm.dispatch(ACTIONS.RESOLVE)
-			: bfaaFsm.dispatch(ACTIONS.IMPACT);
+	private addStickinessPlugin(): void {
+		this.addUnstickLogic();
+		this.addUnstickButton();
+		this.addUnstickEvents();
 
-		return Promise.resolve(this.adSlot.getIframe());
+		utils
+			.once((this as any) as EventEmitter, (BfaaHiviTheme.RESOLVED_STATE_EVENT as any) as string)
+			.then(() => {
+				this.stickListener = scrollListener.addCallback(() => {
+					const scrollPosition =
+						window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
+					if (scrollPosition >= 0) {
+						scrollListener.removeCallback(this.stickListener);
+						this.stickiness.run();
+					}
+				});
+			});
 	}
 
-	// This is run next
 	onAdReady(): void {
-		this.container.classList.add('theme-hivi');
-		this.addAdvertisementLabel();
+		super.onAdReady();
+
+		if (resolvedState.isResolvedState(this.params)) {
+			bfaaFsm.dispatch('resolve');
+			this.setResolvedState(true);
+		} else {
+			bfaaFsm.dispatch('impact');
+			this.setResolvedState(false);
+			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
+			this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
+			// Manually run update on scroll once
+			this.updateAdSizes();
+		}
+
+		setTimeout(() => this.addImagesAnimation());
 	}
 
 	onVideoReady(video: PorvataPlayer): void {
 		this.video = video;
+		video.addEventListener('wikiaAdStarted', () => {
+			if (this.stopNextVideo) {
+				this.stopNextVideo = false;
+				video.stop();
+				return;
+			}
 
-		// Video restart
-		fromEvent(video.ima, 'wikiaAdPlayTriggered')
-			.pipe(skip(1))
-			.subscribe(() => {
-				this.startStickiness();
-				bfaaFsm.dispatch(ACTIONS.IMPACT);
-			});
+			this.updateAdSizes();
+
+			if (!video.params.autoPlay) {
+				this.resetResolvedState();
+			}
+		});
+		video.addEventListener('wikiaAdCompleted', () => {
+			if (!this.isLocked) {
+				this.setResolvedState(true);
+			}
+		});
+		video.addEventListener('wikiaFullscreenChange', () => {
+			if (video.isFullscreen()) {
+				this.stickiness.blockRevertStickiness();
+				this.container.classList.add('theme-video-fullscreen');
+			} else {
+				this.stickiness.unblockRevertStickiness();
+				this.container.classList.remove('theme-video-fullscreen');
+				this.updateAdSizes();
+			}
+		});
 	}
 
-	addAdvertisementLabel(): void {
-		const advertisementLabel = new AdvertisementLabel();
+	private resetResolvedState(): void {
+		const offset: number = this.getHeightDifferenceBetweenStates();
 
-		this.container.appendChild(advertisementLabel.render());
+		if (this.isLocked && this.config.defaultStateAllowed && window.scrollY < offset) {
+			const aspectRatio: number = this.params.config.aspectRatio.default;
+
+			this.container.style.top = '';
+			this.config.mainContainer.style.paddingTop = `${100 / aspectRatio}%`;
+
+			if (this.params.isSticky && this.config.stickinessAllowed) {
+				this.unstickImmediately(false);
+			}
+
+			this.unlock();
+			this.switchImagesInAd(false);
+			this.updateAdSizes();
+
+			if (this.config.onResolvedStateResetCallback) {
+				this.config.onResolvedStateResetCallback(this.config, this.adSlot, this.params);
+			}
+		}
 	}
 
-	switchImagesInAd(isResolved: boolean): void {
+	private lock(): void {
+		const offset: number = this.getHeightDifferenceBetweenStates();
+
+		this.isLocked = true;
+		this.container.classList.add('theme-locked');
+		scrollListener.removeCallback(this.scrollListener);
+		this.adjustSizesToResolved(offset);
+		((this as any) as EventEmitter).emit(BfaaHiviTheme.RESOLVED_STATE_EVENT);
+	}
+
+	private unlock(): void {
+		this.isLocked = false;
+		this.container.classList.remove('theme-locked');
+		this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
+	}
+
+	private adjustSizesToResolved(offset: number): void {
+		if (this.adSlot.isEnabled()) {
+			const aspectRatio = this.params.config.aspectRatio.resolved;
+
+			this.container.style.top = '';
+			this.config.mainContainer.style.paddingTop = `${100 / aspectRatio}%`;
+			slotTweaker.makeResponsive(this.adSlot, aspectRatio);
+			window.scrollBy(0, -Math.min(offset, window.scrollY));
+			this.updateAdSizes();
+		}
+	}
+
+	private updateAdSizes(): Promise<HTMLElement> {
+		const { aspectRatio, state } = this.params.config;
+		const currentWidth: number = this.config.mainContainer.offsetWidth;
+		const isResolved = this.container.classList.contains(CSS_CLASSNAME_THEME_RESOLVED);
+		const maxHeight = currentWidth / aspectRatio.default;
+		const minHeight = currentWidth / aspectRatio.resolved;
+		const scrollY = window.scrollY || window.pageYOffset || 0;
+		const aspectScroll = this.isLocked ? minHeight : Math.max(minHeight, maxHeight - scrollY);
+		const currentAspectRatio = currentWidth / aspectScroll;
+		const aspectRatioDiff = aspectRatio.default - aspectRatio.resolved;
+		const currentDiff = aspectRatio.default - currentAspectRatio;
+		const currentState = 1 - (aspectRatioDiff - currentDiff) / aspectRatioDiff;
+		const heightDiff = state.height.default - state.height.resolved;
+		const heightFactor = (state.height.default - heightDiff * currentState) / 100;
+		const relativeHeight = aspectScroll * heightFactor;
+
+		this.adjustVideoSize(relativeHeight);
+
+		if (this.params.thumbnail) {
+			this.setThumbnailStyle(currentState);
+		}
+
+		if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
+			bfaaFsm.dispatch('resolve');
+			this.setResolvedState();
+		} else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
+			bfaaFsm.dispatch('unstick');
+			this.container.style.top = '';
+			this.switchImagesInAd(false);
+		}
+
+		return slotTweaker.makeResponsive(this.adSlot, currentAspectRatio);
+	}
+
+	private adjustVideoSize(relativeHeight: number): void {
+		if (this.video && !this.video.isFullscreen()) {
+			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
+		}
+	}
+
+	private setThumbnailStyle(state: number): void {
+		const style: Dictionary = mapValues(
+			this.params.config.state,
+			(styleProperty: UapState<number>) => {
+				const diff: number = styleProperty.default - styleProperty.resolved;
+
+				return `${styleProperty.default - diff * state}%`;
+			},
+		);
+
+		Object.assign(this.params.thumbnail.style, style);
+
+		if (this.video) {
+			Object.assign(this.video.container.style, style);
+
+			if (this.video.isFullscreen()) {
+				this.video.container.style.height = '100%';
+			}
+		}
+	}
+
+	private setResolvedState(immediately?: boolean): Promise<void> {
+		const offset: number = this.getHeightDifferenceBetweenStates();
+
+		this.switchImagesInAd(true);
+
+		if (this.onResolvedStateScroll) {
+			window.removeEventListener('scroll', this.onResolvedStateScroll);
+			this.onResolvedStateScroll.cancel();
+		}
+
+		if (this.config.onResolvedStateSetCallback) {
+			this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
+		}
+
+		return new Promise((resolve) => {
+			if (immediately) {
+				this.lock();
+				resolve();
+			} else {
+				this.onResolvedStateScroll = debounce(() => {
+					if (window.scrollY < offset) {
+						return;
+					}
+
+					window.removeEventListener('scroll', this.onResolvedStateScroll);
+					this.onResolvedStateScroll = null;
+					this.lock();
+					resolve();
+				}, 50);
+				window.addEventListener('scroll', this.onResolvedStateScroll);
+				this.onResolvedStateScroll();
+			}
+		});
+	}
+
+	private getHeightDifferenceBetweenStates(): number {
+		const width: number = this.container.offsetWidth;
+		const { aspectRatio } = this.params.config;
+
+		return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
+	}
+
+	private switchImagesInAd(isResolved: boolean): void {
+		if (isResolved) {
+			this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
+		} else {
+			this.container.classList.remove(CSS_CLASSNAME_THEME_RESOLVED);
+		}
+
 		if (this.params.image2 && this.params.image2.background) {
 			if (isResolved) {
 				this.params.image2.element.classList.remove('hidden-state');
@@ -270,110 +321,93 @@ export class BfaaHiviTheme extends BigFancyAdTheme {
 		}
 	}
 
-	get currentWidth(): number {
-		return this.config.mainContainer.offsetWidth;
+	protected async getVideoViewedAndTimeout(): Promise<void> {
+		const { stickyUntilSlotViewed } = this.config;
+		const { stickyAdditionalTime, stickyUntilVideoViewed } = this.params;
+		const slotViewed: Promise<void> = stickyUntilSlotViewed
+			? this.adSlot.loaded.then(() => this.adSlot.viewed)
+			: Promise.resolve();
+		const videoViewed: Promise<void> = stickyUntilVideoViewed
+			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
+			: Promise.resolve();
+		const unstickDelay: number = isUndefined(stickyAdditionalTime)
+			? BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY
+			: stickyAdditionalTime;
+
+		await slotViewed;
+		utils.logger(logGroup, 'static slot viewed');
+
+		await videoViewed;
+		utils.logger(logGroup, 'video slot viewed');
+
+		await utils.wait(unstickDelay);
+		utils.logger(logGroup, 'slot timeout reached');
 	}
 
-	get aspectRatio(): UapRatio {
-		return this.params.config.aspectRatio;
-	}
+	protected async onStickinessChange(isSticky: boolean): Promise<void> {
+		const stickinessBeforeCallback: StickinessCallback = isSticky
+			? this.config.onBeforeStickBfaaCallback
+			: this.config.onBeforeUnstickBfaaCallback;
+		const stickinessAfterCallback: StickinessCallback = isSticky
+			? this.config.onAfterStickBfaaCallback
+			: this.config.onAfterUnstickBfaaCallback;
 
-	get currentAspectRatio(): number {
-		return this.currentWidth / this.aspectScroll;
-	}
+		stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
 
-	get aspectScroll(): number {
-		const maxHeight = this.currentWidth / this.aspectRatio.default;
-		const minHeight = this.currentWidth / this.aspectRatio.resolved;
-		const scrollY = window.scrollY || window.pageYOffset || 0;
-
-		return bfaaFsm.state.name === STATES.IMPACT
-			? Math.max(minHeight, maxHeight - scrollY)
-			: minHeight;
-	}
-
-	get currentState(): number {
-		const { aspectRatio } = this.params.config;
-		const aspectRatioDiff = aspectRatio.default - aspectRatio.resolved;
-		const currentDiff = aspectRatio.default - this.currentAspectRatio;
-		return 1 - (aspectRatioDiff - currentDiff) / aspectRatioDiff;
-	}
-
-	private updateAdSizes(): Promise<HTMLElement> {
-		const { state } = this.params.config;
-		const currentState = this.currentState;
-		const heightDiff = state.height.default - state.height.resolved;
-		const heightFactor = (state.height.default - heightDiff * currentState) / 100;
-		const relativeHeight = this.aspectScroll * heightFactor;
-
-		this.updateVideoSize(relativeHeight);
-
-		const style = mapValues(this.params.config.state, (styleProperty: UapState<number>) => {
-			const diff: number = styleProperty.default - styleProperty.resolved;
-
-			return `${styleProperty.default - diff * currentState}%`;
-		});
-
-		if (this.params.thumbnail) {
-			this.setThumbnailStyle(style);
-			if (this.video) {
-				this.setVideoStyle(style);
-			}
+		if (!isSticky) {
+			bfaaFsm.dispatch('unstick');
+			this.removeUnstickButton();
+			this.adSlot.emitEvent(Stickiness.SLOT_UNSTICKED_STATE);
+			this.config.moveNavbar(0, SLIDE_OUT_TIME);
+			await animate(this.adSlot.getElement(), CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
+			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
+			animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+		} else {
+			bfaaFsm.dispatch('stick');
+			this.stickNavbar();
+			this.adSlot.emitEvent(Stickiness.SLOT_STICKED_STATE);
+			this.adSlot.getElement().classList.add(CSS_CLASSNAME_STICKY_BFAA);
 		}
 
-		return slotTweaker.makeResponsive(this.adSlot, this.currentAspectRatio);
-	}
-
-	private setThumbnailStyle(style): void {
-		Object.assign(this.params.thumbnail.style, style);
-	}
-
-	private setVideoStyle(style) {
-		Object.assign(this.video.container.style, style);
-
-		if (this.video.isFullscreen()) {
-			this.video.container.style.height = '100%';
-		}
-	}
-
-	private updateVideoSize(relativeHeight: number): void {
-		if (this.video && !this.video.isFullscreen()) {
-			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
-		}
+		stickinessAfterCallback.call(this.config, this.adSlot, this.params);
 	}
 
 	private stickNavbar(): void {
-		// TODO: Refactor
 		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
 		const resolvedHeight: number = width / aspectRatio.resolved;
 
-		this.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
+		this.config.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
 	}
 
-	private moveNavbar(height = 0, time = 0): void {
-		communicator.dispatch({ type: MOVE_NAVBAR, payload: { height, time } });
+	protected onCloseClicked(): void {
+		bfaaFsm.dispatch('close-click');
+		this.adSlot.emitEvent(Stickiness.SLOT_FORCE_UNSTICK);
+		this.unstickImmediately();
 	}
 
-	protected startStickiness() {
-		// needs a better name!
-		this.viewableAndTimeoutRunning$.next(true);
-		const slotViewed: Promise<void> = this.config.stickyUntilSlotViewed
-			? this.adSlot.loaded.then(() => this.adSlot.viewed)
-			: Promise.resolve();
-		const videoViewed: Promise<void> = this.params.stickyUntilVideoViewed
-			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
-			: Promise.resolve();
-		const unstickDelay: number = isUndefined(this.params.stickyAdditionalTime)
-			? BigFancyAdHiviTheme.DEFAULT_UNSTICK_DELAY
-			: this.params.stickyAdditionalTime;
+	protected unstickImmediately(stopVideo = true): void {
+		scrollListener.removeCallback(this.scrollListener);
+		this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 
-		Promise.all([slotViewed, videoViewed, utils.wait(unstickDelay)]).then(() =>
-			this.viewableAndTimeoutRunning$.next(false),
-		);
+		if (stopVideo) {
+			this.stopVideoPlayback();
+		}
+
+		this.config.onAfterUnstickBfaaCallback.call(this.config, this.adSlot, this.params);
+		this.stickiness.sticky = false;
+		this.removeUnstickButton();
 	}
 
-	private setBodyPaddingTop(padding: string): void {
-		communicator.dispatch({ type: SET_BODY_PADDING_TOP, padding: padding });
+	private stopVideoPlayback() {
+		if (this.video && this.video.ima.getAdsManager() && this.video.ima.status) {
+			if (this.video.isPlaying()) {
+				this.video.stop();
+			}
+		} else {
+			this.stopNextVideo = true;
+		}
+
+		this.setResolvedState(true);
 	}
 }

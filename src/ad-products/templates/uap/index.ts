@@ -5,4 +5,4 @@ export * from './roadblock';
 export * from './universal-ad-package';
 
 export { resolvedState } from './resolved-state';
-export { MOVE_NAVBAR, SET_BODY_PADDING_TOP } from './themes/hivi/hivi-bfaa'; // TODO: After: Refactor this export
+export { MOVE_NAVBAR, SET_BODY_PADDING_TOP } from './themes/hivi/hivi-bfaa-2'; // TODO: After: Refactor this export
