@@ -81,9 +81,6 @@ const bfaaFsm = new FSM(
 /* tslint:disable */
 new ReduxExtensionConnector(bfaaFsm, '[UAP BFAA] ');
 
-const entering$ = new Subject<State>();
-const leaving$ = new Subject<State>();
-
 function createScrollObservable(): Observable<any> {
 	return new Observable((observer) => {
 		const listenerId = scrollListener.addCallback(() => {
@@ -93,6 +90,9 @@ function createScrollObservable(): Observable<any> {
 		return () => scrollListener.removeCallback(listenerId);
 	});
 }
+
+const entering$ = new Subject<State>();
+const leaving$ = new Subject<State>();
 
 bfaaEmitter.on(FSM.events.enter, (state: State) => {
 	entering$.next(state);
@@ -105,7 +105,6 @@ bfaaEmitter.on(FSM.events.leave, (state: State) => {
 export class BfaaHiviTheme extends BigFancyAdTheme {
 	protected config: BigFancyAdAboveConfig;
 	video: PorvataPlayer;
-	impactStateScrollListener: string;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
 
 	constructor(protected adSlot: AdSlot, public params: UapParams) {
@@ -204,7 +203,7 @@ export class BfaaHiviTheme extends BigFancyAdTheme {
 					)
 					.subscribe(([_, running]) => {
 						if (running) {
-							// it not timeout and not viewable
+							// if not timeout and not viewable
 							bfaaFsm.dispatch(ACTIONS.STICK);
 						} else {
 							// if timeout and viewable
@@ -216,10 +215,6 @@ export class BfaaHiviTheme extends BigFancyAdTheme {
 
 		// LEAVE - STATE
 		bfaaEmitter.on(FSM.events.leave, (state: State) => {
-			if (state.name === STATES.IMPACT) {
-				scrollListener.removeCallback(this.impactStateScrollListener);
-			}
-
 			if (state.name === STATES.STICKY) {
 				communicator.dispatch({ type: MOVE_NAVBAR, payload: { height: 0, time: SLIDE_OUT_TIME } });
 			}
@@ -243,12 +238,6 @@ export class BfaaHiviTheme extends BigFancyAdTheme {
 		this.addAdvertisementLabel();
 	}
 
-	addAdvertisementLabel(): void {
-		const advertisementLabel = new AdvertisementLabel();
-
-		this.container.appendChild(advertisementLabel.render());
-	}
-
 	onVideoReady(video: PorvataPlayer): void {
 		this.video = video;
 
@@ -261,7 +250,13 @@ export class BfaaHiviTheme extends BigFancyAdTheme {
 			});
 	}
 
-	private switchImagesInAd(isResolved: boolean): void {
+	addAdvertisementLabel(): void {
+		const advertisementLabel = new AdvertisementLabel();
+
+		this.container.appendChild(advertisementLabel.render());
+	}
+
+	switchImagesInAd(isResolved: boolean): void {
 		if (this.params.image2 && this.params.image2.background) {
 			if (isResolved) {
 				this.params.image2.element.classList.remove('hidden-state');
