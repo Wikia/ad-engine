@@ -11,11 +11,13 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
+		context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
 		context.set('bidders.prebid.33across.enabled', instantConfig.get('icPrebid33Across'));
 		context.set('bidders.prebid.aol.enabled', instantConfig.get('icPrebidAol'));
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
 		context.set('bidders.prebid.beachfront.enabled', instantConfig.get('icPrebidBeachfront'));
+		context.set('bidders.prebid.criteo.enabled', instantConfig.get('icPrebidCriteo'));
 		context.set('bidders.prebid.gumgum.enabled', instantConfig.get('icPrebidGumGum'));
 		context.set('bidders.prebid.indexExchange.enabled', instantConfig.get('icPrebidIndexExchange'));
 		context.set('bidders.prebid.kargo.enabled', instantConfig.get('icPrebidKargo'));
@@ -28,7 +30,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			instantConfig.get('icPrebidRubiconDisplay'),
 		);
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
-		context.set('bidders.prebid.teads.enabled', instantConfig.get('icPrebidTeads'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 		context.set('bidders.prebid.vmg.enabled', instantConfig.get('icPrebidVmg'));
 

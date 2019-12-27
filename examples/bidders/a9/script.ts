@@ -8,6 +8,7 @@ import {
 	events,
 	eventService,
 	setupNpaContext,
+	setupRdpContext,
 	utils,
 } from '@wikia/ad-engine';
 import customContext from '../../context';
@@ -58,6 +59,7 @@ context.set('bidders.a9.bidsRefreshing.enabled', utils.queryString.get('refreshi
 context.set('bidders.a9.bidsRefreshing.slots', ['incontent_boxad']);
 
 setupNpaContext();
+setupRdpContext();
 
 let resolveBidders;
 

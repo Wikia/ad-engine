@@ -5,6 +5,7 @@ logVersion();
 
 export * from './ad-engine';
 export * from './listeners';
+export * from './rxjs';
 export * from './models';
 export * from './providers';
 export * from './services';

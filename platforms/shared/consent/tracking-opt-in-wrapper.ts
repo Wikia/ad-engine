@@ -1,7 +1,7 @@
 import { context, utils } from '@wikia/ad-engine';
 
 const trackingOptInLibraryUrl =
-	'//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v3.0.0/tracking-opt-in.min.js';
+	'//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v3.0.1/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
@@ -31,14 +31,12 @@ class TrackingOptInWrapper {
 			utils.scriptLoader.loadScript(trackingOptInLibraryUrl).then(() => {
 				utils.logger(logGroup, 'Modal library loaded');
 
-				const usapiEnabled = utils.queryString.get('icUSPrivacyApi') === '1';
-
 				this.libraryReady = true;
 				this.consentInstances = window.trackingOptIn.default({
 					country,
 					region,
 					disableConsentQueue: true,
-					enableCCPAinit: usapiEnabled,
+					enableCCPAinit: true,
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
 						this.gdprConsent = true;
@@ -50,14 +48,14 @@ class TrackingOptInWrapper {
 					zIndex: 9999999,
 				});
 
-				const consentRequired = this.consentInstances.gdpr.geoRequiresTrackingConsent();
-				const signalRequired =
-					this.consentInstances.ccpa && this.consentInstances.ccpa.geoRequiresUserSignal();
-
-				context.set('custom.isCMPEnabled', consentRequired);
-				context.set('custom.isUSAPIEnabled', usapiEnabled);
-				context.set('options.geoRequiresConsent', consentRequired);
-				context.set('options.geoRequiresSignal', signalRequired);
+				context.set(
+					'options.geoRequiresConsent',
+					this.consentInstances.gdpr.geoRequiresTrackingConsent(),
+				);
+				context.set(
+					'options.geoRequiresSignal',
+					this.consentInstances.ccpa.geoRequiresUserSignal(),
+				);
 
 				resolve();
 			});
@@ -131,24 +129,20 @@ class TrackingOptInWrapper {
 			}
 
 			// Nothing is needed if the geo does not require any consent
-			if (!this.consentInstances.ccpa || !this.consentInstances.ccpa.geoRequiresUserSignal()) {
+			if (!this.consentInstances.ccpa.geoRequiresUserSignal()) {
 				this.ccpaSignal = false;
 				context.set('options.optOutSale', false);
 				resolve();
 				return;
 			}
 
-			if (
-				this.consentInstances.ccpa &&
-				this.consentInstances.ccpa.hasUserProvidedSignal() === undefined
-			) {
+			if (this.consentInstances.ccpa.hasUserProvidedSignal() === undefined) {
 				context.set('options.optOutSale', true);
 				resolve();
 				return;
 			}
 
-			this.ccpaSignal =
-				this.consentInstances.ccpa && this.consentInstances.ccpa.hasUserProvidedSignal();
+			this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
 
 			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
 			context.set('options.optOutSale', this.ccpaSignal);
