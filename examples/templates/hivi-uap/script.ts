@@ -15,8 +15,6 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Communicator, ofType, setupPostQuecast } from '@wikia/post-quecast';
-import { FSM } from 'state-charts';
-console.log(MOVE_NAVBAR);
 
 import customContext from '../../context';
 import '../../styles.scss';
