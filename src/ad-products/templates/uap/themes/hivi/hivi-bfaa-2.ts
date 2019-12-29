@@ -5,7 +5,13 @@ import { isUndefined, mapValues } from 'lodash';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 import { filter, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { FSM, ReduxExtensionConnector } from 'state-charts';
-import { BigFancyAdAboveConfig, PorvataPlayer, resolvedState, UapRatio } from '../../../..';
+import {
+	BigFancyAdAboveConfig,
+	PorvataPlayer,
+	resolvedState,
+	UapConfig,
+	UapRatio,
+} from '../../../..';
 import { AdvertisementLabel } from '../../../interface/advertisement-label';
 import {
 	CSS_CLASSNAME_IMPACT_BFAA,
@@ -104,14 +110,16 @@ bfaaEmitter.on(FSM.events.leave, (state: State) => {
 });
 
 export class BfaaHiviTheme2 extends BigFancyAdTheme {
-	protected config: BigFancyAdAboveConfig;
+	protected platformConfig: BigFancyAdAboveConfig;
+	protected gamConfig: UapConfig;
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
 	ui = new HiviBfaa2Ui();
 
 	constructor(protected adSlot: AdSlot, public params: UapParams) {
 		super(adSlot, params);
-		this.config = context.get('templates.bfaa') || {};
+		this.platformConfig = context.get('templates.bfaa') || {};
+		this.gamConfig = params.config;
 
 		// ENTER - UI
 		bfaaEmitter.on(FSM.events.enter, (state: State) => {
@@ -119,7 +127,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 				this.startStickiness();
 			}
 			if (state.name === STATES.RESOLVED) {
-				slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.resolved);
+				slotTweaker.makeResponsive(this.adSlot, this.gamConfig.aspectRatio.resolved);
 				this.ui.switchImagesInAd(this.params, true);
 				this.adSlot.addClass(CSS_CLASSNAME_THEME_RESOLVED);
 
@@ -131,7 +139,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 			if (state.name === STATES.IMPACT) {
 				this.adSlot.addClass(CSS_CLASSNAME_IMPACT_BFAA);
-				slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
+				slotTweaker.makeResponsive(this.adSlot, this.gamConfig.aspectRatio.default);
 				this.ui.switchImagesInAd(this.params, false);
 
 				this.updateAdSizes();
@@ -259,11 +267,11 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	get currentWidth(): number {
-		return this.config.mainContainer.offsetWidth;
+		return this.platformConfig.mainContainer.offsetWidth;
 	}
 
 	get aspectRatio(): UapRatio {
-		return this.params.config.aspectRatio;
+		return this.gamConfig.aspectRatio;
 	}
 
 	get currentAspectRatio(): number {
@@ -281,14 +289,14 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	get currentState(): number {
-		const { aspectRatio } = this.params.config;
+		const { aspectRatio } = this.gamConfig;
 		const aspectRatioDiff = aspectRatio.default - aspectRatio.resolved;
 		const currentDiff = aspectRatio.default - this.currentAspectRatio;
 		return 1 - (aspectRatioDiff - currentDiff) / aspectRatioDiff;
 	}
 
 	private updateAdSizes(): Promise<HTMLElement> {
-		const { state } = this.params.config;
+		const { state } = this.gamConfig;
 		const currentState = this.currentState;
 		const heightDiff = state.height.default - state.height.resolved;
 		const heightFactor = (state.height.default - heightDiff * currentState) / 100;
@@ -296,7 +304,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		this.ui.updateVideoSize(this.video, this.params.videoAspectRatio * relativeHeight);
 
-		const style = mapValues(this.params.config.state, (styleProperty: UapState<number>) => {
+		const style = mapValues(this.gamConfig.state, (styleProperty: UapState<number>) => {
 			const diff: number = styleProperty.default - styleProperty.resolved;
 
 			return `${styleProperty.default - diff * currentState}%`;
@@ -315,7 +323,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	private stickNavbar(): void {
 		// TODO: Refactor
 		const width: number = this.container.offsetWidth;
-		const { aspectRatio } = this.params.config;
+		const { aspectRatio } = this.gamConfig;
 		const resolvedHeight: number = width / aspectRatio.resolved;
 
 		this.moveNavbar(resolvedHeight, SLIDE_OUT_TIME);
@@ -328,7 +336,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	protected startStickiness() {
 		// needs a better name!
 		this.viewableAndTimeoutRunning$.next(true);
-		const slotViewed: Promise<void> = this.config.stickyUntilSlotViewed
+		const slotViewed: Promise<void> = this.platformConfig.stickyUntilSlotViewed
 			? this.adSlot.loaded.then(() => this.adSlot.viewed)
 			: Promise.resolve();
 		const videoViewed: Promise<void> = this.params.stickyUntilVideoViewed
