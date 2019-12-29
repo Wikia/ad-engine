@@ -120,6 +120,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
 	ui = new HiviBfaa2Ui();
 	videoWidth$ = new ReplaySubject<number>();
+	readyElement: HTMLElement | HTMLIFrameElement; // required by slotTweaker.setPaddingBottom
 
 	constructor(protected adSlot: AdSlot, public params: UapParams) {
 		super(adSlot, params);
@@ -132,7 +133,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		});
 
 		entering$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
-			slotTweaker.makeResponsive(this.adSlot, this.gamConfig.aspectRatio.resolved);
+			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.resolved);
 			this.ui.switchImagesInAd(this.params, true);
 			this.adSlot.addClass(CSS_CLASSNAME_THEME_RESOLVED);
 
@@ -145,23 +146,16 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		entering$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
 			this.adSlot.addClass(CSS_CLASSNAME_IMPACT_BFAA);
 			this.ui.switchImagesInAd(this.params, false);
-			slotTweaker
-				.makeResponsive(this.adSlot, this.gamConfig.aspectRatio.default)
-				.then(() => {
-					return this.updateAdSizes();
-				})
-				.then((element: HTMLElement) => {
-					this.moveNavbar(element.offsetHeight);
-				});
-			// TODO: Update body padding
+			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.default);
+			this.updateAdSizes();
+			this.moveNavbar(this.container.offsetHeight);
 
 			createScrollObservable()
 				.pipe(takeUntil(leaving$))
 				.subscribe(() => {
 					// TODO: Update body padding
-					this.updateAdSizes().then((element) => {
-						this.moveNavbar(element.offsetHeight);
-					});
+					this.updateAdSizes();
+					this.moveNavbar(this.container.offsetHeight);
 				});
 		});
 
@@ -238,18 +232,20 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	// This is run first
-	adIsReady(videoSettings: UapVideoSettings): Promise<HTMLIFrameElement | HTMLElement> {
-		resolvedState.isResolvedState(this.params)
-			? bfaaFsm.dispatch(ACTIONS.RESOLVE)
-			: bfaaFsm.dispatch(ACTIONS.IMPACT);
+	async adIsReady(videoSettings: UapVideoSettings): Promise<HTMLIFrameElement | HTMLElement> {
+		this.readyElement = await slotTweaker.onReady(this.adSlot);
 
-		return Promise.resolve(this.adSlot.getIframe());
+		return this.readyElement;
 	}
 
 	// This is run next
 	onAdReady(): void {
 		this.container.classList.add('theme-hivi');
 		this.addAdvertisementLabel();
+
+		resolvedState.isResolvedState(this.params)
+			? bfaaFsm.dispatch(ACTIONS.RESOLVE)
+			: bfaaFsm.dispatch(ACTIONS.IMPACT);
 	}
 
 	onVideoReady(video: PorvataPlayer): void {
@@ -306,14 +302,14 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		return 1 - (aspectRatioDiff - currentDiff) / aspectRatioDiff;
 	}
 
-	private updateAdSizes(): Promise<HTMLElement> {
+	private updateAdSizes(): void {
 		this.updateVideoAdSize();
 
-		return this.updateStaticAdSize();
+		this.updateStaticAdSize();
 	}
 
-	private updateStaticAdSize(): Promise<HTMLElement> {
-		return slotTweaker.makeResponsive(this.adSlot, this.currentAspectRatio);
+	private updateStaticAdSize(): void {
+		slotTweaker.setPaddingBottom(this.readyElement, this.currentAspectRatio);
 	}
 
 	private updateVideoAdSize(): void {
