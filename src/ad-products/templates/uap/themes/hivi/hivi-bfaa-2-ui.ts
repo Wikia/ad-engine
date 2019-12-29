@@ -17,7 +17,7 @@ export class HiviBfaa2Ui {
 	}
 
 	updateVideoSize(video: PorvataPlayer | undefined, width: number): void {
-		if (video && !video.isFullscreen()) {
+		if (!video.isFullscreen()) {
 			video.container.style.width = `${width}px`;
 		}
 	}

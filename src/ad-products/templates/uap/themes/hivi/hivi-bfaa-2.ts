@@ -2,7 +2,7 @@ import { AdSlot, context, scrollListener, slotTweaker, utils } from '@ad-engine/
 import { Communicator } from '@wikia/post-quecast';
 import * as EventEmitter from 'eventemitter3';
 import { isUndefined, mapValues } from 'lodash';
-import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, fromEvent, Observable, ReplaySubject, Subject } from 'rxjs';
 import { filter, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { FSM, ReduxExtensionConnector, State } from 'state-charts';
 import {
@@ -119,6 +119,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
 	ui = new HiviBfaa2Ui();
+	videoWidth$ = new ReplaySubject<number>();
 
 	constructor(protected adSlot: AdSlot, public params: UapParams) {
 		super(adSlot, params);
@@ -143,12 +144,15 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		entering$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
 			this.adSlot.addClass(CSS_CLASSNAME_IMPACT_BFAA);
-			slotTweaker.makeResponsive(this.adSlot, this.gamConfig.aspectRatio.default);
 			this.ui.switchImagesInAd(this.params, false);
-
-			this.updateAdSizes().then((element) => {
-				this.moveNavbar(element.offsetHeight);
-			});
+			slotTweaker
+				.makeResponsive(this.adSlot, this.gamConfig.aspectRatio.default)
+				.then(() => {
+					return this.updateAdSizes();
+				})
+				.then((element: HTMLElement) => {
+					this.moveNavbar(element.offsetHeight);
+				});
 			// TODO: Update body padding
 
 			createScrollObservable()
@@ -250,6 +254,9 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 	onVideoReady(video: PorvataPlayer): void {
 		this.video = video;
+		this.videoWidth$.subscribe((width) => {
+			this.ui.updateVideoSize(video, width);
+		});
 
 		// Video restart
 		fromEvent(video.ima, 'wikiaAdPlayTriggered')
@@ -258,6 +265,10 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 				this.startStickiness();
 				bfaaFsm.dispatch(ACTIONS.IMPACT);
 			});
+
+		fromEvent(video.ima, 'wikiaAdStarted').subscribe(() => {
+			this.updateVideoAdSize(); // Must resize video container once more
+		});
 	}
 
 	addAdvertisementLabel(): void {
@@ -296,13 +307,23 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	private updateAdSizes(): Promise<HTMLElement> {
+		this.updateVideoAdSize();
+
+		return this.updateStaticAdSize();
+	}
+
+	private updateStaticAdSize(): Promise<HTMLElement> {
+		return slotTweaker.makeResponsive(this.adSlot, this.currentAspectRatio);
+	}
+
+	private updateVideoAdSize(): void {
 		const { state } = this.gamConfig;
 		const currentState = this.currentState;
 		const heightDiff = state.height.default - state.height.resolved;
 		const heightFactor = (state.height.default - heightDiff * currentState) / 100;
 		const relativeHeight = this.aspectScroll * heightFactor;
 
-		this.ui.updateVideoSize(this.video, this.params.videoAspectRatio * relativeHeight);
+		this.videoWidth$.next(this.params.videoAspectRatio * relativeHeight);
 
 		const style = mapValues(this.gamConfig.state, (styleProperty: UapState<number>) => {
 			const diff: number = styleProperty.default - styleProperty.resolved;
@@ -316,8 +337,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 				this.ui.setVideoStyle(this.video, style);
 			}
 		}
-
-		return slotTweaker.makeResponsive(this.adSlot, this.currentAspectRatio);
 	}
 
 	private stickNavbar(): void {
