@@ -2,7 +2,6 @@
 import { AdSlot, Dictionary, scrollListener, slotTweaker, utils } from '@ad-engine/core';
 import * as EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
-import { FSM, ReduxExtensionConnector } from 'state-charts';
 import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import { animate } from '../../../interface/animate';
 import { StickinessCallback } from '../../big-fancy-ad-above';
@@ -19,34 +18,6 @@ import { resolvedStateSwitch } from '../../resolved-state-switch';
 import { UapParams, UapState } from '../../universal-ad-package';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 import { Stickiness } from './stickiness';
-
-const bfaaStates = [
-	{
-		name: 'initial',
-		transitions: [{ action: 'impact', to: 'impact' }, { action: 'resolve', to: 'resolved' }],
-	},
-	{
-		name: 'resolved',
-		transitions: [{ action: 'stick', to: 'sticky' }, { action: 'reset', to: 'impact' }],
-	},
-	{
-		name: 'sticky',
-		transitions: [{ action: 'unstick', to: 'resolved' }, { action: 'close-click', to: 'resolved' }],
-	},
-	{
-		name: 'impact',
-		transitions: [{ action: 'stick', to: 'sticky' }, { action: 'resolve', to: 'resolved' }],
-	},
-];
-const bfaaEmitter = new EventEmitter();
-
-const bfaaFsm = new FSM(
-	bfaaEmitter,
-	bfaaStates,
-	bfaaStates.find((state) => state.name === 'initial'),
-);
-new ReduxExtensionConnector(bfaaFsm, '[UAP BFAA] ');
-bfaaFsm.init();
 
 const HIVI_RESOLVED_THRESHOLD = 0.995;
 const logGroup = 'hivi-bfaa';
@@ -101,10 +72,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		super.onAdReady();
 
 		if (resolvedState.isResolvedState(this.params)) {
-			bfaaFsm.dispatch('resolve');
 			this.setResolvedState(true);
 		} else {
-			bfaaFsm.dispatch('impact');
 			this.setResolvedState(false);
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
@@ -221,10 +190,8 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 
 		if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
-			bfaaFsm.dispatch('resolve');
 			this.setResolvedState();
 		} else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
-			bfaaFsm.dispatch('unstick');
 			this.container.style.top = '';
 			this.switchImagesInAd(false);
 		}
@@ -355,7 +322,6 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		stickinessBeforeCallback.call(this.config, this.adSlot, this.params);
 
 		if (!isSticky) {
-			bfaaFsm.dispatch('unstick');
 			this.removeUnstickButton();
 			this.adSlot.emitEvent(Stickiness.SLOT_UNSTICKED_STATE);
 			this.config.moveNavbar(0, SLIDE_OUT_TIME);
@@ -363,7 +329,6 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAA);
 			animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
 		} else {
-			bfaaFsm.dispatch('stick');
 			this.stickNavbar();
 			this.adSlot.emitEvent(Stickiness.SLOT_STICKED_STATE);
 			this.adSlot.getElement().classList.add(CSS_CLASSNAME_STICKY_BFAA);
@@ -381,7 +346,6 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	protected onCloseClicked(): void {
-		bfaaFsm.dispatch('close-click');
 		this.adSlot.emitEvent(Stickiness.SLOT_FORCE_UNSTICK);
 		this.unstickImmediately();
 	}
