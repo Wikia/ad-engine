@@ -16,6 +16,7 @@ import {
 import { UapVideoSettings } from '../../uap-video-settings';
 import { UapParams, UapState } from '../../universal-ad-package';
 import { BigFancyAdTheme } from '../theme';
+import { HiviBfaa2Ui } from './hivi-bfaa-2-ui';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 
 const HIVI_RESOLVED_THRESHOLD = 0.995;
@@ -106,6 +107,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	protected config: BigFancyAdAboveConfig;
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
+	ui = new HiviBfaa2Ui();
 
 	constructor(protected adSlot: AdSlot, public params: UapParams) {
 		super(adSlot, params);
@@ -118,7 +120,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			}
 			if (state.name === STATES.RESOLVED) {
 				slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.resolved);
-				this.switchImagesInAd(true);
+				this.ui.switchImagesInAd(this.params, true);
 				this.adSlot.addClass(CSS_CLASSNAME_THEME_RESOLVED);
 
 				this.updateAdSizes();
@@ -130,7 +132,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			if (state.name === STATES.IMPACT) {
 				this.adSlot.addClass(CSS_CLASSNAME_IMPACT_BFAA);
 				slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
-				this.switchImagesInAd(false);
+				this.ui.switchImagesInAd(this.params, false);
 
 				this.updateAdSizes();
 				// TODO: Update body padding
@@ -256,20 +258,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		this.container.appendChild(advertisementLabel.render());
 	}
 
-	switchImagesInAd(isResolved: boolean): void {
-		if (this.params.image2 && this.params.image2.background) {
-			if (isResolved) {
-				this.params.image2.element.classList.remove('hidden-state');
-				this.params.image1.element.classList.add('hidden-state');
-			} else {
-				this.params.image2.element.classList.add('hidden-state');
-				this.params.image1.element.classList.remove('hidden-state');
-			}
-		} else {
-			this.params.image1.element.classList.remove('hidden-state');
-		}
-	}
-
 	get currentWidth(): number {
 		return this.config.mainContainer.offsetWidth;
 	}
@@ -306,7 +294,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		const heightFactor = (state.height.default - heightDiff * currentState) / 100;
 		const relativeHeight = this.aspectScroll * heightFactor;
 
-		this.updateVideoSize(relativeHeight);
+		this.ui.updateVideoSize(this.video, this.params.videoAspectRatio * relativeHeight);
 
 		const style = mapValues(this.params.config.state, (styleProperty: UapState<number>) => {
 			const diff: number = styleProperty.default - styleProperty.resolved;
@@ -315,31 +303,13 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		});
 
 		if (this.params.thumbnail) {
-			this.setThumbnailStyle(style);
+			Object.assign(this.params.thumbnail.style, style);
 			if (this.video) {
-				this.setVideoStyle(style);
+				this.ui.setVideoStyle(this.video, style);
 			}
 		}
 
 		return slotTweaker.makeResponsive(this.adSlot, this.currentAspectRatio);
-	}
-
-	private setThumbnailStyle(style): void {
-		Object.assign(this.params.thumbnail.style, style);
-	}
-
-	private setVideoStyle(style) {
-		Object.assign(this.video.container.style, style);
-
-		if (this.video.isFullscreen()) {
-			this.video.container.style.height = '100%';
-		}
-	}
-
-	private updateVideoSize(relativeHeight: number): void {
-		if (this.video && !this.video.isFullscreen()) {
-			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
-		}
 	}
 
 	private stickNavbar(): void {
