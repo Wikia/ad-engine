@@ -1,7 +1,7 @@
-import { Dictionary, Type } from '@ad-engine/core';
+import { AdSlot, Dictionary, Type } from '@ad-engine/core';
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { TemplateDependenciesRegistry } from './template-dependencies-registry';
 import { TemplateMachine } from './template-machine';
-import { TemplateParamsRegistry } from './template-params-registry';
 import { TemplateStateHandler } from './template-state-handler';
 
 interface TemplateMachinePayload<
@@ -16,7 +16,7 @@ export class TemplateRegistry {
 	private settings = new Map<string, TemplateMachinePayload>();
 	private machines = new Map<string, TemplateMachine>();
 
-	constructor(private container: Container, private paramsRegistry: TemplateParamsRegistry) {}
+	constructor(private container: Container, private paramsRegistry: TemplateDependenciesRegistry) {}
 
 	register<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
 		templateName: string,
@@ -26,7 +26,7 @@ export class TemplateRegistry {
 		this.settings.set(templateName, { StateHandlerTypesDict, initialStateKey });
 	}
 
-	init(templateName: string, templateParams: Dictionary): void {
+	init(templateName: string, slot: AdSlot, templateParams: Dictionary = {}): void {
 		if (!this.settings.has(templateName)) {
 			throw new Error(`Template ${templateName} was not registered`);
 		}
@@ -34,7 +34,7 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		this.paramsRegistry.register(templateName, templateParams);
+		this.paramsRegistry.register(templateName, slot, templateParams);
 
 		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
 		const machine = this.createMachine(templateName, StateHandlerTypesDict, initialStateKey);
