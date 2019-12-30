@@ -12,10 +12,14 @@ import {
 	UapRatio,
 } from '../../../..';
 import { AdvertisementLabel } from '../../../interface/advertisement-label';
+import { animate } from '../../../interface/animate';
 import {
+	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_IMPACT_BFAA,
+	CSS_CLASSNAME_SLIDE_OUT_ANIMATION,
 	CSS_CLASSNAME_STICKY_BFAA,
 	CSS_CLASSNAME_THEME_RESOLVED,
+	FADE_IN_TIME,
 	SLIDE_OUT_TIME,
 } from '../../constants';
 import { UapVideoSettings } from '../../uap-video-settings';
@@ -31,6 +35,7 @@ const STATES = {
 	INITIAL: 'initial',
 	RESOLVED: 'resolved',
 	STICKY: 'sticky',
+	TRANSITION: 'transition',
 };
 const ACTIONS = {
 	IMPACT: 'impact',
@@ -60,15 +65,19 @@ const bfaaStates = [
 	{
 		name: STATES.STICKY,
 		transitions: [
-			{ action: ACTIONS.RESOLVE, to: STATES.RESOLVED },
+			{ action: ACTIONS.RESOLVE, to: STATES.TRANSITION },
 			{ action: ACTIONS.CLOSE, to: STATES.RESOLVED },
 		],
+	},
+	{
+		name: STATES.TRANSITION,
+		transitions: [{ action: ACTIONS.RESOLVE, to: STATES.RESOLVED }],
 	},
 	{
 		name: STATES.IMPACT,
 		transitions: [
 			{ action: ACTIONS.STICK, to: STATES.STICKY },
-			{ action: ACTIONS.RESOLVE, to: STATES.RESOLVED },
+			{ action: ACTIONS.RESOLVE, to: STATES.TRANSITION },
 		],
 	},
 ];
@@ -139,7 +148,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 			this.updateAdSizes();
 
-			this.moveNavbar(0, SLIDE_OUT_TIME);
+			this.moveNavbar(0, 0);
 			this.setBodyPaddingTop(`${this.aspectRatio.resolved}%`);
 		});
 
@@ -166,16 +175,17 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.stickNavbar();
 		});
 
+		entering$.pipe(ofState(STATES.TRANSITION)).subscribe(async () => {
+			this.platformConfig.moveNavbar(0, SLIDE_OUT_TIME);
+			await animate(this.container, CSS_CLASSNAME_SLIDE_OUT_ANIMATION, SLIDE_OUT_TIME);
+			this.adSlot.removeClass(CSS_CLASSNAME_STICKY_BFAA);
+			this.adSlot.removeClass(CSS_CLASSNAME_IMPACT_BFAA);
+			animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+			bfaaFsm.dispatch(ACTIONS.RESOLVE);
+		});
+
 		leaving$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
 			this.adSlot.removeClass(CSS_CLASSNAME_THEME_RESOLVED);
-		});
-		leaving$.pipe(ofState(STATES.STICKY)).subscribe(() => {
-			// TODO: Animation of scrolling the ad up to resolved
-			// But how do I know it's scrolling to resolved and not restarted?
-			this.adSlot.removeClass(CSS_CLASSNAME_STICKY_BFAA);
-		});
-		leaving$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
-			this.adSlot.removeClass(CSS_CLASSNAME_IMPACT_BFAA);
 		});
 
 		entering$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
@@ -223,11 +233,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 						bfaaFsm.dispatch(ACTIONS.RESOLVE);
 					}
 				});
-		});
-
-		// LEAVE - STATE
-		leaving$.pipe(ofState(STATES.STICKY)).subscribe(() => {
-			this.moveNavbar(0, SLIDE_OUT_TIME);
 		});
 
 		bfaaFsm.init();
@@ -372,3 +377,5 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		this.platformConfig.setBodyPaddingTop(padding);
 	}
 }
+
+// TODO: Page jumps when transitioning from impact state
