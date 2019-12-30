@@ -3,7 +3,7 @@ import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 import { Transition } from './template-state-transition';
 
-export class TemplateMachine<T extends Dictionary<TemplateStateHandler<string>[]>> {
+export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[]> = any> {
 	private get currentState(): TemplateState<keyof T> {
 		if (!this.states.has(this.currentStateKey)) {
 			throw new Error(`State (${this.currentStateKey}) does not exist.`);
@@ -14,12 +14,12 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<string>[]
 	private states: Map<keyof T, TemplateState<keyof T>> = new Map();
 	private currentStateKey: keyof T;
 
-	constructor(input: T, initialStateKey: keyof T) {
+	constructor(stateHandlersDict: T, initialStateKey: keyof T) {
 		this.currentStateKey = initialStateKey;
 		this.states = new Map(
-			Object.keys(input).map((key: keyof T) => [
-				key,
-				new TemplateState(key, this.transition, input[key]),
+			Object.keys(stateHandlersDict).map((stateKey: keyof T) => [
+				stateKey,
+				new TemplateState(stateKey, this.transition, stateHandlersDict[stateKey]),
 			]),
 		);
 	}
