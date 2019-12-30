@@ -13,6 +13,7 @@ import {
 } from '../../../..';
 import { AdvertisementLabel } from '../../../interface/advertisement-label';
 import { animate } from '../../../interface/animate';
+import { CloseButton } from '../../../interface/close-button';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_IMPACT_BFAA,
@@ -41,7 +42,6 @@ const ACTIONS = {
 	IMPACT: 'impact',
 	RESOLVE: 'resolve',
 	RESET: 'reset',
-	UNSTICK: 'unstick',
 	CLOSE: 'close-click',
 	STICK: 'stick',
 };
@@ -66,7 +66,7 @@ const bfaaStates = [
 		name: STATES.STICKY,
 		transitions: [
 			{ action: ACTIONS.RESOLVE, to: STATES.TRANSITION },
-			{ action: ACTIONS.CLOSE, to: STATES.RESOLVED },
+			{ action: ACTIONS.CLOSE, to: STATES.TRANSITION },
 		],
 	},
 	{
@@ -78,6 +78,7 @@ const bfaaStates = [
 		transitions: [
 			{ action: ACTIONS.STICK, to: STATES.STICKY },
 			{ action: ACTIONS.RESOLVE, to: STATES.TRANSITION },
+			{ action: ACTIONS.CLOSE, to: STATES.TRANSITION },
 		],
 	},
 ];
@@ -125,6 +126,7 @@ type BigFancyAdAboveConfig2 = BigFancyAdAboveConfig & {
 export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	protected platformConfig: BigFancyAdAboveConfig2;
 	protected gamConfig: UapConfig;
+	closeButton: HTMLElement;
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
 	ui = new HiviBfaa2Ui();
@@ -170,11 +172,11 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		});
 
 		entering$.pipe(ofState(STATES.STICKY)).subscribe(() => {
+			this.addCloseButton();
 			this.adSlot.addClass(CSS_CLASSNAME_STICKY_BFAA);
 			this.ui.switchImagesInAd(this.params, true);
 			this.stickNavbar();
 			this.updateAdSizes();
-			this.setBodyPaddingTop(`${100 / this.aspectRatio.resolved}%`);
 		});
 
 		entering$.pipe(ofState(STATES.TRANSITION)).subscribe(async () => {
@@ -190,6 +192,10 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		leaving$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
 			this.adSlot.removeClass(CSS_CLASSNAME_THEME_RESOLVED);
+		});
+
+		leaving$.pipe(ofState(STATES.STICKY)).subscribe(() => {
+			this.removeCloseButton();
 		});
 
 		entering$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
@@ -387,6 +393,21 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
 	}
-}
+	protected addCloseButton(): void {
+		if (!this.closeButton) {
+			this.closeButton = new CloseButton({
+				classNames: ['button-unstick'],
+				onClick: () => bfaaFsm.dispatch(ACTIONS.CLOSE),
+			}).render();
 
-// TODO: Page jumps when transitioning from impact state
+			this.container.appendChild(this.closeButton);
+		}
+	}
+
+	protected removeCloseButton(): void {
+		if (this.closeButton) {
+			this.closeButton.remove();
+			delete this.closeButton;
+		}
+	}
+}
