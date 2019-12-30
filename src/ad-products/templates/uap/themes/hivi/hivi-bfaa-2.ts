@@ -158,7 +158,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.default);
 			this.updateAdSizes();
 			this.moveNavbar(this.container.offsetHeight);
-			this.setBodyPaddingTop(`${100 / this.aspectRatio.default}%`); // TODO: Use difference between sizes
+			this.setBodyPaddingTop(`${100 / this.aspectRatio.default}%`);
 
 			createScrollObservable()
 				.pipe(takeUntil(leaving$))
@@ -173,6 +173,8 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.adSlot.addClass(CSS_CLASSNAME_STICKY_BFAA);
 			this.ui.switchImagesInAd(this.params, true);
 			this.stickNavbar();
+			this.updateAdSizes();
+			this.setBodyPaddingTop(`${100 / this.aspectRatio.resolved}%`);
 		});
 
 		entering$.pipe(ofState(STATES.TRANSITION)).subscribe(async () => {
