@@ -10,15 +10,15 @@ export class TemplateState<T extends string> {
 	) {}
 
 	async enter(): Promise<void> {
-		utils.logger(`State - ${name}`, 'enter');
+		utils.logger(`State - ${this.name}`, 'enter');
 		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(this.useTransition())));
-		utils.logger(`State - ${name}`, 'entered');
+		utils.logger(`State - ${this.name}`, 'entered');
 	}
 
 	async leave(): Promise<void> {
-		utils.logger(`State - ${name}`, 'leave');
+		utils.logger(`State - ${this.name}`, 'leave');
 		await Promise.all(this.handlers.map(async (handler) => handler.onLeave()));
-		utils.logger(`State - ${name}`, 'left');
+		utils.logger(`State - ${this.name}`, 'left');
 	}
 
 	private useTransition(): Transition<T> {
