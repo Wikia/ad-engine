@@ -31,7 +31,16 @@ templateRegistry.register(
 	},
 	'first',
 );
+templateRegistry.register(
+	'uap-2-copy',
+	{
+		first: [FirstMockHandler],
+		second: [SecondMockHandler],
+	},
+	'first',
+);
 
 templateRegistry.init('uap-2', { name: 'slot name' } as any, { slotName: 'I do not know' });
+// templateRegistry.init('uap-2-copy', { name: 'another slot' } as any, { slotName: 'another params' });
 
 new AdEngine().init();
