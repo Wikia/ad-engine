@@ -161,6 +161,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		entering$.pipe(ofState(STATES.STICKY)).subscribe(() => {
 			this.adSlot.addClass(CSS_CLASSNAME_STICKY_BFAA);
+			this.ui.switchImagesInAd(this.params, true);
 			this.stickNavbar();
 		});
 
