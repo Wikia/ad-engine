@@ -1,11 +1,11 @@
 import { utils } from '@ad-engine/core';
 import { TemplateStateHandler } from './template-state-handler';
-import { Transition } from './template-state-transition';
+import { TemplateTransition } from './template-state-transition';
 
 export class TemplateState<T extends string> {
 	constructor(
 		private name: string,
-		private transition: Transition<T>,
+		private transition: TemplateTransition<T>,
 		private handlers: TemplateStateHandler<T>[],
 	) {}
 
@@ -21,7 +21,7 @@ export class TemplateState<T extends string> {
 		utils.logger(`State - ${this.name}`, 'left');
 	}
 
-	private useTransition(): Transition<T> {
+	private useTransition(): TemplateTransition<T> {
 		let called = false;
 
 		return (targetStateKey) => {

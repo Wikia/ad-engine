@@ -1,7 +1,7 @@
 import { Dictionary } from '@ad-engine/core';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
-import { Transition } from './template-state-transition';
+import { TemplateTransition } from './template-state-transition';
 
 export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[]> = any> {
 	private get currentState(): TemplateState<keyof T> {
@@ -35,7 +35,7 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		this.currentState.enter();
 	}
 
-	private transition: Transition<keyof T> = async (targetStateKey) => {
+	private transition: TemplateTransition<keyof T> = async (targetStateKey) => {
 		if (this.currentStateKey === targetStateKey) {
 			throw new Error(
 				`Template ${this.templateName} - already is in ${this.currentStateKey} state`,
