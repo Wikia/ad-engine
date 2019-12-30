@@ -47,5 +47,3 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		await this.currentState.enter();
 	};
 }
-
-const a = new TemplateMachine('aaa', { first: [], second: [] }, 'first');
