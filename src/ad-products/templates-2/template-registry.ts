@@ -8,17 +8,27 @@ export class TemplateRegistry {
 
 	constructor(private container: Container) {}
 
+	init(templateName: string): void {
+		if (!this.machines.has(templateName)) {
+			throw new Error(`Template ${templateName} does not exist.`);
+		}
+
+		const machine = this.machines.get(templateName);
+
+		machine.init();
+	}
+
 	register<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
-		name: string,
+		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
 	): void {
 		const stateHandlersDict = Object.keys(StateHandlerTypesDict)
 			.map((stateKey: keyof T) => this.createStateHandlersDict(StateHandlerTypesDict, stateKey))
 			.reduce((result, curr) => ({ ...result, ...curr }), {});
-		const machine = new TemplateMachine(stateHandlersDict, initialStateKey);
+		const machine = new TemplateMachine(templateName, stateHandlersDict, initialStateKey);
 
-		this.machines.set(name, machine);
+		this.machines.set(templateName, machine);
 	}
 
 	private createStateHandlersDict<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(

@@ -13,8 +13,9 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 	}
 	private states: Map<keyof T, TemplateState<keyof T>> = new Map();
 	private currentStateKey: keyof T;
+	private initialized = false;
 
-	constructor(stateHandlersDict: T, initialStateKey: keyof T) {
+	constructor(private templateName: string, stateHandlersDict: T, initialStateKey: keyof T) {
 		this.currentStateKey = initialStateKey;
 		this.states = new Map(
 			Object.keys(stateHandlersDict).map((stateKey: keyof T) => [
@@ -24,6 +25,14 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		);
 	}
 
+	init(): void {
+		if (this.initialized) {
+			throw new Error(`Template ${this.templateName} already initialized`);
+		}
+
+		this.currentState.enter();
+	}
+
 	private transition: Transition<keyof T> = async (targetStateKey) => {
 		await this.currentState.leave();
 		this.currentStateKey = targetStateKey;
@@ -31,4 +40,4 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 	};
 }
 
-const a = new TemplateMachine({ first: [], second: [] }, 'first');
+const a = new TemplateMachine('aaa', { first: [], second: [] }, 'first');
