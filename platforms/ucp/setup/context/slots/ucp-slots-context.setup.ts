@@ -18,10 +18,10 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				sizes: [
 					{
 						viewportSize: [1024, 0],
-						sizes: [[728, 90], [970, 250]],
+						sizes: [[728, 90], [970, 250], [2, 2]],
 					},
 				],
-				defaultSizes: [[728, 90]],
+				defaultSizes: [[728, 90], [2, 2]],
 				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
@@ -42,6 +42,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 					{
 						viewportSize: [1024, 0],
 						sizes: [
+							[2, 2], // TODO: Move to template init
 							[728, 90],
 							[970, 66],
 							[970, 90],

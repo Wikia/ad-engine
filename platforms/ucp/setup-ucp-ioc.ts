@@ -5,6 +5,7 @@ import {
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
+	TemplatesSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
 import { context, InstantConfigService } from '@wikia/ad-engine';
@@ -18,6 +19,7 @@ import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup
 import { UcpWikiContextSetup } from './setup/context/wiki/ucp-wiki-context.setup';
 import { UcpDynamicSlotsSetup } from './setup/dynamic-slots/ucp-dynamic-slots.setup';
 import { UcpSlotsStateSetup } from './setup/state/slots/ucp-slots-state-setup';
+import { UcpTemplatesSetup } from './templates/templates.setup';
 
 export async function setupUcpIoc(): Promise<Container> {
 	const container = new Container();
@@ -25,6 +27,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
+	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(AdEngineRunnerSetup).to(UcpAdEngineRunnerSetup);
 	container.bind(AdsMode).to(UcpAdsMode);

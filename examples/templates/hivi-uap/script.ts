@@ -5,8 +5,6 @@ import {
 	BigFancyAdBelow,
 	context,
 	FloatingRail,
-	MOVE_NAVBAR,
-	SET_BODY_PADDING_TOP,
 	setupNpaContext,
 	slotPropertiesTrackingMiddleware,
 	slotTracker,
@@ -14,23 +12,11 @@ import {
 	templateService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
-import { Communicator, ofType, setupPostQuecast } from '@wikia/post-quecast';
 
 import customContext from '../../context';
 import '../../styles.scss';
 
 const { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } = universalAdPackage;
-
-function moveNavbar(offset = 0, time: number = SLIDE_OUT_TIME): void {
-	const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
-
-	if (navbarElement) {
-		navbarElement.style.transition = offset ? '' : `top ${time}ms ${CSS_TIMING_EASE_IN_CUBIC}`;
-		navbarElement.style.top = offset ? `${offset}px` : '';
-	}
-}
-
-setupPostQuecast();
 
 context.extend(customContext);
 
@@ -49,7 +35,20 @@ if (document.body.offsetWidth < 728) {
 
 setupNpaContext();
 
-templateService.register(BigFancyAdAbove, {});
+templateService.register(BigFancyAdAbove, {
+	moveNavbar: (offset = 0, time: number = SLIDE_OUT_TIME): void => {
+		const navbarElement: HTMLElement = document.querySelector('body > nav.navigation');
+
+		if (navbarElement) {
+			navbarElement.style.transition = offset ? '' : `top ${time}ms ${CSS_TIMING_EASE_IN_CUBIC}`;
+			navbarElement.style.top = offset ? `${offset}px` : '';
+		}
+	},
+	setBodyPaddingTop: (padding: string) => {
+		document.body.style.paddingTop = padding;
+	},
+});
+
 templateService.register(BigFancyAdBelow);
 templateService.register(FloatingRail);
 
@@ -61,17 +60,5 @@ slotTracker
 		// Trigger event tracking
 		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
 	});
-
-// TODO: Move theme with PQC
-const communicator = new Communicator();
-
-communicator.actions$.pipe(ofType(MOVE_NAVBAR)).subscribe(({ payload }) => {
-	const { height, time } = payload;
-	moveNavbar(height, time);
-});
-
-communicator.actions$.pipe(ofType(SET_BODY_PADDING_TOP)).subscribe(({ padding }) => {
-	document.body.style.paddingTop = padding;
-});
 
 new AdEngine().init();

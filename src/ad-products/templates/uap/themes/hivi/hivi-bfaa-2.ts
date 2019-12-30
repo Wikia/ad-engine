@@ -1,5 +1,4 @@
 import { AdSlot, context, scrollListener, slotTweaker, utils } from '@ad-engine/core';
-import { Communicator } from '@wikia/post-quecast';
 import * as EventEmitter from 'eventemitter3';
 import { isUndefined, mapValues } from 'lodash';
 import { BehaviorSubject, fromEvent, Observable, ReplaySubject, Subject } from 'rxjs';
@@ -26,8 +25,6 @@ import { HiviBfaa2Ui } from './hivi-bfaa-2-ui';
 import { BigFancyAdHiviTheme } from './hivi-theme';
 
 const HIVI_RESOLVED_THRESHOLD = 0.995;
-export const MOVE_NAVBAR = '[UAP HiVi BFAA] move navbar';
-export const SET_BODY_PADDING_TOP = '[UAP HiVi BFAA] set body padding top';
 
 const STATES = {
 	IMPACT: 'impact',
@@ -76,7 +73,6 @@ const bfaaStates = [
 	},
 ];
 const bfaaEmitter = new EventEmitter();
-const communicator = new Communicator();
 
 const bfaaFsm = new FSM(
 	bfaaEmitter,
@@ -113,8 +109,12 @@ function ofState(stateName: string) {
 	return filter((state: State) => state.name === stateName);
 }
 
+type BigFancyAdAboveConfig2 = BigFancyAdAboveConfig & {
+	setBodyPaddingTop: (padding: string) => void;
+};
+
 export class BfaaHiviTheme2 extends BigFancyAdTheme {
-	protected platformConfig: BigFancyAdAboveConfig;
+	protected platformConfig: BigFancyAdAboveConfig2;
 	protected gamConfig: UapConfig;
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
@@ -139,8 +139,8 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 			this.updateAdSizes();
 
-			this.setBodyPaddingTop(`${100 / this.currentAspectRatio}%`);
-			this.moveNavbar(0, 0);
+			this.moveNavbar(0, SLIDE_OUT_TIME);
+			this.setBodyPaddingTop(`${this.aspectRatio.resolved}%`);
 		});
 
 		entering$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
@@ -149,6 +149,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.default);
 			this.updateAdSizes();
 			this.moveNavbar(this.container.offsetHeight);
+			this.setBodyPaddingTop(`${100 / this.aspectRatio.default}%`); // TODO: Use difference between sizes
 
 			createScrollObservable()
 				.pipe(takeUntil(leaving$))
@@ -226,7 +227,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		// LEAVE - STATE
 		leaving$.pipe(ofState(STATES.STICKY)).subscribe(() => {
-			communicator.dispatch({ type: MOVE_NAVBAR, payload: { height: 0, time: SLIDE_OUT_TIME } });
+			this.moveNavbar(0, SLIDE_OUT_TIME);
 		});
 
 		bfaaFsm.init();
@@ -346,7 +347,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	private moveNavbar(height = 0, time = 0): void {
-		communicator.dispatch({ type: MOVE_NAVBAR, payload: { height, time } });
+		this.platformConfig.moveNavbar(height, time);
 	}
 
 	protected startStickiness() {
@@ -368,6 +369,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	private setBodyPaddingTop(padding: string): void {
-		communicator.dispatch({ type: SET_BODY_PADDING_TOP, padding: padding });
+		this.platformConfig.setBodyPaddingTop(padding);
 	}
 }
