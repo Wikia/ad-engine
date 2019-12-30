@@ -15,7 +15,6 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 	}
 	private states: Map<keyof T, TemplateState<keyof T>> = new Map();
 	private currentStateKey: keyof T;
-	private initialized = false;
 
 	constructor(private templateName: string, stateHandlersDict: T, initialStateKey: keyof T) {
 		this.currentStateKey = initialStateKey;
@@ -25,14 +24,12 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 				new TemplateState(stateKey, this.transition, stateHandlersDict[stateKey]),
 			]),
 		);
+
+		this.init();
 	}
 
-	init(): void {
-		if (this.initialized) {
-			throw new Error(`Template ${this.templateName} - already initialized`);
-		}
-
-		utils.logger(`Template ${this.templateName}`, 'load template');
+	private init(): void {
+		utils.logger(`Template ${this.templateName}`, 'initialize');
 		this.currentState.enter();
 	}
 
