@@ -15,20 +15,31 @@ export class TemplateRegistry {
 	): void {
 		const stateHandlersDict = Object.keys(StateHandlerTypesDict)
 			.map((stateKey: keyof T) => {
-				const StateHandlerTypes = StateHandlerTypesDict[stateKey];
-				const stateHandlers = StateHandlerTypes.map((StateHandlerType) =>
-					this.createStateHandler(StateHandlerType),
-				);
+				const stateHandlers = this.createStateHandlers(StateHandlerTypesDict, stateKey);
 
-				return { [stateKey]: stateHandlers };
+				return {
+					key: stateKey,
+					value: stateHandlers,
+				};
 			})
-			.reduce((result, curr) => ({ ...result, ...curr }), {});
+			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 		const machine = new TemplateMachine(stateHandlersDict, initialStateKey);
 
 		this.machines.set(name, machine);
 	}
 
-	private createStateHandler(StateHandlerType: Type<TemplateStateHandler>): TemplateStateHandler {
+	private createStateHandlers<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
+		StateHandlerTypesDict: T,
+		stateKey: keyof T,
+	): TemplateStateHandler<keyof T>[] {
+		const StateHandlerTypes = StateHandlerTypesDict[stateKey];
+
+		return StateHandlerTypes.map((StateHandlerType) => this.createStateHandler(StateHandlerType));
+	}
+
+	private createStateHandler<T extends string>(
+		StateHandlerType: Type<TemplateStateHandler<T>>,
+	): TemplateStateHandler<T> {
 		this.container.bind(StateHandlerType).scope('Transient');
 
 		return this.container.get(StateHandlerType);
