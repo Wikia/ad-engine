@@ -1,21 +1,23 @@
 import { Dictionary, Type } from '@ad-engine/core';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { TemplateMachine } from './template-machine';
+import { TemplateParamsRegistry } from './template-params-registry';
 import { TemplateStateHandler } from './template-state-handler';
 
 @Injectable()
 export class TemplateRegistry {
 	private machines = new Map<string, TemplateMachine>();
 
-	constructor(private container: Container) {}
+	constructor(private container: Container, private paramsRegistry: TemplateParamsRegistry) {}
 
-	init(templateName: string): void {
+	init(templateName: string, templateParams: Dictionary): void {
 		if (!this.machines.has(templateName)) {
 			throw new Error(`Template ${templateName} does not exist.`);
 		}
 
 		const machine = this.machines.get(templateName);
 
+		this.paramsRegistry.register(templateName, templateParams);
 		machine.init();
 	}
 

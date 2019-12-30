@@ -1,4 +1,4 @@
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary, utils } from '@ad-engine/core';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
@@ -32,6 +32,7 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 			throw new Error(`Template ${this.templateName} - already initialized`);
 		}
 
+		utils.logger(`Template ${this.templateName}`, 'load template');
 		this.currentState.enter();
 	}
 
