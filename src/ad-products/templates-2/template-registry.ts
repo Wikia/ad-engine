@@ -1,8 +1,9 @@
 import { Dictionary, Type } from '@ad-engine/core';
-import { Container } from '@wikia/dependency-injection';
+import { Container, Injectable } from '@wikia/dependency-injection';
 import { TemplateMachine } from './template-machine';
 import { TemplateStateHandler } from './template-state-handler';
 
+@Injectable()
 export class TemplateRegistry {
 	private machines = new Map<string, TemplateMachine>();
 

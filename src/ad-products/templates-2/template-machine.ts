@@ -6,7 +6,9 @@ import { Transition } from './template-state-transition';
 export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[]> = any> {
 	private get currentState(): TemplateState<keyof T> {
 		if (!this.states.has(this.currentStateKey)) {
-			throw new Error(`State (${this.currentStateKey}) does not exist.`);
+			throw new Error(
+				`Template ${this.templateName} - state (${this.currentStateKey}) does not exist.`,
+			);
 		}
 
 		return this.states.get(this.currentStateKey);
@@ -27,13 +29,19 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 
 	init(): void {
 		if (this.initialized) {
-			throw new Error(`Template ${this.templateName} already initialized`);
+			throw new Error(`Template ${this.templateName} - already initialized`);
 		}
 
 		this.currentState.enter();
 	}
 
 	private transition: Transition<keyof T> = async (targetStateKey) => {
+		if (this.currentStateKey === targetStateKey) {
+			throw new Error(
+				`Template ${this.templateName} - already is in ${this.currentStateKey} state`,
+			);
+		}
+
 		await this.currentState.leave();
 		this.currentStateKey = targetStateKey;
 		await this.currentState.enter();
