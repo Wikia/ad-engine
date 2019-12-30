@@ -14,18 +14,20 @@ export class TemplateRegistry {
 		initialStateKey: keyof T,
 	): void {
 		const stateHandlersDict = Object.keys(StateHandlerTypesDict)
-			.map((stateKey: keyof T) => {
-				const stateHandlers = this.createStateHandlers(StateHandlerTypesDict, stateKey);
-
-				return {
-					key: stateKey,
-					value: stateHandlers,
-				};
-			})
-			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
+			.map((stateKey: keyof T) => this.createStateHandlersDict(StateHandlerTypesDict, stateKey))
+			.reduce((result, curr) => ({ ...result, ...curr }), {});
 		const machine = new TemplateMachine(stateHandlersDict, initialStateKey);
 
 		this.machines.set(name, machine);
+	}
+
+	private createStateHandlersDict<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
+		StateHandlerTypesDict: T,
+		stateKey: keyof T,
+	): Dictionary<TemplateStateHandler<keyof T>[]> {
+		const stateHandlers = this.createStateHandlers(StateHandlerTypesDict, stateKey);
+
+		return { [stateKey]: stateHandlers };
 	}
 
 	private createStateHandlers<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
