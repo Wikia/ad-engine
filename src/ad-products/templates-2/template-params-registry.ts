@@ -15,10 +15,7 @@ export class TemplateParamsRegistry {
 		}
 
 		templateParams.slotName = templateParams.slotName.split(',').shift();
-		this.container
-			.bind(TemplateParams)
-			.scope('Transient')
-			.value({ ...templateParams, templateName });
+		this.container.bind(TemplateParams).value({ ...templateParams, templateName });
 	}
 
 	private slotNameExists(templateParams: Dictionary): templateParams is { slotName: string } {
