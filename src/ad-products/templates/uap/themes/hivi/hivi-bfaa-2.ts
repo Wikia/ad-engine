@@ -181,6 +181,8 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.adSlot.removeClass(CSS_CLASSNAME_STICKY_BFAA);
 			this.adSlot.removeClass(CSS_CLASSNAME_IMPACT_BFAA);
 			animate(this.adSlot.getElement(), CSS_CLASSNAME_FADE_IN_ANIMATION, FADE_IN_TIME);
+			window.scrollBy(0, -Math.min(this.getHeightDifferenceBetweenStates(), window.scrollY));
+
 			bfaaFsm.dispatch(ACTIONS.RESOLVE);
 		});
 
@@ -375,6 +377,13 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 	private setBodyPaddingTop(padding: string): void {
 		this.platformConfig.setBodyPaddingTop(padding);
+	}
+
+	private getHeightDifferenceBetweenStates(): number {
+		const width: number = this.container.offsetWidth;
+		const { aspectRatio } = this.params.config;
+
+		return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
 	}
 }
 
