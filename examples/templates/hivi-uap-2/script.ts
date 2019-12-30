@@ -32,6 +32,6 @@ templateRegistry.register(
 	'first',
 );
 
-templateRegistry.init('uap-2');
+templateRegistry.init('uap-2', { slotName: 'I do not know' });
 
 new AdEngine().init();
