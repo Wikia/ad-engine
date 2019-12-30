@@ -1,6 +1,6 @@
 import { AdSlot, Dictionary, Type } from '@ad-engine/core';
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { TemplateDependenciesRegistry } from './template-dependencies-registry';
+import { TemplateDependenciesContainer } from './template-dependencies-container';
 import { TemplateMachine } from './template-machine';
 import { TemplateStateHandler } from './template-state-handler';
 
@@ -16,7 +16,10 @@ export class TemplateRegistry {
 	private settings = new Map<string, TemplateMachinePayload>();
 	private machines = new Map<string, TemplateMachine>();
 
-	constructor(private container: Container, private paramsRegistry: TemplateDependenciesRegistry) {}
+	constructor(
+		private container: Container,
+		private dependenciesContainer: TemplateDependenciesContainer,
+	) {}
 
 	register<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
 		templateName: string,
@@ -34,7 +37,7 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		this.paramsRegistry.register(templateName, slot, templateParams);
+		this.dependenciesContainer.bindTemplateSlotAndParams(templateName, slot, templateParams);
 
 		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
 		const machine = this.createMachine(templateName, StateHandlerTypesDict, initialStateKey);
