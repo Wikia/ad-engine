@@ -138,7 +138,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		this.platformConfig = context.get('templates.bfaa') || {};
 		this.gamConfig = params.config;
 
-		// ENTER - UI
 		entering$.pipe(ofState(STATES.INITIAL)).subscribe(() => {
 			this.startStickiness();
 		});
@@ -152,6 +151,19 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 			this.moveNavbar(0, 0);
 			this.setBodyPaddingTop(`${this.aspectRatio.resolved}%`);
+
+			// Stick on scroll only if not viewable and not timeout
+			this.viewableAndTimeoutRunning$
+				.pipe(
+					filter((running) => !!running),
+					switchMap(() => {
+						return createScrollObservable().pipe(
+							takeUntil(this.viewableAndTimeoutRunning$.pipe(filter((running) => !running))),
+							takeUntil(leaving$),
+						);
+					}),
+				)
+				.subscribe(() => bfaaFsm.dispatch(ACTIONS.STICK));
 		});
 
 		entering$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
@@ -169,6 +181,24 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 					this.updateAdSizes();
 					this.moveNavbar(this.container.offsetHeight);
 				});
+
+			// When smaller than HIVI_RESOLVED_THRESHOLD
+			createScrollObservable()
+				.pipe(
+					takeUntil(leaving$),
+					filter(() => this.currentState >= HIVI_RESOLVED_THRESHOLD),
+					take(1),
+					withLatestFrom(this.viewableAndTimeoutRunning$),
+				)
+				.subscribe(([_, running]) => {
+					if (running) {
+						// if not timeout and not viewable
+						bfaaFsm.dispatch(ACTIONS.STICK);
+					} else {
+						// if timeout and viewable
+						bfaaFsm.dispatch(ACTIONS.RESOLVE);
+					}
+				});
 		});
 
 		entering$.pipe(ofState(STATES.STICKY)).subscribe(() => {
@@ -177,6 +207,16 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.ui.switchImagesInAd(this.params, true);
 			this.stickNavbar();
 			this.updateAdSizes();
+
+			// Unstick on scroll only if viewable and timeout
+			this.viewableAndTimeoutRunning$
+				.pipe(
+					filter((running) => !running),
+					takeUntil(leaving$),
+					switchMap(() => createScrollObservable()),
+					take(1),
+				)
+				.subscribe(() => bfaaFsm.dispatch(ACTIONS.RESOLVE));
 		});
 
 		entering$.pipe(ofState(STATES.TRANSITION)).subscribe(async () => {
@@ -196,53 +236,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		leaving$.pipe(ofState(STATES.STICKY)).subscribe(() => {
 			this.removeCloseButton();
-		});
-
-		entering$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
-			// Stick on scroll only if not viewable and not timeout
-			this.viewableAndTimeoutRunning$
-				.pipe(
-					filter((running) => !!running),
-					switchMap(() => {
-						return createScrollObservable().pipe(
-							takeUntil(this.viewableAndTimeoutRunning$.pipe(filter((running) => !running))),
-							takeUntil(leaving$),
-						);
-					}),
-				)
-				.subscribe(() => bfaaFsm.dispatch(ACTIONS.STICK));
-		});
-
-		entering$.pipe(ofState(STATES.STICKY)).subscribe(() => {
-			// Unstick on scroll only if viewable and timeout
-			this.viewableAndTimeoutRunning$
-				.pipe(
-					filter((running) => !running),
-					takeUntil(leaving$),
-					switchMap(() => createScrollObservable()),
-					take(1),
-				)
-				.subscribe(() => bfaaFsm.dispatch(ACTIONS.RESOLVE));
-		});
-
-		entering$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
-			// When smaller than HIVI_RESOLVED_THRESHOLD
-			createScrollObservable()
-				.pipe(
-					takeUntil(leaving$),
-					filter(() => this.currentState >= HIVI_RESOLVED_THRESHOLD),
-					take(1),
-					withLatestFrom(this.viewableAndTimeoutRunning$),
-				)
-				.subscribe(([_, running]) => {
-					if (running) {
-						// if not timeout and not viewable
-						bfaaFsm.dispatch(ACTIONS.STICK);
-					} else {
-						// if timeout and viewable
-						bfaaFsm.dispatch(ACTIONS.RESOLVE);
-					}
-				});
 		});
 
 		bfaaFsm.init();
@@ -411,3 +404,5 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		}
 	}
 }
+
+// TODO: Emit events
