@@ -15,6 +15,11 @@ import { Container } from '@wikia/dependency-injection';
 
 import customContext from '../../context';
 import '../../styles.scss';
+import { ImpactHandler } from './handlers/impact-handler';
+import { InitialHandler } from './handlers/initial-handler';
+import { ResolvedHandler } from './handlers/resolved-handler';
+import { StickyHandler } from './handlers/sticky-handler';
+import { TransitionHandler } from './handlers/transition-handler';
 import { overwriteCustomAdLoader } from './overwrite-custom-ad-loader';
 
 const { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } = universalAdPackage;
@@ -65,11 +70,11 @@ const templateRegistry = container.get(TemplateRegistry);
 templateRegistry.register(
 	'bfaa',
 	{
-		impact: [],
-		initial: [],
-		resolved: [],
-		sticky: [],
-		transition: [],
+		impact: [ImpactHandler],
+		initial: [InitialHandler],
+		resolved: [ResolvedHandler],
+		sticky: [StickyHandler],
+		transition: [TransitionHandler],
 	},
 	'initial',
 );
