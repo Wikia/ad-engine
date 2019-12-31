@@ -10,7 +10,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class TransitionHandler implements TemplateStateHandler {
 	constructor(private params: TemplateParams, private slot: TemplateAdSlot) {}
 
-	async onEnter(transition: TemplateTransition): Promise<void> {}
+	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {}
 
 	async onLeave(): Promise<void> {}
 }
