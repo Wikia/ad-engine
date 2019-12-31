@@ -37,7 +37,12 @@ module.exports = () => ({
 			getTypeScriptLoader({
 				include,
 				paths,
-				reportFiles: ['src/**/*.ts', 'platforms/**/*.ts'],
+				reportFiles: [
+					'src/**/*.ts',
+					'platforms/**/*.ts',
+					'examples/**/template-registry-demo/**/*.ts',
+					'examples/**/template-registry-uap/**/*.ts',
+				],
 			}),
 			{
 				test: /\.s?css$/,
