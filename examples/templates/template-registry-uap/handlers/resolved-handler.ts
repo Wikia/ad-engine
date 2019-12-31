@@ -1,16 +1,51 @@
 import {
+	slotTweaker,
 	TemplateAdSlot,
 	TemplateParams,
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { Subject } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { CSS_CLASSNAME_THEME_RESOLVED } from '../../../../src/ad-products/templates/uap/constants';
+import { createScrollObservable } from '../../../../src/ad-products/templates/uap/themes/hivi/hivi-bfaa-2';
+import { HandlersShared } from '../helpers/handlers-shared';
 
 @Injectable()
 export class ResolvedHandler implements TemplateStateHandler {
-	constructor(private params: TemplateParams, private slot: TemplateAdSlot) {}
+	unsubscribe$ = new Subject();
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {}
+	constructor(
+		private params: TemplateParams,
+		private slot: TemplateAdSlot,
+		private shared: HandlersShared,
+	) {}
+
+	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
+		console.log('resolved', this.params);
+		slotTweaker.setPaddingBottom(this.shared.readyElement, this.params.config.aspectRatio.resolved);
+		this.shared.ui.switchImagesInAd(this.params as any, true);
+		this.slot.addClass(CSS_CLASSNAME_THEME_RESOLVED);
+
+		this.shared.updateAdSizes();
+
+		this.shared.config.moveNavbar(0, 0);
+		this.shared.setBodyPaddingTop(`${this.shared.aspectRatio.resolved}%`);
+
+		// Stick on scroll only if not viewable and not timeout
+		this.shared.viewableAndTimeoutRunning$
+			.pipe(
+				filter((running) => !!running),
+				switchMap(() => {
+					return createScrollObservable().pipe(
+						takeUntil(this.shared.viewableAndTimeoutRunning$.pipe(filter((running) => !running))),
+						takeUntil(this.unsubscribe$),
+					);
+				}),
+			)
+			.subscribe(() => transition('sticky'));
+	}
 
 	async onLeave(): Promise<void> {}
 }

@@ -92,7 +92,7 @@ const bfaaFsm = new FSM(
 /* tslint:disable */
 new ReduxExtensionConnector(bfaaFsm, '[UAP BFAA] ');
 
-function createScrollObservable(): Observable<any> {
+export function createScrollObservable(): Observable<any> {
 	// TODO: Create observable monitoring subscriptions
 	return new Observable((observer) => {
 		const listenerId = scrollListener.addCallback(() => {
@@ -119,7 +119,7 @@ function ofState(stateName: string) {
 	return filter((state: State) => state.name === stateName);
 }
 
-type BigFancyAdAboveConfig2 = BigFancyAdAboveConfig & {
+export type BigFancyAdAboveConfig2 = BigFancyAdAboveConfig & {
 	setBodyPaddingTop: (padding: string) => void;
 };
 
@@ -139,6 +139,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		this.gamConfig = params.config;
 
 		entering$.pipe(ofState(STATES.INITIAL)).subscribe(() => {
+			console.log('start');
 			this.startStickiness();
 		});
 

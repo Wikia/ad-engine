@@ -1,16 +1,13 @@
-import {
-	TemplateAdSlot,
-	TemplateParams,
-	TemplateStateHandler,
-	TemplateTransition,
-} from '@wikia/ad-engine';
+import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class ImpactHandler implements TemplateStateHandler {
-	constructor(private params: TemplateParams, private slot: TemplateAdSlot) {}
+	constructor() {}
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {}
+	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
+		console.log('impact');
+	}
 
 	async onLeave(): Promise<void> {}
 }
