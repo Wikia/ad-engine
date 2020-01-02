@@ -40,7 +40,7 @@ export class TemplateRegistry {
 		this.dependenciesManager.provideDependencies(templateName, slot, templateParams);
 
 		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
-		const stateHandlersDict = this.createStateHandlersOfTemplateDict(StateHandlerTypesDict);
+		const stateHandlersDict = this.createStateHandlersDict(StateHandlerTypesDict);
 
 		this.dependenciesManager.resetDependencies();
 
@@ -49,22 +49,14 @@ export class TemplateRegistry {
 		this.machines.set(templateName, machine);
 	}
 
-	private createStateHandlersOfTemplateDict<
-		T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>
-	>(StateHandlerTypesDict: T): Dictionary<TemplateStateHandler<keyof T>[]> {
+	private createStateHandlersDict<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
+		StateHandlerTypesDict: T,
+	): Dictionary<TemplateStateHandler<keyof T>[]> {
 		return Object.keys(StateHandlerTypesDict)
-			.map((stateKey: keyof T) =>
-				this.createStateHandlersOfStateDict(StateHandlerTypesDict, stateKey),
-			)
+			.map((stateKey: keyof T) => ({
+				[stateKey]: this.createStateHandlers(StateHandlerTypesDict, stateKey),
+			}))
 			.reduce((result, curr) => ({ ...result, ...curr }), {});
-	}
-
-	private createStateHandlersOfStateDict<
-		T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>
-	>(StateHandlerTypesDict: T, stateKey: keyof T): Dictionary<TemplateStateHandler<keyof T>[]> {
-		const stateHandlers = this.createStateHandlers(StateHandlerTypesDict, stateKey);
-
-		return { [stateKey]: stateHandlers };
 	}
 
 	private createStateHandlers<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
