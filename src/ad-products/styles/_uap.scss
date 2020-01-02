@@ -491,6 +491,7 @@ body.ctp-vuap-loaded {
 	transition: height $uap-video-animation-duration ease;
 	top: 0;
 
+	// TODO: Is this CSS change safe?
 	//&.theme-hivi:not(.theme-resolved):not(.sticky-bfaa),
 	//&.theme-hivi.theme-resolved:not(.theme-locked):not(.sticky-iab) {
 	//	position: fixed;
