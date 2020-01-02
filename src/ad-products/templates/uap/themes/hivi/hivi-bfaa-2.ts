@@ -139,7 +139,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		this.gamConfig = params.config;
 
 		entering$.pipe(ofState(STATES.INITIAL)).subscribe(() => {
-			console.log('start');
 			this.startStickiness();
 		});
 
