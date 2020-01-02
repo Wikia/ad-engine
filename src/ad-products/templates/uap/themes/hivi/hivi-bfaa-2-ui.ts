@@ -29,4 +29,7 @@ export class HiviBfaa2Ui {
 			video.container.style.height = '100%';
 		}
 	}
+	setBodyPaddingTop(padding: string): void {
+		document.body.style.paddingTop = padding;
+	}
 }

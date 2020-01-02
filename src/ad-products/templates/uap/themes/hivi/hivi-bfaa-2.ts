@@ -147,7 +147,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.updateAdSizes();
 
 			this.moveNavbar(0, 0);
-			this.setBodyPaddingTop(`${this.aspectRatio.resolved}%`);
+			this.ui.setBodyPaddingTop(`${this.aspectRatio.resolved}%`);
 
 			// Stick on scroll only if not viewable and not timeout
 			this.viewableAndTimeoutRunning$
@@ -169,7 +169,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.default);
 			this.updateAdSizes();
 			this.moveNavbar(this.container.offsetHeight);
-			this.setBodyPaddingTop(`${100 / this.aspectRatio.default}%`);
+			this.ui.setBodyPaddingTop(`${100 / this.aspectRatio.default}%`);
 
 			createScrollObservable()
 				.pipe(takeUntil(leaving$))
@@ -393,10 +393,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.closeButton.remove();
 			delete this.closeButton;
 		}
-	}
-
-	private setBodyPaddingTop(padding: string): void {
-		document.body.style.paddingTop = padding;
 	}
 }
 

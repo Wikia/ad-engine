@@ -1,9 +1,7 @@
 import {
 	AdSlot,
 	BigFancyAdAboveConfig,
-	BigFancyAdHiviTheme,
 	context,
-	HiviBfaa2Ui,
 	PorvataPlayer,
 	slotTweaker,
 	TemplateParams,
@@ -15,6 +13,8 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { isUndefined, mapValues } from 'lodash';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { HiviBfaa2Ui } from '../../../../src/ad-products/templates/uap/themes/hivi/hivi-bfaa-2-ui';
+import { BigFancyAdHiviTheme } from '../../../../src/ad-products/templates/uap/themes/hivi/hivi-theme';
 
 const { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } = universalAdPackage;
 

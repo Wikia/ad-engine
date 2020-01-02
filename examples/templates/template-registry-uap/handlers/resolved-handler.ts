@@ -1,6 +1,4 @@
 import {
-	createScrollObservable,
-	CSS_CLASSNAME_THEME_RESOLVED,
 	slotTweaker,
 	TemplateAdSlot,
 	TemplateParams,
@@ -10,6 +8,8 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { CSS_CLASSNAME_THEME_RESOLVED } from '../../../../src/ad-products/templates/uap/constants';
+import { createScrollObservable } from '../../../../src/ad-products/templates/uap/themes/hivi/hivi-bfaa-2';
 import { HandlersShared } from '../helpers/handlers-shared';
 
 @Injectable()
@@ -31,6 +31,7 @@ export class ResolvedHandler implements TemplateStateHandler {
 		this.shared.updateAdSizes();
 
 		this.shared.config.moveNavbar(0, 0);
+		this.shared.ui.setBodyPaddingTop(`${this.shared.aspectRatio.resolved}%`);
 
 		// Stick on scroll only if not viewable and not timeout
 		this.shared.viewableAndTimeoutRunning$
