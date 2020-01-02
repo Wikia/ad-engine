@@ -9,7 +9,6 @@ coverage
 examples/**/dist/*
 node_modules
 npm-debug.log
-.npm_cache/
 
 tests/allure-results/*
 !tests/allure-results/categories.json
