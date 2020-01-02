@@ -60,3 +60,23 @@ export function timeoutReject(msToTimeout: number): Promise<any> {
 export function createWithTimeout(func: (...args: any) => any, msToTimeout = 2000): Promise<any> {
 	return Promise.race([new Promise(func), timeoutReject(msToTimeout)]);
 }
+
+type PromiseExecutor<T> = ConstructorParameters<PromiseConstructor>[0];
+type PromiseResolve<T> = Parameters<PromiseExecutor<T>>[0];
+type PromiseReject = Parameters<PromiseExecutor<any>>[1];
+export type ExtendedPromise<T> = Promise<T> & { resolve: PromiseResolve<T>; reject: PromiseReject };
+
+export function createExtendedPromise<T = void>(): ExtendedPromise<T> {
+	let resolve: ExtendedPromise<T>['resolve'];
+	let reject: ExtendedPromise<T>['reject'];
+
+	const promise = new Promise<T>((res, rej) => {
+		resolve = res;
+		reject = rej;
+	});
+
+	promise['resolve'] = resolve;
+	promise['reject'] = reject;
+
+	return promise as ExtendedPromise<T>;
+}

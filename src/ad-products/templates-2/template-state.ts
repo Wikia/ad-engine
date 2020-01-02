@@ -10,8 +10,15 @@ export class TemplateState<T extends string> {
 	) {}
 
 	async enter(): Promise<void> {
+		const transitionCompleted = utils.createExtendedPromise();
+
 		utils.logger(`State - ${this.name}`, 'enter');
-		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(this.useTransition())));
+		await Promise.all(
+			this.handlers.map(async (handler) =>
+				handler.onEnter(this.useTransition(transitionCompleted)),
+			),
+		);
+		transitionCompleted.resolve();
 		utils.logger(`State - ${this.name}`, 'entered');
 	}
 
@@ -21,10 +28,12 @@ export class TemplateState<T extends string> {
 		utils.logger(`State - ${this.name}`, 'left');
 	}
 
-	private useTransition(): TemplateTransition<T> {
+	private useTransition(ready: Promise<void>): TemplateTransition<T> {
 		let called = false;
 
-		return (targetStateKey) => {
+		return async (targetStateKey) => {
+			await ready;
+
 			if (called) {
 				throw new Error(
 					'Attempting to call transition second time. ' +

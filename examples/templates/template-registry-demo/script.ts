@@ -1,7 +1,11 @@
 import { AdEngine, TemplateRegistry } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import '../../styles.scss';
+import { FirstAMockHandler } from './first-a-mock-handler';
+import { FirstBMockHandler } from './first-b-mock-handler';
 import { FirstMockHandler } from './first-mock-handler';
+import { SecondAMockHandler } from './second-a-mock-handler';
+import { SecondBMockHandler } from './second-b-mock-handler';
 import { SecondMockHandler } from './second-mock-handler';
 
 const container = new Container();
@@ -10,8 +14,8 @@ const templateRegistry = container.get(TemplateRegistry);
 templateRegistry.register(
 	'uap-2',
 	{
-		first: [FirstMockHandler],
-		second: [SecondMockHandler],
+		first: [FirstAMockHandler, FirstBMockHandler],
+		second: [SecondAMockHandler, SecondBMockHandler],
 	},
 	'first',
 );
