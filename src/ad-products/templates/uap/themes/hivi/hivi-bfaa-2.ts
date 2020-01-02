@@ -119,12 +119,8 @@ function ofState(stateName: string) {
 	return filter((state: State) => state.name === stateName);
 }
 
-export type BigFancyAdAboveConfig2 = BigFancyAdAboveConfig & {
-	setBodyPaddingTop: (padding: string) => void;
-};
-
 export class BfaaHiviTheme2 extends BigFancyAdTheme {
-	protected platformConfig: BigFancyAdAboveConfig2;
+	protected platformConfig: BigFancyAdAboveConfig;
 	protected gamConfig: UapConfig;
 	closeButton: HTMLElement;
 	video: PorvataPlayer;
@@ -140,6 +136,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		entering$.pipe(ofState(STATES.INITIAL)).subscribe(() => {
 			this.startStickiness();
+			this.container.classList.add('theme-hivi');
 		});
 
 		entering$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
@@ -250,7 +247,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 	// This is run next
 	onAdReady(): void {
-		this.container.classList.add('theme-hivi');
 		this.addAdvertisementLabel();
 
 		resolvedState.isResolvedState(this.params)
@@ -346,7 +342,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	}
 
 	private stickNavbar(): void {
-		// TODO: Refactor
 		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.gamConfig;
 		const resolvedHeight: number = width / aspectRatio.resolved;
@@ -376,10 +371,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		);
 	}
 
-	private setBodyPaddingTop(padding: string): void {
-		this.platformConfig.setBodyPaddingTop(padding);
-	}
-
 	private getHeightDifferenceBetweenStates(): number {
 		const width: number = this.container.offsetWidth;
 		const { aspectRatio } = this.params.config;
@@ -402,6 +393,10 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 			this.closeButton.remove();
 			delete this.closeButton;
 		}
+	}
+
+	private setBodyPaddingTop(padding: string): void {
+		document.body.style.paddingTop = padding;
 	}
 }
 

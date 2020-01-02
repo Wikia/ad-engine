@@ -22,10 +22,6 @@ export function getBfaaConfig():
 				navbarElement.style.top = offset ? `${offset}px` : '';
 			}
 		},
-		setBodyPaddingTop: (padding: string) => {
-			document.body.style.paddingTop = padding;
-		},
-
 		onInit(adSlot: AdSlot, params: UapParams, config: BigFancyAdAboveConfig): void {
 			slotsContext.setupSlotVideoAdUnit(adSlot, params);
 		},

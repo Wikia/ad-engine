@@ -44,9 +44,6 @@ templateService.register(BigFancyAdAbove, {
 			navbarElement.style.top = offset ? `${offset}px` : '';
 		}
 	},
-	setBodyPaddingTop: (padding: string) => {
-		document.body.style.paddingTop = padding;
-	},
 });
 
 templateService.register(BigFancyAdBelow);
