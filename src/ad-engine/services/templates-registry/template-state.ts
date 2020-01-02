@@ -12,15 +12,12 @@ export class TemplateState<T extends string> {
 
 	async enter(): Promise<void> {
 		const transitionCompleted = createExtendedPromise();
+		const transition = this.useTransition(transitionCompleted);
 
 		logger(`State - ${this.name}`, 'enter');
-		await Promise.all(
-			this.handlers.map(async (handler) =>
-				handler.onEnter(this.useTransition(transitionCompleted)),
-			),
-		);
-		transitionCompleted.resolve();
+		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(transition)));
 		logger(`State - ${this.name}`, 'entered');
+		transitionCompleted.resolve();
 	}
 
 	async leave(): Promise<void> {
@@ -29,16 +26,20 @@ export class TemplateState<T extends string> {
 		logger(`State - ${this.name}`, 'left');
 	}
 
-	private useTransition(ready: Promise<void>): TemplateTransition<T> {
+	private useTransition(completed: Promise<void>): TemplateTransition<T> {
 		let called = false;
 
 		return async (targetStateKey) => {
-			await ready;
+			await completed;
 
 			if (called) {
 				throw new Error(
-					'Attempting to call transition second time. ' +
-						'You may need to create better "onLeave" method to clean up any listeners.',
+					// tslint:disable-next-line:prefer-template
+					'Attempting to call transition second time.\n' +
+						'This may be caused by:\n' +
+						'- not cleaning listeners in an "onLeave" method,\n' +
+						'- calling transition in a different handler at the same time.\n' +
+						'You may suppress this error by placing transition method inside a try catch block.\n',
 				);
 			}
 

@@ -7,6 +7,7 @@ export class FirstBMockHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'second'>): Promise<void> {
 		console.log(`first - b enter`);
+		transition('second');
 	}
 
 	async onLeave(): Promise<void> {
