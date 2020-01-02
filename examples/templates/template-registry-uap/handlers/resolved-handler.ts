@@ -1,11 +1,12 @@
 import {
+	AdSlot,
+	Dictionary,
 	slotTweaker,
-	TemplateAdSlot,
-	TemplateParams,
+	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { CSS_CLASSNAME_THEME_RESOLVED } from '../../../../src/ad-products/templates/uap/constants';
@@ -17,8 +18,8 @@ export class ResolvedHandler implements TemplateStateHandler {
 	unsubscribe$ = new Subject();
 
 	constructor(
-		private params: TemplateParams,
-		private slot: TemplateAdSlot,
+		@Inject(TEMPLATE.PARAMS) private params: Dictionary,
+		@Inject(TEMPLATE.SLOT) private slot: AdSlot,
 		private shared: HandlersShared,
 	) {}
 

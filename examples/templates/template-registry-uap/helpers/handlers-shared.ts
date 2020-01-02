@@ -2,15 +2,16 @@ import {
 	AdSlot,
 	BigFancyAdAboveConfig,
 	context,
+	Dictionary,
 	PorvataPlayer,
 	slotTweaker,
-	TemplateParams,
+	TEMPLATE,
 	UapRatio,
 	UapState,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { isUndefined, mapValues } from 'lodash';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { HiviBfaa2Ui } from '../../../../src/ad-products/templates/uap/themes/hivi/hivi-bfaa-2-ui';
@@ -56,7 +57,7 @@ export class HandlersShared {
 		},
 	};
 
-	constructor(private params: TemplateParams) {
+	constructor(@Inject(TEMPLATE.PARAMS) private params: Dictionary) {
 		// I don't like that handlers have to know to what template they are assigned
 		// this could be solved in something like TemplateParams etc.
 		this.platformConfig = context.get('templates.bfaa') || {};

@@ -1,6 +1,6 @@
 import { AdSlot, Dictionary, Type } from '@ad-engine/core';
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { TemplateDependenciesContainer } from './template-dependencies-container';
+import { TemplateDependenciesManager } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
 import { TemplateStateHandler } from './template-state-handler';
 
@@ -18,7 +18,7 @@ export class TemplateRegistry {
 
 	constructor(
 		private container: Container,
-		private dependenciesContainer: TemplateDependenciesContainer,
+		private dependenciesManager: TemplateDependenciesManager,
 	) {}
 
 	register<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
@@ -37,30 +37,31 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		this.dependenciesContainer.bindTemplateSlotAndParams(templateName, slot, templateParams);
+		this.dependenciesManager.provideDependencies(templateName, slot, templateParams);
 
 		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
-		const machine = this.createMachine(templateName, StateHandlerTypesDict, initialStateKey);
+		const stateHandlersDict = this.createStateHandlersOfTemplateDict(StateHandlerTypesDict);
+
+		this.dependenciesManager.resetDependencies();
+
+		const machine = new TemplateMachine(templateName, stateHandlersDict, initialStateKey);
 
 		this.machines.set(templateName, machine);
 	}
 
-	private createMachine<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
-		templateName: string,
-		StateHandlerTypesDict: T,
-		initialStateKey: keyof T,
-	): TemplateMachine<Dictionary<TemplateStateHandler<keyof T>[]>> {
-		const stateHandlersDict = Object.keys(StateHandlerTypesDict)
-			.map((stateKey: keyof T) => this.createStateHandlersDict(StateHandlerTypesDict, stateKey))
+	private createStateHandlersOfTemplateDict<
+		T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>
+	>(StateHandlerTypesDict: T): Dictionary<TemplateStateHandler<keyof T>[]> {
+		return Object.keys(StateHandlerTypesDict)
+			.map((stateKey: keyof T) =>
+				this.createStateHandlersOfStateDict(StateHandlerTypesDict, stateKey),
+			)
 			.reduce((result, curr) => ({ ...result, ...curr }), {});
-
-		return new TemplateMachine(templateName, stateHandlersDict, initialStateKey);
 	}
 
-	private createStateHandlersDict<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
-		StateHandlerTypesDict: T,
-		stateKey: keyof T,
-	): Dictionary<TemplateStateHandler<keyof T>[]> {
+	private createStateHandlersOfStateDict<
+		T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>
+	>(StateHandlerTypesDict: T, stateKey: keyof T): Dictionary<TemplateStateHandler<keyof T>[]> {
 		const stateHandlers = this.createStateHandlers(StateHandlerTypesDict, stateKey);
 
 		return { [stateKey]: stateHandlers };

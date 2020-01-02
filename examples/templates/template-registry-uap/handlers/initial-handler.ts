@@ -1,23 +1,24 @@
 import {
+	AdSlot,
+	Dictionary,
 	resolvedState,
 	setupNavbar,
 	slotTweaker,
-	TemplateAdSlot,
-	TemplateParams,
+	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { AdvertisementLabel } from '../../../../src/ad-products/templates/interface/advertisement-label';
 import { HandlersShared } from '../helpers/handlers-shared';
 
 @Injectable()
 export class InitialHandler implements TemplateStateHandler {
 	constructor(
-		private params: TemplateParams,
-		private slot: TemplateAdSlot,
+		@Inject(TEMPLATE.PARAMS) private params: Dictionary,
+		@Inject(TEMPLATE.SLOT) private slot: AdSlot,
 		private shared: HandlersShared,
 	) {}
 

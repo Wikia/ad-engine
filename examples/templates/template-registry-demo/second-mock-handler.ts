@@ -1,16 +1,20 @@
 import {
-	TemplateAdSlot,
-	TemplateParams,
+	AdSlot,
+	Dictionary,
+	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SecondMockHandler implements TemplateStateHandler {
 	private id = Math.random() * 10;
 
-	constructor(private params: TemplateParams, private slot: TemplateAdSlot) {}
+	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: Dictionary,
+		@Inject(TEMPLATE.SLOT) private slot: AdSlot,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'first'>): Promise<void> {
 		console.log(`second mock handler (${this.id}) enter`);

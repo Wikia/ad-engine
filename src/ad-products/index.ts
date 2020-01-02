@@ -10,5 +10,4 @@ export * from './utils';
 export * from './templates-2/template-registry';
 export * from './templates-2/template-state-transition';
 export * from './templates-2/template-state-handler';
-export * from './templates-2/template-params';
-export * from './templates-2/template-ad-slot';
+export * from './templates-2/template-symbols';
