@@ -1,4 +1,5 @@
-import { utils } from '@ad-engine/core';
+import { createExtendedPromise, logger } from '../../utils';
+
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
 
@@ -10,22 +11,22 @@ export class TemplateState<T extends string> {
 	) {}
 
 	async enter(): Promise<void> {
-		const transitionCompleted = utils.createExtendedPromise();
+		const transitionCompleted = createExtendedPromise();
 
-		utils.logger(`State - ${this.name}`, 'enter');
+		logger(`State - ${this.name}`, 'enter');
 		await Promise.all(
 			this.handlers.map(async (handler) =>
 				handler.onEnter(this.useTransition(transitionCompleted)),
 			),
 		);
 		transitionCompleted.resolve();
-		utils.logger(`State - ${this.name}`, 'entered');
+		logger(`State - ${this.name}`, 'entered');
 	}
 
 	async leave(): Promise<void> {
-		utils.logger(`State - ${this.name}`, 'leave');
+		logger(`State - ${this.name}`, 'leave');
 		await Promise.all(this.handlers.map(async (handler) => handler.onLeave()));
-		utils.logger(`State - ${this.name}`, 'left');
+		logger(`State - ${this.name}`, 'left');
 	}
 
 	private useTransition(ready: Promise<void>): TemplateTransition<T> {

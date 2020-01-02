@@ -1,5 +1,5 @@
-import { AdSlot, Dictionary } from '@ad-engine/core';
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { AdSlot, Dictionary } from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
 @Injectable()

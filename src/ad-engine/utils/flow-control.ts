@@ -62,13 +62,13 @@ export function createWithTimeout(func: (...args: any) => any, msToTimeout = 200
 }
 
 type PromiseExecutor<T> = ConstructorParameters<PromiseConstructor>[0];
-type PromiseResolve<T> = Parameters<PromiseExecutor<T>>[0];
-type PromiseReject = Parameters<PromiseExecutor<any>>[1];
+export type PromiseResolve<T> = Parameters<PromiseExecutor<T>>[0];
+export type PromiseReject = Parameters<PromiseExecutor<any>>[1];
 export type ExtendedPromise<T> = Promise<T> & { resolve: PromiseResolve<T>; reject: PromiseReject };
 
 export function createExtendedPromise<T = void>(): ExtendedPromise<T> {
-	let resolve: ExtendedPromise<T>['resolve'];
-	let reject: ExtendedPromise<T>['reject'];
+	let resolve: PromiseResolve<T>;
+	let reject: PromiseReject;
 
 	const promise = new Promise<T>((res, rej) => {
 		resolve = res;

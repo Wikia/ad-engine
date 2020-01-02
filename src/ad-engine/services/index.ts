@@ -19,3 +19,7 @@ export * from './slot-tweaker';
 export * from './template-service';
 export * from './tracking-opt-in';
 export * from './viewability-counter';
+export * from './templates-registry/template-registry';
+export * from './templates-registry/template-state-transition';
+export * from './templates-registry/template-state-handler';
+export * from './templates-registry/template-symbols';

@@ -1,4 +1,5 @@
-import { Dictionary, utils } from '@ad-engine/core';
+import { Dictionary } from '../../models';
+import { logger } from '../../utils';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
@@ -29,7 +30,7 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 	}
 
 	private init(): void {
-		utils.logger(`Template ${this.templateName}`, 'initialize');
+		logger(`Template ${this.templateName}`, 'initialize');
 		this.currentState.enter();
 	}
 

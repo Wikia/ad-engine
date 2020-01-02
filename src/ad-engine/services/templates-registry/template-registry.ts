@@ -1,5 +1,5 @@
-import { AdSlot, Dictionary, Type } from '@ad-engine/core';
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateDependenciesManager } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
 import { TemplateStateHandler } from './template-state-handler';
