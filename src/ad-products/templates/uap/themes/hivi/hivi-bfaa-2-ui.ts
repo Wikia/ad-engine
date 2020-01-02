@@ -1,21 +1,22 @@
-import { PorvataPlayer } from '../../../..';
+import { PorvataPlayer, UapParams } from '../../../..';
 import { CloseButton } from '../../../interface/close-button';
-import { UapParams } from '../../universal-ad-package';
 
 export class HiviBfaa2Ui {
 	closeButton: HTMLElement;
 
-	switchImagesInAd(params: UapParams, isResolved: boolean): void {
-		if (params.image2 && params.image2.background) {
+	constructor(private gamParams: UapParams) {}
+
+	switchImagesInAd(isResolved: boolean): void {
+		if (this.gamParams.image2 && this.gamParams.image2.background) {
 			if (isResolved) {
-				params.image2.element.classList.remove('hidden-state');
-				params.image1.element.classList.add('hidden-state');
+				this.gamParams.image2.element.classList.remove('hidden-state');
+				this.gamParams.image1.element.classList.add('hidden-state');
 			} else {
-				params.image2.element.classList.add('hidden-state');
-				params.image1.element.classList.remove('hidden-state');
+				this.gamParams.image2.element.classList.add('hidden-state');
+				this.gamParams.image1.element.classList.remove('hidden-state');
 			}
 		} else {
-			params.image1.element.classList.remove('hidden-state');
+			this.gamParams.image1.element.classList.remove('hidden-state');
 		}
 	}
 

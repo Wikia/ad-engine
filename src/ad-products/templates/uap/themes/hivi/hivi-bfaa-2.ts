@@ -123,7 +123,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	protected gamConfig: UapConfig;
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
-	ui = new HiviBfaa2Ui();
+	ui: HiviBfaa2Ui;
 	videoWidth$ = new ReplaySubject<number>();
 	readyElement: HTMLElement | HTMLIFrameElement; // required by slotTweaker.setPaddingBottom
 
@@ -131,6 +131,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		super(adSlot, params);
 		this.platformConfig = context.get('templates.bfaa') || {};
 		this.gamConfig = params.config;
+		this.ui = new HiviBfaa2Ui(params, this.platformConfig);
 
 		entering$.pipe(ofState(STATES.INITIAL)).subscribe(() => {
 			this.startStickiness();
@@ -139,7 +140,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		entering$.pipe(ofState(STATES.RESOLVED)).subscribe(() => {
 			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.resolved);
-			this.ui.switchImagesInAd(this.params, true);
+			this.ui.switchImagesInAd(true);
 			this.adSlot.addClass(CSS_CLASSNAME_THEME_RESOLVED);
 
 			this.updateAdSizes();
@@ -163,7 +164,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 
 		entering$.pipe(ofState(STATES.IMPACT)).subscribe(() => {
 			this.adSlot.addClass(CSS_CLASSNAME_IMPACT_BFAA);
-			this.ui.switchImagesInAd(this.params, false);
+			this.ui.switchImagesInAd(false);
 			slotTweaker.setPaddingBottom(this.readyElement, this.gamConfig.aspectRatio.default);
 			this.updateAdSizes();
 			this.moveNavbar(this.container.offsetHeight);
@@ -199,7 +200,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		entering$.pipe(ofState(STATES.STICKY)).subscribe(() => {
 			this.ui.addCloseButton(this.container, () => bfaaFsm.dispatch(ACTIONS.CLOSE));
 			this.adSlot.addClass(CSS_CLASSNAME_STICKY_BFAA);
-			this.ui.switchImagesInAd(this.params, true);
+			this.ui.switchImagesInAd(true);
 			this.stickNavbar();
 			this.updateAdSizes();
 
