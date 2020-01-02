@@ -29,7 +29,7 @@ export class TemplateRegistry {
 		this.settings.set(templateName, { StateHandlerTypesDict, initialStateKey });
 	}
 
-	init(templateName: string, slot: AdSlot, templateParams: Dictionary = {}): void {
+	init(templateName: string, templateSlot: AdSlot, templateParams: Dictionary = {}): void {
 		if (!this.settings.has(templateName)) {
 			throw new Error(`Template ${templateName} was not registered`);
 		}
@@ -37,7 +37,7 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		this.dependenciesManager.provideDependencies(templateName, slot, templateParams);
+		this.dependenciesManager.provideDependencies(templateName, templateSlot, templateParams);
 
 		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
 		const stateHandlersDict = this.createStateHandlersDict(StateHandlerTypesDict);

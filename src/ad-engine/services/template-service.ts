@@ -1,11 +1,17 @@
 import { AdSlot, Dictionary } from '../models';
-import { logger } from '../utils/logger';
-import { context } from './';
+import { logger } from '../utils';
+import { context } from './context-service';
+import { TemplateRegistry } from './templates-registry/template-registry';
 
 const logGroup = 'template-service';
 
 class TemplateService {
+	private registry?: TemplateRegistry;
 	private templates: Dictionary = {};
+
+	setRegistry(registry: TemplateRegistry): void {
+		this.registry = registry;
+	}
 
 	register(template: any, customConfig: any = null): void {
 		if (typeof template.getName !== 'function') {
@@ -28,6 +34,13 @@ class TemplateService {
 	}
 
 	init(name: string, slot: AdSlot = null, params: Dictionary = {}): void {
+		try {
+			this.registry.init(name, slot, params);
+			return;
+		} catch (e) {
+			// simply use old template service
+		}
+
 		logger(logGroup, 'Load template', name, slot, params);
 
 		if (!this.templates[name]) {

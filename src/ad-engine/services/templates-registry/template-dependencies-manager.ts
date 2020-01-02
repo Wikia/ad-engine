@@ -11,7 +11,11 @@ export class TemplateDependenciesManager {
 	 * Designed to be called right before instantiating TemplateStateHandlers.
 	 * Allows TemplateParams and TemplateAdSlot to be scoped to TemplateStateHandlers of a given Template.
 	 */
-	provideDependencies(templateName: string, slot: AdSlot, templateParams: Dictionary = {}): void {
+	provideDependencies(
+		templateName: string,
+		templateSlot: AdSlot,
+		templateParams: Dictionary,
+	): void {
 		// override params.slotName by splitting it by comma and picking first occurrence
 		// so we can rely on it in used creative templates
 		if (this.slotNameExists(templateParams)) {
@@ -19,7 +23,7 @@ export class TemplateDependenciesManager {
 		}
 
 		this.container.bind(TEMPLATE.PARAMS).value({ ...templateParams, templateName });
-		this.container.bind(TEMPLATE.SLOT).value(slot);
+		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
 		this.container.bind(TEMPLATE.NAME).value(templateName);
 	}
 
