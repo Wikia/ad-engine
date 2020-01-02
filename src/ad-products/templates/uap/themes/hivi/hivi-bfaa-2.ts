@@ -13,7 +13,6 @@ import {
 } from '../../../..';
 import { AdvertisementLabel } from '../../../interface/advertisement-label';
 import { animate } from '../../../interface/animate';
-import { CloseButton } from '../../../interface/close-button';
 import {
 	CSS_CLASSNAME_FADE_IN_ANIMATION,
 	CSS_CLASSNAME_IMPACT_BFAA,
@@ -122,7 +121,6 @@ function ofState(stateName: string) {
 export class BfaaHiviTheme2 extends BigFancyAdTheme {
 	protected platformConfig: BigFancyAdAboveConfig;
 	protected gamConfig: UapConfig;
-	closeButton: HTMLElement;
 	video: PorvataPlayer;
 	viewableAndTimeoutRunning$ = new BehaviorSubject<boolean>(true);
 	ui = new HiviBfaa2Ui();
@@ -199,7 +197,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		});
 
 		entering$.pipe(ofState(STATES.STICKY)).subscribe(() => {
-			this.addCloseButton();
+			this.ui.addCloseButton(this.container, () => bfaaFsm.dispatch(ACTIONS.CLOSE));
 			this.adSlot.addClass(CSS_CLASSNAME_STICKY_BFAA);
 			this.ui.switchImagesInAd(this.params, true);
 			this.stickNavbar();
@@ -232,7 +230,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		});
 
 		leaving$.pipe(ofState(STATES.STICKY)).subscribe(() => {
-			this.removeCloseButton();
+			this.ui.removeCloseButton();
 		});
 
 		bfaaFsm.init();
@@ -376,23 +374,6 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		const { aspectRatio } = this.params.config;
 
 		return Math.round(width / aspectRatio.default - width / aspectRatio.resolved);
-	}
-	protected addCloseButton(): void {
-		if (!this.closeButton) {
-			this.closeButton = new CloseButton({
-				classNames: ['button-unstick'],
-				onClick: () => bfaaFsm.dispatch(ACTIONS.CLOSE),
-			}).render();
-
-			this.container.appendChild(this.closeButton);
-		}
-	}
-
-	protected removeCloseButton(): void {
-		if (this.closeButton) {
-			this.closeButton.remove();
-			delete this.closeButton;
-		}
 	}
 }
 

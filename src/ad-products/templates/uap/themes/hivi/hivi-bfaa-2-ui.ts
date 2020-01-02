@@ -1,7 +1,10 @@
 import { PorvataPlayer } from '../../../..';
+import { CloseButton } from '../../../interface/close-button';
 import { UapParams } from '../../universal-ad-package';
 
 export class HiviBfaa2Ui {
+	closeButton: HTMLElement;
+
 	switchImagesInAd(params: UapParams, isResolved: boolean): void {
 		if (params.image2 && params.image2.background) {
 			if (isResolved) {
@@ -31,5 +34,23 @@ export class HiviBfaa2Ui {
 	}
 	setBodyPaddingTop(padding: string): void {
 		document.body.style.paddingTop = padding;
+	}
+
+	addCloseButton(element: HTMLElement, onClick: () => void): void {
+		if (!this.closeButton) {
+			this.closeButton = new CloseButton({
+				classNames: ['button-unstick'],
+				onClick,
+			}).render();
+
+			element.appendChild(this.closeButton);
+		}
+	}
+
+	removeCloseButton(): void {
+		if (this.closeButton) {
+			this.closeButton.remove();
+			delete this.closeButton;
+		}
 	}
 }
