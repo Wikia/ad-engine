@@ -20,7 +20,6 @@ import { InitialHandler } from './handlers/initial-handler';
 import { ResolvedHandler } from './handlers/resolved-handler';
 import { StickyHandler } from './handlers/sticky-handler';
 import { TransitionHandler } from './handlers/transition-handler';
-import { overwriteCustomAdLoader } from './overwrite-custom-ad-loader';
 
 const { CSS_TIMING_EASE_IN_CUBIC, SLIDE_OUT_TIME } = universalAdPackage;
 
@@ -67,6 +66,8 @@ slotTracker
 const container = new Container();
 const templateRegistry = container.get(TemplateRegistry);
 
+templateService.setRegistry(templateRegistry);
+
 templateRegistry.register(
 	'bfaa',
 	{
@@ -80,4 +81,3 @@ templateRegistry.register(
 );
 
 new AdEngine().init();
-overwriteCustomAdLoader(templateRegistry, context.get('options.customAdLoader.globalMethodName'));

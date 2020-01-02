@@ -34,7 +34,7 @@ export class TemplateState<T extends string> {
 			if (called) {
 				throw new Error(
 					// tslint:disable-next-line:prefer-template
-					'Attempting to call transition second time.\n' +
+					`Attempting to call transition from ${this.name} state a second time.\n` +
 						'This may be caused by:\n' +
 						'- not cleaning listeners in an "onLeave" method,\n' +
 						'- calling transition in a different handler at the same time.\n' +

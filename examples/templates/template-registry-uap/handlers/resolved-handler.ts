@@ -48,5 +48,7 @@ export class ResolvedHandler implements TemplateStateHandler {
 			.subscribe(() => transition('sticky'));
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		this.unsubscribe$.next();
+	}
 }
