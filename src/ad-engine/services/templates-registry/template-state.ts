@@ -1,13 +1,13 @@
+import { Observable, Subject } from 'rxjs';
 import { createExtendedPromise, logger } from '../../utils';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
 
 export class TemplateState<T extends string> {
-	constructor(
-		private name: string,
-		private transition: TemplateTransition<T>,
-		private handlers: TemplateStateHandler<T>[],
-	) {}
+	private readonly transitionSubject$ = new Subject<T>();
+	readonly transition$: Observable<T> = this.transitionSubject$.asObservable();
+
+	constructor(private name: string, private handlers: TemplateStateHandler<T>[]) {}
 
 	async enter(): Promise<void> {
 		const transitionCompleted = createExtendedPromise();
@@ -45,7 +45,7 @@ export class TemplateState<T extends string> {
 
 			called = true;
 
-			return this.transition(targetStateKey);
+			this.transitionSubject$.next(targetStateKey);
 		};
 	}
 }

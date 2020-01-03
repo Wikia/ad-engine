@@ -1,3 +1,4 @@
+import { merge } from 'rxjs';
 import { Dictionary } from '../../models';
 import { logger } from '../../utils';
 import { TemplateState } from './template-state';
@@ -14,23 +15,18 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 
 		return this.states.get(this.currentStateKey);
 	}
-	private states: Map<keyof T, TemplateState<keyof T>> = new Map();
-	private currentStateKey: keyof T;
 
-	constructor(private templateName: string, stateHandlersDict: T, initialStateKey: keyof T) {
-		this.currentStateKey = initialStateKey;
-		this.states = new Map(
-			Object.keys(stateHandlersDict).map((stateKey: keyof T) => [
-				stateKey,
-				new TemplateState(stateKey, this.transition, stateHandlersDict[stateKey]),
-			]),
-		);
+	constructor(
+		private templateName: string,
+		private states: Map<keyof T, TemplateState<keyof T>>,
+		private currentStateKey: keyof T,
+	) {}
 
-		this.init();
-	}
+	init(): void {
+		const transitions = Array.from(this.states.values()).map((state) => state.transition$);
 
-	private init(): void {
 		logger(`Template ${this.templateName}`, 'initialize');
+		merge(...transitions).subscribe((targetStateKey) => this.transition(targetStateKey));
 		this.currentState.enter();
 	}
 

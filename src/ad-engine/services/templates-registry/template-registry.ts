@@ -2,6 +2,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateDependenciesManager } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
+import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 
 interface TemplateMachinePayload<
@@ -40,32 +41,39 @@ export class TemplateRegistry {
 		this.dependenciesManager.provideDependencies(templateName, templateSlot, templateParams);
 
 		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
-		const stateHandlersDict = this.createStateHandlersDict(StateHandlerTypesDict);
+		const templateStateMap = this.createTemplateStateMap(StateHandlerTypesDict);
 
 		this.dependenciesManager.resetDependencies();
 
-		const machine = new TemplateMachine(templateName, stateHandlersDict, initialStateKey);
+		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey);
 
+		machine.init();
 		this.machines.set(templateName, machine);
 	}
 
-	private createStateHandlersDict<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
+	private createTemplateStateMap<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
 		StateHandlerTypesDict: T,
-	): Dictionary<TemplateStateHandler<keyof T>[]> {
-		return Object.keys(StateHandlerTypesDict)
-			.map((stateKey: keyof T) => ({
-				[stateKey]: this.createStateHandlers(StateHandlerTypesDict, stateKey),
-			}))
-			.reduce((result, curr) => ({ ...result, ...curr }), {});
+	): Map<keyof T, TemplateState<keyof T>> {
+		const keyStateTuples: [keyof T, TemplateState<keyof T>][] = Object.keys(
+			StateHandlerTypesDict,
+		).map((stateKey: keyof T) => [
+			stateKey,
+			this.createTemplateState(StateHandlerTypesDict, stateKey),
+		]);
+
+		return new Map(keyStateTuples);
 	}
 
-	private createStateHandlers<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
+	private createTemplateState<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
 		StateHandlerTypesDict: T,
 		stateKey: keyof T,
-	): TemplateStateHandler<keyof T>[] {
+	): TemplateState<keyof T> {
 		const StateHandlerTypes = StateHandlerTypesDict[stateKey];
+		const stateHandlers = StateHandlerTypes.map((StateHandlerType) =>
+			this.createStateHandler(StateHandlerType),
+		);
 
-		return StateHandlerTypes.map((StateHandlerType) => this.createStateHandler(StateHandlerType));
+		return new TemplateState(stateKey, stateHandlers);
 	}
 
 	private createStateHandler<T extends string>(
