@@ -1,12 +1,12 @@
 import { pbjsFactory } from '@wikia/ad-engine/services/pbjs-factory';
 import { SinonSandbox, SinonStub } from 'sinon';
 
-export type PbjsStub = { [key in keyof Pbjs]: SinonStub };
+export type PbjsStub = { [key in keyof Pbjs]: SinonStub & Pbjs[key] };
 
 export function createPbjsStub(sandbox: SinonSandbox): PbjsStub {
 	return {
-		bidderSettings: sandbox.stub(),
-		adUnits: sandbox.stub(),
+		bidderSettings: sandbox.stub() as any,
+		adUnits: sandbox.stub() as any,
 		requestBids: sandbox.stub(),
 		removeAdUnit: sandbox.stub(),
 		aliasBidder: sandbox.stub(),
