@@ -16,22 +16,9 @@ export class TemplateDependenciesManager {
 		templateSlot: AdSlot,
 		templateParams: Dictionary,
 	): void {
-		// override params.slotName by splitting it by comma and picking first occurrence
-		// so we can rely on it in used creative templates
-		if (this.slotNameExists(templateParams)) {
-			templateParams.slotName = templateParams.slotName.split(',').shift();
-		}
-
-		this.container.bind(TEMPLATE.PARAMS).value({ ...templateParams, templateName });
-		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
 		this.container.bind(TEMPLATE.NAME).value(templateName);
-	}
-
-	private slotNameExists(templateParams: Dictionary): templateParams is { slotName: string } {
-		return (
-			templateParams &&
-			(typeof templateParams.slotName === 'string' || templateParams.slotName instanceof String)
-		);
+		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
+		this.container.bind(TEMPLATE.PARAMS).value(templateParams);
 	}
 
 	resetDependencies(): void {
