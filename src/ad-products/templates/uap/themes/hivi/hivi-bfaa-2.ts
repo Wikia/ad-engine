@@ -131,7 +131,7 @@ export class BfaaHiviTheme2 extends BigFancyAdTheme {
 		super(adSlot, params);
 		this.platformConfig = context.get('templates.bfaa') || {};
 		this.gamConfig = params.config;
-		this.ui = new HiviBfaa2Ui(params, this.platformConfig);
+		this.ui = new HiviBfaa2Ui(params);
 
 		entering$.pipe(ofState(STATES.INITIAL)).subscribe(() => {
 			this.startStickiness();
