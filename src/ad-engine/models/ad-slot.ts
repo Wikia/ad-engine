@@ -12,6 +12,7 @@ export interface Targeting {
 	hb_pb?: string;
 	src?: string;
 	pos?: string;
+	loc?: string;
 	wsi?: string;
 	rv?: number;
 	[key: string]: googletag.NamedSize | number;
@@ -35,6 +36,7 @@ export interface SlotConfig {
 	trackOverscrolled?: boolean;
 	slotName?: string;
 	nextSiblingSelector?: string;
+	parentContainerSelector?: string;
 
 	targeting: Targeting;
 	videoAdUnit?: string;

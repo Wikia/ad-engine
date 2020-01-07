@@ -38,14 +38,12 @@ export class A9Provider extends BidderProvider {
 
 	amazonId: string;
 	bidsRefreshing: Partial<BidsRefreshing>;
-	isCMPEnabled: boolean;
 	slots: Dictionary<A9SlotConfig>;
 	slotsNames: string[];
 
 	constructor(public bidderConfig: A9Config, public timeout: number = DEFAULT_MAX_DELAY) {
 		super('a9', bidderConfig, timeout);
 
-		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.amazonId = this.bidderConfig.amazonId;
 		this.slots = this.bidderConfig.slots;
 		this.slotsNames = Object.keys(this.slots);
@@ -83,7 +81,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
-		if (this.isCMPEnabled && consentData && consentData.consentData) {
+		if (consentData && consentData.consentData) {
 			return {
 				gdpr: {
 					enabled: consentData.gdprApplies,
@@ -258,7 +256,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	protected async callBids(): Promise<void> {
-		if (this.isCMPEnabled && this.cmp.exists) {
+		if (this.cmp.exists) {
 			const consentData = await this.cmp.getConsentData();
 
 			this.init(consentData);

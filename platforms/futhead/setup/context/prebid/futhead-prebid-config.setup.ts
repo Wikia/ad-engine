@@ -2,6 +2,7 @@ import { DeviceMode, getDeviceMode, getWikiaContext, PrebidConfigSetup } from '@
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppNexusContext } from '../../../bidders/prebid/app-nexus';
+import { getCriteoContext } from '../../../bidders/prebid/criteo';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
@@ -14,6 +15,7 @@ export class FutheadPrebidConfigSetup implements PrebidConfigSetup {
 		const mode: DeviceMode = getDeviceMode();
 
 		context.set('bidders.prebid.appnexus', getAppNexusContext(mode));
+		context.set('bidders.prebid.criteo', getCriteoContext(mode));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(mode));
 		context.set('bidders.prebid.openx', getOpenXContext(mode));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(mode));
