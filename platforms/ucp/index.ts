@@ -22,6 +22,7 @@ window.RLQ.push(async () => {
 
 	platformStartup.configure({ isMobile: false });
 
+	// TODO: Move it to platformStartup.run once all platforms use @wikia/post-quecast
 	communicator.dispatch({ type: '[AdEngine] Configured' });
 
 	platformStartup.run();
