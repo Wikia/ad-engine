@@ -11,7 +11,9 @@ export interface IasTrackingParams {
 	placementId?: string;
 	pubCreative?: string;
 	pubId?: string;
-	custom?: any;
+	custom?: string;
+	custom2?: string;
+	custom3?: string;
 }
 
 class IasVideoTracker {

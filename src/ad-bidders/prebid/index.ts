@@ -69,13 +69,10 @@ export class PrebidProvider extends BidderProvider {
 
 		if (this.cmp.exists) {
 			// ToDo: remove it once Prebid v2.44.0 transition will be done
-			if (context.get('bidders.prebid.libraryUrl')) {
-				this.prebidConfig.consentManagement = {
-					cmpApi: 'iab',
-					timeout: this.timeout,
-					allowAuctionWithoutConsent: false,
-				};
-			} else {
+			if (
+				context.get('bidders.prebid.libraryUrl') &&
+				!context.get('bidders.prebid.libraryUrl').includes('v2.4.0')
+			) {
 				this.prebidConfig.consentManagement = {
 					gdpr: {
 						cmpApi: 'iab',
@@ -86,6 +83,12 @@ export class PrebidProvider extends BidderProvider {
 						cmpApi: 'iab',
 						timeout: 100,
 					},
+				};
+			} else {
+				this.prebidConfig.consentManagement = {
+					cmpApi: 'iab',
+					timeout: this.timeout,
+					allowAuctionWithoutConsent: false,
 				};
 			}
 		}
@@ -181,7 +184,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const refreshUsedBid = (winningBid) => {
-			eventService.emit(events.BIDS_REFRESH_STARTED, winningBid.adUnitCode);
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				eventService.emit(events.BIDS_REFRESH);
 				const adUnitsToRefresh = this.adUnits.filter(
