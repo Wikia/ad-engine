@@ -224,6 +224,19 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "muthead"
+            ],
+            "regions": [
+                "PL",
+                "US-CA",
+                "US-NY"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.1/20200103.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
                 "mobile-wiki",
                 "muthead",
                 "oasis"
