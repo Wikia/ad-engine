@@ -32,6 +32,24 @@ export class BaseContextSetup {
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
+
+		context.set(
+			'options.video.playAdsOnNextVideo',
+			this.instantConfig.isGeoEnabled('wgAdDriverPlayAdsOnNextFVCountries'),
+		);
+		context.set(
+			'options.video.adsOnNextVideoFrequency',
+			this.instantConfig.get('wgAdDriverPlayAdsOnNextFVFrequency') || 3,
+		);
+		context.set(
+			'options.video.isMidrollEnabled',
+			this.instantConfig.isGeoEnabled('wgAdDriverFVMidrollCountries'),
+		);
+		context.set(
+			'options.video.isPostrollEnabled',
+			this.instantConfig.isGeoEnabled('wgAdDriverFVPostrollCountries'),
+		);
+
 		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
 		context.set(
 			'options.video.isOutstreamEnabled',

@@ -74,6 +74,22 @@
             "value": true
         }
     ],
+    "icPrebidSendAllBids": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 5.0,
+            "value": true
+        }
+    ],
     "icPrebid": [
         {
             "apps": [
@@ -202,13 +218,16 @@
             "apps": [
                 "futhead",
                 "gamepedia",
-                "muthead"
+                "mobile-wiki",
+                "muthead",
+                "oasis"
             ],
             "regions": [
                 "PL",
                 "US-CA",
                 "US-NY"
             ],
+            "sampling": 100.0,
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.1/20200103.min.js"
         },
         {
