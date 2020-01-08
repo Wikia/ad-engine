@@ -22,6 +22,7 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
+const sendAllBidsEnabled = utils.queryString.get('send_all_bids') === '1';
 const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
 
 cmp.override((cmd, param, cb) => {
@@ -64,6 +65,7 @@ context.set(
 	'bidders.prebid.libraryUrl',
 	'https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.1/20200103.min.js',
 );
+context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 
 setupNpaContext();
 setupRdpContext();
