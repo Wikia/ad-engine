@@ -1,5 +1,12 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
-import { btRec, context, Dictionary, FmrRotator, SlotConfig } from '@wikia/ad-engine';
+import {
+	btRec,
+	context,
+	Dictionary,
+	FmrRotator,
+	JWPlayerManager,
+	SlotConfig,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Communicator, ofType } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
@@ -8,6 +15,7 @@ import { take } from 'rxjs/operators';
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
+		this.setupJWPlayerAds();
 	}
 
 	private injectSlots(): void {
@@ -71,5 +79,9 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 		}
 
 		return container;
+	}
+
+	private setupJWPlayerAds(): void {
+		new JWPlayerManager().manage();
 	}
 }
