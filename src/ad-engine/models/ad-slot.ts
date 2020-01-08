@@ -27,7 +27,9 @@ interface RepeatConfig {
 }
 
 export interface SlotConfig {
+	uid: string;
 	adProduct: string;
+	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
@@ -84,6 +86,17 @@ export class AdSlot extends EventEmitter {
 	static AD_CLASS = 'gpt-ad';
 	static HIDDEN_CLASS = 'hide';
 
+	static generateSlotId(): string {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+			// tslint:disable-next-line:no-bitwise
+			const r = (Math.random() * 16) | 0;
+			// tslint:disable-next-line:no-bitwise
+			const v = c === 'x' ? r : (r & 0x3) | 0x8;
+
+			return v.toString(16);
+		});
+	}
+
 	private slotViewed = false;
 
 	config: SlotConfig;
@@ -135,6 +148,13 @@ export class AdSlot extends EventEmitter {
 		this.events.onItemFlush((event) => {
 			this.on(event.name, event.callback);
 		});
+
+		if (!this.config.uid) {
+			const uid = AdSlot.generateSlotId();
+
+			this.config.uid = uid;
+			context.set(`slots.${ad.id}.uid`, uid);
+		}
 
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.targeting = this.config.targeting || ({} as Targeting);
@@ -203,6 +223,10 @@ export class AdSlot extends EventEmitter {
 		const { pos = '' } = this.targeting;
 
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
+	}
+
+	getId(): string {
+		return this.config.uid;
 	}
 
 	getSlotName(): string {
