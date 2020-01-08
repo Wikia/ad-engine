@@ -25,7 +25,7 @@ export class OneVideo extends PrebidAdapter {
 						video: {
 							playerWidth: 640,
 							playerHeight: 480,
-							mimes: ['video/mp4', 'application/javascript'],
+							mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 							protocols: [2, 5],
 							api: [1, 2],
 							delivery: [2],
