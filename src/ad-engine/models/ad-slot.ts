@@ -63,6 +63,7 @@ export interface WinningBidderDetails {
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
+	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static SLOT_RENDERED_EVENT = 'slotRendered';
@@ -104,6 +105,13 @@ export class AdSlot extends EventEmitter {
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackOnStatusChanged = false;
 
+	requested = new Promise<void>((resolve) => {
+		this.once(AdSlot.SLOT_REQUESTED_EVENT, () => {
+			this.pushTime = new Date().getTime();
+
+			resolve();
+		});
+	});
 	loaded = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, () => {
 			slotTweaker.setDataParam(this, 'slotLoaded', true);
@@ -132,7 +140,6 @@ export class AdSlot extends EventEmitter {
 	constructor(ad: AdStackPayload) {
 		super();
 
-		this.pushTime = new Date().getTime();
 		this.config = context.get(`slots.${ad.id}`) || {};
 		this.enabled = !this.config.disabled;
 		this.events = new LazyQueue();
