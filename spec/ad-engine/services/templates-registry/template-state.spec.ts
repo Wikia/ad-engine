@@ -54,7 +54,7 @@ describe('Template State', () => {
 		transition('other');
 	});
 
-	it('should throw if attempting second transition', async () => {
+	it('should throw when attempting second transition if allowMulticast set to false', async () => {
 		const handlerStub = createTemplateStateHandlerStub(sandbox);
 		const instance = new TemplateState('mock', [handlerStub]);
 		let transition: TemplateTransition;
@@ -69,7 +69,36 @@ describe('Template State', () => {
 		} catch (e) {
 			assert(true);
 		}
+		try {
+			await transition('other', { allowMulticast: false });
+			assert(false);
+		} catch (e) {
+			assert(true);
+		}
+		try {
+			await transition('other', { allowMulticast: true });
+			assert(true);
+		} catch (e) {
+			assert(false);
+		}
 	});
 
-	it('should preserve order');
+	it('should postpone transition till all handlers enter', (done) => {
+		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
+		const handlerStub2 = createTemplateStateHandlerStub(sandbox);
+		const instance = new TemplateState('mock', [handlerStub1, handlerStub2]);
+
+		handlerStub1.onEnter.callsFake((transition) => {
+			transition('other');
+		});
+		instance.transition$.pipe(take(1)).subscribe(() => {
+			sandbox.assert.callOrder(handlerStub1.onEnter, handlerStub2.onEnter);
+			assert(handlerStub1.onEnter.calledOnce);
+			assert(handlerStub2.onEnter.calledOnce);
+			assert(handlerStub1.onLeave.callCount === 0);
+			assert(handlerStub2.onLeave.callCount === 0);
+			done();
+		});
+		instance.enter();
+	});
 });

@@ -39,7 +39,7 @@ export class TemplateState<T extends string> {
 						'This may be caused by:\n' +
 						'- not cleaning up in an "onLeave" method,\n' +
 						'- calling transition in a different handler at the same time.\n' +
-						'You may suppress this error by allowMulticast to true.\n',
+						'You may suppress this error by setting allowMulticast to true.\n',
 				);
 			}
 
