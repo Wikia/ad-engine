@@ -92,6 +92,7 @@ export class AdSlot extends EventEmitter {
 	element: null | HTMLElement = null;
 	status: null | string = null;
 	isEmpty = true;
+	pushTime: number;
 	enabled: boolean;
 	events: LazyQueue;
 	adUnit: string;
@@ -131,6 +132,7 @@ export class AdSlot extends EventEmitter {
 	constructor(ad: AdStackPayload) {
 		super();
 
+		this.pushTime = new Date().getTime();
 		this.config = context.get(`slots.${ad.id}`) || {};
 		this.enabled = !this.config.disabled;
 		this.events = new LazyQueue();
@@ -249,6 +251,10 @@ export class AdSlot extends EventEmitter {
 
 	getStatus(): string {
 		return this.status;
+	}
+
+	getPushTime(): number {
+		return this.pushTime;
 	}
 
 	setStatus(status: null | string = null): void {

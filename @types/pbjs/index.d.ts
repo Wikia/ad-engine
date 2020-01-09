@@ -39,6 +39,8 @@ interface PrebidBidResponse {
 	cpm: number;
 	status: string;
 	bidderCode: string;
+	requestTimestamp: number;
+	responseTimestamp: number;
 	timeToRespond: number;
 	getStatusCode: () => number;
 	width: number;

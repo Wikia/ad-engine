@@ -1,10 +1,14 @@
 import { context, slotService, utils } from '@ad-engine/core';
 import { AdBidderContext } from './bidder-tracker';
 
-function isBidOnTime(responseTime): string {
-	const biddersTimeout = context.get('bidders.timeout') || 2000;
+function isBidOnTime(slotName: string, responseTime: number): boolean {
+	const slot = slotService.get(slotName);
 
-	return responseTime > biddersTimeout ? 'too_late' : 'on_time';
+	if (!slot || !slot.getPushTime()) {
+		return true;
+	}
+
+	return slot.getPushTime() > responseTime;
 }
 
 function getSlotNamesByBidderAlias(alias: string): string[] {
@@ -46,7 +50,7 @@ export const bidderTrackingMiddleware: utils.Middleware<AdBidderContext> = (
 			size: bid.size,
 			price: bid.cpm,
 			response_time: bid.timeToRespond,
-			status: isBidOnTime(bid.timeToRespond),
+			status: isBidOnTime(slotName, bid.responseTimestamp) ? 'on_time' : 'too_late',
 			additional_flags: '',
 		},
 	});
