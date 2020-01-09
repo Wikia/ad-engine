@@ -1,4 +1,4 @@
-import { getAdStack } from '../';
+import { getAdStack, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
@@ -113,24 +113,11 @@ class SlotService {
 		return slotByPos;
 	}
 
-	/**
-	 * Get slot id by its name
-	 */
-	getId(id: string): string {
-		let slotName = id;
-
-		if (!context.get(`slots.${slotName}`)) {
-			slotName = this.getSlotsByBidderAlias(id).shift();
-
-			if (!slotName) {
-				return '';
-			}
-		}
-
+	getSlotId(slotName: string): string {
 		let uid = context.get(`slots.${slotName}.uid`);
 
 		if (!uid) {
-			uid = AdSlot.generateSlotId();
+			uid = utils.generateUniqueId();
 			context.set(`slots.${slotName}.uid`, uid);
 		}
 
@@ -256,15 +243,6 @@ class SlotService {
 	getEnabledSlotNames(): string[] {
 		return Object.entries(this.slotConfigsMap)
 			.filter(([name, config]) => !config.disabled)
-			.map(([name, config]) => name);
-	}
-
-	/**
-	 * Returns slots with selected bidderAlias value.
-	 */
-	getSlotsByBidderAlias(alias: string): string[] {
-		return Object.entries(this.slotConfigsMap)
-			.filter(([name, config]) => config.bidderAlias === alias)
 			.map(([name, config]) => name);
 	}
 

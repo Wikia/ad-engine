@@ -7,13 +7,34 @@ function isBidOnTime(responseTime): string {
 	return responseTime > biddersTimeout ? 'too_late' : 'on_time';
 }
 
+function getSlotNamesByBidderAlias(alias: string): string[] {
+	return Object.entries(slotService.slotConfigsMap)
+		.filter(([name, config]) => config.bidderAlias === alias)
+		.map(([name, config]) => name);
+}
+
+function getSlotNameByBidderId(id: string): string {
+	let slotName = id;
+
+	if (!context.get(`slots.${slotName}`)) {
+		slotName = getSlotNamesByBidderAlias(id).shift();
+
+		if (!slotName) {
+			return '';
+		}
+	}
+
+	return slotName;
+}
+
 export const bidderTrackingMiddleware: utils.Middleware<AdBidderContext> = (
 	{ bid, data },
 	next,
 ) => {
 	const now = new Date();
 	const timestamp: number = now.getTime();
-	const slotId = slotService.getId(bid.adUnitCode);
+	const slotName = getSlotNameByBidderId(bid.adUnitCode);
+	const slotId = slotService.getSlotId(slotName);
 
 	return next({
 		bid,

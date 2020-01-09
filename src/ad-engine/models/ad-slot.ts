@@ -1,5 +1,5 @@
 import * as EventEmitter from 'eventemitter3';
-import { AdStackPayload, eventService, slotTweaker } from '../';
+import { AdStackPayload, eventService, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
@@ -86,17 +86,6 @@ export class AdSlot extends EventEmitter {
 	static AD_CLASS = 'gpt-ad';
 	static HIDDEN_CLASS = 'hide';
 
-	static generateSlotId(): string {
-		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-			// tslint:disable-next-line:no-bitwise
-			const r = (Math.random() * 16) | 0;
-			// tslint:disable-next-line:no-bitwise
-			const v = c === 'x' ? r : (r & 0x3) | 0x8;
-
-			return v.toString(16);
-		});
-	}
-
 	private slotViewed = false;
 
 	config: SlotConfig;
@@ -150,10 +139,7 @@ export class AdSlot extends EventEmitter {
 		});
 
 		if (!this.config.uid) {
-			const uid = AdSlot.generateSlotId();
-
-			this.config.uid = uid;
-			context.set(`slots.${ad.id}.uid`, uid);
+			context.set(`slots.${ad.id}.uid`, utils.generateUniqueId());
 		}
 
 		this.config.slotName = this.config.slotName || ad.id;
@@ -223,10 +209,6 @@ export class AdSlot extends EventEmitter {
 		const { pos = '' } = this.targeting;
 
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
-	}
-
-	getId(): string {
-		return this.config.uid;
 	}
 
 	getSlotName(): string {
