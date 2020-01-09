@@ -5,6 +5,10 @@ const prebidLibraryUrl =
 	'//origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.4.0/20191216.min.js';
 const logGroup = 'pbjs-factory';
 
+// ToDo: remove
+// @ts-ignore
+prebidLibraryUrl = '//origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200109.min.js';
+
 (window as any).pbjs = (window as any).pbjs || {};
 (window as any).pbjs.que = (window as any).pbjs.que || [];
 

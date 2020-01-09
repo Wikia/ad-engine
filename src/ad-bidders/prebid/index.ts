@@ -68,7 +68,7 @@ export class PrebidProvider extends BidderProvider {
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		if (this.cmp.exists) {
-			// ToDo: remove it once Prebid v2.44.0 transition will be done
+			// ToDo @ Prebid 3.0: remove it once Prebid v2.44.0 transition will be done
 			if (
 				context.get('bidders.prebid.libraryUrl') &&
 				!context.get('bidders.prebid.libraryUrl').includes('v2.4.0')
