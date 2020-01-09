@@ -28,18 +28,18 @@ export class TemplateState<T extends string> {
 	private useTransition(completed: Promise<void>): TemplateTransition<T> {
 		let called = false;
 
-		return async (targetStateKey) => {
+		return async (targetStateKey, { allowMulticast = false } = {}) => {
 			await completed;
 
-			if (called) {
+			if (called && !allowMulticast) {
 				throw new Error(
 					// tslint:disable-next-line:prefer-template
 					`Error thrown while attempting to transition to "${targetStateKey}" state. ` +
 						`Attempting to call transition from "${this.name}" state a second time.\n` +
 						'This may be caused by:\n' +
-						'- not cleaning listeners in an "onLeave" method,\n' +
+						'- not cleaning up in an "onLeave" method,\n' +
 						'- calling transition in a different handler at the same time.\n' +
-						'You may suppress this error by placing transition method inside a try catch block.\n',
+						'You may suppress this error by allowMulticast to true.\n',
 				);
 			}
 

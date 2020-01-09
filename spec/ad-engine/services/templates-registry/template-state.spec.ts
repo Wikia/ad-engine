@@ -65,10 +65,11 @@ describe('Template State', () => {
 		await transition('other');
 		try {
 			await transition('other');
+			assert(false);
 		} catch (e) {
 			assert(true);
-			return;
 		}
-		assert(false);
 	});
+
+	it('should preserve order');
 });
