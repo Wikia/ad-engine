@@ -183,6 +183,18 @@
             "value": true
         }
     ],
+    "icBidsTracking": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "value": false
+        }
+    ],
     "icA9Deals": [
         {
             "apps": [
