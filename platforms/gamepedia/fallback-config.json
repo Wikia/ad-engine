@@ -1,19 +1,4 @@
 {
-    "wgAdDriverDelayTimeout": 2000,
-    "icConfiant": [
-        {
-            "apps": [
-                "gamepedia"
-            ],
-            "devices": [
-                "smartphone"
-            ],
-            "regions": [
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icPrebidRubiconDisplay": [
         {
             "apps": [
@@ -30,84 +15,9 @@
         }
     ],
     "wgAdDriverUapRestriction": 1,
-    "icPrebidAppNexus": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidPubmatic": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icBTRec": [
-        {
-            "apps": [
-                "gamepedia"
-            ],
-            "devices": [
-                "desktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidSendAllBids": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 5.0,
-            "value": true
-        }
-    ],
     "wgAdDriverTestCommunities": [
         "cdm_gamepedia",
         "project43"
-    ],
-    "icPrebid": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
     ],
     "icPrebidOpenX": [
         {
@@ -164,22 +74,6 @@
             "value": 1
         }
     ],
-    "icBabDetection": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icPostmessageTracking": [
         {
             "apps": [
@@ -194,18 +88,7 @@
             "value": true
         }
     ],
-    "icDurationMedia": [
-        {
-            "apps": [
-                "gamepedia"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icA9Deals": [
+    "icBidsTracking": [
         {
             "apps": [
                 "futhead",
@@ -214,10 +97,7 @@
                 "muthead",
                 "oasis"
             ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebidCriteo": [
@@ -281,9 +161,6 @@
             "value": true
         }
     ],
-    "wgAdDriverLABradorTestCountries": [
-        "PL/35-cached"
-    ],
     "icPrebidTriplelift": [
         {
             "apps": [
@@ -298,5 +175,140 @@
             ],
             "value": true
         }
+    ],
+    "wgAdDriverDelayTimeout": 2000,
+    "icConfiant": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "devices": [
+                "smartphone"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidAppNexus": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidPubmatic": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBTRec": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "devices": [
+                "desktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidSendAllBids": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 5.0,
+            "value": true
+        }
+    ],
+    "icPrebid": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBabDetection": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icDurationMedia": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icA9Deals": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "wgAdDriverLABradorTestCountries": [
+        "PL/35-cached"
     ]
 }
