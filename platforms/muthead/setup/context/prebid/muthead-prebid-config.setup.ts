@@ -4,6 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { getCriteoContext } from '../../../../futhead/bidders/prebid/criteo';
 import { getAppNexusContext } from '../../../bidders/prebid/app-nexus';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
+import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
@@ -17,6 +18,7 @@ export class MutheadPrebidConfigSetup implements PrebidConfigSetup {
 		context.set('bidders.prebid.appnexus', getAppNexusContext(mode));
 		context.set('bidders.prebid.criteo', getCriteoContext(mode));
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext(mode));
+		context.set('bidders.prebid.nobid', getNobidContext(mode));
 		context.set('bidders.prebid.openx', getOpenXContext(mode));
 		context.set('bidders.prebid.pubmatic', getPubmaticContext(mode));
 		context.set('bidders.prebid.rubicon_display', getRubiconContext(mode));

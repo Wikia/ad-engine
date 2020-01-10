@@ -53,7 +53,7 @@ export class PrebidProvider extends BidderProvider {
 			debug:
 				utils.queryString.get('pbjs_debug') === '1' ||
 				utils.queryString.get('pbjs_debug') === 'true',
-			enableSendAllBids: false,
+			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
@@ -163,9 +163,15 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
+		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
 
-		return getWinningBid(slotAlias);
+		return {
+			...(context.get('bidders.prebid.sendAllBids')
+				? pbjs.getAdserverTargetingForAdUnitCode(slotAlias)
+				: null),
+			...(await getWinningBid(slotAlias)),
+		};
 	}
 
 	isSupported(slotName: string): boolean {
