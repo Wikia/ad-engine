@@ -12,7 +12,7 @@ export function createTemplateStaterStub(sandbox: SinonSandbox): TemplateStateSt
 	return {
 		transitionSubject$,
 		transition$: transitionSubject$.asObservable(),
-		enter: sandbox.stub(),
-		leave: sandbox.stub(),
+		enter: sandbox.stub().resolves(),
+		leave: sandbox.stub().resolves(),
 	};
 }
