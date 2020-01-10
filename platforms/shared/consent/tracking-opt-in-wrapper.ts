@@ -10,8 +10,48 @@ const logGroup = 'tracking-opt-in-wrapper';
 class TrackingOptInWrapper {
 	libraryReady = false;
 	consentInstances: any;
-	ccpaSignal = false;
+
 	gdprConsent = false;
+	geoRequiresConsent = true;
+
+	ccpaSignal = false;
+	geoRequiresSignal = true;
+
+	constructor() {
+		this.installConsentQueue();
+	}
+
+	installConsentQueue(): void {
+		window.ads = window.ads || ({} as Ads);
+		window.ads.consentQueue = new utils.LazyQueue<(callback: any) => void>(
+			...(window.ads.consentQueue || []),
+		);
+
+		window.ads.consentQueue.onItemFlush((callback) => {
+			callback({
+				gdprConsent: this.gdprConsent,
+				geoRequiresConsent: this.geoRequiresConsent,
+				ccpaSignal: this.ccpaSignal,
+				geoRequiresSignal: this.geoRequiresSignal,
+			});
+		});
+		window.ads.pushToConsentQueue =
+			window.ads.pushToConsentQueue ||
+			((callback) => {
+				window.ads.consentQueue.push(callback);
+			});
+	}
+
+	flushConsentQueue(): Promise<void> {
+		context.set('options.trackingOptIn', this.gdprConsent);
+		context.set('options.optOutSale', this.ccpaSignal);
+		context.set('options.geoRequiresConsent', this.geoRequiresConsent);
+		context.set('options.geoRequiresSignal', this.geoRequiresSignal);
+
+		window.ads.consentQueue.flush();
+
+		return Promise.resolve();
+	}
 
 	/**
 	 * Initialize the system
@@ -23,41 +63,42 @@ class TrackingOptInWrapper {
 
 		return new Promise<void>((resolve, reject) => {
 			// In case it fails to load, we'll resolve after 2s
-			setTimeout(() => {
+			const loadingTimeout = setTimeout(() => {
 				utils.logger(logGroup, 'Timeout waiting for library to load');
 				resolve();
 			}, 2000);
 
+			const disableConsentQueue = !!context.get('options.disableConsentQueue');
+
 			utils.scriptLoader.loadScript(trackingOptInLibraryUrl).then(() => {
+				// Clear loading timeout
+				clearTimeout(loadingTimeout);
+
 				utils.logger(logGroup, 'Modal library loaded');
 
 				this.libraryReady = true;
 				this.consentInstances = window.trackingOptIn.default({
 					country,
 					region,
-					disableConsentQueue: true,
+					disableConsentQueue,
 					enableCCPAinit: true,
 					onAcceptTracking: () => {
 						utils.logger(logGroup, 'GDPR Consent');
-						this.gdprConsent = true;
+						resolve();
 					},
 					onRejectTracking: () => {
 						utils.logger(logGroup, 'GDPR Non-consent');
-						this.gdprConsent = false;
+						resolve();
 					},
 					zIndex: 9999999,
 				});
 
-				context.set(
-					'options.geoRequiresConsent',
-					this.consentInstances.gdpr.geoRequiresTrackingConsent(),
-				);
-				context.set(
-					'options.geoRequiresSignal',
-					this.consentInstances.ccpa.geoRequiresUserSignal(),
-				);
+				this.geoRequiresConsent = this.consentInstances.gdpr.geoRequiresTrackingConsent();
+				this.geoRequiresSignal = this.consentInstances.ccpa.geoRequiresUserSignal();
 
-				resolve();
+				if (disableConsentQueue) {
+					resolve();
+				}
 			});
 		});
 	}
@@ -72,13 +113,13 @@ class TrackingOptInWrapper {
 			// Nothing is needed if cookies are disabled
 			if (!window.navigator.cookieEnabled) {
 				utils.logger(logGroup, 'Cookies are disabled. Ignoring CMP consent check');
-				context.set('options.trackingOptIn', true);
+				this.gdprConsent = true;
 				resolve();
 				return;
 			}
 
 			if (!this.libraryReady) {
-				context.set('options.trackingOptIn', false);
+				this.gdprConsent = false;
 				resolve();
 				return;
 			}
@@ -86,13 +127,12 @@ class TrackingOptInWrapper {
 			// Nothing is needed if the geo does not require any consent
 			if (!this.consentInstances.gdpr.geoRequiresTrackingConsent()) {
 				this.gdprConsent = true;
-				context.set('options.trackingOptIn', true);
 				resolve();
 				return;
 			}
 
 			if (this.consentInstances.gdpr.hasUserConsented() === undefined) {
-				context.set('options.trackingOptIn', false);
+				this.gdprConsent = false;
 				resolve();
 				return;
 			}
@@ -100,7 +140,6 @@ class TrackingOptInWrapper {
 			this.gdprConsent = this.consentInstances.gdpr.hasUserConsented();
 
 			utils.logger(logGroup, `User consent: ${this.gdprConsent}`);
-			context.set('options.trackingOptIn', this.gdprConsent);
 
 			resolve();
 			return;
@@ -117,13 +156,13 @@ class TrackingOptInWrapper {
 			// Nothing is needed if cookies are disabled
 			if (!window.navigator.cookieEnabled) {
 				utils.logger(logGroup, 'Cookies are disabled. Ignoring USAPI consent check');
-				context.set('options.optOutSale', false);
+				this.ccpaSignal = false;
 				resolve();
 				return;
 			}
 
 			if (!this.libraryReady) {
-				context.set('options.optOutSale', true);
+				this.ccpaSignal = true;
 				resolve();
 				return;
 			}
@@ -131,13 +170,12 @@ class TrackingOptInWrapper {
 			// Nothing is needed if the geo does not require any consent
 			if (!this.consentInstances.ccpa.geoRequiresUserSignal()) {
 				this.ccpaSignal = false;
-				context.set('options.optOutSale', false);
 				resolve();
 				return;
 			}
 
 			if (this.consentInstances.ccpa.hasUserProvidedSignal() === undefined) {
-				context.set('options.optOutSale', true);
+				this.ccpaSignal = true;
 				resolve();
 				return;
 			}
@@ -145,7 +183,6 @@ class TrackingOptInWrapper {
 			this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
 
 			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
-			context.set('options.optOutSale', this.ccpaSignal);
 
 			resolve();
 			return;
