@@ -1,10 +1,12 @@
-import { merge } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 import { Dictionary } from '../../models';
 import { logger } from '../../utils';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 
 export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[]> = any> {
+	private subscription: Subscription;
+
 	private get currentState(): TemplateState<keyof T> {
 		if (!this.states.has(this.currentStateKey)) {
 			throw new Error(
@@ -25,8 +27,16 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		const transitions = Array.from(this.states.values()).map((state) => state.transition$);
 
 		logger(`Template ${this.templateName}`, 'initialize');
-		merge(...transitions).subscribe((targetStateKey) => this.transition(targetStateKey));
+		this.subscription = merge(...transitions).subscribe((targetStateKey) =>
+			this.transition(targetStateKey),
+		);
 		this.currentState.enter();
+	}
+
+	close(): void {
+		if (this.subscription) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	private async transition(targetStateKey: keyof T): Promise<void> {
