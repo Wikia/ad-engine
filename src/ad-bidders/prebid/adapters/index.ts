@@ -8,6 +8,7 @@ export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
 export * from './lkqd';
+export * from './nobid';
 export * from './onemobile';
 export * from './openx';
 export * from './pubmatic';
