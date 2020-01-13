@@ -3,7 +3,6 @@ import { Dictionary } from '../../models';
 import { logger } from '../../utils';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
-import { TemplateTransition } from './template-state-transition';
 
 export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[]> = any> {
 	private get currentState(): TemplateState<keyof T> {
@@ -30,7 +29,7 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		this.currentState.enter();
 	}
 
-	private transition: TemplateTransition<keyof T> = async (targetStateKey) => {
+	private async transition(targetStateKey: keyof T): Promise<void> {
 		if (this.currentStateKey === targetStateKey) {
 			throw new Error(
 				`Template ${this.templateName} - already is in ${this.currentStateKey} state`,
@@ -40,5 +39,5 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		await this.currentState.leave();
 		this.currentStateKey = targetStateKey;
 		await this.currentState.enter();
-	};
+	}
 }
