@@ -10,6 +10,7 @@ export * from './kargo';
 export * from './lkqd';
 export * from './nobid';
 export * from './onemobile';
+export * from './one-video';
 export * from './openx';
 export * from './pubmatic';
 export * from './rubicon';
