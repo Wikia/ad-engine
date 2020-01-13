@@ -63,7 +63,7 @@ export const adSlotEvent = action(
 	'[AdEngine] Ad Slot event',
 	props<{
 		event: string;
-		payload: any;
+		payload?: any;
 		adSlotName: string;
 	}>(),
 );

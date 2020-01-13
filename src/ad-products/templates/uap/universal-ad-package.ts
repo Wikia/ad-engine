@@ -265,21 +265,26 @@ function isFanTakeoverLoaded(): boolean {
 	);
 }
 
-eventService.communicator.actions$
-	.pipe(
-		ofType(adSlotEvent),
-		filter((action) => {
-			return [AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
-				.map((status) => action.event === status)
-				.some((x) => !!x);
-		}),
-		take(1),
-	)
-	.subscribe(() => {
-		eventService.communicator.dispatch(
-			uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
-		);
-	});
+export function registerUapListener(): void {
+	eventService.communicator.actions$
+		.pipe(
+			ofType(adSlotEvent),
+			filter((action) => {
+				return [AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
+					.map((status) => action.event === status)
+					.some((x) => !!x);
+			}),
+			take(1),
+		)
+		.subscribe(() => {
+			eventService.communicator.dispatch(
+				uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
+			);
+		});
+}
+
+// Side effect
+registerUapListener();
 
 export const universalAdPackage = {
 	...constants,
