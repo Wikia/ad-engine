@@ -1,5 +1,5 @@
 import { TemplateMachine } from '@wikia/ad-engine/services/templates-registry/template-machine';
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { createTemplateStaterStub, TemplateStateStub } from './template-state.stub';
 
@@ -37,28 +37,54 @@ describe('Template Machine', () => {
 		assert(!stateB.leave.called);
 	});
 
-	// it('should respond to first navigation', (done) => {
-	// 	stateA.enter.callsFake(async () => {
-	// 		stateA.transitionSubject$.next('b');
-	// 	});
-	//
-	// 	machine.init().subscribe(() => {
-	// 		assert(stateA.enter.calledOnce);
-	// 		assert(stateA.leave.calledOnce);
-	// 		assert(stateB.enter.calledOnce);
-	// 		assert(!stateB.leave.called);
-	// 		done();
-	// 	});
-	// });
+	it('should respond to immediate transition', async () => {
+		stateA.enter.callsFake(() => stateA.transitionSubject$.next('b'));
+		machine.init();
 
-	it('should throw if attempting to transition to the same state', () => {
-		try {
-			machine.init();
-			stateA.transitionSubject$.next('a');
-			stateA.transitionSubject$.next('a');
-		} catch (e) {
-			console.log('bielik');
-			console.log(e);
-		}
+		assert(stateA.enter.calledOnce);
+		assert(stateA.leave.calledOnce);
+
+		await Promise.resolve();
+
+		assert(stateB.enter.calledOnce);
+		assert(!stateB.leave.called);
+
+		sandbox.assert.callOrder(stateA.enter, stateA.leave, stateB.enter);
+	});
+
+	it('should respond to any terminate', async () => {
+		machine.init();
+		stateA.transitionSubject$.next('b');
+
+		assert(stateA.enter.calledOnce);
+		assert(stateA.leave.calledOnce);
+
+		await Promise.resolve();
+
+		assert(stateB.enter.calledOnce);
+		assert(!stateB.leave.called);
+	});
+
+	it('should stop working after terminate', async () => {
+		machine.init();
+		machine.terminate();
+		stateA.transitionSubject$.next('b');
+
+		assert(stateA.enter.calledOnce);
+		assert(!stateA.leave.called);
+
+		await Promise.resolve();
+
+		assert(!stateB.enter.called);
+		assert(!stateB.leave.called);
+	});
+
+	it('should throw if initialized twice', () => {
+		machine.init();
+		expect(() => machine.init()).to.throw('Template mock-template can be initialized only once');
+	});
+
+	it('should throw if terminate before initialize', () => {
+		expect(() => machine.terminate()).to.throw();
 	});
 });

@@ -24,6 +24,10 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 	) {}
 
 	init(): void {
+		if (this.subscription) {
+			throw new Error(`Template ${this.templateName} can be initialized only once`);
+		}
+
 		const transitions = Array.from(this.states.values()).map((state) => state.transition$);
 
 		logger(`Template ${this.templateName}`, 'initialize');
@@ -33,10 +37,8 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		this.currentState.enter();
 	}
 
-	close(): void {
-		if (this.subscription) {
-			this.subscription.unsubscribe();
-		}
+	terminate(): void {
+		this.subscription.unsubscribe();
 	}
 
 	private async transition(targetStateKey: keyof T): Promise<void> {
