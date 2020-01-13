@@ -20,7 +20,7 @@ describe('Template Machine', () => {
 	});
 
 	afterEach(() => {
-		sandbox.reset();
+		sandbox.restore();
 	});
 
 	it('should enter initial state state after init', () => {
@@ -37,8 +37,10 @@ describe('Template Machine', () => {
 		assert(!stateB.leave.called);
 	});
 
-	it('should respond to immediate transition', async () => {
-		stateA.enter.callsFake(() => stateA.transitionSubject$.next('b'));
+	it('should respond to transition', async () => {
+		stateA.enter.callsFake((transition) => {
+			transition('b');
+		});
 		machine.init();
 
 		assert(stateA.enter.calledOnce);
@@ -52,39 +54,29 @@ describe('Template Machine', () => {
 		sandbox.assert.callOrder(stateA.enter, stateA.leave, stateB.enter);
 	});
 
-	it('should respond to any terminate', async () => {
+	it('should throw when transition to the same state', (done) => {
+		stateA.enter.callsFake(async (transition) => {
+			try {
+				await transition('a');
+				assert(false);
+			} catch (e) {
+				expect(e.message).to.equal('Template mock-template - already is in a state');
+			}
+			done();
+		});
 		machine.init();
-		stateA.transitionSubject$.next('b');
-
-		assert(stateA.enter.calledOnce);
-		assert(stateA.leave.calledOnce);
-
-		await Promise.resolve();
-
-		assert(stateB.enter.calledOnce);
-		assert(!stateB.leave.called);
 	});
 
-	it('should stop working after terminate', async () => {
+	it('should throw when transition to not existing state', (done) => {
+		stateA.enter.callsFake(async (transition) => {
+			try {
+				await transition('wrong');
+				assert(false);
+			} catch (e) {
+				expect(e.message).to.equal('Template mock-template - state (wrong) does not exist.');
+			}
+			done();
+		});
 		machine.init();
-		machine.terminate();
-		stateA.transitionSubject$.next('b');
-
-		assert(stateA.enter.calledOnce);
-		assert(!stateA.leave.called);
-
-		await Promise.resolve();
-
-		assert(!stateB.enter.called);
-		assert(!stateB.leave.called);
-	});
-
-	it('should throw if initialized twice', () => {
-		machine.init();
-		expect(() => machine.init()).to.throw('Template mock-template can be initialized only once');
-	});
-
-	it('should throw if terminate before initialize', () => {
-		expect(() => machine.terminate()).to.throw();
 	});
 });

@@ -1,20 +1,15 @@
 import { TemplateTransition } from '@wikia/ad-engine';
 import { TemplateState } from '@wikia/ad-engine/services/templates-registry/template-state';
 import { assert, expect } from 'chai';
-import { take } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonStub } from 'sinon';
 import { createTemplateStateHandlerStub } from './template-state-handler.stub';
 
 describe('Template State', () => {
 	const sandbox = createSandbox();
-	// @ts-ignore
-	let scheduler: TestScheduler;
+	let templateTransitionStub: SinonStub;
 
 	beforeEach(() => {
-		scheduler = new TestScheduler((actual, expected) => {
-			expect(actual).to.equal(expected);
-		});
+		templateTransitionStub = sandbox.stub().resolves();
 	});
 
 	afterEach(() => {
@@ -26,7 +21,7 @@ describe('Template State', () => {
 		const handlerStub2 = createTemplateStateHandlerStub(sandbox);
 		const instance = new TemplateState('mock', [handlerStub1, handlerStub2]);
 
-		instance.enter();
+		instance.enter(templateTransitionStub);
 		assert(handlerStub1.onEnter.calledOnce);
 		assert(handlerStub2.onEnter.calledOnce);
 		assert(handlerStub1.onLeave.callCount === 0);
@@ -39,44 +34,44 @@ describe('Template State', () => {
 		assert(handlerStub2.onLeave.calledOnce);
 	});
 
-	it('should transition out of a state', (done) => {
+	it('should transition out of a state', async () => {
 		const handlerStub = createTemplateStateHandlerStub(sandbox);
 		const instance = new TemplateState('mock', [handlerStub]);
-		let transition: TemplateTransition;
 
-		handlerStub.onEnter.callsFake((arg) => (transition = arg));
-		instance.enter();
-
-		instance.transition$.pipe(take(1)).subscribe((value) => {
-			expect(value).to.equal('other');
-			done();
+		handlerStub.onEnter.callsFake((stateTransition) => {
+			stateTransition('other');
 		});
-		transition('other');
+		await instance.enter(templateTransitionStub);
+
+		assert(templateTransitionStub.calledOnce);
+		expect(templateTransitionStub.getCall(0).args[0]).to.equal('other');
 	});
 
 	it('should throw when attempting second transition if allowMulticast set to false', async () => {
 		const handlerStub = createTemplateStateHandlerStub(sandbox);
 		const instance = new TemplateState('mock', [handlerStub]);
-		let transition: TemplateTransition;
+		let stateTransition: TemplateTransition;
 
-		handlerStub.onEnter.callsFake((arg) => (transition = arg));
-		instance.enter();
+		handlerStub.onEnter.callsFake((arg) => {
+			stateTransition = arg;
+		});
+		instance.enter(templateTransitionStub);
 
-		await transition('other');
+		await stateTransition('other');
 		try {
-			await transition('other');
+			await stateTransition('other');
 			assert(false);
 		} catch (e) {
 			assert(true);
 		}
 		try {
-			await transition('other', { allowMulticast: false });
+			await stateTransition('other', { allowMulticast: false });
 			assert(false);
 		} catch (e) {
 			assert(true);
 		}
 		try {
-			await transition('other', { allowMulticast: true });
+			await stateTransition('other', { allowMulticast: true });
 			assert(true);
 		} catch (e) {
 			assert(false);
@@ -88,10 +83,7 @@ describe('Template State', () => {
 		const handlerStub2 = createTemplateStateHandlerStub(sandbox);
 		const instance = new TemplateState('mock', [handlerStub1, handlerStub2]);
 
-		handlerStub1.onEnter.callsFake((transition) => {
-			transition('other');
-		});
-		instance.transition$.pipe(take(1)).subscribe(() => {
+		templateTransitionStub.callsFake(() => {
 			sandbox.assert.callOrder(handlerStub1.onEnter, handlerStub2.onEnter);
 			assert(handlerStub1.onEnter.calledOnce);
 			assert(handlerStub2.onEnter.calledOnce);
@@ -99,6 +91,9 @@ describe('Template State', () => {
 			assert(handlerStub2.onLeave.callCount === 0);
 			done();
 		});
-		instance.enter();
+		handlerStub1.onEnter.callsFake((stateTransition) => {
+			stateTransition('other');
+		});
+		instance.enter(templateTransitionStub);
 	});
 });

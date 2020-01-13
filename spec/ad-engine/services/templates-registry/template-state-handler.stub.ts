@@ -7,7 +7,7 @@ export type TemplateStateHandlerStub = {
 
 export function createTemplateStateHandlerStub(sandbox: SinonSandbox): TemplateStateHandlerStub {
 	return {
-		onEnter: sandbox.stub(),
-		onLeave: sandbox.stub(),
+		onEnter: sandbox.stub().resolves(),
+		onLeave: sandbox.stub().resolves(),
 	};
 }

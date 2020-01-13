@@ -1,20 +1,16 @@
-import { Observable, Subject } from 'rxjs';
 import { createExtendedPromise, logger } from '../../utils';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
 
 export class TemplateState<T extends string> {
-	private readonly transitionSubject$ = new Subject<T>();
-	readonly transition$: Observable<T> = this.transitionSubject$.asObservable();
-
 	constructor(private name: string, private handlers: TemplateStateHandler<T>[]) {}
 
-	async enter(): Promise<void> {
+	async enter(templateTransition: TemplateTransition<T>): Promise<void> {
 		const transitionCompleted = createExtendedPromise();
-		const transition = this.useTransition(transitionCompleted);
+		const stateTransition = this.useTransition(templateTransition, transitionCompleted);
 
 		logger(`State - ${this.name}`, 'enter');
-		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(transition)));
+		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(stateTransition)));
 		logger(`State - ${this.name}`, 'entered');
 		transitionCompleted.resolve();
 	}
@@ -25,7 +21,10 @@ export class TemplateState<T extends string> {
 		logger(`State - ${this.name}`, 'left');
 	}
 
-	private useTransition(completed: Promise<void>): TemplateTransition<T> {
+	private useTransition(
+		templateTransition: TemplateTransition<T>,
+		completed: Promise<void>,
+	): TemplateTransition<T> {
 		let called = false;
 
 		return async (targetStateKey, { allowMulticast = false } = {}) => {
@@ -45,7 +44,7 @@ export class TemplateState<T extends string> {
 
 			called = true;
 
-			this.transitionSubject$.next(targetStateKey);
+			templateTransition(targetStateKey, { allowMulticast });
 		};
 	}
 }

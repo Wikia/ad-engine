@@ -1,12 +1,10 @@
-import { merge, Subscription } from 'rxjs';
 import { Dictionary } from '../../models';
 import { logger } from '../../utils';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
+import { TemplateTransition } from './template-state-transition';
 
 export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[]> = any> {
-	private subscription: Subscription;
-
 	private get currentState(): TemplateState<keyof T> {
 		if (!this.states.has(this.currentStateKey)) {
 			throw new Error(
@@ -24,24 +22,11 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 	) {}
 
 	init(): void {
-		if (this.subscription) {
-			throw new Error(`Template ${this.templateName} can be initialized only once`);
-		}
-
-		const transitions = Array.from(this.states.values()).map((state) => state.transition$);
-
 		logger(`Template ${this.templateName}`, 'initialize');
-		this.subscription = merge(...transitions).subscribe((targetStateKey) =>
-			this.transition(targetStateKey),
-		);
-		this.currentState.enter();
+		this.currentState.enter(this.transition);
 	}
 
-	terminate(): void {
-		this.subscription.unsubscribe();
-	}
-
-	private async transition(targetStateKey: keyof T): Promise<void> {
+	private transition: TemplateTransition<keyof T> = async (targetStateKey) => {
 		if (this.currentStateKey === targetStateKey) {
 			throw new Error(
 				`Template ${this.templateName} - already is in ${this.currentStateKey} state`,
@@ -50,6 +35,6 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 
 		await this.currentState.leave();
 		this.currentStateKey = targetStateKey;
-		await this.currentState.enter();
-	}
+		await this.currentState.enter(this.transition);
+	};
 }
