@@ -21,7 +21,7 @@ class TrackingOptInWrapper {
 		this.installConsentQueue();
 	}
 
-	installConsentQueue(): void {
+	private installConsentQueue(): void {
 		window.ads = window.ads || ({} as Ads);
 		window.ads.consentQueue = new utils.LazyQueue<(callback: any) => void>(
 			...(window.ads.consentQueue || []),
@@ -42,151 +42,119 @@ class TrackingOptInWrapper {
 			});
 	}
 
-	flushConsentQueue(): Promise<void> {
+	flushConsentQueue(): void {
 		context.set('options.trackingOptIn', this.gdprConsent);
 		context.set('options.optOutSale', this.ccpaSignal);
 		context.set('options.geoRequiresConsent', this.geoRequiresConsent);
 		context.set('options.geoRequiresSignal', this.geoRequiresSignal);
 
 		window.ads.consentQueue.flush();
-
-		return Promise.resolve();
 	}
 
-	/**
-	 * Initialize the system
-	 * Returns a Promise fulfilled when the library is ready for use
-	 */
-	init(geoData: utils.GeoData): Promise<void> {
-		const country = geoData.country;
-		const region = geoData.region;
-
-		return new Promise<void>((resolve, reject) => {
-			// In case it fails to load, we'll resolve after 2s
-			const loadingTimeout = setTimeout(() => {
+	async init(geoData: utils.GeoData): Promise<void> {
+		try {
+			await Promise.race([utils.timeoutReject(2000), this.initInstances(geoData)]);
+		} catch (e) {
+			if (!this.libraryReady) {
 				utils.logger(logGroup, 'Timeout waiting for library to load');
-				resolve();
-			}, 2000);
+				return;
+			}
+		}
+	}
 
+	private initInstances(geoData: utils.GeoData): Promise<void> {
+		return new Promise<void>(async (resolve, reject) => {
+			await utils.scriptLoader.loadScript(trackingOptInLibraryUrl);
+
+			this.libraryReady = true;
+
+			const country = geoData.country;
+			const region = geoData.region;
 			const disableConsentQueue = !!context.get('options.disableConsentQueue');
 
-			utils.scriptLoader.loadScript(trackingOptInLibraryUrl).then(() => {
-				// Clear loading timeout
-				clearTimeout(loadingTimeout);
+			utils.logger(logGroup, 'Modal library loaded');
 
-				utils.logger(logGroup, 'Modal library loaded');
-
-				this.libraryReady = true;
-				this.consentInstances = window.trackingOptIn.default({
-					country,
-					region,
-					disableConsentQueue,
-					enableCCPAinit: true,
-					onAcceptTracking: () => {
-						utils.logger(logGroup, 'GDPR Consent');
-						resolve();
-					},
-					onRejectTracking: () => {
-						utils.logger(logGroup, 'GDPR Non-consent');
-						resolve();
-					},
-					zIndex: 9999999,
-				});
-
-				this.geoRequiresConsent = this.consentInstances.gdpr.geoRequiresTrackingConsent();
-				this.geoRequiresSignal = this.consentInstances.ccpa.geoRequiresUserSignal();
-
-				if (disableConsentQueue) {
+			this.consentInstances = window.trackingOptIn.default({
+				country,
+				region,
+				disableConsentQueue,
+				enableCCPAinit: true,
+				onAcceptTracking: () => {
+					utils.logger(logGroup, 'GDPR Consent');
 					resolve();
-				}
+				},
+				onRejectTracking: () => {
+					utils.logger(logGroup, 'GDPR Non-consent');
+					resolve();
+				},
+				zIndex: 9999999,
 			});
+
+			this.geoRequiresConsent = this.consentInstances.gdpr.geoRequiresTrackingConsent();
+			this.geoRequiresSignal = this.consentInstances.ccpa.geoRequiresUserSignal();
+
+			if (disableConsentQueue) {
+				resolve();
+			}
 		});
 	}
 
-	/**
-	 * Returns a promise fulfilled when either the geo does not require consent, CMP is disabled,
-	 * or the geo requires consent that has either been previously set in a cookie or via interaction
-	 * with the CMP UI
-	 */
-	getConsent(): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
-			// Nothing is needed if cookies are disabled
-			if (!window.navigator.cookieEnabled) {
-				utils.logger(logGroup, 'Cookies are disabled. Ignoring CMP consent check');
-				this.gdprConsent = true;
-				resolve();
-				return;
-			}
-
-			if (!this.libraryReady) {
-				this.gdprConsent = false;
-				resolve();
-				return;
-			}
-
-			// Nothing is needed if the geo does not require any consent
-			if (!this.consentInstances.gdpr.geoRequiresTrackingConsent()) {
-				this.gdprConsent = true;
-				resolve();
-				return;
-			}
-
-			if (this.consentInstances.gdpr.hasUserConsented() === undefined) {
-				this.gdprConsent = false;
-				resolve();
-				return;
-			}
-
-			this.gdprConsent = this.consentInstances.gdpr.hasUserConsented();
-
-			utils.logger(logGroup, `User consent: ${this.gdprConsent}`);
-
-			resolve();
+	getConsent(): void {
+		// Nothing is needed if cookies are disabled
+		if (!window.navigator.cookieEnabled) {
+			utils.logger(logGroup, 'Cookies are disabled. Ignoring CMP consent check');
+			this.gdprConsent = true;
 			return;
-		});
+		}
+
+		if (!this.libraryReady) {
+			this.gdprConsent = false;
+			return;
+		}
+
+		// Nothing is needed if the geo does not require any consent
+		if (!this.consentInstances.gdpr.geoRequiresTrackingConsent()) {
+			this.gdprConsent = true;
+			return;
+		}
+
+		if (this.consentInstances.gdpr.hasUserConsented() === undefined) {
+			this.gdprConsent = false;
+			return;
+		}
+
+		this.gdprConsent = this.consentInstances.gdpr.hasUserConsented();
+
+		utils.logger(logGroup, `User consent: ${this.gdprConsent}`);
 	}
 
-	/**
-	 * Returns a promise fulfilled when either the geo does not require signal, USAPI is disabled,
-	 * or the geo requires signal that has either been previously set in a cookie or via interaction
-	 * with the USAPI UI
-	 */
-	getSignal(): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
-			// Nothing is needed if cookies are disabled
-			if (!window.navigator.cookieEnabled) {
-				utils.logger(logGroup, 'Cookies are disabled. Ignoring USAPI consent check');
-				this.ccpaSignal = false;
-				resolve();
-				return;
-			}
-
-			if (!this.libraryReady) {
-				this.ccpaSignal = true;
-				resolve();
-				return;
-			}
-
-			// Nothing is needed if the geo does not require any consent
-			if (!this.consentInstances.ccpa.geoRequiresUserSignal()) {
-				this.ccpaSignal = false;
-				resolve();
-				return;
-			}
-
-			if (this.consentInstances.ccpa.hasUserProvidedSignal() === undefined) {
-				this.ccpaSignal = true;
-				resolve();
-				return;
-			}
-
-			this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
-
-			utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
-
-			resolve();
+	getSignal(): void {
+		// Nothing is needed if cookies are disabled
+		if (!window.navigator.cookieEnabled) {
+			utils.logger(logGroup, 'Cookies are disabled. Ignoring USAPI consent check');
+			this.ccpaSignal = false;
 			return;
-		});
+		}
+
+		if (!this.libraryReady) {
+			this.ccpaSignal = true;
+			return;
+		}
+
+		// Nothing is needed if the geo does not require any consent
+		if (!this.consentInstances.ccpa.geoRequiresUserSignal()) {
+			this.ccpaSignal = false;
+			return;
+		}
+
+		if (this.consentInstances.ccpa.hasUserProvidedSignal() === undefined) {
+			this.ccpaSignal = true;
+			return;
+		}
+
+		this.ccpaSignal = this.consentInstances.ccpa.hasUserProvidedSignal();
+
+		utils.logger(logGroup, `User signal: ${this.ccpaSignal}`);
 	}
 }
 
