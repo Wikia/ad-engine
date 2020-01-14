@@ -1,6 +1,5 @@
 @import '_mixin';
 
-$video-z-index: 1;
 $controls-z-index: 11;
 $outstream-button-color: #fff;
 $outstream-button-size: 20px;
@@ -54,7 +53,6 @@ $vpaid-z-index: 10;
 				background: #000;
 				margin: 0 auto;
 				pointer-events: auto;
-				z-index: $video-z-index;
 			}
 		}
 
@@ -107,7 +105,6 @@ $vpaid-z-index: 10;
 		}
 
 		.porvata-switchable-icon {
-			pointer-events: auto;
 			z-index: 100;
 
 			.porvata-off-icon {
