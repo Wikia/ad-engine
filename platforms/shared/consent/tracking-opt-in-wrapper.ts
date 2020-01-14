@@ -52,13 +52,17 @@ class TrackingOptInWrapper {
 	}
 
 	async init(geoData: utils.GeoData): Promise<void> {
+		const initPromise = this.initInstances(geoData);
+
 		try {
-			await Promise.race([utils.timeoutReject(2000), this.initInstances(geoData)]);
+			await Promise.race([initPromise, utils.timeoutReject(2000)]);
 		} catch (e) {
 			if (!this.libraryReady) {
 				utils.logger(logGroup, 'Timeout waiting for library to load');
 				return;
 			}
+
+			await initPromise;
 		}
 	}
 
