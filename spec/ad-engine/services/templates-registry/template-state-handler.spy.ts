@@ -1,15 +1,15 @@
-import { SinonSandbox, SinonSpy } from 'sinon';
+import { SinonSandbox, SinonStub } from 'sinon';
 
 export interface TemplateStateHandlerSpy {
-	constructor: SinonSpy;
-	onEnter: SinonSpy;
-	onLeave: SinonSpy;
+	constructor: SinonStub;
+	onEnter: SinonStub;
+	onLeave: SinonStub;
 }
 
 export function createTemplateStateHandlerSpy(sandbox: SinonSandbox): TemplateStateHandlerSpy {
 	return {
-		constructor: sandbox.spy(),
-		onEnter: sandbox.spy(),
-		onLeave: sandbox.spy(),
+		constructor: sandbox.stub().resolves(),
+		onEnter: sandbox.stub().resolves(),
+		onLeave: sandbox.stub().resolves(),
 	};
 }

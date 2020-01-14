@@ -44,7 +44,7 @@ export class TemplateState<T extends string> {
 
 			called = true;
 
-			templateTransition(targetStateKey, { allowMulticast });
+			return templateTransition(targetStateKey, { allowMulticast });
 		};
 	}
 }
