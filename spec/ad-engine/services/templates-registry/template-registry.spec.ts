@@ -131,6 +131,20 @@ describe('Template Registry', () => {
 			assert(stateSharedSpy.constructor.callCount === 4);
 		});
 
+		it('should throw then trying get deps after init', () => {
+			instance.init(templateName1, templateSlot1, templateParams1);
+
+			expect(() => container.get(TEMPLATE.NAME)).to.throw(
+				`${TEMPLATE.NAME.toString()} can only be injected in template handler constructor`,
+			);
+			expect(() => container.get(TEMPLATE.SLOT)).to.throw(
+				`${TEMPLATE.SLOT.toString()} can only be injected in template handler constructor`,
+			);
+			expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
+				`${TEMPLATE.PARAMS.toString()} can only be injected in template handler constructor`,
+			);
+		});
+
 		it('should be able inject correct params', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
