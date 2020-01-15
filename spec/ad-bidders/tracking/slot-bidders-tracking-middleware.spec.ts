@@ -37,6 +37,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			gumgum: 19.0,
 			'33across': 20.0,
 			triplelift: 21.0,
+			oneVideo: 23.0,
 			criteo: 24.0,
 			nobid: 25.0,
 		});
@@ -67,6 +68,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			gumgum: 19.0,
 			'33across': 20.0,
 			triplelift: 21.0,
+			oneVideo: 23.0,
 			criteo: 24.0,
 			nobid: 25.0,
 		});
@@ -104,6 +106,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_19: 19.0,
 			bidder_20: 20.0,
 			bidder_21: 21.0,
+			bidder_23: 23.0,
 			bidder_24: 24.0,
 			bidder_25: 25.0,
 		});
@@ -143,6 +146,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_19: '19not_used',
 			bidder_20: '20not_used',
 			bidder_21: '21not_used',
+			bidder_23: '23not_used',
 			bidder_24: '24not_used',
 			bidder_25: '25not_used',
 		});

@@ -1,5 +1,6 @@
-import { Dictionary } from '@wikia/ad-engine';
+import { adSlotEvent, Dictionary, eventService } from '@wikia/ad-engine';
 import { assert, expect } from 'chai';
+import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../src/ad-engine/services/context-service';
 import ConfigMock from '../config-mock';
@@ -15,8 +16,15 @@ function createAdSlot(id) {
 }
 
 describe('ad-slot', () => {
+	const sandbox: SinonSandbox = createSandbox();
+
 	beforeEach(() => {
 		context.extend(ConfigMock);
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+		sandbox.reset();
 	});
 
 	it('base properties', () => {
@@ -216,6 +224,70 @@ describe('ad-slot', () => {
 			const result = adSlot.getSlotsToInjectAfterRendered();
 
 			assert.deepEqual(result, expectedValue);
+		});
+	});
+
+	describe('emit', () => {
+		let emitSpy: SinonSpy;
+		let dispatchSpy: SinonSpy;
+		let adSlot: AdSlot;
+		const symbol = Symbol('My Symbol');
+		const slotName = 'top_leaderboard';
+
+		beforeEach(() => {
+			adSlot = createAdSlot(slotName);
+			emitSpy = sandbox.spy(eventService, 'emit');
+			dispatchSpy = sandbox.spy(eventService.communicator, 'dispatch');
+		});
+
+		afterEach(() => {
+			sandbox.restore();
+		});
+
+		it('should call eventService.emit with string event', () => {
+			adSlot.emit(AdSlot.TEMPLATES_LOADED, 'foo', 'bar');
+
+			expect(emitSpy.callCount).to.equal(1);
+			expect(emitSpy.firstCall.args[0]).to.equal(AdSlot.TEMPLATES_LOADED);
+			expect(emitSpy.firstCall.args[1]).to.equal(adSlot);
+			expect(emitSpy.firstCall.args[2]).to.equal('foo');
+			expect(emitSpy.firstCall.args[3]).to.equal('bar');
+		});
+
+		it('should call eventService.emit with Symbol event', () => {
+			adSlot.emit(symbol, 'foo', 'bar');
+
+			expect(emitSpy.callCount).to.equal(1);
+			expect(emitSpy.firstCall.args[0]).to.equal(symbol);
+			expect(emitSpy.firstCall.args[1]).to.equal(adSlot);
+			expect(emitSpy.firstCall.args[2]).to.equal('foo');
+			expect(emitSpy.firstCall.args[3]).to.equal('bar');
+		});
+
+		it('should call eventService.communicator.dispatch with string event', () => {
+			adSlot.emit(AdSlot.TEMPLATES_LOADED, 'foo', 'bar');
+
+			expect(dispatchSpy.callCount).to.equal(1);
+			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
+				adSlotEvent({
+					payload: ['foo', 'bar'],
+					event: AdSlot.TEMPLATES_LOADED,
+					adSlotName: slotName,
+				}),
+			);
+		});
+
+		it('should call eventService.communicator.dispatch with Symbol event', () => {
+			adSlot.emit(symbol, 'foo', 'bar');
+
+			expect(dispatchSpy.callCount).to.equal(1);
+			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
+				adSlotEvent({
+					payload: ['foo', 'bar'],
+					event: 'Symbol(My Symbol)',
+					adSlotName: slotName,
+				}),
+			);
 		});
 	});
 });
