@@ -167,7 +167,8 @@
 		},
 		"ignore": [
 			"**/dist/**/*",
-			"maintenance/tslint-rules/tests/**/*"
+			"maintenance/tslint-rules/tests/**/*",
+			"platforms/*/fallback-config.js"
 		]
 	}
 }
