@@ -93,9 +93,11 @@ describe('Template Registry', () => {
 
 	describe('Initialized', () => {
 		const templateName1 = 'foo';
+		const templateSlot1: AdSlot = { slot: 'foo-slot' } as any;
+		const templateParams1 = { params: 'foo-params' };
 		const templateName2 = 'bar';
-		const templateSlot: AdSlot = { slot: 'slot-value' } as any;
-		const templateParams = { params: 'params-value' };
+		const templateSlot2: AdSlot = { slot: 'bar-slot' } as any;
+		const templateParams2 = { params: 'bar-params' };
 		const template = {
 			a: [StateAHandler, StateSharedHandler],
 			b: [StateBHandler, StateSharedHandler],
@@ -113,7 +115,7 @@ describe('Template Registry', () => {
 		});
 
 		it('should create all handlers on init', () => {
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 
 			assert(stateASpy.constructor.calledOnce);
 			assert(stateBSpy.constructor.calledOnce);
@@ -121,8 +123,8 @@ describe('Template Registry', () => {
 		});
 
 		it('should create all handlers on init for two templates', () => {
-			instance.init(templateName1, templateSlot, templateParams);
-			instance.init(templateName2, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
+			instance.init(templateName2, templateSlot1, templateParams1);
 
 			assert(stateASpy.constructor.calledTwice);
 			assert(stateBSpy.constructor.calledTwice);
@@ -130,17 +132,32 @@ describe('Template Registry', () => {
 		});
 
 		it('should be able inject correct params', () => {
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 
 			const [name, slot, params] = stateASpy.constructor.getCall(0).args;
 
 			expect(name).to.equal(templateName1);
-			expect(slot).to.equal(templateSlot);
-			expect(params).to.equal(templateParams);
+			expect(slot).to.equal(templateSlot1);
+			expect(params).to.equal(templateParams1);
+		});
+
+		it('should be able inject correct params to different templates', () => {
+			instance.init(templateName1, templateSlot1, templateParams1);
+			instance.init(templateName2, templateSlot2, templateParams2);
+
+			const [name1, slot1, params1] = stateASpy.constructor.getCall(0).args;
+			const [name2, slot2, params2] = stateASpy.constructor.getCall(1).args;
+
+			expect(name1).to.equal(templateName1);
+			expect(slot1).to.equal(templateSlot1);
+			expect(params1).to.equal(templateParams1);
+			expect(name2).to.equal(templateName2);
+			expect(slot2).to.equal(templateSlot2);
+			expect(params2).to.equal(templateParams2);
 		});
 
 		it('should enter initial state', () => {
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 
 			assert(stateASpy.onEnter.calledOnce);
 			assert(stateASpy.onLeave.notCalled);
@@ -173,7 +190,7 @@ describe('Template Registry', () => {
 
 				done();
 			});
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 		});
 
 		it('should throw if transition to the same state', (done) => {
@@ -186,7 +203,7 @@ describe('Template Registry', () => {
 					.finally(() => done());
 			});
 
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 		});
 
 		it('should throw if transition to not existing state', (done) => {
@@ -199,7 +216,7 @@ describe('Template Registry', () => {
 					.finally(() => done());
 			});
 
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 		});
 
 		it('should throw if transition twice', (done) => {
@@ -211,7 +228,7 @@ describe('Template Registry', () => {
 					.finally(() => done());
 			});
 
-			instance.init(templateName1, templateSlot, templateParams);
+			instance.init(templateName1, templateSlot1, templateParams1);
 		});
 	});
 });
