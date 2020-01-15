@@ -59,16 +59,38 @@ export class PrebidProvider extends BidderProvider {
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
-			userSync: {
-				iframeEnabled: true,
-				enabledBidders: [],
-				syncDelay: 6000,
-			},
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
+		// ToDo @ Prebid 3.0: remove else part once Prebid v3.2.0 transition will be done
+		if (
+			context.get('bidders.prebid.libraryUrl') &&
+			context.get('bidders.prebid.libraryUrl').includes('v3.2.0')
+		) {
+			this.prebidConfig.userSync = {
+				filterSettings: {
+					iframe: {
+						bidders: '*',
+						filter: 'include',
+					},
+					image: {
+						bidders: '*',
+						filter: 'include',
+					},
+				},
+				syncsPerBidder: 3,
+				syncDelay: 6000,
+			};
+		} else {
+			this.prebidConfig.userSync = {
+				iframeEnabled: true,
+				enabledBidders: [],
+				syncDelay: 6000,
+			};
+		}
+
 		if (this.cmp.exists) {
-			// ToDo: remove it once Prebid v2.44.0 transition will be done
+			// ToDo @ Prebid 3.0: remove else part once Prebid v2.44.0 transition will be done
 			if (
 				context.get('bidders.prebid.libraryUrl') &&
 				!context.get('bidders.prebid.libraryUrl').includes('v2.4.0')
