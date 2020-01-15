@@ -1,9 +1,10 @@
-import { AdEngine, context, Permutive } from '@wikia/ad-engine';
+import { AdEngine, context, permutive } from '@wikia/ad-engine';
 import adContext from '../../context';
 
 context.extend(adContext);
+context.set('services.permutive.enabled', true);
+context.set('options.trackingOptIn', true);
 
-Permutive.configure();
-Permutive.loadScript();
+permutive.call();
 
 new AdEngine().init();

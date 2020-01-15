@@ -62,7 +62,7 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`services.krux.enabled`|Decides whether Krux is loaded (after calling `krux.call()`)|boolean|✘|
 |`services.krux.id`|Krux ID|string|✔|
 |`services.permutive.enabled`|Decides whether Permutive is loaded|boolean|✘|
-|`slots`|Ad slots definition|object|✔|;
+|`slots`|Ad slots definition|object|✔|
 |`slots.{slot_name}`|Single slot definition|object|✔|
 |`slots.{slot_name}.{anything}`|Ad slot definition may contain different properties and they will be available in `AdSlot.config` property|string|✘|
 |`slots.{slot_name}.avoidConflictWith`|CSS selector that is going to be checked to prevent loading ad slot in the same viewport|string|✘|
