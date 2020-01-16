@@ -18,6 +18,7 @@ class Permutive {
 		this.configure();
 		this.loadScript();
 		this.setTargeting();
+		this.setAddon('web', {});
 	}
 
 	configure(): void {
