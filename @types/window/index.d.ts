@@ -3,6 +3,7 @@
 
 interface Window {
 	__cmp?: WindowCMP;
+	__uspapi?: WindowUSP;
 	XMLHttpRequest?: any;
 	AdEngine_adType?: ManualAdType;
 	ads?: Ads;
