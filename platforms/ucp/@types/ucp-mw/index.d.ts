@@ -11,6 +11,8 @@ interface MediaWikiAdsContext {
 }
 
 interface MediaWikiAds {
+	consentQueue: any;
 	context?: MediaWikiAdsContext;
+	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
 }

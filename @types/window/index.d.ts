@@ -22,6 +22,7 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
+	trackingOptIn?: any;
 }
 
 declare var NOLBUNDLE: any;

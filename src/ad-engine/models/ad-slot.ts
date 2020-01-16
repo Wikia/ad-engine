@@ -1,4 +1,5 @@
 import * as EventEmitter from 'eventemitter3';
+import { action, props } from 'ts-action';
 import { AdStackPayload, eventService, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
@@ -60,6 +61,15 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
+export const adSlotEvent = action(
+	'[AdEngine] Ad Slot event',
+	props<{
+		event: string;
+		payload?: any;
+		adSlotName: string;
+	}>(),
+);
+
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
@@ -86,6 +96,8 @@ export class AdSlot extends EventEmitter {
 
 	static AD_CLASS = 'gpt-ad';
 	static HIDDEN_CLASS = 'hide';
+
+	static TEMPLATES_LOADED = 'Templates Loaded';
 
 	private slotViewed = false;
 
@@ -338,11 +350,13 @@ export class AdSlot extends EventEmitter {
 		}
 		this.setStatus(status);
 
-		const templateNames = this.getConfigProperty('defaultTemplates');
+		const templateNames = this.getConfigProperty('defaultTemplates') || [];
 
 		if (templateNames && templateNames.length) {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
+
+		this.emit(AdSlot.TEMPLATES_LOADED, ...templateNames);
 
 		if (this.config.trackOverscrolled) {
 			overscrollListener.apply(this);
@@ -485,6 +499,7 @@ export class AdSlot extends EventEmitter {
 		const result = super.emit(event, ...args);
 
 		eventService.emit(event, this, ...args);
+		this.emitPostQueueCast(event, args);
 
 		this.logger(this.getSlotName(), event, result, ...args);
 
@@ -495,6 +510,16 @@ export class AdSlot extends EventEmitter {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
 		}
+	}
+
+	private emitPostQueueCast(event: string | symbol, payload: any[]) {
+		eventService.communicator.dispatch(
+			adSlotEvent({
+				payload: JSON.parse(JSON.stringify(payload)),
+				event: event.toString(),
+				adSlotName: this.getSlotName(),
+			}),
+		);
 	}
 
 	/**

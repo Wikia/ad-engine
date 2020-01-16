@@ -1,4 +1,6 @@
 interface Ads {
+	consentQueue: any;
+	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
 }
 

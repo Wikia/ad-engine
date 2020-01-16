@@ -1,21 +1,25 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-import { context } from '../../../../src/ad-engine';
-import { universalAdPackage } from '../../../../src/ad-products/templates/uap/universal-ad-package';
+import { BehaviorSubject } from 'rxjs';
+import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
+import { AdSlot, adSlotEvent, context, eventService } from '../../../../src/ad-engine';
+import {
+	registerUapListener,
+	uapLoadStatus,
+	universalAdPackage,
+} from '../../../../src/ad-products/templates/uap/universal-ad-package';
 
 describe('UniversalAdPackage', () => {
 	const UAP_ID = 666;
 	const UAP_CREATIVE_ID = 333;
-	let sandbox;
-
-	beforeEach(() => {
-		sandbox = sinon.sandbox.create();
-		sandbox.stub(context, 'get');
-		sandbox.spy(context, 'set');
-	});
+	const sandbox: SinonSandbox = createSandbox();
 
 	afterEach(() => {
 		sandbox.restore();
+	});
+
+	beforeEach(() => {
+		sandbox.stub(context, 'get');
+		sandbox.spy(context, 'set');
 	});
 
 	it('should update every slots context when uap is updated', () => {
@@ -63,5 +67,80 @@ describe('UniversalAdPackage', () => {
 		);
 		expect(context.set.neverCalledWith('slots.NON_UAP_SLOT.targeting.uap', UAP_ID)).to.equal(true);
 		expect(context.set.callCount).to.equal(4);
+	});
+
+	describe('registerUapListener (UAP Load Status listener - side effect)', () => {
+		const isFanTakeoverLoaded = true;
+		const adSlotName = 'Slot1';
+		let dispatch: SinonSpy;
+
+		beforeEach(() => {
+			dispatch = sandbox.spy(eventService.communicator, 'dispatch');
+			sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
+		});
+
+		afterEach(() => {
+			sandbox.reset();
+		});
+
+		it('should emit event with load status if slot collapsed', () => {
+			sandbox.stub(eventService.communicator, 'actions$').value(
+				new BehaviorSubject(
+					adSlotEvent({
+						adSlotName,
+						event: AdSlot.STATUS_COLLAPSE,
+					}),
+				),
+			);
+
+			registerUapListener();
+
+			expect(dispatch.callCount).to.equal(1);
+			expect(dispatch.firstCall.args[0]).to.deep.equal(
+				uapLoadStatus({
+					isLoaded: isFanTakeoverLoaded,
+				}),
+			);
+		});
+
+		it('should emit event with load status if slot forcibly collapsed', () => {
+			sandbox.stub(eventService.communicator, 'actions$').value(
+				new BehaviorSubject(
+					adSlotEvent({
+						adSlotName,
+						event: AdSlot.STATUS_FORCED_COLLAPSE,
+					}),
+				),
+			);
+
+			registerUapListener();
+
+			expect(dispatch.callCount).to.equal(1);
+			expect(dispatch.firstCall.args[0]).to.deep.equal(
+				uapLoadStatus({
+					isLoaded: isFanTakeoverLoaded,
+				}),
+			);
+		});
+
+		it('should emit event with load status when templates are loaded', () => {
+			sandbox.stub(eventService.communicator, 'actions$').value(
+				new BehaviorSubject(
+					adSlotEvent({
+						adSlotName,
+						event: AdSlot.TEMPLATES_LOADED,
+					}),
+				),
+			);
+
+			registerUapListener();
+
+			expect(dispatch.callCount).to.equal(1);
+			expect(dispatch.firstCall.args[0]).to.deep.equal(
+				uapLoadStatus({
+					isLoaded: isFanTakeoverLoaded,
+				}),
+			);
+		});
 	});
 });
