@@ -8,7 +8,7 @@ const NAMESPACE = 'fandom';
 const logGroup = 'permutive';
 
 class Permutive {
-	call() {
+	call(): void {
 		if (!context.get('services.permutive.enabled') || !context.get('options.trackingOptIn')) {
 			utils.logger(logGroup, 'disabled');
 			return;
@@ -27,8 +27,8 @@ class Permutive {
 	}
 
 	setTargeting(): void {
-		const g = window.localStorage.getItem('_pdfps');
-		context.set('targeting.permutive', g ? JSON.parse(g) : []);
+		const targeting = window.localStorage.getItem('_pdfps');
+		context.set('targeting.permutive', targeting ? JSON.parse(targeting) : []);
 	}
 
 	loadScript(): Promise<Event> {
