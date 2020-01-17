@@ -9,7 +9,7 @@ const logGroup = 'permutive';
 
 class Permutive {
 	call(): void {
-		if (!context.get('services.permutive.enabled') || !context.get('options.trackingOptIn')) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
@@ -19,6 +19,14 @@ class Permutive {
 		this.loadScript();
 		this.setTargeting();
 		this.setAddon('web', {});
+	}
+
+	isEnabled(): boolean {
+		return (
+			context.get('services.permutive.enabled') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale')
+		)
 	}
 
 	configure(): void {
