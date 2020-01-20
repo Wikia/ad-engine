@@ -75,6 +75,7 @@ export class BaseContextSetup {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		context.set('services.permutive.enabled', this.instantConfig.get('icPermutive'));
 	}
 
 	private setMiscContext(): void {
