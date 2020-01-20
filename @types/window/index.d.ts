@@ -24,6 +24,7 @@ interface Window {
 	pvNumberGlobal?: number;
 	pvUID?: string;
 	trackingOptIn?: any;
+	permutive?: Permutive;
 }
 
 declare var NOLBUNDLE: any;
