@@ -61,6 +61,7 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`options.video.porvata.audio.exposeToSlot`|Decides whether Porvata stores `audio` flag in slot object|boolean|✔|
 |`services.krux.enabled`|Decides whether Krux is loaded (after calling `krux.call()`)|boolean|✘|
 |`services.krux.id`|Krux ID|string|✔|
+|`services.permutive.enabled`|Decides whether Permutive is loaded|boolean|✘|
 |`slots`|Ad slots definition|object|✔|
 |`slots.{slot_name}`|Single slot definition|object|✔|
 |`slots.{slot_name}.{anything}`|Ad slot definition may contain different properties and they will be available in `AdSlot.config` property|string|✘|
