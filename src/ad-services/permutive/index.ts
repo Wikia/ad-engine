@@ -35,11 +35,11 @@ class Permutive {
 	}
 
 	setTargeting(): void {
-		const segments = window.localStorage.getItem('_pdfps');
+		const segments = window.localStorage.getItem('_psegs');
 		let permutiveTargeting = segments ? JSON.parse(segments) : [];
 
 		permutiveTargeting.push('_test');
-		context.set('targeting.permutive', permutiveTargeting);
+		context.set('targeting.permutive', permutiveTargeting.toString());
 	}
 
 	loadScript(): Promise<Event> {
