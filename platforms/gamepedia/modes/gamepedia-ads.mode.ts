@@ -1,5 +1,12 @@
 import { AdsMode, biddersDelay, startAdEngine } from '@platforms/shared';
-import { bidders, confiant, context, durationMedia, taxonomyService } from '@wikia/ad-engine';
+import {
+	bidders,
+	confiant,
+	context,
+	durationMedia,
+	permutive,
+	taxonomyService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { hideAllAdSlots } from '../templates/hide-all-ad-slots';
 import { editModeManager } from '../utils/edit-mode-manager';
@@ -18,6 +25,7 @@ export class GamepediaAdsMode implements AdsMode {
 			responseListener: biddersDelay.markAsReady,
 		});
 
+		permutive.call();
 		confiant.call();
 		durationMedia.call();
 

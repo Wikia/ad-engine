@@ -10,10 +10,11 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
-import { Apstag, Cmp, cmp } from '../wrappers';
+import { Apstag, Cmp, cmp, Usp, usp } from '../wrappers';
 import {
 	A9Bid,
 	A9Bids,
+	A9CCPA,
 	A9Config,
 	A9GDPR,
 	A9SlotConfig,
@@ -32,6 +33,7 @@ export class A9Provider extends BidderProvider {
 	apstag: Apstag = Apstag.make();
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
+	usp: Usp = usp;
 	isRenderImpOverwritten = false;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
@@ -54,8 +56,8 @@ export class A9Provider extends BidderProvider {
 		return this.targetingKeys;
 	}
 
-	init(consentData: ConsentData = {}): void {
-		this.initIfNotLoaded(consentData);
+	init(consentData: ConsentData = {}, signalData: SignalData = {}): void {
+		this.initIfNotLoaded(consentData, signalData);
 
 		this.bids = {};
 		this.priceMap = {};
@@ -64,19 +66,20 @@ export class A9Provider extends BidderProvider {
 		this.fetchBids(a9Slots);
 	}
 
-	private initIfNotLoaded(consentData: ConsentData): void {
+	private initIfNotLoaded(consentData: ConsentData, signalData: SignalData): void {
 		if (!this.loaded) {
-			this.apstag.init(this.getApstagConfig(consentData));
+			this.apstag.init(this.getApstagConfig(consentData, signalData));
 			this.loaded = true;
 		}
 	}
 
-	private getApstagConfig(consentData: ConsentData): ApstagConfig {
+	private getApstagConfig(consentData: ConsentData, signalData: SignalData): ApstagConfig {
 		return {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
 			deals: !!this.bidderConfig.dealsEnabled,
 			...this.getGdprIfApplicable(consentData),
+			...this.getCcpaIfApplicable(signalData),
 		};
 	}
 
@@ -87,6 +90,18 @@ export class A9Provider extends BidderProvider {
 					enabled: consentData.gdprApplies,
 					consent: consentData.consentData,
 					cmpTimeout: 5000,
+				},
+			};
+		}
+
+		return {};
+	}
+
+	private getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
+		if (signalData && signalData.uspString) {
+			return {
+				params: {
+					us_privacy: signalData.uspString,
 				},
 			};
 		}
@@ -256,13 +271,18 @@ export class A9Provider extends BidderProvider {
 	}
 
 	protected async callBids(): Promise<void> {
-		if (this.cmp.exists) {
-			const consentData = await this.cmp.getConsentData();
+		let consentData = null;
+		let signalData = null;
 
-			this.init(consentData);
-		} else {
-			this.init();
+		if (this.cmp.exists) {
+			consentData = await this.cmp.getConsentData();
 		}
+
+		if (this.usp.exists) {
+			signalData = await this.usp.getSignalData();
+		}
+
+		this.init(consentData, signalData);
 	}
 
 	calculatePrices(): void {

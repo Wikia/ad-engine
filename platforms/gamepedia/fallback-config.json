@@ -259,7 +259,10 @@
                 "muthead",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "PL"
+            ],
+            "value": true
         }
     ],
     "icBabDetection": [
