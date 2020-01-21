@@ -20,7 +20,7 @@ function getSlotNamesByBidderAlias(alias: string): string[] {
 function getSlotNameByBidderId(id: string): string {
 	let slotName = id;
 
-	if (!context.get(`slots.${slotName}`)) {
+	if (Object.entries(context.get(`slots.${slotName}`) || {}).length === 0) {
 		slotName = getSlotNamesByBidderAlias(id).shift();
 
 		if (!slotName) {
