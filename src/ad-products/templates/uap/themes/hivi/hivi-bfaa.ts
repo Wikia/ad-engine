@@ -189,7 +189,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 
 		if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
-			this.setResolvedState();
+			this.setResolvedState(true);
 		} else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
 			this.container.style.top = '';
 			this.switchImagesInAd(false);
@@ -225,22 +225,24 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	private setResolvedState(immediately?: boolean): Promise<void> {
+	private setResolvedState(isResolved: boolean): Promise<void> {
 		const offset: number = this.getHeightDifferenceBetweenStates();
 
-		this.switchImagesInAd(true);
+		this.switchImagesInAd(isResolved);
 
 		if (this.onResolvedStateScroll) {
 			window.removeEventListener('scroll', this.onResolvedStateScroll);
 			this.onResolvedStateScroll.cancel();
 		}
 
-		if (this.config.onResolvedStateSetCallback) {
-			this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
+		if (isResolved) {
+			if (this.config.onResolvedStateSetCallback) {
+				this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
+			}
 		}
 
 		return new Promise((resolve) => {
-			if (immediately) {
+			if (isResolved) {
 				this.lock();
 				resolve();
 			} else {
