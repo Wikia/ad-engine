@@ -90,6 +90,23 @@
             "value": true
         }
     ],
+    "icLABradorTest": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 40.0,
+            "samplingCache": true,
+            "value": true
+        }
+    ],
     "icPrebid": [
         {
             "apps": [
@@ -268,6 +285,22 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icAdEngineDelay": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 2000
         }
     ],
     "icPrebidTriplelift": [
