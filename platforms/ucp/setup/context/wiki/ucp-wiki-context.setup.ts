@@ -8,5 +8,6 @@ export class UcpWikiContextSetup implements WikiContextSetup {
 		const wikiContext = window.ads ? window.ads.context : {};
 
 		context.set('wiki', wikiContext);
+		context.set('state.showAds', !!context.get('wiki.opts.showAds'));
 	}
 }
