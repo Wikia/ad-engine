@@ -51,9 +51,13 @@ class Permutive {
 
 	getPageViewEventSchema(): object {
 		return {
-			's0': context.get('targeting.s0'),
-			's1': context.get('targeting.s1'),
-			'skin': context.get('targeting.skin')
+			'page': {
+				'page_info': {
+					's0': context.get('targeting.s0'),
+					's1': context.get('targeting.s1'),
+					'skin': context.get('targeting.skin'),
+				}
+			}
 		}
 	}
 
