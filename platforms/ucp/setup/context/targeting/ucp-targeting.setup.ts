@@ -6,6 +6,10 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpTargetingSetup implements TargetingSetup {
 	configureTargetingContext(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+
+		if (context.get('wiki.opts.isAdTestWiki')) {
+			context.set('src', 'test');
+		}
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
