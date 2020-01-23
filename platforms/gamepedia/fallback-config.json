@@ -277,6 +277,8 @@
                 "oasis"
             ],
             "regions": [
+                "AU",
+                "CA",
                 "PL"
             ],
             "value": true
