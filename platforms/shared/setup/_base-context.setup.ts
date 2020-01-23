@@ -24,7 +24,7 @@ export class BaseContextSetup {
 		context.set('state.isMobile', isMobile);
 		context.set(
 			'state.showAds',
-			context.get('state.showAds') !== false && !utils.client.isSteamPlatform(),
+			context.get('wiki.opts.showAds') !== false && !utils.client.isSteamPlatform(),
 		);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
