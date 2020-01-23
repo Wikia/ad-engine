@@ -22,9 +22,10 @@ export class BaseContextSetup {
 
 	private setBaseState(isMobile: boolean): void {
 		context.set('state.isMobile', isMobile);
-		if (context.get('state.showAds') !== false) {
-			context.set('state.showAds', !utils.client.isSteamPlatform());
-		}
+		context.set(
+			'state.showAds',
+			context.get('state.showAds') !== false && !utils.client.isSteamPlatform(),
+		);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
