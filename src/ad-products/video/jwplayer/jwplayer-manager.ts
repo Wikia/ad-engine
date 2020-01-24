@@ -5,10 +5,10 @@ import { map, mergeMap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
+import { JWPlayer } from './external-types/jwplayer';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
 import { JWPlayerHelper } from './jwplayer-helper';
-import { JWPlayer } from './jwplayer-plugin/jwplayer';
 import { createJWPlayerStreams } from './jwplayer-streams';
 
 interface PlayerReadyResult {
