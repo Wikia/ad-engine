@@ -22,7 +22,10 @@ export class BaseContextSetup {
 
 	private setBaseState(isMobile: boolean): void {
 		context.set('state.isMobile', isMobile);
-		context.set('state.showAds', !utils.client.isSteamPlatform());
+		context.set(
+			'state.showAds',
+			context.get('wiki.opts.showAds') !== false && !utils.client.isSteamPlatform(),
+		);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
@@ -75,6 +78,7 @@ export class BaseContextSetup {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		context.set('services.permutive.enabled', this.instantConfig.get('icPermutive'));
 	}
 
 	private setMiscContext(): void {

@@ -15,6 +15,23 @@
         }
     ],
     "wgAdDriverUapRestriction": 1,
+    "icLABradorTest": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 40.0,
+            "samplingCache": true,
+            "value": true
+        }
+    ],
     "wgAdDriverTestCommunities": [
         "cdm_gamepedia",
         "project43"
@@ -259,7 +276,12 @@
                 "muthead",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "AU",
+                "CA",
+                "PL"
+            ],
+            "value": true
         }
     ],
     "icBabDetection": [
@@ -274,6 +296,20 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPermutive": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL",
+                "US-NY"
             ],
             "value": true
         }
@@ -306,5 +342,21 @@
     ],
     "wgAdDriverLABradorTestCountries": [
         "PL/35-cached"
+    ],
+    "icAdEngineDelay": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 2000
+        }
     ]
 }
