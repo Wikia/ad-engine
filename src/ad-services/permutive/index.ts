@@ -39,7 +39,7 @@ class Permutive {
 		let permutiveTargeting = segments ? JSON.parse(segments) : [];
 
 		permutiveTargeting.push('_test');
-		context.set('targeting.permutive', permutiveTargeting);
+		context.set('targeting.permutive', permutiveTargeting.toString());
 	}
 
 	loadScript(): Promise<Event> {
