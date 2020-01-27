@@ -17,7 +17,7 @@ const targetingElement = document.getElementById('targeting');
 
 const enabledProjects = utils.queryString.get('enabled-project');
 
-function makeCall(lazyCallProject = null, callId) {
+function makeCall(lazyCallProject = null, callId?: string | number) {
 	billTheLizard.call(lazyCallProject, callId).then(
 		(predictions) => {
 			allPredictionsElement.innerText = JSON.stringify(billTheLizard.getPredictions(), null, 2);
@@ -28,7 +28,7 @@ function makeCall(lazyCallProject = null, callId) {
 				.join('\n');
 			serializedElement.innerText = billTheLizard.serialize();
 			statusElement.innerText = billTheLizard.getResponseStatus();
-			targetingElement.innerText = billTheLizard.setTargeting();
+			targetingElement.innerText = billTheLizard.setTargeting().join(',');
 		},
 		(response) => {
 			console.error(`❗ Error : ${response.message}`);
