@@ -13,8 +13,11 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
+// @ts-ignore
 customContext.targeting.artid = '173';
+// @ts-ignore
 customContext.slots.floor_adhesion.forceSafeFrame = true;
+// @ts-ignore
 customContext.slots.floor_adhesion.clickPositionTracking = true;
 
 context.extend(customContext);
