@@ -3,7 +3,7 @@ import { context } from '../../../src/ad-engine/index';
 import { moatYi } from '../../../src/ad-services/moat-yi';
 
 describe('MOAT YI service', () => {
-	let moatPageLevelData = {};
+	let moatPageLevelData: any = {};
 
 	beforeEach(() => {
 		context.set('targeting.m_data', 'waiting');

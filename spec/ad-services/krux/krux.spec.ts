@@ -9,7 +9,8 @@ describe('Krux service', () => {
 	const sandbox = createSandbox();
 
 	beforeEach(() => {
-		window.localStorage = {};
+		(window as any).localStorage = {};
+
 		context.set('services.krux', {
 			account: 'ns:foo',
 			enabled: true,
@@ -24,8 +25,9 @@ describe('Krux service', () => {
 
 	afterEach(() => {
 		sandbox.restore();
-		delete window.localStorage;
+		// @ts-ignore
 		delete window.kruxDartParam_foo;
+		delete (window as any).localStorage;
 	});
 
 	describe('local storage available', () => {
@@ -72,6 +74,7 @@ describe('Krux service', () => {
 		it('export context targeting to krux', () => {
 			krux.exportPageParams();
 
+			// @ts-ignore
 			expect(window.kruxDartParam_foo).to.equal('bar');
 		});
 	});
