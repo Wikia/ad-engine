@@ -35,7 +35,7 @@ describe('Video event data provider', () => {
 			position: 'incontent_player',
 			user_block_autoplay: -1,
 			video_id: 'bar',
-		});
+		} as any);
 
 		assert.equal(data.ad_error_code, 900);
 		assert.equal(data.ad_product, 'foo');
