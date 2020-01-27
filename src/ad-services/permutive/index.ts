@@ -18,7 +18,7 @@ class Permutive {
 		this.configure();
 		this.loadScript();
 		this.setTargeting();
-		this.setAddon('web', {});
+		this.setAddon('web', this.getPageViewEventSchema());
 	}
 
 	isEnabled(): boolean {
@@ -50,6 +50,18 @@ class Permutive {
 			'first',
 			{ id: 'permutive'},
 		);
+	}
+
+	getPageViewEventSchema(): object {
+		return {
+			'page': {
+				'page_info': {
+					's0': context.get('targeting.s0'),
+					's1': context.get('targeting.s1'),
+					'skin': context.get('targeting.skin'),
+				}
+			}
+		}
 	}
 
 	setAddon(key: string, val: object): void {
