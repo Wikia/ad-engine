@@ -109,6 +109,7 @@ biddersDelay.getPromise().then(() => {
 		videoId: videoData.mediaid,
 	});
 
+	// @ts-ignore
 	window.wikiaJWPlayer('playerContainer', playerOptions, (player) => {
 		videoAds.register(player);
 	});
