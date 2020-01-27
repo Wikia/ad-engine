@@ -11,9 +11,8 @@ import { getConfig as getBigFancyAdAboveConfig } from '../../big-fancy-ad-above-
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '455';
-
 context.extend(customContext);
+context.set('customContext.targeting.artid', '455');
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);
