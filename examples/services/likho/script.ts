@@ -2,10 +2,12 @@ import { AdEngine, context, likhoService, localCache, setupNpaContext } from '@w
 import customContext from '../../context';
 import '../../styles.scss';
 
+// @ts-ignore
 window.guaTrackEvent = (...args) => {
 	console.log(`🛤 Custom tracker: ${args}`);
 };
 
+// @ts-ignore
 customContext.targeting.artid = '535';
 customContext.slots.top_leaderboard.sizes = [
 	{
@@ -17,6 +19,7 @@ customContext.slots.top_leaderboard.sizes = [
 		sizes: [[970, 250], [3, 3]],
 	},
 ];
+// @ts-ignore
 customContext.targeting.likho = likhoService.refresh();
 
 context.extend(customContext);

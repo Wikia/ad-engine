@@ -3,6 +3,7 @@ import customContext from '../../context';
 
 const isConfiantEnabled = utils.queryString.get('confiant-disabled') !== '1';
 
+// @ts-ignore
 customContext.targeting.artid = '553';
 context.extend(customContext);
 context.set('services.confiant.enabled', isConfiantEnabled);
