@@ -4,13 +4,18 @@
 	cursor: pointer;
 	height: 250px;
 	margin: 0 auto;
+	position: relative;
 	width: 300px;
 }
 
-.controls {
+.porvata-interface {
+	background: #fff2;
+	bottom: 0;
 	font-size: 0.9em;
 	font-weight: bold;
 	margin-left: 50%;
+	padding: 5px 0;
+	position: absolute;
 	text-align: right;
 	transform: translateX(-50%);
 	width: 300px;
@@ -19,4 +24,5 @@
 .icon {
 	cursor: pointer;
 	margin-left: 10px;
+	margin-right: 5px;
 }

@@ -10,6 +10,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import adContext from '../../context';
+import '../../styles.scss';
 
 const blockOutOfViewportPausing = utils.queryString.get('block_pausing') === '1';
 const container = document.getElementById('player');
@@ -22,11 +23,6 @@ const params = {
 	height: 250,
 	slotName: 'outstream',
 };
-const playerCloseButton = document.getElementById('player-close');
-const playerFullscreenButton = document.getElementById('player-fullscreen');
-const playerMuteButton = document.getElementById('player-mute');
-const playerResumePlayButton = document.getElementById('player-play-pause');
-const playerUnmuteButton = document.getElementById('player-unmute');
 
 if (blockOutOfViewportPausing) {
 	console.warn('🎬 Block out of viewport pausing enabled');
@@ -38,34 +34,48 @@ context.set(
 	utils.queryString.get('enable_IAS_tracking') === '1',
 );
 context.set('targeting.artid', 292);
+context.set('targeting.artid', '517');
+context.set('targeting.cid', 'overriding_vpaid');
+// context.set('targeting.cid', '5271726473');
+context.set('src', 'gpt');
 context.set('targeting.vertical', 'games');
 context.set('targeting.wpage', '100% Orange Juice');
 context.set('custom.device', utils.client.getDeviceType());
 context.set('custom.adLayout', 'article');
+context.set('options.tracking.kikimora.player', true);
 
 slotService.add(new AdSlot({ id: 'outstream' }));
 
-context.set('options.tracking.kikimora.player', true);
 porvataTracker.register();
 
-eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
-	const request = new window.XMLHttpRequest();
-	const queryUrl = Object.keys(eventInfo)
-		.map((key) => `${key}=${eventInfo[key]}`)
-		.join('&');
-
-	request.open('GET', `http://example.com?${queryUrl}`);
-	request.send();
-});
+// eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
+// 	const request = new window.XMLHttpRequest();
+// 	const queryUrl = Object.keys(eventInfo)
+// 		.map((key) => `${key}=${eventInfo[key]}`)
+// 		.join('&');
+//
+// 	request.open('GET', `http://example.com?${queryUrl}`);
+// 	request.send();
+// });
 
 scrollListener.init();
-Porvata.inject(params).then((_video) => {
-	const player = document.querySelector('.video-player');
+Porvata.inject(params).then((player) => {
+	(window as any).porvataPlayer = player;
 
-	_video.addEventListener('loaded', () => {
-		player.classList.remove('hide');
-		document.querySelector('.controls').classList.remove('hide');
-		if (_video.params.autoPlay) {
+	const videoContainer = document.querySelector('.video-player');
+	const porvataInterface = container.querySelector('.porvata-interface');
+
+	porvataInterface.innerHTML = document.getElementById('controls-template').innerHTML;
+
+	const playerCloseButton = document.getElementById('player-close');
+	const playerFullscreenButton = document.getElementById('player-fullscreen');
+	const playerMuteButton = document.getElementById('player-mute');
+	const playerResumePlayButton = document.getElementById('player-play-pause');
+	const playerUnmuteButton = document.getElementById('player-unmute');
+
+	player.addEventListener('loaded', () => {
+		videoContainer.classList.remove('hide');
+		if (player.videoSettings.get('autoPlay')) {
 			playerMuteButton.classList.add('hide');
 			playerUnmuteButton.classList.remove('hide');
 		} else {
@@ -73,35 +83,36 @@ Porvata.inject(params).then((_video) => {
 			playerUnmuteButton.classList.add('hide');
 		}
 	});
-	_video.addEventListener('wikiaAdCompleted', () => {
-		player.classList.add('hide');
-		document.querySelector('.controls').classList.add('hide');
-		_video.reload();
+	player.addEventListener('wikiaAdCompleted', () => {
+		videoContainer.classList.add('hide');
+		player.reload();
 	});
 	container.addEventListener('click', () => {
-		_video.play();
+		if (videoContainer.classList.contains('hide')) {
+			player.play();
+		}
 	});
 	playerCloseButton.addEventListener('click', () => {
-		_video.stop();
+		player.stop();
 	});
 	playerUnmuteButton.addEventListener('click', () => {
-		_video.unmute();
+		player.unmute();
 		playerMuteButton.classList.remove('hide');
 		playerUnmuteButton.classList.add('hide');
 	});
 	playerMuteButton.addEventListener('click', () => {
-		_video.mute();
+		player.mute();
 		playerMuteButton.classList.add('hide');
 		playerUnmuteButton.classList.remove('hide');
 	});
 	playerFullscreenButton.addEventListener('click', () => {
-		_video.toggleFullscreen();
+		player.toggleFullscreen();
 	});
 	playerResumePlayButton.addEventListener('click', () => {
-		if (_video.isPlaying()) {
-			_video.pause();
+		if (player.isPlaying()) {
+			player.pause();
 		} else {
-			_video.resume();
+			player.resume();
 		}
 	});
 });

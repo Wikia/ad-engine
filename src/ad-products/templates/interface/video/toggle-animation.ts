@@ -18,7 +18,7 @@ function toggle(elementToShow, elementToHide): void {
 function hideVideo(video, params): void {
 	resizeContainer(params.container, params.aspectRatio);
 	setTimeout(() => {
-		toggle(params.image, video.container);
+		toggle(params.image, video.playerContainer);
 		params.container.classList.remove(onAnimationClassName);
 	}, duration);
 }
@@ -26,7 +26,7 @@ function hideVideo(video, params): void {
 function showVideo(video, params): void {
 	params.container.classList.add(onAnimationClassName);
 	resizeContainer(params.container, params.videoAspectRatio);
-	toggle(video.container, params.image);
+	toggle(video.playerContainer, params.image);
 }
 
 function add(video, container, params): void {

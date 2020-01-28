@@ -1,7 +1,9 @@
-export function setup(video, uiElements, params): void {
+import { PorvataPlayer } from '../../../video/player/p/porvata-player';
+
+export function setup(player: PorvataPlayer, uiElements, params): void {
 	uiElements.forEach((element) => {
 		if (element) {
-			element.add(video, video.container, params);
+			element.add(player, player.interfaceContainer, params);
 		}
 	});
 }

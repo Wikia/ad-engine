@@ -69,6 +69,10 @@ export class VideoSettings {
 		return this.params;
 	}
 
+	getSlotName(): string {
+		return this.get('slotName');
+	}
+
 	getVpaidMode(): google.ima.ImaSdkSettings.VpaidMode {
 		if (!!this.params.vpaidMode) {
 			return this.params.vpaidMode;
@@ -87,5 +91,9 @@ export class VideoSettings {
 
 	isAutoPlay(): boolean | undefined {
 		return this.params.autoPlay;
+	}
+
+	setAutoPlay(value: boolean): void {
+		this.params.autoPlay = value;
 	}
 }

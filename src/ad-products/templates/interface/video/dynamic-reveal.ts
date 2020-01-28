@@ -3,16 +3,16 @@ import { DEFAULT_VIDEO_ASPECT_RATIO } from '../../outstream/porvata-template';
 
 /**
  * Add UI animations that expands once video ad starts and collapses the slot once video ad finishes
- * @param video Porvata video element
+ * @param player Porvata video element
  * @param container Video container
  * @param params videoSettings parameters
  */
-function add(video, container, params): void {
+function add(player, container, params): void {
 	const slot = slotService.get(params.slotName);
 
 	let slotExpanded = false;
 
-	video.addEventListener('loaded', () => {
+	player.addEventListener('loaded', () => {
 		if (!slotExpanded) {
 			slotTweaker.expand(slot);
 			slotExpanded = true;
@@ -20,20 +20,20 @@ function add(video, container, params): void {
 			// Delay dispatching event so it's run after browser really finish expanding the slot
 			// Value 1000ms is related to animation defined in _porvata.scss file
 			setTimeout(() => {
-				video.ima.dispatchEvent('wikiaSlotExpanded');
+				player.dispatchEvent('wikiaSlotExpanded');
 			}, 1000);
 		}
 
-		if (!video.isFloating) {
+		if (!player.isFloating) {
 			const slotWidth = slot.getElement().scrollWidth;
 
-			video.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
+			player.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
 		}
 	});
 
-	video.addEventListener('allAdsCompleted', () => {
+	player.addEventListener('allAdsCompleted', () => {
 		slotTweaker.collapse(slot);
-		video.ima.dispatchEvent('wikiaSlotCollapsed');
+		player.dispatchEvent('wikiaSlotCollapsed');
 	});
 }
 

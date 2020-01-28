@@ -7,7 +7,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { mapValues } from 'lodash';
-import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
+import { PorvataPlayer } from '../../../../video/player/p/porvata-player';
 import { animate } from '../../../interface/animate';
 import { BigFancyAdBelowConfig } from '../../big-fancy-ad-below';
 import {
@@ -140,7 +140,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 
 	private adjustVideoSize(relativeHeight): void {
 		if (this.video && !this.video.isFullscreen()) {
-			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
+			this.video.videoContainer.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
 		}
 	}
 
@@ -166,7 +166,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		Object.assign(thumbnail.style, style);
 
 		if (this.video) {
-			Object.assign(this.video.container.style, style);
+			Object.assign(this.video.videoContainer.style, style);
 		}
 	}
 
@@ -207,7 +207,8 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		if (this.stickiness) {
 			this.adSlot.getElement().classList.remove(CSS_CLASSNAME_STICKY_BFAB);
 
-			if (stopVideo && this.video && this.video.ima.getAdsManager()) {
+			// TODO: this.video.ima.getAdsManager()
+			if (stopVideo && this.video) {
 				this.video.stop();
 			}
 

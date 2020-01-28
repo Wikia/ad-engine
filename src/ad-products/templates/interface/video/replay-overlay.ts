@@ -4,6 +4,7 @@ const replayOverlayClass = 'replay-overlay';
 
 function add(video, container, params): void {
 	const overlay = document.createElement('div');
+	const videoSettingsParams = video.videoSettings.getParams();
 
 	overlay.classList.add(replayOverlayClass);
 	overlay.addEventListener('click', () => video.play());
@@ -16,7 +17,7 @@ function add(video, container, params): void {
 		showOverlay(overlay, params);
 	});
 
-	if (video.params.theme && video.params.theme === 'hivi') {
+	if (videoSettingsParams.theme && videoSettingsParams.theme === 'hivi') {
 		const replayIcon = addReplayIcon(overlay);
 
 		if (!params.autoPlay) {
@@ -30,7 +31,7 @@ function add(video, container, params): void {
 			});
 		}
 
-		container = video.params.thumbnail;
+		container = video.videoSettings.getParams().thumbnail;
 		container.appendChild(overlay);
 	} else {
 		container.parentElement.insertBefore(overlay, container);
