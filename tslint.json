@@ -47,11 +47,7 @@
 				"banned": [
 					{
 						"snippets": ["localStorage"],
-						"excludePaths": [
-							"/spec/ad-services/krux/krux.spec.ts",
-							"/src/ad-engine/services/local-storage.ts",
-							"/src/ad-services/krux/index.ts"
-						]
+						"excludePaths": ["/src/ad-engine/services/local-storage.ts"]
 					}
 				]
 			}

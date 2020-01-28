@@ -18,7 +18,6 @@ interface Window {
 	googletag: googletag.Googletag;
 	moatPrebidApi?: MoatPrebidApi;
 	moatYieldReady?: MoatYieldReady;
-	Krux?: KruxQueue;
 	moatjw?: MoatJW;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
