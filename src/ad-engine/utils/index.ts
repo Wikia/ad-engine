@@ -2,6 +2,7 @@ export * from './client';
 export * from './dimensions';
 export * from './document';
 export * from './flow-control';
+export * from './generate-unique-id';
 export * from './geo';
 export * from './iframe-builder';
 export * from './lazy-queue';

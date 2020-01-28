@@ -227,11 +227,11 @@ export class A9Provider extends BidderProvider {
 	createSlotDefinition(slotName: string): A9SlotDefinition | null {
 		const config: A9SlotConfig = this.slots[slotName];
 		const definition: A9SlotDefinition = {
-			slotID: slotName,
 			slotName,
+			slotID: slotName,
 		};
 
-		if (!this.bidderConfig.videoEnabled && config.type === 'video') {
+		if (!config || (!this.bidderConfig.videoEnabled && config.type === 'video')) {
 			return null;
 		}
 		if (config.type === 'video') {

@@ -2,12 +2,15 @@ import { AdEngine, context, likhoService, localCache, setupNpaContext } from '@w
 import customContext from '../../context';
 import '../../styles.scss';
 
+// @ts-ignore
 window.guaTrackEvent = (...args) => {
 	console.log(`🛤 Custom tracker: ${args}`);
 };
 
-customContext.targeting.artid = '535';
-customContext.slots.top_leaderboard.sizes = [
+context.extend(customContext);
+context.set('customContext.targeting.artid', '535');
+context.set('customContext.targeting.likho', likhoService.refresh());
+context.set('customContext.slots.top_leaderboard.sizes', [
 	{
 		viewportSize: [728, 0],
 		sizes: [[728, 90], [3, 3]],
@@ -16,10 +19,7 @@ customContext.slots.top_leaderboard.sizes = [
 		viewportSize: [970, 0],
 		sizes: [[970, 250], [3, 3]],
 	},
-];
-customContext.targeting.likho = likhoService.refresh();
-
-context.extend(customContext);
+]);
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);

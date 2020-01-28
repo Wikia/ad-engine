@@ -1,6 +1,6 @@
 import * as EventEmitter from 'eventemitter3';
 import { action, props } from 'ts-action';
-import { AdStackPayload, eventService, slotTweaker } from '../';
+import { AdStackPayload, eventService, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
@@ -28,7 +28,9 @@ interface RepeatConfig {
 }
 
 export interface SlotConfig {
+	uid: string;
 	adProduct: string;
+	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
@@ -71,6 +73,7 @@ export const adSlotEvent = action(
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
+	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static SLOT_RENDERED_EVENT = 'slotRendered';
@@ -102,6 +105,7 @@ export class AdSlot extends EventEmitter {
 	element: null | HTMLElement = null;
 	status: null | string = null;
 	isEmpty = true;
+	pushTime: number;
 	enabled: boolean;
 	events: LazyQueue;
 	adUnit: string;
@@ -113,6 +117,13 @@ export class AdSlot extends EventEmitter {
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackOnStatusChanged = false;
 
+	requested = new Promise<void>((resolve) => {
+		this.once(AdSlot.SLOT_REQUESTED_EVENT, () => {
+			this.pushTime = new Date().getTime();
+
+			resolve();
+		});
+	});
 	loaded = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, () => {
 			slotTweaker.setDataParam(this, 'slotLoaded', true);
@@ -147,6 +158,10 @@ export class AdSlot extends EventEmitter {
 		this.events.onItemFlush((event) => {
 			this.on(event.name, event.callback);
 		});
+
+		if (!this.config.uid) {
+			context.set(`slots.${ad.id}.uid`, utils.generateUniqueId());
+		}
 
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.targeting = this.config.targeting || ({} as Targeting);
@@ -255,6 +270,10 @@ export class AdSlot extends EventEmitter {
 
 	getStatus(): string {
 		return this.status;
+	}
+
+	getPushTime(): number {
+		return this.pushTime;
 	}
 
 	setStatus(status: null | string = null): void {
