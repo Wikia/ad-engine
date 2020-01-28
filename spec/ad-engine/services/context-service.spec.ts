@@ -1,10 +1,12 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox } from 'sinon';
 import { context } from '../../../src/ad-engine/services/context-service';
 
 function baz() {}
 
 describe('context-service', () => {
+	const sandbox = createSandbox();
+
 	beforeEach(() => {
 		context.extend({
 			foo: {
@@ -52,12 +54,9 @@ describe('context-service', () => {
 
 	it('execute onChange leaf and parent callbacks', () => {
 		const callbacks = {
-			foo: () => {},
-			fooBar: () => {},
+			foo: sandbox.spy(),
+			fooBar: sandbox.spy(),
 		};
-
-		sinon.spy(callbacks, 'foo');
-		sinon.spy(callbacks, 'fooBar');
 
 		context.onChange('foo', callbacks.foo);
 		context.onChange('foo.bar', callbacks.fooBar);
@@ -77,12 +76,9 @@ describe('context-service', () => {
 
 	it('remove child event listener', () => {
 		const callbacks = {
-			foo: () => {},
-			fooBar: () => {},
+			foo: sandbox.spy(),
+			fooBar: sandbox.spy(),
 		};
-
-		sinon.spy(callbacks, 'foo');
-		sinon.spy(callbacks, 'fooBar');
 
 		context.onChange('foo', callbacks.foo);
 		context.onChange('foo.bar', callbacks.fooBar);
@@ -96,12 +92,9 @@ describe('context-service', () => {
 
 	it('remove parent event listener', () => {
 		const callbacks = {
-			foo: () => {},
-			fooBar: () => {},
+			foo: sandbox.spy(),
+			fooBar: sandbox.spy(),
 		};
-
-		sinon.spy(callbacks, 'foo');
-		sinon.spy(callbacks, 'fooBar');
 
 		context.onChange('foo', callbacks.foo);
 		context.onChange('foo.bar', callbacks.fooBar);
