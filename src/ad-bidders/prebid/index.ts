@@ -117,6 +117,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
+		this.registerBidsTracking();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -222,6 +223,19 @@ export class PrebidProvider extends BidderProvider {
 		pbjs.onEvent('bidWon', refreshUsedBid);
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
 			pbjs.offEvent('bidWon', refreshUsedBid);
+		});
+	}
+
+	async registerBidsTracking(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		const trackBid = (response) => {
+			eventService.emit(events.BIDS_RESPONSE, response);
+		};
+
+		pbjs.onEvent('bidResponse', trackBid);
+		eventService.once(events.PAGE_CHANGE_EVENT, () => {
+			pbjs.offEvent('bidResponse', trackBid);
 		});
 	}
 
