@@ -1,7 +1,10 @@
 import {
+	AdBidderContext,
 	AdEngine,
 	AdInfoContext,
 	bidders,
+	bidderTracker,
+	bidderTrackingMiddleware,
 	cmp,
 	context,
 	DelayModule,
@@ -58,6 +61,10 @@ cmp.override((cmd, param, cb) => {
 
 context.extend(customContext);
 context.set('slots.bottom_leaderboard.disabled', false);
+context.set(
+	'bidders.prebid.libraryUrl',
+	'https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.1/20200103.min.js',
+);
 context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 
 setupNpaContext();
@@ -101,6 +108,8 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 
 // Tracking
 context.set('options.tracking.slot.status', true);
+context.set('options.tracking.slot.bidder', true);
+
 slotTracker
 	.add(slotTrackingMiddleware)
 	.add(slotPropertiesTrackingMiddleware)
@@ -110,5 +119,10 @@ slotTracker
 		// Trigger event tracking
 		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
 	});
+
+bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderContext) => {
+	// Trigger bidder tracking
+	console.info(`🏁 Bidder tracker: ${bid.bidderCode} for ${bid.adUnitCode}`, bid, data);
+});
 
 new AdEngine().init();

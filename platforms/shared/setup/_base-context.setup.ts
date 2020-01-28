@@ -22,7 +22,10 @@ export class BaseContextSetup {
 
 	private setBaseState(isMobile: boolean): void {
 		context.set('state.isMobile', isMobile);
-		context.set('state.showAds', !utils.client.isSteamPlatform());
+		context.set(
+			'state.showAds',
+			context.get('wiki.opts.showAds') !== false && !utils.client.isSteamPlatform(),
+		);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
@@ -31,6 +34,7 @@ export class BaseContextSetup {
 		context.set('options.tracking.kikimora.player', true);
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
+		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
 
 		context.set(
