@@ -17,7 +17,7 @@ describe('google-ima-setup', () => {
 					NORMAL: 0,
 				},
 			},
-		};
+		} as any;
 		context.extend(ConfigMock);
 		slotService.add(new AdSlot({ id: 'top_leaderboard' }));
 	});
