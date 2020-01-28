@@ -32,12 +32,12 @@ describe('gpt-provider', () => {
 		window.googletag = {
 			pubads: () => pubads,
 			enableServices: spy(),
-		};
+		} as any;
 
 		window.googletag.cmd = window.googletag.cmd || [];
-		window.googletag.cmd.push = (cb) => {
+		window.googletag.cmd.push = ((cb) => {
 			cb();
-		};
+		}) as any;
 
 		context.set('options.trackingOptIn', true);
 	});

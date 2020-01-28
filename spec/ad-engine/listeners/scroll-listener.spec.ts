@@ -1,5 +1,4 @@
-import { AdStackPayload, ScrollListener } from '@wikia/ad-engine';
-import { OldLazyQueue } from '@wikia/ad-engine/utils';
+import { ScrollListener } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
