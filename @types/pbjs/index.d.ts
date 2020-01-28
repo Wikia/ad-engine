@@ -39,16 +39,20 @@ interface PrebidBidResponse {
 	cpm: number;
 	status: string;
 	bidderCode: string;
+	requestTimestamp: number;
+	responseTimestamp: number;
 	timeToRespond: number;
 	getStatusCode: () => number;
 	width: number;
 	height: number;
+	size: string;
 	statusMessage:
 		| 'Pending'
 		| 'Bid available'
 		| 'Bid returned empty or error response'
 		| 'Bid timed out';
 	adId: string;
+	adUnitCode: string;
 	requestId: string;
 	mediaType: string;
 	source: unknown;
