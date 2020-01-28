@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createSandbox, SinonFakeTimers, spy } from 'sinon';
+import { createSandbox, SinonFakeTimers } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models';
 import { context } from '../../../src/ad-engine/services';
 import { slotPropertiesTrackingMiddleware } from '../../../src/ad-engine/tracking';

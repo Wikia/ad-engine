@@ -1,14 +1,15 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox } from 'sinon';
 import { context, slotInjector } from '../../../src/ad-engine/services';
 
 describe('slot-repeater', () => {
+	const sandbox = createSandbox();
 	let elementProperties;
 	let conflictingElement;
 	let placeholder;
 
 	afterEach(() => {
-		document.querySelectorAll.restore();
+		sandbox.restore();
 	});
 
 	beforeEach(() => {
@@ -48,10 +49,10 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		const querySelectorAll = sinon.stub(document, 'querySelectorAll');
+		const querySelectorAll = sandbox.stub(document, 'querySelectorAll');
 
-		querySelectorAll.withArgs('.foo').returns([conflictingElement]);
-		querySelectorAll.withArgs('.main p').returns([placeholder]);
+		querySelectorAll.withArgs('.foo').returns([conflictingElement] as any);
+		querySelectorAll.withArgs('.main p').returns([placeholder] as any);
 
 		context.set('events.pushOnScroll.ids', []);
 		context.set('slots.incontent_player', {
