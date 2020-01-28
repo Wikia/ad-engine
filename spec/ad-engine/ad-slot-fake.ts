@@ -1,6 +1,6 @@
 import { LazyQueue } from '@wikia/ad-engine/utils';
 
-const dataset = {};
+const dataset: any = {};
 
 let offsetTop = 1000;
 

@@ -1,10 +1,10 @@
 import { context, Dictionary, SlotConfig, slotService } from '@wikia/ad-engine';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox } from 'sinon';
 import adSlotFake from '../ad-slot-fake';
 
 let adSlot;
-let elementProperties = {};
+let elementProperties: any = {};
 let slotConfigs: Dictionary<Partial<SlotConfig>>;
 
 function clearSlotServiceState() {
@@ -14,10 +14,12 @@ function clearSlotServiceState() {
 }
 
 describe('slot-service', () => {
+	const sandbox = createSandbox();
+
 	beforeEach(() => {
 		const originalGet = context.get;
 
-		sinon.stub(context, 'get').callsFake((key) => {
+		sandbox.stub(context, 'get').callsFake((key) => {
 			if (key === 'slots') {
 				return slotConfigs;
 			}
@@ -27,8 +29,7 @@ describe('slot-service', () => {
 	});
 
 	afterEach(() => {
-		document.getElementById.restore();
-		context.get.restore();
+		sandbox.restore();
 	});
 
 	beforeEach(() => {
@@ -40,7 +41,7 @@ describe('slot-service', () => {
 		};
 		slotConfigs = {};
 
-		sinon
+		sandbox
 			.stub(document, 'getElementById')
 			.withArgs('foo-container')
 			.returns({
@@ -51,7 +52,7 @@ describe('slot-service', () => {
 				offsetHeight: 300,
 				offsetParent: elementProperties.offsetParent,
 				ownerDocument: {},
-			});
+			} as any);
 
 		adSlot = { ...adSlotFake };
 		adSlot.getViewportConflicts = () => ['foo-container'];
