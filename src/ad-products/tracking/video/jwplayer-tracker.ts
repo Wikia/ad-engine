@@ -45,16 +45,16 @@ export class JWPlayerTracker {
 	static PLAYER_NAME = 'jwplayer';
 
 	adProduct: string | null;
-	audio = false;
-	contentType: string | null = null;
-	creativeId: string | null = null;
-	ctp = false;
-	isCtpAudioUpdateEnabled = true;
-	lineItemId: string | null = null;
-	slotName: string;
-	userBlockAutoplay: 1 | 0 | -1 = -1;
-	videoId: string | null = null;
-	playerInstance: PlayerInstance;
+	private audio = false;
+	private contentType: string | null = null;
+	private creativeId: string | null = null;
+	private ctp = false;
+	private isCtpAudioUpdateEnabled = true;
+	private lineItemId: string | null = null;
+	private slotName: string;
+	private userBlockAutoplay: 1 | 0 | -1 = -1;
+	private videoId: string | null = null;
+	private playerInstance: PlayerInstance;
 
 	constructor(params: Dictionary = {}) {
 		this.adProduct = params.adProduct || null;
@@ -70,7 +70,7 @@ export class JWPlayerTracker {
 	/**
 	 * Update withCtp and withAudio based on player and slot
 	 */
-	updatePlayerState(slot?: AdSlot): void {
+	private updatePlayerState(slot?: AdSlot): void {
 		if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
 			this.ctp = !slot.config.autoplay;
 			this.audio = slot.config.audio;
@@ -91,7 +91,7 @@ export class JWPlayerTracker {
 	/**
 	 * Update creative details
 	 */
-	updateCreativeData(params: CreativeParams = {}): void {
+	private updateCreativeData(params: CreativeParams = {}): void {
 		this.lineItemId = params.lineItemId;
 		this.creativeId = params.creativeId;
 		this.contentType = params.contentType;
@@ -158,7 +158,7 @@ export class JWPlayerTracker {
 		});
 	}
 
-	getVideoData(eventName: string, errorCode: number): VideoData {
+	private getVideoData(eventName: string, errorCode: number): VideoData {
 		return {
 			ad_error_code: errorCode,
 			ad_product: this.adProduct,
@@ -178,7 +178,7 @@ export class JWPlayerTracker {
 	/**
 	 * Dispatch single event
 	 */
-	emit(eventName: string, errorCode = 0): void {
+	private emit(eventName: string, errorCode = 0): void {
 		this.userBlockAutoplay = -1;
 
 		const featuredVideoAutoplayCookie: string | undefined = Cookies.get('featuredVideoAutoplay');
