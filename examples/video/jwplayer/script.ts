@@ -5,16 +5,22 @@ import {
 	DelayModule,
 	events,
 	eventService,
-	jwplayerAdsFactory,
+	JWPlayerManager,
+	jwpReady,
 	playerEvents,
 	utils,
 } from '@wikia/ad-engine';
+import { setupPostQuecast, Transmitter } from '@wikia/post-quecast';
 // tslint:disable-next-line:no-submodule-imports
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
 import '../../styles.scss';
 import * as videoData from './video-data.json';
 
+setupPostQuecast();
+new JWPlayerManager().manage();
+
+const transmitter = new Transmitter();
 const f15sVideoId = utils.queryString.get('f15s');
 
 context.extend(adContext);
@@ -100,21 +106,27 @@ biddersDelay.getPromise().then(() => {
 			time: 3,
 		},
 	};
-	const videoAds = jwplayerAdsFactory.create({
-		adProduct: 'featured-video',
-		audio: !playerOptions.mute,
-		autoplay: playerOptions.autoplay,
-		featured: true,
-		slotName: 'featured',
-		videoId: videoData.mediaid,
-	});
 
 	// @ts-ignore
 	window.wikiaJWPlayer('playerContainer', playerOptions, (player) => {
-		videoAds.register(player);
-	});
+		const options = {
+			adProduct: 'featured-video',
+			slotName: 'featured',
+			audio: !playerOptions.mute,
+			autoplay: playerOptions.autoplay,
+			featured: true,
+			videoId: videoData.mediaid,
+		};
+		const targeting = {
+			plist: '',
+			videoTags: [],
+			v1: '',
+		};
+		const playerKey = 'aePlayerKey';
 
-	jwplayerAdsFactory.loadMoatPlugin();
+		window[playerKey] = player;
+		transmitter.dispatch(jwpReady({ options, playerKey, targeting }));
+	});
 });
 
 eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
