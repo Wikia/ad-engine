@@ -1,5 +1,5 @@
 import { AdSlot, context, slotTweaker } from '@ad-engine/core';
-import { PorvataPlayer } from '../../../../video/player/p/porvata-player';
+import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import ToggleAnimation from '../../../interface/video/toggle-animation';
 import { BigFancyAdAboveConfig } from '../../big-fancy-ad-above';
 import { resolvedState } from '../../resolved-state';

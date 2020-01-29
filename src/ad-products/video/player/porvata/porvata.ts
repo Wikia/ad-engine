@@ -9,10 +9,21 @@ import {
 	templateService,
 	utils,
 } from '@ad-engine/core';
-import { PorvataFactory } from '../p/porvata-factory';
-import { PorvataPlayer } from '../p/porvata-player';
+import { GoogleIma } from './ima/google-ima';
+import { GoogleImaPlayer } from './ima/google-ima-player';
 import { PorvataListener } from './porvata-listener';
-import { VideoSettings } from './video-settings';
+import { VideoParams, VideoSettings } from './video-settings';
+
+interface NativeFullscreen {
+	enter: () => boolean | undefined;
+	exit: () => boolean | undefined;
+	addChangeListener: (listener: () => void) => void;
+	removeChangeListener: (listener: () => void) => void;
+	isSupported: () => boolean;
+}
+
+const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
+const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
 
 export interface PorvataTemplateParams {
 	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
@@ -58,6 +69,253 @@ export const VpaidMode = {
 	ENABLED: 1,
 	INSECURE: 2,
 };
+
+const prepareVideoAdContainer = (params: VideoParams): HTMLElement => {
+	const videoAdContainer = params.container.querySelector('div');
+
+	videoAdContainer.classList.add('video-player');
+	videoAdContainer.classList.add('hide');
+
+	return videoAdContainer;
+};
+
+const nativeFullscreenOnElement = (element: HTMLElement): NativeFullscreen => {
+	const enter = utils.tryProperty(element, [
+		'webkitRequestFullscreen',
+		'mozRequestFullScreen',
+		'msRequestFullscreen',
+		'requestFullscreen',
+	]);
+	const exit = utils.tryProperty(document, [
+		'webkitExitFullscreen',
+		'mozCancelFullScreen',
+		'msExitFullscreen',
+		'exitFullscreen',
+	]);
+	const fullscreenChangeEvent = (
+		utils.whichProperty(document, [
+			'onwebkitfullscreenchange',
+			'onmozfullscreenchange',
+			'onmsfullscreenchange',
+			'onfullscreenchange',
+		]) || ''
+	)
+		.replace(/^on/, '')
+		.replace('msfullscreenchange', 'MSFullscreenChange');
+	const addChangeListener = (listener: () => void) =>
+		document.addEventListener(fullscreenChangeEvent, listener);
+	const removeChangeListener = (listener: () => void) =>
+		document.removeEventListener(fullscreenChangeEvent, listener);
+	const isSupported = () => Boolean(enter && exit);
+
+	return {
+		enter,
+		exit,
+		addChangeListener,
+		removeChangeListener,
+		isSupported,
+	} as NativeFullscreen;
+};
+
+export class PorvataPlayer {
+	container: HTMLElement;
+	mobileVideoAd: HTMLVideoElement;
+	isFloating = false;
+	fullscreen: boolean;
+	width: number;
+	height: number;
+	muteProtect: boolean;
+	readonly defaultVolume = 0.75;
+	readonly destroyCallbacks = new utils.LazyQueue();
+	nativeFullscreen: NativeFullscreen;
+
+	constructor(
+		readonly ima: GoogleImaPlayer,
+		public params: VideoParams,
+		public videoSettings: VideoSettings,
+	) {
+		this.container = prepareVideoAdContainer(params);
+		this.mobileVideoAd = params.container.querySelector('video');
+
+		const nativeFullscreen: NativeFullscreen = nativeFullscreenOnElement(this.container);
+
+		this.fullscreen = Boolean(params.isFullscreen);
+		this.nativeFullscreen = nativeFullscreen;
+		this.width = params.width;
+		this.height = params.height;
+
+		this.destroyCallbacks.onItemFlush((callback: () => void) => callback());
+
+		if (nativeFullscreen.isSupported()) {
+			nativeFullscreen.addChangeListener(() => this.onFullscreenChange());
+		}
+	}
+
+	addEventListener(
+		eventName: string,
+		callback: (event: google.ima.AdErrorEvent | google.ima.AdEvent) => void,
+	): void {
+		this.ima.addEventListener(eventName, callback);
+	}
+
+	getRemainingTime(): number {
+		return this.ima.getAdsManager().getRemainingTime();
+	}
+
+	isFullscreen(): boolean {
+		return this.fullscreen;
+	}
+
+	isMuted(): boolean {
+		return this.ima.getAdsManager().getVolume() === 0;
+	}
+
+	isMobilePlayerMuted(): boolean {
+		const mobileVideoAd = this.container.querySelector<HTMLVideoElement>('video');
+
+		return mobileVideoAd && mobileVideoAd.autoplay && mobileVideoAd.muted;
+	}
+
+	isPaused(): boolean {
+		return this.ima.getStatus() === 'paused';
+	}
+
+	isPlaying(): boolean {
+		return this.ima.getStatus() === 'playing';
+	}
+
+	pause(): void {
+		this.ima.getAdsManager().pause();
+	}
+
+	play(newWidth?: number, newHeight?: number): void {
+		if (newWidth !== undefined && newHeight !== undefined) {
+			this.width = newWidth;
+			this.height = newHeight;
+		}
+		if (!this.width || !this.height || this.isFullscreen()) {
+			this.width = this.params.container.offsetWidth;
+			this.height = this.params.container.offsetHeight;
+		}
+
+		this.ima.playVideo(this.width, this.height);
+	}
+
+	reload(): void {
+		this.ima.reload();
+	}
+
+	resize(newWidth?: number, newHeight?: number): void {
+		if (isFinite(newWidth) && isFinite(newHeight)) {
+			this.width = newWidth;
+			this.height = newHeight;
+		}
+
+		if (this.isFullscreen()) {
+			this.ima.resize(window.innerWidth, window.innerHeight, true);
+		} else {
+			this.ima.resize(this.width, this.height, false);
+		}
+	}
+
+	resume(): void {
+		this.ima.getAdsManager().resume();
+	}
+
+	rewind(): void {
+		this.params.autoPlay = false;
+		this.ima.setAutoPlay(false);
+		this.ima.dispatchEvent('wikiaAdRestart');
+		this.play();
+	}
+
+	setVolume(volume: number): void {
+		this.updateVideoDOMElement(volume);
+		this.ima.getAdsManager().setVolume(volume);
+
+		// This is hack for Safari, because it can't dispatch original IMA event (volumeChange)
+		this.ima.dispatchEvent('wikiaVolumeChange');
+	}
+
+	toggleFullscreen(): void {
+		const isFullscreen: boolean = this.isFullscreen();
+
+		this.muteProtect = true;
+
+		if (this.nativeFullscreen.isSupported()) {
+			const toggleNativeFullscreen = isFullscreen
+				? this.nativeFullscreen.exit
+				: this.nativeFullscreen.enter;
+
+			toggleNativeFullscreen();
+		} else {
+			this.onFullscreenChange();
+		}
+	}
+
+	onFullscreenChange(): void {
+		this.fullscreen = !this.fullscreen;
+
+		if (this.isFullscreen()) {
+			this.container.classList.add(VIDEO_FULLSCREEN_CLASS_NAME);
+			document.documentElement.classList.add(STOP_SCROLLING_CLASS_NAME);
+		} else {
+			this.container.classList.remove(VIDEO_FULLSCREEN_CLASS_NAME);
+			document.documentElement.classList.remove(STOP_SCROLLING_CLASS_NAME);
+
+			if (this.muteProtect) {
+				this.muteProtect = false;
+			} else if (this.isPlaying() && !this.isMuted()) {
+				this.mute();
+			}
+		}
+
+		this.resize();
+		this.ima.dispatchEvent('wikiaFullscreenChange');
+	}
+
+	updateVideoDOMElement(volume: number): void {
+		if (this.mobileVideoAd) {
+			this.mobileVideoAd.muted = volume === 0;
+			this.mobileVideoAd.volume = volume;
+		}
+	}
+
+	mute(): void {
+		this.setVolume(0);
+	}
+
+	unmute(): void {
+		this.setVolume(this.defaultVolume);
+
+		if (this.params.autoPlay && this.params.restartOnUnmute) {
+			this.rewind();
+		}
+	}
+
+	volumeToggle(): void {
+		if (this.isMuted()) {
+			this.unmute();
+			this.ima.dispatchEvent('wikiaAdUnmute');
+		} else {
+			this.mute();
+			this.ima.dispatchEvent('wikiaAdMute');
+		}
+	}
+
+	stop(): void {
+		this.ima.getAdsManager().stop();
+		this.ima.dispatchEvent('wikiaAdStop');
+	}
+
+	addOnDestroyCallback(callback: () => void): void {
+		this.destroyCallbacks.push(callback);
+	}
+
+	destroy(): void {
+		this.destroyCallbacks.flush();
+	}
+}
 
 export class PorvataFiller implements SlotFiller {
 	private containerId = 'playerContainer';
@@ -161,102 +419,102 @@ export class Porvata {
 
 		porvataListener.init();
 
-		return PorvataFactory.create(videoSettings).then((player: PorvataPlayer) => {
-			// setTimeout(() => player.pause(), 5000);
-			// (window as any).video = player;
-
-			function inViewportCallback(isVisible: boolean): void {
-				// Play video automatically only for the first time
-				if (isVisible && !autoPlayed && params.autoPlay) {
-					player.dispatchEvent('wikiaFirstTimeInViewport');
-					player.play();
-					autoPlayed = true;
-					// Don't resume when video was paused manually
-				} else if (isVisible && autoPaused) {
-					player.resume();
-					// Pause video once it's out of viewport and set autoPaused to distinguish manual
-					// and auto pause
-				} else if (!isVisible && player.isPlaying() && !params.blockOutOfViewportPausing) {
-					player.pause();
-					autoPaused = true;
-				}
-			}
-
-			function setupAutoPlayMethod(): void {
-				if (params.blockOutOfViewportPausing && !params.startInViewportOnly) {
-					if (params.autoPlay && !autoPlayed) {
+		return GoogleIma.init()
+			.then((googleIma) => googleIma.getPlayer(videoSettings))
+			.then((ima: GoogleImaPlayer) => new PorvataPlayer(ima, params, videoSettings))
+			.then((video: PorvataPlayer) => {
+				function inViewportCallback(isVisible: boolean): void {
+					// Play video automatically only for the first time
+					if (isVisible && !autoPlayed && params.autoPlay) {
+						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
+						video.play();
 						autoPlayed = true;
-						player.play();
+						// Don't resume when video was paused manually
+					} else if (isVisible && autoPaused) {
+						video.resume();
+						// Pause video once it's out of viewport and set autoPaused to distinguish manual
+						// and auto pause
+					} else if (!isVisible && video.isPlaying() && !params.blockOutOfViewportPausing) {
+						video.pause();
+						autoPaused = true;
 					}
-				} else {
-					viewportListenerId = Porvata.addOnViewportChangeListener(params, inViewportCallback);
-				}
-			}
-
-			porvataListener.registerVideoEvents(player);
-
-			player.addEventListener('adCanPlay', () => {
-				player.dispatchEvent('wikiaAdStarted');
-				eventService.emit(events.VIDEO_AD_IMPRESSION, slotService.get(params.slotName));
-			});
-			player.addEventListener('allAdsCompleted', () => {
-				if (player.isFullscreen()) {
-					player.toggleFullscreen();
 				}
 
-				player.setAutoPlay(false);
-				player.dispatchEvent('wikiaAdCompleted');
-				if (viewportListenerId) {
-					utils.viewportObserver.removeListener(viewportListenerId);
-					viewportListenerId = null;
+				function setupAutoPlayMethod(): void {
+					if (params.blockOutOfViewportPausing && !params.startInViewportOnly) {
+						if (params.autoPlay && !autoPlayed) {
+							autoPlayed = true;
+							video.play();
+						}
+					} else {
+						viewportListenerId = Porvata.addOnViewportChangeListener(params, inViewportCallback);
+					}
 				}
-				isFirstPlay = false;
-				porvataListener.params.withAudio = true;
-				porvataListener.params.withCtp = true;
-			});
-			player.addEventListener('wikiaAdRestart', () => {
-				isFirstPlay = false;
-			});
-			player.addEventListener('start', () => {
-				player.dispatchEvent('wikiaAdPlay');
-				if (!viewportListenerId && !autoPlayed) {
-					setupAutoPlayMethod();
-				}
-			});
-			player.addEventListener('resume', () => {
-				player.dispatchEvent('wikiaAdPlay');
-				autoPaused = false;
-			});
-			player.addEventListener('pause', () => {
-				player.dispatchEvent('wikiaAdPause');
-			});
-			player.addOnDestroyCallback(() => {
-				if (viewportListenerId) {
-					utils.viewportObserver.removeListener(viewportListenerId);
-					viewportListenerId = null;
-				}
-			});
 
-			if (params.autoPlay) {
-				muteFirstPlay(player);
-			}
+				porvataListener.registerVideoEvents(video);
 
-			if (params.onReady) {
-				params.onReady(player);
-			}
-
-			player.addEventListener('wikiaAdsManagerLoaded', () => {
-				setupAutoPlayMethod();
-			});
-			player.addEventListener('wikiaEmptyAd', () => {
-				viewportListenerId = Porvata.addOnViewportChangeListener(params, () => {
-					player.dispatchEvent('wikiaFirstTimeInViewport');
-					utils.viewportObserver.removeListener(viewportListenerId);
+				video.addEventListener('adCanPlay', () => {
+					video.ima.dispatchEvent('wikiaAdStarted');
+					eventService.emit(events.VIDEO_AD_IMPRESSION, slotService.get(params.slotName));
 				});
-			});
+				video.addEventListener('allAdsCompleted', () => {
+					if (video.isFullscreen()) {
+						video.toggleFullscreen();
+					}
 
-			return player;
-		});
+					video.ima.setAutoPlay(false);
+					video.ima.dispatchEvent('wikiaAdCompleted');
+					if (viewportListenerId) {
+						utils.viewportObserver.removeListener(viewportListenerId);
+						viewportListenerId = null;
+					}
+					isFirstPlay = false;
+					porvataListener.params.withAudio = true;
+					porvataListener.params.withCtp = true;
+				});
+				video.addEventListener('wikiaAdRestart', () => {
+					isFirstPlay = false;
+				});
+				video.addEventListener('start', () => {
+					video.ima.dispatchEvent('wikiaAdPlay');
+					if (!viewportListenerId && !autoPlayed) {
+						setupAutoPlayMethod();
+					}
+				});
+				video.addEventListener('resume', () => {
+					video.ima.dispatchEvent('wikiaAdPlay');
+					autoPaused = false;
+				});
+				video.addEventListener('pause', () => {
+					video.ima.dispatchEvent('wikiaAdPause');
+				});
+				video.addOnDestroyCallback(() => {
+					if (viewportListenerId) {
+						utils.viewportObserver.removeListener(viewportListenerId);
+						viewportListenerId = null;
+					}
+				});
+
+				if (params.autoPlay) {
+					muteFirstPlay(video);
+				}
+
+				if (params.onReady) {
+					params.onReady(video);
+				}
+
+				video.addEventListener('wikiaAdsManagerLoaded', () => {
+					setupAutoPlayMethod();
+				});
+				video.addEventListener('wikiaEmptyAd', () => {
+					viewportListenerId = Porvata.addOnViewportChangeListener(params, () => {
+						video.ima.dispatchEvent('wikiaFirstTimeInViewport');
+						utils.viewportObserver.removeListener(viewportListenerId);
+					});
+				});
+
+				return video;
+			});
 	}
 
 	static isVpaid(contentType: string): boolean {

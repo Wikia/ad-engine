@@ -8,7 +8,7 @@ import {
 	VideoData,
 	VideoEventListener,
 } from '@ad-engine/core';
-import { PorvataPlayer } from '../p/porvata-player';
+import { PorvataPlayer } from '../porvata/porvata';
 
 export interface PorvataListenerParams {
 	adProduct: string;
@@ -120,10 +120,10 @@ export class PorvataListener {
 			contentType = adInfo.contentType;
 			creativeId = adInfo.creativeId;
 			lineItemId = adInfo.lineItemId;
-		} else if (this.video && this.video.videoContainer) {
-			contentType = this.video.videoContainer.getAttribute('data-vast-content-type');
-			creativeId = this.video.videoContainer.getAttribute('data-vast-creative-id');
-			lineItemId = this.video.videoContainer.getAttribute('data-vast-line-item-id');
+		} else if (this.video && this.video.container) {
+			contentType = this.video.container.getAttribute('data-vast-content-type');
+			creativeId = this.video.container.getAttribute('data-vast-creative-id');
+			lineItemId = this.video.container.getAttribute('data-vast-line-item-id');
 		}
 
 		return {

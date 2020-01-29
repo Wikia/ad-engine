@@ -59,7 +59,6 @@ class GoogleImaSetup {
 		adsRenderingSettings.loadVideoTimeout = params.loadVideoTimeout || 15000;
 		adsRenderingSettings.enablePreloading = true;
 		adsRenderingSettings.uiElements = [];
-		adsRenderingSettings.useStyledNonLinearAds = false;
 
 		return adsRenderingSettings;
 	}

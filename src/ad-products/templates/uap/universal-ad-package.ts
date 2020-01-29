@@ -11,8 +11,7 @@ import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
 import { action, props } from 'ts-action';
 import { ofType } from 'ts-action-operators';
-import { PorvataPlayer } from '../../video/player/p/porvata-player';
-import { Porvata } from '../../video/player/porvata/porvata';
+import { Porvata, PorvataPlayer } from '../../video/player/porvata/porvata';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
 import { UapVideoSettings } from './uap-video-settings';
@@ -133,7 +132,7 @@ async function loadPorvata(videoSettings, slotContainer, imageContainer): Promis
 
 	const video = await Porvata.inject(params);
 
-	video.videoContainer.style.position = 'relative';
+	video.container.style.position = 'relative';
 	videoUserInterface.setup(video, template, {
 		autoPlay: videoSettings.isAutoPlay(),
 		image: imageContainer,

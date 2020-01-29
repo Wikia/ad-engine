@@ -18,7 +18,7 @@ function add(video, container, params): void {
 		}, FADE_OUT_TIMEOUT);
 
 		removeVisibilityTimeout = window.setTimeout(() => {
-			video.playerContainer.classList.remove('ui-visible');
+			video.container.classList.remove('ui-visible');
 		}, FADE_OUT_TIMEOUT + FADE_OUT_ANIMATION_TIME);
 	}
 
@@ -32,14 +32,14 @@ function add(video, container, params): void {
 
 	overlay.classList.add('toggle-ui-overlay');
 	video.addEventListener('start', () => {
-		video.playerContainer.classList.add('ui-visible');
+		video.container.classList.add('ui-visible');
 		resetFadeOut();
 		fadeOut();
 	});
 
 	if (isMobile) {
 		overlay.addEventListener('click', () => {
-			video.playerContainer.classList.toggle('ui-visible');
+			video.container.classList.toggle('ui-visible');
 			resetFadeOut();
 
 			if (video.isPlaying()) {
@@ -50,12 +50,12 @@ function add(video, container, params): void {
 		video.addEventListener('resume', fadeOut);
 		video.addEventListener('pause', resetFadeOut);
 	} else {
-		video.playerContainer.addEventListener('mouseenter', () => {
-			video.playerContainer.classList.add('ui-visible');
+		video.container.addEventListener('mouseenter', () => {
+			video.container.classList.add('ui-visible');
 			resetFadeOut();
 		});
 
-		video.playerContainer.addEventListener('mouseleave', () => {
+		video.container.addEventListener('mouseleave', () => {
 			fadeOut();
 		});
 

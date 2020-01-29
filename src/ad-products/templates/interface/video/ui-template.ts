@@ -1,4 +1,4 @@
-import { VideoSettings } from '../../../video/porvata/video-settings';
+import { VideoSettings } from '../../../video/player/porvata/video-settings';
 import { UapVideoSettings } from '../../uap/uap-video-settings';
 import CloseButton from './close-button';
 import DynamicReveal from './dynamic-reveal';

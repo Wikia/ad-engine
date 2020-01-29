@@ -22,15 +22,19 @@ function createVolumeControl(params): HTMLDivElement {
 }
 
 function updateCurrentState(video, volumeControl): void {
-	if (video.isMuted()) {
+	if (video.isMuted() || video.isMobilePlayerMuted()) {
 		volumeControl.classList.add('is-on');
 	} else {
 		volumeControl.classList.remove('is-on');
 	}
+
+	if (!video.isMobilePlayerMuted() && video.mobileVideoAd && video.mobileVideoAd.muted) {
+		video.updateVideoDOMElement(video.defaultVolume);
+	}
 }
 
 function add(video, container): void {
-	const volumeControl = createVolumeControl(video.videoSettings.getParams());
+	const volumeControl = createVolumeControl(video.params);
 
 	video.addEventListener('wikiaVolumeChange', () => {
 		updateCurrentState(video, volumeControl);
@@ -41,7 +45,7 @@ function add(video, container): void {
 	});
 
 	volumeControl.addEventListener('click', (e) => {
-		video.toggleVolume();
+		video.volumeToggle();
 		e.preventDefault();
 	});
 

@@ -1,7 +1,7 @@
 import { AdSlot, Dictionary, scrollListener, slotTweaker, utils } from '@ad-engine/core';
 import * as EventEmitter from 'eventemitter3';
 import { debounce, isUndefined, mapValues, toPlainObject } from 'lodash';
-import { PorvataPlayer } from '../../../../video/player/p/porvata-player';
+import { PorvataPlayer } from '../../../../video/player/porvata/porvata';
 import { animate } from '../../../interface/animate';
 import { StickinessCallback } from '../../big-fancy-ad-above';
 import {
@@ -94,7 +94,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 			this.updateAdSizes();
 
-			if (!video.videoSettings.get('autoPlay')) {
+			if (!video.params.autoPlay) {
 				this.resetResolvedState();
 			}
 		});
@@ -200,7 +200,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 
 	private adjustVideoSize(relativeHeight: number): void {
 		if (this.video && !this.video.isFullscreen()) {
-			this.video.videoContainer.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
+			this.video.container.style.width = `${this.params.videoAspectRatio * relativeHeight}px`;
 		}
 	}
 
@@ -217,10 +217,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		Object.assign(this.params.thumbnail.style, style);
 
 		if (this.video) {
-			Object.assign(this.video.videoContainer.style, style);
+			Object.assign(this.video.container.style, style);
 
 			if (this.video.isFullscreen()) {
-				this.video.videoContainer.style.height = '100%';
+				this.video.container.style.height = '100%';
 			}
 		}
 	}
@@ -363,7 +363,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private stopVideoPlayback() {
-		if (this.video && this.video.getState()) {
+		if (this.video && this.video.ima.getAdsManager() && this.video.ima.status) {
 			if (this.video.isPlaying()) {
 				this.video.stop();
 			}

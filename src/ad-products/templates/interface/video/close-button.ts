@@ -1,11 +1,9 @@
-import { PorvataPlayer } from '../../../video/porvata/porvata-player';
-
-function add(player: PorvataPlayer, container): void {
+function add(video, container): void {
 	const closeButton = document.createElement('div');
 
 	closeButton.classList.add('close-ad');
 	closeButton.addEventListener('click', (event) => {
-		player.stop();
+		video.stop();
 		event.preventDefault();
 	});
 
