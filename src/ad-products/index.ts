@@ -4,6 +4,6 @@ export * from './tracking';
 export * from './video/jwplayer-ads-factory';
 export * from './video/new/jwplayer-manager';
 export * from './video/new/jwplayer-actions';
-export * from './video/player/porvata/porvata';
-export * from './video/player/porvata/video-settings';
+export * from './video/porvata/porvata';
+export * from './video/porvata/video-settings';
 export * from './utils';

@@ -1,4 +1,4 @@
-import { PorvataPlayer } from '../../../video/player/p/porvata-player';
+import { PorvataPlayer } from '../../../video/porvata/porvata-player';
 
 function add(player: PorvataPlayer, container): void {
 	const closeButton = document.createElement('div');

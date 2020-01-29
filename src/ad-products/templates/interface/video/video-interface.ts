@@ -1,4 +1,4 @@
-import { PorvataPlayer } from '../../../video/player/p/porvata-player';
+import { PorvataPlayer } from '../../../video/porvata/porvata-player';
 
 export function setup(player: PorvataPlayer, uiElements, params): void {
 	uiElements.forEach((element) => {

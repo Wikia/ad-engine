@@ -1,5 +1,5 @@
 import { slotTweaker } from '@ad-engine/core';
-import { PorvataPlayer } from '../../../video/player/p/porvata-player';
+import { PorvataPlayer } from '../../../video/porvata/porvata-player';
 
 interface ProgressBarElement extends HTMLDivElement {
 	pause?: () => void;
