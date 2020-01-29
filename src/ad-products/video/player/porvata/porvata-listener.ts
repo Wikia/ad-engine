@@ -8,7 +8,7 @@ import {
 	VideoData,
 	VideoEventListener,
 } from '@ad-engine/core';
-import { PorvataPlayer } from '../porvata/porvata';
+import { PorvataPlayer } from '../porvata';
 
 export interface PorvataListenerParams {
 	adProduct: string;

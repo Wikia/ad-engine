@@ -1,7 +1,7 @@
-export function setup(player, uiElements, params): void {
+export function setup(video, uiElements, params): void {
 	uiElements.forEach((element) => {
 		if (element) {
-			element.add(player, player.container, params);
+			element.add(video, video.container, params);
 		}
 	});
 }

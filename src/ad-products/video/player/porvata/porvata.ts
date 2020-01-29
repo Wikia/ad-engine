@@ -14,17 +14,6 @@ import { GoogleImaPlayer } from './ima/google-ima-player';
 import { PorvataListener } from './porvata-listener';
 import { VideoParams, VideoSettings } from './video-settings';
 
-interface NativeFullscreen {
-	enter: () => boolean | undefined;
-	exit: () => boolean | undefined;
-	addChangeListener: (listener: () => void) => void;
-	removeChangeListener: (listener: () => void) => void;
-	isSupported: () => boolean;
-}
-
-const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
-const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
-
 export interface PorvataTemplateParams {
 	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
 	viewportHookElement?: HTMLElement;
@@ -63,6 +52,17 @@ export interface PorvataGamParams {
 	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
 	vastTargeting: Targeting;
 }
+
+interface NativeFullscreen {
+	enter: () => boolean | undefined;
+	exit: () => boolean | undefined;
+	addChangeListener: (listener: () => void) => void;
+	removeChangeListener: (listener: () => void) => void;
+	isSupported: () => boolean;
+}
+
+const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
+const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
 
 export const VpaidMode = {
 	DISABLED: 0,
