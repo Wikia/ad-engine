@@ -2,10 +2,9 @@ import { AdEngine, context, Interstitial, templateService } from '@wikia/ad-engi
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '167';
-customContext.targeting.skin = 'mercury';
-
 context.extend(customContext);
+context.set('customContext.targeting.artid', '167');
+context.set('customContext.targeting.skin', 'mercury');
 
 templateService.register(Interstitial);
 

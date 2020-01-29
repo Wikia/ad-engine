@@ -1,14 +1,15 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox } from 'sinon';
 import { context } from '../../../src/ad-engine/index';
 import { billTheLizard, BillTheLizard } from '../../../src/ad-services/bill-the-lizard';
 
 describe('Bill the Lizard service', () => {
+	const sandbox = createSandbox();
 	let requests = [];
 
 	beforeEach(() => {
 		requests = [];
-		window.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
+		window.XMLHttpRequest = sandbox.useFakeXMLHttpRequest();
 		window.XMLHttpRequest.onCreate = (req) => {
 			requests.push(req);
 		};
@@ -61,7 +62,7 @@ describe('Bill the Lizard service', () => {
 	});
 
 	afterEach(() => {
-		window.XMLHttpRequest.restore();
+		sandbox.restore();
 	});
 
 	describe('buildPredictions', () => {
@@ -70,7 +71,7 @@ describe('Bill the Lizard service', () => {
 			const callId = 'foo';
 			const modelToResultMap = { a: 5 };
 
-			const result = billTheLizard.buildPredictions(models, modelToResultMap, callId);
+			const result = billTheLizard.buildPredictions(models as any, modelToResultMap, callId);
 
 			expect(result.length).to.equal(1);
 			expect(result[0]).to.deep.equal({ callId, modelName: 'a', result: 5 });
@@ -103,11 +104,7 @@ describe('Bill the Lizard service', () => {
 
 	describe('setTargeting', () => {
 		before(() => {
-			sinon.stub(billTheLizard, 'getTargeting').callsFake(() => ({ a: 5 }));
-		});
-
-		after(() => {
-			billTheLizard.getTargeting.restore();
+			sandbox.stub(billTheLizard, 'getTargeting').callsFake(() => ({ a: 5 }));
 		});
 
 		it('should set the value of targeting in context (key: "targeting.btl")', () => {

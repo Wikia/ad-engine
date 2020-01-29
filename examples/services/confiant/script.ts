@@ -3,8 +3,8 @@ import customContext from '../../context';
 
 const isConfiantEnabled = utils.queryString.get('confiant-disabled') !== '1';
 
-customContext.targeting.artid = '553';
 context.extend(customContext);
+context.set('customContext.targeting.artid', '553');
 context.set('services.confiant.enabled', isConfiantEnabled);
 
 confiant.call();

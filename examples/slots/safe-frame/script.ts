@@ -13,11 +13,10 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '173';
-customContext.slots.floor_adhesion.forceSafeFrame = true;
-customContext.slots.floor_adhesion.clickPositionTracking = true;
-
 context.extend(customContext);
+context.set('customContext.targeting.artid', '173');
+context.set('customContext.slots.floor_adhesion.forceSafeFrame', true);
+context.set('customContext.slots.floor_adhesion.clickPositionTracking', true);
 
 templateService.register(FloorAdhesion);
 

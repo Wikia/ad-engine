@@ -35,7 +35,7 @@ export class UapVideoSettings {
 		return this.resolvedState;
 	}
 
-	isSplitLayout(): string {
-		return this.splitLayout;
+	isSplitLayout(): boolean {
+		return !!this.splitLayout;
 	}
 }

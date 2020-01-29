@@ -1,5 +1,5 @@
 import { AdSlot } from '../models';
-import { logger } from '../utils';
+import { generateUniqueId, logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
 import { eventService } from './events';
@@ -45,6 +45,8 @@ function repeatSlot(adSlot: AdSlot): boolean {
 			context.set(`slots.${slotName}.${key}`, value);
 		});
 	}
+
+	context.set(`slots.${slotName}.uid`, generateUniqueId());
 
 	const container = slotInjector.inject(slotName);
 	const additionalClasses = repeatConfig.additionalClasses || '';

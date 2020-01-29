@@ -9,10 +9,9 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.post_id = '1210636';
-customContext.slots.top_boxad.aboveTheFold = false;
-
 context.extend(customContext);
+context.set('customContext.targeting.post_id', '1210636');
+context.set('customContext.slots.top_boxad.aboveTheFold', false);
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);
