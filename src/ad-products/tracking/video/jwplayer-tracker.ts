@@ -1,11 +1,4 @@
-import {
-	AdSlot,
-	Dictionary,
-	slotService,
-	vastParser,
-	VideoData,
-	VideoEventData,
-} from '@ad-engine/core';
+import { Dictionary, slotService, vastParser, VideoData, VideoEventData } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
@@ -32,10 +25,10 @@ const trackingEventsMap: Dictionary<string> = {
 	adFirstQuartile: 'first_quartile',
 	adMidPoint: 'midpoint',
 	adThirdQuartile: 'third_quartile',
-	adComplete: 'completed',
+	adComplete: 'completed', // when ad completes
 	adSkipped: 'skipped',
 	videoStart: 'content_started',
-	complete: 'content_completed',
+	complete: 'content_completed', // when video completes (not ad)
 };
 
 /**
@@ -44,27 +37,54 @@ const trackingEventsMap: Dictionary<string> = {
 export class JWPlayerTracker {
 	static PLAYER_NAME = 'jwplayer';
 
+	/**
+	 * updated in helper.resetTrackerAdProduct and helper.playVideoAd
+	 * depends on adSlot and position ('midroll' | 'postroll' | 'preroll')
+	 */
 	adProduct: string | null;
+	/**
+	 * from player config and ad slot
+	 */
 	private audio = false;
+	/**
+	 * from currentAd (duplicated in helper.setSlotParams)
+	 */
 	private contentType: string | null = null;
+	/**
+	 * from currentAd (duplicated in helper.setSlotParams)
+	 */
 	private creativeId: string | null = null;
-	private ctp = false;
-	private isCtpAudioUpdateEnabled = true;
+	/**
+	 * from currentAd (duplicated in helper.setSlotParams)
+	 */
 	private lineItemId: string | null = null;
-	private slotName: string;
-	private userBlockAutoplay: 1 | 0 | -1 = -1;
+	/**
+	 * whether or on user clicked to see video
+	 * resets to false after "complete" (after actual video completes).
+	 * from player config and ad slot
+	 */
+	private clickedToPlay = false;
+	/**
+	 * flag, changes to false after first of
+	 * ['adRequest', 'adError', 'ready', 'videoStart', 'complete']
+	 */
+	private isCtpAudioUpdateEnabled = true;
+	/**
+	 * feel unnecessary, should be replaced with adSlot from manager
+	 */
+	private readonly slotName: string;
+	/**
+	 * from player (duplicate of helper.updateVideoId)
+	 */
 	private videoId: string | null = null;
 	private playerInstance: PlayerInstance;
 
 	constructor(params: Dictionary = {}) {
 		this.adProduct = params.adProduct || null;
 		this.audio = params.audio || false;
-		this.ctp = params.ctp || false;
+		this.clickedToPlay = params.ctp || false;
 		this.slotName = params.slotName;
-		this.userBlockAutoplay = params.userBlockAutoplay || null;
 		this.videoId = params.videoId || null;
-
-		this.emit('setup');
 	}
 
 	/**
@@ -73,6 +93,8 @@ export class JWPlayerTracker {
 	 */
 	register(player: any): void {
 		this.playerInstance = player;
+		this.clickedToPlay = !this.playerInstance.getConfig().autostart;
+		this.audio = !this.playerInstance.getMute();
 
 		this.updateVideoId();
 
@@ -92,8 +114,6 @@ export class JWPlayerTracker {
 			this.updateCreativeData(currentAd);
 		});
 
-		this.updatePlayerState();
-
 		Object.keys(trackingEventsMap).forEach((playerEvent) => {
 			player.on(playerEvent, (event: any) => {
 				let errorCode;
@@ -104,7 +124,9 @@ export class JWPlayerTracker {
 				) {
 					const slot = slotService.get(this.slotName);
 
-					this.updatePlayerState(slot);
+					this.clickedToPlay = !slot.config.autoplay;
+					this.audio = slot.config.audio;
+					this.isCtpAudioUpdateEnabled = false;
 				}
 
 				if (playerEvent === 'adError') {
@@ -118,7 +140,7 @@ export class JWPlayerTracker {
 				// has not been disabled by calling updatePlayerState with VAST params
 				if (playerEvent === 'complete') {
 					this.isCtpAudioUpdateEnabled = false;
-					this.ctp = false;
+					this.clickedToPlay = false;
 				}
 			});
 		});
@@ -128,6 +150,11 @@ export class JWPlayerTracker {
 		});
 	}
 
+	/**
+	 * used at the beginning
+	 * used in helper.updateVideoId
+	 *   on 'beforePlay'
+	 */
 	updateVideoId(): void {
 		const playlistItem = this.playerInstance.getPlaylist();
 		const playlistIndex = this.playerInstance.getPlaylistIndex();
@@ -137,8 +164,8 @@ export class JWPlayerTracker {
 
 	/**
 	 * Update creative details
+	 * duplicate of helper.setSlotParams
 	 */
-	// TODO: helper.setSlotParams
 	private updateCreativeData(params: CreativeParams = {}): void {
 		this.lineItemId = params.lineItemId;
 		this.creativeId = params.creativeId;
@@ -146,31 +173,9 @@ export class JWPlayerTracker {
 	}
 
 	/**
-	 * Update withCtp and withAudio based on player and slot
-	 */
-	private updatePlayerState(slot?: AdSlot): void {
-		if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
-			this.ctp = !slot.config.autoplay;
-			this.audio = slot.config.audio;
-			this.isCtpAudioUpdateEnabled = false;
-		} else {
-			this.ctp = !this.playerInstance.getConfig().autostart;
-			this.audio = !this.playerInstance.getMute();
-		}
-	}
-
-	/**
 	 * Dispatch single event
 	 */
 	private emit(eventName: string, errorCode = 0): void {
-		this.userBlockAutoplay = -1;
-
-		const featuredVideoAutoplayCookie: string | undefined = Cookies.get('featuredVideoAutoplay');
-
-		if (['0', '1'].indexOf(featuredVideoAutoplayCookie) > -1) {
-			this.userBlockAutoplay = featuredVideoAutoplayCookie === '0' ? 1 : 0;
-		}
-
 		const videoData: VideoData = this.getVideoData(eventName, errorCode);
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
@@ -184,13 +189,27 @@ export class JWPlayerTracker {
 			audio: this.audio ? 1 : 0,
 			content_type: this.contentType,
 			creative_id: this.creativeId,
-			ctp: this.ctp ? 1 : 0,
+			ctp: this.clickedToPlay ? 1 : 0,
 			event_name: eventName,
 			line_item_id: this.lineItemId,
 			player: JWPlayerTracker.PLAYER_NAME,
 			position: this.slotName,
-			user_block_autoplay: this.userBlockAutoplay,
+			user_block_autoplay: this.getUserBlockAutoplay(),
 			video_id: this.videoId || '',
 		};
+	}
+
+	private getUserBlockAutoplay(): 1 | 0 | -1 {
+		const featuredVideoAutoplayCookie = Cookies.get('featuredVideoAutoplay') || '-1';
+
+		switch (featuredVideoAutoplayCookie) {
+			case '1':
+				return 1;
+			case '0':
+				return 0;
+			case '-1':
+			default:
+				return -1;
+		}
 	}
 }
