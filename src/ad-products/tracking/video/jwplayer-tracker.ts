@@ -108,6 +108,10 @@ export class JWPlayerTracker {
 
 		this.emit('init');
 
+		if (player.getConfig().itemReady) {
+			this.emit('late_ready');
+		}
+
 		player.on('videoStart', () => {
 			this.updateCreativeData();
 		});
