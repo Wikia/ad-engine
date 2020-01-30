@@ -68,36 +68,6 @@ export class JWPlayerTracker {
 	}
 
 	/**
-	 * Update withCtp and withAudio based on player and slot
-	 */
-	private updatePlayerState(slot?: AdSlot): void {
-		if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
-			this.ctp = !slot.config.autoplay;
-			this.audio = slot.config.audio;
-			this.isCtpAudioUpdateEnabled = false;
-		} else {
-			this.ctp = !this.playerInstance.getConfig().autostart;
-			this.audio = !this.playerInstance.getMute();
-		}
-	}
-
-	updateVideoId(): void {
-		const playlistItem = this.playerInstance.getPlaylist();
-		const playlistIndex = this.playerInstance.getPlaylistIndex();
-
-		this.videoId = playlistItem[playlistIndex].mediaid;
-	}
-
-	/**
-	 * Update creative details
-	 */
-	private updateCreativeData(params: CreativeParams = {}): void {
-		this.lineItemId = params.lineItemId;
-		this.creativeId = params.creativeId;
-		this.contentType = params.contentType;
-	}
-
-	/**
 	 * Register event listeners on player
 	 * @param {Object} player
 	 */
@@ -158,21 +128,34 @@ export class JWPlayerTracker {
 		});
 	}
 
-	private getVideoData(eventName: string, errorCode: number): VideoData {
-		return {
-			ad_error_code: errorCode,
-			ad_product: this.adProduct,
-			audio: this.audio ? 1 : 0,
-			content_type: this.contentType,
-			creative_id: this.creativeId,
-			ctp: this.ctp ? 1 : 0,
-			event_name: eventName,
-			line_item_id: this.lineItemId,
-			player: JWPlayerTracker.PLAYER_NAME,
-			position: this.slotName,
-			user_block_autoplay: this.userBlockAutoplay,
-			video_id: this.videoId || '',
-		};
+	updateVideoId(): void {
+		const playlistItem = this.playerInstance.getPlaylist();
+		const playlistIndex = this.playerInstance.getPlaylistIndex();
+
+		this.videoId = playlistItem[playlistIndex].mediaid;
+	}
+
+	/**
+	 * Update creative details
+	 */
+	private updateCreativeData(params: CreativeParams = {}): void {
+		this.lineItemId = params.lineItemId;
+		this.creativeId = params.creativeId;
+		this.contentType = params.contentType;
+	}
+
+	/**
+	 * Update withCtp and withAudio based on player and slot
+	 */
+	private updatePlayerState(slot?: AdSlot): void {
+		if (slot && slot.config.autoplay !== undefined && slot.config.audio !== undefined) {
+			this.ctp = !slot.config.autoplay;
+			this.audio = slot.config.audio;
+			this.isCtpAudioUpdateEnabled = false;
+		} else {
+			this.ctp = !this.playerInstance.getConfig().autostart;
+			this.audio = !this.playerInstance.getMute();
+		}
 	}
 
 	/**
@@ -191,5 +174,22 @@ export class JWPlayerTracker {
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
+	}
+
+	private getVideoData(eventName: string, errorCode: number): VideoData {
+		return {
+			ad_error_code: errorCode,
+			ad_product: this.adProduct,
+			audio: this.audio ? 1 : 0,
+			content_type: this.contentType,
+			creative_id: this.creativeId,
+			ctp: this.ctp ? 1 : 0,
+			event_name: eventName,
+			line_item_id: this.lineItemId,
+			player: JWPlayerTracker.PLAYER_NAME,
+			position: this.slotName,
+			user_block_autoplay: this.userBlockAutoplay,
+			video_id: this.videoId || '',
+		};
 	}
 }
