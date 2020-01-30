@@ -138,6 +138,7 @@ export class JWPlayerTracker {
 	/**
 	 * Update creative details
 	 */
+	// TODO: helper.setSlotParams
 	private updateCreativeData(params: CreativeParams = {}): void {
 		this.lineItemId = params.lineItemId;
 		this.creativeId = params.creativeId;

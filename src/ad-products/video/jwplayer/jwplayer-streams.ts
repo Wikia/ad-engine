@@ -6,26 +6,30 @@ import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from './external-
 import { JWPlayerEvent } from './external-types/jwplayer-event';
 import { JWPlayerListItem } from './external-types/jwplayer-list-item';
 
-export interface VideoDepth {
-	depth: number;
-	correlator: number;
+export interface JWPlayerStreams {
+	adRequest$: Observable<JWPlayerStream<'adRequest'> & VastParamsObject>;
+	adError$: Observable<JWPlayerStream<'adError'> & VastParamsObject>;
+	adImpression$: Observable<JWPlayerStream<'adImpression'> & VastParamsObject>;
+	adBlock$: Observable<JWPlayerStream<'adBlock'>>;
+	adsManager$: Observable<JWPlayerStream<'adsManager'>>;
+	beforePlay$: Observable<JWPlayerStream<'beforePlay'> & VideoDepth>;
+	videoMidPoint$: Observable<JWPlayerStream<'videoMidPoint'> & VideoDepth>;
+	beforeComplete$: Observable<JWPlayerStream<'beforeComplete'> & VideoDepth>;
+	complete$: Observable<JWPlayerStream<'complete'>>;
 }
 
-export interface VastParamsEventUnion<TEvent> {
-	event: TEvent;
+export interface JWPlayerStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent> {
+	eventName: string;
+	event: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
+}
+
+interface VastParamsObject {
 	vastParams: VastParams;
 }
 
-export interface JWPlayerStreams {
-	adRequest$: Observable<VastParamsEventUnion<JWPlayerEventParams['adRequest']>>;
-	adError$: Observable<VastParamsEventUnion<JWPlayerEventParams['adError']>>;
-	adImpression$: Observable<VastParamsEventUnion<JWPlayerEventParams['adImpression']>>;
-	adBlock$: Observable<void>;
-	adsManager$: Observable<JWPlayerEventParams['adsManager']>;
-	beforePlay$: Observable<VideoDepth>;
-	videoMidPoint$: Observable<VideoDepth>;
-	beforeComplete$: Observable<VideoDepth>;
-	complete$: Observable<void>;
+export interface VideoDepth {
+	depth: number;
+	correlator: number;
 }
 
 /**
@@ -69,32 +73,37 @@ export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 function createJwpStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>(
 	jwplayer: JWPlayer,
 	event: TEvent,
-): Observable<TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : void> {
+): Observable<JWPlayerStream<TEvent>> {
 	return new Observable((observer) => {
-		jwplayer.on(event as any, (param) => observer.next(param));
+		jwplayer.on(event as any, (param) => observer.next({ eventName: event, event: param }));
 	});
 }
 
-function scanCorrelatorDepth<T>(): RxJsOperator<T, VideoDepth> {
+function scanCorrelatorDepth<T extends object>(): RxJsOperator<T, T & VideoDepth> {
 	return (source: Observable<T>) =>
 		source.pipe(
-			scan(
-				({ correlator, depth }) => ({
+			scan<T & VideoDepth>(
+				({ correlator, depth }, value: T) => ({
+					...value,
 					correlator: Math.round(Math.random() * 10000000000),
 					depth: depth + 1,
 				}),
-				{ correlator: 0, depth: 0 },
+				{ correlator: 0, depth: 0 } as T & VideoDepth,
 			),
 		);
 }
 
 function supplementCorrelatorDepth<T>(
-	beforePlay$: JWPlayerStreams['beforePlay$'],
-): RxJsOperator<T, VideoDepth> {
+	beforePlay$: Observable<VideoDepth>,
+): RxJsOperator<T, T & VideoDepth> {
 	return (source: Observable<T>) =>
 		source.pipe(
 			withLatestFrom(beforePlay$),
-			map(([, payload]) => payload),
+			map(([original, payload]) => ({
+				...original,
+				depth: payload.depth,
+				correlator: payload.correlator,
+			})),
 		);
 }
 
@@ -110,7 +119,7 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 		);
 }
 
-function ensureEventTag<T extends JWPlayerEvent>(
+function ensureEventTag<T extends { event: JWPlayerEvent }>(
 	adRequest$: JWPlayerStreams['adRequest$'],
 ): RxJsOperator<T, T> {
 	const base$ = merge(
@@ -125,13 +134,16 @@ function ensureEventTag<T extends JWPlayerEvent>(
 		);
 }
 
-function supplementVastParams<T extends JWPlayerEvent>(): RxJsOperator<T, VastParamsEventUnion<T>> {
+function supplementVastParams<T extends { event: JWPlayerEvent }>(): RxJsOperator<
+	T,
+	T & VastParamsObject
+> {
 	return (source: Observable<T>) =>
 		source.pipe(
-			map((event) => ({
-				event,
-				vastParams: vastParser.parse(event.tag, {
-					imaAd: event.ima && event.ima.ad,
+			map((value) => ({
+				...value,
+				vastParams: vastParser.parse(value.event.tag, {
+					imaAd: value.event.ima && value.event.ima.ad,
 				}),
 			})),
 		);
