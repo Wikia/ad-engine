@@ -1,4 +1,4 @@
-import { bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
+import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { Communicator, setupPostQuecast } from '@wikia/post-quecast';
@@ -23,7 +23,7 @@ window.RLQ.push(async () => {
 	platformStartup.configure({ isMobile: false });
 
 	// TODO: Move it to platformStartup.run once all platforms use @wikia/post-quecast
-	communicator.dispatch({ type: '[AdEngine] Configured' });
+	communicator.dispatch(adEngineConfigured());
 
 	platformStartup.run();
 });
