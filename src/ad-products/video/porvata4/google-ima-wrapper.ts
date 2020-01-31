@@ -1,5 +1,5 @@
 import { AdSlot, buildVastUrl, context } from '@ad-engine/core';
-import { VideoParams, VideoSettings } from './video-settings';
+import { PorvataSettings } from './porvata-settings';
 
 export class GoogleImaWrapper {
 	static createDisplayContainer(
@@ -34,7 +34,7 @@ export class GoogleImaWrapper {
 		}
 	}
 
-	static createAdsLoader(adDisplayContainer, videoSettings: VideoSettings): google.ima.AdsLoader {
+	static createAdsLoader(adDisplayContainer, videoSettings: PorvataSettings): google.ima.AdsLoader {
 		const adsLoader = new window.google.ima.AdsLoader(adDisplayContainer);
 
 		adsLoader.getSettings().setVpaidMode(videoSettings.getVpaidMode());
@@ -42,25 +42,26 @@ export class GoogleImaWrapper {
 		return adsLoader;
 	}
 
-	static createAdsRequest(videoSettings: VideoSettings): google.ima.AdsRequest {
+	static createAdsRequest(settings: PorvataSettings): google.ima.AdsRequest {
 		const adsRequest = new window.google.ima.AdsRequest();
-		const params: Partial<VideoParams> = videoSettings.getParams();
+		const width = settings.getWidth();
+		const height = settings.getHeight();
 
 		adsRequest.adTagUrl =
-			params.vastUrl ||
-			buildVastUrl(params.width / params.height, params.slotName, {
-				targeting: params.vastTargeting,
+			settings.getVastUrl() ||
+			buildVastUrl(width / height, settings.getSlotName(), {
+				targeting: settings.getVastTargeting(),
 			});
-		adsRequest.linearAdSlotWidth = params.width;
-		adsRequest.linearAdSlotHeight = params.height;
+		adsRequest.linearAdSlotWidth = width;
+		adsRequest.linearAdSlotHeight = height;
 
-		adsRequest.setAdWillAutoPlay(videoSettings.get('autoPlay'));
-		adsRequest.setAdWillPlayMuted(videoSettings.get('autoPlay'));
+		adsRequest.setAdWillAutoPlay(settings.isAutoPlay());
+		adsRequest.setAdWillPlayMuted(settings.isAutoPlay());
 
 		return adsRequest;
 	}
 
-	static getRenderingSettings(videoSettings: VideoSettings): google.ima.AdsRenderingSettings {
+	static getRenderingSettings(): google.ima.AdsRenderingSettings {
 		const adsRenderingSettings = new window.google.ima.AdsRenderingSettings();
 		const maximumRecommendedBitrate = 68000; // 2160p High Frame Rate
 
@@ -68,7 +69,7 @@ export class GoogleImaWrapper {
 			adsRenderingSettings.bitrate = maximumRecommendedBitrate;
 		}
 
-		adsRenderingSettings.loadVideoTimeout = videoSettings.get('loadVideoTimeout') || 15000;
+		adsRenderingSettings.loadVideoTimeout = 15000;
 		adsRenderingSettings.enablePreloading = true;
 		adsRenderingSettings.uiElements = [];
 

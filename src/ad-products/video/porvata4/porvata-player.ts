@@ -1,7 +1,8 @@
-import { AdSlot, Dictionary, utils, vastDebugger } from '@ad-engine/core';
+import { AdSlot, Dictionary, utils } from '@ad-engine/core';
 import { GoogleImaWrapper } from './google-ima-wrapper';
 import { NativeFullscreen } from './native-fullscreen';
-import { VideoSettings } from './video-settings';
+import { PorvataDom } from './porvata-dom';
+import { PorvataSettings } from './porvata-settings';
 
 type VideoEvent = google.ima.AdEvent.Type | google.ima.AdErrorEvent.Type | string;
 type VideoState = 'playing' | 'paused' | 'stopped';
@@ -9,52 +10,45 @@ type VideoState = 'playing' | 'paused' | 'stopped';
 const VIDEO_FULLSCREEN_CLASS_NAME = 'video-player-fullscreen';
 const STOP_SCROLLING_CLASS_NAME = 'stop-scrolling';
 
+export const DEFAULT_VOLUME = 0.75;
+export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
+export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
+
 export class PorvataPlayer {
-	isFloating = false; // TODO REMOVE ME
+	/**
+	 * @deprecated
+	 * It's used in old PorvataListener only
+	 */
+	container: HTMLElement;
+	// TODO: Consider better place for isFloating flag
+	isFloating = false;
 
 	private state: VideoState = null;
 	private adsManager: google.ima.AdsManager = null;
 	private eventListeners: Dictionary<((...args: any[]) => void)[]> = {};
-	private width: number;
-	private height: number;
 	private fullscreenMuteProtect: boolean;
 
+	readonly dom: PorvataDom;
 	readonly nativeFullscreen: NativeFullscreen;
-	readonly defaultVolume = 0.75;
 	readonly destroyCallbacks = new utils.LazyQueue();
-	readonly playerContainer: HTMLElement | null = null;
-	readonly interfaceContainer: HTMLElement | null = null;
-	readonly videoContainer: HTMLElement | null = null;
-	readonly videoElement: HTMLVideoElement | null = null;
 
 	constructor(
-		private adDisplayContainer: google.ima.AdDisplayContainer,
-		private adsLoader: google.ima.AdsLoader,
-		private adsRequest: google.ima.AdsRequest,
-		public videoSettings: VideoSettings,
+		private readonly adDisplayContainer: google.ima.AdDisplayContainer,
+		private readonly adsLoader: google.ima.AdsLoader,
+		private readonly adsRequest: google.ima.AdsRequest,
+		readonly settings: PorvataSettings,
 	) {
-		this.playerContainer = videoSettings.getContainer();
-		this.playerContainer.classList.add('porvata', 'porvata-container');
+		const playerContainer = settings.getPlayerContainer();
 
-		this.videoContainer = this.playerContainer.querySelector('div');
-		this.videoContainer.classList.add('video-player', 'porvata-player', 'hide');
-
-		this.videoElement = this.playerContainer.querySelector('video');
-		this.videoElement.classList.add('porvata-video');
-
-		this.interfaceContainer = document.createElement('div');
-		this.interfaceContainer.classList.add('porvata-interface', 'hide');
-		this.playerContainer.appendChild(this.interfaceContainer);
+		this.dom = new PorvataDom(playerContainer);
+		this.container = playerContainer;
+		this.nativeFullscreen = new NativeFullscreen(playerContainer);
 
 		this.registerStateListeners();
 
-		if (this.videoSettings.isAutoPlay()) {
+		if (this.settings.isAutoPlay()) {
 			this.setAutoPlay(true);
 		}
-
-		this.nativeFullscreen = new NativeFullscreen(this.videoContainer);
-		this.width = this.videoSettings.get('width');
-		this.height = this.videoSettings.get('height');
 
 		this.destroyCallbacks.onItemFlush((callback: () => void) => callback());
 
@@ -65,10 +59,10 @@ export class PorvataPlayer {
 
 	private registerStateListeners(): void {
 		this.addEventListener(window.google.ima.AdEvent.Type.LOADED, (event: google.ima.AdEvent) =>
-			this.setVastAttributes(AdSlot.STATUS_SUCCESS, event.getAd()),
+			this.setAdStatus(AdSlot.STATUS_SUCCESS, event.getAd()),
 		);
 		this.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
-			this.setVastAttributes(AdSlot.STATUS_ERROR),
+			this.setAdStatus(AdSlot.STATUS_ERROR),
 		);
 
 		this.addEventListener('resume', () => this.setState('playing'));
@@ -77,8 +71,16 @@ export class PorvataPlayer {
 		this.addEventListener('wikiaAdStop', () => this.setState('stopped'));
 		this.addEventListener('allAdsCompleted', () => this.setState('stopped'));
 
-		this.addEventListener('adCanPlay', () => this.interfaceContainer.classList.remove('hide'));
-		this.addEventListener('wikiaAdCompleted', () => this.interfaceContainer.classList.add('hide'));
+		this.addEventListener('adCanPlay', () =>
+			this.dom.getInterfaceContainer().classList.remove('hide'),
+		);
+		this.addEventListener('wikiaAdCompleted', () =>
+			this.dom.getInterfaceContainer().classList.add('hide'),
+		);
+	}
+
+	getAdsManager(): google.ima.AdsManager | null {
+		return this.adsManager;
 	}
 
 	setAdsManager(adsManager: google.ima.AdsManager): void {
@@ -113,21 +115,13 @@ export class PorvataPlayer {
 		}
 	}
 
-	setVastAttributes(status: string, currentAd?: google.ima.Ad): void {
-		const attributes = vastDebugger.getVastAttributes(this.adsRequest.adTagUrl, status, currentAd);
-
-		Object.keys(attributes).forEach((key) =>
-			this.videoContainer.setAttribute(key, attributes[key]),
-		);
+	setAutoPlay(value: boolean): void {
+		this.dom.setAutoPlayOnVideoElement(value);
+		this.settings.setAutoPlay(value);
 	}
 
-	setAutoPlay(value: boolean): void {
-		if (this.videoElement) {
-			this.videoElement.autoplay = value;
-			this.videoElement.muted = value;
-		}
-
-		this.videoSettings.setAutoPlay(value);
+	setAdStatus(status: string, currentAd?: google.ima.Ad) {
+		this.dom.setVastAttributes(this.adsRequest.adTagUrl, status, currentAd);
 	}
 
 	requestAds(): void {
@@ -136,30 +130,28 @@ export class PorvataPlayer {
 
 	play(width?: number, height?: number): void {
 		if (width !== undefined && height !== undefined) {
-			this.width = width;
-			this.height = height;
+			this.settings.setHeight(height);
+			this.settings.setWidth(width);
 		}
-		if (!this.width || !this.height || this.isFullscreen()) {
-			this.width = this.playerContainer.offsetWidth;
-			this.height = this.playerContainer.offsetHeight;
+		if (!this.settings.getWidth() || !this.settings.getHeight() || this.isFullscreen()) {
+			this.settings.setHeight(this.dom.getPlayerContainer().offsetHeight);
+			this.settings.setWidth(this.dom.getPlayerContainer().offsetWidth);
 		}
 
 		this.dispatchEvent('wikiaAdPlayTriggered');
 
-		setTimeout(() => this.pause(), 5000);
-
 		// https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdDisplayContainer.initialize
 		this.adDisplayContainer.initialize();
 		this.adsManager.init(
-			Math.round(this.width),
-			Math.round(this.height),
+			Math.round(this.settings.getWidth()),
+			Math.round(this.settings.getHeight()),
 			window.google.ima.ViewMode.NORMAL,
 		);
 		this.adsManager.start();
 	}
 
 	reload(): void {
-		const adsRequest = GoogleImaWrapper.createAdsRequest(this.videoSettings);
+		const adsRequest = GoogleImaWrapper.createAdsRequest(this.settings);
 
 		this.adsManager.destroy();
 		this.adsLoader.contentComplete();
@@ -171,14 +163,18 @@ export class PorvataPlayer {
 
 		if (!!this.adsManager) {
 			if (isFinite(width) && isFinite(height)) {
-				this.width = width;
-				this.height = height;
+				this.settings.setHeight(height);
+				this.settings.setWidth(width);
 			}
 
 			if (this.isFullscreen()) {
-				this.adsManager.resize(window.innerWidth, window.innerHeight, viewMode.FULLSCREEN);
+				this.adsManager.resize(window.screen.width, window.screen.height, viewMode.FULLSCREEN);
 			} else {
-				this.adsManager.resize(Math.round(this.width), Math.round(this.height), viewMode.NORMAL);
+				this.adsManager.resize(
+					Math.round(this.settings.getWidth()),
+					Math.round(this.settings.getHeight()),
+					viewMode.NORMAL,
+				);
 			}
 		}
 	}
@@ -241,26 +237,19 @@ export class PorvataPlayer {
 	}
 
 	unmute(): void {
-		this.setVolume(this.defaultVolume);
+		this.setVolume(DEFAULT_VOLUME);
 
-		if (this.videoSettings.isAutoPlay() && this.videoSettings.get('restartOnUnmute')) {
+		if (this.settings.isAutoPlay() && this.settings.shouldRestartOnMute()) {
 			this.rewind();
 		}
 	}
 
 	setVolume(volume: number): void {
-		this.updateVideoElementAudioProperties(volume);
+		this.dom.setAudioOnVideoElement(volume);
 		this.adsManager.setVolume(volume);
 
 		// This is hack for Safari, because it can't dispatch original IMA event (volumeChange)
 		this.dispatchEvent('wikiaVolumeChange');
-	}
-
-	private updateVideoElementAudioProperties(volume: number): void {
-		if (this.videoElement) {
-			this.videoElement.muted = volume === 0;
-			this.videoElement.volume = volume;
-		}
 	}
 
 	toggleFullscreen(): void {
@@ -275,10 +264,10 @@ export class PorvataPlayer {
 
 	private onFullscreenChange(): void {
 		if (this.isFullscreen()) {
-			this.videoContainer.classList.add(VIDEO_FULLSCREEN_CLASS_NAME);
+			this.dom.getPlayerContainer().classList.add(VIDEO_FULLSCREEN_CLASS_NAME);
 			document.documentElement.classList.add(STOP_SCROLLING_CLASS_NAME);
 		} else {
-			this.videoContainer.classList.remove(VIDEO_FULLSCREEN_CLASS_NAME);
+			this.dom.getPlayerContainer().classList.remove(VIDEO_FULLSCREEN_CLASS_NAME);
 			document.documentElement.classList.remove(STOP_SCROLLING_CLASS_NAME);
 
 			if (this.fullscreenMuteProtect) {

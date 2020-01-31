@@ -1,5 +1,6 @@
 import { context, slotService, utils } from '@ad-engine/core';
-import { VideoSettings } from '../../video-settings';
+import { PorvataPlayer } from '../../porvata-player';
+import { PorvataSettings } from '../../porvata-settings';
 import { PorvataPlugin } from '../porvata-plugin';
 
 const scriptUrl = '//static.adsafeprotected.com/vans-adapter-google-ima.js';
@@ -21,7 +22,7 @@ interface IasConfig {
 class IasVideoTracker implements PorvataPlugin {
 	private scriptPromise: Promise<Event>;
 
-	isEnabled(videoSettings: VideoSettings) {
+	isEnabled(videoSettings: PorvataSettings) {
 		return videoSettings.isIasTrackingEnabled();
 	}
 
@@ -38,10 +39,10 @@ class IasVideoTracker implements PorvataPlugin {
 		return this.scriptPromise;
 	}
 
-	init(adsManager: google.ima.AdsManager, videoSettings: VideoSettings): Promise<void> {
+	init(player: PorvataPlayer, settings: PorvataSettings): Promise<void> {
 		return this.load().then(() => {
 			const config: IasConfig = context.get('options.video.iasTracking.config');
-			const slotName = videoSettings.get('slotName');
+			const slotName = settings.getSlotName();
 			const { src, pos, loc } = slotService.get(slotName).getTargeting();
 
 			config.custom = src;
@@ -52,8 +53,8 @@ class IasVideoTracker implements PorvataPlugin {
 
 			window.googleImaVansAdapter.init(
 				window.google,
-				adsManager,
-				videoSettings.getContainer(),
+				player.getAdsManager(),
+				player.dom.getVideoContainer(),
 				config,
 			);
 		});

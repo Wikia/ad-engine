@@ -1,7 +1,8 @@
-import { VideoSettings } from '../video-settings';
+import { PorvataPlayer } from '../porvata-player';
+import { PorvataSettings } from '../porvata-settings';
 
 export interface PorvataPlugin {
-	isEnabled(videoSettings: VideoSettings): boolean;
+	isEnabled(videoSettings: PorvataSettings): boolean;
 	/**
 	 * load method is executed before "ADS_MANAGER_LOADED" IMA event,
 	 * and only if method isEnabled returns true
@@ -11,5 +12,5 @@ export interface PorvataPlugin {
 	 * init method is executed after "ADS_MANAGER_LOADED" IMA event,
 	 * once player has set adsManager property
 	 */
-	init(adsManager: google.ima.AdsManager, videoSettings: VideoSettings): Promise<void>;
+	init(player: PorvataPlayer, videoSettings: PorvataSettings): Promise<void>;
 }

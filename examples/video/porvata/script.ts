@@ -62,10 +62,9 @@ scrollListener.init();
 Porvata.inject(params).then((player) => {
 	(window as any).porvataPlayer = player;
 
-	const videoContainer = document.querySelector('.video-player');
-	const porvataInterface = container.querySelector('.porvata-interface');
-
-	porvataInterface.innerHTML = document.getElementById('controls-template').innerHTML;
+	player.dom.getInterfaceContainer().innerHTML = document.getElementById(
+		'controls-template',
+	).innerHTML;
 
 	const playerCloseButton = document.getElementById('player-close');
 	const playerFullscreenButton = document.getElementById('player-fullscreen');
@@ -74,8 +73,8 @@ Porvata.inject(params).then((player) => {
 	const playerUnmuteButton = document.getElementById('player-unmute');
 
 	player.addEventListener('loaded', () => {
-		videoContainer.classList.remove('hide');
-		if (player.videoSettings.get('autoPlay')) {
+		player.dom.getVideoContainer().classList.remove('hide');
+		if (player.settings.isAutoPlay()) {
 			playerMuteButton.classList.add('hide');
 			playerUnmuteButton.classList.remove('hide');
 		} else {
@@ -84,11 +83,12 @@ Porvata.inject(params).then((player) => {
 		}
 	});
 	player.addEventListener('wikiaAdCompleted', () => {
-		videoContainer.classList.add('hide');
+		player.dom.getVideoContainer().classList.add('hide');
 		player.reload();
 	});
+
 	container.addEventListener('click', () => {
-		if (videoContainer.classList.contains('hide')) {
+		if (player.dom.getVideoContainer().classList.contains('hide')) {
 			player.play();
 		}
 	});

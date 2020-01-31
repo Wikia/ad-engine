@@ -28,7 +28,7 @@ $vpaid-z-index: 10;
 
 		.video-overlay {
 			@include absolute-fill();
-			height: 100%;
+			height: calc(100% - 24px);
 			top: 24px;
 		}
 

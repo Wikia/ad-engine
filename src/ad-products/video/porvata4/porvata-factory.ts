@@ -4,7 +4,7 @@ import { iasVideoTracker } from './plugins/ias/ias-video-tracker';
 import { moatVideoTracker } from './plugins/moat/moat-video-tracker';
 import { PorvataPlugin } from './plugins/porvata-plugin';
 import { PorvataPlayer } from './porvata-player';
-import { VideoSettings } from './video-settings';
+import { PorvataSettings } from './porvata-settings';
 
 function createVideoElement(): HTMLVideoElement {
 	const videoElement: HTMLVideoElement = document.createElement('video');
@@ -14,14 +14,14 @@ function createVideoElement(): HTMLVideoElement {
 	return videoElement;
 }
 
-function setSlotProperties(slot: AdSlot, videoSettings: VideoSettings): void {
+function setSlotProperties(slot: AdSlot, videoSettings: PorvataSettings): void {
 	slot.setConfigProperty('autoplay', videoSettings.isAutoPlay());
 	slot.setConfigProperty('audio', !videoSettings.isAutoPlay());
 	slot.setConfigProperty('targeting.autoplay', videoSettings.isAutoPlay() ? 'yes' : 'no');
 	slot.setConfigProperty('targeting.audio', !videoSettings.isAutoPlay() ? 'yes' : 'no');
 }
 
-function getPlugins(settings: VideoSettings): PorvataPlugin[] {
+function getPlugins(settings: PorvataSettings): PorvataPlugin[] {
 	const imaPlugins: PorvataPlugin[] = [iasVideoTracker, moatVideoTracker];
 
 	return imaPlugins.filter((plugin) => plugin.isEnabled(settings));
@@ -30,28 +30,28 @@ function getPlugins(settings: VideoSettings): PorvataPlugin[] {
 export class PorvataFactory {
 	private static loadSdkPromise: Promise<void>;
 
-	static async create(videoSettings: VideoSettings): Promise<PorvataPlayer> {
-		videoSettings.getContainer().style.opacity = '0';
+	static async create(settings: PorvataSettings): Promise<PorvataPlayer> {
+		settings.getPlayerContainer().style.opacity = '0';
 
 		await PorvataFactory.load();
 
-		const slotName = videoSettings.get('slotName');
+		const slotName = settings.getSlotName();
 		const slot = slotService.get(slotName);
-		setSlotProperties(slot, videoSettings);
+		setSlotProperties(slot, settings);
 
 		const adDisplayContainer = GoogleImaWrapper.createDisplayContainer(
-			videoSettings.getContainer(),
+			settings.getPlayerContainer(),
 			slot,
 		);
-		const adsLoader = GoogleImaWrapper.createAdsLoader(adDisplayContainer, videoSettings);
-		const adsRequest = GoogleImaWrapper.createAdsRequest(videoSettings);
+		const adsLoader = GoogleImaWrapper.createAdsLoader(adDisplayContainer, settings);
+		const adsRequest = GoogleImaWrapper.createAdsRequest(settings);
+		const plugins = getPlugins(settings);
 
-		const player = new PorvataPlayer(adDisplayContainer, adsLoader, adsRequest, videoSettings);
-		const plugins = getPlugins(videoSettings);
+		const player = new PorvataPlayer(adDisplayContainer, adsLoader, adsRequest, settings);
 
 		plugins.forEach((plugin) => plugin.load());
 
-		this.registerAdsLoaderListeners(adsLoader, player, videoSettings, plugins);
+		this.registerAdsLoaderListeners(adsLoader, player, settings, plugins);
 
 		await player.requestAds();
 
@@ -75,23 +75,22 @@ export class PorvataFactory {
 	private static registerAdsLoaderListeners(
 		adsLoader: google.ima.AdsLoader,
 		player: PorvataPlayer,
-		videoSettings: VideoSettings,
+		settings: PorvataSettings,
 		plugins: PorvataPlugin[],
 	): void {
 		adsLoader.addEventListener(
 			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
 			(adsManagerLoadedEvent: google.ima.AdsManagerLoadedEvent) => {
-				const renderingSettings = GoogleImaWrapper.getRenderingSettings(videoSettings);
+				const renderingSettings = GoogleImaWrapper.getRenderingSettings();
 				const adsManager: google.ima.AdsManager = adsManagerLoadedEvent.getAdsManager(
 					createVideoElement(),
 					renderingSettings,
 				);
 
 				player.setAdsManager(adsManager);
-
-				Promise.all(plugins.map((plugin) => plugin.init(adsManager, videoSettings))).then(() => {
+				Promise.all(plugins.map((plugin) => plugin.init(player, settings))).then(() => {
 					player.dispatchEvent('wikiaAdsManagerLoaded');
-					videoSettings.getContainer().style.opacity = '1';
+					settings.getPlayerContainer().style.opacity = '1';
 				});
 			},
 			false,
@@ -109,7 +108,7 @@ export class PorvataFactory {
 					player.dispatchEvent('wikiaEmptyAd');
 				}
 
-				player.setVastAttributes('error');
+				player.setAdStatus(AdSlot.STATUS_ERROR);
 			},
 		);
 	}

@@ -9,10 +9,10 @@ import {
 	templateService,
 	utils,
 } from '@ad-engine/core';
+import { PorvataListener } from '../player/porvata/porvata-listener';
 import { PorvataFactory } from './porvata-factory';
-import { PorvataListener } from './porvata-listener';
 import { PorvataPlayer } from './porvata-player';
-import { VideoSettings } from './video-settings';
+import { PorvataSettings } from './porvata-settings';
 
 export interface PorvataTemplateParams {
 	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
@@ -157,7 +157,7 @@ export class Porvata {
 			passback: 'porvata',
 		};
 
-		const videoSettings = new VideoSettings(params);
+		const videoSettings = new PorvataSettings(params);
 
 		porvataListener.init();
 

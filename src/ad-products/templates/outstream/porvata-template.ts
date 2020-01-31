@@ -1,8 +1,13 @@
 import { AdSlot, context, events, eventService, slotTweaker } from '@ad-engine/core';
+import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
 import { getTranslation } from '../../common/i18n';
-import { Porvata, PorvataTemplateParams, VpaidMode } from '../../video/porvata/porvata';
-import { PorvataPlayer } from '../../video/porvata/porvata-player';
+import { PorvataPlayer } from '../../video/porvata4/porvata-player';
 import * as videoUserInterface from '../interface/video';
+
+import DynamicReveal from '../interface/video/dynamic-reveal';
+import Floating from '../interface/video/floating';
+import ProgressBar from '../interface/video/progress-bar';
+import VolumeControl from '../interface/video/volume-control';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
@@ -36,8 +41,6 @@ export class PorvataTemplate {
 	}
 
 	init(params: PorvataTemplateParams): Promise<PorvataPlayer> | void {
-		this.adSlot.config.disableExpandAnimation = true;
-
 		if (!this.adSlot.getElement().classList.contains('ad-slot')) {
 			this.adSlot.getElement().classList.add('ad-slot');
 		}
@@ -64,7 +67,6 @@ export class PorvataTemplate {
 		this.config.onInit(this.adSlot, params, this.config);
 
 		context.set('options.video.porvataLoaded', true);
-		console.warn(params);
 
 		return slotTweaker
 			.makeResponsive(this.adSlot, DEFAULT_VIDEO_ASPECT_RATIO)
@@ -73,44 +75,43 @@ export class PorvataTemplate {
 			);
 	}
 
-	onReady(video: PorvataPlayer, params: PorvataTemplateParams): PorvataPlayer {
+	onReady(player: PorvataPlayer, params: PorvataTemplateParams): PorvataPlayer {
 		const slotElement: HTMLElement = this.adSlot.getElement();
-		const template: string = videoUserInterface.selectTemplate(video.videoSettings);
-		const videoContainer: HTMLElement = params.container;
+		const template = [DynamicReveal, Floating, ProgressBar, VolumeControl];
 
 		if (this.isInsecureMode) {
-			this.adjustVpaidPlayer(video, videoContainer);
+			this.adjustVpaidPlayer(player, player.dom.getVideoContainer());
 		}
 
 		slotElement.classList.add('porvata-outstream');
 
-		video.addEventListener('loaded', () => {
-			video.videoContainer.classList.remove('hide');
+		player.addEventListener('loaded', () => {
+			player.dom.getVideoContainer().classList.remove('hide');
 		});
 
 		window.addEventListener('resize', () => {
-			if (!video.isFloating) {
+			if (!player.isFloating) {
 				const slotWidth = slotElement.clientWidth;
 
-				video.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
+				player.resize(slotWidth, slotWidth / DEFAULT_VIDEO_ASPECT_RATIO);
 			}
 		});
 
-		this.handleSlotStatus(video);
+		this.handleSlotStatus(player);
 
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
-			video.destroy();
+			player.destroy();
 		});
 
-		videoUserInterface.setup(video, template, {
-			container: videoContainer,
+		videoUserInterface.setup(player, player.dom.getInterfaceContainer(), template, {
+			container: player.dom.getInterfaceContainer(),
 			inViewportOffsetTop: this.config.inViewportOffsetTop,
 			inViewportOffsetBottom: this.config.inViewportOffsetBottom,
 			isFloatingEnabled: this.config.isFloatingEnabled && params.enableInContentFloating,
-			slotName: params.slotName,
+			slotName: this.adSlot.getSlotName(),
 		});
 
-		return video;
+		return player;
 	}
 
 	handleSlotStatus(video: PorvataPlayer): void {

@@ -1,5 +1,6 @@
 import { context, utils } from '@ad-engine/core';
-import { VideoSettings } from '../../video-settings';
+import { PorvataPlayer } from '../../porvata-player';
+import { PorvataSettings } from '../../porvata-settings';
 import { PorvataPlugin } from '../porvata-plugin';
 import { initMoatTracking } from './moat-video-tracker-script';
 
@@ -13,7 +14,7 @@ interface MoatConfig {
 }
 
 class MoatVideoTracker implements PorvataPlugin {
-	isEnabled(videoSettings: VideoSettings): boolean {
+	isEnabled(videoSettings: PorvataSettings): boolean {
 		return videoSettings.isMoatTrackingEnabled();
 	}
 
@@ -21,9 +22,13 @@ class MoatVideoTracker implements PorvataPlugin {
 		return Promise.resolve();
 	}
 
-	init(adsManager: google.ima.AdsManager, videoSettings: VideoSettings): Promise<void> {
+	init(player: PorvataPlayer, settings: PorvataSettings): Promise<void> {
 		try {
-			initMoatTracking(adsManager, this.getConfig(videoSettings), videoSettings.getContainer());
+			initMoatTracking(
+				player.getAdsManager(),
+				this.getConfig(settings),
+				player.dom.getVideoContainer(),
+			);
 			utils.logger(logGroup, 'MOAT video tracking initialized');
 		} catch (error) {
 			utils.logger(logGroup, 'MOAT video tracking initalization error', error);
@@ -32,11 +37,11 @@ class MoatVideoTracker implements PorvataPlugin {
 		return Promise.resolve();
 	}
 
-	private getConfig(videoSettings: VideoSettings): MoatConfig {
+	private getConfig(settings: PorvataSettings): MoatConfig {
 		return {
 			partnerCode: context.get('options.video.moatTracking.partnerCode'),
-			slicer1: videoSettings.get('src'),
-			slicer2: `${videoSettings.get('adProduct')}/${videoSettings.get('slotName')}`,
+			slicer1: settings.getSrc(),
+			slicer2: `${settings.getAdProduct()}/${settings.getSlotName()}`,
 			viewMode: window.google.ima.ViewMode.NORMAL,
 		};
 	}
