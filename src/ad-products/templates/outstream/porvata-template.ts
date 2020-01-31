@@ -19,6 +19,9 @@ export interface PorvataTemplateConfig {
 	onInit: (adSlot: AdSlot, params: PorvataTemplateParams, config: PorvataTemplateConfig) => void;
 }
 
+/**
+ * TODO: Revisit responsibilities of this template. Shouldn't we move some parts to Porvata logic?
+ */
 export class PorvataTemplate {
 	static getName(): string {
 		return 'porvata3';
@@ -80,7 +83,7 @@ export class PorvataTemplate {
 		const template = [DynamicReveal, Floating, ProgressBar, VolumeControl];
 
 		if (this.isInsecureMode) {
-			this.adjustVpaidPlayer(player, player.dom.getVideoContainer());
+			this.adjustVpaidPlayer(player);
 		}
 
 		slotElement.classList.add('porvata-outstream');
@@ -140,23 +143,27 @@ export class PorvataTemplate {
 		});
 	}
 
-	adjustVpaidPlayer(video: PorvataPlayer, container: HTMLElement): void {
-		const videoPlayer = container.querySelector<HTMLVideoElement>('.video-player');
-
+	/**
+	 * TODO: Shouldn't we move this logic to Porvata code?
+	 */
+	adjustVpaidPlayer(video: PorvataPlayer): void {
 		video.addEventListener('loaded', (event: google.ima.AdEvent) => {
 			const ad: google.ima.Ad = event.getAd();
 
 			if (ad && Porvata.isVpaid(ad.getContentType() || '')) {
-				container.classList.add('vpaid-enabled');
-				videoPlayer.classList.remove('hide');
+				video.dom.getPlayerContainer().classList.add('vpaid-enabled');
+				video.dom.getPlayerContainer().classList.remove('hide');
 			}
 		});
 
 		video.addEventListener('allAdsCompleted', () => {
-			container.classList.add('hide');
+			video.dom.getPlayerContainer().classList.add('hide');
 		});
 	}
 
+	/**
+	 * TODO: Shouldn't we move this logic to Porvata code?
+	 */
 	createVideoContainer(): HTMLElement {
 		const container: HTMLElement = document.createElement('div');
 		const displayWrapper: HTMLElement = document.createElement('div');

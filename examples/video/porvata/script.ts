@@ -34,10 +34,6 @@ context.set(
 	utils.queryString.get('enable_IAS_tracking') === '1',
 );
 context.set('targeting.artid', 292);
-// context.set('targeting.artid', '517');
-// context.set('targeting.cid', 'overriding_vpaid');
-// context.set('targeting.cid', '5271726473');
-// context.set('src', 'gpt');
 context.set('targeting.vertical', 'games');
 context.set('targeting.wpage', '100% Orange Juice');
 context.set('custom.device', utils.client.getDeviceType());
@@ -48,15 +44,15 @@ slotService.add(new AdSlot({ id: 'outstream' }));
 
 porvataTracker.register();
 
-// eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
-// 	const request = new window.XMLHttpRequest();
-// 	const queryUrl = Object.keys(eventInfo)
-// 		.map((key) => `${key}=${eventInfo[key]}`)
-// 		.join('&');
-//
-// 	request.open('GET', `http://example.com?${queryUrl}`);
-// 	request.send();
-// });
+eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
+	const request = new window.XMLHttpRequest();
+	const queryUrl = Object.keys(eventInfo)
+		.map((key) => `${key}=${eventInfo[key]}`)
+		.join('&');
+
+	request.open('GET', `http://example.com?${queryUrl}`);
+	request.send();
+});
 
 scrollListener.init();
 Porvata.inject(params).then((player) => {

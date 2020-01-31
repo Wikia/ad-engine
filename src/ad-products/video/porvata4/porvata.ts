@@ -59,6 +59,16 @@ export const VpaidMode = {
 	INSECURE: 2,
 };
 
+/**
+ * TODO:
+ * 		@Szymon: Consider reimplementation of this idea. Currently we have two approaches of filling in
+ * 		slots, they are: "provider" and "filler". In my opinion they are doing slightly the same thing.
+ * 		It looks like another ad provider which could live along with gpt-provider and prebidium-provider.
+ * 		But then we would need to change the way AdEngine handles providers and revisit how btfBlocker works.
+ * 		Also, I believe it can be more general idea. We don't need to create 'porvata-provider' but some kind of
+ * 		'template-provider', because the responsibility of this code should be loading configured (in context)
+ * 		ad-product template (with certain set of parameters) directly instead of calling GPT.
+ */
 export class PorvataFiller implements SlotFiller {
 	private containerId = 'playerContainer';
 	private porvataParams: PorvataGamParams = {
@@ -116,6 +126,12 @@ export class PorvataFiller implements SlotFiller {
 	}
 }
 
+/**
+ * TODO:
+ * 		@Szymon: Consider reimplementation of this class/logic. In my opinion it conflicts with PorvataFactory.
+ * 		It does the same thing -- creates Porvata instance, but adds some additional logic which, I believe, could
+ * 		be moved to the factory or split into some UI elements/Porvata plugins.
+ */
 export class Porvata {
 	private static addOnViewportChangeListener(
 		params: PorvataTemplateParams,
@@ -162,9 +178,6 @@ export class Porvata {
 		porvataListener.init();
 
 		return PorvataFactory.create(videoSettings).then((player: PorvataPlayer) => {
-			// setTimeout(() => player.pause(), 5000);
-			// (window as any).video = player;
-
 			function inViewportCallback(isVisible: boolean): void {
 				// Play video automatically only for the first time
 				if (isVisible && !autoPlayed && params.autoPlay) {

@@ -23,9 +23,6 @@ const sendAllBidsEnabled = utils.queryString.get('send_all_bids') === '1';
 context.extend(customContext);
 
 context.set('targeting.artid', '503');
-// context.set('targeting.cid', 'overriding_vpaid');
-// context.set('targeting.cid', '5271726473');
-// context.set('src', 'gpt');
 context.set('slots.incontent_boxad.disabled', false);
 context.set('options.tracking.kikimora.player', true);
 context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
