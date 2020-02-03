@@ -13,7 +13,6 @@ export interface TrackingParams {
 	label?: string;
 	lc?: string;
 	line_item_id?: number;
-	n?: number;
 	prop_name?: string;
 	prop_value?: string;
 	pv_number?: number;
@@ -29,5 +28,4 @@ export interface TrackingParams {
 	u?: number;
 	ua?: string;
 	value?: any;
-	x?: string;
 }

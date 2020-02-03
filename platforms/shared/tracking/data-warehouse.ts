@@ -127,8 +127,6 @@ export class DataWarehouseTracker {
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
 			a: context.get('targeting.artid') || -1,
-			x: context.get('targeting.DBName') || 'unknown',
-			n: context.get('targeting.namespaceNumber') || -1,
 		};
 	}
 }
