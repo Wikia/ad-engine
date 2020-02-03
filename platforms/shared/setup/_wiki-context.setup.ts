@@ -1,9 +1,12 @@
-import { iocDefaultWarning } from '../utils/ioc-default-warning';
+import { context } from '@wikia/ad-engine';
 
 export class WikiContextSetup {
-	constructor() {
-		iocDefaultWarning('WikiContextSetup');
-	}
+	configureWikiContext(): void {
+		const wikiContext = {
+			...(window.mw ? window.mw.config.values : {}),
+			...(window.ads ? window.ads.context : {}),
+		};
 
-	configureWikiContext(): void {}
+		context.set('wiki', wikiContext);
+	}
 }

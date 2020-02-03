@@ -34,8 +34,8 @@ export class UcpTargetingSetup implements TargetingSetup {
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
 		};
 
-		if (window.pvNumber) {
-			targeting.pv = window.pvNumber.toString();
+		if (context.get('wiki.pvNumber')) {
+			targeting.pv = context.get('wiki.pvNumber').toString();
 		}
 
 		if (cid !== undefined) {

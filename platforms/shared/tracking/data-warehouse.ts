@@ -36,17 +36,19 @@ export class DataWarehouseTracker {
 	 */
 	private getDataWarehouseParams(): TrackingParams {
 		return {
-			session_id: window.sessionId || 'unknown',
-			pv_number: window.pvNumber,
-			pv_number_global: window.pvNumberGlobal,
-			pv_unique_id: window.pvUID,
-			beacon: window.beacon_id || 'unknown',
+			session_id: context.get('wiki.sessionId') || 'unknown',
+			pv_number: context.get('wiki.pvNumber'),
+			pv_number_global: context.get('wiki.pvNumberGlobal'),
+			pv_unique_id: context.get('wiki.pvUID'),
+			beacon: context.get('wiki.beaconId') || 'unknown',
 			ck: context.get('wiki.dsSiteKey') || 'unknown',
 			lc: context.get('wiki.wgUserLanguage') || 'unknown',
 			s: context.get('targeting.skin') || 'unknown',
 			ua: window.navigator.userAgent,
 			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
 			a: context.get('targeting.artid') || -1,
+			x: context.get('wiki.wgDBname') || 'unknown',
+			n: context.get('wiki.wgNamespaceNumber') || -1,
 		};
 	}
 
