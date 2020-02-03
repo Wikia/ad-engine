@@ -12,30 +12,6 @@ export interface TimeBasedParams {
 }
 
 export class DataWarehouseTracker {
-	/**
-	 * Get additional params only for datawarehouse trackingParams
-	 *
-	 * @see https://wikia-inc.atlassian.net/wiki/display/FT/Analytics+Data+Model
-	 * @see https://docs.google.com/spreadsheets/d/1_C--1KGTuj3cs1un4UM_UnCWUBLhhGkGZKbabNwPWFU/edit#gid=932083905
-	 */
-	private static getDatawarehouseParams(): TrackingParams {
-		return {
-			session_id: window.session_id || 'unknown',
-			pv_number: window.pvNumber,
-			pv_number_global: window.pvNumberGlobal,
-			pv_unique_id: window.pvUID,
-			beacon: window.beacon_id || 'unknown',
-			ck: context.get('wiki.dsSiteKey') || 'unknown',
-			lc: context.get('wiki.wgUserLanguage') || 'unknown',
-			s: context.get('targeting.skin') || 'unknown',
-			ua: window.navigator.userAgent,
-			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
-			a: context.get('targeting.artid') || -1,
-			x: context.get('targeting.DBName') || 'unknown',
-			n: context.get('targeting.namespaceNumber') || -1,
-		};
-	}
-
 	private static getTimeBasedParams(): TimeBasedParams {
 		return {
 			cb: Math.floor(Math.random() * 99999),
@@ -121,7 +97,7 @@ export class DataWarehouseTracker {
 	 */
 	track(options: TrackingParams, trackingURL?: string): void {
 		const params: TrackingParams = {
-			...DataWarehouseTracker.getDatawarehouseParams(),
+			...this.getDataWarehouseParams(),
 			...options,
 		};
 
@@ -130,5 +106,29 @@ export class DataWarehouseTracker {
 		} else {
 			this.sendTrackEvent(params);
 		}
+	}
+
+	/**
+	 * Get additional params only for datawarehouse trackingParams
+	 *
+	 * @see https://wikia-inc.atlassian.net/wiki/display/FT/Analytics+Data+Model
+	 * @see https://docs.google.com/spreadsheets/d/1_C--1KGTuj3cs1un4UM_UnCWUBLhhGkGZKbabNwPWFU/edit#gid=932083905
+	 */
+	private getDataWarehouseParams(): TrackingParams {
+		return {
+			session_id: window.sessionId || 'unknown',
+			pv_number: window.pvNumber,
+			pv_number_global: window.pvNumberGlobal,
+			pv_unique_id: window.pvUID,
+			beacon: window.beacon_id || 'unknown',
+			ck: context.get('wiki.dsSiteKey') || 'unknown',
+			lc: context.get('wiki.wgUserLanguage') || 'unknown',
+			s: context.get('targeting.skin') || 'unknown',
+			ua: window.navigator.userAgent,
+			u: trackingOptIn.isOptedIn() ? context.get('userId') || 0 : -1,
+			a: context.get('targeting.artid') || -1,
+			x: context.get('targeting.DBName') || 'unknown',
+			n: context.get('targeting.namespaceNumber') || -1,
+		};
 	}
 }
