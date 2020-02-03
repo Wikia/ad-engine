@@ -168,7 +168,7 @@ export class PorvataPlayer {
 			}
 
 			if (this.isFullscreen()) {
-				this.adsManager.resize(window.screen.width, window.screen.height, viewMode.FULLSCREEN);
+				this.adsManager.resize(window.innerWidth, window.innerHeight, viewMode.FULLSCREEN);
 			} else {
 				this.adsManager.resize(
 					Math.round(this.settings.getWidth()),
