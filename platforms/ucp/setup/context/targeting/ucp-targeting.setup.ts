@@ -28,7 +28,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 			s0: wiki.targeting.mappedVerticalName,
 			s1: this.getRawDbName(wiki),
 			s2: this.getAdLayout(wiki),
-			skin: 'ucp',
+			skin: 'oasis',
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
@@ -64,7 +64,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 		return undefined;
 	}
 
-	private getRawDbName(adsContext): string {
+	private getRawDbName(adsContext: MediaWikiAdsContext): string {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 

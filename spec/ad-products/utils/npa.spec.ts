@@ -1,14 +1,14 @@
 import { assert } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonStub } from 'sinon';
 import { context, trackingOptIn } from '../../../src/ad-engine';
 import { setupNpaContext } from '../../../src/ad-products/utils/npa';
 
 describe('NPA - setup context ', () => {
-	let sandbox;
+	const sandbox = createSandbox();
+	let isOptedInStub: SinonStub;
 
 	beforeEach(() => {
-		sandbox = sinon.sandbox.create();
-		sandbox.stub(trackingOptIn, 'isOptedIn');
+		isOptedInStub = sandbox.stub(trackingOptIn, 'isOptedIn');
 	});
 
 	afterEach(() => {
@@ -16,13 +16,13 @@ describe('NPA - setup context ', () => {
 	});
 
 	it('sets npa targeting for turned off tracking opt-in', () => {
-		trackingOptIn.isOptedIn.returns(false);
+		isOptedInStub.returns(false);
 		setupNpaContext();
 		assert.equal(context.get('targeting.npa'), '1');
 	});
 
 	it('sets npa targeting for tracking opt-in', () => {
-		trackingOptIn.isOptedIn.returns(true);
+		isOptedInStub.returns(true);
 		setupNpaContext();
 		assert.equal(context.get('targeting.npa'), '0');
 	});

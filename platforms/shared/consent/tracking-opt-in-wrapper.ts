@@ -22,7 +22,7 @@ class TrackingOptInWrapper {
 	}
 
 	private installConsentQueue(): void {
-		window.ads = window.ads || ({} as Ads);
+		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.consentQueue = new utils.LazyQueue<(callback: any) => void>(
 			...(window.ads.consentQueue || []),
 		);

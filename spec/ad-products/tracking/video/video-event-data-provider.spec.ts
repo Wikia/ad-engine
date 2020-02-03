@@ -22,7 +22,7 @@ describe('Video event data provider', () => {
 	});
 
 	it('returns list of values to track', () => {
-		const data = videoEventDataProvider.getEventData({
+		const videoData: any = {
 			ad_error_code: 900,
 			ad_product: 'foo',
 			audio: false,
@@ -35,7 +35,8 @@ describe('Video event data provider', () => {
 			position: 'incontent_player',
 			user_block_autoplay: -1,
 			video_id: 'bar',
-		});
+		};
+		const data = videoEventDataProvider.getEventData(videoData);
 
 		assert.equal(data.ad_error_code, 900);
 		assert.equal(data.ad_product, 'foo');
@@ -43,11 +44,11 @@ describe('Video event data provider', () => {
 		assert.equal(typeof data.browser, 'string');
 		assert.equal(data.content_type, 'video/mp4');
 		assert.equal(data.country, 'PL');
-		assert.equal(data.creative_id, 123);
+		assert.equal(data.creative_id, 123 as any);
 		assert.equal(data.ctp, 0);
 		assert.equal(data.document_visibility, 'not_implemented');
 		assert.equal(data.event_name, 'start');
-		assert.equal(data.line_item_id, 987);
+		assert.equal(data.line_item_id, 987 as any);
 		assert.equal(data.player, 'player-name');
 		assert.equal(data.position, 'incontent_player');
 		assert.equal(data.pv_number, 5);

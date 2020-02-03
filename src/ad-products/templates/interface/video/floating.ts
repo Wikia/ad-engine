@@ -46,16 +46,18 @@ function add(video, container, params): void {
 			},
 		);
 		const disableFloating = () => {
+			const width = videoWrapper.offsetWidth;
+
 			video.isFloating = false;
 			slotElement.classList.remove(FLOATING_CLASS_NAME);
 			utils.viewportObserver.removeListener(observer);
-			const width = videoWrapper.offsetWidth;
-
 			video.resize(width, width / DEFAULT_VIDEO_ASPECT_RATIO);
-			adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
 		};
 		const closeButton = new CloseButton({
-			onClick: disableFloating,
+			onClick: () => {
+				disableFloating();
+				adSlot.emitEvent(SlotTweaker.SLOT_CLOSE_IMMEDIATELY);
+			},
 		});
 
 		container.parentNode.insertBefore(closeButton.render(), container);

@@ -6,7 +6,7 @@ interface Window {
 	__uspapi?: WindowUSP;
 	XMLHttpRequest?: any;
 	AdEngine_adType?: ManualAdType;
-	ads?: Ads;
+	ads?: MediaWikiAds;
 	adsQueue?: any;
 	apstag?: Apstag;
 	confiant?: Confiant;
