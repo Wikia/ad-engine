@@ -3,7 +3,7 @@ import customContext from '../../context';
 import '../../styles.scss';
 
 context.extend(customContext);
-context.set('customContext.targeting.artid', '264');
+context.set('targeting.artid', '264');
 
 templateService.register(FloatingRail, {
 	startOffset: -15,

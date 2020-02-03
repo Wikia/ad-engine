@@ -12,7 +12,7 @@ import customContext from '../../context';
 import '../../styles.scss';
 
 context.extend(customContext);
-context.set('customContext.targeting.artid', '479');
+context.set('targeting.artid', '479');
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);
