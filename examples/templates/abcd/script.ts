@@ -4,9 +4,9 @@ import customContext from '../../context';
 import '../../styles.scss';
 
 context.extend(customContext);
-context.set('customContext.targeting.artid', '390');
-context.set('customContext.targeting.dmn', 'fandomcom');
-context.set('customContext.targeting.bfaa', {
+context.set('targeting.artid', '390');
+context.set('targeting.dmn', 'fandomcom');
+context.set('targeting.bfaa', {
 	slotsToDisable: ['incontent_player'],
 });
 

@@ -114,6 +114,19 @@
                 "muthead",
                 "oasis"
             ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
             "value": false
         }
     ],
@@ -133,6 +146,19 @@
         }
     ],
     "icPrebidVersion": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
+        },
         {
             "apps": [
                 "futhead",

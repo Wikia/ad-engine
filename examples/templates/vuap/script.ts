@@ -12,7 +12,7 @@ import customContext from '../../context';
 import '../../styles.scss';
 
 context.extend(customContext);
-context.set('customContext.targeting.artid', '321');
+context.set('targeting.artid', '321');
 
 templateService.register(BigFancyAdAbove, getBigFancyAdAboveConfig());
 templateService.register(BigFancyAdBelow);
