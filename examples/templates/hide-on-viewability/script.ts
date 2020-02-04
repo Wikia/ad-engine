@@ -12,7 +12,7 @@ import '../../styles.scss';
 const timeoutHideTime = Number.parseInt(utils.queryString.get('timeout-hide-time'), 10) || 0;
 
 context.extend(customContext);
-context.set('customContext.targeting.artid', '158');
+context.set('targeting.artid', '158');
 context.set('slots.invisible_high_impact_2.defaultTemplates', ['hideOnViewability']);
 
 templateService.register(FloorAdhesion);
