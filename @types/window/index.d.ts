@@ -28,12 +28,14 @@ interface Window {
 	Krux?: KruxQueue;
 	moatjw?: MoatJW;
 	sessionId?: string;
+	session_id?: string;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
 	trackingOptIn?: any;
 	permutive?: Permutive;
 	wgCookiePath?: string;
+	beaconId?: string;
 	beacon_id?: string;
 }
 
