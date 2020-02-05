@@ -25,7 +25,6 @@ interface Window {
 	googletag: googletag.Googletag;
 	moatPrebidApi?: MoatPrebidApi;
 	moatYieldReady?: MoatYieldReady;
-	Krux?: KruxQueue;
 	moatjw?: MoatJW;
 	sessionId?: string;
 	session_id?: string;

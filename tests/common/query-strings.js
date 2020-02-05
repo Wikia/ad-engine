@@ -35,7 +35,6 @@ class QueryStrings {
 		};
 		this.services = {
 			confiant: 'confiant-disabled',
-			krux: 'krux-disabled',
 			trackingOptIn: 'tracking-opt-in',
 			moat: 'moat-yi-disabled',
 			adEngineDelay: 'adengine-delay',
@@ -142,12 +141,6 @@ class QueryStrings {
 		const on = resolved ? '1' : '0';
 
 		return `${this.utils.resolved}=${on}`;
-	}
-
-	getKrux(enabled) {
-		const on = enabled ? '0' : '1';
-
-		return `${this.services.krux}=${on}`;
 	}
 
 	getConfiant(enabled) {

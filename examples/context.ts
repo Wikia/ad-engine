@@ -346,10 +346,6 @@ export default {
 			endpoint: 'https://services.wikia-dev.pl/icbm/api/config?app=oasis',
 			fallbackConfigKey: 'fallbackConfig',
 		},
-		krux: {
-			enabled: true,
-			id: 'KPSUiAKl',
-		},
 		taxonomy: {
 			enabled: false,
 		},

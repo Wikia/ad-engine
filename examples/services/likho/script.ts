@@ -8,9 +8,9 @@ window.guaTrackEvent = (...args) => {
 };
 
 context.extend(customContext);
-context.set('customContext.targeting.artid', '535');
-context.set('customContext.targeting.likho', likhoService.refresh());
-context.set('customContext.slots.top_leaderboard.sizes', [
+context.set('targeting.artid', '535');
+context.set('targeting.likho', likhoService.refresh());
+context.set('slots.top_leaderboard.sizes', [
 	{
 		viewportSize: [728, 0],
 		sizes: [[728, 90], [3, 3]],
