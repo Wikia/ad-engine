@@ -51,7 +51,7 @@ class Permutive {
 	}
 
 	setTargeting(): void {
-		context.set('targeting.permutive', this.getTargeting);
+		context.set('targeting.permutive', () => this.getTargeting());
 	}
 
 	loadScript(): Promise<Event> {
