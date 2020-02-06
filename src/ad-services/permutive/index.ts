@@ -35,10 +35,12 @@ class Permutive {
 	}
 
 	getTargeting(): Array<string> {
-		const permutiveGptTargeting = window.googletag.pubads().getTargeting('permutive');
+		if (window.googletag.pubads) {
+			const permutiveGptTargeting = window.googletag.pubads().getTargeting('permutive');
 
-		if (permutiveGptTargeting.length) {
-			return permutiveGptTargeting;
+			if (permutiveGptTargeting.length) {
+				return permutiveGptTargeting;
+			}
 		}
 
 		const segments = window.localStorage.getItem('_pdfps');
