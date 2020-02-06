@@ -344,6 +344,7 @@ export const basicContext = {
 		rubiconDfp: true,
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '_not_a_top1k_wiki',
+		rolloutTracking: 'ucp',
 	},
 	events: {
 		pushOnScroll: {
