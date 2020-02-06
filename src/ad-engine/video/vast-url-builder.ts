@@ -17,11 +17,26 @@ const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator: number = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
+	const targeting = context.get('targeting') || {};
 	const params: Dictionary = {
-		...(context.get('targeting') || {}),
 		...slot.getTargeting(),
 		...extraTargeting,
 	};
+
+	function setTargetingValue(
+		key: string,
+		value: string | string[] | (() => string | string[]),
+	): void {
+		if (typeof value === 'function') {
+			params[key] = value();
+		} else if (value !== 'undefined' && value !== null) {
+			params[key] = value;
+		}
+	}
+
+	Object.keys(targeting).forEach((key) => {
+		setTargetingValue(key, targeting[key]);
+	});
 
 	return encodeURIComponent(
 		Object.keys(params)
