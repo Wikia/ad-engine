@@ -62,7 +62,9 @@ export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
 		}
 
 		return (
-			uapRestriction === window.pvNumber || uapRestriction === 0 || context.get('src') === 'test'
+			uapRestriction === context.get('wiki.pvNumber') ||
+			uapRestriction === 0 ||
+			context.get('src') === 'test'
 		);
 	}
 }

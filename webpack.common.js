@@ -21,8 +21,6 @@ const paths = mergeCompilerOptionsPaths([
 	path.resolve(__dirname, 'spec/tsconfig.json'),
 ]);
 
-const reportFiles = ['src/**/*.ts', 'platforms/**/*.ts', 'examples/**/*.ts', 'spec/**/*.ts'];
-
 module.exports = () => ({
 	mode: 'development',
 
@@ -39,7 +37,6 @@ module.exports = () => ({
 			getTypeScriptLoader({
 				include,
 				paths,
-				reportFiles,
 			}),
 			{
 				test: /\.s?css$/,
