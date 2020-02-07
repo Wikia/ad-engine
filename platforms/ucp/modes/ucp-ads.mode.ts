@@ -1,5 +1,5 @@
 import { AdsMode, biddersDelay, startAdEngine } from '@platforms/shared';
-import { bidders, context } from '@wikia/ad-engine';
+import { bidders, context, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -14,6 +14,8 @@ export class UcpAdsMode implements AdsMode {
 		bidders.requestBids({
 			responseListener: biddersDelay.markAsReady,
 		});
+
+		permutive.call();
 	}
 
 	private setAdStack(): void {

@@ -8,11 +8,10 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '158';
-customContext.targeting.src = 'test';
-customContext.slots.floor_adhesion.clickPositionTracking = true;
-
 context.extend(customContext);
+context.set('targeting.artid', '158');
+context.set('targeting.src', 'test');
+context.set('slots.floor_adhesion.clickPositionTracking', true);
 
 templateService.register(FloorAdhesion);
 

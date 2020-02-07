@@ -55,7 +55,7 @@ eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 });
 
 scrollListener.init();
-Porvata.inject(params).then((player) => {
+Porvata.inject(params as any).then((player) => {
 	(window as any).porvataPlayer = player;
 
 	player.dom.getInterfaceContainer().innerHTML = document.getElementById(

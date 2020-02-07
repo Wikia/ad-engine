@@ -1,10 +1,12 @@
 import {
 	AdEngineRunnerSetup,
 	AdsMode,
+	CommonTrackingSetup,
 	DynamicSlotsSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
+	TrackingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
 import { context, InstantConfigService } from '@wikia/ad-engine';
@@ -31,6 +33,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(SlotsStateSetup).to(UcpSlotsStateSetup);
 	container.bind(SlotsContextSetup).to(UcpSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(UcpDynamicSlotsSetup);
+	container.bind(TrackingSetup).to(CommonTrackingSetup);
 
 	return container;
 }

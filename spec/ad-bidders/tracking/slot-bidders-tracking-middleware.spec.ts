@@ -1,12 +1,14 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonStub } from 'sinon';
 import { bidders } from '../../../src/ad-bidders';
 import { slotBiddersTrackingMiddleware } from '../../../src/ad-bidders/tracking';
 import { AdSlot } from '../../../src/ad-engine/models';
 
 describe('slot-bidders-tracking-middleware', () => {
-	const sandbox = sinon.createSandbox();
+	const sandbox = createSandbox();
 	let adSlot: AdSlot;
+	let getDfpSlotPricesStub: SinonStub;
+	let getCurrentSlotPricesStub: SinonStub;
 
 	beforeEach(() => {
 		adSlot = new AdSlot({ id: 'foo' });
@@ -15,9 +17,10 @@ describe('slot-bidders-tracking-middleware', () => {
 			price: '11.00',
 		};
 
-		sandbox.stub(bidders, 'getDfpSlotPrices');
-		sandbox.stub(bidders, 'getCurrentSlotPrices');
-		bidders.getCurrentSlotPrices.returns({
+		getDfpSlotPricesStub = sandbox.stub(bidders, 'getDfpSlotPrices');
+		getCurrentSlotPricesStub = sandbox.stub(bidders, 'getCurrentSlotPrices');
+
+		getCurrentSlotPricesStub.returns({
 			wikia: 20.0,
 			indexExchange: 1.0,
 			appnexus: 2.0,
@@ -48,7 +51,7 @@ describe('slot-bidders-tracking-middleware', () => {
 	});
 
 	it('returns bidders info for tracking', async () => {
-		bidders.getDfpSlotPrices.returns({
+		getDfpSlotPricesStub.returns({
 			wikia: 20.0,
 			indexExchange: 1.0,
 			appnexus: 2.0,
@@ -79,7 +82,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
+		const nextSpy = sandbox.spy();
 
 		await slotBiddersTrackingMiddleware(context, nextSpy);
 
@@ -119,7 +122,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
+		const nextSpy = sandbox.spy();
 
 		await slotBiddersTrackingMiddleware(context, nextSpy);
 

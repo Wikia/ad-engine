@@ -53,13 +53,26 @@ class Permutive {
 	}
 
 	getPageViewEventSchema(): object {
+		// TODO uncomment age when schema is fixed
 		return {
 			'page': {
 				'page_info': {
 					's0': context.get('targeting.s0'),
 					's1': context.get('targeting.s1'),
 					'skin': context.get('targeting.skin'),
-				}
+					'lang': context.get('targeting.lang'),
+					'esrb': context.get('targeting.esrb'),
+					// 'age': context.get('targeting.age'),
+					'sex': context.get('targeting.sex'),
+					'gnre': context.get('targeting.gnre'),
+					'media': context.get('targeting.media'),
+					'pform': context.get('targeting.pform'),
+					'pub': context.get('targeting.pub'),
+					'theme': context.get('targeting.theme'),
+					'tv': context.get('targeting.tv'),
+					'src': context.get('src'),
+					'geo': utils.geoService.getCountryCode(),
+				},
 			}
 		}
 	}

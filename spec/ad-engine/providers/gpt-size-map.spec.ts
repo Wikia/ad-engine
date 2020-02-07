@@ -42,7 +42,9 @@ describe('gpt-size-map', () => {
 
 		sizeMap.addSize([728, 0], [[728, 90]]);
 
-		expect(sizeMap.sizeMap).to.deep.equal([{ viewportSize: [728, 0], sizes: [[728, 90]] }]);
+		expect((sizeMap as any).sizeMap).to.deep.equal([
+			{ viewportSize: [728, 0], sizes: [[728, 90]] },
+		]);
 	});
 
 	it('has ability to map all sizes', () => {
@@ -54,15 +56,13 @@ describe('gpt-size-map', () => {
 			{ viewportSize: [728, 0], sizes: [[0, 0]] },
 			{ viewportSize: [768, 0], sizes: [[1, 1]] },
 		];
-		const sizeMap = new GptSizeMap(initSizes);
+		const sizeMap = new GptSizeMap(initSizes).mapAllSizes((sizes, viewportSize, index) => {
+			expect(sizes).to.deep.equal(initSizes[index].sizes);
+			expect(viewportSize).to.deep.equal(initSizes[index].viewportSize);
 
-		expect(
-			sizeMap.mapAllSizes((sizes, viewportSize, index) => {
-				expect(sizes).to.deep.equal(initSizes[index].sizes);
-				expect(viewportSize).to.deep.equal(initSizes[index].viewportSize);
+			return [[index, index]];
+		});
 
-				return [[index, index]];
-			}).sizeMap,
-		).to.deep.equal(mapSizes);
+		expect((sizeMap as any).sizeMap).to.deep.equal(mapSizes);
 	});
 });
