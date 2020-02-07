@@ -39,26 +39,20 @@ export class BaseContextSetup {
 
 		context.set(
 			'options.video.playAdsOnNextVideo',
-			this.instantConfig.isGeoEnabled('wgAdDriverPlayAdsOnNextFVCountries'),
+			!!this.instantConfig.get('icFeaturedVideoAdsFrequency'),
 		);
 		context.set(
 			'options.video.adsOnNextVideoFrequency',
-			this.instantConfig.get('wgAdDriverPlayAdsOnNextFVFrequency') || 3,
+			this.instantConfig.get('icFeaturedVideoAdsFrequency', 3),
 		);
-		context.set(
-			'options.video.isMidrollEnabled',
-			this.instantConfig.isGeoEnabled('wgAdDriverFVMidrollCountries'),
-		);
+		context.set('options.video.isMidrollEnabled', this.instantConfig.get('icFeaturedVideoMidroll'));
 		context.set(
 			'options.video.isPostrollEnabled',
-			this.instantConfig.isGeoEnabled('wgAdDriverFVPostrollCountries'),
+			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
 
-		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
-		context.set(
-			'options.video.isOutstreamEnabled',
-			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
-		);
+		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
+		context.set('options.video.isOutstreamEnabled', this.instantConfig.get('icOutstreamSlot'));
 		this.setWadContext();
 	}
 
@@ -83,13 +77,11 @@ export class BaseContextSetup {
 	}
 
 	private setMiscContext(): void {
-		if (
-			this.instantConfig.get('wgAdDriverTestCommunities', []).includes(context.get('wiki.wgDBname'))
-		) {
+		if (this.instantConfig.get('icTestCommunities', []).includes(context.get('wiki.wgDBname'))) {
 			context.set('src', 'test');
 		}
 
-		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
+		this.instantConfig.get('icLABradorTest');
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
