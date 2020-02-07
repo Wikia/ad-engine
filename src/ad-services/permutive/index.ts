@@ -53,7 +53,6 @@ class Permutive {
 	}
 
 	getPageViewEventSchema(): object {
-		// TODO uncomment age when schema is fixed
 		return {
 			'page': {
 				'page_info': {
@@ -62,7 +61,7 @@ class Permutive {
 					'skin': context.get('targeting.skin'),
 					'lang': context.get('targeting.lang'),
 					'esrb': context.get('targeting.esrb'),
-					// 'age': context.get('targeting.age'),
+					'age': context.get('targeting.age'),
 					'sex': context.get('targeting.sex'),
 					'gnre': context.get('targeting.gnre'),
 					'media': context.get('targeting.media'),
