@@ -1,7 +1,5 @@
 interface MediaWiki {
-	config: {
-		values: {};
-	};
+	config: Map<string, any>;
 
 	loader: {
 		/**
