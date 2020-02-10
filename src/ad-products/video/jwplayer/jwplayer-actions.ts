@@ -7,12 +7,8 @@ export interface VideoTargeting {
 }
 
 export interface JwPlayerAdsFactoryOptions {
-	adProduct: string;
 	slotName: string;
-	audio: boolean;
-	autoplay: boolean;
 	featured: boolean;
-	videoId: string;
 }
 
 export const jwpReady = action(

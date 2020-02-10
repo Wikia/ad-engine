@@ -14,8 +14,7 @@ import { createJWPlayerStreams } from './jwplayer-streams';
 interface PlayerReadyResult {
 	player: JWPlayer;
 	adSlot: AdSlot;
-	tracker: JWPlayerTracker;
-	slotTargeting: VideoTargeting;
+	targeting: VideoTargeting;
 }
 
 export class JWPlayerManager {
@@ -40,11 +39,8 @@ export class JWPlayerManager {
 			map(({ options, targeting, playerKey }) => {
 				const player: JWPlayer = window[playerKey];
 				const adSlot = this.createAdSlot(options, player);
-				const tracker = this.createTracker(options, adSlot);
 
-				tracker.register(player); // TODO: need to handle it separately
-
-				return { player, adSlot, tracker, slotTargeting: targeting };
+				return { player, adSlot, targeting };
 			}),
 		);
 	}
@@ -65,24 +61,19 @@ export class JWPlayerManager {
 		return adSlot;
 	}
 
-	private createTracker(options: JwPlayerAdsFactoryOptions, adSlot: AdSlot): JWPlayerTracker {
+	private createTracker(adSlot: AdSlot): JWPlayerTracker {
 		return new JWPlayerTracker({
 			slotName: adSlot.config.slotName,
 			adProduct: adSlot.config.trackingKey,
-			audio: options.audio,
-			ctp: !options.autoplay,
-			videoId: options.videoId,
 		});
 	}
 
-	private createJWPlayerHandler({
-		player,
-		adSlot,
-		tracker,
-		slotTargeting,
-	}: PlayerReadyResult): JWPlayerHandler {
+	private createJWPlayerHandler({ player, adSlot, targeting }: PlayerReadyResult): JWPlayerHandler {
 		const streams = createJWPlayerStreams(player);
-		const helper = new JWPlayerHelper(adSlot, tracker, slotTargeting, player);
+		const tracker = this.createTracker(adSlot);
+		const helper = new JWPlayerHelper(adSlot, tracker, targeting, player);
+
+		tracker.register(player); // TODO: need to handle it separately
 
 		return new JWPlayerHandler(streams, helper);
 	}

@@ -81,10 +81,7 @@ export class JWPlayerTracker {
 
 	constructor(params: Dictionary = {}) {
 		this.adProduct = params.adProduct || null;
-		this.audio = params.audio || false;
-		this.clickedToPlay = params.ctp || false;
 		this.slotName = params.slotName;
-		this.videoId = params.videoId || null;
 	}
 
 	/**
