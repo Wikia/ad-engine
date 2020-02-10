@@ -63,7 +63,7 @@ export class JWPlayerManager {
 
 	private createJWPlayerHandler({ player, adSlot, targeting }: PlayerReadyResult): JWPlayerHandler {
 		const streams = createJWPlayerStreams(player);
-		const tracker = new JWPlayerTracker(adSlot, player, targeting);
+		const tracker = new JWPlayerTracker(adSlot, player);
 		const helper = new JWPlayerHelper(adSlot, player, targeting, tracker);
 
 		tracker.register(); // TODO: need to handle it separately

@@ -8,7 +8,7 @@ import {
 } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import { JWPlayer } from '../../video/jwplayer/external-types/jwplayer';
-import { VideoTargeting } from '../../video/jwplayer/jwplayer-actions';
+import { getVideoId } from '../../video/jwplayer/utils/get-video-id';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 
@@ -79,11 +79,7 @@ export class JWPlayerTracker {
 	 */
 	private readonly slotName: string;
 
-	constructor(
-		private adSlot: AdSlot,
-		private jwplayer: JWPlayer,
-		private targeting: VideoTargeting,
-	) {
+	constructor(private adSlot: AdSlot, private jwplayer: JWPlayer) {
 		this.adProduct = this.adSlot.config.trackingKey || null;
 		this.slotName = this.adSlot.config.slotName;
 	}
@@ -94,8 +90,6 @@ export class JWPlayerTracker {
 	register(): void {
 		this.clickedToPlay = !this.jwplayer.getConfig().autostart;
 		this.audio = !this.jwplayer.getMute();
-
-		this.updateVideoId();
 
 		this.emit('init');
 
@@ -150,17 +144,6 @@ export class JWPlayerTracker {
 	}
 
 	/**
-	 * used at the beginning
-	 * used in helper.updateVideoId
-	 *   on 'beforePlay'
-	 */
-	private updateVideoId(): void {
-		const { mediaid } = this.jwplayer.getPlaylistItem() || {};
-
-		this.targeting.v1 = mediaid;
-	}
-
-	/**
 	 * Update creative details
 	 * duplicate of helper.setSlotParams
 	 */
@@ -193,7 +176,7 @@ export class JWPlayerTracker {
 			player: JWPlayerTracker.PLAYER_NAME,
 			position: this.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
-			video_id: this.targeting.v1 || '',
+			video_id: getVideoId(this.jwplayer) || '',
 		};
 	}
 

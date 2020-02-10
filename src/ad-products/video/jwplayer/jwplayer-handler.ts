@@ -71,7 +71,6 @@ export class JWPlayerHandler {
 	private beforePlay(): Observable<any> {
 		return this.streams.beforePlay$.pipe(
 			tap(({ depth }) => {
-				this.helper.updateVideoId();
 				this.helper.updateVideoDepth(depth);
 			}),
 			filter(({ depth }) => this.helper.shouldPlayPreroll(depth)),

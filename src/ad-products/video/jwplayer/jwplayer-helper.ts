@@ -3,6 +3,7 @@ import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from './external-types/jwplayer';
 import { VideoTargeting } from './jwplayer-actions';
+import { getVideoId } from './utils/get-video-id';
 
 const EMPTY_VAST_CODE = 21009;
 
@@ -93,12 +94,6 @@ export class JWPlayerHelper {
 		this.adSlot.emit(events.VIDEO_AD_IMPRESSION);
 	}
 
-	updateVideoId(): void {
-		const { mediaid } = this.jwplayer.getPlaylistItem() || {};
-
-		this.targeting.v1 = mediaid;
-	}
-
 	updateVideoDepth(depth: number): void {
 		this.adSlot.setConfigProperty('videoDepth', depth);
 	}
@@ -149,6 +144,7 @@ export class JWPlayerHelper {
 			targeting: {
 				passback: 'jwplayer',
 				rv: this.calculateRV(depth),
+				v1: getVideoId(this.jwplayer),
 				...this.targeting,
 			},
 		});
