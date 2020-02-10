@@ -244,7 +244,8 @@ export type JWPlayerNoParamEvent =
 	| 'displayClick'
 	| 'playlistComplete'
 	| 'seeked'
-	| 'remove';
+	| 'remove'
+	| 'videoStart';
 
 export interface JWPlayer {
 	getMute(): boolean;

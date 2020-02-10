@@ -12,9 +12,9 @@ const EMPTY_VAST_CODE = 21009;
 export class JWPlayerHelper {
 	constructor(
 		private adSlot: AdSlot,
-		private tracker: JWPlayerTracker,
-		private slotTargeting: VideoTargeting,
 		private jwplayer: JWPlayer,
+		private targeting: VideoTargeting,
+		private tracker: JWPlayerTracker,
 	) {}
 
 	isMoatTrackingEnabled(): boolean {
@@ -96,8 +96,7 @@ export class JWPlayerHelper {
 	updateVideoId(): void {
 		const { mediaid } = this.jwplayer.getPlaylistItem() || {};
 
-		this.slotTargeting.v1 = mediaid;
-		this.tracker.updateVideoId();
+		this.targeting.v1 = mediaid;
 	}
 
 	updateVideoDepth(depth: number): void {
@@ -150,7 +149,7 @@ export class JWPlayerHelper {
 			targeting: {
 				passback: 'jwplayer',
 				rv: this.calculateRV(depth),
-				...this.slotTargeting,
+				...this.targeting,
 			},
 		});
 	}

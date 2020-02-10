@@ -8,6 +8,7 @@ import {
 } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import { JWPlayer } from '../../video/jwplayer/external-types/jwplayer';
+import { VideoTargeting } from '../../video/jwplayer/jwplayer-actions';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 
@@ -77,46 +78,43 @@ export class JWPlayerTracker {
 	 * feel unnecessary, should be replaced with adSlot from manager
 	 */
 	private readonly slotName: string;
-	/**
-	 * from player (duplicate of helper.updateVideoId)
-	 */
-	private videoId: string | null = null;
-	private playerInstance: JWPlayer;
 
-	constructor(private adSlot: AdSlot) {
+	constructor(
+		private adSlot: AdSlot,
+		private jwplayer: JWPlayer,
+		private targeting: VideoTargeting,
+	) {
 		this.adProduct = this.adSlot.config.trackingKey || null;
 		this.slotName = this.adSlot.config.slotName;
 	}
 
 	/**
 	 * Register event listeners on player
-	 * @param {Object} player
 	 */
-	register(player: any): void {
-		this.playerInstance = player;
-		this.clickedToPlay = !this.playerInstance.getConfig().autostart;
-		this.audio = !this.playerInstance.getMute();
+	register(): void {
+		this.clickedToPlay = !this.jwplayer.getConfig().autostart;
+		this.audio = !this.jwplayer.getMute();
 
 		this.updateVideoId();
 
 		this.emit('init');
 
-		if (player.getConfig().itemReady) {
+		if (this.jwplayer.getConfig().itemReady) {
 			this.emit('late_ready');
 		}
 
-		player.on('videoStart', () => {
+		this.jwplayer.on('videoStart', () => {
 			this.updateCreativeData();
 		});
 
-		player.on('adRequest', (event: any) => {
+		this.jwplayer.on('adRequest', (event: any) => {
 			const currentAd = vastParser.getAdInfo(event.ima && event.ima.ad);
 
 			this.updateCreativeData(currentAd);
 		});
 
-		Object.keys(trackingEventsMap).forEach((playerEvent) => {
-			player.on(playerEvent, (event: any) => {
+		Object.keys(trackingEventsMap).forEach((playerEvent: any) => {
+			this.jwplayer.on(playerEvent, (event: any) => {
 				let errorCode;
 
 				if (
@@ -146,7 +144,7 @@ export class JWPlayerTracker {
 			});
 		});
 
-		player.on('adError', () => {
+		this.jwplayer.on('adError', () => {
 			this.updateCreativeData();
 		});
 	}
@@ -156,11 +154,10 @@ export class JWPlayerTracker {
 	 * used in helper.updateVideoId
 	 *   on 'beforePlay'
 	 */
-	updateVideoId(): void {
-		const playlist = this.playerInstance.getPlaylist();
-		const playlistIndex = this.playerInstance.getPlaylistIndex();
+	private updateVideoId(): void {
+		const { mediaid } = this.jwplayer.getPlaylistItem() || {};
 
-		this.videoId = playlist[playlistIndex].mediaid;
+		this.targeting.v1 = mediaid;
 	}
 
 	/**
@@ -196,7 +193,7 @@ export class JWPlayerTracker {
 			player: JWPlayerTracker.PLAYER_NAME,
 			position: this.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
-			video_id: this.videoId || '',
+			video_id: this.targeting.v1 || '',
 		};
 	}
 
