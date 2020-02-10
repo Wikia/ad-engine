@@ -20,6 +20,7 @@ export interface TrackingParams {
 	pv_number_global?: number;
 	pv_unique_id?: string;
 	r?: string;
+	rollout_tracking?: string;
 	rv?: number;
 	s?: string;
 	session_id?: string;

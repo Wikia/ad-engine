@@ -49,6 +49,13 @@ export class DataWarehouseTracker {
 			a: context.get('targeting.artid') || -1,
 			x: context.get('wiki.wgDBname') || 'unknown',
 			n: context.get('wiki.wgNamespaceNumber') || -1,
+			rollout_tracking:
+				window.ads &&
+				window.ads.context &&
+				window.ads.context.targeting &&
+				window.ads.context.targeting.isUcp
+					? 'ucp'
+					: '',
 		};
 	}
 

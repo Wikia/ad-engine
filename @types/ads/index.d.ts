@@ -22,6 +22,7 @@ interface MediaWikiAdsTargeting {
 	esrbRating: string;
 	featuredVideo?: MediaWikiFeaturedVideoInfo;
 	hasFeaturedVideo: boolean;
+	isUcp?: boolean;
 	mappedVerticalName: string;
 	hasIncontentPlayer: boolean;
 	pageArticleId: number;
