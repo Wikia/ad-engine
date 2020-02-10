@@ -1,11 +1,15 @@
-import { Dictionary, slotService, vastParser, VideoData, VideoEventData } from '@ad-engine/core';
+import {
+	AdSlot,
+	Dictionary,
+	slotService,
+	vastParser,
+	VideoData,
+	VideoEventData,
+} from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
+import { JWPlayer } from '../../video/jwplayer/external-types/jwplayer';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
-
-interface PlayerInstance {
-	[key: string]: any;
-}
 
 interface CreativeParams {
 	lineItemId?: string | null;
@@ -77,11 +81,11 @@ export class JWPlayerTracker {
 	 * from player (duplicate of helper.updateVideoId)
 	 */
 	private videoId: string | null = null;
-	private playerInstance: PlayerInstance;
+	private playerInstance: JWPlayer;
 
-	constructor(params: Dictionary = {}) {
-		this.adProduct = params.adProduct || null;
-		this.slotName = params.slotName;
+	constructor(private adSlot: AdSlot) {
+		this.adProduct = this.adSlot.config.trackingKey || null;
+		this.slotName = this.adSlot.config.slotName;
 	}
 
 	/**
@@ -153,10 +157,10 @@ export class JWPlayerTracker {
 	 *   on 'beforePlay'
 	 */
 	updateVideoId(): void {
-		const playlistItem = this.playerInstance.getPlaylist();
+		const playlist = this.playerInstance.getPlaylist();
 		const playlistIndex = this.playerInstance.getPlaylistIndex();
 
-		this.videoId = playlistItem[playlistIndex].mediaid;
+		this.videoId = playlist[playlistIndex].mediaid;
 	}
 
 	/**

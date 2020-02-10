@@ -61,16 +61,9 @@ export class JWPlayerManager {
 		return adSlot;
 	}
 
-	private createTracker(adSlot: AdSlot): JWPlayerTracker {
-		return new JWPlayerTracker({
-			slotName: adSlot.config.slotName,
-			adProduct: adSlot.config.trackingKey,
-		});
-	}
-
 	private createJWPlayerHandler({ player, adSlot, targeting }: PlayerReadyResult): JWPlayerHandler {
 		const streams = createJWPlayerStreams(player);
-		const tracker = this.createTracker(adSlot);
+		const tracker = new JWPlayerTracker(adSlot);
 		const helper = new JWPlayerHelper(adSlot, tracker, targeting, player);
 
 		tracker.register(player); // TODO: need to handle it separately

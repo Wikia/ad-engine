@@ -249,6 +249,7 @@ export type JWPlayerNoParamEvent =
 export interface JWPlayer {
 	getMute(): boolean;
 	getPlaylist(): JWPlayerListItem[];
+	getPlaylistIndex(): number;
 	getPlaylistItem(index?: number): JWPlayerListItem;
 	getContainer(): HTMLElement;
 	on<TEvent extends keyof JWPlayerEventParams>(
