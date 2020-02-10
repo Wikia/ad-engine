@@ -82,15 +82,14 @@ export class JWPlayerTracker {
 	constructor(private adSlot: AdSlot, private jwplayer: JWPlayer) {
 		this.adProduct = this.adSlot.config.trackingKey || null;
 		this.slotName = this.adSlot.config.slotName;
+		this.clickedToPlay = !this.jwplayer.getConfig().autostart;
+		this.audio = !this.jwplayer.getMute();
 	}
 
 	/**
 	 * Register event listeners on player
 	 */
 	register(): void {
-		this.clickedToPlay = !this.jwplayer.getConfig().autostart;
-		this.audio = !this.jwplayer.getMute();
-
 		this.emit('init');
 
 		if (this.jwplayer.getConfig().itemReady) {
