@@ -24,7 +24,7 @@ export class JWPlayerManager {
 	manage(): void {
 		this.onPlayerReady()
 			.pipe(
-				map((result) => this.createJWPlayerAd(result)),
+				map((result) => this.createJWPlayerHandler(result)),
 				mergeMap((handler) => handler.handle()),
 			)
 			.subscribe();
@@ -75,7 +75,7 @@ export class JWPlayerManager {
 		});
 	}
 
-	private createJWPlayerAd({
+	private createJWPlayerHandler({
 		player,
 		adSlot,
 		tracker,
