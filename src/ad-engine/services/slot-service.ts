@@ -1,4 +1,4 @@
-import { getAdStack } from '../';
+import { getAdStack, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
@@ -8,7 +8,7 @@ import { slotTweaker } from './slot-tweaker';
 const groupName = 'slot-service';
 
 interface SlotEvent {
-	callback: () => void;
+	callback: (event?: any) => void;
 	name: string;
 }
 
@@ -113,6 +113,17 @@ class SlotService {
 		return slotByPos;
 	}
 
+	getSlotId(slotName: string): string {
+		let uid = context.get(`slots.${slotName}.uid`);
+
+		if (!uid) {
+			uid = utils.generateUniqueId();
+			context.set(`slots.${slotName}.uid`, uid);
+		}
+
+		return uid;
+	}
+
 	/**
 	 * Iterate over all defined slots
 	 * @param {function} callback
@@ -123,7 +134,7 @@ class SlotService {
 		});
 	}
 
-	on(slotName: string, eventName: string, callback: () => void): void {
+	on(slotName: string, eventName: string, callback: (payload?: any) => void): void {
 		const adSlot = this.get(slotName);
 		const event: SlotEvent = {
 			callback,

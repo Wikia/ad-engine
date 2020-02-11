@@ -63,3 +63,56 @@ describe('Taxonomy service', () => {
 		expect(taxonomyService.getName()).to.equal('taxonomy-service');
 	});
 });
+
+describe('Taxonomy service - comics tag', () => {
+	const sandbox = sinon.createSandbox();
+	let getComicsTagStub;
+
+	const comicsTag = '[1]';
+
+	beforeEach(() => {
+		context.set('services.taxonomy.comics.enabled', true);
+		getComicsTagStub = sandbox.stub(taxonomyServiceLoader, 'getComicsTag').callsFake(() => {
+			return Promise.resolve(comicsTag);
+		});
+	});
+
+	afterEach(() => {
+		context.remove('services.taxonomy.comics.enabled');
+		sandbox.restore();
+	});
+
+	it('configures fetched comics tag in context targeting', async () => {
+		const fetchedComicsTag = await taxonomyService.configureComicsTargeting();
+
+		expect(getComicsTagStub.called).to.be.true;
+		expect(fetchedComicsTag).to.deep.equal({
+			txn_comics: ['[1]'],
+		});
+		expect(context.get('targeting.txn_comics')).to.deep.equal(['[1]']);
+	});
+
+	it('does not fetch comics tag when service is disabled', async () => {
+		context.set('services.taxonomy.comics.enabled', false);
+
+		const fetchedComicsTag = await taxonomyService.configureComicsTargeting();
+
+		expect(getComicsTagStub.called).to.be.false;
+		expect(fetchedComicsTag).to.be.an('object').that.is.empty;
+	});
+
+	it('fetched comics tag resolves delay promise', async () => {
+		let delayResolved = false;
+		taxonomyService.getPromise().then(() => {
+			delayResolved = true;
+		});
+
+		await taxonomyService.configureComicsTargeting();
+
+		expect(delayResolved).to.be.true;
+	});
+
+	it('is named delay module', async () => {
+		expect(taxonomyService.getName()).to.equal('taxonomy-service');
+	});
+});

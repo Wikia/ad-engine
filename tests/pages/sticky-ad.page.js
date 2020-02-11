@@ -1,4 +1,4 @@
-import { adSlots } from '../common/ad-slots';
+import { slots } from '../common/slot-registry';
 
 class StickyAd {
 	constructor() {
@@ -6,7 +6,7 @@ class StickyAd {
 		this.classStickyTemplate = '.sticky-template';
 		this.classStickySlot = '.sticky-slot';
 		this.classUnstickButton = '.button-unstick';
-		this.stickedSlot = `${adSlots.topLeaderboard}${this.classStickyTemplate}${
+		this.stickedSlot = `${slots.topLeaderboard.selector}${this.classStickyTemplate}${
 			this.classStickySlot
 		}`;
 	}

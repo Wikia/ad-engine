@@ -1,25 +1,23 @@
-import { bootstrapAndGetCmpConsent } from '@platforms/shared';
+import { bootstrapAndGetConsent, ensureGeoCookie } from '@platforms/shared';
 import { context, utils } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { PlatformStartup } from '../shared/platform-startup';
 import { basicContext } from './ad-context';
 import { setupGamepediaIoc } from './setup-gamepedia-ioc';
 import './styles.scss';
+import { mediaWikiWrapper } from './utils/media-wiki-wrapper';
 
-// RLQ may not exist as AdEngine is loading independently from Resource Loader
-window.RLQ = window.RLQ || [];
-window.RLQ.push(async () => {
-	// AdEngine has to wait for Track extension
-	await window.mw.loader.using('ext.track.scripts');
-
+const load = async () => {
 	context.extend(basicContext);
 
-	const [consent, container]: [boolean, Container] = await Promise.all([
-		bootstrapAndGetCmpConsent(),
+	const [container]: [Container, ...any[]] = await Promise.all([
 		setupGamepediaIoc(),
+		ensureGeoCookie().then(() => bootstrapAndGetConsent()),
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isOptedIn: consent, isMobile: !utils.client.isDesktop() });
+	platformStartup.configure({ isMobile: !utils.client.isDesktop() });
 	platformStartup.run();
-});
+};
+
+mediaWikiWrapper.ready.then(load);

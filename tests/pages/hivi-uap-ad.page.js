@@ -18,8 +18,8 @@ export class HiviUap {
 		this.buttonIsOn = '.is-on';
 		this.closeLeaderboardButton = '.button-unstick';
 		this.fullScreen = '.stop-scrolling';
-		this.firstCall = '4466763538'; // applies only to top leaderboard
-		this.secondCall = '4511050296'; // top and incontent boxad and bottom leaderboard
+		this.firstCall = '5234888783'; // applies only to top leaderboard
+		this.secondCall = '5234562937'; // top and incontent boxad and bottom leaderboard
 		this.videoDuration = 45000;
 	}
 
@@ -28,6 +28,11 @@ export class HiviUap {
 		if (adSlot) {
 			$(adSlot).waitForDisplayed(timeouts.standard);
 		}
+	}
+
+	closeLeaderboard() {
+		$(this.closeLeaderboardButton).waitForDisplayed(timeouts.standard);
+		$(this.closeLeaderboardButton).click();
 	}
 }
 

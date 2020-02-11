@@ -1,3 +1,5 @@
+import { context, slotService } from '@ad-engine/core';
+import { IasTrackingParams, iasVideoTracker } from '../ias/ias-video-tracker';
 import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { VideoSettings } from '../video-settings';
 import { GoogleImaPlayer } from './google-ima-player';
@@ -22,6 +24,10 @@ class GoogleImaPlayerFactory {
 			}
 		}
 
+		if (videoSettings.isIasTrackingEnabled()) {
+			iasVideoTracker.loadScript();
+		}
+
 		adsLoader.addEventListener(
 			window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
 			(adsManagerLoadedEvent: google.ima.AdsManagerLoadedEvent) => {
@@ -33,6 +39,14 @@ class GoogleImaPlayerFactory {
 
 				player.setAdsManager(adsManager);
 
+				adsManager.addEventListener(
+					window.google.ima.AdEvent.Type.LOADED,
+					(event: google.ima.AdEvent) => player.setVastAttributes('success', event.getAd()),
+				);
+				adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
+					player.setVastAttributes('error'),
+				);
+
 				if (videoSettings.isMoatTrackingEnabled()) {
 					moatVideoTracker.init(
 						adsManager,
@@ -43,15 +57,21 @@ class GoogleImaPlayerFactory {
 					);
 				}
 
-				player.dispatchEvent('wikiaAdsManagerLoaded');
+				if (videoSettings.isIasTrackingEnabled()) {
+					const iasConfig: IasTrackingParams = context.get('options.video.iasTracking.config');
+					const { src, pos, loc } = slotService.get(videoSettings.get('slotName')).getTargeting();
+					iasConfig.custom = src;
+					iasConfig.custom2 = pos;
+					iasConfig.custom3 = loc;
 
-				adsManager.addEventListener(
-					window.google.ima.AdEvent.Type.LOADED,
-					(event: google.ima.AdEvent) => player.setVastAttributes('success', event.getAd()),
-				);
-				adsManager.addEventListener(window.google.ima.AdErrorEvent.Type.AD_ERROR, () =>
-					player.setVastAttributes('error'),
-				);
+					iasVideoTracker
+						.init(google, adsManager, videoSettings.getContainer(), iasConfig)
+						.then(() => {
+							player.dispatchEvent('wikiaAdsManagerLoaded');
+						});
+				} else {
+					player.dispatchEvent('wikiaAdsManagerLoaded');
+				}
 			},
 			false,
 		);

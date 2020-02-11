@@ -6,6 +6,7 @@ class QueryStrings {
 		this.utils = {
 			resolved: 'resolved_state',
 			cb: 'cb',
+			cid: 'cid',
 			contentLength: 'content_length',
 			sessionId: 'sessionid',
 			enabledGeo: 'enabled-geo',
@@ -34,11 +35,14 @@ class QueryStrings {
 		};
 		this.services = {
 			confiant: 'confiant-disabled',
-			krux: 'krux-disabled',
 			trackingOptIn: 'tracking-opt-in',
 			moat: 'moat-yi-disabled',
 			adEngineDelay: 'adengine-delay',
 			enabledProjects: 'enabled-project',
+		};
+		this.killCodes = {
+			disableBtf: 'disableBtf',
+			disableSecondCall: 'disableSecondCall',
 		};
 	}
 
@@ -99,16 +103,16 @@ class QueryStrings {
 		return `${this.video.mute}=${capping}`;
 	}
 
-	getF15n() {
-		return `${this.video.f15n}`;
-	}
-
 	getCacheBuster(cb = Date.now()) {
 		return `${this.utils.cb}=${cb}`;
 	}
 
 	getPrice(price) {
 		return `${this.bidders.price}=${price}`;
+	}
+
+	getCampaign(cid) {
+		return `${this.utils.cid}=${cid}`;
 	}
 
 	getLimit(limit) {
@@ -137,12 +141,6 @@ class QueryStrings {
 		const on = resolved ? '1' : '0';
 
 		return `${this.utils.resolved}=${on}`;
-	}
-
-	getKrux(enabled) {
-		const on = enabled ? '0' : '1';
-
-		return `${this.services.krux}=${on}`;
 	}
 
 	getConfiant(enabled) {
@@ -183,6 +181,17 @@ class QueryStrings {
 		const on = enabled ? '1' : '0';
 
 		return `${this.utils.directPorvata}=${on}`;
+	}
+
+	disableBtf(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.killCodes.disableBtf}=${on}`;
+	}
+	disableSecondCall(enabled) {
+		const on = enabled ? '1' : '0';
+
+		return `${this.killCodes.disableSecondCall}=${on}`;
 	}
 
 	getSessionIdParam(parameter) {

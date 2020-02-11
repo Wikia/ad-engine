@@ -1,27 +1,37 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonSandbox, SinonStub } from 'sinon';
 import { context, slotTweaker } from '../../../../../../src/ad-engine';
 import { resolvedState } from '../../../../../../src/ad-products/templates/uap/resolved-state';
 import { BfaaHiviTheme } from '../../../../../../src/ad-products/templates/uap/themes/hivi';
+import { AdSlotStub, createAdSlotStub } from '../../../../../ad-engine/models/ad-slot.stub';
 
-function getSlotElement() {
+function getElement(): object {
 	return {
 		appendChild: () => {},
 		classList: {
 			contains: () => false,
 			add: () => {},
+			remove: () => {},
 		},
 		style: {},
-		offsetWidth: 1920,
 	};
 }
 
-function getAdSlotObject() {
+function getSlotElement(): object {
 	return {
-		getElement: () => getSlotElement(),
-		getSlotName: () => 'top_leaderboard',
-		isEnabled: () => true,
+		offsetWidth: 1920,
+		...getElement(),
 	};
+}
+
+function getAdSlotObject(sandbox: SinonSandbox): AdSlotStub {
+	const stub = createAdSlotStub(sandbox);
+
+	stub.getElement.callsFake(getSlotElement);
+	stub.getSlotName.returns('top_leaderboard');
+	stub.isEnabled.returns(true);
+
+	return stub;
 }
 
 const RESOLVED_STATE_PADDING = '10%';
@@ -64,23 +74,14 @@ function getParams() {
 		videoPlaceholderElement: {},
 		splitLayoutVideoPosition: 'right',
 		image1: {
-			element: {},
+			element: getElement(),
 			background: 'default-state-image.jpg',
 		},
 		image2: {
-			element: {
-				classList: {
-					contains: () => false,
-					remove: () => {},
-				},
-			},
+			element: getElement(),
 			background: 'resolved-state-image.jpg',
 		},
-		adContainer: {
-			classList: {
-				contains: () => false,
-			},
-		},
+		adContainer: getElement(),
 		thumbnail: {
 			style: {},
 		},
@@ -98,28 +99,22 @@ function getParams() {
 }
 
 describe('UAP:HiVi template', () => {
-	let sandbox;
+	const sandbox = createSandbox();
+	let isResolvedStateStub: SinonStub;
 
 	beforeEach(() => {
-		sandbox = sinon.sandbox.create();
-
+		isResolvedStateStub = sandbox.stub(resolvedState, 'isResolvedState');
 		sandbox
 			.stub(context, 'get')
 			.withArgs('templates.bfaa')
 			.returns({
 				mainContainer: document.body,
 			});
-		sandbox.stub(slotTweaker, 'onReady').returns({ then: () => {} });
-		sandbox.stub(slotTweaker, 'makeResponsive');
-		sandbox.stub(resolvedState, 'isResolvedState');
-		sandbox.stub(global.window, 'scrollBy');
-		sandbox.stub(global.window, 'addEventListener');
-		global.document.body.style = new CSSStyleDeclaration();
-
-		slotTweaker.onReady.returns({ then: () => {} });
-		slotTweaker.makeResponsive.returns({ then: () => {} });
-		global.window.scrollBy.returns(null);
-		global.window.addEventListener.returns(null);
+		sandbox.stub(slotTweaker, 'onReady').resolves({} as any);
+		sandbox.stub(slotTweaker, 'makeResponsive').resolves({} as any);
+		sandbox.stub(window, 'scrollBy').returns(null);
+		sandbox.stub(window, 'addEventListener').returns(null);
+		(document.body as any).style = new CSSStyleDeclaration();
 	});
 
 	afterEach(() => {
@@ -127,20 +122,20 @@ describe('UAP:HiVi template', () => {
 	});
 
 	it('should left padding empty for default state (BFAA handles it)', () => {
-		const adSlot = getAdSlotObject();
-		const theme = new BfaaHiviTheme(adSlot, getParams());
+		const adSlot = getAdSlotObject(sandbox);
+		const theme = new BfaaHiviTheme(adSlot as any, getParams() as any);
 
-		resolvedState.isResolvedState.returns(false);
+		isResolvedStateStub.returns(false);
 
 		theme.onAdReady();
 		expect(document.body.style.paddingTop).to.equal('');
 	});
 
 	it('should set correct padding for resolved state', () => {
-		const adSlot = getAdSlotObject();
-		const theme = new BfaaHiviTheme(adSlot, getParams());
+		const adSlot = getAdSlotObject(sandbox);
+		const theme = new BfaaHiviTheme(adSlot as any, getParams() as any);
 
-		resolvedState.isResolvedState.returns(true);
+		isResolvedStateStub.returns(true);
 
 		theme.onAdReady();
 

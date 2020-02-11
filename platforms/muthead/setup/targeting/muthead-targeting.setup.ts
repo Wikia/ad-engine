@@ -5,7 +5,7 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class MutheadTargetingSetup implements TargetingSetup {
 	configureTargetingContext(): void {
-		context.set('targeting', this.getPageLevelTargeting());
+		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
@@ -19,6 +19,7 @@ export class MutheadTargetingSetup implements TargetingSetup {
 			s1: 'muthead',
 			s2: getPageType(),
 			dmn: `${domain.name}${domain.tld}`,
+			geo: utils.geoService.getCountryCode() || 'none',
 		};
 
 		if (cid !== undefined) {

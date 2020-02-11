@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { stickyAd } from '../../../pages/sticky-ad.page';
-import { adSlots } from '../../../common/ad-slots';
+import { slots } from '../../../common/slot-registry';
 import { timeouts } from '../../../common/timeouts';
 import { helpers } from '../../../common/helpers';
 import { network } from '../../../common/network';
@@ -11,11 +11,10 @@ describe('sticky-ad template', () => {
 		network.captureConsole();
 	});
 	beforeEach(() => {
-		helpers.fastScroll(-2000);
 		network.clearLogs();
 
-		browser.url(stickyAd.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(stickyAd.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	after(() => {
@@ -45,7 +44,7 @@ describe('sticky-ad template', () => {
 	});
 
 	it('should unstick if close button is clicked', () => {
-		const message = 'Custom listener: onCustomEvent top_leaderboard force-unstick';
+		const message = '👁 top_leaderboard custom event: force-unstick';
 
 		helpers.mediumScroll(200);
 		$(stickyAd.stickedSlot).waitForExist(timeouts.standard);
@@ -55,17 +54,19 @@ describe('sticky-ad template', () => {
 		browser.waitUntil(
 			() => network.checkIfMessageIsInLogs(message),
 			2000,
-			`Logs should contain message: ${message}`,
+			`Logs should contain message: ${message}, instead they contain ${network.logs.map(
+				(entry) => entry.text,
+			)}`,
 		);
 
 		expect(network.checkIfMessageIsInLogs('force-close')).to.be.false;
 	});
 
 	it('should emit "stickiness-disabled event" if stickiness is disabled', () => {
-		const message = '👁 Custom listener: onCustomEvent top_leaderboard stickiness-disabled';
+		const message = '👁 top_leaderboard custom event: stickiness-disabled';
 
-		browser.url(`${stickyAd.pageLink}?disabled=1`);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(stickyAd.pageLink, 'disabled=1');
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.slowScroll(200);
 
 		browser.waitUntil(

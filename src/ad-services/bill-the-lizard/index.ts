@@ -1,23 +1,21 @@
-import { context, eventService, utils } from '@ad-engine/core';
+import { context, Dictionary, eventService, utils } from '@ad-engine/core';
 import { Executor } from './executor';
 import { ProjectsHandler } from './projects-handler';
 
 export * from './slot-bill-the-lizard-tracking-middleware';
 
-/**
- * @typedef {Object} ModelDefinition
- * @property {boolean|undefined} executable
- * @property {string[]} countries
- * @property {string} name
- * @property {function} on_*
- */
+interface ModelDefinition {
+	executable: boolean | undefined;
+	countries: string[];
+	name: string;
+	// {function} on_*
+}
 
-/**
- * @typedef {Object} PredictionDefinition
- * @property {string} modelName
- * @property {result} number
- * @property {(number|string)} callId
- */
+interface PredictionDefinition {
+	modelName: string;
+	result: number;
+	callId: number | string;
+}
 
 const logGroup = 'bill-the-lizard';
 let openRequests = [];
@@ -110,11 +108,11 @@ function httpRequest(host, endpoint, queryParameters = {}, timeout = 0, callId) 
 
 /**
  * Builds key-value pairs for query parameters
- * @param {ModelDefinition[]} models
+ * @param models
  * @param {Object} parameters (key-value pairs)
  * @returns {Object}
  */
-function getQueryParameters(models, parameters) {
+function getQueryParameters(models: ModelDefinition[], parameters) {
 	const now = new Date();
 	const day = now.getDay() - 1;
 
@@ -159,7 +157,7 @@ export class BillTheLizard {
 	targetedModelNames = new Set();
 	callCounter = 0;
 	predictions = [];
-	statuses = {};
+	statuses: Dictionary<string> = {};
 
 	reset() {
 		this.callCounter = 0;
@@ -177,12 +175,8 @@ export class BillTheLizard {
 	 * Supply callKey if you need to access status for this specific request.
 	 * DO NOT use an integer as callKey as it's the default value.
 	 * Good key example: "incontent_boxad1".
-	 *
-	 * @param {string[]} projectNames
-	 * @param {string} callId key for this call
-	 * @returns {Promise}
 	 */
-	call(projectNames, callId) {
+	call(projectNames: string[], callId?: string | number): Promise<PredictionDefinition> {
 		if (!context.get('services.billTheLizard.enabled')) {
 			utils.logger(logGroup, 'disabled');
 
@@ -203,7 +197,7 @@ export class BillTheLizard {
 			utils.logger(logGroup, 'no models to predict');
 			this.statuses[callId] = BillTheLizard.NOT_USED;
 
-			return Promise.resolve({});
+			return Promise.resolve({} as any);
 		}
 
 		// update names of GAM targeted models
@@ -253,18 +247,17 @@ export class BillTheLizard {
 			.catch((error) => {
 				utils.logger(logGroup, 'service response', error.message, `callId: ${callId}`);
 
-				return {};
+				return {} as any;
 			});
 	}
 
 	/**
 	 *
-	 * @param {ModelDefinition[]} models
+	 * @param models
 	 * @param {Object.<string, number>} modelToResultMap
 	 * @param {number|string} callId
-	 * @returns {PredictionDefinition[]}
 	 */
-	buildPredictions(models, modelToResultMap, callId) {
+	buildPredictions(models: ModelDefinition[], modelToResultMap, callId): PredictionDefinition[] {
 		return models
 			.map((model) => model.name)
 			.filter((modelName) => modelToResultMap[modelName] !== undefined)
@@ -274,9 +267,8 @@ export class BillTheLizard {
 	/**
 	 * Converts response to predictions
 	 * @param {Object} response
-	 * @returns {PredictionDefinition}
 	 */
-	getModelToResultMap(response) {
+	getModelToResultMap(response): PredictionDefinition {
 		const modelToResultMap = {};
 
 		Object.keys(response).forEach((modelName) => {
@@ -287,15 +279,13 @@ export class BillTheLizard {
 			}
 		});
 
-		return modelToResultMap;
+		return modelToResultMap as PredictionDefinition;
 	}
 
 	/**
 	 * Sets DFP targeting in context.
-	 *
-	 * @returns string
 	 */
-	setTargeting() {
+	setTargeting(): string[] {
 		const targeting = this.getTargeting();
 
 		if (Object.keys(targeting).length > 0) {
@@ -308,7 +298,7 @@ export class BillTheLizard {
 			return serializedTargeting;
 		}
 
-		return '';
+		return [];
 	}
 
 	/**
@@ -335,9 +325,8 @@ export class BillTheLizard {
 	 *
 	 * @param {string} modelName
 	 * @param {(number|string)} callId
-	 * @returns {PredictionDefinition}
 	 */
-	getPrediction(modelName, callId) {
+	getPrediction(modelName, callId): PredictionDefinition {
 		return this.getPredictions(modelName).find((pred) => pred.callId === callId);
 	}
 
@@ -347,9 +336,8 @@ export class BillTheLizard {
 	 * If model name is given, it returns all predictions with models matching.
 	 * Model matches when raw name (without version) is matched.
 	 *
-	 * @returns {PredictionDefinition[]}
 	 */
-	getPredictions(modelName?: string) {
+	getPredictions(modelName?: string): PredictionDefinition[] {
 		const separator = ':';
 
 		if (modelName) {
@@ -369,9 +357,7 @@ export class BillTheLizard {
 	 * @param {number|string} [callId] value passed as key for call
 	 * @returns {string}
 	 */
-	getResponseStatus(callId) {
-		callId = callId || this.callCounter;
-
+	getResponseStatus(callId: number | string = this.callCounter): string {
 		return this.statuses[callId];
 	}
 

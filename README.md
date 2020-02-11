@@ -42,7 +42,6 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`bidders.prebid.{bidder_name}.enabled`|Decides whether given bidder will be requested on page|boolean|✔|
 |`bidders.prebid.{bidder_name}.slots`|Slots definitions (specific for each bidder)|object|✔|
 |`bidders.prebid.bidsRefreshing.slots`|Decides which slots should be refreshed by Prebid|string[]|✘|
-|`custom.isCMPEnabled`|Enables or disables GDPR data in Prebid and A9 requests|boolean|✘|
 |`events`|Configuration for ad engine events|object|✘|
 |`events.pushOnScroll`|Creates defined slots on scroll|object|✘|
 |`events.pushOnScroll.ids`|List of ad slot names|array|✘|
@@ -60,8 +59,7 @@ To compile it in your desired application import `getAdEngineLoader` from `confi
 |`options.video.moatTracking.partnerCode`|MOAT identifier|string|✔|
 |`options.video.moatTracking.sampling`|Sampling for MOAT tracking|string|✔|
 |`options.video.porvata.audio.exposeToSlot`|Decides whether Porvata stores `audio` flag in slot object|boolean|✔|
-|`services.krux.enabled`|Decides whether Krux is loaded (after calling `krux.call()`)|boolean|✘|
-|`services.krux.id`|Krux ID|string|✔|
+|`services.permutive.enabled`|Decides whether Permutive is loaded|boolean|✘|
 |`slots`|Ad slots definition|object|✔|
 |`slots.{slot_name}`|Single slot definition|object|✔|
 |`slots.{slot_name}.{anything}`|Ad slot definition may contain different properties and they will be available in `AdSlot.config` property|string|✘|

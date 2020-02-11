@@ -38,7 +38,7 @@ export class AdEngine {
 
 		context.extend(config);
 
-		window.ads = window.ads || ({} as Ads);
+		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
 		templateService.register(FloatingAd);

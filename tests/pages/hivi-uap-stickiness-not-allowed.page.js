@@ -5,6 +5,7 @@ class HiviUapStickinessNotAllowed extends HiviUap {
 		super();
 		this.pageLink = 'templates/hivi-uap-stickiness-not-allowed/';
 		this.videoPlayer = '#videoContainer';
+		this.firstCall = '4466763538';
 	}
 }
 

@@ -33,6 +33,10 @@ if (blockOutOfViewportPausing) {
 }
 
 context.extend(adContext);
+context.set(
+	'options.video.iasTracking.enabled',
+	utils.queryString.get('enable_IAS_tracking') === '1',
+);
 context.set('targeting.artid', 292);
 context.set('targeting.vertical', 'games');
 context.set('targeting.wpage', '100% Orange Juice');
@@ -55,7 +59,7 @@ eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (eventInfo) => {
 });
 
 scrollListener.init();
-Porvata.inject(params).then((_video) => {
+Porvata.inject(params as any).then((_video) => {
 	const player = document.querySelector('.video-player');
 
 	_video.addEventListener('loaded', () => {

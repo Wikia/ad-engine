@@ -1,8 +1,10 @@
+import { slots } from '../common/slot-registry';
+
 class FloorAdhesion {
 	constructor() {
 		this.pageLink = 'templates/floor-adhesion/';
-		this.outOfPageWrapper = '.out-of-page-template';
-		this.closeButton = `${this.outOfPageWrapper}.floor-adhesion > .button-close`;
+		this.cid = 'adeng-floor-adhesion';
+		this.closeButton = `${slots.floorAdhesion.selector} .button-close`;
 	}
 }
 

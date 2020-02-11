@@ -35,8 +35,7 @@ function getAdSlotFromEvent(
 	event:
 		| googletag.events.ImpressionViewableEvent
 		| googletag.events.SlotOnloadEvent
-		| googletag.events.SlotRenderEndedEvent
-		| googletag.events.slotVisibilityChangedEvent,
+		| googletag.events.SlotRenderEndedEvent,
 ) {
 	const id = event.slot.getSlotElementId();
 
@@ -47,6 +46,12 @@ function configure() {
 	const tag = window.googletag.pubads();
 
 	tag.disableInitialLoad();
+
+	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
+		const adSlot = getAdSlotFromEvent(event);
+
+		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
+	});
 
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
@@ -118,6 +123,7 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupNonPersonalizedAds();
+		this.setupRestrictDataProcessing();
 		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.destroySlots());
 		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
 		initialized = true;
@@ -127,6 +133,14 @@ export class GptProvider implements Provider {
 		const tag = window.googletag.pubads();
 
 		tag.setRequestNonPersonalizedAds(trackingOptIn.isOptedIn() ? 0 : 1);
+	}
+
+	setupRestrictDataProcessing(): void {
+		const tag = window.googletag.pubads();
+
+		tag.setPrivacySettings({
+			restrictDataProcessing: trackingOptIn.isOptOutSale(),
+		});
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)

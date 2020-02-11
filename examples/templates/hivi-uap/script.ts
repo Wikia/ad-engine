@@ -17,12 +17,18 @@ import customContext from '../../context';
 import '../../styles.scss';
 
 context.extend(customContext);
-context.set('targeting.artid', '455');
+
+const cid = context.get('targeting.cid');
+
+if (!cid) {
+	context.set('targeting.cid', 'adeng-uap-hivi-dev');
+}
 context.set('options.tracking.slot.status', true);
 
 if (document.body.offsetWidth < 728) {
 	context.set('state.isMobile', true);
 	context.set('targeting.skin', 'fandom_mobile');
+	context.set('slots.bottom_leaderboard.viewportConflicts', []);
 }
 
 setupNpaContext();

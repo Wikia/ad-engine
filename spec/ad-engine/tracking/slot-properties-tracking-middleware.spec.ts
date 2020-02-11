@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createSandbox, SinonFakeTimers, spy } from 'sinon';
+import { createSandbox, SinonFakeTimers } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models';
 import { context } from '../../../src/ad-engine/services';
 import { slotPropertiesTrackingMiddleware } from '../../../src/ad-engine/tracking';
@@ -28,6 +28,8 @@ describe('slot-properties-tracking-middleware', () => {
 		adSlot.lineItemId = 789;
 		adSlot.orderId = 3;
 		adSlot.status = 'success';
+
+		sandbox.stub(adSlot, 'getUid').returns('a2b01b9f-69df-4481-9daf-9e27bf26502b');
 	});
 
 	afterEach(() => {
@@ -60,6 +62,7 @@ describe('slot-properties-tracking-middleware', () => {
 			order_id: 3,
 			previous: 'value',
 			product_lineitem_id: 789,
+			slot_id: 'a2b01b9f-69df-4481-9daf-9e27bf26502b',
 			slot_size: '728x90',
 		});
 	});

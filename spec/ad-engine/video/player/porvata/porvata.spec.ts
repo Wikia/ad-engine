@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { PorvataPlayer } from '../../../../../src/ad-products/video/player/porvata/porvata';
 
-let mocks = {};
+let mocks: any = {};
 
 describe('porvata', () => {
 	beforeEach(() => {
@@ -43,7 +43,7 @@ describe('porvata', () => {
 	});
 
 	it('player with proper interface and properties', () => {
-		const player = new PorvataPlayer(mocks.ima, mocks.params);
+		const player = new PorvataPlayer(mocks.ima as any, mocks.params as any, {} as any);
 
 		expect(player.ima).to.equal(mocks.ima);
 		expect(typeof player.container).to.equal('object');
@@ -75,7 +75,7 @@ describe('porvata', () => {
 		sinon.spy(mocks.adsManager, 'setVolume');
 		sinon.spy(mocks.adsManager, 'stop');
 
-		const player = new PorvataPlayer(mocks.ima, mocks.params);
+		const player = new PorvataPlayer(mocks.ima as any, mocks.params as any, {} as any);
 
 		player.addEventListener('loaded', () => {});
 		expect(mocks.ima.addEventListener.calledOnce).to.be.ok;
@@ -101,7 +101,7 @@ describe('porvata', () => {
 		player.resume();
 		expect(mocks.adsManager.resume.calledOnce).to.be.ok;
 
-		player.setVolume();
+		player.setVolume(50);
 		expect(mocks.adsManager.setVolume.calledOnce).to.be.ok;
 
 		player.stop();
@@ -110,7 +110,7 @@ describe('porvata', () => {
 
 	it('destroy calls defined destroy callbacks', () => {
 		const destroyCallback = sinon.spy();
-		const player = new PorvataPlayer(mocks.ima, mocks.params);
+		const player = new PorvataPlayer(mocks.ima as any, mocks.params as any, {} as any);
 
 		player.addOnDestroyCallback(destroyCallback);
 		player.destroy();

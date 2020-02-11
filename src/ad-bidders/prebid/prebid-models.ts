@@ -11,16 +11,19 @@ export type PrebidConfig = {
 
 export interface PrebidAdapterConfig {
 	enabled: boolean;
-	slots: Dictionary<PrebidAdapterConfig>;
+	slots: Dictionary<PrebidAdSlotConfig>;
 }
 
 export interface PrebidAdSlotConfig {
 	appId?: string | number;
-	siteId?: string | number;
 	inScreen?: string;
+	inventoryCodes?: string[];
+	networkId?: string;
 	placementId?: string | number;
 	pos?: string;
 	productId?: string;
+	pubId?: string | number;
+	siteId?: string | number;
 	size?: number[];
 	sizes?: [number, number][];
 	unit?: string;

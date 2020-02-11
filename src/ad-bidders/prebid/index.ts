@@ -9,8 +9,9 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
+import { Cmp, cmp } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
-import { getAvailableBidsByAdUnitCode, getBidUUID, setupAdUnits } from './prebid-helper';
+import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
@@ -34,16 +35,11 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	}
 }
 
-const uuidKey = 'hb_uuid';
-
 export class PrebidProvider extends BidderProvider {
-	static validResponseStatusCode = 1;
-	static errorResponseStatusCode = 2;
-
 	adUnits: PrebidAdUnit[];
-	isCMPEnabled: boolean;
 	isLazyLoadingEnabled: boolean;
 	lazyLoaded = false;
+	cmp: Cmp = cmp;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
 
@@ -52,36 +48,76 @@ export class PrebidProvider extends BidderProvider {
 		adaptersRegistry.configureAdapters();
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		this.prebidConfig = {
 			debug:
 				utils.queryString.get('pbjs_debug') === '1' ||
 				utils.queryString.get('pbjs_debug') === 'true',
-			enableSendAllBids: false,
+			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
-			userSync: {
-				iframeEnabled: true,
-				enabledBidders: [],
-				syncDelay: 6000,
-			},
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
-		if (this.isCMPEnabled) {
-			this.prebidConfig.consentManagement = {
-				cmpApi: 'iab',
-				timeout: this.timeout,
-				allowAuctionWithoutConsent: false,
+		// ToDo @ Prebid 3.0: remove else part once Prebid v3.2.0 transition will be done
+		if (
+			context.get('bidders.prebid.libraryUrl') &&
+			context.get('bidders.prebid.libraryUrl').includes('v3.2.0')
+		) {
+			this.prebidConfig.userSync = {
+				filterSettings: {
+					iframe: {
+						bidders: '*',
+						filter: 'include',
+					},
+					image: {
+						bidders: '*',
+						filter: 'include',
+					},
+				},
+				syncsPerBidder: 3,
+				syncDelay: 6000,
 			};
+		} else {
+			this.prebidConfig.userSync = {
+				iframeEnabled: true,
+				enabledBidders: [],
+				syncDelay: 6000,
+			};
+		}
+
+		if (this.cmp.exists) {
+			// ToDo @ Prebid 3.0: remove else part once Prebid v2.44.0 transition will be done
+			if (
+				context.get('bidders.prebid.libraryUrl') &&
+				!context.get('bidders.prebid.libraryUrl').includes('v2.4.0')
+			) {
+				this.prebidConfig.consentManagement = {
+					gdpr: {
+						cmpApi: 'iab',
+						timeout: this.timeout,
+						allowAuctionWithoutConsent: false,
+					},
+					usp: {
+						cmpApi: 'iab',
+						timeout: 100,
+					},
+				};
+			} else {
+				this.prebidConfig.consentManagement = {
+					cmpApi: 'iab',
+					timeout: this.timeout,
+					allowAuctionWithoutConsent: false,
+				};
+			}
 		}
 
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
+		this.registerBidsTracking();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -149,71 +185,16 @@ export class PrebidProvider extends BidderProvider {
 		return allTargetingKeys.filter((key) => key.indexOf('hb_') === 0);
 	}
 
-	getDealsTargetingFromBid(bid: Dictionary): PrebidTargeting {
-		const keyValuePairs: Dictionary = {};
-
-		Object.keys(bid.adserverTargeting).forEach((key) => {
-			if (key.indexOf('hb_deal_') === 0) {
-				keyValuePairs[key] = bid.adserverTargeting[key];
-			}
-		});
-
-		return keyValuePairs;
-	}
-
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
+		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
-		let slotParams: PrebidTargeting = {};
-		let deals: PrebidTargeting = {};
 
-		// We are not using pbjs.getAdserverTargetingForAdUnitCode
-		// because it takes only last auction into account.
-		// We need to get all available bids (including old auctions)
-		// in order to keep still available, not refreshed adapters' bids...
-		const bids: PrebidBidResponse[] = await getAvailableBidsByAdUnitCode(slotAlias);
-
-		if (bids.length) {
-			let bidParams = null;
-
-			bids.forEach((param) => {
-				if (!bidParams) {
-					bidParams = param;
-				} else if (bidParams.cpm === param.cpm) {
-					bidParams = bidParams.timeToRespond > param.timeToRespond ? param : bidParams;
-				} else {
-					bidParams = bidParams.cpm < param.cpm ? param : bidParams;
-				}
-
-				// ... However we need to take care of all hb_deal_* keys manually then
-				deals = {
-					...deals,
-					...this.getDealsTargetingFromBid(param),
-				};
-			});
-
-			if (bidParams) {
-				slotParams = {
-					...deals,
-					...bidParams.adserverTargeting,
-				};
-			}
-		}
-
-		const { hb_adid: adId } = slotParams;
-
-		if (adId) {
-			const uuid: string = await getBidUUID(slotAlias, adId);
-
-			if (uuid) {
-				// This is not calculated in prebid-settings for hb_uuid
-				// because AppNexus adapter is using external service to retrieve
-				// cache key and adserverTargeting is executed too early.
-				// We have to take it as late as possible.
-				slotParams[uuidKey] = uuid;
-			}
-		}
-
-		return slotParams || {};
+		return {
+			...(context.get('bidders.prebid.sendAllBids')
+				? pbjs.getAdserverTargetingForAdUnitCode(slotAlias)
+				: null),
+			...(await getWinningBid(slotAlias)),
+		};
 	}
 
 	isSupported(slotName: string): boolean {
@@ -226,7 +207,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const refreshUsedBid = (winningBid) => {
-			eventService.emit(events.BIDS_REFRESH_STARTED, winningBid.adUnitCode);
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				eventService.emit(events.BIDS_REFRESH);
 				const adUnitsToRefresh = this.adUnits.filter(
@@ -243,6 +223,19 @@ export class PrebidProvider extends BidderProvider {
 		pbjs.onEvent('bidWon', refreshUsedBid);
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
 			pbjs.offEvent('bidWon', refreshUsedBid);
+		});
+	}
+
+	async registerBidsTracking(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		const trackBid = (response) => {
+			eventService.emit(events.BIDS_RESPONSE, response);
+		};
+
+		pbjs.onEvent('bidResponse', trackBid);
+		eventService.once(events.PAGE_CHANGE_EVENT, () => {
+			pbjs.offEvent('bidResponse', trackBid);
 		});
 	}
 

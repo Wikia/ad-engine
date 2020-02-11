@@ -10,10 +10,11 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
-import { Apstag, Cmp, cmp } from '../wrappers';
+import { Apstag, Cmp, cmp, Usp, usp } from '../wrappers';
 import {
 	A9Bid,
 	A9Bids,
+	A9CCPA,
 	A9Config,
 	A9GDPR,
 	A9SlotConfig,
@@ -32,20 +33,19 @@ export class A9Provider extends BidderProvider {
 	apstag: Apstag = Apstag.make();
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
+	usp: Usp = usp;
 	isRenderImpOverwritten = false;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
 
 	amazonId: string;
 	bidsRefreshing: Partial<BidsRefreshing>;
-	isCMPEnabled: boolean;
 	slots: Dictionary<A9SlotConfig>;
 	slotsNames: string[];
 
 	constructor(public bidderConfig: A9Config, public timeout: number = DEFAULT_MAX_DELAY) {
 		super('a9', bidderConfig, timeout);
 
-		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.amazonId = this.bidderConfig.amazonId;
 		this.slots = this.bidderConfig.slots;
 		this.slotsNames = Object.keys(this.slots);
@@ -56,8 +56,8 @@ export class A9Provider extends BidderProvider {
 		return this.targetingKeys;
 	}
 
-	init(consentData: ConsentData = {}): void {
-		this.initIfNotLoaded(consentData);
+	init(consentData: ConsentData = {}, signalData: SignalData = {}): void {
+		this.initIfNotLoaded(consentData, signalData);
 
 		this.bids = {};
 		this.priceMap = {};
@@ -66,29 +66,42 @@ export class A9Provider extends BidderProvider {
 		this.fetchBids(a9Slots);
 	}
 
-	private initIfNotLoaded(consentData: ConsentData): void {
+	private initIfNotLoaded(consentData: ConsentData, signalData: SignalData): void {
 		if (!this.loaded) {
-			this.apstag.init(this.getApstagConfig(consentData));
+			this.apstag.init(this.getApstagConfig(consentData, signalData));
 			this.loaded = true;
 		}
 	}
 
-	private getApstagConfig(consentData: ConsentData): ApstagConfig {
+	private getApstagConfig(consentData: ConsentData, signalData: SignalData): ApstagConfig {
 		return {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
 			deals: !!this.bidderConfig.dealsEnabled,
 			...this.getGdprIfApplicable(consentData),
+			...this.getCcpaIfApplicable(signalData),
 		};
 	}
 
 	private getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
-		if (this.isCMPEnabled && consentData && consentData.consentData) {
+		if (consentData && consentData.consentData) {
 			return {
 				gdpr: {
 					enabled: consentData.gdprApplies,
 					consent: consentData.consentData,
 					cmpTimeout: 5000,
+				},
+			};
+		}
+
+		return {};
+	}
+
+	private getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
+		if (signalData && signalData.uspString) {
+			return {
+				params: {
+					us_privacy: signalData.uspString,
 				},
 			};
 		}
@@ -214,11 +227,11 @@ export class A9Provider extends BidderProvider {
 	createSlotDefinition(slotName: string): A9SlotDefinition | null {
 		const config: A9SlotConfig = this.slots[slotName];
 		const definition: A9SlotDefinition = {
-			slotID: slotName,
 			slotName,
+			slotID: slotName,
 		};
 
-		if (!this.bidderConfig.videoEnabled && config.type === 'video') {
+		if (!config || (!this.bidderConfig.videoEnabled && config.type === 'video')) {
 			return null;
 		}
 		if (config.type === 'video') {
@@ -258,13 +271,18 @@ export class A9Provider extends BidderProvider {
 	}
 
 	protected async callBids(): Promise<void> {
-		if (this.isCMPEnabled && this.cmp.exists) {
-			const consentData = await this.cmp.getConsentData();
+		let consentData = null;
+		let signalData = null;
 
-			this.init(consentData);
-		} else {
-			this.init();
+		if (this.cmp.exists) {
+			consentData = await this.cmp.getConsentData();
 		}
+
+		if (this.usp.exists) {
+			signalData = await this.usp.getSignalData();
+		}
+
+		this.init(consentData, signalData);
 	}
 
 	calculatePrices(): void {

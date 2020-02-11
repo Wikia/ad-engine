@@ -20,6 +20,11 @@ interface PrebidMediaTypes {
 	video: {
 		context?: string;
 		playerSize: number[];
+		mimes?: string[];
+		api?: number[];
+		linearity?: number;
+		maxduration?: number;
+		protocols?: number[];
 	};
 }
 
@@ -34,16 +39,20 @@ interface PrebidBidResponse {
 	cpm: number;
 	status: string;
 	bidderCode: string;
+	requestTimestamp: number;
+	responseTimestamp: number;
 	timeToRespond: number;
 	getStatusCode: () => number;
 	width: number;
 	height: number;
+	size: string;
 	statusMessage:
 		| 'Pending'
 		| 'Bid available'
 		| 'Bid returned empty or error response'
 		| 'Bid timed out';
 	adId: string;
+	adUnitCode: string;
 	requestId: string;
 	mediaType: string;
 	source: unknown;
@@ -52,6 +61,7 @@ interface PrebidBidResponse {
 	 * ${width}x${height}
 	 */
 	getSize: () => string;
+	adserverTargeting: PrebidTargeting;
 }
 
 interface PrebidRequestOptions {
@@ -98,6 +108,8 @@ interface Pbjs {
 	markWinningBidAsUsed(markBidRequest: PrebidMarkBidRequest): void;
 
 	getBidResponsesForAdUnitCode(adUnitCode: string): { bids: PrebidBidResponse[] };
+
+	getAdserverTargetingForAdUnitCode(adUnitCode: string): PrebidTargeting;
 
 	setConfig(config: {}): void;
 

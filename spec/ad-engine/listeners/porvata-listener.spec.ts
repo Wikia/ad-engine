@@ -35,7 +35,7 @@ describe('porvata-listener', () => {
 	});
 
 	it('dispatch Porvata event with all basic data', () => {
-		new PorvataListener({ adProduct: 'test-video', position: 'abcd' }).init();
+		new PorvataListener({ adProduct: 'test-video', position: 'abcd' } as any).init();
 
 		expect(customListener.dispatchedEvents.length).to.equal(1);
 
@@ -54,7 +54,7 @@ describe('porvata-listener', () => {
 
 	describe('init', () => {
 		it('should dispatch Porvata event with ad data extracted from video container', () => {
-			const listener = new PorvataListener({ adProduct: 'test-video' });
+			const listener = new PorvataListener({ adProduct: 'test-video' } as any);
 			listener.video = {
 				container: {
 					getAttribute: (attr: string): string => {
@@ -65,7 +65,7 @@ describe('porvata-listener', () => {
 						}[attr];
 					},
 				},
-			};
+			} as any;
 
 			listener.init();
 
@@ -79,7 +79,7 @@ describe('porvata-listener', () => {
 	});
 
 	it('dispatch video viewed event on ad-slot', () => {
-		const listener = new PorvataListener({ adProduct: 'test-video', position: 'abcd' });
+		const listener = new PorvataListener({ adProduct: 'test-video', position: 'abcd' } as any);
 
 		const adSlotMock = { emit: spy(), getSlotName: () => {} };
 

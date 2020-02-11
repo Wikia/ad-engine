@@ -4,7 +4,7 @@ import { commonAds } from '../pages/common-ad.page';
 const slotsContext = {
 	mobile: {
 		bottomLeaderboard: {
-			scrollTrigger: '.bottom-leaderboard',
+			scrollTrigger: 'footer',
 			slotName: 'bottom_leaderboard',
 		},
 		featured: {
@@ -16,8 +16,8 @@ const slotsContext = {
 		},
 		incontentBoxad: {
 			position: 'incontent_boxad',
-			scrollTrigger: '.incontent-boxad,.incontent-boxad-1',
-			slotName: 'incontent_boxad_1',
+			scrollTrigger: '.rail-module',
+			slotName: 'incontent_boxad',
 		},
 		incontentPlayer: {
 			slotName: 'incontent_player',
@@ -40,6 +40,7 @@ const slotsContext = {
 	desktop: {
 		bottomLeaderboard: {
 			isLazyLoaded: true,
+			scrollTrigger: 'footer',
 			slotName: 'bottom_leaderboard',
 		},
 		incontentBoxad: {
@@ -62,6 +63,9 @@ const slotsContext = {
 		},
 		topLeaderboard: {
 			slotName: 'top_leaderboard',
+		},
+		floorAdhesion: {
+			slotName: 'floor_adhesion',
 		},
 		repeatableBoxad1: {
 			scrollTrigger: commonAds.railModule,
@@ -87,6 +91,12 @@ const slotsContext = {
 		},
 		repeatableBoxad8: {
 			slotName: 'repeatable_boxad_8',
+		},
+		repeatableBoxad9: {
+			slotName: 'repeatable_boxad_9',
+		},
+		repeatableBoxad10: {
+			slotName: 'repeatable_boxad_10',
 		},
 	},
 };

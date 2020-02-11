@@ -18,6 +18,7 @@ exports.config = merge(
 			slots: ['./tests/specs/slots/*.desktop.test.js'],
 			utils: ['./tests/specs/utils/*.desktop.test.js'],
 			video: ['./tests/specs/video/*.desktop.test.js'],
+			tracking: ['./tests/specs/tracking/*.desktop.test.js'],
 		},
 
 		specs: ['tests/specs/**/*.desktop.test.js'],

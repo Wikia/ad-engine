@@ -73,11 +73,14 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		if (resolvedState.isResolvedState(this.params)) {
 			this.setResolvedState(true);
 		} else {
+			this.setResolvedState(false);
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
 			// Manually run update on scroll once
 			this.updateAdSizes();
 		}
+
+		setTimeout(() => this.addImagesAnimation());
 	}
 
 	onVideoReady(video: PorvataPlayer): void {
@@ -186,7 +189,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 
 		if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
-			this.setResolvedState();
+			this.setResolvedState(true);
 		} else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
 			this.container.style.top = '';
 			this.switchImagesInAd(false);
@@ -222,22 +225,24 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	private setResolvedState(immediately?: boolean): Promise<void> {
+	private setResolvedState(isResolved: boolean): Promise<void> {
 		const offset: number = this.getHeightDifferenceBetweenStates();
 
-		this.switchImagesInAd(true);
+		this.switchImagesInAd(isResolved);
 
 		if (this.onResolvedStateScroll) {
 			window.removeEventListener('scroll', this.onResolvedStateScroll);
 			this.onResolvedStateScroll.cancel();
 		}
 
-		if (this.config.onResolvedStateSetCallback) {
-			this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
+		if (isResolved) {
+			if (this.config.onResolvedStateSetCallback) {
+				this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
+			}
 		}
 
 		return new Promise((resolve) => {
-			if (immediately) {
+			if (isResolved) {
 				this.lock();
 				resolve();
 			} else {
@@ -267,10 +272,20 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	private switchImagesInAd(isResolved: boolean): void {
 		if (isResolved) {
 			this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
-			this.params.image2.element.classList.remove('hidden-state');
 		} else {
 			this.container.classList.remove(CSS_CLASSNAME_THEME_RESOLVED);
-			this.params.image2.element.classList.add('hidden-state');
+		}
+
+		if (this.params.image2 && this.params.image2.background) {
+			if (isResolved) {
+				this.params.image2.element.classList.remove('hidden-state');
+				this.params.image1.element.classList.add('hidden-state');
+			} else {
+				this.params.image2.element.classList.add('hidden-state');
+				this.params.image1.element.classList.remove('hidden-state');
+			}
+		} else {
+			this.params.image1.element.classList.remove('hidden-state');
 		}
 	}
 

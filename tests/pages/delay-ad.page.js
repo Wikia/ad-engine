@@ -6,6 +6,10 @@ class DelayAd {
 	constructor() {
 		this.pageLink = 'slots/delay/';
 		this.loadAdsButton = '#clickDelay';
+		this.resultAttribute = 'data-slot-result';
+		this.viewedAttribute = 'data-slot-viewed';
+		this.adLoaded = 'success';
+		this.adViewed = 'true';
 	}
 
 	/**
@@ -27,6 +31,11 @@ class DelayAd {
 			'Ads not loaded',
 			timeouts.interval,
 		);
+	}
+
+	loadAds() {
+		$(this.loadAdsButton).waitForDisplayed(timeouts.standard);
+		$(this.loadAdsButton).click();
 	}
 }
 

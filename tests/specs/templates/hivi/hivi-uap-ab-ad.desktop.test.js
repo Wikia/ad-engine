@@ -1,52 +1,39 @@
 import { expect } from 'chai';
 import { hiviUapAb } from '../../../pages/hivi-uap-ab-ad.page';
-import { adSlots } from '../../../common/ad-slots';
-import { timeouts } from '../../../common/timeouts';
+import { slots } from '../../../common/slot-registry';
 import { helpers } from '../../../common/helpers';
 
 describe('HiVi UAP AB ads page with uap_c', () => {
-	let adStatus;
-
+	let currentCreativeID;
 	before(() => {
 		helpers.navigateToUrl(hiviUapAb.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
-		helpers.slowScroll(7000);
-		adSlots.waitForSlotExpanded(adSlots.bottomLeaderboard);
+		slots.topLeaderboard.waitForCreativedIDAttribute();
+		currentCreativeID = slots.topLeaderboard.creativeId;
 	});
 
-	beforeEach(() => {
-		adStatus = adSlots.getSlotStatus(adSlots.bottomLeaderboard);
-	});
-
-	it('Check if slot is visible in viewport', () => {
-		expect(adStatus.inViewport, 'Not in viewport').to.be.true;
-	});
-
-	it('Check if creative id is from the same campaign', () => {
-		helpers.waitForLineItemIdAttribute(adSlots.bottomLeaderboard);
-
-		expect(helpers.getLineItemId(adSlots.topLeaderboard)).to.equal(
-			hiviUapAb.lineItemId,
-			'Line item ID mismatch',
+	it('should check creativeID for Top Boxad', () => {
+		slots.topBoxad.waitForCreativedIDAttribute();
+		expect(hiviUapAb.getUapCValue(slots.topBoxad)).to.equal(
+			currentCreativeID,
+			'Top Boxad has incorrect creative id',
 		);
+	});
 
-		const topLeaderboardCreativeId = helpers.getCreativeId(adSlots.topLeaderboard);
-		const bottomLeaderboardCreativeId = helpers.getCreativeId(adSlots.bottomLeaderboard);
+	it('should check creativeID for Incontent Boxad', () => {
+		slots.incontentBoxad.scrollIntoView();
+		slots.incontentBoxad.waitForCreativedIDAttribute();
+		expect(hiviUapAb.getUapCValue(slots.incontentBoxad)).to.equal(
+			currentCreativeID,
+			'Incontent Boxad has incorrect creative id',
+		);
+	});
 
-		if (topLeaderboardCreativeId === hiviUapAb.aCreativeId) {
-			expect(bottomLeaderboardCreativeId).to.equal(
-				hiviUapAb.aCreativeId,
-				'Bottom leaderboard creative ID mismatch',
-			);
-		} else {
-			expect(topLeaderboardCreativeId).to.equal(
-				hiviUapAb.bCreativeId,
-				'Top leaderboard creative ID mismatch',
-			);
-			expect(bottomLeaderboardCreativeId).to.equal(
-				hiviUapAb.bCreativeId,
-				'Bottom leaderboard creative ID mismatch',
-			);
-		}
+	it('should check creativeID for Bottom Leaderboard', () => {
+		slots.bottomLeaderboard.scrollIntoView();
+		slots.bottomLeaderboard.waitForCreativedIDAttribute();
+		expect(hiviUapAb.getUapCValue(slots.bottomLeaderboard)).to.equal(
+			currentCreativeID,
+			'Bottom Leaderboard has incorrect creative id',
+		);
 	});
 });

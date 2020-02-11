@@ -1,10 +1,12 @@
 import { utils } from '@wikia/ad-engine';
-import { cmpWrapper } from './cmp/cmp-wrapper';
+import { trackingOptInWrapper } from './consent/tracking-opt-in-wrapper';
 
-export async function bootstrapAndGetCmpConsent(): Promise<boolean> {
-	const countryCode = utils.geoService.setUpGeoData().country;
+export async function bootstrapAndGetConsent(): Promise<void> {
+	const geoData = utils.geoService.setUpGeoData();
 
-	await cmpWrapper.init(countryCode);
+	await trackingOptInWrapper.init(geoData);
 
-	return cmpWrapper.getConsent();
+	trackingOptInWrapper.getConsent();
+	trackingOptInWrapper.getSignal();
+	trackingOptInWrapper.flushConsentQueue();
 }

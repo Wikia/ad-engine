@@ -56,6 +56,12 @@ describe('google-ima-player', () => {
 				getContainer() {
 					return mocks.videoParams.container;
 				},
+				isMoatTrackingEnabled() {
+					return false;
+				},
+				isIasTrackingEnabled() {
+					return false;
+				},
 			},
 		};
 		window.google = {

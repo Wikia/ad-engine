@@ -25,18 +25,19 @@ describe('gpt-provider', () => {
 			disableInitialLoad: spy(),
 			enableSingleRequest: spy(),
 			setRequestNonPersonalizedAds: spy(),
+			setPrivacySettings: spy(),
 			setTargeting: spy(),
 		};
 
 		window.googletag = {
 			pubads: () => pubads,
 			enableServices: spy(),
-		};
+		} as any;
 
 		window.googletag.cmd = window.googletag.cmd || [];
-		window.googletag.cmd.push = (cb) => {
+		window.googletag.cmd.push = ((cb) => {
 			cb();
-		};
+		}) as any;
 
 		context.set('options.trackingOptIn', true);
 	});
@@ -55,7 +56,7 @@ describe('gpt-provider', () => {
 		setTimeout(() => {
 			expect(pubads.disableInitialLoad.called).to.be.true;
 			expect(pubads.enableSingleRequest.called).to.be.false;
-			expect(pubads.addEventListener.calledThrice).to.be.true;
+			expect(pubads.addEventListener.callCount).to.equal(4);
 			expect(pubads.setRequestNonPersonalizedAds.calledWith(0)).to.be.true;
 			done();
 		});
@@ -68,5 +69,14 @@ describe('gpt-provider', () => {
 		provider.setupNonPersonalizedAds();
 
 		expect(pubads.setRequestNonPersonalizedAds.calledWith(1)).to.be.true;
+	});
+
+	it('initialise with restrict data processing when user opt-out from data sale', () => {
+		context.set('options.optOutSale', true);
+
+		provider = new GptProvider();
+		provider.setupRestrictDataProcessing();
+
+		expect(pubads.setPrivacySettings.calledWith({ restrictDataProcessing: true })).to.be.true;
 	});
 });

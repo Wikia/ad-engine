@@ -1,30 +1,26 @@
 import { postmessageTrackerPage } from '../../pages/postmessage-tracker';
-import { timeouts } from '../../common/timeouts';
+import { helpers } from '../../common/helpers';
 
 describe('PostmessageTracker', () => {
 	const page = postmessageTrackerPage;
 
 	beforeEach(() => {
-		browser.url(page.pageLink);
-		browser.waitUntil(
-			() => page.getMessageCount() === '0',
-			timeouts.standard,
-			'Page set up incorrectly',
-		);
+		helpers.navigateToUrl(page.pageLink);
+		page.checkNumberOfMessages(0, 'Page set up incorrectly');
 	});
 
 	it('should handle correct message (raw object)', () => {
 		$(page.correctButtonSelector).click();
-		browser.waitUntil(() => page.getMessageCount() === '1', timeouts.standard);
+		page.checkNumberOfMessages(1);
 	});
 
 	it('should handle correct message (serialized object)', () => {
 		$(page.correctSerializedButtonSelector).click();
-		browser.waitUntil(() => page.getMessageCount() === '1', timeouts.standard);
+		page.checkNumberOfMessages(1);
 	});
 
 	it('should not catch incorrect message', () => {
 		$(page.incorrectButtonSelector).click();
-		browser.waitUntil(() => page.getMessageCount() === '0', timeouts.standard);
+		page.checkNumberOfMessages(0);
 	});
 });

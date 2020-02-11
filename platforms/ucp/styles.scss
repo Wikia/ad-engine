@@ -1,0 +1,19 @@
+.main-page-tag-rcs {
+	display: flex;
+	flex-direction: column;
+}
+
+#top_leaderboard {
+	> div {
+		text-align: center;
+	}
+}
+
+#bottom_leaderboard {
+	padding: 20px 0;
+	margin: 0 auto;
+
+	> div {
+		text-align: center;
+	}
+}

@@ -3,7 +3,7 @@ export * from './bt-rec';
 export * from './confiant';
 export * from './duration-media';
 export * from './instant-config';
-export * from './krux';
 export * from './moat-yi';
 export * from './nielsen';
+export * from './permutive';
 export * from './taxonomy/taxonomy-service';

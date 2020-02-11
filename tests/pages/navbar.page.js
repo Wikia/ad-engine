@@ -1,3 +1,5 @@
+import { helpers } from '../common/helpers';
+
 class NavbarPage {
 	get element() {
 		return $(this.selector);
@@ -9,6 +11,10 @@ class NavbarPage {
 
 	get position() {
 		return this.element.getLocation('y');
+	}
+
+	get relativePosition() {
+		return helpers.getLocationRelativeToViewport(this.selector);
 	}
 
 	get height() {

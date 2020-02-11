@@ -1,7 +1,15 @@
 import { expect } from 'chai';
 import { timeouts } from './timeouts';
 
+/**
+ * Simplified Response object
+ * (https://chromedevtools.github.io/devtools-protocol/tot/Network#type-Response)
+ * @typedef {Object} NetworkResponse
+ * @property {string} url - URL
+ */
+
 class Network {
+	/** @type {NetworkResponse[]} */
 	responses = [];
 	listener = null;
 	logs = [];
@@ -68,6 +76,12 @@ class Network {
 		this.responses = [];
 	}
 
+	/**
+	 * Filters responses by keys.
+	 *
+	 * @param {string[]} keys
+	 * @returns {NetworkResponse[]}
+	 */
 	filterResponses(...keys) {
 		return this.responses.filter((response) => keys.every((key) => response.url.includes(key)));
 	}

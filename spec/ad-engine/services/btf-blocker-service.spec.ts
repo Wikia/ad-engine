@@ -30,7 +30,7 @@ describe('btf-blocker-service', () => {
 
 		window.ads = {
 			runtime: {},
-		};
+		} as any;
 
 		firstCallSlot = {
 			...adSlotFake,

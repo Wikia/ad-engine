@@ -8,6 +8,7 @@ import {
 	events,
 	eventService,
 	setupNpaContext,
+	setupRdpContext,
 	utils,
 } from '@wikia/ad-engine';
 import customContext from '../../context';
@@ -32,16 +33,14 @@ cmp.override((cmd, param, cb) => {
 		cb(
 			{
 				metadata: 'BOQu5naOQu5naCNABAAABRAAAAAAAA',
-				purposeConsents: Array.from({ length: 5 }).reduce((map, val, i) => {
-					map[i + 1] = optIn;
-
-					return map;
-				}, {}),
-				vendorConsents: Array.from({ length: 500 }).reduce((map, val, i) => {
-					map[i + 1] = optIn;
-
-					return map;
-				}, {}),
+				purposeConsents: Array.from({ length: 5 }).reduce<ConsentData['purposeConsents']>(
+					(map, val, i) => ({ ...map, [i + 1]: optIn }),
+					{},
+				),
+				vendorConsents: Array.from({ length: 500 }).reduce<ConsentData['vendorConsents']>(
+					(map, val, i) => ({ ...map, [i + 1]: optIn }),
+					{},
+				),
 			},
 			true,
 		);
@@ -58,6 +57,7 @@ context.set('bidders.a9.bidsRefreshing.enabled', utils.queryString.get('refreshi
 context.set('bidders.a9.bidsRefreshing.slots', ['incontent_boxad']);
 
 setupNpaContext();
+setupRdpContext();
 
 let resolveBidders;
 
@@ -92,6 +92,7 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
+// @ts-ignore
 window.bidders = bidders;
 
 document.getElementById('enableDebugMode').addEventListener('click', () => {

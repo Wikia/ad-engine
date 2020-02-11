@@ -1,12 +1,8 @@
-import { Dictionary, pbjsFactory } from '@ad-engine/core';
+import { Dictionary } from '@ad-engine/core';
 import { mapValues } from 'lodash';
 import { adaptersRegistry } from './adapters-registry';
-import { PrebidProvider } from './index';
 import { DEFAULT_MAX_CPM } from './prebid-adapter';
-
-function isValidPrice(bid: PrebidBidResponse): boolean {
-	return bid.getStatusCode && bid.getStatusCode() === PrebidProvider.validResponseStatusCode;
-}
+import { getWinningBid } from './prebid-helper';
 
 /**
  * Round cpm to predefined values.
@@ -32,33 +28,24 @@ function roundCpm(cpm: number, maxCpm: number): number {
 }
 
 /**
- * Round cpm to predefined values and transform to String with 2 decimal places.
+ * Round cpm to predefined values and transform to string with 2 decimal places.
  */
 export function transformPriceFromCpm(cpm: number, maxCpm: number = DEFAULT_MAX_CPM): string {
-	maxCpm = Math.max(maxCpm, DEFAULT_MAX_CPM);
+	const price = Math.max(maxCpm, DEFAULT_MAX_CPM);
 
-	return roundCpm(cpm, maxCpm).toFixed(2);
+	return roundCpm(cpm, price).toFixed(2);
 }
 
 export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<string>> {
-	const pbjs: Pbjs = await pbjsFactory.init();
 	const bestPrices: Dictionary<number> = {};
-	const slotBids: PrebidBidResponse[] = pbjs.getBidResponsesForAdUnitCode(slotName).bids || [];
+	const prebidAdapters = adaptersRegistry.getAdapters();
 
-	adaptersRegistry.getAdapters().forEach((adapter) => {
-		bestPrices[adapter.bidderName] = 0;
-	});
+	for (const adapter of Array.from(prebidAdapters.entries())) {
+		const winningBid = await getWinningBid(slotName, adapter[1].bidderName);
+		const { hb_pb } = winningBid;
 
-	slotBids
-		.filter((bid) => isValidPrice(bid) && bid.status !== 'rendered')
-		.forEach((bid) => {
-			const { bidderCode, cpm } = bid;
-			const cmpPrice = Math.max(bestPrices[bidderCode] || 0, roundCpm(cpm, DEFAULT_MAX_CPM));
-
-			if (cmpPrice > 0) {
-				bestPrices[bidderCode] = cmpPrice;
-			}
-		});
+		bestPrices[adapter[1].bidderName] = hb_pb ? parseFloat(hb_pb) : 0;
+	}
 
 	return mapValues(bestPrices, (price: number) => {
 		return price === 0 ? '' : price.toFixed(2);

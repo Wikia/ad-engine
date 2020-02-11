@@ -1,18 +1,17 @@
 import { expect } from 'chai';
-import { timeouts } from '../../common/timeouts';
 import { helpers } from '../../common/helpers';
 import { billTheLizard } from '../../pages/bill-the-lizard.page';
-import { adSlots } from '../../common/ad-slots';
+import { slots } from '../../common/slot-registry';
 
 describe('It will test bill the lizard page', () => {
 	before(() => {
-		browser.url(billTheLizard.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(billTheLizard.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 	});
 
 	beforeEach(() => {
-		browser.url(billTheLizard.pageLink);
-		$(adSlots.topLeaderboard).waitForDisplayed(timeouts.standard);
+		helpers.navigateToUrl(billTheLizard.pageLink);
+		slots.topLeaderboard.waitForDisplayed();
 		helpers.waitForValuesLoaded();
 	});
 
