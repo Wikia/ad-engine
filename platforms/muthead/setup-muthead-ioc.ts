@@ -18,7 +18,7 @@ import {
 	TemplatesSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import { babDetection, context, InhibitorsRegistry, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import { MutheadAdEngineRunnerSetup } from './ad-engine-runner/muthead-ad-engine-runner.setup';
@@ -32,6 +32,8 @@ export async function setupMutheadIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection]));
+
 	container.bind(TargetingSetup).to(MutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
 	container.bind(AdEngineRunnerSetup).to(MutheadAdEngineRunnerSetup);

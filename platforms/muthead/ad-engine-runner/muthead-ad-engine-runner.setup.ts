@@ -1,9 +1,4 @@
-import {
-	AdEngineRunnerSetup,
-	babDetection,
-	biddersDelay,
-	configureEventService,
-} from '@platforms/shared';
+import { AdEngineRunnerSetup, biddersDelay, configureEventService } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -12,7 +7,6 @@ export class MutheadAdEngineRunnerSetup implements AdEngineRunnerSetup {
 	constructor() {}
 
 	configureAdEngineRunner(): void {
-		context.push('delayModules', babDetection);
 		context.push('delayModules', biddersDelay);
 		configureEventService();
 	}
