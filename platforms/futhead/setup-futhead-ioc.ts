@@ -18,7 +18,13 @@ import {
 	TemplatesSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { babDetection, context, InhibitorsRegistry, InstantConfigService } from '@wikia/ad-engine';
+import {
+	babDetection,
+	bidders,
+	context,
+	InhibitorsRegistry,
+	InstantConfigService,
+} from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import { FutheadAdEngineRunnerSetup } from './ad-engine-runner/futhead-ad-engine-runner.setup';
@@ -32,7 +38,7 @@ export async function setupFutheadIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
-	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection]));
+	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection, bidders]));
 
 	container.bind(TargetingSetup).to(FutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);

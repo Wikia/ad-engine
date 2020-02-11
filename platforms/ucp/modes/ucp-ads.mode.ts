@@ -1,4 +1,4 @@
-import { AdsMode, biddersDelay, startAdEngine } from '@platforms/shared';
+import { AdsMode, startAdEngine } from '@platforms/shared';
 import { bidders, context, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -11,9 +11,7 @@ export class UcpAdsMode implements AdsMode {
 	}
 
 	private callExternals(): void {
-		bidders.requestBids({
-			responseListener: biddersDelay.markAsReady,
-		});
+		bidders.requestBids();
 
 		permutive.call();
 	}

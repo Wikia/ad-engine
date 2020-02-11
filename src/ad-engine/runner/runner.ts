@@ -6,11 +6,7 @@ export class Runner {
 		private inhibitors: Inhibitor[] = [],
 		private timeout = 0,
 		private logGroup = 'runner',
-	) {
-		this.inhibitors.forEach((inhibitor) => {
-			this.addInhibitor(inhibitor);
-		});
-	}
+	) {}
 
 	async run(callback: () => void): Promise<void> {
 		await Promise.race([this.getEnabledInhibitorsPromise(), this.getTimeoutPromise()]);
@@ -35,7 +31,8 @@ export class Runner {
 	private getEnabledInhibitorsPromise(): Promise<void | void[]> {
 		const enabledInhibitors = this.inhibitors.filter((inhibitor) => inhibitor.isEnabled());
 
-		if (enabledInhibitors.length) {
+		console.warn('runner', enabledInhibitors);
+		if (!enabledInhibitors.length) {
 			logger(this.logGroup, 'Running without delay (there are no inhibitors)');
 
 			return Promise.resolve();

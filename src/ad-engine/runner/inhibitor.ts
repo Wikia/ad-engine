@@ -20,7 +20,7 @@ export abstract class Inhibitor {
 		this.resolvePromise = null;
 	}
 
-	protected markAsReady(): void {
+	markAsReady(): void {
 		if (this.resolvePromise) {
 			this.resolvePromise();
 			this.resolvePromise = null;

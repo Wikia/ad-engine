@@ -27,7 +27,6 @@ const contextObject: ContextObject = {
 		},
 	},
 	events: {},
-	delayModules: [],
 	listeners: {
 		porvata: [],
 	},

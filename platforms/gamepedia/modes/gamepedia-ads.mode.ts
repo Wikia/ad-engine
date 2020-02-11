@@ -1,4 +1,4 @@
-import { AdsMode, biddersDelay, startAdEngine } from '@platforms/shared';
+import { AdsMode, startAdEngine } from '@platforms/shared';
 import {
 	bidders,
 	confiant,
@@ -21,9 +21,7 @@ export class GamepediaAdsMode implements AdsMode {
 	}
 
 	private callExternals(): void {
-		bidders.requestBids({
-			responseListener: biddersDelay.markAsReady,
-		});
+		bidders.requestBids();
 
 		permutive.call();
 		confiant.call();

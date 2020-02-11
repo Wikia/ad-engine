@@ -16,7 +16,14 @@ import {
 	TemplatesSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { babDetection, context, InhibitorsRegistry, InstantConfigService } from '@wikia/ad-engine';
+import {
+	babDetection,
+	bidders,
+	context,
+	InhibitorsRegistry,
+	InstantConfigService,
+	taxonomyService,
+} from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import { GamepediaAdEngineRunnerSetup } from './ad-engine-runner/muthead-ad-engine-runner.setup';
@@ -34,7 +41,9 @@ export async function setupGamepediaIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
-	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection]));
+	container
+		.bind(InhibitorsRegistry)
+		.value(new InhibitorsRegistry([babDetection, bidders, taxonomyService]));
 
 	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
 	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);

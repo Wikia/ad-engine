@@ -2,7 +2,6 @@ import {
 	AdSlot,
 	bidders,
 	context,
-	DelayModule,
 	events,
 	eventService,
 	JWPlayerManager,
@@ -61,32 +60,11 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
-
 context.set('options.maxDelayTimeout', 1000);
-context.push('delayModules', biddersDelay);
 
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
+bidders.requestBids();
 
-biddersDelay.getPromise().then(() => {
+bidders.getPromise().then(() => {
 	const playlist = [videoData];
 	const playerOptions = {
 		autoplay: utils.queryString.get('autoplay') !== '0',

@@ -9,7 +9,13 @@ import {
 	TrackingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
-import { babDetection, context, InhibitorsRegistry, InstantConfigService } from '@wikia/ad-engine';
+import {
+	babDetection,
+	bidders,
+	context,
+	InhibitorsRegistry,
+	InstantConfigService,
+} from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import { UcpAdEngineRunnerSetup } from './ad-engine-runner/ucp-ad-engine-runner.setup';
@@ -26,7 +32,7 @@ export async function setupUcpIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
-	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection]));
+	container.bind(InhibitorsRegistry).value(new InhibitorsRegistry([babDetection, bidders]));
 
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
