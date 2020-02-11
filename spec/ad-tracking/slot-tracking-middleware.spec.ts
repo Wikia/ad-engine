@@ -84,6 +84,7 @@ describe('slot-tracking-middleware', () => {
 			'page_width',
 			'pv',
 			'pv_unique_id',
+			'rollout_tracking',
 			'scroll_y',
 			'time_bucket',
 			'tz_offset',

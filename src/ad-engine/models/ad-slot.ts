@@ -232,6 +232,10 @@ export class AdSlot extends EventEmitter {
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
 	}
 
+	getUid(): string {
+		return this.config.uid;
+	}
+
 	getSlotName(): string {
 		return this.config.slotName;
 	}

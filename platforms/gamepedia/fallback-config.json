@@ -9,7 +9,7 @@
 	"wgAdDriverUapRestriction": 1,
 	"icLABradorTest": [
 		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["PL"],
 			"sampling": 35.0,
 			"samplingCache": true,
@@ -22,6 +22,13 @@
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
+		}
+	],
+	"icTestCommunities": [
+		{
+			"apps": ["gamepedia"],
+			"regions": ["XX"],
+			"value": ["cdm_gamepedia"]
 		}
 	],
 	"wgAdDriverUapCountries": ["XX"],
@@ -69,14 +76,19 @@
 	"icPrebidVersion": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["PL", "US-CA", "US-NY"],
+			"regions": ["US-CA", "US-NY"],
 			"sampling": 100.0,
 			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
 		},
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
+			"regions": ["GB", "UK", "US"],
 			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.2/20200110.min.js"
+		},
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["XX"],
+			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
 		}
 	],
 	"icA9Bidder": [
@@ -142,7 +154,7 @@
 	"icPrebidNobid": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["AU", "CA", "PL"],
+			"regions": ["XX"],
 			"value": true
 		}
 	],
@@ -156,7 +168,7 @@
 	"icPermutive": [
 		{
 			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
-			"regions": ["PL", "US"],
+			"regions": ["GB", "PL", "UK", "US"],
 			"value": true
 		}
 	],
@@ -180,6 +192,13 @@
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": 2000
+		}
+	],
+	"icOutstreamSlot": [
+		{
+			"apps": ["gamepedia"],
+			"regions": ["XX"],
+			"value": false
 		}
 	]
 }

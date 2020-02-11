@@ -344,6 +344,7 @@ export const basicContext = {
 		rubiconDfp: true,
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '_not_a_top1k_wiki',
+		rolloutTracking: 'ucp',
 	},
 	events: {
 		pushOnScroll: {
@@ -359,8 +360,8 @@ export const basicContext = {
 			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		ae3: '1',
 		outstream: 'none',
+		rollout_tracking: 'ucp',
 		skin: 'oasis',
 		uap: 'none',
 		uap_c: 'none',
