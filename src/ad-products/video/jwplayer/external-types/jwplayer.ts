@@ -202,6 +202,7 @@ export interface JWPlayerEventParams {
 	adSchedule: AdScheduleParam;
 	adStarted: AdStartedParam;
 	adImpression: AdImpressionParam & JWPlayerEvent;
+	adViewableImpression: JWPlayerEvent;
 	adPlay: AdPlayParam;
 	adPause: AdPlayParam;
 	adTime: AdTimeParam;
@@ -245,7 +246,10 @@ export type JWPlayerNoParamEvent =
 	| 'playlistComplete'
 	| 'seeked'
 	| 'remove'
-	| 'videoStart';
+	| 'videoStart'
+	| 'adFirstQuartile'
+	| 'adMidPoint'
+	| 'adThirdQuartile';
 
 export interface JWPlayer {
 	getMute(): boolean;

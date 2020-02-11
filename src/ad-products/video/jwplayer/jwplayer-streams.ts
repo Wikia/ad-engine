@@ -16,6 +16,17 @@ export interface JWPlayerStreams {
 	videoMidPoint$: Observable<JWPlayerStream<'videoMidPoint'> & VideoDepth>;
 	beforeComplete$: Observable<JWPlayerStream<'beforeComplete'> & VideoDepth>;
 	complete$: Observable<JWPlayerStream<'complete'>>;
+	// TODO
+	ready$?: Observable<JWPlayerStream<'ready'>>;
+	adClick$?: Observable<JWPlayerStream<'adClick'>>;
+	adStarted$?: Observable<JWPlayerStream<'adStarted'>>;
+	adViewableImpression$?: Observable<JWPlayerStream<'adViewableImpression'>>;
+	adFirstQuartile$?: Observable<JWPlayerStream<'adFirstQuartile'>>;
+	adMidPoint$?: Observable<JWPlayerStream<'adMidPoint'>>;
+	adThirdQuartile$?: Observable<JWPlayerStream<'adThirdQuartile'>>;
+	adComplete$?: Observable<JWPlayerStream<'adComplete'>>;
+	adSkipped$?: Observable<JWPlayerStream<'adSkipped'>>;
+	videoStart$?: Observable<JWPlayerStream<'videoStart'>>;
 }
 
 export interface JWPlayerStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent> {
