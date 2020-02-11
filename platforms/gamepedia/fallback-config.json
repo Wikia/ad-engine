@@ -76,19 +76,14 @@
 	"icPrebidVersion": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["US-CA", "US-NY"],
+			"regions": ["PL", "US-CA", "US-NY"],
 			"sampling": 100.0,
 			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
 		},
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["GB", "UK", "US"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.2/20200110.min.js"
-		},
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
+			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.2/20200110.min.js"
 		}
 	],
 	"icA9Bidder": [
@@ -168,7 +163,7 @@
 	"icPermutive": [
 		{
 			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
-			"regions": ["GB", "PL", "UK", "US"],
+			"regions": ["PL", "US"],
 			"value": true
 		}
 	],
