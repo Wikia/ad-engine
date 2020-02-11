@@ -12,7 +12,7 @@ import { JWPlayerHelper } from './jwplayer-helper';
 import { createJWPlayerStreams } from './jwplayer-streams';
 
 interface PlayerReadyResult {
-	player: JWPlayer;
+	jwplayer: JWPlayer;
 	adSlot: AdSlot;
 	targeting: VideoTargeting;
 }
@@ -37,22 +37,22 @@ export class JWPlayerManager {
 				this.loadIasTrackerIfEnabled();
 			}),
 			map(({ options, targeting, playerKey }) => {
-				const player: JWPlayer = window[playerKey];
-				const adSlot = this.createAdSlot(options, player);
+				const jwplayer: JWPlayer = window[playerKey];
+				const adSlot = this.createAdSlot(options, jwplayer);
 
-				return { player, adSlot, targeting };
+				return { jwplayer, adSlot, targeting };
 			}),
 		);
 	}
 
-	private createAdSlot(options: JwPlayerAdsFactoryOptions, player: JWPlayer): AdSlot {
+	private createAdSlot(options: JwPlayerAdsFactoryOptions, jwplayer: JWPlayer): AdSlot {
 		const slotName = options.slotName || (options.featured ? 'featured' : 'video');
 		const adSlot = slotService.get(slotName) || new AdSlot({ id: slotName });
-		const videoElement = player && player.getContainer && player.getContainer();
+		const videoElement = jwplayer && jwplayer.getContainer && jwplayer.getContainer();
 
 		adSlot.element = videoElement && (videoElement.parentNode as HTMLElement);
-		adSlot.setConfigProperty('audio', !player.getMute());
-		adSlot.setConfigProperty('autoplay', player.getConfig().autostart);
+		adSlot.setConfigProperty('audio', !jwplayer.getMute());
+		adSlot.setConfigProperty('autoplay', jwplayer.getConfig().autostart);
 
 		if (!slotService.get(slotName)) {
 			slotService.add(adSlot);
@@ -61,10 +61,14 @@ export class JWPlayerManager {
 		return adSlot;
 	}
 
-	private createJWPlayerHandler({ player, adSlot, targeting }: PlayerReadyResult): JWPlayerHandler {
-		const streams = createJWPlayerStreams(player);
-		const tracker = new JWPlayerTracker(adSlot, player);
-		const helper = new JWPlayerHelper(adSlot, player, targeting, tracker);
+	private createJWPlayerHandler({
+		jwplayer,
+		adSlot,
+		targeting,
+	}: PlayerReadyResult): JWPlayerHandler {
+		const streams = createJWPlayerStreams(jwplayer);
+		const tracker = new JWPlayerTracker(adSlot, jwplayer);
+		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting, tracker);
 
 		tracker.register(); // TODO: need to handle it separately
 
