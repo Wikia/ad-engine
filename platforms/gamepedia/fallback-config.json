@@ -18,6 +18,7 @@
     "icLABradorTest": [
         {
             "apps": [
+                "f2",
                 "futhead",
                 "gamepedia",
                 "mobile-wiki",
@@ -49,6 +50,19 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icTestCommunities": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "cdm_gamepedia"
+            ]
         }
     ],
     "wgAdDriverUapCountries": [
@@ -142,7 +156,6 @@
                 "oasis"
             ],
             "regions": [
-                "PL",
                 "US-CA",
                 "US-NY"
             ],
@@ -158,9 +171,24 @@
                 "oasis"
             ],
             "regions": [
-                "XX"
+                "GB",
+                "UK",
+                "US"
             ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.2/20200110.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
         }
     ],
     "icA9Bidder": [
@@ -293,9 +321,7 @@
                 "oasis"
             ],
             "regions": [
-                "AU",
-                "CA",
-                "PL"
+                "XX"
             ],
             "value": true
         }
@@ -325,7 +351,9 @@
                 "oasis"
             ],
             "regions": [
+                "GB",
                 "PL",
+                "UK",
                 "US"
             ],
             "value": true
@@ -374,6 +402,17 @@
                 "XX"
             ],
             "value": 2000
+        }
+    ],
+    "icOutstreamSlot": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
         }
     ]
 }
