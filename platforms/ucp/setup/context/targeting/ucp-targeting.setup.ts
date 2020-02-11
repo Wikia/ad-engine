@@ -26,6 +26,8 @@ export class UcpTargetingSetup implements TargetingSetup {
 			hostpre: this.getHostnamePrefix(),
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			s0: wiki.targeting.mappedVerticalName,
+			s0v: wiki.targeting.wikiVertical,
+			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
 			s2: this.getAdLayout(wiki),
 			skin: 'oasis',
