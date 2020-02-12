@@ -58,12 +58,12 @@ function scanCorrelatorDepth<T>(): RxJsOperator<T, VideoDepth> {
 		);
 }
 
-function createVastParams<T extends { event: JWPlayerEvent }>(): RxJsOperator<T, VastParams> {
+function createVastParams<T extends { payload: JWPlayerEvent }>(): RxJsOperator<T, VastParams> {
 	return (source: Observable<T>) =>
 		source.pipe(
-			map((value) =>
-				vastParser.parse(value.event.tag, {
-					imaAd: value.event.ima && value.event.ima.ad,
+			map((event) =>
+				vastParser.parse(event.payload.tag, {
+					imaAd: event.payload.ima && event.payload.ima.ad,
 				}),
 			),
 		);

@@ -34,7 +34,7 @@ export interface JwpEvent<TEvent extends JWPlayerEventKey> extends JwpStatelessE
 
 export function createJwpStreams(jwplayer: JWPlayer): JwpStreams {
 	const statelessStreams = createJwpStatelessStreams(jwplayer);
-	const state$ = createJwpStateStream(statelessStreams);
+	const state$ = createJwpStateStream(statelessStreams, jwplayer);
 
 	return mapValues(statelessStreams, (value$: Observable<any>) =>
 		value$.pipe(

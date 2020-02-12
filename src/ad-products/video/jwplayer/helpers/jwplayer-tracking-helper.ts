@@ -10,10 +10,10 @@ export class JwplayerTrackingHelper {
 	}
 
 	private getErrorCode(event: JwpEvent<'adError'>): number | undefined {
-		if (event.eventName !== 'adError') {
+		if (event.name !== 'adError') {
 			return;
 		}
 
-		return event.event && event.event.code;
+		return event.payload && event.payload.code;
 	}
 }

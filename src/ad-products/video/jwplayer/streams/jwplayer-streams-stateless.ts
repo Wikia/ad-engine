@@ -30,8 +30,8 @@ export interface JwpStatelessStreams {
 }
 
 export interface JwpStatelessEvent<TEvent extends JWPlayerEventKey> {
-	eventName: TEvent;
-	event: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
+	name: TEvent;
+	payload: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
 }
 
 /**
@@ -69,28 +69,28 @@ function createJwpStream<TEvent extends JWPlayerEventKey>(
 	event: TEvent,
 ): Observable<JwpStatelessEvent<TEvent>> {
 	return new Observable((observer) => {
-		jwplayer.on(event as any, (param) => observer.next({ eventName: event, event: param }));
+		jwplayer.on(event as any, (param) => observer.next({ name: event, payload: param }));
 	});
 }
 
 function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 	return (source: Observable<T>) =>
 		source.pipe(
-			map((payload) => ({
-				payload,
+			map((event) => ({
+				event,
 				playlistItem: jwplayer.getPlaylistItem() || ({} as JWPlayerListItem),
 			})),
 			distinctUntilChanged((a, b) => a.playlistItem.mediaid === b.playlistItem.mediaid),
-			map(({ payload }) => payload),
+			map(({ event }) => event),
 		);
 }
 
-function ensureEventTag<T extends { event: JWPlayerEvent }>(
+function ensureEventTag<T extends { payload: JWPlayerEvent }>(
 	adRequest$: JwpStatelessStreams['adRequest$'],
 ): RxJsOperator<T, T> {
 	const base$ = merge(
-		of({ event: { tag: null } }),
-		adRequest$.pipe(map((adRequest) => adRequest.event)),
+		of({ payload: { tag: null } }),
+		adRequest$.pipe(map((adRequest) => adRequest.payload)),
 	);
 
 	return (source: Observable<T>) =>
