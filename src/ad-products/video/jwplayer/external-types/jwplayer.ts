@@ -197,7 +197,7 @@ export interface JWPlayerEventParams {
 	adCompanions: AdCompanionsParam;
 	adComplete: AdProgressParam;
 	adSkipped: AdProgressParam;
-	adError: AdErrorParam & JWPlayerEvent;
+	adError: AdErrorParam & JWPlayerEvent & { code: number };
 	adRequest: AdRequestParam & JWPlayerEvent;
 	adSchedule: AdScheduleParam;
 	adStarted: AdStartedParam;
@@ -250,6 +250,8 @@ export type JWPlayerNoParamEvent =
 	| 'adFirstQuartile'
 	| 'adMidPoint'
 	| 'adThirdQuartile';
+
+export type JWPlayerEventKey = keyof JWPlayerEventParams | JWPlayerNoParamEvent;
 
 export interface JWPlayer {
 	getMute(): boolean;

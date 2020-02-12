@@ -1,7 +1,7 @@
 import { utils } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
-import { JWPlayerHelper } from './jwplayer-helper';
+import { JWPlayerHelper } from './helpers/jwplayer-helper';
 import { JwpStreams } from './streams/jwplayer-streams';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);

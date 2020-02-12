@@ -1,11 +1,16 @@
 import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, scan, startWith } from 'rxjs/operators';
+import { JWPlayer } from '../external-types/jwplayer';
+import { JWPlayerConfig } from '../external-types/jwplayer-config';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
+import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 import { JwpStatelessStreams } from './jwplayer-streams-stateless';
 
 export interface JwpState extends VideoDepth {
 	vastParams: VastParams;
+	playlistItem: JWPlayerListItem;
+	config: JWPlayerConfig;
 }
 
 interface VideoDepth {
@@ -13,7 +18,10 @@ interface VideoDepth {
 	correlator: number;
 }
 
-export function createJwpStateStream(streams: JwpStatelessStreams): Observable<JwpState> {
+export function createJwpStateStream(
+	streams: JwpStatelessStreams,
+	jwplayer: JWPlayer,
+): Observable<JwpState> {
 	const videoDepth$: Observable<VideoDepth> = streams.beforePlay$.pipe(
 		scanCorrelatorDepth(),
 		startWith({ depth: 0, correlator: 0 }),
@@ -28,7 +36,12 @@ export function createJwpStateStream(streams: JwpStatelessStreams): Observable<J
 	);
 
 	return combineLatest([videoDepth$, vastParams$]).pipe(
-		map(([videoDepth, vastParams]) => ({ vastParams, ...videoDepth })),
+		map(([videoDepth, vastParams]) => ({
+			...videoDepth,
+			vastParams,
+			playlistItem: jwplayer.getPlaylistItem(),
+			config: jwplayer.getConfig(),
+		})),
 	);
 }
 

@@ -6,9 +6,9 @@ import { ofType } from 'ts-action-operators';
 import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
+import { JWPlayerHelper } from './helpers/jwplayer-helper';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
-import { JWPlayerHelper } from './jwplayer-helper';
 import { createJwpStreams } from './streams/jwplayer-streams';
 
 interface PlayerReadyResult {

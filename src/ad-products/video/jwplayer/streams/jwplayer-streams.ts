@@ -1,7 +1,7 @@
 import { mapValues } from 'lodash';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
-import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from '../external-types/jwplayer';
+import { JWPlayer, JWPlayerEventKey } from '../external-types/jwplayer';
 import { createJwpStateStream, JwpState } from './jwplayer-streams-state';
 import { createJwpStatelessStreams, JwpStatelessEvent } from './jwplayer-streams-stateless';
 
@@ -28,8 +28,7 @@ export interface JwpStreams {
 	videoStart$?: Observable<JwpEvent<'videoStart'>>;
 }
 
-interface JwpEvent<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>
-	extends JwpStatelessEvent<TEvent> {
+export interface JwpEvent<TEvent extends JWPlayerEventKey> extends JwpStatelessEvent<TEvent> {
 	state: JwpState;
 }
 

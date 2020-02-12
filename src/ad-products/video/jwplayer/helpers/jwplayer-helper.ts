@@ -1,9 +1,9 @@
 import { AdSlot, buildVastUrl, context, events, vastDebugger, VastParams } from '@ad-engine/core';
-import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
-import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
-import { JWPlayer, JWPlayerEventParams } from './external-types/jwplayer';
-import { VideoTargeting } from './jwplayer-actions';
-import { getVideoId } from './utils/get-video-id';
+import { JWPlayerTracker } from '../../../tracking/video/jwplayer-tracker';
+import { iasVideoTracker } from '../../player/porvata/ias/ias-video-tracker';
+import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
+import { VideoTargeting } from '../jwplayer-actions';
+import { getVideoId } from '../utils/get-video-id';
 
 const EMPTY_VAST_CODE = 21009;
 
