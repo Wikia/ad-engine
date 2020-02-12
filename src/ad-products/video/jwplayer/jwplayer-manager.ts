@@ -9,7 +9,7 @@ import { JWPlayer } from './external-types/jwplayer';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
 import { JWPlayerHelper } from './jwplayer-helper';
-import { createJWPlayerStreams } from './jwplayer-streams';
+import { createJwpStatelessStreams } from './streams/jwplayer-streams-stateless';
 
 interface PlayerReadyResult {
 	jwplayer: JWPlayer;
@@ -66,7 +66,7 @@ export class JWPlayerManager {
 		adSlot,
 		targeting,
 	}: PlayerReadyResult): JWPlayerHandler {
-		const streams = createJWPlayerStreams(jwplayer);
+		const streams = createJwpStatelessStreams(jwplayer);
 		const tracker = new JWPlayerTracker(adSlot, jwplayer);
 		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting, tracker);
 

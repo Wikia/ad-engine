@@ -2,7 +2,7 @@ import { utils } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './jwplayer-helper';
-import { JWPlayerStreams } from './jwplayer-streams';
+import { JwpStatelessStreams } from './streams/jwplayer-streams-stateless';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
@@ -10,7 +10,7 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
  * Describes what is done
  */
 export class JWPlayerHandler {
-	constructor(private streams: JWPlayerStreams, private helper: JWPlayerHelper) {}
+	constructor(private streams: JwpStatelessStreams, private helper: JWPlayerHelper) {}
 
 	handle(): Observable<any> {
 		return merge(

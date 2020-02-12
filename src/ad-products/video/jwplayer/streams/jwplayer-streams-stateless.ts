@@ -2,34 +2,36 @@ import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, scan, withLatestFrom } from 'rxjs/operators';
-import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from './external-types/jwplayer';
-import { JWPlayerEvent } from './external-types/jwplayer-event';
-import { JWPlayerListItem } from './external-types/jwplayer-list-item';
+import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from '../external-types/jwplayer';
+import { JWPlayerEvent } from '../external-types/jwplayer-event';
+import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 
-export interface JWPlayerStreams {
-	adRequest$: Observable<JWPlayerStream<'adRequest'> & VastParamsObject>;
-	adError$: Observable<JWPlayerStream<'adError'> & VastParamsObject>;
-	adImpression$: Observable<JWPlayerStream<'adImpression'> & VastParamsObject>;
-	adBlock$: Observable<JWPlayerStream<'adBlock'>>;
-	adsManager$: Observable<JWPlayerStream<'adsManager'>>;
-	beforePlay$: Observable<JWPlayerStream<'beforePlay'> & VideoDepth>;
-	videoMidPoint$: Observable<JWPlayerStream<'videoMidPoint'> & VideoDepth>;
-	beforeComplete$: Observable<JWPlayerStream<'beforeComplete'> & VideoDepth>;
-	complete$: Observable<JWPlayerStream<'complete'>>;
+export interface JwpStatelessStreams {
+	adRequest$: Observable<JwpStatelessStream<'adRequest'> & VastParamsObject>;
+	adError$: Observable<JwpStatelessStream<'adError'> & VastParamsObject>;
+	adImpression$: Observable<JwpStatelessStream<'adImpression'> & VastParamsObject>;
+	adBlock$: Observable<JwpStatelessStream<'adBlock'>>;
+	adsManager$: Observable<JwpStatelessStream<'adsManager'>>;
+	beforePlay$: Observable<JwpStatelessStream<'beforePlay'> & VideoDepth>;
+	videoMidPoint$: Observable<JwpStatelessStream<'videoMidPoint'> & VideoDepth>;
+	beforeComplete$: Observable<JwpStatelessStream<'beforeComplete'> & VideoDepth>;
+	complete$: Observable<JwpStatelessStream<'complete'>>;
 	// TODO
-	ready$?: Observable<JWPlayerStream<'ready'>>;
-	adClick$?: Observable<JWPlayerStream<'adClick'>>;
-	adStarted$?: Observable<JWPlayerStream<'adStarted'>>;
-	adViewableImpression$?: Observable<JWPlayerStream<'adViewableImpression'>>;
-	adFirstQuartile$?: Observable<JWPlayerStream<'adFirstQuartile'>>;
-	adMidPoint$?: Observable<JWPlayerStream<'adMidPoint'>>;
-	adThirdQuartile$?: Observable<JWPlayerStream<'adThirdQuartile'>>;
-	adComplete$?: Observable<JWPlayerStream<'adComplete'>>;
-	adSkipped$?: Observable<JWPlayerStream<'adSkipped'>>;
-	videoStart$?: Observable<JWPlayerStream<'videoStart'>>;
+	ready$?: Observable<JwpStatelessStream<'ready'>>;
+	adClick$?: Observable<JwpStatelessStream<'adClick'>>;
+	adStarted$?: Observable<JwpStatelessStream<'adStarted'>>;
+	adViewableImpression$?: Observable<JwpStatelessStream<'adViewableImpression'>>; // needs supplementVastParams
+	adFirstQuartile$?: Observable<JwpStatelessStream<'adFirstQuartile'>>;
+	adMidPoint$?: Observable<JwpStatelessStream<'adMidPoint'>>;
+	adThirdQuartile$?: Observable<JwpStatelessStream<'adThirdQuartile'>>;
+	adComplete$?: Observable<JwpStatelessStream<'adComplete'>>;
+	adSkipped$?: Observable<JwpStatelessStream<'adSkipped'>>;
+	videoStart$?: Observable<JwpStatelessStream<'videoStart'>>;
 }
 
-export interface JWPlayerStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent> {
+export interface JwpStatelessStream<
+	TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent
+> {
 	eventName: string;
 	event: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
 }
@@ -46,7 +48,7 @@ export interface VideoDepth {
 /**
  * Describes streams (event sources) and their relations
  */
-export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
+export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStreams {
 	const adRequest$ = createJwpStream(jwplayer, 'adRequest').pipe(supplementVastParams());
 	const adError$ = createJwpStream(jwplayer, 'adError').pipe(
 		onlyOncePerVideo(jwplayer),
@@ -84,7 +86,7 @@ export function createJWPlayerStreams(jwplayer: JWPlayer): JWPlayerStreams {
 function createJwpStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>(
 	jwplayer: JWPlayer,
 	event: TEvent,
-): Observable<JWPlayerStream<TEvent>> {
+): Observable<JwpStatelessStream<TEvent>> {
 	return new Observable((observer) => {
 		jwplayer.on(event as any, (param) => observer.next({ eventName: event, event: param }));
 	});
@@ -131,7 +133,7 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 }
 
 function ensureEventTag<T extends { event: JWPlayerEvent }>(
-	adRequest$: JWPlayerStreams['adRequest$'],
+	adRequest$: JwpStatelessStreams['adRequest$'],
 ): RxJsOperator<T, T> {
 	const base$ = merge(
 		of({ event: { tag: null } }),
