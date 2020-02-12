@@ -15,8 +15,8 @@ interface VideoDepth {
 
 export function createJwpStateStream(streams: JwpStatelessStreams): Observable<JwpState> {
 	const videoDepth$: Observable<VideoDepth> = streams.beforePlay$.pipe(
-		startWith(0),
 		scanCorrelatorDepth(),
+		startWith({ depth: 0, correlator: 0 }),
 	);
 	const vastParams$: Observable<VastParams> = merge(
 		streams.adRequest$,

@@ -1,34 +1,46 @@
+import { mapValues } from 'lodash';
 import { Observable } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from '../external-types/jwplayer';
-import { JwpState } from './jwplayer-streams-state';
-import { JwpStatelessStream } from './jwplayer-streams-stateless';
+import { createJwpStateStream, JwpState } from './jwplayer-streams-state';
+import { createJwpStatelessStreams, JwpStatelessEvent } from './jwplayer-streams-stateless';
 
 export interface JwpStreams {
-	adRequest$: Observable<JwpStream<'adRequest'>>;
-	adError$: Observable<JwpStream<'adError'>>;
-	adImpression$: Observable<JwpStream<'adImpression'>>;
-	adBlock$: Observable<JwpStream<'adBlock'>>;
-	adsManager$: Observable<JwpStream<'adsManager'>>;
-	beforePlay$: Observable<JwpStream<'beforePlay'>>;
-	videoMidPoint$: Observable<JwpStream<'videoMidPoint'>>;
-	beforeComplete$: Observable<JwpStream<'beforeComplete'>>;
-	complete$: Observable<JwpStream<'complete'>>;
+	adRequest$: Observable<JwpEvent<'adRequest'>>;
+	adError$: Observable<JwpEvent<'adError'>>;
+	adImpression$: Observable<JwpEvent<'adImpression'>>;
+	adBlock$: Observable<JwpEvent<'adBlock'>>;
+	adsManager$: Observable<JwpEvent<'adsManager'>>;
+	beforePlay$: Observable<JwpEvent<'beforePlay'>>;
+	videoMidPoint$: Observable<JwpEvent<'videoMidPoint'>>;
+	beforeComplete$: Observable<JwpEvent<'beforeComplete'>>;
+	complete$: Observable<JwpEvent<'complete'>>;
 	// TODO
-	ready$?: Observable<JwpStream<'ready'>>;
-	adClick$?: Observable<JwpStream<'adClick'>>;
-	adStarted$?: Observable<JwpStream<'adStarted'>>;
-	adViewableImpression$?: Observable<JwpStream<'adViewableImpression'>>;
-	adFirstQuartile$?: Observable<JwpStream<'adFirstQuartile'>>;
-	adMidPoint$?: Observable<JwpStream<'adMidPoint'>>;
-	adThirdQuartile$?: Observable<JwpStream<'adThirdQuartile'>>;
-	adComplete$?: Observable<JwpStream<'adComplete'>>;
-	adSkipped$?: Observable<JwpStream<'adSkipped'>>;
-	videoStart$?: Observable<JwpStream<'videoStart'>>;
+	ready$?: Observable<JwpEvent<'ready'>>;
+	adClick$?: Observable<JwpEvent<'adClick'>>;
+	adStarted$?: Observable<JwpEvent<'adStarted'>>;
+	adViewableImpression$?: Observable<JwpEvent<'adViewableImpression'>>;
+	adFirstQuartile$?: Observable<JwpEvent<'adFirstQuartile'>>;
+	adMidPoint$?: Observable<JwpEvent<'adMidPoint'>>;
+	adThirdQuartile$?: Observable<JwpEvent<'adThirdQuartile'>>;
+	adComplete$?: Observable<JwpEvent<'adComplete'>>;
+	adSkipped$?: Observable<JwpEvent<'adSkipped'>>;
+	videoStart$?: Observable<JwpEvent<'videoStart'>>;
 }
 
-interface JwpStream<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>
-	extends JwpStatelessStream<TEvent> {
+interface JwpEvent<TEvent extends keyof JWPlayerEventParams | JWPlayerNoParamEvent>
+	extends JwpStatelessEvent<TEvent> {
 	state: JwpState;
 }
 
-export function createJwpStreams(jwPlayer: JWPlayer): JwpStreams {}
+export function createJwpStreams(jwplayer: JWPlayer): JwpStreams {
+	const statelessStreams = createJwpStatelessStreams(jwplayer);
+	const state$ = createJwpStateStream(statelessStreams);
+
+	return mapValues(statelessStreams, (value$: Observable<any>) =>
+		value$.pipe(
+			withLatestFrom(state$),
+			map(([value, state]) => ({ ...value, state })),
+		),
+	);
+}
