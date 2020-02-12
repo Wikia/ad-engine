@@ -11,6 +11,7 @@ export interface JwpState extends VideoDepth {
 	vastParams: VastParams;
 	playlistItem: JWPlayerListItem;
 	config: JWPlayerConfig;
+	mute: boolean;
 }
 
 interface VideoDepth {
@@ -35,12 +36,14 @@ export function createJwpStateStream(
 		startWith(vastParser.parse(null)),
 	);
 
+	// TODO: every event should trigger common stuff update
 	return combineLatest([videoDepth$, vastParams$]).pipe(
 		map(([videoDepth, vastParams]) => ({
 			...videoDepth,
 			vastParams,
 			playlistItem: jwplayer.getPlaylistItem(),
 			config: jwplayer.getConfig(),
+			mute: jwplayer.getMute(),
 		})),
 	);
 }
