@@ -293,7 +293,7 @@ export class PorvataPlayer {
 		}
 	}
 
-	volumeToggle(): void {
+	toggleVolume(): void {
 		if (this.isMuted()) {
 			this.unmute();
 			this.ima.dispatchEvent('wikiaAdUnmute');
@@ -374,6 +374,9 @@ export class PorvataFiller implements SlotFiller {
 	}
 }
 
+/**
+ * @deprecated
+ */
 export class Porvata {
 	private static addOnViewportChangeListener(
 		params: PorvataTemplateParams,
@@ -389,6 +392,9 @@ export class Porvata {
 		);
 	}
 
+	/**
+	 * @deprecated
+	 */
 	static inject(params: PorvataTemplateParams): Promise<PorvataPlayer> {
 		const porvataListener = new PorvataListener({
 			adProduct: params.adProduct,

@@ -1,6 +1,6 @@
 @import '_mixin';
 
-$controls-z-index: 11;
+$controls-z-index: 100;
 $outstream-button-color: #fff;
 $outstream-button-size: 20px;
 $outstream-progress-bar-color: #7c7c7c;
@@ -28,7 +28,7 @@ $vpaid-z-index: 10;
 
 		.video-overlay {
 			@include absolute-fill();
-			height: 100%;
+			height: calc(100% - 24px);
 			top: 24px;
 		}
 
@@ -157,6 +157,20 @@ $vpaid-z-index: 10;
 				right: 20px;
 				width: 320px;
 			}
+		}
+	}
+}
+
+.porvata4 {
+	.porvata-interface {
+		height: 100%;
+		pointer-events: none;
+		position: absolute;
+		width: 100%;
+		z-index: $controls-z-index;
+
+		& > * {
+			pointer-events: auto;
 		}
 	}
 }

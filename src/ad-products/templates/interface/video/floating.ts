@@ -60,7 +60,7 @@ function add(video, container, params): void {
 			},
 		});
 
-		container.parentNode.insertBefore(closeButton.render(), container);
+		container.appendChild(closeButton.render());
 		video.addEventListener('wikiaAdCompleted', disableFloating);
 	});
 }

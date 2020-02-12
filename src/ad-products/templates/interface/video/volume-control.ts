@@ -1,14 +1,13 @@
 import { createIcon, icons } from '../icons';
 
-function createVolumeControl(params): HTMLDivElement {
-	const iconPrefix = params.theme === 'hivi' ? 'HIVI_' : '';
+function createVolumeControl(): HTMLDivElement {
 	const volume = document.createElement('div');
-	const offIcon = createIcon(icons[`${iconPrefix}VOLUME_OFF`], [
+	const offIcon = createIcon(icons['HIVI_VOLUME_OFF'], [
 		'volume-off-icon',
 		'porvata-icon',
 		'porvata-off-icon',
 	]);
-	const onIcon = createIcon(icons[`${iconPrefix}VOLUME_ON`], [
+	const onIcon = createIcon(icons['HIVI_VOLUME_ON'], [
 		'volume-on-icon',
 		'porvata-icon',
 		'porvata-on-icon',
@@ -22,19 +21,15 @@ function createVolumeControl(params): HTMLDivElement {
 }
 
 function updateCurrentState(video, volumeControl): void {
-	if (video.isMuted() || video.isMobilePlayerMuted()) {
+	if (video.isMuted()) {
 		volumeControl.classList.add('is-on');
 	} else {
 		volumeControl.classList.remove('is-on');
 	}
-
-	if (!video.isMobilePlayerMuted() && video.mobileVideoAd && video.mobileVideoAd.muted) {
-		video.updateVideoDOMElement(video.defaultVolume);
-	}
 }
 
 function add(video, container): void {
-	const volumeControl = createVolumeControl(video.params);
+	const volumeControl = createVolumeControl();
 
 	video.addEventListener('wikiaVolumeChange', () => {
 		updateCurrentState(video, volumeControl);
@@ -45,7 +40,7 @@ function add(video, container): void {
 	});
 
 	volumeControl.addEventListener('click', (e) => {
-		video.volumeToggle();
+		video.toggleVolume();
 		e.preventDefault();
 	});
 
