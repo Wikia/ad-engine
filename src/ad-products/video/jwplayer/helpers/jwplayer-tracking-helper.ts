@@ -1,18 +1,45 @@
-import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
+import { AdSlot, Dictionary, VideoData, VideoEventData } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
 import { JWPlayerEventKey } from '../external-types/jwplayer';
 import { JwpEvent } from '../streams/jwplayer-streams';
 
+const trackingEventsMap: Dictionary<string> = {
+	ready: 'ready',
+	adBlock: 'blocked',
+	adClick: 'clicked',
+	adRequest: 'loaded',
+	adError: 'error',
+	adImpression: 'impression',
+	adStarted: 'started',
+	adViewableImpression: 'viewable_impression',
+	adFirstQuartile: 'first_quartile',
+	adMidPoint: 'midpoint',
+	adThirdQuartile: 'third_quartile',
+	adComplete: 'completed',
+	adSkipped: 'skipped',
+	videoStart: 'content_started',
+	complete: 'content_completed',
+};
+
 export class JwplayerTrackingHelper {
+	// TODO: init and late_ready
 	constructor(private readonly slot: AdSlot) {}
 
 	track<T extends JWPlayerEventKey>(event: JwpEvent<T>): void {
+		if (!this.isTrackableEvent(event)) {
+			return;
+		}
+
 		const videoData = this.getVideoData(event);
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
+	}
+
+	private isTrackableEvent<T extends JWPlayerEventKey>(event: JwpEvent<T>): boolean {
+		return Object.keys(trackingEventsMap).includes(event.name);
 	}
 
 	private getVideoData<T extends JWPlayerEventKey>(event: JwpEvent<T>): VideoData {
@@ -24,7 +51,7 @@ export class JwplayerTrackingHelper {
 			content_type: event.state.vastParams.contentType,
 			creative_id: event.state.vastParams.creativeId,
 			line_item_id: event.state.vastParams.lineItemId,
-			event_name: event.name,
+			event_name: trackingEventsMap[event.name],
 			player: 'jwplayer',
 			position: this.slot.config.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),

@@ -1,6 +1,6 @@
 import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
-import { map, scan, startWith, withLatestFrom } from 'rxjs/operators';
+import { map, scan, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';
 import { JWPlayerConfig } from '../external-types/jwplayer-config';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
@@ -66,6 +66,7 @@ export function createJwpStateStream(
 			config: jwplayer.getConfig(),
 			mute: jwplayer.getMute(),
 		})),
+		shareReplay(1),
 	);
 }
 
