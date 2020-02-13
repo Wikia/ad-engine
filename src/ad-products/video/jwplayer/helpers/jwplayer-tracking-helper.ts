@@ -1,4 +1,4 @@
-import { VideoData, VideoEventData } from '@ad-engine/core';
+import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
@@ -6,6 +6,8 @@ import { JWPlayerEventKey } from '../external-types/jwplayer';
 import { JwpEvent } from '../streams/jwplayer-streams';
 
 export class JwplayerTrackingHelper {
+	constructor(private readonly slot: AdSlot) {}
+
 	track<T extends JWPlayerEventKey>(event: JwpEvent<T>): void {
 		const videoData = this.getVideoData(event);
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
@@ -16,11 +18,18 @@ export class JwplayerTrackingHelper {
 	private getVideoData<T extends JWPlayerEventKey>(event: JwpEvent<T>): VideoData {
 		return {
 			ad_error_code: this.getErrorCode(event as any),
-			audio: !event.state.mute,
+			ad_product: undefined, // TODO
+			audio: !event.state.mute ? 1 : 0,
+			ctp: undefined, // TODO
+			content_type: event.state.vastParams.contentType,
+			creative_id: event.state.vastParams.creativeId,
+			line_item_id: event.state.vastParams.lineItemId,
+			event_name: event.name,
 			player: 'jwplayer',
+			position: this.slot.config.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
 			video_id: event.state.playlistItem.mediaid || '',
-		} as any;
+		};
 	}
 
 	private getErrorCode(event: JwpEvent<'adError'>): number | undefined {
