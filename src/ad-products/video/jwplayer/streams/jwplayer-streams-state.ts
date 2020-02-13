@@ -35,10 +35,17 @@ export function createJwpStateStream(
 		createVastParams(),
 		startWith(vastParser.parse(null)),
 	);
+	const common$ = merge(Object.values(streams)).pipe(
+		map(() => ({
+			playlistItem: jwplayer.getPlaylistItem(),
+			config: jwplayer.getConfig(),
+			mute: jwplayer.getMute(),
+		})),
+	);
 
-	// TODO: every event should trigger common stuff update
-	return combineLatest([videoDepth$, vastParams$]).pipe(
-		map(([videoDepth, vastParams]) => ({
+	return combineLatest([videoDepth$, vastParams$, common$]).pipe(
+		map(([videoDepth, vastParams, common]) => ({
+			...common,
 			...videoDepth,
 			vastParams,
 			playlistItem: jwplayer.getPlaylistItem(),
