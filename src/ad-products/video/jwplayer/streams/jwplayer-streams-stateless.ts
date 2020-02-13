@@ -16,17 +16,16 @@ export interface JwpStatelessStreams {
 	videoMidPoint$: Observable<JwpStatelessEvent<'videoMidPoint'>>;
 	beforeComplete$: Observable<JwpStatelessEvent<'beforeComplete'>>;
 	complete$: Observable<JwpStatelessEvent<'complete'>>;
-	// TODO
-	ready$?: Observable<JwpStatelessEvent<'ready'>>;
-	adClick$?: Observable<JwpStatelessEvent<'adClick'>>;
-	adStarted$?: Observable<JwpStatelessEvent<'adStarted'>>;
-	adViewableImpression$?: Observable<JwpStatelessEvent<'adViewableImpression'>>; // needs supplementVastParams
-	adFirstQuartile$?: Observable<JwpStatelessEvent<'adFirstQuartile'>>;
-	adMidPoint$?: Observable<JwpStatelessEvent<'adMidPoint'>>;
-	adThirdQuartile$?: Observable<JwpStatelessEvent<'adThirdQuartile'>>;
-	adComplete$?: Observable<JwpStatelessEvent<'adComplete'>>;
-	adSkipped$?: Observable<JwpStatelessEvent<'adSkipped'>>;
-	videoStart$?: Observable<JwpStatelessEvent<'videoStart'>>;
+	ready$: Observable<JwpStatelessEvent<'ready'>>;
+	adClick$: Observable<JwpStatelessEvent<'adClick'>>;
+	adStarted$: Observable<JwpStatelessEvent<'adStarted'>>;
+	adViewableImpression$: Observable<JwpStatelessEvent<'adViewableImpression'>>; // needs supplementVastParams
+	adFirstQuartile$: Observable<JwpStatelessEvent<'adFirstQuartile'>>;
+	adMidPoint$: Observable<JwpStatelessEvent<'adMidPoint'>>;
+	adThirdQuartile$: Observable<JwpStatelessEvent<'adThirdQuartile'>>;
+	adComplete$: Observable<JwpStatelessEvent<'adComplete'>>;
+	adSkipped$: Observable<JwpStatelessEvent<'adSkipped'>>;
+	videoStart$: Observable<JwpStatelessEvent<'videoStart'>>;
 }
 
 export interface JwpStatelessEvent<TEvent extends JWPlayerEventKey> {
@@ -50,6 +49,16 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 	const videoMidPoint$ = createJwpStream(jwplayer, 'videoMidPoint');
 	const beforeComplete$ = createJwpStream(jwplayer, 'beforeComplete');
 	const complete$ = createJwpStream(jwplayer, 'complete');
+	const ready$ = createJwpStream(jwplayer, 'ready');
+	const adClick$ = createJwpStream(jwplayer, 'adClick');
+	const adStarted$ = createJwpStream(jwplayer, 'adStarted');
+	const adViewableImpression$ = createJwpStream(jwplayer, 'adViewableImpression');
+	const adFirstQuartile$ = createJwpStream(jwplayer, 'adFirstQuartile');
+	const adMidPoint$ = createJwpStream(jwplayer, 'adMidPoint');
+	const adThirdQuartile$ = createJwpStream(jwplayer, 'adThirdQuartile');
+	const adComplete$ = createJwpStream(jwplayer, 'adComplete');
+	const adSkipped$ = createJwpStream(jwplayer, 'adSkipped');
+	const videoStart$ = createJwpStream(jwplayer, 'videoStart');
 
 	return {
 		adError$,
@@ -61,6 +70,16 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 		videoMidPoint$,
 		beforeComplete$,
 		complete$,
+		ready$,
+		adClick$,
+		adStarted$,
+		adViewableImpression$,
+		adFirstQuartile$,
+		adMidPoint$,
+		adThirdQuartile$,
+		adComplete$,
+		adSkipped$,
+		videoStart$,
 	};
 }
 
