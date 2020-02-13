@@ -3,7 +3,7 @@ import { JWPlayerTracker } from '../../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../../player/porvata/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
-import { getVideoId } from '../utils/get-video-id';
+import { JwpState } from '../streams/jwplayer-streams-state';
 
 const EMPTY_VAST_CODE = 21009;
 
@@ -124,27 +124,23 @@ export class JWPlayerHelper {
 		);
 	}
 
-	playVideoAd(
-		position: 'midroll' | 'postroll' | 'preroll',
-		depth: number,
-		correlator: number,
-	): void {
+	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
 		this.tracker.adProduct = `${this.adSlot.config.trackingKey}-${position}`;
 		this.adSlot.setConfigProperty('audio', !this.jwplayer.getMute());
 
-		const vastUrl = this.getVastUrl(position, depth, correlator);
+		const vastUrl = this.getVastUrl(position, state);
 
 		this.jwplayer.playAd(vastUrl);
 	}
 
-	private getVastUrl(position: string, depth: number, correlator: number): string {
+	private getVastUrl(position: string, state: JwpState): string {
 		return buildVastUrl(16 / 9, this.adSlot.getSlotName(), {
-			correlator,
+			correlator: state.correlator,
 			vpos: position,
 			targeting: {
 				passback: 'jwplayer',
-				rv: this.calculateRV(depth),
-				v1: getVideoId(this.jwplayer),
+				rv: this.calculateRV(state.depth),
+				v1: state.playlistItem.mediaid || '',
 				...this.targeting,
 			},
 		});

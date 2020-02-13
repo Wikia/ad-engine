@@ -75,21 +75,21 @@ export class JWPlayerHandler {
 			}),
 			filter(({ state }) => this.helper.shouldPlayPreroll(state.depth)),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
-			tap(({ state }) => this.helper.playVideoAd('preroll', state.depth, state.correlator)),
+			tap(({ state }) => this.helper.playVideoAd('preroll', state)),
 		);
 	}
 
 	private videoMidPoint(): Observable<any> {
 		return this.streams.videoMidPoint$.pipe(
 			filter(({ state }) => this.helper.shouldPlayMidroll(state.depth)),
-			tap(({ state }) => this.helper.playVideoAd('midroll', state.depth, state.correlator)),
+			tap(({ state }) => this.helper.playVideoAd('midroll', state)),
 		);
 	}
 
 	private beforeComplete(): Observable<any> {
 		return this.streams.beforeComplete$.pipe(
 			filter(({ state }) => this.helper.shouldPlayPostroll(state.depth)),
-			tap(({ state }) => this.helper.playVideoAd('postroll', state.depth, state.correlator)),
+			tap(({ state }) => this.helper.playVideoAd('postroll', state)),
 		);
 	}
 
