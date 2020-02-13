@@ -1,6 +1,6 @@
 import { RxJsOperator, VastParams, vastParser } from '@ad-engine/core';
 import { combineLatest, merge, Observable } from 'rxjs';
-import { map, scan, startWith } from 'rxjs/operators';
+import { map, scan, startWith, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';
 import { JWPlayerConfig } from '../external-types/jwplayer-config';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
@@ -12,6 +12,7 @@ export interface JwpState extends VideoDepth {
 	playlistItem: JWPlayerListItem;
 	config: JWPlayerConfig;
 	mute: boolean;
+	adStatus: 'bootstrap' | 'preroll' | 'midroll' | 'postroll' | 'complete';
 }
 
 interface VideoDepth {
@@ -35,6 +36,18 @@ export function createJwpStateStream(
 		createVastParams(),
 		startWith(vastParser.parse(null)),
 	);
+	const videoStatus$ = merge(
+		streams.beforePlay$.pipe(map(() => 'preroll')),
+		streams.videoMidPoint$.pipe(map(() => 'midroll')),
+		streams.beforeComplete$.pipe(map(() => 'postroll')),
+	);
+	const adStatus$: Observable<JwpState['adStatus']> = merge(
+		streams.adStarted$.pipe(
+			withLatestFrom(videoStatus$),
+			map(([, videoStatus]) => videoStatus),
+		),
+		streams.complete$.pipe(map(() => 'complete')),
+	).pipe(startWith('bootstrap')) as any;
 	const common$ = merge(Object.values(streams)).pipe(
 		map(() => ({
 			playlistItem: jwplayer.getPlaylistItem(),
@@ -43,11 +56,12 @@ export function createJwpStateStream(
 		})),
 	);
 
-	return combineLatest([videoDepth$, vastParams$, common$]).pipe(
-		map(([videoDepth, vastParams, common]) => ({
+	return combineLatest([videoDepth$, vastParams$, adStatus$, common$]).pipe(
+		map(([videoDepth, vastParams, adStatus, common]) => ({
 			...common,
 			...videoDepth,
 			vastParams,
+			adStatus,
 			playlistItem: jwplayer.getPlaylistItem(),
 			config: jwplayer.getConfig(),
 			mute: jwplayer.getMute(),

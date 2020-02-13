@@ -18,7 +18,7 @@ export class JwplayerTrackingHelper {
 	private getVideoData<T extends JWPlayerEventKey>(event: JwpEvent<T>): VideoData {
 		return {
 			ad_error_code: this.getErrorCode(event as any),
-			ad_product: undefined, // TODO
+			ad_product: this.getAdProduct(event),
 			audio: !event.state.mute ? 1 : 0,
 			ctp: undefined, // TODO
 			content_type: event.state.vastParams.contentType,
@@ -38,6 +38,20 @@ export class JwplayerTrackingHelper {
 		}
 
 		return event.payload && event.payload.code;
+	}
+
+	private getAdProduct<T extends JWPlayerEventKey>(event: JwpEvent<T>): string {
+		switch (event.state.adStatus) {
+			case 'complete':
+				return this.slot.config.slotName;
+			case 'midroll':
+			case 'postroll':
+			case 'preroll':
+				return `${this.slot.config.trackingKey}-${event.state.adStatus}`;
+			case 'bootstrap':
+			default:
+				return this.slot.config.trackingKey;
+		}
 	}
 
 	private getUserBlockAutoplay(): 1 | 0 | -1 {
