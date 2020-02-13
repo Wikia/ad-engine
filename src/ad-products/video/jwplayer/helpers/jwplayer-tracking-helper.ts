@@ -20,7 +20,7 @@ export class JwplayerTrackingHelper {
 			ad_error_code: this.getErrorCode(event as any),
 			ad_product: this.getAdProduct(event),
 			audio: !event.state.mute ? 1 : 0,
-			ctp: undefined, // TODO
+			ctp: this.getCtp(event),
 			content_type: event.state.vastParams.contentType,
 			creative_id: event.state.vastParams.creativeId,
 			line_item_id: event.state.vastParams.lineItemId,
@@ -52,6 +52,14 @@ export class JwplayerTrackingHelper {
 			default:
 				return this.slot.config.trackingKey;
 		}
+	}
+
+	private getCtp<T extends JWPlayerEventKey>(event: JwpEvent<T>): 0 | 1 {
+		if (event.state.depth > 1) {
+			return 0;
+		}
+
+		return !event.state.config.autostart ? 1 : 0;
 	}
 
 	private getUserBlockAutoplay(): 1 | 0 | -1 {
