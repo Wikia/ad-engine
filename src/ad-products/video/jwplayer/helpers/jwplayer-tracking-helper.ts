@@ -6,6 +6,8 @@ import { JwpEvent } from '../streams/jwplayer-streams';
 import { JwpEventKey } from '../streams/jwplayer-streams-stateless';
 
 const trackingEventsMap = {
+	init: 'init',
+	lateReady: 'late_ready',
 	ready: 'ready',
 	adBlock: 'blocked',
 	adClick: 'clicked',

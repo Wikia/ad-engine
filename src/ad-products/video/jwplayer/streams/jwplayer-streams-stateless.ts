@@ -7,6 +7,8 @@ import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 
 export interface JwpStatelessStreams {
+	init$: Observable<JwpStatelessEvent<'init'>>;
+	lateReady$: Observable<JwpStatelessEvent<'lateReady'>>;
 	adRequest$: Observable<JwpStatelessEvent<'adRequest'>>;
 	adError$: Observable<JwpStatelessEvent<'adError'>>;
 	adImpression$: Observable<JwpStatelessEvent<'adImpression'>>;
@@ -33,12 +35,14 @@ export interface JwpStatelessEvent<TEvent extends JwpEventKey> {
 	payload: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
 }
 
-export type JwpEventKey = keyof JWPlayerEventParams | JWPlayerNoParamEvent;
+export type JwpEventKey = keyof JWPlayerEventParams | JWPlayerNoParamEvent | 'init' | 'lateReady';
 
 /**
  * Describes streams (event sources) and their relations
  */
 export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStreams {
+	const init$: JwpStatelessStreams['init$'] = of({ name: 'init', payload: undefined });
+	const lateReady$: JwpStatelessStreams['lateReady$'] = createLateReadyStream(jwplayer);
 	const adRequest$ = createJwpStream(jwplayer, 'adRequest');
 	const adError$ = createJwpStream(jwplayer, 'adError').pipe(
 		onlyOncePerVideo(jwplayer),
@@ -63,6 +67,8 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 	const videoStart$ = createJwpStream(jwplayer, 'videoStart');
 
 	return {
+		init$,
+		lateReady$,
 		adError$,
 		adRequest$,
 		adImpression$,
@@ -83,6 +89,10 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 		adSkipped$,
 		videoStart$,
 	};
+}
+
+function createLateReadyStream(jwplayer: JWPlayer): JwpStatelessStreams['lateReady$'] {
+	return jwplayer.getConfig().itemReady ? of({ name: 'lateReady', payload: undefined }) : of();
 }
 
 function createJwpStream<TEvent extends JwpEventKey>(

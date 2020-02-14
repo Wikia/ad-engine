@@ -10,6 +10,8 @@ import {
 } from './jwplayer-streams-stateless';
 
 export interface JwpStreams {
+	init$: Observable<JwpEvent<'init'>>;
+	lateReady$: Observable<JwpEvent<'lateReady'>>;
 	adRequest$: Observable<JwpEvent<'adRequest'>>;
 	adError$: Observable<JwpEvent<'adError'>>;
 	adImpression$: Observable<JwpEvent<'adImpression'>>;
