@@ -2,6 +2,7 @@ import { utils } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
+import { JwpTrackingHelper } from './helpers/jwplayer-tracking-helper';
 import { JwpStreams } from './streams/jwplayer-streams';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -10,7 +11,11 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
  * Describes what is done
  */
 export class JWPlayerHandler {
-	constructor(private streams: JwpStreams, private helper: JWPlayerHelper) {}
+	constructor(
+		private streams: JwpStreams,
+		private helper: JWPlayerHelper,
+		private tracker: JwpTrackingHelper,
+	) {}
 
 	handle(): Observable<any> {
 		return merge(
@@ -23,6 +28,7 @@ export class JWPlayerHandler {
 			this.videoMidPoint(),
 			this.beforeComplete(),
 			this.complete(),
+			this.track(),
 		);
 	}
 
@@ -95,5 +101,12 @@ export class JWPlayerHandler {
 
 	private complete(): Observable<any> {
 		return this.streams.complete$.pipe(tap(() => this.helper.resetTrackerAdProduct()));
+	}
+
+	private track(): Observable<any> {
+		return merge(...Object.values(this.streams)).pipe(
+			filter((event) => this.tracker.isTrackingEvent(event as any)),
+			tap((event) => this.tracker.track(event)),
+		);
 	}
 }

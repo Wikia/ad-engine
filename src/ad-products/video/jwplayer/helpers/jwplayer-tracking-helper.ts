@@ -27,22 +27,17 @@ const trackingEventsMap = {
 
 type TrackingEvent = keyof typeof trackingEventsMap;
 
-export class JwplayerTrackingHelper {
-	// TODO: init and late_ready
-	constructor(private readonly slot: AdSlot) {}
+export class JwpTrackingHelper {
+	constructor(private readonly adSlot: AdSlot) {}
 
-	track<T extends JwpEventKey>(event: JwpEvent<T>): void {
-		if (!this.isTrackingEvent(event)) {
-			return;
-		}
-
+	track<T extends TrackingEvent>(event: JwpEvent<T>): void {
 		const videoData = this.getVideoData(event);
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
 	}
 
-	private isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {
+	isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {
 		return Object.keys(trackingEventsMap).includes(event.name);
 	}
 
@@ -57,7 +52,7 @@ export class JwplayerTrackingHelper {
 			line_item_id: event.state.vastParams.lineItemId,
 			event_name: trackingEventsMap[event.name],
 			player: 'jwplayer',
-			position: this.slot.config.slotName,
+			position: this.adSlot.config.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
 			video_id: event.state.playlistItem.mediaid || '',
 		};
@@ -74,14 +69,14 @@ export class JwplayerTrackingHelper {
 	private getAdProduct<T extends JwpEventKey>(event: JwpEvent<T>): string {
 		switch (event.state.adStatus) {
 			case 'complete':
-				return this.slot.config.slotName;
+				return this.adSlot.config.slotName;
 			case 'midroll':
 			case 'postroll':
 			case 'preroll':
-				return `${this.slot.config.trackingKey}-${event.state.adStatus}`;
+				return `${this.adSlot.config.trackingKey}-${event.state.adStatus}`;
 			case 'bootstrap':
 			default:
-				return this.slot.config.trackingKey;
+				return this.adSlot.config.trackingKey;
 		}
 	}
 

@@ -7,6 +7,7 @@ import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
+import { JwpTrackingHelper } from './helpers/jwplayer-tracking-helper';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
 import { createJwpStreams } from './streams/jwplayer-streams';
@@ -67,12 +68,11 @@ export class JWPlayerManager {
 		targeting,
 	}: PlayerReadyResult): JWPlayerHandler {
 		const streams = createJwpStreams(jwplayer);
-		const tracker = new JWPlayerTracker(adSlot, jwplayer);
-		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting, tracker);
+		const oldTracker = new JWPlayerTracker(adSlot, jwplayer); // TODO remove
+		const tracker = new JwpTrackingHelper(adSlot);
+		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting, oldTracker);
 
-		tracker.register(); // TODO: need to handle it separately
-
-		return new JWPlayerHandler(streams, helper);
+		return new JWPlayerHandler(streams, helper, tracker);
 	}
 
 	private loadMoatPlugin(): void {

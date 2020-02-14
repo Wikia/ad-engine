@@ -48,9 +48,11 @@ export function createJwpStateStream(
 		),
 		streams.complete$.pipe(map(() => 'complete')),
 	).pipe(startWith('bootstrap')) as any;
-	const common$ = merge(Object.values(streams)).pipe(
+	const common$ = merge(...Object.values(streams)).pipe(
 		map(() => ({
-			playlistItem: jwplayer.getPlaylistItem(),
+			playlistItem:
+				jwplayer.getPlaylistItem() ||
+				({ sources: [], tracks: [], variations: [], images: [], allSources: [] } as any),
 			config: jwplayer.getConfig(),
 			mute: jwplayer.getMute(),
 		})),
@@ -62,9 +64,6 @@ export function createJwpStateStream(
 			...videoDepth,
 			vastParams,
 			adStatus,
-			playlistItem: jwplayer.getPlaylistItem(),
-			config: jwplayer.getConfig(),
-			mute: jwplayer.getMute(),
 		})),
 		shareReplay(1),
 	);
