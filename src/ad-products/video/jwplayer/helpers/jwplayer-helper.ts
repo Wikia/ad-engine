@@ -1,5 +1,4 @@
 import { AdSlot, buildVastUrl, context, events, vastDebugger, VastParams } from '@ad-engine/core';
-import { JWPlayerTracker } from '../../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../../player/porvata/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
@@ -10,12 +9,12 @@ const EMPTY_VAST_CODE = 21009;
 /**
  * Describes how things are done
  */
+// TODO: Consider separating AdSlot part from player part
 export class JWPlayerHelper {
 	constructor(
 		private adSlot: AdSlot,
 		private jwplayer: JWPlayer,
-		private targeting: VideoTargeting,
-		private tracker: JWPlayerTracker,
+		private readonly targeting: VideoTargeting,
 	) {}
 
 	isMoatTrackingEnabled(): boolean {
@@ -56,10 +55,6 @@ export class JWPlayerHelper {
 		const iasConfig = context.get('options.video.iasTracking.config');
 
 		iasVideoTracker.init(window.google, adsManager, videoElement, iasConfig);
-	}
-
-	resetTrackerAdProduct(): void {
-		this.tracker.adProduct = this.adSlot.config.slotName;
 	}
 
 	setSlotParams(vastParams: VastParams): void {
@@ -125,7 +120,6 @@ export class JWPlayerHelper {
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
-		this.tracker.adProduct = `${this.adSlot.config.trackingKey}-${position}`;
 		this.adSlot.setConfigProperty('audio', !this.jwplayer.getMute());
 
 		const vastUrl = this.getVastUrl(position, state);

@@ -27,7 +27,7 @@ const trackingEventsMap = {
 
 type TrackingEvent = keyof typeof trackingEventsMap;
 
-export class JwpTrackingHelper {
+export class JWPlayerTrackingHelper {
 	constructor(private readonly adSlot: AdSlot) {}
 
 	track<T extends TrackingEvent>(event: JwpEvent<T>): void {
@@ -58,9 +58,9 @@ export class JwpTrackingHelper {
 		};
 	}
 
-	private getErrorCode(event: JwpEvent<'adError'>): number | undefined {
+	private getErrorCode(event: JwpEvent<'adError'>): number {
 		if (event.name !== 'adError') {
-			return;
+			return 0;
 		}
 
 		return event.payload && event.payload.code;

@@ -2,7 +2,7 @@ import { utils } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
-import { JwpTrackingHelper } from './helpers/jwplayer-tracking-helper';
+import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
 import { JwpStreams } from './streams/jwplayer-streams';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -14,7 +14,7 @@ export class JWPlayerHandler {
 	constructor(
 		private streams: JwpStreams,
 		private helper: JWPlayerHelper,
-		private tracker: JwpTrackingHelper,
+		private tracker: JWPlayerTrackingHelper,
 	) {}
 
 	handle(): Observable<any> {
@@ -22,12 +22,10 @@ export class JWPlayerHandler {
 			this.adError(),
 			this.adRequest(),
 			this.adImpression(),
-			this.adBlock(),
 			this.adsManager(),
 			this.beforePlay(),
 			this.videoMidPoint(),
 			this.beforeComplete(),
-			this.complete(),
 			this.track(),
 		);
 	}
@@ -63,10 +61,6 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private adBlock(): Observable<any> {
-		return this.streams.adBlock$.pipe(tap(() => this.helper.resetTrackerAdProduct()));
-	}
-
 	private adsManager(): Observable<any> {
 		return this.streams.adsManager$.pipe(
 			filter(() => this.helper.isIasTrackingEnabled()),
@@ -97,10 +91,6 @@ export class JWPlayerHandler {
 			filter(({ state }) => this.helper.shouldPlayPostroll(state.depth)),
 			tap(({ state }) => this.helper.playVideoAd('postroll', state)),
 		);
-	}
-
-	private complete(): Observable<any> {
-		return this.streams.complete$.pipe(tap(() => this.helper.resetTrackerAdProduct()));
 	}
 
 	private track(): Observable<any> {

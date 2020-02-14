@@ -39,6 +39,7 @@ const trackingEventsMap: Dictionary<string> = {
 /**
  * Ads tracker for JWPlayer
  */
+// TODO: remove
 export class JWPlayerTracker {
 	static PLAYER_NAME = 'jwplayer';
 

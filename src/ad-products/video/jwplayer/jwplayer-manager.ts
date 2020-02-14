@@ -3,11 +3,10 @@ import { Communicator } from '@wikia/post-quecast';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
-import { JWPlayerTracker } from '../../tracking/video/jwplayer-tracker';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
-import { JwpTrackingHelper } from './helpers/jwplayer-tracking-helper';
+import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
 import { createJwpStreams } from './streams/jwplayer-streams';
@@ -68,9 +67,8 @@ export class JWPlayerManager {
 		targeting,
 	}: PlayerReadyResult): JWPlayerHandler {
 		const streams = createJwpStreams(jwplayer);
-		const oldTracker = new JWPlayerTracker(adSlot, jwplayer); // TODO remove
-		const tracker = new JwpTrackingHelper(adSlot);
-		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting, oldTracker);
+		const tracker = new JWPlayerTrackingHelper(adSlot);
+		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting);
 
 		return new JWPlayerHandler(streams, helper, tracker);
 	}
