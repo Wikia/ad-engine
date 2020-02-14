@@ -1,5 +1,6 @@
 import * as EventEmitter from 'eventemitter3';
-import { AdStackPayload, eventService, slotTweaker } from '../';
+import { action, props } from 'ts-action';
+import { AdStackPayload, eventService, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
@@ -27,7 +28,9 @@ interface RepeatConfig {
 }
 
 export interface SlotConfig {
+	uid: string;
 	adProduct: string;
+	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
@@ -58,9 +61,19 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
+export const adSlotEvent = action(
+	'[AdEngine] Ad Slot event',
+	props<{
+		event: string;
+		payload?: any;
+		adSlotName: string;
+	}>(),
+);
+
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
+	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static SLOT_RENDERED_EVENT = 'slotRendered';
@@ -84,12 +97,15 @@ export class AdSlot extends EventEmitter {
 	static AD_CLASS = 'gpt-ad';
 	static HIDDEN_CLASS = 'hide';
 
+	static TEMPLATES_LOADED = 'Templates Loaded';
+
 	private slotViewed = false;
 
 	config: SlotConfig;
 	element: null | HTMLElement = null;
 	status: null | string = null;
 	isEmpty = true;
+	pushTime: number;
 	enabled: boolean;
 	events: LazyQueue;
 	adUnit: string;
@@ -101,6 +117,13 @@ export class AdSlot extends EventEmitter {
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackOnStatusChanged = false;
 
+	requested = new Promise<void>((resolve) => {
+		this.once(AdSlot.SLOT_REQUESTED_EVENT, () => {
+			this.pushTime = new Date().getTime();
+
+			resolve();
+		});
+	});
 	loaded = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_LOADED_EVENT, () => {
 			slotTweaker.setDataParam(this, 'slotLoaded', true);
@@ -135,6 +158,10 @@ export class AdSlot extends EventEmitter {
 		this.events.onItemFlush((event) => {
 			this.on(event.name, event.callback);
 		});
+
+		if (!this.config.uid) {
+			context.set(`slots.${ad.id}.uid`, utils.generateUniqueId());
+		}
 
 		this.config.slotName = this.config.slotName || ad.id;
 		this.config.targeting = this.config.targeting || ({} as Targeting);
@@ -205,6 +232,10 @@ export class AdSlot extends EventEmitter {
 		return (Array.isArray(pos) ? pos : pos.split(','))[0].toLowerCase();
 	}
 
+	getUid(): string {
+		return this.config.uid;
+	}
+
 	getSlotName(): string {
 		return this.config.slotName;
 	}
@@ -243,6 +274,10 @@ export class AdSlot extends EventEmitter {
 
 	getStatus(): string {
 		return this.status;
+	}
+
+	getPushTime(): number {
+		return this.pushTime;
 	}
 
 	setStatus(status: null | string = null): void {
@@ -319,11 +354,13 @@ export class AdSlot extends EventEmitter {
 		}
 		this.setStatus(status);
 
-		const templateNames = this.getConfigProperty('defaultTemplates');
+		const templateNames = this.getConfigProperty('defaultTemplates') || [];
 
 		if (templateNames && templateNames.length) {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
+
+		this.emit(AdSlot.TEMPLATES_LOADED, ...templateNames);
 
 		if (this.config.trackOverscrolled) {
 			overscrollListener.apply(this);
@@ -466,6 +503,7 @@ export class AdSlot extends EventEmitter {
 		const result = super.emit(event, ...args);
 
 		eventService.emit(event, this, ...args);
+		this.emitPostQueueCast(event, args);
 
 		this.logger(this.getSlotName(), event, result, ...args);
 
@@ -476,6 +514,16 @@ export class AdSlot extends EventEmitter {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
 		}
+	}
+
+	private emitPostQueueCast(event: string | symbol, payload: any[]) {
+		eventService.communicator.dispatch(
+			adSlotEvent({
+				payload: JSON.parse(JSON.stringify(payload)),
+				event: event.toString(),
+				adSlotName: this.getSlotName(),
+			}),
+		);
 	}
 
 	/**

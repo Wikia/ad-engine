@@ -6,6 +6,10 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpTargetingSetup implements TargetingSetup {
 	configureTargetingContext(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+
+		if (context.get('wiki.opts.isAdTestWiki')) {
+			context.set('src', 'test');
+		}
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
@@ -22,16 +26,18 @@ export class UcpTargetingSetup implements TargetingSetup {
 			hostpre: this.getHostnamePrefix(),
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			s0: wiki.targeting.mappedVerticalName,
-			s1: `_${wiki.targeting.wikiDbName}`,
-			s2: wiki.targeting.pageType,
-			skin: 'ucp',
+			s0v: wiki.targeting.wikiVertical,
+			s0c: wiki.targeting.newWikiCategories,
+			s1: this.getRawDbName(wiki),
+			s2: this.getAdLayout(wiki),
+			skin: 'oasis',
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
 		};
 
-		if (window.pvNumber) {
-			targeting.pv = window.pvNumber.toString();
+		if (context.get('wiki.pvNumber')) {
+			targeting.pv = context.get('wiki.pvNumber').toString();
 		}
 
 		if (cid !== undefined) {
@@ -58,5 +64,32 @@ export class UcpTargetingSetup implements TargetingSetup {
 		}
 
 		return undefined;
+	}
+
+	private getRawDbName(adsContext: MediaWikiAdsContext): string {
+		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
+	}
+
+	private getAdLayout(wikiContext: MediaWikiAdsContext): string {
+		let layout = wikiContext.targeting.pageType || 'article';
+
+		if (layout === 'article') {
+			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
+			if (
+				wikiContext.targeting.hasFeaturedVideo &&
+				wikiContext.targeting.featuredVideo &&
+				wikiContext.targeting.featuredVideo.isDedicatedForArticle === false
+			) {
+				layout = `wv-${layout}`;
+			} else if (wikiContext.targeting.hasFeaturedVideo) {
+				layout = `fv-${layout}`;
+			}
+
+			if (wikiContext.targeting.hasIncontentPlayer) {
+				layout = `${layout}-ic`;
+			}
+		}
+
+		return layout;
 	}
 }

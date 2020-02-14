@@ -2,7 +2,7 @@ import { iocDefaultWarning } from '../utils/ioc-default-warning';
 
 export class BiddersStateSetup {
 	constructor() {
-		iocDefaultWarning('DynamicSlotsSetup');
+		iocDefaultWarning('BiddersStateSetup');
 	}
 
 	configureBiddersState(): void {}

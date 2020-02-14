@@ -53,22 +53,44 @@ export class PrebidProvider extends BidderProvider {
 			debug:
 				utils.queryString.get('pbjs_debug') === '1' ||
 				utils.queryString.get('pbjs_debug') === 'true',
-			enableSendAllBids: false,
+			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
-			userSync: {
-				iframeEnabled: true,
-				enabledBidders: [],
-				syncDelay: 6000,
-			},
 		};
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
+		// ToDo @ Prebid 3.0: remove else part once Prebid v3.2.0 transition will be done
+		if (
+			context.get('bidders.prebid.libraryUrl') &&
+			context.get('bidders.prebid.libraryUrl').includes('v3.2.0')
+		) {
+			this.prebidConfig.userSync = {
+				filterSettings: {
+					iframe: {
+						bidders: '*',
+						filter: 'include',
+					},
+					image: {
+						bidders: '*',
+						filter: 'include',
+					},
+				},
+				syncsPerBidder: 3,
+				syncDelay: 6000,
+			};
+		} else {
+			this.prebidConfig.userSync = {
+				iframeEnabled: true,
+				enabledBidders: [],
+				syncDelay: 6000,
+			};
+		}
+
 		if (this.cmp.exists) {
-			// ToDo: remove it once Prebid v2.44.0 transition will be done
+			// ToDo @ Prebid 3.0: remove else part once Prebid v2.44.0 transition will be done
 			if (
 				context.get('bidders.prebid.libraryUrl') &&
 				!context.get('bidders.prebid.libraryUrl').includes('v2.4.0')
@@ -95,6 +117,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
+		this.registerBidsTracking();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -163,9 +186,15 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
+		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
 
-		return getWinningBid(slotAlias);
+		return {
+			...(context.get('bidders.prebid.sendAllBids')
+				? pbjs.getAdserverTargetingForAdUnitCode(slotAlias)
+				: null),
+			...(await getWinningBid(slotAlias)),
+		};
 	}
 
 	isSupported(slotName: string): boolean {
@@ -194,6 +223,19 @@ export class PrebidProvider extends BidderProvider {
 		pbjs.onEvent('bidWon', refreshUsedBid);
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
 			pbjs.offEvent('bidWon', refreshUsedBid);
+		});
+	}
+
+	async registerBidsTracking(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		const trackBid = (response) => {
+			eventService.emit(events.BIDS_RESPONSE, response);
+		};
+
+		pbjs.onEvent('bidResponse', trackBid);
+		eventService.once(events.PAGE_CHANGE_EVENT, () => {
+			pbjs.offEvent('bidResponse', trackBid);
 		});
 	}
 

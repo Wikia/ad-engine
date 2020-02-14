@@ -25,6 +25,7 @@ export const slotPropertiesTrackingMiddleware: Middleware<AdInfoContext> = (
 			kv_wsi: slot.getConfigProperty('targeting.wsi') || '',
 			order_id: slot.orderId || '',
 			product_lineitem_id: slot.lineItemId || '',
+			slot_id: slot.getUid() || '',
 			slot_size: creativeSize || '',
 		},
 	});

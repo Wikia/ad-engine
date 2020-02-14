@@ -18,11 +18,14 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
+const sendAllBidsEnabled = utils.queryString.get('send_all_bids') === '1';
+
 context.extend(customContext);
 
 context.set('targeting.artid', '503');
 context.set('slots.incontent_boxad.disabled', false);
 context.set('options.tracking.kikimora.player', true);
+context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 
 if (utils.queryString.get('porvata-direct') === '1') {
 	context.set('slots.incontent_player.customFiller', 'porvata');

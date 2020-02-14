@@ -29,6 +29,7 @@ describe('Instant Config Overrider', () => {
 			'InstantGlobals.override': 'true',
 			'InstantGlobals.wgAdDriverOverride': 'false',
 			'InstantGlobals.wgAdDriverQueryUnique': 'I am wgAdDriver unique from query',
+			'icbm.icFoo': 'I am value overridden with icbm. prefix',
 		};
 
 		beforeEach(() => {
@@ -52,6 +53,9 @@ describe('Instant Config Overrider', () => {
 				{ regions: ['XX'], value: 'I am new unique from query' },
 			]);
 			expect(result['override']).to.deep.equal([{ regions: ['XX'], value: true }]);
+			expect(result['icFoo']).to.deep.equal([
+				{ regions: ['XX'], value: 'I am value overridden with icbm. prefix' },
+			]);
 
 			expect(result['wgAdDriverConfigUnique']).to.equal('I am wgAdDriver unique from config');
 			expect(result['wgAdDriverQueryUnique']).to.equal('I am wgAdDriver unique from query');

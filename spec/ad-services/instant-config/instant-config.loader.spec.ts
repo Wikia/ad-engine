@@ -1,13 +1,19 @@
 import { context, Dictionary } from '@wikia/ad-engine';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import {
+	createSandbox,
+	SinonFakeXMLHttpRequest,
+	SinonFakeXMLHttpRequestStatic,
+	SinonStub,
+} from 'sinon';
 
 describe('Instant Config Loader', () => {
+	const sandbox = createSandbox();
 	let callCount: number;
-	let xhr: sinon.SinonFakeXMLHttpRequestStatic;
-	let request: sinon.SinonFakeXMLHttpRequest;
-	let contextGetStub: sinon.SinonStub;
+	let xhr: SinonFakeXMLHttpRequestStatic;
+	let request: SinonFakeXMLHttpRequest & { setStatus: (status: number) => void };
+	let contextGetStub: SinonStub;
 	let contextRepo: Dictionary<string>;
 
 	beforeEach(() => {
@@ -15,21 +21,20 @@ describe('Instant Config Loader', () => {
 			'services.instantConfig.endpoint': 'http://endpoint.com',
 			'services.instantConfig.fallbackConfigKey': 'fallback_config_key',
 		};
-		contextGetStub = sinon.stub(context, 'get');
+		contextGetStub = sandbox.stub(context, 'get');
 		contextGetStub.callsFake((key) => contextRepo[key]);
 
 		callCount = 0;
-		xhr = sinon.useFakeXMLHttpRequest();
+		xhr = sandbox.useFakeXMLHttpRequest();
 		xhr.onCreate = (_xhr) => {
 			callCount++;
-			request = _xhr;
+			request = _xhr as any;
 		};
 	});
 
 	afterEach(() => {
 		instantConfigLoader['configPromise'] = null;
-		contextGetStub.restore();
-		xhr.restore();
+		sandbox.restore();
 	});
 
 	it('should get config', async () => {

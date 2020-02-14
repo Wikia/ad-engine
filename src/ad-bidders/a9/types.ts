@@ -3,7 +3,7 @@ import { BidderConfig, BidsRefreshing } from '../bidder-provider';
 
 export type PriceMap = Dictionary<string>;
 
-export interface ApstagConfig extends Partial<A9GDPR> {
+export interface ApstagConfig extends Partial<A9GDPR>, Partial<A9CCPA> {
 	pubID: string;
 	videoAdServer: 'DFP';
 	deals: boolean;
@@ -14,6 +14,12 @@ export interface A9GDPR {
 		enabled: boolean;
 		consent: string;
 		cmpTimeout: number;
+	};
+}
+
+export interface A9CCPA {
+	params: {
+		us_privacy: string;
 	};
 }
 

@@ -32,12 +32,12 @@ describe('gpt-provider', () => {
 		window.googletag = {
 			pubads: () => pubads,
 			enableServices: spy(),
-		};
+		} as any;
 
 		window.googletag.cmd = window.googletag.cmd || [];
-		window.googletag.cmd.push = (cb) => {
+		window.googletag.cmd.push = ((cb) => {
 			cb();
-		};
+		}) as any;
 
 		context.set('options.trackingOptIn', true);
 	});
@@ -56,7 +56,7 @@ describe('gpt-provider', () => {
 		setTimeout(() => {
 			expect(pubads.disableInitialLoad.called).to.be.true;
 			expect(pubads.enableSingleRequest.called).to.be.false;
-			expect(pubads.addEventListener.calledThrice).to.be.true;
+			expect(pubads.addEventListener.callCount).to.equal(4);
 			expect(pubads.setRequestNonPersonalizedAds.calledWith(0)).to.be.true;
 			done();
 		});

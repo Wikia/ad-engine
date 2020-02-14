@@ -47,6 +47,12 @@ function configure() {
 
 	tag.disableInitialLoad();
 
+	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
+		const adSlot = getAdSlotFromEvent(event);
+
+		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
+	});
+
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 

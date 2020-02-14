@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "53.3.1",
+	"version": "57.0.1",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@babel/runtime-corejs2": "^7.3.1",
 		"@wikia/dependency-injection": "2.1.0",
-		"@wikia/post-quecast": "^1.1.0",
+		"@wikia/post-quecast": "^1.2.0",
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
@@ -168,7 +168,8 @@
 		},
 		"ignore": [
 			"**/dist/**/*",
-			"maintenance/tslint-rules/tests/**/*"
+			"maintenance/tslint-rules/tests/**/*",
+			"platforms/*/fallback-config.js"
 		]
 	}
 }

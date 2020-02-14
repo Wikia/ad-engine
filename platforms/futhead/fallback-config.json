@@ -37,7 +37,37 @@
 			"value": true
 		}
 	],
+	"icPrebidSendAllBids": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["PL"],
+			"sampling": 5.0,
+			"value": true
+		},
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["CZ"],
+			"sampling": 100.0,
+			"value": true
+		}
+	],
+	"icLABradorTest": [
+		{
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["PL"],
+			"sampling": 35.0,
+			"samplingCache": true,
+			"value": true
+		}
+	],
 	"icPrebid": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidNobid": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
@@ -83,6 +113,13 @@
 			"value": true
 		}
 	],
+	"icBidsTracking": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["CZ"],
+			"value": true
+		}
+	],
 	"icA9Deals": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
@@ -100,8 +137,19 @@
 	"icPrebidVersion": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["US-CA", "US-NY"],
+			"sampling": 100.0,
+			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
+		},
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["GB", "UK", "US"],
+			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.2/20200110.min.js"
+		},
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.4.0/20191216.min.js"
+			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
 		}
 	],
 	"icA9Bidder": [
@@ -109,6 +157,13 @@
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
+		}
+	],
+	"icAdEngineDelay": [
+		{
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["XX"],
+			"value": 2000
 		}
 	],
 	"icPrebidTriplelift": [

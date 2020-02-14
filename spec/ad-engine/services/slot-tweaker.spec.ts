@@ -13,7 +13,7 @@ describe('slot-tweaker', () => {
 		it('should accept a string', () => {
 			const mockedValue = 'qunitParamValue';
 
-			slotTweaker.setDataParam(adSlotFake, 'qunitParam', mockedValue);
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', mockedValue);
 
 			expect(adSlotFake.getElement().dataset.qunitParam).to.equal(mockedValue);
 		});
@@ -24,7 +24,7 @@ describe('slot-tweaker', () => {
 				param2: 'value2',
 			};
 
-			slotTweaker.setDataParam(adSlotFake, 'qunitParam', mockedValue);
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', mockedValue);
 
 			expect(adSlotFake.getElement().dataset.qunitParam).to.equal(
 				'{"param1":"value1","param2":"value2"}',
@@ -34,19 +34,19 @@ describe('slot-tweaker', () => {
 		it('should accept an array', () => {
 			const mockedValue = ['value1', 'value2'];
 
-			slotTweaker.setDataParam(adSlotFake, 'qunitParam', mockedValue);
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', mockedValue);
 
 			expect(adSlotFake.getElement().dataset.qunitParam).to.equal('["value1","value2"]');
 		});
 
 		it('should accept a boolean', () => {
-			slotTweaker.setDataParam(adSlotFake, 'qunitParam', true);
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', true);
 
 			expect(adSlotFake.getElement().dataset.qunitParam).to.equal('true');
 		});
 
 		it('should accept a boolean', () => {
-			slotTweaker.setDataParam(adSlotFake, 'qunitParam', false);
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', false);
 
 			expect(adSlotFake.getElement().dataset.qunitParam).to.equal('false');
 		});
@@ -54,7 +54,7 @@ describe('slot-tweaker', () => {
 		it('should not break if slot has no container', () => {
 			adSlotFake.getElement = () => null;
 
-			slotTweaker.setDataParam(adSlotFake, 'qunitParam', true);
+			slotTweaker.setDataParam(adSlotFake as any, 'qunitParam', true);
 		});
 	});
 });
