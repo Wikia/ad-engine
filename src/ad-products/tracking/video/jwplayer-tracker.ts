@@ -8,7 +8,6 @@ import {
 } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import { JWPlayer } from '../../video/jwplayer/external-types/jwplayer';
-import { getVideoId } from '../../video/jwplayer/utils/get-video-id';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 
@@ -176,7 +175,7 @@ export class JWPlayerTracker {
 			player: JWPlayerTracker.PLAYER_NAME,
 			position: this.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
-			video_id: getVideoId(this.jwplayer) || '',
+			video_id: this.getVideoId() || '',
 		};
 	}
 
@@ -192,5 +191,11 @@ export class JWPlayerTracker {
 			default:
 				return -1;
 		}
+	}
+
+	private getVideoId(): string {
+		const { mediaid } = this.jwplayer.getPlaylistItem() || {};
+
+		return mediaid;
 	}
 }
