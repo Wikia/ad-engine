@@ -2,7 +2,7 @@ import { RxJsOperator } from '@ad-engine/core';
 import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
-import { JWPlayer, JWPlayerEventKey, JWPlayerEventParams } from '../external-types/jwplayer';
+import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from '../external-types/jwplayer';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 
@@ -19,7 +19,7 @@ export interface JwpStatelessStreams {
 	ready$: Observable<JwpStatelessEvent<'ready'>>;
 	adClick$: Observable<JwpStatelessEvent<'adClick'>>;
 	adStarted$: Observable<JwpStatelessEvent<'adStarted'>>;
-	adViewableImpression$: Observable<JwpStatelessEvent<'adViewableImpression'>>; // needs supplementVastParams
+	adViewableImpression$: Observable<JwpStatelessEvent<'adViewableImpression'>>;
 	adFirstQuartile$: Observable<JwpStatelessEvent<'adFirstQuartile'>>;
 	adMidPoint$: Observable<JwpStatelessEvent<'adMidPoint'>>;
 	adThirdQuartile$: Observable<JwpStatelessEvent<'adThirdQuartile'>>;
@@ -28,10 +28,12 @@ export interface JwpStatelessStreams {
 	videoStart$: Observable<JwpStatelessEvent<'videoStart'>>;
 }
 
-export interface JwpStatelessEvent<TEvent extends JWPlayerEventKey> {
+export interface JwpStatelessEvent<TEvent extends JwpEventKey> {
 	name: TEvent;
 	payload: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
 }
+
+export type JwpEventKey = keyof JWPlayerEventParams | JWPlayerNoParamEvent;
 
 /**
  * Describes streams (event sources) and their relations
@@ -83,7 +85,7 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 	};
 }
 
-function createJwpStream<TEvent extends JWPlayerEventKey>(
+function createJwpStream<TEvent extends JwpEventKey>(
 	jwplayer: JWPlayer,
 	event: TEvent,
 ): Observable<JwpStatelessEvent<TEvent>> {

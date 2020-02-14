@@ -1,11 +1,11 @@
-import { AdSlot, Dictionary, VideoData, VideoEventData } from '@ad-engine/core';
+import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
-import { JWPlayerEventKey } from '../external-types/jwplayer';
 import { JwpEvent } from '../streams/jwplayer-streams';
+import { JwpEventKey } from '../streams/jwplayer-streams-stateless';
 
-const trackingEventsMap: Dictionary<string> = {
+const trackingEventsMap = {
 	ready: 'ready',
 	adBlock: 'blocked',
 	adClick: 'clicked',
@@ -23,12 +23,14 @@ const trackingEventsMap: Dictionary<string> = {
 	complete: 'content_completed',
 };
 
+type TrackingEvent = keyof typeof trackingEventsMap;
+
 export class JwplayerTrackingHelper {
 	// TODO: init and late_ready
 	constructor(private readonly slot: AdSlot) {}
 
-	track<T extends JWPlayerEventKey>(event: JwpEvent<T>): void {
-		if (!this.isTrackableEvent(event)) {
+	track<T extends JwpEventKey>(event: JwpEvent<T>): void {
+		if (!this.isTrackingEvent(event)) {
 			return;
 		}
 
@@ -38,11 +40,11 @@ export class JwplayerTrackingHelper {
 		playerEventEmitter.emit(eventInfo);
 	}
 
-	private isTrackableEvent<T extends JWPlayerEventKey>(event: JwpEvent<T>): boolean {
+	private isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {
 		return Object.keys(trackingEventsMap).includes(event.name);
 	}
 
-	private getVideoData<T extends JWPlayerEventKey>(event: JwpEvent<T>): VideoData {
+	private getVideoData(event: JwpEvent<TrackingEvent>): VideoData {
 		return {
 			ad_error_code: this.getErrorCode(event as any),
 			ad_product: this.getAdProduct(event),
@@ -67,7 +69,7 @@ export class JwplayerTrackingHelper {
 		return event.payload && event.payload.code;
 	}
 
-	private getAdProduct<T extends JWPlayerEventKey>(event: JwpEvent<T>): string {
+	private getAdProduct<T extends JwpEventKey>(event: JwpEvent<T>): string {
 		switch (event.state.adStatus) {
 			case 'complete':
 				return this.slot.config.slotName;
@@ -81,7 +83,7 @@ export class JwplayerTrackingHelper {
 		}
 	}
 
-	private getCtp<T extends JWPlayerEventKey>(event: JwpEvent<T>): 0 | 1 {
+	private getCtp<T extends JwpEventKey>(event: JwpEvent<T>): 0 | 1 {
 		if (event.state.depth > 1) {
 			return 0;
 		}

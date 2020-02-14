@@ -251,8 +251,6 @@ export type JWPlayerNoParamEvent =
 	| 'adMidPoint'
 	| 'adThirdQuartile';
 
-export type JWPlayerEventKey = keyof JWPlayerEventParams | JWPlayerNoParamEvent;
-
 export interface JWPlayer {
 	getMute(): boolean;
 	getPlaylist(): JWPlayerListItem[];
