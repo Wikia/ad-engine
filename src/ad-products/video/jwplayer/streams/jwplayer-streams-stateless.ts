@@ -7,6 +7,7 @@ import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 
 // TODO: consider changing names to values without $, so that it can be made a list
+// TODO: or create single stream on ofJwpEvent method to filter events.
 export interface JwpStatelessStreams {
 	init$: Observable<JwpStatelessEvent<'init'>>;
 	lateReady$: Observable<JwpStatelessEvent<'lateReady'>>;

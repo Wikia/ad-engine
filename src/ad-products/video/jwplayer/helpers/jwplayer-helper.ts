@@ -120,7 +120,7 @@ export class JWPlayerHelper {
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
-		this.adSlot.setConfigProperty('audio', !this.jwplayer.getMute());
+		this.adSlot.setConfigProperty('audio', !state.mute);
 
 		const vastUrl = this.getVastUrl(position, state);
 
