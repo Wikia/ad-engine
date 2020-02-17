@@ -69,11 +69,14 @@ export type ExtendedPromise<T> = Promise<T> & { resolve: PromiseResolve<T>; reje
 export function createExtendedPromise<T = void>(): ExtendedPromise<T> {
 	let resolve: PromiseResolve<T>;
 	let reject: PromiseReject;
+
 	const promise = new Promise<T>((res, rej) => {
 		resolve = res;
 		reject = rej;
 	});
+
 	promise['resolve'] = resolve;
 	promise['reject'] = reject;
+
 	return promise as ExtendedPromise<T>;
 }
