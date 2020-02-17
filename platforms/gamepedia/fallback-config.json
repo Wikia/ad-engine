@@ -128,7 +128,10 @@
                 "muthead",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "CZ"
+            ],
+            "value": true
         }
     ],
     "icPrebidCriteo": [
@@ -293,6 +296,20 @@
                 "PL"
             ],
             "sampling": 5.0,
+            "value": true
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "CZ"
+            ],
+            "sampling": 100.0,
             "value": true
         }
     ],

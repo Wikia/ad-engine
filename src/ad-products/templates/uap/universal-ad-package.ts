@@ -133,7 +133,7 @@ async function loadPorvata(videoSettings, slotContainer, imageContainer): Promis
 	const video = await Porvata.inject(params);
 
 	video.container.style.position = 'relative';
-	videoUserInterface.setup(video, template, {
+	videoUserInterface.setup(video, video.container, template, {
 		autoPlay: videoSettings.isAutoPlay(),
 		image: imageContainer,
 		container: slotContainer,

@@ -4,6 +4,7 @@ node_modules/**/*
 jspm_packages/
 **/allure-results/**/*
 src/ad-products/video/player/porvata/moat/moat-video-tracker-script.ts
+src/ad-products/video/porvata4/plugins/moat/moat-video-tracker-script.ts
 src/ad-services/nielsen/static-queue-script.ts
 src/ad-services/permutive/index.ts
 package-lock.json

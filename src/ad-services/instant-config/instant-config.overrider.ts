@@ -5,14 +5,18 @@ import {
 	InstantConfigValue,
 } from './instant-config.models';
 
-const instantGlobalsQueryParamPrefix = 'InstantGlobals';
+const queryParamPrefixes = ['InstantGlobals', 'icbm'];
+
+function hasInstantConfigPrefix(key: string): boolean {
+	return queryParamPrefixes.filter((prefix: string) => key.startsWith(`${prefix}.`)).length > 0;
+}
 
 export class InstantConfigOverrider {
 	override(config: InstantConfigResponse): InstantConfigResponse {
 		const queryParams = utils.queryString.getValues();
 
 		return Object.keys(queryParams)
-			.filter((paramKey: string) => paramKey.startsWith(instantGlobalsQueryParamPrefix))
+			.filter((paramKey: string) => hasInstantConfigPrefix(paramKey))
 			.map((paramKey) => {
 				const [, key] = paramKey.split('.');
 

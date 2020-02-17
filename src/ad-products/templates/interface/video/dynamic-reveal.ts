@@ -20,7 +20,7 @@ function add(video, container, params): void {
 			// Delay dispatching event so it's run after browser really finish expanding the slot
 			// Value 1000ms is related to animation defined in _porvata.scss file
 			setTimeout(() => {
-				video.ima.dispatchEvent('wikiaSlotExpanded');
+				video.dispatchEvent('wikiaSlotExpanded');
 			}, 1000);
 		}
 
@@ -33,7 +33,7 @@ function add(video, container, params): void {
 
 	video.addEventListener('allAdsCompleted', () => {
 		slotTweaker.collapse(slot);
-		video.ima.dispatchEvent('wikiaSlotCollapsed');
+		video.dispatchEvent('wikiaSlotCollapsed');
 	});
 }
 

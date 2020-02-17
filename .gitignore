@@ -1,4 +1,5 @@
 .idea
+.vscode
 .nyc_output
 .rpt2_cache
 .npm_cache/
