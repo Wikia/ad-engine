@@ -8,11 +8,7 @@ npm install github:Wikia/ad-engine
 
 ## Platforms
 
-### Gamepedia
-
-* `npm run dev:gp` - to serve gamepedia on port 9000
-* `npm run build:gp` - to create production build of gamepedia
-* `npm run test:gp` - to run unit tests of gamepedia
+* `npm run dev:platforms` - to serve platforms (UCP, Gamepedia, Futhead, Muthead) ad-engine code on port 9000
 
 ## Available packages
 

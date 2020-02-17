@@ -7,6 +7,6 @@ export class UcpWikiContextSetup extends WikiContextSetup {
 	configureWikiContext(): void {
 		super.configureWikiContext();
 		// Make sure showAds is set to false in case of any falsy value
-		context.set('wiki.opts.showAds', !!context.get('wiki.opts.showAds'));
+		context.set('wiki.opts.showAds', context.get('wiki.opts.pageType') !== 'no_ads');
 	}
 }
