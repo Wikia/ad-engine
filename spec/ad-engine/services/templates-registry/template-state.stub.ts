@@ -5,7 +5,7 @@ export type TemplateStateStub = {
 	[key in keyof TemplateState<string>]: SinonStub & TemplateState<string>[key]
 };
 
-export function createTemplateStaterStub(sandbox: SinonSandbox): TemplateStateStub {
+export function createTemplateStateStub(sandbox: SinonSandbox): TemplateStateStub {
 	return {
 		enter: sandbox.stub().resolves(),
 		leave: sandbox.stub().resolves(),

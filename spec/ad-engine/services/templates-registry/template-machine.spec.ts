@@ -1,7 +1,7 @@
 import { TemplateMachine } from '@wikia/ad-engine/services/templates-registry/template-machine';
 import { assert, expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { createTemplateStaterStub, TemplateStateStub } from './template-state.stub';
+import { createTemplateStateStub, TemplateStateStub } from './template-state.stub';
 
 describe('Template Machine', () => {
 	const sandbox = createSandbox();
@@ -10,8 +10,8 @@ describe('Template Machine', () => {
 	let machine: TemplateMachine;
 
 	beforeEach(() => {
-		stateA = createTemplateStaterStub(sandbox);
-		stateB = createTemplateStaterStub(sandbox);
+		stateA = createTemplateStateStub(sandbox);
+		stateB = createTemplateStateStub(sandbox);
 		machine = new TemplateMachine(
 			'mock-template',
 			new Map([['a', stateA], ['b', stateB]]) as any,
@@ -23,7 +23,7 @@ describe('Template Machine', () => {
 		sandbox.restore();
 	});
 
-	it('should enter initial state state after init', () => {
+	it('should enter initial state after init', () => {
 		assert(!stateA.enter.called);
 		assert(!stateA.leave.called);
 		assert(!stateB.enter.called);
