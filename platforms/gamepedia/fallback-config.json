@@ -14,7 +14,6 @@
             "value": true
         }
     ],
-    "wgAdDriverUapRestriction": 1,
     "icLABradorTest": [
         {
             "apps": [
@@ -32,10 +31,6 @@
             "samplingCache": true,
             "value": true
         }
-    ],
-    "wgAdDriverTestCommunities": [
-        "cdm_gamepedia",
-        "project43"
     ],
     "icPrebidOpenX": [
         {
@@ -64,9 +59,6 @@
                 "cdm_gamepedia"
             ]
         }
-    ],
-    "wgAdDriverUapCountries": [
-        "XX"
     ],
     "icTaxonomyAdTags": [
         {
@@ -159,36 +151,6 @@
                 "oasis"
             ],
             "regions": [
-                "US-CA",
-                "US-NY"
-            ],
-            "sampling": 100.0,
-            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
-        },
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "GB",
-                "UK",
-                "US"
-            ],
-            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.2/20200110.min.js"
-        },
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
                 "XX"
             ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js"
@@ -224,7 +186,6 @@
             "value": true
         }
     ],
-    "wgAdDriverDelayTimeout": 2000,
     "icConfiant": [
         {
             "apps": [
@@ -401,9 +362,6 @@
             ],
             "value": true
         }
-    ],
-    "wgAdDriverLABradorTestCountries": [
-        "PL/35-cached"
     ],
     "icAdEngineDelay": [
         {
