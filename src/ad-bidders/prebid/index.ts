@@ -49,6 +49,8 @@ export class PrebidProvider extends BidderProvider {
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
+
 		this.prebidConfig = {
 			debug:
 				utils.queryString.get('pbjs_debug') === '1' ||
@@ -59,15 +61,7 @@ export class PrebidProvider extends BidderProvider {
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
-		};
-		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-
-		// ToDo @ Prebid 3.0: remove else part once Prebid v3.2.0 transition will be done
-		if (
-			context.get('bidders.prebid.libraryUrl') &&
-			context.get('bidders.prebid.libraryUrl').includes('v3.2.0')
-		) {
-			this.prebidConfig.userSync = {
+			userSync: {
 				filterSettings: {
 					iframe: {
 						bidders: '*',
@@ -80,39 +74,21 @@ export class PrebidProvider extends BidderProvider {
 				},
 				syncsPerBidder: 3,
 				syncDelay: 6000,
-			};
-		} else {
-			this.prebidConfig.userSync = {
-				iframeEnabled: true,
-				enabledBidders: [],
-				syncDelay: 6000,
-			};
-		}
+			},
+		};
 
 		if (this.cmp.exists) {
-			// ToDo @ Prebid 3.0: remove else part once Prebid v2.44.0 transition will be done
-			if (
-				context.get('bidders.prebid.libraryUrl') &&
-				!context.get('bidders.prebid.libraryUrl').includes('v2.4.0')
-			) {
-				this.prebidConfig.consentManagement = {
-					gdpr: {
-						cmpApi: 'iab',
-						timeout: this.timeout,
-						allowAuctionWithoutConsent: false,
-					},
-					usp: {
-						cmpApi: 'iab',
-						timeout: 100,
-					},
-				};
-			} else {
-				this.prebidConfig.consentManagement = {
+			this.prebidConfig.consentManagement = {
+				gdpr: {
 					cmpApi: 'iab',
 					timeout: this.timeout,
 					allowAuctionWithoutConsent: false,
-				};
-			}
+				},
+				usp: {
+					cmpApi: 'iab',
+					timeout: 100,
+				},
+			};
 		}
 
 		this.applyConfig(this.prebidConfig);
