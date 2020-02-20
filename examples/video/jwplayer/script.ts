@@ -62,9 +62,7 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 
 context.set('options.maxDelayTimeout', 1000);
 
-bidders.requestBids();
-
-bidders.getPromise().then(() => {
+bidders.requestBids().then(() => {
 	const playlist = [videoData];
 	const playerOptions = {
 		autoplay: utils.queryString.get('autoplay') !== '0',
