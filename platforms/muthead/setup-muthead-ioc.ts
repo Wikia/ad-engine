@@ -32,7 +32,6 @@ export async function setupMutheadIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
-
 	container.bind(TargetingSetup).to(MutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
 	container.bind(AdEngineRunnerSetup).to(MutheadAdEngineRunnerSetup);
