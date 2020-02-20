@@ -26,4 +26,4 @@ slotService.on('top_leaderboard', AdSlot.CUSTOM_EVENT, (event) => {
 	console.log(`👁 top_leaderboard custom event: ${event.status}`);
 });
 
-new AdEngine(context).init();
+new AdEngine([], context).init();

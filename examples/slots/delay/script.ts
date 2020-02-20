@@ -1,19 +1,9 @@
-import { AdEngine, context, Inhibitor } from '@wikia/ad-engine';
+import { AdEngine, context, utils } from '@wikia/ad-engine';
 import adContext from '../../context';
 
 let time = 10;
 
-class ClickDelay extends Inhibitor {
-	getName(): string {
-		return 'click';
-	}
-
-	isEnabled(): boolean {
-		return true;
-	}
-}
-
-const clickDelay = new ClickDelay();
+const clickInhibitor = utils.createExtendedPromise();
 const interval = setInterval(() => {
 	time -= 1;
 	document.getElementById('clickDelay').innerText = 'Load ads';
@@ -26,11 +16,11 @@ const interval = setInterval(() => {
 }, 1000);
 
 document.getElementById('clickDelay').addEventListener('click', () => {
-	clickDelay.markAsReady();
+	clickInhibitor.resolve();
 	time = 0;
 });
 
 context.extend(adContext);
 context.set('options.maxDelayTimeout', 10000);
 
-new AdEngine(null, [clickDelay]).init();
+new AdEngine([clickInhibitor]).init();

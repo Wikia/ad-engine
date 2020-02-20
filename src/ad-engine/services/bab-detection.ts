@@ -2,7 +2,6 @@
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
 import { utils } from '../';
-import { Inhibitor } from '../runner';
 import { context } from '../services';
 
 const logGroup = 'bab-detection';
@@ -10,7 +9,7 @@ const logGroup = 'bab-detection';
 let bab: BlockAdBlock;
 let isBabInitialised = false;
 
-class BabDetection extends Inhibitor {
+class BabDetection {
 	getName(): string {
 		return logGroup;
 	}
@@ -27,7 +26,6 @@ class BabDetection extends Inhibitor {
 		this.setRuntimeParams(isBabDetected);
 		this.updateSrcParameter(isBabDetected);
 		this.dispatchDetectionEvent(isBabDetected);
-		this.markAsReady();
 
 		return isBabDetected;
 	}

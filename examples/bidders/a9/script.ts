@@ -60,9 +60,7 @@ setupRdpContext();
 
 context.set('options.maxDelayTimeout', 1000);
 
-bidders.requestBids();
-
-bidders.getPromise().then(() => {
+const biddersInhibitor = bidders.requestBids().then(() => {
 	console.log('⛳ Prebid bidding completed');
 });
 
@@ -83,7 +81,7 @@ document.getElementById('disableDebugMode').addEventListener('click', () => {
 	window.location.reload();
 });
 
-new AdEngine(null, [bidders]).init();
+new AdEngine([biddersInhibitor]).init();
 
 window.adsQueue.push({
 	id: 'repeatable_boxad_1',

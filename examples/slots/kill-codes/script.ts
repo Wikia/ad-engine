@@ -8,4 +8,4 @@ window.ads.runtime = window.ads.runtime || {};
 window.ads.runtime.disableBtf = JSON.parse(disableBtf as any);
 window.ads.runtime.disableSecondCall = JSON.parse(disableSecondCall as any);
 
-new AdEngine(context).init();
+new AdEngine([], context).init();

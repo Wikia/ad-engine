@@ -45,7 +45,7 @@ context.push('listeners.porvata', {
 
 context.set('options.maxDelayTimeout', 1000);
 
-bidders.requestBids();
+const biddersInhibitor = bidders.requestBids();
 
 templateService.register(PorvataTemplate, {
 	isFloatingEnabled: utils.queryString.get('floating') !== '0',
@@ -77,4 +77,4 @@ document.addEventListener('keydown', (event) => {
 	}
 });
 
-new AdEngine(null, [bidders]).init();
+new AdEngine([biddersInhibitor]).init();

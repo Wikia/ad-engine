@@ -67,9 +67,9 @@ context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 setupNpaContext();
 setupRdpContext();
 
-bidders.requestBids();
-
-bidders.getPromise().then(() => console.log('⛳ Prebid bidding completed'));
+const biddersInhibitor = bidders
+	.requestBids()
+	.then(() => console.log('⛳ Prebid bidding completed'));
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
@@ -94,4 +94,4 @@ bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderCon
 	console.info(`🏁 Bidder tracker: ${bid.bidderCode} for ${bid.adUnitCode}`, bid, data);
 });
 
-new AdEngine(null, [bidders]).init();
+new AdEngine([biddersInhibitor]).init();

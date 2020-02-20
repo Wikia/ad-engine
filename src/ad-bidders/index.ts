@@ -1,4 +1,4 @@
-import { context, Dictionary, events, eventService, Inhibitor, utils } from '@ad-engine/core';
+import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -9,23 +9,17 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-class Bidders extends Inhibitor {
+class Bidders {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
 	constructor() {
-		super();
-
 		eventService.on(events.VIDEO_AD_REQUESTED, (adSlot) => {
 			adSlot.updateWinningPbBidderDetails();
 		});
 
 		eventService.on(events.VIDEO_AD_USED, (adSlot) => {
 			this.updateSlotTargeting(adSlot.getSlotName());
-		});
-
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
-			this.reset();
 		});
 	}
 
@@ -95,8 +89,9 @@ class Bidders extends Inhibitor {
 		utils.logger(logGroup, 'resetTargetingKeys', slotName);
 	}
 
-	requestBids(): void {
+	requestBids(): Promise<void> {
 		const config = context.get('bidders') || {};
+		const promise = utils.createExtendedPromise();
 
 		if (config.prebid && config.prebid.enabled) {
 			this.biddersProviders.prebid = new PrebidProvider(config.prebid, config.timeout);
@@ -109,12 +104,18 @@ class Bidders extends Inhibitor {
 		this.getBiddersProviders().forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
-					this.markAsReady();
+					promise.resolve();
 				}
 			});
 
 			provider.call();
 		});
+
+		if (!this.getBiddersProviders().length) {
+			return Promise.resolve();
+		}
+
+		return promise;
 	}
 
 	async storeRealSlotPrices(slotName): Promise<void> {

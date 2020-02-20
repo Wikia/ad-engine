@@ -118,15 +118,15 @@ for (let i = 0; i < contentLength; i += 1) {
 context.set('targeting.artid', '266');
 context.set('options.maxDelayTimeout', 1000);
 
-bidders.requestBids();
-
-bidders.getPromise().then(() => console.log('⛳ Prebid bidding completed'));
+const biddersInhibitor = bidders
+	.requestBids()
+	.then(() => console.log('⛳ Prebid bidding completed'));
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-new AdEngine(null, [bidders]).init();
+new AdEngine([biddersInhibitor]).init();
 
 btfBlockerService.finishFirstCall();
 

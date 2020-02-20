@@ -1,7 +1,7 @@
 import { AdEngine } from '@wikia/ad-engine';
 import context from '../../context';
 
-new AdEngine(context).init();
+new AdEngine([], context).init();
 
 let action = 'collapse';
 

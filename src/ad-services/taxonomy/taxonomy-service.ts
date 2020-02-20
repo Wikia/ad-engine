@@ -1,14 +1,12 @@
-import { context, Inhibitor, utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
 
 const logGroup = 'taxonomy-service';
 const comicsLogGroup = 'taxonomy-comics-service';
 
-export class TaxonomyService extends Inhibitor {
+export class TaxonomyService {
 	async configurePageLevelTargeting(): Promise<AdTags> {
 		if (!this.isEnabled()) {
-			this.markAsReady();
-
 			return {};
 		}
 
@@ -23,14 +21,11 @@ export class TaxonomyService extends Inhibitor {
 			context.set(`targeting.${key}`, adTags[key]);
 		});
 
-		this.markAsReady();
-
 		return adTags;
 	}
 
 	async configureComicsTargeting(): Promise<AdTags> {
 		if (!this.isGettingComicsTagEnabled()) {
-			this.markAsReady();
 			return {};
 		}
 
@@ -40,8 +35,6 @@ export class TaxonomyService extends Inhibitor {
 		utils.logger(comicsLogGroup, 'taxonomy comics tag', comicsTag);
 
 		context.set('targeting.txn_comics', comicsTag['txn_comics']);
-
-		this.markAsReady();
 
 		return comicsTag;
 	}
@@ -59,7 +52,6 @@ export class TaxonomyService extends Inhibitor {
 	}
 
 	reset(): void {
-		super.reset();
 		taxonomyServiceLoader.resetComicsTagPromise();
 		context.remove('targeting.txn_comics');
 	}

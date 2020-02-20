@@ -1,7 +1,7 @@
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
-import { Inhibitor, Runner } from './runner';
+import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
@@ -33,7 +33,7 @@ export class AdEngine {
 	adStack: OldLazyQueue<AdStackPayload>;
 	runner: Runner;
 
-	constructor(config = null, inhibitors: Inhibitor[] = []) {
+	constructor(inhibitors: Promise<any>[] = [], config = null) {
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
 
 		context.extend(config);

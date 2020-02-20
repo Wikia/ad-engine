@@ -28,12 +28,12 @@ function registerClickPositionTracker() {
 	);
 }
 
-bidders.requestBids();
+const biddersInhibitor = bidders.requestBids();
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-new AdEngine(null, [bidders]).init();
+new AdEngine([biddersInhibitor]).init();
 
 registerClickPositionTracker();
