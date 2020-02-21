@@ -2,6 +2,8 @@
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
 import currentDevice from 'current-device';
+import 'querystring';
+import { queryString } from './query-string';
 
 let bab: BlockAdBlock;
 let browser: string = null;
@@ -141,6 +143,10 @@ class Client {
 		const { userAgent } = window.navigator;
 
 		return userAgent.toLowerCase().indexOf('steam') > -1;
+	}
+
+	canPlayVideo(): boolean {
+		return queryString.get('canplayvideo') === '1';
 	}
 }
 
