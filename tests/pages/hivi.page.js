@@ -84,15 +84,15 @@ export class HiviPage {
 			`${slot.slotName} viewport position state`,
 		);
 		expect(slot.aspectRatio).to.be.within(
-			aspectRatio - 0.1,
-			aspectRatio + 0.1,
+			aspectRatio - 0.5,
+			aspectRatio + 0.5,
 			`${slot.slotName} has incorrect ratio`,
 		);
 
 		if (isSticked) {
 			expect(navbarPage.position).to.be.within(
-				slot.height - 0.1,
-				slot.height + 0.1,
+				slot.height - 1.1,
+				slot.height + 1.1,
 				'Navbar in incorrect position',
 			);
 		} else {
@@ -122,15 +122,15 @@ export class HiviPage {
 			`${slot.slotName} viewport position state`,
 		);
 		expect(slot.aspectRatio).to.be.within(
-			aspectRatio - 0.1,
-			aspectRatio + 0.1,
+			aspectRatio - 0.5,
+			aspectRatio + 0.5,
 			`${slot.slotName} has incorrect ratio`,
 		);
 
 		if (isSticked) {
 			expect(navbarPage.position).to.be.within(
-				slot.height - 0.1,
-				slot.height + 0.1,
+				slot.height - 1.1,
+				slot.height + 1.1,
 				'Navbar in incorrect position',
 			);
 		} else {

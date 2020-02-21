@@ -14,7 +14,7 @@ describe('Desktop HiVi UAP Impact state', () => {
 			browser.pause(timeouts.actions);
 		});
 
-		it('should check the state', () => {
+		it.skip('should check the state', () => {
 			const expectedState = {
 				aspectRatio: hiviPage.desktopImpactAspectRatio,
 				isCloseButtonDisplayed: false,

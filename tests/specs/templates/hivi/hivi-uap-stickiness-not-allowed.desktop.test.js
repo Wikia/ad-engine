@@ -10,7 +10,7 @@ describe('Desktop HiVi UAP sticky ads page: top leaderboard', () => {
 		slots.topLeaderboard.waitForDisplayed();
 	});
 
-	it('should check the state', () => {
+	it.skip('should check the state', () => {
 		const expectedState = {
 			aspectRatio: hiviPage.desktopResolvedAspectRatio,
 			isCloseButtonDisplayed: false,
@@ -23,7 +23,7 @@ describe('Desktop HiVi UAP sticky ads page: top leaderboard', () => {
 		hiviPage.assertHiViStaticFanTakeoverAdSlot(expectedState);
 	});
 
-	it('Check if the line item id is from the same campaign', () => {
+	it.skip('Check if the line item id is from the same campaign', () => {
 		slots.topLeaderboard.waitForLineItemIdAttribute();
 		expect(slots.topLeaderboard.lineItemId).to.equal(
 			hiviUapStickinessNotAllowed.firstCall,
