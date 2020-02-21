@@ -59,10 +59,6 @@ cmp.override((cmd, param, cb) => {
 
 context.extend(customContext);
 context.set('slots.bottom_leaderboard.disabled', false);
-context.set(
-	'bidders.prebid.libraryUrl',
-	'https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v2.44.1/20200103.min.js',
-);
 context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 
 setupNpaContext();
