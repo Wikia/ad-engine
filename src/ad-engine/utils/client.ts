@@ -151,3 +151,4 @@ class Client {
 }
 
 export const client = new Client();
+window.canPlayVideo = client.canPlayVideo;
