@@ -29,7 +29,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
-			s2: this.getAdLayout(wiki),
+			s2: this.getAdLayout(wiki.targeting),
 			skin: 'oasis',
 			uap: 'none',
 			uap_c: 'none',
@@ -70,22 +70,23 @@ export class UcpTargetingSetup implements TargetingSetup {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	private getAdLayout(wikiContext: MediaWikiAdsContext): string {
-		let layout = wikiContext.targeting.pageType || 'article';
+	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
+		let layout = targeting.pageType || 'article';
 
 		if (layout === 'article') {
-			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
-			if (
-				wikiContext.targeting.hasFeaturedVideo &&
-				wikiContext.targeting.featuredVideo &&
-				wikiContext.targeting.featuredVideo.isDedicatedForArticle === false
-			) {
-				layout = `wv-${layout}`;
-			} else if (wikiContext.targeting.hasFeaturedVideo) {
-				layout = `fv-${layout}`;
+			if (targeting.hasFeaturedVideo) {
+				// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
+				const isWikiaVideo =
+					targeting.featuredVideo && targeting.featuredVideo.isDedicatedForArticle === false;
+				const wikiaVideoPlayed = isWikiaVideo && window.canPlayVideo && window.canPlayVideo();
+				const videoPrefix = wikiaVideoPlayed ? 'wv' : 'fv';
+
+				layout = `${videoPrefix}-${layout}`;
+
+				context.set('custom.hasFeaturedVideo', !isWikiaVideo || wikiaVideoPlayed);
 			}
 
-			if (wikiContext.targeting.hasIncontentPlayer) {
+			if (targeting.hasIncontentPlayer) {
 				layout = `${layout}-ic`;
 			}
 		}
