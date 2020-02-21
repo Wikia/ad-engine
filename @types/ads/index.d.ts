@@ -50,4 +50,9 @@ interface Runtime {
 	bab?: any;
 }
 
+interface VideoStatus {
+	wikiaVideo?: boolean;
+	videoPlayed?: boolean;
+}
+
 type ManualAdType = 'collapse' | 'forced_collapse' | 'forced_success' | 'manual';
