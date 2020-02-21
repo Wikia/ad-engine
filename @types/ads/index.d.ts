@@ -51,8 +51,8 @@ interface Runtime {
 }
 
 interface VideoStatus {
-	wikiaVideo?: boolean;
-	videoPlayed?: boolean;
+	isDedicatedForArticle?: boolean;
+	hasVideoOnPage?: boolean;
 }
 
 type ManualAdType = 'collapse' | 'forced_collapse' | 'forced_success' | 'manual';
