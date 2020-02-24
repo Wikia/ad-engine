@@ -60,7 +60,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 						],
 					},
 				],
-				defaultSizes: [[728, 90], [2, 2]],
+				defaultSizes: [[728, 90]],
 				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
