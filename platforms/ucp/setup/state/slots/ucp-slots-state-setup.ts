@@ -6,6 +6,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpSlotsStateSetup implements SlotsStateSetup {
 	configureSlotsState(): void {
 		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
+		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', true);
 		slotsContext.setState('bottom_leaderboard', true);
 		slotsContext.setState('incontent_player', false);
