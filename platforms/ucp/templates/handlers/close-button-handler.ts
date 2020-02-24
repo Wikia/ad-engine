@@ -4,6 +4,7 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
@@ -15,7 +16,10 @@ export class CloseButtonHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		this.button = new CloseButton({
-			onClick: () => transition('transition'),
+			onClick: () => {
+				this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);
+				transition('transition');
+			},
 		}).render();
 		this.adSlot.getElement().appendChild(this.button);
 	}
