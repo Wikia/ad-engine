@@ -17,13 +17,23 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
+		const enabledSlots: string[] = [
+			'top_boxad',
+			'hivi_leaderboard',
+			'bottom_leaderboard',
+			'incontent_boxad',
+		];
 		universalAdPackage.init(
 			this.params,
-			['top_boxad'],
+			enabledSlots,
 			Object.keys(context.get('slots') || []).filter(
-				(slotName) => !['top_boxad', 'hivi_leaderboard'].includes(slotName),
+				(slotName) => !enabledSlots.includes(slotName),
 			),
 		);
+		context.set('slots.bottom_leaderboard.viewportConflicts', []);
+		context.set('slots.bottom_leaderboard.sizes', []);
+		context.set('slots.bottom_leaderboard.defaultSizes', [[3, 3]]);
+
 		document.body.classList.add('has-bfaa');
 		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.hide();
