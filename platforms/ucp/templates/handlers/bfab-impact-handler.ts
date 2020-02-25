@@ -31,7 +31,6 @@ export class BfabImpactHandler implements TemplateStateHandler {
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.adSlot.show();
 		this.helper.setImpactImage();
-		this.helper.setImpactAdHeight();
 		this.domListener.resize$
 			.pipe(
 				takeUntil(this.unsubscribe$),
