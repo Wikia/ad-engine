@@ -21,7 +21,7 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 			'top_boxad',
 			'hivi_leaderboard',
 			'bottom_leaderboard',
-			'incontent_boxad',
+			'incontent_boxad_1',
 		];
 		universalAdPackage.init(
 			this.params,
