@@ -30,10 +30,10 @@ export class BfabHelper {
 	}
 
 	getResolvedAdHeight(): number {
-		return (1 / this.params.config.aspectRatio.resolved) * this.adSlot.element.clientWidth;
+		return (1 / this.params.config.aspectRatio.resolved) * this.adSlot.element.offsetWidth;
 	}
 
 	getImpactAdHeight(): number {
-		return (1 / this.params.config.aspectRatio.default) * this.adSlot.element.clientWidth;
+		return (1 / this.params.config.aspectRatio.default) * this.adSlot.element.offsetWidth;
 	}
 }
