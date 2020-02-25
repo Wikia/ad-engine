@@ -18,3 +18,7 @@ export const FAN_TAKEOVER_TYPES = ['uap', 'vuap'];
 
 export const BFAA_UNSTICK_DELAY = 3000;
 export const TLB_UNSTICK_DELAY = 2000;
+
+export const SLOT_FORCE_UNSTICK = 'force-unstick';
+export const SLOT_UNSTICKED_STATE = 'unsticked';
+export const SLOT_STICKED_STATE = 'sticked';

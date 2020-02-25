@@ -26,11 +26,16 @@ export class BfaaStickyDurationHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
+		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKED_STATE);
+
 		this.viewedAndDelayed()
 			.pipe(
 				takeUntil(this.unsubscribe$),
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
-				tap(() => transition('transition')),
+				tap(() => {
+					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
+					transition('transition');
+				}),
 			)
 			.subscribe();
 	}
