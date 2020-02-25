@@ -1,4 +1,4 @@
-import { createExtendedPromise, logger } from '../../utils';
+import { createExtendedPromise } from '../../utils';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
 
@@ -9,16 +9,12 @@ export class TemplateState<T extends string> {
 		const transitionCompleted = createExtendedPromise();
 		const stateTransition = this.useTransition(templateTransition, transitionCompleted);
 
-		logger(`State - ${this.name}`, 'enter');
 		await Promise.all(this.handlers.map(async (handler) => handler.onEnter(stateTransition)));
-		logger(`State - ${this.name}`, 'entered');
 		transitionCompleted.resolve();
 	}
 
 	async leave(): Promise<void> {
-		logger(`State - ${this.name}`, 'leave');
 		await Promise.all(this.handlers.map(async (handler) => handler.onLeave()));
-		logger(`State - ${this.name}`, 'left');
 	}
 
 	private useTransition(

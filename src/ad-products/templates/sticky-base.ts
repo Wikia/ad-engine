@@ -1,11 +1,12 @@
 import { AdSlot, context, Dictionary, utils } from '@ad-engine/core';
 import { CloseButton } from './interface/close-button';
+import { TLB_UNSTICK_DELAY } from './uap/constants';
 import { Stickiness } from './uap/themes/hivi/stickiness';
 
 const logGroup = 'sticky-base';
 
 export abstract class StickyBase {
-	static DEFAULT_UNSTICK_DELAY = 2000;
+	static DEFAULT_UNSTICK_DELAY = TLB_UNSTICK_DELAY;
 
 	protected container: HTMLElement;
 	protected lineId: string;
