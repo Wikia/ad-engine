@@ -50,4 +50,9 @@ interface Runtime {
 	bab?: any;
 }
 
+interface VideoStatus {
+	isDedicatedForArticle?: boolean;
+	hasVideoOnPage?: boolean;
+}
+
 type ManualAdType = 'collapse' | 'forced_collapse' | 'forced_success' | 'manual';

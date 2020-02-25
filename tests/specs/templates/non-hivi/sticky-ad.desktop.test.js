@@ -34,7 +34,8 @@ describe('sticky-ad template', () => {
 		expect(network.checkIfMessageIsInLogs('force-close')).to.be.false;
 	});
 
-	it('should not stick if viewability is counted', () => {
+	// TODO Fix in ADEN-9661
+	it.skip('should not stick if viewability is counted', () => {
 		helpers.waitForViewabillityCounted(timeouts.unstickTime);
 		helpers.mediumScroll(300);
 		$(stickyAd.stickedSlot).waitForExist(timeouts.standard, true);

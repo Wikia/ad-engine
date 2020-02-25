@@ -14,6 +14,7 @@ interface Window {
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	apstag?: Apstag;
+	canPlayVideo?: any;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
 	google: {

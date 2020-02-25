@@ -29,7 +29,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
-			s2: this.getAdLayout(wiki),
+			s2: this.getAdLayout(wiki.targeting),
 			skin: 'oasis',
 			uap: 'none',
 			uap_c: 'none',
@@ -70,22 +70,35 @@ export class UcpTargetingSetup implements TargetingSetup {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	private getAdLayout(wikiContext: MediaWikiAdsContext): string {
-		let layout = wikiContext.targeting.pageType || 'article';
+	private getVideoStatus(): VideoStatus {
+		if (context.get('wiki.targeting.hasFeaturedVideo')) {
+			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
+			const isDedicatedForArticle =
+				context.get('wiki.targeting.featuredVideo.isDedicatedForArticle') !== false;
+			const bridgeVideoPlayed =
+				!isDedicatedForArticle && window.canPlayVideo && window.canPlayVideo();
+
+			return {
+				isDedicatedForArticle,
+				hasVideoOnPage: isDedicatedForArticle || bridgeVideoPlayed,
+			};
+		}
+
+		return {};
+	}
+
+	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
+		let layout = targeting.pageType || 'article';
 
 		if (layout === 'article') {
-			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
-			if (
-				wikiContext.targeting.hasFeaturedVideo &&
-				wikiContext.targeting.featuredVideo &&
-				wikiContext.targeting.featuredVideo.isDedicatedForArticle === false
-			) {
-				layout = `wv-${layout}`;
-			} else if (wikiContext.targeting.hasFeaturedVideo) {
-				layout = `fv-${layout}`;
+			const videoStatus = this.getVideoStatus();
+			if (!!videoStatus.hasVideoOnPage) {
+				const videoPrefix = videoStatus.isDedicatedForArticle ? 'fv' : 'wv';
+
+				layout = `${videoPrefix}-${layout}`;
 			}
 
-			if (wikiContext.targeting.hasIncontentPlayer) {
+			if (context.get('custom.hasIncontentPlayer')) {
 				layout = `${layout}-ic`;
 			}
 		}
