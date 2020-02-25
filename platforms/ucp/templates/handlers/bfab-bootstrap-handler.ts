@@ -18,11 +18,9 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
+		this.adSlot.addClass('expanded-slot'); // TODO: Consider moving to a separate handler
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
-
-		this.adSlot.addClass('expanded-slot'); // TODO: Consider moving to a separate handler
-
 		if (resolvedState.isResolvedState(this.params)) {
 			transition('resolved');
 		} else {
