@@ -4,12 +4,13 @@ import { AdvertisementLabelHandler } from './handlers/advertisement-label-handle
 import { BfabBootstrapHandler } from './handlers/bfab-bootstrap-handler';
 import { BfabImpactHandler } from './handlers/bfab-impact-handler';
 import { BfabResolvedHandler } from './handlers/bfab-resolved-handler';
+import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'bfab',
 		{
-			initial: [BfabBootstrapHandler, AdvertisementLabelHandler],
+			initial: [BfabBootstrapHandler, AdvertisementLabelHandler, DebugTransitionHandler],
 			impact: [BfabImpactHandler],
 			resolved: [BfabResolvedHandler],
 		},
