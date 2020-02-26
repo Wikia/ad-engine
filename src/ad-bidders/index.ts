@@ -101,6 +101,10 @@ class Bidders {
 			this.biddersProviders.a9 = new A9Provider(config.a9, config.timeout);
 		}
 
+		if (!this.getBiddersProviders().length) {
+			return Promise.resolve();
+		}
+
 		this.getBiddersProviders().forEach((provider) => {
 			provider.addResponseListener(() => {
 				if (this.hasAllResponses()) {
@@ -110,10 +114,6 @@ class Bidders {
 
 			provider.call();
 		});
-
-		if (!this.getBiddersProviders().length) {
-			return Promise.resolve();
-		}
 
 		return promise;
 	}
