@@ -1,0 +1,35 @@
+@import 'src/ad-products/styles/uap-variables';
+@import 'src/ad-products/styles/breakpoints';
+
+@mixin button-close() {
+	.button-close {
+		background: none;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		display: block;
+		padding: $hivi-uap-button-border-space;
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: $uap-video-z-index;
+		fill: $hivi-uap-light-button-color;
+
+		@media #{$breakpoint-m-up} {
+			right: 17px;
+		}
+	}
+
+	.button-close,
+	.button-close .icon {
+		box-sizing: content-box;
+		-webkit-box-sizing: content-box;
+		width: $hivi-uap-mobile-button-size;
+		height: $hivi-uap-mobile-button-size;
+
+		@media #{$breakpoint-m-up} {
+			width: $hivi-uap-button-size;
+			height: $hivi-uap-button-size;
+		}
+	}
+}

@@ -70,7 +70,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	private getVideoStatus(): VideoStatus {
+	getVideoStatus(): VideoStatus {
 		if (context.get('wiki.targeting.hasFeaturedVideo')) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
 			const isDedicatedForArticle =

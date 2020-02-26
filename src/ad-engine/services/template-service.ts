@@ -4,8 +4,15 @@ import { context } from './';
 
 const logGroup = 'template-service';
 
+type TemplateInitializer = Pick<TemplateService, 'init'>;
+
 class TemplateService {
+	private initializer?: TemplateInitializer;
 	private templates: Dictionary = {};
+
+	setInitializer(initializer: TemplateInitializer): void {
+		this.initializer = initializer;
+	}
 
 	register(template: any, customConfig: any = null): void {
 		if (typeof template.getName !== 'function') {
@@ -28,6 +35,13 @@ class TemplateService {
 	}
 
 	init(name: string, slot: AdSlot = null, params: Dictionary = {}): void {
+		try {
+			this.initializer.init(name, slot, params);
+			return;
+		} catch (e) {
+			// simply use old template service
+		}
+
 		logger(logGroup, 'Load template', name, slot, params);
 
 		if (!this.templates[name]) {

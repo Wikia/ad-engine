@@ -1,11 +1,13 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
 import {
+	AdSlot,
 	btRec,
 	context,
 	Dictionary,
 	FmrRotator,
 	JWPlayerManager,
 	SlotConfig,
+	slotService,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -19,6 +21,7 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
 		this.setupJWPlayerAds();
+		this.configureTopLeaderboard();
 	}
 
 	private injectSlots(): void {
@@ -94,5 +97,23 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 
 	private setupJWPlayerAds(): void {
 		new JWPlayerManager().manage();
+	}
+
+	private configureTopLeaderboard(): void {
+		if (context.get('options.hiviLeaderboard')) {
+			context.set('slots.top_leaderboard.firstCall', false);
+
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
+				slotService.setState('top_leaderboard', false);
+			});
+
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				const adSlot = slotService.get('hivi_leaderboard');
+
+				if (!adSlot.isEmpty) {
+					slotService.setState('top_leaderboard', false);
+				}
+			});
+		}
 	}
 }

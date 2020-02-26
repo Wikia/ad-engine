@@ -12,4 +12,5 @@ export * from './providers';
 export * from './services';
 export * from './tracking';
 export * from './video';
+export * from './utils/manipulators/dom-manipulator';
 export { utils };
