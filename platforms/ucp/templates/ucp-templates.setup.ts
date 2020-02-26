@@ -3,6 +3,7 @@ import { logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engin
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
+import { registerBfabTemplate } from './bfab-template';
 
 @Injectable()
 export class UcpTemplatesSetup implements TemplatesSetup {
@@ -12,7 +13,8 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 
 	configureTemplates(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
+		const bfab$ = registerBfabTemplate(this.registry);
 
-		logTemplates(merge(bfaa$));
+		logTemplates(merge(bfaa$, bfab$));
 	}
 }
