@@ -12,6 +12,42 @@ export class IndexExchange extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, siteId }): PrebidAdUnit {
+		switch (code.toLowerCase()) {
+			case 'featured':
+				return this.getVideoConfig(code, siteId);
+			default:
+				return this.getStandardConfig(code, { sizes, siteId });
+		}
+	}
+
+	getVideoConfig(code, siteId): PrebidAdUnit {
+		return {
+			code,
+			mediaTypes: {
+				video: {
+					context: 'instream',
+					playerSize: [640, 480],
+				},
+			},
+			bids: [
+				{
+					bidder: this.bidderName,
+					params: {
+						siteId,
+						size: [640, 480],
+						video: {
+							mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+							minduration: 1,
+							maxduration: 30,
+							protocols: [2, 3, 5, 6],
+						},
+					},
+				},
+			],
+		};
+	}
+
+	getStandardConfig(code, { sizes, siteId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
