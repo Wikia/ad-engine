@@ -36,6 +36,7 @@ export class BaseContextSetup {
 		context.set('options.tracking.slot.viewability', true);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
+		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
 
 		context.set(
 			'options.video.playAdsOnNextVideo',

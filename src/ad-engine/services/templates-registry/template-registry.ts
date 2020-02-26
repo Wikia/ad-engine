@@ -1,5 +1,7 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
+import { TemplateAction } from './template-action';
 import { TemplateDependenciesManager } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
 import { TemplateState } from './template-state';
@@ -10,6 +12,7 @@ interface TemplateMachinePayload<
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
+	emitter$: Subject<TemplateAction>;
 }
 
 @Injectable()
@@ -26,8 +29,12 @@ export class TemplateRegistry {
 		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
-	): void {
-		this.settings.set(templateName, { StateHandlerTypesDict, initialStateKey });
+	): Observable<TemplateAction> {
+		const emitter$ = new Subject<TemplateAction>();
+
+		this.settings.set(templateName, { StateHandlerTypesDict, initialStateKey, emitter$ });
+
+		return emitter$.asObservable();
 	}
 
 	init(templateName: string, templateSlot: AdSlot, templateParams: Dictionary = {}): void {
@@ -40,12 +47,12 @@ export class TemplateRegistry {
 
 		this.dependenciesManager.provideDependencies(templateName, templateSlot, templateParams);
 
-		const { StateHandlerTypesDict, initialStateKey } = this.settings.get(templateName);
+		const { StateHandlerTypesDict, initialStateKey, emitter$ } = this.settings.get(templateName);
 		const templateStateMap = this.createTemplateStateMap(StateHandlerTypesDict);
 
 		this.dependenciesManager.resetDependencies();
 
-		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey);
+		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey, emitter$);
 
 		machine.init();
 		this.machines.set(templateName, machine);

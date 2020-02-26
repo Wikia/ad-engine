@@ -8,11 +8,8 @@ npm install github:Wikia/ad-engine
 
 ## Platforms
 
-### Gamepedia
-
-* `npm run dev:gp` - to serve gamepedia on port 9000
-* `npm run build:gp` - to create production build of gamepedia
-* `npm run test:gp` - to run unit tests of gamepedia
+* `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Gamepedia, Futhead, Muthead) on port 9000
+* `npm run build:platforms` - to create production build of platforms ad-engine code
 
 ## Available packages
 
@@ -21,69 +18,9 @@ Import everything from `@wikia/ad-engine`. Dead code should be eliminated during
 It is the one in `dist/index.es5.js`. It is compiled to es5 without polyfills and lodash plugin.
 To compile it in your desired application import `getAdEngineLoader` from `configs/webpack-app.config.js` and add to your webpack loaders array.
 
-## Context description
+## Context
 
-| Key | Description | Type | Required |
-|-----|-------------|:----:|:--------:|
-|`adUnitId`|Ad unit id used for DFP requests|string|✔|
-|`bidders`|Bidders definitions|object|✘|
-|`bidders.a9.amazonId`|A9 ID|string|✔|
-|`bidders.a9.dealsEnabled`|Decides whether A9 deals will be enabled|boolean|✘|
-|`bidders.a9.enabled`|Decides whether A9 will be enabled|boolean|✔|
-|`bidders.a9.slots`|List of slots with their sizes/video type|object|✔|
-|`bidders.a9.slots.{slot_name}.slotId`|Slot id|array|✘|
-|`bidders.a9.slots.{slot_name}.sizes`|List of creative sizes to bid|array|✔|
-|`bidders.a9.slots.{slot_name}.type`|`video` type decides of "video" mediaType bid|string|✘|
-|`bidders.a9.videoEnabled`|Decides whether A9 video will be enabled|boolean|✘|
-|`bidders.a9.bidsRefreshing.enabled`|Decides whether A9 should refresh bids|boolean|✘|
-|`bidders.a9.bidsRefreshing.slots`|Decides which slots should be refreshed by A9|string[]|✘|
-|`bidders.prebid.enabled`|Decides whether Prebid.js will be enabled|boolean|✔|
-|`bidders.prebid.{bidder_name}`|Single bidder definitions|object|✔|
-|`bidders.prebid.{bidder_name}.enabled`|Decides whether given bidder will be requested on page|boolean|✔|
-|`bidders.prebid.{bidder_name}.slots`|Slots definitions (specific for each bidder)|object|✔|
-|`bidders.prebid.bidsRefreshing.slots`|Decides which slots should be refreshed by Prebid|string[]|✘|
-|`events`|Configuration for ad engine events|object|✘|
-|`events.pushOnScroll`|Creates defined slots on scroll|object|✘|
-|`events.pushOnScroll.ids`|List of ad slot names|array|✘|
-|`events.pushOnScroll.threshold`|Top margin (in px) when slot is going to be requested (once user reach given position)|integer|✘|
-|`events.pushAfterCreated`|Creates defined slots once another slot is created|object|✘|
-|`events.pushAfterCreated.{slot_name}`|List of ad slot names to create once {slot_name} is created|array|✘|
-|`events.pushAfterRendered`|Creates defined slots once another slot is rendered and lazy-loads them|object|✘|
-|`events.pushAfterRendered.{slot_name}`|List of ad slot names to create once {slot_name} is rendered|array|✘|
-|`listeners`|List of listeners registered in the ad-engine|object|✘|
-|`listeners.porvata`|Porvata listeners objects (available methods: `isEnabled`, `onEvent`)|array|✘|
-|`networkId`|DFP network ID that can be used in ad units|string|✘|
-|`options`|General configuration of ad-engine services|object|✔|
-|`options.customAdLoader.globalMethodName`|`top.{method_name}` will execute defined creative templates|string|✔|
-|`options.video.moatTracking.enabled`|Decides whether MOAT video tracking is enabled|boolean|✘|
-|`options.video.moatTracking.partnerCode`|MOAT identifier|string|✔|
-|`options.video.moatTracking.sampling`|Sampling for MOAT tracking|string|✔|
-|`options.video.porvata.audio.exposeToSlot`|Decides whether Porvata stores `audio` flag in slot object|boolean|✔|
-|`services.permutive.enabled`|Decides whether Permutive is loaded|boolean|✘|
-|`slots`|Ad slots definition|object|✔|
-|`slots.{slot_name}`|Single slot definition|object|✔|
-|`slots.{slot_name}.{anything}`|Ad slot definition may contain different properties and they will be available in `AdSlot.config` property|string|✘|
-|`slots.{slot_name}.avoidConflictWith`|CSS selector that is going to be checked to prevent loading ad slot in the same viewport|string|✘|
-|`slots.{slot_name}.bidderAlias`|Ad slot name alias for getting bids that are assigned for different ad slot|string|✘|
-|`slots.{slot_name}.forceSafeFrame`|Forces safe frame for slot|boolean|✘|
-|`slots.{slot_name}.insertBelowScrollPosition`|Switch: insert ad slot below scroll|boolean|✘|
-|`slots.{slot_name}.insertBeforeSelector`|CSS selector where to put ad slot when it is going to be created once another slot is created (`events.pushAfterRendered` or `events.pushAfterCreated` is required)|string|✘|
-|`slots.{slot_name}.repeat`|Configuration for repeating ad slot|object|✘|
-|`slots.{slot_name}.repeat.additionalClasses`|CSS classes list for newly created slots|string|✘|
-|`slots.{slot_name}.repeat.index`|Index of repeated slot (should be set to 1)|integer|✔|
-|`slots.{slot_name}.repeat.limit`|Decides how many times slot should be repeated (unlimited if it is not set)|integer|✘|
-|`slots.{slot_name}.repeat.slotNamePattern`|Pattern for creating another ad slot (e.g. `incontent_boxad_{slotConfig.repeat.index}`|string|✔|
-|`slots.{slot_name}.repeat.updateProperties`|Definition of ad slot properties to update once it is created|string|✘|
-|`slots.{slot_name}.repeat.updateProperties.{key}`|Value of slot property to update|any|✘|
-|`slots.{slot_name}.sizes`|Ad slots sizes definition for certain viewports|array|✘|
-|`slots.{slot_name}.sizes.0.sizes`|List of sizes for given viewport (e.g. `[[300, 50], [320, 50], [300, 250], [300, 600]]`)|array|✔|
-|`slots.{slot_name}.sizes.0.viewport`|Minimum viewport width and height for defined sizes (e.g. `[1280, 700]`)|array|✔|
-|`slots.{slot_name}.defaultSizes`|List of default sizes (if the smallest viewport is not matching)|array|✔|
-|`slots.{slot_name}.targeting`|List of DFP slot level key-values|object|✘|
-|`state.adStack`|Main queue where ad slots are pushed|array|✔|
-|`state.provider`|Which provider should be used ('gpt', 'prebidium')|string|✔|
-|`targeting`|List of DFP page level key-values|object|✔|
-|`vast.adUnitId`|Ad unit id for video ads|string|✔|
+Context is the ad-engine's store of custom global configuration. To get to know how to set and use it see `src/ad-engine/services/context-service.ts`.
 
 ## Usage
 
@@ -229,7 +166,7 @@ context.set('state.isMobile', true);
 // Setup custom variables so they can be used in adUnitId configuration
 context.set('custom.namespace', 'article');
 
-// Setup gpt targeting
+// Setup GPT targeting
 context.set('targeting.post_id', 123);
 
 new AdEngine().init();
@@ -266,7 +203,7 @@ top.loadCustomAd && top.loadCustomAd({
 </script>
 ```
 
-## Available templates
+## Example templates
 
 ### Big Fancy Ad Above
 
@@ -276,54 +213,151 @@ Name: **bfaa**
 
 ```json
 {
-	"desktopNavbarWrapperSelector": ".wds-global-navigation-wrapper",
-	"handleNavbar": false,
-	"mobileNavbarWrapperSelector": ".global-navigation-mobile-wrapper",
-	"slotSibling": ".topic-header",
-	"slotsToEnable": [
-		"bottom_leaderboard",
-		"incontent_boxad"
-	]
+    desktopNavbarWrapperSelector: '.wds-global-navigation-wrapper',
+    mobileNavbarWrapperSelector: '.global-navigation-mobile-wrapper',
+    mainContainer: document.body,
+    handleNavbar: false,
+    autoPlayAllowed: true,
+    defaultStateAllowed: true,
+    fullscreenAllowed: true,
+    stickinessAllowed: true,
+    stickyUntilSlotViewed: true,
+    slotSibling: '.topic-header',
+    slotsToEnable: ['bottom_leaderboard', 'incontent_boxad', 'top_boxad'],
+    onInit: () => {},
+    onBeforeStickBfaaCallback: () => {},
+    onAfterStickBfaaCallback: () => {},
+    onBeforeUnstickBfaaCallback: () => {},
+    onAfterUnstickBfaaCallback() {},
+    onResolvedStateSetCallback: () => {},
+    onResolvedStateResetCallback: () => {},
+    moveNavbar() {},
 }
 ```
 
-Description:
+##### Description:
 
 * desktopNavbarWrapperSelector - desktop navbar DOM selector
-* handleNavbar - decides whether template should adjust navbar
 * mobileNavbarWrapperSelector - mobile navbar DOM selector
+* mainContainer - main container DOM selector (default: `document.body`)
+* handleNavbar - decides whether template should adjust navbar
+* autoPlayAllowed - decides whether video can be autoplayed
+* defaultStateAllowed - decides whether BFAA impact state is allowed
+* fullscreenAllowed - decides whether video can be displayed on full screen
+* stickinessAllowed - decides whether the slot can be sticky
+* stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
 * slotSibling - DOM sibling element next to BFAA slot
 * slotsToEnable - decides which slots should be enabled on Fan Takeover load
 
-#### Template parameters:
+##### Template parameters
 
-* player
-* slotName
-* src
-* uap
-* lineItemId
-* creativeId
-* backgroundColor
-* autoPlay
-* resolvedStateAutoplay
-* videoTriggers
-* videoPlaceholderElement
-* splitLayoutVideoPosition
-* image1
-* image2
-* aspectRatio
-* resolvedStateAspectRatio
-* videoAspectRatio
-* loadMedrecFromBTF
-* moatTracking
+	adContainer: HTMLElement;
+	adProduct: string;
+	aspectRatio: number;
+	autoPlay: boolean;
+	backgroundColor: string;
+	blockOutOfViewportPausing: boolean;
+	clickThroughURL: string;
+	config: UapConfig;
+	container: HTMLElement;
+	creativeId: string;
+	fullscreenable: boolean;
+	fullscreenAllowed: boolean;
+	image1: UapImage;
+	image2?: UapImage;
+	isDarkTheme: boolean;
+	isMobile: boolean;
+	isSticky: boolean;
+	lineItemId: string;
+	loadMedrecFromBTF: boolean;
+	moatTracking: boolean;
+	player: HTMLElement;
+	resolvedStateAspectRatio: number;
+	resolvedStateAutoPlay: boolean;
+	resolvedStateForced?: boolean;
+	restartOnUnmute: boolean;
+	slotName: string;
+	splitLayoutVideoPosition: string;
+	src: string;
+	stickyAdditionalTime: number;
+	stickyUntilVideoViewed: boolean;
+	theme: string;
+	thumbnail: HTMLElement;
+	uap: string;
+	videoAspectRatio: number;
+	videoPlaceholderElement: HTMLElement;
+	videoTriggers: any[];
 
 ### Big Fancy Ad Below
 
 Name: **bfab**
 
-#### Template parameters:
+### Default config:
 
-Check Big Fancy Ad Above.
+```json
+{
+  autoPlayAllowed: true,
+  defaultStateAllowed: true,
+  fullscreenAllowed: true,
+  stickinessAllowed: false,
+  stickyUntilSlotViewed: true,
+  bfaaSlotName: 'top_leaderboard',
+  unstickInstantlyBelowPosition: 500,
+  topThreshold: 58,
+  onInit: () => {},
+}
+```
+
+##### Description:
+
+* autoPlayAllowed - decides whether video can be autoplayed
+* defaultStateAllowed - decides whether BFAA impact state is allowed
+* fullscreenAllowed - decides whether video can be displayed on full screen
+* stickinessAllowed - decides whether the slot can be sticky
+* stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
+* bfaaSlotName - name of BFAA slot - if BFAA is sticky, BFAB can't stick
+* unstickInstantlyBelowPosition - below given offset BFAB is always unsticked
+* topThreshold - number of pixels from the top edge of BFAA slot when it's sticky to the top edge of its nearest positioned ancestor
+
+##### Template parameters
+
+See BFAA Template parameters.
+
+### Porvata
+
+#### Default config:inViewportOffsetBottom
+
+```json
+{
+  isFloatingEnabled: true,
+  inViewportOffsetTop: 0,
+  inViewportOffsetBottom: 0,
+  onInit: () => {},
+}
+```
+
+##### Description:
+
+* isFloatingEnabled - decides whether Porvata slot can float
+* inViewportOffsetTop, inViewportOffsetBottom - below given thresholds Porvata slot is not considered being within a viewport
+
+##### Template parameters
+
+	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+	viewportHookElement?: HTMLElement;
+	container: HTMLElement;
+	originalContainer: HTMLElement;
+	enableInContentFloating: boolean;
+	slotName: string;
+	viewportOffsetTop?: number;
+	viewportOffsetBottom?: number;
+	adProduct: string;
+	src: string;
+	autoPlay: boolean;
+	vastTargeting: Targeting;
+	blockOutOfViewportPausing: boolean;
+	startInViewportOnly: boolean;
+	onReady: (player: PorvataPlayer) => void;
 
 ### Floating rail
 
@@ -340,14 +374,14 @@ Name: **floatingRail**
 }
 ```
 
-Description:
+##### Description:
 
 * enabled - decides whether template is usable
-* railSelector - element which is going to have `position: fixed`
-* wrapperSelector - rail wrapper
+* railSelector - selector of element which is going to have `position: fixed`
+* wrapperSelector - rail wrapper DOM element selector
 * startOffset - decides when rail starts floating
 
-#### Template parameters:
+##### Template parameters:
 
 * offset - how long (in px) rail is going to be fixed
 
@@ -405,26 +439,23 @@ npm run lint
 
 ### Run tests
 
-In one session run ad-engine and in other run tests.
+Run all suites one by one by using e.g.
 
 ```bash
-npm run serve
+npm run wdio-desktop -- --suite bidders
 ```
+
+Wdio doesn't use `npm run serve` anymore - it does use example pages so be sure to rebuild them first with
 
 ```bash
-npm run wdio-all
+npm run build:examples
 ```
 
-Run single suite:
-
-```bash
-npm run wdio -- --suite bidders
-```
+Suites are listed in `wdio.*platform*.config.js`.
 
 Run single test file:
-
 ```bash
-npm run wdio -- --spec specs/bidders/reusable-prebid.desktop.test.js
+npm run wdio-desktop -- --spec reusable-prebid
 ```
 
 ### Generate Allure report

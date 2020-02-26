@@ -1,3 +1,46 @@
+@import 'src/ad-products/styles/mixin';
+@import 'src/ad-products/styles/breakpoints';
+@import 'src/ad-products/styles/uap-variables';
+@import './styles/navbar';
+@import './styles/button-close';
+@import './styles/advertisement-label';
+
+.has-bfaa {
+	#top_leaderboard,
+	#hivi_leaderboard {
+		z-index: 202;
+		padding: 0;
+	}
+  
+	#bottom_leaderboard {
+		position: relative;
+	}
+}
+
+.gpt-ad {
+	&.expanded-slot {
+		width: 100%;
+
+		& > div,
+		& > div > iframe {
+			height: 100%;
+			width: 100%;
+		}
+
+		&.hide,
+		& .hide {
+			display: none !important;
+		}
+
+		@include button-close();
+		@include advertisement-label();
+	}
+}
+
+@include navbar();
+
+// #######################################
+
 .main-page-tag-rcs {
 	display: flex;
 	flex-direction: column;
@@ -10,8 +53,7 @@
 }
 
 #bottom_leaderboard {
-	padding: 20px 0;
-	margin: 0 auto;
+	margin-bottom: 23px;
 
 	> div {
 		text-align: center;
