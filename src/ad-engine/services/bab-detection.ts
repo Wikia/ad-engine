@@ -77,7 +77,7 @@ class BabDetection {
 	}
 
 	private updateSrcParameter(isBabDetected: boolean): void {
-		const newSrcValue = context.get('options.wad.blocking.blockingSrc');
+		const newSrcValue = context.get('options.wad.blockingSrc');
 
 		if (isBabDetected && newSrcValue) {
 			context.set('src', newSrcValue);

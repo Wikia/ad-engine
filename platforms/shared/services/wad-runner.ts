@@ -3,7 +3,7 @@ import { trackBab } from '../tracking/bab-tracker';
 
 class WadRunner {
 	async call(): Promise<void> {
-		if (babDetection.isEnabled()) {
+		if (!babDetection.isEnabled()) {
 			return Promise.resolve();
 		}
 
