@@ -90,4 +90,4 @@ bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderCon
 	console.info(`🏁 Bidder tracker: ${bid.bidderCode} for ${bid.adUnitCode}`, bid, data);
 });
 
-new AdEngine([biddersInhibitor]).init();
+new AdEngine().init([biddersInhibitor]);

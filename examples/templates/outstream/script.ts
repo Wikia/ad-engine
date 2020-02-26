@@ -77,4 +77,4 @@ document.addEventListener('keydown', (event) => {
 	}
 });
 
-new AdEngine([biddersInhibitor]).init();
+new AdEngine().init([biddersInhibitor]);

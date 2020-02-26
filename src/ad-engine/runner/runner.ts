@@ -1,30 +1,34 @@
 import { buildPromisedTimeout, logger } from '../utils';
 
 export class Runner {
+	private timeoutPromise: Promise<number> = null;
+
 	constructor(
 		private inhibitors: Promise<any>[] = [],
 		private timeout = 0,
 		private logGroup = 'runner',
 	) {}
 
-	async run(callback: () => void): Promise<void> {
+	async waitForInhibitors(): Promise<void> {
 		await Promise.race([this.getInhibitorsPromise(), this.getTimeoutPromise()]);
 
 		logger(this.logGroup, 'Ready');
-
-		callback();
 	}
 
-	private getTimeoutPromise(): Promise<void | number> {
-		if (this.timeout === 0) {
-			logger(this.logGroup, 'Running without delay (timeout is not set)');
+	private getTimeoutPromise(): Promise<number> {
+		if (this.timeoutPromise === null) {
+			if (this.timeout === 0) {
+				logger(this.logGroup, 'Running without delay (timeout is not set)');
 
-			return Promise.resolve();
+				this.timeoutPromise = Promise.resolve(0);
+			} else {
+				logger(this.logGroup, `Configured ${this.timeout}ms timeout`);
+
+				this.timeoutPromise = buildPromisedTimeout(this.timeout).promise;
+			}
 		}
 
-		logger(this.logGroup, `Configured ${this.timeout}ms timeout`);
-
-		return buildPromisedTimeout(this.timeout).promise;
+		return this.timeoutPromise;
 	}
 
 	private getInhibitorsPromise(): Promise<void | void[]> {

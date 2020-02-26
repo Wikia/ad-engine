@@ -23,4 +23,4 @@ document.getElementById('clickDelay').addEventListener('click', () => {
 context.extend(adContext);
 context.set('options.maxDelayTimeout', 10000);
 
-new AdEngine([clickInhibitor]).init();
+new AdEngine().init([clickInhibitor]);

@@ -81,7 +81,7 @@ document.getElementById('disableDebugMode').addEventListener('click', () => {
 	window.location.reload();
 });
 
-new AdEngine([biddersInhibitor]).init();
+new AdEngine().init([biddersInhibitor]);
 
 window.adsQueue.push({
 	id: 'repeatable_boxad_1',

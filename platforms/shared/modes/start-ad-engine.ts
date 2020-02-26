@@ -5,9 +5,9 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 
 	utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
 
-	const engine = new AdEngine(inhibitors);
+	const engine = new AdEngine();
 
-	engine.init();
+	engine.init(inhibitors);
 
 	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
 		slot.removeClass('default-height');

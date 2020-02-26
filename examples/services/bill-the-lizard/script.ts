@@ -59,7 +59,7 @@ billTheLizard.executor.register('logResult', (model, prediction) => {
 makeCall(['queen_of_hearts']);
 
 setTimeout(() => {
-	new AdEngine([], context).init();
+	new AdEngine(context).init();
 }, 1000);
 
 document.getElementById('lazyCallCat').addEventListener('click', () => {

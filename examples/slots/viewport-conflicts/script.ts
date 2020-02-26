@@ -26,4 +26,4 @@ eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {
 
 adContext.slots.bottom_leaderboard.disabled = false;
 
-new AdEngine([], adContext).init();
+new AdEngine(adContext).init();

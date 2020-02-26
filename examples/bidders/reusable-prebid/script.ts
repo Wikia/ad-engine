@@ -126,7 +126,7 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-new AdEngine([biddersInhibitor]).init();
+new AdEngine().init([biddersInhibitor]);
 
 btfBlockerService.finishFirstCall();
 

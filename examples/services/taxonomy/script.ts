@@ -25,4 +25,4 @@ if (pageArticleId) {
 		'To get comics tag, add community-id and page-article-id in query string.';
 }
 
-new AdEngine([taxonomyInhibitor]).init();
+new AdEngine().init([taxonomyInhibitor]);

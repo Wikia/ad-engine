@@ -31,11 +31,8 @@ export class AdEngine {
 	started = false;
 	provider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
-	runner: Runner;
 
-	constructor(inhibitors: Promise<any>[] = [], config = null) {
-		const maxTimeout: number = context.get('options.maxDelayTimeout');
-
+	constructor(config = null) {
 		context.extend(config);
 
 		window.ads = window.ads || ({} as MediaWikiAds);
@@ -47,11 +44,9 @@ export class AdEngine {
 			this.started = false;
 			this.setupAdStack();
 		});
-
-		this.runner = new Runner(inhibitors, maxTimeout, 'ad-engine-runner');
 	}
 
-	init(): void {
+	init(inhibitors: Promise<any>[] = []): void {
 		this.setupProviders();
 		this.setupAdStack();
 		btfBlockerService.init();
@@ -61,7 +56,7 @@ export class AdEngine {
 		slotTweaker.registerMessageListener();
 
 		// TODO CHECK MOBILE-WIKI
-		this.runAdQueue();
+		this.runAdQueue(inhibitors);
 
 		scrollListener.init();
 		slotRepeater.init();
@@ -108,8 +103,10 @@ export class AdEngine {
 		}
 	}
 
-	runAdQueue(): void {
-		this.runner.run(() => {
+	runAdQueue(inhibitors: Promise<any>[] = []): void {
+		const maxTimeout: number = context.get('options.maxDelayTimeout');
+
+		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
 				eventService.emit(events.AD_STACK_START);
 				this.started = true;

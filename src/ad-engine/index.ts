@@ -3,9 +3,9 @@ import * as utils from './utils';
 
 logVersion();
 
-export * from './runner';
 export * from './ad-engine';
 export * from './listeners';
+export * from './runner';
 export * from './rxjs';
 export * from './models';
 export * from './providers';
