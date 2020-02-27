@@ -9,7 +9,7 @@ import { JWPlayerHelper } from './helpers/jwplayer-helper';
 import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
 import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
 import { JWPlayerHandler } from './jwplayer-handler';
-import { createJwpStreams } from './streams/jwplayer-streams';
+import { createJwpStream } from './streams/jwplayer-stream';
 
 interface PlayerReadyResult {
 	jwplayer: JWPlayer;
@@ -66,11 +66,11 @@ export class JWPlayerManager {
 		adSlot,
 		targeting,
 	}: PlayerReadyResult): JWPlayerHandler {
-		const streams = createJwpStreams(jwplayer);
+		const stream$ = createJwpStream(jwplayer);
 		const tracker = new JWPlayerTrackingHelper(adSlot);
 		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting);
 
-		return new JWPlayerHandler(streams, helper, tracker);
+		return new JWPlayerHandler(stream$, helper, tracker);
 	}
 
 	private loadMoatPlugin(): void {

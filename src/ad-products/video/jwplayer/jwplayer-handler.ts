@@ -3,7 +3,7 @@ import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
 import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
-import { JwpStreams } from './streams/jwplayer-streams';
+import { JwpStream, ofJwpEvent } from './streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
@@ -12,7 +12,7 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
  */
 export class JWPlayerHandler {
 	constructor(
-		private streams: JwpStreams,
+		private stream$: JwpStream,
 		private helper: JWPlayerHelper,
 		private tracker: JWPlayerTrackingHelper,
 	) {}
@@ -31,7 +31,8 @@ export class JWPlayerHandler {
 	}
 
 	private adError(): Observable<any> {
-		return this.streams.adError$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('adError'),
 			tap(({ event, state }) => {
 				log(`ad error message: ${event.message}`);
 				this.helper.setSlotParams(state.vastParams);
@@ -42,7 +43,8 @@ export class JWPlayerHandler {
 	}
 
 	private adRequest(): Observable<any> {
-		return this.streams.adRequest$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('adRequest'),
 			tap(({ state }) => {
 				this.helper.setSlotElementAttributes(state.vastParams);
 				this.helper.emitVideoAdRequest();
@@ -51,7 +53,8 @@ export class JWPlayerHandler {
 	}
 
 	private adImpression(): Observable<any> {
-		return this.streams.adImpression$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('adImpression'),
 			tap(({ state }) => {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.emitVideoAdImpression();
@@ -62,14 +65,16 @@ export class JWPlayerHandler {
 	}
 
 	private adsManager(): Observable<any> {
-		return this.streams.adsManager$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('adsManager'),
 			filter(() => this.helper.isIasTrackingEnabled()),
 			tap((event) => this.helper.initIasVideoTracking(event)),
 		);
 	}
 
 	private beforePlay(): Observable<any> {
-		return this.streams.beforePlay$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('beforePlay'),
 			tap(({ state }) => {
 				this.helper.updateVideoDepth(state.depth);
 			}),
@@ -80,22 +85,24 @@ export class JWPlayerHandler {
 	}
 
 	private videoMidPoint(): Observable<any> {
-		return this.streams.videoMidPoint$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('videoMidPoint'),
 			filter(({ state }) => this.helper.shouldPlayMidroll(state.depth)),
 			tap(({ state }) => this.helper.playVideoAd('midroll', state)),
 		);
 	}
 
 	private beforeComplete(): Observable<any> {
-		return this.streams.beforeComplete$.pipe(
+		return this.stream$.pipe(
+			ofJwpEvent('beforeComplete'),
 			filter(({ state }) => this.helper.shouldPlayPostroll(state.depth)),
 			tap(({ state }) => this.helper.playVideoAd('postroll', state)),
 		);
 	}
 
 	private track(): Observable<any> {
-		return merge(...Object.values(this.streams)).pipe(
-			filter((event) => this.tracker.isTrackingEvent(event as any)),
+		return this.stream$.pipe(
+			filter((event) => this.tracker.isTrackingEvent(event)),
 			tap((event) => this.tracker.track(event)),
 		);
 	}

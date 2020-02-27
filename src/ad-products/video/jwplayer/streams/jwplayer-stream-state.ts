@@ -5,7 +5,7 @@ import { JWPlayer } from '../external-types/jwplayer';
 import { JWPlayerConfig } from '../external-types/jwplayer-config';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
-import { JwpStatelessStreams } from './jwplayer-streams-stateless';
+import { JwpStatelessStream, ofJwpStatelessEvent } from './jwplayer-stream-stateless';
 
 export interface JwpState extends VideoDepth {
 	vastParams: VastParams;
@@ -21,34 +21,45 @@ interface VideoDepth {
 }
 
 export function createJwpStateStream(
-	streams: JwpStatelessStreams,
+	stream$: JwpStatelessStream,
 	jwplayer: JWPlayer,
 ): Observable<JwpState> {
-	const videoDepth$: Observable<VideoDepth> = streams.beforePlay$.pipe(
+	const videoDepth$: Observable<VideoDepth> = stream$.pipe(
+		ofJwpStatelessEvent('beforePlay'),
 		scanCorrelatorDepth(),
 		startWith({ depth: 0, correlator: 0 }),
 	);
-	const vastParams$: Observable<VastParams> = merge(
-		streams.adRequest$,
-		streams.adError$,
-		streams.adImpression$,
-	).pipe(
+	const vastParams$: Observable<VastParams> = stream$.pipe(
+		ofJwpStatelessEvent('adRequest', 'adError', 'adImpression'),
 		createVastParams(),
 		startWith(vastParser.parse(null)),
 	);
 	const videoStatus$ = merge(
-		streams.beforePlay$.pipe(map(() => 'preroll')),
-		streams.videoMidPoint$.pipe(map(() => 'midroll')),
-		streams.beforeComplete$.pipe(map(() => 'postroll')),
+		stream$.pipe(
+			ofJwpStatelessEvent('beforePlay'),
+			map(() => 'preroll'),
+		),
+		stream$.pipe(
+			ofJwpStatelessEvent('videoMidPoint'),
+			map(() => 'midroll'),
+		),
+		stream$.pipe(
+			ofJwpStatelessEvent('beforeComplete'),
+			map(() => 'postroll'),
+		),
 	);
 	const adStatus$: Observable<JwpState['adStatus']> = merge(
-		streams.adStarted$.pipe(
+		stream$.pipe(
+			ofJwpStatelessEvent('adStarted'),
 			withLatestFrom(videoStatus$),
 			map(([, videoStatus]) => videoStatus),
 		),
-		streams.complete$.pipe(map(() => 'complete')),
+		stream$.pipe(
+			ofJwpStatelessEvent('complete'),
+			map(() => 'complete'),
+		),
 	).pipe(startWith('bootstrap')) as any;
-	const common$ = merge(...Object.values(streams)).pipe(
+	const common$ = stream$.pipe(
 		map(() => ({
 			playlistItem:
 				jwplayer.getPlaylistItem() ||

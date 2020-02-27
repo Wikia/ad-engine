@@ -2,8 +2,8 @@ import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
-import { JwpEvent } from '../streams/jwplayer-streams';
-import { JwpEventKey } from '../streams/jwplayer-streams-stateless';
+import { JwpEventKey } from '../streams/jwplayer-events';
+import { JwpEvent } from '../streams/jwplayer-stream';
 
 const trackingEventsMap = {
 	init: 'init',

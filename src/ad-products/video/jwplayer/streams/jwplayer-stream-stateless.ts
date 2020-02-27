@@ -1,50 +1,33 @@
 import { RxJsOperator } from '@ad-engine/core';
 import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
-import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
-import { JWPlayer, JWPlayerEventParams, JWPlayerNoParamEvent } from '../external-types/jwplayer';
+import { distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
+import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
+import { JwpEventKey, JwpEventName, JwpNamedEvent } from './jwplayer-events';
 
-// TODO: consider changing names to values without $, so that it can be made a list
-// TODO: or create single stream on ofJwpEvent method to filter events.
-export interface JwpStatelessStreams {
-	init$: Observable<JwpStatelessEvent<'init'>>;
-	lateReady$: Observable<JwpStatelessEvent<'lateReady'>>;
-	adRequest$: Observable<JwpStatelessEvent<'adRequest'>>;
-	adError$: Observable<JwpStatelessEvent<'adError'>>;
-	adImpression$: Observable<JwpStatelessEvent<'adImpression'>>;
-	adBlock$: Observable<JwpStatelessEvent<'adBlock'>>;
-	adsManager$: Observable<JwpStatelessEvent<'adsManager'>>;
-	beforePlay$: Observable<JwpStatelessEvent<'beforePlay'>>;
-	videoMidPoint$: Observable<JwpStatelessEvent<'videoMidPoint'>>;
-	beforeComplete$: Observable<JwpStatelessEvent<'beforeComplete'>>;
-	complete$: Observable<JwpStatelessEvent<'complete'>>;
-	ready$: Observable<JwpStatelessEvent<'ready'>>;
-	adClick$: Observable<JwpStatelessEvent<'adClick'>>;
-	adStarted$: Observable<JwpStatelessEvent<'adStarted'>>;
-	adViewableImpression$: Observable<JwpStatelessEvent<'adViewableImpression'>>;
-	adFirstQuartile$: Observable<JwpStatelessEvent<'adFirstQuartile'>>;
-	adMidPoint$: Observable<JwpStatelessEvent<'adMidPoint'>>;
-	adThirdQuartile$: Observable<JwpStatelessEvent<'adThirdQuartile'>>;
-	adComplete$: Observable<JwpStatelessEvent<'adComplete'>>;
-	adSkipped$: Observable<JwpStatelessEvent<'adSkipped'>>;
-	videoStart$: Observable<JwpStatelessEvent<'videoStart'>>;
-}
+export type JwpStatelessStream<T extends JwpEventKey = JwpEventName> = Observable<
+	JwpStatelessEvent<T>
+>;
 
-export interface JwpStatelessEvent<TEvent extends JwpEventKey> {
-	name: TEvent;
+export interface JwpStatelessEvent<TEvent extends JwpEventKey> extends JwpNamedEvent<TEvent> {
 	payload: TEvent extends keyof JWPlayerEventParams ? JWPlayerEventParams[TEvent] : undefined;
 }
 
-export type JwpEventKey = keyof JWPlayerEventParams | JWPlayerNoParamEvent | 'init' | 'lateReady';
+export function ofJwpStatelessEvent<
+	T extends JwpEventName[],
+	P extends JwpStatelessEvent<T[number]>
+>(...names: T): RxJsOperator<JwpStatelessEvent<any>, P> {
+	return (source: Observable<any>) => source.pipe(filter(({ name }) => names.includes(name)));
+}
 
 /**
  * Describes streams (event sources) and their relations
  */
-export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStreams {
-	const init$: JwpStatelessStreams['init$'] = of({ name: 'init', payload: undefined });
-	const lateReady$: JwpStatelessStreams['lateReady$'] = createLateReadyStream(jwplayer);
+export function createJwpStatelessStream(jwplayer: JWPlayer): JwpStatelessStream {
+	const init$: JwpStatelessStream<'init'> = of({ name: 'init', payload: undefined });
+	const lateReady$: JwpStatelessStream<'lateReady'> = createLateReadyStream(jwplayer);
 	const adRequest$ = createJwpStream(jwplayer, 'adRequest');
 	const adError$ = createJwpStream(jwplayer, 'adError').pipe(
 		onlyOncePerVideo(jwplayer),
@@ -68,7 +51,7 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 	const adSkipped$ = createJwpStream(jwplayer, 'adSkipped');
 	const videoStart$ = createJwpStream(jwplayer, 'videoStart');
 
-	return {
+	return merge(
 		init$,
 		lateReady$,
 		adError$,
@@ -90,17 +73,17 @@ export function createJwpStatelessStreams(jwplayer: JWPlayer): JwpStatelessStrea
 		adComplete$,
 		adSkipped$,
 		videoStart$,
-	};
+	);
 }
 
-function createLateReadyStream(jwplayer: JWPlayer): JwpStatelessStreams['lateReady$'] {
+function createLateReadyStream(jwplayer: JWPlayer): JwpStatelessStream<'lateReady'> {
 	return jwplayer.getConfig().itemReady ? of({ name: 'lateReady', payload: undefined }) : of();
 }
 
 function createJwpStream<TEvent extends JwpEventKey>(
 	jwplayer: JWPlayer,
 	event: TEvent,
-): Observable<JwpStatelessEvent<TEvent>> {
+): JwpStatelessStream<TEvent> {
 	return new Observable((observer) => {
 		jwplayer.on(event as any, (param) => observer.next({ name: event, payload: param }));
 	});
@@ -119,7 +102,7 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 }
 
 function ensureEventTag<T extends { payload: JWPlayerEvent }>(
-	adRequest$: JwpStatelessStreams['adRequest$'],
+	adRequest$: JwpStatelessStream<'adRequest'>,
 ): RxJsOperator<T, T> {
 	const base$ = merge(
 		of({ payload: { tag: null } }),

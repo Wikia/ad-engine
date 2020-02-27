@@ -2,7 +2,7 @@ import { AdSlot, buildVastUrl, context, events, vastDebugger, VastParams } from 
 import { iasVideoTracker } from '../../player/porvata/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
-import { JwpState } from '../streams/jwplayer-streams-state';
+import { JwpState } from '../streams/jwplayer-stream-state';
 
 const EMPTY_VAST_CODE = 21009;
 

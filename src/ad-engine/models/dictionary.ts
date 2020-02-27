@@ -11,3 +11,5 @@ export interface Type<T> extends Function {
 
 // tslint:disable-next-line:ban-types
 export type TypeKey<T> = Type<T> | Function;
+
+export type ValuesOf<T extends readonly any[]> = T[number];
