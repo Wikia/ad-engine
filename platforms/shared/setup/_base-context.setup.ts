@@ -53,7 +53,13 @@ export class BaseContextSetup {
 		);
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
+		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isOutstreamEnabled', this.instantConfig.get('icOutstreamSlot'));
+		context.set(
+			'options.video.moatTracking.enabledForArticleVideos',
+			this.instantConfig.get('icFeaturedVideoMoatTracking'),
+		);
+
 		this.setWadContext();
 	}
 
