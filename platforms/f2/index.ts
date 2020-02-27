@@ -8,8 +8,7 @@ import './styles.scss';
 
 setupPostQuecast();
 
-window.RLQ = window.RLQ || [];
-window.RLQ.push(async () => {
+const load = async () => {
 	const communicator = new Communicator();
 
 	context.extend(basicContext);
@@ -25,4 +24,6 @@ window.RLQ.push(async () => {
 	communicator.dispatch(adEngineConfigured());
 
 	platformStartup.run();
-});
+};
+
+load();
