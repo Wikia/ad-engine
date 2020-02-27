@@ -100,7 +100,7 @@ export class FmrRotator {
 		if (this.btRecStatus) {
 			this.removeRecNode();
 		} else {
-			this.currentAdSlot.hide();
+			eventService.emit(events.AD_SLOT_DESTROY_TRIGGERED, this.currentAdSlot.getSlotName());
 		}
 
 		this.swapRecirculation(true);
