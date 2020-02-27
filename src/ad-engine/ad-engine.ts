@@ -55,7 +55,6 @@ export class AdEngine {
 		messageBus.init();
 		slotTweaker.registerMessageListener();
 
-		// TODO CHECK MOBILE-WIKI
 		this.runAdQueue(inhibitors);
 
 		scrollListener.init();
