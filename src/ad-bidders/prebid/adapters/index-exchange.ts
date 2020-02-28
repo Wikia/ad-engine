@@ -1,3 +1,4 @@
+import { context } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 export class IndexExchange extends PrebidAdapter {
@@ -12,12 +13,11 @@ export class IndexExchange extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, siteId }): PrebidAdUnit {
-		switch (code.toLowerCase()) {
-			case 'featured':
-				return this.getVideoConfig(code, siteId);
-			default:
-				return this.getStandardConfig(code, { sizes, siteId });
+		if (context.get(`slots.${code}.isVideo`)) {
+			return this.getVideoConfig(code, siteId);
 		}
+
+		return this.getStandardConfig(code, { sizes, siteId });
 	}
 
 	getVideoConfig(code, siteId): PrebidAdUnit {
