@@ -67,13 +67,13 @@ export class JWPlayerTrackingHelper {
 	}
 
 	private getAdProduct<T extends JwpEventKey>(event: JwpEvent<T>): string {
-		switch (event.state.adStatus) {
-			case 'complete':
+		switch (event.state.adInVideo) {
+			case 'none':
 				return this.adSlot.config.slotName;
 			case 'midroll':
 			case 'postroll':
 			case 'preroll':
-				return `${this.adSlot.config.trackingKey}-${event.state.adStatus}`;
+				return `${this.adSlot.config.trackingKey}-${event.state.adInVideo}`;
 			case 'bootstrap':
 			default:
 				return this.adSlot.config.trackingKey;

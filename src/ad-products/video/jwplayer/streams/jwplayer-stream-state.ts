@@ -12,7 +12,7 @@ export interface JwpState extends VideoDepth {
 	playlistItem: JWPlayerListItem;
 	config: JWPlayerConfig;
 	mute: boolean;
-	adStatus: 'bootstrap' | 'preroll' | 'midroll' | 'postroll' | 'complete';
+	adInVideo: 'bootstrap' | 'none' | 'preroll' | 'midroll' | 'postroll';
 }
 
 interface VideoDepth {
@@ -34,7 +34,7 @@ export function createJwpStateStream(
 		createVastParams(),
 		startWith(vastParser.parse(null)),
 	);
-	const videoStatus$ = merge(
+	const videoStage$ = merge(
 		stream$.pipe(
 			ofJwpStatelessEvent('beforePlay'),
 			map(() => 'preroll'),
@@ -48,17 +48,18 @@ export function createJwpStateStream(
 			map(() => 'postroll'),
 		),
 	);
-	const adStatus$: Observable<JwpState['adStatus']> = merge(
+	const adInVideo$: Observable<JwpState['adInVideo']> = merge(
 		stream$.pipe(
 			ofJwpStatelessEvent('adStarted'),
-			withLatestFrom(videoStatus$),
+			withLatestFrom(videoStage$),
 			map(([, videoStatus]) => videoStatus),
 		),
 		stream$.pipe(
 			ofJwpStatelessEvent('complete'),
-			map(() => 'complete'),
+			map(() => 'none'),
+			startWith('bootstrap'),
 		),
-	).pipe(startWith('bootstrap')) as any;
+	) as any;
 	const common$ = stream$.pipe(
 		map(() => ({
 			playlistItem:
@@ -69,12 +70,12 @@ export function createJwpStateStream(
 		})),
 	);
 
-	return combineLatest([videoDepth$, vastParams$, adStatus$, common$]).pipe(
-		map(([videoDepth, vastParams, adStatus, common]) => ({
+	return combineLatest([videoDepth$, vastParams$, adInVideo$, common$]).pipe(
+		map(([videoDepth, vastParams, adInVideo, common]) => ({
 			...common,
 			...videoDepth,
 			vastParams,
-			adStatus,
+			adInVideo,
 		})),
 		shareReplay(1),
 	);
