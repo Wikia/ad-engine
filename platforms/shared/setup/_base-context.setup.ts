@@ -36,6 +36,7 @@ export class BaseContextSetup {
 		context.set('options.tracking.slot.viewability', true);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
+		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
 
 		context.set(
 			'options.video.playAdsOnNextVideo',
@@ -52,7 +53,13 @@ export class BaseContextSetup {
 		);
 
 		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
+		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isOutstreamEnabled', this.instantConfig.get('icOutstreamSlot'));
+		context.set(
+			'options.video.moatTracking.enabledForArticleVideos',
+			this.instantConfig.get('icFeaturedVideoMoatTracking'),
+		);
+
 		this.setWadContext();
 	}
 

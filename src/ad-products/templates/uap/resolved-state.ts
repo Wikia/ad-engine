@@ -105,4 +105,7 @@ export const resolvedState = {
 		return Promise.resolve();
 	},
 	isResolvedState,
+	updateInformationAboutSeenDefaultStateAd: () => {
+		resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
+	},
 };

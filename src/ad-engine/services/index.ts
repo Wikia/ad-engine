@@ -23,3 +23,5 @@ export * from './templates-registry/template-registry';
 export * from './templates-registry/template-state-transition';
 export * from './templates-registry/template-state-handler';
 export * from './templates-registry/template-symbols';
+export * from './templates-registry/template-action';
+export * from './templates-registry/template-logger';

@@ -1,5 +1,7 @@
+import { TemplateAction } from '@wikia/ad-engine/services/templates-registry/template-action';
 import { TemplateMachine } from '@wikia/ad-engine/services/templates-registry/template-machine';
 import { assert, expect } from 'chai';
+import { Subject } from 'rxjs';
 import { createSandbox } from 'sinon';
 import { createTemplateStateStub, TemplateStateStub } from './template-state.stub';
 
@@ -16,6 +18,7 @@ describe('Template Machine', () => {
 			'mock-template',
 			new Map([['a', stateA], ['b', stateB]]) as any,
 			'a',
+			new Subject<TemplateAction>(),
 		);
 	});
 

@@ -1,5 +1,6 @@
+import { Subject } from 'rxjs';
 import { Dictionary } from '../../models';
-import { logger } from '../../utils';
+import { TemplateAction } from './template-action';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 import { TemplateTransition } from './template-state-transition';
@@ -19,11 +20,13 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		private templateName: string,
 		private states: Map<keyof T, TemplateState<keyof T>>,
 		private currentStateKey: keyof T,
+		private emitter$: Subject<TemplateAction>,
 	) {}
 
-	init(): void {
-		logger(`Template ${this.templateName}`, 'initialize');
-		this.currentState.enter(this.transition);
+	async init(): Promise<void> {
+		this.emit('initialising');
+		await this.currentState.enter(this.transition);
+		this.emit('initialised');
 	}
 
 	private transition: TemplateTransition<keyof T> = async (targetStateKey) => {
@@ -33,8 +36,22 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 			);
 		}
 
+		this.emit('leaving');
 		await this.currentState.leave();
+		this.emit('left');
+
 		this.currentStateKey = targetStateKey;
+
+		this.emit('entering');
 		await this.currentState.enter(this.transition);
+		this.emit('entered');
 	};
+
+	private emit(type: TemplateAction['type']): void {
+		this.emitter$.next({
+			type,
+			templateName: this.templateName,
+			stateName: this.currentStateKey,
+		});
+	}
 }

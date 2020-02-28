@@ -52,32 +52,35 @@ export class SlotTweaker {
 		aspectRatio: number = null,
 		paddingBottom = true,
 	): Promise<HTMLIFrameElement | HTMLElement> {
-		const slotContainer = adSlot.getElement();
-		let container: HTMLElement;
-
-		slotContainer.classList.add('slot-responsive');
+		adSlot.addClass('slot-responsive');
+		logger(logGroup, 'make responsive', adSlot.getSlotName());
 
 		const element = await this.onReady(adSlot);
+
+		this.setPaddingBottom(element, aspectRatio, paddingBottom);
+
+		return element;
+	}
+
+	setPaddingBottom(element: HTMLElement, aspectRatio: number | null, paddingBottom = true): void {
+		let container: HTMLElement;
+		let ratio = aspectRatio;
 
 		if (isIframe(element)) {
 			if (!aspectRatio) {
 				const height = element.contentWindow.document.body.scrollHeight;
 				const width = element.contentWindow.document.body.scrollWidth;
 
-				aspectRatio = width / height;
+				ratio = width / height;
 			}
 			container = element.parentElement;
 		} else {
 			container = element;
 		}
 
-		logger(logGroup, 'make responsive', adSlot.getSlotName());
-
 		if (paddingBottom) {
-			container.style.paddingBottom = `${100 / aspectRatio}%`;
+			container.style.paddingBottom = `${100 / ratio}%`;
 		}
-
-		return element;
 	}
 
 	onReady(adSlot: AdSlot): Promise<HTMLIFrameElement | HTMLElement> {
