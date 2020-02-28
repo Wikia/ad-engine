@@ -9,7 +9,6 @@ const EMPTY_VAST_CODE = 21009;
 /**
  * Describes how things are done
  */
-// TODO: Consider separating AdSlot part from player part
 export class JWPlayerHelper {
 	constructor(
 		private adSlot: AdSlot,
