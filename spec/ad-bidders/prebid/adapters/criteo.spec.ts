@@ -1,29 +1,29 @@
-import { IndexExchange } from '@wikia/ad-bidders/prebid/adapters/index-exchange';
+import { Criteo } from '@wikia/ad-bidders/prebid/adapters/criteo';
 import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
-describe('IndexExchange bidder adapter', () => {
+describe('Criteo bidder adapter', () => {
 	it('can be enabled', () => {
-		const indexExchange = new IndexExchange({
+		const criteo = new Criteo({
 			enabled: true,
 			slots: {},
 		});
 
-		expect(indexExchange.enabled).to.equal(true);
+		expect(criteo.enabled).to.equal(true);
 	});
 
 	it('prepareAdUnits returns data in correct shape', () => {
-		const indexExchange = new IndexExchange({
+		const criteo = new Criteo({
 			enabled: true,
 			slots: {
 				bottom_leaderboard: {
 					sizes: [[300, 250], [320, 50]],
-					siteId: '112233',
+					networkId: '112233',
 				},
 			},
 		});
 
-		expect(indexExchange.prepareAdUnits()).to.deep.equal([
+		expect(criteo.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'bottom_leaderboard',
 				mediaTypes: {
@@ -33,16 +33,16 @@ describe('IndexExchange bidder adapter', () => {
 				},
 				bids: [
 					{
-						bidder: 'indexExchange',
+						bidder: 'criteo',
 						params: {
-							siteId: '112233',
+							networkId: '112233',
 							size: [300, 250],
 						},
 					},
 					{
-						bidder: 'indexExchange',
+						bidder: 'criteo',
 						params: {
-							siteId: '112233',
+							networkId: '112233',
 							size: [320, 50],
 						},
 					},
@@ -52,36 +52,38 @@ describe('IndexExchange bidder adapter', () => {
 	});
 
 	it('prepareAdUnits for video returns data in correct shape', () => {
-		const indexExchange = new IndexExchange({
+		const criteo = new Criteo({
 			enabled: true,
 			slots: {
 				featured: {
-					siteId: '112233',
+					zoneId: '112233',
 				},
 			},
 		});
 		context.set('slots.featured.isVideo', true);
 
-		expect(indexExchange.prepareAdUnits()).to.deep.equal([
+		expect(criteo.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'featured',
 				mediaTypes: {
 					video: {
-						context: 'instream',
 						playerSize: [640, 480],
+						context: 'instream',
+						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+						maxduration: 30,
+						api: [2],
+						protocols: [2, 3, 5, 6],
 					},
 				},
 				bids: [
 					{
-						bidder: 'indexExchange',
+						bidder: 'criteo',
 						params: {
-							siteId: '112233',
-							size: [640, 480],
+							zoneId: '112233',
 							video: {
-								mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
-								minduration: 1,
-								maxduration: 30,
-								protocols: [2, 3, 5, 6],
+								skip: 0,
+								playbackmethod: 1,
+								placement: 1,
 							},
 						},
 					},
