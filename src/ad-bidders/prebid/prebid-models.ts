@@ -27,4 +27,5 @@ export interface PrebidAdSlotConfig {
 	size?: number[];
 	sizes?: [number, number][];
 	unit?: string;
+	zoneId?: string;
 }

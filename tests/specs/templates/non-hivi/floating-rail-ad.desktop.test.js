@@ -51,7 +51,7 @@ describe('Floating rail ads page: top boxad requests', () => {
 		});
 
 		it('Check slot size in response', () => {
-			expect(network.checkIfHasResponse(`&sz=300x250`)).to.be.true;
+			expect(network.checkIfHasResponse(`prev_iu_szs=300x250`)).to.be.true;
 		});
 
 		it('Check positioning of the slot', () => {
