@@ -470,7 +470,7 @@ npm run allure
 
 #### Severity
 
-Add these lines to test files
+Add these lines to test files:
 
 ```js
 import reporter from 'wdio-allure-reporter';
