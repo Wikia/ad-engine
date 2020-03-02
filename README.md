@@ -439,13 +439,13 @@ npm run lint
 
 ### Run tests
 
-Run all suites one by one by using e.g.
+Run all suites one by one by using e.g.:
 
 ```bash
 npm run wdio-desktop -- --suite bidders
 ```
 
-Wdio doesn't use `npm run serve` anymore - it does use example pages so be sure to rebuild them first with
+Wdio doesn't use `npm run serve` anymore - it does use example pages so be sure to rebuild them first with:
 
 ```bash
 npm run build:examples
