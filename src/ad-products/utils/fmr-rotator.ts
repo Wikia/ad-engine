@@ -100,7 +100,11 @@ export class FmrRotator {
 		if (this.btRecStatus) {
 			this.removeRecNode();
 		} else {
-			this.currentAdSlot.hide();
+			if (context.get('options.floatingMedrecDestroyable')) {
+				eventService.emit(events.AD_SLOT_DESTROY_TRIGGERED, this.currentAdSlot.getSlotName());
+			} else {
+				this.currentAdSlot.hide();
+			}
 		}
 
 		this.swapRecirculation(true);

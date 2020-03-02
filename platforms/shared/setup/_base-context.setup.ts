@@ -9,7 +9,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BaseContextSetup {
-	constructor(private instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	configureBaseContext(isMobile = false): void {
 		this.setBaseState(isMobile);
