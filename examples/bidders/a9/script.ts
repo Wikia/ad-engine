@@ -4,7 +4,6 @@ import {
 	bidders,
 	cmp,
 	context,
-	DelayModule,
 	events,
 	eventService,
 	setupNpaContext,
@@ -59,32 +58,9 @@ context.set('bidders.a9.bidsRefreshing.slots', ['incontent_boxad']);
 setupNpaContext();
 setupRdpContext();
 
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
-
 context.set('options.maxDelayTimeout', 1000);
-context.push('delayModules', biddersDelay);
 
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
-
-bidders.runOnBiddingReady(() => {
+const biddersInhibitor = bidders.requestBids().then(() => {
 	console.log('⛳ Prebid bidding completed');
 });
 
@@ -105,7 +81,7 @@ document.getElementById('disableDebugMode').addEventListener('click', () => {
 	window.location.reload();
 });
 
-new AdEngine().init();
+new AdEngine().init([biddersInhibitor]);
 
 window.adsQueue.push({
 	id: 'repeatable_boxad_1',
