@@ -1,25 +1,13 @@
-import { AdEngine, AdSlot, btRec, eventService, utils } from '@wikia/ad-engine';
-import { trackBab } from '../tracking/bab-tracker';
-import { babDetection } from '../wad/bab-detection';
+import { AdEngine, AdSlot, eventService, utils } from '@wikia/ad-engine';
 
-export function startAdEngine(): void {
+export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 	const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
 	utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
 
 	const engine = new AdEngine();
 
-	engine.init();
-
-	if (babDetection.isEnabled()) {
-		babDetection.run().then((isBabDetected) => {
-			trackBab(isBabDetected);
-
-			if (isBabDetected) {
-				btRec.run();
-			}
-		});
-	}
+	engine.init(inhibitors);
 
 	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
 		slot.removeClass('default-height');

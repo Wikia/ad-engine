@@ -19,7 +19,7 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { GamepediaAdEngineRunnerSetup } from './ad-engine-runner/muthead-ad-engine-runner.setup';
+import { GamepediaAdEngineRunnerSetup } from './ad-engine-runner/gamepedia-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
 import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';

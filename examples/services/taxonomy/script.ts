@@ -11,9 +11,8 @@ context.set('services.taxonomy.enabled', isEnabled);
 context.set('services.taxonomy.comics.enabled', isGettingComicsTagEnabled);
 context.set('services.taxonomy.communityId', communityId);
 context.set('services.taxonomy.pageArticleId', pageArticleId);
-context.push('delayModules', taxonomyService);
 
-taxonomyService.configurePageLevelTargeting().then((adTags) => {
+const taxonomyInhibitor = taxonomyService.configurePageLevelTargeting().then((adTags) => {
 	document.getElementById('adTags').innerText = JSON.stringify(adTags);
 });
 
@@ -26,4 +25,4 @@ if (pageArticleId) {
 		'To get comics tag, add community-id and page-article-id in query string.';
 }
 
-new AdEngine().init();
+new AdEngine().init([taxonomyInhibitor]);
