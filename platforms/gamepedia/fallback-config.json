@@ -121,7 +121,9 @@
                 "oasis"
             ],
             "regions": [
-                "XX-EU"
+                "XX-AS",
+                "XX-EU",
+                "XX-OC"
             ],
             "value": true
         }
@@ -315,7 +317,6 @@
             ],
             "regions": [
                 "GB",
-                "PL",
                 "UK",
                 "US"
             ],

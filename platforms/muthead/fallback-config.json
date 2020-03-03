@@ -221,7 +221,9 @@
                 "oasis"
             ],
             "regions": [
-                "XX-EU"
+                "XX-AS",
+                "XX-EU",
+                "XX-OC"
             ],
             "value": true
         }
