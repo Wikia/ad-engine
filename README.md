@@ -376,7 +376,7 @@ Name: **floatingRail**
 
 ##### Description:
 
-* enabled - decides whether template is usable
+* enabled - decides whether template is usable or not
 * railSelector - selector of element which is going to have `position: fixed`
 * wrapperSelector - rail wrapper DOM element selector
 * startOffset - decides when rail starts floating
