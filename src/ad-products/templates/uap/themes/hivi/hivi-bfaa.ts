@@ -73,7 +73,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		if (resolvedState.isResolvedState(this.params)) {
 			this.setResolvedState(true);
 		} else {
-			this.setResolvedState(false);
+			this.setImpactState();
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.scrollListener = scrollListener.addCallback(() => this.updateAdSizes());
 			// Manually run update on scroll once
@@ -129,7 +129,7 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 			}
 
 			this.unlock();
-			this.switchImagesInAd(false);
+			this.setImpactState();
 			this.updateAdSizes();
 
 			if (this.config.onResolvedStateResetCallback) {
@@ -189,10 +189,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 
 		if (currentState >= HIVI_RESOLVED_THRESHOLD && !isResolved) {
-			this.setResolvedState(true);
+			this.setResolvedState();
 		} else if (currentState < HIVI_RESOLVED_THRESHOLD && isResolved) {
 			this.container.style.top = '';
-			this.switchImagesInAd(false);
+			this.setImpactState();
 		}
 
 		return slotTweaker.makeResponsive(this.adSlot, currentAspectRatio);
@@ -225,24 +225,22 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	private setResolvedState(isResolved: boolean): Promise<void> {
+	private setResolvedState(immediately = false): Promise<void> {
 		const offset: number = this.getHeightDifferenceBetweenStates();
 
-		this.switchImagesInAd(isResolved);
+		this.switchImagesInAd(true);
 
 		if (this.onResolvedStateScroll) {
 			window.removeEventListener('scroll', this.onResolvedStateScroll);
 			this.onResolvedStateScroll.cancel();
 		}
 
-		if (isResolved) {
-			if (this.config.onResolvedStateSetCallback) {
-				this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
-			}
+		if (this.config.onResolvedStateSetCallback) {
+			this.config.onResolvedStateSetCallback(this.config, this.adSlot, this.params);
 		}
 
 		return new Promise((resolve) => {
-			if (isResolved) {
+			if (immediately) {
 				this.lock();
 				resolve();
 			} else {
@@ -260,6 +258,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 				this.onResolvedStateScroll();
 			}
 		});
+	}
+
+	private setImpactState() {
+		this.switchImagesInAd(false);
 	}
 
 	private getHeightDifferenceBetweenStates(): number {
