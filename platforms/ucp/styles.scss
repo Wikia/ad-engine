@@ -11,7 +11,7 @@
 		z-index: 202;
 		padding: 0;
 	}
-  
+
 	#bottom_leaderboard {
 		position: relative;
 	}
@@ -58,4 +58,8 @@
 	> div {
 		text-align: center;
 	}
+}
+
+.is-dark {
+	@include uap-dark-theme();
 }
