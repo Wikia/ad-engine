@@ -493,7 +493,7 @@ If you want to set different severity for some cases, put it right under `it` in
 
 #### Categories
 
-In order to add custom names for categories you need to create the 'categories.json' file in 'allure-results' folder.
+In order to add custom names for categories you need to create the `categories.json` file in `allure-results` folder.
 The structure of that file looks like that:
 
 ```json
