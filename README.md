@@ -1,12 +1,12 @@
 # AdEngine
 
-## Installation
+## Installation.
 
 ```bash
 npm install github:Wikia/ad-engine
 ```
 
-## Platforms
+## Platforms.
 
 * `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Gamepedia, Futhead, Muthead) on port 9000
 * `npm run build:platforms` - to create production build of platforms ad-engine code
