@@ -1,6 +1,6 @@
 # AdEngine
 
-## Installation.
+## Installation
 
 ```bash
 npm install github:Wikia/ad-engine
