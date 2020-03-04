@@ -16,3 +16,11 @@
 	-webkit-transition-timing-function: $timing;
 	-webkit-transition-delay: $delay;
 }
+
+@mixin uap-dark-theme() {
+	.advertisement-label,
+	.button-control .icon {
+		color: $hivi-uap-dark-button-color;
+		fill: $hivi-uap-dark-button-color;
+	}
+}
