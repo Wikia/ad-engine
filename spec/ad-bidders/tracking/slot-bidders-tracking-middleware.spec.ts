@@ -43,6 +43,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			oneVideo: 23.0,
 			criteo: 24.0,
 			nobid: 25.0,
+			telaria: 26.0,
 		});
 	});
 
@@ -74,6 +75,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			oneVideo: 23.0,
 			criteo: 24.0,
 			nobid: 25.0,
+			telaria: 26.0,
 		});
 
 		const context = {
@@ -112,6 +114,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_23: 23.0,
 			bidder_24: 24.0,
 			bidder_25: 25.0,
+			bidder_26: 26.0,
 		});
 	});
 
@@ -152,6 +155,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_23: '23not_used',
 			bidder_24: '24not_used',
 			bidder_25: '25not_used',
+			bidder_26: '26not_used',
 		});
 	});
 });
