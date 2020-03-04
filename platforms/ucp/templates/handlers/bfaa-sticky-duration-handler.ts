@@ -42,14 +42,16 @@ export class BfaaStickyDurationHandler implements TemplateStateHandler {
 
 	private viewedAndDelayed(): Observable<unknown> {
 		const slotViewed: Promise<void> = this.adSlot.loaded.then(() => this.adSlot.viewed);
-		const videoViewed: Promise<void> = this.params.stickyUntilVideoViewed
-			? utils.once(this.adSlot, AdSlot.VIDEO_VIEWED_EVENT)
-			: Promise.resolve();
-		const unstickDelay: number = isUndefined(this.params.stickyAdditionalTime)
-			? universalAdPackage.BFAA_UNSTICK_DELAY
-			: this.params.stickyAdditionalTime;
 
-		return from(Promise.all([slotViewed, videoViewed, utils.wait(unstickDelay)]));
+		return from(slotViewed.then(() => utils.wait(this.getAdditionalStickinessTime())));
+	}
+
+	private getAdditionalStickinessTime(): number {
+		if (!isUndefined(this.params.stickyAdditionalTime)) {
+			return this.params.stickyAdditionalTime;
+		}
+
+		return universalAdPackage.BFAA_UNSTICK_DELAY;
 	}
 
 	async onLeave(): Promise<void> {
