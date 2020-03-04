@@ -527,7 +527,7 @@ Allure does not allow changing categories' colors, unless we fork our own releas
 #### Environment
 
 Similar to categories, you can also add more information about the environment.
-To do that, simply add the 'environment.xml' file in allure-results folder.
+To do that, simply add the `environment.xml` file in allure-results folder.
 The structure of that file looks like that:
 
 ```xml
