@@ -33,6 +33,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			instantConfig.get('icPrebidRubiconDisplay'),
 		);
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
+		context.set('bidders.prebid.telaria.enabled', instantConfig.get('icPrebidTelaria'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 		context.set('bidders.prebid.vmg.enabled', instantConfig.get('icPrebidVmg'));
 
