@@ -1,3 +1,4 @@
+import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 
 export class Pubmatic extends PrebidAdapter {
@@ -15,13 +16,11 @@ export class Pubmatic extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, ids }): PrebidAdUnit {
-		switch (code.toLowerCase()) {
-			case 'featured':
-			case 'incontent_player':
-				return this.getVideoConfig(code, ids);
-			default:
-				return this.getStandardConfig(code, sizes, ids);
+		if (context.get(`slots.${code}.isVideo`)) {
+			return this.getVideoConfig(code, ids);
 		}
+
+		return this.getStandardConfig(code, sizes, ids);
 	}
 
 	getVideoConfig(code, ids): PrebidAdUnit {

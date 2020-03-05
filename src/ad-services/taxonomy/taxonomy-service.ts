@@ -1,20 +1,12 @@
-import { context, DelayModule, utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
 
 const logGroup = 'taxonomy-service';
 const comicsLogGroup = 'taxonomy-comics-service';
 
-export class TaxonomyService implements DelayModule {
-	private delayPromise: Promise<void> = null;
-	private resolveDelayPromise: () => void = null;
-
+export class TaxonomyService {
 	async configurePageLevelTargeting(): Promise<AdTags> {
-		if (this.delayPromise === null) {
-			this.configureDelayPromise();
-		}
-
 		if (!this.isEnabled()) {
-			this.resolveDelayPromise();
 			return {};
 		}
 
@@ -29,18 +21,11 @@ export class TaxonomyService implements DelayModule {
 			context.set(`targeting.${key}`, adTags[key]);
 		});
 
-		this.resolveDelayPromise();
-
 		return adTags;
 	}
 
 	async configureComicsTargeting(): Promise<AdTags> {
-		if (this.delayPromise === null) {
-			this.configureDelayPromise();
-		}
-
 		if (!this.isGettingComicsTagEnabled()) {
-			this.resolveDelayPromise();
 			return {};
 		}
 
@@ -51,21 +36,7 @@ export class TaxonomyService implements DelayModule {
 
 		context.set('targeting.txn_comics', comicsTag['txn_comics']);
 
-		this.resolveDelayPromise();
-
 		return comicsTag;
-	}
-
-	getPromise(): Promise<void> {
-		if (this.delayPromise === null) {
-			this.configureDelayPromise();
-		}
-
-		if (!this.isEnabled()) {
-			this.resolveDelayPromise();
-		}
-
-		return this.delayPromise;
 	}
 
 	getName(): string {
@@ -83,12 +54,6 @@ export class TaxonomyService implements DelayModule {
 	reset(): void {
 		taxonomyServiceLoader.resetComicsTagPromise();
 		context.remove('targeting.txn_comics');
-	}
-
-	private configureDelayPromise() {
-		this.delayPromise = new Promise((resolve) => {
-			this.resolveDelayPromise = resolve;
-		});
 	}
 }
 

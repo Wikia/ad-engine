@@ -7,7 +7,6 @@ import {
 	bidderTrackingMiddleware,
 	cmp,
 	context,
-	DelayModule,
 	events,
 	eventService,
 	setupNpaContext,
@@ -64,37 +63,9 @@ context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 setupNpaContext();
 setupRdpContext();
 
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
-
-context.push('delayModules', biddersDelay);
-
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
-
-bidders
-	.runOnBiddingReady(() => {
-		console.log('⛳ Prebid bidding completed');
-	})
-	.catch(() => {
-		console.log('😡 Prebid bidding timed out');
-	});
+const biddersInhibitor = bidders
+	.requestBids()
+	.then(() => console.log('⛳ Prebid bidding completed'));
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
@@ -119,4 +90,4 @@ bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderCon
 	console.info(`🏁 Bidder tracker: ${bid.bidderCode} for ${bid.adUnitCode}`, bid, data);
 });
 
-new AdEngine().init();
+new AdEngine().init([biddersInhibitor]);

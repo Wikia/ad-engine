@@ -48,17 +48,6 @@ describe('Taxonomy service', () => {
 		expect(fetchedAdTags).to.deep.equal({});
 	});
 
-	it('fetched ad tags resolves delay promise', async () => {
-		let delayResolved = false;
-		taxonomyService.getPromise().then(() => {
-			delayResolved = true;
-		});
-
-		await taxonomyService.configurePageLevelTargeting();
-
-		expect(delayResolved).to.be.true;
-	});
-
 	it('is named delay module', async () => {
 		expect(taxonomyService.getName()).to.equal('taxonomy-service');
 	});
@@ -99,17 +88,6 @@ describe('Taxonomy service - comics tag', () => {
 
 		expect(getComicsTagStub.called).to.be.false;
 		expect(fetchedComicsTag).to.be.an('object').that.is.empty;
-	});
-
-	it('fetched comics tag resolves delay promise', async () => {
-		let delayResolved = false;
-		taxonomyService.getPromise().then(() => {
-			delayResolved = true;
-		});
-
-		await taxonomyService.configureComicsTargeting();
-
-		expect(delayResolved).to.be.true;
 	});
 
 	it('is named delay module', async () => {

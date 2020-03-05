@@ -1,4 +1,5 @@
 import { Pubmatic } from '@wikia/ad-bidders/prebid/adapters/pubmatic';
+import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
 describe('Pubmatic bidder adapter', () => {
@@ -64,6 +65,7 @@ describe('Pubmatic bidder adapter', () => {
 				},
 			},
 		});
+		context.set('slots.featured.isVideo', true);
 
 		expect(pubmatic.prepareAdUnits()).to.deep.equal([
 			{

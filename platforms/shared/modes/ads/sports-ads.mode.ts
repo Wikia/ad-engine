@@ -1,24 +1,29 @@
 import { bidders, confiant, context, durationMedia } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { biddersDelay } from '../../bidders/bidders-delay';
+import { wadRunner } from '../../services/wad-runner';
 import { startAdEngine } from '../start-ad-engine';
 import { AdsMode } from './_ads.mode';
 
 @Injectable()
 export class SportsAdsMode implements AdsMode {
 	handleAds(): void {
-		this.callExternals();
-		startAdEngine();
+		const inhibitors = this.callExternals();
+
+		startAdEngine(inhibitors);
+
 		this.setAdStack();
 	}
 
-	private callExternals(): void {
-		bidders.requestBids({
-			responseListener: biddersDelay.markAsReady,
-		});
+	private callExternals(): Promise<any>[] {
+		const inhibitors: Promise<any>[] = [];
+
+		inhibitors.push(bidders.requestBids());
+		inhibitors.push(wadRunner.call());
 
 		confiant.call();
 		durationMedia.call();
+
+		return inhibitors;
 	}
 
 	private setAdStack(): void {
