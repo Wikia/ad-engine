@@ -10,8 +10,4 @@ export class AdvertisementLabel extends UiComponent {
 
 		return label;
 	}
-
-	getClassNames(): string[] {
-		return ['advertisement-label', ...super.getClassNames()];
-	}
 }
