@@ -11,7 +11,7 @@
 		z-index: 202;
 		padding: 0;
 	}
-  
+
 	#bottom_leaderboard {
 		position: relative;
 	}
@@ -34,6 +34,10 @@
 
 		@include button-close();
 		@include advertisement-label();
+	}
+
+	&.is-dark {
+		@include uap-dark-theme();
 	}
 }
 
