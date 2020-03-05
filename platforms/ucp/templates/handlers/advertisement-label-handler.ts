@@ -1,27 +1,14 @@
-import {
-	AdSlot,
-	AdvertisementLabel,
-	TEMPLATE,
-	TemplateStateHandler,
-	UapParams,
-} from '@wikia/ad-engine';
+import { AdSlot, AdvertisementLabel, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class AdvertisementLabelHandler implements TemplateStateHandler {
-	private advertisementLabel: HTMLDivElement;
-
-	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-	) {}
+	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(): Promise<void> {
-		this.advertisementLabel = new AdvertisementLabel({
-			isDarkTheme: this.params.isDarkTheme,
-		}).render();
+		const advertisementLabel = new AdvertisementLabel();
 
-		this.adSlot.getElement().appendChild(this.advertisementLabel);
+		this.adSlot.getElement().appendChild(advertisementLabel.render());
 	}
 
 	async onLeave(): Promise<void> {}

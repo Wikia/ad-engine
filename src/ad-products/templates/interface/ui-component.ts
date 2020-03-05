@@ -1,12 +1,7 @@
 import { Dictionary } from '@ad-engine/core';
 
 export class UiComponent {
-	constructor(protected props: Dictionary = {}) {
-		if (props.isDarkTheme) {
-			const classList = this.getClassNames();
-			classList.push('is-dark');
-		}
-	}
+	constructor(protected props: Dictionary = {}) {}
 
 	render(): HTMLElement | DocumentFragment {
 		return document.createDocumentFragment();
