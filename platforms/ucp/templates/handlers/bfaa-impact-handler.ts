@@ -30,7 +30,19 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
 	}
 
-	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'sticky' | 'resolved'>): Promise<void> {
+		let shouldStick = true;
+
+		this.helper
+			.isViewedAndDelayed()
+			.pipe(
+				takeUntil(this.unsubscribe$),
+				tap(() => {
+					shouldStick = false;
+				}),
+			)
+			.subscribe();
+
 		this.adSlot.show();
 		this.helper.setImpactImage();
 		this.domListener.resize$
@@ -58,7 +70,11 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 				tap(() => {
 					const correction = this.helper.usePositionCorrection(this.footer);
 
-					transition('sticky').then(correction);
+					if (shouldStick) {
+						transition('sticky').then(correction);
+					} else {
+						transition('resolved').then(correction);
+					}
 				}),
 			)
 			.subscribe();
