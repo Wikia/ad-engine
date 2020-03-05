@@ -35,6 +35,10 @@
 		@include button-close();
 		@include advertisement-label();
 	}
+
+	&.is-dark {
+		@include uap-dark-theme();
+	}
 }
 
 @include navbar();
@@ -58,8 +62,4 @@
 	> div {
 		text-align: center;
 	}
-}
-
-.is-dark {
-	@include uap-dark-theme();
 }
