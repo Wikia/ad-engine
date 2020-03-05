@@ -9,7 +9,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BaseContextSetup {
-	constructor(private instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	configureBaseContext(isMobile = false): void {
 		this.setBaseState(isMobile);
@@ -80,7 +80,10 @@ export class BaseContextSetup {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
-		context.set('services.permutive.enabled', this.instantConfig.get('icPermutive'));
+		context.set(
+			'services.permutive.enabled',
+			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
+		);
 	}
 
 	private setMiscContext(): void {

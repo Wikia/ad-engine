@@ -1,15 +1,16 @@
 .idea
-.vscode
 .nyc_output
 .rpt2_cache
+.vscode
 .npm_cache/
-env/
-dist/
-previous-package.json
+
 coverage
+dist/
+env/
 examples/**/dist/*
 node_modules
 npm-debug.log
+previous-package.json
 
 tests/allure-results/*
 !tests/allure-results/categories.json

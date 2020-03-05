@@ -1,3 +1,4 @@
+import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 
 export class Criteo extends PrebidAdapter {
@@ -10,13 +11,11 @@ export class Criteo extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, networkId, zoneId }): PrebidAdUnit {
-		switch (code.toLowerCase()) {
-			case 'featured':
-			case 'incontent_player':
-				return this.getVideoConfig(code, zoneId);
-			default:
-				return this.getStandardConfig(code, { sizes, networkId });
+		if (context.get(`slots.${code}.isVideo`)) {
+			return this.getVideoConfig(code, zoneId);
 		}
+
+		return this.getStandardConfig(code, { sizes, networkId });
 	}
 
 	getVideoConfig(code, zoneId): PrebidAdUnit {

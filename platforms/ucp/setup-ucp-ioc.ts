@@ -1,6 +1,7 @@
 import {
 	AdEngineRunnerSetup,
 	AdsMode,
+	BaseContextSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
 	SlotsContextSetup,
@@ -21,6 +22,7 @@ import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup
 import { UcpWikiContextSetup } from './setup/context/wiki/ucp-wiki-context.setup';
 import { UcpDynamicSlotsSetup } from './setup/dynamic-slots/ucp-dynamic-slots.setup';
 import { UcpSlotsStateSetup } from './setup/state/slots/ucp-slots-state-setup';
+import { UcpBaseContextSetup } from './setup/ucp-base-context.setup';
 import { UcpTemplatesSetup } from './templates/ucp-templates.setup';
 
 export async function setupUcpIoc(): Promise<Container> {
@@ -28,6 +30,7 @@ export async function setupUcpIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(AdEngineRunnerSetup).to(UcpAdEngineRunnerSetup);

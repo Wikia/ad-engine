@@ -376,7 +376,7 @@ Name: **floatingRail**
 
 ##### Description:
 
-* enabled - decides whether template is usable
+* enabled - decides whether template is usable or not
 * railSelector - selector of element which is going to have `position: fixed`
 * wrapperSelector - rail wrapper DOM element selector
 * startOffset - decides when rail starts floating
@@ -439,13 +439,13 @@ npm run lint
 
 ### Run tests
 
-Run all suites one by one by using e.g.
+Run all suites one by one by using e.g.:
 
 ```bash
 npm run wdio-desktop -- --suite bidders
 ```
 
-Wdio doesn't use `npm run serve` anymore - it does use example pages so be sure to rebuild them first with
+Wdio doesn't use `npm run serve` anymore - it does use example pages so be sure to rebuild them first with:
 
 ```bash
 npm run build:examples
@@ -470,7 +470,7 @@ npm run allure
 
 #### Severity
 
-Add these lines to test files
+Add these lines to test files:
 
 ```js
 import reporter from 'wdio-allure-reporter';
@@ -493,7 +493,7 @@ If you want to set different severity for some cases, put it right under `it` in
 
 #### Categories
 
-In order to add custom names for categories you need to create the 'categories.json' file in 'allure-results' folder.
+In order to add custom names for categories you need to create the `categories.json` file in `allure-results` folder.
 The structure of that file looks like that:
 
 ```json
@@ -527,7 +527,7 @@ Allure does not allow changing categories' colors, unless we fork our own releas
 #### Environment
 
 Similar to categories, you can also add more information about the environment.
-To do that, simply add the 'environment.xml' file in allure-results folder.
+To do that, simply add the `environment.xml` file in allure-results folder.
 The structure of that file looks like that:
 
 ```xml

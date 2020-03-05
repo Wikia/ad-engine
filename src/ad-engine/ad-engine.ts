@@ -1,6 +1,7 @@
 import { scrollListener } from './listeners';
-import { AdSlot, DelayModule } from './models';
+import { AdSlot } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
+import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
@@ -14,7 +15,7 @@ import {
 	templateService,
 } from './services';
 import { FloatingAd } from './templates';
-import { LazyQueue, logger, makeLazyQueue, OldLazyQueue } from './utils';
+import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -23,8 +24,6 @@ export interface AdStackPayload {
 export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return context.get('state.adStack');
 }
-
-const logGroup = 'ad-engine';
 
 export const DEFAULT_MAX_DELAY = 2000;
 
@@ -47,7 +46,7 @@ export class AdEngine {
 		});
 	}
 
-	init(): void {
+	init(inhibitors: Promise<any>[] = []): void {
 		this.setupProviders();
 		this.setupAdStack();
 		btfBlockerService.init();
@@ -55,7 +54,8 @@ export class AdEngine {
 		registerCustomAdLoader(context.get('options.customAdLoader.globalMethodName'));
 		messageBus.init();
 		slotTweaker.registerMessageListener();
-		this.runAdQueue();
+
+		this.runAdQueue(inhibitors);
 
 		scrollListener.init();
 		slotRepeater.init();
@@ -102,36 +102,15 @@ export class AdEngine {
 		}
 	}
 
-	async runAdQueue(): Promise<void> {
-		const delayModulesPromises: Promise<void>[] = this.getDelayModulesPromises();
+	runAdQueue(inhibitors: Promise<any>[] = []): void {
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
-		const timeoutPromise = new Promise<void>((resolve) => setTimeout(resolve, maxTimeout));
 
-		logger(logGroup, `Delay by ${delayModulesPromises.length} modules (${maxTimeout}ms timeout)`);
-
-		await Promise.race([Promise.all(delayModulesPromises), timeoutPromise]);
-
-		logger(logGroup, 'startAdQueue', 'Ready');
-		this.startAdStack();
-	}
-
-	private getDelayModulesPromises(): Promise<void>[] {
-		const delayModules: DelayModule[] = context.get('delayModules') || [];
-
-		return delayModules
-			.filter((delayModule: DelayModule) => delayModule.isEnabled())
-			.map((delayModule: DelayModule) => {
-				logger(logGroup, 'Register delay module', delayModule.getName());
-
-				return delayModule.getPromise();
-			});
-	}
-
-	private startAdStack(): void {
-		if (!this.started) {
-			eventService.emit(events.AD_STACK_START);
-			this.started = true;
-			this.adStack.start();
-		}
+		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
+			if (!this.started) {
+				eventService.emit(events.AD_STACK_START);
+				this.started = true;
+				this.adStack.start();
+			}
+		});
 	}
 }

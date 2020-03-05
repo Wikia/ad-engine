@@ -41,6 +41,7 @@ async function getBiddersPrices(slotName: string): Promise<Dictionary<string>> {
 		bidder_23: transformBidderPrice('oneVideo'),
 		bidder_24: transformBidderPrice('criteo'),
 		bidder_25: transformBidderPrice('nobid'),
+		bidder_26: transformBidderPrice('telaria'),
 	};
 }
 
