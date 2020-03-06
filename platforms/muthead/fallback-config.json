@@ -221,9 +221,8 @@
                 "oasis"
             ],
             "regions": [
-                "XX-AS",
-                "XX-EU",
-                "XX-OC"
+                "XX",
+                "non-US"
             ],
             "value": true
         }
@@ -255,7 +254,7 @@
             "regions": [
                 "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebidVersion": [
