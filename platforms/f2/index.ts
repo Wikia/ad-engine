@@ -8,6 +8,10 @@ import './styles.scss';
 
 setupPostQuecast();
 
+function checkIff2IsMobile(): boolean {
+	return false;
+}
+
 const load = async () => {
 	const communicator = new Communicator();
 
@@ -19,7 +23,9 @@ const load = async () => {
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isMobile: false });
+	const isf2Mobile = await checkIff2IsMobile();
+
+	platformStartup.configure({ isMobile: isf2Mobile });
 
 	communicator.dispatch(adEngineConfigured());
 
