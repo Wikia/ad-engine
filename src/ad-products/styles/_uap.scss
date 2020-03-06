@@ -427,11 +427,7 @@
 	}
 
 	&.is-dark {
-		.advertisement-label,
-		.button-control .icon {
-			color: $hivi-uap-dark-button-color;
-			fill: $hivi-uap-dark-button-color;
-		}
+		@include uap-dark-theme();
 	}
 
 	&.is-mobile-layout .video-player {
