@@ -11,7 +11,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
+import { filter, shareReplay, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BfaaHelper } from '../helpers/bfaa-helper';
 
 @Injectable()
@@ -31,17 +31,12 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 	}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'resolved'>): Promise<void> {
-		let shouldStick = true;
-
-		this.helper
-			.isViewedAndDelayed()
-			.pipe(
-				takeUntil(this.unsubscribe$),
-				tap(() => {
-					shouldStick = false;
-				}),
-			)
-			.subscribe();
+		const isViewedAndDelayed$ = this.helper.isViewedAndDelayed().pipe(
+			takeUntil(this.unsubscribe$),
+			startWith(true),
+			shareReplay(1),
+		);
+		isViewedAndDelayed$.subscribe();
 
 		this.adSlot.show();
 		this.helper.setImpactImage();
@@ -67,7 +62,8 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 					this.helper.setNavbarFixedPosition();
 				}),
 				filter(() => this.reachedResolvedSize()),
-				tap(() => {
+				withLatestFrom(isViewedAndDelayed$),
+				tap(([_, shouldStick]) => {
 					const correction = this.helper.usePositionCorrection(this.footer);
 
 					if (shouldStick) {
