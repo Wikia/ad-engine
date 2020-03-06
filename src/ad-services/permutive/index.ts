@@ -18,7 +18,7 @@ class Permutive {
 		this.configure();
 		this.loadScript();
 		this.setTargeting();
-		this.setAddon('web', this.getPageViewEventSchema());
+		this.setAddon();
 	}
 
 	isEnabled(): boolean {
@@ -88,9 +88,12 @@ class Permutive {
 		}
 	}
 
-	setAddon(key: string, val: object): void {
+	setAddon(): void {
 		if (window.permutive) {
-			window.permutive.addon(key, val);
+			window.permutive.addon(
+				'web',
+				this.getPageViewEventSchema(),
+			);
 		}
 	}
 }
