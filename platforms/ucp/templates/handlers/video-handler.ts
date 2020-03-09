@@ -30,24 +30,21 @@ export class VideoHandler implements TemplateStateHandler {
 			return;
 		}
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
-		const params = { ...this.params };
-
-		params.vastTargeting = { passback: universalAdPackage.getType() };
-
-		const isResolvedState = !resolvedState.isResolvedState(params);
-		const defaultStateAutoPlay = params.autoPlay && !isResolvedState;
-		const resolvedStateAutoPlay = params.resolvedStateAutoPlay && isResolvedState;
-
-		params.autoPlay = Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
-
+		const isResolvedState = !resolvedState.isResolvedState(this.params);
+		const defaultStateAutoPlay = this.params.autoPlay && !isResolvedState;
+		const resolvedStateAutoPlay = this.params.resolvedStateAutoPlay && isResolvedState;
 		const playerContainer = Porvata.createVideoContainer(this.adSlot.getElement());
-		playerContainer.parentElement.classList.add('hide');
 
+		playerContainer.parentElement.classList.add('hide');
+		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.context.video = utils.createExtendedPromise<Porvata4Player>();
+		this.params.autoPlay = Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
+		this.params.vastTargeting = { passback: universalAdPackage.getType() };
+
 		const playerParams = {
-			...params,
+			...this.params,
 			container: playerContainer,
-			hideWhenPlaying: params.videoPlaceholderElement,
+			hideWhenPlaying: this.params.videoPlaceholderElement,
 		};
 
 		Porvata.inject(playerParams).then((video) => {
