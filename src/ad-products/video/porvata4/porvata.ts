@@ -18,7 +18,6 @@ export interface PorvataTemplateParams {
 	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 	viewportHookElement?: HTMLElement;
 	container: HTMLElement;
-	originalContainer?: HTMLElement; // TODO: It's not used anywhere. Ask Szymon if OK to remove.
 	enableInContentFloating?: boolean;
 	slotName: string;
 	viewportOffsetTop?: number;

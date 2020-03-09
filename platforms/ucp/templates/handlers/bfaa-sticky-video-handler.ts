@@ -10,7 +10,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, fromEvent, Observable, Subject } from 'rxjs';
-import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { filter, skipUntil, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { VideoHelper } from '../helpers/video-helper';
 import { UapContext } from './uap-context';
 
@@ -36,16 +36,9 @@ export class BfaaStickyVideoHandler implements TemplateStateHandler {
 			video$ = from(this.context.video);
 			video$
 				.pipe(
-					takeUntil(this.unsubscribe$),
-					take(1),
-					tap((video) => this.helper.setVideoResolvedSize(video)),
-				)
-				.subscribe();
-
-			video$
-				.pipe(
 					switchMap((video) => {
 						return this.domListener.resize$.pipe(
+							startWith({}),
 							tap(() => this.helper.setVideoResolvedSize(video)),
 						);
 					}),
@@ -55,14 +48,14 @@ export class BfaaStickyVideoHandler implements TemplateStateHandler {
 
 			video$
 				.pipe(
-					switchMap((video) => {
-						return fromEvent(this.adSlot, AdSlot.CUSTOM_EVENT).pipe(
+					skipUntil(
+						fromEvent(this.adSlot, AdSlot.CUSTOM_EVENT).pipe(
 							filter((event: { status: string }) => {
 								return event.status === universalAdPackage.SLOT_FORCE_UNSTICK;
 							}),
-							tap(() => video.stop()),
-						);
-					}),
+						),
+					),
+					tap((video: Porvata4Player) => video.stop()),
 					takeUntil(this.unsubscribe$),
 				)
 				.subscribe();

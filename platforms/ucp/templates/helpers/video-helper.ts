@@ -23,13 +23,7 @@ export class VideoHelper {
 			const height = (slotHeight * heightMultiplier) / 100;
 			const width = height * this.params.videoAspectRatio;
 
-			video.resize(width, height);
-
-			const videoOverlay = video.dom.getPlayerContainer().parentElement;
-
-			this.manipulator.element(videoOverlay).setProperty('width', `${width}px`);
-			this.manipulator.element(videoOverlay).setProperty('height', `${height}px`);
-			this.manipulator.element(videoOverlay).setProperty('top', `${margin}%`);
+			this.setVideoSize(video, width, height, margin);
 		}
 	}
 
@@ -53,13 +47,23 @@ export class VideoHelper {
 			const height = slotHeight * (this.params.config.state.height.resolved / 100);
 			const width = height * this.params.videoAspectRatio;
 
-			video.resize(width, height);
-
-			const videoOverlay = video.dom.getPlayerContainer().parentElement;
-
-			this.manipulator.element(videoOverlay).setProperty('width', `${width}px`);
-			this.manipulator.element(videoOverlay).setProperty('height', `${height}px`);
-			this.manipulator.element(videoOverlay).setProperty('top', `${margin}%`);
+			this.setVideoSize(video, width, height, margin);
 		}
+	}
+
+	setVideoSize(video: Porvata4Player, width: number, height: number, margin: number): void {
+		video.resize(width, height);
+
+		const videoOverlay = video.dom.getPlayerContainer().parentElement;
+
+		this.manipulator.element(videoOverlay).setProperty('width', `${width}px`);
+		this.manipulator.element(videoOverlay).setProperty('height', `${height}px`);
+		this.manipulator.element(videoOverlay).setProperty('top', `${margin}%`);
+
+		const thumbnail = this.params.thumbnail;
+
+		this.manipulator.element(thumbnail).setProperty('width', `${width}px`);
+		this.manipulator.element(thumbnail).setProperty('height', `${height}px`);
+		this.manipulator.element(thumbnail).setProperty('top', `${margin}%`);
 	}
 }

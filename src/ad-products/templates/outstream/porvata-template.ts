@@ -59,7 +59,6 @@ export class PorvataTemplate {
 
 		params.viewportHookElement = this.adSlot.getElement();
 		if (this.isInsecureMode) {
-			params.originalContainer = params.container;
 			params.container = Porvata.createVideoContainer(this.adSlot.getElement());
 		}
 

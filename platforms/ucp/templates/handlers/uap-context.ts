@@ -1,5 +1,5 @@
-import { Porvata4Player } from '@wikia/ad-engine';
+import { Porvata4Player, utils } from '@wikia/ad-engine';
 
 export interface UapContext {
-	video?: Promise<Porvata4Player>;
+	video?: utils.ExtendedPromise<Porvata4Player>;
 }

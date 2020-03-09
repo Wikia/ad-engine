@@ -32,7 +32,6 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 		this.helper.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				startWith({}),
 				tap(() => {
 					this.helper.setResolvedAdHeight();
@@ -40,13 +39,13 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 					this.helper.setNavbarFixedPosition();
 					this.helper.setBodyPadding();
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
-		this.unsubscribe$.complete();
 		this.manipulator.restore();
 	}
 }
