@@ -2,6 +2,8 @@ import {
 	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
 	PrebidConfigSetup,
@@ -44,6 +46,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
 	container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
 
 	return container;
