@@ -1,6 +1,6 @@
 import { AdSlot, DomManipulator, Porvata4Player, UapParams } from '@wikia/ad-engine';
 
-export class BfaaVideoHelper {
+export class VideoHelper {
 	constructor(
 		private manipulator: DomManipulator,
 		private params: UapParams,

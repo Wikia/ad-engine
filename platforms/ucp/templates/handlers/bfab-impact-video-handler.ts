@@ -15,7 +15,7 @@ import { VideoHelper } from '../helpers/video-helper';
 import { UapContext } from './uap-context';
 
 @Injectable()
-export class BfaaImpactVideoHandler implements TemplateStateHandler {
+export class BfabImpactVideoHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private helper: VideoHelper;
@@ -36,10 +36,10 @@ export class BfaaImpactVideoHandler implements TemplateStateHandler {
 			video$ = from(this.context.video);
 			video$
 				.pipe(
-					tap((video) => this.helper.setDynamicVideoImpactSize(video)),
+					tap((video) => this.helper.setDynamicVideoImpactSize(video, 0)),
 					switchMap((video) => {
-						return merge(this.domListener.scroll$, this.domListener.resize$).pipe(
-							tap(() => this.helper.setDynamicVideoImpactSize(video)),
+						return merge(this.domListener.resize$).pipe(
+							tap(() => this.helper.setDynamicVideoImpactSize(video, 0)),
 						);
 					}),
 					takeUntil(this.unsubscribe$),

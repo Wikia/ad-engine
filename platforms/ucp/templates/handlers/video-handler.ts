@@ -14,14 +14,14 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
 import { skip } from 'rxjs/operators';
-import { BfaaContext } from './bfaa-context';
+import { UapContext } from './uap-context';
 
 @Injectable()
-export class BfaaVideoHandler implements TemplateStateHandler {
+export class VideoHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		@Inject(TEMPLATE.CONTEXT) private context: BfaaContext,
+		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
 	) {}
 
 	async onEnter(transition: TemplateTransition<'impact'>): Promise<void> {
@@ -30,7 +30,7 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 
 		params.vastTargeting = { passback: universalAdPackage.getType() };
 
-		const isResolvedState = !resolvedState.isResolvedState(this.params);
+		const isResolvedState = !resolvedState.isResolvedState(params);
 		const defaultStateAutoPlay = params.autoPlay && !isResolvedState;
 		const resolvedStateAutoPlay = params.resolvedStateAutoPlay && isResolvedState;
 
@@ -45,7 +45,13 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 			videoLoaded = res;
 		});
 
-		Porvata.inject({ ...params, container: playerContainer }).then((video) => {
+		const playerParams = {
+			...params,
+			container: playerContainer,
+			hideWhenPlaying: params.videoPlaceholderElement,
+		};
+
+		Porvata.inject(playerParams).then((video) => {
 			videoLoaded(video);
 
 			const started$ = fromEvent(video, 'wikiaAdStarted');
@@ -65,15 +71,15 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 				});
 			});
 			videoUIElements.ProgressBar.add(video, video.dom.getInterfaceContainer());
-			createBottomPanel({ fullscreenAllowed: params.fullscreenAllowed, theme: 'hivi' }).add(
+			createBottomPanel({ fullscreenAllowed: playerParams.fullscreenAllowed, theme: 'hivi' }).add(
 				video,
 				video.dom.getInterfaceContainer(),
-				params,
+				playerParams,
 			);
-			videoUIElements.ToggleUI.add(video, video.dom.getInterfaceContainer(), params);
+			videoUIElements.ToggleUI.add(video, video.dom.getInterfaceContainer(), playerParams);
 			videoUIElements.ToggleVideo.add(video, playerContainer.parentElement);
-			videoUIElements.ToggleThumbnail.add(video, undefined, params);
-			videoUIElements.ReplayOverlay.add(video, video.dom.getPlayerContainer(), params);
+			videoUIElements.ToggleThumbnail.add(video, undefined, playerParams);
+			videoUIElements.ReplayOverlay.add(video, video.dom.getPlayerContainer(), playerParams);
 		});
 	}
 
