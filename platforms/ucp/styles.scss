@@ -20,7 +20,11 @@
 	}
 
 	#bottom_leaderboard {
+		z-index: 201;
+		margin-top: 20px;
 		position: relative;
+
+		@include bfaa-bfab-overlay;
 	}
 
 	#top_leaderboard,
