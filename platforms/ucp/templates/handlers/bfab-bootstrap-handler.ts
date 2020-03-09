@@ -1,5 +1,6 @@
 import {
 	AdSlot,
+	DomManipulator,
 	resolvedState,
 	slotTweaker,
 	TEMPLATE,
@@ -12,6 +13,8 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BfabBootstrapHandler implements TemplateStateHandler {
+	private manipulator = new DomManipulator();
+
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -20,8 +23,10 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.getAdContainer().classList.add('iframe-container');
+		this.manipulator.element(this.adSlot.getElement()).setProperty('visibility', 'hidden');
 
 		await slotTweaker.onReady(this.adSlot);
+
 		await this.awaitVisibleDOM();
 
 		if (resolvedState.isResolvedState(this.params)) {
@@ -38,5 +43,7 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 		}
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		this.manipulator.restore();
+	}
 }
