@@ -9,20 +9,10 @@ export class BfaaVideoHelper {
 
 	/**
 	 */
-	setVideoImpactSize(video: Porvata4Player): void {
+	setDynamicVideoImpactSize(video: Porvata4Player, fixedProgress?: number): void {
 		if (!video.isFullscreen()) {
 			const slotHeight = this.adSlot.getElement().offsetHeight;
-			const slotWidth = this.adSlot.getElement().offsetWidth;
-
-			const slotResolvedHeight = slotWidth / this.params.config.aspectRatio.resolved;
-			const slotDefaultHeight = slotWidth / this.params.config.aspectRatio.default;
-
-			/* changes between 0 (impact, full height) to 1 (resolved size);
-			 * used to make video height transition smooth between
-			 * this.params.config.state.height.default
-			 * and this.params.config.state.height.resolved
-			 */
-			const progress = window.scrollY / (slotDefaultHeight - slotResolvedHeight);
+			const progress = fixedProgress === undefined ? this.getImpactProgress() : fixedProgress;
 
 			const heightMultiplier =
 				this.params.config.state.height.default +
@@ -41,6 +31,19 @@ export class BfaaVideoHelper {
 			this.manipulator.element(videoOverlay).setProperty('height', `${height}px`);
 			this.manipulator.element(videoOverlay).setProperty('top', `${margin}%`);
 		}
+	}
+
+	getImpactProgress(): number {
+		const slotWidth = this.adSlot.getElement().offsetWidth;
+		const slotResolvedHeight = slotWidth / this.params.config.aspectRatio.resolved;
+		const slotDefaultHeight = slotWidth / this.params.config.aspectRatio.default;
+
+		/* changes between 0 (impact, full height) to 1 (resolved size);
+		 * used to make video height transition smooth between
+		 * this.params.config.state.height.default
+		 * and this.params.config.state.height.resolved
+		 */
+		return window.scrollY / (slotDefaultHeight - slotResolvedHeight);
 	}
 
 	setVideoResolvedSize(video: Porvata4Player): void {
