@@ -4,6 +4,7 @@ import {
 	BaseContextSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
+	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
@@ -17,6 +18,7 @@ import { set } from 'lodash';
 import { UcpAdEngineRunnerSetup } from './ad-engine-runner/ucp-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
+import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
 import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup';
 import { UcpWikiContextSetup } from './setup/context/wiki/ucp-wiki-context.setup';
@@ -42,6 +44,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
 	container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
+	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
 
 	return container;
 }
