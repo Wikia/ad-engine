@@ -1,6 +1,6 @@
 import { RxJsOperator } from '@ad-engine/core';
 import { Observable } from 'rxjs';
-import { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { JWPlayer } from '../external-types/jwplayer';
 import { JwpEventKey, JwpEventName } from './jwplayer-events';
 import { createJwpStateStream, JwpState } from './jwplayer-stream-state';
@@ -25,6 +25,5 @@ export function createJwpStream(jwplayer: JWPlayer): JwpStream {
 	return stream$.pipe(
 		withLatestFrom(state$),
 		map(([value, state]) => ({ ...value, state })),
-		shareReplay(1),
 	);
 }
