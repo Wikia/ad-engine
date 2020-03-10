@@ -19,7 +19,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { skip, take, tap } from 'rxjs/operators';
 import { UapContext } from './uap-context';
 
 @Injectable()
@@ -56,6 +56,7 @@ export class VideoHandler implements TemplateStateHandler {
 			this.handleRestart(video, transition);
 			this.handleEvents(video);
 			this.adjustUI(video, playerContainer, playerParams);
+			this.handleManualStartInCtpScenario(video, playerParams, transition);
 		});
 	}
 
@@ -97,6 +98,21 @@ export class VideoHandler implements TemplateStateHandler {
 		ToggleVideo.add(video, playerContainer.parentElement);
 		ToggleThumbnail.add(video, undefined, params);
 		ReplayOverlay.add(video, video.dom.getPlayerContainer(), params);
+	}
+
+	private handleManualStartInCtpScenario(
+		video: Porvata4Player,
+		params: PorvataTemplateParams,
+		transition: TemplateTransition,
+	): void {
+		if (!params.autoPlay && this.adSlot.getTargeting().loc === 'top') {
+			fromEvent(video, 'wikiaAdStarted')
+				.pipe(
+					take(1),
+					tap(() => transition('impact', { allowMulticast: true })),
+				)
+				.subscribe();
+		}
 	}
 
 	async onLeave(): Promise<void> {}
