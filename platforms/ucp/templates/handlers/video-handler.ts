@@ -3,14 +3,18 @@ import {
 	createBottomPanel,
 	Porvata,
 	Porvata4Player,
+	ProgressBar,
+	ReplayOverlay,
 	resolvedState,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	ToggleThumbnail,
+	ToggleUI,
+	ToggleVideo,
 	UapParams,
 	universalAdPackage,
 	utils,
-	videoUIElements,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
@@ -66,16 +70,16 @@ export class VideoHandler implements TemplateStateHandler {
 					video.reload();
 				});
 			});
-			videoUIElements.ProgressBar.add(video, video.dom.getInterfaceContainer());
+			ProgressBar.add(video, video.dom.getInterfaceContainer());
 			createBottomPanel({ fullscreenAllowed: playerParams.fullscreenAllowed, theme: 'hivi' }).add(
 				video,
 				video.dom.getInterfaceContainer(),
 				playerParams,
 			);
-			videoUIElements.ToggleUI.add(video, video.dom.getInterfaceContainer(), playerParams);
-			videoUIElements.ToggleVideo.add(video, playerContainer.parentElement);
-			videoUIElements.ToggleThumbnail.add(video, undefined, playerParams);
-			videoUIElements.ReplayOverlay.add(video, video.dom.getPlayerContainer(), playerParams);
+			ToggleUI.add(video, video.dom.getInterfaceContainer(), playerParams);
+			ToggleVideo.add(video, playerContainer.parentElement);
+			ToggleThumbnail.add(video, undefined, playerParams);
+			ReplayOverlay.add(video, video.dom.getPlayerContainer(), playerParams);
 		});
 	}
 

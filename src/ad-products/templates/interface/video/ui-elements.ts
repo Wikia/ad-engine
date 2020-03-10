@@ -1,15 +1,5 @@
-export { default as CloseButton } from './close-button';
-export { default as DynamicReveal } from './dynamic-reveal';
-export { default as Floating } from './floating';
-export { default as LearnMore } from './learn-more';
-export { default as Panel } from './panel';
-export { default as PauseControl } from './pause-control';
-export { default as PauseOverlay } from './pause-overlay';
 export { default as ProgressBar } from './progress-bar';
 export { default as ReplayOverlay } from './replay-overlay';
-export { default as ToggleAnimation } from './toggle-animation';
-export { default as ToggleFullscreen } from './toggle-fullscreen';
 export { default as ToggleThumbnail } from './toggle-thumbnail';
 export { default as ToggleUI } from './toggle-ui';
 export { default as ToggleVideo } from './toggle-video';
-export { default as VolumeControl } from './volume-control';
