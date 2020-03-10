@@ -6,8 +6,8 @@ import { BfabImpactHandler } from './handlers/bfab-impact-handler';
 import { BfabImpactVideoHandler } from './handlers/bfab-impact-video-handler';
 import { BfabResolvedHandler } from './handlers/bfab-resolved-handler';
 import { BfabResolvedVideoHandler } from './handlers/bfab-resolved-video-handler';
+import { BfabVideoHandler } from './handlers/bfab-video-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
-import { VideoHandler } from './handlers/video-handler';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -17,7 +17,7 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 				BfabBootstrapHandler,
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
-				VideoHandler,
+				BfabVideoHandler,
 			],
 			impact: [BfabImpactHandler, BfabImpactVideoHandler],
 			resolved: [BfabResolvedHandler, BfabResolvedVideoHandler],

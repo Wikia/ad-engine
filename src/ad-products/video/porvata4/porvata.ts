@@ -18,7 +18,7 @@ export interface PorvataTemplateParams {
 	adProduct: string;
 	autoPlay: boolean;
 	blockOutOfViewportPausing: boolean;
-	container: HTMLElement;
+	container: HTMLDivElement;
 	enableInContentFloating?: boolean;
 	hideWhenPlaying: HTMLElement;
 	onReady?: (player: PorvataPlayer) => void;
@@ -147,9 +147,9 @@ export class Porvata {
 		);
 	}
 
-	static createVideoContainer(parent: HTMLElement): HTMLElement {
+	static createVideoContainer(parent: HTMLElement): HTMLDivElement {
 		const container: HTMLElement = document.createElement('div');
-		const displayWrapper: HTMLElement = document.createElement('div');
+		const displayWrapper: HTMLDivElement = document.createElement('div');
 
 		container.classList.add('video-overlay');
 		displayWrapper.classList.add('video-display-wrapper');
