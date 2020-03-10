@@ -15,41 +15,42 @@ import { PorvataPlayer } from './porvata-player';
 import { PorvataSettings } from './porvata-settings';
 
 export interface PorvataTemplateParams {
-	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
-	viewportHookElement?: HTMLElement;
+	adProduct: string;
+	autoPlay: boolean;
+	blockOutOfViewportPausing: boolean;
 	container: HTMLElement;
 	enableInContentFloating?: boolean;
-	slotName: string;
-	viewportOffsetTop?: number;
-	viewportOffsetBottom?: number;
-	adProduct: string;
-	src: string;
-	autoPlay: boolean;
-	vastTargeting: Targeting;
-	blockOutOfViewportPausing: boolean;
-	startInViewportOnly?: boolean;
+	hideWhenPlaying: HTMLElement;
 	onReady?: (player: PorvataPlayer) => void;
+	slotName: string;
+	src: string;
+	startInViewportOnly?: boolean;
+	vastTargeting: Targeting;
+	viewportHookElement?: HTMLElement;
+	viewportOffsetBottom?: number;
+	viewportOffsetTop?: number;
+	vpaidMode?: google.ima.ImaSdkSettings.VpaidMode;
 }
 
 export interface PorvataGamParams {
-	container: HTMLElement;
-	slotName: string;
-	type: string;
-	theme: string;
 	adProduct: string;
 	autoPlay: boolean;
-	startInViewportOnly: boolean;
 	blockOutOfViewportPausing: boolean;
-	enableInContentFloating: boolean;
-	width: number;
-	height: number;
-	src: string;
-	lineItemId: string;
+	container: HTMLElement;
 	creativeId: string;
-	trackingDisabled: boolean;
+	enableInContentFloating: boolean;
+	height: number;
+	lineItemId: string;
 	loadVideoTimeout: number;
-	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+	slotName: string;
+	src: string;
+	startInViewportOnly: boolean;
+	theme: string;
+	trackingDisabled: boolean;
+	type: string;
 	vastTargeting: Targeting;
+	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+	width: number;
 }
 
 export const VpaidMode = {
