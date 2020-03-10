@@ -8,6 +8,12 @@ export class VideoHelper {
 	) {}
 
 	/**
+	 * Sets video size.
+	 *
+	 * Scales from impact to default ratio during scroll.
+	 *
+	 * @param video Porvata video
+	 * @param fixedProgress if provided then this value is used instead of calculated progress
 	 */
 	setDynamicVideoImpactSize(video: Porvata4Player, fixedProgress?: number): void {
 		if (!video.isFullscreen()) {
@@ -27,19 +33,25 @@ export class VideoHelper {
 		}
 	}
 
+	/**
+	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
+	 * used to make video height transition smooth between
+	 * this.params.config.state.height.default
+	 * and this.params.config.state.height.resolved
+	 */
 	getImpactProgress(): number {
 		const slotWidth = this.adSlot.getElement().offsetWidth;
 		const slotResolvedHeight = slotWidth / this.params.config.aspectRatio.resolved;
 		const slotDefaultHeight = slotWidth / this.params.config.aspectRatio.default;
 
-		/* changes between 0 (impact, full height) to 1 (resolved size);
-		 * used to make video height transition smooth between
-		 * this.params.config.state.height.default
-		 * and this.params.config.state.height.resolved
-		 */
 		return window.scrollY / (slotDefaultHeight - slotResolvedHeight);
 	}
 
+	/**
+	 * Sets video size using resolved ratio.
+	 *
+	 * @param video Porvata video
+	 */
 	setVideoResolvedSize(video: Porvata4Player): void {
 		if (!video.isFullscreen()) {
 			const slotHeight = this.adSlot.getElement().offsetHeight;
@@ -51,7 +63,7 @@ export class VideoHelper {
 		}
 	}
 
-	setVideoSize(video: Porvata4Player, width: number, height: number, margin: number): void {
+	private setVideoSize(video: Porvata4Player, width: number, height: number, margin: number): void {
 		video.resize(width, height);
 
 		const videoOverlay = video.dom.getPlayerContainer().parentElement;
