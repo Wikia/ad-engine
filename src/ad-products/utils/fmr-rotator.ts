@@ -16,7 +16,6 @@ export class FmrRotator {
 	private currentAdSlot: AdSlot;
 	private recirculationElement: HTMLElement;
 	private refreshInfo = {
-		delayDisabled: false,
 		recSlotViewed: 2000,
 		refreshDelay: 10000,
 		refreshLimit: 20,
@@ -41,14 +40,6 @@ export class FmrRotator {
 				slot.once(AdSlot.STATUS_SUCCESS, () => {
 					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
 					slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-						if (this.refreshInfo.delayDisabled) {
-							this.rotatorListener = scrollListener.addCallback(() => {
-								this.removeScrollListener();
-								this.hideSlot();
-							});
-
-							return;
-						}
 						setTimeout(() => {
 							this.hideSlot();
 						}, this.refreshInfo.refreshDelay);
