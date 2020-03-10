@@ -1,5 +1,5 @@
 import { AdSlot } from '../models';
-import { logger } from '../utils';
+import { generateUniqueId, logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
 import { eventService } from './events';
@@ -46,13 +46,9 @@ function repeatSlot(adSlot: AdSlot): boolean {
 		});
 	}
 
-	const container = slotInjector.inject(slotName);
+	context.set(`slots.${slotName}.uid`, generateUniqueId());
 
-	if (!!container && context.get('options.nonLazyLoading.enabled')) {
-		context.get('state.adStack').push({
-			id: slotName,
-		});
-	}
+	const container = slotInjector.inject(slotName);
 	const additionalClasses = repeatConfig.additionalClasses || '';
 
 	if (container !== null) {
@@ -66,19 +62,13 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 class SlotRepeater {
 	init(): void {
-		if (!context.get('options.nonLazyLoading.enabled')) {
-			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
-				return this.handleSlotRepeating(adSlot);
-			});
-		}
-	}
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+			if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+				return repeatSlot(adSlot);
+			}
 
-	handleSlotRepeating(adSlot: AdSlot): boolean {
-		if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-			return repeatSlot(adSlot);
-		}
-
-		return false;
+			return false;
+		});
 	}
 }
 

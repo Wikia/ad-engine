@@ -1,12 +1,14 @@
 import { expect } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonStub } from 'sinon';
 import { bidders } from '../../../src/ad-bidders';
 import { slotBiddersTrackingMiddleware } from '../../../src/ad-bidders/tracking';
 import { AdSlot } from '../../../src/ad-engine/models';
 
 describe('slot-bidders-tracking-middleware', () => {
-	const sandbox = sinon.createSandbox();
+	const sandbox = createSandbox();
 	let adSlot: AdSlot;
+	let getDfpSlotPricesStub: SinonStub;
+	let getCurrentSlotPricesStub: SinonStub;
 
 	beforeEach(() => {
 		adSlot = new AdSlot({ id: 'foo' });
@@ -15,9 +17,10 @@ describe('slot-bidders-tracking-middleware', () => {
 			price: '11.00',
 		};
 
-		sandbox.stub(bidders, 'getDfpSlotPrices');
-		sandbox.stub(bidders, 'getCurrentSlotPrices');
-		bidders.getCurrentSlotPrices.returns({
+		getDfpSlotPricesStub = sandbox.stub(bidders, 'getDfpSlotPrices');
+		getCurrentSlotPricesStub = sandbox.stub(bidders, 'getCurrentSlotPrices');
+
+		getCurrentSlotPricesStub.returns({
 			wikia: 20.0,
 			indexExchange: 1.0,
 			appnexus: 2.0,
@@ -37,8 +40,10 @@ describe('slot-bidders-tracking-middleware', () => {
 			gumgum: 19.0,
 			'33across': 20.0,
 			triplelift: 21.0,
-			teads: 22.0,
+			oneVideo: 23.0,
 			criteo: 24.0,
+			nobid: 25.0,
+			telaria: 26.0,
 		});
 	});
 
@@ -47,7 +52,7 @@ describe('slot-bidders-tracking-middleware', () => {
 	});
 
 	it('returns bidders info for tracking', async () => {
-		bidders.getDfpSlotPrices.returns({
+		getDfpSlotPricesStub.returns({
 			wikia: 20.0,
 			indexExchange: 1.0,
 			appnexus: 2.0,
@@ -67,8 +72,10 @@ describe('slot-bidders-tracking-middleware', () => {
 			gumgum: 19.0,
 			'33across': 20.0,
 			triplelift: 21.0,
-			teads: 22.0,
+			oneVideo: 23.0,
 			criteo: 24.0,
+			nobid: 25.0,
+			telaria: 26.0,
 		});
 
 		const context = {
@@ -77,7 +84,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
+		const nextSpy = sandbox.spy();
 
 		await slotBiddersTrackingMiddleware(context, nextSpy);
 
@@ -104,8 +111,10 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_19: 19.0,
 			bidder_20: 20.0,
 			bidder_21: 21.0,
-			bidder_22: 22.0,
+			bidder_23: 23.0,
 			bidder_24: 24.0,
+			bidder_25: 25.0,
+			bidder_26: 26.0,
 		});
 	});
 
@@ -116,7 +125,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			},
 			slot: adSlot,
 		};
-		const nextSpy = sinon.spy();
+		const nextSpy = sandbox.spy();
 
 		await slotBiddersTrackingMiddleware(context, nextSpy);
 
@@ -143,8 +152,10 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_19: '19not_used',
 			bidder_20: '20not_used',
 			bidder_21: '21not_used',
-			bidder_22: '22not_used',
+			bidder_23: '23not_used',
 			bidder_24: '24not_used',
+			bidder_25: '25not_used',
+			bidder_26: '26not_used',
 		});
 	});
 });

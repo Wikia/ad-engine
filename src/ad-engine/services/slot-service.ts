@@ -1,4 +1,4 @@
-import { getAdStack } from '../';
+import { getAdStack, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
@@ -111,6 +111,17 @@ class SlotService {
 		});
 
 		return slotByPos;
+	}
+
+	getSlotId(slotName: string): string {
+		let uid = context.get(`slots.${slotName}.uid`);
+
+		if (!uid) {
+			uid = utils.generateUniqueId();
+			context.set(`slots.${slotName}.uid`, uid);
+		}
+
+		return uid;
 	}
 
 	/**

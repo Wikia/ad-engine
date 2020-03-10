@@ -2,6 +2,7 @@ import { AdSlot, context, slotTweaker } from '@ad-engine/core';
 import { AdvertisementLabel } from '../../../interface/advertisement-label';
 import { CloseButton } from '../../../interface/close-button';
 import { BigFancyAdAboveConfig } from '../../big-fancy-ad-above';
+import { BFAA_UNSTICK_DELAY } from '../../constants';
 import { resolvedState } from '../../resolved-state';
 import { UapVideoSettings } from '../../uap-video-settings';
 import { UapParams } from '../../universal-ad-package';
@@ -9,7 +10,7 @@ import { BigFancyAdTheme } from '../theme';
 import { CustomWhen, Stickiness } from './stickiness';
 
 export abstract class BigFancyAdHiviTheme extends BigFancyAdTheme {
-	static DEFAULT_UNSTICK_DELAY = 3000;
+	static DEFAULT_UNSTICK_DELAY = BFAA_UNSTICK_DELAY;
 
 	closeButton: HTMLElement;
 	protected stickiness: Stickiness;

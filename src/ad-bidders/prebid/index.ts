@@ -9,6 +9,7 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
+import { Cmp, cmp } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -36,9 +37,9 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
-	isCMPEnabled: boolean;
 	isLazyLoadingEnabled: boolean;
 	lazyLoaded = false;
+	cmp: Cmp = cmp;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
 
@@ -47,36 +48,52 @@ export class PrebidProvider extends BidderProvider {
 		adaptersRegistry.configureAdapters();
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.isCMPEnabled = context.get('custom.isCMPEnabled');
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
+
 		this.prebidConfig = {
 			debug:
 				utils.queryString.get('pbjs_debug') === '1' ||
 				utils.queryString.get('pbjs_debug') === 'true',
-			enableSendAllBids: false,
+			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
 			},
 			userSync: {
-				iframeEnabled: true,
-				enabledBidders: [],
+				filterSettings: {
+					iframe: {
+						bidders: '*',
+						filter: 'include',
+					},
+					image: {
+						bidders: '*',
+						filter: 'include',
+					},
+				},
+				syncsPerBidder: 3,
 				syncDelay: 6000,
 			},
 		};
-		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
-		if (this.isCMPEnabled) {
+		if (this.cmp.exists) {
 			this.prebidConfig.consentManagement = {
-				cmpApi: 'iab',
-				timeout: this.timeout,
-				allowAuctionWithoutConsent: false,
+				gdpr: {
+					cmpApi: 'iab',
+					timeout: this.timeout,
+					allowAuctionWithoutConsent: false,
+				},
+				usp: {
+					cmpApi: 'iab',
+					timeout: 100,
+				},
 			};
 		}
 
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
+		this.registerBidsTracking();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -145,9 +162,15 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	async getTargetingParams(slotName: string): Promise<PrebidTargeting> {
+		const pbjs: Pbjs = await pbjsFactory.init();
 		const slotAlias: string = this.getSlotAlias(slotName);
 
-		return getWinningBid(slotAlias);
+		return {
+			...(context.get('bidders.prebid.sendAllBids')
+				? pbjs.getAdserverTargetingForAdUnitCode(slotAlias)
+				: null),
+			...(await getWinningBid(slotAlias)),
+		};
 	}
 
 	isSupported(slotName: string): boolean {
@@ -160,7 +183,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const refreshUsedBid = (winningBid) => {
-			eventService.emit(events.BIDS_REFRESH_STARTED, winningBid.adUnitCode);
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
 				eventService.emit(events.BIDS_REFRESH);
 				const adUnitsToRefresh = this.adUnits.filter(
@@ -177,6 +199,19 @@ export class PrebidProvider extends BidderProvider {
 		pbjs.onEvent('bidWon', refreshUsedBid);
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
 			pbjs.offEvent('bidWon', refreshUsedBid);
+		});
+	}
+
+	async registerBidsTracking(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		const trackBid = (response) => {
+			eventService.emit(events.BIDS_RESPONSE, response);
+		};
+
+		pbjs.onEvent('bidResponse', trackBid);
+		eventService.once(events.PAGE_CHANGE_EVENT, () => {
+			pbjs.offEvent('bidResponse', trackBid);
 		});
 	}
 

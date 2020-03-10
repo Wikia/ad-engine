@@ -1,5 +1,4 @@
 {
-    "wgAdDriverDelayTimeout": 2000,
     "icConfiant": [
         {
             "apps": [
@@ -11,7 +10,7 @@
             "regions": [
                 "US"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebidRubiconDisplay": [
@@ -74,7 +73,55 @@
             "value": true
         }
     ],
+    "icPrebidSendAllBids": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icLABradorTest": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 35.0,
+            "samplingCache": true,
+            "value": true
+        }
+    ],
     "icPrebid": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidNobid": [
         {
             "apps": [
                 "futhead",
@@ -103,9 +150,6 @@
             ],
             "value": true
         }
-    ],
-    "wgAdDriverUapCountries": [
-        "XX"
     ],
     "icPrebidIndexExchange": [
         {
@@ -167,6 +211,21 @@
             "value": true
         }
     ],
+    "icBidsTracking": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icA9Deals": [
         {
             "apps": [
@@ -182,7 +241,7 @@
             "value": true
         }
     ],
-    "icPrebidCriteo": [
+    "icPrebidVersion": [
         {
             "apps": [
                 "futhead",
@@ -191,7 +250,10 @@
                 "muthead",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200302.min.js"
         }
     ],
     "icA9Bidder": [
@@ -207,6 +269,22 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icAdEngineDelay": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 2000
         }
     ],
     "icPrebidTriplelift": [

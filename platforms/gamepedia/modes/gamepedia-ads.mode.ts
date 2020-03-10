@@ -1,5 +1,12 @@
-import { AdsMode, biddersDelay, startAdEngine } from '@platforms/shared';
-import { bidders, confiant, context, durationMedia, taxonomyService } from '@wikia/ad-engine';
+import { AdsMode, startAdEngine, wadRunner } from '@platforms/shared';
+import {
+	bidders,
+	confiant,
+	context,
+	durationMedia,
+	permutive,
+	taxonomyService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { hideAllAdSlots } from '../templates/hide-all-ad-slots';
 import { editModeManager } from '../utils/edit-mode-manager';
@@ -8,20 +15,26 @@ import { editModeManager } from '../utils/edit-mode-manager';
 export class GamepediaAdsMode implements AdsMode {
 	handleAds(): void {
 		editModeManager.onActivate(() => hideAllAdSlots());
-		this.callExternals();
-		startAdEngine();
+
+		const inhibitors = this.callExternals();
+
+		startAdEngine(inhibitors);
+
 		this.setAdStack();
 	}
 
-	private callExternals(): void {
-		bidders.requestBids({
-			responseListener: biddersDelay.markAsReady,
-		});
+	private callExternals(): Promise<any>[] {
+		const inhibitors: Promise<any>[] = [];
 
+		inhibitors.push(bidders.requestBids());
+		inhibitors.push(taxonomyService.configurePageLevelTargeting());
+		inhibitors.push(wadRunner.call());
+
+		permutive.call();
 		confiant.call();
 		durationMedia.call();
 
-		taxonomyService.configurePageLevelTargeting();
+		return inhibitors;
 	}
 
 	private setAdStack(): void {

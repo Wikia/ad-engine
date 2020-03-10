@@ -1,4 +1,4 @@
-import { eventService, InstantConfigCacheStorage, utils } from '@wikia/ad-engine';
+import { eventService, InstantConfigCacheStorage } from '@wikia/ad-engine';
 import { InstantConfigInterpreter } from '@wikia/ad-services/instant-config/instant-config.interpreter';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { InstantConfigOverrider } from '@wikia/ad-services/instant-config/instant-config.overrider';
@@ -134,39 +134,6 @@ describe('Instant Config Service', () => {
 
 			it('should return default if key has undefined value', () => {
 				expect(instance.get('undefinedTest', 'it is ok')).to.equal('it is ok');
-			});
-		});
-
-		describe('isGeoEnabled', () => {
-			let isProperGeoStub: sinon.SinonStub;
-
-			beforeEach(() => {
-				isProperGeoStub = sinon.stub(utils.geoService, 'isProperGeo');
-			});
-
-			afterEach(() => {
-				isProperGeoStub.restore();
-			});
-
-			it('should call isProperGeo with correct arguments', () => {
-				instance.isGeoEnabled('wgAdDriverA9BidderCountries');
-
-				expect(isProperGeoStub.firstCall.args).to.deep.equal([
-					['PL'],
-					'wgAdDriverA9BidderCountries',
-				]);
-			});
-
-			it('should return value for isProperGeo for wgAdDriver', () => {
-				isProperGeoStub.returns('it is ok');
-
-				expect(instance.isGeoEnabled('wgAdDriverA9BidderCountries')).to.equal('it is ok');
-			});
-
-			it('should throw if supplied not wgAdDriver key', () => {
-				expect(instance.isGeoEnabled.bind(instance, 'scrollTimeout')).to.throw(
-					'This method should be only used for legacy wgAdDriver keys',
-				);
 			});
 		});
 	});

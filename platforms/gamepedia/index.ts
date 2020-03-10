@@ -5,9 +5,7 @@ import { PlatformStartup } from '../shared/platform-startup';
 import { basicContext } from './ad-context';
 import { setupGamepediaIoc } from './setup-gamepedia-ioc';
 import './styles.scss';
-
-// RLQ may not exist as AdEngine is loading independently from Resource Loader
-window.RLQ = window.RLQ || [];
+import { mediaWikiWrapper } from './utils/media-wiki-wrapper';
 
 const load = async () => {
 	context.extend(basicContext);
@@ -22,15 +20,4 @@ const load = async () => {
 	platformStartup.run();
 };
 
-window.RLQ.push(() => {
-	// AdEngine has to wait for Track extension
-	/*
-	 mw.loader.using is no longer available in MediaWiki 1.33
-	 Remove once https://gitlab.com/hydrawiki/hydra/issues/5087 is finished.
-	*/
-	if (window.mw.loader.using) {
-		window.mw.loader.using('ext.track.scripts').then(load);
-	} else {
-		window.mw.loader.enqueue(['ext.track.scripts'], load);
-	}
-});
+mediaWikiWrapper.ready.then(load);

@@ -19,6 +19,7 @@ export class MutheadTargetingSetup implements TargetingSetup {
 			s1: 'muthead',
 			s2: getPageType(),
 			dmn: `${domain.name}${domain.tld}`,
+			geo: utils.geoService.getCountryCode() || 'none',
 		};
 
 		if (cid !== undefined) {

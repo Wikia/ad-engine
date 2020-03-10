@@ -1,0 +1,30 @@
+@mixin porvata-icons($size, $color) {
+	.button-control .icon,
+	.porvata-icon {
+		box-sizing: content-box;
+		-webkit-box-sizing: content-box;
+		cursor: pointer;
+		color: $color;
+		fill: $color;
+		height: $size;
+		opacity: 0.95;
+		overflow: hidden;
+		width: $size;
+	}
+
+	.porvata-switchable-icon {
+		.porvata-off-icon {
+			display: none;
+		}
+
+		&.is-on {
+			.porvata-off-icon {
+				display: inline-block;
+			}
+
+			.porvata-on-icon {
+				display: none;
+			}
+		}
+	}
+}

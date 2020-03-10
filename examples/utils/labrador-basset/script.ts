@@ -24,4 +24,4 @@ Object.keys(instantGlobals).forEach((variable) => {
 });
 
 preStatuses.innerText = statuses.join('\n');
-preGroups.innerText = cacheStorage.getSamplingResults();
+preGroups.innerText = cacheStorage.getSamplingResults().join(',');

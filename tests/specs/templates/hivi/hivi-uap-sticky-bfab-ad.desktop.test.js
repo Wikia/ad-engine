@@ -11,7 +11,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 		slots.topLeaderboard.waitForDisplayed();
 	});
 
-	it('Check if the line item id is from the same campaign', () => {
+	it.skip('Check if the line item id is from the same campaign', () => {
 		slots.topLeaderboard.waitForLineItemIdAttribute();
 		expect(slots.topLeaderboard.lineItemId).to.equal(
 			hiviUapStickyBfab.firstCall,
@@ -20,7 +20,7 @@ describe('Desktop HiVi UAP sticky BFAB ads page: top leaderboard', () => {
 	});
 });
 
-describe('HiVi UAP sticky BFAB: bottom leaderboard Impact state: ', () => {
+describe.skip('HiVi UAP sticky BFAB: bottom leaderboard Impact state: ', () => {
 	before(() => {
 		helpers.navigateToUrl(hiviUapStickyBfab.pageLink, queryStrings.getResolvedState(false));
 		slots.topLeaderboard.waitForDisplayed();
@@ -57,7 +57,7 @@ describe('HiVi UAP sticky BFAB: bottom leaderboard Impact state: ', () => {
 	});
 });
 
-describe('HiVi UAP sticky BFAB: bottom leaderboard Resolved state: ', () => {
+describe.skip('HiVi UAP sticky BFAB: bottom leaderboard Resolved state: ', () => {
 	before(() => {
 		helpers.navigateToUrl(hiviUapStickyBfab.pageLink, queryStrings.getResolvedState(true));
 		slots.topLeaderboard.waitForDisplayed();

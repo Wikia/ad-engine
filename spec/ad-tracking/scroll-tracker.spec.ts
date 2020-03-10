@@ -1,4 +1,4 @@
-import { context, events, eventService, ScrollSpeedCalculator } from '@wikia/ad-engine';
+import { context, events, eventService } from '@wikia/ad-engine';
 import { ScrollTracker } from '@wikia/ad-tracking';
 import { expect } from 'chai';
 import { createSandbox, SinonFakeTimers, SinonStub } from 'sinon';

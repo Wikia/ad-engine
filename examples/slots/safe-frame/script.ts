@@ -3,7 +3,6 @@ import {
 	bidders,
 	clickPositionTracker,
 	context,
-	DelayModule,
 	events,
 	eventService,
 	FloorAdhesion,
@@ -13,26 +12,14 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
-customContext.targeting.artid = '173';
-customContext.slots.floor_adhesion.forceSafeFrame = true;
-customContext.slots.floor_adhesion.clickPositionTracking = true;
-
 context.extend(customContext);
+context.set('targeting.artid', '173');
+context.set('slots.floor_adhesion.forceSafeFrame', true);
+context.set('slots.floor_adhesion.clickPositionTracking', true);
 
 templateService.register(FloorAdhesion);
 
 setupNpaContext();
-
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
 
 function registerClickPositionTracker() {
 	clickPositionTracker.register(
@@ -41,23 +28,12 @@ function registerClickPositionTracker() {
 	);
 }
 
-context.push('delayModules', biddersDelay);
-
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
+const biddersInhibitor = bidders.requestBids();
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-new AdEngine().init();
+new AdEngine().init([biddersInhibitor]);
 
 registerClickPositionTracker();

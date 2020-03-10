@@ -37,7 +37,6 @@ module.exports = () => ({
 			getTypeScriptLoader({
 				include,
 				paths,
-				reportFiles: ['src/**/*.ts', 'platforms/**/*.ts'],
 			}),
 			{
 				test: /\.s?css$/,

@@ -4,8 +4,8 @@ import {
 	bidders,
 	billTheLizard,
 	btfBlockerService,
+	cmp,
 	context,
-	DelayModule,
 	events,
 	eventService,
 	slotService,
@@ -18,6 +18,7 @@ const mainContainer = document.getElementById('main-container');
 const limit = utils.queryString.get('limit') || null;
 const contentLength = utils.queryString.get('content_length') || 1;
 const enabledProjects = utils.queryString.get('enabled-project');
+const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
 
 function loadContent() {
 	const newContent = document.createElement('div');
@@ -26,6 +27,38 @@ function loadContent() {
 
 	mainContainer.appendChild(newContent);
 }
+
+cmp.override((cmd, param, cb) => {
+	if (cmd === 'getConsentData') {
+		cb(
+			{
+				consentData: optIn
+					? 'BOQu5jyOQu5jyCNABAPLBR-AAAAeCAFgAUABYAIAAaABFACY'
+					: 'BOQu5naOQu5naCNABAPLBRAAAAAeCAAA',
+				gdprApplies: true,
+				hasGlobalScope: false,
+			},
+			true,
+		);
+	} else if (cmd === 'getVendorConsents') {
+		cb(
+			{
+				metadata: 'BOQu5naOQu5naCNABAAABRAAAAAAAA',
+				purposeConsents: Array.from({ length: 5 }).reduce<ConsentData['purposeConsents']>(
+					(map, val, i) => ({ ...map, [i + 1]: optIn }),
+					{},
+				),
+				vendorConsents: Array.from({ length: 500 }).reduce<ConsentData['vendorConsents']>(
+					(map, val, i) => ({ ...map, [i + 1]: optIn }),
+					{},
+				),
+			},
+			true,
+		);
+	} else {
+		cb(null, false);
+	}
+});
 
 context.extend(adContext);
 context.set('slots.repeatable_boxad_1.repeat.limit', limit);
@@ -82,41 +115,18 @@ for (let i = 0; i < contentLength; i += 1) {
 	loadContent();
 }
 
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
-
 context.set('targeting.artid', '266');
 context.set('options.maxDelayTimeout', 1000);
-context.push('delayModules', biddersDelay);
 
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
-
-bidders.runOnBiddingReady(() => {
-	console.log('⛳ Prebid bidding completed');
-});
+const biddersInhibitor = bidders
+	.requestBids()
+	.then(() => console.log('⛳ Prebid bidding completed'));
 
 eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-new AdEngine().init();
+new AdEngine().init([biddersInhibitor]);
 
 btfBlockerService.finishFirstCall();
 
@@ -125,5 +135,5 @@ window.adsQueue.push({
 });
 
 document.getElementById('requestBids').addEventListener('click', () => {
-	bidders.requestBids({});
+	bidders.requestBids();
 });

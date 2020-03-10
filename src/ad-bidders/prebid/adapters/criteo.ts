@@ -1,3 +1,4 @@
+import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 
 export class Criteo extends PrebidAdapter {
@@ -10,13 +11,11 @@ export class Criteo extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes, networkId, zoneId }): PrebidAdUnit {
-		switch (code.toLowerCase()) {
-			case 'featured':
-			case 'incontent_player':
-				return this.getVideoConfig(code, zoneId);
-			default:
-				return this.getStandardConfig(code, { sizes, networkId });
+		if (context.get(`slots.${code}.isVideo`)) {
+			return this.getVideoConfig(code, zoneId);
 		}
+
+		return this.getStandardConfig(code, { sizes, networkId });
 	}
 
 	getVideoConfig(code, zoneId): PrebidAdUnit {
@@ -26,10 +25,10 @@ export class Criteo extends PrebidAdapter {
 				video: {
 					playerSize: [640, 480],
 					context: 'instream',
-					mimes: ['video/mp4'],
+					mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
 					maxduration: 30,
-					api: [1, 2],
-					protocols: [2, 3],
+					api: [2],
+					protocols: [2, 3, 5, 6],
 				},
 			},
 			bids: [
@@ -37,6 +36,11 @@ export class Criteo extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						zoneId,
+						video: {
+							skip: 0,
+							playbackmethod: 1,
+							placement: 1,
+						},
 					},
 				},
 			],

@@ -6,3 +6,9 @@ export { StickyTLB } from './sticky-tlb';
 export * from './uap';
 export * from './out-of-page';
 export * from './outstream';
+export * from './interface/close-button';
+export * from './interface/advertisement-label';
+export * from './interface/video/ui-template';
+
+import * as videoUIElements from './interface/video/ui-elements';
+export { videoUIElements };

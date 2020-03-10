@@ -9,6 +9,7 @@
 		"noImplicitAny": false,
 		"baseUrl": ".",
 		"noUnusedLocals": true,
+		"keyofStringsOnly": true,
 		"typeRoots": ["node_modules/@types", "@types"]
 	},
 	"include": ["src", "spec", "platforms", "examples"],

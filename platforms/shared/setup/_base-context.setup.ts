@@ -9,7 +9,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BaseContextSetup {
-	constructor(private instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	configureBaseContext(isMobile = false): void {
 		this.setBaseState(isMobile);
@@ -22,7 +22,10 @@ export class BaseContextSetup {
 
 	private setBaseState(isMobile: boolean): void {
 		context.set('state.isMobile', isMobile);
-		context.set('state.showAds', !utils.client.isSteamPlatform());
+		context.set(
+			'state.showAds',
+			context.get('wiki.opts.showAds') !== false && !utils.client.isSteamPlatform(),
+		);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
@@ -31,12 +34,32 @@ export class BaseContextSetup {
 		context.set('options.tracking.kikimora.player', true);
 		context.set('options.tracking.slot.status', true);
 		context.set('options.tracking.slot.viewability', true);
+		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
-		context.set('options.maxDelayTimeout', this.instantConfig.get('wgAdDriverDelayTimeout', 2000));
+		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
+
 		context.set(
-			'options.video.isOutstreamEnabled',
-			this.instantConfig.isGeoEnabled('wgAdDriverOutstreamSlotCountries'),
+			'options.video.playAdsOnNextVideo',
+			!!this.instantConfig.get('icFeaturedVideoAdsFrequency'),
 		);
+		context.set(
+			'options.video.adsOnNextVideoFrequency',
+			this.instantConfig.get('icFeaturedVideoAdsFrequency', 3),
+		);
+		context.set('options.video.isMidrollEnabled', this.instantConfig.get('icFeaturedVideoMidroll'));
+		context.set(
+			'options.video.isPostrollEnabled',
+			this.instantConfig.get('icFeaturedVideoPostroll'),
+		);
+
+		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
+		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
+		context.set('options.video.isOutstreamEnabled', this.instantConfig.get('icOutstreamSlot'));
+		context.set(
+			'options.video.moatTracking.enabledForArticleVideos',
+			this.instantConfig.get('icFeaturedVideoMoatTracking'),
+		);
+
 		this.setWadContext();
 	}
 
@@ -57,16 +80,18 @@ export class BaseContextSetup {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		context.set(
+			'services.permutive.enabled',
+			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
+		);
 	}
 
 	private setMiscContext(): void {
-		if (
-			this.instantConfig.get('wgAdDriverTestCommunities', []).includes(context.get('wiki.wgDBname'))
-		) {
+		if (this.instantConfig.get('icTestCommunities', []).includes(context.get('wiki.wgDBname'))) {
 			context.set('src', 'test');
 		}
 
-		this.instantConfig.isGeoEnabled('wgAdDriverLABradorTestCountries');
+		this.instantConfig.get('icLABradorTest');
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);

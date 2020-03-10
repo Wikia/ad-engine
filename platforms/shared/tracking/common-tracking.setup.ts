@@ -1,4 +1,6 @@
 import {
+	bidderTracker,
+	bidderTrackingMiddleware,
 	Dictionary,
 	eventService,
 	InstantConfigCacheStorage,
@@ -21,6 +23,7 @@ import { TrackingSetup } from '../setup/_tracking.setup';
 import { DataWarehouseTracker } from './data-warehouse';
 import { PageTracker } from './page-tracker';
 
+const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
@@ -31,6 +34,7 @@ export class CommonTrackingSetup implements TrackingSetup {
 		this.porvataTracker();
 		this.slotTracker();
 		this.viewabilityTracker();
+		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
 	}
@@ -68,6 +72,14 @@ export class CommonTrackingSetup implements TrackingSetup {
 			.register(({ data }: Dictionary) => {
 				dataWarehouseTracker.track(data, viewabilityUrl);
 			});
+	}
+
+	private bidderTracker(): void {
+		const dataWarehouseTracker = new DataWarehouseTracker();
+
+		bidderTracker.add(bidderTrackingMiddleware).register(({ data }: Dictionary) => {
+			dataWarehouseTracker.track(data, bidderTrackingUrl);
+		});
 	}
 
 	private postmessageTrackingTracker(): void {

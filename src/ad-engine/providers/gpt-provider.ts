@@ -47,6 +47,12 @@ function configure() {
 
 	tag.disableInitialLoad();
 
+	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
+		const adSlot = getAdSlotFromEvent(event);
+
+		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
+	});
+
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
 
@@ -120,6 +126,9 @@ export class GptProvider implements Provider {
 		this.setupRestrictDataProcessing();
 		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.destroySlots());
 		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
+		eventService.on(events.AD_SLOT_DESTROY_TRIGGERED, (adSlotName: string) =>
+			this.destroySlots([adSlotName]),
+		);
 		initialized = true;
 	}
 

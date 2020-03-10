@@ -21,6 +21,8 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
 	const timestamp: number = now.getTime();
+	const isUap =
+		slot.getConfigProperty('targeting.uap') && slot.getConfigProperty('targeting.uap') !== 'none';
 	const keyVals: Dictionary<string> = {
 		likho: (context.get('targeting.likho') || []).join('|'),
 	};
@@ -39,7 +41,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 			country: (utils.geoService.getCountryCode() || '').toUpperCase(),
 			device: utils.client.getDeviceType(),
 			document_visibility: utils.getDocumentVisibilityStatus(),
-			is_uap: slot.getConfigProperty('targeting.uap') ? 1 : 0,
+			is_uap: isUap ? 1 : 0,
 			key_vals: Object.keys(keyVals)
 				.filter((key) => keyVals[key])
 				.map((key) => `${key}=${keyVals[key]}`)
@@ -62,6 +64,7 @@ export const slotTrackingMiddleware: utils.Middleware<AdInfoContext> = ({ data, 
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
 			pv: window.pvNumber || '',
 			pv_unique_id: window.pvUID || '',
+			rollout_tracking: context.get('targeting.rollout_tracking') || '',
 			scroll_y: window.scrollY || window.pageYOffset,
 			time_bucket: now.getHours(),
 			tz_offset: now.getTimezoneOffset(),

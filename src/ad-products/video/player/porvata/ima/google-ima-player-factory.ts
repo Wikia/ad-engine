@@ -1,4 +1,4 @@
-import { context } from '@ad-engine/core';
+import { context, slotService } from '@ad-engine/core';
 import { IasTrackingParams, iasVideoTracker } from '../ias/ias-video-tracker';
 import { moatVideoTracker } from '../moat/moat-video-tracker';
 import { VideoSettings } from '../video-settings';
@@ -59,6 +59,10 @@ class GoogleImaPlayerFactory {
 
 				if (videoSettings.isIasTrackingEnabled()) {
 					const iasConfig: IasTrackingParams = context.get('options.video.iasTracking.config');
+					const { src, pos, loc } = slotService.get(videoSettings.get('slotName')).getTargeting();
+					iasConfig.custom = src;
+					iasConfig.custom2 = pos;
+					iasConfig.custom3 = loc;
 
 					iasVideoTracker
 						.init(google, adsManager, videoSettings.getContainer(), iasConfig)

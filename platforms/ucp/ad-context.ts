@@ -154,6 +154,27 @@ export const basicContext = {
 					},
 				},
 			},
+			nobid: {
+				enabled: false,
+				slots: {
+					top_leaderboard: {
+						sizes: [[728, 90], [970, 250]],
+						siteId: '21872987104',
+					},
+					top_boxad: {
+						sizes: [[300, 250], [300, 600]],
+						siteId: '21872987104',
+					},
+					incontent_boxad_1: {
+						sizes: [[160, 600], [300, 600], [300, 250]],
+						siteId: '21872987104',
+					},
+					bottom_leaderboard: {
+						sizes: [[728, 90], [970, 250]],
+						siteId: '21872987104',
+					},
+				},
+			},
 			onemobile: {
 				enabled: false,
 				slots: {},
@@ -323,6 +344,7 @@ export const basicContext = {
 		rubiconDfp: true,
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '_not_a_top1k_wiki',
+		rolloutTracking: 'ucp',
 	},
 	events: {
 		pushOnScroll: {
@@ -338,8 +360,8 @@ export const basicContext = {
 			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		ae3: '1',
 		outstream: 'none',
+		rollout_tracking: 'ucp',
 		skin: 'oasis',
 		uap: 'none',
 		uap_c: 'none',
@@ -365,11 +387,6 @@ export const basicContext = {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=oasis',
 			fallbackConfigKey: 'fallbackInstantConfig',
 		},
-		krux: {
-			account: 'ns:wikia',
-			enabled: false,
-			id: 'JU3_GW1b',
-		},
 		moatYi: {
 			enabled: false,
 			partnerCode: 'wikiaprebidheader490634422386',
@@ -382,7 +399,7 @@ export const basicContext = {
 	slotGroups: {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
-	src: 'test',
+	src: 'gpt',
 	state: {
 		adStack: [],
 		isMobile: true,

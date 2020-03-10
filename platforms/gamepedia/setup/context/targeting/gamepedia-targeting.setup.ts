@@ -16,12 +16,13 @@ export class GamepediaTargetingSetup implements TargetingSetup {
 			artid: wikiContext.wgArticleId && wikiContext.wgArticleId.toString(),
 			dmn: this.getDomain(),
 			pName: wikiContext.wgPageName,
-			pv: window.pvNumber && window.pvNumber.toString(),
+			pv: wikiContext.pvNumber && wikiContext.pvNumber.toString(),
 			s0: 'gaming',
 			s1: wikiContext.wgDBname,
 			s2: this.getPageType(wikiContext),
 			sdName: wikiContext.wgDBname,
 			skin: this.getSkin(wikiContext),
+			geo: utils.geoService.getCountryCode() || 'none',
 		};
 
 		const cid = utils.queryString.get('cid');

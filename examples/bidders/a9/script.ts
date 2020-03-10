@@ -4,10 +4,10 @@ import {
 	bidders,
 	cmp,
 	context,
-	DelayModule,
 	events,
 	eventService,
 	setupNpaContext,
+	setupRdpContext,
 	utils,
 } from '@wikia/ad-engine';
 import customContext from '../../context';
@@ -32,16 +32,14 @@ cmp.override((cmd, param, cb) => {
 		cb(
 			{
 				metadata: 'BOQu5naOQu5naCNABAAABRAAAAAAAA',
-				purposeConsents: Array.from({ length: 5 }).reduce((map, val, i) => {
-					map[i + 1] = optIn;
-
-					return map;
-				}, {}),
-				vendorConsents: Array.from({ length: 500 }).reduce((map, val, i) => {
-					map[i + 1] = optIn;
-
-					return map;
-				}, {}),
+				purposeConsents: Array.from({ length: 5 }).reduce<ConsentData['purposeConsents']>(
+					(map, val, i) => ({ ...map, [i + 1]: optIn }),
+					{},
+				),
+				vendorConsents: Array.from({ length: 500 }).reduce<ConsentData['vendorConsents']>(
+					(map, val, i) => ({ ...map, [i + 1]: optIn }),
+					{},
+				),
 			},
 			true,
 		);
@@ -58,33 +56,11 @@ context.set('bidders.a9.bidsRefreshing.enabled', utils.queryString.get('refreshi
 context.set('bidders.a9.bidsRefreshing.slots', ['incontent_boxad']);
 
 setupNpaContext();
-
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
+setupRdpContext();
 
 context.set('options.maxDelayTimeout', 1000);
-context.push('delayModules', biddersDelay);
 
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
-
-bidders.runOnBiddingReady(() => {
+const biddersInhibitor = bidders.requestBids().then(() => {
 	console.log('⛳ Prebid bidding completed');
 });
 
@@ -92,6 +68,7 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
+// @ts-ignore
 window.bidders = bidders;
 
 document.getElementById('enableDebugMode').addEventListener('click', () => {
@@ -104,7 +81,7 @@ document.getElementById('disableDebugMode').addEventListener('click', () => {
 	window.location.reload();
 });
 
-new AdEngine().init();
+new AdEngine().init([biddersInhibitor]);
 
 window.adsQueue.push({
 	id: 'repeatable_boxad_1',

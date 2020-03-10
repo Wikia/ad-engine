@@ -1,3 +1,4 @@
+export * from './bab-detection';
 export * from './btf-blocker-service';
 export * from './context-service';
 export * from './custom-ad-loader';
@@ -19,3 +20,9 @@ export * from './slot-tweaker';
 export * from './template-service';
 export * from './tracking-opt-in';
 export * from './viewability-counter';
+export * from './templates-registry/template-registry';
+export * from './templates-registry/template-state-transition';
+export * from './templates-registry/template-state-handler';
+export * from './templates-registry/template-symbols';
+export * from './templates-registry/template-action';
+export * from './templates-registry/template-logger';

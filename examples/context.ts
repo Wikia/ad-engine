@@ -35,7 +35,6 @@ export default {
 		},
 		prebid: {
 			enabled: true,
-			libraryUrl: '../../vendor/dist/prebid.min.js',
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				enabled: true,
@@ -270,7 +269,7 @@ export default {
 			targeting: {},
 			videoAdUnit:
 				'/{networkId}/wka1a.{slotConfig.group}/{slotConfig.lowerSlotName}' +
-				'{slotConfig.audioSegment}/{custom.device}/ae-{custom.adLayout}/_example',
+				'/{custom.device}/ae-{custom.adLayout}/_example',
 		},
 		featured: {
 			lowerSlotName: 'featured',
@@ -346,10 +345,6 @@ export default {
 		instantConfig: {
 			endpoint: 'https://services.wikia-dev.pl/icbm/api/config?app=oasis',
 			fallbackConfigKey: 'fallbackConfig',
-		},
-		krux: {
-			enabled: true,
-			id: 'KPSUiAKl',
 		},
 		taxonomy: {
 			enabled: false,

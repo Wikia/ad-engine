@@ -2,19 +2,24 @@ import {
 	AdSlot,
 	bidders,
 	context,
-	DelayModule,
 	events,
 	eventService,
-	jwplayerAdsFactory,
+	JWPlayerManager,
+	jwpReady,
 	playerEvents,
 	utils,
 } from '@wikia/ad-engine';
+import { setupPostQuecast, Transmitter } from '@wikia/post-quecast';
 // tslint:disable-next-line:no-submodule-imports
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
 import '../../styles.scss';
 import * as videoData from './video-data.json';
 
+setupPostQuecast();
+new JWPlayerManager().manage();
+
+const transmitter = new Transmitter();
 const f15sVideoId = utils.queryString.get('f15s');
 
 context.extend(adContext);
@@ -55,32 +60,9 @@ eventService.on(events.AD_SLOT_CREATED, (slot) => {
 	bidders.updateSlotTargeting(slot.getSlotName());
 });
 
-let resolveBidders;
-
-const biddersDelay: DelayModule = {
-	isEnabled: () => true,
-	getName: () => 'bidders-delay',
-	getPromise: () =>
-		new Promise((resolve) => {
-			resolveBidders = resolve;
-		}),
-};
-
 context.set('options.maxDelayTimeout', 1000);
-context.push('delayModules', biddersDelay);
 
-bidders.requestBids({
-	responseListener: () => {
-		if (bidders.hasAllResponses()) {
-			if (resolveBidders) {
-				resolveBidders();
-				resolveBidders = null;
-			}
-		}
-	},
-});
-
-biddersDelay.getPromise().then(() => {
+bidders.requestBids().then(() => {
 	const playlist = [videoData];
 	const playerOptions = {
 		autoplay: utils.queryString.get('autoplay') !== '0',
@@ -100,20 +82,27 @@ biddersDelay.getPromise().then(() => {
 			time: 3,
 		},
 	};
-	const videoAds = jwplayerAdsFactory.create({
-		adProduct: 'featured-video',
-		audio: !playerOptions.mute,
-		autoplay: playerOptions.autoplay,
-		featured: true,
-		slotName: 'featured',
-		videoId: videoData.mediaid,
-	});
 
+	// @ts-ignore
 	window.wikiaJWPlayer('playerContainer', playerOptions, (player) => {
-		videoAds.register(player);
-	});
+		const options = {
+			adProduct: 'featured-video',
+			slotName: 'featured',
+			audio: !playerOptions.mute,
+			autoplay: playerOptions.autoplay,
+			featured: true,
+			videoId: videoData.mediaid,
+		};
+		const targeting = {
+			plist: '',
+			videoTags: [],
+			v1: '',
+		};
+		const playerKey = 'aePlayerKey';
 
-	jwplayerAdsFactory.loadMoatPlugin();
+		window[playerKey] = player;
+		transmitter.dispatch(jwpReady({ options, playerKey, targeting }));
+	});
 });
 
 eventService.on(AdSlot.SLOT_STATUS_CHANGED, (adSlot) => {

@@ -1,19 +1,104 @@
+@import 'src/ad-products/styles/mixin';
+@import 'src/ad-products/styles/breakpoints';
+@import 'src/ad-products/styles/uap-variables';
+@import 'src/ad-products/styles/porvata';
+@import './styles/advertisement-label';
+@import './styles/bottom-panel';
+@import './styles/button-close';
+@import './styles/fullscreen-control';
+@import './styles/navbar';
+@import './styles/progress-bar';
+@import './styles/porvata-icons';
+
+.has-bfaa {
+	#top_leaderboard,
+	#hivi_leaderboard {
+		z-index: 202;
+		padding: 0;
+
+		@include bfaa-bfab-overlay;
+	}
+
+	#bottom_leaderboard {
+		position: relative;
+	}
+
+	#top_leaderboard,
+	#hivi_leaderboard,
+	#bottom_leaderboard {
+		.video-overlay {
+			position: absolute;
+		}
+
+		.video-display-wrapper {
+			height: 100%;
+			position: relative;
+			width: 100%;
+		}
+
+		.video-player {
+			right: 0;
+		}
+
+		.video-overlay,
+		.replay-overlay {
+			@include bfaa-bfab-hivi-right-position;
+		}
+
+		.porvata-interface {
+			@include bottom-panel();
+			@include fullscreen-button();
+			@include porvata-icons($hivi-uap-button-size, $hivi-uap-light-button-color);
+			@include progress-bar(
+				$hivi-uap-progress-bar-height,
+				$hivi-uap-progress-bar-color,
+				$hivi-uap-progress-bar-current-time-color
+			);
+		}
+
+		@include advertisement-label();
+		@include button-close();
+	}
+}
+
+.gpt-ad {
+	&.expanded-slot {
+		width: 100%;
+
+		& > div.iframe-container,
+		& > div.iframe-container > iframe {
+			height: 100%;
+			width: 100%;
+		}
+
+		&.hide,
+		& .hide {
+			display: none !important;
+		}
+	}
+
+	&.is-dark {
+		@include uap-dark-theme();
+	}
+}
+
+@include navbar();
+
+// #######################################
+
 .main-page-tag-rcs {
 	display: flex;
 	flex-direction: column;
 }
 
 #top_leaderboard {
-	padding: 10px 0;
-
 	> div {
 		text-align: center;
 	}
 }
 
 #bottom_leaderboard {
-	padding: 20px 0;
-	margin: 0 auto;
+	margin-bottom: 23px;
 
 	> div {
 		text-align: center;

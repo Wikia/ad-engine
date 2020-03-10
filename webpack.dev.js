@@ -1,5 +1,4 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
@@ -13,12 +12,7 @@ const development = {
 		filename: '[name]/dist/bundle.js',
 	},
 
-	plugins: [
-		new MiniCssExtractPlugin({ filename: '[name]/dist/styles.css' }),
-		new CopyWebpackPlugin([
-			{ from: path.resolve(__dirname, 'lib/prebid.min.js'), to: 'vendor/dist/prebid.min.js' },
-		]),
-	],
+	plugins: [new MiniCssExtractPlugin({ filename: '[name]/dist/styles.css' })],
 
 	optimization: {
 		splitChunks: {

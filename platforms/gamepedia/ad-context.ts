@@ -15,10 +15,12 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
+		disableConsentQueue: true,
 		maxDelayTimeout: 2000,
 		wad: {
 			enabled: false,
 			blocking: false,
+			blockingSrc: 'gamepedia-rec',
 			btRec: {
 				enabled: false,
 				placementsMap: {

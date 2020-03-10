@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "51.2.0",
+	"version": "58.3.1",
 	"description": "Wikia AdEngine",
 	"sideEffects": [
 		"*.scss"
@@ -10,17 +10,19 @@
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
-		"@babel/runtime-corejs2": "7.3.1",
-		"@wikia/dependency-injection": "2.0.1",
-		"@wikia/post-quecast": "1.1.0",
-		"blockadblock": "3.2.1",
+		"@babel/runtime-corejs2": "^7.3.1",
+		"@wikia/dependency-injection": "2.1.0",
+		"@wikia/post-quecast": "^1.2.0",
+		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
-		"current-device": "0.7.8",
-		"eventemitter3": "3.0.1",
-		"js-cookie": "2.2.0",
+		"current-device": "^0.7.8",
+		"eventemitter3": "^3.0.1",
+		"js-cookie": "^2.2.0",
 		"lodash": "^4.17.4",
-		"query-string": "6.8.0",
-		"rxjs": "6.5.3"
+		"query-string": "^6.8.0",
+		"rxjs": "^6.5.3",
+		"ts-action": "^11.0.0",
+		"ts-action-operators": "^9.1.1"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
@@ -48,7 +50,6 @@
 		"chai": "^4.1.2",
 		"chrome-remote-interface": "0.28.0",
 		"concat": "1.0.3",
-		"copy-webpack-plugin": "4.5.2",
 		"deepmerge": "2.2.1",
 		"express": "^4.16.2",
 		"husky": "1.1.4",
@@ -166,7 +167,8 @@
 		},
 		"ignore": [
 			"**/dist/**/*",
-			"maintenance/tslint-rules/tests/**/*"
+			"maintenance/tslint-rules/tests/**/*",
+			"platforms/*/fallback-config.js"
 		]
 	}
 }
