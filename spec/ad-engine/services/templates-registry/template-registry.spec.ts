@@ -28,8 +28,9 @@ describe('Template Registry', () => {
 			@Inject(TEMPLATE.NAME) name: string,
 			@Inject(TEMPLATE.SLOT) slot: AdSlot,
 			@Inject(TEMPLATE.PARAMS) params: Dictionary,
+			@Inject(TEMPLATE.CONTEXT) context: Dictionary,
 		) {
-			stateASpy.constructor(name, slot, params);
+			stateASpy.constructor(name, slot, params, context);
 		}
 
 		async onEnter(transition: TemplateTransition<'b'>): Promise<void> {

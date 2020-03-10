@@ -124,23 +124,7 @@
 		display: block;
 	}
 
-	.replay-overlay,
-	.pause-overlay {
-		cursor: pointer;
-		height: 100%;
-		position: absolute;
-		z-index: 1;
-	}
-
-	.replay-overlay {
-		background: $uap-replay-overlay-color url($player-button-play) center/8% no-repeat;
-		display: none;
-	}
-
-	.pause-overlay {
-		top: 0;
-		width: 100%;
-	}
+	@include bfaa-bfab-overlay;
 
 	.close-ad {
 		cursor: pointer;
@@ -397,8 +381,7 @@
 
 		.video-player,
 		.replay-overlay {
-			right: 23.2%;
-			transform: translateX(50%);
+			@include bfaa-bfab-hivi-right-position;
 			top: 4%;
 			height: 92%;
 		}

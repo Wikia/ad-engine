@@ -16,7 +16,10 @@ function add(video, container, params): void {
 		showOverlay(overlay, params);
 	});
 
-	if (video.params.theme && video.params.theme === 'hivi') {
+	if (
+		(video.params && video.params.theme && video.params.theme === 'hivi') ||
+		(params.theme && params.theme === 'hivi')
+	) {
 		const replayIcon = addReplayIcon(overlay);
 
 		if (!params.autoPlay) {
@@ -30,7 +33,7 @@ function add(video, container, params): void {
 			});
 		}
 
-		container = video.params.thumbnail;
+		container = video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
 		container.appendChild(overlay);
 	} else {
 		container.parentElement.insertBefore(overlay, container);

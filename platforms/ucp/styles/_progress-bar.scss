@@ -1,0 +1,19 @@
+@mixin progress-bar($height, $background-color, $progress-color) {
+	.progress-bar {
+		background: $background-color;
+		bottom: 0;
+		height: $height;
+		left: 0;
+		position: absolute;
+		width: 100%;
+		z-index: 2;
+	}
+
+	.current-time {
+		background: $progress-color;
+		height: 100%;
+		max-width: 100%;
+		width: 0;
+		transition: width linear;
+	}
+}

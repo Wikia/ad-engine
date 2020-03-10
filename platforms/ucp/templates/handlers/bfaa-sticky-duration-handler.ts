@@ -35,12 +35,12 @@ export class BfaaStickyDurationHandler implements TemplateStateHandler {
 		this.helper
 			.isViewedAndDelayed()
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
 				tap(() => {
 					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
 					transition('transition');
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

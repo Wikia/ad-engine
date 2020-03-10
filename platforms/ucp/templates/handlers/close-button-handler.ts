@@ -31,7 +31,6 @@ export class CloseButtonHandler implements TemplateStateHandler {
 
 		this.domListener.scroll$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				filter(() => {
 					return window.scrollY > 0;
 				}),
@@ -39,6 +38,7 @@ export class CloseButtonHandler implements TemplateStateHandler {
 				tap(() => {
 					this.adSlot.getElement().appendChild(this.button);
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

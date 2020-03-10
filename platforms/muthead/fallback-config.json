@@ -221,8 +221,7 @@
                 "oasis"
             ],
             "regions": [
-                "XX",
-                "non-US"
+                "XX"
             ],
             "value": true
         }
@@ -240,21 +239,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidCriteo": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
         }
     ],
     "icPrebidVersion": [
