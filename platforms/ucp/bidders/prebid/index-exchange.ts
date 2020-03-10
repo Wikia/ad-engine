@@ -1,4 +1,4 @@
-export function getIndexExchangeConfig(): object {
+export function getIndexExchangeContext(): object {
 	return {
 		enabled: false,
 		slots: {

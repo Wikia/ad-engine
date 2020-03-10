@@ -6,7 +6,7 @@ import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getAudienceNetworkContext } from '../../../bidders/prebid/audience-network';
 import { getBeachfrontContext } from '../../../bidders/prebid/beachfront';
-import { getIndexExchangeConfig } from '../../../bidders/prebid/index-exchange';
+import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOneMobileContext } from '../../../bidders/prebid/one-mobile';
@@ -28,7 +28,7 @@ export class UcpPrebidConfigSetup implements PrebidConfigSetup {
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.audienceNetwork', getAudienceNetworkContext());
 		context.set('bidders.prebid.beachfront', getBeachfrontContext());
-		context.set('bidders.prebid.indexExchange', getIndexExchangeConfig());
+		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.kargo', getKargoContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.onemobile', getOneMobileContext());
