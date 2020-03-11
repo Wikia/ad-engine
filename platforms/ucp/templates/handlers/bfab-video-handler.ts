@@ -37,6 +37,7 @@ export class BfabVideoHandler implements TemplateStateHandler {
 
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.context.video = utils.createExtendedPromise<Porvata4Player>();
+		this.helper.setCtpTargeting();
 
 		Porvata.inject(playerParams).then((video) => {
 			this.context.video.resolve(video);
