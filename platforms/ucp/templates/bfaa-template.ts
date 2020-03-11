@@ -12,9 +12,9 @@ import { BfaaStickyHandler } from './handlers/bfaa-sticky-handler';
 import { BfaaStickyVideoHandler } from './handlers/bfaa-sticky-video-handler';
 import { BfaaTransitionHandler } from './handlers/bfaa-transition-handler';
 import { BfaaTransitionVideoHandler } from './handlers/bfaa-transition-video-handler';
+import { BfaaVideoHandler } from './handlers/bfaa-video-handler';
 import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
-import { VideoHandler } from './handlers/video-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -23,7 +23,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			initial: [
 				BfaaConfigHandler,
 				BfaaBootstrapHandler,
-				VideoHandler,
+				BfaaVideoHandler,
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],

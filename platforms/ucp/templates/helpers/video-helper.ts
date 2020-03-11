@@ -1,4 +1,22 @@
-import { AdSlot, DomManipulator, Porvata4Player, UapParams } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	createBottomPanel,
+	DomManipulator,
+	Porvata,
+	Porvata4Player,
+	PorvataTemplateParams,
+	ProgressBar,
+	ReplayOverlay,
+	resolvedState,
+	TemplateTransition,
+	ToggleThumbnail,
+	ToggleUI,
+	ToggleVideo,
+	UapParams,
+	universalAdPackage,
+} from '@wikia/ad-engine';
+import { fromEvent } from 'rxjs';
+import { skip } from 'rxjs/operators';
 
 export class VideoHelper {
 	constructor(
@@ -77,5 +95,71 @@ export class VideoHelper {
 		this.manipulator.element(thumbnail).setProperty('width', `${width}px`);
 		this.manipulator.element(thumbnail).setProperty('height', `${height}px`);
 		this.manipulator.element(thumbnail).setProperty('top', `${margin}%`);
+	}
+
+	getPlayerParams(): PorvataTemplateParams {
+		return {
+			...this.params,
+			vastTargeting: { passback: universalAdPackage.getType() },
+			autoPlay: this.isAutoPlayEnabled(this.params),
+			container: this.createPlayerContainer(this.adSlot),
+			hideWhenPlaying: this.params.videoPlaceholderElement,
+		};
+	}
+
+	createPlayerContainer(adSlot: AdSlot): HTMLDivElement {
+		const playerContainer = Porvata.createVideoContainer(this.adSlot.getElement());
+
+		playerContainer.parentElement.classList.add('hide');
+
+		return playerContainer;
+	}
+
+	private isAutoPlayEnabled(params: UapParams): boolean {
+		const isResolvedState = !resolvedState.isResolvedState(params);
+		const defaultStateAutoPlay = params.autoPlay && !isResolvedState;
+		const resolvedStateAutoPlay = params.resolvedStateAutoPlay && isResolvedState;
+
+		return Boolean(defaultStateAutoPlay || resolvedStateAutoPlay);
+	}
+
+	/**
+	 * Transition to impact when video is restarted
+	 */
+	handleRestart(video: Porvata4Player, transition: TemplateTransition<'impact'>): void {
+		const restarted$ = fromEvent(video, 'wikiaAdStarted').pipe(skip(1));
+
+		restarted$.subscribe(() => {
+			transition('impact', { allowMulticast: true });
+			video.unmute();
+		});
+	}
+
+	handleEvents(video: Porvata4Player): void {
+		video.addEventListener('adCanPlay', () => {
+			video.dom.getVideoContainer().classList.remove('hide');
+		});
+		video.addEventListener('wikiaAdStarted', () => {
+			video.addEventListener('wikiaAdCompleted', () => {
+				video.reload();
+			});
+		});
+	}
+
+	adjustUI(
+		video: Porvata4Player,
+		playerContainer: HTMLDivElement,
+		params: PorvataTemplateParams,
+	): void {
+		ProgressBar.add(video, video.dom.getInterfaceContainer());
+		createBottomPanel({ fullscreenAllowed: this.params.fullscreenAllowed, theme: 'hivi' }).add(
+			video,
+			video.dom.getInterfaceContainer(),
+			params,
+		);
+		ToggleUI.add(video, video.dom.getInterfaceContainer(), params);
+		ToggleVideo.add(video, playerContainer.parentElement);
+		ToggleThumbnail.add(video, undefined, params);
+		ReplayOverlay.add(video, video.dom.getPlayerContainer(), params);
 	}
 }
