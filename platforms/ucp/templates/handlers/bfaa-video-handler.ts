@@ -45,15 +45,23 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 			this.helper.handleRestart(video, transition);
 			this.helper.handleEvents(video);
 			this.helper.adjustUI(video, playerParams.container, playerParams);
-			if (!playerParams.autoPlay) {
-				fromEvent(video, 'wikiaAdStarted')
-					.pipe(
-						take(1),
-						tap(() => transition('impact', { allowMulticast: true })),
-					)
-					.subscribe();
-			}
+			this.handleCtpStart(video, playerParams, transition);
 		});
+	}
+
+	private handleCtpStart(
+		video: Porvata4Player,
+		params: PorvataTemplateParams,
+		transition: TemplateTransition,
+	): void {
+		if (!params.autoPlay) {
+			fromEvent(video, 'wikiaAdStarted')
+				.pipe(
+					take(1),
+					tap(() => transition('impact', { allowMulticast: true })),
+				)
+				.subscribe();
+		}
 	}
 
 	async onLeave(): Promise<void> {}
