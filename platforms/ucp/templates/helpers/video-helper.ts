@@ -162,4 +162,15 @@ export class VideoHelper {
 		ToggleThumbnail.add(video, undefined, params);
 		ReplayOverlay.add(video, video.dom.getPlayerContainer(), params);
 	}
+
+	setCtpTargeting(): void {
+		const isAutoPlayEnabled = this.isAutoPlayEnabled(this.params);
+
+		const audioSuffix = !isAutoPlayEnabled ? '-audio' : '';
+		const clickToPlaySuffix = isAutoPlayEnabled ? '' : '-ctp';
+
+		this.adSlot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
+		this.adSlot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
+		this.adSlot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
+	}
 }
