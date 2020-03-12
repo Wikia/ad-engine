@@ -23,7 +23,8 @@ export function ofJwpStatelessEvent<
 }
 
 /**
- * Describes streams (event sources) and their relations
+ * Creates stateless stream of jwplayer events.
+ * Describes events and their relations.
  */
 export function createJwpStatelessStream(jwplayer: JWPlayer): JwpStatelessStream {
 	const init$: JwpStatelessStream<'init'> = of({ name: 'init', payload: undefined });

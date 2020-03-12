@@ -18,6 +18,12 @@ export function ofJwpEvent<T extends JwpEventName[], P extends JwpEvent<T[number
 	return (source: Observable<any>) => source.pipe(filter(({ name }) => names.includes(name)));
 }
 
+/**
+ * Creates stateful stream of jwplayer events.
+ * It is an amalgamation of stateless stream and state stream.
+ * Can be filtered using ofJwpEvent operator.
+ * @see ofJwpEvent
+ */
 export function createJwpStream(jwplayer: JWPlayer): JwpStream {
 	const stream$ = createJwpStatelessStream(jwplayer);
 	const state$ = createJwpStateStream(stream$, jwplayer);

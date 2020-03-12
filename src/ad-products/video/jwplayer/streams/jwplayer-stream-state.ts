@@ -20,6 +20,11 @@ interface VideoDepth {
 	correlator: number;
 }
 
+/**
+ * Creates jwplayer state stream.
+ * If there is a need for additional data in the stream, this is a place to add it.
+ * It ensures that data attached to event is reflecting the state of things at the time of that event.
+ */
 export function createJwpStateStream(
 	stream$: JwpStatelessStream,
 	jwplayer: JWPlayer,
