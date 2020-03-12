@@ -1,15 +1,38 @@
 import { AdsMode, startAdEngine, wadRunner } from '@platforms/shared';
-import { bidders, context, permutive } from '@wikia/ad-engine';
+import { bidders, context, JWPlayerManager, permutive, Runner } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { Communicator } from '@wikia/post-quecast';
 
 @Injectable()
 export class UcpAdsMode implements AdsMode {
 	handleAds(): void {
 		const inhibitors = this.callExternals();
 
+		this.setupJWPlayer(inhibitors);
 		startAdEngine(inhibitors);
 
 		this.setAdStack();
+	}
+
+	private async setupJWPlayer(inhibitors = []): Promise<any> {
+		new JWPlayerManager().manage();
+
+		const maxTimeout = context.get('options.maxDelayTimeout');
+		const runner = new Runner(inhibitors, maxTimeout, 'jwplayer-runner');
+
+		runner.waitForInhibitors().then(() => {
+			this.dispatchJWPlayerSetupAction();
+		});
+	}
+
+	private dispatchJWPlayerSetupAction(showAds = true): void {
+		const communicator = new Communicator();
+
+		communicator.dispatch({
+			showAds,
+			type: '[Ad Engine] Setup JWPlayer',
+			autoplayDisabled: false,
+		});
 	}
 
 	private callExternals(): Promise<any>[] {
