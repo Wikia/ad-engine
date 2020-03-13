@@ -54,6 +54,5 @@ export class UcpAdsMode implements AdsMode {
 		context.push('state.adStack', { id: 'incontent_player' });
 		context.push('state.adStack', { id: 'floor_adhesion' });
 		context.push('state.adStack', { id: 'invisible_high_impact_2' });
-		context.push('state.adStack', { id: 'featured' });
 	}
 }
