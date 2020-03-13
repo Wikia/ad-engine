@@ -5,15 +5,15 @@ import { Communicator } from '@wikia/post-quecast';
 @Injectable()
 export class UcpNoAdsMode implements NoAdsMode {
 	handleNoAds(): void {
-		this.dispatchJWPlayerSetupAction(false);
+		this.dispatchJWPlayerSetupAction();
 	}
 
-	private dispatchJWPlayerSetupAction(showAds = false): void {
+	private dispatchJWPlayerSetupAction(): void {
 		const communicator = new Communicator();
 
 		communicator.dispatch({
-			showAds,
 			type: '[Ad Engine] Setup JWPlayer',
+			showAds: false,
 			autoplayDisabled: false,
 		});
 	}

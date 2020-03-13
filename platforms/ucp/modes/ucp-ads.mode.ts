@@ -25,12 +25,12 @@ export class UcpAdsMode implements AdsMode {
 		});
 	}
 
-	private dispatchJWPlayerSetupAction(showAds = true): void {
+	private dispatchJWPlayerSetupAction(): void {
 		const communicator = new Communicator();
 
 		communicator.dispatch({
-			showAds,
 			type: '[Ad Engine] Setup JWPlayer',
+			showAds: true,
 			autoplayDisabled: false,
 		});
 	}
