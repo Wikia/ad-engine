@@ -39,6 +39,7 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		this.adSlot.hide();
 		this.adSlot.getElement().style.setProperty('backgroundColor', '#000');
 		this.adSlot.addClass('expanded-slot');
+		this.adSlot.getAdContainer().classList.add('iframe-container');
 		this.ensureImage();
 	}
 

@@ -1,3 +1,5 @@
+@import './uap-variables';
+
 @mixin absolute-fill() {
 	height: 100%;
 	left: 0;
@@ -15,6 +17,31 @@
 	-webkit-transition-duration: $duration;
 	-webkit-transition-timing-function: $timing;
 	-webkit-transition-delay: $delay;
+}
+
+@mixin bfaa-bfab-overlay() {
+	.replay-overlay,
+	.pause-overlay {
+		cursor: pointer;
+		height: 100%;
+		position: absolute;
+		z-index: 1;
+	}
+
+	.replay-overlay {
+		background: $uap-replay-overlay-color url($player-button-play) center/8% no-repeat;
+		display: none;
+	}
+
+	.pause-overlay {
+		top: 0;
+		width: 100%;
+	}
+}
+
+@mixin bfaa-bfab-hivi-right-position() {
+	right: 23.2%;
+	transform: translateX(50%);
 }
 
 @mixin uap-dark-theme() {

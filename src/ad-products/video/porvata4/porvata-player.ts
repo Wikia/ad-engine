@@ -107,6 +107,18 @@ export class PorvataPlayer {
 		}
 	}
 
+	/**
+	 * @deprecated this method is not implemented
+	 *
+	 * intentionally empty for now - needed only to create a stream with RxJS `fromEvent`
+	 */
+	removeEventListener(
+		eventName: VideoEvent,
+		callback: (event: google.ima.AdEvent | google.ima.AdErrorEvent) => void,
+	): void {
+		// TODO: Implement removeEventListener
+	}
+
 	dispatchEvent(eventName: string): void {
 		if (this.eventListeners[eventName] && this.eventListeners[eventName].length > 0) {
 			this.eventListeners[eventName].forEach((callback) => {
@@ -161,12 +173,12 @@ export class PorvataPlayer {
 	resize(width?: number, height?: number): void {
 		const viewMode: typeof google.ima.ViewMode = window.google.ima.ViewMode;
 
-		if (!!this.adsManager) {
-			if (isFinite(width) && isFinite(height)) {
-				this.settings.setHeight(height);
-				this.settings.setWidth(width);
-			}
+		if (isFinite(width) && isFinite(height)) {
+			this.settings.setHeight(height);
+			this.settings.setWidth(width);
+		}
 
+		if (!!this.adsManager) {
 			if (this.isFullscreen()) {
 				this.adsManager.resize(window.innerWidth, window.innerHeight, viewMode.FULLSCREEN);
 			} else {

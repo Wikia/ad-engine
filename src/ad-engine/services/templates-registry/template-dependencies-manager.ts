@@ -15,10 +15,12 @@ export class TemplateDependenciesManager {
 		templateName: string,
 		templateSlot: AdSlot,
 		templateParams: Dictionary,
+		templateContext: Dictionary,
 	): void {
 		this.container.bind(TEMPLATE.NAME).value(templateName);
 		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
 		this.container.bind(TEMPLATE.PARAMS).value(templateParams);
+		this.container.bind(TEMPLATE.CONTEXT).value(templateContext);
 	}
 
 	resetDependencies(): void {
@@ -30,6 +32,9 @@ export class TemplateDependenciesManager {
 		});
 		this.container.bind(TEMPLATE.NAME).provider(() => {
 			throw new Error(this.constructErrorMessage(TEMPLATE.NAME.toString()));
+		});
+		this.container.bind(TEMPLATE.CONTEXT).provider(() => {
+			throw new Error(this.constructErrorMessage(TEMPLATE.CONTEXT.toString()));
 		});
 	}
 

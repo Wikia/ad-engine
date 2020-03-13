@@ -42,7 +42,6 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		this.helper.setImpactImage();
 		this.domListener.resize$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				startWith({}),
 				tap(() => {
 					this.helper.setImpactAdHeight();
@@ -50,12 +49,12 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 					this.helper.setNavbarFixedPosition();
 					this.helper.setBodyPadding();
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 
 		this.domListener.scroll$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				tap(() => {
 					this.helper.setImpactAdHeight();
 					this.helper.setAdFixedPosition();
@@ -72,6 +71,7 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 						transition('resolved').then(correction);
 					}
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

@@ -31,11 +31,11 @@ export class BfabResolvedHandler implements TemplateStateHandler {
 		this.helper.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				startWith({}),
 				tap(() => {
 					this.helper.setResolvedAdHeight();
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

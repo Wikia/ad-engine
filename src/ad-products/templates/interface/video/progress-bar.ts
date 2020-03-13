@@ -8,7 +8,10 @@ interface ProgressBarElement extends HTMLDivElement {
 	start?: () => void;
 }
 
-function add(video: PorvataPlayer, container: HTMLElement): void {
+function add(
+	video: Pick<PorvataPlayer, 'getRemainingTime' | 'addEventListener'>,
+	container: HTMLElement,
+): void {
 	const progressBar: ProgressBarElement = document.createElement('div');
 	const currentTime: HTMLDivElement = document.createElement('div');
 

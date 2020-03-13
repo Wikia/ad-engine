@@ -205,6 +205,16 @@ export class AdSlot extends EventEmitter {
 		return this.element;
 	}
 
+	getAdContainer(): HTMLDivElement | null {
+		const element = this.getElement();
+
+		if (!element) {
+			return null;
+		}
+
+		return element.querySelector<HTMLDivElement>('div[id*="_container_"]');
+	}
+
 	getIframe(): HTMLIFrameElement | null {
 		const element = this.getElement();
 

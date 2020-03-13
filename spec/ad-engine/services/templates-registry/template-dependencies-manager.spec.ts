@@ -9,6 +9,7 @@ describe('Template Dependencies Manager', () => {
 	const templateName = 'foo';
 	const templateSlot: AdSlot = { foo: 'bar' } as any;
 	const templateParams = { params: 'params' };
+	const templateContext = {};
 
 	beforeEach(() => {
 		container = new Container();
@@ -19,14 +20,16 @@ describe('Template Dependencies Manager', () => {
 		expect(() => container.get(TEMPLATE.NAME)).to.throw(TypeError);
 		expect(() => container.get(TEMPLATE.SLOT)).to.throw(TypeError);
 		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(TypeError);
+		expect(() => container.get(TEMPLATE.CONTEXT)).to.throw(TypeError);
 	});
 
 	it('should provide dependencies', () => {
-		instance.provideDependencies(templateName, templateSlot, templateParams);
+		instance.provideDependencies(templateName, templateSlot, templateParams, templateContext);
 
 		expect(container.get(TEMPLATE.NAME)).to.equal(templateName);
 		expect(container.get(TEMPLATE.SLOT)).to.equal(templateSlot);
 		expect(container.get(TEMPLATE.PARAMS)).to.equal(templateParams);
+		expect(container.get(TEMPLATE.CONTEXT)).to.equal(templateContext);
 	});
 
 	it('should throw after reset', () => {
@@ -40,6 +43,9 @@ describe('Template Dependencies Manager', () => {
 		);
 		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
 			`${TEMPLATE.PARAMS.toString()} can only be injected in template handler constructor`,
+		);
+		expect(() => container.get(TEMPLATE.CONTEXT)).to.throw(
+			`${TEMPLATE.CONTEXT.toString()} can only be injected in template handler constructor`,
 		);
 	});
 });
