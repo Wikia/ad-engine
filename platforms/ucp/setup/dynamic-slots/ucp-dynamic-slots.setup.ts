@@ -4,17 +4,18 @@ import {
 	btRec,
 	context,
 	Dictionary,
+	fillerService,
 	FmrRotator,
 	JWPlayerManager,
+	PorvataFiller,
 	SlotConfig,
+	slotInjector,
 	slotService,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Communicator, ofType } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
-
-const logGroup = 'dynamic-slots';
+import { slotsContext } from '../../../shared/slots/slots-context';
 
 @Injectable()
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
@@ -27,19 +28,21 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	private injectSlots(): void {
 		const slots: Dictionary<SlotConfig> = context.get('slots');
 		Object.keys(slots).forEach((slotName) => {
-			if (slots[slotName].nextSiblingSelector) {
-				this.insertSlot(
-					slotName,
-					document.querySelector(slots[slotName].nextSiblingSelector),
-					true,
-				);
+			if (slots[slotName].insertBeforeSelector) {
+				slotInjector.inject(slotName, true);
 			}
 		});
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
+		this.appendIncontentPlayer();
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
+		const icbSlotName = 'incontent_boxad_1';
 		const communicator = new Communicator();
+
+		if (context.get('custom.hasFeaturedVideo')) {
+			context.set(`slots.${icbSlotName}.defaultSizes`, [300, 250]);
+		}
 
 		communicator.actions$
 			.pipe(
@@ -48,11 +51,21 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 			)
 			.subscribe(() => {
 				this.appendRotatingSlot(
-					'incontent_boxad_1',
+					icbSlotName,
 					slotConfig.repeat.slotNamePattern,
 					document.querySelector(slotConfig.parentContainerSelector),
 				);
 			});
+	}
+
+	private appendIncontentPlayer(): void {
+		const icpSlotName = 'incontent_player';
+
+		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
+		context.set(`slots.${icpSlotName}.customFillerOptions`, {
+			enableInContentFloating: true,
+		});
+		fillerService.register(new PorvataFiller());
 	}
 
 	private appendRotatingSlot(
@@ -69,38 +82,14 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 		rotator.rotateSlot();
 	}
 
-	private insertSlot(
-		slotName: string,
-		nextSibling: HTMLElement | null,
-		disablePushOnScroll: boolean,
-	): HTMLElement | null {
-		if (nextSibling === null) {
-			utils.logger(
-				logGroup,
-				`Could not insert slot ${slotName} because it's sibling does not exist.`,
-			);
-			return null;
-		}
-
-		const container = document.createElement('div');
-
-		container.id = slotName;
-
-		nextSibling.parentNode.insertBefore(container, nextSibling);
-
-		if (!disablePushOnScroll) {
-			context.push('events.pushOnScroll.ids', slotName);
-		}
-
-		return container;
-	}
-
 	private setupJWPlayerAds(): void {
 		new JWPlayerManager().manage();
 	}
 
 	private configureTopLeaderboard(): void {
-		if (context.get('options.hiviLeaderboard')) {
+		const hiviLBEnabled = context.get('options.hiviLeaderboard');
+
+		if (hiviLBEnabled) {
 			context.set('slots.top_leaderboard.firstCall', false);
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
@@ -114,6 +103,10 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 					slotService.setState('top_leaderboard', false);
 				}
 			});
+		}
+
+		if (!context.get('custom.hasFeaturedVideo')) {
+			slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
 		}
 	}
 }

@@ -70,7 +70,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	getVideoStatus(): VideoStatus {
+	private getVideoStatus(): VideoStatus {
 		if (context.get('wiki.targeting.hasFeaturedVideo')) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
 			const isDedicatedForArticle =
@@ -89,16 +89,21 @@ export class UcpTargetingSetup implements TargetingSetup {
 
 	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
 		let layout = targeting.pageType || 'article';
+		const videoStatus = this.getVideoStatus();
+
+		context.set('custom.hasFeaturedVideo', !!videoStatus.hasVideoOnPage);
+		context.set(
+			'custom.hasIncontentPlayer',
+			!context.get('custom.hasFeaturedVideo') &&
+				document.querySelector(context.get('slots.incontent_player.insertBeforeSelector')) !== null,
+		);
 
 		if (layout === 'article') {
-			const videoStatus = this.getVideoStatus();
-			if (!!videoStatus.hasVideoOnPage) {
+			if (context.get('custom.hasFeaturedVideo')) {
 				const videoPrefix = videoStatus.isDedicatedForArticle ? 'fv' : 'wv';
 
 				layout = `${videoPrefix}-${layout}`;
-			}
-
-			if (context.get('custom.hasIncontentPlayer')) {
+			} else if (context.get('custom.hasIncontentPlayer')) {
 				layout = `${layout}-ic`;
 			}
 		}

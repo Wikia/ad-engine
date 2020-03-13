@@ -4,6 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
+import { registerPorvataTemplate } from './porvata-template';
 
 @Injectable()
 export class UcpTemplatesSetup implements TemplatesSetup {
@@ -16,5 +17,7 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 		const bfab$ = registerBfabTemplate(this.registry);
 
 		logTemplates(merge(bfaa$, bfab$));
+
+		registerPorvataTemplate();
 	}
 }
