@@ -40,6 +40,6 @@ export class UcpPrebidConfigSetup implements PrebidConfigSetup {
 		context.set('bidders.prebid.telaria', getTelariaContext());
 		context.set('bidders.prebid.triplelift', getTripleliftContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
-		context.set('bidders.prebid.wikia_video', getWikiaVideoContext());
+		context.set('bidders.prebid.wikiaVideo', getWikiaVideoContext());
 	}
 }
