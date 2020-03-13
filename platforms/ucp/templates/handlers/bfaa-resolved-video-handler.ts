@@ -10,22 +10,22 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { BfaaVideoHelper } from '../helpers/bfaa-video-helper';
-import { BfaaContext } from './bfaa-context';
+import { VideoHelper } from '../helpers/video-helper';
+import { UapContext } from './uap-context';
 
 @Injectable()
 export class BfaaResolvedVideoHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
-	private helper: BfaaVideoHelper;
+	private helper: VideoHelper;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.CONTEXT) private context: BfaaContext,
+		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
 		private domListener: RxjsDomListener,
 	) {
-		this.helper = new BfaaVideoHelper(this.manipulator, this.params, this.adSlot);
+		this.helper = new VideoHelper(this.manipulator, this.params, this.adSlot);
 	}
 
 	async onEnter(): Promise<void> {
@@ -35,18 +35,12 @@ export class BfaaResolvedVideoHandler implements TemplateStateHandler {
 			video$ = from(this.context.video);
 			video$
 				.pipe(
+					tap((video) => this.helper.setVideoResolvedSize(video)),
 					switchMap((video) => {
 						return this.domListener.resize$.pipe(
 							tap(() => this.helper.setVideoResolvedSize(video)),
 						);
 					}),
-					takeUntil(this.unsubscribe$),
-				)
-				.subscribe();
-
-			video$
-				.pipe(
-					tap((video) => this.helper.setVideoResolvedSize(video)),
 					takeUntil(this.unsubscribe$),
 				)
 				.subscribe();

@@ -12,13 +12,11 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { fromEvent } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
 import { VideoHelper } from '../helpers/video-helper';
 import { UapContext } from './uap-context';
 
 @Injectable()
-export class BfaaVideoHandler implements TemplateStateHandler {
+export class BfabVideoHandler implements TemplateStateHandler {
 	private helper: VideoHelper;
 	private manipulator: DomManipulator = new DomManipulator();
 
@@ -46,23 +44,7 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 			this.helper.handleRestart(video, transition);
 			this.helper.handleEvents(video);
 			this.helper.adjustUI(video, playerParams.container, playerParams);
-			this.handleCtpStart(video, playerParams, transition);
 		});
-	}
-
-	private handleCtpStart(
-		video: Porvata4Player,
-		params: PorvataTemplateParams,
-		transition: TemplateTransition,
-	): void {
-		if (!params.autoPlay) {
-			fromEvent(video, 'wikiaAdStarted')
-				.pipe(
-					take(1),
-					tap(() => transition('impact', { allowMulticast: true })),
-				)
-				.subscribe();
-		}
 	}
 
 	async onLeave(): Promise<void> {}
