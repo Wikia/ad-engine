@@ -8,11 +8,7 @@ const NAMESPACE = 'fandom';
 const logGroup = 'permutive';
 
 class Permutive {
-	setup: () => void;
-
-	constructor() {
-		this.setFirstSetup();
-	}
+	isSetUp: boolean = false;
 
 	call(): void {
 		if (!this.isEnabled()) {
@@ -23,18 +19,14 @@ class Permutive {
 		this.setAddon();
 	}
 
-	private setFirstSetup(): void {
-		this.setup = () => {
+	private setup(): void {
+		if (!this.isSetUp) {
 			utils.logger(logGroup, 'loading');
 			this.configure();
 			this.loadScript();
 			this.setTargeting();
-			this.setNextSetup();
+			this.isSetUp = true;
 		}
-	}
-
-	private setNextSetup(): void {
-		this.setup = () => { };
 	}
 
 	private isEnabled(): boolean {
