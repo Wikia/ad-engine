@@ -61,43 +61,10 @@
 
 		@include advertisement-label();
 		@include button-close();
-	}
 
-	#top_leaderboard,
-	#hivi_leaderboard,
-	#bottom_leaderboard {
-		.video-overlay {
-			position: absolute;
+		&.is-dark {
+			@include uap-dark-theme();
 		}
-
-		.video-display-wrapper {
-			height: 100%;
-			position: relative;
-			width: 100%;
-		}
-
-		.video-player {
-			right: 0;
-		}
-
-		.video-overlay,
-		.replay-overlay {
-			@include bfaa-bfab-hivi-right-position;
-		}
-
-		.porvata-interface {
-			@include bottom-panel();
-			@include fullscreen-button();
-			@include porvata-icons($hivi-uap-button-size, $hivi-uap-light-button-color);
-			@include progress-bar(
-				$hivi-uap-progress-bar-height,
-				$hivi-uap-progress-bar-color,
-				$hivi-uap-progress-bar-current-time-color
-			);
-		}
-
-		@include advertisement-label();
-		@include button-close();
 	}
 }
 
@@ -115,10 +82,6 @@
 		& .hide {
 			display: none !important;
 		}
-	}
-
-	&.is-dark {
-		@include uap-dark-theme();
 	}
 }
 
