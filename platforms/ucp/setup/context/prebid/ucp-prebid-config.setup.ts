@@ -4,7 +4,6 @@ import { Injectable } from '@wikia/dependency-injection';
 import { getAOLContext } from '../../../bidders/prebid/aol';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
-import { getAudienceNetworkContext } from '../../../bidders/prebid/audience-network';
 import { getBeachfrontContext } from '../../../bidders/prebid/beachfront';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
@@ -26,7 +25,6 @@ export class UcpPrebidConfigSetup implements PrebidConfigSetup {
 		context.set('bidders.prebid.aol', getAOLContext());
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
-		context.set('bidders.prebid.audienceNetwork', getAudienceNetworkContext());
 		context.set('bidders.prebid.beachfront', getBeachfrontContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.kargo', getKargoContext());
