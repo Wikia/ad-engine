@@ -6,11 +6,10 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
-	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { from, fromEvent, Observable, Subject } from 'rxjs';
-import { filter, skipUntil, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { from, Observable, Subject } from 'rxjs';
+import { startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { VideoHelper } from '../helpers/video-helper';
 import { UapContext } from './uap-context';
 
@@ -42,20 +41,6 @@ export class BfaaStickyVideoHandler implements TemplateStateHandler {
 							tap(() => this.helper.setVideoResolvedSize(video)),
 						);
 					}),
-					takeUntil(this.unsubscribe$),
-				)
-				.subscribe();
-
-			video$
-				.pipe(
-					skipUntil(
-						fromEvent(this.adSlot, AdSlot.CUSTOM_EVENT).pipe(
-							filter((event: { status: string }) => {
-								return event.status === universalAdPackage.SLOT_FORCE_UNSTICK;
-							}),
-						),
-					),
-					tap((video: Porvata4Player) => video.stop()),
 					takeUntil(this.unsubscribe$),
 				)
 				.subscribe();
