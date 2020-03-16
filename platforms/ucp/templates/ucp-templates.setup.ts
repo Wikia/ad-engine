@@ -1,10 +1,10 @@
 import { TemplatesSetup } from '@platforms/shared';
-import { logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import { logTemplates, PorvataTemplate, TemplateRegistry, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
-import { registerPorvataTemplate } from './porvata-template';
+import { getOutstreamConfig } from './configs/outstream-config';
 
 @Injectable()
 export class UcpTemplatesSetup implements TemplatesSetup {
@@ -18,6 +18,6 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 
 		logTemplates(merge(bfaa$, bfab$));
 
-		registerPorvataTemplate();
+		templateService.register(PorvataTemplate, getOutstreamConfig());
 	}
 }

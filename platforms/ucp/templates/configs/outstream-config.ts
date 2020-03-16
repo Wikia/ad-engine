@@ -1,7 +1,7 @@
 import { slotsContext } from '@platforms/shared';
-import { NavbarManager, PorvataTemplate, templateService } from '@wikia/ad-engine';
+import { NavbarManager, PorvataTemplateConfig } from '@wikia/ad-engine';
 
-const getPorvataConfig = () => {
+export const getOutstreamConfig = (): PorvataTemplateConfig => {
 	const navbarManager = new NavbarManager(document.getElementById('globalNavigation'));
 
 	return {
@@ -13,7 +13,3 @@ const getPorvataConfig = () => {
 		},
 	};
 };
-
-export function registerPorvataTemplate(): void {
-	templateService.register(PorvataTemplate, getPorvataConfig());
-}

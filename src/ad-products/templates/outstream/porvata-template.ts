@@ -13,9 +13,9 @@ export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
 
 export interface PorvataTemplateConfig {
-	isFloatingEnabled: boolean;
-	inViewportOffsetTop: number;
-	inViewportOffsetBottom: number;
+	isFloatingEnabled?: boolean;
+	inViewportOffsetTop?: number;
+	inViewportOffsetBottom?: number;
 	onInit: (adSlot: AdSlot, params: PorvataTemplateParams, config: PorvataTemplateConfig) => void;
 }
 

@@ -90,24 +90,28 @@ export class UcpTargetingSetup implements TargetingSetup {
 	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
 		let layout = targeting.pageType || 'article';
 		const videoStatus = this.getVideoStatus();
-
-		context.set('custom.hasFeaturedVideo', !!videoStatus.hasVideoOnPage);
-		context.set(
-			'custom.hasIncontentPlayer',
-			!context.get('custom.hasFeaturedVideo') &&
-				document.querySelector(context.get('slots.incontent_player.insertBeforeSelector')) !== null,
-		);
+		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
+		const hasIncontentPlayer =
+			!hasFeaturedVideo &&
+			document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
 
 		if (layout === 'article') {
-			if (context.get('custom.hasFeaturedVideo')) {
+			if (hasFeaturedVideo) {
 				const videoPrefix = videoStatus.isDedicatedForArticle ? 'fv' : 'wv';
 
 				layout = `${videoPrefix}-${layout}`;
-			} else if (context.get('custom.hasIncontentPlayer')) {
+			} else if (hasIncontentPlayer) {
 				layout = `${layout}-ic`;
 			}
 		}
 
+		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
+
 		return layout;
+	}
+
+	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
+		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
+		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 }

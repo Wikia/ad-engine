@@ -8,6 +8,7 @@ import {
 	FmrRotator,
 	JWPlayerManager,
 	PorvataFiller,
+	PorvataGamParams,
 	SlotConfig,
 	slotInjector,
 	slotService,
@@ -23,6 +24,7 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 		this.injectSlots();
 		this.setupJWPlayerAds();
 		this.configureTopLeaderboard();
+		this.configureIncontentPlayerFiller();
 	}
 
 	private injectSlots(): void {
@@ -33,7 +35,6 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 			}
 		});
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
-		this.appendIncontentPlayer();
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
@@ -58,13 +59,15 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 			});
 	}
 
-	private appendIncontentPlayer(): void {
+	private configureIncontentPlayerFiller(): void {
 		const icpSlotName = 'incontent_player';
+		const fillerOptions: Partial<PorvataGamParams> = {
+			enableInContentFloating: true,
+		};
 
 		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, {
-			enableInContentFloating: true,
-		});
+		context.set(`slots.${icpSlotName}.customFillerOptions`, fillerOptions);
+
 		fillerService.register(new PorvataFiller());
 	}
 
