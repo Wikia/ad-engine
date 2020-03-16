@@ -16,7 +16,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { fromEvent } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { filter, skip } from 'rxjs/operators';
 
 export class VideoHelper {
 	constructor(
@@ -144,6 +144,14 @@ export class VideoHelper {
 				video.reload();
 			});
 		});
+
+		fromEvent(this.adSlot, AdSlot.CUSTOM_EVENT)
+			.pipe(
+				filter(
+					(event: { status: string }) => event.status === universalAdPackage.SLOT_FORCE_UNSTICK,
+				),
+			)
+			.subscribe(() => video.stop());
 	}
 
 	adjustUI(
