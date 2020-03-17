@@ -2,18 +2,15 @@ import {
 	AdSlot,
 	DomListener,
 	DomManipulator,
-	FOOTER,
 	NAVBAR,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	UapParams,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
+import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { BfaaHelper } from '../../helpers/bfaa-helper';
-import { ScrollCorrector } from '../../helpers/scroll-corrector';
 
 @Injectable()
 export class BfaaImpactHandler implements TemplateStateHandler {
@@ -24,15 +21,13 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(FOOTER) private footer: HTMLElement,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 		private domListener: DomListener,
-		private scrollCorrector: ScrollCorrector,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
 	}
 
-	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		this.adSlot.show();
 		this.helper.setImpactImage();
 		this.domListener.resize$
@@ -56,12 +51,6 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
 				}),
-				filter(() => this.reachedResolvedSize()),
-				tap(() => {
-					const correction = this.scrollCorrector.usePositionCorrection(this.footer);
-
-					transition('sticky').then(correction);
-				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
@@ -71,10 +60,6 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		this.manipulator
 			.element(document.body)
 			.setProperty('paddingTop', `${this.helper.getImpactAdHeight() + this.navbar.offsetHeight}px`);
-	}
-
-	private reachedResolvedSize(): boolean {
-		return this.helper.getDynamicImpactAdHeight() <= this.helper.getResolvedAdHeight();
 	}
 
 	async onLeave(): Promise<void> {

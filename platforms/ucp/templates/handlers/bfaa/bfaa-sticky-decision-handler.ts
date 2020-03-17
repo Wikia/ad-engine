@@ -13,7 +13,7 @@ import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { TimeoutManager } from '../../helpers/timeout-manager';
 
 @Injectable()
-export class BfaaStickyDurationHandler implements TemplateStateHandler {
+export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(

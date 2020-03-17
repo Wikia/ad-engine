@@ -5,7 +5,6 @@ import {
 	NAVBAR,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	UapParams,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -28,7 +27,7 @@ export class BfabImpactHandler implements TemplateStateHandler {
 		this.helper = new BfabHelper(this.manipulator, this.params, this.adSlot);
 	}
 
-	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		this.adSlot.show();
 		this.helper.setImpactImage();
 		this.domListener.resize$

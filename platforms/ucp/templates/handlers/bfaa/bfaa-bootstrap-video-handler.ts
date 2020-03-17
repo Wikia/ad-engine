@@ -19,7 +19,7 @@ import { VideoHelper } from '../../helpers/video-helper';
 import { UapContext } from '../uap-context';
 
 @Injectable()
-export class BfaaVideoHandler implements TemplateStateHandler {
+export class BfaaBootstrapVideoHandler implements TemplateStateHandler {
 	private helper: VideoHelper;
 	private manipulator: DomManipulator = new DomManipulator();
 

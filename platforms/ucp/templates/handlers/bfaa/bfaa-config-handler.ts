@@ -3,7 +3,6 @@ import {
 	context,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
@@ -18,7 +17,7 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		private timeoutManager: TimeoutManager,
 	) {}
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = [
 			'top_boxad',
 			'hivi_leaderboard',
