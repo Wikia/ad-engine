@@ -44,10 +44,10 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 				tap(([, viewedAndDelayed]) => {
 					const correction = this.scrollCorrector.usePositionCorrection(this.footer);
 
-					if (!viewedAndDelayed) {
-						transition('sticky').then(correction);
-					} else {
+					if (viewedAndDelayed) {
 						transition('transition').then(correction);
+					} else {
+						transition('sticky').then(correction);
 					}
 				}),
 				takeUntil(this.unsubscribe$),
