@@ -3,7 +3,7 @@ import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isUndefined } from 'util';
 
-export class BfaaDelayHelper {
+export class StickinessDelayer {
 	constructor(private params: UapParams, private adSlot: AdSlot) {}
 
 	isViewedAndDelayed(): Observable<boolean> {

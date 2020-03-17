@@ -11,12 +11,12 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { BfaaDelayHelper } from '../../helpers/bfaa-delay-helper';
+import { StickinessDelayer } from '../../helpers/stickiness-delayer';
 
 @Injectable()
 export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private delayer: BfaaDelayHelper;
+	private delayer: StickinessDelayer;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -24,7 +24,7 @@ export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
 	) {
-		this.delayer = new BfaaDelayHelper(this.params, this.adSlot);
+		this.delayer = new StickinessDelayer(this.params, this.adSlot);
 	}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
