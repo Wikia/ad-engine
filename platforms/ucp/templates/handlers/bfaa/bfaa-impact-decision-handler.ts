@@ -11,7 +11,8 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
+import { filter, shareReplay, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { BfaaDelayHelper } from '../../helpers/bfaa-delay-helper';
 import { BfaaHelper } from '../../helpers/bfaa-helper';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 
@@ -20,6 +21,7 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private helper: BfaaHelper;
+	private delayer: BfaaDelayHelper;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -30,17 +32,30 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 		private scrollCorrector: ScrollCorrector,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
+		this.delayer = new BfaaDelayHelper(this.params, this.adSlot);
 	}
 
-	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
+		const isViewedAndDelayed$ = this.delayer.isViewedAndDelayed().pipe(
+			takeUntil(this.unsubscribe$),
+			startWith(true),
+			shareReplay(1),
+		);
+		isViewedAndDelayed$.subscribe();
+
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
 				filter(() => this.reachedResolvedSize()),
-				tap(() => {
+				withLatestFrom(isViewedAndDelayed$),
+				tap(([_, shouldStick]) => {
 					const correction = this.scrollCorrector.usePositionCorrection(this.footer);
 
-					transition('sticky').then(correction);
+					if (shouldStick) {
+						transition('sticky').then(correction);
+					} else {
+						transition('transition').then(correction);
+					}
 				}),
 				takeUntil(this.unsubscribe$),
 			)

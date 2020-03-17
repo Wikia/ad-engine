@@ -5,33 +5,33 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { TimeoutManager } from '../../helpers/timeout-manager';
+import { BfaaDelayHelper } from '../../helpers/bfaa-delay-helper';
 
 @Injectable()
 export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
+	private delayer: BfaaDelayHelper;
 
 	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
-		private timeoutManager: TimeoutManager,
-	) {}
+	) {
+		this.delayer = new BfaaDelayHelper(this.params, this.adSlot);
+	}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
-		if (this.timeoutManager.resolved) {
-			transition('transition');
-			return;
-		}
-
 		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKED_STATE);
 
-		this.timeoutManager.resolved$
+		this.delayer
+			.isViewedAndDelayed()
 			.pipe(
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
 				tap(() => {
