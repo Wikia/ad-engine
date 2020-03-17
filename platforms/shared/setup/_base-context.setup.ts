@@ -84,6 +84,7 @@ export class BaseContextSetup {
 			'services.permutive.enabled',
 			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
 		);
+		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 	}
 
 	private setMiscContext(): void {
