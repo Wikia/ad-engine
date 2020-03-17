@@ -4,6 +4,7 @@ import {
 	FOOTER,
 	NAVBAR,
 	RxjsDomListener,
+	ScrollCorrector,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -11,7 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, shareReplay, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 import { BfaaHelper } from '../helpers/bfaa-helper';
 
 @Injectable()
@@ -26,28 +27,22 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		@Inject(FOOTER) private footer: HTMLElement,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 		private domListener: RxjsDomListener,
+		private scrollCorrector: ScrollCorrector,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
 	}
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
-		const isViewedAndDelayed$ = this.helper.isViewedAndDelayed().pipe(
-			takeUntil(this.unsubscribe$),
-			startWith(true),
-			shareReplay(1),
-		);
-		isViewedAndDelayed$.subscribe();
-
+	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
 		this.adSlot.show();
 		this.helper.setImpactImage();
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.helper.setImpactAdHeight();
+					this.helper.setDynamicImpactAdHeight();
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
-					this.setBodyPadding();
+					this.setImpactBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
@@ -57,37 +52,29 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.helper.setImpactAdHeight();
+					this.helper.setDynamicImpactAdHeight();
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
 				}),
 				filter(() => this.reachedResolvedSize()),
-				withLatestFrom(isViewedAndDelayed$),
-				tap(([_, shouldStick]) => {
-					const correction = this.helper.usePositionCorrection(this.footer);
+				tap(() => {
+					const correction = this.scrollCorrector.usePositionCorrection(this.footer);
 
-					if (shouldStick) {
-						transition('sticky').then(correction);
-					} else {
-						transition('transition').then(correction);
-					}
+					transition('sticky').then(correction);
 				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}
 
-	private setBodyPadding(): void {
+	private setImpactBodyPadding(): void {
 		this.manipulator
 			.element(document.body)
-			.setProperty(
-				'paddingTop',
-				`${this.helper.getImpactMaxAdHeight() + this.navbar.offsetHeight}px`,
-			);
+			.setProperty('paddingTop', `${this.helper.getImpactAdHeight() + this.navbar.offsetHeight}px`);
 	}
 
 	private reachedResolvedSize(): boolean {
-		return this.helper.getImpactAdHeight() <= this.helper.getResolvedAdHeight();
+		return this.helper.getDynamicImpactAdHeight() <= this.helper.getResolvedAdHeight();
 	}
 
 	async onLeave(): Promise<void> {

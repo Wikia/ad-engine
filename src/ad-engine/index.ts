@@ -13,4 +13,5 @@ export * from './services';
 export * from './tracking';
 export * from './video';
 export * from './utils/manipulators/dom-manipulator';
+export * from './utils/scroll-corrector';
 export { utils };

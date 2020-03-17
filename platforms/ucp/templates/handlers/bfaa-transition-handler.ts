@@ -3,6 +3,7 @@ import {
 	DomManipulator,
 	NAVBAR,
 	RxjsDomListener,
+	ScrollCorrector,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -26,6 +27,7 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 		private domListener: RxjsDomListener,
+		private scrollCorrector: ScrollCorrector,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, this.navbar);
 	}
@@ -40,7 +42,7 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 					this.helper.setResolvedAdHeight();
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
-					this.helper.setBodyPadding();
+					this.helper.setResolvedBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
@@ -49,7 +51,7 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		this.animate()
 			.pipe(
 				tap(() => {
-					const correction = this.helper.useScrollCorrection();
+					const correction = this.scrollCorrector.useScrollCorrection();
 
 					transition('resolved').then(correction);
 				}),
