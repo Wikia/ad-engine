@@ -130,8 +130,6 @@ export class VideoHelper {
 		const restarted$ = fromEvent(video, 'wikiaAdStarted').pipe(skip(1));
 
 		restarted$.subscribe(() => {
-			// TODO: timeout manager
-			// this.timeoutManager.start(universalAdPackage.BFAA_UNSTICK_DELAY);
 			transition('impact', { allowMulticast: true });
 			video.unmute();
 		});

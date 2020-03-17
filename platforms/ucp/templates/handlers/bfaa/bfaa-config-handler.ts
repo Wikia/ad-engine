@@ -7,14 +7,12 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { TimeoutManager } from '../../helpers/timeout-manager';
 
 @Injectable()
 export class BfaaConfigHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		private timeoutManager: TimeoutManager,
 	) {}
 
 	async onEnter(): Promise<void> {
@@ -42,7 +40,6 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.getAdContainer().classList.add('iframe-container');
 		this.ensureImage();
-		this.timeoutManager.start(universalAdPackage.BFAA_UNSTICK_DELAY);
 	}
 
 	private ensureImage(): void {
