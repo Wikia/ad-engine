@@ -1,7 +1,7 @@
 import {
 	AdSlot,
+	DomListener,
 	NAVBAR,
-	RxjsDomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -19,7 +19,7 @@ export class BfaaStickyDurationHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) navbar: HTMLElement,
-		private domListener: RxjsDomListener,
+		private domListener: DomListener,
 		private timeoutManager: TimeoutManager,
 	) {}
 

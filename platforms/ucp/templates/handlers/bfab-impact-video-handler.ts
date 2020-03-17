@@ -1,8 +1,8 @@
 import {
 	AdSlot,
+	DomListener,
 	DomManipulator,
 	Porvata4Player,
-	RxjsDomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -24,7 +24,7 @@ export class BfabImpactVideoHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
-		private domListener: RxjsDomListener,
+		private domListener: DomListener,
 	) {
 		this.helper = new VideoHelper(this.manipulator, this.params, this.adSlot);
 	}
