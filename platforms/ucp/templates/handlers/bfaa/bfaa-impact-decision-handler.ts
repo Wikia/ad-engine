@@ -11,7 +11,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, shareReplay, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BfaaDelayHelper } from '../../helpers/bfaa-delay-helper';
 import { BfaaHelper } from '../../helpers/bfaa-helper';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
@@ -36,22 +36,15 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
-		const isViewedAndDelayed$ = this.delayer.isViewedAndDelayed().pipe(
-			takeUntil(this.unsubscribe$),
-			startWith(true),
-			shareReplay(1),
-		);
-		isViewedAndDelayed$.subscribe();
-
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
+				withLatestFrom(this.delayer.isViewedAndDelayed()),
 				filter(() => this.reachedResolvedSize()),
-				withLatestFrom(isViewedAndDelayed$),
-				tap(([_, shouldStick]) => {
+				tap(([, viewedAndDelayed]) => {
 					const correction = this.scrollCorrector.usePositionCorrection(this.footer);
 
-					if (shouldStick) {
+					if (!viewedAndDelayed) {
 						transition('sticky').then(correction);
 					} else {
 						transition('transition').then(correction);
