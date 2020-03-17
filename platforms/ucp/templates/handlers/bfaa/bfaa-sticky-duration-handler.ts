@@ -10,7 +10,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { TimeoutManager } from '../helpers/timeout-manager';
+import { TimeoutManager } from '../../helpers/timeout-manager';
 
 @Injectable()
 export class BfaaStickyDurationHandler implements TemplateStateHandler {

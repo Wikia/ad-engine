@@ -8,7 +8,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { TimeoutManager } from '../helpers/timeout-manager';
+import { TimeoutManager } from '../../helpers/timeout-manager';
 
 @Injectable()
 export class BfaaConfigHandler implements TemplateStateHandler {
