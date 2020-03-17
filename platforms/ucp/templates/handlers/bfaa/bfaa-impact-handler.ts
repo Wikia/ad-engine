@@ -12,8 +12,8 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfaaHelper } from '../helpers/bfaa-helper';
-import { ScrollCorrector } from '../helpers/scroll-corrector';
+import { BfaaHelper } from '../../helpers/bfaa-helper';
+import { ScrollCorrector } from '../../helpers/scroll-corrector';
 
 @Injectable()
 export class BfaaImpactHandler implements TemplateStateHandler {

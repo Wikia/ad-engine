@@ -11,7 +11,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfabHelper } from '../helpers/bfab-helper';
+import { BfabHelper } from '../../helpers/bfab-helper';
 
 @Injectable()
 export class BfabImpactHandler implements TemplateStateHandler {

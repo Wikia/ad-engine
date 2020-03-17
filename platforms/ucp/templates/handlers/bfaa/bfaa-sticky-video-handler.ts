@@ -10,8 +10,8 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { VideoHelper } from '../helpers/video-helper';
-import { UapContext } from './uap-context';
+import { VideoHelper } from '../../helpers/video-helper';
+import { UapContext } from '../uap-context';
 
 @Injectable()
 export class BfaaStickyVideoHandler implements TemplateStateHandler {
