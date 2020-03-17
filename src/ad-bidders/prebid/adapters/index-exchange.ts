@@ -36,10 +36,17 @@ export class IndexExchange extends PrebidAdapter {
 						siteId,
 						size: [640, 480],
 						video: {
-							mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+							mimes: [
+								'video/mp4',
+								'video/x-flv',
+								'video/webm',
+								'video/ogg',
+								'application/javascript',
+							],
 							minduration: 1,
 							maxduration: 30,
 							protocols: [2, 3, 5, 6],
+							api: [2],
 						},
 					},
 				},
