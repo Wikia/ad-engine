@@ -1,8 +1,8 @@
 import {
 	AdSlot,
+	DomListener,
 	DomManipulator,
 	NAVBAR,
-	RxjsDomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -23,7 +23,7 @@ export class BfabImpactHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) navbar: HTMLElement,
-		private domListener: RxjsDomListener,
+		private domListener: DomListener,
 	) {
 		this.helper = new BfabHelper(this.manipulator, this.params, this.adSlot);
 	}

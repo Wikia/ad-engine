@@ -1,7 +1,7 @@
 import {
 	AdSlot,
 	CloseButton,
-	RxjsDomListener,
+	DomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -16,10 +16,7 @@ export class CloseButtonHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private button: HTMLButtonElement;
 
-	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		private domListener: RxjsDomListener,
-	) {}
+	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private domListener: DomListener) {}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		this.button = new CloseButton({

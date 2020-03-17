@@ -1,10 +1,9 @@
 import {
 	AdSlot,
+	DomListener,
 	DomManipulator,
 	FOOTER,
 	NAVBAR,
-	RxjsDomListener,
-	ScrollCorrector,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -14,6 +13,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 import { BfaaHelper } from '../helpers/bfaa-helper';
+import { ScrollCorrector } from '../helpers/scroll-corrector';
 
 @Injectable()
 export class BfaaImpactHandler implements TemplateStateHandler {
@@ -26,7 +26,7 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(FOOTER) private footer: HTMLElement,
 		@Inject(NAVBAR) private navbar: HTMLElement,
-		private domListener: RxjsDomListener,
+		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);

@@ -5,7 +5,7 @@ import { observeOn, publish, refCount } from 'rxjs/operators';
 type FromEventTarget<T> = Parameters<typeof fromEvent>[0];
 
 @Injectable()
-export class RxjsDomListener {
+export class DomListener {
 	readonly scroll$: Observable<Event> = this.createSource(document, 'scroll');
 	readonly resize$: Observable<Event> = this.createSource(window, 'resize');
 

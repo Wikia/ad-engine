@@ -1,7 +1,7 @@
 import {
 	AdSlot,
+	DomListener,
 	DomManipulator,
-	RxjsDomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -21,7 +21,7 @@ export class BfabResolvedHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		private domListener: RxjsDomListener,
+		private domListener: DomListener,
 	) {
 		this.helper = new BfabHelper(this.manipulator, this.params, this.adSlot);
 	}
