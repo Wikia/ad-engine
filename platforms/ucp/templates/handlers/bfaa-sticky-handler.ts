@@ -37,7 +37,7 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 					this.helper.setResolvedAdHeight();
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
-					this.helper.setBodyPadding();
+					this.helper.setResolvedBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)

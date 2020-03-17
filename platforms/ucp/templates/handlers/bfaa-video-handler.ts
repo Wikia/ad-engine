@@ -14,6 +14,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
+import { TimeoutManager } from '../helpers/timeout-manager';
 import { VideoHelper } from '../helpers/video-helper';
 import { UapContext } from './uap-context';
 
@@ -26,6 +27,7 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
+		private timeoutManager: TimeoutManager,
 	) {
 		this.helper = new VideoHelper(this.manipulator, this.params, this.adSlot);
 	}
@@ -59,7 +61,10 @@ export class BfaaVideoHandler implements TemplateStateHandler {
 			fromEvent(video, 'wikiaAdStarted')
 				.pipe(
 					take(1),
-					tap(() => transition('impact', { allowMulticast: true })),
+					tap(() => {
+						this.timeoutManager.start(universalAdPackage.BFAA_UNSTICK_DELAY);
+						transition('impact', { allowMulticast: true });
+					}),
 				)
 				.subscribe();
 		}
