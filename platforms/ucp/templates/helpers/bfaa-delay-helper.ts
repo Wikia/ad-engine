@@ -1,14 +1,20 @@
 import { AdSlot, UapParams, universalAdPackage, utils } from '@wikia/ad-engine';
-import { from, Observable } from 'rxjs';
+import { from, merge, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { isUndefined } from 'util';
 
 export class BfaaDelayHelper {
 	constructor(private params: UapParams, private adSlot: AdSlot) {}
 
-	isViewedAndDelayed(): Observable<unknown> {
-		const slotViewed: Promise<void> = this.adSlot.loaded.then(() => this.adSlot.viewed);
+	isViewedAndDelayed(): Observable<boolean> {
+		const bootstrap$ = of(false);
+		const completed$ = from(
+			this.adSlot.loaded
+				.then(() => this.adSlot.viewed)
+				.then(() => utils.wait(this.getAdditionalStickinessTime())),
+		).pipe(map(() => true));
 
-		return from(slotViewed.then(() => utils.wait(this.getAdditionalStickinessTime())));
+		return merge(bootstrap$, completed$);
 	}
 
 	private getAdditionalStickinessTime(): number {

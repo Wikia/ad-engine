@@ -10,7 +10,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BfaaDelayHelper } from '../../helpers/bfaa-delay-helper';
 
 @Injectable()
@@ -33,6 +33,7 @@ export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 		this.delayer
 			.isViewedAndDelayed()
 			.pipe(
+				filter((viewedAndDelayed) => viewedAndDelayed),
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
 				tap(() => {
 					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
