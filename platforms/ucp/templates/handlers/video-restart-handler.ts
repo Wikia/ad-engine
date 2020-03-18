@@ -1,7 +1,7 @@
 import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
-import { map, skip, switchMap, take, tap } from 'rxjs/operators';
+import { skip, switchMap, take, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../helpers/player-registry';
 
 /**
@@ -15,16 +15,8 @@ export class VideoRestartHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				take(1),
-				switchMap(({ player }) =>
-					fromEvent(player, 'wikiaAdStarted').pipe(
-						skip(1),
-						map(() => player),
-					),
-				),
-				tap((player) => {
-					transition('impact', { allowMulticast: true });
-					player.unmute();
-				}),
+				switchMap(({ player }) => fromEvent(player, 'wikiaAdStarted').pipe(skip(1))),
+				tap(() => transition('impact', { allowMulticast: true })),
 			)
 			.subscribe();
 	}
