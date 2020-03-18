@@ -15,8 +15,8 @@ import { BfaaVideoTransitionHandler } from './handlers/bfaa/bfaa-video-transitio
 import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
+import { VideoCompletedHandler } from './handlers/video-completed-handler';
 import { VideoCtpHandler } from './handlers/video-ctp-handler';
-import { VideoImpactDecisionHandler } from './handlers/video-impact-decision-handler';
 import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { PlayerRegistry } from './helpers/player-registry';
@@ -38,7 +38,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				BfaaImpactHandler,
 				BfaaImpactDecisionHandler,
 				BfaaVideoImpactHandler,
-				VideoImpactDecisionHandler,
+				VideoCompletedHandler,
 			],
 			sticky: [
 				BfaaStickyHandler,
