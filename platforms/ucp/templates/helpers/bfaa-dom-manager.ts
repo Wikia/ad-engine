@@ -1,5 +1,6 @@
-import { AdSlot, DomManipulator, UapParams } from '@wikia/ad-engine';
+import { AdSlot, UapParams } from '@wikia/ad-engine';
 import { BfaaDomReader } from './bfaa-dom-reader';
+import { DomManipulator } from './manipulators/dom-manipulator';
 
 export class BfaaDomManager extends BfaaDomReader {
 	constructor(

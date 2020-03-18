@@ -1,4 +1,5 @@
-import { AdSlot, DomManipulator, UapParams } from '@wikia/ad-engine';
+import { AdSlot, UapParams } from '@wikia/ad-engine';
+import { DomManipulator } from './manipulators/dom-manipulator';
 
 export class BfabDomManager {
 	constructor(
