@@ -8,20 +8,21 @@ import {
 	TemplateStateHandler,
 	TemplateTransition,
 	UapParams,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BfaaHelper } from '../../helpers/bfaa-helper';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
-import { StickinessDelayer } from '../../helpers/stickiness-delayer';
+import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
 @Injectable()
 export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private helper: BfaaHelper;
-	private delayer: StickinessDelayer;
+	private timeout: StickinessTimeout;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -32,14 +33,18 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 		private scrollCorrector: ScrollCorrector,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
-		this.delayer = new StickinessDelayer(this.params, this.adSlot);
+		this.timeout = new StickinessTimeout(
+			this.params,
+			this.adSlot,
+			universalAdPackage.BFAA_UNSTICK_DELAY,
+		);
 	}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
-				withLatestFrom(this.delayer.isViewedAndDelayed()),
+				withLatestFrom(this.timeout.isViewedAndDelayed()),
 				filter(() => this.reachedResolvedSize()),
 				tap(([, viewedAndDelayed]) => {
 					const correction = this.scrollCorrector.usePositionCorrection(this.footer);

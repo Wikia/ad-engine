@@ -1,10 +1,10 @@
-import { AdSlot, UapParams, universalAdPackage, utils } from '@wikia/ad-engine';
+import { AdSlot, UapParams, utils } from '@wikia/ad-engine';
 import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isUndefined } from 'util';
 
-export class StickinessDelayer {
-	constructor(private params: UapParams, private adSlot: AdSlot) {}
+export class StickinessTimeout {
+	constructor(private params: UapParams, private adSlot: AdSlot, private fallbackTimeout: number) {}
 
 	isViewedAndDelayed(): Observable<boolean> {
 		const bootstrap$ = of(false);
@@ -22,6 +22,6 @@ export class StickinessDelayer {
 			return this.params.stickyAdditionalTime;
 		}
 
-		return universalAdPackage.BFAA_UNSTICK_DELAY;
+		return this.fallbackTimeout;
 	}
 }
