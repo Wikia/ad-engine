@@ -48,5 +48,7 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		}
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		this.adSlot.show();
+	}
 }

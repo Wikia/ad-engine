@@ -1,4 +1,4 @@
-import { AdSlot, DomListener, NAVBAR, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { DomListener, NAVBAR, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
@@ -10,7 +10,6 @@ export class BfaaResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
 		private manipulator: DomManipulator,
@@ -18,7 +17,6 @@ export class BfaaResolvedHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		this.adSlot.show();
 		this.manager.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
