@@ -17,6 +17,7 @@ import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { ResolvedVideoHandler } from './handlers/resolved-video-handler';
 import { VideoCtpHandler } from './handlers/video-ctp-handler';
+import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { PlayerRegistry } from './helpers/player-registry';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
@@ -28,6 +29,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				BfaaBootstrapHandler,
 				BootstrapVideoHandler,
 				VideoCtpHandler,
+				VideoRestartHandler,
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
