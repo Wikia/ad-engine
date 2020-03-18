@@ -16,10 +16,10 @@ import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
 import { VideoCtpHandler } from './handlers/video-ctp-handler';
+import { VideoImpactDecisionHandler } from './handlers/video-impact-decision-handler';
 import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { PlayerRegistry } from './helpers/player-registry';
-import { VideoImpactDecisionHandler } from './helpers/video-impact-decision-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(

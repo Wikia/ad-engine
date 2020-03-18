@@ -4,7 +4,6 @@ import {
 	DomManipulator,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	UapParams,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -20,15 +19,15 @@ export class BfaaVideoImpactHandler implements TemplateStateHandler {
 	private manager: VideoDomManager;
 
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@Inject(TEMPLATE.PARAMS) params: UapParams,
+		@Inject(TEMPLATE.SLOT) adSlot: AdSlot,
 		private playerRegistry: PlayerRegistry,
 		private domListener: DomListener,
 	) {
-		this.manager = new VideoDomManager(this.manipulator, this.params, this.adSlot);
+		this.manager = new VideoDomManager(this.manipulator, params, adSlot);
 	}
 
-	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) =>

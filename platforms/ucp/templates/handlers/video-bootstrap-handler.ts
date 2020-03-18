@@ -7,7 +7,6 @@ import {
 	ReplayOverlay,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	ToggleThumbnail,
 	ToggleUI,
 	ToggleVideo,
@@ -27,7 +26,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 		private playerRegistry: PlayerRegistry,
 	) {}
 
-	async onEnter(transition: TemplateTransition<'impact'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		if (!universalAdPackage.isVideoEnabled(this.params)) {
 			return;
 		}
