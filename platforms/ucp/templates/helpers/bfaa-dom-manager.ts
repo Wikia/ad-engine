@@ -21,13 +21,6 @@ export class BfaaDomManager {
 		this.setAdHeight(`${this.reader.getResolvedAdHeight()}px`);
 	}
 
-	setStickyBodyPadding(): void {
-		const adHeight = this.reader.getResolvedAdHeight();
-		const adAndNavHeight = adHeight + this.navbar.offsetHeight;
-
-		this.manipulator.element(document.body).setProperty('paddingTop', `${adAndNavHeight}px`);
-	}
-
 	setAdFixedPosition(): void {
 		this.manipulator
 			.element(this.adSlot.getElement())
