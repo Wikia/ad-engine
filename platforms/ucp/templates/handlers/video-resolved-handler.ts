@@ -7,8 +7,8 @@ import {
 	UapParams,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { Subject } from 'rxjs';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../helpers/player-registry';
 import { VideoDomManager } from '../helpers/video-dom-manager';
 
@@ -30,12 +30,13 @@ export class VideoResolvedHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
-				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
-				switchMap(({ player }) => {
-					return this.domListener.resize$.pipe(
-						tap(() => this.manager.setVideoResolvedSize(player)),
-					);
-				}),
+				switchMap(({ player }) =>
+					merge(this.domListener.resize$).pipe(
+						startWith({}),
+						map(() => player),
+					),
+				),
+				tap((player) => this.manager.setVideoResolvedSize(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
