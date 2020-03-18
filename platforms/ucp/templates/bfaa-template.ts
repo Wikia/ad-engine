@@ -23,6 +23,7 @@ import { BfaaDomManager } from './helpers/bfaa-dom-manager';
 import { BfaaDomReader } from './helpers/bfaa-dom-reader';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
+import { VideoDomManager } from './helpers/video-dom-manager';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -53,6 +54,6 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [BfaaResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, BfaaDomManager, BfaaDomReader],
+		[PlayerRegistry, DomManipulator, BfaaDomManager, BfaaDomReader, VideoDomManager],
 	);
 }

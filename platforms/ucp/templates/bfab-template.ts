@@ -12,6 +12,7 @@ import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { BfabDomManager } from './helpers/bfab-dom-manager';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
+import { VideoDomManager } from './helpers/video-dom-manager';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -27,6 +28,6 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [BfabResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, BfabDomManager],
+		[PlayerRegistry, DomManipulator, BfabDomManager, VideoDomManager],
 	);
 }
