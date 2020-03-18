@@ -15,7 +15,6 @@ import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 @Injectable()
 export class BfaaStickyHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private manager: BfaaDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
@@ -23,9 +22,8 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
 		private manipulator: DomManipulator,
-	) {
-		this.manager = new BfaaDomManager(this.manipulator, params, this.adSlot, navbar);
-	}
+		private manager: BfaaDomManager,
+	) {}
 
 	async onEnter(): Promise<void> {
 		this.adSlot.show();

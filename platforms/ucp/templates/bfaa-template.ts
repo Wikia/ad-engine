@@ -19,6 +19,8 @@ import { VideoCompletedHandler } from './handlers/video-completed-handler';
 import { VideoCtpHandler } from './handlers/video-ctp-handler';
 import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video-restart-handler';
+import { BfaaDomManager } from './helpers/bfaa-dom-manager';
+import { BfaaDomReader } from './helpers/bfaa-dom-reader';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
 
@@ -51,6 +53,6 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [BfaaResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator],
+		[PlayerRegistry, DomManipulator, BfaaDomManager, BfaaDomReader],
 	);
 }
