@@ -9,30 +9,30 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfabHelper } from '../../helpers/bfab-helper';
+import { BfabDomManager } from '../../helpers/bfab-dom-manager';
 
 @Injectable()
 export class BfabResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
-	private helper: BfabHelper;
+	private manager: BfabDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		private domListener: DomListener,
 	) {
-		this.helper = new BfabHelper(this.manipulator, this.params, this.adSlot);
+		this.manager = new BfabDomManager(this.manipulator, this.params, this.adSlot);
 	}
 
 	async onEnter(): Promise<void> {
 		this.adSlot.show();
-		this.helper.setResolvedImage();
+		this.manager.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.helper.setResolvedAdHeight();
+					this.manager.setResolvedAdHeight();
 				}),
 				takeUntil(this.unsubscribe$),
 			)

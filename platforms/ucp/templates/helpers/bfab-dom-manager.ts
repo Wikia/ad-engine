@@ -1,6 +1,6 @@
 import { AdSlot, DomManipulator, UapParams } from '@wikia/ad-engine';
 
-export class BfabHelper {
+export class BfabDomManager {
 	constructor(
 		private manipulator: DomManipulator,
 		private params: UapParams,
