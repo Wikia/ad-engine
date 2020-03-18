@@ -13,7 +13,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable()
-export class BfaaStickyVideoHandler implements TemplateStateHandler {
+export class BfaaVideoStickyHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private manager: VideoDomManager;

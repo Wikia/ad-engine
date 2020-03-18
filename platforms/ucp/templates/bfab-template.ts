@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfabBootstrapHandler } from './handlers/bfab/bfab-bootstrap-handler';
 import { BfabImpactHandler } from './handlers/bfab/bfab-impact-handler';
-import { BfabImpactVideoHandler } from './handlers/bfab/bfab-impact-video-handler';
 import { BfabResolvedHandler } from './handlers/bfab/bfab-resolved-handler';
-import { BootstrapVideoHandler } from './handlers/bootstrap-video-handler';
+import { BfabVideoImpactHandler } from './handlers/bfab/bfab-video-impact-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
-import { ResolvedVideoHandler } from './handlers/resolved-video-handler';
+import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
+import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { PlayerRegistry } from './helpers/player-registry';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
@@ -16,12 +16,12 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 		{
 			initial: [
 				BfabBootstrapHandler,
-				BootstrapVideoHandler,
+				VideoBootstrapHandler,
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
-			impact: [BfabImpactHandler, BfabImpactVideoHandler],
-			resolved: [BfabResolvedHandler, ResolvedVideoHandler],
+			impact: [BfabImpactHandler, BfabVideoImpactHandler],
+			resolved: [BfabResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
 		[PlayerRegistry],

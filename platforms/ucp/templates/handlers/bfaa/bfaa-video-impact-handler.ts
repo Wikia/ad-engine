@@ -4,16 +4,17 @@ import {
 	DomManipulator,
 	TEMPLATE,
 	TemplateStateHandler,
+	TemplateTransition,
 	UapParams,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { Subject } from 'rxjs';
+import { fromEvent, merge, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { PlayerRegistry } from '../helpers/player-registry';
-import { VideoDomManager } from '../helpers/video-dom-manager';
+import { PlayerRegistry } from '../../helpers/player-registry';
+import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable()
-export class ResolvedVideoHandler implements TemplateStateHandler {
+export class BfaaVideoImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private manager: VideoDomManager;
@@ -27,15 +28,22 @@ export class ResolvedVideoHandler implements TemplateStateHandler {
 		this.manager = new VideoDomManager(this.manipulator, this.params, this.adSlot);
 	}
 
-	async onEnter(): Promise<void> {
+	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
-				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
+				tap(({ player }) => this.manager.setDynamicVideoImpactSize(player)),
 				switchMap(({ player }) => {
-					return this.domListener.resize$.pipe(
-						tap(() => this.manager.setVideoResolvedSize(player)),
+					return merge(this.domListener.scroll$, this.domListener.resize$).pipe(
+						tap(() => this.manager.setDynamicVideoImpactSize(player)),
 					);
 				}),
+				takeUntil(this.unsubscribe$),
+			)
+			.subscribe();
+		this.playerRegistry.video$
+			.pipe(
+				switchMap(({ player }) => fromEvent(player, 'wikiaAdCompleted')),
+				tap(() => transition('resolved')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
