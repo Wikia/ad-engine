@@ -20,7 +20,7 @@ import { filter, take } from 'rxjs/operators';
 import { PlayerRegistry } from '../helpers/player-registry';
 
 @Injectable()
-export class BootstrapVideoHandler implements TemplateStateHandler {
+export class VideoBootstrapHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,

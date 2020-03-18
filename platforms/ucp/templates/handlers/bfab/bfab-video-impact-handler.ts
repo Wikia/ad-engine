@@ -14,7 +14,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable()
-export class BfabImpactVideoHandler implements TemplateStateHandler {
+export class BfabVideoImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private manager: VideoDomManager;
