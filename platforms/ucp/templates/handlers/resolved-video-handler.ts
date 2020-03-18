@@ -10,11 +10,11 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { VideoDomManager } from '../../helpers/video-dom-manager';
-import { UapContext } from '../uap-context';
+import { VideoDomManager } from '../helpers/video-dom-manager';
+import { UapContext } from './uap-context';
 
 @Injectable()
-export class BfabResolvedVideoHandler implements TemplateStateHandler {
+export class ResolvedVideoHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
 	private manager: VideoDomManager;
