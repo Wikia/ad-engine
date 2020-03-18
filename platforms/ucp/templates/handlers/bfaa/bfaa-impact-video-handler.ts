@@ -11,14 +11,14 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, fromEvent, merge, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { VideoHelper } from '../../helpers/video-helper';
+import { VideoDomManager } from '../../helpers/video-dom-manager';
 import { UapContext } from '../uap-context';
 
 @Injectable()
 export class BfaaImpactVideoHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
-	private helper: VideoHelper;
+	private manager: VideoDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -26,7 +26,7 @@ export class BfaaImpactVideoHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
 		private domListener: DomListener,
 	) {
-		this.helper = new VideoHelper(this.manipulator, this.params, this.adSlot);
+		this.manager = new VideoDomManager(this.manipulator, this.params, this.adSlot);
 	}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
@@ -36,10 +36,10 @@ export class BfaaImpactVideoHandler implements TemplateStateHandler {
 			video$ = from(this.context.video);
 			video$
 				.pipe(
-					tap((video) => this.helper.setDynamicVideoImpactSize(video)),
+					tap((video) => this.manager.setDynamicVideoImpactSize(video)),
 					switchMap((video) => {
 						return merge(this.domListener.scroll$, this.domListener.resize$).pipe(
-							tap(() => this.helper.setDynamicVideoImpactSize(video)),
+							tap(() => this.manager.setDynamicVideoImpactSize(video)),
 						);
 					}),
 					takeUntil(this.unsubscribe$),

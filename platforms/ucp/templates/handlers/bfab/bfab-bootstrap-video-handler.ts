@@ -1,6 +1,5 @@
 import {
 	AdSlot,
-	DomManipulator,
 	Porvata,
 	Porvata4Player,
 	PorvataTemplateParams,
@@ -12,20 +11,19 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { VideoHelper } from '../../helpers/video-helper';
+import { VideoBootstrapHelper } from '../../helpers/video-bootstrap-helper';
 import { UapContext } from '../uap-context';
 
 @Injectable()
 export class BfabBootstrapVideoHandler implements TemplateStateHandler {
-	private helper: VideoHelper;
-	private manipulator: DomManipulator = new DomManipulator();
+	private helper: VideoBootstrapHelper;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
 	) {
-		this.helper = new VideoHelper(this.manipulator, this.params, this.adSlot);
+		this.helper = new VideoBootstrapHelper(this.params, this.adSlot);
 	}
 
 	async onEnter(transition: TemplateTransition<'impact'>): Promise<void> {
