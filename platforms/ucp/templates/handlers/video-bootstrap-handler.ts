@@ -28,7 +28,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		if (!universalAdPackage.isVideoEnabled(this.params)) {
-			return;
+			return this.playerRegistry.discard();
 		}
 
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
