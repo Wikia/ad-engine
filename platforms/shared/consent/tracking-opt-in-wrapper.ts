@@ -1,7 +1,7 @@
 import { context, utils } from '@wikia/ad-engine';
 
 const trackingOptInLibraryUrl =
-	'//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v3.0.1/tracking-opt-in.min.js';
+	'//origin-images.wikia.com/fandom-ae-assets/tracking-opt-in/v3.0.2/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**

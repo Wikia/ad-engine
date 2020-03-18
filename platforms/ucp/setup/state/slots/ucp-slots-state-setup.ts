@@ -1,5 +1,5 @@
 import { slotsContext, SlotsStateSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()

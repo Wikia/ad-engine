@@ -216,6 +216,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				},
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
+				isVideo: true,
 			},
 		};
 

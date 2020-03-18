@@ -6,7 +6,6 @@ import {
 	Dictionary,
 	fillerService,
 	FmrRotator,
-	JWPlayerManager,
 	PorvataFiller,
 	PorvataGamParams,
 	SlotConfig,
@@ -22,7 +21,6 @@ import { slotsContext } from '../../../shared/slots/slots-context';
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
-		this.setupJWPlayerAds();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -83,10 +81,6 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 		container.id = slotName;
 		parentContainer.appendChild(container);
 		rotator.rotateSlot();
-	}
-
-	private setupJWPlayerAds(): void {
-		new JWPlayerManager().manage();
 	}
 
 	private configureTopLeaderboard(): void {
