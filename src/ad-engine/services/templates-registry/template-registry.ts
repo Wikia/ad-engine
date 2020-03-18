@@ -12,6 +12,7 @@ interface TemplateMachinePayload<
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
+	additionalDependencies: Type<any>[];
 	emitter$: Subject<TemplateAction>;
 }
 
@@ -29,10 +30,16 @@ export class TemplateRegistry {
 		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
+		additionalDependencies: Type<any>[] = [],
 	): Observable<TemplateAction> {
 		const emitter$ = new Subject<TemplateAction>();
 
-		this.settings.set(templateName, { StateHandlerTypesDict, initialStateKey, emitter$ });
+		this.settings.set(templateName, {
+			StateHandlerTypesDict,
+			initialStateKey,
+			additionalDependencies,
+			emitter$,
+		});
 
 		return emitter$.asObservable();
 	}
@@ -45,19 +52,23 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		const context: Dictionary = {};
+		const {
+			StateHandlerTypesDict,
+			initialStateKey,
+			additionalDependencies,
+			emitter$,
+		} = this.settings.get(templateName);
 
 		this.dependenciesManager.provideDependencies(
 			templateName,
 			templateSlot,
 			templateParams,
-			context,
+			additionalDependencies,
 		);
 
-		const { StateHandlerTypesDict, initialStateKey, emitter$ } = this.settings.get(templateName);
 		const templateStateMap = this.createTemplateStateMap(StateHandlerTypesDict);
 
-		this.dependenciesManager.resetDependencies();
+		this.dependenciesManager.resetDependencies(additionalDependencies);
 
 		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey, emitter$);
 
