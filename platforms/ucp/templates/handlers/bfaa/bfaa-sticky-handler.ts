@@ -19,12 +19,12 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@Inject(TEMPLATE.PARAMS) params: UapParams,
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
 		private manipulator: DomManipulator,
 	) {
-		this.manager = new BfaaDomManager(this.manipulator, this.params, this.adSlot, navbar);
+		this.manager = new BfaaDomManager(this.manipulator, params, this.adSlot, navbar);
 	}
 
 	async onEnter(): Promise<void> {

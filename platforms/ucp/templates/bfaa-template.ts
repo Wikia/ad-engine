@@ -47,7 +47,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				CloseButtonHandler,
 				BfaaVideoStickyHandler,
 			],
-			transition: [BfaaTransitionHandler, BfaaVideoTransitionHandler],
+			transition: [BfaaStickyHandler, BfaaTransitionHandler, BfaaVideoTransitionHandler],
 			resolved: [BfaaResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
