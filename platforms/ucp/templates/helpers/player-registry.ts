@@ -21,6 +21,9 @@ export class PlayerRegistry {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
+	/**
+	 * Creates player and distributes it alongside playerParams with video$ stream.
+	 */
 	register(): void {
 		const params: PorvataTemplateParams = this.getPlayerParams();
 
@@ -61,5 +64,12 @@ export class PlayerRegistry {
 		this.adSlot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
 		this.adSlot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
 		this.adSlot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
+	}
+
+	/**
+	 * Marks player as not usable - releases all resources waiting for video$ stream.
+	 */
+	discard(): void {
+		this.state$.complete();
 	}
 }
