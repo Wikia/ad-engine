@@ -19,6 +19,7 @@ import { VideoCtpHandler } from './handlers/video-ctp-handler';
 import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { PlayerRegistry } from './helpers/player-registry';
+import { VideoImpactDecisionHandler } from './helpers/video-impact-decision-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -33,7 +34,12 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
-			impact: [BfaaImpactHandler, BfaaImpactDecisionHandler, BfaaVideoImpactHandler],
+			impact: [
+				BfaaImpactHandler,
+				BfaaImpactDecisionHandler,
+				BfaaVideoImpactHandler,
+				VideoImpactDecisionHandler,
+			],
 			sticky: [
 				BfaaStickyHandler,
 				BfaaStickyDecisionHandler,

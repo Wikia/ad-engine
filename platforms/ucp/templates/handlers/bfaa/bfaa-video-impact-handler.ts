@@ -8,8 +8,8 @@ import {
 	UapParams,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { fromEvent, merge, Subject } from 'rxjs';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
@@ -31,19 +31,13 @@ export class BfaaVideoImpactHandler implements TemplateStateHandler {
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
-				tap(({ player }) => this.manager.setDynamicVideoImpactSize(player)),
-				switchMap(({ player }) => {
-					return merge(this.domListener.scroll$, this.domListener.resize$).pipe(
-						tap(() => this.manager.setDynamicVideoImpactSize(player)),
-					);
-				}),
-				takeUntil(this.unsubscribe$),
-			)
-			.subscribe();
-		this.playerRegistry.video$
-			.pipe(
-				switchMap(({ player }) => fromEvent(player, 'wikiaAdCompleted')),
-				tap(() => transition('resolved')),
+				switchMap(({ player }) =>
+					merge(this.domListener.scroll$, this.domListener.resize$).pipe(
+						startWith({}),
+						map(() => player),
+					),
+				),
+				tap((player) => this.manager.setDynamicVideoImpactSize(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
