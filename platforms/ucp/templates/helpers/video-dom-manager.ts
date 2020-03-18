@@ -13,12 +13,11 @@ export class VideoDomManager {
 	 * Scales from impact to default ratio during scroll.
 	 *
 	 * @param video Porvata video
-	 * @param fixedProgress if provided then this value is used instead of calculated progress
+	 * @param progress if provided then this value is used instead of calculated progress
 	 */
-	setDynamicVideoImpactSize(video: Porvata4Player, fixedProgress?: number): void {
+	setDynamicVideoImpactSize(video: Porvata4Player, progress = this.getImpactProgress()): void {
 		if (!video.isFullscreen()) {
 			const slotHeight = this.adSlot.getElement().offsetHeight;
-			const progress = fixedProgress === undefined ? this.getImpactProgress() : fixedProgress;
 
 			const heightMultiplier =
 				this.params.config.state.height.default +
