@@ -16,6 +16,7 @@ import { BfaaTransitionVideoHandler } from './handlers/bfaa/bfaa-transition-vide
 import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { ResolvedVideoHandler } from './handlers/resolved-video-handler';
+import { PlayerRegistry } from './helpers/player-registry';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -39,5 +40,6 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [BfaaResolvedHandler, ResolvedVideoHandler],
 		},
 		'initial',
+		[PlayerRegistry],
 	);
 }

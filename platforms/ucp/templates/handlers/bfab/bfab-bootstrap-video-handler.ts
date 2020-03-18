@@ -1,18 +1,16 @@
 import {
 	AdSlot,
 	Porvata,
-	Porvata4Player,
 	PorvataTemplateParams,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
 	UapParams,
 	universalAdPackage,
-	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoBootstrapHelper } from '../../helpers/video-bootstrap-helper';
-import { UapContext } from '../uap-context';
 
 @Injectable()
 export class BfabBootstrapVideoHandler implements TemplateStateHandler {
@@ -21,7 +19,7 @@ export class BfabBootstrapVideoHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
+		private playerRegistry: PlayerRegistry,
 	) {
 		this.helper = new VideoBootstrapHelper(this.params, this.adSlot);
 	}
@@ -34,11 +32,10 @@ export class BfabBootstrapVideoHandler implements TemplateStateHandler {
 		const playerParams: PorvataTemplateParams = this.helper.getPlayerParams();
 
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
-		this.context.video = utils.createExtendedPromise<Porvata4Player>();
 		this.helper.setCtpTargeting();
 
 		Porvata.inject(playerParams).then((video) => {
-			this.context.video.resolve(video);
+			this.playerRegistry.register(video);
 			this.helper.handleRestart(video, transition);
 			this.helper.handleEvents(video);
 			this.helper.adjustUI(video, playerParams.container, playerParams);
