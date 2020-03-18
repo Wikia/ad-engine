@@ -10,14 +10,14 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { VideoHelper } from '../../helpers/video-helper';
+import { VideoDomManager } from '../../helpers/video-dom-manager';
 import { UapContext } from '../uap-context';
 
 @Injectable()
 export class BfabResolvedVideoHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
-	private helper: VideoHelper;
+	private manager: VideoDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -25,7 +25,7 @@ export class BfabResolvedVideoHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.CONTEXT) private context: UapContext,
 		private domListener: DomListener,
 	) {
-		this.helper = new VideoHelper(this.manipulator, this.params, this.adSlot);
+		this.manager = new VideoDomManager(this.manipulator, this.params, this.adSlot);
 	}
 
 	async onEnter(): Promise<void> {
@@ -35,10 +35,10 @@ export class BfabResolvedVideoHandler implements TemplateStateHandler {
 			video$ = from(this.context.video);
 			video$
 				.pipe(
-					tap((video) => this.helper.setVideoResolvedSize(video)),
+					tap((video) => this.manager.setVideoResolvedSize(video)),
 					switchMap((video) => {
 						return this.domListener.resize$.pipe(
-							tap(() => this.helper.setVideoResolvedSize(video)),
+							tap(() => this.manager.setVideoResolvedSize(video)),
 						);
 					}),
 					takeUntil(this.unsubscribe$),
