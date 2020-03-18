@@ -26,7 +26,6 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('visibility', 'hidden');
 
 		await slotTweaker.onReady(this.adSlot);
-
 		await this.awaitVisibleDOM();
 
 		if (resolvedState.isResolvedState(this.params)) {
