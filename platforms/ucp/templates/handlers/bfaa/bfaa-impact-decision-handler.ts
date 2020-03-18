@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	DomListener,
-	FOOTER,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -24,7 +23,6 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) params: UapParams,
 		@Inject(TEMPLATE.SLOT) adSlot: AdSlot,
-		@Inject(FOOTER) private footer: HTMLElement,
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 	) {
@@ -39,7 +37,7 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 				withLatestFrom(this.timeout.isViewedAndDelayed()),
 				filter(() => this.reachedResolvedSize()),
 				tap(([, viewedAndDelayed]) => {
-					const correction = this.scrollCorrector.usePositionCorrection(this.footer);
+					const correction = this.scrollCorrector.usePositionCorrection();
 
 					if (viewedAndDelayed) {
 						transition('transition').then(correction);
