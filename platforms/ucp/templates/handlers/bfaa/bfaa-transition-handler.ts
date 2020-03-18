@@ -1,6 +1,5 @@
 import {
 	AdSlot,
-	DomListener,
 	NAVBAR,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -11,43 +10,27 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
-import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfaaDomManager } from '../../helpers/bfaa-dom-manager';
+import { takeUntil, tap } from 'rxjs/operators';
+import { BfaaDomReader } from '../../helpers/bfaa-dom-reader';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 
 @Injectable()
 export class BfaaTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private manager: BfaaDomManager;
+	private manager: BfaaDomReader;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(NAVBAR) private navbar: HTMLElement,
-		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 		private manipulator: DomManipulator,
 	) {
-		this.manager = new BfaaDomManager(this.manipulator, this.params, this.adSlot, this.navbar);
+		this.manager = new BfaaDomReader(this.params);
 	}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
-		this.adSlot.show();
-		this.manager.setResolvedImage();
-		this.domListener.resize$
-			.pipe(
-				startWith({}),
-				tap(() => {
-					this.manager.setResolvedAdHeight();
-					this.manager.setAdFixedPosition();
-					this.manager.setNavbarFixedPosition();
-					this.manager.setStickyBodyPadding();
-				}),
-				takeUntil(this.unsubscribe$),
-			)
-			.subscribe();
-
 		this.animate()
 			.pipe(
 				tap(() => {
