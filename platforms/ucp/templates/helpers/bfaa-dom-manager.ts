@@ -19,7 +19,7 @@ export class BfaaDomManager extends BfaaDomReader {
 		this.setAdHeight(`${this.getResolvedAdHeight()}px`);
 	}
 
-	setResolvedBodyPadding(): void {
+	setStickyBodyPadding(): void {
 		const adHeight = this.getResolvedAdHeight();
 		const adAndNavHeight = adHeight + this.navbar.offsetHeight;
 

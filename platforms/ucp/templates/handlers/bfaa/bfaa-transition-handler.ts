@@ -42,7 +42,7 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 					this.manager.setResolvedAdHeight();
 					this.manager.setAdFixedPosition();
 					this.manager.setNavbarFixedPosition();
-					this.manager.setResolvedBodyPadding();
+					this.manager.setStickyBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
