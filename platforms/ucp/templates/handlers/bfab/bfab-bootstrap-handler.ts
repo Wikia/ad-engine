@@ -1,6 +1,5 @@
 import {
 	AdSlot,
-	DomManipulator,
 	resolvedState,
 	slotTweaker,
 	TEMPLATE,
@@ -10,14 +9,14 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 
 @Injectable()
 export class BfabBootstrapHandler implements TemplateStateHandler {
-	private manipulator = new DomManipulator();
-
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		private manipulator: DomManipulator,
 	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {

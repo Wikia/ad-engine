@@ -1,4 +1,5 @@
-import { AdSlot, DomManipulator, Porvata4Player, UapParams } from '@wikia/ad-engine';
+import { AdSlot, Porvata4Player, UapParams } from '@wikia/ad-engine';
+import { DomManipulator } from './manipulators/dom-manipulator';
 
 export class VideoDomManager {
 	constructor(

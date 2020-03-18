@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	DomListener,
-	DomManipulator,
 	NAVBAR,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -11,11 +10,11 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { BfaaDomManager } from '../../helpers/bfaa-dom-manager';
+import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 
 @Injectable()
 export class BfaaImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private manipulator = new DomManipulator();
 	private manager: BfaaDomManager;
 
 	constructor(
@@ -23,6 +22,7 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 		private domListener: DomListener,
+		private manipulator: DomManipulator,
 	) {
 		this.manager = new BfaaDomManager(this.manipulator, this.params, this.adSlot, navbar);
 	}
