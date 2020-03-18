@@ -13,14 +13,14 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfaaHelper } from '../../helpers/bfaa-helper';
+import { BfaaDomManager } from '../../helpers/bfaa-dom-manager';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 
 @Injectable()
 export class BfaaTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
-	private helper: BfaaHelper;
+	private manager: BfaaDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
@@ -29,20 +29,20 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 	) {
-		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, this.navbar);
+		this.manager = new BfaaDomManager(this.manipulator, this.params, this.adSlot, this.navbar);
 	}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.adSlot.show();
-		this.helper.setResolvedImage();
+		this.manager.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.helper.setResolvedAdHeight();
-					this.helper.setAdFixedPosition();
-					this.helper.setNavbarFixedPosition();
-					this.helper.setResolvedBodyPadding();
+					this.manager.setResolvedAdHeight();
+					this.manager.setAdFixedPosition();
+					this.manager.setNavbarFixedPosition();
+					this.manager.setResolvedBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
@@ -72,20 +72,20 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${distance - this.helper.getResolvedAdHeight()}px`);
+			.setProperty('top', `${distance - this.manager.getResolvedAdHeight()}px`);
 
 		return from(utils.wait(duration));
 	}
 
 	private calcAnimationDistance(): number {
-		const distance = this.helper.getResolvedAdHeight() - window.scrollY;
+		const distance = this.manager.getResolvedAdHeight() - window.scrollY;
 
 		return distance <= 0 ? 0 : distance;
 	}
 
 	private calcAnimationDuration(distance: number): number {
 		const distanceFraction =
-			(this.helper.getResolvedAdHeight() - distance) / this.helper.getResolvedAdHeight();
+			(this.manager.getResolvedAdHeight() - distance) / this.manager.getResolvedAdHeight();
 
 		return distanceFraction * universalAdPackage.SLIDE_OUT_TIME;
 	}

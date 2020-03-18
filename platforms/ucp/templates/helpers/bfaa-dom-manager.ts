@@ -1,28 +1,18 @@
 import { AdSlot, DomManipulator, UapParams } from '@wikia/ad-engine';
+import { BfaaDomReader } from './bfaa-dom-reader';
 
-export class BfaaHelper {
+export class BfaaDomManager extends BfaaDomReader {
 	constructor(
 		private manipulator: DomManipulator,
-		private params: UapParams,
+		params: UapParams,
 		private adSlot: AdSlot,
 		private navbar: HTMLElement,
-	) {}
+	) {
+		super(params);
+	}
 
 	setDynamicImpactAdHeight(): void {
 		this.setAdHeight(`${this.getDynamicImpactAdHeight()}px`);
-	}
-
-	getDynamicImpactAdHeight(): number {
-		const minHeight = this.getResolvedAdHeight();
-		const maxHeight = this.getImpactAdHeight();
-		const offset = window.scrollY || window.pageYOffset || 0;
-		const height = maxHeight - offset;
-
-		return height < minHeight ? minHeight : height;
-	}
-
-	getImpactAdHeight(): number {
-		return this.calculateAdHeight(this.params.config.aspectRatio.default);
 	}
 
 	setResolvedAdHeight(): void {
@@ -34,10 +24,6 @@ export class BfaaHelper {
 		const adAndNavHeight = adHeight + this.navbar.offsetHeight;
 
 		this.manipulator.element(document.body).setProperty('paddingTop', `${adAndNavHeight}px`);
-	}
-
-	getResolvedAdHeight(): number {
-		return this.calculateAdHeight(this.params.config.aspectRatio.resolved);
 	}
 
 	setAdFixedPosition(): void {
@@ -70,9 +56,5 @@ export class BfaaHelper {
 
 	private setAdHeight(height: string): void {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
-	}
-
-	private calculateAdHeight(ratio: number): number {
-		return (1 / ratio) * document.body.offsetWidth;
 	}
 }

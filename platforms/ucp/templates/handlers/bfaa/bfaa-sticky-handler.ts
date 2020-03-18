@@ -10,13 +10,13 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfaaHelper } from '../../helpers/bfaa-helper';
+import { BfaaDomManager } from '../../helpers/bfaa-dom-manager';
 
 @Injectable()
 export class BfaaStickyHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private manipulator = new DomManipulator();
-	private helper: BfaaHelper;
+	private manager: BfaaDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
@@ -24,20 +24,20 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
 	) {
-		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
+		this.manager = new BfaaDomManager(this.manipulator, this.params, this.adSlot, navbar);
 	}
 
 	async onEnter(): Promise<void> {
 		this.adSlot.show();
-		this.helper.setResolvedImage();
+		this.manager.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.helper.setResolvedAdHeight();
-					this.helper.setAdFixedPosition();
-					this.helper.setNavbarFixedPosition();
-					this.helper.setResolvedBodyPadding();
+					this.manager.setResolvedAdHeight();
+					this.manager.setAdFixedPosition();
+					this.manager.setNavbarFixedPosition();
+					this.manager.setResolvedBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
