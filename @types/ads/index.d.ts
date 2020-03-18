@@ -12,6 +12,7 @@ interface MediaWikiAdsContext {
 }
 
 interface MediaWikiAdsOpts {
+	noAdsReason: string;
 	isAdTestWiki: boolean;
 	pageType: string;
 	showAds: boolean;
