@@ -16,7 +16,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
-import { filter, skip, take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { PlayerRegistry } from '../helpers/player-registry';
 
 @Injectable()
@@ -36,21 +36,8 @@ export class BootstrapVideoHandler implements TemplateStateHandler {
 		this.playerRegistry.register();
 
 		this.playerRegistry.video$.pipe(take(1)).subscribe(({ player, params }) => {
-			this.handleRestart(player, transition);
 			this.handleEvents(player);
 			this.adjustUI(player, params);
-		});
-	}
-
-	/**
-	 * Transition to impact when video is restarted
-	 */
-	private handleRestart(player: Porvata4Player, transition: TemplateTransition<'impact'>): void {
-		const restarted$ = fromEvent(player, 'wikiaAdStarted').pipe(skip(1));
-
-		restarted$.subscribe(() => {
-			transition('impact', { allowMulticast: true });
-			player.unmute();
 		});
 	}
 
