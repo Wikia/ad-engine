@@ -26,9 +26,9 @@ export class BfaaTransitionVideoHandler implements TemplateStateHandler {
 	}
 
 	async onEnter(): Promise<void> {
-		this.playerRegistry.player$
+		this.playerRegistry.video$
 			.pipe(
-				tap((video) => this.manager.setVideoResolvedSize(video)),
+				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

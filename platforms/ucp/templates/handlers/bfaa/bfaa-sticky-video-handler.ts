@@ -28,12 +28,12 @@ export class BfaaStickyVideoHandler implements TemplateStateHandler {
 	}
 
 	async onEnter(): Promise<void> {
-		this.playerRegistry.player$
+		this.playerRegistry.video$
 			.pipe(
-				switchMap((video) => {
+				switchMap(({ player }) => {
 					return this.domListener.resize$.pipe(
 						startWith({}),
-						tap(() => this.manager.setVideoResolvedSize(video)),
+						tap(() => this.manager.setVideoResolvedSize(player)),
 					);
 				}),
 				takeUntil(this.unsubscribe$),

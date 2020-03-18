@@ -28,11 +28,13 @@ export class ResolvedVideoHandler implements TemplateStateHandler {
 	}
 
 	async onEnter(): Promise<void> {
-		this.playerRegistry.player$
+		this.playerRegistry.video$
 			.pipe(
-				tap((video) => this.manager.setVideoResolvedSize(video)),
-				switchMap((video) => {
-					return this.domListener.resize$.pipe(tap(() => this.manager.setVideoResolvedSize(video)));
+				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
+				switchMap(({ player }) => {
+					return this.domListener.resize$.pipe(
+						tap(() => this.manager.setVideoResolvedSize(player)),
+					);
 				}),
 				takeUntil(this.unsubscribe$),
 			)
