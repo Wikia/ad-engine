@@ -8,6 +8,7 @@ import { BfabImpactVideoHandler } from './handlers/bfab/bfab-impact-video-handle
 import { BfabResolvedHandler } from './handlers/bfab/bfab-resolved-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { ResolvedVideoHandler } from './handlers/resolved-video-handler';
+import { PlayerRegistry } from './helpers/player-registry';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -23,5 +24,6 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [BfabResolvedHandler, ResolvedVideoHandler],
 		},
 		'initial',
+		[PlayerRegistry],
 	);
 }
