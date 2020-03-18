@@ -9,6 +9,7 @@ import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
 import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { PlayerRegistry } from './helpers/player-registry';
+import { VideoImpactDecisionHandler } from './helpers/video-impact-decision-handler';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -20,7 +21,7 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
-			impact: [BfabImpactHandler, BfabVideoImpactHandler],
+			impact: [BfabImpactHandler, BfabVideoImpactHandler, VideoImpactDecisionHandler],
 			resolved: [BfabResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
