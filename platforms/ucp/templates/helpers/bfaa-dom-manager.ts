@@ -1,27 +1,28 @@
-import { AdSlot, UapParams } from '@wikia/ad-engine';
+import { AdSlot, NAVBAR, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { BfaaDomReader } from './bfaa-dom-reader';
 import { DomManipulator } from './manipulators/dom-manipulator';
 
-export class BfaaDomManager extends BfaaDomReader {
+@Injectable()
+export class BfaaDomManager {
 	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@Inject(NAVBAR) private navbar: HTMLElement,
 		private manipulator: DomManipulator,
-		params: UapParams,
-		private adSlot: AdSlot,
-		private navbar: HTMLElement,
-	) {
-		super(params);
-	}
+		private reader: BfaaDomReader,
+	) {}
 
 	setDynamicImpactAdHeight(): void {
-		this.setAdHeight(`${this.getDynamicImpactAdHeight()}px`);
+		this.setAdHeight(`${this.reader.getDynamicImpactAdHeight()}px`);
 	}
 
 	setResolvedAdHeight(): void {
-		this.setAdHeight(`${this.getResolvedAdHeight()}px`);
+		this.setAdHeight(`${this.reader.getResolvedAdHeight()}px`);
 	}
 
 	setStickyBodyPadding(): void {
-		const adHeight = this.getResolvedAdHeight();
+		const adHeight = this.reader.getResolvedAdHeight();
 		const adAndNavHeight = adHeight + this.navbar.offsetHeight;
 
 		this.manipulator.element(document.body).setProperty('paddingTop', `${adAndNavHeight}px`);

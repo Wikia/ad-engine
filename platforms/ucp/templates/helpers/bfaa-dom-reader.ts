@@ -1,7 +1,9 @@
-import { UapParams } from '@wikia/ad-engine';
+import { TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 
+@Injectable()
 export class BfaaDomReader {
-	constructor(protected params: UapParams) {}
+	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	getDynamicImpactAdHeight(): number {
 		const minHeight = this.getResolvedAdHeight();

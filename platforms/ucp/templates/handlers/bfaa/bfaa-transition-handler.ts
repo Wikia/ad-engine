@@ -4,7 +4,6 @@ import {
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	UapParams,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
@@ -18,17 +17,14 @@ import { ScrollCorrector } from '../../helpers/scroll-corrector';
 @Injectable()
 export class BfaaTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private manager: BfaaDomReader;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 		private scrollCorrector: ScrollCorrector,
 		private manipulator: DomManipulator,
-	) {
-		this.manager = new BfaaDomReader(this.params);
-	}
+		private reader: BfaaDomReader,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.animate()
@@ -55,20 +51,20 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${distance - this.manager.getResolvedAdHeight()}px`);
+			.setProperty('top', `${distance - this.reader.getResolvedAdHeight()}px`);
 
 		return from(utils.wait(duration));
 	}
 
 	private calcAnimationDistance(): number {
-		const distance = this.manager.getResolvedAdHeight() - window.scrollY;
+		const distance = this.reader.getResolvedAdHeight() - window.scrollY;
 
 		return distance <= 0 ? 0 : distance;
 	}
 
 	private calcAnimationDuration(distance: number): number {
 		const distanceFraction =
-			(this.manager.getResolvedAdHeight() - distance) / this.manager.getResolvedAdHeight();
+			(this.reader.getResolvedAdHeight() - distance) / this.reader.getResolvedAdHeight();
 
 		return distanceFraction * universalAdPackage.SLIDE_OUT_TIME;
 	}

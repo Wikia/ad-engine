@@ -17,7 +17,6 @@ import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 @Injectable()
 export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private reader: BfaaDomReader;
 	private timeout: StickinessTimeout;
 
 	constructor(
@@ -25,8 +24,8 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.SLOT) adSlot: AdSlot,
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
+		private reader: BfaaDomReader,
 	) {
-		this.reader = new BfaaDomReader(params);
 		this.timeout = new StickinessTimeout(params, adSlot, universalAdPackage.BFAA_UNSTICK_DELAY);
 	}
 
