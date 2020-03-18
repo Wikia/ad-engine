@@ -19,7 +19,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 
 		const targeting: Partial<Targeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
-			artid: wiki.targeting.pageArticleId.toString(),
+			artid: wiki.targeting.pageArticleId ? wiki.targeting.pageArticleId.toString() : '',
 			dmn: domain.base,
 			esrb: wiki.targeting.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
