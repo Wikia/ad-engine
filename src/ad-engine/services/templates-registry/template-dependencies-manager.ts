@@ -1,5 +1,5 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { AdSlot, Dictionary } from '../../models/';
+import { AdSlot, Dictionary, Type } from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
 @Injectable()
@@ -15,15 +15,15 @@ export class TemplateDependenciesManager {
 		templateName: string,
 		templateSlot: AdSlot,
 		templateParams: Dictionary,
-		templateContext: Dictionary,
+		additionalDependencies: Type<any>[],
 	): void {
 		this.container.bind(TEMPLATE.NAME).value(templateName);
 		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
 		this.container.bind(TEMPLATE.PARAMS).value(templateParams);
-		this.container.bind(TEMPLATE.CONTEXT).value(templateContext);
+		additionalDependencies.forEach((type) => this.container.bind(type).to(type));
 	}
 
-	resetDependencies(): void {
+	resetDependencies(additionalDependencies: Type<any>[]): void {
 		this.container.bind(TEMPLATE.PARAMS).provider(() => {
 			throw new Error(this.constructErrorMessage(TEMPLATE.PARAMS.toString()));
 		});
@@ -33,9 +33,11 @@ export class TemplateDependenciesManager {
 		this.container.bind(TEMPLATE.NAME).provider(() => {
 			throw new Error(this.constructErrorMessage(TEMPLATE.NAME.toString()));
 		});
-		this.container.bind(TEMPLATE.CONTEXT).provider(() => {
-			throw new Error(this.constructErrorMessage(TEMPLATE.CONTEXT.toString()));
-		});
+		additionalDependencies.forEach((type) =>
+			this.container.bind(type).provider(() => {
+				throw new Error(this.constructErrorMessage(type.toString()));
+			}),
+		);
 	}
 
 	private constructErrorMessage(name: string): string {

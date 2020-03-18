@@ -8,7 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { assert, expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonSpy } from 'sinon';
 import {
 	createTemplateStateHandlerSpy,
 	TemplateStateHandlerSpy,
@@ -16,6 +16,7 @@ import {
 
 describe('Template Registry', () => {
 	const sandbox = createSandbox();
+	let additionalDepsSpy: SinonSpy;
 	let stateASpy: TemplateStateHandlerSpy;
 	let stateBSpy: TemplateStateHandlerSpy;
 	let stateSharedSpy: TemplateStateHandlerSpy;
@@ -23,14 +24,21 @@ describe('Template Registry', () => {
 	let instance: TemplateRegistry;
 
 	@Injectable()
+	class AdditionalDependency {
+		constructor(@Inject(TEMPLATE.NAME) public name: string) {
+			additionalDepsSpy(name);
+		}
+	}
+
+	@Injectable()
 	class StateAHandler implements TemplateStateHandler {
 		constructor(
 			@Inject(TEMPLATE.NAME) name: string,
 			@Inject(TEMPLATE.SLOT) slot: AdSlot,
 			@Inject(TEMPLATE.PARAMS) params: Dictionary,
-			@Inject(TEMPLATE.CONTEXT) context: Dictionary,
+			dep: AdditionalDependency,
 		) {
-			stateASpy.constructor(name, slot, params, context);
+			stateASpy.constructor(name, slot, params, dep);
 		}
 
 		async onEnter(transition: TemplateTransition<'b'>): Promise<void> {
@@ -71,6 +79,7 @@ describe('Template Registry', () => {
 	}
 
 	beforeEach(() => {
+		additionalDepsSpy = sandbox.spy();
 		stateASpy = createTemplateStateHandlerSpy(sandbox);
 		stateBSpy = createTemplateStateHandlerSpy(sandbox);
 		stateSharedSpy = createTemplateStateHandlerSpy(sandbox);
@@ -92,6 +101,12 @@ describe('Template Registry', () => {
 		expect(() => instance.init('mock', {} as any)).to.throw('Template mock is already initialized');
 	});
 
+	it('should be able to register without additional dependencies', () => {
+		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
+		instance.init('mock', {} as any);
+		assert(true);
+	});
+
 	describe('Initialized', () => {
 		const templateName1 = 'foo';
 		const templateSlot1: AdSlot = { slot: 'foo-slot' } as any;
@@ -105,12 +120,13 @@ describe('Template Registry', () => {
 		};
 
 		beforeEach(() => {
-			instance.register(templateName1, template, 'a');
-			instance.register(templateName2, template, 'a');
+			instance.register(templateName1, template, 'a', [AdditionalDependency]);
+			instance.register(templateName2, template, 'a', [AdditionalDependency]);
 		});
 
 		it('should not start before init', () => {
 			assert(stateASpy.constructor.notCalled);
+			assert(additionalDepsSpy.notCalled);
 			assert(stateBSpy.constructor.notCalled);
 			assert(stateSharedSpy.constructor.notCalled);
 		});
@@ -119,6 +135,7 @@ describe('Template Registry', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
 			assert(stateASpy.constructor.calledOnce);
+			assert(additionalDepsSpy.calledOnce);
 			assert(stateBSpy.constructor.calledOnce);
 			assert(stateSharedSpy.constructor.calledTwice);
 		});
@@ -128,6 +145,7 @@ describe('Template Registry', () => {
 			instance.init(templateName2, templateSlot1, templateParams1);
 
 			assert(stateASpy.constructor.calledTwice);
+			assert(additionalDepsSpy.calledTwice);
 			assert(stateBSpy.constructor.calledTwice);
 			assert(stateSharedSpy.constructor.callCount === 4);
 		});
@@ -149,26 +167,33 @@ describe('Template Registry', () => {
 		it('should be able inject correct params', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
-			const [name, slot, params] = stateASpy.constructor.getCall(0).args;
+			const [name, slot, params, dep] = stateASpy.constructor.getCall(0).args;
 
 			expect(name).to.equal(templateName1);
 			expect(slot).to.equal(templateSlot1);
 			expect(params).to.equal(templateParams1);
+			assert(additionalDepsSpy.calledOnce);
+			expect(dep instanceof AdditionalDependency).to.true;
+			expect(dep.name).to.equal(templateName1);
 		});
 
 		it('should be able inject correct params to different templates', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 			instance.init(templateName2, templateSlot2, templateParams2);
 
-			const [name1, slot1, params1] = stateASpy.constructor.getCall(0).args;
-			const [name2, slot2, params2] = stateASpy.constructor.getCall(1).args;
+			const [name1, slot1, params1, dep1] = stateASpy.constructor.getCall(0).args;
+			const [name2, slot2, params2, dep2] = stateASpy.constructor.getCall(1).args;
 
 			expect(name1).to.equal(templateName1);
 			expect(slot1).to.equal(templateSlot1);
 			expect(params1).to.equal(templateParams1);
+			assert(dep1 instanceof AdditionalDependency);
 			expect(name2).to.equal(templateName2);
 			expect(slot2).to.equal(templateSlot2);
 			expect(params2).to.equal(templateParams2);
+			assert(dep2 instanceof AdditionalDependency);
+			assert(dep1 !== dep2);
+			assert(additionalDepsSpy.calledTwice);
 		});
 
 		it('should enter initial state', () => {
