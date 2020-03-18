@@ -8,7 +8,6 @@ import { BfaaImpactDecisionHandler } from './handlers/bfaa/bfaa-impact-decision-
 import { BfaaImpactHandler } from './handlers/bfaa/bfaa-impact-handler';
 import { BfaaImpactVideoHandler } from './handlers/bfaa/bfaa-impact-video-handler';
 import { BfaaResolvedHandler } from './handlers/bfaa/bfaa-resolved-handler';
-import { BfaaResolvedVideoHandler } from './handlers/bfaa/bfaa-resolved-video-handler';
 import { BfaaStickyDecisionHandler } from './handlers/bfaa/bfaa-sticky-decision-handler';
 import { BfaaStickyHandler } from './handlers/bfaa/bfaa-sticky-handler';
 import { BfaaStickyVideoHandler } from './handlers/bfaa/bfaa-sticky-video-handler';
@@ -16,6 +15,7 @@ import { BfaaTransitionHandler } from './handlers/bfaa/bfaa-transition-handler';
 import { BfaaTransitionVideoHandler } from './handlers/bfaa/bfaa-transition-video-handler';
 import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
+import { ResolvedVideoHandler } from './handlers/resolved-video-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -36,7 +36,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				BfaaStickyVideoHandler,
 			],
 			transition: [BfaaTransitionHandler, BfaaTransitionVideoHandler],
-			resolved: [BfaaResolvedHandler, BfaaResolvedVideoHandler],
+			resolved: [BfaaResolvedHandler, ResolvedVideoHandler],
 		},
 		'initial',
 	);
