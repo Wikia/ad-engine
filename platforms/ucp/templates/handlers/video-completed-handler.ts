@@ -4,8 +4,11 @@ import { fromEvent, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../helpers/player-registry';
 
+/**
+ * Transition to resolved when video completes
+ */
 @Injectable()
-export class VideoImpactDecisionHandler implements TemplateStateHandler {
+export class VideoCompletedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private playerRegistry: PlayerRegistry) {}
