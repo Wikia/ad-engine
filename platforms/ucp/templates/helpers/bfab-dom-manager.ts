@@ -1,11 +1,13 @@
-import { AdSlot, UapParams } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';
 
+@Injectable()
 export class BfabDomManager {
 	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		private manipulator: DomManipulator,
-		private params: UapParams,
-		private adSlot: AdSlot,
 	) {}
 
 	setResolvedImage(): void {

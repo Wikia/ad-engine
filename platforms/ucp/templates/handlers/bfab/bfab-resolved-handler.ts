@@ -1,4 +1,4 @@
-import { AdSlot, DomListener, TEMPLATE, TemplateStateHandler, UapParams } from '@wikia/ad-engine';
+import { AdSlot, DomListener, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
@@ -8,16 +8,13 @@ import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 @Injectable()
 export class BfabResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private manager: BfabDomManager;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		private domListener: DomListener,
 		private manipulator: DomManipulator,
-	) {
-		this.manager = new BfabDomManager(this.manipulator, this.params, this.adSlot);
-	}
+		private manager: BfabDomManager,
+	) {}
 
 	async onEnter(): Promise<void> {
 		this.adSlot.show();
