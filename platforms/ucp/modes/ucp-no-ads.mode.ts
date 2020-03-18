@@ -11,11 +11,7 @@ export class UcpNoAdsMode implements NoAdsMode {
 	}
 
 	private trackAdEngineStatus(): void {
-		if (context.get('state.showAds')) {
-			PageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
-		} else {
-			PageTracker.trackProp('adengine', `off_${this.getReasonForNoAds()}`);
-		}
+		PageTracker.trackProp('adengine', `off_${this.getReasonForNoAds()}`);
 	}
 
 	private getReasonForNoAds(): string {
