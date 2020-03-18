@@ -29,20 +29,20 @@ export class BfaaImpactVideoHandler implements TemplateStateHandler {
 	}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
-		this.playerRegistry.player$
+		this.playerRegistry.video$
 			.pipe(
-				tap((video) => this.manager.setDynamicVideoImpactSize(video)),
-				switchMap((video) => {
+				tap(({ player }) => this.manager.setDynamicVideoImpactSize(player)),
+				switchMap(({ player }) => {
 					return merge(this.domListener.scroll$, this.domListener.resize$).pipe(
-						tap(() => this.manager.setDynamicVideoImpactSize(video)),
+						tap(() => this.manager.setDynamicVideoImpactSize(player)),
 					);
 				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
-		this.playerRegistry.player$
+		this.playerRegistry.video$
 			.pipe(
-				switchMap((video) => fromEvent(video, 'wikiaAdCompleted')),
+				switchMap(({ player }) => fromEvent(player, 'wikiaAdCompleted')),
 				tap(() => transition('resolved')),
 				takeUntil(this.unsubscribe$),
 			)
