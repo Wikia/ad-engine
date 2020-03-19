@@ -3,15 +3,57 @@ import { context } from '../../../src/ad-engine/services/context-service';
 import { trackingOptIn } from '../../../src/ad-engine/services/tracking-opt-in';
 
 describe('tracking-opt-in', () => {
-	it('is not opted in when main flag is disabled', () => {
-		context.set('options.trackingOptIn', false);
-
-		expect(trackingOptIn.isOptedIn()).to.not.be.ok;
+	beforeEach(() => {
+		context.remove('options.isSubjectToCoppa');
+		context.remove('options.trackingOptIn');
+		context.remove('options.optOutSale');
 	});
 
-	it('is opted in when main flag is enabled', () => {
-		context.set('options.trackingOptIn', true);
+	after(() => {
+		context.remove('options.isSubjectToCoppa');
+		context.remove('options.trackingOptIn');
+		context.remove('options.optOutSale');
+	});
 
-		expect(trackingOptIn.isOptedIn()).to.be.ok;
+	describe('isOptedIn', () => {
+		[
+			[undefined, undefined, false],
+			[true, undefined, false],
+			[false, undefined, false],
+			[undefined, true, true],
+			[true, true, false],
+			[false, true, true],
+			[undefined, false, false],
+			[true, false, false],
+			[false, false, false],
+		].forEach(([coppa, optIn, result]) => {
+			it(`should return ${result} when options.trackingOptIn is ${optIn} and options.isSubjectToCoppa is ${coppa}`, () => {
+				context.set('options.isSubjectToCoppa', coppa);
+				context.set('options.trackingOptIn', optIn);
+
+				expect(trackingOptIn.isOptedIn()).to.equal(result);
+			});
+		});
+	});
+
+	describe('isOptOutSale', () => {
+		[
+			[undefined, undefined, false],
+			[true, undefined, true],
+			[false, undefined, false],
+			[undefined, true, true],
+			[true, true, true],
+			[false, true, true],
+			[undefined, false, false],
+			[true, false, true],
+			[false, false, false],
+		].forEach(([coppa, optOutSale, result]) => {
+			it(`should return ${result} when options.optOutSale is ${optOutSale} and options.isSubjectToCoppa is ${coppa}`, () => {
+				context.set('options.isSubjectToCoppa', coppa);
+				context.set('options.optOutSale', optOutSale);
+
+				expect(trackingOptIn.isOptOutSale()).to.equal(result);
+			});
+		});
 	});
 });
