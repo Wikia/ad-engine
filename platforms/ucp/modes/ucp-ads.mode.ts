@@ -1,15 +1,47 @@
 import { AdsMode, startAdEngine, wadRunner } from '@platforms/shared';
-import { bidders, confiant, context, durationMedia, nielsen, permutive } from '@wikia/ad-engine';
+import {
+	bidders,
+	confiant,
+	context,
+	durationMedia,
+	JWPlayerManager,
+	nielsen,
+	permutive,
+	Runner,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { Communicator } from '@wikia/post-quecast';
 
 @Injectable()
 export class UcpAdsMode implements AdsMode {
 	handleAds(): void {
 		const inhibitors = this.callExternals();
 
+		this.setupJWPlayer(inhibitors);
 		startAdEngine(inhibitors);
 
 		this.setAdStack();
+	}
+
+	private async setupJWPlayer(inhibitors = []): Promise<any> {
+		new JWPlayerManager().manage();
+
+		const maxTimeout = context.get('options.maxDelayTimeout');
+		const runner = new Runner(inhibitors, maxTimeout, 'jwplayer-runner');
+
+		runner.waitForInhibitors().then(() => {
+			this.dispatchJWPlayerSetupAction();
+		});
+	}
+
+	private dispatchJWPlayerSetupAction(): void {
+		const communicator = new Communicator();
+
+		communicator.dispatch({
+			type: '[Ad Engine] Setup JWPlayer',
+			showAds: true,
+			autoplayDisabled: false,
+		});
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -39,6 +71,5 @@ export class UcpAdsMode implements AdsMode {
 		context.push('state.adStack', { id: 'incontent_player' });
 		context.push('state.adStack', { id: 'floor_adhesion' });
 		context.push('state.adStack', { id: 'invisible_high_impact_2' });
-		context.push('state.adStack', { id: 'featured' });
 	}
 }

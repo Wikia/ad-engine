@@ -5,7 +5,6 @@ import {
 	context,
 	Dictionary,
 	FmrRotator,
-	JWPlayerManager,
 	SlotConfig,
 	slotService,
 	utils,
@@ -20,7 +19,6 @@ const logGroup = 'dynamic-slots';
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
-		this.setupJWPlayerAds();
 		this.configureTopLeaderboard();
 	}
 
@@ -93,10 +91,6 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 		}
 
 		return container;
-	}
-
-	private setupJWPlayerAds(): void {
-		new JWPlayerManager().manage();
 	}
 
 	private configureTopLeaderboard(): void {
