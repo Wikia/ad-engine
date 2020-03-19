@@ -15,14 +15,14 @@ export class UcpNoAdsMode implements NoAdsMode {
 	}
 
 	private getReasonForNoAds(): string {
-		const reasonFromBackend = window.ads.context.opts.noAdsReason || null;
-		const pageType = window.ads.context.opts.pageType || null;
+		const reasonFromBackend = window.ads.context.opts.noAdsReason;
+		const pageType = window.ads.context.opts.pageType;
 
 		if (reasonFromBackend === 'no_ads_user' && pageType === 'homepage_logged') {
-			return null;
+			return '';
 		}
 
-		if (reasonFromBackend !== null) {
+		if (reasonFromBackend) {
 			return reasonFromBackend;
 		}
 
@@ -37,7 +37,7 @@ export class UcpNoAdsMode implements NoAdsMode {
 			return value === true;
 		});
 
-		return reasons.length > 0 ? reasons[0] : null;
+		return reasons.length > 0 ? reasons[0] : '';
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
