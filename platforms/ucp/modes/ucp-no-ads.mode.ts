@@ -33,8 +33,8 @@ export class UcpNoAdsMode implements NoAdsMode {
 			ad_stack_disabled: context.get('options.disableAdStack'),
 		};
 
-		const reasons = Object.keys(possibleFrontendReasons).filter((key) => {
-			return possibleFrontendReasons[key] === true;
+		const reasons = Object.values(possibleFrontendReasons).filter((value) => {
+			return value === true;
 		});
 
 		return reasons.length > 0 ? reasons[0] : null;
