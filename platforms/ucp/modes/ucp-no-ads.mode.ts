@@ -37,7 +37,7 @@ export class UcpNoAdsMode implements NoAdsMode {
 			return possibleFrontendReasons[key] === true;
 		});
 
-		return reasons.length > 0 ? reasons[0] : null;
+		return reasons.length > 0 ? reasons[0] : '';
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
