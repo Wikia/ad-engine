@@ -22,7 +22,7 @@ export class UcpNoAdsMode implements NoAdsMode {
 			return null;
 		}
 
-		if (reasonFromBackend !== null) {
+		if (reasonFromBackend) {
 			return reasonFromBackend;
 		}
 
