@@ -18,7 +18,7 @@ describe('tracking-opt-in', () => {
 			[true, undefined, false],
 			[false, undefined, false],
 			[undefined, true, true],
-			[true, true, false],
+			[true, true, true],
 			[false, true, true],
 			[undefined, false, false],
 			[true, false, false],
