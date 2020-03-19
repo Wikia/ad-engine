@@ -19,7 +19,7 @@ export class UcpNoAdsMode implements NoAdsMode {
 		const pageType = window.ads.context.opts.pageType;
 
 		if (reasonFromBackend === 'no_ads_user' && pageType === 'homepage_logged') {
-			return null;
+			return '';
 		}
 
 		if (reasonFromBackend) {
