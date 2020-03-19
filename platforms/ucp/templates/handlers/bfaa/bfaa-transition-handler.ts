@@ -10,9 +10,9 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { BfaaDomReader } from '../../helpers/bfaa-dom-reader';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
+import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable()
 export class BfaaTransitionHandler implements TemplateStateHandler {
@@ -23,7 +23,7 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 		private scrollCorrector: ScrollCorrector,
 		private manipulator: DomManipulator,
-		private reader: BfaaDomReader,
+		private reader: UapDomReader,
 	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {

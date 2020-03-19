@@ -10,9 +10,9 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { BfaaDomReader } from '../../helpers/bfaa-dom-reader';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
+import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable()
 export class BfaaImpactDecisionHandler implements TemplateStateHandler {
@@ -24,7 +24,7 @@ export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.SLOT) adSlot: AdSlot,
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
-		private reader: BfaaDomReader,
+		private reader: UapDomReader,
 	) {
 		this.timeout = new StickinessTimeout(params, adSlot, universalAdPackage.BFAA_UNSTICK_DELAY);
 	}

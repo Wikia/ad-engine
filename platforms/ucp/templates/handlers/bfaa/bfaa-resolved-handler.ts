@@ -2,8 +2,8 @@ import { DomListener, NAVBAR, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfaaDomManager } from '../../helpers/bfaa-dom-manager';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
+import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable()
 export class BfaaResolvedHandler implements TemplateStateHandler {
@@ -13,7 +13,7 @@ export class BfaaResolvedHandler implements TemplateStateHandler {
 		@Inject(NAVBAR) navbar: HTMLElement,
 		private domListener: DomListener,
 		private manipulator: DomManipulator,
-		private manager: BfaaDomManager,
+		private manager: UapDomManager,
 	) {}
 
 	async onEnter(): Promise<void> {

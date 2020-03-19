@@ -9,9 +9,10 @@ import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video-completed-handler';
 import { VideoResolvedHandler } from './handlers/video-resolved-handler';
-import { BfabDomManager } from './helpers/bfab-dom-manager';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
+import { UapDomManager } from './helpers/uap-dom-manager';
+import { UapDomReader } from './helpers/uap-dom-reader';
 import { VideoDomManager } from './helpers/video-dom-manager';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
@@ -28,6 +29,6 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [BfabResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, BfabDomManager, VideoDomManager],
+		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],
 	);
 }
