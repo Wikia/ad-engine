@@ -2,8 +2,8 @@ import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { BfabDomManager } from '../../helpers/bfab-dom-manager';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
+import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable()
 export class BfabImpactHandler implements TemplateStateHandler {
@@ -12,7 +12,7 @@ export class BfabImpactHandler implements TemplateStateHandler {
 	constructor(
 		private domListener: DomListener,
 		private manipulator: DomManipulator,
-		private manager: BfabDomManager,
+		private manager: UapDomManager,
 	) {}
 
 	async onEnter(): Promise<void> {

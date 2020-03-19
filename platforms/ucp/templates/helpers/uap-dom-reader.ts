@@ -1,9 +1,12 @@
-import { TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class BfaaDomReader {
-	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
+export class UapDomReader {
+	constructor(
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+	) {}
 
 	getDynamicImpactAdHeight(): number {
 		const minHeight = this.getResolvedAdHeight();
@@ -23,6 +26,6 @@ export class BfaaDomReader {
 	}
 
 	private calculateAdHeight(ratio: number): number {
-		return (1 / ratio) * document.body.offsetWidth;
+		return (1 / ratio) * this.adSlot.element.offsetWidth;
 	}
 }
