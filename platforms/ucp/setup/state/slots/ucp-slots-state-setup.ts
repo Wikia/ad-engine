@@ -1,5 +1,5 @@
 import { slotsContext, SlotsStateSetup } from '@platforms/shared';
-import { context, slotService } from '@wikia/ad-engine';
+import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -9,12 +9,11 @@ export class UcpSlotsStateSetup implements SlotsStateSetup {
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', true);
 		slotsContext.setState('bottom_leaderboard', true);
-		slotsContext.setState('incontent_player', false);
 		slotsContext.setState('invisible_skin', false);
 		slotsContext.setState('floor_adhesion', false);
 		slotsContext.setState('invisible_high_impact_2', false);
 
-		// Use slotsService directly and avoid checking DOM element:
-		slotService.setState('featured', window.canPlayVideo && window.canPlayVideo());
+		slotsContext.setState('featured', context.get('custom.hasFeaturedVideo'));
+		slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 	}
 }
