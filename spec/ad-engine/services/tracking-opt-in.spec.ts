@@ -3,17 +3,14 @@ import { context } from '../../../src/ad-engine/services/context-service';
 import { trackingOptIn } from '../../../src/ad-engine/services/tracking-opt-in';
 
 describe('tracking-opt-in', () => {
-	beforeEach(() => {
+	function clearContext() {
 		context.remove('options.isSubjectToCoppa');
 		context.remove('options.trackingOptIn');
 		context.remove('options.optOutSale');
-	});
+	}
+	beforeEach(clearContext);
 
-	after(() => {
-		context.remove('options.isSubjectToCoppa');
-		context.remove('options.trackingOptIn');
-		context.remove('options.optOutSale');
-	});
+	after(clearContext);
 
 	describe('isOptedIn', () => {
 		[
