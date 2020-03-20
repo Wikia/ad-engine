@@ -38,7 +38,7 @@ export interface SlotConfig {
 	aboveTheFold?: boolean;
 	trackOverscrolled?: boolean;
 	slotName?: string;
-	nextSiblingSelector?: string;
+	insertBeforeSelector?: string;
 	parentContainerSelector?: string;
 
 	targeting: Targeting;

@@ -1,12 +1,10 @@
 import { SlotsContextSetup } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../../../../shared/slots/slots-context';
-import { UcpTargetingSetup } from '../targeting/ucp-targeting.setup';
 
 @Injectable()
 export class UcpSlotsContextSetup implements SlotsContextSetup {
-	constructor(private targetingSetup: UcpTargetingSetup) {}
+	constructor() {}
 
 	configureSlotsContext(): void {
 		const slots = {
@@ -16,7 +14,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				nextSiblingSelector: '.wds-global-navigation-wrapper',
+				insertBeforeSelector: '.wds-global-navigation-wrapper',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
@@ -39,7 +37,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				nextSiblingSelector: '.WikiaPage',
+				insertBeforeSelector: '.WikiaPage',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -73,7 +71,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				nextSiblingSelector: '.rcs-container, .wikia-rail-inner',
+				insertBeforeSelector: '.rcs-container, .wikia-rail-inner',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [[300, 250], [300, 600], [300, 1050]],
@@ -86,7 +84,6 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,
 				group: 'PX',
-				nextSiblingSelector: '',
 				options: {},
 				slotNameSuffix: '',
 				slotShortcut: 'x',
@@ -135,7 +132,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				nextSiblingSelector: '.mcf-en',
+				insertBeforeSelector: '.mcf-en',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -165,15 +162,15 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
-				avoidConflictWith: null,
 				autoplay: true,
 				audio: false,
-				insertBeforeSelector: '#mw-content-text > h2',
+				isVideo: true,
+				insertBeforeSelector: '#mw-content-text > div > h2',
 				insertBelowFirstViewport: true,
 				disabled: true,
+				nonUapSlot: true,
 				slotNameSuffix: '',
 				group: 'HiVi',
-				nextSiblingSelector: '',
 				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -188,7 +185,6 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
-				nextSiblingSelector: '',
 				options: {},
 				targeting: {
 					loc: 'footer',
@@ -201,7 +197,6 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
-				nextSiblingSelector: '',
 				options: {},
 				outOfPage: true,
 				targeting: {
@@ -214,7 +209,6 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				slotNameSuffix: '',
 				nonUapSlot: true,
 				group: 'VIDEO',
-				nextSiblingSelector: '',
 				lowerSlotName: 'featured',
 				videoSizes: [[640, 480]],
 				targeting: {
@@ -227,10 +221,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 		};
 
 		context.set('slots', slots);
-
-		// context.set('slots', slots) must be called first!
-		if (!this.targetingSetup.getVideoStatus().hasVideoOnPage) {
-			slotsContext.addSlotSize('hivi_leaderboard', [3, 3]);
-		}
+		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 	}
 }
