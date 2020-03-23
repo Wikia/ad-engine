@@ -9,7 +9,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, take, takeUntil, tap } from 'rxjs/operators';
+import { filter, startWith, take, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable()
 export class CloseButtonHandler implements TemplateStateHandler {
@@ -31,7 +31,7 @@ export class CloseButtonHandler implements TemplateStateHandler {
 
 		this.domListener.scroll$
 			.pipe(
-				takeUntil(this.unsubscribe$),
+				startWith({}),
 				filter(() => {
 					return window.scrollY > 0;
 				}),
@@ -39,6 +39,7 @@ export class CloseButtonHandler implements TemplateStateHandler {
 				tap(() => {
 					this.adSlot.getElement().appendChild(this.button);
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

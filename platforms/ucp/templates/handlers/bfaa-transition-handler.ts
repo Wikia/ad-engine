@@ -35,7 +35,6 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 		this.helper.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				startWith({}),
 				tap(() => {
 					this.helper.setResolvedAdHeight();
@@ -43,17 +42,18 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 					this.helper.setNavbarFixedPosition();
 					this.helper.setBodyPadding();
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 
 		this.animate()
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				tap(() => {
 					const correction = this.helper.useScrollCorrection();
 
 					transition('resolved').then(correction);
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

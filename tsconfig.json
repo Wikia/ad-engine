@@ -9,8 +9,8 @@
 		"noImplicitAny": false,
 		"baseUrl": ".",
 		"noUnusedLocals": true,
-		"typeRoots": ["node_modules/@types", "@types"],
-		"keyofStringsOnly": true
+		"keyofStringsOnly": true,
+		"typeRoots": ["node_modules/@types", "@types"]
 	},
 	"include": ["src", "spec", "platforms", "examples"],
 	"exclude": ["**/dist/**/*"]

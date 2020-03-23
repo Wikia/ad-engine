@@ -1,0 +1,70 @@
+@import 'src/ad-products/styles/uap-variables';
+@import 'src/ad-products/styles/breakpoints';
+
+@mixin bottom-panel() {
+	.bottom-panel {
+		position: absolute;
+		bottom: $uap-progress-bar-height;
+		right: 0;
+		text-align: right;
+		z-index: 1;
+
+		> div {
+			cursor: pointer;
+			display: inline-block;
+			padding: $hivi-uap-player-button-border-space $player-button-click-area-mobile;
+			vertical-align: top;
+
+			@media #{$breakpoint-m-up} {
+				padding: $hivi-uap-player-button-border-space $player-button-click-area-desktop;
+			}
+		}
+	}
+
+	.dynamic-panel {
+		bottom: 8px;
+		//display: none;
+		pointer-events: none;
+		right: 0;
+		text-align: left;
+		width: 100%;
+		z-index: 3;
+
+		& > div {
+			pointer-events: all;
+		}
+	}
+
+	.toggle-ui-overlay {
+		cursor: pointer;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		user-select: none;
+		width: 100%;
+		z-index: 1;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-webkit-user-select: none;
+	}
+
+	&.ui-visible {
+		.toggle-ui-overlay {
+			background: linear-gradient(
+				to top,
+				rgba(0, 0, 0, 1) 0%,
+				rgba(0, 0, 0, 0.7) 15%,
+				rgba(0, 0, 0, 0) 30%
+			);
+		}
+
+		.dynamic-panel {
+			display: block;
+		}
+	}
+
+	.fading {
+		opacity: 0;
+		transition: opacity 1s linear;
+	}
+}

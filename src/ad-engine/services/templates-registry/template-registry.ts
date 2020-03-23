@@ -45,7 +45,14 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		this.dependenciesManager.provideDependencies(templateName, templateSlot, templateParams);
+		const context: Dictionary = {};
+
+		this.dependenciesManager.provideDependencies(
+			templateName,
+			templateSlot,
+			templateParams,
+			context,
+		);
 
 		const { StateHandlerTypesDict, initialStateKey, emitter$ } = this.settings.get(templateName);
 		const templateStateMap = this.createTemplateStateMap(StateHandlerTypesDict);

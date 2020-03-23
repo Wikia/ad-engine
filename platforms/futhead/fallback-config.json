@@ -221,29 +221,12 @@
                 "oasis"
             ],
             "regions": [
-                "XX-AS",
-                "XX-EU",
-                "XX-OC"
-            ],
-            "value": true
-        }
-    ],
-    "icA9Deals": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
                 "XX"
             ],
             "value": true
         }
     ],
-    "icPrebidCriteo": [
+    "icA9Deals": [
         {
             "apps": [
                 "futhead",
@@ -270,7 +253,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200302.min.js"
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200309.min.js"
         }
     ],
     "icA9Bidder": [

@@ -1,4 +1,6 @@
-import { AdSlot, DomManipulator, UapParams } from '@wikia/ad-engine';
+import { AdSlot, DomManipulator, UapParams, universalAdPackage, utils } from '@wikia/ad-engine';
+import { from, Observable } from 'rxjs';
+import { isUndefined } from 'util';
 import { calculateAdHeight } from './calculate-ad-height';
 
 export class BfaaHelper {
@@ -89,5 +91,19 @@ export class BfaaHelper {
 		const startValue = elementOfReference.getBoundingClientRect().top;
 
 		return () => window.scrollBy(0, elementOfReference.getBoundingClientRect().top - startValue);
+	}
+
+	isViewedAndDelayed(): Observable<unknown> {
+		const slotViewed: Promise<void> = this.adSlot.loaded.then(() => this.adSlot.viewed);
+
+		return from(slotViewed.then(() => utils.wait(this.getAdditionalStickinessTime())));
+	}
+
+	private getAdditionalStickinessTime(): number {
+		if (!isUndefined(this.params.stickyAdditionalTime)) {
+			return this.params.stickyAdditionalTime;
+		}
+
+		return universalAdPackage.BFAA_UNSTICK_DELAY;
 	}
 }

@@ -33,11 +33,11 @@ export class BfabImpactHandler implements TemplateStateHandler {
 		this.helper.setImpactImage();
 		this.domListener.resize$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				startWith({}),
 				tap(() => {
 					this.helper.setImpactAdHeight();
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

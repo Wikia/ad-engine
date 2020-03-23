@@ -11,7 +11,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
+import { filter, shareReplay, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BfaaHelper } from '../helpers/bfaa-helper';
 
 @Injectable()
@@ -30,12 +30,18 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
 	}
 
-	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
+		const isViewedAndDelayed$ = this.helper.isViewedAndDelayed().pipe(
+			takeUntil(this.unsubscribe$),
+			startWith(true),
+			shareReplay(1),
+		);
+		isViewedAndDelayed$.subscribe();
+
 		this.adSlot.show();
 		this.helper.setImpactImage();
 		this.domListener.resize$
 			.pipe(
-				takeUntil(this.unsubscribe$),
 				startWith({}),
 				tap(() => {
 					this.helper.setImpactAdHeight();
@@ -43,23 +49,30 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 					this.helper.setNavbarFixedPosition();
 					this.helper.setBodyPadding();
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 
 		this.domListener.scroll$
 			.pipe(
-				takeUntil(this.unsubscribe$),
+				startWith({}),
 				tap(() => {
 					this.helper.setImpactAdHeight();
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
 				}),
 				filter(() => this.reachedResolvedSize()),
-				tap(() => {
+				withLatestFrom(isViewedAndDelayed$),
+				tap(([_, shouldStick]) => {
 					const correction = this.helper.usePositionCorrection(this.footer);
 
-					transition('sticky').then(correction);
+					if (shouldStick) {
+						transition('sticky').then(correction);
+					} else {
+						transition('transition').then(correction);
+					}
 				}),
+				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
 	}

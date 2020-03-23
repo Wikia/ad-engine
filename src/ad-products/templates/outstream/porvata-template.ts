@@ -13,9 +13,9 @@ export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
 
 export interface PorvataTemplateConfig {
-	isFloatingEnabled: boolean;
-	inViewportOffsetTop: number;
-	inViewportOffsetBottom: number;
+	isFloatingEnabled?: boolean;
+	inViewportOffsetTop?: number;
+	inViewportOffsetBottom?: number;
 	onInit: (adSlot: AdSlot, params: PorvataTemplateParams, config: PorvataTemplateConfig) => void;
 }
 
@@ -59,8 +59,7 @@ export class PorvataTemplate {
 
 		params.viewportHookElement = this.adSlot.getElement();
 		if (this.isInsecureMode) {
-			params.originalContainer = params.container;
-			params.container = this.createVideoContainer();
+			params.container = Porvata.createVideoContainer(this.adSlot.getElement());
 		}
 
 		if (!this.adSlot.config.disableExpandAnimation) {
@@ -159,21 +158,5 @@ export class PorvataTemplate {
 		video.addEventListener('allAdsCompleted', () => {
 			video.dom.getPlayerContainer().classList.add('hide');
 		});
-	}
-
-	/**
-	 * TODO: Shouldn't we move this logic to Porvata code?
-	 */
-	createVideoContainer(): HTMLElement {
-		const container: HTMLElement = document.createElement('div');
-		const displayWrapper: HTMLElement = document.createElement('div');
-
-		container.classList.add('video-overlay');
-		displayWrapper.classList.add('video-display-wrapper');
-
-		container.appendChild(displayWrapper);
-		this.adSlot.getElement().appendChild(container);
-
-		return displayWrapper;
 	}
 }
