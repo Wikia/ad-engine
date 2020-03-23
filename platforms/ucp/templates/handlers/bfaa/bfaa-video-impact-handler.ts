@@ -6,7 +6,7 @@ import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class BfaaVideoImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

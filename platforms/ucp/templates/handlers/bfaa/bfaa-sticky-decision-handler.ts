@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private timeout: StickinessTimeout;

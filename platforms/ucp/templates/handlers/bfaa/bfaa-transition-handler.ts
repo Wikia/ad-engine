@@ -14,7 +14,7 @@ import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class BfaaTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

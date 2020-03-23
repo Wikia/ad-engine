@@ -5,7 +5,7 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
 import { UapDomManager } from '../helpers/uap-dom-manager';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class ResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

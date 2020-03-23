@@ -23,14 +23,14 @@ describe('Template Registry', () => {
 	let container: Container;
 	let instance: TemplateRegistry;
 
-	@Injectable()
+	@Injectable({ autobind: false })
 	class AdditionalDependency {
 		constructor(@Inject(TEMPLATE.NAME) public name: string) {
 			additionalDepsSpy(name);
 		}
 	}
 
-	@Injectable()
+	@Injectable({ autobind: false })
 	class StateAHandler implements TemplateStateHandler {
 		constructor(
 			@Inject(TEMPLATE.NAME) name: string,
@@ -50,6 +50,7 @@ describe('Template Registry', () => {
 		}
 	}
 
+	@Injectable({ autobind: false })
 	class StateBHandler implements TemplateStateHandler {
 		constructor() {
 			stateBSpy.constructor();
@@ -64,6 +65,7 @@ describe('Template Registry', () => {
 		}
 	}
 
+	@Injectable({ autobind: false })
 	class StateSharedHandler implements TemplateStateHandler {
 		constructor() {
 			stateSharedSpy.constructor();

@@ -18,7 +18,7 @@ import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { PlayerRegistry } from '../helpers/player-registry';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class VideoBootstrapHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,

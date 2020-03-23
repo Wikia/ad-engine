@@ -14,7 +14,7 @@ import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private timeout: StickinessTimeout;

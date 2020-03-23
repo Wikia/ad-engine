@@ -7,7 +7,7 @@ import { PlayerRegistry } from '../helpers/player-registry';
 /**
  * Transition to resolved when video completes
  */
-@Injectable()
+@Injectable({ autobind: false })
 export class VideoCompletedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 

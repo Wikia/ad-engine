@@ -1,7 +1,7 @@
 import { FOOTER } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class ScrollCorrector {
 	constructor(@Inject(FOOTER) private footer: HTMLElement) {}
 

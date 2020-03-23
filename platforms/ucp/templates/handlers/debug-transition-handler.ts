@@ -1,7 +1,7 @@
 import { TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class DebugTransitionHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.NAME) private name: string) {}
 

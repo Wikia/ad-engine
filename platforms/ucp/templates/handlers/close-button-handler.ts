@@ -11,7 +11,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, take, takeUntil, tap } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class CloseButtonHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private button: HTMLButtonElement;

@@ -1,8 +1,10 @@
 import { AdSlot, UapParams, utils } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isUndefined } from 'util';
 
+@Injectable({ autobind: false })
 export class StickinessTimeout {
 	constructor(private params: UapParams, private adSlot: AdSlot, private fallbackTimeout: number) {}
 
