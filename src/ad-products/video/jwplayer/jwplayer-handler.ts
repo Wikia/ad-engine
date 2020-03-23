@@ -33,11 +33,11 @@ export class JWPlayerHandler {
 	private adError(): Observable<any> {
 		return this.stream$.pipe(
 			ofJwpEvent('adError'),
-			tap(({ event, state }) => {
-				log(`ad error message: ${event.message}`);
+			tap(({ payload, state }) => {
+				log(`ad error message: ${payload.message}`);
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes(state.vastParams);
-				this.helper.emitVideoAdError(event.adErrorCode);
+				this.helper.emitVideoAdError(payload.adErrorCode);
 			}),
 		);
 	}
