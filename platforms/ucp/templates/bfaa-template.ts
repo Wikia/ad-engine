@@ -1,4 +1,4 @@
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
@@ -21,6 +21,8 @@ import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
+import { ScrollCorrector } from './helpers/scroll-corrector';
+import { STICKINESS_TIMEOUT_DEFAULT, StickinessTimeout } from './helpers/stickiness-timeout';
 import { UapDomManager } from './helpers/uap-dom-manager';
 import { UapDomReader } from './helpers/uap-dom-reader';
 import { VideoDomManager } from './helpers/video-dom-manager';
@@ -54,6 +56,15 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [ResolvedHandler, VideoResolvedHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],
+		[
+			ScrollCorrector,
+			PlayerRegistry,
+			DomManipulator,
+			UapDomManager,
+			UapDomReader,
+			VideoDomManager,
+			StickinessTimeout,
+			{ bind: STICKINESS_TIMEOUT_DEFAULT, value: universalAdPackage.BFAA_UNSTICK_DELAY },
+		],
 	);
 }

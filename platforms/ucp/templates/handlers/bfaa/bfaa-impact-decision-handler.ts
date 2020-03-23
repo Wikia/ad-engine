@@ -1,13 +1,5 @@
-import {
-	AdSlot,
-	DomListener,
-	TEMPLATE,
-	TemplateStateHandler,
-	TemplateTransition,
-	UapParams,
-	universalAdPackage,
-} from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { DomListener, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
@@ -17,17 +9,13 @@ import { UapDomReader } from '../../helpers/uap-dom-reader';
 @Injectable({ autobind: false })
 export class BfaaImpactDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private timeout: StickinessTimeout;
 
 	constructor(
-		@Inject(TEMPLATE.PARAMS) params: UapParams,
-		@Inject(TEMPLATE.SLOT) adSlot: AdSlot,
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 		private reader: UapDomReader,
-	) {
-		this.timeout = new StickinessTimeout(params, adSlot, universalAdPackage.BFAA_UNSTICK_DELAY);
-	}
+		private timeout: StickinessTimeout,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
 		this.domListener.scroll$
