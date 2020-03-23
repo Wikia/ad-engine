@@ -1,4 +1,4 @@
-import { AdsMode, startAdEngine, wadRunner } from '@platforms/shared';
+import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	bidders,
 	confiant,
@@ -21,6 +21,11 @@ export class UcpAdsMode implements AdsMode {
 		startAdEngine(inhibitors);
 
 		this.setAdStack();
+		this.trackAdEngineStatus();
+	}
+
+	private trackAdEngineStatus(): void {
+		PageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
 	private async setupJWPlayer(inhibitors = []): Promise<any> {
