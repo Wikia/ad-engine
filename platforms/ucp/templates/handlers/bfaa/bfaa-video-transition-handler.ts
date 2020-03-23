@@ -2,7 +2,6 @@ import { TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
@@ -10,11 +9,7 @@ import { VideoDomManager } from '../../helpers/video-dom-manager';
 export class BfaaVideoTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(
-		private playerRegistry: PlayerRegistry,
-		private manipulator: DomManipulator,
-		private manager: VideoDomManager,
-	) {}
+	constructor(private playerRegistry: PlayerRegistry, private manager: VideoDomManager) {}
 
 	async onEnter(): Promise<void> {
 		this.playerRegistry.video$
@@ -27,6 +22,5 @@ export class BfaaVideoTransitionHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
-		this.manipulator.restore();
 	}
 }

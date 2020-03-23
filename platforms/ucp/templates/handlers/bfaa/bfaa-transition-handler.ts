@@ -71,6 +71,5 @@ export class BfaaTransitionHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
-		this.manipulator.restore();
 	}
 }

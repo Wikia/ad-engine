@@ -43,6 +43,5 @@ export class BfaaStickyHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
-		this.manipulator.restore();
 	}
 }
