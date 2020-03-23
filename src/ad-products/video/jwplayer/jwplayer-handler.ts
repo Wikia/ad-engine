@@ -60,7 +60,7 @@ export class JWPlayerHandler {
 				this.helper.emitVideoAdImpression();
 			}),
 			filter(() => this.helper.isMoatTrackingEnabled()),
-			tap(({ event }) => this.helper.trackMoat(event)),
+			tap(({ payload }) => this.helper.trackMoat(payload)),
 		);
 	}
 

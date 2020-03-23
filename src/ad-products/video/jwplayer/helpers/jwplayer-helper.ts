@@ -20,7 +20,7 @@ export class JWPlayerHelper {
 		return context.get('options.video.moatTracking.enabledForArticleVideos') && !!window.moatjw;
 	}
 
-	trackMoat(event: JWPlayerEventParams['adImpression']): void {
+	trackMoat(payload: JWPlayerEventParams['adImpression']): void {
 		const partnerCode =
 			context.get('options.video.moatTracking.articleVideosPartnerCode') ||
 			context.get('options.video.moatTracking.partnerCode');
@@ -28,7 +28,7 @@ export class JWPlayerHelper {
 		window.moatjw.add({
 			partnerCode,
 			player: this.jwplayer,
-			adImpressionEvent: event,
+			adImpressionEvent: payload,
 		});
 	}
 
