@@ -2,8 +2,12 @@ import {
 	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
+	NoAdsMode,
+	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
@@ -17,6 +21,8 @@ import { set } from 'lodash';
 import { UcpAdEngineRunnerSetup } from './ad-engine-runner/ucp-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
+import { UcpNoAdsMode } from './modes/ucp-no-ads.mode';
+import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
 import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup';
 import { UcpWikiContextSetup } from './setup/context/wiki/ucp-wiki-context.setup';
@@ -35,6 +41,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(AdEngineRunnerSetup).to(UcpAdEngineRunnerSetup);
 	container.bind(AdsMode).to(UcpAdsMode);
+	container.bind(NoAdsMode).to(UcpNoAdsMode);
 	container.bind(SlotsStateSetup).to(UcpSlotsStateSetup);
 	container.bind(SlotsContextSetup).to(UcpSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(UcpDynamicSlotsSetup);
@@ -42,6 +49,8 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
 	container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
+	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
 
 	return container;
 }

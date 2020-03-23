@@ -44,8 +44,8 @@ export class PlatformStartup {
 	configure(args: PlatformStartupArgs): void {
 		this.wikiContextSetup.configureWikiContext();
 		this.baseContextSetup.configureBaseContext(args.isMobile);
-		this.targetingSetup.configureTargetingContext();
 		this.slotsContextSetup.configureSlotsContext();
+		this.targetingSetup.configureTargetingContext();
 		this.prebidConfigSetup.configurePrebidContext();
 		this.a9ConfigSetup.configureA9Context();
 		this.dynamicSlotsSetup.configureDynamicSlots();
