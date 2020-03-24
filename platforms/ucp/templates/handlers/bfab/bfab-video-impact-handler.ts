@@ -1,6 +1,6 @@
 import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { merge, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
@@ -19,7 +19,7 @@ export class BfabVideoImpactHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) =>
-					merge(this.domListener.resize$).pipe(
+					this.domListener.resize$.pipe(
 						startWith({}),
 						map(() => player),
 					),
