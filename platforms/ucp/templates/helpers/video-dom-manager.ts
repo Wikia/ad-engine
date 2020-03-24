@@ -2,7 +2,7 @@ import { AdSlot, Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class VideoDomManager {
 	constructor(
 		private manipulator: DomManipulator,

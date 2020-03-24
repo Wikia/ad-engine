@@ -23,14 +23,14 @@ describe('Template Registry', () => {
 	let container: Container;
 	let instance: TemplateRegistry;
 
-	@Injectable()
+	@Injectable({ autobind: false })
 	class AdditionalDependency {
 		constructor(@Inject(TEMPLATE.NAME) public name: string) {
 			additionalDepsSpy(name);
 		}
 	}
 
-	@Injectable()
+	@Injectable({ autobind: false })
 	class StateAHandler implements TemplateStateHandler {
 		constructor(
 			@Inject(TEMPLATE.NAME) name: string,
@@ -50,6 +50,7 @@ describe('Template Registry', () => {
 		}
 	}
 
+	@Injectable({ autobind: false })
 	class StateBHandler implements TemplateStateHandler {
 		constructor() {
 			stateBSpy.constructor();
@@ -64,6 +65,7 @@ describe('Template Registry', () => {
 		}
 	}
 
+	@Injectable({ autobind: false })
 	class StateSharedHandler implements TemplateStateHandler {
 		constructor() {
 			stateSharedSpy.constructor();
@@ -96,13 +98,22 @@ describe('Template Registry', () => {
 	});
 
 	it('should throw when initialized twice', () => {
-		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
+		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
+			AdditionalDependency,
+		]);
 		instance.init('mock', {} as any);
 		expect(() => instance.init('mock', {} as any)).to.throw('Template mock is already initialized');
 	});
 
-	it('should be able to register without additional dependencies', () => {
+	it('should throw without providing template dependencies', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
+		expect(() => instance.init('mock', {} as any)).to.throw(
+			`${AdditionalDependency.toString()} is not bound to anything`,
+		);
+	});
+
+	it('should be able to register without template dependencies', () => {
+		instance.register('mock', { a: [StateBHandler], b: [StateBHandler] }, 'a');
 		instance.init('mock', {} as any);
 		assert(true);
 	});
@@ -154,13 +165,13 @@ describe('Template Registry', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
 			expect(() => container.get(TEMPLATE.NAME)).to.throw(
-				`${TEMPLATE.NAME.toString()} can only be injected in template handler constructor`,
+				`${TEMPLATE.NAME.toString()} is not bound to anything`,
 			);
 			expect(() => container.get(TEMPLATE.SLOT)).to.throw(
-				`${TEMPLATE.SLOT.toString()} can only be injected in template handler constructor`,
+				`${TEMPLATE.SLOT.toString()} is not bound to anything`,
 			);
 			expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
-				`${TEMPLATE.PARAMS.toString()} can only be injected in template handler constructor`,
+				`${TEMPLATE.PARAMS.toString()} is not bound to anything`,
 			);
 		});
 

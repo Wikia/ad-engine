@@ -2,18 +2,16 @@ import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from '../helpers/player-registry';
 import { VideoDomManager } from '../helpers/video-dom-manager';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class VideoResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
 		private playerRegistry: PlayerRegistry,
 		private domListener: DomListener,
-		private manipulator: DomManipulator,
 		private manager: VideoDomManager,
 	) {}
 
@@ -34,6 +32,5 @@ export class VideoResolvedHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
-		this.manipulator.restore();
 	}
 }

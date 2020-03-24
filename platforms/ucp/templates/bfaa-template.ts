@@ -1,4 +1,4 @@
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
@@ -13,6 +13,7 @@ import { BfaaVideoStickyHandler } from './handlers/bfaa/bfaa-video-sticky-handle
 import { BfaaVideoTransitionHandler } from './handlers/bfaa/bfaa-video-transition-handler';
 import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
+import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { ResolvedHandler } from './handlers/resolved-handler';
 import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video-completed-handler';
@@ -21,6 +22,8 @@ import { VideoResolvedHandler } from './handlers/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
+import { ScrollCorrector } from './helpers/scroll-corrector';
+import { STICKINESS_TIMEOUT_DEFAULT, StickinessTimeout } from './helpers/stickiness-timeout';
 import { UapDomManager } from './helpers/uap-dom-manager';
 import { UapDomReader } from './helpers/uap-dom-reader';
 import { VideoDomManager } from './helpers/video-dom-manager';
@@ -43,17 +46,33 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				BfaaImpactDecisionHandler,
 				BfaaVideoImpactHandler,
 				VideoCompletedHandler,
+				DomCleanupHandler,
 			],
 			sticky: [
 				BfaaStickyHandler,
 				BfaaStickyDecisionHandler,
 				CloseButtonHandler,
 				BfaaVideoStickyHandler,
+				DomCleanupHandler,
 			],
-			transition: [BfaaStickyHandler, BfaaTransitionHandler, BfaaVideoTransitionHandler],
-			resolved: [ResolvedHandler, VideoResolvedHandler],
+			transition: [
+				BfaaStickyHandler,
+				BfaaTransitionHandler,
+				BfaaVideoTransitionHandler,
+				DomCleanupHandler,
+			],
+			resolved: [ResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],
+		[
+			ScrollCorrector,
+			PlayerRegistry,
+			DomManipulator,
+			UapDomManager,
+			UapDomReader,
+			VideoDomManager,
+			StickinessTimeout,
+			{ bind: STICKINESS_TIMEOUT_DEFAULT, value: universalAdPackage.BFAA_UNSTICK_DELAY },
+		],
 	);
 }

@@ -1,7 +1,7 @@
 import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class UapDomReader {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,

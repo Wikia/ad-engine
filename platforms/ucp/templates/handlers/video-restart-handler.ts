@@ -7,7 +7,7 @@ import { PlayerRegistry } from '../helpers/player-registry';
 /**
  * Transition to impact when video is restarted
  */
-@Injectable()
+@Injectable({ autobind: false })
 export class VideoRestartHandler implements TemplateStateHandler {
 	constructor(private playerRegistry: PlayerRegistry) {}
 

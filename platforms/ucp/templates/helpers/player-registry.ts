@@ -11,7 +11,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { ReplaySubject } from 'rxjs';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class PlayerRegistry {
 	private state$ = new ReplaySubject<{ player: Porvata4Player; params: PorvataTemplateParams }>(1);
 	video$ = this.state$.asObservable();

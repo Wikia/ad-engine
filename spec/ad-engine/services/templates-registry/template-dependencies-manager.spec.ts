@@ -3,7 +3,7 @@ import { TemplateDependenciesManager } from '@wikia/ad-engine/services/templates
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { assert, expect } from 'chai';
 
-@Injectable()
+@Injectable({ autobind: false })
 class AdditionalDependency {
 	constructor(@Inject(TEMPLATE.NAME) public name: string) {}
 }
@@ -20,10 +20,19 @@ describe('Template Dependencies Manager', () => {
 		instance = container.get(TemplateDependenciesManager);
 	});
 
-	it('should be empty if no provide', () => {
-		expect(() => container.get(TEMPLATE.NAME)).to.throw(TypeError);
-		expect(() => container.get(TEMPLATE.SLOT)).to.throw(TypeError);
-		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(TypeError);
+	it('should throw if no provide', () => {
+		expect(() => container.get(TEMPLATE.NAME)).to.throw(
+			`${TEMPLATE.NAME.toString()} is not bound to anything`,
+		);
+		expect(() => container.get(TEMPLATE.SLOT)).to.throw(
+			`${TEMPLATE.SLOT.toString()} is not bound to anything`,
+		);
+		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
+			`${TEMPLATE.PARAMS.toString()} is not bound to anything`,
+		);
+		expect(() => container.get(AdditionalDependency)).to.throw(
+			`${AdditionalDependency.toString()} is not bound to anything`,
+		);
 	});
 
 	it('should provide dependencies', () => {
@@ -39,19 +48,22 @@ describe('Template Dependencies Manager', () => {
 	});
 
 	it('should throw after reset', () => {
+		instance.provideDependencies(templateName, templateSlot, templateParams, [
+			AdditionalDependency,
+		]);
 		instance.resetDependencies([AdditionalDependency]);
 
 		expect(() => container.get(TEMPLATE.NAME)).to.throw(
-			`${TEMPLATE.NAME.toString()} can only be injected in template handler constructor`,
+			`${TEMPLATE.NAME.toString()} is not bound to anything`,
 		);
 		expect(() => container.get(TEMPLATE.SLOT)).to.throw(
-			`${TEMPLATE.SLOT.toString()} can only be injected in template handler constructor`,
+			`${TEMPLATE.SLOT.toString()} is not bound to anything`,
 		);
 		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
-			`${TEMPLATE.PARAMS.toString()} can only be injected in template handler constructor`,
+			`${TEMPLATE.PARAMS.toString()} is not bound to anything`,
 		);
 		expect(() => container.get(AdditionalDependency)).to.throw(
-			`${AdditionalDependency.toString()} can only be injected in template handler constructor`,
+			`${AdditionalDependency.toString()} is not bound to anything`,
 		);
 	});
 });

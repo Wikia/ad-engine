@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class UapDomManager {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,

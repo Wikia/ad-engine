@@ -7,7 +7,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class SecondMockHandler implements TemplateStateHandler {
 	private id = Math.random() * 10;
 

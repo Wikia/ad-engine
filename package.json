@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@babel/runtime-corejs2": "^7.3.1",
-		"@wikia/dependency-injection": "2.1.0",
+		"@wikia/dependency-injection": "2.2.2",
 		"@wikia/post-quecast": "^1.2.0",
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
@@ -89,7 +89,7 @@
 		"tslint-config-airbnb": "5.11.1",
 		"tslint-config-prettier": "1.18.0",
 		"tslint-eslint-rules": "5.4.0",
-		"typescript": "3.6.3",
+		"typescript": "3.8.3",
 		"webdriverio": "5.16.9",
 		"webpack": "4.5.0",
 		"webpack-cli": "2.0.14",

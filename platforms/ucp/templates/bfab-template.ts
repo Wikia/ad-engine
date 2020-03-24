@@ -5,6 +5,7 @@ import { BfabBootstrapHandler } from './handlers/bfab/bfab-bootstrap-handler';
 import { BfabImpactHandler } from './handlers/bfab/bfab-impact-handler';
 import { BfabVideoImpactHandler } from './handlers/bfab/bfab-video-impact-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
+import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { ResolvedHandler } from './handlers/resolved-handler';
 import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video-completed-handler';
@@ -25,8 +26,8 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
-			impact: [BfabImpactHandler, BfabVideoImpactHandler, VideoCompletedHandler],
-			resolved: [ResolvedHandler, VideoResolvedHandler],
+			impact: [BfabImpactHandler, BfabVideoImpactHandler, VideoCompletedHandler, DomCleanupHandler],
+			resolved: [ResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
 		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],

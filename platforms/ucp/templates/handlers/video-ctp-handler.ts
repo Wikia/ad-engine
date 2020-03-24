@@ -7,7 +7,7 @@ import { PlayerRegistry } from '../helpers/player-registry';
 /**
  * Transition to impact when video clicked to play
  */
-@Injectable()
+@Injectable({ autobind: false })
 export class VideoCtpHandler implements TemplateStateHandler {
 	constructor(private playerRegistry: PlayerRegistry) {}
 

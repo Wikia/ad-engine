@@ -1,5 +1,7 @@
+import { Injectable } from '@wikia/dependency-injection';
 import { forIn } from 'lodash';
 
+@Injectable({ autobind: false })
 export class ElementManipulator {
 	private stylesBackup: Partial<CSSStyleDeclaration> = {};
 	private classesBackup?: string;
