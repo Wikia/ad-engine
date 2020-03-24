@@ -24,7 +24,7 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(FOOTER) private footer: HTMLElement,
-		@Inject(NAVBAR) navbar: HTMLElement,
+		@Inject(NAVBAR) private navbar: HTMLElement,
 		private domListener: RxjsDomListener,
 	) {
 		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
@@ -47,7 +47,7 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 					this.helper.setImpactAdHeight();
 					this.helper.setAdFixedPosition();
 					this.helper.setNavbarFixedPosition();
-					this.helper.setBodyPadding();
+					this.setBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
@@ -75,6 +75,15 @@ export class BfaaImpactHandler implements TemplateStateHandler {
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
+	}
+
+	private setBodyPadding(): void {
+		this.manipulator
+			.element(document.body)
+			.setProperty(
+				'paddingTop',
+				`${this.helper.getImpactMaxAdHeight() + this.navbar.offsetHeight}px`,
+			);
 	}
 
 	private reachedResolvedSize(): boolean {
