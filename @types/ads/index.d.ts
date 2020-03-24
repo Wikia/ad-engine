@@ -7,6 +7,7 @@ interface MediaWikiAds {
 }
 
 interface MediaWikiAdsContext {
+	skin: string;
 	opts: MediaWikiAdsOpts;
 	targeting: MediaWikiAdsTargeting;
 }

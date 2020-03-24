@@ -69,12 +69,20 @@ export class UcpAdsMode implements AdsMode {
 	}
 
 	private setAdStack(): void {
-		context.push('state.adStack', { id: 'hivi_leaderboard' });
-		context.push('state.adStack', { id: 'top_leaderboard' });
-		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
-		context.push('state.adStack', { id: 'incontent_player' });
-		context.push('state.adStack', { id: 'floor_adhesion' });
-		context.push('state.adStack', { id: 'invisible_high_impact_2' });
+		if (context.get('targeting.skin') === 'hydra') {
+			context.push('state.adStack', { id: 'cdm-zone-01' });
+			context.push('state.adStack', { id: 'cdm-zone-02' });
+			context.push('state.adStack', { id: 'cdm-zone-03' });
+			context.push('state.adStack', { id: 'cdm-zone-06' });
+			context.push('events.pushOnScroll.ids', 'cdm-zone-04');
+		} else {
+			context.push('state.adStack', { id: 'hivi_leaderboard' });
+			context.push('state.adStack', { id: 'top_leaderboard' });
+			context.push('state.adStack', { id: 'top_boxad' });
+			context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
+			context.push('state.adStack', { id: 'incontent_player' });
+			context.push('state.adStack', { id: 'floor_adhesion' });
+			context.push('state.adStack', { id: 'invisible_high_impact_2' });
+		}
 	}
 }

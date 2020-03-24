@@ -7,7 +7,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 	constructor() {}
 
 	configureSlotsContext(): void {
-		const slots = {
+		const slotsFandom = {
 			hivi_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
@@ -220,7 +220,106 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 			},
 		};
 
-		context.set('slots', slots);
+		const slotsCurse = {
+			'cdm-zone-01': {
+				aboveTheFold: true,
+				adProduct: 'cdm-zone-01',
+				slotNameSuffix: '',
+				defaultSizes: [[728, 90], [970, 150], [970, 250]],
+				firstCall: true,
+				bidderAlias: '01_LB',
+				group: '01_LB',
+				insertBeforeSelector: '#firstHeading',
+				sizes: [
+					{
+						viewportSize: [1024, 300],
+						sizes: [[728, 90], [970, 150], [970, 250], [980, 150], [980, 250]],
+					},
+					{
+						viewportSize: [970, 200],
+						sizes: [[728, 90], [970, 150], [970, 250]],
+					},
+					{
+						viewportSize: [840, 200],
+						sizes: [[728, 90]],
+					},
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 50], [320, 100]],
+						mobileViewport: true,
+					},
+				],
+				targeting: {
+					loc: 'top',
+					zne: '01',
+					rv: 1,
+				},
+			},
+			'cdm-zone-02': {
+				aboveTheFold: true,
+				adProduct: 'cdm-zone-02',
+				slotNameSuffix: '',
+				defaultSizes: [[300, 250], [300, 600]],
+				bidderAlias: '02_MR',
+				group: '02_MR',
+				insertBeforeSelector: '',
+				sizes: [],
+				targeting: {
+					loc: 'top',
+					zne: '02',
+					rv: 1,
+				},
+			},
+			'cdm-zone-03': {
+				adProduct: 'cdm-zone-03',
+				slotNameSuffix: '',
+				defaultSizes: [[300, 250]],
+				bidderAlias: '03_PF',
+				group: '03_PF',
+				insertBeforeSelector: '#curse-footer',
+				sizes: [],
+				targeting: {
+					loc: 'footer',
+					zne: '03',
+					rv: 1,
+				},
+			},
+			'cdm-zone-04': {
+				adProduct: 'cdm-zone-04',
+				slotNameSuffix: '',
+				defaultSizes: [[728, 90]],
+				bidderAlias: '04_BLB',
+				group: '04_BLB',
+				insertBeforeSelector: '#catlinks',
+				sizes: [],
+				targeting: {
+					loc: 'middle',
+					zne: '04',
+					rv: 1,
+				},
+			},
+			'cdm-zone-06': {
+				adProduct: 'cdm-zone-06',
+				slotNameSuffix: '',
+				defaultSizes: [[300, 250]],
+				bidderAlias: '06_FMR',
+				group: '06_FMR',
+				insertBeforeSelector: '',
+				sizes: [],
+				targeting: {
+					loc: 'footer',
+					zne: '06',
+					rv: 1,
+				},
+			},
+		};
+
+		if (context.get('targeting.skin') === 'hydra') {
+			context.set('slots', slotsCurse);
+		} else {
+			context.set('slots', slotsFandom);
+		}
+
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 	}

@@ -30,7 +30,6 @@ export class UcpTargetingSetup implements TargetingSetup {
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
 			s2: this.getAdLayout(wiki.targeting),
-			skin: 'oasis',
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
