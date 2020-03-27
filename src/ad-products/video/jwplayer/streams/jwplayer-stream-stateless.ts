@@ -93,10 +93,7 @@ function createJwpStream<TEvent extends JwpEventKey>(
 	event: TEvent,
 ): JwpStatelessStream<TEvent> {
 	return new Observable((observer) => {
-		console.log('** create', event);
 		jwplayer.on(event as any, (param) => {
-			// tslint:disable-next-line:no-console
-			console.log('**', event, { name: event, param });
 			observer.next({ name: event, payload: param });
 		});
 	}).pipe(

@@ -102,7 +102,6 @@ export class JWPlayerHandler {
 
 	private track(): Observable<any> {
 		return this.stream$.pipe(
-			tap((value) => console.log('****', value.name, { name: value.name })),
 			filter((event) => this.tracker.isTrackingEvent(event)),
 			tap((event) => this.tracker.track(event)),
 		);
