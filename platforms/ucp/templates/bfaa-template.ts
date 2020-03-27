@@ -23,7 +23,7 @@ import { VideoRestartHandler } from './handlers/video-restart-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
 import { ScrollCorrector } from './helpers/scroll-corrector';
-import { STICKINESS_TIMEOUT_DEFAULT, StickinessTimeout } from './helpers/stickiness-timeout';
+import { StickinessTimeout } from './helpers/stickiness-timeout';
 import { UapDomManager } from './helpers/uap-dom-manager';
 import { UapDomReader } from './helpers/uap-dom-reader';
 import { VideoDomManager } from './helpers/video-dom-manager';
@@ -71,8 +71,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			UapDomManager,
 			UapDomReader,
 			VideoDomManager,
-			StickinessTimeout,
-			{ bind: STICKINESS_TIMEOUT_DEFAULT, value: universalAdPackage.BFAA_UNSTICK_DELAY },
+			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
 		],
 	);
 }

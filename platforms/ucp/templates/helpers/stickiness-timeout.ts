@@ -1,23 +1,33 @@
-import { AdSlot, TEMPLATE, UapParams, utils } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { AdSlot, TEMPLATE, TemplateDependency, UapParams, utils } from '@wikia/ad-engine';
+import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isUndefined } from 'util';
 
-export const STICKINESS_TIMEOUT_DEFAULT = Symbol('stickiness default timeout');
-
 @Injectable({ autobind: false })
 export class StickinessTimeout {
+	static provide(defaultTimeout: number): TemplateDependency {
+		return {
+			bind: StickinessTimeout,
+			provider: (container: Container) =>
+				new StickinessTimeout(
+					container.get(TEMPLATE.SLOT),
+					container.get(TEMPLATE.PARAMS),
+					defaultTimeout,
+				),
+		};
+	}
+
 	private fallbackTimeout: number;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) params: UapParams,
-		@Inject(STICKINESS_TIMEOUT_DEFAULT) fallbackTimeout: number,
+		defaultTimeout: number,
 	) {
 		this.fallbackTimeout = !isUndefined(params.stickyAdditionalTime)
 			? params.stickyAdditionalTime
-			: fallbackTimeout;
+			: defaultTimeout;
 	}
 
 	isViewedAndDelayed(): Observable<boolean> {
