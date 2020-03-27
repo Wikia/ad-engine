@@ -1,5 +1,5 @@
 import { slotsContext, SlotsStateSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class UcpSlotsStateSetup implements SlotsStateSetup {
 		slotsContext.setState('floor_adhesion', false);
 		slotsContext.setState('invisible_high_impact_2', false);
 
-		slotsContext.setState('featured', context.get('custom.hasFeaturedVideo'));
+		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
 		slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 	}
 }
