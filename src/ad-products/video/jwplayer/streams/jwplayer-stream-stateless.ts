@@ -39,7 +39,7 @@ export function createJwpStatelessStream(jwplayer: JWPlayer): JwpStatelessStream
 	const adRequest$ = createJwpStream(jwplayer, 'adRequest');
 	const adError$ = createJwpStream(jwplayer, 'adError').pipe(
 		onlyOncePerVideo(jwplayer),
-		ensureEventTag(createJwpStream(jwplayer, 'adRequest')),
+		ensureEventTag(adRequest$),
 	);
 	const adImpression$ = createJwpStream(jwplayer, 'adImpression');
 	const adBlock$ = createJwpStream(jwplayer, 'adBlock');

@@ -18,18 +18,20 @@ describe('Jwplayer Stream Stateless', () => {
 	});
 
 	describe('all events', () => {
+		let callbacks = [];
+
 		beforeEach(() => {
-			jwplayerStub.on.callsFake((name: string, cb) => cb());
+			callbacks = [];
+			jwplayerStub.on.callsFake((name: string, cb) => callbacks.push(cb));
 		});
 
 		it('should emit every event once', () => {
 			jwplayerStub.getConfig.returns({ itemReady: true });
 
 			const emittedEvents = [];
-			createJwpStatelessStream(jwplayerStub)
-				.subscribe(({ name }) => emittedEvents.push(name))
-				.unsubscribe();
+			createJwpStatelessStream(jwplayerStub).subscribe(({ name }) => emittedEvents.push(name));
 
+			callbacks.forEach((cb) => cb());
 			expect(emittedEvents.sort()).to.deep.equal([...jwpEvents].sort());
 		});
 
@@ -37,10 +39,9 @@ describe('Jwplayer Stream Stateless', () => {
 			jwplayerStub.getConfig.returns({ itemReady: false });
 
 			const emittedEvents = [];
-			createJwpStatelessStream(jwplayerStub)
-				.subscribe(({ name }) => emittedEvents.push(name))
-				.unsubscribe();
+			createJwpStatelessStream(jwplayerStub).subscribe(({ name }) => emittedEvents.push(name));
 
+			callbacks.forEach((cb) => cb());
 			expect(emittedEvents.sort()).to.deep.equal(
 				jwpEvents.filter((name) => name !== 'lateReady').sort(),
 			);
