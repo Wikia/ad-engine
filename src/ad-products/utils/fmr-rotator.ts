@@ -90,7 +90,7 @@ export class FmrRotator {
 	private hideSlot(): void {
 		if (this.btRecStatus) {
 			this.removeRecNode();
-		} else {
+		} else if (!universalAdPackage.isFanTakeoverLoaded()) {
 			if (context.get('options.floatingMedrecDestroyable')) {
 				eventService.emit(events.AD_SLOT_DESTROY_TRIGGERED, this.currentAdSlot.getSlotName());
 			} else {
