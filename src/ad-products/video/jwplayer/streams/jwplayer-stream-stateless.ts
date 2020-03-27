@@ -1,7 +1,14 @@
 import { RxJsOperator } from '@ad-engine/core';
 import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
-import { distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
+import {
+	distinctUntilChanged,
+	filter,
+	map,
+	publish,
+	refCount,
+	withLatestFrom,
+} from 'rxjs/operators';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
@@ -86,8 +93,13 @@ function createJwpStream<TEvent extends JwpEventKey>(
 	event: TEvent,
 ): JwpStatelessStream<TEvent> {
 	return new Observable((observer) => {
-		jwplayer.on(event as any, (param) => observer.next({ name: event, payload: param }));
-	});
+		jwplayer.on(event as any, (param) => {
+			observer.next({ name: event, payload: param });
+		});
+	}).pipe(
+		publish(),
+		refCount(),
+	);
 }
 
 function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {

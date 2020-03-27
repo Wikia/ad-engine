@@ -18,18 +18,20 @@ describe('Jwplayer Stream Stateless', () => {
 	});
 
 	describe('all events', () => {
+		let callbacks = [];
+
 		beforeEach(() => {
-			jwplayerStub.on.callsFake((name: string, cb) => cb());
+			callbacks = [];
+			jwplayerStub.on.callsFake((name: string, cb) => callbacks.push(cb));
 		});
 
 		it('should emit every event once', () => {
 			jwplayerStub.getConfig.returns({ itemReady: true });
 
 			const emittedEvents = [];
-			createJwpStatelessStream(jwplayerStub)
-				.subscribe(({ name }) => emittedEvents.push(name))
-				.unsubscribe();
+			createJwpStatelessStream(jwplayerStub).subscribe(({ name }) => emittedEvents.push(name));
 
+			callbacks.forEach((cb) => cb());
 			expect(emittedEvents.sort()).to.deep.equal([...jwpEvents].sort());
 		});
 
@@ -37,10 +39,9 @@ describe('Jwplayer Stream Stateless', () => {
 			jwplayerStub.getConfig.returns({ itemReady: false });
 
 			const emittedEvents = [];
-			createJwpStatelessStream(jwplayerStub)
-				.subscribe(({ name }) => emittedEvents.push(name))
-				.unsubscribe();
+			createJwpStatelessStream(jwplayerStub).subscribe(({ name }) => emittedEvents.push(name));
 
+			callbacks.forEach((cb) => cb());
 			expect(emittedEvents.sort()).to.deep.equal(
 				jwpEvents.filter((name) => name !== 'lateReady').sort(),
 			);
@@ -49,53 +50,57 @@ describe('Jwplayer Stream Stateless', () => {
 
 	describe('adError - ensureEventTag', () => {
 		it('should contain empty tag', () => {
+			const callbacks = [];
+
 			jwplayerStub.on.callsFake((name: string, cb) => {
 				if (name === 'adError') {
-					cb();
+					callbacks.push(cb);
 				}
 			});
 			createJwpStatelessStream(jwplayerStub)
 				.pipe(ofJwpEvent('adError'))
 				.subscribe(({ payload }) => {
 					expect(payload.tag).to.equal(null);
-				})
-				.unsubscribe();
+				});
+			callbacks.forEach((cb) => cb());
 		});
 
 		it('should contain tag from latest adRequest if no tag in adError', () => {
 			const tag = 'test-tag';
+			const callbacks = [];
 
 			jwplayerStub.on.callsFake((name: string, cb) => {
 				if (name === 'adRequest') {
-					return cb({ tag });
+					callbacks.push(() => cb({ tag }));
 				}
 			});
 			createJwpStatelessStream(jwplayerStub)
 				.pipe(ofJwpEvent('adError'))
 				.subscribe(({ payload }) => {
 					expect(payload.tag).to.equal(tag);
-				})
-				.unsubscribe();
+				});
+			callbacks.forEach((cb) => cb());
 		});
 
 		it('should contain tag from latest adError', () => {
 			const adRequestTag = 'ad-request-tag';
 			const adErrorTag = 'ad-error-tag';
+			const callbacks = [];
 
 			jwplayerStub.on.callsFake((name: string, cb) => {
 				if (name === 'adRequest') {
-					return cb({ tag: adRequestTag });
+					callbacks.push(() => cb({ tag: adRequestTag }));
 				}
 				if (name === 'adError') {
-					return cb({ tag: adErrorTag });
+					callbacks.push(() => cb({ tag: adErrorTag }));
 				}
 			});
 			createJwpStatelessStream(jwplayerStub)
 				.pipe(ofJwpEvent('adError'))
 				.subscribe(({ payload }) => {
 					expect(payload.tag).to.equal(adErrorTag);
-				})
-				.unsubscribe();
+				});
+			callbacks.forEach((cb) => cb());
 		});
 	});
 
@@ -117,9 +122,7 @@ describe('Jwplayer Stream Stateless', () => {
 			});
 			jwplayerStub.getPlaylistItem.returns({ mediaid: 1 });
 
-			const subscription = createJwpStatelessStream(jwplayerStub).subscribe(
-				({ name }) => (counters[name] += 1),
-			);
+			createJwpStatelessStream(jwplayerStub).subscribe(({ name }) => (counters[name] += 1));
 
 			expect(counters.adError).to.equal(0);
 			expect(counters.beforePlay).to.equal(0);
@@ -146,8 +149,6 @@ describe('Jwplayer Stream Stateless', () => {
 
 			expect(counters.adError).to.equal(2);
 			expect(counters.beforePlay).to.equal(2);
-
-			subscription.unsubscribe();
 		});
 	});
 });

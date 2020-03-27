@@ -15,13 +15,16 @@ describe('Jwplayer Stream', () => {
 	let subscription: Subscription;
 
 	beforeEach(() => {
+		const callbacks = [];
+
 		results = [];
 		jwplayerStub = createJwplayerStub(sandbox);
 		jwplayerStub.getConfig.returns({ itemReady: true });
 		jwplayerStub.on.callsFake((name: string, cb) => {
-			return cb({ tag: 'test-tag' });
+			callbacks.push(cb);
 		});
 		subscription = createJwpStream(jwplayerStub).subscribe((value) => results.push(value));
+		callbacks.forEach((cb) => cb({ tag: 'test-tag' }));
 	});
 
 	afterEach(() => {
