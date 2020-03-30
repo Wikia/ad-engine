@@ -9,6 +9,12 @@ function isOptedIn(): boolean {
 }
 
 function isOptOutSale(): boolean {
+	const isSubjectToCoppa = !!context.get('options.isSubjectToCoppa');
+
+	if (isSubjectToCoppa) {
+		return true;
+	}
+
 	return isOptOutSaleByQueryParam || !!context.get('options.optOutSale');
 }
 

@@ -1,4 +1,5 @@
 import {
+	A9ConfigSetup,
 	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
@@ -22,6 +23,7 @@ import { UcpAdEngineRunnerSetup } from './ad-engine-runner/ucp-ad-engine-runner.
 import * as fallbackInstantConfig from './fallback-config.json';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
 import { UcpNoAdsMode } from './modes/ucp-no-ads.mode';
+import { UcpA9ConfigSetup } from './setup/context/a9/a9';
 import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
 import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup';
@@ -51,6 +53,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
+	container.bind(A9ConfigSetup).to(UcpA9ConfigSetup);
 
 	return container;
 }
