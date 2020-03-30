@@ -23,6 +23,7 @@ import '../../styles.scss';
 
 const sendAllBidsEnabled = utils.queryString.get('send_all_bids') === '1';
 const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
+const prebidVersion = utils.queryString.get('prebid-version');
 
 cmp.override((cmd, param, cb) => {
 	if (cmd === 'getConsentData') {
@@ -59,6 +60,13 @@ cmp.override((cmd, param, cb) => {
 context.extend(customContext);
 context.set('slots.bottom_leaderboard.disabled', false);
 context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
+
+if (prebidVersion) {
+	context.set(
+		'bidders.prebid.libraryUrl',
+		`https://origin-images.wikia.com/fandom-ae-assets/prebid.js/${prebidVersion}`,
+	);
+}
 
 setupNpaContext();
 setupRdpContext();
