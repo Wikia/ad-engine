@@ -25,7 +25,7 @@ function setUpGeoData(): GeoData {
 		context.set('geo.continent', geoData.continent);
 	} catch (e) {}
 
-	return context.get('geo');
+	return context.get('geo') || {};
 }
 
 function hasCache(countryList: string[]): boolean {
