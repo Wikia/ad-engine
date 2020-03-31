@@ -3,20 +3,19 @@ import {
 	context,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class BfaaConfigHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = [
 			'top_boxad',
 			'hivi_leaderboard',
@@ -49,5 +48,7 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		}
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		this.adSlot.show();
+	}
 }

@@ -1,28 +1,26 @@
-import { AdSlot, DomManipulator, Porvata4Player, UapParams } from '@wikia/ad-engine';
+import { AdSlot, Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
+import { DomManipulator } from './manipulators/dom-manipulator';
 
-export class BfaaVideoHelper {
+@Injectable({ autobind: false })
+export class VideoDomManager {
 	constructor(
 		private manipulator: DomManipulator,
-		private params: UapParams,
-		private adSlot: AdSlot,
+		@Inject(TEMPLATE.PARAMS) private params: UapParams,
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 	) {}
 
 	/**
+	 * Sets video size.
+	 *
+	 * Scales from impact to default ratio during scroll.
+	 *
+	 * @param video Porvata video
+	 * @param progress if provided then this value is used instead of calculated progress
 	 */
-	setVideoImpactSize(video: Porvata4Player): void {
+	setDynamicVideoImpactSize(video: Porvata4Player, progress = this.getImpactProgress()): void {
 		if (!video.isFullscreen()) {
 			const slotHeight = this.adSlot.getElement().offsetHeight;
-			const slotWidth = this.adSlot.getElement().offsetWidth;
-
-			const slotResolvedHeight = slotWidth / this.params.config.aspectRatio.resolved;
-			const slotDefaultHeight = slotWidth / this.params.config.aspectRatio.default;
-
-			/* changes between 0 (impact, full height) to 1 (resolved size);
-			 * used to make video height transition smooth between
-			 * this.params.config.state.height.default
-			 * and this.params.config.state.height.resolved
-			 */
-			const progress = window.scrollY / (slotDefaultHeight - slotResolvedHeight);
 
 			const heightMultiplier =
 				this.params.config.state.height.default +
@@ -37,6 +35,25 @@ export class BfaaVideoHelper {
 		}
 	}
 
+	/**
+	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
+	 * used to make video height transition smooth between
+	 * this.params.config.state.height.default
+	 * and this.params.config.state.height.resolved
+	 */
+	private getImpactProgress(): number {
+		const slotWidth = this.adSlot.getElement().offsetWidth;
+		const slotResolvedHeight = slotWidth / this.params.config.aspectRatio.resolved;
+		const slotDefaultHeight = slotWidth / this.params.config.aspectRatio.default;
+
+		return window.scrollY / (slotDefaultHeight - slotResolvedHeight);
+	}
+
+	/**
+	 * Sets video size using resolved ratio.
+	 *
+	 * @param video Porvata video
+	 */
 	setVideoResolvedSize(video: Porvata4Player): void {
 		if (!video.isFullscreen()) {
 			const slotHeight = this.adSlot.getElement().offsetHeight;
@@ -48,7 +65,7 @@ export class BfaaVideoHelper {
 		}
 	}
 
-	setVideoSize(video: Porvata4Player, width: number, height: number, margin: number): void {
+	private setVideoSize(video: Porvata4Player, width: number, height: number, margin: number): void {
 		video.resize(width, height);
 
 		const videoOverlay = video.dom.getPlayerContainer().parentElement;

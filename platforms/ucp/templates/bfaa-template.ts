@@ -1,20 +1,32 @@
-import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
-import { BfaaBootstrapHandler } from './handlers/bfaa-bootstrap-handler';
-import { BfaaConfigHandler } from './handlers/bfaa-config-handler';
-import { BfaaImpactHandler } from './handlers/bfaa-impact-handler';
-import { BfaaImpactVideoHandler } from './handlers/bfaa-impact-video-handler';
-import { BfaaResolvedHandler } from './handlers/bfaa-resolved-handler';
-import { BfaaResolvedVideoHandler } from './handlers/bfaa-resolved-video-handler';
-import { BfaaStickyDurationHandler } from './handlers/bfaa-sticky-duration-handler';
-import { BfaaStickyHandler } from './handlers/bfaa-sticky-handler';
-import { BfaaStickyVideoHandler } from './handlers/bfaa-sticky-video-handler';
-import { BfaaTransitionHandler } from './handlers/bfaa-transition-handler';
-import { BfaaTransitionVideoHandler } from './handlers/bfaa-transition-video-handler';
-import { BfaaVideoHandler } from './handlers/bfaa-video-handler';
+import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
+import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
+import { BfaaImpactDecisionHandler } from './handlers/bfaa/bfaa-impact-decision-handler';
+import { BfaaImpactHandler } from './handlers/bfaa/bfaa-impact-handler';
+import { BfaaStickyDecisionHandler } from './handlers/bfaa/bfaa-sticky-decision-handler';
+import { BfaaStickyHandler } from './handlers/bfaa/bfaa-sticky-handler';
+import { BfaaTransitionHandler } from './handlers/bfaa/bfaa-transition-handler';
+import { BfaaVideoImpactHandler } from './handlers/bfaa/bfaa-video-impact-handler';
+import { BfaaVideoStickyHandler } from './handlers/bfaa/bfaa-video-sticky-handler';
+import { BfaaVideoTransitionHandler } from './handlers/bfaa/bfaa-video-transition-handler';
 import { CloseButtonHandler } from './handlers/close-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
+import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
+import { ResolvedHandler } from './handlers/resolved-handler';
+import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
+import { VideoCompletedHandler } from './handlers/video-completed-handler';
+import { VideoCtpHandler } from './handlers/video-ctp-handler';
+import { VideoResolvedHandler } from './handlers/video-resolved-handler';
+import { VideoRestartHandler } from './handlers/video-restart-handler';
+import { DomManipulator } from './helpers/manipulators/dom-manipulator';
+import { PlayerRegistry } from './helpers/player-registry';
+import { ScrollCorrector } from './helpers/scroll-corrector';
+import { StickinessTimeout } from './helpers/stickiness-timeout';
+import { UapDomManager } from './helpers/uap-dom-manager';
+import { UapDomReader } from './helpers/uap-dom-reader';
+import { VideoDomManager } from './helpers/video-dom-manager';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -23,20 +35,43 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			initial: [
 				BfaaConfigHandler,
 				BfaaBootstrapHandler,
-				BfaaVideoHandler,
+				VideoBootstrapHandler,
+				VideoCtpHandler,
+				VideoRestartHandler,
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
-			impact: [BfaaImpactHandler, BfaaImpactVideoHandler],
+			impact: [
+				BfaaImpactHandler,
+				BfaaImpactDecisionHandler,
+				BfaaVideoImpactHandler,
+				VideoCompletedHandler,
+				DomCleanupHandler,
+			],
 			sticky: [
 				BfaaStickyHandler,
-				BfaaStickyDurationHandler,
+				BfaaStickyDecisionHandler,
 				CloseButtonHandler,
-				BfaaStickyVideoHandler,
+				BfaaVideoStickyHandler,
+				DomCleanupHandler,
 			],
-			transition: [BfaaTransitionHandler, BfaaTransitionVideoHandler],
-			resolved: [BfaaResolvedHandler, BfaaResolvedVideoHandler],
+			transition: [
+				BfaaStickyHandler,
+				BfaaTransitionHandler,
+				BfaaVideoTransitionHandler,
+				DomCleanupHandler,
+			],
+			resolved: [ResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
+		[
+			ScrollCorrector,
+			PlayerRegistry,
+			DomManipulator,
+			UapDomManager,
+			UapDomReader,
+			VideoDomManager,
+			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+		],
 	);
 }

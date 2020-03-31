@@ -2,6 +2,8 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { AdSlot, Dictionary } from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
+export type TemplateDependency = Parameters<Container['bind']>[0];
+
 @Injectable()
 export class TemplateDependenciesManager {
 	constructor(private container: Container) {}
@@ -15,30 +17,18 @@ export class TemplateDependenciesManager {
 		templateName: string,
 		templateSlot: AdSlot,
 		templateParams: Dictionary,
-		templateContext: Dictionary,
+		dependencies: TemplateDependency[],
 	): void {
 		this.container.bind(TEMPLATE.NAME).value(templateName);
 		this.container.bind(TEMPLATE.SLOT).value(templateSlot);
 		this.container.bind(TEMPLATE.PARAMS).value(templateParams);
-		this.container.bind(TEMPLATE.CONTEXT).value(templateContext);
+		dependencies.forEach((dependency) => this.container.bind(dependency));
 	}
 
-	resetDependencies(): void {
-		this.container.bind(TEMPLATE.PARAMS).provider(() => {
-			throw new Error(this.constructErrorMessage(TEMPLATE.PARAMS.toString()));
-		});
-		this.container.bind(TEMPLATE.SLOT).provider(() => {
-			throw new Error(this.constructErrorMessage(TEMPLATE.SLOT.toString()));
-		});
-		this.container.bind(TEMPLATE.NAME).provider(() => {
-			throw new Error(this.constructErrorMessage(TEMPLATE.NAME.toString()));
-		});
-		this.container.bind(TEMPLATE.CONTEXT).provider(() => {
-			throw new Error(this.constructErrorMessage(TEMPLATE.CONTEXT.toString()));
-		});
-	}
-
-	private constructErrorMessage(name: string): string {
-		return `${name} can only be injected in template handler constructor`;
+	resetDependencies(dependencies: TemplateDependency[]): void {
+		this.container.unbind(TEMPLATE.PARAMS);
+		this.container.unbind(TEMPLATE.SLOT);
+		this.container.unbind(TEMPLATE.NAME);
+		dependencies.forEach((dependency) => this.container.unbind(dependency));
 	}
 }

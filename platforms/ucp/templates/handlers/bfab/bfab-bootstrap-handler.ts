@@ -10,19 +10,23 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
-export class BfaaBootstrapHandler implements TemplateStateHandler {
+@Injectable({ autobind: false })
+export class BfabBootstrapHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
+		this.adSlot.addClass('expanded-slot');
+		this.adSlot.getAdContainer().classList.add('iframe-container');
+		this.adSlot.hide();
+
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
 
 		if (resolvedState.isResolvedState(this.params)) {
-			transition('sticky');
+			transition('resolved');
 		} else {
 			resolvedState.updateInformationAboutSeenDefaultStateAd();
 			transition('impact');
@@ -35,5 +39,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		}
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		this.adSlot.show();
+	}
 }

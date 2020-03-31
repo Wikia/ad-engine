@@ -1,40 +1,33 @@
 import {
 	AdSlot,
-	DomManipulator,
-	NAVBAR,
-	RxjsDomListener,
+	DomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	UapParams,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { BfaaHelper } from '../helpers/bfaa-helper';
+import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
-@Injectable()
-export class BfaaStickyDurationHandler implements TemplateStateHandler {
+@Injectable({ autobind: false })
+export class BfaaStickyDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private manipulator = new DomManipulator();
-	private helper: BfaaHelper;
 
 	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(NAVBAR) navbar: HTMLElement,
-		private domListener: RxjsDomListener,
-	) {
-		this.helper = new BfaaHelper(this.manipulator, this.params, this.adSlot, navbar);
-	}
+		private domListener: DomListener,
+		private timeout: StickinessTimeout,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKED_STATE);
 
-		this.helper
+		this.timeout
 			.isViewedAndDelayed()
 			.pipe(
+				filter((viewedAndDelayed) => viewedAndDelayed),
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
 				tap(() => {
 					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
@@ -47,6 +40,5 @@ export class BfaaStickyDurationHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
-		this.manipulator.restore();
 	}
 }
