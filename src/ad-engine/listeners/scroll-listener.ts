@@ -89,7 +89,7 @@ export class ScrollListener {
 	}
 
 	/**
-	 * @deprecated use RxjsDomListener instead
+	 * @deprecated use DomListener instead
 	 */
 	addCallback(callback: ScrollListenerCallback): string {
 		const id: string = this.getUniqueId();

@@ -45,6 +45,7 @@ const contextObject: ContextObject = {
 		slotRepeater: false,
 		optOutSale: false,
 		trackingOptIn: false,
+		isSubjectToCoppa: false,
 	},
 	geo: {
 		region: 'WP',

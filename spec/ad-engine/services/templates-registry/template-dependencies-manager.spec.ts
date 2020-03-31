@@ -1,7 +1,12 @@
 import { AdSlot, TEMPLATE } from '@wikia/ad-engine';
 import { TemplateDependenciesManager } from '@wikia/ad-engine/services/templates-registry/template-dependencies-manager';
-import { Container } from '@wikia/dependency-injection';
-import { expect } from 'chai';
+import { Container, Inject, Injectable } from '@wikia/dependency-injection';
+import { assert, expect } from 'chai';
+
+@Injectable({ autobind: false })
+class AdditionalDependency {
+	constructor(@Inject(TEMPLATE.NAME) public name: string) {}
+}
 
 describe('Template Dependencies Manager', () => {
 	let instance: TemplateDependenciesManager;
@@ -9,43 +14,56 @@ describe('Template Dependencies Manager', () => {
 	const templateName = 'foo';
 	const templateSlot: AdSlot = { foo: 'bar' } as any;
 	const templateParams = { params: 'params' };
-	const templateContext = {};
 
 	beforeEach(() => {
 		container = new Container();
 		instance = container.get(TemplateDependenciesManager);
 	});
 
-	it('should be empty if no provide', () => {
-		expect(() => container.get(TEMPLATE.NAME)).to.throw(TypeError);
-		expect(() => container.get(TEMPLATE.SLOT)).to.throw(TypeError);
-		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(TypeError);
-		expect(() => container.get(TEMPLATE.CONTEXT)).to.throw(TypeError);
+	it('should throw if no provide', () => {
+		expect(() => container.get(TEMPLATE.NAME)).to.throw(
+			`${TEMPLATE.NAME.toString()} is not bound to anything`,
+		);
+		expect(() => container.get(TEMPLATE.SLOT)).to.throw(
+			`${TEMPLATE.SLOT.toString()} is not bound to anything`,
+		);
+		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
+			`${TEMPLATE.PARAMS.toString()} is not bound to anything`,
+		);
+		expect(() => container.get(AdditionalDependency)).to.throw(
+			`${AdditionalDependency.toString()} is not bound to anything`,
+		);
 	});
 
 	it('should provide dependencies', () => {
-		instance.provideDependencies(templateName, templateSlot, templateParams, templateContext);
+		instance.provideDependencies(templateName, templateSlot, templateParams, [
+			AdditionalDependency,
+		]);
 
 		expect(container.get(TEMPLATE.NAME)).to.equal(templateName);
 		expect(container.get(TEMPLATE.SLOT)).to.equal(templateSlot);
 		expect(container.get(TEMPLATE.PARAMS)).to.equal(templateParams);
-		expect(container.get(TEMPLATE.CONTEXT)).to.equal(templateContext);
+		assert(container.get(AdditionalDependency) instanceof AdditionalDependency);
+		expect(container.get(AdditionalDependency).name).to.equal(templateName);
 	});
 
 	it('should throw after reset', () => {
-		instance.resetDependencies();
+		instance.provideDependencies(templateName, templateSlot, templateParams, [
+			AdditionalDependency,
+		]);
+		instance.resetDependencies([AdditionalDependency]);
 
 		expect(() => container.get(TEMPLATE.NAME)).to.throw(
-			`${TEMPLATE.NAME.toString()} can only be injected in template handler constructor`,
+			`${TEMPLATE.NAME.toString()} is not bound to anything`,
 		);
 		expect(() => container.get(TEMPLATE.SLOT)).to.throw(
-			`${TEMPLATE.SLOT.toString()} can only be injected in template handler constructor`,
+			`${TEMPLATE.SLOT.toString()} is not bound to anything`,
 		);
 		expect(() => container.get(TEMPLATE.PARAMS)).to.throw(
-			`${TEMPLATE.PARAMS.toString()} can only be injected in template handler constructor`,
+			`${TEMPLATE.PARAMS.toString()} is not bound to anything`,
 		);
-		expect(() => container.get(TEMPLATE.CONTEXT)).to.throw(
-			`${TEMPLATE.CONTEXT.toString()} can only be injected in template handler constructor`,
+		expect(() => container.get(AdditionalDependency)).to.throw(
+			`${AdditionalDependency.toString()} is not bound to anything`,
 		);
 	});
 });

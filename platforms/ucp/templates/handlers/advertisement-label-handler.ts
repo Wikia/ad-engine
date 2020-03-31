@@ -1,7 +1,7 @@
 import { AdSlot, AdvertisementLabel, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
-@Injectable()
+@Injectable({ autobind: false })
 export class AdvertisementLabelHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 

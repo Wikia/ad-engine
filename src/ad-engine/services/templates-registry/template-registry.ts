@@ -2,7 +2,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';
-import { TemplateDependenciesManager } from './template-dependencies-manager';
+import { TemplateDependenciesManager, TemplateDependency } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
 import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
@@ -12,6 +12,7 @@ interface TemplateMachinePayload<
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
+	templateDependencies: TemplateDependency[];
 	emitter$: Subject<TemplateAction>;
 }
 
@@ -29,10 +30,16 @@ export class TemplateRegistry {
 		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
+		templateDependencies: TemplateDependency[] = [],
 	): Observable<TemplateAction> {
 		const emitter$ = new Subject<TemplateAction>();
 
-		this.settings.set(templateName, { StateHandlerTypesDict, initialStateKey, emitter$ });
+		this.settings.set(templateName, {
+			StateHandlerTypesDict,
+			initialStateKey,
+			templateDependencies,
+			emitter$,
+		});
 
 		return emitter$.asObservable();
 	}
@@ -45,19 +52,23 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
-		const context: Dictionary = {};
+		const {
+			StateHandlerTypesDict,
+			initialStateKey,
+			templateDependencies,
+			emitter$,
+		} = this.settings.get(templateName);
 
 		this.dependenciesManager.provideDependencies(
 			templateName,
 			templateSlot,
 			templateParams,
-			context,
+			templateDependencies,
 		);
 
-		const { StateHandlerTypesDict, initialStateKey, emitter$ } = this.settings.get(templateName);
 		const templateStateMap = this.createTemplateStateMap(StateHandlerTypesDict);
 
-		this.dependenciesManager.resetDependencies();
+		this.dependenciesManager.resetDependencies(templateDependencies);
 
 		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey, emitter$);
 
