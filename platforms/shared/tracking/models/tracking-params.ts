@@ -2,6 +2,7 @@ export interface TrackingParams {
 	a?: number;
 	action?: string;
 	beacon?: string;
+	c?: string;
 	ck?: string;
 	category?: string;
 	creative_id?: number;
