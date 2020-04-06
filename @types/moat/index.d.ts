@@ -4,8 +4,6 @@ interface MoatPrebidApi {
 	};
 }
 
-type MoatYieldReady = () => void;
-
 interface MoatJWAddPayload {
 	adImpressionEvent: any;
 	partnerCode: string;
