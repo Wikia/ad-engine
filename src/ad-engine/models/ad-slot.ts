@@ -101,7 +101,6 @@ export class AdSlot extends EventEmitter {
 	static TEMPLATES_LOADED = 'Templates Loaded';
 
 	private slotViewed = false;
-	private slotDismissed = false;
 
 	config: SlotConfig;
 	element: null | HTMLElement = null;
@@ -312,10 +311,6 @@ export class AdSlot extends EventEmitter {
 
 	isViewed(): boolean {
 		return this.slotViewed;
-	}
-
-	isDismissed(): boolean {
-		return this.slotDismissed;
 	}
 
 	isRepeatable(): boolean {
@@ -529,10 +524,6 @@ export class AdSlot extends EventEmitter {
 	emitEvent(eventName: null | string = null): void {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
-		}
-
-		if (eventName === AdSlot.STATUS_FORCE_UNSTICK) {
-			this.slotDismissed = true;
 		}
 	}
 
