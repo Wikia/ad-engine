@@ -1,15 +1,17 @@
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
-import { CloseButtonHandler } from './handlers/close-button-handler';
+import { BfaaStickyHandler } from './handlers/bfaa/bfaa-sticky-handler';
+import { BfaaTransitionHandler } from './handlers/bfaa/bfaa-transition-handler';
+import { CloseToCollapsedButtonHandler } from './handlers/close-to-collapsed-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
+import { ResolvedHandler } from './handlers/resolved-handler';
+import { SlotCollapsedHandler } from './handlers/slot-collapsed-handler';
 import { StickyDecisionHandler } from './handlers/sticky-decision-handler';
 import { StickyTlbBootstrapHandler } from './handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
 import { StickyTlbConfigHandler } from './handlers/sticky-tlb/sticky-tlb-config-handler';
-import { StickyTlbStaticHandler } from './handlers/sticky-tlb/sticky-tlb-static-handler';
-import { StickyTlbStickyHandler } from './handlers/sticky-tlb/sticky-tlb-sticky-handler';
-import { StickyTlbTransitionHandler } from './handlers/sticky-tlb/sticky-tlb-transition-handler';
+import { StickyTlbDecisionHandler } from './handlers/sticky-tlb/sticky-tlb-decision-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from './helpers/scroll-corrector';
 import { StickinessTimeout } from './helpers/stickiness-timeout';
@@ -22,19 +24,30 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 	return registry.register(
 		'stickyTlb',
 		{
-			initial: [StickyTlbBootstrapHandler, DebugTransitionHandler],
-			configure: [StickyTlbConfigHandler, AdvertisementLabelHandler],
-			sticky: [CloseButtonHandler, StickyDecisionHandler, StickyTlbStickyHandler],
-			transition: [StickyTlbTransitionHandler, DomCleanupHandler],
-			static: [StickyTlbStaticHandler],
+			decision: [StickyTlbDecisionHandler],
+			initial: [
+				StickyTlbBootstrapHandler,
+				StickyTlbConfigHandler,
+				AdvertisementLabelHandler,
+				DebugTransitionHandler,
+			],
+			sticky: [
+				BfaaStickyHandler,
+				StickyDecisionHandler,
+				CloseToCollapsedButtonHandler,
+				DomCleanupHandler,
+			],
+			transition: [BfaaStickyHandler, BfaaTransitionHandler, DomCleanupHandler],
+			resolved: [ResolvedHandler, DomCleanupHandler],
+			collapsed: [SlotCollapsedHandler, DomCleanupHandler],
 		},
-		'initial',
+		'decision',
 		[
 			DomManipulator,
 			UapDomManager,
 			UapDomReader,
 			ScrollCorrector,
-			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+			StickinessTimeout.provide(universalAdPackage.TLB_UNSTICK_DELAY),
 		],
 	);
 }

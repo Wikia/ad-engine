@@ -10,7 +10,7 @@ import { BfaaTransitionHandler } from './handlers/bfaa/bfaa-transition-handler';
 import { BfaaVideoImpactHandler } from './handlers/bfaa/bfaa-video-impact-handler';
 import { BfaaVideoStickyHandler } from './handlers/bfaa/bfaa-video-sticky-handler';
 import { BfaaVideoTransitionHandler } from './handlers/bfaa/bfaa-video-transition-handler';
-import { CloseButtonHandler } from './handlers/close-button-handler';
+import { CloseToTransitionButtonHandler } from './handlers/close-to-transition-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { ResolvedHandler } from './handlers/resolved-handler';
@@ -51,7 +51,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			sticky: [
 				BfaaStickyHandler,
 				StickyDecisionHandler,
-				CloseButtonHandler,
+				CloseToTransitionButtonHandler,
 				BfaaVideoStickyHandler,
 				DomCleanupHandler,
 			],

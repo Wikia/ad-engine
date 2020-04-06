@@ -12,17 +12,17 @@ import { Subject } from 'rxjs';
 import { filter, startWith, take, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable({ autobind: false })
-export class CloseButtonHandler implements TemplateStateHandler {
+export class CloseToCollapsedButtonHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private button: HTMLButtonElement;
 
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private domListener: DomListener) {}
 
-	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'collapsed'>): Promise<void> {
 		this.button = new CloseButton({
 			onClick: () => {
 				this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);
-				transition('transition');
+				transition('collapsed');
 			},
 		}).render();
 

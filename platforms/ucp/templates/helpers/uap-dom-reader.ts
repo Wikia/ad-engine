@@ -18,11 +18,11 @@ export class UapDomReader {
 	}
 
 	getImpactAdHeight(): number {
-		return this.calculateAdHeight(this.params.config.aspectRatio.default);
+		return this.calculateAdHeight(this.params?.config?.aspectRatio?.default ?? 4);
 	}
 
 	getResolvedAdHeight(): number {
-		return this.calculateAdHeight(this.params.config.aspectRatio.resolved);
+		return this.calculateAdHeight(this.params?.config?.aspectRatio?.resolved ?? 10);
 	}
 
 	private calculateAdHeight(ratio: number): number {

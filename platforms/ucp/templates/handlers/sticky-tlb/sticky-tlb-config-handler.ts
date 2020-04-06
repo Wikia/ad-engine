@@ -10,10 +10,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class StickyTlbConfigHandler implements TemplateStateHandler {
-	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-	) // @Inject(TEMPLATE.PARAMS) private params: UapParams,
-	{}
+	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
 		await slotTweaker.onReady(this.adSlot);
