@@ -1,7 +1,13 @@
 import { AdSlot, slotTweaker, utils } from '@ad-engine/core';
 import * as EventEmitter from 'eventemitter3';
 import { isFunction } from 'lodash';
-import { SLOT_FORCE_UNSTICK, SLOT_STICKED_STATE, SLOT_UNSTICKED_STATE } from '../../constants';
+import {
+	SLOT_FORCE_UNSTICK,
+	SLOT_STICKED_STATE,
+	SLOT_STICKINESS_DISABLED,
+	SLOT_STICKY_READY_STATE,
+	SLOT_UNSTICKED_STATE,
+} from '../../constants';
 
 export type CustomWhen = (() => Promise<void>) | Promise<void>;
 
@@ -13,9 +19,9 @@ export class Stickiness extends EventEmitter {
 
 	static SLOT_STICKED_STATE = SLOT_STICKED_STATE;
 	static SLOT_UNSTICKED_STATE = SLOT_UNSTICKED_STATE;
-	static SLOT_STICKY_READY_STATE = 'sticky-ready';
+	static SLOT_STICKY_READY_STATE = SLOT_STICKY_READY_STATE;
 	static SLOT_FORCE_UNSTICK = SLOT_FORCE_UNSTICK;
-	static SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
+	static SLOT_STICKINESS_DISABLED = SLOT_STICKINESS_DISABLED;
 
 	sticky = false;
 	private stickyConditions = [];
