@@ -19,8 +19,6 @@ import { StickinessTimeout } from './helpers/stickiness-timeout';
 import { UapDomManager } from './helpers/uap-dom-manager';
 import { UapDomReader } from './helpers/uap-dom-reader';
 
-// ToDo: code prio (outstream works)
-
 export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'stickyTlb',
