@@ -75,9 +75,7 @@ export class JWPlayerHandler {
 	private beforePlay(): Observable<any> {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
-			tap(({ state }) => {
-				this.helper.updateVideoDepth(state.depth);
-			}),
+			tap(({ state }) => this.helper.updateVideoProperties(state)),
 			filter(({ state }) => this.helper.shouldPlayPreroll(state.depth)),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
 			tap(({ state }) => this.helper.playVideoAd('preroll', state)),
