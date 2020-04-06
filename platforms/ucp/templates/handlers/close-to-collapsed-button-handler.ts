@@ -26,7 +26,10 @@ export class CloseToCollapsedButtonHandler implements TemplateStateHandler {
 			},
 		}).render();
 
-		this.helper.appendOnScroll(this.button).pipe(takeUntil(this.unsubscribe$));
+		this.helper
+			.appendOnScroll(this.button)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe();
 	}
 
 	async onLeave(): Promise<void> {

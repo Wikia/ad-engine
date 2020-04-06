@@ -20,6 +20,7 @@ import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video/video-restart-handler';
 import { VideoStickyHandler } from './handlers/video/video-sticky-handler';
 import { VideoTransitionHandler } from './handlers/video/video-transition-handler';
+import { CloseButtonHelper } from './helpers/close-button-helper';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
 import { ScrollCorrector } from './helpers/scroll-corrector';
@@ -71,6 +72,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			UapDomManager,
 			UapDomReader,
 			VideoDomManager,
+			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
 		],
 	);

@@ -12,6 +12,7 @@ import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { StickyTlbBlockingHandler } from './handlers/sticky-tlb/sticky-tlb-blocking-handler';
 import { StickyTlbBootstrapHandler } from './handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
 import { StickyTlbConfigHandler } from './handlers/sticky-tlb/sticky-tlb-config-handler';
+import { CloseButtonHelper } from './helpers/close-button-helper';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from './helpers/scroll-corrector';
 import { StickinessTimeout } from './helpers/stickiness-timeout';
@@ -47,6 +48,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			UapDomManager,
 			UapDomReader,
 			ScrollCorrector,
+			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.TLB_UNSTICK_DELAY),
 		],
 	);
