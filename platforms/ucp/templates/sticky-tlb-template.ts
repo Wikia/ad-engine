@@ -1,10 +1,10 @@
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
-import { CloseToCollapsedButtonHandler } from './handlers/close-to-collapsed-button-handler';
+import { CloseToHiddenButtonHandler } from './handlers/close-to-hidden-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { SlotCollapsedHandler } from './handlers/slot/slot-collapsed-handler';
+import { SlotHiddenHandler } from './handlers/slot/slot-hidden-handler';
 import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
 import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
 import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
@@ -33,12 +33,12 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			sticky: [
 				SlotStickyHandler,
 				SlotStickyDecisionHandler,
-				CloseToCollapsedButtonHandler,
+				CloseToHiddenButtonHandler,
 				DomCleanupHandler,
 			],
 			transition: [SlotStickyHandler, SlotTransitionHandler, DomCleanupHandler],
 			resolved: [SlotResolvedHandler, DomCleanupHandler],
-			collapsed: [SlotCollapsedHandler, DomCleanupHandler],
+			hidden: [SlotHiddenHandler, DomCleanupHandler],
 		},
 		'blocking',
 		[
