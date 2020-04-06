@@ -2,8 +2,8 @@ import { DomListener, startAndRespondTo, TemplateStateHandler } from '@wikia/ad-
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { PlayerRegistry } from '../helpers/player-registry';
-import { VideoDomManager } from '../helpers/video-dom-manager';
+import { PlayerRegistry } from '../../helpers/player-registry';
+import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable({ autobind: false })
 export class VideoResolvedHandler implements TemplateStateHandler {

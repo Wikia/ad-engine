@@ -1,14 +1,14 @@
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
-import { BfaaStickyHandler } from './handlers/bfaa/bfaa-sticky-handler';
-import { BfaaTransitionHandler } from './handlers/bfaa/bfaa-transition-handler';
 import { CloseToCollapsedButtonHandler } from './handlers/close-to-collapsed-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { ResolvedHandler } from './handlers/resolved-handler';
-import { SlotCollapsedHandler } from './handlers/slot-collapsed-handler';
-import { StickyDecisionHandler } from './handlers/sticky-decision-handler';
+import { SlotCollapsedHandler } from './handlers/slot/slot-collapsed-handler';
+import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
+import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
+import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
+import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { StickyTlbBlockingHandler } from './handlers/sticky-tlb/sticky-tlb-blocking-handler';
 import { StickyTlbBootstrapHandler } from './handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
 import { StickyTlbConfigHandler } from './handlers/sticky-tlb/sticky-tlb-config-handler';
@@ -32,13 +32,13 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				DebugTransitionHandler,
 			],
 			sticky: [
-				BfaaStickyHandler,
-				StickyDecisionHandler,
+				SlotStickyHandler,
+				SlotStickyDecisionHandler,
 				CloseToCollapsedButtonHandler,
 				DomCleanupHandler,
 			],
-			transition: [BfaaStickyHandler, BfaaTransitionHandler, DomCleanupHandler],
-			resolved: [ResolvedHandler, DomCleanupHandler],
+			transition: [SlotStickyHandler, SlotTransitionHandler, DomCleanupHandler],
+			resolved: [SlotResolvedHandler, DomCleanupHandler],
 			collapsed: [SlotCollapsedHandler, DomCleanupHandler],
 		},
 		'blocking',

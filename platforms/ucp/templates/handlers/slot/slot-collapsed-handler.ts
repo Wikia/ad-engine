@@ -1,6 +1,6 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
+import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 
 @Injectable({ autobind: false })
 export class SlotCollapsedHandler implements TemplateStateHandler {

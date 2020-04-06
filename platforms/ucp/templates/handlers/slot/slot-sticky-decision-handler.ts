@@ -9,10 +9,10 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { StickinessTimeout } from '../helpers/stickiness-timeout';
+import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
 @Injectable({ autobind: false })
-export class StickyDecisionHandler implements TemplateStateHandler {
+export class SlotStickyDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
