@@ -62,8 +62,8 @@ export class JWPlayerHelper {
 		this.adSlot.creativeSize = vastParams.size;
 	}
 
-	setSlotElementAttributes(vastParams: VastParams): void {
-		const attributes = vastDebugger.getVastAttributesFromVastParams('success', vastParams);
+	setSlotElementAttributes(status: 'success' | 'error', vastParams: VastParams): void {
+		const attributes = vastDebugger.getVastAttributesFromVastParams(status, vastParams);
 		const element = this.adSlot.element;
 
 		Object.keys(attributes).forEach((key) => element.setAttribute(key, attributes[key]));
