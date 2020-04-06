@@ -9,9 +9,9 @@ import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { ResolvedHandler } from './handlers/resolved-handler';
 import { SlotCollapsedHandler } from './handlers/slot-collapsed-handler';
 import { StickyDecisionHandler } from './handlers/sticky-decision-handler';
+import { StickyTlbBlockingHandler } from './handlers/sticky-tlb/sticky-tlb-blocking-handler';
 import { StickyTlbBootstrapHandler } from './handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
 import { StickyTlbConfigHandler } from './handlers/sticky-tlb/sticky-tlb-config-handler';
-import { StickyTlbDecisionHandler } from './handlers/sticky-tlb/sticky-tlb-decision-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from './helpers/scroll-corrector';
 import { StickinessTimeout } from './helpers/stickiness-timeout';
@@ -24,7 +24,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 	return registry.register(
 		'stickyTlb',
 		{
-			decision: [StickyTlbDecisionHandler],
+			blocking: [StickyTlbBlockingHandler],
 			initial: [
 				StickyTlbBootstrapHandler,
 				StickyTlbConfigHandler,
@@ -41,7 +41,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			resolved: [ResolvedHandler, DomCleanupHandler],
 			collapsed: [SlotCollapsedHandler, DomCleanupHandler],
 		},
-		'decision',
+		'blocking',
 		[
 			DomManipulator,
 			UapDomManager,

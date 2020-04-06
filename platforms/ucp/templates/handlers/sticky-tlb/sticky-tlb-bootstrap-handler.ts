@@ -1,9 +1,10 @@
 import {
 	AdSlot,
-	slotService,
+	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
-	universalAdPackage,
+	TemplateTransition,
+	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
@@ -11,15 +12,17 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 export class StickyTlbBootstrapHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
-	async onEnter(): Promise<void> {
-		this.adSlot.setConfigProperty('showManually', true);
-		this.adSlot.hide();
-		this.adSlot.setConfigProperty('useGptOnloadEvent', true);
-		this.adSlot.loaded.then(() => {
-			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKY_READY_STATE);
-		});
+	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
+		await slotTweaker.onReady(this.adSlot);
+		await this.awaitVisibleDOM();
 
-		slotService.disable('incontent_player', 'hivi-collapse');
+		transition('sticky');
+	}
+
+	private async awaitVisibleDOM(): Promise<void> {
+		if (document.hidden) {
+			await utils.once(window, 'visibilitychange');
+		}
 	}
 
 	async onLeave(): Promise<void> {}
