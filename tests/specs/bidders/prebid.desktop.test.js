@@ -36,10 +36,10 @@ describe('Bidders: Prebid template', () => {
 		helpers.navigateToUrl(
 			prebid.pageLink,
 			queryStrings.getPrice(2000),
-			// 100,3000 configuration means that first bid is avaialble after 100ms
-			// and all other bids are available after 3000ms which means that auction
+			// 100,9000 configuration means that first bid is avaialble after 100ms
+			// and all other bids are available after 9000ms which means that auction
 			// did not fit in the 2000ms ad-engine timeout
-			queryStrings.getTimeout('100,3000'),
+			queryStrings.getTimeout('100,9000'),
 			// TODO: remove this test case if we decide to abandon ADEN-10030 idea
 			// TODO: remove below line and use latest version if we decide to release ADEN-10030 globally
 			'prebid-version=v3.2.0/20200326-auction-fix.min.js',
