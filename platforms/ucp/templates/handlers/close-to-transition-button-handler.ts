@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	CloseButton,
-	DomListener,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -9,14 +8,15 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
-import { filter, startWith, take, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
+import { CloseButtonHelper } from '../helpers/close-button-helper';
 
 @Injectable({ autobind: false })
-export class CloseButtonHandler implements TemplateStateHandler {
+export class CloseToTransitionButtonHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private button: HTMLButtonElement;
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private domListener: DomListener) {}
+	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private helper: CloseButtonHelper) {}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		this.button = new CloseButton({
@@ -26,18 +26,9 @@ export class CloseButtonHandler implements TemplateStateHandler {
 			},
 		}).render();
 
-		this.domListener.scroll$
-			.pipe(
-				startWith({}),
-				filter(() => {
-					return window.scrollY > 0;
-				}),
-				take(1),
-				tap(() => {
-					this.adSlot.getElement().appendChild(this.button);
-				}),
-				takeUntil(this.unsubscribe$),
-			)
+		this.helper
+			.appendOnScroll(this.button)
+			.pipe(takeUntil(this.unsubscribe$))
 			.subscribe();
 	}
 

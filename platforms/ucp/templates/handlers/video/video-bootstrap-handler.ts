@@ -16,7 +16,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-import { PlayerRegistry } from '../helpers/player-registry';
+import { PlayerRegistry } from '../../helpers/player-registry';
 
 @Injectable({ autobind: false })
 export class VideoBootstrapHandler implements TemplateStateHandler {

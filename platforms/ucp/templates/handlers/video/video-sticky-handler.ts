@@ -6,7 +6,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable({ autobind: false })
-export class BfabVideoImpactHandler implements TemplateStateHandler {
+export class VideoStickyHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
@@ -19,7 +19,7 @@ export class BfabVideoImpactHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				startAndRespondTo(this.domListener.resize$),
-				tap(({ player }) => this.manager.setDynamicVideoImpactSize(player, 0)),
+				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

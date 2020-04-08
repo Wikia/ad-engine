@@ -2,14 +2,14 @@ import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfabBootstrapHandler } from './handlers/bfab/bfab-bootstrap-handler';
-import { BfabImpactHandler } from './handlers/bfab/bfab-impact-handler';
-import { BfabVideoImpactHandler } from './handlers/bfab/bfab-video-impact-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { ResolvedHandler } from './handlers/resolved-handler';
-import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
-import { VideoCompletedHandler } from './handlers/video-completed-handler';
-import { VideoResolvedHandler } from './handlers/video-resolved-handler';
+import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
+import { SlotStaticImpactHandler } from './handlers/slot/slot-static-impact-handler';
+import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
+import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
+import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
+import { VideoStaticImpactHandler } from './handlers/video/video-static-impact-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
 import { UapDomManager } from './helpers/uap-dom-manager';
@@ -26,8 +26,13 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
-			impact: [BfabImpactHandler, BfabVideoImpactHandler, VideoCompletedHandler, DomCleanupHandler],
-			resolved: [ResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
+			impact: [
+				SlotStaticImpactHandler,
+				VideoStaticImpactHandler,
+				VideoCompletedHandler,
+				DomCleanupHandler,
+			],
+			resolved: [SlotResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
 		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],

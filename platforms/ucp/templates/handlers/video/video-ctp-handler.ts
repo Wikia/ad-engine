@@ -2,7 +2,7 @@ import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
-import { PlayerRegistry } from '../helpers/player-registry';
+import { PlayerRegistry } from '../../helpers/player-registry';
 
 /**
  * Transition to impact when video clicked to play
