@@ -39,16 +39,20 @@ export class FmrRotator {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
 				slot.once(AdSlot.STATUS_SUCCESS, () => {
 					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-					slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-						setTimeout(() => {
-							this.hideSlot();
-						}, this.refreshInfo.refreshDelay);
-					});
+					if (!universalAdPackage.isFanTakeoverLoaded()) {
+						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
+							setTimeout(() => {
+								this.hideSlot();
+							}, this.refreshInfo.refreshDelay);
+						});
+					}
 				});
 
 				slot.once(AdSlot.STATUS_COLLAPSE, () => {
-					this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
-					this.scheduleNextSlotPush();
+					if (!universalAdPackage.isFanTakeoverLoaded()) {
+						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+						this.scheduleNextSlotPush();
+					}
 				});
 			}
 		});
@@ -90,7 +94,7 @@ export class FmrRotator {
 	private hideSlot(): void {
 		if (this.btRecStatus) {
 			this.removeRecNode();
-		} else if (!universalAdPackage.isFanTakeoverLoaded()) {
+		} else {
 			if (context.get('options.floatingMedrecDestroyable')) {
 				eventService.emit(events.AD_SLOT_DESTROY_TRIGGERED, this.currentAdSlot.getSlotName());
 			} else {
