@@ -36,7 +36,7 @@ export class JWPlayerHandler {
 			tap(({ payload, state }) => {
 				log(`ad error message: ${payload.message}`);
 				this.helper.setSlotParams(state.vastParams);
-				this.helper.setSlotElementAttributes(state.vastParams);
+				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
 			}),
 		);
@@ -46,7 +46,7 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('adRequest'),
 			tap(({ state }) => {
-				this.helper.setSlotElementAttributes(state.vastParams);
+				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdRequest();
 			}),
 		);
@@ -75,9 +75,7 @@ export class JWPlayerHandler {
 	private beforePlay(): Observable<any> {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
-			tap(({ state }) => {
-				this.helper.updateVideoDepth(state.depth);
-			}),
+			tap(({ state }) => this.helper.updateVideoProperties(state)),
 			filter(({ state }) => this.helper.shouldPlayPreroll(state.depth)),
 			mergeMap((payload) => this.helper.awaitIasTracking(payload)),
 			tap(({ state }) => this.helper.playVideoAd('preroll', state)),

@@ -8,6 +8,8 @@ import {
 	pbjsFactory,
 	utils,
 } from '@ad-engine/core';
+import { TrackingBidDefinition } from '@ad-engine/tracking';
+import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Cmp, cmp } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
@@ -206,13 +208,24 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const trackBid = (response) => {
-			eventService.emit(events.BIDS_RESPONSE, response);
+			eventService.emit(events.BIDS_RESPONSE, this.mapResponseToTrackingBidDefinition(response));
 		};
 
 		pbjs.onEvent('bidResponse', trackBid);
 		eventService.once(events.PAGE_CHANGE_EVENT, () => {
 			pbjs.offEvent('bidResponse', trackBid);
 		});
+	}
+
+	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {
+		return {
+			bidderName: response.bidderCode,
+			price: response.cpm.toString(),
+			responseTimestamp: response.responseTimestamp,
+			slotName: getSlotNameByBidderAlias(response.adUnitCode),
+			size: response.size,
+			timeToRespond: response.timeToRespond,
+		};
 	}
 
 	async requestBids(

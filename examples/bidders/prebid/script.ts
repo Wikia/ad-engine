@@ -95,7 +95,7 @@ slotTracker
 
 bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderContext) => {
 	// Trigger bidder tracking
-	console.info(`🏁 Bidder tracker: ${bid.bidderCode} for ${bid.adUnitCode}`, bid, data);
+	console.info(`🏁 Bidder tracker: ${bid.bidderName} for ${bid.slotName}`, bid, data);
 });
 
 new AdEngine().init([biddersInhibitor]);

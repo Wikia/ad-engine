@@ -62,8 +62,8 @@ export class JWPlayerHelper {
 		this.adSlot.creativeSize = vastParams.size;
 	}
 
-	setSlotElementAttributes(vastParams: VastParams): void {
-		const attributes = vastDebugger.getVastAttributesFromVastParams('success', vastParams);
+	setSlotElementAttributes(status: 'success' | 'error', vastParams: VastParams): void {
+		const attributes = vastDebugger.getVastAttributesFromVastParams(status, vastParams);
 		const element = this.adSlot.element;
 
 		Object.keys(attributes).forEach((key) => element.setAttribute(key, attributes[key]));
@@ -88,8 +88,9 @@ export class JWPlayerHelper {
 		this.adSlot.emit(events.VIDEO_AD_IMPRESSION);
 	}
 
-	updateVideoDepth(depth: number): void {
-		this.adSlot.setConfigProperty('videoDepth', depth);
+	updateVideoProperties(state: JwpState): void {
+		this.adSlot.setConfigProperty('videoDepth', state.depth);
+		this.adSlot.setConfigProperty('targeting.rv', state.rv);
 	}
 
 	shouldPlayPreroll(videoDepth: number): boolean {
@@ -132,16 +133,10 @@ export class JWPlayerHelper {
 			vpos: position,
 			targeting: {
 				passback: 'jwplayer',
-				rv: this.calculateRV(state.depth),
+				rv: state.rv,
 				v1: state.playlistItem.mediaid || '',
 				...this.targeting,
 			},
 		});
-	}
-
-	private calculateRV(depth: number): number {
-		const capping = context.get('options.video.adsOnNextVideoFrequency');
-
-		return depth < 2 || !capping ? 1 : Math.floor((depth - 1) / capping) + 1;
 	}
 }

@@ -9,6 +9,8 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
+import { TrackingBidDefinition } from '@ad-engine/tracking';
+import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag, Cmp, cmp, Usp, usp } from '../wrappers';
 import {
@@ -132,7 +134,9 @@ export class A9Provider extends BidderProvider {
 			return;
 		}
 
+		const startTime = new Date().getTime();
 		const currentBids: A9Bid[] = await this.apstag.fetchBids({ slots, timeout: this.timeout });
+		const endTime: number = new Date().getTime();
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 		this.addApstagRenderImpHookOnFirstFetch();
@@ -143,6 +147,16 @@ export class A9Provider extends BidderProvider {
 				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
 				this.updateBidSlot(slotName, keys, bidTargeting);
+
+				eventService.emit(
+					events.BIDS_RESPONSE,
+					this.mapResponseToTrackingBidDefinition(
+						bid.slotID,
+						bidTargeting,
+						endTime,
+						endTime - startTime,
+					),
+				);
 			}),
 		);
 
@@ -151,6 +165,23 @@ export class A9Provider extends BidderProvider {
 		if (refresh) {
 			eventService.emit(events.BIDS_REFRESH);
 		}
+	}
+
+	private mapResponseToTrackingBidDefinition(
+		slotName: string,
+		bid: Dictionary,
+		responseTimestamp: number,
+		timeToRespond: number,
+	): TrackingBidDefinition {
+		return {
+			responseTimestamp,
+			timeToRespond,
+			bidderName: 'a9',
+			buyerId: bid.amznp,
+			price: bid.amznbid,
+			size: bid.amznsz,
+			slotName: getSlotNameByBidderAlias(slotName),
+		};
 	}
 
 	private addApstagRenderImpHookOnFirstFetch(): void {
@@ -250,7 +281,7 @@ export class A9Provider extends BidderProvider {
 		let keys: string[] = await this.apstag.targetingKeys();
 
 		if (this.bidderConfig.dealsEnabled) {
-			keys = await bid.helpers.targetingKeys;
+			keys = bid.helpers.targetingKeys;
 			bidTargeting = bid.targeting;
 		}
 
