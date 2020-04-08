@@ -36,7 +36,6 @@ class QueryStrings {
 		this.services = {
 			confiant: 'confiant-disabled',
 			trackingOptIn: 'tracking-opt-in',
-			moat: 'moat-yi-disabled',
 			adEngineDelay: 'adengine-delay',
 			enabledProjects: 'enabled-project',
 		};
@@ -153,12 +152,6 @@ class QueryStrings {
 		const on = enabled ? '1' : '0';
 
 		return `${this.services.trackingOptIn}=${on}`;
-	}
-
-	getMoat(enabled) {
-		const on = enabled ? '0' : '1';
-
-		return `${this.services.moat}=${on}`;
 	}
 
 	getAdEngineDelay(timeout) {
