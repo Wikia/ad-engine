@@ -1,4 +1,4 @@
-import { TemplateStateHandler } from '@wikia/ad-engine';
+import { DomListener, startAndRespondTo, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -6,15 +6,20 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable({ autobind: false })
-export class BfaaVideoTransitionHandler implements TemplateStateHandler {
+export class VideoDynamicImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(private playerRegistry: PlayerRegistry, private manager: VideoDomManager) {}
+	constructor(
+		private playerRegistry: PlayerRegistry,
+		private domListener: DomListener,
+		private manager: VideoDomManager,
+	) {}
 
 	async onEnter(): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
-				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
+				startAndRespondTo(this.domListener.scroll$, this.domListener.resize$),
+				tap(({ player }) => this.manager.setDynamicVideoImpactSize(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

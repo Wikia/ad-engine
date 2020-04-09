@@ -65,10 +65,28 @@
 		&.is-dark {
 			@include uap-dark-theme();
 		}
+
+		&.sticky-tlb {
+			background: #000;
+			padding: 18px 0 0 0;
+			width: 100%;
+			box-sizing: border-box;
+
+			& .advertisement-label {
+				color: #5f7a7b;
+				position: static;
+				text-align: center;
+			}
+		}
 	}
 }
 
 .gpt-ad {
+	&.hide,
+	& .hide {
+		display: none !important;
+	}
+
 	&.expanded-slot {
 		width: 100%;
 
@@ -76,6 +94,11 @@
 		& > div.iframe-container > iframe {
 			height: 100%;
 			width: 100%;
+		}
+
+		& > div.iframe-centered > iframe {
+			display: block;
+			margin: 0 auto;
 		}
 
 		&.hide,

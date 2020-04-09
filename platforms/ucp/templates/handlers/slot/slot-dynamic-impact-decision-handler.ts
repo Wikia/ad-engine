@@ -7,7 +7,7 @@ import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
-export class BfaaImpactDecisionHandler implements TemplateStateHandler {
+export class SlotDynamicImpactDecisionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
