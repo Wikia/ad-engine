@@ -7,7 +7,7 @@ import { UapDomManager } from '../../helpers/uap-dom-manager';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
-export class BfaaImpactHandler implements TemplateStateHandler {
+export class SlotDynamicImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(

@@ -3,23 +3,24 @@ import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
 import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
-import { BfaaImpactDecisionHandler } from './handlers/bfaa/bfaa-impact-decision-handler';
-import { BfaaImpactHandler } from './handlers/bfaa/bfaa-impact-handler';
-import { BfaaStickyDecisionHandler } from './handlers/bfaa/bfaa-sticky-decision-handler';
-import { BfaaStickyHandler } from './handlers/bfaa/bfaa-sticky-handler';
-import { BfaaTransitionHandler } from './handlers/bfaa/bfaa-transition-handler';
-import { BfaaVideoImpactHandler } from './handlers/bfaa/bfaa-video-impact-handler';
-import { BfaaVideoStickyHandler } from './handlers/bfaa/bfaa-video-sticky-handler';
-import { BfaaVideoTransitionHandler } from './handlers/bfaa/bfaa-video-transition-handler';
-import { CloseButtonHandler } from './handlers/close-button-handler';
+import { CloseToTransitionButtonHandler } from './handlers/close-to-transition-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { ResolvedHandler } from './handlers/resolved-handler';
-import { VideoBootstrapHandler } from './handlers/video-bootstrap-handler';
-import { VideoCompletedHandler } from './handlers/video-completed-handler';
-import { VideoCtpHandler } from './handlers/video-ctp-handler';
-import { VideoResolvedHandler } from './handlers/video-resolved-handler';
-import { VideoRestartHandler } from './handlers/video-restart-handler';
+import { SlotDynamicImpactDecisionHandler } from './handlers/slot/slot-dynamic-impact-decision-handler';
+import { SlotDynamicImpactHandler } from './handlers/slot/slot-dynamic-impact-handler';
+import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
+import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
+import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
+import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
+import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
+import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
+import { VideoCtpHandler } from './handlers/video/video-ctp-handler';
+import { VideoDynamicImpactHandler } from './handlers/video/video-dynamic-impact-handler';
+import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
+import { VideoRestartHandler } from './handlers/video/video-restart-handler';
+import { VideoStickyHandler } from './handlers/video/video-sticky-handler';
+import { VideoTransitionHandler } from './handlers/video/video-transition-handler';
+import { CloseButtonHelper } from './helpers/close-button-helper';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
 import { ScrollCorrector } from './helpers/scroll-corrector';
@@ -42,26 +43,26 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				DebugTransitionHandler,
 			],
 			impact: [
-				BfaaImpactHandler,
-				BfaaImpactDecisionHandler,
-				BfaaVideoImpactHandler,
+				SlotDynamicImpactHandler,
+				SlotDynamicImpactDecisionHandler,
+				VideoDynamicImpactHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
 			sticky: [
-				BfaaStickyHandler,
-				BfaaStickyDecisionHandler,
-				CloseButtonHandler,
-				BfaaVideoStickyHandler,
+				SlotStickyHandler,
+				SlotStickyDecisionHandler,
+				CloseToTransitionButtonHandler,
+				VideoStickyHandler,
 				DomCleanupHandler,
 			],
 			transition: [
-				BfaaStickyHandler,
-				BfaaTransitionHandler,
-				BfaaVideoTransitionHandler,
+				SlotStickyHandler,
+				SlotTransitionHandler,
+				VideoTransitionHandler,
 				DomCleanupHandler,
 			],
-			resolved: [ResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
+			resolved: [SlotResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
 		[
@@ -71,6 +72,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			UapDomManager,
 			UapDomReader,
 			VideoDomManager,
+			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
 		],
 	);

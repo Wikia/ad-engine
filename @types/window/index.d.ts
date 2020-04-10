@@ -25,7 +25,6 @@ interface Window {
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	moatPrebidApi?: MoatPrebidApi;
-	moatYieldReady?: MoatYieldReady;
 	moatjw?: MoatJW;
 	sessionId?: string;
 	session_id?: string;

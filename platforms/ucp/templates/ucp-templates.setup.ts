@@ -5,6 +5,7 @@ import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
+import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
 export class UcpTemplatesSetup implements TemplatesSetup {
@@ -15,8 +16,9 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 	configureTemplates(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
+		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$));
+		logTemplates(merge(bfaa$, bfab$, stickyTlb$));
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 	}

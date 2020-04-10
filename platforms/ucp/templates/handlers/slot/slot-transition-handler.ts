@@ -15,7 +15,7 @@ import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
-export class BfaaTransitionHandler implements TemplateStateHandler {
+export class SlotTransitionHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(

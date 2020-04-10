@@ -44,7 +44,7 @@ export class UapDomManager {
 	setResolvedImage(): void {
 		if (this.params.image2 && this.params.image2.background) {
 			this.manipulator.element(this.params.image2.element).removeClass('hidden-state');
-		} else {
+		} else if (this.params.image1) {
 			this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
 		}
 	}
