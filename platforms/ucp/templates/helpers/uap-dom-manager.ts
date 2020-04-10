@@ -29,7 +29,8 @@ export class UapDomManager {
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('position', 'fixed')
-			.setProperty('top', '0');
+			.setProperty('top', '0')
+			.setProperty('left', '0');
 	}
 
 	setNavbarFixedPosition(): void {
