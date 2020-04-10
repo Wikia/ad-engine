@@ -22,7 +22,6 @@ export class StickyTlbConfigHandler implements TemplateStateHandler {
 		document.body.classList.add('has-bfaa');
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('sticky-tlb');
-		this.adSlot.getAdContainer().classList.add('iframe-centered');
 	}
 
 	async onLeave(): Promise<void> {
