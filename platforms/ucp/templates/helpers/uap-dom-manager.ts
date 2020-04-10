@@ -25,21 +25,10 @@ export class UapDomManager {
 		this.setAdHeight(`${this.reader.getImpactAdHeight()}px`);
 	}
 
-	setAdFixedPosition(): void {
-		this.manipulator
-			.element(this.adSlot.getElement())
-			.setProperty('position', 'fixed')
-			.setProperty('top', '0')
-			.setProperty('left', '0');
-	}
-
-	setNavbarFixedPosition(): void {
+	setNavbarOffsetToAdHeight(): void {
 		const adHeight = this.adSlot.getElement().offsetHeight;
 
-		this.manipulator
-			.element(this.navbar)
-			.setProperty('position', 'fixed')
-			.setProperty('top', `${adHeight}px`);
+		this.manipulator.element(this.navbar).setProperty('top', `${adHeight}px`);
 	}
 
 	setResolvedImage(): void {

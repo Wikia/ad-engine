@@ -25,8 +25,7 @@ export class SlotDynamicImpactHandler implements TemplateStateHandler {
 				startWith({}),
 				tap(() => {
 					this.manager.setDynamicImpactAdHeight();
-					this.manager.setAdFixedPosition();
-					this.manager.setNavbarFixedPosition();
+					this.manager.setNavbarOffsetToAdHeight();
 					this.setImpactBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
@@ -38,8 +37,7 @@ export class SlotDynamicImpactHandler implements TemplateStateHandler {
 				startWith({}),
 				tap(() => {
 					this.manager.setDynamicImpactAdHeight();
-					this.manager.setAdFixedPosition();
-					this.manager.setNavbarFixedPosition();
+					this.manager.setNavbarOffsetToAdHeight();
 				}),
 				takeUntil(this.unsubscribe$),
 			)

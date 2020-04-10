@@ -25,8 +25,7 @@ export class SlotStickyHandler implements TemplateStateHandler {
 				startWith({}),
 				tap(() => {
 					this.manager.setResolvedAdHeight();
-					this.manager.setAdFixedPosition();
-					this.manager.setNavbarFixedPosition();
+					this.manager.setNavbarOffsetToAdHeight();
 					this.setStickyBodyPadding();
 				}),
 				takeUntil(this.unsubscribe$),
