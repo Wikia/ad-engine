@@ -1,11 +1,14 @@
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
+import { BodyOffsetSmall } from './handlers/body/body-offset-small';
 import { CloseToHiddenButtonHandler } from './handlers/close-to-hidden-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
+import { NavbarOffsetSmallToNone } from './handlers/navbar/navbar-offset-small-to-none';
 import { SlotHiddenHandler } from './handlers/slot/slot-hidden-handler';
-import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
+import { SlotOffsetSmallToNone } from './handlers/slot/slot-offset-small-to-none';
+import { SlotSizeSmall } from './handlers/slot/slot-size-small';
 import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
 import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
 import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
@@ -37,7 +40,13 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				DomCleanupHandler,
 			],
 			transition: [SlotStickyHandler, SlotTransitionHandler, DomCleanupHandler],
-			resolved: [SlotResolvedHandler, DomCleanupHandler],
+			resolved: [
+				SlotSizeSmall,
+				SlotOffsetSmallToNone,
+				NavbarOffsetSmallToNone,
+				BodyOffsetSmall,
+				DomCleanupHandler,
+			],
 			hidden: [SlotHiddenHandler, DomCleanupHandler],
 		},
 		'blocking',
