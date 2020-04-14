@@ -1,30 +1,20 @@
-import { DomListener, NAVBAR, TemplateStateHandler } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { merge, Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
-import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
-import { UapDomReader } from '../../helpers/uap-dom-reader';
+import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
 export class NavbarOffsetSmallToNone implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(
-		@Inject(NAVBAR) private navbar: HTMLElement,
-		private domListener: DomListener,
-		private reader: UapDomReader,
-		private manipulator: DomManipulator,
-	) {}
+	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
 		merge(this.domListener.scroll$, this.domListener.resize$)
 			.pipe(
 				startWith({}),
-				tap(() => {
-					this.manipulator
-						.element(this.navbar)
-						.setProperty('top', `${this.reader.getNavbarOffsetSmallToNone()}px`);
-				}),
+				tap(() => this.manager.setNavbarOffsetSmallToNone()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

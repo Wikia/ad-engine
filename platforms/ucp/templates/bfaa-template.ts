@@ -3,17 +3,19 @@ import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
 import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
+import { BodyOffsetBig } from './handlers/body/body-offset-big';
 import { BodyOffsetSmall } from './handlers/body/body-offset-small';
-import { CloseToTransitionButtonHandler } from './handlers/close-to-transition-button-handler';
+import { CloseToTransitionButton } from './handlers/close-to-transition-button';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
+import { NavbarOffsetBigToSmall } from './handlers/navbar/navbar-offset-big-to-small';
+import { NavbarOffsetSmall } from './handlers/navbar/navbar-offset-small';
 import { NavbarOffsetSmallToNone } from './handlers/navbar/navbar-offset-small-to-none';
-import { SlotDynamicImpactDecisionHandler } from './handlers/slot/slot-dynamic-impact-decision-handler';
-import { SlotDynamicImpactHandler } from './handlers/slot/slot-dynamic-impact-handler';
+import { SlotDecisionBigToSmall } from './handlers/slot/slot-decision-big-to-small';
+import { SlotDecisionTimeout } from './handlers/slot/slot-decision-timeout';
 import { SlotOffsetSmallToNone } from './handlers/slot/slot-offset-small-to-none';
+import { SlotSizeBigToSmall } from './handlers/slot/slot-size-big-to-small';
 import { SlotSizeSmall } from './handlers/slot/slot-size-small';
-import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
-import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
 import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
@@ -46,21 +48,27 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				DebugTransitionHandler,
 			],
 			impact: [
-				SlotDynamicImpactHandler,
-				SlotDynamicImpactDecisionHandler,
+				SlotSizeBigToSmall,
+				SlotDecisionBigToSmall,
+				NavbarOffsetBigToSmall,
+				BodyOffsetBig,
 				VideoDynamicImpactHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
 			sticky: [
-				SlotStickyHandler,
-				SlotStickyDecisionHandler,
-				CloseToTransitionButtonHandler,
+				SlotSizeSmall,
+				BodyOffsetSmall,
+				NavbarOffsetSmall,
+				SlotDecisionTimeout,
+				CloseToTransitionButton,
 				VideoStickyHandler,
 				DomCleanupHandler,
 			],
 			transition: [
-				SlotStickyHandler,
+				SlotSizeSmall,
+				BodyOffsetSmall,
+				NavbarOffsetSmall,
 				SlotTransitionHandler,
 				VideoTransitionHandler,
 				DomCleanupHandler,

@@ -13,6 +13,42 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
+	setBodyOffsetBig(): void {
+		this.setBodyOffset(this.reader.getBodyOffsetBig());
+	}
+
+	setBodyOffsetSmall(): void {
+		this.setBodyOffset(this.reader.getBodyOffsetSmall());
+	}
+
+	private setBodyOffset(value: number): void {
+		this.manipulator.element(document.body).setProperty('paddingTop', `${value}px`);
+	}
+
+	setNavbarOffsetBigToSmall(): void {
+		this.setNavbarOffset(this.reader.getNavbarOffsetBigToSmall());
+	}
+
+	setNavbarOffsetSmallToNone(): void {
+		this.setNavbarOffset(this.reader.getNavbarOffsetSmallToNone());
+	}
+
+	setNavbarOffsetSmall(): void {
+		this.setNavbarOffset(this.reader.getNavbarOffsetSmall());
+	}
+
+	private setNavbarOffset(value: number): void {
+		this.manipulator.element(this.navbar).setProperty('top', `${value}px`);
+	}
+
+	setSlotOffsetSmallToNone(): void {
+		this.setSlotOffset(this.reader.getSlotOffsetSmallToNone());
+	}
+
+	private setSlotOffset(value: number): void {
+		this.manipulator.element(this.adSlot.getElement()).setProperty('top', `${value}px`);
+	}
+
 	setSlotHeightBigToSmall(): void {
 		this.setSlotHeight(`${this.reader.getSlotHeightBigToSmall()}px`);
 	}
@@ -25,10 +61,8 @@ export class UapDomManager {
 		this.setSlotHeight(`${this.reader.getSlotHeightBig()}px`);
 	}
 
-	setNavbarOffsetToAdHeight(): void {
-		const adHeight = this.adSlot.getElement().offsetHeight;
-
-		this.manipulator.element(this.navbar).setProperty('top', `${adHeight}px`);
+	private setSlotHeight(height: string): void {
+		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
 	setResolvedImage(): void {
@@ -41,9 +75,5 @@ export class UapDomManager {
 
 	setImpactImage(): void {
 		this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
-	}
-
-	private setSlotHeight(height: string): void {
-		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 }

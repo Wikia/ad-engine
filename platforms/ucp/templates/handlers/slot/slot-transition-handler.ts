@@ -40,23 +40,23 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 	}
 
 	private animate(): Observable<unknown> {
-		const navbarOffset = this.reader.getNavbarOffsetSmallToNone();
-		const duration = this.calcAnimationDuration(navbarOffset);
+		const duration = this.calcAnimationDuration();
 
 		this.manipulator
 			.element(this.navbar)
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${navbarOffset}px`);
+			.setProperty('top', `${this.reader.getNavbarOffsetSmallToNone()}px`);
 
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${navbarOffset - this.reader.getSlotHeightSmall()}px`);
+			.setProperty('top', `${this.reader.getSlotOffsetSmallToNone()}px`);
 
 		return from(utils.wait(duration));
 	}
 
-	private calcAnimationDuration(distance: number): number {
+	private calcAnimationDuration(): number {
+		const distance = this.reader.getNavbarOffsetSmallToNone();
 		const distanceFraction =
 			(this.reader.getSlotHeightSmall() - distance) / this.reader.getSlotHeightSmall();
 

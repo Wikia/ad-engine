@@ -10,14 +10,26 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
+	getBodyOffsetBig(): number {
+		return this.getSlotHeightBig() + this.navbar.offsetHeight;
+	}
+
 	getBodyOffsetSmall(): number {
 		return this.getSlotHeightSmall() + this.navbar.offsetHeight;
 	}
 
+	getNavbarOffsetBigToSmall(): number {
+		return this.getSlotHeightBigToSmall();
+	}
+
 	getNavbarOffsetSmallToNone(): number {
-		const distance = this.getSlotHeightSmall() - window.scrollY;
+		const distance = this.getNavbarOffsetSmall() - window.scrollY;
 
 		return distance <= 0 ? 0 : distance;
+	}
+
+	getNavbarOffsetSmall(): number {
+		return this.getSlotHeightSmall();
 	}
 
 	getSlotOffsetSmallToNone(): number {

@@ -5,7 +5,7 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class BodyOffsetSmall implements TemplateStateHandler {
+export class BodyOffsetBig implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
@@ -14,7 +14,7 @@ export class BodyOffsetSmall implements TemplateStateHandler {
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setBodyOffsetSmall()),
+				tap(() => this.manager.setBodyOffsetBig()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
