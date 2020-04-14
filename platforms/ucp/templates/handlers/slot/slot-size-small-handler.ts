@@ -5,7 +5,7 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotSizeSmall implements TemplateStateHandler {
+export class SlotSizeSmallHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}

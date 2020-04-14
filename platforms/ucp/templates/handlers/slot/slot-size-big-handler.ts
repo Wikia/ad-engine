@@ -1,20 +1,23 @@
 import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { merge, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class NavbarOffsetBigToSmall implements TemplateStateHandler {
+export class SlotSizeBigHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		merge(this.domListener.scroll$, this.domListener.resize$)
+		this.manager.setImpactImage();
+		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setNavbarOffsetBigToSmall()),
+				tap(() => {
+					this.manager.setSlotHeightBig();
+				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

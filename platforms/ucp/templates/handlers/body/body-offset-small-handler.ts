@@ -1,20 +1,20 @@
 import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { merge, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotOffsetSmallToNone implements TemplateStateHandler {
+export class BodyOffsetSmallHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		merge(this.domListener.scroll$, this.domListener.resize$)
+		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setSlotOffsetSmallToNone()),
+				tap(() => this.manager.setBodyOffsetSmall()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
