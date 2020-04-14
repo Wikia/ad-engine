@@ -11,16 +11,28 @@ export const basicContext = {
 			amazonId: '3115',
 			slots: {
 				bottom_leaderboard: {
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 				},
 				incontent_boxad_1: {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 				top_leaderboard: {
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 				},
 				top_boxad: {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 				featured: {
 					type: 'video',
@@ -77,13 +89,12 @@ export const basicContext = {
 			enabled: false,
 			siteId: '1167',
 		},
+		externalLogger: {
+			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
+		},
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=oasis',
 			fallbackConfigKey: 'fallbackInstantConfig',
-		},
-		moatYi: {
-			enabled: false,
-			partnerCode: 'wikiaprebidheader490634422386',
 		},
 		nielsen: {
 			enabled: false,
