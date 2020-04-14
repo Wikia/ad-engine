@@ -3,6 +3,7 @@ import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
 import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
+import { JWPlayerA9Logger } from './jwplayer-a9-logger';
 import { JwpStream, ofJwpEvent } from './streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -38,6 +39,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
+				JWPlayerA9Logger.log(payload);
 			}),
 		);
 	}
