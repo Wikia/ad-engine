@@ -11,8 +11,7 @@ export class SlotSizeBigToSmallHandler implements TemplateStateHandler {
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.setImpactImage();
-
+		this.manager.setBigImage();
 		merge(this.domListener.resize$, this.domListener.scroll$)
 			.pipe(
 				startWith({}),

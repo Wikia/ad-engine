@@ -11,8 +11,7 @@ export class SlotSizeSmallHandler implements TemplateStateHandler {
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.setResolvedImage();
-
+		this.manager.setSmallImage();
 		this.domListener.resize$
 			.pipe(
 				startWith({}),

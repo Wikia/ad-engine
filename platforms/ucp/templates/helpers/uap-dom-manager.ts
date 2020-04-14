@@ -65,7 +65,7 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
-	setResolvedImage(): void {
+	setSmallImage(): void {
 		if (this.params.image2 && this.params.image2.background) {
 			this.manipulator.element(this.params.image2.element).removeClass('hidden-state');
 		} else if (this.params.image1) {
@@ -73,7 +73,7 @@ export class UapDomManager {
 		}
 	}
 
-	setImpactImage(): void {
+	setBigImage(): void {
 		this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
 	}
 }
