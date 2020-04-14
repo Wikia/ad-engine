@@ -24,7 +24,7 @@ export class SlotDynamicImpactHandler implements TemplateStateHandler {
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.manager.setDynamicImpactAdHeight();
+					this.manager.setSlotHeightBigToSmall();
 					this.manager.setNavbarOffsetToAdHeight();
 					this.setImpactBodyPadding();
 				}),
@@ -36,7 +36,7 @@ export class SlotDynamicImpactHandler implements TemplateStateHandler {
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.manager.setDynamicImpactAdHeight();
+					this.manager.setSlotHeightBigToSmall();
 					this.manager.setNavbarOffsetToAdHeight();
 				}),
 				takeUntil(this.unsubscribe$),
@@ -47,7 +47,7 @@ export class SlotDynamicImpactHandler implements TemplateStateHandler {
 	private setImpactBodyPadding(): void {
 		this.manipulator
 			.element(document.body)
-			.setProperty('paddingTop', `${this.reader.getImpactAdHeight() + this.navbar.offsetHeight}px`);
+			.setProperty('paddingTop', `${this.reader.getSlotHeightBig() + this.navbar.offsetHeight}px`);
 	}
 
 	async onLeave(): Promise<void> {

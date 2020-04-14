@@ -13,16 +13,16 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
-	setDynamicImpactAdHeight(): void {
-		this.setAdHeight(`${this.reader.getDynamicImpactAdHeight()}px`);
+	setSlotHeightBigToSmall(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightBigToSmall()}px`);
 	}
 
-	setResolvedAdHeight(): void {
-		this.setAdHeight(`${this.reader.getResolvedAdHeight()}px`);
+	setSlotHeightSmall(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightSmall()}px`);
 	}
 
-	setImpactAdHeight(): void {
-		this.setAdHeight(`${this.reader.getImpactAdHeight()}px`);
+	setSlotHeightBig(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightBig()}px`);
 	}
 
 	setNavbarOffsetToAdHeight(): void {
@@ -43,7 +43,7 @@ export class UapDomManager {
 		this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
 	}
 
-	private setAdHeight(height: string): void {
+	private setSlotHeight(height: string): void {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 }

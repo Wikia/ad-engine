@@ -24,7 +24,7 @@ export class SlotStickyHandler implements TemplateStateHandler {
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.manager.setResolvedAdHeight();
+					this.manager.setSlotHeightSmall();
 					this.manager.setNavbarOffsetToAdHeight();
 					this.setStickyBodyPadding();
 				}),
@@ -34,7 +34,7 @@ export class SlotStickyHandler implements TemplateStateHandler {
 	}
 
 	private setStickyBodyPadding(): void {
-		const adHeight = this.reader.getResolvedAdHeight();
+		const adHeight = this.reader.getSlotHeightSmall();
 		const adAndNavHeight = adHeight + this.navbar.offsetHeight;
 
 		this.manipulator.element(document.body).setProperty('paddingTop', `${adAndNavHeight}px`);

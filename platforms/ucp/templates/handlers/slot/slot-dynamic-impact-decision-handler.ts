@@ -38,7 +38,7 @@ export class SlotDynamicImpactDecisionHandler implements TemplateStateHandler {
 	}
 
 	private reachedResolvedSize(): boolean {
-		return this.reader.getDynamicImpactAdHeight() <= this.reader.getResolvedAdHeight();
+		return this.reader.getSlotHeightBigToSmall() <= this.reader.getSlotHeightSmall();
 	}
 
 	async onLeave(): Promise<void> {

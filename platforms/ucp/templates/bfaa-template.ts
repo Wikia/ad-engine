@@ -9,6 +9,7 @@ import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { SlotDynamicImpactDecisionHandler } from './handlers/slot/slot-dynamic-impact-decision-handler';
 import { SlotDynamicImpactHandler } from './handlers/slot/slot-dynamic-impact-handler';
 import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
+import { SlotSizeSmall } from './handlers/slot/slot-size-small';
 import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
 import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
 import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
@@ -62,7 +63,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				VideoTransitionHandler,
 				DomCleanupHandler,
 			],
-			resolved: [SlotResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
+			resolved: [SlotSizeSmall, SlotResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
 		[

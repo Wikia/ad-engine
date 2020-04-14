@@ -5,18 +5,19 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotStaticImpactHandler implements TemplateStateHandler {
+export class SlotSizeSmall implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.setImpactImage();
+		this.manager.setResolvedImage();
+
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.manager.setSlotHeightBig();
+					this.manager.setSlotHeightSmall();
 				}),
 				takeUntil(this.unsubscribe$),
 			)
