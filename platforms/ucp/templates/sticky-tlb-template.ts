@@ -55,7 +55,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				NavbarOffsetResolvedToNoneHandler,
 				DomCleanupHandler,
 			],
-			hidden: [SlotHiddenHandler, DomCleanupHandler],
+			hidden: [SlotHiddenHandler, BodyOffsetResolvedHandler, DomCleanupHandler],
 		},
 		'blocking',
 		[
