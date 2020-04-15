@@ -56,9 +56,9 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 	}
 
 	private calcAnimationDuration(): number {
+		const heightResolved = this.reader.getSlotHeightResolved();
 		const distance = this.reader.getNavbarOffsetResolvedToNone();
-		const distanceFraction =
-			(this.reader.getSlotHeightResolved() - distance) / this.reader.getSlotHeightResolved();
+		const distanceFraction = (heightResolved - distance) / heightResolved;
 
 		return distanceFraction * universalAdPackage.SLIDE_OUT_TIME;
 	}

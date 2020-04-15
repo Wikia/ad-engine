@@ -38,7 +38,7 @@ export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler
 	}
 
 	private reachedResolvedSize(): boolean {
-		return this.reader.getSlotHeightImpactToResolved() <= this.reader.getSlotHeightResolved();
+		return this.reader.getProgressImpactToResolved() === 1;
 	}
 
 	async onLeave(): Promise<void> {

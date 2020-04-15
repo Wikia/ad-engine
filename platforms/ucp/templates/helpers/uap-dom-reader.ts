@@ -92,7 +92,7 @@ export class UapDomReader {
 	/**
 	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
 	 */
-	private getProgressImpactToResolved(): number {
+	getProgressImpactToResolved(): number {
 		const mixHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
 		const progress = window.scrollY / (maxHeight - mixHeight);
