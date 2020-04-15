@@ -10,6 +10,18 @@ export class VideoDomManager {
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 	) {}
 
+	setVideoSizeResolved(video: Porvata4Player): void {
+		return this.setVideoSizeProgressive(video, 1);
+	}
+
+	setVideoSizeImpact(video: Porvata4Player): void {
+		return this.setVideoSizeProgressive(video, 0);
+	}
+
+	setVideoSizeImpactToResolved(video: Porvata4Player): void {
+		return this.setVideoSizeProgressive(video, this.getImpactProgress());
+	}
+
 	/**
 	 * Sets video size.
 	 *
@@ -18,21 +30,23 @@ export class VideoDomManager {
 	 * @param video Porvata video
 	 * @param progress if provided then this value is used instead of calculated progress
 	 */
-	setDynamicVideoImpactSize(video: Porvata4Player, progress = this.getImpactProgress()): void {
-		if (!video.isFullscreen()) {
-			const slotHeight = this.adSlot.getElement().offsetHeight;
-
-			const heightMultiplier =
-				this.params.config.state.height.default +
-				progress *
-					(this.params.config.state.height.resolved - this.params.config.state.height.default);
-
-			const margin = (100 - heightMultiplier) / 2;
-			const height = (slotHeight * heightMultiplier) / 100;
-			const width = height * this.params.videoAspectRatio;
-
-			this.setVideoSize(video, width, height, margin);
+	private setVideoSizeProgressive(video: Porvata4Player, progress: number): void {
+		if (video.isFullscreen()) {
+			return;
 		}
+
+		const slotHeight = this.adSlot.getElement().offsetHeight;
+
+		const heightMultiplier =
+			this.params.config.state.height.default +
+			progress *
+				(this.params.config.state.height.resolved - this.params.config.state.height.default);
+
+		const margin = (100 - heightMultiplier) / 2;
+		const height = (slotHeight * heightMultiplier) / 100;
+		const width = height * this.params.videoAspectRatio;
+
+		this.setVideoSize(video, width, height, margin);
 	}
 
 	/**
@@ -47,22 +61,6 @@ export class VideoDomManager {
 		const slotDefaultHeight = slotWidth / this.params.config.aspectRatio.default;
 
 		return window.scrollY / (slotDefaultHeight - slotResolvedHeight);
-	}
-
-	/**
-	 * Sets video size using resolved ratio.
-	 *
-	 * @param video Porvata video
-	 */
-	setVideoResolvedSize(video: Porvata4Player): void {
-		if (!video.isFullscreen()) {
-			const slotHeight = this.adSlot.getElement().offsetHeight;
-			const margin = (100 - this.params.config.state.height.resolved) / 2;
-			const height = slotHeight * (this.params.config.state.height.resolved / 100);
-			const width = height * this.params.videoAspectRatio;
-
-			this.setVideoSize(video, width, height, margin);
-		}
 	}
 
 	private setVideoSize(video: Porvata4Player, width: number, height: number, margin: number): void {

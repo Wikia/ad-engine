@@ -19,7 +19,7 @@ export class VideoSizeResolvedHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				startAndRespondTo(this.domListener.resize$),
-				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
+				tap(({ player }) => this.manager.setVideoSizeResolved(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

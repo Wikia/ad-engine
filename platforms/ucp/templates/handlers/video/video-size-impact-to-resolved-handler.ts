@@ -19,7 +19,7 @@ export class VideoSizeImpactToResolvedHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				startAndRespondTo(this.domListener.scroll$, this.domListener.resize$),
-				tap(({ player }) => this.manager.setDynamicVideoImpactSize(player)),
+				tap(({ player }) => this.manager.setVideoSizeImpactToResolved(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
