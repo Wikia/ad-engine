@@ -2,7 +2,7 @@ import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BodyOffsetResolvedHandler } from './handlers/body/body-offset-resolved-handler';
-import { CloseToHiddenButton } from './handlers/close-to-hidden-button';
+import { CloseToHiddenButtonHandler } from './handlers/close-to-hidden-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { NavbarOffsetResolvedHandler } from './handlers/navbar/navbar-offset-resolved-handler';
@@ -38,7 +38,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				BodyOffsetResolvedHandler,
 				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
-				CloseToHiddenButton,
+				CloseToHiddenButtonHandler,
 				DomCleanupHandler,
 			],
 			transition: [

@@ -5,7 +5,7 @@ import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
 import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
 import { BodyOffsetImpactHandler } from './handlers/body/body-offset-impact-handler';
 import { BodyOffsetResolvedHandler } from './handlers/body/body-offset-resolved-handler';
-import { CloseToTransitionButton } from './handlers/close-to-transition-button';
+import { CloseToTransitionButtonHandler } from './handlers/close-to-transition-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
 import { NavbarOffsetImpactToResolvedHandler } from './handlers/navbar/navbar-offset-impact-to-resolved-handler';
@@ -59,7 +59,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				BodyOffsetResolvedHandler,
 				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
-				CloseToTransitionButton,
+				CloseToTransitionButtonHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
