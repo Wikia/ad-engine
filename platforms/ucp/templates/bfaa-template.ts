@@ -20,10 +20,9 @@ import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
 import { VideoCtpHandler } from './handlers/video/video-ctp-handler';
-import { VideoDynamicImpactHandler } from './handlers/video/video-dynamic-impact-handler';
-import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video/video-restart-handler';
-import { VideoTransitionHandler } from './handlers/video/video-transition-handler';
+import { VideoSizeImpactToResolvedHandler } from './handlers/video/video-size-impact-to-resolved-handler';
+import { VideoSizeResolvedHandler } from './handlers/video/video-size-resolved-handler';
 import { CloseButtonHelper } from './helpers/close-button-helper';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
@@ -51,7 +50,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				SlotDecisionBigToSmallHandler,
 				NavbarOffsetBigToSmallHandler,
 				BodyOffsetBigHandler,
-				VideoDynamicImpactHandler,
+				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
@@ -61,7 +60,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				NavbarOffsetSmallHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToTransitionButton,
-				VideoResolvedHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			transition: [
@@ -69,7 +68,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				BodyOffsetSmallHandler,
 				NavbarOffsetSmallHandler,
 				SlotTransitionHandler,
-				VideoTransitionHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			resolved: [
@@ -77,7 +76,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				SlotOffsetSmallToNoneHandler,
 				NavbarOffsetSmallToNoneHandler,
 				BodyOffsetSmallHandler,
-				VideoResolvedHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 		},

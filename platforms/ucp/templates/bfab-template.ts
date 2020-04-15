@@ -8,8 +8,8 @@ import { SlotSizeBigHandler } from './handlers/slot/slot-size-big-handler';
 import { SlotSizeSmallHandler } from './handlers/slot/slot-size-small-handler';
 import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
-import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
-import { VideoStaticImpactHandler } from './handlers/video/video-static-impact-handler';
+import { VideoSizeImpactHandler } from './handlers/video/video-size-impact-handler';
+import { VideoSizeResolvedHandler } from './handlers/video/video-size-resolved-handler';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
 import { UapDomManager } from './helpers/uap-dom-manager';
@@ -28,11 +28,11 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			],
 			impact: [
 				SlotSizeBigHandler,
-				VideoStaticImpactHandler,
+				VideoSizeImpactHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
-			resolved: [SlotSizeSmallHandler, VideoResolvedHandler, DomCleanupHandler],
+			resolved: [SlotSizeSmallHandler, VideoSizeResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
 		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],
