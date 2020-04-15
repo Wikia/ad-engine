@@ -26,6 +26,10 @@ export class TemplateRegistry {
 		private dependenciesManager: TemplateDependenciesManager,
 	) {}
 
+	has(templateName: string): boolean {
+		return this.settings.has(templateName);
+	}
+
 	register<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
 		templateName: string,
 		StateHandlerTypesDict: T,
