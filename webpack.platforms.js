@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-const platformsList = ['gamepedia', 'muthead', 'futhead', 'ucp'];
+const platformsList = ['gamepedia', 'muthead', 'futhead', 'ucp', 'ucp-hydra'];
 
 const platforms = ({ entry }) => ({
 	entry,

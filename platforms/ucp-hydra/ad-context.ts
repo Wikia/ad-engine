@@ -24,7 +24,7 @@ export const basicContext = {
 			btRec: {
 				enabled: false,
 				placementsMap: {
-					'cdm-zone-01': {
+					top_leaderboard: {
 						uid: '5d49e52d0a-188',
 						style: {
 							'z-index': '100',
@@ -35,7 +35,7 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
-					'cdm-zone-02': {
+					top_boxad: {
 						uid: '5d49e534b1-188',
 						style: {
 							'z-index': '100',
@@ -46,7 +46,7 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
-					'cdm-zone-03': {
+					footer: {
 						uid: '5d49e53f6b-188',
 						style: {
 							'z-index': '100',
@@ -57,7 +57,7 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
-					'cdm-zone-04': {
+					bottom_leaderboard: {
 						uid: '5d49e5469d-188',
 						style: {
 							'z-index': '100',
@@ -68,7 +68,7 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
-					'cdm-zone-06': {
+					incontent_boxad_1: {
 						uid: '5d49e54f25-188',
 						style: {
 							'z-index': '100',
