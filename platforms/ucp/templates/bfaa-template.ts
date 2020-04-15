@@ -23,7 +23,6 @@ import { VideoCtpHandler } from './handlers/video/video-ctp-handler';
 import { VideoDynamicImpactHandler } from './handlers/video/video-dynamic-impact-handler';
 import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video/video-restart-handler';
-import { VideoStickyHandler } from './handlers/video/video-sticky-handler';
 import { VideoTransitionHandler } from './handlers/video/video-transition-handler';
 import { CloseButtonHelper } from './helpers/close-button-helper';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
@@ -62,7 +61,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				NavbarOffsetSmallHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToTransitionButton,
-				VideoStickyHandler,
+				VideoResolvedHandler,
 				DomCleanupHandler,
 			],
 			transition: [
