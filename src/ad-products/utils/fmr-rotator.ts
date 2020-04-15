@@ -33,7 +33,7 @@ export class FmrRotator {
 		this.recirculationElement = document.getElementById('recirculation-rail');
 		this.refreshInfo.startPosition =
 			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
-		this.btRecStatus = this.btRec && this.btRec.isEnabled();
+		this.btRecStatus = this.btRec?.isEnabled();
 
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
