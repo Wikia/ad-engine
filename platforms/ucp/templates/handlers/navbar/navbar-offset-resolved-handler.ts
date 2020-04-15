@@ -14,9 +14,7 @@ export class NavbarOffsetResolvedHandler implements TemplateStateHandler {
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => {
-					this.manager.setNavbarOffsetResolved();
-				}),
+				tap(() => this.manager.setNavbarOffsetResolved()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

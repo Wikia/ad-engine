@@ -15,9 +15,7 @@ export class SlotSizeImpactHandler implements TemplateStateHandler {
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => {
-					this.manager.setSlotHeightImpact();
-				}),
+				tap(() => this.manager.setSlotHeightImpact()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
