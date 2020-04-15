@@ -16,39 +16,39 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
-	getBodyOffsetBig(): number {
-		return this.getSlotHeightBig() + this.navbar.offsetHeight;
+	getBodyOffsetImpact(): number {
+		return this.getSlotHeightImpact() + this.navbar.offsetHeight;
 	}
 
-	getBodyOffsetSmall(): number {
-		return this.getSlotHeightSmall() + this.navbar.offsetHeight;
+	getBodyOffsetResolved(): number {
+		return this.getSlotHeightResolved() + this.navbar.offsetHeight;
 	}
 
-	getNavbarOffsetBigToSmall(): number {
-		return this.getSlotHeightBigToSmall();
+	getNavbarOffsetImpactToResolved(): number {
+		return this.getSlotHeightImpactToResolved();
 	}
 
-	getNavbarOffsetSmallToNone(): number {
-		const distance = this.getNavbarOffsetSmall() - window.scrollY;
+	getNavbarOffsetResolvedToNone(): number {
+		const distance = this.getNavbarOffsetResolved() - window.scrollY;
 
 		return distance <= 0 ? 0 : distance;
 	}
 
-	getNavbarOffsetSmall(): number {
-		return this.getSlotHeightSmall();
+	getNavbarOffsetResolved(): number {
+		return this.getSlotHeightResolved();
 	}
 
 	getVideoSizeImpact(): UapVideoSize {
-		return this.calculateVideoSize(this.getSlotHeightBig(), this.getVideoMultiplierImpact());
+		return this.calculateVideoSize(this.getSlotHeightImpact(), this.getVideoMultiplierImpact());
 	}
 
 	getVideoSizeResolved(): UapVideoSize {
-		return this.calculateVideoSize(this.getSlotHeightSmall(), this.getVideoMultiplierResolved());
+		return this.calculateVideoSize(this.getSlotHeightResolved(), this.getVideoMultiplierResolved());
 	}
 
 	getVideoSizeImpactToResolved(): UapVideoSize {
 		return this.calculateVideoSize(
-			this.getSlotHeightBigToSmall(),
+			this.getSlotHeightImpactToResolved(),
 			this.getVideoMultiplierImpactToResolved(),
 		);
 	}
@@ -64,7 +64,7 @@ export class UapDomReader {
 	private getVideoMultiplierImpactToResolved(): number {
 		return (
 			this.getVideoMultiplierImpact() +
-			this.getProgressBigToSmall() *
+			this.getProgressImpactToResolved() *
 				(this.getVideoMultiplierResolved() - this.getVideoMultiplierImpact())
 		);
 	}
@@ -77,30 +77,30 @@ export class UapDomReader {
 		return this.params.config.state.height.resolved;
 	}
 
-	getSlotOffsetSmallToNone(): number {
-		return this.getNavbarOffsetSmallToNone() - this.getSlotHeightSmall();
+	getSlotOffsetResolvedToNone(): number {
+		return this.getNavbarOffsetResolvedToNone() - this.getSlotHeightResolved();
 	}
 
-	getSlotHeightBigToSmall(): number {
-		const smallHeight = this.getSlotHeightSmall();
-		const bigHeight = this.getSlotHeightBig();
-		const progress = this.getProgressBigToSmall();
+	getSlotHeightImpactToResolved(): number {
+		const mixHeight = this.getSlotHeightResolved();
+		const maxHeight = this.getSlotHeightImpact();
+		const progress = this.getProgressImpactToResolved();
 
-		return bigHeight - (bigHeight - smallHeight) * progress;
+		return maxHeight - (maxHeight - mixHeight) * progress;
 	}
 
 	/**
-	 * Progress changes between 0 (big, full height) to 1 (small size);
+	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
 	 */
-	private getProgressBigToSmall(): number {
-		const smallHeight = this.getSlotHeightSmall();
-		const bigHeight = this.getSlotHeightBig();
-		const progress = window.scrollY / (bigHeight - smallHeight);
+	private getProgressImpactToResolved(): number {
+		const mixHeight = this.getSlotHeightResolved();
+		const maxHeight = this.getSlotHeightImpact();
+		const progress = window.scrollY / (maxHeight - mixHeight);
 
 		return progress >= 1 ? 1 : progress;
 	}
 
-	getSlotHeightBig(): number {
+	getSlotHeightImpact(): number {
 		if (isUndefined(this.params?.config?.aspectRatio?.default)) {
 			return this.adSlot.element.offsetHeight;
 		}
@@ -108,7 +108,7 @@ export class UapDomReader {
 		return this.calculateSlotHeight(this.params.config.aspectRatio.default);
 	}
 
-	getSlotHeightSmall(): number {
+	getSlotHeightResolved(): number {
 		if (isUndefined(this.params?.config?.aspectRatio?.resolved)) {
 			return this.adSlot.element.offsetHeight;
 		}

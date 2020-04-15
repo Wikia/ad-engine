@@ -4,8 +4,8 @@ import { AdvertisementLabelHandler } from './handlers/advertisement-label-handle
 import { BfabBootstrapHandler } from './handlers/bfab/bfab-bootstrap-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { SlotSizeBigHandler } from './handlers/slot/slot-size-big-handler';
-import { SlotSizeSmallHandler } from './handlers/slot/slot-size-small-handler';
+import { SlotSizeImpactHandler } from './handlers/slot/slot-size-impact-handler';
+import { SlotSizeResolvedHandler } from './handlers/slot/slot-size-resolved-handler';
 import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
 import { VideoSizeImpactHandler } from './handlers/video/video-size-impact-handler';
@@ -27,12 +27,12 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 				DebugTransitionHandler,
 			],
 			impact: [
-				SlotSizeBigHandler,
+				SlotSizeImpactHandler,
 				VideoSizeImpactHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
-			resolved: [SlotSizeSmallHandler, VideoSizeResolvedHandler, DomCleanupHandler],
+			resolved: [SlotSizeResolvedHandler, VideoSizeResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
 		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],

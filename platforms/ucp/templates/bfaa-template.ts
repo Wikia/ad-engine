@@ -3,19 +3,19 @@ import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
 import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
-import { BodyOffsetBigHandler } from './handlers/body/body-offset-big-handler';
-import { BodyOffsetSmallHandler } from './handlers/body/body-offset-small-handler';
+import { BodyOffsetImpactHandler } from './handlers/body/body-offset-impact-handler';
+import { BodyOffsetResolvedHandler } from './handlers/body/body-offset-resolved-handler';
 import { CloseToTransitionButton } from './handlers/close-to-transition-button';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { NavbarOffsetBigToSmallHandler } from './handlers/navbar/navbar-offset-big-to-small-handler';
-import { NavbarOffsetSmallHandler } from './handlers/navbar/navbar-offset-small-handler';
-import { NavbarOffsetSmallToNoneHandler } from './handlers/navbar/navbar-offset-small-to-none-handler';
-import { SlotDecisionBigToSmallHandler } from './handlers/slot/slot-decision-big-to-small-handler';
+import { NavbarOffsetImpactToResolvedHandler } from './handlers/navbar/navbar-offset-impact-to-resolved-handler';
+import { NavbarOffsetResolvedHandler } from './handlers/navbar/navbar-offset-resolved-handler';
+import { NavbarOffsetResolvedToNoneHandler } from './handlers/navbar/navbar-offset-resolved-to-none-handler';
+import { SlotDecisionImpactToResolvedHandler } from './handlers/slot/slot-decision-impact-to-resolved-handler';
 import { SlotDecisionTimeoutHandler } from './handlers/slot/slot-decision-timeout-handler';
-import { SlotOffsetSmallToNoneHandler } from './handlers/slot/slot-offset-small-to-none-handler';
-import { SlotSizeBigToSmallHandler } from './handlers/slot/slot-size-big-to-small-handler';
-import { SlotSizeSmallHandler } from './handlers/slot/slot-size-small-handler';
+import { SlotOffsetResolvedToNoneHandler } from './handlers/slot/slot-offset-resolved-to-none-handler';
+import { SlotSizeImpactToResolvedHandler } from './handlers/slot/slot-size-impact-to-resolved-handler';
+import { SlotSizeResolvedHandler } from './handlers/slot/slot-size-resolved-handler';
 import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
@@ -46,36 +46,36 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				DebugTransitionHandler,
 			],
 			impact: [
-				SlotSizeBigToSmallHandler,
-				SlotDecisionBigToSmallHandler,
-				NavbarOffsetBigToSmallHandler,
-				BodyOffsetBigHandler,
+				SlotSizeImpactToResolvedHandler,
+				SlotDecisionImpactToResolvedHandler,
+				NavbarOffsetImpactToResolvedHandler,
+				BodyOffsetImpactHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
 			sticky: [
-				SlotSizeSmallHandler,
-				BodyOffsetSmallHandler,
-				NavbarOffsetSmallHandler,
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToTransitionButton,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			transition: [
-				SlotSizeSmallHandler,
-				BodyOffsetSmallHandler,
-				NavbarOffsetSmallHandler,
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotTransitionHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			resolved: [
-				SlotSizeSmallHandler,
-				SlotOffsetSmallToNoneHandler,
-				NavbarOffsetSmallToNoneHandler,
-				BodyOffsetSmallHandler,
+				SlotSizeResolvedHandler,
+				SlotOffsetResolvedToNoneHandler,
+				NavbarOffsetResolvedToNoneHandler,
+				BodyOffsetResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],

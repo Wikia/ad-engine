@@ -5,7 +5,7 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class NavbarOffsetSmallToNoneHandler implements TemplateStateHandler {
+export class SlotOffsetResolvedToNoneHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
@@ -14,7 +14,7 @@ export class NavbarOffsetSmallToNoneHandler implements TemplateStateHandler {
 		merge(this.domListener.scroll$, this.domListener.resize$)
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setNavbarOffsetSmallToNone()),
+				tap(() => this.manager.setSlotOffsetResolvedToNone()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

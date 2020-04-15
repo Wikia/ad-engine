@@ -1,16 +1,16 @@
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
-import { BodyOffsetSmallHandler } from './handlers/body/body-offset-small-handler';
+import { BodyOffsetResolvedHandler } from './handlers/body/body-offset-resolved-handler';
 import { CloseToHiddenButton } from './handlers/close-to-hidden-button';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { NavbarOffsetSmallHandler } from './handlers/navbar/navbar-offset-small-handler';
-import { NavbarOffsetSmallToNoneHandler } from './handlers/navbar/navbar-offset-small-to-none-handler';
+import { NavbarOffsetResolvedHandler } from './handlers/navbar/navbar-offset-resolved-handler';
+import { NavbarOffsetResolvedToNoneHandler } from './handlers/navbar/navbar-offset-resolved-to-none-handler';
 import { SlotDecisionTimeoutHandler } from './handlers/slot/slot-decision-timeout-handler';
 import { SlotHiddenHandler } from './handlers/slot/slot-hidden-handler';
-import { SlotOffsetSmallToNoneHandler } from './handlers/slot/slot-offset-small-to-none-handler';
-import { SlotSizeSmallHandler } from './handlers/slot/slot-size-small-handler';
+import { SlotOffsetResolvedToNoneHandler } from './handlers/slot/slot-offset-resolved-to-none-handler';
+import { SlotSizeResolvedHandler } from './handlers/slot/slot-size-resolved-handler';
 import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { StickyTlbBlockingHandler } from './handlers/sticky-tlb/sticky-tlb-blocking-handler';
 import { StickyTlbBootstrapHandler } from './handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
@@ -34,25 +34,25 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				DebugTransitionHandler,
 			],
 			sticky: [
-				SlotSizeSmallHandler,
-				BodyOffsetSmallHandler,
-				NavbarOffsetSmallHandler,
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToHiddenButton,
 				DomCleanupHandler,
 			],
 			transition: [
-				SlotSizeSmallHandler,
-				BodyOffsetSmallHandler,
-				NavbarOffsetSmallHandler,
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotTransitionHandler,
 				DomCleanupHandler,
 			],
 			resolved: [
-				SlotSizeSmallHandler,
-				SlotOffsetSmallToNoneHandler,
-				BodyOffsetSmallHandler,
-				NavbarOffsetSmallToNoneHandler,
+				SlotSizeResolvedHandler,
+				SlotOffsetResolvedToNoneHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedToNoneHandler,
 				DomCleanupHandler,
 			],
 			hidden: [SlotHiddenHandler, DomCleanupHandler],
