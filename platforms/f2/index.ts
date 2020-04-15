@@ -24,6 +24,10 @@ const load = async () => {
 	const f2Action = await onF2Configured();
 	const f2Payload = f2Action.payload;
 
+	context.set('src', f2Payload.src);
+	context.set('custom.namespace', f2Payload.namespace);
+	context.set('custom.adLayout', f2Payload.adLayout);
+
 	context.extend(basicContext);
 
 	const [container]: [Container, ...any[]] = await Promise.all([
