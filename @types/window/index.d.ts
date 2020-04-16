@@ -8,6 +8,7 @@ interface Window {
 		...opts: string[]
 	) => void;
 	__cmp?: WindowCMP;
+	__iasPET?: IasPet;
 	__uspapi?: WindowUSP;
 	XMLHttpRequest?: any;
 	AdEngine_adType?: ManualAdType;
@@ -24,7 +25,6 @@ interface Window {
 	RLQ?: any;
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
-	iasPET?: IasPet;
 	moatPrebidApi?: MoatPrebidApi;
 	moatjw?: MoatJW;
 	sessionId?: string;

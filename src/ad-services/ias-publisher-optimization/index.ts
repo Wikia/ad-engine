@@ -57,10 +57,10 @@ class IasPublisherOptimization {
 		});
 
 		// @ts-ignore
-		window.iasPET = __iasPET || {};
-		window.iasPET.queue = window.iasPET.queue || [];
-		window.iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
-		window.iasPET.queue.push({
+		window.__iasPET = __iasPET || {};
+		window.__iasPET.queue = window.__iasPET.queue || [];
+		window.__iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
+		window.__iasPET.queue.push({
 			adSlots: iasPETSlots,
 			dataHandler: this.iasDataHandler,
 		});
