@@ -91,6 +91,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,
 				group: 'PX',
+				insertBeforeSelector: '.WikiaPage',
 				options: {},
 				slotNameSuffix: '',
 				slotShortcut: 'x',
