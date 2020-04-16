@@ -48,17 +48,6 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
-					footer: {
-						uid: '5d49e53f6b-188',
-						style: {
-							'z-index': '100',
-						},
-						size: {
-							width: 300,
-							height: 250,
-						},
-						lazy: false,
-					},
 					bottom_leaderboard: {
 						uid: '5d49e5469d-188',
 						style: {

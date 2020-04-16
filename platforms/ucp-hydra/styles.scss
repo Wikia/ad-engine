@@ -1,4 +1,10 @@
 @import 'src/ad-products/styles/mixin';
 @import 'src/ad-products/styles/breakpoints';
-@import 'src/ad-products/styles/uap-variables';
-@import 'src/ad-products/styles/porvata';
+
+.gpt-ad {
+	&#top_leaderboard,
+	&#bottom_leaderboard {
+		text-align: center;
+		padding: 5px 0;
+	}
+}
