@@ -117,6 +117,14 @@
 
 @include navbar();
 
+body.has-background-ad {
+	.WikiaPage,
+	.wds-global-footer {
+		position: relative;
+		//z-index: 10;
+	}
+}
+
 // #######################################
 
 .main-page-tag-rcs {

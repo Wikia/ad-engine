@@ -14,6 +14,7 @@ export class SkinHandler implements TemplateStateHandler {
 		const adSkin = this.createAdSkin();
 
 		this.manipulator.element(adSkin).setProperty('display', 'inline');
+		this.manipulator.element(document.body).addClass('has-background-ad');
 
 		console.log('**', this.params);
 	}
@@ -29,7 +30,6 @@ export class SkinHandler implements TemplateStateHandler {
 		adSkin.style.width = '100%';
 		adSkin.style.left = '0';
 		adSkin.style.top = '0';
-		adSkin.style.zIndex = '1';
 		adSkin.style.cursor = 'pointer';
 		parent.appendChild(adSkin);
 
