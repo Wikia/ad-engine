@@ -56,6 +56,7 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					loc: 'top',
 					zne: '01',
 					rv: 1,
+					xna: 1,
 				},
 			},
 			top_boxad: {
@@ -75,18 +76,6 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					rv: 1,
 				},
 			},
-			footer: {
-				adProduct: 'footer',
-				defaultSizes: [[300, 250]],
-				group: '03_PF',
-				insertBeforeSelector: '#curse-footer',
-				sizes: [],
-				targeting: {
-					loc: 'footer',
-					zne: '03',
-					rv: 1,
-				},
-			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
 				defaultSizes: [[728, 90]],
@@ -97,6 +86,7 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					loc: 'middle',
 					zne: '04',
 					rv: 1,
+					xna: 1,
 				},
 			},
 			incontent_boxad_1: {
