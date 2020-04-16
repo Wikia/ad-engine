@@ -40,31 +40,25 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 	}
 
 	private animate(): Observable<unknown> {
-		const distance = this.calcAnimationDistance();
-		const duration = this.calcAnimationDuration(distance);
+		const duration = this.calcAnimationDuration();
 
 		this.manipulator
 			.element(this.navbar)
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${distance}px`);
+			.setProperty('top', `${this.reader.getNavbarOffsetResolvedToNone()}px`);
 
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${distance - this.reader.getResolvedAdHeight()}px`);
+			.setProperty('top', `${this.reader.getSlotOffsetResolvedToNone()}px`);
 
 		return from(utils.wait(duration));
 	}
 
-	private calcAnimationDistance(): number {
-		const distance = this.reader.getResolvedAdHeight() - window.scrollY;
-
-		return distance <= 0 ? 0 : distance;
-	}
-
-	private calcAnimationDuration(distance: number): number {
-		const distanceFraction =
-			(this.reader.getResolvedAdHeight() - distance) / this.reader.getResolvedAdHeight();
+	private calcAnimationDuration(): number {
+		const heightResolved = this.reader.getSlotHeightResolved();
+		const distance = this.reader.getNavbarOffsetResolvedToNone();
+		const distanceFraction = (heightResolved - distance) / heightResolved;
 
 		return distanceFraction * universalAdPackage.SLIDE_OUT_TIME;
 	}

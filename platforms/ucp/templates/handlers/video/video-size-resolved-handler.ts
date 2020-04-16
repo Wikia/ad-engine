@@ -6,7 +6,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 import { VideoDomManager } from '../../helpers/video-dom-manager';
 
 @Injectable({ autobind: false })
-export class VideoResolvedHandler implements TemplateStateHandler {
+export class VideoSizeResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
@@ -19,7 +19,7 @@ export class VideoResolvedHandler implements TemplateStateHandler {
 		this.playerRegistry.video$
 			.pipe(
 				startAndRespondTo(this.domListener.resize$),
-				tap(({ player }) => this.manager.setVideoResolvedSize(player)),
+				tap(({ player }) => this.manager.setVideoSizeResolved(player)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

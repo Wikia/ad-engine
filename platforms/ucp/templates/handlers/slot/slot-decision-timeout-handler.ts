@@ -12,7 +12,7 @@ import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
 @Injectable({ autobind: false })
-export class SlotStickyDecisionHandler implements TemplateStateHandler {
+export class SlotDecisionTimeoutHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
