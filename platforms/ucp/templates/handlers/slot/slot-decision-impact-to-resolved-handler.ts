@@ -7,7 +7,7 @@ import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
-export class SlotDynamicImpactDecisionHandler implements TemplateStateHandler {
+export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
@@ -38,7 +38,7 @@ export class SlotDynamicImpactDecisionHandler implements TemplateStateHandler {
 	}
 
 	private reachedResolvedSize(): boolean {
-		return this.reader.getDynamicImpactAdHeight() <= this.reader.getResolvedAdHeight();
+		return this.reader.getProgressImpactToResolved() === 1;
 	}
 
 	async onLeave(): Promise<void> {

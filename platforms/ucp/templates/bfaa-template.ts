@@ -3,23 +3,26 @@ import { Observable } from 'rxjs';
 import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
 import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
 import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
+import { BodyOffsetImpactHandler } from './handlers/body/body-offset-impact-handler';
+import { BodyOffsetResolvedHandler } from './handlers/body/body-offset-resolved-handler';
 import { CloseToTransitionButtonHandler } from './handlers/close-to-transition-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { SlotDynamicImpactDecisionHandler } from './handlers/slot/slot-dynamic-impact-decision-handler';
-import { SlotDynamicImpactHandler } from './handlers/slot/slot-dynamic-impact-handler';
-import { SlotResolvedHandler } from './handlers/slot/slot-resolved-handler';
-import { SlotStickyDecisionHandler } from './handlers/slot/slot-sticky-decision-handler';
-import { SlotStickyHandler } from './handlers/slot/slot-sticky-handler';
+import { NavbarOffsetImpactToResolvedHandler } from './handlers/navbar/navbar-offset-impact-to-resolved-handler';
+import { NavbarOffsetResolvedHandler } from './handlers/navbar/navbar-offset-resolved-handler';
+import { NavbarOffsetResolvedToNoneHandler } from './handlers/navbar/navbar-offset-resolved-to-none-handler';
+import { SlotDecisionImpactToResolvedHandler } from './handlers/slot/slot-decision-impact-to-resolved-handler';
+import { SlotDecisionTimeoutHandler } from './handlers/slot/slot-decision-timeout-handler';
+import { SlotOffsetResolvedToNoneHandler } from './handlers/slot/slot-offset-resolved-to-none-handler';
+import { SlotSizeImpactToResolvedHandler } from './handlers/slot/slot-size-impact-to-resolved-handler';
+import { SlotSizeResolvedHandler } from './handlers/slot/slot-size-resolved-handler';
 import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
 import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
 import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
 import { VideoCtpHandler } from './handlers/video/video-ctp-handler';
-import { VideoDynamicImpactHandler } from './handlers/video/video-dynamic-impact-handler';
-import { VideoResolvedHandler } from './handlers/video/video-resolved-handler';
 import { VideoRestartHandler } from './handlers/video/video-restart-handler';
-import { VideoStickyHandler } from './handlers/video/video-sticky-handler';
-import { VideoTransitionHandler } from './handlers/video/video-transition-handler';
+import { VideoSizeImpactToResolvedHandler } from './handlers/video/video-size-impact-to-resolved-handler';
+import { VideoSizeResolvedHandler } from './handlers/video/video-size-resolved-handler';
 import { CloseButtonHelper } from './helpers/close-button-helper';
 import { DomManipulator } from './helpers/manipulators/dom-manipulator';
 import { PlayerRegistry } from './helpers/player-registry';
@@ -43,26 +46,39 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				DebugTransitionHandler,
 			],
 			impact: [
-				SlotDynamicImpactHandler,
-				SlotDynamicImpactDecisionHandler,
-				VideoDynamicImpactHandler,
+				SlotSizeImpactToResolvedHandler,
+				SlotDecisionImpactToResolvedHandler,
+				NavbarOffsetImpactToResolvedHandler,
+				BodyOffsetImpactHandler,
+				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
 			sticky: [
-				SlotStickyHandler,
-				SlotStickyDecisionHandler,
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
+				SlotDecisionTimeoutHandler,
 				CloseToTransitionButtonHandler,
-				VideoStickyHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			transition: [
-				SlotStickyHandler,
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotTransitionHandler,
-				VideoTransitionHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
-			resolved: [SlotResolvedHandler, VideoResolvedHandler, DomCleanupHandler],
+			resolved: [
+				SlotSizeResolvedHandler,
+				SlotOffsetResolvedToNoneHandler,
+				NavbarOffsetResolvedToNoneHandler,
+				BodyOffsetResolvedHandler,
+				VideoSizeResolvedHandler,
+				DomCleanupHandler,
+			],
 		},
 		'initial',
 		[
