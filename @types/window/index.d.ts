@@ -24,6 +24,7 @@ interface Window {
 	RLQ?: any;
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
+	iasPET?: IasPet;
 	moatPrebidApi?: MoatPrebidApi;
 	moatjw?: MoatJW;
 	sessionId?: string;

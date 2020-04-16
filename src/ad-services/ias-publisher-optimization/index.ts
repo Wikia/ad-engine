@@ -1,17 +1,8 @@
 import { context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
+import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
-
-interface IasPetQueueElement {
-	adSlots: number[][];
-	dataHandler: (string) => void;
-}
-
-interface IasPetConfig {
-	queue?: IasPetQueueElement[];
-	pubId?: string;
-}
 
 interface IasTargetingSlotData {
 	id?: string;
@@ -26,7 +17,6 @@ interface IasTargetingData {
 class IasPublisherOptimization {
 	private isLoaded = false;
 	private slotList: string[] = [];
-	private iasPET: IasPetConfig;
 
 	private isEnabled(): boolean {
 		return context.get('services.iasPublisherOptimization.enabled');
@@ -42,11 +32,12 @@ class IasPublisherOptimization {
 			utils.logger(logGroup, 'loading');
 			utils.scriptLoader
 				.loadScript(scriptUrl, 'text/javascript', true, 'first')
-				.then(postponeExecutionUntilGptLoads(() => this.setup()));
+				.then(() => this.setup());
 			this.isLoaded = true;
 		}
 	}
 
+	@decorate(postponeExecutionUntilGptLoads)
 	private setup(): void {
 		const iasPETSlots = [];
 		this.slotList = context.get('services.iasPublisherOptimization.slots');
@@ -66,10 +57,10 @@ class IasPublisherOptimization {
 		});
 
 		// @ts-ignore
-		this.iasPET = __iasPET || {};
-		this.iasPET.queue = this.iasPET.queue || [];
-		this.iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
-		this.iasPET.queue.push({
+		window.iasPET = __iasPET || {};
+		window.iasPET.queue = window.iasPET.queue || [];
+		window.iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
+		window.iasPET.queue.push({
 			adSlots: iasPETSlots,
 			dataHandler: this.iasDataHandler,
 		});

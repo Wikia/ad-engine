@@ -12,6 +12,7 @@ describe('IAS Publisher Optimization', () => {
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		context.remove('services.iasPublisherOptimization.enabled');
+		context.remove('services.iasPublisherOptimization.slots');
 	});
 
 	afterEach(() => {
@@ -28,6 +29,7 @@ describe('IAS Publisher Optimization', () => {
 
 	it('IAS Publisher Optimization is called', async () => {
 		context.set('services.iasPublisherOptimization.enabled', true);
+		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 
 		expect(loadScriptStub.called).to.equal(true);
