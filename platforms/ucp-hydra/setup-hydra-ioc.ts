@@ -1,14 +1,10 @@
 import {
-	A9ConfigSetup,
 	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
-	BiddersStateSetup,
-	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
 	NoAdsMode,
-	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
@@ -22,8 +18,6 @@ import { HydraAdEngineRunnerSetup } from './ad-engine-runner/hydra-ad-engine-run
 import * as fallbackInstantConfig from './fallback-config.json';
 import { HydraAdsMode } from './modes/hydra-ads-mode.service';
 import { HydraNoAdsMode } from './modes/hydra-no-ads-mode.service';
-import { HydraA9ConfigSetup } from './setup/context/a9/a9';
-import { HydraPrebidConfigSetup } from './setup/context/prebid/hydra-prebid-config-setup.service';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup.service';
 import { HydraTargetingSetup } from './setup/context/targeting/hydra-targeting-setup.service';
 import { HydraWikiContextSetup } from './setup/context/wiki/hydra-wiki-context-setup.service';
@@ -46,9 +40,6 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(SlotsContextSetup).to(HydraSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(HydraDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
-	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
-	container.bind(PrebidConfigSetup).to(HydraPrebidConfigSetup);
-	container.bind(A9ConfigSetup).to(HydraA9ConfigSetup);
 
 	return container;
 }
