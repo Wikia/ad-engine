@@ -38,7 +38,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 
 	private injectAfter(slotName, siblingsSelector): void {
 		const container = document.createElement('div');
-		const siblingElement = document.getElementById(siblingsSelector);
+		const siblingElement = document.querySelector(siblingsSelector);
 
 		container.id = slotName;
 

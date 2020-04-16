@@ -80,7 +80,7 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'bottom_leaderboard',
 				defaultSizes: [[728, 90]],
 				group: 'PF',
-				insertAfterSelector: 'catlinks',
+				insertAfterSelector: '#catlinks',
 				sizes: [],
 				targeting: {
 					loc: 'middle',

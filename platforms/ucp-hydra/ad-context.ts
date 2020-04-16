@@ -5,6 +5,7 @@ export const basicContext = {
 	custom: {
 		dfpId: '5441',
 		serverPrefix: 'wka1b',
+		rolloutTracking: 'ucp',
 	},
 	events: {
 		pushOnScroll: {
@@ -87,6 +88,9 @@ export const basicContext = {
 	slots: {},
 	slotGroups: {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+	},
+	targeting: {
+		rollout_tracking: 'ucp',
 	},
 	services: {
 		confiant: {
