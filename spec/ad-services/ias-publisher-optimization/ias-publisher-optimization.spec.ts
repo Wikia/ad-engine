@@ -1,0 +1,38 @@
+import { expect } from 'chai';
+import { createSandbox } from 'sinon';
+import { context, utils } from '../../../src/ad-engine';
+import { iasPublisherOptimization } from '../../../src/ad-services';
+
+describe('IAS Publisher Optimization', () => {
+	const sandbox = createSandbox();
+	let loadScriptStub;
+
+	beforeEach(() => {
+		loadScriptStub = sandbox
+			.stub(utils.scriptLoader, 'loadScript')
+			.returns(Promise.resolve({} as any));
+		context.remove('services.iasPublisherOptimization.enabled');
+	});
+
+	afterEach(() => {
+		sandbox.restore();
+	});
+
+	it('IAS Publisher Optimization can be disabled', async () => {
+		context.set('services.iasPublisherOptimization.enabled', false);
+
+		await iasPublisherOptimization.load();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('IAS Publisher Optimization is called', async () => {
+		context.set('services.iasPublisherOptimization.enabled', true);
+		await iasPublisherOptimization.load();
+
+		expect(loadScriptStub.called).to.equal(true);
+		expect(
+			loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', 'text/javascript', true),
+		).to.equal(true);
+	});
+});
