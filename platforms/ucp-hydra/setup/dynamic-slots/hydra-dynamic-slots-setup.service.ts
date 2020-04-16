@@ -4,10 +4,7 @@ import {
 	btRec,
 	context,
 	Dictionary,
-	fillerService,
 	FmrRotator,
-	PorvataFiller,
-	PorvataGamParams,
 	SlotConfig,
 	slotInjector,
 	slotService,
@@ -22,7 +19,6 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
-		this.configureIncontentPlayerFiller();
 	}
 
 	private injectSlots(): void {
@@ -32,7 +28,21 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 				slotInjector.inject(slotName, true);
 			}
 		});
+		Object.keys(slots).forEach((slotName) => {
+			if (slots[slotName].insertAfterSelector) {
+				this.injectAfter(slotName, slots[slotName].insertAfterSelector);
+			}
+		});
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
+	}
+
+	private injectAfter(slotName, siblingsSelector): void {
+		const container = document.createElement('div');
+		const siblingElement = document.getElementById(siblingsSelector);
+
+		container.id = slotName;
+
+		siblingElement.parentNode.insertBefore(container, siblingElement.nextSibling);
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
@@ -50,18 +60,6 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 				document.querySelector(slotConfig.parentContainerSelector),
 			);
 		});
-	}
-
-	private configureIncontentPlayerFiller(): void {
-		const icpSlotName = 'incontent_player';
-		const fillerOptions: Partial<PorvataGamParams> = {
-			enableInContentFloating: true,
-		};
-
-		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
-		context.set(`slots.${icpSlotName}.customFillerOptions`, fillerOptions);
-
-		fillerService.register(new PorvataFiller());
 	}
 
 	private appendRotatingSlot(

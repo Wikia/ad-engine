@@ -112,7 +112,7 @@ export const basicContext = {
 	},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/gamepedia/{slotConfig.adProduct}/{state.deviceType}/' +
+			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}/{state.deviceType}/' +
 			'{targeting.skin}-{targeting.s2}/_gp_wiki-gamepedia',
 	},
 	templates: {},
