@@ -49,10 +49,6 @@ class IasPublisherOptimization {
 
 	private setup(): void {
 		const iasPETSlots = [];
-		// @ts-ignore
-		this.iasPET = __iasPET || {};
-		this.iasPET.queue = this.iasPET.queue || [];
-		this.iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
 		this.slotList = context.get('services.iasPublisherOptimization.slots');
 		this.setInitialTargeting();
 
@@ -69,6 +65,10 @@ class IasPublisherOptimization {
 			});
 		});
 
+		// @ts-ignore
+		this.iasPET = __iasPET || {};
+		this.iasPET.queue = this.iasPET.queue || [];
+		this.iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
 		this.iasPET.queue.push({
 			adSlots: iasPETSlots,
 			dataHandler: this.iasDataHandler,
