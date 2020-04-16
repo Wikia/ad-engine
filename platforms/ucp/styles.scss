@@ -117,12 +117,14 @@
 
 @include navbar();
 
-body.has-background-ad {
-	.WikiaPage,
-	.wds-global-footer {
-		position: relative;
-		//z-index: 10;
-	}
+// #### ROADBLOCK STYLES ####
+
+#hivi_leaderboard,
+#top_leaderboard,
+.WikiaPage,
+.wds-global-footer {
+	position: relative;
+	z-index: 1;
 }
 
 // #######################################
