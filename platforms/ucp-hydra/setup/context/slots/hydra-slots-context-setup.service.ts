@@ -10,14 +10,16 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 		const slots = {
 			top_leaderboard: {
 				aboveTheFold: true,
+				adProduct: 'top_leaderboard',
+				slotNameSuffix: '',
 				defaultSizes: [
 					[728, 90],
 					[970, 150],
 					[970, 250],
 				],
 				firstCall: true,
-				bidderAlias: '01_LB',
-				group: '01_LB',
+				group: 'LB',
+				insertBeforeSelector: '#firstHeading',
 				sizes: [
 					{
 						viewportSize: [1024, 300],
@@ -58,15 +60,15 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 			},
 			top_boxad: {
 				aboveTheFold: true,
-				autoplay: true,
-				audio: false,
-				disableExpandAnimation: true,
+				adProduct: 'top_boxad',
+				slotNameSuffix: '',
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
 				],
-				bidderAlias: '02_MR',
-				group: '02_MR',
+				group: 'MR',
+				insertBeforeSelector: '',
+				sizes: [],
 				targeting: {
 					loc: 'top',
 					zne: '02',
@@ -74,9 +76,11 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				},
 			},
 			footer: {
+				adProduct: 'footer',
 				defaultSizes: [[300, 250]],
 				group: '03_PF',
-				bidderAlias: '03_PF',
+				insertBeforeSelector: '#curse-footer',
+				sizes: [],
 				targeting: {
 					loc: 'footer',
 					zne: '03',
@@ -84,9 +88,11 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				},
 			},
 			bottom_leaderboard: {
+				adProduct: 'bottom_leaderboard',
 				defaultSizes: [[728, 90]],
-				group: '04_BLB',
-				bidderAlias: '04_BLB',
+				group: 'PF',
+				insertBeforeSelector: '#catlinks',
+				sizes: [],
 				targeting: {
 					loc: 'middle',
 					zne: '04',
@@ -94,25 +100,15 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				},
 			},
 			incontent_boxad_1: {
+				adProduct: 'incontent_boxad_1',
+				bidderAlias: 'incontent_boxad_1',
 				defaultSizes: [[300, 250]],
-				group: '06_FMR',
-				bidderAlias: '06_FMR',
+				group: 'HiVi',
+				insertBeforeSelector: '',
+				sizes: [],
 				targeting: {
 					loc: 'footer',
 					zne: '06',
-					rv: 1,
-				},
-			},
-			incontent_player: {
-				disabled: true,
-				autoplay: true,
-				audio: false,
-				group: 'HiVi',
-				defaultSizes: [[1, 1]],
-				insertBeforeSelector: '#mw-content-text > .mw-parser-output > h2',
-				insertBelowFirstViewport: true,
-				targeting: {
-					loc: 'middle',
 					rv: 1,
 				},
 			},

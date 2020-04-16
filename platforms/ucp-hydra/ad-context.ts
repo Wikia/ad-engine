@@ -1,9 +1,10 @@
 export const basicContext = {
 	adUnitId:
-		'/{custom.dfpId}/gamepedia/{slotConfig.group}/{state.deviceType}/' +
+		'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}/{state.deviceType}/' +
 		'{targeting.skin}-{targeting.s2}/_gp_wiki-gamepedia',
 	custom: {
 		dfpId: '5441',
+		serverPrefix: 'wka1b',
 	},
 	events: {
 		pushOnScroll: {
