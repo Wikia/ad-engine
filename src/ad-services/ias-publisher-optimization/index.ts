@@ -1,39 +1,38 @@
-import { context, utils } from '@ad-engine/core';
+import { context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
-const SLOT_LIST = [
-	'hivi_leaderboard',
-	'top_leaderboard',
-	'top_boxad',
-	'incontent_boxad_1',
-	'bottom_leaderboard',
-];
-
-interface IasPetConfig {
-	queue?: IasPetQueueElement[];
-	pubId?: string;
-}
 
 interface IasPetQueueElement {
 	adSlots: number[][];
 	dataHandler: (string) => void;
 }
 
+interface IasPetConfig {
+	queue?: IasPetQueueElement[];
+	pubId?: string;
+}
+
+interface IasTargetingSlotData {
+	id?: string;
+	vw?: string[];
+}
+
 interface IasTargetingData {
 	fr?: string;
-	slots?: any[];
+	slots?: IasTargetingSlotData[];
 }
 
 class IasPublisherOptimization {
 	private isLoaded = false;
+	private slotList: string[] = [];
 	private iasPET: IasPetConfig;
 
 	private isEnabled(): boolean {
 		return context.get('services.iasPublisherOptimization.enabled');
 	}
 
-	load(): void {
+	call(): void {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
@@ -43,48 +42,43 @@ class IasPublisherOptimization {
 			utils.logger(logGroup, 'loading');
 			utils.scriptLoader
 				.loadScript(scriptUrl, 'text/javascript', true, 'first')
-				.then(() => this.setup());
+				.then(postponeExecutionUntilGptLoads(() => this.setup()));
 			this.isLoaded = true;
 		}
 	}
 
 	private setup(): void {
+		const iasPETSlots = [];
 		// @ts-ignore
 		this.iasPET = __iasPET || {};
 		this.iasPET.queue = this.iasPET.queue || [];
-		this.iasPET.pubId = '930616';
+		this.iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
+		this.slotList = context.get('services.iasPublisherOptimization.slots');
 		this.setInitialTargeting();
 
-		window.googletag.cmd.push(() => {
-			const slots = [];
-			const iasPETSlots = [];
-			SLOT_LIST.forEach((slotName) => {
-				slots.push(context.get(`slots.${slotName}`));
+		this.slotList.forEach((slotName) => {
+			const slot = context.get(`slots.${slotName}`);
+			const sizes = slot.sizes && slot.sizes.length ? slot.sizes[0].sizes : slot.defaultSizes;
+			const adUnitPath = utils.stringBuilder.build(slot.adUnit || context.get('adUnitId'), {
+				slotConfig: slot,
 			});
+			iasPETSlots.push({
+				adSlotId: slot['adProduct'],
+				size: sizes,
+				adUnitPath,
+			});
+		});
 
-			slots.forEach((slot) => {
-				const sizes = slot.sizes && slot.sizes.length ? slot.sizes[0].sizes : slot.defaultSizes;
-				const adUnitPath = utils.stringBuilder.build(slot.adUnit || context.get('adUnitId'), {
-					slotConfig: slot,
-				});
-				iasPETSlots.push({
-					adSlotId: slot['adProduct'],
-					size: sizes,
-					adUnitPath,
-				});
-			});
-
-			this.iasPET.queue.push({
-				adSlots: iasPETSlots,
-				dataHandler: this.iasDataHandler,
-			});
+		this.iasPET.queue.push({
+			adSlots: iasPETSlots,
+			dataHandler: this.iasDataHandler,
 		});
 	}
 
 	private setInitialTargeting(): void {
-		context.set('targeting.fr', -1);
-		SLOT_LIST.forEach((slotName) => {
-			context.set(`slots.${slotName}.targeting.vw`, -1);
+		context.set('targeting.fr', '-1');
+		this.slotList.forEach((slotName) => {
+			context.set(`slots.${slotName}.targeting.vw`, '-1');
 		});
 	}
 

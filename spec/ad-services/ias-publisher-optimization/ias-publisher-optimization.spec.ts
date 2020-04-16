@@ -21,14 +21,14 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization can be disabled', async () => {
 		context.set('services.iasPublisherOptimization.enabled', false);
 
-		await iasPublisherOptimization.load();
+		await iasPublisherOptimization.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
 	it('IAS Publisher Optimization is called', async () => {
 		context.set('services.iasPublisherOptimization.enabled', true);
-		await iasPublisherOptimization.load();
+		await iasPublisherOptimization.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
