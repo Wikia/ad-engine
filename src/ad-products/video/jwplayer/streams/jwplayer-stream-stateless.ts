@@ -58,6 +58,7 @@ export function createJwpStatelessStream(jwplayer: JWPlayer): JwpStatelessStream
 	const adComplete$ = createJwpStream(jwplayer, 'adComplete');
 	const adSkipped$ = createJwpStream(jwplayer, 'adSkipped');
 	const videoStart$ = createJwpStream(jwplayer, 'videoStart');
+	const videoError$ = createJwpStream(jwplayer, 'error');
 
 	return merge(
 		init$,
@@ -81,6 +82,7 @@ export function createJwpStatelessStream(jwplayer: JWPlayer): JwpStatelessStream
 		adComplete$,
 		adSkipped$,
 		videoStart$,
+		videoError$,
 	);
 }
 
@@ -96,10 +98,7 @@ function createJwpStream<TEvent extends JwpEventKey>(
 		jwplayer.on(event as any, (param) => {
 			observer.next({ name: event, payload: param });
 		});
-	}).pipe(
-		publish(),
-		refCount(),
-	);
+	}).pipe(publish(), refCount());
 }
 
 function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
