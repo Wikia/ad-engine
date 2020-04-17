@@ -4,7 +4,7 @@ import { context } from './';
 
 const logGroup = 'template-service';
 
-type TemplateInitializer = Pick<TemplateService, 'init'>;
+type TemplateInitializer = Pick<TemplateService, 'init'> & { has: (name: string) => boolean };
 
 class TemplateService {
 	private initializer?: TemplateInitializer;
@@ -35,11 +35,8 @@ class TemplateService {
 	}
 
 	init(name: string, slot: AdSlot = null, params: Dictionary = {}): void {
-		try {
-			this.initializer.init(name, slot, params);
-			return;
-		} catch (e) {
-			// simply use old template service
+		if (this.initializer?.has(name)) {
+			return this.initializer.init(name, slot, params);
 		}
 
 		logger(logGroup, 'Load template', name, slot, params);

@@ -5,19 +5,16 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotResolvedHandler implements TemplateStateHandler {
+export class BodyOffsetImpactHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.setResolvedImage();
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => {
-					this.manager.setResolvedAdHeight();
-				}),
+				tap(() => this.manager.setBodyOffsetImpact()),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

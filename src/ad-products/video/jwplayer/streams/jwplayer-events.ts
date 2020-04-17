@@ -29,6 +29,7 @@ export const jwpEvents = [
 	'adComplete',
 	'adSkipped',
 	'videoStart',
+	'error',
 ] as const;
 
 export type JwpEventName = ValuesOf<typeof jwpEvents>;

@@ -23,6 +23,7 @@ const trackingEventsMap = {
 	adSkipped: 'skipped',
 	videoStart: 'content_started',
 	complete: 'content_completed',
+	error: 'content_error',
 };
 
 type TrackingEvent = keyof typeof trackingEventsMap;
@@ -59,7 +60,7 @@ export class JWPlayerTrackingHelper {
 	}
 
 	private getErrorCode(event: JwpEvent<'adError'>): number {
-		if (event.name !== 'adError') {
+		if (!['adError', 'error'].includes(event.name)) {
 			return 0;
 		}
 
