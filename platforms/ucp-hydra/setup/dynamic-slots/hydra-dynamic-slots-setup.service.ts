@@ -37,7 +37,9 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 
 		container.id = slotName;
 
-		siblingElement.parentNode.insertBefore(container, siblingElement.nextSibling);
+		if (siblingElement) {
+			siblingElement.parentNode.insertBefore(container, siblingElement.nextSibling);
+		}
 	}
 
 	private configureTopLeaderboard(): void {
