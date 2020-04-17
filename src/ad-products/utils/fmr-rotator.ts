@@ -33,13 +33,18 @@ export class FmrRotator {
 		this.recirculationElement = document.getElementById('recirculation-rail');
 		this.refreshInfo.startPosition =
 			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
-		this.btRecStatus = this.btRec.isEnabled();
+		this.btRecStatus = this.btRec?.isEnabled();
 
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
+				const onlyFirstSlot =
+					universalAdPackage.isFanTakeoverLoaded() ||
+					context.get('options.floatingMedrecRecirculationDisabled');
+
 				slot.once(AdSlot.STATUS_SUCCESS, () => {
 					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-					if (!universalAdPackage.isFanTakeoverLoaded()) {
+
+					if (!onlyFirstSlot) {
 						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
 							setTimeout(() => {
 								this.hideSlot();
@@ -49,7 +54,7 @@ export class FmrRotator {
 				});
 
 				slot.once(AdSlot.STATUS_COLLAPSE, () => {
-					if (!universalAdPackage.isFanTakeoverLoaded()) {
+					if (!onlyFirstSlot) {
 						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
 						this.scheduleNextSlotPush();
 					}
@@ -57,9 +62,14 @@ export class FmrRotator {
 			}
 		});
 
-		setTimeout(() => {
+		if (context.get('options.floatingMedrecRecirculationDisabled')) {
+			this.swapRecirculation(false);
 			this.startFirstRotation();
-		}, this.refreshInfo.refreshDelay);
+		} else {
+			setTimeout(() => {
+				this.startFirstRotation();
+			}, this.refreshInfo.refreshDelay);
+		}
 	}
 
 	private slotStatusChanged(slotStatus): void {

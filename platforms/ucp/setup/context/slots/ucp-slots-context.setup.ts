@@ -14,13 +14,16 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				insertBeforeSelector: '.wds-global-navigation-wrapper',
+				insertBeforeSelector: '.WikiaPage',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
 					{
 						viewportSize: [1024, 0],
-						sizes: [[728, 90], [970, 250]],
+						sizes: [
+							[728, 90],
+							[970, 250],
+						],
 					},
 				],
 				defaultSizes: [[728, 90]],
@@ -74,7 +77,11 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				insertBeforeSelector: '.rcs-container, .wikia-rail-inner',
 				options: {},
 				slotShortcut: 'm',
-				defaultSizes: [[300, 250], [300, 600], [300, 1050]],
+				defaultSizes: [
+					[300, 250],
+					[300, 600],
+					[300, 1050],
+				],
 				targeting: {
 					loc: 'top',
 					rv: 1,
@@ -90,7 +97,10 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				sizes: [
 					{
 						viewportSize: [1240, 0],
-						sizes: [[1, 1], [1000, 1000]],
+						sizes: [
+							[1, 1],
+							[1000, 1000],
+						],
 					},
 				],
 				defaultSizes: [[1, 1]],
@@ -108,7 +118,12 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
-				defaultSizes: [[120, 600], [160, 600], [300, 250], [300, 600]],
+				defaultSizes: [
+					[120, 600],
+					[160, 600],
+					[300, 250],
+					[300, 600],
+				],
 				insertBeforeSelector: '#incontent_boxad_1',
 				garfieldCat: true,
 				repeat: {

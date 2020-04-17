@@ -10,11 +10,18 @@
 @import './styles/progress-bar';
 @import './styles/porvata-icons';
 
-.has-bfaa {
+.has-uap {
+	.WikiaSiteWrapper {
+		margin-top: 0;
+	}
+
 	#top_leaderboard,
 	#hivi_leaderboard {
 		z-index: 202;
 		padding: 0;
+		left: 0;
+		top: 0;
+		position: fixed;
 
 		@include bfaa-bfab-overlay;
 	}

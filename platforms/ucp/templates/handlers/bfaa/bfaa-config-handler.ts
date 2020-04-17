@@ -33,7 +33,6 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		context.set('slots.bottom_leaderboard.sizes', []);
 		context.set('slots.bottom_leaderboard.defaultSizes', [[3, 3]]);
 
-		document.body.classList.add('has-bfaa');
 		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.hide();
 		this.adSlot.getElement().style.setProperty('backgroundColor', '#000');
@@ -50,5 +49,6 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.adSlot.show();
+		document.body.classList.add('has-uap');
 	}
 }

@@ -13,32 +13,56 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
-	setDynamicImpactAdHeight(): void {
-		this.setAdHeight(`${this.reader.getDynamicImpactAdHeight()}px`);
+	setBodyOffsetImpact(): void {
+		this.setBodyOffset(this.reader.getBodyOffsetImpact());
 	}
 
-	setResolvedAdHeight(): void {
-		this.setAdHeight(`${this.reader.getResolvedAdHeight()}px`);
+	setBodyOffsetResolved(): void {
+		this.setBodyOffset(this.reader.getBodyOffsetResolved());
 	}
 
-	setImpactAdHeight(): void {
-		this.setAdHeight(`${this.reader.getImpactAdHeight()}px`);
+	private setBodyOffset(value: number): void {
+		this.manipulator.element(document.body).setProperty('paddingTop', `${value}px`);
 	}
 
-	setAdFixedPosition(): void {
-		this.manipulator
-			.element(this.adSlot.getElement())
-			.setProperty('position', 'fixed')
-			.setProperty('top', '0');
+	setNavbarOffsetImpactToResolved(): void {
+		this.setNavbarOffset(this.reader.getNavbarOffsetImpactToResolved());
 	}
 
-	setNavbarFixedPosition(): void {
-		const adHeight = this.adSlot.getElement().offsetHeight;
+	setNavbarOffsetResolvedToNone(): void {
+		this.setNavbarOffset(this.reader.getNavbarOffsetResolvedToNone());
+	}
 
-		this.manipulator
-			.element(this.navbar)
-			.setProperty('position', 'fixed')
-			.setProperty('top', `${adHeight}px`);
+	setNavbarOffsetResolved(): void {
+		this.setNavbarOffset(this.reader.getNavbarOffsetResolved());
+	}
+
+	private setNavbarOffset(value: number): void {
+		this.manipulator.element(this.navbar).setProperty('top', `${value}px`);
+	}
+
+	setSlotOffsetResolvedToNone(): void {
+		this.setSlotOffset(this.reader.getSlotOffsetResolvedToNone());
+	}
+
+	private setSlotOffset(value: number): void {
+		this.manipulator.element(this.adSlot.getElement()).setProperty('top', `${value}px`);
+	}
+
+	setSlotHeightImpactToResolved(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightImpactToResolved()}px`);
+	}
+
+	setSlotHeightResolved(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightResolved()}px`);
+	}
+
+	setSlotHeightImpact(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightImpact()}px`);
+	}
+
+	private setSlotHeight(height: string): void {
+		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
 	setResolvedImage(): void {
@@ -51,9 +75,5 @@ export class UapDomManager {
 
 	setImpactImage(): void {
 		this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
-	}
-
-	private setAdHeight(height: string): void {
-		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 }

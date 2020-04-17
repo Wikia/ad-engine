@@ -1,16 +1,12 @@
 @mixin navbar() {
 	.wds-global-navigation-wrapper {
 		top: 0;
-		position: sticky;
+		position: fixed;
 		width: 100%;
 		z-index: 400;
 	}
 
 	#globalNavigation {
 		position: static;
-	}
-
-	.WikiaSiteWrapper {
-		margin-top: 0;
 	}
 }
