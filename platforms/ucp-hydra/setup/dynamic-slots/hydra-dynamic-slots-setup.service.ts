@@ -1,17 +1,13 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
 import {
 	AdSlot,
-	btRec,
 	context,
 	Dictionary,
-	FmrRotator,
 	SlotConfig,
 	slotInjector,
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator, ofType } from '@wikia/post-quecast';
-import { take } from 'rxjs/operators';
 import { slotsContext } from '../../../shared/slots/slots-context';
 
 @Injectable()
@@ -33,7 +29,6 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 				this.injectAfter(slotName, slots[slotName].insertAfterSelector);
 			}
 		});
-		this.appendIncontentBoxad(slots['incontent_boxad_1']);
 	}
 
 	private injectAfter(slotName, siblingsSelector): void {
@@ -43,37 +38,6 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		container.id = slotName;
 
 		siblingElement.parentNode.insertBefore(container, siblingElement.nextSibling);
-	}
-
-	private appendIncontentBoxad(slotConfig: SlotConfig): void {
-		const icbSlotName = 'incontent_boxad_1';
-		const communicator = new Communicator();
-
-		if (context.get('custom.hasFeaturedVideo')) {
-			context.set(`slots.${icbSlotName}.defaultSizes`, [300, 250]);
-		}
-
-		communicator.actions$.pipe(ofType('[Rail] Ready'), take(1)).subscribe(() => {
-			this.appendRotatingSlot(
-				icbSlotName,
-				slotConfig.repeat.slotNamePattern,
-				document.querySelector(slotConfig.parentContainerSelector),
-			);
-		});
-	}
-
-	private appendRotatingSlot(
-		slotName: string,
-		slotNamePattern: string,
-		parentContainer: HTMLElement,
-	): void {
-		const container = document.createElement('div');
-		const prefix = slotNamePattern.replace(slotNamePattern.match(/({.*})/g)[0], '');
-		const rotator = new FmrRotator(slotName, prefix, btRec);
-
-		container.id = slotName;
-		parentContainer.appendChild(container);
-		rotator.rotateSlot();
 	}
 
 	private configureTopLeaderboard(): void {

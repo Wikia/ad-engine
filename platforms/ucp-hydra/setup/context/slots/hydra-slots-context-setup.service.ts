@@ -59,23 +59,6 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					xna: 1,
 				},
 			},
-			top_boxad: {
-				aboveTheFold: true,
-				adProduct: 'top_boxad',
-				slotNameSuffix: '',
-				defaultSizes: [
-					[300, 250],
-					[300, 600],
-				],
-				group: 'MR',
-				insertBeforeSelector: '',
-				sizes: [],
-				targeting: {
-					loc: 'top',
-					zne: '02',
-					rv: 1,
-				},
-			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
 				defaultSizes: [[728, 90]],
@@ -87,19 +70,6 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					zne: '04',
 					rv: 1,
 					xna: 1,
-				},
-			},
-			incontent_boxad_1: {
-				adProduct: 'incontent_boxad_1',
-				bidderAlias: 'incontent_boxad_1',
-				defaultSizes: [[300, 250]],
-				group: 'HiVi',
-				insertBeforeSelector: '',
-				sizes: [],
-				targeting: {
-					loc: 'footer',
-					zne: '06',
-					rv: 1,
 				},
 			},
 		};
