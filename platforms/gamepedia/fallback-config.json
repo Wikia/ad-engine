@@ -135,6 +135,9 @@
                 "muthead",
                 "oasis"
             ],
+            "regions": [
+                "XX-EU"
+            ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
         },
         {
@@ -159,8 +162,7 @@
                 "oasis"
             ],
             "regions": [
-                "XX",
-                "non-US"
+                "XX"
             ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200407.min.js"
         },
