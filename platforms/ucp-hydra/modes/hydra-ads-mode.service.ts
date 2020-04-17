@@ -1,23 +1,12 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import {
-	bidders,
-	confiant,
-	context,
-	durationMedia,
-	JWPlayerManager,
-	nielsen,
-	permutive,
-	Runner,
-} from '@wikia/ad-engine';
+import { bidders, confiant, context, durationMedia, nielsen, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator } from '@wikia/post-quecast';
 
 @Injectable()
 export class HydraAdsMode implements AdsMode {
 	handleAds(): void {
 		const inhibitors = this.callExternals();
 
-		this.setupJWPlayer(inhibitors);
 		startAdEngine(inhibitors);
 
 		this.setAdStack();
@@ -26,27 +15,6 @@ export class HydraAdsMode implements AdsMode {
 
 	private trackAdEngineStatus(): void {
 		PageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
-	}
-
-	private async setupJWPlayer(inhibitors = []): Promise<any> {
-		new JWPlayerManager().manage();
-
-		const maxTimeout = context.get('options.maxDelayTimeout');
-		const runner = new Runner(inhibitors, maxTimeout, 'jwplayer-runner');
-
-		runner.waitForInhibitors().then(() => {
-			this.dispatchJWPlayerSetupAction();
-		});
-	}
-
-	private dispatchJWPlayerSetupAction(): void {
-		const communicator = new Communicator();
-
-		communicator.dispatch({
-			type: '[Ad Engine] Setup JWPlayer',
-			showAds: true,
-			autoplayDisabled: false,
-		});
 	}
 
 	private callExternals(): Promise<any>[] {

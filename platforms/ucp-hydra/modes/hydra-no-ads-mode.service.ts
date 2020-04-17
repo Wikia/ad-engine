@@ -1,12 +1,10 @@
 import { NoAdsMode, PageTracker } from '@platforms/shared';
 import { context, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator } from '@wikia/post-quecast';
 
 @Injectable()
 export class HydraNoAdsMode implements NoAdsMode {
 	handleNoAds(): void {
-		this.dispatchJWPlayerSetupAction();
 		this.trackAdEngineStatus();
 	}
 
@@ -38,15 +36,5 @@ export class HydraNoAdsMode implements NoAdsMode {
 		});
 
 		return reasons.length > 0 ? reasons[0] : '';
-	}
-
-	private dispatchJWPlayerSetupAction(): void {
-		const communicator = new Communicator();
-
-		communicator.dispatch({
-			type: '[Ad Engine] Setup JWPlayer',
-			showAds: false,
-			autoplayDisabled: false,
-		});
 	}
 }

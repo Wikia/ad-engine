@@ -11,10 +11,6 @@ export class HydraBaseContextSetup extends BaseContextSetup {
 			'options.floatingMedrecDestroyable',
 			this.instantConfig.get('icFloatingMedrecDestroyable'),
 		);
-		context.set(
-			'options.jwplayerA9LoggerErrorCodes',
-			this.instantConfig.get('icA9LoggerErrorCodes'),
-		);
 		// sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
 		context.set(
 			'userId',
