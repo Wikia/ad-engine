@@ -57,7 +57,7 @@ class IasPublisherOptimization {
 		});
 
 		// @ts-ignore
-		window.__iasPET = __iasPET || {};
+		window.__iasPET = window.__iasPET || {};
 		window.__iasPET.queue = window.__iasPET.queue || [];
 		window.__iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
 		window.__iasPET.queue.push({

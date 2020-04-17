@@ -6,16 +6,19 @@ import { iasPublisherOptimization } from '../../../src/ad-services';
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
+	let clock;
 
 	beforeEach(() => {
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
+		clock = sandbox.useFakeTimers();
 		context.remove('services.iasPublisherOptimization.enabled');
 		context.remove('services.iasPublisherOptimization.slots');
 	});
 
 	afterEach(() => {
+		clock.tick(1);
 		sandbox.restore();
 	});
 
