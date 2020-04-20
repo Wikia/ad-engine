@@ -1,7 +1,6 @@
-import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { AdsMode, editModeManager, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import { bidders, confiant, context, durationMedia, nielsen, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { editModeManager } from '../../shared/utils/edit-mode-manager';
 import { hideAllAdSlots } from '../templates/hide-all-ad-slots';
 
 @Injectable()
