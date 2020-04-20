@@ -29,6 +29,8 @@ context.set('targeting.topics', ['foo', 'bar', 'test']);
 context.set('custom.device', utils.client.getDeviceType());
 context.set('custom.adLayout', 'article');
 context.set('options.tracking.kikimora.player', true);
+context.set('bidders.a9.videoEnabled', true);
+context.set('bidders.a9.dealsEnabled', true);
 context.set('bidders.prebid.enabled', !!utils.queryString.get('wikia_video_adapter'));
 context.set('options.video.isMidrollEnabled', utils.queryString.get('midroll') === '1');
 context.set('options.video.isPostrollEnabled', utils.queryString.get('postroll') === '1');
