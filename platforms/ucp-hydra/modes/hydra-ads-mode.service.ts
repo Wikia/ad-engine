@@ -1,5 +1,5 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import { bidders, confiant, context, durationMedia, nielsen, permutive } from '@wikia/ad-engine';
+import { bidders, confiant, context, durationMedia, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -19,7 +19,6 @@ export class HydraAdsMode implements AdsMode {
 
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
-		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
@@ -27,11 +26,6 @@ export class HydraAdsMode implements AdsMode {
 		permutive.call();
 		confiant.call();
 		durationMedia.call();
-		nielsen.call({
-			type: 'static',
-			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-		});
 
 		return inhibitors;
 	}
