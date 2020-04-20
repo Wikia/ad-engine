@@ -1,0 +1,28 @@
+@import 'src/ad-products/styles/mixin';
+@import 'src/ad-products/styles/breakpoints';
+
+.gpt-ad {
+	text-align: center;
+
+	&#top_leaderboard {
+		bottom: 0;
+		margin: 0 auto;
+		position: fixed;
+		width: 100%;
+		z-index: 999999 !important;
+	}
+
+	&#footer {
+		margin: 10px auto;
+	}
+}
+
+html.disable-ads {
+	.gpt-ad {
+		display: none;
+	}
+}
+
+.editor-overlay .gpt-ad {
+	display: none;
+}
