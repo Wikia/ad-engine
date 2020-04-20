@@ -24,22 +24,29 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 				slotInjector.inject(slotName, true);
 			}
 		});
-		Object.keys(slots).forEach((slotName) => {
-			if (slots[slotName].insertAfterSelector) {
-				this.injectAfter(slotName, slots[slotName].insertAfterSelector);
-			}
-		});
+		this.injectBLB(slots['bottom_leaderboard'].insertAfterSelector);
 	}
 
-	private injectAfter(slotName, siblingsSelector): void {
-		const container = document.createElement('div');
+	private injectBLB(siblingsSelector): void {
+		const wrapper = document.createElement('div');
+		wrapper.id = 'btflb';
+
+		const blbContainer = document.createElement('div');
+		blbContainer.id = 'bottom_leaderboard';
+
+		const sideRailElement = document.querySelector('#siderail_ucpinternalgptestproject43');
 		const siblingElement = document.querySelector(siblingsSelector);
 
-		container.id = slotName;
-
-		if (siblingElement) {
-			siblingElement.parentNode.insertBefore(container, siblingElement.nextSibling);
+		if (sideRailElement) {
+			this.injectAfter(blbContainer, sideRailElement, wrapper);
+		} else if (siblingElement) {
+			this.injectAfter(blbContainer, siblingElement, wrapper);
 		}
+	}
+
+	private injectAfter(newElement, siblingElement, newElementWrapper): void {
+		siblingElement.parentNode.insertBefore(newElementWrapper, siblingElement.nextSibling);
+		newElementWrapper.appendChild(newElement);
 	}
 
 	private configureTopLeaderboard(): void {
