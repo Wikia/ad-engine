@@ -34,19 +34,14 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		const blbContainer = document.createElement('div');
 		blbContainer.id = 'bottom_leaderboard';
 
-		const sideRailElement = document.querySelector('#siderail_ucpinternalgptestproject43');
-		const siblingElement = document.querySelector(siblingsSelector);
+		const siblingElement =
+			document.querySelector('#siderail_ucpinternalgptestproject43') ||
+			document.querySelector(siblingsSelector);
 
-		if (sideRailElement) {
-			this.injectAfter(blbContainer, sideRailElement, wrapper);
-		} else if (siblingElement) {
-			this.injectAfter(blbContainer, siblingElement, wrapper);
+		if (siblingElement) {
+			siblingElement.parentNode.insertBefore(wrapper, siblingElement.nextSibling);
+			wrapper.appendChild(blbContainer);
 		}
-	}
-
-	private injectAfter(newElement, siblingElement, newElementWrapper): void {
-		siblingElement.parentNode.insertBefore(newElementWrapper, siblingElement.nextSibling);
-		newElementWrapper.appendChild(newElement);
 	}
 
 	private configureTopLeaderboard(): void {
