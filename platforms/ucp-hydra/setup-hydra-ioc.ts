@@ -14,16 +14,16 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { HydraAdEngineRunnerSetup } from './ad-engine-runner/hydra-ad-engine-runner-setup.service';
+import { HydraAdEngineRunnerSetup } from './ad-engine-runner/hydra-ad-engine-runner-setup';
 import * as fallbackInstantConfig from './fallback-config.json';
-import { HydraAdsMode } from './modes/hydra-ads-mode.service';
-import { HydraNoAdsMode } from './modes/hydra-no-ads-mode.service';
-import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup.service';
-import { HydraTargetingSetup } from './setup/context/targeting/hydra-targeting-setup.service';
-import { HydraWikiContextSetup } from './setup/context/wiki/hydra-wiki-context-setup.service';
-import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup.service';
-import { HydraBaseContextSetup } from './setup/hydra-base-context-setup.service';
-import { HydraSlotsStateSetup } from './setup/state/slots/hydra-slots-state-setup.service';
+import { HydraAdsMode } from './modes/hydra-ads-mode';
+import { HydraNoAdsMode } from './modes/hydra-no-ads-mode';
+import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
+import { HydraTargetingSetup } from './setup/context/targeting/hydra-targeting-setup';
+import { HydraWikiContextSetup } from './setup/context/wiki/hydra-wiki-context-setup';
+import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup';
+import { HydraBaseContextSetup } from './setup/hydra-base-context-setup';
+import { HydraSlotsStateSetup } from './setup/state/slots/hydra-slots-state-setup';
 
 export async function setupHydraIoc(): Promise<Container> {
 	const container = new Container();
