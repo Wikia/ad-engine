@@ -11,6 +11,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 			top_leaderboard: {
 				aboveTheFold: true,
 				adProduct: 'top_leaderboard',
+				bidderAlias: '01_LB',
 				slotNameSuffix: '',
 				defaultSizes: [
 					[728, 90],
@@ -68,7 +69,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 				],
 				bidderAlias: '02_MR',
 				insertBeforeSelector: '#mw-content-text h2:nth-child(2)',
-				group: '02_MR',
+				group: 'MR',
 				targeting: {
 					loc: 'top',
 					zne: '02',
@@ -79,7 +80,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'footer',
 				aboveTheFold: false,
 				defaultSizes: [[300, 250]],
-				group: '03_PF',
+				group: 'PF',
 				bidderAlias: '03_PF',
 				insertAfterSelector: '.minerva-footer .license',
 				targeting: {
