@@ -10,33 +10,34 @@ interface Window {
 	__cmp?: WindowCMP;
 	__iasPET?: IasPet;
 	__uspapi?: WindowUSP;
-	XMLHttpRequest?: any;
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	apstag?: Apstag;
+	beaconId?: string;
+	beacon_id?: string;
 	canPlayVideo?: any;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
 	google: {
 		ima: typeof google.ima;
 	};
-	mw?: MediaWiki;
-	RLQ?: any;
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
-	moatPrebidApi?: MoatPrebidApi;
 	moatjw?: MoatJW;
-	sessionId?: string;
-	session_id?: string;
+	moatPrebidApi?: MoatPrebidApi;
+	mw?: MediaWiki;
+	permutive?: Permutive;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
+	RLQ?: any;
+	sessionId?: string;
+	session_id?: string;
+	tabId?: string;
 	trackingOptIn?: any;
-	permutive?: Permutive;
 	wgCookiePath?: string;
-	beaconId?: string;
-	beacon_id?: string;
+	XMLHttpRequest?: any;
 }
 
 declare var NOLBUNDLE: any;

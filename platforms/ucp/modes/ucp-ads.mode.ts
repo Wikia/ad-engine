@@ -11,6 +11,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Communicator } from '@wikia/post-quecast';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UcpAdsMode implements AdsMode {
@@ -22,10 +23,21 @@ export class UcpAdsMode implements AdsMode {
 
 		this.setAdStack();
 		this.trackAdEngineStatus();
+		this.trackTabId();
 	}
 
 	private trackAdEngineStatus(): void {
 		PageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
+	}
+
+	private trackTabId(): void {
+		if (!context.get('options.tracking.tabId')) {
+			return;
+		}
+
+		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
+
+		PageTracker.trackProp('tab_id', window.tabId);
 	}
 
 	private async setupJWPlayer(inhibitors = []): Promise<any> {

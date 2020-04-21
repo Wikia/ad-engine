@@ -70,8 +70,23 @@ export class A9Provider extends BidderProvider {
 
 	private initIfNotLoaded(consentData: ConsentData, signalData: SignalData): void {
 		if (!this.loaded) {
+			if (context.get('bidders.a9.videoBidsCleaning')) {
+				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
+				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
+			}
+
 			this.apstag.init(this.getApstagConfig(consentData, signalData));
 			this.loaded = true;
+		}
+	}
+
+	private removeBids(adSlot: AdSlot) {
+		const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+
+		delete this.bids[slotAlias];
+
+		if (adSlot.isVideo()) {
+			eventService.emit(events.VIDEO_AD_USED, adSlot);
 		}
 	}
 
