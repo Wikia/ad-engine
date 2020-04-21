@@ -1,4 +1,4 @@
-import { editModeManager, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	BigFancyAdAboveConfig,
@@ -9,6 +9,7 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
+import { editModeManager } from '../utils/edit-mode-manager';
 
 const { CSS_TIMING_EASE_IN_CUBIC, FADE_IN_TIME, SLIDE_OUT_TIME } = universalAdPackage;
 const navbarBorderSize = 1;

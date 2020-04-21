@@ -19,7 +19,7 @@ window.RLQ.push(async () => {
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isMobile: false });
+	platformStartup.configure({ isMobile: true });
 
 	// TODO: Move it to platformStartup.run once all platforms use @wikia/post-quecast
 	communicator.dispatch(adEngineConfigured());

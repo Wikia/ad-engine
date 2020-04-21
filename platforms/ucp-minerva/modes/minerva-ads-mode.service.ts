@@ -1,13 +1,10 @@
-import { AdsMode, editModeManager, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import { bidders, confiant, context, durationMedia, nielsen, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { hideAllAdSlots } from '../templates/hide-all-ad-slots';
 
 @Injectable()
 export class MinervaAdsMode implements AdsMode {
 	handleAds(): void {
-		editModeManager.onActivate(() => hideAllAdSlots());
-
 		const inhibitors = this.callExternals();
 
 		startAdEngine(inhibitors);
