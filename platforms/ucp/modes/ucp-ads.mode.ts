@@ -4,6 +4,7 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	identityLibrary,
 	JWPlayerManager,
 	nielsen,
 	permutive,
@@ -57,6 +58,7 @@ export class UcpAdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		permutive.call();
+		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();
 		nielsen.call({
