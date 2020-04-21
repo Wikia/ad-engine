@@ -14,16 +14,16 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { MinervaAdEngineRunnerSetup } from './ad-engine-runner/minerva-ad-engine-runner-setup.service';
+import { MinervaAdEngineRunnerSetup } from './ad-engine-runner/minerva-ad-engine-runner-setup';
 import * as fallbackInstantConfig from './fallback-config.json';
-import { MinervaAdsMode } from './modes/minerva-ads-mode.service';
-import { MinervaNoAdsMode } from './modes/minerva-no-ads-mode.service';
-import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup.service';
-import { MinervaTargetingSetup } from './setup/context/targeting/minerva-targeting-setup.service';
-import { MinervaWikiContextSetup } from './setup/context/wiki/minerva-wiki-context-setup.service';
-import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup.service';
-import { MinervaBaseContextSetup } from './setup/minerva-base-context-setup.service';
-import { MinervaSlotsStateSetup } from './setup/state/slots/minerva-slots-state-setup.service';
+import { MinervaAdsMode } from './modes/minerva-ads-mode';
+import { MinervaNoAdsMode } from './modes/minerva-no-ads-mode';
+import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
+import { MinervaTargetingSetup } from './setup/context/targeting/minerva-targeting-setup';
+import { MinervaWikiContextSetup } from './setup/context/wiki/minerva-wiki-context-setup';
+import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup';
+import { MinervaBaseContextSetup } from './setup/minerva-base-context-setup';
+import { MinervaSlotsStateSetup } from './setup/state/slots/minerva-slots-state-setup';
 
 export async function setupMinervaIoc(): Promise<Container> {
 	const container = new Container();
