@@ -1,4 +1,4 @@
-import { getDomain, TargetingSetup } from '@platforms/shared';
+import { getDomain, getUcpAdLayout, getUcpHostnamePrefix, TargetingSetup } from '@platforms/shared';
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -23,13 +23,13 @@ export class MinervaTargetingSetup implements TargetingSetup {
 			dmn: domain.base,
 			esrb: wiki.targeting.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
-			hostpre: this.getHostnamePrefix(),
+			hostpre: getUcpHostnamePrefix(),
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			s0: wiki.targeting.mappedVerticalName,
 			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
-			s2: this.getAdLayout(wiki.targeting),
+			s2: getUcpAdLayout(wiki.targeting),
 			skin: 'minerva',
 			uap: 'none',
 			uap_c: 'none',
@@ -47,30 +47,7 @@ export class MinervaTargetingSetup implements TargetingSetup {
 		return targeting;
 	}
 
-	private getHostnamePrefix(): string {
-		const hostname = window.location.hostname.toLowerCase();
-		const match = /(^|.)(showcase|externaltest|preview|verify|stable|sandbox-[^.]+)\./.exec(
-			hostname,
-		);
-
-		if (match && match.length > 2) {
-			return match[2];
-		}
-
-		const pieces = hostname.split('.');
-
-		if (pieces.length) {
-			return pieces[0];
-		}
-
-		return undefined;
-	}
-
 	private getRawDbName(adsContext: MediaWikiAdsContext): string {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
-	}
-
-	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
-		return targeting.pageType || 'article';
 	}
 }
