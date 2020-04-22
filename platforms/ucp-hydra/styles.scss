@@ -6,5 +6,9 @@
 	&#bottom_leaderboard {
 		text-align: center;
 		padding: 5px 0;
+
+		&.hide {
+			display: none;
+		}
 	}
 }
