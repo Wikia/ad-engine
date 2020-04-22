@@ -39,6 +39,7 @@ export interface SlotConfig {
 	trackOverscrolled?: boolean;
 	slotName?: string;
 	insertBeforeSelector?: string;
+	insertAfterSelector?: string;
 	parentContainerSelector?: string;
 
 	targeting: Targeting;
@@ -50,6 +51,7 @@ export interface SlotConfig {
 	defaultSizes?: any;
 	viewportConflicts?: string[];
 	outOfPage?: any;
+	isVideo?: boolean;
 
 	trackingKey?: string;
 	audio?: boolean;
@@ -319,6 +321,10 @@ export class AdSlot extends EventEmitter {
 
 	isOutOfPage(): boolean {
 		return !!this.config.outOfPage;
+	}
+
+	isVideo(): boolean {
+		return !!this.config.isVideo;
 	}
 
 	getCopy(): SlotConfig {
