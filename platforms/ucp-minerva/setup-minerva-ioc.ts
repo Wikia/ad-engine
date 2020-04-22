@@ -1,5 +1,4 @@
 import {
-	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
 	CommonTrackingSetup,
@@ -17,7 +16,6 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { MinervaAdEngineRunnerSetup } from './ad-engine-runner/minerva-ad-engine-runner-setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaNoAdsMode } from './modes/minerva-no-ads-mode';
@@ -34,7 +32,6 @@ export async function setupMinervaIoc(): Promise<Container> {
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(UcpTargetingSetup.skin('minerva'));
-	container.bind(AdEngineRunnerSetup).to(MinervaAdEngineRunnerSetup);
 	container.bind(AdsMode).to(MinervaAdsMode);
 	container.bind(NoAdsMode).to(MinervaNoAdsMode);
 	container.bind(SlotsStateSetup).to(MinervaSlotsStateSetup);

@@ -1,5 +1,4 @@
 import {
-	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
 	CommonTrackingSetup,
@@ -17,7 +16,6 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { HydraAdEngineRunnerSetup } from './ad-engine-runner/hydra-ad-engine-runner-setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { HydraAdsMode } from './modes/hydra-ads-mode';
 import { HydraNoAdsMode } from './modes/hydra-no-ads-mode';
@@ -34,7 +32,6 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(UcpTargetingSetup.skin('hydra'));
-	container.bind(AdEngineRunnerSetup).to(HydraAdEngineRunnerSetup);
 	container.bind(AdsMode).to(HydraAdsMode);
 	container.bind(NoAdsMode).to(HydraNoAdsMode);
 	container.bind(SlotsStateSetup).to(HydraSlotsStateSetup);

@@ -1,6 +1,5 @@
 import {
 	A9ConfigSetup,
-	AdEngineRunnerSetup,
 	AdsMode,
 	BaseContextSetup,
 	BiddersStateSetup,
@@ -22,7 +21,6 @@ import {
 import { context, FOOTER, InstantConfigService, NAVBAR } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { UcpAdEngineRunnerSetup } from './ad-engine-runner/ucp-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
 import { UcpNoAdsMode } from './modes/ucp-no-ads.mode';
@@ -42,7 +40,6 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(UcpTargetingSetup.skin('oasis'));
-	container.bind(AdEngineRunnerSetup).to(UcpAdEngineRunnerSetup);
 	container.bind(AdsMode).to(UcpAdsMode);
 	container.bind(NoAdsMode).to(UcpNoAdsMode);
 	container.bind(SlotsStateSetup).to(UcpSlotsStateSetup);
