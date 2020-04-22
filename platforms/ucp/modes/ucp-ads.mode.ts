@@ -16,7 +16,7 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UcpAdsMode implements AdsMode {
-	constructor(private communicator: Communicator) {}
+	constructor(private communicator: Communicator, private pageTracker: PageTracker) {}
 
 	handleAds(): void {
 		const inhibitors = this.callExternals();
@@ -30,7 +30,7 @@ export class UcpAdsMode implements AdsMode {
 	}
 
 	private trackAdEngineStatus(): void {
-		PageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
+		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
 	private trackTabId(): void {
@@ -40,7 +40,7 @@ export class UcpAdsMode implements AdsMode {
 
 		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
 
-		PageTracker.trackProp('tab_id', window.tabId);
+		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
 
 	private async setupJWPlayer(inhibitors = []): Promise<any> {

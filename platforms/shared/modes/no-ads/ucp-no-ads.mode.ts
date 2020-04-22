@@ -6,7 +6,7 @@ import { NoAdsMode } from './_no-ads.mode';
 
 @Injectable()
 export class UcpNoAdsMode implements NoAdsMode {
-	constructor(private communicator: Communicator) {}
+	constructor(private communicator: Communicator, private pageTracker: PageTracker) {}
 
 	handleNoAds(): void {
 		this.dispatchJWPlayerSetupAction();
@@ -14,7 +14,7 @@ export class UcpNoAdsMode implements NoAdsMode {
 	}
 
 	private trackAdEngineStatus(): void {
-		PageTracker.trackProp('adengine', `off_${this.getReasonForNoAds()}`);
+		this.pageTracker.trackProp('adengine', `off_${this.getReasonForNoAds()}`);
 	}
 
 	private getReasonForNoAds(): string {
