@@ -1,4 +1,4 @@
-import { DynamicSlotsSetup } from '@platforms/shared';
+import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
@@ -15,7 +15,6 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { Communicator, ofType } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
-import { slotsContext } from '../../../shared/slots/slots-context';
 
 @Injectable()
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
@@ -43,18 +42,13 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 			context.set(`slots.${icbSlotName}.defaultSizes`, [300, 250]);
 		}
 
-		communicator.actions$
-			.pipe(
-				ofType('[Rail] Ready'),
-				take(1),
-			)
-			.subscribe(() => {
-				this.appendRotatingSlot(
-					icbSlotName,
-					slotConfig.repeat.slotNamePattern,
-					document.querySelector(slotConfig.parentContainerSelector),
-				);
-			});
+		communicator.actions$.pipe(ofType('[Rail] Ready'), take(1)).subscribe(() => {
+			this.appendRotatingSlot(
+				icbSlotName,
+				slotConfig.repeat.slotNamePattern,
+				document.querySelector(slotConfig.parentContainerSelector),
+			);
+		});
 	}
 
 	private configureIncontentPlayerFiller(): void {

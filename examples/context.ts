@@ -145,11 +145,17 @@ export default {
 			sizes: [
 				{
 					viewportSize: [728, 0],
-					sizes: [[728, 90], [3, 3]],
+					sizes: [
+						[728, 90],
+						[3, 3],
+					],
 				},
 			],
 			defaultClasses: ['i-am-the-default-class-added-on-create'],
-			defaultSizes: [[300, 250], [2, 2]],
+			defaultSizes: [
+				[300, 250],
+				[2, 2],
+			],
 			targeting: {
 				loc: 'top',
 			},
@@ -159,7 +165,10 @@ export default {
 			sizes: [
 				{
 					viewportSize: [768, 0],
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 			],
 			defaultSizes: [[300, 250]],
@@ -181,7 +190,10 @@ export default {
 			sizes: [
 				{
 					viewportSize: [768, 0],
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 			],
 			defaultSizes: [[300, 250]],
@@ -239,7 +251,10 @@ export default {
 			sizes: [
 				{
 					viewportSize: [768, 0],
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 			],
 			targeting: {
@@ -253,10 +268,16 @@ export default {
 			sizes: [
 				{
 					viewportSize: [728, 0],
-					sizes: [[728, 90], [3, 3]],
+					sizes: [
+						[728, 90],
+						[3, 3],
+					],
 				},
 			],
-			defaultSizes: [[300, 250], [2, 2]],
+			defaultSizes: [
+				[300, 250],
+				[2, 2],
+			],
 			targeting: {
 				loc: 'footer',
 				pos: ['bottom_leaderboard', 'mobile_prefooter'],
@@ -277,6 +298,7 @@ export default {
 			targeting: {
 				wsi: 'xxx1',
 			},
+			isVideo: true,
 			trackingKey: 'featured-video',
 			videoAdUnit:
 				'/{networkId}/wka1a.{slotConfig.group}/{slotConfig.lowerSlotName}' +
