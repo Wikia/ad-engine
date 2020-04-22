@@ -1,4 +1,4 @@
-import { bidders, confiant, context, durationMedia } from '@wikia/ad-engine';
+import { bidders, confiant, context, durationMedia, identityLibrary } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { wadRunner } from '../../services/wad-runner';
 import { startAdEngine } from '../start-ad-engine';
@@ -20,6 +20,7 @@ export class SportsAdsMode implements AdsMode {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
 
+		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();
 
