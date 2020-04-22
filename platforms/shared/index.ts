@@ -33,8 +33,6 @@ export * from './modes/start-ad-engine';
 export * from './services/wad-runner';
 export * from './utils/get-domain';
 export * from './utils/get-sports-page-type';
-export * from './utils/get-ucp-ad-layout';
-export * from './utils/get-ucp-hostname-prefix';
 export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';

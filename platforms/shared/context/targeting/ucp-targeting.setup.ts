@@ -2,8 +2,6 @@ import { Binder, context, Targeting, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { TargetingSetup } from '../../setup/_targeting.setup';
 import { getDomain } from '../../utils/get-domain';
-import { getUcpAdLayout } from '../../utils/get-ucp-ad-layout';
-import { getUcpHostnamePrefix } from '../../utils/get-ucp-hostname-prefix';
 
 const SKIN = Symbol('targeting skin');
 
@@ -37,13 +35,13 @@ export class UcpTargetingSetup implements TargetingSetup {
 			dmn: domain.base,
 			esrb: wiki.targeting.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
-			hostpre: getUcpHostnamePrefix(),
+			hostpre: this.getHostnamePrefix(),
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			s0: wiki.targeting.mappedVerticalName,
 			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
-			s2: getUcpAdLayout(wiki.targeting),
+			s2: this.getAdLayout(wiki.targeting),
 			skin: this.skin,
 			uap: 'none',
 			uap_c: 'none',
@@ -61,7 +59,76 @@ export class UcpTargetingSetup implements TargetingSetup {
 		return targeting;
 	}
 
+	private getHostnamePrefix(): string {
+		const hostname = window.location.hostname.toLowerCase();
+		const match = /(^|.)(showcase|externaltest|preview|verify|stable|sandbox-[^.]+)\./.exec(
+			hostname,
+		);
+
+		if (match && match.length > 2) {
+			return match[2];
+		}
+
+		const pieces = hostname.split('.');
+
+		if (pieces.length) {
+			return pieces[0];
+		}
+
+		return undefined;
+	}
+
 	private getRawDbName(adsContext: MediaWikiAdsContext): string {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
+	}
+
+	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
+		let adLayout = this.getPageType(targeting);
+		const videoStatus = this.getVideoStatus();
+		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
+		const hasIncontentPlayer =
+			!hasFeaturedVideo &&
+			document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
+
+		if (adLayout === 'article') {
+			if (hasFeaturedVideo) {
+				const videoPrefix = videoStatus.isDedicatedForArticle ? 'fv' : 'wv';
+
+				adLayout = `${videoPrefix}-${adLayout}`;
+			} else if (hasIncontentPlayer) {
+				adLayout = `${adLayout}-ic`;
+			}
+		}
+
+		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
+
+		return adLayout;
+	}
+
+	private getPageType(targeting: MediaWikiAdsTargeting): string {
+		return targeting.pageType || 'article';
+	}
+
+	private getVideoStatus(): VideoStatus {
+		if (context.get('wiki.targeting.hasFeaturedVideo')) {
+			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
+			const isDedicatedForArticle =
+				context.get('wiki.targeting.featuredVideo.isDedicatedForArticle') !== false;
+			const bridgeVideoPlayed =
+				!isDedicatedForArticle && window.canPlayVideo && window.canPlayVideo();
+
+			return {
+				isDedicatedForArticle,
+				hasVideoOnPage: isDedicatedForArticle || bridgeVideoPlayed,
+			};
+		}
+
+		return {};
+	}
+
+	// TODO: This should not be here. It is a side effect that is unpredictable.
+	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
+		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
+		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 }
