@@ -10,6 +10,7 @@ import {
 	TargetingSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpTargetingSetup,
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -21,7 +22,6 @@ import * as fallbackInstantConfig from './fallback-config.json';
 import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaNoAdsMode } from './modes/minerva-no-ads-mode';
 import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
-import { MinervaTargetingSetup } from './setup/context/targeting/minerva-targeting-setup';
 import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup';
 import { MinervaSlotsStateSetup } from './setup/state/slots/minerva-slots-state-setup';
 
@@ -32,7 +32,8 @@ export async function setupMinervaIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
-	container.bind(TargetingSetup).to(MinervaTargetingSetup);
+	container.bind(TargetingSetup).to(UcpTargetingSetup);
+	container.bind(UcpTargetingSetup.skin('minerva'));
 	container.bind(AdEngineRunnerSetup).to(MinervaAdEngineRunnerSetup);
 	container.bind(AdsMode).to(MinervaAdsMode);
 	container.bind(NoAdsMode).to(MinervaNoAdsMode);

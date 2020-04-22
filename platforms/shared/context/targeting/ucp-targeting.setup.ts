@@ -1,9 +1,23 @@
-import { getDomain, getUcpAdLayout, getUcpHostnamePrefix, TargetingSetup } from '@platforms/shared';
-import { context, Targeting, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Binder, context, Targeting, utils } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
+import { TargetingSetup } from '../../setup/_targeting.setup';
+import { getDomain } from '../../utils/get-domain';
+import { getUcpAdLayout } from '../../utils/get-ucp-ad-layout';
+import { getUcpHostnamePrefix } from '../../utils/get-ucp-hostname-prefix';
+
+const SKIN = Symbol('targeting skin');
 
 @Injectable()
-export class MinervaTargetingSetup implements TargetingSetup {
+export class UcpTargetingSetup implements TargetingSetup {
+	static skin(skin: string): Binder {
+		return {
+			bind: SKIN,
+			value: skin,
+		};
+	}
+
+	constructor(@Inject(SKIN) private skin: string) {}
+
 	configureTargetingContext(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 
@@ -30,7 +44,7 @@ export class MinervaTargetingSetup implements TargetingSetup {
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
 			s2: getUcpAdLayout(wiki.targeting),
-			skin: 'minerva',
+			skin: this.skin,
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),

@@ -10,6 +10,7 @@ import {
 	TargetingSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpTargetingSetup,
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -21,7 +22,6 @@ import * as fallbackInstantConfig from './fallback-config.json';
 import { HydraAdsMode } from './modes/hydra-ads-mode';
 import { HydraNoAdsMode } from './modes/hydra-no-ads-mode';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
-import { HydraTargetingSetup } from './setup/context/targeting/hydra-targeting-setup';
 import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup';
 import { HydraSlotsStateSetup } from './setup/state/slots/hydra-slots-state-setup';
 
@@ -32,7 +32,8 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
-	container.bind(TargetingSetup).to(HydraTargetingSetup);
+	container.bind(TargetingSetup).to(UcpTargetingSetup);
+	container.bind(UcpTargetingSetup.skin('hydra'));
 	container.bind(AdEngineRunnerSetup).to(HydraAdEngineRunnerSetup);
 	container.bind(AdsMode).to(HydraAdsMode);
 	container.bind(NoAdsMode).to(HydraNoAdsMode);

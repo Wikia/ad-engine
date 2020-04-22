@@ -15,6 +15,7 @@ import {
 	TemplatesSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpTargetingSetup,
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -28,7 +29,6 @@ import { UcpNoAdsMode } from './modes/ucp-no-ads.mode';
 import { UcpA9ConfigSetup } from './setup/context/a9/a9';
 import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
-import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup';
 import { UcpDynamicSlotsSetup } from './setup/dynamic-slots/ucp-dynamic-slots.setup';
 import { UcpSlotsStateSetup } from './setup/state/slots/ucp-slots-state-setup';
 import { UcpTemplatesSetup } from './templates/ucp-templates.setup';
@@ -41,6 +41,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
+	container.bind(UcpTargetingSetup.skin('oasis'));
 	container.bind(AdEngineRunnerSetup).to(UcpAdEngineRunnerSetup);
 	container.bind(AdsMode).to(UcpAdsMode);
 	container.bind(NoAdsMode).to(UcpNoAdsMode);

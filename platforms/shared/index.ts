@@ -37,4 +37,5 @@ export * from './utils/get-ucp-ad-layout';
 export * from './utils/get-ucp-hostname-prefix';
 export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
+export * from './context/targeting/ucp-targeting.setup';
 export * from './context/wiki/ucp-wiki-context.setup';
