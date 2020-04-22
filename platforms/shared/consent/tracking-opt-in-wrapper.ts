@@ -51,8 +51,8 @@ class TrackingOptInWrapper {
 		window.ads.consentQueue.flush();
 	}
 
-	async init(geoData: utils.GeoData): Promise<void> {
-		const initPromise = this.initInstances(geoData);
+	async init(): Promise<void> {
+		const initPromise = this.initInstances();
 
 		try {
 			await Promise.race([initPromise, utils.timeoutReject(2000)]);
@@ -66,21 +66,17 @@ class TrackingOptInWrapper {
 		}
 	}
 
-	private initInstances(geoData: utils.GeoData): Promise<void> {
+	private initInstances(): Promise<void> {
 		return new Promise<void>(async (resolve, reject) => {
 			await utils.scriptLoader.loadScript(trackingOptInLibraryUrl);
 
 			this.libraryReady = true;
 
-			const country = geoData.country;
-			const region = geoData.region;
 			const disableConsentQueue = !!context.get('options.disableConsentQueue');
 
 			utils.logger(logGroup, 'Modal library loaded');
 
 			this.consentInstances = window.trackingOptIn.default({
-				country,
-				region,
 				disableConsentQueue,
 				enableCCPAinit: true,
 				isSubjectToCoppa: window.ads.context && window.ads.context.opts.isSubjectToCoppa,

@@ -81,6 +81,10 @@ export class BaseContextSetup {
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		context.set(
+			'services.ixIdentityLibrary.enabled',
+			this.instantConfig.get('icIxIdentityLibrary'),
+		);
+		context.set(
 			'services.permutive.enabled',
 			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
 		);

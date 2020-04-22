@@ -19,18 +19,17 @@ export async function ensureGeoCookie(): Promise<void> {
 		return;
 	}
 
-	cookieAdapter.setItem('Geo', JSON.stringify(await getGeoData()));
+	try {
+		cookieAdapter.setItem('Geo', JSON.stringify(await getGeoData()));
+	} catch (e) {
+		// do nothing
+	}
 }
 
 function getGeoData(): Promise<GeoData> {
 	const GEO_SERVICE_URL = 'https://services.fandom.com/geoip/location';
-	const defaultGeo: GeoData = {
-		continent: 'EU',
-		country: 'PL',
-		region: 'WP',
-	};
 
-	return new Promise<GeoData>((resolve) => {
+	return new Promise<GeoData>((resolve, reject) => {
 		try {
 			const request = new XMLHttpRequest();
 
@@ -41,7 +40,7 @@ function getGeoData(): Promise<GeoData> {
 
 			request.onload = () => {
 				if (request.status < 200 || request.status >= 300) {
-					resolve(defaultGeo);
+					reject();
 				} else {
 					const geoResponse: GeoResponse = JSON.parse(request.responseText);
 
@@ -54,12 +53,12 @@ function getGeoData(): Promise<GeoData> {
 			};
 
 			request.onerror = () => {
-				resolve(defaultGeo);
+				reject();
 			};
 
 			request.send();
 		} catch (err) {
-			resolve(defaultGeo);
+			reject();
 		}
 	});
 }

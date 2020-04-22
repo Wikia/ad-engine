@@ -1,196 +1,401 @@
 {
-	"icPrebidRubiconDisplay": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icLABradorTest": [
-		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["PL"],
-			"sampling": 35.0,
-			"samplingCache": true,
-			"value": true
-		}
-	],
-	"icPrebidOpenX": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icTestCommunities": [
-		{
-			"apps": ["gamepedia"],
-			"regions": ["XX"],
-			"value": ["cdm_gamepedia"]
-		}
-	],
-	"icTaxonomyAdTags": [
-		{
-			"apps": ["gamepedia"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidIndexExchange": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icUapRestriction": [
-		{
-			"apps": ["gamepedia"],
-			"regions": ["XX"],
-			"value": 1
-		}
-	],
-	"icPostmessageTracking": [
-		{
-			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icBidsTracking": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidVersion": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
-		},
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX-EU"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200326-auction-fix.min.js"
-		},
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200407.min.js"
-		},
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200309.min.js"
-		}
-	],
-	"icA9Bidder": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidTriplelift": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icConfiant": [
-		{
-			"apps": ["gamepedia"],
-			"devices": ["smartphone"],
-			"regions": ["US"],
-			"value": true
-		}
-	],
-	"icPrebidAppNexus": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidPubmatic": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icBTRec": [
-		{
-			"apps": ["gamepedia"],
-			"devices": ["desktop"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidSendAllBids": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebid": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPrebidNobid": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icBabDetection": [
-		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icPermutive": [
-		{
-			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
-			"regions": ["GB", "UK", "US"],
-			"value": true
-		}
-	],
-	"icDurationMedia": [
-		{
-			"apps": ["gamepedia"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icA9Deals": [
-		{
-			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icAdEngineDelay": [
-		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["XX"],
-			"value": 2000
-		}
-	],
-	"icOutstreamSlot": [
-		{
-			"apps": ["gamepedia"],
-			"regions": ["XX"],
-			"value": false
-		}
-	]
+    "icPrebidRubiconDisplay": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icLABradorTest": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 35.0,
+            "samplingCache": true,
+            "value": true
+        }
+    ],
+    "icPrebidOpenX": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icTestCommunities": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "cdm_gamepedia"
+            ]
+        }
+    ],
+    "icTaxonomyAdTags": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidIndexExchange": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icUapRestriction": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 1
+        }
+    ],
+    "icPostmessageTracking": [
+        {
+            "apps": [
+                "f2",
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBidsTracking": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidVersion": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX-EU"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200326-auction-fix.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200407.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200309.min.js"
+        }
+    ],
+    "icA9Bidder": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidTriplelift": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icConfiant": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "devices": [
+                "smartphone"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidAppNexus": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidPubmatic": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBTRec": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "devices": [
+                "desktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidSendAllBids": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebid": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidNobid": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBabDetection": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPermutive": [
+        {
+            "apps": [
+                "f2",
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "GB",
+                "UK",
+                "US"
+            ],
+            "value": true
+        }
+    ],
+    "icDurationMedia": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icA9Deals": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icAdEngineDelay": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 2000
+        }
+    ],
+    "icOutstreamSlot": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
+    ]
 }
