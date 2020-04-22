@@ -34,3 +34,5 @@ export * from './services/wad-runner';
 export * from './utils/get-domain';
 export * from './utils/get-page-type';
 export * from './ensure-geo-cookie';
+export * from './context/base/ucp-base-context.setup';
+export * from './context/wiki/ucp-wiki-context.setup';

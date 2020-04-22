@@ -9,6 +9,8 @@ import {
 	SlotsStateSetup,
 	TargetingSetup,
 	TrackingSetup,
+	UcpBaseContextSetup,
+	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
 import { context, InstantConfigService } from '@wikia/ad-engine';
@@ -20,9 +22,7 @@ import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaNoAdsMode } from './modes/minerva-no-ads-mode';
 import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
 import { MinervaTargetingSetup } from './setup/context/targeting/minerva-targeting-setup';
-import { MinervaWikiContextSetup } from './setup/context/wiki/minerva-wiki-context-setup';
 import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup';
-import { MinervaBaseContextSetup } from './setup/minerva-base-context-setup';
 import { MinervaSlotsStateSetup } from './setup/state/slots/minerva-slots-state-setup';
 
 export async function setupMinervaIoc(): Promise<Container> {
@@ -30,8 +30,8 @@ export async function setupMinervaIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
-	container.bind(BaseContextSetup).to(MinervaBaseContextSetup);
-	container.bind(WikiContextSetup).to(MinervaWikiContextSetup);
+	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
+	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(MinervaTargetingSetup);
 	container.bind(AdEngineRunnerSetup).to(MinervaAdEngineRunnerSetup);
 	container.bind(AdsMode).to(MinervaAdsMode);

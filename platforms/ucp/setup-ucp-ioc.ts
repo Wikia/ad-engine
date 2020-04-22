@@ -14,6 +14,8 @@ import {
 	TargetingSetup,
 	TemplatesSetup,
 	TrackingSetup,
+	UcpBaseContextSetup,
+	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
 import { context, FOOTER, InstantConfigService, NAVBAR } from '@wikia/ad-engine';
@@ -27,10 +29,8 @@ import { UcpA9ConfigSetup } from './setup/context/a9/a9';
 import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
 import { UcpTargetingSetup } from './setup/context/targeting/ucp-targeting.setup';
-import { UcpWikiContextSetup } from './setup/context/wiki/ucp-wiki-context.setup';
 import { UcpDynamicSlotsSetup } from './setup/dynamic-slots/ucp-dynamic-slots.setup';
 import { UcpSlotsStateSetup } from './setup/state/slots/ucp-slots-state-setup';
-import { UcpBaseContextSetup } from './setup/ucp-base-context.setup';
 import { UcpTemplatesSetup } from './templates/ucp-templates.setup';
 
 export async function setupUcpIoc(): Promise<Container> {
