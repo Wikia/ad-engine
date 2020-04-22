@@ -37,3 +37,5 @@ export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './context/wiki/ucp-wiki-context.setup';
+export * from './context/prebid/gamepedia-prebid-context-setup';
+export * from './context/a9/gamepedia-a9-config.setup';

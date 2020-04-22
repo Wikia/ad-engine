@@ -1,14 +1,21 @@
 import {
+	A9ConfigSetup,
 	AdsMode,
 	BaseContextSetup,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
+	GamepediaA9ConfigSetup,
 	NoAdsMode,
+	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
+	TemplatesSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpGamepediaPrebidConfigSetup,
 	UcpNoAdsMode,
 	UcpTargetingSetup,
 	UcpWikiContextSetup,
@@ -22,6 +29,7 @@ import { HydraAdsMode } from './modes/hydra-ads-mode';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
 import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup';
 import { HydraSlotsStateSetup } from './setup/state/slots/hydra-slots-state-setup';
+import { UcpHydraTemplatesSetup } from './templates/ucp-hydra-templates.setup';
 
 export async function setupHydraIoc(): Promise<Container> {
 	const container = new Container();
@@ -35,9 +43,13 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(AdsMode).to(HydraAdsMode);
 	container.bind(NoAdsMode).to(UcpNoAdsMode);
 	container.bind(SlotsStateSetup).to(HydraSlotsStateSetup);
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsContextSetup).to(HydraSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(HydraDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
+	container.bind(TemplatesSetup).to(UcpHydraTemplatesSetup);
+	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
+	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
 
 	return container;
 }

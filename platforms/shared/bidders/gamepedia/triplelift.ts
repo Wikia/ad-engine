@@ -1,16 +1,22 @@
-import { DeviceMode } from '@platforms/shared';
+import { DeviceMode } from '../../models/device-mode';
 
-export function getTripleliftContext(device: DeviceMode): any {
+export function getGamepediaTripleliftContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 					inventoryCodes: ['Gamepedia_Desktop_TopLeaderboard_prebid'],
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 					inventoryCodes: ['Gamepedia_Desktop_TopRightSticky_hdx_prebid'],
 				},
 				'03_PF': {

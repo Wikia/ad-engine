@@ -11,6 +11,7 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 			top_leaderboard: {
 				aboveTheFold: true,
 				adProduct: 'top_leaderboard',
+				bidderAlias: '01_LB',
 				slotNameSuffix: '',
 				defaultSizes: [
 					[728, 90],
@@ -61,8 +62,9 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
+				bidderAlias: '04_BLB',
 				defaultSizes: [[728, 90]],
-				group: 'PF',
+				group: 'BLB',
 				insertAfterSelector: '#bodyContent',
 				sizes: [],
 				targeting: {

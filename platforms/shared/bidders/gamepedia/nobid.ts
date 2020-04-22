@@ -1,16 +1,22 @@
-import { DeviceMode } from '@platforms/shared';
+import { DeviceMode } from '../../models/device-mode';
 
-export function getNobidContext(device: DeviceMode): any {
+export function getGamepediaNobidContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 					siteId: '21872987314',
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 					siteId: '21872987314',
 				},
 				'03_PF': {
