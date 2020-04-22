@@ -1,7 +1,8 @@
-import { NoAdsMode, PageTracker } from '@platforms/shared';
 import { context, jwpSetup, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Communicator } from '@wikia/post-quecast';
+import { PageTracker } from '../../tracking/page-tracker';
+import { NoAdsMode } from './_no-ads.mode';
 
 @Injectable()
 export class UcpNoAdsMode implements NoAdsMode {

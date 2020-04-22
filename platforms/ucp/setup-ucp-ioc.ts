@@ -14,6 +14,7 @@ import {
 	TemplatesSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpNoAdsMode,
 	UcpTargetingSetup,
 	UcpWikiContextSetup,
 	WikiContextSetup,
@@ -23,7 +24,6 @@ import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
-import { UcpNoAdsMode } from './modes/ucp-no-ads.mode';
 import { UcpA9ConfigSetup } from './setup/context/a9/a9';
 import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';

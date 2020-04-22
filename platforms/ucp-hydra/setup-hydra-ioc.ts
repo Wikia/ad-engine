@@ -9,6 +9,7 @@ import {
 	TargetingSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpNoAdsMode,
 	UcpTargetingSetup,
 	UcpWikiContextSetup,
 	WikiContextSetup,
@@ -18,7 +19,6 @@ import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { HydraAdsMode } from './modes/hydra-ads-mode';
-import { HydraNoAdsMode } from './modes/hydra-no-ads-mode';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
 import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup';
 import { HydraSlotsStateSetup } from './setup/state/slots/hydra-slots-state-setup';
@@ -33,7 +33,7 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
 	container.bind(UcpTargetingSetup.skin('hydra'));
 	container.bind(AdsMode).to(HydraAdsMode);
-	container.bind(NoAdsMode).to(HydraNoAdsMode);
+	container.bind(NoAdsMode).to(UcpNoAdsMode);
 	container.bind(SlotsStateSetup).to(HydraSlotsStateSetup);
 	container.bind(SlotsContextSetup).to(HydraSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(HydraDynamicSlotsSetup);

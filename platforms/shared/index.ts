@@ -26,6 +26,7 @@ export * from './templates/sports-templates.setup';
 export * from './setup/_tracking.setup';
 export * from './tracking/common-tracking.setup';
 export * from './modes/no-ads/_no-ads.mode';
+export * from './modes/no-ads/ucp-no-ads.mode';
 export * from './modes/ads/_ads.mode';
 export * from './modes/ads/sports-ads.mode';
 export * from './modes/start-ad-engine';
