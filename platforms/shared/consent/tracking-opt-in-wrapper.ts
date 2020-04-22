@@ -83,7 +83,7 @@ class TrackingOptInWrapper {
 				region,
 				disableConsentQueue,
 				enableCCPAinit: true,
-				isSubjectToCoppa: window.ads.context && window.ads.context.opts.isSubjectToCoppa,
+				isSubjectToCcpa: window.ads.context && window.ads.context.opts.isSubjectToCcpa,
 				onAcceptTracking: () => {
 					utils.logger(logGroup, 'GDPR Consent');
 					resolve();
