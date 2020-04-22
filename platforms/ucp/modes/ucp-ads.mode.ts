@@ -5,6 +5,7 @@ import {
 	context,
 	durationMedia,
 	JWPlayerManager,
+	jwpSetup,
 	nielsen,
 	permutive,
 	Runner,
@@ -15,6 +16,8 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UcpAdsMode implements AdsMode {
+	constructor(private communicator: Communicator) {}
+
 	handleAds(): void {
 		const inhibitors = this.callExternals();
 
@@ -52,13 +55,7 @@ export class UcpAdsMode implements AdsMode {
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
-		const communicator = new Communicator();
-
-		communicator.dispatch({
-			type: '[Ad Engine] Setup JWPlayer',
-			showAds: true,
-			autoplayDisabled: false,
-		});
+		this.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 
 	private callExternals(): Promise<any>[] {
