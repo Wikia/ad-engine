@@ -7,7 +7,7 @@ describe('Pipeline', () => {
 	let pipeline: Pipeline<PipelineFuncStep<any>, any>;
 
 	beforeEach(() => {
-		pipeline = new Pipeline(new PipelineFuncAdapter());
+		pipeline = PipelineFuncAdapter.makePipeline();
 	});
 
 	afterEach(() => {
