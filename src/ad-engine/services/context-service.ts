@@ -47,11 +47,6 @@ const contextObject: ContextObject = {
 		trackingOptIn: false,
 		isSubjectToCcpa: false,
 	},
-	geo: {
-		region: 'WP',
-		country: 'PL',
-		continent: 'EU',
-	},
 	service: {
 		instantConfig: {
 			endpoint: '//services.wikia-dev.pl/icbm/api/config',
