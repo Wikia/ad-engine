@@ -29,7 +29,7 @@ const platforms = ({ entry }) => ({
 });
 
 module.exports = (env, argv) => {
-	if (env.platform && argv.mode === 'production') {
+	if (env && env.platform && argv.mode === 'production') {
 		return merge(
 			common(),
 			platforms({
