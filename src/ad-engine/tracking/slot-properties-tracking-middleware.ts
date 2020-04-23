@@ -1,5 +1,5 @@
 import { AdInfoContext } from '@ad-engine/tracking';
-import { Middleware } from '../pipeline/middleware-types';
+import { Middleware } from '../pipeline/middleware/middleware-types';
 
 export const slotPropertiesTrackingMiddleware: Middleware<AdInfoContext> = (
 	{ data, slot },
