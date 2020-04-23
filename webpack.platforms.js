@@ -1,9 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
+const platformsConfig = require('./platforms/platforms.json');
 const common = require('./webpack.common.js');
-
-const platformsList = ['gamepedia', 'muthead', 'futhead', 'ucp', 'ucp-hydra', 'ucp-minerva'];
 
 const platforms = ({ entry }) => ({
 	entry,
@@ -30,8 +29,17 @@ const platforms = ({ entry }) => ({
 });
 
 module.exports = (env, argv) => {
+	if (env.platform && argv.mode === 'production') {
+		return merge(
+			common(),
+			platforms({
+				entry: { [env.platform]: path.resolve(__dirname, `platforms/${env.platform}/index.ts`) },
+			}),
+		);
+	}
+
 	if (argv.mode === 'production') {
-		return platformsList.map((platform) =>
+		return platformsConfig.list.map((platform) =>
 			merge(
 				common(),
 				platforms({
@@ -44,7 +52,7 @@ module.exports = (env, argv) => {
 	return merge(
 		common(),
 		platforms({
-			entry: platformsList.reduce(
+			entry: platformsConfig.list.reduce(
 				(result, platform) => ({
 					...result,
 					[platform]: path.resolve(__dirname, `platforms/${platform}/index.ts`),
