@@ -9,12 +9,6 @@ export interface PipelineDiStep<TPayload> {
 
 export class PipelineDiAdapter<TPayload>
 	implements PipelineAdapter<Type<PipelineDiStep<TPayload>>, TPayload> {
-	static makePipeline<TPayload>(
-		container: Container,
-	): Pipeline<Type<PipelineDiStep<TPayload>>, TPayload> {
-		return new Pipeline(new PipelineDiAdapter<TPayload>(container));
-	}
-
 	constructor(private container: Container) {}
 
 	execute(
@@ -25,5 +19,11 @@ export class PipelineDiAdapter<TPayload>
 		const instance = this.container.get(step);
 
 		return instance.execute(payload, next);
+	}
+}
+
+export class DiPipeline<TPayload> extends Pipeline<Type<PipelineDiStep<TPayload>>, TPayload> {
+	constructor(container: Container) {
+		super(new PipelineDiAdapter<TPayload>(container));
 	}
 }

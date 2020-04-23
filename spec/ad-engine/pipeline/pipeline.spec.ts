@@ -1,13 +1,13 @@
-import { Pipeline, PipelineFuncAdapter, PipelineFuncStep } from '@wikia/ad-engine';
+import { FuncPipeline, PipelineFuncStep } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 describe('Pipeline', () => {
 	const sandbox = createSandbox();
-	let pipeline: Pipeline<PipelineFuncStep<any>, any>;
+	let pipeline: FuncPipeline<any>;
 
 	beforeEach(() => {
-		pipeline = PipelineFuncAdapter.makePipeline();
+		pipeline = new FuncPipeline();
 	});
 
 	afterEach(() => {

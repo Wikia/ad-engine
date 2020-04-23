@@ -8,15 +8,17 @@ export type PipelineFuncStep<TPayload> = (
 
 export class PipelineFuncAdapter<TPayload>
 	implements PipelineAdapter<PipelineFuncStep<TPayload>, TPayload> {
-	static makePipeline<TPayload>(): Pipeline<PipelineFuncStep<TPayload>, TPayload> {
-		return new Pipeline(new PipelineFuncAdapter<TPayload>());
-	}
-
 	async execute(
 		step: PipelineFuncStep<TPayload>,
 		payload: TPayload,
 		next?: PipelineNext<TPayload>,
 	): Promise<TPayload> {
 		return step(payload, next as any);
+	}
+}
+
+export class FuncPipeline<TPayload> extends Pipeline<PipelineFuncStep<TPayload>, TPayload> {
+	constructor() {
+		super(new PipelineFuncAdapter<TPayload>());
 	}
 }
