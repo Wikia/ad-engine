@@ -1,4 +1,4 @@
-import { Container } from '@wikia/dependency-injection';
+import { Container, Injectable } from '@wikia/dependency-injection';
 import { Type } from '../../models/dictionary';
 import { Pipeline } from '../pipeline';
 import { PipelineAdapter, PipelineNext } from '../pipeline-types';
@@ -22,6 +22,7 @@ export class PipelineDiAdapter<TPayload>
 	}
 }
 
+@Injectable({ scope: 'Transient' })
 export class DiPipeline<TPayload> extends Pipeline<Type<PipelineDiStep<TPayload>>, TPayload> {
 	constructor(container: Container) {
 		super(new PipelineDiAdapter<TPayload>(container));
