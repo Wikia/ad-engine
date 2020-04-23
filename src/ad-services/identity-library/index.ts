@@ -7,7 +7,12 @@ class IdentityLibrary {
 	private isLoaded = false;
 
 	private isEnabled(): boolean {
-		return context.get('services.ixIdentityLibrary.enabled');
+		return (
+			context.get('services.ixIdentityLibrary.enabled') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!context.get('wiki.targeting.directedAtChildren')
+		);
 	}
 
 	call(): void {
