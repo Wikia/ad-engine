@@ -51,9 +51,9 @@ export class PipelineTestSuite<TStep> {
 	}
 
 	async executeWithFinal(): Promise<void> {
-		const result = await this.pipeline
-			.add(this.steps.first, this.steps.second)
-			.execute(10, this.steps.final);
+		this.pipeline.add(this.steps.first, this.steps.second);
+
+		const result = await this.pipeline.execute(10, this.steps.final);
 
 		expect(this.spys.firstBefore.getCall(0).args[0]).to.equal(10, 'firstBefore');
 		expect(this.spys.secondBefore.getCall(0).args[0]).to.equal(11, 'secondBefore');
@@ -68,5 +68,10 @@ export class PipelineTestSuite<TStep> {
 			this.spys.firstAfter,
 		);
 		expect(result).to.equal(13, 'result');
+
+		const result2 = await this.pipeline.execute(10, this.steps.final);
+
+		expect(result2).to.equal(13, 'result2');
+		expect(this.spys.final.callCount).to.equal(2, 'final should be called only twice');
 	}
 }
