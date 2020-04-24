@@ -2,7 +2,7 @@ import { Pipeline } from '../pipeline';
 import { PipelineAdapter, PipelineNext } from '../pipeline-types';
 import { Middleware } from './middleware-types';
 
-export class PipelineMiddlewareAdapter<TPayload>
+export class MiddlewarePipelineAdapter<TPayload>
 	implements PipelineAdapter<Middleware<TPayload>, TPayload> {
 	async execute(
 		step: Middleware<TPayload>,
@@ -17,6 +17,6 @@ export class PipelineMiddlewareAdapter<TPayload>
 
 export class MiddlewarePipeline<TPayload> extends Pipeline<Middleware<TPayload>, TPayload> {
 	constructor() {
-		super(new PipelineMiddlewareAdapter<TPayload>());
+		super(new MiddlewarePipelineAdapter<TPayload>());
 	}
 }

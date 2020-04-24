@@ -1,8 +1,8 @@
-import { FuncPipeline, PipelineFuncStep } from '@wikia/ad-engine';
+import { FuncPipeline, FuncPipelineStep } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-describe('Pipeline', () => {
+describe('FuncPipeline', () => {
 	const sandbox = createSandbox();
 	let pipeline: FuncPipeline<any>;
 
@@ -19,14 +19,14 @@ describe('Pipeline', () => {
 		const firstAfterSpy = sandbox.spy();
 		const secondBeforeSpy = sandbox.spy();
 		const secondAfterSpy = sandbox.spy();
-		const firstStep: PipelineFuncStep<any> = (payload, next) => {
+		const firstStep: FuncPipelineStep<any> = (payload, next) => {
 			firstBeforeSpy(payload);
 			return next(payload + 1).then((result) => {
 				firstAfterSpy(result);
 				return result;
 			});
 		};
-		const secondStep: PipelineFuncStep<any> = async (payload, next) => {
+		const secondStep: FuncPipelineStep<any> = async (payload, next) => {
 			secondBeforeSpy(payload);
 			const result = await next(payload + 1);
 			secondAfterSpy(result);

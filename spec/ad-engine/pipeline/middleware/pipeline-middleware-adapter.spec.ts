@@ -1,5 +1,5 @@
 import { Middleware } from '@wikia/ad-engine';
-import { PipelineMiddlewareAdapter } from '@wikia/ad-engine/pipeline/middleware/pipeline-middleware-adapter';
+import { MiddlewarePipelineAdapter } from '@wikia/ad-engine/pipeline/middleware/middleware-pipeline-adapter';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
@@ -12,7 +12,7 @@ describe('PipelineMiddlewareAdapter', () => {
 
 	it('should execute step and return original value', async () => {
 		const spy = sandbox.spy();
-		const adapter = new PipelineMiddlewareAdapter<{ number: number }>();
+		const adapter = new MiddlewarePipelineAdapter<{ number: number }>();
 		const middleware: Middleware<{ number: number }> = ({ number }, next) => {
 			next({ number: number + 1 });
 		};

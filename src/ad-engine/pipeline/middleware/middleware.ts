@@ -1,5 +1,5 @@
+import { MiddlewarePipeline } from './middleware-pipeline-adapter';
 import { Middleware } from './middleware-types';
-import { MiddlewarePipeline } from './pipeline-middleware-adapter';
 
 // TODO: Could be replaced with MiddlewarePipeline, but would increase scope.
 // TODO: Best would be to replace it with FuncPipeline, but would require few adjustment on middleware side.

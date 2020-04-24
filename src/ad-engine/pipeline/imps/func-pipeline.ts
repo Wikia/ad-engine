@@ -1,15 +1,15 @@
 import { Pipeline } from '../pipeline';
 import { PipelineAdapter, PipelineNext } from '../pipeline-types';
 
-export type PipelineFuncStep<TPayload> = (
+export type FuncPipelineStep<TPayload> = (
 	payload: TPayload,
 	next?: PipelineNext<TPayload>,
 ) => Promise<TPayload>;
 
-export class PipelineFuncAdapter<TPayload>
-	implements PipelineAdapter<PipelineFuncStep<TPayload>, TPayload> {
+class FuncPipelineAdapter<TPayload>
+	implements PipelineAdapter<FuncPipelineStep<TPayload>, TPayload> {
 	async execute(
-		step: PipelineFuncStep<TPayload>,
+		step: FuncPipelineStep<TPayload>,
 		payload: TPayload,
 		next?: PipelineNext<TPayload>,
 	): Promise<TPayload> {
@@ -17,8 +17,8 @@ export class PipelineFuncAdapter<TPayload>
 	}
 }
 
-export class FuncPipeline<TPayload> extends Pipeline<PipelineFuncStep<TPayload>, TPayload> {
+export class FuncPipeline<TPayload> extends Pipeline<FuncPipelineStep<TPayload>, TPayload> {
 	constructor() {
-		super(new PipelineFuncAdapter<TPayload>());
+		super(new FuncPipelineAdapter<TPayload>());
 	}
 }
