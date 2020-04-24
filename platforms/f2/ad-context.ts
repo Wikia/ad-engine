@@ -1,10 +1,6 @@
-import { utils } from '@wikia/ad-engine';
-
-const serverPrefix = utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm' : 'wka';
-
 export const basicContext = {
 	adUnitId:
-		`/{custom.dfpId}/${serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
+		`/{custom.dfpId}/{custom.serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
 		'/{state.deviceType}/ns-{custom.adLayout}/_fandom-all',
 	custom: {
 		dfpid: '5441',
@@ -50,7 +46,7 @@ export const basicContext = {
 	src: 'ns',
 	vast: {
 		adUnitId:
-			`/{custom.dfpId}/${serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
+			`/{custom.dfpId}/{custom.serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
 			'{slotConfig.slotNameSuffix}/{state.deviceType}/ns-{custom.adLayout}/_fandom-all',
 	},
 };
