@@ -57,4 +57,8 @@ describe('DiPipeline', () => {
 	it('should execute with final', async () => {
 		await pipelineTestSuite.executeWithFinal();
 	});
+
+	it('should execute with cutoff', async () => {
+		await pipelineTestSuite.executeWithCutoff();
+	});
 });

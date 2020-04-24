@@ -74,4 +74,17 @@ export class PipelineTestSuite<TStep> {
 		expect(result2).to.equal(13, 'result2');
 		expect(this.spies.final.callCount).to.equal(2, 'final should be called only twice');
 	}
+
+	async executeWithCutoff(): Promise<void> {
+		const result = await this.pipeline
+			.add(this.steps.first, this.steps.final, this.steps.second)
+			.execute(10);
+
+		expect(this.spies.firstBefore.getCall(0).args[0]).to.equal(10, 'firstBefore');
+		expect(this.spies.final.getCall(0).args[0]).to.equal(11, 'final');
+		expect(this.spies.firstAfter.getCall(0).args[0]).to.equal(12, 'firstAfter');
+		expect(this.spies.secondBefore.callCount).to.equal(0, 'before should not be called');
+		this.sandbox.assert.callOrder(this.spies.firstBefore, this.spies.final, this.spies.firstAfter);
+		expect(result).to.equal(12, 'result');
+	}
 }
