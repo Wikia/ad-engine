@@ -47,10 +47,14 @@ describe('DiPipeline', () => {
 	});
 
 	afterEach(() => {
-		sandbox.restore();
+		sandbox.resetHistory();
 	});
 
-	it('should execute step and return final value', async () => {
+	it('should execute without final', async () => {
 		await pipelineTestSuite.executeWithoutFinal();
+	});
+
+	it('should execute with final', async () => {
+		await pipelineTestSuite.executeWithFinal();
 	});
 });
