@@ -1,4 +1,4 @@
-import { context, events, eventService, Middleware, MiddlewareService } from '@ad-engine/core';
+import { context, events, eventService, Middleware, MiddlewarePipeline } from '@ad-engine/core';
 import { TrackingBidDefinition } from './tracking-bid';
 
 export interface AdBidderContext {
@@ -7,7 +7,7 @@ export interface AdBidderContext {
 }
 
 class BidderTracker {
-	private middlewareService = new MiddlewareService<AdBidderContext>();
+	private middlewareService = new MiddlewarePipeline<AdBidderContext>();
 
 	add(middleware: Middleware<AdBidderContext>): this {
 		this.middlewareService.add(middleware);

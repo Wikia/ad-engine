@@ -1,4 +1,4 @@
-import { MiddlewareService } from '@wikia/ad-engine';
+import { MiddlewarePipeline } from '@wikia/ad-engine';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 
@@ -6,7 +6,7 @@ describe('middleware-service', () => {
 	let middlewareService;
 
 	beforeEach(() => {
-		middlewareService = new MiddlewareService();
+		middlewareService = new MiddlewarePipeline();
 	});
 
 	it('resolves run all added middlewares', () => {

@@ -1,4 +1,4 @@
-import { AdSlot, context, eventService, Middleware, MiddlewareService } from '@ad-engine/core';
+import { AdSlot, context, eventService, Middleware, MiddlewarePipeline } from '@ad-engine/core';
 
 export interface AdViewabilityContext {
 	data: any;
@@ -6,7 +6,7 @@ export interface AdViewabilityContext {
 }
 
 class ViewabilityTracker {
-	private middlewareService = new MiddlewareService<AdViewabilityContext>();
+	private middlewareService = new MiddlewarePipeline<AdViewabilityContext>();
 
 	add(middleware: Middleware<AdViewabilityContext>): this {
 		this.middlewareService.add(middleware);

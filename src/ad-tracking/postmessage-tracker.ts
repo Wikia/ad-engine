@@ -1,4 +1,4 @@
-import { context, Dictionary, messageBus, Middleware, MiddlewareService } from '@ad-engine/core';
+import { context, Dictionary, messageBus, Middleware, MiddlewarePipeline } from '@ad-engine/core';
 
 export enum TrackingTarget {
 	DataWarehouse = 'DW',
@@ -43,7 +43,7 @@ export const trackingPayloadValidationMiddleware: Middleware<TrackingMessage> = 
  * For example use, check examples /tracking/postmessage-tracker/.
  */
 export class PostmessageTracker {
-	private middlewareService = new MiddlewareService<any>();
+	private middlewareService = new MiddlewarePipeline<any>();
 
 	constructor(private readonly requiredKeys: string[]) {}
 

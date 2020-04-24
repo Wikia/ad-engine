@@ -2,7 +2,7 @@ import {
 	AdSlot,
 	context,
 	Middleware,
-	MiddlewareService,
+	MiddlewarePipeline,
 	slotService,
 	utils,
 } from '@ad-engine/core';
@@ -23,7 +23,7 @@ export interface ClickPositionContext {
 }
 
 class ClickPositionTracker {
-	private middlewareService = new MiddlewareService<ClickPositionContext>();
+	private middlewareService = new MiddlewarePipeline<ClickPositionContext>();
 	private logGroup = 'click-position-tracker';
 
 	register(middleware: Middleware<ClickPositionContext>, slotName: string): void {

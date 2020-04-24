@@ -1,5 +1,5 @@
 import { AdViewabilityContext } from '@ad-engine/tracking';
-import { Middleware } from '../pipeline/middleware/middleware-types';
+import { Middleware } from '../pipeline/imps/middleware-pipeline';
 
 export const viewabilityPropertiesTrackingMiddleware: Middleware<AdViewabilityContext> = (
 	{ data, slot },
