@@ -88,7 +88,6 @@ export class BaseContextSetup {
 			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
 		);
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
-		context.set('services.moatYi.enabled', this.instantConfig.get('icMoatYieldIntelligence'));
 	}
 
 	private setMiscContext(): void {

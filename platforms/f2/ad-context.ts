@@ -4,7 +4,7 @@ const serverPrefix = utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm' : 'wk
 
 export const basicContext = {
 	adUnitId:
-		`/{networkId}/${serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
+		`/{custom.dfpId}/${serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
 		'/{state.deviceType}/ns-{custom.adLayout}/_fandom-all',
 	custom: {
 		dfpid: '5441',
@@ -50,7 +50,7 @@ export const basicContext = {
 	src: 'ns',
 	vast: {
 		adUnitId:
-			`/{networkId}/${serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
+			`/{custom.dfpId}/${serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
 			'{slotConfig.slotNameSuffix}/{state.deviceType}/ns-{custom.adLayout}/_fandom-all',
 	},
 };
