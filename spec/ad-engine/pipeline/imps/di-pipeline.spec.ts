@@ -1,22 +1,19 @@
-import { DiPipeline, DiPipelineStep } from '@wikia/ad-engine';
+import { DiPipeline, DiPipelineStep, Type } from '@wikia/ad-engine';
 import { PipelineNext } from '@wikia/ad-engine/pipeline/pipeline-types';
 import { Container } from '@wikia/dependency-injection';
-import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { createSandbox } from 'sinon';
+import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('DiPipeline', () => {
 	const sandbox = createSandbox();
-	let pipeline: DiPipeline<number>;
-	let firstBeforeSpy: SinonSpy;
-	let firstAfterSpy: SinonSpy;
-	let secondBeforeSpy: SinonSpy;
-	let secondAfterSpy: SinonSpy;
+	const spys = PipelineTestSuite.generateSpys(sandbox);
+	let pipelineTestSuite: PipelineTestSuite<Type<DiPipelineStep<number>>>;
 
 	class FirstStep implements DiPipelineStep<number> {
 		execute(payload: number, next?: PipelineNext<number>): Promise<number> {
-			firstBeforeSpy(payload);
+			spys.firstBefore(payload);
 			return next(payload + 1).then((result) => {
-				firstAfterSpy(result);
+				spys.firstAfter(result);
 				return result;
 			});
 		}
@@ -24,21 +21,29 @@ describe('DiPipeline', () => {
 
 	class SecondStep implements DiPipelineStep<number> {
 		async execute(payload: number, next?: PipelineNext<number>): Promise<number> {
-			secondBeforeSpy(payload);
+			spys.secondBefore(payload);
 			const result = await next(payload + 1);
-			secondAfterSpy(result);
+			spys.secondAfter(result);
 			return result;
+		}
+	}
+
+	class FinalStep implements DiPipelineStep<number> {
+		async execute(payload: number): Promise<number> {
+			spys.final(payload);
+			return payload + 1;
 		}
 	}
 
 	beforeEach(() => {
 		const container = new Container();
 
-		pipeline = container.get<DiPipeline<number>>(DiPipeline);
-		firstBeforeSpy = sandbox.spy();
-		firstAfterSpy = sandbox.spy();
-		secondBeforeSpy = sandbox.spy();
-		secondAfterSpy = sandbox.spy();
+		pipelineTestSuite = new PipelineTestSuite<Type<DiPipelineStep<number>>>(
+			sandbox,
+			spys,
+			container.get<DiPipeline<number>>(DiPipeline),
+			{ first: FirstStep, second: SecondStep, final: FinalStep },
+		);
 	});
 
 	afterEach(() => {
@@ -46,13 +51,6 @@ describe('DiPipeline', () => {
 	});
 
 	it('should execute step and return final value', async () => {
-		const result = await pipeline.add(FirstStep, SecondStep).execute(10);
-
-		expect(result).to.equal(12);
-		expect(firstBeforeSpy.getCall(0).args[0]).to.equal(10);
-		expect(firstAfterSpy.getCall(0).args[0]).to.equal(12);
-		expect(secondBeforeSpy.getCall(0).args[0]).to.equal(11);
-		expect(secondAfterSpy.getCall(0).args[0]).to.equal(12);
-		sandbox.assert.callOrder(firstBeforeSpy, secondBeforeSpy, secondAfterSpy, firstAfterSpy);
+		await pipelineTestSuite.executeWithoutFinal();
 	});
 });
