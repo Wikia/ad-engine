@@ -1,45 +1,48 @@
 import { FuncPipeline, FuncPipelineStep } from '@wikia/ad-engine';
-import { expect } from 'chai';
 import { createSandbox } from 'sinon';
+import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('FuncPipeline', () => {
 	const sandbox = createSandbox();
-	let pipeline: FuncPipeline<any>;
+	const spys = PipelineTestSuite.generateSpys(sandbox);
+	let pipelineTestSuite: PipelineTestSuite<FuncPipelineStep<number>>;
+
+	const firstStep: FuncPipelineStep<number> = (payload, next) => {
+		spys.firstBefore(payload);
+		return next(payload + 1).then((result) => {
+			spys.firstAfter(result);
+			return result;
+		});
+	};
+	const secondStep: FuncPipelineStep<any> = async (payload, next) => {
+		spys.secondBefore(payload);
+		const result = await next(payload + 1);
+		spys.secondAfter(result);
+		return result;
+	};
+	const finalStep: FuncPipelineStep<any> = async (payload) => {
+		spys.final(payload);
+		return payload + 1;
+	};
 
 	beforeEach(() => {
-		pipeline = new FuncPipeline();
+		pipelineTestSuite = new PipelineTestSuite<FuncPipelineStep<number>>(
+			sandbox,
+			spys,
+			new FuncPipeline<number>(),
+			{ first: firstStep, second: secondStep, final: finalStep },
+		);
 	});
 
 	afterEach(() => {
-		sandbox.restore();
+		sandbox.resetHistory();
 	});
 
-	it('should execute in order', async () => {
-		const firstBeforeSpy = sandbox.spy();
-		const firstAfterSpy = sandbox.spy();
-		const secondBeforeSpy = sandbox.spy();
-		const secondAfterSpy = sandbox.spy();
-		const firstStep: FuncPipelineStep<any> = (payload, next) => {
-			firstBeforeSpy(payload);
-			return next(payload + 1).then((result) => {
-				firstAfterSpy(result);
-				return result;
-			});
-		};
-		const secondStep: FuncPipelineStep<any> = async (payload, next) => {
-			secondBeforeSpy(payload);
-			const result = await next(payload + 1);
-			secondAfterSpy(result);
-			return result;
-		};
+	it('should execute without final', async () => {
+		await pipelineTestSuite.executeWithoutFinal();
+	});
 
-		const result = await pipeline.add(firstStep, secondStep).execute(10);
-
-		expect(result).to.equal(12);
-		expect(firstBeforeSpy.getCall(0).args[0]).to.equal(10);
-		expect(firstAfterSpy.getCall(0).args[0]).to.equal(12);
-		expect(secondBeforeSpy.getCall(0).args[0]).to.equal(11);
-		expect(secondAfterSpy.getCall(0).args[0]).to.equal(12);
-		sandbox.assert.callOrder(firstBeforeSpy, secondBeforeSpy, secondAfterSpy, firstAfterSpy);
+	it('should execute with final', async () => {
+		await pipelineTestSuite.executeWithFinal();
 	});
 });
