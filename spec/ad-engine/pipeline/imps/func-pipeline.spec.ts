@@ -4,31 +4,31 @@ import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('FuncPipeline', () => {
 	const sandbox = createSandbox();
-	const spys = PipelineTestSuite.generateSpys(sandbox);
+	const spies = PipelineTestSuite.generateSpies(sandbox);
 	let pipelineTestSuite: PipelineTestSuite<FuncPipelineStep<number>>;
 
 	const firstStep: FuncPipelineStep<number> = (payload, next) => {
-		spys.firstBefore(payload);
+		spies.firstBefore(payload);
 		return next(payload + 1).then((result) => {
-			spys.firstAfter(result);
+			spies.firstAfter(result);
 			return result;
 		});
 	};
 	const secondStep: FuncPipelineStep<any> = async (payload, next) => {
-		spys.secondBefore(payload);
+		spies.secondBefore(payload);
 		const result = await next(payload + 1);
-		spys.secondAfter(result);
+		spies.secondAfter(result);
 		return result;
 	};
 	const finalStep: FuncPipelineStep<any> = async (payload) => {
-		spys.final(payload);
+		spies.final(payload);
 		return payload + 1;
 	};
 
 	beforeEach(() => {
 		pipelineTestSuite = new PipelineTestSuite<FuncPipelineStep<number>>(
 			sandbox,
-			spys,
+			spies,
 			new FuncPipeline<number>(),
 			{ first: firstStep, second: secondStep, final: finalStep },
 		);

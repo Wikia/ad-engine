@@ -8,7 +8,7 @@ interface Steps<TStep> {
 	final: TStep;
 }
 
-interface Spys {
+interface Spies {
 	firstBefore: SinonSpy;
 	firstAfter: SinonSpy;
 	secondBefore: SinonSpy;
@@ -17,7 +17,7 @@ interface Spys {
 }
 
 export class PipelineTestSuite<TStep> {
-	static generateSpys(sandbox: SinonSandbox): Spys {
+	static generateSpies(sandbox: SinonSandbox): Spies {
 		return {
 			firstBefore: sandbox.spy(),
 			firstAfter: sandbox.spy(),
@@ -29,7 +29,7 @@ export class PipelineTestSuite<TStep> {
 
 	constructor(
 		private sandbox: SinonSandbox,
-		private spys: Spys,
+		private spies: Spies,
 		private pipeline: Pipeline<TStep, number>,
 		private steps: Steps<TStep>,
 	) {}
@@ -37,15 +37,15 @@ export class PipelineTestSuite<TStep> {
 	async executeWithoutFinal(): Promise<void> {
 		const result = await this.pipeline.add(this.steps.first, this.steps.second).execute(10);
 
-		expect(this.spys.firstBefore.getCall(0).args[0]).to.equal(10, 'firstBefore');
-		expect(this.spys.secondBefore.getCall(0).args[0]).to.equal(11, 'secondBefore');
-		expect(this.spys.secondAfter.getCall(0).args[0]).to.equal(12, 'secondAfter');
-		expect(this.spys.firstAfter.getCall(0).args[0]).to.equal(12, 'firstAfter');
+		expect(this.spies.firstBefore.getCall(0).args[0]).to.equal(10, 'firstBefore');
+		expect(this.spies.secondBefore.getCall(0).args[0]).to.equal(11, 'secondBefore');
+		expect(this.spies.secondAfter.getCall(0).args[0]).to.equal(12, 'secondAfter');
+		expect(this.spies.firstAfter.getCall(0).args[0]).to.equal(12, 'firstAfter');
 		this.sandbox.assert.callOrder(
-			this.spys.firstBefore,
-			this.spys.secondBefore,
-			this.spys.secondAfter,
-			this.spys.firstAfter,
+			this.spies.firstBefore,
+			this.spies.secondBefore,
+			this.spies.secondAfter,
+			this.spies.firstAfter,
 		);
 		expect(result).to.equal(12, 'result');
 	}
@@ -55,23 +55,23 @@ export class PipelineTestSuite<TStep> {
 
 		const result = await this.pipeline.execute(10, this.steps.final);
 
-		expect(this.spys.firstBefore.getCall(0).args[0]).to.equal(10, 'firstBefore');
-		expect(this.spys.secondBefore.getCall(0).args[0]).to.equal(11, 'secondBefore');
-		expect(this.spys.final.getCall(0).args[0]).to.equal(12, 'final');
-		expect(this.spys.secondAfter.getCall(0).args[0]).to.equal(13, 'secondAfter');
-		expect(this.spys.firstAfter.getCall(0).args[0]).to.equal(13, 'firstAfter');
+		expect(this.spies.firstBefore.getCall(0).args[0]).to.equal(10, 'firstBefore');
+		expect(this.spies.secondBefore.getCall(0).args[0]).to.equal(11, 'secondBefore');
+		expect(this.spies.final.getCall(0).args[0]).to.equal(12, 'final');
+		expect(this.spies.secondAfter.getCall(0).args[0]).to.equal(13, 'secondAfter');
+		expect(this.spies.firstAfter.getCall(0).args[0]).to.equal(13, 'firstAfter');
 		this.sandbox.assert.callOrder(
-			this.spys.firstBefore,
-			this.spys.secondBefore,
-			this.spys.final,
-			this.spys.secondAfter,
-			this.spys.firstAfter,
+			this.spies.firstBefore,
+			this.spies.secondBefore,
+			this.spies.final,
+			this.spies.secondAfter,
+			this.spies.firstAfter,
 		);
 		expect(result).to.equal(13, 'result');
 
 		const result2 = await this.pipeline.execute(10, this.steps.final);
 
 		expect(result2).to.equal(13, 'result2');
-		expect(this.spys.final.callCount).to.equal(2, 'final should be called only twice');
+		expect(this.spies.final.callCount).to.equal(2, 'final should be called only twice');
 	}
 }

@@ -6,14 +6,14 @@ import { PipelineTestSuite } from './pipeline-test-suite';
 
 describe('DiPipeline', () => {
 	const sandbox = createSandbox();
-	const spys = PipelineTestSuite.generateSpys(sandbox);
+	const spies = PipelineTestSuite.generateSpies(sandbox);
 	let pipelineTestSuite: PipelineTestSuite<Type<DiPipelineStep<number>>>;
 
 	class FirstStep implements DiPipelineStep<number> {
 		execute(payload: number, next?: PipelineNext<number>): Promise<number> {
-			spys.firstBefore(payload);
+			spies.firstBefore(payload);
 			return next(payload + 1).then((result) => {
-				spys.firstAfter(result);
+				spies.firstAfter(result);
 				return result;
 			});
 		}
@@ -21,16 +21,16 @@ describe('DiPipeline', () => {
 
 	class SecondStep implements DiPipelineStep<number> {
 		async execute(payload: number, next?: PipelineNext<number>): Promise<number> {
-			spys.secondBefore(payload);
+			spies.secondBefore(payload);
 			const result = await next(payload + 1);
-			spys.secondAfter(result);
+			spies.secondAfter(result);
 			return result;
 		}
 	}
 
 	class FinalStep implements DiPipelineStep<number> {
 		async execute(payload: number): Promise<number> {
-			spys.final(payload);
+			spies.final(payload);
 			return payload + 1;
 		}
 	}
@@ -40,7 +40,7 @@ describe('DiPipeline', () => {
 
 		pipelineTestSuite = new PipelineTestSuite<Type<DiPipelineStep<number>>>(
 			sandbox,
-			spys,
+			spies,
 			container.get<DiPipeline<number>>(DiPipeline),
 			{ first: FirstStep, second: SecondStep, final: FinalStep },
 		);
