@@ -1,7 +1,7 @@
-import { Middleware } from '@ad-engine/core';
+import { FuncPipelineStep } from '@ad-engine/core';
 import { AdInfoContext } from '@ad-engine/tracking';
 
-export const slotBillTheLizardStatusTrackingMiddleware: Middleware<AdInfoContext> = (
+export const slotBillTheLizardStatusTrackingMiddleware: FuncPipelineStep<AdInfoContext> = (
 	{ data, slot },
 	next,
 ) => {

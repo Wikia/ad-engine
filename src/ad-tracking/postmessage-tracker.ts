@@ -1,4 +1,4 @@
-import { context, Dictionary, messageBus, Middleware, MiddlewarePipeline } from '@ad-engine/core';
+import { context, Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
 
 export enum TrackingTarget {
 	DataWarehouse = 'DW',
@@ -24,12 +24,12 @@ export interface GoogleAnalyticsPayload {
 
 export type TrackingMessage = GoogleAnalyticsMessage & DataWarehouseMessage;
 
-export const trackingPayloadValidationMiddleware: Middleware<TrackingMessage> = (
+export const trackingPayloadValidationMiddleware: FuncPipelineStep<TrackingMessage> = (
 	message: Partial<TrackingMessage>,
 	next,
 ) => {
 	if (Object.values(TrackingTarget).includes(message.target) && message.payload) {
-		next({
+		return next({
 			payload: message.payload,
 			target: message.target,
 		});
@@ -43,17 +43,17 @@ export const trackingPayloadValidationMiddleware: Middleware<TrackingMessage> = 
  * For example use, check examples /tracking/postmessage-tracker/.
  */
 export class PostmessageTracker {
-	private middlewareService = new MiddlewarePipeline<any>();
+	private middlewareService = new FuncPipeline<any>();
 
 	constructor(private readonly requiredKeys: string[]) {}
 
-	add(middleware: Middleware<any>): this {
+	add(middleware: FuncPipelineStep<any>): this {
 		this.middlewareService.add(middleware);
 
 		return this;
 	}
 
-	register<T>(callback: Middleware<T>): this {
+	register<T>(callback: FuncPipelineStep<T>): this {
 		if (!this.isEnabled()) {
 			return;
 		}

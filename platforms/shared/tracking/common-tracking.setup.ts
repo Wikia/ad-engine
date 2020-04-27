@@ -60,6 +60,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 			.add(slotBiddersTrackingMiddleware)
 			.register(({ data }: Dictionary) => {
 				dataWarehouseTracker.track(data, slotTrackingUrl);
+
+				return data;
 			});
 	}
 
@@ -71,6 +73,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 			.add(viewabilityPropertiesTrackingMiddleware)
 			.register(({ data }: Dictionary) => {
 				dataWarehouseTracker.track(data, viewabilityUrl);
+
+				return data;
 			});
 	}
 
@@ -79,6 +83,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 
 		bidderTracker.add(bidderTrackingMiddleware).register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, bidderTrackingUrl);
+
+			return data;
 		});
 	}
 
@@ -87,7 +93,7 @@ export class CommonTrackingSetup implements TrackingSetup {
 
 		postmessageTracker
 			.add(trackingPayloadValidationMiddleware)
-			.register<TrackingMessage>((message) => {
+			.register<TrackingMessage>(async (message) => {
 				const { target, payload } = message;
 
 				switch (target) {
@@ -108,6 +114,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 					default:
 						break;
 				}
+
+				return message;
 			});
 	}
 

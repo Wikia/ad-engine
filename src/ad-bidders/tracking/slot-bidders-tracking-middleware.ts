@@ -1,4 +1,4 @@
-import { Dictionary, Middleware } from '@ad-engine/core';
+import { Dictionary, FuncPipelineStep } from '@ad-engine/core';
 import { AdInfoContext } from '@ad-engine/tracking';
 import { bidders } from '../';
 
@@ -42,7 +42,7 @@ async function getBiddersPrices(slotName: string): Promise<Dictionary<string>> {
 	};
 }
 
-export const slotBiddersTrackingMiddleware: Middleware<AdInfoContext> = async (
+export const slotBiddersTrackingMiddleware: FuncPipelineStep<AdInfoContext> = async (
 	{ data, slot },
 	next,
 ) => {

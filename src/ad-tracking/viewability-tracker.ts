@@ -1,4 +1,4 @@
-import { AdSlot, context, eventService, Middleware, MiddlewarePipeline } from '@ad-engine/core';
+import { AdSlot, context, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 
 export interface AdViewabilityContext {
 	data: any;
@@ -6,9 +6,9 @@ export interface AdViewabilityContext {
 }
 
 class ViewabilityTracker {
-	private middlewareService = new MiddlewarePipeline<AdViewabilityContext>();
+	private middlewareService = new FuncPipeline<AdViewabilityContext>();
 
-	add(middleware: Middleware<AdViewabilityContext>): this {
+	add(middleware: FuncPipelineStep<AdViewabilityContext>): this {
 		this.middlewareService.add(middleware);
 
 		return this;
@@ -18,7 +18,7 @@ class ViewabilityTracker {
 		return context.get('options.tracking.slot.viewability');
 	}
 
-	register(callback: Middleware<AdViewabilityContext>): void {
+	register(callback: FuncPipelineStep<AdViewabilityContext>): void {
 		if (!this.isEnabled()) {
 			return;
 		}

@@ -1,4 +1,4 @@
-import { context, events, eventService, Middleware, MiddlewarePipeline } from '@ad-engine/core';
+import { context, events, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 import { TrackingBidDefinition } from './tracking-bid';
 
 export interface AdBidderContext {
@@ -7,9 +7,9 @@ export interface AdBidderContext {
 }
 
 class BidderTracker {
-	private middlewareService = new MiddlewarePipeline<AdBidderContext>();
+	private middlewareService = new FuncPipeline<AdBidderContext>();
 
-	add(middleware: Middleware<AdBidderContext>): this {
+	add(middleware: FuncPipelineStep<AdBidderContext>): this {
 		this.middlewareService.add(middleware);
 
 		return this;
@@ -19,7 +19,7 @@ class BidderTracker {
 		return context.get('options.tracking.slot.bidder');
 	}
 
-	register(callback: Middleware<AdBidderContext>): void {
+	register(callback: FuncPipelineStep<AdBidderContext>): void {
 		if (!this.isEnabled()) {
 			return;
 		}
