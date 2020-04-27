@@ -13,26 +13,17 @@ setupPostQuecast();
 
 const communicator = new Communicator();
 
-function onF2Configured(): Promise<Action> {
-	return communicator.actions$.pipe(ofType(f2Ready), take(1)).toPromise();
-}
-
-async function load(): Promise<any> {
-	const f2Action = await onF2Configured();
-	const f2Payload = f2Action.payload;
-
+async function load(f2config: F2Config): Promise<any> {
 	context.extend(basicContext);
 
 	const [container]: [Container, ...any[]] = await Promise.all([
-		setupF2Ioc(f2Payload),
+		setupF2Ioc(f2config),
 		bootstrapAndGetConsent(),
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isMobile: f2Payload.isMobile });
-
+	platformStartup.configure({ isMobile: f2config.isMobile });
 	communicator.dispatch(adEngineConfigured());
-
 	platformStartup.run();
 }
 
