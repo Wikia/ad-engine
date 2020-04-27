@@ -13,7 +13,6 @@ export * from './services';
 export * from './tracking';
 export * from './video';
 export * from './pipeline/pipeline';
-export * from './pipeline/imps/middleware-pipeline';
 export * from './pipeline/imps/di-pipeline';
 export * from './pipeline/imps/func-pipeline';
 export { PipelineAdapter } from './pipeline/pipeline-types';
