@@ -1,11 +1,11 @@
 import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
-import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
+import { Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { basicContext } from './ad-context';
-import { f2Ready } from './setup-f2';
+import { F2Config, f2Ready } from './setup-f2';
 import { setupF2Ioc } from './setup-f2-ioc';
 import './styles.scss';
 
