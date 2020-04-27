@@ -96,7 +96,10 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 			});
 		}
 
-		if (!context.get('custom.hasFeaturedVideo')) {
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			context.get('wiki.targeting.pageType') !== 'special'
+		) {
 			slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
 
 			if (context.get('templates.stickyTlb.lineItemIds')) {

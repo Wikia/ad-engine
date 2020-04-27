@@ -326,6 +326,21 @@
             "value": 2000
         }
     ],
+    "icIxIdentityLibrary": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "NZ"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidTriplelift": [
         {
             "apps": [
