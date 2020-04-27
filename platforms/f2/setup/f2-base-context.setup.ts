@@ -1,9 +1,7 @@
 import { BaseContextSetup } from '@platforms/shared';
 import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { F2Config } from '../setup-f2';
-
-export const F2_CONFIG = Symbol('f2 config');
+import { F2_CONFIG, F2Config } from '../setup-f2';
 
 @Injectable()
 export class F2BaseContextSetup extends BaseContextSetup {
