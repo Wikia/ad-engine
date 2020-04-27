@@ -50,7 +50,7 @@ class IasPublisherOptimization {
 				slotConfig: slot,
 			});
 			iasPETSlots.push({
-				adSlotId: slot['adProduct'],
+				adSlotId: slotName,
 				size: sizes,
 				adUnitPath,
 			});
