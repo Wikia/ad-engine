@@ -1,11 +1,19 @@
-import { DynamicSlotsSetup } from '@platforms/shared';
-import { context, Dictionary, SlotConfig, slotInjector } from '@wikia/ad-engine';
+import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import {
+	AdSlot,
+	context,
+	Dictionary,
+	SlotConfig,
+	slotInjector,
+	slotService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
+		this.configureTopLeaderboard();
 	}
 
 	private injectSlots(): void {
@@ -32,6 +40,38 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		if (siblingElement) {
 			siblingElement.parentNode.insertBefore(wrapper, siblingElement.nextSibling);
 			wrapper.appendChild(blbContainer);
+		}
+	}
+
+	private configureTopLeaderboard(): void {
+		const hiviLBEnabled = context.get('options.hiviLeaderboard');
+
+		if (hiviLBEnabled) {
+			context.set('slots.top_leaderboard.firstCall', false);
+
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
+				slotService.setState('top_leaderboard', false);
+			});
+
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				const adSlot = slotService.get('hivi_leaderboard');
+
+				if (!adSlot.isEmpty) {
+					slotService.setState('top_leaderboard', false);
+				}
+			});
+		}
+
+		if (!context.get('custom.hasFeaturedVideo')) {
+			slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
+
+			if (context.get('templates.stickyTlb.lineItemIds')) {
+				context.set('templates.stickyTlb.enabled', true);
+				context.push(
+					`slots.${hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard'}.defaultTemplates`,
+					'stickyTlb',
+				);
+			}
 		}
 	}
 }
