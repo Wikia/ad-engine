@@ -96,6 +96,10 @@ export const basicContext = {
 			enabled: false,
 			siteId: '1066',
 		},
+		iasPublisherOptimization: {
+			pubId: '930616',
+			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
+		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',

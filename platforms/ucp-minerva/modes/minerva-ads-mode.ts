@@ -1,5 +1,13 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import { bidders, confiant, context, durationMedia, nielsen, permutive } from '@wikia/ad-engine';
+import {
+	bidders,
+	confiant,
+	context,
+	durationMedia,
+	iasPublisherOptimization,
+	nielsen,
+	permutive,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -25,6 +33,7 @@ export class MinervaAdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		permutive.call();
+		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();
 		nielsen.call({

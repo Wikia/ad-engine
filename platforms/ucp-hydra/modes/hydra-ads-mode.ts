@@ -1,5 +1,12 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import { bidders, confiant, context, durationMedia, permutive } from '@wikia/ad-engine';
+import {
+	bidders,
+	confiant,
+	context,
+	durationMedia,
+	iasPublisherOptimization,
+	permutive,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -24,6 +31,7 @@ export class HydraAdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		permutive.call();
+		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();
 
