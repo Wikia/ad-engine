@@ -13,7 +13,7 @@ class FuncPipelineAdapter<TPayload>
 		payload: TPayload,
 		next?: PipelineNext<TPayload>,
 	): Promise<TPayload> {
-		return step(payload, next as any);
+		return step(payload, next);
 	}
 }
 
