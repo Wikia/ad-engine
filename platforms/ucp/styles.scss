@@ -2,13 +2,13 @@
 @import 'src/ad-products/styles/breakpoints';
 @import 'src/ad-products/styles/uap-variables';
 @import 'src/ad-products/styles/porvata';
-@import './styles/advertisement-label';
-@import './styles/bottom-panel';
-@import './styles/button-close';
-@import './styles/fullscreen-control';
+@import 'platforms/shared/styles/advertisement-label';
+@import 'platforms/shared/styles/bottom-panel';
+@import 'platforms/shared/styles/button-close';
+@import 'platforms/shared/styles/fullscreen-control';
+@import 'platforms/shared/styles/progress-bar';
+@import 'platforms/shared/styles/porvata-icons';
 @import './styles/navbar';
-@import './styles/progress-bar';
-@import './styles/porvata-icons';
 
 .has-uap {
 	.WikiaSiteWrapper {
