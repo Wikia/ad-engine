@@ -1,9 +1,21 @@
-import { getDomain, TargetingSetup } from '@platforms/shared';
-import { context, Targeting, utils } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { Binder, context, Targeting, utils } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
+import { TargetingSetup } from '../../setup/_targeting.setup';
+import { getDomain } from '../../utils/get-domain';
+
+const SKIN = Symbol('targeting skin');
 
 @Injectable()
-export class HydraTargetingSetup implements TargetingSetup {
+export class UcpTargetingSetup implements TargetingSetup {
+	static skin(skin: string): Binder {
+		return {
+			bind: SKIN,
+			value: skin,
+		};
+	}
+
+	constructor(@Inject(SKIN) private skin: string) {}
+
 	configureTargetingContext(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 
@@ -30,7 +42,7 @@ export class HydraTargetingSetup implements TargetingSetup {
 			s0c: wiki.targeting.newWikiCategories,
 			s1: this.getRawDbName(wiki),
 			s2: this.getAdLayout(wiki.targeting),
-			skin: 'hydra',
+			skin: this.skin,
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
@@ -70,6 +82,33 @@ export class HydraTargetingSetup implements TargetingSetup {
 		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
+	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
+		let adLayout = this.getPageType(targeting);
+		const videoStatus = this.getVideoStatus();
+		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
+		const hasIncontentPlayer =
+			!hasFeaturedVideo &&
+			document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
+
+		if (adLayout === 'article') {
+			if (hasFeaturedVideo) {
+				const videoPrefix = videoStatus.isDedicatedForArticle ? 'fv' : 'wv';
+
+				adLayout = `${videoPrefix}-${adLayout}`;
+			} else if (hasIncontentPlayer) {
+				adLayout = `${adLayout}-ic`;
+			}
+		}
+
+		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
+
+		return adLayout;
+	}
+
+	private getPageType(targeting: MediaWikiAdsTargeting): string {
+		return targeting.pageType || 'article';
+	}
+
 	private getVideoStatus(): VideoStatus {
 		if (context.get('wiki.targeting.hasFeaturedVideo')) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
@@ -87,29 +126,7 @@ export class HydraTargetingSetup implements TargetingSetup {
 		return {};
 	}
 
-	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
-		let layout = targeting.pageType || 'article';
-		const videoStatus = this.getVideoStatus();
-		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
-		const hasIncontentPlayer =
-			!hasFeaturedVideo &&
-			document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
-
-		if (layout === 'article') {
-			if (hasFeaturedVideo) {
-				const videoPrefix = videoStatus.isDedicatedForArticle ? 'fv' : 'wv';
-
-				layout = `${videoPrefix}-${layout}`;
-			} else if (hasIncontentPlayer) {
-				layout = `${layout}-ic`;
-			}
-		}
-
-		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
-
-		return layout;
-	}
-
+	// TODO: This should not be here. It is a side effect that is unpredictable.
 	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
 		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);

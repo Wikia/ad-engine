@@ -1,4 +1,4 @@
-export function getPageType(): string {
+export function getSportsPageType(): string {
 	const pathName = window.location.pathname;
 	const hostname = window.location.hostname.toLowerCase();
 	const pieces = hostname.split('.').filter((piece) => piece !== 'www');

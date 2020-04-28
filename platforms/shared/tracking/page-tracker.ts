@@ -1,19 +1,22 @@
+import { Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
 
 /**
  * Wrapper for page info warehouse trackingParams
  */
+@Injectable()
 export class PageTracker {
+	constructor(private dwTracker: DataWarehouseTracker) {}
+
 	/**
 	 * Track page info prop values
 	 */
-	static trackProp(name: string, value: string): void {
+	trackProp(name: string, value: string): void {
 		const now = new Date();
-		const dataWarehouseTracker = new DataWarehouseTracker();
 		const trackingPropsURL =
 			'https://beacon.wikia-services.com/__track/special/adengpageinfo_props';
 
-		dataWarehouseTracker.track(
+		this.dwTracker.track(
 			{
 				prop_name: name,
 				prop_value: value,
