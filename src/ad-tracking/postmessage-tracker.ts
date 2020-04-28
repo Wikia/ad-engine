@@ -43,12 +43,12 @@ export const trackingPayloadValidationMiddleware: FuncPipelineStep<TrackingMessa
  * For example use, check examples /tracking/postmessage-tracker/.
  */
 export class PostmessageTracker {
-	private middlewareService = new FuncPipeline<any>();
+	private pipeline = new FuncPipeline<any>();
 
 	constructor(private readonly requiredKeys: string[]) {}
 
 	add(middleware: FuncPipelineStep<any>): this {
-		this.middlewareService.add(middleware);
+		this.pipeline.add(middleware);
 
 		return this;
 	}
@@ -58,7 +58,7 @@ export class PostmessageTracker {
 			return;
 		}
 		messageBus.register<T>({ keys: this.requiredKeys, infinite: true }, (message) => {
-			this.middlewareService.execute({ ...message }, callback);
+			this.pipeline.execute({ ...message }, callback);
 		});
 
 		return this;

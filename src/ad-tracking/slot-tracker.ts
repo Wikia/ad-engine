@@ -19,10 +19,10 @@ class SlotTracker {
 		AdSlot.STATUS_CLOSED_BY_PORVATA,
 	];
 
-	private middlewareService = new FuncPipeline<AdInfoContext>();
+	private pipeline = new FuncPipeline<AdInfoContext>();
 
 	add(middleware: FuncPipelineStep<AdInfoContext>): this {
-		this.middlewareService.add(middleware);
+		this.pipeline.add(middleware);
 
 		return this;
 	}
@@ -47,7 +47,7 @@ class SlotTracker {
 				this.onRenderEndedStatusToTrack.includes(status) ||
 				slot.getConfigProperty('trackEachStatus')
 			) {
-				this.middlewareService.execute(middlewareContext, callback);
+				this.pipeline.execute(middlewareContext, callback);
 			} else if (slot.getStatus() === 'manual') {
 				slot.trackOnStatusChanged = true;
 			}
@@ -63,7 +63,7 @@ class SlotTracker {
 			};
 
 			if (this.onChangeStatusToTrack.includes(status) || shouldSlotBeTracked) {
-				this.middlewareService.execute(middlewareContext, callback);
+				this.pipeline.execute(middlewareContext, callback);
 				delete slot.trackOnStatusChanged;
 			}
 		});
@@ -76,7 +76,7 @@ class SlotTracker {
 				},
 			};
 
-			this.middlewareService.execute(middlewareContext, callback);
+			this.pipeline.execute(middlewareContext, callback);
 		});
 	}
 }

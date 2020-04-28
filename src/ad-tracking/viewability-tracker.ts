@@ -6,10 +6,10 @@ export interface AdViewabilityContext {
 }
 
 class ViewabilityTracker {
-	private middlewareService = new FuncPipeline<AdViewabilityContext>();
+	private pipeline = new FuncPipeline<AdViewabilityContext>();
 
 	add(middleware: FuncPipelineStep<AdViewabilityContext>): this {
-		this.middlewareService.add(middleware);
+		this.pipeline.add(middleware);
 
 		return this;
 	}
@@ -24,7 +24,7 @@ class ViewabilityTracker {
 		}
 
 		eventService.on(AdSlot.SLOT_VIEWED_EVENT, (slot: AdSlot) => {
-			this.middlewareService.execute(
+			this.pipeline.execute(
 				{
 					slot,
 					data: {},

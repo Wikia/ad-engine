@@ -7,10 +7,10 @@ export interface AdBidderContext {
 }
 
 class BidderTracker {
-	private middlewareService = new FuncPipeline<AdBidderContext>();
+	private pipeline = new FuncPipeline<AdBidderContext>();
 
 	add(middleware: FuncPipelineStep<AdBidderContext>): this {
-		this.middlewareService.add(middleware);
+		this.pipeline.add(middleware);
 
 		return this;
 	}
@@ -25,7 +25,7 @@ class BidderTracker {
 		}
 
 		eventService.on(events.BIDS_RESPONSE, (bid: TrackingBidDefinition) => {
-			this.middlewareService.execute(
+			this.pipeline.execute(
 				{
 					bid,
 					data: {},

@@ -23,7 +23,7 @@ export interface ClickPositionContext {
 }
 
 class ClickPositionTracker {
-	private middlewareService = new FuncPipeline<ClickPositionContext>();
+	private pipeline = new FuncPipeline<ClickPositionContext>();
 	private logGroup = 'click-position-tracker';
 
 	register(middleware: FuncPipelineStep<ClickPositionContext>, slotName: string): void {
@@ -92,7 +92,7 @@ class ClickPositionTracker {
 		middleware: FuncPipelineStep<ClickPositionContext>,
 		clickPayload: ClickPayload,
 	): void {
-		this.middlewareService.execute(
+		this.pipeline.execute(
 			{
 				category: 'click_position',
 				action: 'click',
