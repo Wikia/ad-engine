@@ -1,6 +1,6 @@
-import { WikiContextSetup } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { WikiContextSetup } from '../../setup/_wiki-context.setup';
 
 @Injectable()
 export class UcpWikiContextSetup extends WikiContextSetup {

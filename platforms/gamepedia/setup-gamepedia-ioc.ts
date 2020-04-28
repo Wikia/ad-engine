@@ -1,6 +1,5 @@
 import {
 	A9ConfigSetup,
-	AdEngineRunnerSetup,
 	AdsMode,
 	BiddersStateSetup,
 	CommonBiddersStateSetup,
@@ -19,7 +18,6 @@ import {
 import { context, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { GamepediaAdEngineRunnerSetup } from './ad-engine-runner/gamepedia-ad-engine-runner.setup';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
 import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';
@@ -36,7 +34,6 @@ export async function setupGamepediaIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
 	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);
-	container.bind(AdEngineRunnerSetup).to(GamepediaAdEngineRunnerSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
 	container.bind(AdsMode).to(GamepediaAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);

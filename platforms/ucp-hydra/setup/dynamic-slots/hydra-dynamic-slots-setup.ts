@@ -1,4 +1,4 @@
-import { DynamicSlotsSetup } from '@platforms/shared';
+import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -8,7 +8,6 @@ import {
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../../../shared/slots/slots-context';
 
 @Injectable()
 export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
