@@ -1,6 +1,3 @@
-@import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/breakpoints';
-
 .gpt-ad {
 	&#top_leaderboard,
 	&#bottom_leaderboard {
@@ -8,6 +5,19 @@
 		padding: 5px 0;
 
 		&.hide {
+			display: none;
+		}
+	}
+}
+
+.gpt-ad {
+	&#top_boxad {
+		margin: 5px;
+		float: right;
+		position: relative;
+		text-align: center;
+
+		@media screen and (max-width: 1350px) {
 			display: none;
 		}
 	}
