@@ -21,6 +21,7 @@ import {
 	StickinessTimeout,
 	UapDomManager,
 	UapDomReader,
+	VideoBootstrapHandler,
 	VideoCompletedHandler,
 	VideoCtpHandler,
 	VideoDomManager,
@@ -40,7 +41,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			initial: [
 				BfaaConfigHandler,
 				BfaaBootstrapHandler,
-				// VideoBootstrapHandler,
+				VideoBootstrapHandler,
 				VideoCtpHandler,
 				VideoRestartHandler,
 				AdvertisementLabelHandler,
