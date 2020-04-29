@@ -6,14 +6,10 @@
 @import 'platforms/shared/styles/fullscreen-control';
 @import 'platforms/shared/styles/progress-bar';
 @import 'platforms/shared/styles/porvata-icons';
+@import './styles/uap-navbar';
 
 .has-uap {
-	.header-container {
-		top: 0;
-		position: fixed;
-		width: 100%;
-		z-index: 400;
-	}
+	@include uap-navbar();
 
 	#top_leaderboard,
 	#hivi_leaderboard {
