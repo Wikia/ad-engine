@@ -1,5 +1,6 @@
 import {
 	AdvertisementLabelHandler,
+	BfabBootstrapHandler,
 	DebugTransitionHandler,
 	DomCleanupHandler,
 	DomManipulator,
@@ -16,7 +17,6 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { BfabBootstrapHandler } from './handlers/bfab/bfab-bootstrap-handler';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
