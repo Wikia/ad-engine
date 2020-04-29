@@ -1,4 +1,4 @@
-import { getDomain, getPageType, TargetingSetup } from '@platforms/shared';
+import { getDomain, getSportsPageType, TargetingSetup } from '@platforms/shared';
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -17,7 +17,7 @@ export class MutheadTargetingSetup implements TargetingSetup {
 			uap_c: 'none',
 			s0: 'gaming',
 			s1: 'muthead',
-			s2: getPageType(),
+			s2: getSportsPageType(),
 			dmn: `${domain.name}${domain.tld}`,
 			geo: utils.geoService.getCountryCode() || 'none',
 		};

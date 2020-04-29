@@ -1,6 +1,6 @@
-import { BaseContextSetup } from '@platforms/shared';
 import { context, Dictionary } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { BaseContextSetup } from '../../setup/_base-context.setup';
 
 @Injectable()
 export class UcpBaseContextSetup extends BaseContextSetup {
@@ -22,7 +22,7 @@ export class UcpBaseContextSetup extends BaseContextSetup {
 			(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		);
 
-		const stickySlotsLines: Dictionary<any> = this.instantConfig.get('icStickySlotLineItemIds');
+		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
 

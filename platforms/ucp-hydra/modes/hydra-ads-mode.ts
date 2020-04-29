@@ -4,6 +4,8 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class HydraAdsMode implements AdsMode {
+	constructor(private pageTracker: PageTracker) {}
+
 	handleAds(): void {
 		const inhibitors = this.callExternals();
 
@@ -14,7 +16,7 @@ export class HydraAdsMode implements AdsMode {
 	}
 
 	private trackAdEngineStatus(): void {
-		PageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
+		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
 	private callExternals(): Promise<any>[] {

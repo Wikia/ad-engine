@@ -30,6 +30,8 @@ const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplaye
 
 @Injectable()
 export class CommonTrackingSetup implements TrackingSetup {
+	constructor(private pageTracker: PageTracker) {}
+
 	configureTracking(): void {
 		this.porvataTracker();
 		this.slotTracker();
@@ -116,7 +118,7 @@ export class CommonTrackingSetup implements TrackingSetup {
 		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
 
 		if (labradorPropValue) {
-			PageTracker.trackProp('labrador', labradorPropValue);
+			this.pageTracker.trackProp('labrador', labradorPropValue);
 		}
 	}
 }
