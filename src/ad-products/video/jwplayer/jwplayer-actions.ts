@@ -15,3 +15,8 @@ export const jwpReady = action(
 	'[JWPlayer] Player Ready',
 	props<{ options: JwPlayerAdsFactoryOptions; targeting: VideoTargeting; playerKey: string }>(),
 );
+
+export const jwpSetup = action(
+	'[Ad Engine] Setup JWPlayer',
+	props<{ showAds: boolean; autoplayDisabled: boolean }>(),
+);

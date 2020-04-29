@@ -148,7 +148,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.mcf-en',
+				insertBeforeSelector: '.mcf-en,.mw-special-Newimages .license-description',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [

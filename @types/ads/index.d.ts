@@ -14,7 +14,7 @@ interface MediaWikiAdsContext {
 interface MediaWikiAdsOpts {
 	noAdsReason: string;
 	isAdTestWiki: boolean;
-	isSubjectToCoppa?: boolean;
+	isSubjectToCcpa?: boolean;
 	pageType: string;
 	showAds: boolean;
 }

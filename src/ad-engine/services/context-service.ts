@@ -45,7 +45,7 @@ const contextObject: ContextObject = {
 		slotRepeater: false,
 		optOutSale: false,
 		trackingOptIn: false,
-		isSubjectToCoppa: false,
+		isSubjectToCcpa: false,
 	},
 	service: {
 		instantConfig: {

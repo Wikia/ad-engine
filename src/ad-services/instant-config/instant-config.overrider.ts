@@ -8,7 +8,9 @@ import {
 const queryParamPrefixes = ['InstantGlobals', 'icbm'];
 
 function hasInstantConfigPrefix(key: string): boolean {
-	return queryParamPrefixes.filter((prefix: string) => key.startsWith(`${prefix}.`)).length > 0;
+	return queryParamPrefixes.some((prefix: string) => {
+		return key.startsWith(`${prefix}.`) || key.startsWith(`${prefix}__`);
+	});
 }
 
 export class InstantConfigOverrider {
@@ -18,7 +20,10 @@ export class InstantConfigOverrider {
 		return Object.keys(queryParams)
 			.filter((paramKey: string) => hasInstantConfigPrefix(paramKey))
 			.map((paramKey) => {
-				const [, key] = paramKey.split('.');
+				const [, key] = paramKey
+					.split('.')
+					.map((part) => part.split('__'))
+					.flat();
 
 				return {
 					paramKey,

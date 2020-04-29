@@ -4,7 +4,7 @@ import { trackingOptIn } from '../../../src/ad-engine/services/tracking-opt-in';
 
 describe('tracking-opt-in', () => {
 	function clearContext() {
-		context.remove('options.isSubjectToCoppa');
+		context.remove('options.isSubjectToCcpa');
 		context.remove('options.trackingOptIn');
 		context.remove('options.optOutSale');
 	}
@@ -23,9 +23,9 @@ describe('tracking-opt-in', () => {
 			[undefined, false, false],
 			[true, false, false],
 			[false, false, false],
-		].forEach(([coppa, optIn, result]) => {
-			it(`should return ${result} when options.trackingOptIn is ${optIn} and options.isSubjectToCoppa is ${coppa}`, () => {
-				context.set('options.isSubjectToCoppa', coppa);
+		].forEach(([ccpa, optIn, result]) => {
+			it(`should return ${result} when options.trackingOptIn is ${optIn} and options.isSubjectToCcpa is ${ccpa}`, () => {
+				context.set('options.isSubjectToCcpa', ccpa);
 				context.set('options.trackingOptIn', optIn);
 
 				expect(trackingOptIn.isOptedIn()).to.equal(result);
@@ -44,9 +44,9 @@ describe('tracking-opt-in', () => {
 			[undefined, false, false],
 			[true, false, true],
 			[false, false, false],
-		].forEach(([coppa, optOutSale, result]) => {
-			it(`should return ${result} when options.optOutSale is ${optOutSale} and options.isSubjectToCoppa is ${coppa}`, () => {
-				context.set('options.isSubjectToCoppa', coppa);
+		].forEach(([ccpa, optOutSale, result]) => {
+			it(`should return ${result} when options.optOutSale is ${optOutSale} and options.isSubjectToCcpa is ${ccpa}`, () => {
+				context.set('options.isSubjectToCcpa', ccpa);
 				context.set('options.optOutSale', optOutSale);
 
 				expect(trackingOptIn.isOptOutSale()).to.equal(result);
