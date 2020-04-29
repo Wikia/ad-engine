@@ -15,14 +15,14 @@ import {
 	SlotSizeResolvedHandler,
 	SlotTransitionHandler,
 	StickinessTimeout,
+	StickyTlbBlockingHandler,
+	StickyTlbBootstrapHandler,
+	StickyTlbConfigHandler,
 	UapDomManager,
 	UapDomReader,
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { StickyTlbBlockingHandler } from './handlers/sticky-tlb/sticky-tlb-blocking-handler';
-import { StickyTlbBootstrapHandler } from './handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
-import { StickyTlbConfigHandler } from './handlers/sticky-tlb/sticky-tlb-config-handler';
 
 export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
