@@ -1,5 +1,7 @@
 import {
 	AdvertisementLabelHandler,
+	BfaaBootstrapHandler,
+	BfaaConfigHandler,
 	CloseButtonHelper,
 	CloseToTransitionButtonHandler,
 	DebugTransitionHandler,
@@ -31,8 +33,6 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
-import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(

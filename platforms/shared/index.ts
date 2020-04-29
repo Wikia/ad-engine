@@ -62,6 +62,8 @@ export * from './templates/handlers/video/video-restart-handler';
 export * from './templates/handlers/video/video-size-impact-handler';
 export * from './templates/handlers/video/video-size-impact-to-resolved-handler';
 export * from './templates/handlers/bfab/bfab-bootstrap-handler';
+export * from './templates/handlers/bfaa/bfaa-bootstrap-handler';
+export * from './templates/handlers/bfaa/bfaa-config-handler';
 export * from './templates/handlers/video/video-size-resolved-handler';
 export * from './templates/helpers/close-button-helper';
 export * from './templates/helpers/player-registry';
