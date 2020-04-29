@@ -1,0 +1,96 @@
+import {
+	AdvertisementLabelHandler,
+	BodyOffsetImpactHandler,
+	BodyOffsetResolvedHandler,
+	CloseButtonHelper,
+	CloseToTransitionButtonHandler,
+	DebugTransitionHandler,
+	DomCleanupHandler,
+	DomManipulator,
+	NavbarOffsetImpactToResolvedHandler,
+	NavbarOffsetResolvedHandler,
+	NavbarOffsetResolvedToNoneHandler,
+	PlayerRegistry,
+	ScrollCorrector,
+	SlotDecisionImpactToResolvedHandler,
+	SlotDecisionTimeoutHandler,
+	SlotOffsetResolvedToNoneHandler,
+	SlotSizeImpactToResolvedHandler,
+	SlotSizeResolvedHandler,
+	SlotTransitionHandler,
+	StickinessTimeout,
+	UapDomManager,
+	UapDomReader,
+	VideoCompletedHandler,
+	VideoCtpHandler,
+	VideoDomManager,
+	VideoRestartHandler,
+	VideoSizeImpactToResolvedHandler,
+	VideoSizeResolvedHandler,
+} from '@platforms/shared';
+import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { Observable } from 'rxjs';
+import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
+import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
+
+export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+	return registry.register(
+		'bfaa',
+		{
+			initial: [
+				BfaaConfigHandler,
+				BfaaBootstrapHandler,
+				// VideoBootstrapHandler,
+				VideoCtpHandler,
+				VideoRestartHandler,
+				AdvertisementLabelHandler,
+				DebugTransitionHandler,
+			],
+			impact: [
+				SlotSizeImpactToResolvedHandler,
+				SlotDecisionImpactToResolvedHandler,
+				NavbarOffsetImpactToResolvedHandler,
+				BodyOffsetImpactHandler,
+				VideoSizeImpactToResolvedHandler,
+				VideoCompletedHandler,
+				DomCleanupHandler,
+			],
+			sticky: [
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
+				SlotDecisionTimeoutHandler,
+				CloseToTransitionButtonHandler,
+				VideoSizeResolvedHandler,
+				DomCleanupHandler,
+			],
+			transition: [
+				SlotSizeResolvedHandler,
+				BodyOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
+				SlotTransitionHandler,
+				VideoSizeResolvedHandler,
+				DomCleanupHandler,
+			],
+			resolved: [
+				SlotSizeResolvedHandler,
+				SlotOffsetResolvedToNoneHandler,
+				NavbarOffsetResolvedToNoneHandler,
+				BodyOffsetResolvedHandler,
+				VideoSizeResolvedHandler,
+				DomCleanupHandler,
+			],
+		},
+		'initial',
+		[
+			ScrollCorrector,
+			PlayerRegistry,
+			DomManipulator,
+			UapDomManager,
+			UapDomReader,
+			VideoDomManager,
+			CloseButtonHelper,
+			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+		],
+	);
+}
