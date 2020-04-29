@@ -76,6 +76,22 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 					rv: 1,
 				},
 			},
+			incontent_boxad: {
+				adProduct: 'incontent_boxad',
+				aboveTheFold: false,
+				defaultSizes: [[300, 250]],
+				bidderAlias: '06_FMR',
+				// before fifth header of size h1..h6
+				insertBeforeSelector: [1, 2, 3, 4, 5, 6]
+					.map((id) => `#bodyContent #mw-content-text .mw-parser-output h${id}:nth-of-type(5)`)
+					.join(','),
+				group: 'FMR',
+				targeting: {
+					loc: 'footer',
+					zne: '06',
+					rv: 1,
+				},
+			},
 			footer: {
 				adProduct: 'footer',
 				aboveTheFold: false,
