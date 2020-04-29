@@ -21,7 +21,7 @@ import {
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import { context, FOOTER, InstantConfigService, NAVBAR, PAGE } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
@@ -47,6 +47,9 @@ export async function setupMinervaIoc(): Promise<Container> {
 	container.bind(DynamicSlotsSetup).to(MinervaDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(TemplatesSetup).to(UcpMinervaTemplatesSetup);
+	container.bind(NAVBAR).value(document.querySelector('.header-container'));
+	container.bind(FOOTER).value(document.querySelector('.minerva-footer'));
+	container.bind(PAGE).value(document.querySelector('#content'));
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
