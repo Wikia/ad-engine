@@ -19,7 +19,7 @@ import {
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
-import { context, FOOTER, InstantConfigService, NAVBAR } from '@wikia/ad-engine';
+import { context, FOOTER, InstantConfigService, NAVBAR, PAGE } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
@@ -49,6 +49,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
 	container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
+	container.bind(PAGE).value(document.body);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(UcpA9ConfigSetup);

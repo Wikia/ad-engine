@@ -21,7 +21,7 @@ import {
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
-import { context, FOOTER, InstantConfigService, NAVBAR } from '@wikia/ad-engine';
+import { context, FOOTER, InstantConfigService, NAVBAR, PAGE } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
@@ -50,6 +50,7 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(TemplatesSetup).to(UcpHydraTemplatesSetup);
 	container.bind(NAVBAR).value(document.querySelector('#netbar'));
 	container.bind(FOOTER).value(document.querySelector('#gamepedia-footer'));
+	container.bind(PAGE).value(document.querySelector('#global-wrapper'));
 	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
 

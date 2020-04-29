@@ -8,10 +8,6 @@
 @import 'platforms/shared/styles/porvata-icons';
 @import './styles/uap-navbar';
 
-html body.has-uap {
-	margin-top: 0 !important;
-}
-
 .has-uap {
 	@include uap-navbar();
 

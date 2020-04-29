@@ -16,11 +16,11 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
-	getBodyOffsetImpact(): number {
+	getPageOffsetImpact(): number {
 		return this.getSlotHeightImpact() + this.navbar.offsetHeight;
 	}
 
-	getBodyOffsetResolved(): number {
+	getPageOffsetResolved(): number {
 		return this.getSlotHeightResolved() + this.navbar.offsetHeight;
 	}
 

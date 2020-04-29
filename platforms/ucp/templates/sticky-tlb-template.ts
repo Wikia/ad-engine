@@ -1,6 +1,5 @@
 import {
 	AdvertisementLabelHandler,
-	BodyOffsetResolvedHandler,
 	CloseButtonHelper,
 	CloseToHiddenButtonHandler,
 	DebugTransitionHandler,
@@ -8,6 +7,7 @@ import {
 	DomManipulator,
 	NavbarOffsetResolvedHandler,
 	NavbarOffsetResolvedToNoneHandler,
+	PageOffsetResolvedHandler,
 	ScrollCorrector,
 	SlotDecisionTimeoutHandler,
 	SlotHiddenHandler,
@@ -37,7 +37,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			],
 			sticky: [
 				SlotSizeResolvedHandler,
-				BodyOffsetResolvedHandler,
+				PageOffsetResolvedHandler,
 				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToHiddenButtonHandler,
@@ -45,7 +45,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			],
 			transition: [
 				SlotSizeResolvedHandler,
-				BodyOffsetResolvedHandler,
+				PageOffsetResolvedHandler,
 				NavbarOffsetResolvedHandler,
 				SlotTransitionHandler,
 				DomCleanupHandler,
@@ -53,11 +53,11 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			resolved: [
 				SlotSizeResolvedHandler,
 				SlotOffsetResolvedToNoneHandler,
-				BodyOffsetResolvedHandler,
+				PageOffsetResolvedHandler,
 				NavbarOffsetResolvedToNoneHandler,
 				DomCleanupHandler,
 			],
-			hidden: [SlotHiddenHandler, BodyOffsetResolvedHandler, DomCleanupHandler],
+			hidden: [SlotHiddenHandler, PageOffsetResolvedHandler, DomCleanupHandler],
 		},
 		'blocking',
 		[
