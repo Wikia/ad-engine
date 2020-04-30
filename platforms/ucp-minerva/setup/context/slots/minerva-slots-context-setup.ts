@@ -69,7 +69,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 				],
 				bidderAlias: '02_MR',
 				// before second header of size h1..h6
-				insertBeforeSelector: [1, 2]
+				insertBeforeSelector: [1, 2, 3, 4, 5, 6]
 					.map((id) => `#bodyContent #mw-content-text .mw-parser-output h${id}:nth-of-type(2)`)
 					.join(','),
 				group: 'MR',
@@ -79,8 +79,8 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 					rv: 1,
 				},
 			},
-			incontent_boxad: {
-				adProduct: 'incontent_boxad',
+			incontent_boxad_1: {
+				adProduct: 'incontent_boxad_1',
 				aboveTheFold: false,
 				defaultSizes: [[300, 250]],
 				bidderAlias: '06_FMR',
@@ -92,6 +92,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 				targeting: {
 					loc: 'footer',
 					zne: '06',
+					pos: 'incontent_boxad',
 					rv: 1,
 				},
 			},
