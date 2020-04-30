@@ -68,7 +68,10 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 					[300, 600],
 				],
 				bidderAlias: '02_MR',
-				insertBeforeSelector: '#mw-content-text h2:nth-child(2)',
+				// before second header of size h1..h6
+				insertBeforeSelector: [1, 2]
+					.map((id) => `#bodyContent #mw-content-text .mw-parser-output h${id}:nth-of-type(2)`)
+					.join(','),
 				group: 'MR',
 				targeting: {
 					loc: 'top',
