@@ -39,8 +39,8 @@ export class VideoDomReader {
 			top,
 			right,
 			bottom,
-			height: Math.round(height),
-			width: Math.round(width),
+			height: Math.ceil(height),
+			width: Math.ceil(width),
 		};
 	}
 
