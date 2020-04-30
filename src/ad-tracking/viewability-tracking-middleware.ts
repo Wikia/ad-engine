@@ -1,7 +1,7 @@
-import { utils } from '@ad-engine/core';
+import { FuncPipelineStep } from '@ad-engine/core';
 import { AdViewabilityContext } from './viewability-tracker';
 
-export const viewabilityTrackingMiddleware: utils.Middleware<AdViewabilityContext> = (
+export const viewabilityTrackingMiddleware: FuncPipelineStep<AdViewabilityContext> = (
 	{ data, slot },
 	next,
 ) => {
