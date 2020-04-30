@@ -34,9 +34,9 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		const blbContainer = document.createElement('div');
 		blbContainer.id = 'bottom_leaderboard';
 
-		const siblingElement =
-			document.querySelector('#siderail_ucpinternalgptestproject43') ||
-			document.querySelector(siblingsSelector);
+		const dbName = context.get('wiki.targeting.wikiDbName');
+		const siderail = document.getElementById(`siderail_${dbName}`);
+		const siblingElement = siderail || document.querySelector(siblingsSelector);
 
 		if (siblingElement) {
 			siblingElement.parentNode.insertBefore(wrapper, siblingElement.nextSibling);
@@ -45,7 +45,8 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private injectTB(): void {
-		const siderail = document.getElementById('siderail_ucpinternalgptestproject43');
+		const dbName = context.get('wiki.targeting.wikiDbName');
+		const siderail = document.getElementById(`siderail_${dbName}`);
 
 		if (siderail) {
 			const topBoxad = document.createElement('div');
