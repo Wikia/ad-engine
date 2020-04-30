@@ -35,6 +35,6 @@ export class MinervaAdsMode implements AdsMode {
 	private setAdStack(): void {
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('state.adStack', { id: 'footer' });
+		context.push('state.adStack', { id: 'footer_boxad' });
 	}
 }
