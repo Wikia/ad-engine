@@ -14,6 +14,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
+		this.positionTB();
 	}
 
 	private injectSlots(): void {
@@ -41,6 +42,34 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 			siblingElement.parentNode.insertBefore(wrapper, siblingElement.nextSibling);
 			wrapper.appendChild(blbContainer);
 		}
+	}
+
+	private positionTB(): void {
+		window.onscroll = () => {
+			const topBoxad = document.getElementById('top_boxad');
+			const sideRail = document.getElementById('siderail_ucpinternalgptestproject43');
+			const footer = document.getElementById('footer');
+			const footerPush = document.getElementById('footer-push');
+			const scrollYTopThreshold = 270;
+			const globalWrapper = document.getElementById('global-wrapper');
+			const windowHeight = globalWrapper.offsetHeight;
+			const scrollYBottomThreshold = windowHeight - footer.offsetHeight - footerPush.offsetHeight;
+
+			if (window.scrollY >= scrollYTopThreshold && window.scrollY < scrollYBottomThreshold) {
+				topBoxad.style.display = 'inline-block';
+				topBoxad.style.top = '10px';
+				topBoxad.style.position = 'fixed';
+				topBoxad.style.right = '34px';
+				const topBoxadHeight = topBoxad.offsetHeight || '250';
+				const siderailTop = Number(topBoxadHeight) + 20;
+				sideRail.style.top = `${siderailTop}px`;
+			} else if (window.scrollY < scrollYTopThreshold) {
+				topBoxad.style.position = 'relative';
+				topBoxad.style.right = '10px';
+			} else if (window.scrollY >= scrollYBottomThreshold) {
+				topBoxad.style.position = 'relative';
+			}
+		};
 	}
 
 	private configureTopLeaderboard(): void {

@@ -12,13 +12,11 @@
 
 .gpt-ad {
 	&#top_boxad {
-		margin: 5px;
 		float: right;
 		position: relative;
-		text-align: center;
 
 		@media screen and (max-width: 1350px) {
-			display: none;
+			display: none !important;
 		}
 	}
 }
