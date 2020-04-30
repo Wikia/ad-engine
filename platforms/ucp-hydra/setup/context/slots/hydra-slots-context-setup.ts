@@ -64,7 +64,6 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				insertBeforeSelector: '#siderail_ucpinternalgptestproject43',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [
