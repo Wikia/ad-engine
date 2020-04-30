@@ -71,10 +71,16 @@ setMessageCount(messageCount);
 
 const postmessageTracker = new PostmessageTracker(['payload', 'target']);
 
-postmessageTracker.add(trackingPayloadValidationMiddleware).register<TrackingMessage>((message) => {
-	messageCount += 1;
-	setMessageCount(messageCount);
-	console.log(
-		`👁 Tracking listener | target: ${message.target},  payload: ${JSON.stringify(message.payload)}`,
-	);
-});
+postmessageTracker
+	.add(trackingPayloadValidationMiddleware)
+	.register<TrackingMessage>(async (message) => {
+		messageCount += 1;
+		setMessageCount(messageCount);
+		console.log(
+			`👁 Tracking listener | target: ${message.target},  payload: ${JSON.stringify(
+				message.payload,
+			)}`,
+		);
+
+		return message;
+	});

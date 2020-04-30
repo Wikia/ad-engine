@@ -1,4 +1,4 @@
-import { slotService, utils } from '@ad-engine/core';
+import { FuncPipelineStep, slotService } from '@ad-engine/core';
 import { AdBidderContext } from './bidder-tracker';
 
 function isBidOnTime(slotName: string, responseTime: number): boolean {
@@ -11,7 +11,7 @@ function isBidOnTime(slotName: string, responseTime: number): boolean {
 	return slot.getPushTime() > responseTime;
 }
 
-export const bidderTrackingMiddleware: utils.Middleware<AdBidderContext> = (
+export const bidderTrackingMiddleware: FuncPipelineStep<AdBidderContext> = (
 	{ bid, data },
 	next,
 ) => {

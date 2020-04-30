@@ -88,14 +88,18 @@ slotTracker
 	.add(slotPropertiesTrackingMiddleware)
 	.add(slotBiddersTrackingMiddleware)
 	.add(slotBillTheLizardStatusTrackingMiddleware)
-	.register(({ data, slot }: AdInfoContext) => {
+	.register(async ({ data, slot }: AdInfoContext) => {
 		// Trigger event tracking
 		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
+
+		return { data, slot };
 	});
 
-bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderContext) => {
+bidderTracker.add(bidderTrackingMiddleware).register(async ({ bid, data }: AdBidderContext) => {
 	// Trigger bidder tracking
 	console.info(`🏁 Bidder tracker: ${bid.bidderName} for ${bid.slotName}`, bid, data);
+
+	return { bid, data };
 });
 
 new AdEngine().init([biddersInhibitor]);
