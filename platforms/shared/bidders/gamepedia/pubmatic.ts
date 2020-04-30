@@ -1,20 +1,26 @@
-import { DeviceMode } from '@platforms/shared';
+import { DeviceMode } from '../../models/device-mode';
 
-export function getPubmaticContext(device: DeviceMode): any {
+export function getGamepediaPubmaticContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
 			publisherId: '156260',
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 					ids: [
 						'Desktop_TopLeaderboard_728x90_Gamepedia',
 						'Desktop_TopLeaderboard_970x250_Gamepedia',
 					],
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 					ids: [
 						'Desktop_TopRightSticky_300x250_Gamepedia',
 						'Desktop_TopRightSticky_300x600_Gamepedia',

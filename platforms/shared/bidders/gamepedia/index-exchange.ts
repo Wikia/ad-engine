@@ -1,53 +1,58 @@
-import { DeviceMode } from '@platforms/shared';
+import { DeviceMode } from '../../models/device-mode';
 
-export function getOpenXContext(device: DeviceMode): any {
+export function getGamepediaIndexExchangeContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
-			delDomain: 'wikia-d.openx.net',
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 150], [970, 250]],
-					unit: '540774852',
+					sizes: [
+						[728, 90],
+						[970, 150],
+						[970, 250],
+					],
+					siteId: '367523',
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
-					unit: '540774853',
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
+					siteId: '367524',
 				},
 				'03_PF': {
 					sizes: [[300, 250]],
-					unit: '540774856',
+					siteId: '367527',
 				},
 				'04_BLB': {
 					sizes: [[728, 90]],
-					unit: '540774855',
+					siteId: '367526',
 				},
 				'06_FMR': {
 					sizes: [[300, 250]],
-					unit: '540774854',
+					siteId: '367525',
 				},
 			},
 		},
 
 		mobile: {
 			enabled: false,
-			delDomain: 'wikia-d.openx.net',
 			slots: {
 				'01_LB': {
 					sizes: [[320, 50]],
-					unit: '540774857',
+					siteId: '367528',
 				},
 				'02_MR': {
 					sizes: [[300, 250]],
-					unit: '540774858',
+					siteId: '367529',
 				},
 				'03_PF': {
 					sizes: [[300, 250]],
-					unit: '540820350',
+					siteId: '399604',
 				},
 				'06_FMR': {
 					sizes: [[300, 250]],
-					unit: '540774859',
+					siteId: '367530',
 				},
 			},
 		},

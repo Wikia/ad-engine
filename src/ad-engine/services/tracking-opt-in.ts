@@ -9,9 +9,9 @@ function isOptedIn(): boolean {
 }
 
 function isOptOutSale(): boolean {
-	const isSubjectToCoppa = !!context.get('options.isSubjectToCoppa');
+	const isSubjectToCcpa = !!context.get('options.isSubjectToCcpa');
 
-	if (isSubjectToCoppa) {
+	if (isSubjectToCcpa) {
 		return true;
 	}
 

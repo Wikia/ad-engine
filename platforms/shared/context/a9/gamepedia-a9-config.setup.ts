@@ -1,6 +1,8 @@
-import { A9ConfigSetup, DeviceMode, getDeviceMode } from '@platforms/shared';
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+
+import { DeviceMode, getDeviceMode } from '../../models/device-mode';
+import { A9ConfigSetup } from '../../setup/_a9-config.setup';
 
 @Injectable()
 export class GamepediaA9ConfigSetup implements A9ConfigSetup {
@@ -14,10 +16,17 @@ export class GamepediaA9ConfigSetup implements A9ConfigSetup {
 		const a9Context = {
 			desktop: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 150], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 150],
+						[970, 250],
+					],
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 				'03_PF': {
 					sizes: [[300, 250]],

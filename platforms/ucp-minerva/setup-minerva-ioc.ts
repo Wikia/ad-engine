@@ -1,14 +1,21 @@
 import {
+	A9ConfigSetup,
 	AdsMode,
 	BaseContextSetup,
+	BiddersStateSetup,
+	CommonBiddersStateSetup,
 	CommonTrackingSetup,
 	DynamicSlotsSetup,
+	GamepediaA9ConfigSetup,
 	NoAdsMode,
+	PrebidConfigSetup,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
+	TemplatesSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
+	UcpGamepediaPrebidConfigSetup,
 	UcpNoAdsMode,
 	UcpTargetingSetup,
 	UcpWikiContextSetup,
@@ -22,6 +29,7 @@ import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
 import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup';
 import { MinervaSlotsStateSetup } from './setup/state/slots/minerva-slots-state-setup';
+import { UcpMinervaTemplatesSetup } from './templates/ucp-minerva-templates.setup';
 
 export async function setupMinervaIoc(): Promise<Container> {
 	const container = new Container();
@@ -38,6 +46,10 @@ export async function setupMinervaIoc(): Promise<Container> {
 	container.bind(SlotsContextSetup).to(MinervaSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(MinervaDynamicSlotsSetup);
 	container.bind(TrackingSetup).to(CommonTrackingSetup);
+	container.bind(TemplatesSetup).to(UcpMinervaTemplatesSetup);
+	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
+	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
+	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
 
 	return container;
 }

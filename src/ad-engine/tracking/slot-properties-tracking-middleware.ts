@@ -1,7 +1,7 @@
 import { AdInfoContext } from '@ad-engine/tracking';
-import { Middleware } from '../utils';
+import { FuncPipelineStep } from '../pipeline/imps/func-pipeline';
 
-export const slotPropertiesTrackingMiddleware: Middleware<AdInfoContext> = (
+export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> = (
 	{ data, slot },
 	next,
 ) => {

@@ -16,10 +16,11 @@ context.set('slots.floor_adhesion.clickPositionTracking', true);
 templateService.register(FloorAdhesion);
 
 function registerClickPositionTracker() {
-	clickPositionTracker.register(
-		(data) => console.log(['🖱️ click on: ', data.label]),
-		'floor_adhesion',
-	);
+	clickPositionTracker.register(async (data) => {
+		console.log(['🖱️ click on: ', data.label]);
+
+		return data;
+	}, 'floor_adhesion');
 }
 
 new AdEngine().init();

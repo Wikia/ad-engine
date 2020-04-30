@@ -1,16 +1,23 @@
-import { DeviceMode } from '@platforms/shared';
+import { DeviceMode } from '../../models/device-mode';
 
-export function getAppNexusContext(device: DeviceMode): any {
+export function getGamepediaAppNexusContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 150], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 150],
+						[970, 250],
+					],
 					placementId: '15976818',
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 					placementId: '15976819',
 				},
 				'03_PF': {

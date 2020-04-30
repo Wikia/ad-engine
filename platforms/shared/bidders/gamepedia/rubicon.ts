@@ -1,13 +1,17 @@
-import { DeviceMode } from '@platforms/shared';
+import { DeviceMode } from '../../models/device-mode';
 
-export function getRubiconContext(device: DeviceMode): any {
+export function getGamepediaRubiconContext(device: DeviceMode): any {
 	const context = {
 		desktop: {
 			enabled: false,
 			accountId: 7450,
 			slots: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 150], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 150],
+						[970, 250],
+					],
 					targeting: {
 						loc: ['top'],
 					},
@@ -16,7 +20,10 @@ export function getRubiconContext(device: DeviceMode): any {
 					zoneId: '1289068',
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 					targeting: {
 						loc: ['top'],
 					},
