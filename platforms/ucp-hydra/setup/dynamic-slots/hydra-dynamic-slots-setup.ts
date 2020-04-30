@@ -54,8 +54,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 			footerBoxad.id = 'footer_boxad';
 			footerBoxadContainer.appendChild(footerBoxad);
 
-			footerBoxadContainer.classList.add('footer-box');
-			footerBoxadContainer.classList.add('footer-ad');
+			footerBoxadContainer.classList.add('footer-box', 'footer-ad');
 			footerWrapper.appendChild(footerBoxadContainer);
 
 			footer.classList.remove('hide-ads');
