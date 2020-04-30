@@ -5,7 +5,7 @@ import { UapDomReader } from './uap-dom-reader';
 export interface UapVideoSize {
 	width: number;
 	height: number;
-	margin: number;
+	bottom: number;
 }
 
 @Injectable({ autobind: false })
@@ -34,11 +34,11 @@ export class VideoDomReader {
 	}
 
 	private calculateVideoSize(slotHeight: number, videoMultiplier: number): UapVideoSize {
-		const margin = (100 - videoMultiplier) / 2;
+		const bottom = (100 - videoMultiplier) / 2;
 		const height = (slotHeight * videoMultiplier) / 100;
 		const width = height * this.params.videoAspectRatio;
 
-		return { margin, height, width };
+		return { bottom, height, width };
 	}
 
 	private getVideoMultiplierImpactToResolved(): number {
