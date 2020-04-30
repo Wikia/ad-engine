@@ -30,6 +30,8 @@ const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplaye
 
 @Injectable()
 export class CommonTrackingSetup implements TrackingSetup {
+	constructor(private pageTracker: PageTracker) {}
+
 	configureTracking(): void {
 		this.porvataTracker();
 		this.slotTracker();
@@ -60,6 +62,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 			.add(slotBiddersTrackingMiddleware)
 			.register(({ data }: Dictionary) => {
 				dataWarehouseTracker.track(data, slotTrackingUrl);
+
+				return data;
 			});
 	}
 
@@ -71,6 +75,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 			.add(viewabilityPropertiesTrackingMiddleware)
 			.register(({ data }: Dictionary) => {
 				dataWarehouseTracker.track(data, viewabilityUrl);
+
+				return data;
 			});
 	}
 
@@ -79,6 +85,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 
 		bidderTracker.add(bidderTrackingMiddleware).register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, bidderTrackingUrl);
+
+			return data;
 		});
 	}
 
@@ -87,7 +95,7 @@ export class CommonTrackingSetup implements TrackingSetup {
 
 		postmessageTracker
 			.add(trackingPayloadValidationMiddleware)
-			.register<TrackingMessage>((message) => {
+			.register<TrackingMessage>(async (message) => {
 				const { target, payload } = message;
 
 				switch (target) {
@@ -108,6 +116,8 @@ export class CommonTrackingSetup implements TrackingSetup {
 					default:
 						break;
 				}
+
+				return message;
 			});
 	}
 
@@ -116,7 +126,7 @@ export class CommonTrackingSetup implements TrackingSetup {
 		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
 
 		if (labradorPropValue) {
-			PageTracker.trackProp('labrador', labradorPropValue);
+			this.pageTracker.trackProp('labrador', labradorPropValue);
 		}
 	}
 }

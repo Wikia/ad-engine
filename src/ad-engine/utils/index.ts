@@ -7,7 +7,6 @@ export * from './geo';
 export * from './iframe-builder';
 export * from './lazy-queue';
 export * from './logger';
-export * from './middleware';
 export * from './not-implemented-exception';
 export * from './promised-timeout';
 export * from './query-string';

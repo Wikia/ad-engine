@@ -1,4 +1,5 @@
 import { context, trackingOptIn, utils } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import * as queryString from 'query-string';
 import { TrackingParams } from './models/tracking-params';
 
@@ -11,6 +12,7 @@ export interface TimeBasedParams {
 	url: string;
 }
 
+@Injectable()
 export class DataWarehouseTracker {
 	/**
 	 * Call all of the setup trackers

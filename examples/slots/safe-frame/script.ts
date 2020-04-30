@@ -22,10 +22,11 @@ templateService.register(FloorAdhesion);
 setupNpaContext();
 
 function registerClickPositionTracker() {
-	clickPositionTracker.register(
-		(data) => console.log(['🖱️ click on: ', data.label]),
-		'floor_adhesion',
-	);
+	clickPositionTracker.register(async (data) => {
+		console.log(['🖱️ click on: ', data.label]);
+
+		return data;
+	}, 'floor_adhesion');
 }
 
 const biddersInhibitor = bidders.requestBids();

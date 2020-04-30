@@ -89,4 +89,34 @@ describe('Instant Config Overrider', () => {
 			});
 		});
 	});
+
+	describe('should split', () => {
+		it('by dot', () => {
+			const queryParamsTypes = {
+				'InstantGlobals.foo': 'false',
+				'icbm.foo_bar': 'true',
+			};
+
+			getQueryParamsStub.returns(queryParamsTypes);
+			const result = overrider.override({});
+
+			expect(result['foo']).to.deep.equal([{ value: false, regions: ['XX'] }]);
+			expect(result['foo_bar']).to.deep.equal([{ value: true, regions: ['XX'] }]);
+		});
+
+		it('double underscore', () => {
+			const queryParamsTypes = {
+				InstantGlobals__foo: 'false',
+				icbm__foo_bar: 'true',
+			};
+
+			getQueryParamsStub.returns(queryParamsTypes);
+			const result = overrider.override({});
+
+			console.log(result);
+
+			expect(result['foo']).to.deep.equal([{ value: false, regions: ['XX'] }]);
+			expect(result['foo_bar']).to.deep.equal([{ value: true, regions: ['XX'] }]);
+		});
+	});
 });

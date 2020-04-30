@@ -64,9 +64,11 @@ setupRdpContext();
 
 context.set('options.maxDelayTimeout', 1000);
 
-bidderTracker.add(bidderTrackingMiddleware).register(({ bid, data }: AdBidderContext) => {
+bidderTracker.add(bidderTrackingMiddleware).register(async ({ bid, data }: AdBidderContext) => {
 	// Trigger bidder tracking
 	console.info(`🏁 Bidder tracker: ${bid.bidderName} for ${bid.slotName}`, bid, data);
+
+	return { bid, data };
 });
 
 const biddersInhibitor = bidders.requestBids().then(() => {
