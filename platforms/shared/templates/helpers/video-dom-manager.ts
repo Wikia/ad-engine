@@ -1,13 +1,13 @@
 import { Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';
-import { UapDomReader, UapVideoSize } from './uap-dom-reader';
+import { UapVideoSize, VideoDomReader } from './video-dom-reader';
 
 @Injectable({ autobind: false })
 export class VideoDomManager {
 	constructor(
 		private manipulator: DomManipulator,
-		private reader: UapDomReader,
+		private reader: VideoDomReader,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 

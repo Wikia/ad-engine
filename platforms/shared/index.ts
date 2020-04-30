@@ -75,6 +75,7 @@ export * from './templates/helpers/stickiness-timeout';
 export * from './templates/helpers/uap-dom-manager';
 export * from './templates/helpers/uap-dom-reader';
 export * from './templates/helpers/video-dom-manager';
+export * from './templates/helpers/video-dom-reader';
 export * from './templates/helpers/manipulators/dom-manipulator';
 export * from './templates/helpers/manipulators/element-manipulator';
 export * from './context/prebid/gamepedia-prebid-context-setup';

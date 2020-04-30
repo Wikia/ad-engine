@@ -12,6 +12,7 @@ import {
 	VideoBootstrapHandler,
 	VideoCompletedHandler,
 	VideoDomManager,
+	VideoDomReader,
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
@@ -37,6 +38,6 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [SlotSizeResolvedHandler, VideoSizeResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomManager],
+		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomReader, VideoDomManager],
 	);
 }
