@@ -1,5 +1,6 @@
 import { Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { isUndefined } from 'util';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapVideoSize, VideoDomReader } from './video-dom-reader';
 
@@ -35,23 +36,30 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeImpactToResolved());
 	}
 
-	private setVideoSize(video: Porvata4Player, { width, height, bottom }: UapVideoSize): void {
-		video.resize(width, height);
+	private setVideoSize(video: Porvata4Player, props: UapVideoSize): void {
+		video.resize(props.width, props.height);
 
 		const videoOverlay = video.dom.getPlayerContainer().parentElement;
-
-		this.manipulator
-			.element(videoOverlay)
-			.setProperty('width', `${width}px`)
-			.setProperty('height', `${height}px`)
-			.setProperty('bottom', `${bottom}%`);
-
 		const thumbnail = this.params.thumbnail;
 
-		this.manipulator
-			.element(thumbnail)
-			.setProperty('width', `${width}px`)
-			.setProperty('height', `${height}px`)
-			.setProperty('bottom', `${bottom}%`);
+		this.setProperties(videoOverlay, props);
+		this.setProperties(thumbnail, props);
+	}
+
+	private setProperties(
+		element: HTMLElement,
+		{ width, height, top, right, bottom }: UapVideoSize,
+	): void {
+		this.manipulator.element(element).setProperty('width', `${width}px`);
+		this.manipulator.element(element).setProperty('height', `${height}px`);
+		if (!isUndefined(top)) {
+			this.manipulator.element(element).setProperty('top', `${top}%`);
+		}
+		if (!isUndefined(right)) {
+			this.manipulator.element(element).setProperty('right', `${right}%`);
+		}
+		if (!isUndefined(bottom)) {
+			this.manipulator.element(element).setProperty('bottom', `${bottom}%`);
+		}
 	}
 }

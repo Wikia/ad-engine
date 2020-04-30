@@ -47,11 +47,6 @@
 			right: 0;
 		}
 
-		.video-overlay,
-		.replay-overlay {
-			@include bfaa-bfab-hivi-right-position;
-		}
-
 		.porvata-interface {
 			@include bottom-panel();
 			@include fullscreen-button();

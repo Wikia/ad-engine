@@ -1,11 +1,13 @@
-import { TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { TEMPLATE, UapParams, UapState } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { UapDomReader } from './uap-dom-reader';
 
 export interface UapVideoSize {
 	width: number;
 	height: number;
-	bottom: number;
+	top?: number;
+	right?: number;
+	bottom?: number;
 }
 
 @Injectable({ autobind: false })
@@ -13,47 +15,50 @@ export class VideoDomReader {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams, private reader: UapDomReader) {}
 
 	getVideoSizeImpact(): UapVideoSize {
-		return this.calculateVideoSize(
-			this.reader.getSlotHeightImpact(),
-			this.getVideoMultiplierImpact(),
-		);
+		return this.calculateVideoSize(this.reader.getSlotHeightImpact(), 0);
 	}
 
 	getVideoSizeResolved(): UapVideoSize {
-		return this.calculateVideoSize(
-			this.reader.getSlotHeightResolved(),
-			this.getVideoMultiplierResolved(),
-		);
+		return this.calculateVideoSize(this.reader.getSlotHeightResolved(), 1);
 	}
 
 	getVideoSizeImpactToResolved(): UapVideoSize {
 		return this.calculateVideoSize(
 			this.reader.getSlotHeightImpactToResolved(),
-			this.getVideoMultiplierImpactToResolved(),
+			this.reader.getProgressImpactToResolved(),
 		);
 	}
 
-	private calculateVideoSize(slotHeight: number, videoMultiplier: number): UapVideoSize {
-		const bottom = (100 - videoMultiplier) / 2;
-		const height = (slotHeight * videoMultiplier) / 100;
+	private calculateVideoSize(slotHeight: number, progress: number): UapVideoSize {
+		const { height, width } = this.getSize(slotHeight, progress);
+		const top = this.getPercentage(progress, this.params.config.state.top);
+		const right = this.getPercentage(progress, this.params.config.state.right);
+		const bottom = this.getPercentage(progress, this.params.config.state.bottom);
+
+		return {
+			top,
+			right,
+			bottom,
+			height: Math.round(height),
+			width: Math.round(width),
+		};
+	}
+
+	private getSize(slotHeight: number, progress: number): { height: number; width: number } {
+		const percentage = this.getPercentage(progress, this.params.config.state.height);
+		const height = slotHeight * (percentage / 100);
 		const width = height * this.params.videoAspectRatio;
 
-		return { bottom, height, width };
+		return { height, width };
 	}
 
-	private getVideoMultiplierImpactToResolved(): number {
-		return (
-			this.getVideoMultiplierImpact() +
-			this.reader.getProgressImpactToResolved() *
-				(this.getVideoMultiplierResolved() - this.getVideoMultiplierImpact())
-		);
-	}
+	private getPercentage(progress: number, state?: UapState<number>): number | undefined {
+		if (!state) {
+			return;
+		}
 
-	private getVideoMultiplierImpact(): number {
-		return this.params.config.state.height.default;
-	}
+		const { default: max, resolved: min } = state;
 
-	private getVideoMultiplierResolved(): number {
-		return this.params.config.state.height.resolved;
+		return max - (max - min) * progress;
 	}
 }
