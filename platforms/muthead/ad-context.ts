@@ -99,6 +99,10 @@ export const basicContext = {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
 		},
+		iasPublisherOptimization: {
+			pubId: '930616',
+			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
+		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=muthead',
 			fallbackConfigKey: 'fallbackInstantConfig',

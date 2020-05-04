@@ -101,6 +101,10 @@ export const basicContext = {
 			enabled: false,
 			siteId: '1066',
 		},
+		iasPublisherOptimization: {
+			pubId: '930616',
+			slots: ['top_leaderboard', 'bottom_leaderboard'],
+		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=gamepedia',
 			fallbackConfigKey: 'fallbackInstantConfig',

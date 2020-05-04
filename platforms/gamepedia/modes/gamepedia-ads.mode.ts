@@ -4,6 +4,7 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	iasPublisherOptimization,
 	identityLibrary,
 	permutive,
 	taxonomyService,
@@ -32,6 +33,7 @@ export class GamepediaAdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		permutive.call();
+		iasPublisherOptimization.call();
 		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();

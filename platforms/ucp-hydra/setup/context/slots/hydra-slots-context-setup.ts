@@ -60,6 +60,24 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					xna: 1,
 				},
 			},
+			top_boxad: {
+				adProduct: 'top_boxad',
+				aboveTheFold: true,
+				slotNameSuffix: '',
+				group: 'MR',
+				options: {},
+				slotShortcut: 'm',
+				defaultSizes: [
+					[300, 250],
+					[300, 600],
+					[300, 1050],
+				],
+				targeting: {
+					loc: 'top',
+					zne: '02',
+					rv: 1,
+				},
+			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
 				bidderAlias: '04_BLB',
