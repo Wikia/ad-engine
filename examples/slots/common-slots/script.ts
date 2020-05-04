@@ -32,17 +32,21 @@ slotTracker
 	.add(slotPropertiesTrackingMiddleware)
 	.add(slotBiddersTrackingMiddleware)
 	.add(slotBillTheLizardStatusTrackingMiddleware)
-	.register(({ data, slot }: AdInfoContext) => {
+	.register(async ({ data, slot }: AdInfoContext) => {
 		// Trigger event tracking
 		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
+
+		return { data, slot };
 	});
 
 viewabilityTracker
 	.add(viewabilityTrackingMiddleware)
 	.add(viewabilityPropertiesTrackingMiddleware)
-	.register(({ data, slot }: AdViewabilityContext) => {
+	.register(async ({ data, slot }: AdViewabilityContext) => {
 		// Trigger event tracking
 		console.info(`👀 Viewability tracker: ${slot.getSlotName()}`, data);
+
+		return { data, slot };
 	});
 
 new AdEngine().init();

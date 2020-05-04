@@ -1,4 +1,4 @@
-import { context, Dictionary, messageBus, utils } from '@ad-engine/core';
+import { context, Dictionary, FuncPipeline, FuncPipelineStep, messageBus } from '@ad-engine/core';
 
 export enum TrackingTarget {
 	DataWarehouse = 'DW',
@@ -24,12 +24,12 @@ export interface GoogleAnalyticsPayload {
 
 export type TrackingMessage = GoogleAnalyticsMessage & DataWarehouseMessage;
 
-export const trackingPayloadValidationMiddleware: utils.Middleware<TrackingMessage> = (
+export const trackingPayloadValidationMiddleware: FuncPipelineStep<TrackingMessage> = (
 	message: Partial<TrackingMessage>,
 	next,
 ) => {
 	if (Object.values(TrackingTarget).includes(message.target) && message.payload) {
-		next({
+		return next({
 			payload: message.payload,
 			target: message.target,
 		});
@@ -43,22 +43,22 @@ export const trackingPayloadValidationMiddleware: utils.Middleware<TrackingMessa
  * For example use, check examples /tracking/postmessage-tracker/.
  */
 export class PostmessageTracker {
-	private middlewareService = new utils.MiddlewareService<any>();
+	private pipeline = new FuncPipeline<any>();
 
 	constructor(private readonly requiredKeys: string[]) {}
 
-	add(middleware: utils.Middleware<any>): this {
-		this.middlewareService.add(middleware);
+	add(middleware: FuncPipelineStep<any>): this {
+		this.pipeline.add(middleware);
 
 		return this;
 	}
 
-	register<T>(callback: utils.Middleware<T>): this {
+	register<T>(callback: FuncPipelineStep<T>): this {
 		if (!this.isEnabled()) {
 			return;
 		}
 		messageBus.register<T>({ keys: this.requiredKeys, infinite: true }, (message) => {
-			this.middlewareService.execute({ ...message }, callback);
+			this.pipeline.execute({ ...message }, callback);
 		});
 
 		return this;

@@ -1,4 +1,4 @@
-import { AdSlot, context, eventService, utils } from '@ad-engine/core';
+import { AdSlot, context, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 
 export interface AdInfoContext {
 	data: any;
@@ -19,10 +19,10 @@ class SlotTracker {
 		AdSlot.STATUS_CLOSED_BY_PORVATA,
 	];
 
-	private middlewareService = new utils.MiddlewareService<AdInfoContext>();
+	private pipeline = new FuncPipeline<AdInfoContext>();
 
-	add(middleware: utils.Middleware<AdInfoContext>): this {
-		this.middlewareService.add(middleware);
+	add(middleware: FuncPipelineStep<AdInfoContext>): this {
+		this.pipeline.add(middleware);
 
 		return this;
 	}
@@ -31,7 +31,7 @@ class SlotTracker {
 		return context.get('options.tracking.slot.status');
 	}
 
-	register(callback: utils.Middleware<AdInfoContext>): void {
+	register(callback: FuncPipelineStep<AdInfoContext>): void {
 		if (!this.isEnabled()) {
 			return;
 		}
@@ -47,7 +47,7 @@ class SlotTracker {
 				this.onRenderEndedStatusToTrack.includes(status) ||
 				slot.getConfigProperty('trackEachStatus')
 			) {
-				this.middlewareService.execute(middlewareContext, callback);
+				this.pipeline.execute(middlewareContext, callback);
 			} else if (slot.getStatus() === 'manual') {
 				slot.trackOnStatusChanged = true;
 			}
@@ -63,7 +63,7 @@ class SlotTracker {
 			};
 
 			if (this.onChangeStatusToTrack.includes(status) || shouldSlotBeTracked) {
-				this.middlewareService.execute(middlewareContext, callback);
+				this.pipeline.execute(middlewareContext, callback);
 				delete slot.trackOnStatusChanged;
 			}
 		});
@@ -76,7 +76,7 @@ class SlotTracker {
 				},
 			};
 
-			this.middlewareService.execute(middlewareContext, callback);
+			this.pipeline.execute(middlewareContext, callback);
 		});
 	}
 }

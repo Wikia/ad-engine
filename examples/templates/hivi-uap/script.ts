@@ -41,9 +41,11 @@ templateService.register(FloatingRail);
 slotTracker
 	.add(slotTrackingMiddleware)
 	.add(slotPropertiesTrackingMiddleware)
-	.register(({ data, slot }: AdInfoContext) => {
+	.register(async ({ data, slot }: AdInfoContext) => {
 		// Trigger event tracking
 		console.info(`🏁 Slot tracker: ${slot.getSlotName()} ${data.ad_status}`, data);
+
+		return { data, slot };
 	});
 
 new AdEngine().init();

@@ -1,4 +1,11 @@
-import { AdSlot, context, slotService, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	context,
+	FuncPipeline,
+	FuncPipelineStep,
+	slotService,
+	utils,
+} from '@ad-engine/core';
 
 interface ClickPayload {
 	x: number;
@@ -16,10 +23,10 @@ export interface ClickPositionContext {
 }
 
 class ClickPositionTracker {
-	private middlewareService = new utils.MiddlewareService<ClickPositionContext>();
+	private pipeline = new FuncPipeline<ClickPositionContext>();
 	private logGroup = 'click-position-tracker';
 
-	register(middleware: utils.Middleware<ClickPositionContext>, slotName: string): void {
+	register(middleware: FuncPipelineStep<ClickPositionContext>, slotName: string): void {
 		if (!this.isEnabled(slotName)) {
 			return;
 		}
@@ -34,7 +41,7 @@ class ClickPositionTracker {
 	}
 
 	private addClickTrackingListeners(
-		middleware: utils.Middleware<ClickPositionContext>,
+		middleware: FuncPipelineStep<ClickPositionContext>,
 		slotName: string,
 	): void {
 		const slot: AdSlot = slotService.get(slotName);
@@ -82,10 +89,10 @@ class ClickPositionTracker {
 	}
 
 	private handleClickEvent(
-		middleware: utils.Middleware<ClickPositionContext>,
+		middleware: FuncPipelineStep<ClickPositionContext>,
 		clickPayload: ClickPayload,
 	): void {
-		this.middlewareService.execute(
+		this.pipeline.execute(
 			{
 				category: 'click_position',
 				action: 'click',
