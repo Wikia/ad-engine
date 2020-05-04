@@ -24,6 +24,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 			}
 		});
 		this.injectBLB(slots['bottom_leaderboard'].insertAfterSelector);
+		this.injectFooterAd();
 	}
 
 	private injectBLB(siblingsSelector): void {
@@ -40,6 +41,23 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		if (siblingElement) {
 			siblingElement.parentNode.insertBefore(wrapper, siblingElement.nextSibling);
 			wrapper.appendChild(blbContainer);
+		}
+	}
+
+	private injectFooterAd(): void {
+		if (context.get('state.showAds')) {
+			const footer = document.getElementById('curse-footer');
+			const footerWrapper = footer.querySelector('.footer-wrapper');
+			const footerBoxadContainer = document.createElement('div');
+			const footerBoxad = document.createElement('div');
+
+			footerBoxad.id = 'footer_boxad';
+			footerBoxadContainer.appendChild(footerBoxad);
+
+			footerBoxadContainer.classList.add('footer-box', 'footer-ad');
+			footerWrapper.appendChild(footerBoxadContainer);
+
+			footer.classList.remove('hide-ads');
 		}
 	}
 

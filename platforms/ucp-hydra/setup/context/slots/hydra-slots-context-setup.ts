@@ -74,6 +74,18 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 					xna: 1,
 				},
 			},
+			footer_boxad: {
+				adProduct: 'footer',
+				aboveTheFold: false,
+				defaultSizes: [[300, 250]],
+				group: 'PF',
+				bidderAlias: '03_PF',
+				targeting: {
+					loc: 'footer',
+					zne: '03',
+					rv: 1,
+				},
+			},
 		};
 
 		context.set('slots', slots);

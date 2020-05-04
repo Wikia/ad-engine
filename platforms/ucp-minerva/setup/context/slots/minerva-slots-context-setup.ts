@@ -96,7 +96,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 					rv: 1,
 				},
 			},
-			footer: {
+			footer_boxad: {
 				adProduct: 'footer',
 				aboveTheFold: false,
 				defaultSizes: [[300, 250]],

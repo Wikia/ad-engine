@@ -7,6 +7,6 @@ export class MinervaSlotsStateSetup implements SlotsStateSetup {
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', true);
 		slotsContext.setState('incontent_boxad_1', true);
-		slotsContext.setState('footer', true);
+		slotsContext.setState('footer_boxad', true);
 	}
 }

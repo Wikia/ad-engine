@@ -59,7 +59,7 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
-					footer: {
+					footer_boxad: {
 						uid: '5d49e53f6b-188',
 						style: {
 							'z-index': '100',

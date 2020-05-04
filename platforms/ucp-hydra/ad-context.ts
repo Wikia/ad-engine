@@ -70,6 +70,17 @@ export const basicContext = {
 						},
 						lazy: false,
 					},
+					footer_boxad: {
+						uid: '5d49e53f6b-188',
+						style: {
+							'z-index': '100',
+						},
+						size: {
+							width: 300,
+							height: 250,
+						},
+						lazy: false,
+					},
 				},
 			},
 		},
