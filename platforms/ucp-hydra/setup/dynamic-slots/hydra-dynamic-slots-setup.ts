@@ -25,6 +25,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		});
 		this.injectTB();
 		this.injectBLB(slots['bottom_leaderboard'].insertAfterSelector);
+		this.injectFooterAd();
 	}
 
 	private injectBLB(siblingsSelector): void {
@@ -52,6 +53,23 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 			const topBoxad = document.createElement('div');
 			topBoxad.id = 'top_boxad';
 			siderail.appendChild(topBoxad);
+    }
+  }
+
+	private injectFooterAd(): void {
+		if (context.get('state.showAds')) {
+			const footer = document.getElementById('curse-footer');
+			const footerWrapper = footer.querySelector('.footer-wrapper');
+			const footerBoxadContainer = document.createElement('div');
+			const footerBoxad = document.createElement('div');
+
+			footerBoxad.id = 'footer_boxad';
+			footerBoxadContainer.appendChild(footerBoxad);
+
+			footerBoxadContainer.classList.add('footer-box', 'footer-ad');
+			footerWrapper.appendChild(footerBoxadContainer);
+
+			footer.classList.remove('hide-ads');
 		}
 	}
 

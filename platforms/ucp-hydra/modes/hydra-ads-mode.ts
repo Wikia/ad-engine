@@ -36,5 +36,6 @@ export class HydraAdsMode implements AdsMode {
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
 		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
+		context.push('events.pushOnScroll.ids', 'footer_boxad');
 	}
 }
