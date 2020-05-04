@@ -1,6 +1,7 @@
 import {
 	AdSlot,
 	createBottomPanel,
+	LearnMore,
 	Porvata4Player,
 	PorvataTemplateParams,
 	ProgressBar,
@@ -70,6 +71,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 		ToggleVideo.add(player, params.container.parentElement);
 		ToggleThumbnail.add(player, undefined, params);
 		ReplayOverlay.add(player, player.dom.getPlayerContainer(), params);
+		LearnMore.add(player, player.dom.getPlayerContainer(), params);
 	}
 
 	async onLeave(): Promise<void> {}

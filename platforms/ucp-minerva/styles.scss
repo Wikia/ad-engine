@@ -6,6 +6,7 @@
 @import 'platforms/shared/styles/fullscreen-control';
 @import 'platforms/shared/styles/progress-bar';
 @import 'platforms/shared/styles/porvata-icons';
+@import 'platforms/shared/styles/learn-more';
 @import './styles/uap-navbar';
 
 .has-uap {
@@ -58,6 +59,7 @@
 			);
 		}
 
+		@include learn-more();
 		@include advertisement-label();
 		@include button-close();
 
