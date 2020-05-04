@@ -18,9 +18,9 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
+		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.getAdContainer().classList.add('iframe-container');
-		this.adSlot.hide();
 
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();

@@ -18,6 +18,13 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
+		this.adSlot.getElement().style.setProperty('backgroundColor', '#000');
+		this.adSlot.setConfigProperty('showManually', true);
+		this.adSlot.hide();
+		this.adSlot.addClass('expanded-slot');
+		this.adSlot.getAdContainer().classList.add('iframe-container');
+		this.ensureImage();
+
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
 
@@ -29,11 +36,20 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		}
 	}
 
+	private ensureImage(): void {
+		if (!(this.params.image2 && this.params.image2.background)) {
+			this.params.image1.element.classList.remove('hidden-state');
+		}
+	}
+
 	private async awaitVisibleDOM(): Promise<void> {
 		if (document.hidden) {
 			await utils.once(window, 'visibilitychange');
 		}
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		this.adSlot.show();
+		document.body.classList.add('has-uap');
+	}
 }
