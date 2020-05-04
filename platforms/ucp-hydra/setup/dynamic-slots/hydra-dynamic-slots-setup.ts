@@ -51,10 +51,11 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 
 		if (siderail) {
 			const topBoxad = document.createElement('div');
+
 			topBoxad.id = 'top_boxad';
 			siderail.appendChild(topBoxad);
-    }
-  }
+		}
+	}
 
 	private injectFooterAd(): void {
 		if (context.get('state.showAds')) {
