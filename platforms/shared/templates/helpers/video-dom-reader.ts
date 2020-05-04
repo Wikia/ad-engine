@@ -57,8 +57,8 @@ export class VideoDomReader {
 			return;
 		}
 
-		const { default: max, resolved: min } = state;
+		const { default: impact, resolved } = state;
 
-		return max - (max - min) * progress;
+		return impact - (impact - resolved) * progress;
 	}
 }
