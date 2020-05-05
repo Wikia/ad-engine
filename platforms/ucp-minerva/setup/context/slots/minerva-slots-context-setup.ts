@@ -109,6 +109,22 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 					rv: 1,
 				},
 			},
+			bottom_leaderboard: {
+				adProduct: 'bottom_leaderboard',
+				slotNameSuffix: '',
+				group: 'PF',
+				options: {},
+				slotShortcut: 'b',
+				sizes: [],
+				disabled: true,
+				defaultSizes: [[2, 2]],
+				insertAfterSelector: '#bodyContent',
+				targeting: {
+					loc: 'footer',
+					rv: 1,
+					xna: 1,
+				},
+			},
 		};
 
 		context.set('slots', slots);

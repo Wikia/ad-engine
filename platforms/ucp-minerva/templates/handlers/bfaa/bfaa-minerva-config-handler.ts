@@ -8,16 +8,11 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
-export class BfaaConfigHandler implements TemplateStateHandler {
+export class BfaaMinervaConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = [
-			'top_boxad',
-			'hivi_leaderboard',
-			'bottom_leaderboard',
-			'incontent_boxad_1',
-		];
+		const enabledSlots: string[] = ['top_boxad', 'bottom_leaderboard', 'incontent_boxad_1'];
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
@@ -27,7 +22,7 @@ export class BfaaConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 		context.set('slots.bottom_leaderboard.sizes', []);
-		context.set('slots.bottom_leaderboard.defaultSizes', [[3, 3]]);
+		context.set('slots.bottom_leaderboard.defaultSizes', [[2, 2]]);
 	}
 
 	async onLeave(): Promise<void> {}
