@@ -8,6 +8,7 @@ import {
 	porvataTracker,
 	PostmessageTracker,
 	slotBiddersTrackingMiddleware,
+	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTracker,
 	slotTrackingMiddleware,
@@ -60,6 +61,7 @@ export class CommonTrackingSetup implements TrackingSetup {
 			.add(slotTrackingMiddleware)
 			.add(slotPropertiesTrackingMiddleware)
 			.add(slotBiddersTrackingMiddleware)
+			.add(slotBillTheLizardStatusTrackingMiddleware) // TODO: this change breaks tree shaking for other platforms
 			.register(({ data }: Dictionary) => {
 				dataWarehouseTracker.track(data, slotTrackingUrl);
 

@@ -6,6 +6,7 @@ export * from './tracking/bab-tracker';
 export * from './tracking/data-warehouse';
 export * from './tracking/page-tracker';
 export * from './setup/_ad-engine-runner.setup';
+export * from './setup/_bill-the-lizard.setup';
 export * from './setup/_targeting.setup';
 export * from './setup/_wiki-context.setup';
 export * from './platform-startup';

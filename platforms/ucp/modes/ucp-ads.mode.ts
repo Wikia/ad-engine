@@ -1,6 +1,7 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	bidders,
+	billTheLizard,
 	confiant,
 	context,
 	durationMedia,
@@ -77,6 +78,7 @@ export class UcpAdsMode implements AdsMode {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+		billTheLizard.call(['vcr']);
 
 		return inhibitors;
 	}
