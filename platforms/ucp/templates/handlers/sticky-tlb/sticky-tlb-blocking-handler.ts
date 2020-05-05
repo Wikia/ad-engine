@@ -28,14 +28,17 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	private isLineAndGeo(): boolean {
 		const lines = context.get('templates.stickyTlb.lineItemIds') || [];
 
-		return lines.some((line) => {
-			const [lineId, geo] = line.split(':', 2);
+		if (Array.isArray(lines)) {
+			return lines.some((line) => {
+				const [lineId, geo] = line.split(':', 2);
 
-			return (
-				lineId.toString() === this.adSlot.lineItemId.toString() &&
-				(!geo || utils.geoService.isProperGeo([geo]))
-			);
-		});
+				return (
+					lineId.toString() === this.adSlot.lineItemId.toString() &&
+					(!geo || utils.geoService.isProperGeo([geo]))
+				);
+			});
+		}
+		return false;
 	}
 
 	async onLeave(): Promise<void> {}
