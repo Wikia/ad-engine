@@ -11,7 +11,7 @@ import { action, props } from 'ts-action';
 import { universalAdPackage } from '../templates/uap';
 import { NavbarManager } from './navbar-manager';
 
-export const recirculationSwappedEvent = action('[AdEngine] recirculation swapped', props<{}>());
+export const recirculationDisabledEvent = action('[AdEngine] recirculation disabled', props<{}>());
 
 export class FmrRotator {
 	private btRecStatus = false;
@@ -67,7 +67,7 @@ export class FmrRotator {
 
 		if (context.get('options.floatingMedrecRecirculationDisabled')) {
 			this.swapRecirculation(false);
-			eventService.communicator.dispatch(recirculationSwappedEvent({}));
+			eventService.communicator.dispatch(recirculationDisabledEvent({}));
 			this.startFirstRotation();
 		} else {
 			setTimeout(() => {
