@@ -17,6 +17,7 @@
 	#top_leaderboard,
 	#hivi_leaderboard {
 		@include bfaa-slot();
+		@include sticky-tlb-slot();
 	}
 
 	#bottom_leaderboard {
@@ -35,23 +36,12 @@
 		&.is-dark {
 			@include uap-dark-theme();
 		}
-
-		&.sticky-tlb {
-			background: #000;
-			padding: 18px 0 0 0;
-			width: 100%;
-			box-sizing: border-box;
-
-			& .advertisement-label {
-				color: #5f7a7b;
-				position: static;
-				text-align: center;
-			}
-		}
 	}
 }
 
 @include expanded-slot();
+
+// #######################################
 
 .gpt-ad {
 	&.hide,
