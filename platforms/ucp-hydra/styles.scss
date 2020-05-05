@@ -1,9 +1,10 @@
-@import './styles/uap-navbar';
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 
 .has-uap {
-	@include uap-navbar();
+	#netbar {
+		@include uap-navbar();
+	}
 
 	.gpt-ad {
 		&#top_leaderboard {

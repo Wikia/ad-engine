@@ -1,6 +1,13 @@
-@import './styles/navbar';
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
+
+.wds-global-navigation-wrapper {
+	@include uap-navbar();
+}
+
+#globalNavigation {
+	position: static;
+}
 
 .has-uap {
 	.WikiaSiteWrapper {
@@ -57,8 +64,6 @@
 		margin: 0 auto;
 	}
 }
-
-@include navbar();
 
 // #######################################
 

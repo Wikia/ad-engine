@@ -1,9 +1,10 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/mixin';
-@import './styles/uap-navbar';
 
 .has-uap {
-	@include uap-navbar();
+	.header-container {
+		@include uap-navbar();
+	}
 
 	#top_leaderboard,
 	#hivi_leaderboard {
