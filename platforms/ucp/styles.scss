@@ -1,4 +1,5 @@
 @import './styles/navbar';
+@import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 
 .has-uap {
@@ -21,8 +22,8 @@
 		@include uap-porvata();
 		@include uap-porvata-right-position();
 
-		@include advertisement-label();
-		@include button-close();
+		@include uap-advertisement-label();
+		@include uap-button-close();
 
 		&.is-dark {
 			@include uap-dark-theme();

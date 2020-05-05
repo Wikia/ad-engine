@@ -1,7 +1,7 @@
 @import 'src/ad-products/styles/uap-variables';
 @import 'src/ad-products/styles/breakpoints';
 
-@mixin button-close() {
+@mixin uap-button-close() {
 	.button-close {
 		background: none;
 		border: none;
