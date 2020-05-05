@@ -28,6 +28,7 @@ import {
 	VideoCtpHandler,
 	VideoDomManager,
 	VideoDomReader,
+	VideoLearnMoreHandler,
 	VideoRestartHandler,
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
@@ -55,6 +56,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				PageOffsetImpactHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
+				VideoLearnMoreHandler,
 				DomCleanupHandler,
 			],
 			sticky: [

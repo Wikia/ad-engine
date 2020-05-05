@@ -13,6 +13,7 @@ import {
 	VideoCompletedHandler,
 	VideoDomManager,
 	VideoDomReader,
+	VideoLearnMoreHandler,
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
@@ -33,6 +34,7 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 				SlotSizeImpactHandler,
 				VideoSizeImpactHandler,
 				VideoCompletedHandler,
+				VideoLearnMoreHandler,
 				DomCleanupHandler,
 			],
 			resolved: [SlotSizeResolvedHandler, VideoSizeResolvedHandler, DomCleanupHandler],
