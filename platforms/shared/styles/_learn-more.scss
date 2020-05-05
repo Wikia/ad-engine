@@ -2,6 +2,11 @@
 @import 'src/ad-products/styles/breakpoints';
 
 @mixin learn-more() {
+	.video-player > iframe,
+	.video-player > iframe {
+		display: none;
+	}
+
 	.learn-more {
 		color: #fff;
 		cursor: pointer;
@@ -21,15 +26,16 @@
 
 		.learn-more-icon {
 			height: $hivi-uap-button-size - 4px;
+			width: $hivi-uap-button-size - 4px;
 			position: absolute;
 			right: 0;
 			top: 0;
-			width: $hivi-uap-button-size - 4px;
 			padding: $hivi-uap-player-button-border-space $player-button-click-area-mobile;
-
-			@media #{$breakpoint-m-up} {
-				padding: $hivi-uap-player-button-border-space $player-button-click-area-desktop;
-			}
+			color: $hivi-uap-light-button-color;
+			fill: $hivi-uap-light-button-color;
+			box-sizing: content-box;
+			opacity: 1;
+			-webkit-box-sizing: content-box;
 		}
 	}
 
