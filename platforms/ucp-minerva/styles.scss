@@ -1,12 +1,4 @@
-@import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/breakpoints';
-@import 'platforms/shared/styles/advertisement-label';
-@import 'platforms/shared/styles/bottom-panel';
-@import 'platforms/shared/styles/button-close';
-@import 'platforms/shared/styles/fullscreen-control';
-@import 'platforms/shared/styles/progress-bar';
-@import 'platforms/shared/styles/porvata-icons';
-@import 'platforms/shared/styles/learn-more';
+@import 'platforms/shared/styles/index';
 @import './styles/uap-navbar';
 
 .has-uap {
@@ -14,52 +6,18 @@
 
 	#top_leaderboard,
 	#hivi_leaderboard {
-		z-index: 202;
-		padding: 0;
-		left: 0;
-		top: 0;
-		position: fixed;
-		width: 100%;
-
-		@include bfaa-bfab-overlay;
+		@include bfaa-slot();
 	}
 
 	#bottom_leaderboard {
-		z-index: 201;
-		position: relative;
-
-		@include bfaa-bfab-overlay;
+		@include bfab-slot();
 	}
 
 	#top_leaderboard,
 	#hivi_leaderboard,
 	#bottom_leaderboard {
-		.video-overlay {
-			position: absolute;
-		}
-
-		.video-display-wrapper {
-			height: 100%;
-			position: relative;
-			width: 100%;
-		}
-
-		.video-player {
-			right: 0;
-		}
-
-		.porvata-interface {
-			@include bottom-panel();
-			@include fullscreen-button();
-			@include porvata-icons($hivi-uap-button-size, $hivi-uap-light-button-color);
-			@include progress-bar(
-				$hivi-uap-progress-bar-height,
-				$hivi-uap-progress-bar-color,
-				$hivi-uap-progress-bar-current-time-color
-			);
-		}
-
-		@include learn-more();
+		@include uap-porvata();
+		@include uap-porvata-learn-more();
 
 		@include advertisement-label();
 		@include button-close();
@@ -83,6 +41,8 @@
 	}
 }
 
+@include expanded-slot();
+
 .gpt-ad {
 	text-align: center;
 
@@ -96,21 +56,6 @@
 
 	&#footer_boxad {
 		margin: 10px auto;
-	}
-
-	&.expanded-slot {
-		width: 100%;
-
-		& > div.iframe-container,
-		& > div.iframe-container > iframe {
-			height: 100%;
-			width: 100%;
-		}
-
-		&.hide,
-		& .hide {
-			display: none !important;
-		}
 	}
 }
 

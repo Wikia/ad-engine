@@ -1,12 +1,7 @@
 @import 'src/ad-products/styles/uap-variables';
 @import 'src/ad-products/styles/breakpoints';
 
-@mixin learn-more() {
-	.video-player > iframe,
-	.video-player > iframe {
-		display: none;
-	}
-
+@mixin uap-porvata-learn-more() {
 	.learn-more {
 		color: #fff;
 		cursor: pointer;

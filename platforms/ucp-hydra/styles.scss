@@ -1,12 +1,5 @@
-@import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/breakpoints';
-@import 'platforms/shared/styles/advertisement-label';
-@import 'platforms/shared/styles/bottom-panel';
-@import 'platforms/shared/styles/button-close';
-@import 'platforms/shared/styles/fullscreen-control';
-@import 'platforms/shared/styles/progress-bar';
-@import 'platforms/shared/styles/porvata-icons';
 @import './styles/uap-navbar';
+@import 'platforms/shared/styles/index';
 
 .has-uap {
 	@include uap-navbar();
@@ -19,54 +12,18 @@
 
 	#top_leaderboard,
 	#hivi_leaderboard {
-		z-index: 202;
-		padding: 0;
-		left: 0;
-		top: 0;
-		position: fixed;
-
-		@include bfaa-bfab-overlay;
+		@include bfaa-slot();
 	}
 
 	#bottom_leaderboard {
-		z-index: 201;
-		position: relative;
-
-		@include bfaa-bfab-overlay;
+		@include bfab-slot();
 	}
 
 	#top_leaderboard,
 	#hivi_leaderboard,
 	#bottom_leaderboard {
-		.video-overlay {
-			position: absolute;
-		}
-
-		.video-display-wrapper {
-			height: 100%;
-			position: relative;
-			width: 100%;
-		}
-
-		.video-player {
-			right: 0;
-		}
-
-		.video-overlay,
-		.replay-overlay {
-			@include bfaa-bfab-hivi-right-position;
-		}
-
-		.porvata-interface {
-			@include bottom-panel();
-			@include fullscreen-button();
-			@include porvata-icons($hivi-uap-button-size, $hivi-uap-light-button-color);
-			@include progress-bar(
-				$hivi-uap-progress-bar-height,
-				$hivi-uap-progress-bar-color,
-				$hivi-uap-progress-bar-current-time-color
-			);
-		}
+		@include uap-porvata();
+		@include uap-porvata-right-position();
 
 		@include advertisement-label();
 		@include button-close();
@@ -90,6 +47,8 @@
 	}
 }
 
+@include expanded-slot();
+
 .gpt-ad {
 	&#top_leaderboard,
 	&#bottom_leaderboard {
@@ -98,21 +57,6 @@
 
 		&.hide {
 			display: none;
-		}
-	}
-
-	&.expanded-slot {
-		width: 100%;
-
-		& > div.iframe-container,
-		& > div.iframe-container > iframe {
-			height: 100%;
-			width: 100%;
-		}
-
-		&.hide,
-		& .hide {
-			display: none !important;
 		}
 	}
 }
