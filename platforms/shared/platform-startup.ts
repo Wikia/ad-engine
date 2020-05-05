@@ -14,8 +14,8 @@ import { SlotsContextSetup } from './setup/_slots-context.setup';
 import { SlotsStateSetup } from './setup/_slots-state.setup';
 import { TargetingSetup } from './setup/_targeting.setup';
 import { TemplatesSetup } from './setup/_templates.setup';
-import { TrackingSetup } from './setup/_tracking.setup';
 import { WikiContextSetup } from './setup/_wiki-context.setup';
+import { TrackingSetup } from './tracking/tracking.setup';
 
 export interface PlatformStartupArgs {
 	isMobile: boolean;

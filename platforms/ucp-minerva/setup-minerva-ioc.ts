@@ -4,7 +4,6 @@ import {
 	BaseContextSetup,
 	BiddersStateSetup,
 	CommonBiddersStateSetup,
-	CommonTrackingSetup,
 	DynamicSlotsSetup,
 	GamepediaA9ConfigSetup,
 	NoAdsMode,
@@ -21,7 +20,12 @@ import {
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import {
+	context,
+	InstantConfigService,
+	slotBiddersTrackingMiddleware,
+	slotPropertiesTrackingMiddleware,
+} from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
@@ -45,11 +49,14 @@ export async function setupMinervaIoc(): Promise<Container> {
 	container.bind(SlotsStateSetup).to(MinervaSlotsStateSetup);
 	container.bind(SlotsContextSetup).to(MinervaSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(MinervaDynamicSlotsSetup);
-	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(TemplatesSetup).to(UcpMinervaTemplatesSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
+
+	TrackingSetup.provideMiddlewares({
+		slotTrackingMiddlewares: [slotPropertiesTrackingMiddleware, slotBiddersTrackingMiddleware],
+	}).forEach((binder) => container.bind(binder));
 
 	return container;
 }
