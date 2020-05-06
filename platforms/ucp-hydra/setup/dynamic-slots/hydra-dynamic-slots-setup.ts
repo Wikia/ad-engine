@@ -23,7 +23,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 				slotInjector.inject(slotName, true);
 			}
 		});
-		this.injectTB();
+		this.injectMedrecs();
 		this.injectBLB(slots['bottom_leaderboard'].insertAfterSelector);
 		this.injectFooterAd();
 	}
@@ -32,8 +32,8 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 		const wrapper = document.createElement('div');
 		wrapper.id = 'btflb';
 
-		const blbContainer = document.createElement('div');
-		blbContainer.id = 'bottom_leaderboard';
+		const bottomLeaderboard = document.createElement('div');
+		bottomLeaderboard.id = 'bottom_leaderboard';
 
 		const dbName = context.get('wiki.targeting.wikiDbName');
 		const siderail = document.getElementById(`siderail_${dbName}`);
@@ -41,19 +41,36 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 
 		if (siblingElement) {
 			siblingElement.parentNode.insertBefore(wrapper, siblingElement.nextSibling);
-			wrapper.appendChild(blbContainer);
+			wrapper.appendChild(bottomLeaderboard);
 		}
 	}
 
-	private injectTB(): void {
+	private injectMedrecs(): void {
 		const dbName = context.get('wiki.targeting.wikiDbName');
 		const siderail = document.getElementById(`siderail_${dbName}`);
 
 		if (siderail) {
+			const topBoxadWrapper = document.createElement('div');
 			const topBoxad = document.createElement('div');
+			const incontentBoxadWrapper = document.createElement('div');
+			const incontentBoxad = document.createElement('div');
 
+			topBoxadWrapper.id = `atfmrec_${dbName}_gamepedia`;
 			topBoxad.id = 'top_boxad';
-			siderail.appendChild(topBoxad);
+			incontentBoxadWrapper.id = `btfmrec_${dbName}_gamepedia`;
+			incontentBoxad.id = 'incontent_boxad_1';
+
+			const gamepediaProBoxWrapper = document.getElementById(`middlemrec_${dbName}_gamepedia`);
+
+			if (gamepediaProBoxWrapper) {
+				siderail.insertBefore(topBoxadWrapper, gamepediaProBoxWrapper);
+			} else {
+				siderail.appendChild(topBoxadWrapper);
+			}
+
+			siderail.appendChild(incontentBoxadWrapper);
+			topBoxadWrapper.appendChild(topBoxad);
+			incontentBoxadWrapper.appendChild(incontentBoxad);
 		}
 	}
 

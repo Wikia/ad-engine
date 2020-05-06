@@ -70,11 +70,21 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
-					[300, 1050],
 				],
 				targeting: {
 					loc: 'top',
 					zne: '02',
+					rv: 1,
+				},
+			},
+			incontent_boxad_1: {
+				adProduct: 'incontent_boxad_1',
+				defaultSizes: [[300, 250]],
+				group: '06_FMR',
+				bidderAlias: '06_FMR',
+				targeting: {
+					loc: 'footer',
+					zne: '06',
 					rv: 1,
 				},
 			},
