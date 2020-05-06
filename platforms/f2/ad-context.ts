@@ -40,7 +40,7 @@ export const basicContext = {
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
 	},
-	slotGroup: {
+	slotGroups: {
 		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'ABCD', 'VIDEO'],
 	},
 	src: 'ns',
