@@ -20,6 +20,7 @@ import { take } from 'rxjs/operators';
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 	configureDynamicSlots(): void {
 		this.injectSlots();
+		this.injectIncontentPlayer();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -49,6 +50,12 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 				document.querySelector(slotConfig.parentContainerSelector),
 			);
 		});
+	}
+
+	private injectIncontentPlayer(): void {
+		if (context.get('custom.hasIncontentPlayer')) {
+			context.push('events.pushOnScroll.ids', 'incontent_player');
+		}
 	}
 
 	private configureIncontentPlayerFiller(): void {
