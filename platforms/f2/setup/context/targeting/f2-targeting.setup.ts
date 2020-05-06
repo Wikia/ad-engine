@@ -1,5 +1,10 @@
 import { TargetingSetup } from '@platforms/shared';
-import { InstantConfigCacheStorage, InstantConfigService, Targeting } from '@wikia/ad-engine';
+import {
+	context,
+	InstantConfigCacheStorage,
+	InstantConfigService,
+	Targeting,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../../setup-f2';
 import { F2State } from '../../../utils/f2-state';
@@ -14,7 +19,9 @@ export class F2TargetingSetup implements TargetingSetup {
 		private cacheStorage: InstantConfigCacheStorage,
 	) {}
 
-	configureTargetingContext(): void {}
+	configureTargetingContext(): void {
+		context.set('targeting', this.getPageLevelTargeting());
+	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
 		const targeting = {
@@ -31,5 +38,7 @@ export class F2TargetingSetup implements TargetingSetup {
 				this.instantConfig.get('icLABradorGamKeyValues'),
 			),
 		};
+
+		return targeting;
 	}
 }

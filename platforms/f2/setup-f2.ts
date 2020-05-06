@@ -3,7 +3,6 @@ import { action, props } from 'ts-action';
 export const F2_ENV = Symbol('f2 config');
 
 export interface F2Environment {
-	src: string;
 	skinName: string;
 	isPageMobile: boolean;
 	isAdMirror: boolean;
