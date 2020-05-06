@@ -1,6 +1,8 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/mixin';
 
+// ########### UAP Styles ################
+
 .has-uap {
 	.header-container {
 		@include uap-navbar();

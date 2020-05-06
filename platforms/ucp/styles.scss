@@ -1,6 +1,8 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 
+// ########### UAP Styles ################
+
 .wds-global-navigation-wrapper {
 	@include uap-navbar();
 }
@@ -54,8 +56,6 @@
 		margin: 0 auto;
 	}
 }
-
-// #######################################
 
 .main-page-tag-rcs {
 	display: flex;
