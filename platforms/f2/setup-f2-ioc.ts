@@ -1,4 +1,10 @@
-import { AdsMode, BaseContextSetup, SlotsContextSetup } from '@platforms/shared';
+import {
+	AdsMode,
+	BaseContextSetup,
+	NoAdsMode,
+	SlotsContextSetup,
+	UcpNoAdsMode,
+} from '@platforms/shared';
 import { context, InstantConfigCacheStorage, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
@@ -18,6 +24,7 @@ export async function setupF2Ioc(f2Env: F2Environment): Promise<Container> {
 	container.bind(BaseContextSetup).to(F2BaseContextSetup);
 	container.bind(SlotsContextSetup).to(F2SlotsContextSetup);
 	container.bind(AdsMode).to(F2AdsMode);
+	container.bind(NoAdsMode).to(UcpNoAdsMode);
 	container.bind(F2_ENV).value(f2Env);
 	container.bind(getF2StateBinder());
 
