@@ -23,7 +23,7 @@ export abstract class StickyBase {
 		this.container = this.adSlot.getElement();
 		this.lineId = this.adSlot.lineItemId.toString() || '';
 		this.lines = context.get(`templates.${this.getName()}.lineItemIds`) || [];
-		this.lines = this.lines.map((el) => el.toString());
+		this.lines = Array.isArray(this.lines) ? this.lines.map((el) => el.toString()) : [];
 		this.config = context.get(`templates.${this.getName()}`) || {};
 	}
 
