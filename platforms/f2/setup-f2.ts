@@ -1,8 +1,8 @@
 import { action, props } from 'ts-action';
 
-export const F2_CONFIG = Symbol('f2 config');
+export const F2_ENV = Symbol('f2 config');
 
-export interface F2Config {
+export interface F2Environment {
 	src: string;
 	skinName: string;
 	isPageMobile: boolean;
@@ -11,4 +11,4 @@ export interface F2Config {
 	isSteam: boolean;
 }
 
-export const f2Ready = action('[F2] Configured', props<F2Config>());
+export const f2Ready = action('[F2] Configured', props<F2Environment>());

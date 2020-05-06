@@ -5,7 +5,7 @@ import { Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import { basicContext } from './ad-context';
-import { F2Config, f2Ready } from './setup-f2';
+import { F2Environment, f2Ready } from './setup-f2';
 import { setupF2Ioc } from './setup-f2-ioc';
 import './styles.scss';
 
@@ -13,16 +13,16 @@ setupPostQuecast();
 
 const communicator = new Communicator();
 
-async function load(f2config: F2Config): Promise<any> {
+async function load(f2env: F2Environment): Promise<any> {
 	context.extend(basicContext);
 
 	const [container]: [Container, ...any[]] = await Promise.all([
-		setupF2Ioc(f2config),
+		setupF2Ioc(f2env),
 		bootstrapAndGetConsent(),
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isMobile: f2config.isPageMobile });
+	platformStartup.configure({ isMobile: f2env.isPageMobile });
 	communicator.dispatch(adEngineConfigured());
 	platformStartup.run();
 }
