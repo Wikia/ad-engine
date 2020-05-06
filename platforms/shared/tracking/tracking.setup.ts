@@ -34,13 +34,13 @@ interface TrackingMiddlewares {
 
 @Injectable()
 export class TrackingSetup {
-
 	static provideMiddlewares(trackingMiddlewares: TrackingMiddlewares): Binder[] {
 		return Object.keys(trackingMiddlewares).map((key) => ({
 			bind: key,
 			value: trackingMiddlewares[key],
 		}));
 	}
+
 	constructor(
 		private pageTracker: PageTracker,
 		@Inject('slotTrackingMiddlewares')
