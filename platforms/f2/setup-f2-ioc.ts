@@ -1,5 +1,5 @@
 import { BaseContextSetup } from '@platforms/shared';
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import { context, InstantConfigCacheStorage, InstantConfigService } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
@@ -11,6 +11,7 @@ export async function setupF2Ioc(f2Config: F2Config): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService).value(await InstantConfigService.init());
+	container.bind(InstantConfigCacheStorage).value(InstantConfigCacheStorage.make());
 	container.bind(BaseContextSetup).to(F2BaseContextSetup);
 	container.bind(F2_CONFIG).value(f2Config);
 

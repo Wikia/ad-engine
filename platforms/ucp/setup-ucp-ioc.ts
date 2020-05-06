@@ -35,7 +35,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	const container = new Container();
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
-	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(InstantConfigService).value(await InstantConfigService.init());
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);

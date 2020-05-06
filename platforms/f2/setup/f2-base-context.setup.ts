@@ -12,12 +12,14 @@ export class F2BaseContextSetup extends BaseContextSetup {
 	configureBaseContext(isMobile: boolean = false): void {
 		super.configureBaseContext(isMobile);
 
+		context.set('src', this.f2Config.src);
 		context.set(
 			'custom.serverPrefix',
 			utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm' : 'wka',
 		);
-		context.set('src', this.f2Config.src);
-		context.set('custom.namespace', this.f2Config.namespace);
-		context.set('custom.adLayout', this.f2Config.adLayout);
+		context.set(
+			'custom.adLayout',
+			`${this.f2Config.hasFeaturedVideo ? 'fv-' : ''}${this.f2Config.pageType}`,
+		);
 	}
 }

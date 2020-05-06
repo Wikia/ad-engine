@@ -22,7 +22,7 @@ async function load(f2config: F2Config): Promise<any> {
 	]);
 	const platformStartup = container.get(PlatformStartup);
 
-	platformStartup.configure({ isMobile: f2config.isMobile });
+	platformStartup.configure({ isMobile: f2config.isPageMobile });
 	communicator.dispatch(adEngineConfigured());
 	platformStartup.run();
 }
