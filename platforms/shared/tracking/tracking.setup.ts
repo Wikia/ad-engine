@@ -44,7 +44,7 @@ export class TrackingSetup {
 	constructor(
 		private pageTracker: PageTracker,
 		@Inject('slotTrackingMiddlewares')
-		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[] = [],
+		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
 	) {}
 
 	configureTracking(): void {
