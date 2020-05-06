@@ -5,8 +5,6 @@ export const F2_CONFIG = Symbol('f2 config');
 export interface F2Config {
 	src: string;
 	skinName: string;
-	pageType: string;
-	hasFeaturedVideo: boolean;
 	isPageMobile: boolean;
 	isAdMirror: boolean;
 	isProduction: boolean;

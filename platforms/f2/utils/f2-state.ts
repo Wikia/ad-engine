@@ -10,20 +10,21 @@ export interface F2State {
 	feed: Feed;
 	trackingOptIn: TrackingOptIn;
 	googleAnalytics: F2StateGoogleAnalytics;
+	hasFeaturedVideo?: boolean;
 }
 
-export interface Ads {
+interface Ads {
 	adStack: any[];
 	runtime: any[];
 }
 
-export interface Comscore {
+interface Comscore {
 	id: string;
 	keyword: string;
 	url: string;
 }
 
-export interface Config {
+interface Config {
 	environment: Environment;
 	assetPath: string;
 	tracking: Tracking;
@@ -31,25 +32,25 @@ export interface Config {
 	cookieDomain: string;
 }
 
-export interface Environment {
+interface Environment {
 	debug: boolean;
 	env: string;
 	locale: string;
 	siteType: string;
 }
 
-export interface Tracking {
+interface Tracking {
 	googleAnalytics: TrackingGoogleAnalytics;
 	dataWarehouse: DataWarehouse;
 	simpleReach: SimpleReach;
 }
 
-export interface DataWarehouse {
+interface DataWarehouse {
 	routes: Routes;
 	wikiId: number;
 }
 
-export interface Routes {
+interface Routes {
 	adRenderEndedEvent: string;
 	adPageInfoPropEvent: string;
 	adVideoEvent: string;
@@ -59,55 +60,55 @@ export interface Routes {
 	pageView: string;
 }
 
-export interface TrackingGoogleAnalytics {
+interface TrackingGoogleAnalytics {
 	accounts: Accounts;
 }
 
-export interface Accounts {
+interface Accounts {
 	production: Development[];
 	development: Development[];
 }
 
-export interface Development {
+interface Development {
 	id: string;
 	name: string;
 	sampleRate: number;
 }
 
-export interface SimpleReach {
+interface SimpleReach {
 	pid: PID;
 }
 
-export interface PID {
+interface PID {
 	production: string;
 	development: string;
 }
 
-export interface Endpoints {
+interface Endpoints {
 	getVideoPlaylist: string;
 	getKibanaLog: string;
 }
 
-export interface Feed {
+interface Feed {
 	hotContentModuleUrl: string;
 }
 
-export interface F2StateGoogleAnalytics {
+interface F2StateGoogleAnalytics {
 	activeTrackerNames: string[];
 }
 
-export interface Regions {
+interface Regions {
 	AU: string;
 	UK: string;
 	US: string;
 }
 
-export interface TrackingOptIn {
+interface TrackingOptIn {
 	gdpr: Gdpr;
 	ccpa: Ccpa;
 }
 
-export interface Ccpa {
+interface Ccpa {
 	options: CcpaOptions;
 	uspapiCommands: null[];
 	explicit_notice: string;
@@ -116,18 +117,18 @@ export interface Ccpa {
 	userSignal: string;
 }
 
-export interface CcpaOptions {
+interface CcpaOptions {
 	cookieAttributes: CookieAttributes;
 	ccpaApplies: boolean;
 	isSubjectToCcpa: boolean;
 }
 
-export interface CookieAttributes {
+interface CookieAttributes {
 	domain: string;
 	expires: number;
 }
 
-export interface Gdpr {
+interface Gdpr {
 	tracker: Tracker;
 	optInManager: OptInManager;
 	geoManager: GeoManager;
@@ -139,7 +140,7 @@ export interface Gdpr {
 	root: null;
 }
 
-export interface ConsentManagementProvider {
+interface ConsentManagementProvider {
 	mounted: boolean;
 	options: ConsentManagementProviderOptions;
 	vendorList: VendorList;
@@ -147,7 +148,7 @@ export interface ConsentManagementProvider {
 	cmpCommands: null[];
 }
 
-export interface ConsentManagementProviderOptions {
+interface ConsentManagementProviderOptions {
 	allowedPublisherPurposes: null;
 	allowedVendorPurposes: number[];
 	allowedVendors: number[];
@@ -160,7 +161,7 @@ export interface ConsentManagementProviderOptions {
 	vendorList: null;
 }
 
-export interface VendorConsent {
+interface VendorConsent {
 	created: Date;
 	lastUpdated: Date;
 	version: number;
@@ -174,7 +175,7 @@ export interface VendorConsent {
 	allowedVendorIds: number[];
 }
 
-export interface VendorList {
+interface VendorList {
 	vendorListVersion: number;
 	lastUpdated: Date;
 	purposes: Feature[];
@@ -182,13 +183,13 @@ export interface VendorList {
 	vendors: Vendor[];
 }
 
-export interface Feature {
+interface Feature {
 	id: number;
 	name: string;
 	description: string;
 }
 
-export interface Vendor {
+interface Vendor {
 	id: number;
 	name: string;
 	purposeIds: number[];
@@ -198,11 +199,11 @@ export interface Vendor {
 	deletedDate?: Date;
 }
 
-export interface ContentManager {
+interface ContentManager {
 	content: Content;
 }
 
-export interface Content {
+interface Content {
 	mainHeadline: string;
 	mainBody: string[];
 	acceptButton: string;
@@ -250,13 +251,13 @@ export interface Content {
 	partnerListUrl: string;
 }
 
-export interface GeoManager {
+interface GeoManager {
 	geosRequiringPrompt: string[];
 	country: string;
 	region: string;
 }
 
-export interface Location {
+interface Location {
 	href: string;
 	ancestorOrigins: DOMStringList;
 	origin: string;
@@ -269,7 +270,7 @@ export interface Location {
 	hash: string;
 }
 
-export interface OptInManager {
+interface OptInManager {
 	cookieName: string;
 	acceptExpiration: number;
 	rejectExpiration: number;
@@ -279,7 +280,7 @@ export interface OptInManager {
 	purposeIds: any[];
 }
 
-export interface GdprOptions {
+interface GdprOptions {
 	preventScrollOn: string;
 	zIndex: number;
 	enabledVendorPurposes: number[];
@@ -287,17 +288,17 @@ export interface GdprOptions {
 	disableConsentQueue: boolean;
 }
 
-export interface Tracker {
+interface Tracker {
 	enable: boolean;
 	defaultParams: DefaultParams;
 }
 
-export interface DefaultParams {
+interface DefaultParams {
 	lang_code: string;
 	detected_geo: string;
 	beacon: string;
 }
 
-export interface User {
+interface User {
 	region: string;
 }

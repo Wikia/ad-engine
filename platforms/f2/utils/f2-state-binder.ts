@@ -1,17 +1,17 @@
-import { Injectable } from '@wikia/dependency-injection';
-import { F2State } from './f2-state';
+import { Binder } from '@wikia/ad-engine';
 
-@Injectable()
-export class F2StateBinder {
+export const F2_STATE = Symbol('F2 State');
+
+export function getF2StateBinder(): Binder {
 	// @ts-ignore
-	private state: F2State;
+	window.fandom = window.fandom || {};
+	// @ts-ignore
+	window.fandom.config = window.fandom.config || {};
+	// @ts-ignore
+	const state = window.fandom;
 
-	constructor() {
-		// @ts-ignore
-		window.fandom = window.fandom || {};
-		// @ts-ignore
-		window.fandom.config = window.fandom.config || {};
-		// @ts-ignore
-		this.state = window.fandom;
-	}
+	return {
+		bind: F2_STATE,
+		value: state,
+	};
 }
