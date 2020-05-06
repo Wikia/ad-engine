@@ -1,5 +1,6 @@
 export interface F2State {
 	ads: Ads;
+	article?: Article;
 	config: Config;
 	endpoints: Endpoints;
 	pageType: string;
@@ -8,6 +9,7 @@ export interface F2State {
 	comscore: Comscore;
 	quantcastUrl: string;
 	feed: Feed;
+	topic?: Topic;
 	trackingOptIn: TrackingOptIn;
 	googleAnalytics: F2StateGoogleAnalytics;
 	hasFeaturedVideo?: boolean;
@@ -16,6 +18,31 @@ export interface F2State {
 interface Ads {
 	adStack: any[];
 	runtime: any[];
+}
+
+interface Article {
+	featuredImage: string;
+	id: number;
+	slug: string;
+	tags: string[];
+	topics: ArticleTopic[];
+	topicNames: string[];
+	publishedTime: Date;
+	authorName: string;
+	isArticlePlus: boolean;
+	contentId: number;
+}
+
+interface ArticleTopic {
+	id: string;
+	name: string;
+	topicSlug: string;
+	pinned: boolean;
+}
+
+interface Topic {
+	id: string;
+	slug: string;
 }
 
 interface Comscore {
