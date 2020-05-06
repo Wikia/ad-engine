@@ -57,7 +57,6 @@ export class F2TargetingSetup implements TargetingSetup {
 		}
 
 		this.setCid(targeting);
-		this.setWsi(targeting);
 
 		return targeting;
 	}
@@ -94,28 +93,7 @@ export class F2TargetingSetup implements TargetingSetup {
 		}
 	}
 
-	private setWsi(targeting: Partial<Targeting>): void {
-		const pageTypeParam = this.getPageTypeShortcut();
-		const skinParam = this.f2Env.isPageMobile ? 'd' : 'f';
-		const srcParam = '1';
-
-		targeting.wsi = `${skinParam}x${pageTypeParam}${srcParam}`;
-	}
-
 	private undefinedIfEmpty<T = any>(array: T[] | undefined): T[] | undefined {
 		return array?.length > 0 ? array : undefined;
-	}
-
-	/**
-	 * Get one-letter abbreviation for the page type
-	 */
-	private getPageTypeShortcut(): string {
-		const pageTypeShortcuts = {
-			article: 'a',
-			'app-article': 'a',
-			home: 'h',
-			topic: 'v',
-		};
-		return pageTypeShortcuts[this.f2State.pageType] || 'x';
 	}
 }
