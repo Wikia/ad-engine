@@ -18,7 +18,6 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
-		this.adSlot.getElement().style.setProperty('backgroundColor', '#000');
 		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
