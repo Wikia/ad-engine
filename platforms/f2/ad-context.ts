@@ -27,11 +27,28 @@ export const basicContext = {
 			moatTracking: {
 				enabled: false,
 				partnerCode: 'wikiajwint101173217941',
-				sampling: 0,
+				sampling: 100,
+			},
+			iasTracking: {
+				enabled: false,
+				config: {
+					anId: '930616',
+					campId: '640x480',
+				},
 			},
 		},
 	},
 	services: {
+		iasPublisherOptimization: {
+			pubId: '930616',
+			slots: [
+				'top_leaderboard',
+				'top_boxad',
+				'feed_boxad',
+				'incontent_boxad',
+				'bottom_leaderboard',
+			],
+		},
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=f2',
 			fallbackConfigKey: 'fallbackInstantConfig',
