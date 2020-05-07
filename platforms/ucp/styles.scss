@@ -1,47 +1,49 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 
-// ########### UAP Styles ################
-
-.wds-global-navigation-wrapper {
-	@include uap-navbar();
-}
-
-#globalNavigation {
-	position: static;
-}
-
-.has-uap {
-	.WikiaSiteWrapper {
-		margin-top: 0;
+@mixin ucp-oasis-uap-styles() {
+	.wds-global-navigation-wrapper {
+		@include uap-navbar();
 	}
 
-	#top_leaderboard,
-	#hivi_leaderboard {
-		@include bfaa-slot();
-		@include sticky-tlb-slot();
+	#globalNavigation {
+		position: static;
 	}
 
-	#bottom_leaderboard {
-		@include bfab-slot();
-	}
+	.has-uap {
+		.WikiaSiteWrapper {
+			margin-top: 0;
+		}
 
-	#top_leaderboard,
-	#hivi_leaderboard,
-	#bottom_leaderboard {
-		@include uap-porvata();
-		@include uap-porvata-right-position();
+		#top_leaderboard,
+		#hivi_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
 
-		@include uap-advertisement-label();
-		@include uap-button-close();
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
 
-		&.is-dark {
-			@include uap-dark-theme();
+		#top_leaderboard,
+		#hivi_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-right-position();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
 		}
 	}
+
+	@include expanded-slot();
 }
 
-@include expanded-slot();
+@include ucp-oasis-uap-styles();
 
 // #######################################
 
