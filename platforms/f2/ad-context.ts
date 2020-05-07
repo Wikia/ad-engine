@@ -3,7 +3,7 @@ export const basicContext = {
 		`/{custom.dfpId}/{custom.serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
 		'/{state.deviceType}/ns-{custom.adLayout}/_fandom-all',
 	custom: {
-		dfpid: '5441',
+		dfpId: '5441',
 	},
 	events: {
 		pushOnScroll: {
@@ -12,6 +12,9 @@ export const basicContext = {
 		},
 	},
 	options: {
+		customAdLoader: {
+			globalMethodName: 'loadCustomAd',
+		},
 		contentLanguage: 'en',
 		porvata: {
 			audio: {

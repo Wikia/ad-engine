@@ -95,7 +95,6 @@ export class F2SlotsContextSetup implements SlotsContextSetup {
 					uap: 'none',
 					rv: 1,
 				},
-				pushOnScroll: true,
 			},
 			top_boxad: {
 				group: 'MR',
@@ -154,7 +153,6 @@ export class F2SlotsContextSetup implements SlotsContextSetup {
 					uap: 'none',
 					rv: 1,
 				},
-				pushOnScroll: true,
 			},
 			feed_boxad: {
 				disabled: true,
@@ -182,7 +180,6 @@ export class F2SlotsContextSetup implements SlotsContextSetup {
 					uap: 'none',
 					rv: 1,
 				},
-				pushOnScroll: true,
 			},
 			featured: {
 				slotNameSuffix: '',
