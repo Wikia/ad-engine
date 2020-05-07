@@ -1,6 +1,6 @@
 import { Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { isUndefined } from 'util';
+import { isNumber } from 'util';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapVideoSize, VideoDomReader } from './video-dom-reader';
 
@@ -52,13 +52,13 @@ export class VideoDomManager {
 	): void {
 		this.manipulator.element(element).setProperty('width', `${width}px`);
 		this.manipulator.element(element).setProperty('height', `${height}px`);
-		if (!isUndefined(top)) {
+		if (isNumber(top)) {
 			this.manipulator.element(element).setProperty('top', `${top}%`);
 		}
-		if (!isUndefined(right)) {
+		if (isNumber(right)) {
 			this.manipulator.element(element).setProperty('right', `${right}%`);
 		}
-		if (!isUndefined(bottom)) {
+		if (isNumber(bottom)) {
 			this.manipulator.element(element).setProperty('bottom', `${bottom}%`);
 		}
 	}
