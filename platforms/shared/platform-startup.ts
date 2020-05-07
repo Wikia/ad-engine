@@ -7,14 +7,15 @@ import { A9ConfigSetup } from './setup/_a9-config.setup';
 import { AdEngineRunnerSetup } from './setup/_ad-engine-runner.setup';
 import { BaseContextSetup } from './setup/_base-context.setup';
 import { BiddersStateSetup } from './setup/_bidders-state.setup';
+import { BillTheLizardSetup } from './setup/_bill-the-lizard.setup';
 import { DynamicSlotsSetup } from './setup/_dynamic-slots.setup';
 import { PrebidConfigSetup } from './setup/_prebid-config.setup';
 import { SlotsContextSetup } from './setup/_slots-context.setup';
 import { SlotsStateSetup } from './setup/_slots-state.setup';
 import { TargetingSetup } from './setup/_targeting.setup';
 import { TemplatesSetup } from './setup/_templates.setup';
-import { TrackingSetup } from './setup/_tracking.setup';
 import { WikiContextSetup } from './setup/_wiki-context.setup';
+import { TrackingSetup } from './tracking/tracking.setup';
 
 export interface PlatformStartupArgs {
 	isMobile: boolean;
@@ -31,6 +32,7 @@ export class PlatformStartup {
 		private slotsContextSetup: SlotsContextSetup,
 		private prebidConfigSetup: PrebidConfigSetup,
 		private a9ConfigSetup: A9ConfigSetup,
+		private billTheLizardSetup: BillTheLizardSetup,
 		private slotsStateSetup: SlotsStateSetup,
 		private biddersStateSetup: BiddersStateSetup,
 		private dynamicSlotsSetup: DynamicSlotsSetup,
@@ -52,6 +54,7 @@ export class PlatformStartup {
 		this.slotsStateSetup.configureSlotsState();
 		this.biddersStateSetup.configureBiddersState();
 		this.templatesSetup.configureTemplates();
+		this.billTheLizardSetup.configure();
 		this.trackingSetup.configureTracking();
 		this.adEngineRunnerSetup.configureAdEngineRunner();
 	}

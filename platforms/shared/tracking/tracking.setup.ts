@@ -1,14 +1,15 @@
 import {
+	AdInfoContext,
 	bidderTracker,
 	bidderTrackingMiddleware,
+	Binder,
 	Dictionary,
 	eventService,
+	FuncPipelineStep,
 	InstantConfigCacheStorage,
 	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
-	slotBiddersTrackingMiddleware,
-	slotPropertiesTrackingMiddleware,
 	slotTracker,
 	slotTrackingMiddleware,
 	TrackingMessage,
@@ -18,8 +19,7 @@ import {
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { TrackingSetup } from '../setup/_tracking.setup';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
 import { PageTracker } from './page-tracker';
 
@@ -28,9 +28,24 @@ const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adeng
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 
+interface TrackingMiddlewares {
+	slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[];
+}
+
 @Injectable()
-export class CommonTrackingSetup implements TrackingSetup {
-	constructor(private pageTracker: PageTracker) {}
+export class TrackingSetup {
+	static provideMiddlewares(trackingMiddlewares: TrackingMiddlewares): Binder[] {
+		return Object.keys(trackingMiddlewares).map((key) => ({
+			bind: key,
+			value: trackingMiddlewares[key],
+		}));
+	}
+
+	constructor(
+		private pageTracker: PageTracker,
+		@Inject('slotTrackingMiddlewares')
+		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
+	) {}
 
 	configureTracking(): void {
 		this.porvataTracker();
@@ -56,15 +71,15 @@ export class CommonTrackingSetup implements TrackingSetup {
 
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
 
-		slotTracker
-			.add(slotTrackingMiddleware)
-			.add(slotPropertiesTrackingMiddleware)
-			.add(slotBiddersTrackingMiddleware)
-			.register(({ data }: Dictionary) => {
-				dataWarehouseTracker.track(data, slotTrackingUrl);
+		if (this.slotTrackingMiddlewares) {
+			this.slotTrackingMiddlewares.forEach((middleware) => slotTracker.add(middleware));
+		}
 
-				return data;
-			});
+		slotTracker.add(slotTrackingMiddleware).register(({ data }: Dictionary) => {
+			dataWarehouseTracker.track(data, slotTrackingUrl);
+
+			return data;
+		});
 	}
 
 	private viewabilityTracker(): void {

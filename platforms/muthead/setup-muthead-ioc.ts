@@ -3,7 +3,6 @@ import {
 	AdsMode,
 	BiddersStateSetup,
 	CommonBiddersStateSetup,
-	CommonTrackingSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	DynamicSlotsSetup,
@@ -17,7 +16,12 @@ import {
 	TemplatesSetup,
 	TrackingSetup,
 } from '@platforms/shared';
-import { context, InstantConfigService } from '@wikia/ad-engine';
+import {
+	context,
+	InstantConfigService,
+	slotBiddersTrackingMiddleware,
+	slotPropertiesTrackingMiddleware,
+} from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
@@ -36,10 +40,13 @@ export async function setupMutheadIoc(): Promise<Container> {
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(SlotsStateSetup).to(CurseSlotsStateSetup);
-	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(PrebidConfigSetup).to(MutheadPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(SportsA9ConfigSetup);
 	container.bind(DynamicSlotsSetup).to(MutheadDynamicSlotsSetup);
+
+	TrackingSetup.provideMiddlewares({
+		slotTrackingMiddlewares: [slotPropertiesTrackingMiddleware, slotBiddersTrackingMiddleware],
+	}).forEach((binder) => container.bind(binder));
 
 	return container;
 }
