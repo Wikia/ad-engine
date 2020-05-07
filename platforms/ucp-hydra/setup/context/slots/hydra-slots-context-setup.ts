@@ -64,6 +64,7 @@ export class HydraSlotsContextSetup implements SlotsContextSetup {
 				adProduct: 'top_boxad',
 				aboveTheFold: true,
 				slotNameSuffix: '',
+				bidderAlias: '02_MR',
 				group: 'MR',
 				options: {},
 				slotShortcut: 'm',

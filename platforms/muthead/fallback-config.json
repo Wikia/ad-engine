@@ -117,10 +117,9 @@
                 "oasis"
             ],
             "regions": [
-                "PL",
-                "US"
+                "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebid": [
@@ -178,7 +177,10 @@
                 "muthead",
                 "oasis"
             ],
-            "value": true
+            "regions": [
+                "XX"
+            ],
+            "value": false
         }
     ],
     "icPrebidIndexExchange": [

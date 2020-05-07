@@ -3,8 +3,8 @@ import {
 	AdsMode,
 	BaseContextSetup,
 	BiddersStateSetup,
+	BillTheLizardSetup,
 	CommonBiddersStateSetup,
-	CommonTrackingSetup,
 	DynamicSlotsSetup,
 	NoAdsMode,
 	PrebidConfigSetup,
@@ -19,12 +19,21 @@ import {
 	UcpWikiContextSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
-import { context, FOOTER, InstantConfigService, NAVBAR } from '@wikia/ad-engine';
+import {
+	context,
+	FOOTER,
+	InstantConfigService,
+	NAVBAR,
+	slotBiddersTrackingMiddleware,
+	slotBillTheLizardStatusTrackingMiddleware,
+	slotPropertiesTrackingMiddleware,
+} from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
 import { UcpA9ConfigSetup } from './setup/context/a9/a9';
+import { UcpBillTheLizardSetup } from './setup/context/bill-the-lizard/bill-the-lizard.setup';
 import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
 import { UcpDynamicSlotsSetup } from './setup/dynamic-slots/ucp-dynamic-slots.setup';
@@ -45,13 +54,21 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(SlotsStateSetup).to(UcpSlotsStateSetup);
 	container.bind(SlotsContextSetup).to(UcpSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(UcpDynamicSlotsSetup);
-	container.bind(TrackingSetup).to(CommonTrackingSetup);
 	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
+	container.bind(BillTheLizardSetup).to(UcpBillTheLizardSetup);
 	container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(UcpA9ConfigSetup);
+
+	TrackingSetup.provideMiddlewares({
+		slotTrackingMiddlewares: [
+			slotPropertiesTrackingMiddleware,
+			slotBiddersTrackingMiddleware,
+			slotBillTheLizardStatusTrackingMiddleware,
+		],
+	}).forEach((binder) => container.bind(binder));
 
 	return container;
 }
