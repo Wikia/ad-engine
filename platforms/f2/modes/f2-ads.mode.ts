@@ -1,16 +1,15 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import { context, JWPlayerManager, jwpSetup, nielsen, permutive, Runner } from '@wikia/ad-engine';
+import { context, JWPlayerManager, nielsen, permutive } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator } from '@wikia/post-quecast';
 
 @Injectable()
 export class F2AdsMode implements AdsMode {
-	constructor(private communicator: Communicator, private pageTracker: PageTracker) {}
+	constructor(private pageTracker: PageTracker) {}
 
 	handleAds(): void {
 		const inhibitors = this.callExternals();
 
-		this.setupJWPlayer(inhibitors);
+		this.setupJWPlayer();
 		startAdEngine(inhibitors);
 
 		this.setAdStack();
@@ -21,19 +20,8 @@ export class F2AdsMode implements AdsMode {
 		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
-	private async setupJWPlayer(inhibitors = []): Promise<any> {
+	private async setupJWPlayer(): Promise<any> {
 		new JWPlayerManager().manage();
-
-		const maxTimeout = context.get('options.maxDelayTimeout');
-		const runner = new Runner(inhibitors, maxTimeout, 'jwplayer-runner');
-
-		runner.waitForInhibitors().then(() => {
-			this.dispatchJWPlayerSetupAction();
-		});
-	}
-
-	private dispatchJWPlayerSetupAction(): void {
-		this.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false })); // TODO maybe not necessary ???
 	}
 
 	private callExternals(): Promise<any>[] {
