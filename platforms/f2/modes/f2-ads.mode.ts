@@ -33,7 +33,7 @@ export class F2AdsMode implements AdsMode {
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
-		this.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false })); // TODO support on F2 side
+		this.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false })); // TODO maybe not necessary ???
 	}
 
 	private callExternals(): Promise<any>[] {
