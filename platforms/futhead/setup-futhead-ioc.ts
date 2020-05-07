@@ -17,10 +17,12 @@ import {
 	TrackingSetup,
 } from '@platforms/shared';
 import {
+	bidderTrackingMiddleware,
 	context,
 	InstantConfigService,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
+	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
@@ -45,7 +47,12 @@ export async function setupFutheadIoc(): Promise<Container> {
 	container.bind(DynamicSlotsSetup).to(FutheadDynamicSlotsSetup);
 
 	TrackingSetup.provideMiddlewares({
-		slotTrackingMiddlewares: [slotPropertiesTrackingMiddleware, slotBiddersTrackingMiddleware],
+		slotTrackingMiddlewares: [
+			slotPropertiesTrackingMiddleware,
+			slotBiddersTrackingMiddleware,
+			slotTrackingMiddleware,
+		],
+		bidderTrackingMiddlewares: [bidderTrackingMiddleware],
 	}).forEach((binder) => container.bind(binder));
 
 	return container;

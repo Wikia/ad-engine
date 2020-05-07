@@ -10,6 +10,7 @@ import {
 	InstantConfigCacheStorage,
 	InstantConfigService,
 	slotPropertiesTrackingMiddleware,
+	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
@@ -30,7 +31,7 @@ export async function setupF2Ioc(f2Env: F2Environment): Promise<Container> {
 	container.bind(BaseContextSetup).to(F2BaseContextSetup);
 	container.bind(SlotsContextSetup).to(F2SlotsContextSetup);
 	// TODO: SlotsStateSetup (which slots to enable)
-	// TODO: DynamicSlotsSetup -> chyba nie potrzeba, (ewentualnie configureTopLeaderboard)
+	// TODO: DynamicSlotsSetup -> maybe unnecessary, (eventually configureTopLeaderboard)
 	// TODO: TemplatesSetup
 	container.bind(AdsMode).to(F2AdsMode); // TODO: setAdStack (add all slots)
 	container.bind(NoAdsMode).to(F2NoAdsMode);
@@ -38,8 +39,7 @@ export async function setupF2Ioc(f2Env: F2Environment): Promise<Container> {
 	container.bind(getF2StateBinder());
 
 	TrackingSetup.provideMiddlewares({
-		slotTrackingMiddlewares: [slotPropertiesTrackingMiddleware],
-		// TODO disable bidders ?
+		slotTrackingMiddlewares: [slotPropertiesTrackingMiddleware, slotTrackingMiddleware],
 	}).forEach((binder) => container.bind(binder));
 
 	return container;
