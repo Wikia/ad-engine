@@ -28,7 +28,7 @@ export class VideoLearnMoreHandler implements TemplateStateHandler {
 		const playerContainer: HTMLElement = player.settings.getPlayerContainer();
 		const learnMore: HTMLElement = playerContainer.querySelector('.learn-more');
 
-		this.manipulator.element(learnMore).setProperty('display', 'block');
+		this.manipulator.element(learnMore).addClass('show-learn-more');
 	}
 
 	async onLeave(): Promise<void> {
