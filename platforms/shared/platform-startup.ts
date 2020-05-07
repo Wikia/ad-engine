@@ -9,6 +9,7 @@ import { BaseContextSetup } from './setup/_base-context.setup';
 import { BiddersStateSetup } from './setup/_bidders-state.setup';
 import { BillTheLizardSetup } from './setup/_bill-the-lizard.setup';
 import { DynamicSlotsSetup } from './setup/_dynamic-slots.setup';
+import { LabradorSetup } from './setup/_labrador.setup';
 import { PrebidConfigSetup } from './setup/_prebid-config.setup';
 import { SlotsContextSetup } from './setup/_slots-context.setup';
 import { SlotsStateSetup } from './setup/_slots-state.setup';
@@ -33,6 +34,7 @@ export class PlatformStartup {
 		private prebidConfigSetup: PrebidConfigSetup,
 		private a9ConfigSetup: A9ConfigSetup,
 		private billTheLizardSetup: BillTheLizardSetup,
+		private labradorSetup: LabradorSetup,
 		private slotsStateSetup: SlotsStateSetup,
 		private biddersStateSetup: BiddersStateSetup,
 		private dynamicSlotsSetup: DynamicSlotsSetup,
@@ -55,6 +57,7 @@ export class PlatformStartup {
 		this.biddersStateSetup.configureBiddersState();
 		this.templatesSetup.configureTemplates();
 		this.billTheLizardSetup.configure();
+		this.labradorSetup.configure();
 		this.trackingSetup.configureTracking();
 		this.adEngineRunnerSetup.configureAdEngineRunner();
 	}
