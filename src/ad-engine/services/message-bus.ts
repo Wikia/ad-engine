@@ -17,7 +17,7 @@ export class MessageBus {
 	private isInitialized = false;
 	private callbacks: MessageCallback[] = [];
 
-	constructor(private window: Pick<Window, 'addEventListener'> = window) {}
+	constructor(private source: Pick<Window, 'addEventListener'> = window) {}
 
 	init(): void {
 		if (this.isInitialized) {
@@ -25,7 +25,7 @@ export class MessageBus {
 		}
 
 		logger(logGroup, 'Register message listener');
-		this.window.addEventListener(
+		this.source.addEventListener(
 			'message',
 			(message: MessageEvent) => this.onMessage(message),
 			false,
