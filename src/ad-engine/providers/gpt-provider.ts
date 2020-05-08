@@ -18,7 +18,10 @@ import { Provider } from './provider';
 const logGroup = 'gpt-provider';
 
 export const ADX = 'AdX';
-export const GAMOrigin = 'https://tpc.googlesyndication.com';
+export const GAMOrigins: string[] = [
+	'https://tpc.googlesyndication.com',
+	'https://googleads.g.doubleclick.net',
+];
 
 export function postponeExecutionUntilGptLoads(method: () => void) {
 	return function (...args: any) {

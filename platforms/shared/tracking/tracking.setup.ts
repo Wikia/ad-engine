@@ -6,7 +6,7 @@ import {
 	Dictionary,
 	eventService,
 	FuncPipelineStep,
-	GAMOrigin,
+	GAMOrigins,
 	InstantConfigCacheStorage,
 	playerEvents,
 	porvataTracker,
@@ -134,7 +134,7 @@ export class TrackingSetup {
 
 				return message;
 			},
-			[window.origin, GAMOrigin],
+			[window.origin, ...GAMOrigins],
 		);
 	}
 
