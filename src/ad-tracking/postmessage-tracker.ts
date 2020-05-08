@@ -53,11 +53,11 @@ export class PostmessageTracker {
 		return this;
 	}
 
-	register<T>(callback: FuncPipelineStep<T>): this {
+	register<T>(callback: FuncPipelineStep<T>, origin?: string[]): this {
 		if (!this.isEnabled()) {
 			return;
 		}
-		messageBus.register<T>({ keys: this.requiredKeys, infinite: true }, (message) => {
+		messageBus.register<T>({ origin, keys: this.requiredKeys, infinite: true }, (message) => {
 			this.pipeline.execute({ ...message }, callback);
 		});
 
