@@ -103,6 +103,13 @@ export class F2SlotsContextSetup implements SlotsContextSetup {
 				sizes: [
 					{
 						viewportSize: [0, 0],
+						sizes: [
+							[300, 250],
+							[320, 50],
+						],
+					},
+					{
+						viewportSize: [415, 200],
 						sizes: [[300, 250]],
 					},
 					{
