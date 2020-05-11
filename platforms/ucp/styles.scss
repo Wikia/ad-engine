@@ -43,7 +43,14 @@
 	@include expanded-slot();
 }
 
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
+	@include interstitial();
+}
+
 @include ucp-oasis-uap-styles();
+@include out-of-page-styles();
 
 // #######################################
 
