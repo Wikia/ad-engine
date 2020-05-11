@@ -119,7 +119,7 @@
             "regions": [
                 "XX"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icPrebid": [
@@ -199,6 +199,22 @@
         }
     ],
     "icBabDetection": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPostmessageTracking": [
         {
             "apps": [
                 "f2",

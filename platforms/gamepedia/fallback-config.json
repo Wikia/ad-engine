@@ -101,8 +101,10 @@
         {
             "apps": [
                 "f2",
+                "futhead",
                 "gamepedia",
                 "mobile-wiki",
+                "muthead",
                 "oasis"
             ],
             "regions": [
@@ -272,7 +274,7 @@
             "regions": [
                 "XX"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icPrebid": [
