@@ -178,7 +178,9 @@ export class A9Provider extends BidderProvider {
 		this.onBidResponse();
 
 		if (refresh) {
-			eventService.emit(events.BIDS_REFRESH);
+			const refreshedSlotNames = slots.map((slot) => slot.slotName);
+
+			eventService.emit(events.BIDS_REFRESH, refreshedSlotNames);
 		}
 	}
 
@@ -200,9 +202,15 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private addApstagRenderImpHookOnFirstFetch(): void {
-		if (!this.isRenderImpOverwritten) {
-			this.isRenderImpOverwritten = true;
-			this.addApstagRenderImpHook();
+		if (this.isRenderImpOverwritten) {
+			return;
+		}
+
+		this.isRenderImpOverwritten = true;
+		this.addApstagRenderImpHook();
+
+		if (this.bidsRefreshing.enabled) {
+			this.registerVideoBidsRefreshing();
 		}
 	}
 
@@ -287,6 +295,20 @@ export class A9Provider extends BidderProvider {
 		}
 
 		return definition;
+	}
+
+	private registerVideoBidsRefreshing(): void {
+		eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => this.refreshVideoBids(adSlot));
+		eventService.on(events.VIDEO_AD_ERROR, (adSlot) => this.refreshVideoBids(adSlot));
+	}
+
+	private refreshVideoBids(adSlot: AdSlot): void {
+		if (!this.shouldRefreshSlot(adSlot)) {
+			return;
+		}
+
+		this.removeBids(adSlot);
+		this.refreshBid(adSlot);
 	}
 
 	private async getBidTargetingWithKeys(
