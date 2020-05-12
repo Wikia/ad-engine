@@ -36,7 +36,7 @@ export class A9Provider extends BidderProvider {
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
 	usp: Usp = usp;
-	isRenderImpOverwritten = false;
+	isApstagConfigured = false;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
 
@@ -154,7 +154,7 @@ export class A9Provider extends BidderProvider {
 		const endTime: number = new Date().getTime();
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
-		this.addApstagRenderImpHookOnFirstFetch();
+		this.configureApstagOnce();
 
 		await Promise.all(
 			currentBids.map(async (bid) => {
@@ -201,12 +201,12 @@ export class A9Provider extends BidderProvider {
 		};
 	}
 
-	private addApstagRenderImpHookOnFirstFetch(): void {
-		if (this.isRenderImpOverwritten) {
+	private configureApstagOnce(): void {
+		if (this.isApstagConfigured) {
 			return;
 		}
 
-		this.isRenderImpOverwritten = true;
+		this.isApstagConfigured = true;
 		this.addApstagRenderImpHook();
 
 		if (this.bidsRefreshing.enabled) {
