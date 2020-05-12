@@ -1,0 +1,13 @@
+@import 'src/ad-products/styles/mixin';
+
+@mixin bfaa-slot() {
+	z-index: 202;
+	padding: 0;
+	left: 0;
+	top: 0;
+	position: fixed;
+	width: 100%;
+	background-color: #000;
+
+	@include bfaa-bfab-overlay;
+}

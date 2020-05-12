@@ -1,92 +1,51 @@
 @import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/breakpoints';
-@import 'src/ad-products/styles/uap-variables';
-@import 'src/ad-products/styles/porvata';
-@import './styles/advertisement-label';
-@import './styles/bottom-panel';
-@import './styles/button-close';
-@import './styles/fullscreen-control';
-@import './styles/navbar';
-@import './styles/progress-bar';
-@import './styles/porvata-icons';
+@import 'platforms/shared/styles/index';
 
-.has-uap {
-	.WikiaSiteWrapper {
-		margin-top: 0;
+@mixin ucp-oasis-uap-styles() {
+	.wds-global-navigation-wrapper {
+		@include uap-navbar();
 	}
 
-	#top_leaderboard,
-	#hivi_leaderboard {
-		z-index: 202;
-		padding: 0;
-		left: 0;
-		top: 0;
-		position: fixed;
-
-		@include bfaa-bfab-overlay;
+	#globalNavigation {
+		position: static;
 	}
 
-	#bottom_leaderboard {
-		z-index: 201;
-		position: relative;
-
-		@include bfaa-bfab-overlay;
-	}
-
-	#top_leaderboard,
-	#hivi_leaderboard,
-	#bottom_leaderboard {
-		.video-overlay {
-			position: absolute;
+	.has-uap {
+		.WikiaSiteWrapper {
+			margin-top: 0;
 		}
 
-		.video-display-wrapper {
-			height: 100%;
-			position: relative;
-			width: 100%;
+		#top_leaderboard,
+		#hivi_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
 		}
 
-		.video-player {
-			right: 0;
+		#bottom_leaderboard {
+			@include bfab-slot();
 		}
 
-		.video-overlay,
-		.replay-overlay {
-			@include bfaa-bfab-hivi-right-position;
-		}
+		#top_leaderboard,
+		#hivi_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-right-position();
 
-		.porvata-interface {
-			@include bottom-panel();
-			@include fullscreen-button();
-			@include porvata-icons($hivi-uap-button-size, $hivi-uap-light-button-color);
-			@include progress-bar(
-				$hivi-uap-progress-bar-height,
-				$hivi-uap-progress-bar-color,
-				$hivi-uap-progress-bar-current-time-color
-			);
-		}
+			@include uap-advertisement-label();
+			@include uap-button-close();
 
-		@include advertisement-label();
-		@include button-close();
-
-		&.is-dark {
-			@include uap-dark-theme();
-		}
-
-		&.sticky-tlb {
-			background: #000;
-			padding: 18px 0 0 0;
-			width: 100%;
-			box-sizing: border-box;
-
-			& .advertisement-label {
-				color: #5f7a7b;
-				position: static;
-				text-align: center;
+			&.is-dark {
+				@include uap-dark-theme();
 			}
 		}
 	}
+
+	@include expanded-slot();
 }
+
+@include ucp-oasis-uap-styles();
+
+// #######################################
 
 .gpt-ad {
 	&.hide,
@@ -98,26 +57,7 @@
 		display: block;
 		margin: 0 auto;
 	}
-
-	&.expanded-slot {
-		width: 100%;
-
-		& > div.iframe-container,
-		& > div.iframe-container > iframe {
-			height: 100%;
-			width: 100%;
-		}
-
-		&.hide,
-		& .hide {
-			display: none !important;
-		}
-	}
 }
-
-@include navbar();
-
-// #######################################
 
 .main-page-tag-rcs {
 	display: flex;
@@ -125,6 +65,8 @@
 }
 
 #top_leaderboard {
+	text-align: center;
+
 	> div {
 		text-align: center;
 	}

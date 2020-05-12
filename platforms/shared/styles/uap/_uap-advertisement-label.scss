@@ -1,7 +1,7 @@
 @import 'src/ad-products/styles/uap-variables';
 @import 'src/ad-products/styles/breakpoints';
 
-@mixin advertisement-label() {
+@mixin uap-advertisement-label() {
 	.advertisement-label {
 		box-sizing: content-box;
 		-webkit-box-sizing: content-box;
@@ -25,5 +25,11 @@
 			line-height: 9px;
 			font-size: 9px;
 		}
+	}
+
+	&.sticky-tlb .advertisement-label {
+		color: #5f7a7b;
+		position: static;
+		text-align: center;
 	}
 }

@@ -2,12 +2,6 @@ import { AdSlot, NAVBAR, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { isUndefined } from 'util';
 
-export interface UapVideoSize {
-	width: number;
-	height: number;
-	margin: number;
-}
-
 @Injectable({ autobind: false })
 export class UapDomReader {
 	constructor(
@@ -16,11 +10,11 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
-	getBodyOffsetImpact(): number {
+	getPageOffsetImpact(): number {
 		return this.getSlotHeightImpact() + this.navbar.offsetHeight;
 	}
 
-	getBodyOffsetResolved(): number {
+	getPageOffsetResolved(): number {
 		return this.getSlotHeightResolved() + this.navbar.offsetHeight;
 	}
 
@@ -36,45 +30,6 @@ export class UapDomReader {
 
 	getNavbarOffsetResolved(): number {
 		return this.getSlotHeightResolved();
-	}
-
-	getVideoSizeImpact(): UapVideoSize {
-		return this.calculateVideoSize(this.getSlotHeightImpact(), this.getVideoMultiplierImpact());
-	}
-
-	getVideoSizeResolved(): UapVideoSize {
-		return this.calculateVideoSize(this.getSlotHeightResolved(), this.getVideoMultiplierResolved());
-	}
-
-	getVideoSizeImpactToResolved(): UapVideoSize {
-		return this.calculateVideoSize(
-			this.getSlotHeightImpactToResolved(),
-			this.getVideoMultiplierImpactToResolved(),
-		);
-	}
-
-	private calculateVideoSize(slotHeight: number, videoMultiplier: number): UapVideoSize {
-		const margin = (100 - videoMultiplier) / 2;
-		const height = (slotHeight * videoMultiplier) / 100;
-		const width = height * this.params.videoAspectRatio;
-
-		return { margin, height, width };
-	}
-
-	private getVideoMultiplierImpactToResolved(): number {
-		return (
-			this.getVideoMultiplierImpact() +
-			this.getProgressImpactToResolved() *
-				(this.getVideoMultiplierResolved() - this.getVideoMultiplierImpact())
-		);
-	}
-
-	private getVideoMultiplierImpact(): number {
-		return this.params.config.state.height.default;
-	}
-
-	private getVideoMultiplierResolved(): number {
-		return this.params.config.state.height.resolved;
 	}
 
 	getSlotOffsetResolvedToNone(): number {

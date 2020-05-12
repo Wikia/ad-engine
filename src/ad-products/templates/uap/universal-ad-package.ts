@@ -35,6 +35,9 @@ export interface UapConfig {
 	};
 	state: {
 		height: UapState<number>;
+		top?: UapState<number>;
+		right?: UapState<number>;
+		bottom?: UapState<number>;
 	};
 }
 

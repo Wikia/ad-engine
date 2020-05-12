@@ -1,4 +1,4 @@
-import { AdSlot, NAVBAR, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { AdSlot, NAVBAR, PAGE, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
@@ -9,20 +9,21 @@ export class UapDomManager {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
+		@Inject(PAGE) private page: HTMLElement,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
 	) {}
 
-	setBodyOffsetImpact(): void {
-		this.setBodyOffset(this.reader.getBodyOffsetImpact());
+	setPageOffsetImpact(): void {
+		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}
 
-	setBodyOffsetResolved(): void {
-		this.setBodyOffset(this.reader.getBodyOffsetResolved());
+	setPageOffsetResolved(): void {
+		this.setPageOffset(this.reader.getPageOffsetResolved());
 	}
 
-	private setBodyOffset(value: number): void {
-		this.manipulator.element(document.body).setProperty('paddingTop', `${value}px`);
+	private setPageOffset(value: number): void {
+		this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
 	}
 
 	setNavbarOffsetImpactToResolved(): void {

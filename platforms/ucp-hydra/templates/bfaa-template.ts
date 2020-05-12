@@ -33,14 +33,14 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { BfaaOasisConfigHandler } from './handlers/bfaa/bfaa-oasis-config-handler';
+import { BfaaHydraConfigHandler } from './handlers/bfaa/bfaa-hydra-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'bfaa',
 		{
 			initial: [
-				BfaaOasisConfigHandler,
+				BfaaHydraConfigHandler,
 				BfaaBootstrapHandler,
 				VideoBootstrapHandler,
 				VideoCtpHandler,

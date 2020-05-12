@@ -27,20 +27,21 @@ import {
 	VideoCtpHandler,
 	VideoDomManager,
 	VideoDomReader,
+	VideoLearnMoreHandler,
 	VideoRestartHandler,
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { BfaaOasisConfigHandler } from './handlers/bfaa/bfaa-oasis-config-handler';
+import { BfaaMinervaConfigHandler } from './handlers/bfaa/bfaa-minerva-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'bfaa',
 		{
 			initial: [
-				BfaaOasisConfigHandler,
+				BfaaMinervaConfigHandler,
 				BfaaBootstrapHandler,
 				VideoBootstrapHandler,
 				VideoCtpHandler,
@@ -55,6 +56,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				PageOffsetImpactHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
+				VideoLearnMoreHandler,
 				DomCleanupHandler,
 			],
 			sticky: [

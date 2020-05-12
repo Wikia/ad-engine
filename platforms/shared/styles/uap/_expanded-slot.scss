@@ -1,0 +1,16 @@
+@mixin expanded-slot() {
+	.gpt-ad.expanded-slot {
+		width: 100%;
+
+		& > div.iframe-container,
+		& > div.iframe-container > iframe {
+			height: 100%;
+			width: 100%;
+		}
+
+		&.hide,
+		& .hide {
+			display: none !important;
+		}
+	}
+}

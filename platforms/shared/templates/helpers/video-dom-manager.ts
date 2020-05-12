@@ -1,13 +1,14 @@
 import { Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { isNumber } from 'util';
 import { DomManipulator } from './manipulators/dom-manipulator';
-import { UapDomReader, UapVideoSize } from './uap-dom-reader';
+import { UapVideoSize, VideoDomReader } from './video-dom-reader';
 
 @Injectable({ autobind: false })
 export class VideoDomManager {
 	constructor(
 		private manipulator: DomManipulator,
-		private reader: UapDomReader,
+		private reader: VideoDomReader,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
@@ -35,19 +36,30 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeImpactToResolved());
 	}
 
-	private setVideoSize(video: Porvata4Player, { width, height, margin }: UapVideoSize): void {
-		video.resize(width, height);
+	private setVideoSize(video: Porvata4Player, props: UapVideoSize): void {
+		video.resize(props.width, props.height);
 
 		const videoOverlay = video.dom.getPlayerContainer().parentElement;
-
-		this.manipulator.element(videoOverlay).setProperty('width', `${width}px`);
-		this.manipulator.element(videoOverlay).setProperty('height', `${height}px`);
-		this.manipulator.element(videoOverlay).setProperty('top', `${margin}%`);
-
 		const thumbnail = this.params.thumbnail;
 
-		this.manipulator.element(thumbnail).setProperty('width', `${width}px`);
-		this.manipulator.element(thumbnail).setProperty('height', `${height}px`);
-		this.manipulator.element(thumbnail).setProperty('top', `${margin}%`);
+		this.setProperties(videoOverlay, props);
+		this.setProperties(thumbnail, props);
+	}
+
+	private setProperties(
+		element: HTMLElement,
+		{ width, height, top, right, bottom }: UapVideoSize,
+	): void {
+		this.manipulator.element(element).setProperty('width', `${width}px`);
+		this.manipulator.element(element).setProperty('height', `${height}px`);
+		if (isNumber(top)) {
+			this.manipulator.element(element).setProperty('top', `${top}%`);
+		}
+		if (isNumber(right)) {
+			this.manipulator.element(element).setProperty('right', `${right}%`);
+		}
+		if (isNumber(bottom)) {
+			this.manipulator.element(element).setProperty('bottom', `${bottom}%`);
+		}
 	}
 }
