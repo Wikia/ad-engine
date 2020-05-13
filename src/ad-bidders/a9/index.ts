@@ -29,6 +29,7 @@ const logGroup = 'A9Provider';
 
 export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
+	private static isApstagConfigured = false;
 
 	private loaded = false;
 
@@ -36,7 +37,6 @@ export class A9Provider extends BidderProvider {
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
 	usp: Usp = usp;
-	isApstagConfigured = false;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
 
@@ -202,11 +202,11 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private configureApstagOnce(): void {
-		if (this.isApstagConfigured) {
+		if (A9Provider.isApstagConfigured) {
 			return;
 		}
 
-		this.isApstagConfigured = true;
+		A9Provider.isApstagConfigured = true;
 		this.addApstagRenderImpHook();
 
 		if (this.bidsRefreshing.enabled) {
