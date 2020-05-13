@@ -113,8 +113,6 @@ describe('Instant Config Overrider', () => {
 			getQueryParamsStub.returns(queryParamsTypes);
 			const result = overrider.override({});
 
-			console.log(result);
-
 			expect(result['foo']).to.deep.equal([{ value: false, regions: ['XX'] }]);
 			expect(result['foo_bar']).to.deep.equal([{ value: true, regions: ['XX'] }]);
 		});
