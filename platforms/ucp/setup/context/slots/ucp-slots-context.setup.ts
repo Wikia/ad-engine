@@ -207,7 +207,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 					loc: 'footer',
 					rv: 1,
 				},
-				defaultTemplates: ['floorAdhesion', 'hideOnViewability'],
+				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [[728, 90]],
 			},
 			invisible_high_impact_2: {
