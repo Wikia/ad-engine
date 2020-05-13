@@ -13,7 +13,7 @@ function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {
 		const cookie = Cookies.get('tracking-opt-in-transition-status');
 
-		if (cookie === null) {
+		if (!cookie) {
 			return context.get('options.trackingOptIn') ? 'yes' : 'no';
 		}
 
