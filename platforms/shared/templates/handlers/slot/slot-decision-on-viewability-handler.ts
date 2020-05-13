@@ -1,4 +1,10 @@
-import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	InstantConfigService,
+	TEMPLATE,
+	TemplateStateHandler,
+	TemplateTransition,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { EMPTY, from, merge, Observable, Subject, timer } from 'rxjs';
 import { mergeMap, take, takeUntil, tap } from 'rxjs/operators';
@@ -6,10 +12,13 @@ import { mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 @Injectable({ autobind: false })
 export class SlotDecisionOnViewabilityHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private additionalHideTime?: number;
-	private timeoutHideTime?: number;
+	private readonly additionalHideTime?: number;
+	private readonly timeoutHideTime?: number;
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
+	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
+		this.additionalHideTime = instantConfig.get('icFloorAdhesionDelay');
+		this.timeoutHideTime = instantConfig.get('icFloorAdhesionTimeout');
+	}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		merge(this.getViewabilityStream(), this.getTimeoutStream())
