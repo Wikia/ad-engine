@@ -4,6 +4,7 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	facebookPixel,
 	iasPublisherOptimization,
 	identityLibrary,
 	permutive,
@@ -32,6 +33,7 @@ export class GamepediaAdsMode implements AdsMode {
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
 
+		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
 		identityLibrary.call();
