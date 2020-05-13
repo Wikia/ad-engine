@@ -2,7 +2,6 @@ import { context, utils } from '@ad-engine/core';
 import { insertFacebookPixel } from './facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
-
 class FacebookPixel {
 	isSetUp = false;
 
@@ -16,6 +15,7 @@ class FacebookPixel {
 	}
 
 	setup(): void {
+		utils.logger(logGroup, 'loading');
 		insertFacebookPixel();
 	}
 
@@ -24,9 +24,10 @@ class FacebookPixel {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
-		utils.logger(logGroup, 'loading');
-		this.setup();
-		this.isSetUp = true;
+		if (!this.isSetUp) {
+			this.setup();
+			this.isSetUp = true;
+		}
 	}
 }
 
