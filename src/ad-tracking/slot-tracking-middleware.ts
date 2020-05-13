@@ -5,11 +5,19 @@ import {
 	InstantConfigCacheStorage,
 	utils,
 } from '@ad-engine/core';
+import * as Cookies from 'js-cookie';
 import { AdInfoContext } from './slot-tracker';
 
+// TODO: TCF 2 Cleanup: Restore obtaining the result from context('options.trackingOptIn')
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {
-		return context.get('options.trackingOptIn') ? 'yes' : 'no';
+		const cookie = Cookies.get('tracking-opt-in-transition-status');
+
+		if (cookie === null) {
+			return context.get('options.trackingOptIn') ? 'yes' : 'no';
+		}
+
+		return cookie.replace('accepted', 'yes').replace('rejected', 'no');
 	}
 
 	return '';
