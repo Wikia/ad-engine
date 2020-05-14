@@ -1,6 +1,6 @@
 import { action, props } from 'ts-action';
 
-export const F2_ENV = Symbol('f2 config');
+export const F2_ENV = Symbol('f2 Environment');
 
 export interface F2Environment {
 	skinName: string;
