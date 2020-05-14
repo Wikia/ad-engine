@@ -1,21 +1,13 @@
-import { context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
+import { Collection, context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
-const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'];
+const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'] as const;
 
 type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
-
-interface BrandSafetyData {
-	adt?: BrandSafetyValue;
-	alc?: BrandSafetyValue;
-	dlm?: BrandSafetyValue;
-	drg?: BrandSafetyValue;
-	hat?: BrandSafetyValue;
-	off?: BrandSafetyValue;
-	vio?: BrandSafetyValue;
-}
+type BrandSafetyKey = typeof brandSafetyKeys[number];
+type BrandSafetyData = Partial<Collection<BrandSafetyKey, BrandSafetyValue>>;
 
 interface IasTargetingSlotData {
 	id?: string;
