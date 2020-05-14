@@ -17,7 +17,7 @@ function checkOptIn(): string {
 			return context.get('options.trackingOptIn') ? 'yes' : 'no';
 		}
 
-		return cookie.replace('accepted', 'yes').replace('rejected', 'no');
+		return cookie.replace(/accepted/g, 'yes').replace(/rejected/g, 'no');
 	}
 
 	return '';
