@@ -3,6 +3,19 @@ import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
+const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'];
+
+type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
+
+interface BrandSafetyData {
+	adt?: BrandSafetyValue;
+	alc?: BrandSafetyValue;
+	dlm?: BrandSafetyValue;
+	drg?: BrandSafetyValue;
+	hat?: BrandSafetyValue;
+	off?: BrandSafetyValue;
+	vio?: BrandSafetyValue;
+}
 
 interface IasTargetingSlotData {
 	id?: string;
@@ -10,6 +23,7 @@ interface IasTargetingSlotData {
 }
 
 interface IasTargetingData {
+	brandSafety?: BrandSafetyData;
 	fr?: string;
 	slots?: IasTargetingSlotData[];
 }
@@ -68,6 +82,11 @@ class IasPublisherOptimization {
 
 	private setInitialTargeting(): void {
 		context.set('targeting.fr', '-1');
+
+		brandSafetyKeys.forEach((key) => {
+			context.set(`targeting.${key}`, '-1');
+		});
+
 		this.slotList.forEach((slotName) => {
 			context.set(`slots.${slotName}.targeting.vw`, '-1');
 		});
@@ -75,7 +94,16 @@ class IasPublisherOptimization {
 
 	private iasDataHandler(adSlotData: string): void {
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
+
 		context.set('targeting.fr', iasTargetingData.fr);
+
+		if (iasTargetingData.brandSafety) {
+			brandSafetyKeys.forEach((key) => {
+				if (iasTargetingData.brandSafety[key]) {
+					context.set(`targeting.${key}`, iasTargetingData.brandSafety[key]);
+				}
+			});
+		}
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
 			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw);
