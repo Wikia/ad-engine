@@ -4,6 +4,7 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
 } from '@wikia/ad-engine';
@@ -32,6 +33,7 @@ export class HydraAdsMode implements AdsMode {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
 
+		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
 		confiant.call();

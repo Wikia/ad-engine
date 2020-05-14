@@ -1,0 +1,35 @@
+@import 'bottom-panel';
+@import 'fullscreen-control';
+@import 'progress-bar';
+@import 'porvata-icons';
+@import 'uap-porvata-learn-more';
+@import 'hide-ima-player';
+
+@mixin uap-porvata() {
+	.video-overlay {
+		position: absolute;
+	}
+
+	.video-display-wrapper {
+		height: 100%;
+		position: relative;
+		width: 100%;
+	}
+
+	.video-player {
+		right: 0;
+	}
+
+	.porvata-interface {
+		@include bottom-panel();
+		@include fullscreen-button();
+		@include porvata-icons($hivi-uap-button-size, $hivi-uap-light-button-color);
+		@include progress-bar(
+			$hivi-uap-progress-bar-height,
+			$hivi-uap-progress-bar-color,
+			$hivi-uap-progress-bar-current-time-color
+		);
+	}
+
+	@include hide-ima-player();
+}

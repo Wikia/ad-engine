@@ -1,43 +1,46 @@
+import {
+	AdvertisementLabelHandler,
+	BfaaBootstrapHandler,
+	CloseButtonHelper,
+	CloseToTransitionButtonHandler,
+	DebugTransitionHandler,
+	DomCleanupHandler,
+	DomManipulator,
+	NavbarOffsetImpactToResolvedHandler,
+	NavbarOffsetResolvedHandler,
+	NavbarOffsetResolvedToNoneHandler,
+	PageOffsetImpactHandler,
+	PageOffsetResolvedHandler,
+	PlayerRegistry,
+	ScrollCorrector,
+	SlotDecisionImpactToResolvedHandler,
+	SlotDecisionTimeoutHandler,
+	SlotOffsetResolvedToNoneHandler,
+	SlotSizeImpactToResolvedHandler,
+	SlotSizeResolvedHandler,
+	SlotTransitionHandler,
+	StickinessTimeout,
+	UapDomManager,
+	UapDomReader,
+	VideoBootstrapHandler,
+	VideoCompletedHandler,
+	VideoCtpHandler,
+	VideoDomManager,
+	VideoDomReader,
+	VideoRestartHandler,
+	VideoSizeImpactToResolvedHandler,
+	VideoSizeResolvedHandler,
+} from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { AdvertisementLabelHandler } from './handlers/advertisement-label-handler';
-import { BfaaBootstrapHandler } from './handlers/bfaa/bfaa-bootstrap-handler';
-import { BfaaConfigHandler } from './handlers/bfaa/bfaa-config-handler';
-import { BodyOffsetImpactHandler } from './handlers/body/body-offset-impact-handler';
-import { BodyOffsetResolvedHandler } from './handlers/body/body-offset-resolved-handler';
-import { CloseToTransitionButtonHandler } from './handlers/close-to-transition-button-handler';
-import { DebugTransitionHandler } from './handlers/debug-transition-handler';
-import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
-import { NavbarOffsetImpactToResolvedHandler } from './handlers/navbar/navbar-offset-impact-to-resolved-handler';
-import { NavbarOffsetResolvedHandler } from './handlers/navbar/navbar-offset-resolved-handler';
-import { NavbarOffsetResolvedToNoneHandler } from './handlers/navbar/navbar-offset-resolved-to-none-handler';
-import { SlotDecisionImpactToResolvedHandler } from './handlers/slot/slot-decision-impact-to-resolved-handler';
-import { SlotDecisionTimeoutHandler } from './handlers/slot/slot-decision-timeout-handler';
-import { SlotOffsetResolvedToNoneHandler } from './handlers/slot/slot-offset-resolved-to-none-handler';
-import { SlotSizeImpactToResolvedHandler } from './handlers/slot/slot-size-impact-to-resolved-handler';
-import { SlotSizeResolvedHandler } from './handlers/slot/slot-size-resolved-handler';
-import { SlotTransitionHandler } from './handlers/slot/slot-transition-handler';
-import { VideoBootstrapHandler } from './handlers/video/video-bootstrap-handler';
-import { VideoCompletedHandler } from './handlers/video/video-completed-handler';
-import { VideoCtpHandler } from './handlers/video/video-ctp-handler';
-import { VideoRestartHandler } from './handlers/video/video-restart-handler';
-import { VideoSizeImpactToResolvedHandler } from './handlers/video/video-size-impact-to-resolved-handler';
-import { VideoSizeResolvedHandler } from './handlers/video/video-size-resolved-handler';
-import { CloseButtonHelper } from './helpers/close-button-helper';
-import { DomManipulator } from './helpers/manipulators/dom-manipulator';
-import { PlayerRegistry } from './helpers/player-registry';
-import { ScrollCorrector } from './helpers/scroll-corrector';
-import { StickinessTimeout } from './helpers/stickiness-timeout';
-import { UapDomManager } from './helpers/uap-dom-manager';
-import { UapDomReader } from './helpers/uap-dom-reader';
-import { VideoDomManager } from './helpers/video-dom-manager';
+import { BfaaOasisConfigHandler } from './handlers/bfaa/bfaa-oasis-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'bfaa',
 		{
 			initial: [
-				BfaaConfigHandler,
+				BfaaOasisConfigHandler,
 				BfaaBootstrapHandler,
 				VideoBootstrapHandler,
 				VideoCtpHandler,
@@ -49,14 +52,14 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				SlotSizeImpactToResolvedHandler,
 				SlotDecisionImpactToResolvedHandler,
 				NavbarOffsetImpactToResolvedHandler,
-				BodyOffsetImpactHandler,
+				PageOffsetImpactHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
 			],
 			sticky: [
 				SlotSizeResolvedHandler,
-				BodyOffsetResolvedHandler,
+				PageOffsetResolvedHandler,
 				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToTransitionButtonHandler,
@@ -65,7 +68,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			],
 			transition: [
 				SlotSizeResolvedHandler,
-				BodyOffsetResolvedHandler,
+				PageOffsetResolvedHandler,
 				NavbarOffsetResolvedHandler,
 				SlotTransitionHandler,
 				VideoSizeResolvedHandler,
@@ -75,7 +78,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				SlotSizeResolvedHandler,
 				SlotOffsetResolvedToNoneHandler,
 				NavbarOffsetResolvedToNoneHandler,
-				BodyOffsetResolvedHandler,
+				PageOffsetResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
@@ -87,6 +90,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			DomManipulator,
 			UapDomManager,
 			UapDomReader,
+			VideoDomReader,
 			VideoDomManager,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),

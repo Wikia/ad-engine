@@ -1,5 +1,43 @@
+@import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/breakpoints';
+
+@mixin ucp-minerva-uap-styles() {
+	.has-uap {
+		.header-container {
+			@include uap-navbar();
+		}
+
+		#top_leaderboard,
+		#hivi_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		#top_leaderboard,
+		#hivi_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+@include ucp-minerva-uap-styles();
+
+// #######################################
 
 .gpt-ad {
 	text-align: center;

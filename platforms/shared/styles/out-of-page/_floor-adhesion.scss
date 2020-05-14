@@ -1,0 +1,8 @@
+@mixin floor-adhesion() {
+	.floor-adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		// needed for Safari 9 - it doesn't position elements from the left by default
+		left: 0;
+	}
+}

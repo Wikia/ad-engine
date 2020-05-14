@@ -201,18 +201,20 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
+				insertBeforeSelector: '.WikiaPage',
 				options: {},
 				targeting: {
 					loc: 'footer',
 					rv: 1,
 				},
-				defaultTemplates: ['floorAdhesion', 'hideOnViewability'],
+				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [[728, 90]],
 			},
 			invisible_high_impact_2: {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
+				insertBeforeSelector: '.WikiaPage',
 				options: {},
 				outOfPage: true,
 				targeting: {

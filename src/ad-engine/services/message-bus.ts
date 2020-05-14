@@ -4,72 +4,20 @@ type CallbackFn<T> = (args: T) => void;
 interface Match {
 	keys?: string[];
 	infinite?: boolean;
+	origin?: string[];
 }
 export interface MessageCallback {
 	match: Match;
 	fn: CallbackFn<any>;
 }
 
-const callbacks: MessageCallback[] = [];
 const logGroup = 'message-bus';
 
-function isAdEngineMessage(message: any): boolean {
-	const data = getDataFromMessage(message);
-
-	return !!data && !!data.AdEngine;
-}
-
-function getDataFromMessage(message: any): any {
-	if (typeof message.data === 'string') {
-		try {
-			return JSON.parse(message.data);
-		} catch (e) {
-			return undefined;
-		}
-	}
-	return message.data;
-}
-
-function messageMatch(match: Match, message: MessageEvent): boolean {
-	let matching = true;
-
-	if (match.keys) {
-		const data = getDataFromMessage(message).AdEngine;
-
-		match.keys.forEach((key) => {
-			matching = matching && data[key];
-		});
-	}
-
-	return matching;
-}
-
-function onMessage(message: MessageEvent): void {
-	let i = 0;
-	let callback: MessageCallback;
-
-	if (isAdEngineMessage(message)) {
-		logger(logGroup, 'Message received', message);
-
-		for (i = 0; i < callbacks.length; i += 1) {
-			callback = callbacks[i];
-			if (messageMatch(callback.match, message)) {
-				logger(logGroup, 'Matching message', message, callback);
-
-				callback.fn(getDataFromMessage(message).AdEngine);
-
-				if (!callback.match.infinite) {
-					callbacks.splice(i, 1);
-				}
-
-				return;
-			}
-		}
-	}
-}
-
-class MessageBus {
+export class MessageBus {
 	private isInitialized = false;
+	private callbacks: MessageCallback[] = [];
+
+	constructor(private source: Pick<Window, 'addEventListener'> = window) {}
 
 	init(): void {
 		if (this.isInitialized) {
@@ -77,16 +25,79 @@ class MessageBus {
 		}
 
 		logger(logGroup, 'Register message listener');
-		window.addEventListener('message', onMessage, false);
+		this.source.addEventListener(
+			'message',
+			(message: MessageEvent) => this.onMessage(message),
+			false,
+		);
 		this.isInitialized = true;
 	}
 
 	register<T>(match: Match, callback: CallbackFn<T>): void {
 		this.init(); // idempotent, can be called with each register call
-		callbacks.push({
+		this.callbacks.push({
 			match,
 			fn: callback,
 		});
+	}
+
+	private onMessage(message: MessageEvent): void {
+		let i = 0;
+		let callback: MessageCallback;
+
+		if (this.isAdEngineMessage(message)) {
+			logger(logGroup, 'Message received', message);
+
+			for (i = 0; i < this.callbacks.length; i += 1) {
+				callback = this.callbacks[i];
+				if (this.messageMatch(callback.match, message)) {
+					logger(logGroup, 'Matching message', message, callback);
+
+					callback.fn(this.getDataFromMessage(message).AdEngine);
+
+					if (!callback.match.infinite) {
+						this.callbacks.splice(i, 1);
+					}
+
+					return;
+				}
+			}
+		}
+	}
+
+	private isAdEngineMessage(message: MessageEvent): boolean {
+		const data = this.getDataFromMessage(message);
+
+		return !!data && !!data.AdEngine;
+	}
+
+	private messageMatch(match: Match, message: MessageEvent): boolean {
+		let matching = true;
+
+		if (match.origin && !match.origin.includes(message.origin)) {
+			return false;
+		}
+
+		if (match.keys) {
+			const data = this.getDataFromMessage(message).AdEngine;
+
+			match.keys.forEach((key) => {
+				matching = matching && data[key];
+			});
+		}
+
+		return matching;
+	}
+
+	private getDataFromMessage(message: MessageEvent): any {
+		if (typeof message.data === 'string') {
+			try {
+				return JSON.parse(message.data);
+			} catch (e) {
+				return undefined;
+			}
+		}
+		return message.data;
 	}
 }
 

@@ -6,6 +6,7 @@ import {
 	Dictionary,
 	eventService,
 	FuncPipelineStep,
+	GAMOrigins,
 	InstantConfigCacheStorage,
 	playerEvents,
 	porvataTracker,
@@ -120,9 +121,8 @@ export class TrackingSetup {
 	private postmessageTrackingTracker(): void {
 		const postmessageTracker = new PostmessageTracker(['payload', 'target']);
 
-		postmessageTracker
-			.add(trackingPayloadValidationMiddleware)
-			.register<TrackingMessage>(async (message) => {
+		postmessageTracker.add(trackingPayloadValidationMiddleware).register<TrackingMessage>(
+			async (message) => {
 				const { target, payload } = message;
 
 				switch (target) {
@@ -145,7 +145,9 @@ export class TrackingSetup {
 				}
 
 				return message;
-			});
+			},
+			[window.origin, ...GAMOrigins],
+		);
 	}
 
 	private labradorTracker(): void {

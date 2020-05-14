@@ -1,0 +1,8 @@
+@import 'src/ad-products/styles/mixin';
+
+@mixin uap-porvata-right-position() {
+	.video-overlay,
+	.replay-overlay {
+		@include bfaa-bfab-hivi-right-position;
+	}
+}

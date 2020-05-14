@@ -4,6 +4,7 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
 } from '@wikia/ad-engine';
@@ -32,6 +33,7 @@ export class MinervaAdsMode implements AdsMode {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
 
+		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
 		confiant.call();
@@ -43,6 +45,7 @@ export class MinervaAdsMode implements AdsMode {
 	private setAdStack(): void {
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
+		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
 		context.push('state.adStack', { id: 'incontent_boxad_1' });
 		context.push('state.adStack', { id: 'footer_boxad' });
 	}
