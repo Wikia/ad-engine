@@ -148,7 +148,10 @@
         {
             "apps": [
                 "f2",
+                "futhead",
+                "gamepedia",
                 "mobile-wiki",
+                "muthead",
                 "oasis"
             ],
             "regions": [
@@ -352,6 +355,18 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icA9BidRefreshing": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": false
         }
     ],
     "icA9Deals": [
@@ -561,7 +576,8 @@
                 "5361509998",
                 "5363972065",
                 "5363972611",
-                "5363972614"
+                "5363972614",
+                "5366657920"
             ]
         }
     ],
@@ -700,8 +716,10 @@
         {
             "apps": [
                 "f2",
+                "futhead",
                 "gamepedia",
                 "mobile-wiki",
+                "muthead",
                 "oasis"
             ],
             "regions": [
@@ -738,6 +756,20 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icA9BidRefreshingSlots": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": [
+                "featured"
+            ]
         }
     ],
     "icPorvataDirect": [

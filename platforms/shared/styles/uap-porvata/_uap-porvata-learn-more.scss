@@ -1,0 +1,46 @@
+@import 'src/ad-products/styles/uap-variables';
+@import 'src/ad-products/styles/breakpoints';
+
+@mixin uap-porvata-learn-more() {
+	.learn-more {
+		color: #fff;
+		cursor: pointer;
+		display: none;
+		position: absolute;
+		opacity: 0.75;
+		z-index: $uap-video-fullscreen-z-index + 1;
+		top: 0;
+		right: 25px;
+
+		& > div {
+			display: block;
+			font-size: 12px;
+			margin-right: 30px;
+			margin-top: 5px;
+		}
+
+		.learn-more-icon {
+			height: $hivi-uap-button-size - 4px;
+			width: $hivi-uap-button-size - 4px;
+			position: absolute;
+			right: 0;
+			top: 0;
+			padding: $hivi-uap-player-button-border-space $player-button-click-area-mobile;
+			color: $hivi-uap-light-button-color;
+			fill: $hivi-uap-light-button-color;
+			box-sizing: content-box;
+			opacity: 1;
+			-webkit-box-sizing: content-box;
+		}
+	}
+
+	.learn-more.show-learn-more {
+		display: block;
+	}
+
+	.video-player-fullscreen {
+		.learn-more {
+			display: block;
+		}
+	}
+}

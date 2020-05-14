@@ -5,6 +5,7 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	facebookPixel,
 	iasPublisherOptimization,
 	identityLibrary,
 	JWPlayerManager,
@@ -68,6 +69,7 @@ export class UcpAdsMode implements AdsMode {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
 
+		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
 		identityLibrary.call();

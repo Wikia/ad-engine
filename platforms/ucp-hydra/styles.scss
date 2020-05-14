@@ -1,8 +1,55 @@
+@import 'src/ad-products/styles/mixin';
+@import 'platforms/shared/styles/index';
+
+@mixin ucp-hydra-uap-styles() {
+	.has-uap {
+		#netbar {
+			@include uap-navbar();
+		}
+
+		.gpt-ad {
+			&#top_leaderboard {
+				margin: 0;
+			}
+		}
+
+		#top_leaderboard,
+		#hivi_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		#top_leaderboard,
+		#hivi_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-right-position();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+@include ucp-hydra-uap-styles();
+
+// #######################################
+
 .gpt-ad {
 	&#top_leaderboard,
 	&#bottom_leaderboard {
 		text-align: center;
-		padding: 5px 0;
+		margin: 5px 0;
 
 		&.hide {
 			display: none;

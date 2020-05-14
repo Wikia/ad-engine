@@ -22,7 +22,10 @@ import {
 } from '@platforms/shared';
 import {
 	context,
+	FOOTER,
 	InstantConfigService,
+	NAVBAR,
+	PAGE,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 } from '@wikia/ad-engine';
@@ -51,6 +54,9 @@ export async function setupHydraIoc(): Promise<Container> {
 	container.bind(SlotsContextSetup).to(HydraSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(HydraDynamicSlotsSetup);
 	container.bind(TemplatesSetup).to(UcpHydraTemplatesSetup);
+	container.bind(NAVBAR).value(document.querySelector('#netbar'));
+	container.bind(FOOTER).value(document.querySelector('#gamepedia-footer'));
+	container.bind(PAGE).value(document.querySelector('#global-wrapper'));
 	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);
 

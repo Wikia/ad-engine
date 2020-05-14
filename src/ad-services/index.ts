@@ -2,6 +2,7 @@ export * from './bill-the-lizard';
 export * from './bt-rec';
 export * from './confiant';
 export * from './duration-media';
+export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './identity-library';
 export * from './instant-config';
