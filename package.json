@@ -21,7 +21,7 @@
 		"js-cookie": "^2.2.0",
 		"lodash": "^4.17.4",
 		"query-string": "^6.8.0",
-		"rxjs": "^6.5.3",
+		"rxjs": "6.5.5",
 		"ts-action": "^11.0.0",
 		"ts-action-operators": "^9.1.1",
 		"uuid": "7.0.3"
