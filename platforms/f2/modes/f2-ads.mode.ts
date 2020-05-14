@@ -1,5 +1,11 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import { context, JWPlayerManager, nielsen, permutive } from '@wikia/ad-engine';
+import {
+	context,
+	iasPublisherOptimization,
+	JWPlayerManager,
+	nielsen,
+	permutive,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -31,6 +37,7 @@ export class F2AdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		permutive.call();
+		iasPublisherOptimization.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/news_and_stories/${targeting.s1}/${targeting.post_id}`,
