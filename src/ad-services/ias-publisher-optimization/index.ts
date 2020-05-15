@@ -19,7 +19,12 @@ class IasPublisherOptimization {
 	private slotList: string[] = [];
 
 	private isEnabled(): boolean {
-		return context.get('services.iasPublisherOptimization.enabled');
+		return (
+			context.get('services.iasPublisherOptimization.enabled') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!context.get('wiki.targeting.directedAtChildren')
+		);
 	}
 
 	call(): void {
