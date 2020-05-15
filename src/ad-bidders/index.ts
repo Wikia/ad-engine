@@ -21,6 +21,10 @@ class Bidders {
 		eventService.on(events.VIDEO_AD_USED, (adSlot) => {
 			this.updateSlotTargeting(adSlot.getSlotName());
 		});
+
+		eventService.on(events.BIDS_REFRESH, (refreshedSlotNames: string[]) => {
+			refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
+		});
 	}
 
 	getName(): string {

@@ -12,6 +12,7 @@ export class MutheadTargetingSetup implements TargetingSetup {
 		const domain = getDomain();
 		const cid = utils.queryString.get('cid');
 		const targeting: Partial<Targeting> = {
+			kid_wiki: '0',
 			skin: `turf_${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
 			uap: 'none',
 			uap_c: 'none',

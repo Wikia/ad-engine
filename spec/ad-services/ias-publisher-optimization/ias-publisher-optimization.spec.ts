@@ -13,12 +13,15 @@ describe('IAS Publisher Optimization', () => {
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		clock = sandbox.useFakeTimers();
-		context.remove('services.iasPublisherOptimization.enabled');
+		context.set('services.iasPublisherOptimization.enabled', true);
+		context.set('options.trackingOptIn', true);
+		context.set('options.optOutSale', false);
+		context.set('wiki.targeting.directedAtChildren', false);
 		context.remove('services.iasPublisherOptimization.slots');
 	});
 
 	afterEach(() => {
-		clock.tick(1);
+		clock.tick(5);
 		sandbox.restore();
 	});
 
@@ -39,5 +42,29 @@ describe('IAS Publisher Optimization', () => {
 		expect(
 			loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', 'text/javascript', true),
 		).to.equal(true);
+	});
+
+	it('IAS Publisher Optimization is not called when user is not opted in', async () => {
+		context.set('options.trackingOptIn', false);
+
+		await iasPublisherOptimization.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('IAS Publisher Optimization is not called when user has opted out sale', async () => {
+		context.set('options.optOutSale', true);
+
+		await iasPublisherOptimization.call();
+
+		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('IAS Publisher Optimization is not called on kid wikis', async () => {
+		context.set('wiki.targeting.directedAtChildren', true);
+
+		await iasPublisherOptimization.call();
+
+		expect(loadScriptStub.called).to.equal(false);
 	});
 });

@@ -36,6 +36,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 			esrb: wiki.targeting.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
 			hostpre: this.getHostnamePrefix(),
+			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			s0: wiki.targeting.mappedVerticalName,
 			s0v: wiki.targeting.wikiVertical,

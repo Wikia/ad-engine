@@ -97,6 +97,20 @@
             "value": 1
         }
     ],
+    "icFacebookPixel": [
+        {
+            "apps": [
+                "f2",
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "US-NY"
+            ],
+            "value": true
+        }
+    ],
     "icPostmessageTracking": [
         {
             "apps": [
