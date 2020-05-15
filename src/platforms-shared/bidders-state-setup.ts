@@ -12,6 +12,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		instantConfig.get('icA9VideoBidsCleaning') && hasFeaturedVideo,
 	);
 	context.set('bidders.a9.bidsRefreshing.enabled', instantConfig.get('icA9BidRefreshing'));
+	context.set('bidders.a9.bidsRefreshing.slots', instantConfig.get('icA9BidRefreshingSlots'));
 
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);

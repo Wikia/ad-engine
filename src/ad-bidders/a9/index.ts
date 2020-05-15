@@ -29,6 +29,7 @@ const logGroup = 'A9Provider';
 
 export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
+	private static isApstagConfigured = false;
 
 	private loaded = false;
 
@@ -36,7 +37,6 @@ export class A9Provider extends BidderProvider {
 	bids: A9Bids = {};
 	cmp: Cmp = cmp;
 	usp: Usp = usp;
-	isRenderImpOverwritten = false;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
 
@@ -154,7 +154,7 @@ export class A9Provider extends BidderProvider {
 		const endTime: number = new Date().getTime();
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
-		this.addApstagRenderImpHookOnFirstFetch();
+		this.configureApstagOnce();
 
 		await Promise.all(
 			currentBids.map(async (bid) => {
@@ -178,7 +178,9 @@ export class A9Provider extends BidderProvider {
 		this.onBidResponse();
 
 		if (refresh) {
-			eventService.emit(events.BIDS_REFRESH);
+			const refreshedSlotNames = slots.map((slot) => slot.slotName);
+
+			eventService.emit(events.BIDS_REFRESH, refreshedSlotNames);
 		}
 	}
 
@@ -199,10 +201,16 @@ export class A9Provider extends BidderProvider {
 		};
 	}
 
-	private addApstagRenderImpHookOnFirstFetch(): void {
-		if (!this.isRenderImpOverwritten) {
-			this.isRenderImpOverwritten = true;
-			this.addApstagRenderImpHook();
+	private configureApstagOnce(): void {
+		if (A9Provider.isApstagConfigured) {
+			return;
+		}
+
+		A9Provider.isApstagConfigured = true;
+		this.addApstagRenderImpHook();
+
+		if (this.bidsRefreshing.enabled) {
+			this.registerVideoBidsRefreshing();
 		}
 	}
 
@@ -287,6 +295,20 @@ export class A9Provider extends BidderProvider {
 		}
 
 		return definition;
+	}
+
+	private registerVideoBidsRefreshing(): void {
+		eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => this.refreshVideoBids(adSlot));
+		eventService.on(events.VIDEO_AD_ERROR, (adSlot) => this.refreshVideoBids(adSlot));
+	}
+
+	private refreshVideoBids(adSlot: AdSlot): void {
+		if (!this.shouldRefreshSlot(adSlot)) {
+			return;
+		}
+
+		this.removeBids(adSlot);
+		this.refreshBid(adSlot);
 	}
 
 	private async getBidTargetingWithKeys(
