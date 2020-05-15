@@ -20,6 +20,7 @@ interface MediaWikiAdsOpts {
 }
 
 interface MediaWikiAdsTargeting {
+	directedAtChildren: boolean;
 	enablePageCategories: boolean;
 	esrbRating: string;
 	featuredVideo?: MediaWikiFeaturedVideoInfo;
