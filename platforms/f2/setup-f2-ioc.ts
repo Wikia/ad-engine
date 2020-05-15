@@ -1,7 +1,6 @@
 import {
 	AdsMode,
 	BaseContextSetup,
-	NoAdsMode,
 	SlotsContextSetup,
 	SlotsStateSetup,
 	TargetingSetup,
@@ -18,7 +17,6 @@ import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { F2AdsMode } from './modes/f2-ads.mode';
-import { F2NoAdsMode } from './modes/f2-no-ads-mode';
 import { F2_ENV, F2Environment } from './setup-f2';
 import { F2SlotsContextSetup } from './setup/context/slots/f2-slots-context.setup';
 import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
@@ -39,7 +37,6 @@ export async function setupF2Ioc(f2Env: F2Environment): Promise<Container> {
 	// TODO: DynamicSlotsSetup -> maybe unnecessary, (eventually configureTopLeaderboard)
 	// TODO: TemplatesSetup
 	container.bind(AdsMode).to(F2AdsMode);
-	container.bind(NoAdsMode).to(F2NoAdsMode);
 	container.bind(F2_ENV).value(f2Env);
 	container.bind(getF2StateBinder());
 
