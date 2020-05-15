@@ -21,9 +21,7 @@ export class LogoReplacement {
 	}
 
 	private replaceLogo(params: LogoReplacementTemplateConfig): void {
-		const parentElement = document.querySelector(
-			'#globalNavigation .wds-global-navigation__content-bar-left',
-		);
+		const parentElement = document.querySelector('.wds-global-navigation__content-bar-left');
 		const fandomLogo = document.querySelector('.wds-global-navigation__logo');
 
 		if (parentElement && fandomLogo) {
