@@ -1,0 +1,34 @@
+@import 'out-of-page-template';
+
+@mixin interstitial() {
+	.interstitial {
+		background: rgba(0, 0, 0, 0.9);
+		bottom: 0;
+		height: 100vh;
+		left: 0;
+		position: fixed;
+		top: 0;
+		width: 100%;
+
+		& > .button-close {
+			height: auto;
+			top: 0;
+		}
+
+		& > .advertisement-label {
+			align-items: center;
+			background-color: rgba(0, 0, 0, 0.5);
+			color: #d5d4d4;
+			display: flex;
+			font-size: 17px;
+			height: 34px;
+			justify-content: left;
+			left: 0;
+			padding: 0 10px;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: $out-of-page-z-index - 1;
+		}
+	}
+}
