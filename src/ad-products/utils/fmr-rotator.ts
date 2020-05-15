@@ -178,9 +178,12 @@ export class FmrRotator {
 
 		this.applyRec(() => {
 			this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-			setTimeout(() => {
-				this.hideSlot();
-			}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
+
+			if (!context.get('options.floatingMedrecRecirculationDisabled')) {
+				setTimeout(() => {
+					this.hideSlot();
+				}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
+			}
 		});
 	}
 
