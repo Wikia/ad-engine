@@ -15,6 +15,7 @@ export class LogoReplacement {
 
 	static getDefaultConfig(): LogoReplacementTemplateConfig {
 		return {
+			clickThroughUrl: 'https://www.fandom.com/',
 			parentSelector: '.wds-global-navigation__content-bar-left',
 			fandomLogoSelector: '.wds-global-navigation__logo',
 		};
