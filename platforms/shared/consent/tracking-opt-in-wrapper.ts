@@ -33,6 +33,8 @@ class TrackingOptInWrapper {
 				geoRequiresConsent: this.geoRequiresConsent,
 				ccpaSignal: this.ccpaSignal,
 				geoRequiresSignal: this.geoRequiresSignal,
+				gdprInstance: this.consentInstances.gdpr,
+				ccpaInstance: this.consentInstances.ccpa,
 			});
 		});
 		window.ads.pushToConsentQueue =

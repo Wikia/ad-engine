@@ -1,0 +1,15 @@
+{
+	"icBabDetection": [
+		{
+			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPorvataDirect": [
+		{
+			"apps": ["f2", "gamepedia", "mobile-wiki", "oasis"],
+			"value": false
+		}
+	]
+}
