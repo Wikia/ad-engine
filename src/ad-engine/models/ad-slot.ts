@@ -92,7 +92,6 @@ export class AdSlot extends EventEmitter {
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_FORCE_UNSTICK = 'force-unstick';
 	static STATUS_ERROR = 'error';
-	static STATUS_LOGO_REPLACED = 'logo-replaced';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
 	static STATUS_HIVI_COLLAPSE = 'hivi-collapse';
