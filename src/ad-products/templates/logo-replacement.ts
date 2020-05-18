@@ -1,11 +1,11 @@
-import { AdSlot, context, utils } from '@ad-engine/core';
+import { AdSlot, context, events, utils } from '@ad-engine/core';
 
 export interface LogoReplacementTemplateConfig {
 	logoImage?: string;
 	clickThroughUrl?: string;
 	pixelUrl?: string;
-	parentSelector?: string;
-	fandomLogoSelector?: string;
+	parentSelector: string;
+	fandomLogoSelector: string;
 }
 
 export class LogoReplacement {
@@ -52,6 +52,8 @@ export class LogoReplacement {
 			parentElement.removeChild(fandomLogo);
 			parentElement.appendChild(trackingPixel);
 			newLogoAnchorElement.appendChild(newLogo);
+
+			this.adSlot.emitEvent(events.LOGO_REPLACED);
 		}
 	}
 }
