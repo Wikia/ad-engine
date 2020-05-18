@@ -8,8 +8,8 @@ export interface AdViewabilityContext {
 class ViewabilityTracker {
 	private pipeline = new FuncPipeline<AdViewabilityContext>();
 
-	add(middleware: FuncPipelineStep<AdViewabilityContext>): this {
-		this.pipeline.add(middleware);
+	add(...middlewares: FuncPipelineStep<AdViewabilityContext>[]): this {
+		this.pipeline.add(...middlewares);
 
 		return this;
 	}

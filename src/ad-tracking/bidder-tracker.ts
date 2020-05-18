@@ -9,8 +9,8 @@ export interface AdBidderContext {
 class BidderTracker {
 	private pipeline = new FuncPipeline<AdBidderContext>();
 
-	add(middleware: FuncPipelineStep<AdBidderContext>): this {
-		this.pipeline.add(middleware);
+	add(...middlewares: FuncPipelineStep<AdBidderContext>[]): this {
+		this.pipeline.add(...middlewares);
 
 		return this;
 	}

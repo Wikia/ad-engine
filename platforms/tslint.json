@@ -9,7 +9,7 @@
 		"no-blacklisted-paths": [
 			true,
 			{
-				"blacklist": ["src"]
+				"blacklist": ["/src"]
 			}
 		]
 	}

@@ -20,6 +20,7 @@ import {
 	WikiContextSetup,
 } from '@platforms/shared';
 import {
+	bidderTrackingMiddleware,
 	context,
 	FOOTER,
 	InstantConfigService,
@@ -28,6 +29,7 @@ import {
 	slotBiddersTrackingMiddleware,
 	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
+	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
@@ -45,7 +47,7 @@ export async function setupUcpIoc(): Promise<Container> {
 	const container = new Container();
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
-	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(InstantConfigService).value(await InstantConfigService.init());
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
 	container.bind(TargetingSetup).to(UcpTargetingSetup);
@@ -69,7 +71,9 @@ export async function setupUcpIoc(): Promise<Container> {
 			slotPropertiesTrackingMiddleware,
 			slotBiddersTrackingMiddleware,
 			slotBillTheLizardStatusTrackingMiddleware,
+			slotTrackingMiddleware,
 		],
+		bidderTrackingMiddlewares: [bidderTrackingMiddleware],
 	}).forEach((binder) => container.bind(binder));
 
 	return container;
