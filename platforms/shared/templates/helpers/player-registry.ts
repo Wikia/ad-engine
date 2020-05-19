@@ -6,7 +6,6 @@ import {
 	resolvedState,
 	TEMPLATE,
 	UapParams,
-	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { ReplaySubject } from 'rxjs';
