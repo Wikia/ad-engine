@@ -53,6 +53,10 @@
 	&#footer_boxad {
 		margin: 10px auto;
 	}
+
+	&.hide {
+		display: none;
+	}
 }
 
 html.disable-ads {
