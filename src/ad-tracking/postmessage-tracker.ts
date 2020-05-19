@@ -47,8 +47,8 @@ export class PostmessageTracker {
 
 	constructor(private readonly requiredKeys: string[]) {}
 
-	add(middleware: FuncPipelineStep<any>): this {
-		this.pipeline.add(middleware);
+	add(...middlewares: FuncPipelineStep<any>[]): this {
+		this.pipeline.add(...middlewares);
 
 		return this;
 	}

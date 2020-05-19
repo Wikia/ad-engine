@@ -15,6 +15,7 @@ export class GamepediaTargetingSetup implements TargetingSetup {
 			uap_c: 'none',
 			artid: wikiContext.wgArticleId && wikiContext.wgArticleId.toString(),
 			dmn: this.getDomain(),
+			kid_wiki: '0',
 			pName: wikiContext.wgPageName,
 			pv: wikiContext.pvNumber && wikiContext.pvNumber.toString(),
 			s0: 'gaming',

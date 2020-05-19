@@ -186,7 +186,7 @@ export class PrebidProvider extends BidderProvider {
 
 		const refreshUsedBid = (winningBid) => {
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-				eventService.emit(events.BIDS_REFRESH);
+				eventService.emit(events.BIDS_REFRESH, [winningBid.adUnitCode]);
 				const adUnitsToRefresh = this.adUnits.filter(
 					(adUnit) =>
 						adUnit.code === winningBid.adUnitCode &&

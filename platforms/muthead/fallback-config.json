@@ -324,7 +324,7 @@
             "regions": [
                 "XX"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icBabDetection": [
