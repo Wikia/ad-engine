@@ -61,6 +61,7 @@ class BtfBlockerService {
 
 	finishFirstCall(): void {
 		this.firstCallEnded = true;
+		eventService.emit(events.FIRST_CALL_ENDED);
 		logger(logGroup, 'first call queue finished');
 
 		if (window.ads.runtime.disableSecondCall) {
