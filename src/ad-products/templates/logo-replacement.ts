@@ -15,7 +15,6 @@ export class LogoReplacement {
 
 	static getDefaultConfig(): LogoReplacementTemplateConfig {
 		return {
-			clickThroughUrl: 'https://www.fandom.com/',
 			parentSelector: '.wds-global-navigation__content-bar-left',
 			fandomLogoSelector: '.wds-global-navigation__logo',
 		};
@@ -31,6 +30,11 @@ export class LogoReplacement {
 		utils.logger(LogoReplacement.getName(), 'init');
 
 		this.config = { ...this.config, ...params };
+
+		if (this.config.clickThroughUrl === '') {
+			this.config.clickThroughUrl = 'https://www.fandom.com/';
+		}
+
 		this.replaceLogo();
 	}
 
