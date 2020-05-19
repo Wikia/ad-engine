@@ -18,9 +18,7 @@ describe('Porvata Settings wrapper', () => {
 			slotName: 'foo',
 			src: 'gpt',
 			width: 3,
-			vastTargeting: {
-				passback: 'veles',
-			},
+			vastTargeting: {},
 			vastUrl: 'http://example.com/foo',
 			vpaidMode: 2,
 		});
@@ -33,9 +31,6 @@ describe('Porvata Settings wrapper', () => {
 		assert.isFalse(porvataSettings.shouldRestartOnMute());
 		assert.equal(porvataSettings.getSlotName(), 'foo');
 		assert.equal(porvataSettings.getWidth(), 3);
-		assert.deepEqual(porvataSettings.getVastTargeting(), {
-			passback: 'veles',
-		});
 		assert.equal(porvataSettings.getVastUrl(), 'http://example.com/foo');
 		assert.equal(porvataSettings.getVpaidMode(), 2);
 	});

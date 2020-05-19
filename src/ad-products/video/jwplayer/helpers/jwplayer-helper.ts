@@ -132,7 +132,6 @@ export class JWPlayerHelper {
 			correlator: state.correlator,
 			vpos: position,
 			targeting: {
-				passback: 'jwplayer',
 				rv: state.rv,
 				v1: state.playlistItem.mediaid || '',
 				...this.targeting,

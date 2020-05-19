@@ -34,7 +34,7 @@ export class PlayerRegistry {
 	private getPlayerParams(): PorvataTemplateParams {
 		return {
 			...this.params,
-			vastTargeting: { passback: universalAdPackage.getType() },
+			vastTargeting: {},
 			autoPlay: this.isAutoPlayEnabled(),
 			container: this.createPlayerContainer(),
 			hideWhenPlaying: this.params.videoPlaceholderElement,
