@@ -1,5 +1,11 @@
 import { TemplatesSetup } from '@platforms/shared';
-import { logTemplates, PorvataTemplate, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import {
+	LogoReplacement,
+	logTemplates,
+	PorvataTemplate,
+	TemplateRegistry,
+	templateService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
@@ -27,5 +33,6 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$, floorAdhesion$, interstitial$));
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
+		templateService.register(LogoReplacement);
 	}
 }
