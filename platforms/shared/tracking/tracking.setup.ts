@@ -1,7 +1,7 @@
 import {
+	AdBidderContext,
 	AdInfoContext,
 	bidderTracker,
-	bidderTrackingMiddleware,
 	Binder,
 	Dictionary,
 	eventService,
@@ -12,7 +12,6 @@ import {
 	porvataTracker,
 	PostmessageTracker,
 	slotTracker,
-	slotTrackingMiddleware,
 	TrackingMessage,
 	trackingPayloadValidationMiddleware,
 	TrackingTarget,
@@ -30,22 +29,31 @@ const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengv
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 
 interface TrackingMiddlewares {
-	slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[];
+	slotTrackingMiddlewares?: FuncPipelineStep<AdInfoContext>[];
+	bidderTrackingMiddlewares?: FuncPipelineStep<AdBidderContext>[];
 }
 
 @Injectable()
 export class TrackingSetup {
 	static provideMiddlewares(trackingMiddlewares: TrackingMiddlewares): Binder[] {
-		return Object.keys(trackingMiddlewares).map((key) => ({
-			bind: key,
-			value: trackingMiddlewares[key],
-		}));
+		return [
+			{
+				bind: 'slotTrackingMiddlewares',
+				value: trackingMiddlewares['slotTrackingMiddlewares'] ?? [],
+			},
+			{
+				bind: 'bidderTrackingMiddlewares',
+				value: trackingMiddlewares['bidderTrackingMiddlewares'] ?? [],
+			},
+		];
 	}
 
 	constructor(
 		private pageTracker: PageTracker,
 		@Inject('slotTrackingMiddlewares')
 		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
+		@Inject('bidderTrackingMiddlewares')
+		private bidderTrackingMiddlewares: FuncPipelineStep<AdBidderContext>[],
 	) {}
 
 	configureTracking(): void {
@@ -68,15 +76,15 @@ export class TrackingSetup {
 	}
 
 	private slotTracker(): void {
+		if (this.slotTrackingMiddlewares.length === 0) {
+			return;
+		}
+
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
-
-		if (this.slotTrackingMiddlewares) {
-			this.slotTrackingMiddlewares.forEach((middleware) => slotTracker.add(middleware));
-		}
-
-		slotTracker.add(slotTrackingMiddleware).register(({ data }: Dictionary) => {
+		slotTracker.add(...this.slotTrackingMiddlewares);
+		slotTracker.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
 
 			return data;
@@ -97,9 +105,13 @@ export class TrackingSetup {
 	}
 
 	private bidderTracker(): void {
+		if (this.bidderTrackingMiddlewares.length === 0) {
+			return;
+		}
+
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		bidderTracker.add(bidderTrackingMiddleware).register(({ data }: Dictionary) => {
+		bidderTracker.add(...this.bidderTrackingMiddlewares).register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, bidderTrackingUrl);
 
 			return data;

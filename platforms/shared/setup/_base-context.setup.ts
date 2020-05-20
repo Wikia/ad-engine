@@ -31,9 +31,12 @@ export class BaseContextSetup {
 	}
 
 	private setOptionsContext(): void {
-		context.set('options.tracking.kikimora.player', true);
-		context.set('options.tracking.slot.status', true);
-		context.set('options.tracking.slot.viewability', true);
+		context.set('options.tracking.kikimora.player', this.instantConfig.get('icPlayerTracking'));
+		context.set('options.tracking.slot.status', this.instantConfig.get('icSlotTracking'));
+		context.set(
+			'options.tracking.slot.viewability',
+			this.instantConfig.get('icViewabilityTracking'),
+		);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
 		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));

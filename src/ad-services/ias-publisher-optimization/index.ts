@@ -1,8 +1,13 @@
-import { context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
+import { Collection, context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
+const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'] as const;
+
+type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
+type BrandSafetyKey = typeof brandSafetyKeys[number];
+type BrandSafetyData = Partial<Collection<BrandSafetyKey, BrandSafetyValue>>;
 
 interface IasTargetingSlotData {
 	id?: string;
@@ -10,6 +15,7 @@ interface IasTargetingSlotData {
 }
 
 interface IasTargetingData {
+	brandSafety?: BrandSafetyData;
 	fr?: string;
 	slots?: IasTargetingSlotData[];
 }
@@ -73,6 +79,11 @@ class IasPublisherOptimization {
 
 	private setInitialTargeting(): void {
 		context.set('targeting.fr', '-1');
+
+		brandSafetyKeys.forEach((key) => {
+			context.set(`targeting.${key}`, '-1');
+		});
+
 		this.slotList.forEach((slotName) => {
 			context.set(`slots.${slotName}.targeting.vw`, '-1');
 		});
@@ -80,7 +91,16 @@ class IasPublisherOptimization {
 
 	private iasDataHandler(adSlotData: string): void {
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
+
 		context.set('targeting.fr', iasTargetingData.fr);
+
+		if (iasTargetingData.brandSafety) {
+			brandSafetyKeys.forEach((key) => {
+				if (iasTargetingData.brandSafety[key]) {
+					context.set(`targeting.${key}`, iasTargetingData.brandSafety[key]);
+				}
+			});
+		}
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
 			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw);

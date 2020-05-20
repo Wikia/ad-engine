@@ -21,8 +21,8 @@ class SlotTracker {
 
 	private pipeline = new FuncPipeline<AdInfoContext>();
 
-	add(middleware: FuncPipelineStep<AdInfoContext>): this {
-		this.pipeline.add(middleware);
+	add(...middlewares: FuncPipelineStep<AdInfoContext>[]): this {
+		this.pipeline.add(...middlewares);
 
 		return this;
 	}
