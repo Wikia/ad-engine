@@ -24,7 +24,6 @@ describe('slot-tracking-middleware', () => {
 		context.set('targeting', {
 			esrb: 'kids',
 			lang: 'de',
-			likho: ['a', 'b'],
 			ref: 'search',
 			s0: 'life',
 			s0v: 'lifestyle',
@@ -101,7 +100,6 @@ describe('slot-tracking-middleware', () => {
 		expect(data['country']).to.equal('PL');
 		expect(data['device']).to.equal('desktop');
 		expect(data['document_visibility']).to.equal('not_implemented');
-		expect(data['key_vals']).to.equal('likho=a|b');
 		expect(data['kv_ah']).to.equal(0);
 		expect(data['kv_esrb']).to.equal('kids');
 		expect(data['kv_lang']).to.equal('de');

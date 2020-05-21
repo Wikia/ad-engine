@@ -3,6 +3,7 @@ import {
 	Dictionary,
 	FuncPipelineStep,
 	InstantConfigCacheStorage,
+	likhoService,
 	utils,
 } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
@@ -38,7 +39,7 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 	const isUap =
 		slot.getConfigProperty('targeting.uap') && slot.getConfigProperty('targeting.uap') !== 'none';
 	const keyVals: Dictionary<string> = {
-		likho: (context.get('targeting.likho') || []).join('|'),
+		likho: likhoService.getTypes().join('|'),
 	};
 	let topOffset = slot.getTopOffset();
 
