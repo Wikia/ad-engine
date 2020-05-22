@@ -14,6 +14,22 @@
             "value": true
         }
     ],
+    "icPlayerTracking": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorTest": [
         {
             "apps": [
@@ -139,6 +155,7 @@
                 "CA",
                 "DE",
                 "GB",
+                "NZ",
                 "PL",
                 "UK",
                 "US"
@@ -311,7 +328,39 @@
             "value": true
         }
     ],
+    "icSlotTracking": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icTcf1Disabled": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icViewabilityTracking": [
         {
             "apps": [
                 "f2",

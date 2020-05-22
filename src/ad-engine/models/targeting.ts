@@ -1,6 +1,5 @@
 export interface Targeting {
 	ae3: '1';
-	outstream: string;
 	skin: string;
 	uap: 'none';
 	uap_c: 'none';
@@ -20,7 +19,6 @@ export interface Targeting {
 	ref: string;
 	esrb: string;
 	geo: string;
-	likho: string[];
 	pv: string;
 	cid: string;
 	top: '1k';
