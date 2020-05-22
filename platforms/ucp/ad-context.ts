@@ -66,7 +66,6 @@ export const basicContext = {
 			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		outstream: 'none',
 		rollout_tracking: 'ucp',
 		skin: 'oasis',
 		uap: 'none',

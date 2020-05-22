@@ -90,7 +90,6 @@ export class PorvataFiller implements SlotFiller {
 		loadVideoTimeout: 30000,
 		vpaidMode: 2,
 		vastTargeting: {
-			passback: 'veles',
 			pos: 'outstream',
 		},
 	};
@@ -182,9 +181,7 @@ export class Porvata {
 			});
 		}
 
-		params.vastTargeting = params.vastTargeting || {
-			passback: 'porvata',
-		};
+		params.vastTargeting = params.vastTargeting || {};
 
 		const videoSettings = new PorvataSettings(params);
 
