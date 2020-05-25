@@ -138,6 +138,19 @@
                 "XX"
             ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
         }
     ],
     "icIASPublisherOptimization": [
@@ -186,9 +199,6 @@
                 "mobile-wiki",
                 "muthead",
                 "oasis"
-            ],
-            "regions": [
-                "NZ"
             ],
             "value": true
         }

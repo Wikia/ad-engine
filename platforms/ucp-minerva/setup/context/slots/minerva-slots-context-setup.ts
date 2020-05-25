@@ -62,7 +62,7 @@ export class MinervaSlotsContextSetup implements SlotsContextSetup {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				aboveTheFold: true,
+				aboveTheFold: false,
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
