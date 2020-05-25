@@ -32,7 +32,6 @@ export class F2TargetingSetup implements TargetingSetup {
 		const targeting: Partial<Targeting> = {
 			host: window.location.hostname,
 			lang: 'en',
-			outstream: 'none',
 			post_id: '-1',
 			skin: this.f2Env.skinName,
 			s0: 'fandom',

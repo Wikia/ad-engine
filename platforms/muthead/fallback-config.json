@@ -14,6 +14,22 @@
             "value": true
         }
     ],
+    "icPlayerTracking": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorTest": [
         {
             "apps": [
@@ -122,6 +138,19 @@
                 "XX"
             ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
         }
     ],
     "icIASPublisherOptimization": [
@@ -139,6 +168,7 @@
                 "CA",
                 "DE",
                 "GB",
+                "NZ",
                 "PL",
                 "UK",
                 "US"
@@ -169,9 +199,6 @@
                 "mobile-wiki",
                 "muthead",
                 "oasis"
-            ],
-            "regions": [
-                "NZ"
             ],
             "value": true
         }
@@ -311,7 +338,39 @@
             "value": true
         }
     ],
+    "icSlotTracking": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icTcf1Disabled": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icViewabilityTracking": [
         {
             "apps": [
                 "f2",
