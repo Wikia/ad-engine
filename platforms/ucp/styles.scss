@@ -55,6 +55,8 @@
 // #######################################
 
 .gpt-ad {
+	text-align: center;
+
 	&.hide,
 	& .hide {
 		display: none !important;
@@ -72,21 +74,14 @@
 }
 
 #top_leaderboard {
-	text-align: center;
-
 	> div {
 		text-align: center;
 	}
 }
 
-#hivi_leaderboard {
-	text-align: center;
-}
-
 #bottom_leaderboard {
 	margin-top: 20px;
 	margin-bottom: 23px;
-	text-align: center;
 
 	> div {
 		text-align: center;
