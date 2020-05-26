@@ -17,6 +17,7 @@ export class FmrRotator {
 	private btRecStatus = false;
 	private nextSlotName: string;
 	private currentAdSlot: AdSlot;
+	private recirculationDisabled = false;
 	private recirculationElement: HTMLElement;
 	private refreshInfo = {
 		recSlotViewed: 2000,
@@ -33,6 +34,7 @@ export class FmrRotator {
 
 	rotateSlot(): void {
 		this.nextSlotName = this.slotName;
+		this.recirculationDisabled = context.get('options.floatingMedrecRecirculationDisabled');
 		this.recirculationElement = document.getElementById('recirculation-rail');
 		this.refreshInfo.startPosition =
 			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
@@ -41,8 +43,7 @@ export class FmrRotator {
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
 				const onlyFirstSlot =
-					universalAdPackage.isFanTakeoverLoaded() ||
-					context.get('options.floatingMedrecRecirculationDisabled');
+					universalAdPackage.isFanTakeoverLoaded() || this.recirculationDisabled;
 
 				slot.once(AdSlot.STATUS_SUCCESS, () => {
 					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
@@ -65,7 +66,7 @@ export class FmrRotator {
 			}
 		});
 
-		if (context.get('options.floatingMedrecRecirculationDisabled')) {
+		if (this.recirculationDisabled) {
 			this.swapRecirculation(false);
 			eventService.communicator.dispatch(recirculationDisabledEvent({}));
 			this.startFirstRotation();
@@ -178,9 +179,12 @@ export class FmrRotator {
 
 		this.applyRec(() => {
 			this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-			setTimeout(() => {
-				this.hideSlot();
-			}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
+
+			if (!this.recirculationDisabled) {
+				setTimeout(() => {
+					this.hideSlot();
+				}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
+			}
 		});
 	}
 
