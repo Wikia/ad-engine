@@ -10,6 +10,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
+import { getLogoReplacementConfig } from './configs/logo-replacement-config';
 import { getOutstreamConfig } from './configs/outstream-config';
 import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerInterstitialTemplate } from './interstitial-template';
@@ -33,6 +34,6 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$, floorAdhesion$, interstitial$));
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
-		templateService.register(LogoReplacement);
+		templateService.register(LogoReplacement, getLogoReplacementConfig());
 	}
 }
