@@ -15,16 +15,18 @@ class IdentityLibrary {
 		);
 	}
 
-	call(): void {
+	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			return;
+			return Promise.resolve();
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
-			utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first');
-			this.isLoaded = true;
+			return utils.scriptLoader.loadScript(scriptUrl).then(() => {
+				utils.logger(logGroup, 'ready');
+				this.isLoaded = true;
+			});
 		}
 	}
 }
