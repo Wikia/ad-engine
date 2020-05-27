@@ -4,8 +4,7 @@ export interface LogoReplacementTemplateConfig {
 	logoImage?: string;
 	clickThroughUrl?: string;
 	pixelUrl?: string;
-	parentSelector: string;
-	fandomLogoSelector: string;
+	replaceLogo?: (logoImage: string, pixelUrl: string, clickThroughUrl: string) => void;
 }
 
 export class LogoReplacement {
@@ -14,10 +13,7 @@ export class LogoReplacement {
 	}
 
 	static getDefaultConfig(): LogoReplacementTemplateConfig {
-		return {
-			parentSelector: '.wds-global-navigation__content-bar-left',
-			fandomLogoSelector: '.wds-global-navigation__logo',
-		};
+		return {};
 	}
 
 	config: LogoReplacementTemplateConfig;
@@ -39,26 +35,11 @@ export class LogoReplacement {
 	}
 
 	private replaceLogo(): void {
-		const parentElement = document.querySelector(this.config.parentSelector);
-		const fandomLogo = document.querySelector(this.config.fandomLogoSelector);
-
-		if (parentElement && fandomLogo) {
-			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.config.clickThroughUrl;
-
-			const newLogo = document.createElement('img');
-			newLogo.src = this.config.logoImage;
-
-			const trackingPixel = document.createElement('img');
-			trackingPixel.src = this.config.pixelUrl;
-			trackingPixel.style.display = 'none';
-
-			parentElement.insertBefore(newLogoAnchorElement, fandomLogo);
-			parentElement.removeChild(fandomLogo);
-			parentElement.appendChild(trackingPixel);
-			newLogoAnchorElement.appendChild(newLogo);
-
-			this.adSlot.emitEvent(events.LOGO_REPLACED);
-		}
+		this.config.replaceLogo(
+			this.config.logoImage,
+			this.config.pixelUrl,
+			this.config.clickThroughUrl,
+		);
+		this.adSlot.emitEvent(events.LOGO_REPLACED);
 	}
 }
