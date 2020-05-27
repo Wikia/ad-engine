@@ -1,4 +1,5 @@
-import { context, utils } from '@ad-engine/core';
+import { context, eventService, utils } from '@ad-engine/core';
+import { action, props } from 'ts-action';
 
 const logGroup = 'identity-library';
 const scriptUrl = '//js-sec.indexww.com/ht/p/183085-19173550049191.js';
@@ -22,8 +23,15 @@ class IdentityLibrary {
 		}
 
 		if (!this.isLoaded) {
+			const performance = window.performance;
+			const loadStart = performance.now();
+
 			utils.logger(logGroup, 'loading');
 			return utils.scriptLoader.loadScript(scriptUrl).then(() => {
+				const loadEnd = performance.now();
+				eventService.communicator.dispatch(
+					identityLibraryLoadedEvent({ loadTime: loadEnd - loadStart }),
+				);
 				utils.logger(logGroup, 'ready');
 				this.isLoaded = true;
 			});
@@ -32,3 +40,7 @@ class IdentityLibrary {
 }
 
 export const identityLibrary = new IdentityLibrary();
+export const identityLibraryLoadedEvent = action(
+	'[AdEngine] Identity library loaded',
+	props<{ loadTime: number }>(),
+);
