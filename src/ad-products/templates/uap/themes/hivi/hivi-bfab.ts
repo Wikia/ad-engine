@@ -127,7 +127,9 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private updateAdSizes(): void {
-		const state = resolvedState.isResolvedState(this.params) ? 'resolved' : 'default';
+		const state = this.container.classList.contains(CSS_CLASSNAME_THEME_RESOLVED)
+			? 'resolved'
+			: 'default';
 		const stateHeight = this.params.config.state.height[state];
 		const relativeHeight = this.params.container.offsetHeight * (stateHeight / 100);
 
