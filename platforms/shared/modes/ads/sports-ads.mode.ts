@@ -4,7 +4,6 @@ import {
 	context,
 	durationMedia,
 	iasPublisherOptimization,
-	identityLibrary,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { wadRunner } from '../../services/wad-runner';
@@ -28,7 +27,6 @@ export class SportsAdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		iasPublisherOptimization.call();
-		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();
 

@@ -8,7 +8,7 @@ class IdentityLibrary {
 
 	private isEnabled(): boolean {
 		return (
-			context.get('services.ixIdentityLibrary.enabled') &&
+			context.get('bidders.ixIdentityLibrary.enabled') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
