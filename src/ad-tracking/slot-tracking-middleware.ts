@@ -6,19 +6,11 @@ import {
 	likhoService,
 	utils,
 } from '@ad-engine/core';
-import * as Cookies from 'js-cookie';
 import { AdInfoContext } from './slot-tracker';
 
-// TODO: TCF 2 Cleanup: Restore obtaining the result from context('options.trackingOptIn')
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {
-		const cookie = Cookies.get('tracking-opt-in-transition-status');
-
-		if (!cookie) {
-			return context.get('options.trackingOptIn') ? 'yes' : 'no';
-		}
-
-		return cookie.replace(/accepted/g, 'yes').replace(/rejected/g, 'no');
+		return context.get('options.trackingOptIn') ? 'yes' : 'no';
 	}
 
 	return '';

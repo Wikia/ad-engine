@@ -55,6 +55,8 @@
 // #######################################
 
 .gpt-ad {
+	text-align: center;
+
 	&.hide,
 	& .hide {
 		display: none !important;
@@ -72,8 +74,6 @@
 }
 
 #top_leaderboard {
-	text-align: center;
-
 	> div {
 		text-align: center;
 	}

@@ -434,6 +434,19 @@
             "value": true
         }
     ],
+    "icTabIdTracking": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icPermutive": [
         {
             "apps": [
