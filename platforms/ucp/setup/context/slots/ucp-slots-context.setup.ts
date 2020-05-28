@@ -184,7 +184,6 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				insertBeforeSelector: '#mw-content-text > div > h2',
 				insertBelowFirstViewport: true,
 				disabled: true,
-				nonUapSlot: true,
 				slotNameSuffix: '',
 				group: 'HiVi',
 				slotShortcut: 'i',
