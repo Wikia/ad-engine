@@ -1,10 +1,13 @@
-import { TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { AdSlot, events, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { LogoReplacementParams } from './logo-replacement-params';
 
 @Injectable({ autobind: false })
 export class LogoReplacementHandler implements TemplateStateHandler {
-	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
+	constructor(
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
+	) {}
 
 	async onEnter(): Promise<void> {
 		const parentElement = document.querySelector('.wds-global-navigation__content-bar-left');
@@ -27,6 +30,8 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 			parentElement.removeChild(fandomLogo);
 			parentElement.appendChild(trackingPixel);
 			newLogoAnchorElement.appendChild(newLogo);
+
+			this.adSlot.emitEvent(events.LOGO_REPLACED);
 		}
 	}
 
