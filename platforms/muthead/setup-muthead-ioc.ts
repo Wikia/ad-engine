@@ -20,12 +20,15 @@ import {
 	bidderTrackingMiddleware,
 	context,
 	InstantConfigService,
+	LogoReplacement,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
+	templateService,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
+import { getLogoReplacementConfig } from '../muthead/templates/logo-replacement-config';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
 import { MutheadDynamicSlotsSetup } from './setup/dynamic-slots/muthead-dynamic-slots.setup';
@@ -38,6 +41,7 @@ export async function setupMutheadIoc(): Promise<Container> {
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(TargetingSetup).to(MutheadTargetingSetup);
 	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
+	templateService.register(LogoReplacement, getLogoReplacementConfig());
 	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
