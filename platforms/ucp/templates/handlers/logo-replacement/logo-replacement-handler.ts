@@ -12,15 +12,16 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 
 		if (parentElement && fandomLogo) {
 			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.params.clickThroughUrl;
+			newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
 
 			const newLogo = document.createElement('img');
 			newLogo.src = this.params.logoImage;
-			newLogo.style.maxHeight = '55px';
+			newLogo.classList.add('wds-global-navigation__logo');
+			newLogo.classList.add('new-logo');
 
 			const trackingPixel = document.createElement('img');
 			trackingPixel.src = this.params.pixelUrl;
-			trackingPixel.style.display = 'none';
+			trackingPixel.classList.add('tracking-pixel');
 
 			parentElement.insertBefore(newLogoAnchorElement, fandomLogo);
 			parentElement.removeChild(fandomLogo);
