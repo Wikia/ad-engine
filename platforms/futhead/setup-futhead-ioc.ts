@@ -11,7 +11,6 @@ import {
 	SlotsStateSetup,
 	SportsA9ConfigSetup,
 	SportsAdsMode,
-	SportsTemplatesSetup,
 	TargetingSetup,
 	TemplatesSetup,
 	TrackingSetup,
@@ -23,16 +22,14 @@ import {
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
-	templateService,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { LogoReplacement } from '../shared/templates-old/logo-replacement-template';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
 import { FutheadDynamicSlotsSetup } from './setup/dynamic-slots/futhead-dynamic-slots.setup';
-import { getLogoReplacementConfig } from './templates/logo-replacement-config';
+import { FutheadTemplatesSetup } from './templates/futhead-templates.setup';
 
 export async function setupFutheadIoc(): Promise<Container> {
 	const container = new Container();
@@ -40,8 +37,7 @@ export async function setupFutheadIoc(): Promise<Container> {
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(TargetingSetup).to(FutheadTargetingSetup);
-	container.bind(TemplatesSetup).to(SportsTemplatesSetup);
-	templateService.register(LogoReplacement, getLogoReplacementConfig());
+	container.bind(TemplatesSetup).to(FutheadTemplatesSetup);
 	container.bind(AdsMode).to(SportsAdsMode);
 	container.bind(SlotsContextSetup).to(CurseSlotsContextSetup);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
