@@ -19,7 +19,6 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 
 			const newLogo = document.createElement('img');
 			newLogo.src = this.params.logoImage;
-			newLogo.classList.add('wds-global-navigation__logo');
 			newLogo.classList.add('new-logo');
 
 			const trackingPixel = document.createElement('img');

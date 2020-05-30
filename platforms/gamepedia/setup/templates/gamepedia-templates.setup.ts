@@ -2,7 +2,6 @@ import { TemplatesSetup } from '@platforms/shared';
 import {
 	BigFancyAdAbove,
 	context,
-	LogoReplacement,
 	PorvataTemplate,
 	Roadblock,
 	templateService,
@@ -10,7 +9,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { getBfaaConfigDesktop } from '../../templates/big-fancy-ad-above-config-desktop';
 import { getBfaaConfigMobile } from '../../templates/big-fancy-ad-above-config-mobile';
-import { getLogoReplacementConfig } from '../../templates/logo-replacement-config';
+import { LogoReplacement } from '../../templates/logo-replacement';
 import { getPorvataConfig } from '../../templates/porvata-config';
 import { getRoadblockConfig } from '../../templates/roadblock-config';
 
@@ -21,7 +20,7 @@ export class GamepediaTemplatesSetup implements TemplatesSetup {
 			BigFancyAdAbove,
 			context.get('state.isMobile') ? getBfaaConfigMobile() : getBfaaConfigDesktop(),
 		);
-		templateService.register(LogoReplacement, getLogoReplacementConfig());
+		templateService.register(LogoReplacement);
 		templateService.register(PorvataTemplate, getPorvataConfig());
 		templateService.register(Roadblock, getRoadblockConfig());
 	}
