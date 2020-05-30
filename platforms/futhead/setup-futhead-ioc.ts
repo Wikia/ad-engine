@@ -20,7 +20,6 @@ import {
 	bidderTrackingMiddleware,
 	context,
 	InstantConfigService,
-	LogoReplacement,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
@@ -28,6 +27,7 @@ import {
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
+import { LogoReplacement } from '../shared/templates-old/logo-replacement-template';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';

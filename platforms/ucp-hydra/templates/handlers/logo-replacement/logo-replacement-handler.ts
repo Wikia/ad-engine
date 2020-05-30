@@ -15,7 +15,7 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 
 		if (parentElement && gamepediaLogo) {
 			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.params.clickThroughUrl;
+			newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
 
 			const newLogo = document.createElement('img');
 			newLogo.src = this.params.logoImage;

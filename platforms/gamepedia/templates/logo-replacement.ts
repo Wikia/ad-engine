@@ -36,7 +36,7 @@ export class LogoReplacement {
 
 		if (parentElement && gamepediaLogo) {
 			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.config.clickThroughUrl;
+			newLogoAnchorElement.href = this.config.clickThroughUrl || 'https://www.fandom.com/';
 
 			const newLogo = document.createElement('img');
 			newLogo.src = this.config.logoImage;

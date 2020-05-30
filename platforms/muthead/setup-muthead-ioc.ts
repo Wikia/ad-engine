@@ -20,7 +20,6 @@ import {
 	bidderTrackingMiddleware,
 	context,
 	InstantConfigService,
-	LogoReplacement,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
@@ -28,11 +27,12 @@ import {
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { set } from 'lodash';
-import { getLogoReplacementConfig } from '../muthead/templates/logo-replacement-config';
+import { LogoReplacement } from '../shared/templates-old/logo-replacement-template';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
 import { MutheadDynamicSlotsSetup } from './setup/dynamic-slots/muthead-dynamic-slots.setup';
 import { MutheadTargetingSetup } from './setup/targeting/muthead-targeting.setup';
+import { getLogoReplacementConfig } from './templates/logo-replacement-config';
 
 export async function setupMutheadIoc(): Promise<Container> {
 	const container = new Container();
