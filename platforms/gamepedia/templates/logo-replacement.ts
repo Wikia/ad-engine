@@ -50,8 +50,8 @@ export class LogoReplacement {
 			parentElement.removeChild(gamepediaLogo);
 			parentElement.appendChild(trackingPixel);
 			newLogoAnchorElement.appendChild(newLogo);
-		}
 
-		this.adSlot.emitEvent(events.LOGO_REPLACED);
+			this.adSlot.emitEvent(events.LOGO_REPLACED);
+		}
 	}
 }
