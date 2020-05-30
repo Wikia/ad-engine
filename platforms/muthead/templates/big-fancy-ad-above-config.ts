@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	BigFancyAdAboveConfig,
@@ -9,7 +10,6 @@ import {
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
-import { slotsContext } from '../slots/slots-context';
 
 const {
 	CSS_CLASSNAME_STICKY_BFAA,
