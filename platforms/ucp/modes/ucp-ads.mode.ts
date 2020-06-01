@@ -7,7 +7,6 @@ import {
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
-	identityLibrary,
 	JWPlayerManager,
 	jwpSetup,
 	nielsen,
@@ -72,7 +71,6 @@ export class UcpAdsMode implements AdsMode {
 		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
-		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();
 		nielsen.call({

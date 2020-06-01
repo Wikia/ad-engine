@@ -4,7 +4,6 @@ export * from './confiant';
 export * from './duration-media';
 export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
-export * from './identity-library';
 export * from './instant-config';
 export * from './nielsen';
 export * from './permutive';
