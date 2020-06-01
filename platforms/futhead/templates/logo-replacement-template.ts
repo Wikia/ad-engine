@@ -32,8 +32,9 @@ export class LogoReplacement {
 	replaceLogo(): void {
 		const parentElement = document.querySelector('.dropdown.dropdown-hover');
 		const logo = document.querySelector('.navbar-brand.navbar-brand-lg');
+		const isDesktop = context.get('targeting.skin').includes('desktop');
 
-		if (parentElement && logo) {
+		if (isDesktop && parentElement && logo) {
 			const newLogoAnchorElement = document.createElement('a');
 			newLogoAnchorElement.href = this.config.clickThroughUrl || 'https://www.futhead.com/';
 			newLogoAnchorElement.style.padding = '0 15px';

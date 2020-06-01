@@ -32,8 +32,9 @@ export class LogoReplacement {
 	replaceLogo(): void {
 		const parentElement = document.querySelector('.header__container');
 		const logo = document.querySelector('.header__home-link');
+		const isDesktop = context.get('targeting.skin').includes('desktop');
 
-		if (parentElement && logo) {
+		if (isDesktop && parentElement && logo) {
 			const newLogoAnchorElement = document.createElement('a');
 			newLogoAnchorElement.href = this.config.clickThroughUrl || 'https://www.muthead.com/';
 

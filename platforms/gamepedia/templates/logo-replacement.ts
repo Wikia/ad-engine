@@ -37,6 +37,7 @@ export class LogoReplacement {
 		if (parentElement && gamepediaLogo) {
 			const newLogoAnchorElement = document.createElement('a');
 			newLogoAnchorElement.href = this.config.clickThroughUrl || 'https://www.gamepedia.com/';
+			newLogoAnchorElement.classList.add('netbar-box', 'left');
 
 			const newLogo = document.createElement('img');
 			newLogo.src = this.config.logoImage;

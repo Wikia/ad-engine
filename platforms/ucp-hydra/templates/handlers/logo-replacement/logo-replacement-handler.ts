@@ -16,6 +16,7 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 		if (parentElement && gamepediaLogo) {
 			const newLogoAnchorElement = document.createElement('a');
 			newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.gamepedia.com/';
+			newLogoAnchorElement.classList.add('netbar-box', 'left');
 
 			const newLogo = document.createElement('img');
 			newLogo.src = this.params.logoImage;
