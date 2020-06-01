@@ -130,7 +130,7 @@ export class GptProvider implements Provider {
 		this.setupRestrictDataProcessing();
 		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
 		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
-			this.destroySlots([adSlot.getSlotName()]);
+			this.destroySlot(adSlot.getSlotName());
 		});
 		initialized = true;
 	}
@@ -161,8 +161,7 @@ export class GptProvider implements Provider {
 		}
 	}
 
-	/** @private */
-	fillInCallback(adSlot: AdSlot): void {
+	private fillInCallback(adSlot: AdSlot): void {
 		const targeting = this.parseTargetingParams(adSlot.getTargeting());
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
@@ -242,49 +241,36 @@ export class GptProvider implements Provider {
 		window.googletag.pubads().updateCorrelator();
 	}
 
-	/** @private */
-	flush(): void {
+	private flush(): void {
 		if (definedSlots.length) {
 			window.googletag.pubads().refresh(definedSlots, { changeCorrelator: false });
 			definedSlots = [];
 		}
 	}
 
-	private destroySlots(slotNames: string[]): boolean {
+	private destroySlot(slotName: string): boolean {
 		const allSlots = window.googletag.pubads().getSlots();
-		let slotsToDestroy = allSlots;
+		const slotToDestroy = allSlots.find((gptSlot) => slotName === gptSlot.getSlotElementId());
 
-		if (slotNames && slotNames.length) {
-			slotsToDestroy = allSlots.filter((slot) => {
-				const slotId = slot.getSlotElementId();
+		if (slotToDestroy) {
+			this.destroyGptSlot(slotToDestroy);
 
-				if (!slotId) {
-					logger(logGroup, 'destroySlots', "slot doesn't return element id", slot);
-				} else if (slotNames.indexOf(slotId) > -1) {
-					return true;
-				}
-
-				return false;
-			});
-		}
-
-		if (slotsToDestroy.length) {
-			this.destroyGptSlots(slotsToDestroy);
 			return true;
 		}
 
-		logger(logGroup, 'destroySlots', 'no slots returned to destroy', allSlots, slotNames);
+		logger(logGroup, 'destroySlot', "slot doesn't return element id", slotName);
+
 		return false;
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
-	private destroyGptSlots(gptSlots: googletag.Slot[]): void {
-		logger(logGroup, 'destroySlots', gptSlots);
+	private destroyGptSlot(gptSlot: googletag.Slot): void {
+		logger(logGroup, 'destroySlot', gptSlot);
 
-		const success = window.googletag.destroySlots(gptSlots);
+		const success = window.googletag.destroySlots([gptSlot]);
 
 		if (!success) {
-			logger(logGroup, 'destroySlots', gptSlots, 'failed');
+			logger(logGroup, 'destroySlot', gptSlot, 'failed');
 		}
 	}
 }
