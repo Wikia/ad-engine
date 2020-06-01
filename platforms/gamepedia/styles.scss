@@ -1,4 +1,7 @@
 @import 'src/ad-products/styles/styles.scss';
+@import 'src/ad-products/styles/mixin.scss';
+
+@include logo-replacement(30px);
 
 .has-bfaa {
 	padding-top: 0 !important;
@@ -56,12 +59,4 @@ html.disable-ads {
 // Fix mobile navigation gray area
 .primary-navigation-enabled {
 	margin-top: 0 !important;
-}
-
-.new-logo {
-	max-height: 30px;
-}
-
-.tracking-pixel {
-	display: none;
 }

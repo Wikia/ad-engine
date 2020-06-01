@@ -1,6 +1,8 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 
+@include logo-replacement(55px);
+
 @mixin ucp-oasis-uap-styles() {
 	.wds-global-navigation-wrapper {
 		@include uap-navbar();
@@ -90,12 +92,4 @@
 
 #invisible_skin {
 	display: none !important;
-}
-
-.new-logo {
-	max-height: 55px;
-}
-
-.tracking-pixel {
-	display: none;
 }

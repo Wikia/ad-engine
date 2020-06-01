@@ -1,4 +1,7 @@
 @import 'src/ad-products/styles/styles.scss';
+@import 'src/ad-products/styles/mixin.scss';
+
+@include logo-replacement(48px);
 
 .gdm__wrapper {
 	text-align: center;
@@ -80,12 +83,4 @@
 	.gpt-ad.bfaa-template {
 		max-width: 100vw;
 	}
-}
-
-.new-logo {
-	max-height: 48px;
-}
-
-.tracking-pixel {
-	display: none;
 }

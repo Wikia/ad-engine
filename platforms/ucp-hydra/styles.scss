@@ -43,6 +43,8 @@
 
 @include ucp-hydra-uap-styles();
 
+@include logo-replacement(30px);
+
 // #######################################
 
 .gpt-ad {
@@ -55,12 +57,4 @@
 			display: none;
 		}
 	}
-}
-
-.new-logo {
-	max-height: 30px;
-}
-
-.tracking-pixel {
-	display: none;
 }

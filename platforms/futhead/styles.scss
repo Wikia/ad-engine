@@ -1,4 +1,7 @@
 @import 'src/ad-products/styles/styles.scss';
+@import 'src/ad-products/styles/mixin.scss';
+
+@include logo-replacement(40px);
 
 .gdm__wrapper {
 	text-align: center;
@@ -84,12 +87,4 @@
 
 #cdm-zone-04 {
 	margin: 15px auto;
-}
-
-.new-logo {
-	max-height: 40px;
-}
-
-.tracking-pixel {
-	display: none;
 }
