@@ -1,8 +1,8 @@
 import { slotsContext, TemplatesSetup } from '@platforms/shared';
 import { BigFancyAdAbove, BigFancyAdBelow, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { getBfaaConfig } from './big-fancy-ad-above-config';
-import { getBfabConfig } from './big-fancy-ad-below-config';
+import { getBfaaConfig } from '../../shared/templates-old/big-fancy-ad-above-config';
+import { getBfabConfig } from '../../shared/templates-old/big-fancy-ad-below-config';
 import { LogoReplacement } from './logo-replacement-templatet';
 
 @Injectable()
