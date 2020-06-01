@@ -128,11 +128,15 @@ export class GptProvider implements Provider {
 		configure();
 		this.setupNonPersonalizedAds();
 		this.setupRestrictDataProcessing();
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.destroySlots());
+		// TODO: move out
+		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
+			this.destroySlots();
+			slotService.removeAll();
+		});
 		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
-		eventService.on(events.AD_SLOT_DESTROY_TRIGGERED, (adSlotName: string) =>
-			this.destroySlots([adSlotName]),
-		);
+		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
+			this.destroySlots([adSlot.getSlotName()]);
+		});
 		initialized = true;
 	}
 
@@ -252,7 +256,7 @@ export class GptProvider implements Provider {
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
-	destroyGptSlots(gptSlots: googletag.Slot[]): void {
+	private destroyGptSlots(gptSlots: googletag.Slot[]): void {
 		logger(logGroup, 'destroySlots', gptSlots);
 
 		gptSlots.forEach((gptSlot) => {
@@ -268,7 +272,7 @@ export class GptProvider implements Provider {
 		}
 	}
 
-	destroySlots(slotNames?: string[]): boolean {
+	private destroySlots(slotNames?: string[]): boolean {
 		const allSlots = window.googletag.pubads().getSlots();
 		let slotsToDestroy = allSlots;
 
