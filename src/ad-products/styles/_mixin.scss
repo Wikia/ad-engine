@@ -51,3 +51,13 @@
 		fill: $hivi-uap-dark-button-color;
 	}
 }
+
+@mixin logo-replacement($max-height) {
+	.new-logo {
+		max-height: $max-height;
+	}
+
+	.tracking-pixel {
+		display: none;
+	}
+}
