@@ -107,6 +107,7 @@ export class SafeBigFancyAdProxy {
 			autoPlay: true,
 			resolvedStateAutoPlay: true,
 			videoPlaceholderElement: this.thumbnail,
+			splitLayoutVideoPosition: 'right',
 
 			image1: {
 				element: this.defaultBackground,
