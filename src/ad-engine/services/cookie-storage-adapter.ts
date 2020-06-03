@@ -3,7 +3,6 @@ import { StorageProvider } from './universal-storage';
 
 interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 	overwrite: boolean;
-	maxAge: number;
 }
 
 export class CookieStorageAdapter implements StorageProvider {
@@ -20,7 +19,6 @@ export class CookieStorageAdapter implements StorageProvider {
 			path: '/',
 			domain: this.getCookieDomain(),
 			overwrite: true,
-			maxAge: this.cacheMaxAge,
 		};
 
 		this.keysSeen.add(key);
