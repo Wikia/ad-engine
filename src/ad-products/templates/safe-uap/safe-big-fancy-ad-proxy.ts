@@ -40,8 +40,8 @@ export class SafeBigFancyAdProxy {
 				<div id="defaultBackground" class="hidden-state" style="background-image: url('${images.default}')"></div>
 				<div id="resolvedBackground" class="hidden-state" style="background-image: url('${images.resolved}')"></div>
 			</div>
-			<div id="videoContainer" class="video-element">
-				<img id="videoThumbnail" src="${this.config.thumbnail}" />
+			<div id="videoContainer" class="video-element hide">
+				<img id="videoThumbnail" />
 			</div>
 		`;
 	}
@@ -55,11 +55,21 @@ export class SafeBigFancyAdProxy {
 			element.addEventListener('click', () => top.open(this.config.clickThroughUrl, '_blank'));
 		});
 
+		if (context.get('state.isMobile')) {
+			this.adContainer.classList.add('theme-mobile');
+		}
+
 		const thumbnailContainer = iframeDocument.getElementById('videoContainer');
 		if (this.config.thumbnail) {
 			this.thumbnail = thumbnailContainer;
-		} else {
-			thumbnailContainer.classList.add('hide');
+
+			const thumbnailImage: HTMLImageElement = iframeDocument.getElementById(
+				'videoThumbnail',
+			) as HTMLImageElement;
+			thumbnailImage.addEventListener('load', () => {
+				this.thumbnail.classList.remove('hide');
+			});
+			thumbnailImage.src = this.config.thumbnail;
 		}
 	}
 
