@@ -40,6 +40,7 @@ export class UniversalStorage {
 		try {
 			this.provider.setItem(key, value);
 		} catch (e) {
+			console.warn(`Item ${key} wasn't set in the storage`, e);
 			this.fallbackStorage[key] = value;
 		}
 		return true;
