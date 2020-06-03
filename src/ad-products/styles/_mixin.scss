@@ -52,9 +52,20 @@
 	}
 }
 
+@keyframes translate-new-logo {
+	to {
+		transform: translateY(0);
+	}
+}
+
 @mixin logo-replacement($max-height) {
 	.new-logo {
 		max-height: $max-height;
+		transform: translateY(-100%);
+		animation-name: translate-new-logo;
+		animation-delay: 0.2s;
+		animation-duration: 0.4s;
+		animation-fill-mode: forwards;
 	}
 
 	.tracking-pixel {
