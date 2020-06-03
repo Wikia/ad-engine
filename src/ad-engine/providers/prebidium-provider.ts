@@ -18,7 +18,7 @@ export class PrebidiumProvider implements Provider {
 	}
 
 	private getIframeDoc(adSlot: AdSlot): Document {
-		const iframe = this.iframeBuilder.create(adSlot);
+		const iframe = this.iframeBuilder.create(adSlot.getElement());
 
 		return iframe.contentWindow.document;
 	}

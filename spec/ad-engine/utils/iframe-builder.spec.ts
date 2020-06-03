@@ -7,7 +7,6 @@ describe('IFrameBuilder', () => {
 	let iframeBuilder;
 	const mock = {
 		div: undefined,
-		adSlot: undefined,
 	};
 
 	beforeEach(() => {
@@ -20,17 +19,14 @@ describe('IFrameBuilder', () => {
 
 		beforeEach(() => {
 			mock.div = document.createElement('div');
-			mock.adSlot = {
-				getElement: () => mock.div,
-			};
-			iframe = iframeBuilder.create(mock.adSlot);
+			iframe = iframeBuilder.create(mock.div);
 		});
 
 		it('should create iframe', () => {
 			assert.equal(iframe.tagName, 'IFRAME');
 		});
 
-		it('should append iframe to adSlot element', () => {
+		it('should append iframe to passed element', () => {
 			assert.equal(mock.div.children[0], iframe);
 		});
 

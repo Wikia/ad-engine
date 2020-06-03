@@ -248,6 +248,10 @@ export class AdSlot extends EventEmitter {
 		return iframe.dataset.isSafeframe === 'true' ? 'safe' : 'regular';
 	}
 
+	getCreativeSize(): string | null {
+		return Array.isArray(this.creativeSize) ? this.creativeSize.join('x') : this.creativeSize;
+	}
+
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
 		const { pos = '' } = this.targeting;

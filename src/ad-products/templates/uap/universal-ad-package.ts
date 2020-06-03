@@ -38,6 +38,7 @@ export interface UapConfig {
 		top?: UapState<number>;
 		right?: UapState<number>;
 		bottom?: UapState<number>;
+		width?: UapState<number>;
 	};
 }
 
@@ -72,7 +73,7 @@ export interface UapParams {
 	lineItemId: string;
 	loadMedrecFromBTF: boolean;
 	moatTracking: boolean;
-	player: HTMLElement;
+	player: string;
 	resolvedStateAspectRatio: number;
 	resolvedStateAutoPlay: boolean;
 	resolvedStateForced?: boolean;
