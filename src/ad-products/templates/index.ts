@@ -4,7 +4,6 @@ export { Skin } from './skin';
 export { StickyAd } from './sticky-ad';
 export { StickyTLB } from './sticky-tlb';
 export { SafeFanTakeoverElement } from './safe-uap/safe-fan-takeover-element';
-export * from './logo-replacement';
 export * from './uap';
 export * from './out-of-page';
 export * from './outstream';

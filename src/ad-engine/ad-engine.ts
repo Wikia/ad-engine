@@ -40,6 +40,9 @@ export class AdEngine {
 
 		templateService.register(FloatingAd);
 
+		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
+			slotService.removeAll();
+		});
 		eventService.on(events.PAGE_CHANGE_EVENT, () => {
 			this.started = false;
 			this.setupAdStack();

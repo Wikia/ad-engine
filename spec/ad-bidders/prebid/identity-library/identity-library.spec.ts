@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, utils } from '../../../src/ad-engine';
-import { identityLibrary } from '../../../src/ad-services';
+import { identityLibrary } from '../../../../src/ad-bidders/prebid/identity-library';
+import { context, utils } from '../../../../src/ad-engine';
 
 describe('IX Identity Library', () => {
 	const sandbox = createSandbox();
@@ -11,7 +11,7 @@ describe('IX Identity Library', () => {
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		context.set('services.ixIdentityLibrary.enabled', true);
+		context.set('bidders.ixIdentityLibrary.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
@@ -25,17 +25,10 @@ describe('IX Identity Library', () => {
 		await identityLibrary.call();
 
 		expect(loadScriptStub.called).to.equal(true);
-		expect(
-			loadScriptStub.calledWith(
-				'//js-sec.indexww.com/ht/p/183085-19173550049191.js',
-				'text/javascript',
-				true,
-			),
-		).to.equal(true);
 	});
 
 	it('IX Identity Library can be disabled', async () => {
-		context.set('services.ixIdentityLibrary.enabled', false);
+		context.set('bidders.ixIdentityLibrary.enabled', false);
 
 		await identityLibrary.call();
 

@@ -6,7 +6,6 @@ import {
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
-	identityLibrary,
 	permutive,
 	taxonomyService,
 } from '@wikia/ad-engine';
@@ -36,7 +35,6 @@ export class GamepediaAdsMode implements AdsMode {
 		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
-		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();
 
