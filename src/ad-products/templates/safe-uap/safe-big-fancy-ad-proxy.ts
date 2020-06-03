@@ -39,9 +39,9 @@ export class SafeBigFancyAdProxy {
 			<div id="adContainer">
 				<div id="defaultBackground" class="hidden-state" style="background-image: url('${images.default}')"></div>
 				<div id="resolvedBackground" class="hidden-state" style="background-image: url('${images.resolved}')"></div>
-			</div>
-			<div id="videoContainer" class="video-element hide">
-				<img id="videoThumbnail" />
+				<div id="videoContainer" class="video-element hide">
+					<img id="videoThumbnail" />
+				</div>
 			</div>
 		`;
 	}
