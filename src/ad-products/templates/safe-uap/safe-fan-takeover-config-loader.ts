@@ -7,7 +7,7 @@ interface BigFancyAdConfig {
 		boxad300x250: string;
 		boxad300x600?: string;
 		default: string;
-		resolved: string;
+		resolved?: string;
 	};
 }
 
@@ -42,16 +42,14 @@ export class SafeFanTakeoverConfigLoader {
 			},
 			mobile: {
 				aspectRatio: {
-					default: 4,
-					resolved: 10,
+					default: 1.7777777778,
+					resolved: 3,
 				},
 				images: {
 					boxad300x250:
 						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/boxad.jpg',
 					default:
-						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/impact.jpg',
-					resolved:
-						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/resolved.jpg',
+						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/impact-mobile.jpg',
 				},
 			},
 			autoplay: true,
