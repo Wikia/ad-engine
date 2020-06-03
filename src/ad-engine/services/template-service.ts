@@ -63,8 +63,7 @@ class TemplateService {
 			},
 			(data: any) => {
 				if (data.action === 'loadTemplate') {
-					const slotName = (data.slotName || '').split(',').shift();
-					const adSlot = slotService.get(slotName);
+					const adSlot = slotService.get(data.slotName);
 
 					this.init(data.type, adSlot, data);
 				}
