@@ -72,6 +72,10 @@ class SlotService {
 		eventService.emit(events.AD_SLOT_CREATED, adSlot);
 	}
 
+	removeAll(): void {
+		Object.values(this.slots).forEach((slot) => this.remove(slot));
+	}
+
 	/**
 	 * Removes slot from register
 	 */
