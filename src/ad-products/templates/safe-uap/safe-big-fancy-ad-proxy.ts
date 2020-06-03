@@ -46,14 +46,20 @@ export class SafeBigFancyAdProxy {
 		`;
 	}
 
-	private setupElements(iframeDocument: Document, hasThumbnail: boolean): void {
+	private setupElements(iframeDocument: Document): void {
 		this.adContainer = iframeDocument.getElementById('adContainer');
 		this.defaultBackground = iframeDocument.getElementById('defaultBackground');
 		this.resolvedBackground = iframeDocument.getElementById('resolvedBackground');
 
-		if (hasThumbnail) {
-			this.thumbnail = iframeDocument.getElementById('videoContainer');
-			this.thumbnail.classList.add('hide');
+		[this.defaultBackground, this.resolvedBackground].forEach((element) => {
+			element.addEventListener('click', () => top.open(this.config.clickThroughUrl, '_blank'));
+		});
+
+		const thumbnailContainer = iframeDocument.getElementById('videoContainer');
+		if (this.config.thumbnail) {
+			this.thumbnail = thumbnailContainer;
+		} else {
+			thumbnailContainer.classList.add('hide');
 		}
 	}
 
