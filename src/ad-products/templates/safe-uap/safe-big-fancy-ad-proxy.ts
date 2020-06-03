@@ -26,7 +26,7 @@ export class SafeBigFancyAdProxy {
 
 		const iframe: HTMLIFrameElement = iframeBuilder.create(divContainer, this.getIframeContent());
 
-		this.setupElements(iframe.contentWindow.document, !!this.config.thumbnail);
+		this.setupElements(iframe.contentWindow.document);
 		this.adSlot.overrideIframe(iframe);
 	}
 
