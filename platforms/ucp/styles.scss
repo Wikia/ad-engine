@@ -2,6 +2,8 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/porvata';
 
+@include logo-replacement(55px);
+
 @mixin ucp-oasis-uap-styles() {
 	.wds-global-navigation-wrapper {
 		@include uap-navbar();
