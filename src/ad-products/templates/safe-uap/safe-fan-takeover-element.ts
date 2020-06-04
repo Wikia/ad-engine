@@ -1,4 +1,4 @@
-import { AdSlot } from '@ad-engine/core';
+import { AdSlot, events, eventService } from '@ad-engine/core';
 import { SafeBigFancyAdProxy } from './safe-big-fancy-ad-proxy';
 import {
 	FanTakeoverCampaignConfig,
@@ -29,6 +29,9 @@ export class SafeFanTakeoverElement {
 			SafeFanTakeoverElement.config = await this.safeFanTakeoverConfigLoader.loadConfig(
 				params.campaign,
 			);
+			eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => {
+				SafeFanTakeoverElement.config = null;
+			});
 		}
 
 		if (this.isBfaSize()) {
