@@ -1,8 +1,15 @@
 // blockadblock doesn't export anything meaningful
 // it sets blockAdBlock and BlockAdBlock properties on window
+import { Communicator } from '@wikia/post-quecast';
 import 'blockadblock';
+import { action, props } from 'ts-action';
 import { utils } from '../';
 import { context } from '../services';
+
+const babDetectedEvent = action(
+	'[Ad Engine] BAB detection finished',
+	props<{ detected: boolean }>(),
+);
 
 const logGroup = 'bab-detection';
 
@@ -10,6 +17,8 @@ let bab: BlockAdBlock;
 let isBabInitialised = false;
 
 class BabDetection {
+	private communicator = new Communicator();
+
 	getName(): string {
 		return logGroup;
 	}
@@ -25,7 +34,7 @@ class BabDetection {
 
 		this.setRuntimeParams(isBabDetected);
 		this.updateSrcParameter(isBabDetected);
-		this.dispatchDetectionEvent(isBabDetected);
+		this.dispatchDetectionEvents(isBabDetected);
 
 		return isBabDetected;
 	}
@@ -45,17 +54,15 @@ class BabDetection {
 			bab.onNotDetected(() => resolve(false));
 
 			bab.check(true);
-		}).then(
-			(detected: boolean): boolean => {
-				if (detected) {
-					enabled();
-				} else {
-					disabled();
-				}
+		}).then((detected: boolean): boolean => {
+			if (detected) {
+				enabled();
+			} else {
+				disabled();
+			}
 
-				return detected;
-			},
-		);
+			return detected;
+		});
 	}
 
 	private setupBab(): void {
@@ -84,12 +91,16 @@ class BabDetection {
 		}
 	}
 
-	private dispatchDetectionEvent(isBabDetected: boolean): void {
+	private dispatchDetectionEvents(isBabDetected: boolean): void {
 		const event = document.createEvent('Event');
 		const name = isBabDetected ? 'bab.blocking' : 'bab.not_blocking';
 
+		// Legacy
 		event.initEvent(name, true, false);
 		document.dispatchEvent(event);
+
+		// Post-QueCast
+		this.communicator.dispatch(babDetectedEvent({ detected: isBabDetected }));
 	}
 }
 
