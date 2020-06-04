@@ -52,17 +52,17 @@
 	}
 }
 
-@keyframes translate-new-logo {
+@keyframes fade-in {
 	to {
-		transform: translateY(0);
+		opacity: 1;
 	}
 }
 
 @mixin logo-replacement($max-height) {
 	.new-logo {
 		max-height: $max-height;
-		transform: translateY(-100%);
-		animation-name: translate-new-logo;
+		opacity: 0;
+		animation-name: fade-in;
 		animation-duration: 2s;
 		animation-fill-mode: forwards;
 	}
