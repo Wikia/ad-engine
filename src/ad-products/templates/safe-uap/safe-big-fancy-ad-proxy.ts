@@ -1,5 +1,5 @@
 import { AdSlot, context, templateService, utils } from '@ad-engine/core';
-import { universalAdPackage } from '../uap';
+import { UapConfig, universalAdPackage } from '../uap';
 import { FanTakeoverCampaignConfig } from './safe-fan-takeover-config-loader';
 
 const BASE_ASSETS_URL = '//static.nocookie.net/fandom-ae-assets/programmatic/latest';
@@ -132,7 +132,7 @@ export class SafeBigFancyAdProxy {
 		});
 	}
 
-	private getStateSetup(deviceType: string) {
+	private getStateSetup(deviceType: string): UapConfig['state'] {
 		switch (deviceType) {
 			case 'desktop':
 				return {
