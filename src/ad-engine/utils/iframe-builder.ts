@@ -1,5 +1,5 @@
 export class IframeBuilder {
-	create(element: HTMLElement, htmlContent: string = null): HTMLIFrameElement {
+	create(element: HTMLElement, htmlContent?: string): HTMLIFrameElement {
 		const iframe = this.createEmptyIframe();
 
 		element.appendChild(iframe);

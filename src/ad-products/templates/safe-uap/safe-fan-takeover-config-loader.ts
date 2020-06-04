@@ -61,5 +61,3 @@ export class SafeFanTakeoverConfigLoader {
 		};
 	}
 }
-
-export const safeFanTakeoverConfigLoader = new SafeFanTakeoverConfigLoader();

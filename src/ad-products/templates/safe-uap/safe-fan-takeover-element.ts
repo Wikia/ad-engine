@@ -2,7 +2,7 @@ import { AdSlot } from '@ad-engine/core';
 import { SafeBigFancyAdProxy } from './safe-big-fancy-ad-proxy';
 import {
 	FanTakeoverCampaignConfig,
-	safeFanTakeoverConfigLoader,
+	SafeFanTakeoverConfigLoader,
 } from './safe-fan-takeover-config-loader';
 
 interface SafeFanTakeoverElementConfig {
@@ -13,18 +13,22 @@ interface SafeFanTakeoverElementConfig {
 const BIG_FANCY_AD_SIZES = ['2x2', '3x3'];
 
 export class SafeFanTakeoverElement {
-	static config: FanTakeoverCampaignConfig = null;
+	static config: FanTakeoverCampaignConfig;
 	static getName(): string {
 		return 'safeFanTakeoverElement';
 	}
+
+	private safeFanTakeoverConfigLoader = new SafeFanTakeoverConfigLoader();
 
 	constructor(private adSlot: AdSlot) {}
 
 	async init(params: SafeFanTakeoverElementConfig): Promise<void> {
 		this.adSlot.getIframe().parentElement.classList.add('hide');
 
-		if (SafeFanTakeoverElement.config === null) {
-			SafeFanTakeoverElement.config = await safeFanTakeoverConfigLoader.loadConfig(params.campaign);
+		if (!SafeFanTakeoverElement.config) {
+			SafeFanTakeoverElement.config = await this.safeFanTakeoverConfigLoader.loadConfig(
+				params.campaign,
+			);
 		}
 
 		if (this.isBfaSize()) {

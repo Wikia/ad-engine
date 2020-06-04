@@ -59,9 +59,8 @@ export class SafeBigFancyAdProxy {
 			this.adContainer.classList.add('theme-mobile');
 		}
 
-		const thumbnailContainer = iframeDocument.getElementById('videoContainer');
 		if (this.config.thumbnail) {
-			this.thumbnail = thumbnailContainer;
+			this.thumbnail = iframeDocument.getElementById('videoContainer');
 
 			const thumbnailImage: HTMLImageElement = iframeDocument.getElementById(
 				'videoThumbnail',
