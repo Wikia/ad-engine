@@ -9,15 +9,20 @@ window.guaTrackEvent = (...args) => {
 
 context.extend(customContext);
 context.set('targeting.artid', '535');
-context.set('targeting.likho', likhoService.refresh());
 context.set('slots.top_leaderboard.sizes', [
 	{
 		viewportSize: [728, 0],
-		sizes: [[728, 90], [3, 3]],
+		sizes: [
+			[728, 90],
+			[3, 3],
+		],
 	},
 	{
 		viewportSize: [970, 0],
-		sizes: [[970, 250], [3, 3]],
+		sizes: [
+			[970, 250],
+			[3, 3],
+		],
 	},
 ]);
 
@@ -27,6 +32,8 @@ if (document.body.offsetWidth < 728) {
 }
 
 setupNpaContext();
+
+likhoService.refresh();
 
 new AdEngine().init();
 

@@ -65,12 +65,11 @@ export default {
 				slots: {
 					incontent_player: {
 						videoAdUnitId: '/5441/wka.life/_project43//article/test/outstream',
-						customParams:
-							's1=_project43&artid=402&src=test&pos=incontent_player&passback=wikiaVideo',
+						customParams: 's1=_project43&artid=402&src=test&pos=incontent_player',
 					},
 					featured: {
 						videoAdUnitId: '/5441/wka.life/_project43//article/test/featured',
-						customParams: 's1=_project43&artid=402&src=test&pos=featured&passback=wikiaVideo',
+						customParams: 's1=_project43&artid=402&src=test&pos=featured',
 					},
 				},
 			},
@@ -383,7 +382,6 @@ export default {
 	},
 	targeting: {
 		cid: cid || null,
-		outstream: 'none',
 		s1: '_project43',
 		uap: 'none',
 	},

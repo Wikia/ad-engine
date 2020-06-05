@@ -15,6 +15,7 @@ describe('PrebidiumProvider', () => {
 		doc: 'mock_document',
 		adId: 'mock_ad_id',
 		slotName: 'mock_slot_name',
+		element: 'mock_slot_element',
 	};
 
 	beforeEach(() => {
@@ -36,6 +37,7 @@ describe('PrebidiumProvider', () => {
 		beforeEach(async () => {
 			adSlot = {
 				getSlotName: () => mock.slotName,
+				getElement: () => mock.slotName,
 			};
 			await prebidiumProvider.fillIn(adSlot);
 		});

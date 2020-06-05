@@ -1,10 +1,16 @@
-import { AdSlot } from '../models';
-
 export class IframeBuilder {
-	create(adSlot: AdSlot): HTMLIFrameElement {
-		const doc = adSlot.getElement();
+	create(element: HTMLElement, htmlContent?: string): HTMLIFrameElement {
+		const iframe = this.createEmptyIframe();
 
-		return doc.appendChild(this.createEmptyIframe());
+		element.appendChild(iframe);
+
+		if (htmlContent) {
+			iframe.contentWindow.document.open();
+			iframe.contentWindow.document.write(htmlContent);
+			iframe.contentWindow.document.close();
+		}
+
+		return iframe;
 	}
 
 	/**

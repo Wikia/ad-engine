@@ -7,9 +7,6 @@ export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> =
 ) => {
 	const now = new Date();
 	const timestamp: number = now.getTime();
-	const creativeSize: string = Array.isArray(slot.creativeSize)
-		? slot.creativeSize.join('x')
-		: slot.creativeSize;
 
 	return next({
 		slot,
@@ -19,14 +16,14 @@ export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> =
 			ad_status: data.ad_status || slot.getStatus(),
 			advertiser_id: slot.advertiserId || '',
 			creative_id: slot.creativeId || '',
-			creative_size: creativeSize || '',
+			creative_size: slot.getCreativeSize() || '',
 			kv_pos: slot.getMainPositionName(),
 			kv_rv: slot.getConfigProperty('targeting.rv') || '',
 			kv_wsi: slot.getConfigProperty('targeting.wsi') || '',
 			order_id: slot.orderId || '',
 			product_lineitem_id: slot.lineItemId || '',
 			slot_id: slot.getUid() || '',
-			slot_size: creativeSize || '',
+			slot_size: slot.getCreativeSize() || '',
 		},
 	});
 };

@@ -4,11 +4,15 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	events,
+	eventService,
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class MinervaAdsMode implements AdsMode {
@@ -21,10 +25,21 @@ export class MinervaAdsMode implements AdsMode {
 
 		this.setAdStack();
 		this.trackAdEngineStatus();
+		this.trackTabId();
 	}
 
 	private trackAdEngineStatus(): void {
 		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
+	}
+
+	private trackTabId(): void {
+		if (!context.get('options.tracking.tabId')) {
+			return;
+		}
+
+		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
+
+		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -44,9 +59,18 @@ export class MinervaAdsMode implements AdsMode {
 
 	private setAdStack(): void {
 		context.push('state.adStack', { id: 'top_leaderboard' });
-		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
-		context.push('state.adStack', { id: 'incontent_boxad_1' });
-		context.push('state.adStack', { id: 'footer_boxad' });
+
+		eventService.once(events.FIRST_CALL_ENDED, () => {
+			if (universalAdPackage.isFanTakeoverLoaded()) {
+				context.push('events.pushOnScroll.ids', 'top_boxad');
+				context.push('events.pushOnScroll.ids', 'incontent_boxad_1');
+				context.push('events.pushOnScroll.ids', 'footer_boxad');
+			} else {
+				context.push('state.adStack', { id: 'top_boxad' });
+				context.push('state.adStack', { id: 'incontent_boxad_1' });
+				context.push('state.adStack', { id: 'footer_boxad' });
+			}
+			context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
+		});
 	}
 }

@@ -109,9 +109,13 @@ $vpaid-z-index: 10;
 				display: none;
 			}
 
+			.porvata-on-icon {
+				display: block;
+			}
+
 			&.is-on {
 				.porvata-off-icon {
-					display: inline-block;
+					display: block;
 				}
 
 				.porvata-on-icon {

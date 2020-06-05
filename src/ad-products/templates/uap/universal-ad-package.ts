@@ -38,6 +38,7 @@ export interface UapConfig {
 		top?: UapState<number>;
 		right?: UapState<number>;
 		bottom?: UapState<number>;
+		width?: UapState<number>;
 	};
 }
 
@@ -72,7 +73,7 @@ export interface UapParams {
 	lineItemId: string;
 	loadMedrecFromBTF: boolean;
 	moatTracking: boolean;
-	player: HTMLElement;
+	player: string;
 	resolvedStateAspectRatio: number;
 	resolvedStateAutoPlay: boolean;
 	resolvedStateForced?: boolean;
@@ -90,9 +91,7 @@ export interface UapParams {
 	videoTriggers: any[];
 
 	// Video
-	vastTargeting: {
-		passback: string;
-	};
+	vastTargeting: {};
 	videoTriggerElement: HTMLVideoElement;
 	type: string;
 
@@ -162,9 +161,7 @@ async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlay
 	const imageContainer: HTMLElement = params.container.querySelector('div:last-of-type');
 	const size: VideoSize = getVideoSize(params.container, params, videoSettings);
 
-	params.vastTargeting = {
-		passback: getType(),
-	};
+	params.vastTargeting = {};
 	params.width = size.width;
 	params.height = size.height;
 	videoSettings.updateParams(params);
