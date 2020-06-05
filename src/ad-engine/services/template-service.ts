@@ -1,10 +1,9 @@
-import { Communicator } from '@wikia/post-quecast';
 import { tap } from 'rxjs/operators';
 import { action, payload } from 'ts-action';
 import { ofType } from 'ts-action-operators';
 import { AdSlot, Dictionary } from '../models';
 import { logger } from '../utils';
-import { context, slotService } from './';
+import { context, eventService, slotService } from './';
 
 const logGroup = 'template-service';
 
@@ -71,9 +70,7 @@ class TemplateService {
 	}
 
 	subscribeCommunicator(): void {
-		const communicator = new Communicator();
-
-		communicator.actions$
+		eventService.communicator.actions$
 			.pipe(
 				ofType(loadTemplate),
 				tap(({ payload }: { payload: LoadTemplatePayload }) => {
