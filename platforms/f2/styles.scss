@@ -2,16 +2,16 @@
 @import 'platforms/shared/styles/index';
 
 @mixin ucp-oasis-uap-styles() {
-	.global-navigation-mobile-wrapper,
-	.wds-global-navigation-wrapper {
-		@include uap-navbar();
-	}
 	//
 	//#globalNavigation {
 	//  position: static;
 	//}
 
 	.has-uap {
+		.global-navigation-mobile-wrapper,
+		.wds-global-navigation-wrapper {
+			@include uap-navbar();
+		}
 		//.WikiaSiteWrapper {
 		//  margin-top: 0;
 		//}
