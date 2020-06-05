@@ -104,6 +104,8 @@ export class AdSlot extends EventEmitter {
 
 	private slotViewed = false;
 
+	private customIframe: HTMLIFrameElement = null;
+
 	config: SlotConfig;
 	element: null | HTMLElement = null;
 	status: null | string = null;
@@ -225,7 +227,15 @@ export class AdSlot extends EventEmitter {
 			return null;
 		}
 
+		if (this.customIframe) {
+			return this.customIframe;
+		}
+
 		return element.querySelector<HTMLIFrameElement>('div[id*="_container_"] iframe');
+	}
+
+	overrideIframe(iframe: HTMLIFrameElement): void {
+		this.customIframe = iframe;
 	}
 
 	getFrameType(): 'safe' | 'regular' | null {
@@ -236,6 +246,10 @@ export class AdSlot extends EventEmitter {
 		}
 
 		return iframe.dataset.isSafeframe === 'true' ? 'safe' : 'regular';
+	}
+
+	getCreativeSize(): string | null {
+		return Array.isArray(this.creativeSize) ? this.creativeSize.join('x') : this.creativeSize;
 	}
 
 	// Main position is the first value defined in the "pos" key-value (targeting)

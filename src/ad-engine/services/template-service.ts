@@ -1,10 +1,25 @@
+import { Communicator } from '@wikia/post-quecast';
+import { tap } from 'rxjs/operators';
+import { action, payload } from 'ts-action';
+import { ofType } from 'ts-action-operators';
 import { AdSlot, Dictionary } from '../models';
-import { logger } from '../utils/logger';
-import { context } from './';
+import { logger } from '../utils';
+import { context, slotService } from './';
 
 const logGroup = 'template-service';
 
 type TemplateInitializer = Pick<TemplateService, 'init'> & { has: (name: string) => boolean };
+
+interface LoadTemplatePayload {
+	campaign?: string;
+	slotName: string;
+	type: string;
+}
+
+export const loadTemplate = action(
+	'[TemplateService] Load template',
+	payload<LoadTemplatePayload>(),
+);
 
 class TemplateService {
 	private initializer?: TemplateInitializer;
@@ -53,6 +68,21 @@ class TemplateService {
 		}
 
 		return new this.templates[name](slot).init(params);
+	}
+
+	subscribeCommunicator(): void {
+		const communicator = new Communicator();
+
+		communicator.actions$
+			.pipe(
+				ofType(loadTemplate),
+				tap(({ payload }: { payload: LoadTemplatePayload }) => {
+					const adSlot = slotService.get(payload.slotName);
+
+					this.init(payload.type, adSlot, payload);
+				}),
+			)
+			.subscribe();
 	}
 }
 

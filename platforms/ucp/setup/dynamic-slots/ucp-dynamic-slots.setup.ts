@@ -44,11 +44,11 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 		}
 
 		communicator.actions$.pipe(ofType('[Rail] Ready'), take(1)).subscribe(() => {
-			this.appendRotatingSlot(
-				icbSlotName,
-				slotConfig.repeat.slotNamePattern,
-				document.querySelector(slotConfig.parentContainerSelector),
-			);
+			const parent = document.querySelector<HTMLDivElement>(slotConfig.parentContainerSelector);
+
+			if (parent) {
+				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
+			}
 		});
 	}
 
