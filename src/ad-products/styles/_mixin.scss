@@ -60,11 +60,11 @@
 
 @mixin logo-replacement($max-height) {
 	.new-logo {
-		max-height: $max-height;
-		opacity: 0;
-		animation-name: fade-in;
 		animation-duration: 3s;
 		animation-fill-mode: forwards;
+		animation-name: fade-in;
+		max-height: $max-height;
+		opacity: 0;
 	}
 
 	.tracking-pixel {
