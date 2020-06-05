@@ -1,5 +1,11 @@
 import { TemplatesSetup } from '@platforms/shared';
-import { logTemplates, PorvataTemplate, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import {
+	logTemplates,
+	PorvataTemplate,
+	SafeFanTakeoverElement,
+	TemplateRegistry,
+	templateService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
@@ -31,5 +37,6 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 		);
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
+		templateService.register(SafeFanTakeoverElement);
 	}
 }
