@@ -1,4 +1,4 @@
-import { AdSlot, context, templateService, utils } from '@ad-engine/core';
+import { AdSlot, btfBlockerService, context, templateService, utils } from '@ad-engine/core';
 import { UapConfig, universalAdPackage } from '../uap';
 import { FanTakeoverCampaignConfig } from './safe-fan-takeover-config-loader';
 
@@ -14,6 +14,7 @@ export class SafeBigFancyAdProxy {
 
 	loadTemplate(): void {
 		this.createNewAdSlotIframe();
+		this.finishFirstCallIfBfaa();
 		this.initTemplate();
 	}
 
@@ -70,6 +71,14 @@ export class SafeBigFancyAdProxy {
 			});
 			thumbnailImage.src = this.config.thumbnail;
 		}
+	}
+
+	private finishFirstCallIfBfaa(): void {
+		if (universalAdPackage.isFanTakeoverLoaded()) {
+			return;
+		}
+
+		btfBlockerService.finishFirstCall();
 	}
 
 	private initTemplate(): void {
