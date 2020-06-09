@@ -29,6 +29,7 @@ const logGroup = 'A9Provider';
 
 export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
+	static VIDEO_TTL = 10 * 60 * 1000; // 10 minutes for video bid to expire
 	private static isApstagConfigured = false;
 
 	private loaded = false;
@@ -152,6 +153,7 @@ export class A9Provider extends BidderProvider {
 		const startTime = new Date().getTime();
 		const currentBids: A9Bid[] = await this.apstag.fetchBids({ slots, timeout: this.timeout });
 		const endTime: number = new Date().getTime();
+		const expirationDate = new Date(endTime + A9Provider.VIDEO_TTL);
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 		this.configureApstagOnce();
@@ -161,7 +163,7 @@ export class A9Provider extends BidderProvider {
 				const slotName: string = bid.slotID;
 				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
-				this.updateBidSlot(slotName, keys, bidTargeting);
+				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
 				eventService.emit(
 					events.BIDS_RESPONSE,
@@ -328,7 +330,12 @@ export class A9Provider extends BidderProvider {
 		};
 	}
 
-	private updateBidSlot(slotName: string, keys: string[], bidTargeting: Dictionary): void {
+	private updateBidSlot(
+		slotName: string,
+		keys: string[],
+		bidTargeting: Dictionary,
+		expirationDate: Date,
+	): void {
 		this.bids[slotName] = {};
 		keys.forEach((key) => {
 			if (this.targetingKeys.indexOf(key) === -1) {
@@ -336,6 +343,10 @@ export class A9Provider extends BidderProvider {
 			}
 			this.bids[slotName][key] = bidTargeting[key];
 		});
+
+		if (context.get(`slots.${slotName}.isVideo`)) {
+			this.bids[slotName]['amznExpirationDate'] = expirationDate.toString();
+		}
 	}
 
 	protected async callBids(): Promise<void> {

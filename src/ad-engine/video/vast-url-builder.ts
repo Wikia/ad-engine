@@ -41,6 +41,8 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		...extraTargeting,
 	};
 
+	validateAmazonBid(params);
+
 	return encodeURIComponent(
 		Object.keys(params)
 			.filter((key: string) => params[key])
@@ -57,6 +59,18 @@ function getVideoSizes(slot: AdSlot): string {
 	}
 
 	return '640x480';
+}
+
+function validateAmazonBid(params: Dictionary) {
+	const expirationDate = Date.parse(params.amznExpirationDate);
+	const currentDate = new Date().getTime();
+
+	if (expirationDate < currentDate) {
+		delete params.amznExpirationDate;
+		delete params.amznbid;
+		delete params.amzniid;
+		delete params.amznp;
+	}
 }
 
 export function buildVastUrl(
