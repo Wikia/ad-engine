@@ -124,7 +124,7 @@ export class Context {
 		segment(key, value);
 	}
 
-	get<T = any>(key: string): T {
+	get(key: string): any {
 		return segment(key);
 	}
 

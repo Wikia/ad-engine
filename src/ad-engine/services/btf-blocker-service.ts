@@ -60,7 +60,7 @@ class BtfBlockerService {
 	}
 
 	private isSafeFanTakeover(adSlot: AdSlot): boolean {
-		const lineItemIds = context.get<string[]>('templates.safeFanTakeoverElement.lineItemIds') || [];
+		const lineItemIds: string[] = context.get('templates.safeFanTakeoverElement.lineItemIds') || [];
 
 		return lineItemIds.includes(adSlot.lineItemId.toString());
 	}

@@ -13,9 +13,14 @@ export class SafeBigFancyAdProxy {
 	constructor(private adSlot: AdSlot, private config: FanTakeoverCampaignConfig) {}
 
 	loadTemplate(): void {
+		const isFirstCall = !universalAdPackage.isFanTakeoverLoaded();
+
 		this.createNewAdSlotIframe();
-		this.finishFirstCallIfBfaa();
-		this.initTemplate();
+		this.initTemplate(isFirstCall);
+
+		if (isFirstCall) {
+			btfBlockerService.finishFirstCall();
+		}
 	}
 
 	private createNewAdSlotIframe(): void {
@@ -73,19 +78,11 @@ export class SafeBigFancyAdProxy {
 		}
 	}
 
-	private finishFirstCallIfBfaa(): void {
-		if (universalAdPackage.isFanTakeoverLoaded()) {
-			return;
-		}
-
-		btfBlockerService.finishFirstCall();
-	}
-
-	private initTemplate(): void {
+	private initTemplate(isFirstCall: boolean): void {
 		const deviceType = context.get('state.isMobile') ? 'mobile' : 'desktop';
 		const state = this.getStateSetup(deviceType);
 		const platformConfig = this.config[deviceType];
-		const templateName = universalAdPackage.isFanTakeoverLoaded() ? 'bfab' : 'bfaa';
+		const templateName = isFirstCall ? 'bfaa' : 'bfab';
 
 		templateService.init(templateName, this.adSlot, {
 			type: templateName,
