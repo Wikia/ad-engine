@@ -1,4 +1,4 @@
-import { AdSlot, events, eventService } from '@ad-engine/core';
+import { AdSlot, events, eventService, utils } from '@ad-engine/core';
 import { SafeBigFancyAdProxy } from './safe-big-fancy-ad-proxy';
 import {
 	FanTakeoverCampaignConfig,
@@ -37,8 +37,12 @@ export class SafeFanTakeoverElement {
 		if (this.isBfaSize()) {
 			this.loadBigFancyAd();
 		} else {
-			// TODO ADEN-10313: load boxad
+			this.loadBoxad();
 		}
+	}
+
+	private isBfaSize(): boolean {
+		return BIG_FANCY_AD_SIZES.includes(this.adSlot.getCreativeSize());
 	}
 
 	private loadBigFancyAd(): void {
@@ -47,7 +51,27 @@ export class SafeFanTakeoverElement {
 		bfaProxy.loadTemplate();
 	}
 
-	private isBfaSize(): boolean {
-		return BIG_FANCY_AD_SIZES.includes(this.adSlot.getCreativeSize());
+	private loadBoxad(): void {
+		const divContainer = document.createElement('div');
+		const iframeBuilder = new utils.IframeBuilder();
+		let imageUrl = SafeFanTakeoverElement.config.desktop.images.boxad300x250;
+		let height = '250px';
+		const width = '300px';
+
+		if (this.adSlot.getCreativeSize() === '300x600') {
+			imageUrl = SafeFanTakeoverElement.config.desktop.images.boxad300x600;
+			height = '600px';
+		}
+		divContainer.classList.add('iframe-container');
+		this.adSlot.getElement().appendChild(divContainer);
+
+		const iframe: HTMLIFrameElement = iframeBuilder.create(divContainer, `<img src="${imageUrl}">`);
+
+		divContainer.style.height = height;
+		divContainer.style.width = width;
+		iframe.style.height = '100%';
+		iframe.style.width = '100%';
+
+		this.adSlot.overrideIframe(iframe);
 	}
 }
