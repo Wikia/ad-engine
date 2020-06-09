@@ -13,26 +13,28 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 		const parentElement = document.querySelector('.netbar-flex');
 		const gamepediaLogo = document.querySelector('#netbar .netbar-box.logo');
 
-		if (parentElement && gamepediaLogo) {
-			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.gamepedia.com/';
-			newLogoAnchorElement.classList.add('netbar-box', 'left');
+		setTimeout(() => {
+			if (parentElement && gamepediaLogo) {
+				const newLogoAnchorElement = document.createElement('a');
+				newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.gamepedia.com/';
+				newLogoAnchorElement.classList.add('netbar-box', 'left');
 
-			const newLogo = document.createElement('img');
-			newLogo.src = this.params.logoImage;
-			newLogo.classList.add('new-logo');
+				const newLogo = document.createElement('img');
+				newLogo.src = this.params.logoImage;
+				newLogo.classList.add('new-logo');
 
-			const trackingPixel = document.createElement('img');
-			trackingPixel.src = this.params.pixelUrl;
-			trackingPixel.classList.add('pixel-tracking');
+				const trackingPixel = document.createElement('img');
+				trackingPixel.src = this.params.pixelUrl;
+				trackingPixel.classList.add('pixel-tracking');
 
-			parentElement.insertBefore(newLogoAnchorElement, gamepediaLogo);
-			parentElement.removeChild(gamepediaLogo);
-			parentElement.appendChild(trackingPixel);
-			newLogoAnchorElement.appendChild(newLogo);
+				parentElement.insertBefore(newLogoAnchorElement, gamepediaLogo);
+				parentElement.removeChild(gamepediaLogo);
+				parentElement.appendChild(trackingPixel);
+				newLogoAnchorElement.appendChild(newLogo);
 
-			this.adSlot.emitEvent(events.LOGO_REPLACED);
-		}
+				this.adSlot.emitEvent(events.LOGO_REPLACED);
+			}
+		}, 1000);
 	}
 
 	async onLeave(): Promise<void> {}

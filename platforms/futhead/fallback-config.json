@@ -132,6 +132,24 @@
             }
         }
     ],
+    "icSafeFanTakeoverLineItemIds": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "5381590794"
+            ]
+        }
+    ],
     "icBidsTracking": [
         {
             "apps": [
