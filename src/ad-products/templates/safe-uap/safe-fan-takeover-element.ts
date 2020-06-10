@@ -10,6 +10,11 @@ interface SafeFanTakeoverElementConfig {
 	slotName: string;
 }
 
+interface Size {
+	height: number;
+	width: number;
+}
+
 const BIG_FANCY_AD_SIZES = ['2x2', '3x3'];
 
 export class SafeFanTakeoverElement {
@@ -54,24 +59,31 @@ export class SafeFanTakeoverElement {
 	private loadBoxad(): void {
 		const divContainer = document.createElement('div');
 		const iframeBuilder = new utils.IframeBuilder();
-		let imageUrl = SafeFanTakeoverElement.config.desktop.images.boxad300x250;
-		let height = '250px';
-		const width = '300px';
+		const imageUrl = this.getBoxadImageUrl();
+		const { height, width } = this.getBoxadSize();
 
-		if (this.adSlot.getCreativeSize() === '300x600') {
-			imageUrl = SafeFanTakeoverElement.config.desktop.images.boxad300x600;
-			height = '600px';
-		}
 		divContainer.classList.add('iframe-container');
 		this.adSlot.getElement().appendChild(divContainer);
 
 		const iframe: HTMLIFrameElement = iframeBuilder.create(divContainer, `<img src="${imageUrl}">`);
 
-		divContainer.style.height = height;
-		divContainer.style.width = width;
+		divContainer.style.height = `${height}px`;
+		divContainer.style.width = `${width}px`;
 		iframe.style.height = '100%';
 		iframe.style.width = '100%';
 
 		this.adSlot.overrideIframe(iframe);
+	}
+
+	private getBoxadImageUrl(): string {
+		return this.adSlot.getCreativeSize() === '300x600'
+			? SafeFanTakeoverElement.config.desktop.images.boxad300x600
+			: SafeFanTakeoverElement.config.desktop.images.boxad300x250;
+	}
+
+	private getBoxadSize(): Size {
+		return this.adSlot.getCreativeSize() === '300x600'
+			? { height: 600, width: 300 }
+			: { height: 250, width: 300 };
 	}
 }
