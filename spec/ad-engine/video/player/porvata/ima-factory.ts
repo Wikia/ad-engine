@@ -40,6 +40,7 @@ export function getIma(): typeof google.ima {
 		AdErrorEvent: {
 			Type: AdErrorEventType,
 		},
+		VERSION: '300',
 		ViewMode: {
 			Normal: 0,
 		},

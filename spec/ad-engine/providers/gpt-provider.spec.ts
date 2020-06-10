@@ -24,6 +24,7 @@ describe('gpt-provider', () => {
 			addEventListener: spy(),
 			disableInitialLoad: spy(),
 			enableSingleRequest: spy(),
+			enableVideoAds: spy(),
 			setRequestNonPersonalizedAds: spy(),
 			setPrivacySettings: spy(),
 			setTargeting: spy(),
