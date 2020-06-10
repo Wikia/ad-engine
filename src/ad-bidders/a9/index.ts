@@ -74,8 +74,8 @@ export class A9Provider extends BidderProvider {
 			if (context.get('bidders.a9.videoBidsCleaning')) {
 				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
-				eventService.on(events.INVALIDATE_SLOT_TARGETING, (params: Dictionary) =>
-					this.invalidateSlotTargeting(params),
+				eventService.on(events.INVALIDATE_SLOT_TARGETING, (adSlot: AdSlot) =>
+					this.invalidateSlotTargeting(adSlot),
 				);
 			}
 
@@ -94,15 +94,18 @@ export class A9Provider extends BidderProvider {
 		}
 	}
 
-	private invalidateSlotTargeting(params: Dictionary) {
-		const expirationDate = Date.parse(params.amznExpirationDate);
+	private invalidateSlotTargeting(adSlot: AdSlot) {
+		const expirationDate = Date.parse(
+			context.get(`slots.${adSlot.getSlotName()}.targeting.amznExpirationDate`),
+		);
 		const currentDate = new Date().getTime();
 
 		if (expirationDate < currentDate) {
-			delete params.amznExpirationDate;
-			delete params.amznbid;
-			delete params.amzniid;
-			delete params.amznp;
+			const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+			delete this.bids[slotAlias];
+			this.targetingKeys.forEach((key: string) => {
+				context.remove(`slots.${adSlot.getSlotName()}.targeting.${key}`);
+			});
 		}
 	}
 
@@ -361,6 +364,7 @@ export class A9Provider extends BidderProvider {
 
 		if (context.get(`slots.${slotName}.isVideo`)) {
 			this.bids[slotName]['amznExpirationDate'] = expirationDate.toString();
+			this.targetingKeys.push('amznExpirationDate');
 		}
 	}
 

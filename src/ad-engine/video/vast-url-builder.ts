@@ -35,13 +35,13 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		setTargetingValue(key, contextTargeting[key]);
 	});
 
+	eventService.emit(events.INVALIDATE_SLOT_TARGETING, slot);
+
 	const params: Dictionary = {
 		...targeting,
 		...slot.getTargeting(),
 		...extraTargeting,
 	};
-
-	eventService.emit(events.INVALIDATE_SLOT_TARGETING, params);
 
 	return encodeURIComponent(
 		Object.keys(params)
