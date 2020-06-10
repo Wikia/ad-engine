@@ -23,6 +23,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { HideSmartBannerHandler } from './handlers/hide-smart-banner-handler';
 
 export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -33,6 +34,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				StickyTlbBootstrapHandler,
 				StickyTlbConfigHandler,
 				AdvertisementLabelHandler,
+				HideSmartBannerHandler,
 				DebugTransitionHandler,
 			],
 			sticky: [

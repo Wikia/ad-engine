@@ -11,8 +11,8 @@ export function registerRoadblockTemplate(registry: TemplateRegistry): Observabl
 		'initial',
 		[
 			RoadblockHandler.config({
-				enabledSlots: ['top_boxad', 'invisible_skin'],
-				disableSlots: ['incontent_player', 'floor_adhesion'],
+				enabledSlots: ['top_leaderboard', 'top_boxad'],
+				disableSlots: [],
 			}),
 		],
 	);

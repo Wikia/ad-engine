@@ -2,19 +2,11 @@
 @import 'platforms/shared/styles/index';
 
 @mixin ucp-oasis-uap-styles() {
-	//
-	//#globalNavigation {
-	//  position: static;
-	//}
-
 	.has-uap {
 		.global-navigation-mobile-wrapper,
 		.wds-global-navigation-wrapper {
 			@include uap-navbar();
 		}
-		//.WikiaSiteWrapper {
-		//  margin-top: 0;
-		//}
 
 		#top_leaderboard,
 		#hivi_leaderboard {
@@ -62,6 +54,7 @@
 
 #top_leaderboard {
 	text-align: center;
+	background-color: #000;
 
 	> div {
 		text-align: center;

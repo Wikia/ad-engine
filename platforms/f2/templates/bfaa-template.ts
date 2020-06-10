@@ -34,6 +34,7 @@ import {
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { BfaaF2ConfigHandler } from './handlers/bfaa/bfaa-f2-config-handler';
+import { HideSmartBannerHandler } from './handlers/hide-smart-banner-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -46,8 +47,8 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				VideoCtpHandler,
 				VideoRestartHandler,
 				AdvertisementLabelHandler,
+				HideSmartBannerHandler,
 				DebugTransitionHandler,
-				// TODO: Hide smart banner
 			],
 			impact: [
 				SlotSizeImpactToResolvedHandler,
