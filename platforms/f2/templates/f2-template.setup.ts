@@ -4,6 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
+import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
@@ -18,9 +19,9 @@ export class F2TemplateSetup implements TemplatesSetup {
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
-		// TODO: Logo Replacement
+		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 
-		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$));
+		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$, logoReplacement$));
 
 		templateService.register(FloatingRail, {
 			enabled: false,

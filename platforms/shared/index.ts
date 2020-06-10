@@ -47,6 +47,7 @@ export * from './templates/handlers/page/page-offset-impact-handler';
 export * from './templates/handlers/page/page-offset-resolved-handler';
 export * from './templates/handlers/roadblock/roadblock-handler';
 export * from './templates/handlers/roadblock/roadblock-params';
+export * from './templates/handlers/logo-replacement/logo-replacement-params';
 export * from './templates/handlers/navbar/navbar-offset-impact-to-resolved-handler';
 export * from './templates/handlers/navbar/navbar-offset-resolved-handler';
 export * from './templates/handlers/navbar/navbar-offset-resolved-to-none-handler';
