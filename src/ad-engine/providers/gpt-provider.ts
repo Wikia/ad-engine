@@ -10,7 +10,7 @@ import {
 	slotService,
 	trackingOptIn,
 } from '../services';
-import { defer, logger } from '../utils';
+import { defer, logger, scriptLoader } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -22,6 +22,7 @@ export const GAMOrigins: string[] = [
 	'https://tpc.googlesyndication.com',
 	'https://googleads.g.doubleclick.net',
 ];
+const GPT_PROXY_URL = '//imasdk.googleapis.com/js/sdkloader/gpt_proxy.js';
 
 export function postponeExecutionUntilGptLoads(method: () => void) {
 	return function (...args: any) {
@@ -79,6 +80,9 @@ function configure() {
 
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 	});
+
+	scriptLoader.loadScript(GPT_PROXY_URL);
+	tag.enableVideoAds();
 
 	window.googletag.enableServices();
 }

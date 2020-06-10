@@ -61,7 +61,7 @@ export class PorvataFactory {
 	private static async load(): Promise<void> {
 		if (!PorvataFactory.loadSdkPromise) {
 			PorvataFactory.loadSdkPromise = new Promise(async (resolve) => {
-				if (!(window.google && window.google.ima)) {
+				if (!(window.google && window.google.ima && window.google.ima.VERSION)) {
 					await utils.scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js');
 				}
 
