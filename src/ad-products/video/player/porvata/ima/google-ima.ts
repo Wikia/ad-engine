@@ -9,7 +9,7 @@ export class GoogleIma {
 	static async init(): Promise<GoogleIma> {
 		if (!GoogleIma.instance) {
 			GoogleIma.instance = new Promise(async (resolve) => {
-				if (!(window.google && window.google.ima)) {
+				if (!(window.google && window.google.ima && window.google.ima.VERSION)) {
 					await utils.scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js');
 				}
 
