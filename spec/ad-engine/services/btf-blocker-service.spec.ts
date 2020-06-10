@@ -35,6 +35,7 @@ describe('btf-blocker-service', () => {
 		firstCallSlot = {
 			...adSlotFake,
 			name: 'A',
+			lineItemId: '',
 			config: {
 				...adSlotFake.config,
 				firstCall: true,
@@ -43,6 +44,7 @@ describe('btf-blocker-service', () => {
 		secondCallSlot = {
 			...adSlotFake,
 			name: 'B',
+			lineItemId: '',
 			config: {
 				...adSlotFake.config,
 				firstCall: false,

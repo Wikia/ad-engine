@@ -1,9 +1,8 @@
 // blockadblock doesn't export anything meaningful
 // it sets blockAdBlock and BlockAdBlock properties on window
-import { Communicator } from '@wikia/post-quecast';
 import 'blockadblock';
 import { action, props } from 'ts-action';
-import { utils } from '../';
+import { eventService, utils } from '../';
 import { context } from '../services';
 
 const babDetectedEvent = action(
@@ -17,8 +16,6 @@ let bab: BlockAdBlock;
 let isBabInitialised = false;
 
 class BabDetection {
-	private communicator = new Communicator();
-
 	getName(): string {
 		return logGroup;
 	}
@@ -100,7 +97,7 @@ class BabDetection {
 		document.dispatchEvent(event);
 
 		// Post-QueCast
-		this.communicator.dispatch(babDetectedEvent({ detected: isBabDetected }));
+		eventService.communicator.dispatch(babDetectedEvent({ detected: isBabDetected }));
 	}
 }
 
