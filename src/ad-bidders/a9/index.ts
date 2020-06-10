@@ -74,6 +74,9 @@ export class A9Provider extends BidderProvider {
 			if (context.get('bidders.a9.videoBidsCleaning')) {
 				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
+				eventService.on(events.INVALIDATE_SLOT_TARGETING, (params: Dictionary) =>
+					this.invalidateSlotTargeting(params),
+				);
 			}
 
 			this.apstag.init(this.getApstagConfig(consentData, signalData));
@@ -88,6 +91,18 @@ export class A9Provider extends BidderProvider {
 
 		if (adSlot.isVideo()) {
 			eventService.emit(events.VIDEO_AD_USED, adSlot);
+		}
+	}
+
+	private invalidateSlotTargeting(params: Dictionary) {
+		const expirationDate = Date.parse(params.amznExpirationDate);
+		const currentDate = new Date().getTime();
+
+		if (expirationDate < currentDate) {
+			delete params.amznExpirationDate;
+			delete params.amznbid;
+			delete params.amzniid;
+			delete params.amznp;
 		}
 	}
 

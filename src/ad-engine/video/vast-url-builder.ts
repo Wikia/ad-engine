@@ -1,5 +1,5 @@
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { context, slotService, trackingOptIn } from '../services';
+import { context, events, eventService, slotService, trackingOptIn } from '../services';
 
 export interface VastOptions {
 	correlator: number;
@@ -41,7 +41,7 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		...extraTargeting,
 	};
 
-	validateAmazonBid(params);
+	eventService.emit(events.INVALIDATE_SLOT_TARGETING, params);
 
 	return encodeURIComponent(
 		Object.keys(params)
@@ -59,18 +59,6 @@ function getVideoSizes(slot: AdSlot): string {
 	}
 
 	return '640x480';
-}
-
-function validateAmazonBid(params: Dictionary) {
-	const expirationDate = Date.parse(params.amznExpirationDate);
-	const currentDate = new Date().getTime();
-
-	if (expirationDate < currentDate) {
-		delete params.amznExpirationDate;
-		delete params.amznbid;
-		delete params.amzniid;
-		delete params.amznp;
-	}
 }
 
 export function buildVastUrl(
