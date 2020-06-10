@@ -18,6 +18,7 @@ export class F2TemplateSetup implements TemplatesSetup {
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
+		// TODO: Logo Replacement
 
 		logTemplates(merge(bfaa$, bfab$, stickyTlb$, roadblock$));
 

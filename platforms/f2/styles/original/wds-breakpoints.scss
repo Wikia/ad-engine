@@ -1,0 +1,127 @@
+$wds-screen: 'screen';
+$wds-breakpoint-small: 0;
+$wds-breakpoint-medium: 768px;
+$wds-breakpoint-large: 1024px;
+$wds-breakpoint-xlarge: 1280px;
+$wds-breakpoint-xxlarge: 1500px;
+
+// content well margins
+$wds-content-well-margins: 18px;
+
+// how much space is available on any breakpoint
+$wds-breakpoint-medium-available-width: $wds-breakpoint-medium - 2 * $wds-content-well-margins;
+$wds-breakpoint-large-available-width: $wds-breakpoint-large - 2 * $wds-content-well-margins;
+$wds-breakpoint-xlarge-available-width: $wds-breakpoint-xlarge - 2 * $wds-content-well-margins;
+$wds-breakpoint-xxlarge-available-width: $wds-breakpoint-xxlarge - 2 * $wds-content-well-margins;
+
+// "only" breakpoints
+$wds-breakpoint-small-only: '#{$wds-screen} and (max-width: #{$wds-breakpoint-medium - 1})';
+$wds-breakpoint-medium-only: '#{$wds-screen} and (min-width: #{$wds-breakpoint-medium}) and (max-width: #{$wds-breakpoint-large - 1})';
+$wds-breakpoint-large-only: '#{$wds-screen} and (min-width: #{$wds-breakpoint-large}) and (max-width: #{$wds-breakpoint-xlarge - 1})';
+$wds-breakpoint-xlarge-only: '#{$wds-screen} and (min-width: #{$wds-breakpoint-xlarge}) and (max-width: #{$wds-breakpoint-xxlarge - 1})';
+$wds-breakpoint-xxlarge-only: '#{$wds-screen} and (min-width: #{$wds-breakpoint-xxlarge})';
+
+// "up" breakpoints
+$wds-breakpoint-small-up: '#{$wds-screen}';
+$wds-breakpoint-medium-up: '#{$wds-screen} and (min-width: #{$wds-breakpoint-medium})';
+$wds-breakpoint-large-up: '#{$wds-screen} and (min-width: #{$wds-breakpoint-large})';
+$wds-breakpoint-xlarge-up: '#{$wds-screen} and (min-width: #{$wds-breakpoint-xlarge})';
+$wds-breakpoint-xxlarge-up: $wds-breakpoint-xxlarge-only;
+
+// "down" breakpoints
+$wds-breakpoint-small-down: $wds-breakpoint-small-only;
+$wds-breakpoint-medium-down: '#{$wds-screen} and (max-width: #{$wds-breakpoint-large - 1})';
+$wds-breakpoint-large-down: '#{$wds-screen} and (max-width: #{$wds-breakpoint-xlarge - 1})';
+$wds-breakpoint-xlarge-down: '#{$wds-screen} and (max-width: #{$wds-breakpoint-xxlarge - 1})';
+$wds-breakpoint-xxlarge-down: '#{$wds-screen}';
+
+// Override old DS var for global footer styles
+$wds-breakpoint-xl-up: $wds-breakpoint-large-up;
+
+// Set media query order for MQPacker (part of postcss-loader)
+// See https://github.com/hail2u/node-css-mqpacker#the-first-win-algorithm
+@media #{$wds-breakpoint-small-down} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-small-only} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-small-up} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-medium-down} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-medium-only} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-medium-up} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-large-down} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-large-only} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-large-up} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-xlarge-down} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-xlarge-only} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-xlarge-up} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-xxlarge-down} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-xxlarge-only} {
+	/* not empty */
+}
+@media #{$wds-breakpoint-xxlarge-up} {
+	/* not empty */
+}
+
+// Content Well mixin
+@mixin wds-content-well-mixin($use-xxl-breakpoint: true) {
+	box-sizing: border-box;
+
+	@media #{$wds-breakpoint-small-only} {
+		margin: 0 $wds-content-well-margins;
+	}
+
+	@media #{$wds-breakpoint-medium-up} {
+		margin: 0 auto;
+	}
+
+	@media #{$wds-breakpoint-medium-only} {
+		width: $wds-breakpoint-medium - 2 * $wds-content-well-margins;
+	}
+
+	@media #{$wds-breakpoint-large-only} {
+		width: $wds-breakpoint-large - 2 * $wds-content-well-margins;
+	}
+
+	@if ($use-xxl-breakpoint) {
+		@media #{$wds-breakpoint-xlarge-only} {
+			width: $wds-breakpoint-xlarge - 2 * $wds-content-well-margins;
+		}
+
+		@media #{$wds-breakpoint-xxlarge-up} {
+			width: $wds-breakpoint-xxlarge - 2 * $wds-content-well-margins;
+		}
+	} @else {
+		@media #{$wds-breakpoint-xlarge-up} {
+			width: $wds-breakpoint-xlarge - 2 * $wds-content-well-margins;
+		}
+	}
+}
+
+// mixin for just news and stories
+@mixin news-and-stories-content-well {
+	@include wds-content-well-mixin($use-xxl-breakpoint: false);
+}
