@@ -1,12 +1,11 @@
-import { context, jwpSetup, utils } from '@wikia/ad-engine';
+import { context, eventService, jwpSetup, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator } from '@wikia/post-quecast';
 import { PageTracker } from '../../tracking/page-tracker';
 import { NoAdsMode } from './_no-ads.mode';
 
 @Injectable()
 export class UcpNoAdsMode implements NoAdsMode {
-	constructor(private communicator: Communicator, private pageTracker: PageTracker) {}
+	constructor(private pageTracker: PageTracker) {}
 
 	handleNoAds(): void {
 		this.dispatchJWPlayerSetupAction();
@@ -44,6 +43,6 @@ export class UcpNoAdsMode implements NoAdsMode {
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
-		this.communicator.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
+		eventService.communicator.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
 	}
 }
