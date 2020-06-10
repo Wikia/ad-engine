@@ -1,4 +1,4 @@
-import { AdSlot, context, templateService, utils } from '@ad-engine/core';
+import { AdSlot, btfBlockerService, context, templateService, utils } from '@ad-engine/core';
 import { UapConfig, universalAdPackage } from '../uap';
 import { FanTakeoverCampaignConfig } from './safe-fan-takeover-config-loader';
 
@@ -13,8 +13,14 @@ export class SafeBigFancyAdProxy {
 	constructor(private adSlot: AdSlot, private config: FanTakeoverCampaignConfig) {}
 
 	loadTemplate(): void {
+		const isFirstCall = !universalAdPackage.isFanTakeoverLoaded();
+
 		this.createNewAdSlotIframe();
-		this.initTemplate();
+		this.initTemplate(isFirstCall);
+
+		if (isFirstCall) {
+			btfBlockerService.finishFirstCall();
+		}
 	}
 
 	private createNewAdSlotIframe(): void {
@@ -72,11 +78,11 @@ export class SafeBigFancyAdProxy {
 		}
 	}
 
-	private initTemplate(): void {
+	private initTemplate(isFirstCall: boolean): void {
 		const deviceType = context.get('state.isMobile') ? 'mobile' : 'desktop';
 		const state = this.getStateSetup(deviceType);
 		const platformConfig = this.config[deviceType];
-		const templateName = universalAdPackage.isFanTakeoverLoaded() ? 'bfab' : 'bfaa';
+		const templateName = isFirstCall ? 'bfaa' : 'bfab';
 
 		templateService.init(templateName, this.adSlot, {
 			type: templateName,

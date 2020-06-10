@@ -1,4 +1,4 @@
-import { Communicator } from '@wikia/post-quecast';
+import { Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import * as EventEmitter from 'eventemitter3';
 import { logger } from '../utils';
 
@@ -27,7 +27,15 @@ export const events = {
 };
 
 class EventService extends EventEmitter.EventEmitter {
-	communicator = new Communicator();
+	communicator: Communicator;
+
+	constructor() {
+		super();
+
+		setupPostQuecast();
+
+		this.communicator = new Communicator();
+	}
 
 	emit(event: symbol | string, ...args: any[]): boolean {
 		logger(groupName, 'emit', event, ...args);
