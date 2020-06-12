@@ -69,6 +69,7 @@ export class SafeFanTakeoverElement {
 
 		divContainer.style.height = `${height}px`;
 		divContainer.style.width = `${width}px`;
+		divContainer.style.margin = 'auto';
 		iframe.style.height = '100%';
 		iframe.style.width = '100%';
 
