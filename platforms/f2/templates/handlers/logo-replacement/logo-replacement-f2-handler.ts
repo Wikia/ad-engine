@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../../setup-f2';
 
 @Injectable({ autobind: false })
-export class LogoReplacementHandler implements TemplateStateHandler {
+export class LogoReplacementF2Handler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,

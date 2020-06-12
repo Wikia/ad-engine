@@ -3,20 +3,21 @@ import { AdSlot, events, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
-export class LogoReplacementHandler implements TemplateStateHandler {
+export class LogoReplacementUcpHydraHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
 	) {}
 
 	async onEnter(): Promise<void> {
-		const parentElement = document.querySelector('.wds-global-navigation__content-bar-left');
-		const fandomLogo = document.querySelector('.wds-global-navigation__logo');
+		const parentElement = document.querySelector('.netbar-flex');
+		const gamepediaLogo = document.querySelector('#netbar .netbar-box.logo');
 
 		setTimeout(() => {
-			if (parentElement && fandomLogo) {
+			if (parentElement && gamepediaLogo) {
 				const newLogoAnchorElement = document.createElement('a');
-				newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
+				newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.gamepedia.com/';
+				newLogoAnchorElement.classList.add('netbar-box', 'left');
 
 				const newLogo = document.createElement('img');
 				newLogo.src = this.params.logoImage;
@@ -24,10 +25,10 @@ export class LogoReplacementHandler implements TemplateStateHandler {
 
 				const trackingPixel = document.createElement('img');
 				trackingPixel.src = this.params.pixelUrl;
-				trackingPixel.classList.add('tracking-pixel');
+				trackingPixel.classList.add('pixel-tracking');
 
-				parentElement.insertBefore(newLogoAnchorElement, fandomLogo);
-				parentElement.removeChild(fandomLogo);
+				parentElement.insertBefore(newLogoAnchorElement, gamepediaLogo);
+				parentElement.removeChild(gamepediaLogo);
 				parentElement.appendChild(trackingPixel);
 				newLogoAnchorElement.appendChild(newLogo);
 
