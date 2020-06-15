@@ -34,6 +34,8 @@ export class SafeFanTakeoverConfigLoader {
 				images: {
 					boxad300x250:
 						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/boxad.jpg',
+					boxad300x600:
+						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/boxad300x600.jpg',
 					default:
 						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/impact.jpg',
 					resolved:
@@ -48,6 +50,8 @@ export class SafeFanTakeoverConfigLoader {
 				images: {
 					boxad300x250:
 						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/boxad.jpg',
+					boxad300x600:
+						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/boxad300x600.jpg',
 					default:
 						'//static.nocookie.net/fandom-ae-assets/programmatic/latest/campaign/1/impact-mobile.jpg',
 				},
