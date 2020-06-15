@@ -10,7 +10,6 @@ const logGroup = 'template-service';
 type TemplateInitializer = Pick<TemplateService, 'init'> & { has: (name: string) => boolean };
 
 interface LoadTemplatePayload {
-	campaign?: string;
 	slotName: string;
 	type: string;
 }

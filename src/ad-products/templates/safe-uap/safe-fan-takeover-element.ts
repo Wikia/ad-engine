@@ -33,6 +33,8 @@ export interface FanTakeoverCampaignConfig {
 const BIG_FANCY_AD_SIZES = ['2x2', '3x3'];
 
 export class SafeFanTakeoverElement {
+	static config: FanTakeoverCampaignConfig;
+
 	static getName(): string {
 		return 'safeFanTakeoverElement';
 	}
@@ -40,19 +42,23 @@ export class SafeFanTakeoverElement {
 	constructor(private adSlot: AdSlot) {}
 
 	async init(params: SafeFanTakeoverElementConfig): Promise<void> {
-		const config: FanTakeoverCampaignConfig = params.config;
+		SafeFanTakeoverElement.config = params.config;
 
 		this.adSlot.getIframe().parentElement.classList.add('hide');
 
 		if (this.isBfaSize()) {
-			this.loadBigFancyAd(params.campaign, config);
+			this.loadBigFancyAd(params.campaign);
 		} else {
 			// TODO ADEN-10313: load boxad
 		}
 	}
 
-	private loadBigFancyAd(campaignId: string, config: FanTakeoverCampaignConfig): void {
-		const bfaProxy = new SafeBigFancyAdProxy(this.adSlot, campaignId, config);
+	private loadBigFancyAd(campaignId: string): void {
+		const bfaProxy = new SafeBigFancyAdProxy(
+			this.adSlot,
+			campaignId,
+			SafeFanTakeoverElement.config,
+		);
 
 		bfaProxy.loadTemplate();
 	}
