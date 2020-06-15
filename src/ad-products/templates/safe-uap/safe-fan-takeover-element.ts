@@ -65,7 +65,12 @@ export class SafeFanTakeoverElement {
 		divContainer.classList.add('iframe-container');
 		this.adSlot.getElement().appendChild(divContainer);
 
-		const iframe: HTMLIFrameElement = iframeBuilder.create(divContainer, `<img src="${imageUrl}">`);
+		const html = `
+		<a href="${SafeFanTakeoverElement.config.clickThroughUrl}" target="_blank">
+			<img src="${imageUrl}">
+		</a>`;
+
+		const iframe: HTMLIFrameElement = iframeBuilder.create(divContainer, html);
 
 		divContainer.style.height = `${height}px`;
 		divContainer.style.width = `${width}px`;
