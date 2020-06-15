@@ -1,5 +1,4 @@
-import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
-import { Communicator } from '@wikia/post-quecast';
+import { AdSlot, context, eventService, slotService, tapOnce, utils } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
@@ -18,8 +17,6 @@ interface PlayerReadyResult {
 }
 
 export class JWPlayerManager {
-	private communicator = new Communicator();
-
 	manage(): void {
 		this.onPlayerReady()
 			.pipe(
@@ -30,7 +27,7 @@ export class JWPlayerManager {
 	}
 
 	private onPlayerReady(): Observable<PlayerReadyResult> {
-		return this.communicator.actions$.pipe(
+		return eventService.communicator.actions$.pipe(
 			ofType(jwpReady),
 			tapOnce(() => {
 				this.loadMoatPlugin();
