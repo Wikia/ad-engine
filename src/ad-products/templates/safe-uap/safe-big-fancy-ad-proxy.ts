@@ -1,8 +1,8 @@
 import { AdSlot, btfBlockerService, context, templateService, utils } from '@ad-engine/core';
 import { UapConfig, universalAdPackage } from '../uap';
-import { FanTakeoverCampaignConfig } from './safe-fan-takeover-config-loader';
+import { FanTakeoverCampaignConfig } from './safe-fan-takeover-element';
 
-const BASE_ASSETS_URL = '//static.nocookie.net/fandom-ae-assets/programmatic/latest';
+const BASE_URL = '//services.fandom.com/campaign-provider';
 
 export class SafeBigFancyAdProxy {
 	private adContainer: HTMLElement;
@@ -10,7 +10,11 @@ export class SafeBigFancyAdProxy {
 	private resolvedBackground: HTMLElement;
 	private thumbnail: HTMLElement;
 
-	constructor(private adSlot: AdSlot, private config: FanTakeoverCampaignConfig) {}
+	constructor(
+		private adSlot: AdSlot,
+		private campaignId: string,
+		private config: FanTakeoverCampaignConfig,
+	) {}
 
 	loadTemplate(): void {
 		const isFirstCall = !universalAdPackage.isFanTakeoverLoaded();
@@ -41,7 +45,7 @@ export class SafeBigFancyAdProxy {
 		const images = this.config[deviceType].images;
 
 		return `
-			<link href="${BASE_ASSETS_URL}/fan-takeover.css" rel="stylesheet" />
+			<link href="${BASE_URL}/styles.css" rel="stylesheet" />
 			<div id="adContainer">
 				<div id="defaultBackground" class="hidden-state" style="background-image: url('${images.default}')"></div>
 				<div id="resolvedBackground" class="hidden-state" style="background-image: url('${images.resolved}')"></div>
@@ -103,9 +107,9 @@ export class SafeBigFancyAdProxy {
 			},
 
 			slotName: this.adSlot.getSlotName(),
-			uap: '5381590794', // FIXME
-			lineItemId: '5381590794', // FIXME
-			creativeId: 'foo', // FIXME
+			uap: this.adSlot.lineItemId?.toString(),
+			lineItemId: this.adSlot.lineItemId?.toString(),
+			creativeId: this.adSlot.creativeId?.toString(),
 
 			isSticky: true,
 			backgroundColor: '#000',
@@ -125,7 +129,7 @@ export class SafeBigFancyAdProxy {
 			adContainer: this.adContainer,
 			thumbnail: this.thumbnail,
 
-			// vastUrl: config.vast,  // FIXME
+			vastUrl: `${BASE_URL}/${this.campaignId}/vast.xml`,
 
 			aspectRatio: platformConfig.aspectRatio.default,
 			resolvedStateAspectRatio: platformConfig.aspectRatio.resolved,

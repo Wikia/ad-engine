@@ -15,10 +15,7 @@ interface LoadTemplatePayload {
 	type: string;
 }
 
-export const loadTemplate = action(
-	'[TemplateService] Load template',
-	payload<LoadTemplatePayload>(),
-);
+export const loadTemplate = action('[GAM iframe] Load template', payload<LoadTemplatePayload>());
 
 class TemplateService {
 	private initializer?: TemplateInitializer;
