@@ -1,4 +1,4 @@
-import { AdSlot, utils } from '@ad-engine/core';
+import { AdSlot, events, eventService, utils } from '@ad-engine/core';
 import { SafeBigFancyAdProxy } from './safe-big-fancy-ad-proxy';
 
 interface SafeFanTakeoverElementConfig {
@@ -47,9 +47,14 @@ export class SafeFanTakeoverElement {
 	constructor(private adSlot: AdSlot) {}
 
 	async init(params: SafeFanTakeoverElementConfig): Promise<void> {
-		SafeFanTakeoverElement.config = params.config;
-
 		this.adSlot.getIframe().parentElement.classList.add('hide');
+
+		if (!SafeFanTakeoverElement.config) {
+			SafeFanTakeoverElement.config = params.config;
+			eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => {
+				SafeFanTakeoverElement.config = null;
+			});
+		}
 
 		if (this.isBfaSize()) {
 			this.loadBigFancyAd(params.campaign);
