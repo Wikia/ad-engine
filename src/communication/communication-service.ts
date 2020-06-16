@@ -39,3 +39,5 @@ export class CommunicationService {
 		this.action$.subscribe((action) => devtools.send(action, {}));
 	}
 }
+
+export const communicationService = new CommunicationService();

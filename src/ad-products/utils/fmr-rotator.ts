@@ -1,4 +1,4 @@
-import { globalAction } from '@ad-engine/communication';
+import { communicationService, globalAction } from '@ad-engine/communication';
 import {
 	AdSlot,
 	context,
@@ -72,7 +72,7 @@ export class FmrRotator {
 
 		if (this.recirculationDisabled) {
 			this.swapRecirculation(false);
-			eventService.communicator.dispatch(recirculationDisabledEvent({}));
+			communicationService.dispatch(recirculationDisabledEvent({}));
 			this.startFirstRotation();
 		} else {
 			setTimeout(() => {

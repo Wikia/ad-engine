@@ -1,9 +1,9 @@
 // blockadblock doesn't export anything meaningful
-import { globalAction } from '@ad-engine/communication';
+import { communicationService, globalAction } from '@ad-engine/communication';
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
 import { props } from 'ts-action';
-import { eventService, utils } from '../';
+import { utils } from '../';
 import { context } from '../services';
 
 const babDetectedEvent = globalAction(
@@ -98,7 +98,7 @@ class BabDetection {
 		document.dispatchEvent(event);
 
 		// Post-QueCast
-		eventService.communicator.dispatch(babDetectedEvent({ detected: isBabDetected }));
+		communicationService.dispatch(babDetectedEvent({ detected: isBabDetected }));
 	}
 }
 

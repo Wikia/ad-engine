@@ -1,10 +1,9 @@
-import { globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, globalAction, ofType } from '@ad-engine/communication';
 import {
 	AdSlot,
 	adSlotEvent,
 	btfBlockerService,
 	context,
-	eventService,
 	slotService,
 	utils,
 } from '@ad-engine/core';
@@ -269,7 +268,7 @@ function isFanTakeoverLoaded(): boolean {
 }
 
 export function registerUapListener(): void {
-	eventService.communicator.actions$
+	communicationService.action$
 		.pipe(
 			ofType(adSlotEvent),
 			filter((action) => {
@@ -280,7 +279,7 @@ export function registerUapListener(): void {
 			take(1),
 		)
 		.subscribe(() => {
-			eventService.communicator.dispatch(
+			communicationService.dispatch(
 				uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
 			);
 		});

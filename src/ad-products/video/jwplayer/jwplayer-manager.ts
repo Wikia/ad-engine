@@ -1,5 +1,5 @@
-import { ofType } from '@ad-engine/communication';
-import { AdSlot, context, eventService, slotService, tapOnce, utils } from '@ad-engine/core';
+import { communicationService, ofType } from '@ad-engine/communication';
+import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
@@ -27,7 +27,7 @@ export class JWPlayerManager {
 	}
 
 	private onPlayerReady(): Observable<PlayerReadyResult> {
-		return eventService.communicator.actions$.pipe(
+		return communicationService.action$.pipe(
 			ofType(jwpReady),
 			tapOnce(() => {
 				this.loadMoatPlugin();

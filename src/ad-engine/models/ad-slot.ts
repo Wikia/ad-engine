@@ -1,4 +1,4 @@
-import { globalAction } from '@ad-engine/communication';
+import { action, communicationService } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
 import { AdStackPayload, eventService, slotTweaker, utils } from '../';
@@ -64,7 +64,7 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-export const adSlotEvent = globalAction(
+export const adSlotEvent = action(
 	'[AdEngine] Ad Slot event',
 	props<{
 		event: string;
@@ -549,7 +549,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	private emitPostQueueCast(event: string | symbol, payload: any[]) {
-		eventService.communicator.dispatch(
+		communicationService.dispatch(
 			adSlotEvent({
 				payload: JSON.parse(JSON.stringify(payload)),
 				event: event.toString(),

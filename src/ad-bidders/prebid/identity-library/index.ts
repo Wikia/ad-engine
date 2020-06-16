@@ -1,5 +1,5 @@
-import { globalAction } from '@ad-engine/communication';
-import { context, eventService, utils } from '@ad-engine/core';
+import { communicationService, globalAction } from '@ad-engine/communication';
+import { context, utils } from '@ad-engine/core';
 import { props } from 'ts-action';
 
 const logGroup = 'identity-library';
@@ -30,7 +30,7 @@ class IdentityLibrary {
 			utils.logger(logGroup, 'loading');
 			return utils.scriptLoader.loadScript(scriptUrl).then(() => {
 				const loadEnd = performance.now();
-				eventService.communicator.dispatch(
+				communicationService.dispatch(
 					identityLibraryLoadedEvent({ loadTime: loadEnd - loadStart }),
 				);
 				utils.logger(logGroup, 'ready');

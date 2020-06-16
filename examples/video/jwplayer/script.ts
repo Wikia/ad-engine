@@ -1,7 +1,7 @@
 import {
 	AdSlot,
 	bidders,
-	CommunicationService,
+	communicationService,
 	context,
 	events,
 	eventService,
@@ -15,8 +15,6 @@ import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
 import '../../styles.scss';
 import * as videoData from './video-data.json';
-
-const communicationService = new CommunicationService();
 
 new JWPlayerManager().manage();
 

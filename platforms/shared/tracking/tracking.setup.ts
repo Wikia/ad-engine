@@ -3,6 +3,7 @@ import {
 	AdInfoContext,
 	bidderTracker,
 	Binder,
+	communicationService,
 	Dictionary,
 	eventService,
 	FuncPipelineStep,
@@ -163,10 +164,8 @@ export class TrackingSetup {
 	}
 
 	private identityLibraryLoadTimeTracker(): void {
-		eventService.communicator.actions$
-			.pipe(ofType(identityLibraryLoadedEvent))
-			.subscribe((props) => {
-				this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
-			});
+		communicationService.action$.pipe(ofType(identityLibraryLoadedEvent)).subscribe((props) => {
+			this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
+		});
 	}
 }
