@@ -27,6 +27,9 @@ export const events = {
 	SCROLL_TRACKING_TIME_CHANGED: Symbol('SCROLL_TRACKING_TIME_CHANGED'),
 };
 
+/**
+ * @deprecated For new actions use CommunicationService instead.
+ */
 class EventService extends EventEmitter.EventEmitter {
 	constructor() {
 		super();
