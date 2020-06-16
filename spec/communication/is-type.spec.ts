@@ -4,8 +4,8 @@ import { Action, props } from 'ts-action';
 
 describe('isType', () => {
 	let results: Action[];
-	const localExample = action('[Local]', props<{ foo: string }>());
-	const globalExample = globalAction('[Global]', props<{ bar: string }>());
+	const localExample = action('[Example]', props<{ foo: string }>());
+	const globalExample = globalAction('[Example]', props<{ bar: string }>());
 	const actions = [
 		localExample({ foo: 'a' }),
 		globalExample({ bar: 'b' }),
@@ -25,8 +25,8 @@ describe('isType', () => {
 		});
 
 		expect(results).to.deep.equal([
-			{ type: '[Local]', foo: 'a' },
-			{ type: '[Local]', foo: 'c' },
+			{ type: '[Example]', foo: 'a' },
+			{ type: '[Example]', foo: 'c' },
 		]);
 	});
 
@@ -38,8 +38,8 @@ describe('isType', () => {
 		});
 
 		expect(results).to.deep.equal([
-			{ type: '[Global]', bar: 'b', __global: true },
-			{ type: '[Global]', bar: 'd', __global: true },
+			{ type: '[Example]', bar: 'b', __global: true },
+			{ type: '[Example]', bar: 'd', __global: true },
 		]);
 	});
 
@@ -51,10 +51,10 @@ describe('isType', () => {
 		});
 
 		expect(results).to.deep.equal([
-			{ type: '[Local]', foo: 'a' },
-			{ type: '[Global]', bar: 'b', __global: true },
-			{ type: '[Local]', foo: 'c' },
-			{ type: '[Global]', bar: 'd', __global: true },
+			{ type: '[Example]', foo: 'a' },
+			{ type: '[Example]', bar: 'b', __global: true },
+			{ type: '[Example]', foo: 'c' },
+			{ type: '[Example]', bar: 'd', __global: true },
 		]);
 	});
 });

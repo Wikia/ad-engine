@@ -8,6 +8,8 @@ export function isType<T extends ActionCreator[]>(
 ): action is ActionType<T[number]> {
 	return (
 		tsIsType(action, ...creators) &&
-		creators.some((creator) => (isGlobalActionCreator(creator) ? isGlobalAction(action) : true))
+		creators.some((creator) =>
+			isGlobalActionCreator(creator) ? isGlobalAction(action) : !isGlobalAction(action),
+		)
 	);
 }

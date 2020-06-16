@@ -13,7 +13,7 @@ export function ofType<C extends ActionCreator[]>(
 			tsOfType(...creators),
 			filter((action) =>
 				creators.some((creator) =>
-					isGlobalActionCreator(creator) ? isGlobalAction(action) : true,
+					isGlobalActionCreator(creator) ? isGlobalAction(action) : !isGlobalAction(action),
 				),
 			),
 		);

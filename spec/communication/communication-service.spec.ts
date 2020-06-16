@@ -9,8 +9,8 @@ import { Action, props } from 'ts-action';
 
 describe('CommunicationService', () => {
 	const sandbox = createSandbox();
-	const localExample = action('[Local]', props<{ foo: string }>());
-	const globalExample = globalAction('[Global]', props<{ bar: string }>());
+	const localExample = action('[Example]', props<{ foo: string }>());
+	const globalExample = globalAction('[Example]', props<{ bar: string }>());
 
 	afterEach(() => {
 		sandbox.restore();
@@ -33,13 +33,13 @@ describe('CommunicationService', () => {
 		service.dispatch(globalExample({ bar: 'd' }));
 
 		expect(nextResults).to.deep.equal([
-			{ type: '[Local]', foo: 'a' },
-			{ type: '[Local]', foo: 'c' },
+			{ type: '[Example]', foo: 'a' },
+			{ type: '[Example]', foo: 'c' },
 		]);
 
 		expect(dispatchResults).to.deep.equal([
-			{ type: '[Global]', bar: 'b', __global: true },
-			{ type: '[Global]', bar: 'd', __global: true },
+			{ type: '[Example]', bar: 'b', __global: true },
+			{ type: '[Example]', bar: 'd', __global: true },
 		]);
 	});
 
@@ -64,8 +64,8 @@ describe('CommunicationService', () => {
 		console.log(results);
 
 		expect(results).to.deep.equal([
-			{ type: '[Local]', foo: 'localSubject - a' },
-			{ type: '[Global]', bar: 'globalSubject - d', __global: true },
+			{ type: '[Example]', foo: 'localSubject - a' },
+			{ type: '[Example]', bar: 'globalSubject - d', __global: true },
 		]);
 	});
 });
