@@ -29,6 +29,7 @@ const logGroup = 'A9Provider';
 
 export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
+	static VIDEO_TTL = 10 * 60 * 1000; // 10 minutes for video bid to expire
 	private static isApstagConfigured = false;
 
 	private loaded = false;
@@ -73,6 +74,9 @@ export class A9Provider extends BidderProvider {
 			if (context.get('bidders.a9.videoBidsCleaning')) {
 				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
+				eventService.on(events.INVALIDATE_SLOT_TARGETING, (adSlot: AdSlot) =>
+					this.invalidateSlotTargeting(adSlot),
+				);
 			}
 
 			this.apstag.init(this.getApstagConfig(consentData, signalData));
@@ -87,6 +91,21 @@ export class A9Provider extends BidderProvider {
 
 		if (adSlot.isVideo()) {
 			eventService.emit(events.VIDEO_AD_USED, adSlot);
+		}
+	}
+
+	private invalidateSlotTargeting(adSlot: AdSlot) {
+		const expirationDate = Date.parse(
+			context.get(`slots.${adSlot.getSlotName()}.targeting.amznExpirationDate`),
+		);
+		const currentDate = new Date().getTime();
+
+		if (expirationDate < currentDate) {
+			const slotAlias = this.getSlotAlias(adSlot.getSlotName());
+			delete this.bids[slotAlias];
+			this.targetingKeys.forEach((key: string) => {
+				context.remove(`slots.${adSlot.getSlotName()}.targeting.${key}`);
+			});
 		}
 	}
 
@@ -152,6 +171,7 @@ export class A9Provider extends BidderProvider {
 		const startTime = new Date().getTime();
 		const currentBids: A9Bid[] = await this.apstag.fetchBids({ slots, timeout: this.timeout });
 		const endTime: number = new Date().getTime();
+		const expirationDate = new Date(endTime + A9Provider.VIDEO_TTL);
 
 		utils.logger(logGroup, 'bids fetched for slots', slots, 'bids', currentBids);
 		this.configureApstagOnce();
@@ -161,7 +181,7 @@ export class A9Provider extends BidderProvider {
 				const slotName: string = bid.slotID;
 				const { keys, bidTargeting } = await this.getBidTargetingWithKeys(bid);
 
-				this.updateBidSlot(slotName, keys, bidTargeting);
+				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
 				eventService.emit(
 					events.BIDS_RESPONSE,
@@ -328,7 +348,12 @@ export class A9Provider extends BidderProvider {
 		};
 	}
 
-	private updateBidSlot(slotName: string, keys: string[], bidTargeting: Dictionary): void {
+	private updateBidSlot(
+		slotName: string,
+		keys: string[],
+		bidTargeting: Dictionary,
+		expirationDate: Date,
+	): void {
 		this.bids[slotName] = {};
 		keys.forEach((key) => {
 			if (this.targetingKeys.indexOf(key) === -1) {
@@ -336,6 +361,11 @@ export class A9Provider extends BidderProvider {
 			}
 			this.bids[slotName][key] = bidTargeting[key];
 		});
+
+		if (context.get(`slots.${slotName}.isVideo`)) {
+			this.bids[slotName]['amznExpirationDate'] = expirationDate.toString();
+			this.targetingKeys.push('amznExpirationDate');
+		}
 	}
 
 	protected async callBids(): Promise<void> {
