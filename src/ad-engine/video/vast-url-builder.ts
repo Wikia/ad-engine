@@ -1,5 +1,5 @@
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { context, slotService, trackingOptIn } from '../services';
+import { context, events, eventService, slotService, trackingOptIn } from '../services';
 
 export interface VastOptions {
 	correlator: number;
@@ -34,6 +34,8 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 	Object.keys(contextTargeting).forEach((key) => {
 		setTargetingValue(key, contextTargeting[key]);
 	});
+
+	eventService.emit(events.INVALIDATE_SLOT_TARGETING, slot);
 
 	const params: Dictionary = {
 		...targeting,
