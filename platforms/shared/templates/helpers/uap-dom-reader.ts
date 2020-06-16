@@ -37,11 +37,11 @@ export class UapDomReader {
 	}
 
 	getSlotHeightImpactToResolved(): number {
-		const mixHeight = this.getSlotHeightResolved();
+		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
 		const progress = this.getProgressImpactToResolved();
 
-		return maxHeight - (maxHeight - mixHeight) * progress;
+		return maxHeight - (maxHeight - minHeight) * progress;
 	}
 
 	/**

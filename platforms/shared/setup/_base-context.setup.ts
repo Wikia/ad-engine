@@ -89,10 +89,6 @@ export class BaseContextSetup {
 			this.instantConfig.get('icIASPublisherOptimization'),
 		);
 		context.set(
-			'services.ixIdentityLibrary.enabled',
-			this.instantConfig.get('icIxIdentityLibrary'),
-		);
-		context.set(
 			'services.permutive.enabled',
 			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
 		);
@@ -108,5 +104,11 @@ export class BaseContextSetup {
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
+		context.set('bidders.ixIdentityLibrary.enabled', this.instantConfig.get('icIxIdentityLibrary'));
+
+		context.set(
+			'templates.safeFanTakeoverElement.lineItemIds',
+			this.instantConfig.get('icSafeFanTakeoverLineItemIds'),
+		);
 	}
 }

@@ -4,6 +4,7 @@ import {
 	btRec,
 	context,
 	Dictionary,
+	eventService,
 	fillerService,
 	FmrRotator,
 	PorvataFiller,
@@ -13,7 +14,7 @@ import {
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator, ofType } from '@wikia/post-quecast';
+import { ofType } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
 
 @Injectable()
@@ -37,18 +38,17 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
 		const icbSlotName = 'incontent_boxad_1';
-		const communicator = new Communicator();
 
 		if (context.get('custom.hasFeaturedVideo')) {
 			context.set(`slots.${icbSlotName}.defaultSizes`, [300, 250]);
 		}
 
-		communicator.actions$.pipe(ofType('[Rail] Ready'), take(1)).subscribe(() => {
-			this.appendRotatingSlot(
-				icbSlotName,
-				slotConfig.repeat.slotNamePattern,
-				document.querySelector(slotConfig.parentContainerSelector),
-			);
+		eventService.communicator.actions$.pipe(ofType('[Rail] Ready'), take(1)).subscribe(() => {
+			const parent = document.querySelector<HTMLDivElement>(slotConfig.parentContainerSelector);
+
+			if (parent) {
+				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
+			}
 		});
 	}
 

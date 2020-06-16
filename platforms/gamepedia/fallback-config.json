@@ -76,6 +76,28 @@
             ]
         }
     ],
+    "icLABradorGamKeyValues": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "icPrebidSendAllBids_A_95:send_all_bids_a",
+                "icPrebidSendAllBids_B_5:send_all_bids_b",
+                "icFloatingMedrecRecirculationDisabled_A_90:fmr_50_50_a",
+                "icFloatingMedrecRecirculationDisabled_B_10:fmr_50_50_b",
+                "icIxIdentityLibrary_A_50:ix_library_a",
+                "icIxIdentityLibrary_B_50:ix_library_b"
+            ]
+        }
+    ],
     "icTaxonomyAdTags": [
         {
             "apps": [
@@ -143,6 +165,24 @@
             "value": true
         }
     ],
+    "icSafeFanTakeoverLineItemIds": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "5381590794"
+            ]
+        }
+    ],
     "icBidsTracking": [
         {
             "apps": [
@@ -171,6 +211,19 @@
                 "XX"
             ],
             "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
         }
     ],
     "icIASPublisherOptimization": [
@@ -221,8 +274,10 @@
                 "oasis"
             ],
             "regions": [
-                "NZ"
+                "HK",
+                "NL"
             ],
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -416,6 +471,19 @@
                 "gamepedia",
                 "mobile-wiki",
                 "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icTabIdTracking": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
                 "oasis"
             ],
             "regions": [

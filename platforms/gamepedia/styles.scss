@@ -1,5 +1,7 @@
 @import 'src/ad-products/styles/styles.scss';
 
+@include logo-replacement(30px);
+
 .has-bfaa {
 	padding-top: 0 !important;
 
@@ -56,4 +58,8 @@ html.disable-ads {
 // Fix mobile navigation gray area
 .primary-navigation-enabled {
 	margin-top: 0 !important;
+}
+
+.new-logo {
+	padding-left: 6px;
 }

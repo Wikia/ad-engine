@@ -5,9 +5,9 @@ import {
 	confiant,
 	context,
 	durationMedia,
+	eventService,
 	facebookPixel,
 	iasPublisherOptimization,
-	identityLibrary,
 	JWPlayerManager,
 	jwpSetup,
 	nielsen,
@@ -15,12 +15,11 @@ import {
 	Runner,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { Communicator } from '@wikia/post-quecast';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UcpAdsMode implements AdsMode {
-	constructor(private communicator: Communicator, private pageTracker: PageTracker) {}
+	constructor(private pageTracker: PageTracker) {}
 
 	handleAds(): void {
 		const inhibitors = this.callExternals();
@@ -59,7 +58,7 @@ export class UcpAdsMode implements AdsMode {
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
-		this.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
+		eventService.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -72,7 +71,6 @@ export class UcpAdsMode implements AdsMode {
 		facebookPixel.call();
 		permutive.call();
 		iasPublisherOptimization.call();
-		identityLibrary.call();
 		confiant.call();
 		durationMedia.call();
 		nielsen.call({
