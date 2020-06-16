@@ -1,5 +1,6 @@
+import { globalAction } from '@ad-engine/communication';
 import { context, eventService, utils } from '@ad-engine/core';
-import { action, props } from 'ts-action';
+import { props } from 'ts-action';
 
 const logGroup = 'identity-library';
 const scriptUrl = '//js-sec.indexww.com/ht/p/183085-19173550049191.js';
@@ -40,7 +41,7 @@ class IdentityLibrary {
 }
 
 export const identityLibrary = new IdentityLibrary();
-export const identityLibraryLoadedEvent = action(
+export const identityLibraryLoadedEvent = globalAction(
 	'[AdEngine] Identity library loaded',
 	props<{ loadTime: number }>(),
 );

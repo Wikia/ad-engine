@@ -1,5 +1,6 @@
+import { globalAction } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
-import { action, props } from 'ts-action';
+import { props } from 'ts-action';
 import { AdStackPayload, eventService, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
@@ -63,7 +64,7 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-export const adSlotEvent = action(
+export const adSlotEvent = globalAction(
 	'[AdEngine] Ad Slot event',
 	props<{
 		event: string;

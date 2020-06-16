@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Action, ActionCreator, ActionType } from 'ts-action';
+// tslint:disable-next-line:import-blacklist
 import { ofType as tsOfType } from 'ts-action-operators';
 import { isGlobalAction, isGlobalActionCreator } from './global-action';
 

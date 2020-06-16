@@ -1,11 +1,12 @@
 // blockadblock doesn't export anything meaningful
+import { globalAction } from '@ad-engine/communication';
 // it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
-import { action, props } from 'ts-action';
+import { props } from 'ts-action';
 import { eventService, utils } from '../';
 import { context } from '../services';
 
-const babDetectedEvent = action(
+const babDetectedEvent = globalAction(
 	'[Ad Engine] BAB detection finished',
 	props<{ detected: boolean }>(),
 );

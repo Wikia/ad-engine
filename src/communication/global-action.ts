@@ -1,3 +1,4 @@
+// tslint:disable-next-line:import-blacklist
 import {
 	Action,
 	action,

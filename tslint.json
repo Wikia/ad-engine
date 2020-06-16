@@ -3,6 +3,13 @@
 	"extends": "./configs/tslint.json",
 	"rules": {
 		"no-implicit-dependencies": [true, ["@wikia/ad-engine"]],
+		"import-blacklist": [
+			true,
+			{
+				"ts-action": ["ofType", "isType", "action"],
+				"ts-action-operators": ["ofType"]
+			}
+		],
 		"only-arrow-functions": {
 			"severity": "warning",
 			"options": ["allow-declarations", "allow-named-functions"]

@@ -1,7 +1,7 @@
+import { ofType } from '@ad-engine/communication';
 import { AdSlot, context, eventService, slotService, tapOnce, utils } from '@ad-engine/core';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { ofType } from 'ts-action-operators';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
 import { JWPlayerHelper } from './helpers/jwplayer-helper';
