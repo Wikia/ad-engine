@@ -2,6 +2,7 @@ import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { merge, Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isGlobalAction } from './global-action';
+import { ReduxDevtoolsFactory } from './redux-devtools';
 
 export class CommunicationService {
 	action$: Observable<Action>;
@@ -16,7 +17,7 @@ export class CommunicationService {
 			this.communicator.actions$.pipe(filter((action) => isGlobalAction(action))),
 			this.subject.asObservable().pipe(filter((action) => !isGlobalAction(action))),
 		);
-		// TODO: add redux dev tool
+		this.connectReduxDevtools();
 	}
 
 	dispatch(action: Action): void {
@@ -25,5 +26,15 @@ export class CommunicationService {
 		} else {
 			this.subject.next(action);
 		}
+	}
+
+	private connectReduxDevtools(): void {
+		const devtools = ReduxDevtoolsFactory.connect();
+
+		if (!devtools) {
+			return;
+		}
+
+		this.action$.subscribe((action) => devtools.send(action, {}));
 	}
 }
