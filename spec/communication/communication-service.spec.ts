@@ -1,4 +1,5 @@
 import { action, CommunicationService, globalAction } from '@wikia/communication';
+// tslint:disable-next-line:import-blacklist
 import { Communicator } from '@wikia/post-quecast';
 import { expect } from 'chai';
 import { Subject } from 'rxjs';

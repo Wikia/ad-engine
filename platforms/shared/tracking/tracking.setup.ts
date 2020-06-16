@@ -9,6 +9,7 @@ import {
 	GAMOrigins,
 	identityLibraryLoadedEvent,
 	InstantConfigCacheStorage,
+	ofType,
 	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
@@ -21,7 +22,6 @@ import {
 	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { ofType } from 'ts-action-operators';
 import { DataWarehouseTracker } from './data-warehouse';
 import { PageTracker } from './page-tracker';
 

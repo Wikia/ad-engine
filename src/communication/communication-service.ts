@@ -1,3 +1,4 @@
+// tslint:disable-next-line:import-blacklist
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { merge, Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';

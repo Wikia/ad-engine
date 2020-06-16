@@ -1,3 +1,4 @@
+// tslint:disable-next-line:import-blacklist
 import { Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import * as EventEmitter from 'eventemitter3';
 import { logger } from '../utils';

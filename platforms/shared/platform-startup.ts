@@ -1,6 +1,5 @@
-import { context } from '@wikia/ad-engine';
+import { context, globalAction } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { action } from 'ts-action';
 import { AdsMode } from './modes/ads/_ads.mode';
 import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
 import { A9ConfigSetup } from './setup/_a9-config.setup';
@@ -22,7 +21,7 @@ export interface PlatformStartupArgs {
 	isMobile: boolean;
 }
 
-export const adEngineConfigured = action('[AdEngine] Configured');
+export const adEngineConfigured = globalAction('[AdEngine] Configured');
 
 @Injectable()
 export class PlatformStartup {

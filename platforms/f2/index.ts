@@ -1,8 +1,7 @@
 import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
-import { context, eventService } from '@wikia/ad-engine';
+import { context, eventService, ofType } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { ofType } from 'ts-action-operators';
 import { basicContext } from './ad-context';
 import { F2Environment, f2Ready } from './setup-f2';
 import { setupF2Ioc } from './setup-f2-ioc';
