@@ -1,14 +1,15 @@
+import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ActionCreator } from 'ts-action';
+import { Action, ActionCreator, ActionType } from 'ts-action';
 import { ofType as tsOfType } from 'ts-action-operators';
 import { isGlobalAction, isGlobalActionCreator } from './global-action';
 
-export function ofType(...args: Parameters<typeof tsOfType>): ReturnType<typeof tsOfType> {
-	const creators: ActionCreator[] = args as any;
-
+export function ofType<C extends ActionCreator[]>(
+	...creators: C
+): (source: Observable<Action>) => Observable<ActionType<C[number]>> {
 	return (source) =>
 		source.pipe(
-			tsOfType(...args),
+			tsOfType(...creators),
 			filter((action) =>
 				creators.some((creator) =>
 					isGlobalActionCreator(creator) ? isGlobalAction(action) : true,

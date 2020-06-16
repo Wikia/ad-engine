@@ -1,4 +1,13 @@
-import { Action, action, ActionCreator } from 'ts-action';
+import {
+	Action,
+	action,
+	ActionCreator,
+	Creator,
+	FunctionWithParametersType,
+	NotTyped,
+	ParametersType,
+	Typed,
+} from 'ts-action';
 
 export type GlobalAction = Action & { __global: true };
 export type GlobalActionCreator = ActionCreator & { __global: true };
@@ -11,9 +20,41 @@ export function isGlobalActionCreator(input: ActionCreator): input is GlobalActi
 	return (input as any).__global === true;
 }
 
-export function globalAction(...args: Parameters<typeof action>): ReturnType<typeof action> {
-	const type: string = args[0];
-	const originalCreator = action(...args);
+export function globalAction<T extends string>(type: T): ActionCreator<T, () => Typed<{}, T>>;
+export function globalAction<T extends string>(
+	type: T,
+	// tslint:disable-next-line:unified-signatures
+	config: { _as: 'empty' },
+): ActionCreator<T, () => Typed<{}, T>>;
+export function globalAction<T extends string, P, M>(
+	type: T,
+	config: { _as: 'fsa'; _p: P; _m: M },
+): ActionCreator<
+	T,
+	(
+		payload: P | Error,
+		meta?: M,
+	) =>
+		| Typed<{ error: false; meta?: M; payload: P }, T>
+		| Typed<{ error: true; meta?: M; payload: P }, T>
+>;
+export function globalAction<T extends string, P>(
+	type: T,
+	config: { _as: 'payload'; _p: P },
+): ActionCreator<T, (payload: P) => Typed<{ payload: P }, T>>;
+export function globalAction<T extends string, P extends object>(
+	type: T,
+	config: { _as: 'props'; _p: P },
+): ActionCreator<T, (props: P & NotTyped<P>) => Typed<P, T>>;
+export function globalAction<T extends string, C extends Creator>(
+	type: T,
+	creator: C & NotTyped<ReturnType<C>>,
+): Typed<FunctionWithParametersType<ParametersType<C>, Typed<ReturnType<C>, T>>, T>;
+export function globalAction<T extends string>(
+	type: T,
+	config?: { _as: 'empty' } | { _as: 'fsa' } | { _as: 'payload' } | { _as: 'props' } | Creator,
+): Creator {
+	const originalCreator = action(type, config as any);
 	const globalCreator = (...creatorArgs: Parameters<typeof originalCreator>) => {
 		const result = originalCreator(...creatorArgs);
 
@@ -32,5 +73,5 @@ export function globalAction(...args: Parameters<typeof action>): ReturnType<typ
 		writable: false,
 	});
 
-	return globalCreator as any;
+	return globalCreator;
 }

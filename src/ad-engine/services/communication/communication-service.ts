@@ -16,6 +16,7 @@ export class CommunicationService {
 			this.communicator.actions$.pipe(filter((action) => isGlobalAction(action))),
 			this.subject.asObservable().pipe(filter((action) => !isGlobalAction(action))),
 		);
+		// TODO: add redux dev tool
 	}
 
 	dispatch(action: Action): void {

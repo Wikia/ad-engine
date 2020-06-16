@@ -1,12 +1,12 @@
-import { Action, ActionCreator, isType as tsIsType } from 'ts-action';
+import { Action, ActionCreator, ActionType, isType as tsIsType } from 'ts-action';
 import { isGlobalAction, isGlobalActionCreator } from './global-action';
 
-export function isType(...args: Parameters<typeof tsIsType>): ReturnType<typeof tsIsType> {
-	const action: Action = args[0];
-	const creators: ActionCreator[] = args.slice(1) as any;
-
+export function isType<T extends ActionCreator[]>(
+	action: Action,
+	...creators: T
+): action is ActionType<T[number]> {
 	return (
-		tsIsType(...args) &&
+		tsIsType(action, ...creators) &&
 		creators.some((creator) => (isGlobalActionCreator(creator) ? isGlobalAction(action) : true))
 	);
 }
