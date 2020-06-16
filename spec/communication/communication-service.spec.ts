@@ -1,4 +1,4 @@
-import { action, CommunicationService, globalAction } from '@wikia/ad-engine';
+import { action, CommunicationService, globalAction } from '@wikia/communication';
 import { Communicator } from '@wikia/post-quecast';
 import { expect } from 'chai';
 import { Subject } from 'rxjs';

@@ -1,4 +1,4 @@
-import { globalAction } from '@wikia/ad-engine';
+import { globalAction } from '@wikia/communication';
 import { expect } from 'chai';
 import { props } from 'ts-action';
 

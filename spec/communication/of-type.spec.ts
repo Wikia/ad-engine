@@ -1,27 +1,26 @@
-import { action, globalAction, isType } from '@wikia/ad-engine';
+import { action, globalAction, ofType } from '@wikia/communication';
 import { expect } from 'chai';
+import { of } from 'rxjs';
 import { Action, props } from 'ts-action';
 
-describe('isType', () => {
+describe('ofType', () => {
 	let results: Action[];
 	const localExample = action('[Local]', props<{ foo: string }>());
 	const globalExample = globalAction('[Global]', props<{ bar: string }>());
-	const actions = [
+	const action$ = of(
 		localExample({ foo: 'a' }),
 		globalExample({ bar: 'b' }),
 		localExample({ foo: 'c' }),
 		globalExample({ bar: 'd' }),
-	];
+	);
 
 	beforeEach(() => {
 		results = [];
 	});
 
 	it('should pass local for local', () => {
-		actions.forEach((action) => {
-			if (isType(action, localExample)) {
-				results.push(action);
-			}
+		action$.pipe(ofType(localExample)).subscribe((action) => {
+			results.push(action);
 		});
 
 		expect(results).to.deep.equal([
@@ -31,10 +30,8 @@ describe('isType', () => {
 	});
 
 	it('should pass global for global', () => {
-		actions.forEach((action) => {
-			if (isType(action, globalExample)) {
-				results.push(action);
-			}
+		action$.pipe(ofType(globalExample)).subscribe((action) => {
+			results.push(action);
 		});
 
 		expect(results).to.deep.equal([
@@ -44,10 +41,8 @@ describe('isType', () => {
 	});
 
 	it('should pass for both', () => {
-		actions.forEach((action) => {
-			if (isType(action, localExample, globalExample)) {
-				results.push(action);
-			}
+		action$.pipe(ofType(localExample, globalExample)).subscribe((action) => {
+			results.push(action);
 		});
 
 		expect(results).to.deep.equal([
