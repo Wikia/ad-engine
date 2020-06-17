@@ -82,6 +82,7 @@ export interface UapParams {
 	splitLayoutVideoPosition: string;
 	src: string;
 	stickyAdditionalTime: number;
+	stickyUntilSlotViewed: boolean;
 	stickyUntilVideoViewed: boolean;
 	theme: string;
 	thumbnail: HTMLElement;
