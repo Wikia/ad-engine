@@ -28,18 +28,11 @@ export class Stickiness extends EventEmitter {
 	private isStickinessBlocked = false;
 	private isRevertStickinessBlocked = false;
 
-	constructor(
-		private adSlot: AdSlot,
-		private customWhen: CustomWhen = Promise.resolve(),
-		private waitForViewed = true,
-	) {
+	constructor(private adSlot: AdSlot, private customWhen: CustomWhen = Promise.resolve()) {
 		super();
 
 		this.customWhen = isFunction(this.customWhen) ? this.customWhen() : this.customWhen;
 		this.stickyConditions = [this.customWhen];
-		if (this.waitForViewed) {
-			this.stickyConditions.push(this.adSlot.viewed);
-		}
 
 		this.registerStickinessBlocking();
 	}
@@ -129,7 +122,7 @@ export class Stickiness extends EventEmitter {
 		});
 
 		this.applyStickiness();
-		this.logger('waiting for viewability and custom condition');
+		this.logger('waiting for custom conditions');
 
 		await Promise.all(this.stickyConditions);
 
