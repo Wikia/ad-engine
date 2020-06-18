@@ -37,6 +37,16 @@ class IdentityLibrary {
 			});
 		}
 	}
+
+	getUids(): string {
+		const identityInfo = window.headertag.getIdentityInfo();
+
+		return Object.entries(identityInfo)
+			.map(
+				([name, info]) => `${name}|${'uids' in info['data'] ? info['data']['uids'][0]['id'] : ''}`,
+			)
+			.join(';');
+	}
 }
 
 export const identityLibrary = new IdentityLibrary();
