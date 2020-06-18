@@ -41,4 +41,7 @@ class EventService extends EventEmitter.EventEmitter {
 	}
 }
 
+/**
+ * @deprecated For new actions use communicationService instead.
+ */
 export const eventService = new EventService();

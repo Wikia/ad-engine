@@ -12,7 +12,7 @@
 			"ts-action-operators",
 			"@wikia/post-quecast",
 			{
-				"ts-action": ["ofType", "isType", "action"]
+				"ts-action": ["isType", "action"]
 			}
 		],
 		"ordered-imports": [
