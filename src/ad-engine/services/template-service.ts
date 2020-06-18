@@ -10,15 +10,11 @@ const logGroup = 'template-service';
 type TemplateInitializer = Pick<TemplateService, 'init'> & { has: (name: string) => boolean };
 
 interface LoadTemplatePayload {
-	campaign?: string;
 	slotName: string;
 	type: string;
 }
 
-export const loadTemplate = action(
-	'[TemplateService] Load template',
-	payload<LoadTemplatePayload>(),
-);
+export const loadTemplate = action('[GAM iframe] Load template', payload<LoadTemplatePayload>());
 
 class TemplateService {
 	private initializer?: TemplateInitializer;
