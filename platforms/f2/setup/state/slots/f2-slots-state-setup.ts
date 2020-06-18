@@ -8,7 +8,6 @@ export class F2SlotsStateSetup implements SlotsStateSetup {
 	constructor(@Inject(F2_STATE) private f2State: F2State) {}
 
 	configureSlotsState(): void {
-		// TODO: slots: video, featured
 		switch (this.f2State.pageType) {
 			case 'curated':
 				slotsContext.setState('top_leaderboard', true);

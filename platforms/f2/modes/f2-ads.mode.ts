@@ -48,7 +48,6 @@ export class F2AdsMode implements AdsMode {
 	}
 
 	private setAdStack(): void {
-		// TODO: slots: video, featured
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
 		context.push('state.adStack', { id: 'top_boxad' });
