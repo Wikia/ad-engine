@@ -1,6 +1,6 @@
 import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { LogoReplacementUcpHandler } from './handlers/logo-replacement/logo-replacement-ucp-handler';
+import { LogoReplacementF2Handler } from './handlers/logo-replacement/logo-replacement-f2-handler';
 
 export function registerLogoReplacementTemplate(
 	registry: TemplateRegistry,
@@ -8,7 +8,7 @@ export function registerLogoReplacementTemplate(
 	return registry.register(
 		'logoReplacement',
 		{
-			initial: [LogoReplacementUcpHandler],
+			initial: [LogoReplacementF2Handler],
 		},
 		'initial',
 	);

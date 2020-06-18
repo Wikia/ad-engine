@@ -292,8 +292,10 @@ export class BfaaHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	protected async getVideoViewedAndTimeout(): Promise<void> {
-		const { stickyUntilSlotViewed } = this.config;
 		const { stickyAdditionalTime, stickyUntilVideoViewed } = this.params;
+		const stickyUntilSlotViewed =
+			this.config.stickyUntilSlotViewed && this.params.stickyUntilSlotViewed !== false;
+
 		const slotViewed: Promise<void> = stickyUntilSlotViewed
 			? this.adSlot.loaded.then(() => this.adSlot.viewed)
 			: Promise.resolve();

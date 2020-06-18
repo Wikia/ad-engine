@@ -42,10 +42,9 @@ export abstract class BigFancyAdHiviTheme extends BigFancyAdTheme {
 	}
 
 	protected addUnstickLogic(): void {
-		const { stickyUntilSlotViewed } = this.config;
 		const videoViewedAndTimeout = this.getVideoViewedAndTimeout();
 
-		this.stickiness = new Stickiness(this.adSlot, videoViewedAndTimeout, stickyUntilSlotViewed);
+		this.stickiness = new Stickiness(this.adSlot, videoViewedAndTimeout);
 	}
 
 	protected abstract getVideoViewedAndTimeout(): CustomWhen;
