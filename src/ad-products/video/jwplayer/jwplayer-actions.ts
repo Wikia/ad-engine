@@ -1,4 +1,5 @@
-import { action, props } from 'ts-action';
+import { globalAction } from '@ad-engine/communication';
+import { props } from 'ts-action';
 
 export interface VideoTargeting {
 	plist?: string;
@@ -11,12 +12,12 @@ export interface JwPlayerAdsFactoryOptions {
 	featured: boolean;
 }
 
-export const jwpReady = action(
+export const jwpReady = globalAction(
 	'[JWPlayer] Player Ready',
 	props<{ options: JwPlayerAdsFactoryOptions; targeting: VideoTargeting; playerKey: string }>(),
 );
 
-export const jwpSetup = action(
+export const jwpSetup = globalAction(
 	'[Ad Engine] Setup JWPlayer',
 	props<{ showAds: boolean; autoplayDisabled: boolean }>(),
 );

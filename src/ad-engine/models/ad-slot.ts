@@ -1,5 +1,6 @@
+import { action, communicationService } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
-import { action, props } from 'ts-action';
+import { props } from 'ts-action';
 import { AdStackPayload, eventService, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
@@ -63,6 +64,7 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
+// TODO: This should be split into separate action for each event
 export const adSlotEvent = action(
 	'[AdEngine] Ad Slot event',
 	props<{
@@ -548,7 +550,7 @@ export class AdSlot extends EventEmitter {
 	}
 
 	private emitPostQueueCast(event: string | symbol, payload: any[]) {
-		eventService.communicator.dispatch(
+		communicationService.dispatch(
 			adSlotEvent({
 				payload: JSON.parse(JSON.stringify(payload)),
 				event: event.toString(),

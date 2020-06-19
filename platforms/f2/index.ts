@@ -1,8 +1,7 @@
 import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
-import { context, eventService } from '@wikia/ad-engine';
+import { communicationService, context, ofType } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { ofType } from 'ts-action-operators';
 import { basicContext } from './ad-context';
 import { F2Environment, f2Ready } from './setup-f2';
 import { setupF2Ioc } from './setup-f2-ioc';
@@ -18,8 +17,8 @@ async function load(f2env: F2Environment): Promise<any> {
 	const platformStartup = container.get(PlatformStartup);
 
 	platformStartup.configure({ isMobile: f2env.isPageMobile });
-	eventService.communicator.dispatch(adEngineConfigured());
+	communicationService.dispatch(adEngineConfigured());
 	platformStartup.run();
 }
 
-eventService.communicator.actions$.pipe(ofType(f2Ready), take(1)).subscribe(load);
+communicationService.action$.pipe(ofType(f2Ready), take(1)).subscribe(load);

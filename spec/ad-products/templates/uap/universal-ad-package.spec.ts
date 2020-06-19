@@ -1,7 +1,8 @@
+import { communicationService } from '@wikia/communication';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
-import { AdSlot, adSlotEvent, Context, context, eventService } from '../../../../src/ad-engine';
+import { AdSlot, adSlotEvent, Context, context } from '../../../../src/ad-engine';
 import {
 	registerUapListener,
 	uapLoadStatus,
@@ -81,7 +82,7 @@ describe('UniversalAdPackage', () => {
 		let dispatch: SinonSpy;
 
 		beforeEach(() => {
-			dispatch = sandbox.spy(eventService.communicator, 'dispatch');
+			dispatch = sandbox.spy(communicationService, 'dispatch');
 			sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
 		});
 
@@ -90,7 +91,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status if slot collapsed', () => {
-			sandbox.stub(eventService.communicator, 'actions$').value(
+			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					adSlotEvent({
 						adSlotName,
@@ -110,7 +111,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status if slot forcibly collapsed', () => {
-			sandbox.stub(eventService.communicator, 'actions$').value(
+			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					adSlotEvent({
 						adSlotName,
@@ -130,7 +131,7 @@ describe('UniversalAdPackage', () => {
 		});
 
 		it('should emit event with load status when templates are loaded', () => {
-			sandbox.stub(eventService.communicator, 'actions$').value(
+			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					adSlotEvent({
 						adSlotName,

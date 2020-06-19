@@ -2,10 +2,10 @@ import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/share
 import {
 	bidders,
 	billTheLizard,
+	communicationService,
 	confiant,
 	context,
 	durationMedia,
-	eventService,
 	facebookPixel,
 	iasPublisherOptimization,
 	JWPlayerManager,
@@ -58,7 +58,7 @@ export class UcpAdsMode implements AdsMode {
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
-		eventService.communicator.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
+		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 
 	private callExternals(): Promise<any>[] {

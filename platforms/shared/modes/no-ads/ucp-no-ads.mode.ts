@@ -1,4 +1,4 @@
-import { context, eventService, jwpSetup, utils } from '@wikia/ad-engine';
+import { communicationService, context, jwpSetup, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { PageTracker } from '../../tracking/page-tracker';
 import { NoAdsMode } from './_no-ads.mode';
@@ -43,6 +43,6 @@ export class UcpNoAdsMode implements NoAdsMode {
 	}
 
 	private dispatchJWPlayerSetupAction(): void {
-		eventService.communicator.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
+		communicationService.dispatch(jwpSetup({ showAds: false, autoplayDisabled: false }));
 	}
 }

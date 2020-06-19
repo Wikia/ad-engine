@@ -129,6 +129,10 @@ $vpaid-z-index: 10;
 		}
 
 		&.outstream-floating {
+			.porvata-container {
+				z-index: 1;
+			}
+
 			.button-close {
 				background: transparent;
 				border: none;

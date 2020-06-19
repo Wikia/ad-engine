@@ -1,9 +1,9 @@
+import { LogoReplacementParams } from '@platforms/shared';
 import { AdSlot, events, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { LogoReplacementParams } from './logo-replacement-params';
 
 @Injectable({ autobind: false })
-export class LogoReplacementHandler implements TemplateStateHandler {
+export class LogoReplacementUcpHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,

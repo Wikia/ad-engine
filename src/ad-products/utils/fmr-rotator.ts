@@ -1,3 +1,4 @@
+import { communicationService, globalAction } from '@ad-engine/communication';
 import {
 	AdSlot,
 	context,
@@ -7,11 +8,14 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
-import { action, props } from 'ts-action';
+import { props } from 'ts-action';
 import { universalAdPackage } from '../templates/uap';
 import { NavbarManager } from './navbar-manager';
 
-export const recirculationDisabledEvent = action('[AdEngine] recirculation disabled', props<{}>());
+export const recirculationDisabledEvent = globalAction(
+	'[AdEngine] recirculation disabled',
+	props<{}>(),
+);
 
 export class FmrRotator {
 	private btRecStatus = false;
@@ -68,7 +72,7 @@ export class FmrRotator {
 
 		if (this.recirculationDisabled) {
 			this.swapRecirculation(false);
-			eventService.communicator.dispatch(recirculationDisabledEvent({}));
+			communicationService.dispatch(recirculationDisabledEvent({}));
 			this.startFirstRotation();
 		} else {
 			setTimeout(() => {
