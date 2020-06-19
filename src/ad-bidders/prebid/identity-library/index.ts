@@ -43,9 +43,9 @@ class IdentityLibrary {
 
 		return Object.entries(identityInfo)
 			.map(
-				([name, info]) => `${name}|${'uids' in info['data'] ? info['data']['uids'][0]['id'] : ''}`,
+				([name, info]) => `${name}=${'uids' in info['data'] ? info['data']['uids'][0]['id'] : ''}`,
 			)
-			.join(';');
+			.join('|');
 	}
 }
 
