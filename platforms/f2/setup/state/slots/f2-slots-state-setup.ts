@@ -17,6 +17,8 @@ export class F2SlotsStateSetup implements SlotsStateSetup {
 				slotsContext.setState('feed_boxad', false);
 				break;
 			case 'article':
+				// TODO: Compared to http://stable.fandom.wikia.com/articles/the-best-movies-of-2017-so-far
+				// this doesn't work well :/
 				slotsContext.setState('top_leaderboard', !!this.f2State.hasFeaturedVideo);
 				slotsContext.setState('bottom_leaderboard', true);
 				slotsContext.setState('top_boxad', true);
