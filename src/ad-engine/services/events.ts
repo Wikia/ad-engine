@@ -1,4 +1,3 @@
-import { Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import * as EventEmitter from 'eventemitter3';
 import { logger } from '../utils';
 
@@ -28,15 +27,12 @@ export const events = {
 	SCROLL_TRACKING_TIME_CHANGED: Symbol('SCROLL_TRACKING_TIME_CHANGED'),
 };
 
+/**
+ * @deprecated For new actions use CommunicationService instead.
+ */
 class EventService extends EventEmitter.EventEmitter {
-	communicator: Communicator;
-
 	constructor() {
 		super();
-
-		setupPostQuecast();
-
-		this.communicator = new Communicator();
 	}
 
 	emit(event: symbol | string, ...args: any[]): boolean {
@@ -45,4 +41,7 @@ class EventService extends EventEmitter.EventEmitter {
 	}
 }
 
+/**
+ * @deprecated For new actions use communicationService instead.
+ */
 export const eventService = new EventService();

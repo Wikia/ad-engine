@@ -12,6 +12,7 @@ export interface F2State {
 	topic?: Topic;
 	googleAnalytics?: F2StateGoogleAnalytics;
 	hasFeaturedVideo?: boolean;
+	topOffset?: number;
 }
 
 interface Ads {

@@ -110,5 +110,9 @@ export class BaseContextSetup {
 			'templates.safeFanTakeoverElement.lineItemIds',
 			this.instantConfig.get('icSafeFanTakeoverLineItemIds'),
 		);
+		context.set(
+			'templates.safeFanTakeoverElement.unstickTimeout',
+			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
+		);
 	}
 }

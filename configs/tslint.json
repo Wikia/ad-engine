@@ -7,6 +7,14 @@
 		"tslint-config-prettier"
 	],
 	"rules": {
+		"import-blacklist": [
+			true,
+			"ts-action-operators",
+			"@wikia/post-quecast",
+			{
+				"ts-action": ["isType", "action"]
+			}
+		],
 		"ordered-imports": [
 			true,
 			{

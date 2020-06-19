@@ -2,7 +2,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { AdSlot, Dictionary } from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
-export type TemplateDependency = Parameters<Container['bind']>[0];
+export type TemplateDependency<T = any> = Parameters<Container['bind']>[0];
 
 @Injectable()
 export class TemplateDependenciesManager {

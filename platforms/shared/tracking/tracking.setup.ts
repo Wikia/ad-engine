@@ -3,12 +3,14 @@ import {
 	AdInfoContext,
 	bidderTracker,
 	Binder,
+	communicationService,
 	Dictionary,
 	eventService,
 	FuncPipelineStep,
 	GAMOrigins,
 	identityLibraryLoadedEvent,
 	InstantConfigCacheStorage,
+	ofType,
 	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
@@ -21,7 +23,6 @@ import {
 	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { ofType } from 'ts-action-operators';
 import { DataWarehouseTracker } from './data-warehouse';
 import { PageTracker } from './page-tracker';
 
@@ -163,10 +164,8 @@ export class TrackingSetup {
 	}
 
 	private identityLibraryLoadTimeTracker(): void {
-		eventService.communicator.actions$
-			.pipe(ofType(identityLibraryLoadedEvent))
-			.subscribe((props) => {
-				this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
-			});
+		communicationService.action$.pipe(ofType(identityLibraryLoadedEvent)).subscribe((props) => {
+			this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
+		});
 	}
 }

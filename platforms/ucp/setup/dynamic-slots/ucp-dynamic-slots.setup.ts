@@ -2,11 +2,13 @@ import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
+	communicationService,
 	context,
 	Dictionary,
-	eventService,
 	fillerService,
 	FmrRotator,
+	globalAction,
+	ofType,
 	PorvataFiller,
 	PorvataGamParams,
 	SlotConfig,
@@ -14,8 +16,9 @@ import {
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { ofType } from '@wikia/post-quecast';
 import { take } from 'rxjs/operators';
+
+const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
@@ -43,7 +46,7 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 			context.set(`slots.${icbSlotName}.defaultSizes`, [300, 250]);
 		}
 
-		eventService.communicator.actions$.pipe(ofType('[Rail] Ready'), take(1)).subscribe(() => {
+		communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
 			const parent = document.querySelector<HTMLDivElement>(slotConfig.parentContainerSelector);
 
 			if (parent) {
