@@ -1,10 +1,11 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 @import 'platforms/f2/styles/original/variables';
+@import 'platforms/f2/styles/feed-bottom-boxad';
 @import '~design-system/dist/scss/wds-variables/index';
 @import '~design-system/dist/scss/wds-mixins/index';
 
-@mixin ucp-f2-styles() {
+@mixin f2-styles() {
 	$advertisement-label-height: 24px;
 	$label-height: -24px;
 
@@ -47,9 +48,13 @@
 		position: relative;
 		top: $label-height;
 	}
+
+	.article-layout__rail.has-incontent-ad {
+		margin-top: 29px;
+	}
 }
 
-@mixin ucp-f2-uap-styles() {
+@mixin f2-uap-styles() {
 	.has-uap {
 		.global-navigation-mobile-wrapper,
 		.wds-global-navigation-wrapper {
@@ -108,9 +113,10 @@
 	@include expanded-slot();
 }
 
-@include ucp-f2-styles();
-@include ucp-f2-uap-styles();
+@include f2-styles();
+@include f2-uap-styles();
 @include logo-replacement(56px);
+@include f2-feed-bottom-boxad();
 
 // #######################################
 

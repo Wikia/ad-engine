@@ -64,12 +64,12 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 			.pipe(
 				ofType(f2ArticleInsertTopBoxad),
 				take(1),
-				tap(({ hasRightRail, hadVideo }) => {
+				tap(({ hasRightRail, hasVideo }) => {
 					const topBoxad = this.makeSlot('top_boxad', 'article-layout__top-box-ad');
 
 					if (hasRightRail) {
 						document.querySelector('.article-layout__rail')?.prepend(topBoxad);
-					} else if (hadVideo) {
+					} else if (hasVideo) {
 						document.querySelector('.article-layout__content')?.append(topBoxad);
 					} else {
 						document.querySelector('.article-content.entry-content p:first-child')?.after(topBoxad);
@@ -108,6 +108,7 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 					document
 						.querySelectorAll('.article-content h2, .article-content h3')[2]
 						?.before(incontentBoxad);
+					document.querySelector('.article-layout__rail').classList.add('has-incontent-ad');
 
 					context.push('events.pushOnScroll.ids', 'incontent_boxad');
 				}),

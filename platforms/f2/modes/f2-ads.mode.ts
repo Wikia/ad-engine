@@ -48,9 +48,7 @@ export class F2AdsMode implements AdsMode {
 	}
 
 	private setAdStack(): void {
-		// TODO: Don't know if that is necessary if we use dynamic slots setup
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
-		context.push('events.pushOnScroll.ids', 'incontent_boxad');
 	}
 }
