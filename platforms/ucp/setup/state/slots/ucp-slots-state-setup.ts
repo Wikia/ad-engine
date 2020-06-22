@@ -1,5 +1,5 @@
 import { slotsContext, SlotsStateSetup } from '@platforms/shared';
-import { context, InstantConfigService, slotService } from '@wikia/ad-engine';
+import { AdSlot, context, InstantConfigService, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -16,6 +16,13 @@ export class UcpSlotsStateSetup implements SlotsStateSetup {
 		slotsContext.setState('invisible_high_impact_2', !this.instantConfig.get('icFloorAdhesion'));
 
 		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
-		slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
+
+		if (context.get('services.distroScale.enabled')) {
+			// It is required to *collapse* ICP for DistroScale
+			// TODO: clean up once we finish DS A/B test
+			slotsContext.setState('incontent_player', false, AdSlot.STATUS_COLLAPSE);
+		} else {
+			slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
+		}
 	}
 }
