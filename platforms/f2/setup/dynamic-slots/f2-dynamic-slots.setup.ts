@@ -1,6 +1,7 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
 import { communicationService, context, ofType } from '@wikia/ad-engine';
-import { tap } from 'rxjs/operators';
+import { Injectable } from '@wikia/dependency-injection';
+import { take, tap } from 'rxjs/operators';
 import {
 	f2ArticleInsertFeedBoxad,
 	f2ArticleInsertIncontentBoxad,
@@ -8,8 +9,14 @@ import {
 	f2FeedInsertFeedBoxad,
 	f2FeedInsertTopBoxad,
 } from '../../f2.actions';
+import { F2FeedBoxadStickiness } from './f2-feed-boxad-stickiness';
 
+@Injectable()
 export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
+	private domParser = new DOMParser();
+
+	constructor(private f2FeedBoxadStickiness: F2FeedBoxadStickiness) {}
+
 	configureDynamicSlots(): void {
 		this.handleSlotsInjection();
 		this.configureTopLeaderboard();
@@ -19,11 +26,12 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 		communicationService.action$
 			.pipe(
 				ofType(f2FeedInsertTopBoxad),
+				take(1),
 				tap(({ hasRightRail }) => {
 					const topBoxad = this.makeSlot('top_boxad', 'feed-block-ad feed-top-boxad');
 
 					if (hasRightRail) {
-						document.querySelectorAll('.feed-layout__right-rail')[0]?.prepend(topBoxad);
+						document.querySelector('.feed-layout__right-rail')?.prepend(topBoxad);
 					} else {
 						document.querySelectorAll('.feed-layout .feed-item')[1]?.prepend(topBoxad);
 					}
@@ -36,11 +44,13 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 		communicationService.action$
 			.pipe(
 				ofType(f2FeedInsertFeedBoxad),
+				take(1),
 				tap(({ hasRightRail }) => {
 					const feedBoxad = this.makeSlot('feed_boxad', 'feed-block-ad feed-bottom-boxad');
 
 					if (hasRightRail) {
 						document.querySelectorAll('.feed-layout .feed-item')[10]?.before(feedBoxad);
+						this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness();
 					} else {
 						document.querySelectorAll('.feed-layout .feed-item')[6]?.prepend(feedBoxad);
 					}
@@ -53,17 +63,16 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 		communicationService.action$
 			.pipe(
 				ofType(f2ArticleInsertTopBoxad),
+				take(1),
 				tap(({ hasRightRail, hadVideo }) => {
 					const topBoxad = this.makeSlot('top_boxad', 'article-layout__top-box-ad');
 
 					if (hasRightRail) {
-						document.querySelectorAll('.article-layout__rail')[0]?.prepend(topBoxad);
+						document.querySelector('.article-layout__rail')?.prepend(topBoxad);
 					} else if (hadVideo) {
-						document.querySelectorAll('.article-layout__content')[0]?.append(topBoxad);
+						document.querySelector('.article-layout__content')?.append(topBoxad);
 					} else {
-						document
-							.querySelectorAll('.article-content.entry-content p:first-child')[0]
-							?.after(topBoxad);
+						document.querySelector('.article-content.entry-content p:first-child')?.after(topBoxad);
 					}
 
 					context.push('state.adStack', { id: 'top_boxad' });
@@ -74,11 +83,12 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 		communicationService.action$
 			.pipe(
 				ofType(f2ArticleInsertFeedBoxad),
+				take(1),
 				tap(({ hasRightRail }) => {
 					const feedBoxad = this.makeSlot('feed_boxad', 'feed-block-ad feed-boxad');
 
 					if (hasRightRail) {
-						document.querySelectorAll('.featured-block.in-area-right')[0]?.before(feedBoxad);
+						document.querySelector('.featured-block.in-area-right')?.before(feedBoxad);
 					} else {
 						document.querySelectorAll('.feed-layout__container .feed-item')[3]?.before(feedBoxad);
 					}
@@ -91,6 +101,7 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 		communicationService.action$
 			.pipe(
 				ofType(f2ArticleInsertIncontentBoxad),
+				take(1),
 				tap(() => {
 					const incontentBoxad = this.makeSlot('incontent_boxad', 'article-layout__incontent-ad');
 
@@ -104,8 +115,11 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 			.subscribe();
 	}
 
-	private makeSlot(slotName, wrapperClass = ''): string {
-		return `<div class="${wrapperClass}"><div class="gpt-ad" id="${slotName}"></div></div>`;
+	private makeSlot(slotName, wrapperClass = ''): ChildNode {
+		return this.domParser.parseFromString(
+			`<div class="${wrapperClass}"><div class="gpt-ad" id="${slotName}"></div></div>`,
+			'text/html',
+		).body.firstChild;
 	}
 
 	private configureTopLeaderboard(): void {
