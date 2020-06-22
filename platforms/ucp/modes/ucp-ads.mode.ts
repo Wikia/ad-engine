@@ -5,6 +5,7 @@ import {
 	communicationService,
 	confiant,
 	context,
+	distroScale,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -13,6 +14,7 @@ import {
 	nielsen,
 	permutive,
 	Runner,
+	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
@@ -66,6 +68,7 @@ export class UcpAdsMode implements AdsMode {
 		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
 
 		facebookPixel.call();
@@ -73,6 +76,7 @@ export class UcpAdsMode implements AdsMode {
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();
+		distroScale.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
