@@ -13,6 +13,7 @@ import {
 	nielsen,
 	permutive,
 	Runner,
+	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
@@ -66,6 +67,7 @@ export class UcpAdsMode implements AdsMode {
 		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
 
 		facebookPixel.call();
