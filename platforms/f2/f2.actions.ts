@@ -13,7 +13,7 @@ export const f2FeedInsertFeedBoxad = globalAction(
 
 export const f2ArticleInsertTopBoxad = globalAction(
 	'[F2 Article] Insert Top Boxad',
-	props<{ hasRightRail: boolean; isVideo: boolean }>(),
+	props<{ hasRightRail: boolean; hadVideo: boolean }>(),
 );
 
 export const f2ArticleInsertFeedBoxad = globalAction(
