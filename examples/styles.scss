@@ -164,6 +164,12 @@ pre {
 	margin-top: 15px;
 }
 
+.rail-sticky-module {
+	position: sticky;
+	top: 60px;
+	padding-top: 10px;
+}
+
 #rail-wrapper {
 	height: 100%;
 }
@@ -175,6 +181,66 @@ pre {
 
 .rail-static {
 	position: static;
+}
+
+.recirculation-rail {
+	h2 {
+		border-bottom: 1px solid #6c6b6b;
+		font-size: 16px;
+		font-weight: bold;
+		line-height: 22px;
+		margin-bottom: 16px;
+		min-height: 30px;
+		padding-left: 2px;
+		text-transform: capitalize;
+	}
+
+	ul.thumbnails {
+		list-style: none;
+		padding-inline-start: 0;
+
+		li {
+			margin: 0 6px 16px;
+
+			a {
+				color: #000000;
+				display: flex;
+				text-decoration: none;
+
+				&:hover {
+					color: #70b8ff;
+					text-decoration: none;
+				}
+
+				.recirculation-placeholder {
+					align-self: center;
+					background: #002a32;
+					border: 1px solid #6c6b6b;
+					border-radius: 4px;
+					display: block;
+					height: 53px;
+					min-width: 53px;
+					position: relative;
+					width: 53px;
+
+					svg {
+						fill: #00d6d6;
+						height: 50%;
+						left: 50%;
+						opacity: 0.2;
+						position: absolute;
+						top: 50%;
+						transform: translate(-50%, -50%);
+						width: 35%;
+					}
+				}
+
+				p {
+					margin: 16px 12px 0;
+				}
+			}
+		}
+	}
 }
 
 footer {
