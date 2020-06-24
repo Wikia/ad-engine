@@ -1,61 +1,82 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
 
-interface SlotCreatorBaseConfig {
+export interface SlotCreatorConfig {
 	slotName: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
-	wrapperClasses?: string[];
+	anchorSelector: string;
+	anchorPosition?: number | 'belowFirstViewport' | 'belowScrollPosition';
+	avoidConflictWith?: string[];
 }
 
-interface SlotCreatorSelectorsConfig extends SlotCreatorBaseConfig {
-	refSelectors: string;
-	refIndex?: number;
+export interface SlotCreatorWrapperConfig {
+	id?: string;
+	classes?: string[];
 }
-
-interface SlotCreatorElementConfig extends SlotCreatorBaseConfig {
-	refElement: Element;
-}
-
-export type SlotCreatorConfig = SlotCreatorSelectorsConfig | SlotCreatorElementConfig;
-
-type SlotCreatorResolvedConfig = Required<SlotCreatorElementConfig>;
 
 @Injectable()
 export class SlotCreator {
-	createSlot(flakyConfig: SlotCreatorConfig): HTMLElement {
-		const config = this.fillConfig(flakyConfig);
-		const slot = this.makeSlot(config.slotName);
-		const wrapper = this.wrapSlot(slot, config.wrapperClasses);
+	createSlot(
+		slotLooseConfig: SlotCreatorConfig,
+		wrapperLooseConfig?: SlotCreatorWrapperConfig,
+	): HTMLElement {
+		const slotConfig = this.fillSlotConfig(slotLooseConfig);
+		const slot = this.makeSlot(slotConfig.slotName);
+		const wrapper = this.wrapSlot(slot, wrapperLooseConfig);
+		const anchorElement = this.getAnchorElement(slotConfig);
 
-		config.refElement[config.insertMethod](wrapper);
+		anchorElement[slotConfig.insertMethod](wrapper);
 
 		return slot;
 	}
 
-	private fillConfig(flakyConfig: SlotCreatorConfig): SlotCreatorResolvedConfig {
+	private fillSlotConfig(slotLooseConfig: SlotCreatorConfig): Required<SlotCreatorConfig> {
 		return {
-			...flakyConfig,
-			wrapperClasses: flakyConfig.wrapperClasses ?? [],
-			refElement: this.getRefElement(flakyConfig),
+			...slotLooseConfig,
+			anchorPosition: slotLooseConfig.anchorPosition ?? 0,
+			avoidConflictWith: [],
 		};
 	}
 
-	private getRefElement(config: SlotCreatorConfig): Element {
-		if ('refElement' in config) {
-			return config.refElement;
+	private getAnchorElement(slotConfig: Required<SlotCreatorConfig>): HTMLElement {
+		const anchorElements = this.getAnchorElements(slotConfig);
+		const conflictElements = this.getConflictElements(slotConfig);
+		const result = anchorElements.find(
+			(anchorElement) => !isInTheSameViewport(anchorElement, conflictElements),
+		);
+
+		if (!result) {
+			throw new Error(`No place to insert slot ${slotConfig.slotName}.`);
 		}
 
-		config.refIndex = config.refIndex ?? 0;
+		return result;
+	}
 
-		const refElement = document.querySelectorAll(config.refSelectors)[config.refIndex];
+	private getAnchorElements(slotConfig: Required<SlotCreatorConfig>): HTMLElement[] {
+		const elements: HTMLElement[] = Array.from(
+			document.querySelectorAll(slotConfig.anchorSelector),
+		);
 
-		if (!refElement) {
-			throw new Error(
-				`Error while trying to create slot ${config.slotName}.
-				Element selected with "document.querySelectorAll('${config.refSelectors}')[${config.refIndex}]" does not exist.`,
-			);
+		switch (slotConfig.anchorPosition) {
+			case 'belowFirstViewport':
+				return elements.filter((el) => getTopOffset(el) > getViewportHeight());
+			case 'belowScrollPosition':
+				return elements.filter((el) => getTopOffset(el) > window.scrollY);
+			default:
+				return [elements[slotConfig.anchorPosition]];
 		}
+	}
 
-		return refElement;
+	private getConflictElements(slotConfig: Required<SlotCreatorConfig>): HTMLElement[] {
+		const elements: HTMLElement[] = [];
+
+		slotConfig.avoidConflictWith.forEach((selector) => {
+			const selected: HTMLElement[] = Array.from(document.querySelectorAll(selector));
+
+			elements.push(...selected);
+		});
+
+		return elements;
 	}
 
 	private makeSlot(slotName: string): HTMLElement {
@@ -67,14 +88,19 @@ export class SlotCreator {
 		return slot;
 	}
 
-	private wrapSlot(slot: HTMLElement, wrapperClasses: string[]): HTMLElement {
-		if (!wrapperClasses.length) {
+	private wrapSlot(slot: HTMLElement, wrapperLooseConfig?: SlotCreatorWrapperConfig): HTMLElement {
+		if (!wrapperLooseConfig) {
 			return slot;
 		}
 
 		const wrapper = document.createElement('div');
 
-		wrapper.classList.add(...wrapperClasses);
+		if (wrapperLooseConfig.classes) {
+			wrapper.classList.add(...wrapperLooseConfig.classes);
+		}
+		if (wrapperLooseConfig.id) {
+			wrapper.id = wrapperLooseConfig.id;
+		}
 		wrapper.append(slot);
 
 		return wrapper;

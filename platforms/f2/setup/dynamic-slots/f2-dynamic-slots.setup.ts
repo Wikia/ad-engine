@@ -5,6 +5,7 @@ import {
 	ofType,
 	SlotCreator,
 	SlotCreatorConfig,
+	SlotCreatorWrapperConfig,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take, tap } from 'rxjs/operators';
@@ -35,15 +36,17 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2FeedInsertTopBoxad),
 				take(1),
 				tap(({ hasRightRail }) => {
-					const config: SlotCreatorConfig = {
+					const slotConfig: SlotCreatorConfig = {
 						slotName: 'top_boxad',
-						wrapperClasses: ['feed-block-ad', 'feed-top-boxad'],
-						refSelectors: hasRightRail ? '.feed-layout__right-rail' : '.feed-layout .feed-item',
-						refIndex: hasRightRail ? 0 : 1,
+						anchorSelector: hasRightRail ? '.feed-layout__right-rail' : '.feed-layout .feed-item',
+						anchorPosition: hasRightRail ? 0 : 1,
 						insertMethod: 'prepend',
 					};
+					const wrapperConfig: SlotCreatorWrapperConfig = {
+						classes: ['feed-block-ad', 'feed-top-boxad'],
+					};
 
-					this.slotCreator.createSlot(config);
+					this.slotCreator.createSlot(slotConfig, wrapperConfig);
 					context.push('state.adStack', { id: 'top_boxad' });
 				}),
 			)
@@ -54,15 +57,17 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2FeedInsertFeedBoxad),
 				take(1),
 				tap(({ hasRightRail }) => {
-					const config: SlotCreatorConfig = {
+					const slotConfig: SlotCreatorConfig = {
 						slotName: 'feed_boxad',
-						wrapperClasses: ['feed-block-ad', 'feed-bottom-boxad'],
-						refSelectors: '.feed-layout .feed-item',
-						refIndex: hasRightRail ? 10 : 6,
+						anchorSelector: '.feed-layout .feed-item',
+						anchorPosition: hasRightRail ? 10 : 6,
 						insertMethod: hasRightRail ? 'before' : 'prepend',
 					};
+					const wrapperConfig: SlotCreatorWrapperConfig = {
+						classes: ['feed-block-ad', 'feed-bottom-boxad'],
+					};
 
-					this.slotCreator.createSlot(config);
+					this.slotCreator.createSlot(slotConfig, wrapperConfig);
 					if (hasRightRail) {
 						this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness();
 					}
@@ -76,25 +81,27 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2ArticleInsertTopBoxad),
 				take(1),
 				tap(({ hasRightRail, hasVideo }) => {
-					const config: SlotCreatorConfig = {
+					const slotConfig: SlotCreatorConfig = {
 						slotName: 'top_boxad',
-						wrapperClasses: ['article-layout__top-box-ad'],
-						refSelectors: '',
+						anchorSelector: '',
 						insertMethod: '' as any,
+					};
+					const wrapperConfig: SlotCreatorWrapperConfig = {
+						classes: ['article-layout__top-box-ad'],
 					};
 
 					if (hasRightRail) {
-						config.refSelectors = '.article-layout__rail';
-						config.insertMethod = 'prepend';
+						slotConfig.anchorSelector = '.article-layout__rail';
+						slotConfig.insertMethod = 'prepend';
 					} else if (hasVideo) {
-						config.refSelectors = '.article-layout__content';
-						config.insertMethod = 'append';
+						slotConfig.anchorSelector = '.article-layout__content';
+						slotConfig.insertMethod = 'append';
 					} else {
-						config.refSelectors = '.article-content.entry-content p:first-child';
-						config.insertMethod = 'after';
+						slotConfig.anchorSelector = '.article-content.entry-content p:first-child';
+						slotConfig.insertMethod = 'after';
 					}
 
-					this.slotCreator.createSlot(config);
+					this.slotCreator.createSlot(slotConfig, wrapperConfig);
 					context.push('state.adStack', { id: 'top_boxad' });
 				}),
 			)
@@ -105,17 +112,19 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2ArticleInsertFeedBoxad),
 				take(1),
 				tap(({ hasRightRail }) => {
-					const config: SlotCreatorConfig = {
+					const slotConfig: SlotCreatorConfig = {
 						slotName: 'feed_boxad',
-						wrapperClasses: ['feed-block-ad', 'feed-boxad'],
-						refSelectors: hasRightRail
+						anchorSelector: hasRightRail
 							? '.featured-block.in-area-right'
 							: '.feed-layout__container .feed-item',
-						refIndex: hasRightRail ? 0 : 3,
+						anchorPosition: hasRightRail ? 0 : 3,
 						insertMethod: 'before',
 					};
+					const wrapperConfig: SlotCreatorWrapperConfig = {
+						classes: ['feed-block-ad', 'feed-boxad'],
+					};
 
-					this.slotCreator.createSlot(config);
+					this.slotCreator.createSlot(slotConfig, wrapperConfig);
 					context.push('events.pushOnScroll.ids', 'feed_boxad');
 				}),
 			)
@@ -128,13 +137,15 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				tap(() => {
 					const config: SlotCreatorConfig = {
 						slotName: 'incontent_boxad',
-						wrapperClasses: ['article-layout__incontent-ad'],
-						refSelectors: '.article-content h2, .article-content h3',
-						refIndex: 2,
+						anchorSelector: '.article-content h2, .article-content h3',
+						anchorPosition: 2,
 						insertMethod: 'before',
 					};
+					const wrapperConfig = {
+						classes: ['article-layout__incontent-ad'],
+					};
 
-					this.slotCreator.createSlot(config);
+					this.slotCreator.createSlot(config, wrapperConfig);
 					document.querySelector('.article-layout__rail').classList.add('has-incontent-ad');
 					context.push('events.pushOnScroll.ids', 'incontent_boxad');
 				}),
