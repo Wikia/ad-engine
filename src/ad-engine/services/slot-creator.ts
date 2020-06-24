@@ -13,7 +13,7 @@ interface SlotCreatorElementConfig extends SlotCreatorBaseConfig {
 	refElement: Element;
 }
 
-type SlotCreatorConfig = SlotCreatorSelectorsConfig | SlotCreatorElementConfig;
+export type SlotCreatorConfig = SlotCreatorSelectorsConfig | SlotCreatorElementConfig;
 
 type SlotCreatorResolvedConfig = Required<SlotCreatorElementConfig>;
 
