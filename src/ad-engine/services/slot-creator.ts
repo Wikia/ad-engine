@@ -1,7 +1,9 @@
+import { Injectable } from '@wikia/dependency-injection';
+
 interface SlotCreatorBaseConfig {
 	slotName: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
-	classes?: string[];
+	wrapperClasses?: string[];
 }
 
 interface SlotCreatorSelectorsConfig extends SlotCreatorBaseConfig {
@@ -17,12 +19,14 @@ export type SlotCreatorConfig = SlotCreatorSelectorsConfig | SlotCreatorElementC
 
 type SlotCreatorResolvedConfig = Required<SlotCreatorElementConfig>;
 
+@Injectable()
 export class SlotCreator {
 	createSlot(flakyConfig: SlotCreatorConfig): HTMLElement {
 		const config = this.fillConfig(flakyConfig);
-		const slot = this.makeSlot(config.slotName, config.classes);
+		const slot = this.makeSlot(config.slotName);
+		const wrapper = this.wrapSlot(slot, config.wrapperClasses);
 
-		config.refElement[config.insertMethod](slot);
+		config.refElement[config.insertMethod](wrapper);
 
 		return slot;
 	}
@@ -30,7 +34,7 @@ export class SlotCreator {
 	private fillConfig(flakyConfig: SlotCreatorConfig): SlotCreatorResolvedConfig {
 		return {
 			...flakyConfig,
-			classes: flakyConfig.classes ?? [],
+			wrapperClasses: flakyConfig.wrapperClasses ?? [],
 			refElement: this.getRefElement(flakyConfig),
 		};
 	}
@@ -39,6 +43,8 @@ export class SlotCreator {
 		if ('refElement' in config) {
 			return config.refElement;
 		}
+
+		config.refIndex = config.refIndex ?? 0;
 
 		const refElement = document.querySelectorAll(config.refSelectors)[config.refIndex];
 
@@ -52,12 +58,25 @@ export class SlotCreator {
 		return refElement;
 	}
 
-	private makeSlot(slotName: string, classes: string[]): HTMLElement {
-		const container = document.createElement('div');
+	private makeSlot(slotName: string): HTMLElement {
+		const slot = document.createElement('div');
 
-		container.id = slotName;
-		container.classList.add('gpt-ad', 'hide', ...classes);
+		slot.id = slotName;
+		slot.classList.add('gpt-ad', 'hide');
 
-		return container;
+		return slot;
+	}
+
+	private wrapSlot(slot: HTMLElement, wrapperClasses: string[]): HTMLElement {
+		if (!wrapperClasses.length) {
+			return slot;
+		}
+
+		const wrapper = document.createElement('div');
+
+		wrapper.classList.add(...wrapperClasses);
+		wrapper.append(slot);
+
+		return wrapper;
 	}
 }

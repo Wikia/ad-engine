@@ -1,5 +1,11 @@
 import { DynamicSlotsSetup } from '@platforms/shared';
-import { communicationService, context, ofType } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	ofType,
+	SlotCreator,
+	SlotCreatorConfig,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take, tap } from 'rxjs/operators';
 import {
@@ -13,9 +19,10 @@ import { F2FeedBoxadStickiness } from './f2-feed-boxad-stickiness';
 
 @Injectable()
 export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
-	private domParser = new DOMParser();
-
-	constructor(private f2FeedBoxadStickiness: F2FeedBoxadStickiness) {}
+	constructor(
+		private f2FeedBoxadStickiness: F2FeedBoxadStickiness,
+		private slotCreator: SlotCreator,
+	) {}
 
 	configureDynamicSlots(): void {
 		this.handleSlotsInjection();
@@ -28,14 +35,15 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2FeedInsertTopBoxad),
 				take(1),
 				tap(({ hasRightRail }) => {
-					const topBoxad = this.makeSlot('top_boxad', 'feed-block-ad feed-top-boxad');
+					const config: SlotCreatorConfig = {
+						slotName: 'top_boxad',
+						wrapperClasses: ['feed-block-ad', 'feed-top-boxad'],
+						refSelectors: hasRightRail ? '.feed-layout__right-rail' : '.feed-layout .feed-item',
+						refIndex: hasRightRail ? 0 : 1,
+						insertMethod: 'prepend',
+					};
 
-					if (hasRightRail) {
-						document.querySelector('.feed-layout__right-rail')?.prepend(topBoxad);
-					} else {
-						document.querySelectorAll('.feed-layout .feed-item')[1]?.prepend(topBoxad);
-					}
-
+					this.slotCreator.createSlot(config);
 					context.push('state.adStack', { id: 'top_boxad' });
 				}),
 			)
@@ -46,15 +54,18 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2FeedInsertFeedBoxad),
 				take(1),
 				tap(({ hasRightRail }) => {
-					const feedBoxad = this.makeSlot('feed_boxad', 'feed-block-ad feed-bottom-boxad');
+					const config: SlotCreatorConfig = {
+						slotName: 'feed_boxad',
+						wrapperClasses: ['feed-block-ad', 'feed-bottom-boxad'],
+						refSelectors: '.feed-layout .feed-item',
+						refIndex: hasRightRail ? 10 : 6,
+						insertMethod: hasRightRail ? 'before' : 'prepend',
+					};
 
+					this.slotCreator.createSlot(config);
 					if (hasRightRail) {
-						document.querySelectorAll('.feed-layout .feed-item')[10]?.before(feedBoxad);
 						this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness();
-					} else {
-						document.querySelectorAll('.feed-layout .feed-item')[6]?.prepend(feedBoxad);
 					}
-
 					context.push('events.pushOnScroll.ids', 'feed_boxad');
 				}),
 			)
@@ -65,16 +76,25 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2ArticleInsertTopBoxad),
 				take(1),
 				tap(({ hasRightRail, hasVideo }) => {
-					const topBoxad = this.makeSlot('top_boxad', 'article-layout__top-box-ad');
+					const config: SlotCreatorConfig = {
+						slotName: 'top_boxad',
+						wrapperClasses: ['article-layout__top-box-ad'],
+						refSelectors: '',
+						insertMethod: '' as any,
+					};
 
 					if (hasRightRail) {
-						document.querySelector('.article-layout__rail')?.prepend(topBoxad);
+						config.refSelectors = '.article-layout__rail';
+						config.insertMethod = 'prepend';
 					} else if (hasVideo) {
-						document.querySelector('.article-layout__content')?.append(topBoxad);
+						config.refSelectors = '.article-layout__content';
+						config.insertMethod = 'append';
 					} else {
-						document.querySelector('.article-content.entry-content p:first-child')?.after(topBoxad);
+						config.refSelectors = '.article-content.entry-content p:first-child';
+						config.insertMethod = 'after';
 					}
 
+					this.slotCreator.createSlot(config);
 					context.push('state.adStack', { id: 'top_boxad' });
 				}),
 			)
@@ -85,14 +105,17 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2ArticleInsertFeedBoxad),
 				take(1),
 				tap(({ hasRightRail }) => {
-					const feedBoxad = this.makeSlot('feed_boxad', 'feed-block-ad feed-boxad');
+					const config: SlotCreatorConfig = {
+						slotName: 'feed_boxad',
+						wrapperClasses: ['feed-block-ad', 'feed-boxad'],
+						refSelectors: hasRightRail
+							? '.featured-block.in-area-right'
+							: '.feed-layout__container .feed-item',
+						refIndex: hasRightRail ? 0 : 3,
+						insertMethod: 'before',
+					};
 
-					if (hasRightRail) {
-						document.querySelector('.featured-block.in-area-right')?.before(feedBoxad);
-					} else {
-						document.querySelectorAll('.feed-layout__container .feed-item')[3]?.before(feedBoxad);
-					}
-
+					this.slotCreator.createSlot(config);
 					context.push('events.pushOnScroll.ids', 'feed_boxad');
 				}),
 			)
@@ -103,24 +126,20 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				ofType(f2ArticleInsertIncontentBoxad),
 				take(1),
 				tap(() => {
-					const incontentBoxad = this.makeSlot('incontent_boxad', 'article-layout__incontent-ad');
+					const config: SlotCreatorConfig = {
+						slotName: 'incontent_boxad',
+						wrapperClasses: ['article-layout__incontent-ad'],
+						refSelectors: '.article-content h2, .article-content h3',
+						refIndex: 2,
+						insertMethod: 'before',
+					};
 
-					document
-						.querySelectorAll('.article-content h2, .article-content h3')[2]
-						?.before(incontentBoxad);
+					this.slotCreator.createSlot(config);
 					document.querySelector('.article-layout__rail').classList.add('has-incontent-ad');
-
 					context.push('events.pushOnScroll.ids', 'incontent_boxad');
 				}),
 			)
 			.subscribe();
-	}
-
-	private makeSlot(slotName, wrapperClass = ''): ChildNode {
-		return this.domParser.parseFromString(
-			`<div class="${wrapperClass}"><div class="gpt-ad" id="${slotName}"></div></div>`,
-			'text/html',
-		).body.firstChild;
 	}
 
 	private configureTopLeaderboard(): void {
