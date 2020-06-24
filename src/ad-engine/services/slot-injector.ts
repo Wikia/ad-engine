@@ -40,6 +40,7 @@ function insertNewSlot(
 	return container;
 }
 
+// TODO: Handle slots creation and injection with SlotCreator
 class SlotInjector {
 	constructor() {
 		eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
