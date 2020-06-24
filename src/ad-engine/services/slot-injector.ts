@@ -1,47 +1,15 @@
 import { AdSlot } from '../models';
-import { getTopOffset, getViewportHeight, logger } from '../utils';
-import { isInTheSameViewport } from '../utils/dimensions';
+import { logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
+import { SlotCreator, SlotCreatorConfig } from './slot-creator';
 import { slotService } from './slot-service';
 
 const logGroup = 'slot-repeater';
 
-function findNextSuitablePlace(
-	anchorElements: HTMLElement[] = [],
-	conflictingElements: HTMLElement[] = [],
-): HTMLElement | null {
-	let i;
-
-	for (i = 0; i < anchorElements.length; i += 1) {
-		if (!isInTheSameViewport(anchorElements[i], conflictingElements)) {
-			return anchorElements[i];
-		}
-	}
-
-	return null;
-}
-
-function insertNewSlot(
-	slotName: string,
-	nextSibling: HTMLElement,
-	disablePushOnScroll: boolean,
-): HTMLElement {
-	const container = document.createElement('div');
-
-	container.id = slotName;
-
-	nextSibling.parentNode.insertBefore(container, nextSibling);
-
-	if (!disablePushOnScroll) {
-		context.push('events.pushOnScroll.ids', slotName);
-	}
-
-	return container;
-}
-
-// TODO: Handle slots creation and injection with SlotCreator
 class SlotInjector {
+	private slotCreator = new SlotCreator();
+
 	constructor() {
 		eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
 			const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
@@ -67,39 +35,38 @@ class SlotInjector {
 	}
 
 	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
+		let container: HTMLElement;
 		const config = context.get(`slots.${slotName}`);
-
-		let anchorElements = Array.prototype.slice.call(
-			document.querySelectorAll(config.insertBeforeSelector),
-		);
+		const slotConfig: SlotCreatorConfig = {
+			slotName,
+			anchorSelector: config.insertBeforeSelector,
+			insertMethod: 'before',
+		};
 
 		if (config.insertBelowFirstViewport) {
-			const viewportHeight = getViewportHeight();
-
-			anchorElements = anchorElements.filter((el) => getTopOffset(el) > viewportHeight);
+			config.anchorPosition = 'belowFirstViewport';
 		}
 
 		if (config.repeat && config.repeat.insertBelowScrollPosition) {
-			const scrollPos = window.scrollY;
-
-			anchorElements = anchorElements.filter((el) => getTopOffset(el) > scrollPos);
+			config.anchorPosition = 'belowScrollPosition';
 		}
 
-		const conflictingElements = Array.prototype.slice.call(
-			document.querySelectorAll(config.avoidConflictWith),
-		);
-		const nextSibling = findNextSuitablePlace(anchorElements, conflictingElements);
+		if (config.avoidConflictWith) {
+			config.avoidConflictWith = [config.avoidConflictWith];
+		}
 
-		if (!nextSibling) {
+		try {
+			container = this.slotCreator.createSlot(slotConfig);
+		} catch (e) {
 			logger(logGroup, `There is not enough space for ${slotName}`);
+			console.error(e);
 
 			return null;
 		}
 
-		if (typeof disablePushOnScroll !== 'boolean') {
-			disablePushOnScroll = config.repeat ? !!config.repeat.disablePushOnScroll : false;
+		if (disablePushOnScroll === false) {
+			context.push('events.pushOnScroll.ids', slotName);
 		}
-		const container = insertNewSlot(slotName, nextSibling, disablePushOnScroll);
 
 		logger(logGroup, 'Inject slot', slotName);
 
