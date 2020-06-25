@@ -1,9 +1,11 @@
 import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
-import { communicationService, context } from '@wikia/ad-engine';
+import { babRemover, communicationService, context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { setupUcpIoc } from './setup-ucp-ioc';
 import './styles.scss';
+
+babRemover.ping();
 
 window.RLQ = window.RLQ || [];
 window.RLQ.push(async () => {

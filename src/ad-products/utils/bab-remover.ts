@@ -9,6 +9,11 @@ class BabRemover {
 		}
 	}
 
+	ping(): void {
+		// tslint:disable-next-line:no-console
+		console.log('ping');
+	}
+
 	async install(): Promise<void> {
 		const isBabDetected = await babDetection.run();
 
@@ -80,7 +85,7 @@ class BabRemover {
 		popup.classList.add('hidden');
 	}
 
-	markPlacements() {
+	markPlacements(): void {
 		const tlbAd: HTMLElement = document.getElementById('top_leaderboard');
 		const tbAd: HTMLElement = document.getElementById('top_boxad');
 		const icbAd: HTMLElement = document.getElementById('incontent_boxad');
