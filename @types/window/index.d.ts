@@ -38,6 +38,7 @@ interface Window {
 	tabId?: string;
 	trackingOptIn?: any;
 	wgCookiePath?: string;
+	wgMainPageTitle: string;
 	XMLHttpRequest?: any;
 }
 
