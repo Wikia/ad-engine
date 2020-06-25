@@ -42,6 +42,23 @@ export class CommunicationService {
 			return;
 		}
 
+		devtools.subscribe((message) => {
+			try {
+				if (message.source === '@devtools-extension' && message.type === 'ACTION') {
+					// According to:
+					// * https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f
+					// * https://github.com/zalmoxisus/mobx-remotedev/blob/master/src/monitorActions.js
+					// * https://github.com/zalmoxisus/remotedev-utils/blob/98ca5b35d8dd042d35dbcdd2653e5e168a2022f5/src/index.js#L75-L78
+					// tslint:disable-next-line:function-constructor no-function-constructor-with-string-args
+					const action = new Function(`return ${message.payload}`)();
+
+					this.dispatch(action);
+				}
+			} catch (e) {
+				devtools.error(e.message);
+			}
+		});
+
 		this.action$.subscribe((action) => devtools.send(action, {}));
 	}
 }
