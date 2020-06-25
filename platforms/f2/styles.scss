@@ -9,6 +9,16 @@
 	$advertisement-label-height: 24px;
 	$label-height: -24px;
 
+	#top_leaderboard {
+		background: $wds-fandom-color-black;
+		justify-content: center;
+		margin: 0 auto;
+		max-width: 100vw;
+		overflow: hidden;
+		padding: 18px 24px 0;
+		text-align: center;
+	}
+
 	.feed-item .gpt-ad {
 		padding: 24px 24px 30px;
 		position: sticky;
@@ -136,7 +146,6 @@
 
 #top_leaderboard {
 	text-align: center;
-	background-color: #000;
 
 	> div {
 		text-align: center;
