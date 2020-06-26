@@ -79,7 +79,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('bidders.prebid.tcf2Enabled') && this.tcf.exists) {
+		if (context.get('bidders.tcf2Enabled') && this.tcf.exists) {
 			this.prebidConfig.consentManagement = {
 				gdpr: {
 					cmpApi: 'iab',

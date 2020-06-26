@@ -120,7 +120,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
-		if (consentData && consentData.consentData) {
+		if (!context.get('bidders.tcf2Enabled') && consentData && consentData.consentData) {
 			return {
 				gdpr: {
 					enabled: consentData.gdprApplies,
