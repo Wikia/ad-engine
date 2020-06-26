@@ -48,7 +48,6 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private injectSlots(): void {
-		// TODO: handle hideAds (?noads=1) flag and on f2State.article.isArticlePlus ads-mode level
 		this.insertSlots([
 			this.getTopLeaderboardConfig(),
 			// FIXME: incontent_boxad
