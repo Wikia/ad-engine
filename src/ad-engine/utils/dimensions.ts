@@ -4,6 +4,13 @@ export interface ElementOffset {
 }
 
 /**
+ * Replaces jQuery `height()` method
+ */
+export function getHeight(element: HTMLElement): number {
+	return parseFloat(getComputedStyle(element, null).height.replace('px', ''));
+}
+
+/**
  * Returns element's offset of given element depending on offset parameter name
  */
 export function getElementOffset(element: HTMLElement): ElementOffset {
