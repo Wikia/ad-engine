@@ -17,14 +17,6 @@ export class F2SlotsDefinitionRepository {
 		return this.f2State.pageType === 'article';
 	}
 
-	private get isHome(): boolean {
-		return this.f2State.pageType === 'home';
-	}
-
-	private get isTopic(): boolean {
-		return this.f2State.pageType === 'topic';
-	}
-
 	constructor(
 		@Inject(F2_STATE) private f2State: F2State,
 		@Inject(F2_ENV) private f2Env: F2Environment,
@@ -32,7 +24,7 @@ export class F2SlotsDefinitionRepository {
 	) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
-		if (!this.isArticle && !this.isHome && !this.isTopic) {
+		if (!['article', 'home', 'topic'].includes(this.f2State.pageType)) {
 			return;
 		}
 
