@@ -11,6 +11,9 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
+// Sync this with &.has-incontent-ad height in article/layout.css
+const longArticleMinHeight = 2200; // Two ads 1050px tall + some space between them
+
 @Injectable()
 export class F2SlotsDefinitionRepository {
 	private get isArticle(): boolean {
@@ -42,6 +45,31 @@ export class F2SlotsDefinitionRepository {
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	getIncontentBoxadConfig(): SlotSetupDefinition {
+		const slotName = 'incontent_boxad';
+
+		if (!this.isArticle) {
+			return;
+		}
+
+		if (!this.isArticleLongEnoughForIncontentBoxad()) {
+			return;
+		}
+
+		return {
+			activator: () => context.push('events.pushOnScroll.ids', slotName),
+			slotCreatorWrapperConfig: {
+				classes: ['article-layout__incontent-ad'],
+			},
+			slotCreatorConfig: {
+				slotName,
+				anchorPosition: 2,
+				anchorSelector: '.article-content h2, .article-content h3',
+				insertMethod: 'before',
 			},
 		};
 	}
@@ -145,10 +173,11 @@ export class F2SlotsDefinitionRepository {
 	}
 
 	getFeedBoxadConfig(): SlotSetupDefinition {
+		if (this.isArticle && this.isArticleLongEnoughForIncontentBoxad()) {
+			return;
+		}
+
 		const slotName = 'feed_boxad';
-		const slotCreatorWrapperConfig = {
-			classes: ['feed-block-ad', 'feed-bottom-boxad'],
-		};
 		const activator = () => {
 			context.push('events.pushOnScroll.ids', slotName);
 			if (this.f2Env.hasRightRail) {
@@ -159,12 +188,14 @@ export class F2SlotsDefinitionRepository {
 		if (!this.isArticle && this.f2Env.hasRightRail) {
 			return {
 				activator,
-				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
 					anchorSelector: '.feed-layout .feed-item',
 					anchorPosition: 10,
 					insertMethod: 'before',
+				},
+				slotCreatorWrapperConfig: {
+					classes: ['feed-block-ad', 'feed-bottom-boxad'],
 				},
 			};
 		}
@@ -172,12 +203,14 @@ export class F2SlotsDefinitionRepository {
 		if (!this.isArticle && !this.f2Env.hasRightRail) {
 			return {
 				activator,
-				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
 					anchorSelector: '.feed-layout .feed-item',
 					anchorPosition: 6,
 					insertMethod: 'before',
+				},
+				slotCreatorWrapperConfig: {
+					classes: ['feed-block-ad', 'feed-bottom-boxad'],
 				},
 			};
 		}
@@ -185,24 +218,36 @@ export class F2SlotsDefinitionRepository {
 		if (this.f2Env.hasRightRail) {
 			return {
 				activator,
-				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
 					anchorSelector: '.featured-block.in-area-right',
 					insertMethod: 'before',
+				},
+				slotCreatorWrapperConfig: {
+					classes: ['feed-block-ad', 'feed-boxad'],
 				},
 			};
 		}
 
 		return {
 			activator,
-			slotCreatorWrapperConfig,
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.feed-layout__container .feed-item',
 				anchorPosition: 3,
 				insertMethod: 'before',
 			},
+			slotCreatorWrapperConfig: {
+				classes: ['feed-block-ad', 'feed-boxad'],
+			},
 		};
+	}
+
+	private isArticleLongEnoughForIncontentBoxad(): boolean {
+		const selectedHeader = document.querySelectorAll('.article-content h2, .article-content h3')[2];
+		const articleContent: HTMLDivElement = document.querySelector('.article-content');
+		const articleContentHeight = articleContent.offsetHeight;
+
+		return selectedHeader && articleContentHeight > longArticleMinHeight;
 	}
 }

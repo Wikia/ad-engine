@@ -20,9 +20,7 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 	private injectSlots(): void {
 		this.insertSlots([
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
-			// FIXME: incontent_boxad
-			// Currently right rail does not work properly on production.
-			// There is no way to test it.
+			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 		]);
 
 		communicationService.action$
