@@ -6,10 +6,12 @@ import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
 describe('SlotCreator', () => {
 	const sandbox = createSandbox();
 	let slotCreator: SlotCreator;
+	let parent: HTMLDivElement;
 	let querySelectorAll: SinonStub;
 
 	beforeEach(() => {
 		slotCreator = new SlotCreator();
+		parent = document.createElement('div');
 		querySelectorAll = sandbox.stub(document, 'querySelectorAll');
 	});
 
@@ -19,39 +21,55 @@ describe('SlotCreator', () => {
 
 	describe('insertMethod', () => {
 		it('should insert with append', () => {
-			testInsertMethod('append');
-		});
-		it('should insert with prepend', () => {
-			testInsertMethod('prepend');
-		});
-		it('should insert with after', () => {
-			testInsertMethod('after');
-		});
-		it('should insert with before', () => {
-			testInsertMethod('before');
+			const slotElement = testInsertMethod('append');
+			const relativeElement = parent.children[0];
+
+			expect(relativeElement.children.length).to.equal(2);
+			expect(relativeElement.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(relativeElement.children[0].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
 
-		function testInsertMethod(insertMethod: SlotCreatorConfig['insertMethod']): void {
+		it('should insert with prepend', () => {
+			const slotElement = testInsertMethod('prepend');
+
+			const relativeElement = parent.children[0];
+
+			expect(relativeElement.children.length).to.equal(2);
+			expect(relativeElement.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(relativeElement.children[1].tagName).to.equal('SPAN', 'span is in wrong place');
+		});
+
+		it('should insert with after', () => {
+			const slotElement = testInsertMethod('after');
+
+			expect(parent.children.length).to.equal(2);
+			expect(parent.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
+		});
+
+		it('should insert with before', () => {
+			const slotElement = testInsertMethod('before');
+
+			expect(parent.children.length).to.equal(2);
+			expect(parent.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
+		});
+
+		function testInsertMethod(insertMethod: SlotCreatorConfig['insertMethod']): HTMLElement {
 			const slotConfig: SlotCreatorConfig = {
 				insertMethod,
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
 			};
-			const relativeElement = createHtmlElementStub(sandbox, 'div');
+			const relativeElement = document.createElement('div');
 
+			relativeElement.append(document.createElement('span'));
+			parent.append(relativeElement);
 			querySelectorAll.withArgs('#relative').returns([relativeElement]);
 
 			const slotElement = slotCreator.createSlot(slotConfig);
 
 			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
-			expect(relativeElement[insertMethod].getCalls().length).to.equal(
-				1,
-				`${[insertMethod]} called more than once`,
-			);
-			expect(relativeElement[insertMethod].getCalls()[0].args[0]).to.equal(
-				slotElement,
-				`element not passed to ${[insertMethod]}`,
-			);
+
+			return slotElement;
 		}
 	});
 
