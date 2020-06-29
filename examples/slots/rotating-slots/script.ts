@@ -1,4 +1,4 @@
-import { AdEngine, context, FmrRotator, utils } from '@wikia/ad-engine';
+import { AdEngine, context, FmrRotator } from '@wikia/ad-engine';
 import customContext from '../../context';
 import '../../styles.scss';
 
@@ -9,10 +9,6 @@ context.set('slots.repeatable_boxad_1.insertBeforeSelector', '#repeatable_boxad_
 context.set('slots.repeatable_boxad_1.repeat.limit', 20);
 context.set('slots.repeatable_boxad_1.repeat.insertBelowScrollPosition', false);
 context.set('slots.repeatable_boxad_1.repeat.disablePushOnScroll', true);
-
-if (utils.queryString.get('recirculation_disabled') === '1') {
-	context.set('options.floatingMedrecRecirculationDisabled', true);
-}
 
 new AdEngine().init();
 
