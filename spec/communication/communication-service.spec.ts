@@ -43,13 +43,14 @@ describe('CommunicationService', () => {
 		]);
 	});
 
-	it.skip('should listen correct actions', () => {
+	it('should listen correct actions', () => {
 		const results: Action[] = [];
 		const localSubject = new Subject<Action>();
 		const globalSubject = new Subject<Action>();
 
-		// TODO: Make this stub work and unskip the test.
-		sandbox.stub(Communicator.prototype, 'actions$').value(globalSubject);
+		sandbox
+			.stub(Communicator.prototype, 'addListener')
+			.callsFake((cb) => globalSubject.subscribe(cb));
 		sandbox.stub(Subject.prototype, 'asObservable').returns(localSubject);
 
 		const service = new CommunicationService();
@@ -60,8 +61,6 @@ describe('CommunicationService', () => {
 		localSubject.next(globalExample({ bar: 'localSubject - b' }));
 		globalSubject.next(localExample({ foo: 'globalSubject - c' }));
 		globalSubject.next(globalExample({ bar: 'globalSubject - d' }));
-
-		console.log(results);
 
 		expect(results).to.deep.equal([
 			{ type: '[Example]', foo: 'localSubject - a' },

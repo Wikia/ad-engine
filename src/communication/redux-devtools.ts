@@ -5,11 +5,19 @@ interface ReduxDevtoolsExtension {
 	connect(options?: ReduxDevtoolsOptions): ReduxDevtools;
 }
 
+interface ReduxDevtoolsMessage<T = any> {
+	type: 'ACTION' | 'DISPATCH' | 'START' | string;
+	source: '@devtools-extension' | string;
+	id: unknown;
+	state: T;
+	payload: string;
+}
+
 /**
  * @link https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Methods.md
  */
 export interface ReduxDevtools {
-	subscribe(listener: (action: Action) => void): () => void;
+	subscribe(listener: (message: ReduxDevtoolsMessage) => void): () => void;
 	unsubscribe(): void;
 	send<T>(action: Action, state: T): void;
 	init<T>(state: T): void;
