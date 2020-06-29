@@ -46,7 +46,7 @@ export class SlotCreator {
 		);
 
 		if (!result) {
-			throw new Error(`No place to insert slot ${slotConfig.slotName}.`);
+			this.throwNoPlaceToInsertError(slotConfig.slotName);
 		}
 
 		return result;
@@ -63,7 +63,13 @@ export class SlotCreator {
 			case 'belowScrollPosition':
 				return elements.filter((el) => getTopOffset(el) > window.scrollY);
 			default:
-				return [elements[slotConfig.anchorPosition]];
+				const element = elements[slotConfig.anchorPosition];
+
+				if (!element) {
+					this.throwNoPlaceToInsertError(slotConfig.slotName);
+				}
+
+				return [element];
 		}
 	}
 
@@ -104,5 +110,9 @@ export class SlotCreator {
 		wrapper.append(slot);
 
 		return wrapper;
+	}
+
+	private throwNoPlaceToInsertError(slotName: string): void {
+		throw new Error(`No place to insert slot ${slotName}.`);
 	}
 }
