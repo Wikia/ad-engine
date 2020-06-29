@@ -6,11 +6,14 @@ describe('SlotCreator', () => {
 	const sandbox = createSandbox();
 	let slotCreator: SlotCreator;
 	let parent: HTMLDivElement;
+	let relativeElement: HTMLDivElement;
 	let querySelectorAll: SinonStub;
 
 	beforeEach(() => {
 		slotCreator = new SlotCreator();
 		parent = document.createElement('div');
+		relativeElement = document.createElement('div');
+		parent.append(relativeElement);
 		querySelectorAll = sandbox.stub(document, 'querySelectorAll');
 	});
 
@@ -21,7 +24,6 @@ describe('SlotCreator', () => {
 	describe('insertMethod', () => {
 		it('should insert with append', () => {
 			const slotElement = testInsertMethod('append');
-			const relativeElement = parent.children[0];
 
 			expect(relativeElement.children.length).to.equal(
 				2,
@@ -33,8 +35,6 @@ describe('SlotCreator', () => {
 
 		it('should insert with prepend', () => {
 			const slotElement = testInsertMethod('prepend');
-
-			const relativeElement = parent.children[0];
 
 			expect(relativeElement.children.length).to.equal(
 				2,
@@ -64,10 +64,8 @@ describe('SlotCreator', () => {
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
 			};
-			const relativeElement = document.createElement('div');
 
-			parent.append(relativeElement);
-			relativeElement.append(document.createElement('span'));
+			relativeElement.append(document.createElement('span')); // to test append and prepend
 			querySelectorAll.withArgs('#relative').returns([relativeElement]);
 
 			const slotElement = slotCreator.createSlot(slotConfig);
@@ -99,9 +97,7 @@ describe('SlotCreator', () => {
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
 			};
-			const relativeElement = document.createElement('div');
 
-			parent.append(relativeElement);
 			querySelectorAll.withArgs('#relative').returns([relativeElement]);
 
 			const slotElement = slotCreator.createSlot(slotConfig, wrapperConfig);
