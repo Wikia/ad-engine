@@ -1,7 +1,6 @@
 import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
-import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
 
 describe('SlotCreator', () => {
 	const sandbox = createSandbox();
@@ -24,7 +23,10 @@ describe('SlotCreator', () => {
 			const slotElement = testInsertMethod('append');
 			const relativeElement = parent.children[0];
 
-			expect(relativeElement.children.length).to.equal(2);
+			expect(relativeElement.children.length).to.equal(
+				2,
+				'wrong number of relativeElement children',
+			);
 			expect(relativeElement.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
 			expect(relativeElement.children[0].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
@@ -34,7 +36,10 @@ describe('SlotCreator', () => {
 
 			const relativeElement = parent.children[0];
 
-			expect(relativeElement.children.length).to.equal(2);
+			expect(relativeElement.children.length).to.equal(
+				2,
+				'wrong number of relativeElement children',
+			);
 			expect(relativeElement.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
 			expect(relativeElement.children[1].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
@@ -42,14 +47,14 @@ describe('SlotCreator', () => {
 		it('should insert with after', () => {
 			const slotElement = testInsertMethod('after');
 
-			expect(parent.children.length).to.equal(2);
+			expect(parent.children.length).to.equal(2, 'wrong number of parent children');
 			expect(parent.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
 		});
 
 		it('should insert with before', () => {
 			const slotElement = testInsertMethod('before');
 
-			expect(parent.children.length).to.equal(2);
+			expect(parent.children.length).to.equal(2, 'wrong number of parent children');
 			expect(parent.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
 		});
 
@@ -61,8 +66,8 @@ describe('SlotCreator', () => {
 			};
 			const relativeElement = document.createElement('div');
 
-			relativeElement.append(document.createElement('span'));
 			parent.append(relativeElement);
+			relativeElement.append(document.createElement('span'));
 			querySelectorAll.withArgs('#relative').returns([relativeElement]);
 
 			const slotElement = slotCreator.createSlot(slotConfig);
@@ -94,8 +99,9 @@ describe('SlotCreator', () => {
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
 			};
-			const relativeElement = createHtmlElementStub(sandbox, 'div');
+			const relativeElement = document.createElement('div');
 
+			parent.append(relativeElement);
 			querySelectorAll.withArgs('#relative').returns([relativeElement]);
 
 			const slotElement = slotCreator.createSlot(slotConfig, wrapperConfig);
@@ -103,9 +109,15 @@ describe('SlotCreator', () => {
 
 			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
 			expect(!!wrapperElement).to.equal(true, "wrapperElement doesn't exist");
-			expect(relativeElement.before.getCalls()[0].args[0]).to.equal(
-				wrapperElement,
-				"wrapper wasn't injected by relativeElement",
+
+			expect(parent.children.length).to.equal(2, 'wrong number of parent children');
+			expect(parent.children[0]).to.equal(wrapperElement, 'wrapperElement is in wrong place');
+			expect(parent.children[1]).to.equal(relativeElement, 'relativeElement is in wrong place');
+
+			expect(wrapperElement.children.length).to.equal(1, 'wrong number of wrapper children');
+			expect(wrapperElement.children[0]).to.equal(
+				slotElement,
+				"wrapperElement doesn't contain slotElement",
 			);
 
 			return wrapperElement;
