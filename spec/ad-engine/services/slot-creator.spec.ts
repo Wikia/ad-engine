@@ -207,6 +207,75 @@ describe('SlotCreator', () => {
 		});
 	});
 
+	describe('avoidConflictWith', () => {
+		beforeEach(() => {
+			sandbox.stub(relativeElement0, 'offsetParent').value(true);
+			sandbox.stub(relativeElement1, 'offsetParent').value(true);
+			sandbox.stub(relativeElement2, 'offsetParent').value(true);
+		});
+
+		it('should throw if in the same node even if not within distance', () => {
+			const slotConfig: SlotCreatorConfig = {
+				insertMethod: 'after',
+				slotName: 'ad-test',
+				anchorSelector: '#relative',
+				avoidConflictWith: ['#conflict'],
+			};
+			const conflictElement = createConflictElement(true);
+
+			relativeElement0.after(conflictElement);
+
+			expectThrowNoPlaceToInsertError(slotConfig);
+		});
+
+		it('should throw if within distance', () => {
+			const slotConfig: SlotCreatorConfig = {
+				insertMethod: 'after',
+				slotName: 'ad-test',
+				anchorSelector: '#relative',
+				avoidConflictWith: ['#conflict'],
+			};
+			const conflictElement = createConflictElement(true);
+
+			relativeElement2.after(conflictElement);
+
+			expectThrowNoPlaceToInsertError(slotConfig);
+		});
+
+		it('should work if not within distance', () => {
+			const slotConfig: SlotCreatorConfig = {
+				insertMethod: 'after',
+				slotName: 'ad-test',
+				anchorSelector: '#relative',
+				avoidConflictWith: ['#conflict'],
+			};
+			const conflictElement = createConflictElement(false);
+
+			relativeElement2.after(conflictElement);
+
+			const slotElement = slotCreator.createSlot(slotConfig);
+
+			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+		});
+
+		function createConflictElement(shouldBeWithinDistance: boolean): HTMLElement {
+			const conflictElement = document.createElement('div');
+
+			querySelectorAll.withArgs('#conflict').returns([conflictElement]);
+			conflictElement.id = 'conflictElement';
+			// distance = 50
+			setElementOffsetHeight(conflictElement, 50);
+			setElementTopOffset(conflictElement, 500);
+			setElementTopOffset(relativeElement0, 600);
+			setElementTopOffset(relativeElement1, 600);
+			setElementTopOffset(relativeElement2, 600);
+			// #############
+			setViewPortHeight(shouldBeWithinDistance ? 60 : 40);
+
+			return conflictElement;
+		}
+	});
+
 	function setViewPortHeight(height: number): void {
 		sandbox.stub(document.documentElement, 'clientHeight').value(height);
 		sandbox.stub(window, 'innerHeight').value(height);
@@ -220,6 +289,10 @@ describe('SlotCreator', () => {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 
 		sandbox.stub(element, 'getBoundingClientRect').returns({ top: top - scrollTop } as any);
+	}
+
+	function setElementOffsetHeight(element: HTMLElement, height: number): void {
+		sandbox.stub(element, 'offsetHeight').value(height);
 	}
 
 	function expectThrowNoPlaceToInsertError(slotConfig: SlotCreatorConfig): void {
