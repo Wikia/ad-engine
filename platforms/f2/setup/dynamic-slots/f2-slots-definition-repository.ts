@@ -11,9 +11,6 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
-// Sync this with &.has-incontent-ad height in article/layout.css
-const longArticleMinHeight = 2200; // Two ads 1050px tall + some space between them
-
 @Injectable()
 export class F2SlotsDefinitionRepository {
 	private get isArticle(): boolean {
@@ -244,6 +241,8 @@ export class F2SlotsDefinitionRepository {
 	}
 
 	private isArticleLongEnoughForIncontentBoxad(): boolean {
+		// Sync this with &.has-incontent-ad height in article/layout.css
+		const longArticleMinHeight = 2200; // Two ads 1050px tall + some space between them
 		const selectedHeader = document.querySelectorAll('.article-content h2, .article-content h3')[2];
 		const articleContent: HTMLDivElement = document.querySelector('.article-content');
 		const articleContentHeight = articleContent.offsetHeight;
