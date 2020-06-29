@@ -26,6 +26,8 @@ interface RepeatConfig {
 	limit: number;
 	updateProperties: Dictionary;
 	additionalClasses?: string;
+	disablePushOnScroll?: boolean;
+	insertBelowScrollPosition?: boolean;
 }
 
 export interface SlotConfig {
@@ -51,6 +53,8 @@ export interface SlotConfig {
 	videoSizes?: number[][];
 	defaultSizes?: any;
 	viewportConflicts?: string[];
+	insertBelowFirstViewport?: boolean;
+	avoidConflictWith?: string;
 	outOfPage?: any;
 	isVideo?: boolean;
 

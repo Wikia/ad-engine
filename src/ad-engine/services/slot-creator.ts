@@ -34,7 +34,7 @@ export class SlotCreator {
 		return {
 			...slotLooseConfig,
 			anchorPosition: slotLooseConfig.anchorPosition ?? 0,
-			avoidConflictWith: [],
+			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 		};
 	}
 
