@@ -127,38 +127,34 @@ describe('SlotCreator', () => {
 	});
 
 	describe('anchorPosition', () => {
-		it('should inject with index', () => {
-			const slotConfig: SlotCreatorConfig = {
-				insertMethod: 'after',
-				slotName: 'ad-test',
-				anchorSelector: '#relative',
-				anchorPosition: 2,
-			};
-			const slotElement = slotCreator.createSlot(slotConfig);
+		describe('index', () => {
+			it('should inject with index', () => {
+				const slotConfig: SlotCreatorConfig = {
+					insertMethod: 'after',
+					slotName: 'ad-test',
+					anchorSelector: '#relative',
+					anchorPosition: 2,
+				};
+				const slotElement = slotCreator.createSlot(slotConfig);
 
-			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
-			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-			expect(parent.children[3]).to.equal(slotElement, 'slotElement is in wrong place');
+				expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+				expect(parent.children.length).to.equal(4, 'wrong number of parent children');
+				expect(parent.children[3]).to.equal(slotElement, 'slotElement is in wrong place');
+			});
+
+			it('should throw with index', () => {
+				const slotConfig: SlotCreatorConfig = {
+					insertMethod: 'after',
+					slotName: 'ad-test',
+					anchorSelector: '#relative',
+					anchorPosition: 3,
+				};
+
+				expectThrowNoPlaceToInsertError(slotConfig);
+			});
 		});
 
-		it('should throw with index', () => {
-			const slotConfig: SlotCreatorConfig = {
-				insertMethod: 'after',
-				slotName: 'ad-test',
-				anchorSelector: '#relative',
-				anchorPosition: 3,
-			};
-
-			try {
-				slotCreator.createSlot(slotConfig);
-			} catch (e) {
-				return expect(e.message).to.equal('No place to insert slot ad-test.');
-			}
-
-			expect(true).to.equal(false, 'createSlot should have thrown');
-		});
-
-		it('should inject with belowFirstViewport', () => {
+		describe('belowFirstViewport', () => {
 			const slotConfig: SlotCreatorConfig = {
 				insertMethod: 'after',
 				slotName: 'ad-test',
@@ -166,37 +162,25 @@ describe('SlotCreator', () => {
 				anchorPosition: 'belowFirstViewport',
 			};
 
-			setViewPortHeight(1000);
-			setElementTopOffset(relativeElement1, 1200);
+			it('should inject with belowFirstViewport', () => {
+				setViewPortHeight(1000);
+				setElementTopOffset(relativeElement1, 1200);
 
-			const slotElement = slotCreator.createSlot(slotConfig);
+				const slotElement = slotCreator.createSlot(slotConfig);
 
-			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
-			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-			expect(parent.children[2]).to.equal(slotElement, 'slotElement is in wrong place');
+				expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+				expect(parent.children.length).to.equal(4, 'wrong number of parent children');
+				expect(parent.children[2]).to.equal(slotElement, 'slotElement is in wrong place');
+			});
+
+			it('should throw with belowFirstViewport', () => {
+				setViewPortHeight(1500);
+				setElementTopOffset(relativeElement1, 1200);
+				expectThrowNoPlaceToInsertError(slotConfig);
+			});
 		});
 
-		it('should throw with belowFirstViewport', () => {
-			const slotConfig: SlotCreatorConfig = {
-				insertMethod: 'after',
-				slotName: 'ad-test',
-				anchorSelector: '#relative',
-				anchorPosition: 'belowFirstViewport',
-			};
-
-			setViewPortHeight(1500);
-			setElementTopOffset(relativeElement1, 1200);
-
-			try {
-				slotCreator.createSlot(slotConfig);
-			} catch (e) {
-				return expect(e.message).to.equal('No place to insert slot ad-test.');
-			}
-
-			expect(true).to.equal(false, 'createSlot should have thrown');
-		});
-
-		it('should inject with belowScrollPosition', () => {
+		describe('belowScrollPosition', () => {
 			const slotConfig: SlotCreatorConfig = {
 				insertMethod: 'after',
 				slotName: 'ad-test',
@@ -204,34 +188,22 @@ describe('SlotCreator', () => {
 				anchorPosition: 'belowScrollPosition',
 			};
 
-			setScrollPosition(1000);
-			setElementTopOffset(relativeElement1, 1200);
+			it('should inject with belowScrollPosition', () => {
+				setScrollPosition(1000);
+				setElementTopOffset(relativeElement1, 1200);
 
-			const slotElement = slotCreator.createSlot(slotConfig);
+				const slotElement = slotCreator.createSlot(slotConfig);
 
-			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
-			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-			expect(parent.children[2]).to.equal(slotElement, 'slotElement is in wrong place');
-		});
+				expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+				expect(parent.children.length).to.equal(4, 'wrong number of parent children');
+				expect(parent.children[2]).to.equal(slotElement, 'slotElement is in wrong place');
+			});
 
-		it('should throw with belowScrollPosition', () => {
-			const slotConfig: SlotCreatorConfig = {
-				insertMethod: 'after',
-				slotName: 'ad-test',
-				anchorSelector: '#relative',
-				anchorPosition: 'belowScrollPosition',
-			};
-
-			setScrollPosition(1500);
-			setElementTopOffset(relativeElement1, 1200);
-
-			try {
-				slotCreator.createSlot(slotConfig);
-			} catch (e) {
-				return expect(e.message).to.equal('No place to insert slot ad-test.');
-			}
-
-			expect(true).to.equal(false, 'createSlot should have thrown');
+			it('should throw with belowScrollPosition', () => {
+				setScrollPosition(1500);
+				setElementTopOffset(relativeElement1, 1200);
+				expectThrowNoPlaceToInsertError(slotConfig);
+			});
 		});
 	});
 
@@ -248,5 +220,16 @@ describe('SlotCreator', () => {
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
 
 		sandbox.stub(element, 'getBoundingClientRect').returns({ top: top - scrollTop } as any);
+	}
+
+	function expectThrowNoPlaceToInsertError(slotConfig: SlotCreatorConfig): void {
+		try {
+			slotCreator.createSlot(slotConfig);
+		} catch (e) {
+			expect(e.message).to.equal('No place to insert slot ad-test.');
+			return;
+		}
+
+		expect(true).to.equal(false, 'createSlot should have thrown');
 	}
 });
