@@ -18,29 +18,6 @@ describe('SlotCreator', () => {
 	});
 
 	describe('insertMethod', () => {
-		function testInsertMethod(insertMethod: SlotCreatorConfig['insertMethod']): void {
-			const slotConfig: SlotCreatorConfig = {
-				insertMethod,
-				slotName: 'ad-test',
-				anchorSelector: '#relative',
-			};
-			const relativeElement = createHtmlElementStub(sandbox, 'div');
-
-			querySelectorAll.withArgs('#relative').returns([relativeElement]);
-
-			const element = slotCreator.createSlot(slotConfig);
-
-			expect(element).to.not.be.undefined;
-			expect(relativeElement[insertMethod].getCalls().length).to.equal(
-				1,
-				`${[insertMethod]} called more than once`,
-			);
-			expect(relativeElement[insertMethod].getCalls()[0].args[0]).to.equal(
-				element,
-				`element not passed to ${[insertMethod]}`,
-			);
-		}
-
 		it('should insert with append', () => {
 			testInsertMethod('append');
 		});
@@ -52,6 +29,49 @@ describe('SlotCreator', () => {
 		});
 		it('should insert with before', () => {
 			testInsertMethod('before');
+		});
+
+		function testInsertMethod(insertMethod: SlotCreatorConfig['insertMethod']): void {
+			const slotConfig: SlotCreatorConfig = {
+				insertMethod,
+				slotName: 'ad-test',
+				anchorSelector: '#relative',
+			};
+			const relativeElement = createHtmlElementStub(sandbox, 'div');
+
+			querySelectorAll.withArgs('#relative').returns([relativeElement]);
+
+			const slotElement = slotCreator.createSlot(slotConfig);
+
+			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+			expect(relativeElement[insertMethod].getCalls().length).to.equal(
+				1,
+				`${[insertMethod]} called more than once`,
+			);
+			expect(relativeElement[insertMethod].getCalls()[0].args[0]).to.equal(
+				slotElement,
+				`element not passed to ${[insertMethod]}`,
+			);
+		}
+	});
+
+	describe('wrapper', () => {
+		it('should create slot inside wrapper', () => {
+			const slotConfig: SlotCreatorConfig = {
+				insertMethod: 'before',
+				slotName: 'ad-test',
+				anchorSelector: '#relative',
+			};
+			const relativeElement = createHtmlElementStub(sandbox, 'div');
+
+			querySelectorAll.withArgs('#relative').returns([relativeElement]);
+
+			const slotElement = slotCreator.createSlot(slotConfig, {});
+			const wrapperElement = slotElement.parentElement;
+
+			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+			expect(!!wrapperElement).to.equal(true, "wrapperElement doesn't exist");
+			expect(relativeElement.before.getCalls()[0].args[0]).to.equal(wrapperElement);
 		});
 	});
 
