@@ -11,7 +11,7 @@ export interface SlotCreatorConfig {
 
 export interface SlotCreatorWrapperConfig {
 	id?: string;
-	classes?: string[];
+	classList?: string[];
 }
 
 @Injectable()
@@ -95,8 +95,8 @@ export class SlotCreator {
 
 		const wrapper = document.createElement('div');
 
-		if (wrapperLooseConfig.classes) {
-			wrapper.classList.add(...wrapperLooseConfig.classes);
+		if (wrapperLooseConfig.classList) {
+			wrapper.classList.add(...wrapperLooseConfig.classList);
 		}
 		if (wrapperLooseConfig.id) {
 			wrapper.id = wrapperLooseConfig.id;

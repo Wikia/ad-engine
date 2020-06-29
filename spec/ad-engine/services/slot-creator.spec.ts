@@ -1,4 +1,4 @@
-import { SlotCreator, SlotCreatorConfig } from '@wikia/ad-engine';
+import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
 import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
@@ -57,6 +57,20 @@ describe('SlotCreator', () => {
 
 	describe('wrapper', () => {
 		it('should create slot inside wrapper', () => {
+			const wrapperElement = testWrapper({});
+
+			expect(wrapperElement.id).to.equal('');
+			expect(wrapperElement.classList.value).to.equal('', 'wrapper classList is not empty');
+		});
+
+		it('should create slot inside wrapper with config', () => {
+			const wrapperElement = testWrapper({ id: 'wrapper', classList: ['aa', 'bb'] });
+
+			expect(wrapperElement.id).to.equal('wrapper');
+			expect(wrapperElement.classList.value).to.equal('aa bb', 'wrapper classList is wrong');
+		});
+
+		function testWrapper(wrapperConfig: SlotCreatorWrapperConfig): HTMLElement {
 			const slotConfig: SlotCreatorConfig = {
 				insertMethod: 'before',
 				slotName: 'ad-test',
@@ -66,13 +80,18 @@ describe('SlotCreator', () => {
 
 			querySelectorAll.withArgs('#relative').returns([relativeElement]);
 
-			const slotElement = slotCreator.createSlot(slotConfig, {});
+			const slotElement = slotCreator.createSlot(slotConfig, wrapperConfig);
 			const wrapperElement = slotElement.parentElement;
 
 			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
 			expect(!!wrapperElement).to.equal(true, "wrapperElement doesn't exist");
-			expect(relativeElement.before.getCalls()[0].args[0]).to.equal(wrapperElement);
-		});
+			expect(relativeElement.before.getCalls()[0].args[0]).to.equal(
+				wrapperElement,
+				"wrapper wasn't injected by relativeElement",
+			);
+
+			return wrapperElement;
+		}
 	});
 
 	// function setViewPortHeight(height: number): void {

@@ -60,7 +60,7 @@ export class F2SlotsDefinitionRepository {
 		return {
 			activator: () => context.push('events.pushOnScroll.ids', slotName),
 			slotCreatorWrapperConfig: {
-				classes: ['article-layout__incontent-ad'],
+				classList: ['article-layout__incontent-ad'],
 			},
 			slotCreatorConfig: {
 				slotName,
@@ -74,8 +74,8 @@ export class F2SlotsDefinitionRepository {
 	getBottomLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'bottom_leaderboard';
 		const activator = () => context.push('events.pushOnScroll.ids', slotName);
-		const slotCreatorWrapperConfig = {
-			classes: ['bottom-leaderboard-wrapper'],
+		const slotCreatorWrapperConfig: SlotCreatorWrapperConfig = {
+			classList: ['bottom-leaderboard-wrapper'],
 		};
 
 		if (!this.isArticle) {
@@ -104,8 +104,8 @@ export class F2SlotsDefinitionRepository {
 
 	getTopBoxadConfig(): SlotSetupDefinition {
 		const slotName = 'top_boxad';
-		const slotCreatorWrapperConfig = {
-			classes: ['article-layout__top-box-ad'],
+		const slotCreatorWrapperConfig: SlotCreatorWrapperConfig = {
+			classList: ['article-layout__top-box-ad'],
 		};
 		const activator = () => context.push('state.adStack', { id: slotName });
 
@@ -192,7 +192,7 @@ export class F2SlotsDefinitionRepository {
 					insertMethod: 'before',
 				},
 				slotCreatorWrapperConfig: {
-					classes: ['feed-block-ad', 'feed-bottom-boxad'],
+					classList: ['feed-block-ad', 'feed-bottom-boxad'],
 				},
 			};
 		}
@@ -207,7 +207,7 @@ export class F2SlotsDefinitionRepository {
 					insertMethod: 'before',
 				},
 				slotCreatorWrapperConfig: {
-					classes: ['feed-block-ad', 'feed-bottom-boxad'],
+					classList: ['feed-block-ad', 'feed-bottom-boxad'],
 				},
 			};
 		}
@@ -221,7 +221,7 @@ export class F2SlotsDefinitionRepository {
 					insertMethod: 'before',
 				},
 				slotCreatorWrapperConfig: {
-					classes: ['feed-block-ad', 'feed-boxad'],
+					classList: ['feed-block-ad', 'feed-boxad'],
 				},
 			};
 		}
@@ -235,7 +235,7 @@ export class F2SlotsDefinitionRepository {
 				insertMethod: 'before',
 			},
 			slotCreatorWrapperConfig: {
-				classes: ['feed-block-ad', 'feed-boxad'],
+				classList: ['feed-block-ad', 'feed-boxad'],
 			},
 		};
 	}
