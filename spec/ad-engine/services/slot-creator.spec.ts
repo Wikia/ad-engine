@@ -267,8 +267,6 @@ describe('SlotCreator', () => {
 			setElementOffsetHeight(conflictElement, 50);
 			setElementTopOffset(conflictElement, 500);
 			setElementTopOffset(relativeElement0, 600);
-			setElementTopOffset(relativeElement1, 600);
-			setElementTopOffset(relativeElement2, 600);
 			// #############
 			setViewPortHeight(shouldBeWithinDistance ? 60 : 40);
 
