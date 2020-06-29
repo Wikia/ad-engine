@@ -6,15 +6,22 @@ describe('SlotCreator', () => {
 	const sandbox = createSandbox();
 	let slotCreator: SlotCreator;
 	let parent: HTMLDivElement;
-	let relativeElement: HTMLDivElement;
+	let relativeElement0: HTMLDivElement;
+	let relativeElement1: HTMLDivElement;
+	let relativeElement2: HTMLDivElement;
 	let querySelectorAll: SinonStub;
 
 	beforeEach(() => {
 		slotCreator = new SlotCreator();
 		parent = document.createElement('div');
-		relativeElement = document.createElement('div');
-		parent.append(relativeElement);
+		relativeElement0 = document.createElement('div');
+		relativeElement1 = document.createElement('div');
+		relativeElement2 = document.createElement('div');
+		parent.append(relativeElement0, relativeElement1, relativeElement2);
 		querySelectorAll = sandbox.stub(document, 'querySelectorAll');
+		querySelectorAll
+			.withArgs('#relative')
+			.returns([relativeElement0, relativeElement1, relativeElement2]);
 	});
 
 	afterEach(() => {
@@ -25,36 +32,36 @@ describe('SlotCreator', () => {
 		it('should insert with append', () => {
 			const slotElement = testInsertMethod('append');
 
-			expect(relativeElement.children.length).to.equal(
+			expect(relativeElement0.children.length).to.equal(
 				2,
-				'wrong number of relativeElement children',
+				'wrong number of relativeElement0 children',
 			);
-			expect(relativeElement.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
-			expect(relativeElement.children[0].tagName).to.equal('SPAN', 'span is in wrong place');
+			expect(relativeElement0.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(relativeElement0.children[0].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
 
 		it('should insert with prepend', () => {
 			const slotElement = testInsertMethod('prepend');
 
-			expect(relativeElement.children.length).to.equal(
+			expect(relativeElement0.children.length).to.equal(
 				2,
-				'wrong number of relativeElement children',
+				'wrong number of relativeElement0 children',
 			);
-			expect(relativeElement.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
-			expect(relativeElement.children[1].tagName).to.equal('SPAN', 'span is in wrong place');
+			expect(relativeElement0.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(relativeElement0.children[1].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
 
 		it('should insert with after', () => {
 			const slotElement = testInsertMethod('after');
 
-			expect(parent.children.length).to.equal(2, 'wrong number of parent children');
+			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
 			expect(parent.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
 		});
 
 		it('should insert with before', () => {
 			const slotElement = testInsertMethod('before');
 
-			expect(parent.children.length).to.equal(2, 'wrong number of parent children');
+			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
 			expect(parent.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
 		});
 
@@ -65,8 +72,7 @@ describe('SlotCreator', () => {
 				anchorSelector: '#relative',
 			};
 
-			relativeElement.append(document.createElement('span')); // to test append and prepend
-			querySelectorAll.withArgs('#relative').returns([relativeElement]);
+			relativeElement0.append(document.createElement('span')); // to test append and prepend
 
 			const slotElement = slotCreator.createSlot(slotConfig);
 
@@ -97,18 +103,15 @@ describe('SlotCreator', () => {
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
 			};
-
-			querySelectorAll.withArgs('#relative').returns([relativeElement]);
-
 			const slotElement = slotCreator.createSlot(slotConfig, wrapperConfig);
 			const wrapperElement = slotElement.parentElement;
 
 			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
 			expect(!!wrapperElement).to.equal(true, "wrapperElement doesn't exist");
 
-			expect(parent.children.length).to.equal(2, 'wrong number of parent children');
+			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
 			expect(parent.children[0]).to.equal(wrapperElement, 'wrapperElement is in wrong place');
-			expect(parent.children[1]).to.equal(relativeElement, 'relativeElement is in wrong place');
+			expect(parent.children[1]).to.equal(relativeElement0, 'relativeElement0 is in wrong place');
 
 			expect(wrapperElement.children.length).to.equal(1, 'wrong number of wrapper children');
 			expect(wrapperElement.children[0]).to.equal(
