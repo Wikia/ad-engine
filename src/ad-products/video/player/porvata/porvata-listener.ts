@@ -53,7 +53,7 @@ export class PorvataListener {
 	static LOG_GROUP = 'porvata-listener';
 	static PLAYER_NAME = 'porvata';
 
-	lastKnownAdData = {
+	private lastKnownAdData = {
 		contentType: '',
 		creativeId: '',
 		lineItemId: '',

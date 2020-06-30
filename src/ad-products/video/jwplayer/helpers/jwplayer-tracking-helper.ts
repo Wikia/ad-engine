@@ -29,7 +29,7 @@ const trackingEventsMap = {
 type TrackingEvent = keyof typeof trackingEventsMap;
 
 export class JWPlayerTrackingHelper {
-	lastKnownAdData = {
+	private lastKnownAdData = {
 		contentType: '',
 		creativeId: '',
 		lineItemId: '',
