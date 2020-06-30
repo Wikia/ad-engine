@@ -21,6 +21,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
+		this.adSlot.addClass('bfaa-template');
 		this.adSlot.getAdContainer().classList.add('iframe-container');
 		this.ensureImage();
 

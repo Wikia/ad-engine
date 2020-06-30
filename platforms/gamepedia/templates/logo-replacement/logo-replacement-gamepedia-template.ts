@@ -7,7 +7,7 @@ export interface LogoReplacementTemplateConfig {
 	replaceLogo: () => void;
 }
 
-export class LogoReplacement {
+export class LogoReplacementGamepediaTemplate {
 	static getName(): string {
 		return 'logoReplacement';
 	}
@@ -24,7 +24,7 @@ export class LogoReplacement {
 	}
 
 	init(params: LogoReplacementTemplateConfig): void {
-		utils.logger(LogoReplacement.getName(), 'init');
+		utils.logger(LogoReplacementGamepediaTemplate.getName(), 'init');
 		this.config = { ...this.config, ...params };
 
 		setTimeout(() => {

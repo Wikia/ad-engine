@@ -9,6 +9,7 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
+	taxonomyService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -46,6 +47,7 @@ export class MinervaAdsMode implements AdsMode {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
 
 		facebookPixel.call();

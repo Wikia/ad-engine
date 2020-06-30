@@ -1,4 +1,5 @@
 import { adSlotEvent, Dictionary, eventService } from '@wikia/ad-engine';
+import { communicationService } from '@wikia/communication';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
@@ -237,7 +238,7 @@ describe('ad-slot', () => {
 		beforeEach(() => {
 			adSlot = createAdSlot(slotName);
 			emitSpy = sandbox.spy(eventService, 'emit');
-			dispatchSpy = sandbox.spy(eventService.communicator, 'dispatch');
+			dispatchSpy = sandbox.spy(communicationService, 'dispatch');
 		});
 
 		afterEach(() => {

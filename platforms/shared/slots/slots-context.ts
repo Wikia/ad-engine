@@ -32,10 +32,10 @@ class SlotsContext {
 		context.set(`slots.${adSlot.getSlotName()}.videoAdUnit`, adUnit);
 	}
 
-	setState(slotName: string, state: boolean): void {
+	setState(slotName: string, state: boolean, status?: string): void {
 		const element = document.getElementById(slotName);
 
-		slotService.setState(slotName, !!element && state);
+		slotService.setState(slotName, !!element && state, status);
 	}
 }
 
