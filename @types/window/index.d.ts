@@ -38,6 +38,10 @@ interface Window {
 	tabId?: string;
 	trackingOptIn?: any;
 	wgCookiePath?: string;
+	wtAdTracer?: (
+		{ apiKey, debug }: { apiKey: string; debug?: boolean },
+		playerElementId: string,
+	) => void;
 	XMLHttpRequest?: any;
 }
 

@@ -141,6 +141,10 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
+			watchingThat: {
+				apiKey: 'TBA',
+				enabled: false,
+			},
 		},
 		wad: {
 			enabled: false,
