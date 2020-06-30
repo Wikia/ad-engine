@@ -43,7 +43,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 	}
 
 	if (instantConfig.get('icTcf2Enabled')) {
-		context.set('bidders.tcf2Enabled', true);
+		context.set('custom.tcf2Enabled', true);
 		context.set(
 			'targeting.rollout_tracking',
 			context.get('targeting.rollout_tracking')
