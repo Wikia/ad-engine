@@ -27,7 +27,8 @@ export class TaxonomyServiceLoader {
 
 	private async fetchAdTags(): Promise<AdTags> {
 		const endpoint = context.get('services.taxonomy.endpoint') || defaultEndpoint;
-		const communityId = context.get('services.taxonomy.communityId');
+		const communityId =
+			context.get('services.taxonomy.communityId') || window.ads.context.targeting.wikiId;
 		const url = utils.stringBuilder.build(endpoint, {
 			communityId,
 		});
