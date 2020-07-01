@@ -6,6 +6,7 @@ export async function bootstrapAndGetConsent(): Promise<void> {
 
 	await trackingOptInWrapper.init();
 
+	trackingOptInWrapper.installConsentQueue();
 	trackingOptInWrapper.getConsent();
 	trackingOptInWrapper.getSignal();
 	trackingOptInWrapper.flushConsentQueue();
