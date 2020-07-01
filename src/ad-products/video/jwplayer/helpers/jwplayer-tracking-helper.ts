@@ -29,12 +29,6 @@ const trackingEventsMap = {
 type TrackingEvent = keyof typeof trackingEventsMap;
 
 export class JWPlayerTrackingHelper {
-	private lastKnownAdData = {
-		contentType: '',
-		creativeId: '',
-		lineItemId: '',
-	};
-
 	constructor(private readonly adSlot: AdSlot) {}
 
 	track<T extends TrackingEvent>(event: JwpEvent<T>): void {
@@ -49,21 +43,14 @@ export class JWPlayerTrackingHelper {
 	}
 
 	private getVideoData(event: JwpEvent<TrackingEvent>): VideoData {
-		this.lastKnownAdData.contentType =
-			event.state.vastParams.contentType || this.lastKnownAdData.contentType;
-		this.lastKnownAdData.creativeId =
-			event.state.vastParams.creativeId || this.lastKnownAdData.creativeId;
-		this.lastKnownAdData.lineItemId =
-			event.state.vastParams.lineItemId || this.lastKnownAdData.lineItemId;
-
 		return {
 			ad_error_code: this.getErrorCode(event as any),
 			ad_product: this.getAdProduct(event),
 			audio: !event.state.mute ? 1 : 0,
 			ctp: this.getCtp(event),
-			content_type: this.lastKnownAdData.contentType,
-			creative_id: this.lastKnownAdData.creativeId,
-			line_item_id: this.lastKnownAdData.lineItemId,
+			content_type: event.state.vastParams.contentType,
+			creative_id: event.state.vastParams.creativeId,
+			line_item_id: event.state.vastParams.lineItemId,
 			event_name: trackingEventsMap[event.name],
 			player: 'jwplayer',
 			position: this.adSlot.config.slotName,

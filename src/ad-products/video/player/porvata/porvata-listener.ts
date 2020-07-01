@@ -53,11 +53,6 @@ export class PorvataListener {
 	static LOG_GROUP = 'porvata-listener';
 	static PLAYER_NAME = 'porvata';
 
-	private lastKnownAdData = {
-		contentType: '',
-		creativeId: '',
-		lineItemId: '',
-	};
 	listeners: PorvataEventListener[];
 	video: PorvataPlayer | NewPorvataPlayer;
 
@@ -132,19 +127,15 @@ export class PorvataListener {
 			lineItemId = this.video.container.getAttribute('data-vast-line-item-id');
 		}
 
-		this.lastKnownAdData.contentType = contentType || this.lastKnownAdData.contentType;
-		this.lastKnownAdData.creativeId = creativeId || this.lastKnownAdData.creativeId;
-		this.lastKnownAdData.lineItemId = lineItemId || this.lastKnownAdData.lineItemId;
-
 		return {
 			ad_error_code: errorCode,
 			ad_product: this.params.adProduct,
 			audio: this.params.withAudio ? 1 : 0,
-			content_type: this.lastKnownAdData.contentType || '(none)',
-			creative_id: this.lastKnownAdData.creativeId || '',
+			content_type: contentType || '(none)',
+			creative_id: creativeId || '',
 			ctp: this.params.withCtp ? 1 : 0,
 			event_name: eventName,
-			line_item_id: this.lastKnownAdData.lineItemId || '',
+			line_item_id: lineItemId || '',
 			player: PorvataListener.PLAYER_NAME,
 			position: this.params.position ? this.params.position.toLowerCase() : '(none)',
 		};

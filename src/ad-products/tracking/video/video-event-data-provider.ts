@@ -28,7 +28,7 @@ export default {
 			position: slot.getSlotName().toLowerCase(),
 			price: '',
 			pv_number: context.get('options.pvNumber') || window.pvNumber || -1,
-			skin: context.get('targeting.skin') || '',
+			skin: context.get('targeting.skin') || {},
 			timestamp: now.getTime(),
 			tz_offset: now.getTimezoneOffset(),
 			user_block_autoplay: videoData.user_block_autoplay,
