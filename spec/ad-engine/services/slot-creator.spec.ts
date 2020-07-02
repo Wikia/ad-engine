@@ -39,7 +39,7 @@ describe('SlotCreator', () => {
 				2,
 				'wrong number of relativeElement0 children',
 			);
-			expect(relativeElement0.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(relativeElement0.children[1]).to.equal(slotElement, 'slotElement is in a wrong place');
 			expect(relativeElement0.children[0].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
 
@@ -50,7 +50,7 @@ describe('SlotCreator', () => {
 				2,
 				'wrong number of relativeElement0 children',
 			);
-			expect(relativeElement0.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(relativeElement0.children[0]).to.equal(slotElement, 'slotElement is in a wrong place');
 			expect(relativeElement0.children[1].tagName).to.equal('SPAN', 'span is in wrong place');
 		});
 
@@ -58,14 +58,14 @@ describe('SlotCreator', () => {
 			const slotElement = testInsertMethod('after');
 
 			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-			expect(parent.children[1]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(parent.children[1]).to.equal(slotElement, 'slotElement is in a wrong place');
 		});
 
 		it('should insert with before', () => {
 			const slotElement = testInsertMethod('before');
 
 			expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-			expect(parent.children[0]).to.equal(slotElement, 'slotElement is in wrong place');
+			expect(parent.children[0]).to.equal(slotElement, 'slotElement is in a wrong place');
 		});
 
 		function testInsertMethod(insertMethod: SlotCreatorConfig['insertMethod']): HTMLElement {
@@ -139,7 +139,7 @@ describe('SlotCreator', () => {
 
 				expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
 				expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-				expect(parent.children[3]).to.equal(slotElement, 'slotElement is in wrong place');
+				expect(parent.children[3]).to.equal(slotElement, 'slotElement is in a wrong place');
 			});
 
 			it('should throw with index', () => {
@@ -170,7 +170,7 @@ describe('SlotCreator', () => {
 
 				expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
 				expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-				expect(parent.children[2]).to.equal(slotElement, 'slotElement is in wrong place');
+				expect(parent.children[2]).to.equal(slotElement, 'slotElement is in a wrong place');
 			});
 
 			it('should throw with belowFirstViewport', () => {
@@ -196,7 +196,7 @@ describe('SlotCreator', () => {
 
 				expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
 				expect(parent.children.length).to.equal(4, 'wrong number of parent children');
-				expect(parent.children[2]).to.equal(slotElement, 'slotElement is in wrong place');
+				expect(parent.children[2]).to.equal(slotElement, 'slotElement is in a wrong place');
 			});
 
 			it('should throw with belowScrollPosition', () => {
@@ -219,6 +219,7 @@ describe('SlotCreator', () => {
 				insertMethod: 'after',
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
+				anchorPosition: 0,
 				avoidConflictWith: ['#conflict'],
 			};
 			const conflictElement = createConflictElement(true);
@@ -233,6 +234,7 @@ describe('SlotCreator', () => {
 				insertMethod: 'after',
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
+				anchorPosition: 0,
 				avoidConflictWith: ['#conflict'],
 			};
 			const conflictElement = createConflictElement(true);
@@ -247,6 +249,7 @@ describe('SlotCreator', () => {
 				insertMethod: 'after',
 				slotName: 'ad-test',
 				anchorSelector: '#relative',
+				anchorPosition: 0,
 				avoidConflictWith: ['#conflict'],
 			};
 			const conflictElement = createConflictElement(false);
@@ -256,6 +259,23 @@ describe('SlotCreator', () => {
 			const slotElement = slotCreator.createSlot(slotConfig);
 
 			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+		});
+
+		it('should work if one of slots not within distance', () => {
+			const slotConfig: SlotCreatorConfig = {
+				insertMethod: 'after',
+				slotName: 'ad-test',
+				anchorSelector: '#relative',
+				avoidConflictWith: ['#conflict'],
+			};
+			const conflictElement = createConflictElement(true);
+
+			relativeElement2.after(conflictElement);
+
+			const slotElement = slotCreator.createSlot(slotConfig);
+
+			expect(!!slotElement).to.equal(true, "slotElement doesn't exist");
+			expect(slotElement).to.equal(parent.children[2], 'slotElement is in a wrong place');
 		});
 
 		function createConflictElement(shouldBeWithinDistance: boolean): HTMLElement {
