@@ -1,10 +1,18 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { UniversalPipeline, UniversalPipelineStep } from '../../universal-pipeline';
+import { Type } from '../../../../models/dictionary';
 import { ProcessPipeline } from '../process-pipeline';
 import { CompoundProcess, CompoundProcessStep, ProcessStepUnion } from '../process-pipeline-types';
 
+type Condition = Type<DiCondition> | FuncCondition;
+
+interface DiCondition {
+	execute(): Promise<boolean> | boolean;
+}
+
+type FuncCondition = () => Promise<boolean> | boolean;
+
 interface ConditionalProcessPayload<T> {
-	condition: UniversalPipelineStep<boolean>; // TODO: replace it with something simpler?
+	condition: Condition;
 	yesSteps: ProcessStepUnion<T>[];
 	noSteps: ProcessStepUnion<T>[];
 }
@@ -14,15 +22,23 @@ class ConditionalProcess<T> implements CompoundProcess<ConditionalProcessPayload
 	constructor(private container: Container) {}
 
 	async execute(payload: ConditionalProcessPayload<T>): Promise<void> {
-		const result = await this.container
-			.get(UniversalPipeline)
-			.add(payload.condition)
-			.execute(false);
-
+		const result = await this.getResult(payload.condition);
 		const pipeline = this.container.get(ProcessPipeline);
 		const steps = result ? payload.yesSteps : payload.noSteps;
 
 		return pipeline.add(...steps).execute();
+	}
+
+	private getResult(condition: Condition): Promise<boolean> | boolean {
+		if (this.isDiCondition(condition)) {
+			return this.container.get(condition).execute();
+		}
+
+		return condition();
+	}
+
+	private isDiCondition(step: Condition): step is Type<DiCondition> {
+		return typeof step.prototype.execute === 'function';
 	}
 }
 
