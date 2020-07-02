@@ -4,7 +4,7 @@ import { ProcessPipeline } from '../process-pipeline';
 import { CompoundProcess, CompoundProcessStep, ProcessStepUnion } from '../process-pipeline-types';
 
 interface ConditionalProcessPayload<T> {
-	condition: UniversalPipelineStep<boolean>;
+	condition: UniversalPipelineStep<boolean>; // TODO: replace it with something simpler?
 	yesSteps: ProcessStepUnion<T>[];
 	noSteps: ProcessStepUnion<T>[];
 }
