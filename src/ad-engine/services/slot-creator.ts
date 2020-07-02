@@ -5,7 +5,10 @@ export interface SlotCreatorConfig {
 	slotName: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
 	anchorSelector: string;
-	anchorPosition?: number | 'belowFirstViewport' | 'belowScrollPosition';
+	/**
+	 * @default firstViable
+	 */
+	anchorPosition?: number | 'firstViable' | 'belowFirstViewport' | 'belowScrollPosition';
 	avoidConflictWith?: string[];
 }
 
@@ -33,7 +36,7 @@ export class SlotCreator {
 	private fillSlotConfig(slotLooseConfig: SlotCreatorConfig): Required<SlotCreatorConfig> {
 		return {
 			...slotLooseConfig,
-			anchorPosition: slotLooseConfig.anchorPosition ?? 0,
+			anchorPosition: slotLooseConfig.anchorPosition ?? 'firstViable',
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 		};
 	}
@@ -62,6 +65,8 @@ export class SlotCreator {
 				return elements.filter((el) => getTopOffset(el) > getViewportHeight());
 			case 'belowScrollPosition':
 				return elements.filter((el) => getTopOffset(el) > window.scrollY);
+			case 'firstViable':
+				return elements;
 			default:
 				const element = elements[slotConfig.anchorPosition];
 
