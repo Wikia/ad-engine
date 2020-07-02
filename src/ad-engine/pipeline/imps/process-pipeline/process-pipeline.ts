@@ -3,6 +3,7 @@ import { Pipeline } from '../../pipeline';
 import { PipelineAdapter, PipelineNext } from '../../pipeline-types';
 import { isCompoundProcessStep, isDiProcess, ProcessStepUnion } from './process-pipeline-types';
 
+@Injectable({ scope: 'Transient' })
 class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> {
 	constructor(private container: Container) {}
 
@@ -26,6 +27,6 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 @Injectable({ scope: 'Transient' })
 export class ProcessPipeline extends Pipeline<ProcessStepUnion> {
 	constructor(container: Container) {
-		super(new ProcessPipelineAdapter(container));
+		super(container.get(ProcessPipelineAdapter));
 	}
 }

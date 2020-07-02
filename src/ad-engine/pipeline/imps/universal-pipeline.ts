@@ -9,6 +9,7 @@ export type UniversalPipelineStep<TPayload> =
 	| Type<DiPipelineStep<TPayload>>
 	| FuncPipelineStep<TPayload>;
 
+@Injectable({ scope: 'Transient' })
 class UniversalPipelineAdapter<TPayload>
 	implements PipelineAdapter<UniversalPipelineStep<TPayload>, TPayload> {
 	constructor(private container: Container) {}
@@ -38,6 +39,6 @@ export class UniversalPipeline<TPayload> extends Pipeline<
 	TPayload
 > {
 	constructor(container: Container) {
-		super(new UniversalPipelineAdapter<TPayload>(container));
+		super(container.get<UniversalPipelineAdapter<TPayload>>(UniversalPipelineAdapter));
 	}
 }

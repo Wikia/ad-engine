@@ -7,6 +7,7 @@ export interface DiPipelineStep<TPayload> {
 	execute(payload: TPayload, next?: PipelineNext<TPayload>): Promise<TPayload>;
 }
 
+@Injectable({ scope: 'Transient' })
 class DiPipelineAdapter<TPayload>
 	implements PipelineAdapter<Type<DiPipelineStep<TPayload>>, TPayload> {
 	constructor(private container: Container) {}
@@ -25,6 +26,6 @@ class DiPipelineAdapter<TPayload>
 @Injectable({ scope: 'Transient' })
 export class DiPipeline<TPayload> extends Pipeline<Type<DiPipelineStep<TPayload>>, TPayload> {
 	constructor(container: Container) {
-		super(new DiPipelineAdapter<TPayload>(container));
+		super(container.get<DiPipelineAdapter<TPayload>>(DiPipelineAdapter));
 	}
 }
