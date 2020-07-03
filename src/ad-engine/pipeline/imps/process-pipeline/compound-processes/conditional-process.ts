@@ -13,8 +13,8 @@ type FuncCondition = () => Promise<boolean> | boolean;
 
 interface ConditionalProcessPayload<T> {
 	condition: Condition;
-	yesSteps: ProcessStepUnion<T>[];
-	noSteps: ProcessStepUnion<T>[];
+	yesStep?: ProcessStepUnion<T>;
+	noStep?: ProcessStepUnion<T>;
 }
 
 @Injectable({ scope: 'Transient' })
@@ -23,10 +23,13 @@ class ConditionalProcess<T> implements CompoundProcess<ConditionalProcessPayload
 
 	async execute(payload: ConditionalProcessPayload<T>): Promise<void> {
 		const result = await this.getResult(payload.condition);
-		const pipeline = this.container.get(ProcessPipeline);
-		const steps = result ? payload.yesSteps : payload.noSteps;
+		const step = result ? payload.yesStep : payload.noStep;
 
-		return pipeline.add(...steps).execute();
+		if (step) {
+			const pipeline = this.container.get(ProcessPipeline);
+
+			return pipeline.add(step).execute();
+		}
 	}
 
 	private getResult(condition: Condition): Promise<boolean> | boolean {
@@ -45,12 +48,12 @@ class ConditionalProcess<T> implements CompoundProcess<ConditionalProcessPayload
 export function conditional<T>(
 	condition: ConditionalProcessPayload<T>['condition'],
 	steps: {
-		yes: ConditionalProcessPayload<T>['yesSteps'];
-		no: ConditionalProcessPayload<T>['noSteps'];
+		yes?: ConditionalProcessPayload<T>['yesStep'];
+		no?: ConditionalProcessPayload<T>['noStep'];
 	},
 ): CompoundProcessStep<ConditionalProcessPayload<T>> {
 	return {
 		process: ConditionalProcess,
-		payload: { condition, yesSteps: steps.yes, noSteps: steps.no },
+		payload: { condition, yesStep: steps.yes, noStep: steps.no },
 	};
 }
