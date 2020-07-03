@@ -17,16 +17,22 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 		if (this.isCompoundProcessStep(step)) {
 			const process = this.container.get(step.process);
 
-			return process.execute(step.payload);
+			await process.execute(step.payload);
+
+			return next();
 		}
 
 		if (this.isDiProcess(step)) {
 			const instance = this.container.get(step);
 
-			return instance.execute();
+			await instance.execute();
+
+			return next();
 		}
 
-		return step();
+		await step();
+
+		return next();
 	}
 
 	private isCompoundProcessStep<T>(step: ProcessStepUnion<T>): step is CompoundProcessStep<T> {
