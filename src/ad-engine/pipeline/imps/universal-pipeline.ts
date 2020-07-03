@@ -2,12 +2,15 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { Type } from '../../models/dictionary';
 import { Pipeline } from '../pipeline';
 import { PipelineAdapter, PipelineNext } from '../pipeline-types';
-import { DiPipelineStep } from './di-pipeline';
 import { FuncPipelineStep } from './func-pipeline';
 
 export type UniversalPipelineStep<TPayload> =
 	| Type<DiPipelineStep<TPayload>>
 	| FuncPipelineStep<TPayload>;
+
+export interface DiPipelineStep<TPayload> {
+	execute(payload: TPayload, next?: PipelineNext<TPayload>): Promise<TPayload>;
+}
 
 @Injectable({ scope: 'Transient' })
 class UniversalPipelineAdapter<TPayload>

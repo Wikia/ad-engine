@@ -14,7 +14,6 @@ export * from './tracking';
 export * from './video';
 export * from './pipeline/pipeline';
 export { PipelineAdapter } from './pipeline/pipeline-types';
-export * from './pipeline/imps/di-pipeline';
 export * from './pipeline/imps/universal-pipeline';
 export * from './pipeline/imps/func-pipeline';
 export * from './pipeline/imps/process-pipeline/process-pipeline';
