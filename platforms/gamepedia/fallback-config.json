@@ -101,7 +101,8 @@
     "icTaxonomyAdTags": [
         {
             "apps": [
-                "gamepedia"
+                "gamepedia",
+                "oasis"
             ],
             "regions": [
                 "XX"
