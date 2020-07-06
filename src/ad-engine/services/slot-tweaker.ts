@@ -1,7 +1,6 @@
 import { AdSlot } from '../models';
 import { isIframe, logger } from '../utils';
 import { fillerService } from './filler-service';
-import { likhoService, LikhoStorageElement } from './likho';
 import { messageBus } from './message-bus';
 import { slotService } from './slot-service';
 
@@ -175,18 +174,6 @@ export class SlotTweaker {
 						break;
 					default:
 						logger(logGroup, 'Unknown action', data.action);
-				}
-			},
-		);
-
-		messageBus.register(
-			{
-				keys: ['action', 'likhoType'],
-				infinite: true,
-			},
-			(data: LikhoStorageElement) => {
-				if (data.likhoType) {
-					likhoService.update(data.likhoType);
 				}
 			},
 		);
