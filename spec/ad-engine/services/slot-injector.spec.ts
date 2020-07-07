@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, slotInjector } from '../../../src/ad-engine/services';
 
-describe('slot-repeater', () => {
+describe('slot-injector', () => {
 	const sandbox = createSandbox();
 	let elementProperties;
 	let conflictingElement;
@@ -30,9 +30,6 @@ describe('slot-repeater', () => {
 			offsetTop: 1400,
 			offsetParent: elementProperties.offsetParent,
 			ownerDocument: {},
-			parentNode: {
-				insertBefore: () => {},
-			},
 		};
 
 		placeholder = {
@@ -44,9 +41,7 @@ describe('slot-repeater', () => {
 			offsetTop: 1500,
 			offsetParent: elementProperties.offsetParent,
 			ownerDocument: {},
-			parentNode: {
-				insertBefore: () => {},
-			},
+			before: () => {},
 		};
 
 		const querySelectorAll = sandbox.stub(document, 'querySelectorAll');
