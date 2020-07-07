@@ -336,8 +336,8 @@ export class AdSlot extends EventEmitter {
 		if (status !== null) {
 			this.emit(status);
 
-			this.emit(AdSlot.SLOT_STATUS_CHANGED);
 			slotTweaker.setDataParam(this, 'slotResult', this.getStatus());
+			this.emit(AdSlot.SLOT_STATUS_CHANGED);
 		}
 	}
 
