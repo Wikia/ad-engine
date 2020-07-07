@@ -162,7 +162,7 @@ export class GptProvider implements Provider {
 	}
 
 	private fillInCallback(adSlot: AdSlot): void {
-		const targeting = this.parseTargetingParams(adSlot.getTargeting());
+		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
 
@@ -174,7 +174,7 @@ export class GptProvider implements Provider {
 			this.forceSafeFrame(gptSlot);
 		}
 
-		slotDataParamsUpdater.updateOnCreate(adSlot, targeting);
+		slotDataParamsUpdater.updateOnCreate(adSlot);
 		adSlot.updateWinningPbBidderDetails();
 
 		window.googletag.display(adSlot.getSlotName());
