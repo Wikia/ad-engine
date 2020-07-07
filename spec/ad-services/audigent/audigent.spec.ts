@@ -11,8 +11,6 @@ describe('Audigent', () => {
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		sandbox.stub(audigent, 'configureAudienceTag');
-		sandbox.stub(audigent, 'setup');
 		context.set('services.audigent.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
