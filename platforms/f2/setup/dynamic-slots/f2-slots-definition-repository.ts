@@ -39,6 +39,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: 'body',
 				insertMethod: 'prepend',
+				classList: ['hide'],
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
@@ -67,6 +68,7 @@ export class F2SlotsDefinitionRepository {
 				anchorPosition: 2,
 				anchorSelector: '.article-content h2, .article-content h3',
 				insertMethod: 'before',
+				classList: ['hide'],
 			},
 		};
 	}
@@ -87,6 +89,7 @@ export class F2SlotsDefinitionRepository {
 					anchorSelector: '.feed-layout .feed-item',
 					anchorPosition: 10,
 					insertMethod: 'before',
+					classList: ['hide'],
 				},
 			};
 		}
@@ -98,6 +101,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.article-layout-wrapper',
 				insertMethod: 'after',
+				classList: ['hide'],
 			},
 		};
 	}
@@ -117,6 +121,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.feed-layout__right-rail',
 					insertMethod: 'prepend',
+					classList: ['hide'],
 				},
 			};
 		}
@@ -130,6 +135,7 @@ export class F2SlotsDefinitionRepository {
 					anchorSelector: '.feed-layout .feed-item',
 					anchorPosition: 1,
 					insertMethod: 'before',
+					classList: ['hide'],
 				},
 			};
 		}
@@ -142,6 +148,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.article-layout__rail',
 					insertMethod: 'prepend',
+					classList: ['hide'],
 				},
 			};
 		}
@@ -154,6 +161,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.article-layout__content',
 					insertMethod: 'append',
+					classList: ['hide'],
 				},
 			};
 		}
@@ -165,6 +173,7 @@ export class F2SlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.article-content.entry-content p:first-child',
 				insertMethod: 'after',
+				classList: ['hide'],
 			},
 		};
 	}
@@ -190,6 +199,7 @@ export class F2SlotsDefinitionRepository {
 					anchorSelector: '.feed-layout .feed-item',
 					anchorPosition: 10,
 					insertMethod: 'before',
+					classList: ['hide'],
 				},
 				slotCreatorWrapperConfig: {
 					classList: ['feed-block-ad', 'feed-bottom-boxad'],
@@ -205,6 +215,7 @@ export class F2SlotsDefinitionRepository {
 					anchorSelector: '.feed-layout .feed-item',
 					anchorPosition: 6,
 					insertMethod: 'before',
+					classList: ['hide'],
 				},
 				slotCreatorWrapperConfig: {
 					classList: ['feed-block-ad', 'feed-bottom-boxad'],
@@ -219,6 +230,7 @@ export class F2SlotsDefinitionRepository {
 					slotName,
 					anchorSelector: '.featured-block.in-area-right',
 					insertMethod: 'before',
+					classList: ['hide'],
 				},
 				slotCreatorWrapperConfig: {
 					classList: ['feed-block-ad', 'feed-boxad'],
@@ -233,6 +245,7 @@ export class F2SlotsDefinitionRepository {
 				anchorSelector: '.feed-layout__container .feed-item',
 				anchorPosition: 3,
 				insertMethod: 'before',
+				classList: ['hide'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['feed-block-ad', 'feed-boxad'],
