@@ -440,13 +440,6 @@
             "apps": [
                 "mobile-wiki",
                 "oasis"
-            ],
-            "regions": [
-                "CA",
-                "PL"
-            ],
-            "value": [
-                303
             ]
         }
     ],
@@ -609,7 +602,17 @@
                 "5387091760",
                 "5367643428",
                 "5398858722",
-                "5398858302"
+                "5398858302",
+                "5410506458",
+                "5410506467",
+                "5410506461",
+                "5410506470",
+                "5410506464",
+                "5410506473",
+                "194029992",
+                "194029389",
+                "5406386861",
+                "5406386864"
             ]
         }
     ],
@@ -638,10 +641,11 @@
     "icTaxonomyAdTags": [
         {
             "apps": [
+                "gamepedia",
                 "oasis"
             ],
             "regions": [
-                "XX-EU"
+                "XX"
             ],
             "value": true
         }
@@ -809,6 +813,19 @@
         }
     ],
     "icPrebidVersion": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.23.0/20200630.min.js"
+        },
         {
             "apps": [
                 "futhead",

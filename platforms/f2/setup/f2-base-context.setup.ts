@@ -1,4 +1,4 @@
-import { BaseContextSetup } from '@platforms/shared';
+import { BaseContextSetup, NoAdsDetector } from '@platforms/shared';
 import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2SrcAdapter } from '../utils/f2-src-adapter';
@@ -11,12 +11,17 @@ export class F2BaseContextSetup extends BaseContextSetup {
 		@Inject(F2_STATE) private f2State: F2State,
 		private srcAdapter: F2SrcAdapter,
 		instantConfig: InstantConfigService,
+		noAdsDetector: NoAdsDetector,
 	) {
-		super(instantConfig);
+		super(instantConfig, noAdsDetector);
 	}
 
 	configureBaseContext(isMobile: boolean = false): void {
 		super.configureBaseContext(isMobile);
+
+		if (this.f2State.article?.isArticlePlus) {
+			this.noAdsDetector.addReason('article_plus');
+		}
 
 		context.set('src', this.srcAdapter.getSrcBasedOnEnv());
 		context.set(
