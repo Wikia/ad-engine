@@ -30,6 +30,7 @@ export * from './modes/ads/_ads.mode';
 export * from './modes/ads/sports-ads.mode';
 export * from './modes/start-ad-engine';
 export * from './services/wad-runner';
+export * from './services/no-ads-detector';
 export * from './utils/get-domain';
 export * from './utils/get-sports-page-type';
 export * from './ensure-geo-cookie';

@@ -26,6 +26,8 @@ interface RepeatConfig {
 	limit: number;
 	updateProperties: Dictionary;
 	additionalClasses?: string;
+	disablePushOnScroll?: boolean;
+	insertBelowScrollPosition?: boolean;
 }
 
 export interface SlotConfig {
@@ -51,6 +53,8 @@ export interface SlotConfig {
 	videoSizes?: number[][];
 	defaultSizes?: any;
 	viewportConflicts?: string[];
+	insertBelowFirstViewport?: boolean;
+	avoidConflictWith?: string;
 	outOfPage?: any;
 	isVideo?: boolean;
 
@@ -282,7 +286,25 @@ export class AdSlot extends EventEmitter {
 	}
 
 	getTargeting(): Targeting {
-		return this.config.targeting;
+		return this.parseTargetingParams(this.config.targeting);
+	}
+
+	private parseTargetingParams(targetingParams: Dictionary): Targeting {
+		const result: Dictionary = {};
+
+		Object.keys(targetingParams).forEach((key) => {
+			let value = targetingParams[key];
+
+			if (typeof value === 'function') {
+				value = value();
+			}
+
+			if (value !== null) {
+				result[key] = value;
+			}
+		});
+
+		return result as Targeting;
 	}
 
 	getDefaultSizes(): string {
