@@ -1,12 +1,23 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 @import 'platforms/f2/styles/original/variables';
+@import 'platforms/f2/styles/feed-bottom-boxad';
 @import '~design-system/dist/scss/wds-variables/index';
 @import '~design-system/dist/scss/wds-mixins/index';
 
-@mixin ucp-f2-styles() {
+@mixin f2-styles() {
 	$advertisement-label-height: 24px;
 	$label-height: -24px;
+
+	#top_leaderboard {
+		background: $wds-fandom-color-black;
+		justify-content: center;
+		margin: 0 auto;
+		max-width: 100vw;
+		overflow: hidden;
+		padding: 18px 24px 0;
+		text-align: center;
+	}
 
 	.feed-item .gpt-ad {
 		padding: 24px 24px 30px;
@@ -47,9 +58,13 @@
 		position: relative;
 		top: $label-height;
 	}
+
+	.article-layout__rail.has-incontent-ad {
+		margin-top: 29px;
+	}
 }
 
-@mixin ucp-f2-uap-styles() {
+@mixin f2-uap-styles() {
 	.has-uap {
 		.global-navigation-mobile-wrapper,
 		.wds-global-navigation-wrapper {
@@ -108,9 +123,10 @@
 	@include expanded-slot();
 }
 
-@include ucp-f2-styles();
-@include ucp-f2-uap-styles();
+@include f2-styles();
+@include f2-uap-styles();
 @include logo-replacement(56px);
+@include f2-feed-bottom-boxad();
 
 // #######################################
 
@@ -130,7 +146,6 @@
 
 #top_leaderboard {
 	text-align: center;
-	background-color: #000;
 
 	> div {
 		text-align: center;
