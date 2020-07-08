@@ -1,4 +1,4 @@
-import { conditional, ProcessPipeline, sequential } from '@wikia/ad-engine';
+import { conditional, ProcessPipeline } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
@@ -61,9 +61,12 @@ describe('ConditionalProcess', () => {
 
 	it('should work with CompoundProcess', async () => {
 		await pipeline
-			.add(conditional(() => true, { yes: sequential(yesProcess, NoProcess) }))
+			.add(
+				conditional(() => true, { yes: conditional(() => false, { no: NoProcess }) }),
+				() => spy('end'),
+			)
 			.execute();
 
-		expect(spy.getCalls().map((call) => call.args[0])).to.deep.equal([true, false]);
+		expect(spy.getCalls().map((call) => call.args[0])).to.deep.equal([false, 'end']);
 	});
 });
