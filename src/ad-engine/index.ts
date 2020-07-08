@@ -12,6 +12,7 @@ export * from './providers';
 export * from './services';
 export * from './tracking';
 export * from './video';
+export * from './wrappers';
 export * from './pipeline/pipeline';
 export * from './pipeline/imps/di-pipeline';
 export * from './pipeline/imps/universal-pipeline';

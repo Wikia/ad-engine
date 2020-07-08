@@ -3,6 +3,7 @@ import {
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
+	setupTCFv2Context,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -16,6 +17,7 @@ export class BaseContextSetup {
 		this.setOptionsContext();
 		this.setServicesContext();
 		this.setMiscContext();
+		setupTCFv2Context(this.instantConfig);
 		setupNpaContext();
 		setupRdpContext();
 	}

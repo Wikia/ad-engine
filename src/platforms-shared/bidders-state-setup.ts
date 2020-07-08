@@ -42,16 +42,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('custom.rubiconInFV', instantConfig.get('icPrebidRubicon') && hasFeaturedVideo);
 	}
 
-	if (instantConfig.get('icTcf2Enabled')) {
-		context.set('custom.tcf2Enabled', true);
-		context.set(
-			'targeting.rollout_tracking',
-			context.get('targeting.rollout_tracking')
-				? `${context.get('targeting.rollout_tracking')},tcf`
-				: 'tcf',
-		);
-	}
-
 	context.set(
 		'bidders.enabled',
 		context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled'),
