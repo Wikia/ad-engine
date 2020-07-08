@@ -608,7 +608,11 @@
                 "5410506461",
                 "5410506470",
                 "5410506464",
-                "5410506473"
+                "5410506473",
+                "194029992",
+                "194029389",
+                "5406386861",
+                "5406386864"
             ]
         }
     ],
@@ -809,6 +813,19 @@
         }
     ],
     "icPrebidVersion": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.23.0/20200630.min.js"
+        },
         {
             "apps": [
                 "futhead",

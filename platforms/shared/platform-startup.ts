@@ -1,7 +1,8 @@
-import { context, globalAction } from '@wikia/ad-engine';
+import { globalAction } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdsMode } from './modes/ads/_ads.mode';
 import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
+import { NoAdsDetector } from './services/no-ads-detector';
 import { A9ConfigSetup } from './setup/_a9-config.setup';
 import { AdEngineRunnerSetup } from './setup/_ad-engine-runner.setup';
 import { BaseContextSetup } from './setup/_base-context.setup';
@@ -42,6 +43,7 @@ export class PlatformStartup {
 		private adEngineRunnerSetup: AdEngineRunnerSetup,
 		private noAdsMode: NoAdsMode,
 		private adsMode: AdsMode,
+		private noAdsDetector: NoAdsDetector,
 	) {}
 
 	configure(args: PlatformStartupArgs): void {
@@ -62,7 +64,7 @@ export class PlatformStartup {
 	}
 
 	run(): void {
-		if (context.get('state.showAds')) {
+		if (this.noAdsDetector.isAdsMode()) {
 			this.adsMode.handleAds();
 		} else {
 			this.noAdsMode.handleNoAds();
