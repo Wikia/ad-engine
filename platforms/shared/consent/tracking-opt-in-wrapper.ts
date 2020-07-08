@@ -43,11 +43,13 @@ class TrackingOptInWrapper {
 			return this.handleDisabledCookies();
 		}
 
+		const libraryPromise = this.loadTrackingOptInLibrary();
+
 		try {
-			await Promise.race([this.loadTrackingOptInLibrary(), utils.timeoutReject(2000)]);
+			await Promise.race([libraryPromise, utils.timeoutReject(2000)]);
 			await this.handleLibraryLoaded();
 		} catch (e) {
-			return this.handleLibraryTimeout();
+			return this.handleLibraryTimeout(libraryPromise);
 		}
 	}
 
@@ -68,7 +70,7 @@ class TrackingOptInWrapper {
 		await utils.scriptLoader.loadScript(trackingOptInLibraryUrl);
 	}
 
-	private handleLibraryTimeout(): void {
+	private handleLibraryTimeout(libraryPromise: Promise<void>): void {
 		utils.logger(logGroup, 'Timeout waiting for library to load.');
 		this.dispatchConsents({
 			gdprConsent: false,
@@ -76,6 +78,9 @@ class TrackingOptInWrapper {
 			ccpaSignal: true,
 			geoRequiresSignal: true,
 		});
+		libraryPromise
+			.then(() => this.initInstances())
+			.then((instances) => this.dispatchInstances(instances));
 	}
 
 	private async handleLibraryLoaded(): Promise<void> {
