@@ -10,6 +10,7 @@ export interface SlotCreatorConfig {
 	 */
 	anchorPosition?: number | 'firstViable' | 'belowFirstViewport' | 'belowScrollPosition';
 	avoidConflictWith?: string[];
+	classList?: string[];
 }
 
 export interface SlotCreatorWrapperConfig {
@@ -24,7 +25,7 @@ export class SlotCreator {
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
 	): HTMLElement {
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
-		const slot = this.makeSlot(slotConfig.slotName);
+		const slot = this.makeSlot(slotConfig);
 		const wrapper = this.wrapSlot(slot, wrapperLooseConfig);
 		const anchorElement = this.getAnchorElement(slotConfig);
 
@@ -38,6 +39,7 @@ export class SlotCreator {
 			...slotLooseConfig,
 			anchorPosition: slotLooseConfig.anchorPosition ?? 'firstViable',
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
+			classList: slotLooseConfig.classList || [],
 		};
 	}
 
@@ -90,11 +92,11 @@ export class SlotCreator {
 		return elements;
 	}
 
-	private makeSlot(slotName: string): HTMLElement {
+	private makeSlot(slotConfig: Required<SlotCreatorConfig>): HTMLElement {
 		const slot = document.createElement('div');
 
-		slot.id = slotName;
-		slot.classList.add('gpt-ad', 'hide');
+		slot.id = slotConfig.slotName;
+		slot.classList.add('gpt-ad', ...slotConfig.classList);
 
 		return slot;
 	}

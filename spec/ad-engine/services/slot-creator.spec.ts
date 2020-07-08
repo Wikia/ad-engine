@@ -85,6 +85,18 @@ describe('SlotCreator', () => {
 		}
 	});
 
+	it('should contain classes passed in config', () => {
+		const slotConfig: SlotCreatorConfig = {
+			insertMethod: 'after',
+			slotName: 'ad-test',
+			anchorSelector: '#relative',
+			classList: ['aa', 'bb'],
+		};
+		const slotElement = slotCreator.createSlot(slotConfig);
+
+		expect(slotElement.classList.value).to.equal('gpt-ad aa bb');
+	});
+
 	describe('wrapper', () => {
 		it('should create slot inside wrapper', () => {
 			const wrapperElement = testWrapper({});
