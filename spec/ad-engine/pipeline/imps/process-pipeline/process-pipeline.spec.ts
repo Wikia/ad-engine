@@ -19,7 +19,7 @@ describe('ProcessPipeline', () => {
 	});
 
 	afterEach(() => {
-		sandbox.resetHistory();
+		sandbox.restore();
 	});
 
 	it('should work', async () => {
