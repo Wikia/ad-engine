@@ -1,4 +1,10 @@
-import { context, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	SlotCreatorConfig,
+	SlotCreatorWrapperConfig,
+	slotService,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../setup-f2';
 import { F2State } from '../../utils/f2-state';
@@ -187,7 +193,9 @@ export class F2SlotsDefinitionRepository {
 		const activator = () => {
 			context.push('events.pushOnScroll.ids', slotName);
 			if (this.f2Env.hasRightRail) {
-				this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness();
+				slotService.on(slotName, AdSlot.STATUS_SUCCESS, () =>
+					this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness(),
+				);
 			}
 		};
 

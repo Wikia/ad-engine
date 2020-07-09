@@ -99,7 +99,6 @@ export class F2SlotsContextSetup implements SlotsContextSetup {
 			top_boxad: {
 				group: 'MR',
 				slotShortcut: 'm',
-				aboveTheFold: true,
 				sizes: [
 					{
 						viewportSize: [0, 0],
