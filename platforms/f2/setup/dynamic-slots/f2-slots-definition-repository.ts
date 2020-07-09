@@ -192,7 +192,7 @@ export class F2SlotsDefinitionRepository {
 		const slotName = 'feed_boxad';
 		const activator = () => {
 			context.push('events.pushOnScroll.ids', slotName);
-			if (this.f2Env.hasRightRail) {
+			if (this.f2Env.hasRightRail && ['home', 'topic'].includes(this.f2State.pageType)) {
 				slotService.on(slotName, AdSlot.STATUS_SUCCESS, () =>
 					this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness(),
 				);
