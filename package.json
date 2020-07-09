@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@babel/runtime-corejs2": "^7.3.1",
 		"@wikia/dependency-injection": "2.2.2",
-		"@wikia/post-quecast": "2.0.0",
+		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
