@@ -10,6 +10,4 @@ export class DebugTransitionHandler implements TemplateStateHandler {
 		(window.ads as any).transitions[this.name] = (state: any) =>
 			transition(state, { allowMulticast: true });
 	}
-
-	async onLeave(): Promise<void> {}
 }

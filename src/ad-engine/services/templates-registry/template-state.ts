@@ -14,7 +14,11 @@ export class TemplateState<T extends string> {
 	}
 
 	async leave(): Promise<void> {
-		await Promise.all(this.handlers.map(async (handler) => handler.onLeave()));
+		await Promise.all(
+			this.handlers.map(async (handler) =>
+				'onLeave' in handler ? handler.onLeave() : Promise.resolve(),
+			),
+		);
 	}
 
 	private useTransition(

@@ -20,5 +20,4 @@ export class VideoRestartHandler implements TemplateStateHandler {
 			)
 			.subscribe();
 	}
-	async onLeave(): Promise<void> {}
 }

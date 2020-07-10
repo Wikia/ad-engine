@@ -73,6 +73,4 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 		ReplayOverlay.add(player, player.dom.getPlayerContainer(), params);
 		LearnMore.add(player, player.dom.getPlayerContainer(), params);
 	}
-
-	async onLeave(): Promise<void> {}
 }

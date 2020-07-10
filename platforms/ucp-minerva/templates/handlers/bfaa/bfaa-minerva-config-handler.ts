@@ -24,6 +24,4 @@ export class BfaaMinervaConfigHandler implements TemplateStateHandler {
 		context.set('slots.bottom_leaderboard.sizes', []);
 		context.set('slots.bottom_leaderboard.defaultSizes', [[2, 2]]);
 	}
-
-	async onLeave(): Promise<void> {}
 }

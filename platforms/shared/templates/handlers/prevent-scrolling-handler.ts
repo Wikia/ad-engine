@@ -9,6 +9,4 @@ export class PreventScrollingHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		this.manipulator.element(document.documentElement).setProperty('overflow', 'hidden');
 	}
-
-	async onLeave(): Promise<void> {}
 }

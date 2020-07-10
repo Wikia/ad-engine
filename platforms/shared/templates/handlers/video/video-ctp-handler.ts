@@ -21,6 +21,4 @@ export class VideoCtpHandler implements TemplateStateHandler {
 			)
 			.subscribe();
 	}
-
-	async onLeave(): Promise<void> {}
 }
