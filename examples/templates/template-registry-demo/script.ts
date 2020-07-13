@@ -7,6 +7,8 @@ import { SecondMockHandler } from './second-mock-handler';
 const container = new Container();
 const templateRegistry = container.get(TemplateRegistry);
 
+(window as any).gcTest = new WeakMap();
+
 templateRegistry.register(
 	'uap-2',
 	{

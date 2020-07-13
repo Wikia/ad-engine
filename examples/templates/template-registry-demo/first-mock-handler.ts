@@ -8,7 +8,9 @@ export class FirstMockHandler implements TemplateStateHandler {
 	private id = Math.random() * 10;
 	private destroy$ = new Subject();
 
-	constructor(private context: Context) {}
+	constructor(private context: Context) {
+		(window as any).gcTest.set(this, 'FirstMockHandler');
+	}
 
 	async onEnter(transition: TemplateTransition<'second'>): Promise<void> {
 		console.log(`first mock handler (${this.id}) enter`);

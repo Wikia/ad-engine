@@ -17,7 +17,9 @@ export class SecondMockHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: Dictionary,
 		@Inject(TEMPLATE.SLOT) private slot: AdSlot,
-	) {}
+	) {
+		(window as any).gcTest.set(this, 'SecondMockHandler');
+	}
 
 	async onEnter(transition: TemplateTransition<'first'>): Promise<void> {
 		console.log(`second mock handler (${this.id}) enter`);
