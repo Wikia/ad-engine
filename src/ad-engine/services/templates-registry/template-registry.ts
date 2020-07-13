@@ -48,6 +48,11 @@ export class TemplateRegistry {
 		return emitter$.asObservable();
 	}
 
+	async destroyAll(): Promise<void> {
+		await Promise.all(Array.from(this.machines.values()).map((machine) => machine.destroy()));
+		this.machines.clear();
+	}
+
 	init(templateName: string, templateSlot: AdSlot, templateParams: Dictionary = {}): void {
 		if (!this.settings.has(templateName)) {
 			throw new Error(`Template ${templateName} was not registered`);
