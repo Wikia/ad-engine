@@ -16,6 +16,12 @@ templateRegistry.register(
 	'first',
 );
 
-templateRegistry.init('uap-2', { name: 'slot name' } as any, { slotName: 'I do not know' });
+document.getElementById('init-button').addEventListener('click', () => {
+	templateRegistry.init('uap-2', { name: 'slot name' } as any, { slotName: 'I do not know' });
+});
+
+document.getElementById('destroy-button').addEventListener('click', () => {
+	templateRegistry.destroyAll();
+});
 
 new AdEngine().init();
