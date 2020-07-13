@@ -40,6 +40,14 @@ describe('Template State', () => {
 		assert(handlerStub2.onLeave.calledOnce);
 	});
 
+	it('should destroy', async () => {
+		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
+		const instance = new TemplateState('mock', [handlerStub1]);
+
+		await instance.destroy();
+		assert(handlerStub1.onDestroy.calledOnce, 'Should destroy state');
+	});
+
 	it('should transition out of a state', async () => {
 		const handlerStub = createTemplateStateHandlerStub(sandbox);
 		const instance = new TemplateState('mock', [handlerStub]);

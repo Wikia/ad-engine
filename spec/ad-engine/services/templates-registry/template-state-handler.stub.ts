@@ -21,5 +21,6 @@ export function createTemplateStateHandlerStub(sandbox: SinonSandbox): TemplateS
 	return {
 		onEnter: sandbox.stub().resolves(),
 		onLeave: sandbox.stub().resolves(),
+		onDestroy: sandbox.stub().resolves(),
 	};
 }
