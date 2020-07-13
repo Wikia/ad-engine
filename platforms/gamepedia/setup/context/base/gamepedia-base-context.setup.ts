@@ -11,7 +11,7 @@ export class GamepediaBaseContextSetup extends BaseContextSetup {
 
 	private disableAdsIfNoAdsPage(): void {
 		const pageName: string = context.get('wiki.wgPageName') || '';
-		const pagesWithoutAds: string[] = context.get('wiki.wgAdDriverPagesWithoutAds') || [];
+		const pagesWithoutAds: string[] = window['wgAdDriverPagesWithoutAds'] || [];
 
 		if (pagesWithoutAds.some((pageWithoutAds) => pageWithoutAds.includes(pageName))) {
 			this.noAdsDetector.addReason('page_without_ads');
