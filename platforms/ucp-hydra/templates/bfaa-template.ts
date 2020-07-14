@@ -33,6 +33,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { registerUcpHydraUapDomElements } from './configs/register-ucp-hydra-uap-dom-elements';
 import { BfaaHydraConfigHandler } from './handlers/bfaa/bfaa-hydra-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
@@ -94,6 +95,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			VideoDomManager,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+			registerUcpHydraUapDomElements(),
 		],
 	);
 }

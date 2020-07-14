@@ -22,10 +22,7 @@ import {
 import {
 	bidderTrackingMiddleware,
 	context,
-	FOOTER,
 	InstantConfigService,
-	NAVBAR,
-	PAGE,
 	slotBiddersTrackingMiddleware,
 	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
@@ -59,9 +56,6 @@ export async function setupUcpIoc(): Promise<Container> {
 	container.bind(DynamicSlotsSetup).to(UcpDynamicSlotsSetup);
 	container.bind(TemplatesSetup).to(UcpTemplatesSetup);
 	container.bind(BillTheLizardSetup).to(UcpBillTheLizardSetup);
-	container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
-	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
-	container.bind(PAGE).value(document.body);
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(UcpA9ConfigSetup);

@@ -23,10 +23,7 @@ import {
 import {
 	bidderTrackingMiddleware,
 	context,
-	FOOTER,
 	InstantConfigService,
-	NAVBAR,
-	PAGE,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
@@ -55,9 +52,6 @@ export async function setupMinervaIoc(): Promise<Container> {
 	container.bind(SlotsContextSetup).to(MinervaSlotsContextSetup);
 	container.bind(DynamicSlotsSetup).to(MinervaDynamicSlotsSetup);
 	container.bind(TemplatesSetup).to(UcpMinervaTemplatesSetup);
-	container.bind(NAVBAR).value(document.querySelector('.header-container'));
-	container.bind(FOOTER).value(document.querySelector('.minerva-footer'));
-	container.bind(PAGE).value(document.querySelector('#content'));
 	container.bind(BiddersStateSetup).to(CommonBiddersStateSetup);
 	container.bind(PrebidConfigSetup).to(UcpGamepediaPrebidConfigSetup);
 	container.bind(A9ConfigSetup).to(GamepediaA9ConfigSetup);

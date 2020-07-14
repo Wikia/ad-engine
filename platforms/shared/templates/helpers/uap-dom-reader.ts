@@ -1,6 +1,7 @@
-import { AdSlot, NAVBAR, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { isUndefined } from 'util';
+import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
