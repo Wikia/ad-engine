@@ -11,6 +11,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 export class BfaaOasisConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
+	// TODO: Should we clean after that somehow (+ other platforms)?
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'bottom_leaderboard', 'incontent_boxad_1'];
 		universalAdPackage.init(

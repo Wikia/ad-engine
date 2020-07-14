@@ -19,6 +19,7 @@ export class CloseToHiddenButtonHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private helper: CloseButtonHelper) {}
 
 	async onEnter(transition: TemplateTransition<'hidden'>): Promise<void> {
+		// TODO: There is no logic that removes that onClick callback, will it be deleted alongside button element?
 		this.button = new CloseButton({
 			onClick: () => {
 				this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);

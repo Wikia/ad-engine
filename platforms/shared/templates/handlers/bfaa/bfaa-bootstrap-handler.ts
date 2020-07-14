@@ -52,4 +52,9 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
 	}
+
+	async onDestroy(): Promise<void> {
+		document.body.classList.remove('has-uap');
+		this.adSlot.getAdContainer().classList.remove('iframe-container'); // TODO: is it necessary?
+	}
 }

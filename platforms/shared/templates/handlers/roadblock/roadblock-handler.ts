@@ -29,6 +29,7 @@ export class RoadblockHandler implements TemplateStateHandler {
 		@Inject(ROADBLOCK_CONFIG) private config: RoadblockConfig,
 	) {}
 
+	// TODO: like BFAA
 	async onEnter(): Promise<void> {
 		this.params.adProduct = 'ruap';
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);

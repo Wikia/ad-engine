@@ -116,7 +116,8 @@ export class PorvataPlayer {
 		eventName: VideoEvent,
 		callback: (event: google.ima.AdEvent | google.ima.AdErrorEvent) => void,
 	): void {
-		// TODO: Implement removeEventListener
+		// TODO: Implement removeEventListener <- Let's really do this!
+		// TODO: I would also like us to look into other memory leaks in that class.
 	}
 
 	dispatchEvent(eventName: string): void {
