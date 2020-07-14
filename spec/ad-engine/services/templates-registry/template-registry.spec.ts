@@ -117,6 +117,13 @@ describe('Template Registry', () => {
 		expect(() => instance.init('mock', {} as any)).to.throw('Template mock is already initialized');
 	});
 
+	it('should work with nested template dependencies', () => {
+		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
+			[[AdditionalDependency]],
+		]);
+		instance.init('mock', {} as any);
+	});
+
 	it('should throw without providing template dependencies', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
 		expect(() => instance.init('mock', {} as any)).to.throw(
