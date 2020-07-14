@@ -16,7 +16,6 @@ import {
 } from './services';
 import { FloatingAd } from './templates';
 import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
-import { tcf } from './wrappers/tcf';
 
 export interface AdStackPayload {
 	id: string;
@@ -59,8 +58,6 @@ export class AdEngine {
 		messageBus.init();
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener();
-
-		inhibitors.push(tcf.init());
 
 		this.runAdQueue(inhibitors);
 

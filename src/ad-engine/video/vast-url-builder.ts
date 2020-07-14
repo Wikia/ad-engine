@@ -1,6 +1,5 @@
 import { AdSlot, Dictionary, Targeting } from '../models';
 import { context, events, eventService, slotService, trackingOptIn } from '../services';
-import { tcf } from '../wrappers/tcf';
 
 export interface VastOptions {
 	correlator: number;
@@ -105,10 +104,7 @@ export function buildVastUrl(
 		params.push(`pmad=${options.numberOfAds}`);
 	}
 
-	if (context.get('custom.tcf2Enabled') && tcf.payload) {
-		params.push(`gdpr=${tcf.payload.gdprApplies ? 1 : 0}`);
-		params.push(`gdpr_consent=${tcf.payload.tcString}`);
-	} else {
+	if (!context.get('custom.tcf2Enabled')) {
 		params.push(`npa=${trackingOptIn.isOptedIn() ? 0 : 1}`);
 	}
 

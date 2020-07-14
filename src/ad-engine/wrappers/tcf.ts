@@ -1,24 +1,5 @@
-interface TCFv2ApiPayload {
-	gdprApplies: boolean;
-	tcString: string;
-}
-
 export class Tcf {
-	payload: TCFv2ApiPayload = null;
 	defaultVersion = 2;
-
-	init(): Promise<void> {
-		if (this.exists) {
-			return this.getTCData().then((tcData: TCData) => {
-				this.payload = {
-					gdprApplies: tcData.gdprApplies,
-					tcString: tcData.tcString,
-				};
-			});
-		}
-
-		return Promise.resolve();
-	}
 
 	get exists(): boolean {
 		return !!window.__tcfapi;
