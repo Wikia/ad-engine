@@ -6,10 +6,14 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { NoAdsDetector } from '../services/no-ads-detector';
 
 @Injectable()
 export class BaseContextSetup {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected noAdsDetector: NoAdsDetector,
+	) {}
 
 	configureBaseContext(isMobile = false): void {
 		this.setBaseState(isMobile);
@@ -21,11 +25,20 @@ export class BaseContextSetup {
 	}
 
 	private setBaseState(isMobile: boolean): void {
+		if (context.get('wiki.opts.showAds') === false) {
+			this.noAdsDetector.addReason('show_ads_false');
+		}
+		if (utils.client.isSteamPlatform()) {
+			this.noAdsDetector.addReason('steam_browser');
+		}
+		if (!!utils.queryString.get('noexternals')) {
+			this.noAdsDetector.addReason('noexternals_querystring');
+		}
+		if (!!utils.queryString.get('noads')) {
+			this.noAdsDetector.addReason('noads_querystring');
+		}
+
 		context.set('state.isMobile', isMobile);
-		context.set(
-			'state.showAds',
-			context.get('wiki.opts.showAds') !== false && !utils.client.isSteamPlatform(),
-		);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
@@ -83,6 +96,7 @@ export class BaseContextSetup {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
@@ -109,6 +123,10 @@ export class BaseContextSetup {
 		context.set(
 			'templates.safeFanTakeoverElement.lineItemIds',
 			this.instantConfig.get('icSafeFanTakeoverLineItemIds'),
+		);
+		context.set(
+			'templates.safeFanTakeoverElement.unstickTimeout',
+			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
 	}
 }

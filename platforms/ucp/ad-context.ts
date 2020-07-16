@@ -88,6 +88,10 @@ export const basicContext = {
 			enabled: false,
 			siteId: '1167',
 		},
+		distroScale: {
+			enabled: false,
+			id: '22599',
+		},
 		iasPublisherOptimization: {
 			pubId: '930616',
 			slots: [

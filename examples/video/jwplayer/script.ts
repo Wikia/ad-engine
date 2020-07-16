@@ -1,6 +1,7 @@
 import {
 	AdSlot,
 	bidders,
+	communicationService,
 	context,
 	events,
 	eventService,
@@ -9,17 +10,14 @@ import {
 	playerEvents,
 	utils,
 } from '@wikia/ad-engine';
-import { setupPostQuecast, Transmitter } from '@wikia/post-quecast';
 // tslint:disable-next-line:no-submodule-imports
 import 'jwplayer-fandom/dist/wikiajwplayer.js';
 import adContext from '../../context';
 import '../../styles.scss';
 import * as videoData from './video-data.json';
 
-setupPostQuecast();
 new JWPlayerManager().manage();
 
-const transmitter = new Transmitter();
 const f15sVideoId = utils.queryString.get('f15s');
 
 context.extend(adContext);
@@ -103,7 +101,7 @@ bidders.requestBids().then(() => {
 		const playerKey = 'aePlayerKey';
 
 		window[playerKey] = player;
-		transmitter.dispatch(jwpReady({ options, playerKey, targeting }));
+		communicationService.dispatch(jwpReady({ options, playerKey, targeting }));
 	});
 });
 

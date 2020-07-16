@@ -1,4 +1,4 @@
-import { Collection, context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
+import { context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
@@ -7,7 +7,7 @@ const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'] as con
 
 type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
 type BrandSafetyKey = typeof brandSafetyKeys[number];
-type BrandSafetyData = Partial<Collection<BrandSafetyKey, BrandSafetyValue>>;
+type BrandSafetyData = Partial<Record<BrandSafetyKey, BrandSafetyValue>>;
 
 interface IasTargetingSlotData {
 	id?: string;

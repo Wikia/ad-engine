@@ -7,11 +7,8 @@ import {
 	slotService,
 	utils,
 } from '@ad-engine/core';
-import { action, props } from 'ts-action';
 import { universalAdPackage } from '../templates/uap';
 import { NavbarManager } from './navbar-manager';
-
-export const recirculationDisabledEvent = action('[AdEngine] recirculation disabled', props<{}>());
 
 export class FmrRotator {
 	private btRecStatus = false;
@@ -34,7 +31,6 @@ export class FmrRotator {
 
 	rotateSlot(): void {
 		this.nextSlotName = this.slotName;
-		this.recirculationDisabled = context.get('options.floatingMedrecRecirculationDisabled');
 		this.recirculationElement = document.getElementById('recirculation-rail');
 		this.refreshInfo.startPosition =
 			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
@@ -42,13 +38,10 @@ export class FmrRotator {
 
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-				const onlyFirstSlot =
-					universalAdPackage.isFanTakeoverLoaded() || this.recirculationDisabled;
-
 				slot.once(AdSlot.STATUS_SUCCESS, () => {
 					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
 
-					if (!onlyFirstSlot) {
+					if (!universalAdPackage.isFanTakeoverLoaded()) {
 						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
 							setTimeout(() => {
 								this.hideSlot();
@@ -58,7 +51,7 @@ export class FmrRotator {
 				});
 
 				slot.once(AdSlot.STATUS_COLLAPSE, () => {
-					if (!onlyFirstSlot) {
+					if (!universalAdPackage.isFanTakeoverLoaded()) {
 						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
 						this.scheduleNextSlotPush();
 					}
@@ -66,15 +59,9 @@ export class FmrRotator {
 			}
 		});
 
-		if (this.recirculationDisabled) {
-			this.swapRecirculation(false);
-			eventService.communicator.dispatch(recirculationDisabledEvent({}));
+		setTimeout(() => {
 			this.startFirstRotation();
-		} else {
-			setTimeout(() => {
-				this.startFirstRotation();
-			}, this.refreshInfo.refreshDelay);
-		}
+		}, this.refreshInfo.refreshDelay);
 	}
 
 	private slotStatusChanged(slotStatus): void {

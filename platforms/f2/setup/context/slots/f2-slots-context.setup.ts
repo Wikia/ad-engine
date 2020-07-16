@@ -1,5 +1,5 @@
 import { SlotsContextSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, events, eventService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -210,6 +210,22 @@ export class F2SlotsContextSetup implements SlotsContextSetup {
 			},
 		};
 
+		eventService.on(events.AD_SLOT_CREATED, (slot) => {
+			context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
+			context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
+				this.setupSlotParameters(slot),
+			);
+		});
 		context.set('slots', slots);
+	}
+
+	private setupSlotParameters(slot): void {
+		const audioSuffix = slot.config.audio === true ? '-audio' : '';
+		const clickToPlaySuffix =
+			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
+
+		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
+		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
+		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }

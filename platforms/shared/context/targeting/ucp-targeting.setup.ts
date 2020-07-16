@@ -19,7 +19,9 @@ export class UcpTargetingSetup implements TargetingSetup {
 	configureTargetingContext(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 
-		if (context.get('wiki.opts.isAdTestWiki')) {
+		if (context.get('wiki.opts.isAdTestWiki') && context.get('wiki.targeting.testSrc')) {
+			context.set('src', context.get('wiki.targeting.testSrc'));
+		} else if (context.get('wiki.opts.isAdTestWiki')) {
 			context.set('src', 'test');
 		}
 	}

@@ -1,4 +1,4 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { DynamicSlotsSetup, NoAdsDetector, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -11,6 +11,8 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
+	constructor(private noAdsDetector: NoAdsDetector) {}
+
 	configureDynamicSlots(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
@@ -75,7 +77,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private injectFooterAd(): void {
-		if (context.get('state.showAds')) {
+		if (this.noAdsDetector.isAdsMode()) {
 			const footer = document.getElementById('curse-footer');
 			const footerWrapper = footer.querySelector('.footer-wrapper');
 			const footerBoxadContainer = document.createElement('div');

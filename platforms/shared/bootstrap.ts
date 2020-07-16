@@ -5,8 +5,4 @@ export async function bootstrapAndGetConsent(): Promise<void> {
 	utils.geoService.setUpGeoData();
 
 	await trackingOptInWrapper.init();
-
-	trackingOptInWrapper.getConsent();
-	trackingOptInWrapper.getSignal();
-	trackingOptInWrapper.flushConsentQueue();
 }

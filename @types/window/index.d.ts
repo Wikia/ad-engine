@@ -14,6 +14,7 @@ interface Window {
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	apstag?: Apstag;
+	au_seg?: any;
 	beaconId?: string;
 	beacon_id?: string;
 	canPlayVideo?: any;
@@ -24,6 +25,7 @@ interface Window {
 	};
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
+	headertag?: any;
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;

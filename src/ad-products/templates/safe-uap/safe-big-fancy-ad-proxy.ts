@@ -139,6 +139,8 @@ export class SafeBigFancyAdProxy {
 			blockOutOfViewportPausing: true,
 			clickThroughURL: this.config.clickThroughUrl,
 			fullscreenable: true,
+			stickyUntilSlotViewed: false,
+			stickyAdditionalTime: context.get('templates.safeFanTakeoverElement.unstickTimeout'),
 		});
 	}
 

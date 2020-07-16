@@ -101,12 +101,30 @@
     "icTaxonomyAdTags": [
         {
             "apps": [
-                "gamepedia"
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
             ],
             "regions": [
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icSafeFanTakeoverUnstickTimeout": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 4000
         }
     ],
     "icPrebidIndexExchange": [
@@ -132,7 +150,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 1
+            "value": 0
         }
     ],
     "icFacebookPixel": [
@@ -210,20 +228,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
-        },
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.23.0/20200630.min.js"
         }
     ],
     "icIASPublisherOptimization": [
@@ -274,10 +279,12 @@
                 "oasis"
             ],
             "regions": [
+                "CA",
                 "HK",
                 "NL"
             ],
             "sampling": 50.0,
+            "samplingCache": true,
             "value": true
         }
     ],

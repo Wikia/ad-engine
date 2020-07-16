@@ -101,16 +101,20 @@
             "value": true
         }
     ],
-    "icTaxonomyComicsTag": [
+    "icSafeFanTakeoverUnstickTimeout": [
         {
             "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
                 "mobile-wiki",
+                "muthead",
                 "oasis"
             ],
             "regions": [
-                "US"
+                "XX"
             ],
-            "value": false
+            "value": 4000
         }
     ],
     "icPrebidSizePriceFloorRule": [
@@ -360,10 +364,7 @@
                 "oasis"
             ],
             "regions": [
-                "CA",
-                "ES",
-                "GB",
-                "UK"
+                "XX"
             ],
             "value": true
         }
@@ -424,13 +425,6 @@
             "apps": [
                 "mobile-wiki",
                 "oasis"
-            ],
-            "regions": [
-                "CA",
-                "PL"
-            ],
-            "value": [
-                303
             ]
         }
     ],
@@ -591,7 +585,22 @@
                 "5353864975",
                 "5366503822",
                 "5387091760",
-                "5367643428"
+                "5367643428",
+                "5398858722",
+                "5398858302",
+                "5410506458",
+                "5410506467",
+                "5410506461",
+                "5410506470",
+                "5410506464",
+                "5410506473",
+                "5376167519",
+                "194029992",
+                "194029389",
+                "5406386861",
+                "5406386864",
+                "5419007438",
+                "5411280632"
             ]
         }
     ],
@@ -617,6 +626,19 @@
             ]
         }
     ],
+    "icTaxonomyAdTags": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icA9VideoBidsCleaning": [
         {
             "apps": [
@@ -624,8 +646,7 @@
                 "oasis"
             ],
             "regions": [
-                "XX",
-                "non-US"
+                "XX"
             ],
             "value": true
         }
@@ -791,20 +812,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "https://origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
-        },
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.2.0/20200414.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.23.0/20200630.min.js"
         }
     ],
     "icA9Bidder": [
@@ -829,10 +837,7 @@
                 "oasis"
             ],
             "regions": [
-                "CA",
-                "ES",
-                "GB",
-                "UK"
+                "XX"
             ],
             "value": [
                 "featured"
@@ -861,10 +866,12 @@
                 "oasis"
             ],
             "regions": [
+                "CA",
                 "HK",
                 "NL"
             ],
             "sampling": 50.0,
+            "samplingCache": true,
             "value": true
         }
     ],
@@ -1003,6 +1010,26 @@
                 "mobile-wiki",
                 "oasis"
             ]
+        }
+    ],
+    "icDistroScale": [
+        {
+            "apps": [
+                "oasis"
+            ],
+            "value": false
+        }
+    ],
+    "icFloorAdhesionDelay": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 30000
         }
     ],
     "icBabDetection": [

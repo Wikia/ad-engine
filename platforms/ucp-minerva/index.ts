@@ -1,5 +1,5 @@
 import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
-import { context, eventService } from '@wikia/ad-engine';
+import { communicationService, context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { setupMinervaIoc } from './setup-minerva-ioc';
@@ -18,7 +18,7 @@ window.RLQ.push(async () => {
 	platformStartup.configure({ isMobile: true });
 
 	// TODO: Move it to platformStartup.run once all platforms use @wikia/post-quecast
-	eventService.communicator.dispatch(adEngineConfigured());
+	communicationService.dispatch(adEngineConfigured());
 
 	platformStartup.run();
 });

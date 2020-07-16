@@ -1,6 +1,6 @@
+import { RoadblockHandler } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { RoadblockHandler } from './handlers/roadblock/roadblock-handler';
 
 export function registerRoadblockTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -9,5 +9,11 @@ export function registerRoadblockTemplate(registry: TemplateRegistry): Observabl
 			initial: [RoadblockHandler],
 		},
 		'initial',
+		[
+			RoadblockHandler.config({
+				enabledSlots: ['top_boxad', 'invisible_skin'],
+				disableSlots: ['incontent_player', 'floor_adhesion'],
+			}),
+		],
 	);
 }

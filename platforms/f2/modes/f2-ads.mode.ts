@@ -18,7 +18,6 @@ export class F2AdsMode implements AdsMode {
 		this.setupJWPlayer();
 		startAdEngine(inhibitors);
 
-		this.setAdStack();
 		this.trackAdEngineStatus();
 	}
 
@@ -45,14 +44,5 @@ export class F2AdsMode implements AdsMode {
 		});
 
 		return inhibitors;
-	}
-
-	private setAdStack(): void {
-		// TODO: slots: video, featured
-		context.push('state.adStack', { id: 'top_leaderboard' });
-		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
-		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('events.pushOnScroll.ids', 'incontent_boxad');
-		context.push('events.pushOnScroll.ids', 'feed_boxad');
 	}
 }
