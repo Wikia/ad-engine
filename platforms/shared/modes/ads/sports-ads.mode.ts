@@ -12,7 +12,7 @@ import { AdsMode } from './_ads.mode';
 
 @Injectable()
 export class SportsAdsMode implements AdsMode {
-	handleAds(): void {
+	execute(): void {
 		const inhibitors = this.callExternals();
 
 		startAdEngine(inhibitors);

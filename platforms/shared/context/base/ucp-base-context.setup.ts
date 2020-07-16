@@ -4,8 +4,8 @@ import { BaseContextSetup } from '../../setup/_base-context.setup';
 
 @Injectable()
 export class UcpBaseContextSetup extends BaseContextSetup {
-	configureBaseContext(isMobile = false): void {
-		super.configureBaseContext(isMobile);
+	execute(): void {
+		super.execute();
 
 		if (window.ads.context.opts.noAdsReason) {
 			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);

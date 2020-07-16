@@ -60,7 +60,7 @@ export class TrackingSetup {
 		private bidderTrackingMiddlewares: FuncPipelineStep<AdBidderContext>[],
 	) {}
 
-	configureTracking(): void {
+	execute(): void {
 		this.porvataTracker();
 		this.slotTracker();
 		this.viewabilityTracker();
@@ -166,8 +166,8 @@ export class TrackingSetup {
 
 	private identityLibraryLoadTimeTracker(): void {
 		communicationService.action$.pipe(ofType(identityLibraryLoadedEvent)).subscribe((props) => {
-				this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
-				this.pageTracker.trackProp('identity_library_ids', identityLibrary.getUids());
-			});
+			this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
+			this.pageTracker.trackProp('identity_library_ids', identityLibrary.getUids());
+		});
 	}
 }

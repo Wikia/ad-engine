@@ -5,5 +5,5 @@ export class SlotsContextSetup {
 		iocDefaultWarning('SlotsContextSetup');
 	}
 
-	configureSlotsContext(): void {}
+	execute(): void {}
 }

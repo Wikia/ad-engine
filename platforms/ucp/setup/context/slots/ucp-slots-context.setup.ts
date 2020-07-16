@@ -6,7 +6,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpSlotsContextSetup implements SlotsContextSetup {
 	constructor() {}
 
-	configureSlotsContext(): void {
+	execute(): void {
 		const slots = {
 			hivi_leaderboard: {
 				aboveTheFold: true,

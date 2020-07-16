@@ -6,7 +6,7 @@ import { BiddersStateSetup } from '../setup/_bidders-state.setup';
 export class CommonBiddersStateSetup implements BiddersStateSetup {
 	constructor(private instantConfig: InstantConfigService) {}
 
-	configureBiddersState(): void {
+	execute(): void {
 		setupBidders(context, this.instantConfig);
 	}
 }

@@ -6,7 +6,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class HydraSlotsContextSetup implements SlotsContextSetup {
 	constructor() {}
 
-	configureSlotsContext(): void {
+	execute(): void {
 		const slots = {
 			top_leaderboard: {
 				aboveTheFold: true,

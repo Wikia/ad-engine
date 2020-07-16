@@ -23,7 +23,7 @@ export class UcpTemplatesSetup implements TemplatesSetup {
 		templateService.setInitializer(this.registry);
 	}
 
-	configureTemplates(): void {
+	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);

@@ -6,7 +6,7 @@ import { A9ConfigSetup } from '../../setup/_a9-config.setup';
 
 @Injectable()
 export class GamepediaA9ConfigSetup implements A9ConfigSetup {
-	configureA9Context(): void {
+	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 
 		context.set('bidders.a9.slots', this.getA9Context(mode));

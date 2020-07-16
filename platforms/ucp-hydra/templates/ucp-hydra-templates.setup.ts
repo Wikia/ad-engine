@@ -12,7 +12,7 @@ export class UcpHydraTemplatesSetup implements TemplatesSetup {
 		templateService.setInitializer(this.registry);
 	}
 
-	configureTemplates(): void {
+	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);

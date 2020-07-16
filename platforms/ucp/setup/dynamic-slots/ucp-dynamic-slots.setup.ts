@@ -22,7 +22,7 @@ const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
-	configureDynamicSlots(): void {
+	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();
 		this.configureTopLeaderboard();

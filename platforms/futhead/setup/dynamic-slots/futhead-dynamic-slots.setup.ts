@@ -5,7 +5,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class FutheadDynamicSlotsSetup implements DynamicSlotsSetup {
 	constructor(private uapSetup: CurseUapSetup) {}
 
-	configureDynamicSlots(): void {
+	execute(): void {
 		this.uapSetup.configureUap();
 	}
 }

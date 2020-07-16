@@ -5,5 +5,5 @@ export class PrebidConfigSetup {
 		iocDefaultWarning('PrebidConfigSetup');
 	}
 
-	configurePrebidContext(): void {}
+	execute(): void {}
 }

@@ -21,7 +21,7 @@ import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
 @Injectable()
 export class UcpPrebidConfigSetup implements PrebidConfigSetup {
-	configurePrebidContext(): void {
+	execute(): void {
 		context.set('bidders.prebid.aol', getAOLContext());
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());

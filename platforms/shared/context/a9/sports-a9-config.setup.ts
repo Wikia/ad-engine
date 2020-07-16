@@ -5,7 +5,7 @@ import { A9ConfigSetup } from '../../setup/_a9-config.setup';
 
 @Injectable()
 export class SportsA9ConfigSetup implements A9ConfigSetup {
-	configureA9Context(): void {
+	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 
 		context.set('bidders.a9.slots', this.getA9Context(mode));
@@ -15,10 +15,16 @@ export class SportsA9ConfigSetup implements A9ConfigSetup {
 		const a9Context = {
 			desktop: {
 				'01_LB': {
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 				},
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 				'03_PF': {
 					sizes: [[300, 250]],

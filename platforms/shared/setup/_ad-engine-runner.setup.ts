@@ -7,7 +7,7 @@ const logGroup = 'ad-engine';
 export class AdEngineRunnerSetup {
 	constructor() {}
 
-	configureAdEngineRunner(): void {
+	execute(): void {
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
 			utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
 			bidders.updateSlotTargeting(slot.getSlotName());

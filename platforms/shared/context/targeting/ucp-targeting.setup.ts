@@ -16,7 +16,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 
 	constructor(@Inject(SKIN) private skin: string) {}
 
-	configureTargetingContext(): void {
+	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 
 		if (context.get('wiki.opts.isAdTestWiki') && context.get('wiki.targeting.testSrc')) {

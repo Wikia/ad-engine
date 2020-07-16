@@ -11,7 +11,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class MinervaDynamicSlotsSetup implements DynamicSlotsSetup {
-	configureDynamicSlots(): void {
+	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
 	}

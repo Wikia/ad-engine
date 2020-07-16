@@ -11,7 +11,7 @@ import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 
 @Injectable()
 export class FutheadPrebidConfigSetup implements PrebidConfigSetup {
-	configurePrebidContext(): void {
+	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 
 		context.set('bidders.prebid.appnexus', getAppNexusContext(mode));
