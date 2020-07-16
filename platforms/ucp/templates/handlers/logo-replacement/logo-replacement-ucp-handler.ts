@@ -9,7 +9,6 @@ export class LogoReplacementUcpHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
 	) {}
 
-	// TODO: What about this? (+ other platforms)
 	async onEnter(): Promise<void> {
 		const parentElement = document.querySelector('.wds-global-navigation__content-bar-left');
 		const fandomLogo = document.querySelector('.wds-global-navigation__logo');
