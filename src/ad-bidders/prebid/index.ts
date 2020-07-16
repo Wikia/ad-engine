@@ -1,17 +1,20 @@
 import {
 	AdSlot,
+	Cmp,
+	cmp,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
 	events,
 	eventService,
 	pbjsFactory,
+	Tcf,
+	tcf,
 	utils,
 } from '@ad-engine/core';
 import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
-import { Cmp, cmp, Tcf, tcf } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
 import { identityLibrary } from './identity-library';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
@@ -79,7 +82,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('bidders.tcf2Enabled') && this.tcf.exists) {
+		if (context.get('custom.tcf2Enabled') && this.tcf.exists) {
 			this.prebidConfig.consentManagement = {
 				gdpr: {
 					cmpApi: 'iab',

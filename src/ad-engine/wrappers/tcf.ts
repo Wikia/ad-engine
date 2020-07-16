@@ -5,7 +5,7 @@ export class Tcf {
 		return !!window.__tcfapi;
 	}
 
-	getTCData(version?: number): Promise<ConsentData> {
+	getTCData(version?: number): Promise<TCData> {
 		return new Promise((resolve) => {
 			window.__tcfapi('getTCData', version || this.defaultVersion, (tcData) => resolve(tcData));
 		});
