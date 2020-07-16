@@ -43,8 +43,4 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 	async onLeave(): Promise<void> {
 		this.adSlot.show();
 	}
-
-	async onDestroy(): Promise<void> {
-		this.adSlot.getAdContainer().classList.remove('iframe-container'); // TODO: is it necessary?
-	}
 }

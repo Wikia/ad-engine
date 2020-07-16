@@ -34,8 +34,6 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 			return this.playerRegistry.discard();
 		}
 
-		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay TODO: shouldn't it be in bfaa-bootstrap-handler
-
 		this.playerRegistry.register();
 		this.playerRegistry.video$
 			.pipe(
