@@ -65,7 +65,6 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 		);
 	}
 
-	// TODO: should we clean after that as well?
 	private adjustUI(player: Porvata4Player, params: PorvataTemplateParams): void {
 		ProgressBar.add(player, player.dom.getInterfaceContainer());
 		createBottomPanel({ fullscreenAllowed: this.params.fullscreenAllowed, theme: 'hivi' }).add(
