@@ -59,7 +59,6 @@ class SlotInjector {
 			container = this.slotCreator.createSlot(slotConfig);
 		} catch (e) {
 			logger(logGroup, `There is not enough space for ${slotName}`);
-			console.error(e);
 
 			return null;
 		}

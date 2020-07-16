@@ -1,6 +1,7 @@
 import {
 	A9ConfigSetup,
 	AdsMode,
+	BaseContextSetup,
 	BiddersStateSetup,
 	CommonBiddersStateSetup,
 	CurseSlotsContextSetup,
@@ -29,6 +30,7 @@ import { set } from 'lodash';
 import * as fallbackInstantConfig from './fallback-config.json';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
 import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';
+import { GamepediaBaseContextSetup } from './setup/context/base/gamepedia-base-context.setup';
 import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
 import { GamepediaDynamicSlotsSetup } from './setup/dynamic-slots/gamepedia-dynamic-slots.setup';
 import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
@@ -38,6 +40,7 @@ export async function setupGamepediaIoc(): Promise<Container> {
 
 	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
+	container.bind(BaseContextSetup).to(GamepediaBaseContextSetup);
 	container.bind(TargetingSetup).to(GamepediaTargetingSetup);
 	container.bind(TemplatesSetup).to(GamepediaTemplatesSetup);
 	container.bind(NoAdsMode).to(GamepediaNoAdsMode);
