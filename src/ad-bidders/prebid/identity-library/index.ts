@@ -42,28 +42,16 @@ class IdentityLibrary {
 
 	dispatchIdsLoadedEvent(): void {
 		const identityInfo = window.headertag.getIdentityInfo();
-		let responsePending = 0;
+		const hasPendingResponses = Object.values(identityInfo).some(
+			(response) => response['responsePending'],
+		);
 
-		for (const rtiPartner in identityInfo) {
-			if (
-				identityInfo.hasOwnProperty(rtiPartner) &&
-				identityInfo[rtiPartner].responsePending === true
-			) {
-				responsePending = 1;
-				break;
-			}
-		}
-
-		if (responsePending) {
-			window.headertag.subscribeEvent(
-				'rti_partner_request_complete',
-				false,
-				(eventName, eventData) => {
-					communicationService.dispatch(identityLibraryIdsLoadedEvent({}));
-				},
+		if (hasPendingResponses) {
+			window.headertag.subscribeEvent('rti_partner_request_complete', false, () =>
+				communicationService.dispatch(identityLibraryIdsLoadedEvent()),
 			);
 		} else {
-			communicationService.dispatch(identityLibraryIdsLoadedEvent({}));
+			communicationService.dispatch(identityLibraryIdsLoadedEvent());
 		}
 	}
 
@@ -87,7 +75,4 @@ export const identityLibraryLoadedEvent = globalAction(
 	'[AdEngine] Identity library loaded',
 	props<{ loadTime: number }>(),
 );
-export const identityLibraryIdsLoadedEvent = globalAction(
-	'[AdEngine] Identity library ids loaded',
-	props<{}>(),
-);
+export const identityLibraryIdsLoadedEvent = globalAction('[AdEngine] Identity library ids loaded');
