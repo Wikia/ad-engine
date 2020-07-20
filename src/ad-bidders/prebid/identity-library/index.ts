@@ -40,20 +40,6 @@ class IdentityLibrary {
 		}
 	}
 
-	getUids(): string {
-		const identityInfo = window.headertag.getIdentityInfo();
-
-		return Object.entries(identityInfo)
-			.map(([name, info]) => this.extractProviderInfo(name, info))
-			.join('|');
-	}
-
-	extractProviderInfo(name: string, identityInfo: Dictionary<any>): string {
-		const uids = 'uids' in identityInfo['data'] ? identityInfo['data']['uids'][0]['id'] : '';
-
-		return `${name}=${uids};responsePending=${identityInfo['responsePending']}`;
-	}
-
 	dispatchIdsLoadedEvent(): void {
 		const identityInfo = window.headertag.getIdentityInfo();
 		let responsePending = 0;
@@ -79,6 +65,20 @@ class IdentityLibrary {
 		} else {
 			communicationService.dispatch(identityLibraryIdsLoadedEvent({}));
 		}
+	}
+
+	getUids(): string {
+		const identityInfo = window.headertag.getIdentityInfo();
+
+		return Object.entries(identityInfo)
+			.map(([name, info]) => this.extractProviderInfo(name, info))
+			.join('|');
+	}
+
+	private extractProviderInfo(name: string, identityInfo: Dictionary<any>): string {
+		const uids = 'uids' in identityInfo['data'] ? identityInfo['data']['uids'][0]['id'] : '';
+
+		return `${name}=${uids};responsePending=${identityInfo['responsePending']}`;
 	}
 }
 
