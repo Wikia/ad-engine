@@ -9,7 +9,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { slotsContext } from '../../../slots/slots-context';
 
 @Injectable({ autobind: false })
 export class BfabBootstrapHandler implements TemplateStateHandler {
@@ -24,7 +23,6 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.addClass('bfab-template');
 		this.adSlot.getAdContainer().classList.add('iframe-container');
 
-		slotsContext.setupSlotVideoAdUnit(this.adSlot, this.params);
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
 
