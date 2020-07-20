@@ -12,7 +12,7 @@ describe('IX Identity Library', () => {
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
 		window.headertag = {
-			getIdentityInfo: () => {},
+			getIdentityInfo: () => ({}),
 		};
 		context.set('bidders.ixIdentityLibrary.enabled', true);
 		context.set('options.trackingOptIn', true);
