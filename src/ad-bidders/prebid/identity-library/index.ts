@@ -33,6 +33,7 @@ class IdentityLibrary {
 				communicationService.dispatch(
 					identityLibraryLoadedEvent({ loadTime: loadEnd - loadStart }),
 				);
+				this.dispatchIdsLoadedEvent();
 				utils.logger(logGroup, 'ready');
 				this.isLoaded = true;
 			});
@@ -52,10 +53,41 @@ class IdentityLibrary {
 
 		return `${name}=${uids};responsePending=${identityInfo['responsePending']}`;
 	}
+
+	dispatchIdsLoadedEvent(): void {
+		const identityInfo = window.headertag.getIdentityInfo();
+		let responsePending = 0;
+
+		for (const rtiPartner in identityInfo) {
+			if (
+				identityInfo.hasOwnProperty(rtiPartner) &&
+				identityInfo[rtiPartner].responsePending === true
+			) {
+				responsePending = 1;
+				break;
+			}
+		}
+
+		if (responsePending) {
+			window.headertag.subscribeEvent(
+				'rti_partner_request_complete',
+				false,
+				(eventName, eventData) => {
+					communicationService.dispatch(identityLibraryIdsLoadedEvent({}));
+				},
+			);
+		} else {
+			communicationService.dispatch(identityLibraryIdsLoadedEvent({}));
+		}
+	}
 }
 
 export const identityLibrary = new IdentityLibrary();
 export const identityLibraryLoadedEvent = globalAction(
 	'[AdEngine] Identity library loaded',
 	props<{ loadTime: number }>(),
+);
+export const identityLibraryIdsLoadedEvent = globalAction(
+	'[AdEngine] Identity library ids loaded',
+	props<{}>(),
 );
