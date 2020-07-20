@@ -1,5 +1,5 @@
 import { communicationService, globalAction } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { context, Dictionary, utils } from '@ad-engine/core';
 import { props } from 'ts-action';
 
 const logGroup = 'identity-library';
@@ -43,10 +43,14 @@ class IdentityLibrary {
 		const identityInfo = window.headertag.getIdentityInfo();
 
 		return Object.entries(identityInfo)
-			.map(
-				([name, info]) => `${name}=${'uids' in info['data'] ? info['data']['uids'][0]['id'] : ''}`,
-			)
+			.map(([name, info]) => this.extractProviderInfo(name, info))
 			.join('|');
+	}
+
+	extractProviderInfo(name: string, identityInfo: Dictionary<any>): string {
+		const uids = 'uids' in identityInfo['data'] ? identityInfo['data']['uids'][0]['id'] : '';
+
+		return `${name}=${uids};responsePending=${identityInfo['responsePending']}`;
 	}
 }
 
