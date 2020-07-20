@@ -170,7 +170,7 @@ export class TrackingSetup {
 			this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
 			this.pageTracker.trackProp('identity_library_ids', identityLibrary.getUids());
 		});
-		communicationService.action$.pipe(ofType(identityLibraryIdsLoadedEvent)).subscribe((props) => {
+		communicationService.action$.pipe(ofType(identityLibraryIdsLoadedEvent)).subscribe(() => {
 			this.pageTracker.trackProp('identity_library_ids_loaded', identityLibrary.getUids());
 		});
 	}
