@@ -1,5 +1,5 @@
 import { communicationService, globalAction } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { context, Dictionary, utils } from '@ad-engine/core';
 import { props } from 'ts-action';
 
 const logGroup = 'identity-library';
@@ -33,9 +33,25 @@ class IdentityLibrary {
 				communicationService.dispatch(
 					identityLibraryLoadedEvent({ loadTime: loadEnd - loadStart }),
 				);
+				this.dispatchIdsLoadedEvent();
 				utils.logger(logGroup, 'ready');
 				this.isLoaded = true;
 			});
+		}
+	}
+
+	dispatchIdsLoadedEvent(): void {
+		const identityInfo = window.headertag.getIdentityInfo();
+		const hasPendingResponses = Object.values(identityInfo).some(
+			(response) => response['responsePending'],
+		);
+
+		if (hasPendingResponses) {
+			window.headertag.subscribeEvent('rti_partner_request_complete', false, () =>
+				communicationService.dispatch(identityLibraryIdsLoadedEvent()),
+			);
+		} else {
+			communicationService.dispatch(identityLibraryIdsLoadedEvent());
 		}
 	}
 
@@ -43,10 +59,14 @@ class IdentityLibrary {
 		const identityInfo = window.headertag.getIdentityInfo();
 
 		return Object.entries(identityInfo)
-			.map(
-				([name, info]) => `${name}=${'uids' in info['data'] ? info['data']['uids'][0]['id'] : ''}`,
-			)
+			.map(([name, info]) => this.extractProviderInfo(name, info))
 			.join('|');
+	}
+
+	private extractProviderInfo(name: string, identityInfo: Dictionary<any>): string {
+		const uids = 'uids' in identityInfo['data'] ? identityInfo['data']['uids'][0]['id'] : '';
+
+		return `${name}=${uids};responsePending=${identityInfo['responsePending']}`;
 	}
 }
 
@@ -55,3 +75,4 @@ export const identityLibraryLoadedEvent = globalAction(
 	'[AdEngine] Identity library loaded',
 	props<{ loadTime: number }>(),
 );
+export const identityLibraryIdsLoadedEvent = globalAction('[AdEngine] Identity library ids loaded');
