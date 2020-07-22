@@ -17,6 +17,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import { slotsContext } from '../../../slots/slots-context';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
 @Injectable({ autobind: false })
@@ -32,6 +33,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 			return this.playerRegistry.discard();
 		}
 
+		slotsContext.setupSlotVideoAdUnit(this.adSlot, this.params);
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.playerRegistry.register();
 
