@@ -1,5 +1,6 @@
 import {
 	context,
+	Dictionary,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
@@ -20,6 +21,7 @@ export class BaseContextSetup {
 		this.setOptionsContext();
 		this.setServicesContext();
 		this.setMiscContext();
+		this.setupStickySlotLineItemIds();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -128,5 +130,20 @@ export class BaseContextSetup {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
+	}
+
+	private setupStickySlotLineItemIds(): void {
+		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
+		if (stickySlotsLines && stickySlotsLines.length) {
+			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
+
+			if (this.instantConfig.get('icHiViLeaderboardUnstickTimeout')) {
+				context.set('options.unstickHiViLeaderboardAfterTimeout', true);
+				context.set(
+					'options.unstickHiViLeaderboardTimeout',
+					this.instantConfig.get('icHiViLeaderboardUnstickTimeout'),
+				);
+			}
+		}
 	}
 }
