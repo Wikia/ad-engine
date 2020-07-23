@@ -8,18 +8,32 @@ export class CurseSlotsContextSetup implements SlotsContextSetup {
 		const slots = {
 			'cdm-zone-01': {
 				aboveTheFold: true,
-				defaultSizes: [[728, 90], [970, 150], [970, 250]],
+				defaultSizes: [
+					[728, 90],
+					[970, 150],
+					[970, 250],
+				],
 				firstCall: true,
 				bidderAlias: '01_LB',
 				group: '01_LB',
 				sizes: [
 					{
 						viewportSize: [1024, 300],
-						sizes: [[728, 90], [970, 150], [970, 250], [980, 150], [980, 250]],
+						sizes: [
+							[728, 90],
+							[970, 150],
+							[970, 250],
+							[980, 150],
+							[980, 250],
+						],
 					},
 					{
 						viewportSize: [970, 200],
-						sizes: [[728, 90], [970, 150], [970, 250]],
+						sizes: [
+							[728, 90],
+							[970, 150],
+							[970, 250],
+						],
 					},
 					{
 						viewportSize: [840, 200],
@@ -27,7 +41,10 @@ export class CurseSlotsContextSetup implements SlotsContextSetup {
 					},
 					{
 						viewportSize: [0, 0],
-						sizes: [[320, 50], [320, 100]],
+						sizes: [
+							[320, 50],
+							[320, 100],
+						],
 						mobileViewport: true,
 					},
 				],
@@ -42,7 +59,10 @@ export class CurseSlotsContextSetup implements SlotsContextSetup {
 				autoplay: true,
 				audio: false,
 				disableExpandAnimation: true,
-				defaultSizes: [[300, 250], [300, 600]],
+				defaultSizes: [
+					[300, 250],
+					[300, 600],
+				],
 				bidderAlias: '02_MR',
 				group: '02_MR',
 				targeting: {
@@ -90,6 +110,7 @@ export class CurseSlotsContextSetup implements SlotsContextSetup {
 				insertBeforeSelector: '#mw-content-text > .mw-parser-output > h2',
 				insertBelowFirstViewport: true,
 				targeting: {
+					pos: ['outstream'],
 					loc: 'middle',
 					rv: 1,
 				},
