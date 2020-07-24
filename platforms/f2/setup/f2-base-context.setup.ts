@@ -23,6 +23,10 @@ export class F2BaseContextSetup extends BaseContextSetup {
 			this.noAdsDetector.addReason('article_plus');
 		}
 
+		if (window.location.hostname.includes('wikia.org')) {
+			this.noAdsDetector.addReason('org');
+		}
+
 		context.set('src', this.srcAdapter.getSrcBasedOnEnv());
 		context.set(
 			'custom.serverPrefix',
