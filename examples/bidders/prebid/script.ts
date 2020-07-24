@@ -64,7 +64,7 @@ context.set('bidders.prebid.sendAllBids', sendAllBidsEnabled);
 if (prebidVersion) {
 	context.set(
 		'bidders.prebid.libraryUrl',
-		`https://origin-images.wikia.com/fandom-ae-assets/prebid.js/${prebidVersion}`,
+		`https://static.wikia.nocookie.net/fandom-ae-assets/prebid.js/${prebidVersion}`,
 	);
 }
 
