@@ -9,6 +9,7 @@ import {
 	FuncPipelineStep,
 	GAMOrigins,
 	identityLibrary,
+	identityLibraryIdsLoadedEvent,
 	identityLibraryLoadedEvent,
 	InstantConfigCacheStorage,
 	ofType,
@@ -67,7 +68,7 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
-		this.identityLibraryLoadTimeTracker();
+		this.identityLibraryTracker();
 	}
 
 	private porvataTracker(): void {
@@ -164,10 +165,13 @@ export class TrackingSetup {
 		}
 	}
 
-	private identityLibraryLoadTimeTracker(): void {
+	private identityLibraryTracker(): void {
 		communicationService.action$.pipe(ofType(identityLibraryLoadedEvent)).subscribe((props) => {
-				this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
-				this.pageTracker.trackProp('identity_library_ids', identityLibrary.getUids());
-			});
+			this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
+			this.pageTracker.trackProp('identity_library_ids', identityLibrary.getUids());
+		});
+		communicationService.action$.pipe(ofType(identityLibraryIdsLoadedEvent)).subscribe(() => {
+			this.pageTracker.trackProp('identity_library_ids_loaded', identityLibrary.getUids());
+		});
 	}
 }

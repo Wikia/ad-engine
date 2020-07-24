@@ -11,6 +11,9 @@ describe('IX Identity Library', () => {
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
+		window.headertag = {
+			getIdentityInfo: () => ({}),
+		};
 		context.set('bidders.ixIdentityLibrary.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);

@@ -1,5 +1,13 @@
 import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
-import { communicationService, context, ofType, SlotCreator } from '@wikia/ad-engine';
+import {
+	btfBlockerService,
+	communicationService,
+	context,
+	events,
+	eventService,
+	ofType,
+	SlotCreator,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take, tap } from 'rxjs/operators';
 import { f2ArticleFeedLoaded, f2FeedLoaded } from '../../f2.actions';
@@ -18,8 +26,10 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private injectSlots(): void {
+		const topLeaderboardDefinition = this.slotsDefinitionRepository.getTopLeaderboardConfig();
+
 		this.insertSlots([
-			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
+			topLeaderboardDefinition,
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 		]);
 
@@ -36,6 +46,10 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 				}),
 			)
 			.subscribe();
+
+		if (!topLeaderboardDefinition) {
+			eventService.once(events.AD_STACK_START, () => btfBlockerService.finishFirstCall());
+		}
 	}
 
 	private insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
