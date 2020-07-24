@@ -242,6 +242,15 @@ class SlotService {
 	}
 
 	/**
+	 * Returns configuration of non first call slots.
+	 */
+	getNonFirstCallSlotNames(): string[] {
+		return Object.entries(this.slotConfigsMap)
+			.filter(([name, config]) => !config.firstCall)
+			.map(([name, config]) => name);
+	}
+
+	/**
 	 * Returns names of enabled slots.
 	 */
 	getEnabledSlotNames(): string[] {
