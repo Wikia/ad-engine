@@ -18,7 +18,7 @@ export class JWPlayerHandler {
 		private tracker: JWPlayerTrackingHelper,
 	) {}
 
-	handle(): Observable<any> {
+	handle(): Observable<unknown> {
 		return merge(
 			this.adError(),
 			this.adRequest(),
@@ -31,7 +31,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private adError(): Observable<any> {
+	private adError(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adError'),
 			tap(({ payload, state }) => {
@@ -44,7 +44,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private adRequest(): Observable<any> {
+	private adRequest(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adRequest'),
 			tap(({ state }) => {
@@ -54,7 +54,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private adImpression(): Observable<any> {
+	private adImpression(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adImpression'),
 			tap(({ state }) => {
@@ -66,7 +66,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private adsManager(): Observable<any> {
+	private adsManager(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adsManager'),
 			filter(() => this.helper.isIasTrackingEnabled()),
@@ -74,7 +74,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private beforePlay(): Observable<any> {
+	private beforePlay(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('beforePlay'),
 			tap(({ state }) => this.helper.updateVideoProperties(state)),
@@ -84,7 +84,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private videoMidPoint(): Observable<any> {
+	private videoMidPoint(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('videoMidPoint'),
 			filter(({ state }) => this.helper.shouldPlayMidroll(state.depth)),
@@ -92,7 +92,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private beforeComplete(): Observable<any> {
+	private beforeComplete(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('beforeComplete'),
 			filter(({ state }) => this.helper.shouldPlayPostroll(state.depth)),
@@ -100,7 +100,7 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private track(): Observable<any> {
+	private track(): Observable<unknown> {
 		return this.stream$.pipe(
 			filter((event) => this.tracker.isTrackingEvent(event)),
 			tap((event) => this.tracker.track(event)),
