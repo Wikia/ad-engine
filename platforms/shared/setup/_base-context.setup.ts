@@ -121,7 +121,6 @@ export class BaseContextSetup {
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
-		context.set('bidders.ixIdentityLibrary.enabled', this.instantConfig.get('icIxIdentityLibrary'));
 
 		context.set(
 			'templates.safeFanTakeoverElement.lineItemIds',

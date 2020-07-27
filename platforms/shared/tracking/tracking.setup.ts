@@ -9,9 +9,6 @@ import {
 	eventService,
 	FuncPipelineStep,
 	GAMOrigins,
-	identityLibrary,
-	identityLibraryIdsLoadedEvent,
-	identityLibraryLoadedEvent,
 	InstantConfigCacheStorage,
 	ofType,
 	playerEvents,
@@ -69,7 +66,6 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
-		this.identityLibraryTracker();
 		this.audigentTracker();
 	}
 
@@ -165,16 +161,6 @@ export class TrackingSetup {
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
 		}
-	}
-
-	private identityLibraryTracker(): void {
-		communicationService.action$.pipe(ofType(identityLibraryLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('identity_library_load_time', props.loadTime.toString());
-			this.pageTracker.trackProp('identity_library_ids', identityLibrary.getUids());
-		});
-		communicationService.action$.pipe(ofType(identityLibraryIdsLoadedEvent)).subscribe(() => {
-			this.pageTracker.trackProp('identity_library_ids_loaded', identityLibrary.getUids());
-		});
 	}
 
 	private audigentTracker(): void {
