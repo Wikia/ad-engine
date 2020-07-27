@@ -1,5 +1,6 @@
 import { communicationService, ofType } from '@ad-engine/communication';
 import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
+import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
@@ -11,15 +12,16 @@ import { PlayerReadyResult } from './helpers/player-ready-result';
 import { JwPlayerAdsFactoryOptions, jwpReady } from './jwplayer-actions';
 import { createJwpStream } from './streams/jwplayer-stream';
 
+@Injectable()
 export class JWPlayerManager {
 	manage(): void {
 		this.onPlayerReady()
 			.pipe(
 				mergeMap((result) =>
 					merge(
-						new JWPlayerHandler(result).handle(),
-						new JWPlayerTrackingHandler(result).handle(),
-						new JwplayerComscoreHandler(result).handle(),
+						new JWPlayerHandler().handle(result),
+						new JWPlayerTrackingHandler().handle(result),
+						new JwplayerComscoreHandler().handle(result),
 					),
 				),
 			)

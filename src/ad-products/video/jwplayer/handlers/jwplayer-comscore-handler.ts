@@ -1,22 +1,18 @@
 import { context } from '@ad-engine/core';
+import { Injectable } from '@wikia/dependency-injection';
 import { EMPTY, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
-import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
+import { ofJwpEvent } from '../streams/jwplayer-stream';
 
+@Injectable({ scope: 'Transient' })
 export class JwplayerComscoreHandler {
-	private stream$: JwpStream;
-
-	constructor({ stream$ }: PlayerReadyResult) {
-		this.stream$ = stream$;
-	}
-
-	handle(): Observable<unknown> {
+	handle({ stream$ }: PlayerReadyResult): Observable<unknown> {
 		if (!this.isEnabled()) {
 			return EMPTY;
 		}
 
-		return this.stream$.pipe(
+		return stream$.pipe(
 			ofJwpEvent('adStarted'),
 			filter(({ state }) => state.adInVideo === 'preroll'),
 			tap(() => {

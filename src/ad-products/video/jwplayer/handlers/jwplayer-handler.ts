@@ -1,4 +1,5 @@
 import { utils } from '@ad-engine/core';
+import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from '../helpers/jwplayer-helper';
@@ -11,16 +12,15 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 /**
  * Describes what is done
  */
+@Injectable({ scope: 'Transient' })
 export class JWPlayerHandler {
 	private stream$: JwpStream;
 	private helper: JWPlayerHelper;
 
-	constructor({ jwplayer, adSlot, targeting, stream$ }: PlayerReadyResult) {
+	handle({ jwplayer, adSlot, targeting, stream$ }: PlayerReadyResult): Observable<unknown> {
 		this.stream$ = stream$;
 		this.helper = new JWPlayerHelper(adSlot, jwplayer, targeting);
-	}
 
-	handle(): Observable<unknown> {
 		return merge(
 			this.adError(),
 			this.adRequest(),

@@ -1,4 +1,5 @@
 import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
+import { Injectable } from '@wikia/dependency-injection';
 import * as Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -6,7 +7,7 @@ import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpEventKey } from '../streams/jwplayer-events';
-import { JwpEvent, JwpStream } from '../streams/jwplayer-stream';
+import { JwpEvent } from '../streams/jwplayer-stream';
 
 const trackingEventsMap = {
 	init: 'init',
@@ -31,22 +32,19 @@ const trackingEventsMap = {
 
 type TrackingEvent = keyof typeof trackingEventsMap;
 
+@Injectable({ scope: 'Transient' })
 export class JWPlayerTrackingHandler {
-	private readonly stream$: JwpStream;
-	private readonly adSlot: AdSlot;
+	private adSlot: AdSlot;
 	private lastKnownAdData = {
 		contentType: '',
 		creativeId: '',
 		lineItemId: '',
 	};
 
-	constructor({ adSlot, stream$ }: PlayerReadyResult) {
-		this.stream$ = stream$;
+	handle({ adSlot, stream$ }: PlayerReadyResult): Observable<unknown> {
 		this.adSlot = adSlot;
-	}
 
-	handle(): Observable<unknown> {
-		return this.stream$.pipe(
+		return stream$.pipe(
 			filter((event) => this.isTrackingEvent(event)),
 			tap((event: JwpEvent<TrackingEvent>) => this.track(event)),
 		);
