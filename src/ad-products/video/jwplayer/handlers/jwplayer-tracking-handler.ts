@@ -1,9 +1,12 @@
 import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
 import * as Cookies from 'js-cookie';
+import { Observable } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
+import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpEventKey } from '../streams/jwplayer-events';
-import { JwpEvent } from '../streams/jwplayer-stream';
+import { JwpEvent, JwpStream } from '../streams/jwplayer-stream';
 
 const trackingEventsMap = {
 	init: 'init',
@@ -28,23 +31,35 @@ const trackingEventsMap = {
 
 type TrackingEvent = keyof typeof trackingEventsMap;
 
-export class JWPlayerTrackingHelper {
+export class JWPlayerTrackingHandler {
+	private readonly stream$: JwpStream;
+	private readonly adSlot: AdSlot;
 	private lastKnownAdData = {
 		contentType: '',
 		creativeId: '',
 		lineItemId: '',
 	};
 
-	constructor(private readonly adSlot: AdSlot) {}
+	constructor({ adSlot, stream$ }: PlayerReadyResult) {
+		this.stream$ = stream$;
+		this.adSlot = adSlot;
+	}
 
-	track<T extends TrackingEvent>(event: JwpEvent<T>): void {
+	handle(): Observable<unknown> {
+		return this.stream$.pipe(
+			filter((event) => this.isTrackingEvent(event)),
+			tap((event: JwpEvent<TrackingEvent>) => this.track(event)),
+		);
+	}
+
+	private track(event: JwpEvent<TrackingEvent>): void {
 		const videoData = this.getVideoData(event);
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
 	}
 
-	isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {
+	private isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {
 		return Object.keys(trackingEventsMap).includes(event.name);
 	}
 

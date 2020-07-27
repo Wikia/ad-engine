@@ -1,10 +1,10 @@
 import { utils } from '@ad-engine/core';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
-import { JWPlayerHelper } from './helpers/jwplayer-helper';
-import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
-import { JWPlayerA9Logger } from './jwplayer-a9-logger';
-import { JwpStream, ofJwpEvent } from './streams/jwplayer-stream';
+import { JWPlayerHelper } from '../helpers/jwplayer-helper';
+import { PlayerReadyResult } from '../helpers/player-ready-result';
+import { JWPlayerA9Logger } from '../jwplayer-a9-logger';
+import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
 
@@ -12,11 +12,13 @@ const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
  * Describes what is done
  */
 export class JWPlayerHandler {
-	constructor(
-		private stream$: JwpStream,
-		private helper: JWPlayerHelper,
-		private tracker: JWPlayerTrackingHelper,
-	) {}
+	private stream$: JwpStream;
+	private helper: JWPlayerHelper;
+
+	constructor({ jwplayer, adSlot, targeting, stream$ }: PlayerReadyResult) {
+		this.stream$ = stream$;
+		this.helper = new JWPlayerHelper(adSlot, jwplayer, targeting);
+	}
 
 	handle(): Observable<unknown> {
 		return merge(
@@ -27,7 +29,6 @@ export class JWPlayerHandler {
 			this.beforePlay(),
 			this.videoMidPoint(),
 			this.beforeComplete(),
-			this.track(),
 		);
 	}
 
@@ -97,13 +98,6 @@ export class JWPlayerHandler {
 			ofJwpEvent('beforeComplete'),
 			filter(({ state }) => this.helper.shouldPlayPostroll(state.depth)),
 			tap(({ state }) => this.helper.playVideoAd('postroll', state)),
-		);
-	}
-
-	private track(): Observable<unknown> {
-		return this.stream$.pipe(
-			filter((event) => this.tracker.isTrackingEvent(event)),
-			tap((event) => this.tracker.track(event)),
 		);
 	}
 }
