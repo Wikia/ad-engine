@@ -5,7 +5,6 @@ import { props } from 'ts-action';
 const logGroup = 'audigent';
 const audienceTagScriptUrl = 'https://a.ad.gt/api/v1/u/matches/158';
 const segmentsScriptUrl = 'https://seg.ad.gt/api/v1/segments.js';
-const audigentLoadedEvent = globalAction('[AdEngine] Audigent loaded', props<{}>());
 
 class Audigent {
 	private isLoaded = false;
@@ -51,3 +50,4 @@ class Audigent {
 }
 
 export const audigent = new Audigent();
+export const audigentLoadedEvent = globalAction('[AdEngine] Audigent loaded', props<{}>());
