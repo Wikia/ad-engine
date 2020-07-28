@@ -1,9 +1,16 @@
 import { context } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { EMPTY, Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
+import { catchError, filter, map, mergeMap } from 'rxjs/operators';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { ofJwpEvent } from '../streams/jwplayer-stream';
+
+interface ComscorePayload {
+	c1: string;
+	c2: number;
+	c5: string;
+}
 
 @Injectable({ scope: 'Transient' })
 export class JwplayerComscoreHandler {
@@ -15,15 +22,12 @@ export class JwplayerComscoreHandler {
 		return stream$.pipe(
 			ofJwpEvent('adStarted'),
 			filter(({ state }) => state.adInVideo === 'preroll'),
-			tap(() => {
-				const payload = {
-					c1: '1',
-					c2: 6177433,
-					c5: '09',
-				};
-				// tslint:disable-next-line:no-console
-				console.log('** Preroll Comscore Track', payload);
-			}),
+			map(() => ({
+				c1: '1',
+				c2: 6177433,
+				c5: '09',
+			})),
+			mergeMap((payload) => this.track(payload)),
 		);
 	}
 
@@ -41,5 +45,19 @@ export class JwplayerComscoreHandler {
 		}
 
 		return true;
+	}
+
+	private track(payload: ComscorePayload): Observable<unknown> {
+		const url = `${
+			document.location.protocol === 'https:' ? 'https://sb' : 'http://b'
+		}.scorecardresearch.com/b2?c1=${payload.c1}&c2=${payload.c2}&c5=${payload.c5}`;
+
+		return ajax.get(url).pipe(
+			catchError((error) => {
+				console.error(error);
+
+				return EMPTY;
+			}),
+		);
 	}
 }
