@@ -17,6 +17,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
+import { slotsContext } from '../../../slots/slots-context';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
 @Injectable({ autobind: false })
@@ -34,6 +35,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 			return this.playerRegistry.discard();
 		}
 
+		slotsContext.setupSlotVideoAdUnit(this.adSlot, this.params);
 		this.playerRegistry.register();
 		this.playerRegistry.video$
 			.pipe(

@@ -26,6 +26,7 @@ export const basicContext = {
 		video: {
 			moatTracking: {
 				enabled: false,
+				jwplayerPluginUrl: 'https://z.moatads.com/jwplayerplugin0938452/moatplugin.js',
 				partnerCode: 'wikiajwint101173217941',
 				sampling: 100,
 			},

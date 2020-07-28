@@ -1,5 +1,6 @@
 import {
 	context,
+	Dictionary,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
@@ -20,6 +21,7 @@ export class BaseContextSetup {
 		this.setOptionsContext();
 		this.setServicesContext();
 		this.setMiscContext();
+		this.setupStickySlotLineItemIds();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -94,6 +96,7 @@ export class BaseContextSetup {
 	private setServicesContext(): void {
 		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
+		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
@@ -128,5 +131,20 @@ export class BaseContextSetup {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
+	}
+
+	private setupStickySlotLineItemIds(): void {
+		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
+		if (stickySlotsLines && stickySlotsLines.length) {
+			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
+
+			if (this.instantConfig.get('icHiViLeaderboardUnstickTimeout')) {
+				context.set('options.unstickHiViLeaderboardAfterTimeout', true);
+				context.set(
+					'options.unstickHiViLeaderboardTimeout',
+					this.instantConfig.get('icHiViLeaderboardUnstickTimeout'),
+				);
+			}
+		}
 	}
 }

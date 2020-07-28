@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "71.2.0",
+	"version": "71.5.1",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@babel/runtime-corejs2": "^7.3.1",
 		"@wikia/dependency-injection": "2.2.2",
-		"@wikia/post-quecast": "2.0.0",
+		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
@@ -123,8 +123,8 @@
 	},
 	"scripts": {
 		"serve": "npm run dev",
-		"dev": "webpack-dev-server --progress --config webpack.dev.js",
-		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js",
+		"dev": "webpack-dev-server --progress --config webpack.dev.js -d",
+		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js -d",
 		"prebuild": "rm -rf dist",
 		"build": "rollup -c rollup.config.js",
 		"build:examples": "webpack --progress --colors --hide-modules --config webpack.dev.js",
