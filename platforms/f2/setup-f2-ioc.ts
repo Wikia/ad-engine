@@ -50,8 +50,9 @@ export async function setupF2Ioc(f2Env: F2Environment): Promise<Container> {
 	container
 		.bind(NAVBAR)
 		.value(
-			document.querySelector('.wds-global-navigation-wrapper') ||
-				document.querySelector('.global-navigation-mobile-wrapper'),
+			f2Env.isPageMobile
+				? document.querySelector('.global-navigation-mobile-wrapper')
+				: document.querySelector('.wds-global-navigation-wrapper'),
 		);
 	container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
 	container
