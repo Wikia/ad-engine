@@ -32,6 +32,7 @@ context.set('bidders.a9.dealsEnabled', true);
 context.set('bidders.prebid.enabled', !!utils.queryString.get('wikia_video_adapter'));
 context.set('options.video.isMidrollEnabled', utils.queryString.get('midroll') === '1');
 context.set('options.video.isPostrollEnabled', utils.queryString.get('postroll') === '1');
+context.set('options.video.comscoreJwpTracking', utils.queryString.get('comscore') === '1');
 context.set(
 	'options.video.adsOnNextVideoFrequency',
 	parseInt(utils.queryString.get('capping'), 10) || 3,
