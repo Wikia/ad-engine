@@ -1,6 +1,7 @@
 import {
 	AdBidderContext,
 	AdInfoContext,
+	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
 	communicationService,
@@ -69,6 +70,7 @@ export class TrackingSetup {
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
 		this.identityLibraryTracker();
+		this.audigentTracker();
 	}
 
 	private porvataTracker(): void {
@@ -172,6 +174,12 @@ export class TrackingSetup {
 		});
 		communicationService.action$.pipe(ofType(identityLibraryIdsLoadedEvent)).subscribe(() => {
 			this.pageTracker.trackProp('identity_library_ids_loaded', identityLibrary.getUids());
+		});
+	}
+
+	private audigentTracker(): void {
+		communicationService.action$.pipe(ofType(audigentLoadedEvent)).subscribe(() => {
+			this.pageTracker.trackProp('audigent', 'loaded');
 		});
 	}
 }
