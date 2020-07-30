@@ -4,6 +4,7 @@ export interface TemplateStateHandlerSpy {
 	constructor: SinonStub;
 	onEnter: SinonStub;
 	onLeave: SinonStub;
+	onDestroy: SinonStub;
 }
 
 export function createTemplateStateHandlerSpy(sandbox: SinonSandbox): TemplateStateHandlerSpy {
@@ -11,5 +12,6 @@ export function createTemplateStateHandlerSpy(sandbox: SinonSandbox): TemplateSt
 		constructor: sandbox.stub().resolves(),
 		onEnter: sandbox.stub().resolves(),
 		onLeave: sandbox.stub().resolves(),
+		onDestroy: sandbox.stub().resolves(),
 	};
 }

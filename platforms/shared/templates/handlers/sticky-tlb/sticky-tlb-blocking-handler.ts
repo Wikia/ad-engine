@@ -42,6 +42,4 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		}
 		return false;
 	}
-
-	async onLeave(): Promise<void> {}
 }

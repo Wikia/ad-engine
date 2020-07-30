@@ -42,183 +42,47 @@
 			<article class="main">
 				<h1>Templates 2.0 - registry demo</h1>
 				<p>Showcases how to use TemplateRegistry with dependency injection.</p>
+				<button id="init-button">Init</button>
+				<button id="destroy-button">Destroy</button>
+				<h2>Garbage Collector Test</h2>
+				<h3>
+					Chrome version:
+				</h3>
+				<ol>
+					<li>In memory devtools take snapshot (filter "Handler")</li>
+					<li>Click "Init" to start template.</li>
+					<li>Observe states changing in the console.</li>
+					<li>In memory devtools take snapshot (filter "Handler")</li>
+					<li>There should be "FirstMockHandler" and "SecondMockHandler".</li>
+					<li>Click "Destroy" to destroy template.</li>
+					<li>Observe states should no longer change in this console.</li>
+					<li>In memory devtools click "collect garbage"</li>
+					<li>In memory devtools take snapshot (filter "Handler")</li>
+					<li>"FirstMockHandler" and "SecondMockHandler" should be gone now.</li>
+				</ol>
+				<h3>
+					Firefox version:
+				</h3>
 				<p>
-					Lorem ipsum dolor sit amet, vix esse repudiandae et, cu vis etiam falli. Illud exerci
-					aliquip ei his. Quis iudicabit in quo, vis et minim noster deseruisse. Eius vidisse
-					repudiare in duo, possim audiam eu has. Eum an iudico mandamus dissentiunt.
+					These template include a way to check if garbage collector works fine on handlers. We do
+					that by creating WeakMap no `window.gcTest`. To that map we add instances of handlers. To
+					test if handlers are still in memory simply print `window.gcTest` in the console, but DO
+					NOT expand it, because browser will then keep reference and Garbage Collector won't pick
+					them up.
 				</p>
-				<p>
-					Te veniam conceptam qui, per no case feugait. Affert iriure nonumes no eos, est minimum
-					recteque ea, ei mea nibh consetetur. Ubique salutatus adversarium at sed. Ex erroribus
-					sententiae reprimique sed, qui no viderer inimicus pericula, ei eam delicata
-					concludaturque. Pri te nemore constituam.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, vix esse repudiandae et, cu vis etiam falli. Illud exerci
-					aliquip ei his. Quis iudicabit in quo, vis et minim noster deseruisse. Eius vidisse
-					repudiare in duo, possim audiam eu has. Eum an iudico mandamus dissentiunt.
-				</p>
-				<p>
-					Te veniam conceptam qui, per no case feugait. Affert iriure nonumes no eos, est minimum
-					recteque ea, ei mea nibh consetetur. Ubique salutatus adversarium at sed. Ex erroribus
-					sententiae reprimique sed, qui no viderer inimicus pericula, ei eam delicata
-					concludaturque. Pri te nemore constituam.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, vix esse repudiandae et, cu vis etiam falli. Illud exerci
-					aliquip ei his. Quis iudicabit in quo, vis et minim noster deseruisse. Eius vidisse
-					repudiare in duo, possim audiam eu has. Eum an iudico mandamus dissentiunt.
-				</p>
-				<p>
-					Te veniam conceptam qui, per no case feugait. Affert iriure nonumes no eos, est minimum
-					recteque ea, ei mea nibh consetetur. Ubique salutatus adversarium at sed. Ex erroribus
-					sententiae reprimique sed, qui no viderer inimicus pericula, ei eam delicata
-					concludaturque. Pri te nemore constituam.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
-				<p>
-					Scaevola evertitur id pro, nec possim aliquando ex, equidem accumsan no sit. Dicat cetero
-					an cum. Sea ut choro tritani intellegam, saepe consul ne vel. Ne quo delenit inimicus. Eu
-					duo natum atqui assum. Feugait vulputate ea mei, ad ius labores epicuri theophrastus, vis
-					ea feugiat concludaturque. Cum et lorem labores graecis, novum nostrud cum et.
-				</p>
-				<p>
-					Ut euismod lucilius suscipiantur eum, ad dico disputationi vel. Ea pro fugit ubique
-					iisque, te malis integre ius. Reque causae no mei. Mea id eruditi assentior, in cum mutat
-					laboramus.
-				</p>
-				<p>
-					Sea necessitatibus vituperatoribus ex, mei commune deserunt necessitatibus ad, illud
-					adolescens conclusionemque has ei. Appetere convenire an eam, in nam case nonumes, idque
-					apeirian usu ea. Corpora fastidii definitiones mea cu, qui ei natum mutat fierent, ei
-					mollis suscipit corrumpit mei. No iriure tincidunt sed, putent pertinax nec ad. No nihil
-					vivendum disputationi sea, vel id enim vivendo, mea tota intellegebat ut.
-				</p>
+				<ol>
+					<li>Confirm that there are no handlers in memory</li>
+					<li>Click "Init" to start template.</li>
+					<li>Observe states changing in the console.</li>
+					<li>Confirm that there are 2 handlers in memory.</li>
+					<li>Click "Destroy" to destroy template.</li>
+					<li>Observe states should no longer change in this console.</li>
+					<li>
+						Force Garbage Collection (open a new tab `about:memory`, and click on `Free memory ->
+						GC`).
+					</li>
+					<li>Confirm that there are no handlers in memory.</li>
+				</ol>
 			</article>
 			<aside class="aside">
 				<div id="rail-wrapper">

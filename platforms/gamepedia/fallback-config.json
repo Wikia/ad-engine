@@ -167,6 +167,21 @@
             "value": true
         }
     ],
+    "icAudigent": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 10.0,
+            "value": true
+        }
+    ],
     "icPostmessageTracking": [
         {
             "apps": [

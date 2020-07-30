@@ -8,6 +8,4 @@ export class HideSmartBannerHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		communicationService.dispatch(hideSmartBanner());
 	}
-
-	async onLeave(): Promise<void> {}
 }

@@ -22,6 +22,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { registerF2UapDomElements } from './configs/register-f2-uap-dom-elements';
 import { HideSmartBannerHandler } from './handlers/hide-smart-banner-handler';
 
 export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
@@ -67,6 +68,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			ScrollCorrector,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.TLB_UNSTICK_DELAY),
+			registerF2UapDomElements(),
 		],
 	);
 }

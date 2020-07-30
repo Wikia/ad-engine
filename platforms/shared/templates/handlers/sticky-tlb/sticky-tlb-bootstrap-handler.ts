@@ -24,6 +24,4 @@ export class StickyTlbBootstrapHandler implements TemplateStateHandler {
 			await utils.once(window, 'visibilitychange');
 		}
 	}
-
-	async onLeave(): Promise<void> {}
 }

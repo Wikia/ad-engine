@@ -1,27 +1,29 @@
 import { communicationService, ofType } from '@ad-engine/communication';
 import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
-import { Observable } from 'rxjs';
+import { Injectable } from '@wikia/dependency-injection';
+import { merge, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { iasVideoTracker } from '../player/porvata/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
-import { JWPlayerHelper } from './helpers/jwplayer-helper';
-import { JWPlayerTrackingHelper } from './helpers/jwplayer-tracking-helper';
-import { JwPlayerAdsFactoryOptions, jwpReady, VideoTargeting } from './jwplayer-actions';
-import { JWPlayerHandler } from './jwplayer-handler';
+import { JwplayerComscoreHandler } from './handlers/jwplayer-comscore-handler';
+import { JWPlayerHandler } from './handlers/jwplayer-handler';
+import { JWPlayerTrackingHandler } from './handlers/jwplayer-tracking-handler';
+import { PlayerReadyResult } from './helpers/player-ready-result';
+import { JwPlayerAdsFactoryOptions, jwpReady } from './jwplayer-actions';
 import { createJwpStream } from './streams/jwplayer-stream';
 
-interface PlayerReadyResult {
-	jwplayer: JWPlayer;
-	adSlot: AdSlot;
-	targeting: VideoTargeting;
-}
-
+@Injectable()
 export class JWPlayerManager {
 	manage(): void {
 		this.onPlayerReady()
 			.pipe(
-				map((result) => this.createJWPlayerHandler(result)),
-				mergeMap((handler) => handler.handle()),
+				mergeMap((result) =>
+					merge(
+						new JWPlayerHandler().handle(result),
+						new JWPlayerTrackingHandler().handle(result),
+						new JwplayerComscoreHandler().handle(result),
+					),
+				),
 			)
 			.subscribe();
 	}
@@ -36,8 +38,9 @@ export class JWPlayerManager {
 			map(({ options, targeting, playerKey }) => {
 				const jwplayer: JWPlayer = window[playerKey];
 				const adSlot = this.createAdSlot(options, jwplayer);
+				const stream$ = createJwpStream(jwplayer);
 
-				return { jwplayer, adSlot, targeting };
+				return { jwplayer, adSlot, targeting, stream$ };
 			}),
 		);
 	}
@@ -56,18 +59,6 @@ export class JWPlayerManager {
 		}
 
 		return adSlot;
-	}
-
-	private createJWPlayerHandler({
-		jwplayer,
-		adSlot,
-		targeting,
-	}: PlayerReadyResult): JWPlayerHandler {
-		const stream$ = createJwpStream(jwplayer);
-		const tracker = new JWPlayerTrackingHelper(adSlot);
-		const helper = new JWPlayerHelper(adSlot, jwplayer, targeting);
-
-		return new JWPlayerHandler(stream$, helper, tracker);
 	}
 
 	private loadMoatPlugin(): void {

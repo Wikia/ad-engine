@@ -34,6 +34,4 @@ export class RoadblockHandler implements TemplateStateHandler {
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
 		context.push('state.adStack', { id: 'invisible_skin' });
 	}
-
-	async onLeave(): Promise<void> {}
 }

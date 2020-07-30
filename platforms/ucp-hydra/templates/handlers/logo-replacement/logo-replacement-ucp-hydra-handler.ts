@@ -36,6 +36,4 @@ export class LogoReplacementUcpHydraHandler implements TemplateStateHandler {
 			}
 		}, 1000);
 	}
-
-	async onLeave(): Promise<void> {}
 }

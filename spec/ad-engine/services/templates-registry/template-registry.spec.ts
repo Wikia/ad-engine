@@ -48,6 +48,10 @@ describe('Template Registry', () => {
 		async onLeave(): Promise<void> {
 			stateASpy.onLeave();
 		}
+
+		async onDestroy(): Promise<void> {
+			stateASpy.onDestroy();
+		}
 	}
 
 	@Injectable({ autobind: false })
@@ -63,6 +67,10 @@ describe('Template Registry', () => {
 		async onLeave(): Promise<void> {
 			stateBSpy.onLeave();
 		}
+
+		async onDestroy(): Promise<void> {
+			stateBSpy.onDestroy();
+		}
 	}
 
 	@Injectable({ autobind: false })
@@ -77,6 +85,10 @@ describe('Template Registry', () => {
 
 		async onLeave(): Promise<void> {
 			stateSharedSpy.onLeave();
+		}
+
+		async onDestroy(): Promise<void> {
+			stateSharedSpy.onDestroy();
 		}
 	}
 
@@ -103,6 +115,13 @@ describe('Template Registry', () => {
 		]);
 		instance.init('mock', {} as any);
 		expect(() => instance.init('mock', {} as any)).to.throw('Template mock is already initialized');
+	});
+
+	it('should work with nested template dependencies', () => {
+		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
+			[[AdditionalDependency]],
+		]);
+		instance.init('mock', {} as any);
 	});
 
 	it('should throw without providing template dependencies', () => {
@@ -159,6 +178,29 @@ describe('Template Registry', () => {
 			assert(additionalDepsSpy.calledTwice);
 			assert(stateBSpy.constructor.calledTwice);
 			assert(stateSharedSpy.constructor.callCount === 4);
+		});
+
+		it('should destroy all machines on destroyAll', async () => {
+			instance.init(templateName1, templateSlot1, templateParams1);
+
+			await instance.destroyAll();
+
+			assert(stateASpy.onLeave.callCount);
+			assert(stateBSpy.onLeave.notCalled);
+			assert(stateSharedSpy.onLeave.calledOnce);
+			assert(stateASpy.onDestroy.calledOnce);
+			assert(stateBSpy.onDestroy.calledOnce);
+			assert(stateSharedSpy.onDestroy.calledTwice);
+			sandbox.assert.callOrder(
+				stateASpy.onLeave,
+				stateSharedSpy.onLeave,
+				stateASpy.onDestroy,
+				stateSharedSpy.onDestroy,
+				stateBSpy.onDestroy,
+				stateSharedSpy.onDestroy,
+			);
+
+			instance.init(templateName1, templateSlot1, templateParams1);
 		});
 
 		it('should throw then trying get deps after init', () => {

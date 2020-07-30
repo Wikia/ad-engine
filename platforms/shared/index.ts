@@ -37,6 +37,7 @@ export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './context/wiki/ucp-wiki-context.setup';
+export * from './templates/configs/uap-dom-elements';
 export * from './templates/handlers/advertisement-label-handler';
 export * from './templates/handlers/close-to-hidden-ihi-button-handler';
 export * from './templates/handlers/close-to-hidden-button-handler';
