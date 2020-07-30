@@ -1,4 +1,5 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
+import { flattenDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';
@@ -15,6 +16,8 @@ interface TemplateMachinePayload<
 	templateDependencies: TemplateDependency[];
 	emitter$: Subject<TemplateAction>;
 }
+
+type TemplateDependencies = (TemplateDependency | TemplateDependencies)[];
 
 @Injectable()
 export class TemplateRegistry {
@@ -34,18 +37,23 @@ export class TemplateRegistry {
 		templateName: string,
 		StateHandlerTypesDict: T,
 		initialStateKey: keyof T,
-		templateDependencies: TemplateDependency[] = [],
+		templateDependencies: TemplateDependencies = [],
 	): Observable<TemplateAction> {
 		const emitter$ = new Subject<TemplateAction>();
 
 		this.settings.set(templateName, {
 			StateHandlerTypesDict,
 			initialStateKey,
-			templateDependencies,
 			emitter$,
+			templateDependencies: flattenDeep<TemplateDependency>(templateDependencies),
 		});
 
 		return emitter$.asObservable();
+	}
+
+	async destroyAll(): Promise<void> {
+		await Promise.all(Array.from(this.machines.values()).map((machine) => machine.destroy()));
+		this.machines.clear();
 	}
 
 	init(templateName: string, templateSlot: AdSlot, templateParams: Dictionary = {}): void {
@@ -59,8 +67,8 @@ export class TemplateRegistry {
 		const {
 			StateHandlerTypesDict,
 			initialStateKey,
-			templateDependencies,
 			emitter$,
+			templateDependencies,
 		} = this.settings.get(templateName);
 
 		this.dependenciesManager.provideDependencies(

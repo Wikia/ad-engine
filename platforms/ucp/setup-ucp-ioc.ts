@@ -3,10 +3,7 @@ import {
 	bidderTrackingMiddleware,
 	context,
 	DiProcess,
-	FOOTER,
 	InstantConfigService,
-	NAVBAR,
-	PAGE,
 	slotBiddersTrackingMiddleware,
 	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
@@ -25,9 +22,6 @@ export class UcpIocSetup implements DiProcess {
 
 		this.container.bind(InstantConfigService).value(await InstantConfigService.init());
 		this.container.bind(UcpTargetingSetup.skin('oasis'));
-		this.container.bind(NAVBAR).value(document.querySelector('.wds-global-navigation-wrapper'));
-		this.container.bind(FOOTER).value(document.querySelector('.wds-global-footer'));
-		this.container.bind(PAGE).value(document.body);
 
 		TrackingSetup.provideMiddlewares({
 			slotTrackingMiddlewares: [

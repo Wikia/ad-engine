@@ -110,6 +110,7 @@ export class CurseSlotsContextSetup implements SlotsContextSetup {
 				insertBeforeSelector: '#mw-content-text > .mw-parser-output > h2',
 				insertBelowFirstViewport: true,
 				targeting: {
+					pos: ['outstream'],
 					loc: 'middle',
 					rv: 1,
 				},

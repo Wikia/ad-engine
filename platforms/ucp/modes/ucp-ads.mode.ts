@@ -1,5 +1,6 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	bidders,
 	billTheLizard,
 	communicationService,
@@ -73,6 +74,7 @@ export class UcpAdsMode implements AdsMode {
 
 		facebookPixel.call();
 		permutive.call();
+		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();

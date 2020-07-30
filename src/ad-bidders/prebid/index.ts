@@ -13,7 +13,6 @@ import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Cmp, cmp } from '../wrappers';
 import { adaptersRegistry } from './adapters-registry';
-import { identityLibrary } from './identity-library';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
@@ -239,7 +238,6 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		const pbjs: Pbjs = await pbjsFactory.init();
-		await identityLibrary.call();
 
 		pbjs.requestBids({
 			adUnits,

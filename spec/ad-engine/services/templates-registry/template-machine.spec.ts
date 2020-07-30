@@ -16,7 +16,10 @@ describe('Template Machine', () => {
 		stateB = createTemplateStateStub(sandbox);
 		machine = new TemplateMachine(
 			'mock-template',
-			new Map([['a', stateA], ['b', stateB]]) as any,
+			new Map([
+				['a', stateA],
+				['b', stateB],
+			]) as any,
 			'a',
 			new Subject<TemplateAction>(),
 		);
@@ -38,6 +41,17 @@ describe('Template Machine', () => {
 		assert(!stateA.leave.called);
 		assert(!stateB.enter.called);
 		assert(!stateB.leave.called);
+	});
+
+	it('should leave current state and then destroy all', async () => {
+		await machine.init();
+		await machine.destroy();
+
+		assert(stateA.leave.called);
+		assert(!stateB.leave.called);
+		assert(stateA.destroy.called);
+		assert(stateB.destroy.called);
+		sandbox.assert.callOrder(stateA.leave, stateA.destroy, stateB.destroy);
 	});
 
 	it('should respond to transition', async () => {

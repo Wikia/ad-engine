@@ -1,5 +1,11 @@
 import { slotsContext, SlotsStateSetup } from '@platforms/shared';
-import { AdSlot, context, InstantConfigService, slotService } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	context,
+	InstantConfigService,
+	slotDataParamsUpdater,
+	slotService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -20,9 +26,18 @@ export class UcpSlotsStateSetup implements SlotsStateSetup {
 		if (context.get('services.distroScale.enabled')) {
 			// It is required to *collapse* ICP for DistroScale
 			// TODO: clean up once we finish DS A/B test
-			slotsContext.setState('incontent_player', false, AdSlot.STATUS_COLLAPSE);
+			this.setupIncontentPlayerForDistroScale();
 		} else {
 			slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 		}
+	}
+
+	private setupIncontentPlayerForDistroScale(): void {
+		const slotName = 'incontent_player';
+
+		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
+		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
+			slotDataParamsUpdater.updateOnCreate(slotService.get(slotName));
+		});
 	}
 }

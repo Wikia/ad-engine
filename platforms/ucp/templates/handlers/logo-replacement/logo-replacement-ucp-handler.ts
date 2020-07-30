@@ -35,6 +35,4 @@ export class LogoReplacementUcpHandler implements TemplateStateHandler {
 			}
 		}, 1000);
 	}
-
-	async onLeave(): Promise<void> {}
 }

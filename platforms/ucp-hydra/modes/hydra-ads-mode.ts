@@ -1,5 +1,6 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	bidders,
 	confiant,
 	context,
@@ -49,6 +50,7 @@ export class HydraAdsMode implements AdsMode {
 
 		facebookPixel.call();
 		permutive.call();
+		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();

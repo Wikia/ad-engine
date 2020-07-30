@@ -24,6 +24,4 @@ export class BfaaOasisConfigHandler implements TemplateStateHandler {
 		context.set('slots.bottom_leaderboard.sizes', []);
 		context.set('slots.bottom_leaderboard.defaultSizes', [[3, 3]]);
 	}
-
-	async onLeave(): Promise<void> {}
 }

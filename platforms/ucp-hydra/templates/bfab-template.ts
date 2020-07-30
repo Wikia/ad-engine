@@ -18,6 +18,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { registerUcpHydraUapDomElements } from './configs/register-ucp-hydra-uap-dom-elements';
 
 export function registerBfabTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -38,6 +39,14 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			resolved: [SlotSizeResolvedHandler, VideoSizeResolvedHandler, DomCleanupHandler],
 		},
 		'initial',
-		[PlayerRegistry, DomManipulator, UapDomManager, UapDomReader, VideoDomReader, VideoDomManager],
+		[
+			PlayerRegistry,
+			DomManipulator,
+			UapDomManager,
+			UapDomReader,
+			VideoDomReader,
+			VideoDomManager,
+			registerUcpHydraUapDomElements(),
+		],
 	);
 }

@@ -1,5 +1,6 @@
 import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	context,
 	iasPublisherOptimization,
 	JWPlayerManager,
@@ -36,6 +37,7 @@ export class F2AdsMode implements AdsMode {
 		inhibitors.push(wadRunner.call());
 
 		permutive.call();
+		audigent.call();
 		iasPublisherOptimization.call();
 		nielsen.call({
 			type: 'static',

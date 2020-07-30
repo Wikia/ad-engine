@@ -33,6 +33,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { registerF2UapDomElements } from './configs/register-f2-uap-dom-elements';
 import { BfaaF2ConfigHandler } from './handlers/bfaa/bfaa-f2-config-handler';
 import { HideSmartBannerHandler } from './handlers/hide-smart-banner-handler';
 
@@ -96,6 +97,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			VideoDomManager,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+			registerF2UapDomElements(),
 		],
 	);
 }

@@ -36,6 +36,4 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 			this.f2Env.siteType === 'app' ? [[2, 2]] : [[3, 3]],
 		);
 	}
-
-	async onLeave(): Promise<void> {}
 }

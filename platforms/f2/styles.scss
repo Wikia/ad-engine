@@ -85,7 +85,14 @@
 		#hivi_leaderboard,
 		#bottom_leaderboard {
 			@include uap-porvata();
-			@include uap-porvata-right-position();
+
+			html.desktop & {
+				@include uap-porvata-right-position();
+			}
+
+			html.mobile & {
+				@include uap-porvata-learn-more();
+			}
 
 			@include uap-advertisement-label();
 			@include uap-button-close();
