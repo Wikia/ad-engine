@@ -1,6 +1,5 @@
 import {
 	AdSlot,
-	NAVBAR,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -10,6 +9,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { NAVBAR } from '../../configs/uap-dom-elements';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { UapDomReader } from '../../helpers/uap-dom-reader';

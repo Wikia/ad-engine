@@ -2,7 +2,10 @@ import { TemplateTransition } from '@wikia/ad-engine';
 import { TemplateState } from '@wikia/ad-engine/services/templates-registry/template-state';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
-import { createTemplateStateHandlerStub } from './template-state-handler.stub';
+import {
+	createMinimalTemplateStateHandlerStub,
+	createTemplateStateHandlerStub,
+} from './template-state-handler.stub';
 
 describe('Template State', () => {
 	const sandbox = createSandbox();
@@ -19,19 +22,30 @@ describe('Template State', () => {
 	it('should transition to and from a state', () => {
 		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
 		const handlerStub2 = createTemplateStateHandlerStub(sandbox);
-		const instance = new TemplateState('mock', [handlerStub1, handlerStub2]);
+		const handlerStub3 = createMinimalTemplateStateHandlerStub(sandbox);
+		const instance = new TemplateState('mock', [handlerStub1, handlerStub2, handlerStub3]);
 
 		instance.enter(templateTransitionStub);
 		assert(handlerStub1.onEnter.calledOnce);
 		assert(handlerStub2.onEnter.calledOnce);
+		assert(handlerStub3.onEnter.calledOnce);
 		assert(handlerStub1.onLeave.callCount === 0);
 		assert(handlerStub2.onLeave.callCount === 0);
 
 		instance.leave();
 		assert(handlerStub1.onEnter.calledOnce);
 		assert(handlerStub2.onEnter.calledOnce);
+		assert(handlerStub3.onEnter.calledOnce);
 		assert(handlerStub1.onLeave.calledOnce);
 		assert(handlerStub2.onLeave.calledOnce);
+	});
+
+	it('should destroy', async () => {
+		const handlerStub1 = createTemplateStateHandlerStub(sandbox);
+		const instance = new TemplateState('mock', [handlerStub1]);
+
+		await instance.destroy();
+		assert(handlerStub1.onDestroy.calledOnce, 'Should destroy state');
 	});
 
 	it('should transition out of a state', async () => {

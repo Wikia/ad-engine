@@ -34,6 +34,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { registerUcpMinervaUapDomElements } from './configs/register-ucp-minerva-uap-dom-elements';
 import { BfaaMinervaConfigHandler } from './handlers/bfaa/bfaa-minerva-config-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
@@ -96,6 +97,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			VideoDomManager,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+			registerUcpMinervaUapDomElements(),
 		],
 	);
 }

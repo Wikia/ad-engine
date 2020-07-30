@@ -1,5 +1,6 @@
 import { AdsMode, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	bidders,
 	confiant,
 	context,
@@ -34,6 +35,7 @@ export class GamepediaAdsMode implements AdsMode {
 
 		facebookPixel.call();
 		permutive.call();
+		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();

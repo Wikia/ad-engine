@@ -1,4 +1,5 @@
 import {
+	audigent,
 	bidders,
 	confiant,
 	context,
@@ -26,6 +27,7 @@ export class SportsAdsMode implements AdsMode {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
 
+		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();

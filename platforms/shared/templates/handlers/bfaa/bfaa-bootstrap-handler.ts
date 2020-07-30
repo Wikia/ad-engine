@@ -22,6 +22,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('bfaa-template');
+		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.adSlot.getAdContainer().classList.add('iframe-container');
 		this.ensureImage();
 
@@ -51,5 +52,9 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 	async onLeave(): Promise<void> {
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
+	}
+
+	async onDestroy(): Promise<void> {
+		document.body.classList.remove('has-uap');
 	}
 }

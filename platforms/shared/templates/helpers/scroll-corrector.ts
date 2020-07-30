@@ -1,5 +1,5 @@
-import { FOOTER } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { FOOTER } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class ScrollCorrector {

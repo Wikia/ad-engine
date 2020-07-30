@@ -152,6 +152,5 @@ class Bidders {
 
 export const bidders = new Bidders();
 
-export * from './prebid/identity-library';
 export * from './tracking';
 export * from './wrappers';

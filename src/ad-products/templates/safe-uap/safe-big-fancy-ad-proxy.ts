@@ -1,4 +1,11 @@
-import { AdSlot, btfBlockerService, context, templateService, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	btfBlockerService,
+	context,
+	slotService,
+	templateService,
+	utils,
+} from '@ad-engine/core';
 import { UapConfig, universalAdPackage } from '../uap';
 import { FanTakeoverCampaignConfig } from './safe-fan-takeover-element';
 
@@ -23,6 +30,10 @@ export class SafeBigFancyAdProxy {
 		this.initTemplate(isFirstCall);
 
 		if (isFirstCall) {
+			slotService.getNonFirstCallSlotNames().forEach((slotName) => {
+				context.set(`slots.${slotName}.targeting.src`, 'uap');
+			});
+
 			btfBlockerService.finishFirstCall();
 		}
 	}

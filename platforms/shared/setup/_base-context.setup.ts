@@ -79,6 +79,10 @@ export class BaseContextSetup {
 			'options.video.moatTracking.enabledForArticleVideos',
 			this.instantConfig.get('icFeaturedVideoMoatTracking'),
 		);
+		context.set(
+			'options.video.comscoreJwpTracking',
+			this.instantConfig.get('icComscoreJwpTracking'),
+		);
 
 		this.setWadContext();
 	}
@@ -98,6 +102,7 @@ export class BaseContextSetup {
 	private setServicesContext(): void {
 		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
+		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
@@ -122,7 +127,6 @@ export class BaseContextSetup {
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
-		context.set('bidders.ixIdentityLibrary.enabled', this.instantConfig.get('icIxIdentityLibrary'));
 
 		context.set(
 			'templates.safeFanTakeoverElement.lineItemIds',
