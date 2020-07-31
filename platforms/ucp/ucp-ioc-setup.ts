@@ -2,7 +2,6 @@ import { TrackingSetup, UcpTargetingSetup } from '@platforms/shared';
 import {
 	bidderTrackingMiddleware,
 	DiProcess,
-	InstantConfigService,
 	slotBiddersTrackingMiddleware,
 	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
@@ -14,8 +13,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 export class UcpIocSetup implements DiProcess {
 	constructor(private container: Container) {}
 
-	async execute(): Promise<void> {
-		this.container.bind(InstantConfigService).value(await InstantConfigService.init());
+	execute(): void {
 		this.container.bind(UcpTargetingSetup.skin('oasis'));
 
 		TrackingSetup.provideMiddlewares({

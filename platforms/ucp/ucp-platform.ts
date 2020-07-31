@@ -3,6 +3,7 @@ import {
 	AdEngineRunnerSetup,
 	bootstrapAndGetConsent,
 	CommonBiddersStateSetup,
+	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
 	TrackingSetup,
@@ -38,7 +39,8 @@ export class UcpPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			parallel(UcpIocSetup, () => bootstrapAndGetConsent()),
+			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			UcpIocSetup,
 			UcpWikiContextSetup,
 			() => context.set('state.isMobile', false),
 			UcpBaseContextSetup,
