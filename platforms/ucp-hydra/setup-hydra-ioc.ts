@@ -22,15 +22,12 @@ import {
 } from '@platforms/shared';
 import {
 	bidderTrackingMiddleware,
-	context,
 	InstantConfigService,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
-import { set } from 'lodash';
-import * as fallbackInstantConfig from './fallback-config.json';
 import { HydraAdsMode } from './modes/hydra-ads-mode';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
 import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup';
@@ -40,7 +37,6 @@ import { UcpHydraTemplatesSetup } from './templates/ucp-hydra-templates.setup';
 export async function setupHydraIoc(): Promise<Container> {
 	const container = new Container();
 
-	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);

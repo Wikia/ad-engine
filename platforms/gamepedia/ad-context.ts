@@ -1,3 +1,5 @@
+import fallbackInstantConfig from './fallback-config.json';
+
 export const basicContext = {
 	adUnitId:
 		'/{custom.dfpId}/gamepedia/{slotConfig.group}/{state.deviceType}/' +
@@ -102,7 +104,7 @@ export const basicContext = {
 		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=gamepedia',
-			fallbackConfigKey: 'fallbackInstantConfig',
+			fallback: fallbackInstantConfig,
 		},
 		taxonomy: {
 			enabled: false,

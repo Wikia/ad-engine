@@ -22,15 +22,12 @@ import {
 } from '@platforms/shared';
 import {
 	bidderTrackingMiddleware,
-	context,
 	InstantConfigService,
 	slotBiddersTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
-import { set } from 'lodash';
-import * as fallbackInstantConfig from './fallback-config.json';
 import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
 import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup';
@@ -40,7 +37,6 @@ import { UcpMinervaTemplatesSetup } from './templates/ucp-minerva-templates.setu
 export async function setupMinervaIoc(): Promise<Container> {
 	const container = new Container();
 
-	set(window, context.get('services.instantConfig.fallbackConfigKey'), fallbackInstantConfig);
 	container.bind(InstantConfigService as any).value(await InstantConfigService.init());
 	container.bind(BaseContextSetup).to(UcpBaseContextSetup);
 	container.bind(WikiContextSetup).to(UcpWikiContextSetup);
