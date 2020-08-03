@@ -6,7 +6,6 @@ import {
 	communicationService,
 	confiant,
 	context,
-	distroScale,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -78,7 +77,6 @@ export class UcpAdsMode implements AdsMode {
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();
-		distroScale.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
