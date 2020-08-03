@@ -14,7 +14,7 @@ import { PrebidConfigSetup } from '../../setup/_prebid-config.setup';
 
 @Injectable()
 export class UcpGamepediaPrebidConfigSetup implements PrebidConfigSetup {
-	configurePrebidContext(): void {
+	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 
 		context.set('bidders.prebid.appnexus', getGamepediaAppNexusContext(mode));

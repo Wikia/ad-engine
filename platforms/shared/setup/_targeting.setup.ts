@@ -5,5 +5,5 @@ export class TargetingSetup {
 		iocDefaultWarning('TargetingSetup');
 	}
 
-	configureTargetingContext(): void {}
+	execute(): void {}
 }

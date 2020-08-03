@@ -1,7 +1,7 @@
 import { context } from '@wikia/ad-engine';
 
 export class WikiContextSetup {
-	configureWikiContext(): void {
+	execute(): void {
 		const wikiContext = {
 			beaconId: window.beaconId || window.beacon_id,
 			pvNumber: window.pvNumber,

@@ -5,5 +5,5 @@ export class A9ConfigSetup {
 		iocDefaultWarning('A9ConfigSetup');
 	}
 
-	configureA9Context(): void {}
+	execute(): void {}
 }

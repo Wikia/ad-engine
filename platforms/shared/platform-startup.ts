@@ -1,4 +1,4 @@
-import { globalAction } from '@wikia/ad-engine';
+import { context, globalAction } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { AdsMode } from './modes/ads/_ads.mode';
 import { NoAdsMode } from './modes/no-ads/_no-ads.mode';
@@ -47,27 +47,28 @@ export class PlatformStartup {
 	) {}
 
 	configure(args: PlatformStartupArgs): void {
-		this.wikiContextSetup.configureWikiContext();
-		this.baseContextSetup.configureBaseContext(args.isMobile);
-		this.slotsContextSetup.configureSlotsContext();
-		this.targetingSetup.configureTargetingContext();
-		this.prebidConfigSetup.configurePrebidContext();
-		this.a9ConfigSetup.configureA9Context();
-		this.dynamicSlotsSetup.configureDynamicSlots();
-		this.slotsStateSetup.configureSlotsState();
-		this.biddersStateSetup.configureBiddersState();
-		this.templatesSetup.configureTemplates();
-		this.billTheLizardSetup.configure();
-		this.labradorSetup.configure();
-		this.trackingSetup.configureTracking();
-		this.adEngineRunnerSetup.configureAdEngineRunner();
+		this.wikiContextSetup.execute();
+		context.set('state.isMobile', args.isMobile || false);
+		this.baseContextSetup.execute();
+		this.slotsContextSetup.execute();
+		this.targetingSetup.execute();
+		this.prebidConfigSetup.execute();
+		this.a9ConfigSetup.execute();
+		this.dynamicSlotsSetup.execute();
+		this.slotsStateSetup.execute();
+		this.biddersStateSetup.execute();
+		this.templatesSetup.execute();
+		this.billTheLizardSetup.execute();
+		this.labradorSetup.execute();
+		this.trackingSetup.execute();
+		this.adEngineRunnerSetup.execute();
 	}
 
 	run(): void {
 		if (this.noAdsDetector.isAdsMode()) {
-			this.adsMode.handleAds();
+			this.adsMode.execute();
 		} else {
-			this.noAdsMode.handleNoAds();
+			this.noAdsMode.execute();
 		}
 	}
 }

@@ -16,7 +16,7 @@ import { editModeManager } from '../utils/edit-mode-manager';
 
 @Injectable()
 export class GamepediaAdsMode implements AdsMode {
-	handleAds(): void {
+	execute(): void {
 		editModeManager.onActivate(() => hideAllAdSlots());
 
 		const inhibitors = this.callExternals();

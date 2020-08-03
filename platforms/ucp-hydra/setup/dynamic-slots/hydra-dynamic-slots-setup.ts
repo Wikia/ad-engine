@@ -13,7 +13,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	constructor(private noAdsDetector: NoAdsDetector) {}
 
-	configureDynamicSlots(): void {
+	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
 	}

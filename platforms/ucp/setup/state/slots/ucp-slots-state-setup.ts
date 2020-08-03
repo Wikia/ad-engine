@@ -12,7 +12,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpSlotsStateSetup implements SlotsStateSetup {
 	constructor(private instantConfig: InstantConfigService) {}
 
-	configureSlotsState(): void {
+	execute(): void {
 		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', true);

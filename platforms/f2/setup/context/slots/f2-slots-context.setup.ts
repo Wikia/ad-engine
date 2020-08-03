@@ -4,7 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class F2SlotsContextSetup implements SlotsContextSetup {
-	configureSlotsContext(): void {
+	execute(): void {
 		const slots = {
 			top_leaderboard: {
 				group: 'LB',

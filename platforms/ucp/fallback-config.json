@@ -626,7 +626,8 @@
                 "5411280632",
                 "5411350733",
                 "5410210521",
-                "5428434937"
+                "5428434937",
+                "5437018947"
             ]
         }
     ],
@@ -882,18 +883,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icIxIdentityLibrary": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "value": false
         }
     ],
     "icIASVideoTracking": [

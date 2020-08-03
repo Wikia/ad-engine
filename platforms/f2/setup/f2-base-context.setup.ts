@@ -16,8 +16,8 @@ export class F2BaseContextSetup extends BaseContextSetup {
 		super(instantConfig, noAdsDetector);
 	}
 
-	configureBaseContext(isMobile: boolean = false): void {
-		super.configureBaseContext(isMobile);
+	execute(): void {
+		super.execute();
 
 		if (this.f2State.article?.isArticlePlus) {
 			this.noAdsDetector.addReason('article_plus');

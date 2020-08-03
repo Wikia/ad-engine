@@ -20,7 +20,7 @@ import { v4 as uuid } from 'uuid';
 export class MinervaAdsMode implements AdsMode {
 	constructor(private pageTracker: PageTracker) {}
 
-	handleAds(): void {
+	execute(): void {
 		const inhibitors = this.callExternals();
 
 		startAdEngine(inhibitors);

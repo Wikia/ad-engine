@@ -5,5 +5,5 @@ export class DynamicSlotsSetup {
 		iocDefaultWarning('DynamicSlotsSetup');
 	}
 
-	configureDynamicSlots(): void {}
+	execute(): void {}
 }

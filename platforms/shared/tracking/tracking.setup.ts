@@ -59,7 +59,7 @@ export class TrackingSetup {
 		private bidderTrackingMiddlewares: FuncPipelineStep<AdBidderContext>[],
 	) {}
 
-	configureTracking(): void {
+	execute(): void {
 		this.porvataTracker();
 		this.slotTracker();
 		this.viewabilityTracker();

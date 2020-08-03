@@ -5,5 +5,5 @@ export class TemplatesSetup {
 		iocDefaultWarning('TemplatesSetup');
 	}
 
-	configureTemplates(): void {}
+	execute(): void {}
 }

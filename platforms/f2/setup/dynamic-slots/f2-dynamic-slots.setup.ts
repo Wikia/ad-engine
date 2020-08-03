@@ -20,7 +20,7 @@ export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
 		private slotsDefinitionRepository: F2SlotsDefinitionRepository,
 	) {}
 
-	configureDynamicSlots(): void {
+	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
 	}

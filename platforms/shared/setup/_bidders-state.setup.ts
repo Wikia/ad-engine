@@ -5,5 +5,5 @@ export class BiddersStateSetup {
 		iocDefaultWarning('BiddersStateSetup');
 	}
 
-	configureBiddersState(): void {}
+	execute(): void {}
 }

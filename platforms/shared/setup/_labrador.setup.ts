@@ -5,7 +5,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class LabradorSetup {
 	constructor(protected instantConfig: InstantConfigService) {}
 
-	configure(): void {
+	execute(): void {
 		const cacheStorage = InstantConfigCacheStorage.make();
 		// Need to be placed always after all lABrador icVars checks
 		context.set(

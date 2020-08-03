@@ -198,7 +198,12 @@ class TrackingOptInWrapper {
 			});
 
 		communicationService.action$.pipe(ofType(setOptIn), take(1)).subscribe((consents) => {
-			window.ads.consentQueue.onItemFlush((callback) => callback(consents));
+			window.ads.consentQueue.onItemFlush((callback) => {
+				console.warn(
+					`[AdEngine] You are using deprecated API to get consent.\nPlease use PostQuecast action "[AdEngine OptIn] set opt in" instead.`,
+				);
+				callback(consents);
+			});
 			window.ads.consentQueue.flush();
 		});
 	}

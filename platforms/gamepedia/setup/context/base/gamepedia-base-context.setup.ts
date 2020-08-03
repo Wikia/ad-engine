@@ -4,8 +4,8 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class GamepediaBaseContextSetup extends BaseContextSetup {
-	configureBaseContext(isMobile = false): void {
-		super.configureBaseContext(isMobile);
+	execute(): void {
+		super.execute();
 		this.disableAdsIfNoAdsPage();
 	}
 

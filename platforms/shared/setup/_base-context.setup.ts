@@ -17,8 +17,8 @@ export class BaseContextSetup {
 		protected noAdsDetector: NoAdsDetector,
 	) {}
 
-	configureBaseContext(isMobile = false): void {
-		this.setBaseState(isMobile);
+	execute(): void {
+		this.setBaseState();
 		this.setOptionsContext();
 		this.setServicesContext();
 		this.setMiscContext();
@@ -28,7 +28,7 @@ export class BaseContextSetup {
 		setupRdpContext();
 	}
 
-	private setBaseState(isMobile: boolean): void {
+	private setBaseState(): void {
 		if (context.get('wiki.opts.showAds') === false) {
 			this.noAdsDetector.addReason('show_ads_false');
 		}
@@ -42,7 +42,6 @@ export class BaseContextSetup {
 			this.noAdsDetector.addReason('noads_querystring');
 		}
 
-		context.set('state.isMobile', isMobile);
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}

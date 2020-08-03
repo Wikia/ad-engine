@@ -13,7 +13,7 @@ import { Injectable } from '@wikia/dependency-injection';
 export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
 	constructor(private uapSetup: CurseUapSetup, private instantConfig: InstantConfigService) {}
 
-	configureDynamicSlots(): void {
+	execute(): void {
 		if (this.isUapAllowed()) {
 			this.uapSetup.configureUap();
 		}

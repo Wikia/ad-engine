@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class MinervaSlotsStateSetup implements SlotsStateSetup {
-	configureSlotsState(): void {
+	execute(): void {
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', true);
 		slotsContext.setState('incontent_boxad_1', true);

@@ -20,7 +20,7 @@ export class F2TargetingSetup implements TargetingSetup {
 		private cacheStorage: InstantConfigCacheStorage,
 	) {}
 
-	configureTargetingContext(): void {
+	execute(): void {
 		const targeting = this.getPageLevelTargeting();
 
 		Object.keys(targeting).forEach((key) => {

@@ -8,7 +8,7 @@ import { NoAdsMode } from './_no-ads.mode';
 export class UcpNoAdsMode implements NoAdsMode {
 	constructor(private pageTracker: PageTracker, private noAdsDetector: NoAdsDetector) {}
 
-	handleNoAds(): void {
+	execute(): void {
 		this.dispatchJWPlayerSetupAction();
 		this.trackAdEngineStatus();
 	}

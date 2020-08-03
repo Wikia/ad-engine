@@ -7,5 +7,5 @@ export class NoAdsMode {
 		iocDefaultWarning('NoAdsMode');
 	}
 
-	handleNoAds(): void {}
+	execute(): void {}
 }

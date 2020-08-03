@@ -4,7 +4,7 @@ import { SlotsContextSetup } from '../../setup/_slots-context.setup';
 
 @Injectable()
 export class CurseSlotsContextSetup implements SlotsContextSetup {
-	configureSlotsContext(): void {
+	execute(): void {
 		const slots = {
 			'cdm-zone-01': {
 				aboveTheFold: true,

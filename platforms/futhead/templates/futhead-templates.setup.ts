@@ -5,7 +5,7 @@ import { LogoReplacement } from './logo-replacement/logo-replacement-futhead-tem
 
 @Injectable()
 export class FutheadTemplatesSetup implements TemplatesSetup {
-	configureTemplates(): void {
+	execute(): void {
 		templateService.register(BigFancyAdAbove, getBfaaConfig());
 		templateService.register(BigFancyAdBelow, getBfabConfig());
 		templateService.register(LogoReplacement);

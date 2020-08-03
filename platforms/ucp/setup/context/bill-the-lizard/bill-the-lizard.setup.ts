@@ -23,7 +23,7 @@ interface BillTheLizardConfig {
 export class UcpBillTheLizardSetup implements BillTheLizardSetup {
 	constructor(private instantConfig: InstantConfigService, private pageTracker: PageTracker) {}
 
-	configure(): void {
+	execute(): void {
 		const config: BillTheLizardConfig = this.instantConfig.get('wgAdDriverBillTheLizardConfig', {});
 		const now = new Date();
 

@@ -5,5 +5,5 @@ export class BillTheLizardSetup {
 		iocDefaultWarning('BillTheLizardSetup');
 	}
 
-	configure(): void {}
+	execute(): void {}
 }

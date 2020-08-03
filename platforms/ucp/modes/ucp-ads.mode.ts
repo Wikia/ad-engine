@@ -24,7 +24,7 @@ import { v4 as uuid } from 'uuid';
 export class UcpAdsMode implements AdsMode {
 	constructor(private pageTracker: PageTracker) {}
 
-	handleAds(): void {
+	execute(): void {
 		const inhibitors = this.callExternals();
 
 		this.setupJWPlayer(inhibitors);

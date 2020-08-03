@@ -7,5 +7,5 @@ export class AdsMode {
 		iocDefaultWarning('AdsMode');
 	}
 
-	handleAds(): void {}
+	execute(): void {}
 }

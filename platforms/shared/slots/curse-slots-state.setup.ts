@@ -5,7 +5,7 @@ import { slotsContext } from './slots-context';
 
 @Injectable()
 export class CurseSlotsStateSetup implements SlotsStateSetup {
-	configureSlotsState(): void {
+	execute(): void {
 		slotsContext.setState('cdm-zone-01', true);
 		slotsContext.setState('cdm-zone-02', true);
 		slotsContext.setState('cdm-zone-03', true);

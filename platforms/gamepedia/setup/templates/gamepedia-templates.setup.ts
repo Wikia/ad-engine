@@ -15,7 +15,7 @@ import { getRoadblockConfig } from '../../templates/roadblock-config';
 
 @Injectable()
 export class GamepediaTemplatesSetup implements TemplatesSetup {
-	configureTemplates(): void {
+	execute(): void {
 		templateService.register(
 			BigFancyAdAbove,
 			context.get('state.isMobile') ? getBfaaConfigMobile() : getBfaaConfigDesktop(),
