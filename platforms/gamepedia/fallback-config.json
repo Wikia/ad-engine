@@ -178,7 +178,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 10.0,
             "value": true
         }
     ],
@@ -374,22 +373,6 @@
             "value": true
         }
     ],
-    "icTcf2Enabled": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icPrebid": [
         {
             "apps": [
@@ -421,22 +404,6 @@
         }
     ],
     "icSlotTracking": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icTcf1Disabled": [
         {
             "apps": [
                 "f2",
