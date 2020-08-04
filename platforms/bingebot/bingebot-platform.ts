@@ -13,8 +13,7 @@ export class BingeBotPlatform {
 	execute(): void {
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			parallel(BingeBotIocSetup),
-			() => bootstrapAndGetConsent(),
+			parallel(BingeBotIocSetup, () => bootstrapAndGetConsent()),
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,
 			BingeBotSlotsStateSetup,
