@@ -9,11 +9,13 @@ export class BingeBotSlotsContextSetup implements SlotsContextSetup {
 	execute(): void {
 		const slots = {
 			sponsored_logo: {
+				adProduct: 'sponsored-logo',
 				group: 'PX',
 				insertBeforeSelector: '',
 				outOfPage: true,
+				slotNameSuffix: '',
 				targeting: {
-					pos: ['---TBD---'],
+					pos: ['sponsored_logo'],
 				},
 			},
 		};
