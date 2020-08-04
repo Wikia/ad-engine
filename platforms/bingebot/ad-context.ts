@@ -11,10 +11,4 @@ export const basicContext = {
 	targeting: {
 		skin: 'bingebot',
 	},
-	services: {
-		instantConfig: {
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=bingebot',
-			fallbackConfigKey: 'fallbackInstantConfig',
-		},
-	},
 };
