@@ -1,5 +1,4 @@
 import { context, utils } from '@ad-engine/core';
-import { get } from 'lodash';
 import { InstantConfigResponse } from './instant-config.models';
 
 const logGroup = 'instant-config-loader';
@@ -18,9 +17,7 @@ class InstantConfigLoader {
 	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
 		const request = new XMLHttpRequest();
 		const url = context.get('services.instantConfig.endpoint');
-		const fallbackConfigKey =
-			context.get('services.instantConfig.fallbackConfigKey') || 'fallbackInstantConfig';
-		const fallbackConfig: InstantConfigResponse = get(window, fallbackConfigKey, {}) as any;
+		const fallbackConfig = context.get('services.instantConfig.fallback') || {};
 
 		request.open('GET', url, true);
 		request.responseType = 'json';

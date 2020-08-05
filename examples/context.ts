@@ -365,7 +365,7 @@ export default {
 		},
 		instantConfig: {
 			endpoint: 'https://services.wikia-dev.pl/icbm/api/config?app=oasis',
-			fallbackConfigKey: 'fallbackConfig',
+			fallback: {},
 		},
 		taxonomy: {
 			enabled: false,

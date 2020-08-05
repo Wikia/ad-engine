@@ -9,6 +9,7 @@ interface Window {
 	) => void;
 	__cmp?: WindowCMP;
 	__iasPET?: IasPet;
+	__tcfapi: WindowTCF;
 	__uspapi?: WindowUSP;
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;

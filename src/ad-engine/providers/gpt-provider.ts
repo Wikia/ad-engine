@@ -4,6 +4,7 @@ import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
+	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -136,9 +137,11 @@ export class GptProvider implements Provider {
 	}
 
 	setupNonPersonalizedAds(): void {
-		const tag = window.googletag.pubads();
+		if (!context.get('custom.tcf2Enabled')) {
+			const tag = window.googletag.pubads();
 
-		tag.setRequestNonPersonalizedAds(trackingOptIn.isOptedIn() ? 0 : 1);
+			tag.setRequestNonPersonalizedAds(trackingOptIn.isOptedIn() ? 0 : 1);
+		}
 	}
 
 	setupRestrictDataProcessing(): void {
