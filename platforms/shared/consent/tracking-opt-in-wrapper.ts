@@ -3,6 +3,7 @@ import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
 interface OptInInstances {
+	icbm: any;
 	gdpr: any;
 	ccpa: any;
 }
@@ -114,7 +115,15 @@ class TrackingOptInWrapper {
 			});
 
 			if (disableConsentQueue) {
-				resolve(optInInstances);
+				// Wait for ICBM response during TCFv2 transition
+				optInInstances.icbm.then(
+					() => {
+						resolve(optInInstances);
+					},
+					() => {
+						resolve(optInInstances);
+					},
+				);
 			}
 		});
 	}
