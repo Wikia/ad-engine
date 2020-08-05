@@ -13,6 +13,7 @@ export * from './services';
 export * from './services/slot-creator';
 export * from './tracking';
 export * from './video';
+export * from './wrappers';
 export * from './pipeline/pipeline';
 export { PipelineAdapter } from './pipeline/pipeline-types';
 export * from './pipeline/imps/universal-pipeline';

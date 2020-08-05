@@ -1,5 +1,7 @@
 import {
 	AdSlot,
+	Cmp,
+	cmp,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
@@ -7,12 +9,14 @@ import {
 	eventService,
 	SlotConfig,
 	slotService,
+	Usp,
+	usp,
 	utils,
 } from '@ad-engine/core';
 import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
-import { Apstag, Cmp, cmp, Usp, usp } from '../wrappers';
+import { Apstag } from '../wrappers';
 import {
 	A9Bid,
 	A9Bids,
@@ -120,7 +124,7 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
-		if (consentData && consentData.consentData) {
+		if (!context.get('custom.tcf2Enabled') && consentData && consentData.consentData) {
 			return {
 				gdpr: {
 					enabled: consentData.gdprApplies,
