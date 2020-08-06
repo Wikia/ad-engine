@@ -2,6 +2,7 @@ import { slotsContext, SlotsStateSetup } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
+	distroScale,
 	InstantConfigService,
 	slotDataParamsUpdater,
 	slotService,
@@ -22,13 +23,12 @@ export class UcpSlotsStateSetup implements SlotsStateSetup {
 		slotsContext.setState('invisible_high_impact_2', !this.instantConfig.get('icFloorAdhesion'));
 
 		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
+		slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 
 		if (context.get('services.distroScale.enabled')) {
 			// It is required to *collapse* ICP for DistroScale
 			// TODO: clean up once we finish DS A/B test
 			this.setupIncontentPlayerForDistroScale();
-		} else {
-			slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 		}
 	}
 
@@ -38,6 +38,7 @@ export class UcpSlotsStateSetup implements SlotsStateSetup {
 		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
 		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
 			slotDataParamsUpdater.updateOnCreate(slotService.get(slotName));
+			distroScale.call();
 		});
 	}
 }

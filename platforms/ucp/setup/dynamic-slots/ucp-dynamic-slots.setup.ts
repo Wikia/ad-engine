@@ -57,7 +57,11 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 
 	private injectIncontentPlayer(): void {
 		if (context.get('custom.hasIncontentPlayer')) {
-			context.push('events.pushOnScroll.ids', 'incontent_player');
+			if (context.get('services.distroScale.enabled')) {
+				context.push('state.adStack', { id: 'incontent_player' });
+			} else {
+				context.push('events.pushOnScroll.ids', 'incontent_player');
+			}
 		}
 	}
 
