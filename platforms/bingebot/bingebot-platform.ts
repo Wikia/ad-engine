@@ -20,6 +20,7 @@ import { basicContext } from './ad-context';
 import { BingeBotIocSetup } from './bingebot-ioc-setup';
 import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
+import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynamic-slots.setup';
 import { BingeBotSlotsStateSetup } from './setup/state/slots/bingebot-slots-state-setup';
 
 @Injectable()
@@ -34,6 +35,7 @@ export class BingeBotPlatform {
 			WikiContextSetup,
 			BaseContextSetup,
 			BingeBotSlotsContextSetup,
+			BingeBotDynamicSlotsSetup,
 			BingeBotSlotsStateSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.dispatch(adEngineConfigured()),
