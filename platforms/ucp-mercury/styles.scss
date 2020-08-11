@@ -1,0 +1,95 @@
+@import 'src/ad-products/styles/mixin';
+@import 'platforms/shared/styles/index';
+@import 'src/ad-products/styles/porvata';
+
+@mixin ucp-oasis-uap-styles() {
+	.wds-global-navigation-wrapper {
+		@include uap-navbar();
+	}
+
+	#globalNavigation {
+		position: static;
+	}
+
+	.has-uap {
+		.WikiaSiteWrapper {
+			margin-top: 0;
+		}
+
+		#top_leaderboard,
+		#hivi_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		#top_leaderboard,
+		#hivi_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-right-position();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
+	@include interstitial();
+}
+
+@include ucp-oasis-uap-styles();
+@include out-of-page-styles();
+@include logo-replacement(55px);
+
+// #######################################
+
+.gpt-ad {
+	text-align: center;
+
+	&.hide,
+	& .hide {
+		display: none !important;
+	}
+
+	& > div > iframe {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+.main-page-tag-rcs {
+	display: flex;
+	flex-direction: column;
+}
+
+#top_leaderboard {
+	> div {
+		text-align: center;
+	}
+}
+
+#bottom_leaderboard {
+	margin-top: 20px;
+	margin-bottom: 23px;
+
+	> div {
+		text-align: center;
+	}
+}
+
+#invisible_skin {
+	display: none !important;
+}

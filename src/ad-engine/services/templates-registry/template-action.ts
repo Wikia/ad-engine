@@ -1,6 +1,6 @@
+import { RxJsOperator } from '@ad-engine/communication';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { RxJsOperator } from '../../rxjs/rxjs-operator';
 
 export interface TemplateAction {
 	templateName: string;

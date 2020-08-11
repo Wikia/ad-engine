@@ -1,6 +1,6 @@
+import { RxJsOperator } from '@ad-engine/communication';
 import { merge, Observable } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
-import { RxJsOperator } from './rxjs-operator';
 
 export function tapOnce<T>(
 	next?: (x: T) => void,
