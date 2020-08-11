@@ -11,7 +11,6 @@ export class BingeBotSlotsContextSetup implements SlotsContextSetup {
 			sponsored_logo: {
 				adProduct: 'sponsored-logo',
 				group: 'PX',
-				parentContainerSelector: '',
 				slotNameSuffix: '',
 				defaultSizes: [
 					[100, 46],

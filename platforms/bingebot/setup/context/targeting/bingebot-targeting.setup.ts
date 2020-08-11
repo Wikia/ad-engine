@@ -23,7 +23,7 @@ export class BingeBotTargetingSetup implements TargetingSetup {
 		return {
 			geo: utils.geoService.getCountryCode() || 'none',
 			s0: 'ent',
-			s2: 'other',
+			s2: 'extra',
 			skin: this.skin,
 		};
 	}
