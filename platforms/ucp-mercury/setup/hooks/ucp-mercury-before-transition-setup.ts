@@ -1,3 +1,4 @@
+import { NoAdsDetector } from '@platforms/shared';
 import {
 	communicationService,
 	DiProcess,
@@ -13,6 +14,8 @@ import { mercuryBeforeTransition } from '../../setup-ucp-mercury';
 
 @Injectable()
 export class UcpMercuryBeforeTransitionSetup implements DiProcess {
+	constructor(private noAdsDetector: NoAdsDetector) {}
+
 	async execute(): Promise<void> {
 		communicationService.action$
 			.pipe(ofType(mercuryBeforeTransition), onlyNew())
@@ -25,6 +28,7 @@ export class UcpMercuryBeforeTransitionSetup implements DiProcess {
 
 		cacheStorage.resetCache();
 		sessionCookie.readSessionId();
+		this.noAdsDetector.reset();
 
 		eventService.emit(events.BEFORE_PAGE_CHANGE_EVENT);
 	}

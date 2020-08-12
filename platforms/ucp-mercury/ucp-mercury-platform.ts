@@ -37,9 +37,9 @@ export class UcpMercuryPlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => context.extend(basicContext),
-			InstantConfigSetup,
-			UcpMercuryIocSetup,
+			conditional(() => UcpMercuryPlatform.executed, {
+				no: sequential(() => context.extend(basicContext), InstantConfigSetup, UcpMercuryIocSetup),
+			}),
 			UcpMercuryWikiContextSetup,
 			UcpMercuryBaseContextSetup,
 			UcpMercurySlotsContextSetup,
