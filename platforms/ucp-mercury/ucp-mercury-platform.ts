@@ -28,7 +28,7 @@ import { UcpMercuryBeforeTransitionSetup } from './setup/hooks/ucp-mercury-befor
 import { UcpMercuryOnTransitionSetup } from './setup/hooks/ucp-mercury-on-transition-setup';
 import { UcpMercuryIocSetup } from './ucp-mercury-ioc-setup';
 
-@Injectable()
+@Injectable({ scope: 'Transient' })
 export class UcpMercuryPlatform {
 	static executed = false;
 

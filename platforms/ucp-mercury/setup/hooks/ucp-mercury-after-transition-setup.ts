@@ -13,6 +13,8 @@ import { MEDIA_WIKI_ADS_CONTEXT } from '../context/wiki/ucp-mercury-wiki-context
 
 @Injectable()
 export class UcpMercuryAfterTransitionSetup implements DiProcess {
+	constructor(private container: Container) {}
+
 	async execute(): Promise<void> {
 		communicationService.action$
 			.pipe(ofType(mercuryAfterTransition), onlyNew())
@@ -24,10 +26,9 @@ export class UcpMercuryAfterTransitionSetup implements DiProcess {
 			adContext,
 		});
 
-		const container = new Container();
-		container.bind(MEDIA_WIKI_ADS_CONTEXT).value(adContext);
+		this.container.bind(MEDIA_WIKI_ADS_CONTEXT).value(adContext);
 
-		const platform = container.get(UcpMercuryPlatform);
+		const platform = this.container.get(UcpMercuryPlatform);
 
 		platform.execute();
 	}

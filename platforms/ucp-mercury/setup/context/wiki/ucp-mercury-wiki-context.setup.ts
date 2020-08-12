@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 export const MEDIA_WIKI_ADS_CONTEXT = Symbol('MediaWikiAdsContext');
 
-@Injectable()
+@Injectable({ scope: 'Transient' })
 export class UcpMercuryWikiContextSetup extends WikiContextSetup {
 	constructor(@Inject(MEDIA_WIKI_ADS_CONTEXT) private adsContext: MediaWikiAdsContext) {
 		super();
