@@ -1,4 +1,4 @@
-import { RxJsOperator } from '@ad-engine/communication';
+import { RxJsOperator } from '@ad-engine/models';
 import { merge, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

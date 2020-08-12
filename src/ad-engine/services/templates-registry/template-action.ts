@@ -1,4 +1,4 @@
-import { RxJsOperator } from '@ad-engine/communication';
+import { RxJsOperator } from '@ad-engine/models';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 

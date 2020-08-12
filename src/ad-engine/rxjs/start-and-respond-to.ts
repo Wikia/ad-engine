@@ -1,4 +1,4 @@
-import { RxJsOperator } from '@ad-engine/communication';
+import { RxJsOperator } from '@ad-engine/models';
 import { Observable, of } from 'rxjs';
 import { respondTo } from './respond-to';
 

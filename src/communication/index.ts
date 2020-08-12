@@ -4,4 +4,3 @@ export { globalAction } from './global-action';
 export { isType } from './is-type';
 export { ofType } from './of-type';
 export { onlyNew } from './only-new';
-export { RxJsOperator } from './rxjs-operator';
