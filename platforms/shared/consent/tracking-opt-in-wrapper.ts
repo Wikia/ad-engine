@@ -3,6 +3,7 @@ import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
 interface OptInInstances {
+	icbm: any;
 	gdpr: any;
 	ccpa: any;
 }
@@ -65,7 +66,7 @@ class TrackingOptInWrapper {
 
 	private async loadTrackingOptInLibrary(): Promise<void> {
 		const trackingOptInLibraryUrl =
-			'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.1/tracking-opt-in.min.js';
+			'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.5/tracking-opt-in.min.js';
 
 		await utils.scriptLoader.loadScript(trackingOptInLibraryUrl);
 	}
@@ -114,7 +115,15 @@ class TrackingOptInWrapper {
 			});
 
 			if (disableConsentQueue) {
-				resolve(optInInstances);
+				// Wait for ICBM response during TCFv2 transition
+				optInInstances.icbm.then(
+					() => {
+						resolve(optInInstances);
+					},
+					() => {
+						resolve(optInInstances);
+					},
+				);
 			}
 		});
 	}
