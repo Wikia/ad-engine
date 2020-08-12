@@ -12,6 +12,7 @@ function load({ payload }: { payload: MediaWikiAdsContext }): void {
 
 	const platform = container.get(UcpMercuryPlatform);
 
+	platform.setup();
 	platform.execute();
 }
 

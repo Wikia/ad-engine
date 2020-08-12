@@ -13,8 +13,8 @@ import {
 	communicationService,
 	conditional,
 	context,
+	once,
 	ProcessPipeline,
-	sequential,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -28,18 +28,18 @@ import { UcpMercuryBeforeTransitionSetup } from './setup/hooks/ucp-mercury-befor
 import { UcpMercuryOnTransitionSetup } from './setup/hooks/ucp-mercury-on-transition-setup';
 import { UcpMercuryIocSetup } from './ucp-mercury-ioc-setup';
 
-@Injectable({ scope: 'Transient' })
+@Injectable()
 export class UcpMercuryPlatform {
 	static executed = false;
 
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
-	execute(): void {
+	setup(): void {
 		// Config
 		this.pipeline.add(
-			conditional(() => UcpMercuryPlatform.executed, {
-				no: sequential(() => context.extend(basicContext), InstantConfigSetup, UcpMercuryIocSetup),
-			}),
+			once(() => context.extend(basicContext)),
+			once(InstantConfigSetup),
+			once(UcpMercuryIocSetup),
 			UcpMercuryWikiContextSetup,
 			UcpMercuryBaseContextSetup,
 			UcpMercurySlotsContextSetup,
@@ -47,19 +47,15 @@ export class UcpMercuryPlatform {
 			UcpMercuryDynamicSlotsSetup,
 			CommonBiddersStateSetup,
 			LabradorSetup,
-			conditional(() => UcpMercuryPlatform.executed, {
-				no: sequential(
-					TrackingSetup,
-					AdEngineRunnerSetup,
-					() => {
-						communicationService.dispatch(adEngineConfigured());
-						UcpMercuryPlatform.executed = true;
-					},
-					UcpMercuryBeforeTransitionSetup,
-					UcpMercuryOnTransitionSetup,
-					UcpMercuryAfterTransitionSetup,
-				),
+			once(TrackingSetup),
+			once(AdEngineRunnerSetup),
+			once(() => {
+				communicationService.dispatch(adEngineConfigured());
+				UcpMercuryPlatform.executed = true;
 			}),
+			once(UcpMercuryBeforeTransitionSetup),
+			once(UcpMercuryOnTransitionSetup),
+			once(UcpMercuryAfterTransitionSetup),
 		);
 
 		// Run
@@ -69,7 +65,9 @@ export class UcpMercuryPlatform {
 				no: UcpNoAdsMode,
 			}),
 		);
+	}
 
+	execute(): void {
 		this.pipeline.execute();
 	}
 }
