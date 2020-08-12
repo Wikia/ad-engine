@@ -1,15 +1,20 @@
 import { AdEngine, AdSlot, eventService, utils } from '@wikia/ad-engine';
 
+let adEngineInstance: AdEngine;
+
 export function startAdEngine(inhibitors: Promise<any>[] = []): void {
-	const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
+	if (!adEngineInstance) {
+		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
-	utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
+		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
 
-	const engine = new AdEngine();
+		adEngineInstance = new AdEngine();
+		adEngineInstance.init(inhibitors);
 
-	engine.init(inhibitors);
-
-	eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
-		slot.removeClass('default-height');
-	});
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
+			slot.removeClass('default-height');
+		});
+	} else {
+		adEngineInstance.runAdQueue(inhibitors);
+	}
 }
