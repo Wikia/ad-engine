@@ -1,20 +1,20 @@
 import { once, ProcessPipeline } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
-import { createSandbox, SinonSpy } from 'sinon';
+import { createSandbox, SinonStub } from 'sinon';
 
 describe('OnceProcess', () => {
 	const sandbox = createSandbox();
-	let spy: SinonSpy;
+	let stub: SinonStub;
 	let pipeline: ProcessPipeline;
 
-	const funcProcess = () => spy('func');
-	const executableOnceProcess = () => spy('once');
+	const funcProcess = () => stub('func');
+	const executableOnceProcess = () => stub('once');
 
 	beforeEach(() => {
 		const container = new Container();
 
-		spy = sandbox.spy();
+		stub = sandbox.stub();
 		pipeline = container.get(ProcessPipeline);
 	});
 
@@ -23,21 +23,28 @@ describe('OnceProcess', () => {
 	});
 
 	it('should work', async () => {
-		pipeline.add(funcProcess, once(executableOnceProcess), () => spy('end'));
+		pipeline.add(
+			funcProcess,
+			once(() => executableOnceProcess()),
+			() => stub('end'),
+		);
 
 		await pipeline.execute();
 
 		assertResults(['func', 'once', 'end']);
 
-		spy = sandbox.spy();
+		stub.resetHistory();
 		await pipeline.execute();
 
 		assertResults(['func', 'end']);
 	});
 
 	it('works on instance-level instead of step-level', async () => {
-		pipeline.add(funcProcess, once(executableOnceProcess), once(executableOnceProcess), () =>
-			spy('end'),
+		pipeline.add(
+			funcProcess,
+			once(() => executableOnceProcess()),
+			once(() => executableOnceProcess()),
+			() => stub('end'),
 		);
 
 		await pipeline.execute();
@@ -46,6 +53,6 @@ describe('OnceProcess', () => {
 	});
 
 	function assertResults(expectedCalls): void {
-		expect(spy.getCalls().map((call) => call.args[0])).to.deep.equal(expectedCalls);
+		expect(stub.getCalls().map((call) => call.args[0])).to.deep.equal(expectedCalls);
 	}
 });
