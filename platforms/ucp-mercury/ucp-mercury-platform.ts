@@ -30,8 +30,6 @@ import { UcpMercuryIocSetup } from './ucp-mercury-ioc-setup';
 
 @Injectable()
 export class UcpMercuryPlatform {
-	static executed = false;
-
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	setup(): void {
@@ -51,7 +49,6 @@ export class UcpMercuryPlatform {
 			once(AdEngineRunnerSetup),
 			once(() => {
 				communicationService.dispatch(adEngineConfigured());
-				UcpMercuryPlatform.executed = true;
 			}),
 			once(UcpMercuryBeforeTransitionSetup),
 			once(UcpMercuryOnTransitionSetup),
