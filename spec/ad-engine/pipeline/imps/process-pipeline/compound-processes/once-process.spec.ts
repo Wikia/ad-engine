@@ -25,13 +25,14 @@ describe('OnceProcess', () => {
 	it('should work', async () => {
 		pipeline.add(
 			funcProcess,
-			once(() => executableOnceProcess()),
+			once(executableOnceProcess),
+			once(() => stub('arrow')),
 			() => stub('end'),
 		);
 
 		await pipeline.execute();
 
-		assertResults(['func', 'once', 'end']);
+		assertResults(['func', 'once', 'arrow', 'end']);
 
 		stub.resetHistory();
 		await pipeline.execute();
@@ -40,11 +41,8 @@ describe('OnceProcess', () => {
 	});
 
 	it('works on instance-level instead of step-level', async () => {
-		pipeline.add(
-			funcProcess,
-			once(() => executableOnceProcess()),
-			once(() => executableOnceProcess()),
-			() => stub('end'),
+		pipeline.add(funcProcess, once(executableOnceProcess), once(executableOnceProcess), () =>
+			stub('end'),
 		);
 
 		await pipeline.execute();
