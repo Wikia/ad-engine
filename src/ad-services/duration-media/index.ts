@@ -4,21 +4,23 @@ const logGroup = 'duration-media';
 
 class DurationMedia {
 	call(): Promise<void> {
-		const siteId: string = context.get('services.durationMedia.siteId');
+		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
-		if (!context.get('services.durationMedia.enabled') || !siteId) {
+		if (!context.get('services.durationMedia.enabled') || !libraryUrl) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 
-		const libraryUrl = `//pr.realvu.net/flip/2/c=E4KZ_f=site_si=${siteId}`;
-
 		utils.logger(logGroup, 'loading', libraryUrl);
 
-		return utils.scriptLoader.loadScript(libraryUrl, 'text/javascript', true).then(() => {
-			utils.logger(logGroup, 'ready');
-		});
+		return utils.scriptLoader
+			.loadScript(libraryUrl, 'text/javascript', true, null, {
+				id: 'dm-script',
+			})
+			.then(() => {
+				utils.logger(logGroup, 'ready');
+			});
 	}
 }
 
