@@ -2,6 +2,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { flattenDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
+import { MultiKeyMap } from '../../models/multi-key-map';
 import { TemplateAction } from './template-action';
 import { TemplateDependenciesManager, TemplateDependency } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
@@ -22,7 +23,7 @@ type TemplateDependencies = (TemplateDependency | TemplateDependencies)[];
 @Injectable()
 export class TemplateRegistry {
 	private settings = new Map<string, TemplateMachinePayload>();
-	private machines = new Map<string, TemplateMachine>();
+	private machines = new MultiKeyMap<string, TemplateMachine>();
 
 	constructor(
 		private container: Container,
@@ -49,6 +50,14 @@ export class TemplateRegistry {
 		});
 
 		return emitter$.asObservable();
+	}
+
+	/**
+	 * @param key - template name or slot name
+	 */
+	async destroy(key: string): Promise<void> {
+		await this.machines.get(key).destroy();
+		this.machines.delete(key);
 	}
 
 	async destroyAll(): Promise<void> {
@@ -86,6 +95,9 @@ export class TemplateRegistry {
 
 		machine.init();
 		this.machines.set(templateName, machine);
+		if (templateSlot) {
+			this.machines.set(templateSlot.getSlotName(), machine);
+		}
 	}
 
 	private createTemplateStateMap<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
