@@ -1,7 +1,6 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
-import { communicationService, globalAction, ofType } from '@wikia/ad-engine';
+import { DynamicSlotsSetup } from '@platforms/shared';
+import { communicationService, context, globalAction, ofType, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
 interface AdSlotInjectedProps {
@@ -13,15 +12,24 @@ export const adSlotInjected = globalAction(
 	props<AdSlotInjectedProps>(),
 );
 
+export const destroyAdSlot = globalAction(
+	'[BingeBot] destroy ad slot',
+	props<AdSlotInjectedProps>(),
+);
+
 @Injectable()
 export class BingeBotDynamicSlotsSetup implements DynamicSlotsSetup {
 	execute(): void {
 		communicationService.action$
-			.pipe(ofType(adSlotInjected), take(1))
-			.subscribe(() => this.setSlotState('sponsored_logo'));
+			.pipe(ofType(adSlotInjected))
+			.subscribe(() => this.setAdStack('sponsored_logo'));
+
+		communicationService.action$
+			.pipe(ofType(destroyAdSlot))
+			.subscribe(() => slotService.removeAll());
 	}
 
-	private setSlotState(slotId): void {
-		slotsContext.setState(slotId, true);
+	private setAdStack(slotId): void {
+		context.push('state.adStack', { id: slotId });
 	}
 }
