@@ -237,6 +237,23 @@
             "value": true
         }
     ],
+    "icDurationMediaLibraryUrl": [
+        {
+            "apps": [
+                "futhead"
+            ],
+            "value": "//tag.durationmedia.net/sites/10654/dm.js"
+        },
+        {
+            "apps": [
+                "futhead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//pr.realvu.net/flip/2/c=E4KZ_f=site_si=1068"
+        }
+    ],
     "icA9Bidder": [
         {
             "apps": [
