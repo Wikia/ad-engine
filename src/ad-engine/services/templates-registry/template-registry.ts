@@ -56,7 +56,7 @@ export class TemplateRegistry {
 	 * @param key - template name or slot name
 	 */
 	async destroy(key: string): Promise<void> {
-		await this.machines.get(key).destroy();
+		await this.machines.get(key)?.destroy();
 		this.machines.delete(key);
 	}
 

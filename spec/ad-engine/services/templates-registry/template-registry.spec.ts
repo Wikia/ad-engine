@@ -174,6 +174,12 @@ describe('Template Registry', () => {
 			assert(stateSharedSpy.constructor.calledTwice);
 		});
 
+		it('should not throw when destroy non-existent', async () => {
+			await instance.destroy('non-existent');
+
+			assert(true, `Shouldn't throw`);
+		});
+
 		it('should create all handlers on init for two templates', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 			instance.init(templateName2, templateSlot1, templateParams1);
