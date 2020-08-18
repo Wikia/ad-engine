@@ -1,6 +1,6 @@
 export class MultiKeyMap<TKey, TValue> {
 	private _values = new Map<TKey, TValue>();
-	private _keys = new Map<TValue, TKey[]>();
+	private _keys = new Map<TValue, Set<TKey>>();
 
 	has(key: TKey): boolean {
 		return this._values.has(key);
@@ -11,15 +11,9 @@ export class MultiKeyMap<TKey, TValue> {
 	}
 
 	set(key: TKey, value: TValue): void {
-		const keys = this.getKeys(value);
-
-		keys.push(key);
-
+		this.resetKey(key);
+		this.setKey(value, key);
 		this._values.set(key, value);
-		this.setKeys(value, keys);
-
-		// console.log('\nvalues', Array.from(this._values.entries()));
-		// console.log('keys', Array.from(this._keys.entries())); // need to reset stuff
 	}
 
 	delete(key: TKey): void {
@@ -40,18 +34,32 @@ export class MultiKeyMap<TKey, TValue> {
 	}
 
 	private getKeys(value: TValue): TKey[] {
-		const keys = this._keys.get(value);
+		const keys = this._keys.get(value) || new Set<TKey>();
 
-		if (!keys) {
-			return [];
-		}
-
-		return keys;
+		return Array.from(keys);
 	}
 
-	private setKeys(value: TValue, keys: TKey[]): void {
-		const _keys: TKey[] = Array.from(new Set(keys));
+	private setKey(value: TValue, key: TKey): void {
+		const keys = this._keys.get(value) || new Set<TKey>();
 
-		this._keys.set(value, _keys);
+		keys.add(key);
+		this._keys.set(value, keys);
+	}
+
+	private resetKey(key: TKey): void {
+		const value = this._values.get(key);
+
+		if (!value) {
+			return;
+		}
+
+		this.removeKey(value, key);
+	}
+
+	private removeKey(value: TValue, key: TKey): void {
+		const keys = this._keys.get(value) || new Set<TKey>();
+
+		keys.delete(key);
+		this._keys.set(value, keys);
 	}
 }

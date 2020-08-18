@@ -42,7 +42,6 @@ describe('MultiKeyMap', () => {
 	});
 
 	it('should work with overwriting', () => {
-		console.log('\n\n\n');
 		const map = new MultiKeyMap<string, any>();
 
 		map.set('a', value1);
@@ -57,5 +56,7 @@ describe('MultiKeyMap', () => {
 		map.delete('b');
 
 		expect(Array.from(map.values())).to.deep.equal([value2]);
+		expect(map.get('a')).to.equal(value2);
+		expect(map.get('b')).to.equal(undefined);
 	});
 });
