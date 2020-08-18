@@ -23,10 +23,9 @@ describe('MultiKeyMap', () => {
 		map.set('a', value1);
 		map.set('b', value1);
 
+		expect(Array.from(map.values())).to.deep.equal([value1]);
 		expect(map.has('a')).to.equal(true);
 		expect(map.has('b')).to.equal(true);
-
-		expect(Array.from(map.values())).to.deep.equal([value1]);
 
 		const a = map.get('a');
 		const b = map.get('b');
@@ -35,10 +34,9 @@ describe('MultiKeyMap', () => {
 
 		map.delete('a');
 
+		expect(Array.from(map.values())).to.deep.equal([]);
 		expect(map.has('a')).to.equal(false);
 		expect(map.has('b')).to.equal(false);
-
-		expect(Array.from(map.values())).to.deep.equal([]);
 	});
 
 	it('should work with overwriting', () => {
@@ -48,10 +46,9 @@ describe('MultiKeyMap', () => {
 		map.set('b', value1);
 		map.set('a', value2);
 
+		expect(Array.from(map.values())).to.deep.equal([value1, value2]);
 		expect(map.get('a')).to.equal(value2);
 		expect(map.get('b')).to.equal(value1);
-
-		expect(Array.from(map.values())).to.deep.equal([value1, value2]);
 
 		map.delete('b');
 
