@@ -20,13 +20,14 @@ export const destroyAdSlot = globalAction(
 @Injectable()
 export class BingeBotDynamicSlotsSetup implements DynamicSlotsSetup {
 	execute(): void {
-		communicationService.action$
-			.pipe(ofType(adSlotInjected))
-			.subscribe(() => this.setAdStack('sponsored_logo'));
+		communicationService.action$.pipe(ofType(adSlotInjected)).subscribe((action) => {
+			this.setAdStack(action.slotId);
+		});
 
-		communicationService.action$
-			.pipe(ofType(destroyAdSlot))
-			.subscribe(() => slotService.removeAll());
+		communicationService.action$.pipe(ofType(destroyAdSlot)).subscribe((action) => {
+			const adSlot = slotService.slots[action.slotId];
+			slotService.remove(adSlot);
+		});
 	}
 
 	private setAdStack(slotId): void {
