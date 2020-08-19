@@ -1,5 +1,5 @@
 export interface SponsoredTextLogoParams {
-	type: 'bingebot-footer';
+	type: 'sponsored-text-logo';
 	slotName: string;
 	text: string;
 	clickThroughURL: string;
