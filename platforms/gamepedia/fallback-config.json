@@ -272,6 +272,23 @@
             "value": true
         }
     ],
+    "icDurationMediaLibraryUrl": [
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "value": "//tag.durationmedia.net/sites/10652/dm.js"
+        },
+        {
+            "apps": [
+                "gamepedia"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//pr.realvu.net/flip/2/c=E4KZ_f=site_si=1066"
+        }
+    ],
     "icA9Bidder": [
         {
             "apps": [
@@ -371,6 +388,22 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icTcf2Enabled": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "JP"
             ],
             "value": true
         }
