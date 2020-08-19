@@ -15,7 +15,8 @@ export class SponsoredLogoHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		const component = this.parse(sponsoredLogoComponent(this.params));
 
-		this.adSlot.getElement().appendChild(component);
+		this.adSlot.addClass('sponsored-logo');
+		this.adSlot.getElement().prepend(component);
 	}
 
 	private parse(domstring: string): ChildNode {
