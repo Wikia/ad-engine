@@ -7,15 +7,9 @@ interface AdSlotInjectedProps {
 	slotId: string;
 }
 
-export const adSlotInjected = globalAction(
-	'[BingeBot] ad slot injected',
-	props<AdSlotInjectedProps>(),
-);
+const adSlotInjected = globalAction('[BingeBot] ad slot injected', props<AdSlotInjectedProps>());
 
-export const destroyAdSlot = globalAction(
-	'[BingeBot] destroy ad slot',
-	props<AdSlotInjectedProps>(),
-);
+const destroyAdSlot = globalAction('[BingeBot] destroy ad slot', props<AdSlotInjectedProps>());
 
 @Injectable()
 export class BingeBotDynamicSlotsSetup implements DynamicSlotsSetup {
@@ -25,7 +19,7 @@ export class BingeBotDynamicSlotsSetup implements DynamicSlotsSetup {
 		});
 
 		communicationService.action$.pipe(ofType(destroyAdSlot)).subscribe((action) => {
-			const adSlot = slotService.slots[action.slotId];
+			const adSlot = slotService.get(action.slotId);
 			slotService.remove(adSlot);
 		});
 	}
