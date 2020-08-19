@@ -101,7 +101,6 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
-			siteId: '1066',
 		},
 		iasPublisherOptimization: {
 			pubId: '930616',
