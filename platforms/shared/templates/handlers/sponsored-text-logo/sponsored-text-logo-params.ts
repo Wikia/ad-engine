@@ -1,6 +1,6 @@
-export interface BingebotFooterParams {
+export interface SponsoredTextLogoParams {
 	type: 'bingebot-footer';
+	slotName: string;
 	text: string;
-	imageUrl: string;
 	clickThroughURL: string;
 }

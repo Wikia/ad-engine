@@ -1,19 +1,19 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { bingebotFooterComponent } from './bingebot-footer-component';
-import { BingebotFooterParams } from './bingebot-footer-params';
+import { sponsoredTextLogoComponent } from './sponsored-text-logo-component';
+import { SponsoredTextLogoParams } from './sponsored-text-logo-params';
 
 @Injectable({ autobind: false })
-export class BingebotFooterHandler implements TemplateStateHandler {
+export class SponsoredTextLogoHandler implements TemplateStateHandler {
 	private domParser = new DOMParser();
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: BingebotFooterParams,
+		@Inject(TEMPLATE.PARAMS) private params: SponsoredTextLogoParams,
 	) {}
 
 	async onEnter(): Promise<void> {
-		const component = this.parse(bingebotFooterComponent(this.params));
+		const component = this.parse(sponsoredTextLogoComponent(this.params));
 
 		this.adSlot.getElement().appendChild(component);
 	}
