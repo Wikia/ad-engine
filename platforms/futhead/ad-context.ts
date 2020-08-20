@@ -95,7 +95,6 @@ export const basicContext = {
 	services: {
 		durationMedia: {
 			enabled: false,
-			siteId: '1068',
 		},
 		confiant: {
 			enabled: false,

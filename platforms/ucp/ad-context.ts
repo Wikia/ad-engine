@@ -88,7 +88,6 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
-			siteId: '1167',
 		},
 		distroScale: {
 			enabled: false,

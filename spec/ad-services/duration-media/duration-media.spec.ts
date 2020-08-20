@@ -11,7 +11,7 @@ describe('Duration media service', () => {
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
-		context.remove('services.durationMedia.siteId');
+		context.remove('services.durationMedia.libraryUrl');
 		context.remove('services.durationMedia.enabled');
 	});
 
@@ -19,7 +19,7 @@ describe('Duration media service', () => {
 		sandbox.restore();
 	});
 
-	it('duration-media is disabled when siteId is not configured', async () => {
+	it('duration-media is disabled when libraryUrl is not configured', async () => {
 		context.set('services.durationMedia.enabled', true);
 
 		await durationMedia.call();
@@ -28,7 +28,7 @@ describe('Duration media service', () => {
 	});
 
 	it('duration-media can be disabled', async () => {
-		context.set('services.durationMedia.siteId', 'foo');
+		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
 		await durationMedia.call();
 
@@ -37,17 +37,15 @@ describe('Duration media service', () => {
 
 	it('duration-media is called', async () => {
 		context.set('services.durationMedia.enabled', true);
-		context.set('services.durationMedia.siteId', 'foo');
+		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
 		await durationMedia.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
-			loadScriptStub.calledWith(
-				'//pr.realvu.net/flip/2/c=E4KZ_f=site_si=foo',
-				'text/javascript',
-				true,
-			),
+			loadScriptStub.calledWith('//example.com/foo', 'text/javascript', true, null, {
+				id: 'dm-script',
+			}),
 		).to.equal(true);
 	});
 });

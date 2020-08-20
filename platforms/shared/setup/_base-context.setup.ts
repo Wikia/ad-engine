@@ -104,6 +104,10 @@ export class BaseContextSetup {
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		context.set(
+			'services.durationMedia.libraryUrl',
+			this.instantConfig.get('icDurationMediaLibraryUrl'),
+		);
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
