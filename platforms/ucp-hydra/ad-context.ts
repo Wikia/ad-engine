@@ -7,7 +7,6 @@ export const basicContext = {
 	custom: {
 		dfpId: '5441',
 		serverPrefix: 'wka1b',
-		rolloutTracking: 'ucp',
 	},
 	events: {
 		pushOnScroll: {
