@@ -81,7 +81,7 @@ export const basicContext = {
 		VIDEO: [],
 	},
 	targeting: {
-		rollout_tracking: 'ucp',
+		rollout_tracking: ['ucp'],
 	},
 	services: {
 		confiant: {

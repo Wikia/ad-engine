@@ -92,7 +92,7 @@ export const basicContext = {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	targeting: {
-		rollout_tracking: 'ucp',
+		rollout_tracking: ['ucp'],
 	},
 	services: {
 		confiant: {
