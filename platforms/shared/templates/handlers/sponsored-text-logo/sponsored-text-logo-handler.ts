@@ -13,15 +13,15 @@ export class SponsoredTextLogoHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		const component = this.parse(sponsoredTextLogoComponent(this.params));
+		const components = this.parse(sponsoredTextLogoComponent(this.params));
 
 		this.adSlot.addClass('sponsored-text-logo');
-		this.adSlot.getElement().prepend(component);
+		this.adSlot.getElement().prepend(...components);
 	}
 
-	private parse(domstring: string): ChildNode {
+	private parse(domstring: string): ChildNode[] {
 		const html = this.domParser.parseFromString(domstring, 'text/html');
 
-		return html.body.firstChild;
+		return Array.from(html.body.childNodes);
 	}
 }

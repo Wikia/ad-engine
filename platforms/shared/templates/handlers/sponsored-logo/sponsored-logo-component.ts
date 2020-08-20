@@ -1,6 +1,3 @@
-import { SponsoredLogoParams } from './sponsored-logo-params';
-
-export const sponsoredLogoComponent = (params: SponsoredLogoParams) => `
+export const sponsoredLogoComponent = () => `
 <div class="promo-title">Sponsored By</div>
-<p class="promo-text">${params.text}</p>
 `;
