@@ -11,7 +11,7 @@ export const sponsoredTextLogoComponent = (
 <div class="title-container">
 	<hr class="title-line" style="border-color: ${config.lineColor}" />
 	<div class="promo-title">Sponsored By</div>
-	<hr class="title-line" />
+	<hr class="title-line" style="border-color: ${config.lineColor}" />
 </div>
 <p class="promo-text">${params.text}</p>
 `;
