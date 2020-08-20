@@ -2,7 +2,6 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { flattenDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
-import { MultiKeyMap } from '../../models/multi-key-map';
 import { TemplateAction } from './template-action';
 import { TemplateDependenciesManager, TemplateDependency } from './template-dependencies-manager';
 import { TemplateMachine } from './template-machine';
@@ -23,7 +22,7 @@ type TemplateDependencies = (TemplateDependency | TemplateDependencies)[];
 @Injectable()
 export class TemplateRegistry {
 	private settings = new Map<string, TemplateMachinePayload>();
-	private machines = new MultiKeyMap<string, TemplateMachine>();
+	private machines = new Map<string, Set<TemplateMachine>>();
 
 	constructor(
 		private container: Container,
@@ -52,25 +51,27 @@ export class TemplateRegistry {
 		return emitter$.asObservable();
 	}
 
-	/**
-	 * @param key - template name or slot name
-	 */
-	async destroy(key: string): Promise<void> {
-		await this.machines.get(key)?.destroy();
-		this.machines.delete(key);
+	async destroy(slotName: string): Promise<void> {
+		const machines: TemplateMachine[] = Array.from(this.machines.get(slotName) || []);
+
+		await Promise.all(machines.map((machine) => machine.destroy()));
+
+		this.machines.delete(slotName);
 	}
 
 	async destroyAll(): Promise<void> {
-		await Promise.all(Array.from(this.machines.values()).map((machine) => machine.destroy()));
+		await Promise.all(
+			Array.from(this.machines.values()).map((set) =>
+				Promise.all(Array.from(set.values()).map((machine) => machine.destroy())),
+			),
+		);
+
 		this.machines.clear();
 	}
 
-	init(templateName: string, templateSlot: AdSlot, templateParams: Dictionary = {}): void {
+	init(templateName: string, templateSlot: AdSlot | null, templateParams: Dictionary = {}): void {
 		if (!this.settings.has(templateName)) {
 			throw new Error(`Template ${templateName} was not registered`);
-		}
-		if (this.machines.has(templateName)) {
-			throw new Error(`Template ${templateName} is already initialized`);
 		}
 
 		const {
@@ -94,10 +95,15 @@ export class TemplateRegistry {
 		const machine = new TemplateMachine(templateName, templateStateMap, initialStateKey, emitter$);
 
 		machine.init();
-		this.machines.set(templateName, machine);
-		if (templateSlot) {
-			this.machines.set(templateSlot.getSlotName(), machine);
-		}
+		this.saveMachine(templateSlot, machine);
+	}
+
+	private saveMachine(templateSlot: AdSlot | null, machine: TemplateMachine): void {
+		const machinesSet =
+			this.machines.get(templateSlot?.getSlotName() ?? '__default__') || new Set<TemplateMachine>();
+
+		machinesSet.add(machine);
+		this.machines.set(templateSlot?.getSlotName() ?? '__default__', machinesSet);
 	}
 
 	private createTemplateStateMap<T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]>>(
