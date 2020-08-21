@@ -1,5 +1,5 @@
 import { TargetingSetup } from '@platforms/shared';
-import { Binder, context, Targeting, utils } from '@wikia/ad-engine';
+import { Binder, context, Dictionary, Targeting, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 const SKIN = Symbol('targeting skin');
@@ -20,11 +20,19 @@ export class BingeBotTargetingSetup implements TargetingSetup {
 	}
 
 	getPageLevelTargeting(): Partial<Targeting> {
-		return {
+		const pageTargeting: Dictionary<string> = {
 			geo: utils.geoService.getCountryCode() || 'none',
 			s0: 'ent',
-			s2: 'other',
+			s2: 'bingebot_selection',
 			skin: this.skin,
 		};
+
+		const cid = utils.queryString.get('cid');
+
+		if (cid !== undefined) {
+			pageTargeting.cid = cid;
+		}
+
+		return pageTargeting;
 	}
 }

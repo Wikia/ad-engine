@@ -629,6 +629,8 @@
                 "5428434937",
                 "5437018947",
                 "5334881004",
+                "5451772486",
+                "5453529357",
                 "5447937745"
             ]
         }
@@ -864,7 +866,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//pr.realvu.net/flip/2/c=E4KZ_f=site_si=1067"
+            "value": "//pr.realvu.net/flip/2/c=E4KZ_f=site_si=1167"
         }
     ],
     "icA9Bidder": [
@@ -1004,7 +1006,39 @@
                 "muthead",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "AR",
+                "AT",
+                "BE",
+                "BR",
+                "CL",
+                "CN",
+                "CO",
+                "ES",
+                "FI",
+                "FR",
+                "HK",
+                "ID",
+                "IE",
+                "IN",
+                "IT",
+                "JP",
+                "KR",
+                "MY",
+                "NL",
+                "NZ",
+                "PE",
+                "PH",
+                "PL",
+                "SE",
+                "SG",
+                "TH",
+                "TR",
+                "TW",
+                "UA",
+                "VN"
+            ],
+            "value": true
         }
     ],
     "icPrebid": [
