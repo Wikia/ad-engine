@@ -403,8 +403,36 @@
                 "oasis"
             ],
             "regions": [
+                "AR",
+                "AT",
+                "BE",
+                "BR",
+                "CL",
+                "CN",
+                "CO",
+                "ES",
+                "FI",
+                "FR",
+                "HK",
+                "ID",
+                "IE",
+                "IN",
+                "IT",
                 "JP",
-                "PL"
+                "KR",
+                "MY",
+                "NL",
+                "NZ",
+                "PE",
+                "PH",
+                "PL",
+                "SE",
+                "SG",
+                "TH",
+                "TR",
+                "TW",
+                "UA",
+                "VN"
             ],
             "value": true
         }
