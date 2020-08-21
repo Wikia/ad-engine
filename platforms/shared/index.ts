@@ -80,6 +80,8 @@ export * from './templates/handlers/sticky-tlb/sticky-tlb-config-handler';
 export * from './templates/handlers/video/video-size-resolved-handler';
 export * from './templates/handlers/floor-adhesion/floor-adhesion-bootstrap-handler';
 export * from './templates/handlers/interstitial/interstitial-bootstrap-handler';
+export * from './templates/handlers/sponsored-text-logo/sponsored-text-logo-handler';
+export * from './templates/handlers/sponsored-logo/sponsored-logo-handler';
 export * from './templates/helpers/close-button-helper';
 export * from './templates/helpers/player-registry';
 export * from './templates/helpers/scroll-corrector';

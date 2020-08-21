@@ -1,0 +1,14 @@
+@mixin sponsored-logo() {
+	.sponsored-logo {
+		width: 117px;
+		text-align: center;
+		margin-top: 5px;
+
+		.promo-title {
+			font-size: 8px;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-bottom: 5px;
+		}
+	}
+}

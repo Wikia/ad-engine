@@ -4,7 +4,6 @@ import {
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	NoAdsDetector,
-	NoAdsMode,
 	WikiContextSetup,
 } from '@platforms/shared';
 import {
@@ -21,6 +20,7 @@ import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
 import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynamic-slots.setup';
+import { BingebotTemplatesSetup } from './templates/bingebot-templates.setup';
 
 @Injectable()
 export class BingeBotPlatform {
@@ -36,13 +36,13 @@ export class BingeBotPlatform {
 			BingeBotSlotsContextSetup,
 			BingeBotTargetingSetup,
 			BingeBotDynamicSlotsSetup,
+			BingebotTemplatesSetup,
 			() => communicationService.dispatch(adEngineConfigured()),
 		);
 
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: BingeBotAdsMode,
-				no: NoAdsMode,
 			}),
 		);
 
