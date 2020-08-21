@@ -23,7 +23,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { basicContext } from '../ucp/ad-context';
+import { basicContext } from './ad-context';
 import { MutheadIocSetup } from './muthead-ioc-setup';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
 import { MutheadDynamicSlotsSetup } from './setup/dynamic-slots/muthead-dynamic-slots.setup';

@@ -22,7 +22,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
-import { basicContext } from '../ucp/ad-context';
+import { basicContext } from './ad-context';
 import { GamepediaIocSetup } from './gamepedia-ioc-setup';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
 import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';

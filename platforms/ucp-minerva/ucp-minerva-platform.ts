@@ -21,7 +21,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { basicContext } from '../ucp/ad-context';
+import { basicContext } from './ad-context';
 import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
 import { MinervaDynamicSlotsSetup } from './setup/dynamic-slots/minerva-dynamic-slots-setup';

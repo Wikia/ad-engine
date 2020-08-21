@@ -23,7 +23,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { basicContext } from '../ucp/ad-context';
+import { basicContext } from './ad-context';
 import { FutheadIocSetup } from './futhead-ioc-setup';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';

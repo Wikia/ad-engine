@@ -15,7 +15,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { basicContext } from '../ucp/ad-context';
+import { basicContext } from './ad-context';
 import { F2IocSetup } from './f2-ioc-setup';
 import { F2AdsMode } from './modes/f2-ads.mode';
 import { F2Environment } from './setup-f2';

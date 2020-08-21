@@ -21,7 +21,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
-import { basicContext } from '../ucp/ad-context';
+import { basicContext } from './ad-context';
 import { HydraAdsMode } from './modes/hydra-ads-mode';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
 import { HydraDynamicSlotsSetup } from './setup/dynamic-slots/hydra-dynamic-slots-setup';
