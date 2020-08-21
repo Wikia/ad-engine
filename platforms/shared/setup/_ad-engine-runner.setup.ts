@@ -1,10 +1,10 @@
-import { bidders, events, eventService, utils } from '@wikia/ad-engine';
+import { bidders, DiProcess, events, eventService, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'ad-engine';
 
 @Injectable()
-export class AdEngineRunnerSetup {
+export class AdEngineRunnerSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {
