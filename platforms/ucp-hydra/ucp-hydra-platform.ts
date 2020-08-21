@@ -1,8 +1,8 @@
 import {
 	adEngineConfigured,
 	AdEngineRunnerSetup,
+	BiddersStateSetup,
 	bootstrapAndGetConsent,
-	CommonBiddersStateSetup,
 	GamepediaA9ConfigSetup,
 	InstantConfigSetup,
 	LabradorSetup,
@@ -47,7 +47,7 @@ export class UcpHydraPlatform {
 			GamepediaA9ConfigSetup,
 			HydraDynamicSlotsSetup,
 			HydraSlotsStateSetup,
-			CommonBiddersStateSetup,
+			BiddersStateSetup,
 			UcpHydraTemplatesSetup,
 			LabradorSetup,
 			TrackingSetup,

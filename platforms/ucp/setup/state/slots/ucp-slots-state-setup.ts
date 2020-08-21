@@ -1,7 +1,8 @@
-import { slotsContext, SlotsStateSetup } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
+	DiProcess,
 	distroScale,
 	InstantConfigService,
 	slotDataParamsUpdater,
@@ -10,7 +11,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpSlotsStateSetup implements SlotsStateSetup {
+export class UcpSlotsStateSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	execute(): void {

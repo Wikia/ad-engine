@@ -1,8 +1,9 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
 	Dictionary,
+	DiProcess,
 	SlotConfig,
 	slotInjector,
 	slotService,
@@ -10,7 +11,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class MinervaDynamicSlotsSetup implements DynamicSlotsSetup {
+export class MinervaDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();

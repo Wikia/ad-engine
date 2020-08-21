@@ -1,5 +1,4 @@
-import { TemplatesSetup } from '@platforms/shared';
-import { logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
@@ -7,7 +6,7 @@ import { registerBfabTemplate } from './bfab-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 
 @Injectable()
-export class UcpHydraTemplatesSetup implements TemplatesSetup {
+export class UcpHydraTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}

@@ -1,8 +1,13 @@
-import { context, InstantConfigCacheStorage, InstantConfigService } from '@wikia/ad-engine';
+import {
+	context,
+	DiProcess,
+	InstantConfigCacheStorage,
+	InstantConfigService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class LabradorSetup {
+export class LabradorSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): void {

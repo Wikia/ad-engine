@@ -1,9 +1,8 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class BingeBotSlotsContextSetup implements SlotsContextSetup {
+export class BingeBotSlotsContextSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {

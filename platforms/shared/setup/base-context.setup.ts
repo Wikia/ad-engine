@@ -1,6 +1,7 @@
 import {
 	context,
 	Dictionary,
+	DiProcess,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
@@ -11,7 +12,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
 
 @Injectable()
-export class BaseContextSetup {
+export class BaseContextSetup implements DiProcess {
 	constructor(
 		protected instantConfig: InstantConfigService,
 		protected noAdsDetector: NoAdsDetector,

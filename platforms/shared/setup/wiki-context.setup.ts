@@ -1,6 +1,6 @@
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 
-export class WikiContextSetup {
+export class WikiContextSetup implements DiProcess {
 	execute(): void {
 		const wikiContext = {
 			beaconId: window.beaconId || window.beacon_id,

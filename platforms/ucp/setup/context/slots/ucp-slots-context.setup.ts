@@ -1,9 +1,8 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context, events, eventService } from '@wikia/ad-engine';
+import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpSlotsContextSetup implements SlotsContextSetup {
+export class UcpSlotsContextSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {

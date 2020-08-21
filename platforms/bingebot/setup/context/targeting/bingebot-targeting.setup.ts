@@ -1,11 +1,10 @@
-import { TargetingSetup } from '@platforms/shared';
-import { Binder, context, Dictionary, Targeting, utils } from '@wikia/ad-engine';
+import { Binder, context, Dictionary, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 const SKIN = Symbol('targeting skin');
 
 @Injectable()
-export class BingeBotTargetingSetup implements TargetingSetup {
+export class BingeBotTargetingSetup implements DiProcess {
 	static skin(skin: string): Binder {
 		return {
 			bind: SKIN,

@@ -1,9 +1,8 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class HydraSlotsContextSetup implements SlotsContextSetup {
+export class HydraSlotsContextSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {

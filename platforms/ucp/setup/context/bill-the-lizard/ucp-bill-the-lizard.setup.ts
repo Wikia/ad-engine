@@ -1,8 +1,9 @@
-import { BillTheLizardSetup, PageTracker } from '@platforms/shared';
+import { PageTracker } from '@platforms/shared';
 import {
 	billTheLizard,
 	billTheLizardEvents,
 	context,
+	DiProcess,
 	eventService,
 	InstantConfigService,
 } from '@wikia/ad-engine';
@@ -20,7 +21,7 @@ interface BillTheLizardConfig {
 }
 
 @Injectable()
-export class UcpBillTheLizardSetup implements BillTheLizardSetup {
+export class UcpBillTheLizardSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService, private pageTracker: PageTracker) {}
 
 	execute(): void {

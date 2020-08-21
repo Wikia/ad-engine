@@ -1,10 +1,11 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
 	communicationService,
 	context,
 	Dictionary,
+	DiProcess,
 	fillerService,
 	FmrRotator,
 	globalAction,
@@ -21,7 +22,7 @@ import { take } from 'rxjs/operators';
 const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
-export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
+export class UcpDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();

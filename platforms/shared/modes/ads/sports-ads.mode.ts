@@ -3,16 +3,16 @@ import {
 	bidders,
 	confiant,
 	context,
+	DiProcess,
 	durationMedia,
 	iasPublisherOptimization,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { wadRunner } from '../../services/wad-runner';
 import { startAdEngine } from '../start-ad-engine';
-import { AdsMode } from './_ads.mode';
 
 @Injectable()
-export class SportsAdsMode implements AdsMode {
+export class SportsAdsMode implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
 

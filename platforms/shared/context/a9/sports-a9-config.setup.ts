@@ -1,10 +1,9 @@
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { DeviceMode, getDeviceMode } from '../../models/device-mode';
-import { A9ConfigSetup } from '../../setup/_a9-config.setup';
 
 @Injectable()
-export class SportsA9ConfigSetup implements A9ConfigSetup {
+export class SportsA9ConfigSetup implements DiProcess {
 	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 

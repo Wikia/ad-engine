@@ -1,8 +1,8 @@
 import {
 	adEngineConfigured,
 	AdEngineRunnerSetup,
+	BiddersStateSetup,
 	bootstrapAndGetConsent,
-	CommonBiddersStateSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	ensureGeoCookie,
@@ -48,7 +48,7 @@ export class GamepediaPlatform {
 			GamepediaA9ConfigSetup,
 			GamepediaDynamicSlotsSetup,
 			CurseSlotsStateSetup,
-			CommonBiddersStateSetup,
+			BiddersStateSetup,
 			GamepediaTemplatesSetup,
 			LabradorSetup,
 			TrackingSetup,
