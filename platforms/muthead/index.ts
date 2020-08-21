@@ -1,26 +1,12 @@
-import {
-	bootstrapAndGetConsent,
-	ensureGeoCookie,
-	getDeviceMode,
-	PlatformStartup,
-} from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
-import { basicContext } from './ad-context';
-import { setupMutheadIoc } from './setup-muthead-ioc';
+import { MutheadPlatform } from './muthead-platform';
 import './styles.scss';
 
 async function start(): Promise<void> {
-	context.extend(basicContext);
+	const container = new Container();
+	const platform = container.get(MutheadPlatform);
 
-	const [container]: [Container, ...any[]] = await Promise.all([
-		setupMutheadIoc(),
-		ensureGeoCookie().then(() => bootstrapAndGetConsent()),
-	]);
-	const platformStartup = container.get(PlatformStartup);
-
-	platformStartup.configure({ isMobile: getDeviceMode() === 'mobile' });
-	platformStartup.run();
+	platform.execute();
 }
 
 start();
