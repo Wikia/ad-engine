@@ -8,7 +8,7 @@ const testParamsButton = document.getElementById('test-params');
 
 context.extend(adContext);
 
-set(window, 'fallbackConfig', {
+context.set('services.instantConfig.fallback', {
 	thisIsValueFromFallbackConfig: [{ regions: ['XX'] }],
 	wgAdDriverThisIsValueFromFallbackConfig: true,
 });

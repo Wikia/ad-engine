@@ -26,16 +26,6 @@ describe('It will test Confiant page', () => {
 		expect(network.checkIfHasResponse(confiant.configFile), 'config not loaded').to.be.true;
 	});
 
-	it('should check console logs', () => {
-		helpers.navigateToUrl(confiant.pageLink);
-		slots.topBoxad.waitForDisplayed();
-		browser.waitUntil(
-			() => network.checkIfMessageIsInLogs(confiant.blockedAdLog),
-			2000,
-			`Logs should contain message: ${confiant.blockedAdLog}`,
-		);
-	});
-
 	it('will test disabled confiant', () => {
 		helpers.navigateToUrl(confiant.pageLink, queryStrings.getConfiant(false));
 		slots.topBoxad.waitForDisplayed();
