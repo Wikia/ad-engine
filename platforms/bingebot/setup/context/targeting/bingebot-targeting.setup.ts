@@ -15,11 +15,11 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
 import { props } from 'ts-action';
 
-interface NewViewRenderedProps {
+interface ViewRenderedProps {
 	viewType: string;
 }
 
-const newViewRendered = globalAction('[BingeBot] view rendered', props<NewViewRenderedProps>());
+const viewRendered = globalAction('[BingeBot] view rendered', props<ViewRenderedProps>());
 
 const SKIN = Symbol('targeting skin');
 
@@ -39,7 +39,7 @@ export class BingeBotTargetingSetup implements TargetingSetup {
 
 		communicationService.action$
 			.pipe(
-				ofType(newViewRendered),
+				ofType(viewRendered),
 				shareReplay(1), // take only the newest value
 			)
 			.subscribe((action) => {
