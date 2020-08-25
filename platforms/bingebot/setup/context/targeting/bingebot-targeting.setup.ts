@@ -4,8 +4,6 @@ import {
 	communicationService,
 	context,
 	Dictionary,
-	events,
-	eventService,
 	globalAction,
 	ofType,
 	Targeting,
@@ -44,9 +42,6 @@ export class BingeBotTargetingSetup implements TargetingSetup {
 			)
 			.subscribe((action) => {
 				context.set('targeting.s2', action.viewType);
-				eventService.emit(events.PAGE_RENDER_EVENT, {
-					adContext: context,
-				});
 			});
 	}
 
