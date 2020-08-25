@@ -77,7 +77,7 @@ class TrackingOptInWrapper {
 		const instantConfig = await InstantConfigService.init();
 
 		await utils.scriptLoader.loadScript(
-			instantConfig.get('icTrackingOptInVersion') || trackingOptInLibraryUrl,
+			instantConfig.get('icTrackingOptInLibraryUrl') || trackingOptInLibraryUrl,
 		);
 	}
 
