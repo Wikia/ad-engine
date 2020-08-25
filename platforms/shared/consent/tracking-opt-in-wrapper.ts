@@ -66,7 +66,7 @@ class TrackingOptInWrapper {
 
 	private async loadTrackingOptInLibrary(): Promise<void> {
 		const trackingOptInLibraryUrl =
-			'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.8/tracking-opt-in.min.js';
+			'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.10/tracking-opt-in.min.js';
 
 		await utils.scriptLoader.loadScript(trackingOptInLibraryUrl);
 	}
