@@ -9,7 +9,7 @@ export class WikiContextSetup {
 			pvUID: window.pvUID,
 			sessionId: window.sessionId || window.session_id,
 
-			...(window.mw ? window.mw.config.values : {}),
+			...(window.mw && window.mw.config ? window.mw.config.values : {}),
 			...(window.ads ? window.ads.context : {}),
 		};
 

@@ -1,4 +1,4 @@
-import { RxJsOperator } from '@ad-engine/core';
+import { RxJsOperator } from '@ad-engine/models';
 import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
 import {
