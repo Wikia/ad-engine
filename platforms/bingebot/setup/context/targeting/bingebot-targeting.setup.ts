@@ -14,10 +14,10 @@ import { shareReplay } from 'rxjs/operators';
 import { props } from 'ts-action';
 
 interface NewViewRenderedProps {
-	s2: string;
+	viewType: string;
 }
 
-const newViewRendered = globalAction('[BingeBot] new view rendered', props<NewViewRenderedProps>());
+const newViewRendered = globalAction('[BingeBot] view rendered', props<NewViewRenderedProps>());
 
 const SKIN = Symbol('targeting skin');
 
@@ -41,7 +41,7 @@ export class BingeBotTargetingSetup implements TargetingSetup {
 				shareReplay(1), // take only the newest value
 			)
 			.subscribe((action) => {
-				context.set('targeting.s2', action.s2);
+				context.set('targeting.s2', action.viewType);
 			});
 	}
 
