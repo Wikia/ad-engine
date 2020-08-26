@@ -19,7 +19,7 @@ export class BingeBotViewRenderedSetup implements DiProcess {
 	async execute(): Promise<void> {
 		communicationService.action$
 			.pipe(ofType(viewRendered), onlyNew())
-			.subscribe(this.emitPageRenderEvent);
+			.subscribe(() => this.emitPageRenderEvent());
 	}
 
 	private emitPageRenderEvent(): void {
