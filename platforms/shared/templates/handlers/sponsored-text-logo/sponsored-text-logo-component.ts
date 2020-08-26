@@ -6,5 +6,5 @@ export const sponsoredTextLogoComponent = (params: SponsoredTextLogoParams) => `
 	<div class="promo-title">Sponsored By</div>
 	<hr class="title-line" />
 </div>
-<p class="promo-text">${params.text}</p>
+<p class="promo-text"><a href="${params.clickThroughURL}" target="_blank">${params.text}</a></p>
 `;
