@@ -1,27 +1,27 @@
 @mixin sponsored-text-logo() {
 	.sponsored-text-logo {
-		width: 100%;
-		text-align: center;
 		padding-bottom: 13px;
+		text-align: center;
+		width: 100%;
 
 		.title-container {
+			align-items: center;
 			display: flex;
 			margin-bottom: 8px;
-			align-items: center;
 
 			.title-line {
-				flex-grow: 1;
 				border-color: #5f7a7b;
+				flex-grow: 1;
 			}
 
 			.promo-title {
-				white-space: nowrap;
-				overflow: hidden;
 				font-size: 8px;
 				font-weight: bold;
 				text-transform: uppercase;
-				margin: 0 13px 0 13px;
 				line-height: 15px;
+				margin: 0 13px 0 13px;
+				overflow: hidden;
+				white-space: nowrap;
 			}
 		}
 
