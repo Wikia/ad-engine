@@ -22,7 +22,7 @@ export class BingeBotViewRenderedSetup implements DiProcess {
 			.subscribe(this.emitPageRenderEvent);
 	}
 
-	emitPageRenderEvent(): void {
+	private emitPageRenderEvent(): void {
 		eventService.emit(events.PAGE_RENDER_EVENT);
 	}
 }
