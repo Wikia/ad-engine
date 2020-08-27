@@ -1,4 +1,11 @@
-import { communicationService, context, globalAction, ofType, utils } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	globalAction,
+	InstantConfigService,
+	ofType,
+	utils,
+} from '@wikia/ad-engine';
 import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
@@ -28,6 +35,8 @@ const setOptInInstances = globalAction(
 	props<OptInInstances>(),
 );
 
+const trackingOptInLibraryUrl =
+	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.13/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
@@ -65,10 +74,11 @@ class TrackingOptInWrapper {
 	}
 
 	private async loadTrackingOptInLibrary(): Promise<void> {
-		const trackingOptInLibraryUrl =
-			'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.13/tracking-opt-in.min.js';
+		const instantConfig = await InstantConfigService.init();
 
-		await utils.scriptLoader.loadScript(trackingOptInLibraryUrl);
+		await utils.scriptLoader.loadScript(
+			instantConfig.get('icTrackingOptInLibraryUrl') || trackingOptInLibraryUrl,
+		);
 	}
 
 	private handleLibraryTimeout(libraryPromise: Promise<void>): void {
