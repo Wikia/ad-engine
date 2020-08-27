@@ -219,22 +219,6 @@
             ]
         }
     ],
-    "icTrackingOptInVersion": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.8/tracking-opt-in.min.js"
-        }
-    ],
     "icBidsTracking": [
         {
             "apps": [
@@ -292,6 +276,9 @@
         {
             "apps": [
                 "gamepedia"
+            ],
+            "regions": [
+                "CA"
             ],
             "value": "//tag.durationmedia.net/sites/10652/dm.js"
         },
@@ -421,8 +408,10 @@
             "regions": [
                 "AR",
                 "AT",
+                "AU",
                 "BE",
                 "BR",
+                "CA",
                 "CL",
                 "CN",
                 "CO",
@@ -436,18 +425,21 @@
                 "IT",
                 "JP",
                 "KR",
+                "MX",
                 "MY",
                 "NL",
                 "NZ",
                 "PE",
                 "PH",
                 "PL",
+                "RU",
                 "SE",
                 "SG",
                 "TH",
                 "TR",
                 "TW",
                 "UA",
+                "US",
                 "VN"
             ],
             "value": true
@@ -529,6 +521,22 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.10/tracking-opt-in.min.js"
         }
     ],
     "icTabIdTracking": [
