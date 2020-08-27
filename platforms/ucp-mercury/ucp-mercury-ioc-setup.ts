@@ -14,7 +14,7 @@ export class UcpMercuryIocSetup implements DiProcess {
 	constructor(private container: Container) {}
 
 	async execute(): Promise<void> {
-		this.container.bind(UcpTargetingSetup.skin('mobile-wiki'));
+		this.container.bind(UcpTargetingSetup.skin('mercury'));
 
 		TrackingSetup.provideMiddlewares({
 			slotTrackingMiddlewares: [
