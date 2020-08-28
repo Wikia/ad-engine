@@ -4,20 +4,13 @@ import {
 	communicationService,
 	context,
 	Dictionary,
-	globalAction,
 	ofType,
 	Targeting,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
-import { props } from 'ts-action';
-
-interface ViewRenderedProps {
-	viewType: string;
-}
-
-const viewRendered = globalAction('[BingeBot] view rendered', props<ViewRenderedProps>());
+import { viewRendered } from '../../../setup-bingebot';
 
 const SKIN = Symbol('targeting skin');
 
