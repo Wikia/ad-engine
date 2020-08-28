@@ -1,34 +1,39 @@
 @mixin sponsored-text-logo() {
 	.sponsored-text-logo {
-		width: 100%;
-		text-align: center;
 		padding-bottom: 13px;
+		text-align: center;
+		width: 100%;
 
 		.title-container {
-			display: flex;
-			margin-bottom: 8px;
 			align-items: center;
+			display: flex;
+			margin-bottom: 4px;
 
 			.title-line {
-				flex-grow: 1;
 				border-color: #5f7a7b;
+				flex-grow: 1;
 			}
 
 			.promo-title {
-				white-space: nowrap;
-				overflow: hidden;
 				font-size: 8px;
 				font-weight: bold;
 				text-transform: uppercase;
-				margin: 0 13px 0 13px;
 				line-height: 15px;
+				margin: 0 13px;
+				overflow: hidden;
+				white-space: nowrap;
 			}
 		}
 
-		.promo-text {
+		.promo-text,
+		.promo-text a {
+			color: inherit;
 			font-size: 12px;
 			line-height: 17px;
-			margin-bottom: 13px;
+			margin-bottom: 8px;
+			overflow: hidden;
+			text-decoration: none;
+			white-space: nowrap;
 		}
 	}
 }
