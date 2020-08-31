@@ -2,7 +2,6 @@ import { context, events, eventService } from '../services';
 
 export function setupGptTargeting(): void {
 	const tag = window.googletag.pubads();
-	const targeting = context.get('targeting') || {};
 
 	function setTargetingValue(
 		key: string,
@@ -18,6 +17,8 @@ export function setupGptTargeting(): void {
 	}
 
 	function setTargetingFromContext(): void {
+		const targeting = context.get('targeting') || {};
+
 		Object.keys(targeting).forEach((key) => {
 			setTargetingValue(key, targeting[key]);
 		});
@@ -33,6 +34,14 @@ export function setupGptTargeting(): void {
 		const segments = trigger.split('.');
 		const key = segments[segments.length - 1];
 
-		setTargetingValue(key, value);
+		// trigger=targeting means that whole targeting
+		// dictionary was replaced in the context
+		if (trigger === 'targeting') {
+			Object.keys(value).forEach((dictionaryKey) => {
+				setTargetingValue(dictionaryKey, value[dictionaryKey]);
+			});
+		} else {
+			setTargetingValue(key, value);
+		}
 	});
 }

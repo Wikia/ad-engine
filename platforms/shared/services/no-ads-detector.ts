@@ -15,4 +15,8 @@ export class NoAdsDetector {
 	addReason(reason: string): void {
 		this.reasons.unshift(reason);
 	}
+
+	reset(): void {
+		this.reasons = [];
+	}
 }

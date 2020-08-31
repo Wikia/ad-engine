@@ -7,7 +7,8 @@
 			"@ad-engine/core": ["src/ad-engine"],
 			"@ad-engine/services": ["src/ad-services"],
 			"@ad-engine/tracking": ["src/ad-tracking"],
-			"@ad-engine/communication": ["src/communication"]
+			"@ad-engine/communication": ["src/communication"],
+			"@ad-engine/models": ["src/models"]
 		}
 	},
 	"include": ["."]

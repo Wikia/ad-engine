@@ -1,5 +1,23 @@
-import { Binder, context, Dictionary, DiProcess, Targeting, utils } from '@wikia/ad-engine';
+import {
+	Binder,
+	communicationService,
+	context,
+	Dictionary,
+	DiProcess,
+	globalAction,
+	ofType,
+	Targeting,
+	utils,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { shareReplay } from 'rxjs/operators';
+import { props } from 'ts-action';
+
+interface ViewRenderedProps {
+	viewType: string;
+}
+
+const viewRendered = globalAction('[BingeBot] view rendered', props<ViewRenderedProps>());
 
 const SKIN = Symbol('targeting skin');
 
@@ -16,6 +34,15 @@ export class BingeBotTargetingSetup implements DiProcess {
 
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+
+		communicationService.action$
+			.pipe(
+				ofType(viewRendered),
+				shareReplay(1), // take only the newest value
+			)
+			.subscribe((action) => {
+				context.set('targeting.s2', action.viewType);
+			});
 	}
 
 	getPageLevelTargeting(): Partial<Targeting> {

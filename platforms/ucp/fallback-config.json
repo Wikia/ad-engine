@@ -380,7 +380,17 @@
 				"5334881004",
 				"5451772486",
 				"5453529357",
-				"5447937745"
+				"5447937745",
+				"5454674848",
+				"5454674845",
+				"5458267900",
+				"5460357292",
+				"5460673082",
+				"5460673085",
+				"5460673343",
+				"5452088588",
+				"5452088585",
+				"5451829654"
 			]
 		}
 	],
@@ -500,6 +510,7 @@
 	"icDurationMediaLibraryUrl": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
+			"regions": ["XX"],
 			"value": "//tag.durationmedia.net/sites/10651/dm.js"
 		},
 		{
@@ -576,8 +587,10 @@
 			"regions": [
 				"AR",
 				"AT",
+				"AU",
 				"BE",
 				"BR",
+				"CA",
 				"CL",
 				"CN",
 				"CO",
@@ -591,18 +604,21 @@
 				"IT",
 				"JP",
 				"KR",
+				"MX",
 				"MY",
 				"NL",
 				"NZ",
 				"PE",
 				"PH",
 				"PL",
+				"RU",
 				"SE",
 				"SG",
 				"TH",
 				"TR",
 				"TW",
 				"UA",
+				"US",
 				"VN"
 			],
 			"value": true
@@ -647,6 +663,13 @@
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
+		}
+	],
+	"icTrackingOptInLibraryUrl": [
+		{
+			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["XX"],
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.15/tracking-opt-in.min.js"
 		}
 	],
 	"icPermutive": [
