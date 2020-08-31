@@ -243,7 +243,7 @@
                 "muthead"
             ],
             "regions": [
-                "CA"
+                "XX"
             ],
             "value": "//tag.durationmedia.net/sites/10655/dm.js"
         },
@@ -502,7 +502,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.13/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.15/tracking-opt-in.min.js"
         }
     ],
     "icDurationMedia": [
