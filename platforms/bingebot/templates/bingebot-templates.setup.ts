@@ -5,7 +5,7 @@ import { registerSponsoredLogoTemplate } from './sponsored-logo-template';
 import { registerSponsoredTextLogoTemplate } from './sponsored-text-logo-template';
 
 @Injectable()
-export class BingebotTemplatesSetup implements DiProcess {
+export class BingeBotTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}
