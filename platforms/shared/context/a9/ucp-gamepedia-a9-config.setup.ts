@@ -4,7 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { DeviceMode, getDeviceMode } from '../../models/device-mode';
 
 @Injectable()
-export class GamepediaA9ConfigSetup implements DiProcess {
+export class UcpGamepediaA9ConfigSetup implements DiProcess {
 	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 
