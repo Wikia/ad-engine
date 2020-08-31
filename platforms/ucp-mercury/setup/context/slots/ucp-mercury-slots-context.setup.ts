@@ -1,5 +1,4 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context, events, eventService } from '@wikia/ad-engine';
+import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 const BIG_VIEWPORT_SIZE = {
@@ -8,7 +7,7 @@ const BIG_VIEWPORT_SIZE = {
 };
 
 @Injectable()
-export class UcpMercurySlotsContextSetup implements SlotsContextSetup {
+export class UcpMercurySlotsContextSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {
