@@ -37,7 +37,8 @@ export class MutheadPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			parallel(InstantConfigSetup, () => ensureGeoCookie().then(() => bootstrapAndGetConsent())),
+			() => ensureGeoCookie(),
+			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			MutheadIocSetup,
 			WikiContextSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),

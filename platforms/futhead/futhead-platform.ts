@@ -37,7 +37,8 @@ export class FutheadPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			parallel(InstantConfigSetup, () => ensureGeoCookie().then(() => bootstrapAndGetConsent())),
+			() => ensureGeoCookie(),
+			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			FutheadIocSetup,
 			WikiContextSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),

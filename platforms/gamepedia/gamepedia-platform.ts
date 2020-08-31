@@ -37,7 +37,8 @@ export class GamepediaPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
-			parallel(InstantConfigSetup, () => ensureGeoCookie().then(() => bootstrapAndGetConsent())),
+			() => ensureGeoCookie(),
+			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			GamepediaIocSetup,
 			WikiContextSetup,
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
