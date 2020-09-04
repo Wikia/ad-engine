@@ -45,7 +45,7 @@
 	"icPrebidOneVideo": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
-			"regions": ["CA", "PL", "US"],
+			"regions": ["CA", "US"],
 			"value": true
 		}
 	],
@@ -85,6 +85,7 @@
 			"devices": ["desktop"],
 			"regions": ["XX"],
 			"sampling": 50.0,
+			"samplingCache": true,
 			"value": true
 		}
 	],
@@ -151,7 +152,7 @@
 	],
 	"icSlotTracking": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
@@ -165,7 +166,7 @@
 	],
 	"icViewabilityTracking": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
@@ -390,7 +391,12 @@
 				"5460673343",
 				"5452088588",
 				"5452088585",
-				"5451829654"
+				"5451829654",
+				"5465152035",
+				"5461291396",
+				"5459355788",
+				"5460496953",
+				"5460497508"
 			]
 		}
 	],
@@ -584,43 +590,7 @@
 	"icTcf2Enabled": [
 		{
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": [
-				"AR",
-				"AT",
-				"AU",
-				"BE",
-				"BR",
-				"CA",
-				"CL",
-				"CN",
-				"CO",
-				"ES",
-				"FI",
-				"FR",
-				"HK",
-				"ID",
-				"IE",
-				"IN",
-				"IT",
-				"JP",
-				"KR",
-				"MX",
-				"MY",
-				"NL",
-				"NZ",
-				"PE",
-				"PH",
-				"PL",
-				"RU",
-				"SE",
-				"SG",
-				"TH",
-				"TR",
-				"TW",
-				"UA",
-				"US",
-				"VN"
-			],
+			"regions": ["XX"],
 			"value": true
 		}
 	],
@@ -646,8 +616,8 @@
 	"icDistroScale": [
 		{
 			"apps": ["oasis"],
-			"regions": ["CA"],
-			"sampling": 50.0,
+			"regions": ["CA", "US"],
+			"sampling": 10.0,
 			"value": true
 		}
 	],
@@ -669,7 +639,7 @@
 		{
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
-			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.15/tracking-opt-in.min.js"
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.17/tracking-opt-in.min.js"
 		}
 	],
 	"icPermutive": [
@@ -691,6 +661,43 @@
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": 2000
+		}
+	],
+	"icDeRecoExperiment": [
+		{
+			"apps": ["oasis"],
+			"browsers": ["Chrome"],
+			"devices": ["desktop"],
+			"regions": ["PL"],
+			"value": {
+				"name": "just_testing",
+				"groups": [
+					{
+						"name": "A",
+						"config": {
+							"wikiStrategy": "ARL",
+							"articleStrategy": "CV"
+						},
+						"sampling": 25
+					},
+					{
+						"name": "B",
+						"config": {
+							"wikiStrategy": "ARL",
+							"articleStrategy": "CV"
+						},
+						"sampling": 25
+					},
+					{
+						"name": "X",
+						"config": {
+							"wikiStrategy": "ARL",
+							"articleStrategy": "CV"
+						},
+						"sampling": 25
+					}
+				]
+			}
 		}
 	]
 }

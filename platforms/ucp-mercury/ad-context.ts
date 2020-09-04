@@ -33,7 +33,7 @@ export const basicContext = {
 			'{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiDBNameIdentifier}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: 'ucp',
+		rollout_tracking: ['ucp'],
 		skin: 'mercury',
 		uap: 'none',
 		uap_c: 'none',

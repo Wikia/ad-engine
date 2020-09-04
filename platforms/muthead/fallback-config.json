@@ -174,43 +174,7 @@
 	"icTcf2Enabled": [
 		{
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": [
-				"AR",
-				"AT",
-				"AU",
-				"BE",
-				"BR",
-				"CA",
-				"CL",
-				"CN",
-				"CO",
-				"ES",
-				"FI",
-				"FR",
-				"HK",
-				"ID",
-				"IE",
-				"IN",
-				"IT",
-				"JP",
-				"KR",
-				"MX",
-				"MY",
-				"NL",
-				"NZ",
-				"PE",
-				"PH",
-				"PL",
-				"RU",
-				"SE",
-				"SG",
-				"TH",
-				"TR",
-				"TW",
-				"UA",
-				"US",
-				"VN"
-			],
+			"regions": ["XX"],
 			"value": true
 		}
 	],
@@ -230,14 +194,14 @@
 	],
 	"icSlotTracking": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
 	],
 	"icViewabilityTracking": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": true
 		}
@@ -253,7 +217,7 @@
 		{
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
-			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.15/tracking-opt-in.min.js"
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.17/tracking-opt-in.min.js"
 		}
 	],
 	"icDurationMedia": [
