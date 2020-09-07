@@ -9,6 +9,7 @@ interface AdSlotInjectedProps {
 	slotId: string;
 }
 
+export const beforeViewChange = globalAction('[BingeBot] before view change');
 export const viewRendered = globalAction('[BingeBot] view rendered', props<ViewRenderedProps>());
 export const adSlotInjected = globalAction(
 	'[BingeBot] ad slot injected',

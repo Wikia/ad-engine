@@ -20,7 +20,7 @@ import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
 import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynamic-slots.setup';
-import { BingeBotBeforeViewRenderedSetup } from './setup/hooks/bingebot-before-view-rendered-setup';
+import { BingeBotBeforeViewChangeSetup } from './setup/hooks/bingebot-before-view-change-setup';
 import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 
 @Injectable()
@@ -38,7 +38,7 @@ export class BingeBotPlatform {
 			BingeBotTargetingSetup,
 			BingeBotDynamicSlotsSetup,
 			BingeBotTemplatesSetup,
-			BingeBotBeforeViewRenderedSetup,
+			BingeBotBeforeViewChangeSetup,
 			() => communicationService.dispatch(adEngineConfigured()),
 		);
 
