@@ -102,13 +102,14 @@ export class SafeFanTakeoverElement {
 	}
 
 	private getBoxadImageUrl(): string {
-		return this.adSlot.getCreativeSize() === '300x600'
-			? SafeFanTakeoverElement.config.desktop.images.boxad300x600
-			: SafeFanTakeoverElement.config.desktop.images.boxad300x250;
+		const { height, width } = this.getBoxadSize();
+
+		return SafeFanTakeoverElement.config.desktop.images[`boxad${width}x${height}`];
 	}
 
 	private getBoxadSize(): Size {
-		return this.adSlot.getCreativeSize() === '300x600'
+		return this.adSlot.getCreativeSize() === '300x600' ||
+			this.adSlot.getCreativeSize() === '300x601'
 			? { height: 600, width: 300 }
 			: { height: 250, width: 300 };
 	}
