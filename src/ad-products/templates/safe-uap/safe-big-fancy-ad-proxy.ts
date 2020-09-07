@@ -34,6 +34,16 @@ export class SafeBigFancyAdProxy {
 				context.set(`slots.${slotName}.targeting.src`, 'uap');
 			});
 
+			const boxadSlotNames = context.get('templates.safeFanTakeoverElement.boxadSlotNames');
+			const boxadSize = context.get('templates.safeFanTakeoverElement.boxadSize');
+
+			if (boxadSlotNames && boxadSize) {
+				boxadSlotNames.forEach((slotName) => {
+					context.set(`slots.${slotName}.sizes`, []);
+					context.set(`slots.${slotName}.defaultSizes`, [boxadSize]);
+				});
+			}
+
 			btfBlockerService.finishFirstCall();
 		}
 	}
