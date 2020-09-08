@@ -617,7 +617,7 @@
 		{
 			"apps": ["oasis"],
 			"regions": ["CA", "US"],
-			"sampling": 10.0,
+			"sampling": 20.0,
 			"value": true
 		}
 	],
@@ -666,9 +666,6 @@
 	"icDeRecoExperiment": [
 		{
 			"apps": ["oasis"],
-			"browsers": ["Chrome"],
-			"devices": ["desktop"],
-			"regions": ["PL"],
 			"value": {
 				"name": "just_testing",
 				"groups": [
