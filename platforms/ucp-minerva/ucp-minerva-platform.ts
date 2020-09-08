@@ -21,6 +21,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { MinervaAdsMode } from './modes/minerva-ads-mode';
 import { MinervaSlotsContextSetup } from './setup/context/slots/minerva-slots-context-setup';
@@ -29,6 +30,7 @@ import { MinervaSlotsStateSetup } from './setup/state/slots/minerva-slots-state-
 import { UcpMinervaTemplatesSetup } from './templates/ucp-minerva-templates.setup';
 import { UcpMinervaIocSetup } from './ucp-minerva-ioc-setup';
 
+@Injectable()
 export class UcpMinervaPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

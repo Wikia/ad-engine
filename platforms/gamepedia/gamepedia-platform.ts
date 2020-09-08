@@ -22,6 +22,7 @@ import {
 	ProcessPipeline,
 	utils,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { GamepediaIocSetup } from './gamepedia-ioc-setup';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
@@ -30,6 +31,7 @@ import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-tar
 import { GamepediaDynamicSlotsSetup } from './setup/dynamic-slots/gamepedia-dynamic-slots.setup';
 import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
 
+@Injectable()
 export class GamepediaPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

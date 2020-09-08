@@ -21,6 +21,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { HydraAdsMode } from './modes/hydra-ads-mode';
 import { HydraSlotsContextSetup } from './setup/context/slots/hydra-slots-context-setup';
@@ -29,6 +30,7 @@ import { HydraSlotsStateSetup } from './setup/state/slots/hydra-slots-state-setu
 import { UcpHydraTemplatesSetup } from './templates/ucp-hydra-templates.setup';
 import { UcpHydraIocSetup } from './ucp-hydra-ioc-setup';
 
+@Injectable()
 export class UcpHydraPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

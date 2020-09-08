@@ -23,6 +23,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { MutheadIocSetup } from './muthead-ioc-setup';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
@@ -30,6 +31,7 @@ import { MutheadDynamicSlotsSetup } from './setup/dynamic-slots/muthead-dynamic-
 import { MutheadTargetingSetup } from './setup/targeting/muthead-targeting.setup';
 import { MutheadTemplatesSetup } from './templates/muthead-templates.setup';
 
+@Injectable()
 export class MutheadPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

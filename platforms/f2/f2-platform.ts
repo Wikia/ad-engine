@@ -15,6 +15,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { F2IocSetup } from './f2-ioc-setup';
 import { F2AdsMode } from './modes/f2-ads.mode';
@@ -25,6 +26,7 @@ import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setu
 import { F2BaseContextSetup } from './setup/f2-base-context.setup';
 import { F2TemplateSetup } from './templates/f2-template.setup';
 
+@Injectable()
 export class F2Platform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 

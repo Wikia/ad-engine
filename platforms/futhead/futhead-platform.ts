@@ -23,6 +23,7 @@ import {
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { FutheadIocSetup } from './futhead-ioc-setup';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
@@ -30,6 +31,7 @@ import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeti
 import { FutheadDynamicSlotsSetup } from './setup/dynamic-slots/futhead-dynamic-slots.setup';
 import { FutheadTemplatesSetup } from './templates/futhead-templates.setup';
 
+@Injectable()
 export class FutheadPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
