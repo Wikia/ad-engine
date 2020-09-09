@@ -42,6 +42,12 @@
 			"value": true
 		}
 	],
+	"icTrackingOptInGoogleMove": [
+		{
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"value": false
+		}
+	],
 	"icPrebidOneVideo": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
@@ -617,7 +623,7 @@
 		{
 			"apps": ["oasis"],
 			"regions": ["CA", "US"],
-			"sampling": 20.0,
+			"sampling": 50.0,
 			"value": true
 		}
 	],
@@ -637,7 +643,12 @@
 	],
 	"icTrackingOptInLibraryUrl": [
 		{
-			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["JP", "NL", "PL"],
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.18/tracking-opt-in.min.js"
+		},
+		{
+			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.17/tracking-opt-in.min.js"
 		}
@@ -661,40 +672,6 @@
 			"apps": ["f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": 2000
-		}
-	],
-	"icDeRecoExperiment": [
-		{
-			"apps": ["oasis"],
-			"value": {
-				"name": "just_testing",
-				"groups": [
-					{
-						"name": "A",
-						"config": {
-							"wikiStrategy": "ARL",
-							"articleStrategy": "CV"
-						},
-						"sampling": 25
-					},
-					{
-						"name": "B",
-						"config": {
-							"wikiStrategy": "ARL",
-							"articleStrategy": "CV"
-						},
-						"sampling": 25
-					},
-					{
-						"name": "X",
-						"config": {
-							"wikiStrategy": "ARL",
-							"articleStrategy": "CV"
-						},
-						"sampling": 25
-					}
-				]
-			}
 		}
 	]
 }
