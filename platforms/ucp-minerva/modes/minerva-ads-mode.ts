@@ -1,9 +1,10 @@
-import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
 	confiant,
 	context,
+	DiProcess,
 	durationMedia,
 	events,
 	eventService,
@@ -17,7 +18,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class MinervaAdsMode implements AdsMode {
+export class MinervaAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker) {}
 
 	execute(): void {

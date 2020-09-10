@@ -1,10 +1,17 @@
-import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
-import { communicationService, context, JWPlayerManager, jwpSetup, Runner } from '@wikia/ad-engine';
+import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import {
+	communicationService,
+	context,
+	DiProcess,
+	JWPlayerManager,
+	jwpSetup,
+	Runner,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class UcpMercuryAdsMode implements AdsMode {
+export class UcpMercuryAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker) {}
 
 	execute(): void {

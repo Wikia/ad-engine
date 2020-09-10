@@ -1,4 +1,4 @@
-import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
@@ -6,6 +6,7 @@ import {
 	communicationService,
 	confiant,
 	context,
+	DiProcess,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -20,7 +21,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class UcpAdsMode implements AdsMode {
+export class UcpAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker) {}
 
 	execute(): void {

@@ -1,8 +1,8 @@
 import {
 	adEngineConfigured,
 	AdEngineRunnerSetup,
+	BiddersStateSetup,
 	bootstrapAndGetConsent,
-	CommonBiddersStateSetup,
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
@@ -23,7 +23,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpAdsMode } from './modes/ucp-ads.mode';
 import { UcpA9ConfigSetup } from './setup/context/a9/a9';
-import { UcpBillTheLizardSetup } from './setup/context/bill-the-lizard/bill-the-lizard.setup';
+import { UcpBillTheLizardSetup } from './setup/context/bill-the-lizard/ucp-bill-the-lizard.setup';
 import { UcpPrebidConfigSetup } from './setup/context/prebid/ucp-prebid-config.setup';
 import { UcpSlotsContextSetup } from './setup/context/slots/ucp-slots-context.setup';
 import { UcpDynamicSlotsSetup } from './setup/dynamic-slots/ucp-dynamic-slots.setup';
@@ -50,7 +50,7 @@ export class UcpPlatform {
 			UcpA9ConfigSetup,
 			UcpDynamicSlotsSetup,
 			UcpSlotsStateSetup,
-			CommonBiddersStateSetup,
+			BiddersStateSetup,
 			UcpTemplatesSetup,
 			UcpBillTheLizardSetup,
 			LabradorSetup,

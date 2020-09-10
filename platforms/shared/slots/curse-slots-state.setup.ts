@@ -1,10 +1,9 @@
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { SlotsStateSetup } from '../setup/_slots-state.setup';
 import { slotsContext } from './slots-context';
 
 @Injectable()
-export class CurseSlotsStateSetup implements SlotsStateSetup {
+export class CurseSlotsStateSetup implements DiProcess {
 	execute(): void {
 		slotsContext.setState('cdm-zone-01', true);
 		slotsContext.setState('cdm-zone-02', true);

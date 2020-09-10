@@ -1,5 +1,5 @@
-import { DeviceMode, getDeviceMode, getWikiaContext, PrebidConfigSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { DeviceMode, getDeviceMode, getWikiaContext } from '@platforms/shared';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAppNexusContext } from '../../../bidders/prebid/app-nexus';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
@@ -10,7 +10,7 @@ import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 
 @Injectable()
-export class FutheadPrebidConfigSetup implements PrebidConfigSetup {
+export class FutheadPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 

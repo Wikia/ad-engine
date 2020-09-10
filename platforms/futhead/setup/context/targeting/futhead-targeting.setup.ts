@@ -1,9 +1,9 @@
-import { getDomain, getSportsPageType, TargetingSetup } from '@platforms/shared';
-import { context, Targeting, utils } from '@wikia/ad-engine';
+import { getDomain, getSportsPageType } from '@platforms/shared';
+import { context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class FutheadTargetingSetup implements TargetingSetup {
+export class FutheadTargetingSetup implements DiProcess {
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 	}

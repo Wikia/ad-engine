@@ -1,9 +1,10 @@
-import { AdsMode, startAdEngine, wadRunner } from '@platforms/shared';
+import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
 	confiant,
 	context,
+	DiProcess,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -15,7 +16,7 @@ import { hideAllAdSlots } from '../templates/hide-all-ad-slots';
 import { editModeManager } from '../utils/edit-mode-manager';
 
 @Injectable()
-export class GamepediaAdsMode implements AdsMode {
+export class GamepediaAdsMode implements DiProcess {
 	execute(): void {
 		editModeManager.onActivate(() => hideAllAdSlots());
 

@@ -1,8 +1,9 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	btfBlockerService,
 	communicationService,
 	context,
+	DiProcess,
 	events,
 	eventService,
 	ofType,
@@ -14,7 +15,7 @@ import { f2ArticleFeedLoaded, f2FeedLoaded } from '../../f2.actions';
 import { F2SlotsDefinitionRepository, SlotSetupDefinition } from './f2-slots-definition-repository';
 
 @Injectable()
-export class F2DynamicSlotsSetup implements DynamicSlotsSetup {
+export class F2DynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotCreator: SlotCreator,
 		private slotsDefinitionRepository: F2SlotsDefinitionRepository,

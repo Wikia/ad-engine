@@ -129,7 +129,7 @@ export class GptProvider implements Provider {
 		configure();
 		this.setupNonPersonalizedAds();
 		this.setupRestrictDataProcessing();
-		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
+		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.updateCorrelator());
 		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
 			this.destroySlot(adSlot.getSlotName());
 		});

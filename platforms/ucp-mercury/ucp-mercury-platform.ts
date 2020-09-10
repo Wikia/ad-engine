@@ -1,7 +1,7 @@
 import {
 	adEngineConfigured,
 	AdEngineRunnerSetup,
-	CommonBiddersStateSetup,
+	BiddersStateSetup,
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
@@ -43,7 +43,7 @@ export class UcpMercuryPlatform {
 			UcpMercurySlotsContextSetup,
 			UcpTargetingSetup,
 			UcpMercuryDynamicSlotsSetup,
-			CommonBiddersStateSetup,
+			BiddersStateSetup,
 			LabradorSetup,
 			once(TrackingSetup),
 			once(AdEngineRunnerSetup),

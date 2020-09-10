@@ -1,10 +1,10 @@
-import { getBfaaConfig, getBfabConfig, TemplatesSetup } from '@platforms/shared';
-import { BigFancyAdAbove, BigFancyAdBelow, templateService } from '@wikia/ad-engine';
+import { getBfaaConfig, getBfabConfig } from '@platforms/shared';
+import { BigFancyAdAbove, BigFancyAdBelow, DiProcess, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { LogoReplacement } from './logo-replacement/logo-replacement-futhead-template';
 
 @Injectable()
-export class FutheadTemplatesSetup implements TemplatesSetup {
+export class FutheadTemplatesSetup implements DiProcess {
 	execute(): void {
 		templateService.register(BigFancyAdAbove, getBfaaConfig());
 		templateService.register(BigFancyAdBelow, getBfabConfig());

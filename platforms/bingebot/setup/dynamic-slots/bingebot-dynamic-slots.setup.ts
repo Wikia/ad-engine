@@ -2,21 +2,12 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	globalAction,
 	ofType,
 	slotService,
 	TemplateRegistry,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { props } from 'ts-action';
-
-interface AdSlotInjectedProps {
-	slotId: string;
-}
-
-const adSlotInjected = globalAction('[BingeBot] ad slot injected', props<AdSlotInjectedProps>());
-
-const destroyAdSlot = globalAction('[BingeBot] destroy ad slot', props<AdSlotInjectedProps>());
+import { adSlotInjected, destroyAdSlot } from '../../setup-bingebot';
 
 @Injectable()
 export class BingeBotDynamicSlotsSetup implements DiProcess {

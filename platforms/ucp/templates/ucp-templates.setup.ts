@@ -1,5 +1,5 @@
-import { TemplatesSetup } from '@platforms/shared';
 import {
+	DiProcess,
 	logTemplates,
 	PorvataTemplate,
 	SafeFanTakeoverElement,
@@ -18,7 +18,7 @@ import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
-export class UcpTemplatesSetup implements TemplatesSetup {
+export class UcpTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}

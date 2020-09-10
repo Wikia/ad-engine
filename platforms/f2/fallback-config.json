@@ -251,8 +251,28 @@
                 "5451829654",
                 "5465152035",
                 "5461291396",
-                "5459355788"
+                "5459355788",
+                "5460496953",
+                "5460497508"
             ]
+        }
+    ],
+    "icTrackingOptInGoogleMove": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "JP",
+                "NL"
+            ],
+            "value": true
         }
     ],
     "icSafeFanTakeoverUnstickTimeout": [
@@ -346,6 +366,25 @@
     "icTrackingOptInLibraryUrl": [
         {
             "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "JP",
+                "NL",
+                "PL",
+                "SG"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.18/tracking-opt-in.min.js"
+        },
+        {
+            "apps": [
+                "bingebot",
                 "f2",
                 "futhead",
                 "gamepedia",

@@ -76,6 +76,24 @@
             ]
         }
     ],
+    "icTrackingOptInGoogleMove": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "JP",
+                "NL"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
@@ -494,6 +512,25 @@
     "icTrackingOptInLibraryUrl": [
         {
             "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "JP",
+                "NL",
+                "PL",
+                "SG"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.18/tracking-opt-in.min.js"
+        },
+        {
+            "apps": [
+                "bingebot",
                 "f2",
                 "futhead",
                 "gamepedia",
