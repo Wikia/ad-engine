@@ -15,7 +15,7 @@ interface ViewRenderedProps {
 const viewRendered = globalAction('[BingeBot] view rendered', props<ViewRenderedProps>());
 
 @Injectable()
-export class BingebotTrackingSetup extends TrackingSetup {
+export class BingeBotTrackingSetup extends TrackingSetup {
 	execute(): void {
 		communicationService.action$
 			.pipe(

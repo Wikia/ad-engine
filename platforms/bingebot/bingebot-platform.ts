@@ -18,10 +18,10 @@ import { BingeBotIocSetup } from './bingebot-ioc-setup';
 import { BingeBotAdsMode } from './modes/bingebot-ads.mode';
 import { BingeBotSlotsContextSetup } from './setup/context/slots/bingebot-slots-context.setup';
 import { BingeBotTargetingSetup } from './setup/context/targeting/bingebot-targeting.setup';
-import { BingebotTrackingSetup } from './setup/context/tracking/bingebot-tracking.setup';
+import { BingeBotTrackingSetup } from './setup/context/tracking/bingebot-tracking.setup';
 import { BingeBotDynamicSlotsSetup } from './setup/dynamic-slots/bingebot-dynamic-slots.setup';
 import { BingeBotViewRenderedSetup } from './setup/hooks/bingebot-view-rendered-setup';
-import { BingebotTemplatesSetup } from './templates/bingebot-templates.setup';
+import { BingeBotTemplatesSetup } from './templates/bingebot-templates.setup';
 
 @Injectable()
 export class BingeBotPlatform {
@@ -36,8 +36,8 @@ export class BingeBotPlatform {
 			BingeBotSlotsContextSetup,
 			BingeBotTargetingSetup,
 			BingeBotDynamicSlotsSetup,
-			BingebotTemplatesSetup,
-			BingebotTrackingSetup,
+			BingeBotTemplatesSetup,
+			BingeBotTrackingSetup,
 			BingeBotViewRenderedSetup,
 			() => communicationService.dispatch(adEngineConfigured()),
 		);
