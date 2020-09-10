@@ -1,24 +1,11 @@
-import { adEngineConfigured, bootstrapAndGetConsent, PlatformStartup } from '@platforms/shared';
-import { communicationService, context } from '@wikia/ad-engine';
 import { Container } from '@wikia/dependency-injection';
-import { basicContext } from './ad-context';
-import { setupMinervaIoc } from './setup-minerva-ioc';
 import './styles.scss';
+import { UcpMinervaPlatform } from './ucp-minerva-platform';
 
 window.RLQ = window.RLQ || [];
 window.RLQ.push(async () => {
-	context.extend(basicContext);
+	const container = new Container();
+	const platform = container.get(UcpMinervaPlatform);
 
-	const [container]: [Container, ...any[]] = await Promise.all([
-		setupMinervaIoc(),
-		bootstrapAndGetConsent(),
-	]);
-	const platformStartup = container.get(PlatformStartup);
-
-	platformStartup.configure({ isMobile: true });
-
-	// TODO: Move it to platformStartup.run once all platforms use @wikia/post-quecast
-	communicationService.dispatch(adEngineConfigured());
-
-	platformStartup.run();
+	platform.execute();
 });

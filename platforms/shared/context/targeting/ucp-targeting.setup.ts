@@ -1,12 +1,11 @@
-import { Binder, context, Targeting, utils } from '@wikia/ad-engine';
+import { Binder, context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { TargetingSetup } from '../../setup/_targeting.setup';
 import { getDomain } from '../../utils/get-domain';
 
 const SKIN = Symbol('targeting skin');
 
 @Injectable()
-export class UcpTargetingSetup implements TargetingSetup {
+export class UcpTargetingSetup implements DiProcess {
 	static skin(skin: string): Binder {
 		return {
 			bind: SKIN,

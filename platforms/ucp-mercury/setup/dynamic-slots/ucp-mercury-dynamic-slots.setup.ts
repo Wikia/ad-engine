@@ -1,5 +1,5 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
-import { btfBlockerService, events, eventService, SlotCreator } from '@wikia/ad-engine';
+import { slotsContext } from '@platforms/shared';
+import { btfBlockerService, DiProcess, events, eventService, SlotCreator } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	SlotSetupDefinition,
@@ -7,7 +7,7 @@ import {
 } from './ucp-mercury-slots-definition-repository';
 
 @Injectable()
-export class UcpMercuryDynamicSlotsSetup implements DynamicSlotsSetup {
+export class UcpMercuryDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotCreator: SlotCreator,
 		private slotsDefinitionRepository: UcpMercurySlotsDefinitionRepository,

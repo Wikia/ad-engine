@@ -1,8 +1,9 @@
-import { DynamicSlotsSetup, NoAdsDetector, slotsContext } from '@platforms/shared';
+import { NoAdsDetector, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
 	Dictionary,
+	DiProcess,
 	SlotConfig,
 	slotInjector,
 	slotService,
@@ -10,7 +11,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
+export class HydraDynamicSlotsSetup implements DiProcess {
 	constructor(private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

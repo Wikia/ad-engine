@@ -1,7 +1,7 @@
-import { TemplatesSetup } from '@platforms/shared';
 import {
 	BigFancyAdAbove,
 	context,
+	DiProcess,
 	PorvataTemplate,
 	Roadblock,
 	templateService,
@@ -14,7 +14,7 @@ import { getPorvataConfig } from '../../templates/porvata-config';
 import { getRoadblockConfig } from '../../templates/roadblock-config';
 
 @Injectable()
-export class GamepediaTemplatesSetup implements TemplatesSetup {
+export class GamepediaTemplatesSetup implements DiProcess {
 	execute(): void {
 		templateService.register(
 			BigFancyAdAbove,

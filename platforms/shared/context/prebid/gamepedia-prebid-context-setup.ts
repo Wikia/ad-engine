@@ -1,4 +1,4 @@
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 import { getGamepediaAppNexusContext } from '../../bidders/gamepedia/app-nexus';
@@ -10,10 +10,9 @@ import { getGamepediaRubiconContext } from '../../bidders/gamepedia/rubicon';
 import { getGamepediaTripleliftContext } from '../../bidders/gamepedia/triplelift';
 import { getWikiaContext } from '../../bidders/wikia-adapter';
 import { DeviceMode, getDeviceMode } from '../../models/device-mode';
-import { PrebidConfigSetup } from '../../setup/_prebid-config.setup';
 
 @Injectable()
-export class UcpGamepediaPrebidConfigSetup implements PrebidConfigSetup {
+export class UcpGamepediaPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		const mode: DeviceMode = getDeviceMode();
 

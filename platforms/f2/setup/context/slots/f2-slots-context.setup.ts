@@ -1,9 +1,8 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context, events, eventService } from '@wikia/ad-engine';
+import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class F2SlotsContextSetup implements SlotsContextSetup {
+export class F2SlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			top_leaderboard: {

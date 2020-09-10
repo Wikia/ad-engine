@@ -1,5 +1,4 @@
-import { PrebidConfigSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getAOLContext } from '../../../bidders/prebid/aol';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
@@ -20,7 +19,7 @@ import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
 @Injectable()
-export class UcpPrebidConfigSetup implements PrebidConfigSetup {
+export class UcpPrebidConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.prebid.aol', getAOLContext());
 		context.set('bidders.prebid.appnexus', getAppnexusContext());

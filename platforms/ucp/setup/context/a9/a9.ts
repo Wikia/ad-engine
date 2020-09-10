@@ -1,9 +1,8 @@
-import { A9ConfigSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpA9ConfigSetup implements A9ConfigSetup {
+export class UcpA9ConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.a9.slots', this.getA9Context());
 	}

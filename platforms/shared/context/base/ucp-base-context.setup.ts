@@ -1,6 +1,6 @@
 import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { BaseContextSetup } from '../../setup/_base-context.setup';
+import { BaseContextSetup } from '../../setup/base-context.setup';
 
 @Injectable()
 export class UcpBaseContextSetup extends BaseContextSetup {
