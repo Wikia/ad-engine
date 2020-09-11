@@ -3,6 +3,11 @@ import { props } from 'ts-action';
 
 interface ViewRenderedProps {
 	viewType: string;
+	beaconId: string;
+	pvNumber: number;
+	pvNumberGlobal: number;
+	pvUID: string;
+	sessionId: string;
 }
 
 interface AdSlotInjectedProps {

@@ -1,18 +1,8 @@
 import { TrackingSetup } from '@platforms/shared';
-import { communicationService, context, globalAction, ofType } from '@wikia/ad-engine';
+import { communicationService, context, ofType } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
-import { props } from 'ts-action';
-
-interface ViewRenderedProps {
-	beaconId: string;
-	pvNumber: number;
-	pvNumberGlobal: number;
-	pvUID: string;
-	sessionId: string;
-}
-
-const viewRendered = globalAction('[BingeBot] view rendered', props<ViewRenderedProps>());
+import { viewRendered } from '../../../setup-bingebot';
 
 @Injectable()
 export class BingeBotTrackingSetup extends TrackingSetup {
