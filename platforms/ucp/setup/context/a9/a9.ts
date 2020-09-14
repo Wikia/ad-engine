@@ -21,6 +21,12 @@ export class UcpA9ConfigSetup implements DiProcess {
 					[300, 600],
 				],
 			},
+			hivi_leaderboard: {
+				sizes: [
+					[728, 90],
+					[970, 90],
+				],
+			},
 			top_leaderboard: {
 				sizes: [
 					[728, 90],
