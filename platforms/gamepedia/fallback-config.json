@@ -88,36 +88,7 @@
                 "oasis"
             ],
             "regions": [
-                "AR",
-                "AT",
-                "BE",
-                "BR",
-                "CL",
-                "CN",
-                "CO",
-                "ES",
-                "FI",
-                "FR",
-                "HK",
-                "ID",
-                "IE",
-                "IN",
-                "IT",
-                "JP",
-                "KR",
-                "MY",
-                "NL",
-                "NZ",
-                "PE",
-                "PH",
-                "PL",
-                "SE",
-                "SG",
-                "TH",
-                "TR",
-                "TW",
-                "UA",
-                "VN"
+                "XX"
             ],
             "value": true
         }
@@ -538,6 +509,19 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.2.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",
