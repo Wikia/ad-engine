@@ -86,6 +86,20 @@ export class UcpSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
+			affiliate_slot: {
+				adProduct: 'affiliate_slot',
+				aboveTheFold: true,
+				slotNameSuffix: '',
+				group: 'AU',
+				insertBeforeSelector: '#top_boxad',
+				options: {},
+				slotShortcut: 'a',
+				defaultSizes: [[280, 120]],
+				targeting: {
+					loc: 'top',
+					rv: 1,
+				},
+			},
 			invisible_skin: {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,

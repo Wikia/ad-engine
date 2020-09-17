@@ -7,6 +7,7 @@ import {
 	InstantConfigService,
 	slotDataParamsUpdater,
 	slotService,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -17,7 +18,13 @@ export class UcpSlotsStateSetup implements DiProcess {
 	execute(): void {
 		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
 		slotsContext.setState('top_leaderboard', true);
-		slotsContext.setState('top_boxad', true);
+		slotsContext.setState('top_boxad', this.isRightRailApplicable());
+		slotsContext.setState(
+			'affiliate_slot',
+			this.isRightRailApplicable() &&
+				context.get('wiki.opts.enableAffiliateSlot') &&
+				!context.get('custom.hasFeaturedVideo'),
+		);
 		slotsContext.setState('bottom_leaderboard', true);
 		slotsContext.setState('invisible_skin', false);
 		slotsContext.setState('floor_adhesion', this.instantConfig.get('icFloorAdhesion'));
@@ -41,5 +48,9 @@ export class UcpSlotsStateSetup implements DiProcess {
 			slotDataParamsUpdater.updateOnCreate(slotService.get(slotName));
 			distroScale.call();
 		});
+	}
+
+	private isRightRailApplicable(): boolean {
+		return utils.getViewportWidth() >= 1024;
 	}
 }
