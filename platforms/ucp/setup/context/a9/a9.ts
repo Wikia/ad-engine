@@ -1,14 +1,16 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpA9ConfigSetup implements DiProcess {
+	constructor(private instantConfig: InstantConfigService) {}
+
 	execute(): void {
 		context.set('bidders.a9.slots', this.getA9Context());
 	}
 
 	getA9Context(): object {
-		return {
+		const config = {
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
@@ -37,5 +39,16 @@ export class UcpA9ConfigSetup implements DiProcess {
 				type: 'video',
 			},
 		};
+
+		if (this.instantConfig.get('icA9HiviLeaderboard')) {
+			config['hivi_leaderboard'] = {
+				sizes: [
+					[728, 90],
+					[970, 90],
+				],
+			};
+		}
+
+		return config;
 	}
 }
