@@ -10,6 +10,7 @@ import {
 	FuncPipelineStep,
 	GAMOrigins,
 	InstantConfigCacheStorage,
+	interventionTracker,
 	ofType,
 	playerEvents,
 	porvataTracker,
@@ -67,6 +68,7 @@ export class TrackingSetup {
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
 		this.audigentTracker();
+		this.interventionTracker();
 	}
 
 	private porvataTracker(): void {
@@ -167,5 +169,9 @@ export class TrackingSetup {
 		communicationService.action$.pipe(ofType(audigentLoadedEvent)).subscribe(() => {
 			this.pageTracker.trackProp('audigent', 'loaded');
 		});
+	}
+
+	private interventionTracker(): void {
+		interventionTracker.register();
 	}
 }

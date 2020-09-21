@@ -258,7 +258,13 @@
                 "5473107813",
                 "5467371078",
                 "5467370628",
-                "5354274880"
+                "5354274880",
+                "5468068234",
+                "5468068237",
+                "5467186974",
+                "5468067817",
+                "5480727970",
+                "5481032081"
             ]
         }
     ],
@@ -368,6 +374,15 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "f2"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.2.1/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",
