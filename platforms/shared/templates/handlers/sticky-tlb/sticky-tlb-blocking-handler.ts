@@ -21,6 +21,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		}
 
 		slotService.disable('incontent_player', 'hivi-collapse');
+		slotService.disable('affiliate_slot', 'hivi-collapse');
 
 		transition('initial');
 	}

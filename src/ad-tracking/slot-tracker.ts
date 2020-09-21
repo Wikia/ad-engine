@@ -17,6 +17,8 @@ class SlotTracker {
 		AdSlot.STATUS_VIEWPORT_CONFLICT,
 		AdSlot.STATUS_HIVI_COLLAPSE,
 		AdSlot.STATUS_CLOSED_BY_PORVATA,
+		AdSlot.STATUS_HEAVY_AD_INTERVENTION,
+		AdSlot.STATUS_UNKNOWN_INTERVENTION,
 	];
 
 	private pipeline = new FuncPipeline<AdInfoContext>();
