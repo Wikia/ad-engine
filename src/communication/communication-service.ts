@@ -5,14 +5,27 @@ import { filter, shareReplay } from 'rxjs/operators';
 import { isGlobalAction } from './global-action';
 import { ReduxDevtoolsFactory } from './redux-devtools';
 
+interface PostQuecastSettings {
+	channelId?: string;
+	coordinatorName?: string;
+	reduxDevtoolsName?: string;
+}
+
+const SETTINGS_KEY = '@wikia/post-quecast-settings';
+
 export class CommunicationService {
 	action$: Observable<Action>;
 	private communicator: Communicator;
 	private subject: Subject<Action>;
 
 	constructor() {
+		const { channelId, coordinatorName, reduxDevtoolsName } = this.getSettings();
+
 		setupPostQuecast();
-		this.communicator = new Communicator();
+		this.communicator = new Communicator({
+			channelId: channelId || 'default',
+			coordinatorHost: window[coordinatorName] || top,
+		});
 
 		const actions$: Observable<Action> = fromEventPattern(
 			(handler) => this.communicator.addListener(handler),
@@ -24,7 +37,7 @@ export class CommunicationService {
 			actions$.pipe(filter((action) => isGlobalAction(action))),
 			this.subject.asObservable().pipe(filter((action) => !isGlobalAction(action))),
 		);
-		this.connectReduxDevtools();
+		this.connectReduxDevtools(reduxDevtoolsName);
 	}
 
 	dispatch(action: Action): void {
@@ -35,8 +48,12 @@ export class CommunicationService {
 		}
 	}
 
-	private connectReduxDevtools(): void {
-		const devtools = ReduxDevtoolsFactory.connect();
+	private getSettings(): PostQuecastSettings {
+		return window[SETTINGS_KEY] || {};
+	}
+
+	private connectReduxDevtools(name?: string): void {
+		const devtools = ReduxDevtoolsFactory.connect(name);
 
 		if (!devtools) {
 			return;
