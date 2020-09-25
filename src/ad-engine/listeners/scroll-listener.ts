@@ -11,8 +11,6 @@ export class ScrollListener {
 	private callbacks: Dictionary<ScrollListenerCallback> = {};
 
 	init(): void {
-		this.callbacks = {};
-
 		let requestAnimationFrameHandleAdded = false;
 
 		document.addEventListener('scroll', (event: Event) => {
@@ -65,27 +63,25 @@ export class ScrollListener {
 
 		logger(this.serviceName, `Add slot ${id}.`);
 
-		this.addCallback(
-			(event: string, callbackId: string): void => {
-				const scrollPosition: number =
-					window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+		this.addCallback((event: string, callbackId: string): void => {
+			const scrollPosition: number =
+				window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 
-				if (threshold !== undefined) {
-					const slotPosition: number = getTopOffset(node);
-					const viewPortHeight: number = getViewportHeight();
+			if (threshold !== undefined) {
+				const slotPosition: number = getTopOffset(node);
+				const viewPortHeight: number = getViewportHeight();
 
-					if (scrollPosition + viewPortHeight > slotPosition - threshold) {
-						this.removeCallback(callbackId);
-						slotService.pushSlot(node);
-					}
-				} else {
-					if (scrollPosition > distanceFromTop) {
-						this.removeCallback(callbackId);
-						slotService.pushSlot(node);
-					}
+				if (scrollPosition + viewPortHeight > slotPosition - threshold) {
+					this.removeCallback(callbackId);
+					slotService.pushSlot(node);
 				}
-			},
-		);
+			} else {
+				if (scrollPosition > distanceFromTop) {
+					this.removeCallback(callbackId);
+					slotService.pushSlot(node);
+				}
+			}
+		});
 	}
 
 	/**

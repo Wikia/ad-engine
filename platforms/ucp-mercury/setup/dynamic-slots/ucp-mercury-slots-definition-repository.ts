@@ -156,6 +156,10 @@ export class UcpMercurySlotsDefinitionRepository {
 					'slots.floor_adhesion.forceSafeFrame',
 					this.instantConfig.get('icFloorAdhesionForceSafeFrame'),
 				);
+				context.set(
+					'templates.floorAdhesion.showCloseButtonAfter',
+					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
+				);
 
 				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
@@ -182,6 +186,11 @@ export class UcpMercurySlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
+				context.set(
+					'templates.floorAdhesion.showCloseButtonAfter',
+					this.instantConfig.get('icInvisibleHighImpact2TimeToCloseButton', 0),
+				);
+
 				context.push('state.adStack', { id: slotName });
 			},
 		};
