@@ -14,7 +14,9 @@ import {
 	conditional,
 	context,
 	once,
+	parallel,
 	ProcessPipeline,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -26,6 +28,7 @@ import { UcpMercuryDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mercury-d
 import { UcpMercuryAfterTransitionSetup } from './setup/hooks/ucp-mercury-after-transition-setup';
 import { UcpMercuryBeforeTransitionSetup } from './setup/hooks/ucp-mercury-before-transition-setup';
 import { UcpMercuryOnTransitionSetup } from './setup/hooks/ucp-mercury-on-transition-setup';
+import { UcpMercuryTemplatesSetup } from './templates/ucp-mercury-templates-setup.service';
 import { UcpMercuryIocSetup } from './ucp-mercury-ioc-setup';
 
 @Injectable()
@@ -36,7 +39,11 @@ export class UcpMercuryPlatform {
 		// Config
 		this.pipeline.add(
 			once(() => context.extend(basicContext)),
-			once(InstantConfigSetup),
+			once(
+				parallel(InstantConfigSetup, () => {
+					utils.geoService.setUpGeoData();
+				}),
+			), // FIXME: GDPR
 			once(UcpMercuryIocSetup),
 			UcpMercuryWikiContextSetup,
 			UcpMercuryBaseContextSetup,
@@ -44,6 +51,7 @@ export class UcpMercuryPlatform {
 			UcpTargetingSetup,
 			UcpMercuryDynamicSlotsSetup,
 			BiddersStateSetup,
+			UcpMercuryTemplatesSetup,
 			LabradorSetup,
 			once(TrackingSetup),
 			once(AdEngineRunnerSetup),
