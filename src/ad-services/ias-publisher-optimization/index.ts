@@ -12,6 +12,7 @@ type BrandSafetyData = Partial<Record<BrandSafetyKey, BrandSafetyValue>>;
 interface IasTargetingSlotData {
 	id?: string;
 	vw?: string[];
+	vw_vv: string[];
 }
 
 interface IasTargetingData {
@@ -116,7 +117,7 @@ class IasPublisherOptimization {
 		}
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
-			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw);
+			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
 		}
 	}
 }
