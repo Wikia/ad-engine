@@ -56,7 +56,14 @@ export const basicContext = {
 		},
 		iasPublisherOptimization: {
 			pubId: '930616',
-			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'],
+			slots: [
+				'top_leaderboard',
+				'top_boxad',
+				'incontent_boxad_1',
+				'bottom_leaderboard',
+				'featured',
+				'incontent_player',
+			],
 		},
 		nielsen: {
 			enabled: false,
