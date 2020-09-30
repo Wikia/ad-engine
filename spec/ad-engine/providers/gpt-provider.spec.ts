@@ -24,7 +24,6 @@ describe('gpt-provider', () => {
 			addEventListener: spy(),
 			disableInitialLoad: spy(),
 			enableSingleRequest: spy(),
-			setRequestNonPersonalizedAds: spy(),
 			setPrivacySettings: spy(),
 			setTargeting: spy(),
 		};
@@ -57,18 +56,8 @@ describe('gpt-provider', () => {
 			expect(pubads.disableInitialLoad.called).to.be.true;
 			expect(pubads.enableSingleRequest.called).to.be.false;
 			expect(pubads.addEventListener.callCount).to.equal(4);
-			expect(pubads.setRequestNonPersonalizedAds.calledWith(0)).to.be.true;
 			done();
 		});
-	});
-
-	it('initialise with non personalized ads when tracking in is disabled', () => {
-		context.set('options.trackingOptIn', false);
-
-		provider = new GptProvider();
-		provider.setupNonPersonalizedAds();
-
-		expect(pubads.setRequestNonPersonalizedAds.calledWith(1)).to.be.true;
 	});
 
 	it('initialise with restrict data processing when user opt-out from data sale', () => {

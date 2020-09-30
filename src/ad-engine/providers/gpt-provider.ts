@@ -4,7 +4,6 @@ import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
-	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
