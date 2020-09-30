@@ -1,3 +1,4 @@
+import * as installCMPStub from '@iabtcf/stub';
 import {
 	communicationService,
 	context,
@@ -44,6 +45,12 @@ const logGroup = 'tracking-opt-in-wrapper';
 class TrackingOptInWrapper {
 	constructor() {
 		window.ads = window.ads || ({} as MediaWikiAds);
+
+		// Install temporary stub until full CMP will be ready
+		if (window.__tcfapi === undefined) {
+			installCMPStub();
+		}
+
 		this.installConsentQueue();
 	}
 
