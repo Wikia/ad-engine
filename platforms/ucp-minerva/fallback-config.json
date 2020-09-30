@@ -48,21 +48,6 @@
             "value": true
         }
     ],
-    "icPrebidOpenX": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icTestCommunities": [
         {
             "apps": [
