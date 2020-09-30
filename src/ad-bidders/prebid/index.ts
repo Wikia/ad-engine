@@ -1,7 +1,5 @@
 import {
 	AdSlot,
-	Cmp,
-	cmp,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
@@ -44,7 +42,6 @@ export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
 	isLazyLoadingEnabled: boolean;
 	lazyLoaded = false;
-	cmp: Cmp = cmp;
 	tcf: Tcf = tcf;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
@@ -81,25 +78,13 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('custom.tcf2Enabled') && this.tcf.exists) {
+		if (this.tcf.exists) {
 			this.prebidConfig.consentManagement = {
 				gdpr: {
 					cmpApi: 'iab',
 					timeout: this.timeout,
 					allowAuctionWithoutConsent: false,
 					defaultGdprScope: false,
-				},
-				usp: {
-					cmpApi: 'iab',
-					timeout: 100,
-				},
-			};
-		} else if (this.cmp.exists) {
-			this.prebidConfig.consentManagement = {
-				gdpr: {
-					cmpApi: 'iab',
-					timeout: this.timeout,
-					allowAuctionWithoutConsent: false,
 				},
 				usp: {
 					cmpApi: 'iab',

@@ -10,7 +10,6 @@ import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
 interface OptInInstances {
-	icbm: any;
 	gdpr: any;
 	ccpa: any;
 }
@@ -36,7 +35,7 @@ const setOptInInstances = globalAction(
 );
 
 const trackingOptInLibraryUrl =
-	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.0.15/tracking-opt-in.min.js';
+	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.0/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
@@ -111,7 +110,6 @@ class TrackingOptInWrapper {
 
 			const optInInstances: OptInInstances = window.trackingOptIn.default({
 				disableConsentQueue,
-				enableCCPAinit: true,
 				isSubjectToCcpa: window.ads.context && window.ads.context.opts.isSubjectToCcpa,
 				onAcceptTracking: () => {
 					utils.logger(logGroup, 'GDPR Consent');
@@ -125,15 +123,7 @@ class TrackingOptInWrapper {
 			});
 
 			if (disableConsentQueue) {
-				// Wait for ICBM response during TCFv2 transition
-				optInInstances.icbm.then(
-					() => {
-						resolve(optInInstances);
-					},
-					() => {
-						resolve(optInInstances);
-					},
-				);
+				resolve(optInInstances);
 			}
 		});
 	}

@@ -5,7 +5,6 @@ import {
 	bidders,
 	bidderTracker,
 	bidderTrackingMiddleware,
-	cmp,
 	context,
 	events,
 	eventService,
@@ -16,40 +15,7 @@ import {
 import customContext from '../../context';
 import '../../styles.scss';
 
-const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
 const apstag = Apstag.make();
-
-cmp.override((cmd, param, cb) => {
-	if (cmd === 'getConsentData') {
-		cb(
-			{
-				consentData: optIn
-					? 'BOQu5jyOQu5jyCNABAPLBR-AAAAeCAFgAUABYAIAAaABFACY'
-					: 'BOQu5naOQu5naCNABAPLBRAAAAAeCAAA',
-				gdprApplies: true,
-				hasGlobalScope: false,
-			},
-			true,
-		);
-	} else if (cmd === 'getVendorConsents') {
-		cb(
-			{
-				metadata: 'BOQu5naOQu5naCNABAAABRAAAAAAAA',
-				purposeConsents: Array.from({ length: 5 }).reduce<ConsentData['purposeConsents']>(
-					(map, val, i) => ({ ...map, [i + 1]: optIn }),
-					{},
-				),
-				vendorConsents: Array.from({ length: 500 }).reduce<ConsentData['vendorConsents']>(
-					(map, val, i) => ({ ...map, [i + 1]: optIn }),
-					{},
-				),
-			},
-			true,
-		);
-	} else {
-		cb(null, false);
-	}
-});
 
 context.extend(customContext);
 context.set('targeting.artid', '266');
