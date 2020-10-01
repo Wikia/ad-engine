@@ -867,7 +867,8 @@
                 "5480727970",
                 "5481032081",
                 "5488108263",
-                "5488108266"
+                "5488108266",
+                "5490139362"
             ]
         }
     ],
@@ -1357,7 +1358,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.1/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
