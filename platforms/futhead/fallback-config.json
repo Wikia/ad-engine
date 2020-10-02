@@ -48,21 +48,6 @@
             "value": true
         }
     ],
-    "icPrebidOpenX": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icTrackingOptInGoogleMove": [
         {
             "apps": [
@@ -197,7 +182,8 @@
                 "5393163252",
                 "5393163249",
                 "5441231927",
-                "5441231924"
+                "5441231924",
+                "5492427980"
             ]
         }
     ],
@@ -488,7 +474,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.1/tracking-opt-in.min.js"
         }
     ],
     "icDurationMedia": [
