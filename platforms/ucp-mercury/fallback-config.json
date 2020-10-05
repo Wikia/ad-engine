@@ -62,9 +62,7 @@
     "icPrebidOpenX": [
         {
             "apps": [
-                "futhead",
                 "mobile-wiki",
-                "muthead",
                 "oasis"
             ],
             "regions": [
@@ -867,7 +865,9 @@
                 "5480727970",
                 "5481032081",
                 "5488108263",
-                "5488108266"
+                "5488108266",
+                "5490139362",
+                "5491791785"
             ]
         }
     ],
@@ -956,7 +956,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 1
+            "value": 3
         }
     ],
     "wgAdDriverBillTheLizardConfig": {
@@ -1067,7 +1067,9 @@
                 "5393163252",
                 "5393163249",
                 "5441231927",
-                "5441231924"
+                "5441231924",
+                "5492427980",
+                "5492807412"
             ]
         }
     ],
@@ -1357,7 +1359,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v4.5.1/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [

@@ -1,4 +1,4 @@
-import { context, postponeExecutionUntilGptLoads, utils } from '@ad-engine/core';
+import { context, postponeExecutionUntilGptLoads, SlotConfig, utils } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
@@ -12,6 +12,7 @@ type BrandSafetyData = Partial<Record<BrandSafetyKey, BrandSafetyValue>>;
 interface IasTargetingSlotData {
 	id?: string;
 	vw?: string[];
+	vw_vv: string[];
 }
 
 interface IasTargetingData {
@@ -50,21 +51,26 @@ class IasPublisherOptimization {
 
 	@decorate(postponeExecutionUntilGptLoads)
 	private setup(): void {
-		const iasPETSlots = [];
+		const iasPETSlots: IasSlotConfig[] = [];
 		this.slotList = context.get('services.iasPublisherOptimization.slots');
 		this.setInitialTargeting();
 
 		this.slotList.forEach((slotName) => {
-			const slot = context.get(`slots.${slotName}`);
-			const sizes = slot.sizes && slot.sizes.length ? slot.sizes[0].sizes : slot.defaultSizes;
+			const slot: SlotConfig = context.get(`slots.${slotName}`);
 			const adUnitPath = utils.stringBuilder.build(slot.adUnit || context.get('adUnitId'), {
 				slotConfig: slot,
 			});
-			iasPETSlots.push({
-				adSlotId: slotName,
-				size: sizes,
+			const config: IasSlotConfig = {
 				adUnitPath,
-			});
+				adSlotId: slotName,
+				size: this.getSlotSize(slot),
+			};
+
+			if (slot.isVideo) {
+				config.type = 'video';
+			}
+
+			iasPETSlots.push(config);
 		});
 
 		// @ts-ignore
@@ -75,6 +81,14 @@ class IasPublisherOptimization {
 			adSlots: iasPETSlots,
 			dataHandler: this.iasDataHandler,
 		});
+	}
+
+	private getSlotSize(slot: SlotConfig): number[] {
+		if (slot.isVideo) {
+			return [1, 1];
+		}
+
+		return slot.sizes && slot.sizes.length ? slot.sizes[0].sizes : slot.defaultSizes;
 	}
 
 	private setInitialTargeting(): void {
@@ -103,7 +117,7 @@ class IasPublisherOptimization {
 		}
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
-			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw);
+			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
 		}
 	}
 }

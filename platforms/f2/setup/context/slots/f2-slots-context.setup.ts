@@ -196,6 +196,7 @@ export class F2SlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 				trackingKey: 'featured-video',
+				isVideo: true,
 			},
 			video: {
 				slotNameSuffix: '',
@@ -206,6 +207,7 @@ export class F2SlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 				trackingKey: 'video',
+				isVideo: true,
 			},
 		};
 
