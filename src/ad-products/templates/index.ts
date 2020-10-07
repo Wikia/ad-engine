@@ -1,3 +1,4 @@
+export { AffiliateDisclaimer } from './affiliate-disclaimer';
 export { FloatingRail } from './floating-rail';
 export { HideOnViewability } from './hide-on-viewability';
 export { Skin } from './skin';
@@ -10,5 +11,4 @@ export * from './outstream';
 export * from './interface/close-button';
 export * from './interface/advertisement-label';
 export * from './interface/video/ui-template';
-
 export * from './interface/video/ui-elements';
