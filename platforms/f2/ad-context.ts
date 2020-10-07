@@ -50,6 +50,7 @@ export const basicContext = {
 				'feed_boxad',
 				'incontent_boxad',
 				'bottom_leaderboard',
+				'featured',
 			],
 		},
 		instantConfig: {

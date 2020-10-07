@@ -106,6 +106,8 @@ export const basicContext = {
 				'top_boxad',
 				'incontent_boxad_1',
 				'bottom_leaderboard',
+				'featured',
+				'incontent_player',
 			],
 		},
 		externalLogger: {
