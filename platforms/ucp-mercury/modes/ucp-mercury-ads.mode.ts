@@ -1,5 +1,6 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	bidders,
 	communicationService,
 	context,
 	DiProcess,
@@ -27,6 +28,7 @@ export class UcpMercuryAdsMode implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
+		inhibitors.push(bidders.requestBids());
 		inhibitors.push(wadRunner.call());
 
 		return inhibitors;
