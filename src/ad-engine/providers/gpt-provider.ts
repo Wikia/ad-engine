@@ -4,7 +4,6 @@ import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
-	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -127,21 +126,12 @@ export class GptProvider implements Provider {
 
 		setupGptTargeting();
 		configure();
-		this.setupNonPersonalizedAds();
 		this.setupRestrictDataProcessing();
 		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.updateCorrelator());
 		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
 			this.destroySlot(adSlot.getSlotName());
 		});
 		initialized = true;
-	}
-
-	setupNonPersonalizedAds(): void {
-		if (!context.get('custom.tcf2Enabled')) {
-			const tag = window.googletag.pubads();
-
-			tag.setRequestNonPersonalizedAds(trackingOptIn.isOptedIn() ? 0 : 1);
-		}
 	}
 
 	setupRestrictDataProcessing(): void {

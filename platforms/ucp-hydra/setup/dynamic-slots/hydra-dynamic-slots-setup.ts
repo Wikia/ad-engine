@@ -63,13 +63,7 @@ export class HydraDynamicSlotsSetup implements DiProcess {
 			incontentBoxadWrapper.id = `btfmrec_${dbName}_gamepedia`;
 			incontentBoxad.id = 'incontent_boxad_1';
 
-			const gamepediaProBoxWrapper = document.getElementById(`middlemrec_${dbName}_gamepedia`);
-
-			if (gamepediaProBoxWrapper) {
-				siderail.insertBefore(topBoxadWrapper, gamepediaProBoxWrapper);
-			} else {
-				siderail.appendChild(topBoxadWrapper);
-			}
+			siderail.prepend(topBoxadWrapper);
 
 			siderail.appendChild(incontentBoxadWrapper);
 			topBoxadWrapper.appendChild(topBoxad);

@@ -8,6 +8,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
+import { registerAffiliateDisclaimerTemplate } from './affiliate-disclaimer-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
@@ -31,9 +32,19 @@ export class UcpTemplatesSetup implements DiProcess {
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const interstitial$ = registerInterstitialTemplate(this.registry);
 		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
+		const affiliateDisclaimer$ = registerAffiliateDisclaimerTemplate(this.registry);
 
 		logTemplates(
-			merge(bfaa$, bfab$, stickyTlb$, roadblock$, floorAdhesion$, interstitial$, logoReplacement$),
+			merge(
+				bfaa$,
+				bfab$,
+				stickyTlb$,
+				roadblock$,
+				floorAdhesion$,
+				interstitial$,
+				logoReplacement$,
+				affiliateDisclaimer$,
+			),
 		);
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
