@@ -27,6 +27,7 @@ import { basicContext } from './ad-context';
 import { GamepediaIocSetup } from './gamepedia-ioc-setup';
 import { GamepediaAdsMode } from './modes/gamepedia-ads.mode';
 import { GamepediaNoAdsMode } from './modes/gamepedia-no-ads.mode';
+import { GamepediaBaseContextSetup } from './setup/context/base/gamepedia-base-context.setup';
 import { GamepediaTargetingSetup } from './setup/context/targeting/gamepedia-targeting.setup';
 import { GamepediaDynamicSlotsSetup } from './setup/dynamic-slots/gamepedia-dynamic-slots.setup';
 import { GamepediaTemplatesSetup } from './setup/templates/gamepedia-templates.setup';
@@ -44,9 +45,9 @@ export class GamepediaPlatform {
 			GamepediaIocSetup,
 			WikiContextSetup,
 			() => context.set('state.isMobile', !utils.client.isDesktop()),
+			GamepediaBaseContextSetup,
 			GamepediaTargetingSetup,
 			CurseSlotsContextSetup,
-			GamepediaTargetingSetup,
 			UcpGamepediaPrebidConfigSetup,
 			UcpGamepediaA9ConfigSetup,
 			GamepediaDynamicSlotsSetup,
