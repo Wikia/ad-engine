@@ -16,7 +16,9 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.addClass('floor-adhesion');
 		this.adSlot.addClass('out-of-page-template');
 
-		await slotTweaker.adjustIframeByContentSize(this.adSlot);
+		if (this.adSlot.isOutOfPage()) {
+			await slotTweaker.adjustIframeByContentSize(this.adSlot);
+		}
 
 		transition('display');
 	}

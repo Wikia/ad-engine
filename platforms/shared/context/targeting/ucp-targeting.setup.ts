@@ -90,7 +90,7 @@ export class UcpTargetingSetup implements DiProcess {
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
 			!hasFeaturedVideo &&
-			document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
+			!!document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
 
 		if (adLayout === 'article') {
 			if (hasFeaturedVideo) {

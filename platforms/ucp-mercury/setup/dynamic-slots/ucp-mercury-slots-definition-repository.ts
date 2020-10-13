@@ -1,4 +1,11 @@
-import { context, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import {
+	context,
+	InstantConfigService,
+	scrollListener,
+	SlotCreatorConfig,
+	SlotCreatorWrapperConfig,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 export interface SlotSetupDefinition {
@@ -9,6 +16,8 @@ export interface SlotSetupDefinition {
 
 @Injectable()
 export class UcpMercurySlotsDefinitionRepository {
+	constructor(protected instantConfig: InstantConfigService) {}
+
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
 			return;
@@ -118,5 +127,76 @@ export class UcpMercurySlotsDefinitionRepository {
 		return (
 			!!document.querySelector('.wds-global-footer') && context.get('custom.pageType') !== 'search'
 		);
+	}
+
+	getFloorAdhesionConfig(): SlotSetupDefinition {
+		if (!this.isFloorAdhesionApplicable()) {
+			return;
+		}
+
+		const slotName = 'floor_adhesion';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '#wikiContainer',
+				insertMethod: 'after',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				const numberOfViewportsFromTopToPush: number =
+					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
+				context.set(
+					'slots.floor_adhesion.numberOfViewportsFromTopToPush',
+					this.instantConfig.get('icFloorAdhesionViewportsToStart'),
+				);
+				context.set(
+					'slots.floor_adhesion.forceSafeFrame',
+					this.instantConfig.get('icFloorAdhesionForceSafeFrame'),
+				);
+				context.set(
+					'templates.floorAdhesion.showCloseButtonAfter',
+					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
+				);
+
+				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+			},
+		};
+	}
+
+	private isFloorAdhesionApplicable(): boolean {
+		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+	}
+
+	getInvisibleHighImpactConfig(): SlotSetupDefinition {
+		if (!this.isInvisibleHighImpactApplicable()) {
+			return;
+		}
+
+		const slotName = 'invisible_high_impact_2';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '#wikiContainer',
+				insertMethod: 'after',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.set(
+					'templates.floorAdhesion.showCloseButtonAfter',
+					this.instantConfig.get('icInvisibleHighImpact2TimeToCloseButton', 0),
+				);
+
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	private isInvisibleHighImpactApplicable(): boolean {
+		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
 }
