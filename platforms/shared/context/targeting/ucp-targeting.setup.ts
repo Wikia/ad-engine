@@ -23,6 +23,11 @@ export class UcpTargetingSetup implements DiProcess {
 		} else if (context.get('wiki.opts.isAdTestWiki')) {
 			context.set('src', 'test');
 		}
+
+		if (context.get('wiki.targeting.wikiIsTop1000')) {
+			context.set('custom.wikiIdentifier', '_top1k_wiki');
+			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
+		}
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
@@ -56,6 +61,10 @@ export class UcpTargetingSetup implements DiProcess {
 
 		if (cid !== undefined) {
 			targeting.cid = cid;
+		}
+
+		if (wiki.targeting.wikiIsTop1000) {
+			targeting.top = '1k';
 		}
 
 		return targeting;
