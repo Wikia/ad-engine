@@ -117,11 +117,13 @@ export class BaseContextSetup implements DiProcess {
 			'services.iasPublisherOptimization.enabled',
 			this.instantConfig.get('icIASPublisherOptimization'),
 		);
+		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
+
+		const isPageDirectedAtChildren = !!context.get('wiki.targeting.directedAtChildren');
 		context.set(
 			'services.permutive.enabled',
-			this.instantConfig.get('icPermutive') && !!!context.get('wiki.targeting.directedAtChildren'),
+			this.instantConfig.get('icPermutive') && !isPageDirectedAtChildren,
 		);
-		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 	}
 
 	private setMiscContext(): void {
