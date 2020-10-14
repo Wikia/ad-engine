@@ -119,7 +119,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set(
 			'services.permutive.enabled',
-			this.instantConfig.get('icPermutive') && !context.get('wiki.targeting.directedAtChildren'),
+			this.instantConfig.get('icPermutive') && !!!context.get('wiki.targeting.directedAtChildren'),
 		);
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 	}
