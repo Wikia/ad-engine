@@ -84,23 +84,6 @@
             "value": true
         }
     ],
-    "icTrackingOptInGoogleMove": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -717,6 +700,7 @@
             "value": [
                 "4366940064",
                 "4916913597",
+                "5457489354",
                 "5504547254",
                 "5501992516",
                 "5447862918",
@@ -874,7 +858,8 @@
                 "5493031115",
                 "5484452297",
                 "5491672941",
-                "5492875154"
+                "5492875154",
+                "5504518465"
             ]
         }
     ],
@@ -963,7 +948,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 3
+            "value": 1
         }
     ],
     "wgAdDriverBillTheLizardConfig": {
@@ -1077,7 +1062,10 @@
                 "5441231924",
                 "5492427980",
                 "5492807412",
-                "5493719719"
+                "5493719719",
+                "5499901083",
+                "5500931404",
+                "5494026389"
             ]
         }
     ],
@@ -1255,22 +1243,6 @@
         {
             "apps": [
                 "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icTcf2Enabled": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
                 "oasis"
             ],
             "regions": [

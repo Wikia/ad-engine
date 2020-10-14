@@ -61,23 +61,6 @@
             ]
         }
     ],
-    "icTrackingOptInGoogleMove": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
@@ -220,7 +203,10 @@
                 "5441231924",
                 "5492427980",
                 "5492807412",
-                "5493719719"
+                "5493719719",
+                "5499901083",
+                "5500931404",
+                "5494026389"
             ]
         }
     ],
@@ -388,22 +374,6 @@
     "icPrebidSendAllBids": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icTcf2Enabled": [
-        {
-            "apps": [
-                "f2",
                 "futhead",
                 "gamepedia",
                 "mobile-wiki",
