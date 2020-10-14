@@ -15,6 +15,7 @@ export const basicContext = {
 	},
 	targeting: {
 		skin: 'bingebot',
+		directedAtChildren: false,
 	},
 	services: {
 		instantConfig: {
