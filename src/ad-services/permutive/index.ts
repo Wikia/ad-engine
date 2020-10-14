@@ -32,6 +32,7 @@ class Permutive {
 	private isEnabled(): boolean {
 		return (
 			context.get('services.permutive.enabled') &&
+			!context.get('wiki.targeting.directedAtChildren') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale')
 		)
