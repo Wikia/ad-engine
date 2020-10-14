@@ -21,7 +21,9 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpMercuryAdsMode } from './modes/ucp-mercury-ads.mode';
+import { UcpMercuryA9ConfigSetup } from './setup/context/a9/ucp-mercury-a9-config.setup';
 import { UcpMercuryBaseContextSetup } from './setup/context/base/ucp-mercury-base-context.setup';
+import { UcpMercuryPrebidConfigSetup } from './setup/context/prebid/ucp-mercury-prebid-config.setup';
 import { UcpMercurySlotsContextSetup } from './setup/context/slots/ucp-mercury-slots-context.setup';
 import { UcpMercuryWikiContextSetup } from './setup/context/wiki/ucp-mercury-wiki-context.setup';
 import { UcpMercuryDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mercury-dynamic-slots.setup';
@@ -49,6 +51,8 @@ export class UcpMercuryPlatform {
 			UcpMercuryBaseContextSetup,
 			UcpMercurySlotsContextSetup,
 			UcpTargetingSetup,
+			UcpMercuryPrebidConfigSetup,
+			UcpMercuryA9ConfigSetup,
 			UcpMercuryDynamicSlotsSetup,
 			BiddersStateSetup,
 			UcpMercuryTemplatesSetup,
