@@ -62,7 +62,7 @@ class TrackingOptInWrapper {
 		const libraryPromise = this.loadTrackingOptInLibrary();
 
 		try {
-			await Promise.race([libraryPromise, utils.timeoutReject(2000)]);
+			await Promise.race([libraryPromise, utils.timeoutReject(5000)]);
 			await this.handleLibraryLoaded();
 		} catch (e) {
 			return this.handleLibraryTimeout(libraryPromise);
