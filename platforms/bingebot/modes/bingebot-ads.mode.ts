@@ -5,15 +5,11 @@ import { Injectable } from '@wikia/dependency-injection';
 @Injectable()
 export class BingeBotAdsMode implements DiProcess {
 	execute(): void {
-		const inhibitors = this.callExternals();
-		startAdEngine(inhibitors);
+		this.callExternals();
+		startAdEngine();
 	}
 
-	private callExternals(): Promise<any>[] {
-		const inhibitors: Promise<any>[] = [];
-
+	private callExternals(): void {
 		permutive.call();
-
-		return inhibitors;
 	}
 }
