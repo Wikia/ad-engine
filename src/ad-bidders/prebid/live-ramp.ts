@@ -1,3 +1,4 @@
+import { communicationService, globalAction } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'LiveRamp';
@@ -10,6 +11,7 @@ class LiveRamp {
 		}
 
 		utils.logger(logGroup, 'enabled');
+		this.dispatchLiveRampPrebidIdsLoadedEvent();
 		return {
 			userSync: {
 				userIds: [
@@ -36,6 +38,12 @@ class LiveRamp {
 			!context.get('wiki.targeting.directedAtChildren')
 		);
 	}
+
+	private dispatchLiveRampPrebidIdsLoadedEvent(): void {
+		communicationService.dispatch(liveRampPrebidIdsLoadedEvent());
+	}
 }
+
+export const liveRampPrebidIdsLoadedEvent = globalAction('[AdEngine] LiveRamp Prebid ids loaded');
 
 export const liveRamp = new LiveRamp();
