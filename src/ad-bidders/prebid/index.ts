@@ -79,7 +79,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		this.prebidConfig.userSync = { ...this.prebidConfig.userSync, ...liveRamp.getConfig() };
+		this.prebidConfig = { ...this.prebidConfig, ...liveRamp.getConfig() };
 
 		if (this.tcf.exists) {
 			this.prebidConfig.consentManagement = {

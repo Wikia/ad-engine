@@ -11,19 +11,21 @@ class LiveRamp {
 
 		utils.logger(logGroup, 'enabled');
 		return {
-			userIds: [
-				{
-					name: 'identityLink',
-					params: {
-						pid: '2161',
+			userSync: {
+				userIds: [
+					{
+						name: 'identityLink',
+						params: {
+							pid: '2161',
+						},
+						storage: {
+							type: 'cookie',
+							name: 'idl_env',
+							expires: 1,
+						},
 					},
-					storage: {
-						type: 'cookie',
-						name: 'idl_env',
-						expires: 1,
-					},
-				},
-			],
+				],
+			},
 		};
 	}
 
