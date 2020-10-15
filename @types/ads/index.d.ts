@@ -34,6 +34,7 @@ interface MediaWikiAdsTargeting {
 	wikiCustomKeyValues: string;
 	wikiDbName: string;
 	wikiId: number;
+	wikiIsTop1000: boolean;
 	wikiLanguage: string;
 	wikiVertical: string;
 	newWikiCategories?: string[];
