@@ -14,6 +14,7 @@ import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
@@ -45,7 +46,6 @@ export class PrebidProvider extends BidderProvider {
 	tcf: Tcf = tcf;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
-	liveRampIdEnabled: boolean;
 
 	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
@@ -54,7 +54,6 @@ export class PrebidProvider extends BidderProvider {
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-		this.liveRampIdEnabled = context.get('bidders.LiveRampId.enabled');
 
 		this.prebidConfig = {
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
@@ -80,24 +79,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (this.liveRampIdEnabled) {
-			this.prebidConfig.userSync = {
-				...this.prebidConfig.userSync,
-				userIds: [
-					{
-						name: 'identityLink',
-						params: {
-							pid: '2161',
-						},
-						storage: {
-							type: 'cookie',
-							name: 'idl_env',
-							expires: 1,
-						},
-					},
-				],
-			};
-		}
+		this.prebidConfig.userSync = { ...this.prebidConfig.userSync, ...liveRamp.getConfig() };
 
 		if (this.tcf.exists) {
 			this.prebidConfig.consentManagement = {
