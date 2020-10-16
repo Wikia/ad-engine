@@ -33,7 +33,7 @@ class LiveRamp {
 
 	private isEnabled(): boolean {
 		return (
-			context.get('bidders.LiveRampId.enabled') &&
+			context.get('bidders.liveRampId.enabled') &&
 			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
 		);
