@@ -2,7 +2,7 @@ import { logger, scriptLoader } from '../utils';
 import { context } from './context-service';
 
 const prebidLibraryUrl =
-	'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.23.0/20201012.min.js';
+	'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201019-LR.min.js';
 const logGroup = 'pbjs-factory';
 
 (window as any).pbjs = (window as any).pbjs || {};
@@ -15,8 +15,7 @@ class PbjsFactory {
 		if (!this.instancePromise) {
 			const libraryUrl = context.get('bidders.prebid.libraryUrl');
 
-			// FIXME: revert changes before merge
-			scriptLoader.loadScript(prebidLibraryUrl || libraryUrl, 'text/javascript', true, 'first');
+			scriptLoader.loadScript(libraryUrl || prebidLibraryUrl, 'text/javascript', true, 'first');
 
 			this.instancePromise = new Promise((resolve) =>
 				(window as any).pbjs.que.push(() => {
