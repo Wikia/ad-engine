@@ -174,8 +174,8 @@ export class TrackingSetup {
 	}
 
 	private liveRampTracker(): void {
-		communicationService.action$.pipe(ofType(liveRampPrebidIdsLoadedEvent)).subscribe(() => {
-			this.pageTracker.trackProp('live_ramp_prebid_ids', 'ids-placeholder');
+		communicationService.action$.pipe(ofType(liveRampPrebidIdsLoadedEvent)).subscribe((props) => {
+			this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
 		});
 	}
 

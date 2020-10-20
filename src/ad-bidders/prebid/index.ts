@@ -99,6 +99,7 @@ export class PrebidProvider extends BidderProvider {
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
+		this.getLiveRampUserIds();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -246,6 +247,13 @@ export class PrebidProvider extends BidderProvider {
 			adUnits,
 			bidsBackHandler,
 		});
+	}
+
+	async getLiveRampUserIds(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+		const userId = pbjs.getUserIds()['idl_env'];
+
+		liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
 	}
 
 	/**

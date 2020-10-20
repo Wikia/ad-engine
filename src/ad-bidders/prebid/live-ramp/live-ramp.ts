@@ -1,5 +1,6 @@
 import { communicationService, globalAction } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
+import { props } from 'ts-action';
 
 const logGroup = 'LiveRamp';
 
@@ -11,7 +12,6 @@ class LiveRamp {
 		}
 
 		utils.logger(logGroup, 'enabled');
-		this.dispatchLiveRampPrebidIdsLoadedEvent();
 		return {
 			userSync: {
 				userIds: [
@@ -31,6 +31,10 @@ class LiveRamp {
 		};
 	}
 
+	dispatchLiveRampPrebidIdsLoadedEvent(userId): void {
+		communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
+	}
+
 	private isEnabled(): boolean {
 		return (
 			context.get('bidders.liveRampId.enabled') &&
@@ -38,12 +42,11 @@ class LiveRamp {
 			!context.get('wiki.targeting.directedAtChildren')
 		);
 	}
-
-	private dispatchLiveRampPrebidIdsLoadedEvent(): void {
-		communicationService.dispatch(liveRampPrebidIdsLoadedEvent());
-	}
 }
 
-export const liveRampPrebidIdsLoadedEvent = globalAction('[AdEngine] LiveRamp Prebid ids loaded');
+export const liveRampPrebidIdsLoadedEvent = globalAction(
+	'[AdEngine] LiveRamp Prebid ids loaded',
+	props<{ userId: string }>(),
+);
 
 export const liveRamp = new LiveRamp();
