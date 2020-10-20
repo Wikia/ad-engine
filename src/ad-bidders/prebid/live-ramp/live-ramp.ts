@@ -32,7 +32,9 @@ class LiveRamp {
 	}
 
 	dispatchLiveRampPrebidIdsLoadedEvent(userId): void {
-		communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
+		if (this.isEnabled()) {
+			communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
+		}
 	}
 
 	private isEnabled(): boolean {
