@@ -2,6 +2,7 @@ import {
 	adEngineConfigured,
 	AdEngineRunnerSetup,
 	BiddersStateSetup,
+	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
@@ -13,10 +14,8 @@ import {
 	communicationService,
 	conditional,
 	context,
-	once,
 	parallel,
 	ProcessPipeline,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -27,9 +26,6 @@ import { UcpMercuryPrebidConfigSetup } from './setup/context/prebid/ucp-mercury-
 import { UcpMercurySlotsContextSetup } from './setup/context/slots/ucp-mercury-slots-context.setup';
 import { UcpMercuryWikiContextSetup } from './setup/context/wiki/ucp-mercury-wiki-context.setup';
 import { UcpMercuryDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mercury-dynamic-slots.setup';
-import { UcpMercuryAfterTransitionSetup } from './setup/hooks/ucp-mercury-after-transition-setup';
-import { UcpMercuryBeforeTransitionSetup } from './setup/hooks/ucp-mercury-before-transition-setup';
-import { UcpMercuryOnTransitionSetup } from './setup/hooks/ucp-mercury-on-transition-setup';
 import { UcpMercuryTemplatesSetup } from './templates/ucp-mercury-templates-setup.service';
 import { UcpMercuryIocSetup } from './ucp-mercury-ioc-setup';
 
@@ -37,17 +33,14 @@ import { UcpMercuryIocSetup } from './ucp-mercury-ioc-setup';
 export class UcpMercuryPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
-	setup(): void {
+	execute(): void {
 		// Config
 		this.pipeline.add(
-			once(() => context.extend(basicContext)),
-			once(
-				parallel(InstantConfigSetup, () => {
-					utils.geoService.setUpGeoData();
-				}),
-			), // FIXME: GDPR
-			once(UcpMercuryIocSetup),
+			() => context.extend(basicContext),
+			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			UcpMercuryIocSetup,
 			UcpMercuryWikiContextSetup,
+			() => context.set('state.isMobile', true),
 			UcpMercuryBaseContextSetup,
 			UcpMercurySlotsContextSetup,
 			UcpTargetingSetup,
@@ -57,14 +50,9 @@ export class UcpMercuryPlatform {
 			BiddersStateSetup,
 			UcpMercuryTemplatesSetup,
 			LabradorSetup,
-			once(TrackingSetup),
-			once(AdEngineRunnerSetup),
-			once(() => {
-				communicationService.dispatch(adEngineConfigured());
-			}),
-			once(UcpMercuryBeforeTransitionSetup),
-			once(UcpMercuryOnTransitionSetup),
-			once(UcpMercuryAfterTransitionSetup),
+			TrackingSetup,
+			AdEngineRunnerSetup,
+			() => communicationService.dispatch(adEngineConfigured()),
 		);
 
 		// Run
@@ -74,9 +62,7 @@ export class UcpMercuryPlatform {
 				no: UcpNoAdsMode,
 			}),
 		);
-	}
 
-	execute(): void {
 		this.pipeline.execute();
 	}
 }
