@@ -61,23 +61,6 @@
             ]
         }
     ],
-    "icTrackingOptInGoogleMove": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
@@ -220,7 +203,10 @@
                 "5441231924",
                 "5492427980",
                 "5492807412",
-                "5493719719"
+                "5493719719",
+                "5499901083",
+                "5500931404",
+                "5494026389"
             ]
         }
     ],
@@ -400,22 +386,6 @@
             "value": true
         }
     ],
-    "icTcf2Enabled": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icPrebid": [
         {
             "apps": [
@@ -510,7 +480,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.1.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.1.1/tracking-opt-in.min.js"
         }
     ],
     "icTabIdTracking": [

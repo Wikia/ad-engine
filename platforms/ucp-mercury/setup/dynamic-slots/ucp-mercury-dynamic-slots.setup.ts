@@ -1,5 +1,15 @@
 import { slotsContext } from '@platforms/shared';
-import { btfBlockerService, DiProcess, events, eventService, SlotCreator } from '@wikia/ad-engine';
+import {
+	btfBlockerService,
+	context,
+	DiProcess,
+	events,
+	eventService,
+	fillerService,
+	PorvataFiller,
+	SlotCreator,
+	slotService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	SlotSetupDefinition,
@@ -15,6 +25,7 @@ export class UcpMercuryDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+		this.configureIncontentPlayer();
 	}
 
 	private injectSlots(): void {
@@ -24,6 +35,8 @@ export class UcpMercuryDynamicSlotsSetup implements DiProcess {
 			topLeaderboardDefinition,
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
 		if (!topLeaderboardDefinition) {
@@ -44,5 +57,15 @@ export class UcpMercuryDynamicSlotsSetup implements DiProcess {
 					slotsContext.setState(slotCreatorConfig.slotName, false);
 				}
 			});
+	}
+
+	private configureIncontentPlayer(): void {
+		const icpSlotName = 'incontent_player';
+
+		slotService.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
+		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
+		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
+
+		fillerService.register(new PorvataFiller());
 	}
 }

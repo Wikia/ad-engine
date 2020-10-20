@@ -16,6 +16,11 @@ export const basicContext = {
 	targeting: {
 		skin: 'bingebot',
 	},
+	wiki: {
+		targeting: {
+			directedAtChildren: false,
+		},
+	},
 	services: {
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=bingebot',

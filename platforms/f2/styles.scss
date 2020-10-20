@@ -90,6 +90,14 @@
 				@include uap-porvata-right-position();
 			}
 
+			html.tablet.landscape & {
+				@include uap-porvata-right-position();
+			}
+
+			html.tablet.portrait & {
+				@include uap-porvata-learn-more();
+			}
+
 			html.mobile & {
 				@include uap-porvata-learn-more();
 			}

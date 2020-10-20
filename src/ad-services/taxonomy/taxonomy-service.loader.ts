@@ -1,7 +1,7 @@
 import { context, utils } from '@ad-engine/core';
 
 const defaultEndpoint =
-	'https://services.fandom.com/knowledge-graph/communities/{communityId}/ad-tags';
+	'https://services.fandom.com/ad-tag-manager/communities/{communityId}/ad-tags';
 const logGroup = 'taxonomy-service-loader';
 
 export interface AdTags {

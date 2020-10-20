@@ -164,7 +164,7 @@ export class UcpMercurySlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					rv: 1,
 				},
-				defaultTemplates: ['floorAdhesion', 'hideOnViewability'],
+				defaultTemplates: ['floorAdhesion'],
 				defaultSizes: [
 					[300, 50],
 					[320, 50],
