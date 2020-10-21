@@ -20,7 +20,7 @@ import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 
 @Injectable()
-export class UcpMercuryPrebidConfigSetup implements DiProcess {
+export class UcpMobilePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.prebid.33across', get33AccrossContext());
 		context.set('bidders.prebid.aol', getAOLContext());

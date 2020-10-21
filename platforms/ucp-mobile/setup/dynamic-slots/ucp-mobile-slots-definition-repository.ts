@@ -15,7 +15,7 @@ export interface SlotSetupDefinition {
 }
 
 @Injectable()
-export class UcpMercurySlotsDefinitionRepository {
+export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {

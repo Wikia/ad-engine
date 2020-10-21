@@ -81,7 +81,7 @@ export const basicContext = {
 	},
 	targeting: {
 		rollout_tracking: ['ucp'],
-		skin: 'mercury',
+		skin: 'fandommobile',
 		uap: 'none',
 		uap_c: 'none',
 	},

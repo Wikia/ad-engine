@@ -12,7 +12,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class UcpMercuryAdsMode implements DiProcess {
+export class UcpMobileAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker) {}
 
 	execute(): void {
