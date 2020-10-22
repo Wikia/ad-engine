@@ -14,6 +14,7 @@ import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
@@ -78,6 +79,8 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
+		this.prebidConfig = { ...this.prebidConfig, ...liveRamp.getConfig() };
+
 		if (this.tcf.exists) {
 			this.prebidConfig.consentManagement = {
 				gdpr: {
@@ -96,6 +99,7 @@ export class PrebidProvider extends BidderProvider {
 		this.applyConfig(this.prebidConfig);
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
+		this.getLiveRampUserIds();
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -243,6 +247,13 @@ export class PrebidProvider extends BidderProvider {
 			adUnits,
 			bidsBackHandler,
 		});
+	}
+
+	async getLiveRampUserIds(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+		const userId = pbjs.getUserIds()['idl_env'];
+
+		liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
 	}
 
 	/**
