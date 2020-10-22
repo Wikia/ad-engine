@@ -3,7 +3,7 @@ import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpMercuryBaseContextSetup extends BaseContextSetup {
+export class UcpMobileBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();
 

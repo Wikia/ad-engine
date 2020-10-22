@@ -11,7 +11,7 @@ import { merge } from 'rxjs';
 import { getOutstreamConfig } from './configs/outstream-config';
 
 @Injectable()
-export class UcpMercuryTemplatesSetup implements DiProcess {
+export class UcpMobileTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}

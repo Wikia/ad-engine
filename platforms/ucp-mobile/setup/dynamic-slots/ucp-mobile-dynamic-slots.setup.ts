@@ -13,14 +13,14 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	SlotSetupDefinition,
-	UcpMercurySlotsDefinitionRepository,
-} from './ucp-mercury-slots-definition-repository';
+	UcpMobileSlotsDefinitionRepository,
+} from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
-export class UcpMercuryDynamicSlotsSetup implements DiProcess {
+export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotCreator: SlotCreator,
-		private slotsDefinitionRepository: UcpMercurySlotsDefinitionRepository,
+		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 	) {}
 
 	execute(): void {
