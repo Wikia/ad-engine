@@ -254,7 +254,7 @@ export class PrebidProvider extends BidderProvider {
 
 	async getLiveRampUserIds(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
-		const userId = pbjs.getUserIds()['idl_env'];
+		const userId = pbjs.getUserIds ? pbjs.getUserIds()['idl_env'] : null;
 
 		liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
 	}
