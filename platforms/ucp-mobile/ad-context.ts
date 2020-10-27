@@ -67,7 +67,7 @@ export const basicContext = {
 			threshold: 100,
 		},
 		pushAfterRendered: {
-			top_boxad: ['incontent_boxad_1', 'incontent_player'],
+			top_boxad: ['incontent_boxad_1', 'incontent_player', 'affiliate_slot'],
 		},
 	},
 	slots: {},

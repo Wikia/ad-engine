@@ -77,7 +77,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2',
-				anchorPosition: 1,
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -139,7 +138,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '#wikiContainer',
+				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -181,7 +180,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '#wikiContainer',
+				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
 			},
