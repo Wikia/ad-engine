@@ -210,6 +210,23 @@
             ]
         }
     ],
+    "icLiveRampId": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "AU",
+                "CA",
+                "US-PA"
+            ],
+            "value": true
+        }
+    ],
     "icBidsTracking": [
         {
             "apps": [
@@ -236,7 +253,8 @@
             ],
             "regions": [
                 "AU",
-                "CA"
+                "CA",
+                "US-PA"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201020.min.js"
         },
