@@ -150,7 +150,7 @@ export const basicContext = {
 				},
 			},
 			watchingThat: {
-				apiKey: 'TBA',
+				apiKey: 'NnBNOWpNNUxFfGJGZkJQaHFCQndNc3ZPMXZQZEp5UkhCWEdPbGJvRllP',
 				enabled: false,
 			},
 		},
