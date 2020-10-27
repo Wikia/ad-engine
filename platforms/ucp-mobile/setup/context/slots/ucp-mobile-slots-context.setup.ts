@@ -7,7 +7,7 @@ const BIG_VIEWPORT_SIZE = {
 };
 
 @Injectable()
-export class UcpMercurySlotsContextSetup implements DiProcess {
+export class UcpMobileSlotsContextSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {

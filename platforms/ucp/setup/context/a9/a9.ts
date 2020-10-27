@@ -44,7 +44,7 @@ export class UcpA9ConfigSetup implements DiProcess {
 			config['hivi_leaderboard'] = {
 				sizes: [
 					[728, 90],
-					[970, 90],
+					[970, 250],
 				],
 			};
 		}

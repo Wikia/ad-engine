@@ -10,11 +10,11 @@ import {
 import { Container, Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpMercuryIocSetup implements DiProcess {
+export class UcpMobileIocSetup implements DiProcess {
 	constructor(private container: Container) {}
 
 	async execute(): Promise<void> {
-		this.container.bind(UcpTargetingSetup.skin('mercury'));
+		this.container.bind(UcpTargetingSetup.skin('fandommobile'));
 
 		TrackingSetup.provideMiddlewares({
 			slotTrackingMiddlewares: [

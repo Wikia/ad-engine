@@ -15,7 +15,7 @@ export interface SlotSetupDefinition {
 }
 
 @Injectable()
-export class UcpMercurySlotsDefinitionRepository {
+export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
@@ -49,7 +49,7 @@ export class UcpMercurySlotsDefinitionRepository {
 			slotCreatorWrapperConfig,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.article-body',
+				anchorSelector: '.article-content',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -76,7 +76,7 @@ export class UcpMercurySlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.article-content > h2',
+				anchorSelector: '.mw-parser-output > h2',
 				anchorPosition: 1,
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
