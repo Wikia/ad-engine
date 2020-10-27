@@ -1,10 +1,11 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
 	communicationService,
 	context,
 	Dictionary,
+	DiProcess,
 	fillerService,
 	FmrRotator,
 	globalAction,
@@ -14,6 +15,7 @@ import {
 	SlotConfig,
 	slotInjector,
 	slotService,
+	TemplateRegistry,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
@@ -21,10 +23,13 @@ import { take } from 'rxjs/operators';
 const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
-export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
-	configureDynamicSlots(): void {
+export class UcpDynamicSlotsSetup implements DiProcess {
+	constructor(private templateRegistry: TemplateRegistry) {}
+
+	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();
+		this.injectAffiliateDisclaimer();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -57,7 +62,11 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 
 	private injectIncontentPlayer(): void {
 		if (context.get('custom.hasIncontentPlayer')) {
-			context.push('events.pushOnScroll.ids', 'incontent_player');
+			if (context.get('services.distroScale.enabled')) {
+				context.push('state.adStack', { id: 'incontent_player' });
+			} else {
+				context.push('events.pushOnScroll.ids', 'incontent_player');
+			}
 		}
 	}
 
@@ -120,5 +129,11 @@ export class UcpDynamicSlotsSetup implements DynamicSlotsSetup {
 				);
 			}
 		}
+	}
+
+	private injectAffiliateDisclaimer(): void {
+		slotService.on('affiliate_slot', AdSlot.STATUS_SUCCESS, () => {
+			this.templateRegistry.init('affiliateDisclaimer', slotService.get('affiliate_slot'));
+		});
 	}
 }

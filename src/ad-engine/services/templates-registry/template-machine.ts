@@ -29,6 +29,13 @@ export class TemplateMachine<T extends Dictionary<TemplateStateHandler<keyof T>[
 		this.emit('initialised');
 	}
 
+	async destroy(): Promise<void> {
+		this.emit('destroying');
+		await this.currentState.leave();
+		await Promise.all(Array.from(this.states.values()).map((state) => state.destroy()));
+		this.emit('destroyed');
+	}
+
 	private transition: TemplateTransition<keyof T> = async (targetStateKey) => {
 		if (this.currentStateKey === targetStateKey) {
 			throw new Error(

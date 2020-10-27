@@ -1,12 +1,11 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class MinervaSlotsContextSetup implements SlotsContextSetup {
+export class MinervaSlotsContextSetup implements DiProcess {
 	constructor() {}
 
-	configureSlotsContext(): void {
+	execute(): void {
 		const slots = {
 			top_leaderboard: {
 				aboveTheFold: true,

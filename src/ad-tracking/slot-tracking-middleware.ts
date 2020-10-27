@@ -1,11 +1,4 @@
-import {
-	context,
-	Dictionary,
-	FuncPipelineStep,
-	InstantConfigCacheStorage,
-	likhoService,
-	utils,
-} from '@ad-engine/core';
+import { context, FuncPipelineStep, InstantConfigCacheStorage, utils } from '@ad-engine/core';
 import { AdInfoContext } from './slot-tracker';
 
 function checkOptIn(): string {
@@ -30,9 +23,6 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 	const timestamp: number = now.getTime();
 	const isUap =
 		slot.getConfigProperty('targeting.uap') && slot.getConfigProperty('targeting.uap') !== 'none';
-	const keyVals: Dictionary<string> = {
-		likho: likhoService.getTypes().join('|'),
-	};
 	let topOffset = slot.getTopOffset();
 
 	if (typeof topOffset === 'number') {
@@ -49,10 +39,7 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 			device: utils.client.getDeviceType(),
 			document_visibility: utils.getDocumentVisibilityStatus(),
 			is_uap: isUap ? 1 : 0,
-			key_vals: Object.keys(keyVals)
-				.filter((key) => keyVals[key])
-				.map((key) => `${key}=${keyVals[key]}`)
-				.join(';'),
+			key_vals: '',
 			kv_ah: window.document.body.scrollHeight,
 			kv_esrb: context.get('targeting.esrb') || '',
 			kv_lang: context.get('targeting.lang') || '',
@@ -69,9 +56,9 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 			page_layout: `pos_top=${topOffset}`,
 			page_width:
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
-			pv: window.pvNumber || '',
-			pv_unique_id: window.pvUID || '',
-			rollout_tracking: context.get('targeting.rollout_tracking') || '',
+			pv: window.pvNumber || context.get('wiki.pvNumber') || '',
+			pv_unique_id: window.pvUID || context.get('wiki.pvUID') || '',
+			rollout_tracking: (context.get('targeting.rollout_tracking') || []).join(','),
 			scroll_y: window.scrollY || window.pageYOffset,
 			time_bucket: now.getHours(),
 			tz_offset: now.getTimezoneOffset(),

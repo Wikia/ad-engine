@@ -1,11 +1,19 @@
+import { RxJsOperator } from '@ad-engine/models';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { RxJsOperator } from '../../rxjs/rxjs-operator';
 
 export interface TemplateAction {
 	templateName: string;
 	stateName: string;
-	type: 'leaving' | 'left' | 'entering' | 'entered' | 'initialising' | 'initialised';
+	type:
+		| 'leaving'
+		| 'left'
+		| 'entering'
+		| 'entered'
+		| 'initialising'
+		| 'initialised'
+		| 'destroying'
+		| 'destroyed';
 }
 
 export function ofTemplateAction(

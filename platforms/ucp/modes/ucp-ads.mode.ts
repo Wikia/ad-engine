@@ -1,11 +1,12 @@
-import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	bidders,
 	billTheLizard,
 	communicationService,
 	confiant,
 	context,
-	distroScale,
+	DiProcess,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -20,10 +21,10 @@ import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class UcpAdsMode implements AdsMode {
+export class UcpAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker) {}
 
-	handleAds(): void {
+	execute(): void {
 		const inhibitors = this.callExternals();
 
 		this.setupJWPlayer(inhibitors);
@@ -73,10 +74,10 @@ export class UcpAdsMode implements AdsMode {
 
 		facebookPixel.call();
 		permutive.call();
+		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();
-		distroScale.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
@@ -91,8 +92,9 @@ export class UcpAdsMode implements AdsMode {
 		context.push('state.adStack', { id: 'hivi_leaderboard' });
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
+		context.push('state.adStack', { id: 'affiliate_slot' });
 		context.push('state.adStack', { id: 'floor_adhesion' });
 		context.push('state.adStack', { id: 'invisible_high_impact_2' });
+		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
 	}
 }

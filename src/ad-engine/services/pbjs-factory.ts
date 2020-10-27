@@ -2,7 +2,7 @@ import { logger, scriptLoader } from '../utils';
 import { context } from './context-service';
 
 const prebidLibraryUrl =
-	'//origin-images.wikia.com/fandom-ae-assets/prebid.js/v3.2.0/20200114.min.js';
+	'//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201020.min.js';
 const logGroup = 'pbjs-factory';
 
 (window as any).pbjs = (window as any).pbjs || {};

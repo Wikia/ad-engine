@@ -4,6 +4,7 @@ import { AdSlot, context } from '../../../src/ad-engine';
 import { viewabilityPropertiesTrackingMiddleware } from '../../../src/ad-engine/tracking';
 
 describe('viewability-properties-tracking-middleware', () => {
+	const sandbox = sinon.createSandbox();
 	let adSlot: AdSlot;
 
 	beforeEach(() => {
@@ -14,6 +15,12 @@ describe('viewability-properties-tracking-middleware', () => {
 		adSlot = new AdSlot({ id: 'foo' });
 		adSlot.creativeId = 123;
 		adSlot.lineItemId = 789;
+
+		sandbox.stub(adSlot, 'getUid').returns('a2b01b9f-69df-4481-9daf-9e27bf26502b');
+	});
+
+	afterEach(() => {
+		sandbox.restore();
 	});
 
 	it('returns all info about slot for tracking', () => {
@@ -32,6 +39,7 @@ describe('viewability-properties-tracking-middleware', () => {
 			line_item_id: 789,
 			previous: 'value',
 			rv: 5,
+			slot_id: 'a2b01b9f-69df-4481-9daf-9e27bf26502b',
 			wsi: 'ola1',
 		});
 	});

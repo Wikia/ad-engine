@@ -126,19 +126,12 @@ export class GptProvider implements Provider {
 
 		setupGptTargeting();
 		configure();
-		this.setupNonPersonalizedAds();
 		this.setupRestrictDataProcessing();
-		eventService.on(events.PAGE_RENDER_EVENT, () => this.updateCorrelator());
+		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.updateCorrelator());
 		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
 			this.destroySlot(adSlot.getSlotName());
 		});
 		initialized = true;
-	}
-
-	setupNonPersonalizedAds(): void {
-		const tag = window.googletag.pubads();
-
-		tag.setRequestNonPersonalizedAds(trackingOptIn.isOptedIn() ? 0 : 1);
 	}
 
 	setupRestrictDataProcessing(): void {
@@ -162,7 +155,7 @@ export class GptProvider implements Provider {
 	}
 
 	private fillInCallback(adSlot: AdSlot): void {
-		const targeting = this.parseTargetingParams(adSlot.getTargeting());
+		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
 
@@ -174,7 +167,7 @@ export class GptProvider implements Provider {
 			this.forceSafeFrame(gptSlot);
 		}
 
-		slotDataParamsUpdater.updateOnCreate(adSlot, targeting);
+		slotDataParamsUpdater.updateOnCreate(adSlot);
 		adSlot.updateWinningPbBidderDetails();
 
 		window.googletag.display(adSlot.getSlotName());

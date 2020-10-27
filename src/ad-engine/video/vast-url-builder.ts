@@ -104,7 +104,6 @@ export function buildVastUrl(
 		params.push(`pmad=${options.numberOfAds}`);
 	}
 
-	params.push(`npa=${trackingOptIn.isOptedIn() ? 0 : 1}`);
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
 	return baseUrl + params.join('&');

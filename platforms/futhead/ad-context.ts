@@ -1,3 +1,5 @@
+import fallbackInstantConfig from './fallback-config.json';
+
 export const basicContext = {
 	adUnitId:
 		'/{custom.dfpId}/cports/{slotConfig.group}/{state.deviceType}/' +
@@ -93,7 +95,6 @@ export const basicContext = {
 	services: {
 		durationMedia: {
 			enabled: false,
-			siteId: '1068',
 		},
 		confiant: {
 			enabled: false,
@@ -105,7 +106,7 @@ export const basicContext = {
 		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=futhead',
-			fallbackConfigKey: 'fallbackInstantConfig',
+			fallback: fallbackInstantConfig,
 		},
 	},
 	src: 'sports',

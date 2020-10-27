@@ -10,6 +10,4 @@ export class AdvertisementLabelHandler implements TemplateStateHandler {
 
 		this.adSlot.getElement().appendChild(advertisementLabel.render());
 	}
-
-	async onLeave(): Promise<void> {}
 }

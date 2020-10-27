@@ -1,8 +1,9 @@
-import { DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { NoAdsDetector, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
 	Dictionary,
+	DiProcess,
 	SlotConfig,
 	slotInjector,
 	slotService,
@@ -10,8 +11,10 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
-	configureDynamicSlots(): void {
+export class HydraDynamicSlotsSetup implements DiProcess {
+	constructor(private noAdsDetector: NoAdsDetector) {}
+
+	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
 	}
@@ -60,13 +63,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 			incontentBoxadWrapper.id = `btfmrec_${dbName}_gamepedia`;
 			incontentBoxad.id = 'incontent_boxad_1';
 
-			const gamepediaProBoxWrapper = document.getElementById(`middlemrec_${dbName}_gamepedia`);
-
-			if (gamepediaProBoxWrapper) {
-				siderail.insertBefore(topBoxadWrapper, gamepediaProBoxWrapper);
-			} else {
-				siderail.appendChild(topBoxadWrapper);
-			}
+			siderail.prepend(topBoxadWrapper);
 
 			siderail.appendChild(incontentBoxadWrapper);
 			topBoxadWrapper.appendChild(topBoxad);
@@ -75,7 +72,7 @@ export class HydraDynamicSlotsSetup implements DynamicSlotsSetup {
 	}
 
 	private injectFooterAd(): void {
-		if (context.get('state.showAds')) {
+		if (this.noAdsDetector.isAdsMode()) {
 			const footer = document.getElementById('curse-footer');
 			const footerWrapper = footer.querySelector('.footer-wrapper');
 			const footerBoxadContainer = document.createElement('div');

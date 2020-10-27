@@ -168,24 +168,4 @@ describe('vast-url-builder', () => {
 
 		expect(vastUrl.match(custParams)).to.not.be.ok;
 	});
-
-	it('build URL with non personalized ads set to false if tracking opt in is enabled', () => {
-		context.set('options.trackingOptIn', true);
-
-		const vastUrl = buildVastUrl(1, 'top_leaderboard');
-
-		const custParams = /&npa=0/;
-
-		expect(vastUrl.match(custParams)).to.be.ok;
-	});
-
-	it('build URL with non personalized ads set to true if tracking opt in is disabled', () => {
-		context.set('options.trackingOptIn', false);
-
-		const vastUrl = buildVastUrl(1, 'top_leaderboard');
-
-		const custParams = /&npa=1/;
-
-		expect(vastUrl.match(custParams)).to.be.ok;
-	});
 });

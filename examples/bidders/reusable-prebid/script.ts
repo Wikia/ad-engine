@@ -4,7 +4,6 @@ import {
 	bidders,
 	billTheLizard,
 	btfBlockerService,
-	cmp,
 	context,
 	events,
 	eventService,
@@ -18,7 +17,6 @@ const mainContainer = document.getElementById('main-container');
 const limit = utils.queryString.get('limit') || null;
 const contentLength = utils.queryString.get('content_length') || 1;
 const enabledProjects = utils.queryString.get('enabled-project');
-const optIn = utils.queryString.get('tracking-opt-in-status') !== '0';
 
 function loadContent() {
 	const newContent = document.createElement('div');
@@ -27,38 +25,6 @@ function loadContent() {
 
 	mainContainer.appendChild(newContent);
 }
-
-cmp.override((cmd, param, cb) => {
-	if (cmd === 'getConsentData') {
-		cb(
-			{
-				consentData: optIn
-					? 'BOQu5jyOQu5jyCNABAPLBR-AAAAeCAFgAUABYAIAAaABFACY'
-					: 'BOQu5naOQu5naCNABAPLBRAAAAAeCAAA',
-				gdprApplies: true,
-				hasGlobalScope: false,
-			},
-			true,
-		);
-	} else if (cmd === 'getVendorConsents') {
-		cb(
-			{
-				metadata: 'BOQu5naOQu5naCNABAAABRAAAAAAAA',
-				purposeConsents: Array.from({ length: 5 }).reduce<ConsentData['purposeConsents']>(
-					(map, val, i) => ({ ...map, [i + 1]: optIn }),
-					{},
-				),
-				vendorConsents: Array.from({ length: 500 }).reduce<ConsentData['vendorConsents']>(
-					(map, val, i) => ({ ...map, [i + 1]: optIn }),
-					{},
-				),
-			},
-			true,
-		);
-	} else {
-		cb(null, false);
-	}
-});
 
 context.extend(adContext);
 context.set('slots.repeatable_boxad_1.repeat.limit', limit);

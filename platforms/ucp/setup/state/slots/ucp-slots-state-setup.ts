@@ -1,28 +1,59 @@
-import { slotsContext, SlotsStateSetup } from '@platforms/shared';
-import { AdSlot, context, InstantConfigService, slotService } from '@wikia/ad-engine';
+import { slotsContext } from '@platforms/shared';
+import {
+	AdSlot,
+	context,
+	DiProcess,
+	distroScale,
+	InstantConfigService,
+	slotDataParamsUpdater,
+	slotService,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpSlotsStateSetup implements SlotsStateSetup {
+export class UcpSlotsStateSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
-	configureSlotsState(): void {
+	execute(): void {
 		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
 		slotsContext.setState('top_leaderboard', true);
-		slotsContext.setState('top_boxad', true);
+		slotsContext.setState('top_boxad', this.isRightRailApplicable());
+		slotsContext.setState('affiliate_slot', this.isAffiliateSlotEnabled());
 		slotsContext.setState('bottom_leaderboard', true);
 		slotsContext.setState('invisible_skin', false);
 		slotsContext.setState('floor_adhesion', this.instantConfig.get('icFloorAdhesion'));
 		slotsContext.setState('invisible_high_impact_2', !this.instantConfig.get('icFloorAdhesion'));
 
 		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
+		slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 
 		if (context.get('services.distroScale.enabled')) {
 			// It is required to *collapse* ICP for DistroScale
 			// TODO: clean up once we finish DS A/B test
-			slotsContext.setState('incontent_player', false, AdSlot.STATUS_COLLAPSE);
-		} else {
-			slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
+			this.setupIncontentPlayerForDistroScale();
 		}
+	}
+
+	private setupIncontentPlayerForDistroScale(): void {
+		const slotName = 'incontent_player';
+
+		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
+		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
+			slotDataParamsUpdater.updateOnCreate(slotService.get(slotName));
+			distroScale.call();
+		});
+	}
+
+	private isRightRailApplicable(): boolean {
+		return utils.getViewportWidth() >= 1024;
+	}
+
+	private isAffiliateSlotEnabled(): boolean {
+		return (
+			this.isRightRailApplicable() &&
+			context.get('wiki.opts.enableAffiliateSlot') &&
+			!context.get('custom.hasFeaturedVideo')
+		);
 	}
 }

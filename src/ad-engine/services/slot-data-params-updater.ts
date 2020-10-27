@@ -1,4 +1,4 @@
-import { AdSlot, Targeting } from '../models';
+import { AdSlot } from '../models';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
 
@@ -6,9 +6,9 @@ import { slotTweaker } from './slot-tweaker';
  * Sets dataset properties on AdSlot container for debug purposes.
  */
 class SlotDataParamsUpdater {
-	updateOnCreate(adSlot: AdSlot, targeting: Targeting): void {
+	updateOnCreate(adSlot: AdSlot): void {
 		slotTweaker.setDataParam(adSlot, 'gptPageParams', context.get('targeting'));
-		slotTweaker.setDataParam(adSlot, 'gptSlotParams', targeting);
+		slotTweaker.setDataParam(adSlot, 'gptSlotParams', adSlot.getTargeting());
 	}
 
 	updateOnRenderEnd(adSlot: AdSlot): void {

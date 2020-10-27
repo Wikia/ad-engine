@@ -1,3 +1,5 @@
+import fallbackInstantConfig from './fallback-config.json';
+
 export const basicContext = {
 	adUnitId:
 		'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiIdentifier}-{targeting.s0}',
@@ -50,7 +52,6 @@ export const basicContext = {
 		rubiconDfp: true,
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '_not_a_top1k_wiki',
-		rolloutTracking: 'ucp',
 	},
 	events: {
 		pushOnScroll: {
@@ -66,10 +67,16 @@ export const basicContext = {
 			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: 'ucp',
+		rollout_tracking: ['ucp'],
 		skin: 'oasis',
 		uap: 'none',
 		uap_c: 'none',
+	},
+	templates: {
+		safeFanTakeoverElement: {
+			boxadSlotNames: ['top_boxad', 'incontent_boxad_1'],
+			boxadSize: [300, 601],
+		},
 	},
 	services: {
 		billTheLizard: {
@@ -86,7 +93,6 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
-			siteId: '1167',
 		},
 		distroScale: {
 			enabled: false,
@@ -100,6 +106,8 @@ export const basicContext = {
 				'top_boxad',
 				'incontent_boxad_1',
 				'bottom_leaderboard',
+				'featured',
+				'incontent_player',
 			],
 		},
 		externalLogger: {
@@ -107,7 +115,7 @@ export const basicContext = {
 		},
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=oasis',
-			fallbackConfigKey: 'fallbackInstantConfig',
+			fallback: fallbackInstantConfig,
 		},
 		nielsen: {
 			enabled: false,

@@ -111,6 +111,8 @@ interface Pbjs {
 
 	getAdserverTargetingForAdUnitCode(adUnitCode: string): PrebidTargeting;
 
+	getUserIds(): object;
+
 	setConfig(config: {}): void;
 
 	createBid(statusCode: number): PrebidBidResponse;

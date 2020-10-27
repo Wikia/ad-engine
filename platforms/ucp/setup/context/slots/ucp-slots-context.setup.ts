@@ -1,12 +1,11 @@
-import { SlotsContextSetup } from '@platforms/shared';
-import { context, events, eventService } from '@wikia/ad-engine';
+import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpSlotsContextSetup implements SlotsContextSetup {
+export class UcpSlotsContextSetup implements DiProcess {
 	constructor() {}
 
-	configureSlotsContext(): void {
+	execute(): void {
 		const slots = {
 			hivi_leaderboard: {
 				aboveTheFold: true,
@@ -82,6 +81,20 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 					[300, 600],
 					[300, 1050],
 				],
+				targeting: {
+					loc: 'top',
+					rv: 1,
+				},
+			},
+			affiliate_slot: {
+				adProduct: 'affiliate_slot',
+				aboveTheFold: true,
+				slotNameSuffix: '',
+				group: 'AU',
+				insertBeforeSelector: '#top_boxad',
+				options: {},
+				slotShortcut: 'a',
+				defaultSizes: [[280, 120]],
 				targeting: {
 					loc: 'top',
 					rv: 1,
@@ -190,7 +203,7 @@ export class UcpSlotsContextSetup implements SlotsContextSetup {
 				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'middle',
-					pos: ['incontent_player'],
+					pos: ['outstream'],
 					rv: 1,
 				},
 			},

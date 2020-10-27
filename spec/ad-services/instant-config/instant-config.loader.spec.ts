@@ -14,12 +14,12 @@ describe('Instant Config Loader', () => {
 	let xhr: SinonFakeXMLHttpRequestStatic;
 	let request: SinonFakeXMLHttpRequest & { setStatus: (status: number) => void };
 	let contextGetStub: SinonStub;
-	let contextRepo: Dictionary<string>;
+	let contextRepo: Dictionary;
 
 	beforeEach(() => {
 		contextRepo = {
 			'services.instantConfig.endpoint': 'http://endpoint.com',
-			'services.instantConfig.fallbackConfigKey': 'fallback_config_key',
+			'services.instantConfig.fallback': {},
 		};
 		contextGetStub = sandbox.stub(context, 'get');
 		contextGetStub.callsFake((key) => contextRepo[key]);
@@ -60,7 +60,7 @@ describe('Instant Config Loader', () => {
 	});
 
 	it('should return fallback if status !== 200', async () => {
-		window['fallback_config_key'] = { a: 'a' };
+		contextRepo['services.instantConfig.fallback'] = { a: 'a' };
 
 		const promise = instantConfigLoader.getConfig();
 
@@ -78,7 +78,7 @@ describe('Instant Config Loader', () => {
 	});
 
 	it('should return fallback if error', async () => {
-		window['fallback_config_key'] = { a: 'a' };
+		contextRepo['services.instantConfig.fallback'] = { a: 'a' };
 
 		const promise = instantConfigLoader.getConfig();
 
@@ -115,8 +115,7 @@ describe('Instant Config Loader', () => {
 	});
 
 	it('should get fallback from fallbackInstantConfig', async () => {
-		delete contextRepo['services.instantConfig.fallbackConfigKey'];
-		window['fallbackInstantConfig'] = { b: 'b' };
+		contextRepo['services.instantConfig.fallback'] = { b: 'b' };
 
 		const promise = instantConfigLoader.getConfig();
 

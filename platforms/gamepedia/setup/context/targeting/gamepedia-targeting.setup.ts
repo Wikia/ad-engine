@@ -1,10 +1,9 @@
-import { TargetingSetup } from '@platforms/shared';
-import { context, Dictionary, Targeting, utils } from '@wikia/ad-engine';
+import { context, Dictionary, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class GamepediaTargetingSetup implements TargetingSetup {
-	configureTargetingContext(): void {
+export class GamepediaTargetingSetup implements DiProcess {
+	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 	}
 

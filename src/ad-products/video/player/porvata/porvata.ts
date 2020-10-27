@@ -336,9 +336,7 @@ export class PorvataFiller implements SlotFiller {
 		trackingDisabled: false,
 		loadVideoTimeout: 30000,
 		vpaidMode: 2,
-		vastTargeting: {
-			pos: 'outstream',
-		},
+		vastTargeting: {},
 	};
 
 	fill(adSlot: AdSlot): void {

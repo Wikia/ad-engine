@@ -48,6 +48,10 @@ describe('Template Registry', () => {
 		async onLeave(): Promise<void> {
 			stateASpy.onLeave();
 		}
+
+		async onDestroy(): Promise<void> {
+			stateASpy.onDestroy();
+		}
 	}
 
 	@Injectable({ autobind: false })
@@ -63,6 +67,10 @@ describe('Template Registry', () => {
 		async onLeave(): Promise<void> {
 			stateBSpy.onLeave();
 		}
+
+		async onDestroy(): Promise<void> {
+			stateBSpy.onDestroy();
+		}
 	}
 
 	@Injectable({ autobind: false })
@@ -77,6 +85,10 @@ describe('Template Registry', () => {
 
 		async onLeave(): Promise<void> {
 			stateSharedSpy.onLeave();
+		}
+
+		async onDestroy(): Promise<void> {
+			stateSharedSpy.onDestroy();
 		}
 	}
 
@@ -94,36 +106,47 @@ describe('Template Registry', () => {
 	});
 
 	it('should throw error if template not registered', () => {
-		expect(() => instance.init('mock', {} as any)).to.throw('Template mock was not registered');
+		expect(() => instance.init('mock', { getSlotName: () => 'mock' } as any)).to.throw(
+			'Template mock was not registered',
+		);
 	});
 
-	it('should throw when initialized twice', () => {
+	it('should not throw when initialized twice', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
 			AdditionalDependency,
 		]);
-		instance.init('mock', {} as any);
-		expect(() => instance.init('mock', {} as any)).to.throw('Template mock is already initialized');
+		instance.init('mock', { getSlotName: () => 'mock' } as any);
+		instance.init('mock', { getSlotName: () => 'mock' } as any);
+
+		assert(true);
+	});
+
+	it('should work with nested template dependencies', () => {
+		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a', [
+			[[AdditionalDependency]],
+		]);
+		instance.init('mock', { getSlotName: () => 'mock' } as any);
 	});
 
 	it('should throw without providing template dependencies', () => {
 		instance.register('mock', { a: [StateAHandler], b: [StateBHandler] }, 'a');
-		expect(() => instance.init('mock', {} as any)).to.throw(
+		expect(() => instance.init('mock', { getSlotName: () => 'mock' } as any)).to.throw(
 			`${AdditionalDependency.toString()} is not bound to anything`,
 		);
 	});
 
 	it('should be able to register without template dependencies', () => {
 		instance.register('mock', { a: [StateBHandler], b: [StateBHandler] }, 'a');
-		instance.init('mock', {} as any);
+		instance.init('mock', { getSlotName: () => 'mock' } as any);
 		assert(true);
 	});
 
 	describe('Initialized', () => {
 		const templateName1 = 'foo';
-		const templateSlot1: AdSlot = { slot: 'foo-slot' } as any;
+		const templateSlot1: AdSlot = { slot: 'foo-slot', getSlotName: () => 'foo-slot' } as any;
 		const templateParams1 = { params: 'foo-params' };
 		const templateName2 = 'bar';
-		const templateSlot2: AdSlot = { slot: 'bar-slot' } as any;
+		const templateSlot2: AdSlot = { slot: 'bar-slot', getSlotName: () => 'bar-slot' } as any;
 		const templateParams2 = { params: 'bar-params' };
 		const template = {
 			a: [StateAHandler, StateSharedHandler],
@@ -151,6 +174,12 @@ describe('Template Registry', () => {
 			assert(stateSharedSpy.constructor.calledTwice);
 		});
 
+		it('should not throw when destroy non-existent', async () => {
+			await instance.destroy('non-existent');
+
+			assert(true, `Shouldn't throw`);
+		});
+
 		it('should create all handlers on init for two templates', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 			instance.init(templateName2, templateSlot1, templateParams1);
@@ -159,6 +188,41 @@ describe('Template Registry', () => {
 			assert(additionalDepsSpy.calledTwice);
 			assert(stateBSpy.constructor.calledTwice);
 			assert(stateSharedSpy.constructor.callCount === 4);
+		});
+
+		it('should destroy all machines on destroy of given slotName', async () => {
+			instance.init(templateName1, templateSlot1, templateParams1);
+			instance.init(templateName1, templateSlot1, templateParams1);
+			instance.init(templateName2, templateSlot2, templateParams2);
+
+			await instance.destroy(templateSlot1.getSlotName());
+
+			assert(stateASpy.onLeave.calledTwice, 'stateASpy.onLeave.calledTwice');
+			assert(stateSharedSpy.onLeave.calledTwice, 'stateSharedSpy.onLeave.calledTwice');
+			assert(stateASpy.onDestroy.calledTwice, 'stateASpy.onDestroy.calledTwice');
+			assert(stateBSpy.onDestroy.calledTwice, 'stateBSpy.onDestroy.calledTwice');
+			assert(stateSharedSpy.onDestroy.callCount === 4, 'stateSharedSpy.onDestroy.callCount === 4');
+		});
+
+		it('should destroy all machines on destroyAll', async () => {
+			instance.init(templateName1, templateSlot1, templateParams1);
+
+			await instance.destroyAll();
+
+			assert(stateASpy.onLeave.callCount, 'stateASpy.onLeave.callCount');
+			assert(stateBSpy.onLeave.notCalled, 'stateBSpy.onLeave.notCalled');
+			assert(stateSharedSpy.onLeave.calledOnce, 'stateSharedSpy.onLeave.calledOnce');
+			assert(stateASpy.onDestroy.calledOnce, 'stateASpy.onDestroy.calledOnce');
+			assert(stateBSpy.onDestroy.calledOnce, 'stateBSpy.onDestroy.calledOnce');
+			assert(stateSharedSpy.onDestroy.calledTwice, 'stateSharedSpy.onDestroy.calledTwice');
+			sandbox.assert.callOrder(
+				stateASpy.onLeave,
+				stateSharedSpy.onLeave,
+				stateASpy.onDestroy,
+				stateSharedSpy.onDestroy,
+				stateBSpy.onDestroy,
+				stateSharedSpy.onDestroy,
+			);
 		});
 
 		it('should throw then trying get deps after init', () => {

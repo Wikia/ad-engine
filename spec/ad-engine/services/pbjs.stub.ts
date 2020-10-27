@@ -14,6 +14,7 @@ export function createPbjsStub(sandbox: SinonSandbox): PbjsStub {
 		markWinningBidAsUsed: sandbox.stub(),
 		getBidResponsesForAdUnitCode: sandbox.stub().returns({ bids: [] }),
 		getAdserverTargetingForAdUnitCode: sandbox.stub().returns({}),
+		getUserIds: sandbox.stub().returns({}),
 		setConfig: sandbox.stub(),
 		createBid: sandbox.stub().returns({}),
 		renderAd: sandbox.stub(),

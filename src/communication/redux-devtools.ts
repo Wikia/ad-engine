@@ -27,7 +27,7 @@ export interface ReduxDevtools {
 export abstract class ReduxDevtoolsFactory {
 	private static devtools: ReduxDevtools;
 
-	static connect(): ReduxDevtools | undefined {
+	static connect(name = 'AdEngine'): ReduxDevtools | undefined {
 		if (this.devtools) {
 			throw new Error('Trying to initialize ReduxDevtools second time');
 		}
@@ -36,7 +36,7 @@ export abstract class ReduxDevtoolsFactory {
 
 		if (extension) {
 			return (this.devtools = extension.connect({
-				name: 'AdEngine',
+				name,
 			}));
 		}
 	}

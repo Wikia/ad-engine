@@ -1,8 +1,10 @@
-import { AdsMode, PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	bidders,
 	confiant,
 	context,
+	DiProcess,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -13,10 +15,10 @@ import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
-export class HydraAdsMode implements AdsMode {
+export class HydraAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker) {}
 
-	handleAds(): void {
+	execute(): void {
 		const inhibitors = this.callExternals();
 
 		startAdEngine(inhibitors);
@@ -49,6 +51,7 @@ export class HydraAdsMode implements AdsMode {
 
 		facebookPixel.call();
 		permutive.call();
+		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();

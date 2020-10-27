@@ -9,6 +9,4 @@ export class SlotHiddenHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		this.manipulator.element(this.adSlot.element).addClass(AdSlot.HIDDEN_CLASS);
 	}
-
-	async onLeave(): Promise<void> {}
 }

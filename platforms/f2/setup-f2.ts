@@ -6,6 +6,7 @@ export const F2_ENV = Symbol('f2 Environment');
 export interface F2Environment {
 	skinName: string;
 	siteType: string;
+	hasRightRail: boolean;
 	isPageMobile: boolean;
 	isAdMirror: boolean;
 	isProduction: boolean;

@@ -7,18 +7,19 @@ import {
 	eventService,
 	SlotConfig,
 	slotService,
+	Usp,
+	usp,
 	utils,
 } from '@ad-engine/core';
 import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
-import { Apstag, Cmp, cmp, Usp, usp } from '../wrappers';
+import { Apstag } from '../wrappers';
 import {
 	A9Bid,
 	A9Bids,
 	A9CCPA,
 	A9Config,
-	A9GDPR,
 	A9SlotConfig,
 	A9SlotDefinition,
 	ApstagConfig,
@@ -36,7 +37,6 @@ export class A9Provider extends BidderProvider {
 
 	apstag: Apstag = Apstag.make();
 	bids: A9Bids = {};
-	cmp: Cmp = cmp;
 	usp: Usp = usp;
 	priceMap: PriceMap = {};
 	targetingKeys: string[] = [];
@@ -59,8 +59,8 @@ export class A9Provider extends BidderProvider {
 		return this.targetingKeys;
 	}
 
-	init(consentData: ConsentData = {}, signalData: SignalData = {}): void {
-		this.initIfNotLoaded(consentData, signalData);
+	init(signalData: SignalData = {}): void {
+		this.initIfNotLoaded(signalData);
 
 		this.bids = {};
 		this.priceMap = {};
@@ -69,7 +69,7 @@ export class A9Provider extends BidderProvider {
 		this.fetchBids(a9Slots);
 	}
 
-	private initIfNotLoaded(consentData: ConsentData, signalData: SignalData): void {
+	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
 			if (context.get('bidders.a9.videoBidsCleaning')) {
 				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
@@ -79,7 +79,7 @@ export class A9Provider extends BidderProvider {
 				);
 			}
 
-			this.apstag.init(this.getApstagConfig(consentData, signalData));
+			this.apstag.init(this.getApstagConfig(signalData));
 			this.loaded = true;
 		}
 	}
@@ -109,28 +109,13 @@ export class A9Provider extends BidderProvider {
 		}
 	}
 
-	private getApstagConfig(consentData: ConsentData, signalData: SignalData): ApstagConfig {
+	private getApstagConfig(signalData: SignalData): ApstagConfig {
 		return {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
 			deals: !!this.bidderConfig.dealsEnabled,
-			...this.getGdprIfApplicable(consentData),
 			...this.getCcpaIfApplicable(signalData),
 		};
-	}
-
-	private getGdprIfApplicable(consentData: ConsentData): Partial<A9GDPR> {
-		if (consentData && consentData.consentData) {
-			return {
-				gdpr: {
-					enabled: consentData.gdprApplies,
-					consent: consentData.consentData,
-					cmpTimeout: 5000,
-				},
-			};
-		}
-
-		return {};
 	}
 
 	private getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
@@ -369,18 +354,13 @@ export class A9Provider extends BidderProvider {
 	}
 
 	protected async callBids(): Promise<void> {
-		let consentData = null;
 		let signalData = null;
-
-		if (this.cmp.exists) {
-			consentData = await this.cmp.getConsentData();
-		}
 
 		if (this.usp.exists) {
 			signalData = await this.usp.getSignalData();
 		}
 
-		this.init(consentData, signalData);
+		this.init(signalData);
 	}
 
 	calculatePrices(): void {

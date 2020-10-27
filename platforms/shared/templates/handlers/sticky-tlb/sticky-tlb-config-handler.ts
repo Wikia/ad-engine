@@ -27,4 +27,8 @@ export class StickyTlbConfigHandler implements TemplateStateHandler {
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
 	}
+
+	async onDestroy(): Promise<void> {
+		document.body.classList.remove('has-uap');
+	}
 }

@@ -1,6 +1,6 @@
-import { TargetingSetup } from '@platforms/shared';
 import {
 	context,
+	DiProcess,
 	InstantConfigCacheStorage,
 	InstantConfigService,
 	Targeting,
@@ -12,7 +12,7 @@ import { F2State } from '../../../utils/f2-state';
 import { F2_STATE } from '../../../utils/f2-state-binder';
 
 @Injectable()
-export class F2TargetingSetup implements TargetingSetup {
+export class F2TargetingSetup implements DiProcess {
 	constructor(
 		@Inject(F2_ENV) private f2Env: F2Environment,
 		@Inject(F2_STATE) private f2State: F2State,
@@ -20,7 +20,7 @@ export class F2TargetingSetup implements TargetingSetup {
 		private cacheStorage: InstantConfigCacheStorage,
 	) {}
 
-	configureTargetingContext(): void {
+	execute(): void {
 		const targeting = this.getPageLevelTargeting();
 
 		Object.keys(targeting).forEach((key) => {

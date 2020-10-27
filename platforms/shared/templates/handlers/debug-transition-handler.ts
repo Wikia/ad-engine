@@ -11,5 +11,7 @@ export class DebugTransitionHandler implements TemplateStateHandler {
 			transition(state, { allowMulticast: true });
 	}
 
-	async onLeave(): Promise<void> {}
+	async onDestroy(): Promise<void> {
+		delete (window.ads as any).transitions[this.name];
+	}
 }

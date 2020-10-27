@@ -1,12 +1,11 @@
-import { Binder, context, Targeting, utils } from '@wikia/ad-engine';
+import { Binder, context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { TargetingSetup } from '../../setup/_targeting.setup';
 import { getDomain } from '../../utils/get-domain';
 
 const SKIN = Symbol('targeting skin');
 
 @Injectable()
-export class UcpTargetingSetup implements TargetingSetup {
+export class UcpTargetingSetup implements DiProcess {
 	static skin(skin: string): Binder {
 		return {
 			bind: SKIN,
@@ -16,13 +15,18 @@ export class UcpTargetingSetup implements TargetingSetup {
 
 	constructor(@Inject(SKIN) private skin: string) {}
 
-	configureTargetingContext(): void {
+	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
 
 		if (context.get('wiki.opts.isAdTestWiki') && context.get('wiki.targeting.testSrc')) {
 			context.set('src', context.get('wiki.targeting.testSrc'));
 		} else if (context.get('wiki.opts.isAdTestWiki')) {
 			context.set('src', 'test');
+		}
+
+		if (context.get('wiki.targeting.wikiIsTop1000')) {
+			context.set('custom.wikiIdentifier', '_top1k_wiki');
+			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
 		}
 	}
 
@@ -59,6 +63,10 @@ export class UcpTargetingSetup implements TargetingSetup {
 			targeting.cid = cid;
 		}
 
+		if (wiki.targeting.wikiIsTop1000) {
+			targeting.top = '1k';
+		}
+
 		return targeting;
 	}
 
@@ -91,7 +99,7 @@ export class UcpTargetingSetup implements TargetingSetup {
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
 			!hasFeaturedVideo &&
-			document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
+			!!document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
 
 		if (adLayout === 'article') {
 			if (hasFeaturedVideo) {

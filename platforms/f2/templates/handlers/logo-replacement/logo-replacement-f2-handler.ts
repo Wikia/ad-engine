@@ -44,6 +44,4 @@ export class LogoReplacementF2Handler implements TemplateStateHandler {
 			this.adSlot.emitEvent(events.LOGO_REPLACED);
 		}
 	}
-
-	async onLeave(): Promise<void> {}
 }

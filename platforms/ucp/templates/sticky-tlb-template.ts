@@ -23,6 +23,7 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { registerUcpUapDomElements } from './configs/register-ucp-uap-dom-elements';
 
 export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
@@ -67,6 +68,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			ScrollCorrector,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.TLB_UNSTICK_DELAY),
+			registerUcpUapDomElements(),
 		],
 	);
 }

@@ -1,12 +1,12 @@
-import { CurseUapSetup, DynamicSlotsSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { CurseUapSetup } from '@platforms/shared';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class MutheadDynamicSlotsSetup implements DynamicSlotsSetup {
+export class MutheadDynamicSlotsSetup implements DiProcess {
 	constructor(private uapSetup: CurseUapSetup) {}
 
-	configureDynamicSlots(): void {
+	execute(): void {
 		if (this.isUapAllowed()) {
 			this.uapSetup.configureUap();
 		}

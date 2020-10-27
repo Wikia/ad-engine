@@ -1,5 +1,12 @@
+interface IasSlotConfig {
+	adUnitPath: string;
+	adSlotId: string;
+	size: number[];
+	type?: string;
+}
+
 interface IasPetQueueElement {
-	adSlots: number[][];
+	adSlots: IasSlotConfig[];
 	dataHandler: (string) => void;
 }
 

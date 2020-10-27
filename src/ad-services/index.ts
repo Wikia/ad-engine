@@ -1,3 +1,4 @@
+export * from './audigent';
 export * from './bill-the-lizard';
 export * from './bt-rec';
 export * from './confiant';

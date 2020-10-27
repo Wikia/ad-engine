@@ -1,5 +1,6 @@
-import { AdSlot, NAVBAR, PAGE, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { NAVBAR, PAGE } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
 

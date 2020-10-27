@@ -1,7 +1,8 @@
-import { CurseUapSetup, DynamicSlotsSetup, slotsContext } from '@platforms/shared';
+import { CurseUapSetup, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
+	DiProcess,
 	InstantConfigService,
 	slotInjector,
 	slotService,
@@ -10,10 +11,10 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class GamepediaDynamicSlotsSetup implements DynamicSlotsSetup {
+export class GamepediaDynamicSlotsSetup implements DiProcess {
 	constructor(private uapSetup: CurseUapSetup, private instantConfig: InstantConfigService) {}
 
-	configureDynamicSlots(): void {
+	execute(): void {
 		if (this.isUapAllowed()) {
 			this.uapSetup.configureUap();
 		}

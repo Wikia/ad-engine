@@ -1,17 +1,16 @@
-import { TemplatesSetup } from '@platforms/shared';
-import { logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import { DiProcess, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 
 @Injectable()
-export class UcpMinervaTemplatesSetup implements TemplatesSetup {
+export class UcpMinervaTemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}
 
-	configureTemplates(): void {
+	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 

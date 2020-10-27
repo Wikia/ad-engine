@@ -1,5 +1,10 @@
-import { TemplatesSetup } from '@platforms/shared';
-import { FloatingRail, logTemplates, TemplateRegistry, templateService } from '@wikia/ad-engine';
+import {
+	DiProcess,
+	FloatingRail,
+	logTemplates,
+	TemplateRegistry,
+	templateService,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
@@ -9,12 +14,12 @@ import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
-export class F2TemplateSetup implements TemplatesSetup {
+export class F2TemplateSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}
 
-	configureTemplates(): void {
+	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
