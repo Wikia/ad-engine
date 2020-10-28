@@ -15,12 +15,6 @@
 
 $closeButtonHeight: 40px;
 
-%high-impact-close-icon {
-	fill: white;
-	height: $closeButtonHeight / 2;
-	width: $closeButtonHeight / 2;
-}
-
 .gpt-ad {
 	text-align: center;
 
@@ -174,26 +168,6 @@ $closeButtonHeight: 40px;
 			svg {
 				position: static;
 			}
-		}
-	}
-}
-
-//show the loading spinner on top of ad in interstitial
-.stop-scrolling {
-	overflow: hidden;
-
-	.wds-spinner__overlay {
-		background: none;
-		bottom: initial;
-		left: 50%;
-		position: absolute;
-		right: initial;
-		top: 50%;
-
-		.wds-spinner {
-			left: initial;
-			position: relative;
-			top: initial;
 		}
 	}
 }
