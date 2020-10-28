@@ -27,7 +27,12 @@ class WatchingThatPlugin {
 	}
 
 	isEnabled(): boolean {
-		return !!context.get('options.video.watchingThat.enabled');
+		return (
+			!!context.get('options.video.watchingThat.enabled') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!context.get('wiki.targeting.directedAtChildren')
+		);
 	}
 
 	private loadScriptOnce(): Promise<Event> {
