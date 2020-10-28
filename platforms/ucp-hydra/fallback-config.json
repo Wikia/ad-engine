@@ -114,7 +114,7 @@
 	"icLiveRampId": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["AU", "CA", "US-PA"],
+			"regions": ["AU", "US-PA"],
 			"value": true
 		}
 	],
@@ -128,8 +128,8 @@
 	"icPrebidVersion": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["AU", "CA", "US-PA"],
-			"value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201020.min.js"
+			"regions": ["AU", "CA", "PL", "US-CA", "US-PA"],
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201022.min.js"
 		},
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
