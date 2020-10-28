@@ -33,6 +33,8 @@ class LiveRamp {
 
 	dispatchLiveRampPrebidIdsLoadedEvent(userId): void {
 		if (this.isEnabled()) {
+			userId = userId ? userId : 'undefined';
+			utils.logger(logGroup, 'userId:', userId);
 			communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
 		}
 	}
