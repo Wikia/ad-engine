@@ -221,7 +221,6 @@
             ],
             "regions": [
                 "AU",
-                "CA",
                 "US-PA"
             ],
             "value": true
@@ -254,9 +253,11 @@
             "regions": [
                 "AU",
                 "CA",
+                "PL",
+                "US-CA",
                 "US-PA"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201020.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201022.min.js"
         },
         {
             "apps": [
