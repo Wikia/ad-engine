@@ -220,7 +220,6 @@
                 "oasis"
             ],
             "regions": [
-                "AU",
                 "US-PA"
             ],
             "value": true
@@ -525,6 +524,21 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icLiveRampATSAnalytics": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "US-PA"
             ],
             "value": true
         }
