@@ -5,6 +5,8 @@ import { props } from 'ts-action';
 const logGroup = 'LiveRamp';
 
 class LiveRamp {
+	private isDispatched = false;
+
 	getConfig() {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -32,10 +34,16 @@ class LiveRamp {
 	}
 
 	dispatchLiveRampPrebidIdsLoadedEvent(userId): void {
-		if (this.isEnabled()) {
+		if (!this.isEnabled()) {
+			utils.logger(logGroup, 'disabled');
+			return;
+		}
+
+		if (!this.isDispatched) {
 			userId = userId ? userId : 'undefined';
 			utils.logger(logGroup, 'userId:', userId);
 			communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
+			this.isDispatched = true;
 		}
 	}
 
