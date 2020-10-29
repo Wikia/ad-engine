@@ -17,26 +17,31 @@ class Ats {
 		utils.logger(logGroup, 'enabled');
 
 		if (!this.isLoaded) {
-			const performance = window.performance;
-			const loadStart = performance.now();
+			const userEmailHashes = context.get('wiki.opts.userEmailHashes');
 
-			// tslint:disable-next-line:tsl-ban-snippets
-			return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
-				const loadEnd = performance.now();
-				const loadTime = loadEnd - loadStart;
+			if (!userEmailHashes) {
+				const performance = window.performance;
+				const loadStart = performance.now();
 
-				(window as any).ats.start({
-					placementID: '2161',
-					email: 'pgralak@fandom.com',
-					storageType: 'localStorage',
-					detectionType: 'scrape',
-					logging: 'error',
+				// tslint:disable-next-line:tsl-ban-snippets
+				return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
+					const loadEnd = performance.now();
+					const loadTime = loadEnd - loadStart;
+
+					(window as any).ats.start({
+						placementID: '2161',
+						emailHashes: userEmailHashes,
+						storageType: 'localStorage',
+						detectionType: 'scrape',
+						logging: 'error',
+					});
+
+					this.dispatchAtsEvents(loadTime);
+					this.isLoaded = true;
 				});
+			}
 
-				this.dispatchAtsEvents(loadTime);
-
-				this.isLoaded = true;
-			});
+			return Promise.resolve();
 		}
 	}
 
@@ -53,7 +58,7 @@ class Ats {
 
 		(window as any).ats.retrieveEnvelope().then((atsEnvelope) => {
 			const atsEnvelopeObj = JSON.parse(atsEnvelope);
-			const envelope = atsEnvelopeObj.envelope;
+			const envelope = atsEnvelopeObj.envelope || 'undefined';
 
 			communicationService.dispatch(atsIdsLoadedEvent({ envelope }));
 		});
