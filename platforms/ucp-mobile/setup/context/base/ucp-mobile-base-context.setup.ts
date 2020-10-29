@@ -9,8 +9,10 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 
 		if (
 			context.get('wiki.opts.noAdsReason') &&
-			context.get('wiki.opts.noAdsReason') !== 'no_ads_user' &&
-			context.get('wiki.opts.pageType') !== 'homepage_logged'
+			!(
+				context.get('wiki.opts.noAdsReason') === 'no_ads_user' &&
+				context.get('wiki.opts.pageType') === 'homepage_logged'
+			)
 		) {
 			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
 		}

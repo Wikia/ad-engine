@@ -9,8 +9,10 @@ export class UcpBaseContextSetup extends BaseContextSetup {
 
 		if (
 			window.ads.context.opts.noAdsReason &&
-			window.ads.context.opts.noAdsReason !== 'no_ads_user' &&
-			window.ads.context.opts.pageType !== 'homepage_logged'
+			!(
+				window.ads.context.opts.noAdsReason === 'no_ads_user' &&
+				window.ads.context.opts.pageType === 'homepage_logged'
+			)
 		) {
 			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
 		}
