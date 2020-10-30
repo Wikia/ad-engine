@@ -262,7 +262,7 @@ export class PrebidProvider extends BidderProvider {
 		if (pbjs.getUserIds) {
 			const userId = pbjs.getUserIds()['idl_env'];
 
-			utils.logger(logGroup, 'prebid dispatching LiveRamp event');
+			utils.logger(logGroup, 'calling LiveRamp dispatch method');
 
 			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
 		}

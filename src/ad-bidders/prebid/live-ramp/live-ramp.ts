@@ -41,6 +41,7 @@ class LiveRamp {
 
 		if (!this.isDispatched) {
 			userId = userId ? userId : 'undefined';
+			utils.logger(logGroup, 'prebid dispatching LiveRamp event');
 			utils.logger(logGroup, 'userId:', userId);
 			communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
 			this.isDispatched = true;
