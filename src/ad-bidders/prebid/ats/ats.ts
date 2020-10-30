@@ -20,28 +20,33 @@ class Ats {
 			const userEmailHashes = context.get('wiki.opts.userEmailHashes');
 
 			if (!userEmailHashes) {
-				const performance = window.performance;
-				const loadStart = performance.now();
+				if (context.get('state.isLogged')) {
+					const reason = 'no email';
+					communicationService.dispatch(atsNotLoadedForLoggedInUser({ reason }));
+				}
 
-				// tslint:disable-next-line:tsl-ban-snippets
-				return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
-					const loadEnd = performance.now();
-					const loadTime = loadEnd - loadStart;
-
-					(window as any).ats.start({
-						placementID: '2161',
-						emailHashes: userEmailHashes,
-						storageType: 'localStorage',
-						detectionType: 'scrape',
-						logging: 'error',
-					});
-
-					this.dispatchAtsEvents(loadTime);
-					this.isLoaded = true;
-				});
+				return Promise.resolve();
 			}
 
-			return Promise.resolve();
+			const performance = window.performance;
+			const loadStart = performance.now();
+
+			// tslint:disable-next-line:tsl-ban-snippets
+			return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
+				const loadEnd = performance.now();
+				const loadTime = loadEnd - loadStart;
+
+				(window as any).ats.start({
+					placementID: '2161',
+					emailHashes: userEmailHashes,
+					storageType: 'localStorage',
+					detectionType: 'scrape',
+					logging: 'error',
+				});
+
+				this.dispatchAtsEvents(loadTime);
+				this.isLoaded = true;
+			});
 		}
 	}
 
@@ -73,6 +78,11 @@ export const atsLoadedEvent = globalAction(
 export const atsIdsLoadedEvent = globalAction(
 	'[AdEngine] ATS ids loaded',
 	props<{ envelope: string }>(),
+);
+
+export const atsNotLoadedForLoggedInUser = globalAction(
+	'[AdEngine] ATS.js not loaded for logged in user',
+	props<{ reason: string }>(),
 );
 
 export const ats = new Ats();
