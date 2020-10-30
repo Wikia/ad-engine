@@ -62,8 +62,8 @@ class Ats {
 		communicationService.dispatch(atsLoadedEvent({ loadTime }));
 
 		(window as any).ats.retrieveEnvelope().then((atsEnvelope) => {
-			const atsEnvelopeObj = JSON.parse(atsEnvelope);
-			const envelope = atsEnvelopeObj.envelope || 'undefined';
+			const atsEnvelopeObj = atsEnvelope ? JSON.parse(atsEnvelope) : undefined;
+			const envelope = atsEnvelopeObj ? atsEnvelopeObj.envelope : 'undefined';
 
 			communicationService.dispatch(atsIdsLoadedEvent({ envelope }));
 		});

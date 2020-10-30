@@ -3,6 +3,7 @@ import {
 	AdInfoContext,
 	atsIdsLoadedEvent,
 	atsLoadedEvent,
+	atsNotLoadedForLoggedInUser,
 	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
@@ -184,11 +185,15 @@ export class TrackingSetup {
 
 	private atsTracker(): void {
 		communicationService.action$.pipe(ofType(atsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('ats_load_time', props.loadTime.toString());
+			this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
 		});
 
 		communicationService.action$.pipe(ofType(atsIdsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('ats_ids', props.envelope);
+			this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
+		});
+
+		communicationService.action$.pipe(ofType(atsNotLoadedForLoggedInUser)).subscribe((props) => {
+			this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
 		});
 	}
 
