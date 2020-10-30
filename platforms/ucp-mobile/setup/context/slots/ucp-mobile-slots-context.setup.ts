@@ -66,6 +66,20 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					xna: 1,
 				},
 			},
+			affiliate_slot: {
+				adProduct: 'affiliate_slot',
+				avoidConflictWith: '#top_boxad,#incontent_boxad_1,#incontent_player',
+				slotNameSuffix: '',
+				group: 'AU',
+				options: {},
+				insertBeforeSelector: '.mw-parser-output > h2',
+				slotShortcut: 'a',
+				defaultSizes: [[280, 120]],
+				targeting: {
+					loc: 'middle',
+					rv: 1,
+				},
+			},
 			// as this slot can be repeated many, it uses bidderAlias mobile_in_content
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
@@ -77,7 +91,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '.article-content > h2',
+				insertBeforeSelector: '.mw-parser-output > h2',
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -118,7 +132,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
 				audio: false,
-				insertBeforeSelector: '.article-content > h2',
+				insertBeforeSelector: '.mw-parser-output > h2',
 				disabled: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
