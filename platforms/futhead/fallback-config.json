@@ -95,7 +95,7 @@
 	"icLiveRampId": [
 		{
 			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
-			"regions": ["AU", "US-PA"],
+			"regions": ["US-PA"],
 			"value": true
 		}
 	],
@@ -228,6 +228,13 @@
 			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
 			"regions": ["XX"],
 			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.1.1/tracking-opt-in.min.js"
+		}
+	],
+	"icLiveRampATSAnalytics": [
+		{
+			"apps": ["futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
+			"regions": ["US-PA"],
+			"value": true
 		}
 	],
 	"icDurationMedia": [
