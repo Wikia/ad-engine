@@ -79,7 +79,10 @@ export class HydraSlotsContextSetup implements DiProcess {
 			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
-				defaultSizes: [[300, 250]],
+				defaultSizes: [
+					[300, 250],
+					[300, 600],
+				],
 				group: '06_FMR',
 				bidderAlias: '06_FMR',
 				targeting: {

@@ -7,14 +7,14 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();
 
-		if (context.get('wiki.opts.noAdsReason')) {
-			this.noAdsDetector.addReason(context.get('wiki.opts.noAdsReason'));
-		}
 		if (
-			context.get('wiki.opts.noAdsReason') === 'no_ads_user' &&
-			context.get('wiki.opts.pageType') === 'homepage_logged'
+			context.get('wiki.opts.noAdsReason') &&
+			!(
+				context.get('wiki.opts.noAdsReason') === 'no_ads_user' &&
+				context.get('wiki.opts.pageType') === 'homepage_logged'
+			)
 		) {
-			this.noAdsDetector.addReason('');
+			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
 		}
 
 		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));

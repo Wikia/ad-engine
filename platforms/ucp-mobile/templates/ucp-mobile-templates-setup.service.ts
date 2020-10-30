@@ -1,5 +1,6 @@
 import { registerFloorAdhesionTemplate, registerInterstitialTemplate } from '@platforms/shared';
 import {
+	AffiliateDisclaimer,
 	DiProcess,
 	logTemplates,
 	PorvataTemplate,
@@ -22,6 +23,7 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 
 		logTemplates(merge(floorAdhesion$, interstitial$));
 
+		templateService.register(AffiliateDisclaimer);
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 	}
 }
