@@ -7,14 +7,14 @@ export class UcpBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();
 
-		if (window.ads.context.opts.noAdsReason) {
-			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
-		}
 		if (
-			window.ads.context.opts.noAdsReason === 'no_ads_user' &&
-			window.ads.context.opts.pageType === 'homepage_logged'
+			window.ads.context.opts.noAdsReason &&
+			!(
+				window.ads.context.opts.noAdsReason === 'no_ads_user' &&
+				window.ads.context.opts.pageType === 'homepage_logged'
+			)
 		) {
-			this.noAdsDetector.addReason('');
+			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
 		}
 
 		context.set(
