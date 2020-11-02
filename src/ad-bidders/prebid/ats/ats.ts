@@ -44,7 +44,8 @@ class Ats {
 					logging: 'error',
 				});
 
-				this.dispatchAtsEvents(loadTime);
+				communicationService.dispatch(atsLoadedEvent({ loadTime }));
+				this.dispatchAtsIdsLoadedEvent();
 				this.isLoaded = true;
 			});
 		}
@@ -58,9 +59,7 @@ class Ats {
 		);
 	}
 
-	private async dispatchAtsEvents(loadTime: number): Promise<void> {
-		communicationService.dispatch(atsLoadedEvent({ loadTime }));
-
+	private async dispatchAtsIdsLoadedEvent(): Promise<void> {
 		(window as any).ats.retrieveEnvelope().then((atsEnvelope) => {
 			const atsEnvelopeObj = atsEnvelope ? JSON.parse(atsEnvelope) : undefined;
 			const envelope = atsEnvelopeObj ? atsEnvelopeObj.envelope : 'undefined';
