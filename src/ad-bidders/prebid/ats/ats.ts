@@ -45,7 +45,7 @@ class Ats {
 				});
 
 				communicationService.dispatch(atsLoadedEvent({ loadTime }));
-				this.dispatchAtsIdsLoadedEvent();
+				this.registerAtsIdsLoadedHandler();
 				this.isLoaded = true;
 			});
 		}
@@ -59,7 +59,7 @@ class Ats {
 		);
 	}
 
-	private async dispatchAtsIdsLoadedEvent(): Promise<void> {
+	private async registerAtsIdsLoadedHandler(): Promise<void> {
 		(window as any).ats.retrieveEnvelope().then((atsEnvelope) => {
 			const atsEnvelopeObj = atsEnvelope ? JSON.parse(atsEnvelope) : undefined;
 			const envelope = atsEnvelopeObj ? atsEnvelopeObj.envelope : 'undefined';
