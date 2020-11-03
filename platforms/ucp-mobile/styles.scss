@@ -2,12 +2,49 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/porvata';
 
+@mixin ucp-mobile-uap-styles() {
+	.has-uap {
+		#globalNavigation {
+			@include uap-navbar();
+		}
+
+		.site-head-wrapper {
+			min-height: 0;
+		}
+
+		#top_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		#top_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
 @mixin out-of-page-styles() {
 	@include out-of-page-template();
 	@include floor-adhesion();
 	@include interstitial();
 }
 
+@include ucp-mobile-uap-styles();
 @include out-of-page-styles();
 @include logo-replacement(55px);
 
@@ -44,37 +81,6 @@ $closeButtonHeight: 40px;
 
 .invisible-high-impact {
 	display: none;
-}
-
-.main-page-pad-slot .ad-slot {
-	margin-bottom: 36px;
-}
-
-.top-leaderboard .ad-slot,
-.mobile-top-leaderboard .ad-slot {
-	position: relative;
-
-	& > div,
-	.provider-container {
-		margin: 10px auto;
-	}
-}
-
-.ad-slot {
-	&.slot-animation {
-		overflow: hidden;
-		transition: max-height 1.6s ease;
-	}
-
-	.provider-container {
-		position: relative;
-	}
-
-	&.slot-responsive {
-		iframe {
-			@include absolute-fill();
-		}
-	}
 }
 
 #affiliate_slot {
@@ -120,15 +126,6 @@ $closeButtonHeight: 40px;
 		&:not(.a9-ad) {
 			margin: 0.75rem -1.5rem 3rem;
 		}
-	}
-}
-
-.top-leaderboard .bfaa-template,
-.mobile-top-leaderboard .bfaa-template {
-	position: absolute;
-
-	& > div {
-		margin: 0 auto;
 	}
 }
 
