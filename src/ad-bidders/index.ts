@@ -154,4 +154,5 @@ export const bidders = new Bidders();
 
 export * from './tracking';
 export * from './wrappers';
+export * from './prebid/ats';
 export * from './prebid/live-ramp';

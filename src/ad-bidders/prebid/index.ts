@@ -14,6 +14,7 @@ import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { ats } from './ats';
 import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -249,6 +250,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		const pbjs: Pbjs = await pbjsFactory.init();
+		ats.call();
 
 		pbjs.requestBids({
 			adUnits,
