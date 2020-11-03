@@ -19,6 +19,8 @@ import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
 
+const logGroup = 'prebid';
+
 interface PrebidConfig extends BidderConfig {
 	lazyLoadingEnabled?: boolean;
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
@@ -103,6 +105,8 @@ export class PrebidProvider extends BidderProvider {
 		this.registerBidsTracking();
 		this.getLiveRampUserIds();
 		this.enableATSAnalytics();
+
+		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {
@@ -258,12 +262,16 @@ export class PrebidProvider extends BidderProvider {
 		if (pbjs.getUserIds) {
 			const userId = pbjs.getUserIds()['idl_env'];
 
+			utils.logger(logGroup, 'calling LiveRamp dispatch method');
+
 			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
 		}
 	}
 
 	private enableATSAnalytics(): void {
 		if (this.isATSAnalyticsEnabled) {
+			utils.logger(logGroup, 'prebid enabling ATS Analytics');
+
 			(window as any).pbjs.que.push(() => {
 				(window as any).pbjs.enableAnalytics([
 					{
