@@ -47,6 +47,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		if (resolvedState.isResolvedState(this.params)) {
 			this.setResolvedState();
 		} else {
+			this.switchImagesInAd(false);
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.updateAdSizes();
 			slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
