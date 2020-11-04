@@ -156,26 +156,6 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		}
 	}
 
-	private switchImagesInAd(isResolved: boolean): void {
-		if (isResolved) {
-			this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
-		} else {
-			this.container.classList.remove(CSS_CLASSNAME_THEME_RESOLVED);
-		}
-
-		if (this.params.image2 && this.params.image2.background) {
-			if (isResolved) {
-				this.params.image2.element.classList.remove('hidden-state');
-				this.params.image1.element.classList.add('hidden-state');
-			} else {
-				this.params.image2.element.classList.add('hidden-state');
-				this.params.image1.element.classList.remove('hidden-state');
-			}
-		} else {
-			this.params.image1.element.classList.remove('hidden-state');
-		}
-	}
-
 	private setThumbnailStyle(state = 'default'): void {
 		const { thumbnail } = this.params;
 		const style = mapValues(
