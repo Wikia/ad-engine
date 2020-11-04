@@ -22,7 +22,7 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 	private logger = (...args: any[]) => utils.logger(BfabBootstrapHandler.LOG_GROUP, ...args);
 
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
-		this.logger('BFAB onEnter');
+		this.logger('onEnter', this.params);
 
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
