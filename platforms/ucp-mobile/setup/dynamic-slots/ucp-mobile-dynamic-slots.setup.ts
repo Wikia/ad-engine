@@ -35,6 +35,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.injectSlots();
 		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
+		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
 	}
 
@@ -91,6 +92,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
 
 		fillerService.register(new PorvataFiller());
+	}
+
+	private registerTopLeaderboardCodePriority(): void {
+		// ToDo: check if pageType detection works fine on fandommobile
+		if (!context.get('custom.hasFeaturedVideo') && context.get('wiki.opts.pageType') !== 'search') {
+			context.push('slots.top_leaderboard.defaultSizes', [2, 2]);
+		}
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
