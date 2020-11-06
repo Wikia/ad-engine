@@ -58,8 +58,8 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isTopLeaderboardApplicable(): boolean {
 		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
-		const isHome = context.get('custom.pageType') === 'home';
-		const isSearch = context.get('custom.pageType') === 'search';
+		const isHome = context.get('wiki.opts.pageType') === 'home';
+		const isSearch = context.get('wiki.opts.pageType') === 'search';
 		const hasPageHeader = !!document.querySelector('.wiki-page-header');
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
 
@@ -77,7 +77,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2',
-				anchorPosition: 1,
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -92,11 +91,11 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInContentApplicable(): boolean {
-		if (context.get('custom.pageType') === 'home') {
+		if (context.get('wiki.opts.pageType') === 'home') {
 			return !!document.querySelector('.curated-content');
 		}
 
-		return context.get('custom.pageType') !== 'search';
+		return context.get('wiki.opts.pageType') !== 'search';
 	}
 
 	getBottomLeaderboardConfig(): SlotSetupDefinition {
@@ -125,7 +124,8 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			!!document.querySelector('.wds-global-footer') && context.get('custom.pageType') !== 'search'
+			!!document.querySelector('.wds-global-footer') &&
+			context.get('wiki.opts.pageType') !== 'search'
 		);
 	}
 
@@ -139,7 +139,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '#wikiContainer',
+				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -181,7 +181,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '#wikiContainer',
+				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
 			},

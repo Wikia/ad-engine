@@ -1,5 +1,6 @@
 import { slotsContext } from '@platforms/shared';
 import {
+	AdSlot,
 	btfBlockerService,
 	context,
 	DiProcess,
@@ -9,6 +10,7 @@ import {
 	PorvataFiller,
 	SlotCreator,
 	slotService,
+	templateService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
@@ -18,6 +20,12 @@ import {
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
+	private CODE_PRIORITY = {
+		floor_adhesion: {
+			active: false,
+		},
+	};
+
 	constructor(
 		private slotCreator: SlotCreator,
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
@@ -25,7 +33,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
+		this.registerTopLeaderboardCodePriority();
+		this.registerFloorAdhesionCodePriority();
 	}
 
 	private injectSlots(): void {
@@ -59,6 +70,20 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 	}
 
+	private configureAffiliateSlot(): void {
+		const slotName = 'affiliate_slot';
+		const isApplicable =
+			context.get('wiki.opts.enableAffiliateSlot') && !context.get('custom.hasFeaturedVideo');
+
+		if (isApplicable) {
+			slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
+				templateService.init('affiliateDisclaimer', slotService.get(slotName));
+			});
+		} else {
+			slotService.disable(slotName);
+		}
+	}
+
 	private configureIncontentPlayer(): void {
 		const icpSlotName = 'incontent_player';
 
@@ -67,5 +92,29 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
 
 		fillerService.register(new PorvataFiller());
+	}
+
+	private registerTopLeaderboardCodePriority(): void {
+		// ToDo: check if pageType detection works fine on fandommobile
+		if (!context.get('custom.hasFeaturedVideo') && context.get('wiki.opts.pageType') !== 'search') {
+			context.push('slots.top_leaderboard.defaultSizes', [2, 2]);
+		}
+	}
+
+	private registerFloorAdhesionCodePriority(): void {
+		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
+			this.CODE_PRIORITY.floor_adhesion.active = true;
+
+			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
+				if (this.CODE_PRIORITY.floor_adhesion.active) {
+					this.CODE_PRIORITY.floor_adhesion.active = false;
+					slotService.disable('floor_adhesion', 'closed-by-porvata');
+				}
+			});
+		});
+
+		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
+			this.CODE_PRIORITY.floor_adhesion.active = false;
+		});
 	}
 }

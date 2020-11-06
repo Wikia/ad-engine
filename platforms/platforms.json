@@ -1,13 +1,3 @@
 {
-	"list": [
-		"bingebot",
-		"futhead",
-		"gamepedia",
-		"muthead",
-		"ucp",
-		"ucp-hydra",
-		"ucp-mobile",
-		"ucp-minerva",
-		"f2"
-	]
+	"list": ["bingebot", "futhead", "muthead", "ucp", "ucp-hydra", "ucp-mobile", "ucp-minerva", "f2"]
 }

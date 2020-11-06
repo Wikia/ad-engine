@@ -1,3 +1,57 @@
+@import 'src/ad-products/styles/mixin';
+@import 'platforms/shared/styles/index';
+@import 'src/ad-products/styles/porvata';
+
+@mixin ucp-mobile-uap-styles() {
+	.has-uap {
+		#globalNavigation {
+			@include uap-navbar();
+		}
+
+		.site-head-wrapper {
+			min-height: 0;
+		}
+
+		#top_leaderboard {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		#top_leaderboard,
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
+	@include interstitial();
+}
+
+@include ucp-mobile-uap-styles();
+@include out-of-page-styles();
+@include logo-replacement(55px);
+
+// #######################################
+
+$closeButtonHeight: 40px;
+
 .gpt-ad {
 	text-align: center;
 
@@ -10,4 +64,126 @@
 		display: block;
 		margin: 0 auto;
 	}
+}
+
+.ad-slot {
+	margin: 0 0 1.125rem;
+	text-align: center;
+
+	.provider-container {
+		margin: 20px auto;
+	}
+
+	&.hide {
+		display: none !important;
+	}
+}
+
+.invisible-high-impact {
+	display: none;
+}
+
+#affiliate_slot {
+	text-align: center;
+
+	& > div {
+		margin-bottom: 10px;
+	}
+}
+
+#affiliate_disclaimer {
+	font-size: 12px;
+	font-style: italic;
+	line-height: 1.5;
+	margin: auto;
+	padding-bottom: 15px;
+	width: 280px;
+}
+
+.article-content .ad-slot-wrapper .ad-slot,
+.article-content p + .ad-slot {
+	&.incontent-boxad {
+		margin: 3rem 0;
+
+		&:not(.a9-ad) {
+			margin: 3rem -1.5rem;
+		}
+	}
+}
+
+.article-content .ad-slot {
+	&:not(.a9-ad) {
+		margin: 0 -1.5rem 1.125rem;
+	}
+
+	&.slot-responsive {
+		margin: 0 0 1.125rem;
+	}
+
+	&.incontent-boxad {
+		margin: 0.75rem 0;
+
+		&:not(.a9-ad) {
+			margin: 0.75rem -1.5rem 3rem;
+		}
+	}
+}
+
+.no-ads {
+	height: 0;
+}
+
+.wikia-ad-iframe {
+	border: 0;
+}
+
+.out-of-page-template {
+	margin: 0;
+
+	&.floor-adhesion {
+		padding: 20px 0;
+
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			height: $closeButtonHeight;
+			top: -($closeButtonHeight / 2);
+			width: $closeButtonHeight;
+		}
+	}
+}
+
+.ad-slot.porvata-outstream {
+	margin-bottom: 20px;
+
+	.porvata-interface {
+		.volume-button {
+			height: auto;
+			padding: 14px 12px 7px 7px;
+			width: auto;
+
+			svg {
+				position: static;
+			}
+		}
+	}
+}
+
+@keyframes fade-in {
+	to {
+		opacity: 1;
+	}
+}
+
+.new-logo {
+	animation-duration: 3s;
+	animation-fill-mode: forwards;
+	animation-name: fade-in;
+	max-height: 55px;
+	opacity: 0;
+	padding-left: 12px;
+}
+
+.tracking-pixel {
+	display: none;
 }
