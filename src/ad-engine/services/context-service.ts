@@ -116,6 +116,10 @@ function segment(key: string, newValue?: any, remove = false): any {
 }
 
 export class Context {
+	constructor() {
+		window.ads.adContext = contextObject;
+	}
+
 	extend(newContext: ContextObject): void {
 		Object.assign(contextObject, newContext);
 	}

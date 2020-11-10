@@ -5,6 +5,7 @@ import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
+	CookieStorageAdapter,
 	events,
 	eventService,
 	messageBus,
@@ -31,12 +32,17 @@ export class AdEngine {
 	started = false;
 	provider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
+	cookieStorage = new CookieStorageAdapter();
 
 	constructor(config = null) {
 		context.extend(config);
 
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
+		window.ads.debug = (groups: string | null) =>
+			groups !== null
+				? this.cookieStorage.setItem('adengine_debug', groups)
+				: this.cookieStorage.removeItem('adengine_debug');
 
 		templateService.register(FloatingAd);
 
