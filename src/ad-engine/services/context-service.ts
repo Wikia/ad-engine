@@ -117,6 +117,7 @@ function segment(key: string, newValue?: any, remove = false): any {
 
 export class Context {
 	constructor() {
+		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.adContext = contextObject;
 	}
 

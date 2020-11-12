@@ -16,7 +16,7 @@ import {
 	templateService,
 } from './services';
 import { FloatingAd } from './templates';
-import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import { LazyQueue, logger, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -39,10 +39,12 @@ export class AdEngine {
 
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
-		window.ads.debug = (groups: string | null) =>
+		window.ads.debug = (groups: string | null) => {
 			groups !== null
-				? this.cookieStorage.setItem('adengine_debug', groups)
+				? this.cookieStorage.setItem('adengine_debug', groups || '1')
 				: this.cookieStorage.removeItem('adengine_debug');
+			logger('ad-engine', 'AdEngine Debug Mode enabled');
+		};
 
 		templateService.register(FloatingAd);
 
