@@ -47,9 +47,7 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 		if (resolvedState.isResolvedState(this.params)) {
 			this.setResolvedState();
 		} else {
-			const { image1 } = this.params;
-
-			image1.element.classList.remove('hidden-state');
+			this.switchImagesInAd(false);
 			resolvedStateSwitch.updateInformationAboutSeenDefaultStateAd();
 			this.updateAdSizes();
 			slotTweaker.makeResponsive(this.adSlot, this.params.config.aspectRatio.default);
@@ -147,10 +145,11 @@ export class BfabHiviTheme extends BigFancyAdHiviTheme {
 	}
 
 	private async setResolvedState(): Promise<void> {
-		const { config, image2 } = this.params;
+		const { config } = this.params;
+
+		this.switchImagesInAd(true);
 
 		this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
-		image2.element.classList.remove('hidden-state');
 		await slotTweaker.makeResponsive(this.adSlot, config.aspectRatio.resolved);
 
 		if (this.params.thumbnail) {

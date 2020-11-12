@@ -410,6 +410,7 @@
             "regions": [
                 "US-PA"
             ],
+            "sampling": 100.0,
             "value": true
         }
     ],
