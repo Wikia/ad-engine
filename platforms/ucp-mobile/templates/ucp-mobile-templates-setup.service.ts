@@ -12,6 +12,7 @@ import { merge } from 'rxjs';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
+import { registerLogoReplacementTemplate } from './logo-replacement-template';
 
 @Injectable()
 export class UcpMobileTemplatesSetup implements DiProcess {
@@ -24,8 +25,9 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 		const interstitial$ = registerInterstitialTemplate(this.registry);
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
+		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 
-		logTemplates(merge(floorAdhesion$, interstitial$, bfaa$, bfab$));
+		logTemplates(merge(floorAdhesion$, interstitial$, bfaa$, bfab$, logoReplacement$));
 
 		templateService.register(AffiliateDisclaimer);
 		templateService.register(PorvataTemplate, getOutstreamConfig());
