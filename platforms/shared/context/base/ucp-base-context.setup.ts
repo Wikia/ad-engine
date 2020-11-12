@@ -31,5 +31,6 @@ export class UcpBaseContextSetup extends BaseContextSetup {
 			'userId',
 			(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		);
+		context.set('options.video.watchingThat.enabled', this.instantConfig.get('icWatchingThat'));
 	}
 }

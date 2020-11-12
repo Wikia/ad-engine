@@ -11,6 +11,7 @@ import { JWPlayerTrackingHandler } from './handlers/jwplayer-tracking-handler';
 import { PlayerReadyResult } from './helpers/player-ready-result';
 import { JwPlayerAdsFactoryOptions, jwpReady } from './jwplayer-actions';
 import { createJwpStream } from './streams/jwplayer-stream';
+import { watchingThatPlugin } from './watching-that';
 
 @Injectable()
 export class JWPlayerManager {
@@ -31,9 +32,10 @@ export class JWPlayerManager {
 	private onPlayerReady(): Observable<PlayerReadyResult> {
 		return communicationService.action$.pipe(
 			ofType(jwpReady),
-			tapOnce(() => {
+			tapOnce(({ playerKey }) => {
 				this.loadMoatPlugin();
 				this.loadIasTrackerIfEnabled();
+				this.loadWatchingThat(playerKey);
 			}),
 			map(({ options, targeting, playerKey }) => {
 				const jwplayer: JWPlayer = window[playerKey];
@@ -69,5 +71,11 @@ export class JWPlayerManager {
 		if (context.get('options.video.iasTracking.enabled')) {
 			iasVideoTracker.loadScript();
 		}
+	}
+
+	private loadWatchingThat(playerKey: string): void {
+		const player: JWPlayer = window[playerKey];
+
+		watchingThatPlugin.load(player);
 	}
 }
