@@ -43,7 +43,7 @@ export class AdEngine {
 			groups !== null
 				? this.cookieStorage.setItem('adengine_debug', groups || '1')
 				: this.cookieStorage.removeItem('adengine_debug');
-			logger('ad-engine', 'AdEngine Debug Mode enabled');
+			logger('ad-engine', `AdEngine Debug Mode ${groups !== null ? 'enabled' : 'disabled'}`);
 		};
 
 		templateService.register(FloatingAd);
