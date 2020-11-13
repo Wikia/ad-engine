@@ -12,16 +12,23 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class BfabBootstrapHandler implements TemplateStateHandler {
+	static LOG_GROUP = 'BfabBootstrapHandler';
+
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
+	private logger = (...args: any[]) => utils.logger(BfabBootstrapHandler.LOG_GROUP, ...args);
+
 	async onEnter(transition: TemplateTransition<'resolved' | 'impact'>): Promise<void> {
+		this.logger('onEnter', this.params);
+
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('bfab-template');
 		this.adSlot.getAdContainer().classList.add('iframe-container');
+		this.ensureImage();
 
 		await slotTweaker.onReady(this.adSlot);
 		await this.awaitVisibleDOM();
@@ -31,6 +38,14 @@ export class BfabBootstrapHandler implements TemplateStateHandler {
 		} else {
 			resolvedState.updateInformationAboutSeenDefaultStateAd();
 			transition('impact');
+		}
+	}
+
+	private ensureImage(): void {
+		this.logger('ensureImage', this.params.image1, this.params.image2);
+
+		if (!(this.params.image2 && this.params.image2.background)) {
+			this.params.image1.element.classList.remove('hidden-state');
 		}
 	}
 

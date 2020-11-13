@@ -2,7 +2,7 @@ import { AdSlot, context, slotTweaker } from '@ad-engine/core';
 import { AdvertisementLabel } from '../../../interface/advertisement-label';
 import { CloseButton } from '../../../interface/close-button';
 import { BigFancyAdAboveConfig } from '../../big-fancy-ad-above';
-import { BFAA_UNSTICK_DELAY } from '../../constants';
+import { BFAA_UNSTICK_DELAY, CSS_CLASSNAME_THEME_RESOLVED } from '../../constants';
 import { resolvedState } from '../../resolved-state';
 import { UapVideoSettings } from '../../uap-video-settings';
 import { UapParams } from '../../universal-ad-package';
@@ -77,6 +77,26 @@ export abstract class BigFancyAdHiviTheme extends BigFancyAdTheme {
 
 		if (this.params.image2 && this.params.image2.element) {
 			this.params.image2.element.classList.add('background-transition');
+		}
+	}
+
+	protected switchImagesInAd(isResolved: boolean): void {
+		if (isResolved) {
+			this.container.classList.add(CSS_CLASSNAME_THEME_RESOLVED);
+		} else {
+			this.container.classList.remove(CSS_CLASSNAME_THEME_RESOLVED);
+		}
+
+		if (this.params.image2 && this.params.image2.background) {
+			if (isResolved) {
+				this.params.image2.element.classList.remove('hidden-state');
+				this.params.image1.element.classList.add('hidden-state');
+			} else {
+				this.params.image2.element.classList.add('hidden-state');
+				this.params.image1.element.classList.remove('hidden-state');
+			}
+		} else {
+			this.params.image1.element.classList.remove('hidden-state');
 		}
 	}
 
