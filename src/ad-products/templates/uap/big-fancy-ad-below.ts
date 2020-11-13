@@ -17,6 +17,8 @@ export interface BigFancyAdBelowConfig {
 }
 
 export class BigFancyAdBelow {
+	static LOG_GROUP = 'BigFancyAdBelow';
+
 	static getName(): string {
 		return 'bfab';
 	}
@@ -45,12 +47,15 @@ export class BigFancyAdBelow {
 		this.config = context.get('templates.bfab') || {};
 		this.container = document.getElementById(this.adSlot.getSlotName());
 	}
+	private logger = (...args: any[]) => utils.logger(BigFancyAdBelow.LOG_GROUP, ...args);
 
 	/**
 	 * Initializes the BFAB unit
 	 */
 	init(params: UapParams): void {
 		this.params = params;
+
+		this.logger('init', this.params);
 
 		if (!this.container) {
 			return;
