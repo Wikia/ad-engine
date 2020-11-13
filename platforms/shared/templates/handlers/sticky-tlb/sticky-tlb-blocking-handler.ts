@@ -12,14 +12,18 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class StickyTlbBlockingHandler implements TemplateStateHandler {
+	static LOG_GROUP = 'sticky-tlb';
+
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
 		if (!this.isLineAndGeo()) {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
+			this.logger(`Line item ID ${this.adSlot.lineItemId} not listed on sticky list`);
 			return;
 		}
 
+		this.logger('Disabling incontent_player and affiliate_slot');
 		slotService.disable('incontent_player', 'hivi-collapse');
 		slotService.disable('affiliate_slot', 'hivi-collapse');
 
@@ -42,5 +46,9 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 				});
 		}
 		return false;
+	}
+
+	private logger(...logMsgs: any): void {
+		utils.logger(StickyTlbBlockingHandler.LOG_GROUP, ...logMsgs);
 	}
 }
