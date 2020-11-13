@@ -11,6 +11,7 @@ import {
 	SlotCreator,
 	slotService,
 	templateService,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
@@ -95,9 +96,46 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
-		// ToDo: check if pageType detection works fine on fandommobile
-		if (!context.get('custom.hasFeaturedVideo') && context.get('wiki.opts.pageType') !== 'search') {
-			context.push('slots.top_leaderboard.defaultSizes', [2, 2]);
+		const STICKY_SLOT_LOG_GROUP = 'sticky-tlb';
+		const hiviLBEnabled = context.get('options.hiviLeaderboard');
+
+		if (hiviLBEnabled) {
+			context.set('slots.top_leaderboard.firstCall', false);
+
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
+				slotService.setState('top_leaderboard', false);
+			});
+
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				const adSlot = slotService.get('hivi_leaderboard');
+
+				if (!adSlot.isEmpty) {
+					slotService.setState('top_leaderboard', false);
+				}
+			});
+		}
+
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			context.get('wiki.targeting.pageType') !== 'search'
+		) {
+			const stickySlot = hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard';
+			slotsContext.addSlotSize(stickySlot, [2, 2]);
+
+			if (context.get('templates.stickyTlb.lineItemIds')) {
+				utils.logger(
+					STICKY_SLOT_LOG_GROUP,
+					`Found sticky slot line-items IDs - enabling stickyTlb template for ${stickySlot} slot`,
+				);
+
+				context.set('templates.stickyTlb.enabled', true);
+				context.push(`slots.${stickySlot}.defaultTemplates`, 'stickyTlb');
+			} else {
+				utils.logger(
+					STICKY_SLOT_LOG_GROUP,
+					`No sticky slot line-items IDs found - stickyTlb template disabled for ${stickySlot} slot`,
+				);
+			}
 		}
 	}
 
