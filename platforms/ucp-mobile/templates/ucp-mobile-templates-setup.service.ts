@@ -13,6 +13,7 @@ import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
+import { registerRoadblockTemplate } from './roadblock-template';
 
 @Injectable()
 export class UcpMobileTemplatesSetup implements DiProcess {
@@ -26,8 +27,9 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
+		const roadblock$ = registerRoadblockTemplate(this.registry);
 
-		logTemplates(merge(floorAdhesion$, interstitial$, bfaa$, bfab$, logoReplacement$));
+		logTemplates(merge(floorAdhesion$, interstitial$, bfaa$, bfab$, logoReplacement$, roadblock$));
 
 		templateService.register(AffiliateDisclaimer);
 		templateService.register(PorvataTemplate, getOutstreamConfig());
