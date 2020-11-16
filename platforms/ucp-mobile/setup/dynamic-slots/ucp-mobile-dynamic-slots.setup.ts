@@ -97,43 +97,25 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerTopLeaderboardCodePriority(): void {
 		const STICKY_SLOT_LOG_GROUP = 'sticky-tlb';
-		const hiviLBEnabled = context.get('options.hiviLeaderboard');
-
-		if (hiviLBEnabled) {
-			context.set('slots.top_leaderboard.firstCall', false);
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-				slotService.setState('top_leaderboard', false);
-			});
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-				const adSlot = slotService.get('hivi_leaderboard');
-
-				if (!adSlot.isEmpty) {
-					slotService.setState('top_leaderboard', false);
-				}
-			});
-		}
 
 		if (
 			!context.get('custom.hasFeaturedVideo') &&
 			context.get('wiki.targeting.pageType') !== 'search'
 		) {
-			const stickySlot = hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard';
-			slotsContext.addSlotSize(stickySlot, [2, 2]);
+			slotsContext.addSlotSize('top_leaderboard', [2, 2]);
 
 			if (context.get('templates.stickyTlb.lineItemIds')) {
 				utils.logger(
 					STICKY_SLOT_LOG_GROUP,
-					`Found sticky slot line-items IDs - enabling stickyTlb template for ${stickySlot} slot`,
+					'Found sticky slot line-items IDs - enabling stickyTlb template for top_leaderboard slot',
 				);
 
 				context.set('templates.stickyTlb.enabled', true);
-				context.push(`slots.${stickySlot}.defaultTemplates`, 'stickyTlb');
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 			} else {
 				utils.logger(
 					STICKY_SLOT_LOG_GROUP,
-					`No sticky slot line-items IDs found - stickyTlb template disabled for ${stickySlot} slot`,
+					'No sticky slot line-items IDs found - stickyTlb template disabled for top_leaderboard slot',
 				);
 			}
 		}
