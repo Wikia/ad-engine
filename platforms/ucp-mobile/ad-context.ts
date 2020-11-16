@@ -126,8 +126,14 @@ export const basicContext = {
 		isMobile: true,
 	},
 	options: {
+		connectionTracking: {
+			enabled: true,
+		},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
+		},
+		scrollSpeedTracking: {
+			enabled: true,
 		},
 		video: {
 			moatTracking: {
