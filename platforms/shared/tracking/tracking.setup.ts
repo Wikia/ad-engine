@@ -8,6 +8,7 @@ import {
 	bidderTracker,
 	Binder,
 	communicationService,
+	context,
 	Dictionary,
 	eventService,
 	FuncPipelineStep,
@@ -19,10 +20,13 @@ import {
 	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
+	ScrollSpeedCalculator,
+	ScrollTracker,
 	slotTracker,
 	TrackingMessage,
 	trackingPayloadValidationMiddleware,
 	TrackingTarget,
+	ViewabilityCounter,
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
@@ -71,6 +75,9 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
+		this.viewabilityCounterTracker();
+		this.scrollSpeedTracker();
+		this.connectionTracker();
 		this.audigentTracker();
 		this.liveRampTracker();
 		this.atsTracker();
@@ -168,6 +175,70 @@ export class TrackingSetup {
 
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
+		}
+	}
+
+	private viewabilityCounterTracker(): void {
+		if (!context.get('options.viewabilityCounter.enabled')) {
+			return;
+		}
+
+		const viewabilityCounter = ViewabilityCounter.make();
+
+		this.pageTracker.trackProp('session_viewability_all', viewabilityCounter.getViewability());
+		this.pageTracker.trackProp(
+			'session_viewability_tb',
+			viewabilityCounter.getViewability('top_boxad'),
+		);
+		this.pageTracker.trackProp(
+			'session_viewability_icb',
+			viewabilityCounter.getViewability('incontent_boxad'),
+		);
+
+		viewabilityCounter.init();
+	}
+
+	private scrollSpeedTracker(): void {
+		if (!context.get('options.scrollSpeedTracking.enabled')) {
+			return;
+		}
+
+		const scrollTracker = new ScrollTracker([0, 2000, 4000], 'mediawiki');
+
+		scrollTracker.initScrollSpeedTracking();
+
+		const scrollSpeedCalculator = ScrollSpeedCalculator.make();
+		const scrollSpeed = scrollSpeedCalculator.getAverageSessionScrollSpeed();
+
+		this.pageTracker.trackProp('session_scroll_speed', scrollSpeed.toString());
+	}
+
+	private connectionTracker(): void {
+		if (!context.get('options.connectionTracking.enabled')) {
+			return;
+		}
+
+		const connection =
+			window.navigator['connection'] ||
+			window.navigator['mozConnection'] ||
+			window.navigator['webkitConnection'];
+
+		if (connection) {
+			const data = [];
+			if (connection.downlink) {
+				data.push(`downlink=${connection.downlink.toFixed(1)}`);
+			}
+			if (connection.effectiveType) {
+				data.push(`effectiveType=${connection.effectiveType}`);
+			}
+			if (connection.rtt) {
+				data.push(`rtt=${connection.rtt.toFixed(0)}`);
+			}
+			if (typeof connection.saveData === 'boolean') {
+				data.push(`saveData=${+connection.saveData}`);
+			}
+
+			this.pageTracker.trackProp('connection', data.join(';'));
 		}
 	}
 
