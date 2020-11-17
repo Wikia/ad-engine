@@ -1,12 +1,20 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	audigent,
 	bidders,
 	communicationService,
+	confiant,
 	context,
 	DiProcess,
+	durationMedia,
+	facebookPixel,
+	iasPublisherOptimization,
 	JWPlayerManager,
 	jwpSetup,
+	nielsen,
+	permutive,
 	Runner,
+	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
@@ -27,9 +35,23 @@ export class UcpMobileAdsMode implements DiProcess {
 
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
+		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
+
+		facebookPixel.call();
+		permutive.call();
+		audigent.call();
+		iasPublisherOptimization.call();
+		confiant.call();
+		durationMedia.call();
+		nielsen.call({
+			type: 'static',
+			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
+			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
+		});
 
 		return inhibitors;
 	}
