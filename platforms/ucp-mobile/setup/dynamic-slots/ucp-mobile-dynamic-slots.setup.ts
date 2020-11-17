@@ -11,6 +11,7 @@ import {
 	SlotCreator,
 	slotService,
 	templateService,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
@@ -95,9 +96,28 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
-		// ToDo: check if pageType detection works fine on fandommobile
-		if (!context.get('custom.hasFeaturedVideo') && context.get('wiki.opts.pageType') !== 'search') {
-			context.push('slots.top_leaderboard.defaultSizes', [2, 2]);
+		const STICKY_SLOT_LOG_GROUP = 'sticky-tlb';
+
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			context.get('wiki.targeting.pageType') !== 'search'
+		) {
+			slotsContext.addSlotSize('top_leaderboard', [2, 2]);
+
+			if (context.get('templates.stickyTlb.lineItemIds')) {
+				utils.logger(
+					STICKY_SLOT_LOG_GROUP,
+					'Found sticky slot line-items IDs - enabling stickyTlb template for top_leaderboard slot',
+				);
+
+				context.set('templates.stickyTlb.enabled', true);
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+			} else {
+				utils.logger(
+					STICKY_SLOT_LOG_GROUP,
+					'No sticky slot line-items IDs found - stickyTlb template disabled for top_leaderboard slot',
+				);
+			}
 		}
 	}
 
