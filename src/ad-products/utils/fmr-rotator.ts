@@ -43,9 +43,10 @@ export class FmrRotator {
 
 					if (!universalAdPackage.isFanTakeoverLoaded()) {
 						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
+							const customDelays = context.get('options.rotatorDelay');
 							setTimeout(() => {
 								this.hideSlot();
-							}, this.refreshInfo.refreshDelay);
+							}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
 						});
 					}
 				});
