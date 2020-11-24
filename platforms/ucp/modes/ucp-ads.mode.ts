@@ -89,8 +89,6 @@ export class UcpAdsMode implements DiProcess {
 	}
 
 	private setAdStack(): void {
-		context.push('state.adStack', { id: 'hivi_leaderboard' });
-		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
 		context.push('state.adStack', { id: 'affiliate_slot' });
 		context.push('state.adStack', { id: 'floor_adhesion' });

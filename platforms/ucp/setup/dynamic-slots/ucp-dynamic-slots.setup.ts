@@ -101,9 +101,11 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 
 		if (hiviLBEnabled) {
 			context.set('slots.top_leaderboard.firstCall', false);
+			context.push('state.adStack', { id: 'hivi_leaderboard' });
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
 				slotService.setState('top_leaderboard', false);
+				context.push('state.adStack', { id: 'top_leaderboard' });
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
@@ -112,7 +114,11 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 				if (!adSlot.isEmpty) {
 					slotService.setState('top_leaderboard', false);
 				}
+
+				context.push('state.adStack', { id: 'top_leaderboard' });
 			});
+		} else {
+			context.push('state.adStack', { id: 'top_leaderboard' });
 		}
 
 		if (

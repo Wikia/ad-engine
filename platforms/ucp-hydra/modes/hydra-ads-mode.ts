@@ -60,7 +60,6 @@ export class HydraAdsMode implements DiProcess {
 	}
 
 	private setAdStack(): void {
-		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
 		context.push('state.adStack', { id: 'incontent_boxad_1' });
 		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
