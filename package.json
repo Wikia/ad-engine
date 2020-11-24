@@ -68,7 +68,7 @@
 		"mocha-jsdom": "^1.1.0",
 		"mocha-junit-reporter": "^1.15.0",
 		"mocha-webpack": "2.0.0-beta.0",
-		"node-sass": "4.13.0",
+		"node-sass": "4.13.1",
 		"nyc": "11.4.1",
 		"portfinder": "1.0.20",
 		"prettier": "1.19.1",
