@@ -63,6 +63,8 @@ export class MinervaAdsMode implements DiProcess {
 	}
 
 	private setAdStack(): void {
+		context.push('state.adStack', { id: 'top_leaderboard' });
+
 		eventService.once(events.FIRST_CALL_ENDED, () => {
 			if (universalAdPackage.isFanTakeoverLoaded()) {
 				context.push('events.pushOnScroll.ids', 'top_boxad');
