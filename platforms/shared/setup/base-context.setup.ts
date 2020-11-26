@@ -70,6 +70,7 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
 
+		context.set('options.rotatorDelay', this.instantConfig.get('icRotatorDelay', {}));
 		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isOutstreamEnabled', this.instantConfig.get('icOutstreamSlot'));
