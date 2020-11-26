@@ -1,13 +1,5 @@
 import { slotsContext } from '@platforms/shared';
-import {
-	AdSlot,
-	context,
-	Dictionary,
-	DiProcess,
-	SlotConfig,
-	slotInjector,
-	slotService,
-} from '@wikia/ad-engine';
+import { context, Dictionary, DiProcess, SlotConfig, slotInjector } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -45,31 +37,10 @@ export class MinervaDynamicSlotsSetup implements DiProcess {
 	private configureTopLeaderboard(): void {
 		slotsContext.addSlotSize('top_leaderboard', [2, 2]);
 
-		const hiviLBEnabled = context.get('options.hiviLeaderboard');
-
-		if (hiviLBEnabled) {
-			context.set('slots.top_leaderboard.firstCall', false);
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-				slotService.setState('top_leaderboard', false);
-			});
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-				const adSlot = slotService.get('hivi_leaderboard');
-
-				if (!adSlot.isEmpty) {
-					slotService.setState('top_leaderboard', false);
-				}
-			});
-		}
-
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('templates.stickyTlb.lineItemIds')) {
 				context.set('templates.stickyTlb.enabled', true);
-				context.push(
-					`slots.${hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard'}.defaultTemplates`,
-					'stickyTlb',
-				);
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 			}
 		}
 	}

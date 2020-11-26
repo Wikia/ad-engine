@@ -528,30 +528,6 @@
             "value": true
         }
     ],
-    "icServicesMobileSearchScopeDropdown": [
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 33.0,
-            "samplingCache": true,
-            "value": "internal"
-        },
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 50.0,
-            "samplingCache": true,
-            "value": "cross-wiki"
-        }
-    ],
     "icTabIdTracking": [
         {
             "apps": [
@@ -1580,7 +1556,9 @@
                 "5532789817",
                 "5532789829",
                 "5532790006",
-                "5532790012"
+                "5532790012",
+                "5545923997",
+                "5545923994"
             ]
         }
     ],
@@ -1800,8 +1778,55 @@
                 "oasis"
             ],
             "regions": [
+                "US-AK",
+                "US-AL",
+                "US-AR",
+                "US-AZ",
+                "US-CO",
+                "US-CT",
+                "US-DE",
+                "US-FL",
+                "US-GA",
+                "US-HI",
+                "US-IA",
+                "US-ID",
+                "US-IL",
+                "US-IN",
+                "US-KS",
+                "US-KY",
+                "US-LA",
+                "US-MA",
+                "US-MD",
+                "US-ME",
+                "US-MI",
+                "US-MN",
+                "US-MO",
+                "US-MS",
+                "US-MT",
+                "US-NC",
+                "US-ND",
+                "US-NE",
+                "US-NH",
+                "US-NJ",
+                "US-NM",
+                "US-NV",
                 "US-NY",
-                "US-PA"
+                "US-OH",
+                "US-OK",
+                "US-OR",
+                "US-PA",
+                "US-RI",
+                "US-SC",
+                "US-SD",
+                "US-TN",
+                "US-TX",
+                "US-UT",
+                "US-VA",
+                "US-VT",
+                "US-WA",
+                "US-WI",
+                "US-WV",
+                "US-WY"
             ],
             "value": true
         }
@@ -1997,8 +2022,55 @@
                 "oasis"
             ],
             "regions": [
+                "UC-NC",
+                "US-AK",
+                "US-AL",
+                "US-AR",
+                "US-AZ",
+                "US-CO",
+                "US-CT",
+                "US-DE",
+                "US-FL",
+                "US-GA",
+                "US-HI",
+                "US-IA",
+                "US-ID",
+                "US-IL",
+                "US-IN",
+                "US-KS",
+                "US-KY",
+                "US-LA",
+                "US-MA",
+                "US-MD",
+                "US-ME",
+                "US-MI",
+                "US-MN",
+                "US-MO",
+                "US-MS",
+                "US-MT",
+                "US-ND",
+                "US-NE",
+                "US-NH",
+                "US-NJ",
+                "US-NM",
+                "US-NV",
                 "US-NY",
-                "US-PA"
+                "US-OH",
+                "US-OK",
+                "US-OR",
+                "US-PA",
+                "US-RI",
+                "US-SC",
+                "US-SD",
+                "US-TN",
+                "US-TX",
+                "US-UT",
+                "US-VA",
+                "US-VT",
+                "US-WA",
+                "US-WI",
+                "US-WV",
+                "US-WY"
             ],
             "sampling": 100.0,
             "value": true
@@ -2105,8 +2177,55 @@
                 "oasis"
             ],
             "regions": [
+                "US-AK",
+                "US-AL",
+                "US-AR",
+                "US-AZ",
+                "US-CO",
+                "US-CT",
+                "US-DE",
+                "US-FL",
+                "US-GA",
+                "US-Hi",
+                "US-IA",
+                "US-ID",
+                "US-IL",
+                "US-IN",
+                "US-KS",
+                "US-KY",
+                "US-LA",
+                "US-MA",
+                "US-MD",
+                "US-ME",
+                "US-MI",
+                "US-MN",
+                "US-MO",
+                "US-MS",
+                "US-MT",
+                "US-NC",
+                "US-ND",
+                "US-NE",
+                "US-NH",
+                "US-NJ",
+                "US-NM",
+                "US-NV",
                 "US-NY",
-                "US-PA"
+                "US-OH",
+                "US-OK",
+                "US-OR",
+                "US-PA",
+                "US-RI",
+                "US-SC",
+                "US-SD",
+                "US-TN",
+                "US-TX",
+                "US-UT",
+                "US-VA",
+                "US-VT",
+                "US-WA",
+                "US-WI",
+                "US-WV",
+                "US-WY"
             ],
             "value": true
         }

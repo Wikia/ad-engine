@@ -106,6 +106,10 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 				slotService.setState('top_leaderboard', false);
 			});
 
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
+				slotService.setState('top_leaderboard', false);
+			});
+
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
 				const adSlot = slotService.get('hivi_leaderboard');
 

@@ -7,8 +7,7 @@
 			@include uap-navbar();
 		}
 
-		#top_leaderboard,
-		#hivi_leaderboard {
+		#top_leaderboard {
 			@include bfaa-slot();
 			@include sticky-tlb-slot();
 		}
@@ -18,7 +17,6 @@
 		}
 
 		#top_leaderboard,
-		#hivi_leaderboard,
 		#bottom_leaderboard {
 			@include uap-porvata();
 			@include uap-porvata-learn-more();
