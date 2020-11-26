@@ -38,7 +38,7 @@ export class AppnexusAst extends PrebidAdapter {
 						placementId: this.isDebugMode ? this.debugPlacementId : placementId,
 						keywords: context.get('bidders.prebid.additionalKeyvals.appnexus')
 							? this.getTargeting(code)
-							: undefined,
+							: {},
 						video: {
 							skippable: false,
 							playback_method: ['auto_play_sound_off'],

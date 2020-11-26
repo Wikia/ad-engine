@@ -56,7 +56,7 @@ export class Rubicon extends PrebidAdapter {
 						name: code,
 						inventory: context.get('bidders.prebid.additionalKeyvals.rubicon')
 							? this.getTargeting(code, this.customTargeting)
-							: undefined,
+							: {},
 						video: {
 							playerWidth: '640',
 							playerHeight: '480',
