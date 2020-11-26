@@ -1,10 +1,12 @@
-import { context } from '@ad-engine/core';
+import { context, Dictionary } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
+
 	accountId: number;
 	maxCpm = EXTENDED_MAX_CPM;
+	customTargeting: Dictionary;
 
 	get bidderName(): string {
 		return Rubicon.bidderName;
@@ -14,14 +16,22 @@ export class Rubicon extends PrebidAdapter {
 		super(options);
 
 		this.accountId = options.accountId;
+		this.customTargeting = {
+			s0: [context.get('targeting.s0') || ''],
+			s1: [
+				context.get('wiki.targeting.wikiIsTop1000')
+					? context.get('targeting.s1') || ''
+					: 'not a top1k wiki',
+			],
+			s2: [context.get('targeting.s2') || ''],
+			lang: [context.get('targeting.wikiLanguage') || context.get('targeting.lang') || 'en'],
+		};
 	}
 
 	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): PrebidAdUnit {
 		if (code === 'featured' && !context.get('custom.rubiconInFV')) {
 			return null;
 		}
-
-		const targeting = this.getTargeting(code);
 
 		return {
 			code,
@@ -46,12 +56,14 @@ export class Rubicon extends PrebidAdapter {
 						zoneId,
 						accountId: this.accountId,
 						name: code,
-						inventory: targeting,
+						inventory: context.get('bidders.prebid.additionalKeyvals.rubicon')
+							? this.getTargeting(code, this.customTargeting)
+							: undefined,
 						video: {
 							playerWidth: '640',
 							playerHeight: '480',
 							size_id: sizeId,
-							language: targeting.lang ? targeting.lang[0] : 'en',
+							language: this.customTargeting['lang'][0],
 						},
 					},
 				},
