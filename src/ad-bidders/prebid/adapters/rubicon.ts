@@ -17,13 +17,11 @@ export class Rubicon extends PrebidAdapter {
 
 		this.accountId = options.accountId;
 		this.customTargeting = {
-			s0: [context.get('targeting.s0') || ''],
 			s1: [
 				context.get('wiki.targeting.wikiIsTop1000')
 					? context.get('targeting.s1') || ''
 					: 'not a top1k wiki',
 			],
-			s2: [context.get('targeting.s2') || ''],
 			lang: [context.get('targeting.wikiLanguage') || context.get('targeting.lang') || 'en'],
 		};
 	}
