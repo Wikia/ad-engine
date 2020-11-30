@@ -1,4 +1,6 @@
+import * as Cookies from 'js-cookie';
 import { Dictionary } from '../models';
+import { queryString } from '../utils/query-string';
 
 interface ContextObject {
 	[key: string]: any;
@@ -115,10 +117,12 @@ function segment(key: string, newValue?: any, remove = false): any {
 	return seg[lastKey];
 }
 
+const isDebugMode = Boolean(queryString.get('adengine_debug') || Cookies.get('adengine_debug'));
+
 export class Context {
 	constructor() {
 		window.ads = window.ads || ({} as MediaWikiAds);
-		window.ads.adContext = contextObject;
+		window.ads.adContext = isDebugMode ? contextObject : {};
 	}
 
 	extend(newContext: ContextObject): void {
