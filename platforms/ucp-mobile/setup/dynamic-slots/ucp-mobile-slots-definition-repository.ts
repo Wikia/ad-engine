@@ -98,6 +98,45 @@ export class UcpMobileSlotsDefinitionRepository {
 		return context.get('wiki.opts.pageType') !== 'search';
 	}
 
+	getMobilePrefooterConfig(): SlotSetupDefinition {
+		if (!this.isMobilePrefooterApplicable()) {
+			return;
+		}
+
+		const slotName = 'mobile_prefooter';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.wds-global-footer',
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: {
+				classList: ['ad-slot-wrapper', 'mobile-prefooter'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	private isMobilePrefooterApplicable(): boolean {
+		const MIN_NUMBER_OF_SECTIONS = 4;
+
+		if (context.get('wiki.opts.pageType') === 'home') {
+			return !!document.querySelector('.trending-articles');
+		}
+
+		const numberOfSections = document.querySelectorAll('.mw-parser-output > h2').length;
+		const hasArticleFooter = !!document.querySelector('.article-footer');
+
+		return (
+			(hasArticleFooter && !this.isInContentApplicable()) ||
+			numberOfSections > MIN_NUMBER_OF_SECTIONS
+		);
+	}
+
 	getBottomLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isBottomLeaderboardApplicable()) {
 			return;

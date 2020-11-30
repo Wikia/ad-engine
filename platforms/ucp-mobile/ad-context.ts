@@ -85,6 +85,12 @@ export const basicContext = {
 		uap: 'none',
 		uap_c: 'none',
 	},
+	templates: {
+		safeFanTakeoverElement: {
+			boxadSlotNames: ['top_boxad', 'mobile_prefooter'],
+			boxadSize: [300, 251],
+		},
+	},
 	services: {
 		confiant: {
 			enabled: false,
