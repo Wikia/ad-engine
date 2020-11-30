@@ -1,5 +1,5 @@
 import { BaseContextSetup } from '@platforms/shared';
-import { context } from '@wikia/ad-engine';
+import { context, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -15,6 +15,10 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			)
 		) {
 			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
+		}
+
+		if (utils.queryString.get('mobile-app') === 'true') {
+			this.noAdsDetector.addReason('mobileapp_querystring');
 		}
 
 		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));
