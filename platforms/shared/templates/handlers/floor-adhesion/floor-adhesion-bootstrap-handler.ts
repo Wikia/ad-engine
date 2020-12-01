@@ -12,7 +12,7 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
-		this.adSlot.hide();
+		this.adSlot.addClass(AdSlot.HIDDEN_CLASS);
 		this.adSlot.addClass('floor-adhesion');
 		this.adSlot.addClass('out-of-page-template');
 
