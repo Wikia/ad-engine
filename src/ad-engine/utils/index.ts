@@ -1,4 +1,5 @@
 export * from './client';
+export * from './debug';
 export * from './dimensions';
 export * from './document';
 export * from './flow-control';
