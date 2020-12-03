@@ -1,5 +1,5 @@
-import { debug } from '.';
 import { Dictionary } from '../models';
+import { debug } from './debug';
 
 interface ContextObject {
 	[key: string]: any;
