@@ -1,5 +1,5 @@
 import { Dictionary } from '../models';
-import { isDebugMode } from '../utils';
+import { debug } from '../utils';
 
 interface ContextObject {
 	[key: string]: any;
@@ -119,7 +119,7 @@ function segment(key: string, newValue?: any, remove = false): any {
 export class Context {
 	constructor() {
 		window.ads = window.ads || ({} as MediaWikiAds);
-		window.ads.adContext = isDebugMode() ? contextObject : {};
+		window.ads.adContext = debug.isDebugMode() ? contextObject : {};
 	}
 
 	extend(newContext: ContextObject): void {

@@ -19,5 +19,11 @@ export function setDebugMode(groups: string | null) {
 	logger('ad-engine', `AdEngine Debug Mode ${groups !== null ? 'enabled' : 'disabled'}`);
 }
 
+export const debug = {
+	isDebugMode,
+	getDebugGroup,
+	setDebugMode,
+};
+
 window.ads = window.ads || ({} as any);
 window.ads.debug = setDebugMode;

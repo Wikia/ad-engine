@@ -1,6 +1,6 @@
-import { getDebugGroup } from './debug';
+import { debug } from './debug';
 
-const debugGroup = getDebugGroup() || '';
+const debugGroup = debug.getDebugGroup() || '';
 const groups = debugGroup.split(',');
 
 if (debugGroup !== '') {
