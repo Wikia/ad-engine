@@ -1,4 +1,4 @@
-import { debug } from './debug';
+import { debug } from '../services/debug';
 
 const debugGroup = debug.getDebugGroup() || '';
 const groups = debugGroup.split(',');
