@@ -50,8 +50,6 @@
 
 // #######################################
 
-$closeButtonHeight: 40px;
-
 .gpt-ad {
 	text-align: center;
 
@@ -77,10 +75,6 @@ $closeButtonHeight: 40px;
 	&.hide {
 		display: none !important;
 	}
-}
-
-.invisible-high-impact {
-	display: none;
 }
 
 #affiliate_slot {
@@ -129,14 +123,6 @@ $closeButtonHeight: 40px;
 	}
 }
 
-.no-ads {
-	height: 0;
-}
-
-.wikia-ad-iframe {
-	border: 0;
-}
-
 .out-of-page-template {
 	margin: 0;
 
@@ -146,9 +132,9 @@ $closeButtonHeight: 40px;
 		.button-close {
 			border: 2px solid white;
 			border-radius: 50%;
-			height: $closeButtonHeight;
-			top: -($closeButtonHeight / 2);
-			width: $closeButtonHeight;
+			width: 40px;
+			height: 40px;
+			top: -20px;
 		}
 	}
 }
