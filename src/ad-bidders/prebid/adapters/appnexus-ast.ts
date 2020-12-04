@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 export class AppnexusAst extends PrebidAdapter {
@@ -36,6 +36,9 @@ export class AppnexusAst extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						placementId: this.isDebugMode ? this.debugPlacementId : placementId,
+						keywords: context.get('bidders.prebid.additionalKeyvals.appnexus')
+							? this.getTargeting(code)
+							: {},
 						video: {
 							skippable: false,
 							playback_method: ['auto_play_sound_off'],

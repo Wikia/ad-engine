@@ -28,6 +28,9 @@ export class Appnexus extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						placementId: placementId || this.getPlacement(position),
+						keywords: context.get('bidders.prebid.additionalKeyvals.appnexus')
+							? this.getTargeting(code)
+							: {},
 					},
 				},
 			],

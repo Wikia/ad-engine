@@ -40,6 +40,15 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 
 		context.set('custom.rubiconInFV', instantConfig.get('icPrebidRubicon') && hasFeaturedVideo);
+
+		context.set(
+			'bidders.prebid.additionalKeyvals.appnexus',
+			instantConfig.get('icPrebidAppNexusAdditionalKeyvals'),
+		);
+		context.set(
+			'bidders.prebid.additionalKeyvals.rubicon',
+			instantConfig.get('icPrebidRubiconAdditionalKeyvals'),
+		);
 	}
 
 	context.set(

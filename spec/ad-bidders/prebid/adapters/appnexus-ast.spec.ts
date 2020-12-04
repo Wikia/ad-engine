@@ -34,6 +34,7 @@ describe('AppnexusAst bidder adapter', () => {
 						bidder: 'appnexusAst',
 						params: {
 							placementId: '11223344',
+							keywords: {},
 							video: {
 								skippable: false,
 								playback_method: ['auto_play_sound_off'],

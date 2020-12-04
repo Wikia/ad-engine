@@ -16,7 +16,10 @@ describe('Appnexus bidder adapter', () => {
 			enabled: true,
 			slots: {
 				bottom_leaderboard: {
-					sizes: [[300, 250], [320, 50]],
+					sizes: [
+						[300, 250],
+						[320, 50],
+					],
 				},
 			},
 			placements: {
@@ -32,7 +35,10 @@ describe('Appnexus bidder adapter', () => {
 				code: 'bottom_leaderboard',
 				mediaTypes: {
 					banner: {
-						sizes: [[300, 250], [320, 50]],
+						sizes: [
+							[300, 250],
+							[320, 50],
+						],
 					},
 				},
 				bids: [
@@ -40,6 +46,7 @@ describe('Appnexus bidder adapter', () => {
 						bidder: 'appnexus',
 						params: {
 							placementId: '99220044',
+							keywords: {},
 						},
 					},
 				],
@@ -52,7 +59,10 @@ describe('Appnexus bidder adapter', () => {
 			enabled: true,
 			slots: {
 				'02_MR': {
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 					placementId: '99220055',
 				},
 			},
@@ -66,7 +76,10 @@ describe('Appnexus bidder adapter', () => {
 				code: '02_MR',
 				mediaTypes: {
 					banner: {
-						sizes: [[300, 250], [300, 600]],
+						sizes: [
+							[300, 250],
+							[300, 600],
+						],
 					},
 				},
 				bids: [
@@ -74,6 +87,7 @@ describe('Appnexus bidder adapter', () => {
 						bidder: 'appnexus',
 						params: {
 							placementId: '99220055',
+							keywords: {},
 						},
 					},
 				],
