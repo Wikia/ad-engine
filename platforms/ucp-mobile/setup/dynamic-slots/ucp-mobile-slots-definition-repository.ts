@@ -1,12 +1,16 @@
 import {
+	communicationService,
 	context,
 	InstantConfigService,
+	ofType,
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -83,10 +87,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-wrapper', 'top-boxad'],
 			},
-			activator: () => {
-				// TODO wait for UAP and check whether slot should be lazy loaded
-				context.push('state.adStack', { id: slotName });
-			},
+			activator: () => this.pushWaitingSlot(slotName),
 		};
 	}
 
@@ -115,9 +116,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-wrapper', 'mobile-prefooter'],
 			},
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
+			activator: () => this.pushWaitingSlot(slotName),
 		};
 	}
 
@@ -154,10 +153,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-wrapper', 'bottom-leaderboard'],
 			},
-			activator: () => {
-				// TODO wait for UAP and check whether slot should be lazy loaded
-				context.push('state.adStack', { id: slotName });
-			},
+			activator: () => this.pushWaitingSlot(slotName),
 		};
 	}
 
@@ -237,5 +233,15 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isInvisibleHighImpactApplicable(): boolean {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+	}
+
+	private pushWaitingSlot(slotName: string): void {
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			if (action.isLoaded) {
+				context.push('events.pushOnScroll.ids', slotName);
+			} else {
+				context.push('state.adStack', { id: slotName });
+			}
+		});
 	}
 }
