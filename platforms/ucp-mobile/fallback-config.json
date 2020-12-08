@@ -194,7 +194,10 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "PL"
+            ],
+            "value": true
         }
     ],
     "icBidsTracking": [
@@ -1750,6 +1753,18 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidAppNexusAdditionalKeyvals": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
             ],
             "value": true
         }
