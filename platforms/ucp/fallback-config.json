@@ -186,7 +186,16 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "XX",
+                "non-CA",
+                "non-DE",
+                "non-GB",
+                "non-RU",
+                "non-UK",
+                "non-US"
+            ],
+            "value": true
         }
     ],
     "icBidsTracking": [
@@ -1609,9 +1618,13 @@
     "icPrebidAppNexusAdditionalKeyvals": [
         {
             "apps": [
+                "mobile-wiki",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "PL"
+            ],
+            "value": true
         }
     ],
     "icSafeFanTakeoverLineItemIds": [
@@ -1715,6 +1728,7 @@
                 "oasis"
             ],
             "regions": [
+                "CA",
                 "PL"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20201124.min.js"
@@ -2012,7 +2026,7 @@
                 "UK",
                 "US"
             ],
-            "sampling": 5.0,
+            "sampling": 15.0,
             "value": true
         }
     ],
