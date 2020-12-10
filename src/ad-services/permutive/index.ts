@@ -16,7 +16,7 @@ class Permutive {
 			return;
 		}
 		utils.logger(logGroup, 'enabled');
-		this.setPermutiveKeysInBiddersContext();
+		this.getPermutiveKeysForAppnexus();
 		this.setup();
 		this.setAddon();
 	}
@@ -30,7 +30,7 @@ class Permutive {
 		)
 	}
 
-	private setPermutiveKeysInBiddersContext(): void {
+	private getPermutiveKeysForAppnexus(): void {
 		if (this.isEnabled()) {
 			const psegs = JSON.parse(window.localStorage.getItem('_psegs') || '[]')
 				.map(Number)
@@ -38,7 +38,7 @@ class Permutive {
 				.map(String);
 			const ppam = JSON.parse(window.localStorage.getItem('_ppam') || '[]');
 			const permutiveKeys = psegs.concat(ppam);
-			context.set('bidders.permutiveKeys', permutiveKeys);
+			context.set('bidders.permutiveKeys.appnexus', permutiveKeys);
 		}
 	}
 

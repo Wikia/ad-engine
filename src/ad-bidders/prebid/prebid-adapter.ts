@@ -42,7 +42,6 @@ export abstract class PrebidAdapter {
 	protected getTargeting(slotName, customTargeting = {}): Dictionary {
 		return {
 			...this.pageTargeting,
-			p_standard: context.get('bidders.permutiveKeys'),
 			src: [context.get('src') || ''],
 			pos: [slotName],
 			...customTargeting,

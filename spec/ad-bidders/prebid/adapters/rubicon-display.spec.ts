@@ -63,7 +63,6 @@ describe('RubiconDisplay bidder adapter', () => {
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
 		context.set('targeting.testKeyval', 'yes');
 		context.set('bidders.prebid.additionalKeyvals.rubicon', true);
-		context.set('src', 'unit-tests');
 
 		const rubiconDisplay = new RubiconDisplay({
 			enabled: true,
@@ -109,7 +108,7 @@ describe('RubiconDisplay bidder adapter', () => {
 								lang: ['en'],
 								mappedVerticalName: ['gaming'],
 								s1: ['not a top1k wiki'],
-								src: ['unit-tests'],
+								src: ['gpt'],
 								pos: ['bottom_leaderboard'],
 								p_standard: [],
 								loc: ['top'],
