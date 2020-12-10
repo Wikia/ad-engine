@@ -14,7 +14,7 @@ export class UcpMobileIocSetup implements DiProcess {
 	constructor(private container: Container) {}
 
 	async execute(): Promise<void> {
-		this.container.bind(UcpTargetingSetup.skin('fandommobile'));
+		this.container.bind(UcpTargetingSetup.skin('ucp_mobile'));
 
 		TrackingSetup.provideMiddlewares({
 			slotTrackingMiddlewares: [

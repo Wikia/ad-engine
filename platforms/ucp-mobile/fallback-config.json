@@ -191,10 +191,32 @@
     "icPrebidRubiconAdditionalKeyvals": [
         {
             "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
                 "mobile-wiki",
                 "oasis"
             ],
-            "value": false
+            "regions": [
+                "XX",
+                "non-CA",
+                "non-DE",
+                "non-GB",
+                "non-RU",
+                "non-UK",
+                "non-US"
+            ],
+            "value": true
         }
     ],
     "icBidsTracking": [
@@ -1754,6 +1776,18 @@
             "value": true
         }
     ],
+    "icPrebidAppNexusAdditionalKeyvals": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icSafeFanTakeoverLineItemIds": [
         {
             "apps": [
@@ -1855,6 +1889,7 @@
                 "oasis"
             ],
             "regions": [
+                "CA",
                 "PL"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20201124.min.js"
@@ -2204,7 +2239,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.1.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.2.0/tracking-opt-in.min.js"
         }
     ],
     "icLiveRampATSAnalytics": [
