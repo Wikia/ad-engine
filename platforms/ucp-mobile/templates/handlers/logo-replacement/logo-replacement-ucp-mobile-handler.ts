@@ -19,21 +19,26 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 
 		if (fandomLogoParent && fandomLogo && separatorParent && separator) {
 			setTimeout(() => {
-				const newLogoAnchorElement = document.createElement('a');
-				newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
+				const customLogoAnchorElement = document.createElement('a');
+				customLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
 
-				const newLogo = document.createElement('img');
-				newLogo.src = this.params.logoImage;
-				newLogo.classList.add('new-logo');
+				const customLogo = document.createElement('img');
+				customLogo.src = this.params.logoImage;
+				customLogo.classList.add('custom-logo');
+
+				const smallCustomllLogo = document.createElement('img');
+				smallCustomllLogo.src = this.params.smallSizedLogoImage;
+				smallCustomllLogo.classList.add('small-custom-logo');
 
 				const trackingPixel = document.createElement('img');
 				trackingPixel.src = this.params.pixelUrl;
 				trackingPixel.classList.add('tracking-pixel');
 
-				separatorParent.insertBefore(newLogoAnchorElement, separator);
+				separatorParent.insertBefore(customLogoAnchorElement, separator);
 				fandomLogoParent.removeChild(fandomLogo);
 				fandomLogoParent.appendChild(trackingPixel);
-				newLogoAnchorElement.appendChild(newLogo);
+				customLogoAnchorElement.appendChild(smallCustomllLogo);
+				customLogoAnchorElement.appendChild(customLogo);
 
 				if (fandomHeartParent && fandomHeart) {
 					fandomHeartParent.removeChild(fandomHeart);

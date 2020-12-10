@@ -15,26 +15,26 @@ export class LogoReplacementUcpHandler implements TemplateStateHandler {
 
 		setTimeout(() => {
 			if (parentElement && fandomLogo) {
-				const newLogoAnchorElement = document.createElement('a');
-				newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
+				const customLogoAnchorElement = document.createElement('a');
+				customLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
 
-				const newLogo = document.createElement('img');
-				newLogo.src = this.params.logoImage;
-				newLogo.classList.add('new-logo');
+				const customLogo = document.createElement('img');
+				customLogo.src = this.params.logoImage;
+				customLogo.classList.add('custom-logo');
 
-				const newSmallLogo = document.createElement('img');
-				newSmallLogo.src = this.params.smallSizedLogoImage;
-				newSmallLogo.classList.add('new-logo');
+				const smallCustomllLogo = document.createElement('img');
+				smallCustomllLogo.src = this.params.smallSizedLogoImage;
+				smallCustomllLogo.classList.add('small-custom-logo');
 
 				const trackingPixel = document.createElement('img');
 				trackingPixel.src = this.params.pixelUrl;
 				trackingPixel.classList.add('tracking-pixel');
 
-				parentElement.insertBefore(newLogoAnchorElement, fandomLogo);
+				parentElement.insertBefore(customLogoAnchorElement, fandomLogo);
 				parentElement.removeChild(fandomLogo);
 				parentElement.appendChild(trackingPixel);
-				newLogoAnchorElement.appendChild(newSmallLogo);
-				newLogoAnchorElement.appendChild(newLogo);
+				customLogoAnchorElement.appendChild(smallCustomllLogo);
+				customLogoAnchorElement.appendChild(customLogo);
 
 				this.adSlot.emitEvent(events.LOGO_REPLACED);
 			}

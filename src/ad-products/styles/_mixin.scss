@@ -58,13 +58,18 @@
 	}
 }
 
-@mixin logo-replacement($max-height) {
-	.new-logo {
+@mixin logo-replacement($max-height, $margin-right: 0) {
+	.custom-logo,
+	.small-custom-logo {
 		animation-duration: 3s;
 		animation-fill-mode: forwards;
 		animation-name: fade-in;
 		max-height: $max-height;
 		opacity: 0;
+	}
+
+	.custom-logo {
+		margin-right: $margin-right;
 	}
 
 	.tracking-pixel {

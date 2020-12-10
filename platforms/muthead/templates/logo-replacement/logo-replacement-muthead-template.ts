@@ -37,21 +37,21 @@ export class LogoReplacement {
 		const isDesktop = context.get('targeting.skin').includes('desktop');
 
 		if (isDesktop && parentElement && logo) {
-			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.config.clickThroughUrl || 'https://www.muthead.com/';
+			const customLogoAnchorElement = document.createElement('a');
+			customLogoAnchorElement.href = this.config.clickThroughUrl || 'https://www.muthead.com/';
 
-			const newLogo = document.createElement('img');
-			newLogo.src = this.config.logoImage;
-			newLogo.classList.add('new-logo');
+			const customLogo = document.createElement('img');
+			customLogo.src = this.config.logoImage;
+			customLogo.classList.add('custom-logo');
 
 			const trackingPixel = document.createElement('img');
 			trackingPixel.src = this.config.pixelUrl;
 			trackingPixel.classList.add('pixel-tracking');
 
-			parentElement.insertBefore(newLogoAnchorElement, logo);
+			parentElement.insertBefore(customLogoAnchorElement, logo);
 			parentElement.removeChild(logo);
 			parentElement.appendChild(trackingPixel);
-			newLogoAnchorElement.appendChild(newLogo);
+			customLogoAnchorElement.appendChild(customLogo);
 		}
 
 		this.adSlot.emitEvent(events.LOGO_REPLACED);

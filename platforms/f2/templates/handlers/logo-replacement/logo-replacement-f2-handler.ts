@@ -24,22 +24,27 @@ export class LogoReplacementF2Handler implements TemplateStateHandler {
 		const logoClass = isMobile ? 'global-navigation-mobile__logo' : 'wds-global-navigation__logo';
 
 		if (parentElement && fandomLogo) {
-			const newLogoAnchorElement = document.createElement('a');
-			newLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
-			newLogoAnchorElement.classList.add(logoClass);
+			const customLogoAnchorElement = document.createElement('a');
+			customLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
+			customLogoAnchorElement.classList.add(logoClass);
 
-			const newLogo = document.createElement('img');
-			newLogo.src = this.params.logoImage;
-			newLogo.classList.add('new-logo');
+			const customLogo = document.createElement('img');
+			customLogo.src = this.params.logoImage;
+			customLogo.classList.add('custom-logo');
+
+			const smallCustomLogo = document.createElement('img');
+			smallCustomLogo.src = this.params.smallSizedLogoImage;
+			smallCustomLogo.classList.add('small-custom-logo');
 
 			const trackingPixel = document.createElement('img');
 			trackingPixel.src = this.params.pixelUrl;
 			trackingPixel.classList.add('tracking-pixel');
 
-			parentElement.insertBefore(newLogoAnchorElement, fandomLogo);
+			parentElement.insertBefore(customLogoAnchorElement, fandomLogo);
 			parentElement.removeChild(fandomLogo);
 			parentElement.appendChild(trackingPixel);
-			newLogoAnchorElement.appendChild(newLogo);
+			customLogoAnchorElement.appendChild(smallCustomLogo);
+			customLogoAnchorElement.appendChild(customLogo);
 
 			this.adSlot.emitEvent(events.LOGO_REPLACED);
 		}

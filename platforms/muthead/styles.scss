@@ -1,6 +1,6 @@
 @import 'src/ad-products/styles/styles.scss';
 
-@include logo-replacement(48px);
+@include logo-replacement(48px, 5px);
 
 .gdm__wrapper {
 	text-align: center;
