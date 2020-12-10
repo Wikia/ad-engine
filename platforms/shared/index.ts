@@ -83,7 +83,5 @@ export * from './templates/helpers/video-dom-manager';
 export * from './templates/helpers/video-dom-reader';
 export * from './templates/helpers/manipulators/dom-manipulator';
 export * from './templates/helpers/manipulators/element-manipulator';
-export * from './templates-old/big-fancy-ad-above-config';
-export * from './templates-old/big-fancy-ad-below-config';
 export * from './context/prebid/gamepedia-prebid-context-setup';
 export * from './context/a9/ucp-gamepedia-a9-config.setup';
