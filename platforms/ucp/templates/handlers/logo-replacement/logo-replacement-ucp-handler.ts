@@ -22,6 +22,10 @@ export class LogoReplacementUcpHandler implements TemplateStateHandler {
 				newLogo.src = this.params.logoImage;
 				newLogo.classList.add('new-logo');
 
+				const newSmallLogo = document.createElement('img');
+				newSmallLogo.src = this.params.smallSizedLogoImage;
+				newSmallLogo.classList.add('new-logo');
+
 				const trackingPixel = document.createElement('img');
 				trackingPixel.src = this.params.pixelUrl;
 				trackingPixel.classList.add('tracking-pixel');
@@ -29,6 +33,7 @@ export class LogoReplacementUcpHandler implements TemplateStateHandler {
 				parentElement.insertBefore(newLogoAnchorElement, fandomLogo);
 				parentElement.removeChild(fandomLogo);
 				parentElement.appendChild(trackingPixel);
+				newLogoAnchorElement.appendChild(newSmallLogo);
 				newLogoAnchorElement.appendChild(newLogo);
 
 				this.adSlot.emitEvent(events.LOGO_REPLACED);
