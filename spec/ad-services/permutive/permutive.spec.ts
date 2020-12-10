@@ -69,15 +69,15 @@ describe('Permutive', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Permutive keys for bidders set in context', async () => {
+	it('Permutive keys for AppNexus set in context', async () => {
 		await permutive.call();
 
-		const permutiveKeys = context.get('bidders.permutiveKeys');
+		const permutiveKeys = context.get('bidders.permutiveKeys.appnexus');
 
 		expect(permutiveKeys).to.eql(['1000000', '1000001', '123', '456']);
 	});
 
-	it('No Permutive keys for bidders set in context', async () => {
+	it('No Permutive keys for AppNexus set in context', async () => {
 		// @ts-ignore
 		window.localStorage = {
 			getItem(key: string): string | null {
@@ -87,7 +87,7 @@ describe('Permutive', () => {
 
 		await permutive.call();
 
-		const permutiveKeys = context.get('bidders.permutiveKeys');
+		const permutiveKeys = context.get('bidders.permutiveKeys.appnexus');
 
 		expect(permutiveKeys).to.eql([]);
 	});

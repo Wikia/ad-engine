@@ -49,7 +49,6 @@ describe('AppnexusAst bidder adapter', () => {
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
 		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
-		context.set('src', 'unit-tests');
 
 		const appnexusAst = new AppnexusAst({
 			enabled: true,
@@ -76,7 +75,7 @@ describe('AppnexusAst bidder adapter', () => {
 							placementId: '11223344',
 							keywords: {
 								p_standard: [],
-								src: ['unit-tests'],
+								src: ['gpt'],
 								pos: ['mobile_in_content'],
 							},
 							video: {

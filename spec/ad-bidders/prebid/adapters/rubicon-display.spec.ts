@@ -110,7 +110,6 @@ describe('RubiconDisplay bidder adapter', () => {
 								s1: ['not a top1k wiki'],
 								src: ['gpt'],
 								pos: ['bottom_leaderboard'],
-								p_standard: [],
 								loc: ['top'],
 								testKeyval: ['yes'],
 							},

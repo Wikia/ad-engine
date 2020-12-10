@@ -51,7 +51,7 @@ export class Appnexus extends PrebidAdapter {
 		if (context.get('bidders.prebid.additionalKeyvals.appnexus')) {
 			return {
 				...this.getTargeting(code),
-				p_standard: context.get('bidders.permutiveKeys.appnexus'),
+				p_standard: context.get('bidders.permutiveKeys.appnexus') || [],
 			};
 		}
 
