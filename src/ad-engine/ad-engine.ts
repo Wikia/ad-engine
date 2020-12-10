@@ -5,7 +5,6 @@ import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
-	CookieStorageAdapter,
 	events,
 	eventService,
 	messageBus,
@@ -32,7 +31,6 @@ export class AdEngine {
 	started = false;
 	provider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
-	cookieStorage = new CookieStorageAdapter();
 
 	constructor(config = null) {
 		context.extend(config);
