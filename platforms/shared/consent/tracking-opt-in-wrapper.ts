@@ -36,7 +36,7 @@ const setOptInInstances = globalAction(
 );
 
 const trackingOptInLibraryUrl =
-	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.0.0/tracking-opt-in.min.js';
+	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.2.0/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
@@ -62,7 +62,7 @@ class TrackingOptInWrapper {
 		const libraryPromise = this.loadTrackingOptInLibrary();
 
 		try {
-			await Promise.race([libraryPromise, utils.timeoutReject(5000)]);
+			await Promise.race([libraryPromise, utils.timeoutReject(10000)]);
 			await this.handleLibraryLoaded();
 		} catch (e) {
 			return this.handleLibraryTimeout(libraryPromise);

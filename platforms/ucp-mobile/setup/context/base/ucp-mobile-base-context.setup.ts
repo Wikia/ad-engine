@@ -21,6 +21,11 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			this.noAdsDetector.addReason('mobileapp_querystring');
 		}
 
+		context.set(
+			'custom.serverPrefix',
+			utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm1b' : 'wka1b',
+		);
+
 		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));
 		// FIXME: sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
 		// context.set(
