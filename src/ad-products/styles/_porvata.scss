@@ -53,6 +53,10 @@ $vpaid-z-index: 10;
 				background: #000;
 				margin: 0 auto;
 				pointer-events: auto;
+
+				& > iframe {
+					z-index: -1;
+				}
 			}
 		}
 

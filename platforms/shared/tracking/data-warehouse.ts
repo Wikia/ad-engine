@@ -113,7 +113,7 @@ export class DataWarehouseTracker {
 			utils.logger(logGroup, msg);
 			throw new Error(msg);
 		}
-		return `${baseUrl}?${queryString.stringify(params)}`;
+		return `${baseUrl}?${queryString.stringify(params, { strict: false })}`;
 	}
 
 	/**
