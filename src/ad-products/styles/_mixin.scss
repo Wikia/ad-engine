@@ -58,7 +58,7 @@
 	}
 }
 
-@mixin logo-replacement($max-height, $padding-right: 0) {
+@mixin logo-replacement($max-height, $padding-left: 0, $padding-right: 0) {
 	.custom-logo,
 	.small-custom-logo {
 		animation-duration: 3s;
@@ -73,7 +73,7 @@
 	}
 
 	.small-custom-logo {
-		padding-left: 12px;
+		padding-left: $padding-left;
 	}
 
 	.tracking-pixel {
