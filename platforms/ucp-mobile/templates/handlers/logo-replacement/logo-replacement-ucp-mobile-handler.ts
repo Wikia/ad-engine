@@ -26,9 +26,9 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 				customLogo.src = this.params.logoImage;
 				customLogo.classList.add('custom-logo');
 
-				const smallCustomllLogo = document.createElement('img');
-				smallCustomllLogo.src = this.params.smallSizedLogoImage;
-				smallCustomllLogo.classList.add('small-custom-logo');
+				const smallCustomLogo = document.createElement('img');
+				smallCustomLogo.src = this.params.smallSizedLogoImage;
+				smallCustomLogo.classList.add('small-custom-logo');
 
 				const trackingPixel = document.createElement('img');
 				trackingPixel.src = this.params.pixelUrl;
@@ -37,7 +37,7 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 				separatorParent.insertBefore(customLogoAnchorElement, separator);
 				fandomLogoParent.removeChild(fandomLogo);
 				fandomLogoParent.appendChild(trackingPixel);
-				customLogoAnchorElement.appendChild(smallCustomllLogo);
+				customLogoAnchorElement.appendChild(smallCustomLogo);
 				customLogoAnchorElement.appendChild(customLogo);
 
 				if (fandomHeartParent && fandomHeart) {
