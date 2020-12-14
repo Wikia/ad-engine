@@ -41,7 +41,7 @@
 
 @include ucp-hydra-uap-styles();
 
-@include logo-replacement(30px);
+@include logo-replacement(30px, 6px);
 
 // #######################################
 
@@ -55,8 +55,4 @@
 			display: none;
 		}
 	}
-}
-
-.custom-logo {
-	padding-left: 6px;
 }
