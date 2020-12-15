@@ -1,4 +1,6 @@
 @import 'src/ad-products/styles/styles.scss';
+@import 'platforms/shared/styles/index';
+@import 'src/ad-products/styles/porvata';
 
 @include logo-replacement(48px);
 
@@ -7,79 +9,69 @@
 }
 
 .slideout-open {
-	.has-bfaa {
-		background-color: #0d0f10;
-	}
-
 	#cdm-zone-01 {
 		display: none;
 	}
 }
 
-.has-bfaa {
-	.header {
-		&.bfaa-pinned {
-			position: relative;
-		}
-	}
+@mixin ucp-muthead-uap-styles() {
+	.desktop {
+		@include uap-porvata-right-position();
 
-	.header.bfaa-pinned + .site-bg {
-		padding-top: 0;
-	}
-
-	.slideout-panel {
-		position: unset;
-	}
-
-	.gdm--banner {
-		margin-top: 0;
-		margin-bottom: 0;
-	}
-}
-
-.site-futhead.has-bfaa {
-	&.with-mobile-nav {
 		#cdm-zone-01 {
-			display: none;
-		}
-
-		.navbar.navbar-futhead.bfaa-pinned {
-			position: fixed;
+			.video-player {
+				transform: translateX(0);
+			}
 		}
 	}
 
-	&.fixed-page-nav {
-		.page-navigation {
-			position: unset;
-			box-shadow: unset;
+	.has-uap {
+		#cdm-zone-01 {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+		}
+
+		#cdm-zone-04 {
+			@include bfab-slot();
+		}
+
+		#cdm-zone-01,
+		#cdm-zone-04 {
+			@include uap-porvata();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
 		}
 	}
 
-	.header {
-		min-height: 43px;
-	}
+	@include expanded-slot();
 
-	.site-header {
-		margin-bottom: 0;
-	}
+	.has-uap {
+		padding-top: 0 !important;
 
-	.navbar.navbar-futhead.bfaa-pinned {
-		position: relative;
-	}
+		#cdm-zone-01 {
+			margin-top: 0;
 
-	.main-content.homepage,
-	.content-header,
-	.futhead-gdm {
-		position: unset;
-	}
+			.video-player,
+			.replay-overlay {
+				top: 0;
+			}
+		}
 
-	.homepage .futhead-gdm,
-	.futhead-gdm.headliner {
-		min-height: 0;
-		margin-bottom: 0 !important;
-	}
+		.header-container {
+			position: absolute;
+			width: 100vw;
 
-	.gpt-ad.bfaa-template {
-		max-width: 100vw;
+			&.bfaa-pinned {
+				position: absolute;
+				opacity: 1 !important;
+			}
+		}
 	}
 }
+
+@include ucp-muthead-uap-styles();

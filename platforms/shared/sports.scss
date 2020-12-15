@@ -1,29 +1,5 @@
 @import 'src/ad-products/styles/styles.scss';
 
-.has-bfaa {
-	padding-top: 0 !important;
-
-	#content div#atflb {
-		min-height: 0 !important;
-		min-width: 0 !important;
-	}
-
-	#mobileatflb {
-		position: relative;
-		bottom: inherit;
-	}
-
-	.header-container {
-		position: absolute;
-		width: 100vw;
-
-		&.bfaa-pinned {
-			position: absolute;
-			opacity: 1 !important;
-		}
-	}
-}
-
 #incontent_player {
 	margin: 0 auto;
 	z-index: 50;
