@@ -23,10 +23,6 @@ export class LogoReplacementUcpHydraHandler implements TemplateStateHandler {
 				customLogo.src = this.params.logoImage;
 				customLogo.classList.add('custom-logo');
 
-				const smallCustomLogo = document.createElement('img');
-				smallCustomLogo.src = this.params.smallSizedLogoImage;
-				smallCustomLogo.classList.add('small-custom-logo');
-
 				const trackingPixel = document.createElement('img');
 				trackingPixel.src = this.params.pixelUrl;
 				trackingPixel.classList.add('pixel-tracking');
@@ -34,7 +30,14 @@ export class LogoReplacementUcpHydraHandler implements TemplateStateHandler {
 				parentElement.insertBefore(customLogoAnchorElement, gamepediaLogo);
 				parentElement.removeChild(gamepediaLogo);
 				parentElement.appendChild(trackingPixel);
-				customLogoAnchorElement.appendChild(smallCustomLogo);
+
+				if (this.params.smallSizedLogoImage) {
+					const smallCustomLogo = document.createElement('img');
+					smallCustomLogo.src = this.params.smallSizedLogoImage;
+					smallCustomLogo.classList.add('small-custom-logo');
+					customLogoAnchorElement.appendChild(smallCustomLogo);
+				}
+
 				customLogoAnchorElement.appendChild(customLogo);
 
 				this.adSlot.emitEvent(events.LOGO_REPLACED);
