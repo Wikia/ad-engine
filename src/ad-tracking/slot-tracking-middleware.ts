@@ -56,8 +56,13 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 			page_layout: `pos_top=${topOffset}`,
 			page_width:
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
-			pv: window.pvNumber || context.get('wiki.pvNumber') || '',
-			pv_unique_id: window.pvUID || context.get('wiki.pvUID') || '',
+			pv:
+				context.getMediaWikiVariable('pvNumber') ||
+				window.pvNumber ||
+				context.get('wiki.pvNumber') ||
+				'',
+			pv_unique_id:
+				context.getMediaWikiVariable('pvUID') || window.pvUID || context.get('wiki.pvUID') || '',
 			rollout_tracking: (context.get('targeting.rollout_tracking') || []).join(','),
 			scroll_y: window.scrollY || window.pageYOffset,
 			time_bucket: now.getHours(),
