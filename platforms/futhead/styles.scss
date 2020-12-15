@@ -2,7 +2,7 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/porvata';
 
-@include logo-replacement(40px);
+@include logo-replacement(40px, 0, 5px);
 
 .gdm__wrapper {
 	text-align: center;
