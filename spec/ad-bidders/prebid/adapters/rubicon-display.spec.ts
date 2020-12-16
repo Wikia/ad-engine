@@ -60,7 +60,7 @@ describe('RubiconDisplay bidder adapter', () => {
 		]);
 	});
 
-	it('prepareAdUnits returns data in correct shape with additional keyvals', () => {
+	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
 		context.set('targeting.testKeyval', 'yes');
 		context.set('bidders.prebid.additionalKeyvals.rubicon', true);
 
