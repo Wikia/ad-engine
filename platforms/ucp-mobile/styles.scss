@@ -46,7 +46,7 @@
 
 @include ucp-mobile-uap-styles();
 @include out-of-page-styles();
-@include logo-replacement(55px);
+@include logo-replacement(55px, 12px);
 
 // #######################################
 
@@ -159,17 +159,4 @@
 	to {
 		opacity: 1;
 	}
-}
-
-.new-logo {
-	animation-duration: 3s;
-	animation-fill-mode: forwards;
-	animation-name: fade-in;
-	max-height: 55px;
-	opacity: 0;
-	padding-left: 12px;
-}
-
-.tracking-pixel {
-	display: none;
 }

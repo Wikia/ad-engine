@@ -58,8 +58,9 @@
 	}
 }
 
-@mixin logo-replacement($max-height) {
-	.new-logo {
+@mixin logo-replacement($max-height, $padding-left: 0, $padding-right: 0) {
+	.custom-logo,
+	.small-custom-logo {
 		animation-duration: 3s;
 		animation-fill-mode: forwards;
 		animation-name: fade-in;
@@ -67,7 +68,21 @@
 		opacity: 0;
 	}
 
+	.custom-logo {
+		padding-right: $padding-right;
+	}
+
+	.small-custom-logo {
+		padding-left: $padding-left;
+	}
+
 	.tracking-pixel {
 		display: none;
+	}
+
+	.wds-is-community-bar-in {
+		.custom-logo {
+			display: none;
+		}
 	}
 }
