@@ -9,6 +9,8 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
+import { getMediaWikiVariable } from '../../../../shared/utils/get-media-wiki-variable';
+
 interface BillTheLizardProject {
 	name: string;
 	countries?: string[];
@@ -34,7 +36,7 @@ export class UcpBillTheLizardSetup implements DiProcess {
 				pv: Math.min(30, context.get('targeting.pv') || 1),
 				pv_global: Math.min(
 					40,
-					context.getMediaWikiVariable('pvNumberGlobal') || window.pvNumberGlobal || 1,
+					getMediaWikiVariable('pvNumberGlobal') || window.pvNumberGlobal || 1,
 				),
 				ref: context.get('targeting.ref') || null,
 			},
