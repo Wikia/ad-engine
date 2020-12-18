@@ -1,4 +1,4 @@
-import { PageTracker } from '@platforms/shared';
+import { getMediaWikiVariable, PageTracker } from '@platforms/shared';
 import {
 	billTheLizard,
 	billTheLizardEvents,
@@ -8,8 +8,6 @@ import {
 	InstantConfigService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-
-import { getMediaWikiVariable } from '../../../../shared/utils/get-media-wiki-variable';
 
 interface BillTheLizardProject {
 	name: string;
