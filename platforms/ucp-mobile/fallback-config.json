@@ -431,6 +431,13 @@
             "value": true
         }
     ],
+    "icDisableTopLeaderboardGapOnScroll": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ]
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -737,6 +744,8 @@
                 "XX"
             ],
             "value": [
+                "5569119045",
+                "5569119354",
                 "5535740121",
                 "5545953836",
                 "5551760773",
