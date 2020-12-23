@@ -9,4 +9,5 @@ export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './nielsen';
 export * from './permutive';
+export * from './real-vu';
 export * from './taxonomy/taxonomy-service';

@@ -121,6 +121,10 @@ export const basicContext = {
 			enabled: false,
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
+		realVu: {
+			id: 'c=E6H4_f=mint',
+			enabled: true,
+		},
 	},
 	slotGroups: {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
