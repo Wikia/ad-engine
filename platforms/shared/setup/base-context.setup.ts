@@ -113,7 +113,10 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icDurationMediaLibraryUrl'),
 		);
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
-		context.set('services.realVu.enabled', this.instantConfig.get('icRealVu'));
+		context.set(
+			'services.realVu.enabled',
+			this.instantConfig.get('icRealVu') && context.get('wiki.opts.enableRealVu'),
+		);
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',

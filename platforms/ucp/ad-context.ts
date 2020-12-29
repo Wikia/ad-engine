@@ -123,7 +123,7 @@ export const basicContext = {
 		},
 		realVu: {
 			id: 'c=E6H4_f=mint',
-			enabled: true,
+			enabled: false,
 		},
 	},
 	slotGroups: {
