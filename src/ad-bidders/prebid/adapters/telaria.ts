@@ -1,4 +1,5 @@
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Telaria extends PrebidAdapter {
 	static bidderName = 'telaria';
@@ -11,7 +12,7 @@ export class Telaria extends PrebidAdapter {
 		super(options);
 	}
 
-	prepareConfigForAdUnit(code, { supplyCode, adCode }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { supplyCode, adCode }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

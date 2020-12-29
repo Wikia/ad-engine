@@ -84,8 +84,24 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		this.prebidConfig = { ...this.prebidConfig, ...liveRamp.getConfig() };
+		this.configureLiveRamp();
+		this.configureTCF();
+		this.configureJWPlayerDataProvider();
+		this.applyConfig(this.prebidConfig);
 
+		this.registerBidsRefreshing();
+		this.registerBidsTracking();
+		this.getLiveRampUserIds();
+		this.enableATSAnalytics();
+
+		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+	}
+
+	private configureLiveRamp() {
+		this.prebidConfig = { ...this.prebidConfig, ...liveRamp.getConfig() };
+	}
+
+	private configureTCF() {
 		if (this.tcf.exists) {
 			this.prebidConfig.consentManagement = {
 				gdpr: {
@@ -100,14 +116,31 @@ export class PrebidProvider extends BidderProvider {
 				},
 			};
 		}
+	}
 
-		this.applyConfig(this.prebidConfig);
-		this.registerBidsRefreshing();
-		this.registerBidsTracking();
-		this.getLiveRampUserIds();
-		this.enableATSAnalytics();
+	private configureJWPlayerDataProvider() {
+		if (!context.get('custom.jwplayerDataProvider')) {
+			return;
+		}
 
-		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+		const jwplayerDataProvider = {
+			name: 'jwplayer',
+			waitForIt: true,
+			params: {
+				mediaIDs: [],
+			},
+		};
+
+		if (context.get('wiki.targeting.featuredVideo.mediaId')) {
+			jwplayerDataProvider.params.mediaIDs.push(
+				context.get('wiki.targeting.featuredVideo.mediaId'),
+			);
+		}
+
+		this.prebidConfig.realTimeData = {
+			auctionDelay: 500,
+			dataProviders: [jwplayerDataProvider],
+		};
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {

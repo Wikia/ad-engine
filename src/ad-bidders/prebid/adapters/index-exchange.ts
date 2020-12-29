@@ -1,5 +1,6 @@
 import { context } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class IndexExchange extends PrebidAdapter {
 	static bidderName = 'indexExchange';
@@ -12,7 +13,7 @@ export class IndexExchange extends PrebidAdapter {
 		return IndexExchange.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, siteId }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, siteId }: PrebidAdSlotConfig): PrebidAdUnit {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, siteId);
 		}

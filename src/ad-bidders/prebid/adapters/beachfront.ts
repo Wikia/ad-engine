@@ -1,5 +1,6 @@
 import { utils } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Beachfront extends PrebidAdapter {
 	static bidderName = 'beachfront';
@@ -18,7 +19,7 @@ export class Beachfront extends PrebidAdapter {
 		return Beachfront.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { appId }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { appId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
