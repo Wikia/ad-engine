@@ -31,7 +31,7 @@ export class Mediagrid extends PrebidAdapter {
 			],
 		};
 
-		if (!context.get('custom.jwplayerDataProvider')) {
+		if (context.get('custom.jwplayerDataProvider')) {
 			config.fpd = {
 				context: {
 					data: {
