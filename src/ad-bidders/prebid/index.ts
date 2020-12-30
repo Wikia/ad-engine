@@ -84,9 +84,13 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		this.configureLiveRamp();
-		this.configureTCF();
-		this.configureJWPlayerDataProvider();
+		this.prebidConfig = {
+			...this.prebidConfig,
+			...this.configureLiveRamp(),
+			...this.configureTCF(),
+			...this.configureJWPlayerDataProvider(),
+		};
+
 		this.applyConfig(this.prebidConfig);
 
 		this.registerBidsRefreshing();
@@ -97,30 +101,34 @@ export class PrebidProvider extends BidderProvider {
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
 	}
 
-	private configureLiveRamp() {
-		this.prebidConfig = { ...this.prebidConfig, ...liveRamp.getConfig() };
+	private configureLiveRamp(): object {
+		return liveRamp.getConfig();
 	}
 
-	private configureTCF() {
+	private configureTCF(): object {
 		if (this.tcf.exists) {
-			this.prebidConfig.consentManagement = {
-				gdpr: {
-					cmpApi: 'iab',
-					timeout: this.timeout,
-					allowAuctionWithoutConsent: false,
-					defaultGdprScope: false,
-				},
-				usp: {
-					cmpApi: 'iab',
-					timeout: 100,
+			return {
+				consentManagement: {
+					gdpr: {
+						cmpApi: 'iab',
+						timeout: this.timeout,
+						allowAuctionWithoutConsent: false,
+						defaultGdprScope: false,
+					},
+					usp: {
+						cmpApi: 'iab',
+						timeout: 100,
+					},
 				},
 			};
 		}
+
+		return {};
 	}
 
-	private configureJWPlayerDataProvider() {
+	private configureJWPlayerDataProvider(): object {
 		if (!context.get('custom.jwplayerDataProvider')) {
-			return;
+			return {};
 		}
 
 		const jwplayerDataProvider = {
@@ -137,9 +145,11 @@ export class PrebidProvider extends BidderProvider {
 			);
 		}
 
-		this.prebidConfig.realTimeData = {
-			auctionDelay: 500,
-			dataProviders: [jwplayerDataProvider],
+		return {
+			realTimeData: {
+				auctionDelay: 500,
+				dataProviders: [jwplayerDataProvider],
+			},
 		};
 	}
 
