@@ -14,6 +14,7 @@ import {
 	jwpSetup,
 	nielsen,
 	permutive,
+	realVu,
 	Runner,
 	taxonomyService,
 } from '@wikia/ad-engine';
@@ -78,6 +79,7 @@ export class UcpAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
+		realVu.call();
 		durationMedia.call();
 		nielsen.call({
 			type: 'static',
