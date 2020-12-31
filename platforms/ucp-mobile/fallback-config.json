@@ -634,6 +634,15 @@
             "value": true
         }
     ],
+    "icRealVu": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "value": true
+        }
+    ],
     "icNielsen": [
         {
             "apps": [
