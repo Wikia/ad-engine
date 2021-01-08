@@ -95,6 +95,55 @@ describe('Appnexus bidder adapter', () => {
 		]);
 	});
 
+	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
+		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
+
+		const appnexus = new Appnexus({
+			enabled: true,
+			slots: {
+				'02_MR': {
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
+					placementId: '99220055',
+				},
+			},
+			placements: {
+				other: '99220044',
+			},
+		});
+
+		expect(appnexus.prepareAdUnits()).to.deep.equal([
+			{
+				code: '02_MR',
+				mediaTypes: {
+					banner: {
+						sizes: [
+							[300, 250],
+							[300, 600],
+						],
+					},
+				},
+				bids: [
+					{
+						bidder: 'appnexus',
+						params: {
+							placementId: '99220055',
+							keywords: {
+								p_standard: [],
+								src: ['gpt'],
+								pos: ['02_MR'],
+							},
+						},
+					},
+				],
+			},
+		]);
+
+		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
+	});
+
 	it('getPlacement on mobile returns correct placementId', () => {
 		const appnexus = new Appnexus({
 			enabled: true,

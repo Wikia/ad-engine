@@ -23,6 +23,7 @@ export * from './services/wad-runner';
 export * from './services/no-ads-detector';
 export * from './utils/get-domain';
 export * from './utils/get-sports-page-type';
+export * from './utils/get-media-wiki-variable';
 export * from './utils/instant-config-setup';
 export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';

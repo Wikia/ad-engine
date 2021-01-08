@@ -1,4 +1,4 @@
-import { PageTracker } from '@platforms/shared';
+import { getMediaWikiVariable, PageTracker } from '@platforms/shared';
 import {
 	billTheLizard,
 	billTheLizardEvents,
@@ -32,7 +32,10 @@ export class UcpBillTheLizardSetup implements DiProcess {
 			vcr: {
 				h: now.getHours(),
 				pv: Math.min(30, context.get('targeting.pv') || 1),
-				pv_global: Math.min(40, window.pvNumberGlobal || 1),
+				pv_global: Math.min(
+					40,
+					getMediaWikiVariable('pvNumberGlobal') || window.pvNumberGlobal || 1,
+				),
 				ref: context.get('targeting.ref') || null,
 			},
 		});

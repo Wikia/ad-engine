@@ -47,7 +47,10 @@
 				"banned": [
 					{
 						"snippets": ["localStorage"],
-						"excludePaths": ["/src/ad-engine/services/local-storage.ts"]
+						"excludePaths": [
+							"/src/ad-engine/services/local-storage.ts",
+							"/spec/ad-services/permutive/permutive.spec.ts"
+						]
 					}
 				]
 			}

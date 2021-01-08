@@ -109,6 +109,10 @@ export const basicContext = {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=gamepedia',
 			fallback: fallbackInstantConfig,
 		},
+		realVu: {
+			id: 'c=E6H4_f=mint',
+			enabled: false,
+		},
 		taxonomy: {
 			enabled: false,
 		},

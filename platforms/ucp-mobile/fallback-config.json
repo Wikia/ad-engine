@@ -620,6 +620,15 @@
             "value": true
         }
     ],
+    "icRealVu": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "value": true
+        }
+    ],
     "icNielsen": [
         {
             "apps": [
@@ -737,8 +746,28 @@
                 "XX"
             ],
             "value": [
+                "5570487543",
+                "5570492862",
+                "5571791678",
+                "5571791666",
+                "5570487543",
+                "5570492862",
+                "5569417635",
+                "5569417632",
+                "5567989607",
+                "5570487543",
+                "5570492862",
+                "5571791669",
+                "5571791681",
+                "5571791666",
+                "5571791678",
+                "5570710699",
+                "5570709487",
+                "5569119045",
+                "5569119354",
                 "5535740121",
                 "5545953836",
+                "5551760773",
                 "5544542286",
                 "5551760776",
                 "5545953971",
@@ -1594,7 +1623,8 @@
                 "5546793962",
                 "5545923994",
                 "5553725670",
-                "5555057246"
+                "5555057246",
+                "5564161880"
             ]
         }
     ],
@@ -1683,7 +1713,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 1
+            "value": 3
         }
     ],
     "wgAdDriverBillTheLizardConfig": {
@@ -1889,23 +1919,9 @@
                 "oasis"
             ],
             "regions": [
-                "CA",
-                "PL"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20201124.min.js"
-        },
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v3.27.1/20201022.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20201124.min.js"
         }
     ],
     "icDurationMediaLibraryUrl": [

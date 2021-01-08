@@ -13,6 +13,7 @@ import {
 	jwpSetup,
 	nielsen,
 	permutive,
+	realVu,
 	Runner,
 	taxonomyService,
 } from '@wikia/ad-engine';
@@ -37,15 +38,17 @@ export class UcpMobileAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
+		permutive.call();
+
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
 
 		facebookPixel.call();
-		permutive.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
+		realVu.call();
 		durationMedia.call();
 		nielsen.call({
 			type: 'static',
