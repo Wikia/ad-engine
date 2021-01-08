@@ -7,7 +7,7 @@ export class NoAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
-		this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
+		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
 		this.trackAdEngineStatus();
 	}
