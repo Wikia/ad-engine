@@ -28,9 +28,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
-		if (context.get('wiki.opts.showAds') === false) {
-			this.noAdsDetector.addReason('show_ads_false');
-		}
 		if (utils.client.isSteamPlatform()) {
 			this.noAdsDetector.addReason('steam_browser');
 		}

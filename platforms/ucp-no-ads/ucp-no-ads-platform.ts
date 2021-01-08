@@ -8,5 +8,6 @@ export class UcpNoAdsPlatform {
 
 	execute(): void {
 		this.pipeline.add(NoAdsMode);
+		this.pipeline.execute();
 	}
 }
