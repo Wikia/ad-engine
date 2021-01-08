@@ -6,7 +6,7 @@ interface WikiaCookieAttributes extends Cookies.CookieAttributes {
 }
 
 export class CookieStorageAdapter implements StorageProvider {
-	private readonly cacheMaxAge = 30 * 60 * 1000;
+	private readonly cacheMaxAge = 24 * 60 * 60 * 1000;
 	private keysSeen = new Set<string>();
 
 	getItem(key: string): string {
