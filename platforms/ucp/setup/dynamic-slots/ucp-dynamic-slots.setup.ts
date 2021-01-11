@@ -6,16 +6,20 @@ import {
 	context,
 	Dictionary,
 	DiProcess,
+	events,
+	eventService,
 	fillerService,
 	FmrRotator,
 	globalAction,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
+	scrollListener,
 	SlotConfig,
 	slotInjector,
 	slotService,
 	TemplateRegistry,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
@@ -30,8 +34,11 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 		this.injectSlots();
 		this.injectIncontentPlayer();
 		this.injectAffiliateDisclaimer();
+		this.injectFloorAdhesion();
+		this.injectBottomLeaderboard();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
+		this.configureSizesAvailability();
 	}
 
 	private injectSlots(): void {
@@ -135,9 +142,54 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 		}
 	}
 
+	private configureSizesAvailability(): void {
+		if (window.innerWidth >= 1024) {
+			context.set('slots.hivi_leaderboard.targeting.xna', '0');
+			context.set('slots.top_leaderboard.targeting.xna', '0');
+			context.set('slots.bottom_leaderboard.targeting.xna', '0');
+		}
+		context.set(
+			`slots.incontent_boxad_1.targeting.xna`,
+			context.get('custom.hasFeaturedVideo') ? '1' : '0',
+		);
+	}
+
 	private injectAffiliateDisclaimer(): void {
 		slotService.on('affiliate_slot', AdSlot.STATUS_SUCCESS, () => {
 			this.templateRegistry.init('affiliateDisclaimer', slotService.get('affiliate_slot'));
 		});
+	}
+
+	private injectFloorAdhesion(): void {
+		scrollListener.addSlot('floor_adhesion', { distanceFromTop: utils.getViewportHeight() });
+
+		this.registerFloorAdhesionCodePriority();
+	}
+
+	private registerFloorAdhesionCodePriority(): void {
+		let porvataClosedActive = false;
+
+		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
+			porvataClosedActive = true;
+
+			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
+				if (porvataClosedActive) {
+					porvataClosedActive = false;
+					slotService.disable('floor_adhesion', 'closed-by-porvata');
+				}
+			});
+		});
+
+		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
+			porvataClosedActive = false;
+		});
+	}
+
+	private injectBottomLeaderboard(): void {
+		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
+
+		if (btRec.isEnabled() && btRec.duplicateSlot('bottom_leaderboard')) {
+			btRec.triggerScript();
+		}
 	}
 }
