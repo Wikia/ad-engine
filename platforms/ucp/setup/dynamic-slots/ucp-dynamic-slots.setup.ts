@@ -38,7 +38,6 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 		this.injectBottomLeaderboard();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
-		this.configureSizesAvailability();
 	}
 
 	private injectSlots(): void {
@@ -140,18 +139,6 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 				);
 			}
 		}
-	}
-
-	private configureSizesAvailability(): void {
-		if (window.innerWidth >= 1024) {
-			context.set('slots.hivi_leaderboard.targeting.xna', '0');
-			context.set('slots.top_leaderboard.targeting.xna', '0');
-			context.set('slots.bottom_leaderboard.targeting.xna', '0');
-		}
-		context.set(
-			`slots.incontent_boxad_1.targeting.xna`,
-			context.get('custom.hasFeaturedVideo') ? '1' : '0',
-		);
 	}
 
 	private injectAffiliateDisclaimer(): void {
