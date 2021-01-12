@@ -2,6 +2,7 @@ import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btfBlockerService,
+	communicationService,
 	context,
 	DiProcess,
 	events,
@@ -11,6 +12,8 @@ import {
 	SlotCreator,
 	slotService,
 	templateService,
+	uapLoadStatus,
+	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -53,7 +56,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			eventService.once(events.AD_STACK_START, () => btfBlockerService.finishFirstCall());
+			eventService.once(events.AD_STACK_START, () => {
+				btfBlockerService.finishFirstCall();
+				communicationService.dispatch(
+					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
+				);
+			});
 		}
 	}
 
