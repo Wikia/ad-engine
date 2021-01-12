@@ -12,7 +12,7 @@ import {
 	UcpGamepediaPrebidConfigSetup,
 	UcpNoAdsMode,
 	UcpTargetingSetup,
-	UcpWikiContextSetup,
+	WikiContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -40,7 +40,7 @@ export class UcpMinervaPlatform {
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpMinervaIocSetup,
-			UcpWikiContextSetup,
+			WikiContextSetup,
 			() => context.set('state.isMobile', true),
 			UcpBaseContextSetup,
 			MinervaSlotsContextSetup,

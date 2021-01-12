@@ -28,7 +28,6 @@ export * from './utils/instant-config-setup';
 export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';
-export * from './context/wiki/ucp-wiki-context.setup';
 export * from './templates/floor-adhesion-template';
 export * from './templates/interstitial-template';
 export * from './templates/configs/uap-dom-elements';
