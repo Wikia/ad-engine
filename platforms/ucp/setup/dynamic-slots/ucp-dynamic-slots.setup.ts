@@ -173,10 +173,14 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectBottomLeaderboard(): void {
-		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
+		const slotName = 'bottom_leaderboard';
 
-		if (btRec.isEnabled() && btRec.duplicateSlot('bottom_leaderboard')) {
-			btRec.triggerScript();
-		}
+		context.push('events.pushOnScroll.ids', slotName);
+
+		eventService.on(events.AD_SLOT_CREATED, (slot) => {
+			if (slot.getSlotName() === slotName && btRec.isEnabled() && btRec.duplicateSlot(slotName)) {
+				btRec.triggerScript();
+			}
+		});
 	}
 }
