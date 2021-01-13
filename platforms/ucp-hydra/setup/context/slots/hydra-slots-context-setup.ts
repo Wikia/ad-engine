@@ -56,7 +56,6 @@ export class HydraSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					zne: '01',
 					rv: 1,
-					xna: 1,
 				},
 			},
 			top_boxad: {
@@ -102,7 +101,6 @@ export class HydraSlotsContextSetup implements DiProcess {
 					loc: 'middle',
 					zne: '04',
 					rv: 1,
-					xna: 1,
 				},
 			},
 			footer_boxad: {

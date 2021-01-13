@@ -30,7 +30,6 @@ export class UcpSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					rv: 1,
-					xna: 1,
 				},
 			},
 			top_leaderboard: {
@@ -65,7 +64,6 @@ export class UcpSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'top',
 					rv: 1,
-					xna: 1,
 				},
 			},
 			top_boxad: {
@@ -186,7 +184,6 @@ export class UcpSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					rv: 1,
-					xna: 1,
 				},
 			},
 			incontent_player: {
