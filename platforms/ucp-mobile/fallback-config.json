@@ -127,6 +127,17 @@
             "value": true
         }
     ],
+    "icIncontentBoxadGap": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icComscoreJwpTracking": [
         {
             "apps": [
@@ -746,6 +757,9 @@
                 "XX"
             ],
             "value": [
+                "5586275496",
+                "5586275487",
+                "5584288942",
                 "5570487543",
                 "5570492862",
                 "5571791678",
