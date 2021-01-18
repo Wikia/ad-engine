@@ -96,8 +96,6 @@ export class UcpAdsMode implements DiProcess {
 		context.push('state.adStack', { id: 'top_leaderboard' });
 		context.push('state.adStack', { id: 'top_boxad' });
 		context.push('state.adStack', { id: 'affiliate_slot' });
-		context.push('state.adStack', { id: 'floor_adhesion' });
 		context.push('state.adStack', { id: 'invisible_high_impact_2' });
-		context.push('events.pushOnScroll.ids', 'bottom_leaderboard');
 	}
 }

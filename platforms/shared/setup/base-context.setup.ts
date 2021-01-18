@@ -38,6 +38,7 @@ export class BaseContextSetup implements DiProcess {
 			this.noAdsDetector.addReason('noads_querystring');
 		}
 
+		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
@@ -89,7 +90,7 @@ export class BaseContextSetup implements DiProcess {
 		// BlockAdBlock detection
 		context.set('options.wad.enabled', babEnabled);
 
-		if (!context.get('state.isLogged') && babEnabled) {
+		if (babEnabled && !context.get('state.isLogged') && context.get('state.showAds')) {
 			// BT rec
 			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
 		}
