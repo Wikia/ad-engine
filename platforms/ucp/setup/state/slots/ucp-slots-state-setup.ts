@@ -22,8 +22,14 @@ export class UcpSlotsStateSetup implements DiProcess {
 		slotsContext.setState('affiliate_slot', this.isAffiliateSlotEnabled());
 		slotsContext.setState('bottom_leaderboard', true);
 		slotsContext.setState('invisible_skin', false);
-		slotsContext.setState('floor_adhesion', this.instantConfig.get('icFloorAdhesion'));
-		slotsContext.setState('invisible_high_impact_2', !this.instantConfig.get('icFloorAdhesion'));
+		slotsContext.setState(
+			'floor_adhesion',
+			this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo'),
+		);
+		slotsContext.setState(
+			'invisible_high_impact_2',
+			!this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo'),
+		);
 
 		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
 		slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
