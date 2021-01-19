@@ -15,5 +15,6 @@ export * from './rubicon';
 export * from './rubicon-display';
 export * from './telaria';
 export * from './triplelift';
+export * from './verizon';
 export * from './wikia';
 export * from './wikia-video';
