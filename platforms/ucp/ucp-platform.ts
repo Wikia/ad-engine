@@ -37,7 +37,7 @@ export class UcpPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
-		utils.logger('ADEN-10728', 'test');
+		utils.logger('ADEN-10728', 'test no cache');
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
