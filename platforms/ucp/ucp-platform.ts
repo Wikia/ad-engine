@@ -18,6 +18,7 @@ import {
 	context,
 	parallel,
 	ProcessPipeline,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
@@ -36,6 +37,7 @@ export class UcpPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		utils.logger('ADEN-10728', 'test');
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
