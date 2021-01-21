@@ -56,7 +56,6 @@ export class MinervaSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					zne: '01',
 					rv: 1,
-					xna: 1,
 				},
 			},
 			top_boxad: {
@@ -121,7 +120,6 @@ export class MinervaSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					rv: 1,
-					xna: 1,
 				},
 			},
 		};

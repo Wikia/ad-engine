@@ -41,6 +41,7 @@ export class BaseContextSetup implements DiProcess {
 			this.noAdsDetector.addReason('noads_querystring');
 		}
 
+		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
 	}
@@ -92,7 +93,7 @@ export class BaseContextSetup implements DiProcess {
 		// BlockAdBlock detection
 		context.set('options.wad.enabled', babEnabled);
 
-		if (!context.get('state.isLogged') && babEnabled) {
+		if (babEnabled && !context.get('state.isLogged') && context.get('state.showAds')) {
 			// BT rec
 			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
 		}
@@ -113,6 +114,10 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icDurationMediaLibraryUrl'),
 		);
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
+		context.set(
+			'services.realVu.enabled',
+			this.instantConfig.get('icRealVu') && context.get('wiki.opts.enableRealVu'),
+		);
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',

@@ -9,6 +9,7 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
+	realVu,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -55,6 +56,7 @@ export class HydraAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
+		realVu.call();
 		durationMedia.call();
 
 		return inhibitors;

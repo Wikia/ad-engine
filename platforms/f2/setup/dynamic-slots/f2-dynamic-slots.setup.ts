@@ -8,6 +8,8 @@ import {
 	eventService,
 	ofType,
 	SlotCreator,
+	uapLoadStatus,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take, tap } from 'rxjs/operators';
@@ -49,7 +51,12 @@ export class F2DynamicSlotsSetup implements DiProcess {
 			.subscribe();
 
 		if (!topLeaderboardDefinition) {
-			eventService.once(events.AD_STACK_START, () => btfBlockerService.finishFirstCall());
+			eventService.once(events.AD_STACK_START, () => {
+				btfBlockerService.finishFirstCall();
+				communicationService.dispatch(
+					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
+				);
+			});
 		}
 	}
 
