@@ -124,11 +124,13 @@ export class JWPlayerHelper {
 
 		const vastUrl = this.getVastUrl(position, state);
 
-		const pauseVideoAdOnTabSwitch = () => {
-			document.hidden ? this.jwplayer.pauseAd(true) : this.jwplayer.pauseAd(false);
-		};
+		if (context.get('options.video.pauseJWPlayerAd')) {
+			const pauseVideoAdOnTabSwitch = () => {
+				document.hidden ? this.jwplayer.pauseAd(true) : this.jwplayer.pauseAd(false);
+			};
 
-		document.addEventListener('visibilitychange', pauseVideoAdOnTabSwitch, false);
+			document.addEventListener('visibilitychange', pauseVideoAdOnTabSwitch, false);
+		}
 
 		this.jwplayer.playAd(vastUrl);
 	}
