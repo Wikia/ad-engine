@@ -124,6 +124,14 @@ export class JWPlayerHelper {
 
 		const vastUrl = this.getVastUrl(position, state);
 
+		if (context.get('options.video.pauseJWPlayerAd')) {
+			const pauseVideoAdOnTabSwitch = () => {
+				this.jwplayer.pauseAd(document.visibilityState !== 'visible');
+			};
+
+			document.addEventListener('visibilitychange', pauseVideoAdOnTabSwitch, false);
+		}
+
 		this.jwplayer.playAd(vastUrl);
 	}
 

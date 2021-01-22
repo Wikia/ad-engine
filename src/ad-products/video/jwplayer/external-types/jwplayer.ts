@@ -274,7 +274,7 @@ export interface JWPlayer {
 	): void;
 	trigger(event: JWPlayerNoParamEvent): void;
 	pause(state?: boolean): void;
-	pauseAd(tag: string): void;
+	pauseAd(state?: boolean): void;
 	play(state?: boolean): void;
 	playAd(tag: string): void;
 	playlistItem(index: number): void;
