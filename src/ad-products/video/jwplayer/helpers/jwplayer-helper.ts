@@ -126,7 +126,9 @@ export class JWPlayerHelper {
 
 		if (context.get('options.video.pauseJWPlayerAd')) {
 			const pauseVideoAdOnTabSwitch = () => {
-				document.hidden ? this.jwplayer.pauseAd(true) : this.jwplayer.pauseAd(false);
+				document.visibilityState !== 'visible'
+					? this.jwplayer.pauseAd(true)
+					: this.jwplayer.pauseAd(false);
 			};
 
 			document.addEventListener('visibilitychange', pauseVideoAdOnTabSwitch, false);
