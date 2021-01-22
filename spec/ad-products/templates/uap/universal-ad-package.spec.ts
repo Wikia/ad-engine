@@ -83,6 +83,7 @@ describe('UniversalAdPackage', () => {
 
 		beforeEach(() => {
 			dispatch = sandbox.spy(communicationService, 'dispatch');
+			contextStub.get.withArgs('slots.Slot1.firstCall').returns(true);
 			sandbox.stub(universalAdPackage, 'isFanTakeoverLoaded').returns(isFanTakeoverLoaded);
 		});
 
