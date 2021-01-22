@@ -147,21 +147,6 @@
             }
         }
     ],
-    "icPrebidRubiconAdditionalKeyvals": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": true
-        }
-    ],
     "icSafeFanTakeoverLineItemIds": [
         {
             "apps": [
