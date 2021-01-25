@@ -79,6 +79,7 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.moatTracking.enabledForArticleVideos',
 			this.instantConfig.get('icFeaturedVideoMoatTracking'),
 		);
+		context.set('options.video.pauseJWPlayerAd', this.instantConfig.get('icPauseJWPlayerAd'));
 		context.set(
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
