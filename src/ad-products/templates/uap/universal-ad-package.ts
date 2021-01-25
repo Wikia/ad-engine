@@ -273,9 +273,14 @@ export function registerUapListener(): void {
 		.pipe(
 			ofType(adSlotEvent),
 			filter((action) => {
-				return [AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
-					.map((status) => action.event === status)
-					.some((x) => !!x);
+				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
+
+				return (
+					isFirstCallAdSlot &&
+					[AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
+						.map((status) => action.event === status)
+						.some((x) => !!x)
+				);
 			}),
 			take(1),
 		)

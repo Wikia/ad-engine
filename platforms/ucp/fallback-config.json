@@ -152,6 +152,26 @@
             "value": true
         }
     ],
+    "icDePersonalizedRecoExperimentTest": [
+        {
+            "apps": [
+                "oasis"
+            ],
+            "sampling": 100.0,
+            "value": {
+                "config": {
+                    
+                },
+                "frontendConfig": {
+                    "slots": "random",
+                    "numberOfSlots": 4
+                },
+                "trackingParams": {
+                    
+                }
+            }
+        }
+    ],
     "icComscoreJwpTracking": [
         {
             "apps": [
@@ -183,30 +203,11 @@
     "icPrebidRubiconAdditionalKeyvals": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": true
-        },
-        {
-            "apps": [
                 "mobile-wiki",
                 "oasis"
             ],
             "regions": [
-                "XX",
-                "non-CA",
-                "non-DE",
-                "non-GB",
-                "non-RU",
-                "non-UK",
-                "non-US"
+                "XX"
             ],
             "value": true
         }
@@ -481,6 +482,9 @@
                 "mobile-wiki",
                 "oasis"
             ],
+            "regions": [
+                "XX"
+            ],
             "value": true
         }
     ],
@@ -607,6 +611,15 @@
                 "XX"
             ],
             "value": [
+                "5593227726",
+                "5593227726",
+                "5593227726",
+                "5593730141",
+                "5536990747",
+                "5587334857",
+                "5586275496",
+                "5586275487",
+                "5584288942",
                 "5570487543",
                 "5570492862",
                 "5571791678",
@@ -1485,7 +1498,15 @@
                 "5545923994",
                 "5553725670",
                 "5555057246",
-                "5564161880"
+                "5564161880",
+                "5579398020",
+                "5579398026",
+                "5580516859",
+                "5580516862",
+                "5589375749",
+                "5583057063",
+                "5595114195",
+                "5595114927"
             ]
         }
     ],
@@ -1674,7 +1695,7 @@
                 "oasis"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": true
         }
@@ -1795,6 +1816,7 @@
             "regions": [
                 "AU",
                 "CA",
+                "DE",
                 "GB",
                 "ID",
                 "MY",
@@ -1924,22 +1946,16 @@
                 "oasis"
             ],
             "regions": [
-                "AT",
                 "AU",
-                "BR",
                 "CA",
                 "DE",
-                "ES",
                 "FR",
                 "GB",
-                "IT",
-                "PH",
-                "SG",
-                "TW",
+                "NZ",
                 "UK",
                 "US"
             ],
-            "sampling": 45.0,
+            "sampling": 65.0,
             "value": true
         }
     ],
