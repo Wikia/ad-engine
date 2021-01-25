@@ -17,6 +17,7 @@ import {
 	RubiconDisplay,
 	Telaria,
 	Triplelift,
+	Verizon,
 	Wikia,
 	WikiaVideo,
 } from './adapters';
@@ -44,6 +45,7 @@ class AdaptersRegistry {
 		Rubicon,
 		Telaria,
 		Triplelift,
+		Verizon,
 		Wikia,
 		WikiaVideo,
 	];

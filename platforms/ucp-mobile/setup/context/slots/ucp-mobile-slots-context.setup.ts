@@ -63,7 +63,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					pos: ['top_boxad'],
 					rv: 1,
-					xna: 1,
 				},
 			},
 			affiliate_slot: {
@@ -124,7 +123,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'middle',
 					pos: ['incontent_boxad'],
 					rv: 1,
-					xna: 1,
 				},
 			},
 			incontent_player: {
