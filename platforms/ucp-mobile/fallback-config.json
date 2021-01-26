@@ -649,6 +649,18 @@
             "value": true
         }
     ],
+    "icPauseJWPlayerAd": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": true
+        }
+    ],
     "icA9LoggerErrorCodes": [
         {
             "apps": [
@@ -741,6 +753,8 @@
                 "XX"
             ],
             "value": [
+                "5585170956",
+                "5585170962",
                 "5593227726",
                 "5593227726",
                 "5593227726",
@@ -1636,7 +1650,10 @@
                 "5589375749",
                 "5583057063",
                 "5595114195",
-                "5595114927"
+                "5595114927",
+                "5598401242",
+                "5598651761",
+                "5598401488"
             ]
         }
     ],
@@ -2130,6 +2147,21 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.3.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",
