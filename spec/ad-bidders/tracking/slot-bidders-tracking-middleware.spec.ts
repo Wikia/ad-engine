@@ -151,7 +151,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_25: '25not_used',
 			bidder_26: '26not_used',
 			bidder_27: '27not_used',
-      bidder_28: '28not_used',
+			bidder_28: '28not_used',
 		});
 	});
 });
