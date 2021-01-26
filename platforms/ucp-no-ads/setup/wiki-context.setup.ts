@@ -4,7 +4,7 @@ export class UcpNoAdsWikiContextSetup implements DiProcess {
 	execute(): void {
 		const platformName =
 			window.ads.context && window.ads.context.opts.platformName
-				? window.mw.config.get('platformName')
+				? window.ads.context.opts.platformName
 				: '';
 		const endpoint = `https://services.wikia.com/icbm/api/config?app=${platformName}`;
 
