@@ -521,6 +521,16 @@
                 "oasis"
             ],
             "regions": [
+                "FR"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
                 "XX"
             ],
             "value": true
@@ -717,7 +727,29 @@
             "value": true
         }
     ],
+    "icPrebidVerizon": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "FR"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidAol": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "FR"
+            ],
+            "value": false
+        },
         {
             "apps": [
                 "mobile-wiki",
