@@ -87,6 +87,32 @@
             "value": true
         }
     ],
+    "icDeRecoExperimentDev": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": {
+                "name": "reco_personalized",
+                "groups": [
+                    {
+                        "name": "all",
+                        "sampling": 100,
+                        "frontendConfig": {
+                            "slots": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ],
+                "sampling": 100
+            }
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -133,10 +159,55 @@
                 "mobile-wiki"
             ],
             "regions": [
-                "CA",
-                "PL"
+                "XX"
             ],
             "value": true
+        }
+    ],
+    "icDePersonalizedRecoExperimentTest": [
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "groups": [
+                    {
+                        "name": "six",
+                        "sampling": 34,
+                        "frontendConfig": {
+                            "slots": "random",
+                            "numberOfSlots": 6
+                        }
+                    },
+                    {
+                        "name": "three",
+                        "sampling": 33,
+                        "frontendConfig": {
+                            "slots": "random",
+                            "numberOfSlots": 3
+                        }
+                    },
+                    {
+                        "name": "four",
+                        "sampling": 33,
+                        "frontendConfig": {
+                            "slots": [
+                                "footer-card-11",
+                                "footer-card-9",
+                                "footer-card-19",
+                                "footer-card-13"
+                            ]
+                        }
+                    }
+                ]
+            }
         }
     ],
     "icComscoreJwpTracking": [
@@ -203,30 +274,11 @@
     "icPrebidRubiconAdditionalKeyvals": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": true
-        },
-        {
-            "apps": [
                 "mobile-wiki",
                 "oasis"
             ],
             "regions": [
-                "XX",
-                "non-CA",
-                "non-DE",
-                "non-GB",
-                "non-RU",
-                "non-UK",
-                "non-US"
+                "XX"
             ],
             "value": true
         }
@@ -541,6 +593,16 @@
                 "oasis"
             ],
             "regions": [
+                "FR"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
                 "XX"
             ],
             "value": true
@@ -669,6 +731,18 @@
             "value": true
         }
     ],
+    "icPauseJWPlayerAd": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": true
+        }
+    ],
     "icA9LoggerErrorCodes": [
         {
             "apps": [
@@ -725,7 +799,29 @@
             "value": true
         }
     ],
+    "icPrebidVerizon": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "FR"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidAol": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "FR"
+            ],
+            "value": false
+        },
         {
             "apps": [
                 "mobile-wiki",
@@ -761,6 +857,17 @@
                 "XX"
             ],
             "value": [
+                "5597409087",
+                "5597409078",
+                "5587334857",
+                "5597409078",
+                "5597409087",
+                "5585170956",
+                "5585170962",
+                "5593227726",
+                "5593227726",
+                "5593227726",
+                "5593730141",
                 "5536990747",
                 "5587334857",
                 "5586275496",
@@ -1650,7 +1757,13 @@
                 "5580516859",
                 "5580516862",
                 "5589375749",
-                "5583057063"
+                "5583057063",
+                "5595114195",
+                "5595114927",
+                "5598401242",
+                "5598651761",
+                "5598401488",
+                "5589348855"
             ]
         }
     ],
@@ -1839,7 +1952,7 @@
                 "oasis"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": true
         }
@@ -2144,6 +2257,22 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
+                "DE",
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.3.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",

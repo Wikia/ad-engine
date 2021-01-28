@@ -94,6 +94,11 @@
 	width: 280px;
 }
 
+.article-content .ad-slot-wrapper {
+	display: flex;
+	justify-content: center;
+}
+
 .article-content .ad-slot-wrapper .ad-slot,
 .article-content p + .ad-slot {
 	&.incontent-boxad {

@@ -1,15 +1,19 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
+	communicationService,
 	context,
 	DiProcess,
 	distroScale,
 	InstantConfigService,
+	ofType,
 	slotDataParamsUpdater,
 	slotService,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class UcpSlotsStateSetup implements DiProcess {
@@ -47,7 +51,14 @@ export class UcpSlotsStateSetup implements DiProcess {
 		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
 		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
 			slotDataParamsUpdater.updateOnCreate(slotService.get(slotName));
-			distroScale.call();
+
+			communicationService.action$
+				.pipe(ofType(uapLoadStatus), take(1))
+				.subscribe(({ isLoaded }) => {
+					if (!isLoaded) {
+						distroScale.call();
+					}
+				});
 		});
 	}
 
