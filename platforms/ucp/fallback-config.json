@@ -155,20 +155,50 @@
     "icDePersonalizedRecoExperimentTest": [
         {
             "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
                 "oasis"
             ],
-            "sampling": 100.0,
+            "regions": [
+                "XX"
+            ],
             "value": {
-                "config": {
-                    
-                },
-                "frontendConfig": {
-                    "slots": "random",
-                    "numberOfSlots": 4
-                },
-                "trackingParams": {
-                    
-                }
+                "name": "Experiment name",
+                "groups": [
+                    {
+                        "name": "one",
+                        "sampling": 34,
+                        "ucpConfig": {
+                            "slots": [
+                                "footer-card-11"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "two",
+                        "sampling": 33,
+                        "ucpConfig": {
+                            "slots": [
+                                "footer-card-19",
+                                "footer-card-13"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "four",
+                        "sampling": 33,
+                        "ucpConfig": {
+                            "slots": [
+                                "footer-card-11",
+                                "footer-card-9",
+                                "footer-card-19",
+                                "footer-card-13"
+                            ]
+                        }
+                    }
+                ]
             }
         }
     ],
@@ -370,6 +400,16 @@
                 "oasis"
             ],
             "regions": [
+                "FR"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
                 "XX"
             ],
             "value": true
@@ -394,7 +434,8 @@
                 "5532790000": 30000,
                 "5532790009": 30000,
                 "5552973055": 30000,
-                "5552987740": 30000
+                "5552987740": 30000,
+                "5595114918": 30000
             }
         }
     ],
@@ -517,6 +558,9 @@
             "apps": [
                 "oasis"
             ],
+            "regions": [
+                "XX"
+            ],
             "sampling": 100.0,
             "value": true
         }
@@ -529,6 +573,19 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPauseJWPlayerAd": [
+        {
+            "apps": [
+                "f2",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA"
             ],
             "value": true
         }
@@ -575,6 +632,18 @@
             "value": true
         }
     ],
+    "icPrebidVerizon": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "FR"
+            ],
+            "value": true
+        }
+    ],
     "icA9HiviLeaderboard": [
         {
             "apps": [
@@ -587,6 +656,16 @@
         }
     ],
     "icPrebidAol": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "FR"
+            ],
+            "value": false
+        },
         {
             "apps": [
                 "mobile-wiki",
@@ -611,6 +690,16 @@
                 "XX"
             ],
             "value": [
+                "5595347256",
+                "5595347256",
+                "5595347262",
+                "5597409087",
+                "5597409078",
+                "5587334857",
+                "5597409078",
+                "5597409087",
+                "5585170956",
+                "5585170962",
                 "5593227726",
                 "5593227726",
                 "5593227726",
@@ -1506,7 +1595,23 @@
                 "5589375749",
                 "5583057063",
                 "5595114195",
-                "5595114927"
+                "5595114927",
+                "5598401242",
+                "5598651761",
+                "5598401488",
+                "5589348855",
+                "5584196347",
+                "5584196350",
+                "5584196353",
+                "5584196356",
+                "5584419293",
+                "5583057048",
+                "5583057051",
+                "5583057054",
+                "5583057057",
+                "5583057060",
+                "5601703894",
+                "5601576390"
             ]
         }
     ],
@@ -1955,7 +2060,7 @@
                 "UK",
                 "US"
             ],
-            "sampling": 65.0,
+            "sampling": 75.0,
             "value": true
         }
     ],
@@ -2014,7 +2119,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.2.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.3.0/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
