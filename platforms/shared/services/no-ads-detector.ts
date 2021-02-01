@@ -16,6 +16,10 @@ export class NoAdsDetector {
 		this.reasons.unshift(reason);
 	}
 
+	addReasons(reasons: string[]): void {
+		this.reasons.push(...reasons);
+	}
+
 	reset(): void {
 		this.reasons = [];
 	}

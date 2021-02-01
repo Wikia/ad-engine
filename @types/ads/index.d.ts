@@ -14,10 +14,11 @@ interface MediaWikiAdsContext {
 }
 
 interface MediaWikiAdsOpts {
-	noAdsReason: string;
+	noAdsReasons: string[];
 	isAdTestWiki: boolean;
 	isSubjectToCcpa?: boolean;
 	pageType: string;
+	platformName?: string;
 	showAds: boolean;
 }
 
