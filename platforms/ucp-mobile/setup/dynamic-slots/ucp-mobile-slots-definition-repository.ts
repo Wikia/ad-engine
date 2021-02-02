@@ -1,4 +1,5 @@
 import {
+	AdSlot,
 	communicationService,
 	context,
 	InstantConfigService,
@@ -6,6 +7,7 @@ import {
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	slotService,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -30,6 +32,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		const slotName = 'top_leaderboard';
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
+			slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+				const topLeaderboard = document.querySelector('.top-leaderboard');
+				topLeaderboard.classList.remove('is-loading');
+			});
 		};
 		const slotCreatorWrapperConfig = {
 			classList: ['ad-slot-wrapper', 'top-leaderboard'],
@@ -50,11 +56,10 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		return {
 			activator,
-			slotCreatorWrapperConfig,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.article-content',
-				insertMethod: 'before',
+				anchorSelector: '.top-leaderboard',
+				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
 		};
