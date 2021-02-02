@@ -1264,7 +1264,10 @@
                 "oasis"
             ],
             "regions": [
-                "CA"
+                "AU",
+                "CA",
+                "GB",
+                "UK"
             ],
             "value": true
         }
