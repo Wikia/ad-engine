@@ -92,9 +92,6 @@
             "apps": [
                 "mobile-wiki"
             ],
-            "regions": [
-                "PL"
-            ],
             "value": {
                 "name": "reco_personalized_dev",
                 "groups": [
@@ -554,8 +551,7 @@
                 "oasis"
             ],
             "regions": [
-                "CA",
-                "FR"
+                "XX"
             ],
             "value": false
         },
@@ -772,8 +768,7 @@
                 "oasis"
             ],
             "regions": [
-                "CA",
-                "FR"
+                "XX"
             ],
             "value": true
         }
@@ -785,8 +780,7 @@
                 "oasis"
             ],
             "regions": [
-                "CA",
-                "FR"
+                "XX"
             ],
             "value": false
         },
@@ -1746,7 +1740,9 @@
                 "5583057057",
                 "5583057060",
                 "5601703894",
-                "5601576390"
+                "5601576390",
+                "5319374800",
+                "5320947728"
             ]
         }
     ],
