@@ -84,30 +84,73 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		this.prebidConfig = { ...this.prebidConfig, ...liveRamp.getConfig() };
-
-		if (this.tcf.exists) {
-			this.prebidConfig.consentManagement = {
-				gdpr: {
-					cmpApi: 'iab',
-					timeout: this.timeout,
-					allowAuctionWithoutConsent: false,
-					defaultGdprScope: false,
-				},
-				usp: {
-					cmpApi: 'iab',
-					timeout: 100,
-				},
-			};
-		}
+		this.prebidConfig = {
+			...this.prebidConfig,
+			...this.configureLiveRamp(),
+			...this.configureTCF(),
+			...this.configureJWPlayerDataProvider(),
+		};
 
 		this.applyConfig(this.prebidConfig);
+
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
 		this.getLiveRampUserIds();
 		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+	}
+
+	private configureLiveRamp(): object {
+		return liveRamp.getConfig();
+	}
+
+	private configureTCF(): object {
+		if (this.tcf.exists) {
+			return {
+				consentManagement: {
+					gdpr: {
+						cmpApi: 'iab',
+						timeout: this.timeout,
+						allowAuctionWithoutConsent: false,
+						defaultGdprScope: false,
+					},
+					usp: {
+						cmpApi: 'iab',
+						timeout: 100,
+					},
+				},
+			};
+		}
+
+		return {};
+	}
+
+	private configureJWPlayerDataProvider(): object {
+		if (!context.get('custom.jwplayerDataProvider')) {
+			return {};
+		}
+
+		const jwplayerDataProvider = {
+			name: 'jwplayer',
+			waitForIt: true,
+			params: {
+				mediaIDs: [],
+			},
+		};
+
+		if (context.get('wiki.targeting.featuredVideo.mediaId')) {
+			jwplayerDataProvider.params.mediaIDs.push(
+				context.get('wiki.targeting.featuredVideo.mediaId'),
+			);
+		}
+
+		return {
+			realTimeData: {
+				auctionDelay: 500,
+				dataProviders: [jwplayerDataProvider],
+			},
+		};
 	}
 
 	async applyConfig(config: Dictionary): Promise<void> {

@@ -1,5 +1,6 @@
 import { context, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class AppnexusAst extends PrebidAdapter {
 	static bidderName = 'appnexusAst';
@@ -22,7 +23,7 @@ export class AppnexusAst extends PrebidAdapter {
 		return AppnexusAst.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { placementId }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { placementId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

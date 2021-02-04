@@ -6,6 +6,7 @@ export * from './beachfront';
 export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
+export * from './mediagrid';
 export * from './nobid';
 export * from './onemobile';
 export * from './one-video';
