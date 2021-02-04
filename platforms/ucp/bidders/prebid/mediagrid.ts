@@ -3,7 +3,7 @@ export function getMediagridContext(): object {
 		enabled: false,
 		slots: {
 			featured: {
-				uid: 1244556677, // ToDo: change to production value
+				uid: 46143,
 			},
 		},
 	};
