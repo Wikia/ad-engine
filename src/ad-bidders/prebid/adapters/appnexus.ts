@@ -1,5 +1,6 @@
 import { context, Dictionary } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
@@ -15,7 +16,10 @@ export class Appnexus extends PrebidAdapter {
 		return Appnexus.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placementId, position = 'mobile' }): PrebidAdUnit {
+	prepareConfigForAdUnit(
+		code,
+		{ sizes, placementId, position = 'mobile' }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

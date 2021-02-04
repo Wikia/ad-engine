@@ -1,4 +1,5 @@
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Openx extends PrebidAdapter {
 	static bidderName = 'openx';
@@ -14,7 +15,7 @@ export class Openx extends PrebidAdapter {
 		this.delDomain = options.delDomain;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, unit }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, unit }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

@@ -41,6 +41,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			oneVideo: 23.0,
 			nobid: 25.0,
 			telaria: 26.0,
+			mediagrid: 27.0,
 			verizon: 28.0,
 		});
 	});
@@ -71,6 +72,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			oneVideo: 23.0,
 			nobid: 25.0,
 			telaria: 26.0,
+			mediagrid: 27.0,
 			verizon: 28.0,
 		});
 
@@ -108,6 +110,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_23: 23.0,
 			bidder_25: 25.0,
 			bidder_26: 26.0,
+			bidder_27: 27.0,
 			bidder_28: 28.0,
 		});
 	});
@@ -147,6 +150,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_23: '23not_used',
 			bidder_25: '25not_used',
 			bidder_26: '26not_used',
+			bidder_27: '27not_used',
 			bidder_28: '28not_used',
 		});
 	});

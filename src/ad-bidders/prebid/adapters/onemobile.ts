@@ -1,4 +1,5 @@
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Onemobile extends PrebidAdapter {
 	static bidderName = 'onemobile';
@@ -14,7 +15,7 @@ export class Onemobile extends PrebidAdapter {
 		this.siteId = options.siteId;
 	}
 
-	prepareConfigForAdUnit(code, { size, pos }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { size, pos }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

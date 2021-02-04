@@ -1,4 +1,5 @@
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Kargo extends PrebidAdapter {
 	static bidderName = 'kargo';
@@ -7,7 +8,7 @@ export class Kargo extends PrebidAdapter {
 		return Kargo.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placementId }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

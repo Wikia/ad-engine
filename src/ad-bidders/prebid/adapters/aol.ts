@@ -1,4 +1,5 @@
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Aol extends PrebidAdapter {
 	static bidderName = 'aol';
@@ -14,7 +15,10 @@ export class Aol extends PrebidAdapter {
 		this.network = options.network;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, placement, alias, sizeId }): PrebidAdUnit {
+	prepareConfigForAdUnit(
+		code,
+		{ sizes, placement, alias, sizeId }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

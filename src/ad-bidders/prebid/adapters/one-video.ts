@@ -1,4 +1,5 @@
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class OneVideo extends PrebidAdapter {
 	static bidderName = 'oneVideo';
@@ -7,7 +8,7 @@ export class OneVideo extends PrebidAdapter {
 		return OneVideo.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { site, pubId }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { site, pubId }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

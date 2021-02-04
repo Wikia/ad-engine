@@ -1,5 +1,6 @@
 import { context, Dictionary } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class RubiconDisplay extends PrebidAdapter {
 	static bidderName = 'rubicon_display';
@@ -28,7 +29,10 @@ export class RubiconDisplay extends PrebidAdapter {
 		};
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizes, position, targeting }): PrebidAdUnit {
+	prepareConfigForAdUnit(
+		code,
+		{ siteId, zoneId, sizes, position, targeting }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
