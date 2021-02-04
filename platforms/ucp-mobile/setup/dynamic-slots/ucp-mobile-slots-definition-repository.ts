@@ -30,10 +30,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
-		const isTLBGapEnabled = context.get('wiki.opts.enableTopLeaderboardPlaceholder');
+		const isTLBPlaceholderEnabled = context.get('wiki.opts.enableTLBPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			if (isTLBGapEnabled) {
+			if (isTLBPlaceholderEnabled) {
 				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
 					const topLeaderboard = document.querySelector('.top-leaderboard');
 					topLeaderboard.classList.remove('is-loading');
@@ -59,11 +59,11 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		return {
 			activator,
-			slotCreatorWrapperConfig: isTLBGapEnabled ? null : slotCreatorWrapperConfig,
+			slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: isTLBGapEnabled ? '.top-leaderboard' : '.article-content',
-				insertMethod: isTLBGapEnabled ? 'prepend' : 'before',
+				anchorSelector: isTLBPlaceholderEnabled ? '.top-leaderboard' : '.article-content',
+				insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'before',
 				classList: ['hide', 'ad-slot'],
 			},
 		};
