@@ -7,20 +7,6 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();
 
-		if (
-			context.get('wiki.opts.noAdsReason') &&
-			!(
-				context.get('wiki.opts.noAdsReason') === 'no_ads_user' &&
-				context.get('wiki.opts.pageType') === 'homepage_logged'
-			)
-		) {
-			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
-		}
-
-		if (utils.queryString.get('mobile-app') === 'true') {
-			this.noAdsDetector.addReason('mobileapp_querystring');
-		}
-
 		context.set(
 			'custom.serverPrefix',
 			utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm1b' : 'wka1b',

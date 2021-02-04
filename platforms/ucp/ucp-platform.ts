@@ -10,7 +10,7 @@ import {
 	UcpBaseContextSetup,
 	UcpNoAdsMode,
 	UcpTargetingSetup,
-	UcpWikiContextSetup,
+	WikiContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -41,7 +41,7 @@ export class UcpPlatform {
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpIocSetup,
-			UcpWikiContextSetup,
+			WikiContextSetup,
 			() => context.set('state.isMobile', false),
 			UcpBaseContextSetup,
 			UcpSlotsContextSetup,

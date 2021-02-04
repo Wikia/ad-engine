@@ -9,6 +9,7 @@ import {
 	TrackingSetup,
 	UcpNoAdsMode,
 	UcpTargetingSetup,
+	WikiContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -24,7 +25,6 @@ import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.
 import { UcpMobileBaseContextSetup } from './setup/context/base/ucp-mobile-base-context.setup';
 import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-prebid-config.setup';
 import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slots-context.setup';
-import { UcpMobileWikiContextSetup } from './setup/context/wiki/ucp-mobile-wiki-context.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates-setup.service';
 import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
@@ -39,7 +39,7 @@ export class UcpMobilePlatform {
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpMobileIocSetup,
-			UcpMobileWikiContextSetup,
+			WikiContextSetup,
 			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,

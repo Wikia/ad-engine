@@ -39,33 +39,18 @@ export class SessionCookie {
 	}
 
 	getItem<T>(key: string): T {
-		return this.storage.getItem<T>(this.getPrefixedKey(key));
+		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 
 	setItem(key: string, input: {} | string): void {
-		this.removeOrphanedItems(key);
-		this.storage.setItem(this.getPrefixedKey(key), input);
+		this.storage.setItem(`${this.prefix}_${key}`, input);
 	}
 
 	removeItem(key: string): void {
-		this.storage.removeItem(this.getPrefixedKey(key));
+		this.storage.removeItem(`${this.prefix}_${key}`);
 	}
 
 	clear(): void {
 		this.storage.clear();
-	}
-
-	private getPrefixedKey(key: string, prefix: string = this.prefix): string {
-		return `${prefix}_${key}`;
-	}
-
-	private removeOrphanedItems(key: string): void {
-		Object.keys(this.storage.getItem(''))
-			.filter(
-				(cookieName) =>
-					cookieName !== this.getPrefixedKey(key) &&
-					cookieName.includes(this.getPrefixedKey(key, '')),
-			)
-			.forEach((cookieName) => this.storage.removeItem(cookieName));
 	}
 }

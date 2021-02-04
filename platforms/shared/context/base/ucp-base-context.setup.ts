@@ -7,16 +7,6 @@ export class UcpBaseContextSetup extends BaseContextSetup {
 	execute(): void {
 		super.execute();
 
-		if (
-			window.ads.context.opts.noAdsReason &&
-			!(
-				window.ads.context.opts.noAdsReason === 'no_ads_user' &&
-				window.ads.context.opts.pageType === 'homepage_logged'
-			)
-		) {
-			this.noAdsDetector.addReason(window.ads.context.opts.noAdsReason);
-		}
-
 		context.set(
 			'options.floatingMedrecDestroyable',
 			this.instantConfig.get('icFloatingMedrecDestroyable'),

@@ -12,7 +12,7 @@ import {
 	UcpGamepediaPrebidConfigSetup,
 	UcpNoAdsMode,
 	UcpTargetingSetup,
-	UcpWikiContextSetup,
+	WikiContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -40,7 +40,7 @@ export class UcpHydraPlatform {
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpHydraIocSetup,
-			UcpWikiContextSetup,
+			WikiContextSetup,
 			() => context.set('state.isMobile', false),
 			UcpBaseContextSetup,
 			HydraSlotsContextSetup,
