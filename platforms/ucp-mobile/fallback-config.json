@@ -93,7 +93,7 @@
                 "mobile-wiki"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": {
                 "name": "reco_personalized_dev",
@@ -169,56 +169,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icDePersonalizedRecoExperimentTest": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": {
-                "name": "Experiment name",
-                "groups": [
-                    {
-                        "name": "one",
-                        "sampling": 34,
-                        "ucpConfig": {
-                            "slots": [
-                                "footer-card-11"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "two",
-                        "sampling": 33,
-                        "ucpConfig": {
-                            "slots": [
-                                "footer-card-19",
-                                "footer-card-13"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "four",
-                        "sampling": 33,
-                        "ucpConfig": {
-                            "slots": [
-                                "footer-card-11",
-                                "footer-card-9",
-                                "footer-card-19",
-                                "footer-card-13"
-                            ]
-                        }
-                    }
-                ]
-            }
         }
     ],
     "icComscoreJwpTracking": [
@@ -604,7 +554,7 @@
                 "oasis"
             ],
             "regions": [
-                "FR"
+                "XX"
             ],
             "value": false
         },
@@ -750,7 +700,10 @@
                 "oasis"
             ],
             "regions": [
-                "CA"
+                "AU",
+                "CA",
+                "GB",
+                "UK"
             ],
             "value": true
         }
@@ -818,7 +771,7 @@
                 "oasis"
             ],
             "regions": [
-                "FR"
+                "XX"
             ],
             "value": true
         }
@@ -830,7 +783,7 @@
                 "oasis"
             ],
             "regions": [
-                "FR"
+                "XX"
             ],
             "value": false
         },
@@ -1790,7 +1743,9 @@
                 "5583057057",
                 "5583057060",
                 "5601703894",
-                "5601576390"
+                "5601576390",
+                "5319374800",
+                "5320947728"
             ]
         }
     ],
