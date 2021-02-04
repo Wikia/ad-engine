@@ -92,6 +92,9 @@
             "apps": [
                 "mobile-wiki"
             ],
+            "regions": [
+                "XX"
+            ],
             "value": {
                 "name": "reco_personalized_dev",
                 "groups": [
