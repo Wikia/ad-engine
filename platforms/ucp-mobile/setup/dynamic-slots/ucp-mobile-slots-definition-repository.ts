@@ -30,7 +30,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
-		const isTLBGapEnabled = context.get('wiki.opts.enableTopLeaderboardGap');
+		const isTLBGapEnabled = context.get('wiki.opts.enableTopLeaderboardPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
 			if (isTLBGapEnabled) {

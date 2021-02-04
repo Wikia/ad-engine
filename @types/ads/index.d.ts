@@ -20,7 +20,7 @@ interface MediaWikiAdsOpts {
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
-	enableTopLeaderboardGap?: boolean;
+	enableTopLeaderboardPlaceholder?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
