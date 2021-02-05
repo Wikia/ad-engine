@@ -213,10 +213,7 @@ export class A9Provider extends BidderProvider {
 
 		A9Provider.isApstagConfigured = true;
 		this.addApstagRenderImpHook();
-
-		if (this.bidsRefreshing.enabled) {
-			this.registerVideoBidsRefreshing();
-		}
+		this.registerVideoBidsRefreshing();
 	}
 
 	/**
@@ -238,9 +235,7 @@ export class A9Provider extends BidderProvider {
 			utils.logger(logGroup, `bid used for slot ${slotName}`);
 			delete this.bids[this.getSlotAlias(slotName)];
 
-			if (this.bidsRefreshing.enabled) {
-				this.refreshBid(slot);
-			}
+			this.refreshBid(slot);
 
 			slot.updateWinningA9BidderDetails();
 		});
