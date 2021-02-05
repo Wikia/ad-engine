@@ -47,11 +47,13 @@ export class UcpMobileSlotsDefinitionRepository {
 		if (!!document.querySelector('.portable-infobox')) {
 			return {
 				activator,
-				slotCreatorWrapperConfig,
+				slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.portable-infobox-wrapper',
-					insertMethod: 'after',
+					anchorSelector: isTLBPlaceholderEnabled
+						? '.top-leaderboard'
+						: '.portable-infobox-wrapper',
+					insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'after',
 					classList: ['hide', 'ad-slot'],
 				},
 			};
