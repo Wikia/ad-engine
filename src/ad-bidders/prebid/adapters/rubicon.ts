@@ -1,5 +1,6 @@
 import { context, Dictionary } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
@@ -26,7 +27,10 @@ export class Rubicon extends PrebidAdapter {
 		};
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, sizeId, position }): PrebidAdUnit {
+	prepareConfigForAdUnit(
+		code,
+		{ siteId, zoneId, sizeId, position }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		if (code === 'featured' && !context.get('custom.rubiconInFV')) {
 			return null;
 		}

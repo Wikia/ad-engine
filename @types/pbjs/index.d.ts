@@ -6,6 +6,16 @@ interface PrebidMarkBidRequest {
 interface PrebidAdUnit {
 	code: string;
 	bids: PrebidBid[];
+	fpd?: {
+		context: {
+			data: {
+				jwTargeting: {
+					playerID: string;
+					mediaID: string;
+				};
+			};
+		};
+	};
 	mediaType?: string; // should not be here
 	mediaTypes?: Partial<PrebidMediaTypes>;
 	labelAny?: string[];

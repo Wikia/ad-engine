@@ -16,18 +16,26 @@ export interface PrebidAdapterConfig {
 
 export interface PrebidAdSlotConfig {
 	adCode?: string;
+	alias?: string;
 	appId?: string | number;
+	ids?: string[];
 	inScreen?: string;
 	inventoryCodes?: string[];
 	networkId?: string;
+	placement?: string;
 	placementId?: string | number;
 	pos?: string;
+	position?: string;
 	productId?: string;
 	pubId?: string | number;
+	site?: string | number;
 	siteId?: string | number;
-	size?: number[];
+	size?: [number, number];
+	sizeId?: string;
 	sizes?: [number, number][];
 	supplyCode?: string;
+	targeting?: any;
+	uid?: string | number;
 	unit?: string;
 	zoneId?: string;
 }
