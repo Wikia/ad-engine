@@ -1,4 +1,5 @@
 import {
+	AdSlot,
 	communicationService,
 	context,
 	InstantConfigService,
@@ -6,6 +7,7 @@ import {
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	slotService,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -28,8 +30,15 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
+		const isTLBPlaceholderEnabled = context.get('wiki.opts.enableTLBPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
+			if (isTLBPlaceholderEnabled) {
+				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topLeaderboard = document.querySelector('.top-leaderboard');
+					topLeaderboard.classList.remove('is-loading');
+				});
+			}
 		};
 		const slotCreatorWrapperConfig = {
 			classList: ['ad-slot-wrapper', 'top-leaderboard'],
@@ -50,11 +59,11 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		return {
 			activator,
-			slotCreatorWrapperConfig,
+			slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.article-content',
-				insertMethod: 'before',
+				anchorSelector: isTLBPlaceholderEnabled ? '.top-leaderboard' : '.article-content',
+				insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'before',
 				classList: ['hide', 'ad-slot'],
 			},
 		};

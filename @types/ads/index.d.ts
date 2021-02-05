@@ -20,6 +20,7 @@ interface MediaWikiAdsOpts {
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
+	enableTLBPlaceholder?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
