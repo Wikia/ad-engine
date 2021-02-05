@@ -1,5 +1,6 @@
 import { Dictionary, pbjsFactory, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
@@ -61,7 +62,7 @@ export class Wikia extends PrebidAdapter {
 		this.isCustomBidAdapter = true;
 	}
 
-	prepareConfigForAdUnit(code, { sizes }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {

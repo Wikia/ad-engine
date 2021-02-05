@@ -1,5 +1,6 @@
 import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Pubmatic extends PrebidAdapter {
 	static bidderName = 'pubmatic';
@@ -15,7 +16,7 @@ export class Pubmatic extends PrebidAdapter {
 		this.publisherId = options.publisherId;
 	}
 
-	prepareConfigForAdUnit(code, { sizes, ids }): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { sizes, ids }: PrebidAdSlotConfig): PrebidAdUnit {
 		if (context.get(`slots.${code}.isVideo`)) {
 			return this.getVideoConfig(code, ids);
 		}
