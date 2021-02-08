@@ -95,6 +95,7 @@
             "regions": [
                 "XX"
             ],
+            "sampling": 100.0,
             "value": {
                 "name": "reco_personalized_dev",
                 "groups": [
@@ -2187,6 +2188,18 @@
             "regions": [
                 "GB",
                 "UK"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidMediaGrid": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA"
             ],
             "value": true
         }
