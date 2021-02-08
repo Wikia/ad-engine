@@ -15,7 +15,6 @@ import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
 import { ats } from './ats';
-import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
@@ -86,7 +85,6 @@ export class PrebidProvider extends BidderProvider {
 
 		this.prebidConfig = {
 			...this.prebidConfig,
-			...this.configureLiveRamp(),
 			...this.configureTCF(),
 			...this.configureJWPlayerDataProvider(),
 		};
@@ -95,14 +93,9 @@ export class PrebidProvider extends BidderProvider {
 
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
-		this.getLiveRampUserIds();
 		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
-	}
-
-	private configureLiveRamp(): object {
-		return liveRamp.getConfig();
 	}
 
 	private configureTCF(): object {
@@ -299,18 +292,6 @@ export class PrebidProvider extends BidderProvider {
 			adUnits,
 			bidsBackHandler,
 		});
-	}
-
-	async getLiveRampUserIds(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		if (pbjs.getUserIds) {
-			const userId = pbjs.getUserIds()['idl_env'];
-
-			utils.logger(logGroup, 'calling LiveRamp dispatch method');
-
-			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
-		}
 	}
 
 	private enableATSAnalytics(): void {

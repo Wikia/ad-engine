@@ -15,7 +15,6 @@ import {
 	GAMOrigins,
 	InstantConfigCacheStorage,
 	interventionTracker,
-	liveRampPrebidIdsLoadedEvent,
 	ofType,
 	playerEvents,
 	porvataTracker,
@@ -79,7 +78,6 @@ export class TrackingSetup {
 		this.scrollSpeedTracker();
 		this.connectionTracker();
 		this.audigentTracker();
-		this.liveRampTracker();
 		this.atsTracker();
 		this.interventionTracker();
 	}
@@ -245,12 +243,6 @@ export class TrackingSetup {
 	private audigentTracker(): void {
 		communicationService.action$.pipe(ofType(audigentLoadedEvent)).subscribe(() => {
 			this.pageTracker.trackProp('audigent', 'loaded');
-		});
-	}
-
-	private liveRampTracker(): void {
-		communicationService.action$.pipe(ofType(liveRampPrebidIdsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
 		});
 	}
 
