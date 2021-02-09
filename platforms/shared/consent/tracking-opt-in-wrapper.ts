@@ -36,7 +36,7 @@ const setOptInInstances = globalAction(
 );
 
 const trackingOptInLibraryUrl =
-	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.2.0/tracking-opt-in.min.js';
+	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.3.0/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
@@ -59,14 +59,8 @@ class TrackingOptInWrapper {
 			return this.handleDisabledCookies();
 		}
 
-		const libraryPromise = this.loadTrackingOptInLibrary();
-
-		try {
-			await Promise.race([libraryPromise, utils.timeoutReject(10000)]);
-			await this.handleLibraryLoaded();
-		} catch (e) {
-			return this.handleLibraryTimeout(libraryPromise);
-		}
+		await this.loadTrackingOptInLibrary();
+		await this.handleLibraryLoaded();
 	}
 
 	private handleDisabledCookies(): void {
@@ -87,19 +81,6 @@ class TrackingOptInWrapper {
 		);
 	}
 
-	private handleLibraryTimeout(libraryPromise: Promise<void>): void {
-		utils.logger(logGroup, 'Timeout waiting for library to load.');
-		this.dispatchConsents({
-			gdprConsent: false,
-			geoRequiresConsent: true,
-			ccpaSignal: true,
-			geoRequiresSignal: true,
-		});
-		libraryPromise
-			.then(() => this.initInstances())
-			.then((instances) => this.dispatchInstances(instances));
-	}
-
 	private async handleLibraryLoaded(): Promise<void> {
 		const optInInstances = await this.initInstances();
 		const gdpr = this.getConsent(optInInstances);
@@ -111,12 +92,9 @@ class TrackingOptInWrapper {
 
 	private initInstances(): Promise<OptInInstances> {
 		return new Promise(async (resolve) => {
-			const disableConsentQueue = !!context.get('options.disableConsentQueue');
-
 			utils.logger(logGroup, 'Modal library loaded');
 
 			const optInInstances: OptInInstances = window.trackingOptIn.default({
-				disableConsentQueue,
 				isSubjectToCcpa: window.ads.context && window.ads.context.opts.isSubjectToCcpa,
 				onAcceptTracking: () => {
 					utils.logger(logGroup, 'GDPR Consent');
@@ -128,10 +106,6 @@ class TrackingOptInWrapper {
 				},
 				zIndex: 9999999,
 			});
-
-			if (disableConsentQueue) {
-				resolve(optInInstances);
-			}
 		});
 	}
 
