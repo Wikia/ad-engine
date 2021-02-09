@@ -4,15 +4,18 @@ import { InstantConfigService } from '@ad-engine/services';
 export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
 	const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 
-	context.set('bidders.a9.enabled', instantConfig.get('icA9Bidder'));
-	context.set('bidders.a9.dealsEnabled', instantConfig.get('icA9Deals'));
-	context.set('bidders.a9.videoEnabled', instantConfig.get('icA9VideoBidder') && hasFeaturedVideo);
-	context.set(
-		'bidders.a9.videoBidsCleaning',
-		instantConfig.get('icA9VideoBidsCleaning') && hasFeaturedVideo,
-	);
-	context.set('bidders.a9.bidsRefreshing.enabled', instantConfig.get('icA9BidRefreshing'));
-	context.set('bidders.a9.bidsRefreshing.slots', instantConfig.get('icA9BidRefreshingSlots'));
+	if (instantConfig.get('icA9Bidder')) {
+		context.set('bidders.a9.enabled', true);
+		context.set('bidders.a9.dealsEnabled', instantConfig.get('icA9Deals'));
+		context.set(
+			'bidders.a9.videoEnabled',
+			instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,
+		);
+		context.set(
+			'bidders.a9.videoBidsCleaning',
+			instantConfig.get('icA9VideoBidsCleaning') && hasFeaturedVideo,
+		);
+	}
 
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
@@ -41,7 +44,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 		context.set('bidders.prebid.verizon.enabled', instantConfig.get('icPrebidVerizon'));
 
-		context.set('custom.rubiconInFV', instantConfig.get('icPrebidRubicon') && hasFeaturedVideo);
 		context.set(
 			'custom.jwplayerDataProvider',
 			instantConfig.get('icPrebidMediaGrid') && hasFeaturedVideo,

@@ -7,49 +7,25 @@ export const basicContext = {
 		enabled: false,
 		timeout: 2000,
 		a9: {
-			dealsEnabled: false,
 			enabled: false,
+			dealsEnabled: false,
 			videoEnabled: false,
 			amazonId: '3115',
-			slots: {
-				bottom_leaderboard: {
-					sizes: [
-						[728, 90],
-						[970, 250],
-					],
-				},
-				incontent_boxad_1: {
-					sizes: [
-						[300, 250],
-						[300, 600],
-					],
-				},
-				top_leaderboard: {
-					sizes: [
-						[728, 90],
-						[970, 250],
-					],
-				},
-				top_boxad: {
-					sizes: [
-						[300, 250],
-						[300, 600],
-					],
-				},
-				featured: {
-					type: 'video',
-				},
+			bidsRefreshing: {
+				slots: ['featured', 'incontent_boxad_1'],
+			},
+		},
+		prebid: {
+			enabled: false,
+			lazyLoadingEnabled: false,
+			bidsRefreshing: {
+				slots: ['incontent_boxad_1'],
 			},
 		},
 	},
 	custom: {
-		appnexusDfp: true,
-		beachfrontDfp: false,
 		dbNameForAdUnit: '_not_a_top1k_wiki',
 		dfpId: '5441',
-		lkqdDfp: false,
-		pubmaticDfp: false,
-		rubiconDfp: true,
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '_not_a_top1k_wiki',
 	},
