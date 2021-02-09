@@ -542,7 +542,15 @@
                 "XX"
             ],
             "sampling": 100.0,
-            "value": true
+            "value": [
+                5,
+                11,
+                31,
+                61,
+                181,
+                601,
+                1801
+            ]
         }
     ],
     "icPrebidBeachfront": [
@@ -673,6 +681,8 @@
                 "XX"
             ],
             "value": [
+                "5612456094",
+                "5612456088",
                 "5595347256",
                 "5595347256",
                 "5595347262",
@@ -2061,6 +2071,18 @@
             "regions": [
                 "GB",
                 "UK"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidMediaGrid": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA"
             ],
             "value": true
         }
