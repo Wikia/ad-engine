@@ -17,12 +17,14 @@ const contextObject: ContextObject = {
 			dealsEnabled: false,
 			videoEnabled: false,
 			amazonId: '3115',
+			bidsRefreshing: {
+				slots: [],
+			},
 		},
 		prebid: {
 			enabled: false,
 			lazyLoadingEnabled: false,
 			bidsRefreshing: {
-				enabled: false,
 				slots: [],
 			},
 		},

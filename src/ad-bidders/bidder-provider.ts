@@ -6,7 +6,6 @@ export interface BidderConfig {
 }
 
 export interface BidsRefreshing {
-	enabled: boolean;
 	slots: string[];
 	bidsBackHandler: (...args: any[]) => void;
 }
