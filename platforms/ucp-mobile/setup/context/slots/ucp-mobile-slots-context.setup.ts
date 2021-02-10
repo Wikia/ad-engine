@@ -163,6 +163,25 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
+			interstitial: {
+				adProduct: 'interstitial',
+				disabled: true,
+				disableManualInsert: true,
+				defaultClasses: ['hide'],
+				slotNameSuffix: '',
+				group: 'IU',
+				options: {},
+				outOfPage: false,
+				defaultTemplates: ['interstitial'],
+				defaultSizes: [
+					[320, 480],
+					[480, 320],
+				],
+				targeting: {
+					loc: 'hivi',
+					rv: 1,
+				},
+			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
 				disabled: true,

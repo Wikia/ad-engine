@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -213,6 +214,36 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isFloorAdhesionApplicable(): boolean {
 		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+	}
+
+	getInterstitialConfig(): SlotSetupDefinition {
+		if (!this.isInterstitialApplicable()) {
+			return;
+		}
+
+		const slotName = 'interstitial';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '#fandom-mobile-wrapper',
+				insertMethod: 'after',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.set('slots.interstitial.disabled', false);
+
+				this.pushWaitingSlot(slotName);
+			},
+		};
+	}
+
+	private isInterstitialApplicable(): boolean {
+		const cookieAdapter = new CookieStorageAdapter();
+
+		return (
+			this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('interstitial-impression')
+		);
 	}
 
 	getInvisibleHighImpactConfig(): SlotSetupDefinition {
