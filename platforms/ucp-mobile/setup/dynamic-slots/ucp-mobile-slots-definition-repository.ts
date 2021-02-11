@@ -101,7 +101,15 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: {
 				classList,
 			},
-			activator: () => this.pushWaitingSlot(slotName),
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+				if (isICPlaceholderEnabled) {
+					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+						const topBoxad = document.querySelector('.top-boxad');
+						topBoxad.classList.remove('loading');
+					});
+				}
+			},
 		};
 	}
 
