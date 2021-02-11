@@ -36,7 +36,7 @@ const setOptInInstances = globalAction(
 );
 
 const trackingOptInLibraryUrl =
-	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.3.0/tracking-opt-in.min.js';
+	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.1/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
