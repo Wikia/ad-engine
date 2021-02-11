@@ -50,6 +50,19 @@
 
 // #######################################
 
+@mixin ad-slot-placeholder() {
+	min-height: 250px;
+	transition: min-height 0.35s linear;
+
+	&.loading {
+		animation: is-loading 2s infinite;
+	}
+
+	&.ad-slot-placeholder-disabled {
+		min-height: 0;
+	}
+}
+
 .gpt-ad {
 	text-align: center;
 
@@ -74,6 +87,12 @@
 
 	&.hide {
 		display: none !important;
+	}
+}
+
+.ad-slot-wrapper.top-boxad {
+	&.ad-slot-placeholder {
+		@include ad-slot-placeholder;
 	}
 }
 

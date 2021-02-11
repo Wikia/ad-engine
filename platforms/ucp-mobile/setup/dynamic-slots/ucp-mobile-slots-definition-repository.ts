@@ -85,6 +85,11 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
+		const isICPlaceholderEnabled = context.get('wiki.opts.enableICPlaceholder');
+		const defaultClasses = ['ad-slot-wrapper', 'top-boxad'];
+		const classList = isICPlaceholderEnabled
+			? [...defaultClasses, 'ad-slot-placeholder', 'loading']
+			: defaultClasses;
 
 		return {
 			slotCreatorConfig: {
@@ -94,7 +99,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-wrapper', 'top-boxad'],
+				classList,
 			},
 			activator: () => this.pushWaitingSlot(slotName),
 		};
