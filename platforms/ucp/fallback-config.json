@@ -373,28 +373,6 @@
             "value": true
         }
     ],
-    "icPrebidOneMobile": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icRotatorDelay": [
         {
             "apps": [
@@ -538,11 +516,16 @@
             "apps": [
                 "oasis"
             ],
-            "regions": [
-                "XX"
-            ],
             "sampling": 100.0,
-            "value": true
+            "value": [
+                5,
+                11,
+                31,
+                61,
+                181,
+                601,
+                1801
+            ]
         }
     ],
     "icPrebidBeachfront": [
@@ -638,30 +621,6 @@
             "value": true
         }
     ],
-    "icPrebidAol": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "AU",
-                "CA",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icStickySlotLineItemIds": [
         {
             "apps": [
@@ -673,6 +632,8 @@
                 "XX"
             ],
             "value": [
+                "5612456094",
+                "5612456088",
                 "5595347256",
                 "5595347256",
                 "5595347262",
@@ -1599,7 +1560,12 @@
                 "5320947728",
                 "5598650594",
                 "5598650591",
-                "5598651329"
+                "5598651329",
+                "5615271306",
+                "5614492224",
+                "5614492491",
+                "5614492512",
+                "5614492515"
             ]
         }
     ],
@@ -2048,7 +2014,7 @@
                 "UK",
                 "US"
             ],
-            "sampling": 75.0,
+            "sampling": 85.0,
             "value": true
         }
     ],

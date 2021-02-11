@@ -427,6 +427,17 @@
             "value": true
         }
     ],
+    "icInterstitial": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
+    ],
     "icSpaInstanceIdTracking": [
         {
             "apps": [
@@ -540,28 +551,6 @@
                 "gamepedia",
                 "mobile-wiki",
                 "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidOneMobile": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "mobile-wiki",
                 "oasis"
             ],
             "regions": [
@@ -777,30 +766,6 @@
             "value": true
         }
     ],
-    "icPrebidAol": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "AU",
-                "CA",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icOverscrolledTracking": [
         {
             "apps": [
@@ -823,6 +788,8 @@
                 "XX"
             ],
             "value": [
+                "5612456094",
+                "5612456088",
                 "5595347256",
                 "5595347256",
                 "5595347262",
@@ -1749,7 +1716,12 @@
                 "5320947728",
                 "5598650594",
                 "5598650591",
-                "5598651329"
+                "5598651329",
+                "5615271306",
+                "5614492224",
+                "5614492491",
+                "5614492512",
+                "5614492515"
             ]
         }
     ],
