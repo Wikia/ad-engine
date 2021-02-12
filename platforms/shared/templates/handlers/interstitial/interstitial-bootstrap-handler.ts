@@ -11,17 +11,17 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 export class InterstitialBootstrapHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
-	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'listen'>): Promise<void> {
 		this.adSlot.hide();
 		this.adSlot.addClass('interstitial');
 		this.adSlot.addClass('out-of-page-template');
 
-		await slotTweaker.adjustIframeByContentSize(this.adSlot);
+		if (this.adSlot.isOutOfPage()) {
+			await slotTweaker.adjustIframeByContentSize(this.adSlot);
+		}
 
-		transition('display');
+		transition('listen');
 	}
 
-	async onLeave(): Promise<void> {
-		this.adSlot.show();
-	}
+	async onLeave(): Promise<void> {}
 }
