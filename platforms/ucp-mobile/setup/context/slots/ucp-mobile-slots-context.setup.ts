@@ -177,6 +177,16 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					[320, 480],
 					[480, 320],
 				],
+				sizes: [
+					{
+						viewportSize: [0, 0],
+						sizes: [[320, 480]],
+					},
+					{
+						viewportSize: [480, 0],
+						sizes: [[480, 320]],
+					},
+				],
 				targeting: {
 					loc: 'hivi',
 					rv: 1,
