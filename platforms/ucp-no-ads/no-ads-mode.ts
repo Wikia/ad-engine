@@ -7,9 +7,17 @@ export class NoAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
+		this.removeSlotsPlaceholders();
 		this.noAdsDetector.addReasons(window.ads.context.opts.noAdsReasons);
 		this.dispatchJWPlayerSetupAction();
 		this.trackAdEngineStatus();
+	}
+
+	private removeSlotsPlaceholders(): void {
+		const placeholders = document.querySelectorAll('.wrapper-gap.is-loading');
+		placeholders.forEach((placeholder) => {
+			placeholder.remove();
+		});
 	}
 
 	private trackAdEngineStatus(): void {

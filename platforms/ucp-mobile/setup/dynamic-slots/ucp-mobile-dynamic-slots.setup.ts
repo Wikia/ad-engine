@@ -52,6 +52,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
@@ -137,7 +138,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
 					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable('floor_adhesion', 'closed-by-porvata');
+					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
+				}
+			});
+
+			eventService.on(events.INTERSTITIAL_DISPLAYED, () => {
+				if (this.CODE_PRIORITY.floor_adhesion.active) {
+					this.CODE_PRIORITY.floor_adhesion.active = false;
+					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
 				}
 			});
 		});

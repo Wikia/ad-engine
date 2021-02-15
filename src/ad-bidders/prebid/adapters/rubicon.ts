@@ -31,7 +31,7 @@ export class Rubicon extends PrebidAdapter {
 		code,
 		{ siteId, zoneId, sizeId, position }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
-		if (code === 'featured' && !context.get('custom.rubiconInFV')) {
+		if (code === 'featured' && !context.get('custom.hasFeaturedVideo')) {
 			return null;
 		}
 

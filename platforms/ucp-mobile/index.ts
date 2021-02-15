@@ -9,12 +9,9 @@ function uncollapseSections(): void {
 
 	for (const header of headers as any) {
 		const section = header.nextElementSibling;
-		let visible = 'false';
-
-		if (header.classList.toggle('open-section')) {
-			visible = 'true';
-		}
-
+		const visible = 'true';
+		
+		header.classList.add('open-section');
 		section.setAttribute('aria-pressed', visible);
 		section.setAttribute('aria-expanded', visible);
 	}
