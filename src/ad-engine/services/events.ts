@@ -8,7 +8,6 @@ export const events = {
 	AD_STACK_START: Symbol('AD_STACK_START'),
 	FIRST_CALL_ENDED: Symbol('FIRST_CALL_ENDED'),
 	BEFORE_PAGE_CHANGE_EVENT: Symbol('BEFORE_PAGE_CHANGE_EVENT'),
-	LOGO_REPLACED: 'logo-replaced',
 	PAGE_CHANGE_EVENT: Symbol('PAGE_CHANGE_EVENT'),
 	PAGE_RENDER_EVENT: Symbol('PAGE_RENDER_EVENT'),
 
@@ -25,6 +24,9 @@ export const events = {
 	PREBID_LAZY_CALL: Symbol('PREBID_LAZY_CALL'),
 
 	SCROLL_TRACKING_TIME_CHANGED: Symbol('SCROLL_TRACKING_TIME_CHANGED'),
+
+	INTERSTITIAL_DISPLAYED: 'interstitial-displayed',
+	LOGO_REPLACED: 'logo-replaced',
 };
 
 /**

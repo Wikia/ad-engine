@@ -1,6 +1,8 @@
 import {
 	AdSlot,
 	CookieStorageAdapter,
+	events,
+	eventService,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -31,6 +33,7 @@ export class InterstitialClickListenerHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
+		eventService.emit(events.INTERSTITIAL_DISPLAYED);
 		this.adSlot.show();
 
 		window.location.hash = 'interstitial';

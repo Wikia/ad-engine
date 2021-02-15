@@ -162,7 +162,7 @@ export class UcpDynamicSlotsSetup implements DiProcess {
 			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
 				if (porvataClosedActive) {
 					porvataClosedActive = false;
-					slotService.disable('floor_adhesion', 'closed-by-porvata');
+					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
 				}
 			});
 		});
