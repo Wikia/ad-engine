@@ -56,6 +56,8 @@
 
 	&.loading {
 		animation: is-loading 2s infinite;
+		border-radius: 20px;
+		max-width: 320px;
 	}
 
 	&.ad-slot-placeholder-disabled {
