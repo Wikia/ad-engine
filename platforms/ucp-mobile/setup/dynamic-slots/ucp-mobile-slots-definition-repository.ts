@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -47,11 +48,13 @@ export class UcpMobileSlotsDefinitionRepository {
 		if (!!document.querySelector('.portable-infobox')) {
 			return {
 				activator,
-				slotCreatorWrapperConfig,
+				slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.portable-infobox-wrapper',
-					insertMethod: 'after',
+					anchorSelector: isTLBPlaceholderEnabled
+						? '.top-leaderboard'
+						: '.portable-infobox-wrapper',
+					insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'after',
 					classList: ['hide', 'ad-slot'],
 				},
 			};
@@ -213,6 +216,36 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isFloorAdhesionApplicable(): boolean {
 		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+	}
+
+	getInterstitialConfig(): SlotSetupDefinition {
+		if (!this.isInterstitialApplicable()) {
+			return;
+		}
+
+		const slotName = 'interstitial';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '#fandom-mobile-wrapper',
+				insertMethod: 'after',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.set('slots.interstitial.disabled', false);
+
+				this.pushWaitingSlot(slotName);
+			},
+		};
+	}
+
+	private isInterstitialApplicable(): boolean {
+		const cookieAdapter = new CookieStorageAdapter();
+
+		return (
+			this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('interstitial-impression')
+		);
 	}
 
 	getInvisibleHighImpactConfig(): SlotSetupDefinition {

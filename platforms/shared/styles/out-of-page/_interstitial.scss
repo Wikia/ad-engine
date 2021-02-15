@@ -2,7 +2,7 @@
 
 @mixin interstitial() {
 	.interstitial {
-		background: rgba(0, 0, 0, 0.9);
+		background: #000000;
 		bottom: 0;
 		height: 100vh;
 		left: 0;
@@ -11,17 +11,23 @@
 		width: 100%;
 
 		& > .button-close {
+			background-color: #002a32;
+			fill: #ffffff;
 			height: auto;
 			top: 0;
+			border: 2px solid #00d6d6;
+			border-radius: 24px;
+			padding: 2px;
+			margin: 11px;
 		}
 
 		& > .advertisement-label {
 			align-items: center;
-			background-color: rgba(0, 0, 0, 0.5);
-			color: #d5d4d4;
+			background-color: #002a32;
+			color: #ffffff;
 			display: flex;
 			font-size: 17px;
-			height: 34px;
+			height: 55px;
 			justify-content: left;
 			left: 0;
 			padding: 0 10px;
