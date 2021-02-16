@@ -88,10 +88,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isICPlaceholderEnabled = context.get('wiki.opts.enableICPlaceholder');
+		const isTBPlaceholderEnabled = context.get('wiki.opts.enableTBPlaceholder');
 		const defaultClasses = ['ad-slot-wrapper', 'top-boxad'];
-		const classList = isICPlaceholderEnabled
-			? [...defaultClasses, 'ad-slot-placeholder', 'loading']
+		const classList = isTBPlaceholderEnabled
+			? [...defaultClasses, 'ic-ad-slot-placeholder', 'loading']
 			: defaultClasses;
 
 		return {
@@ -106,7 +106,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				if (isICPlaceholderEnabled) {
+				if (isTBPlaceholderEnabled) {
 					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
 						const topBoxad = document.querySelector('.top-boxad');
 						topBoxad.classList.remove('loading');

@@ -50,18 +50,15 @@
 
 // #######################################
 
-@mixin ad-slot-placeholder() {
+@mixin ic-ad-slot-placeholder() {
+	align-items: center;
+	display: flex;
+	justify-content: center;
 	min-height: 250px;
-	transition: min-height 0.35s linear;
 
 	&.loading {
 		animation: is-loading 2s infinite;
 		border-radius: 20px;
-		max-width: 320px;
-	}
-
-	&.ad-slot-placeholder-disabled {
-		min-height: 0;
 	}
 }
 
@@ -93,8 +90,14 @@
 }
 
 .ad-slot-wrapper.top-boxad {
-	&.ad-slot-placeholder {
-		@include ad-slot-placeholder;
+	&.ic-ad-slot-placeholder {
+		@include ic-ad-slot-placeholder;
+	}
+}
+
+.incontent-boxad {
+	&.ic-ad-slot-placeholder {
+		@include ic-ad-slot-placeholder;
 	}
 }
 
