@@ -14,7 +14,9 @@ export class NoAdsMode implements DiProcess {
 	}
 
 	private removeSlotsPlaceholders(): void {
-		const placeholders = document.querySelectorAll('.wrapper-gap.is-loading');
+		const placeholders = document.querySelectorAll(
+			'.wrapper-gap.is-loading, .ic-ad-slot-placeholder',
+		);
 		placeholders.forEach((placeholder) => {
 			placeholder.remove();
 		});
