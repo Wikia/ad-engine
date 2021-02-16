@@ -57,7 +57,7 @@ export const basicContext = {
 	services: {
 		billTheLizard: {
 			enabled: true,
-			host: 'https://services.wikia.com',
+			host: 'https://services.fandom.com',
 			endpoint: 'bill-the-lizard/predict',
 			projects: {},
 			parameters: {},
@@ -90,7 +90,7 @@ export const basicContext = {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.wikia.com/icbm/api/config?app=oasis',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=oasis',
 			fallback: fallbackInstantConfig,
 		},
 		nielsen: {
