@@ -98,9 +98,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private configureICBPlaceholderHandler(): void {
 		if (context.get('wiki.opts.enableICBPlaceholder')) {
-			const defaultClasses = context.get('slots.incontent_boxad_1.defaultClasses');
 			context.set('slots.incontent_boxad_1.defaultClasses', [
-				...defaultClasses,
+				'incontent-boxad',
+				'ad-slot',
 				'ic-ad-slot-placeholder',
 				'loading',
 			]);
