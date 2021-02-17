@@ -55,11 +55,6 @@
 	display: flex;
 	justify-content: center;
 	min-height: 250px;
-
-	&.loading {
-		animation: is-loading 2s infinite;
-		border-radius: 20px;
-	}
 }
 
 .gpt-ad {

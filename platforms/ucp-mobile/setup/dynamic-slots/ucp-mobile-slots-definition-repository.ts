@@ -34,12 +34,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		const isTLBPlaceholderEnabled = context.get('wiki.opts.enableTLBPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			if (isTLBPlaceholderEnabled) {
-				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topLeaderboard = document.querySelector('.top-leaderboard');
-					topLeaderboard.classList.remove('is-loading');
-				});
-			}
 		};
 		const slotCreatorWrapperConfig = {
 			classList: ['ad-slot-wrapper', 'top-leaderboard'],
