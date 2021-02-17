@@ -38,6 +38,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureAffiliateSlot();
+		this.configureICBPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
@@ -92,6 +93,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 		} else {
 			slotService.disable(slotName);
+		}
+	}
+
+	private configureICBPlaceholderHandler(): void {
+		if (context.get('wiki.opts.enableICBPlaceholder')) {
+			context.set('slots.incontent_boxad_1.defaultClasses', [
+				'incontent-boxad',
+				'ad-slot',
+				'ic-ad-slot-placeholder',
+				'loading',
+			]);
+
+			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+				adSlot.removeClass('loading');
+			});
 		}
 	}
 

@@ -50,6 +50,18 @@
 
 // #######################################
 
+@mixin ic-ad-slot-placeholder() {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	min-height: 250px;
+
+	&.loading {
+		animation: is-loading 2s infinite;
+		border-radius: 20px;
+	}
+}
+
 .gpt-ad {
 	text-align: center;
 
@@ -77,6 +89,18 @@
 	}
 }
 
+.ad-slot-wrapper.top-boxad {
+	&.ic-ad-slot-placeholder {
+		@include ic-ad-slot-placeholder;
+	}
+}
+
+.incontent-boxad {
+	&.ic-ad-slot-placeholder {
+		@include ic-ad-slot-placeholder;
+	}
+}
+
 #affiliate_slot {
 	text-align: center;
 
@@ -97,6 +121,7 @@
 .article-content .ad-slot-wrapper {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 }
 
 .article-content .ad-slot-wrapper .ad-slot,

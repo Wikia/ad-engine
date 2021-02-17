@@ -21,6 +21,8 @@ interface MediaWikiAdsOpts {
 	platformName?: string;
 	showAds: boolean;
 	enableTLBPlaceholder?: boolean;
+	enableTBPlaceholder?: boolean;
+	enableICBPlaceholder?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
