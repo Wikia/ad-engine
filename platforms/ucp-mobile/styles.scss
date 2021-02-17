@@ -57,8 +57,27 @@
 	min-height: 250px;
 
 	&.loading {
-		animation: is-loading 2s infinite;
+		animation: loader 2s infinite;
+		background-color: var(--fandommobile-background-color);
 		border-radius: 20px;
+	}
+}
+
+@keyframes loader {
+	0% {
+		opacity: 1;
+	}
+
+	25% {
+		opacity: 0.5;
+	}
+
+	75% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0.5;
 	}
 }
 
