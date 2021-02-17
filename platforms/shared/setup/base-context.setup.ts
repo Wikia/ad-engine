@@ -30,6 +30,9 @@ export class BaseContextSetup implements DiProcess {
 	private setBaseState(): void {
 		if (utils.client.isSteamPlatform()) {
 			this.noAdsDetector.addReason('steam_browser');
+
+			const topLeaderboard = document.querySelector('.top-leaderboard');
+			topLeaderboard?.classList.remove('is-loading');
 		}
 		if (!!utils.queryString.get('noexternals')) {
 			this.noAdsDetector.addReason('noexternals_querystring');
