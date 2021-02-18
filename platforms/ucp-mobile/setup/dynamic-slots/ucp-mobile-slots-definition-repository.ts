@@ -36,8 +36,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			context.push('state.adStack', { id: slotName });
 			if (isTLBPlaceholderEnabled) {
 				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topLeaderboard = document.querySelector('.top-leaderboard');
-					topLeaderboard.classList.remove('is-loading');
+					const spinner = document.querySelector('.wds-spinner');
+					spinner.remove();
 				});
 			}
 		};
