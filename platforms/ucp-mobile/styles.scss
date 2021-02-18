@@ -46,7 +46,11 @@
 
 @include ucp-mobile-uap-styles();
 @include out-of-page-styles();
-@include logo-replacement(55px, 12px);
+@include logo-replacement(55px, 12px, 0, 93px, 27px);
+
+.wds-is-gamepedia {
+	@include logo-replacement(55px, 12px, 0, 116px, 24px);
+}
 
 // #######################################
 
