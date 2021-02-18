@@ -88,6 +88,11 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
+		const isTBPlaceholderEnabled = context.get('wiki.opts.enableTBPlaceholder');
+		const defaultClasses = ['ad-slot-wrapper', 'top-boxad'];
+		const classList = isTBPlaceholderEnabled
+			? [...defaultClasses, 'ic-ad-slot-placeholder', 'loading']
+			: defaultClasses;
 
 		return {
 			slotCreatorConfig: {
@@ -97,9 +102,17 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-wrapper', 'top-boxad'],
+				classList,
 			},
-			activator: () => this.pushWaitingSlot(slotName),
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+				if (isTBPlaceholderEnabled) {
+					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+						const topBoxad = document.querySelector('.top-boxad');
+						topBoxad.classList.remove('loading');
+					});
+				}
+			},
 		};
 	}
 

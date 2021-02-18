@@ -432,7 +432,10 @@
             "apps": [
                 "mobile-wiki"
             ],
-            "value": false
+            "regions": [
+                "US"
+            ],
+            "value": true
         }
     ],
     "icSpaInstanceIdTracking": [
@@ -1710,7 +1713,12 @@
                 "5614492515",
                 "5618830549",
                 "5613147481",
-                "5613143479"
+                "5613143479",
+                "5619284084",
+                "5619275243",
+                "5617625970",
+                "5617625967",
+                "5622045977"
             ]
         }
     ],
@@ -2202,7 +2210,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.5/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
