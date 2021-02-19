@@ -2,6 +2,7 @@ export * from './across';
 export * from './aol';
 export * from './appnexus';
 export * from './appnexus-ast';
+export * from './appnexus-group-m';
 export * from './beachfront';
 export * from './gumgum';
 export * from './index-exchange';
