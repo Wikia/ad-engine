@@ -342,6 +342,7 @@
                 "HR",
                 "HT",
                 "HU",
+                "ID",
                 "IE",
                 "IM",
                 "IN",
@@ -368,6 +369,7 @@
                 "MS",
                 "MT",
                 "MX",
+                "MY",
                 "NC",
                 "NF",
                 "NI",
@@ -379,6 +381,7 @@
                 "PA",
                 "PF",
                 "PG",
+                "PH",
                 "PL",
                 "PM",
                 "PN",
@@ -391,6 +394,7 @@
                 "SA",
                 "SB",
                 "SE",
+                "SG",
                 "SI",
                 "SJ",
                 "SK",
@@ -2266,6 +2270,58 @@
                 "XX"
             ],
             "value": 2000
+        }
+    ],
+    "icDeRecoExperiment": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 1.0,
+            "samplingCache": true,
+            "value": {
+                "name": "reco_personalized_AA",
+                "groups": [
+                    {
+                        "name": "A",
+                        "config": {
+                            
+                        },
+                        "mobile": {
+                            "recommendedSlots": [
+                                
+                            ]
+                        },
+                        "sampling": 50,
+                        "ucpConfig": {
+                            "slots": [
+                                
+                            ]
+                        }
+                    },
+                    {
+                        "name": "B",
+                        "config": {
+                            
+                        },
+                        "mobile": {
+                            "recommendedSlots": [
+                                
+                            ]
+                        },
+                        "sampling": 50,
+                        "ucpConfig": {
+                            "slots": [
+                                
+                            ]
+                        }
+                    }
+                ]
+            }
         }
     ]
 }
