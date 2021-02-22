@@ -140,7 +140,7 @@
 
 @include f2-styles();
 @include f2-uap-styles();
-@include logo-replacement(56px);
+@include logo-replacement(56px, 0, 0, 93px, 27px);
 @include f2-feed-bottom-boxad();
 
 // #######################################
