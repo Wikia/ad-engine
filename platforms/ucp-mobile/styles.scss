@@ -109,7 +109,7 @@
 	&.ic-ad-slot-placeholder {
 		@include ic-ad-slot-placeholder;
 
-		min-height: calc((100vw - 2.25rem) / 1.3333);
+		min-height: calc((100vw - 2.25rem) * 0.75);
 		align-items: unset;
 		display: block !important;
 
