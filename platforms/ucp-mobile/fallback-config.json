@@ -90,32 +90,29 @@
     "icDeRecoExperimentDev": [
         {
             "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "XX"
+                "mobile-wiki",
+                "oasis"
             ],
             "sampling": 100.0,
             "value": {
-                "name": "reco_personalized_dev",
+                "name": "de5320_qa",
                 "groups": [
                     {
-                        "name": "first",
+                        "name": "A",
+                        "config": {
+                            
+                        },
                         "mobile": {
                             "recommendedSlots": [
                                 "footer-slot-1"
                             ]
                         },
-                        "sampling": 50
-                    },
-                    {
-                        "name": "second",
-                        "mobile": {
-                            "recommendedSlots": [
-                                "footer-slot-2"
+                        "sampling": 50,
+                        "ucpConfig": {
+                            "slots": [
+                                "footer-card-3"
                             ]
-                        },
-                        "sampling": 50
+                        }
                     }
                 ]
             }
@@ -1751,7 +1748,8 @@
                 "5617625970",
                 "5617625967",
                 "5622045977",
-                "4737728378"
+                "4737728378",
+                "5627328607"
             ]
         }
     ],
