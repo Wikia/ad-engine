@@ -105,6 +105,20 @@
 	}
 }
 
+#incontent_player {
+	&.ic-ad-slot-placeholder {
+		@include ic-ad-slot-placeholder;
+
+		min-height: calc((100vw - 2.25rem) * 0.75);
+		align-items: unset;
+		display: block !important;
+
+		.video-overlay {
+			background: #000000;
+		}
+	}
+}
+
 #affiliate_slot {
 	text-align: center;
 

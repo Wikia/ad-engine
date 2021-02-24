@@ -39,6 +39,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.injectSlots();
 		this.configureAffiliateSlot();
 		this.configureICBPlaceholderHandler();
+		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
@@ -106,6 +107,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			]);
 
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+				adSlot.removeClass('loading');
+			});
+		}
+	}
+
+	private configureICPPlaceholderHandler(): void {
+		if (context.get('wiki.opts.enableICPPlaceholder')) {
+			context.set('slots.incontent_player.defaultClasses', ['ic-ad-slot-placeholder', 'loading']);
+
+			eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => {
 				adSlot.removeClass('loading');
 			});
 		}
