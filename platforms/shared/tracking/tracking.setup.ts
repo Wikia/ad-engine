@@ -1,9 +1,6 @@
 import {
 	AdBidderContext,
 	AdInfoContext,
-	atsIdsLoadedEvent,
-	atsLoadedEvent,
-	atsNotLoadedForLoggedInUser,
 	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
@@ -15,7 +12,6 @@ import {
 	GAMOrigins,
 	InstantConfigCacheStorage,
 	interventionTracker,
-	liveRampPrebidIdsLoadedEvent,
 	ofType,
 	playerEvents,
 	porvataTracker,
@@ -79,8 +75,6 @@ export class TrackingSetup {
 		this.scrollSpeedTracker();
 		this.connectionTracker();
 		this.audigentTracker();
-		this.liveRampTracker();
-		this.atsTracker();
 		this.interventionTracker();
 	}
 
@@ -245,26 +239,6 @@ export class TrackingSetup {
 	private audigentTracker(): void {
 		communicationService.action$.pipe(ofType(audigentLoadedEvent)).subscribe(() => {
 			this.pageTracker.trackProp('audigent', 'loaded');
-		});
-	}
-
-	private liveRampTracker(): void {
-		communicationService.action$.pipe(ofType(liveRampPrebidIdsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
-		});
-	}
-
-	private atsTracker(): void {
-		communicationService.action$.pipe(ofType(atsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
-		});
-
-		communicationService.action$.pipe(ofType(atsIdsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
-		});
-
-		communicationService.action$.pipe(ofType(atsNotLoadedForLoggedInUser)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
 		});
 	}
 
