@@ -1,7 +1,6 @@
 import { Aliases, context, pbjsFactory } from '@ad-engine/core';
 import {
 	Across,
-	Aol,
 	Appnexus,
 	AppnexusAst,
 	AppnexusGroupM,
@@ -11,7 +10,6 @@ import {
 	Kargo,
 	Mediagrid,
 	Nobid,
-	Onemobile,
 	OneVideo,
 	Openx,
 	Pubmatic,
@@ -31,7 +29,6 @@ class AdaptersRegistry {
 	private adapters = new Map<string, PrebidAdapter>();
 	private availableAdapters = [
 		Across,
-		Aol,
 		Appnexus,
 		AppnexusAst,
 		AppnexusGroupM,
@@ -41,7 +38,6 @@ class AdaptersRegistry {
 		Kargo,
 		Mediagrid,
 		Nobid,
-		Onemobile,
 		OneVideo,
 		Openx,
 		Pubmatic,

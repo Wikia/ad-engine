@@ -1,7 +1,6 @@
 import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { get33AccrossContext } from '../../../bidders/prebid/accross';
-import { getAOLContext } from '../../../bidders/prebid/aol';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getAppnexusGroupMContext } from '../../../bidders/prebid/appnexus-group-m';
@@ -10,7 +9,6 @@ import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange'
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMediagridContext } from '../../../bidders/prebid/mediagrid';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
-import { getOneMobileContext } from '../../../bidders/prebid/one-mobile';
 import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
@@ -26,7 +24,6 @@ import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 export class UcpMobilePrebidConfigSetup implements DiProcess {
 	execute(): void {
 		context.set('bidders.prebid.33across', get33AccrossContext());
-		context.set('bidders.prebid.aol', getAOLContext());
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.appnexusGroupM', getAppnexusGroupMContext());
@@ -35,7 +32,6 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.kargo', getKargoContext());
 		context.set('bidders.prebid.mediagrid', getMediagridContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
-		context.set('bidders.prebid.onemobile', getOneMobileContext());
 		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.openx', getOpenXContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());

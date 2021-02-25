@@ -23,6 +23,7 @@ interface MediaWikiAdsOpts {
 	enableTLBPlaceholder?: boolean;
 	enableTBPlaceholder?: boolean;
 	enableICBPlaceholder?: boolean;
+	enableICPPlaceholder?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
