@@ -90,32 +90,32 @@
     "icDeRecoExperimentDev": [
         {
             "apps": [
-                "mobile-wiki"
+                "mobile-wiki",
+                "oasis"
             ],
             "regions": [
-                "XX"
+                "PL"
             ],
             "sampling": 100.0,
             "value": {
-                "name": "reco_personalized_dev",
+                "name": "de5320_qa",
                 "groups": [
                     {
-                        "name": "first",
+                        "name": "A",
+                        "config": {
+                            
+                        },
                         "mobile": {
                             "recommendedSlots": [
                                 "footer-slot-1"
                             ]
                         },
-                        "sampling": 50
-                    },
-                    {
-                        "name": "second",
-                        "mobile": {
-                            "recommendedSlots": [
-                                "footer-slot-2"
+                        "sampling": 100,
+                        "ucpConfig": {
+                            "slots": [
+                                "footer-card-3"
                             ]
-                        },
-                        "sampling": 50
+                        }
                     }
                 ]
             }
@@ -342,6 +342,7 @@
                 "HR",
                 "HT",
                 "HU",
+                "ID",
                 "IE",
                 "IM",
                 "IN",
@@ -368,6 +369,7 @@
                 "MS",
                 "MT",
                 "MX",
+                "MY",
                 "NC",
                 "NF",
                 "NI",
@@ -379,6 +381,7 @@
                 "PA",
                 "PF",
                 "PG",
+                "PH",
                 "PL",
                 "PM",
                 "PN",
@@ -391,6 +394,7 @@
                 "SA",
                 "SB",
                 "SE",
+                "SG",
                 "SI",
                 "SJ",
                 "SK",
@@ -424,6 +428,17 @@
                 "US"
             ],
             "sampling": 90.0,
+            "value": true
+        }
+    ],
+    "icInterstitial": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "US"
+            ],
             "value": true
         }
     ],
@@ -548,28 +563,6 @@
             "value": true
         }
     ],
-    "icPrebidOneMobile": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icCollapseTopLeaderboard": [
         {
             "apps": [
@@ -618,18 +611,6 @@
         }
     ],
     "icA9VideoBidder": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icA9BidRefreshing": [
         {
             "apps": [
                 "mobile-wiki",
@@ -777,30 +758,6 @@
             "value": true
         }
     ],
-    "icPrebidAol": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "AU",
-                "CA",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icOverscrolledTracking": [
         {
             "apps": [
@@ -823,6 +780,39 @@
                 "XX"
             ],
             "value": [
+                "5585170956",
+                "5585170959",
+                "5585170962",
+                "5625526730",
+                "5625528371",
+                "5625526727",
+                "5625528140",
+                "5625528374",
+                "5625528137",
+                "5625528368",
+                "5625528134",
+                "5625528365",
+                "5625528131",
+                "5625528362",
+                "5625528239",
+                "5625528236",
+                "5625528128",
+                "5625010558",
+                "5623894779",
+                "5623894776",
+                "5625010690",
+                "5625010687",
+                "5623894770",
+                "5625010681",
+                "5623894785",
+                "5623894788",
+                "5625010555",
+                "5623894782",
+                "5625010684",
+                "5623894773",
+                "5623894767",
+                "5612456094",
+                "5612456088",
                 "5595347256",
                 "5595347256",
                 "5595347262",
@@ -1744,12 +1734,35 @@
                 "5583057057",
                 "5583057060",
                 "5601703894",
+                "5619114611",
                 "5601576390",
                 "5319374800",
                 "5320947728",
                 "5598650594",
                 "5598650591",
-                "5598651329"
+                "5598651329",
+                "5615271306",
+                "5614492224",
+                "5614492491",
+                "5614492512",
+                "5614492515",
+                "5618830549",
+                "5613147481",
+                "5613143479",
+                "5619284084",
+                "5619275243",
+                "5617625970",
+                "5617625967",
+                "5622045977",
+                "4737728378",
+                "5627328607",
+                "5623495864",
+                "5623961408",
+                "5628046064",
+                "5626593060",
+                "5598401704",
+                "5626398639",
+                "5598651800"
             ]
         }
     ],
@@ -2023,33 +2036,6 @@
             "value": true
         }
     ],
-    "icA9BidRefreshingSlots": [
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "CZ",
-                "DK"
-            ],
-            "value": [
-                "mobile_in_content",
-                "featured"
-            ]
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": [
-                "featured"
-            ]
-        }
-    ],
     "icPorvataDirect": [
         {
             "apps": [
@@ -2268,7 +2254,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v5.3.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.5/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
@@ -2324,6 +2310,57 @@
                 "XX"
             ],
             "value": 2000
+        }
+    ],
+    "icDeRecoExperiment": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 3.0,
+            "value": {
+                "name": "reco_personalized_AA_no_cache",
+                "groups": [
+                    {
+                        "name": "A",
+                        "config": {
+                            
+                        },
+                        "mobile": {
+                            "recommendedSlots": [
+                                
+                            ]
+                        },
+                        "sampling": 50,
+                        "ucpConfig": {
+                            "slots": [
+                                
+                            ]
+                        }
+                    },
+                    {
+                        "name": "B",
+                        "config": {
+                            
+                        },
+                        "mobile": {
+                            "recommendedSlots": [
+                                
+                            ]
+                        },
+                        "sampling": 50,
+                        "ucpConfig": {
+                            "slots": [
+                                
+                            ]
+                        }
+                    }
+                ]
+            }
         }
     ]
 }

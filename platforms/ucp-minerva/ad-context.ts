@@ -18,7 +18,6 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
-		disableConsentQueue: true,
 		maxDelayTimeout: 2000,
 		wad: {
 			enabled: false,

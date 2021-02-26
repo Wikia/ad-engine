@@ -38,6 +38,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureAffiliateSlot();
+		this.configureICBPlaceholderHandler();
+		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
@@ -52,6 +54,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
@@ -91,6 +94,31 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 		} else {
 			slotService.disable(slotName);
+		}
+	}
+
+	private configureICBPlaceholderHandler(): void {
+		if (context.get('wiki.opts.enableICBPlaceholder')) {
+			context.set('slots.incontent_boxad_1.defaultClasses', [
+				'incontent-boxad',
+				'ad-slot',
+				'ic-ad-slot-placeholder',
+				'loading',
+			]);
+
+			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+				adSlot.removeClass('loading');
+			});
+		}
+	}
+
+	private configureICPPlaceholderHandler(): void {
+		if (context.get('wiki.opts.enableICPPlaceholder')) {
+			context.set('slots.incontent_player.defaultClasses', ['ic-ad-slot-placeholder', 'loading']);
+
+			eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => {
+				adSlot.removeClass('loading');
+			});
 		}
 	}
 
@@ -137,7 +165,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
 					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable('floor_adhesion', 'closed-by-porvata');
+					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
+				}
+			});
+
+			eventService.on(events.INTERSTITIAL_DISPLAYED, () => {
+				if (this.CODE_PRIORITY.floor_adhesion.active) {
+					this.CODE_PRIORITY.floor_adhesion.active = false;
+					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
 				}
 			});
 		});

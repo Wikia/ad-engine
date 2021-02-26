@@ -4,7 +4,6 @@ export type PrebidConfig = {
 	enabled: boolean;
 	lazyLoadingEnabled: boolean;
 	bidsRefreshing: {
-		enabled: boolean;
 		slots: string[];
 	};
 } & Dictionary<PrebidAdapterConfig>;
