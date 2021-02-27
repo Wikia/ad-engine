@@ -510,6 +510,19 @@
             "value": true
         }
     ],
+    "icPrebidAppNexusGroupM": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "GB",
+                "UK"
+            ],
+            "value": false
+        }
+    ],
     "icFeaturedVideoPostroll": [
         {
             "apps": [
@@ -783,6 +796,8 @@
                 "5585170956",
                 "5585170959",
                 "5585170962",
+                "5629664089",
+                "5628410358",
                 "5625526730",
                 "5625528371",
                 "5625526727",
@@ -2183,9 +2198,6 @@
             "apps": [
                 "mobile-wiki",
                 "oasis"
-            ],
-            "regions": [
-                "CA"
             ],
             "value": true
         }
