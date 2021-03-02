@@ -76,10 +76,17 @@ export class UcpMobileSlotsDefinitionRepository {
 		const hasFeaturedVideo = context.get('custom.hasFeaturedVideo');
 		const isHome = context.get('wiki.opts.pageType') === 'home';
 		const isSearch = context.get('wiki.opts.pageType') === 'search';
+		const allAdsAllowed = context.get('wiki.opts.pageType') === 'all_ads';
 		const hasPageHeader = !!document.querySelector('.wiki-page-header');
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
 
-		return isSearch || isHome || hasPortableInfobox || (hasPageHeader && !hasFeaturedVideo);
+		return (
+			isSearch ||
+			isHome ||
+			hasPortableInfobox ||
+			(hasPageHeader && !hasFeaturedVideo) ||
+			allAdsAllowed
+		);
 	}
 
 	getTopBoxadConfig(): SlotSetupDefinition {
