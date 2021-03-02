@@ -62,6 +62,8 @@ class Permutive {
 			const permutiveGptTargeting = window.googletag.pubads().getTargeting('permutive');
 
 			if (permutiveGptTargeting.length) {
+				utils.logger(logGroup, ['gets targeting from GPT', permutiveGptTargeting]);
+
 				return permutiveGptTargeting;
 			}
 		}
@@ -69,6 +71,8 @@ class Permutive {
 		const segments = window.localStorage.getItem('_pdfps');
 		let permutiveTargeting = segments ? JSON.parse(segments) : [];
 		permutiveTargeting.push('_test');
+
+		utils.logger(logGroup, 'gets targeting from localStorage', permutiveTargeting);
 
 		return permutiveTargeting;
 	}
@@ -88,24 +92,30 @@ class Permutive {
 	}
 
 	private getPageViewEventSchema(): object {
+		const pageInfo = {
+			's0': context.get('targeting.s0'),
+			's1': context.get('targeting.s1'),
+			'skin': context.get('targeting.skin'),
+			'lang': context.get('targeting.lang'),
+			'esrb': context.get('targeting.esrb'),
+			'age': context.get('targeting.age'),
+			'sex': context.get('targeting.sex'),
+			'gnre': context.get('targeting.gnre'),
+			'media': context.get('targeting.media'),
+			'pform': context.get('targeting.pform'),
+			'pub': context.get('targeting.pub'),
+			'theme': context.get('targeting.theme'),
+			'tv': context.get('targeting.tv'),
+			'src': context.get('src'),
+			'geo': utils.geoService.getCountryCode(),
+		};
+
+		utils.logger(logGroup, 'gets pageview event schema', pageInfo);
+
 		return {
 			'page': {
 				'page_info': {
-					's0': context.get('targeting.s0'),
-					's1': context.get('targeting.s1'),
-					'skin': context.get('targeting.skin'),
-					'lang': context.get('targeting.lang'),
-					'esrb': context.get('targeting.esrb'),
-					'age': context.get('targeting.age'),
-					'sex': context.get('targeting.sex'),
-					'gnre': context.get('targeting.gnre'),
-					'media': context.get('targeting.media'),
-					'pform': context.get('targeting.pform'),
-					'pub': context.get('targeting.pub'),
-					'theme': context.get('targeting.theme'),
-					'tv': context.get('targeting.tv'),
-					'src': context.get('src'),
-					'geo': utils.geoService.getCountryCode(),
+					...pageInfo
 				},
 			}
 		}
