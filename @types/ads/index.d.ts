@@ -46,6 +46,7 @@ interface MediaWikiAdsTargeting {
 	wikiVertical: string;
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
+	adTags?: string[];
 }
 
 interface MediaWikiFeaturedVideoInfo {
