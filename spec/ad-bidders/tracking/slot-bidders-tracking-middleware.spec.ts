@@ -41,6 +41,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			telaria: 26.0,
 			mediagrid: 27.0,
 			verizon: 28.0,
+			appnexusGroupM: 29.0,
 		});
 	});
 
@@ -70,6 +71,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			telaria: 26.0,
 			mediagrid: 27.0,
 			verizon: 28.0,
+			appnexusGroupM: 29.0,
 		});
 
 		const context = {
@@ -106,6 +108,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_26: 26.0,
 			bidder_27: 27.0,
 			bidder_28: 28.0,
+			bidder_29: 29.0,
 		});
 	});
 
@@ -144,6 +147,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_26: '26not_used',
 			bidder_27: '27not_used',
 			bidder_28: '28not_used',
+			bidder_29: '29not_used',
 		});
 	});
 });
