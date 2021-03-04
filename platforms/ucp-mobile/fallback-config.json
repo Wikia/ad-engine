@@ -510,6 +510,19 @@
             "value": true
         }
     ],
+    "icPrebidAppNexusGroupM": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "GB",
+                "UK"
+            ],
+            "value": false
+        }
+    ],
     "icFeaturedVideoPostroll": [
         {
             "apps": [
@@ -780,9 +793,16 @@
                 "XX"
             ],
             "value": [
+                "5631833463",
+                "5631668329",
+                "2826685371",
+                "5628778263",
+                "5629857064",
                 "5585170956",
                 "5585170959",
                 "5585170962",
+                "5629664089",
+                "5628410358",
                 "5625526730",
                 "5625528371",
                 "5625526727",
@@ -1762,7 +1782,9 @@
                 "5626593060",
                 "5598401704",
                 "5626398639",
-                "5598651800"
+                "5598651800",
+                "5632392924",
+                "5629615601"
             ]
         }
     ],
@@ -1996,7 +2018,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20201229.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210301.min.js"
         }
     ],
     "icDurationMediaLibraryUrl": [
@@ -2181,8 +2203,7 @@
     "icPrebidMediaGrid": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "mobile-wiki"
             ],
             "regions": [
                 "CA"
@@ -2254,7 +2275,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.5/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.6/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
@@ -2321,9 +2342,9 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 3.0,
+            "sampling": 100.0,
             "value": {
-                "name": "reco_personalized_AA_no_cache",
+                "name": "reco_personalized_AA_group_sampling",
                 "groups": [
                     {
                         "name": "A",
@@ -2335,7 +2356,7 @@
                                 
                             ]
                         },
-                        "sampling": 50,
+                        "sampling": 2,
                         "ucpConfig": {
                             "slots": [
                                 
@@ -2352,7 +2373,7 @@
                                 
                             ]
                         },
-                        "sampling": 50,
+                        "sampling": 2,
                         "ucpConfig": {
                             "slots": [
                                 
