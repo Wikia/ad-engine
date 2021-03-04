@@ -24,6 +24,10 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.33across.enabled', instantConfig.get('icPrebid33Across'));
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
+		context.set(
+			'bidders.prebid.appnexusGroupM.enabled',
+			instantConfig.get('icPrebidAppNexusGroupM'),
+		);
 		context.set('bidders.prebid.beachfront.enabled', instantConfig.get('icPrebidBeachfront'));
 		context.set('bidders.prebid.gumgum.enabled', instantConfig.get('icPrebidGumGum'));
 		context.set('bidders.prebid.indexExchange.enabled', instantConfig.get('icPrebidIndexExchange'));
