@@ -25,7 +25,7 @@ export class CloseToRedirectButtonHandler implements TemplateStateHandler {
 		window.addEventListener(
 			'hashchange',
 			() => {
-				if (location.hash !== '#interstitial') {
+				if (window.location.hash !== '#interstitial') {
 					transition('hidden');
 				}
 			},

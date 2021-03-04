@@ -20,6 +20,12 @@ export class InterstitialBootstrapHandler implements TemplateStateHandler {
 			await slotTweaker.adjustIframeByContentSize(this.adSlot);
 		}
 
+		if (window.location.hash === '#interstitial') {
+			window.location.hash = '';
+		}
+
+		window.ads.runtime.interstitial = window.ads.runtime.interstitial || {};
+
 		transition('listen');
 	}
 

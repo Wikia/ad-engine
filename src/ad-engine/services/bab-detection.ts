@@ -74,7 +74,7 @@ class BabDetection {
 	}
 
 	private setRuntimeParams(isBabDetected: boolean): void {
-		window.ads.runtime = window.ads.runtime || ({} as any);
+		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 		window.ads.runtime.bab = window.ads.runtime.bab || {};
 		window.ads.runtime.bab.blocking = isBabDetected;
 
