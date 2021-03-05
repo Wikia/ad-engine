@@ -6,7 +6,7 @@ import {
 	TemplateTransition,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { EMPTY, from, merge, Observable, Subject, timer } from 'rxjs';
+import { EMPTY, from, merge, NEVER, Observable, Subject, timer } from 'rxjs';
 import { mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable({ autobind: false })
@@ -31,6 +31,10 @@ export class SlotDecisionOnViewabilityHandler implements TemplateStateHandler {
 	}
 
 	private getViewabilityStream(): Observable<unknown> {
+		if (this.additionalHideTime === -1) {
+			return NEVER;
+		}
+
 		return from(this.adSlot.viewed).pipe(mergeMap(() => timer(this.additionalHideTime)));
 	}
 
