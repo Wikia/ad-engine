@@ -46,13 +46,24 @@ interface MediaWikiAdsTargeting {
 	wikiVertical: string;
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
-	adTags?: string[];
+	adTagManagerTags?: AdTagManagerTags;
 }
 
 interface MediaWikiFeaturedVideoInfo {
 	mediaId: string | null;
 	videoTags: string[];
 	isDedicatedForArticle: boolean | null;
+}
+
+interface AdTagManagerTags {
+	age: string[];
+	gnre: string[];
+	media: string[];
+	pform: string[];
+	pub: string[];
+	sex: string[];
+	theme: string[];
+	tv: string[];
 }
 
 interface Runtime {
