@@ -520,7 +520,7 @@
                 "GB",
                 "UK"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icFeaturedVideoPostroll": [
@@ -598,6 +598,19 @@
             "regions": [
                 "XX"
             ],
+            "value": true
+        }
+    ],
+    "icSxIsFandomMobileBannerDisabled": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
             "value": true
         }
     ],
@@ -1784,6 +1797,7 @@
                 "5626398639",
                 "5598651800",
                 "5632392924",
+                "5634738479",
                 "5629615601"
             ]
         }
