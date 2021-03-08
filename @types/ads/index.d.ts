@@ -56,14 +56,14 @@ interface MediaWikiFeaturedVideoInfo {
 }
 
 interface AdTagManagerTags {
-	age: string[];
-	gnre: string[];
-	media: string[];
-	pform: string[];
-	pub: string[];
-	sex: string[];
-	theme: string[];
-	tv: string[];
+	age?: string[];
+	gnre?: string[];
+	media?: string[];
+	pform?: string[];
+	pub?: string[];
+	sex?: string[];
+	theme?: string[];
+	tv?: string[];
 }
 
 interface Runtime {
