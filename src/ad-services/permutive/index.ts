@@ -62,7 +62,7 @@ class Permutive {
 			const permutiveGptTargeting = window.googletag.pubads().getTargeting('permutive');
 
 			if (permutiveGptTargeting.length) {
-				utils.logger(logGroup, ['gets targeting from GPT', permutiveGptTargeting]);
+				utils.logger(logGroup, 'gets targeting from GPT', permutiveGptTargeting);
 
 				return permutiveGptTargeting;
 			}
