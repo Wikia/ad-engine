@@ -67,10 +67,12 @@ export class HideOnViewability {
 	private getViewabilityPromise(adSlot: AdSlot): Promise<void> {
 		return new Promise((resolve) => {
 			adSlot.viewed.then(() => {
-				setTimeout(() => {
-					utils.logger(HideOnViewability.getName(), 'viewability Promise resolved');
-					resolve();
-				}, this.config.additionalHideTime || 0);
+				if (this.config.additionalHideTime !== -1) {
+					setTimeout(() => {
+						utils.logger(HideOnViewability.getName(), 'viewability Promise resolved');
+						resolve();
+					}, this.config.additionalHideTime || 0);
+				}
 			});
 		});
 	}
