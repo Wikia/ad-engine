@@ -520,7 +520,7 @@
                 "GB",
                 "UK"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icFeaturedVideoPostroll": [
@@ -598,6 +598,19 @@
             "regions": [
                 "XX"
             ],
+            "value": true
+        }
+    ],
+    "icSxIsFandomMobileBannerDisabled": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
             "value": true
         }
     ],
@@ -793,6 +806,7 @@
                 "XX"
             ],
             "value": [
+                "5638254131",
                 "5631833463",
                 "5631668329",
                 "2826685371",
@@ -1784,7 +1798,10 @@
                 "5626398639",
                 "5598651800",
                 "5632392924",
-                "5629615601"
+                "5634738479",
+                "5629615601",
+                "5639027258",
+                "5637583580"
             ]
         }
     ],
