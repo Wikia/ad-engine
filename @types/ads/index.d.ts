@@ -55,10 +55,16 @@ interface MediaWikiFeaturedVideoInfo {
 }
 
 interface Runtime {
+	bab?: {
+		blocking?: boolean;
+	};
 	disableBtf?: boolean;
 	disableSecondCall?: boolean;
+	interstitial?: {
+		available?: boolean;
+		visible?: boolean;
+	};
 	unblockHighlyViewableSlots?: boolean;
-	bab?: any;
 }
 
 interface VideoStatus {
