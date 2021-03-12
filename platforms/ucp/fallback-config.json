@@ -98,7 +98,7 @@
             ],
             "sampling": 100.0,
             "value": {
-                "name": "de5320_qa",
+                "name": "de5377_qa",
                 "groups": [
                     {
                         "name": "A",
@@ -159,36 +159,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icDePersonalizedRecoExperimentTest": [
-        {
-            "apps": [
-                "oasis"
-            ],
-            "value": {
-                "name": "ucp_qa_2",
-                "groups": [
-                    {
-                        "name": "small",
-                        "sampling": 30,
-                        "ucpConfig": {
-                            "slots": [
-                                "footer-card-11"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "big",
-                        "sampling": 70,
-                        "ucpConfig": {
-                            "slots": [
-                                "footer-card-3"
-                            ]
-                        }
-                    }
-                ]
-            }
         }
     ],
     "icComscoreJwpTracking": [
@@ -1638,6 +1608,8 @@
                 "5634738479",
                 "5629615601",
                 "5639027258",
+                "5635883648",
+                "5638709244",
                 "5637583580"
             ]
         }
@@ -2092,6 +2064,7 @@
     "icPrebidMediaGrid": [
         {
             "apps": [
+                "mobile-wiki",
                 "oasis"
             ],
             "regions": [
@@ -2101,6 +2074,17 @@
         }
     ],
     "icFloorAdhesionDelay": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA",
+                "PL"
+            ],
+            "value": -1
+        },
         {
             "apps": [
                 "mobile-wiki",
@@ -2200,10 +2184,27 @@
             ],
             "sampling": 100.0,
             "value": {
-                "name": "reco_personalized_AA_group_sampling",
+                "name": "reco_personalized_AB_first_slot",
                 "groups": [
                     {
-                        "name": "A",
+                        "name": "first_slot",
+                        "config": {
+                            
+                        },
+                        "mobile": {
+                            "recommendedSlots": [
+                                "footer-slot-1"
+                            ]
+                        },
+                        "sampling": 1,
+                        "ucpConfig": {
+                            "slots": [
+                                "footer-card-3"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "control",
                         "config": {
                             
                         },
@@ -2212,7 +2213,7 @@
                                 
                             ]
                         },
-                        "sampling": 2,
+                        "sampling": 1,
                         "ucpConfig": {
                             "slots": [
                                 
@@ -2220,7 +2221,7 @@
                         }
                     },
                     {
-                        "name": "B",
+                        "name": "control_control",
                         "config": {
                             
                         },
@@ -2229,7 +2230,7 @@
                                 
                             ]
                         },
-                        "sampling": 2,
+                        "sampling": 1,
                         "ucpConfig": {
                             "slots": [
                                 
