@@ -2246,6 +2246,17 @@
                 "oasis"
             ],
             "regions": [
+                "CA",
+                "PL"
+            ],
+            "value": -1
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
                 "XX"
             ],
             "value": 30000
