@@ -93,6 +93,20 @@ class SlotService {
 	 * Get slot by its name or pos
 	 */
 	get(id: string): AdSlot {
+		if (id.includes('gpt_unit_')) {
+			const prefix = context.get('custom.serverPrefix');
+			const matcher = new RegExp(`/${prefix}.[A-Z]+/(?<slotName>[a-z_]+)/`);
+			const found = id.match(matcher);
+
+			if (found['groups'] && found['groups'].slotName && this.slots[found['groups'].slotName]) {
+				const slotName = found['groups'].slotName;
+
+				this.slots[slotName].setConfigProperty('insertId', id);
+
+				return this.slots[slotName];
+			}
+		}
+
 		const [singleSlotName] = id.split(',');
 
 		if (this.slots[singleSlotName]) {

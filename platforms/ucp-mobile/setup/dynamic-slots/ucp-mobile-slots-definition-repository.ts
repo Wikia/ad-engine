@@ -2,7 +2,6 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	CookieStorageAdapter,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -261,11 +260,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInterstitialApplicable(): boolean {
-		const cookieAdapter = new CookieStorageAdapter();
-
-		return (
-			this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('interstitial-impression')
-		);
+		return this.instantConfig.get('icInterstitial');
 	}
 
 	getInvisibleHighImpactConfig(): SlotSetupDefinition {
