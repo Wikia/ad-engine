@@ -103,6 +103,8 @@
                 "XX"
             ],
             "value": [
+                "5641439187",
+                "5641439178",
                 "5638254131",
                 "5631833463",
                 "5631668329",
@@ -1097,7 +1099,12 @@
                 "5632392924",
                 "5634738479",
                 "5629615601",
-                "5637583580"
+                "5639027258",
+                "5635883648",
+                "5638709244",
+                "5637583580",
+                "5643483514",
+                "5643484747"
             ]
         }
     ],
@@ -1203,7 +1210,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.6/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.7/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [

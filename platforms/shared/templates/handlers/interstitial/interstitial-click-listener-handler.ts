@@ -14,6 +14,8 @@ export class InterstitialClickListenerHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
+		window.ads.runtime.interstitial.available = true;
+
 		const callback = (event) => {
 			const link = this.findUrl(event.target);
 
@@ -36,10 +38,11 @@ export class InterstitialClickListenerHandler implements TemplateStateHandler {
 		eventService.emit(events.INTERSTITIAL_DISPLAYED);
 		this.adSlot.show();
 
-		window.location.hash = 'interstitial';
-
 		const cookieAdapter = new CookieStorageAdapter();
 		cookieAdapter.setItem('interstitial-impression', '1');
+
+		window.location.hash = 'interstitial';
+		window.ads.runtime.interstitial.visible = true;
 	}
 
 	private findUrl(element): string | null {

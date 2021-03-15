@@ -4,6 +4,7 @@ import {
 	btfBlockerService,
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	DiProcess,
 	events,
 	eventService,
@@ -41,6 +42,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.configureICBPlaceholderHandler();
 		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
+		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
 	}
@@ -130,6 +132,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
 
 		fillerService.register(new PorvataFiller());
+	}
+
+	private configureInterstitial(): void {
+		slotService.on('interstitial', AdSlot.STATUS_COLLAPSE, () => {
+			const cookieAdapter = new CookieStorageAdapter();
+			cookieAdapter.setItem('interstitial-impression', '1');
+		});
+
+		slotService.on('interstitial', AdSlot.STATUS_FORCED_COLLAPSE, () => {
+			const cookieAdapter = new CookieStorageAdapter();
+			cookieAdapter.setItem('interstitial-impression', '1');
+		});
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
