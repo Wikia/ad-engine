@@ -58,6 +58,7 @@ interface MediaWikiFeaturedVideoInfo {
 
 interface AdTagManagerTags {
 	age?: string[];
+	esrb?: string[];
 	gnre?: string[];
 	media?: string[];
 	pform?: string[];
