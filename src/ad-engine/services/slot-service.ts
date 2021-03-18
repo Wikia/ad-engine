@@ -94,19 +94,8 @@ class SlotService {
 	 */
 	get(id: string): AdSlot {
 		if (id.includes('gpt_unit_')) {
-			const prefix = context.get('custom.serverPrefix');
-			const matcher = new RegExp(`/${prefix}.[A-Z]+/(?<slotName>[a-z_]+)/`);
-			const found = id.match(matcher);
-
-			if (found['groups'] && found['groups'].slotName && this.slots[found['groups'].slotName]) {
-				const slotName = found['groups'].slotName;
-
-				this.slots[slotName].setConfigProperty('insertId', id);
-
-				return this.slots[slotName];
-			}
+			return this.getGptAdSlot(id);
 		}
-
 		const [singleSlotName] = id.split(',');
 
 		if (this.slots[singleSlotName]) {
@@ -283,6 +272,35 @@ class SlotService {
 			});
 		} else {
 			logger(groupName, `Could not push slot ${node.id} because adStack is not present.`);
+		}
+	}
+
+	/**
+	 * Get GPT AdSlot
+	 */
+	private getGptAdSlot(id: string): AdSlot {
+		const prefix = context.get('custom.serverPrefix');
+		const matcher = new RegExp(`/${prefix}.[A-Z]+/(?<slotName>[a-z_]+)/`);
+		const found = id.match(matcher);
+
+		if (found['groups'] && found['groups'].slotName && this.slots[found['groups'].slotName]) {
+			const slotName = found['groups'].slotName;
+			const gptAdSlot = this.slots[slotName];
+
+			this.setGptAdSlotInsertId(gptAdSlot, id);
+
+			return gptAdSlot;
+		}
+	}
+
+	/**
+	 * Set insert id for GPT Ad Slot
+	 */
+	private setGptAdSlotInsertId(gptAdSlot: AdSlot, id: string): void {
+		const gptAdSlotName = gptAdSlot.getSlotName();
+
+		if (this.slots[gptAdSlotName]) {
+			this.slots[gptAdSlotName].setConfigProperty('insertId', id);
 		}
 	}
 }
