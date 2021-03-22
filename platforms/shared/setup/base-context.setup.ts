@@ -105,7 +105,12 @@ export class BaseContextSetup implements DiProcess {
 			'services.interventionTracker.enabled',
 			this.instantConfig.get('icInterventionTracking'),
 		);
-		context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
+
+		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
+			// if backend call is disabled let's call it on frontend
+			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
+		}
+
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));

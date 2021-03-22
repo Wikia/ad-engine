@@ -24,6 +24,7 @@ interface MediaWikiAdsOpts {
 	enableTBPlaceholder?: boolean;
 	enableICBPlaceholder?: boolean;
 	enableICPPlaceholder?: boolean;
+	enableAdTagManagerBackend?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
@@ -46,12 +47,25 @@ interface MediaWikiAdsTargeting {
 	wikiVertical: string;
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
+	adTagManagerTags?: AdTagManagerTags;
 }
 
 interface MediaWikiFeaturedVideoInfo {
 	mediaId: string | null;
 	videoTags: string[];
 	isDedicatedForArticle: boolean | null;
+}
+
+interface AdTagManagerTags {
+	age?: string[];
+	esrb?: string[];
+	gnre?: string[];
+	media?: string[];
+	pform?: string[];
+	pub?: string[];
+	sex?: string[];
+	theme?: string[];
+	tv?: string[];
 }
 
 interface Runtime {
