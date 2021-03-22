@@ -94,7 +94,10 @@ class SlotService {
 	 */
 	get(id: string): AdSlot {
 		if (id.includes('gpt_unit_')) {
-			return this.getGptAdSlot(id);
+			const gptSlotName = this.getGptAdSlot(id);
+			this.setGptAdSlotInsertId(gptSlotName, id);
+
+			return gptSlotName;
 		}
 		const [singleSlotName] = id.split(',');
 
@@ -283,13 +286,10 @@ class SlotService {
 		const matcher = new RegExp(`/${prefix}.[A-Z]+/(?<slotName>[a-z_]+)/`);
 		const found = id.match(matcher);
 
-		if (found['groups'] && found['groups'].slotName && this.slots[found['groups'].slotName]) {
-			const slotName = found['groups'].slotName;
-			const gptAdSlot = this.slots[slotName];
-
-			this.setGptAdSlotInsertId(gptAdSlot, id);
-
-			return gptAdSlot;
+		try {
+			return this.slots[found['groups'].slotName];
+		} catch (_) {
+			throw new Error('Unsupported GPT Template slot id format');
 		}
 	}
 
@@ -297,11 +297,7 @@ class SlotService {
 	 * Set insert id for GPT Ad Slot
 	 */
 	private setGptAdSlotInsertId(gptAdSlot: AdSlot, id: string): void {
-		const gptAdSlotName = gptAdSlot.getSlotName();
-
-		if (this.slots[gptAdSlotName]) {
-			this.slots[gptAdSlotName].setConfigProperty('insertId', id);
-		}
+		gptAdSlot.setConfigProperty('insertId', id);
 	}
 }
 
