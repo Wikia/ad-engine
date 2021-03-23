@@ -44,7 +44,7 @@ export const basicContext = {
 	},
 	targeting: {
 		rollout_tracking: ['ucp-desktop'],
-		skin: 'oasis',
+		skin: 'ucp_desktop',
 		uap: 'none',
 		uap_c: 'none',
 	},

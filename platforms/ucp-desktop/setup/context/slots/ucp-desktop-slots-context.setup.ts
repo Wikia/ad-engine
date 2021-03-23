@@ -13,7 +13,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				insertBeforeSelector: '.WikiaPage',
+				// ToDo: top-mergin needs to be fixed
+				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
@@ -38,7 +39,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				insertBeforeSelector: '.WikiaPage',
+				// ToDo: top-mergin needs to be fixed
+				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -71,7 +73,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				insertBeforeSelector: '.rcs-container, .wikia-rail-inner',
+				// ToDo: it's probably not final selector
+				insertBeforeSelector: '.page-wrapper__right-rail h1',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [
@@ -89,6 +92,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'AU',
+				// ToDo: revalidate requirements
 				insertBeforeSelector: '#top_boxad',
 				options: {},
 				slotShortcut: 'a',
@@ -102,7 +106,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,
 				group: 'PX',
-				insertBeforeSelector: '.WikiaPage',
+				// ToDo: ditto top_leaderboard or cleanup
+				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				slotNameSuffix: '',
 				slotShortcut: 'x',
@@ -126,7 +131,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
 				group: 'HiVi',
-				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
+				// ToDo: it's probably not final selector
+				parentContainerSelector: '.page-wrapper__right-rail',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
@@ -159,7 +165,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.mcf-en,.mw-special-Newimages .license-description',
+				insertBeforeSelector: '.wds-global-footer',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -210,7 +216,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.WikiaPage',
+				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				targeting: {
 					loc: 'footer',
@@ -223,7 +229,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
-				insertBeforeSelector: '.WikiaPage',
+				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				outOfPage: true,
 				targeting: {
