@@ -183,6 +183,14 @@ export class GptProvider implements Provider {
 	/** @private */
 	createGptSlot(adSlot: AdSlot, sizeMap: GptSizeMap) {
 		if (adSlot.isOutOfPage()) {
+			if (adSlot.getConfigProperty('outOfPageFormat')) {
+				return window.googletag.defineOutOfPageSlot(
+					adSlot.getAdUnit(),
+					// @ts-ignore
+					window.googletag.enums.OutOfPageFormat[adSlot.getConfigProperty('outOfPageFormat')],
+				);
+			}
+
 			return window.googletag.defineOutOfPageSlot(adSlot.getAdUnit(), adSlot.getSlotName());
 		}
 

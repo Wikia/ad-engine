@@ -1,5 +1,7 @@
 import {
 	AdSlot,
+	events,
+	eventService,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -11,7 +13,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 export class InterstitialBootstrapHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
-	async onEnter(transition: TemplateTransition<'listen'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
 		this.adSlot.hide();
 		this.adSlot.addClass('interstitial');
 		this.adSlot.addClass('out-of-page-template');
@@ -20,14 +22,16 @@ export class InterstitialBootstrapHandler implements TemplateStateHandler {
 			await slotTweaker.adjustIframeByContentSize(this.adSlot);
 		}
 
-		if (window.location.hash === '#interstitial') {
-			window.location.hash = '';
-		}
-
 		window.ads.runtime.interstitial = window.ads.runtime.interstitial || {};
+		window.ads.runtime.interstitial.available = true;
 
-		transition('listen');
+		transition('display');
 	}
 
-	async onLeave(): Promise<void> {}
+	async onLeave(): Promise<void> {
+		eventService.emit(events.INTERSTITIAL_DISPLAYED);
+		this.adSlot.show();
+
+		window.ads.runtime.interstitial.visible = true;
+	}
 }
