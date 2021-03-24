@@ -93,6 +93,12 @@ class SlotService {
 	 * Get slot by its name or pos
 	 */
 	get(id: string): AdSlot {
+		if (id.includes('gpt_unit_')) {
+			const gptSlotName = this.getGptAdSlot(id);
+			this.setGptAdSlotInsertId(gptSlotName, id);
+
+			return gptSlotName;
+		}
 		const [singleSlotName] = id.split(',');
 
 		if (this.slots[singleSlotName]) {
@@ -270,6 +276,28 @@ class SlotService {
 		} else {
 			logger(groupName, `Could not push slot ${node.id} because adStack is not present.`);
 		}
+	}
+
+	/**
+	 * Get GPT AdSlot
+	 */
+	private getGptAdSlot(id: string): AdSlot {
+		const prefix = context.get('custom.serverPrefix');
+		const matcher = new RegExp(`/${prefix}.[A-Z]+/(?<slotName>[a-z_]+)/`);
+		const found = id.match(matcher);
+
+		try {
+			return this.slots[found['groups'].slotName];
+		} catch (_) {
+			throw new Error('Unsupported GPT Template slot id format');
+		}
+	}
+
+	/**
+	 * Set insert id for GPT Ad Slot
+	 */
+	private setGptAdSlotInsertId(gptAdSlot: AdSlot, id: string): void {
+		gptAdSlot.setConfigProperty('insertId', id);
 	}
 }
 
