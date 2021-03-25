@@ -14,7 +14,7 @@ export class UcpDesktopIocSetup implements DiProcess {
 	constructor(private container: Container) {}
 
 	execute(): void {
-		this.container.bind(UcpTargetingSetup.skin('oasis'));
+		this.container.bind(UcpTargetingSetup.skin('ucp_desktop'));
 
 		TrackingSetup.provideMiddlewares({
 			slotTrackingMiddlewares: [
