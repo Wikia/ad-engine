@@ -16,6 +16,7 @@ interface MediaWikiAdsContext {
 interface MediaWikiAdsOpts {
 	noAdsReasons: string[];
 	isAdTestWiki: boolean;
+	isGamepedia?: boolean;
 	isSubjectToCcpa?: boolean;
 	pageType: string;
 	platformName?: string;
