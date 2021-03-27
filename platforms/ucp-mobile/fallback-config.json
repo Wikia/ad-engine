@@ -685,6 +685,28 @@
             "value": true
         }
     ],
+    "icDeHeartbeatTracking": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 100.0,
+            "value": [
+                5,
+                11,
+                31,
+                61,
+                181,
+                601,
+                1801
+            ]
+        }
+    ],
     "icPrebidBeachfront": [
         {
             "apps": [
