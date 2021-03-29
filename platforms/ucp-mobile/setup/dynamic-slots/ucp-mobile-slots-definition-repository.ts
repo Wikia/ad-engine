@@ -100,26 +100,45 @@ export class UcpMobileSlotsDefinitionRepository {
 			? [...defaultClasses, 'ic-ad-slot-placeholder', 'loading']
 			: defaultClasses;
 
-		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '.mw-parser-output > h2',
-				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
-			},
-			slotCreatorWrapperConfig: {
-				classList,
-			},
-			activator: () => {
-				this.pushWaitingSlot(slotName);
-				if (isTBPlaceholderEnabled) {
+		if (isTBPlaceholderEnabled) {
+			return {
+				slotCreatorConfig: {
+					slotName,
+					anchorSelector: '.top-boxad',
+					insertMethod: 'prepend',
+					classList: ['hide', 'ad-slot'],
+				},
+				slotCreatorWrapperConfig: null,
+				activator: () => {
+					context.push('state.adStack', { id: slotName });
 					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-						const topBoxad = document.querySelector('.top-boxad');
-						topBoxad.classList.remove('loading');
+						const topBoxAd = document.querySelector('.top-boxad');
+						topBoxAd.classList.remove('is-loading');
 					});
-				}
-			},
-		};
+				},
+			};
+		} 
+			return {
+				slotCreatorConfig: {
+					slotName,
+					anchorSelector: '.mw-parser-output > h2',
+					insertMethod: 'before',
+					classList: ['hide', 'ad-slot'],
+				},
+				slotCreatorWrapperConfig: {
+					classList,
+				},
+				activator: () => {
+					this.pushWaitingSlot(slotName);
+					if (isTBPlaceholderEnabled) {
+						slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+							const topBoxad = document.querySelector('.top-boxad');
+							topBoxad.classList.remove('loading');
+						});
+					}
+				},
+			};
+		
 	}
 
 	private isInContentApplicable(): boolean {
