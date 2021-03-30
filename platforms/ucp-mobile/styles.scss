@@ -93,12 +93,6 @@
 	}
 }
 
-.ad-slot-wrapper.top-boxad {
-	&.ic-ad-slot-placeholder {
-		@include ic-ad-slot-placeholder;
-	}
-}
-
 .incontent-boxad {
 	&.ic-ad-slot-placeholder {
 		@include ic-ad-slot-placeholder;

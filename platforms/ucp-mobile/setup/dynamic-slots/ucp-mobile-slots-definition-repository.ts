@@ -95,50 +95,48 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotName = 'top_boxad';
 		const isTBPlaceholderEnabled = context.get('wiki.opts.enableTBPlaceholder');
-		const defaultClasses = ['ad-slot-wrapper', 'top-boxad'];
-		const classList = isTBPlaceholderEnabled
-			? [...defaultClasses, 'ic-ad-slot-placeholder', 'loading']
-			: defaultClasses;
+		const defaultClasses = ['ad-slot-placeholder', 'top-boxad'];
+		const classList = isTBPlaceholderEnabled ? [...defaultClasses, 'is-loading'] : defaultClasses;
 
-		if (isTBPlaceholderEnabled) {
-			return {
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: '.top-boxad',
-					insertMethod: 'prepend',
-					classList: ['hide', 'ad-slot'],
-				},
-				slotCreatorWrapperConfig: null,
-				activator: () => {
-					context.push('state.adStack', { id: slotName });
+		const clsImprovedSlotSetupDefinition: SlotSetupDefinition = {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.top-boxad',
+				insertMethod: 'prepend',
+				classList: ['hide', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: null,
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topBoxAd = document.querySelector('.top-boxad');
+					topBoxAd.classList.remove('is-loading');
+				});
+			},
+		};
+
+		const slotSetupDefinition: SlotSetupDefinition = {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.mw-parser-output > h2',
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: {
+				classList,
+			},
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+				if (isTBPlaceholderEnabled) {
 					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-						const topBoxAd = document.querySelector('.top-boxad');
-						topBoxAd.classList.remove('is-loading');
+						const topBoxad = document.querySelector('.top-boxad');
+						topBoxad.classList.remove('loading');
 					});
-				},
-			};
-		} 
-			return {
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: '.mw-parser-output > h2',
-					insertMethod: 'before',
-					classList: ['hide', 'ad-slot'],
-				},
-				slotCreatorWrapperConfig: {
-					classList,
-				},
-				activator: () => {
-					this.pushWaitingSlot(slotName);
-					if (isTBPlaceholderEnabled) {
-						slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-							const topBoxad = document.querySelector('.top-boxad');
-							topBoxad.classList.remove('loading');
-						});
-					}
-				},
-			};
-		
+				}
+			},
+		};
+
+		return isTBPlaceholderEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
 	}
 
 	private isInContentApplicable(): boolean {
