@@ -80,10 +80,14 @@
 	}
 }
 
-.ad-slot {
-	margin: 0 0 1.125rem;
-	text-align: center;
+not(.ic-ad-slot-placeholder) {
+	.ad-slot {
+		margin: 0 0 1.125rem;
+		text-align: center;
+	}
+}
 
+.ad-slot {
 	.provider-container {
 		margin: 20px auto;
 	}
@@ -103,6 +107,10 @@
 	&.ic-ad-slot-placeholder {
 		@include ic-ad-slot-placeholder;
 	}
+}
+
+.ic-ad-slot-placeholder {
+	@include ic-ad-slot-placeholder;
 }
 
 #incontent_player {
@@ -144,7 +152,7 @@
 
 .article-content .ad-slot-wrapper .ad-slot,
 .article-content p + .ad-slot {
-	&.incontent-boxad {
+	&.incontent-boxad:not(.ic-ad-slot-placeholder) {
 		margin: 3rem 0;
 
 		&:not(.a9-ad) {
@@ -153,7 +161,7 @@
 	}
 }
 
-.article-content .ad-slot {
+.article-content :not(.ic-ad-slot-placeholder) > .ad-slot {
 	&:not(.a9-ad) {
 		margin: 0 -1.5rem 1.125rem;
 	}

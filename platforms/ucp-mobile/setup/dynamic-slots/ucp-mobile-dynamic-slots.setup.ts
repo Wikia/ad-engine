@@ -52,6 +52,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.insertSlots([
 			topLeaderboardDefinition,
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
+			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
@@ -100,15 +101,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private configureICBPlaceholderHandler(): void {
 		if (context.get('wiki.opts.enableICBPlaceholder')) {
-			context.set('slots.incontent_boxad_1.defaultClasses', [
-				'incontent-boxad',
-				'ad-slot',
-				'ic-ad-slot-placeholder',
-				'loading',
-			]);
+			context.set('slots.incontent_boxad_1.defaultClasses', ['incontent-boxad', 'ad-slot']);
 
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
 				adSlot.removeClass('loading');
+			});
+		}
+
+		if (context.get('icbs_change')) {
+			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+				const slotName = adSlot.getSlotName();
+				const slotElement = document.querySelector(`#${slotName}`);
+				slotElement.parentElement.classList.remove('loading');
 			});
 		}
 	}

@@ -86,7 +86,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				bidderAlias: 'mobile_in_content',
 				viewabilityCounterId: 'incontent_boxad',
 				cheshireCatSlot: true,
-				defaultClasses: ['hide', 'incontent-boxad', 'ad-slot'],
+				defaultClasses: ['hide', 'ad-slot'],
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},

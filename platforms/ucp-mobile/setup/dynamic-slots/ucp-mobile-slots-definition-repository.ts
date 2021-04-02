@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	communicationService,
 	context,
+	globalAction,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -13,6 +14,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import { props } from 'ts-action';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -118,6 +120,55 @@ export class UcpMobileSlotsDefinitionRepository {
 						topBoxad.classList.remove('loading');
 					});
 				}
+			},
+		};
+	}
+
+	getIncontentBoxadConfig(): SlotSetupDefinition {
+		if (!this.isInContentApplicable()) {
+			return;
+		}
+
+		const slotName = 'incontent_boxad_1';
+		const classList = ['ad-slot-wrapper', 'incontent-boxad', 'ic-ad-slot-placeholder', 'loading'];
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.mw-parser-output > h2',
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+				repeat: {
+					index: 1,
+					limit: 20,
+					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.rv': '{slotConfig.repeat.index}',
+						'targeting.pos': ['incontent_boxad'],
+					},
+					insertBelowScrollPosition: true,
+				},
+			},
+			slotCreatorWrapperConfig: {
+				classList,
+			},
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+
+				slotService.on('incontent_boxad_1', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const incontentBoxad1 = document.querySelector('.incontent-boxad');
+					incontentBoxad1.classList.remove('loading');
+				});
+
+				interface SlotParams {
+					slotName: string;
+				}
+
+				const icbActivated = globalAction('[ICB] activated', props<SlotParams>());
+				communicationService.dispatch(icbActivated({ slotName: 'incontent_boxad_1' }));
+
+				context.set('icbs_change', true);
 			},
 		};
 	}

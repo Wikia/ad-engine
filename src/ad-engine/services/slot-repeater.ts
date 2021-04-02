@@ -17,7 +17,7 @@ function buildString(pattern: string, definition: SlotDefinition): string {
 	});
 }
 
-function repeatSlot(adSlot: AdSlot): boolean {
+function repeatSlot(adSlot: AdSlot, lazyLoading: boolean): boolean {
 	const newSlotDefinition = adSlot.getCopy();
 	const repeatConfig = newSlotDefinition.repeat;
 
@@ -48,7 +48,7 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 	context.set(`slots.${slotName}.uid`, generateUniqueId());
 
-	const container = slotInjector.inject(slotName);
+	const container = slotInjector.inject(slotName, lazyLoading);
 	const additionalClasses = repeatConfig.additionalClasses || '';
 
 	if (container !== null) {
@@ -62,13 +62,23 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 class SlotRepeater {
 	init(): void {
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
-			if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-				return repeatSlot(adSlot);
-			}
+		if (context.get('icbs_change')) {
+			eventService.on(AdSlot.SLOT_REQUESTED_EVENT, (adSlot: AdSlot) => {
+				if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+					return repeatSlot(adSlot, false);
+				}
 
-			return false;
-		});
+				return false;
+			});
+		} else {
+			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+				if (adSlot.isEnabled() && adSlot.isRepeatable()) {
+					return repeatSlot(adSlot, true);
+				}
+
+				return false;
+			});
+		}
 	}
 }
 

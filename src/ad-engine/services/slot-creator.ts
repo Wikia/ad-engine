@@ -11,6 +11,7 @@ export interface SlotCreatorConfig {
 	anchorPosition?: number | 'firstViable' | 'belowFirstViewport' | 'belowScrollPosition';
 	avoidConflictWith?: string[];
 	classList?: string[];
+	repeat?: object;
 }
 
 export interface SlotCreatorWrapperConfig {
@@ -40,6 +41,7 @@ export class SlotCreator {
 			anchorPosition: slotLooseConfig.anchorPosition ?? 'firstViable',
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
+			repeat: slotLooseConfig.repeat || {},
 		};
 	}
 
