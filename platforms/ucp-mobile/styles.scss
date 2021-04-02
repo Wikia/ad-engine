@@ -60,7 +60,7 @@
 	justify-content: center;
 	min-height: 250px;
 
-	&.loading {
+	&.is-loading {
 		animation: is-loading 2s infinite;
 		border-radius: 20px;
 	}

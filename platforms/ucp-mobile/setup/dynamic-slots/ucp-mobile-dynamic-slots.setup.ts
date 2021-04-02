@@ -99,18 +99,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureICBPlaceholderHandler(): void {
-		if (context.get('wiki.opts.enableICBPlaceholder')) {
-			context.set('slots.incontent_boxad_1.defaultClasses', [
-				'incontent-boxad',
-				'ad-slot',
-				'ic-ad-slot-placeholder',
-				'loading',
-			]);
+		context.set('slots.incontent_boxad_1.defaultClasses', [
+			'incontent-boxad',
+			'ad-slot',
+			'ic-ad-slot-placeholder',
+			'is-loading',
+		]);
 
-			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
-				adSlot.removeClass('loading');
-			});
-		}
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+			adSlot.removeClass('is-loading');
+		});
 	}
 
 	private configureICPPlaceholderHandler(): void {
