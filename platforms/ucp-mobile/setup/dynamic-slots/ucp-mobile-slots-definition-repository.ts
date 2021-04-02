@@ -30,42 +30,21 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
-		const isTLBPlaceholderEnabled = context.get('wiki.opts.enableTLBPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			if (isTLBPlaceholderEnabled) {
-				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topLeaderboard = document.querySelector('.top-leaderboard');
-					topLeaderboard.classList.remove('is-loading');
-				});
-			}
+			slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+				const topLeaderboard = document.querySelector('.top-leaderboard');
+				topLeaderboard.classList.remove('is-loading');
+			});
 		};
-		const slotCreatorWrapperConfig = {
-			classList: ['ad-slot-wrapper', 'top-leaderboard'],
-		};
-
-		if (!!document.querySelector('.portable-infobox')) {
-			return {
-				activator,
-				slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: isTLBPlaceholderEnabled
-						? '.top-leaderboard'
-						: '.portable-infobox-wrapper',
-					insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'after',
-					classList: ['hide', 'ad-slot'],
-				},
-			};
-		}
 
 		return {
 			activator,
-			slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
+			slotCreatorWrapperConfig: null,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: isTLBPlaceholderEnabled ? '.top-leaderboard' : '.article-content',
-				insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'before',
+				anchorSelector: '.top-leaderboard',
+				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
 		};
@@ -94,9 +73,8 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isTBPlaceholderEnabled = context.get('wiki.opts.enableTBPlaceholder');
-		const defaultClasses = ['ad-slot-placeholder', 'top-boxad'];
-		const classList = isTBPlaceholderEnabled ? [...defaultClasses, 'is-loading'] : defaultClasses;
+		const isTBPlaceholderOnBackendEnabled = context.get('wiki.opts.enableTBPlaceholderOnBackend');
+		const defaultClasses = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
 
 		const clsImprovedSlotSetupDefinition: SlotSetupDefinition = {
 			slotCreatorConfig: {
@@ -123,20 +101,18 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList,
+				classList: defaultClasses,
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				if (isTBPlaceholderEnabled) {
-					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-						const topBoxad = document.querySelector('.top-boxad');
-						topBoxad.classList.remove('loading');
-					});
-				}
+				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topBoxad = document.querySelector('.top-boxad');
+					topBoxad.classList.remove('loading');
+				});
 			},
 		};
 
-		return isTBPlaceholderEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
+		return isTBPlaceholderOnBackendEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
 	}
 
 	private isInContentApplicable(): boolean {
