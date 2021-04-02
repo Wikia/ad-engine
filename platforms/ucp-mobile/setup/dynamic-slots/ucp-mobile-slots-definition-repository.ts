@@ -2,19 +2,19 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	globalAction,
 	InstantConfigService,
 	ofType,
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	SlotPlaceholderConfig,
+	slotPlaceholderInjector,
 	slotService,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { props } from 'ts-action';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -161,14 +161,17 @@ export class UcpMobileSlotsDefinitionRepository {
 					incontentBoxad1.classList.remove('loading');
 				});
 
-				interface SlotParams {
-					slotName: string;
-				}
-
-				const icbActivated = globalAction('[ICB] activated', props<SlotParams>());
-				communicationService.dispatch(icbActivated({ slotName: 'incontent_boxad_1' }));
-
 				context.set('icbs_change', true);
+
+				const icbPlaceholderConfig: SlotPlaceholderConfig = {
+					classList: [],
+					anchorSelector: '.mw-parser-output > h2',
+					insertMethod: 'before',
+					avoidConflictWith: ['.ad-slot', '#incontent_player', '.ic-ad-slot-placeholder'],
+					repeat: 20,
+				};
+
+				slotPlaceholderInjector.inject(icbPlaceholderConfig);
 			},
 		};
 	}

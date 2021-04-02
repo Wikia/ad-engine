@@ -62,15 +62,7 @@ function repeatSlot(adSlot: AdSlot, lazyLoading: boolean): boolean {
 
 class SlotRepeater {
 	init(): void {
-		if (context.get('icbs_change')) {
-			eventService.on(AdSlot.SLOT_REQUESTED_EVENT, (adSlot: AdSlot) => {
-				if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-					return repeatSlot(adSlot, false);
-				}
-
-				return false;
-			});
-		} else {
+		if (!context.get('icbs_change')) {
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
 				if (adSlot.isEnabled() && adSlot.isRepeatable()) {
 					return repeatSlot(adSlot, true);
