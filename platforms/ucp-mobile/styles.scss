@@ -127,6 +127,20 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
+.ic-ad-slot-placeholder {
+	@include ic-ad-slot-placeholder;
+
+	#incontent_player {
+		height: calc((100vw - 2.25rem) * 0.75);
+		min-height: calc((100vw - 2.25rem) * 0.75);
+		width: calc(100vw - 2.25rem);
+
+		.video-overlay {
+			background: #000000;
+		}
+	}
+}
+
 #affiliate_slot {
 	text-align: center;
 

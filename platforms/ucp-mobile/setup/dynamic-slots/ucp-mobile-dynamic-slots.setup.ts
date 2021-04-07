@@ -125,6 +125,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				adSlot.removeClass('loading');
 			});
 		}
+		if (context.get('icbs_change')) {
+			eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => {
+				adSlot.getElement().parentElement.classList.remove('loading');
+			});
+		}
 	}
 
 	private configureIncontentPlayer(): void {

@@ -136,6 +136,12 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2',
+				avoidConflictWith: [
+					'.ad-slot-wrapper',
+					'.ic-ad-slot-placeholder',
+					'.ad-slot',
+					'#incontent_player',
+				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
@@ -167,7 +173,12 @@ export class UcpMobileSlotsDefinitionRepository {
 					classList: [],
 					anchorSelector: '.mw-parser-output > h2',
 					insertMethod: 'before',
-					avoidConflictWith: ['.ad-slot', '#incontent_player', '.ic-ad-slot-placeholder'],
+					avoidConflictWith: [
+						'.ad-slot',
+						'#incontent_player',
+						'.ic-ad-slot-placeholder',
+						'.ad-slot-wrapper',
+					],
 					repeat: 20,
 				};
 
@@ -175,6 +186,9 @@ export class UcpMobileSlotsDefinitionRepository {
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
 				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
+
+				context.set('slots.incontent_player.insertBeforeSelector', '');
+				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
 			},
 		};
 	}
