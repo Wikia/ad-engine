@@ -172,6 +172,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				};
 
 				slotPlaceholderInjector.inject(icbPlaceholderConfig);
+
+				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
 			},
 		};
 	}

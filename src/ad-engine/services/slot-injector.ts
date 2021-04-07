@@ -2,7 +2,7 @@ import { AdSlot, SlotConfig } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
 import { events, eventService } from './events';
-import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from './slot-creator';
+import { SlotCreator, SlotCreatorConfig } from './slot-creator';
 import { slotService } from './slot-service';
 
 const logGroup = 'slot-repeater';
@@ -34,17 +34,13 @@ class SlotInjector {
 		});
 	}
 
-	inject(
-		slotName: string,
-		disablePushOnScroll?: boolean,
-		lazyLoading?: boolean,
-	): HTMLElement | null {
+	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
 		let container: HTMLElement;
 		const config: SlotConfig = context.get(`slots.${slotName}`);
 		const slotConfig: SlotCreatorConfig = {
 			slotName,
-			anchorSelector: config.insertBeforeSelector,
-			insertMethod: 'before',
+			anchorSelector: config.insertBeforeSelector || config.parentContainerSelector,
+			insertMethod: config.insertBeforeSelector ? 'before' : 'append',
 		};
 
 		if (config.insertBelowFirstViewport) {
@@ -60,14 +56,7 @@ class SlotInjector {
 		}
 
 		try {
-			if (!lazyLoading && slotName.includes('incontent_boxad')) {
-				const icbWrapper: SlotCreatorWrapperConfig = {
-					classList: ['ic-ad-slot-placeholder', 'loading'],
-				};
-				container = this.slotCreator.createSlot(slotConfig, icbWrapper);
-			} else {
-				container = this.slotCreator.createSlot(slotConfig);
-			}
+			container = this.slotCreator.createSlot(slotConfig);
 		} catch (e) {
 			logger(logGroup, `There is not enough space for ${slotName}`);
 
