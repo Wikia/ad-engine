@@ -104,15 +104,20 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			context.set('slots.incontent_boxad_1.defaultClasses', ['incontent-boxad', 'ad-slot']);
 
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
-				adSlot.removeClass('loading');
+				const slotName = adSlot.getSlotName();
+				if (slotName.includes('incontent_boxad')) {
+					adSlot.removeClass('loading');
+				}
 			});
 		}
 
 		if (context.get('icbs_change')) {
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
 				const slotName = adSlot.getSlotName();
-				const slotElement = document.querySelector(`#${slotName}`);
-				slotElement.parentElement.classList.remove('loading');
+				if (slotName.includes('incontent_boxad')) {
+					const slotElement = document.querySelector(`#${slotName}`);
+					slotElement.parentElement.classList.remove('loading');
+				}
 			});
 		}
 	}

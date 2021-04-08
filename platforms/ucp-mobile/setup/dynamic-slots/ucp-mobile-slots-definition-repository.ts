@@ -162,11 +162,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 
-				slotService.on('incontent_boxad_1', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const incontentBoxad1 = document.querySelector('.incontent-boxad');
-					incontentBoxad1.classList.remove('loading');
-				});
-
 				context.set('icbs_change', true);
 
 				const icbPlaceholderConfig: SlotPlaceholderConfig = {
