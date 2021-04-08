@@ -1,13 +1,14 @@
 {
 	"list": [
 		"bingebot",
+		"f2",
 		"futhead",
 		"muthead",
 		"ucp",
+		"ucp-desktop",
 		"ucp-hydra",
-		"ucp-mobile",
 		"ucp-minerva",
-		"f2",
+		"ucp-mobile",
 		"ucp-no-ads"
 	]
 }

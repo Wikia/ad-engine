@@ -2,7 +2,6 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	CookieStorageAdapter,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -178,14 +177,19 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.article-footer',
-				insertMethod: 'before',
+				anchorSelector: '.bottom-leaderboard',
+				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
-			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-wrapper', 'bottom-leaderboard'],
+			slotCreatorWrapperConfig: null,
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+
+				slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
+					bottomLeaderboard.classList.remove('is-loading');
+				});
 			},
-			activator: () => this.pushWaitingSlot(slotName),
 		};
 	}
 
@@ -261,11 +265,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInterstitialApplicable(): boolean {
-		const cookieAdapter = new CookieStorageAdapter();
-
-		return (
-			this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('interstitial-impression')
-		);
+		return this.instantConfig.get('icInterstitial');
 	}
 
 	getInvisibleHighImpactConfig(): SlotSetupDefinition {
