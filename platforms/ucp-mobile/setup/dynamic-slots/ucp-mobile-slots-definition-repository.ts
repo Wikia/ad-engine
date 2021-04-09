@@ -166,27 +166,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-
-				const icbPlaceholderConfig: SlotPlaceholderConfig = {
-					classList: [],
-					anchorSelector: '.mw-parser-output > h2',
-					insertMethod: 'before',
-					avoidConflictWith: [
-						'.ad-slot',
-						'#incontent_player',
-						'.ic-ad-slot-placeholder',
-						'.ad-slot-wrapper',
-					],
-					repeat: 20,
-				};
-
-				slotPlaceholderInjector.inject(icbPlaceholderConfig);
-
-				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
-				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
-
-				context.set('slots.incontent_player.insertBeforeSelector', '');
-				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
+				this.injectIncontentAdsPlaceholders();
 			},
 		};
 	}
@@ -197,6 +177,28 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		return context.get('wiki.opts.pageType') !== 'search';
+	}
+
+	private injectIncontentAdsPlaceholders(): void {
+		const icbPlaceholderConfig: SlotPlaceholderConfig = {
+			classList: [],
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
+			repeat: 20,
+		};
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			if (!action.isLoaded) {
+				slotPlaceholderInjector.inject(icbPlaceholderConfig);
+
+				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
+
+				context.set('slots.incontent_player.insertBeforeSelector', '');
+				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
+			}
+		});
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
