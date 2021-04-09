@@ -125,12 +125,17 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
-		if (!this.isInContentApplicable()) {
+		if (!this.isInContentApplicable() || !context.get('wiki.opts.enableICLazyRequesting')) {
 			return;
 		}
 
 		const slotName = 'incontent_boxad_1';
-		const classList = ['ad-slot-wrapper', 'incontent-boxad', 'ic-ad-slot-placeholder', 'loading'];
+		const wrapperClassList = [
+			'ad-slot-wrapper',
+			'incontent-boxad',
+			'ic-ad-slot-placeholder',
+			'loading',
+		];
 
 		return {
 			slotCreatorConfig: {
@@ -157,12 +162,10 @@ export class UcpMobileSlotsDefinitionRepository {
 				},
 			},
 			slotCreatorWrapperConfig: {
-				classList,
+				classList: wrapperClassList,
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-
-				context.set('icbs_change', true);
 
 				const icbPlaceholderConfig: SlotPlaceholderConfig = {
 					classList: [],

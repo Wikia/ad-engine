@@ -100,23 +100,26 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureICBPlaceholderHandler(): void {
-		if (context.get('wiki.opts.enableICBPlaceholder')) {
-			context.set('slots.incontent_boxad_1.defaultClasses', ['incontent-boxad', 'ad-slot']);
-
-			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
-				const slotName = adSlot.getSlotName();
-				if (slotName.includes('incontent_boxad')) {
-					adSlot.removeClass('loading');
-				}
-			});
-		}
-
-		if (context.get('icbs_change')) {
+		if (context.get('wiki.opts.enableICLazyRequesting')) {
 			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
 				const slotName = adSlot.getSlotName();
 				if (slotName.includes('incontent_boxad')) {
 					const slotElement = document.querySelector(`#${slotName}`);
 					slotElement.parentElement.classList.remove('loading');
+				}
+			});
+		} else if (context.get('wiki.opts.enableICBPlaceholder')) {
+			context.set('slots.incontent_boxad_1.defaultClasses', [
+				'incontent-boxad',
+				'ad-slot',
+				'ic-ad-slot-placeholder',
+				'loading',
+			]);
+
+			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
+				const slotName = adSlot.getSlotName();
+				if (slotName.includes('incontent_boxad')) {
+					adSlot.removeClass('loading');
 				}
 			});
 		}
@@ -130,7 +133,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				adSlot.removeClass('loading');
 			});
 		}
-		if (context.get('icbs_change')) {
+		if (context.get('wiki.opts.enableICLazyRequesting')) {
 			eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => {
 				adSlot.getElement().parentElement.classList.remove('loading');
 			});
