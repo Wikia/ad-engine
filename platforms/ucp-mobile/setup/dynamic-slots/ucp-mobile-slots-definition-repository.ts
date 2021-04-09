@@ -107,7 +107,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				this.pushWaitingSlot(slotName);
 				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
 					const topBoxad = document.querySelector('.top-boxad');
-					topBoxad.classList.remove('loading');
+					topBoxad.classList.remove('is-loading');
 				});
 			},
 		};
