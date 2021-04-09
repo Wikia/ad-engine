@@ -180,18 +180,18 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private injectIncontentAdsPlaceholders(): void {
-		const slotName = 'incontent ad';
+		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: SlotPlaceholderConfig = {
 			classList: ['ic-ad-slot-placeholder', 'loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
-			repeat: 19,
+			repeatLimit: 19,
 		};
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
-				slotPlaceholderInjector.inject(icbPlaceholderConfig, slotName);
+				slotPlaceholderInjector.inject(icbPlaceholderConfig, adSlotCategory);
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
 				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');

@@ -7,16 +7,17 @@ export interface SlotPlaceholderConfig {
 	anchorSelector: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
 	avoidConflictWith?: string[];
-	repeat?: number;
+	repeatLimit?: number;
 }
 
 class SlotPlaceholderInjector {
-	inject(placeholderConfig: SlotPlaceholderConfig, adSlotName: string): void {
+	inject(placeholderConfig: SlotPlaceholderConfig, adSlotCategory: string): void {
+		// Placeholder is repeatable. The first one is already injected so we start counting from 2.
 		let repeat = 2;
 
-		placeholderConfig.repeat = placeholderConfig.repeat || 0;
+		placeholderConfig.repeatLimit = placeholderConfig.repeatLimit || 0;
 
-		while (repeat <= placeholderConfig.repeat) {
+		while (repeat <= placeholderConfig.repeatLimit) {
 			const placeholder = this.createPlaceholder(placeholderConfig.classList);
 			const anchorElement = this.findAnchorElement(
 				placeholderConfig.anchorSelector,
@@ -29,7 +30,7 @@ class SlotPlaceholderInjector {
 
 			anchorElement[placeholderConfig.insertMethod](placeholder);
 
-			logger(logGroup, `Placeholder for ${adSlotName} number ${repeat} injected`);
+			logger(logGroup, `Placeholder for ${adSlotCategory} number ${repeat} injected`);
 
 			repeat++;
 		}
