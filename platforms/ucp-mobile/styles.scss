@@ -176,10 +176,6 @@ not(.ic-ad-slot-placeholder) {
 }
 
 .article-content :not(.ic-ad-slot-placeholder) > .ad-slot {
-	&:not(.a9-ad) {
-		margin: 0 -1.5rem 1.125rem;
-	}
-
 	&.slot-responsive {
 		margin: 0 0 1.125rem;
 	}
