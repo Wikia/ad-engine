@@ -1,6 +1,6 @@
-import { getTopOffset, isInTheSameViewport } from '../utils';
+import { getTopOffset, isInTheSameViewport, logger } from '../utils';
 
-// const logGroup = 'slot-placeholder-injector';
+const logGroup = 'slot-placeholder-injector';
 
 export interface SlotPlaceholderConfig {
 	classList: string[];
@@ -11,13 +11,13 @@ export interface SlotPlaceholderConfig {
 }
 
 class SlotPlaceholderInjector {
-	inject(placeholderConfig: SlotPlaceholderConfig): void {
-		let repeat = 0;
+	inject(placeholderConfig: SlotPlaceholderConfig, adSlotName: string): void {
+		let repeat = 2;
 
 		placeholderConfig.repeat = placeholderConfig.repeat || 0;
 
 		while (repeat <= placeholderConfig.repeat) {
-			const placeholder = this.createPlaceholder();
+			const placeholder = this.createPlaceholder(placeholderConfig.classList);
 			const anchorElement = this.findAnchorElement(
 				placeholderConfig.anchorSelector,
 				placeholderConfig.avoidConflictWith,
@@ -29,14 +29,16 @@ class SlotPlaceholderInjector {
 
 			anchorElement[placeholderConfig.insertMethod](placeholder);
 
+			logger(logGroup, `Placeholder for ${adSlotName} number ${repeat} injected`);
+
 			repeat++;
 		}
 	}
 
-	private createPlaceholder(): HTMLElement {
+	private createPlaceholder(classList: string[]): HTMLElement {
 		const placeholder = document.createElement('div');
 
-		placeholder.classList.add('ic-ad-slot-placeholder', 'loading');
+		placeholder.classList.add(...classList);
 
 		return placeholder;
 	}
