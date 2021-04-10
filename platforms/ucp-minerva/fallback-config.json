@@ -465,7 +465,7 @@
             "value": true
         }
     ],
-    "icDeByebyeTracking": [
+    "icDeHeartbeatActivityTracking": [
         {
             "apps": [
                 "gamepedia",

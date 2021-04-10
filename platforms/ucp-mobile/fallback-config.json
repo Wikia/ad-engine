@@ -578,6 +578,19 @@
             "value": true
         }
     ],
+    "icDeHeartbeatActivityTracking": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icCollapseTopLeaderboard": [
         {
             "apps": [
@@ -2309,19 +2322,6 @@
             ],
             "regions": [
                 "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icDeByebyeTracking": [
-        {
-            "apps": [
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
             ],
             "value": true
         }
