@@ -147,14 +147,26 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		if (context.get('wiki.opts.enableICPPlaceholder')) {
 			context.set('slots.incontent_player.defaultClasses', ['ic-ad-slot-placeholder', 'loading']);
 
-			eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => {
-				adSlot.removeClass('loading');
-			});
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => action.adSlotName === 'incontent_player'),
+				)
+				.subscribe((action) => {
+					const slotElement = document.querySelector(`#${action.adSlotName}`);
+					slotElement.classList.remove('loading');
+				});
 		}
 		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => {
-				adSlot.getElement().parentElement.classList.remove('loading');
-			});
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => action.adSlotName === 'incontent_player'),
+				)
+				.subscribe((action) => {
+					const slotElement = document.querySelector(`#${action.adSlotName}`);
+					slotElement.parentElement.classList.remove('loading');
+				});
 		}
 	}
 
