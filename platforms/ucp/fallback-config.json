@@ -206,6 +206,13 @@
 			}
 		}
 	],
+	"icDeHeartbeatActivityTracking": [
+		{
+			"apps": ["gamepedia", "mobile-wiki", "oasis"],
+			"regions": ["PL"],
+			"value": true
+		}
+	],
 	"icViewabilityTracking": [
 		{
 			"apps": ["bingebot", "f2", "futhead", "gamepedia", "mobile-wiki", "muthead", "oasis"],
@@ -1633,13 +1640,6 @@
 		{
 			"apps": ["mobile-wiki", "oasis"],
 			"regions": ["XX"],
-			"value": true
-		}
-	],
-	"icDeByebyeTracking": [
-		{
-			"apps": ["gamepedia", "mobile-wiki", "oasis"],
-			"regions": ["PL"],
 			"value": true
 		}
 	],

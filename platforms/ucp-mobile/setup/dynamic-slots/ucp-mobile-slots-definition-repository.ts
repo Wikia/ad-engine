@@ -81,6 +81,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		const hasPageHeader = !!document.querySelector('.wiki-page-header');
 		const hasPortableInfobox = !!document.querySelector('.portable-infobox');
 
+		if (hasFeaturedVideo) {
+			return false;
+		}
+
 		return (
 			isSearch ||
 			isHome ||

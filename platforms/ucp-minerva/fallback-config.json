@@ -225,7 +225,7 @@
 			"value": true
 		}
 	],
-	"icDeByebyeTracking": [
+	"icDeHeartbeatActivityTracking": [
 		{
 			"apps": ["gamepedia", "mobile-wiki", "oasis"],
 			"regions": ["PL"],
