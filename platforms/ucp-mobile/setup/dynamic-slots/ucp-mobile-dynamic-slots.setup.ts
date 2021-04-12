@@ -1,6 +1,7 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
+	adSlotEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -8,6 +9,7 @@ import {
 	events,
 	eventService,
 	fillerService,
+	ofType,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
@@ -17,6 +19,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { filter } from 'rxjs/operators';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -100,22 +103,26 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureICBPlaceholderHandler(): void {
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
-				const slotName = adSlot.getSlotName();
-				if (slotName.includes('incontent_boxad')) {
-					const slotElement = document.querySelector(`#${slotName}`);
-					slotElement.parentElement.classList.remove('loading');
+		const shouldRemoveICBLoader = (action: object) => {
+			if (action['adSlotName'].includes('incontent_boxad')) {
+				if (action['event'] === 'slotRendered' || action['event'] === 'slotHidden') {
+					return true;
 				}
-			});
+			}
 
-			eventService.on(AdSlot.HIDDEN_EVENT, (adSlot) => {
-				const slotName = adSlot.getSlotName();
-				if (slotName.includes('incontent_boxad')) {
-					const slotElement = document.querySelector(`#${slotName}`);
+			return false;
+		};
+
+		if (context.get('wiki.opts.enableICLazyRequesting')) {
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => shouldRemoveICBLoader(action)),
+				)
+				.subscribe((action) => {
+					const slotElement = document.querySelector(`#${action.adSlotName}`);
 					slotElement.parentElement.classList.remove('loading');
-				}
-			});
+				});
 		} else if (context.get('wiki.opts.enableICBPlaceholder')) {
 			context.set('slots.incontent_boxad_1.defaultClasses', [
 				'incontent-boxad',
@@ -123,13 +130,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				'ic-ad-slot-placeholder',
 				'loading',
 			]);
-
-			eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot) => {
-				const slotName = adSlot.getSlotName();
-				if (slotName.includes('incontent_boxad')) {
-					adSlot.removeClass('loading');
-				}
-			});
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => shouldRemoveICBLoader(action)),
+				)
+				.subscribe((action) => {
+					const slotElement = document.querySelector(`#${action.adSlotName}`);
+					slotElement.classList.remove('loading');
+					slotElement.classList.remove('is-loading');
+				});
 		}
 	}
 
