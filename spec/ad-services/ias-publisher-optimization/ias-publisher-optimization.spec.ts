@@ -10,7 +10,7 @@ describe('IAS Publisher Optimization', () => {
 		'{"adt":"veryLow",' +
 		'"alc":"medium",' +
 		'"dlm":"veryLow",' +
-		'"drg":"veryLow",' +
+		'"drg":"high",' +
 		'"hat":"veryLow",' +
 		'"off":"medium",' +
 		'"vio":"veryLow"},' +
@@ -90,10 +90,11 @@ describe('IAS Publisher Optimization', () => {
 		expect(context.get('targeting.adt')).to.equal('veryLow');
 		expect(context.get('targeting.alc')).to.equal('medium');
 		expect(context.get('targeting.dlm')).to.equal('veryLow');
-		expect(context.get('targeting.drg')).to.equal('veryLow');
+		expect(context.get('targeting.drg')).to.equal('high');
 		expect(context.get('targeting.hat')).to.equal('veryLow');
 		expect(context.get('targeting.off')).to.equal('medium');
 		expect(context.get('targeting.vio')).to.equal('veryLow');
+		expect(context.get('targeting.b_ias')).to.equal('high');
 		expect(context.get('slots.top_leaderboard.targeting.vw')).to.equal('false');
 	});
 });
