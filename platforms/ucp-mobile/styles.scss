@@ -132,6 +132,7 @@ not(.ic-ad-slot-placeholder) {
 
 	#incontent_player {
 		height: calc((100vw - 2.25rem) * 0.75);
+		margin: 0;
 		min-height: calc((100vw - 2.25rem) * 0.75);
 		width: calc(100vw - 2.25rem);
 
