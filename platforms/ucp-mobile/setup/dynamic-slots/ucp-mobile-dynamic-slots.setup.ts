@@ -113,16 +113,23 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			return false;
 		};
 
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
+		const tmp = (removeLoader) => {
 			communicationService.action$
 				.pipe(
 					ofType(adSlotEvent),
 					filter((action) => shouldRemoveICBLoader(action)),
 				)
 				.subscribe((action) => {
-					const slotElement = document.querySelector(`#${action.adSlotName}`);
-					slotElement.parentElement.classList.remove('loading');
+					removeLoader(action.adSlotName);
 				});
+		};
+
+		if (context.get('wiki.opts.enableICLazyRequesting')) {
+			const removeLoader = (adSlotName) => {
+				const slotElement = document.querySelector(`#${adSlotName}`);
+				slotElement.parentElement.classList.remove('loading');
+			};
+			tmp(removeLoader);
 		} else if (context.get('wiki.opts.enableICBPlaceholder')) {
 			context.set('slots.incontent_boxad_1.defaultClasses', [
 				'incontent-boxad',
@@ -130,16 +137,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				'ic-ad-slot-placeholder',
 				'loading',
 			]);
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => shouldRemoveICBLoader(action)),
-				)
-				.subscribe((action) => {
-					const slotElement = document.querySelector(`#${action.adSlotName}`);
-					slotElement.classList.remove('loading');
-					slotElement.classList.remove('is-loading');
-				});
+
+			const removeLoader = (adSlotName) => {
+				const slotElement = document.querySelector(`#${adSlotName}`);
+				slotElement.classList.remove('loading');
+				slotElement.classList.remove('is-loading');
+			};
+			tmp(removeLoader);
 		}
 	}
 
