@@ -1,9 +1,21 @@
-import { context, postponeExecutionUntilGptLoads, SlotConfig, utils } from '@ad-engine/core';
+import {
+	context,
+	Dictionary,
+	postponeExecutionUntilGptLoads,
+	SlotConfig,
+	utils,
+} from '@ad-engine/core';
 import { decorate } from 'core-decorators';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
 const brandSafetyKeys = ['adt', 'alc', 'dlm', 'drg', 'hat', 'off', 'vio'] as const;
+const brandSafetyValuesLevel: Dictionary<number> = {
+	veryLow: 1,
+	low: 2,
+	medium: 3,
+	high: 4,
+};
 
 type BrandSafetyValue = 'veryLow' | 'low' | 'medium' | 'high';
 type BrandSafetyKey = typeof brandSafetyKeys[number];
@@ -93,6 +105,7 @@ class IasPublisherOptimization {
 
 	private setInitialTargeting(): void {
 		context.set('targeting.fr', '-1');
+		context.set('targeting.b_ias', '-1');
 
 		brandSafetyKeys.forEach((key) => {
 			context.set(`targeting.${key}`, '-1');
@@ -109,11 +122,23 @@ class IasPublisherOptimization {
 		context.set('targeting.fr', iasTargetingData.fr);
 
 		if (iasTargetingData.brandSafety) {
+			let maxValue = '-1';
+
 			brandSafetyKeys.forEach((key) => {
 				if (iasTargetingData.brandSafety[key]) {
 					context.set(`targeting.${key}`, iasTargetingData.brandSafety[key]);
+
+					if (
+						maxValue === '-1' ||
+						brandSafetyValuesLevel[maxValue] <
+							brandSafetyValuesLevel[iasTargetingData.brandSafety[key]]
+					) {
+						maxValue = iasTargetingData.brandSafety[key];
+					}
 				}
 			});
+
+			context.set('targeting.b_ias', maxValue);
 		}
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
