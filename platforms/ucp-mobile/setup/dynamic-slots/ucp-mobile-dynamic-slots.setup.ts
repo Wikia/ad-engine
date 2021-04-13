@@ -113,7 +113,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			return false;
 		};
 
-		const tmp = (removeLoader) => {
+		const adSlotEventListener = (removeLoader) => {
 			communicationService.action$
 				.pipe(
 					ofType(adSlotEvent),
@@ -129,7 +129,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const slotElement = document.querySelector(`#${adSlotName}`);
 				slotElement.parentElement.classList.remove('loading');
 			};
-			tmp(removeLoader);
+
+			adSlotEventListener(removeLoader);
 		} else if (context.get('wiki.opts.enableICBPlaceholder')) {
 			context.set('slots.incontent_boxad_1.defaultClasses', [
 				'incontent-boxad',
@@ -143,34 +144,40 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				slotElement.classList.remove('loading');
 				slotElement.classList.remove('is-loading');
 			};
-			tmp(removeLoader);
+
+			adSlotEventListener(removeLoader);
 		}
 	}
 
 	private configureICPPlaceholderHandler(): void {
+		const adSlotEventListener = (removeLoader) => {
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => action.adSlotName === 'incontent_player'),
+				)
+				.subscribe((action) => {
+					removeLoader(action.adSlotName);
+				});
+		};
+
 		if (context.get('wiki.opts.enableICPPlaceholder')) {
 			context.set('slots.incontent_player.defaultClasses', ['ic-ad-slot-placeholder', 'loading']);
 
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => action.adSlotName === 'incontent_player'),
-				)
-				.subscribe((action) => {
-					const slotElement = document.querySelector(`#${action.adSlotName}`);
-					slotElement.classList.remove('loading');
-				});
+			const removeLoader = (adSlotName) => {
+				const slotElement = document.querySelector(`#${adSlotName}`);
+				slotElement.classList.remove('loading');
+			};
+
+			adSlotEventListener(removeLoader);
 		}
 		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => action.adSlotName === 'incontent_player'),
-				)
-				.subscribe((action) => {
-					const slotElement = document.querySelector(`#${action.adSlotName}`);
-					slotElement.parentElement.classList.remove('loading');
-				});
+			const removeLoader = (adSlotName) => {
+				const slotElement = document.querySelector(`#${adSlotName}`);
+				slotElement.parentElement.classList.remove('loading');
+			};
+
+			adSlotEventListener(removeLoader);
 		}
 	}
 

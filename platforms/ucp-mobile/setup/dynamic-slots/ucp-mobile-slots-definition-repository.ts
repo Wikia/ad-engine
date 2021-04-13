@@ -203,8 +203,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				context.set('slots.incontent_player.insertBeforeSelector', '');
 				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
 
-				context.set('slots.affiliate_slot.insertBeforeSelector', '');
-				context.set('slots.affiliate_slot.parentContainerSelector', '.ic-ad-slot-placeholder');
+				context.set('slots.affiliate_slot.insertBeforeSelector', '.ic-ad-slot-placeholder');
 			}
 		});
 	}
