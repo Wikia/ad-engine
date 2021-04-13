@@ -195,7 +195,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
-				slotPlaceholderInjector.inject(icbPlaceholderConfig, adSlotCategory);
+				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
 				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');

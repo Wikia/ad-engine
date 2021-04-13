@@ -11,29 +11,41 @@ export interface SlotPlaceholderConfig {
 }
 
 class SlotPlaceholderInjector {
-	inject(placeholderConfig: SlotPlaceholderConfig, adSlotCategory: string): void {
+	injectAndRepeat(placeholderConfig: SlotPlaceholderConfig, adSlotCategory: string): number {
 		// Placeholder is repeatable. The first one is already injected so we start counting from 2.
 		let repeat = 2;
 
 		placeholderConfig.repeatLimit = placeholderConfig.repeatLimit || 0;
 
 		while (repeat <= placeholderConfig.repeatLimit) {
-			const placeholder = this.createPlaceholder(placeholderConfig.classList);
-			const anchorElement = this.findAnchorElement(
-				placeholderConfig.anchorSelector,
-				placeholderConfig.avoidConflictWith,
-			);
+			const placeholder = this.inject(placeholderConfig);
 
-			if (!anchorElement) {
-				return;
+			if (!placeholder) {
+				return repeat;
 			}
-
-			anchorElement[placeholderConfig.insertMethod](placeholder);
 
 			logger(logGroup, `Placeholder for ${adSlotCategory} number ${repeat} injected`);
 
 			repeat++;
 		}
+
+		return repeat;
+	}
+
+	inject(placeholderConfig: SlotPlaceholderConfig): HTMLElement | null {
+		const placeholder = this.createPlaceholder(placeholderConfig.classList);
+		const anchorElement = this.findAnchorElement(
+			placeholderConfig.anchorSelector,
+			placeholderConfig.avoidConflictWith,
+		);
+
+		if (!anchorElement) {
+			return null;
+		}
+
+		anchorElement[placeholderConfig.insertMethod](placeholder);
+
+		return placeholder;
 	}
 
 	private createPlaceholder(classList: string[]): HTMLElement {
