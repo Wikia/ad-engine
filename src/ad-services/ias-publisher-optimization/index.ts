@@ -46,18 +46,18 @@ class IasPublisherOptimization {
 		);
 	}
 
-	call(): void {
+	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			return;
+			return Promise.resolve();
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
-			utils.scriptLoader
+			this.isLoaded = true;
+			return utils.scriptLoader
 				.loadScript(scriptUrl, 'text/javascript', true, 'first')
 				.then(() => this.setup());
-			this.isLoaded = true;
 		}
 	}
 

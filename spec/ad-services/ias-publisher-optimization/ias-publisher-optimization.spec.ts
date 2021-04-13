@@ -5,6 +5,17 @@ import { iasPublisherOptimization } from '../../../src/ad-services';
 
 describe('IAS Publisher Optimization', () => {
 	const sandbox = createSandbox();
+	const iasData =
+		'{"brandSafety":' +
+		'{"adt":"veryLow",' +
+		'"alc":"medium",' +
+		'"dlm":"veryLow",' +
+		'"drg":"veryLow",' +
+		'"hat":"veryLow",' +
+		'"off":"medium",' +
+		'"vio":"veryLow"},' +
+		'"fr":"false",' +
+		'"slots":{"top_leaderboard":{"id":"68f5088c-9c44-11eb-b40e","grm":["40"],"vw":"false"}}}';
 	let loadScriptStub;
 	let clock;
 
@@ -33,17 +44,6 @@ describe('IAS Publisher Optimization', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('IAS Publisher Optimization is called', async () => {
-		context.set('services.iasPublisherOptimization.enabled', true);
-		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
-		await iasPublisherOptimization.call();
-
-		expect(loadScriptStub.called).to.equal(true);
-		expect(
-			loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', 'text/javascript', true),
-		).to.equal(true);
-	});
-
 	it('IAS Publisher Optimization is not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
@@ -66,5 +66,34 @@ describe('IAS Publisher Optimization', () => {
 		await iasPublisherOptimization.call();
 
 		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('IAS Publisher Optimization is called', async () => {
+		context.set('services.iasPublisherOptimization.enabled', true);
+		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
+		await iasPublisherOptimization.call();
+
+		expect(loadScriptStub.called).to.equal(true);
+		expect(
+			loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', 'text/javascript', true),
+		).to.equal(true);
+	});
+
+	it('IAS Publisher Optimization properly updates a targeting', async () => {
+		context.set('services.iasPublisherOptimization.enabled', true);
+		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
+		await iasPublisherOptimization.call();
+
+		window.__iasPET.queue[0].dataHandler(iasData);
+
+		expect(context.get('targeting.fr')).to.equal('false');
+		expect(context.get('targeting.adt')).to.equal('veryLow');
+		expect(context.get('targeting.alc')).to.equal('medium');
+		expect(context.get('targeting.dlm')).to.equal('veryLow');
+		expect(context.get('targeting.drg')).to.equal('veryLow');
+		expect(context.get('targeting.hat')).to.equal('veryLow');
+		expect(context.get('targeting.off')).to.equal('medium');
+		expect(context.get('targeting.vio')).to.equal('veryLow');
+		expect(context.get('slots.top_leaderboard.targeting.vw')).to.equal('false');
 	});
 });
