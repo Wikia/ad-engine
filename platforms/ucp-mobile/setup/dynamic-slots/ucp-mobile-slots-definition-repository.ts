@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	communicationService,
 	context,
+	insertMethodType,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -93,11 +94,25 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 		};
 
+		let slotCreatorConfig: {
+			anchorSelector: string;
+			insertMethod: insertMethodType;
+		} = {
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+		};
+
+		if (context.get('wiki.targeting.pageType') === 'home') {
+			slotCreatorConfig = {
+				anchorSelector: '.mobile-main-page__wiki-description',
+				insertMethod: 'after',
+			};
+		}
+
 		const slotSetupDefinition: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.mw-parser-output > h2',
-				insertMethod: 'before',
+				...slotCreatorConfig,
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {

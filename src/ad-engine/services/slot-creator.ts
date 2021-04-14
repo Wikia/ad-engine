@@ -1,9 +1,11 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
 
+export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
+
 export interface SlotCreatorConfig {
 	slotName: string;
-	insertMethod: 'append' | 'prepend' | 'after' | 'before';
+	insertMethod: insertMethodType;
 	anchorSelector: string;
 	/**
 	 * @default firstViable
