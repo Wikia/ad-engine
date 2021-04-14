@@ -23,6 +23,7 @@ interface MediaWikiAdsOpts {
 	showAds: boolean;
 	enableTLBPlaceholder?: boolean;
 	enableTBPlaceholder?: boolean;
+	enableICLazyRequesting?: boolean;
 	enableICBPlaceholder?: boolean;
 	enableICPPlaceholder?: boolean;
 	enableAdTagManagerBackend?: boolean;
