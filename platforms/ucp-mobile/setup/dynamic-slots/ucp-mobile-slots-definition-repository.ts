@@ -8,6 +8,8 @@ import {
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	SlotPlaceholderConfig,
+	slotPlaceholderInjector,
 	slotService,
 	uapLoadStatus,
 	utils,
@@ -130,12 +132,84 @@ export class UcpMobileSlotsDefinitionRepository {
 		return isTBPlaceholderOnBackendEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
 	}
 
+	getIncontentBoxadConfig(): SlotSetupDefinition {
+		if (!this.isInContentApplicable() || !context.get('wiki.opts.enableICLazyRequesting')) {
+			return;
+		}
+
+		const slotName = 'incontent_boxad_1';
+		const wrapperClassList = [
+			'ad-slot-wrapper',
+			'incontent-boxad',
+			'ic-ad-slot-placeholder',
+			'loading',
+		];
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.mw-parser-output > h2',
+				avoidConflictWith: [
+					'.ad-slot-wrapper',
+					'.ic-ad-slot-placeholder',
+					'.ad-slot',
+					'#incontent_player',
+				],
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+				repeat: {
+					index: 1,
+					limit: 20,
+					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.rv': '{slotConfig.repeat.index}',
+						'targeting.pos': ['incontent_boxad'],
+					},
+					insertBelowScrollPosition: true,
+				},
+			},
+			slotCreatorWrapperConfig: {
+				classList: wrapperClassList,
+			},
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+				this.injectIncontentAdsPlaceholders();
+			},
+		};
+	}
+
 	private isInContentApplicable(): boolean {
 		if (context.get('wiki.opts.pageType') === 'home') {
 			return !!document.querySelector('.curated-content');
 		}
 
 		return context.get('wiki.opts.pageType') !== 'search';
+	}
+
+	private injectIncontentAdsPlaceholders(): void {
+		const adSlotCategory = 'incontent';
+		const icbPlaceholderConfig: SlotPlaceholderConfig = {
+			classList: ['ic-ad-slot-placeholder', 'loading'],
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
+			repeatLimit: 19,
+		};
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			if (!action.isLoaded) {
+				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+
+				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
+
+				context.set('slots.incontent_player.insertBeforeSelector', '');
+				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
+
+				context.set('slots.affiliate_slot.insertBeforeSelector', '.ic-ad-slot-placeholder');
+			}
+		});
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
