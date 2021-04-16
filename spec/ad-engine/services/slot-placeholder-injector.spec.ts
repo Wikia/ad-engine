@@ -2,7 +2,7 @@ import { SlotPlaceholderConfig, slotPlaceholderInjector } from '@wikia/ad-engine
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
 
-describe.only('Slot placeholder injector', () => {
+describe('Slot placeholder injector', () => {
 	const sandbox = createSandbox();
 	let parent: HTMLDivElement;
 	let anchorElement0: HTMLElement;
