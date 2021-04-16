@@ -13,6 +13,9 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'bottom_leaderboard', 'incontent_boxad_1'];
+
+		this.params.ignoreNavbarHeight = true;
+
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,

@@ -13,7 +13,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				// ToDo: top-mergin needs to be fixed
 				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				slotShortcut: 'v',
@@ -39,7 +38,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				// ToDo: top-mergin needs to be fixed
 				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				slotShortcut: 'l',
@@ -73,8 +71,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				// ToDo: it's probably not final selector
-				insertBeforeSelector: '.page-wrapper__right-rail h1',
+				parentContainerSelector: '#rail-boxad-wrapper',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [
@@ -106,7 +103,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,
 				group: 'PX',
-				// ToDo: ditto top_leaderboard or cleanup
 				insertBeforeSelector: '.page-wrapper',
 				options: {},
 				slotNameSuffix: '',
@@ -131,8 +127,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
 				group: 'HiVi',
-				// ToDo: it's probably not final selector
-				parentContainerSelector: '.page-wrapper__right-rail',
+				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
+				insertBeforeSelector: '#incontent_boxad_1',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
@@ -142,7 +138,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[300, 600],
 				],
-				insertBeforeSelector: '#incontent_boxad_1',
 				garfieldCat: true,
 				repeat: {
 					additionalClasses: 'hide',

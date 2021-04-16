@@ -12,11 +12,15 @@ export class UapDomReader {
 	) {}
 
 	getPageOffsetImpact(): number {
-		return this.getSlotHeightImpact() + this.navbar.offsetHeight;
+		return (
+			this.getSlotHeightImpact() + (this.params.ignoreNavbarHeight ? 0 : this.navbar.offsetHeight)
+		);
 	}
 
 	getPageOffsetResolved(): number {
-		return this.getSlotHeightResolved() + this.navbar.offsetHeight;
+		return (
+			this.getSlotHeightResolved() + (this.params.ignoreNavbarHeight ? 0 : this.navbar.offsetHeight)
+		);
 	}
 
 	getNavbarOffsetImpactToResolved(): number {

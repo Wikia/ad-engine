@@ -64,6 +64,7 @@ export interface UapParams {
 	creativeId: string;
 	fullscreenable: boolean;
 	fullscreenAllowed: boolean;
+	ignoreNavbarHeight?: boolean;
 	image1: UapImage;
 	image2?: UapImage;
 	isDarkTheme: boolean;

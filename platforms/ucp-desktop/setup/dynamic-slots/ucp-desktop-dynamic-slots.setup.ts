@@ -47,7 +47,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				slotInjector.inject(slotName, true);
 			}
 		});
+
+		this.appendTopBoxad();
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
+	}
+
+	private appendTopBoxad(): void {
+		slotInjector.inject('top_boxad', true);
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
