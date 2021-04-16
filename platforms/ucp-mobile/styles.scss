@@ -80,10 +80,14 @@
 	}
 }
 
-.ad-slot {
-	margin: 0 0 1.125rem;
-	text-align: center;
+not(.ic-ad-slot-placeholder) {
+	.ad-slot {
+		margin: 0 0 1.125rem;
+		text-align: center;
+	}
+}
 
+.ad-slot {
 	.provider-container {
 		margin: 20px auto;
 	}
@@ -105,6 +109,10 @@
 	}
 }
 
+.ic-ad-slot-placeholder {
+	@include ic-ad-slot-placeholder;
+}
+
 #incontent_player {
 	&.ic-ad-slot-placeholder {
 		@include ic-ad-slot-placeholder;
@@ -112,6 +120,21 @@
 		min-height: calc((100vw - 2.25rem) * 0.75);
 		align-items: unset;
 		display: block !important;
+
+		.video-overlay {
+			background: #000000;
+		}
+	}
+}
+
+.ic-ad-slot-placeholder {
+	@include ic-ad-slot-placeholder;
+
+	#incontent_player {
+		height: calc((100vw - 2.25rem) * 0.75);
+		margin: 0;
+		min-height: calc((100vw - 2.25rem) * 0.75);
+		width: calc(100vw - 2.25rem);
 
 		.video-overlay {
 			background: #000000;
@@ -144,7 +167,7 @@
 
 .article-content .ad-slot-wrapper .ad-slot,
 .article-content p + .ad-slot {
-	&.incontent-boxad {
+	&.incontent-boxad:not(.ic-ad-slot-placeholder) {
 		margin: 3rem 0;
 
 		&:not(.a9-ad) {
@@ -153,7 +176,7 @@
 	}
 }
 
-.article-content .ad-slot {
+.article-content :not(.ic-ad-slot-placeholder) > .ad-slot {
 	&.slot-responsive {
 		margin: 0 0 1.125rem;
 	}
