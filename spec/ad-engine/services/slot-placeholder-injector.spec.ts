@@ -35,8 +35,11 @@ describe('Slot placeholder injector', () => {
 		anchorElement0 = document.createElement('h2');
 		anchorElement1 = document.createElement('h2');
 		anchorElement2 = document.createElement('h2');
+		anchorElement0.id = 'anchor_0';
 		anchorElement0.classList.add('anchor');
+		anchorElement1.id = 'anchor_1';
 		anchorElement1.classList.add('anchor');
+		anchorElement2.id = 'anchor_2';
 		anchorElement2.classList.add('anchor');
 		conflictingElement = document.createElement('div');
 		conflictingElement.id = 'conflict';
@@ -44,10 +47,56 @@ describe('Slot placeholder injector', () => {
 		querySelectorAll = sandbox.stub(document, 'querySelectorAll');
 		querySelectorAll.withArgs('.anchor').returns([anchorElement0, anchorElement1, anchorElement2]);
 		querySelectorAll.withArgs('#conflict').returns([conflictingElement]);
+		querySelectorAll.withArgs('#anchorElementDoesNotExist').returns([]);
 	});
 
 	afterEach(() => {
 		sandbox.restore();
+	});
+
+	it('should not inject slot placeholder if no anchor element found', () => {
+		const slotPlaceholderConfig: SlotPlaceholderConfig = {
+			classList: ['class_1', 'class_2'],
+			anchorSelector: '#anchorElementDoesNotExist',
+			insertMethod: 'append',
+			avoidConflictWith: ['#conflict'],
+			repeatLimit: 3,
+		};
+
+		setViewPortHeight(100);
+		setElementTopOffset(anchorElement0, 1200);
+		setElementOffsetHeight(anchorElement0, 50);
+		setScrollPosition(0);
+
+		const placeholder = slotPlaceholderInjector.inject(slotPlaceholderConfig);
+
+		expect(placeholder).to.equal(null);
+	});
+
+	it.skip('should not inject slot placeholder if no place to insert found', () => {
+		const slotPlaceholderConfig: SlotPlaceholderConfig = {
+			classList: ['class_1', 'class_2'],
+			anchorSelector: '.anchor',
+			insertMethod: 'append',
+			avoidConflictWith: ['#conflict'],
+			repeatLimit: 3,
+		};
+
+		setViewPortHeight(1000);
+		setElementOffsetHeight(document.body, 2000);
+		setElementTopOffset(anchorElement0, 900);
+		setElementOffsetHeight(anchorElement0, 10);
+		setElementTopOffset(anchorElement1, 1100);
+		setElementOffsetHeight(anchorElement1, 10);
+		setElementTopOffset(conflictingElement, 1200);
+		setElementOffsetHeight(conflictingElement, 50);
+		setElementTopOffset(anchorElement2, 1300);
+		setElementOffsetHeight(anchorElement2, 10);
+		setScrollPosition(1000);
+
+		const placeholder = slotPlaceholderInjector.inject(slotPlaceholderConfig);
+
+		expect(placeholder).to.equal(null);
 	});
 
 	it('slot placeholder should have classes passed in config', () => {
@@ -60,9 +109,9 @@ describe('Slot placeholder injector', () => {
 		};
 
 		setViewPortHeight(1000);
-		setElementTopOffset(anchorElement1, 1200);
-		setElementOffsetHeight(anchorElement1, 50);
-		setScrollPosition(100);
+		setElementTopOffset(anchorElement0, 1200);
+		setElementOffsetHeight(anchorElement0, 50);
+		setScrollPosition(0);
 
 		const placeholder = slotPlaceholderInjector.inject(slotPlaceholderConfig);
 
