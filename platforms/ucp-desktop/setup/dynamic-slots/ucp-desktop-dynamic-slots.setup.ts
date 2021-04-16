@@ -53,7 +53,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private appendTopBoxad(): void {
+		// ToDo: refactor global logic
+		// Make initial injection to understand 'parentContainerSelector'
 		slotInjector.inject('top_boxad', true);
+		slotInjector.inject('affiliate_slot', true);
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {

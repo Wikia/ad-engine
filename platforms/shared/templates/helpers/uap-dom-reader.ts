@@ -1,4 +1,4 @@
-import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { AdSlot, context, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { isUndefined } from 'util';
 import { NAVBAR } from '../configs/uap-dom-elements';
@@ -13,13 +13,15 @@ export class UapDomReader {
 
 	getPageOffsetImpact(): number {
 		return (
-			this.getSlotHeightImpact() + (this.params.ignoreNavbarHeight ? 0 : this.navbar.offsetHeight)
+			this.getSlotHeightImpact() +
+			(context.get('templates.ignoreNavbarHeight') ? 0 : this.navbar.offsetHeight)
 		);
 	}
 
 	getPageOffsetResolved(): number {
 		return (
-			this.getSlotHeightResolved() + (this.params.ignoreNavbarHeight ? 0 : this.navbar.offsetHeight)
+			this.getSlotHeightResolved() +
+			(context.get('templates.ignoreNavbarHeight') ? 0 : this.navbar.offsetHeight)
 		);
 	}
 

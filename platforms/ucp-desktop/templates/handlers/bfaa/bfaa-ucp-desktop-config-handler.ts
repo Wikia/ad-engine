@@ -14,8 +14,6 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'bottom_leaderboard', 'incontent_boxad_1'];
 
-		this.params.ignoreNavbarHeight = true;
-
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
@@ -23,6 +21,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 				(slotName) => !enabledSlots.includes(slotName),
 			),
 		);
+
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 		context.set('slots.bottom_leaderboard.sizes', []);
 		context.set('slots.bottom_leaderboard.defaultSizes', [[3, 3]]);

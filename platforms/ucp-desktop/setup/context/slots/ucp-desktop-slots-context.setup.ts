@@ -89,7 +89,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'AU',
-				// ToDo: revalidate requirements
 				insertBeforeSelector: '#top_boxad',
 				options: {},
 				slotShortcut: 'a',
