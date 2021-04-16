@@ -23,6 +23,11 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
+interface SlotCreatorInsertionParamsType {
+	anchorSelector: string;
+	insertMethod: insertMethodType;
+}
+
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -96,25 +101,10 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 		};
 
-		let slotCreatorConfig: {
-			anchorSelector: string;
-			insertMethod: insertMethodType;
-		} = {
-			anchorSelector: '.mw-parser-output > h2',
-			insertMethod: 'before',
-		};
-
-		if (context.get('wiki.targeting.pageType') === 'home') {
-			slotCreatorConfig = {
-				anchorSelector: '.mobile-main-page__wiki-description',
-				insertMethod: 'after',
-			};
-		}
-
 		const slotSetupDefinition: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
-				...slotCreatorConfig,
+				...this.slotCreatorInsertionParams(),
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
@@ -132,6 +122,22 @@ export class UcpMobileSlotsDefinitionRepository {
 		return isTBPlaceholderOnBackendEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
 	}
 
+	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
+		let params: SlotCreatorInsertionParamsType = {
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+		};
+
+		if (context.get('wiki.targeting.pageType') === 'home') {
+			params = {
+				anchorSelector: '.mobile-main-page__wiki-description',
+				insertMethod: 'after',
+			};
+		}
+
+		return params;
+	}
+
 	getIncontentBoxadConfig(): SlotSetupDefinition {
 		if (!this.isInContentApplicable() || !context.get('wiki.opts.enableICLazyRequesting')) {
 			return;
@@ -142,7 +148,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			'ad-slot-wrapper',
 			'incontent-boxad',
 			'ic-ad-slot-placeholder',
-			'loading',
+			'is-loading',
 		];
 
 		return {
@@ -190,7 +196,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: SlotPlaceholderConfig = {
-			classList: ['ic-ad-slot-placeholder', 'loading'],
+			classList: ['ic-ad-slot-placeholder', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
