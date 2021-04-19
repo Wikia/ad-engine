@@ -39,8 +39,8 @@ class SlotInjector {
 		const config: SlotConfig = context.get(`slots.${slotName}`);
 		const slotConfig: SlotCreatorConfig = {
 			slotName,
-			anchorSelector: config.insertBeforeSelector,
-			insertMethod: 'before',
+			anchorSelector: config.insertBeforeSelector || config.parentContainerSelector,
+			insertMethod: config.insertBeforeSelector ? 'before' : 'append',
 		};
 
 		if (config.insertBelowFirstViewport) {
