@@ -50,11 +50,7 @@ const contextObject: ContextObject = {
 		trackingOptIn: false,
 		isSubjectToCcpa: false,
 	},
-	service: {
-		instantConfig: {
-			endpoint: '//services.wikia-dev.pl/icbm/api/config',
-		},
-	},
+	services: {},
 	slots: {},
 	src: 'gpt',
 	state: {
