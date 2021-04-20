@@ -52,7 +52,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.adSlot.show();
-		document.body.classList.add('has-uap');
+		document.body.classList.add('has-uap-tmp');
 	}
 
 	async onDestroy(): Promise<void> {

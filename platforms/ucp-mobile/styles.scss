@@ -3,7 +3,7 @@
 @import 'src/ad-products/styles/porvata';
 
 @mixin ucp-mobile-uap-styles() {
-	.has-uap {
+	.has-uap-tmp {
 		#globalNavigation {
 			@include uap-navbar();
 		}
@@ -226,4 +226,14 @@ not(.ic-ad-slot-placeholder) {
 	to {
 		opacity: 1;
 	}
+}
+
+.tmp-video-overlay-sticky {
+	position: absolute !important;
+	top: 20px !important;
+}
+
+.tlb-placeholder-sticky {
+	position: sticky;
+	top: 55px;
 }

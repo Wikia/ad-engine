@@ -7,7 +7,8 @@
 
 @mixin uap-porvata() {
 	.video-overlay {
-		position: absolute;
+		position: fixed;
+		top: 55px;
 	}
 
 	.video-display-wrapper {

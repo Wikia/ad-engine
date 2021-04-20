@@ -1,6 +1,6 @@
 import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { NAVBAR, PAGE } from '../configs/uap-dom-elements';
+import { NAVBAR } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
 
@@ -10,7 +10,7 @@ export class UapDomManager {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
-		@Inject(PAGE) private page: HTMLElement,
+		// @Inject(PAGE) private page: HTMLElement,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
 	) {}
@@ -24,15 +24,19 @@ export class UapDomManager {
 	}
 
 	private setPageOffset(value: number): void {
-		this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
+		// this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
+		// this.manipulator.element(this.page).setProperty('marginTop', '0');
 	}
 
 	setNavbarOffsetImpactToResolved(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetImpactToResolved());
+		// this.setNavbarOffset(this.reader.getNavbarOffsetImpactToResolved());
+		// this.setNavbarOffset(0);
 	}
 
 	setNavbarOffsetResolvedToNone(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetResolvedToNone());
+		const tlb = document.getElementById('top_leaderboard');
+		tlb.style.position = 'unset';
+		// this.setNavbarOffset(this.reader.getNavbarOffsetResolvedToNone());
 	}
 
 	setNavbarOffsetResolved(): void {
@@ -56,7 +60,16 @@ export class UapDomManager {
 	}
 
 	setSlotHeightResolved(): void {
+		const tlb = document.getElementById('top_leaderboard');
+		tlb.style.position = 'unset';
+
+		const videoOverlay = document.querySelector('.video-overlay');
+		videoOverlay.classList.add('tmp-video-overlay-sticky');
+
 		this.setSlotHeight(`${this.reader.getSlotHeightResolved()}px`);
+
+		const tlbplaceholder = document.querySelector('.ad-slot-placeholder.top-leaderboard');
+		tlbplaceholder.classList.add('tlb-placeholder-sticky');
 	}
 
 	setSlotHeightImpact(): void {
