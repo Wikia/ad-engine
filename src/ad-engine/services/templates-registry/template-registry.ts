@@ -77,7 +77,7 @@ export class TemplateRegistry {
 
 		utils.communicator('Template loaded', {
 			name: templateName,
-			state: templateSlot.getSlotName(),
+			state: templateSlot ? templateSlot.getSlotName() : '',
 		});
 
 		const {

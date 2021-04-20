@@ -2,6 +2,7 @@ import {
 	AdSlot,
 	communicationService,
 	context,
+	insertMethodType,
 	InstantConfigService,
 	ofType,
 	scrollListener,
@@ -22,6 +23,11 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
+interface SlotCreatorInsertionParamsType {
+	anchorSelector: string;
+	insertMethod: insertMethodType;
+}
+
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -32,42 +38,21 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
-		const isTLBPlaceholderEnabled = context.get('wiki.opts.enableTLBPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			if (isTLBPlaceholderEnabled) {
-				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topLeaderboard = document.querySelector('.top-leaderboard');
-					topLeaderboard.classList.remove('is-loading');
-				});
-			}
+			slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+				const topLeaderboard = document.querySelector('.top-leaderboard');
+				topLeaderboard.classList.remove('is-loading');
+			});
 		};
-		const slotCreatorWrapperConfig = {
-			classList: ['ad-slot-wrapper', 'top-leaderboard'],
-		};
-
-		if (!!document.querySelector('.portable-infobox')) {
-			return {
-				activator,
-				slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: isTLBPlaceholderEnabled
-						? '.top-leaderboard'
-						: '.portable-infobox-wrapper',
-					insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'after',
-					classList: ['hide', 'ad-slot'],
-				},
-			};
-		}
 
 		return {
 			activator,
-			slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
+			slotCreatorWrapperConfig: null,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: isTLBPlaceholderEnabled ? '.top-leaderboard' : '.article-content',
-				insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'before',
+				anchorSelector: '.top-leaderboard',
+				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
 		};
@@ -96,32 +81,61 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isTBPlaceholderEnabled = context.get('wiki.opts.enableTBPlaceholder');
-		const defaultClasses = ['ad-slot-wrapper', 'top-boxad'];
-		const classList = isTBPlaceholderEnabled
-			? [...defaultClasses, 'ic-ad-slot-placeholder', 'loading']
-			: defaultClasses;
+		const isTBPlaceholderOnBackendEnabled = context.get('wiki.opts.enableTBPlaceholderOnBackend');
+		const defaultClasses = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
 
-		return {
+		const clsImprovedSlotSetupDefinition: SlotSetupDefinition = {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.mw-parser-output > h2',
-				insertMethod: 'before',
+				anchorSelector: '.top-boxad',
+				insertMethod: 'prepend',
+				classList: ['hide', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: null,
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topBoxAd = document.querySelector('.top-boxad');
+					topBoxAd.classList.remove('is-loading');
+				});
+			},
+		};
+
+		const slotSetupDefinition: SlotSetupDefinition = {
+			slotCreatorConfig: {
+				slotName,
+				...this.slotCreatorInsertionParams(),
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList,
+				classList: defaultClasses,
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				if (isTBPlaceholderEnabled) {
-					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-						const topBoxad = document.querySelector('.top-boxad');
-						topBoxad.classList.remove('loading');
-					});
-				}
+				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topBoxad = document.querySelector('.top-boxad');
+					topBoxad.classList.remove('is-loading');
+				});
 			},
 		};
+
+		return isTBPlaceholderOnBackendEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
+	}
+
+	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
+		let params: SlotCreatorInsertionParamsType = {
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+		};
+
+		if (context.get('wiki.targeting.pageType') === 'home') {
+			params = {
+				anchorSelector: '.mobile-main-page__wiki-description',
+				insertMethod: 'after',
+			};
+		}
+
+		return params;
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
@@ -134,7 +148,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			'ad-slot-wrapper',
 			'incontent-boxad',
 			'ic-ad-slot-placeholder',
-			'loading',
+			'is-loading',
 		];
 
 		return {
@@ -182,7 +196,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: SlotPlaceholderConfig = {
-			classList: ['ic-ad-slot-placeholder', 'loading'],
+			classList: ['ic-ad-slot-placeholder', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
