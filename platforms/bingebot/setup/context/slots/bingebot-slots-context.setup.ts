@@ -7,6 +7,16 @@ export class BingeBotSlotsContextSetup implements DiProcess {
 
 	execute(): void {
 		const slots = {
+			promoted_recs: {
+				firstCall: true,
+				adProduct: 'promoted-recs',
+				group: 'PX',
+				slotNameSuffix: '',
+				outOfPage: true,
+				targeting: {
+					pos: ['promoted_recs'],
+				},
+			},
 			sponsored_logo: {
 				adProduct: 'sponsored-logo',
 				group: 'PX',

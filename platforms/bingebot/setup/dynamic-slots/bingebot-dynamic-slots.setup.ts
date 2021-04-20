@@ -15,18 +15,18 @@ export class BingeBotDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		communicationService.action$.pipe(ofType(adSlotInjected)).subscribe((action) => {
-			this.setAdStack(action.slotId);
+			context.push('state.adStack', { id: action.slotId });
 		});
 
 		communicationService.action$.pipe(ofType(destroyAdSlot)).subscribe((action) => {
-			const adSlot = slotService.get(action.slotId);
-
-			this.templateRegistry.destroy(action.slotId);
-			slotService.remove(adSlot);
+			this.destroyAdSlot(action.slotId);
 		});
 	}
 
-	private setAdStack(slotId): void {
-		context.push('state.adStack', { id: slotId });
+	private destroyAdSlot(slotId: string): void {
+		const adSlot = slotService.get(slotId);
+
+		this.templateRegistry.destroy(slotId);
+		slotService.remove(adSlot);
 	}
 }
