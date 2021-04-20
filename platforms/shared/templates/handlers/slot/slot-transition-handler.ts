@@ -32,6 +32,13 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 				tap(() => {
 					const correction = this.scrollCorrector.useScrollCorrection();
 
+					const tlbPlaceholder = document.querySelector('.ad-slot-placeholder.top-leaderboard');
+					tlbPlaceholder.classList.remove('tlb-placeholder-sticky');
+
+					const videoOverlay = document.querySelector('.video-overlay');
+					videoOverlay.classList.remove('tmp-video-overlay-sticky');
+					videoOverlay.classList.add('tmp-video-overlay-resolved');
+
 					transition('resolved').then(correction);
 				}),
 				takeUntil(this.unsubscribe$),
