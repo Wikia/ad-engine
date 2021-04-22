@@ -13,7 +13,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
@@ -38,7 +38,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -102,7 +102,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_skin',
 				aboveTheFold: true,
 				group: 'PX',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				slotNameSuffix: '',
 				slotShortcut: 'x',
@@ -210,7 +210,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				targeting: {
 					loc: 'footer',
@@ -223,7 +223,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				outOfPage: true,
 				targeting: {
