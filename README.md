@@ -408,15 +408,6 @@ To build entire lib just use `npm run build` - it will create all three versions
   * can be build with `npm run build:webpack`
   * cannot be watched
 
-## Run example pages
-
-```bash
-npm run serve
-```
-
-Navigate to <http://localhost:8080/> (you may have different port).
-Upon using the command, the page should automatically open in your default browser.
-
 ### Debug mode
 
 Add `adengine_debug=1` to see all logged events in console.
