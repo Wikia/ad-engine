@@ -5,10 +5,10 @@ import {
 	insertMethodType,
 	InstantConfigService,
 	ofType,
+	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
-	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	slotService,
 	uapLoadStatus,
@@ -195,12 +195,13 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
-		const icbPlaceholderConfig: SlotPlaceholderConfig = {
+		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ic-ad-slot-placeholder', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
-			repeatLimit: 19,
+			repeatStart: 2,
+			repeatLimit: 20,
 		};
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
