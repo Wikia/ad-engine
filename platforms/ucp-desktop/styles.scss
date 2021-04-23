@@ -69,25 +69,29 @@
 		margin: 0 auto;
 	}
 }
+body:not(.has-uap) {
+	#hivi_leaderboard > div {
+		margin-top: 10px;
+	}
 
-.main-page-tag-rcs {
-	display: flex;
-	flex-direction: column;
-}
-
-#top_leaderboard {
-	> div {
+	#top_leaderboard > div {
+		margin-top: 10px;
 		text-align: center;
 	}
 }
 
-#bottom_leaderboard {
-	margin-top: 20px;
-	margin-bottom: 23px;
+#top_boxad {
+	margin-bottom: 10px;
+}
 
-	> div {
-		text-align: center;
-	}
+#bottom_leaderboard > div {
+	text-align: center;
+}
+
+.porvata-outstream.porvata3 .volume-button {
+	width: 20px;
+	height: 20px;
+	margin: 0 10px 10px 0 !important;
 }
 
 #invisible_skin {
