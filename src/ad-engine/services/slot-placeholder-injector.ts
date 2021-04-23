@@ -2,26 +2,32 @@ import { getTopOffset, isInTheSameViewport, logger } from '../utils';
 
 const logGroup = 'slot-placeholder-injector';
 
+export type SlotPlaceholderConfigType = SlotPlaceholderConfig | RepeatableSlotPlaceholderConfig;
+
 export interface SlotPlaceholderConfig {
 	classList: string[];
 	anchorSelector: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
 	avoidConflictWith?: string[];
-	repeatLimit?: number;
+}
+
+export interface RepeatableSlotPlaceholderConfig extends SlotPlaceholderConfig {
+	repeatStart: number;
+	repeatLimit: number;
 }
 
 class SlotPlaceholderInjector {
-	injectAndRepeat(placeholderConfig: SlotPlaceholderConfig, adSlotCategory: string): number {
-		// Placeholder is repeatable. The first one is already injected so we start counting from 2.
-		let repeat = 2;
-
-		placeholderConfig.repeatLimit = placeholderConfig.repeatLimit || 0;
+	injectAndRepeat(
+		placeholderConfig: RepeatableSlotPlaceholderConfig,
+		adSlotCategory: string,
+	): number {
+		let repeat = placeholderConfig.repeatStart;
 
 		while (repeat <= placeholderConfig.repeatLimit) {
 			const placeholder = this.inject(placeholderConfig);
 
 			if (!placeholder) {
-				return repeat;
+				return this.getLastPlaceholderNumber(repeat);
 			}
 
 			logger(logGroup, `Placeholder for ${adSlotCategory} number ${repeat} injected`);
@@ -29,10 +35,10 @@ class SlotPlaceholderInjector {
 			repeat++;
 		}
 
-		return repeat;
+		return this.getLastPlaceholderNumber(repeat);
 	}
 
-	inject(placeholderConfig: SlotPlaceholderConfig): HTMLElement | null {
+	inject(placeholderConfig: SlotPlaceholderConfigType): HTMLElement | null {
 		const placeholder = this.createPlaceholder(placeholderConfig.classList);
 		const anchorElement = this.findAnchorElement(
 			placeholderConfig.anchorSelector,
@@ -89,6 +95,10 @@ class SlotPlaceholderInjector {
 		});
 
 		return elements;
+	}
+
+	private getLastPlaceholderNumber(repeat: number): number {
+		return repeat - 1;
 	}
 }
 

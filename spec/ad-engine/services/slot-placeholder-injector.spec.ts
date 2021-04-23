@@ -1,4 +1,8 @@
-import { SlotPlaceholderConfig, slotPlaceholderInjector } from '@wikia/ad-engine';
+import {
+	RepeatableSlotPlaceholderConfig,
+	SlotPlaceholderConfig,
+	slotPlaceholderInjector,
+} from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
 
@@ -60,7 +64,6 @@ describe('Slot placeholder injector', () => {
 			anchorSelector: '#anchorElementDoesNotExist',
 			insertMethod: 'append',
 			avoidConflictWith: ['#conflict'],
-			repeatLimit: 3,
 		};
 
 		setViewPortHeight(100);
@@ -70,33 +73,7 @@ describe('Slot placeholder injector', () => {
 
 		const placeholder = slotPlaceholderInjector.inject(slotPlaceholderConfig);
 
-		expect(placeholder).to.equal(null);
-	});
-
-	it.skip('should not inject slot placeholder if no place to insert found', () => {
-		const slotPlaceholderConfig: SlotPlaceholderConfig = {
-			classList: ['class_1', 'class_2'],
-			anchorSelector: '.anchor',
-			insertMethod: 'append',
-			avoidConflictWith: ['#conflict'],
-			repeatLimit: 3,
-		};
-
-		setViewPortHeight(1000);
-		setElementOffsetHeight(document.body, 2000);
-		setElementTopOffset(anchorElement0, 900);
-		setElementOffsetHeight(anchorElement0, 10);
-		setElementTopOffset(anchorElement1, 1100);
-		setElementOffsetHeight(anchorElement1, 10);
-		setElementTopOffset(conflictingElement, 1200);
-		setElementOffsetHeight(conflictingElement, 50);
-		setElementTopOffset(anchorElement2, 1300);
-		setElementOffsetHeight(anchorElement2, 10);
-		setScrollPosition(1000);
-
-		const placeholder = slotPlaceholderInjector.inject(slotPlaceholderConfig);
-
-		expect(placeholder).to.equal(null);
+		expect(placeholder).to.be.null;
 	});
 
 	it('slot placeholder should have classes passed in config', () => {
@@ -105,7 +82,6 @@ describe('Slot placeholder injector', () => {
 			anchorSelector: '.anchor',
 			insertMethod: 'append',
 			avoidConflictWith: ['#conflict'],
-			repeatLimit: 3,
 		};
 
 		setViewPortHeight(1000);
@@ -115,6 +91,46 @@ describe('Slot placeholder injector', () => {
 
 		const placeholder = slotPlaceholderInjector.inject(slotPlaceholderConfig);
 
+		expect(placeholder).to.exist;
 		expect(placeholder.classList.value).to.equal('class_1 class_2');
+	});
+
+	it('should inject placeholder multiple times', () => {
+		const slotPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
+			classList: ['class_1', 'class_2'],
+			anchorSelector: '.anchor',
+			insertMethod: 'append',
+			avoidConflictWith: ['#anchorElementDoesNotExist'],
+			repeatStart: 1,
+			repeatLimit: 5,
+		};
+
+		const anchorElement3 = document.createElement('h2');
+		anchorElement3.classList.add('anchor');
+
+		const anchorElement4 = document.createElement('h2');
+		anchorElement4.classList.add('anchor');
+
+		const anchorElements = [
+			anchorElement0,
+			anchorElement1,
+			anchorElement2,
+			anchorElement3,
+			anchorElement4,
+		];
+
+		querySelectorAll.withArgs('.anchor').returns(anchorElements);
+
+		setViewPortHeight(1000);
+		setScrollPosition(0);
+		setElementTopOffset(anchorElement0, 1100);
+		setElementTopOffset(anchorElement1, 1200);
+		setElementTopOffset(anchorElement2, 1300);
+		setElementTopOffset(anchorElement3, 1400);
+		setElementTopOffset(anchorElement4, 1500);
+
+		const repeat = slotPlaceholderInjector.injectAndRepeat(slotPlaceholderConfig, 'test ads');
+
+		expect(repeat).to.equal(5);
 	});
 });
