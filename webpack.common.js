@@ -32,6 +32,13 @@ module.exports = () => ({
 		plugins: [new TsConfigPathsPlugin({ paths })],
 	},
 
+	output: {
+		devtoolModuleFilenameTemplate: '[absolute-resource-path]',
+		devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]',
+	},
+
+	devtool: '#inline-cheap-module-source-map',
+
 	module: {
 		rules: [
 			getTypeScriptLoader({

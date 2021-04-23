@@ -133,4 +133,40 @@ describe('Slot placeholder injector', () => {
 
 		expect(repeat).to.equal(5);
 	});
+
+	it('should not inject placeholder if repeatStart > repeatLimit', () => {
+		const slotPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
+			classList: ['class_1', 'class_2'],
+			anchorSelector: '.anchor',
+			insertMethod: 'append',
+			avoidConflictWith: ['#anchorElementDoesNotExist'],
+			repeatStart: 2,
+			repeatLimit: 1,
+		};
+
+		const repeat = slotPlaceholderInjector.injectAndRepeat(slotPlaceholderConfig, 'test ads');
+
+		expect(repeat).to.be.null;
+	});
+
+	it('should inject placeholder without avoidConflictWith in config', () => {
+		const slotPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
+			classList: ['class_1', 'class_2'],
+			anchorSelector: '.anchor',
+			insertMethod: 'append',
+			repeatStart: 2,
+			repeatLimit: 3,
+		};
+
+		setViewPortHeight(100);
+		setElementTopOffset(anchorElement0, 1200);
+		setElementOffsetHeight(anchorElement0, 50);
+		setElementTopOffset(anchorElement1, 1200);
+		setElementOffsetHeight(anchorElement2, 50);
+		setScrollPosition(0);
+
+		const repeat = slotPlaceholderInjector.injectAndRepeat(slotPlaceholderConfig, 'test ads');
+
+		expect(repeat).to.equal(3);
+	});
 });

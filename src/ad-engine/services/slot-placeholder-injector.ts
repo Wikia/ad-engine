@@ -20,7 +20,11 @@ class SlotPlaceholderInjector {
 	injectAndRepeat(
 		placeholderConfig: RepeatableSlotPlaceholderConfig,
 		adSlotCategory: string,
-	): number {
+	): number | null {
+		if (placeholderConfig.repeatStart > placeholderConfig.repeatLimit) {
+			return null;
+		}
+
 		let repeat = placeholderConfig.repeatStart;
 
 		while (repeat <= placeholderConfig.repeatLimit) {
@@ -64,9 +68,18 @@ class SlotPlaceholderInjector {
 
 	private findAnchorElement(
 		anchorSelector: string,
-		conflictingElementsSelectors?: string[],
+		conflictingElementsSelectors = [],
 	): HTMLElement | null {
 		const anchorElements = this.getAnchorElements(anchorSelector);
+
+		if (conflictingElementsSelectors.length === 0) {
+			if (anchorElements.length === 0) {
+				return null;
+			}
+
+			return anchorElements[0];
+		}
+
 		const conflictingElements = this.getConflictingElements(conflictingElementsSelectors);
 		const anchorElement = anchorElements.find(
 			(element) => !isInTheSameViewport(element, conflictingElements),
