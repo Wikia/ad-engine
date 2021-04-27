@@ -179,7 +179,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
-				this.pushWaitingSlot(slotName);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(() => {
+					context.push('events.pushOnScroll.ids', slotName);
+				});
 				this.injectIncontentAdsPlaceholders();
 			},
 		};
