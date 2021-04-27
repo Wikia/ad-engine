@@ -45,7 +45,7 @@ export abstract class PrebidAdapter {
 		const realVu = context.get(`slots.${slotName}.targeting.realvu`);
 
 		return {
-			realVu: realVu || [''],
+			realvu: realVu || [''],
 			...this.pageTargeting,
 			src: [context.get('src') || ''],
 			pos: [slotName],
