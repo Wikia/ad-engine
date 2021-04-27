@@ -202,7 +202,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
-			repeatStart: 2,
+			repeatStart: 1,
 			repeatLimit: 20,
 		};
 
