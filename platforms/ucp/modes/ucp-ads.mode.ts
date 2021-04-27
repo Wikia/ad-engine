@@ -70,6 +70,7 @@ export class UcpAdsMode implements DiProcess {
 		const targeting = context.get('targeting');
 
 		permutive.call();
+		realVu.call();
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
@@ -79,7 +80,6 @@ export class UcpAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
 		durationMedia.call();
 		nielsen.call({
 			type: 'static',

@@ -47,6 +47,7 @@ export class HydraAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		permutive.call();
+		realVu.call();
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
@@ -56,7 +57,6 @@ export class HydraAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
 		durationMedia.call();
 
 		return inhibitors;

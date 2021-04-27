@@ -1,3 +1,4 @@
+import { utils } from './index';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
@@ -112,6 +113,8 @@ export class AdEngine {
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
 				eventService.emit(events.AD_STACK_START);
+				utils.communicator('Ad queue started');
+
 				this.started = true;
 				this.adStack.start();
 			}
