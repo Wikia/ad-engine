@@ -39,8 +39,6 @@ export const trackingPayloadValidationMiddleware: FuncPipelineStep<TrackingMessa
 /**
  * Monitor messages sent with post message.
  * Message must abide the TrackingMessage interface.
- *
- * For example use, check examples /tracking/postmessage-tracker/.
  */
 export class PostmessageTracker {
 	private pipeline = new FuncPipeline<any>();
