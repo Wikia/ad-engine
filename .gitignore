@@ -7,7 +7,6 @@
 coverage
 dist/
 env/
-examples/**/dist/*
 node_modules
 npm-debug.log
 previous-package.json
