@@ -174,7 +174,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		if (context.get('wiki.opts.enableICLazyRequesting')) {
 			const removeLoader = (adSlotName) => {
 				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.parentElement.classList.remove('loading');
+				slotElement.parentElement.classList.remove('is-loading');
 			};
 
 			adSlotEventListener(removeLoader);
