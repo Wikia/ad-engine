@@ -157,7 +157,15 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectFloorAdhesion(): void {
-		scrollListener.addSlot('floor_adhesion', { distanceFromTop: utils.getViewportHeight() });
+		const numberOfViewportsFromTopToPush: number =
+			context.get('options.floorAdhesionNumberOfViewportsFromTopToPush') || 0;
+
+		if (numberOfViewportsFromTopToPush === -1) {
+			context.push('state.adStack', { id: 'floor_adhesion' });
+		} else {
+			const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+			scrollListener.addSlot('floor_adhesion', { distanceFromTop: distance });
+		}
 
 		this.registerFloorAdhesionCodePriority();
 	}
