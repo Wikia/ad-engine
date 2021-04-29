@@ -1,6 +1,7 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { flattenDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
+import { utils } from '../../index';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';
 import { TemplateDependenciesManager, TemplateDependency } from './template-dependencies-manager';
@@ -73,6 +74,11 @@ export class TemplateRegistry {
 		if (!this.settings.has(templateName)) {
 			throw new Error(`Template ${templateName} was not registered`);
 		}
+
+		utils.communicator('Template loaded', {
+			name: templateName,
+			state: templateSlot ? templateSlot.getSlotName() : '',
+		});
 
 		const {
 			StateHandlerTypesDict,

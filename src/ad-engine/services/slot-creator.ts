@@ -1,9 +1,11 @@
 import { Injectable } from '@wikia/dependency-injection';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
 
+export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
+
 export interface SlotCreatorConfig {
 	slotName: string;
-	insertMethod: 'append' | 'prepend' | 'after' | 'before';
+	insertMethod: insertMethodType;
 	anchorSelector: string;
 	/**
 	 * @default firstViable
@@ -11,6 +13,7 @@ export interface SlotCreatorConfig {
 	anchorPosition?: number | 'firstViable' | 'belowFirstViewport' | 'belowScrollPosition';
 	avoidConflictWith?: string[];
 	classList?: string[];
+	repeat?: object;
 }
 
 export interface SlotCreatorWrapperConfig {
@@ -40,6 +43,7 @@ export class SlotCreator {
 			anchorPosition: slotLooseConfig.anchorPosition ?? 'firstViable',
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
+			repeat: slotLooseConfig.repeat || {},
 		};
 	}
 

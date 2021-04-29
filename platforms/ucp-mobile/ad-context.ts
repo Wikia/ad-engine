@@ -2,7 +2,12 @@ import fallbackInstantConfig from './fallback-config.json';
 
 export const basicContext = {
 	adUnitId:
-		'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiIdentifier}-{targeting.s0}',
+		'/{custom.dfpId}' +
+		'/{custom.serverPrefix}.{slotConfig.group}' +
+		'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+		'/{state.deviceType}' +
+		'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+		'/{custom.wikiIdentifier}-{targeting.s0}',
 	bidders: {
 		enabled: false,
 		timeout: 2000,
@@ -42,11 +47,19 @@ export const basicContext = {
 	slots: {},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
-			'{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiIdentifier}-{targeting.s0}',
+			'/{custom.dfpId}/' +
+			'{custom.serverPrefix}.{slotConfig.group}/' +
+			'{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
+			'{state.deviceType}/' +
+			'{targeting.skin}-{targeting.original_host}-{targeting.s2}/' +
+			'{custom.wikiIdentifier}-{targeting.s0}',
 		dbNameAdUnitId:
-			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
-			'{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiDBNameIdentifier}-{targeting.s0}',
+			'/{custom.dfpId}/' +
+			'{custom.serverPrefix}.{slotConfig.group}/' +
+			'{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
+			'{state.deviceType}/' +
+			'{targeting.skin}-{targeting.original_host}-{targeting.s2}/' +
+			'{custom.wikiDBNameIdentifier}-{targeting.s0}',
 	},
 	targeting: {
 		rollout_tracking: ['ucp'],

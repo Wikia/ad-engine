@@ -47,6 +47,7 @@ export class UcpTargetingSetup implements DiProcess {
 			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			media: wiki.targeting?.adTagManagerTags?.media || [],
+			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
 			pform: wiki.targeting?.adTagManagerTags?.pform || [],
 			pub: wiki.targeting?.adTagManagerTags?.pub || [],
 			s0: wiki.targeting.mappedVerticalName,

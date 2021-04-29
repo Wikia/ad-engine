@@ -11,6 +11,7 @@ export * from './models';
 export * from './providers';
 export * from './services';
 export * from './services/slot-creator';
+export * from './services/slot-placeholder-injector';
 export * from './tracking';
 export * from './video';
 export * from './wrappers';

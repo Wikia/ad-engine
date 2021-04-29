@@ -2,12 +2,14 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	CookieStorageAdapter,
+	insertMethodType,
 	InstantConfigService,
 	ofType,
+	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	slotPlaceholderInjector,
 	slotService,
 	uapLoadStatus,
 	utils,
@@ -21,6 +23,11 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
+interface SlotCreatorInsertionParamsType {
+	anchorSelector: string;
+	insertMethod: insertMethodType;
+}
+
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -31,42 +38,21 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
-		const isTLBPlaceholderEnabled = context.get('wiki.opts.enableTLBPlaceholder');
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			if (isTLBPlaceholderEnabled) {
-				slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topLeaderboard = document.querySelector('.top-leaderboard');
-					topLeaderboard.classList.remove('is-loading');
-				});
-			}
+			slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+				const topLeaderboard = document.querySelector('.top-leaderboard');
+				topLeaderboard.classList.remove('is-loading');
+			});
 		};
-		const slotCreatorWrapperConfig = {
-			classList: ['ad-slot-wrapper', 'top-leaderboard'],
-		};
-
-		if (!!document.querySelector('.portable-infobox')) {
-			return {
-				activator,
-				slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: isTLBPlaceholderEnabled
-						? '.top-leaderboard'
-						: '.portable-infobox-wrapper',
-					insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'after',
-					classList: ['hide', 'ad-slot'],
-				},
-			};
-		}
 
 		return {
 			activator,
-			slotCreatorWrapperConfig: isTLBPlaceholderEnabled ? null : slotCreatorWrapperConfig,
+			slotCreatorWrapperConfig: null,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: isTLBPlaceholderEnabled ? '.top-leaderboard' : '.article-content',
-				insertMethod: isTLBPlaceholderEnabled ? 'prepend' : 'before',
+				anchorSelector: '.top-leaderboard',
+				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
 		};
@@ -95,30 +81,108 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isTBPlaceholderEnabled = context.get('wiki.opts.enableTBPlaceholder');
-		const defaultClasses = ['ad-slot-wrapper', 'top-boxad'];
-		const classList = isTBPlaceholderEnabled
-			? [...defaultClasses, 'ic-ad-slot-placeholder', 'loading']
-			: defaultClasses;
+		const isTBPlaceholderOnBackendEnabled = context.get('wiki.opts.enableTBPlaceholderOnBackend');
+		const defaultClasses = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
+
+		const clsImprovedSlotSetupDefinition: SlotSetupDefinition = {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.top-boxad',
+				insertMethod: 'prepend',
+				classList: ['hide', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: null,
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topBoxAd = document.querySelector('.top-boxad');
+					topBoxAd.classList.remove('is-loading');
+				});
+			},
+		};
+
+		const slotSetupDefinition: SlotSetupDefinition = {
+			slotCreatorConfig: {
+				slotName,
+				...this.slotCreatorInsertionParams(),
+				classList: ['hide', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: {
+				classList: defaultClasses,
+			},
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const topBoxad = document.querySelector('.top-boxad');
+					topBoxad.classList.remove('is-loading');
+				});
+			},
+		};
+
+		return isTBPlaceholderOnBackendEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
+	}
+
+	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
+		let params: SlotCreatorInsertionParamsType = {
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+		};
+
+		if (context.get('wiki.targeting.pageType') === 'home') {
+			params = {
+				anchorSelector: '.mobile-main-page__wiki-description',
+				insertMethod: 'after',
+			};
+		}
+
+		return params;
+	}
+
+	getIncontentBoxadConfig(): SlotSetupDefinition {
+		if (!this.isInContentApplicable() || !context.get('wiki.opts.enableICLazyRequesting')) {
+			return;
+		}
+
+		const slotName = 'incontent_boxad_1';
+		const wrapperClassList = [
+			'ad-slot-wrapper',
+			'incontent-boxad',
+			'ic-ad-slot-placeholder',
+			'is-loading',
+		];
 
 		return {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2',
+				avoidConflictWith: [
+					'.ad-slot-wrapper',
+					'.ic-ad-slot-placeholder',
+					'.ad-slot',
+					'#incontent_player',
+				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
+				repeat: {
+					index: 1,
+					limit: 20,
+					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.rv': '{slotConfig.repeat.index}',
+						'targeting.pos': ['incontent_boxad'],
+					},
+					insertBelowScrollPosition: true,
+				},
 			},
 			slotCreatorWrapperConfig: {
-				classList,
+				classList: wrapperClassList,
 			},
 			activator: () => {
-				this.pushWaitingSlot(slotName);
-				if (isTBPlaceholderEnabled) {
-					slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-						const topBoxad = document.querySelector('.top-boxad');
-						topBoxad.classList.remove('loading');
-					});
-				}
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(() => {
+					context.push('events.pushOnScroll.ids', slotName);
+				});
+				this.injectIncontentAdsPlaceholders();
 			},
 		};
 	}
@@ -129,6 +193,32 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		return context.get('wiki.opts.pageType') !== 'search';
+	}
+
+	private injectIncontentAdsPlaceholders(): void {
+		const adSlotCategory = 'incontent';
+		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
+			classList: ['ic-ad-slot-placeholder', 'is-loading'],
+			anchorSelector: '.mw-parser-output > h2',
+			insertMethod: 'before',
+			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
+			repeatStart: 1,
+			repeatLimit: 20,
+		};
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			if (!action.isLoaded) {
+				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+
+				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
+
+				context.set('slots.incontent_player.insertBeforeSelector', '');
+				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
+
+				context.set('slots.affiliate_slot.insertBeforeSelector', '.ic-ad-slot-placeholder');
+			}
+		});
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
@@ -178,14 +268,19 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.article-footer',
-				insertMethod: 'before',
+				anchorSelector: '.bottom-leaderboard',
+				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
-			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-wrapper', 'bottom-leaderboard'],
+			slotCreatorWrapperConfig: null,
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+
+				slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
+					bottomLeaderboard.classList.remove('is-loading');
+				});
 			},
-			activator: () => this.pushWaitingSlot(slotName),
 		};
 	}
 
@@ -261,11 +356,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInterstitialApplicable(): boolean {
-		const cookieAdapter = new CookieStorageAdapter();
-
-		return (
-			this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('interstitial-impression')
-		);
+		return this.instantConfig.get('icInterstitial');
 	}
 
 	getInvisibleHighImpactConfig(): SlotSetupDefinition {
