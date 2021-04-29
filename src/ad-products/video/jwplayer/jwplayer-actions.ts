@@ -3,13 +3,14 @@ import { props } from 'ts-action';
 
 export interface VideoTargeting {
 	plist?: string;
-	videoTags?: string | string[]; // not sure about `string`
-	v1?: string; // playlist item id
+	vtags?: string[];
 }
 
 export interface JwPlayerAdsFactoryOptions {
+	audio: boolean;
+	ctp: boolean;
 	slotName: string;
-	featured: boolean;
+	videoId: string;
 }
 
 export const jwpReady = globalAction(
