@@ -3,7 +3,7 @@ import { props } from 'ts-action';
 
 export interface VideoTargeting {
 	plist?: string;
-	vtags?: string[];
+	vtags?: string;
 }
 
 export interface JwPlayerAdsFactoryOptions {
