@@ -9,6 +9,7 @@ export interface VideoTargeting {
 export interface JwPlayerAdsFactoryOptions {
 	audio: boolean;
 	ctp: boolean;
+	featured: boolean;
 	slotName: string;
 	videoId: string;
 }
