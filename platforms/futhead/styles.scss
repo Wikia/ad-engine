@@ -21,6 +21,7 @@
 @mixin ucp-futhead-uap-styles() {
 	.navbar.navbar-futhead {
 		@include uap-navbar();
+		top: unset;
 	}
 
 	.has-uap {
