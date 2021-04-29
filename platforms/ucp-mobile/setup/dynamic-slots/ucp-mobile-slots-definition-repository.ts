@@ -306,9 +306,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set(`slots.${slotName}.disabled`, !this.instantConfig.get('icFloorAdhesion'));
+				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
 				context.set(
-					`slots.${slotName}.forceSafeFrame`,
+					'slots.floor_adhesion.forceSafeFrame',
 					this.instantConfig.get('icFloorAdhesionForceSafeFrame'),
 				);
 				context.set(
