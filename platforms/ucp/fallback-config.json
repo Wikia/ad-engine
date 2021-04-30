@@ -173,6 +173,17 @@
             "value": true
         }
     ],
+    "icFloorAdhesionViewportsToStart": [
+        {
+            "apps": [
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 1
+        }
+    ],
     "icPrebidSizePriceFloorRule": [
         {
             "apps": [
@@ -1708,7 +1719,11 @@
                 "5671404855",
                 "5679406799",
                 "5669348111",
-                "5671417347"
+                "5671417347",
+                "5674356957",
+                "5674357080",
+                "5674357083",
+                "5674357329"
             ]
         }
     ],
