@@ -1,4 +1,7 @@
 @import 'src/ad-products/styles/styles.scss';
+@import 'src/ad-products/styles/mixin';
+@import 'platforms/shared/styles/index';
+@import 'src/ad-products/styles/porvata';
 
 @include logo-replacement(48px);
 
