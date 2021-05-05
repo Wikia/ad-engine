@@ -420,12 +420,22 @@ export class AdSlot extends EventEmitter {
 
 		this.emit(AdSlot.TEMPLATES_LOADED, ...templateNames);
 
+		utils.communicator('Ad Slot loaded', {
+			name: this.getSlotName(),
+			state: AdSlot.STATUS_SUCCESS,
+		});
+
 		if (this.config.trackOverscrolled) {
 			overscrollListener.apply(this);
 		}
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
+		utils.communicator('Ad Slot loaded', {
+			name: this.getSlotName(),
+			state: AdSlot.STATUS_COLLAPSE,
+		});
+
 		this.hide();
 		this.setStatus(status);
 	}

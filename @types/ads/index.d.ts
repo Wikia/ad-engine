@@ -16,13 +16,13 @@ interface MediaWikiAdsContext {
 interface MediaWikiAdsOpts {
 	noAdsReasons: string[];
 	isAdTestWiki: boolean;
+	isGamepedia?: boolean;
 	isSubjectToCcpa?: boolean;
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
-	enableTLBPlaceholder?: boolean;
-	enableTBPlaceholder?: boolean;
-	enableICBPlaceholder?: boolean;
+	enableTBPlaceholderOnBackend?: boolean;
+	enableICLazyRequesting?: boolean;
 	enableICPPlaceholder?: boolean;
 	enableAdTagManagerBackend?: boolean;
 }

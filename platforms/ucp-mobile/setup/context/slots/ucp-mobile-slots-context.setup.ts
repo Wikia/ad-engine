@@ -171,22 +171,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'IU',
 				options: {},
-				outOfPage: false,
-				defaultTemplates: ['interstitial'],
-				defaultSizes: [
-					[320, 480],
-					[480, 320],
-				],
-				sizes: [
-					{
-						viewportSize: [0, 0],
-						sizes: [[320, 480]],
-					},
-					{
-						viewportSize: [480, 0],
-						sizes: [[480, 320]],
-					},
-				],
+				outOfPage: true,
+				outOfPageFormat: 'INTERSTITIAL',
 				targeting: {
 					loc: 'hivi',
 					rv: 1,
@@ -307,6 +293,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+
+		if (context.get('wiki.opts.enableICLazyRequesting')) {
+			context.set('slots.incontent_boxad_1.defaultClasses', ['hide', 'ad-slot']);
+		}
 	}
 
 	private setupSlotParameters(slot): void {

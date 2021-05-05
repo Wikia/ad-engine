@@ -12,7 +12,7 @@ export class PorvataDom {
 
 		this.playerContainer.classList.add('porvata', 'porvata-container');
 		this.videoContainer.classList.add('video-player', 'porvata-player', 'hide');
-		this.videoElement.classList.add('porvata-video');
+		this.videoElement?.classList.add('porvata-video');
 		this.interfaceContainer.classList.add('porvata-interface', 'hide');
 
 		this.playerContainer.appendChild(this.interfaceContainer);

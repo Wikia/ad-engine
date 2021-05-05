@@ -98,7 +98,7 @@
             ],
             "sampling": 100.0,
             "value": {
-                "name": "de5377_qa",
+                "name": "icbm_events_test",
                 "groups": [
                     {
                         "name": "A",
@@ -203,7 +203,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 1
+            "value": 0
         }
     ],
     "icPrebidGumGum": [
@@ -273,10 +273,15 @@
             "regions": [
                 "AU",
                 "CA",
+                "CH",
                 "DE",
+                "ES",
+                "FR",
                 "GB",
+                "IT",
                 "NZ",
                 "PL",
+                "SG",
                 "UK",
                 "US"
             ],
@@ -573,6 +578,19 @@
             "value": true
         }
     ],
+    "icDeHeartbeatActivityTracking": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icCollapseTopLeaderboard": [
         {
             "apps": [
@@ -669,7 +687,7 @@
             "regions": [
                 "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icNielsen": [
@@ -683,6 +701,28 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icDeHeartbeatTracking": [
+        {
+            "apps": [
+                "gamepedia",
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 100.0,
+            "value": [
+                5,
+                11,
+                31,
+                61,
+                181,
+                601,
+                1801
+            ]
         }
     ],
     "icPrebidBeachfront": [
@@ -803,6 +843,27 @@
                 "XX"
             ],
             "value": [
+                "5675427997",
+                "5672641641",
+                "5671583683",
+                "5677261124",
+                "5670678471",
+                "5668850526",
+                "5663471693",
+                "5661781917",
+                "5660907508",
+                "5660490379",
+                "5659546725",
+                "5660493577",
+                "5659546728",
+                "5659546722",
+                "5660493580",
+                "5656809496",
+                "5656809511",
+                "5655810621",
+                "5656809250",
+                "5656518362",
+                "5656518374",
                 "5647371313",
                 "5647370629",
                 "5646185272",
@@ -817,6 +878,7 @@
                 "5629857064",
                 "5585170956",
                 "5585170959",
+                "5664517913",
                 "5585170962",
                 "5629664089",
                 "5628410358",
@@ -1835,7 +1897,34 @@
                 "5650532788",
                 "5650533550",
                 "5646263904",
-                "5646263901"
+                "5646263901",
+                "5651124712",
+                "5651124715",
+                "5651547270",
+                "5653396781",
+                "5657389886",
+                "5659376765",
+                "5664939276",
+                "5664939279",
+                "5665857118",
+                "5665857244",
+                "5666587619",
+                "5638843608",
+                "5671404855",
+                "5679406799",
+                "5669348111",
+                "5671417347",
+                "5674356957",
+                "5674357080",
+                "5674357083",
+                "5681824940",
+                "5681824934",
+                "5681824796",
+                "5681211784",
+                "5681824793",
+                "5680653996",
+                "5680653993",
+                "5674357329"
             ]
         }
     ],
@@ -1857,7 +1946,9 @@
                 "icFloatingMedrecRecirculationDisabled_A_90:fmr_50_50_a",
                 "icFloatingMedrecRecirculationDisabled_B_10:fmr_50_50_b",
                 "icIxIdentityLibrary_A_90:ix_library_a",
-                "icIxIdentityLibrary_B_10:ix_library_b"
+                "icIxIdentityLibrary_B_10:ix_library_b",
+                "icFloorAdhesionDelay_A_50:fd_50_50_a",
+                "icFloorAdhesionDelay_B_50:fd_50_50_b"
             ]
         }
     ],
@@ -2292,6 +2383,28 @@
                 "oasis"
             ],
             "regions": [
+                "US"
+            ],
+            "sampling": 50.0,
+            "value": -1
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "US"
+            ],
+            "sampling": 100.0,
+            "value": 30000
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
                 "XX"
             ],
             "value": 30000
@@ -2338,7 +2451,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.7/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.1.1/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
@@ -2377,7 +2490,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 1000
+            "value": 0
         }
     ],
     "icAdEngineDelay": [

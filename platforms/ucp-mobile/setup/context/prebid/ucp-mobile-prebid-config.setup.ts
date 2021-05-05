@@ -5,6 +5,7 @@ import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getAppnexusGroupMContext } from '../../../bidders/prebid/appnexus-group-m';
 import { getBeachfrontContext } from '../../../bidders/prebid/beachfront';
+import { getGumgumContext } from '../../../bidders/prebid/gumgum';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMediagridContext } from '../../../bidders/prebid/mediagrid';
@@ -28,6 +29,7 @@ export class UcpMobilePrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.appnexusGroupM', getAppnexusGroupMContext());
 		context.set('bidders.prebid.beachfront', getBeachfrontContext());
+		context.set('bidders.prebid.gumgum', getGumgumContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.kargo', getKargoContext());
 		context.set('bidders.prebid.mediagrid', getMediagridContext());
