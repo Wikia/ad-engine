@@ -1,87 +1,85 @@
-@import 'src/ad-products/styles/mixin';
-@import 'platforms/shared/styles/index';
-@import 'src/ad-products/styles/porvata';
+@import 'src/ad-products/styles/styles.scss';
 
-@include logo-replacement(40px, 0, 5px);
+@include logo-replacement(48px);
 
 .gdm__wrapper {
 	text-align: center;
 }
 
 .slideout-open {
+	.has-bfaa {
+		background-color: #0d0f10;
+	}
+
 	#cdm-zone-01 {
 		display: none;
 	}
 }
 
-#cdm-zone-04 {
-	margin: 15px auto;
-}
-
-@mixin ucp-futhead-uap-styles() {
-	.navbar.navbar-futhead {
-		@include uap-navbar();
-		top: unset;
+.has-bfaa {
+	.header {
+		&.bfaa-pinned {
+			position: relative;
+		}
 	}
 
-	.has-uap {
+	.header.bfaa-pinned + .site-bg {
+		padding-top: 0;
+	}
+
+	.slideout-panel {
+		position: unset;
+	}
+
+	.gdm--banner {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+.site-futhead.has-bfaa {
+	&.with-mobile-nav {
 		#cdm-zone-01 {
-			@include bfaa-slot();
-			@include sticky-tlb-slot();
-
-			&.is-mobile-layout .video-overlay {
-				transform: translateZ(0);
-			}
+			display: none;
 		}
 
-		#cdm-zone-01,
-		#cdm-zone-04 {
-			@include uap-porvata();
-			@include uap-porvata-right-position();
-
-			@include uap-advertisement-label();
-			@include uap-button-close();
-
-			&.is-dark {
-				@include uap-dark-theme();
-			}
-		}
-
-		#cdm-zone-04 {
-			@include bfab-slot();
+		.navbar.navbar-futhead.bfaa-pinned {
+			position: fixed;
 		}
 	}
 
-	@include expanded-slot();
-
-	.mobile {
-		#cdm-zone-04 {
-			.video-overlay {
-				transform: translateZ(0);
-			}
-		}
-	}
-
-	.site-futhead.has-uap {
-		&.with-mobile-nav {
-			.navbar.navbar-futhead.bfaa-pinned {
-				position: fixed;
-			}
-		}
-
-		&.fixed-page-nav {
-			.page-navigation {
-				position: unset;
-				box-shadow: unset;
-			}
-		}
-
-		.main-content.homepage,
-		.content-header,
-		.futhead-gdm {
+	&.fixed-page-nav {
+		.page-navigation {
 			position: unset;
+			box-shadow: unset;
 		}
+	}
+
+	.header {
+		min-height: 43px;
+	}
+
+	.site-header {
+		margin-bottom: 0;
+	}
+
+	.navbar.navbar-futhead.bfaa-pinned {
+		position: relative;
+	}
+
+	.main-content.homepage,
+	.content-header,
+	.futhead-gdm {
+		position: unset;
+	}
+
+	.homepage .futhead-gdm,
+	.futhead-gdm.headliner {
+		min-height: 0;
+		margin-bottom: 0 !important;
+	}
+
+	.gpt-ad.bfaa-template {
+		max-width: 100vw;
 	}
 }
-
-@include ucp-futhead-uap-styles();
