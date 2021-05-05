@@ -306,14 +306,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
 				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
-				context.set(
-					'slots.floor_adhesion.numberOfViewportsFromTopToPush',
-					this.instantConfig.get('icFloorAdhesionViewportsToStart'),
-				);
 				context.set(
 					'slots.floor_adhesion.forceSafeFrame',
 					this.instantConfig.get('icFloorAdhesionForceSafeFrame'),
@@ -323,8 +316,15 @@ export class UcpMobileSlotsDefinitionRepository {
 					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
 				);
 
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				const numberOfViewportsFromTopToPush: number =
+					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+				if (numberOfViewportsFromTopToPush === -1) {
+					this.pushWaitingSlot(slotName);
+				} else {
+					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+					scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				}
 			},
 		};
 	}
