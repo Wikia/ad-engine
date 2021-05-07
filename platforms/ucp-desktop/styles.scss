@@ -18,10 +18,8 @@
 
 		#top_leaderboard,
 		#hivi_leaderboard {
-			@include bfaa-slot();
+			@include bfaa-slot(1000);
 			@include sticky-tlb-slot();
-
-			z-index: 1000;
 		}
 
 		#bottom_leaderboard {
