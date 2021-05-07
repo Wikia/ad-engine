@@ -93,7 +93,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
-				context.push('state.adStack', { id: slotName });
+				this.pushWaitingSlot(slotName);
 				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
 					const topBoxAd = document.querySelector('.top-boxad');
 					topBoxAd.classList.remove('is-loading');
