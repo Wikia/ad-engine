@@ -44,7 +44,7 @@ export interface SlotConfig {
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
-	parentContainerPosition?: insertMethodType;
+	insertIntoParentContainerMethod?: insertMethodType;
 
 	targeting: Targeting;
 	videoAdUnit?: string;
