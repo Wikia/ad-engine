@@ -441,7 +441,10 @@
             "apps": [
                 "mobile-wiki"
             ],
-            "value": false
+            "regions": [
+                "US"
+            ],
+            "value": true
         }
     ],
     "icSpaInstanceIdTracking": [
