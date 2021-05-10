@@ -38,7 +38,6 @@ export const basicContext = {
 	events: {
 		pushOnScroll: {
 			ids: [],
-			threshold: 100,
 		},
 		pushAfterRendered: {
 			top_boxad: ['incontent_boxad_1', 'incontent_player', 'affiliate_slot'],
