@@ -9,7 +9,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
-import { registerBfaaTemplate } from './bfaa-template';
+import { registerBfaaNewTemplate } from './bfaa-new-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
@@ -25,7 +25,7 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 	execute(): void {
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const interstitial$ = registerInterstitialTemplate(this.registry);
-		const bfaa$ = registerBfaaTemplate(this.registry);
+		const bfaa$ = registerBfaaNewTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);

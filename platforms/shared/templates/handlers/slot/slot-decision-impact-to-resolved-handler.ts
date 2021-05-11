@@ -17,7 +17,7 @@ export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler
 		private timeout: StickinessTimeout,
 	) {}
 
-	async onEnter(transition: TemplateTransition<'sticky' | 'transition'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<any>): Promise<void> {
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
@@ -29,6 +29,7 @@ export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler
 					if (viewedAndDelayed) {
 						transition('transition').then(correction);
 					} else {
+						transition('embeddedResolved').then(correction);
 						transition('sticky').then(correction);
 					}
 				}),

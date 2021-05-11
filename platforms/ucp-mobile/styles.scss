@@ -17,6 +17,11 @@
 			@include sticky-tlb-slot();
 		}
 
+		#top_leaderboard.bfaa-new-template {
+			position: unset;
+			margin-bottom: 25px;
+		}
+
 		#bottom_leaderboard {
 			@include bfab-slot();
 		}
@@ -24,6 +29,16 @@
 		#top_leaderboard,
 		#bottom_leaderboard {
 			@include uap-porvata();
+
+			.video-overlay {
+				position: relative;
+				top: -211px;
+			}
+
+			.video-display-wrapper {
+				position: unset;
+			}
+
 			@include uap-porvata-learn-more();
 
 			@include uap-advertisement-label();
@@ -31,6 +46,21 @@
 
 			&.is-dark {
 				@include uap-dark-theme();
+			}
+		}
+
+		#top_leaderboard {
+			.advertisement-label {
+				position: relative;
+				top: -205px;
+				left: -155px;
+			}
+		}
+
+		#top_leaderboard.embedded-resolved {
+			.video-overlay {
+				top: -90px;
+				left: 220px;
 			}
 		}
 	}

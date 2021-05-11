@@ -15,6 +15,10 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
+	addClassToAdSlot(className: string): void {
+		this.adSlot.addClass(className);
+	}
+
 	setPageOffsetImpact(): void {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}

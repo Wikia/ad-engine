@@ -13,12 +13,15 @@ export class VideoRestartHandler implements TemplateStateHandler {
 
 	constructor(private playerRegistry: PlayerRegistry) {}
 
-	async onEnter(transition: TemplateTransition<'impact'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<any>): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
 				take(1),
 				switchMap(({ player }) => fromEvent(player, 'wikiaAdStarted').pipe(skip(1))),
-				tap(() => transition('impact', { allowMulticast: true })),
+				tap(() => {
+					transition('impact', { allowMulticast: true });
+					transition('embeddedImpact', { allowMulticast: true });
+				}),
 				takeUntil(this.destroy$),
 			)
 			.subscribe();
