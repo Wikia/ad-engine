@@ -20,7 +20,10 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 		// );
 
 		context.set('options.video.watchingThat.enabled', this.instantConfig.get('icWatchingThat'));
-		context.set('events.pushOnScroll.threshold', this.instantConfig.get('icPushOnScrollThreshold'));
+		context.set(
+			'events.pushOnScroll.threshold',
+			this.instantConfig.get('icPushOnScrollThreshold', 100),
+		);
 
 		if (context.get('wiki.opts.enableICLazyRequesting')) {
 			context.set('wiki.opts.enableICBPlaceholder', false);
