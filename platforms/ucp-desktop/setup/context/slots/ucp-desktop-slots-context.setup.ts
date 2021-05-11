@@ -71,7 +71,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				parentContainerSelector: '#rail-boxad-wrapper',
+				parentContainerSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
+				insertIntoParentContainerMethod: 'prepend',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [
