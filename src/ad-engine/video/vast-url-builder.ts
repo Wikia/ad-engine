@@ -79,7 +79,10 @@ export function buildVastUrl(
 	const slot: AdSlot = slotService.get(slotName);
 
 	if (slot) {
-		params.push(`iu=${slot.getVideoAdUnit()}`);
+		const iuParameter = `iu=${slot.getVideoAdUnit()}`;
+		params.push(iuParameter);
+		window.ads.runtime.distroscale.adUnit = iuParameter;
+
 		params.push(`sz=${getVideoSizes(slot)}`);
 		params.push(`cust_params=${getCustomParameters(slot, options.targeting)}`);
 	} else if (options.videoAdUnitId && options.customParams) {
