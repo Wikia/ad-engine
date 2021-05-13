@@ -598,6 +598,17 @@
             "value": true
         }
     ],
+    "skTest": [
+        {
+            "apps": [
+                "oasis"
+            ],
+            "regions": [
+                "XX-EU"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorTest": [
         {
             "apps": [
