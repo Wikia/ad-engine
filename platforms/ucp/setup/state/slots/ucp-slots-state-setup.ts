@@ -5,12 +5,14 @@ import {
 	context,
 	DiProcess,
 	distroScale,
+	getAdProductInfo,
 	InstantConfigService,
 	ofType,
 	slotDataParamsUpdater,
 	slotService,
 	uapLoadStatus,
 	utils,
+	VideoParams,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
@@ -45,8 +47,38 @@ export class UcpSlotsStateSetup implements DiProcess {
 		}
 	}
 
+	private distroScaleIU(adSlot: AdSlot, params: VideoParams): string {
+		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
+		const adUnit = utils.stringBuilder.build(
+			context.get(`slots.${adSlot.getSlotName()}.videoAdUnit`) || context.get('vast.adUnitId'),
+			{
+				slotConfig: {
+					group: adProductInfo.adGroup,
+					adProduct: adSlot.getSlotName(),
+					slotNameSuffix: '',
+				},
+			},
+		);
+		return adUnit;
+	}
+
+	// TODO: make it more clean
+	private setDistroscaleVarInRuntime(slotName: string): void {
+		const params = {
+			slotName,
+			type: 'porvata3',
+			adProduct: 'incontent_veles',
+		};
+		const newAdSlot = new AdSlot({ id: slotName });
+		const distroscaleIU = this.distroScaleIU(newAdSlot, params);
+		window.ads.runtime = window.ads.runtime || ({} as Runtime);
+		window.ads.runtime.distroscale = window.ads.runtime.distroscale || {};
+		window.ads.runtime.distroscale.adUnit = distroscaleIU;
+	}
+
 	private setupIncontentPlayerForDistroScale(): void {
 		const slotName = 'incontent_player';
+		this.setDistroscaleVarInRuntime(slotName);
 
 		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
 		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {

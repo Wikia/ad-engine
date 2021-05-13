@@ -78,12 +78,8 @@ export function buildVastUrl(
 	];
 	const slot: AdSlot = slotService.get(slotName);
 
-	console.log('test',slot);
 	if (slot) {
-		const iuParameter = `iu=${slot.getVideoAdUnit()}`;
-		params.push(iuParameter);
-		console.log(iuParameter);
-		window.ads.runtime.distroscale.adUnit = iuParameter;
+		params.push(`iu=${slot.getVideoAdUnit()}`);
 
 		params.push(`sz=${getVideoSizes(slot)}`);
 		params.push(`cust_params=${getCustomParameters(slot, options.targeting)}`);
