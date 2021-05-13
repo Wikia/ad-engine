@@ -1820,6 +1820,13 @@
 			"apps": ["f2", "mobile-wiki", "oasis"]
 		}
 	],
+	"icWatchingThat": [
+		{
+			"apps": ["mobile-wiki", "oasis"],
+			"regions": ["GB", "UK"],
+			"value": true
+		}
+	],
 	"icPrebidMediaGrid": [
 		{
 			"apps": ["mobile-wiki", "oasis"],

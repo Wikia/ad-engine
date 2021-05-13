@@ -1685,6 +1685,13 @@
 			"value": true
 		}
 	],
+	"icWatchingThat": [
+		{
+			"apps": ["mobile-wiki", "oasis"],
+			"regions": ["GB", "UK"],
+			"value": true
+		}
+	],
 	"icPrebidMediaGrid": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
