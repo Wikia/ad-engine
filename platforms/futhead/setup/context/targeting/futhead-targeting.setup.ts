@@ -21,6 +21,7 @@ export class FutheadTargetingSetup implements DiProcess {
 			s2: this.isSquadPage() ? 'squad' : getSportsPageType(),
 			dmn: `${domain.name}${domain.tld}`,
 			geo: utils.geoService.getCountryCode() || 'none',
+			is_mobile: context.get('state.isMobile') ? 1 : 0,
 		};
 
 		if (cid !== undefined) {
