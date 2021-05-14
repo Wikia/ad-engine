@@ -5,7 +5,7 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotPositionEmbeddedToSticky implements TemplateStateHandler {
+export class SlotPositionEmbeddedResolvedToStickyResolved implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private manager: UapDomManager, private domListener: DomListener) {}
@@ -15,7 +15,7 @@ export class SlotPositionEmbeddedToSticky implements TemplateStateHandler {
 			.pipe(
 				startWith({}),
 				tap(() => {
-					this.manager.addClassToAdSlotPlaceholder('bfaa-sticky');
+					this.manager.addClassToAdSlotPlaceholder('bfaa-sticky-resolved');
 				}),
 				takeUntil(this.unsubscribe$),
 			)
@@ -23,6 +23,7 @@ export class SlotPositionEmbeddedToSticky implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
+		this.manager.removeAdSlotPlaceholderClass('bfaa-sticky-resolved');
 		this.unsubscribe$.next();
 	}
 }

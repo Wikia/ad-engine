@@ -27,6 +27,10 @@ export class UapDomManager {
 		this.adSlot.element.parentElement.classList.add(className);
 	}
 
+	removeAdSlotPlaceholderClass(className: string): void {
+		this.adSlot.element.parentElement.classList.remove(className);
+	}
+
 	getAdSlotTopOffset(): number {
 		const rect = this.adSlot.element.getBoundingClientRect();
 

@@ -41,8 +41,6 @@
 		}
 
 		#top_leaderboard {
-			position: relative;
-
 			@include uap-porvata();
 			@include uap-porvata-learn-more();
 			@include uap-advertisement-label();
@@ -57,24 +55,50 @@
 			}
 		}
 
-		#top_leaderboard.bfaa-new-template {
-		}
-
-		#top_leaderboard.embedded-resolved {
-		}
-
-		.top-leaderboard.ad-slot-placeholder.bfaa-sticky {
-			position: sticky;
-			top: 55px;
-
-			.video-player.porvata-player {
-				position: relative;
-				top: -150px;
+		.top-leaderboard.ad-slot-placeholder.bfaa-sticky-impact {
+			#top_leaderboard {
+				position: unset;
 			}
 
-			.porvata-interface {
-				position: relative;
-				top: -150px;
+			.video-overlay {
+				top: 0;
+				width: 100%;
+
+				.porvata-interface {
+					position: relative;
+					top: 210px;
+
+					.bottom-panel.dynamic-panel {
+						position: absolute;
+						top: -35px;
+					}
+				}
+			}
+		}
+
+		.top-leaderboard.ad-slot-placeholder.bfaa-sticky-resolved {
+			#top_leaderboard {
+				position: unset;
+
+				.video-player.porvata-player {
+					position: fixed !important;
+					right: 10px;
+					top: 95px;
+				}
+			}
+
+			.video-overlay {
+				position: fixed;
+				top: 95px;
+				width: 100%;
+
+				.porvata-interface {
+					position: fixed;
+					top: 95px;
+					width: 145px;
+					height: 82px;
+					right: 10px;
+				}
 			}
 		}
 	}
