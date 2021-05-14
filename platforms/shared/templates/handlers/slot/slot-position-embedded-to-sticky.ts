@@ -5,18 +5,18 @@ import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotSizeResolvedHandler implements TemplateStateHandler {
+export class SlotPositionEmbeddedToSticky implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(private domListener: DomListener, private manager: UapDomManager) {}
+	constructor(private manager: UapDomManager, private domListener: DomListener) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.setResolvedImage();
-		this.manager.addClassToAdSlot('embedded-resolved');
-		this.domListener.resize$
+		this.domListener.scroll$
 			.pipe(
 				startWith({}),
-				tap(() => {}),
+				tap(() => {
+					this.manager.addClassToAdSlotPlaceholder('bfaa-sticky');
+				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

@@ -17,11 +17,6 @@
 			@include sticky-tlb-slot();
 		}
 
-		#top_leaderboard.bfaa-new-template {
-			position: unset;
-			margin-bottom: 25px;
-		}
-
 		#bottom_leaderboard {
 			@include bfab-slot();
 		}
@@ -29,18 +24,7 @@
 		#top_leaderboard,
 		#bottom_leaderboard {
 			@include uap-porvata();
-
-			.video-overlay {
-				position: relative;
-				top: -211px;
-			}
-
-			.video-display-wrapper {
-				position: unset;
-			}
-
 			@include uap-porvata-learn-more();
-
 			@include uap-advertisement-label();
 			@include uap-button-close();
 
@@ -48,19 +32,49 @@
 				@include uap-dark-theme();
 			}
 		}
+	}
+
+	.has-new-uap {
+		.top-leaderboard.ad-slot-placeholder {
+			position: sticky;
+			top: 55px;
+		}
 
 		#top_leaderboard {
-			.advertisement-label {
-				position: relative;
-				top: -205px;
-				left: -155px;
+			position: relative;
+
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			.video-overlay {
+				position: absolute;
+			}
+
+			&.is-dark {
+				@include uap-dark-theme();
 			}
 		}
 
+		#top_leaderboard.bfaa-new-template {
+		}
+
 		#top_leaderboard.embedded-resolved {
-			.video-overlay {
-				top: -90px;
-				left: 220px;
+		}
+
+		.top-leaderboard.ad-slot-placeholder.bfaa-sticky {
+			position: sticky;
+			top: 55px;
+
+			.video-player.porvata-player {
+				position: relative;
+				top: -150px;
+			}
+
+			.porvata-interface {
+				position: relative;
+				top: -150px;
 			}
 		}
 	}

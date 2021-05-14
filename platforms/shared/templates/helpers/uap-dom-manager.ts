@@ -19,6 +19,20 @@ export class UapDomManager {
 		this.adSlot.addClass(className);
 	}
 
+	removeAdSlotClass(className: string): void {
+		this.adSlot.removeClass(className);
+	}
+
+	addClassToAdSlotPlaceholder(className: string): void {
+		this.adSlot.element.parentElement.classList.add(className);
+	}
+
+	getAdSlotTopOffset(): number {
+		const rect = this.adSlot.element.getBoundingClientRect();
+
+		return rect.top;
+	}
+
 	setPageOffsetImpact(): void {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}

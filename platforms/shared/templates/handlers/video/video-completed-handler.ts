@@ -13,14 +13,11 @@ export class VideoCompletedHandler implements TemplateStateHandler {
 
 	constructor(private playerRegistry: PlayerRegistry) {}
 
-	async onEnter(transition: TemplateTransition<any>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) => fromEvent(player, 'wikiaAdCompleted')),
-				tap(() => {
-					transition('resolved');
-					transition('embeddedResolved');
-				}),
+				tap(() => transition('resolved')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
