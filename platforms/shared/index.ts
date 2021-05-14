@@ -51,6 +51,8 @@ export * from './templates/handlers/slot/slot-decision-embedded-resolved-to-stic
 export * from './templates/handlers/slot/slot-decision-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-handler';
 export * from './templates/handlers/slot/slot-decision-on-viewability-handler';
+export * from './templates/handlers/slot/slot-decision-sticky-impact-to-embedded-impact-handler';
+export * from './templates/handlers/slot/slot-decision-sticky-resolved-to-embedded-resolved-handler';
 export * from './templates/handlers/slot/slot-hidden-handler';
 export * from './templates/handlers/slot/slot-offset-resolved-to-none-handler';
 export * from './templates/handlers/slot/slot-position-embedded-impact-to-sticky-impact';
