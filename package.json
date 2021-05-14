@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "82.2.2",
+	"version": "82.3.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -78,7 +78,7 @@
 		"string-replace-webpack-plugin": "0.1.3",
 		"ts-node": "8.3.0",
 		"tsconfig-paths": "3.8.0",
-		"tscpaths": "git://github.com/bielik20/tscpaths.git#release",
+		"tscpaths": "github:wikia/tscpaths.git#release",
 		"tslib": "1.10.0",
 		"tslint": "5.12.1",
 		"tslint-ban-snippets": "2.1.0",
