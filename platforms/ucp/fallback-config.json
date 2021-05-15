@@ -2069,6 +2069,20 @@
             "value": true
         }
     ],
+    "icSilverSurfer": [
+        {
+            "apps": [
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": [
+                "g_age_bracket:ageBrackets",
+                "g_gender:gender"
+            ]
+        }
+    ],
     "icConfiant": [
         {
             "apps": [
