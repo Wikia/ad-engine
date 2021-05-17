@@ -11,8 +11,8 @@ import {
 	SlotDecisionEmbeddedResolvedToStickyResolvedHandler,
 	SlotDecisionStickyImpactToEmbeddedImpactHandler,
 	SlotDecisionStickyResolvedToEmbeddedResolvedHandler,
-	SlotPositionEmbeddedImpactToStickyImpact,
-	SlotPositionEmbeddedResolvedToStickyResolved,
+	SlotPositionEmbeddedImpactToStickyImpactHandler,
+	SlotPositionEmbeddedResolvedToStickyResolvedHandler,
 	StickinessTimeout,
 	UapDomManager,
 	UapDomReader,
@@ -46,7 +46,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			stickyImpact: [
-				SlotPositionEmbeddedImpactToStickyImpact,
+				SlotPositionEmbeddedImpactToStickyImpactHandler,
 				SlotDecisionStickyImpactToEmbeddedImpactHandler,
 				DomCleanupHandler,
 			],
@@ -57,7 +57,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			stickyResolved: [
-				SlotPositionEmbeddedResolvedToStickyResolved,
+				SlotPositionEmbeddedResolvedToStickyResolvedHandler,
 				SlotDecisionStickyResolvedToEmbeddedResolvedHandler,
 				DomCleanupHandler,
 			],

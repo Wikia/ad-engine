@@ -101,6 +101,21 @@
 				}
 			}
 		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+		}
+
+		#bottom_leaderboard {
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
 	}
 
 	@include expanded-slot();

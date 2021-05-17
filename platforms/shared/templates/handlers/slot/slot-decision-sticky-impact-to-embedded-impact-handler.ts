@@ -14,7 +14,9 @@ export class SlotDecisionStickyImpactToEmbeddedImpactHandler implements Template
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
-				filter(() => window.scrollY < this.manager.getAdSlotTopOffset() + 55),
+				filter(
+					() => window.scrollY < this.manager.getAdSlotTopOffset() + this.manager.getNavbarHeight(),
+				),
 				tap(() => transition('embeddedImpact')),
 				takeUntil(this.unsubscribe$),
 			)
