@@ -6,16 +6,8 @@ import { silverSurferServiceLoader } from './silver-surfer.loader';
 const logGroup = 'silver-surfer';
 
 class SilverSurferService {
-	private static isEnabled(): boolean {
-		return !!context.get('services.silverSurfer');
-	}
-
-	private static convertArrayToObject(array: []): {} {
-		return Object.assign({}, ...array);
-	}
-
 	async configureUserTargeting(): Promise<AdTags> {
-		if (!SilverSurferService.isEnabled()) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return {};
 		}
@@ -28,6 +20,7 @@ class SilverSurferService {
 		Object.keys(userTargeting).forEach((key) => {
 			context.set(`targeting.${key}`, userTargeting[key]);
 		});
+
 		return userTargeting;
 	}
 
@@ -42,7 +35,11 @@ class SilverSurferService {
 				[gamKeyVals]: userProfile[configKeyVals],
 			}));
 
-		return SilverSurferService.convertArrayToObject(splitTargetingConfigKeyVals);
+		return Object.assign({}, ...splitTargetingConfigKeyVals);
+	}
+
+	private isEnabled(): boolean {
+		return !!context.get('services.silverSurfer');
 	}
 }
 

@@ -12,6 +12,7 @@ class SilverSurferServiceLoader {
 		if (SilverSurferSDK.isInitialized() && !this.userProfilePromise) {
 			this.userProfilePromise = this.fetchUserProfile();
 		}
+
 		return this.userProfilePromise;
 	}
 
