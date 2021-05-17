@@ -15,9 +15,7 @@ export class SlotDecisionStickyResolvedToEmbeddedResolvedHandler implements Temp
 			.pipe(
 				startWith({}),
 				filter(() => window.scrollY < this.manager.getAdSlotTopOffset() + 55),
-				tap(() => {
-					transition('embeddedResolved');
-				}),
+				tap(() => transition('embeddedResolved')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

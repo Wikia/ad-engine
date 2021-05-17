@@ -15,9 +15,7 @@ export class SlotDecisionEmbeddedImpactToStickyImpactHandler implements Template
 			.pipe(
 				startWith({}),
 				filter(() => window.scrollY >= this.manager.getAdSlotTopOffset() + 55),
-				tap(() => {
-					transition('stickyImpact');
-				}),
+				tap(() => transition('stickyImpact')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

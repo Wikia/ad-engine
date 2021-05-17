@@ -36,7 +36,6 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				BfaaUcpMobileConfigHandler,
 				BfaaNewBootstrapHandler,
 				VideoBootstrapHandler,
-				DebugTransitionHandler,
 				AdvertisementLabelHandler,
 				DebugTransitionHandler,
 			],
