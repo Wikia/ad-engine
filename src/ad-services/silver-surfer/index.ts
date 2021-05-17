@@ -17,19 +17,18 @@ class SilverSurfer {
 		setTimeout(() => {
 			if (!this.isLoaded) {
 				utils.logger(logGroup, 'loading');
-				// @ts-ignore
-				if (window.SilverSurferSDK.isInitialized()) {
-					this.isLoaded = true;
-					utils.logger(logGroup, 'loaded');
-					this.setup();
-				}
+				this.isLoaded = true;
+				this.setup();
 			}
 		}, 2000);
 	}
 
 	private setup(): void {
 		// @ts-ignore
-		window.SilverSurferSDK.getUserProfile().then((result) => console.log(result));
+		if (window.SilverSurferSDK.isInitialized()) {
+			// @ts-ignore
+			window.SilverSurferSDK.getUserProfile().then((result) => console.log('silverSurfer', result));
+		}
 	}
 }
 
