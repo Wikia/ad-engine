@@ -27,7 +27,7 @@ export class TaxonomyService {
 		return 'taxonomy-service';
 	}
 
-	isEnabled(): boolean {
+	private isEnabled(): boolean {
 		return context.get('services.taxonomy.enabled');
 	}
 }

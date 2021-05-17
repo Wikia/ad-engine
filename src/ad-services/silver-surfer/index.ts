@@ -1,35 +1,49 @@
 import { context, utils } from '@ad-engine/core';
+import { UserProfile } from '../../../@types/silver-surfer';
+import { AdTags } from '../taxonomy/taxonomy-service.loader';
+import { silverSurferServiceLoader } from './silver-surfer.loader';
 
 const logGroup = 'silver-surfer';
 
-class SilverSurfer {
-	private isLoaded = false;
-
-	private isEnabled(): boolean {
-		return context.get('services.silverSurfer.enabled');
-	}
-
-	call(): void {
+class SilverSurferService {
+	async configureUserTargeting(): Promise<AdTags> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			return;
+			return {};
 		}
-		setTimeout(() => {
-			if (!this.isLoaded) {
-				utils.logger(logGroup, 'loading');
-				this.isLoaded = true;
-				this.setup();
-			}
-		}, 2000);
+		// @ts-ignore
+		const targetingConfig = context.get('services.silverSurfer');
+		const userProfile: UserProfile = await silverSurferServiceLoader.getUserProfile();
+
+		return this.mapTargetingResults(targetingConfig, userProfile);
 	}
 
-	private setup(): void {
-		// @ts-ignore
-		if (window.SilverSurferSDK.isInitialized()) {
-			// @ts-ignore
-			window.SilverSurferSDK.getUserProfile().then((result) => console.log('silverSurfer', result));
+	private mapTargetingResults(targetingConfig: string[] = [], userProfile = {}): AdTags {
+		if (!targetingConfig || !targetingConfig.length) {
+			return {};
 		}
+
+		const splitTargetingConfigKeyVals: string[][] = targetingConfig
+			.map((keyVal: string) => keyVal.split(':'))
+
+		const [configKeyVals, gamKeyVals] = this.partitionTargetingKeyValsArrays(splitTargetingConfigKeyVals);
+
+		console.log({ targetingConfig, userProfile, configKeyVals, gamKeyVals });
+		}
+
+	private isEnabled(): boolean {
+		return !!context.get('services.silverSurfer');
+	}
+
+	private partitionTargetingKeyValsArrays(config: string[][]): string[][] {
+		const configKeyVals = [];
+		const gamKeyVals = [];
+		config.forEach(([a, b]) => {
+			configKeyVals.push(a)
+			gamKeyVals.push(b)
+		});
+		return [configKeyVals, gamKeyVals];
 	}
 }
 
-export const silverSurfer = new SilverSurfer();
+export const silverSurferService = new SilverSurferService();

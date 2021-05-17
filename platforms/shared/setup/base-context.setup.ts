@@ -121,7 +121,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
-		context.set('services.silverSurfer.enabled', !!this.instantConfig.get('icSilverSurfer'));
+		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		context.set(
 			'services.durationMedia.libraryUrl',

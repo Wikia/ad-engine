@@ -1,5 +1,3 @@
-// tslint:disable-next-line:no-blacklisted-paths
-import { silverSurfer } from '@wikia/ad-engine';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
@@ -112,7 +110,6 @@ export class AdEngine {
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
-			silverSurfer.call();
 			if (!this.started) {
 				eventService.emit(events.AD_STACK_START);
 				this.started = true;
