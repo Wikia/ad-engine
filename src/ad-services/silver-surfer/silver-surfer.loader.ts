@@ -9,8 +9,8 @@ class SilverSurferServiceLoader {
 
 	async getUserProfile(): Promise<UserProfile> {
 		// @ts-ignore
-		if(SilverSurferSDK.isInitialized() && !this.userProfilePromise) {
-				this.userProfilePromise = this.fetchUserProfile();
+		if (SilverSurferSDK.isInitialized() && !this.userProfilePromise) {
+			this.userProfilePromise = this.fetchUserProfile();
 		}
 		return this.userProfilePromise;
 	}

@@ -23,13 +23,16 @@ class SilverSurferService {
 			return {};
 		}
 
-		const splitTargetingConfigKeyVals: string[][] = targetingConfig
-			.map((keyVal: string) => keyVal.split(':'))
+		const splitTargetingConfigKeyVals: string[][] = targetingConfig.map((keyVal: string) =>
+			keyVal.split(':'),
+		);
 
-		const [configKeyVals, gamKeyVals] = this.partitionTargetingKeyValsArrays(splitTargetingConfigKeyVals);
+		const [configKeyVals, gamKeyVals] = this.partitionTargetingKeyValsArrays(
+			splitTargetingConfigKeyVals,
+		);
 
 		console.log({ targetingConfig, userProfile, configKeyVals, gamKeyVals });
-		}
+	}
 
 	private isEnabled(): boolean {
 		return !!context.get('services.silverSurfer');
@@ -39,8 +42,8 @@ class SilverSurferService {
 		const configKeyVals = [];
 		const gamKeyVals = [];
 		config.forEach(([a, b]) => {
-			configKeyVals.push(a)
-			gamKeyVals.push(b)
+			configKeyVals.push(a);
+			gamKeyVals.push(b);
 		});
 		return [configKeyVals, gamKeyVals];
 	}
