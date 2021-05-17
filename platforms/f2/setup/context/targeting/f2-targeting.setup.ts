@@ -41,7 +41,7 @@ export class F2TargetingSetup implements DiProcess {
 			labrador: this.cacheStorage.mapSamplingResults(
 				this.instantConfig.get('icLABradorGamKeyValues'),
 			),
-			is_mobile: utils.client.isMobileSkin(this.f2Env.skinName) ? '1' : '0',
+			is_mobile: utils.client.isMobileSkin(this.f2Env.skinName) ? 1 : 0,
 		};
 
 		if (this.f2State.pageType === 'article' || this.f2State.pageType === 'app-article') {
