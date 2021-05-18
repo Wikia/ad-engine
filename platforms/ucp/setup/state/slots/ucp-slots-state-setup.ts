@@ -6,6 +6,8 @@ import {
 	DiProcess,
 	distroScale,
 	getAdProductInfo,
+	getAdUnitString,
+	globalRuntimeVariableSetter,
 	InstantConfigService,
 	ofType,
 	slotDataParamsUpdater,
@@ -47,33 +49,16 @@ export class UcpSlotsStateSetup implements DiProcess {
 		}
 	}
 
-	private distroScaleIU(adSlot: AdSlot, params: VideoParams): string {
-		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
-		const adUnit = utils.stringBuilder.build(
-			context.get(`slots.${adSlot.getSlotName()}.videoAdUnit`) || context.get('vast.adUnitId'),
-			{
-				slotConfig: {
-					group: adProductInfo.adGroup,
-					adProduct: adSlot.getSlotName(),
-					slotNameSuffix: '',
-				},
-			},
-		);
-		return adUnit;
-	}
-
-	// TODO: make it more clean
 	private setDistroscaleVarInRuntime(slotName: string): void {
 		const params = {
-			slotName,
-			type: 'porvata3',
+			group: 'VIDEO',
 			adProduct: 'incontent_veles',
+			slotNameSuffix: '',
 		};
-		const newAdSlot = new AdSlot({ id: slotName });
-		const distroscaleIU = this.distroScaleIU(newAdSlot, params);
-		window.ads.runtime = window.ads.runtime || ({} as Runtime);
-		window.ads.runtime.distroscale = window.ads.runtime.distroscale || {};
-		window.ads.runtime.distroscale.adUnit = distroscaleIU;
+
+		const distroscaleIU = getAdUnitString(slotName, params);
+
+		globalRuntimeVariableSetter.addNewVariableToRuntime('distroscale', { adUnit: distroscaleIU });
 	}
 
 	private setupIncontentPlayerForDistroScale(): void {
