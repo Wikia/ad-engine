@@ -27,7 +27,7 @@ class SilverSurferService {
 	}
 
 	private mapTargetingResults(targetingConfig: string[] = [], userProfile: UserProfile): AdTags {
-		if (!targetingConfig || !targetingConfig.length) {
+		if (!targetingConfig || !targetingConfig.length || !userProfile) {
 			return {};
 		}
 

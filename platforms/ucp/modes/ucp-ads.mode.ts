@@ -75,9 +75,7 @@ export class UcpAdsMode implements DiProcess {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
-		setTimeout(() => {
-			inhibitors.push(silverSurferService.configureUserTargeting());
-		}, 4000);
+		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
 		audigent.call();
