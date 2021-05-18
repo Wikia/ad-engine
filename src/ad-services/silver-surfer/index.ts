@@ -1,5 +1,4 @@
 import { context, utils } from '@ad-engine/core';
-import { UserProfile } from '../../../@types/silver-surfer';
 import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import { silverSurferServiceLoader } from './silver-surfer.loader';
 

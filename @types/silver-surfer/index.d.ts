@@ -31,7 +31,7 @@ interface Page {
 	adTags: AdTags;
 }
 
-export interface UserProfile {
+interface UserProfile {
 	beaconId: string;
 	gender: string[];
 	ageBrackets: string[];

@@ -1,6 +1,5 @@
 import { utils } from '@ad-engine/core';
 import { isEmpty } from 'lodash';
-import { UserProfile } from '../../../@types/silver-surfer';
 
 const logGroup = 'silver-surfer';
 
