@@ -13,9 +13,11 @@ class SilverSurferService {
 		}
 
 		const targetingConfig = context.get('services.silverSurfer');
-		const userProfile: UserProfile = await silverSurferServiceLoader.getUserProfile();
+		const userProfile = await silverSurferServiceLoader.getUserProfile();
 
 		const userTargeting = this.mapTargetingResults(targetingConfig, userProfile);
+
+		context.set(`targeting.galactus_status`, userProfile ? 'on_time' : 'too_late');
 
 		Object.keys(userTargeting).forEach((key) => {
 			context.set(`targeting.${key}`, userTargeting[key]);
@@ -29,7 +31,7 @@ class SilverSurferService {
 			return {};
 		}
 
-		const splitTargetingConfigKeyVals: any = targetingConfig
+		const splitTargetingConfigKeyVals: AdTags[] = targetingConfig
 			.map((keyVal: string) => keyVal.split(':'))
 			.map(([configKeyVals, gamKeyVals]) => ({
 				[gamKeyVals]: userProfile[configKeyVals],

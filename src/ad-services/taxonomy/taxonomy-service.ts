@@ -11,7 +11,7 @@ export class TaxonomyService {
 
 		context.set('targeting.txn', '-1');
 
-		const adTags: AdTags = await taxonomyServiceLoader.getAdTags();
+		const adTags = await taxonomyServiceLoader.getAdTags();
 
 		utils.logger(logGroup, 'taxonomy ad tags', adTags);
 
