@@ -4,7 +4,6 @@ import {
 	getAdProductInfo,
 	getAdUnitString,
 	slotService,
-	utils,
 	VideoParams,
 } from '@wikia/ad-engine';
 

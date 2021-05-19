@@ -5,7 +5,6 @@ import {
 	context,
 	DiProcess,
 	distroScale,
-	getAdProductInfo,
 	getAdUnitString,
 	globalRuntimeVariableSetter,
 	InstantConfigService,
@@ -14,7 +13,6 @@ import {
 	slotService,
 	uapLoadStatus,
 	utils,
-	VideoParams,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
