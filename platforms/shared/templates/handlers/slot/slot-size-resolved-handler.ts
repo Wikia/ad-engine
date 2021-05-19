@@ -12,11 +12,12 @@ export class SlotSizeResolvedHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		this.manager.setResolvedImage();
-		this.manager.addClassToAdSlot('embedded-resolved');
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => {}),
+				tap(() => {
+					this.manager.setSlotHeightResolved();
+				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
