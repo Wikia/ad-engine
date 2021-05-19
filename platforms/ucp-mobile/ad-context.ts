@@ -140,10 +140,6 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
-			watchingThat: {
-				apiKey: 'NnBNOWpNNUxFfGJGZkJQaHFCQndNc3ZPMXZQZEp5UkhCWEdPbGJvRllP',
-				enabled: false,
-			},
 		},
 		viewabilityCounter: {
 			enabled: true,
