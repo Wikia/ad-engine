@@ -62,6 +62,7 @@ export class UcpTargetingSetup implements DiProcess {
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
+			is_mobile: utils.client.isMobileSkin(this.skin) ? '1' : '0',
 		};
 
 		if (context.get('wiki.pvNumber')) {
