@@ -416,9 +416,6 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "regions": [
-                "PL"
-            ],
             "value": true
         }
     ],
@@ -2160,19 +2157,6 @@
                 "US"
             ],
             "sampling": 100.0,
-            "value": true
-        }
-    ],
-    "icWatchingThat": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "GB",
-                "UK"
-            ],
             "value": true
         }
     ],

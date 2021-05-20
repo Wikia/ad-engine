@@ -602,9 +602,6 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "regions": [
-                "PL"
-            ],
             "value": true
         }
     ],
@@ -2296,19 +2293,6 @@
                 "mobile-wiki",
                 "oasis"
             ]
-        }
-    ],
-    "icWatchingThat": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "GB",
-                "UK"
-            ],
-            "value": true
         }
     ],
     "icPrebidMediaGrid": [
