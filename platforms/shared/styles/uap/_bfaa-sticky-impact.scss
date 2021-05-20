@@ -1,0 +1,22 @@
+@mixin bfaa-sticky-impact() {
+	&.bfaa-sticky-impact {
+		#top_leaderboard {
+			position: unset;
+		}
+
+		.video-overlay {
+			top: 0;
+			width: 100%;
+
+			.porvata-interface {
+				position: relative;
+				top: 210px;
+
+				.bottom-panel.dynamic-panel {
+					position: absolute;
+					top: -35px;
+				}
+			}
+		}
+	}
+}

@@ -3,10 +3,10 @@ import { Injectable } from '@wikia/dependency-injection';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotPositionEmbeddedImpactToStickyImpactHandler implements TemplateStateHandler {
+export class SlotPositionEmbeddedImpact implements TemplateStateHandler {
 	constructor(private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.addClassToAdSlotPlaceholder('bfaa-sticky-impact');
+		this.manager.addClassToAdSlotPlaceholder('bfaa-embedded-impact');
 	}
 }

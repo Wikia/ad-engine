@@ -38,75 +38,26 @@
 		.top-leaderboard.ad-slot-placeholder {
 			position: sticky;
 			top: 55px;
-		}
 
-		#top_leaderboard {
-			@include uap-porvata();
-			@include uap-porvata-learn-more();
-			@include uap-advertisement-label();
-			@include uap-button-close();
-
-			.video-overlay {
-				position: absolute;
-			}
-
-			&.is-dark {
-				@include uap-dark-theme();
-			}
-		}
-
-		.top-leaderboard.ad-slot-placeholder.bfaa-sticky-impact {
 			#top_leaderboard {
-				position: unset;
-			}
+				@include uap-porvata();
+				@include uap-porvata-learn-more();
+				@include uap-advertisement-label();
+				@include uap-button-close();
 
-			.video-overlay {
-				top: 0;
-				width: 100%;
-
-				.porvata-interface {
-					position: relative;
-					top: 210px;
-
-					.bottom-panel.dynamic-panel {
-						position: absolute;
-						top: -35px;
-					}
-				}
-			}
-		}
-
-		.top-leaderboard.ad-slot-placeholder.bfaa-sticky-resolved {
-			#top_leaderboard {
-				position: unset;
-
-				.video-player.porvata-player {
-					position: fixed !important;
-					right: 10px;
-					top: 95px;
+				&.is-dark {
+					@include uap-dark-theme();
 				}
 			}
 
-			.video-overlay {
-				position: fixed;
-				top: 95px;
-				width: 100%;
-
-				.porvata-interface {
-					position: fixed;
-					top: 95px;
-					width: 145px;
-					height: 82px;
-					right: 10px;
-				}
-			}
+			@include bfaa-embedded-impact();
+			@include bfaa-embedded-resolved();
+			@include bfaa-sticky-impact();
+			@include bfaa-sticky-resolved();
 		}
 
 		#bottom_leaderboard {
 			@include bfab-slot();
-		}
-
-		#bottom_leaderboard {
 			@include uap-porvata();
 			@include uap-porvata-learn-more();
 			@include uap-advertisement-label();
