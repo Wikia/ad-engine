@@ -1,4 +1,6 @@
 @mixin bfaa-sticky-impact() {
+	z-index: 202;
+
 	&.bfaa-sticky-impact {
 		#top_leaderboard {
 			position: unset;
