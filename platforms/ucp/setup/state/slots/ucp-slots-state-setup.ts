@@ -50,7 +50,7 @@ export class UcpSlotsStateSetup implements DiProcess {
 	private setDistroscaleVarInRuntime(slotName: string): void {
 		const params = {
 			group: 'VIDEO',
-			adProduct: 'incontent_veles',
+			adProduct: 'incontent_video',
 			slotNameSuffix: '',
 		};
 
