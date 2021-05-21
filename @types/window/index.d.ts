@@ -40,10 +40,6 @@ interface Window {
 	trackingOptIn?: any;
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
-	wtAdTracer?: (
-		{ apiKey, debug }: { apiKey: string; debug?: boolean },
-		playerElementId: string,
-	) => void;
 	XMLHttpRequest?: any;
 }
 

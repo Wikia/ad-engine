@@ -602,9 +602,6 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "regions": [
-                "PL"
-            ],
             "value": true
         }
     ],
@@ -860,6 +857,8 @@
                 "XX"
             ],
             "value": [
+                "5693635584",
+                "5687652183",
                 "5687652183",
                 "5687548505",
                 "5687551124",
@@ -1953,7 +1952,13 @@
                 "5678107606",
                 "5674357329",
                 "5689548881",
-                "5688085854"
+                "5688085854",
+                "5694899039",
+                "5694899162",
+                "5694899165",
+                "5694899168",
+                "5694899171",
+                "5640416352"
             ]
         }
     ],
@@ -2050,75 +2055,7 @@
     "wgAdDriverBillTheLizardConfig": {
         "timeout": 2000,
         "projects": {
-            "vcr": [
-                {
-                    "name": "vcr",
-                    "countries": [
-                        "PL/100",
-                        "CZ/100",
-                        "HK/100",
-                        "UK/100",
-                        "GB/100"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "garfield": [
-                {
-                    "name": "garfield",
-                    "on_1": [
-                        "catlapseIncontentBoxad"
-                    ],
-                    "countries": [
-                        "CZ/25"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "cheshirecat": [
-                {
-                    "name": "cheshirecat",
-                    "on_1": [
-                        "catlapseIncontentBoxad"
-                    ],
-                    "countries": [
-                        "PL/100",
-                        "UK/100",
-                        "GB/100",
-                        "DK/100",
-                        "FR/100",
-                        "IT/100",
-                        "NI/100"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "tb_viewability": [
-                {
-                    "name": "tb_viewability",
-                    "countries": [
-                        "DK/100",
-                        "MY/100",
-                        "CA/100",
-                        "US/100"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "queen_of_hearts": [
-                {
-                    "name": "ctp_desktop:2.0.0",
-                    "on_0": [
-                        "disableAutoPlay"
-                    ],
-                    "on_1": [
-                        "disableAutoPlay"
-                    ],
-                    "countries": [
-                        "XX/0.05-cached"
-                    ]
-                }
-            ]
+            
         }
     },
     "icPostmessageTracking": [
@@ -2356,19 +2293,6 @@
                 "mobile-wiki",
                 "oasis"
             ]
-        }
-    ],
-    "icWatchingThat": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "GB",
-                "UK"
-            ],
-            "value": true
         }
     ],
     "icPrebidMediaGrid": [
