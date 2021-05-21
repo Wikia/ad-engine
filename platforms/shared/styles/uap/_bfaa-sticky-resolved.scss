@@ -1,7 +1,7 @@
-@mixin bfaa-sticky-resolved() {
+@mixin bfaa-sticky-small() {
 	z-index: 202;
 
-	&.bfaa-sticky-resolved {
+	&.bfaa-sticky-small {
 		#top_leaderboard {
 			position: unset;
 

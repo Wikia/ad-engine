@@ -50,10 +50,10 @@
 				}
 			}
 
-			@include bfaa-embedded-impact();
-			@include bfaa-embedded-resolved();
-			@include bfaa-sticky-impact();
-			@include bfaa-sticky-resolved();
+			@include bfaa-embedded-big();
+			@include bfaa-embedded-small();
+			@include bfaa-sticky-big();
+			@include bfaa-sticky-small();
 		}
 
 		#bottom_leaderboard {

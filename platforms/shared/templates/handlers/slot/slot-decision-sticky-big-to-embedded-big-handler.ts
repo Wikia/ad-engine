@@ -5,19 +5,19 @@ import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
 
 @Injectable({ autobind: false })
-export class SlotDecisionStickyResolvedToEmbeddedResolvedHandler implements TemplateStateHandler {
+export class SlotDecisionStickyBigToEmbeddedBigHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(private manager: UapDomManager, private domListener: DomListener) {}
 
-	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'embeddedBig'>): Promise<void> {
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
 				filter(
 					() => window.scrollY < this.manager.getAdSlotTopOffset() + this.manager.getNavbarHeight(),
 				),
-				tap(() => transition('embeddedResolved')),
+				tap(() => transition('embeddedBig')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

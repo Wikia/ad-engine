@@ -17,9 +17,7 @@ export class BfaaNewBootstrapHandler implements TemplateStateHandler {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
-	async onEnter(
-		transition: TemplateTransition<'embeddedResolved' | 'embeddedImpact'>,
-	): Promise<void> {
+	async onEnter(transition: TemplateTransition<'embeddedSmall' | 'embeddedBig'>): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
@@ -33,10 +31,10 @@ export class BfaaNewBootstrapHandler implements TemplateStateHandler {
 		await this.awaitVisibleDOM();
 
 		if (resolvedState.isResolvedState(this.params)) {
-			transition('embeddedResolved');
+			transition('embeddedSmall');
 		} else {
 			resolvedState.updateInformationAboutSeenDefaultStateAd();
-			transition('embeddedImpact');
+			transition('embeddedBig');
 		}
 	}
 
