@@ -48,6 +48,7 @@ interface MediaWikiAdsTargeting {
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
 	adTagManagerTags?: AdTagManagerTags;
+	isMobile: boolean;
 }
 
 interface MediaWikiFeaturedVideoInfo {

@@ -21,6 +21,7 @@ export class MutheadTargetingSetup implements DiProcess {
 			s2: getSportsPageType(),
 			dmn: `${domain.name}${domain.tld}`,
 			geo: utils.geoService.getCountryCode() || 'none',
+			is_mobile: context.get('state.isMobile') ? '1' : '0',
 		};
 
 		if (cid !== undefined) {
