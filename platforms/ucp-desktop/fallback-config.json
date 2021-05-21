@@ -647,6 +647,7 @@
                 "XX"
             ],
             "value": [
+                "5696627683",
                 "5693635584",
                 "5687652183",
                 "5687652183",
@@ -2014,7 +2015,6 @@
             "regions": [
                 "PL"
             ],
-            "sampling": 100.0,
             "value": [
                 "ageBrackets:g_age_bracket",
                 "gender:g_gender"
