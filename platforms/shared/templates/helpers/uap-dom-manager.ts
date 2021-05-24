@@ -15,6 +15,28 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
+	addClassToAdSlot(className: string): void {
+		this.manipulator.element(this.adSlot.element).addClass(className);
+	}
+
+	removeAdSlotClass(className: string): void {
+		this.manipulator.element(this.adSlot.element).removeClass(className);
+	}
+
+	addClassToAdSlotPlaceholder(className: string): void {
+		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
+	}
+
+	removeAdSlotPlaceholderClass(className: string): void {
+		this.manipulator.element(this.adSlot.element.parentElement).removeClass(className);
+	}
+
+	getAdSlotTopOffset(): number {
+		const rect = this.adSlot.element.getBoundingClientRect();
+
+		return rect.top;
+	}
+
 	setPageOffsetImpact(): void {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}
@@ -25,6 +47,10 @@ export class UapDomManager {
 
 	private setPageOffset(value: number): void {
 		this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
+	}
+
+	getNavbarHeight(): number {
+		return this.navbar.offsetHeight;
 	}
 
 	setNavbarOffsetImpactToResolved(): void {
