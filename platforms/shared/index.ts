@@ -56,6 +56,7 @@ export * from './templates/handlers/slot/slot-decision-timeout-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-without-scroll-handler';
 export * from './templates/handlers/slot/slot-decision-on-viewability-handler';
 export * from './templates/handlers/slot/slot-decision-sticky-big-to-embedded-big-handler';
+export * from './templates/handlers/slot/slot-decision-sticky-big-to-sticky-small-handler';
 export * from './templates/handlers/slot/slot-decision-sticky-small-to-embedded-small-handler';
 export * from './templates/handlers/slot/slot-hidden-handler';
 export * from './templates/handlers/slot/slot-offset-resolved-to-none-handler';
@@ -67,9 +68,19 @@ export * from './templates/handlers/slot/slot-position-embedded-resolved-handler
 export * from './templates/handlers/slot/slot-size-impact-handler';
 export * from './templates/handlers/slot/slot-size-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-size-resolved-handler';
+export * from './templates/handlers/slot/slot-size-stickyBig-to-stickySmall-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
+<<<<<<< HEAD
 export * from './templates/handlers/slot/slot-transition-new-template-handler';
+=======
+export * from './templates/handlers/bfab/bfab-bootstrap-handler';
+export * from './templates/handlers/bfaa/bfaa-bootstrap-handler';
+export * from './templates/handlers/bfaa-new/bfaa-new-bootstrap-handler';
+export * from './templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
+export * from './templates/handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
+export * from './templates/handlers/sticky-tlb/sticky-tlb-config-handler';
+>>>>>>> 713ade39 (ADEN-10998 | ucp-mobile: new BFAA - resize on scroll)
 export * from './templates/handlers/video/video-bootstrap-handler';
 export * from './templates/handlers/video/video-completed-handler';
 export * from './templates/handlers/video/video-ctp-handler';
@@ -78,13 +89,8 @@ export * from './templates/handlers/video/video-new-bfaa-restart-handler';
 export * from './templates/handlers/video/video-size-impact-handler';
 export * from './templates/handlers/video/video-size-impact-to-resolved-handler';
 export * from './templates/handlers/video/video-learn-more-handler';
-export * from './templates/handlers/bfab/bfab-bootstrap-handler';
-export * from './templates/handlers/bfaa/bfaa-bootstrap-handler';
-export * from './templates/handlers/bfaa-new/bfaa-new-bootstrap-handler';
-export * from './templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
-export * from './templates/handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
-export * from './templates/handlers/sticky-tlb/sticky-tlb-config-handler';
 export * from './templates/handlers/video/video-size-resolved-handler';
+export * from './templates/handlers/video/video-size-stickyBig-to-stickySmall-handler';
 export * from './templates/handlers/floor-adhesion/floor-adhesion-bootstrap-handler';
 export * from './templates/handlers/interstitial/interstitial-bootstrap-handler';
 export * from './templates/handlers/sponsored-text-logo/sponsored-text-logo-handler';

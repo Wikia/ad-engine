@@ -36,6 +36,17 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeImpactToResolved());
 	}
 
+	setVideoSizeStickyBigToStickySmall(video: Porvata4Player, adSlotTopOffset: number): void {
+		if (video.isFullscreen()) {
+			return;
+		}
+
+		return this.setVideoSize(
+			video,
+			this.reader.getVideoSizeStickyBigToStickySmall(adSlotTopOffset),
+		);
+	}
+
 	private setVideoSize(video: Porvata4Player, props: UapVideoSize): void {
 		video.resize(props.width, props.height);
 

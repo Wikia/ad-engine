@@ -13,6 +13,7 @@ import {
 	SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
 	SlotDecisionStickyBigToEmbeddedBigHandler,
+	SlotDecisionStickyBigToStickySmallHandlerHandler,
 	SlotDecisionStickySmallToEmbeddedSmallHandler,
 	SlotDecisionTimeoutWithoutScrollHandler,
 	SlotPositionEmbeddedBig,
@@ -33,6 +34,7 @@ import {
 	VideoNewBfaaRestartHandler,
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
+	VideoSizeStickyBigToStickySmallHandler,
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
@@ -64,9 +66,9 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				SlotSizeImpactHandler,
 				SlotPositionStickyBigHandler,
 				SlotDecisionStickyBigToEmbeddedBigHandler,
-				CloseToEmbeddedResolvedButtonHandler,
-				VideoSizeImpactHandler,
-				VideoLearnMoreHandler,
+				SlotSizeStickyBigToStickySmallHandlerHandler,
+				SlotDecisionStickyBigToStickySmallHandlerHandler,
+				VideoSizeStickyBigToStickySmallHandler,
 				DomCleanupHandler,
 			],
 			transition: [
