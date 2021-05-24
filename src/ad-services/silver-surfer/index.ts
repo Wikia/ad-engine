@@ -32,9 +32,13 @@ class SilverSurferService {
 
 		const splitTargetingConfigKeyVals: AdTags[] = targetingConfig
 			.map((keyVal: string) => keyVal.split(':'))
-			.map(([configKeyVals, gamKeyVals]) => ({
-				[gamKeyVals]: userProfile[configKeyVals],
-			}));
+			.map(([configKeyVals, gamKeyVals]) => {
+				if (userProfile[configKeyVals]) {
+					return {
+						[gamKeyVals]: userProfile[configKeyVals],
+					};
+				}
+			});
 
 		return Object.assign({}, ...splitTargetingConfigKeyVals);
 	}
