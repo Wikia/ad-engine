@@ -12,6 +12,7 @@ import {
 	iasPublisherOptimization,
 	permutive,
 	realVu,
+	silverSurferService,
 	taxonomyService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
@@ -54,6 +55,7 @@ export class MinervaAdsMode implements DiProcess {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
+		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
 		audigent.call();
