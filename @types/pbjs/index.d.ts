@@ -35,6 +35,7 @@ interface PrebidMediaTypes {
 		linearity?: number;
 		maxduration?: number;
 		protocols?: number[];
+		playbackmethod?: number[];
 	};
 }
 

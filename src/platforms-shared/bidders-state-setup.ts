@@ -45,6 +45,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.telaria.enabled', instantConfig.get('icPrebidTelaria'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 		context.set('bidders.prebid.verizon.enabled', instantConfig.get('icPrebidVerizon'));
+		context.set('bidders.prebid.medianet.enabled', instantConfig.get('icPrebidMedianet'));
 
 		context.set(
 			'custom.jwplayerDataProvider',
