@@ -29,6 +29,13 @@ export class VideoDomReader {
 		);
 	}
 
+	getVideoSizeStickyBigToStickySmall(adSlotTopOffset: number): UapVideoSize {
+		return this.calculateVideoSize(
+			this.reader.getSlotHeightBigToSmall(adSlotTopOffset),
+			this.reader.getProgressStickyBigToStickySmall(adSlotTopOffset),
+		);
+	}
+
 	private calculateVideoSize(slotHeight: number, progress: number): UapVideoSize {
 		const { height, width } = this.getSize(slotHeight, progress);
 		const top = this.getPercentage(progress, this.params.config.state.top);

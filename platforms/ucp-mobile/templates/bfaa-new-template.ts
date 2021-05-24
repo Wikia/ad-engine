@@ -10,11 +10,13 @@ import {
 	SlotDecisionEmbeddedBigToStickyBigHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
 	SlotDecisionStickyBigToEmbeddedBigHandler,
+	SlotDecisionStickyBigToStickySmallHandlerHandler,
 	SlotDecisionStickySmallToEmbeddedSmallHandler,
 	SlotPositionEmbeddedBig,
 	SlotPositionEmbeddedSmallHandler,
 	SlotPositionStickyBigHandler,
 	SlotPositionStickySmallHandler,
+	SlotSizeStickyBigToStickySmallHandlerHandler,
 	StickinessTimeout,
 	UapDomManager,
 	UapDomReader,
@@ -24,6 +26,7 @@ import {
 	VideoLearnMoreHandler,
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
+	VideoSizeStickyBigToStickySmallHandler,
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
@@ -51,6 +54,9 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			stickyBig: [
 				SlotPositionStickyBigHandler,
 				SlotDecisionStickyBigToEmbeddedBigHandler,
+				SlotSizeStickyBigToStickySmallHandlerHandler,
+				SlotDecisionStickyBigToStickySmallHandlerHandler,
+				VideoSizeStickyBigToStickySmallHandler,
 				DomCleanupHandler,
 			],
 			transition: [],
