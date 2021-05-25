@@ -603,7 +603,7 @@
                 "oasis"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": true
         }
@@ -860,6 +860,8 @@
                 "XX"
             ],
             "value": [
+                "5699440526",
+                "5696627683",
                 "5693635584",
                 "5687652183",
                 "5687652183",
@@ -1961,7 +1963,8 @@
                 "5694899165",
                 "5694899168",
                 "5694899171",
-                "5640416352"
+                "5640416352",
+                "5699740740"
             ]
         }
     ],
@@ -2219,6 +2222,22 @@
             "value": true
         }
     ],
+    "icSilverSurfer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": [
+                "ageBrackets:g_age_bracket",
+                "gender:g_gender",
+                "test:test1"
+            ]
+        }
+    ],
     "icConfiant": [
         {
             "apps": [
@@ -2296,19 +2315,6 @@
                 "mobile-wiki",
                 "oasis"
             ]
-        }
-    ],
-    "icWatchingThat": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "GB",
-                "UK"
-            ],
-            "value": true
         }
     ],
     "icPrebidMediaGrid": [

@@ -417,7 +417,7 @@
                 "oasis"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": true
         }
@@ -650,6 +650,8 @@
                 "XX"
             ],
             "value": [
+                "5699440526",
+                "5696627683",
                 "5693635584",
                 "5687652183",
                 "5687652183",
@@ -1751,7 +1753,8 @@
                 "5694899165",
                 "5694899168",
                 "5694899171",
-                "5640416352"
+                "5640416352",
+                "5699740740"
             ]
         }
     ],
@@ -2012,15 +2015,16 @@
     "icSilverSurfer": [
         {
             "apps": [
+                "mobile-wiki",
                 "oasis"
             ],
             "regions": [
                 "PL"
             ],
-            "sampling": 100.0,
             "value": [
                 "ageBrackets:g_age_bracket",
-                "gender:g_gender"
+                "gender:g_gender",
+                "test:test1"
             ]
         }
     ],
@@ -2160,19 +2164,6 @@
                 "US"
             ],
             "sampling": 100.0,
-            "value": true
-        }
-    ],
-    "icWatchingThat": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "GB",
-                "UK"
-            ],
             "value": true
         }
     ],

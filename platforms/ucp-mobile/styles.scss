@@ -25,7 +25,41 @@
 		#bottom_leaderboard {
 			@include uap-porvata();
 			@include uap-porvata-learn-more();
+			@include uap-advertisement-label();
+			@include uap-button-close();
 
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	.has-new-uap {
+		.top-leaderboard.ad-slot-placeholder {
+			position: sticky;
+			top: 55px;
+
+			#top_leaderboard {
+				@include uap-porvata();
+				@include uap-porvata-learn-more();
+				@include uap-advertisement-label();
+				@include uap-button-close();
+
+				&.is-dark {
+					@include uap-dark-theme();
+				}
+			}
+
+			@include bfaa-embedded-big();
+			@include bfaa-embedded-small();
+			@include bfaa-sticky-big();
+			@include bfaa-sticky-small();
+		}
+
+		#bottom_leaderboard {
+			@include bfab-slot();
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
 			@include uap-advertisement-label();
 			@include uap-button-close();
 
