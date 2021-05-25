@@ -1,22 +1,14 @@
-import { context } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Medianet extends PrebidAdapter {
 	static bidderName = 'medianet';
 
-	cid = '8CU5JOKX4';
-	cidr = '475658876';
-
 	get bidderName(): string {
 		return Medianet.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { siteId, zoneId, position }: PrebidAdSlotConfig): PrebidAdUnit {
-		if (code === 'featured' && !context.get('custom.hasFeaturedVideo')) {
-			return null;
-		}
-
+	prepareConfigForAdUnit(code, { cid, cidr }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaType: 'video',
@@ -36,12 +28,8 @@ export class Medianet extends PrebidAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						position,
-						siteId,
-						zoneId,
-						cid: this.cid,
-						cidr: this.cidr,
-						name: code,
+						cid,
+						cidr,
 						video: {
 							w: '640',
 							h: '480',
