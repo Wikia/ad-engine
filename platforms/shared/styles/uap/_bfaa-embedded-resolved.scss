@@ -1,0 +1,14 @@
+@mixin bfaa-embedded-small() {
+	&.bfaa-embedded-small {
+		#top_leaderboard {
+			.video-overlay {
+				bottom: 20% !important;
+				position: absolute;
+			}
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+}

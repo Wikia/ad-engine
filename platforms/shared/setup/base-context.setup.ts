@@ -59,6 +59,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
 		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
+		context.set('options.newBfaaTemplate', this.instantConfig.get('icUAPNewBFAATemplate'));
 
 		context.set(
 			'options.video.playAdsOnNextVideo',
@@ -121,6 +122,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
+		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		context.set(
 			'services.durationMedia.libraryUrl',
