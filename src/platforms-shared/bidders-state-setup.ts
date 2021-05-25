@@ -33,6 +33,7 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.indexExchange.enabled', instantConfig.get('icPrebidIndexExchange'));
 		context.set('bidders.prebid.kargo.enabled', instantConfig.get('icPrebidKargo'));
 		context.set('bidders.prebid.mediagrid.enabled', instantConfig.get('icPrebidMediaGrid'));
+		context.set('bidders.prebid.medianet.enabled', instantConfig.get('icPrebidMedianet'));
 		context.set('bidders.prebid.nobid.enabled', instantConfig.get('icPrebidNobid'));
 		context.set('bidders.prebid.oneVideo.enabled', instantConfig.get('icPrebidOneVideo'));
 		context.set('bidders.prebid.openx.enabled', instantConfig.get('icPrebidOpenX'));
@@ -45,7 +46,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.telaria.enabled', instantConfig.get('icPrebidTelaria'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 		context.set('bidders.prebid.verizon.enabled', instantConfig.get('icPrebidVerizon'));
-		context.set('bidders.prebid.medianet.enabled', instantConfig.get('icPrebidMedianet'));
 
 		context.set(
 			'custom.jwplayerDataProvider',

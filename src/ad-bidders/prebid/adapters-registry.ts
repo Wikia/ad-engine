@@ -9,6 +9,7 @@ import {
 	IndexExchange,
 	Kargo,
 	Mediagrid,
+	Medianet,
 	Nobid,
 	OneVideo,
 	Openx,
@@ -21,7 +22,6 @@ import {
 	Wikia,
 	WikiaVideo,
 } from './adapters';
-import { Medianet } from './adapters/medianet';
 import { PrebidAdapter } from './prebid-adapter';
 import { isPrebidAdapterConfig } from './prebid-helper';
 import { PrebidConfig } from './prebid-models';
@@ -38,18 +38,18 @@ class AdaptersRegistry {
 		IndexExchange,
 		Kargo,
 		Mediagrid,
+		Medianet,
 		Nobid,
 		OneVideo,
 		Openx,
 		Pubmatic,
-		RubiconDisplay,
 		Rubicon,
+		RubiconDisplay,
 		Telaria,
 		Triplelift,
 		Verizon,
 		Wikia,
 		WikiaVideo,
-		Medianet,
 	];
 
 	getAdapter(bidderName: string): PrebidAdapter | undefined {
