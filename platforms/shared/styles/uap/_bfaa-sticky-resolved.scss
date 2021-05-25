@@ -1,0 +1,29 @@
+@mixin bfaa-sticky-small() {
+	z-index: 202;
+
+	&.bfaa-sticky-small {
+		#top_leaderboard {
+			position: unset;
+
+			.video-player.porvata-player {
+				position: fixed !important;
+				right: 10px;
+				top: 95px;
+			}
+		}
+
+		.video-overlay {
+			position: fixed;
+			top: 95px;
+			width: 100%;
+
+			.porvata-interface {
+				position: fixed;
+				top: 95px;
+				width: 145px;
+				height: 82px;
+				right: 10px;
+			}
+		}
+	}
+}
