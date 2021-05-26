@@ -82,6 +82,7 @@ export const adSlotEvent = action(
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
+	static SLOT_ADDED = 'slotAdded';
 	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';

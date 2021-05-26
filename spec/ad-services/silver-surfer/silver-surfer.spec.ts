@@ -16,7 +16,11 @@ describe('Silver Surfer service', () => {
 		time: 123456789,
 	};
 
-	const silverSurferConfig = ['ageBrackets:g_age_bracket', 'gender:g_gender'];
+	const silverSurferConfig = [
+		'ageBrackets:g_age_bracket',
+		'gender:g_gender',
+		'keyMissingFromConfig:g_key_missing_from_config',
+	];
 
 	beforeEach(() => {
 		getUserTargetingStub = sandbox
