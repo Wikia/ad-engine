@@ -860,6 +860,8 @@
                 "XX"
             ],
             "value": [
+                "5701604348",
+                "5687551124",
                 "5699440526",
                 "5696627683",
                 "5693635584",
@@ -2220,22 +2222,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icSilverSurfer": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": [
-                "ageBrackets:g_age_bracket",
-                "gender:g_gender",
-                "test:test1"
-            ]
         }
     ],
     "icConfiant": [
