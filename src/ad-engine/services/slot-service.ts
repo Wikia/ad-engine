@@ -72,7 +72,7 @@ class SlotService {
 		eventService.emit(events.AD_SLOT_CREATED, adSlot);
 		utils.communicator('Ad Slot added', {
 			name: slotName,
-			state: AdSlot.SLOT_ADDED,
+			state: AdSlot.SLOT_ADDED_EVENT,
 		});
 	}
 
