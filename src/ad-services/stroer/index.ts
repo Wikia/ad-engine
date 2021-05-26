@@ -2,7 +2,7 @@ import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'Stroer';
 
-class RealVu {
+class Stroer {
 	call(): Promise<void> {
 		if (!context.get('services.stroer.enabled')) {
 			utils.logger(logGroup, 'disabled');
@@ -20,4 +20,4 @@ class RealVu {
 	}
 }
 
-export const realVu = new RealVu();
+export const stroer = new Stroer();
