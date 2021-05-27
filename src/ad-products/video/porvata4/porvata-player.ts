@@ -77,6 +77,22 @@ export class PorvataPlayer {
 		this.addEventListener('wikiaAdCompleted', () =>
 			this.dom.getInterfaceContainer().classList.add('hide'),
 		);
+
+		this.addEventListener(google.ima.AdEvent.Type.COMPLETE, (_) =>
+			this.moveTocUnderBfaa(document.querySelector<HTMLElement>('.bfaa-sticky-big')?.offsetHeight),
+		);
+
+		this.addEventListener(google.ima.AdEvent.Type.STARTED, (_) =>
+			this.moveTocUnderBfaa(Math.round(this.settings.getHeight())),
+		);
+	}
+
+	moveTocUnderBfaa(height: number): void {
+		const bfaa = document.querySelector<HTMLElement>('.bfaa-sticky-big');
+		const toc = document.getElementById('toc');
+		if (bfaa !== null && toc !== null && height !== undefined) {
+			toc.style.setProperty('--sticky-height', `${height.toString()}px`);
+		}
 	}
 
 	getAdsManager(): google.ima.AdsManager | null {
