@@ -108,7 +108,23 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		utils.logger(logGroup, 'slot: ', adSlotName, 'random quote: ', quote);
 
 		const slotElement = document.querySelector(`#${adSlotName}`);
-		slotElement.innerHTML = `Fandom did not find a suitable ad for you.</br> But we have a quote to share!<br />${quote.quote}`;
+		let quoteToDisplay = `Fandom did not find a suitable ad for you.</br>But we have a quote to share!<br />
+			<blockquote class="UserProfileQuotesList__item">
+				<div class="UserProfileQuotesList__quote">${quote.quote}</div>`;
+
+		if (quote.speakers.length > 0) {
+			quoteToDisplay += `<div class="UserProfileQuotesList__speakers">- ${quote.speakers.join(
+				', ',
+			)}</div>`;
+		}
+
+		if (quote.attributionComment !== '') {
+			quoteToDisplay += `<div class="UserProfileQuotesList__comment">(${quote.attributionComment})</div>`;
+		}
+
+		quoteToDisplay += '</blockquote>';
+
+		slotElement.innerHTML = quoteToDisplay;
 		slotElement.classList.remove('hide');
 	}
 
