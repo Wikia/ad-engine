@@ -25,6 +25,8 @@ import {
 	UcpMobileSlotsDefinitionRepository,
 } from './ucp-mobile-slots-definition-repository';
 
+const logGroup = 'dynamic-slots';
+
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private CODE_PRIORITY = {
@@ -102,6 +104,47 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		}
 	}
 
+	private renderFiller(adSlotName, quote): void {
+		utils.logger(logGroup, 'slot: ', adSlotName, 'random quote: ', quote);
+
+		const slotElement = document.querySelector(`#${adSlotName}`);
+		slotElement.innerHTML = `Fandom did not find a suitable ad for you.</br> But we have a quote to share!<br />${quote.quote}`;
+		slotElement.classList.remove('hide');
+	}
+
+	private useFillerIfPossible(action: object): void {
+		if (action['event'] === 'slotHidden') {
+			fetch('https://services.fandom-dev.pl/quotes')
+				.then(
+					(response: Response) => {
+						if (response.status === 200) {
+							utils.logger(logGroup, 'successful response');
+
+							return response.json();
+						}
+						utils.logger(logGroup, `response status: ${response.status}`);
+
+						return {};
+					},
+					() => {
+						utils.logger(logGroup, 'rejected');
+
+						return {};
+					},
+				)
+				.then((quotes: object) => {
+					utils.logger(logGroup, 'quotes fetched', quotes);
+
+					this.renderFiller(
+						action['adSlotName'],
+						quotes[Math.floor(Math.random() * Object.keys(quotes).length)],
+					);
+				});
+		} else {
+			utils.logger(logGroup, "Canceling using the filler since the slot wasn't collapsed");
+		}
+	}
+
 	private configureICBPlaceholderHandler(): void {
 		const shouldRemoveICBLoader = (action: object) => {
 			if (action['adSlotName'].includes('incontent_boxad')) {
@@ -121,6 +164,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				)
 				.subscribe((action) => {
 					removeLoader(action.adSlotName);
+					this.useFillerIfPossible(action);
 				});
 		};
 
