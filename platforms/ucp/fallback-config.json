@@ -416,9 +416,6 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "regions": [
-                "XX"
-            ],
             "value": true
         }
     ],
@@ -637,6 +634,18 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icStoer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "DE"
+            ],
+            "value": false
         }
     ],
     "icStickySlotLineItemIds": [
@@ -1756,7 +1765,11 @@
                 "5694899168",
                 "5694899171",
                 "5640416352",
-                "5699740740"
+                "5699740740",
+                "5691549483",
+                "5693159648",
+                "5693159651",
+                "5693159654"
             ]
         }
     ],
