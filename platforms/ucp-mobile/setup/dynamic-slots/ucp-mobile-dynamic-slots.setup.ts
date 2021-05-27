@@ -114,7 +114,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private useFillerIfPossible(action: object): void {
 		if (action['event'] === 'slotHidden') {
-			fetch('https://services.fandom-dev.pl/quotes')
+			// @ts-ignore
+			fetch(`https://services.fandom-dev.pl/quotes?wiki-id=${window.wgCityId}`)
 				.then(
 					(response: Response) => {
 						if (response.status === 200) {
@@ -134,11 +135,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				)
 				.then((quotes: object) => {
 					utils.logger(logGroup, 'quotes fetched', quotes);
+					const quotesNumber = Object.keys(quotes).length;
 
-					this.renderFiller(
-						action['adSlotName'],
-						quotes[Math.floor(Math.random() * Object.keys(quotes).length)],
-					);
+					if (quotesNumber > 0) {
+						this.renderFiller(
+							action['adSlotName'],
+							quotes[Math.floor(Math.random() * quotesNumber)],
+						);
+					} else {
+						utils.logger(logGroup, 'No quotes on this wiki');
+					}
 				});
 		} else {
 			utils.logger(logGroup, "Canceling using the filler since the slot wasn't collapsed");
