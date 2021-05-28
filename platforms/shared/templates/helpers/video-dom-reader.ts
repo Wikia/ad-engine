@@ -29,10 +29,10 @@ export class VideoDomReader {
 		);
 	}
 
-	getVideoSizeStickyBigToStickySmall(adSlotTopOffset: number): UapVideoSize {
+	getVideoSizeStickyBigToStickySmall(adSlotPlaceholderTopOffset: number): UapVideoSize {
 		return this.calculateVideoSize(
-			this.reader.getSlotHeightBigToSmall(adSlotTopOffset),
-			this.reader.getProgressStickyBigToStickySmall(adSlotTopOffset),
+			this.reader.getSlotHeightBigToSmall(adSlotPlaceholderTopOffset),
+			this.reader.getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset),
 		);
 	}
 
