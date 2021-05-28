@@ -15,7 +15,7 @@ export class SlotDecisionStickyBigToEmbeddedBigHandler implements TemplateStateH
 			.pipe(
 				startWith({}),
 				filter(
-					() => window.scrollY < this.manager.getAdSlotTopOffset() + this.manager.getNavbarHeight(),
+					() => window.scrollY < this.manager.getAdSlotTopOffset() - this.manager.getNavbarHeight(),
 				),
 				tap(() => transition('embeddedBig')),
 				takeUntil(this.unsubscribe$),
