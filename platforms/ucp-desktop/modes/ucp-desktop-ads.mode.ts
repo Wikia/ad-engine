@@ -16,6 +16,7 @@ import {
 	permutive,
 	realVu,
 	Runner,
+	stroer,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -80,6 +81,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		iasPublisherOptimization.call();
 		confiant.call();
 		realVu.call();
+		stroer.call();
 		durationMedia.call();
 		nielsen.call({
 			type: 'static',
