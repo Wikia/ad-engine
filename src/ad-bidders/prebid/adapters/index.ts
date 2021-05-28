@@ -7,6 +7,7 @@ export * from './gumgum';
 export * from './index-exchange';
 export * from './kargo';
 export * from './mediagrid';
+export * from './medianet';
 export * from './nobid';
 export * from './one-video';
 export * from './openx';

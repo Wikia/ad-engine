@@ -602,9 +602,6 @@
                 "mobile-wiki",
                 "oasis"
             ],
-            "regions": [
-                "XX"
-            ],
             "value": true
         }
     ],
@@ -838,6 +835,18 @@
             "value": true
         }
     ],
+    "icStoer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "DE"
+            ],
+            "value": false
+        }
+    ],
     "icOverscrolledTracking": [
         {
             "apps": [
@@ -860,6 +869,8 @@
                 "XX"
             ],
             "value": [
+                "5701604348",
+                "5687551124",
                 "5699440526",
                 "5696627683",
                 "5693635584",
@@ -1964,7 +1975,11 @@
                 "5694899168",
                 "5694899171",
                 "5640416352",
-                "5699740740"
+                "5699740740",
+                "5691549483",
+                "5693159648",
+                "5693159651",
+                "5693159654"
             ]
         }
     ],
@@ -2220,22 +2235,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icSilverSurfer": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": [
-                "ageBrackets:g_age_bracket",
-                "gender:g_gender",
-                "test:test1"
-            ]
         }
     ],
     "icConfiant": [
