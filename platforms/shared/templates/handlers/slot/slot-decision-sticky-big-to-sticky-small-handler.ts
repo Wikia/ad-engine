@@ -2,18 +2,13 @@ import { DomListener, TemplateStateHandler, TemplateTransition } from '@wikia/ad
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
-import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
 export class SlotDecisionStickyBigToStickySmallHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(
-		private domListener: DomListener,
-		private scrollCorrector: ScrollCorrector,
-		private reader: UapDomReader,
-	) {}
+	constructor(private domListener: DomListener, private reader: UapDomReader) {}
 
 	async onEnter(transition: TemplateTransition<'stickySmall'>): Promise<void> {
 		const adSlotTopOffset = window.scrollY + this.reader.getNavbarHeight();
@@ -22,11 +17,7 @@ export class SlotDecisionStickyBigToStickySmallHandler implements TemplateStateH
 			.pipe(
 				startWith({}),
 				filter(() => this.reachedSmallSize(adSlotTopOffset)),
-				tap(() => {
-					const correction = this.scrollCorrector.usePositionCorrection();
-
-					transition('stickySmall').then(correction);
-				}),
+				tap(() => transition('stickySmall')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
