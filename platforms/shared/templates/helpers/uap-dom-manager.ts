@@ -21,10 +21,6 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.element).addClass(className);
 	}
 
-	removeAdSlotClass(className: string): void {
-		this.manipulator.element(this.adSlot.element).removeClass(className);
-	}
-
 	addClassToAdSlotPlaceholder(className: string): void {
 		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
 	}
