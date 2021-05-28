@@ -5,10 +5,10 @@ import {
 	insertMethodType,
 	InstantConfigService,
 	ofType,
+	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
-	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
 	slotService,
 	uapLoadStatus,
@@ -93,7 +93,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
-				context.push('state.adStack', { id: slotName });
+				this.pushWaitingSlot(slotName);
 				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
 					const topBoxAd = document.querySelector('.top-boxad');
 					topBoxAd.classList.remove('is-loading');
@@ -179,7 +179,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
-				this.pushWaitingSlot(slotName);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(() => {
+					context.push('events.pushOnScroll.ids', slotName);
+				});
 				this.injectIncontentAdsPlaceholders();
 			},
 		};
@@ -195,12 +197,13 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
-		const icbPlaceholderConfig: SlotPlaceholderConfig = {
+		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
 			classList: ['ic-ad-slot-placeholder', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
-			repeatLimit: 19,
+			repeatStart: 1,
+			repeatLimit: 20,
 		};
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
@@ -303,14 +306,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
 				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
-				context.set(
-					'slots.floor_adhesion.numberOfViewportsFromTopToPush',
-					this.instantConfig.get('icFloorAdhesionViewportsToStart'),
-				);
 				context.set(
 					'slots.floor_adhesion.forceSafeFrame',
 					this.instantConfig.get('icFloorAdhesionForceSafeFrame'),
@@ -320,8 +316,15 @@ export class UcpMobileSlotsDefinitionRepository {
 					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
 				);
 
-				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				const numberOfViewportsFromTopToPush: number =
+					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+				if (numberOfViewportsFromTopToPush === -1) {
+					this.pushWaitingSlot(slotName);
+				} else {
+					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+					scrollListener.addSlot(slotName, { distanceFromTop: distance });
+				}
 			},
 		};
 	}

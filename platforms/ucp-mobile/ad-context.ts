@@ -38,7 +38,6 @@ export const basicContext = {
 	events: {
 		pushOnScroll: {
 			ids: [],
-			threshold: 100,
 		},
 		pushAfterRendered: {
 			top_boxad: ['incontent_boxad_1', 'incontent_player', 'affiliate_slot'],
@@ -140,10 +139,6 @@ export const basicContext = {
 					anId: '930616',
 					campId: '640x480',
 				},
-			},
-			watchingThat: {
-				apiKey: 'NnBNOWpNNUxFfGJGZkJQaHFCQndNc3ZPMXZQZEp5UkhCWEdPbGJvRllP',
-				enabled: false,
 			},
 		},
 		viewabilityCounter: {
