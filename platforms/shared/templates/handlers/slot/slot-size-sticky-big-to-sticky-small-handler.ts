@@ -3,26 +3,21 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge, Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomManager } from '../../helpers/uap-dom-manager';
-import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
 export class SlotSizeStickyBigToStickySmallHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(
-		private domListener: DomListener,
-		private manager: UapDomManager,
-		private reader: UapDomReader,
-	) {}
+	constructor(private domListener: DomListener, private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		const adSlotTopOffset = window.scrollY + this.reader.getNavbarHeight();
+		const adSlotPlaceholderTopOffset = this.manager.getAdSlotPlaceholderTopOffset();
 
 		this.manager.setImpactImage();
 		merge(this.domListener.resize$, this.domListener.scroll$)
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setSlotHeightBigToSmall(adSlotTopOffset)),
+				tap(() => this.manager.setSlotHeightBigToSmall(adSlotPlaceholderTopOffset)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

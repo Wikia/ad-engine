@@ -36,14 +36,17 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeImpactToResolved());
 	}
 
-	setVideoSizeStickyBigToStickySmall(video: Porvata4Player, adSlotTopOffset: number): void {
+	setVideoSizeStickyBigToStickySmall(
+		video: Porvata4Player,
+		adSlotPlaceholderTopOffset: number,
+	): void {
 		if (video.isFullscreen()) {
 			return;
 		}
 
 		return this.setVideoSize(
 			video,
-			this.reader.getVideoSizeStickyBigToStickySmall(adSlotTopOffset),
+			this.reader.getVideoSizeStickyBigToStickySmall(adSlotPlaceholderTopOffset),
 		);
 	}
 
@@ -72,5 +75,11 @@ export class VideoDomManager {
 		if (isNumber(bottom)) {
 			this.manipulator.element(element).setProperty('bottom', `${bottom}%`);
 		}
+	}
+
+	getAdSlotPlaceholderTopOffset(): number {
+		const adSlotPlaceholder = document.querySelector('.ad-slot-placeholder.top-leaderboard');
+
+		return adSlotPlaceholder.getBoundingClientRect().top + window.scrollY;
 	}
 }

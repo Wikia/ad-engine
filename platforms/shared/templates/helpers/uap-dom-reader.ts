@@ -55,10 +55,10 @@ export class UapDomReader {
 		return maxHeight - (maxHeight - minHeight) * progress;
 	}
 
-	getSlotHeightBigToSmall(adSlotTopOffset: number): number {
+	getSlotHeightBigToSmall(adSlotPlaceholderTopOffset: number): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
-		const progress = this.getProgressStickyBigToStickySmall(adSlotTopOffset);
+		const progress = this.getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset);
 
 		return maxHeight - (maxHeight - minHeight) * progress;
 	}
@@ -77,11 +77,12 @@ export class UapDomReader {
 	/**
 	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
 	 */
-	getProgressStickyBigToStickySmall(adSlotTopOffset: number): number {
+	getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset: number): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
 		const navbarHeight = this.getNavbarHeight();
-		const progress = (window.scrollY - (adSlotTopOffset + navbarHeight)) / (maxHeight - minHeight);
+		const progress =
+			(window.scrollY - (adSlotPlaceholderTopOffset + navbarHeight)) / (maxHeight - minHeight);
 
 		return progress >= 1 ? 1 : progress;
 	}

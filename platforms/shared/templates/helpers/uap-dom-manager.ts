@@ -71,8 +71,8 @@ export class UapDomManager {
 		this.setSlotHeight(`${this.reader.getSlotHeightImpactToResolved()}px`);
 	}
 
-	setSlotHeightBigToSmall(adSlotTopOffset: number): void {
-		this.setSlotHeight(`${this.reader.getSlotHeightBigToSmall(adSlotTopOffset)}px`);
+	setSlotHeightBigToSmall(adSlotPlaceholderTopOffset: number): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightBigToSmall(adSlotPlaceholderTopOffset)}px`);
 	}
 
 	setSlotHeightResolved(): void {
