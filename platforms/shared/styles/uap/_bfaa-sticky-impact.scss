@@ -7,11 +7,12 @@
 		}
 
 		.video-overlay {
+			position: fixed;
 			top: 0;
 			width: 100%;
 
 			.porvata-interface {
-				position: relative;
+				position: fixed;
 				top: 210px;
 
 				.bottom-panel.dynamic-panel {
