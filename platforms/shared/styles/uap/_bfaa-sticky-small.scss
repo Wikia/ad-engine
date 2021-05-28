@@ -4,8 +4,18 @@
 		top: 55px;
 
 		#top_leaderboard {
-			.video-overlay {
-				width: 100%;
+			.video-player.porvata-player {
+				right: 10px;
+			}
+		}
+		.video-overlay {
+			bottom: 80%;
+			width: 100%;
+
+			.porvata-interface {
+				width: 145px;
+				height: 82px;
+				right: 10px;
 			}
 		}
 	}

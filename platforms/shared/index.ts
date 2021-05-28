@@ -68,7 +68,7 @@ export * from './templates/handlers/slot/slot-position-embedded-resolved-handler
 export * from './templates/handlers/slot/slot-size-impact-handler';
 export * from './templates/handlers/slot/slot-size-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-size-resolved-handler';
-export * from './templates/handlers/slot/slot-size-stickyBig-to-stickySmall-handler';
+export * from './templates/handlers/slot/slot-size-sticky-big-to-sticky-small-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
 export * from './templates/handlers/slot/slot-transition-new-template-handler';
