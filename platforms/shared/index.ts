@@ -71,16 +71,7 @@ export * from './templates/handlers/slot/slot-size-resolved-handler';
 export * from './templates/handlers/slot/slot-size-stickyBig-to-stickySmall-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
-<<<<<<< HEAD
 export * from './templates/handlers/slot/slot-transition-new-template-handler';
-=======
-export * from './templates/handlers/bfab/bfab-bootstrap-handler';
-export * from './templates/handlers/bfaa/bfaa-bootstrap-handler';
-export * from './templates/handlers/bfaa-new/bfaa-new-bootstrap-handler';
-export * from './templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
-export * from './templates/handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
-export * from './templates/handlers/sticky-tlb/sticky-tlb-config-handler';
->>>>>>> 713ade39 (ADEN-10998 | ucp-mobile: new BFAA - resize on scroll)
 export * from './templates/handlers/video/video-bootstrap-handler';
 export * from './templates/handlers/video/video-completed-handler';
 export * from './templates/handlers/video/video-ctp-handler';
