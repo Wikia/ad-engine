@@ -62,6 +62,7 @@ export class UcpSlotsStateSetup implements DiProcess {
 	private setupIncontentPlayerForDistroScale(): void {
 		const slotName = 'incontent_player';
 		this.setDistroscaleVarInRuntime(slotName);
+		context.set('slots.incontent_player.targeting.pos', ['incontent_video']);
 
 		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
 		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
