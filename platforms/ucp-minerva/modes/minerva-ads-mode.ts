@@ -11,7 +11,6 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
-	realVu,
 	silverSurferService,
 	taxonomyService,
 	universalAdPackage,
@@ -51,7 +50,6 @@ export class MinervaAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		permutive.call();
-		realVu.call();
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());

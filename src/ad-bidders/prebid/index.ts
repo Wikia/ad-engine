@@ -87,6 +87,7 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		this.applyConfig(this.prebidConfig);
+		this.applyAnalytics();
 
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
@@ -146,6 +147,17 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		return pbjs.setConfig(config);
+	}
+
+	async applyAnalytics(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		return pbjs.enableAnalytics({
+			provider: 'realvuAnalytics',
+			options: {
+				partnerId: 'E6H4',
+			},
+		});
 	}
 
 	async applySettings(): Promise<void> {

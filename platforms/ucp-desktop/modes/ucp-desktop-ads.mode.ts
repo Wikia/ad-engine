@@ -14,7 +14,6 @@ import {
 	jwpSetup,
 	nielsen,
 	permutive,
-	realVu,
 	Runner,
 	silverSurferService,
 	taxonomyService,
@@ -71,7 +70,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const targeting = context.get('targeting');
 
 		permutive.call();
-		realVu.call();
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());

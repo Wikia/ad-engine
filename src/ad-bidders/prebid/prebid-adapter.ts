@@ -42,10 +42,8 @@ export abstract class PrebidAdapter {
 
 	protected getTargeting(placementName, customTargeting = {}): Dictionary {
 		const slotName = getSlotNameByBidderAlias(placementName);
-		const realVu = context.get(`slots.${slotName}.targeting.realvu`);
 
 		return {
-			realvu: realVu || [''],
 			...this.pageTargeting,
 			src: [context.get('src') || ''],
 			pos: [slotName],

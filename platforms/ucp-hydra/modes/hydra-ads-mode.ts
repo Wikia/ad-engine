@@ -9,7 +9,6 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
-	realVu,
 	silverSurferService,
 	taxonomyService,
 } from '@wikia/ad-engine';
@@ -48,7 +47,6 @@ export class HydraAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		permutive.call();
-		realVu.call();
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
