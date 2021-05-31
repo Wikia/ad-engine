@@ -167,8 +167,6 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
-		utils.communicator('Prebid bids requested');
-
 		if (!this.adUnits) {
 			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		}
