@@ -80,6 +80,7 @@ export function buildVastUrl(
 
 	if (slot) {
 		params.push(`iu=${slot.getVideoAdUnit()}`);
+
 		params.push(`sz=${getVideoSizes(slot)}`);
 		params.push(`cust_params=${getCustomParameters(slot, options.targeting)}`);
 	} else if (options.videoAdUnitId && options.customParams) {
