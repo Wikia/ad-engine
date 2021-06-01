@@ -16,8 +16,8 @@ import {
 	permutive,
 	realVu,
 	Runner,
-	stroer,
 	silverSurferService,
+	stroer,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
