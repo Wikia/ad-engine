@@ -2,8 +2,8 @@ import {
 	AdSlot,
 	context,
 	getAdProductInfo,
+	getAdUnitString,
 	slotService,
-	utils,
 	VideoParams,
 } from '@wikia/ad-engine';
 
@@ -19,15 +19,11 @@ class SlotsContext {
 
 	setupSlotVideoAdUnit(adSlot: AdSlot, params: VideoParams): void {
 		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
-		const adUnit = utils.stringBuilder.build(
-			context.get(`slots.${adSlot.getSlotName()}.videoAdUnit`) || context.get('vast.adUnitId'),
-			{
-				slotConfig: {
-					group: adProductInfo.adGroup,
-					adProduct: adProductInfo.adProduct,
-				},
-			},
-		);
+		const slotConfig = {
+			group: adProductInfo.adGroup,
+			adProduct: adProductInfo.adProduct,
+		};
+		const adUnit = getAdUnitString(adSlot.getSlotName(), slotConfig);
 
 		context.set(`slots.${adSlot.getSlotName()}.videoAdUnit`, adUnit);
 	}

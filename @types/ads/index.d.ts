@@ -79,6 +79,9 @@ interface Runtime {
 		available?: boolean;
 		visible?: boolean;
 	};
+	distroscale?: {
+		adUnit?: string;
+	};
 	unblockHighlyViewableSlots?: boolean;
 }
 
