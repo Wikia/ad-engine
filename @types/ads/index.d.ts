@@ -48,6 +48,7 @@ interface MediaWikiAdsTargeting {
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
 	adTagManagerTags?: AdTagManagerTags;
+	isMobile: boolean;
 }
 
 interface MediaWikiFeaturedVideoInfo {
@@ -77,6 +78,9 @@ interface Runtime {
 	interstitial?: {
 		available?: boolean;
 		visible?: boolean;
+	};
+	distroscale?: {
+		adUnit?: string;
 	};
 	unblockHighlyViewableSlots?: boolean;
 }

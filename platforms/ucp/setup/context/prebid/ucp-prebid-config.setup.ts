@@ -7,6 +7,7 @@ import { getBeachfrontContext } from '../../../bidders/prebid/beachfront';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
 import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMediagridContext } from '../../../bidders/prebid/mediagrid';
+import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
@@ -29,6 +30,7 @@ export class UcpPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
 		context.set('bidders.prebid.kargo', getKargoContext());
 		context.set('bidders.prebid.mediagrid', getMediagridContext());
+		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
 		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.openx', getOpenXContext());

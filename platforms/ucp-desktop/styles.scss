@@ -18,7 +18,7 @@
 
 		#top_leaderboard,
 		#hivi_leaderboard {
-			@include bfaa-slot();
+			@include bfaa-slot(1000);
 			@include sticky-tlb-slot();
 		}
 
@@ -69,6 +69,12 @@
 		margin: 0 auto;
 	}
 }
+
+.main-page-tag-rcs {
+	display: flex;
+	flex-direction: column;
+}
+
 body:not(.has-uap) {
 	#hivi_leaderboard > div {
 		margin-top: 10px;

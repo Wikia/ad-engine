@@ -19,7 +19,10 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 		// 	(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
 		// );
 
-		context.set('options.video.watchingThat.enabled', this.instantConfig.get('icWatchingThat'));
+		context.set(
+			'events.pushOnScroll.threshold',
+			this.instantConfig.get('icPushOnScrollThreshold', 100),
+		);
 
 		if (context.get('wiki.opts.enableICLazyRequesting')) {
 			context.set('wiki.opts.enableICBPlaceholder', false);

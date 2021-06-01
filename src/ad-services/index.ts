@@ -11,4 +11,5 @@ export * from './nielsen';
 export * from './permutive';
 export * from './real-vu';
 export * from './stroer';
+export * from './silver-surfer';
 export * from './taxonomy/taxonomy-service';

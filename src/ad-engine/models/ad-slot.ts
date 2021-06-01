@@ -1,7 +1,7 @@
 import { action, communicationService } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
-import { AdStackPayload, eventService, slotTweaker, utils } from '../';
+import { AdStackPayload, eventService, insertMethodType, slotTweaker, utils } from '../';
 import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
@@ -44,6 +44,7 @@ export interface SlotConfig {
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
+	insertIntoParentContainerMethod?: insertMethodType;
 
 	targeting: Targeting;
 	videoAdUnit?: string;
@@ -81,6 +82,7 @@ export const adSlotEvent = action(
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
+	static SLOT_ADDED_EVENT = 'slotAdded';
 	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';

@@ -1,7 +1,7 @@
 @import 'src/ad-products/styles/mixin';
 
-@mixin bfaa-slot() {
-	z-index: 202;
+@mixin bfaa-slot($uap-z-index: 202) {
+	z-index: $uap-z-index;
 	padding: 0;
 	left: 0;
 	top: 0;
