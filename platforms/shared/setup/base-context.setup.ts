@@ -133,7 +133,6 @@ export class BaseContextSetup implements DiProcess {
 			'services.realVu.enabled',
 			this.instantConfig.get('icRealVu') && context.get('wiki.opts.enableRealVu'),
 		);
-		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
@@ -141,6 +140,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.permutive.enabled', this.instantConfig.get('icPermutive'));
+		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 	}
 
 	private setMiscContext(): void {
