@@ -17,6 +17,7 @@ import {
 	realVu,
 	Runner,
 	silverSurferService,
+	stroer,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -82,6 +83,7 @@ export class UcpAdsMode implements DiProcess {
 		iasPublisherOptimization.call();
 		confiant.call();
 		realVu.call();
+		stroer.call();
 		durationMedia.call();
 		nielsen.call({
 			type: 'static',

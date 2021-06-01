@@ -1,6 +1,6 @@
 import { context, utils } from '@ad-engine/core';
 
-const logGroup = 'Stroer';
+const logGroup = 'stroer';
 
 class Stroer {
 	call(): Promise<void> {
