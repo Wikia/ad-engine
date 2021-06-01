@@ -21,7 +21,7 @@
 		"design-system": "git+https://github.com/Wikia/design-system.git#22.0.0",
 		"eventemitter3": "^3.0.1",
 		"js-cookie": "^2.2.0",
-		"lodash": "^4.17.4",
+		"lodash": "4.17.21",
 		"query-string": "^6.8.0",
 		"rxjs": "6.5.5",
 		"ts-action": "^11.0.0",
@@ -88,7 +88,7 @@
 		"typescript": "3.8.3",
 		"webpack": "4.5.0",
 		"webpack-cli": "2.0.14",
-		"webpack-dev-server": "3.1.14",
+		"webpack-dev-server": "3.11.2",
 		"webpack-merge": "4.1.2"
 	},
 	"files": [
