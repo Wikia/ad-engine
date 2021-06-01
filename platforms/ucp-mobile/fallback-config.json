@@ -602,6 +602,9 @@
                 "mobile-wiki",
                 "oasis"
             ],
+            "regions": [
+                "XX"
+            ],
             "value": true
         }
     ],
