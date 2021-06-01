@@ -79,17 +79,10 @@ export class PorvataPlayer {
 		);
 
 		this.addEventListener(google.ima.AdEvent.Type.STARTED, (_) =>
-			utils.communicator('Porvata Started', {
-				name: 'Porvata',
-				state: 'Started',
-			}),
+			utils.communicator('Porvata Started'),
 		);
-
 		this.addEventListener(google.ima.AdEvent.Type.COMPLETE, (_) =>
-			utils.communicator('Porvata Complete', {
-				name: 'Porvata',
-				state: 'Complete',
-			}),
+			utils.communicator('Porvata Complete'),
 		);
 	}
 
