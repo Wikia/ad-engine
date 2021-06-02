@@ -2,10 +2,6 @@
 	z-index: 202;
 
 	&.bfaa-sticky-big {
-		#top_leaderboard {
-			position: unset;
-		}
-
 		.video-overlay {
 			top: 0;
 			width: 100%;
@@ -16,7 +12,7 @@
 
 				.bottom-panel.dynamic-panel {
 					position: absolute;
-					top: -35px;
+					bottom: 0;
 				}
 			}
 		}
