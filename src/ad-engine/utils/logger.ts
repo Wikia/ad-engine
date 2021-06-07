@@ -36,11 +36,11 @@ export function warner(warnGroup: string, ...warnValues: any[]): void {
 
 export function communicator(
 	communicatorEvent: string,
-	communicatorValues: CommunicatorPayload,
+	communicatorValues: CommunicatorPayload | {} = {},
 ): void {
 	const aeCommunicatorEvent = globalAction(
 		`[AdEngine] ${communicatorEvent}`,
-		props<CommunicatorPayload>(),
+		props<CommunicatorPayload | {}>(),
 	);
 
 	communicationService.dispatch(aeCommunicatorEvent(communicatorValues));
