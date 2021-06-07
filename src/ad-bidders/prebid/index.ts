@@ -53,9 +53,6 @@ export class PrebidProvider extends BidderProvider {
 		adaptersRegistry.configureAdapters();
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
-		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
-
 		this.prebidConfig = {
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
 			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
@@ -88,6 +85,8 @@ export class PrebidProvider extends BidderProvider {
 
 		this.applyConfig(this.prebidConfig);
 		this.applyAnalytics();
+
+		this.configureAdUnits();
 
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
@@ -143,6 +142,14 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
+	async configureAdUnits(): Promise<void> {
+		await pbjsFactory.init();
+
+		if (!this.adUnits) {
+			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		}
+	}
+
 	async applyConfig(config: Dictionary): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
@@ -157,7 +164,23 @@ export class PrebidProvider extends BidderProvider {
 				provider: 'realvuAnalytics',
 				options: {
 					partnerId: context.get('services.realVu.partnerId'),
+					reqAllUnits: true,
 				},
+			});
+
+			Object.keys(context.get('slots') || []).forEach((slotName) => {
+				if (window.realvu_aa) {
+					const status =
+						window.realvu_aa.addUnitById({
+							partner_id: 'E6H4',
+							unit_id: slotName,
+							mode: 'kvp',
+						}) || 'na';
+
+					context.set(`slots.${slotName}.targeting.realvu`, [status]);
+				} else {
+					context.set(`slots.${slotName}.targeting.realvu`, ['too_late']);
+				}
 			});
 		}
 	}
@@ -168,10 +191,8 @@ export class PrebidProvider extends BidderProvider {
 		pbjs.bidderSettings = getSettings();
 	}
 
-	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
-		if (!this.adUnits) {
-			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
-		}
+	protected async callBids(bidsBackHandler: (...args: any[]) => void): Promise<void> {
+		await this.configureAdUnits();
 
 		if (this.adUnits.length > 0) {
 			this.applySettings();
@@ -241,6 +262,8 @@ export class PrebidProvider extends BidderProvider {
 
 	async registerBidsRefreshing(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
+
+		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 
 		const refreshUsedBid = (winningBid) => {
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
