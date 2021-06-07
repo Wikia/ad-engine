@@ -90,4 +90,51 @@ describe('AppnexusAst bidder adapter', () => {
 
 		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
 	});
+
+	it('prepareAdUnits returns data in correct shape with additional key-vals and RealVu flag', () => {
+		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
+		context.set('slots.mobile_in_content.targeting.realvu', ['yes']);
+
+		const appnexusAst = new AppnexusAst({
+			enabled: true,
+			slots: {
+				mobile_in_content: {
+					placementId: '11223344',
+				},
+			},
+		});
+
+		expect(appnexusAst.prepareAdUnits()).to.deep.equal([
+			{
+				code: 'mobile_in_content',
+				mediaTypes: {
+					video: {
+						context: 'instream',
+						playerSize: [640, 480],
+					},
+				},
+				bids: [
+					{
+						bidder: 'appnexusAst',
+						params: {
+							placementId: '11223344',
+							keywords: {
+								p_standard: [],
+								realvu: ['yes'],
+								src: ['gpt'],
+								pos: ['mobile_in_content'],
+							},
+							video: {
+								skippable: false,
+								playback_method: ['auto_play_sound_off'],
+							},
+						},
+					},
+				],
+			},
+		]);
+
+		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
+		context.remove('slots.mobile_in_content');
+	});
 });

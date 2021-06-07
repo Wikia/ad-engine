@@ -41,15 +41,20 @@ export abstract class PrebidAdapter {
 	}
 
 	protected getTargeting(placementName, customTargeting = {}): Dictionary {
+		const targeting: Dictionary = {
+			...this.pageTargeting,
+			src: [context.get('src') || ''],
+			pos: [placementName],
+			...customTargeting,
+		};
+
 		const slotName = getSlotNameByBidderAlias(placementName);
 		const realVu = context.get(`slots.${slotName}.targeting.realvu`);
 
-		return {
-			realvu: realVu || [''],
-			...this.pageTargeting,
-			src: [context.get('src') || ''],
-			pos: [slotName],
-			...customTargeting,
-		};
+		if (realVu) {
+			targeting.realvu = realVu;
+		}
+
+		return targeting;
 	}
 }
