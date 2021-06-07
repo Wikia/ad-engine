@@ -5,6 +5,8 @@ import {
 	context,
 	DiProcess,
 	distroScale,
+	getAdUnitString,
+	globalRuntimeVariableSetter,
 	InstantConfigService,
 	ofType,
 	slotDataParamsUpdater,
@@ -45,8 +47,22 @@ export class UcpSlotsStateSetup implements DiProcess {
 		}
 	}
 
+	private setDistroscaleVarInRuntime(slotName: string): void {
+		const params = {
+			group: 'VIDEO',
+			adProduct: 'incontent_video',
+			slotNameSuffix: '',
+		};
+
+		const distroscaleIU = getAdUnitString(slotName, params);
+
+		globalRuntimeVariableSetter.addNewVariableToRuntime('distroscale', { adUnit: distroscaleIU });
+	}
+
 	private setupIncontentPlayerForDistroScale(): void {
 		const slotName = 'incontent_player';
+		this.setDistroscaleVarInRuntime(slotName);
+		context.set('slots.incontent_player.targeting.pos', ['incontent_video']);
 
 		slotService.setState(slotName, false, AdSlot.STATUS_COLLAPSE);
 		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
