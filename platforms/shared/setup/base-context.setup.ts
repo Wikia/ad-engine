@@ -140,6 +140,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.permutive.enabled', this.instantConfig.get('icPermutive'));
+		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 	}
 
 	private setMiscContext(): void {

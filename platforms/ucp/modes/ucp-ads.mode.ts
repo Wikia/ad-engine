@@ -16,6 +16,7 @@ import {
 	permutive,
 	Runner,
 	silverSurferService,
+	stroer,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -80,6 +81,7 @@ export class UcpAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
+		stroer.call();
 		durationMedia.call();
 		nielsen.call({
 			type: 'static',
