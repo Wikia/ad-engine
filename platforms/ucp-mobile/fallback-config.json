@@ -602,6 +602,9 @@
                 "mobile-wiki",
                 "oasis"
             ],
+            "regions": [
+                "XX"
+            ],
             "value": true
         }
     ],
@@ -835,6 +838,18 @@
             "value": true
         }
     ],
+    "icStoer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "DE"
+            ],
+            "value": false
+        }
+    ],
     "icOverscrolledTracking": [
         {
             "apps": [
@@ -857,6 +872,10 @@
                 "XX"
             ],
             "value": [
+                "5708676637",
+                "5708682148",
+                "5701604348",
+                "5687551124",
                 "5699440526",
                 "5696627683",
                 "5693635584",
@@ -1960,7 +1979,24 @@
                 "5694899165",
                 "5694899168",
                 "5694899171",
-                "5640416352"
+                "5640416352",
+                "5699740740",
+                "5691549483",
+                "5693159648",
+                "5693159651",
+                "5693159654",
+                "5703650360",
+                "5703760508",
+                "5702090772",
+                "5703614362",
+                "5704155245",
+                "5704155248",
+                "5704155587",
+                "5709158816",
+                "5708586631",
+                "5699419605",
+                "5707825843",
+                "5702154395"
             ]
         }
     ],
@@ -2126,6 +2162,19 @@
                 "oasis"
             ],
             "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210601.min.js"
+        },
+        {
+            "apps": [
+                "futhead",
+                "gamepedia",
+                "mobile-wiki",
+                "muthead",
+                "oasis"
+            ],
+            "regions": [
                 "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210301.min.js"
@@ -2141,16 +2190,6 @@
                 "XX"
             ],
             "value": "//tag.durationmedia.net/sites/10651/dm.js"
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//pr.realvu.net/flip/2/c=E4KZ_f=site_si=1167"
         }
     ],
     "icA9Bidder": [

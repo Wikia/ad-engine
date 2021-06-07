@@ -16,6 +16,7 @@ import {
 	permutive,
 	realVu,
 	Runner,
+	silverSurferService,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -74,6 +75,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
+		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
 		audigent.call();

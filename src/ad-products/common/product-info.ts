@@ -1,4 +1,4 @@
-import { context } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 
 interface AdProductInfo {
 	adGroup: string;
@@ -32,4 +32,13 @@ export function getAdProductInfo(slotName, loadedTemplate, loadedProduct): AdPro
 		adGroup: getGroup(product),
 		adProduct: product.toLowerCase(),
 	};
+}
+
+export function getAdUnitString(adslotName: string, slotConfig: {}): string {
+	return utils.stringBuilder.build(
+		context.get(`slots.${adslotName}.videoAdUnit`) || context.get('vast.adUnitId'),
+		{
+			slotConfig,
+		},
+	);
 }
