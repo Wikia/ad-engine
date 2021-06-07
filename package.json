@@ -121,6 +121,7 @@
 		"ci-check": "npm run test && npm run lint",
 		"lint": "tslint --project . && npm run rules:lint",
 		"lintf": "tslint --project . --fix && npm run rules:lintf",
+		"lintf:errors": "tslint --project . --fix --quiet && npm run rules:lintf",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
 		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
