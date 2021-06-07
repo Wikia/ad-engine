@@ -40,7 +40,7 @@ export abstract class PrebidAdapter {
 		);
 	}
 
-	protected getTargeting(placementName, customTargeting = {}): Dictionary {
+	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
 		const targeting: Dictionary = {
 			...this.pageTargeting,
 			src: [context.get('src') || ''],

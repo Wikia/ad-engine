@@ -3,6 +3,11 @@ import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
 describe('AppnexusAst bidder adapter', () => {
+	afterEach(() => {
+		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
+		context.remove('slots.mobile_in_content');
+	});
+
 	it('can be enabled', () => {
 		const appnexusAst = new AppnexusAst({
 			enabled: true,
@@ -87,8 +92,6 @@ describe('AppnexusAst bidder adapter', () => {
 				],
 			},
 		]);
-
-		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals and RealVu flag', () => {
@@ -133,8 +136,5 @@ describe('AppnexusAst bidder adapter', () => {
 				],
 			},
 		]);
-
-		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
-		context.remove('slots.mobile_in_content');
 	});
 });

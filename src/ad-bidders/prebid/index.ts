@@ -157,7 +157,7 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	async applyAnalytics(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
+		const pbjs = await pbjsFactory.init();
 
 		if (context.get('services.realVu.enabled') && context.get('services.realVu.partnerId')) {
 			pbjs.enableAnalytics({
