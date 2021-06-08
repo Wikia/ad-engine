@@ -838,18 +838,6 @@
             "value": true
         }
     ],
-    "icStoer": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "DE"
-            ],
-            "value": false
-        }
-    ],
     "icOverscrolledTracking": [
         {
             "apps": [
@@ -872,6 +860,9 @@
                 "XX"
             ],
             "value": [
+                "5702861484",
+                "5708676637",
+                "5708682148",
                 "5701604348",
                 "5687551124",
                 "5699440526",
@@ -1989,7 +1980,12 @@
                 "5703614362",
                 "5704155245",
                 "5704155248",
-                "5704155587"
+                "5704155587",
+                "5709158816",
+                "5708586631",
+                "5699419605",
+                "5707825843",
+                "5702154395"
             ]
         }
     ],
@@ -2157,7 +2153,7 @@
             "regions": [
                 "PL"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210527.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210601.min.js"
         },
         {
             "apps": [
@@ -2196,6 +2192,18 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icStroer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "DE"
             ],
             "value": true
         }
