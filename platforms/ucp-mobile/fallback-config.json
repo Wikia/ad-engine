@@ -838,18 +838,6 @@
             "value": true
         }
     ],
-    "icStoer": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "DE"
-            ],
-            "value": false
-        }
-    ],
     "icOverscrolledTracking": [
         {
             "apps": [
@@ -872,6 +860,7 @@
                 "XX"
             ],
             "value": [
+                "5702861484",
                 "5708676637",
                 "5708682148",
                 "5701604348",
@@ -2203,6 +2192,18 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icStroer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "DE"
             ],
             "value": true
         }

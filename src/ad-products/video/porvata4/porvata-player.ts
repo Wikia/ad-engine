@@ -77,6 +77,13 @@ export class PorvataPlayer {
 		this.addEventListener('wikiaAdCompleted', () =>
 			this.dom.getInterfaceContainer().classList.add('hide'),
 		);
+
+		this.addEventListener(google.ima.AdEvent.Type.STARTED, (_) =>
+			utils.communicator('Porvata Started'),
+		);
+		this.addEventListener(google.ima.AdEvent.Type.COMPLETE, (_) =>
+			utils.communicator('Porvata Complete'),
+		);
 	}
 
 	getAdsManager(): google.ima.AdsManager | null {
