@@ -14,10 +14,12 @@ export class SlotSizeStickyBigToStickySmallHandler implements TemplateStateHandl
 		const adSlotPlaceholderTopOffset = this.manager.getAdSlotPlaceholderTopOffset();
 
 		this.manager.setImpactImage();
-		merge(this.domListener.resize$, this.domListener.scroll$)
+		merge(this.domListener.resize$)
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setSlotHeightBigToSmall(adSlotPlaceholderTopOffset)),
+				tap(() => {
+					return this.manager.setSlotHeightBigToSmall(adSlotPlaceholderTopOffset);
+				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

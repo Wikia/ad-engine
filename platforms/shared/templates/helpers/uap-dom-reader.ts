@@ -71,7 +71,15 @@ export class UapDomReader {
 		const maxHeight = this.getSlotHeightImpact();
 		const progress = window.scrollY / (maxHeight - minHeight);
 
-		return progress >= 1 ? 1 : progress;
+		if (progress >= 1) {
+			return 1;
+		}
+
+		if (progress <= 0) {
+			return 0;
+		}
+
+		return progress;
 	}
 
 	/**
@@ -84,7 +92,15 @@ export class UapDomReader {
 		const progress =
 			(window.scrollY - (adSlotPlaceholderTopOffset + navbarHeight)) / (maxHeight - minHeight);
 
-		return progress >= 1 ? 1 : progress;
+		if (progress >= 1) {
+			return 1;
+		}
+
+		if (progress <= 0) {
+			return 0;
+		}
+
+		return progress;
 	}
 
 	getSlotHeightImpact(): number {
