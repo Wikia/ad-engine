@@ -17,9 +17,7 @@ export class SlotSizeStickyBigToStickySmallHandler implements TemplateStateHandl
 		merge(this.domListener.resize$)
 			.pipe(
 				startWith({}),
-				tap(() => {
-					return this.manager.setSlotHeightBigToSmall(adSlotPlaceholderTopOffset);
-				}),
+				tap(() => this.manager.setSlotHeightBigToSmall(adSlotPlaceholderTopOffset)),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
