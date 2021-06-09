@@ -22,10 +22,12 @@
 
 		#top_leaderboard,
 		#hivi_leaderboard {
-			@include bfaa-slot(1000, 66px);
-			@include sticky-tlb-slot(66px);
+			$global-navigation-width: 66px;
 
-			margin-left: 66px;
+			@include bfaa-slot(1000, $global-navigation-width);
+			@include sticky-tlb-slot($global-navigation-width);
+
+			margin-left: $global-navigation-width;
 		}
 
 		#bottom_leaderboard {
