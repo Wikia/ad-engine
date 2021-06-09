@@ -7,6 +7,7 @@ import {
 	DomManipulator,
 	PlayerRegistry,
 	ScrollCorrector,
+	SlotDecisionEmbeddedBigToEmbeddedResolvedHandler,
 	SlotDecisionEmbeddedBigToStickyBigHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
 	SlotDecisionStickyBigToEmbeddedBigHandler,
@@ -43,6 +44,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			],
 			embeddedBig: [
 				SlotPositionEmbeddedBig,
+				SlotDecisionEmbeddedBigToEmbeddedResolvedHandler,
 				SlotDecisionEmbeddedBigToStickyBigHandler,
 				VideoSizeImpactHandler,
 				VideoLearnMoreHandler,
@@ -65,6 +67,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				SlotDecisionStickySmallToEmbeddedSmallHandler,
 				DomCleanupHandler,
 			],
+			embeddedResolved: [],
 		},
 		'initial',
 		[

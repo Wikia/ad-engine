@@ -1,0 +1,28 @@
+import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import { Injectable } from '@wikia/dependency-injection';
+import { Subject } from 'rxjs';
+import { filter, takeUntil, tap } from 'rxjs/operators';
+import { StickinessTimeout } from '../../helpers/stickiness-timeout';
+
+@Injectable({ autobind: false })
+export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements TemplateStateHandler {
+	private unsubscribe$ = new Subject<void>();
+
+	constructor(private timeout: StickinessTimeout) {}
+
+	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
+		// console.log('bfaa aaa', this.timeout.isViewedAndDelayed());
+		this.timeout.isViewedAndDelayed().pipe(
+			filter((viewedAndDelayed) => viewedAndDelayed),
+			tap(() => {
+				// console.log('bfaa bbb');
+				transition('embeddedResolved');
+			}),
+			takeUntil(this.unsubscribe$),
+		);
+	}
+
+	async onLeave(): Promise<void> {
+		this.unsubscribe$.next();
+	}
+}
