@@ -33,6 +33,10 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
+	realvu_aa?: {
+		addUnitById: (any) => string;
+		regUnit: (string) => string;
+	};
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;

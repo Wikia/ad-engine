@@ -9,7 +9,6 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
-	realVu,
 	silverSurferService,
 	taxonomyService,
 } from '@wikia/ad-engine';
@@ -58,7 +57,6 @@ export class HydraAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
 		durationMedia.call();
 
 		return inhibitors;
