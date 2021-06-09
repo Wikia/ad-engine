@@ -23,7 +23,7 @@
 		#top_leaderboard,
 		#hivi_leaderboard {
 			@include bfaa-slot(1000, 66px);
-			@include sticky-tlb-slot();
+			@include sticky-tlb-slot(66px);
 
 			margin-left: 66px;
 		}
