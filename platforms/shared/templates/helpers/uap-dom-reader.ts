@@ -64,7 +64,7 @@ export class UapDomReader {
 	}
 
 	/**
-	 * Progress changes between 0 (stickyBig, full height) to 1 (stickySmall);
+	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
 	 */
 	getProgressImpactToResolved(): number {
 		const minHeight = this.getSlotHeightResolved();
@@ -75,7 +75,7 @@ export class UapDomReader {
 	}
 
 	/**
-	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
+	 * Progress changes between 0 (stickyBig, full height) to 1 (stickySmall);
 	 */
 	getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset: number): number {
 		const minHeight = this.getSlotHeightResolved();
