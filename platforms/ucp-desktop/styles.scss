@@ -24,7 +24,7 @@
 		#hivi_leaderboard {
 			$global-navigation-width: 66px;
 
-			@include bfaa-slot(1000, $global-navigation-width);
+			@include bfaa-slot(600, $global-navigation-width);
 			@include sticky-tlb-slot($global-navigation-width);
 
 			margin-left: $global-navigation-width;
