@@ -103,8 +103,8 @@ export const basicContext = {
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
 		realVu: {
-			id: 'c=E6H4_f=mint',
 			enabled: false,
+			partnerId: 'E6H4',
 		},
 	},
 	slotGroups: {

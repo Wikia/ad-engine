@@ -14,7 +14,6 @@ import {
 	jwpSetup,
 	nielsen,
 	permutive,
-	realVu,
 	Runner,
 	silverSurferService,
 	stroer,
@@ -82,7 +81,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
 		stroer.call();
 		durationMedia.call();
 		nielsen.call({
