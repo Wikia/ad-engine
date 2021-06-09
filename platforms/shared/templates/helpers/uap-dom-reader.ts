@@ -63,6 +63,9 @@ export class UapDomReader {
 		return maxHeight - (maxHeight - minHeight) * progress;
 	}
 
+	/**
+	 * Progress changes between 0 (stickyBig, full height) to 1 (stickySmall);
+	 */
 	getProgressImpactToResolved(): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
@@ -71,6 +74,9 @@ export class UapDomReader {
 		return this.calculateProgress(offset);
 	}
 
+	/**
+	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
+	 */
 	getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset: number): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
@@ -82,7 +88,8 @@ export class UapDomReader {
 	}
 
 	/**
-	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
+	 * Progress changes between 0 to 1
+	 * All the values below and above will be rounded to 0 or 1
 	 */
 	calculateProgress(offset: number): number {
 		if (offset >= 1) {
