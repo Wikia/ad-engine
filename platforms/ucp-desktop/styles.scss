@@ -16,10 +16,16 @@
 			margin-top: 0;
 		}
 
+		.fandom-sticky-header {
+			margin-top: -46px;
+		}
+
 		#top_leaderboard,
 		#hivi_leaderboard {
-			@include bfaa-slot(1000);
+			@include bfaa-slot(1000, 66px);
 			@include sticky-tlb-slot();
+
+			margin-left: 66px;
 		}
 
 		#bottom_leaderboard {
