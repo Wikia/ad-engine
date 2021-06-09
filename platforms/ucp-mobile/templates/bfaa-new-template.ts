@@ -8,6 +8,7 @@ import {
 	PlayerRegistry,
 	ScrollCorrector,
 	SlotDecisionEmbeddedBigToStickyBigHandler,
+	SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
 	SlotDecisionStickyBigToEmbeddedBigHandler,
 	SlotDecisionStickySmallToEmbeddedSmallHandler,
@@ -58,6 +59,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			embeddedSmall: [
 				SlotPositionEmbeddedSmallHandler,
 				SlotDecisionEmbeddedSmallToStickySmallHandler,
+				SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],

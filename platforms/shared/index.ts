@@ -47,6 +47,7 @@ export * from './templates/handlers/navbar/navbar-offset-impact-to-resolved-hand
 export * from './templates/handlers/navbar/navbar-offset-resolved-handler';
 export * from './templates/handlers/navbar/navbar-offset-resolved-to-none-handler';
 export * from './templates/handlers/slot/slot-decision-embedded-big-to-sticky-big-handler';
+export * from './templates/handlers/slot/slot-decision-embedded-small-to-embedded-resolved-handler';
 export * from './templates/handlers/slot/slot-decision-embedded-small-to-sticky-small-handler';
 export * from './templates/handlers/slot/slot-decision-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-handler';
