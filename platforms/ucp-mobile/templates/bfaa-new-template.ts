@@ -12,6 +12,7 @@ import {
 	SlotDecisionStickyBigToEmbeddedBigHandler,
 	SlotDecisionStickySmallToEmbeddedSmallHandler,
 	SlotPositionEmbeddedBig,
+	SlotPositionEmbeddedResolvedHandler,
 	SlotPositionEmbeddedSmallHandler,
 	SlotPositionStickyBigHandler,
 	SlotPositionStickySmallHandler,
@@ -63,6 +64,11 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			stickySmall: [
 				SlotPositionStickySmallHandler,
 				SlotDecisionStickySmallToEmbeddedSmallHandler,
+				DomCleanupHandler,
+			],
+			embeddedResolved: [
+				SlotPositionEmbeddedResolvedHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 		},
