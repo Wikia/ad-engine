@@ -15,9 +15,7 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 			.isViewedAndDelayed()
 			.pipe(
 				filter((viewedAndDelayed) => viewedAndDelayed),
-				tap(() => {
-					transition('embeddedResolved');
-				}),
+				tap(() => transition('embeddedResolved')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
