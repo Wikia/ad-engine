@@ -4,7 +4,7 @@ export function getMedianetContext(): object {
 		slots: {
 			featured: {
 				cid: '8CU5JOKX4',
-				cidr: '475658876',
+				crid: '475658876',
 			},
 		},
 	};
