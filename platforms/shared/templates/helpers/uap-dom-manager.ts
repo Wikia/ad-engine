@@ -19,22 +19,12 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.element).addClass(className);
 	}
 
-	removeAdSlotClass(className: string): void {
-		this.manipulator.element(this.adSlot.element).removeClass(className);
-	}
-
 	addClassToAdSlotPlaceholder(className: string): void {
 		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
 	}
 
-	removeAdSlotPlaceholderClass(className: string): void {
-		this.manipulator.element(this.adSlot.element.parentElement).removeClass(className);
-	}
-
-	getAdSlotTopOffset(): number {
-		const rect = this.adSlot.element.getBoundingClientRect();
-
-		return rect.top;
+	getAdSlotPlaceholderTopOffset(): number {
+		return this.adSlot.element.parentElement.offsetTop;
 	}
 
 	setPageOffsetImpact(): void {
@@ -79,6 +69,10 @@ export class UapDomManager {
 
 	setSlotHeightImpactToResolved(): void {
 		this.setSlotHeight(`${this.reader.getSlotHeightImpactToResolved()}px`);
+	}
+
+	setSlotHeightBigToSmall(adSlotPlaceholderTopOffset: number): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightBigToSmall(adSlotPlaceholderTopOffset)}px`);
 	}
 
 	setSlotHeightResolved(): void {

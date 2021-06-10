@@ -25,6 +25,10 @@ export class UapDomReader {
 		);
 	}
 
+	getNavbarOffsetHeight(): number {
+		return this.navbar.offsetHeight;
+	}
+
 	getNavbarOffsetImpactToResolved(): number {
 		return this.getSlotHeightImpactToResolved();
 	}
@@ -51,15 +55,52 @@ export class UapDomReader {
 		return maxHeight - (maxHeight - minHeight) * progress;
 	}
 
+	getSlotHeightBigToSmall(adSlotPlaceholderTopOffset: number): number {
+		const minHeight = this.getSlotHeightResolved();
+		const maxHeight = this.getSlotHeightImpact();
+		const progress = this.getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset);
+
+		return maxHeight - (maxHeight - minHeight) * progress;
+	}
+
 	/**
 	 * Progress changes between 0 (impact, full height) to 1 (resolved size);
 	 */
 	getProgressImpactToResolved(): number {
-		const mixHeight = this.getSlotHeightResolved();
+		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
-		const progress = window.scrollY / (maxHeight - mixHeight);
+		const offset = window.scrollY / (maxHeight - minHeight);
 
-		return progress >= 1 ? 1 : progress;
+		return this.calculateProgress(offset);
+	}
+
+	/**
+	 * Progress changes between 0 (stickyBig, full height) to 1 (stickySmall);
+	 */
+	getProgressStickyBigToStickySmall(adSlotPlaceholderTopOffset: number): number {
+		const minHeight = this.getSlotHeightResolved();
+		const maxHeight = this.getSlotHeightImpact();
+		const navbarHeight = this.getNavbarOffsetHeight();
+		const offset =
+			(window.scrollY - (adSlotPlaceholderTopOffset + navbarHeight)) / (maxHeight - minHeight);
+
+		return this.calculateProgress(offset);
+	}
+
+	/**
+	 * Progress changes between 0 to 1
+	 * All the values below and above will be rounded to 0 or 1
+	 */
+	calculateProgress(offset: number): number {
+		if (offset >= 1) {
+			return 1;
+		}
+
+		if (offset <= 0) {
+			return 0;
+		}
+
+		return offset;
 	}
 
 	getSlotHeightImpact(): number {
