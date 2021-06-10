@@ -99,8 +99,8 @@ export const basicContext = {
 			fallback: fallbackInstantConfig,
 		},
 		realVu: {
-			id: 'c=E6H4_f=mint',
 			enabled: false,
+			partnerId: 'E6H4',
 		},
 		taxonomy: {
 			enabled: false,

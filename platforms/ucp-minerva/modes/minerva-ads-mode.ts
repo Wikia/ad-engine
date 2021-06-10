@@ -11,7 +11,6 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	permutive,
-	realVu,
 	silverSurferService,
 	taxonomyService,
 	universalAdPackage,
@@ -61,7 +60,6 @@ export class MinervaAdsMode implements DiProcess {
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
 		durationMedia.call();
 
 		return inhibitors;

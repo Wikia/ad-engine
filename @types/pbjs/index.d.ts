@@ -126,6 +126,8 @@ interface Pbjs {
 
 	setConfig(config: {}): void;
 
+	enableAnalytics(config: {}): void;
+
 	createBid(statusCode: number): PrebidBidResponse;
 
 	renderAd(doc: HTMLDocument, id: string): void;
