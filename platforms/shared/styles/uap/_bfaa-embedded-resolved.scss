@@ -1,10 +1,11 @@
 @mixin bfaa-embedded-resolved() {
 	&.bfaa-embedded-resolved {
-		position: static;
+		position: relative;
+		top: 0;
 
 		#top_leaderboard {
 			.video-overlay {
-				bottom: 60% !important;
+				bottom: 20% !important;
 				position: absolute;
 			}
 
