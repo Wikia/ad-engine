@@ -11,15 +11,16 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 	constructor(private timeout: StickinessTimeout) {}
 
 	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
-		// console.log('bfaa aaa', this.timeout.isViewedAndDelayed());
-		this.timeout.isViewedAndDelayed().pipe(
-			filter((viewedAndDelayed) => viewedAndDelayed),
-			tap(() => {
-				// console.log('bfaa bbb');
-				transition('embeddedResolved');
-			}),
-			takeUntil(this.unsubscribe$),
-		);
+		this.timeout
+			.isViewedAndDelayed()
+			.pipe(
+				filter((viewedAndDelayed) => viewedAndDelayed),
+				tap(() => {
+					transition('embeddedResolved');
+				}),
+				takeUntil(this.unsubscribe$),
+			)
+			.subscribe();
 	}
 
 	async onLeave(): Promise<void> {
