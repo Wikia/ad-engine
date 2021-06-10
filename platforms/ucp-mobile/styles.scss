@@ -54,6 +54,7 @@
 			@include bfaa-embedded-small();
 			@include bfaa-sticky-big();
 			@include bfaa-sticky-small();
+			@include bfaa-embedded-resolved();
 		}
 
 		#bottom_leaderboard {
