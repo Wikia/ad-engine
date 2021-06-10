@@ -8,7 +8,7 @@ export class Medianet extends PrebidAdapter {
 		return Medianet.bidderName;
 	}
 
-	prepareConfigForAdUnit(code, { cid, cidr }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(code, { cid, crid }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaType: 'video',
@@ -29,7 +29,7 @@ export class Medianet extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						cid,
-						cidr,
+						crid,
 						video: {
 							w: '640',
 							h: '480',
