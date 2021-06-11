@@ -76,6 +76,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			embeddedResolved: [
+				SlotSizeResolvedHandler,
 				SlotPositionEmbeddedResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
