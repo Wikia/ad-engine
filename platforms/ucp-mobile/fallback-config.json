@@ -704,7 +704,7 @@
             "regions": [
                 "CA"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icNielsen": [
@@ -2143,6 +2143,16 @@
         }
     ],
     "icPrebidVersion": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
+        },
         {
             "apps": [
                 "futhead",
