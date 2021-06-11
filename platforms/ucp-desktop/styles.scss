@@ -16,10 +16,19 @@
 			margin-top: 0;
 		}
 
+		.fandom-sticky-header {
+			margin-top: -46px;
+			z-index: 401;
+		}
+
 		#top_leaderboard,
 		#hivi_leaderboard {
-			@include bfaa-slot(1000);
-			@include sticky-tlb-slot();
+			$global-navigation-width: 66px;
+
+			@include bfaa-slot(402, $global-navigation-width);
+			@include sticky-tlb-slot($global-navigation-width);
+
+			margin-left: $global-navigation-width;
 		}
 
 		#bottom_leaderboard {
