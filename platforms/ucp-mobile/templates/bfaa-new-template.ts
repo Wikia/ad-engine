@@ -48,6 +48,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DebugTransitionHandler,
 			],
 			embeddedBig: [
+				SlotSizeResolvedHandler,
 				SlotPositionEmbeddedBig,
 				SlotDecisionEmbeddedBigToEmbeddedResolvedHandler,
 				SlotDecisionEmbeddedBigToStickyBigHandler,
@@ -56,6 +57,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			stickyBig: [
+				SlotSizeResolvedHandler,
 				CloseToEmbeddedResolvedButtonHandler,
 				SlotPositionStickyBigHandler,
 				SlotDecisionStickyBigToEmbeddedBigHandler,
@@ -68,18 +70,21 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			embeddedSmall: [
+				SlotSizeResolvedHandler,
 				SlotPositionEmbeddedSmallHandler,
 				SlotDecisionEmbeddedSmallToStickySmallHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			stickySmall: [
+				SlotSizeResolvedHandler,
 				SlotPositionStickySmallHandler,
 				CloseToTransitionButtonHandler,
 				SlotDecisionTimeoutHandler,
 				DomCleanupHandler,
 			],
 			embeddedResolved: [
+				SlotSizeResolvedHandler,
 				SlotPositionEmbeddedResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
