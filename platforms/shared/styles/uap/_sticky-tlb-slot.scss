@@ -1,7 +1,7 @@
-@mixin sticky-tlb-slot() {
+@mixin sticky-tlb-slot($uap-margin: 0px) {
 	&.sticky-tlb {
 		padding: 18px 0 0 0;
-		width: 100%;
+		width: calc(100% - #{$uap-margin});
 		box-sizing: border-box;
 	}
 }
