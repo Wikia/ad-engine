@@ -13,13 +13,14 @@ import {
 	SlotDecisionEmbeddedBigToStickyBigHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
 	SlotDecisionStickyBigToEmbeddedBigHandler,
-	SlotDecisionStickySmallToEmbeddedSmallHandler,
+	SlotDecisionTimeoutHandler,
 	SlotPositionEmbeddedBig,
 	SlotPositionEmbeddedResolvedHandler,
 	SlotPositionEmbeddedSmallHandler,
 	SlotPositionStickyBigHandler,
 	SlotPositionStickySmallHandler,
 	SlotSizeResolvedHandler,
+	SlotTransitionNewTemplateHandler,
 	StickinessTimeout,
 	UapDomManager,
 	UapDomReader,
@@ -32,8 +33,6 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { SlotDecisionStickySmallToTransitionHandler } from '../../shared/templates/handlers/slot/slot-decision-sticky-small-to-transition-handler';
-import { SlotTransitionNewTemplateHandler } from '../../shared/templates/handlers/slot/slot-transition-new-template-handler';
 import { registerUcpMobileUapDomElements } from './configs/register-ucp-mobile-uap-dom-elements';
 import { BfaaUcpMobileConfigHandler } from './handlers/bfaa/bfaa-ucp-mobile-config-handler';
 
@@ -77,8 +76,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			stickySmall: [
 				SlotPositionStickySmallHandler,
 				CloseToTransitionButtonHandler,
-				SlotDecisionStickySmallToTransitionHandler,
-				SlotDecisionStickySmallToEmbeddedSmallHandler,
+				SlotDecisionTimeoutHandler,
 				DomCleanupHandler,
 			],
 			embeddedResolved: [
