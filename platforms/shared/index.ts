@@ -71,6 +71,7 @@ export * from './templates/handlers/video/video-bootstrap-handler';
 export * from './templates/handlers/video/video-completed-handler';
 export * from './templates/handlers/video/video-ctp-handler';
 export * from './templates/handlers/video/video-restart-handler';
+export * from './templates/handlers/video/video-new-bfaa-restart-handler';
 export * from './templates/handlers/video/video-size-impact-handler';
 export * from './templates/handlers/video/video-size-impact-to-resolved-handler';
 export * from './templates/handlers/video/video-learn-more-handler';
