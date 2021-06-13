@@ -15,6 +15,8 @@ export class PageTracker {
 		const now = new Date();
 		const trackingPropsURL =
 			'https://beacon.wikia-services.com/__track/special/adengpageinfo_props';
+		const labradorTrackingURL =
+			'https://beacon.wikia-services.com/__track/special/labradorpageview';
 
 		this.dwTracker.track(
 			{
@@ -25,5 +27,16 @@ export class PageTracker {
 			},
 			trackingPropsURL,
 		);
+
+		if (name === 'labrador') {
+			this.dwTracker.track(
+				{
+					value,
+					timestamp: now.getTime(),
+					tz_offset: now.getTimezoneOffset(),
+				},
+				labradorTrackingURL,
+			);
+		}
 	}
 }
