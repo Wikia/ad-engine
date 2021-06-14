@@ -2,7 +2,6 @@ import {
 	AdvertisementLabelHandler,
 	BfaaNewBootstrapHandler,
 	CloseButtonHelper,
-	CloseToEmbeddedResolvedButtonHandler,
 	CloseToTransitionButtonHandler,
 	DebugTransitionHandler,
 	DomCleanupHandler,
@@ -56,9 +55,10 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			stickyBig: [
-				CloseToEmbeddedResolvedButtonHandler,
 				SlotPositionStickyBigHandler,
 				SlotDecisionStickyBigToEmbeddedBigHandler,
+				CloseToTransitionButtonHandler,
+				SlotDecisionTimeoutHandler,
 				DomCleanupHandler,
 			],
 			transition: [
