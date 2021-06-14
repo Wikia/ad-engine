@@ -71,6 +71,10 @@
 			@include uap-navbar();
 		}
 
+		&.is-menu-active .global-navigation-mobile-wrapper {
+			top: 0 !important;
+		}
+
 		#top_leaderboard,
 		#hivi_leaderboard {
 			@include bfaa-slot();
