@@ -64,6 +64,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			stickySmall: [
 				SlotPositionStickySmallHandler,
 				SlotDecisionStickySmallToEmbeddedSmallHandler,
+				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
 			embeddedResolved: [
