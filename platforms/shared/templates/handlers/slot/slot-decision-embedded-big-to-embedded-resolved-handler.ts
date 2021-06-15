@@ -13,6 +13,17 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 	constructor(private timeout: StickinessTimeout, private playerRegistry: PlayerRegistry) {}
 
 	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
+		this.videoTransitionHandler(transition);
+		this.staticTransitionHandler(transition);
+	}
+
+	async onLeave(): Promise<void> {
+		this.unsubscribe$.next();
+	}
+
+	private async videoTransitionHandler(
+		transition: TemplateTransition<'embeddedResolved'>,
+	): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) => {
@@ -23,7 +34,11 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
+	}
 
+	private async staticTransitionHandler(
+		transition: TemplateTransition<'embeddedResolved'>,
+	): Promise<void> {
 		this.timeout
 			.isViewedAndDelayed()
 			.pipe(
@@ -32,9 +47,5 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
-	}
-
-	async onLeave(): Promise<void> {
-		this.unsubscribe$.next();
 	}
 }
