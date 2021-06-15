@@ -11,8 +11,8 @@
 			width: 100%;
 
 			.porvata-interface {
-				width: 145px;
-				height: 82px;
+				width: $hivi-uap-video-width-to-vw-ratio;
+				height: $hivi-uap-video-width-to-height-ratio;
 				right: 10px;
 			}
 		}

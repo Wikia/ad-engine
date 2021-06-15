@@ -25,5 +25,7 @@ $hivi-uap-button-size: 16px;
 $hivi-uap-mobile-button-size: 24px;
 $hivi-uap-button-border-space: 6px;
 $hivi-uap-player-button-border-space: 6px;
+$hivi-uap-video-width-to-vw-ratio: calc(100vw * 0.3866666);
+$hivi-uap-video-width-to-height-ratio: calc(100vw * 0.3866666 * 0.5625);
 
 $ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
