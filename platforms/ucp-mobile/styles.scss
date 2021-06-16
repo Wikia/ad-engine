@@ -58,7 +58,7 @@
 		}
 
 		#bottom_leaderboard {
-			@include bfab-slot();
+			@include bfab-new-uap();
 			@include uap-porvata();
 			@include uap-porvata-learn-more();
 			@include uap-advertisement-label();
