@@ -4,10 +4,6 @@
 			.video-overlay {
 				position: absolute;
 			}
-
-			&.is-dark {
-				@include uap-dark-theme();
-			}
 		}
 	}
 }
