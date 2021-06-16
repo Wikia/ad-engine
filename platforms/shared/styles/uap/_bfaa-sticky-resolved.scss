@@ -1,5 +1,7 @@
+@import 'src/ad-products/styles/uap-variables';
+
 @mixin bfaa-sticky-small() {
-	z-index: 202;
+	z-index: $new-uap-z-index;
 	&.bfaa-sticky-small {
 		#top_leaderboard {
 			.video-player.porvata-player {
