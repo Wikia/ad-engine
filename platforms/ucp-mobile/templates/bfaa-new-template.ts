@@ -52,6 +52,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 			stickyBig: [
 				SlotPositionStickyBigHandler,
 				SlotDecisionStickyBigToEmbeddedBigHandler,
+				VideoLearnMoreHandler,
 				DomCleanupHandler,
 			],
 			transition: [],
