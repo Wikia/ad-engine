@@ -2041,10 +2041,14 @@
     "icSilverSurfer": [
         {
             "apps": [
+                "mobile-wiki",
                 "oasis"
             ],
             "regions": [
-                "PL"
+                "GB",
+                "PL",
+                "UK",
+                "US"
             ],
             "value": [
                 "ageBrackets:g_age_bracket",
