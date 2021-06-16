@@ -53,6 +53,7 @@ export * from './templates/handlers/slot/slot-decision-embedded-small-to-embedde
 export * from './templates/handlers/slot/slot-decision-embedded-small-to-sticky-small-handler';
 export * from './templates/handlers/slot/slot-decision-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-handler';
+export * from './templates/handlers/slot/slot-decision-timeout-handler-wihtout-scroll';
 export * from './templates/handlers/slot/slot-decision-on-viewability-handler';
 export * from './templates/handlers/slot/slot-decision-sticky-big-to-embedded-big-handler';
 export * from './templates/handlers/slot/slot-decision-sticky-small-to-embedded-small-handler';
