@@ -19,6 +19,7 @@ import {
 	SlotPositionEmbeddedSmallHandler,
 	SlotPositionStickyBigHandler,
 	SlotPositionStickySmallHandler,
+	SlotSizeImpactHandler,
 	SlotSizeResolvedHandler,
 	StickinessTimeout,
 	UapDomManager,
@@ -49,7 +50,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DebugTransitionHandler,
 			],
 			embeddedBig: [
-				SlotSizeResolvedHandler,
+				SlotSizeImpactHandler,
 				SlotPositionEmbeddedBig,
 				SlotDecisionEmbeddedBigToEmbeddedResolvedHandler,
 				SlotDecisionEmbeddedBigToStickyBigHandler,
@@ -58,7 +59,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				DomCleanupHandler,
 			],
 			stickyBig: [
-				SlotSizeResolvedHandler,
+				SlotSizeImpactHandler,
 				SlotPositionStickyBigHandler,
 				SlotDecisionStickyBigToEmbeddedBigHandler,
 				CloseToEmbeddedResolvedButtonHandler,
