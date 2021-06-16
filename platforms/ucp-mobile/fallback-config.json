@@ -2248,6 +2248,24 @@
             "value": true
         }
     ],
+    "icSilverSurfer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "value": [
+                "ageBrackets:g_age_bracket",
+                "gender:g_gender"
+            ]
+        }
+    ],
     "icConfiant": [
         {
             "apps": [
