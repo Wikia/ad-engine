@@ -11,7 +11,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
 @Injectable({ autobind: false })
-export class SlotDecisionTimeoutWihtoutScrollHandler implements TemplateStateHandler {
+export class SlotDecisionTimeoutWithoutScrollHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private timeout: StickinessTimeout) {}
