@@ -860,6 +860,8 @@
                 "XX"
             ],
             "value": [
+                "5714835837",
+                "5714835834",
                 "5702861484",
                 "5708676637",
                 "5708682148",
@@ -1986,7 +1988,11 @@
                 "5699419605",
                 "5707825843",
                 "5702154395",
-                "5715091109"
+                "5715091109",
+                "5711411262",
+                "5712597349",
+                "5712597352",
+                "5712597355"
             ]
         }
     ],
@@ -2145,16 +2151,6 @@
     "icPrebidVersion": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "CA"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
-        },
-        {
-            "apps": [
                 "futhead",
                 "gamepedia",
                 "mobile-wiki",
@@ -2164,7 +2160,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210601.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
         }
     ],
     "icDurationMediaLibraryUrl": [
@@ -2254,6 +2250,24 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icSilverSurfer": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "value": [
+                "ageBrackets:g_age_bracket",
+                "gender:g_gender"
+            ]
         }
     ],
     "icConfiant": [
