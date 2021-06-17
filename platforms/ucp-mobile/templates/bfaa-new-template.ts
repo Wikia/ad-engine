@@ -88,6 +88,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				SlotPositionStickySmallHandler,
 				SlotDecisionTimeoutWithoutScrollHandler,
 				SlotDecisionStickySmallToEmbeddedSmallHandler,
+				CloseToEmbeddedResolvedButtonHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],
