@@ -2,12 +2,7 @@
 	&.bfaa-embedded-small {
 		#top_leaderboard {
 			.video-overlay {
-				bottom: 16% !important;
 				position: absolute;
-			}
-
-			&.is-dark {
-				@include uap-dark-theme();
 			}
 		}
 	}
