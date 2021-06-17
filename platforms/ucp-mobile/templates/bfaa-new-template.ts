@@ -13,6 +13,7 @@ import {
 	SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
 	SlotDecisionStickyBigToEmbeddedBigHandler,
+	SlotDecisionStickySmallToEmbeddedSmallHandler,
 	SlotDecisionTimeoutWithoutScrollHandler,
 	SlotPositionEmbeddedBig,
 	SlotPositionEmbeddedResolvedHandler,
