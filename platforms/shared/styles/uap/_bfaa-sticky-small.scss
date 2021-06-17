@@ -1,0 +1,10 @@
+@mixin bfaa-sticky-small() {
+	z-index: 202;
+	&.bfaa-sticky-small {
+		#top_leaderboard {
+			.video-overlay {
+				width: 100%;
+			}
+		}
+	}
+}
