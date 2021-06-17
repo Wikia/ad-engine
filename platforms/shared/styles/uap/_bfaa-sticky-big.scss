@@ -1,8 +1,4 @@
-@import 'src/ad-products/styles/uap-variables';
-
 @mixin bfaa-sticky-big() {
-	z-index: $new-uap-z-index;
-
 	&.bfaa-sticky-big {
 		.video-overlay {
 			top: 0;
