@@ -1,5 +1,8 @@
 @mixin bfaa-sticky-small() {
 	&.bfaa-sticky-small {
+		position: fixed;
+		top: 55px;
+
 		#top_leaderboard {
 			.video-overlay {
 				width: 100%;

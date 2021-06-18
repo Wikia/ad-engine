@@ -6,6 +6,8 @@ import { UapDomReader } from './uap-dom-reader';
 
 @Injectable({ autobind: false })
 export class UapDomManager {
+	private adSlotTopOffset;
+
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
@@ -32,9 +34,11 @@ export class UapDomManager {
 	}
 
 	getAdSlotTopOffset(): number {
-		const rect = this.adSlot.element.getBoundingClientRect();
+		return this.adSlotTopOffset;
+	}
 
-		return rect.top;
+	setAdSlotTopOffset(adSlotTopOffset: number): void {
+		this.adSlotTopOffset = adSlotTopOffset;
 	}
 
 	setPageOffsetImpact(): void {

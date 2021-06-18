@@ -1,5 +1,8 @@
 @mixin bfaa-sticky-big() {
 	&.bfaa-sticky-big {
+		position: fixed;
+		top: 55px;
+
 		.video-overlay {
 			top: 0;
 			width: 100%;

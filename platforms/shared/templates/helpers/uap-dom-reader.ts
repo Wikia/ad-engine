@@ -11,6 +11,12 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
+	getAdSlotTopOffset(): number {
+		const rect = this.adSlot.element.getBoundingClientRect();
+
+		return rect.top;
+	}
+
 	getPageOffsetImpact(): number {
 		return (
 			this.getSlotHeightImpact() +

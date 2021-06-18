@@ -1,5 +1,7 @@
 @mixin bfaa-embedded-small() {
 	&.bfaa-embedded-small {
+		position: relative;
+
 		#top_leaderboard {
 			.video-overlay {
 				position: absolute;
