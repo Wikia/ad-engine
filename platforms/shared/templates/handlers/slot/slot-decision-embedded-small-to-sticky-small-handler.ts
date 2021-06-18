@@ -21,8 +21,8 @@ export class SlotDecisionEmbeddedSmallToStickySmallHandler implements TemplateSt
 				startWith({}),
 				filter(() => this.reader.getAdSlotTopOffset() <= this.manager.getNavbarHeight()),
 				tap(() => {
-					transition('stickySmall');
 					this.manager.setAdSlotTopOffset(window.scrollY);
+					transition('stickySmall');
 				}),
 				takeUntil(this.unsubscribe$),
 			)
