@@ -53,11 +53,9 @@
 				}
 			}
 
-			@include bfaa-embedded-big();
-			@include bfaa-embedded-small();
+			@include bfaa-embedded();
 			@include bfaa-sticky-big();
 			@include bfaa-sticky-small();
-			@include bfaa-embedded-resolved();
 		}
 
 		@include bfaa-with-infobox();
