@@ -53,6 +53,7 @@ export * from './templates/handlers/slot/slot-decision-embedded-small-to-embedde
 export * from './templates/handlers/slot/slot-decision-embedded-small-to-sticky-small-handler';
 export * from './templates/handlers/slot/slot-decision-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-handler';
+export * from './templates/handlers/slot/slot-decision-timeout-without-scroll-handler';
 export * from './templates/handlers/slot/slot-decision-on-viewability-handler';
 export * from './templates/handlers/slot/slot-decision-sticky-big-to-embedded-big-handler';
 export * from './templates/handlers/slot/slot-decision-sticky-small-to-embedded-small-handler';
@@ -68,6 +69,7 @@ export * from './templates/handlers/slot/slot-size-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-size-resolved-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
+export * from './templates/handlers/slot/slot-transition-new-template-handler';
 export * from './templates/handlers/video/video-bootstrap-handler';
 export * from './templates/handlers/video/video-completed-handler';
 export * from './templates/handlers/video/video-ctp-handler';
