@@ -17,14 +17,14 @@ export class SlotDecisionTimeoutWithoutScrollHandler implements TemplateStateHan
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private timeout: StickinessTimeout) {}
 
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
-		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKED_STATE);
+		this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);
 
 		this.timeout
 			.isViewedAndDelayed()
 			.pipe(
 				filter((viewedAndDelayed) => viewedAndDelayed),
 				tap(() => {
-					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
+					this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);
 					transition('transition');
 				}),
 				takeUntil(this.unsubscribe$),

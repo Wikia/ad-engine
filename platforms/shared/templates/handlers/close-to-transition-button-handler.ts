@@ -21,7 +21,7 @@ export class CloseToTransitionButtonHandler implements TemplateStateHandler {
 	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
 		this.button = new CloseButton({
 			onClick: () => {
-				this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
+				this.adSlot.emitEvent(universalAdPackage.SLOT_FORCE_UNSTICK);
 				transition('transition');
 			},
 		}).render();
