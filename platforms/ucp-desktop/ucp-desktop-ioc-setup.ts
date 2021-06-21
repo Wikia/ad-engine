@@ -3,7 +3,6 @@ import {
 	bidderTrackingMiddleware,
 	DiProcess,
 	slotBiddersTrackingMiddleware,
-	slotBillTheLizardStatusTrackingMiddleware,
 	slotPropertiesTrackingMiddleware,
 	slotTrackingMiddleware,
 } from '@wikia/ad-engine';
@@ -20,7 +19,6 @@ export class UcpDesktopIocSetup implements DiProcess {
 			slotTrackingMiddlewares: [
 				slotPropertiesTrackingMiddleware,
 				slotBiddersTrackingMiddleware,
-				slotBillTheLizardStatusTrackingMiddleware,
 				slotTrackingMiddleware,
 			],
 			bidderTrackingMiddlewares: [bidderTrackingMiddleware],
