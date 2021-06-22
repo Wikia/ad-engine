@@ -2,7 +2,6 @@ import {
 	AdvertisementLabelHandler,
 	BfaaNewBootstrapHandler,
 	CloseButtonHelper,
-	CloseToEmbeddedResolvedButtonHandler,
 	CloseToTransitionButtonHandler,
 	DebugTransitionHandler,
 	DomCleanupHandler,
