@@ -55,14 +55,6 @@ export const basicContext = {
 		},
 	},
 	services: {
-		billTheLizard: {
-			enabled: true,
-			host: 'https://services.fandom.com',
-			endpoint: 'bill-the-lizard/predict',
-			projects: {},
-			parameters: {},
-			timeout: 2000,
-		},
 		confiant: {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',

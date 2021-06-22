@@ -2,7 +2,6 @@ import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
-	billTheLizard,
 	communicationService,
 	confiant,
 	context,
@@ -88,7 +87,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
-		billTheLizard.call(['vcr']);
 
 		return inhibitors;
 	}
