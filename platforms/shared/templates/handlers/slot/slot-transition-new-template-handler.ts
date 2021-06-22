@@ -38,21 +38,13 @@ export class SlotTransitionNewTemplateHandler implements TemplateStateHandler {
 	}
 
 	private animate(): Observable<unknown> {
-		const duration = this.calcAnimationDuration();
+		const duration = universalAdPackage.SLIDE_OUT_TIME;
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('transition', `all ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
 			.setProperty('marginTop', `-${this.reader.getSlotHeightResolved() * 2}px`);
 
 		return from(utils.wait(duration));
-	}
-
-	private calcAnimationDuration(): number {
-		const heightResolved = this.reader.getSlotHeightResolved();
-		const distance = this.reader.getNavbarOffsetResolvedToNone();
-		const distanceFraction = (heightResolved - distance) / heightResolved;
-
-		return distanceFraction * universalAdPackage.SLIDE_OUT_TIME;
 	}
 
 	async onLeave(): Promise<void> {
