@@ -42,7 +42,7 @@ export class SlotTransitionNewTemplateHandler implements TemplateStateHandler {
 		this.manipulator
 			.element(this.adSlot.getElement())
 			.setProperty('transition', `all ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('marginTop', `-${this.reader.getSlotHeightResolved()}px`);
+			.setProperty('marginTop', `-${this.reader.getSlotHeightResolved() * 2}px`);
 
 		return from(utils.wait(duration));
 	}
