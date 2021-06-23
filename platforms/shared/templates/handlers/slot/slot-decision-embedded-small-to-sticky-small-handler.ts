@@ -16,10 +16,17 @@ export class SlotDecisionEmbeddedSmallToStickySmallHandler implements TemplateSt
 	) {}
 
 	async onEnter(transition: TemplateTransition<'stickySmall'>): Promise<void> {
+		const isBfaaInOrBelowTheViewport = () => {
+			return this.reader.getAdSlotTopOffset() >= 0;
+		};
+		const scrolledToBfaa = () => {
+			return this.reader.getAdSlotTopOffset() <= this.manager.getNavbarHeight();
+		};
+
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
-				filter(() => this.reader.getAdSlotTopOffset() <= this.manager.getNavbarHeight()),
+				filter(() => isBfaaInOrBelowTheViewport() && scrolledToBfaa()),
 				tap(() => {
 					this.manager.setAdSlotTopOffset(window.scrollY);
 					transition('stickySmall');
