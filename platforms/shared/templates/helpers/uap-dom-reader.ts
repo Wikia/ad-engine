@@ -31,6 +31,10 @@ export class UapDomReader {
 		);
 	}
 
+	getNavbarHeight(): number {
+		return this.navbar.offsetHeight;
+	}
+
 	getNavbarOffsetImpactToResolved(): number {
 		return this.getSlotHeightImpactToResolved();
 	}
@@ -82,6 +86,14 @@ export class UapDomReader {
 		}
 
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
+	}
+
+	isAdSlotInOrBelowTheViewport(): boolean {
+		return this.getAdSlotTopOffset() >= 0;
+	}
+
+	scrolledToAdSlot(): boolean {
+		return this.getAdSlotTopOffset() <= this.getNavbarHeight();
 	}
 
 	private calculateSlotHeight(ratio: number): number {

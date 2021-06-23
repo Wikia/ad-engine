@@ -53,10 +53,6 @@ export class UapDomManager {
 		this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
 	}
 
-	getNavbarHeight(): number {
-		return this.navbar.offsetHeight;
-	}
-
 	setNavbarOffsetImpactToResolved(): void {
 		this.setNavbarOffset(this.reader.getNavbarOffsetImpactToResolved());
 	}
