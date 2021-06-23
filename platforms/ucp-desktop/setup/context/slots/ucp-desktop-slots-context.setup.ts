@@ -138,7 +138,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[300, 600],
 				],
-				garfieldCat: true,
 				repeat: {
 					additionalClasses: 'hide',
 					index: 1,
@@ -160,7 +159,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.wds-global-footer',
+				insertBeforeSelector: '.mcf-en,.mw-special-Newimages .license-description',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
