@@ -93,6 +93,14 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
+	setSlotHeightBigToSmall(): void {
+		this.setSlotHeight(`${this.reader.getSlotHeightResolved()}px`);
+	}
+
+	getAdSlotPlaceholderTopOffset(): number {
+		return this.adSlot.element.parentElement.offsetTop + 100;
+	}
+
 	setResolvedImage(): void {
 		if (this.params.image2 && this.params.image2.background) {
 			this.manipulator.element(this.params.image1.element).addClass('hidden-state');
