@@ -11,7 +11,7 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
-	getAdSlotTopOffset(): number {
+	private getAdSlotTopOffset(): number {
 		const rect = this.adSlot.element.getBoundingClientRect();
 
 		return rect.top;
@@ -95,11 +95,11 @@ export class UapDomReader {
 		return this.calculateProgress(offset);
 	}
 
-	getNavbarOffsetHeight(): number {
+	private getNavbarOffsetHeight(): number {
 		return this.navbar.offsetHeight;
 	}
 
-	calculateProgress(offset: number): number {
+	private calculateProgress(offset: number): number {
 		if (offset >= 1) {
 			return 1;
 		}
