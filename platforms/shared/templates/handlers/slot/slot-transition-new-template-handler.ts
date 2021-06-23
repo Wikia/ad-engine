@@ -40,9 +40,9 @@ export class SlotTransitionNewTemplateHandler implements TemplateStateHandler {
 	private animate(): Observable<unknown> {
 		const duration = universalAdPackage.SLIDE_OUT_TIME;
 		this.manipulator
-			.element(this.adSlot.getElement())
-			.setProperty('transition', `all ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('marginTop', `-${this.reader.getSlotHeightResolved() * 2}px`);
+			.element(this.adSlot.getElement().parentElement)
+			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
+			.setProperty('top', `-${this.reader.getSlotHeightResolved() * 2}px`);
 
 		return from(utils.wait(duration));
 	}
