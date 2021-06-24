@@ -5,11 +5,21 @@ import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
+	private adSlotHeight = 0;
+
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
+
+	getAdSlotHeight(): number {
+		return this.adSlotHeight;
+	}
+
+	readAdSlotHeight(): void {
+		this.adSlotHeight = this.adSlot.element.offsetHeight;
+	}
 
 	getPageOffsetImpact(): number {
 		return (
