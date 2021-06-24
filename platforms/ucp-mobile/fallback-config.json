@@ -860,6 +860,9 @@
                 "XX"
             ],
             "value": [
+                "5725843320",
+                "5726935636",
+                "5726313329",
                 "5723553791",
                 "5714835837",
                 "5714835834",
@@ -2275,7 +2278,11 @@
             ],
             "value": [
                 "ageBrackets:g_age_bracket",
-                "gender:g_gender"
+                "gender:g_gender",
+                "affiliation:g_affiliation",
+                "language:g_language",
+                "interests:g_interests",
+                "country:g_country"
             ]
         }
     ],
