@@ -159,7 +159,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.mcf-en,.mw-special-Newimages .license-description',
+				parentContainerSelector: '.mcf-en,.mw-special-Newimages .license-description',
+				insertIntoParentContainerMethod: 'prepend',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
