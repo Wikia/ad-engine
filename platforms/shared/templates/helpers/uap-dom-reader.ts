@@ -5,7 +5,7 @@ import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
-	private adSlotHeight = 0;
+	private adSlotHeight;
 
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
@@ -14,7 +14,7 @@ export class UapDomReader {
 	) {}
 
 	getAdSlotHeight(): number {
-		return this.adSlotHeight;
+		return this.adSlotHeight ? this.adSlotHeight : 0;
 	}
 
 	readAdSlotHeight(): void {
