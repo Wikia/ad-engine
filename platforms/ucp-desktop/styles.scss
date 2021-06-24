@@ -21,6 +21,14 @@
 			z-index: 401;
 		}
 
+		.main-container {
+			position: relative;
+
+			.fandom-community-header__background {
+				position: absolute;
+			}
+		}
+
 		#top_leaderboard,
 		#hivi_leaderboard {
 			$global-navigation-width: 66px;
