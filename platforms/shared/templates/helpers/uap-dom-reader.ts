@@ -11,6 +11,12 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
+	private getAdSlotTopOffset(): number {
+		const rect = this.adSlot.element.getBoundingClientRect();
+
+		return rect.top;
+	}
+
 	getPageOffsetImpact(): number {
 		return (
 			this.getSlotHeightImpact() +
@@ -76,6 +82,33 @@ export class UapDomReader {
 		}
 
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
+	}
+
+	getProgressStickyBigToStickySmall(): number {
+		const minHeight = this.getSlotHeightResolved();
+		const maxHeight = this.getSlotHeightImpact();
+		const navbarHeight = this.getNavbarOffsetHeight();
+		const adSlotTopOffset =
+			this.getAdSlotTopOffset() + this.calculateSlotHeight(this.params.config.aspectRatio.default);
+		const offset = (window.scrollY - (adSlotTopOffset + navbarHeight)) / (maxHeight - minHeight);
+
+		return this.calculateProgress(offset);
+	}
+
+	private getNavbarOffsetHeight(): number {
+		return this.navbar.offsetHeight;
+	}
+
+	private calculateProgress(offset: number): number {
+		if (offset >= 1) {
+			return 1;
+		}
+
+		if (offset <= 0) {
+			return 0;
+		}
+
+		return offset;
 	}
 
 	private calculateSlotHeight(ratio: number): number {
