@@ -19,12 +19,6 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
 	}
 
-	setAdSlotPlaceholderHeight(height: number): void {
-		const adSlotPlaceholder = this.manipulator.element(this.adSlot.element.parentElement);
-
-		adSlotPlaceholder.setProperty('height', `${height.toString()}px`);
-	}
-
 	getAdSlotTopOffset(): number {
 		const rect = this.adSlot.element.getBoundingClientRect();
 
