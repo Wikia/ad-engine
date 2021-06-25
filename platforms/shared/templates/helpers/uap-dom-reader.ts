@@ -30,6 +30,10 @@ export class UapDomReader {
 		);
 	}
 
+	getNavbarOffsetHeight(): number {
+		return this.navbar.offsetHeight;
+	}
+
 	getNavbarOffsetImpactToResolved(): number {
 		return this.getSlotHeightImpactToResolved();
 	}
@@ -83,6 +87,14 @@ export class UapDomReader {
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
 	}
 
+	isAdSlotInOrBelowTheViewport(): boolean {
+		return this.getAdSlotTopOffset() >= 0;
+	}
+
+	scrolledToAdSlot(): boolean {
+		return this.getAdSlotTopOffset() <= this.getNavbarOffsetHeight();
+	}
+
 	getProgressStickyBigToStickySmall(): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
@@ -92,10 +104,6 @@ export class UapDomReader {
 		const offset = (window.scrollY - (adSlotTopOffset + navbarHeight)) / (maxHeight - minHeight);
 
 		return this.calculateProgress(offset);
-	}
-
-	private getNavbarOffsetHeight(): number {
-		return this.navbar.offsetHeight;
 	}
 
 	private calculateProgress(offset: number): number {

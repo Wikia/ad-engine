@@ -37,8 +37,9 @@
 
 	.has-new-uap {
 		.top-leaderboard.ad-slot-placeholder {
+			left: 0;
 			position: sticky;
-			top: 55px;
+			width: 100vw;
 			z-index: $new-uap-bfaa-z-index;
 
 			#top_leaderboard {
@@ -52,12 +53,12 @@
 				}
 			}
 
-			@include bfaa-embedded-big();
-			@include bfaa-embedded-small();
+			@include bfaa-embedded();
 			@include bfaa-sticky-big();
 			@include bfaa-sticky-small();
-			@include bfaa-embedded-resolved();
 		}
+
+		@include bfaa-with-infobox();
 
 		#bottom_leaderboard {
 			@include bfab-new-uap();

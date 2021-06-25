@@ -1,5 +1,10 @@
+@import 'src/ad-products/styles/uap-variables';
+
 @mixin bfaa-sticky-small() {
 	&.bfaa-sticky-small {
+		position: fixed;
+		top: $fandom-navbar-height;
+
 		#top_leaderboard {
 			.video-overlay {
 				width: 100%;
