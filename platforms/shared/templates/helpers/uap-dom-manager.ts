@@ -17,20 +17,14 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
-	addClassToAdSlot(className: string): void {
-		this.manipulator.element(this.adSlot.element).addClass(className);
-	}
-
-	removeAdSlotClass(className: string): void {
-		this.manipulator.element(this.adSlot.element).removeClass(className);
-	}
-
 	addClassToAdSlotPlaceholder(className: string): void {
 		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
 	}
 
-	removeAdSlotPlaceholderClass(className: string): void {
-		this.manipulator.element(this.adSlot.element.parentElement).removeClass(className);
+	setAdSlotPlaceholderHeight(height: number): void {
+		const adSlotPlaceholder = this.manipulator.element(this.adSlot.element.parentElement);
+
+		adSlotPlaceholder.setProperty('height', `${height.toString()}px`);
 	}
 
 	getAdSlotTopOffset(): number {

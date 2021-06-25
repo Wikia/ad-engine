@@ -339,6 +339,7 @@
 			"apps": ["f2", "mobile-wiki", "oasis"],
 			"regions": ["XX"],
 			"value": [
+				"5727054465",
 				"5725843320",
 				"5726935636",
 				"5726313329",
@@ -1483,7 +1484,10 @@
 				"5723175564",
 				"5723175552",
 				"5723129919",
-				"5724909047"
+				"5724909047",
+				"5726300790",
+				"5726287677",
+				"5727844924"
 			]
 		}
 	],
@@ -1627,7 +1631,7 @@
 	"icSilverSurfer": [
 		{
 			"apps": ["mobile-wiki", "oasis"],
-			"regions": ["GB", "PL", "UK", "US"],
+			"regions": ["CH", "GB", "PL", "UK", "US"],
 			"value": [
 				"ageBrackets:g_age_bracket",
 				"gender:g_gender",
@@ -1784,7 +1788,7 @@
 		{
 			"apps": ["oasis"],
 			"regions": ["PL", "US"],
-			"sampling": 10.0,
+			"sampling": 20.0,
 			"value": true
 		}
 	],
