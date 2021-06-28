@@ -2,19 +2,23 @@ import { DomListener, TemplateStateHandler, TemplateTransition } from '@wikia/ad
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
-import { UapDomManager } from '../../helpers/uap-dom-manager';
+import { UapDomReader } from '../../helpers/uap-dom-reader';
 
 @Injectable({ autobind: false })
 export class SlotDecisionStickyBigToEmbeddedBigHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(private manager: UapDomManager, private domListener: DomListener) {}
+	constructor(private reader: UapDomReader, private domListener: DomListener) {}
 
 	async onEnter(transition: TemplateTransition<'embeddedBig'>): Promise<void> {
 		this.domListener.scroll$
 			.pipe(
 				startWith({}),
-				filter(() => window.scrollY < this.manager.getAdSlotTopOffset()),
+				filter(
+					() =>
+						window.scrollY <
+						this.reader.getAdSlotInitialYPos() - this.reader.getNavbarOffsetHeight(),
+				),
 				tap(() => transition('embeddedBig')),
 				takeUntil(this.unsubscribe$),
 			)

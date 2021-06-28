@@ -14,6 +14,10 @@ export class UapDomReader {
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
 
+	getAdSlotInitialYPos(): number {
+		return this.adSlotInitialYPos ? this.adSlotInitialYPos : 0;
+	}
+
 	setAdSlotInitialYPos(): void {
 		this.adSlotInitialYPos = window.scrollY + this.getAdSlotTopOffset();
 	}
@@ -93,14 +97,6 @@ export class UapDomReader {
 		}
 
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
-	}
-
-	isAdSlotInOrBelowTheViewport(): boolean {
-		return this.getAdSlotTopOffset() >= 0;
-	}
-
-	scrolledToAdSlot(): boolean {
-		return this.getAdSlotTopOffset() <= this.getNavbarOffsetHeight();
 	}
 
 	getProgressStickyBigToStickySmall(): number {
