@@ -107,8 +107,12 @@ body:not(.has-uap) {
 	margin-bottom: 10px;
 }
 
-#bottom_leaderboard > div {
-	text-align: center;
+#bottom_leaderboard {
+	margin: 20px 0;
+
+	> div {
+		text-align: center;
+	}
 }
 
 .porvata-outstream.porvata3 .volume-button {

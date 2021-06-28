@@ -43,20 +43,15 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	private injectSlots(): void {
 		const slots: Dictionary<SlotConfig> = context.get('slots');
 		Object.keys(slots).forEach((slotName) => {
-			if (slots[slotName].insertBeforeSelector) {
+			if (
+				slotName !== 'incontent_boxad_1' &&
+				(slots[slotName].insertBeforeSelector || slots[slotName].parentContainerSelector)
+			) {
 				slotInjector.inject(slotName, true);
 			}
 		});
 
-		this.appendTopBoxad();
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
-	}
-
-	private appendTopBoxad(): void {
-		// ToDo: refactor global logic
-		// Make initial injection to understand 'parentContainerSelector'
-		slotInjector.inject('top_boxad', true);
-		slotInjector.inject('affiliate_slot', true);
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
