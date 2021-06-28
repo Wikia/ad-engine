@@ -10,7 +10,6 @@ export class UapDomReader {
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
-
 	private getAdSlotTopOffset(): number {
 		const rect = this.adSlot.element.getBoundingClientRect();
 
@@ -29,6 +28,10 @@ export class UapDomReader {
 			this.getSlotHeightResolved() +
 			(context.get('templates.ignoreNavbarHeight') ? 0 : this.navbar.offsetHeight)
 		);
+	}
+
+	getNavbarOffsetHeight(): number {
+		return this.navbar.offsetHeight;
 	}
 
 	getNavbarOffsetImpactToResolved(): number {
@@ -84,6 +87,14 @@ export class UapDomReader {
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
 	}
 
+	isAdSlotInOrBelowTheViewport(): boolean {
+		return this.getAdSlotTopOffset() >= 0;
+	}
+
+	scrolledToAdSlot(): boolean {
+		return this.getAdSlotTopOffset() <= this.getNavbarOffsetHeight();
+	}
+
 	getProgressStickyBigToStickySmall(): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
@@ -93,10 +104,6 @@ export class UapDomReader {
 		const offset = (window.scrollY - (adSlotTopOffset + navbarHeight)) / (maxHeight - minHeight);
 
 		return this.calculateProgress(offset);
-	}
-
-	private getNavbarOffsetHeight(): number {
-		return this.navbar.offsetHeight;
 	}
 
 	private calculateProgress(offset: number): number {

@@ -1,0 +1,14 @@
+@mixin bfaa-with-infobox() {
+	.portable-infobox-wrapper ~ .top-leaderboard.ad-slot-placeholder {
+		left: -12px;
+
+		#top_leaderboard {
+			margin: 0;
+		}
+
+		&.bfaa-sticky-big,
+		&.bfaa-sticky-small {
+			left: 0;
+		}
+	}
+}
