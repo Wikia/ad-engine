@@ -5,11 +5,19 @@ import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
+	// BFAA ad slot y position relative to the document (page) when UAP loads
+	private adSlotInitialYPos;
+
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
+
+	setAdSlotInitialYPos(): void {
+		this.adSlotInitialYPos = window.scrollY + this.getAdSlotTopOffset();
+	}
+
 	private getAdSlotTopOffset(): number {
 		const rect = this.adSlot.element.getBoundingClientRect();
 
@@ -100,7 +108,7 @@ export class UapDomReader {
 		const maxHeight = this.getSlotHeightImpact();
 		const navbarHeight = this.getNavbarOffsetHeight();
 		const adSlotTopOffset =
-			this.getAdSlotTopOffset() + this.calculateSlotHeight(this.params.config.aspectRatio.default);
+			this.adSlotInitialYPos + this.calculateSlotHeight(this.params.config.aspectRatio.default);
 		const offset = (window.scrollY - (adSlotTopOffset + navbarHeight)) / (maxHeight - minHeight);
 
 		return this.calculateProgress(offset);
