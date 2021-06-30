@@ -158,13 +158,11 @@ class AdMarketplace {
 		image: string,
 		impression: string,
 	): string {
-		return (
-			`<a href="${url}">` +
-			`<img class="logo" src="${image}" alt="" />` +
-			`<span class="title">${title}</span><span class="label">Sponsored</span>` +
-			`<img class="pixel" src="${impression}" width="1" height="1" />` +
-			'</a>'
-		);
+		return `<a href="${url}">
+    			<img class="logo" src="${image}" alt="" />
+    			<span class="title">${title}</span><span class="label">Sponsored</span>
+    			<img class="pixel" src="${impression}" alt="" width="1" height="1" />
+  			</a>`;
 	}
 }
 
