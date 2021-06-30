@@ -5,7 +5,6 @@ import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
-	// BFAA ad slot y position relative to the document (page) when UAP loads
 	private adSlotInitialYPos;
 
 	constructor(

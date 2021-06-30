@@ -19,9 +19,7 @@ export class SlotDecisionEmbeddedSmallToStickySmallHandler implements TemplateSt
 						window.scrollY >=
 						this.reader.getAdSlotInitialYPos() - this.reader.getNavbarOffsetHeight(),
 				),
-				tap(() => {
-					transition('stickySmall');
-				}),
+				tap(() => transition('stickySmall')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
