@@ -137,7 +137,6 @@ export class UcpSlotsContextSetup implements DiProcess {
 					[300, 600],
 				],
 				insertBeforeSelector: '#incontent_boxad_1',
-				garfieldCat: true,
 				repeat: {
 					additionalClasses: 'hide',
 					index: 1,
