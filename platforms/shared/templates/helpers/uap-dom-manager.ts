@@ -6,8 +6,6 @@ import { UapDomReader } from './uap-dom-reader';
 
 @Injectable({ autobind: false })
 export class UapDomManager {
-	private adSlotTopOffset;
-
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
@@ -19,14 +17,6 @@ export class UapDomManager {
 
 	addClassToAdSlotPlaceholder(className: string): void {
 		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
-	}
-
-	getAdSlotTopOffset(): number {
-		return this.adSlotTopOffset;
-	}
-
-	setAdSlotTopOffset(adSlotTopOffset: number): void {
-		this.adSlotTopOffset = adSlotTopOffset;
 	}
 
 	setPageOffsetImpact(): void {

@@ -5,11 +5,22 @@ import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
+	private adSlotInitialYPos;
+
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
+
+	getAdSlotInitialYPos(): number {
+		return this.adSlotInitialYPos ? this.adSlotInitialYPos : 0;
+	}
+
+	setAdSlotInitialYPos(): void {
+		this.adSlotInitialYPos = window.scrollY + this.getAdSlotTopOffset();
+	}
+
 	private getAdSlotTopOffset(): number {
 		const rect = this.adSlot.element.getBoundingClientRect();
 
@@ -87,20 +98,12 @@ export class UapDomReader {
 		return this.calculateSlotHeight(this.params.config.aspectRatio.resolved);
 	}
 
-	isAdSlotInOrBelowTheViewport(): boolean {
-		return this.getAdSlotTopOffset() >= 0;
-	}
-
-	scrolledToAdSlot(): boolean {
-		return this.getAdSlotTopOffset() <= this.getNavbarOffsetHeight();
-	}
-
 	getProgressStickyBigToStickySmall(): number {
 		const minHeight = this.getSlotHeightResolved();
 		const maxHeight = this.getSlotHeightImpact();
 		const navbarHeight = this.getNavbarOffsetHeight();
 		const adSlotTopOffset =
-			this.getAdSlotTopOffset() + this.calculateSlotHeight(this.params.config.aspectRatio.default);
+			this.adSlotInitialYPos + this.calculateSlotHeight(this.params.config.aspectRatio.default);
 		const offset = (window.scrollY - (adSlotTopOffset + navbarHeight)) / (maxHeight - minHeight);
 
 		return this.calculateProgress(offset);
