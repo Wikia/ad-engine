@@ -3,6 +3,12 @@ import { context, utils } from '@ad-engine/core';
 import { map, take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
+interface AdMarketplaceConfiguration {
+	enabled: boolean;
+	insertSelector: string;
+	insertMethod: string;
+}
+
 interface InstantSearchResponse {
 	original_qt: string;
 	paid_suggestions: {
@@ -42,10 +48,13 @@ const instantSearchEndpointParameters = [
 ];
 
 class AdMarketplace {
+	private configuration: AdMarketplaceConfiguration;
 	private instantSearchSuggestionElement: HTMLElement | null = null;
 
 	initialize(): Promise<void> {
-		if (!context.get('services.adMarketplace.enabled')) {
+		this.configuration = context.get('services.adMarketplace');
+
+		if (!this.configuration.enabled) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -121,7 +130,7 @@ class AdMarketplace {
 
 	private getInstantSearchAdsWrapper(): HTMLElement | null {
 		if (!this.instantSearchSuggestionElement) {
-			const dropdownSelector = '.wds-global-navigation__search-suggestions.wds-dropdown__content';
+			const dropdownSelector = this.configuration.insertSelector;
 			const dropdownElement = document.querySelector(dropdownSelector);
 
 			if (!dropdownElement) {
@@ -131,7 +140,11 @@ class AdMarketplace {
 			const suggestionElement = document.createElement('p');
 			suggestionElement.className = 'instant-suggestion';
 
-			dropdownElement.prepend(suggestionElement);
+			if (this.configuration.insertMethod === 'prepend') {
+				dropdownElement.prepend(suggestionElement);
+			} else if (this.configuration.insertMethod === 'after') {
+				dropdownElement.after(suggestionElement);
+			}
 
 			this.instantSearchSuggestionElement = suggestionElement;
 		}
@@ -148,8 +161,8 @@ class AdMarketplace {
 		return (
 			`<a href="${url}">` +
 			`<img class="logo" src="${image}" alt="" />` +
-			`<span class="title">${title}</span><br /><span class="label">Sponsored</span>` +
-			`<img src="${impression}" width="1" height="1" />` +
+			`<span class="title">${title}</span><span class="label">Sponsored</span>` +
+			`<img class="pixel" src="${impression}" width="1" height="1" />` +
 			'</a>'
 		);
 	}
