@@ -143,6 +143,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				);
 			}
 		}
+
+		slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+			const topLeaderboard = document.querySelector('.top-leaderboard');
+			topLeaderboard.classList.remove('is-loading');
+		});
 	}
 
 	private injectAffiliateDisclaimer(): void {
@@ -193,6 +198,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			if (slot.getSlotName() === slotName && btRec.isEnabled() && btRec.duplicateSlot(slotName)) {
 				btRec.triggerScript();
 			}
+		});
+
+		slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+			const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
+			bottomLeaderboard.classList.remove('is-loading');
 		});
 	}
 }
