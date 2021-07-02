@@ -1,6 +1,6 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { from, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { from, fromEvent, Observable, Subject } from 'rxjs';
 import { delay, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
@@ -42,7 +42,7 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 	private async staticTransitionHandler(
 		transition: TemplateTransition<'embeddedResolved'>,
 	): Promise<void> {
-		merge(this.getViewabilityStream())
+		this.getViewabilityStream()
 			.pipe(
 				filter(() => !this.isVideo),
 				take(1),
