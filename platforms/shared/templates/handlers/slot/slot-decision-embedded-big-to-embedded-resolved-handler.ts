@@ -1,16 +1,18 @@
-import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { fromEvent, Subject } from 'rxjs';
-import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
+import { from, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { delay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
-import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
 @Injectable({ autobind: false })
 export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private isVideo = false;
+	private readonly viewabilityTransitionDelay?: number = 3000;
 
-	constructor(private timeout: StickinessTimeout, private playerRegistry: PlayerRegistry) {}
+	constructor(
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		private playerRegistry: PlayerRegistry,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
 		this.videoTransitionHandler(transition);
@@ -27,7 +29,6 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) => {
-					this.isVideo = true;
 					return fromEvent(player, 'wikiaAdCompleted');
 				}),
 				tap(() => transition('embeddedResolved')),
@@ -39,13 +40,16 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 	private async staticTransitionHandler(
 		transition: TemplateTransition<'embeddedResolved'>,
 	): Promise<void> {
-		this.timeout
-			.isViewedAndDelayed()
+		merge(this.getViewabilityStream())
 			.pipe(
-				filter((viewedAndDelayed) => !this.isVideo && viewedAndDelayed),
+				take(1),
 				tap(() => transition('embeddedResolved')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
+	}
+
+	private getViewabilityStream(): Observable<unknown> {
+		return from(this.adSlot.viewed).pipe(delay(this.viewabilityTransitionDelay));
 	}
 }
