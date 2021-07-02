@@ -1,13 +1,14 @@
 import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, fromEvent, merge, Observable, Subject } from 'rxjs';
-import { delay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { delay, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
 @Injectable({ autobind: false })
 export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
-	private readonly viewabilityTransitionDelay?: number = 3000;
+	private isVideo = false;
+	private readonly viewabilityTransitionDelay = 3000;
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
@@ -29,6 +30,7 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) => {
+					this.isVideo = true;
 					return fromEvent(player, 'wikiaAdCompleted');
 				}),
 				tap(() => transition('embeddedResolved')),
@@ -42,6 +44,7 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 	): Promise<void> {
 		merge(this.getViewabilityStream())
 			.pipe(
+				filter(() => !this.isVideo),
 				take(1),
 				tap(() => transition('embeddedResolved')),
 				takeUntil(this.unsubscribe$),
