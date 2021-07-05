@@ -69,7 +69,6 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-// TODO: This should be split into separate action for each event
 export const adSlotEvent = globalAction(
 	'[AdEngine] Ad Slot event',
 	props<{
