@@ -1,16 +1,19 @@
-import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
-import { fromEvent, Subject } from 'rxjs';
-import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { AdSlot, TEMPLATE, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
+import { from, fromEvent, Observable, Subject } from 'rxjs';
+import { delay, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
-import { StickinessTimeout } from '../../helpers/stickiness-timeout';
 
 @Injectable({ autobind: false })
 export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 	private isVideo = false;
+	private readonly viewabilityTransitionDelay = 3000;
 
-	constructor(private timeout: StickinessTimeout, private playerRegistry: PlayerRegistry) {}
+	constructor(
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		private playerRegistry: PlayerRegistry,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
 		this.videoTransitionHandler(transition);
@@ -39,13 +42,17 @@ export class SlotDecisionEmbeddedBigToEmbeddedResolvedHandler implements Templat
 	private async staticTransitionHandler(
 		transition: TemplateTransition<'embeddedResolved'>,
 	): Promise<void> {
-		this.timeout
-			.isViewedAndDelayed()
+		this.getViewabilityStream()
 			.pipe(
-				filter((viewedAndDelayed) => !this.isVideo && viewedAndDelayed),
+				filter(() => !this.isVideo),
+				take(1),
 				tap(() => transition('embeddedResolved')),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
+	}
+
+	private getViewabilityStream(): Observable<unknown> {
+		return from(this.adSlot.viewed).pipe(delay(this.viewabilityTransitionDelay));
 	}
 }
