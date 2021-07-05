@@ -1,4 +1,4 @@
-import { action, communicationService } from '@ad-engine/communication';
+import { communicationService, globalAction } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
 import { AdStackPayload, eventService, insertMethodType, slotTweaker, utils } from '../';
@@ -70,7 +70,7 @@ export interface WinningBidderDetails {
 }
 
 // TODO: This should be split into separate action for each event
-export const adSlotEvent = action(
+export const adSlotEvent = globalAction(
 	'[AdEngine] Ad Slot event',
 	props<{
 		event: string;
