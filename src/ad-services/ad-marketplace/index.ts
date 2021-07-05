@@ -38,13 +38,11 @@ const adMarketplaceSearchEvent = globalAction(
 const instantSearchEndpoint = '//fandomsearch.cps.ampfeed.com/suggestions?';
 const instantSearchEndpointParameters = [
 	'partner=fandomsearch',
-	'sub1=search-suggestions',
 	'sub2=fandom.com',
 	'v=1.4',
 	'out=json',
 	'results-ps=1',
 	'results-os=0',
-	'qt=',
 ];
 
 class AdMarketplace {
@@ -59,6 +57,11 @@ class AdMarketplace {
 
 			return Promise.resolve();
 		}
+
+		instantSearchEndpointParameters.push(
+			`sub1=${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
+		);
+		instantSearchEndpointParameters.push('qt=');
 
 		communicationService.action$
 			.pipe(ofType(adMarketplaceInitEvent), take(1))
@@ -129,7 +132,7 @@ class AdMarketplace {
 	}
 
 	private getInstantSearchAdsWrapper(): HTMLElement | null {
-		if (!this.instantSearchSuggestionElement) {
+		if (!this.instantSearchSuggestionElement || !this.instantSearchSuggestionElement.isConnected) {
 			const dropdownSelector = this.configuration.insertSelector;
 			const dropdownElement = document.querySelector(dropdownSelector);
 
@@ -158,7 +161,7 @@ class AdMarketplace {
 		image: string,
 		impression: string,
 	): string {
-		return `<a href="${url}">
+		return `<a href="${url}" target="_blank">
     			<img class="logo" src="${image}" alt="" />
     			<span class="title">${title}</span><span class="label">Sponsored</span>
     			<img class="pixel" src="${impression}" alt="" width="1" height="1" />
