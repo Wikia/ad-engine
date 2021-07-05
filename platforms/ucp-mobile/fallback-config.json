@@ -2033,29 +2033,9 @@
                 "5732198146",
                 "5732198140",
                 "5732198143",
-                "5726669444"
+                "5726669444",
+                "5731247491"
             ]
-        }
-    ],
-    "icUAPNewBFAATemplate": [
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": true
-        },
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": false
         }
     ],
     "icLABradorGamKeyValues": [
