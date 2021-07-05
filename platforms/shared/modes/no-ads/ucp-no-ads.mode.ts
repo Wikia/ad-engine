@@ -14,7 +14,7 @@ export class UcpNoAdsMode implements DiProcess {
 	}
 
 	private removeICPlaceholders(): void {
-		const placeholders = document.querySelectorAll('.ic-ad-slot-placeholder');
+		const placeholders = document.querySelectorAll('.ic-ad-slot-placeholder, .ad-slot-placeholder');
 		placeholders.forEach((placeholder) => {
 			placeholder.remove();
 		});
