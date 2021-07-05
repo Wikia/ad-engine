@@ -32,6 +32,7 @@ export * from './templates/floor-adhesion-template';
 export * from './templates/interstitial-template';
 export * from './templates/configs/uap-dom-elements';
 export * from './templates/handlers/advertisement-label-handler';
+export * from './templates/handlers/close-to-embedded-resolved-button-handler';
 export * from './templates/handlers/close-to-hidden-ihi-button-handler';
 export * from './templates/handlers/close-to-hidden-button-handler';
 export * from './templates/handlers/close-to-transition-button-handler';
