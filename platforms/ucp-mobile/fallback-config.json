@@ -2034,8 +2034,32 @@
                 "5732198140",
                 "5732198143",
                 "5726669444",
-                "5731247491"
+                "5731247491",
+                "5734758939",
+                "5734761051"
             ]
+        }
+    ],
+    "icUAPNewBFAATemplate": [
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 50.0,
+            "value": true
+        },
+        {
+            "apps": [
+                "mobile-wiki"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 100.0,
+            "value": false
         }
     ],
     "icLABradorGamKeyValues": [
@@ -2304,6 +2328,8 @@
             ],
             "regions": [
                 "CH",
+                "DE",
+                "ES",
                 "GB",
                 "PL",
                 "UK",
