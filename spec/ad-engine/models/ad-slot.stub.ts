@@ -28,6 +28,7 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		rendered: sandbox.stub().resolves() as any,
 		viewed: sandbox.stub().resolves() as any,
 		getAdUnit: sandbox.stub(),
+		slotViewed: sandbox.stub() as any,
 		getVideoAdUnit: sandbox.stub(),
 		getElement: sandbox.stub(),
 		getAdContainer: sandbox.stub(),
