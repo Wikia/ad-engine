@@ -16,16 +16,14 @@ export class VideoNoViewabilityHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		this.playerRegistry.video$
-			.pipe(
-				filter(() => !this.adSlot.slotViewed),
-				take(1),
-				mergeMap(({ player }) => this.handlePause(player)),
-			)
-			.subscribe();
+		this.playerRegistry.video$.pipe(mergeMap(({ player }) => this.handlePause(player))).subscribe();
 	}
 
 	private handlePause(player: Porvata4Player): Observable<unknown> {
-		return fromEvent(player, 'wikiaAdStarted').pipe(tap(() => player.pause()));
+		return fromEvent(player, 'wikiaAdStarted').pipe(
+			filter(() => !this.adSlot.slotViewed),
+			take(1),
+			tap(() => player.pause()),
+		);
 	}
 }
