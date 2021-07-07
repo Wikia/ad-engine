@@ -1,7 +1,6 @@
-import { AdSlot, Porvata4Player, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { fromEvent, Observable } from 'rxjs';
-// import { fromEvent } from 'rxjs';
+import { from, fromEvent, Observable } from 'rxjs';
 import { filter, mergeMap, take, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
@@ -16,14 +15,31 @@ export class VideoNoViewabilityHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		this.playerRegistry.video$.pipe(mergeMap(({ player }) => this.handlePause(player))).subscribe();
+		this.handlePauseVideo();
+		this.handleResumeVideo();
 	}
 
-	private handlePause(player: Porvata4Player): Observable<unknown> {
-		return fromEvent(player, 'wikiaAdStarted').pipe(
-			filter(() => !this.adSlot.slotViewed),
-			take(1),
-			tap(() => player.pause()),
-		);
+	private async handlePauseVideo(): Promise<void> {
+		this.playerRegistry.video$
+			.pipe(
+				mergeMap(({ player }) =>
+					fromEvent(player, 'wikiaAdStarted').pipe(
+						filter(() => !this.adSlot.slotViewed),
+						take(1),
+						tap(() => player.pause()),
+					),
+				),
+			)
+			.subscribe();
+	}
+
+	private async handleResumeVideo(): Promise<void> {
+		this.playerRegistry.video$
+			.pipe(mergeMap(({ player }) => this.getViewabilityStream().pipe(tap(() => player.resume()))))
+			.subscribe();
+	}
+
+	private getViewabilityStream(): Observable<unknown> {
+		return from(this.adSlot.viewed);
 	}
 }
