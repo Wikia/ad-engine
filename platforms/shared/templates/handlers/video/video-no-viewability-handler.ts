@@ -7,7 +7,7 @@ import {
 	TemplateStateHandler,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 /**
  * Transition to impact when video clicked to play
@@ -22,11 +22,9 @@ export class VideoNoViewabilityHandler implements TemplateStateHandler {
 		communicationService.action$
 			.pipe(
 				ofType(globalAction('[AdEngine] Porvata Started')),
+				filter(() => !this.adSlot.slotViewed),
 				take(1)
 			)
-			.subscribe(() => {
-
-				if (!this.adSlot.slotViewed) { console.log('bfaa', this.adSlot.slotViewed)}
-			});
+			.subscribe(() => console.log('bfaa shoukd pause'));
 	}
 }
