@@ -73,6 +73,11 @@ export const basicContext = {
 		},
 	},
 	services: {
+		adMarketplace: {
+			enabled: false,
+			insertMethod: 'prepend',
+			insertSelector: '.wds-global-navigation__search-suggestions.wds-dropdown__content',
+		},
 		confiant: {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
