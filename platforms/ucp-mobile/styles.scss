@@ -36,8 +36,6 @@
 	}
 
 	.has-new-uap {
-		@include bfaa-with-infobox();
-
 		.top-leaderboard.ad-slot-placeholder {
 			left: 0;
 			position: sticky;
@@ -59,21 +57,9 @@
 			@include bfaa-embedded();
 			@include bfaa-sticky-big();
 			@include bfaa-sticky-small();
-
-			&.bfaa-transition {
-				position: fixed;
-				left: 0;
-				top: -50%;
-				transition: top 2s;
-				transition-timing-function: cubic-bezier(0.1, 0.6, 1, 0.1);
-
-				#top_leaderboard {
-					.video-overlay {
-						width: 100%;
-					}
-				}
-			}
 		}
+
+		@include bfaa-with-infobox();
 
 		#bottom_leaderboard {
 			@include bfab-new-uap();
