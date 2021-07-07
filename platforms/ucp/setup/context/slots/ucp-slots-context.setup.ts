@@ -127,6 +127,7 @@ export class UcpSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'HiVi',
 				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
+				recirculationElementSelector: '#recirculation-rail',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
