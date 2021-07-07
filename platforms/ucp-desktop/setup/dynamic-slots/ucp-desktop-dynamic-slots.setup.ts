@@ -66,6 +66,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 			if (parent) {
 				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
+				context.push('events.pushOnScroll.ids', { id: icbSlotName });
 			}
 		});
 	}

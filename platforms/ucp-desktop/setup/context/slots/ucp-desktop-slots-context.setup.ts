@@ -129,7 +129,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				group: 'HiVi',
 				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
 				insertBeforeSelector: '#incontent_boxad_1',
-				recirculationElementSelector: '.right-rail-wrapper',
+				recirculationElementSelector: '#recirculation-rail',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
