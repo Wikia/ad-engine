@@ -1,13 +1,9 @@
-import {
-	AdSlot,
-	communicationService,
-	globalAction,
-	ofType,
-	TEMPLATE,
-	TemplateStateHandler,
-} from '@wikia/ad-engine';
+import { AdSlot, Porvata4Player, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { filter, take } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+// import { fromEvent } from 'rxjs';
+import { filter, mergeMap, take, tap } from 'rxjs/operators';
+import { PlayerRegistry } from '../../helpers/player-registry';
 
 /**
  * Transition to impact when video clicked to play
@@ -16,15 +12,20 @@ import { filter, take } from 'rxjs/operators';
 export class VideoNoViewabilityHandler implements TemplateStateHandler {
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		private playerRegistry: PlayerRegistry,
 	) {}
 
 	async onEnter(): Promise<void> {
-		communicationService.action$
+		this.playerRegistry.video$
 			.pipe(
-				ofType(globalAction('[AdEngine] Porvata Started')),
 				filter(() => !this.adSlot.slotViewed),
-				take(1)
+				take(1),
+				mergeMap(({ player }) => this.handlePause(player)),
 			)
-			.subscribe(() => console.log('bfaa shoukd pause'));
+			.subscribe();
+	}
+
+	private handlePause(player: Porvata4Player): Observable<unknown> {
+		return fromEvent(player, 'wikiaAdStarted').pipe(tap(() => player.pause()));
 	}
 }
