@@ -1,5 +1,6 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	adMarketplace,
 	audigent,
 	bidders,
 	communicationService,
@@ -57,6 +58,8 @@ export class UcpMobileAdsMode implements DiProcess {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+
+		adMarketplace.initialize();
 
 		return inhibitors;
 	}
