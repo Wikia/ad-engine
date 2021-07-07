@@ -4,9 +4,6 @@ import { from, fromEvent, Observable } from 'rxjs';
 import { filter, mergeMap, take, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
-/**
- * Transition to impact when video clicked to play
- */
 @Injectable({ autobind: false })
 export class VideoNoViewabilityHandler implements TemplateStateHandler {
 	constructor(
