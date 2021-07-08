@@ -8,12 +8,12 @@ export class UcpNoAdsMode implements DiProcess {
 	constructor(private pageTracker: PageTracker, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
-		this.removeICPlaceholders();
+		this.removeAdSlotsPlaceholders();
 		this.dispatchJWPlayerSetupAction();
 		this.trackAdEngineStatus();
 	}
 
-	private removeICPlaceholders(): void {
+	private removeAdSlotsPlaceholders(): void {
 		const placeholders = document.querySelectorAll('.ic-ad-slot-placeholder, .ad-slot-placeholder');
 		placeholders.forEach((placeholder) => {
 			placeholder.remove();
