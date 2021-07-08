@@ -12,9 +12,7 @@ import {
 	SlotDecisionEmbeddedBigToStickyBigHandler,
 	SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 	SlotDecisionEmbeddedSmallToStickySmallHandler,
-	SlotDecisionStickyBigToEmbeddedBigHandler,
 	SlotDecisionStickyBigToStickySmallHandler,
-	SlotDecisionStickySmallToEmbeddedSmallHandler,
 	SlotDecisionTimeoutWithoutScrollHandler,
 	SlotInitialYPositionHandler,
 	SlotPositionEmbeddedHandler,
@@ -60,12 +58,11 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				VideoSizeImpactHandler,
 				VideoLearnMoreHandler,
 				DomCleanupHandler,
-				VideoNoViewabilityHandler
+				VideoNoViewabilityHandler,
 			],
 			stickyBig: [
 				SlotSizeImpactHandler,
 				SlotPositionStickyBigHandler,
-				SlotDecisionStickyBigToEmbeddedBigHandler,
 				CloseToEmbeddedResolvedButtonHandler,
 				SlotDecisionStickyBigToStickySmallHandler,
 				VideoSizeImpactHandler,
@@ -80,13 +77,12 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
-				VideoNoViewabilityHandler
+				VideoNoViewabilityHandler,
 			],
 			stickySmall: [
 				SlotSizeResolvedHandler,
 				SlotPositionStickySmallHandler,
 				SlotDecisionTimeoutWithoutScrollHandler,
-				SlotDecisionStickySmallToEmbeddedSmallHandler,
 				CloseToEmbeddedResolvedButtonHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
