@@ -112,8 +112,6 @@ export class AdSlot extends EventEmitter {
 
 	static TEMPLATES_LOADED = 'Templates Loaded';
 
-	private slotViewed = false;
-
 	private customIframe: HTMLIFrameElement = null;
 
 	config: SlotConfig;
@@ -131,6 +129,7 @@ export class AdSlot extends EventEmitter {
 	lineItemId: null | string | number = null;
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackOnStatusChanged = false;
+	slotViewed = false;
 
 	requested = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_REQUESTED_EVENT, () => {
