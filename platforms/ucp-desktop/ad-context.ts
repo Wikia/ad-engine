@@ -71,6 +71,11 @@ export const basicContext = {
 		},
 	},
 	services: {
+		adMarketplace: {
+			enabled: false,
+			insertMethod: 'after',
+			insertSelector: '.search-modal__content > form',
+		},
 		confiant: {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
