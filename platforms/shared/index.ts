@@ -69,7 +69,6 @@ export * from './templates/handlers/slot/slot-size-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-size-resolved-handler';
 export * from './templates/handlers/slot/slot-transition-handler';
 export * from './templates/handlers/slot/slot-transition-ihi-handler';
-export * from './templates/handlers/slot/slot-transition-new-template-handler';
 export * from './templates/handlers/video/video-bootstrap-handler';
 export * from './templates/handlers/video/video-completed-handler';
 export * from './templates/handlers/video/video-ctp-handler';
