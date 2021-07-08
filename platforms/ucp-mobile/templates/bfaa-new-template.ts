@@ -30,6 +30,7 @@ import {
 	VideoDomReader,
 	VideoLearnMoreHandler,
 	VideoNewBfaaRestartHandler,
+	VideoNoViewabilityHandler,
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
@@ -59,6 +60,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				VideoSizeImpactHandler,
 				VideoLearnMoreHandler,
 				DomCleanupHandler,
+				VideoNoViewabilityHandler
 			],
 			stickyBig: [
 				SlotSizeImpactHandler,
@@ -78,6 +80,7 @@ export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<
 				SlotDecisionEmbeddedSmallToEmbeddedResolvedHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
+				VideoNoViewabilityHandler
 			],
 			stickySmall: [
 				SlotSizeResolvedHandler,

@@ -21,6 +21,7 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		creativeId: sandbox.stub() as any,
 		creativeSize: sandbox.stub() as any,
 		lineItemId: sandbox.stub() as any,
+		slotViewed: sandbox.stub() as any,
 		winningBidderDetails: sandbox.stub() as any,
 		trackOnStatusChanged: sandbox.stub() as any,
 		requested: sandbox.stub().resolves() as any,

@@ -16,6 +16,7 @@ export class FmrRotator {
 	private currentAdSlot: AdSlot;
 	private recirculationDisabled = false;
 	private recirculationElement: HTMLElement;
+	private recirculationElementSelector: string;
 	private refreshInfo = {
 		recSlotViewed: 2000,
 		refreshDelay: 10000,
@@ -31,7 +32,10 @@ export class FmrRotator {
 
 	rotateSlot(): void {
 		this.nextSlotName = this.slotName;
-		this.recirculationElement = document.getElementById('recirculation-rail');
+		this.recirculationElementSelector = context.get(
+			`slots.${this.slotName}.recirculationElementSelector`,
+		);
+		this.recirculationElement = document.querySelector(this.recirculationElementSelector);
 		this.refreshInfo.startPosition =
 			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
 		this.btRecStatus = this.btRec?.isEnabled();
