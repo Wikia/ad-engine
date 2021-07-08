@@ -36,7 +36,7 @@ class Nielsen {
 	 * @param {Object} nielsenMetadata
 	 * @returns {Object}
 	 */
-	call(nielsenMetadata) {
+	call(nielsenMetadata): void {
 		const nielsenKey = context.get('services.nielsen.appId');
 
 		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
