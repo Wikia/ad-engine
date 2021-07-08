@@ -1826,7 +1826,8 @@
                 "5726669444",
                 "5731247491",
                 "5734758939",
-                "5734761051"
+                "5734761051",
+                "5735951703"
             ]
         }
     ],
@@ -2287,6 +2288,18 @@
             "value": true
         }
     ],
+    "icAdMarketplace": [
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidMediaGrid": [
         {
             "apps": [
@@ -2386,7 +2399,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.1.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.1.2/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
