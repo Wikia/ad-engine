@@ -16,7 +16,7 @@ export class SlotDecisionTimeoutWithoutScrollHandler implements TemplateStateHan
 
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private timeout: StickinessTimeout) {}
 
-	async onEnter(transition: TemplateTransition<'transition'>): Promise<void> {
+	async onEnter(transition: TemplateTransition<'embeddedResolved'>): Promise<void> {
 		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKED_STATE);
 
 		this.timeout
@@ -25,7 +25,7 @@ export class SlotDecisionTimeoutWithoutScrollHandler implements TemplateStateHan
 				filter((viewedAndDelayed) => viewedAndDelayed),
 				tap(() => {
 					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
-					transition('transition');
+					transition('embeddedResolved');
 				}),
 				takeUntil(this.unsubscribe$),
 			)
