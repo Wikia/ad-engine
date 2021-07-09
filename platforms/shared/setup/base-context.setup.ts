@@ -120,6 +120,7 @@ export class BaseContextSetup implements DiProcess {
 		}
 
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
+		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
@@ -129,10 +130,7 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icDurationMediaLibraryUrl'),
 		);
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
-		context.set(
-			'services.realVu.enabled',
-			this.instantConfig.get('icRealVu') && context.get('wiki.opts.enableRealVu'),
-		);
+		context.set('services.realVu.enabled', this.instantConfig.get('icRealVu'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
