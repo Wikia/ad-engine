@@ -145,6 +145,14 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			const topLeaderboard = document.querySelector('.top-leaderboard');
 			topLeaderboard.classList.remove('is-loading');
 		});
+
+		slotService.on('hivi_leaderboard', AdSlot.SLOT_REQUESTED_EVENT, () => {
+			const topLeaderboard = document.querySelector('.top-leaderboard');
+			topLeaderboard.classList.remove('is-loading');
+
+			const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
+			bottomLeaderboard.classList.remove('is-loading');
+		});
 	}
 
 	private injectAffiliateDisclaimer(): void {

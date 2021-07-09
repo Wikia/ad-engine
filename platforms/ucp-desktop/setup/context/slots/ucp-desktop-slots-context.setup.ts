@@ -13,7 +13,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				insertBeforeSelector: '.page',
+				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
