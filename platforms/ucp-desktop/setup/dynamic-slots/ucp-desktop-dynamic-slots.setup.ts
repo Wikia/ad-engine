@@ -26,6 +26,11 @@ import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
 
+function stopLoading(className): void {
+	const bottomLeaderboard = document.querySelector(className);
+	bottomLeaderboard.classList.remove('is-loading');
+}
+
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(private templateRegistry: TemplateRegistry) {}
@@ -142,16 +147,17 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		}
 
 		slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-			const topLeaderboard = document.querySelector('.top-leaderboard');
-			topLeaderboard.classList.remove('is-loading');
+			stopLoading('.top-leaderboard');
+		});
+		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+			stopLoading('.top-leaderboard');
 		});
 
 		slotService.on('hivi_leaderboard', AdSlot.SLOT_REQUESTED_EVENT, () => {
-			const topLeaderboard = document.querySelector('.top-leaderboard');
-			topLeaderboard.classList.remove('is-loading');
-
-			const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
-			bottomLeaderboard.classList.remove('is-loading');
+			stopLoading('.top-leaderboard');
+		});
+		slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+			stopLoading('.top-leaderboard');
 		});
 	}
 
@@ -206,8 +212,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		});
 
 		slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-			const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
-			bottomLeaderboard.classList.remove('is-loading');
+			stopLoading('.bottom-leaderboard');
+		});
+		slotService.on('bottom_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+			stopLoading('.bottom-leaderboard');
+		});
+		slotService.on('bottom_leaderboard', AdSlot.STATUS_BLOCKED, () => {
+			stopLoading('.bottom-leaderboard');
 		});
 	}
 }
