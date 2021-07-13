@@ -11,6 +11,7 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
+	InstantConfigService,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -27,13 +28,15 @@ import { take } from 'rxjs/operators';
 const railReady = globalAction('[Rail] Ready');
 
 function stopLoading(className): void {
-	const bottomLeaderboard = document.querySelector(className);
-	bottomLeaderboard.classList.remove('is-loading');
+	document.querySelector(className).classList.remove('is-loading');
 }
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
-	constructor(private templateRegistry: TemplateRegistry) {}
+	constructor(
+		private templateRegistry: TemplateRegistry,
+		protected instantConfig: InstantConfigService,
+	) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -149,16 +152,18 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
 			stopLoading('.top-leaderboard');
 		});
-		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			stopLoading('.top-leaderboard');
-		});
-
 		slotService.on('hivi_leaderboard', AdSlot.SLOT_REQUESTED_EVENT, () => {
 			stopLoading('.top-leaderboard');
 		});
-		slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			stopLoading('.top-leaderboard');
-		});
+
+		if (this.instantConfig.get('icUseFandomdesktopTLBPlaceholders')) {
+			slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				stopLoading('.top-leaderboard');
+			});
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				stopLoading('.top-leaderboard');
+			});
+		}
 	}
 
 	private injectAffiliateDisclaimer(): void {
