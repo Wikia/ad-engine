@@ -1827,7 +1827,8 @@
                 "5731247491",
                 "5734758939",
                 "5734761051",
-                "5735951703"
+                "5735951703",
+                "5739398562"
             ]
         }
     ],
@@ -2295,9 +2296,19 @@
                 "oasis"
             ],
             "regions": [
-                "US"
+                "US-CA"
             ],
             "value": false
+        },
+        {
+            "apps": [
+                "mobile-wiki",
+                "oasis"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
         }
     ],
     "icPrebidMediaGrid": [
