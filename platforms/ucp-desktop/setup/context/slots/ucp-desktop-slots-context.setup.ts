@@ -14,7 +14,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			insertIntoParentContainerMethod: 'prepend',
 		};
 
-		if (this.instantConfig.get('icUseFandomdesktopTLBPlaceholders')) {
+		if (document.getElementsByClassName('ad-slot-placeholder').length > 0) {
 			tlbSelectors = {
 				parentContainerSelector: '.top-leaderboard',
 			};

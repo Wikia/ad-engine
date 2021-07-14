@@ -156,7 +156,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			stopLoading('.top-leaderboard');
 		});
 
-		if (this.instantConfig.get('icUseFandomdesktopTLBPlaceholders')) {
+		if (document.getElementsByClassName('ad-slot-placeholder').length > 0) {
 			slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
 				stopLoading('.top-leaderboard');
 			});
