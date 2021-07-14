@@ -28,7 +28,7 @@ import { take } from 'rxjs/operators';
 const railReady = globalAction('[Rail] Ready');
 
 function stopLoading(className): void {
-	document.querySelector(className).classList.remove('is-loading');
+	document.querySelector(className)?.classList.remove('is-loading');
 }
 
 @Injectable()
