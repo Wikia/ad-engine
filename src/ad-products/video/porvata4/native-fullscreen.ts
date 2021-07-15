@@ -8,21 +8,23 @@ export class NativeFullscreen {
 	private fullscreen = false;
 
 	constructor(element: HTMLElement) {
-		this.enter = utils.tryProperty(element, [
+		const video = element.querySelector('video');
+
+		this.enter = utils.tryProperty(video, [
 			'webkitRequestFullscreen',
 			'webkitEnterFullscreen',
 			'mozRequestFullScreen',
 			'msRequestFullscreen',
 			'requestFullscreen',
 		]);
-		this.exit = utils.tryProperty(document, [
+		this.exit = utils.tryProperty(video, [
 			'webkitExitFullscreen',
 			'mozCancelFullScreen',
 			'msExitFullscreen',
 			'exitFullscreen',
 		]);
 		this.fullscreenChangeEvent = (
-			utils.whichProperty(document, [
+			utils.whichProperty(video, [
 				'onwebkitfullscreenchange',
 				'onmozfullscreenchange',
 				'onmsfullscreenchange',
