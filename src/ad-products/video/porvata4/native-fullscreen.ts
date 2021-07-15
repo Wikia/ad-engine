@@ -10,6 +10,7 @@ export class NativeFullscreen {
 	constructor(element: HTMLElement) {
 		this.enter = utils.tryProperty(element, [
 			'webkitRequestFullscreen',
+			'webkitEnterFullscreen',
 			'mozRequestFullScreen',
 			'msRequestFullscreen',
 			'requestFullscreen',
