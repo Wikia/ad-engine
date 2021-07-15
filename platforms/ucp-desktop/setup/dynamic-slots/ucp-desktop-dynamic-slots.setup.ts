@@ -11,6 +11,7 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
+	InstantConfigService,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -26,9 +27,16 @@ import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
 
+function stopLoading(className): void {
+	document.querySelector(className)?.classList.remove('is-loading');
+}
+
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
-	constructor(private templateRegistry: TemplateRegistry) {}
+	constructor(
+		private templateRegistry: TemplateRegistry,
+		protected instantConfig: InstantConfigService,
+	) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -140,6 +148,22 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				);
 			}
 		}
+
+		slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+			stopLoading('.top-leaderboard');
+		});
+		slotService.on('hivi_leaderboard', AdSlot.SLOT_REQUESTED_EVENT, () => {
+			stopLoading('.top-leaderboard');
+		});
+
+		if (document.getElementsByClassName('ad-slot-placeholder').length > 0) {
+			slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				stopLoading('.top-leaderboard');
+			});
+			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+				stopLoading('.top-leaderboard');
+			});
+		}
 	}
 
 	private injectAffiliateDisclaimer(): void {
@@ -190,6 +214,16 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			if (slot.getSlotName() === slotName && btRec.isEnabled() && btRec.duplicateSlot(slotName)) {
 				btRec.triggerScript();
 			}
+		});
+
+		slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+			stopLoading('.bottom-leaderboard');
+		});
+		slotService.on('bottom_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+			stopLoading('.bottom-leaderboard');
+		});
+		slotService.on('bottom_leaderboard', AdSlot.STATUS_BLOCKED, () => {
+			stopLoading('.bottom-leaderboard');
 		});
 	}
 }
