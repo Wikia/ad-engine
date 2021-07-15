@@ -575,17 +575,6 @@
             "value": true
         }
     ],
-    "icUseFandomdesktopTLBPlaceholders": [
-        {
-            "apps": [
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        }
-    ],
     "icA9LoggerErrorCodes": [
         {
             "apps": [
