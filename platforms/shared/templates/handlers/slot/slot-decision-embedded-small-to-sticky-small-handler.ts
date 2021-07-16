@@ -1,5 +1,12 @@
-import { DomListener, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import {
+	AdSlot,
+	DomListener,
+	TEMPLATE,
+	TemplateStateHandler,
+	TemplateTransition,
+	utils,
+} from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
@@ -8,8 +15,11 @@ import { UapDomReader } from '../../helpers/uap-dom-reader';
 export class SlotDecisionEmbeddedSmallToStickySmallHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(private reader: UapDomReader, private domListener: DomListener) {}
-
+	constructor(
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		private reader: UapDomReader,
+		private domListener: DomListener,
+	) {}
 	async onEnter(transition: TemplateTransition<'stickySmall'>): Promise<void> {
 		this.domListener.scroll$
 			.pipe(
@@ -17,7 +27,8 @@ export class SlotDecisionEmbeddedSmallToStickySmallHandler implements TemplateSt
 				filter(
 					() =>
 						window.scrollY >=
-						this.reader.getAdSlotInitialYPos() - this.reader.getNavbarOffsetHeight(),
+							this.reader.getAdSlotInitialYPos() - this.reader.getNavbarOffsetHeight() ||
+						!utils.isInViewport(this.adSlot.getElement()),
 				),
 				tap(() => transition('stickySmall')),
 				takeUntil(this.unsubscribe$),
