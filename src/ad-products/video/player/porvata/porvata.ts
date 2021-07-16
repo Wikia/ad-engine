@@ -81,6 +81,7 @@ const prepareVideoAdContainer = (params: VideoParams): HTMLElement => {
 const nativeFullscreenOnElement = (element: HTMLElement): NativeFullscreen => {
 	const enter = utils.tryProperty(element, [
 		'webkitRequestFullscreen',
+		'webkitEnterFullscreen',
 		'mozRequestFullScreen',
 		'msRequestFullscreen',
 		'requestFullscreen',
