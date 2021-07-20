@@ -96,6 +96,7 @@
 	align-items: center;
 	display: flex;
 	justify-content: center;
+	// 250px (slot height) + 18px (top padding) + 24px (bottom padding = label height)
 	min-height: 292px;
 
 	&.is-loading {
