@@ -255,7 +255,7 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
-.ad-slot-placeholder.top-leaderboard,
+body:not(.has-uap):not(.has-new-uap) .ad-slot-placeholder.top-leaderboard,
 .ad-slot-placeholder.top-boxad,
 .ad-slot-placeholder.bottom-leaderboard,
 .ic-ad-slot-placeholder {
