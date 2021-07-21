@@ -96,7 +96,8 @@
 	align-items: center;
 	display: flex;
 	justify-content: center;
-	min-height: 250px;
+	// 250px (slot height) + 18px (top padding) + 24px (bottom padding = label height)
+	min-height: 292px;
 
 	&.is-loading {
 		animation: is-loading 2s infinite;
@@ -251,6 +252,33 @@ not(.ic-ad-slot-placeholder) {
 				position: static;
 			}
 		}
+	}
+}
+
+body:not(.has-uap):not(.has-new-uap) .ad-slot-placeholder.top-leaderboard,
+.ad-slot-placeholder.top-boxad,
+.ad-slot-placeholder.bottom-leaderboard,
+.ic-ad-slot-placeholder {
+	position: relative;
+	padding: 18px 0 24px 0;
+
+	&::after {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		color: #5f7a7b;
+		content: 'Advertisement';
+		display: block;
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 24px;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.porvata-outstream.porvata3::before {
+		display: none;
 	}
 }
 
