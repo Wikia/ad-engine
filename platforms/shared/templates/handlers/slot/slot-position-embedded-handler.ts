@@ -7,6 +7,6 @@ export class SlotPositionEmbeddedHandler implements TemplateStateHandler {
 	constructor(private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.addClassToAdSlotPlaceholder('bfaa-embedded');
+		this.manager.addClassToAdSlot('bfaa-embedded');
 	}
 }

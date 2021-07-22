@@ -41,21 +41,20 @@
 			position: sticky;
 			width: 100vw;
 			z-index: $new-uap-bfaa-z-index;
+			min-height: 211px;
 
 			#top_leaderboard {
 				@include uap-porvata();
 				@include uap-porvata-learn-more();
 				@include uap-advertisement-label();
 				@include uap-button-close();
-
+				@include bfaa-sticky-big();
+				@include bfaa-sticky-small();
+				@include bfaa-embedded();
 				&.is-dark {
 					@include uap-dark-theme();
 				}
 			}
-
-			@include bfaa-embedded();
-			@include bfaa-sticky-big();
-			@include bfaa-sticky-small();
 		}
 
 		@include bfaa-with-infobox();
