@@ -8,7 +8,7 @@ export class CloseButtonHelper {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, private domListener: DomListener) {}
 
 	appendImmediately(button: HTMLButtonElement): Observable<unknown> {
-		return from(this.adSlot.rendered).pipe(
+		return from(this.adSlot.viewed).pipe(
 			startWith({}),
 			take(1),
 			tap(() => this.adSlot.getElement().appendChild(button)),
