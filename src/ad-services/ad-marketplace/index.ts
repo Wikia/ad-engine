@@ -52,7 +52,11 @@ class AdMarketplace {
 	initialize(): Promise<void> {
 		this.configuration = context.get('services.adMarketplace');
 
-		if (!this.configuration.enabled || context.get('wiki.opts.disableSearchAds')) {
+		if (
+			!this.configuration.enabled ||
+			context.get('wiki.opts.disableSearchAds') ||
+			context.get('state.isLogged')
+		) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
