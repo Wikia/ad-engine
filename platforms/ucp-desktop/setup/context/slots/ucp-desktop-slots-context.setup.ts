@@ -252,7 +252,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			featured: {
 				adProduct: 'featured',
 				slotNameSuffix: '',
-				nonUapSlot: true,
 				group: 'VIDEO',
 				lowerSlotName: 'featured',
 				videoSizes: [[640, 480]],
