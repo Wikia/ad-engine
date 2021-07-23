@@ -27,7 +27,7 @@ export class CloseToEmbeddedResolvedButtonHandler implements TemplateStateHandle
 		}).render();
 
 		this.helper
-			.appendOnScroll(this.button)
+			.appendImmediately(this.button)
 			.pipe(takeUntil(this.unsubscribe$))
 			.subscribe();
 	}
