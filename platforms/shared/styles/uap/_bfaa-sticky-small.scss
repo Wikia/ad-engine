@@ -1,14 +1,13 @@
 @import 'src/ad-products/styles/uap-variables';
 
 @mixin bfaa-sticky-small() {
-	&.bfaa-sticky-small {
+	&.bfaa-sticky-small #top_leaderboard {
 		position: fixed;
 		top: $fandom-navbar-height;
+		left: 0;
 
-		#top_leaderboard {
-			.video-overlay {
-				width: 100%;
-			}
+		.video-overlay {
+			width: 100%;
 		}
 	}
 }
