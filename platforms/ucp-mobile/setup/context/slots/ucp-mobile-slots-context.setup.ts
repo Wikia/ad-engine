@@ -259,7 +259,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			featured: {
 				adProduct: 'featured',
 				slotNameSuffix: '',
-				nonUapSlot: true,
 				group: 'VIDEO',
 				lowerSlotName: 'featured',
 				targeting: {
@@ -268,17 +267,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				trackingKey: 'featured-video',
 				trackEachStatus: true,
 				isVideo: true,
-			},
-			video: {
-				adProduct: 'video',
-				slotNameSuffix: '',
-				nonUapSlot: true,
-				group: 'VIDEO',
-				lowerSlotName: 'video',
-				targeting: {
-					uap: 'none',
-				},
-				trackingKey: 'video',
 			},
 		};
 

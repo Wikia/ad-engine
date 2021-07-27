@@ -219,10 +219,8 @@ function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
-		if (!slots[slotId].nonUapSlot) {
-			context.set(`slots.${slotId}.targeting.uap`, lineItemId);
-			context.set(`slots.${slotId}.targeting.uap_c`, creativeId);
-		}
+		context.set(`slots.${slotId}.targeting.uap`, lineItemId);
+		context.set(`slots.${slotId}.targeting.uap_c`, creativeId);
 	});
 }
 

@@ -25,8 +25,6 @@ describe('UniversalAdPackage', () => {
 
 	it('should update every slots context when uap is updated', () => {
 		contextStub.get.withArgs('slots').returns({ top_leaderboard: {}, top_boxad: {} });
-		contextStub.get.withArgs('slots.top_leaderboard.nonUapSlot').returns(undefined);
-		contextStub.get.withArgs('slots.top_boxad.nonUapSlot').returns(undefined);
 
 		universalAdPackage.init({
 			uap: UAP_ID,
@@ -41,36 +39,6 @@ describe('UniversalAdPackage', () => {
 		).to.equal(true);
 		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap', UAP_ID)).to.equal(true);
 		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap_c', UAP_CREATIVE_ID)).to.equal(
-			true,
-		);
-		expect(contextStub.set.callCount).to.equal(4);
-	});
-
-	it('should not update slot with blocked uap parameter', () => {
-		contextStub.get.withArgs('slots').returns({
-			top_leaderboard: {},
-			NON_UAP_SLOT: {
-				nonUapSlot: true,
-			},
-			top_boxad: {},
-		});
-
-		universalAdPackage.init({
-			uap: UAP_ID,
-			creativeId: UAP_CREATIVE_ID,
-		} as any);
-
-		expect(contextStub.set.calledWith('slots.top_leaderboard.targeting.uap', UAP_ID)).to.equal(
-			true,
-		);
-		expect(
-			contextStub.set.calledWith('slots.top_leaderboard.targeting.uap_c', UAP_CREATIVE_ID),
-		).to.equal(true);
-		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap', UAP_ID)).to.equal(true);
-		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap_c', UAP_CREATIVE_ID)).to.equal(
-			true,
-		);
-		expect(contextStub.set.neverCalledWith('slots.NON_UAP_SLOT.targeting.uap', UAP_ID)).to.equal(
 			true,
 		);
 		expect(contextStub.set.callCount).to.equal(4);
