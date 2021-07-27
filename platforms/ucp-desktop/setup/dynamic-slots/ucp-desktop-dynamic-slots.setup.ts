@@ -11,7 +11,6 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
-	InstantConfigService,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -27,16 +26,21 @@ import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
 
-function stopLoading(className): void {
-	document.querySelector(className)?.classList.remove('is-loading');
+function stopLoading(className: string, withHide: string = ''): void {
+	const placeholder: HTMLElement = document.querySelector(className);
+
+	placeholder?.classList.remove('is-loading');
+
+	if (withHide === 'placeholder') {
+		placeholder?.setAttribute('style', 'display: none');
+	} else if (withHide === 'parent') {
+		placeholder?.parentElement?.setAttribute('style', 'display: none');
+	}
 }
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
-	constructor(
-		private templateRegistry: TemplateRegistry,
-		protected instantConfig: InstantConfigService,
-	) {}
+	constructor(private templateRegistry: TemplateRegistry) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -119,10 +123,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
 				slotService.setState('top_leaderboard', false);
+				stopLoading('.top-leaderboard');
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
 				slotService.setState('top_leaderboard', false);
+				stopLoading('.top-leaderboard', 'parent');
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
@@ -130,9 +136,17 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 				if (!adSlot.isEmpty) {
 					slotService.setState('top_leaderboard', false);
+					stopLoading('.top-leaderboard');
 				}
 			});
 		}
+
+		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
+			stopLoading('.top-leaderboard');
+		});
+		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+			stopLoading('.top-leaderboard', 'parent');
+		});
 
 		if (
 			!context.get('custom.hasFeaturedVideo') &&
@@ -147,22 +161,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 					'stickyTlb',
 				);
 			}
-		}
-
-		slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-			stopLoading('.top-leaderboard');
-		});
-		slotService.on('hivi_leaderboard', AdSlot.SLOT_REQUESTED_EVENT, () => {
-			stopLoading('.top-leaderboard');
-		});
-
-		if (document.getElementsByClassName('ad-slot-placeholder').length > 0) {
-			slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-				stopLoading('.top-leaderboard');
-			});
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-				stopLoading('.top-leaderboard');
-			});
 		}
 	}
 
@@ -216,7 +214,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			}
 		});
 
-		slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
+		slotService.on('bottom_leaderboard', AdSlot.STATUS_SUCCESS, () => {
 			stopLoading('.bottom-leaderboard');
 		});
 		slotService.on('bottom_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
