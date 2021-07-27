@@ -1,28 +1,11 @@
-import { context, DiProcess, events, eventService, InstantConfigService } from '@wikia/ad-engine';
+import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsContextSetup implements DiProcess {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor() {}
 
 	execute(): void {
-		let tlbSelectors: object = {
-			insertBeforeSelector: '.page',
-		};
-		let blbSelectors: object = {
-			parentContainerSelector: '.mcf-en,.mw-special-Newimages .license-description',
-			insertIntoParentContainerMethod: 'prepend',
-		};
-
-		if (document.getElementsByClassName('ad-slot-placeholder').length > 0) {
-			tlbSelectors = {
-				parentContainerSelector: '.top-leaderboard',
-			};
-			blbSelectors = {
-				parentContainerSelector: '.bottom-leaderboard',
-			};
-		}
-
 		const slots = {
 			hivi_leaderboard: {
 				aboveTheFold: true,
@@ -30,7 +13,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				...tlbSelectors,
+				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
@@ -55,7 +38,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				...tlbSelectors,
+				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -177,7 +160,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				...blbSelectors,
+				parentContainerSelector: '.bottom-leaderboard',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
