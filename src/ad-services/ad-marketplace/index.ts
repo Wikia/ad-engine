@@ -35,9 +35,9 @@ const adMarketplaceSearchEvent = globalAction(
 	props<{ query: string }>(),
 );
 
-const instantSearchEndpoint = '//fandomsearch.cps.ampfeed.com/suggestions?';
+const instantSearchEndpoint = '//fandomcps.cps.ampfeed.com/suggestions?';
 const instantSearchEndpointParameters = [
-	'partner=fandomsearch',
+	'partner=fandomcps',
 	'sub2=fandom.com',
 	'v=1.4',
 	'out=json',
