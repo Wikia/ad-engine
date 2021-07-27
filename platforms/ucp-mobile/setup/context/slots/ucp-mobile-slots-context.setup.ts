@@ -268,16 +268,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 				isVideo: true,
 			},
-			video: {
-				adProduct: 'video',
-				slotNameSuffix: '',
-				group: 'VIDEO',
-				lowerSlotName: 'video',
-				targeting: {
-					uap: 'none',
-				},
-				trackingKey: 'video',
-			},
 		};
 
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
