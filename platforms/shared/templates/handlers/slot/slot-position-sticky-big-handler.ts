@@ -7,6 +7,6 @@ export class SlotPositionStickyBigHandler implements TemplateStateHandler {
 	constructor(private manager: UapDomManager) {}
 
 	async onEnter(): Promise<void> {
-		this.manager.addClassToAdSlotPlaceholder('bfaa-sticky-big');
+		this.manager.addClassToAdSlot('bfaa-sticky-big');
 	}
 }

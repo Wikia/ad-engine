@@ -15,8 +15,8 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
-	addClassToAdSlotPlaceholder(className: string): void {
-		this.manipulator.element(this.adSlot.element.parentElement).addClass(className);
+	addClassToAdSlot(className: string): void {
+		this.manipulator.element(this.adSlot.element).addClass(className);
 	}
 
 	setPageOffsetImpact(): void {

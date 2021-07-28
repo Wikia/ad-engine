@@ -1,11 +1,8 @@
 @mixin bfaa-embedded() {
 	&.bfaa-embedded {
-		position: relative;
-
-		#top_leaderboard {
-			.video-overlay {
-				position: absolute;
-			}
-		}
+		position: absolute;
+		margin: 0;
+		top: 50%;
+		transform: translateY(-50%);
 	}
 }
