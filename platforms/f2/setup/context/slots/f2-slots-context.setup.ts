@@ -73,28 +73,6 @@ export class F2SlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
-			bottom_leaderboard: {
-				disabled: true,
-				group: 'PF',
-				slotShortcut: 'b',
-				sizes: [
-					{
-						viewportSize: [840, 100],
-						sizes: [[728, 90]],
-					},
-					{
-						viewportSize: [320, 200],
-						sizes: [],
-						mobileViewport: true,
-					},
-				],
-				defaultSizes: [],
-				targeting: {
-					loc: 'footer',
-					uap: 'none',
-					rv: 1,
-				},
-			},
 			top_boxad: {
 				group: 'MR',
 				slotShortcut: 'm',
@@ -160,52 +138,27 @@ export class F2SlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
-			feed_boxad: {
+			bottom_leaderboard: {
 				disabled: true,
 				group: 'PF',
-				slotShortcut: 'e',
+				slotShortcut: 'b',
 				sizes: [
 					{
-						viewportSize: [0, 0],
-						sizes: [[300, 250]],
+						viewportSize: [840, 100],
+						sizes: [[728, 90]],
 					},
 					{
-						viewportSize: [840, 200],
-						sizes: [
-							[300, 250],
-							[300, 600],
-						],
+						viewportSize: [320, 200],
+						sizes: [],
+						mobileViewport: true,
 					},
 				],
-				defaultSizes: [
-					[300, 250],
-					[300, 600],
-				],
+				defaultSizes: [],
 				targeting: {
 					loc: 'footer',
 					uap: 'none',
 					rv: 1,
 				},
-			},
-			featured: {
-				slotNameSuffix: '',
-				group: 'VIDEO',
-				targeting: {
-					uap: 'none',
-					rv: 1,
-				},
-				trackingKey: 'featured-video',
-				isVideo: true,
-			},
-			video: {
-				slotNameSuffix: '',
-				group: 'VIDEO',
-				targeting: {
-					uap: 'none',
-					rv: 1,
-				},
-				trackingKey: 'video',
-				isVideo: true,
 			},
 		};
 
