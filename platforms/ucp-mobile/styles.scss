@@ -42,7 +42,7 @@
 			width: 100vw;
 			z-index: $new-uap-bfaa-z-index;
 			// Highest expected BFAA size. CLS optimization.
-			min-height: 211px;
+			min-height: 213px;
 
 			#top_leaderboard {
 				@include uap-porvata();
