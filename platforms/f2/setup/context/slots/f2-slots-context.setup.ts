@@ -189,7 +189,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 			featured: {
 				slotNameSuffix: '',
-				nonUapSlot: true,
 				group: 'VIDEO',
 				targeting: {
 					uap: 'none',
@@ -200,7 +199,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 			video: {
 				slotNameSuffix: '',
-				nonUapSlot: true,
 				group: 'VIDEO',
 				targeting: {
 					uap: 'none',
