@@ -1,7 +1,7 @@
 @import 'src/ad-products/styles/uap-variables';
 
 @mixin bfaa-sticky-big() {
-	&.bfaa-sticky-big #top_leaderboard {
+	&.bfaa-sticky-big {
 		position: fixed;
 		top: $fandom-navbar-height;
 		left: 0;

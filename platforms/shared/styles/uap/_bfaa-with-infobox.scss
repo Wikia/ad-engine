@@ -1,5 +1,6 @@
 @mixin bfaa-with-infobox() {
 	.portable-infobox-wrapper ~ .top-leaderboard.ad-slot-placeholder {
+		position: relative;
 		left: -12px;
 
 		#top_leaderboard {
