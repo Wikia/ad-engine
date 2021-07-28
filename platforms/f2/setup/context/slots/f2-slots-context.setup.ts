@@ -160,6 +160,26 @@ export class F2SlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
+			featured: {
+				slotNameSuffix: '',
+				group: 'VIDEO',
+				targeting: {
+					uap: 'none',
+					rv: 1,
+				},
+				trackingKey: 'featured-video',
+				isVideo: true,
+			},
+			video: {
+				slotNameSuffix: '',
+				group: 'VIDEO',
+				targeting: {
+					uap: 'none',
+					rv: 1,
+				},
+				trackingKey: 'video',
+				isVideo: true,
+			},
 		};
 
 		eventService.on(events.AD_SLOT_CREATED, (slot) => {
