@@ -1,12 +1,20 @@
-import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	eventService,
+	FuncPipeline,
+	FuncPipelineStep,
+	slotService,
+	utils,
+} from '@ad-engine/core';
 
 class ClickTracker {
 	private pipeline = new FuncPipeline<any>();
 
 	private logGroup = 'click-tracker';
 
-	register(middleware: any, slotName: string): void {
-		slotService.on(slotName, AdSlot.SLOT_RENDERED_EVENT, () => {
+	register(middleware: any): void {
+		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot: AdSlot) => {
+			const slotName = slot.getSlotName();
 			this.addClickTrackingListeners(middleware, slotName);
 		});
 	}

@@ -124,7 +124,9 @@ export class TrackingSetup {
 
 		clickTracker.register(({ data }) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
-		}, 'top_leaderboard');
+
+			return data;
+		});
 	}
 
 	private bidderTracker(): void {
