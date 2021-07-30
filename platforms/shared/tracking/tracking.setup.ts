@@ -4,6 +4,7 @@ import {
 	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
+	clickTracker,
 	communicationService,
 	context,
 	Dictionary,
@@ -76,6 +77,7 @@ export class TrackingSetup {
 		this.connectionTracker();
 		this.audigentTracker();
 		this.interventionTracker();
+		this.clickTracker();
 	}
 
 	private porvataTracker(): void {
@@ -115,6 +117,14 @@ export class TrackingSetup {
 
 				return data;
 			});
+	}
+
+	private clickTracker(): void {
+		const dataWarehouseTracker = new DataWarehouseTracker();
+
+		clickTracker.register(({ data }) => {
+			dataWarehouseTracker.track(data, slotTrackingUrl);
+		}, 'top_leaderboard');
 	}
 
 	private bidderTracker(): void {
