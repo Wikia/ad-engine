@@ -1,11 +1,4 @@
-import {
-	AdSlot,
-	eventService,
-	FuncPipeline,
-	FuncPipelineStep,
-	slotService,
-	utils,
-} from '@ad-engine/core';
+import { AdSlot, eventService, FuncPipeline, FuncPipelineStep, utils } from '@ad-engine/core';
 
 class ClickTracker {
 	private pipeline = new FuncPipeline<any>();
@@ -14,13 +7,12 @@ class ClickTracker {
 
 	register(middleware: any): void {
 		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot: AdSlot) => {
-			const slotName = slot.getSlotName();
-			this.addClickTrackingListeners(middleware, slotName);
+			this.addClickTrackingListeners(middleware, slot);
 		});
 	}
 
-	private addClickTrackingListeners(middleware: FuncPipelineStep<any>, slotName: string): void {
-		const slot: AdSlot = slotService.get(slotName);
+	private addClickTrackingListeners(middleware: FuncPipelineStep<any>, slot: AdSlot): void {
+		const slotName = slot.getSlotName();
 		const iframeElement: HTMLIFrameElement = slot.getIframe();
 		const slotElement: HTMLElement = slot.getElement();
 
@@ -36,19 +28,19 @@ class ClickTracker {
 		const iframeBody: HTMLElement = iframeElement.contentWindow.document.body;
 
 		if (iframeBody && slotElement) {
-			slotElement.addEventListener('click', (e: MouseEvent) => {
-				this.handleClickEvent(middleware, slotName);
+			slotElement.addEventListener('click', () => {
+				this.handleClickEvent(middleware, slot);
 			});
-			iframeBody.addEventListener('click', (e: MouseEvent) => {
-				this.handleClickEvent(middleware, slotName);
+			iframeBody.addEventListener('click', () => {
+				this.handleClickEvent(middleware, slot);
 			});
 		}
 	}
 
-	private handleClickEvent(middleware: any, slotName: string): void {
+	private handleClickEvent(middleware: any, slot: AdSlot): void {
 		this.pipeline.execute(
 			{
-				slotName,
+				slot,
 				data: {
 					ad_status: AdSlot.STATUS_CLICKED,
 				},
