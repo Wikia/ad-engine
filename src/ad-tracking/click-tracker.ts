@@ -31,7 +31,7 @@ class AdClickTracker {
 	private addClickTrackingListeners(middleware: FuncPipelineStep<AdClickContext>, slotName): void {
 		const adSlot = slotService.get(slotName);
 		const iframeElement = adSlot.getIframe();
-		const slotElement = adSlot.getElement();
+		const slotElement = adSlot.getAdContainer();
 
 		if (!adSlot || !iframeElement) {
 			utils.logger(logGroup, `Slot ${slotName} has no iframe.`);
@@ -46,7 +46,7 @@ class AdClickTracker {
 		const iframeBody = iframeElement.contentWindow.document.body;
 
 		if (iframeBody && slotElement) {
-			slotElement.addEventListener('click', () => {
+			slotElement.firstElementChild.addEventListener('click', () => {
 				this.handleClickEvent(middleware, adSlot);
 			});
 			iframeBody.addEventListener('click', () => {
