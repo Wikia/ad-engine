@@ -44,14 +44,7 @@ export const basicContext = {
 	services: {
 		iasPublisherOptimization: {
 			pubId: '930616',
-			slots: [
-				'top_leaderboard',
-				'top_boxad',
-				'feed_boxad',
-				'incontent_boxad',
-				'bottom_leaderboard',
-				'featured',
-			],
+			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
 		},
 		instantConfig: {
 			endpoint: 'https://services.wikia.com/icbm/api/config?app=f2',
