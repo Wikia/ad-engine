@@ -16,12 +16,7 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = [
-			'top_boxad',
-			'bottom_leaderboard',
-			'incontent_boxad',
-			'feed_boxad',
-		];
+		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad', 'bottom_leaderboard'];
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
