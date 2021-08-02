@@ -14,7 +14,7 @@ export function registerF2UapDomElements(): TemplateDependency[] {
 
 				return f2Env.isPageMobile
 					? document.querySelector('.global-navigation-mobile-wrapper')
-					: document.querySelector('.wds-global-navigation-wrapper');
+					: document.querySelector('.nav-bg-hack');
 			},
 		},
 		{
