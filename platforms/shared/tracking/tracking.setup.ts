@@ -122,7 +122,7 @@ export class TrackingSetup {
 	private adClickTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		adClickTracker.register(({ data }) => {
+		adClickTracker.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
 
 			return data;
