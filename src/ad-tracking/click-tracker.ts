@@ -9,10 +9,17 @@ const adSlotLoadedEvent = globalAction(
 	props<{ adSlotName: string; status: string; event: string }>(),
 );
 
-class AdClickTracker {
-	private pipeline = new FuncPipeline<any>();
+interface AdClickContext {
+	slot: AdSlot;
+	data: {
+		ad_status: string;
+	};
+}
 
-	register(middleware: any): void {
+class AdClickTracker {
+	private pipeline = new FuncPipeline<AdClickContext>();
+
+	register(middleware: FuncPipelineStep<AdClickContext>): void {
 		communicationService.action$
 			.pipe(ofType(adSlotLoadedEvent))
 			.subscribe(async ({ event, adSlotName }) => {
@@ -23,7 +30,7 @@ class AdClickTracker {
 			});
 	}
 
-	private addClickTrackingListeners(middleware: FuncPipelineStep<any>, slotName): void {
+	private addClickTrackingListeners(middleware: FuncPipelineStep<AdClickContext>, slotName): void {
 		const adSlot = slotService.get(slotName);
 		const iframeElement: HTMLIFrameElement = adSlot.getIframe();
 		const slotElement: HTMLElement = adSlot.getElement();
@@ -50,7 +57,7 @@ class AdClickTracker {
 		}
 	}
 
-	private handleClickEvent(middleware: any, slot: AdSlot): void {
+	private handleClickEvent(middleware: FuncPipelineStep<AdClickContext>, slot: AdSlot): void {
 		this.pipeline.execute(
 			{
 				slot,
