@@ -3,10 +3,9 @@ import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-
 import { props } from 'ts-action';
 
 const logGroup = 'ad-click-tracker';
-
 const adSlotLoadedEvent = globalAction(
 	'[AdEngine] Ad Slot event',
-	props<{ adSlotName: string; status: string; event: string }>(),
+	props<{ adSlotName: string; event: string }>(),
 );
 
 interface AdClickContext {
@@ -31,8 +30,8 @@ class AdClickTracker {
 
 	private addClickTrackingListeners(middleware: FuncPipelineStep<AdClickContext>, slotName): void {
 		const adSlot = slotService.get(slotName);
-		const iframeElement: HTMLIFrameElement = adSlot.getIframe();
-		const slotElement: HTMLElement = adSlot.getElement();
+		const iframeElement = adSlot.getIframe();
+		const slotElement = adSlot.getElement();
 
 		if (!adSlot || !iframeElement) {
 			utils.logger(logGroup, `Slot ${slotName} has no iframe.`);
@@ -44,7 +43,7 @@ class AdClickTracker {
 			return;
 		}
 
-		const iframeBody: HTMLElement = iframeElement.contentWindow.document.body;
+		const iframeBody = iframeElement.contentWindow.document.body;
 
 		if (iframeBody && slotElement) {
 			slotElement.addEventListener('click', () => {
