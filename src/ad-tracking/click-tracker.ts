@@ -25,7 +25,6 @@ class AdClickTracker {
 			.subscribe(async ({ event, adSlotName }) => {
 				if (event === AdSlot.SLOT_RENDERED_EVENT) {
 					this.addClickTrackingListeners(middleware, adSlotName);
-					utils.logger(logGroup, 'registered');
 				}
 			});
 	}
