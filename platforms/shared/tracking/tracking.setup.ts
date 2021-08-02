@@ -1,10 +1,10 @@
 import {
 	AdBidderContext,
+	adClickTracker,
 	AdInfoContext,
 	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
-	clickTracker,
 	communicationService,
 	context,
 	Dictionary,
@@ -77,7 +77,7 @@ export class TrackingSetup {
 		this.connectionTracker();
 		this.audigentTracker();
 		this.interventionTracker();
-		this.clickTracker();
+		this.adClickTracker();
 	}
 
 	private porvataTracker(): void {
@@ -119,10 +119,10 @@ export class TrackingSetup {
 			});
 	}
 
-	private clickTracker(): void {
+	private adClickTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		clickTracker.register(({ data }) => {
+		adClickTracker.register(({ data }) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
 
 			return data;

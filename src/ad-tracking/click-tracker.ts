@@ -1,9 +1,9 @@
 import { AdSlot, eventService, FuncPipeline, FuncPipelineStep, utils } from '@ad-engine/core';
 
-class ClickTracker {
+class AdClickTracker {
 	private pipeline = new FuncPipeline<any>();
 
-	private logGroup = 'click-tracker';
+	private logGroup = 'ad-click-tracker';
 
 	register(middleware: any): void {
 		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot: AdSlot) => {
@@ -13,8 +13,8 @@ class ClickTracker {
 
 	private addClickTrackingListeners(middleware: FuncPipelineStep<any>, slot: AdSlot): void {
 		const slotName = slot.getSlotName();
-		const iframeElement: HTMLIFrameElement = slot.getIframe();
-		const slotElement: HTMLElement = slot.getElement();
+		const iframeElement = slot.getIframe();
+		const slotElement = slot.getElement();
 
 		if (!slot || !iframeElement) {
 			utils.logger(this.logGroup, `Slot ${slotName} has no iframe.`);
@@ -50,4 +50,4 @@ class ClickTracker {
 	}
 }
 
-export const clickTracker = new ClickTracker();
+export const adClickTracker = new AdClickTracker();
