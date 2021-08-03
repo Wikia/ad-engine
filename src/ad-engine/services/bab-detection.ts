@@ -30,6 +30,7 @@ class BabDetection {
 
 		utils.logger(logGroup, 'BAB detection, AB detected:', isBabDetected);
 
+		this.setBodyClass(isBabDetected);
 		this.setRuntimeParams(isBabDetected);
 		this.updateSrcParameter(isBabDetected);
 		this.dispatchDetectionEvents(isBabDetected);
@@ -99,6 +100,12 @@ class BabDetection {
 
 		// Post-QueCast
 		communicationService.dispatch(babDetectedEvent({ detected: isBabDetected }));
+	}
+
+	private setBodyClass(isBabDetected: boolean): void {
+		if (isBabDetected) {
+			document.body.classList.add('bab-detected');
+		}
 	}
 }
 

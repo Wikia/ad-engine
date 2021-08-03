@@ -152,7 +152,6 @@ export const basicContext = {
 					top_leaderboard: {
 						uid: '5b33d3584c-188',
 						style: {
-							margin: '10px 0',
 							'z-index': '100',
 						},
 						size: {
@@ -164,7 +163,7 @@ export const basicContext = {
 					top_boxad: {
 						uid: '5b2d1649b2-188',
 						style: {
-							'margin-bottom': '10px',
+							margin: '24px 0 14px 0',
 							'z-index': '100',
 						},
 						size: {
@@ -187,7 +186,7 @@ export const basicContext = {
 					bottom_leaderboard: {
 						uid: '5b8f13805d-188',
 						style: {
-							'margin-bottom': '23px',
+							margin: '20px 0',
 							'z-index': '100',
 						},
 						size: {
