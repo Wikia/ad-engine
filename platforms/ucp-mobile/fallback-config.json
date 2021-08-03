@@ -2458,6 +2458,8 @@
                 "oasis"
             ],
             "regions": [
+                "AU",
+                "CA",
                 "US"
             ],
             "value": true
