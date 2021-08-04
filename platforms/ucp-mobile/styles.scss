@@ -14,7 +14,7 @@
 		}
 
 		#top_leaderboard {
-			@include bfaa-slot();
+			@include bfaa-slot(400);
 			@include sticky-tlb-slot();
 		}
 
