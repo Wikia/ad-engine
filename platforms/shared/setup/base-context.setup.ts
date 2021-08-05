@@ -104,7 +104,11 @@ export class BaseContextSetup implements DiProcess {
 
 		if (babEnabled && !context.get('state.isLogged') && context.get('state.showAds')) {
 			// BT rec
-			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+			context.set('services.aax.enabled', this.instantConfig.get('icAax'));
+
+			if (!context.get('services.aax.enabled')) {
+				context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+			}
 		}
 	}
 
@@ -120,7 +124,6 @@ export class BaseContextSetup implements DiProcess {
 		}
 
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
-		context.set('services.aax.enabled', this.instantConfig.get('icAax'));
 		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
