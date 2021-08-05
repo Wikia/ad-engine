@@ -1,5 +1,6 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	aax,
 	adMarketplace,
 	audigent,
 	bidders,
@@ -47,6 +48,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(silverSurferService.configureUserTargeting());
 
+		aax.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();

@@ -1,13 +1,13 @@
 import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'aax';
-const scriptDomain = '';
+const scriptDomain = 'https://c.aaxads.com/aax.js';
 
 function loadScript(pubId: string, hostname: string): Promise<Event> {
 	const version = '1.2';
-	const aaxLibraryUrl = `https://c.aaxads.com/aax.js?pub=${pubId}&hst=${hostname}&ver=${version}`;
+	const aaxLibraryUrl = `${scriptDomain}?pub=${pubId}&hst=${hostname}&ver=${version}`;
 
-	return utils.scriptLoader.loadScript(aaxLibraryUrl, 'text/javascript', true, 'first');
+	return utils.scriptLoader.loadScript(aaxLibraryUrl);
 }
 
 class Aax {
