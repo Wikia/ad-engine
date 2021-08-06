@@ -58,6 +58,29 @@
 		}
 	}
 
+	.uap-light {
+		.fandom-sticky-header {
+			margin-top: unset;
+		}
+
+		.top-ads-container {
+			position: relative;
+			background: #000;
+
+			.ad-slot-placeholder.top-leaderboard {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
+			clip: rect(0, auto, auto, 0);
+		}
+	}
+
 	@include expanded-slot();
 }
 

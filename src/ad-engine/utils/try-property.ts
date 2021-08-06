@@ -1,6 +1,10 @@
 import { Dictionary } from '../models';
 
 export function whichProperty(obj: Dictionary = {}, properties: string[] = []): string | undefined {
+	if (!obj) {
+		return;
+	}
+
 	return properties.find((property: string) => {
 		if (typeof property !== 'string') {
 			throw new Error('property name must be a string');
@@ -10,10 +14,7 @@ export function whichProperty(obj: Dictionary = {}, properties: string[] = []): 
 	});
 }
 
-export function tryProperty(
-	obj: Dictionary,
-	properties: string[] = [],
-): () => boolean | boolean | undefined {
+export function tryProperty(obj: Dictionary, properties: string[] = []): () => boolean | undefined {
 	const property: string = whichProperty(obj, properties);
 
 	if (!!property) {
