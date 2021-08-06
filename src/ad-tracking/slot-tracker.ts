@@ -10,6 +10,7 @@ class SlotTracker {
 		AdSlot.STATUS_COLLAPSE,
 		AdSlot.STATUS_FORCED_COLLAPSE,
 		AdSlot.STATUS_SUCCESS,
+		AdSlot.STATUS_CLICKED,
 	];
 	onChangeStatusToTrack = [
 		AdSlot.STATUS_BLOCKED,
