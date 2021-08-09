@@ -14,7 +14,7 @@ class Aax {
 	call(): Promise<void> {
 		const pubId = context.get('services.aax.pubId');
 
-		if (!context.get('services.aax.enabled') || !pubId) {
+		if (!this.isEnabled() || !pubId) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
@@ -28,6 +28,10 @@ class Aax {
 		return loadScript(pubId, hostname).then(() => {
 			utils.logger(logGroup, 'ready');
 		});
+	}
+
+	isEnabled(): boolean {
+		return context.get('services.aax.enabled') && context.get('options.wad.blocking');
 	}
 }
 
