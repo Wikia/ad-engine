@@ -10,10 +10,7 @@ export function whichProperty(obj: Dictionary = {}, properties: string[] = []): 
 	});
 }
 
-export function tryProperty(
-	obj: Dictionary,
-	properties: string[] = [],
-): () => boolean | boolean | undefined {
+export function tryProperty(obj: Dictionary, properties: string[] = []): () => boolean | undefined {
 	const property: string = whichProperty(obj, properties);
 
 	if (!!property) {

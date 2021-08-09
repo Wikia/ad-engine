@@ -19,6 +19,10 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.element).addClass(className);
 	}
 
+	addClassToPage(className: string): void {
+		this.manipulator.element(this.page).addClass(className);
+	}
+
 	setPageOffsetImpact(): void {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}
@@ -69,6 +73,20 @@ export class UapDomManager {
 
 	private setSlotHeight(height: string): void {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
+	}
+
+	setPlaceholderHeightResolved(): void {
+		this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
+	}
+
+	setPlaceholderHeightImpact(): void {
+		this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+	}
+
+	private setPlaceholderHeight(height: string): void {
+		this.manipulator
+			.element(this.adSlot.getElement().parentElement.parentElement)
+			.setProperty('height', height);
 	}
 
 	setResolvedImage(): void {
