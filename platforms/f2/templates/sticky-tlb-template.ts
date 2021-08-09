@@ -1,4 +1,5 @@
 import {
+	AdvertisementLabelHandler,
 	CloseButtonHelper,
 	CloseToHiddenButtonHandler,
 	DebugTransitionHandler,
@@ -33,6 +34,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			initial: [
 				StickyTlbBootstrapHandler,
 				StickyTlbConfigHandler,
+				AdvertisementLabelHandler,
 				HideSmartBannerHandler,
 				DebugTransitionHandler,
 			],

@@ -1,6 +1,7 @@
 export * from './bidder-tracker';
 export * from './bidder-tracking-middleware';
 export * from './click-position-tracker';
+export * from './click-tracker';
 export * from './scroll-tracker';
 export * from './slot-tracker';
 export * from './slot-tracking-middleware';
