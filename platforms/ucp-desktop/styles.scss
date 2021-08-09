@@ -59,10 +59,6 @@
 	}
 
 	.uap-light {
-		.fandom-sticky-header {
-			margin-top: unset;
-		}
-
 		.top-ads-container {
 			position: relative;
 			background: #000;
@@ -76,8 +72,14 @@
 			}
 		}
 
-		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
-			clip: rect(0, auto, auto, 0);
+		&:not(.uap-sticked) {
+			.fandom-sticky-header {
+				margin-top: unset;
+			}
+
+			.ad-slot-placeholder.top-leaderboard {
+				clip: rect(0, auto, auto, 0);
+			}
 		}
 	}
 
