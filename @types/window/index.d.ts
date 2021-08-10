@@ -10,6 +10,7 @@ interface Window {
 	__iasPET?: IasPet;
 	__tcfapi: WindowTCF;
 	__uspapi?: WindowUSP;
+	aax?: any;
 	AdEngine_adType?: ManualAdType;
 	ads?: MediaWikiAds;
 	adsQueue?: any;

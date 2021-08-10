@@ -1,3 +1,4 @@
+export * from './aax';
 export * from './audigent';
 export * from './ad-marketplace';
 export * from './bt-rec';

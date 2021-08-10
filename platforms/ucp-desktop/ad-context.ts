@@ -71,6 +71,10 @@ export const basicContext = {
 		},
 	},
 	services: {
+		aax: {
+			enabled: false,
+			pubId: 'AAX78RV39',
+		},
 		adMarketplace: {
 			enabled: false,
 			insertMethod: 'after',
