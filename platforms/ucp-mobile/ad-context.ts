@@ -89,7 +89,7 @@ export const basicContext = {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=mobile-wiki',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
 			fallback: fallbackInstantConfig,
 		},
 		iasPublisherOptimization: {
