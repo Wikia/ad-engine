@@ -8,7 +8,7 @@ const adSlotLoadedEvent = globalAction(
 	props<{ adSlotName: string; event: string }>(),
 );
 
-export interface AdClickContext {
+interface AdClickContext {
 	slot: AdSlot;
 	data: {
 		ad_status: string;
