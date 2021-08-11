@@ -4,8 +4,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -17,7 +19,9 @@
     "icPrebidAppNexusAst": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -30,7 +34,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -53,6 +59,7 @@
     "icPushOnScrollThreshold": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "devices": [
@@ -67,7 +74,9 @@
     "icPrebidRubicon": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -79,7 +88,9 @@
     "icPrebidOpenX": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -91,7 +102,9 @@
     "icPrebidPubmaticOutstream": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -104,7 +117,9 @@
     "icDeRecoExperimentDev": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "sampling": 100.0,
@@ -135,7 +150,9 @@
     "icPrebidOneVideo": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -151,8 +168,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -164,6 +183,7 @@
     "icAudigent": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -175,6 +195,7 @@
     "icIncontentBoxadGap": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -186,7 +207,9 @@
     "icComscoreJwpTracking": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -198,6 +221,7 @@
     "icPrebid33Across": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -209,6 +233,7 @@
     "icFloorAdhesionViewportsToStart": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -220,6 +245,7 @@
     "icPrebidGumGum": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -232,8 +258,10 @@
         {
             "apps": [
                 "futhead",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -247,7 +275,9 @@
     "icPrebidRubiconAdditionalKeyvals": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -261,8 +291,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -277,8 +309,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -302,6 +336,7 @@
     "icFloorAdhesion": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -438,6 +473,7 @@
         },
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -450,6 +486,7 @@
     "icInterstitial": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -461,6 +498,7 @@
     "icSpaInstanceIdTracking": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -473,6 +511,7 @@
     "icRepeatMobileIncontentExtended": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -493,8 +532,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -506,7 +547,9 @@
     "icFeaturedVideoMoatTracking": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -529,7 +572,9 @@
     "icPrebidAppNexusGroupM": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -543,7 +588,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ]
         }
@@ -551,7 +598,9 @@
     "icPrebidIndexExchangeFeatured": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -565,8 +614,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -582,8 +633,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -596,7 +649,9 @@
         {
             "apps": [
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -608,6 +663,7 @@
     "icCollapseTopLeaderboard": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "value": true
@@ -620,8 +676,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -633,6 +691,7 @@
     "icSxIsFandomMobileBannerDisabled": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -647,7 +706,9 @@
         {
             "apps": [
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -659,7 +720,9 @@
     "icPrebidLkqdOutstream": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "value": false
@@ -668,7 +731,9 @@
     "icA9VideoBidder": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -682,8 +747,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -695,7 +762,9 @@
     "icRealVu": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -709,7 +778,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -722,7 +793,9 @@
         {
             "apps": [
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -743,7 +816,9 @@
     "icPrebidBeachfront": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -756,7 +831,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -771,7 +848,9 @@
     "icA9LoggerErrorCodes": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ]
         }
@@ -779,6 +858,7 @@
     "icPrebidKargo": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -796,8 +876,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -810,6 +892,8 @@
         {
             "apps": [
                 "f2",
+                "fandomdesktop",
+                "fandommobile",
                 "futhead",
                 "gamepedia",
                 "mobile-wiki",
@@ -827,7 +911,9 @@
     "icPrebidVerizon": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -839,6 +925,7 @@
     "icOverscrolledTracking": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -851,7 +938,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2068,6 +2157,7 @@
     "icUAPNewBFAATemplate": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -2078,6 +2168,7 @@
         },
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -2092,8 +2183,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2117,7 +2210,9 @@
         {
             "apps": [
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2129,7 +2224,9 @@
     "icA9VideoBidsCleaning": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2143,8 +2240,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2158,7 +2257,9 @@
             "apps": [
                 "f2",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2170,7 +2271,9 @@
     "icFeaturedVideoAdsFrequency": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2191,8 +2294,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2204,7 +2309,9 @@
     "icPrebidAppNexusAdditionalKeyvals": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2219,8 +2326,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2246,8 +2355,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2259,7 +2370,9 @@
     "icDurationMediaLibraryUrl": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2273,8 +2386,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2286,7 +2401,9 @@
     "icStroer": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2298,7 +2415,9 @@
     "icPorvataDirect": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2311,7 +2430,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2335,8 +2456,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2348,7 +2471,9 @@
     "icSilverSurfer": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2373,6 +2498,7 @@
     "icConfiant": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -2389,8 +2515,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2404,8 +2532,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2417,7 +2547,9 @@
     "icPrebidTelaria": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2431,8 +2563,10 @@
             "apps": [
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2445,7 +2579,9 @@
         {
             "apps": [
                 "f2",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ]
         }
@@ -2453,7 +2589,9 @@
     "icAdMarketplace": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2463,7 +2601,9 @@
         },
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2477,7 +2617,9 @@
     "icPrebidMediaGrid": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2489,6 +2631,7 @@
     "icFloorAdhesionForceSafeFrame": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -2500,7 +2643,9 @@
     "icFloorAdhesionDelay": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2511,7 +2656,9 @@
         },
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2522,7 +2669,9 @@
         },
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2533,7 +2682,9 @@
         },
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2545,6 +2696,7 @@
     "icScrollSpeedTracking": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -2559,8 +2711,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2576,8 +2730,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2591,7 +2747,9 @@
             "apps": [
                 "f2",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2605,7 +2763,9 @@
     "icDurationMedia": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2617,6 +2777,7 @@
     "icFloorAdhesionTimeToCloseButton": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki"
             ],
             "regions": [
@@ -2631,8 +2792,10 @@
                 "f2",
                 "futhead",
                 "gamepedia",
+                "fandommobile",
                 "mobile-wiki",
                 "muthead",
+                "fandomdesktop",
                 "oasis"
             ],
             "regions": [
@@ -2644,7 +2807,9 @@
     "icDeRecoExperiment": [
         {
             "apps": [
+                "fandommobile",
                 "mobile-wiki",
+                "fandomdesktop",
                 "oasis"
             ],
             "sampling": 100.0,
