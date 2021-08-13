@@ -7,10 +7,12 @@ import {
 	PorvataTemplate,
 	TemplateRegistry,
 	templateService,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
-import { registerBfaaNewTemplate } from './bfaa-new-template';
+import { registerBfaa3Template } from './bfaa-3-template';
+import { registerBfaaOldTemplate } from './bfaa-old-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
@@ -28,8 +30,10 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const interstitial$ = registerInterstitialTemplate(this.registry);
 		const bfaa$ = context.get('options.newBfaaTemplate')
-			? registerBfaaNewTemplate(this.registry)
-			: registerBfaaTemplate(this.registry);
+			? utils.queryString.get('use-uap-3')
+				? registerBfaa3Template(this.registry)
+				: registerBfaaTemplate(this.registry)
+			: registerBfaaOldTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);

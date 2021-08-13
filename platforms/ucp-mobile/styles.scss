@@ -35,6 +35,32 @@
 		}
 	}
 
+	.uap-light {
+		$global-navigation-width: 55px;
+
+		.top-ads-container {
+			position: relative;
+			margin-top: $global-navigation-width;
+
+			.ad-slot-placeholder.top-leaderboard {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		#top_leaderboard {
+			top: $global-navigation-width;
+			z-index: 202;
+		}
+
+		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
+			clip: rect(0, auto, auto, 0);
+		}
+	}
+
 	.has-new-uap {
 		.top-leaderboard.ad-slot-placeholder {
 			left: 0;
@@ -255,7 +281,6 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
-body:not(.has-uap):not(.has-new-uap) .ad-slot-placeholder.top-leaderboard,
 .ad-slot-placeholder.top-boxad,
 .ad-slot-placeholder.bottom-leaderboard,
 .ic-ad-slot-placeholder {
