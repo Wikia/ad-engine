@@ -5,10 +5,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -20,9 +18,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -35,9 +31,7 @@
             "apps": [
                 "f2",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "FI",
@@ -60,9 +54,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -74,9 +66,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -88,9 +78,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "CA",
@@ -103,9 +91,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "sampling": 100.0,
             "value": {
@@ -136,9 +122,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "CA",
@@ -154,10 +138,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -168,8 +150,7 @@
     "icAudigent": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -181,9 +162,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -194,8 +173,7 @@
     "icFloorAdhesionViewportsToStart": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -208,10 +186,8 @@
             "apps": [
                 "futhead",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -225,9 +201,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -241,10 +215,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -259,10 +231,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "AU",
@@ -288,10 +258,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -303,9 +271,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "DK",
@@ -328,9 +294,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "GB",
@@ -342,8 +306,7 @@
     "icBTRec": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -356,9 +319,7 @@
             "apps": [
                 "f2",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ]
         }
     ],
@@ -366,9 +327,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -379,8 +338,7 @@
     "icFloatingMedrecDestroyable": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -394,10 +352,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -413,10 +369,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -427,8 +381,7 @@
     "icRotatorDelay": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -458,9 +411,7 @@
             "apps": [
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -476,10 +427,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -492,9 +441,7 @@
             "apps": [
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -506,9 +453,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "value": false
         }
@@ -517,9 +462,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -533,10 +476,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -548,9 +489,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "CA",
@@ -564,9 +503,7 @@
             "apps": [
                 "f2",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -577,8 +514,7 @@
     "icHiViLeaderboardSlot": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -591,9 +527,7 @@
             "apps": [
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -614,9 +548,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -629,9 +561,7 @@
             "apps": [
                 "f2",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "AU",
@@ -646,9 +576,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ]
         }
     ],
@@ -659,10 +587,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -678,9 +604,7 @@
                 "fandommobile",
                 "futhead",
                 "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "muthead"
             ],
             "regions": [
                 "PL"
@@ -694,9 +618,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -707,8 +629,7 @@
     "icA9HiviLeaderboard": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -721,9 +642,7 @@
             "apps": [
                 "f2",
                 "fandomdesktop",
-                "fandommobile",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -1949,10 +1868,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -1976,9 +1893,7 @@
             "apps": [
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -1990,9 +1905,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2006,10 +1919,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2023,9 +1934,7 @@
                 "f2",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -2037,9 +1946,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2060,10 +1967,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2075,9 +1980,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2092,10 +1995,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2121,10 +2022,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2136,9 +2035,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2152,10 +2049,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2167,9 +2062,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "DE"
@@ -2181,9 +2074,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2196,9 +2087,7 @@
             "apps": [
                 "f2",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "AU",
@@ -2222,10 +2111,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2237,9 +2124,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "CH",
@@ -2263,8 +2148,7 @@
     "icConfiant": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "value": false
         }
@@ -2275,10 +2159,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2292,10 +2174,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2307,9 +2187,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2321,8 +2199,7 @@
         {
             "apps": [
                 "gamepedia",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "PL"
@@ -2349,10 +2226,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2363,8 +2238,7 @@
     "icAdditionalVastSize": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "CH"
@@ -2375,8 +2249,7 @@
     "icInterventionTracking": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2389,17 +2262,14 @@
             "apps": [
                 "f2",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ]
         }
     ],
     "icDistroScale": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "AE",
@@ -2453,9 +2323,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US-CA"
@@ -2465,9 +2333,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "AU",
@@ -2481,9 +2347,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2495,9 +2359,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "CA",
@@ -2508,9 +2370,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -2521,9 +2381,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -2534,9 +2392,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2547,8 +2403,7 @@
     "icPrebidMedianet": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -2564,10 +2419,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2583,10 +2436,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2600,9 +2451,7 @@
                 "f2",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "GB",
@@ -2616,9 +2465,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2629,8 +2476,7 @@
     "icFloorAdhesionTimeToCloseButton": [
         {
             "apps": [
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2645,10 +2491,8 @@
                 "futhead",
                 "gamepedia",
                 "fandommobile",
-                "mobile-wiki",
                 "muthead",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2660,9 +2504,7 @@
         {
             "apps": [
                 "fandommobile",
-                "mobile-wiki",
-                "fandomdesktop",
-                "oasis"
+                "fandomdesktop"
             ],
             "sampling": 100.0,
             "value": {
