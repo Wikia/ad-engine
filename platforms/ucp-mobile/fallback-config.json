@@ -2068,30 +2068,10 @@
                 "5755802833",
                 "5755802827",
                 "5755802830",
-                "5762247977"
+                "5762247977",
+                "5760963750",
+                "5760963753"
             ]
-        }
-    ],
-    "icUAPNewBFAATemplate": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": true
-        },
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 100.0,
-            "value": false
         }
     ],
     "icLABradorGamKeyValues": [
