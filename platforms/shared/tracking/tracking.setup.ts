@@ -120,8 +120,12 @@ export class TrackingSetup {
 	}
 
 	private adClickTracker(): void {
+		if (this.slotTrackingMiddlewares.length === 0) {
+			return;
+		}
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
+		adClickTracker.add(...this.slotTrackingMiddlewares);
 		adClickTracker.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
 

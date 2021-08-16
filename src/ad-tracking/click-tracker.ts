@@ -18,17 +18,23 @@ interface AdClickContext {
 class AdClickTracker {
 	private pipeline = new FuncPipeline<AdClickContext>();
 
-	register(middleware: FuncPipelineStep<AdClickContext>): void {
+	add(...middlewares: FuncPipelineStep<AdClickContext>[]): this {
+		this.pipeline.add(...middlewares);
+
+		return this;
+	}
+
+	register(callback: FuncPipelineStep<AdClickContext>): void {
 		communicationService.action$
 			.pipe(ofType(adSlotLoadedEvent))
 			.subscribe(async ({ event, adSlotName }) => {
 				if (event === AdSlot.SLOT_RENDERED_EVENT) {
-					this.addClickTrackingListeners(middleware, adSlotName);
+					this.addClickTrackingListeners(callback, adSlotName);
 				}
 			});
 	}
 
-	private addClickTrackingListeners(middleware: FuncPipelineStep<AdClickContext>, slotName): void {
+	private addClickTrackingListeners(callback: FuncPipelineStep<AdClickContext>, slotName): void {
 		const adSlot = slotService.get(slotName);
 		const iframeElement = adSlot.getIframe();
 		const slotElement = adSlot.getAdContainer();
@@ -47,15 +53,15 @@ class AdClickTracker {
 
 		if (iframeBody && slotElement) {
 			slotElement.firstElementChild.addEventListener('click', () => {
-				this.handleClickEvent(middleware, adSlot);
+				this.handleClickEvent(callback, adSlot);
 			});
 			iframeBody.addEventListener('click', () => {
-				this.handleClickEvent(middleware, adSlot);
+				this.handleClickEvent(callback, adSlot);
 			});
 		}
 	}
 
-	private handleClickEvent(middleware: FuncPipelineStep<AdClickContext>, slot: AdSlot): void {
+	private handleClickEvent(callback: FuncPipelineStep<AdClickContext>, slot: AdSlot): void {
 		this.pipeline.execute(
 			{
 				slot,
@@ -63,7 +69,7 @@ class AdClickTracker {
 					ad_status: AdSlot.STATUS_CLICKED,
 				},
 			},
-			middleware,
+			callback,
 		);
 	}
 }
