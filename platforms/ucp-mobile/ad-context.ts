@@ -29,11 +29,11 @@ export const basicContext = {
 		},
 	},
 	custom: {
+		dbNameForAdUnit: '_not_a_top1k_wiki',
 		dfpId: '5441',
-		wikiIdentifier: '_not_a_top1k_wiki',
-		wikiDBNameIdentifier: '_not_a_top1k_wiki',
-		serverPrefix: 'wka1b',
 		rolloutTracking: 'ucp',
+		serverPrefix: 'wka1b',
+		wikiIdentifier: '_not_a_top1k_wiki',
 	},
 	events: {
 		pushOnScroll: {
@@ -46,19 +46,19 @@ export const basicContext = {
 	slots: {},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/' +
-			'{custom.serverPrefix}.{slotConfig.group}/' +
-			'{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
-			'{state.deviceType}/' +
-			'{targeting.skin}-{targeting.original_host}-{targeting.s2}/' +
-			'{custom.wikiIdentifier}-{targeting.s0}',
-		dbNameAdUnitId:
-			'/{custom.dfpId}/' +
-			'{custom.serverPrefix}.{slotConfig.group}/' +
-			'{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
-			'{state.deviceType}/' +
-			'{targeting.skin}-{targeting.original_host}-{targeting.s2}/' +
-			'{custom.wikiDBNameIdentifier}-{targeting.s0}',
+			'/{custom.dfpId}' +
+			'/{custom.serverPrefix}.{slotConfig.group}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{state.deviceType}' +
+			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+			'/{custom.wikiIdentifier}-{targeting.s0}',
+		adUnitIdWithDbName:
+			'/{custom.dfpId}' +
+			'/{custom.serverPrefix}.{slotConfig.group}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{state.deviceType}' +
+			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
 		rollout_tracking: ['ucp'],
