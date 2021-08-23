@@ -22,7 +22,6 @@ export class BfaaBootstrapLightHandler implements TemplateStateHandler {
 		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('bfaa-template');
-		this.adSlot.addClass('uap-toc-pusher');
 		this.adSlot.addClass('slot-responsive');
 		this.adSlot.addClass('theme-hivi'); // Required by replay-overlay
 		this.adSlot.getAdContainer().classList.add('iframe-container');
