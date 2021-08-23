@@ -142,15 +142,7 @@ class Client {
 	}
 
 	isMobileSkin(skin: string): boolean {
-		const mobileSkins = [
-			'mercury',
-			'fandom_mobile',
-			'fc_mobile',
-			'minerva',
-			'turf_mobile',
-			'fandommobile',
-			'ucp_mobile',
-		];
+		const mobileSkins = ['fandom_mobile', 'fc_mobile', 'turf_mobile', 'fandommobile', 'ucp_mobile'];
 
 		return mobileSkins.includes(skin);
 	}
