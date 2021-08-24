@@ -10,6 +10,7 @@ import {
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
+	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
 	nielsen,
@@ -28,9 +29,13 @@ export class UcpAdsMode implements DiProcess {
 
 	execute(): void {
 		const inhibitors = this.callExternals();
-
 		this.setupJWPlayer(inhibitors);
-		startAdEngine(inhibitors);
+
+		const jwpInhibitor = [jwPlayerInhibitor.get()];
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
+		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
+			startAdEngine(inhibitors);
+		});
 
 		this.setAdStack();
 		this.trackAdEngineStatus();
