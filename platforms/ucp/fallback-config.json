@@ -1878,7 +1878,10 @@
                 "5766072950",
                 "5766072953",
                 "5765123908",
-                "5766234870"
+                "5768678810",
+                "5768678813",
+                "5766234870",
+                "5769564367"
             ]
         }
     ],
@@ -2165,8 +2168,8 @@
     "icSilverSurfer": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "CH",
@@ -2183,7 +2186,9 @@
                 "affiliation:g_affiliation",
                 "language:g_language",
                 "interests:g_interests",
-                "country:g_country"
+                "country:g_country",
+                "consoles:g_console",
+                "streaming:g_streaming"
             ]
         }
     ],
