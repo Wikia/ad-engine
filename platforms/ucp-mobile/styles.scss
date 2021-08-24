@@ -36,11 +36,9 @@
 	}
 
 	.uap-light {
-		$global-navigation-width: 55px;
-
 		.top-ads-container {
 			position: relative;
-			margin-top: $global-navigation-width;
+			margin-top: $fandom-navbar-height;
 
 			.ad-slot-placeholder.top-leaderboard {
 				position: absolute;
@@ -52,7 +50,7 @@
 		}
 
 		#top_leaderboard {
-			top: $global-navigation-width;
+			top: $fandom-navbar-height;
 			z-index: 202;
 		}
 
