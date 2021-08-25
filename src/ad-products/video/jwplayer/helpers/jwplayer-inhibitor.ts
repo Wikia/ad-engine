@@ -16,7 +16,7 @@ export class JWPlayerInhibitor {
 		return this.getExtendedPromise();
 	}
 
-	resolve(lineItemId: string, creativeId: string): void {
+	resolve(lineItemId: string = null, creativeId: string = null): void {
 		if (!this.isEnabled()) {
 			return;
 		}
