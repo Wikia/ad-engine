@@ -252,6 +252,15 @@
             "value": true
         }
     ],
+    "icUAPJWPlayer": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -580,6 +589,15 @@
             ]
         }
     ],
+    "icUAPJWPlayerDelay": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": 0
+        }
+    ],
     "icPlayerTracking": [
         {
             "apps": [
@@ -648,6 +666,8 @@
                 "XX"
             ],
             "value": [
+                "5767211193",
+                "5767211196",
                 "5748920809",
                 "5748920800",
                 "5733067199",
@@ -1883,28 +1903,6 @@
                 "5766234870",
                 "5769564367"
             ]
-        }
-    ],
-    "icUAPNewBFAATemplate": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": true
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 100.0,
-            "value": false
         }
     ],
     "icLABradorGamKeyValues": [

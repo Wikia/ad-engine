@@ -299,6 +299,15 @@
             "value": true
         }
     ],
+    "icUAPJWPlayer": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": false
+        }
+    ],
     "icFloorAdhesion": [
         {
             "apps": [
@@ -776,6 +785,15 @@
             ]
         }
     ],
+    "icUAPJWPlayerDelay": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": 0
+        }
+    ],
     "icPrebidKargo": [
         {
             "apps": [
@@ -858,6 +876,8 @@
                 "XX"
             ],
             "value": [
+                "5767211193",
+                "5767211196",
                 "5748920809",
                 "5748920800",
                 "5733067199",
