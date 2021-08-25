@@ -1,5 +1,5 @@
 import { context, utils } from '@ad-engine/core';
-import { universalAdPackage } from '../../../templates/uap/universal-ad-package';
+import { universalAdPackage } from '../../../templates';
 
 export class JWPlayerInhibitor {
 	private promise: utils.ExtendedPromise<void>;
@@ -16,7 +16,7 @@ export class JWPlayerInhibitor {
 		return this.getExtendedPromise();
 	}
 
-	resolve(lineItemId: string = null, creativeId: string = null): void {
+	resolve(lineItemId: string, creativeId: string): void {
 		if (!this.isEnabled()) {
 			return;
 		}
