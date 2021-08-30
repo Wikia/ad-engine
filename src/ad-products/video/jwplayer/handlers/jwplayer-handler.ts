@@ -49,7 +49,6 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('adRequest'),
 			tap(({ state }) => {
-				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdRequest();
 			}),
 		);
@@ -60,6 +59,7 @@ export class JWPlayerHandler {
 			ofJwpEvent('adImpression'),
 			tap(({ state }) => {
 				this.helper.setSlotParams(state.vastParams);
+				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
 			}),
 			filter(() => this.helper.isMoatTrackingEnabled()),
