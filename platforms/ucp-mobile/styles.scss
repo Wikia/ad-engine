@@ -263,9 +263,6 @@ not(.ic-ad-slot-placeholder) {
 			&:after {
 				content: '';
 				position: absolute;
-				left: -5px;
-				top: -2px;
-				z-index: -1;
 				width: 45px;
 				height: 45px;
 			}
