@@ -37,7 +37,7 @@ import { Observable } from 'rxjs';
 import { registerUcpMobileUapDomElements } from './configs/register-ucp-mobile-uap-dom-elements';
 import { BfaaUcpMobileConfigHandler } from './handlers/bfaa/bfaa-ucp-mobile-config-handler';
 
-export function registerBfaaNewTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+export function registerBfaa3Template(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'bfaa',
 		{
