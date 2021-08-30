@@ -1,4 +1,4 @@
-import { aax, babDetection, btRec } from '@wikia/ad-engine';
+import { aax, babDetection, btfBlockerService, btRec } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
 class WadRunner {
@@ -12,6 +12,7 @@ class WadRunner {
 		trackBab(isBabDetected);
 
 		if (isBabDetected) {
+			btfBlockerService.finishFirstCall();
 			btRec.run();
 			aax.call();
 		}
