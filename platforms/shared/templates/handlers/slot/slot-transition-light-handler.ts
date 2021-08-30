@@ -29,6 +29,7 @@ export class SlotTransitionLightHandler implements TemplateStateHandler {
 			.pipe(
 				tap(() => {
 					const correction = this.scrollCorrector.useScrollCorrection();
+					this.adSlot.removeClass('uap-toc-pusher');
 
 					transition('resolved').then(correction);
 				}),
