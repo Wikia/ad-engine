@@ -326,5 +326,6 @@ export const universalAdPackage = {
 	loadVideoAd,
 	reset,
 	setType,
+	updateSlotsTargeting,
 	uapLoadStatus,
 };
