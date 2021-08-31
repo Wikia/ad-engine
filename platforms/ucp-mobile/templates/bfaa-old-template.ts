@@ -27,21 +27,22 @@ import {
 	VideoCtpHandler,
 	VideoDomManager,
 	VideoDomReader,
+	VideoLearnMoreHandler,
 	VideoRestartHandler,
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { registerUcpUapDomElements } from './configs/register-ucp-uap-dom-elements';
-import { BfaaOasisConfigHandler } from './handlers/bfaa/bfaa-oasis-config-handler';
+import { registerUcpMobileUapDomElements } from './configs/register-ucp-mobile-uap-dom-elements';
+import { BfaaUcpMobileConfigHandler } from './handlers/bfaa/bfaa-ucp-mobile-config-handler';
 
-export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+export function registerBfaaOldTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
 	return registry.register(
 		'bfaa',
 		{
 			initial: [
-				BfaaOasisConfigHandler,
+				BfaaUcpMobileConfigHandler,
 				BfaaBootstrapHandler,
 				VideoBootstrapHandler,
 				VideoCtpHandler,
@@ -56,6 +57,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				PageOffsetImpactHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
+				VideoLearnMoreHandler,
 				DomCleanupHandler,
 			],
 			sticky: [
@@ -95,7 +97,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			VideoDomManager,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
-			registerUcpUapDomElements(),
+			registerUcpMobileUapDomElements(),
 		],
 	);
 }
