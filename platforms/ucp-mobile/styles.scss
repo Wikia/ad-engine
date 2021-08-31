@@ -259,6 +259,13 @@ not(.ic-ad-slot-placeholder) {
 			width: 40px;
 			height: 40px;
 			top: -20px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
 		}
 	}
 }
