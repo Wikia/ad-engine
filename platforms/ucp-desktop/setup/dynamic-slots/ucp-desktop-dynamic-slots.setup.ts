@@ -116,7 +116,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureTopLeaderboard(): void {
-		const hiviLBEnabled = context.get('options.hiviLeaderboard');
+		const hiviLBEnabled =
+			context.get('options.hiviLeaderboard') && !context.get('options.wad.blocking');
 
 		if (hiviLBEnabled) {
 			context.set('slots.top_leaderboard.firstCall', false);
