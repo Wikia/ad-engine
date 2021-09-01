@@ -4,9 +4,11 @@ import {
 	context,
 	DiProcess,
 	iasPublisherOptimization,
+	jwPlayerInhibitor,
 	JWPlayerManager,
 	nielsen,
 	permutive,
+	Runner,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -16,9 +18,13 @@ export class F2AdsMode implements DiProcess {
 
 	execute(): void {
 		const inhibitors = this.callExternals();
-
 		this.setupJWPlayer();
-		startAdEngine(inhibitors);
+
+		const jwpInhibitor = [jwPlayerInhibitor.get()];
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
+		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
+			startAdEngine(inhibitors);
+		});
 
 		this.trackAdEngineStatus();
 	}

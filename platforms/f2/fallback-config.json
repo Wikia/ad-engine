@@ -4,7 +4,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -55,7 +54,6 @@
                 "fandomdesktop",
                 "fandommobile",
                 "futhead",
-                "gamepedia",
                 "muthead"
             ],
             "regions": [
@@ -72,7 +70,6 @@
                 "bingebot",
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1358,6 +1355,10 @@
                 "5776002149",
                 "5774100870",
                 "5775490702",
+                "5741889554",
+                "5741204557",
+                "5741889557",
+                "5741204551",
                 "5775490705",
                 "5775997805"
             ]
@@ -1368,7 +1369,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1383,7 +1383,6 @@
         {
             "apps": [
                 "f2",
-                "gamepedia",
                 "fandommobile",
                 "fandomdesktop"
             ],
@@ -1398,7 +1397,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "muthead"
             ],
             "regions": [
@@ -1424,7 +1422,6 @@
                 "bingebot",
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1440,7 +1437,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1457,7 +1453,6 @@
                 "bingebot",
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1473,7 +1468,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1488,7 +1482,6 @@
         {
             "apps": [
                 "f2",
-                "gamepedia",
                 "fandommobile",
                 "fandomdesktop"
             ],
@@ -1505,7 +1498,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1533,7 +1525,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
@@ -1585,7 +1576,6 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
                 "fandommobile",
                 "muthead",
                 "fandomdesktop"
