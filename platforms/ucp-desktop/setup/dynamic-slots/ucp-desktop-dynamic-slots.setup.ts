@@ -1,6 +1,7 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
+	babDetection,
 	btRec,
 	communicationService,
 	context,
@@ -115,8 +116,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		rotator.rotateSlot();
 	}
 
-	private configureTopLeaderboard(): void {
-		const hiviLBEnabled = context.get('options.hiviLeaderboard');
+	private async configureTopLeaderboard(): Promise<void> {
+		const isBabDetected = await babDetection.run();
+		const hiviLBEnabled = context.get('options.hiviLeaderboard') && !isBabDetected;
 
 		if (hiviLBEnabled) {
 			context.set('slots.top_leaderboard.firstCall', false);
@@ -139,6 +141,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 					stopLoading('.top-leaderboard');
 				}
 			});
+		} else {
+			slotService.setState('hivi_leaderboard', false);
 		}
 
 		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
