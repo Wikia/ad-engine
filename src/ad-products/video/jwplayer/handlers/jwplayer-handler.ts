@@ -3,6 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from '../helpers/jwplayer-helper';
+import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JWPlayerA9Logger } from '../jwplayer-a9-logger';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
@@ -32,19 +33,6 @@ export class JWPlayerHandler {
 		);
 	}
 
-	private adError(): Observable<unknown> {
-		return this.stream$.pipe(
-			ofJwpEvent('adError'),
-			tap(({ payload, state }) => {
-				log(`ad error message: ${payload.message}`);
-				this.helper.setSlotParams(state.vastParams);
-				this.helper.setSlotElementAttributes('error', state.vastParams);
-				this.helper.emitVideoAdError(payload.adErrorCode);
-				JWPlayerA9Logger.log(payload);
-			}),
-		);
-	}
-
 	private adRequest(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adRequest'),
@@ -61,9 +49,24 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
+				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
 			}),
 			filter(() => this.helper.isMoatTrackingEnabled()),
 			tap(({ payload }) => this.helper.trackMoat(payload)),
+		);
+	}
+
+	private adError(): Observable<unknown> {
+		return this.stream$.pipe(
+			ofJwpEvent('adError'),
+			tap(({ payload, state }) => {
+				log(`ad error message: ${payload.message}`);
+				this.helper.setSlotParams(state.vastParams);
+				this.helper.setSlotElementAttributes('error', state.vastParams);
+				this.helper.emitVideoAdError(payload.adErrorCode);
+				jwPlayerInhibitor.resolve();
+				JWPlayerA9Logger.log(payload);
+			}),
 		);
 	}
 
