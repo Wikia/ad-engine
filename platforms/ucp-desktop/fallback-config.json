@@ -2365,23 +2365,14 @@
     "icAdMarketplace": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "US-CA"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "AU",
                 "CA",
-                "US"
+                "US",
+                "XX-EU"
             ],
             "value": true
         }

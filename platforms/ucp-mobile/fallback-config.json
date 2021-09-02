@@ -2126,6 +2126,28 @@
             ]
         }
     ],
+    "icUAPNewBFAATemplate": [
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 50.0,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 100.0,
+            "value": false
+        }
+    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
@@ -2482,23 +2504,14 @@
     "icAdMarketplace": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "US-CA"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "AU",
                 "CA",
-                "US"
+                "US",
+                "XX-EU"
             ],
             "value": true
         }
