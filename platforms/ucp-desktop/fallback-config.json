@@ -1912,6 +1912,7 @@
                 "5741889557",
                 "5741204551",
                 "5775490705",
+                "5777655567",
                 "5775997805"
             ]
         }
@@ -2067,10 +2068,22 @@
     "icPrebidVersion": [
         {
             "apps": [
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210831.min.js"
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "XX"
