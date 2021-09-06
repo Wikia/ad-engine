@@ -31,6 +31,7 @@ export class PorvataPlayer {
 	readonly dom: PorvataDom;
 	readonly nativeFullscreen: NativeFullscreen;
 	readonly destroyCallbacks = new utils.LazyQueue();
+	readonly isVideoFound: boolean;
 
 	constructor(
 		private readonly adDisplayContainer: google.ima.AdDisplayContainer,
@@ -42,7 +43,9 @@ export class PorvataPlayer {
 
 		this.dom = new PorvataDom(playerContainer);
 		this.container = playerContainer;
-		this.nativeFullscreen = new NativeFullscreen(playerContainer);
+		const video = playerContainer.querySelector('video');
+		this.nativeFullscreen = new NativeFullscreen(video);
+		this.isVideoFound = video !== null;
 
 		this.registerStateListeners();
 

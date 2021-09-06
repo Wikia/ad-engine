@@ -33,7 +33,6 @@ export class PorvataListener {
 		complete: 'completed',
 		click: 'clicked',
 		firstquartile: 'first_quartile',
-		fullscreen_error: 'fullscreen_error',
 		impression: 'impression',
 		loaded: 'loaded',
 		midpoint: 'midpoint',
@@ -72,6 +71,10 @@ export class PorvataListener {
 
 	init(): void {
 		this.dispatch('init');
+	}
+
+	dispatchVideoNotFound(): void {
+		this.dispatch('video_not_found');
 	}
 
 	registerVideoEvents(video: PorvataPlayer | NewPorvataPlayer): void {

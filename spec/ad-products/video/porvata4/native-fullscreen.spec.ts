@@ -2,8 +2,8 @@ import { NativeFullscreen } from '@wikia/ad-products/video/porvata4/native-fulls
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-describe.only('native-fullscreen', () => {
-	it('should not be supported and send event to DW if the video element is null', () => {
+describe('native-fullscreen', () => {
+	it('should not be supported if the video element is null', () => {
 		const testElementMock: HTMLElement = ({ querySelector: () => null } as unknown) as HTMLElement;
 		const testInstance = new NativeFullscreen(testElementMock);
 
