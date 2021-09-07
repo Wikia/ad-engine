@@ -15,11 +15,8 @@ describe('native-fullscreen', () => {
 			webkitRequestFullscreen: () => {},
 			webkitExitFullscreen: () => {},
 			onwebkitfullscreenchange: () => {},
-		};
-		const testElementMock: HTMLElement = ({
-			querySelector: () => testVideoMock,
-		} as unknown) as HTMLElement;
-		const testInstance = new NativeFullscreen(testElementMock);
+		} as any;
+		const testInstance = new NativeFullscreen(testVideoMock);
 
 		expect(testInstance.isSupported()).to.be.true;
 	});
@@ -28,11 +25,8 @@ describe('native-fullscreen', () => {
 		const testVideoMock = {
 			webkitRequestFullscreen: spy(),
 			webkitExitFullscreen: spy(),
-		};
-		const testElementMock: HTMLElement = ({
-			querySelector: () => testVideoMock,
-		} as unknown) as HTMLElement;
-		const testInstance = new NativeFullscreen(testElementMock);
+		} as any;
+		const testInstance = new NativeFullscreen(testVideoMock);
 
 		expect(testVideoMock.webkitRequestFullscreen.called).to.be.false;
 		expect(testVideoMock.webkitExitFullscreen.called).to.be.false;
