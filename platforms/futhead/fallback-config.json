@@ -189,8 +189,7 @@
                 "muthead"
             ],
             "regions": [
-                "DE",
-                "PL"
+                "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210831.min.js"
         },
@@ -200,9 +199,6 @@
                 "fandommobile",
                 "futhead",
                 "muthead"
-            ],
-            "regions": [
-                "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
         }
