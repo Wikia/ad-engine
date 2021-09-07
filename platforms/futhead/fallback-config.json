@@ -48,25 +48,21 @@
     "icLABradorGamKeyValues": [
         {
             "apps": [
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
             "value": [
-                "icPrebidSendAllBids_A_95:send_all_bids_a",
-                "icPrebidSendAllBids_B_5:send_all_bids_b",
-                "icFloatingMedrecRecirculationDisabled_A_90:fmr_50_50_a",
-                "icFloatingMedrecRecirculationDisabled_B_10:fmr_50_50_b",
-                "icIxIdentityLibrary_A_90:ix_library_a",
-                "icIxIdentityLibrary_B_10:ix_library_b",
                 "icFloorAdhesionDelay_A_50:fd_50_50_a",
                 "icFloorAdhesionDelay_B_50:fd_50_50_b",
                 "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b"
+                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
+                "icUAPJWPlayer_A_99:uap_jwp_99_a",
+                "icUAPJWPlayer_B_1:uap_jwp_1_b"
             ]
         }
     ],
@@ -187,10 +183,23 @@
     "icPrebidVersion": [
         {
             "apps": [
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "DE",
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210831.min.js"
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "XX"
