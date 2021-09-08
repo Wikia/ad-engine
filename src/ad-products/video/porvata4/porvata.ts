@@ -186,9 +186,6 @@ export class Porvata {
 		porvataListener.init();
 
 		return PorvataFactory.create(videoSettings).then((player: PorvataPlayer) => {
-			if (!player.isVideoFound) {
-				porvataListener.dispatchVideoNotFound();
-			}
 			function inViewportCallback(isVisible: boolean): void {
 				// Play video automatically only for the first time
 				if (isVisible && !autoPlayed && params.autoPlay) {

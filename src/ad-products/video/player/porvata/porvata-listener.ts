@@ -73,10 +73,6 @@ export class PorvataListener {
 		this.dispatch('init');
 	}
 
-	dispatchVideoNotFound(): void {
-		this.dispatch('video_not_found');
-	}
-
 	registerVideoEvents(video: PorvataPlayer | NewPorvataPlayer): void {
 		this.video = video;
 		this.dispatch('ready');
