@@ -1,4 +1,4 @@
-import { DomListener, TemplateStateHandler } from '@wikia/ad-engine';
+import { DomListener, TemplateStateHandler, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil, tap } from 'rxjs/operators';
@@ -15,7 +15,7 @@ export class SlotSizeImpactHandler implements TemplateStateHandler {
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setSlotHeightImpact()),
+				tap(() => utils.defer(() => this.manager.setSlotHeightImpact())),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
