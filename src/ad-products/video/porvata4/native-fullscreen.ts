@@ -7,9 +7,7 @@ export class NativeFullscreen {
 	private readonly fullscreenChangeEvent;
 	private fullscreen = false;
 
-	constructor(element: HTMLElement) {
-		const video = element.querySelector('video');
-
+	constructor(video: HTMLElement) {
 		this.enter = utils.tryProperty(video, [
 			'webkitRequestFullscreen',
 			'webkitEnterFullscreen',

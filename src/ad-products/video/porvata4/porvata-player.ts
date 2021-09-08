@@ -42,7 +42,8 @@ export class PorvataPlayer {
 
 		this.dom = new PorvataDom(playerContainer);
 		this.container = playerContainer;
-		this.nativeFullscreen = new NativeFullscreen(playerContainer);
+		const video = playerContainer.querySelector('video');
+		this.nativeFullscreen = new NativeFullscreen(video);
 
 		this.registerStateListeners();
 
