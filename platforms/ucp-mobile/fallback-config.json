@@ -869,6 +869,8 @@
                 "XX"
             ],
             "value": [
+                "5782937222",
+                "5782937018",
                 "5767211193",
                 "5767211196",
                 "5748920809",
@@ -2131,7 +2133,8 @@
                 "5775490705",
                 "5777655567",
                 "5778918420",
-                "5775997805"
+                "5775997805",
+                "5770400280"
             ]
         }
     ],
@@ -2174,7 +2177,9 @@
                 "icUAPNewBFAATemplate_A_50:new_uap_50_a",
                 "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
-                "icUAPJWPlayer_B_1:uap_jwp_1_b"
+                "icUAPJWPlayer_B_1:uap_jwp_1_b",
+                "icAax_A_95:recovery_test_a",
+                "icAax_B_5:recovery_test_b"
             ]
         }
     ],
@@ -2313,15 +2318,6 @@
                 "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210831.min.js"
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
         }
     ],
     "icDurationMediaLibraryUrl": [
