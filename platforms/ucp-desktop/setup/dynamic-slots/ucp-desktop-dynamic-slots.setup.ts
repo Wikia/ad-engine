@@ -149,11 +149,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			stopLoading('.top-leaderboard', 'parent');
 		});
 
-		if (
-			!context.get('custom.hasFeaturedVideo') &&
-			context.get('wiki.targeting.pageType') !== 'special'
-		) {
-			slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
+		if (!context.get('custom.hasFeaturedVideo')) {
+			if (context.get('wiki.targeting.pageType') !== 'special') {
+				slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
+			}
 
 			if (context.get('templates.stickyTlb.lineItemIds')) {
 				context.set('templates.stickyTlb.enabled', true);

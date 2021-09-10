@@ -100,6 +100,8 @@
                 "XX"
             ],
             "value": [
+                "5782937222",
+                "5782937018",
                 "5767211193",
                 "5767211196",
                 "5748920809",
@@ -1360,7 +1362,10 @@
                 "5741889557",
                 "5741204551",
                 "5775490705",
-                "5775997805"
+                "5777655567",
+                "5778918420",
+                "5775997805",
+                "5770400280"
             ]
         }
     ],
@@ -1452,15 +1457,15 @@
             "apps": [
                 "bingebot",
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.4/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [

@@ -82,7 +82,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotName = 'top_boxad';
 		const isTBPlaceholderOnBackendEnabled = context.get('wiki.opts.enableTBPlaceholderOnBackend');
-		const defaultClasses = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
+		const wrapperClassList = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
 
 		const clsImprovedSlotSetupDefinition: SlotSetupDefinition = {
 			slotCreatorConfig: {
@@ -108,7 +108,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: defaultClasses,
+				classList: wrapperClassList,
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
@@ -236,9 +236,25 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: ['ad-slot-wrapper', 'mobile-prefooter'],
+				classList: [
+					'ad-slot-wrapper',
+					'ad-slot-placeholder',
+					'mobile-prefooter',
+					'is-loading',
+					'hide',
+				],
 			},
-			activator: () => this.pushWaitingSlot(slotName),
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+				slotService.on('mobile_prefooter', AdSlot.SLOT_REQUESTED_EVENT, () => {
+					const mobilePrefooter = document.querySelector('.mobile-prefooter');
+					mobilePrefooter.classList.remove('hide');
+				});
+				slotService.on('mobile_prefooter', AdSlot.SLOT_RENDERED_EVENT, () => {
+					const mobilePrefooter = document.querySelector('.mobile-prefooter');
+					mobilePrefooter.classList.remove('is-loading');
+				});
+			},
 		};
 	}
 
