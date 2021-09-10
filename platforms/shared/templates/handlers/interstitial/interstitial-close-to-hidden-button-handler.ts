@@ -10,7 +10,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
-export class CloseToHiddenIhiButtonHandler implements TemplateStateHandler {
+export class InterstitialCloseToHiddenButtonHandler implements TemplateStateHandler {
 	private button: HTMLButtonElement;
 	private readonly showCloseButtonAfter?: number;
 
