@@ -301,8 +301,8 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '#fandom-mobile-wrapper',
-				insertMethod: 'after',
+				anchorSelector: '#floor_adhesion_anchor',
+				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {

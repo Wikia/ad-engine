@@ -1,9 +1,10 @@
 import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { CloseToHiddenIhiButtonHandler } from './handlers/close-to-hidden-ihi-button-handler';
 import { DebugTransitionHandler } from './handlers/debug-transition-handler';
 import { DomCleanupHandler } from './handlers/dom-cleanup-handler';
+import { FloorAdhesionAnchorHiddenHandler } from './handlers/floor-adhesion/floor-adhesion-anchor-hidden-handler';
 import { FloorAdhesionBootstrapHandler } from './handlers/floor-adhesion/floor-adhesion-bootstrap-handler';
+import { FloorAdhesionCloseButtonHandler } from './handlers/floor-adhesion/floor-adhesion-close-button-handler';
 import { SlotDecisionOnViewabilityHandler } from './handlers/slot/slot-decision-on-viewability-handler';
 import { SlotHiddenHandler } from './handlers/slot/slot-hidden-handler';
 import { SlotTransitionIhiHandler } from './handlers/slot/slot-transition-ihi-handler';
@@ -16,9 +17,13 @@ export function registerFloorAdhesionTemplate(
 		'floorAdhesion',
 		{
 			initial: [FloorAdhesionBootstrapHandler, DebugTransitionHandler],
-			display: [SlotDecisionOnViewabilityHandler, CloseToHiddenIhiButtonHandler, DomCleanupHandler],
+			display: [
+				SlotDecisionOnViewabilityHandler,
+				FloorAdhesionCloseButtonHandler,
+				DomCleanupHandler,
+			],
 			transition: [SlotTransitionIhiHandler, DomCleanupHandler],
-			hidden: [SlotHiddenHandler, DomCleanupHandler],
+			hidden: [SlotHiddenHandler, FloorAdhesionAnchorHiddenHandler, DomCleanupHandler],
 		},
 		'initial',
 		[DomManipulator],

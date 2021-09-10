@@ -13,17 +13,15 @@ export class FloorAdhesionBootstrapHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
 		this.adSlot.addClass(AdSlot.HIDDEN_CLASS);
-		this.adSlot.addClass('floor-adhesion');
-		this.adSlot.addClass('out-of-page-template');
 
 		if (this.adSlot.isOutOfPage()) {
 			await slotTweaker.adjustIframeByContentSize(this.adSlot);
 		}
-
 		transition('display');
 	}
 
 	async onLeave(): Promise<void> {
+		document.getElementById('floor_adhesion_anchor').classList.remove('hide');
 		this.adSlot.show();
 	}
 }
