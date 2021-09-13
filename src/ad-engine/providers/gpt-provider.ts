@@ -4,6 +4,7 @@ import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
+	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -155,6 +156,11 @@ export class GptProvider implements Provider {
 	}
 
 	private fillInCallback(adSlot: AdSlot): void {
+		const slotName = adSlot.getSlotName();
+		if (window.realvu_aa) {
+			const { realvu } = window.realvu_aa.getStatusById(adSlot.getSlotName());
+			context.set(`slots.${slotName}.targeting.realvu`, [realvu]);
+		}
 		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);

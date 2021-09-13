@@ -36,6 +36,7 @@ interface Window {
 	pvUID?: string;
 	realvu_aa?: {
 		addUnitById: (any) => string;
+		getStatusById: (string) => any;
 		regUnit: (string) => string;
 	};
 	RLQ?: any;
