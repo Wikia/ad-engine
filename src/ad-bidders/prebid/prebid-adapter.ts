@@ -1,5 +1,7 @@
 import { Aliases, context, Dictionary } from '@ad-engine/core';
 import { isArray } from 'util';
+// tslint:disable-next-line:no-blacklisted-paths
+import { realVu } from '../../ad-services';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
@@ -49,10 +51,10 @@ export abstract class PrebidAdapter {
 		};
 
 		const slotName = getSlotNameByBidderAlias(placementName);
-		const realVu = context.get(`slots.${slotName}.targeting.realvu`);
+		const realvu = realVu.getSlotTargeting(slotName);
 
-		if (realVu) {
-			targeting.realvu = realVu;
+		if (realvu) {
+			targeting.realvu = realvu;
 		}
 
 		return targeting;

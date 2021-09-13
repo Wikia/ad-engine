@@ -1,10 +1,11 @@
 import { decorate } from 'core-decorators';
 // tslint:disable-next-line:no-blacklisted-paths
+import { realVu } from '../../ad-services';
+// tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
-	context,
 	events,
 	eventService,
 	slotDataParamsUpdater,
@@ -157,10 +158,7 @@ export class GptProvider implements Provider {
 
 	private fillInCallback(adSlot: AdSlot): void {
 		const slotName = adSlot.getSlotName();
-		if (window.realvu_aa) {
-			const { realvu } = window.realvu_aa.getStatusById(adSlot.getSlotName());
-			context.set(`slots.${slotName}.targeting.realvu`, [realvu]);
-		}
+		realVu.updateSlotTargeting(slotName);
 		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);

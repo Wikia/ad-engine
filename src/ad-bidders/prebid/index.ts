@@ -11,6 +11,8 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { TrackingBidDefinition } from '@ad-engine/tracking';
+// tslint:disable-next-line:no-blacklisted-paths
+import { realVu } from '../../ad-services';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
@@ -159,30 +161,8 @@ export class PrebidProvider extends BidderProvider {
 	async applyAnalytics(): Promise<void> {
 		const pbjs = await pbjsFactory.init();
 
-		if (context.get('services.realVu.enabled') && context.get('services.realVu.partnerId')) {
-			pbjs.enableAnalytics({
-				provider: 'realvuAnalytics',
-				options: {
-					partnerId: context.get('services.realVu.partnerId'),
-					reqAllUnits: true,
-				},
-			});
-
-			Object.keys(context.get('slots') || []).forEach((slotName) => {
-				if (window.realvu_aa) {
-					const status =
-						window.realvu_aa.addUnitById({
-							partner_id: 'E6H4',
-							unit_id: slotName,
-							mode: 'kvp',
-						}) || 'na';
-
-					context.set(`slots.${slotName}.targeting.realvu`, [status]);
-				} else {
-					context.set(`slots.${slotName}.targeting.realvu`, ['too_late']);
-				}
-			});
-		}
+		realVu.enableAnalytics(pbjs);
+		realVu.setInitialTargeting();
 	}
 
 	async applySettings(): Promise<void> {
