@@ -1,7 +1,5 @@
 import { decorate } from 'core-decorators';
 // tslint:disable-next-line:no-blacklisted-paths
-import { realVu } from '../../ad-services';
-// tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
@@ -12,6 +10,7 @@ import {
 	slotService,
 	trackingOptIn,
 } from '../services';
+import { realVu } from '../tracking';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';

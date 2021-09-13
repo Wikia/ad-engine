@@ -1,4 +1,5 @@
-import { context, utils } from '@ad-engine/core';
+import { context } from '../services';
+import { logger } from '../utils';
 
 type Status = 'yes' | 'no' | 'na';
 const logGroup = 'real-vu';
@@ -6,7 +7,7 @@ const logGroup = 'real-vu';
 class RealVu {
 	enableAnalytics(pbjs: Pbjs): void {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 
@@ -21,7 +22,7 @@ class RealVu {
 
 	setInitialTargeting(): void {
 		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
+			logger(logGroup, 'disabled');
 			return;
 		}
 

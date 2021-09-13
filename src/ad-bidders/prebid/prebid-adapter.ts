@@ -1,7 +1,5 @@
-import { Aliases, context, Dictionary } from '@ad-engine/core';
+import { Aliases, context, Dictionary, realVu } from '@ad-engine/core';
 import { isArray } from 'util';
-// tslint:disable-next-line:no-blacklisted-paths
-import { realVu } from '../../ad-services';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 

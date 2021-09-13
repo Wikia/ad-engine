@@ -6,13 +6,12 @@ import {
 	events,
 	eventService,
 	pbjsFactory,
+	realVu,
 	Tcf,
 	tcf,
 	utils,
 } from '@ad-engine/core';
 import { TrackingBidDefinition } from '@ad-engine/tracking';
-// tslint:disable-next-line:no-blacklisted-paths
-import { realVu } from '../../ad-services';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
