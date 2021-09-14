@@ -15,7 +15,7 @@ export class InterstitialCloseToHiddenButtonHandler implements TemplateStateHand
 	private readonly showCloseButtonAfter?: number;
 
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
-		this.showCloseButtonAfter = instantConfig.get('icInvisibleHighImpact2TimeToCloseButton', 2);
+		this.showCloseButtonAfter = instantConfig.get('icInvisibleHighImpact2TimeToCloseButton', 0);
 	}
 
 	async onEnter(transition: TemplateTransition<'hidden'>): Promise<void> {
