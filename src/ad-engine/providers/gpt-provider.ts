@@ -156,8 +156,8 @@ export class GptProvider implements Provider {
 	}
 
 	private fillInCallback(adSlot: AdSlot): void {
-		const slotName = adSlot.getSlotName();
-		realVu.updateSlotTargeting(slotName);
+		const adSlotName = adSlot.getSlotName();
+		realVu.updateSlotTargeting(adSlotName);
 		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
@@ -173,14 +173,14 @@ export class GptProvider implements Provider {
 		slotDataParamsUpdater.updateOnCreate(adSlot);
 		adSlot.updateWinningPbBidderDetails();
 
-		window.googletag.display(adSlot.getSlotName());
+		window.googletag.display(adSlotName);
 		definedSlots.push(gptSlot);
 
 		if (!adSlot.isFirstCall()) {
 			this.flush();
 		}
 
-		logger(logGroup, adSlot.getSlotName(), 'slot added');
+		logger(logGroup, adSlotName, 'slot added');
 	}
 
 	/** @private */

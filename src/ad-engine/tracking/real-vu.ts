@@ -35,9 +35,9 @@ class RealVu {
 						mode: 'kvp',
 					}) || 'na';
 
-				context.set(`slots.${slotName}.targeting.realvu`, [status]);
+				this.setSlotTargeting(slotName, status);
 			} else {
-				context.set(`slots.${slotName}.targeting.realvu`, ['too_late']);
+				this.setSlotTargeting(slotName, 'too_late');
 			}
 		});
 	}
@@ -46,15 +46,19 @@ class RealVu {
 		return context.get(`slots.${slotName}.targeting.realvu`);
 	}
 
+	private setSlotTargeting(slotName: string, status: string): void {
+		context.set(`slots.${slotName}.targeting.realvu`, [status]);
+	}
+
 	updateSlotTargeting(slotName: string): void {
 		if (this.isEnabled() && window.realvu_aa) {
-			const realvu = window.realvu_aa.getStatusById(slotName);
-			context.set(`slots.${slotName}.targeting.realvu`, [realvu]);
+			const status = window.realvu_aa.getStatusById(slotName);
+			this.setSlotTargeting(slotName, status);
 		}
 	}
 
 	private isEnabled(): boolean {
-		return !!context.get('services.realVu.enabled') && !!context.get('services.realVu.partnerId');
+		return context.get('services.realVu.enabled') && context.get('services.realVu.partnerId');
 	}
 }
 
