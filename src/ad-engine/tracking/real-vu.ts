@@ -35,14 +35,14 @@ class RealVu {
 	}
 
 	updateSlotTargeting(slotName: string): void {
-		if (this.isEnabled() && window.realvu_aa) {
+		if (this.isEnabled()) {
 			const status = window.realvu_aa.getStatusById(slotName);
 			this.setSlotTargeting(slotName, status);
 		}
 	}
 
 	private statusResolver(slotName: string): Status {
-		return window.realvu_aa?.addUnitById(
+		return window.realvu_aa.addUnitById(
 			{
 				partner_id: 'E6H4',
 				unit_id: slotName,
@@ -56,7 +56,11 @@ class RealVu {
 	}
 
 	private isEnabled(): boolean {
-		return context.get('services.realVu.enabled') && context.get('services.realVu.partnerId');
+		return (
+			context.get('services.realVu.enabled') &&
+			context.get('services.realVu.partnerId') &&
+			!!window.realvu_aa
+		);
 	}
 }
 
