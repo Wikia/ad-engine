@@ -1,7 +1,7 @@
-type Status = 'yes' | 'no' | 'na' | 'too_late';
+type Status = 'yes' | 'no' | 'na';
 
 interface RealVu {
-	addUnitById: (any) => Partial<Status>;
+	addUnitById: (any) => Status;
 	getStatusById: (string) => Status;
 	regUnit: (string) => string;
 }

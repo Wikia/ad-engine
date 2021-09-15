@@ -42,15 +42,13 @@ class RealVu {
 	}
 
 	private statusResolver(slotName: string): Status {
-		return window.realvu_aa
-			? window.realvu_aa.addUnitById(
-				{
-					partner_id: 'E6H4',
-					unit_id: slotName,
-					mode: 'kvp',
-				} || 'na',
-			)
-			: 'too_late';
+		return window.realvu_aa?.addUnitById(
+			{
+				partner_id: 'E6H4',
+				unit_id: slotName,
+				mode: 'kvp',
+			} || 'na',
+		);
 	}
 
 	private setSlotTargeting(slotName: string, status: Status): void {
