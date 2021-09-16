@@ -8,7 +8,7 @@ export function getGumgumContext(): object {
 					[320, 50],
 					[320, 100],
 				],
-				inScreen: 'vbzbl1nw',
+				zone: 'vbzbl1nw',
 			},
 		},
 	};

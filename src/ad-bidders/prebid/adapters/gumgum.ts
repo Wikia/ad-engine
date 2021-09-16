@@ -8,7 +8,7 @@ export class Gumgum extends PrebidAdapter {
 		return Gumgum.bidderName;
 	}
 
-	prepareConfigForAdUnit(code: string, { sizes, inScreen }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(code: string, { sizes, zone }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -20,7 +20,7 @@ export class Gumgum extends PrebidAdapter {
 				{
 					bidder: this.bidderName,
 					params: {
-						inScreen,
+						zone,
 					},
 				},
 			],

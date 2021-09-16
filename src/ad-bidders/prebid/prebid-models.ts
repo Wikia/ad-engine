@@ -38,5 +38,6 @@ export interface PrebidAdSlotConfig {
 	targeting?: any;
 	uid?: string | number;
 	unit?: string;
+	zone?: string;
 	zoneId?: string;
 }
