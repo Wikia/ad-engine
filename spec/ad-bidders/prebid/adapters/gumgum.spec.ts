@@ -17,7 +17,7 @@ describe('GumGum bidder adapter', () => {
 			slots: {
 				mobile_in_content: {
 					sizes: [[300, 250]],
-					inScreen: '11223344',
+					zone: '11223344',
 				},
 			},
 		});
@@ -34,7 +34,7 @@ describe('GumGum bidder adapter', () => {
 					{
 						bidder: 'gumgum',
 						params: {
-							inScreen: '11223344',
+							zone: '11223344',
 						},
 					},
 				],
