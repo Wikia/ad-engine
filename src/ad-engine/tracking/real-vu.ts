@@ -36,7 +36,7 @@ class RealVu {
 
 	updateSlotTargeting(slotName: string): void {
 		if (this.isEnabled()) {
-			const status = window.realvu_aa.getStatusById(slotName);
+			const status = window.realvu_aa.getStatusById(slotName).realvu;
 			this.setSlotTargeting(slotName, status);
 		}
 	}
