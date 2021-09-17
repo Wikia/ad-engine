@@ -64,7 +64,9 @@
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icAax_A_95:recovery_test_a",
-                "icAax_B_5:recovery_test_b"
+                "icAax_B_5:recovery_test_b",
+                "icTrafficDivider_A_50:galactus_h2_a",
+                "icTrafficDivider_B_50:galactus_h2_b"
             ]
         }
     ],
@@ -193,7 +195,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210831.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210916.min.js"
         }
     ],
     "icIASPublisherOptimization": [
