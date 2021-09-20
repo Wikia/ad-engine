@@ -117,6 +117,17 @@
             }
         }
     ],
+    "icForceStickyTlb": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -264,10 +275,8 @@
     "icPrebidPubmatic": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -357,10 +366,8 @@
     "icPrebidNobid": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -420,7 +427,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 10.0,
+            "sampling": 15.0,
             "value": true
         }
     ],
@@ -462,15 +469,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidLkqdOutstream": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "value": false
         }
     ],
     "icA9VideoBidder": [
@@ -1962,7 +1960,9 @@
                 "5789252111",
                 "5787354951",
                 "5787354930",
-                "5770400280"
+                "5770400280",
+                "5789011434",
+                "5790995954"
             ]
         }
     ],
@@ -2018,10 +2018,8 @@
     "icPrebidIndexExchange": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2204,10 +2202,8 @@
     "icPrebidTriplelift": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2253,10 +2249,8 @@
     "icPrebidAppNexus": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2524,7 +2518,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.4/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.5/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
