@@ -33,6 +33,10 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	private isLineAndGeo(): boolean {
 		const lines: string[] = context.get('templates.stickyTlb.lineItemIds') || [];
 
+		if (context.get('templates.stickyTlb.forced')) {
+			return true;
+		}
+
 		if (Array.isArray(lines)) {
 			return lines
 				.map((line) => line.toString())
