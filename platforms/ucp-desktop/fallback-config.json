@@ -117,6 +117,17 @@
             }
         }
     ],
+    "icForceStickyTlb": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
