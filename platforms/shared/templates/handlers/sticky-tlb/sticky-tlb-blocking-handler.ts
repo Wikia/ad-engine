@@ -33,7 +33,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	private isLineAndGeo(): boolean {
 		const lines: string[] = context.get('templates.stickyTlb.lineItemIds') || [];
 
-		if (context.get('templates.stickyTlb.forced')) {
+		if (this.stickyTlbForced()) {
 			return true;
 		}
 
@@ -50,6 +50,10 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 				});
 		}
 		return false;
+	}
+
+	private stickyTlbForced(): boolean {
+		return context.get('templates.stickyTlb.forced');
 	}
 
 	private logger(...logMsgs: any): void {
