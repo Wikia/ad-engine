@@ -85,20 +85,6 @@
             "value": 4000
         }
     ],
-    "icPrebidIndexExchange": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icAudigent": [
         {
             "apps": [
@@ -250,20 +236,6 @@
             "value": true
         }
     ],
-    "icPrebidTriplelift": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icConfiant": [
         {
             "apps": [
@@ -276,34 +248,6 @@
                 "GB",
                 "UK",
                 "US"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidAppNexus": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidPubmatic": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
             ],
             "value": true
         }
@@ -338,20 +282,6 @@
         }
     ],
     "icPrebid": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidNobid": [
         {
             "apps": [
                 "futhead",
@@ -425,7 +355,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.4/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.5/tracking-opt-in.min.js"
         }
     ],
     "icDurationMedia": [

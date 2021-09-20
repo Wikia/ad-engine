@@ -500,10 +500,8 @@
     "icPrebidPubmatic": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -571,10 +569,8 @@
     "icPrebidNobid": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -657,15 +653,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidLkqdOutstream": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "value": false
         }
     ],
     "icA9VideoBidder": [
@@ -2160,7 +2147,9 @@
                 "5789252111",
                 "5787354951",
                 "5787354930",
-                "5770400280"
+                "5770400280",
+                "5789011434",
+                "5790995954"
             ]
         }
     ],
@@ -2230,10 +2219,8 @@
     "icPrebidIndexExchange": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2329,6 +2316,15 @@
     "icPrebidVersion": [
         {
             "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
+        },
+        {
+            "apps": [
                 "fandomdesktop",
                 "fandommobile",
                 "futhead",
@@ -2416,10 +2412,8 @@
     "icPrebidTriplelift": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2471,10 +2465,8 @@
     "icPrebidAppNexus": [
         {
             "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2653,7 +2645,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.4/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.5/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
