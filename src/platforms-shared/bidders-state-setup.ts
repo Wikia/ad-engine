@@ -6,7 +6,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 
 	if (instantConfig.get('icA9Bidder')) {
 		context.set('bidders.a9.enabled', true);
-		context.set('bidders.a9.dealsEnabled', instantConfig.get('icA9Deals'));
 		context.set(
 			'bidders.a9.videoEnabled',
 			instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,
