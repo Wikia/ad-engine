@@ -1,4 +1,4 @@
-import { Aliases, context, Dictionary } from '@ad-engine/core';
+import { Aliases, context, Dictionary, realVu } from '@ad-engine/core';
 import { isArray } from 'util';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
@@ -49,10 +49,10 @@ export abstract class PrebidAdapter {
 		};
 
 		const slotName = getSlotNameByBidderAlias(placementName);
-		const realVu = context.get(`slots.${slotName}.targeting.realvu`);
+		const realvu = realVu.getSlotTargeting(slotName);
 
-		if (realVu) {
-			targeting.realvu = realVu;
+		if (realvu) {
+			targeting.realvu = realvu;
 		}
 
 		return targeting;

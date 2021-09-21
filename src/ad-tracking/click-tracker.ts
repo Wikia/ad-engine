@@ -44,7 +44,7 @@ class AdClickTracker {
 			return;
 		}
 
-		if (!typeof iframeElement.contentWindow) {
+		if (adSlot.getFrameType() === 'safe') {
 			utils.logger(logGroup, `Slot ${slotName} is served in safeframe.`);
 			return;
 		}

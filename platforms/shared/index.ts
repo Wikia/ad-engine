@@ -102,5 +102,3 @@ export * from './templates/helpers/video-dom-manager';
 export * from './templates/helpers/video-dom-reader';
 export * from './templates/helpers/manipulators/dom-manipulator';
 export * from './templates/helpers/manipulators/element-manipulator';
-export * from './context/prebid/gamepedia-prebid-context-setup';
-export * from './context/a9/ucp-gamepedia-a9-config.setup';

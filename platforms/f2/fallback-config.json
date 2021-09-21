@@ -100,6 +100,8 @@
                 "XX"
             ],
             "value": [
+                "5789289108",
+                "5789289111",
                 "5782937222",
                 "5782937018",
                 "5767211193",
@@ -1365,7 +1367,17 @@
                 "5777655567",
                 "5778918420",
                 "5775997805",
-                "5770400280"
+                "5786072580",
+                "5787354954",
+                "5788710172",
+                "5789252117",
+                "5789252111",
+                "5787354951",
+                "5787354930",
+                "5770400280",
+                "5789011434",
+                "5790965481",
+                "5790995954"
             ]
         }
     ],
@@ -1465,7 +1477,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.4/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.2.5/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [
@@ -1563,17 +1575,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icAdEngineVersion": [
-        {
-            "apps": [
-                "f2"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "v59.6.0"
         }
     ],
     "icAdEngineDelay": [
