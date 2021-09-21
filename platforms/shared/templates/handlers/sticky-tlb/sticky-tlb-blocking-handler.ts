@@ -17,7 +17,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
-		if (!this.isLineAndGeo()) {
+		if (!(this.isStickyTlbForced() || this.isLineAndGeo())) {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
 			this.logger(`Line item ID ${this.adSlot.lineItemId} not listed on sticky list`);
 			return;
@@ -32,10 +32,6 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 
 	private isLineAndGeo(): boolean {
 		const lines: string[] = context.get('templates.stickyTlb.lineItemIds') || [];
-
-		if (this.stickyTlbForced()) {
-			return true;
-		}
 
 		if (Array.isArray(lines)) {
 			return lines
@@ -52,7 +48,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		return false;
 	}
 
-	private stickyTlbForced(): boolean {
+	private isStickyTlbForced(): boolean {
 		return context.get('templates.stickyTlb.forced');
 	}
 
