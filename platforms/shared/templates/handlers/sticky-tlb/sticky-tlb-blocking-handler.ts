@@ -17,7 +17,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
-		if (!(this.isStickyTlbForced() || this.isLineAndGeo())) {
+		if (!this.isStickyTlbForced() || !this.isLineAndGeo()) {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
 			this.logger(`Line item ID ${this.adSlot.lineItemId} not listed on sticky list`);
 			return;
