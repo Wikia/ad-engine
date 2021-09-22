@@ -171,14 +171,6 @@ export class BaseContextSetup implements DiProcess {
 		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
-
-			if (this.instantConfig.get('icHiViLeaderboardUnstickTimeout')) {
-				context.set('options.unstickHiViLeaderboardAfterTimeout', true);
-				context.set(
-					'options.unstickHiViLeaderboardTimeout',
-					this.instantConfig.get('icHiViLeaderboardUnstickTimeout'),
-				);
-			}
 		}
 	}
 }
