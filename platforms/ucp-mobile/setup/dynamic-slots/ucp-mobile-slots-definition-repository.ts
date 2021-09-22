@@ -324,10 +324,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
 				context.set(
-					'slots.floor_adhesion.forceSafeFrame',
-					this.instantConfig.get('icFloorAdhesionForceSafeFrame'),
-				);
-				context.set(
 					'templates.floorAdhesion.showCloseButtonAfter',
 					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
 				);
