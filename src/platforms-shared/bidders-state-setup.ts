@@ -10,10 +10,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			'bidders.a9.videoEnabled',
 			instantConfig.get('icA9VideoBidder') && hasFeaturedVideo,
 		);
-		context.set(
-			'bidders.a9.videoBidsCleaning',
-			instantConfig.get('icA9VideoBidsCleaning') && hasFeaturedVideo,
-		);
 	}
 
 	if (instantConfig.get('icPrebid')) {

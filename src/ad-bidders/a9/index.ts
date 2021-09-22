@@ -71,7 +71,7 @@ export class A9Provider extends BidderProvider {
 
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
-			if (context.get('bidders.a9.videoBidsCleaning')) {
+			if (context.get('custom.hasFeaturedVideo')) {
 				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.INVALIDATE_SLOT_TARGETING, (adSlot: AdSlot) =>
