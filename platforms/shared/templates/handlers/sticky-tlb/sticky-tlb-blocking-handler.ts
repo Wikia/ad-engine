@@ -17,17 +17,17 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
-		if (!this.isLineAndGeo()) {
+		if (this.isStickyTlbForced() || this.isLineAndGeo()) {
+			this.logger('Disabling incontent_player and affiliate_slot');
+			slotService.disable('incontent_player', 'hivi-collapse');
+			slotService.disable('affiliate_slot', 'hivi-collapse');
+			transition('initial');
+		} else {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
-			this.logger(`Line item ID ${this.adSlot.lineItemId} not listed on sticky list`);
-			return;
+			this.logger(
+				`Template 'stickyTlb' could not be applied for Line item ID ${this.adSlot.lineItemId}`,
+			);
 		}
-
-		this.logger('Disabling incontent_player and affiliate_slot');
-		slotService.disable('incontent_player', 'hivi-collapse');
-		slotService.disable('affiliate_slot', 'hivi-collapse');
-
-		transition('initial');
 	}
 
 	private isLineAndGeo(): boolean {
@@ -46,6 +46,10 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 				});
 		}
 		return false;
+	}
+
+	private isStickyTlbForced(): boolean {
+		return context.get('templates.stickyTlb.forced');
 	}
 
 	private logger(...logMsgs: any): void {
