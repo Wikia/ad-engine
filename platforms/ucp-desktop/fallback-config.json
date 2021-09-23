@@ -427,7 +427,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 15.0,
+            "sampling": 20.0,
             "value": true
         }
     ],
@@ -581,14 +581,6 @@
                 "UK"
             ],
             "value": true
-        }
-    ],
-    "icA9LoggerErrorCodes": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ]
         }
     ],
     "icUAPJWPlayerDelay": [
@@ -1965,6 +1957,9 @@
                 "5770400280",
                 "5789011434",
                 "5790965481",
+                "5793467516",
+                "5793009994",
+                "5793665228",
                 "5790995954"
             ]
         }
