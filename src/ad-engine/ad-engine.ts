@@ -14,7 +14,6 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { FloatingAd } from './templates';
 import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
@@ -37,8 +36,6 @@ export class AdEngine {
 
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
-
-		templateService.register(FloatingAd);
 
 		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
 			slotService.removeAll();
