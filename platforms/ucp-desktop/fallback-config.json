@@ -583,14 +583,6 @@
             "value": true
         }
     ],
-    "icA9LoggerErrorCodes": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ]
-        }
-    ],
     "icUAPJWPlayerDelay": [
         {
             "apps": [

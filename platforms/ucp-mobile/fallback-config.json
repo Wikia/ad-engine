@@ -322,6 +322,7 @@
                 "BL",
                 "BM",
                 "BQ",
+                "BR",
                 "BS",
                 "BY",
                 "BZ",
@@ -364,8 +365,10 @@
                 "IT",
                 "JE",
                 "JM",
+                "JP",
                 "KI",
                 "KN",
+                "KR",
                 "KY",
                 "LC",
                 "LI",
@@ -735,14 +738,6 @@
                 "UK"
             ],
             "value": true
-        }
-    ],
-    "icA9LoggerErrorCodes": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ]
         }
     ],
     "icUAPJWPlayerDelay": [
