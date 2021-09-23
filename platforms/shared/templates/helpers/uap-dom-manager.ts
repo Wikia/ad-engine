@@ -99,6 +99,8 @@ export class UapDomManager {
 	}
 
 	setImpactImage(): void {
-		this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
+		if (this.params.image1) {
+			this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
+		}
 	}
 }

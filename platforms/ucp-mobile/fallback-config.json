@@ -170,17 +170,6 @@
             "value": true
         }
     ],
-    "icIncontentBoxadGap": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icComscoreJwpTracking": [
         {
             "apps": [
@@ -333,6 +322,7 @@
                 "BL",
                 "BM",
                 "BQ",
+                "BR",
                 "BS",
                 "BY",
                 "BZ",
@@ -375,8 +365,10 @@
                 "IT",
                 "JE",
                 "JM",
+                "JP",
                 "KI",
                 "KN",
+                "KR",
                 "KY",
                 "LC",
                 "LI",
@@ -606,14 +598,6 @@
             "value": true
         }
     ],
-    "icCollapseTopLeaderboard": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "value": true
-        }
-    ],
     "icViewabilityTracking": [
         {
             "apps": [
@@ -756,14 +740,6 @@
             "value": true
         }
     ],
-    "icA9LoggerErrorCodes": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ]
-        }
-    ],
     "icUAPJWPlayerDelay": [
         {
             "apps": [
@@ -773,7 +749,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 10000
+            "value": 30000
         }
     ],
     "icTrafficDivider": [
@@ -844,8 +820,8 @@
     "icPrebidVerizon": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -875,6 +851,8 @@
                 "XX"
             ],
             "value": [
+                "5789289108",
+                "5789289111",
                 "5782937222",
                 "5782937018",
                 "5767211193",
@@ -2149,6 +2127,10 @@
                 "5787354930",
                 "5770400280",
                 "5789011434",
+                "5790965481",
+                "5793467516",
+                "5793009994",
+                "5793665228",
                 "5790995954"
             ]
         }
@@ -2541,8 +2523,8 @@
     "icPrebidMediaGrid": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2666,8 +2648,8 @@
     "icDurationMedia": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"

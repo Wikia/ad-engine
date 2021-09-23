@@ -39,7 +39,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 	}
 
 	private ensureImage(): void {
-		if (!(this.params.image2 && this.params.image2.background)) {
+		if (!(this.params.image2 && this.params.image2.background) && this.params.image1) {
 			this.params.image1.element.classList.remove('hidden-state');
 		}
 	}

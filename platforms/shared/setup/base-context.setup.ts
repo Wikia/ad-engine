@@ -164,6 +164,7 @@ export class BaseContextSetup implements DiProcess {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
+		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
 	}
 
 	private setupStickySlotLineItemIds(): void {
