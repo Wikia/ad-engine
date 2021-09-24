@@ -30,9 +30,6 @@ export class VideoDomReader {
 	}
 
 	private calculateVideoSize(slotHeight: number, progress: number): UapVideoSize {
-		if (!this.params.config) {
-			return;
-		}
 		const { height, width } = this.getSize(slotHeight, progress);
 		const top = this.getPercentage(progress, this.params.config.state.top);
 		const right = this.getPercentage(progress, this.params.config.state.right);
@@ -48,9 +45,6 @@ export class VideoDomReader {
 	}
 
 	private getSize(slotHeight: number, progress: number): { height: number; width: number } {
-		if (!this.params.config) {
-			return;
-		}
 		const percentage = this.getPercentage(progress, this.params.config.state.height);
 		const height = slotHeight * (percentage / 100);
 		const width = height * this.params.videoAspectRatio;
