@@ -146,10 +146,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setMiscContext(): void {
-		if (this.instantConfig.get('icTestCommunities', []).includes(context.get('wiki.wgDBname'))) {
-			context.set('src', 'test');
-		}
-
 		this.instantConfig.get('icLABradorTest');
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
