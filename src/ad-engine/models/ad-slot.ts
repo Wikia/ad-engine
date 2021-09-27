@@ -2,7 +2,6 @@ import { communicationService, globalAction } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
 import { AdStackPayload, eventService, insertMethodType, slotTweaker, utils } from '../';
-import { overscrollListener } from '../listeners';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
@@ -38,7 +37,6 @@ export interface SlotConfig {
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
-	trackOverscrolled?: boolean;
 	slotName?: string;
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
@@ -424,10 +422,6 @@ export class AdSlot extends EventEmitter {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
-
-		if (this.config.trackOverscrolled) {
-			overscrollListener.apply(this);
-		}
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
