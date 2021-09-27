@@ -370,11 +370,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set(
-					'templates.floorAdhesion.showCloseButtonAfter',
-					this.instantConfig.get('icInvisibleHighImpact2TimeToCloseButton', 0),
-				);
-
 				context.push('state.adStack', { id: slotName });
 			},
 		};
