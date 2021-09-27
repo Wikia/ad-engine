@@ -81,27 +81,9 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_boxad';
-		const isTBPlaceholderOnBackendEnabled = context.get('wiki.opts.enableTBPlaceholderOnBackend');
 		const wrapperClassList = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
 
-		const clsImprovedSlotSetupDefinition: SlotSetupDefinition = {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '.top-boxad',
-				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
-			},
-			slotCreatorWrapperConfig: null,
-			activator: () => {
-				this.pushWaitingSlot(slotName);
-				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topBoxAd = document.querySelector('.top-boxad');
-					topBoxAd.classList.remove('is-loading');
-				});
-			},
-		};
-
-		const slotSetupDefinition: SlotSetupDefinition = {
+		return {
 			slotCreatorConfig: {
 				slotName,
 				...this.slotCreatorInsertionParams(),
@@ -118,8 +100,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				});
 			},
 		};
-
-		return isTBPlaceholderOnBackendEnabled ? clsImprovedSlotSetupDefinition : slotSetupDefinition;
 	}
 
 	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
