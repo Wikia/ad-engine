@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	CloseButton,
-	InstantConfigService,
 	SlotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -12,11 +11,8 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 @Injectable({ autobind: false })
 export class InterstitialCloseToHiddenButtonHandler implements TemplateStateHandler {
 	private button: HTMLButtonElement;
-	private readonly showCloseButtonAfter?: number;
 
-	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot, instantConfig: InstantConfigService) {
-		this.showCloseButtonAfter = instantConfig.get('icInvisibleHighImpact2TimeToCloseButton', 0);
-	}
+	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'hidden'>): Promise<void> {
 		this.button = new CloseButton({
@@ -28,7 +24,7 @@ export class InterstitialCloseToHiddenButtonHandler implements TemplateStateHand
 
 		setTimeout(() => {
 			this.adSlot.getElement().appendChild(this.button);
-		}, this.showCloseButtonAfter);
+		}, 0);
 	}
 
 	async onLeave(): Promise<void> {
