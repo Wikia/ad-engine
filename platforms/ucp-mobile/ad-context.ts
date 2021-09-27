@@ -83,6 +83,7 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',

@@ -85,6 +85,7 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		distroScale: {
 			enabled: false,

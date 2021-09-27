@@ -94,6 +94,7 @@ export const basicContext = {
 	services: {
 		durationMedia: {
 			enabled: false,
+			libraryUrl: '//tag.durationmedia.net/sites/10654/dm.js',
 		},
 		confiant: {
 			enabled: false,
