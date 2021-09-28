@@ -293,7 +293,7 @@ not(.ic-ad-slot-placeholder) {
 	position: relative;
 	padding: 18px 0 24px 0;
 
-	&::after {
+	/*	&::after {
 		position: absolute;
 		left: 0;
 		bottom: 0;
@@ -306,7 +306,7 @@ not(.ic-ad-slot-placeholder) {
 		line-height: 24px;
 		text-align: center;
 		text-transform: uppercase;
-	}
+	}*/
 
 	.porvata-outstream.porvata3::before {
 		display: none;
