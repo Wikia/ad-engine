@@ -1,6 +1,6 @@
+import { context } from '@wikia/ad-engine';
+import { PorvataSettings } from '@wikia/ad-products/video/porvata4/porvata-settings';
 import { assert } from 'chai';
-import { context } from '../../../../../src/ad-engine/services';
-import { PorvataSettings } from '../../../../../src/ad-products/video/porvata4/porvata-settings';
 
 describe('Porvata Settings wrapper', () => {
 	let porvataSettings;
@@ -67,18 +67,6 @@ describe('Porvata Settings wrapper', () => {
 		});
 
 		assert.isFalse(settings.isMoatTrackingEnabled());
-	});
-
-	it('enables moatTracking when sampling is 100%', () => {
-		context.set('options.video.moatTracking.sampling', 100);
-
-		const settings = new PorvataSettings({
-			container: document.createElement('div'),
-			slotName: 'foo',
-			src: 'gpt',
-		});
-
-		assert.isTrue(settings.isMoatTrackingEnabled());
 	});
 
 	it('enables iasTracking when true is passed', () => {
