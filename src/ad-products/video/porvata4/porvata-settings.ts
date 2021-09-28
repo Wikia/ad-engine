@@ -1,4 +1,4 @@
-import { context, Dictionary, Targeting, utils } from '@ad-engine/core';
+import { context, Dictionary, Targeting } from '@ad-engine/core';
 import { VpaidMode } from './porvata';
 
 export interface PorvataParams extends Dictionary {
@@ -18,25 +18,11 @@ export interface PorvataParams extends Dictionary {
 }
 
 function getMoatTrackingStatus(params: PorvataParams): boolean {
-	const sampling: number = context.get('options.video.moatTracking.sampling');
-
 	if (typeof params.moatTracking === 'boolean') {
 		return params.moatTracking;
 	}
 
-	if (!context.get('options.video.moatTracking.enabled')) {
-		return false;
-	}
-
-	if (sampling === 100) {
-		return true;
-	}
-
-	if (sampling > 0) {
-		return utils.sampler.sample('moat_video_tracking', sampling);
-	}
-
-	return false;
+	return !!context.get('options.video.moatTracking.enabledForPorvata');
 }
 
 function getIasTrackingStatus(params: PorvataParams): boolean {
