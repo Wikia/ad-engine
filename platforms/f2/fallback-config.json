@@ -14,6 +14,17 @@
             "value": true
         }
     ],
+    "zorf2": [
+        {
+            "apps": [
+                "f2"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 2011
+        }
+    ],
     "icPorvataMoatTracking": [
         {
             "apps": [
