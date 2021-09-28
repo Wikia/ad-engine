@@ -58,7 +58,9 @@ export class Rubicon extends PrebidAdapter {
 						zoneId,
 						accountId: this.accountId,
 						name: code,
-						inventory: this.getAdditionalKeyVals(code),
+						inventory: {
+							...this.getTargeting(code, this.customTargeting),
+						},
 						video: {
 							playerWidth: '640',
 							playerHeight: '480',
@@ -69,15 +71,5 @@ export class Rubicon extends PrebidAdapter {
 				},
 			],
 		};
-	}
-
-	private getAdditionalKeyVals(code): object {
-		if (context.get('bidders.prebid.additionalKeyvals.rubicon')) {
-			return {
-				...this.getTargeting(code, this.customTargeting),
-			};
-		}
-
-		return {};
 	}
 }

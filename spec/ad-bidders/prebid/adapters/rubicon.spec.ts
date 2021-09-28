@@ -49,7 +49,14 @@ describe('Rubicon bidder adapter', () => {
 							zoneId: '88888',
 							name: 'mobile_in_content',
 							position: 'btf',
-							inventory: {},
+							inventory: {
+								lang: ['en'],
+								mappedVerticalName: ['gaming'],
+								pos: ['mobile_in_content'],
+								s1: ['not a top1k wiki'],
+								src: ['gpt'],
+								testKeyval: ['yes'],
+							},
 							video: {
 								playerWidth: '640',
 								playerHeight: '480',
@@ -101,7 +108,14 @@ describe('Rubicon bidder adapter', () => {
 							zoneId: '88888',
 							name: 'mobile_in_content',
 							position: 'btf',
-							inventory: {},
+							inventory: {
+								lang: ['en'],
+								mappedVerticalName: ['gaming'],
+								pos: ['mobile_in_content'],
+								s1: ['not a top1k wiki'],
+								src: ['gpt'],
+								testKeyval: ['yes'],
+							},
 							video: {
 								playerWidth: '640',
 								playerHeight: '480',
@@ -116,7 +130,6 @@ describe('Rubicon bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('bidders.prebid.additionalKeyvals.rubicon', true);
 		context.set('targeting.testKeyval', 'yes');
 
 		const rubicon = new Rubicon({
@@ -175,7 +188,5 @@ describe('Rubicon bidder adapter', () => {
 				],
 			},
 		]);
-
-		context.set('bidders.prebid.additionalKeyvals.rubicon', false);
 	});
 });

@@ -45,11 +45,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			'custom.jwplayerDataProvider',
 			instantConfig.get('icPrebidMediaGrid') && hasFeaturedVideo,
 		);
-
-		context.set(
-			'bidders.prebid.additionalKeyvals.rubicon',
-			instantConfig.get('icPrebidRubiconAdditionalKeyvals'),
-		);
 	}
 
 	context.set(
