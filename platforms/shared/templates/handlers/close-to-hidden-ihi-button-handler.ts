@@ -9,7 +9,7 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
-export class InterstitialCloseToHiddenButtonHandler implements TemplateStateHandler {
+export class CloseToHiddenIhiButtonHandler implements TemplateStateHandler {
 	private button: HTMLButtonElement;
 
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}

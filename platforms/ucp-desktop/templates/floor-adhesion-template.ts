@@ -1,8 +1,8 @@
 import {
+	CloseToHiddenIhiButtonHandler,
 	DebugTransitionHandler,
 	DomCleanupHandler,
 	DomManipulator,
-	InterstitialCloseToHiddenButtonHandler,
 	SlotDecisionOnViewabilityHandler,
 	SlotHiddenHandler,
 	SlotTransitionIhiHandler,
@@ -18,11 +18,7 @@ export function registerFloorAdhesionTemplate(
 		'floorAdhesion',
 		{
 			initial: [FloorAdhesionBootstrapHandler, DebugTransitionHandler],
-			display: [
-				SlotDecisionOnViewabilityHandler,
-				InterstitialCloseToHiddenButtonHandler,
-				DomCleanupHandler,
-			],
+			display: [SlotDecisionOnViewabilityHandler, CloseToHiddenIhiButtonHandler, DomCleanupHandler],
 			transition: [SlotTransitionIhiHandler, DomCleanupHandler],
 			hidden: [SlotHiddenHandler, DomCleanupHandler],
 		},
