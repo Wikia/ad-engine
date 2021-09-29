@@ -1,6 +1,6 @@
+import { DomManipulator } from '@platforms/shared';
 import { AdSlot, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 
 @Injectable({ autobind: false })
 export class FloorAdhesionAnchorHiddenHandler implements TemplateStateHandler {

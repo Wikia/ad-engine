@@ -1,4 +1,4 @@
-import { registerFloorAdhesionTemplate, registerInterstitialTemplate } from '@platforms/shared';
+import { registerInterstitialTemplate } from '@platforms/shared';
 import {
 	context,
 	DiProcess,
@@ -15,6 +15,7 @@ import { registerBfaaOldTemplate } from './bfaa-old-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
+import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
