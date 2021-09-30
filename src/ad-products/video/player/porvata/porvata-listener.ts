@@ -49,6 +49,7 @@ export class PorvataListener {
 		wikiaXClick: 'force_close',
 		wikiaInViewportWithOffer: 'in_viewport_with_offer',
 		wikiaInViewportWithoutOffer: 'in_viewport_without_offer',
+		wikiaFullscreenChange: 'fullscreen_change',
 	};
 	static LOG_GROUP = 'porvata-listener';
 	static PLAYER_NAME = 'porvata';
