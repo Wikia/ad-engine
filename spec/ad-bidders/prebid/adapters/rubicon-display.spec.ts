@@ -52,7 +52,14 @@ describe('RubiconDisplay bidder adapter', () => {
 							name: 'bottom_leaderboard',
 							position: 'btf',
 							keywords: ['rp.fastlane'],
-							inventory: {},
+							inventory: {
+								lang: ['en'],
+								loc: ['top'],
+								mappedVerticalName: ['gaming'],
+								pos: ['bottom_leaderboard'],
+								s1: ['not a top1k wiki'],
+								src: ['gpt'],
+							},
 						},
 					},
 				],
@@ -62,7 +69,6 @@ describe('RubiconDisplay bidder adapter', () => {
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
 		context.set('targeting.testKeyval', 'yes');
-		context.set('bidders.prebid.additionalKeyvals.rubicon', true);
 
 		const rubiconDisplay = new RubiconDisplay({
 			enabled: true,
@@ -118,7 +124,5 @@ describe('RubiconDisplay bidder adapter', () => {
 				],
 			},
 		]);
-
-		context.set('bidders.prebid.additionalKeyvals.rubicon', false);
 	});
 });

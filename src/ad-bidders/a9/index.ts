@@ -71,7 +71,7 @@ export class A9Provider extends BidderProvider {
 
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
-			if (context.get('bidders.a9.videoBidsCleaning')) {
+			if (context.get('custom.hasFeaturedVideo')) {
 				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
 				eventService.on(events.INVALIDATE_SLOT_TARGETING, (adSlot: AdSlot) =>
@@ -113,7 +113,7 @@ export class A9Provider extends BidderProvider {
 		return {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
-			deals: !!this.bidderConfig.dealsEnabled,
+			deals: true,
 			...this.getCcpaIfApplicable(signalData),
 		};
 	}
@@ -314,17 +314,11 @@ export class A9Provider extends BidderProvider {
 	private async getBidTargetingWithKeys(
 		bid: A9Bid,
 	): Promise<{ keys: string[]; bidTargeting: Dictionary }> {
-		let bidTargeting: Dictionary = bid;
-		let keys: string[] = await this.apstag.targetingKeys();
-
-		if (this.bidderConfig.dealsEnabled) {
-			keys = bid.helpers.targetingKeys;
-			bidTargeting = bid.targeting;
-		}
+		await this.apstag.targetingKeys();
 
 		return {
-			keys,
-			bidTargeting,
+			keys: bid.helpers.targetingKeys,
+			bidTargeting: bid.targeting,
 		};
 	}
 

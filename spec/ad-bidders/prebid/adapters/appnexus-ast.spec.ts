@@ -4,7 +4,6 @@ import { expect } from 'chai';
 
 describe('AppnexusAst bidder adapter', () => {
 	afterEach(() => {
-		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
 		context.remove('slots.mobile_in_content');
 	});
 
@@ -40,7 +39,11 @@ describe('AppnexusAst bidder adapter', () => {
 						bidder: 'appnexusAst',
 						params: {
 							placementId: '11223344',
-							keywords: {},
+							keywords: {
+								p_standard: [],
+								pos: ['mobile_in_content'],
+								src: ['gpt'],
+							},
 							video: {
 								skippable: false,
 								playback_method: ['auto_play_sound_off'],
@@ -53,8 +56,6 @@ describe('AppnexusAst bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
-
 		const appnexusAst = new AppnexusAst({
 			enabled: true,
 			slots: {
@@ -95,7 +96,6 @@ describe('AppnexusAst bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals and RealVu flag', () => {
-		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
 		context.set('slots.mobile_in_content.targeting.realvu', ['yes']);
 
 		const appnexusAst = new AppnexusAst({

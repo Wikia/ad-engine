@@ -83,7 +83,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.maxDelayTimeout', this.instantConfig.get('icAdEngineDelay', 2000));
 		context.set('options.jwpMaxDelayTimeout', this.instantConfig.get('icUAPJWPlayerDelay', 0));
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
-		context.set('options.video.isOutstreamEnabled', this.instantConfig.get('icOutstreamSlot'));
 		context.set('options.video.isUAPJWPEnabled', this.instantConfig.get('icUAPJWPlayer'));
 		context.set(
 			'options.video.moatTracking.enabledForArticleVideos',
@@ -134,10 +133,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
-		context.set(
-			'services.durationMedia.libraryUrl',
-			this.instantConfig.get('icDurationMediaLibraryUrl'),
-		);
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 		context.set('services.realVu.enabled', this.instantConfig.get('icRealVu'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
@@ -151,10 +146,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setMiscContext(): void {
-		if (this.instantConfig.get('icTestCommunities', []).includes(context.get('wiki.wgDBname'))) {
-			context.set('src', 'test');
-		}
-
 		this.instantConfig.get('icLABradorTest');
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
@@ -175,14 +166,6 @@ export class BaseContextSetup implements DiProcess {
 		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
-
-			if (this.instantConfig.get('icHiViLeaderboardUnstickTimeout')) {
-				context.set('options.unstickHiViLeaderboardAfterTimeout', true);
-				context.set(
-					'options.unstickHiViLeaderboardTimeout',
-					this.instantConfig.get('icHiViLeaderboardUnstickTimeout'),
-				);
-			}
 		}
 	}
 }
