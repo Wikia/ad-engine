@@ -5,7 +5,6 @@ import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from '../helpers/jwplayer-helper';
 import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
-import { JWPlayerA9Logger } from '../jwplayer-a9-logger';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
 const log = (...args) => utils.logger('jwplayer-ads-factory', ...args);
@@ -65,7 +64,6 @@ export class JWPlayerHandler {
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
 				jwPlayerInhibitor.resolve();
-				JWPlayerA9Logger.log(payload);
 			}),
 		);
 	}

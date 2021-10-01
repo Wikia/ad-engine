@@ -1,26 +1,18 @@
-import { context, DiProcess, InstantConfigService } from '@wikia/ad-engine';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopA9ConfigSetup implements DiProcess {
-	constructor(private instantConfig: InstantConfigService) {}
-
 	execute(): void {
 		context.set('bidders.a9.slots', this.getA9Context());
 	}
 
 	getA9Context(): object {
-		const config = {
-			bottom_leaderboard: {
+		return {
+			hivi_leaderboard: {
 				sizes: [
 					[728, 90],
 					[970, 250],
-				],
-			},
-			incontent_boxad_1: {
-				sizes: [
-					[300, 250],
-					[300, 600],
 				],
 			},
 			top_leaderboard: {
@@ -35,20 +27,21 @@ export class UcpDesktopA9ConfigSetup implements DiProcess {
 					[300, 600],
 				],
 			},
-			featured: {
-				type: 'video',
+			incontent_boxad_1: {
+				sizes: [
+					[300, 250],
+					[300, 600],
+				],
 			},
-		};
-
-		if (this.instantConfig.get('icA9HiviLeaderboard')) {
-			config['hivi_leaderboard'] = {
+			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
 					[970, 250],
 				],
-			};
-		}
-
-		return config;
+			},
+			featured: {
+				type: 'video',
+			},
+		};
 	}
 }

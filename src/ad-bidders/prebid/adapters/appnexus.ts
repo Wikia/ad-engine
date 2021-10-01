@@ -32,7 +32,10 @@ export class Appnexus extends PrebidAdapter {
 					bidder: this.bidderName,
 					params: {
 						placementId: placementId || this.getPlacement(position),
-						keywords: this.getAdditionalKeyVals(code),
+						keywords: {
+							...this.getTargeting(code),
+							p_standard: context.get('bidders.permutiveKeys.appnexus') || [],
+						},
 					},
 				},
 			],
@@ -49,16 +52,5 @@ export class Appnexus extends PrebidAdapter {
 		}
 
 		return this.placements[placement];
-	}
-
-	private getAdditionalKeyVals(code): object {
-		if (context.get('bidders.prebid.additionalKeyvals.appnexus')) {
-			return {
-				...this.getTargeting(code),
-				p_standard: context.get('bidders.permutiveKeys.appnexus') || [],
-			};
-		}
-
-		return {};
 	}
 }

@@ -11,10 +11,6 @@ export class UcpBaseContextSetup extends BaseContextSetup {
 			'options.floatingMedrecDestroyable',
 			this.instantConfig.get('icFloatingMedrecDestroyable'),
 		);
-		context.set(
-			'options.jwplayerA9LoggerErrorCodes',
-			this.instantConfig.get('icA9LoggerErrorCodes'),
-		);
 		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));
 		// sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
 		context.set(

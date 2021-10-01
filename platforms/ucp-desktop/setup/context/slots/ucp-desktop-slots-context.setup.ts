@@ -208,7 +208,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
 				disabled: true,
-				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
 				insertBeforeSelector: '.page',

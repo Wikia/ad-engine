@@ -13,7 +13,6 @@ export const basicContext = {
 		timeout: 2000,
 		a9: {
 			enabled: false,
-			dealsEnabled: false,
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
@@ -84,6 +83,7 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',

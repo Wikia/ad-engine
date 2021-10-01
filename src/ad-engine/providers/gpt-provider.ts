@@ -166,10 +166,6 @@ export class GptProvider implements Provider {
 
 		this.applyTargetingParams(gptSlot, targeting);
 
-		if (adSlot.getConfigProperty('forceSafeFrame')) {
-			this.forceSafeFrame(gptSlot);
-		}
-
 		slotDataParamsUpdater.updateOnCreate(adSlot);
 		adSlot.updateWinningPbBidderDetails();
 
@@ -212,13 +208,6 @@ export class GptProvider implements Provider {
 				value = value.toString();
 			}
 			gptSlot.setTargeting(key, value);
-		});
-	}
-
-	forceSafeFrame(gptSlot: googletag.Slot) {
-		gptSlot.setForceSafeFrame(true);
-		gptSlot.setSafeFrameConfig({
-			sandbox: true,
 		});
 	}
 

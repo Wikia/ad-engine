@@ -50,20 +50,12 @@ export class RubiconDisplay extends PrebidAdapter {
 						accountId: this.accountId,
 						name: code,
 						keywords: ['rp.fastlane'],
-						inventory: this.getAdditionalKeyVals(code, targeting),
+						inventory: {
+							...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
+						},
 					},
 				},
 			],
 		};
-	}
-
-	private getAdditionalKeyVals(code, targeting): object {
-		if (context.get('bidders.prebid.additionalKeyvals.rubicon')) {
-			return {
-				...this.getTargeting(code, { ...(targeting || {}), ...this.customTargeting }),
-			};
-		}
-
-		return {};
 	}
 }
