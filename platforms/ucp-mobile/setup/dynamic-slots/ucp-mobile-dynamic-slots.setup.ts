@@ -25,6 +25,21 @@ import {
 	UcpMobileSlotsDefinitionRepository,
 } from './ucp-mobile-slots-definition-repository';
 
+const removeLabel = (slotName: string): void => {
+	const parentElement =
+		slotName !== 'top_leaderboard'
+			? document.querySelector(`#${slotName}`).parentElement
+			: document.querySelector('.top-ads-container');
+
+	let adLabel: HTMLElement;
+	for (const child of parentElement.children as any) {
+		if (child.className.includes('ae-translatable-label')) {
+			adLabel = child;
+		}
+	}
+	adLabel?.classList.add('hide');
+};
+
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private CODE_PRIORITY = {
@@ -121,6 +136,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				)
 				.subscribe((action) => {
 					removeLoader(action.adSlotName);
+					if (action['event'] === 'slotHidden') {
+						removeLabel(action.adSlotName);
+					}
 				});
 		};
 
@@ -158,6 +176,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				)
 				.subscribe((action) => {
 					removeLoader(action.adSlotName);
+					if (action['event'] === 'slotHidden') {
+						removeLabel(action.adSlotName);
+					}
 				});
 		};
 
