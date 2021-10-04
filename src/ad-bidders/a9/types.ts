@@ -17,7 +17,6 @@ export interface A9CCPA {
 
 export interface A9Config extends BidderConfig {
 	amazonId: string;
-	dealsEnabled: boolean;
 	slots: Dictionary<A9SlotConfig>;
 	videoEnabled: boolean;
 	bidsRefreshing: BidsRefreshing;

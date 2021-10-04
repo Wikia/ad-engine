@@ -100,20 +100,6 @@ export class CurseSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
-			incontent_player: {
-				disabled: true,
-				autoplay: true,
-				audio: false,
-				group: 'HiVi',
-				defaultSizes: [[1, 1]],
-				insertBeforeSelector: '#mw-content-text > .mw-parser-output > h2',
-				insertBelowFirstViewport: true,
-				targeting: {
-					pos: ['outstream'],
-					loc: 'middle',
-					rv: 1,
-				},
-			},
 		};
 
 		context.set('slots', slots);

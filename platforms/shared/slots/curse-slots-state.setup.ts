@@ -10,6 +10,5 @@ export class CurseSlotsStateSetup implements DiProcess {
 		slotsContext.setState('cdm-zone-03', true);
 		slotsContext.setState('cdm-zone-04', !context.get('state.isMobile'));
 		slotsContext.setState('cdm-zone-06', true);
-		slotsContext.setState('incontent_player', context.get('options.video.isOutstreamEnabled'));
 	}
 }

@@ -46,7 +46,11 @@ describe('Appnexus bidder adapter', () => {
 						bidder: 'appnexus',
 						params: {
 							placementId: '99220044',
-							keywords: {},
+							keywords: {
+								p_standard: [],
+								pos: ['bottom_leaderboard'],
+								src: ['gpt'],
+							},
 						},
 					},
 				],
@@ -87,7 +91,11 @@ describe('Appnexus bidder adapter', () => {
 						bidder: 'appnexus',
 						params: {
 							placementId: '99220055',
-							keywords: {},
+							keywords: {
+								p_standard: [],
+								pos: ['02_MR'],
+								src: ['gpt'],
+							},
 						},
 					},
 				],
@@ -96,8 +104,6 @@ describe('Appnexus bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
-
 		const appnexus = new Appnexus({
 			enabled: true,
 			slots: {
@@ -140,8 +146,6 @@ describe('Appnexus bidder adapter', () => {
 				],
 			},
 		]);
-
-		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
 	});
 
 	it('getPlacement on mobile returns correct placementId', () => {
