@@ -248,25 +248,25 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
-.out-of-page-template {
-	margin: 0;
+#floor_adhesion_anchor.out-of-page-template {
+	background: rgba(0, 0, 0, 0.8);
+	bottom: 0;
+	// needed for Safari 9 - it doesn't position elements from the left by default
+	left: 0;
+	padding: 20px 0;
 
-	&.floor-adhesion {
-		padding: 20px 0;
+	.button-close {
+		border: 2px solid white;
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		top: -20px;
 
-		.button-close {
-			border: 2px solid white;
-			border-radius: 50%;
-			width: 40px;
-			height: 40px;
-			top: -20px;
-
-			&:after {
-				content: '';
-				position: absolute;
-				width: 45px;
-				height: 45px;
-			}
+		&:after {
+			content: '';
+			position: absolute;
+			width: 45px;
+			height: 45px;
 		}
 	}
 }
