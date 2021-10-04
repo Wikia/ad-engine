@@ -124,8 +124,7 @@
 	min-height: 292px;
 
 	&.is-loading {
-		animation: is-loading 2s infinite;
-		border-radius: 20px;
+		background-color: #d8d8d8;
 	}
 }
 
@@ -298,7 +297,7 @@ not(.ic-ad-slot-placeholder) {
 		left: 0;
 		bottom: 0;
 		width: 100%;
-		color: #5f7a7b;
+		color: #858585;
 		content: 'Advertisement';
 		display: block;
 		font-size: 10px;
