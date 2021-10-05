@@ -294,19 +294,22 @@ not(.ic-ad-slot-placeholder) {
 	position: relative;
 	padding: 18px 0 24px 0;
 
-	&::after {
-		position: absolute;
-		left: 0;
+	.ae-translatable-label {
 		bottom: 0;
-		width: 100%;
-		color: #858585;
-		content: 'Advertisement';
 		display: block;
+		color: #5f7a7b;
 		font-size: 10px;
 		font-weight: 500;
+		left: 0;
 		line-height: 24px;
+		position: absolute;
 		text-align: center;
 		text-transform: uppercase;
+		width: 100%;
+
+		&.hide {
+			display: none;
+		}
 	}
 
 	.porvata-outstream.porvata3::before {
