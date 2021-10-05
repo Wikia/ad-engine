@@ -70,8 +70,9 @@ class AdClickTracker {
 		const data = {
 			ad_status: AdSlot.STATUS_CLICKED,
 		};
+		// @TODO rename "unused_6" to something more meaningful
 		if (event) {
-			data['unused_6'] = `x=${event.x};y=${event.y}`;
+			data['unused_6'] = `x=${event.clientY};y=${event.clientY}`;
 		}
 		this.pipeline.execute(
 			{
