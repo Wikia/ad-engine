@@ -120,12 +120,13 @@
 	align-items: center;
 	display: flex;
 	justify-content: center;
+	margin: 2px auto;
 	// 250px (slot height) + 18px (top padding) + 24px (bottom padding = label height)
 	min-height: 292px;
 
 	&.is-loading {
-		animation: is-loading 2s infinite;
-		border-radius: 20px;
+		background-color: #d8d8d8;
+		max-width: 320px;
 	}
 }
 
@@ -298,7 +299,7 @@ not(.ic-ad-slot-placeholder) {
 		left: 0;
 		bottom: 0;
 		width: 100%;
-		color: #5f7a7b;
+		color: #858585;
 		content: 'Advertisement';
 		display: block;
 		font-size: 10px;
