@@ -71,12 +71,7 @@ class AdClickTracker {
 			ad_status: AdSlot.STATUS_CLICKED,
 		};
 		if (event) {
-			const clickData = {
-				click: { x: event.x, y: event.y },
-				// @ts-ignore
-				size: { x: event.target.offsetWidth, y: event.target.offsetHeight },
-			};
-			data['unused_6'] = JSON.stringify(clickData);
+			data['unused_6'] = `x=${event.x};y=${event.y}`;
 		}
 		this.pipeline.execute(
 			{
