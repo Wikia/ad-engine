@@ -124,8 +124,9 @@
 	min-height: 292px;
 
 	&.is-loading {
-		animation: is-loading 2s infinite;
-		border-radius: 20px;
+		// animation: is-loading 2s infinite;
+		// border-radius: 20px;
+		background-color: #d8d8d8;
 	}
 }
 
@@ -292,6 +293,21 @@ not(.ic-ad-slot-placeholder) {
 .ic-ad-slot-placeholder {
 	position: relative;
 	padding: 18px 0 24px 0;
+
+	&::after {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		color: #858585;
+		content: 'Advertisement';
+		display: block;
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 24px;
+		text-align: center;
+		text-transform: uppercase;
+	}
 
 	.porvata-outstream.porvata3::before {
 		display: none;
