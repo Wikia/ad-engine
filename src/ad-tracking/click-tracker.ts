@@ -12,6 +12,7 @@ interface AdClickContext {
 	slot: AdSlot;
 	data: {
 		ad_status: string;
+		unused_6?: string;
 	};
 }
 
@@ -55,19 +56,33 @@ class AdClickTracker {
 			slotElement.firstElementChild.addEventListener('click', () => {
 				this.handleClickEvent(callback, adSlot);
 			});
-			iframeBody.addEventListener('click', () => {
-				this.handleClickEvent(callback, adSlot);
+			iframeBody.addEventListener('click', (e) => {
+				this.handleClickEvent(callback, adSlot, e);
 			});
 		}
 	}
 
-	private handleClickEvent(callback: FuncPipelineStep<AdClickContext>, slot: AdSlot): void {
+	private handleClickEvent(
+		callback: FuncPipelineStep<AdClickContext>,
+		slot: AdSlot,
+		event?: MouseEvent,
+	): void {
+		const data = {
+			ad_status: AdSlot.STATUS_CLICKED,
+		};
+		if (event) {
+			const target = event.target as HTMLElement;
+			const clickData = {
+				click: { x: event.clientX, y: event.clientY },
+				size: { x: target.offsetWidth, y: target.offsetHeight },
+			};
+			// @TODO rename "unused_6" to something more meaningful
+			data['unused_6'] = JSON.stringify(clickData);
+		}
 		this.pipeline.execute(
 			{
 				slot,
-				data: {
-					ad_status: AdSlot.STATUS_CLICKED,
-				},
+				data,
 			},
 			callback,
 		);
