@@ -1,3 +1,4 @@
+import { addAdvertisementLabel, stopLoadingSlot } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,
@@ -28,51 +29,6 @@ interface SlotCreatorInsertionParamsType {
 	insertMethod: insertMethodType;
 }
 
-const statusesToStopLoadingSlot: string[] = [
-	'SLOT_RENDERED_EVENT',
-	'STATUS_BLOCKED',
-	'STATUS_COLLAPSE',
-	'STATUS_FORCED_COLLAPSE',
-];
-
-function stopLoading(className: string, withHide: string = ''): void {
-	const placeholder: HTMLElement = document.querySelector(className);
-
-	placeholder?.classList.remove('is-loading');
-
-	if (withHide === 'placeholder') {
-		placeholder?.setAttribute('style', 'display: none');
-	} else if (withHide === 'parent') {
-		placeholder?.parentElement?.setAttribute('style', 'display: none');
-	}
-}
-
-function addAdvertisementLabel(className: string): void {
-	const classElements: NodeListOf<HTMLElement> = document.querySelectorAll(className);
-
-	classElements?.forEach((element) => {
-		const div = document.createElement('div');
-		div.className = 'ae-translatable-label';
-		div.innerText = 'Advertisement';
-		element.appendChild(div);
-	});
-}
-
-const removeLabel = (slotName: string): void => {
-	const parentElement =
-		slotName !== 'top_leaderboard'
-			? document.querySelector(`#${slotName}`).parentElement
-			: document.querySelector('.top-ads-container');
-
-	let adLabel: HTMLElement;
-	for (const child of parentElement.children as any) {
-		if (child.className.includes('ae-translatable-label')) {
-			adLabel = child;
-		}
-	}
-	adLabel?.classList.add('hide');
-};
-
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -85,14 +41,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		const slotName = 'top_leaderboard';
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			statusesToStopLoadingSlot.map((status) => {
-				slotService.on('top_leaderboard', AdSlot[status], () => {
-					stopLoading('.top-leaderboard');
-					if (status !== 'SLOT_RENDERED_EVENT') {
-						removeLabel('top_leaderboard');
-					}
-				});
-			});
+			stopLoadingSlot(slotName);
 		};
 
 		return {
@@ -144,14 +93,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 				addAdvertisementLabel('.top-boxad');
-				statusesToStopLoadingSlot.map((status) => {
-					slotService.on('top_boxad', AdSlot[status], () => {
-						stopLoading('.top-boxad');
-						if (status !== 'SLOT_RENDERED_EVENT') {
-							removeLabel('top_boxad');
-						}
-					});
-				});
+				stopLoadingSlot(slotName);
 			},
 		};
 	}
@@ -286,14 +228,7 @@ export class UcpMobileSlotsDefinitionRepository {
 					const mobilePrefooter = document.querySelector('.mobile-prefooter');
 					mobilePrefooter.classList.remove('hide');
 				});
-				statusesToStopLoadingSlot.map((status) => {
-					slotService.on('mobile_prefooter', AdSlot[status], () => {
-						stopLoading('.mobile-prefooter');
-						if (status !== 'SLOT_RENDERED_EVENT') {
-							removeLabel('mobile_prefooter');
-						}
-					});
-				});
+				stopLoadingSlot(slotName);
 			},
 		};
 	}
@@ -332,14 +267,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 				addAdvertisementLabel('.bottom-leaderboard');
-				statusesToStopLoadingSlot.map((status) => {
-					slotService.on('bottom_leaderboard', AdSlot[status], () => {
-						stopLoading('.bottom-leaderboard');
-						if (status !== 'SLOT_RENDERED_EVENT') {
-							removeLabel('bottom_leaderboard');
-						}
-					});
-				});
+				stopLoadingSlot(slotName);
 			},
 		};
 	}
