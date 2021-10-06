@@ -87,19 +87,6 @@
             "value": true
         }
     ],
-    "icPrebidPubmaticOutstream": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "CA",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icDeRecoExperimentDev": [
         {
             "apps": [
@@ -229,18 +216,6 @@
             "value": {
                 "300x600": 0.3
             }
-        }
-    ],
-    "icPrebidRubiconAdditionalKeyvals": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
         }
     ],
     "icBidsTracking": [
@@ -459,36 +434,6 @@
             "value": true
         }
     ],
-    "icSpaInstanceIdTracking": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 100.0,
-            "value": true
-        }
-    ],
-    "icRepeatMobileIncontentExtended": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "AU",
-                "CA",
-                "FR",
-                "GB",
-                "IL",
-                "PL",
-                "TR",
-                "UK"
-            ],
-            "value": true
-        }
-    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -544,18 +489,6 @@
                 "fandommobile",
                 "fandomdesktop"
             ]
-        }
-    ],
-    "icPrebidIndexExchangeFeatured": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
         }
     ],
     "icPrebidNobid": [
@@ -643,20 +576,6 @@
         {
             "apps": [
                 "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icA9Deals": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
                 "fandomdesktop"
             ],
             "regions": [
@@ -829,17 +748,6 @@
             "value": true
         }
     ],
-    "icOverscrolledTracking": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icStickySlotLineItemIds": [
         {
             "apps": [
@@ -851,6 +759,10 @@
                 "XX"
             ],
             "value": [
+                "5805105259",
+                "5805836378",
+                "5805836375",
+                "5805105256",
                 "5789289108",
                 "5789289111",
                 "5782937222",
@@ -2153,7 +2065,9 @@
                 "5797934082",
                 "5804736206",
                 "5804737361",
-                "5801857090"
+                "5801857090",
+                "5799964713",
+                "5805980576"
             ]
         }
     ],
@@ -2206,18 +2120,6 @@
             "value": true
         }
     ],
-    "icA9VideoBidsCleaning": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icPrebidIndexExchange": [
         {
             "apps": [
@@ -2255,12 +2157,6 @@
             "value": 3
         }
     ],
-    "wgAdDriverBillTheLizardConfig": {
-        "timeout": 2000,
-        "projects": {
-            
-        }
-    },
     "icPostmessageTracking": [
         {
             "apps": [
@@ -2268,18 +2164,6 @@
                 "futhead",
                 "fandommobile",
                 "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidAppNexusAdditionalKeyvals": [
-        {
-            "apps": [
-                "fandommobile",
                 "fandomdesktop"
             ],
             "regions": [
@@ -2338,18 +2222,6 @@
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210916.min.js"
         }
     ],
-    "icDurationMediaLibraryUrl": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//tag.durationmedia.net/sites/10651/dm.js"
-        }
-    ],
     "icA9Bidder": [
         {
             "apps": [
@@ -2372,18 +2244,6 @@
             ],
             "regions": [
                 "DE"
-            ],
-            "value": true
-        }
-    ],
-    "icPorvataDirect": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
             ],
             "value": true
         }
@@ -2476,20 +2336,6 @@
             "value": true
         }
     ],
-    "icPrebidSendAllBids": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icPrebidTelaria": [
         {
             "apps": [
@@ -2552,17 +2398,6 @@
             "value": true
         }
     ],
-    "icFloorAdhesionForceSafeFrame": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        }
-    ],
     "icFloorAdhesionDelay": [
         {
             "apps": [
@@ -2606,17 +2441,6 @@
                 "XX"
             ],
             "value": 30000
-        }
-    ],
-    "icScrollSpeedTracking": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
         }
     ],
     "icBabDetection": [
