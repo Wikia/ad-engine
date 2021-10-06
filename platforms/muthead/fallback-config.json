@@ -1,4 +1,20 @@
 {
+    "icConfiant": [
+        {
+            "apps": [
+                "muthead"
+            ],
+            "devices": [
+                "smartphone"
+            ],
+            "regions": [
+                "GB",
+                "UK",
+                "US"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidRubiconDisplay": [
         {
             "apps": [
@@ -28,6 +44,21 @@
             "value": true
         }
     ],
+    "icBTRec": [
+        {
+            "apps": [
+                "futhead",
+                "muthead"
+            ],
+            "devices": [
+                "desktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorTest": [
         {
             "apps": [
@@ -42,6 +73,36 @@
             ],
             "sampling": 35.0,
             "samplingCache": true,
+            "value": true
+        }
+    ],
+    "icPrebid": [
+        {
+            "apps": [
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icSlotTracking": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
             "value": true
         }
     ],
@@ -98,6 +159,53 @@
             "value": true
         }
     ],
+    "icViewabilityTracking": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBabDetection": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.4.0/tracking-opt-in.min.js"
+        }
+    ],
     "icPostmessageTracking": [
         {
             "apps": [
@@ -127,6 +235,19 @@
             "value": {
                 "300x600": 0.3
             }
+        }
+    ],
+    "icDurationMedia": [
+        {
+            "apps": [
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 100.0,
+            "value": true
         }
     ],
     "icSafeFanTakeoverLineItemIds": [
@@ -211,167 +332,7 @@
             "value": true
         }
     ],
-    "icDurationMediaLibraryUrl": [
-        {
-            "apps": [
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//tag.durationmedia.net/sites/10655/dm.js"
-        }
-    ],
     "icA9Bidder": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icConfiant": [
-        {
-            "apps": [
-                "muthead"
-            ],
-            "devices": [
-                "smartphone"
-            ],
-            "regions": [
-                "GB",
-                "UK",
-                "US"
-            ],
-            "value": true
-        }
-    ],
-    "icBTRec": [
-        {
-            "apps": [
-                "futhead",
-                "muthead"
-            ],
-            "devices": [
-                "desktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidSendAllBids": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebid": [
-        {
-            "apps": [
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icSlotTracking": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icViewabilityTracking": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icBabDetection": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.4.0/tracking-opt-in.min.js"
-        }
-    ],
-    "icDurationMedia": [
-        {
-            "apps": [
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 100.0,
-            "value": true
-        }
-    ],
-    "icA9Deals": [
         {
             "apps": [
                 "futhead",
