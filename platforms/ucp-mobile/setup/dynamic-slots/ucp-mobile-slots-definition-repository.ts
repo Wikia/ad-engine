@@ -225,14 +225,17 @@ export class UcpMobileSlotsDefinitionRepository {
 				],
 			},
 			activator: () => {
-				this.pushWaitingSlot(slotName);
-				slotService.on('mobile_prefooter', AdSlot.SLOT_REQUESTED_EVENT, () => {
-					const mobilePrefooter = document.querySelector('.mobile-prefooter');
-					mobilePrefooter.classList.remove('hide');
-				});
-				slotService.on('mobile_prefooter', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const mobilePrefooter = document.querySelector('.mobile-prefooter');
-					mobilePrefooter.classList.remove('is-loading');
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						this.pushWaitingSlot(slotName);
+
+						const mobilePrefooter = document.querySelector('.mobile-prefooter');
+						mobilePrefooter.classList.remove('hide');
+
+						slotService.on('mobile_prefooter', AdSlot.SLOT_RENDERED_EVENT, () => {
+							mobilePrefooter.classList.remove('is-loading');
+						});
+					}
 				});
 			},
 		};
