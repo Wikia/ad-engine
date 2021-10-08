@@ -3,8 +3,8 @@ import { context, utils } from '@ad-engine/core';
 import { props } from 'ts-action';
 
 const logGroup = 'nativo';
-const libraryUrl = 'https://s.ntv.io/serve/load.js';
-const nativoLoadedEvent = globalAction('[AdEngine] Nativo loaded', props<{}>());
+export const libraryUrl = 'https://s.ntv.io/serve/load.js';
+export const nativoLoadedEvent = globalAction('[AdEngine] Nativo loaded', props<{}>());
 
 class Nativo {
 	call(): Promise<void> {

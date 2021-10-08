@@ -1,16 +1,19 @@
-import { nativo } from '@wikia/ad-services';
+import { libraryUrl, nativo, nativoLoadedEvent } from '@wikia/ad-services';
+import { communicationService } from '@wikia/communication';
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonSpy } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
 
 describe('Nativo service', () => {
 	const sandbox = createSandbox();
-	let loadScriptStub;
+	let loadScriptSpy: SinonSpy;
+	let dispatchSpy: SinonSpy;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
+		loadScriptSpy = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
+		dispatchSpy = sandbox.spy(communicationService, 'dispatch');
 		context.set('services.nativo.enabled', true);
 		context.set('wiki.opts.enableNativeAds', true);
 	});
@@ -23,8 +26,8 @@ describe('Nativo service', () => {
 		await nativo.call();
 
 		expect(
-			loadScriptStub.calledWith(
-				'https://s.ntv.io/serve/load.js',
+			loadScriptSpy.calledWith(
+				libraryUrl,
 				'text/javascript',
 				true,
 				null,
@@ -39,7 +42,7 @@ describe('Nativo service', () => {
 
 		await nativo.call();
 
-		expect(loadScriptStub.called).to.equal(false);
+		expect(loadScriptSpy.called).to.equal(false);
 	});
 
 	it('Nativo service disabled from backend', async () => {
@@ -47,6 +50,16 @@ describe('Nativo service', () => {
 
 		await nativo.call();
 
-		expect(loadScriptStub.called).to.equal(false);
+		expect(loadScriptSpy.called).to.equal(false);
+	});
+
+	it('Nativo emits event on successful load', async () => {
+		await nativo.call();
+
+		console.log(dispatchSpy.firstCall.args[0]);
+
+		expect(loadScriptSpy.called).to.equal(true);
+		expect(dispatchSpy.callCount).to.equal(1);
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({}));
 	});
 });
