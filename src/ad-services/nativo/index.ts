@@ -6,14 +6,19 @@ const libraryUrl = 'https://s.ntv.io/serve/load.js';
 class Nativo {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
-			return;
+			utils.logger(logGroup, 'disabled');
+
+			return Promise.resolve();
 		}
 
-		return utils.scriptLoader
-			.loadScript(libraryUrl, 'text/javascript', true, null, 'data-ntv-set-no-auto-start')
-			.then(() => {
-				utils.logger(logGroup, 'ready');
-			});
+		return (
+			utils.scriptLoader
+				// @ts-ignore
+				.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
+				.then(() => {
+					utils.logger(logGroup, 'ready');
+				})
+		);
 	}
 
 	private isEnabled(): boolean {
