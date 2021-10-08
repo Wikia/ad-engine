@@ -56,8 +56,6 @@ describe('Nativo service', () => {
 	it('Nativo emits event on successful load', async () => {
 		await nativo.call();
 
-		console.log(dispatchSpy.firstCall.args[0]);
-
 		expect(loadScriptSpy.called).to.equal(true);
 		expect(dispatchSpy.callCount).to.equal(1);
 		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({}));
