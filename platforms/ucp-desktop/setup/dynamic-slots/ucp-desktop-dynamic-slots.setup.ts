@@ -1,4 +1,4 @@
-import { slotsContext } from '@platforms/shared';
+import { slotsContext, stopLoading } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
@@ -25,18 +25,6 @@ import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
-
-function stopLoading(className: string, withHide: string = ''): void {
-	const placeholder: HTMLElement = document.querySelector(className);
-
-	placeholder?.classList.remove('is-loading');
-
-	if (withHide === 'placeholder') {
-		placeholder?.setAttribute('style', 'display: none');
-	} else if (withHide === 'parent') {
-		placeholder?.parentElement?.setAttribute('style', 'display: none');
-	}
-}
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
