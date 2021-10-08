@@ -1,6 +1,5 @@
 import { addAdvertisementLabel, stopLoadingSlot } from '@platforms/shared';
 import {
-	AdSlot,
 	communicationService,
 	context,
 	insertMethodType,
@@ -11,7 +10,6 @@ import {
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
 	slotPlaceholderInjector,
-	slotService,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
