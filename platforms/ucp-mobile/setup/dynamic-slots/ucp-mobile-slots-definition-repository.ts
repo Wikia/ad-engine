@@ -222,13 +222,17 @@ export class UcpMobileSlotsDefinitionRepository {
 				],
 			},
 			activator: () => {
-				this.pushWaitingSlot(slotName);
-				addAdvertisementLabel('.mobile-prefooter');
-				slotService.on('mobile_prefooter', AdSlot.SLOT_REQUESTED_EVENT, () => {
-					const mobilePrefooter = document.querySelector('.mobile-prefooter');
-					mobilePrefooter.classList.remove('hide');
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						this.pushWaitingSlot(slotName);
+
+						const mobilePrefooter = document.querySelector('.mobile-prefooter');
+						mobilePrefooter.classList.remove('hide');
+						addAdvertisementLabel('.mobile-prefooter');
+
+						stopLoadingSlot(slotName);
+					}
 				});
-				stopLoadingSlot(slotName);
 			},
 		};
 	}
