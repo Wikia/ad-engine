@@ -1,4 +1,12 @@
-import { Binder, context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
+import {
+	Binder,
+	context,
+	Dictionary,
+	DiProcess,
+	InstantConfigService,
+	Targeting,
+	utils,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getDomain } from '../../utils/get-domain';
 
@@ -13,7 +21,7 @@ export class UcpTargetingSetup implements DiProcess {
 		};
 	}
 
-	constructor(@Inject(SKIN) private skin: string) {}
+	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
@@ -28,6 +36,51 @@ export class UcpTargetingSetup implements DiProcess {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
 			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
 		}
+
+		this.setupTargetingBundles();
+	}
+
+	private setupTargetingBundles(): void {
+		context.set('targeting.bundles', []);
+
+		const bundles = this.instantConfig.get('icTargetingBundles');
+
+		try {
+			Object.keys(bundles).forEach((key) => {
+				if (this.matchesTargetingBundle(bundles[key])) {
+					context.push('targeting.bundles', key);
+				}
+			});
+		} catch (e) {
+			utils.logger('targeting-bundles', 'Invalid input data!');
+		}
+	}
+
+	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {
+		let allSetsPass = true;
+
+		Object.keys(bundle).forEach((key) => {
+			const acceptedValues = context.get(`targeting.${key}`);
+
+			if (!acceptedValues) {
+				allSetsPass = false;
+				return;
+			}
+
+			if (Array.isArray(acceptedValues)) {
+				if (bundle[key].some((find) => acceptedValues.includes(find))) {
+					allSetsPass = false;
+					return;
+				}
+			} else {
+				if (!bundle[key].includes(acceptedValues)) {
+					allSetsPass = false;
+					return;
+				}
+			}
+		});
+
+		return allSetsPass;
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
