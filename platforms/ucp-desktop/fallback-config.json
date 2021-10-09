@@ -618,6 +618,7 @@
                 "XX"
             ],
             "value": [
+                "5803812894",
                 "5804931036",
                 "5805105259",
                 "5805836378",
@@ -2001,6 +2002,15 @@
             "value": true
         }
     ],
+    "icNativo": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": true
+        }
+    ],
     "icFeaturedVideoAdsFrequency": [
         {
             "apps": [
@@ -2175,6 +2185,41 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icTargetingBundles": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "bundle1": {
+                    "s1": [
+                        "_project34",
+                        "_harry"
+                    ],
+                    "esrb": [
+                        "teen"
+                    ]
+                },
+                "bundle2": {
+                    "s1": [
+                        "_project43",
+                        "_harrypotter"
+                    ],
+                    "esrb": [
+                        "teen"
+                    ]
+                },
+                "bundle3": {
+                    "skin": [
+                        "ucp_desktop"
+                    ]
+                }
+            }
         }
     ],
     "icPrebidTelaria": [
