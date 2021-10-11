@@ -1,5 +1,5 @@
+import { addAdvertisementLabel, stopLoadingSlot } from '@platforms/shared';
 import {
-	AdSlot,
 	communicationService,
 	context,
 	insertMethodType,
@@ -10,7 +10,6 @@ import {
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
 	slotPlaceholderInjector,
-	slotService,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -40,10 +39,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		const slotName = 'top_leaderboard';
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			slotService.on('top_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-				const topLeaderboard = document.querySelector('.top-leaderboard');
-				topLeaderboard.classList.remove('is-loading');
-			});
+			stopLoadingSlot(slotName);
 		};
 
 		return {
@@ -94,10 +90,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				slotService.on('top_boxad', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const topBoxad = document.querySelector('.top-boxad');
-					topBoxad.classList.remove('is-loading');
-				});
+				addAdvertisementLabel('.top-boxad');
+				stopLoadingSlot(slotName);
 			},
 		};
 	}
@@ -189,6 +183,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
 				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+				addAdvertisementLabel('.ic-ad-slot-placeholder');
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
 				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
@@ -231,10 +226,9 @@ export class UcpMobileSlotsDefinitionRepository {
 
 						const mobilePrefooter = document.querySelector('.mobile-prefooter');
 						mobilePrefooter.classList.remove('hide');
+						addAdvertisementLabel('.mobile-prefooter');
 
-						slotService.on('mobile_prefooter', AdSlot.SLOT_RENDERED_EVENT, () => {
-							mobilePrefooter.classList.remove('is-loading');
-						});
+						stopLoadingSlot(slotName);
 					}
 				});
 			},
@@ -274,11 +268,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: null,
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-
-				slotService.on('bottom_leaderboard', AdSlot.SLOT_RENDERED_EVENT, () => {
-					const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
-					bottomLeaderboard.classList.remove('is-loading');
-				});
+				addAdvertisementLabel('.bottom-leaderboard');
+				stopLoadingSlot(slotName);
 			},
 		};
 	}
