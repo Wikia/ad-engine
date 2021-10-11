@@ -8,7 +8,6 @@ const PUBLIC_API_KEY = '0006e595-b3f2-4dfc-b3a4-657eb42a74cf';
 const NAMESPACE = 'fandom';
 const logGroup = 'permutive';
 
-
 class Permutive {
 	isSetUp: boolean = false;
 
