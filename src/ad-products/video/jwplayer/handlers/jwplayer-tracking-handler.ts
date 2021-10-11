@@ -3,6 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import * as Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
+import * as utils from '../../../../ad-engine/utils';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
 import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
@@ -54,7 +55,9 @@ export class JWPlayerTrackingHandler {
 		const videoData = this.getVideoData(event);
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
+		utils.logger('permutive', 'log-EVENT', event);
 		playerEventEmitter.emit(eventInfo);
+		playerEventEmitter.emitVideoEvent(event);
 	}
 
 	private isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {
