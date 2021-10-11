@@ -6,7 +6,7 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
-
+ //test
 const include = [
 	path.resolve(__dirname, 'src'),
 	path.resolve(__dirname, 'platforms'),
