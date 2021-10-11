@@ -759,6 +759,7 @@
                 "XX"
             ],
             "value": [
+                "5803812894",
                 "5804931036",
                 "5805105259",
                 "5805836378",
@@ -2150,6 +2151,15 @@
             ],
             "regions": [
                 "US"
+            ],
+            "value": true
+        }
+    ],
+    "icNativo": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
             ],
             "value": true
         }

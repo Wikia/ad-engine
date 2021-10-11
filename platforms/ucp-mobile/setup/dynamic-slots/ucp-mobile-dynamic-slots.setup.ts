@@ -1,4 +1,4 @@
-import { slotsContext } from '@platforms/shared';
+import { removeAdLabel, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	adSlotEvent,
@@ -121,6 +121,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				)
 				.subscribe((action) => {
 					removeLoader(action.adSlotName);
+					if (action['event'] === 'slotHidden') {
+						removeAdLabel(action.adSlotName);
+					}
 				});
 		};
 
@@ -158,6 +161,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				)
 				.subscribe((action) => {
 					removeLoader(action.adSlotName);
+					if (action['event'] === 'slotHidden') {
+						removeAdLabel(action.adSlotName);
+					}
 				});
 		};
 
