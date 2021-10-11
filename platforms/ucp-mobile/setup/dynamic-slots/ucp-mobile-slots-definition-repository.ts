@@ -113,7 +113,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getIncontentBoxadConfig(): SlotSetupDefinition {
-		if (!this.isInContentApplicable() || !context.get('wiki.opts.enableICLazyRequesting')) {
+		if (!this.isInContentApplicable()) {
 			return;
 		}
 
