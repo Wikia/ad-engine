@@ -12,7 +12,7 @@ interface AdClickContext {
 	slot: AdSlot;
 	data: {
 		ad_status: string;
-		unused_6?: string;
+		click_position?: string;
 	};
 }
 
@@ -76,8 +76,7 @@ class AdClickTracker {
 				click: { x: event.clientX, y: event.clientY },
 				size: { x: target.offsetWidth, y: target.offsetHeight },
 			};
-			// @TODO rename "unused_6" to something more meaningful
-			data['unused_6'] = JSON.stringify(clickData);
+			data['click_position'] = JSON.stringify(clickData);
 		}
 		this.pipeline.execute(
 			{
