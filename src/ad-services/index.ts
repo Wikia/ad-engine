@@ -8,6 +8,7 @@ export * from './distro-scale';
 export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';
+export * from './nativo';
 export * from './nielsen';
 export * from './permutive';
 export * from './silver-surfer';
