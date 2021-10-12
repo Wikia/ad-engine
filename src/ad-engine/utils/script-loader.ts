@@ -8,6 +8,7 @@ class ScriptLoader {
 		isAsync = true,
 		node: HTMLElement | string = null,
 		parameters: Partial<HTMLScriptElement> = {},
+		datasets: Partial<DOMStringMap> = {},
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 		const temp: ChildNode =
@@ -21,6 +22,10 @@ class ScriptLoader {
 
 		Object.keys(parameters).forEach((parameter) => {
 			script[parameter] = parameters[parameter];
+		});
+
+		Object.keys(datasets).forEach((dataset) => {
+			script.dataset[dataset] = datasets[dataset];
 		});
 
 		temp.parentNode.insertBefore(script, temp);
@@ -37,9 +42,17 @@ class ScriptLoader {
 		isAsync = true,
 		node: HTMLElement | string = null,
 		parameters: Partial<HTMLScriptElement> = {},
+		datasets: Partial<DOMStringMap> = {},
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
-			const script: HTMLScriptElement = this.createScript(src, type, isAsync, node, parameters);
+			const script: HTMLScriptElement = this.createScript(
+				src,
+				type,
+				isAsync,
+				node,
+				parameters,
+				datasets,
+			);
 
 			script.onload = resolve;
 			script.onerror = reject;
