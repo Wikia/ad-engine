@@ -68,6 +68,7 @@ interface VideoEventSchema {
 @Injectable()
 export class VideoTracker {
 	private adInfo: EventAdInfo;
+	private playId: string;
 
 	private getEventName(videoEvent: VideoEvent): string {
 		const videoAdEventsMap = {
@@ -94,9 +95,12 @@ export class VideoTracker {
 	}
 
 	private getVideoEventSchema(videoEvent: VideoEvent): VideoEventSchema {
-		// INFO: ima is present only in adStarted and adClick events
+		// INFO: ima and adPlayId are present only in adStarted and adClick events
 		// so we have to save it for the rest of ad events (e.g. process)
-		this.adInfo = this.adInfo || videoEvent.payload.ima.ad.g;
+		if (this.getEventName(videoEvent) === 'VideoAdPlay') {
+			this.adInfo = videoEvent.payload.ima.ad.g;
+			this.playId = videoEvent.payload.adPlayId;
+		}
 		const videoInfo = videoEvent.state.playlistItem;
 		const event = {
 			ad: {
@@ -120,7 +124,7 @@ export class VideoTracker {
 				published_at: new Date(videoInfo.pubdate),
 				tags: videoInfo.tags.split(','),
 			},
-			play_id: videoEvent.payload.adPlayId,
+			play_id: this.playId,
 		};
 
 		if (this.getEventName(videoEvent) === 'VideoAdProgress') {
