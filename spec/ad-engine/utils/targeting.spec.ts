@@ -15,12 +15,9 @@ describe('targeting', () => {
 	});
 
 	it('getHostnamePrefix properly detects current environment', () => {
-		// @ts-ignore
-		global.window = {
-			location: {
-				hostname: 'project43.preview.fandom.com',
-			},
-		};
+		sandbox.stub(window, 'location').value({
+			hostname: 'project43.preview.fandom.com',
+		});
 
 		expect(targeting.getHostnamePrefix()).to.equal('preview');
 	});
