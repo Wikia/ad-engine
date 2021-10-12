@@ -1,7 +1,6 @@
 import {
 	Binder,
 	context,
-	Dictionary,
 	DiProcess,
 	InstantConfigService,
 	Targeting,
@@ -37,50 +36,10 @@ export class UcpTargetingSetup implements DiProcess {
 			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
 		}
 
-		this.setupTargetingBundles();
-	}
-
-	private setupTargetingBundles(): void {
-		context.set('targeting.bundles', []);
-
-		const bundles = this.instantConfig.get('icTargetingBundles');
-
-		try {
-			Object.keys(bundles).forEach((key) => {
-				if (this.matchesTargetingBundle(bundles[key])) {
-					context.push('targeting.bundles', key);
-				}
-			});
-		} catch (e) {
-			utils.logger('targeting-bundles', 'Invalid input data!');
-		}
-	}
-
-	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {
-		let allSetsPass = true;
-
-		Object.keys(bundle).forEach((key) => {
-			const acceptedValues = context.get(`targeting.${key}`);
-
-			if (!acceptedValues) {
-				allSetsPass = false;
-				return;
-			}
-
-			if (Array.isArray(acceptedValues)) {
-				if (bundle[key].some((find) => acceptedValues.includes(find))) {
-					allSetsPass = false;
-					return;
-				}
-			} else {
-				if (!bundle[key].includes(acceptedValues)) {
-					allSetsPass = false;
-					return;
-				}
-			}
-		});
-
-		return allSetsPass;
+		context.set(
+			'targeting.bundles',
+			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
+		);
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
@@ -96,7 +55,7 @@ export class UcpTargetingSetup implements DiProcess {
 			esrb: wiki.targeting.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
 			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
-			hostpre: this.getHostnamePrefix(),
+			hostpre: utils.targeting.getHostnamePrefix(),
 			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			media: wiki.targeting?.adTagManagerTags?.media || [],
@@ -106,7 +65,7 @@ export class UcpTargetingSetup implements DiProcess {
 			s0: wiki.targeting.mappedVerticalName,
 			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
-			s1: this.getRawDbName(wiki),
+			s1: utils.targeting.getRawDbName(wiki.targeting.wikiDbName),
 			s2: this.getAdLayout(wiki.targeting),
 			sex: wiki.targeting?.adTagManagerTags?.sex || [],
 			skin: this.skin,
@@ -131,29 +90,6 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		return targeting;
-	}
-
-	private getHostnamePrefix(): string {
-		const hostname = window.location.hostname.toLowerCase();
-		const match = /(^|.)(showcase|externaltest|preview|verify|stable|sandbox-[^.]+)\./.exec(
-			hostname,
-		);
-
-		if (match && match.length > 2) {
-			return match[2];
-		}
-
-		const pieces = hostname.split('.');
-
-		if (pieces.length) {
-			return pieces[0];
-		}
-
-		return undefined;
-	}
-
-	private getRawDbName(adsContext: MediaWikiAdsContext): string {
-		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
 	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
