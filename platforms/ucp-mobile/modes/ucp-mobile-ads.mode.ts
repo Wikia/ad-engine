@@ -13,6 +13,7 @@ import {
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	nativo,
 	nielsen,
 	permutive,
 	Runner,
@@ -58,6 +59,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		confiant.call();
 		stroer.call();
 		durationMedia.call();
+		nativo.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
