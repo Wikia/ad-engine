@@ -21,8 +21,6 @@ interface MediaWikiAdsOpts {
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
-	enableICLazyRequesting?: boolean;
-	enableICPPlaceholder?: boolean;
 	enableAdTagManagerBackend?: boolean;
 }
 
