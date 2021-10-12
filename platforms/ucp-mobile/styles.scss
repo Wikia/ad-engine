@@ -321,9 +321,12 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
-.bab-detected {
-	.ic-ad-slot-placeholder,
-	.ad-slot-placeholder {
+body.bab-detected {
+	.ad-slot-placeholder.top-leaderboard,
+	.ad-slot-placeholder.top-boxad,
+	.ad-slot-placeholder.mobile-prefooter,
+	.ad-slot-placeholder.bottom-leaderboard,
+	.ic-ad-slot-placeholder {
 		display: none;
 	}
 }
