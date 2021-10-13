@@ -20,8 +20,9 @@ class Nativo {
 		return utils.scriptLoader
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
-				this.sendEvent();
 				utils.logger(logGroup, 'ready');
+				this.sendEvent();
+				this.displayTestAd();
 			});
 	}
 
@@ -31,6 +32,29 @@ class Nativo {
 
 	private isEnabled(): boolean {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
+	}
+
+	private displayTestAd(): void {
+		if (utils.queryString.get('native_ads') !== '1') {
+			return;
+		}
+
+		const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
+		nativeAdIncontentPlaceholder.innerHTML = `<hr style="margin: 8px 0">
+					<div class="ntv-title"></div>
+						<div class="ntv-content" style="display: flex">
+							<img 
+								src="https://placekitten.com/100/100" 
+								alt="mr. mittens" 
+								style="width: 100px; height: 100px"/>
+							<div style="margin: 0 8px">
+								<p style="margin-bottom: 0">AD</p>
+								<a href="https://fandom.com" style="margin: 8px 0; font-size: 24px">Sprzedam opla</a>
+								<p style="margin-bottom: 0">Teraz</p>
+							</div>
+						</div>
+				</div>
+			<hr style="margin: 8px 0 18px">`;
 	}
 }
 
