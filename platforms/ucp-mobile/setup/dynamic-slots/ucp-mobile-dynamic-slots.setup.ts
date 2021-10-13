@@ -40,6 +40,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+		this.configureNativeAdsPlaceholderHandler();
 		this.configureAffiliateSlot();
 		this.configureICBPlaceholderHandler();
 		this.configureICPPlaceholderHandler();
@@ -156,6 +157,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		};
 
 		adSlotEventListener();
+	}
+
+	configureNativeAdsPlaceholderHandler(): void {
+		const node = document.querySelector('.mw-parser-output>p:last-of-type');
+		const container = document.createElement('div');
+
+		container.setAttribute('class', `ntv-ad`);
+		container.setAttribute('id', `ntv-ad`);
+
+		node.before(container);
 	}
 
 	private configureIncontentPlayer(): void {

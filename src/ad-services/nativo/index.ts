@@ -4,7 +4,10 @@ import { props } from 'ts-action';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
-export const nativoLoadedEvent = globalAction('[AdEngine] Nativo loaded', props<{}>());
+export const nativoLoadedEvent = globalAction(
+	'[AdEngine] Nativo loaded',
+	props<{ isLoaded: boolean }>(),
+);
 
 class Nativo {
 	call(): Promise<void> {
@@ -23,11 +26,12 @@ class Nativo {
 	}
 
 	private sendEvent(): void {
-		communicationService.dispatch(nativoLoadedEvent({}));
+		communicationService.dispatch(nativoLoadedEvent({ isLoaded: true }));
 	}
 
 	private isEnabled(): boolean {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 }
+
 export const nativo = new Nativo();

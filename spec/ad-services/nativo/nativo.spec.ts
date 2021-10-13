@@ -58,6 +58,6 @@ describe('Nativo service', () => {
 
 		expect(loadScriptSpy.called).to.equal(true);
 		expect(dispatchSpy.callCount).to.equal(1);
-		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({}));
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({ isLoaded: true }));
 	});
 });
