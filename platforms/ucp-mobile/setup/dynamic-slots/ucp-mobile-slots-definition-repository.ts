@@ -97,6 +97,30 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
+	getNativeAdsConfig(): SlotSetupDefinition {
+		if (!this.isNativeAdsApplicable() && false) {
+			return;
+		}
+
+		const slotName = 'ntv-ad';
+		const wrapperClassList = ['ntv-ad'];
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.mw-parser-output > p:last-of-type',
+				insertMethod: 'before',
+				classList: ['ntv-ad', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: {
+				classList: wrapperClassList,
+			},
+			activator: () => {
+				this.pushWaitingSlot(slotName);
+			},
+		};
+	}
+
 	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
 		let params: SlotCreatorInsertionParamsType = {
 			anchorSelector: '.mw-parser-output > h2',
@@ -168,6 +192,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		return context.get('wiki.opts.pageType') !== 'search';
+	}
+
+	private isNativeAdsApplicable(): boolean {
+		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
 	private injectIncontentAdsPlaceholders(): void {
