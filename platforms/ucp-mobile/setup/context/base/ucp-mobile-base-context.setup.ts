@@ -24,10 +24,6 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			this.instantConfig.get('icPushOnScrollThreshold', 100),
 		);
 
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			context.set('wiki.opts.enableICBPlaceholder', false);
-			context.set('wiki.opts.enableICPPlaceholder', false);
-			context.set('events.pushAfterRendered.top_boxad', ['incontent_player', 'affiliate_slot']);
-		}
+		context.set('events.pushAfterRendered.top_boxad', ['incontent_player', 'affiliate_slot']);
 	}
 }
