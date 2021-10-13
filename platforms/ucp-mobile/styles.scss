@@ -185,6 +185,11 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
+.ntv-ad {
+	display: block;
+	min-height: 1px;
+}
+
 .ic-ad-slot-placeholder {
 	@include ic-ad-slot-placeholder;
 

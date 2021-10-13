@@ -11,7 +11,7 @@ export const nativoLoadedEvent = globalAction(
 
 class Nativo {
 	call(): Promise<void> {
-		if (!this.isEnabled()) {
+		if (!this.isEnabled() && false) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
