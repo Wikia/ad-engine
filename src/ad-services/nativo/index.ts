@@ -41,18 +41,17 @@ class Nativo {
 
 		const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
 		nativeAdIncontentPlaceholder.innerHTML = `<hr style="margin: 8px 0">
-					<div class="ntv-title"></div>
-						<div class="ntv-content" style="display: flex">
-							<img 
-								src="https://placekitten.com/100/100" 
-								alt="mr. mittens" 
-								style="width: 100px; height: 100px"/>
-							<div style="margin: 0 8px">
-								<p style="margin-bottom: 0">AD</p>
-								<a href="https://fandom.com" style="margin: 8px 0; font-size: 24px">Sprzedam opla</a>
-								<p style="margin-bottom: 0">Teraz</p>
-							</div>
-						</div>
+				<div class="ntv-wrapper">
+					<img 
+						src="https://placekitten.com/100/100" 
+						alt="mr. mittens" 
+						class="ntv-img" 
+					/>
+					<div class="ntv-content">
+						<p>AD</p>
+						<a href="https://fandom.com">Sprzedam opla</a>
+						<p>Teraz</p>
+					</div>
 				</div>
 			<hr style="margin: 8px 0 18px">`;
 	}

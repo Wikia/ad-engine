@@ -36,7 +36,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				avoidConflictWith: '.ad-slot,#ntv-ad',
+				avoidConflictWith: '.ad-slot,#ntv-ad,.ntv-ad',
 				bidderAlias: 'mobile_in_content',
 				slotNameSuffix: '',
 				group: 'MR',

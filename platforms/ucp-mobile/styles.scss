@@ -186,8 +186,27 @@ not(.ic-ad-slot-placeholder) {
 }
 
 .ntv-ad {
-	display: block;
-	min-height: 1px;
+	.ntv-wrapper {
+		display: flex;
+
+		.ntv-img {
+			width: 100px;
+			height: 100px;
+		}
+
+		.ntv-content {
+			margin: 0 8px;
+
+			a {
+				margin: 8px 0;
+				font-size: 24px;
+			}
+
+			p {
+				margin-bottom: 0;
+			}
+		}
+	}
 }
 
 .ic-ad-slot-placeholder {
