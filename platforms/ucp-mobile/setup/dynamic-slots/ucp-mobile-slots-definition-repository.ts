@@ -98,7 +98,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativeAdsConfig(): SlotSetupDefinition {
-		if (!this.isNativeAdsApplicable() && false) {
+		if (!this.isNativeAdsApplicable()) {
 			return;
 		}
 
