@@ -113,7 +113,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			return false;
 		};
 
-		const adSlotEventListener = (removeLoader) => {
+		const removeLoader = (adSlotName) => {
+			const slotElement = document.querySelector(`#${adSlotName}`);
+			slotElement.parentElement.classList.remove('is-loading');
+		};
+
+		const adSlotEventListener = () => {
 			communicationService.action$
 				.pipe(
 					ofType(adSlotEvent),
@@ -127,33 +132,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				});
 		};
 
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.parentElement.classList.remove('is-loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		} else if (context.get('wiki.opts.enableICBPlaceholder')) {
-			context.set('slots.incontent_boxad_1.defaultClasses', [
-				'incontent-boxad',
-				'ad-slot',
-				'ic-ad-slot-placeholder',
-				'is-loading',
-			]);
-
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.classList.remove('loading');
-				slotElement.classList.remove('is-loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		}
+		adSlotEventListener();
 	}
 
 	private configureICPPlaceholderHandler(): void {
-		const adSlotEventListener = (removeLoader) => {
+		const removeLoader = (adSlotName) => {
+			const slotElement = document.querySelector(`#${adSlotName}`);
+			slotElement.parentElement.classList.remove('is-loading');
+		};
+
+		const adSlotEventListener = () => {
 			communicationService.action$
 				.pipe(
 					ofType(adSlotEvent),
@@ -167,24 +155,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				});
 		};
 
-		if (context.get('wiki.opts.enableICPPlaceholder')) {
-			context.set('slots.incontent_player.defaultClasses', ['ic-ad-slot-placeholder', 'loading']);
-
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.classList.remove('loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		}
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.parentElement.classList.remove('is-loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		}
+		adSlotEventListener();
 	}
 
 	private configureIncontentPlayer(): void {
