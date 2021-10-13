@@ -84,7 +84,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				...this.slotCreatorInsertionParams(),
 				classList: ['hide', 'ad-slot'],
-				avoidConflictWith: ['#ntv-ad', '.ntv-ad'],
+				avoidConflictWith: ['.ntv-ad'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: wrapperClassList,
