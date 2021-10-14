@@ -98,7 +98,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativeAdsConfig(): SlotSetupDefinition {
-		if (!this.isNativeAdsApplicable()) {
+		if (!this.isNativeAdApplicable()) {
 			return;
 		}
 
@@ -194,7 +194,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return context.get('wiki.opts.pageType') !== 'search';
 	}
 
-	private isNativeAdsApplicable(): boolean {
+	private isNativeAdApplicable(): boolean {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 

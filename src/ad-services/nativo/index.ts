@@ -6,7 +6,7 @@ import { props } from 'ts-action';
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
 export const nativoLoadedEvent = globalAction(
-	'[AdEngine] Nativo loaded',
+	'[AdEngine] Nativo service',
 	props<{ isLoaded: boolean }>(),
 );
 const uapLoadStatus = globalAction('[AdEngine] UAP Load status', props<{ isLoaded: boolean }>());
@@ -37,7 +37,7 @@ class Nativo {
 	}
 
 	private displayTestAd(): void {
-		if (utils.queryString.get('native_ads') !== '1') {
+		if (utils.queryString.get('native_ads_test') !== '1') {
 			return;
 		}
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
