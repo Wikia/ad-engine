@@ -55,6 +55,7 @@ export class JWPlayerTrackingHandler {
 		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
+		playerEventEmitter.emitVideoEvent(event);
 	}
 
 	private isTrackingEvent(event: JwpEvent<JwpEventKey>): event is JwpEvent<TrackingEvent> {

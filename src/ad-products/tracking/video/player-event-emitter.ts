@@ -1,4 +1,4 @@
-import { context, eventService, VideoEventData } from '@ad-engine/core';
+import { context, events, eventService, VideoEventData } from '@ad-engine/core';
 
 export const playerEvents = {
 	VIDEO_PLAYER_TRACKING_EVENT: Symbol('VIDEO_PLAYER_TRACKING_EVENT'),
@@ -19,5 +19,9 @@ export default {
 		}
 
 		eventService.emit(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, eventInfo);
+	},
+
+	emitVideoEvent(videoEvent): void {
+		eventService.emit(events.VIDEO_EVENT, videoEvent);
 	},
 };
