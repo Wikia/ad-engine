@@ -2361,6 +2361,37 @@
             "value": true
         }
     ],
+    "icTargetingBundles": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "bundle1": {
+                    "lang": [
+                        "pl"
+                    ]
+                },
+                "bundle2": {
+                    "s0": [
+                        "gaming"
+                    ],
+                    "skin": [
+                        "ucp_desktop"
+                    ]
+                },
+                "bundle3": {
+                    "s0c": [
+                        "books"
+                    ]
+                }
+            }
+        }
+    ],
     "icPrebidTelaria": [
         {
             "apps": [

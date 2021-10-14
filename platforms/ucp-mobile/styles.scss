@@ -346,6 +346,16 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
+body.bab-detected {
+	.top-ads-container,
+	.ad-slot-placeholder.top-boxad,
+	.ad-slot-placeholder.mobile-prefooter,
+	.ad-slot-placeholder.bottom-leaderboard,
+	.ic-ad-slot-placeholder {
+		display: none;
+	}
+}
+
 @keyframes fade-in {
 	to {
 		opacity: 1;
