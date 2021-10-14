@@ -319,6 +319,12 @@ not(.ic-ad-slot-placeholder) {
 	&.hide {
 		display: none !important;
 	}
+
+	&.is-loading {
+		.ae-translatable-label {
+			background-color: var(--theme-page-background-color);
+		}
+	}
 }
 
 @keyframes fade-in {
