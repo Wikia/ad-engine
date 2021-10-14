@@ -429,7 +429,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
+                "XX"
             ],
             "value": true
         }
@@ -2079,7 +2079,11 @@
                 "5806184044",
                 "5806183912",
                 "5809737983",
-                "5808681249"
+                "5808681249",
+                "5809022529",
+                "5809023255",
+                "5809023516",
+                "5810232364"
             ]
         }
     ],
@@ -2355,6 +2359,37 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icTargetingBundles": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "bundle1": {
+                    "lang": [
+                        "pl"
+                    ]
+                },
+                "bundle2": {
+                    "s0": [
+                        "gaming"
+                    ],
+                    "skin": [
+                        "ucp_desktop"
+                    ]
+                },
+                "bundle3": {
+                    "s0c": [
+                        "books"
+                    ]
+                }
+            }
         }
     ],
     "icPrebidTelaria": [

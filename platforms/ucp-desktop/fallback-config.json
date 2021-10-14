@@ -1938,7 +1938,11 @@
                 "5806184044",
                 "5806183912",
                 "5809737983",
-                "5808681249"
+                "5808681249",
+                "5809022529",
+                "5809023255",
+                "5809023516",
+                "5810232364"
             ]
         }
     ],
@@ -2192,42 +2196,30 @@
     "icTargetingBundles": [
         {
             "apps": [
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
             "value": {
                 "bundle1": {
-                    "s1": [
-                        "_project34",
-                        "_harry"
-                    ],
-                    "esrb": [
-                        "teen"
+                    "lang": [
+                        "pl"
                     ]
                 },
                 "bundle2": {
-                    "s1": [
-                        "_project43",
-                        "_harrypotter"
+                    "s0": [
+                        "gaming"
                     ],
-                    "esrb": [
-                        "teen"
-                    ]
-                },
-                "bundle3": {
                     "skin": [
                         "ucp_desktop"
                     ]
                 },
-                "bundle4": {
-                    
-                },
-                "bundle5": {
-                    "skin": {
-                        
-                    }
+                "bundle3": {
+                    "s0c": [
+                        "books"
+                    ]
                 }
             }
         }
