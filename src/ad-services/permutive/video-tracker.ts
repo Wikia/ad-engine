@@ -58,7 +58,6 @@ interface VideoEventSchema {
 		duration: number;
 		video_id: string;
 		name: string;
-		published_at: Date;
 		tags: string[];
 	};
 	play_id: string;
@@ -121,7 +120,6 @@ export class VideoTracker {
 				duration: videoInfo.duration,
 				video_id: videoInfo.mediaid,
 				name: videoInfo.title,
-				published_at: new Date(videoInfo.pubdate),
 				tags: videoInfo.tags.split(','),
 			},
 			play_id: this.playId,
