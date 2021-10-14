@@ -1,4 +1,5 @@
 import { context, utils } from '@ad-engine/core';
+import { VideoTracker } from './video-tracker';
 
 /* tslint:disable */
 const PROJECT_ID = '88ca3150-0f6f-482a-bbc1-2aa3276b3cab';
@@ -127,6 +128,9 @@ class Permutive {
 				'web',
 				this.getPageViewEventSchema(),
 			);
+
+			const videoTracker = new VideoTracker();
+			videoTracker.setupVideoAdTracking();
 		}
 	}
 }
