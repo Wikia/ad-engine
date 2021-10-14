@@ -1,6 +1,5 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, globalAction } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 
 const logGroup = 'nativo';
@@ -9,7 +8,6 @@ export const nativoLoadedEvent = globalAction(
 	'[AdEngine] Nativo service',
 	props<{ isLoaded: boolean }>(),
 );
-const uapLoadStatus = globalAction('[AdEngine] UAP Load status', props<{ isLoaded: boolean }>());
 
 class Nativo {
 	call(): Promise<void> {
@@ -24,8 +22,11 @@ class Nativo {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 				this.sendEvent();
-				this.displayTestAd();
 			});
+	}
+
+	start(): void {
+		this.displayTestAd();
 	}
 
 	private sendEvent(): void {
@@ -40,25 +41,22 @@ class Nativo {
 		if (utils.queryString.get('native_ads_test') !== '1') {
 			return;
 		}
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (!action.isLoaded) {
-				const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
-				nativeAdIncontentPlaceholder.innerHTML = `<hr style="margin: 8px 0">
-						<div class="ntv-wrapper">
-							<img 
-								src="https://placekitten.com/100/100" 
-								alt="mr. mittens" 
-								class="ntv-img" 
-							/>
-							<div class="ntv-content">
-								<p>AD</p>
-								<a href="https://fandom.com">Sprzedam opla</a>
-								<p>Teraz</p>
-							</div>
-						</div>
-					<hr style="margin: 8px 0 18px">`;
-			}
-		});
+
+		const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
+		nativeAdIncontentPlaceholder.innerHTML = `<hr style="margin: 8px 0">
+				<div class="ntv-wrapper">
+					<img 
+						src="https://placekitten.com/100/100" 
+						alt="mr. mittens" 
+						class="ntv-img" 
+					/>
+					<div class="ntv-content">
+						<p>AD</p>
+						<a href="https://fandom.com">Sprzedam opla</a>
+						<p>Teraz</p>
+					</div>
+				</div>
+			<hr style="margin: 8px 0 18px">`;
 	}
 }
 
