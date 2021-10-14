@@ -4,6 +4,7 @@ import {
 	context,
 	insertMethodType,
 	InstantConfigService,
+	nativo,
 	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -84,6 +85,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName,
 				...this.slotCreatorInsertionParams(),
 				classList: ['hide', 'ad-slot'],
+				avoidConflictWith: ['.ntv-ad'],
 			},
 			slotCreatorWrapperConfig: {
 				classList: wrapperClassList,
@@ -92,6 +94,34 @@ export class UcpMobileSlotsDefinitionRepository {
 				this.pushWaitingSlot(slotName);
 				addAdvertisementLabel('.top-boxad');
 				stopLoadingSlot(slotName);
+			},
+		};
+	}
+
+	getNativeAdsConfig(): SlotSetupDefinition {
+		if (!this.isNativeAdApplicable()) {
+			return;
+		}
+
+		const slotName = 'ntv-ad';
+		const wrapperClassList = ['ntv-ad'];
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.mw-parser-output > p:last-of-type',
+				insertMethod: 'before',
+				classList: ['ntv-ad', 'ad-slot'],
+			},
+			slotCreatorWrapperConfig: {
+				classList: wrapperClassList,
+			},
+			activator: () => {
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (!action.isLoaded) {
+						nativo.start();
+					}
+				});
 			},
 		};
 	}
@@ -167,6 +197,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		return context.get('wiki.opts.pageType') !== 'search';
+	}
+
+	private isNativeAdApplicable(): boolean {
+		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
 	private injectIncontentAdsPlaceholders(): void {
