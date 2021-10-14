@@ -54,6 +54,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		this.insertSlots([
 			topLeaderboardDefinition,
+			this.slotsDefinitionRepository.getNativeAdsConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
