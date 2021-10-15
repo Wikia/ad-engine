@@ -18,6 +18,14 @@ export class Placeholder {
 
 		if (this.placeholderElement) {
 			this.labelElement = this.placeholderElement.querySelector(`.${Placeholder.LABEL_CSS_CLASS}`);
+
+			if (this.labelElement === null) {
+				// when label is not a child of the placeholder
+				// most likely when there is a wrapper involved for example #top_leaderboard
+				this.labelElement = this.placeholderElement.parentElement.querySelector(
+					`.${Placeholder.LABEL_CSS_CLASS}`,
+				);
+			}
 		}
 	}
 

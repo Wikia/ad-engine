@@ -441,6 +441,11 @@ export class AdSlot extends EventEmitter {
 
 		this.hide();
 		this.setStatus(status);
+
+		if (this.placeholder !== null) {
+			this.placeholder.stopLoading();
+			this.placeholder.removeLabel();
+		}
 	}
 
 	updateWinningPbBidderDetails(): void {
