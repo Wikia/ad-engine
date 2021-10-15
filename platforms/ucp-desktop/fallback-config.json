@@ -1942,13 +1942,29 @@
                 "5809022529",
                 "5809023255",
                 "5809023516",
-                "5810232364"
+                "5810232364",
+                "5813057720",
+                "5806828033",
+                "5811079574",
+                "5809194900",
+                "5811079577",
+                "5809194897",
+                "5811079571",
+                "5809194903",
+                "5809194360",
+                "5812565422",
+                "5812565758",
+                "5812565752",
+                "5812565755",
+                "5812565425",
+                "5812565410"
             ]
         }
     ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
+                "f2",
                 "fandomdesktop",
                 "fandommobile",
                 "futhead",
@@ -1967,7 +1983,9 @@
                 "icAax_A_95:recovery_test_a",
                 "icAax_B_5:recovery_test_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
-                "icTrafficDivider_B_50:galactus_h2_b"
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icTrackingOptInLibraryUrl_A_50:modal_disabled",
+                "icTrackingOptInLibraryUrl_B_50:modal_enabled"
             ]
         }
     ],
@@ -2203,22 +2221,26 @@
                 "XX"
             ],
             "value": {
-                "bundle1": {
-                    "lang": [
-                        "pl"
-                    ]
-                },
-                "bundle2": {
-                    "s0": [
-                        "gaming"
-                    ],
-                    "skin": [
-                        "ucp_desktop"
-                    ]
-                },
-                "bundle3": {
-                    "s0c": [
-                        "books"
+                "dnd_bundle": {
+                    "s1": [
+                        "_dungeonsdragons",
+                        "_itincantesimibellibelli",
+                        "_dnd5e",
+                        "_dungeonsdragons",
+                        "_gdmaze",
+                        "_dungeons",
+                        "_dungeonsanddaddiespodcast",
+                        "_ptbrdnd4th",
+                        "_dainxtdungeonsmod",
+                        "_esdnd5e",
+                        "_dungeonsiege",
+                        "_adnd2e",
+                        "_criticalrole",
+                        "_fantasyhigh",
+                        "_baldursgategame",
+                        "_dragonage",
+                        "_forgottenrealms",
+                        "_sfery"
                     ]
                 }
             }
@@ -2447,6 +2469,22 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "BR"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",
