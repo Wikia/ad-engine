@@ -33,6 +33,11 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_leaderboard', 'mobile_top_leaderboard'],
 					rv: 1,
 				},
+				placeholder: {
+					enabled: true,
+					selector: '.top-leaderboard',
+					label: true,
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
