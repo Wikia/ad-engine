@@ -1435,7 +1435,50 @@
                 "5809022529",
                 "5809023255",
                 "5809023516",
-                "5810232364"
+                "5810232364",
+                "5813057720",
+                "5806828033",
+                "5811079574",
+                "5809194900",
+                "5811079577",
+                "5809194897",
+                "5811079571",
+                "5809194903",
+                "5809194360",
+                "5812565422",
+                "5812565758",
+                "5812565752",
+                "5812565755",
+                "5812565425",
+                "5812565410"
+            ]
+        }
+    ],
+    "icLABradorGamKeyValues": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "icFloorAdhesionDelay_A_50:fd_50_50_a",
+                "icFloorAdhesionDelay_B_50:fd_50_50_b",
+                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
+                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
+                "icUAPJWPlayer_A_99:uap_jwp_99_a",
+                "icUAPJWPlayer_B_1:uap_jwp_1_b",
+                "icAax_A_95:recovery_test_a",
+                "icAax_B_5:recovery_test_b",
+                "icTrafficDivider_A_50:galactus_h2_a",
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icTrackingOptInLibraryUrl_A_50:modal_disabled",
+                "icTrackingOptInLibraryUrl_B_50:modal_enabled"
             ]
         }
     ],
@@ -1523,6 +1566,22 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "BR"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",

@@ -109,6 +109,7 @@
     "icLABradorGamKeyValues": [
         {
             "apps": [
+                "f2",
                 "fandomdesktop",
                 "fandommobile",
                 "futhead",
@@ -127,7 +128,9 @@
                 "icAax_A_95:recovery_test_a",
                 "icAax_B_5:recovery_test_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
-                "icTrafficDivider_B_50:galactus_h2_b"
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icTrackingOptInLibraryUrl_A_50:modal_disabled",
+                "icTrackingOptInLibraryUrl_B_50:modal_enabled"
             ]
         }
     ],
@@ -191,6 +194,22 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "BR"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",
