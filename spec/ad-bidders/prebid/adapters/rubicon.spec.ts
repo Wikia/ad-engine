@@ -28,7 +28,6 @@ describe('Rubicon bidder adapter', () => {
 		expect(rubicon.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
-				mediaType: 'video',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
@@ -87,7 +86,6 @@ describe('Rubicon bidder adapter', () => {
 		expect(rubicon.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
-				mediaType: 'video',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
@@ -148,7 +146,6 @@ describe('Rubicon bidder adapter', () => {
 		expect(rubicon.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
-				mediaType: 'video',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
