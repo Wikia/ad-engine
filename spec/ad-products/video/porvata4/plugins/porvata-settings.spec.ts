@@ -1,5 +1,5 @@
 import { context } from '@wikia/ad-engine';
-import { PorvataSettings } from '@wikia/ad-products/video/porvata/porvata-settings';
+import { PorvataSettings } from '@wikia/ad-products';
 import { assert } from 'chai';
 
 describe('Porvata Settings wrapper', () => {
