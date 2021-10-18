@@ -102,7 +102,6 @@ export class PrebidProvider extends BidderProvider {
 					gdpr: {
 						cmpApi: 'iab',
 						timeout: this.timeout,
-						allowAuctionWithoutConsent: false,
 						defaultGdprScope: false,
 					},
 					usp: {

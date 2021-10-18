@@ -11,7 +11,6 @@ export class Medianet extends PrebidAdapter {
 	prepareConfigForAdUnit(code, { cid, crid }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
-			mediaType: 'video',
 			mediaTypes: {
 				video: {
 					playerSize: [640, 480],
