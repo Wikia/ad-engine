@@ -49,7 +49,7 @@ export class PorvataSettings {
 	private readonly vastTargeting: Targeting;
 	private readonly vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
 
-	constructor(params: PorvataParams) {
+	constructor(private params: PorvataParams) {
 		this.adProduct = params.adProduct;
 		this.autoPlay = !!params.autoPlay;
 		this.height = params.height;
@@ -67,6 +67,10 @@ export class PorvataSettings {
 
 	getAdProduct(): string | undefined {
 		return this.adProduct;
+	}
+
+	getParams(): PorvataParams {
+		return this.params;
 	}
 
 	getPlayerContainer(): HTMLElement | undefined {
