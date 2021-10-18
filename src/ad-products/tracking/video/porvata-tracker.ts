@@ -1,5 +1,5 @@
 import { context, VideoData, VideoEventData } from '@ad-engine/core';
-import { PorvataEventListener, PorvataListenerParams } from '../../video/porvata4/porvata-listener';
+import { PorvataEventListener, PorvataListenerParams } from '../../video/porvata/porvata-listener';
 import playerEventEmitter from './player-event-emitter';
 import videoEventDataProvider from './video-event-data-provider';
 

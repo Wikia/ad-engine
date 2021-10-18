@@ -1,7 +1,7 @@
 import {
 	AdSlot,
 	Porvata,
-	Porvata4Player,
+	PorvataPlayer,
 	PorvataTemplateParams,
 	resolvedState,
 	TEMPLATE,
@@ -12,7 +12,7 @@ import { ReplaySubject } from 'rxjs';
 
 @Injectable({ autobind: false })
 export class PlayerRegistry {
-	private state$ = new ReplaySubject<{ player: Porvata4Player; params: PorvataTemplateParams }>(1);
+	private state$ = new ReplaySubject<{ player: PorvataPlayer; params: PorvataTemplateParams }>(1);
 	video$ = this.state$.asObservable();
 
 	constructor(

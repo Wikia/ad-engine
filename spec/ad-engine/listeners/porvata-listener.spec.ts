@@ -1,5 +1,5 @@
 import { context, slotService } from '@wikia/ad-engine';
-import { PorvataListener } from '@wikia/ad-products/video/porvata4/porvata-listener';
+import { PorvataListener } from '@wikia/ad-products/video/porvata/porvata-listener';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 

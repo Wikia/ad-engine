@@ -10,8 +10,8 @@ import {
 import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
 import { props } from 'ts-action';
-import { Porvata } from '../../video/porvata4/porvata';
-import { PorvataPlayer } from '../../video/porvata4/porvata-player';
+import { Porvata } from '../../video/porvata/porvata';
+import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
 import { UapVideoSettings } from './uap-video-settings';

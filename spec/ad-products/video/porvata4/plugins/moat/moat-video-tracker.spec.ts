@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import { context, utils } from '../../../../../../src/ad-engine';
-import { moatVideoTracker } from '../../../../../../src/ad-products/video/porvata4/plugins/moat/moat-video-tracker';
-import { PorvataSettings } from '../../../../../../src/ad-products/video/porvata4/porvata-settings';
+import { moatVideoTracker } from '../../../../../../src/ad-products/video/porvata/plugins/moat/moat-video-tracker';
+import { PorvataSettings } from '../../../../../../src/ad-products/video/porvata/porvata-settings';
 
 describe('MOAT video tracker', () => {
 	const sandbox = sinon.createSandbox();

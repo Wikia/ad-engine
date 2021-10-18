@@ -3,7 +3,7 @@ import { AdSlot, context, slotService, tapOnce, utils } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { iasVideoTracker } from '../porvata4/plugins/ias/ias-video-tracker';
+import { iasVideoTracker } from '../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer } from './external-types/jwplayer';
 import { JwplayerComscoreHandler } from './handlers/jwplayer-comscore-handler';
 import { JWPlayerHandler } from './handlers/jwplayer-handler';

@@ -1,4 +1,4 @@
-import { NativeFullscreen } from '@wikia/ad-products/video/porvata4/native-fullscreen';
+import { NativeFullscreen } from '@wikia/ad-products/video/porvata/native-fullscreen';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
