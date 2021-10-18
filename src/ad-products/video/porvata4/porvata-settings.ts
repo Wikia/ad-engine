@@ -11,6 +11,7 @@ export interface PorvataParams extends Dictionary {
 	restartOnUnmute?: boolean;
 	slotName: string;
 	src: string;
+	type?: string;
 	width?: number;
 	vastTargeting?: Targeting;
 	vastUrl?: string;

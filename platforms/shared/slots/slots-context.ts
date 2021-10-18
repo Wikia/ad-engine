@@ -1,11 +1,6 @@
-import {
-	AdSlot,
-	context,
-	getAdProductInfo,
-	getAdUnitString,
-	slotService,
-	VideoParams,
-} from '@wikia/ad-engine';
+import { AdSlot, context, getAdProductInfo, getAdUnitString, slotService } from '@wikia/ad-engine';
+// tslint:disable-next-line:no-blacklisted-paths
+import { PorvataParams } from '../../../src/ad-products/video/porvata4/porvata-settings';
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
@@ -17,7 +12,7 @@ class SlotsContext {
 		});
 	}
 
-	setupSlotVideoAdUnit(adSlot: AdSlot, params: VideoParams): void {
+	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
 		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
 		const slotConfig = {
 			group: adProductInfo.adGroup,
