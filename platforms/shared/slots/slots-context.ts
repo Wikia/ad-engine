@@ -1,6 +1,11 @@
-import { AdSlot, context, getAdProductInfo, getAdUnitString, slotService } from '@wikia/ad-engine';
-// tslint:disable-next-line:no-blacklisted-paths
-import { PorvataParams } from '../../../src/ad-products/video/porvata/porvata-settings';
+import {
+	AdSlot,
+	context,
+	getAdProductInfo,
+	getAdUnitString,
+	PorvataParams,
+	slotService,
+} from '@wikia/ad-engine';
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
