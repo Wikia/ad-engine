@@ -37,7 +37,6 @@ export class Rubicon extends PrebidAdapter {
 
 		return {
 			code,
-			mediaType: 'video',
 			mediaTypes: {
 				video: {
 					playerSize: [640, 480],
