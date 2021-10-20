@@ -26,7 +26,7 @@ export const GAMOrigins: string[] = [
 
 export function postponeExecutionUntilGptLoads(method: () => void) {
 	return function (...args: any) {
-		// TODO: remove this hack in https://wikia-inc.atlassian.net/browse/ADEN-9254
+		// @TODO: remove this hack in https://wikia-inc.atlassian.net/browse/ADEN-9254
 		setTimeout(() => {
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});

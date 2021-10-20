@@ -20,7 +20,7 @@ export interface PorvataTemplateConfig {
 }
 
 /**
- * TODO: Revisit responsibilities of this template. Shouldn't we move some parts to Porvata logic?
+ * @TODO: Revisit responsibilities of this template. Shouldn't we move some parts to Porvata logic?
  */
 export class PorvataTemplate {
 	static getName(): string {
@@ -143,7 +143,7 @@ export class PorvataTemplate {
 	}
 
 	/**
-	 * TODO: Shouldn't we move this logic to Porvata code?
+	 * @TODO: Shouldn't we move this logic to Porvata code?
 	 */
 	adjustVpaidPlayer(video: PorvataPlayer): void {
 		video.addEventListener('loaded', (event: google.ima.AdEvent) => {

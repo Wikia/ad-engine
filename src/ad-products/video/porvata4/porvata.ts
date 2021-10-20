@@ -60,7 +60,7 @@ export const VpaidMode = {
 };
 
 /**
- * TODO:
+ * @TODO:
  * 		@Szymon: Consider reimplementation of this idea. Currently we have two approaches of filling in
  * 		slots, they are: "provider" and "filler". In my opinion they are doing slightly the same thing.
  * 		It looks like another ad provider which could live along with gpt-provider and prebidium-provider.
@@ -124,7 +124,7 @@ export class PorvataFiller implements SlotFiller {
 }
 
 /**
- * TODO:
+ * @TODO:
  * 		@Szymon: Consider reimplementation of this class/logic. In my opinion it conflicts with PorvataFactory.
  * 		It does the same thing -- creates Porvata instance, but adds some additional logic which, I believe, could
  * 		be moved to the factory or split into some UI elements/Porvata plugins.
