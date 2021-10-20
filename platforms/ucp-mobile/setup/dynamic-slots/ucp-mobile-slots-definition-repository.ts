@@ -1,4 +1,3 @@
-import { addAdvertisementLabel } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -91,7 +90,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				addAdvertisementLabel('.top-boxad');
 			},
 		};
 	}
@@ -215,7 +213,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
 				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-				addAdvertisementLabel('.ic-ad-slot-placeholder');
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
 				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
@@ -258,7 +255,6 @@ export class UcpMobileSlotsDefinitionRepository {
 
 						const mobilePrefooter = document.querySelector('.mobile-prefooter');
 						mobilePrefooter.classList.remove('hide');
-						addAdvertisementLabel('.mobile-prefooter');
 					}
 				});
 			},
@@ -298,7 +294,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: null,
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				addAdvertisementLabel('.bottom-leaderboard');
 			},
 		};
 	}

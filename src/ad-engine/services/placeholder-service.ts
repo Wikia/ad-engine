@@ -12,17 +12,6 @@ class PlaceholderService {
 		}
 	};
 
-	addAdvertisementLabel = (className: string): void => {
-		const classElements: NodeListOf<HTMLElement> = document.querySelectorAll(className);
-
-		classElements?.forEach((element) => {
-			const div = document.createElement('div');
-			div.className = 'ae-translatable-label';
-			div.innerText = 'Advertisement';
-			element.appendChild(div);
-		});
-	};
-
 	removeAdLabel = (slotName: string): void => {
 		const parentElement =
 			slotName !== 'top_leaderboard'

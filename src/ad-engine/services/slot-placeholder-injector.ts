@@ -44,6 +44,7 @@ class SlotPlaceholderInjector {
 
 	inject(placeholderConfig: SlotPlaceholderConfigType): HTMLElement | null {
 		const placeholder = this.createPlaceholder(placeholderConfig.classList);
+		const label = this.createLabel();
 		const anchorElement = this.findAnchorElement(
 			placeholderConfig.anchorSelector,
 			placeholderConfig.avoidConflictWith,
@@ -54,6 +55,7 @@ class SlotPlaceholderInjector {
 		}
 
 		anchorElement[placeholderConfig.insertMethod](placeholder);
+		placeholder.appendChild(label);
 
 		return placeholder;
 	}
@@ -64,6 +66,13 @@ class SlotPlaceholderInjector {
 		placeholder.classList.add(...classList);
 
 		return placeholder;
+	}
+
+	private createLabel(): HTMLElement {
+		const div = document.createElement('div');
+		div.className = 'ae-translatable-label';
+		div.innerText = 'Advertisement';
+		return div;
 	}
 
 	private findAnchorElement(
