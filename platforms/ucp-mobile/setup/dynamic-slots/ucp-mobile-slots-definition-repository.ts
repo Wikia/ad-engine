@@ -40,6 +40,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		const slotName = 'top_leaderboard';
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
+			stopLoadingSlot(slotName);
 		};
 
 		return {

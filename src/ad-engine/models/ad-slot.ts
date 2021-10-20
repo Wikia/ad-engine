@@ -415,10 +415,6 @@ export class AdSlot extends EventEmitter {
 		}
 		this.setStatus(status);
 
-		if (this.placeholder !== null) {
-			this.placeholder.stopLoading();
-		}
-
 		const templateNames = this.getConfigProperty('defaultTemplates') || [];
 
 		if (templateNames && templateNames.length) {
