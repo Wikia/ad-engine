@@ -621,6 +621,13 @@
                 "XX"
             ],
             "value": [
+                "5816487755",
+                "5815863298",
+                "5812121484",
+                "5813975219",
+                "5815745758",
+                "5816370704",
+                "5815749760",
                 "5812104903",
                 "5803812894",
                 "5804931036",
@@ -1863,6 +1870,7 @@
                 "5765505829",
                 "5766072950",
                 "5766072953",
+                "5814427419",
                 "5765123908",
                 "5768678810",
                 "5768678813",
@@ -1961,8 +1969,28 @@
                 "5812565752",
                 "5812565755",
                 "5812565425",
-                "5812565410"
+                "5815492531",
+                "5815496773",
+                "5815496776",
+                "5815496767",
+                "5814531567",
+                "5812565410",
+                "5816392205"
             ]
+        }
+    ],
+    "icUAPNewBFAATemplate": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "DE",
+                "GB",
+                "PL",
+                "UK"
+            ],
+            "value": true
         }
     ],
     "icLABradorGamKeyValues": [
@@ -2036,7 +2064,7 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icFeaturedVideoAdsFrequency": [
@@ -2245,6 +2273,86 @@
                         "_dragonage",
                         "_forgottenrealms",
                         "_sfery"
+                    ]
+                },
+                "MARVEL_BUNDLE": {
+                    "s1": [
+                        "_avengers",
+                        "_avengersacademy",
+                        "_avengersacademy736",
+                        "_avengersalliance",
+                        "_avengersalliancetactics",
+                        "_avengersandxmen",
+                        "_avengersassemble",
+                        "_avengersassemble978",
+                        "_avengersassembled",
+                        "_avengersearthsmightiestheroes",
+                        "_avengersvsxmen",
+                        "_enmarveldatabase-ent",
+                        "_enmarveldatabase",
+                        "_loki",
+                        "_marvel-cinematic-universe",
+                        "_marvel-contestofchampions",
+                        "_marvel-microheroes",
+                        "_marvel-movies",
+                        "_marvel-spider-man",
+                        "_marvel",
+                        "_marvelanimated",
+                        "_marvelavengers",
+                        "_marvelcin",
+                        "_marvelcinematiceuniverse",
+                        "_marvelcinematicuniverse-ent",
+                        "_marvelcinematicuniverse",
+                        "_marvelcinematicuniverse880",
+                        "_marvelcinematicuniversedatabase",
+                        "_marvelcinematicuniverseguide",
+                        "_marvelcinematicuniverseunlimited",
+                        "_marvelcinenaticuniverse",
+                        "_marvelcomics",
+                        "_marvelcomics156",
+                        "_marvelcomicsanswers",
+                        "_marvelcomicsfanon",
+                        "_marvelcontestofchampions",
+                        "_marvelcontestofchampions272",
+                        "_marvelcrossroads",
+                        "_marveldatabase",
+                        "_marveldc",
+                        "_marveldc69",
+                        "_marvelfanfiction",
+                        "_marvelfilme",
+                        "_marvelfutureavengers",
+                        "_marvelheroes",
+                        "_marvelheroicrp",
+                        "_marvelhorror",
+                        "_marvelmicroheroes",
+                        "_marvelmovies-ent",
+                        "_marvelmovies",
+                        "_marvelmoviesfanon",
+                        "_marvelousmrsmaisel",
+                        "_marvelpuzzlequest",
+                        "_marvels-spider-man",
+                        "_marvelsavengers271",
+                        "_marvelsheroproject",
+                        "_marvelsspiderman2017",
+                        "_marvelstrikeforce811",
+                        "_marveltest",
+                        "_marvelultimatealliance",
+                        "_marveluniversemap",
+                        "_marvelvscapcom",
+                        "_marvelvsdc293",
+                        "_marvelvsdccomiccrossover",
+                        "_marvelwarofheroes",
+                        "_theavengers",
+                        "_theavengersassemble",
+                        "_theavengersmovie",
+                        "_xmen",
+                        "_xmendestiny",
+                        "_xmenevolution",
+                        "_xmenfanon",
+                        "_xmenlegends",
+                        "_xmenmovie",
+                        "_xmenmovies-ent",
+                        "_xmenmovies"
                     ]
                 }
             }

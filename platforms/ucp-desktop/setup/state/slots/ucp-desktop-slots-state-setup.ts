@@ -42,7 +42,7 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 
 		if (context.get('services.distroScale.enabled')) {
 			// It is required to *collapse* ICP for DistroScale
-			// TODO: clean up once we finish DS A/B test
+			// @TODO: clean up once we finish DS A/B test
 			this.setupIncontentPlayerForDistroScale();
 		}
 	}
