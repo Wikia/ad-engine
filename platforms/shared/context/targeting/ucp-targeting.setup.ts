@@ -136,7 +136,7 @@ export class UcpTargetingSetup implements DiProcess {
 		return {};
 	}
 
-	// TODO: This should not be here. It is a side effect that is unpredictable.
+	// @TODO: This should not be here. It is a side effect that is unpredictable.
 	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
 		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);

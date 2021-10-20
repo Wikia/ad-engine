@@ -60,8 +60,7 @@ export const VpaidMode = {
 };
 
 /**
- * TODO:
- * 		@Szymon: Consider reimplementation of this idea. Currently we have two approaches of filling in
+ * @TODO: Consider reimplementation of this idea. Currently we have two approaches of filling in
  * 		slots, they are: "provider" and "filler". In my opinion they are doing slightly the same thing.
  * 		It looks like another ad provider which could live along with gpt-provider and prebidium-provider.
  * 		But then we would need to change the way AdEngine handles providers and revisit how btfBlocker works.
@@ -124,8 +123,7 @@ export class PorvataFiller implements SlotFiller {
 }
 
 /**
- * TODO:
- * 		@Szymon: Consider reimplementation of this class/logic. In my opinion it conflicts with PorvataFactory.
+ * @TODO: Consider reimplementation of this class/logic. In my opinion it conflicts with PorvataFactory.
  * 		It does the same thing -- creates Porvata instance, but adds some additional logic which, I believe, could
  * 		be moved to the factory or split into some UI elements/Porvata plugins.
  */
