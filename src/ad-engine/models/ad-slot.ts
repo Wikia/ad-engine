@@ -409,7 +409,7 @@ export class AdSlot extends EventEmitter {
 			this.show();
 		}
 		this.setStatus(status);
-		placeholderService.stopLoading(this.config.slotName);
+		placeholderService.stopLoading(this.getSlotName());
 
 		const templateNames = this.getConfigProperty('defaultTemplates') || [];
 
@@ -430,10 +430,10 @@ export class AdSlot extends EventEmitter {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_COLLAPSE,
 		});
-		placeholderService.stopLoading(this.config.slotName);
 
 		this.hide();
 		this.setStatus(status);
+		placeholderService.stopLoading(this.getSlotName());
 	}
 
 	updateWinningPbBidderDetails(): void {
