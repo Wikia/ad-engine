@@ -13,7 +13,7 @@ class LocalCache {
 		return this.storage.isAvailable();
 	}
 
-	// TODO: Should not return boolean if item expired
+	// @TODO: Should not return boolean if item expired
 	get<T = any>(key: string): T {
 		const cacheItem: CacheItem = this.storage.getItem<CacheItem>(key);
 
