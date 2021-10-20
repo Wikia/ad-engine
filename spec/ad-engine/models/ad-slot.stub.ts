@@ -10,7 +10,6 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		targeting: sandbox.stub() as any,
 		config: sandbox.stub() as any,
 		element: sandbox.stub() as any,
-		placeholder: sandbox.stub() as any,
 		status: sandbox.stub() as any,
 		isEmpty: sandbox.stub() as any,
 		pushTime: sandbox.stub() as any,

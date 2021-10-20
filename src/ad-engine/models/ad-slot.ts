@@ -6,7 +6,6 @@ import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
-import { Placeholder, PlaceholderConfig } from './placeholder';
 
 export interface Targeting {
 	amznbid?: string;
@@ -45,7 +44,6 @@ export interface SlotConfig {
 	insertIntoParentContainerMethod?: insertMethodType;
 
 	targeting: Targeting;
-	placeholder?: PlaceholderConfig;
 	videoAdUnit?: string;
 	repeat?: RepeatConfig;
 	adUnit?: string;
@@ -116,7 +114,6 @@ export class AdSlot extends EventEmitter {
 
 	config: SlotConfig;
 	element: null | HTMLElement = null;
-	placeholder: null | Placeholder;
 	status: null | string = null;
 	isEmpty = true;
 	pushTime: number;
@@ -182,8 +179,6 @@ export class AdSlot extends EventEmitter {
 		this.config.targeting = this.config.targeting || ({} as Targeting);
 		this.config.targeting.src = this.config.targeting.src || context.get('src');
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
-
-		this.placeholder = this.config.placeholder ? new Placeholder(this.config.placeholder) : null;
 
 		this.viewed.then(() => {
 			this.slotViewed = true;
