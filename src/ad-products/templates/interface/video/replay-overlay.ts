@@ -2,7 +2,7 @@ import { createIcon, icons } from '../icons';
 
 const replayOverlayClass = 'replay-overlay';
 
-// TODO Clean up this P1 ADEN-10294 hack
+// @TODO Clean up this P1 ADEN-10294 hack
 // It forces Safari to repaint the thumbnail
 function forceRepaint(element) {
 	element.style.display = 'none';
