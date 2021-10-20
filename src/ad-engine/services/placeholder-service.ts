@@ -1,7 +1,7 @@
 class PlaceholderService {
 	stopLoading = (slotName: string, withHide: string = ''): void => {
-		const className = `.${slotName.replace('_', '-')}`;
-		const placeholder: HTMLElement = document.querySelector(className);
+		const parentClass = `.${slotName.replace('_', '-')}`;
+		const placeholder: HTMLElement = document.querySelector(parentClass);
 
 		placeholder?.classList.remove('is-loading');
 
