@@ -3,7 +3,7 @@ import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
 import { AdStackPayload, eventService, insertMethodType, slotTweaker, utils } from '../';
 import { ADX, GptSizeMapping } from '../providers';
-import { context, slotDataParamsUpdater, templateService } from '../services';
+import { context, placeholderService, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
@@ -409,6 +409,7 @@ export class AdSlot extends EventEmitter {
 			this.show();
 		}
 		this.setStatus(status);
+		placeholderService.stopLoading(this.config.slotName);
 
 		const templateNames = this.getConfigProperty('defaultTemplates') || [];
 
@@ -429,6 +430,7 @@ export class AdSlot extends EventEmitter {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_COLLAPSE,
 		});
+		placeholderService.stopLoading(this.config.slotName);
 
 		this.hide();
 		this.setStatus(status);

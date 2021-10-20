@@ -1,4 +1,4 @@
-import { addAdvertisementLabel, stopLoadingSlot } from '@platforms/shared';
+import { addAdvertisementLabel } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -40,7 +40,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		const slotName = 'top_leaderboard';
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
-			stopLoadingSlot(slotName);
 		};
 
 		return {
@@ -93,7 +92,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 				addAdvertisementLabel('.top-boxad');
-				stopLoadingSlot(slotName);
 			},
 		};
 	}
@@ -261,8 +259,6 @@ export class UcpMobileSlotsDefinitionRepository {
 						const mobilePrefooter = document.querySelector('.mobile-prefooter');
 						mobilePrefooter.classList.remove('hide');
 						addAdvertisementLabel('.mobile-prefooter');
-
-						stopLoadingSlot(slotName);
 					}
 				});
 			},
@@ -303,7 +299,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				this.pushWaitingSlot(slotName);
 				addAdvertisementLabel('.bottom-leaderboard');
-				stopLoadingSlot(slotName);
 			},
 		};
 	}
