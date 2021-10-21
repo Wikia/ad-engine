@@ -1,5 +1,4 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { adLabel } from '../models';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
 import { context } from './context-service';
 
@@ -37,7 +36,7 @@ export class SlotCreator {
 		anchorElement[slotConfig.insertMethod](wrapper);
 
 		if (context.get(`slots.${slotConfig.slotName}.label`)) {
-			adLabel.addLabel(slot.parentElement);
+			this.addAdLabel(slot.parentElement);
 		}
 
 		return slot;
@@ -127,6 +126,17 @@ export class SlotCreator {
 		wrapper.append(slot);
 
 		return wrapper;
+	}
+
+	private createAdLabel(): HTMLElement {
+		const div = document.createElement('div');
+		div.className = 'ae-translatable-label';
+		div.innerText = 'Advertisement';
+		return div;
+	}
+
+	private addAdLabel(slotParent: HTMLElement): void {
+		slotParent.appendChild(this.createAdLabel());
 	}
 
 	private throwNoPlaceToInsertError(slotName: string): void {
