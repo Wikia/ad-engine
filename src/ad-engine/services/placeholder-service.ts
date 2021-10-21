@@ -1,6 +1,8 @@
+import { context } from './context-service';
+
 class PlaceholderService {
 	stopLoading = (placeholder: HTMLElement, withHide: string = ''): void => {
-		placeholder?.parentElement.classList.remove('is-loading');
+		placeholder.parentElement.classList.remove('is-loading');
 
 		if (withHide === 'placeholder') {
 			placeholder?.setAttribute('style', 'display: none');
@@ -10,13 +12,17 @@ class PlaceholderService {
 	};
 
 	removeAdLabel = (placeholder: HTMLElement): void => {
+		if (!context.get(`slots.${placeholder.id}.label`)) {
+			return;
+		}
+
 		const parentElement =
 			placeholder.id === 'top_leaderboard'
 				? placeholder.parentElement.parentElement
 				: placeholder.parentElement;
 
 		const labelElement = parentElement.querySelector('.ae-translatable-label');
-		labelElement.classList.add('hide');
+		labelElement?.classList.add('hide');
 	};
 }
 
