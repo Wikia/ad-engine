@@ -1,5 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { adLabel } from '../models';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
+import { context } from './context-service';
 
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
@@ -33,7 +35,10 @@ export class SlotCreator {
 		const anchorElement = this.getAnchorElement(slotConfig);
 
 		anchorElement[slotConfig.insertMethod](wrapper);
-		this.addLabel(slot);
+
+		if (context.get(`slots.${slotConfig.slotName}.label`)) {
+			adLabel.addLabel(slot.parentElement);
+		}
 
 		return slot;
 	}
@@ -122,19 +127,6 @@ export class SlotCreator {
 		wrapper.append(slot);
 
 		return wrapper;
-	}
-
-	private createLabel(): HTMLElement {
-		const div = document.createElement('div');
-		div.className = 'ae-translatable-label';
-		div.innerText = 'Advertisement';
-		return div;
-	}
-
-	private addLabel(slot: HTMLElement): void {
-		if (!slot.parentElement.classList.contains('top-leaderboard')) {
-			slot.parentElement.appendChild(this.createLabel());
-		}
 	}
 
 	private throwNoPlaceToInsertError(slotName: string): void {

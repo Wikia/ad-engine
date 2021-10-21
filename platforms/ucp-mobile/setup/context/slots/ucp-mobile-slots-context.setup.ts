@@ -19,6 +19,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
+				label: false,
 				options: {},
 				slotShortcut: 'l',
 				sizes: [],
@@ -40,6 +41,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				bidderAlias: 'mobile_in_content',
 				slotNameSuffix: '',
 				group: 'MR',
+				label: true,
 				options: {},
 				slotShortcut: 'm',
 				sizes: [
@@ -69,6 +71,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '#top_boxad,#incontent_boxad_1,#incontent_player',
 				slotNameSuffix: '',
 				group: 'AU',
+				label: true,
 				options: {},
 				insertBeforeSelector: '.mw-parser-output > h2',
 				slotShortcut: 'a',
@@ -87,6 +90,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide', 'incontent-boxad', 'ad-slot'],
 				slotNameSuffix: '',
 				group: 'HiVi',
+				label: true,
 				options: {},
 				insertBeforeSelector: '.mw-parser-output > h2',
 				repeat: {
@@ -133,6 +137,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'HiVi',
+				label: true,
 				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -148,6 +153,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				disabled: true,
 				disableManualInsert: true,
 				group: 'PF',
+				label: true,
 				options: {},
 				slotShortcut: 'p',
 				sizes: [],
@@ -168,6 +174,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'IU',
+				label: false,
 				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
@@ -183,6 +190,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'PF',
+				label: false,
 				options: {},
 				outOfPage: false,
 				targeting: {
@@ -220,6 +228,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
+				label: true,
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -249,6 +258,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				defaultClasses: ['hide'],
 				group: 'PX',
+				label: false,
 				options: {},
 				outOfPage: true,
 				targeting: {
@@ -260,6 +270,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 				group: 'VIDEO',
+				label: false,
 				lowerSlotName: 'featured',
 				targeting: {
 					uap: 'none',
