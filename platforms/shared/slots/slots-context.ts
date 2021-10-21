@@ -3,8 +3,8 @@ import {
 	context,
 	getAdProductInfo,
 	getAdUnitString,
+	PorvataParams,
 	slotService,
-	VideoParams,
 } from '@wikia/ad-engine';
 
 class SlotsContext {
@@ -17,7 +17,7 @@ class SlotsContext {
 		});
 	}
 
-	setupSlotVideoAdUnit(adSlot: AdSlot, params: VideoParams): void {
+	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
 		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
 		const slotConfig = {
 			group: adProductInfo.adGroup,

@@ -1,4 +1,4 @@
-import { Porvata4Player, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import { PorvataPlayer, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { isNumber } from 'util';
 import { DomManipulator } from './manipulators/dom-manipulator';
@@ -12,7 +12,7 @@ export class VideoDomManager {
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 	) {}
 
-	setVideoSizeResolved(video: Porvata4Player): void {
+	setVideoSizeResolved(video: PorvataPlayer): void {
 		if (video.isFullscreen()) {
 			return;
 		}
@@ -20,7 +20,7 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeResolved());
 	}
 
-	setVideoSizeImpact(video: Porvata4Player): void {
+	setVideoSizeImpact(video: PorvataPlayer): void {
 		if (video.isFullscreen()) {
 			return;
 		}
@@ -28,7 +28,7 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeImpact());
 	}
 
-	setVideoSizeImpactToResolved(video: Porvata4Player): void {
+	setVideoSizeImpactToResolved(video: PorvataPlayer): void {
 		if (video.isFullscreen()) {
 			return;
 		}
@@ -36,7 +36,7 @@ export class VideoDomManager {
 		return this.setVideoSize(video, this.reader.getVideoSizeImpactToResolved());
 	}
 
-	private setVideoSize(video: Porvata4Player, props: UapVideoSize): void {
+	private setVideoSize(video: PorvataPlayer, props: UapVideoSize): void {
 		video.resize(props.width, props.height);
 
 		const videoOverlay = video.dom.getPlayerContainer().parentElement;

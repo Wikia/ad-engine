@@ -2,7 +2,7 @@ import {
 	AdSlot,
 	createBottomPanel,
 	LearnMore,
-	Porvata4Player,
+	PorvataPlayer,
 	PorvataTemplateParams,
 	ProgressBar,
 	ReplayOverlay,
@@ -47,7 +47,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 			.subscribe();
 	}
 
-	private handleEvents(player: Porvata4Player): Observable<unknown> {
+	private handleEvents(player: PorvataPlayer): Observable<unknown> {
 		return merge(
 			fromEvent(player, 'adCanPlay').pipe(
 				tap(() => player.dom.getVideoContainer().classList.remove('hide')),
@@ -67,7 +67,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 		);
 	}
 
-	private adjustUI(player: Porvata4Player, params: PorvataTemplateParams): void {
+	private adjustUI(player: PorvataPlayer, params: PorvataTemplateParams): void {
 		ProgressBar.add(player, player.dom.getInterfaceContainer());
 		createBottomPanel({ fullscreenAllowed: this.params.fullscreenAllowed, theme: 'hivi' }).add(
 			player,

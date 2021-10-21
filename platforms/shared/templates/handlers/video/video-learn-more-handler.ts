@@ -1,4 +1,4 @@
-import { Porvata4Player, TemplateStateHandler } from '@wikia/ad-engine';
+import { PorvataPlayer, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { take, takeUntil, tap } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class VideoLearnMoreHandler implements TemplateStateHandler {
 			.subscribe();
 	}
 
-	private setLearnMoreBlockDisplay(player: Porvata4Player): void {
+	private setLearnMoreBlockDisplay(player: PorvataPlayer): void {
 		const playerContainer: HTMLElement = player.settings.getPlayerContainer();
 		const learnMore: HTMLElement = playerContainer.querySelector('.learn-more');
 

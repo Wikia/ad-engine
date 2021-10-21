@@ -762,6 +762,7 @@
                 "XX"
             ],
             "value": [
+                "5805836378",
                 "5816487755",
                 "5815863298",
                 "5812121484",
@@ -2116,7 +2117,11 @@
                 "5815496767",
                 "5814531567",
                 "5812565410",
-                "5816392205"
+                "5816316907",
+                "5816316910",
+                "5816316913",
+                "5816392205",
+                "5816216296"
             ]
         }
     ],
@@ -2578,8 +2583,8 @@
     "icFloorAdhesionDelay": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "CA",
@@ -2589,19 +2594,19 @@
         },
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "US"
             ],
-            "sampling": 50.0,
+            "sampling": 75.0,
             "value": -1
         },
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "US"
@@ -2611,8 +2616,8 @@
         },
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2646,25 +2651,9 @@
                 "muthead"
             ],
             "regions": [
-                "BR"
-            ],
-            "sampling": 50.0,
-            "samplingCache": true,
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.0/tracking-opt-in.min.js"
-        },
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.4.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.0/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
