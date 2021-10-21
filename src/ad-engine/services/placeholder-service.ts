@@ -9,19 +9,14 @@ class PlaceholderService {
 		}
 	};
 
-	removeAdLabel = (slotName: string): void => {
+	removeAdLabel = (placeholder: HTMLElement): void => {
 		const parentElement =
-			slotName !== 'top_leaderboard'
-				? document.querySelector(`#${slotName}`).parentElement
-				: document.querySelector('.top-ads-container');
+			placeholder.id === 'top_leaderboard'
+				? placeholder.parentElement.parentElement
+				: placeholder.parentElement;
 
-		let adLabel: HTMLElement;
-		for (const child of parentElement.children as any) {
-			if (child.className.includes('ae-translatable-label')) {
-				adLabel = child;
-			}
-		}
-		adLabel?.classList.add('hide');
+		const labelElement = parentElement.querySelector('.ae-translatable-label');
+		labelElement.classList.add('hide');
 	};
 }
 
