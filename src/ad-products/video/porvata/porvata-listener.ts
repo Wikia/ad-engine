@@ -8,8 +8,7 @@ import {
 	VideoData,
 	VideoEventListener,
 } from '@ad-engine/core';
-import { PorvataPlayer as NewPorvataPlayer } from '../../porvata4/porvata-player';
-import { PorvataPlayer } from './porvata';
+import { PorvataPlayer } from './porvata-player';
 
 export interface PorvataListenerParams {
 	adProduct: string;
@@ -60,7 +59,7 @@ export class PorvataListener {
 		lineItemId: '',
 	};
 	listeners: PorvataEventListener[];
-	video: PorvataPlayer | NewPorvataPlayer;
+	video: PorvataPlayer;
 
 	constructor(public params: PorvataListenerParams) {
 		this.listeners = getListeners().filter(
@@ -74,7 +73,7 @@ export class PorvataListener {
 		this.dispatch('init');
 	}
 
-	registerVideoEvents(video: PorvataPlayer | NewPorvataPlayer): void {
+	registerVideoEvents(video: PorvataPlayer): void {
 		this.video = video;
 		this.dispatch('ready');
 

@@ -9,8 +9,8 @@ import {
 	templateService,
 	utils,
 } from '@ad-engine/core';
-import { PorvataListener } from '../player/porvata/porvata-listener';
 import { PorvataFactory } from './porvata-factory';
+import { PorvataListener } from './porvata-listener';
 import { PorvataPlayer } from './porvata-player';
 import { PorvataSettings } from './porvata-settings';
 

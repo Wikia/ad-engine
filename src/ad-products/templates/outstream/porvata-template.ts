@@ -1,7 +1,7 @@
 import { AdSlot, context, events, eventService, slotTweaker } from '@ad-engine/core';
 import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
 import { getTranslation } from '../../common/i18n';
-import { PorvataPlayer } from '../../video/porvata4/porvata-player';
+import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 
 import DynamicReveal from '../interface/video/dynamic-reveal';
