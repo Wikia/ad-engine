@@ -1,6 +1,8 @@
+import { communicationService } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
 import { context } from './context-service';
+import { placeholderService } from './placeholder-service';
 
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
@@ -35,7 +37,7 @@ export class SlotCreator {
 
 		anchorElement[slotConfig.insertMethod](wrapper);
 
-		if (context.get(`slots.${slotConfig.slotName}.label`)) {
+		if (this.slotHasLabel(slot.id)) {
 			this.addAdLabel(slot.parentElement);
 		}
 
@@ -128,6 +130,14 @@ export class SlotCreator {
 		return wrapper;
 	}
 
+	private slotHasLabel(slotId: string): boolean {
+		if (context.get(`slots.${slotId}.label`)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private createAdLabel(): HTMLElement {
 		const div = document.createElement('div');
 		div.className = 'ae-translatable-label';
@@ -138,6 +148,36 @@ export class SlotCreator {
 	private addAdLabel(slotParent: HTMLElement): void {
 		slotParent.appendChild(this.createAdLabel());
 	}
+
+	private removeAdLabel = (slotName: string): void => {
+		if (!this.slotHasLabel(slotName) && slotName !== 'top_leaderboard') {
+			return;
+		}
+
+		const parentElement =
+			slotName !== 'top_leaderboard'
+				? document.querySelector(`#${slotName}`).parentElement
+				: document.querySelector('.top-ads-container');
+
+		const labelElement = parentElement.querySelector('.ae-translatable-label');
+		labelElement?.classList.add('hide');
+	};
+
+	stopLoadingSlots = (): void => {
+		communicationService.action$.subscribe((action) => {
+			if (action['event'] === 'success') {
+				placeholderService.stopLoading(action['adSlotName']);
+			} else if (
+				action['event'] === 'slotHidden' ||
+				action['event'] === 'collapse' ||
+				action['event'] === 'forced_collapse' ||
+				action['event'] === 'blocked'
+			) {
+				placeholderService.stopLoading(action['adSlotName']);
+				this.removeAdLabel(action['adSlotName']);
+			}
+		});
+	};
 
 	private throwNoPlaceToInsertError(slotName: string): void {
 		throw new Error(`No place to insert slot ${slotName}.`);

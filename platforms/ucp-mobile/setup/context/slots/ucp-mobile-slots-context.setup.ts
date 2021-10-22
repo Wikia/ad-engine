@@ -71,7 +71,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '#top_boxad,#incontent_boxad_1,#incontent_player',
 				slotNameSuffix: '',
 				group: 'AU',
-				label: true,
+				label: false,
 				options: {},
 				insertBeforeSelector: '.mw-parser-output > h2',
 				slotShortcut: 'a',
