@@ -154,12 +154,12 @@ export class SlotCreator {
 			return;
 		}
 
-		const parentElement =
-			slotName !== 'top_leaderboard'
-				? document.querySelector(`#${slotName}`).parentElement
-				: document.querySelector('.top-ads-container');
+		const parentElement: HTMLElement =
+			slotName === 'top_leaderboard'
+				? document.querySelector('.top-ads-container')
+				: document.querySelector(`#${slotName}`).parentElement;
 
-		const labelElement = parentElement.querySelector('.ae-translatable-label');
+		const labelElement: HTMLElement = parentElement?.querySelector('.ae-translatable-label');
 		labelElement?.classList.add('hide');
 	};
 
