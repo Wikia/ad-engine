@@ -25,8 +25,6 @@ export * from './utils/get-domain';
 export * from './utils/get-sports-page-type';
 export * from './utils/get-media-wiki-variable';
 export * from './utils/instant-config-setup';
-export * from './utils/ad-label-helper';
-export * from './utils/ad-loading-helper';
 export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';

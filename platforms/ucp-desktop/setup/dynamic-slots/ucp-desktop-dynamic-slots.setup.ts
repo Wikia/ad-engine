@@ -1,4 +1,4 @@
-import { slotsContext, stopLoading } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
