@@ -203,10 +203,21 @@
                 "futhead",
                 "muthead"
             ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.8.0/tracking-opt-in.min.js"
+        },
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.1/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [
@@ -297,15 +308,13 @@
     "icPrebidVersion": [
         {
             "apps": [
-                "fandomdesktop",
-                "fandommobile",
                 "futhead",
                 "muthead"
             ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210916.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
         }
     ],
     "icIASPublisherOptimization": [
