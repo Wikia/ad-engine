@@ -72,6 +72,7 @@ export class JWPlayerHandler {
 		return this.stream$.pipe(
 			ofJwpEvent('adsManager'),
 			filter(() => this.helper.isIasTrackingEnabled()),
+			tap(({ payload }) => this.helper.initIasVideoTracking(payload)),
 		);
 	}
 
