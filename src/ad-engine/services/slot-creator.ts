@@ -145,8 +145,8 @@ export class SlotCreator {
 		return div;
 	}
 
-	private addAdLabel(slotParent: HTMLElement): void {
-		slotParent.appendChild(this.createAdLabel());
+	private addAdLabel(placeholder: HTMLElement): void {
+		placeholder.appendChild(this.createAdLabel());
 	}
 
 	private removeAdLabel = (slotName: string): void => {
