@@ -144,23 +144,13 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'incontent_boxad_1';
-		const wrapperClassList = [
-			'ad-slot-wrapper',
-			'incontent-boxad',
-			'ic-ad-slot-placeholder',
-			'is-loading',
-		];
+		const wrapperClassList = ['incontent-boxad', 'ad-slot-placeholder', 'is-loading'];
 
 		return {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2',
-				avoidConflictWith: [
-					'.ad-slot-wrapper',
-					'.ic-ad-slot-placeholder',
-					'.ad-slot',
-					'#incontent_player',
-				],
+				avoidConflictWith: ['.ad-slot-placeholder', '.ad-slot', '#incontent_player'],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
@@ -202,10 +192,10 @@ export class UcpMobileSlotsDefinitionRepository {
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
-			classList: ['ic-ad-slot-placeholder', 'is-loading'],
+			classList: ['ad-slot-placeholder', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ic-ad-slot-placeholder', '.ad-slot-wrapper'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder'],
 			repeatStart: 1,
 			repeatLimit: 20,
 		};
@@ -215,12 +205,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
-				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ic-ad-slot-placeholder');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ad-slot-placeholder');
 
 				context.set('slots.incontent_player.insertBeforeSelector', '');
-				context.set('slots.incontent_player.parentContainerSelector', '.ic-ad-slot-placeholder');
+				context.set('slots.incontent_player.parentContainerSelector', '.ad-slot-placeholder');
 
-				context.set('slots.affiliate_slot.insertBeforeSelector', '.ic-ad-slot-placeholder');
+				context.set('slots.affiliate_slot.insertBeforeSelector', '.ad-slot-placeholder');
 			}
 		});
 	}
@@ -240,13 +230,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			slotCreatorWrapperConfig: {
-				classList: [
-					'ad-slot-wrapper',
-					'ad-slot-placeholder',
-					'mobile-prefooter',
-					'is-loading',
-					'hide',
-				],
+				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
