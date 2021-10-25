@@ -81,12 +81,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
-				const anchor = document.querySelector('.mw-parser-output > h2:not(first-of-type');
+				const anchor = document.querySelector('.mw-parser-output > h2:not(:first-of-type)');
 
 				const container = document.createElement('div');
 				container.classList.add(...nativeAdSlotClassList);
 
-				anchor.prepend(container);
+				anchor.before(container);
 
 				nativo.start();
 			}
