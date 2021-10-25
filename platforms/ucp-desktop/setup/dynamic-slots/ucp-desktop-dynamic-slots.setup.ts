@@ -28,6 +28,7 @@ import { take } from 'rxjs/operators';
 import {
 	isNativeAdApplicable,
 	nativeAdSlotClassList,
+	nativeAdSlotName,
 } from '../../../shared/utils/native-ads-helper';
 
 const railReady = globalAction('[Rail] Ready');
@@ -84,6 +85,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				const anchor = document.querySelector('.mw-parser-output > h2:not(:first-of-type)');
 
 				const container = document.createElement('div');
+				container.setAttribute('id', nativeAdSlotName);
 				container.classList.add(...nativeAdSlotClassList);
 
 				anchor.before(container);
