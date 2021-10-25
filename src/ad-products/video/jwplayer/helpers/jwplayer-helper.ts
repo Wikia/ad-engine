@@ -50,6 +50,12 @@ export class JWPlayerHelper {
 		return context.get('options.video.iasTracking.enabled');
 	}
 
+	initIasVideoTracking({ adsManager, videoElement }: JWPlayerEventParams['adsManager']): void {
+		const iasConfig = context.get('options.video.iasTracking.config');
+
+		window.googleImaVansAdapter.init(google, adsManager, videoElement, iasConfig);
+	}
+
 	setSlotParams(vastParams: VastParams): void {
 		this.adSlot.lineItemId = vastParams.lineItemId;
 		this.adSlot.creativeId = vastParams.creativeId;
