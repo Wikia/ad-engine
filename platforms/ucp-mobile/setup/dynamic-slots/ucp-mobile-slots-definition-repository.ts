@@ -16,6 +16,12 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import {
+	isNativeAdApplicable,
+	nativeAdSlotClassList,
+	nativeAdSlotName,
+	nativeAdWrapperClassList,
+} from '../../../shared/utils/native-ads-helper';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -99,22 +105,19 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativeAdsConfig(): SlotSetupDefinition {
-		if (!this.isNativeAdApplicable()) {
+		if (!isNativeAdApplicable()) {
 			return;
 		}
 
-		const slotName = 'ntv-ad';
-		const wrapperClassList = ['ntv-ad'];
-
 		return {
 			slotCreatorConfig: {
-				slotName,
+				slotName: nativeAdSlotName,
 				anchorSelector: '.mw-parser-output > p:last-of-type',
 				insertMethod: 'before',
-				classList: ['ntv-ad', 'ad-slot'],
+				classList: nativeAdSlotClassList,
 			},
 			slotCreatorWrapperConfig: {
-				classList: wrapperClassList,
+				classList: nativeAdWrapperClassList,
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
@@ -197,10 +200,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		return context.get('wiki.opts.pageType') !== 'search';
-	}
-
-	private isNativeAdApplicable(): boolean {
-		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
 	private injectIncontentAdsPlaceholders(): void {
