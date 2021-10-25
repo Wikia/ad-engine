@@ -47,6 +47,10 @@ export class BaseContextSetup implements DiProcess {
 		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
+
+		if (this.instantConfig.get('icPrebidium')) {
+			context.set('state.provider', 'prebidium');
+		}
 	}
 
 	private setOptionsContext(): void {

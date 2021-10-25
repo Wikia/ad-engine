@@ -135,6 +135,10 @@ class Bidders {
 		this.applyTargetingParams(slotName, bidderTargeting);
 
 		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
+		utils.communicator('Bidding done', {
+			name: slotName,
+			state: 'prebid',
+		});
 
 		return bidderTargeting;
 	}
