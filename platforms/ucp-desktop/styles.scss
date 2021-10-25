@@ -102,6 +102,64 @@
 	}
 }
 
+.ntv-ad {
+	min-width: 496px;
+	height: 150px;
+
+	hr {
+		display: none;
+	}
+
+	.ntv-wrapper {
+		border-radius: 3px;
+		padding: 12px 18px;
+		display: flex;
+		background: var(--theme-page-background-color--secondary);
+
+		.ntv-img {
+			border-radius: 3px;
+			width: 126px;
+			height: 126px;
+		}
+
+		.ntv-content {
+			text-align: left;
+			margin: 0 16px;
+			font-family: Rubik, serif;
+
+			.ntv-ad-label {
+				margin: 0;
+				font-size: 14px;
+				font-weight: 700;
+			}
+
+			.ntv-ad-title {
+				margin: 0;
+				font-size: 18px;
+				font-weight: 700;
+			}
+
+			.ntv-ad-offer {
+				margin: 0;
+				font-size: 16px;
+				font-weight: 400;
+			}
+
+			.ntv-ad-button {
+				margin: 8px 0;
+				align-items: center;
+				padding: 11px 18px;
+				border-radius: 3px;
+				border: none;
+				font-weight: 700;
+				text-transform: uppercase;
+				background-color: var(--fandom-text-color);
+				color: var(--theme-page-background-color);
+			}
+		}
+	}
+}
+
 .main-page-tag-rcs {
 	display: flex;
 	flex-direction: column;
