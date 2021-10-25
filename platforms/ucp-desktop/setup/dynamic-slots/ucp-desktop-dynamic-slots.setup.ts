@@ -12,6 +12,7 @@ import {
 	FmrRotator,
 	globalAction,
 	ofType,
+	placeholderService,
 	PorvataFiller,
 	PorvataGamParams,
 	scrollListener,
@@ -104,6 +105,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureTopLeaderboard(): void {
+		const slotName = 'top_leaderboard';
 		const hiviLBEnabled =
 			context.get('options.hiviLeaderboard') && !context.get('options.wad.blocking');
 
@@ -112,12 +114,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
 				slotService.setState('top_leaderboard', false);
-				stopLoading('.top-leaderboard');
+				placeholderService.stopLoading(slotName);
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
 				slotService.setState('top_leaderboard', false);
-				stopLoading('.top-leaderboard', 'parent');
+				placeholderService.stopLoading(slotName, 'placeholder');
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
@@ -125,16 +127,16 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 				if (!adSlot.isEmpty) {
 					slotService.setState('top_leaderboard', false);
-					stopLoading('.top-leaderboard');
+					placeholderService.stopLoading(slotName);
 				}
 			});
 		}
 
 		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-			stopLoading('.top-leaderboard');
+			placeholderService.stopLoading(slotName);
 		});
 		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			stopLoading('.top-leaderboard', 'parent');
+			placeholderService.stopLoading(slotName, 'placeholder');
 		});
 
 		if (!context.get('custom.hasFeaturedVideo')) {
@@ -206,13 +208,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		});
 
 		slotService.on('bottom_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-			stopLoading('.bottom-leaderboard');
+			placeholderService.stopLoading(slotName);
 		});
 		slotService.on('bottom_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			stopLoading('.bottom-leaderboard');
+			placeholderService.stopLoading(slotName);
 		});
 		slotService.on('bottom_leaderboard', AdSlot.STATUS_BLOCKED, () => {
-			stopLoading('.bottom-leaderboard');
+			placeholderService.stopLoading(slotName);
 		});
 	}
 }
