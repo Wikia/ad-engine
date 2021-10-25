@@ -1,9 +1,7 @@
 import { communicationService } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
-import { context } from './context-service';
 import { placeholderService } from './placeholder-service';
-
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
@@ -17,6 +15,7 @@ export interface SlotCreatorConfig {
 	avoidConflictWith?: string[];
 	classList?: string[];
 	repeat?: object;
+	label?: boolean;
 }
 
 export interface SlotCreatorWrapperConfig {
@@ -37,7 +36,7 @@ export class SlotCreator {
 
 		anchorElement[slotConfig.insertMethod](wrapper);
 
-		if (this.slotHasLabel(slot.id)) {
+		if (slotConfig.label && slot.id !== 'top_leaderboard') {
 			this.addAdLabel(slot.parentElement);
 		}
 
@@ -51,6 +50,7 @@ export class SlotCreator {
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
 			repeat: slotLooseConfig.repeat || {},
+			label: slotLooseConfig.label || false,
 		};
 	}
 
@@ -130,14 +130,6 @@ export class SlotCreator {
 		return wrapper;
 	}
 
-	private slotHasLabel(slotId: string): boolean {
-		if (context.get(`slots.${slotId}.label`)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private createAdLabel(): HTMLElement {
 		const div = document.createElement('div');
 		div.className = 'ae-translatable-label';
@@ -149,11 +141,7 @@ export class SlotCreator {
 		placeholder.appendChild(this.createAdLabel());
 	}
 
-	private removeAdLabel = (slotName: string): void => {
-		if (!this.slotHasLabel(slotName) && slotName !== 'top_leaderboard') {
-			return;
-		}
-
+	removeAdLabel = (slotName: string): void => {
 		const parentElement: HTMLElement =
 			slotName === 'top_leaderboard'
 				? document.querySelector('.top-ads-container')

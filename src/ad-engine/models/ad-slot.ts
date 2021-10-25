@@ -59,6 +59,7 @@ export interface SlotConfig {
 	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
+	label?: boolean;
 }
 
 export interface WinningBidderDetails {
