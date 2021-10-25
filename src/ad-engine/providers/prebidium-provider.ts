@@ -7,7 +7,8 @@ import { IframeBuilder, logger } from '../utils';
 import { Provider } from './provider';
 
 const logGroup = 'prebidium-provider';
-const biddingDone = globalAction(
+
+export const biddingDone = globalAction(
 	'[AdEngine] Bidding done',
 	props<{ name: string; state: string }>(),
 );
