@@ -411,7 +411,8 @@
                 "VI",
                 "VU",
                 "WF",
-                "WS"
+                "WS",
+                "ZA"
             ],
             "value": true
         },
@@ -2269,22 +2270,22 @@
     "icPrebidVersion": [
         {
             "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
+        },
+        {
+            "apps": [
                 "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210916.min.js"
         }
     ],
     "icA9Bidder": [
