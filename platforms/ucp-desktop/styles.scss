@@ -108,50 +108,50 @@
 	}
 
 	.ntv-wrapper {
-		border-radius: 3px;
-		padding: 12px 18px;
-		display: flex;
 		background: var(--theme-page-background-color--secondary);
+		border-radius: 3px;
+		display: flex;
+		padding: 12px 18px;
 
 		.ntv-img {
 			border-radius: 3px;
-			width: 126px;
 			height: 126px;
+			width: 126px;
 		}
 
 		.ntv-content {
-			text-align: left;
-			margin: 0 16px;
 			font-family: Rubik, serif;
+			margin: 0 16px;
+			text-align: left;
 
-			.ntv-ad-label {
-				margin: 0;
-				font-size: 14px;
+			.ntv-ad-button {
+				align-items: center;
+				background-color: var(--fandom-text-color);
+				border: none;
+				border-radius: 3px;
+				color: var(--theme-page-background-color);
 				font-weight: 700;
+				margin: 8px 0 0 0;
+				padding: 11px 18px;
+				text-transform: uppercase;
 			}
 
-			.ntv-ad-title {
-				margin: 0;
-				font-size: 18px;
+			.ntv-ad-label {
+				font-size: 14px;
 				font-weight: 700;
+				margin: 0;
 			}
 
 			.ntv-ad-offer {
-				margin: 0;
 				font-size: 16px;
 				font-weight: 400;
+				margin: 0;
 			}
 
-			.ntv-ad-button {
-				margin: 8px 0 0 0;
-				align-items: center;
-				padding: 11px 18px;
-				border-radius: 3px;
-				border: none;
+			.ntv-ad-title {
+				font-size: 18px;
 				font-weight: 700;
-				text-transform: uppercase;
-				background-color: var(--fandom-text-color);
-				color: var(--theme-page-background-color);
+				margin: 0;
 			}
 		}
 	}
