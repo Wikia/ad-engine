@@ -43,8 +43,7 @@ class Nativo {
 		}
 
 		const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
-		nativeAdIncontentPlaceholder.innerHTML = `<hr>
-				<div class="ntv-wrapper">
+		nativeAdIncontentPlaceholder.innerHTML = `<div class="ntv-wrapper">
 					<img 
 						src="https://placekitten.com/100/100" 
 						alt="mr. mittens" 
@@ -56,8 +55,7 @@ class Nativo {
 						<p class="ntv-ad-offer">Available from komis for $213.7</p>
 						<button class="ntv-ad-button">buy now</button>
 					</div>
-				</div>
-			<hr>`;
+				</div>`;
 	}
 }
 
