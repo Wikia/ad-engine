@@ -146,13 +146,18 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'incontent_boxad_1';
-		const wrapperClassList = ['incontent-boxad', 'ad-slot-placeholder', 'is-loading'];
+		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
 
 		return {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2',
-				avoidConflictWith: ['.ad-slot-placeholder', '.ad-slot', '#incontent_player'],
+				avoidConflictWith: [
+					'.ad-slot-placeholder',
+					'.ad-slot',
+					'.incontent-boxad',
+					'#incontent_player',
+				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 				label: context.get(`slots.${slotName}.label`),
@@ -195,10 +200,10 @@ export class UcpMobileSlotsDefinitionRepository {
 	private injectIncontentAdsPlaceholders(): void {
 		const adSlotCategory = 'incontent';
 		const icbPlaceholderConfig: RepeatableSlotPlaceholderConfig = {
-			classList: ['ad-slot-placeholder', 'is-loading'],
+			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
 			repeatStart: 1,
 			repeatLimit: 20,
 		};
@@ -208,12 +213,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
 
 				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
-				context.set('slots.incontent_boxad_1.parentContainerSelector', '.ad-slot-placeholder');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.incontent-boxad');
 
 				context.set('slots.incontent_player.insertBeforeSelector', '');
-				context.set('slots.incontent_player.parentContainerSelector', '.ad-slot-placeholder');
+				context.set('slots.incontent_player.parentContainerSelector', '.incontent-boxad');
 
-				context.set('slots.affiliate_slot.insertBeforeSelector', '.ad-slot-placeholder');
+				context.set('slots.affiliate_slot.insertBeforeSelector', '.incontent-boxad');
 			}
 		});
 	}
