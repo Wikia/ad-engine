@@ -130,18 +130,14 @@ export class SlotCreator {
 		return wrapper;
 	}
 
-	private createAdLabel(): HTMLElement {
+	private addAdLabel(placeholder: HTMLElement): void {
 		const div = document.createElement('div');
 		div.className = 'ae-translatable-label';
 		div.innerText = 'Advertisement';
-		return div;
+		placeholder.appendChild(div);
 	}
 
-	private addAdLabel(placeholder: HTMLElement): void {
-		placeholder.appendChild(this.createAdLabel());
-	}
-
-	removeAdLabel = (slotName: string): void => {
+	hideAdLabel = (slotName: string): void => {
 		const parentElement: HTMLElement =
 			slotName === 'top_leaderboard'
 				? document.querySelector('.top-ads-container')
@@ -162,7 +158,7 @@ export class SlotCreator {
 				action['event'] === 'blocked'
 			) {
 				placeholderService.stopLoading(action['adSlotName']);
-				this.removeAdLabel(action['adSlotName']);
+				this.hideAdLabel(action['adSlotName']);
 			}
 		});
 	};
