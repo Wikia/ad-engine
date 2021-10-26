@@ -393,7 +393,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 50.0,
+            "sampling": 30.0,
             "value": true
         }
     ],
@@ -1995,6 +1995,7 @@
                 "PL",
                 "UK"
             ],
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -2131,6 +2132,15 @@
             "apps": [
                 "fandomdesktop",
                 "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
