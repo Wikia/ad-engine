@@ -203,7 +203,12 @@
                 "futhead",
                 "muthead"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.8.0/tracking-opt-in.min.js"
+            "regions": [
+                "CN"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.10.0/tracking-opt-in.min.js"
         },
         {
             "apps": [
@@ -217,7 +222,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.9.0/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [
