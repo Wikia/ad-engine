@@ -187,24 +187,52 @@ not(.ic-ad-slot-placeholder) {
 
 .ntv-ad {
 	.ntv-wrapper {
+		border-top: 1px solid var(--theme-border-color);
+		border-bottom: 1px solid var(--theme-border-color);
 		display: flex;
+		padding: 12px 18px;
 
 		.ntv-img {
-			width: 100px;
-			height: 100px;
+			border-radius: 3px;
+			height: 126px;
+			width: 126px;
 		}
 
 		.ntv-content {
+			font-family: Rubik, serif;
+			margin: 0 16px;
 			text-align: left;
-			margin: 0 8px;
 
-			a {
-				margin: 8px 0;
-				font-size: 24px;
+			.ntv-ad-button {
+				align-items: center;
+				background-color: var(--fandom-text-color);
+				border: none;
+				border-radius: 3px;
+				color: var(--theme-page-background-color);
+				font-size: 12px;
+				font-weight: 700;
+				margin: 6px 0;
+				padding: 11px 18px;
+				text-transform: uppercase;
 			}
 
-			p {
-				margin-bottom: 0;
+			.ntv-ad-label {
+				font-size: 12px;
+				font-weight: 700;
+				margin: 0;
+			}
+
+			.ntv-ad-offer {
+				font-size: 12px;
+				font-weight: 400;
+				margin: 0;
+			}
+
+			.ntv-ad-title {
+				font-size: 16px;
+				font-weight: 700;
+				line-height: 20px;
+				margin: 0;
 			}
 		}
 	}
