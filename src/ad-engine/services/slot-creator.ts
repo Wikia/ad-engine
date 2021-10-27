@@ -1,7 +1,5 @@
-import { communicationService } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
 import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
-import { placeholderService } from './placeholder-service';
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
@@ -138,29 +136,14 @@ export class SlotCreator {
 	}
 
 	hideAdLabel = (slotName: string): void => {
-		const parentElement: HTMLElement =
+		const slotElement: HTMLElement = document.querySelector(`#${slotName}`);
+		const placeholder: HTMLElement =
 			slotName === 'top_leaderboard'
 				? document.querySelector('.top-ads-container')
-				: document.querySelector(`#${slotName}`).parentElement;
+				: slotElement?.parentElement;
 
-		const labelElement: HTMLElement = parentElement?.querySelector('.ae-translatable-label');
+		const labelElement: HTMLElement = placeholder?.querySelector('.ae-translatable-label');
 		labelElement?.classList.add('hide');
-	};
-
-	stopLoadingSlots = (): void => {
-		communicationService.action$.subscribe((action) => {
-			if (action['event'] === 'success') {
-				placeholderService.stopLoading(action['adSlotName']);
-			} else if (
-				action['event'] === 'slotHidden' ||
-				action['event'] === 'collapse' ||
-				action['event'] === 'forced_collapse' ||
-				action['event'] === 'blocked'
-			) {
-				placeholderService.stopLoading(action['adSlotName']);
-				this.hideAdLabel(action['adSlotName']);
-			}
-		});
 	};
 
 	private throwNoPlaceToInsertError(slotName: string): void {

@@ -1,6 +1,7 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
+	adSlotEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -8,6 +9,8 @@ import {
 	events,
 	eventService,
 	fillerService,
+	ofType,
+	placeholderService,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
@@ -17,6 +20,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { filter } from 'rxjs/operators';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -38,6 +42,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureAffiliateSlot();
+		this.configureICBPlaceholderHandler();
+		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
@@ -67,8 +73,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				);
 			});
 		}
-
-		this.slotCreator.stopLoadingSlots();
 	}
 
 	private insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
@@ -98,6 +102,52 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		} else {
 			slotService.disable(slotName);
 		}
+	}
+
+	private configureICBPlaceholderHandler(): void {
+		const shouldRemoveICBLoader = (action: object) => {
+			if (action['adSlotName'].includes('incontent_boxad')) {
+				if (action['event'] === 'slotRendered' || action['event'] === 'slotHidden') {
+					return true;
+				}
+			}
+
+			return false;
+		};
+
+		const adSlotEventListener = () => {
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => shouldRemoveICBLoader(action)),
+				)
+				.subscribe((action) => {
+					placeholderService.stopLoading(action.adSlotName);
+					if (action['event'] === 'slotHidden') {
+						this.slotCreator.hideAdLabel(action.adSlotName);
+					}
+				});
+		};
+
+		adSlotEventListener();
+	}
+
+	private configureICPPlaceholderHandler(): void {
+		const adSlotEventListener = () => {
+			communicationService.action$
+				.pipe(
+					ofType(adSlotEvent),
+					filter((action) => action.adSlotName === 'incontent_player'),
+				)
+				.subscribe((action) => {
+					placeholderService.stopLoading(action.adSlotName);
+					if (action['event'] === 'slotHidden') {
+						this.slotCreator.hideAdLabel(action.adSlotName);
+					}
+				});
+		};
+
+		adSlotEventListener();
 	}
 
 	private configureIncontentPlayer(): void {

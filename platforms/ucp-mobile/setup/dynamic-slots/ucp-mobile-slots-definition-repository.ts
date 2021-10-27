@@ -5,6 +5,7 @@ import {
 	InstantConfigService,
 	nativo,
 	ofType,
+	placeholderService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	SlotCreatorConfig,
@@ -37,8 +38,10 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
+			placeholderService.stopLoadingSlot(slotName, slotHasLabel);
 		};
 
 		return {
@@ -49,7 +52,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 		};
 	}
@@ -78,6 +81,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotName = 'top_boxad';
 		const wrapperClassList = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -85,13 +89,19 @@ export class UcpMobileSlotsDefinitionRepository {
 				...this.slotCreatorInsertionParams(),
 				classList: ['hide', 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 			slotCreatorWrapperConfig: {
 				classList: wrapperClassList,
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
+					}
+				});
 			},
 		};
 	}
@@ -147,6 +157,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotName = 'incontent_boxad_1';
 		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -160,7 +171,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -177,8 +188,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(() => {
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 					context.push('events.pushOnScroll.ids', slotName);
+					if (action.isLoaded) {
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
+					}
 				});
 				this.injectIncontentAdsPlaceholders();
 			},
@@ -229,6 +244,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'mobile_prefooter';
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -236,18 +252,20 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '.wds-global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
 			},
 			activator: () => {
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 					if (action.isLoaded) {
 						this.pushWaitingSlot(slotName);
 
 						const mobilePrefooter = document.querySelector('.mobile-prefooter');
 						mobilePrefooter.classList.remove('hide');
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
 					}
 				});
 			},
@@ -276,6 +294,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'bottom_leaderboard';
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -283,11 +302,17 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
 				this.pushWaitingSlot(slotName);
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
+					}
+				});
 			},
 		};
 	}
@@ -305,6 +330,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'floor_adhesion';
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -312,9 +338,16 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '#floor_adhesion_anchor',
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 			activator: () => {
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
+					}
+				});
+
 				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
 				context.set(
 					'templates.floorAdhesion.showCloseButtonAfter',
@@ -344,6 +377,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'interstitial';
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -351,10 +385,16 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 			activator: () => {
 				context.set('slots.interstitial.disabled', false);
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
+					}
+				});
 
 				this.pushWaitingSlot(slotName);
 			},
@@ -371,6 +411,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'invisible_high_impact_2';
+		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -378,10 +419,16 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
-				label: context.get(`slots.${slotName}.label`),
+				label: slotHasLabel,
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
+				placeholderService.stopLoadingSlot(slotName, slotHasLabel);
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (action.isLoaded) {
+						placeholderService.hideCollapsedPlaceholdersOnUap(slotName);
+					}
+				});
 			},
 		};
 	}

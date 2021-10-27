@@ -119,7 +119,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
 				slotService.setState('top_leaderboard', false);
-				placeholderService.stopLoading(slotName, 'placeholder');
+				placeholderService.stopLoading(slotName);
+				placeholderService.hidePlaceholder(slotName);
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
@@ -136,7 +137,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			placeholderService.stopLoading(slotName);
 		});
 		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			placeholderService.stopLoading(slotName, 'placeholder');
+			placeholderService.stopLoading(slotName);
+			placeholderService.hidePlaceholder(slotName);
 		});
 
 		if (!context.get('custom.hasFeaturedVideo')) {
