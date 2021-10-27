@@ -104,6 +104,7 @@
 
 .ntv-ad {
 	@include nativo;
+	margin-bottom: 24px;
 
 	.ntv-wrapper {
 		background: var(--theme-page-background-color--secondary);
