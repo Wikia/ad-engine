@@ -88,7 +88,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				container.setAttribute('id', NATIVE_AD_SLOT_NAME);
 				container.classList.add(...NATIVE_AD_SLOT_CLASS_LIST);
 
-				anchor.before(container);
+				anchor?.before(container);
 
 				nativo.start();
 			}
