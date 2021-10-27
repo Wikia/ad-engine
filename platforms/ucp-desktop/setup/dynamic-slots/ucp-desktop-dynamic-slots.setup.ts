@@ -82,15 +82,18 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
-				const anchor = document.querySelectorAll('.mw-headline');
+				const pageHeaders = document.querySelectorAll('.mw-headline');
+				const anchor = pageHeaders[1];
 
-				const container = document.createElement('div');
-				container.setAttribute('id', NATIVE_AD_SLOT_NAME);
-				container.classList.add(...NATIVE_AD_SLOT_CLASS_LIST);
+				if (!!anchor) {
+					const container = document.createElement('div');
+					container.setAttribute('id', NATIVE_AD_SLOT_NAME);
+					container.classList.add(...NATIVE_AD_SLOT_CLASS_LIST);
 
-				anchor[1]?.before(container);
+					anchor.before(container);
 
-				nativo.start();
+					nativo.start();
+				}
 			}
 		});
 	}
