@@ -11,6 +11,7 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
+	nativo,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -19,10 +20,16 @@ import {
 	slotInjector,
 	slotService,
 	TemplateRegistry,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import {
+	isNativeAdApplicable,
+	NATIVE_AD_SLOT_CLASS_LIST,
+	NATIVE_AD_SLOT_NAME,
+} from '../../../shared/utils/native-ads-helper';
 
 const railReady = globalAction('[Rail] Ready');
 
@@ -36,6 +43,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.injectAffiliateDisclaimer();
 		this.injectFloorAdhesion();
 		this.injectBottomLeaderboard();
+		this.injectNativeAdsPlaceholder();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -63,6 +71,29 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 			if (parent) {
 				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
+			}
+		});
+	}
+
+	private injectNativeAdsPlaceholder(): void {
+		if (!isNativeAdApplicable()) {
+			return;
+		}
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			if (!action.isLoaded) {
+				const pageHeaders = document.querySelectorAll('.mw-headline');
+				const anchor = pageHeaders[1];
+
+				if (!!anchor) {
+					const container = document.createElement('div');
+					container.setAttribute('id', NATIVE_AD_SLOT_NAME);
+					container.classList.add(...NATIVE_AD_SLOT_CLASS_LIST);
+
+					anchor.before(container);
+
+					nativo.start();
+				}
 			}
 		});
 	}

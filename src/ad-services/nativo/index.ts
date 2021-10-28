@@ -43,20 +43,19 @@ class Nativo {
 		}
 
 		const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
-		nativeAdIncontentPlaceholder.innerHTML = `<hr style="margin: 8px 0">
-				<div class="ntv-wrapper">
+		nativeAdIncontentPlaceholder.innerHTML = `<div class="ntv-wrapper">
 					<img 
 						src="https://placekitten.com/100/100" 
 						alt="mr. mittens" 
 						class="ntv-img" 
 					/>
 					<div class="ntv-content">
-						<p>AD</p>
-						<a href="https://fandom.com">Sprzedam opla</a>
-						<p>Teraz</p>
+						<p class="ntv-ad-label">AD · best buy</p>
+						<p class="ntv-ad-title">Buy Opla: Very good Astra 1.0 TDI</p>
+						<p class="ntv-ad-offer">Available from komis for $213.7</p>
+						<button class="ntv-ad-button">buy now</button>
 					</div>
-				</div>
-			<hr style="margin: 8px 0 18px">`;
+				</div>`;
 	}
 }
 

@@ -102,6 +102,37 @@
 	}
 }
 
+.ntv-ad {
+	@include nativo;
+	margin-bottom: 24px;
+
+	.ntv-wrapper {
+		background: var(--theme-page-background-color--secondary);
+		border: 0;
+
+		.ntv-content {
+			.ntv-ad-button {
+				font-size: 14px;
+			}
+
+			.ntv-ad-label {
+				font-size: 14px;
+				line-height: 24px;
+			}
+
+			.ntv-ad-offer {
+				font-size: 16px;
+				line-height: 28px;
+			}
+
+			.ntv-ad-title {
+				font-size: 18px;
+				line-height: 32px;
+			}
+		}
+	}
+}
+
 .main-page-tag-rcs {
 	display: flex;
 	flex-direction: column;
