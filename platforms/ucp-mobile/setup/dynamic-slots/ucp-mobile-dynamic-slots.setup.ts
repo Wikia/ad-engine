@@ -42,12 +42,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureAffiliateSlot();
-		this.configureICBPlaceholderHandler();
-		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
+		this.stopLoadingSlots();
 	}
 
 	private injectSlots(): void {
@@ -102,52 +101,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		} else {
 			slotService.disable(slotName);
 		}
-	}
-
-	private configureICBPlaceholderHandler(): void {
-		const shouldRemoveICBLoader = (action: object) => {
-			if (action['adSlotName'].includes('incontent_boxad')) {
-				if (action['event'] === 'slotRendered' || action['event'] === 'slotHidden') {
-					return true;
-				}
-			}
-
-			return false;
-		};
-
-		const adSlotEventListener = () => {
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => shouldRemoveICBLoader(action)),
-				)
-				.subscribe((action) => {
-					placeholderService.stopLoading(action.adSlotName);
-					if (action['event'] === 'slotHidden') {
-						this.slotCreator.hideAdLabel(action.adSlotName);
-					}
-				});
-		};
-
-		adSlotEventListener();
-	}
-
-	private configureICPPlaceholderHandler(): void {
-		const adSlotEventListener = () => {
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => action.adSlotName === 'incontent_player'),
-				)
-				.subscribe((action) => {
-					placeholderService.stopLoading(action.adSlotName);
-					if (action['event'] === 'slotHidden') {
-						this.slotCreator.hideAdLabel(action.adSlotName);
-					}
-				});
-		};
-
-		adSlotEventListener();
 	}
 
 	private configureIncontentPlayer(): void {
@@ -244,4 +197,40 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.CODE_PRIORITY.floor_adhesion.active = false;
 		});
 	}
+
+	stopLoadingSlots = (): void => {
+		const statusesToCollapse: string[] = [
+			AdSlot.STATUS_BLOCKED,
+			AdSlot.STATUS_COLLAPSE,
+			AdSlot.STATUS_FORCED_COLLAPSE,
+			AdSlot.HIDDEN_EVENT,
+		];
+		const statusesToStopLoadingSlot: string[] = [AdSlot.SLOT_RENDERED_EVENT, AdSlot.HIDDEN_EVENT];
+
+		const shouldRemoveOrCollapse = (action: object): boolean => {
+			return (
+				statusesToStopLoadingSlot.includes(action['event']) ||
+				statusesToCollapse.includes(action['event'])
+			);
+		};
+
+		communicationService.action$
+			.pipe(
+				ofType(adSlotEvent),
+				filter((action) => shouldRemoveOrCollapse(action)),
+			)
+			.subscribe((action) => {
+				const slotHasLabel = context.get(`slots.${action['adSlotName']}.label`);
+
+				if (statusesToStopLoadingSlot.includes(action['event'])) {
+					placeholderService.stopLoading(action['adSlotName']);
+				}
+
+				if (statusesToCollapse.includes(action['event'])) {
+					if (slotHasLabel || action['adSlotName'] === 'top_leaderboard') {
+						this.slotCreator.hideAdLabel(action['adSlotName']);
+					}
+				}
+			});
+	};
 }
