@@ -35,7 +35,7 @@ export class SlotCreator {
 		anchorElement[slotConfig.insertMethod](wrapper);
 
 		if (slotConfig.label && slot.id !== 'top_leaderboard') {
-			this.addAdLabel(slot.parentElement);
+			this.addAdLabel(slot.parentElement, slotConfig.slotName);
 		}
 
 		return slot;
@@ -128,7 +128,7 @@ export class SlotCreator {
 		return wrapper;
 	}
 
-	private addAdLabel(placeholder: HTMLElement): void {
+	private addAdLabel(placeholder: HTMLElement, name: string): void {
 		const div = document.createElement('div');
 		div.className = 'ae-translatable-label';
 		div.innerText = 'Advertisement';

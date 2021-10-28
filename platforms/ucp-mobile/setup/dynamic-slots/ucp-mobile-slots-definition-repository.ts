@@ -5,7 +5,6 @@ import {
 	InstantConfigService,
 	nativo,
 	ofType,
-	placeholderService,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	SlotCreatorConfig,
@@ -95,11 +94,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						placeholderService.hideCollapsedPlaceholders(slotName);
-					}
-				});
 			},
 		};
 	}
@@ -186,13 +180,19 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
+				context.push('events.pushOnScroll.ids', slotName);
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					context.push('events.pushOnScroll.ids', slotName);
-					if (action.isLoaded) {
-						placeholderService.hideCollapsedPlaceholders(slotName);
+					if (!action.isLoaded) {
+						this.injectIncontentAdsPlaceholders();
 					}
 				});
-				this.injectIncontentAdsPlaceholders();
+				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
+				context.set('slots.incontent_boxad_1.parentContainerSelector', '.incontent-boxad');
+
+				context.set('slots.incontent_player.insertBeforeSelector', '');
+				context.set('slots.incontent_player.parentContainerSelector', '.incontent-boxad');
+
+				context.set('slots.affiliate_slot.insertBeforeSelector', '.incontent-boxad');
 			},
 		};
 	}
@@ -223,14 +223,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (!action.isLoaded) {
 				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-
-				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
-				context.set('slots.incontent_boxad_1.parentContainerSelector', '.incontent-boxad');
-
-				context.set('slots.incontent_player.insertBeforeSelector', '');
-				context.set('slots.incontent_player.parentContainerSelector', '.incontent-boxad');
-
-				context.set('slots.affiliate_slot.insertBeforeSelector', '.incontent-boxad');
 			}
 		});
 	}
@@ -261,7 +253,6 @@ export class UcpMobileSlotsDefinitionRepository {
 
 						const mobilePrefooter = document.querySelector('.mobile-prefooter');
 						mobilePrefooter.classList.remove('hide');
-						placeholderService.hideCollapsedPlaceholders(slotName);
 					}
 				});
 			},
@@ -303,11 +294,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: null,
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						placeholderService.hideCollapsedPlaceholders(slotName);
-					}
-				});
 			},
 		};
 	}
@@ -336,12 +322,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				label: slotHasLabel,
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						placeholderService.hideCollapsedPlaceholders(slotName);
-					}
-				});
-
 				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
 				context.set(
 					'templates.floorAdhesion.showCloseButtonAfter',
@@ -383,12 +363,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				context.set('slots.interstitial.disabled', false);
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						placeholderService.hideCollapsedPlaceholders(slotName);
-					}
-				});
-
 				this.pushWaitingSlot(slotName);
 			},
 		};
@@ -416,11 +390,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						placeholderService.hideCollapsedPlaceholders(slotName);
-					}
-				});
 			},
 		};
 	}

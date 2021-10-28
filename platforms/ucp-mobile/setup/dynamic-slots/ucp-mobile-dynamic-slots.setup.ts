@@ -20,7 +20,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -37,9 +37,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotCreator: SlotCreator,
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
+		private isUapLoaded: boolean,
 	) {}
 
 	execute(): void {
+		this.checkUap();
 		this.injectSlots();
 		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
@@ -203,9 +205,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlot.STATUS_BLOCKED,
 			AdSlot.STATUS_COLLAPSE,
 			AdSlot.STATUS_FORCED_COLLAPSE,
-			AdSlot.HIDDEN_EVENT,
 		];
-		const statusesToStopLoadingSlot: string[] = [AdSlot.SLOT_RENDERED_EVENT, AdSlot.HIDDEN_EVENT];
+		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
 
 		const shouldRemoveOrCollapse = (action: object): boolean => {
 			return (
@@ -224,13 +225,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 				if (statusesToStopLoadingSlot.includes(action['event'])) {
 					placeholderService.stopLoading(action['adSlotName']);
-				}
-
-				if (statusesToCollapse.includes(action['event'])) {
-					if (slotHasLabel || action['adSlotName'] === 'top_leaderboard') {
-						this.slotCreator.hideAdLabel(action['adSlotName']);
+				} else if (statusesToCollapse.includes(action['event'])) {
+					if (this.isUapLoaded) {
+						placeholderService.hidePlaceholder(action['adSlotName']);
+					} else {
+						if (slotHasLabel || action['adSlotName'] === 'top_leaderboard') {
+							this.slotCreator.hideAdLabel(action['adSlotName']);
+						}
 					}
 				}
 			});
 	};
+
+	private checkUap(): void {
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			this.isUapLoaded = action.isLoaded;
+		});
+	}
 }
