@@ -38,9 +38,6 @@ export class VideoDomManager {
 
 	private setVideoSize(video: PorvataPlayer, props: UapVideoSize): void {
 		video.resize(props.width, props.height);
-		if (!props) {
-			return;
-		}
 
 		const videoOverlay = video.dom.getPlayerContainer().parentElement;
 		const thumbnail = this.params.thumbnail;
