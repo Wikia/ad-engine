@@ -1980,7 +1980,16 @@
                 "5816316910",
                 "5816316913",
                 "5816392205",
-                "5816216296"
+                "5816216296",
+                "5818527027",
+                "5818528200",
+                "5818528209",
+                "5818528203",
+                "5816343060",
+                "5816343066",
+                "5816343069",
+                "5816343072",
+                "5816343075"
             ]
         }
     ],
@@ -2134,7 +2143,13 @@
                 "fandommobile"
             ],
             "regions": [
-                "PL"
+                "BR",
+                "DE",
+                "GB",
+                "IN",
+                "PL",
+                "RU",
+                "UK"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
         },
@@ -2603,7 +2618,12 @@
                 "futhead",
                 "muthead"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.8.0/tracking-opt-in.min.js"
+            "regions": [
+                "CN"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.10.0/tracking-opt-in.min.js"
         },
         {
             "apps": [
@@ -2617,7 +2637,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.7.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.9.0/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
