@@ -4,15 +4,11 @@ import { FuncPipelineStep } from '../pipeline/imps/func-pipeline';
 export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> = (
 	{ data, slot },
 	next,
-) => {
-	const now = new Date();
-	const timestamp: number = now.getTime();
-
-	return next({
+) =>
+	next({
 		slot,
 		data: {
 			...data,
-			ad_load_time: timestamp - window.performance.timing.connectStart,
 			ad_status: data.ad_status || slot.getStatus(),
 			advertiser_id: slot.advertiserId || '',
 			creative_id: slot.creativeId || '',
@@ -26,4 +22,3 @@ export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> =
 			slot_size: slot.getCreativeSize() || '',
 		},
 	});
-};
