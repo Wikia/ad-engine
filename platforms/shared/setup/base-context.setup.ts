@@ -1,10 +1,12 @@
 import {
+	communicationService,
 	context,
 	Dictionary,
 	DiProcess,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -50,6 +52,7 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');
+			communicationService.dispatch(uapLoadStatus({ isLoaded: false }));
 		}
 	}
 

@@ -31,6 +31,7 @@ export class PrebidiumProvider implements Provider {
 
 				if (doc && adId) {
 					pbjs.renderAd(doc, adId);
+					adSlot.getElement().classList.remove('hide');
 					logger(logGroup, adSlot.getSlotName(), 'slot added');
 				}
 			});
