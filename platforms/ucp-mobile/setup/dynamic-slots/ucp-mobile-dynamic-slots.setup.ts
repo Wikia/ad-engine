@@ -10,7 +10,6 @@ import {
 	eventService,
 	fillerService,
 	ofType,
-	placeholderService,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
@@ -221,17 +220,20 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				filter((action) => shouldRemoveOrCollapse(action)),
 			)
 			.subscribe((action) => {
-				const slotHasLabel = context.get(`slots.${action['adSlotName']}.label`);
+				const adSlot = slotService.get(action.adSlotName);
+
+				if (!adSlot) return;
+
+				const placeholder = adSlot.getPlaceholder();
+				const elementToHide = adSlot.getConfigProperty('placeholder').elementToHide;
 
 				if (statusesToStopLoadingSlot.includes(action['event'])) {
-					placeholderService.stopLoading(action['adSlotName']);
+					placeholder.classList.remove('is-loading');
 				} else if (statusesToCollapse.includes(action['event'])) {
 					if (this.isUapLoaded) {
-						placeholderService.hidePlaceholder(action['adSlotName']);
-					} else {
-						if (slotHasLabel || action['adSlotName'] === 'top_leaderboard') {
-							this.slotCreator.hideAdLabel(action['adSlotName']);
-						}
+						placeholder.classList.add('hide');
+					} else if (!this.isUapLoaded) {
+						adSlot.getAdLabel(elementToHide)?.classList.add('hide');
 					}
 				}
 			});

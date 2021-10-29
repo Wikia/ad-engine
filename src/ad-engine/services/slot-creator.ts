@@ -13,7 +13,7 @@ export interface SlotCreatorConfig {
 	avoidConflictWith?: string[];
 	classList?: string[];
 	repeat?: object;
-	label?: boolean;
+	placeholderConfig?: SlotPlaceholderContextConfig;
 }
 
 export interface SlotCreatorWrapperConfig {
@@ -21,8 +21,15 @@ export interface SlotCreatorWrapperConfig {
 	classList?: string[];
 }
 
+export interface SlotPlaceholderContextConfig {
+	createLabel?: boolean;
+	elementToHide?: string;
+}
+
 @Injectable()
 export class SlotCreator {
+	static AD_LABEL_CLASS = 'ae-translatable-label';
+
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
@@ -34,7 +41,7 @@ export class SlotCreator {
 
 		anchorElement[slotConfig.insertMethod](wrapper);
 
-		if (slotConfig.label && slot.id !== 'top_leaderboard') {
+		if (slotConfig.placeholderConfig.createLabel) {
 			this.addAdLabel(slot.parentElement, slotConfig.slotName);
 		}
 
@@ -48,7 +55,7 @@ export class SlotCreator {
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
 			repeat: slotLooseConfig.repeat || {},
-			label: slotLooseConfig.label || false,
+			placeholderConfig: slotLooseConfig.placeholderConfig,
 		};
 	}
 
@@ -128,23 +135,13 @@ export class SlotCreator {
 		return wrapper;
 	}
 
-	private addAdLabel(placeholder: HTMLElement, name: string): void {
+	private addAdLabel(placeholder: HTMLElement, slotName: string): void {
 		const div = document.createElement('div');
-		div.className = 'ae-translatable-label';
+		div.className = SlotCreator.AD_LABEL_CLASS;
 		div.innerText = 'Advertisement';
+		div.dataset.slotName = slotName;
 		placeholder.appendChild(div);
 	}
-
-	hideAdLabel = (slotName: string): void => {
-		const slotElement: HTMLElement = document.querySelector(`#${slotName}`);
-		const placeholder: HTMLElement =
-			slotName === 'top_leaderboard'
-				? document.querySelector('.top-ads-container')
-				: slotElement?.parentElement;
-
-		const labelElement: HTMLElement = placeholder?.querySelector('.ae-translatable-label');
-		labelElement?.classList.add('hide');
-	};
 
 	private throwNoPlaceToInsertError(slotName: string): void {
 		throw new Error(`No place to insert slot ${slotName}.`);

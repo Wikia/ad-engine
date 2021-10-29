@@ -1,7 +1,15 @@
 import { communicationService, globalAction } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
-import { AdStackPayload, eventService, insertMethodType, slotTweaker, utils } from '../';
+import {
+	AdStackPayload,
+	eventService,
+	insertMethodType,
+	SlotCreator,
+	SlotPlaceholderContextConfig,
+	slotTweaker,
+	utils,
+} from '../';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
@@ -59,7 +67,7 @@ export interface SlotConfig {
 	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
-	label?: boolean;
+	placeholder?: SlotPlaceholderContextConfig;
 }
 
 export interface WinningBidderDetails {
@@ -107,6 +115,7 @@ export class AdSlot extends EventEmitter {
 	static STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention';
 
 	static AD_CLASS = 'gpt-ad';
+	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
 	static HIDDEN_CLASS = 'hide';
 
 	static TEMPLATES_LOADED = 'Templates Loaded';
@@ -216,6 +225,25 @@ export class AdSlot extends EventEmitter {
 		}
 
 		return this.element;
+	}
+
+	getPlaceholder(): HTMLElement | null {
+		const placeholder = this.getElement()?.parentElement;
+
+		if (placeholder.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS)) {
+			return placeholder;
+		}
+
+		return null;
+	}
+
+	getAdLabel(elementToHideSelector?: string): HTMLElement {
+		if (elementToHideSelector) {
+			const elementToHide: HTMLElement = document.querySelector(elementToHideSelector);
+			return elementToHide?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);
+		}
+
+		return this.getPlaceholder()?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);
 	}
 
 	getAdContainer(): HTMLDivElement | null {
