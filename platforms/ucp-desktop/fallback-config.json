@@ -620,6 +620,7 @@
             "regions": [
                 "XX"
             ],
+            "sampling": 100.0,
             "value": [
                 "5816925751",
                 "5805836378",
@@ -1999,7 +2000,8 @@
                 "5787333786",
                 "5787333789",
                 "5787334074",
-                "5787334077"
+                "5787334077",
+                "5823087112"
             ]
         }
     ],
@@ -2631,25 +2633,9 @@
                 "muthead"
             ],
             "regions": [
-                "CN"
-            ],
-            "sampling": 50.0,
-            "samplingCache": true,
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.10.0/tracking-opt-in.min.js"
-        },
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.9.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.10.0/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
