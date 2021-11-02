@@ -41,7 +41,7 @@ export class SlotCreator {
 
 		anchorElement[slotConfig.insertMethod](wrapper);
 
-		if (slotConfig.placeholderConfig.createLabel) {
+		if (slotConfig.placeholderConfig?.createLabel) {
 			this.addAdLabel(slot.parentElement, slotConfig.slotName);
 		}
 
