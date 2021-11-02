@@ -7,6 +7,7 @@ import {
 	confiant,
 	context,
 	DiProcess,
+	distroScale,
 	durationMedia,
 	facebookPixel,
 	getTranslation,
@@ -16,13 +17,18 @@ import {
 	jwpSetup,
 	nativo,
 	nielsen,
+	ofType,
 	permutive,
 	Runner,
 	silverSurferService,
+	slotDataParamsUpdater,
+	slotService,
 	stroer,
 	taxonomyService,
+	uapLoadStatus,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -112,6 +118,13 @@ export class UcpDesktopAdsMode implements DiProcess {
 		});
 
 		adMarketplace.initialize();
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(({ isLoaded }) => {
+			if (!isLoaded) {
+				slotDataParamsUpdater.updateOnCreate(slotService.get('incontent_player'));
+				distroScale.call();
+			}
+		});
 
 		return inhibitors;
 	}
