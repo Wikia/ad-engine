@@ -19,8 +19,7 @@ import { take } from 'rxjs/operators';
 import {
 	isNativeAdApplicable,
 	NATIVE_AD_SLOT_CLASS_LIST,
-	NATIVE_AD_SLOT_NAME,
-	NATIVE_AD_WRAPPER_CLASS_LIST,
+	NATIVO_INCONTENT_AD_SLOT_NAME,
 } from '../../../shared/utils/native-ads-helper';
 
 export interface SlotSetupDefinition {
@@ -111,13 +110,10 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		return {
 			slotCreatorConfig: {
-				slotName: NATIVE_AD_SLOT_NAME,
+				slotName: NATIVO_INCONTENT_AD_SLOT_NAME,
 				anchorSelector: '.mw-parser-output > p:last-of-type',
 				insertMethod: 'before',
 				classList: NATIVE_AD_SLOT_CLASS_LIST,
-			},
-			slotCreatorWrapperConfig: {
-				classList: NATIVE_AD_WRAPPER_CLASS_LIST,
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
