@@ -11,7 +11,7 @@ describe('MOAT video tracker', () => {
 		return new PorvataSettings({
 			container: document.createElement('div'),
 			moatTracking,
-			slotName: 'foo',
+			slotName: 'incontent_player',
 			src: 'bar',
 		});
 	}

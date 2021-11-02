@@ -15,7 +15,7 @@ describe('Porvata Settings wrapper', () => {
 			container: document.createElement('div'),
 			height: 7,
 			restartOnUnmute: false,
-			slotName: 'foo',
+			slotName: 'incontent_player',
 			src: 'gpt',
 			width: 3,
 			vastTargeting: {},
@@ -29,7 +29,7 @@ describe('Porvata Settings wrapper', () => {
 		assert.isFalse(porvataSettings.isAutoPlay());
 		assert.equal(porvataSettings.getHeight(), 7);
 		assert.isFalse(porvataSettings.shouldRestartOnMute());
-		assert.equal(porvataSettings.getSlotName(), 'foo');
+		assert.equal(porvataSettings.getSlotName(), 'incontent_player');
 		assert.equal(porvataSettings.getWidth(), 3);
 		assert.equal(porvataSettings.getVastUrl(), 'http://example.com/foo');
 		assert.equal(porvataSettings.getVpaidMode(), 2);
@@ -39,11 +39,22 @@ describe('Porvata Settings wrapper', () => {
 		const settings = new PorvataSettings({
 			moatTracking: true,
 			container: document.createElement('div'),
-			slotName: 'foo',
+			slotName: 'incontent_player',
 			src: 'gpt',
 		});
 
 		assert.isTrue(settings.isMoatTrackingEnabled());
+	});
+
+	it('disables moatTracking for other slots than outstream', () => {
+		const settings = new PorvataSettings({
+			moatTracking: true,
+			container: document.createElement('div'),
+			slotName: 'foo',
+			src: 'gpt',
+		});
+
+		assert.isFalse(settings.isMoatTrackingEnabled());
 	});
 
 	it('disables moatTracking when false is passed', () => {
