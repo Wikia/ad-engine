@@ -83,6 +83,10 @@ export class UapDomManager {
 		this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
 	}
 
+	setBigAdvertisementLabel(): void {
+		this.manipulator.element(this.adSlot.getElement()).addClass('big-advertisement-label');
+	}
+
 	private setPlaceholderHeight(height: string): void {
 		this.manipulator
 			.element(this.adSlot.getElement().parentElement.parentElement)
