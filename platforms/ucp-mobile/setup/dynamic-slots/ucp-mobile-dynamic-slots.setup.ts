@@ -2,6 +2,7 @@ import { removeAdLabel, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	adSlotEvent,
+	adSlotLoadedEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -9,6 +10,7 @@ import {
 	events,
 	eventService,
 	fillerService,
+	nativo,
 	ofType,
 	PorvataFiller,
 	SlotCreator,
@@ -20,6 +22,10 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { filter } from 'rxjs/operators';
+import {
+	NATIVO_FEED_AD_SLOT_NAME,
+	NATIVO_INCONTENT_AD_SLOT_NAME,
+} from '../../../shared/utils/native-ads-helper';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -45,6 +51,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
+		this.configureNativoAds();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
 	}
@@ -62,6 +69,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
+			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 		]);
 
 		if (!topLeaderboardDefinition) {
@@ -179,6 +187,19 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
 			eventService.emit(events.INTERSTITIAL_DISPLAYED);
 		});
+	}
+
+	private configureNativoAds(): void {
+		communicationService.action$
+			.pipe(
+				ofType(adSlotLoadedEvent),
+				filter((action) =>
+					[NATIVO_INCONTENT_AD_SLOT_NAME, NATIVO_FEED_AD_SLOT_NAME].includes(action.name),
+				),
+			)
+			.subscribe((action) => {
+				nativo.start();
+			});
 	}
 
 	private styleInterstitial(selector: string): void {

@@ -4,7 +4,6 @@ import {
 	context,
 	insertMethodType,
 	InstantConfigService,
-	nativo,
 	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -19,6 +18,7 @@ import { take } from 'rxjs/operators';
 import {
 	isNativeAdApplicable,
 	NATIVO_AD_SLOT_CLASS_LIST,
+	NATIVO_FEED_AD_SLOT_NAME,
 	NATIVO_INCONTENT_AD_SLOT_NAME,
 } from '../../../shared/utils/native-ads-helper';
 
@@ -116,11 +116,26 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: NATIVO_AD_SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (!action.isLoaded) {
-						nativo.start();
-					}
-				});
+				scrollListener.addSlot(NATIVO_INCONTENT_AD_SLOT_NAME, { threshold: 300 });
+			},
+		};
+	}
+
+	getNativoFeedAdConfig(): SlotSetupDefinition {
+		if (!isNativeAdApplicable()) {
+			return;
+		}
+
+		return {
+			slotCreatorConfig: {
+				slotName: NATIVO_FEED_AD_SLOT_NAME,
+				anchorSelector: '.recirculation-prefooter',
+				insertMethod: 'before',
+				classList: NATIVO_AD_SLOT_CLASS_LIST,
+			},
+			activator: () => {
+				// https://github.com/Wikia/unified-platform/blob/master/skins/FandomMobile/scripts/recirculationPrefooter/Init.ts#L6
+				scrollListener.addSlot(NATIVO_FEED_AD_SLOT_NAME, { threshold: 300 });
 			},
 		};
 	}

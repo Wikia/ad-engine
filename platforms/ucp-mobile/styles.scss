@@ -189,6 +189,11 @@ not(.ic-ad-slot-placeholder) {
 	@include nativo;
 }
 
+#ntv_feed_ad {
+	padding: 0 0.75rem;
+	text-align: left;
+}
+
 .ic-ad-slot-placeholder {
 	@include ic-ad-slot-placeholder;
 
