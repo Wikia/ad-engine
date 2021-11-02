@@ -19,7 +19,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
-				label: false,
 				options: {},
 				slotShortcut: 'l',
 				sizes: [],
@@ -34,6 +33,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_leaderboard', 'mobile_top_leaderboard'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					elementToHide: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
@@ -41,7 +44,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				bidderAlias: 'mobile_in_content',
 				slotNameSuffix: '',
 				group: 'MR',
-				label: true,
 				options: {},
 				slotShortcut: 'm',
 				sizes: [
@@ -65,13 +67,15 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_boxad'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			affiliate_slot: {
 				adProduct: 'affiliate_slot',
 				avoidConflictWith: '#top_boxad,#incontent_boxad_1,#incontent_player',
 				slotNameSuffix: '',
 				group: 'AU',
-				label: false,
 				options: {},
 				insertBeforeSelector: '.mw-parser-output > h2',
 				slotShortcut: 'a',
@@ -90,7 +94,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide', 'incontent-boxad', 'ad-slot'],
 				slotNameSuffix: '',
 				group: 'HiVi',
-				label: true,
 				options: {},
 				insertBeforeSelector: '.mw-parser-output > h2',
 				repeat: {
@@ -126,6 +129,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['incontent_boxad'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -137,7 +143,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'HiVi',
-				label: true,
 				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
@@ -146,6 +151,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 				isVideo: true,
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			mobile_prefooter: {
 				adProduct: 'mobile_prefooter',
@@ -153,7 +161,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				disabled: true,
 				disableManualInsert: true,
 				group: 'PF',
-				label: true,
 				options: {},
 				slotShortcut: 'p',
 				sizes: [],
@@ -166,6 +173,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			interstitial: {
 				adProduct: 'interstitial',
@@ -174,7 +184,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'IU',
-				label: false,
 				options: {},
 				outOfPage: true,
 				outOfPageFormat: 'INTERSTITIAL',
@@ -190,7 +199,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'PF',
-				label: false,
 				options: {},
 				outOfPage: false,
 				targeting: {
@@ -228,7 +236,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				label: true,
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -252,13 +259,15 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			invisible_high_impact_2: {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				defaultClasses: ['hide'],
 				group: 'PX',
-				label: false,
 				options: {},
 				outOfPage: true,
 				targeting: {
@@ -270,7 +279,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 				group: 'VIDEO',
-				label: false,
 				lowerSlotName: 'featured',
 				targeting: {
 					uap: 'none',

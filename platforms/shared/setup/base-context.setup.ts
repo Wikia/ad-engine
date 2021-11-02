@@ -1,10 +1,12 @@
 import {
+	communicationService,
 	context,
 	Dictionary,
 	DiProcess,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -47,6 +49,11 @@ export class BaseContextSetup implements DiProcess {
 		context.set('state.showAds', this.noAdsDetector.isAdsMode());
 		context.set('state.deviceType', utils.client.getDeviceType());
 		context.set('state.isLogged', !!context.get('wiki.wgUserId'));
+
+		if (this.instantConfig.get('icPrebidium')) {
+			context.set('state.provider', 'prebidium');
+			communicationService.dispatch(uapLoadStatus({ isLoaded: false }));
+		}
 	}
 
 	private setOptionsContext(): void {

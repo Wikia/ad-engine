@@ -13,7 +13,6 @@ import {
 	globalAction,
 	nativo,
 	ofType,
-	placeholderService,
 	PorvataFiller,
 	PorvataGamParams,
 	scrollListener,
@@ -135,6 +134,28 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		rotator.rotateSlot();
 	}
 
+	private handleAdPlaceholders(slotName: string, slotStatus: string): void {
+		const statusesToHideLabel: string[] = [
+			AdSlot.STATUS_BLOCKED,
+			AdSlot.STATUS_COLLAPSE,
+			AdSlot.STATUS_FORCED_COLLAPSE,
+		];
+		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS];
+		const adSlot = slotService.get(slotName);
+
+		if (!adSlot) return;
+
+		const placeholder = adSlot.getPlaceholder();
+		const elementToHide = adSlot.getConfigProperty('placeholder')?.elementToHide;
+
+		if (statusesToStopLoadingSlot.includes(slotStatus)) {
+			placeholder.classList.remove('is-loading');
+		} else if (statusesToHideLabel.includes(slotStatus)) {
+			placeholder.classList.remove('is-loading');
+			adSlot.getAdLabel(elementToHide)?.classList.add('hide');
+		}
+	}
+
 	private configureTopLeaderboard(): void {
 		const slotName = 'top_leaderboard';
 		const hiviLBEnabled =
@@ -144,14 +165,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			context.set('slots.top_leaderboard.firstCall', false);
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-				slotService.setState('top_leaderboard', false);
-				placeholderService.stopLoading(slotName);
+				slotService.setState(slotName, false);
+				this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
 				slotService.setState('top_leaderboard', false);
-				placeholderService.stopLoading(slotName);
-				placeholderService.hidePlaceholder(slotName);
+				this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
@@ -159,17 +179,17 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 				if (!adSlot.isEmpty) {
 					slotService.setState('top_leaderboard', false);
-					placeholderService.stopLoading(slotName);
+					this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
 				}
 			});
 		}
 
 		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-			placeholderService.stopLoading(slotName);
+			this.handleAdPlaceholders('top_leaderboard', AdSlot.STATUS_SUCCESS);
 		});
+
 		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			placeholderService.stopLoading(slotName);
-			placeholderService.hidePlaceholder(slotName);
+			this.handleAdPlaceholders('top_leaderboard', AdSlot.STATUS_COLLAPSE);
 		});
 
 		if (!context.get('custom.hasFeaturedVideo')) {
@@ -240,14 +260,20 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			}
 		});
 
-		slotService.on('bottom_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-			placeholderService.stopLoading(slotName);
+		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
 		});
-		slotService.on('bottom_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			placeholderService.stopLoading(slotName);
+
+		slotService.on(slotName, AdSlot.STATUS_BLOCKED, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_BLOCKED);
 		});
-		slotService.on('bottom_leaderboard', AdSlot.STATUS_BLOCKED, () => {
-			placeholderService.stopLoading(slotName);
+
+		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
+		});
+
+		slotService.on(slotName, AdSlot.STATUS_FORCED_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
 		});
 	}
 }

@@ -43,7 +43,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'top_leaderboard';
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 		const activator = () => {
 			context.push('state.adStack', { id: slotName });
 		};
@@ -53,10 +53,10 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorWrapperConfig: null,
 			slotCreatorConfig: {
 				slotName,
+				placeholderConfig,
 				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 			},
 		};
 	}
@@ -85,15 +85,15 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotName = 'top_boxad';
 		const wrapperClassList = ['ad-slot-placeholder', 'top-boxad', 'is-loading'];
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
+				placeholderConfig,
 				...this.slotCreatorInsertionParams(),
 				classList: ['hide', 'ad-slot'],
 				avoidConflictWith: ['.ntv-ad'],
-				label: slotHasLabel,
 			},
 			slotCreatorWrapperConfig: {
 				classList: wrapperClassList,
@@ -152,11 +152,12 @@ export class UcpMobileSlotsDefinitionRepository {
 
 		const slotName = 'incontent_boxad_1';
 		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
+				placeholderConfig,
 				anchorSelector: '.mw-parser-output > h2',
 				avoidConflictWith: [
 					'.ad-slot-placeholder',
@@ -166,7 +167,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -232,15 +232,15 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'mobile_prefooter';
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
+				placeholderConfig,
 				anchorSelector: '.wds-global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 			},
 			slotCreatorWrapperConfig: {
 				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
@@ -280,15 +280,15 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'bottom_leaderboard';
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
+		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
 			slotCreatorConfig: {
 				slotName,
+				placeholderConfig,
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 			},
 			slotCreatorWrapperConfig: null,
 			activator: () => {
@@ -310,7 +310,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'floor_adhesion';
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -318,7 +317,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '#floor_adhesion_anchor',
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 			},
 			activator: () => {
 				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
@@ -350,7 +348,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'interstitial';
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -358,7 +355,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 			},
 			activator: () => {
 				context.set('slots.interstitial.disabled', false);
@@ -377,7 +373,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotName = 'invisible_high_impact_2';
-		const slotHasLabel = context.get(`slots.${slotName}.label`);
 
 		return {
 			slotCreatorConfig: {
@@ -385,7 +380,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				anchorSelector: '#fandom-mobile-wrapper',
 				insertMethod: 'after',
 				classList: ['hide', 'ad-slot'],
-				label: slotHasLabel,
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });

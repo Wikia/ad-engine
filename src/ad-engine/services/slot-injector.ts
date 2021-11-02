@@ -43,7 +43,7 @@ class SlotInjector {
 			insertMethod: config.insertBeforeSelector
 				? 'before'
 				: config.insertIntoParentContainerMethod || 'append',
-			label: config.label,
+			placeholderConfig: config.placeholder,
 		};
 
 		if (config.insertBelowFirstViewport) {
