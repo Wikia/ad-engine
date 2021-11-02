@@ -27,7 +27,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 import {
 	isNativeAdApplicable,
-	NATIVE_AD_SLOT_CLASS_LIST,
+	NATIVO_AD_SLOT_CLASS_LIST,
 	NATIVO_INCONTENT_AD_SLOT_NAME,
 } from '../../../shared/utils/native-ads-helper';
 
@@ -88,7 +88,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				if (!!anchor) {
 					const container = document.createElement('div');
 					container.setAttribute('id', NATIVO_INCONTENT_AD_SLOT_NAME);
-					container.classList.add(...NATIVE_AD_SLOT_CLASS_LIST);
+					container.classList.add(...NATIVO_AD_SLOT_CLASS_LIST);
 
 					anchor.before(container);
 

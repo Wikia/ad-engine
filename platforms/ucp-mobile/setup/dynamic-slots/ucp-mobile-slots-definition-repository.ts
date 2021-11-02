@@ -18,7 +18,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 import {
 	isNativeAdApplicable,
-	NATIVE_AD_SLOT_CLASS_LIST,
+	NATIVO_AD_SLOT_CLASS_LIST,
 	NATIVO_INCONTENT_AD_SLOT_NAME,
 } from '../../../shared/utils/native-ads-helper';
 
@@ -103,7 +103,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-	getNativeAdsConfig(): SlotSetupDefinition {
+	getNativoIncontentAdConfig(): SlotSetupDefinition {
 		if (!isNativeAdApplicable()) {
 			return;
 		}
@@ -113,7 +113,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName: NATIVO_INCONTENT_AD_SLOT_NAME,
 				anchorSelector: '.mw-parser-output > p:last-of-type',
 				insertMethod: 'before',
-				classList: NATIVE_AD_SLOT_CLASS_LIST,
+				classList: NATIVO_AD_SLOT_CLASS_LIST,
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
