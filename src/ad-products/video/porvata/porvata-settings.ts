@@ -19,7 +19,7 @@ export interface PorvataParams extends Dictionary {
 }
 
 function getMoatTrackingStatus(params: PorvataParams): boolean {
-	if (!slotService.get(params.slotName).config.isVideo) {
+	if (!slotService.get(params.slotName)?.getConfigProperty('isVideo')) {
 		return false;
 	}
 

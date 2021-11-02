@@ -1,8 +1,11 @@
-import { context } from '@wikia/ad-engine';
+import { context, slotService } from '@wikia/ad-engine';
 import { PorvataSettings } from '@wikia/ad-products';
 import { assert } from 'chai';
+import * as sinon from 'sinon';
 
 describe('Porvata Settings wrapper', () => {
+	const sandbox = sinon.createSandbox();
+
 	let porvataSettings;
 
 	beforeEach(() => {
@@ -15,7 +18,7 @@ describe('Porvata Settings wrapper', () => {
 			container: document.createElement('div'),
 			height: 7,
 			restartOnUnmute: false,
-			slotName: 'incontent_player',
+			slotName: 'foo',
 			src: 'gpt',
 			width: 3,
 			vastTargeting: {},
@@ -24,29 +27,26 @@ describe('Porvata Settings wrapper', () => {
 		});
 	});
 
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('returns passed values in constructor', () => {
 		assert.equal(porvataSettings.getAdProduct(), 'hivi');
 		assert.isFalse(porvataSettings.isAutoPlay());
 		assert.equal(porvataSettings.getHeight(), 7);
 		assert.isFalse(porvataSettings.shouldRestartOnMute());
-		assert.equal(porvataSettings.getSlotName(), 'incontent_player');
+		assert.equal(porvataSettings.getSlotName(), 'foo');
 		assert.equal(porvataSettings.getWidth(), 3);
 		assert.equal(porvataSettings.getVastUrl(), 'http://example.com/foo');
 		assert.equal(porvataSettings.getVpaidMode(), 2);
 	});
 
 	it('enables moatTracking when true is passed', () => {
-		const settings = new PorvataSettings({
-			moatTracking: true,
-			container: document.createElement('div'),
-			slotName: 'incontent_player',
-			src: 'gpt',
-		});
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
 
-		assert.isTrue(settings.isMoatTrackingEnabled());
-	});
-
-	it('disables moatTracking for other slots than outstream', () => {
 		const settings = new PorvataSettings({
 			moatTracking: true,
 			container: document.createElement('div'),
@@ -54,10 +54,14 @@ describe('Porvata Settings wrapper', () => {
 			src: 'gpt',
 		});
 
-		assert.isFalse(settings.isMoatTrackingEnabled());
+		assert.isTrue(settings.isMoatTrackingEnabled());
 	});
 
 	it('disables moatTracking when false is passed', () => {
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
+
 		const settings = new PorvataSettings({
 			moatTracking: false,
 			container: document.createElement('div'),
