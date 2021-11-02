@@ -30,7 +30,7 @@ export class SlotCreator {
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
 	): HTMLElement {
-		logger(groupName, 'SlotCreator::createSlot() called', slotLooseConfig, wrapperLooseConfig);
+		logger(groupName, `Creating: ${slotLooseConfig.slotName}`, slotLooseConfig, wrapperLooseConfig);
 
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
 		const slot = this.makeSlot(slotConfig);
