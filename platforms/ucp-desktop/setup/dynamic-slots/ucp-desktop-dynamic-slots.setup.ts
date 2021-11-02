@@ -146,13 +146,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		if (!adSlot) return;
 
 		const placeholder = adSlot.getPlaceholder();
-		const elementToHide = adSlot.getConfigProperty('placeholder')?.elementToHide;
+		const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
 		if (statusesToStopLoadingSlot.includes(slotStatus)) {
 			placeholder.classList.remove('is-loading');
 		} else if (statusesToHideLabel.includes(slotStatus)) {
 			placeholder.classList.remove('is-loading');
-			adSlot.getAdLabel(elementToHide)?.classList.add('hide');
+			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
 		}
 	}
 

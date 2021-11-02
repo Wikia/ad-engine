@@ -237,10 +237,10 @@ export class AdSlot extends EventEmitter {
 		return null;
 	}
 
-	getAdLabel(elementToHideSelector?: string): HTMLElement {
-		if (elementToHideSelector) {
-			const elementToHide: HTMLElement = document.querySelector(elementToHideSelector);
-			return elementToHide?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);
+	getAdLabel(adLabelParentSelector?: string): HTMLElement {
+		if (adLabelParentSelector) {
+			const adLabelParent: HTMLElement = document.querySelector(adLabelParentSelector);
+			return adLabelParent?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);
 		}
 
 		return this.getPlaceholder()?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);

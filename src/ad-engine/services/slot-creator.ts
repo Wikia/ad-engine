@@ -23,7 +23,7 @@ export interface SlotCreatorWrapperConfig {
 
 export interface SlotPlaceholderContextConfig {
 	createLabel?: boolean;
-	elementToHide?: string;
+	adLabelParent?: string;
 }
 
 @Injectable()

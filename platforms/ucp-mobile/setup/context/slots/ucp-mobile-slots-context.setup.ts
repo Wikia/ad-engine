@@ -35,7 +35,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 				placeholder: {
 					createLabel: false,
-					elementToHide: '.top-ads-container',
+					adLabelParent: '.top-ads-container',
 				},
 			},
 			top_boxad: {

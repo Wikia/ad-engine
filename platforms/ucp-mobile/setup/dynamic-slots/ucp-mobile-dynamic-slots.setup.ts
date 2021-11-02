@@ -40,14 +40,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		this.checkUap();
+		this.registerUapChecker();
 		this.injectSlots();
 		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
-		this.stopLoadingSlots();
+		this.registerAdPlaceholderHandler();
 	}
 
 	private injectSlots(): void {
@@ -199,7 +199,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
-	stopLoadingSlots = (): void => {
+	private registerAdPlaceholderHandler(): void {
 		const statusesToCollapse: string[] = [
 			AdSlot.STATUS_BLOCKED,
 			AdSlot.STATUS_COLLAPSE,
@@ -225,7 +225,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				if (!adSlot) return;
 
 				const placeholder = adSlot.getPlaceholder();
-				const elementToHide = adSlot.getConfigProperty('placeholder').elementToHide;
+				const adLabelParent = adSlot.getConfigProperty('placeholder').adLabelParent;
 
 				if (statusesToStopLoadingSlot.includes(action['event'])) {
 					placeholder.classList.remove('is-loading');
@@ -233,13 +233,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					if (this.isUapLoaded) {
 						placeholder.classList.add('hide');
 					} else if (!this.isUapLoaded) {
-						adSlot.getAdLabel(elementToHide)?.classList.add('hide');
+						adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
 					}
 				}
 			});
-	};
+	}
 
-	private checkUap(): void {
+	private registerUapChecker(): void {
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			this.isUapLoaded = action.isLoaded;
 		});

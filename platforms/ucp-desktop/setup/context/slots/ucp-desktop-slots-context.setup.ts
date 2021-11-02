@@ -67,7 +67,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 				placeholder: {
 					createLabel: false,
-					elementToHide: '.top-ads-container',
+					adLabelParent: '.top-ads-container',
 				},
 			},
 			top_boxad: {
@@ -192,7 +192,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 				placeholder: {
 					createLabel: false,
-					elementToHide: '.bottom-ads-container',
+					adLabelParent: '.bottom-ads-container',
 				},
 			},
 			incontent_player: {
