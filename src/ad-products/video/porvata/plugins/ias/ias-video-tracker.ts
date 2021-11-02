@@ -22,7 +22,7 @@ interface IasConfig {
 class IasVideoTracker implements PorvataPlugin {
 	private scriptPromise: Promise<Event>;
 
-	isEnabled(videoSettings: PorvataSettings) {
+	isEnabled(videoSettings: PorvataSettings): boolean {
 		return videoSettings.isIasTrackingEnabled();
 	}
 
