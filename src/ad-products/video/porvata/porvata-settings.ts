@@ -19,6 +19,10 @@ export interface PorvataParams extends Dictionary {
 }
 
 function getMoatTrackingStatus(params: PorvataParams): boolean {
+	if (params.slotName !== 'incontent_player') {
+		return false;
+	}
+
 	if (typeof params.moatTracking === 'boolean') {
 		return params.moatTracking;
 	}
