@@ -393,7 +393,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 5.0,
+            "sampling": 0.0,
             "value": true
         }
     ],
