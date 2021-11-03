@@ -230,11 +230,7 @@ export class AdSlot extends EventEmitter {
 	getPlaceholder(): HTMLElement | null {
 		const placeholder = this.getElement()?.parentElement;
 
-		if (placeholder.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS)) {
-			return placeholder;
-		}
-
-		return null;
+		return placeholder.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS) ? placeholder : null;
 	}
 
 	getAdLabel(adLabelParentSelector?: string): HTMLElement {
