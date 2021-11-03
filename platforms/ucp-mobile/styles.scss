@@ -247,24 +247,21 @@
 		text-align: center;
 		text-transform: uppercase;
 		width: 100%;
-
-		&.hide {
-			display: none;
-		}
 	}
 
 	.porvata-outstream.porvata3::before {
 		display: none;
 	}
 
-	&.hide {
-		display: none !important;
-	}
-
 	&.is-loading {
 		.ae-translatable-label {
 			background-color: var(--theme-page-background-color);
 		}
+	}
+
+	&.hide,
+	.hide {
+		display: none;
 	}
 }
 
