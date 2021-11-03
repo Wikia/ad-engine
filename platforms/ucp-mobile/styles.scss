@@ -98,6 +98,16 @@
 	}
 
 	@include expanded-slot();
+
+	.big-advertisement-label::after {
+		height: 50px;
+		padding-top: 20px;
+		display: block;
+		content: 'ADVERTISEMENT';
+		background-color: black;
+		color: white;
+		font-size: 10px;
+	}
 }
 
 @mixin out-of-page-styles() {

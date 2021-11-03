@@ -39,6 +39,7 @@ describe('IAS video tracker', () => {
 				pos: 'foo_pos',
 				loc: 'foo_loc',
 			}),
+			getConfigProperty(key: string): any {},
 		} as AdSlot);
 
 		context.set('options.video.iasTracking.config', {
