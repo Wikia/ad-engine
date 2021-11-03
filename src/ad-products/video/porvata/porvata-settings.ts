@@ -1,4 +1,4 @@
-import { context, Dictionary, Targeting } from '@ad-engine/core';
+import { context, Dictionary, slotService, Targeting } from '@ad-engine/core';
 import { VpaidMode } from './porvata';
 
 export interface PorvataParams extends Dictionary {
@@ -19,6 +19,10 @@ export interface PorvataParams extends Dictionary {
 }
 
 function getMoatTrackingStatus(params: PorvataParams): boolean {
+	if (!slotService.get(params.slotName)?.getConfigProperty('isVideo')) {
+		return false;
+	}
+
 	if (typeof params.moatTracking === 'boolean') {
 		return params.moatTracking;
 	}

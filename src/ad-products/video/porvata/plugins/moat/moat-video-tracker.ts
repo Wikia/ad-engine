@@ -18,7 +18,7 @@ class MoatVideoTracker implements PorvataPlugin {
 		return videoSettings.isMoatTrackingEnabled();
 	}
 
-	load() {
+	load(): Promise<void> {
 		return Promise.resolve();
 	}
 
