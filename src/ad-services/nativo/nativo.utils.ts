@@ -1,4 +1,4 @@
-import { context } from '@wikia/ad-engine';
+import { context } from '@ad-engine/core';
 
 export const NATIVO_INCONTENT_AD_SLOT_NAME = 'ntv_ad';
 export const NATIVO_FEED_AD_SLOT_NAME = 'ntv_feed_ad';

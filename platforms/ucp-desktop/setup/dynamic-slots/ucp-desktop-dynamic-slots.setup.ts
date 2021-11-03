@@ -11,7 +11,10 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
+	isNativeAdApplicable,
 	nativo,
+	NATIVO_AD_SLOT_CLASS_LIST,
+	NATIVO_INCONTENT_AD_SLOT_NAME,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -25,11 +28,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import {
-	isNativeAdApplicable,
-	NATIVO_AD_SLOT_CLASS_LIST,
-	NATIVO_INCONTENT_AD_SLOT_NAME,
-} from '../../../shared/utils/native-ads-helper';
 
 const railReady = globalAction('[Rail] Ready');
 

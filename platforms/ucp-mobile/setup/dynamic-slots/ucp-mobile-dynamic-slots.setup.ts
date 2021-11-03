@@ -11,6 +11,8 @@ import {
 	eventService,
 	fillerService,
 	nativo,
+	NATIVO_FEED_AD_SLOT_NAME,
+	NATIVO_INCONTENT_AD_SLOT_NAME,
 	ofType,
 	PorvataFiller,
 	SlotCreator,
@@ -22,10 +24,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { filter } from 'rxjs/operators';
-import {
-	NATIVO_FEED_AD_SLOT_NAME,
-	NATIVO_INCONTENT_AD_SLOT_NAME,
-} from '../../../shared/utils/native-ads-helper';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,

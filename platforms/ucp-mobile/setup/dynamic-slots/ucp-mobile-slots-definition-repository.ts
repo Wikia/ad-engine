@@ -4,6 +4,10 @@ import {
 	context,
 	insertMethodType,
 	InstantConfigService,
+	isNativeAdApplicable,
+	NATIVO_AD_SLOT_CLASS_LIST,
+	NATIVO_FEED_AD_SLOT_NAME,
+	NATIVO_INCONTENT_AD_SLOT_NAME,
 	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -15,12 +19,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import {
-	isNativeAdApplicable,
-	NATIVO_AD_SLOT_CLASS_LIST,
-	NATIVO_FEED_AD_SLOT_NAME,
-	NATIVO_INCONTENT_AD_SLOT_NAME,
-} from '../../../shared/utils/native-ads-helper';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
