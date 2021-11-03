@@ -26,7 +26,7 @@ export class BfaaBigAdvertisementLabelHandler implements TemplateStateHandler {
 			.subscribe();
 	}
 
-	setBigAdvertisementLabel(): void {
+	private setBigAdvertisementLabel(): void {
 		this.manipulator.element(this.adSlot.getElement()).addClass('big-advertisement-label');
 	}
 
