@@ -232,7 +232,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				} else if (statusesToCollapse.includes(action['event'])) {
 					if (this.isUapLoaded) {
 						placeholder?.classList.add('hide');
-					} else if (!this.isUapLoaded) {
+					} else {
 						adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
 					}
 				}
