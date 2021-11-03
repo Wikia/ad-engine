@@ -183,19 +183,15 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
-				context.push('events.pushOnScroll.ids', slotName);
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					context.push('events.pushOnScroll.ids', slotName);
 					if (!action.isLoaded) {
 						this.injectIncontentAdsPlaceholders();
 					}
 				});
-				context.set('slots.incontent_boxad_1.insertBeforeSelector', '');
-				context.set('slots.incontent_boxad_1.parentContainerSelector', '.incontent-boxad');
-
+				// We need to reset it here, because otherwise ucp-targeting-setup throws an error in line:
+				// https://github.com/Wikia/ad-engine/blob/dev/platforms/shared/context/targeting/ucp-targeting.setup.ts#L101
 				context.set('slots.incontent_player.insertBeforeSelector', '');
-				context.set('slots.incontent_player.parentContainerSelector', '.incontent-boxad');
-
-				context.set('slots.affiliate_slot.insertBeforeSelector', '.incontent-boxad');
 			},
 		};
 	}

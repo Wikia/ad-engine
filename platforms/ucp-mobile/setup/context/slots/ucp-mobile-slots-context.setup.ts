@@ -77,7 +77,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'AU',
 				options: {},
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '.incontent-boxad',
 				slotShortcut: 'a',
 				defaultSizes: [[280, 120]],
 				targeting: {
@@ -95,7 +95,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '',
+				parentContainerSelector: '.incontent-boxad',
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -139,6 +140,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				autoplay: true,
 				audio: false,
 				insertBeforeSelector: '.mw-parser-output > h2',
+				parentContainerSelector: '.incontent-boxad',
 				disabled: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
