@@ -11,6 +11,8 @@ export const nativoLoadedEvent = globalAction(
 );
 
 class Nativo {
+	private postRelease: NativoPostRelease;
+
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -23,11 +25,16 @@ class Nativo {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 				this.sendEvent();
+				this.postRelease = window.PostRelease;
 			});
 	}
 
 	start(): void {
-		this.displayTestAd();
+		if (utils.queryString.get('native_ads_test') === '1') {
+			this.displayTestAd();
+		} else {
+			this.postRelease.Start();
+		}
 	}
 
 	private sendEvent(): void {
@@ -39,10 +46,6 @@ class Nativo {
 	}
 
 	private displayTestAd(): void {
-		if (utils.queryString.get('native_ads_test') !== '1') {
-			return;
-		}
-
 		const nativeAdIncontentPlaceholder = document.getElementById(NATIVO_INCONTENT_AD_SLOT_NAME);
 		nativeAdIncontentPlaceholder.innerHTML = `<div class="ntv-wrapper">
 					<img 
