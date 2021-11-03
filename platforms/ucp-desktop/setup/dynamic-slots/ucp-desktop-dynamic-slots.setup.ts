@@ -143,8 +143,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS];
 		const adSlot = slotService.get(slotName);
 
-		if (!adSlot) return;
-
 		const placeholder = adSlot.getPlaceholder();
 		const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
