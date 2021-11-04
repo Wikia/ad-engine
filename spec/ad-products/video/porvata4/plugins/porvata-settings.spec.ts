@@ -1,8 +1,11 @@
-import { context } from '@wikia/ad-engine';
+import { context, slotService } from '@wikia/ad-engine';
 import { PorvataSettings } from '@wikia/ad-products';
 import { assert } from 'chai';
+import * as sinon from 'sinon';
 
 describe('Porvata Settings wrapper', () => {
+	const sandbox = sinon.createSandbox();
+
 	let porvataSettings;
 
 	beforeEach(() => {
@@ -24,6 +27,10 @@ describe('Porvata Settings wrapper', () => {
 		});
 	});
 
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('returns passed values in constructor', () => {
 		assert.equal(porvataSettings.getAdProduct(), 'hivi');
 		assert.isFalse(porvataSettings.isAutoPlay());
@@ -36,6 +43,10 @@ describe('Porvata Settings wrapper', () => {
 	});
 
 	it('enables moatTracking when true is passed', () => {
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
+
 		const settings = new PorvataSettings({
 			moatTracking: true,
 			container: document.createElement('div'),
@@ -47,6 +58,10 @@ describe('Porvata Settings wrapper', () => {
 	});
 
 	it('disables moatTracking when false is passed', () => {
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
+
 		const settings = new PorvataSettings({
 			moatTracking: false,
 			container: document.createElement('div'),
