@@ -31,6 +31,7 @@ interface Window {
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
 	permutive?: Permutive;
+	PostRelease?: any;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
