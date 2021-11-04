@@ -111,7 +111,10 @@
                 "XX"
             ],
             "sampling": 100.0,
+            "samplingCache": true,
             "value": [
+                "5821545299",
+                "5819692209",
                 "5816925751",
                 "5805836378",
                 "5816487755",
@@ -1492,6 +1495,7 @@
                 "5787334074",
                 "5787334077",
                 "5823087112",
+                "5825476260",
                 "5822513451"
             ]
         }
@@ -1620,7 +1624,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.13.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.13.2/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [
