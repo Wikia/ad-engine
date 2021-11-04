@@ -2,6 +2,7 @@ import { addAdvertisementLabel, stopLoadingSlot } from '@platforms/shared';
 import {
 	communicationService,
 	context,
+	globalAction,
 	insertMethodType,
 	InstantConfigService,
 	isNativeAdApplicable,
@@ -132,8 +133,23 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: NATIVO_AD_SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				// https://github.com/Wikia/unified-platform/blob/master/skins/FandomMobile/scripts/recirculationPrefooter/Init.ts#L6
-				scrollListener.addSlot(NATIVO_FEED_AD_SLOT_NAME, { threshold: 300 });
+				const recirculationListLoaded = globalAction('[Recirculation] Ready');
+				communicationService.action$
+					.pipe(ofType(recirculationListLoaded), take(1))
+					.subscribe(() => {
+						const nativoFeedAdSlotElement = document.querySelector(`#${NATIVO_FEED_AD_SLOT_NAME}`);
+						const recirculationSponsoredElementSelector =
+							'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored';
+						const recirculationSponsoredElement = document.querySelector(
+							recirculationSponsoredElementSelector,
+						);
+
+						if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
+							recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
+						} else {
+							console.warn('Could not replace sponsored element with Nativo feed ad');
+						}
+					});
 			},
 		};
 	}
