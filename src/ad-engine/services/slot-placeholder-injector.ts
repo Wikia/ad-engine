@@ -1,4 +1,5 @@
 import { getTopOffset, isInTheSameViewport, logger } from '../utils';
+import { SlotCreator } from './slot-creator';
 
 const logGroup = 'slot-placeholder-injector';
 
@@ -62,8 +63,17 @@ class SlotPlaceholderInjector {
 		const placeholder = document.createElement('div');
 
 		placeholder.classList.add(...classList);
+		this.addAdLabel(placeholder);
 
 		return placeholder;
+	}
+
+	private addAdLabel(placeholder: HTMLElement): void {
+		const div = document.createElement('div');
+		div.className = SlotCreator.AD_LABEL_CLASS;
+		div.innerText = 'Advertisement';
+		div.dataset.slotName = 'incontent-boxad';
+		placeholder.appendChild(div);
 	}
 
 	private findAnchorElement(

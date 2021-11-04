@@ -153,9 +153,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 				isVideo: true,
-				placeholder: {
-					createLabel: true,
-				},
 			},
 			mobile_prefooter: {
 				adProduct: 'mobile_prefooter',
