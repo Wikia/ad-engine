@@ -32,6 +32,9 @@ export class RoadblockHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		this.params.adProduct = 'ruap';
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
-		context.push('state.adStack', { id: 'invisible_skin' });
+		const isMobile = context.get('state.isMobile');
+		if (!isMobile) {
+			context.push('state.adStack', { id: 'invisible_skin' });
+		}
 	}
 }
