@@ -206,7 +206,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlot.STATUS_FORCED_COLLAPSE,
 			AdSlot.HIDDEN_EVENT,
 		];
-		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
+		const statusesToStopLoadingSlot: string[] = [
+			AdSlot.STATUS_SUCCESS,
+			AdSlot.HIDDEN_EVENT,
+			AdSlot.SLOT_RENDERED_EVENT,
+		];
 
 		const shouldRemoveOrCollapse = (action: object): boolean => {
 			return (
@@ -227,6 +231,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 				const placeholder = adSlot.getPlaceholder();
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
+
+				if (
+					action['event'] === AdSlot.SLOT_RENDERED_EVENT &&
+					action['payload'][1] === 'forced_success'
+				) {
+					placeholder?.classList.remove('hide');
+					return;
+				}
 
 				if (statusesToStopLoadingSlot.includes(action['event'])) {
 					placeholder?.classList.remove('is-loading');
