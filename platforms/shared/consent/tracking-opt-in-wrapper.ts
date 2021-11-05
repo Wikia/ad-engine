@@ -45,7 +45,7 @@ class TrackingOptInWrapper {
 		window.ads = window.ads || ({} as MediaWikiAds);
 
 		// Install temporary stub until full CMP will be ready
-		if (window.__tcfapi === undefined) {
+		if (typeof window.__tcfapi === 'undefined') {
 			installCMPStub();
 		}
 
