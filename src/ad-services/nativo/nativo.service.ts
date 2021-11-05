@@ -29,8 +29,6 @@ class Nativo {
 			});
 	}
 
-	start(): void {}
-
 	requestAd(): void {
 		if (utils.queryString.get('native_ads_test') === '1') {
 			utils.logger(logGroup, 'Displaying an dummy test ads');

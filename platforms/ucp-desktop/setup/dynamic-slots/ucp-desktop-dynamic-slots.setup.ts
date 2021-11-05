@@ -90,7 +90,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 					anchor.before(container);
 
-					nativo.start();
+					nativo.requestAd();
 				}
 			}
 		});
