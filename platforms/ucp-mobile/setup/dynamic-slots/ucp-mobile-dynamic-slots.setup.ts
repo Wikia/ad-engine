@@ -2,7 +2,6 @@ import { removeAdLabel, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	adSlotEvent,
-	adSlotLoadedEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -10,9 +9,6 @@ import {
 	events,
 	eventService,
 	fillerService,
-	nativo,
-	NATIVO_FEED_AD_SLOT_NAME,
-	NATIVO_INCONTENT_AD_SLOT_NAME,
 	ofType,
 	PorvataFiller,
 	SlotCreator,
@@ -49,7 +45,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
-		this.configureNativoAds();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
 	}
@@ -185,19 +180,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
 			eventService.emit(events.INTERSTITIAL_DISPLAYED);
 		});
-	}
-
-	private configureNativoAds(): void {
-		communicationService.action$
-			.pipe(
-				ofType(adSlotLoadedEvent),
-				filter((action) =>
-					[NATIVO_INCONTENT_AD_SLOT_NAME, NATIVO_FEED_AD_SLOT_NAME].includes(action.name),
-				),
-			)
-			.subscribe((action) => {
-				nativo.start();
-			});
 	}
 
 	private styleInterstitial(selector: string): void {

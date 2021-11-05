@@ -75,11 +75,6 @@ export const adSlotEvent = globalAction(
 	}>(),
 );
 
-export const adSlotLoadedEvent = globalAction(
-	'[AdEngine] Ad Slot added',
-	props<{ name: string; status: string }>(),
-);
-
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';

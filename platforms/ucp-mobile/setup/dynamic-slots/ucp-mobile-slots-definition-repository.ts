@@ -6,6 +6,7 @@ import {
 	insertMethodType,
 	InstantConfigService,
 	isNativeAdApplicable,
+	nativo,
 	NATIVO_AD_SLOT_CLASS_LIST,
 	NATIVO_FEED_AD_SLOT_NAME,
 	NATIVO_INCONTENT_AD_SLOT_NAME,
@@ -115,7 +116,11 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: NATIVO_AD_SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				scrollListener.addSlot(NATIVO_INCONTENT_AD_SLOT_NAME, { threshold: 300 });
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					if (!action.isLoaded) {
+						nativo.requestAd();
+					}
+				});
 			},
 		};
 	}
@@ -133,22 +138,11 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: NATIVO_AD_SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				const recirculationListLoaded = globalAction('[Recirculation] Ready');
+				const recirculationListLoaded = globalAction('[FanFeed] Ready');
 				communicationService.action$
 					.pipe(ofType(recirculationListLoaded), take(1))
 					.subscribe(() => {
-						const nativoFeedAdSlotElement = document.querySelector(`#${NATIVO_FEED_AD_SLOT_NAME}`);
-						const recirculationSponsoredElementSelector =
-							'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored';
-						const recirculationSponsoredElement = document.querySelector(
-							recirculationSponsoredElementSelector,
-						);
-
-						if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
-							recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
-						} else {
-							console.warn('Could not replace sponsored element with Nativo feed ad');
-						}
+						nativo.replaceSponsoredFanFeedAd();
 					});
 			},
 		};
