@@ -5,11 +5,8 @@ import {
 	globalAction,
 	insertMethodType,
 	InstantConfigService,
-	isNativeAdApplicable,
+	Nativo,
 	nativo,
-	NATIVO_AD_SLOT_CLASS_LIST,
-	NATIVO_FEED_AD_SLOT_NAME,
-	NATIVO_INCONTENT_AD_SLOT_NAME,
 	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
@@ -104,16 +101,16 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
-		if (!isNativeAdApplicable()) {
+		if (!nativo.isEnabled()) {
 			return;
 		}
 
 		return {
 			slotCreatorConfig: {
-				slotName: NATIVO_INCONTENT_AD_SLOT_NAME,
+				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
 				anchorSelector: '.mw-parser-output > p:last-of-type',
 				insertMethod: 'before',
-				classList: NATIVO_AD_SLOT_CLASS_LIST,
+				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
@@ -126,16 +123,16 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativoFeedAdConfig(): SlotSetupDefinition {
-		if (!isNativeAdApplicable()) {
+		if (!nativo.isEnabled()) {
 			return;
 		}
 
 		return {
 			slotCreatorConfig: {
-				slotName: NATIVO_FEED_AD_SLOT_NAME,
+				slotName: Nativo.FEED_AD_SLOT_NAME,
 				anchorSelector: '.recirculation-prefooter',
 				insertMethod: 'before',
-				classList: NATIVO_AD_SLOT_CLASS_LIST,
+				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
 				const recirculationListLoaded = globalAction('[FanFeed] Ready');

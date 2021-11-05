@@ -11,10 +11,8 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
-	isNativeAdApplicable,
+	Nativo,
 	nativo,
-	NATIVO_AD_SLOT_CLASS_LIST,
-	NATIVO_INCONTENT_AD_SLOT_NAME,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -76,7 +74,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeAdsPlaceholder(): void {
-		if (!isNativeAdApplicable()) {
+		if (!nativo.isEnabled()) {
 			return;
 		}
 
@@ -87,8 +85,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 				if (!!anchor) {
 					const container = document.createElement('div');
-					container.setAttribute('id', NATIVO_INCONTENT_AD_SLOT_NAME);
-					container.classList.add(...NATIVO_AD_SLOT_CLASS_LIST);
+					container.setAttribute('id', Nativo.INCONTENT_AD_SLOT_NAME);
+					container.classList.add(...Nativo.SLOT_CLASS_LIST);
 
 					anchor.before(container);
 
