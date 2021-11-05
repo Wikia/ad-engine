@@ -28,7 +28,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
-const nativoFanFeed = globalAction('[FanFeed] Ready');
+const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -246,7 +246,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeFanFeed(): void {
-		communicationService.action$.pipe(ofType(nativoFanFeed), take(1)).subscribe(() => {
+		communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
 			nativo.requestAd();
 		});
 	}

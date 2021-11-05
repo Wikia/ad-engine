@@ -30,6 +30,8 @@ interface SlotCreatorInsertionParamsType {
 	insertMethod: insertMethodType;
 }
 
+const fanFeedReady = globalAction('[FanFeed] Ready');
+
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
@@ -135,12 +137,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				const recirculationListLoaded = globalAction('[FanFeed] Ready');
-				communicationService.action$
-					.pipe(ofType(recirculationListLoaded), take(1))
-					.subscribe(() => {
-						nativo.replaceSponsoredFanFeedAd();
-					});
+				communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
+					nativo.replaceSponsoredFanFeedAd();
+				});
 			},
 		};
 	}
