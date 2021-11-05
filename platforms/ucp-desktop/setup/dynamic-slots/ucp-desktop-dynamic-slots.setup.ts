@@ -32,6 +32,7 @@ import {
 } from '../../../shared/utils/native-ads-helper';
 
 const railReady = globalAction('[Rail] Ready');
+const nativoFanFeed = globalAction('[AdEngine] Load native ad in FanFeed');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -44,6 +45,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.injectFloorAdhesion();
 		this.injectBottomLeaderboard();
 		this.injectNativeAdsPlaceholder();
+		this.injectNativeFanFeed();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -244,6 +246,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		});
 		slotService.on('bottom_leaderboard', AdSlot.STATUS_BLOCKED, () => {
 			stopLoading('.bottom-leaderboard');
+		});
+	}
+
+	private injectNativeFanFeed(): void {
+		communicationService.action$.pipe(ofType(nativoFanFeed), take(1)).subscribe(() => {
+			nativo.start();
 		});
 	}
 }
