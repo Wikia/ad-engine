@@ -1,6 +1,7 @@
 import { communicationService, globalAction } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 import { props } from 'ts-action';
+import { logger } from '../../ad-engine/utils';
 import { NATIVO_FEED_AD_SLOT_NAME, NATIVO_INCONTENT_AD_SLOT_NAME } from './nativo.utils';
 
 const logGroup = 'nativo';
@@ -64,8 +65,33 @@ class Nativo {
 	}
 
 	private displayTestAd(): void {
+		if (utils.queryString.get('native_ads_test') !== '1') {
+			return;
+		}
+
+		this.nativeIncontentTestDummy();
+		this.nativeFanFeedAdTestDummy();
+	}
+
+	private nativeFanFeedAdTestDummy(): void {
+		const nativeAdFeedPlaceholder = document.getElementById(NATIVO_FEED_AD_SLOT_NAME);
+
+		if (nativeAdFeedPlaceholder) {
+			nativeAdFeedPlaceholder.innerHTML = `<a href="https://bit.ly/NewFanLabRecirc" class="recirculation-prefooter__item-anchor recirculation-prefooter__sponsored mcf-card mcf-card-article ntv-ad-anchor"  style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000), url(https://placekitten.com/386/259);">
+				<p class="recirculation-prefooter__personalization wds-font-size-s wds-font-weight-medium wds-leading-tight mcf-card-article__subtitle ntv-ad-label">AD · best buy</p>
+				<p class="recirculation-prefooter__title wds-font-size-base wds-font-weight-bold wds-leading-tight mcf-card-article__title ntv-ad-title">Buy Opla: Very good Astra 1.0 TDI</p>
+				<p class="recirculation-prefooter__subtitle wds-font-size-s wds-font-weight-medium wds-leading-tight mcf-card-article__subtitle ntv-ad-offer">Available from komis for $213.7</p>
+			</a>`;
+		} else {
+			logger(logGroup, `No anchor found: #${NATIVO_FEED_AD_SLOT_NAME}`);
+		}
+	}
+
+	private nativeIncontentTestDummy(): void {
 		const nativeAdIncontentPlaceholder = document.getElementById(NATIVO_INCONTENT_AD_SLOT_NAME);
-		nativeAdIncontentPlaceholder.innerHTML = `<div class="ntv-wrapper">
+
+		if (nativeAdIncontentPlaceholder) {
+			nativeAdIncontentPlaceholder.innerHTML = `<div class="ntv-wrapper">
 					<img 
 						src="https://placekitten.com/100/100" 
 						alt="mr. mittens" 
@@ -78,15 +104,9 @@ class Nativo {
 						<button class="ntv-ad-button">buy now</button>
 					</div>
 				</div>`;
-
-		const nativeAdFeedPlaceholder = document.getElementById(NATIVO_FEED_AD_SLOT_NAME);
-		nativeAdFeedPlaceholder.innerHTML = `<li class="recirculation-prefooter__item is-sponsored" style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000), url(https://placekitten.com/386/259);">
-			<a href="https://bit.ly/NewFanLabRecirc" class="recirculation-prefooter__item-anchor recirculation-prefooter__sponsored ntv-ad-anchor">
-				<p class="recirculation-prefooter__personalization wds-font-size-s wds-font-weight-medium wds-leading-tight ntv-ad-label">AD · best buy</p>
-				<p class="recirculation-prefooter__title wds-font-size-base wds-font-weight-bold wds-leading-tight ntv-ad-title">Buy Opla: Very good Astra 1.0 TDI</p>
-				<p class="recirculation-prefooter__subtitle wds-font-size-s wds-font-weight-medium wds-leading-tight ntv-ad-offer">Available from komis for $213.7</p>
-			</a>
-		</li>`;
+		} else {
+			logger(logGroup, `No anchor found: #${NATIVO_INCONTENT_AD_SLOT_NAME}`);
+		}
 	}
 }
 
