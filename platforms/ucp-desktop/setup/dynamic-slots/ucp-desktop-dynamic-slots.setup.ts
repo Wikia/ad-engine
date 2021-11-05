@@ -32,7 +32,7 @@ import {
 } from '../../../shared/utils/native-ads-helper';
 
 const railReady = globalAction('[Rail] Ready');
-const nativoFanFeed = globalAction('[AdEngine] Load native ad in FanFeed');
+const nativoFanFeed = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
