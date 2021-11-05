@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
+import { AD_LABEL_CLASS, getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils';
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
@@ -28,8 +28,6 @@ export interface SlotPlaceholderContextConfig {
 
 @Injectable()
 export class SlotCreator {
-	static AD_LABEL_CLASS = 'ae-translatable-label';
-
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
@@ -137,7 +135,7 @@ export class SlotCreator {
 
 	private addAdLabel(placeholder: HTMLElement, slotName: string): void {
 		const div = document.createElement('div');
-		div.className = SlotCreator.AD_LABEL_CLASS;
+		div.className = AD_LABEL_CLASS;
 		div.innerText = 'Advertisement';
 		div.dataset.slotName = slotName;
 		placeholder.appendChild(div);
