@@ -5,14 +5,13 @@ import {
 	AdStackPayload,
 	eventService,
 	insertMethodType,
-	SlotCreator,
 	SlotPlaceholderContextConfig,
 	slotTweaker,
 	utils,
 } from '../';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
-import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
+import { AD_LABEL_CLASS, getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
@@ -236,10 +235,10 @@ export class AdSlot extends EventEmitter {
 	getAdLabel(adLabelParentSelector?: string): HTMLElement {
 		if (adLabelParentSelector) {
 			const adLabelParent: HTMLElement = document.querySelector(adLabelParentSelector);
-			return adLabelParent?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);
+			return adLabelParent?.querySelector(`.${AD_LABEL_CLASS}`);
 		}
 
-		return this.getPlaceholder()?.querySelector(`.${SlotCreator.AD_LABEL_CLASS}`);
+		return this.getPlaceholder()?.querySelector(`.${AD_LABEL_CLASS}`);
 	}
 
 	getAdContainer(): HTMLDivElement | null {
