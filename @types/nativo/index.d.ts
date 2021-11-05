@@ -3,7 +3,7 @@ interface NativoPostRelease {
 }
 
 interface NativoConfiguration {
-	ptd?: [];
+	ptd?: any[];
 	infScrollReset?: boolean;
 }
 

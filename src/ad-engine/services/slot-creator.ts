@@ -1,6 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { logger } from '../utils/';
-import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
+import { getTopOffset, getViewportHeight, isInTheSameViewport, logger } from '../utils/';
 
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
@@ -63,7 +62,7 @@ export class SlotCreator {
 			this.throwNoPlaceToInsertError(slotConfig.slotName);
 		}
 
-		logger(groupName, 'SlotCreator::getAnchorElement() called', slotConfig, result);
+		logger(groupName, 'getAnchorElement() called', slotConfig, result);
 
 		return result;
 	}

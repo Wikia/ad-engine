@@ -31,7 +31,7 @@ class Nativo {
 
 	requestAd(): void {
 		if (utils.queryString.get('native_ads_test') === '1') {
-			utils.logger(logGroup, 'Displaying an dummy test ads');
+			utils.logger(logGroup, 'Displaying dummy test ads');
 			this.displayTestAd();
 		} else {
 			utils.logger(logGroup, 'Sending an ad request to Nativo');
@@ -43,10 +43,8 @@ class Nativo {
 
 	replaceSponsoredFanFeedAd(): void {
 		const nativoFeedAdSlotElement = document.querySelector(`#${NATIVO_FEED_AD_SLOT_NAME}`);
-		const recirculationSponsoredElementSelector =
-			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored';
 		const recirculationSponsoredElement = document.querySelector(
-			recirculationSponsoredElementSelector,
+			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored',
 		);
 
 		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
