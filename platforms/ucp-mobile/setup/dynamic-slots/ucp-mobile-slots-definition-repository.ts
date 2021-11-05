@@ -192,8 +192,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				// We need to reset it here, because otherwise ucp-targeting-setup throws an error in line:
 				// https://github.com/Wikia/ad-engine/blob/dev/platforms/shared/context/targeting/ucp-targeting.setup.ts#L101
 				context.set('slots.incontent_player.insertBeforeSelector', '');
-				// This is set to false to avoid creating a second label (while creating slots in slotCreator) for incontent_boxads_2+
-				context.set('slots.incontent_boxad_1.placeholder.createLabel', false);
 			},
 		};
 	}

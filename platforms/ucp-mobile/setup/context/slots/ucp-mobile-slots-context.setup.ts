@@ -105,6 +105,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						'placeholder.createLabel': false,
 					},
 					insertBelowScrollPosition: true,
 				},
