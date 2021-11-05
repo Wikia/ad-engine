@@ -33,8 +33,8 @@ export class RoadblockHandler implements TemplateStateHandler {
 		this.params.adProduct = 'ruap';
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
 		// TODO: create follow-up ticket and remove invisible_skin
-		const isMobile = context.get('state.isMobile');
-		if (!isMobile) {
+		const isDesktop = context.get('targeting.skin').includes('desktop');
+		if (isDesktop) {
 			context.push('state.adStack', { id: 'invisible_skin' });
 		}
 	}
