@@ -26,7 +26,11 @@ class Nativo {
 	}
 
 	start(): void {
-		this.displayTestAd();
+		if (utils.queryString.get('native_ads_test') === '1') {
+			this.displayTestAd();
+		} else {
+			window.PostRelease.Start();
+		}
 	}
 
 	private sendEvent(): void {
@@ -38,10 +42,6 @@ class Nativo {
 	}
 
 	private displayTestAd(): void {
-		if (utils.queryString.get('native_ads_test') !== '1') {
-			return;
-		}
-
 		const nativeAdIncontentPlaceholder = document.getElementById('ntv-ad');
 		nativeAdIncontentPlaceholder.innerHTML = `<div class="ntv-wrapper">
 					<img 
