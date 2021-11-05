@@ -211,6 +211,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlot.HIDDEN_EVENT,
 			AdSlot.SLOT_RENDERED_EVENT,
 		];
+		const statusToUndoCollapse = 'forced_success';
 
 		const shouldRemoveOrCollapse = (action: object): boolean => {
 			return (
@@ -234,7 +235,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 				if (
 					action['event'] === AdSlot.SLOT_RENDERED_EVENT &&
-					action['payload'][1] === 'forced_success'
+					action['payload'][1] === statusToUndoCollapse
 				) {
 					placeholder?.classList.remove('hide');
 					return;
