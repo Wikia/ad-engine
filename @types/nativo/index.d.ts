@@ -8,5 +8,5 @@ interface NativoConfiguration {
 }
 
 interface NativoQueue {
-	cmd: [];
+	cmd?: any[];
 }

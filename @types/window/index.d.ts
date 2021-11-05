@@ -30,7 +30,7 @@ interface Window {
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
-	nv?: NativoQueue;
+	ntv?: NativoQueue;
 	permutive?: Permutive;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
