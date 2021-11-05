@@ -10,15 +10,10 @@ interface BTPlacementConfig {
 	lazy?: boolean;
 }
 
-interface BTLoader {
-	clearThrough: () => void;
-}
-
 /**
  * BT service handler
  */
 class BTRec {
-	private bt: BTLoader;
 	private placementsMap: Dictionary<BTPlacementConfig>;
 
 	/**
@@ -39,10 +34,8 @@ class BTRec {
 
 		if (!isDebug) {
 			await this.loadScript();
-
-			this.bt = (window as any).BT;
-
-			this.triggerScript();
+		} else {
+			utils.logger(logGroup, 'debug mode enabled');
 		}
 	}
 
@@ -54,61 +47,17 @@ class BTRec {
 	}
 
 	/**
-	 * Duplicates slots before rec code execution
+	 * Injects BT script
 	 */
-	duplicateSlot(slotName: string): HTMLElement | boolean {
-		const placementClass = 'bt-uid-tg';
-		const slot = document.getElementById(slotName);
+	private loadScript(): Promise<Event> {
+		const btLibraryUrl = '//btloader.com/tag?h=wikia-inc-com&upapi=true';
 
-		if (slot) {
-			const placement: BTPlacementConfig = this.placementsMap[slotName];
-			const node = document.createElement('span');
-
-			node.classList.add(placementClass);
-			node.dataset['uid'] = this.getPlacementId(slotName);
-			node.dataset['style'] = '';
-
-			if (placement.style) {
-				Object.keys(placement.style).forEach((key) => {
-					node.dataset['style'] += `${key}: ${placement.style[key]};`;
-
-					if (isDebug) {
-						node.style.setProperty(key, placement.style[key]);
-					}
-				});
-			}
-
-			if (isDebug) {
-				node.style.setProperty('width', `${placement.size.width}px`);
-				node.style.setProperty('height', `${placement.size.height}px`);
-				node.style.setProperty('background', '#00D6D6');
-				node.style.setProperty('display', 'inline-block');
-			} else {
-				node.style.setProperty('display', 'none');
-			}
-
-			slot.parentNode.insertBefore(node, slot.previousSibling);
-
-			return node;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get slot BT placement uid
-	 */
-	getPlacementId(slotName): string {
-		return this.placementsMap[slotName].uid || '';
-	}
-
-	/**
-	 * Force trigger of BT code
-	 */
-	triggerScript(): void {
-		if (!isDebug && this.bt && this.bt.clearThrough) {
-			this.bt.clearThrough();
-		}
+		return utils.scriptLoader.loadScript(
+			btLibraryUrl,
+			'text/javascript',
+			true,
+			document.head.lastChild as HTMLElement,
+		);
 	}
 
 	/**
@@ -123,14 +72,34 @@ class BTRec {
 	}
 
 	/**
-	 * Injects BT script
+	 * Duplicates slots before rec code execution
 	 */
-	private loadScript(): Promise<Event> {
-		const scriptDomain = 'wikia-inc-com.videoplayerhub.com';
-		const btLibraryUrl = `//${scriptDomain}/galleryloader.js`;
+	duplicateSlot(slotName: string): HTMLElement | boolean {
+		const placementClass = ['gpt-ad', 'bt-ad'];
+		const slot = document.getElementById(slotName);
 
-		return utils.scriptLoader.loadScript(btLibraryUrl, 'text/javascript', false, document.head
-			.lastChild as HTMLElement);
+		if (slot) {
+			const placement: BTPlacementConfig = this.placementsMap[slotName];
+			const node = document.createElement('div');
+
+			node.id = `${slotName}_bt`;
+			node.classList.add(...placementClass);
+
+			if (isDebug) {
+				node.style.setProperty('width', `${placement.size.width}px`);
+				node.style.setProperty('height', `${placement.size.height}px`);
+				node.style.setProperty('background', '#00D6D6');
+				node.style.setProperty('display', 'inline-block');
+			}
+
+			slot.parentNode.insertBefore(node, slot);
+
+			utils.logger(logGroup, slotName, 'injected');
+
+			return node;
+		}
+
+		return false;
 	}
 }
 

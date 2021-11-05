@@ -131,7 +131,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		container.id = slotName;
 		parentContainer.appendChild(container);
-		rotator.rotateSlot();
+
+		eventService.once(events.AD_STACK_START, () => {
+			rotator.rotateSlot();
+		});
 	}
 
 	private configureTopLeaderboard(): void {
@@ -230,9 +233,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		context.push('events.pushOnScroll.ids', slotName);
 
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
-			if (slot.getSlotName() === slotName && btRec.isEnabled() && btRec.duplicateSlot(slotName)) {
-				btRec.triggerScript();
+		eventService.once(events.AD_STACK_START, () => {
+			if (btRec.isEnabled()) {
+				btRec.duplicateSlot(slotName);
 			}
 		});
 

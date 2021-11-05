@@ -11,21 +11,17 @@ import { universalAdPackage } from '../templates/uap';
 import { NavbarManager } from './navbar-manager';
 
 export class FmrRotator {
-	private btRecStatus = false;
 	private nextSlotName: string;
 	private currentAdSlot: AdSlot;
-	private recirculationDisabled = false;
 	private recirculationElement: HTMLElement;
 	private recirculationElementSelector: string;
 	private refreshInfo = {
 		recSlotViewed: 2000,
-		refreshDelay: 10000,
-		refreshLimit: 20,
+		refreshDelay: utils.queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
 		startPosition: 0,
 	};
 	private navbarManager = new NavbarManager(document.getElementById('globalNavigation'));
 	private rotatorListener: string;
-	private recSelector: string;
 	private currentRecNode: HTMLElement;
 
 	constructor(private slotName: string, private fmrPrefix: string, private btRec) {}
@@ -38,109 +34,56 @@ export class FmrRotator {
 		this.recirculationElement = document.querySelector(this.recirculationElementSelector);
 		this.refreshInfo.startPosition =
 			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
-		this.btRecStatus = this.btRec?.isEnabled();
 
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
-			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-				slot.once(AdSlot.STATUS_SUCCESS, () => {
-					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-
-					if (!universalAdPackage.isFanTakeoverLoaded()) {
-						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-							const customDelays = context.get('options.rotatorDelay');
-							setTimeout(() => {
-								this.hideSlot();
-							}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
-						});
-					}
-				});
-
-				slot.once(AdSlot.STATUS_COLLAPSE, () => {
-					if (!universalAdPackage.isFanTakeoverLoaded()) {
-						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
-						this.scheduleNextSlotPush();
-					}
-				});
-			}
-		});
+		if (this.btRec?.isEnabled()) {
+			this.initializeBTRotation();
+		} else {
+			this.initializeStandardRotation();
+		}
 
 		setTimeout(() => {
 			this.startFirstRotation();
 		}, this.refreshInfo.refreshDelay);
 	}
 
-	private slotStatusChanged(slotStatus): void {
-		if (universalAdPackage.isFanTakeoverLoaded()) {
-			this.swapRecirculation(false);
+	private initializeStandardRotation(): void {
+		eventService.on(events.AD_SLOT_CREATED, (slot) => {
+			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
+				if (universalAdPackage.isFanTakeoverLoaded()) {
+					slot.once(AdSlot.STATUS_SUCCESS, () => {
+						this.swapRecirculation(false);
+					});
+				} else {
+					slot.once(AdSlot.STATUS_SUCCESS, () => {
+						this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
 
-			return;
-		}
+						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
+							const customDelays = context.get('options.rotatorDelay');
+							setTimeout(() => {
+								this.hideSlot();
+							}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
+						});
+					});
 
-		if (!this.btRecStatus) {
-			this.currentAdSlot = slotService.get(this.nextSlotName);
-			this.nextSlotName =
-				this.fmrPrefix + (this.currentAdSlot.getConfigProperty('repeat.index') + 1);
-		}
-
-		if (slotStatus === AdSlot.STATUS_SUCCESS) {
-			this.swapRecirculation(false);
-		}
-	}
-
-	private swapRecirculation(visible): void {
-		this.recirculationElement.style.display = visible ? 'block' : 'none';
-	}
-
-	private removeScrollListener(): void {
-		if (this.rotatorListener) {
-			scrollListener.removeCallback(this.rotatorListener);
-			this.rotatorListener = null;
-		}
-	}
-
-	private hideSlot(): void {
-		if (this.btRecStatus) {
-			this.removeRecNode();
-		} else {
-			if (context.get('options.floatingMedrecDestroyable')) {
-				slotService.remove(this.currentAdSlot);
-			} else {
-				this.currentAdSlot.hide();
+					slot.once(AdSlot.STATUS_COLLAPSE, () => {
+						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+						this.scheduleNextSlotPush();
+					});
+				}
 			}
-		}
-
-		this.swapRecirculation(true);
-		this.scheduleNextSlotPush();
+		});
 	}
 
-	private removeRecNode(): void {
-		const recNode = (document.querySelector(this.recSelector) ||
-			this.currentRecNode) as HTMLElement;
-
-		if (recNode) {
-			recNode.style.setProperty('display', 'none');
-			recNode.remove();
-		}
+	private initializeBTRotation(): void {
+		this.currentRecNode = this.btRec.duplicateSlot(this.nextSlotName) as HTMLElement;
+		this.hideRecNode();
 	}
 
-	private scheduleNextSlotPush(): void {
-		if (this.isRefreshLimitAvailable()) {
-			setTimeout(() => {
-				this.tryPushNextSlot();
-			}, this.refreshInfo.refreshDelay);
-		}
-	}
-
-	private isRefreshLimitAvailable(): boolean {
-		return (
-			this.btRecStatus ||
-			(this.currentAdSlot &&
-				this.currentAdSlot.getConfigProperty('repeat.index') < this.refreshInfo.refreshLimit)
+	private startFirstRotation(): void {
+		this.runNowOrOnScroll(
+			() => this.isInViewport() && this.isStartPositionReached(),
+			this.pushNextSlot.bind(this),
 		);
-	}
-
-	private tryPushNextSlot(): void {
-		this.runNowOrOnScroll(this.isInViewport.bind(this), this.pushNextSlot.bind(this));
 	}
 
 	private runNowOrOnScroll(condition, callback): void {
@@ -154,10 +97,16 @@ export class FmrRotator {
 		}
 	}
 
+	private removeScrollListener(): void {
+		if (this.rotatorListener) {
+			scrollListener.removeCallback(this.rotatorListener);
+			this.rotatorListener = null;
+		}
+	}
+
 	private isInViewport(): boolean {
 		const recirculationElementInViewport = utils.isInViewport(this.recirculationElement);
-		const btRecNodeInViewport =
-			this.btRecStatus && this.currentRecNode && utils.isInViewport(this.currentRecNode);
+		const btRecNodeInViewport = this.currentRecNode && utils.isInViewport(this.currentRecNode);
 		const adSlotInViewport =
 			this.currentAdSlot &&
 			this.currentAdSlot.getElement() &&
@@ -166,51 +115,81 @@ export class FmrRotator {
 		return recirculationElementInViewport || btRecNodeInViewport || adSlotInViewport;
 	}
 
+	private isStartPositionReached(): boolean {
+		return this.refreshInfo.startPosition <= window.scrollY;
+	}
+
 	private pushNextSlot(): void {
-		context.push('state.adStack', { id: this.nextSlotName });
+		if (this.btRec?.isEnabled()) {
+			this.showRecNode();
+			this.swapRecirculation(false);
 
-		this.applyRec(() => {
-			this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-
-			if (!this.recirculationDisabled) {
-				setTimeout(() => {
-					this.hideSlot();
-				}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
-			}
-		});
+			setTimeout(() => {
+				this.hideRecNode();
+			}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
+		} else {
+			context.push('state.adStack', { id: this.nextSlotName });
+		}
 	}
 
-	private applyRec(onSuccess): void {
-		if (!this.btRecStatus) {
-			return;
+	private hideSlot(): void {
+		if (context.get('options.floatingMedrecDestroyable')) {
+			slotService.remove(this.currentAdSlot);
+		} else {
+			this.currentAdSlot.hide();
 		}
 
-		if (this.recSelector === null) {
-			this.recSelector = `div[id*="${this.btRec.getPlacementId(this.nextSlotName)}"]`;
-		}
+		this.swapRecirculation(true);
+		this.scheduleNextSlotPush();
+	}
 
-		this.currentRecNode = this.btRec.duplicateSlot(this.nextSlotName) as HTMLElement;
-
+	private showRecNode(): void {
 		if (this.currentRecNode) {
-			this.btRec.triggerScript();
+			this.currentRecNode.style.setProperty('display', 'block');
 		}
-
-		if (onSuccess) {
-			onSuccess();
-		}
-
-		this.currentRecNode = (document.querySelector(this.recSelector) ||
-			this.currentRecNode) as HTMLElement;
 	}
 
-	private startFirstRotation(): void {
-		this.runNowOrOnScroll(
-			() => this.isInViewport() && this.isStartPositionReached(),
-			this.pushNextSlot.bind(this),
+	private hideRecNode(): void {
+		if (this.currentRecNode) {
+			this.currentRecNode.style.setProperty('display', 'none');
+		}
+
+		this.swapRecirculation(true);
+		// ToDo: fix rotation when node is not in viewport
+		this.scheduleNextSlotPush();
+	}
+
+	private slotStatusChanged(slotStatus): void {
+		this.currentAdSlot = slotService.get(this.nextSlotName);
+		this.nextSlotName = this.fmrPrefix + (this.currentAdSlot.getConfigProperty('repeat.index') + 1);
+
+		if (slotStatus === AdSlot.STATUS_SUCCESS) {
+			this.swapRecirculation(false);
+		}
+	}
+
+	private swapRecirculation(visible): void {
+		this.recirculationElement.style.display = visible ? 'block' : 'none';
+	}
+
+	private scheduleNextSlotPush(): void {
+		if (this.isRefreshLimitAvailable()) {
+			setTimeout(() => {
+				this.tryPushNextSlot();
+			}, this.refreshInfo.refreshDelay);
+		}
+	}
+
+	private isRefreshLimitAvailable(): boolean {
+		return (
+			this.btRec?.isEnabled() ||
+			(this.currentAdSlot &&
+				this.currentAdSlot.getConfigProperty('repeat.index') <
+					this.currentAdSlot.getConfigProperty('repeat.limit'))
 		);
 	}
 
-	private isStartPositionReached(): boolean {
-		return this.refreshInfo.startPosition <= window.scrollY;
+	private tryPushNextSlot(): void {
+		this.runNowOrOnScroll(this.isInViewport.bind(this), this.pushNextSlot.bind(this));
 	}
 }

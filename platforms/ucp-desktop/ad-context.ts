@@ -154,33 +154,18 @@ export const basicContext = {
 				enabled: false,
 				placementsMap: {
 					top_leaderboard: {
-						uid: '5b33d3584c-188',
-						style: {
-							'z-index': '100',
-						},
 						size: {
 							width: 728,
 							height: 90,
 						},
-						lazy: false,
 					},
 					top_boxad: {
-						uid: '5b2d1649b2-188',
-						style: {
-							margin: '24px 0 14px 0',
-							'z-index': '100',
-						},
 						size: {
 							width: 300,
 							height: 250,
 						},
-						lazy: false,
 					},
 					incontent_boxad_1: {
-						uid: '5bbe13967e-188',
-						style: {
-							'z-index': '100',
-						},
 						size: {
 							width: 300,
 							height: 250,
@@ -188,11 +173,6 @@ export const basicContext = {
 						lazy: true,
 					},
 					bottom_leaderboard: {
-						uid: '5b8f13805d-188',
-						style: {
-							margin: '20px 0',
-							'z-index': '100',
-						},
 						size: {
 							width: 728,
 							height: 90,
