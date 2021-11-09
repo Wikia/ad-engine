@@ -38,27 +38,38 @@ export class Nativo {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
-	requestAd(): void {
+	requestAd(placeholder: HTMLElement | null): void {
+		if (!nativo.isEnabled()) {
+			utils.logger(logGroup, 'Nativo is disabled');
+			return;
+		}
+
 		if (utils.queryString.get(Nativo.TEST_QUERY_STRING) === '1') {
 			utils.logger(logGroup, 'Displaying dummy test ads');
 			this.displayTestAd();
-		} else {
-			utils.logger(logGroup, 'Sending an ad request to Nativo');
-			window.ntv.cmd.push(() => {
-				window.PostRelease.Start();
-			});
+			return;
 		}
+
+		if (!placeholder) {
+			utils.logger(logGroup, 'Placeholder does not exist');
+			return;
+		}
+
+		utils.logger(logGroup, 'Sending an ad request to Nativo');
+		window.ntv.cmd.push(() => {
+			window.PostRelease.Start();
+		});
 	}
 
 	replaceSponsoredFanFeedAd(): void {
-		const nativoFeedAdSlotElement = document.querySelector(`#${Nativo.FEED_AD_SLOT_NAME}`);
+		const nativoFeedAdSlotElement = document.getElementById(Nativo.FEED_AD_SLOT_NAME);
 		const recirculationSponsoredElement = document.querySelector(
 			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored',
 		);
 
 		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
 			recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
-			this.requestAd();
+			this.requestAd(nativoFeedAdSlotElement);
 		} else {
 			utils.logger(logGroup, 'Could not replace sponsored element with Nativo feed ad');
 		}

@@ -96,7 +96,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 			anchor.before(container);
 
-			nativo.requestAd();
+			nativo.requestAd(container);
 		});
 	}
 
@@ -251,7 +251,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private injectNativeFanFeed(): void {
 		communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-			nativo.requestAd();
+			nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME));
 		});
 	}
 }
