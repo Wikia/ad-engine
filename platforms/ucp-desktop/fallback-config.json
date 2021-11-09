@@ -1982,6 +1982,7 @@
                 "5814531567",
                 "5812565410",
                 "5816316907",
+                "5829417731",
                 "5816316910",
                 "5816316913",
                 "5816392205",
@@ -2157,30 +2158,14 @@
         {
             "apps": [
                 "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "AU",
-                "BR",
-                "CA",
-                "CN",
-                "DE",
-                "GB",
-                "IN",
-                "PL",
-                "RU",
-                "UK"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
-        },
-        {
-            "apps": [
-                "fandomdesktop"
+                "fandommobile",
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.43.4/20210916.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
         }
     ],
     "icA9Bidder": [
@@ -2506,7 +2491,6 @@
                 "IN",
                 "IT",
                 "JP",
-                "KR",
                 "KZ",
                 "MX",
                 "MY",
