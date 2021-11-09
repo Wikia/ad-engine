@@ -47,8 +47,8 @@ export function getElementOffset(element: HTMLElement): ElementOffset {
  */
 function calculateOffset(element: HTMLElement): ElementOffset {
 	const rect = element.getBoundingClientRect();
-	const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-	const scrollTop = window.scrollY || document.documentElement.scrollTop;
+	const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+	const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
 	return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
 }
