@@ -1,5 +1,4 @@
 import {
-	context,
 	TEMPLATE,
 	TemplateDependency,
 	TemplateStateHandler,
@@ -32,8 +31,5 @@ export class RoadblockHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		this.params.adProduct = 'ruap';
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
-		if (context.get('targeting.skin') === 'ucp_desktop') {
-			context.push('state.adStack', { id: 'invisible_skin' });
-		}
 	}
 }
