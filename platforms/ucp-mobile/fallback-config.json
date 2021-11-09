@@ -2298,30 +2298,14 @@
         {
             "apps": [
                 "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "AU",
-                "BR",
-                "CA",
-                "CN",
-                "DE",
-                "GB",
-                "IN",
-                "PL",
-                "RU",
-                "UK"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
-        },
-        {
-            "apps": [
-                "fandommobile"
+                "fandommobile",
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210610.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
         }
     ],
     "icA9Bidder": [
