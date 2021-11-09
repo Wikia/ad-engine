@@ -61,14 +61,15 @@ export class Nativo {
 		});
 	}
 
-	replaceSponsoredFanFeedAd(): void {
+	replaceAndShowSponsoredFanAd(): void {
 		const nativoFeedAdSlotElement = document.getElementById(Nativo.FEED_AD_SLOT_NAME);
 		const recirculationSponsoredElement = document.querySelector(
-			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored',
+			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored.can-nativo-replace',
 		);
 
 		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
 			recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
+			nativoFeedAdSlotElement.classList.remove('hide');
 			this.requestAd(nativoFeedAdSlotElement);
 		} else {
 			utils.logger(logGroup, 'Could not replace sponsored element with Nativo feed ad');

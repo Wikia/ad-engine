@@ -134,11 +134,11 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName: Nativo.FEED_AD_SLOT_NAME,
 				anchorSelector: '.recirculation-prefooter',
 				insertMethod: 'before',
-				classList: Nativo.SLOT_CLASS_LIST,
+				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-					nativo.replaceSponsoredFanFeedAd();
+					nativo.replaceAndShowSponsoredFanAd();
 				});
 			},
 		};
