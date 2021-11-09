@@ -152,34 +152,6 @@ export const basicContext = {
 			blocking: false,
 			btRec: {
 				enabled: false,
-				placementsMap: {
-					top_leaderboard: {
-						size: {
-							width: 728,
-							height: 90,
-						},
-					},
-					top_boxad: {
-						size: {
-							width: 300,
-							height: 250,
-						},
-					},
-					incontent_boxad_1: {
-						size: {
-							width: 300,
-							height: 250,
-						},
-						lazy: true,
-					},
-					bottom_leaderboard: {
-						size: {
-							width: 728,
-							height: 90,
-						},
-						lazy: true,
-					},
-				},
 			},
 		},
 	},

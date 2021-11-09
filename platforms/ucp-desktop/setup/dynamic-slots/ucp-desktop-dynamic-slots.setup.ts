@@ -233,12 +233,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		context.push('events.pushOnScroll.ids', slotName);
 
-		eventService.once(events.AD_STACK_START, () => {
-			if (btRec.isEnabled()) {
-				btRec.duplicateSlot(slotName);
-			}
-		});
-
 		slotService.on('bottom_leaderboard', AdSlot.STATUS_SUCCESS, () => {
 			stopLoading('.bottom-leaderboard');
 		});

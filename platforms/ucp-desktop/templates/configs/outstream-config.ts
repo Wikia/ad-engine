@@ -1,11 +1,9 @@
 import { slotsContext } from '@platforms/shared';
-import { NavbarManager, PorvataTemplateConfig } from '@wikia/ad-engine';
+import { PorvataTemplateConfig } from '@wikia/ad-engine';
 
 export const getOutstreamConfig = (): PorvataTemplateConfig => {
-	const navbarManager = new NavbarManager(document.getElementById('globalNavigation'));
-
 	return {
-		inViewportOffsetTop: navbarManager.getHeight(),
+		inViewportOffsetTop: document.querySelector('.fandom-sticky-header')?.clientHeight || 0,
 		isFloatingEnabled: true,
 		onInit: (adSlot, params) => {
 			slotsContext.setupSlotVideoAdUnit(adSlot, params);

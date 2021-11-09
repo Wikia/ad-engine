@@ -8,42 +8,31 @@ import {
 	utils,
 } from '@ad-engine/core';
 import { universalAdPackage } from '../templates/uap';
-import { NavbarManager } from './navbar-manager';
 
 export class FmrRotator {
 	private nextSlotName: string;
 	private currentAdSlot: AdSlot;
 	private recirculationElement: HTMLElement;
-	private recirculationElementSelector: string;
 	private refreshInfo = {
 		recSlotViewed: 2000,
 		refreshDelay: utils.queryString.isUrlParamSet('fmr-debug') ? 2000 : 10000,
 		startPosition: 0,
 	};
-	private navbarManager = new NavbarManager(document.getElementById('globalNavigation'));
 	private rotatorListener: string;
-	private currentRecNode: HTMLElement;
 
 	constructor(private slotName: string, private fmrPrefix: string, private btRec) {}
 
 	rotateSlot(): void {
 		this.nextSlotName = this.slotName;
-		this.recirculationElementSelector = context.get(
-			`slots.${this.slotName}.recirculationElementSelector`,
+		this.recirculationElement = document.querySelector(
+			context.get(`slots.${this.slotName}.recirculationElementSelector`),
 		);
-		this.recirculationElement = document.querySelector(this.recirculationElementSelector);
-		this.refreshInfo.startPosition =
-			utils.getTopOffset(this.recirculationElement) - this.navbarManager.getHeight();
 
 		if (this.btRec?.isEnabled()) {
 			this.initializeBTRotation();
 		} else {
 			this.initializeStandardRotation();
 		}
-
-		setTimeout(() => {
-			this.startFirstRotation();
-		}, this.refreshInfo.refreshDelay);
 	}
 
 	private initializeStandardRotation(): void {
@@ -72,11 +61,18 @@ export class FmrRotator {
 				}
 			}
 		});
+
+		setTimeout(() => {
+			this.refreshInfo.startPosition =
+				utils.getTopOffset(this.recirculationElement) -
+				(document.querySelector('.fandom-sticky-header')?.clientHeight || 0);
+			this.startFirstRotation();
+		}, this.refreshInfo.refreshDelay);
 	}
 
 	private initializeBTRotation(): void {
-		this.currentRecNode = this.btRec.duplicateSlot(this.nextSlotName) as HTMLElement;
-		this.hideRecNode();
+		this.pushNextSlot();
+		this.swapRecirculation(false);
 	}
 
 	private startFirstRotation(): void {
@@ -106,13 +102,12 @@ export class FmrRotator {
 
 	private isInViewport(): boolean {
 		const recirculationElementInViewport = utils.isInViewport(this.recirculationElement);
-		const btRecNodeInViewport = this.currentRecNode && utils.isInViewport(this.currentRecNode);
 		const adSlotInViewport =
 			this.currentAdSlot &&
 			this.currentAdSlot.getElement() &&
 			utils.isInViewport(this.currentAdSlot.getElement());
 
-		return recirculationElementInViewport || btRecNodeInViewport || adSlotInViewport;
+		return recirculationElementInViewport || adSlotInViewport;
 	}
 
 	private isStartPositionReached(): boolean {
@@ -120,16 +115,7 @@ export class FmrRotator {
 	}
 
 	private pushNextSlot(): void {
-		if (this.btRec?.isEnabled()) {
-			this.showRecNode();
-			this.swapRecirculation(false);
-
-			setTimeout(() => {
-				this.hideRecNode();
-			}, this.refreshInfo.recSlotViewed + this.refreshInfo.refreshDelay);
-		} else {
-			context.push('state.adStack', { id: this.nextSlotName });
-		}
+		context.push('state.adStack', { id: this.nextSlotName });
 	}
 
 	private hideSlot(): void {
@@ -140,22 +126,6 @@ export class FmrRotator {
 		}
 
 		this.swapRecirculation(true);
-		this.scheduleNextSlotPush();
-	}
-
-	private showRecNode(): void {
-		if (this.currentRecNode) {
-			this.currentRecNode.style.setProperty('display', 'block');
-		}
-	}
-
-	private hideRecNode(): void {
-		if (this.currentRecNode) {
-			this.currentRecNode.style.setProperty('display', 'none');
-		}
-
-		this.swapRecirculation(true);
-		// ToDo: fix rotation when node is not in viewport
 		this.scheduleNextSlotPush();
 	}
 
@@ -182,10 +152,9 @@ export class FmrRotator {
 
 	private isRefreshLimitAvailable(): boolean {
 		return (
-			this.btRec?.isEnabled() ||
-			(this.currentAdSlot &&
-				this.currentAdSlot.getConfigProperty('repeat.index') <
-					this.currentAdSlot.getConfigProperty('repeat.limit'))
+			this.currentAdSlot &&
+			this.currentAdSlot.getConfigProperty('repeat.index') <
+				this.currentAdSlot.getConfigProperty('repeat.limit')
 		);
 	}
 
