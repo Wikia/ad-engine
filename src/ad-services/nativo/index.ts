@@ -23,9 +23,6 @@ export class Nativo {
 			return Promise.resolve();
 		}
 
-		window.ntv = window.ntv || {};
-		window.ntv.cmd = window.ntv.cmd || [];
-
 		return utils.scriptLoader
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
@@ -127,5 +124,8 @@ export class Nativo {
 			</div>`;
 	}
 }
+
+window.ntv = window.ntv || {};
+window.ntv.cmd = window.ntv.cmd || [];
 
 export const nativo = new Nativo();
