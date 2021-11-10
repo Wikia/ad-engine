@@ -132,7 +132,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		container.id = slotName;
 		parentContainer.appendChild(container);
 
-		eventService.once(events.AD_STACK_START, () => {
+		utils.listener(events.AD_STACK_START, () => {
 			rotator.rotateSlot();
 		});
 	}

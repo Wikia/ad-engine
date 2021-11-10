@@ -65,7 +65,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			eventService.once(events.AD_STACK_START, () => {
+			utils.listener(events.AD_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.dispatch(
 					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
