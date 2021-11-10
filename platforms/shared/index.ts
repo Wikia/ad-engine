@@ -84,7 +84,6 @@ export * from './templates/handlers/video/video-learn-more-handler';
 export * from './templates/handlers/bfaa/bfaa-bootstrap-handler';
 export * from './templates/handlers/bfaa/bfaa-bootstrap-light-handler';
 export * from './templates/handlers/bfaa-new/bfaa-new-bootstrap-handler';
-export * from './templates/handlers/bfaa/bfaa-new-big-advertisement-label-handler';
 export * from './templates/handlers/bfab/bfab-bootstrap-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-blocking-handler';
 export * from './templates/handlers/sticky-tlb/sticky-tlb-bootstrap-handler';
