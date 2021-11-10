@@ -2011,21 +2011,6 @@
             ]
         }
     ],
-    "icUAPNewBFAATemplate": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "DE",
-                "GB",
-                "PL",
-                "UK"
-            ],
-            "sampling": 50.0,
-            "value": true
-        }
-    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
