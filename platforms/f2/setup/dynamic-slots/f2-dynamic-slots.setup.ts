@@ -5,10 +5,10 @@ import {
 	context,
 	DiProcess,
 	events,
-	eventService,
 	SlotCreator,
 	uapLoadStatus,
 	universalAdPackage,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { F2SlotsDefinitionRepository, SlotSetupDefinition } from './f2-slots-definition-repository';
@@ -36,7 +36,7 @@ export class F2DynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			eventService.once(events.AD_STACK_START, () => {
+			utils.listener(events.AD_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.dispatch(
 					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),

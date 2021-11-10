@@ -1,4 +1,5 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
+import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 import { debug } from '../services/debug';
 
@@ -44,4 +45,21 @@ export function communicator(
 	);
 
 	communicationService.dispatch(aeCommunicatorEvent(communicatorValues));
+}
+
+export function listener(
+	communicatorEvent: string,
+	callback: (action: CommunicatorPayload | {} | undefined) => void,
+	once: boolean = true,
+): void {
+	const aeCommunicatorEvent = globalAction(
+		`[AdEngine] ${communicatorEvent}`,
+		props<CommunicatorPayload | {}>(),
+	);
+
+	if (once) {
+		communicationService.action$.pipe(ofType(aeCommunicatorEvent), take(1)).subscribe(callback);
+	} else {
+		communicationService.action$.pipe(ofType(aeCommunicatorEvent)).subscribe(callback);
+	}
 }
