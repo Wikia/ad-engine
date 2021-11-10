@@ -3,7 +3,7 @@ import { PorvataTemplateConfig } from '@wikia/ad-engine';
 
 export const getOutstreamConfig = (): PorvataTemplateConfig => {
 	return {
-		inViewportOffsetTop: document.querySelector('.fandom-sticky-header')?.clientHeight || 0,
+		inViewportOffsetTop: document.querySelector('.fandom-sticky-header')?.clientHeight ?? 0,
 		isFloatingEnabled: true,
 		onInit: (adSlot, params) => {
 			slotsContext.setupSlotVideoAdUnit(adSlot, params);
