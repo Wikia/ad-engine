@@ -1,6 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
-
+import { AD_LABEL_CLASS, getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils';
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
@@ -14,11 +13,17 @@ export interface SlotCreatorConfig {
 	avoidConflictWith?: string[];
 	classList?: string[];
 	repeat?: object;
+	placeholderConfig?: SlotPlaceholderContextConfig;
 }
 
 export interface SlotCreatorWrapperConfig {
 	id?: string;
 	classList?: string[];
+}
+
+export interface SlotPlaceholderContextConfig {
+	createLabel?: boolean;
+	adLabelParent?: string;
 }
 
 @Injectable()
@@ -34,6 +39,10 @@ export class SlotCreator {
 
 		anchorElement[slotConfig.insertMethod](wrapper);
 
+		if (slotConfig.placeholderConfig?.createLabel) {
+			this.addAdLabel(slot.parentElement, slotConfig.slotName);
+		}
+
 		return slot;
 	}
 
@@ -44,6 +53,7 @@ export class SlotCreator {
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
 			repeat: slotLooseConfig.repeat || {},
+			placeholderConfig: slotLooseConfig.placeholderConfig,
 		};
 	}
 
@@ -121,6 +131,14 @@ export class SlotCreator {
 		wrapper.append(slot);
 
 		return wrapper;
+	}
+
+	private addAdLabel(placeholder: HTMLElement, slotName: string): void {
+		const div = document.createElement('div');
+		div.className = AD_LABEL_CLASS;
+		div.innerText = 'Advertisement';
+		div.dataset.slotName = slotName;
+		placeholder.appendChild(div);
 	}
 
 	private throwNoPlaceToInsertError(slotName: string): void {

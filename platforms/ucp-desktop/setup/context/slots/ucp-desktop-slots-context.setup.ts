@@ -65,6 +65,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
@@ -162,6 +166,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					rv: 1,
+				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.bottom-ads-container',
 				},
 			},
 			incontent_player: {

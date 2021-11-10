@@ -1,3 +1,5 @@
+import { communicationService } from '@ad-engine/communication';
+import { videoLearnMoreDisplayedEvent } from '@ad-engine/tracking';
 import { getTranslation } from '../../../common/i18n';
 import { createIcon, icons } from '../icons';
 
@@ -14,6 +16,13 @@ function add(video, container, params): void {
 	learnMore.addEventListener('click', () => {
 		top.open(params.clickThroughURL, '_blank');
 	});
+
+	communicationService.dispatch(
+		videoLearnMoreDisplayedEvent({
+			adSlotName: video.settings.getSlotName(),
+			learnMoreLink: learnMore,
+		}),
+	);
 
 	container.appendChild(learnMore);
 }

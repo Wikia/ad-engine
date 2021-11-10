@@ -2153,19 +2153,6 @@
             ]
         }
     ],
-    "icUAPNewBFAATemplate": [
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "DE",
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": true
-        }
-    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
