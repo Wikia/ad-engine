@@ -20,7 +20,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 		slotsContext.setState('top_boxad', this.isRightRailApplicable());
 		slotsContext.setState('affiliate_slot', this.isAffiliateSlotEnabled());
 		slotsContext.setState('bottom_leaderboard', true);
-		slotsContext.setState('invisible_skin', false);
 		slotsContext.setState(
 			'floor_adhesion',
 			this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo'),
