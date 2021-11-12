@@ -233,23 +233,31 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const placeholder = adSlot.getPlaceholder();
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
-				if (
-					action['event'] === AdSlot.SLOT_RENDERED_EVENT &&
-					action['payload'][1] === statusToUndoCollapse
-				) {
-					placeholder?.classList.remove('hide');
-					return;
-				}
+				if (placeholder) {
+					if (
+						action['event'] === AdSlot.SLOT_RENDERED_EVENT &&
+						action['payload'][1] === statusToUndoCollapse
+					) {
+						placeholder?.classList.remove('hide');
+						return;
+					}
 
-				if (statusesToStopLoadingSlot.includes(action['event'])) {
-					placeholder?.classList.remove('is-loading');
-				}
+					if (
+						statusesToStopLoadingSlot.includes(action['event']) &&
+						placeholder.classList.contains('is-loading')
+					) {
+						placeholder.classList.remove('is-loading');
+					}
 
-				if (statusesToCollapse.includes(action['event'])) {
-					if (this.isUapLoaded) {
-						placeholder?.classList.add('hide');
-					} else {
-						adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
+					if (statusesToCollapse.includes(action['event'])) {
+						if (this.isUapLoaded && !placeholder.classList.contains('hide')) {
+							placeholder.classList.add('hide');
+						} else {
+							const adLabel = adSlot.getAdLabel(adLabelParent);
+							if (adLabel && !adLabel.classList.contains('hide')) {
+								adLabel.classList.add('hide');
+							}
+						}
 					}
 				}
 			});
