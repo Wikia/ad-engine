@@ -1,6 +1,5 @@
 import {
 	AdvertisementLabelHandler,
-	BfaaBigAdvertisementLabelHandler,
 	BfaaBootstrapLightHandler,
 	CloseButtonHelper,
 	CloseToTransitionButtonHandler,
@@ -57,7 +56,6 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 				DomCleanupHandler,
 			],
 			sticky: [
-				BfaaBigAdvertisementLabelHandler,
 				SlotSizeResolvedWithPlaceholderHandler,
 				SlotDecisionTimeoutHandler,
 				SlotStateStickedHandler,

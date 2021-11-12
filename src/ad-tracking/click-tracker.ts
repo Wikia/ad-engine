@@ -7,6 +7,10 @@ const adSlotLoadedEvent = globalAction(
 	'[AdEngine] Ad Slot event',
 	props<{ adSlotName: string; event: string }>(),
 );
+export const videoLearnMoreDisplayedEvent = globalAction(
+	'[AdEngine] Video learn more displayed',
+	props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
+);
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -32,6 +36,12 @@ class AdClickTracker {
 				if (event === AdSlot.SLOT_RENDERED_EVENT) {
 					this.addClickTrackingListeners(callback, adSlotName);
 				}
+			});
+
+		communicationService.action$
+			.pipe(ofType(videoLearnMoreDisplayedEvent))
+			.subscribe(async ({ adSlotName, learnMoreLink }) => {
+				this.addClickVideoLearnMoreTrackingListeners(callback, adSlotName, learnMoreLink);
 			});
 	}
 
@@ -60,6 +70,16 @@ class AdClickTracker {
 				this.handleClickEvent(callback, adSlot, e);
 			});
 		}
+	}
+
+	private addClickVideoLearnMoreTrackingListeners(
+		callback: FuncPipelineStep<AdClickContext>,
+		adSlotName: string,
+		learnMoreLink: HTMLElement,
+	): void {
+		learnMoreLink.addEventListener('click', () => {
+			this.handleClickEvent(callback, slotService.get(adSlotName));
+		});
 	}
 
 	private handleClickEvent(

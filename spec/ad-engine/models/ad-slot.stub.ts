@@ -31,6 +31,8 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		getAdUnit: sandbox.stub(),
 		getVideoAdUnit: sandbox.stub(),
 		getElement: sandbox.stub(),
+		getPlaceholder: sandbox.stub(),
+		getAdLabel: sandbox.stub(),
 		getAdContainer: sandbox.stub(),
 		getIframe: sandbox.stub(),
 		overrideIframe: sandbox.stub(),
