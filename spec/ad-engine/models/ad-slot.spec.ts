@@ -59,9 +59,9 @@ describe('ad-slot', () => {
 
 	it('with other ad unit', () => {
 		context.set('custom.pageType', 'other');
-		const adSlot = createAdSlot('INVISIBLE_SKIN');
+		const adSlot = createAdSlot('invisible_high_impact_2');
 
-		expect(adSlot.getAdUnit()).to.equal('/5441/something/_other/INVISIBLE_SKIN');
+		expect(adSlot.getAdUnit()).to.equal('/5441/something/_other/invisible_high_impact_2');
 	});
 
 	it('config property getter and setter', () => {

@@ -103,29 +103,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
-			invisible_skin: {
-				adProduct: 'invisible_skin',
-				aboveTheFold: true,
-				group: 'PX',
-				insertBeforeSelector: '.page',
-				options: {},
-				slotNameSuffix: '',
-				slotShortcut: 'x',
-				sizes: [
-					{
-						viewportSize: [1240, 0],
-						sizes: [
-							[1, 1],
-							[1000, 1000],
-						],
-					},
-				],
-				defaultSizes: [[1, 1]],
-				targeting: {
-					loc: 'top',
-					rv: 1,
-				},
-			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
