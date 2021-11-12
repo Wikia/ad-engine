@@ -256,11 +256,29 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 							const adLabel = adSlot.getAdLabel(adLabelParent);
 							if (adLabel && !adLabel.classList.contains('hide')) {
 								adLabel.classList.add('hide');
+								this.addTextAndBtnToElement(placeholder);
 							}
 						}
 					}
 				}
 			});
+	}
+
+	private addTextAndBtnToElement(placeholder: HTMLElement): void {
+		const messageBox = document.createElement('div');
+		messageBox.className = 'message-box';
+
+		const button = document.createElement('button');
+		button.className = 'collapse-btn';
+		button.innerHTML = 'hide';
+		button.onclick = () => placeholder.classList.add('hide');
+
+		const message = document.createElement('p');
+		message.innerHTML =
+			'It looks like your ad has not been loaded... You can remove the gap by clicking the button below. Enjoy your fandom! :)';
+
+		messageBox.append(message, button);
+		placeholder.appendChild(messageBox);
 	}
 
 	private registerUapChecker(): void {

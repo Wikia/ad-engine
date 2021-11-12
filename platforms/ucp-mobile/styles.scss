@@ -272,6 +272,21 @@ body.bab-detected {
 	}
 }
 
+.message-box {
+	p,
+	.collapse-btn {
+		font-style: italic;
+	}
+
+	.collapse-btn {
+		display: block;
+		margin: 0 auto;
+		height: 35px;
+		width: 70px;
+		border-radius: 5px;
+	}
+}
+
 @keyframes fade-in {
 	to {
 		opacity: 1;
