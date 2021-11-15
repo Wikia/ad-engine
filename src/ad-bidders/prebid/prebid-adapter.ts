@@ -1,6 +1,5 @@
-import { Aliases, context, Dictionary, realVu } from '@ad-engine/core';
+import { Aliases, context, Dictionary } from '@ad-engine/core';
 import { isArray } from 'util';
-import { getSlotNameByBidderAlias } from '../alias-helper';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 export const DEFAULT_MAX_CPM = 20;
@@ -41,20 +40,11 @@ export abstract class PrebidAdapter {
 	}
 
 	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
-		const targeting: Dictionary = {
+		return {
 			...this.pageTargeting,
 			src: [context.get('src') || ''],
 			pos: [placementName],
 			...customTargeting,
 		};
-
-		const slotName = getSlotNameByBidderAlias(placementName);
-		const realvu = realVu.getSlotTargeting(slotName);
-
-		if (realvu) {
-			targeting.realvu = realvu;
-		}
-
-		return targeting;
 	}
 }

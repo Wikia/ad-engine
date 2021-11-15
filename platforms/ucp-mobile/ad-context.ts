@@ -107,10 +107,6 @@ export const basicContext = {
 			enabled: false,
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
 		},
-		realVu: {
-			enabled: false,
-			partnerId: 'E6H4',
-		},
 	},
 	slotGroups: {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
