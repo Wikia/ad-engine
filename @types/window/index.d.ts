@@ -29,8 +29,9 @@ interface Window {
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
+	ntv?: NativoQueue;
 	permutive?: Permutive;
-	PostRelease?: any;
+	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
