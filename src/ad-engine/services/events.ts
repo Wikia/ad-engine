@@ -5,7 +5,6 @@ const groupName = 'eventService';
 
 export const events = {
 	AD_SLOT_CREATED: Symbol('AD_SLOT_CREATED'),
-	AD_STACK_START: Symbol('AD_STACK_START'),
 	FIRST_CALL_ENDED: Symbol('FIRST_CALL_ENDED'),
 	BEFORE_PAGE_CHANGE_EVENT: Symbol('BEFORE_PAGE_CHANGE_EVENT'),
 	PAGE_CHANGE_EVENT: Symbol('PAGE_CHANGE_EVENT'),
@@ -26,6 +25,8 @@ export const events = {
 	PREBID_LAZY_CALL: Symbol('PREBID_LAZY_CALL'),
 
 	SCROLL_TRACKING_TIME_CHANGED: Symbol('SCROLL_TRACKING_TIME_CHANGED'),
+
+	AD_STACK_START: 'Ad Stack started',
 
 	INTERSTITIAL_DISPLAYED: 'interstitial-displayed',
 	LOGO_REPLACED: 'logo-replaced',

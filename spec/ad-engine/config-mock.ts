@@ -13,15 +13,27 @@ export default {
 			sizes: [
 				{
 					viewportSize: [1440, 350],
-					sizes: [[728, 90], [970, 250], [1024, 416], [1440, 585]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+						[1024, 416],
+						[1440, 585],
+					],
 				},
 				{
 					viewportSize: [1024, 300],
-					sizes: [[728, 90], [970, 250], [1024, 416]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+						[1024, 416],
+					],
 				},
 				{
 					viewportSize: [970, 200],
-					sizes: [[728, 90], [970, 250]],
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 				},
 				{
 					viewportSize: [728, 200],
@@ -29,14 +41,22 @@ export default {
 				},
 				{
 					viewportSize: [320, 200],
-					sizes: [[300, 250], [320, 480]],
+					sizes: [
+						[300, 250],
+						[320, 480],
+					],
 				},
 				{
 					viewportSize: [0, 0],
 					sizes: [[300, 250]],
 				},
 			],
-			defaultSizes: [[728, 90], [970, 250], [1024, 416], [1440, 585]],
+			defaultSizes: [
+				[728, 90],
+				[970, 250],
+				[1024, 416],
+				[1440, 585],
+			],
 			targeting: {
 				loc: 'top',
 			},
@@ -46,7 +66,10 @@ export default {
 			sizes: [
 				{
 					viewportSize: [1024, 300],
-					sizes: [[728, 90], [1024, 416]],
+					sizes: [
+						[728, 90],
+						[1024, 416],
+					],
 				},
 				{
 					viewportSize: [728, 100],
@@ -72,10 +95,18 @@ export default {
 				},
 				{
 					viewportSize: [768, 200],
-					sizes: [[300, 250], [300, 600], [300, 1050]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+						[300, 1050],
+					],
 				},
 			],
-			defaultSizes: [[300, 250], [300, 600], [300, 1050]],
+			defaultSizes: [
+				[300, 250],
+				[300, 600],
+				[300, 1050],
+			],
 			targeting: {
 				loc: 'top',
 			},
@@ -89,10 +120,16 @@ export default {
 				},
 				{
 					viewportSize: [768, 200],
-					sizes: [[300, 250], [300, 600]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
 				},
 			],
-			defaultSizes: [[300, 250], [300, 600]],
+			defaultSizes: [
+				[300, 250],
+				[300, 600],
+			],
 			defaultTemplate: 'floating-ad',
 			targeting: {
 				loc: 'hivi',
@@ -106,29 +143,20 @@ export default {
 				},
 				{
 					viewportSize: [768, 200],
-					sizes: [[300, 250], [300, 600], [300, 1050]],
+					sizes: [
+						[300, 250],
+						[300, 600],
+						[300, 1050],
+					],
 				},
 			],
-			defaultSizes: [[300, 250], [300, 1050], [300, 600]],
+			defaultSizes: [
+				[300, 250],
+				[300, 1050],
+				[300, 600],
+			],
 			targeting: {
 				loc: 'bottom',
-			},
-		},
-		invisible_skin: {
-			aboveTheFold: true,
-			sizes: [
-				{
-					viewportSize: [1064, 600],
-					sizes: [[1000, 1000]],
-				},
-				{
-					viewportSize: [0, 0],
-					sizes: [],
-				},
-			],
-			defaultSizes: [[1000, 1000]],
-			targeting: {
-				loc: 'top',
 			},
 		},
 		incontent_player: {

@@ -120,8 +120,9 @@ export class UcpDesktopAdsMode implements DiProcess {
 		adMarketplace.initialize();
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(({ isLoaded }) => {
-			if (!isLoaded) {
-				slotDataParamsUpdater.updateOnCreate(slotService.get('incontent_player'));
+			const incontentPlayer = slotService.get('incontent_player');
+			if (!isLoaded && incontentPlayer) {
+				slotDataParamsUpdater.updateOnCreate(incontentPlayer);
 				distroScale.call();
 			}
 		});
