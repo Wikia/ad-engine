@@ -1,8 +1,10 @@
 import {
 	communicationService,
 	context,
+	globalAction,
 	insertMethodType,
 	InstantConfigService,
+	Nativo,
 	nativo,
 	ofType,
 	RepeatableSlotPlaceholderConfig,
@@ -15,12 +17,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import {
-	isNativeAdApplicable,
-	NATIVE_AD_SLOT_CLASS_LIST,
-	NATIVE_AD_SLOT_NAME,
-	NATIVE_AD_WRAPPER_CLASS_LIST,
-} from '../../../shared/utils/native-ads-helper';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -32,6 +28,8 @@ interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
 	insertMethod: insertMethodType;
 }
+
+const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
@@ -104,26 +102,43 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-	getNativeAdsConfig(): SlotSetupDefinition {
-		if (!isNativeAdApplicable()) {
+	getNativoIncontentAdConfig(): SlotSetupDefinition {
+		if (!nativo.isEnabled()) {
 			return;
 		}
 
 		return {
 			slotCreatorConfig: {
-				slotName: NATIVE_AD_SLOT_NAME,
+				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
 				anchorSelector: '.mw-parser-output > p:last-of-type',
 				insertMethod: 'before',
-				classList: NATIVE_AD_SLOT_CLASS_LIST,
-			},
-			slotCreatorWrapperConfig: {
-				classList: NATIVE_AD_WRAPPER_CLASS_LIST,
+				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 					if (!action.isLoaded) {
-						nativo.start();
+						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME));
 					}
+				});
+			},
+		};
+	}
+
+	getNativoFeedAdConfig(): SlotSetupDefinition {
+		if (!nativo.isEnabled()) {
+			return;
+		}
+
+		return {
+			slotCreatorConfig: {
+				slotName: Nativo.FEED_AD_SLOT_NAME,
+				anchorSelector: '.recirculation-prefooter',
+				insertMethod: 'before',
+				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
+			},
+			activator: () => {
+				communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
+					nativo.replaceAndShowSponsoredFanAd();
 				});
 			},
 		};

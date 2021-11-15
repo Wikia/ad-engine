@@ -1,5 +1,11 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { AD_LABEL_CLASS, getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils';
+import {
+	AD_LABEL_CLASS,
+	getTopOffset,
+	getViewportHeight,
+	isInTheSameViewport,
+	logger,
+} from '../utils';
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
@@ -26,12 +32,16 @@ export interface SlotPlaceholderContextConfig {
 	adLabelParent?: string;
 }
 
+const groupName = 'slot-creator';
+
 @Injectable()
 export class SlotCreator {
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
 	): HTMLElement {
+		logger(groupName, `Creating: ${slotLooseConfig.slotName}`, slotLooseConfig, wrapperLooseConfig);
+
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
 		const slot = this.makeSlot(slotConfig);
 		const wrapper = this.wrapSlot(slot, wrapperLooseConfig);
@@ -67,6 +77,8 @@ export class SlotCreator {
 		if (!result) {
 			this.throwNoPlaceToInsertError(slotConfig.slotName);
 		}
+
+		logger(groupName, 'getAnchorElement() called', slotConfig, result);
 
 		return result;
 	}

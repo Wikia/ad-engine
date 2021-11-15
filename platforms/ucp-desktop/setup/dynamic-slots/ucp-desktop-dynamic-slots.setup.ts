@@ -11,6 +11,7 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
+	Nativo,
 	nativo,
 	ofType,
 	PorvataFiller,
@@ -25,13 +26,9 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import {
-	isNativeAdApplicable,
-	NATIVE_AD_SLOT_CLASS_LIST,
-	NATIVE_AD_SLOT_NAME,
-} from '../../../shared/utils/native-ads-helper';
 
 const railReady = globalAction('[Rail] Ready');
+const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -44,6 +41,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.injectFloorAdhesion();
 		this.injectBottomLeaderboard();
 		this.injectNativeAdsPlaceholder();
+		this.injectNativeFanFeed();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -76,25 +74,29 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeAdsPlaceholder(): void {
-		if (!isNativeAdApplicable()) {
+		if (!nativo.isEnabled()) {
 			return;
 		}
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (!action.isLoaded) {
-				const pageHeaders = document.querySelectorAll('.mw-headline');
-				const anchor = pageHeaders[1];
-
-				if (!!anchor) {
-					const container = document.createElement('div');
-					container.setAttribute('id', NATIVE_AD_SLOT_NAME);
-					container.classList.add(...NATIVE_AD_SLOT_CLASS_LIST);
-
-					anchor.before(container);
-
-					nativo.start();
-				}
+			if (action.isLoaded) {
+				return;
 			}
+
+			const pageHeaders = document.querySelectorAll('.mw-headline');
+			const anchor = pageHeaders[1];
+
+			if (!anchor) {
+				return;
+			}
+
+			const container = document.createElement('div');
+			container.setAttribute('id', Nativo.INCONTENT_AD_SLOT_NAME);
+			container.classList.add(...Nativo.SLOT_CLASS_LIST);
+
+			anchor.before(container);
+
+			nativo.requestAd(container);
 		});
 	}
 
@@ -269,6 +271,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		slotService.on(slotName, AdSlot.STATUS_FORCED_COLLAPSE, () => {
 			this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
+		});
+	}
+
+	private injectNativeFanFeed(): void {
+		communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
+			nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME));
 		});
 	}
 }
