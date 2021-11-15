@@ -35,8 +35,6 @@ const setOptInInstances = globalAction(
 	props<OptInInstances>(),
 );
 
-const trackingOptInLibraryUrl =
-	'//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.0.1/tracking-opt-in.min.js';
 const logGroup = 'tracking-opt-in-wrapper';
 
 /**
@@ -47,7 +45,7 @@ class TrackingOptInWrapper {
 		window.ads = window.ads || ({} as MediaWikiAds);
 
 		// Install temporary stub until full CMP will be ready
-		if (window.__tcfapi === undefined) {
+		if (typeof window.__tcfapi === 'undefined') {
 			installCMPStub();
 		}
 
@@ -76,9 +74,7 @@ class TrackingOptInWrapper {
 	private async loadTrackingOptInLibrary(): Promise<void> {
 		const instantConfig = await InstantConfigService.init();
 
-		await utils.scriptLoader.loadScript(
-			instantConfig.get('icTrackingOptInLibraryUrl') || trackingOptInLibraryUrl,
-		);
+		await utils.scriptLoader.loadScript(instantConfig.get('icTrackingOptInLibraryUrl'));
 	}
 
 	private async handleLibraryLoaded(): Promise<void> {

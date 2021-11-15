@@ -1,10 +1,17 @@
 import { communicationService, globalAction } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
-import { AdStackPayload, eventService, insertMethodType, slotTweaker, utils } from '../';
+import {
+	AdStackPayload,
+	eventService,
+	insertMethodType,
+	SlotPlaceholderContextConfig,
+	slotTweaker,
+	utils,
+} from '../';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
-import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
+import { AD_LABEL_CLASS, getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
@@ -59,6 +66,7 @@ export interface SlotConfig {
 	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
+	placeholder?: SlotPlaceholderContextConfig;
 }
 
 export interface WinningBidderDetails {
@@ -106,6 +114,7 @@ export class AdSlot extends EventEmitter {
 	static STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention';
 
 	static AD_CLASS = 'gpt-ad';
+	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
 	static HIDDEN_CLASS = 'hide';
 
 	static TEMPLATES_LOADED = 'Templates Loaded';
@@ -215,6 +224,21 @@ export class AdSlot extends EventEmitter {
 		}
 
 		return this.element;
+	}
+
+	getPlaceholder(): HTMLElement | null {
+		const placeholder = this.getElement()?.parentElement;
+
+		return placeholder.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS) ? placeholder : null;
+	}
+
+	getAdLabel(adLabelParentSelector?: string): HTMLElement {
+		if (adLabelParentSelector) {
+			const adLabelParent: HTMLElement = document.querySelector(adLabelParentSelector);
+			return adLabelParent?.querySelector(`.${AD_LABEL_CLASS}`);
+		}
+
+		return this.getPlaceholder()?.querySelector(`.${AD_LABEL_CLASS}`);
 	}
 
 	getAdContainer(): HTMLDivElement | null {

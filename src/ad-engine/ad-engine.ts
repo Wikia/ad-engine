@@ -14,7 +14,7 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import { communicator, LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -108,7 +108,7 @@ export class AdEngine {
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
-				eventService.emit(events.AD_STACK_START);
+				communicator(events.AD_STACK_START);
 
 				this.started = true;
 				this.adStack.start();

@@ -1,3 +1,4 @@
+export * from './ad-label-helper';
 export * from './client';
 export * from './dimensions';
 export * from './document';

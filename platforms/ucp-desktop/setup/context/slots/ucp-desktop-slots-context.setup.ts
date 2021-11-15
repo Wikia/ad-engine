@@ -65,6 +65,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
@@ -94,29 +98,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				options: {},
 				slotShortcut: 'a',
 				defaultSizes: [[280, 120]],
-				targeting: {
-					loc: 'top',
-					rv: 1,
-				},
-			},
-			invisible_skin: {
-				adProduct: 'invisible_skin',
-				aboveTheFold: true,
-				group: 'PX',
-				insertBeforeSelector: '.page',
-				options: {},
-				slotNameSuffix: '',
-				slotShortcut: 'x',
-				sizes: [
-					{
-						viewportSize: [1240, 0],
-						sizes: [
-							[1, 1],
-							[1000, 1000],
-						],
-					},
-				],
-				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'top',
 					rv: 1,
@@ -185,6 +166,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					rv: 1,
+				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.bottom-ads-container',
 				},
 			},
 			incontent_player: {

@@ -33,6 +33,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_leaderboard', 'mobile_top_leaderboard'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
@@ -63,6 +67,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_boxad'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			affiliate_slot: {
 				adProduct: 'affiliate_slot',
@@ -70,7 +77,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'AU',
 				options: {},
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '.incontent-boxad',
 				slotShortcut: 'a',
 				defaultSizes: [[280, 120]],
 				targeting: {
@@ -88,7 +95,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '',
+				parentContainerSelector: '.incontent-boxad',
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -97,6 +105,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						'placeholder.createLabel': false,
 					},
 					insertBelowScrollPosition: true,
 				},
@@ -122,6 +131,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['incontent_boxad'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -129,6 +141,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				autoplay: true,
 				audio: false,
 				insertBeforeSelector: '.mw-parser-output > h2',
+				parentContainerSelector: '.incontent-boxad',
 				disabled: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
@@ -159,6 +172,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					rv: 1,
+				},
+				placeholder: {
+					createLabel: true,
 				},
 			},
 			interstitial: {
@@ -242,6 +258,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 					rv: 1,
+				},
+				placeholder: {
+					createLabel: true,
 				},
 			},
 			invisible_high_impact_2: {
