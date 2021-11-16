@@ -10,7 +10,6 @@ import {
 	slotService,
 	trackingOptIn,
 } from '../services';
-import { realVu } from '../tracking';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
@@ -156,7 +155,6 @@ export class GptProvider implements Provider {
 
 	private fillInCallback(adSlot: AdSlot): void {
 		const adSlotName = adSlot.getSlotName();
-		realVu.updateSlotTargeting(adSlotName);
 		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
