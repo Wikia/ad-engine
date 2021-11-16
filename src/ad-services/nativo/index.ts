@@ -32,7 +32,13 @@ export class Nativo {
 	}
 
 	isEnabled(): boolean {
-		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
+		return (
+			context.get('services.nativo.enabled') &&
+			context.get('wiki.opts.enableNativeAds') &&
+			!context.get('custom.hasFeaturedVideo') &&
+			!context.get('templates.stickyTlb.enabled') &&
+			!context.get('templates.stickyTlb.forced')
+		);
 	}
 
 	requestAd(placeholder: HTMLElement | null): void {
