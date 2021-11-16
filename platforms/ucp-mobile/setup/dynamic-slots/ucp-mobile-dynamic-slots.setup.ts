@@ -258,7 +258,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 							const adLabel = adSlot.getAdLabel(adLabelParent);
 							if (adLabel && !adLabel.classList.contains('hide')) {
 								adLabel.classList.add('hide');
-								this.addTextAndButtonToElement(placeholder, adSlot);
+								this.addMessageBoxToCollapsedElement(placeholder, adSlot);
 							}
 						}
 					}
@@ -266,7 +266,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 	}
 
-	private addTextAndButtonToElement(placeholder: HTMLElement, adslot: AdSlot): void {
+	private addMessageBoxToCollapsedElement(placeholder: HTMLElement, adslot: AdSlot): void {
 		const messageBox = document.createElement('div');
 		messageBox.className = 'message-box';
 
