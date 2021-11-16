@@ -54,9 +54,12 @@ export class PrebidProvider extends BidderProvider {
 		adaptersRegistry.configureAdapters();
 
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
+		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
+
 		this.prebidConfig = {
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: true,
+			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
@@ -102,6 +105,7 @@ export class PrebidProvider extends BidderProvider {
 					gdpr: {
 						cmpApi: 'iab',
 						timeout: this.timeout,
+						allowAuctionWithoutConsent: false,
 						defaultGdprScope: false,
 					},
 					usp: {
@@ -169,8 +173,10 @@ export class PrebidProvider extends BidderProvider {
 		pbjs.bidderSettings = getSettings();
 	}
 
-	protected async callBids(bidsBackHandler: (...args: any[]) => void): Promise<void> {
-		await this.configureAdUnits();
+	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
+		if (!this.adUnits) {
+			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		}
 
 		if (this.adUnits.length > 0) {
 			this.applySettings();
@@ -225,7 +231,9 @@ export class PrebidProvider extends BidderProvider {
 		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return {
-			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
+			...(context.get('bidders.prebid.sendAllBids')
+				? pbjs.getAdserverTargetingForAdUnitCode(slotAlias)
+				: null),
 			...(await getWinningBid(slotAlias)),
 		};
 	}
