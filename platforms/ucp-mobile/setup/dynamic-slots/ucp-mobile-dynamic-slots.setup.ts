@@ -9,6 +9,7 @@ import {
 	events,
 	eventService,
 	fillerService,
+	hideCollapsedAdEvent,
 	ofType,
 	PorvataFiller,
 	SlotCreator,
@@ -257,7 +258,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 							const adLabel = adSlot.getAdLabel(adLabelParent);
 							if (adLabel && !adLabel.classList.contains('hide')) {
 								adLabel.classList.add('hide');
-								this.addTextAndBtnToElement(placeholder);
+								this.addTextAndButtonToElement(placeholder, adSlot);
 							}
 						}
 					}
@@ -265,7 +266,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 	}
 
-	private addTextAndBtnToElement(placeholder: HTMLElement): void {
+	private addTextAndButtonToElement(placeholder: HTMLElement, adslot: AdSlot): void {
 		const messageBox = document.createElement('div');
 		messageBox.className = 'message-box';
 
@@ -273,6 +274,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		button.className = 'collapse-btn';
 		button.innerHTML = 'hide';
 		button.onclick = () => placeholder.classList.add('hide');
+		communicationService.dispatch(
+			hideCollapsedAdEvent({
+				adSlotName: adslot.getSlotName(),
+				collapseButton: button,
+				ad_status: 'clicked_collapse',
+			}),
+		);
 
 		const message = document.createElement('p');
 		message.innerHTML =

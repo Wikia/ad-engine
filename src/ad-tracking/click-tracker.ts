@@ -12,12 +12,24 @@ export const videoLearnMoreDisplayedEvent = globalAction(
 	props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
 );
 
+export const hideCollapsedAdEvent = globalAction(
+	'[AdEngine] Collapsed ad hidden',
+	props<{ adSlotName: string; collapseButton: HTMLElement; ad_status: string }>(),
+);
+
 interface AdClickContext {
 	slot: AdSlot;
 	data: {
 		ad_status: string;
 		click_position?: string;
 	};
+}
+
+interface HandleClickParams {
+	callback: FuncPipelineStep<AdClickContext>;
+	slot: AdSlot;
+	event?: MouseEvent;
+	ad_status?: string;
 }
 
 class AdClickTracker {
@@ -43,6 +55,14 @@ class AdClickTracker {
 			.subscribe(async ({ adSlotName, learnMoreLink }) => {
 				this.addClickVideoLearnMoreTrackingListeners(callback, adSlotName, learnMoreLink);
 			});
+
+		communicationService.action$
+			.pipe(ofType(hideCollapsedAdEvent))
+			.subscribe(async ({ adSlotName, collapseButton, ad_status }) => {
+				collapseButton.addEventListener('click', () => {
+					this.handleClickEvent({ ad_status, callback, slot: slotService.get(adSlotName) });
+				});
+			});
 	}
 
 	private addClickTrackingListeners(callback: FuncPipelineStep<AdClickContext>, slotName): void {
@@ -64,10 +84,10 @@ class AdClickTracker {
 
 		if (iframeBody && slotElement) {
 			slotElement.firstElementChild.addEventListener('click', () => {
-				this.handleClickEvent(callback, adSlot);
+				this.handleClickEvent({ callback, slot: adSlot });
 			});
-			iframeBody.addEventListener('click', (e) => {
-				this.handleClickEvent(callback, adSlot, e);
+			iframeBody.addEventListener('click', (event) => {
+				this.handleClickEvent({ event, callback, slot: adSlot });
 			});
 		}
 	}
@@ -78,18 +98,13 @@ class AdClickTracker {
 		learnMoreLink: HTMLElement,
 	): void {
 		learnMoreLink.addEventListener('click', () => {
-			this.handleClickEvent(callback, slotService.get(adSlotName));
+			this.handleClickEvent({ callback, slot: slotService.get(adSlotName) });
 		});
 	}
 
-	private handleClickEvent(
-		callback: FuncPipelineStep<AdClickContext>,
-		slot: AdSlot,
-		event?: MouseEvent,
-	): void {
-		const data = {
-			ad_status: AdSlot.STATUS_CLICKED,
-		};
+	private handleClickEvent(params: HandleClickParams): void {
+		const { callback, slot, event, ad_status = AdSlot.STATUS_CLICKED } = params;
+		const data = { ad_status };
 		if (event) {
 			const target = event.target as HTMLElement;
 			const clickData = {
