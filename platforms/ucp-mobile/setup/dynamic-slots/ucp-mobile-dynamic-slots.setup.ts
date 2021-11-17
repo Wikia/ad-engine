@@ -213,13 +213,37 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			AdSlot.HIDDEN_EVENT,
 			AdSlot.SLOT_RENDERED_EVENT,
 		];
-		const statusToUndoCollapse = 'forced_success';
 
 		const shouldRemoveOrCollapse = (action: object): boolean => {
 			return (
 				statusesToStopLoadingSlot.includes(action['event']) ||
 				statusesToCollapse.includes(action['event'])
 			);
+		};
+
+		const shouldStopLoading = (actionEvent: string, placeholder: HTMLElement): boolean => {
+			return (
+				statusesToStopLoadingSlot.includes(actionEvent) &&
+				placeholder.classList.contains('is-loading')
+			);
+		};
+
+		const shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
+			return !placeholder.classList.contains('hide');
+		};
+
+		const shouldUndoHidingPlaceholder = (
+			actionEvent: string,
+			actionPayload: string,
+			placeholder: HTMLElement,
+		): boolean => {
+			const statusToUndoCollapse = 'forced_success';
+
+			return actionEvent === AdSlot.SLOT_RENDERED_EVENT && actionPayload === statusToUndoCollapse;
+		};
+
+		const shouldHideAdLabel = (adLabel: HTMLElement) => {
+			return !adLabel.classList.contains('hide');
 		};
 
 		communicationService.action$
@@ -236,27 +260,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
 				if (placeholder) {
-					if (
-						action['event'] === AdSlot.SLOT_RENDERED_EVENT &&
-						action['payload'][1] === statusToUndoCollapse
-					) {
-						placeholder?.classList.remove('hide');
+					if (shouldUndoHidingPlaceholder(action['event'], action['payload'][1], placeholder)) {
+						placeholder.classList.remove('hide');
 						return;
 					}
 
-					if (
-						statusesToStopLoadingSlot.includes(action['event']) &&
-						placeholder.classList.contains('is-loading')
-					) {
+					if (shouldStopLoading(action['event'], placeholder)) {
 						placeholder.classList.remove('is-loading');
 					}
 
 					if (statusesToCollapse.includes(action['event'])) {
-						if (this.isUapLoaded && !placeholder.classList.contains('hide')) {
+						if (this.isUapLoaded && shouldHidePlaceholder(placeholder)) {
 							placeholder.classList.add('hide');
 						} else {
 							const adLabel = adSlot.getAdLabel(adLabelParent);
-							if (adLabel && !adLabel.classList.contains('hide')) {
+							if (shouldHideAdLabel(adLabel)) {
 								adLabel.classList.add('hide');
 								this.addMessageBoxToCollapsedElement(placeholder, adSlot);
 							}
