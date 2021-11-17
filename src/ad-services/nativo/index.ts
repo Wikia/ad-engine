@@ -45,7 +45,7 @@ export class Nativo {
 			this.isDisabled = true;
 		}
 
-		communicationService.action$.pipe(ofType(adSlotEvent), take(1)).subscribe(({ event }) => {
+		communicationService.action$.pipe(ofType(adSlotEvent)).subscribe(({ event }) => {
 			if (event === 'Stick TLB') {
 				this.isDisabled = true;
 			}
