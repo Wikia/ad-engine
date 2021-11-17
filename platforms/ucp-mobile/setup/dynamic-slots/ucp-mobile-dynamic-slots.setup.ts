@@ -55,7 +55,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		this.insertSlots([
 			topLeaderboardDefinition,
-			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
@@ -64,6 +63,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
+			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 		]);
 
 		if (!topLeaderboardDefinition) {

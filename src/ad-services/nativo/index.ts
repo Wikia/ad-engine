@@ -1,5 +1,6 @@
 import { communicationService, globalAction, ofType } from '@ad-engine/communication';
 import { adSlotEvent, context, utils } from '@ad-engine/core';
+import { filter } from 'rxjs/operators';
 import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
 
@@ -46,13 +47,24 @@ export class Nativo {
 	checkCodePriority(): void {
 		if (context.get('custom.hasFeaturedVideo')) {
 			this.forceDisabled = true;
+
+			return;
 		}
 
-		communicationService.action$.pipe(ofType(adSlotEvent)).subscribe(({ event }) => {
-			if (event === 'Stick TLB') {
+		if (context.get('templates.stickyTlb.forced')) {
+			this.forceDisabled = true;
+
+			return;
+		}
+
+		communicationService.action$
+			.pipe(
+				ofType(adSlotEvent),
+				filter((action) => action.payload.some((el) => el.status === 'Stick TLB')),
+			)
+			.subscribe(({ event }) => {
 				this.forceDisabled = true;
-			}
-		});
+			});
 	}
 
 	requestAd(placeholder: HTMLElement | null): void {
