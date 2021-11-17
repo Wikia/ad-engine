@@ -40,11 +40,7 @@ export class Nativo {
 	}
 
 	checkCodePriority(): boolean {
-		return (
-			!context.get('custom.hasFeaturedVideo') &&
-			!context.get('templates.stickyTlb.enabled') &&
-			!context.get('templates.stickyTlb.forced')
-		);
+		return !context.get('custom.hasFeaturedVideo');
 	}
 
 	requestAd(placeholder: HTMLElement | null): void {

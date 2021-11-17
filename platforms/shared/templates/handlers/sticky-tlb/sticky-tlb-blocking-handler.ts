@@ -21,6 +21,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 			this.logger('Disabling incontent_player and affiliate_slot');
 			slotService.disable('incontent_player', 'hivi-collapse');
 			slotService.disable('affiliate_slot', 'hivi-collapse');
+			context.set('services.nativo.enabled', false);
 			transition('initial');
 		} else {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
