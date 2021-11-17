@@ -1,4 +1,4 @@
-import { slotsContext } from '@platforms/shared';
+import { addMessageBoxToCollapsedElement, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	adSlotEvent,
@@ -9,7 +9,6 @@ import {
 	events,
 	eventService,
 	fillerService,
-	hideCollapsedAdEvent,
 	ofType,
 	PorvataFiller,
 	SlotCreator,
@@ -253,35 +252,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 							placeholder.classList.add('hide');
 						} else {
 							adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
-							this.addMessageBoxToCollapsedElement(placeholder, adSlot);
+							addMessageBoxToCollapsedElement(placeholder, adSlot);
 						}
 					}
 				}
 			});
-	}
-
-	private addMessageBoxToCollapsedElement(placeholder: HTMLElement, adSlot: AdSlot): void {
-		const messageBox = document.createElement('div');
-		messageBox.className = 'message-box';
-
-		const button = document.createElement('button');
-		button.className = 'collapse-btn';
-		button.innerHTML = 'hide';
-		button.onclick = () => placeholder.classList.add('hide');
-		communicationService.dispatch(
-			hideCollapsedAdEvent({
-				adSlotName: adSlot.getSlotName(),
-				collapseButton: button,
-				ad_status: 'clicked_collapse',
-			}),
-		);
-
-		const message = document.createElement('p');
-		message.innerHTML =
-			'It looks like your ad has not been loaded... You can remove the gap by clicking the button below. Enjoy your fandom! :)';
-
-		messageBox.append(message, button);
-		placeholder.appendChild(messageBox);
 	}
 
 	private registerUapChecker(): void {
