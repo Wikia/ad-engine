@@ -36,8 +36,15 @@ export class FmrRotator {
 	}
 
 	private initializeStandardRotation(): void {
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
+		eventService.on(events.AD_SLOT_CREATED, (slot: AdSlot) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
+				if (context.get('state.provider') === 'prebidium') {
+					slot.once(AdSlot.STATUS_SUCCESS, () => {
+						this.swapRecirculation(false);
+					});
+					return;
+				}
+
 				if (universalAdPackage.isFanTakeoverLoaded()) {
 					slot.once(AdSlot.STATUS_SUCCESS, () => {
 						this.swapRecirculation(false);
