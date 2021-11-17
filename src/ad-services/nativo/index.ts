@@ -16,7 +16,7 @@ export class Nativo {
 	static SLOT_CLASS_LIST = ['ntv-ad', 'ad-slot'];
 	static TEST_QUERY_STRING = 'native_ads_test';
 
-	isDisabled = false;
+	forceDisabled = false;
 
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
@@ -36,23 +36,27 @@ export class Nativo {
 	}
 
 	isEnabled(): boolean {
-		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
+		return (
+			context.get('services.nativo.enabled') &&
+			context.get('wiki.opts.enableNativeAds') &&
+			!this.forceDisabled
+		);
 	}
 
 	checkCodePriority(): void {
 		if (context.get('custom.hasFeaturedVideo')) {
-			this.isDisabled = true;
+			this.forceDisabled = true;
 		}
 
 		communicationService.action$.pipe(ofType(adSlotEvent)).subscribe(({ event }) => {
 			if (event === 'Stick TLB') {
-				this.isDisabled = true;
+				this.forceDisabled = true;
 			}
 		});
 	}
 
 	requestAd(placeholder: HTMLElement | null): void {
-		if (!nativo.isEnabled() || this.isDisabled) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'Nativo is disabled');
 			return;
 		}
