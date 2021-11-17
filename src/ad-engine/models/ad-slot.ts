@@ -106,6 +106,7 @@ export class AdSlot extends EventEmitter {
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_CLICKED = 'clicked';
+	static STATUS_CLICKED_COLLAPSE = 'clicked_collapse';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
 	static STATUS_HIVI_COLLAPSE = 'hivi-collapse';
 	static STATUS_CLOSED_BY_PORVATA = 'closed-by-porvata';

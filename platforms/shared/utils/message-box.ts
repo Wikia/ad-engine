@@ -8,11 +8,11 @@ export const addMessageBoxToCollapsedElement = (placeholder: HTMLElement, adSlot
 	button.className = 'collapse-btn';
 	button.innerHTML = 'hide';
 	button.onclick = () => placeholder.classList.add('hide');
+	adSlot.setStatus(AdSlot.STATUS_CLICKED_COLLAPSE);
 	communicationService.dispatch(
 		collapsedAdEvent({
 			adSlotName: adSlot.getSlotName(),
 			collapseButton: button,
-			adStatus: 'clicked_collapse',
 		}),
 	);
 
