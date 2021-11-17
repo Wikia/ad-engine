@@ -6,7 +6,6 @@ import {
 	events,
 	eventService,
 	pbjsFactory,
-	realVu,
 	Tcf,
 	tcf,
 	utils,
@@ -85,7 +84,6 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		this.applyConfig(this.prebidConfig);
-		this.applyAnalytics();
 
 		this.configureAdUnits();
 
@@ -154,13 +152,6 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		return pbjs.setConfig(config);
-	}
-
-	async applyAnalytics(): Promise<void> {
-		const pbjs = await pbjsFactory.init();
-
-		realVu.enableAnalytics(pbjs);
-		realVu.setInitialTargeting();
 	}
 
 	async applySettings(): Promise<void> {
