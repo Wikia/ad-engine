@@ -1,5 +1,6 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { adSlotEvent, context, utils } from '@ad-engine/core';
+import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
 
@@ -44,7 +45,7 @@ export class Nativo {
 			this.isDisabled = true;
 		}
 
-		utils.listener('Ad Slot Event', ({ event }) => {
+		communicationService.action$.pipe(ofType(adSlotEvent), take(1)).subscribe(({ event }) => {
 			if (event === 'Stick TLB') {
 				this.isDisabled = true;
 			}
