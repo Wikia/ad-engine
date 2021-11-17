@@ -35,7 +35,6 @@ interface Window {
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
-	realvu_aa?: RealVu;
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
