@@ -202,23 +202,20 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerAdPlaceholderHandler(): void {
-		const statusesToCollapse: string[] = [
-			AdSlot.STATUS_BLOCKED,
-			AdSlot.STATUS_COLLAPSE,
-			AdSlot.STATUS_FORCED_COLLAPSE,
-			AdSlot.HIDDEN_EVENT,
-		];
-		const statusesToStopLoadingSlot: string[] = [
-			AdSlot.STATUS_SUCCESS,
-			AdSlot.HIDDEN_EVENT,
-			AdSlot.SLOT_RENDERED_EVENT,
-		];
+		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
+		const statusToCollapse: string = AdSlot.HIDDEN_EVENT;
+		const statusToUndoCollapse: string = AdSlot.SLOT_RENDERED_EVENT;
 
 		const shouldRemoveOrCollapse = (action: object): boolean => {
 			return (
 				statusesToStopLoadingSlot.includes(action['event']) ||
-				statusesToCollapse.includes(action['event'])
+				statusToCollapse === action['event'] ||
+				statusToUndoCollapse === action['event']
 			);
+		};
+
+		const shouldUndoCollapse = (actionEvent: string, actionPayload: string): boolean => {
+			return actionEvent === statusToUndoCollapse && actionPayload === 'forced_success';
 		};
 
 		const shouldStopLoading = (actionEvent: string, placeholder: HTMLElement): boolean => {
@@ -226,24 +223,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				statusesToStopLoadingSlot.includes(actionEvent) &&
 				placeholder.classList.contains('is-loading')
 			);
-		};
-
-		const shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
-			return !placeholder.classList.contains('hide');
-		};
-
-		const shouldUndoHidingPlaceholder = (
-			actionEvent: string,
-			actionPayload: string,
-			placeholder: HTMLElement,
-		): boolean => {
-			const statusToUndoCollapse = 'forced_success';
-
-			return actionEvent === AdSlot.SLOT_RENDERED_EVENT && actionPayload === statusToUndoCollapse;
-		};
-
-		const shouldHideAdLabel = (adLabel: HTMLElement) => {
-			return !adLabel.classList.contains('hide');
 		};
 
 		communicationService.action$
@@ -260,7 +239,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
 				if (placeholder) {
-					if (shouldUndoHidingPlaceholder(action['event'], action['payload'][1], placeholder)) {
+					if (shouldUndoCollapse(action['event'], action['payload'][1])) {
 						placeholder.classList.remove('hide');
 						return;
 					}
@@ -269,22 +248,19 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 						placeholder.classList.remove('is-loading');
 					}
 
-					if (statusesToCollapse.includes(action['event'])) {
-						if (this.isUapLoaded && shouldHidePlaceholder(placeholder)) {
+					if (statusToCollapse === action['event']) {
+						if (this.isUapLoaded) {
 							placeholder.classList.add('hide');
 						} else {
-							const adLabel = adSlot.getAdLabel(adLabelParent);
-							if (shouldHideAdLabel(adLabel)) {
-								adLabel.classList.add('hide');
-								this.addMessageBoxToCollapsedElement(placeholder, adSlot);
-							}
+							adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
+							this.addMessageBoxToCollapsedElement(placeholder, adSlot);
 						}
 					}
 				}
 			});
 	}
 
-	private addMessageBoxToCollapsedElement(placeholder: HTMLElement, adslot: AdSlot): void {
+	private addMessageBoxToCollapsedElement(placeholder: HTMLElement, adSlot: AdSlot): void {
 		const messageBox = document.createElement('div');
 		messageBox.className = 'message-box';
 
@@ -294,7 +270,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		button.onclick = () => placeholder.classList.add('hide');
 		communicationService.dispatch(
 			hideCollapsedAdEvent({
-				adSlotName: adslot.getSlotName(),
+				adSlotName: adSlot.getSlotName(),
 				collapseButton: button,
 				ad_status: 'clicked_collapse',
 			}),
