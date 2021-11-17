@@ -225,7 +225,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			classList: ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
-			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad', '.ntv-ad'],
+			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
 			repeatStart: 1,
 			repeatLimit: 20,
 		};

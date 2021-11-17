@@ -41,9 +41,9 @@ export class Nativo {
 
 	checkCodePriority(): boolean {
 		return (
-			context.get('custom.hasFeaturedVideo') &&
-			context.get('templates.stickyTlb.enabled') &&
-			context.get('templates.stickyTlb.forced')
+			!context.get('custom.hasFeaturedVideo') &&
+			!context.get('templates.stickyTlb.enabled') &&
+			!context.get('templates.stickyTlb.forced')
 		);
 	}
 
