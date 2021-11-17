@@ -35,9 +35,15 @@ export class Nativo {
 		return (
 			context.get('services.nativo.enabled') &&
 			context.get('wiki.opts.enableNativeAds') &&
-			!context.get('custom.hasFeaturedVideo') &&
-			!context.get('templates.stickyTlb.enabled') &&
-			!context.get('templates.stickyTlb.forced')
+			this.checkCodePriority()
+		);
+	}
+
+	checkCodePriority(): boolean {
+		return (
+			context.get('custom.hasFeaturedVideo') &&
+			context.get('templates.stickyTlb.enabled') &&
+			context.get('templates.stickyTlb.forced')
 		);
 	}
 
