@@ -1,4 +1,4 @@
-import { AdSlot, communicationService, hideCollapsedAdEvent } from '@wikia/ad-engine';
+import { AdSlot, collapsedAdEvent, communicationService } from '@wikia/ad-engine';
 
 export const addMessageBoxToCollapsedElement = (placeholder: HTMLElement, adSlot: AdSlot): void => {
 	const messageBox = document.createElement('div');
@@ -9,10 +9,10 @@ export const addMessageBoxToCollapsedElement = (placeholder: HTMLElement, adSlot
 	button.innerHTML = 'hide';
 	button.onclick = () => placeholder.classList.add('hide');
 	communicationService.dispatch(
-		hideCollapsedAdEvent({
+		collapsedAdEvent({
 			adSlotName: adSlot.getSlotName(),
 			collapseButton: button,
-			ad_status: 'clicked_collapse',
+			adStatus: 'clicked_collapse',
 		}),
 	);
 
