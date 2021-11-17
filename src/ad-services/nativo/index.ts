@@ -1,6 +1,5 @@
 import { communicationService, globalAction, ofType } from '@ad-engine/communication';
 import { adSlotEvent, context, utils } from '@ad-engine/core';
-import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
 
