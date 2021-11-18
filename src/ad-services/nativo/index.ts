@@ -26,7 +26,7 @@ export class Nativo {
 			return Promise.resolve();
 		}
 
-		this.checkCodePriority();
+		this.setCodePriorityListener();
 
 		return utils.scriptLoader
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
@@ -40,23 +40,16 @@ export class Nativo {
 		return (
 			context.get('services.nativo.enabled') &&
 			context.get('wiki.opts.enableNativeAds') &&
+			this.checkCodePriority() &&
 			!this.forceDisabled
 		);
 	}
 
-	checkCodePriority(): void {
-		if (context.get('custom.hasFeaturedVideo')) {
-			this.forceDisabled = true;
+	checkCodePriority(): boolean {
+		return !(context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.forced'));
+	}
 
-			return;
-		}
-
-		if (context.get('templates.stickyTlb.forced')) {
-			this.forceDisabled = true;
-
-			return;
-		}
-
+	setCodePriorityListener(): void {
 		communicationService.action$
 			.pipe(
 				ofType(adSlotEvent),
