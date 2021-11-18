@@ -1499,7 +1499,17 @@
                 "5825476260",
                 "5832313876",
                 "5822513451",
-                "5834481571"
+                "5834481571",
+                "5836375108",
+                "5837735885",
+                "5837101876",
+                "5832810124",
+                "5831632797",
+                "5831633268",
+                "5831633271",
+                "5831633265",
+                "5831633274",
+                "5832810127"
             ]
         }
     ],
@@ -1615,6 +1625,20 @@
         }
     ],
     "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.2.0/tracking-opt-in.min.js"
+        },
         {
             "apps": [
                 "bingebot",
