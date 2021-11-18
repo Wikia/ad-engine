@@ -234,7 +234,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		const shouldAddMessageBox = (actionEvent: string): boolean => {
 			// Here we can add dependence on the icbm variable
-			return actionEvent === AdSlot.STATUS_COLLAPSE;
+
+			// Remove status 'hidden' - currently it's used only for testing purposes,
+			// because messageBox should be added only for 'collapsed' AdSlots
+			return actionEvent === AdSlot.STATUS_COLLAPSE || actionEvent === AdSlot.HIDDEN_EVENT;
 		};
 
 		communicationService.action$
@@ -248,21 +251,24 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				if (!adSlot) return;
 
 				const placeholder = adSlot.getPlaceholder();
+				if (!placeholder) {
+					return;
+				}
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
 				if (shouldDisplayPlaceholder(action['event'], action['payload'][1])) {
-					placeholder?.classList.remove('hide');
+					placeholder.classList.remove('hide');
 					return;
 				}
 
 				if (shouldStopLoading(action['event'], placeholder)) {
-					placeholder?.classList.remove('is-loading');
+					placeholder.classList.remove('is-loading');
 				}
 
 				if (statusesToCollapse.includes(action['event'])) {
 					if (this.isUapLoaded) {
 						if (shouldHidePlaceholder(placeholder)) {
-							placeholder?.classList.add('hide');
+							placeholder.classList.add('hide');
 						}
 					} else {
 						const adLabel = adSlot.getAdLabel(adLabelParent);

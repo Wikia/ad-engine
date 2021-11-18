@@ -14,7 +14,7 @@ export const videoLearnMoreDisplayedEvent = globalAction(
 
 export const collapsedAdEvent = globalAction(
 	'[AdEngine] Collapsed ad hidden',
-	props<{ adSlotName: string; collapseButton: HTMLElement }>(),
+	props<{ adSlotName: string }>(),
 );
 
 interface AdClickContext {
@@ -51,10 +51,8 @@ class AdClickTracker {
 
 		communicationService.action$
 			.pipe(ofType(collapsedAdEvent))
-			.subscribe(async ({ adSlotName, collapseButton }) => {
-				collapseButton.addEventListener('click', () => {
-					this.handleClickEvent(callback, slotService.get(adSlotName));
-				});
+			.subscribe(async ({ adSlotName }) => {
+				this.handleMessageBoxButtonClick(callback, slotService.get(adSlotName));
 			});
 	}
 
@@ -100,11 +98,9 @@ class AdClickTracker {
 		slot: AdSlot,
 		event?: MouseEvent,
 	): void {
-		let adStatus = AdSlot.STATUS_CLICKED;
-		if (slot.getStatus() === AdSlot.STATUS_CLICKED_COLLAPSE) {
-			adStatus = AdSlot.STATUS_CLICKED_COLLAPSE;
-		}
-		const data = { ad_status: adStatus };
+		const data = {
+			ad_status: AdSlot.STATUS_CLICKED,
+		};
 		if (event) {
 			const target = event.target as HTMLElement;
 			const clickData = {
@@ -113,6 +109,22 @@ class AdClickTracker {
 			};
 			data['click_position'] = JSON.stringify(clickData);
 		}
+		this.pipeline.execute(
+			{
+				slot,
+				data,
+			},
+			callback,
+		);
+	}
+
+	private handleMessageBoxButtonClick(
+		callback: FuncPipelineStep<AdClickContext>,
+		slot: AdSlot,
+	): void {
+		const data = {
+			ad_status: 'clicked_collapse',
+		};
 		this.pipeline.execute(
 			{
 				slot,
