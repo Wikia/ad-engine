@@ -1,4 +1,4 @@
-import { AdSlot, collapsedAdEvent, communicationService } from '@wikia/ad-engine';
+import { AdSlot, communicationService, hideMessageBoxEvent } from '@wikia/ad-engine';
 
 const createButton = (): HTMLButtonElement => {
 	const button = document.createElement('button');
@@ -16,7 +16,7 @@ const createMessage = (): HTMLElement => {
 
 const sendTrackingEvent = (adSlot: AdSlot) => {
 	communicationService.dispatch(
-		collapsedAdEvent({
+		hideMessageBoxEvent({
 			adSlotName: adSlot.getSlotName(),
 		}),
 	);

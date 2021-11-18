@@ -12,8 +12,8 @@ export const videoLearnMoreDisplayedEvent = globalAction(
 	props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
 );
 
-export const collapsedAdEvent = globalAction(
-	'[AdEngine] Collapsed ad hidden',
+export const hideMessageBoxEvent = globalAction(
+	'[AdEngine] MessageBox hidden',
 	props<{ adSlotName: string }>(),
 );
 
@@ -50,7 +50,7 @@ class AdClickTracker {
 			});
 
 		communicationService.action$
-			.pipe(ofType(collapsedAdEvent))
+			.pipe(ofType(hideMessageBoxEvent))
 			.subscribe(async ({ adSlotName }) => {
 				this.handleMessageBoxButtonClick(callback, slotService.get(adSlotName));
 			});
