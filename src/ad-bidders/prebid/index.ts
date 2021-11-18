@@ -15,6 +15,8 @@ import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
+import { ats } from './ats';
+import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
 import { getPrebidBestPrice } from './price-helper';
@@ -48,6 +50,7 @@ export class PrebidProvider extends BidderProvider {
 	tcf: Tcf = tcf;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
+	isATSAnalyticsEnabled = false;
 
 	constructor(public bidderConfig: PrebidConfig, public timeout = DEFAULT_MAX_DELAY) {
 		super('prebid', bidderConfig, timeout);
@@ -56,6 +59,7 @@ export class PrebidProvider extends BidderProvider {
 		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
 		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
+		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
 
 		this.prebidConfig = {
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
@@ -83,6 +87,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.prebidConfig = {
 			...this.prebidConfig,
+			...this.configureLiveRamp(),
 			...this.configureTCF(),
 			...this.configureJWPlayerDataProvider(),
 		};
@@ -94,8 +99,14 @@ export class PrebidProvider extends BidderProvider {
 
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
+		this.getLiveRampUserIds();
+		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
+	}
+
+	private configureLiveRamp(): object {
+		return liveRamp.getConfig();
 	}
 
 	private configureTCF(): object {
@@ -303,11 +314,42 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		const pbjs: Pbjs = await pbjsFactory.init();
+		ats.call();
 
 		pbjs.requestBids({
 			adUnits,
 			bidsBackHandler,
 		});
+	}
+
+	async getLiveRampUserIds(): Promise<void> {
+		const pbjs: Pbjs = await pbjsFactory.init();
+
+		if (pbjs.getUserIds) {
+			const userId = pbjs.getUserIds()['idl_env'];
+
+			utils.logger(logGroup, 'calling LiveRamp dispatch method');
+
+			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
+		}
+	}
+
+	private enableATSAnalytics(): void {
+		if (this.isATSAnalyticsEnabled) {
+			utils.logger(logGroup, 'prebid enabling ATS Analytics');
+
+			(window as any).pbjs.que.push(() => {
+				(window as any).pbjs.enableAnalytics([
+					{
+						provider: 'atsAnalytics',
+						options: {
+							pid: '2161',
+							host: 'https://analytics.openlog.in',
+						},
+					},
+				]);
+			});
+		}
 	}
 
 	/**
