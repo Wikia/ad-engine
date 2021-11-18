@@ -1,5 +1,5 @@
 import { communicationService, globalAction, ofType } from '@ad-engine/communication';
-import { adSlotEvent, context, utils } from '@ad-engine/core';
+import { adSlotEvent, context, events, utils } from '@ad-engine/core';
 import { filter } from 'rxjs/operators';
 import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
@@ -53,7 +53,9 @@ export class Nativo {
 		communicationService.action$
 			.pipe(
 				ofType(adSlotEvent),
-				filter((action) => action.payload.some((el) => el.status === 'Stick TLB')),
+				filter((action) =>
+					action.payload.some((el) => el.status === events.TOP_LEADERBOARD_STICKED),
+				),
 			)
 			.subscribe(({ event }) => {
 				this.forceDisabled = true;
