@@ -38,34 +38,32 @@ export class FmrRotator {
 	private initializeStandardRotation(): void {
 		eventService.on(events.AD_SLOT_CREATED, (slot: AdSlot) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-				if (context.get('state.provider') === 'prebidium') {
+				if (
+					universalAdPackage.isFanTakeoverLoaded() ||
+					context.get('state.provider') === 'prebidium'
+				) {
 					slot.once(AdSlot.STATUS_SUCCESS, () => {
 						this.swapRecirculation(false);
 					});
+
 					return;
 				}
 
-				if (universalAdPackage.isFanTakeoverLoaded()) {
-					slot.once(AdSlot.STATUS_SUCCESS, () => {
-						this.swapRecirculation(false);
-					});
-				} else {
-					slot.once(AdSlot.STATUS_SUCCESS, () => {
-						this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
+				slot.once(AdSlot.STATUS_SUCCESS, () => {
+					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
 
-						slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-							const customDelays = context.get('options.rotatorDelay');
-							setTimeout(() => {
-								this.hideSlot();
-							}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
-						});
+					slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
+						const customDelays = context.get('options.rotatorDelay');
+						setTimeout(() => {
+							this.hideSlot();
+						}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
 					});
+				});
 
-					slot.once(AdSlot.STATUS_COLLAPSE, () => {
-						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
-						this.scheduleNextSlotPush();
-					});
-				}
+				slot.once(AdSlot.STATUS_COLLAPSE, () => {
+					this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+					this.scheduleNextSlotPush();
+				});
 			}
 		});
 
