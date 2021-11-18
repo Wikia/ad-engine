@@ -202,18 +202,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerAdPlaceholderHandler(): void {
 		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
-		const statusToCollapse: string = AdSlot.HIDDEN_EVENT;
+		const statusesToCollapse: string[] = [AdSlot.HIDDEN_EVENT, AdSlot.STATUS_COLLAPSE];
 		const statusToUndoCollapse: string = AdSlot.SLOT_RENDERED_EVENT;
 
 		const shouldRemoveOrCollapse = (action: object): boolean => {
 			return (
 				statusesToStopLoadingSlot.includes(action['event']) ||
-				statusToCollapse === action['event'] ||
+				statusesToCollapse.includes(action['event']) ||
 				statusToUndoCollapse === action['event']
 			);
 		};
 
-		const shouldUndoCollapse = (actionEvent: string, actionPayload: string): boolean => {
+		const shouldDisplayPlaceholder = (actionEvent: string, actionPayload: string): boolean => {
 			return actionEvent === statusToUndoCollapse && actionPayload === 'forced_success';
 		};
 
@@ -222,6 +222,19 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				statusesToStopLoadingSlot.includes(actionEvent) &&
 				placeholder.classList.contains('is-loading')
 			);
+		};
+
+		const shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
+			return !placeholder.classList.contains('hide');
+		};
+
+		const shouldHideAdLabel = (adLabel: HTMLElement): boolean => {
+			return !adLabel.classList.contains('hide');
+		};
+
+		const shouldAddMessageBox = (actionEvent: string): boolean => {
+			// Here we can add dependence on the icbm variable
+			return actionEvent === AdSlot.STATUS_COLLAPSE;
 		};
 
 		communicationService.action$
@@ -237,22 +250,27 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				const placeholder = adSlot.getPlaceholder();
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
-				if (placeholder) {
-					if (shouldUndoCollapse(action['event'], action['payload'][1])) {
-						placeholder.classList.remove('hide');
-						return;
-					}
+				if (shouldDisplayPlaceholder(action['event'], action['payload'][1])) {
+					placeholder?.classList.remove('hide');
+					return;
+				}
 
-					if (shouldStopLoading(action['event'], placeholder)) {
-						placeholder.classList.remove('is-loading');
-					}
+				if (shouldStopLoading(action['event'], placeholder)) {
+					placeholder?.classList.remove('is-loading');
+				}
 
-					if (statusToCollapse === action['event']) {
-						if (this.isUapLoaded) {
-							placeholder.classList.add('hide');
-						} else {
-							adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
-							addMessageBoxToCollapsedElement(placeholder, adSlot);
+				if (statusesToCollapse.includes(action['event'])) {
+					if (this.isUapLoaded) {
+						if (shouldHidePlaceholder(placeholder)) {
+							placeholder?.classList.add('hide');
+						}
+					} else {
+						const adLabel = adSlot.getAdLabel(adLabelParent);
+						if (shouldHideAdLabel(adLabel)) {
+							adLabel.classList.add('hide');
+							if (shouldAddMessageBox(action['event'])) {
+								addMessageBoxToCollapsedElement(placeholder, adSlot);
+							}
 						}
 					}
 				}
