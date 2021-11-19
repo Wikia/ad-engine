@@ -437,19 +437,6 @@
             "value": true
         }
     ],
-    "icRealVu": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "CA",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icNielsen": [
         {
             "apps": [
@@ -2007,7 +1994,11 @@
                 "5831633271",
                 "5831633265",
                 "5831633274",
-                "5832810127"
+                "5832810127",
+                "5836797057",
+                "5836797063",
+                "5838772246",
+                "5838772243"
             ]
         }
     ],
@@ -2150,7 +2141,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211118.min.js"
         }
     ],
     "icA9Bidder": [
@@ -2610,9 +2601,9 @@
                 "muthead"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.2.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.2.1/tracking-opt-in.min.js"
         },
         {
             "apps": [
@@ -2622,9 +2613,6 @@
                 "fandommobile",
                 "futhead",
                 "muthead"
-            ],
-            "regions": [
-                "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.13.2/tracking-opt-in.min.js"
         }
