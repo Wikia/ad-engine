@@ -3,6 +3,8 @@ import { adSlotEvent, context, events, utils } from '@ad-engine/core';
 import { filter } from 'rxjs/operators';
 import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
+// tslint:disable-next-line:no-blacklisted-paths
+import { uapLoadStatus } from '../../ad-products';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
@@ -58,6 +60,15 @@ export class Nativo {
 				),
 			)
 			.subscribe(({ event }) => {
+				this.forceDisabled = true;
+			});
+
+		communicationService.action$
+			.pipe(
+				ofType(uapLoadStatus),
+				filter((action) => action.isLoaded),
+			)
+			.subscribe(() => {
 				this.forceDisabled = true;
 			});
 	}
