@@ -1,7 +1,7 @@
+import { fanFeedNativeAdListener } from '@platforms/shared';
 import {
 	communicationService,
 	context,
-	globalAction,
 	insertMethodType,
 	InstantConfigService,
 	Nativo,
@@ -16,8 +16,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { combineLatest } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -29,8 +28,6 @@ interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
 	insertMethod: insertMethodType;
 }
-
-const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
@@ -138,23 +135,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
 			},
 			activator: () => {
-				const uap$ = communicationService.action$.pipe(
-					ofType(uapLoadStatus),
-					map(({ isLoaded }) => isLoaded),
-				);
-
-				const fanFeed$ = communicationService.action$.pipe(
-					ofType(fanFeedReady),
-					map(() => true),
-				);
-
-				combineLatest([uap$, fanFeed$])
-					.pipe(map(([uapLoaded, fanFeedLoaded]) => uapLoaded && fanFeedLoaded))
-					.subscribe((shouldRenderNativeAd) => {
-						if (!shouldRenderNativeAd) {
-							nativo.replaceAndShowSponsoredFanAd();
-						}
-					});
+				fanFeedNativeAdListener();
 			},
 		};
 	}

@@ -1,4 +1,4 @@
-import { slotsContext } from '@platforms/shared';
+import { fanFeedNativeAdListener, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
@@ -25,11 +25,9 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { combineLatest } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
-const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -276,22 +274,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeFanFeed(): void {
-		const uap$ = communicationService.action$.pipe(
-			ofType(uapLoadStatus),
-			map(({ isLoaded }) => isLoaded),
-		);
-
-		const fanFeed$ = communicationService.action$.pipe(
-			ofType(fanFeedReady),
-			map(() => true),
-		);
-
-		combineLatest([uap$, fanFeed$])
-			.pipe(map(([uapLoaded, fanFeedLoaded]) => uapLoaded && fanFeedLoaded))
-			.subscribe((shouldRenderNativeAd) => {
-				if (!shouldRenderNativeAd) {
-					nativo.replaceAndShowSponsoredFanAd();
-				}
-			});
+		fanFeedNativeAdListener();
 	}
 }
