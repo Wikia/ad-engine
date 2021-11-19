@@ -1,39 +1,51 @@
 import { AdSlot, communicationService, hideMessageBoxEvent } from '@wikia/ad-engine';
 
-const createButton = (): HTMLButtonElement => {
-	const button = document.createElement('button');
-	button.className = 'collapse-btn';
-	button.innerHTML = 'hide';
-	return button;
-};
+class MessageBox {
+	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
+		const box = document.createElement('div');
+		box.className = 'message-box';
 
-const createMessage = (): HTMLElement => {
-	const message = document.createElement('p');
-	message.innerHTML =
-		'It looks like your ad has not been loaded... You can remove the gap by clicking the button below. Enjoy your fandom! :)';
-	return message;
-};
+		const button = this.createButton(placeholder, adSlot);
 
-const sendTrackingEvent = (adSlot: AdSlot) => {
-	communicationService.dispatch(
-		hideMessageBoxEvent({
-			adSlotName: adSlot.getSlotName(),
-		}),
-	);
-};
+		const message = this.createMessage();
 
-export const addMessageBoxToCollapsedElement = (placeholder: HTMLElement, adSlot: AdSlot): void => {
-	const messageBox = document.createElement('div');
-	messageBox.className = 'message-box';
-
-	const button = createButton();
-	button.onclick = () => {
-		sendTrackingEvent(adSlot);
-		placeholder.classList.add('hide');
+		box.append(message, button);
+		placeholder.appendChild(box);
 	};
 
-	const message = createMessage();
+	private createMessage = (): HTMLElement => {
+		const message = document.createElement('p');
+		message.innerHTML =
+			'It looks like your ad has not been loaded... You can remove the gap by clicking the button below. Enjoy your fandom! :)';
+		return message;
+	};
 
-	messageBox.append(message, button);
-	placeholder.appendChild(messageBox);
-};
+	private createButton = (placeholder: HTMLElement, adSlot: AdSlot): HTMLButtonElement => {
+		const button = document.createElement('button');
+		button.className = 'collapse-btn';
+		button.innerHTML = 'hide';
+		button.onclick = () => {
+			this.hidePlaceholder(placeholder);
+			this.sendTrackingEvent(adSlot);
+		};
+		return button;
+	};
+
+	private hidePlaceholder = (placeholder: HTMLElement) => {
+		if (placeholder.className.includes('top-leaderboard')) {
+			placeholder.parentElement.classList.add('hide');
+		} else {
+			placeholder.classList.add('hide');
+		}
+	};
+
+	private sendTrackingEvent = (adSlot: AdSlot) => {
+		communicationService.dispatch(
+			hideMessageBoxEvent({
+				adSlotName: adSlot.getSlotName(),
+			}),
+		);
+	};
+}
+
+export const messageBox = new MessageBox();
