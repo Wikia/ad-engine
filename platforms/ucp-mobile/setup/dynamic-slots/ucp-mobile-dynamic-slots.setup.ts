@@ -1,7 +1,6 @@
-import { addMessageBoxToCollapsedElement, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
-	adSlotEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -9,7 +8,7 @@ import {
 	events,
 	eventService,
 	fillerService,
-	ofType,
+	placeholderService,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
@@ -19,7 +18,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { filter, take } from 'rxjs/operators';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -36,18 +34,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotCreator: SlotCreator,
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
-		private isUapLoaded: boolean,
 	) {}
 
 	execute(): void {
-		this.registerUapChecker();
 		this.injectSlots();
 		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
-		this.registerAdPlaceholderHandler();
+		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
@@ -200,92 +196,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
-	private registerAdPlaceholderHandler(): void {
-		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
-		const statusesToCollapse: string[] = [AdSlot.HIDDEN_EVENT, AdSlot.STATUS_COLLAPSE];
-		const statusToUndoCollapse: string = AdSlot.SLOT_RENDERED_EVENT;
-
-		const shouldRemoveOrCollapse = (action: object): boolean => {
-			return (
-				statusesToStopLoadingSlot.includes(action['event']) ||
-				statusesToCollapse.includes(action['event']) ||
-				statusToUndoCollapse === action['event']
-			);
-		};
-
-		const shouldDisplayPlaceholder = (actionEvent: string, actionPayload: string): boolean => {
-			return actionEvent === statusToUndoCollapse && actionPayload === 'forced_success';
-		};
-
-		const shouldStopLoading = (actionEvent: string, placeholder: HTMLElement): boolean => {
-			return (
-				statusesToStopLoadingSlot.includes(actionEvent) &&
-				placeholder.classList.contains('is-loading')
-			);
-		};
-
-		const shouldHidePlaceholder = (placeholder: HTMLElement): boolean => {
-			return !placeholder.classList.contains('hide');
-		};
-
-		const shouldHideAdLabel = (adLabel: HTMLElement): boolean => {
-			return !adLabel.classList.contains('hide');
-		};
-
-		const shouldAddMessageBox = (actionEvent: string): boolean => {
-			// Here we can add dependence on the icbm variable
-
-			// Remove status 'hidden' - currently it's used only for testing purposes,
-			// because messageBox should be added only for 'collapsed' AdSlots
-			return actionEvent === AdSlot.STATUS_COLLAPSE || actionEvent === AdSlot.HIDDEN_EVENT;
-		};
-
-		communicationService.action$
-			.pipe(
-				ofType(adSlotEvent),
-				filter((action) => shouldRemoveOrCollapse(action)),
-			)
-			.subscribe((action) => {
-				const adSlot = slotService.get(action.adSlotName);
-
-				if (!adSlot) return;
-
-				const placeholder = adSlot.getPlaceholder();
-				if (!placeholder) {
-					return;
-				}
-				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
-
-				if (shouldDisplayPlaceholder(action['event'], action['payload'][1])) {
-					placeholder.classList.remove('hide');
-					return;
-				}
-
-				if (shouldStopLoading(action['event'], placeholder)) {
-					placeholder.classList.remove('is-loading');
-				}
-
-				if (statusesToCollapse.includes(action['event'])) {
-					if (this.isUapLoaded) {
-						if (shouldHidePlaceholder(placeholder)) {
-							placeholder.classList.add('hide');
-						}
-					} else {
-						const adLabel = adSlot.getAdLabel(adLabelParent);
-						if (shouldHideAdLabel(adLabel)) {
-							adLabel.classList.add('hide');
-							if (shouldAddMessageBox(action['event'])) {
-								addMessageBoxToCollapsedElement(placeholder, adSlot);
-							}
-						}
-					}
-				}
-			});
-	}
-
-	private registerUapChecker(): void {
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			this.isUapLoaded = action.isLoaded;
-		});
+	private registerAdPlaceholderService(): void {
+		placeholderService.init();
 	}
 }
