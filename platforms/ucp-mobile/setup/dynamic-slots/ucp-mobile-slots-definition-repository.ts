@@ -110,7 +110,7 @@ export class UcpMobileSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-				anchorSelector: '.mw-parser-output > p:last-of-type',
+				anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
 				insertMethod: 'before',
 				classList: Nativo.SLOT_CLASS_LIST,
 			},
