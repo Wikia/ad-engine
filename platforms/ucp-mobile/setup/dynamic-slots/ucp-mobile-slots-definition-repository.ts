@@ -16,7 +16,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -137,9 +138,23 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-					nativo.replaceAndShowSponsoredFanAd();
-				});
+				const uap$ = communicationService.action$.pipe(
+					ofType(uapLoadStatus),
+					map(({ isLoaded }) => isLoaded),
+				);
+
+				const fanFeed$ = communicationService.action$.pipe(
+					ofType(fanFeedReady),
+					map(() => true),
+				);
+
+				combineLatest([uap$, fanFeed$])
+					.pipe(map(([uapLoaded, fanFeedLoaded]) => uapLoaded && fanFeedLoaded))
+					.subscribe((shouldRenderNativeAd) => {
+						if (!shouldRenderNativeAd) {
+							nativo.replaceAndShowSponsoredFanAd();
+						}
+					});
 			},
 		};
 	}
