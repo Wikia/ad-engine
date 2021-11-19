@@ -28,6 +28,7 @@ export const events = {
 
 	AD_STACK_START: 'Ad Stack started',
 
+	TOP_LEADERBOARD_STICKED: 'top-leaderboard-sticked',
 	INTERSTITIAL_DISPLAYED: 'interstitial-displayed',
 	LOGO_REPLACED: 'logo-replaced',
 };
