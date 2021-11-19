@@ -38,8 +38,12 @@ describe('PrebidiumProvider', () => {
 
 		beforeEach(async () => {
 			adSlot = {
+				successCalled: false,
 				getSlotName: () => mock.slotName,
 				getElement: () => mock.slotName,
+				success(): void {
+					this.successCalled = true;
+				},
 			};
 
 			sandbox.stub(communicationService, 'action$').value(
@@ -60,6 +64,7 @@ describe('PrebidiumProvider', () => {
 			assert(pbjsStub.renderAd.calledOnce);
 			assert.equal(doc, mock.doc);
 			assert.equal(adId, mock.adId);
+			assert.isTrue(adSlot.successCalled);
 		});
 
 		it('should call context get with correct argument', () => {

@@ -204,9 +204,9 @@
                 "muthead"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.2.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.2.1/tracking-opt-in.min.js"
         },
         {
             "apps": [
@@ -216,9 +216,6 @@
                 "fandommobile",
                 "futhead",
                 "muthead"
-            ],
-            "regions": [
-                "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.13.2/tracking-opt-in.min.js"
         }
@@ -319,7 +316,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211015.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211118.min.js"
         }
     ],
     "icIASPublisherOptimization": [
