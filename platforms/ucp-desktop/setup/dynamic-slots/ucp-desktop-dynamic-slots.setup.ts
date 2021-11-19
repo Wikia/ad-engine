@@ -25,7 +25,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
 const fanFeedReady = globalAction('[FanFeed] Ready');
@@ -275,8 +276,22 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeFanFeed(): void {
-		communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-			nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME));
-		});
+		const uap$ = communicationService.action$.pipe(
+			ofType(uapLoadStatus),
+			map(({ isLoaded }) => isLoaded),
+		);
+
+		const fanFeed$ = communicationService.action$.pipe(
+			ofType(fanFeedReady),
+			map(() => true),
+		);
+
+		combineLatest([uap$, fanFeed$])
+			.pipe(map(([uapLoaded, fanFeedLoaded]) => uapLoaded && fanFeedLoaded))
+			.subscribe((shouldRenderNativeAd) => {
+				if (!shouldRenderNativeAd) {
+					nativo.replaceAndShowSponsoredFanAd();
+				}
+			});
 	}
 }
