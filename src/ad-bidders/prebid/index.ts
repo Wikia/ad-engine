@@ -62,7 +62,7 @@ export class PrebidProvider extends BidderProvider {
 
 		this.prebidConfig = {
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: !!context.get('bidders.prebid.sendAllBids'),
+			enableSendAllBids: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
@@ -233,9 +233,7 @@ export class PrebidProvider extends BidderProvider {
 		const slotAlias: string = this.getSlotAlias(slotName);
 
 		return {
-			...(context.get('bidders.prebid.sendAllBids')
-				? pbjs.getAdserverTargetingForAdUnitCode(slotAlias)
-				: null),
+			...pbjs.getAdserverTargetingForAdUnitCode(slotAlias),
 			...(await getWinningBid(slotAlias)),
 		};
 	}
