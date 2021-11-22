@@ -10,7 +10,6 @@ import {
 	distroScale,
 	durationMedia,
 	facebookPixel,
-	getTranslation,
 	iasPublisherOptimization,
 	jwPlayerInhibitor,
 	JWPlayerManager,
@@ -26,6 +25,7 @@ import {
 	stroer,
 	taxonomyService,
 	uapLoadStatus,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
@@ -48,7 +48,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 		this.setAdStack();
 		this.trackAdEngineStatus();
 		this.trackTabId();
-		this.translateLabels();
+
+		utils.translateLabels();
 	}
 
 	private trackAdEngineStatus(): void {
@@ -63,19 +64,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
 
 		this.pageTracker.trackProp('tab_id', window.tabId);
-	}
-
-	private translateLabels(): void {
-		const labels = document.querySelectorAll('.ae-translatable-label');
-
-		labels.forEach((label: HTMLElement) => {
-			const key = label.dataset.key;
-			const translation = getTranslation('labels', key);
-
-			if (translation) {
-				label.innerText = translation;
-			}
-		});
 	}
 
 	private async setupJWPlayer(inhibitors = []): Promise<any> {

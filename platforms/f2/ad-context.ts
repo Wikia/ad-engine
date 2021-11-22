@@ -17,7 +17,6 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
-		contentLanguage: 'en',
 		porvata: {
 			audio: {
 				exposeToSlot: 'true',
