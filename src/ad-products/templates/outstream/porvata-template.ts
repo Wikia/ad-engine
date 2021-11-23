@@ -48,9 +48,7 @@ export class PorvataTemplate {
 		}
 
 		this.adSlot.getElement().classList.add('porvata3');
-		this.adSlot
-			.getElement()
-			.setAttribute('data-label', utils.getTranslation('labels', 'advertisement'));
+		this.adSlot.getElement().setAttribute('data-label', utils.getTranslation('advertisement'));
 
 		this.isInsecureMode = params.vpaidMode === VpaidMode.INSECURE;
 

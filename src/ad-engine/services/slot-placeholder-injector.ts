@@ -76,7 +76,7 @@ class SlotPlaceholderInjector {
 	private addAdLabel(placeholder: HTMLElement): void {
 		const div = document.createElement('div');
 		div.className = AD_LABEL_CLASS;
-		div.innerText = getTranslation('labels', 'advertisement');
+		div.innerText = getTranslation('advertisement');
 		div.dataset.slotName = 'incontent-boxad';
 		placeholder.appendChild(div);
 	}

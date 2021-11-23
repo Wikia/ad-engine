@@ -3,12 +3,11 @@ import { TRANSLATIONS } from './translations';
 
 const defaultLanguage = 'en';
 
-export function getTranslation(category: string, key: string): string {
+export function getTranslation(key: string): string {
 	const lang = context.get('wiki.targeting.wikiLanguage');
-	const language =
-		lang && typeof TRANSLATIONS[category][lang] !== 'undefined' ? lang : defaultLanguage;
+	const language = lang && typeof TRANSLATIONS[lang] !== 'undefined' ? lang : defaultLanguage;
 
-	return TRANSLATIONS[category][language][key] || TRANSLATIONS[category][defaultLanguage][key];
+	return TRANSLATIONS[language][key] || TRANSLATIONS[defaultLanguage][key];
 }
 
 export function translateLabels(): void {
@@ -16,7 +15,7 @@ export function translateLabels(): void {
 
 	labels.forEach((label: HTMLElement) => {
 		const key = label.dataset.key;
-		const translation = getTranslation('labels', key);
+		const translation = getTranslation(key);
 
 		if (translation) {
 			label.innerText = translation;

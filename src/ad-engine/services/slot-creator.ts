@@ -149,7 +149,7 @@ export class SlotCreator {
 	private addAdLabel(placeholder: HTMLElement, slotName: string): void {
 		const div = document.createElement('div');
 		div.className = AD_LABEL_CLASS;
-		div.innerText = getTranslation('labels', 'advertisement');
+		div.innerText = getTranslation('advertisement');
 		div.dataset.slotName = slotName;
 		placeholder.appendChild(div);
 	}

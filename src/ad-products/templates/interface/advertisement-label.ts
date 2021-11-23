@@ -5,7 +5,7 @@ export class AdvertisementLabel extends UiComponent {
 	render(): HTMLDivElement {
 		const label = document.createElement('div');
 
-		label.innerText = utils.getTranslation('labels', 'advertisement');
+		label.innerText = utils.getTranslation('advertisement');
 		label.className = 'advertisement-label';
 
 		return label;

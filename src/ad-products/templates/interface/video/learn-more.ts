@@ -8,7 +8,7 @@ function add(video, container, params): void {
 	const icon = createIcon(icons.LEARN_MORE, ['learn-more-icon', 'porvata-icon']);
 	const label = document.createElement('div');
 
-	label.innerText = utils.getTranslation('labels', 'learn-more');
+	label.innerText = utils.getTranslation('learn-more');
 	learnMore.appendChild(label);
 	learnMore.appendChild(icon);
 
