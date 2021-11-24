@@ -7,10 +7,11 @@ import {
 } from '@wikia/ad-engine';
 import { filter, take } from 'rxjs/operators';
 import { messageBox } from './message-box';
-import { placeholderHelper } from './placeholder-service-helper';
+import { PlaceholderServiceHelper } from './placeholder-service-helper';
 
-class PlaceholderService {
+export class PlaceholderService {
 	isUapLoaded: boolean;
+	private placeholderHelper = new PlaceholderServiceHelper();
 
 	init(): void {
 		this.registerUapChecker();
@@ -21,7 +22,7 @@ class PlaceholderService {
 		communicationService.action$
 			.pipe(
 				ofType(adSlotEvent),
-				filter((action) => placeholderHelper.isLoadingOrCollapsed(action)),
+				filter((action) => this.placeholderHelper.isLoadingOrCollapsed(action)),
 			)
 			.subscribe((action) => {
 				const adSlot = slotService.get(action.adSlotName);
@@ -32,19 +33,21 @@ class PlaceholderService {
 
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
-				if (placeholderHelper.shouldDisplayPlaceholder(action['event'], action['payload'][1])) {
-					placeholderHelper.displayPlaceholder(placeholder);
+				if (
+					this.placeholderHelper.shouldDisplayPlaceholder(action['event'], action['payload'][1])
+				) {
+					this.placeholderHelper.displayPlaceholder(placeholder);
 					return;
 				}
 
-				placeholderHelper.stopLoading(action['event'], placeholder);
+				this.placeholderHelper.stopLoading(action['event'], placeholder);
 
-				if (placeholderHelper.statusesToCollapse.includes(action['event'])) {
+				if (this.placeholderHelper.statusesToCollapse.includes(action['event'])) {
 					if (this.isUapLoaded) {
-						placeholderHelper.hidePlaceholder(placeholder);
+						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
-						placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
-						if (placeholderHelper.shouldAddMessageBox(action['event'])) {
+						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
+						if (this.placeholderHelper.shouldAddMessageBox(action['event'])) {
 							messageBox.addMessageBox(placeholder, adSlot);
 						}
 					}
@@ -58,5 +61,3 @@ class PlaceholderService {
 		});
 	}
 }
-
-export const placeholderService = new PlaceholderService();

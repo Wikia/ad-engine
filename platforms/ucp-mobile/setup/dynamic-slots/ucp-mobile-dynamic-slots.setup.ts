@@ -1,4 +1,4 @@
-import { slotsContext } from '@platforms/shared';
+import { PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btfBlockerService,
@@ -8,7 +8,6 @@ import {
 	events,
 	eventService,
 	fillerService,
-	placeholderService,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
@@ -197,6 +196,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerAdPlaceholderService(): void {
+		const placeholderService = new PlaceholderService();
 		placeholderService.init();
 	}
 }

@@ -1,6 +1,6 @@
 import { AdSlot } from '@wikia/ad-engine';
 
-class PlaceholderServiceHelper {
+export class PlaceholderServiceHelper {
 	statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
 	statusesToCollapse: string[] = [
 		AdSlot.HIDDEN_EVENT,
@@ -63,5 +63,3 @@ class PlaceholderServiceHelper {
 		return actionEvent === AdSlot.STATUS_COLLAPSE;
 	};
 }
-
-export const placeholderHelper = new PlaceholderServiceHelper();
