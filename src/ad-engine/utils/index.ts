@@ -5,6 +5,7 @@ export * from './document';
 export * from './flow-control';
 export * from './generate-unique-id';
 export * from './geo';
+export * from './i18n';
 export * from './iframe-builder';
 export * from './lazy-queue';
 export * from './logger';

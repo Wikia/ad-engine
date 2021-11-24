@@ -2,6 +2,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,
+	getTranslation,
 	getViewportHeight,
 	isInTheSameViewport,
 	logger,
@@ -148,7 +149,7 @@ export class SlotCreator {
 	private addAdLabel(placeholder: HTMLElement, slotName: string): void {
 		const div = document.createElement('div');
 		div.className = AD_LABEL_CLASS;
-		div.innerText = 'Advertisement';
+		div.innerText = getTranslation('advertisement');
 		div.dataset.slotName = slotName;
 		placeholder.appendChild(div);
 	}
