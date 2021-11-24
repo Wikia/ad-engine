@@ -95,7 +95,7 @@ export default customContext = {
 				additionalClasses: 'hide',
 				index: 1,
 				insertBeforeSelector: '.main p',
-				limit: null,
+				limit: 5,
 				slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
 				updateProperties: {
 					'targeting.rv': '{slotConfig.repeat.index}'
