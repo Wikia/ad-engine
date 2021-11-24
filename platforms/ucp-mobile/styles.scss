@@ -280,17 +280,25 @@ body.bab-detected {
 }
 
 .message-box {
-	p,
-	.collapse-btn {
-		font-style: italic;
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	padding: 30px;
+	background-color: #520044;
+
+	.cta-message {
+		color: #ffc500;
+		font-size: 36px;
+		font-weight: 900;
+		line-height: 45px;
+		margin: 0 0 12px;
+		text-transform: uppercase;
 	}
 
-	.collapse-btn {
-		display: block;
-		margin: 0 auto;
-		height: 35px;
-		width: 70px;
-		border-radius: 5px;
+	.register-btn {
+		background-color: #ffc500;
+		color: #520044;
+		cursor: pointer;
 	}
 }
 

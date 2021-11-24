@@ -14,18 +14,22 @@ class MessageBox {
 	};
 
 	private createMessage = (): HTMLElement => {
-		const message = document.createElement('p');
-		message.innerHTML =
-			'It looks like your ad has not been loaded... You can remove the gap by clicking the button below. Enjoy your fandom! :)';
+		const message = document.createElement('h3');
+		message.className = 'cta-message';
+		message.innerHTML = 'Join a passionate community of people who love what you love.';
 		return message;
 	};
 
 	private createButton = (placeholder: HTMLElement, adSlot: AdSlot): HTMLButtonElement => {
+		const url = 'https://www.fandom.com/register';
+
 		const button = document.createElement('button');
-		button.className = 'collapse-btn';
-		button.innerHTML = 'hide';
+		button.className = 'register-btn';
+		button.classList.add('wds-button');
+		button.innerHTML = 'Register';
 		button.onclick = () => {
 			this.hidePlaceholder(placeholder);
+			this.openInNewTab(url);
 			this.sendTrackingEvent(adSlot);
 		};
 		return button;
@@ -37,6 +41,10 @@ class MessageBox {
 		} else {
 			placeholder.classList.add('hide');
 		}
+	};
+
+	private openInNewTab = (url: string): void => {
+		window.open(url, '_blank').focus();
 	};
 
 	private sendTrackingEvent = (adSlot: AdSlot) => {
