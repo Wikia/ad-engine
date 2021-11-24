@@ -28,19 +28,10 @@ class MessageBox {
 		button.classList.add('wds-button');
 		button.innerHTML = 'Register';
 		button.onclick = () => {
-			this.hidePlaceholder(placeholder);
 			this.openInNewTab(url);
 			this.sendTrackingEvent(adSlot);
 		};
 		return button;
-	};
-
-	private hidePlaceholder = (placeholder: HTMLElement) => {
-		if (placeholder.className.includes('top-leaderboard')) {
-			placeholder.parentElement.classList.add('hide');
-		} else {
-			placeholder.classList.add('hide');
-		}
 	};
 
 	private openInNewTab = (url: string): void => {
