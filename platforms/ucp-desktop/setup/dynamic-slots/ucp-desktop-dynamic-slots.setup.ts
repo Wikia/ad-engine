@@ -1,4 +1,4 @@
-import { fanFeedNativeAdListener, slotsContext } from '@platforms/shared';
+import { slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btRec,
@@ -26,6 +26,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import { desktopFanFeedNativeAdListener } from './desktop-fan-feed-native-ad-listener';
 
 const railReady = globalAction('[Rail] Ready');
 
@@ -274,6 +275,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeFanFeed(): void {
-		fanFeedNativeAdListener();
+		desktopFanFeedNativeAdListener();
 	}
 }
