@@ -102,6 +102,10 @@
 	}
 }
 
+.ad-slot-placeholder.hide {
+	display: none !important;
+}
+
 .ntv-ad {
 	@include nativo;
 	margin-bottom: 24px;
