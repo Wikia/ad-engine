@@ -26,9 +26,9 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import { desktopFanFeedNativeAdListener } from './desktop-fan-feed-native-ad-listener';
 
 const railReady = globalAction('[Rail] Ready');
-const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -275,8 +275,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeFanFeed(): void {
-		communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-			nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME));
-		});
+		desktopFanFeedNativeAdListener();
 	}
 }
