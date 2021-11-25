@@ -60,6 +60,14 @@ export class PlaceholderServiceHelper {
 	};
 
 	shouldAddMessageBox = (actionEvent: string): boolean => {
+		if (this.isMessageBoxAlreadyAdded()) {
+			return false;
+		}
+
 		return actionEvent === AdSlot.STATUS_COLLAPSE;
+	};
+
+	isMessageBoxAlreadyAdded = (): boolean => {
+		return document.querySelector('.message-box') !== null;
 	};
 }
