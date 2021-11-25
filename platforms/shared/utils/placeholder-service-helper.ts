@@ -59,8 +59,8 @@ export class PlaceholderServiceHelper {
 		return !adLabel.classList.contains('hide');
 	};
 
-	shouldAddMessageBox = (actionEvent: string): boolean => {
-		if (this.isMessageBoxAlreadyAdded()) {
+	shouldAddMessageBox = (actionEvent: string, placeholder: HTMLElement): boolean => {
+		if (this.isMessageBoxAlreadyAdded() || this.isItTopLeaderboard(placeholder)) {
 			return false;
 		}
 
@@ -69,5 +69,9 @@ export class PlaceholderServiceHelper {
 
 	isMessageBoxAlreadyAdded = (): boolean => {
 		return document.querySelector('.message-box') !== null;
+	};
+
+	isItTopLeaderboard = (placeholder: HTMLElement): boolean => {
+		return placeholder.classList.contains('top-leaderboard');
 	};
 }
