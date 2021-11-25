@@ -1,7 +1,6 @@
 import {
 	communicationService,
 	context,
-	globalAction,
 	insertMethodType,
 	InstantConfigService,
 	Nativo,
@@ -17,6 +16,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import { mobileFanFeedNativeAdListener } from './mobile-fan-feed-native-ad-listener';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -28,8 +28,6 @@ interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
 	insertMethod: insertMethodType;
 }
-
-const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
@@ -137,9 +135,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-					nativo.replaceAndShowSponsoredFanAd();
-				});
+				mobileFanFeedNativeAdListener();
 			},
 		};
 	}
