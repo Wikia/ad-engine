@@ -1,4 +1,4 @@
-import { PlaceholderService, slotsContext } from '@platforms/shared';
+import { MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btfBlockerService,
@@ -17,6 +17,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { PlaceholderServiceHelper } from '../../../shared/utils/placeholder-service-helper';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -196,7 +197,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerAdPlaceholderService(): void {
-		const placeholderService = new PlaceholderService();
+		const placeholderHelper = new PlaceholderServiceHelper();
+		const messageBox = new MessageBox();
+
+		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
 		placeholderService.init();
 	}
 }

@@ -1,6 +1,6 @@
 import { AdSlot, communicationService, hideMessageBoxEvent } from '@wikia/ad-engine';
 
-class MessageBox {
+export class MessageBox {
 	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
 		const box = document.createElement('div');
 		box.className = 'message-box';
@@ -46,5 +46,3 @@ class MessageBox {
 		);
 	};
 }
-
-export const messageBox = new MessageBox();

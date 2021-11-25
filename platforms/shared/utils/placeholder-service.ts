@@ -6,12 +6,16 @@ import {
 	uapLoadStatus,
 } from '@wikia/ad-engine';
 import { filter, take } from 'rxjs/operators';
-import { messageBox } from './message-box';
+import { MessageBox } from './message-box';
 import { PlaceholderServiceHelper } from './placeholder-service-helper';
 
 export class PlaceholderService {
-	isUapLoaded: boolean;
-	private placeholderHelper = new PlaceholderServiceHelper();
+	private isUapLoaded: boolean;
+
+	constructor(
+		private placeholderHelper: PlaceholderServiceHelper,
+		private messageBox: MessageBox,
+	) {}
 
 	init(): void {
 		this.registerUapChecker();
@@ -48,7 +52,7 @@ export class PlaceholderService {
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
 						if (this.placeholderHelper.shouldAddMessageBox(action['event'])) {
-							messageBox.addMessageBox(placeholder, adSlot);
+							this.messageBox.addMessageBox(placeholder, adSlot);
 						}
 					}
 				}
