@@ -15,6 +15,7 @@ export * from './context/a9/sports-a9-config.setup';
 export * from './slots/curse-slots-state.setup';
 export * from './bidders/bidders-state.setup';
 export * from './dynamic-slots/curse-uap.setup';
+export * from './dynamic-slots/fan-feed-native-ad-listener';
 export * from './tracking/tracking.setup';
 export * from './modes/no-ads/ucp-no-ads.mode';
 export * from './modes/ads/sports-ads.mode';
