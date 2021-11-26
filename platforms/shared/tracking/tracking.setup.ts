@@ -2,6 +2,9 @@ import {
 	AdBidderContext,
 	adClickTracker,
 	AdInfoContext,
+	atsIdsLoadedEvent,
+	atsLoadedEvent,
+	atsNotLoadedForLoggedInUser,
 	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
@@ -13,6 +16,7 @@ import {
 	GAMOrigins,
 	InstantConfigCacheStorage,
 	interventionTracker,
+	liveRampPrebidIdsLoadedEvent,
 	ofType,
 	playerEvents,
 	porvataTracker,
@@ -76,6 +80,8 @@ export class TrackingSetup {
 		this.scrollSpeedTracker();
 		this.connectionTracker();
 		this.audigentTracker();
+		this.liveRampTracker();
+		this.atsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 	}
@@ -260,5 +266,25 @@ export class TrackingSetup {
 
 	private interventionTracker(): void {
 		interventionTracker.register();
+	}
+
+	private liveRampTracker(): void {
+		communicationService.action$.pipe(ofType(liveRampPrebidIdsLoadedEvent)).subscribe((props) => {
+			this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
+		});
+	}
+
+	private atsTracker(): void {
+		communicationService.action$.pipe(ofType(atsLoadedEvent)).subscribe((props) => {
+			this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
+		});
+
+		communicationService.action$.pipe(ofType(atsIdsLoadedEvent)).subscribe((props) => {
+			this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
+		});
+
+		communicationService.action$.pipe(ofType(atsNotLoadedForLoggedInUser)).subscribe((props) => {
+			this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
+		});
 	}
 }
