@@ -26,9 +26,9 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import { desktopFanFeedNativeAdListener } from './desktop-fan-feed-native-ad-listener';
 
 const railReady = globalAction('[Rail] Ready');
-const fanFeedReady = globalAction('[FanFeed] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -140,12 +140,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private handleAdPlaceholders(slotName: string, slotStatus: string): void {
-		const statusesToHideLabel: string[] = [
-			AdSlot.STATUS_BLOCKED,
-			AdSlot.STATUS_COLLAPSE,
-			AdSlot.STATUS_FORCED_COLLAPSE,
-		];
+		const statusesToHideLabel: string[] = [AdSlot.STATUS_BLOCKED, AdSlot.STATUS_COLLAPSE];
 		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS];
+		const statusesToCollapse: string[] = [AdSlot.STATUS_FORCED_COLLAPSE];
 		const adSlot = slotService.get(slotName);
 
 		const placeholder = adSlot.getPlaceholder();
@@ -155,6 +152,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			placeholder?.classList.remove('is-loading');
 		} else if (statusesToHideLabel.includes(slotStatus)) {
 			placeholder?.classList.remove('is-loading');
+			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
+		} else if (statusesToCollapse.includes(slotStatus)) {
+			placeholder?.classList.add('hide');
 			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
 		}
 	}
@@ -275,8 +275,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectNativeFanFeed(): void {
-		communicationService.action$.pipe(ofType(fanFeedReady), take(1)).subscribe(() => {
-			nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME));
-		});
+		desktopFanFeedNativeAdListener();
 	}
 }

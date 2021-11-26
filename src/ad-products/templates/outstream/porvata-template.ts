@@ -1,6 +1,5 @@
-import { AdSlot, context, events, eventService, slotTweaker } from '@ad-engine/core';
+import { AdSlot, context, events, eventService, slotTweaker, utils } from '@ad-engine/core';
 import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
-import { getTranslation } from '../../common/i18n';
 import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 
@@ -49,7 +48,7 @@ export class PorvataTemplate {
 		}
 
 		this.adSlot.getElement().classList.add('porvata3');
-		this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
+		this.adSlot.getElement().setAttribute('data-label', utils.getTranslation('advertisement'));
 
 		this.isInsecureMode = params.vpaidMode === VpaidMode.INSECURE;
 
