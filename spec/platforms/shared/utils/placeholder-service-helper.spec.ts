@@ -103,4 +103,20 @@ describe('placeholder service helper', () => {
 			);
 		});
 	});
+
+	describe('Ad label', () => {
+		let placeholderHelper: PlaceholderServiceHelper;
+
+		beforeEach(() => {
+			placeholderHelper = new PlaceholderServiceHelper();
+		});
+
+		it("shouldHideAdLabel returns true if adLabel contains class '.hide'", () => {
+			expect(placeholderHelper.shouldHideAdLabel(getMockElement(true))).to.equal(false);
+		});
+
+		it("shouldHideAdLabel returns false if adLabel does not contain class '.hide'", () => {
+			expect(placeholderHelper.shouldHideAdLabel(getMockElement(false))).to.equal(true);
+		});
+	});
 });
