@@ -12,6 +12,11 @@ export const videoLearnMoreDisplayedEvent = globalAction(
 	props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
 );
 
+export const hideMessageBoxEvent = globalAction(
+	'[AdEngine] MessageBox hidden',
+	props<{ adSlotName: string }>(),
+);
+
 interface AdClickContext {
 	slot: AdSlot;
 	data: {
@@ -42,6 +47,12 @@ class AdClickTracker {
 			.pipe(ofType(videoLearnMoreDisplayedEvent))
 			.subscribe(async ({ adSlotName, learnMoreLink }) => {
 				this.addClickVideoLearnMoreTrackingListeners(callback, adSlotName, learnMoreLink);
+			});
+
+		communicationService.action$
+			.pipe(ofType(hideMessageBoxEvent))
+			.subscribe(async ({ adSlotName }) => {
+				this.handleMessageBoxButtonClick(callback, slotService.get(adSlotName));
 			});
 	}
 
@@ -98,6 +109,22 @@ class AdClickTracker {
 			};
 			data['click_position'] = JSON.stringify(clickData);
 		}
+		this.pipeline.execute(
+			{
+				slot,
+				data,
+			},
+			callback,
+		);
+	}
+
+	private handleMessageBoxButtonClick(
+		callback: FuncPipelineStep<AdClickContext>,
+		slot: AdSlot,
+	): void {
+		const data = {
+			ad_status: 'clicked_collapse',
+		};
 		this.pipeline.execute(
 			{
 				slot,
