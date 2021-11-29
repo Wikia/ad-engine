@@ -35,11 +35,13 @@ export class UcpTargetingSetup implements DiProcess {
 			context.set('src', ['test']);
 		}
 
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (action.isLoaded) {
-				context.push('src', 'uap');
-			}
-		});
+		if (context.get('options.uapExtendedSrcTargeting')) {
+			communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+				if (action.isLoaded) {
+					context.push('src', 'uap');
+				}
+			});
+		}
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
