@@ -10,7 +10,8 @@ import {
 import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
 import { props } from 'ts-action';
-import { Porvata, PorvataPlayer } from '../../video/player/porvata/porvata';
+import { Porvata } from '../../video/porvata/porvata';
+import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
 import { UapVideoSettings } from './uap-video-settings';
@@ -219,10 +220,8 @@ function updateSlotsTargeting(lineItemId, creativeId): void {
 	const slots = context.get('slots') || {};
 
 	Object.keys(slots).forEach((slotId) => {
-		if (!slots[slotId].nonUapSlot) {
-			context.set(`slots.${slotId}.targeting.uap`, lineItemId);
-			context.set(`slots.${slotId}.targeting.uap_c`, creativeId);
-		}
+		context.set(`slots.${slotId}.targeting.uap`, lineItemId);
+		context.set(`slots.${slotId}.targeting.uap_c`, creativeId);
 	});
 }
 
@@ -328,5 +327,6 @@ export const universalAdPackage = {
 	loadVideoAd,
 	reset,
 	setType,
+	updateSlotsTargeting,
 	uapLoadStatus,
 };

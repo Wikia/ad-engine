@@ -35,6 +35,7 @@ interface PrebidMediaTypes {
 		linearity?: number;
 		maxduration?: number;
 		protocols?: number[];
+		playbackmethod?: number[];
 	};
 }
 
@@ -124,6 +125,8 @@ interface Pbjs {
 	getUserIds(): object;
 
 	setConfig(config: {}): void;
+
+	enableAnalytics(config: {}): void;
 
 	createBid(statusCode: number): PrebidBidResponse;
 

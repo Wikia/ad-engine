@@ -39,11 +39,11 @@ export abstract class PrebidAdapter {
 		);
 	}
 
-	protected getTargeting(slotName, customTargeting = {}): Dictionary {
+	protected getTargeting(placementName: string, customTargeting = {}): Dictionary {
 		return {
 			...this.pageTargeting,
 			src: [context.get('src') || ''],
-			pos: [slotName],
+			pos: [placementName],
 			...customTargeting,
 		};
 	}

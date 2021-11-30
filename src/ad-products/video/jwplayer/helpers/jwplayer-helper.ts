@@ -1,5 +1,5 @@
 import { AdSlot, buildVastUrl, context, events, vastDebugger, VastParams } from '@ad-engine/core';
-import { iasVideoTracker } from '../../player/porvata/ias/ias-video-tracker';
+import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
 import { JwpState } from '../streams/jwplayer-stream-state';
@@ -38,7 +38,7 @@ export class JWPlayerHelper {
 		}
 
 		try {
-			await iasVideoTracker.loadScript();
+			await iasVideoTracker.load();
 		} catch (e) {
 			console.error(e);
 		}
@@ -53,7 +53,7 @@ export class JWPlayerHelper {
 	initIasVideoTracking({ adsManager, videoElement }: JWPlayerEventParams['adsManager']): void {
 		const iasConfig = context.get('options.video.iasTracking.config');
 
-		iasVideoTracker.init(window.google, adsManager, videoElement, iasConfig);
+		window.googleImaVansAdapter.init(google, adsManager, videoElement, iasConfig);
 	}
 
 	setSlotParams(vastParams: VastParams): void {

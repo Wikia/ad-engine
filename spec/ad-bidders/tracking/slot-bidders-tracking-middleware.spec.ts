@@ -42,6 +42,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			mediagrid: 27.0,
 			verizon: 28.0,
 			appnexusGroupM: 29.0,
+			medianet: 30.0,
 		});
 	});
 
@@ -72,6 +73,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			mediagrid: 27.0,
 			verizon: 28.0,
 			appnexusGroupM: 29.0,
+			medianet: 30.0,
 		});
 
 		const context = {
@@ -109,6 +111,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_27: 27.0,
 			bidder_28: 28.0,
 			bidder_29: 29.0,
+			bidder_30: 30.0,
 		});
 	});
 
@@ -148,6 +151,7 @@ describe('slot-bidders-tracking-middleware', () => {
 			bidder_27: '27not_used',
 			bidder_28: '28not_used',
 			bidder_29: '29not_used',
+			bidder_30: '30not_used',
 		});
 	});
 });

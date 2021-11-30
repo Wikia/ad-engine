@@ -28,114 +28,6 @@ describe('Rubicon bidder adapter', () => {
 		expect(rubicon.prepareAdUnits()).to.deep.equal([
 			{
 				code: 'mobile_in_content',
-				mediaType: 'video',
-				mediaTypes: {
-					video: {
-						playerSize: [640, 480],
-						context: 'instream',
-						api: [2],
-						linearity: 1,
-						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
-						maxduration: 30,
-						protocols: [2, 3, 5, 6],
-					},
-				},
-				bids: [
-					{
-						bidder: 'rubicon',
-						params: {
-							accountId: 1234,
-							siteId: '55111',
-							zoneId: '88888',
-							name: 'mobile_in_content',
-							position: 'btf',
-							inventory: {},
-							video: {
-								playerWidth: '640',
-								playerHeight: '480',
-								size_id: '101',
-								language: 'en',
-							},
-						},
-					},
-				],
-			},
-		]);
-	});
-
-	it('prepareAdUnits returns data in correct shape', () => {
-		const rubicon = new Rubicon({
-			enabled: true,
-			accountId: 1234,
-			slots: {
-				mobile_in_content: {
-					siteId: '55111',
-					sizeId: '101',
-					zoneId: '88888',
-					position: 'btf',
-				},
-			},
-		});
-
-		expect(rubicon.prepareAdUnits()).to.deep.equal([
-			{
-				code: 'mobile_in_content',
-				mediaType: 'video',
-				mediaTypes: {
-					video: {
-						playerSize: [640, 480],
-						context: 'instream',
-						api: [2],
-						linearity: 1,
-						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
-						maxduration: 30,
-						protocols: [2, 3, 5, 6],
-					},
-				},
-				bids: [
-					{
-						bidder: 'rubicon',
-						params: {
-							accountId: 1234,
-							siteId: '55111',
-							zoneId: '88888',
-							name: 'mobile_in_content',
-							position: 'btf',
-							inventory: {},
-							video: {
-								playerWidth: '640',
-								playerHeight: '480',
-								size_id: '101',
-								language: 'en',
-							},
-						},
-					},
-				],
-			},
-		]);
-	});
-
-	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('bidders.prebid.additionalKeyvals.rubicon', true);
-		context.set('targeting.testKeyval', 'yes');
-
-		const rubicon = new Rubicon({
-			enabled: true,
-			accountId: 1234,
-			slots: {
-				mobile_in_content: {
-					siteId: '55111',
-					sizeId: '101',
-					zoneId: '88888',
-					position: 'btf',
-				},
-			},
-		});
-
-		expect(rubicon.prepareAdUnits()).to.deep.equal([
-			{
-				code: 'mobile_in_content',
-				mediaType: 'video',
 				mediaTypes: {
 					video: {
 						playerSize: [640, 480],
@@ -175,7 +67,123 @@ describe('Rubicon bidder adapter', () => {
 				],
 			},
 		]);
+	});
 
-		context.set('bidders.prebid.additionalKeyvals.rubicon', false);
+	it('prepareAdUnits returns data in correct shape', () => {
+		const rubicon = new Rubicon({
+			enabled: true,
+			accountId: 1234,
+			slots: {
+				mobile_in_content: {
+					siteId: '55111',
+					sizeId: '101',
+					zoneId: '88888',
+					position: 'btf',
+				},
+			},
+		});
+
+		expect(rubicon.prepareAdUnits()).to.deep.equal([
+			{
+				code: 'mobile_in_content',
+				mediaTypes: {
+					video: {
+						playerSize: [640, 480],
+						context: 'instream',
+						api: [2],
+						linearity: 1,
+						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+						maxduration: 30,
+						protocols: [2, 3, 5, 6],
+					},
+				},
+				bids: [
+					{
+						bidder: 'rubicon',
+						params: {
+							accountId: 1234,
+							siteId: '55111',
+							zoneId: '88888',
+							name: 'mobile_in_content',
+							position: 'btf',
+							inventory: {
+								lang: ['en'],
+								mappedVerticalName: ['gaming'],
+								pos: ['mobile_in_content'],
+								s1: ['not a top1k wiki'],
+								src: ['gpt'],
+								testKeyval: ['yes'],
+							},
+							video: {
+								playerWidth: '640',
+								playerHeight: '480',
+								size_id: '101',
+								language: 'en',
+							},
+						},
+					},
+				],
+			},
+		]);
+	});
+
+	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
+		context.set('targeting.testKeyval', 'yes');
+
+		const rubicon = new Rubicon({
+			enabled: true,
+			accountId: 1234,
+			slots: {
+				mobile_in_content: {
+					siteId: '55111',
+					sizeId: '101',
+					zoneId: '88888',
+					position: 'btf',
+				},
+			},
+		});
+
+		expect(rubicon.prepareAdUnits()).to.deep.equal([
+			{
+				code: 'mobile_in_content',
+				mediaTypes: {
+					video: {
+						playerSize: [640, 480],
+						context: 'instream',
+						api: [2],
+						linearity: 1,
+						mimes: ['video/mp4', 'video/x-flv', 'video/webm', 'video/ogg'],
+						maxduration: 30,
+						protocols: [2, 3, 5, 6],
+					},
+				},
+				bids: [
+					{
+						bidder: 'rubicon',
+						params: {
+							accountId: 1234,
+							siteId: '55111',
+							zoneId: '88888',
+							name: 'mobile_in_content',
+							position: 'btf',
+							inventory: {
+								lang: ['en'],
+								mappedVerticalName: ['gaming'],
+								pos: ['mobile_in_content'],
+								s1: ['not a top1k wiki'],
+								src: ['gpt'],
+								testKeyval: ['yes'],
+							},
+							video: {
+								playerWidth: '640',
+								playerHeight: '480',
+								size_id: '101',
+								language: 'en',
+							},
+						},
+					},
+				],
+			},
+		]);
 	});
 });

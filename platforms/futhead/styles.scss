@@ -22,8 +22,11 @@
 	.navbar.navbar-futhead {
 		@include uap-navbar();
 	}
-
+	.navbar-unfix-top {
+		margin-top: unset;
+	}
 	.has-uap {
+		padding-top: 0;
 		#cdm-zone-01 {
 			@include bfaa-slot();
 			@include sticky-tlb-slot();

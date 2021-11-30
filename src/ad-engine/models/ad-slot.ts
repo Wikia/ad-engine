@@ -1,11 +1,17 @@
-import { action, communicationService } from '@ad-engine/communication';
+import { communicationService, globalAction } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
 import { props } from 'ts-action';
-import { AdStackPayload, eventService, slotTweaker, utils } from '../';
-import { overscrollListener } from '../listeners';
+import {
+	AdStackPayload,
+	eventService,
+	insertMethodType,
+	SlotPlaceholderContextConfig,
+	slotTweaker,
+	utils,
+} from '../';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
-import { getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
+import { AD_LABEL_CLASS, getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
@@ -37,13 +43,12 @@ export interface SlotConfig {
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
 	firstCall?: boolean;
-	forceSafeFrame?: boolean;
 	aboveTheFold?: boolean;
-	trackOverscrolled?: boolean;
 	slotName?: string;
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
+	insertIntoParentContainerMethod?: insertMethodType;
 
 	targeting: Targeting;
 	videoAdUnit?: string;
@@ -61,6 +66,7 @@ export interface SlotConfig {
 	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
+	placeholder?: SlotPlaceholderContextConfig;
 }
 
 export interface WinningBidderDetails {
@@ -68,8 +74,7 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-// TODO: This should be split into separate action for each event
-export const adSlotEvent = action(
+export const adSlotEvent = globalAction(
 	'[AdEngine] Ad Slot event',
 	props<{
 		event: string;
@@ -81,6 +86,7 @@ export const adSlotEvent = action(
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
 	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
+	static SLOT_ADDED_EVENT = 'slotAdded';
 	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
@@ -99,6 +105,7 @@ export class AdSlot extends EventEmitter {
 	static STATUS_FORCE_UNSTICK = 'force-unstick';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
+	static STATUS_CLICKED = 'clicked';
 	static STATUS_VIEWPORT_CONFLICT = 'viewport-conflict';
 	static STATUS_HIVI_COLLAPSE = 'hivi-collapse';
 	static STATUS_CLOSED_BY_PORVATA = 'closed-by-porvata';
@@ -107,11 +114,10 @@ export class AdSlot extends EventEmitter {
 	static STATUS_UNKNOWN_INTERVENTION = 'unknown-intervention';
 
 	static AD_CLASS = 'gpt-ad';
+	static AD_SLOT_PLACEHOLDER_CLASS = 'ad-slot-placeholder';
 	static HIDDEN_CLASS = 'hide';
 
 	static TEMPLATES_LOADED = 'Templates Loaded';
-
-	private slotViewed = false;
 
 	private customIframe: HTMLIFrameElement = null;
 
@@ -130,6 +136,7 @@ export class AdSlot extends EventEmitter {
 	lineItemId: null | string | number = null;
 	winningBidderDetails: null | WinningBidderDetails = null;
 	trackOnStatusChanged = false;
+	slotViewed = false;
 
 	requested = new Promise<void>((resolve) => {
 		this.once(AdSlot.SLOT_REQUESTED_EVENT, () => {
@@ -217,6 +224,21 @@ export class AdSlot extends EventEmitter {
 		}
 
 		return this.element;
+	}
+
+	getPlaceholder(): HTMLElement | null {
+		const placeholder = this.getElement()?.parentElement;
+
+		return placeholder.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS) ? placeholder : null;
+	}
+
+	getAdLabel(adLabelParentSelector?: string): HTMLElement {
+		if (adLabelParentSelector) {
+			const adLabelParent: HTMLElement = document.querySelector(adLabelParentSelector);
+			return adLabelParent?.querySelector(`.${AD_LABEL_CLASS}`);
+		}
+
+		return this.getPlaceholder()?.querySelector(`.${AD_LABEL_CLASS}`);
 	}
 
 	getAdContainer(): HTMLDivElement | null {
@@ -424,10 +446,6 @@ export class AdSlot extends EventEmitter {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
-
-		if (this.config.trackOverscrolled) {
-			overscrollListener.apply(this);
-		}
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {

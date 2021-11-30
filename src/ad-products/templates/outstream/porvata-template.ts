@@ -1,7 +1,6 @@
-import { AdSlot, context, events, eventService, slotTweaker } from '@ad-engine/core';
+import { AdSlot, context, events, eventService, slotTweaker, utils } from '@ad-engine/core';
 import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
-import { getTranslation } from '../../common/i18n';
-import { PorvataPlayer } from '../../video/porvata4/porvata-player';
+import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 
 import DynamicReveal from '../interface/video/dynamic-reveal';
@@ -20,7 +19,7 @@ export interface PorvataTemplateConfig {
 }
 
 /**
- * TODO: Revisit responsibilities of this template. Shouldn't we move some parts to Porvata logic?
+ * @TODO: Revisit responsibilities of this template. Shouldn't we move some parts to Porvata logic?
  */
 export class PorvataTemplate {
 	static getName(): string {
@@ -49,7 +48,7 @@ export class PorvataTemplate {
 		}
 
 		this.adSlot.getElement().classList.add('porvata3');
-		this.adSlot.getElement().setAttribute('data-label', getTranslation('labels', 'advertisement'));
+		this.adSlot.getElement().setAttribute('data-label', utils.getTranslation('advertisement'));
 
 		this.isInsecureMode = params.vpaidMode === VpaidMode.INSECURE;
 
@@ -143,7 +142,7 @@ export class PorvataTemplate {
 	}
 
 	/**
-	 * TODO: Shouldn't we move this logic to Porvata code?
+	 * @TODO: Shouldn't we move this logic to Porvata code?
 	 */
 	adjustVpaidPlayer(video: PorvataPlayer): void {
 		video.addEventListener('loaded', (event: google.ima.AdEvent) => {

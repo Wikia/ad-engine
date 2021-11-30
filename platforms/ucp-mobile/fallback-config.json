@@ -3,10 +3,9 @@
         {
             "apps": [
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -17,8 +16,8 @@
     "icPrebidAppNexusAst": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -30,8 +29,8 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "FI",
@@ -50,11 +49,25 @@
             "value": true
         }
     ],
+    "icPushOnScrollThreshold": [
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "devices": [
+                "smartphone"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 100
+        }
+    ],
     "icPrebidRubicon": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -65,8 +78,8 @@
     "icPrebidOpenX": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -74,27 +87,11 @@
             "value": true
         }
     ],
-    "icPrebidPubmaticOutstream": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "CA",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icDeRecoExperimentDev": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "PL"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "sampling": 100.0,
             "value": {
@@ -124,8 +121,8 @@
     "icPrebidOneVideo": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "CA",
@@ -139,10 +136,9 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -153,18 +149,7 @@
     "icAudigent": [
         {
             "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icIncontentBoxadGap": [
-        {
-            "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -175,8 +160,8 @@
     "icComscoreJwpTracking": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -187,7 +172,7 @@
     "icPrebid33Across": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -198,18 +183,18 @@
     "icFloorAdhesionViewportsToStart": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
-            "value": 1
+            "value": 0
         }
     ],
     "icPrebidGumGum": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -221,9 +206,9 @@
         {
             "apps": [
                 "futhead",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -233,26 +218,13 @@
             }
         }
     ],
-    "icPrebidRubiconAdditionalKeyvals": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icBidsTracking": [
         {
             "apps": [
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -265,10 +237,9 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "AU",
@@ -288,10 +259,26 @@
             "value": true
         }
     ],
+    "icUAPJWPlayer": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "DE",
+                "GB",
+                "PL",
+                "UK"
+            ],
+            "sampling": 1.0,
+            "value": true
+        }
+    ],
     "icFloorAdhesion": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "AD",
@@ -313,6 +300,7 @@
                 "BL",
                 "BM",
                 "BQ",
+                "BR",
                 "BS",
                 "BY",
                 "BZ",
@@ -355,8 +343,10 @@
                 "IT",
                 "JE",
                 "JM",
+                "JP",
                 "KI",
                 "KN",
+                "KR",
                 "KY",
                 "LC",
                 "LI",
@@ -421,13 +411,14 @@
                 "VI",
                 "VU",
                 "WF",
-                "WS"
+                "WS",
+                "ZA"
             ],
             "value": true
         },
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "US"
@@ -439,37 +430,10 @@
     "icInterstitial": [
         {
             "apps": [
-                "mobile-wiki"
-            ],
-            "value": false
-        }
-    ],
-    "icSpaInstanceIdTracking": [
-        {
-            "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
-            ],
-            "sampling": 100.0,
-            "value": true
-        }
-    ],
-    "icRepeatMobileIncontentExtended": [
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "AU",
-                "CA",
-                "FR",
-                "GB",
-                "IL",
-                "PL",
-                "TR",
-                "UK"
             ],
             "value": true
         }
@@ -477,11 +441,8 @@
     "icPrebidPubmatic": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -492,8 +453,8 @@
     "icFeaturedVideoMoatTracking": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "DK",
@@ -515,8 +476,8 @@
     "icPrebidAppNexusGroupM": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "GB",
@@ -529,31 +490,16 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ]
-        }
-    ],
-    "icPrebidIndexExchangeFeatured": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
         }
     ],
     "icPrebidNobid": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -567,10 +513,9 @@
                 "bingebot",
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -581,20 +526,11 @@
     "icDeHeartbeatActivityTracking": [
         {
             "apps": [
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
-                "PL"
-            ],
-            "value": true
-        }
-    ],
-    "icCollapseTopLeaderboard": [
-        {
-            "apps": [
-                "mobile-wiki"
+                "XX"
             ],
             "value": true
         }
@@ -605,10 +541,9 @@
                 "bingebot",
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -619,7 +554,7 @@
     "icSxIsFandomMobileBannerDisabled": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -632,57 +567,20 @@
     "icTabIdTracking": [
         {
             "apps": [
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidLkqdOutstream": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "value": false
         }
     ],
     "icA9VideoBidder": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icA9Deals": [
-        {
-            "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icRealVu": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -694,8 +592,8 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -706,9 +604,8 @@
     "icDeHeartbeatTracking": [
         {
             "apps": [
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -728,8 +625,8 @@
     "icPrebidBeachfront": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -741,30 +638,61 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
-                "AU",
-                "CA",
-                "GB",
-                "UK"
+                "US"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
             ],
             "value": true
         }
     ],
-    "icA9LoggerErrorCodes": [
+    "icUAPJWPlayerDelay": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
-            ]
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 10000
+        }
+    ],
+    "icTrafficDivider": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "DE",
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true,
+            "value": true
         }
     ],
     "icPrebidKargo": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "AU",
@@ -780,10 +708,9 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -795,11 +722,10 @@
         {
             "apps": [
                 "f2",
+                "fandomdesktop",
+                "fandommobile",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "muthead"
             ],
             "regions": [
                 "PL"
@@ -812,19 +738,8 @@
     "icPrebidVerizon": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icOverscrolledTracking": [
-        {
-            "apps": [
-                "mobile-wiki"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -836,13 +751,79 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
+            "sampling": 100.0,
+            "samplingCache": true,
             "value": [
+                "5843854796",
+                "5821545299",
+                "5819692209",
+                "5816925751",
+                "5805836378",
+                "5816487755",
+                "5815863298",
+                "5812121484",
+                "5813975219",
+                "5815745758",
+                "5816370704",
+                "5815749760",
+                "5812104903",
+                "5803812894",
+                "5804931036",
+                "5805105259",
+                "5805836378",
+                "5805836375",
+                "5805105256",
+                "5789289108",
+                "5789289111",
+                "5782937222",
+                "5782937018",
+                "5767211193",
+                "5767211196",
+                "5748920809",
+                "5748920800",
+                "5733067199",
+                "5731335504",
+                "5731359990",
+                "5727822625",
+                "5727822619",
+                "5726787729",
+                "5726787720",
+                "5727054465",
+                "5725843320",
+                "5726935636",
+                "5726313329",
+                "5723553791",
+                "5714835837",
+                "5714835834",
+                "5702861484",
+                "5708676637",
+                "5708682148",
+                "5701604348",
+                "5687551124",
+                "5699440526",
+                "5696627683",
+                "5693635584",
+                "5687652183",
+                "5687652183",
+                "5687548505",
+                "5687551124",
+                "5686613743",
+                "5686613740",
+                "5686613647",
+                "5686613641",
+                "5686613737",
+                "5686613644",
+                "5675427997",
+                "5672641641",
+                "5671583683",
+                "5677261124",
+                "5670678471",
                 "5668850526",
                 "5663471693",
                 "5661781917",
@@ -873,6 +854,7 @@
                 "5629857064",
                 "5585170956",
                 "5585170959",
+                "5664517913",
                 "5585170962",
                 "5629664089",
                 "5628410358",
@@ -1903,52 +1885,384 @@
                 "5665857118",
                 "5665857244",
                 "5666587619",
-                "5638843608"
+                "5638843608",
+                "5671404855",
+                "5679406799",
+                "5669348111",
+                "5671417347",
+                "5674356957",
+                "5674357080",
+                "5674357083",
+                "5681824940",
+                "5681824934",
+                "5681824796",
+                "5681211784",
+                "5681824793",
+                "5680653996",
+                "5680653993",
+                "5678107606",
+                "5674357329",
+                "5689548881",
+                "5688085854",
+                "5694899039",
+                "5694899162",
+                "5694899165",
+                "5694899168",
+                "5694899171",
+                "5640416352",
+                "5699740740",
+                "5691549483",
+                "5693159648",
+                "5693159651",
+                "5693159654",
+                "5703650360",
+                "5703760508",
+                "5702090772",
+                "5703614362",
+                "5704155245",
+                "5704155248",
+                "5704155587",
+                "5709158816",
+                "5708586631",
+                "5699419605",
+                "5707825843",
+                "5702154395",
+                "5715091109",
+                "5711411262",
+                "5712597349",
+                "5712597352",
+                "5712597355",
+                "5720974788",
+                "5664772550",
+                "5664772553",
+                "5723175573",
+                "5723175564",
+                "5723175552",
+                "5723129919",
+                "5724909047",
+                "5726300790",
+                "5726287677",
+                "5727844924",
+                "5731045622",
+                "5731045625",
+                "5726668922",
+                "5726668925",
+                "5726669255",
+                "5726669258",
+                "5726669261",
+                "5731198479",
+                "5732198128",
+                "5732198329",
+                "5732198281",
+                "5732198284",
+                "5732198149",
+                "5732198146",
+                "5732198140",
+                "5732198143",
+                "5726669444",
+                "5731247491",
+                "5734758939",
+                "5734761051",
+                "5735951703",
+                "5739398562",
+                "5741204554",
+                "5741204560",
+                "5741889551",
+                "5741889560",
+                "5737226367",
+                "5739251685",
+                "5739251733",
+                "5739251736",
+                "5739252195",
+                "5739252207",
+                "5739252384",
+                "5745449682",
+                "5745422625",
+                "5739252387",
+                "5746908457",
+                "5736251400",
+                "5754080527",
+                "5754668618",
+                "5754668621",
+                "5754668876",
+                "5754668879",
+                "5754669002",
+                "5755208355",
+                "5750071397",
+                "5755802395",
+                "5755802824",
+                "5755802605",
+                "5755802833",
+                "5755802827",
+                "5755802830",
+                "5762247977",
+                "5760963750",
+                "5760963753",
+                "5765812789",
+                "5763385146",
+                "5763385140",
+                "5764526112",
+                "5766054875",
+                "5766054878",
+                "5766054881",
+                "5766055166",
+                "5766055169",
+                "5766055175",
+                "5766055172",
+                "5764194909",
+                "5764194912",
+                "5765505829",
+                "5766072950",
+                "5766072953",
+                "5814427419",
+                "5765123908",
+                "5768678810",
+                "5768678813",
+                "5766234870",
+                "5769526716",
+                "5769527406",
+                "5769564367",
+                "5754668603",
+                "5754668606",
+                "5754668609",
+                "5754668612",
+                "5754668615",
+                "5754668846",
+                "5773375331",
+                "5772063573",
+                "5761785059",
+                "5772063555",
+                "5764526109",
+                "5766405575",
+                "5765812792",
+                "5775993245",
+                "5776002149",
+                "5774100870",
+                "5775490702",
+                "5741889554",
+                "5741204557",
+                "5741889557",
+                "5741204551",
+                "5775490705",
+                "5777655567",
+                "5778918420",
+                "5775997805",
+                "5786072580",
+                "5787354954",
+                "5788710172",
+                "5789252117",
+                "5789252111",
+                "5787354951",
+                "5787354930",
+                "5770400280",
+                "5789011434",
+                "5790965481",
+                "5793467516",
+                "5793009994",
+                "5793665228",
+                "5794860469",
+                "5794450451",
+                "5796039085",
+                "5790995954",
+                "5794101588",
+                "5799888458",
+                "5797934076",
+                "5797934073",
+                "5799242869",
+                "5797934079",
+                "5791869303",
+                "5791869306",
+                "5793249037",
+                "5787354915",
+                "5787354918",
+                "5788710160",
+                "5788710163",
+                "5789252102",
+                "5789252105",
+                "5797934082",
+                "5804736206",
+                "5804737361",
+                "5801857090",
+                "5799964713",
+                "5805980576",
+                "5804957718",
+                "5806182925",
+                "5806183918",
+                "5806183909",
+                "5806184041",
+                "5804957712",
+                "5806184044",
+                "5806183912",
+                "5809737983",
+                "5808681249",
+                "5809022529",
+                "5809023255",
+                "5809023516",
+                "5810232364",
+                "5813057720",
+                "5806828033",
+                "5811079574",
+                "5809194900",
+                "5811079577",
+                "5809194897",
+                "5811079571",
+                "5809194903",
+                "5809194360",
+                "5812565422",
+                "5812565758",
+                "5812565752",
+                "5812565755",
+                "5812565425",
+                "5815492531",
+                "5815496773",
+                "5815496776",
+                "5815496767",
+                "5814531567",
+                "5812565410",
+                "5816316907",
+                "5829417731",
+                "5816316910",
+                "5816316913",
+                "5816392205",
+                "5816216296",
+                "5818527027",
+                "5818528200",
+                "5818528209",
+                "5818528203",
+                "5816343060",
+                "5816343066",
+                "5816343069",
+                "5823011702",
+                "5823012152",
+                "5816343072",
+                "5816343075",
+                "5823285548",
+                "5787333780",
+                "5787333783",
+                "5787333786",
+                "5787333789",
+                "5787334074",
+                "5787334077",
+                "5823087112",
+                "5825476260",
+                "5832313876",
+                "5822513451",
+                "5834481571",
+                "5836375108",
+                "5837735885",
+                "5837101876",
+                "5832810124",
+                "5831632797",
+                "5831633268",
+                "5831633271",
+                "5831633265",
+                "5831633274",
+                "5832810127",
+                "5836797057",
+                "5836797063",
+                "5838772246",
+                "5838772243",
+                "5838804859",
+                "5838804853",
+                "5837541996",
+                "5837541978",
+                "5839464878",
+                "5839464872",
+                "5837540568",
+                "5837540562",
+                "5837538864",
+                "5839463915",
+                "5838803242",
+                "5838803239",
+                "5837541279",
+                "5837541273",
+                "5839465148",
+                "5837538177",
+                "5837542278",
+                "5837542254",
+                "5839464452",
+                "5837537964",
+                "5838803662",
+                "5838803656",
+                "5838804412",
+                "5839411427",
+                "5838068769",
+                "5839323001",
+                "5838272394",
+                "5840147171",
+                "5838085902",
+                "5835145605",
+                "5835148755",
+                "5835148758",
+                "5835148761",
+                "5835148764",
+                "5836338427",
+                "5837500047",
+                "5841434767",
+                "5837500068",
+                "5837500059",
+                "5837500254",
+                "5837500245",
+                "5837500242",
+                "5842655213",
+                "5841999286",
+                "5842655210",
+                "5837500263",
+                "5835922692",
+                "5838769909",
+                "5843291491",
+                "5838301387",
+                "5838297049",
+                "5838301381",
+                "5843599869",
+                "5845474925",
+                "5845474928",
+                "5845474931",
+                "5845474934",
+                "5845474937",
+                "5845474940",
+                "5845474943",
+                "5845669913",
+                "5845670042",
+                "5845666283",
+                "5845669919",
+                "5845670627"
             ]
         }
     ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
             "value": [
-                "icPrebidSendAllBids_A_95:send_all_bids_a",
-                "icPrebidSendAllBids_B_5:send_all_bids_b",
-                "icFloatingMedrecRecirculationDisabled_A_90:fmr_50_50_a",
-                "icFloatingMedrecRecirculationDisabled_B_10:fmr_50_50_b",
-                "icIxIdentityLibrary_A_90:ix_library_a",
-                "icIxIdentityLibrary_B_10:ix_library_b",
                 "icFloorAdhesionDelay_A_50:fd_50_50_a",
-                "icFloorAdhesionDelay_B_50:fd_50_50_b"
+                "icFloorAdhesionDelay_B_50:fd_50_50_b",
+                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
+                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
+                "icUAPJWPlayer_A_99:uap_jwp_99_a",
+                "icUAPJWPlayer_B_1:uap_jwp_1_b",
+                "icAax_A_95:recovery_test_a",
+                "icAax_B_5:recovery_test_b",
+                "icTrafficDivider_A_50:galactus_h2_a",
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icTrackingOptInLibraryUrl_A_50:modal_disabled",
+                "icTrackingOptInLibraryUrl_B_50:modal_enabled"
             ]
         }
     ],
     "icTaxonomyAdTags": [
         {
             "apps": [
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icA9VideoBidsCleaning": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -1959,11 +2273,8 @@
     "icPrebidIndexExchange": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -1975,9 +2286,8 @@
         {
             "apps": [
                 "f2",
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "US"
@@ -1985,11 +2295,20 @@
             "value": true
         }
     ],
+    "icNativo": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": false
+        }
+    ],
     "icFeaturedVideoAdsFrequency": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -1997,101 +2316,14 @@
             "value": 3
         }
     ],
-    "wgAdDriverBillTheLizardConfig": {
-        "timeout": 2000,
-        "projects": {
-            "vcr": [
-                {
-                    "name": "vcr",
-                    "countries": [
-                        "PL/100",
-                        "CZ/100",
-                        "HK/100",
-                        "UK/100",
-                        "GB/100"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "garfield": [
-                {
-                    "name": "garfield",
-                    "on_1": [
-                        "catlapseIncontentBoxad"
-                    ],
-                    "countries": [
-                        "CZ/25"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "cheshirecat": [
-                {
-                    "name": "cheshirecat",
-                    "on_1": [
-                        "catlapseIncontentBoxad"
-                    ],
-                    "countries": [
-                        "PL/100",
-                        "UK/100",
-                        "GB/100",
-                        "DK/100",
-                        "FR/100",
-                        "IT/100",
-                        "NI/100"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "tb_viewability": [
-                {
-                    "name": "tb_viewability",
-                    "countries": [
-                        "DK/100",
-                        "MY/100",
-                        "CA/100",
-                        "US/100"
-                    ],
-                    "dfp_targeting": true
-                }
-            ],
-            "queen_of_hearts": [
-                {
-                    "name": "ctp_desktop:2.0.0",
-                    "on_0": [
-                        "disableAutoPlay"
-                    ],
-                    "on_1": [
-                        "disableAutoPlay"
-                    ],
-                    "countries": [
-                        "XX/0.05-cached"
-                    ]
-                }
-            ]
-        }
-    },
     "icPostmessageTracking": [
         {
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icPrebidAppNexusAdditionalKeyvals": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2104,10 +2336,9 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2130,48 +2361,24 @@
     "icPrebidVersion": [
         {
             "apps": [
+                "fandomdesktop",
+                "fandommobile",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v4.17.0/20210301.min.js"
-        }
-    ],
-    "icDurationMediaLibraryUrl": [
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//tag.durationmedia.net/sites/10651/dm.js"
-        },
-        {
-            "apps": [
-                "mobile-wiki",
-                "oasis"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//pr.realvu.net/flip/2/c=E4KZ_f=site_si=1167"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
         }
     ],
     "icA9Bidder": [
         {
             "apps": [
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2179,14 +2386,14 @@
             "value": true
         }
     ],
-    "icPorvataDirect": [
+    "icStroer": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
-                "XX"
+                "DE"
             ],
             "value": true
         }
@@ -2195,8 +2402,8 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "AU",
@@ -2217,11 +2424,8 @@
     "icPrebidTriplelift": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2229,12 +2433,40 @@
             "value": true
         }
     ],
+    "icSilverSurfer": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CH",
+                "DE",
+                "ES",
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "value": [
+                "ageBrackets:g_age_bracket",
+                "gender:g_gender",
+                "affiliation:g_affiliation",
+                "language:g_language",
+                "interests:g_interests",
+                "country:g_country",
+                "consoles:g_console",
+                "streaming:g_streaming"
+            ]
+        }
+    ],
     "icConfiant": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
+                "DE",
                 "GB",
                 "UK",
                 "US"
@@ -2245,11 +2477,8 @@
     "icPrebidAppNexus": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2257,26 +2486,126 @@
             "value": true
         }
     ],
-    "icPrebidSendAllBids": [
+    "icTargetingBundles": [
         {
             "apps": [
-                "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
-            "value": true
+            "value": {
+                "dnd_bundle": {
+                    "s1": [
+                        "_dungeonsdragons",
+                        "_itincantesimibellibelli",
+                        "_dnd5e",
+                        "_dungeonsdragons",
+                        "_gdmaze",
+                        "_dungeons",
+                        "_dungeonsanddaddiespodcast",
+                        "_ptbrdnd4th",
+                        "_dainxtdungeonsmod",
+                        "_esdnd5e",
+                        "_dungeonsiege",
+                        "_adnd2e",
+                        "_criticalrole",
+                        "_fantasyhigh",
+                        "_baldursgategame",
+                        "_dragonage",
+                        "_forgottenrealms",
+                        "_sfery"
+                    ]
+                },
+                "MARVEL_BUNDLE": {
+                    "s1": [
+                        "_avengers",
+                        "_avengersacademy",
+                        "_avengersacademy736",
+                        "_avengersalliance",
+                        "_avengersalliancetactics",
+                        "_avengersandxmen",
+                        "_avengersassemble",
+                        "_avengersassemble978",
+                        "_avengersassembled",
+                        "_avengersearthsmightiestheroes",
+                        "_avengersvsxmen",
+                        "_enmarveldatabase-ent",
+                        "_enmarveldatabase",
+                        "_loki",
+                        "_marvel-cinematic-universe",
+                        "_marvel-contestofchampions",
+                        "_marvel-microheroes",
+                        "_marvel-movies",
+                        "_marvel-spider-man",
+                        "_marvel",
+                        "_marvelanimated",
+                        "_marvelavengers",
+                        "_marvelcin",
+                        "_marvelcinematiceuniverse",
+                        "_marvelcinematicuniverse-ent",
+                        "_marvelcinematicuniverse",
+                        "_marvelcinematicuniverse880",
+                        "_marvelcinematicuniversedatabase",
+                        "_marvelcinematicuniverseguide",
+                        "_marvelcinematicuniverseunlimited",
+                        "_marvelcinenaticuniverse",
+                        "_marvelcomics",
+                        "_marvelcomics156",
+                        "_marvelcomicsanswers",
+                        "_marvelcomicsfanon",
+                        "_marvelcontestofchampions",
+                        "_marvelcontestofchampions272",
+                        "_marvelcrossroads",
+                        "_marveldatabase",
+                        "_marveldc",
+                        "_marveldc69",
+                        "_marvelfanfiction",
+                        "_marvelfilme",
+                        "_marvelfutureavengers",
+                        "_marvelheroes",
+                        "_marvelheroicrp",
+                        "_marvelhorror",
+                        "_marvelmicroheroes",
+                        "_marvelmovies-ent",
+                        "_marvelmovies",
+                        "_marvelmoviesfanon",
+                        "_marvelousmrsmaisel",
+                        "_marvelpuzzlequest",
+                        "_marvels-spider-man",
+                        "_marvelsavengers271",
+                        "_marvelsheroproject",
+                        "_marvelsspiderman2017",
+                        "_marvelstrikeforce811",
+                        "_marveltest",
+                        "_marvelultimatealliance",
+                        "_marveluniversemap",
+                        "_marvelvscapcom",
+                        "_marvelvsdc293",
+                        "_marvelvsdccomiccrossover",
+                        "_marvelwarofheroes",
+                        "_theavengers",
+                        "_theavengersassemble",
+                        "_theavengersmovie",
+                        "_xmen",
+                        "_xmendestiny",
+                        "_xmenevolution",
+                        "_xmenfanon",
+                        "_xmenlegends",
+                        "_xmenmovie",
+                        "_xmenmovies-ent",
+                        "_xmenmovies"
+                    ]
+                }
+            }
         }
     ],
     "icPrebidTelaria": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2288,10 +2617,9 @@
         {
             "apps": [
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2303,20 +2631,22 @@
         {
             "apps": [
                 "f2",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ]
         }
     ],
-    "icWatchingThat": [
+    "icAdMarketplace": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
-                "GB",
-                "UK"
+                "AU",
+                "CA",
+                "US",
+                "XX-EU"
             ],
             "value": true
         }
@@ -2324,8 +2654,8 @@
     "icPrebidMediaGrid": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2333,22 +2663,11 @@
             "value": true
         }
     ],
-    "icFloorAdhesionForceSafeFrame": [
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        }
-    ],
     "icFloorAdhesionDelay": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "CA",
@@ -2358,19 +2677,19 @@
         },
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "US"
             ],
-            "sampling": 50.0,
+            "sampling": 75.0,
             "value": -1
         },
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "US"
@@ -2380,8 +2699,8 @@
         },
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2389,26 +2708,14 @@
             "value": 30000
         }
     ],
-    "icScrollSpeedTracking": [
-        {
-            "apps": [
-                "mobile-wiki"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
     "icBabDetection": [
         {
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2421,25 +2728,23 @@
             "apps": [
                 "bingebot",
                 "f2",
+                "fandomdesktop",
+                "fandommobile",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
-                "muthead",
-                "oasis"
+                "muthead"
             ],
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v6.1.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.4.0/tracking-opt-in.min.js"
         }
     ],
     "icPermutive": [
         {
             "apps": [
                 "f2",
-                "gamepedia",
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "regions": [
                 "GB",
@@ -2452,8 +2757,8 @@
     "icDurationMedia": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
@@ -2464,12 +2769,12 @@
     "icFloorAdhesionTimeToCloseButton": [
         {
             "apps": [
-                "mobile-wiki"
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
-            "value": 1000
+            "value": 0
         }
     ],
     "icAdEngineDelay": [
@@ -2477,10 +2782,9 @@
             "apps": [
                 "f2",
                 "futhead",
-                "gamepedia",
-                "mobile-wiki",
+                "fandommobile",
                 "muthead",
-                "oasis"
+                "fandomdesktop"
             ],
             "regions": [
                 "XX"
@@ -2491,8 +2795,8 @@
     "icDeRecoExperiment": [
         {
             "apps": [
-                "mobile-wiki",
-                "oasis"
+                "fandommobile",
+                "fandomdesktop"
             ],
             "sampling": 100.0,
             "value": {

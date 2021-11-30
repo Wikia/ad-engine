@@ -29,7 +29,9 @@ interface Window {
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
+	ntv?: NativoQueue;
 	permutive?: Permutive;
+	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
 	pvUID?: string;
@@ -38,11 +40,8 @@ interface Window {
 	session_id?: string;
 	tabId?: string;
 	trackingOptIn?: any;
+	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
-	wtAdTracer?: (
-		{ apiKey, debug }: { apiKey: string; debug?: boolean },
-		playerElementId: string,
-	) => void;
 	XMLHttpRequest?: any;
 }
 

@@ -5,15 +5,12 @@ import {
 	context,
 	DiProcess,
 	events,
-	eventService,
-	ofType,
 	SlotCreator,
 	uapLoadStatus,
 	universalAdPackage,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take, tap } from 'rxjs/operators';
-import { f2ArticleFeedLoaded, f2FeedLoaded } from '../../f2.actions';
 import { F2SlotsDefinitionRepository, SlotSetupDefinition } from './f2-slots-definition-repository';
 
 @Injectable()
@@ -33,25 +30,13 @@ export class F2DynamicSlotsSetup implements DiProcess {
 
 		this.insertSlots([
 			topLeaderboardDefinition,
+			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
+			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 		]);
 
-		communicationService.action$
-			.pipe(
-				ofType(f2ArticleFeedLoaded, f2FeedLoaded),
-				take(1),
-				tap(() => {
-					this.insertSlots([
-						this.slotsDefinitionRepository.getTopBoxadConfig(),
-						this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
-						this.slotsDefinitionRepository.getFeedBoxadConfig(),
-					]);
-				}),
-			)
-			.subscribe();
-
 		if (!topLeaderboardDefinition) {
-			eventService.once(events.AD_STACK_START, () => {
+			utils.listener(events.AD_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.dispatch(
 					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),

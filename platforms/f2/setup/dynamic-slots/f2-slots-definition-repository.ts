@@ -1,15 +1,8 @@
-import {
-	AdSlot,
-	context,
-	SlotCreatorConfig,
-	SlotCreatorWrapperConfig,
-	slotService,
-} from '@wikia/ad-engine';
+import { context, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../setup-f2';
 import { F2State } from '../../utils/f2-state';
 import { F2_STATE } from '../../utils/f2-state-binder';
-import { F2FeedBoxadStickiness } from './f2-feed-boxad-stickiness';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -26,7 +19,6 @@ export class F2SlotsDefinitionRepository {
 	constructor(
 		@Inject(F2_STATE) private f2State: F2State,
 		@Inject(F2_ENV) private f2Env: F2Environment,
-		private f2FeedBoxadStickiness: F2FeedBoxadStickiness,
 	) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
@@ -53,65 +45,6 @@ export class F2SlotsDefinitionRepository {
 		};
 	}
 
-	getIncontentBoxadConfig(): SlotSetupDefinition {
-		const slotName = 'incontent_boxad';
-
-		if (!this.isArticle) {
-			return;
-		}
-
-		if (!this.isArticleLongEnoughForIncontentBoxad()) {
-			return;
-		}
-
-		return {
-			activator: () => context.push('events.pushOnScroll.ids', slotName),
-			slotCreatorWrapperConfig: {
-				classList: ['article-layout__incontent-ad'],
-			},
-			slotCreatorConfig: {
-				slotName,
-				anchorPosition: 2,
-				anchorSelector: '.article-content h2, .article-content h3',
-				insertMethod: 'before',
-				classList: ['hide'],
-			},
-		};
-	}
-
-	getBottomLeaderboardConfig(): SlotSetupDefinition {
-		const slotName = 'bottom_leaderboard';
-		const activator = () => context.push('events.pushOnScroll.ids', slotName);
-		const slotCreatorWrapperConfig: SlotCreatorWrapperConfig = {
-			classList: ['bottom-leaderboard-wrapper'],
-		};
-
-		if (!this.isArticle) {
-			return {
-				activator,
-				slotCreatorWrapperConfig,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: '.feed-layout .feed-item',
-					anchorPosition: 10,
-					insertMethod: 'before',
-					classList: ['hide'],
-				},
-			};
-		}
-
-		return {
-			activator,
-			slotCreatorWrapperConfig,
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '.article-layout-wrapper',
-				insertMethod: 'after',
-				classList: ['hide'],
-			},
-		};
-	}
-
 	getTopBoxadConfig(): SlotSetupDefinition {
 		const slotName = 'top_boxad';
 		const slotCreatorWrapperConfig: SlotCreatorWrapperConfig = {
@@ -119,28 +52,14 @@ export class F2SlotsDefinitionRepository {
 		};
 		const activator = () => context.push('state.adStack', { id: slotName });
 
-		if (!this.isArticle && this.f2Env.hasRightRail) {
+		if (!this.isArticle) {
 			return {
 				activator,
 				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.feed-layout__right-rail',
+					anchorSelector: '.feed-section__ad',
 					insertMethod: 'prepend',
-					classList: ['hide'],
-				},
-			};
-		}
-
-		if (!this.isArticle && !this.f2Env.hasRightRail) {
-			return {
-				activator,
-				slotCreatorWrapperConfig,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: '.feed-layout .feed-item',
-					anchorPosition: 1,
-					insertMethod: 'before',
 					classList: ['hide'],
 				},
 			};
@@ -184,79 +103,60 @@ export class F2SlotsDefinitionRepository {
 		};
 	}
 
-	getFeedBoxadConfig(): SlotSetupDefinition {
-		if (this.isArticle && this.isArticleLongEnoughForIncontentBoxad()) {
+	getIncontentBoxadConfig(): SlotSetupDefinition {
+		const slotName = 'incontent_boxad';
+
+		if (!this.isArticle) {
 			return;
 		}
 
-		const slotName = 'feed_boxad';
-		const activator = () => {
-			context.push('events.pushOnScroll.ids', slotName);
-			if (this.f2Env.hasRightRail && ['home', 'topic'].includes(this.f2State.pageType)) {
-				slotService.on(slotName, AdSlot.STATUS_SUCCESS, () =>
-					this.f2FeedBoxadStickiness.initializeFeedBoxadStickiness(),
-				);
-			}
+		if (!this.isArticleLongEnoughForIncontentBoxad()) {
+			return;
+		}
+
+		return {
+			activator: () => context.push('events.pushOnScroll.ids', slotName),
+			slotCreatorWrapperConfig: {
+				classList: ['article-layout__incontent-ad'],
+			},
+			slotCreatorConfig: {
+				slotName,
+				anchorPosition: 2,
+				anchorSelector: '.article-content h2, .article-content h3',
+				insertMethod: 'before',
+				classList: ['hide'],
+			},
+		};
+	}
+
+	getBottomLeaderboardConfig(): SlotSetupDefinition {
+		const slotName = 'bottom_leaderboard';
+		const activator = () => context.push('events.pushOnScroll.ids', slotName);
+		const slotCreatorWrapperConfig: SlotCreatorWrapperConfig = {
+			classList: ['bottom-leaderboard-wrapper'],
 		};
 
-		if (!this.isArticle && this.f2Env.hasRightRail) {
+		if (!this.isArticle) {
 			return {
 				activator,
+				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.feed-layout .feed-item',
-					anchorPosition: 10,
+					anchorSelector: '.search-box-bottom-wrapper',
 					insertMethod: 'before',
 					classList: ['hide'],
-				},
-				slotCreatorWrapperConfig: {
-					classList: ['feed-block-ad', 'feed-bottom-boxad'],
-				},
-			};
-		}
-
-		if (!this.isArticle && !this.f2Env.hasRightRail) {
-			return {
-				activator,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: '.feed-layout .feed-item',
-					anchorPosition: 6,
-					insertMethod: 'before',
-					classList: ['hide'],
-				},
-				slotCreatorWrapperConfig: {
-					classList: ['feed-block-ad', 'feed-bottom-boxad'],
-				},
-			};
-		}
-
-		if (this.f2Env.hasRightRail) {
-			return {
-				activator,
-				slotCreatorConfig: {
-					slotName,
-					anchorSelector: '.featured-block.in-area-right',
-					insertMethod: 'before',
-					classList: ['hide'],
-				},
-				slotCreatorWrapperConfig: {
-					classList: ['feed-block-ad', 'feed-boxad'],
 				},
 			};
 		}
 
 		return {
 			activator,
+			slotCreatorWrapperConfig,
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.feed-layout__container .feed-item',
-				anchorPosition: 3,
-				insertMethod: 'before',
+				anchorSelector: '.article-layout-wrapper',
+				insertMethod: 'after',
 				classList: ['hide'],
-			},
-			slotCreatorWrapperConfig: {
-				classList: ['feed-block-ad', 'feed-boxad'],
 			},
 		};
 	}

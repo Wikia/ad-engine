@@ -1,9 +1,17 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { getTopOffset, getViewportHeight, isInTheSameViewport } from '../utils/dimensions';
+import {
+	AD_LABEL_CLASS,
+	getTopOffset,
+	getTranslation,
+	getViewportHeight,
+	isInTheSameViewport,
+	logger,
+} from '../utils';
+export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
 	slotName: string;
-	insertMethod: 'append' | 'prepend' | 'after' | 'before';
+	insertMethod: insertMethodType;
 	anchorSelector: string;
 	/**
 	 * @default firstViable
@@ -12,6 +20,7 @@ export interface SlotCreatorConfig {
 	avoidConflictWith?: string[];
 	classList?: string[];
 	repeat?: object;
+	placeholderConfig?: SlotPlaceholderContextConfig;
 }
 
 export interface SlotCreatorWrapperConfig {
@@ -19,18 +28,31 @@ export interface SlotCreatorWrapperConfig {
 	classList?: string[];
 }
 
+export interface SlotPlaceholderContextConfig {
+	createLabel?: boolean;
+	adLabelParent?: string;
+}
+
+const groupName = 'slot-creator';
+
 @Injectable()
 export class SlotCreator {
 	createSlot(
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
 	): HTMLElement {
+		logger(groupName, `Creating: ${slotLooseConfig.slotName}`, slotLooseConfig, wrapperLooseConfig);
+
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
 		const slot = this.makeSlot(slotConfig);
 		const wrapper = this.wrapSlot(slot, wrapperLooseConfig);
 		const anchorElement = this.getAnchorElement(slotConfig);
 
 		anchorElement[slotConfig.insertMethod](wrapper);
+
+		if (slotConfig.placeholderConfig?.createLabel) {
+			this.addAdLabel(slot.parentElement, slotConfig.slotName);
+		}
 
 		return slot;
 	}
@@ -42,6 +64,7 @@ export class SlotCreator {
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
 			repeat: slotLooseConfig.repeat || {},
+			placeholderConfig: slotLooseConfig.placeholderConfig,
 		};
 	}
 
@@ -55,6 +78,8 @@ export class SlotCreator {
 		if (!result) {
 			this.throwNoPlaceToInsertError(slotConfig.slotName);
 		}
+
+		logger(groupName, 'getAnchorElement() called', slotConfig, result);
 
 		return result;
 	}
@@ -119,6 +144,14 @@ export class SlotCreator {
 		wrapper.append(slot);
 
 		return wrapper;
+	}
+
+	private addAdLabel(placeholder: HTMLElement, slotName: string): void {
+		const div = document.createElement('div');
+		div.className = AD_LABEL_CLASS;
+		div.innerText = getTranslation('advertisement');
+		div.dataset.slotName = slotName;
+		placeholder.appendChild(div);
 	}
 
 	private throwNoPlaceToInsertError(slotName: string): void {

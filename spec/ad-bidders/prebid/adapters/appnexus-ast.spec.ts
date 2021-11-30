@@ -3,6 +3,10 @@ import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
 describe('AppnexusAst bidder adapter', () => {
+	afterEach(() => {
+		context.remove('slots.mobile_in_content');
+	});
+
 	it('can be enabled', () => {
 		const appnexusAst = new AppnexusAst({
 			enabled: true,
@@ -35,7 +39,11 @@ describe('AppnexusAst bidder adapter', () => {
 						bidder: 'appnexusAst',
 						params: {
 							placementId: '11223344',
-							keywords: {},
+							keywords: {
+								p_standard: [],
+								pos: ['mobile_in_content'],
+								src: ['gpt'],
+							},
 							video: {
 								skippable: false,
 								playback_method: ['auto_play_sound_off'],
@@ -48,8 +56,6 @@ describe('AppnexusAst bidder adapter', () => {
 	});
 
 	it('prepareAdUnits returns data in correct shape with additional key-vals', () => {
-		context.set('bidders.prebid.additionalKeyvals.appnexus', true);
-
 		const appnexusAst = new AppnexusAst({
 			enabled: true,
 			slots: {
@@ -87,7 +93,5 @@ describe('AppnexusAst bidder adapter', () => {
 				],
 			},
 		]);
-
-		context.set('bidders.prebid.additionalKeyvals.appnexus', false);
 	});
 });

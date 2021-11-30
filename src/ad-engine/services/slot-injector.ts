@@ -40,7 +40,10 @@ class SlotInjector {
 		const slotConfig: SlotCreatorConfig = {
 			slotName,
 			anchorSelector: config.insertBeforeSelector || config.parentContainerSelector,
-			insertMethod: config.insertBeforeSelector ? 'before' : 'append',
+			insertMethod: config.insertBeforeSelector
+				? 'before'
+				: config.insertIntoParentContainerMethod || 'append',
+			placeholderConfig: config.placeholder,
 		};
 
 		if (config.insertBelowFirstViewport) {

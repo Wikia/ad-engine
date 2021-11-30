@@ -13,7 +13,6 @@ export const basicContext = {
 		timeout: 2000,
 		a9: {
 			enabled: false,
-			dealsEnabled: false,
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
@@ -29,16 +28,15 @@ export const basicContext = {
 		},
 	},
 	custom: {
+		dbNameForAdUnit: '_not_a_top1k_wiki',
 		dfpId: '5441',
-		wikiIdentifier: '_not_a_top1k_wiki',
-		wikiDBNameIdentifier: '_not_a_top1k_wiki',
-		serverPrefix: 'wka1b',
 		rolloutTracking: 'ucp',
+		serverPrefix: 'wka1b',
+		wikiIdentifier: '_not_a_top1k_wiki',
 	},
 	events: {
 		pushOnScroll: {
 			ids: [],
-			threshold: 100,
 		},
 		pushAfterRendered: {
 			top_boxad: ['incontent_boxad_1', 'incontent_player', 'affiliate_slot'],
@@ -47,19 +45,19 @@ export const basicContext = {
 	slots: {},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/' +
-			'{custom.serverPrefix}.{slotConfig.group}/' +
-			'{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
-			'{state.deviceType}/' +
-			'{targeting.skin}-{targeting.original_host}-{targeting.s2}/' +
-			'{custom.wikiIdentifier}-{targeting.s0}',
-		dbNameAdUnitId:
-			'/{custom.dfpId}/' +
-			'{custom.serverPrefix}.{slotConfig.group}/' +
-			'{slotConfig.adProduct}{slotConfig.slotNameSuffix}/' +
-			'{state.deviceType}/' +
-			'{targeting.skin}-{targeting.original_host}-{targeting.s2}/' +
-			'{custom.wikiDBNameIdentifier}-{targeting.s0}',
+			'/{custom.dfpId}' +
+			'/{custom.serverPrefix}.{slotConfig.group}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{state.deviceType}' +
+			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+			'/{custom.wikiIdentifier}-{targeting.s0}',
+		adUnitIdWithDbName:
+			'/{custom.dfpId}' +
+			'/{custom.serverPrefix}.{slotConfig.group}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{state.deviceType}' +
+			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
 		rollout_tracking: ['ucp'],
@@ -74,18 +72,24 @@ export const basicContext = {
 		},
 	},
 	services: {
+		adMarketplace: {
+			enabled: false,
+			insertMethod: 'prepend',
+			insertSelector: '.wds-global-navigation__search-suggestions.wds-dropdown__content',
+		},
 		confiant: {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
 		},
 		durationMedia: {
 			enabled: false,
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=mobile-wiki',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
 			fallback: fallbackInstantConfig,
 		},
 		iasPublisherOptimization: {
@@ -102,10 +106,6 @@ export const basicContext = {
 		nielsen: {
 			enabled: false,
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
-		},
-		realVu: {
-			id: 'c=E6H4_f=mint',
-			enabled: false,
 		},
 	},
 	slotGroups: {
@@ -141,14 +141,10 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
-			watchingThat: {
-				apiKey: 'NnBNOWpNNUxFfGJGZkJQaHFCQndNc3ZPMXZQZEp5UkhCWEdPbGJvRllP',
-				enabled: false,
-			},
 		},
 		viewabilityCounter: {
 			enabled: true,
-			ignoredSlots: ['featured', 'incontent_player', 'video'],
+			ignoredSlots: ['featured', 'incontent_player'],
 		},
 	},
 };

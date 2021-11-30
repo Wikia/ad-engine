@@ -1,8 +1,8 @@
+import { PorvataSettings } from '@wikia/ad-products';
+import { moatVideoTracker } from '@wikia/ad-products/video/porvata/plugins/moat/moat-video-tracker';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { context, utils } from '../../../../../../src/ad-engine';
-import { moatVideoTracker } from '../../../../../../src/ad-products/video/porvata4/plugins/moat/moat-video-tracker';
-import { PorvataSettings } from '../../../../../../src/ad-products/video/porvata4/porvata-settings';
+import { context, slotService, utils } from '../../../../../../src/ad-engine';
 
 describe('MOAT video tracker', () => {
 	const sandbox = sinon.createSandbox();
@@ -18,6 +18,9 @@ describe('MOAT video tracker', () => {
 
 	beforeEach(() => {
 		sandbox.stub(utils.scriptLoader, 'loadScript').returns(Promise.resolve(new Event('foo')));
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
 
 		context.set('options.video.moatTracking.partnerCode', 'bar');
 	});

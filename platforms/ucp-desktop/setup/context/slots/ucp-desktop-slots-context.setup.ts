@@ -13,8 +13,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'hivi_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				// ToDo: top-mergin needs to be fixed
-				insertBeforeSelector: '.page-wrapper',
+				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'v',
 				sizes: [
@@ -39,8 +38,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				// ToDo: top-mergin needs to be fixed
-				insertBeforeSelector: '.page-wrapper',
+				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -67,14 +65,18 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					loc: 'top',
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				// ToDo: it's probably not final selector
-				insertBeforeSelector: '.page-wrapper__right-rail h1',
+				parentContainerSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
+				insertIntoParentContainerMethod: 'prepend',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [
@@ -92,35 +94,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'AU',
-				// ToDo: revalidate requirements
 				insertBeforeSelector: '#top_boxad',
 				options: {},
 				slotShortcut: 'a',
 				defaultSizes: [[280, 120]],
-				targeting: {
-					loc: 'top',
-					rv: 1,
-				},
-			},
-			invisible_skin: {
-				adProduct: 'invisible_skin',
-				aboveTheFold: true,
-				group: 'PX',
-				// ToDo: ditto top_leaderboard or cleanup
-				insertBeforeSelector: '.page-wrapper',
-				options: {},
-				slotNameSuffix: '',
-				slotShortcut: 'x',
-				sizes: [
-					{
-						viewportSize: [1240, 0],
-						sizes: [
-							[1, 1],
-							[1000, 1000],
-						],
-					},
-				],
-				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'top',
 					rv: 1,
@@ -131,8 +108,9 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
 				group: 'HiVi',
-				// ToDo: it's probably not final selector
-				parentContainerSelector: '.page-wrapper__right-rail',
+				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
+				insertBeforeSelector: '#incontent_boxad_1',
+				recirculationElementSelector: '#recirculation-rail',
 				options: {},
 				slotShortcut: 'f',
 				sizes: [],
@@ -142,8 +120,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[300, 600],
 				],
-				insertBeforeSelector: '#incontent_boxad_1',
-				garfieldCat: true,
 				repeat: {
 					additionalClasses: 'hide',
 					index: 1,
@@ -165,7 +141,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.wds-global-footer',
+				parentContainerSelector: '.bottom-leaderboard',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -191,6 +167,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					loc: 'footer',
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.bottom-ads-container',
+				},
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -213,10 +193,9 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
 				disabled: true,
-				forceSafeFrame: true,
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				targeting: {
 					loc: 'footer',
@@ -229,7 +208,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
-				insertBeforeSelector: '.page-wrapper',
+				insertBeforeSelector: '.page',
 				options: {},
 				outOfPage: true,
 				targeting: {
@@ -240,7 +219,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			featured: {
 				adProduct: 'featured',
 				slotNameSuffix: '',
-				nonUapSlot: true,
 				group: 'VIDEO',
 				lowerSlotName: 'featured',
 				videoSizes: [[640, 480]],

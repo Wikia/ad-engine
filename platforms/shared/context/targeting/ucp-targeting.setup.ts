@@ -1,4 +1,11 @@
-import { Binder, context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
+import {
+	Binder,
+	context,
+	DiProcess,
+	InstantConfigService,
+	Targeting,
+	utils,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getDomain } from '../../utils/get-domain';
 
@@ -13,7 +20,7 @@ export class UcpTargetingSetup implements DiProcess {
 		};
 	}
 
-	constructor(@Inject(SKIN) private skin: string) {}
+	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
 		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
@@ -28,6 +35,11 @@ export class UcpTargetingSetup implements DiProcess {
 			context.set('custom.wikiIdentifier', '_top1k_wiki');
 			context.set('custom.dbNameForAdUnit', context.get('targeting.s1'));
 		}
+
+		context.set(
+			'targeting.bundles',
+			utils.targeting.getTargetingBundles(this.instantConfig.get('icTargetingBundles')),
+		);
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
@@ -43,7 +55,7 @@ export class UcpTargetingSetup implements DiProcess {
 			esrb: wiki.targeting.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
 			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
-			hostpre: this.getHostnamePrefix(),
+			hostpre: utils.targeting.getHostnamePrefix(),
 			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
 			lang: wiki.targeting.wikiLanguage || 'unknown',
 			media: wiki.targeting?.adTagManagerTags?.media || [],
@@ -53,7 +65,7 @@ export class UcpTargetingSetup implements DiProcess {
 			s0: wiki.targeting.mappedVerticalName,
 			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
-			s1: this.getRawDbName(wiki),
+			s1: utils.targeting.getRawDbName(wiki.targeting.wikiDbName),
 			s2: this.getAdLayout(wiki.targeting),
 			sex: wiki.targeting?.adTagManagerTags?.sex || [],
 			skin: this.skin,
@@ -62,6 +74,7 @@ export class UcpTargetingSetup implements DiProcess {
 			uap: 'none',
 			uap_c: 'none',
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
+			is_mobile: utils.client.isMobileSkin(this.skin) ? '1' : '0',
 		};
 
 		if (context.get('wiki.pvNumber')) {
@@ -77,29 +90,6 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		return targeting;
-	}
-
-	private getHostnamePrefix(): string {
-		const hostname = window.location.hostname.toLowerCase();
-		const match = /(^|.)(showcase|externaltest|preview|verify|stable|sandbox-[^.]+)\./.exec(
-			hostname,
-		);
-
-		if (match && match.length > 2) {
-			return match[2];
-		}
-
-		const pieces = hostname.split('.');
-
-		if (pieces.length) {
-			return pieces[0];
-		}
-
-		return undefined;
-	}
-
-	private getRawDbName(adsContext: MediaWikiAdsContext): string {
-		return `_${adsContext.targeting.wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
 	private getAdLayout(targeting: MediaWikiAdsTargeting): string {
@@ -146,7 +136,7 @@ export class UcpTargetingSetup implements DiProcess {
 		return {};
 	}
 
-	// TODO: This should not be here. It is a side effect that is unpredictable.
+	// @TODO: This should not be here. It is a side effect that is unpredictable.
 	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
 		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);

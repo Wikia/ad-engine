@@ -1,6 +1,5 @@
-import { VideoSettings } from '../../../video/player/porvata/video-settings';
-import { UapParams } from '../../uap';
-import { UapVideoSettings } from '../../uap/uap-video-settings';
+import { PorvataSettings } from '../../../video/porvata/porvata-settings';
+import { UapParams, UapVideoSettings } from '../../uap';
 import CloseButton from './close-button';
 import DynamicReveal from './dynamic-reveal';
 import Floating from './floating';
@@ -32,7 +31,7 @@ export const createBottomPanel = ({ fullscreenAllowed = true, theme = null }) =>
 	]);
 };
 
-const getTemplates = (params, videoSettings?: VideoSettings | UapVideoSettings) => {
+const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings) => {
 	let isAutoPlay: boolean;
 
 	if (videoSettings) {
@@ -74,7 +73,7 @@ const getTemplates = (params, videoSettings?: VideoSettings | UapVideoSettings) 
 };
 
 export function selectTemplate(
-	videoSettings: VideoSettings | UapVideoSettings,
+	videoSettings: PorvataSettings | UapVideoSettings,
 	params?: Partial<UapParams>,
 ) {
 	const videoParams = params || videoSettings.getParams();

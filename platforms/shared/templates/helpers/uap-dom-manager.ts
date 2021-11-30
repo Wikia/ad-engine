@@ -15,6 +15,14 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
+	addClassToAdSlot(className: string): void {
+		this.manipulator.element(this.adSlot.element).addClass(className);
+	}
+
+	addClassToPage(className: string): void {
+		this.manipulator.element(this.page).addClass(className);
+	}
+
 	setPageOffsetImpact(): void {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}
@@ -67,6 +75,20 @@ export class UapDomManager {
 		this.manipulator.element(this.adSlot.getElement()).setProperty('height', height);
 	}
 
+	setPlaceholderHeightResolved(): void {
+		this.setPlaceholderHeight(`${this.reader.getSlotHeightResolved()}px`);
+	}
+
+	setPlaceholderHeightImpact(): void {
+		this.setPlaceholderHeight(`${this.reader.getSlotHeightImpact()}px`);
+	}
+
+	private setPlaceholderHeight(height: string): void {
+		this.manipulator
+			.element(this.adSlot.getElement().parentElement.parentElement)
+			.setProperty('height', height);
+	}
+
 	setResolvedImage(): void {
 		if (this.params.image2 && this.params.image2.background) {
 			this.manipulator.element(this.params.image1.element).addClass('hidden-state');
@@ -77,6 +99,8 @@ export class UapDomManager {
 	}
 
 	setImpactImage(): void {
-		this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
+		if (this.params.image1) {
+			this.manipulator.element(this.params.image1.element).removeClass('hidden-state');
+		}
 	}
 }

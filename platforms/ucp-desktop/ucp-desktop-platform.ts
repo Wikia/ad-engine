@@ -23,7 +23,6 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
-import { UcpDesktopBillTheLizardSetup } from './setup/context/bill-the-lizard/ucp-desktop-bill-the-lizard.setup';
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
@@ -52,7 +51,6 @@ export class UcpDesktopPlatform {
 			UcpDesktopSlotsStateSetup,
 			BiddersStateSetup,
 			UcpDesktopTemplatesSetup,
-			UcpDesktopBillTheLizardSetup,
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,

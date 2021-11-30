@@ -2,13 +2,17 @@ import fallbackInstantConfig from './fallback-config.json';
 
 export const basicContext = {
 	adUnitId:
-		'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiIdentifier}-{targeting.s0}',
+		'/{custom.dfpId}' +
+		'/{custom.serverPrefix}.{slotConfig.group}' +
+		'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+		'/{state.deviceType}' +
+		'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+		'/{custom.wikiIdentifier}-{targeting.s0}',
 	bidders: {
 		enabled: false,
 		timeout: 2000,
 		a9: {
 			enabled: false,
-			dealsEnabled: false,
 			videoEnabled: false,
 			amazonId: '3115',
 			bidsRefreshing: {
@@ -38,9 +42,19 @@ export const basicContext = {
 	slots: {},
 	vast: {
 		adUnitId:
-			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiIdentifier}-{targeting.s0}',
+			'/{custom.dfpId}' +
+			'/{custom.serverPrefix}.{slotConfig.group}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{state.deviceType}' +
+			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+			'/{custom.wikiIdentifier}-{targeting.s0}',
 		adUnitIdWithDbName:
-			'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.dbNameForAdUnit}-{targeting.s0}',
+			'/{custom.dfpId}' +
+			'/{custom.serverPrefix}.{slotConfig.group}' +
+			'/{slotConfig.adProduct}{slotConfig.slotNameSuffix}' +
+			'/{state.deviceType}' +
+			'/{targeting.skin}-{targeting.original_host}-{targeting.s2}' +
+			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
 		rollout_tracking: ['ucp-desktop'],
@@ -49,19 +63,17 @@ export const basicContext = {
 		uap_c: 'none',
 	},
 	templates: {
+		ignoreNavbarHeight: true,
 		safeFanTakeoverElement: {
 			boxadSlotNames: ['top_boxad', 'incontent_boxad_1'],
 			boxadSize: [300, 601],
 		},
 	},
 	services: {
-		billTheLizard: {
-			enabled: true,
-			host: 'https://services.fandom.com',
-			endpoint: 'bill-the-lizard/predict',
-			projects: {},
-			parameters: {},
-			timeout: 2000,
+		adMarketplace: {
+			enabled: false,
+			insertMethod: 'after',
+			insertSelector: '.search-modal__content > form',
 		},
 		confiant: {
 			enabled: false,
@@ -69,6 +81,7 @@ export const basicContext = {
 		},
 		durationMedia: {
 			enabled: false,
+			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
 		},
 		distroScale: {
 			enabled: false,
@@ -90,16 +103,12 @@ export const basicContext = {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=oasis',
+			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandomdesktop',
 			fallback: fallbackInstantConfig,
 		},
 		nielsen: {
 			enabled: false,
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
-		},
-		realVu: {
-			id: 'c=E6H4_f=mint',
-			enabled: false,
 		},
 	},
 	slotGroups: {
@@ -129,65 +138,12 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
-			watchingThat: {
-				apiKey: 'NnBNOWpNNUxFfGJGZkJQaHFCQndNc3ZPMXZQZEp5UkhCWEdPbGJvRllP',
-				enabled: false,
-			},
 		},
 		wad: {
 			enabled: false,
 			blocking: false,
 			btRec: {
 				enabled: false,
-				placementsMap: {
-					top_leaderboard: {
-						uid: '5b33d3584c-188',
-						style: {
-							margin: '10px 0',
-							'z-index': '100',
-						},
-						size: {
-							width: 728,
-							height: 90,
-						},
-						lazy: false,
-					},
-					top_boxad: {
-						uid: '5b2d1649b2-188',
-						style: {
-							'margin-bottom': '10px',
-							'z-index': '100',
-						},
-						size: {
-							width: 300,
-							height: 250,
-						},
-						lazy: false,
-					},
-					incontent_boxad_1: {
-						uid: '5bbe13967e-188',
-						style: {
-							'z-index': '100',
-						},
-						size: {
-							width: 300,
-							height: 250,
-						},
-						lazy: true,
-					},
-					bottom_leaderboard: {
-						uid: '5b8f13805d-188',
-						style: {
-							'margin-bottom': '23px',
-							'z-index': '100',
-						},
-						size: {
-							width: 728,
-							height: 90,
-						},
-						lazy: true,
-					},
-				},
 			},
 		},
 	},

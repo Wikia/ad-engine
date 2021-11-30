@@ -1,6 +1,7 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/porvata';
+@import 'src/ad-products/styles/uap-variables';
 
 @mixin ucp-mobile-uap-styles() {
 	.has-uap {
@@ -13,7 +14,7 @@
 		}
 
 		#top_leaderboard {
-			@include bfaa-slot();
+			@include bfaa-slot(400);
 			@include sticky-tlb-slot();
 		}
 
@@ -25,7 +26,68 @@
 		#bottom_leaderboard {
 			@include uap-porvata();
 			@include uap-porvata-learn-more();
+			@include uap-advertisement-label();
+			@include uap-button-close();
 
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+	}
+
+	.uap-light {
+		.top-ads-container {
+			position: relative;
+			margin-top: $fandom-navbar-height;
+
+			.ad-slot-placeholder.top-leaderboard {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		#top_leaderboard {
+			top: $fandom-navbar-height;
+			z-index: 202;
+		}
+
+		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
+			clip: rect(0, auto, auto, 0);
+		}
+	}
+
+	.has-new-uap {
+		.ad-slot-placeholder.top-leaderboard {
+			left: 0;
+			position: sticky;
+			width: 100vw;
+			z-index: $new-uap-bfaa-z-index;
+			// Highest expected BFAA size. CLS optimization.
+			min-height: 213px;
+
+			#top_leaderboard {
+				@include uap-porvata();
+				@include uap-porvata-learn-more();
+				@include uap-advertisement-label();
+				@include uap-button-close();
+				@include bfaa-sticky-big();
+				@include bfaa-sticky-small();
+				@include bfaa-embedded();
+				&.is-dark {
+					@include uap-dark-theme();
+				}
+			}
+		}
+
+		@include bfaa-with-infobox();
+
+		#bottom_leaderboard {
+			@include bfab-new-uap();
+			@include uap-porvata();
+			@include uap-porvata-learn-more();
 			@include uap-advertisement-label();
 			@include uap-button-close();
 
@@ -52,20 +114,6 @@
 	@include logo-replacement(55px, 12px, 0, 116px, 24px);
 }
 
-// #######################################
-
-@mixin ic-ad-slot-placeholder() {
-	align-items: center;
-	display: flex;
-	justify-content: center;
-	min-height: 250px;
-
-	&.loading {
-		animation: is-loading 2s infinite;
-		border-radius: 20px;
-	}
-}
-
 .gpt-ad {
 	text-align: center;
 
@@ -80,13 +128,6 @@
 	}
 }
 
-not(.ic-ad-slot-placeholder) {
-	.ad-slot {
-		margin: 0 0 1.125rem;
-		text-align: center;
-	}
-}
-
 .ad-slot {
 	.provider-container {
 		margin: 20px auto;
@@ -97,49 +138,15 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
-.ad-slot-wrapper.top-boxad {
-	&.ic-ad-slot-placeholder {
-		@include ic-ad-slot-placeholder;
-	}
+.ntv-ad {
+	@include nativo;
 }
 
-.incontent-boxad {
-	&.ic-ad-slot-placeholder {
-		@include ic-ad-slot-placeholder;
-	}
-}
-
-.ic-ad-slot-placeholder {
-	@include ic-ad-slot-placeholder;
-}
-
-#incontent_player {
-	&.ic-ad-slot-placeholder {
-		@include ic-ad-slot-placeholder;
-
-		min-height: calc((100vw - 2.25rem) * 0.75);
-		align-items: unset;
-		display: block !important;
-
-		.video-overlay {
-			background: #000000;
-		}
-	}
-}
-
-.ic-ad-slot-placeholder {
-	@include ic-ad-slot-placeholder;
-
-	#incontent_player {
-		height: calc((100vw - 2.25rem) * 0.75);
-		margin: 0;
-		min-height: calc((100vw - 2.25rem) * 0.75);
-		width: calc(100vw - 2.25rem);
-
-		.video-overlay {
-			background: #000000;
-		}
-	}
+#ntv_feed_ad {
+	text-align: left;
+	height: 259px;
+	margin-bottom: 12px;
+	border-radius: 3px;
 }
 
 #affiliate_slot {
@@ -159,24 +166,15 @@ not(.ic-ad-slot-placeholder) {
 	width: 280px;
 }
 
-.article-content .ad-slot-wrapper {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.article-content .ad-slot-wrapper .ad-slot,
 .article-content p + .ad-slot {
-	&.incontent-boxad:not(.ic-ad-slot-placeholder) {
-		margin: 3rem 0;
+	margin: 3rem 0;
 
-		&:not(.a9-ad) {
-			margin: 3rem -1.5rem;
-		}
+	&:not(.a9-ad) {
+		margin: 3rem -1.5rem;
 	}
 }
 
-.article-content :not(.ic-ad-slot-placeholder) > .ad-slot {
+.article-content :not(.ad-slot-placeholder) > .ad-slot {
 	&.slot-responsive {
 		margin: 0 0 1.125rem;
 	}
@@ -190,18 +188,25 @@ not(.ic-ad-slot-placeholder) {
 	}
 }
 
-.out-of-page-template {
-	margin: 0;
+#floor_adhesion_anchor.out-of-page-template {
+	background: rgba(0, 0, 0, 0.8);
+	bottom: 0;
+	// needed for Safari 9 - it doesn't position elements from the left by default
+	left: 0;
+	padding: 20px 0;
 
-	&.floor-adhesion {
-		padding: 20px 0;
+	.button-close {
+		border: 2px solid white;
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		top: -20px;
 
-		.button-close {
-			border: 2px solid white;
-			border-radius: 50%;
-			width: 40px;
-			height: 40px;
-			top: -20px;
+		&:after {
+			content: '';
+			position: absolute;
+			width: 45px;
+			height: 45px;
 		}
 	}
 }
@@ -219,6 +224,81 @@ not(.ic-ad-slot-placeholder) {
 				position: static;
 			}
 		}
+	}
+}
+
+.ad-slot-placeholder {
+	position: relative;
+	padding: 18px 0 24px 0;
+
+	#incontent_player {
+		height: calc((100vw - 2.25rem) * 0.75);
+		margin: 0;
+		min-height: calc((100vw - 2.25rem) * 0.75);
+		width: calc(100vw - 2.25rem);
+
+		.video-overlay {
+			background: #000000;
+		}
+	}
+
+	.ae-translatable-label {
+		bottom: 0;
+		display: block;
+		color: #858585;
+		font-size: 10px;
+		font-weight: 500;
+		left: 0;
+		line-height: 24px;
+		position: absolute;
+		text-align: center;
+		text-transform: uppercase;
+		width: 100%;
+	}
+
+	.porvata-outstream.porvata3::before {
+		display: none;
+	}
+
+	&.is-loading {
+		.ae-translatable-label {
+			background-color: var(--theme-page-background-color);
+		}
+	}
+
+	&.hide,
+	.hide {
+		display: none;
+	}
+}
+
+body.bab-detected {
+	.top-ads-container,
+	.ad-slot-placeholder {
+		display: none;
+	}
+}
+
+.message-box {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	padding: 30px;
+	background-color: #520044;
+
+	.cta-message {
+		color: #ffc500;
+		font-size: 36px;
+		font-weight: 900;
+		line-height: 45px;
+		margin: 0 0 12px;
+		text-transform: uppercase;
+	}
+
+	.register-btn {
+		background-color: #ffc500;
+		color: #520044;
+		cursor: pointer;
 	}
 }
 

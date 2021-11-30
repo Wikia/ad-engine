@@ -1,5 +1,6 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	adMarketplace,
 	audigent,
 	bidders,
 	communicationService,
@@ -9,13 +10,17 @@ import {
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
+	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	nativo,
 	nielsen,
 	permutive,
-	realVu,
 	Runner,
+	silverSurferService,
+	stroer,
 	taxonomyService,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
@@ -26,12 +31,18 @@ export class UcpMobileAdsMode implements DiProcess {
 
 	execute(): void {
 		const inhibitors = this.callExternals();
-
 		this.setupJWPlayer(inhibitors);
-		startAdEngine(inhibitors);
+
+		const jwpInhibitor = [jwPlayerInhibitor.get()];
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
+		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
+			startAdEngine(inhibitors);
+		});
 
 		this.trackAdEngineStatus();
 		this.trackTabId();
+
+		utils.translateLabels();
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -43,18 +54,22 @@ export class UcpMobileAdsMode implements DiProcess {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
+		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
+		stroer.call();
 		durationMedia.call();
+		nativo.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+
+		adMarketplace.initialize();
 
 		return inhibitors;
 	}

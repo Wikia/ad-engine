@@ -48,17 +48,15 @@ class Client {
 			bab.onNotDetected(() => resolve(false));
 
 			bab.check(true);
-		}).then(
-			(detected: boolean): boolean => {
-				if (detected) {
-					enabled();
-				} else {
-					disabled();
-				}
+		}).then((detected: boolean): boolean => {
+			if (detected) {
+				enabled();
+			} else {
+				disabled();
+			}
 
-				return detected;
-			},
-		);
+			return detected;
+		});
 	}
 
 	getDeviceType(): DeviceType {
@@ -141,6 +139,12 @@ class Client {
 		const { userAgent } = window.navigator;
 
 		return userAgent.toLowerCase().indexOf('steam') > -1;
+	}
+
+	isMobileSkin(skin: string): boolean {
+		const mobileSkins = ['fandom_mobile', 'fc_mobile', 'turf_mobile', 'fandommobile', 'ucp_mobile'];
+
+		return mobileSkins.includes(skin);
 	}
 }
 

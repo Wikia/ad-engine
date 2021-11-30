@@ -33,12 +33,15 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_leaderboard', 'mobile_top_leaderboard'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				adProduct: 'top_boxad',
-				avoidConflictWith: '.ad-slot',
+				avoidConflictWith: '.ad-slot,.ntv-ad',
 				bidderAlias: 'mobile_in_content',
-				cheshireCatSlot: true,
 				slotNameSuffix: '',
 				group: 'MR',
 				options: {},
@@ -64,6 +67,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['top_boxad'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			affiliate_slot: {
 				adProduct: 'affiliate_slot',
@@ -71,7 +77,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'AU',
 				options: {},
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '.incontent-boxad',
 				slotShortcut: 'a',
 				defaultSizes: [[280, 120]],
 				targeting: {
@@ -85,12 +91,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
 				viewabilityCounterId: 'incontent_boxad',
-				cheshireCatSlot: true,
 				defaultClasses: ['hide', 'incontent-boxad', 'ad-slot'],
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '',
+				parentContainerSelector: '.incontent-boxad',
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -99,6 +105,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						'placeholder.createLabel': false,
 					},
 					insertBelowScrollPosition: true,
 				},
@@ -124,6 +131,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['incontent_boxad'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			incontent_player: {
 				adProduct: 'incontent_player',
@@ -131,6 +141,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				autoplay: true,
 				audio: false,
 				insertBeforeSelector: '.mw-parser-output > h2',
+				parentContainerSelector: '.incontent-boxad',
 				disabled: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
@@ -161,6 +172,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				targeting: {
 					loc: 'footer',
 					rv: 1,
+				},
+				placeholder: {
+					createLabel: true,
 				},
 			},
 			interstitial: {
@@ -245,6 +259,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					pos: ['bottom_leaderboard', 'mobile_prefooter'],
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: true,
+				},
 			},
 			invisible_high_impact_2: {
 				adProduct: 'invisible_high_impact_2',
@@ -261,7 +278,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			featured: {
 				adProduct: 'featured',
 				slotNameSuffix: '',
-				nonUapSlot: true,
 				group: 'VIDEO',
 				lowerSlotName: 'featured',
 				targeting: {
@@ -270,17 +286,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				trackingKey: 'featured-video',
 				trackEachStatus: true,
 				isVideo: true,
-			},
-			video: {
-				adProduct: 'video',
-				slotNameSuffix: '',
-				nonUapSlot: true,
-				group: 'VIDEO',
-				lowerSlotName: 'video',
-				targeting: {
-					uap: 'none',
-				},
-				trackingKey: 'video',
 			},
 		};
 
@@ -293,10 +298,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
-
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			context.set('slots.incontent_boxad_1.defaultClasses', ['hide', 'ad-slot']);
-		}
+		context.set('slots.incontent_boxad_1.defaultClasses', ['hide', 'ad-slot']);
 	}
 
 	private setupSlotParameters(slot): void {

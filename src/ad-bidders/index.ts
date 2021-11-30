@@ -135,6 +135,10 @@ class Bidders {
 		this.applyTargetingParams(slotName, bidderTargeting);
 
 		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
+		utils.communicator('Bidding done', {
+			name: slotName,
+			state: 'prebid',
+		});
 
 		return bidderTargeting;
 	}
@@ -154,3 +158,5 @@ export const bidders = new Bidders();
 
 export * from './tracking';
 export * from './wrappers';
+export * from './prebid/ats';
+export * from './prebid/live-ramp';

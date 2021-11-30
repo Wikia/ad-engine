@@ -1,8 +1,11 @@
+import { context, slotService } from '@wikia/ad-engine';
+import { PorvataSettings } from '@wikia/ad-products';
 import { assert } from 'chai';
-import { context } from '../../../../../src/ad-engine/services';
-import { PorvataSettings } from '../../../../../src/ad-products/video/porvata4/porvata-settings';
+import * as sinon from 'sinon';
 
 describe('Porvata Settings wrapper', () => {
+	const sandbox = sinon.createSandbox();
+
 	let porvataSettings;
 
 	beforeEach(() => {
@@ -24,6 +27,10 @@ describe('Porvata Settings wrapper', () => {
 		});
 	});
 
+	afterEach(() => {
+		sandbox.restore();
+	});
+
 	it('returns passed values in constructor', () => {
 		assert.equal(porvataSettings.getAdProduct(), 'hivi');
 		assert.isFalse(porvataSettings.isAutoPlay());
@@ -36,6 +43,10 @@ describe('Porvata Settings wrapper', () => {
 	});
 
 	it('enables moatTracking when true is passed', () => {
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
+
 		const settings = new PorvataSettings({
 			moatTracking: true,
 			container: document.createElement('div'),
@@ -47,6 +58,10 @@ describe('Porvata Settings wrapper', () => {
 	});
 
 	it('disables moatTracking when false is passed', () => {
+		sandbox.stub(slotService, 'get').returns({
+			getConfigProperty: () => ({ isVideo: true }),
+		} as any);
+
 		const settings = new PorvataSettings({
 			moatTracking: false,
 			container: document.createElement('div'),
@@ -67,18 +82,6 @@ describe('Porvata Settings wrapper', () => {
 		});
 
 		assert.isFalse(settings.isMoatTrackingEnabled());
-	});
-
-	it('enables moatTracking when sampling is 100%', () => {
-		context.set('options.video.moatTracking.sampling', 100);
-
-		const settings = new PorvataSettings({
-			container: document.createElement('div'),
-			slotName: 'foo',
-			src: 'gpt',
-		});
-
-		assert.isTrue(settings.isMoatTrackingEnabled());
 	});
 
 	it('enables iasTracking when true is passed', () => {

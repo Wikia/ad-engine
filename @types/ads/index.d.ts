@@ -21,11 +21,6 @@ interface MediaWikiAdsOpts {
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
-	enableTLBPlaceholder?: boolean;
-	enableTBPlaceholder?: boolean;
-	enableICLazyRequesting?: boolean;
-	enableICBPlaceholder?: boolean;
-	enableICPPlaceholder?: boolean;
 	enableAdTagManagerBackend?: boolean;
 }
 
@@ -50,6 +45,7 @@ interface MediaWikiAdsTargeting {
 	newWikiCategories?: string[];
 	hasPortableInfobox: boolean;
 	adTagManagerTags?: AdTagManagerTags;
+	isMobile: boolean;
 }
 
 interface MediaWikiFeaturedVideoInfo {
@@ -79,6 +75,9 @@ interface Runtime {
 	interstitial?: {
 		available?: boolean;
 		visible?: boolean;
+	};
+	distroscale?: {
+		adUnit?: string;
 	};
 	unblockHighlyViewableSlots?: boolean;
 }

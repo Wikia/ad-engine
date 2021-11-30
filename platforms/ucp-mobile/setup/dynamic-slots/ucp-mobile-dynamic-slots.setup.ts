@@ -1,7 +1,6 @@
-import { slotsContext } from '@platforms/shared';
+import { MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
-	adSlotEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -9,7 +8,6 @@ import {
 	events,
 	eventService,
 	fillerService,
-	ofType,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
@@ -19,7 +17,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { filter } from 'rxjs/operators';
+import { PlaceholderServiceHelper } from '../../../shared/utils/placeholder-service-helper';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -41,12 +39,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureAffiliateSlot();
-		this.configureICBPlaceholderHandler();
-		this.configureICPPlaceholderHandler();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
+		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
@@ -54,6 +51,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		this.insertSlots([
 			topLeaderboardDefinition,
+			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
@@ -61,10 +59,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
+			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 		]);
 
 		if (!topLeaderboardDefinition) {
-			eventService.once(events.AD_STACK_START, () => {
+			utils.listener(events.AD_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.dispatch(
 					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
@@ -99,85 +98,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 		} else {
 			slotService.disable(slotName);
-		}
-	}
-
-	private configureICBPlaceholderHandler(): void {
-		const shouldRemoveICBLoader = (action: object) => {
-			if (action['adSlotName'].includes('incontent_boxad')) {
-				if (action['event'] === 'slotRendered' || action['event'] === 'slotHidden') {
-					return true;
-				}
-			}
-
-			return false;
-		};
-
-		const adSlotEventListener = (removeLoader) => {
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => shouldRemoveICBLoader(action)),
-				)
-				.subscribe((action) => {
-					removeLoader(action.adSlotName);
-				});
-		};
-
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.parentElement.classList.remove('loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		} else if (context.get('wiki.opts.enableICBPlaceholder')) {
-			context.set('slots.incontent_boxad_1.defaultClasses', [
-				'incontent-boxad',
-				'ad-slot',
-				'ic-ad-slot-placeholder',
-				'loading',
-			]);
-
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.classList.remove('loading');
-				slotElement.classList.remove('is-loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		}
-	}
-
-	private configureICPPlaceholderHandler(): void {
-		const adSlotEventListener = (removeLoader) => {
-			communicationService.action$
-				.pipe(
-					ofType(adSlotEvent),
-					filter((action) => action.adSlotName === 'incontent_player'),
-				)
-				.subscribe((action) => {
-					removeLoader(action.adSlotName);
-				});
-		};
-
-		if (context.get('wiki.opts.enableICPPlaceholder')) {
-			context.set('slots.incontent_player.defaultClasses', ['ic-ad-slot-placeholder', 'loading']);
-
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.classList.remove('loading');
-			};
-
-			adSlotEventListener(removeLoader);
-		}
-		if (context.get('wiki.opts.enableICLazyRequesting')) {
-			const removeLoader = (adSlotName) => {
-				const slotElement = document.querySelector(`#${adSlotName}`);
-				slotElement.parentElement.classList.remove('loading');
-			};
-
-			adSlotEventListener(removeLoader);
 		}
 	}
 
@@ -247,5 +167,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
 			this.CODE_PRIORITY.floor_adhesion.active = false;
 		});
+	}
+
+	private registerAdPlaceholderService(): void {
+		const placeholderHelper = new PlaceholderServiceHelper();
+		const messageBox = new MessageBox();
+
+		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
+		placeholderService.init();
 	}
 }

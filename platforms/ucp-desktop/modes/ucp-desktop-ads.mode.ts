@@ -1,24 +1,34 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	adMarketplace,
 	audigent,
 	bidders,
-	billTheLizard,
 	communicationService,
 	confiant,
 	context,
 	DiProcess,
+	distroScale,
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
+	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	nativo,
 	nielsen,
+	ofType,
 	permutive,
-	realVu,
 	Runner,
+	silverSurferService,
+	slotDataParamsUpdater,
+	slotService,
+	stroer,
 	taxonomyService,
+	uapLoadStatus,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -27,13 +37,19 @@ export class UcpDesktopAdsMode implements DiProcess {
 
 	execute(): void {
 		const inhibitors = this.callExternals();
-
 		this.setupJWPlayer(inhibitors);
-		startAdEngine(inhibitors);
+
+		const jwpInhibitor = [jwPlayerInhibitor.get()];
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
+		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
+			startAdEngine(inhibitors);
+		});
 
 		this.setAdStack();
 		this.trackAdEngineStatus();
 		this.trackTabId();
+
+		utils.translateLabels();
 	}
 
 	private trackAdEngineStatus(): void {
@@ -74,19 +90,30 @@ export class UcpDesktopAdsMode implements DiProcess {
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
+		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
-		realVu.call();
+		stroer.call();
 		durationMedia.call();
+		nativo.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
-		billTheLizard.call(['vcr']);
+
+		adMarketplace.initialize();
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(({ isLoaded }) => {
+			const incontentPlayer = slotService.get('incontent_player');
+			if (!isLoaded && incontentPlayer) {
+				slotDataParamsUpdater.updateOnCreate(incontentPlayer);
+				distroScale.call();
+			}
+		});
 
 		return inhibitors;
 	}

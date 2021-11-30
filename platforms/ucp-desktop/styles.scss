@@ -16,10 +16,19 @@
 			margin-top: 0;
 		}
 
+		.fandom-sticky-header {
+			margin-top: -46px;
+			z-index: 401;
+		}
+
 		#top_leaderboard,
 		#hivi_leaderboard {
-			@include bfaa-slot();
-			@include sticky-tlb-slot();
+			$global-navigation-width: 66px;
+
+			@include bfaa-slot(402, $global-navigation-width);
+			@include sticky-tlb-slot($global-navigation-width);
+
+			margin-left: $global-navigation-width;
 		}
 
 		#bottom_leaderboard {
@@ -38,6 +47,29 @@
 			&.is-dark {
 				@include uap-dark-theme();
 			}
+		}
+	}
+
+	.uap-light {
+		.fandom-sticky-header {
+			margin-top: unset;
+		}
+
+		.top-ads-container {
+			position: relative;
+			background: #000;
+
+			.ad-slot-placeholder.top-leaderboard {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
+			clip: rect(0, auto, auto, 0);
 		}
 	}
 
@@ -70,28 +102,62 @@
 	}
 }
 
+.ad-slot-placeholder.hide {
+	display: none !important;
+}
+
+.ntv-ad {
+	@include nativo;
+	margin-bottom: 24px;
+
+	.ntv-wrapper {
+		background: var(--theme-page-background-color--secondary);
+		border: 0;
+
+		.ntv-content {
+			.ntv-ad-button {
+				font-size: 14px;
+			}
+
+			.ntv-ad-label {
+				font-size: 14px;
+				line-height: 24px;
+			}
+
+			.ntv-ad-offer {
+				font-size: 16px;
+				line-height: 28px;
+			}
+
+			.ntv-ad-title {
+				font-size: 18px;
+				line-height: 32px;
+			}
+		}
+	}
+}
+
 .main-page-tag-rcs {
 	display: flex;
 	flex-direction: column;
 }
 
-#top_leaderboard {
-	> div {
-		text-align: center;
-	}
+#top_boxad {
+	margin-bottom: 10px;
 }
 
 #bottom_leaderboard {
-	margin-top: 20px;
-	margin-bottom: 23px;
+	margin: 20px 0;
 
 	> div {
 		text-align: center;
 	}
 }
 
-#invisible_skin {
-	display: none !important;
+.porvata-outstream.porvata3 .volume-button {
+	width: 20px;
+	height: 20px;
+	margin: 0 10px 10px 0 !important;
 }
 
 #affiliate_slot > div {

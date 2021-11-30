@@ -11,6 +11,8 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
+	Nativo,
+	nativo,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -19,10 +21,12 @@ import {
 	slotInjector,
 	slotService,
 	TemplateRegistry,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+import { desktopFanFeedNativeAdListener } from './desktop-fan-feed-native-ad-listener';
 
 const railReady = globalAction('[Rail] Ready');
 
@@ -36,6 +40,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.injectAffiliateDisclaimer();
 		this.injectFloorAdhesion();
 		this.injectBottomLeaderboard();
+		this.injectNativeAdsPlaceholder();
+		this.injectNativeFanFeed();
 		this.configureTopLeaderboard();
 		this.configureIncontentPlayerFiller();
 	}
@@ -43,10 +49,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	private injectSlots(): void {
 		const slots: Dictionary<SlotConfig> = context.get('slots');
 		Object.keys(slots).forEach((slotName) => {
-			if (slots[slotName].insertBeforeSelector) {
+			if (slots[slotName].insertBeforeSelector || slots[slotName].parentContainerSelector) {
 				slotInjector.inject(slotName, true);
 			}
 		});
+
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
 	}
 
@@ -64,6 +71,41 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
 			}
 		});
+	}
+
+	private injectNativeAdsPlaceholder(): void {
+		if (!nativo.isEnabled()) {
+			return;
+		}
+
+		const pageHeaders = document.querySelectorAll('.mw-headline');
+		const anchor = pageHeaders[1];
+
+		if (!anchor) {
+			return;
+		}
+
+		const container = this.createNativeAdPlaceholder(
+			Nativo.INCONTENT_AD_SLOT_NAME,
+			Nativo.SLOT_CLASS_LIST,
+		);
+		anchor.before(container);
+
+		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+			if (action.isLoaded) {
+				return;
+			}
+
+			nativo.requestAd(container);
+		});
+	}
+
+	private createNativeAdPlaceholder(id: string, classList): HTMLElement {
+		const container = document.createElement('div');
+		container.setAttribute('id', id);
+		container.classList.add(...classList);
+
+		return container;
 	}
 
 	private injectIncontentPlayer(): void {
@@ -99,21 +141,48 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		container.id = slotName;
 		parentContainer.appendChild(container);
-		rotator.rotateSlot();
+
+		utils.listener(events.AD_STACK_START, () => {
+			rotator.rotateSlot();
+		});
+	}
+
+	private handleAdPlaceholders(slotName: string, slotStatus: string): void {
+		const statusesToHideLabel: string[] = [AdSlot.STATUS_BLOCKED, AdSlot.STATUS_COLLAPSE];
+		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS];
+		const statusesToCollapse: string[] = [AdSlot.STATUS_FORCED_COLLAPSE];
+		const adSlot = slotService.get(slotName);
+
+		const placeholder = adSlot.getPlaceholder();
+		const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
+
+		if (statusesToStopLoadingSlot.includes(slotStatus)) {
+			placeholder?.classList.remove('is-loading');
+		} else if (statusesToHideLabel.includes(slotStatus)) {
+			placeholder?.classList.remove('is-loading');
+			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
+		} else if (statusesToCollapse.includes(slotStatus)) {
+			placeholder?.classList.add('hide');
+			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
+		}
 	}
 
 	private configureTopLeaderboard(): void {
-		const hiviLBEnabled = context.get('options.hiviLeaderboard');
+		const slotName = 'top_leaderboard';
+		const hiviLBEnabled =
+			context.get('options.hiviLeaderboard') && !context.get('options.wad.blocking');
 
 		if (hiviLBEnabled) {
 			context.set('slots.top_leaderboard.firstCall', false);
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-				slotService.setState('top_leaderboard', false);
+				slotService.setState(slotName, false);
+				this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
 				slotService.setState('top_leaderboard', false);
+				this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
 			});
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
@@ -121,17 +190,28 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 				if (!adSlot.isEmpty) {
 					slotService.setState('top_leaderboard', false);
+					this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
 				}
 			});
 		}
 
-		if (
-			!context.get('custom.hasFeaturedVideo') &&
-			context.get('wiki.targeting.pageType') !== 'special'
-		) {
-			slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
+		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
+			this.handleAdPlaceholders('top_leaderboard', AdSlot.STATUS_SUCCESS);
+		});
 
-			if (context.get('templates.stickyTlb.lineItemIds')) {
+		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
+			this.handleAdPlaceholders('top_leaderboard', AdSlot.STATUS_COLLAPSE);
+		});
+
+		if (!context.get('custom.hasFeaturedVideo')) {
+			if (context.get('wiki.targeting.pageType') !== 'special') {
+				slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
+			}
+
+			if (context.get('templates.stickyTlb.forced')) {
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+				context.push('slots.hivi_leaderboard.defaultTemplates', 'stickyTlb');
+			} else if (context.get('templates.stickyTlb.lineItemIds')) {
 				context.set('templates.stickyTlb.enabled', true);
 				context.push(
 					`slots.${hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard'}.defaultTemplates`,
@@ -148,7 +228,15 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectFloorAdhesion(): void {
-		scrollListener.addSlot('floor_adhesion', { distanceFromTop: utils.getViewportHeight() });
+		const numberOfViewportsFromTopToPush: number =
+			context.get('options.floorAdhesionNumberOfViewportsFromTopToPush') || 0;
+
+		if (numberOfViewportsFromTopToPush === -1) {
+			context.push('state.adStack', { id: 'floor_adhesion' });
+		} else {
+			const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+			scrollListener.addSlot('floor_adhesion', { distanceFromTop: distance });
+		}
 
 		this.registerFloorAdhesionCodePriority();
 	}
@@ -177,10 +265,24 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		context.push('events.pushOnScroll.ids', slotName);
 
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
-			if (slot.getSlotName() === slotName && btRec.isEnabled() && btRec.duplicateSlot(slotName)) {
-				btRec.triggerScript();
-			}
+		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
 		});
+
+		slotService.on(slotName, AdSlot.STATUS_BLOCKED, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_BLOCKED);
+		});
+
+		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
+		});
+
+		slotService.on(slotName, AdSlot.STATUS_FORCED_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
+		});
+	}
+
+	private injectNativeFanFeed(): void {
+		desktopFanFeedNativeAdListener();
 	}
 }

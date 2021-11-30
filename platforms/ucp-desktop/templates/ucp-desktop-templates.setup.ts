@@ -1,5 +1,6 @@
-import { registerFloorAdhesionTemplate, registerInterstitialTemplate } from '@platforms/shared';
+import { registerInterstitialTemplate } from '@platforms/shared';
 import {
+	context,
 	DiProcess,
 	logTemplates,
 	PorvataTemplate,
@@ -10,9 +11,11 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
 import { registerAffiliateDisclaimerTemplate } from './affiliate-disclaimer-template';
+import { registerBfaaOldTemplate } from './bfaa-old-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
+import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
@@ -24,7 +27,9 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 	}
 
 	execute(): void {
-		const bfaa$ = registerBfaaTemplate(this.registry);
+		const bfaa$ = context.get('options.newBfaaTemplate')
+			? registerBfaaTemplate(this.registry)
+			: registerBfaaOldTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);

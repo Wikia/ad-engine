@@ -25,7 +25,6 @@ export const GAMOrigins: string[] = [
 
 export function postponeExecutionUntilGptLoads(method: () => void) {
 	return function (...args: any) {
-		// TODO: remove this hack in https://wikia-inc.atlassian.net/browse/ADEN-9254
 		setTimeout(() => {
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
@@ -155,6 +154,7 @@ export class GptProvider implements Provider {
 	}
 
 	private fillInCallback(adSlot: AdSlot): void {
+		const adSlotName = adSlot.getSlotName();
 		const targeting = adSlot.getTargeting();
 		const sizeMap = new GptSizeMap(adSlot.getSizes());
 		const gptSlot = this.createGptSlot(adSlot, sizeMap);
@@ -163,21 +163,17 @@ export class GptProvider implements Provider {
 
 		this.applyTargetingParams(gptSlot, targeting);
 
-		if (adSlot.getConfigProperty('forceSafeFrame')) {
-			this.forceSafeFrame(gptSlot);
-		}
-
 		slotDataParamsUpdater.updateOnCreate(adSlot);
 		adSlot.updateWinningPbBidderDetails();
 
-		window.googletag.display(adSlot.getSlotName());
+		window.googletag.display(adSlotName);
 		definedSlots.push(gptSlot);
 
 		if (!adSlot.isFirstCall()) {
 			this.flush();
 		}
 
-		logger(logGroup, adSlot.getSlotName(), 'slot added');
+		logger(logGroup, adSlotName, 'slot added');
 	}
 
 	/** @private */
@@ -209,13 +205,6 @@ export class GptProvider implements Provider {
 				value = value.toString();
 			}
 			gptSlot.setTargeting(key, value);
-		});
-	}
-
-	forceSafeFrame(gptSlot: googletag.Slot) {
-		gptSlot.setForceSafeFrame(true);
-		gptSlot.setSafeFrameConfig({
-			sandbox: true,
 		});
 	}
 

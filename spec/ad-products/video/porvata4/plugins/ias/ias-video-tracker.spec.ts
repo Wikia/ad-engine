@@ -1,17 +1,16 @@
-import { iasVideoTracker } from '@wikia/ad-products/video/porvata4/plugins/ias/ias-video-tracker';
-import { PorvataPlayer } from '@wikia/ad-products/video/porvata4/porvata-player';
+import { PorvataPlayer, PorvataSettings } from '@wikia/ad-products';
+import { iasVideoTracker } from '@wikia/ad-products/video/porvata/plugins/ias/ias-video-tracker';
 import { assert } from 'chai';
 import * as sinon from 'sinon';
 import { AdSlot, context, slotService, utils } from '../../../../../../src/ad-engine';
-import { PorvataSettings } from '../../../../../../src/ad-products/video/porvata4/porvata-settings';
 
 describe('IAS video tracker', () => {
 	const sandbox = sinon.createSandbox();
 
 	function createVideoSettings(iasTracking: boolean = true) {
 		return new PorvataSettings({
-			container: document.createElement('div'),
 			iasTracking,
+			container: document.createElement('div'),
 			slotName: 'foo',
 			src: 'bar',
 		});
@@ -40,6 +39,7 @@ describe('IAS video tracker', () => {
 				pos: 'foo_pos',
 				loc: 'foo_loc',
 			}),
+			getConfigProperty(key: string): any {},
 		} as AdSlot);
 
 		context.set('options.video.iasTracking.config', {

@@ -15,7 +15,9 @@ export class SlotSizeResolvedHandler implements TemplateStateHandler {
 		this.domListener.resize$
 			.pipe(
 				startWith({}),
-				tap(() => this.manager.setSlotHeightResolved()),
+				tap(() => {
+					this.manager.setSlotHeightResolved();
+				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();

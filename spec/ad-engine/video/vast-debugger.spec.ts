@@ -1,5 +1,5 @@
+import { vastDebugger } from '@wikia/ad-engine';
 import { expect } from 'chai';
-import { vastDebugger } from '../../../src/ad-engine/video/vast-debugger';
 
 describe('vast-debugger', () => {
 	it('get attributes for given vastUrl', () => {

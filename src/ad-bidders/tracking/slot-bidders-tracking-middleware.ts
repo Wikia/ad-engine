@@ -40,6 +40,7 @@ async function getBiddersPrices(slotName: string): Promise<Dictionary<string>> {
 		bidder_27: transformBidderPrice('mediagrid'),
 		bidder_28: transformBidderPrice('verizon'),
 		bidder_29: transformBidderPrice('appnexusGroupM'),
+		bidder_30: transformBidderPrice('medianet'),
 	};
 }
 

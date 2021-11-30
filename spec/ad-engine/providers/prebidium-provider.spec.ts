@@ -1,6 +1,8 @@
-import { context, PrebidiumProvider } from '@wikia/ad-engine';
+import { biddingDone, context, PrebidiumProvider } from '@wikia/ad-engine';
 import { IframeBuilder } from '@wikia/ad-engine/utils';
+import { communicationService } from '@wikia/communication';
 import { assert } from 'chai';
+import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox } from 'sinon';
 import { PbjsStub, stubPbjs } from '../services/pbjs.stub';
 
@@ -36,9 +38,23 @@ describe('PrebidiumProvider', () => {
 
 		beforeEach(async () => {
 			adSlot = {
+				successCalled: false,
 				getSlotName: () => mock.slotName,
 				getElement: () => mock.slotName,
+				success(): void {
+					this.successCalled = true;
+				},
 			};
+
+			sandbox.stub(communicationService, 'action$').value(
+				new BehaviorSubject(
+					biddingDone({
+						name: mock.slotName,
+						state: 'prebid',
+					}),
+				),
+			);
+
 			await prebidiumProvider.fillIn(adSlot);
 		});
 
@@ -48,6 +64,7 @@ describe('PrebidiumProvider', () => {
 			assert(pbjsStub.renderAd.calledOnce);
 			assert.equal(doc, mock.doc);
 			assert.equal(adId, mock.adId);
+			assert.isTrue(adSlot.successCalled);
 		});
 
 		it('should call context get with correct argument', () => {
