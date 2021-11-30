@@ -638,14 +638,22 @@
         {
             "apps": [
                 "f2",
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
-                "AU",
-                "CA",
-                "GB",
-                "UK"
+                "US"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
             ],
             "value": true
         }
@@ -2361,7 +2369,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211118.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
         }
     ],
     "icA9Bidder": [
