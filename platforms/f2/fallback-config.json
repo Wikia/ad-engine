@@ -1826,14 +1826,22 @@
         {
             "apps": [
                 "f2",
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
-                "AU",
-                "CA",
-                "GB",
-                "UK"
+                "US"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
             ],
             "value": true
         }
