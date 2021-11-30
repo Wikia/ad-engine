@@ -59,7 +59,7 @@ export const basicContext = {
 	slotGroups: {
 		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'ABCD', 'VIDEO'],
 	},
-	src: 'ns',
+	src: ['ns'],
 	vast: {
 		adUnitId:
 			`/{custom.dfpId}/{custom.serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
