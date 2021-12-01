@@ -19,9 +19,8 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
 		if (this.isStickyTlbForced() || this.isLineAndGeo()) {
-			this.logger('Disabling incontent_player and affiliate_slot');
+			this.logger('Disabling incontent_player');
 			slotService.disable('incontent_player', 'hivi-collapse');
-			slotService.disable('affiliate_slot', 'hivi-collapse');
 			this.adSlot.emitEvent(events.TOP_LEADERBOARD_STICKED);
 			transition('initial');
 		} else {

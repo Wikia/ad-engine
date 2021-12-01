@@ -1,6 +1,5 @@
 import { registerInterstitialTemplate } from '@platforms/shared';
 import {
-	AffiliateDisclaimer,
 	context,
 	DiProcess,
 	logTemplates,
@@ -44,7 +43,6 @@ export class UcpMobileTemplatesSetup implements DiProcess {
 			merge(bfaa$, bfab$, stickyTlb$, logoReplacement$, roadblock$, floorAdhesion$, interstitial$),
 		);
 
-		templateService.register(AffiliateDisclaimer);
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 	}
 }

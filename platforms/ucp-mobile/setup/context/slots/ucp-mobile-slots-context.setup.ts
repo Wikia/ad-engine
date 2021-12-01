@@ -71,20 +71,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 					createLabel: true,
 				},
 			},
-			affiliate_slot: {
-				adProduct: 'affiliate_slot',
-				avoidConflictWith: '#top_boxad,#incontent_boxad_1,#incontent_player',
-				slotNameSuffix: '',
-				group: 'AU',
-				options: {},
-				insertBeforeSelector: '.incontent-boxad',
-				slotShortcut: 'a',
-				defaultSizes: [[280, 120]],
-				targeting: {
-					loc: 'middle',
-					rv: 1,
-				},
-			},
 			// as this slot can be repeated many, it uses bidderAlias mobile_in_content
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',

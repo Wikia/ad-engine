@@ -11,7 +11,6 @@ import {
 	PorvataFiller,
 	SlotCreator,
 	slotService,
-	templateService,
 	uapLoadStatus,
 	universalAdPackage,
 	utils,
@@ -38,7 +37,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
-		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
@@ -85,20 +83,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					slotsContext.setState(slotCreatorConfig.slotName, false);
 				}
 			});
-	}
-
-	private configureAffiliateSlot(): void {
-		const slotName = 'affiliate_slot';
-		const isApplicable =
-			context.get('wiki.opts.enableAffiliateSlot') && !context.get('custom.hasFeaturedVideo');
-
-		if (isApplicable) {
-			slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-				templateService.init('affiliateDisclaimer', slotService.get(slotName));
-			});
-		} else {
-			slotService.disable(slotName);
-		}
 	}
 
 	private configureIncontentPlayer(): void {

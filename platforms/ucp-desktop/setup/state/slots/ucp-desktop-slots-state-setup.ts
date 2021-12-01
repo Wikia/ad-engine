@@ -18,7 +18,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', this.isRightRailApplicable());
-		slotsContext.setState('affiliate_slot', this.isAffiliateSlotEnabled());
 		slotsContext.setState('bottom_leaderboard', true);
 		slotsContext.setState(
 			'floor_adhesion',
@@ -58,13 +57,5 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 
 	private isRightRailApplicable(): boolean {
 		return utils.getViewportWidth() >= 1024;
-	}
-
-	private isAffiliateSlotEnabled(): boolean {
-		return (
-			this.isRightRailApplicable() &&
-			context.get('wiki.opts.enableAffiliateSlot') &&
-			!context.get('custom.hasFeaturedVideo')
-		);
 	}
 }
