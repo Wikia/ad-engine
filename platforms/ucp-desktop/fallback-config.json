@@ -2141,7 +2141,10 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "value": false
+            "regions": [
+                "US"
+            ],
+            "value": true
         }
     ],
     "icFeaturedVideoAdsFrequency": [
