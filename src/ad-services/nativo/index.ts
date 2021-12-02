@@ -1,6 +1,5 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
-import { adSlotEvent, context, events, utils } from '@ad-engine/core';
-import { filter } from 'rxjs/operators';
+import { communicationService, globalAction } from '@ad-engine/communication';
+import { context, utils } from '@ad-engine/core';
 import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
 
@@ -17,16 +16,12 @@ export class Nativo {
 	static SLOT_CLASS_LIST = ['ntv-ad', 'ad-slot'];
 	static TEST_QUERY_STRING = 'native_ads_test';
 
-	forceDisabled = false;
-
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
-
-		this.setCodePriorityListener();
 
 		return utils.scriptLoader
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
@@ -37,29 +32,7 @@ export class Nativo {
 	}
 
 	isEnabled(): boolean {
-		return (
-			context.get('services.nativo.enabled') &&
-			context.get('wiki.opts.enableNativeAds') &&
-			this.checkCodePriority() &&
-			!this.forceDisabled
-		);
-	}
-
-	checkCodePriority(): boolean {
-		return !(context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.forced'));
-	}
-
-	setCodePriorityListener(): void {
-		communicationService.action$
-			.pipe(
-				ofType(adSlotEvent),
-				filter((action) =>
-					action.payload.some((el) => el.status === events.TOP_LEADERBOARD_STICKED),
-				),
-			)
-			.subscribe(({ event }) => {
-				this.forceDisabled = true;
-			});
+		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
 	requestAd(placeholder: HTMLElement | null): void {

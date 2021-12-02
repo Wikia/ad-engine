@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	context,
-	events,
 	slotService,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -21,7 +20,6 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		if (this.isStickyTlbForced() || this.isLineAndGeo()) {
 			this.logger('Disabling incontent_player');
 			slotService.disable('incontent_player', 'hivi-collapse');
-			this.adSlot.emitEvent(events.TOP_LEADERBOARD_STICKED);
 			transition('initial');
 		} else {
 			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
