@@ -735,6 +735,18 @@
             "value": true
         }
     ],
+    "icUAPExtendendSrcTargeting": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidVerizon": [
         {
             "apps": [
