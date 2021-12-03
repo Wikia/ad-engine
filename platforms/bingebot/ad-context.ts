@@ -9,7 +9,7 @@ export const basicContext = {
 		wikiIdentifier: '',
 	},
 	slots: {},
-	src: 'bingebot',
+	src: ['bingebot'],
 	state: {
 		adStack: [],
 	},

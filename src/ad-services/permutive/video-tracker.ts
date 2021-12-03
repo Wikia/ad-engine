@@ -30,7 +30,7 @@ interface VideoEvent {
 		adPlayId: string;
 		ima: {
 			ad: {
-				g: EventAdInfo;
+				h: EventAdInfo;
 			};
 		};
 	};
@@ -97,7 +97,7 @@ export class VideoTracker {
 		// INFO: ima and adPlayId are present only in adStarted and adClick events
 		// so we have to save it for the rest of ad events (e.g. process)
 		if (this.getEventName(videoEvent) === 'VideoAdPlay') {
-			this.adInfo = videoEvent.payload.ima.ad.g;
+			this.adInfo = videoEvent.payload.ima.ad.h;
 			this.playId = videoEvent.payload.adPlayId;
 		}
 		const videoInfo = videoEvent.state.playlistItem;

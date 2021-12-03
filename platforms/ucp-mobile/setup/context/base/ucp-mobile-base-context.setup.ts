@@ -24,6 +24,6 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			this.instantConfig.get('icPushOnScrollThreshold', 100),
 		);
 
-		context.set('events.pushAfterRendered.top_boxad', ['incontent_player', 'affiliate_slot']);
+		context.set('events.pushAfterRendered.top_boxad', ['incontent_player']);
 	}
 }

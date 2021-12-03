@@ -51,7 +51,7 @@ const contextObject: ContextObject = {
 	},
 	services: {},
 	slots: {},
-	src: 'gpt',
+	src: ['gpt'],
 	state: {
 		adStack: [],
 		isMobile: false,

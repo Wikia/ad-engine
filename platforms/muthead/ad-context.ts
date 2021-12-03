@@ -48,7 +48,7 @@ export const basicContext = {
 			fallback: fallbackInstantConfig,
 		},
 	},
-	src: 'sports',
+	src: ['sports'],
 	state: {
 		adStack: [],
 		isMobile: false,

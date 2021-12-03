@@ -67,6 +67,10 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
 		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
 		context.set('options.newBfaaTemplate', this.instantConfig.get('icUAPNewBFAATemplate'));
+		context.set(
+			'options.uapExtendedSrcTargeting',
+			this.instantConfig.get('icUAPExtendendSrcTargeting'),
+		);
 
 		context.set(
 			'options.video.playAdsOnNextVideo',
