@@ -98,36 +98,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private configureInterstitial(): void {
 		const slotName = 'interstitial';
 
-		slotService.on(slotName, AdSlot.SLOT_LOADED_EVENT, () => {
-			this.styleInterstitial(slotService.get(slotName).getConfigProperty('insertId'));
-		});
-
 		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
 			eventService.emit(events.INTERSTITIAL_DISPLAYED);
 		});
-	}
-
-	private styleInterstitial(selector: string): void {
-		const wrapper: HTMLElement = document.getElementById(selector);
-		const iframe: HTMLIFrameElement = wrapper.firstElementChild
-			.firstElementChild as HTMLIFrameElement;
-
-		wrapper.style.backgroundColor = '#000000';
-
-		const header: HTMLElement = iframe.contentWindow.document.querySelector(
-			'#ad_position_box > .toprow',
-		);
-		const text: HTMLElement = iframe.contentWindow.document.querySelector('#heading > .text');
-		const button: HTMLElement = iframe.contentWindow.document.querySelector(
-			'#dismiss-button > div',
-		);
-
-		header.style.backgroundColor = '#002a32';
-		button.style.border = '2px solid #00d6d6';
-		button.style.borderRadius = '24px';
-		button.style.width = '17px';
-		button.style.textAlign = 'center';
-		text.innerText = 'Advertisement';
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
