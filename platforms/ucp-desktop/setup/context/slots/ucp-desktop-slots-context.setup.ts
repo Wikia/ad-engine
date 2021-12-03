@@ -89,20 +89,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					rv: 1,
 				},
 			},
-			affiliate_slot: {
-				adProduct: 'affiliate_slot',
-				aboveTheFold: true,
-				slotNameSuffix: '',
-				group: 'AU',
-				insertBeforeSelector: '#top_boxad',
-				options: {},
-				slotShortcut: 'a',
-				defaultSizes: [[280, 120]],
-				targeting: {
-					loc: 'top',
-					rv: 1,
-				},
-			},
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',

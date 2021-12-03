@@ -1,4 +1,3 @@
-export { AffiliateDisclaimer } from './affiliate-disclaimer';
 export { FloatingRail } from './floating-rail';
 export { SafeFanTakeoverElement } from './safe-uap/safe-fan-takeover-element';
 export * from './uap';

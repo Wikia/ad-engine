@@ -39,7 +39,7 @@ export const basicContext = {
 			ids: [],
 		},
 		pushAfterRendered: {
-			top_boxad: ['incontent_boxad_1', 'incontent_player', 'affiliate_slot'],
+			top_boxad: ['incontent_boxad_1', 'incontent_player'],
 		},
 	},
 	slots: {},

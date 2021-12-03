@@ -20,7 +20,6 @@ import {
 	SlotConfig,
 	slotInjector,
 	slotService,
-	TemplateRegistry,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -32,12 +31,9 @@ const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
-	constructor(private templateRegistry: TemplateRegistry) {}
-
 	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();
-		this.injectAffiliateDisclaimer();
 		this.injectFloorAdhesion();
 		this.injectBottomLeaderboard();
 		this.injectNativeAdsPlaceholder();
@@ -219,12 +215,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				);
 			}
 		}
-	}
-
-	private injectAffiliateDisclaimer(): void {
-		slotService.on('affiliate_slot', AdSlot.STATUS_SUCCESS, () => {
-			this.templateRegistry.init('affiliateDisclaimer', slotService.get('affiliate_slot'));
-		});
 	}
 
 	private injectFloorAdhesion(): void {
