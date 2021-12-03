@@ -165,53 +165,25 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private configureTopLeaderboard(): void {
 		const slotName = 'top_leaderboard';
-		const hiviLBEnabled =
-			context.get('options.hiviLeaderboard') && !context.get('options.wad.blocking');
 
-		if (hiviLBEnabled) {
-			context.set('slots.top_leaderboard.firstCall', false);
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-				slotService.setState(slotName, false);
-				this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
-			});
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_FORCED_COLLAPSE, () => {
-				slotService.setState('top_leaderboard', false);
-				this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
-			});
-
-			slotService.on('hivi_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-				const adSlot = slotService.get('hivi_leaderboard');
-
-				if (!adSlot.isEmpty) {
-					slotService.setState('top_leaderboard', false);
-					this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
-				}
-			});
-		}
-
-		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
-			this.handleAdPlaceholders('top_leaderboard', AdSlot.STATUS_SUCCESS);
+		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
 		});
 
-		slotService.on('top_leaderboard', AdSlot.STATUS_COLLAPSE, () => {
-			this.handleAdPlaceholders('top_leaderboard', AdSlot.STATUS_COLLAPSE);
+		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
 		});
 
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
-				slotsContext.addSlotSize(hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard', [3, 3]);
+				slotsContext.addSlotSize(slotName, [3, 3]);
 			}
 
-			if (context.get('templates.stickyTlb.forced')) {
-				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
-				context.push('slots.hivi_leaderboard.defaultTemplates', 'stickyTlb');
-			} else if (context.get('templates.stickyTlb.lineItemIds')) {
-				context.push(
-					`slots.${hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard'}.defaultTemplates`,
-					'stickyTlb',
-				);
+			if (
+				context.get('templates.stickyTlb.forced') ||
+				context.get('templates.stickyTlb.lineItemIds')
+			) {
+				context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
 			}
 		}
 	}

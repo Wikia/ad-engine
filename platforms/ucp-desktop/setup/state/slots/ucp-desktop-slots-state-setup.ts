@@ -15,7 +15,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	execute(): void {
-		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', this.isRightRailApplicable());
 		slotsContext.setState('bottom_leaderboard', true);
