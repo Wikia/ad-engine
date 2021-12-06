@@ -65,5 +65,10 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 
 	async onLeave(): Promise<void> {
 		this.unsubscribe$.next();
+		// document.body.classList.add('has-sticky-tlb');
+	}
+
+	async onDestroy(): Promise<void> {
+		// document.body.classList.remove('has-sticky-tlb');
 	}
 }
