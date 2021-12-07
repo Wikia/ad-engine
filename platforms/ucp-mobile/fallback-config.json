@@ -642,17 +642,6 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "f2",
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
                 "XX"
             ],
             "value": true
