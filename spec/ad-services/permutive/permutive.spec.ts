@@ -99,4 +99,10 @@ describe('Permutive - make sure src is a string', () => {
 
 		expect(permutive.getSrcFromContext()).to.equal('gpt');
 	});
+
+	it('Permutive gets string if src is an array', () => {
+		context.set('src', ['gpt', 'uap', 'whatever']);
+
+		expect(permutive.getSrcFromContext()).to.equal('gpt');
+	});
 });
