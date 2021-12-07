@@ -31,6 +31,6 @@ export class StickyTlbConfigHandler implements TemplateStateHandler {
 
 	async onDestroy(): Promise<void> {
 		document.body.classList.remove('has-uap');
-		// document.body.classList.remove('has-sticky-tlb');
+		document.body.classList.remove('has-sticky-tlb');
 	}
 }
