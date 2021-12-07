@@ -9,12 +9,15 @@ import {
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
+		context.push(`slots.${slotName}.defaultSizes`, size);
+
 		const definedViewportSizes = context.get(`slots.${slotName}.sizes`);
 
-		context.push(`slots.${slotName}.defaultSizes`, size);
-		definedViewportSizes.forEach((sizeMap) => {
-			sizeMap.sizes.push(size);
-		});
+		if (definedViewportSizes) {
+			definedViewportSizes.forEach((sizeMap) => {
+				sizeMap.sizes.push(size);
+			});
+		}
 	}
 
 	setSlotSize(slotName: string, size: [number, number]): void {
