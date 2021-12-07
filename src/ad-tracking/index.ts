@@ -8,3 +8,4 @@ export * from './viewability-tracker';
 export * from './viewability-tracking-middleware';
 export * from './postmessage-tracker';
 export * from './tracking-bid';
+export * from './cta-tracker';

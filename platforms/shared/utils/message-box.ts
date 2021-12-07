@@ -1,4 +1,9 @@
-import { AdSlot, communicationService, hideMessageBoxEvent } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	displayMessageBoxEvent,
+	hideMessageBoxEvent,
+} from '@wikia/ad-engine';
 
 export class MessageBox {
 	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
@@ -11,6 +16,8 @@ export class MessageBox {
 
 		box.append(message, button);
 		placeholder.appendChild(box);
+
+		this.sendImpressionEvent(adSlot);
 	};
 
 	private createMessage = (): HTMLElement => {
@@ -29,7 +36,7 @@ export class MessageBox {
 		button.innerHTML = 'Register';
 		button.onclick = () => {
 			this.openInNewTab(url);
-			this.sendTrackingEvent(adSlot);
+			this.sendClickTrackingEvent(adSlot);
 		};
 		return button;
 	};
@@ -38,10 +45,20 @@ export class MessageBox {
 		window.open(url, '_blank').focus();
 	};
 
-	private sendTrackingEvent = (adSlot: AdSlot) => {
+	private sendClickTrackingEvent = (adSlot: AdSlot) => {
 		communicationService.dispatch(
 			hideMessageBoxEvent({
 				adSlotName: adSlot.getSlotName(),
+				ad_status: 'clicked_collapse',
+			}),
+		);
+	};
+
+	private sendImpressionEvent = (adSlot: AdSlot) => {
+		communicationService.dispatch(
+			displayMessageBoxEvent({
+				adSlotName: adSlot.getSlotName(),
+				ad_status: 'collapse_message',
 			}),
 		);
 	};
