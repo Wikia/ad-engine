@@ -3,7 +3,7 @@ import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
 import { permutive } from '../../../src/ad-services';
 
-describe('Permutive', () => {
+describe('Permutive integration', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
@@ -90,5 +90,13 @@ describe('Permutive', () => {
 		const permutiveKeys = context.get('bidders.permutiveKeys.appnexus');
 
 		expect(permutiveKeys).to.eql([]);
+	});
+});
+
+describe('Permutive - make sure src is a string', () => {
+	it('Permutive gets string if src is a string', () => {
+		context.set('src', 'gpt');
+
+		expect(permutive.getSrcFromContext()).to.equal('gpt');
 	});
 });

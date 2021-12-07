@@ -22,6 +22,12 @@ class Permutive {
 		this.setAddon();
 	}
 
+	getSrcFromContext() {
+		const src = context.get('src');
+
+		return typeof(src) === 'object' ? src[0] : src;
+	}
+
 	private isEnabled(): boolean {
 		return (
 			context.get('services.permutive.enabled') &&
@@ -93,8 +99,6 @@ class Permutive {
 	}
 
 	private getPageViewEventSchema(): object {
-		const src = context.get('src');
-
 		const pageInfo = {
 			's0': context.get('targeting.s0'),
 			's1': context.get('targeting.s1'),
@@ -109,7 +113,7 @@ class Permutive {
 			'pub': context.get('targeting.pub'),
 			'theme': context.get('targeting.theme'),
 			'tv': context.get('targeting.tv'),
-			'src': typeof(src) === 'object' ? src[0] : src,
+			'src': this.getSrcFromContext(),
 			'geo': utils.geoService.getCountryCode(),
 		};
 
