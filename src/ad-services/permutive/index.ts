@@ -23,9 +23,9 @@ class Permutive {
 	}
 
 	getSrcFromContext() {
-		const src = context.get('src');
+		const src = context.get('src') ?? '';
 
-		return src === null ? '' : (typeof(src) === 'object' ? src[0] : src);
+		return typeof(src) === 'object' ? src[0] : src;
 	}
 
 	private isEnabled(): boolean {
