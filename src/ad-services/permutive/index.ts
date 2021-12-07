@@ -93,6 +93,8 @@ class Permutive {
 	}
 
 	private getPageViewEventSchema(): object {
+		const src = context.get('src');
+
 		const pageInfo = {
 			's0': context.get('targeting.s0'),
 			's1': context.get('targeting.s1'),
@@ -107,7 +109,7 @@ class Permutive {
 			'pub': context.get('targeting.pub'),
 			'theme': context.get('targeting.theme'),
 			'tv': context.get('targeting.tv'),
-			'src': context.get('src'),
+			'src': typeof(src) === 'object' ? src[0] : src,
 			'geo': utils.geoService.getCountryCode(),
 		};
 
