@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	context,
 	TEMPLATE,
@@ -12,7 +13,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
-		const enabledSlots: string[] = ['top_boxad', 'bottom_leaderboard', 'incontent_boxad_1'];
+		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
 
 		universalAdPackage.init(
 			this.params,
@@ -23,7 +24,9 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 		);
 
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
-		context.set('slots.bottom_leaderboard.sizes', []);
-		context.set('slots.bottom_leaderboard.defaultSizes', [[3, 3]]);
+
+		slotsContext.addSlotSize('top_boxad', [5, 5]);
+		slotsContext.addSlotSize('incontent_boxad_1', [5, 5]);
+		slotsContext.setSlotSize('bottom_leaderboard', [3, 3]);
 	}
 }

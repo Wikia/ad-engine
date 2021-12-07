@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	context,
 	TEMPLATE,
@@ -21,8 +22,9 @@ export class BfaaFutheadConfigHandler implements TemplateStateHandler {
 			),
 		);
 		context.set('slots.cdm-zone-04.viewportConflicts', []);
-		context.set('slots.cdm-zone-04.sizes', []);
-		context.set('slots.cdm-zone-04.defaultSizes', [[3, 3]]);
+
+		slotsContext.addSlotSize('cdm-zone-02', [5, 5]);
+		slotsContext.setSlotSize('cdm-zone-04', [3, 3]);
 	}
 
 	async onLeave(): Promise<void> {}

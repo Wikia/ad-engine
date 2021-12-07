@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	context,
 	TEMPLATE,
@@ -21,7 +22,9 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 			),
 		);
 		context.set('slots.incontent_boxad_1.repeat', null);
-		context.set('slots.bottom_leaderboard.sizes', []);
-		context.set('slots.bottom_leaderboard.defaultSizes', [[2, 2]]);
+
+		slotsContext.addSlotSize('top_boxad', [4, 4]);
+		slotsContext.addSlotSize('mobile_prefooter', [4, 4]);
+		slotsContext.setSlotSize('bottom_leaderboard', [2, 2]);
 	}
 }

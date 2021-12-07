@@ -17,6 +17,11 @@ class SlotsContext {
 		});
 	}
 
+	setSlotSize(slotName: string, size: [number, number]): void {
+		context.set(`slots.${slotName}.sizes`, []);
+		context.set(`slots.${slotName}.defaultSizes`, [size]);
+	}
+
 	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
 		const adProductInfo = getAdProductInfo(adSlot.getSlotName(), params.type, params.adProduct);
 		const slotConfig = {

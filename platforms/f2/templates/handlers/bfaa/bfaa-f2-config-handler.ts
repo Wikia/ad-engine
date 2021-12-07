@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	context,
 	TEMPLATE,
@@ -25,10 +26,15 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 			),
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
-		context.set('slots.bottom_leaderboard.sizes', []);
-		context.set(
-			'slots.bottom_leaderboard.defaultSizes',
-			this.f2Env.siteType === 'app' ? [[2, 2]] : [[3, 3]],
-		);
+
+		if (this.f2Env.siteType === 'app') {
+			slotsContext.addSlotSize('top_boxad', [4, 4]);
+			slotsContext.addSlotSize('incontent_boxad', [4, 4]);
+			slotsContext.setSlotSize('bottom_leaderboard', [2, 2]);
+		} else {
+			slotsContext.addSlotSize('top_boxad', [5, 5]);
+			slotsContext.addSlotSize('incontent_boxad', [5, 5]);
+			slotsContext.setSlotSize('bottom_leaderboard', [3, 3]);
+		}
 	}
 }
