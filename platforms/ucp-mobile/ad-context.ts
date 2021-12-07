@@ -39,7 +39,7 @@ export const basicContext = {
 			ids: [],
 		},
 		pushAfterRendered: {
-			top_boxad: ['incontent_boxad_1', 'incontent_player', 'affiliate_slot'],
+			top_boxad: ['incontent_boxad_1', 'incontent_player'],
 		},
 	},
 	slots: {},
@@ -111,7 +111,7 @@ export const basicContext = {
 	slotGroups: {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
-	src: 'mobile',
+	src: ['mobile'],
 	state: {
 		adStack: [],
 		isMobile: true,

@@ -1,7 +1,6 @@
-import { slotsContext } from '@platforms/shared';
+import { MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
-	adSlotEvent,
 	btfBlockerService,
 	communicationService,
 	context,
@@ -9,17 +8,15 @@ import {
 	events,
 	eventService,
 	fillerService,
-	ofType,
 	PorvataFiller,
 	SlotCreator,
 	slotService,
-	templateService,
 	uapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { filter, take } from 'rxjs/operators';
+import { PlaceholderServiceHelper } from '../../../shared/utils/placeholder-service-helper';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -36,18 +33,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotCreator: SlotCreator,
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
-		private isUapLoaded: boolean,
 	) {}
 
 	execute(): void {
-		this.registerUapChecker();
 		this.injectSlots();
-		this.configureAffiliateSlot();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
 		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
-		this.registerAdPlaceholderHandler();
+		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
@@ -91,20 +85,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			});
 	}
 
-	private configureAffiliateSlot(): void {
-		const slotName = 'affiliate_slot';
-		const isApplicable =
-			context.get('wiki.opts.enableAffiliateSlot') && !context.get('custom.hasFeaturedVideo');
-
-		if (isApplicable) {
-			slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-				templateService.init('affiliateDisclaimer', slotService.get(slotName));
-			});
-		} else {
-			slotService.disable(slotName);
-		}
-	}
-
 	private configureIncontentPlayer(): void {
 		const icpSlotName = 'incontent_player';
 
@@ -118,36 +98,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private configureInterstitial(): void {
 		const slotName = 'interstitial';
 
-		slotService.on(slotName, AdSlot.SLOT_LOADED_EVENT, () => {
-			this.styleInterstitial(slotService.get(slotName).getConfigProperty('insertId'));
-		});
-
 		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
 			eventService.emit(events.INTERSTITIAL_DISPLAYED);
 		});
-	}
-
-	private styleInterstitial(selector: string): void {
-		const wrapper: HTMLElement = document.getElementById(selector);
-		const iframe: HTMLIFrameElement = wrapper.firstElementChild
-			.firstElementChild as HTMLIFrameElement;
-
-		wrapper.style.backgroundColor = '#000000';
-
-		const header: HTMLElement = iframe.contentWindow.document.querySelector(
-			'#ad_position_box > .toprow',
-		);
-		const text: HTMLElement = iframe.contentWindow.document.querySelector('#heading > .text');
-		const button: HTMLElement = iframe.contentWindow.document.querySelector(
-			'#dismiss-button > div',
-		);
-
-		header.style.backgroundColor = '#002a32';
-		button.style.border = '2px solid #00d6d6';
-		button.style.borderRadius = '24px';
-		button.style.width = '17px';
-		button.style.textAlign = 'center';
-		text.innerText = 'Advertisement';
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
@@ -200,65 +153,11 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
-	private registerAdPlaceholderHandler(): void {
-		const statusesToCollapse: string[] = [
-			AdSlot.STATUS_BLOCKED,
-			AdSlot.STATUS_COLLAPSE,
-			AdSlot.STATUS_FORCED_COLLAPSE,
-			AdSlot.HIDDEN_EVENT,
-		];
-		const statusesToStopLoadingSlot: string[] = [
-			AdSlot.STATUS_SUCCESS,
-			AdSlot.HIDDEN_EVENT,
-			AdSlot.SLOT_RENDERED_EVENT,
-		];
-		const statusToUndoCollapse = 'forced_success';
+	private registerAdPlaceholderService(): void {
+		const placeholderHelper = new PlaceholderServiceHelper();
+		const messageBox = new MessageBox();
 
-		const shouldRemoveOrCollapse = (action: object): boolean => {
-			return (
-				statusesToStopLoadingSlot.includes(action['event']) ||
-				statusesToCollapse.includes(action['event'])
-			);
-		};
-
-		communicationService.action$
-			.pipe(
-				ofType(adSlotEvent),
-				filter((action) => shouldRemoveOrCollapse(action)),
-			)
-			.subscribe((action) => {
-				const adSlot = slotService.get(action.adSlotName);
-
-				if (!adSlot) return;
-
-				const placeholder = adSlot.getPlaceholder();
-				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
-
-				if (
-					action['event'] === AdSlot.SLOT_RENDERED_EVENT &&
-					action['payload'][1] === statusToUndoCollapse
-				) {
-					placeholder?.classList.remove('hide');
-					return;
-				}
-
-				if (statusesToStopLoadingSlot.includes(action['event'])) {
-					placeholder?.classList.remove('is-loading');
-				}
-
-				if (statusesToCollapse.includes(action['event'])) {
-					if (this.isUapLoaded) {
-						placeholder?.classList.add('hide');
-					} else {
-						adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
-					}
-				}
-			});
-	}
-
-	private registerUapChecker(): void {
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			this.isUapLoaded = action.isLoaded;
-		});
+		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
+		placeholderService.init();
 	}
 }

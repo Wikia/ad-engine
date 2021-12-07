@@ -20,7 +20,6 @@ import {
 	SlotConfig,
 	slotInjector,
 	slotService,
-	TemplateRegistry,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -32,12 +31,9 @@ const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
-	constructor(private templateRegistry: TemplateRegistry) {}
-
 	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();
-		this.injectAffiliateDisclaimer();
 		this.injectFloorAdhesion();
 		this.injectBottomLeaderboard();
 		this.injectNativeAdsPlaceholder();
@@ -78,26 +74,34 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			return;
 		}
 
+		const pageHeaders = document.querySelectorAll('.mw-headline');
+		const anchor = pageHeaders[1];
+
+		if (!anchor) {
+			return;
+		}
+
+		const container = this.createNativeAdPlaceholder(
+			Nativo.INCONTENT_AD_SLOT_NAME,
+			Nativo.SLOT_CLASS_LIST,
+		);
+		anchor.before(container);
+
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
 			if (action.isLoaded) {
 				return;
 			}
 
-			const pageHeaders = document.querySelectorAll('.mw-headline');
-			const anchor = pageHeaders[1];
-
-			if (!anchor) {
-				return;
-			}
-
-			const container = document.createElement('div');
-			container.setAttribute('id', Nativo.INCONTENT_AD_SLOT_NAME);
-			container.classList.add(...Nativo.SLOT_CLASS_LIST);
-
-			anchor.before(container);
-
 			nativo.requestAd(container);
 		});
+	}
+
+	private createNativeAdPlaceholder(id: string, classList): HTMLElement {
+		const container = document.createElement('div');
+		container.setAttribute('id', id);
+		container.classList.add(...classList);
+
+		return container;
 	}
 
 	private injectIncontentPlayer(): void {
@@ -216,12 +220,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				);
 			}
 		}
-	}
-
-	private injectAffiliateDisclaimer(): void {
-		slotService.on('affiliate_slot', AdSlot.STATUS_SUCCESS, () => {
-			this.templateRegistry.init('affiliateDisclaimer', slotService.get('affiliate_slot'));
-		});
 	}
 
 	private injectFloorAdhesion(): void {

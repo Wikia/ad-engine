@@ -149,23 +149,6 @@
 	border-radius: 3px;
 }
 
-#affiliate_slot {
-	text-align: center;
-
-	& > div {
-		margin-bottom: 10px;
-	}
-}
-
-#affiliate_disclaimer {
-	font-size: 12px;
-	font-style: italic;
-	line-height: 1.5;
-	margin: auto;
-	padding-bottom: 15px;
-	width: 280px;
-}
-
 .article-content p + .ad-slot {
 	margin: 3rem 0;
 
@@ -276,6 +259,29 @@ body.bab-detected {
 	.top-ads-container,
 	.ad-slot-placeholder {
 		display: none;
+	}
+}
+
+.message-box {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	padding: 30px;
+	background-color: #520044;
+
+	.cta-message {
+		color: #ffc500;
+		font-size: 36px;
+		font-weight: 900;
+		line-height: 45px;
+		margin: 0 0 12px;
+		text-transform: uppercase;
+	}
+
+	.register-btn {
+		background-color: #ffc500;
+		color: #520044;
+		cursor: pointer;
 	}
 }
 
