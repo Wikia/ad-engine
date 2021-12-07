@@ -91,18 +91,15 @@ describe('Permutive integration', () => {
 
 		expect(permutiveKeys).to.eql([]);
 	});
-});
 
-describe('Permutive - make sure src is a string', () => {
-	it('Permutive gets string if src is a string', () => {
+	it('Permutive pass src in correct format', () => {
 		context.set('src', 'gpt');
-
 		expect(permutive.getSrcFromContext()).to.equal('gpt');
-	});
 
-	it('Permutive gets string if src is an array', () => {
 		context.set('src', ['gpt', 'uap', 'whatever']);
-
 		expect(permutive.getSrcFromContext()).to.equal('gpt');
+
+		context.set('src', null);
+		expect(permutive.getSrcFromContext()).to.equal('');
 	});
 });
