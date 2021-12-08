@@ -3,7 +3,7 @@ import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
 import { permutive } from '../../../src/ad-services';
 
-describe('Permutive', () => {
+describe('Permutive integration', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
@@ -90,5 +90,16 @@ describe('Permutive', () => {
 		const permutiveKeys = context.get('bidders.permutiveKeys.appnexus');
 
 		expect(permutiveKeys).to.eql([]);
+	});
+
+	it('Permutive pass src in correct format', () => {
+		context.set('src', 'gpt');
+		expect(permutive.getSrcFromContext()).to.equal('gpt');
+
+		context.set('src', ['gpt', 'uap', 'whatever']);
+		expect(permutive.getSrcFromContext()).to.equal('gpt');
+
+		context.set('src', null);
+		expect(permutive.getSrcFromContext()).to.equal('');
 	});
 });
