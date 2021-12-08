@@ -2,7 +2,6 @@ import {
 	audigent,
 	bidders,
 	confiant,
-	context,
 	DiProcess,
 	durationMedia,
 	iasPublisherOptimization,
@@ -17,8 +16,6 @@ export class SportsAdsMode implements DiProcess {
 		const inhibitors = this.callExternals();
 
 		startAdEngine(inhibitors);
-
-		this.setAdStack();
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -33,13 +30,5 @@ export class SportsAdsMode implements DiProcess {
 		durationMedia.call();
 
 		return inhibitors;
-	}
-
-	private setAdStack(): void {
-		context.push('state.adStack', { id: 'cdm-zone-01' });
-		context.push('state.adStack', { id: 'cdm-zone-02' });
-		context.push('state.adStack', { id: 'cdm-zone-03' });
-		context.push('state.adStack', { id: 'cdm-zone-06' });
-		context.push('events.pushOnScroll.ids', 'cdm-zone-04');
 	}
 }
