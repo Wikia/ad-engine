@@ -4,6 +4,7 @@ import {
 	BaseContextSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
+	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	ensureGeoCookie,
@@ -28,7 +29,6 @@ import { basicContext } from './ad-context';
 import { FutheadIocSetup } from './futhead-ioc-setup';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
-import { FutheadDynamicSlotsSetup } from './setup/dynamic-slots/futhead-dynamic-slots.setup';
 import { FutheadTemplatesSetup } from './templates/futhead-templates.setup';
 
 @Injectable()
@@ -49,7 +49,7 @@ export class FutheadPlatform {
 			FutheadTargetingSetup,
 			FutheadPrebidConfigSetup,
 			SportsA9ConfigSetup,
-			FutheadDynamicSlotsSetup,
+			CurseDynamicSlotsSetup,
 			CurseSlotsStateSetup,
 			BiddersStateSetup,
 			FutheadTemplatesSetup,

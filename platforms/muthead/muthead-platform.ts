@@ -4,6 +4,7 @@ import {
 	BaseContextSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
+	CurseDynamicSlotsSetup,
 	CurseSlotsContextSetup,
 	CurseSlotsStateSetup,
 	ensureGeoCookie,
@@ -27,7 +28,6 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { MutheadIocSetup } from './muthead-ioc-setup';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
-import { MutheadDynamicSlotsSetup } from './setup/dynamic-slots/muthead-dynamic-slots.setup';
 import { MutheadTargetingSetup } from './setup/targeting/muthead-targeting.setup';
 import { MutheadTemplatesSetup } from './templates/muthead-templates.setup';
 
@@ -49,7 +49,7 @@ export class MutheadPlatform {
 			MutheadTargetingSetup,
 			MutheadPrebidConfigSetup,
 			SportsA9ConfigSetup,
-			MutheadDynamicSlotsSetup,
+			CurseDynamicSlotsSetup,
 			CurseSlotsStateSetup,
 			BiddersStateSetup,
 			MutheadTemplatesSetup,
