@@ -208,7 +208,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 				context.push('slots.hivi_leaderboard.defaultTemplates', 'stickyTlb');
 			} else if (context.get('templates.stickyTlb.lineItemIds')) {
-				context.set('templates.stickyTlb.enabled', true);
 				context.push(
 					`slots.${hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard'}.defaultTemplates`,
 					'stickyTlb',
