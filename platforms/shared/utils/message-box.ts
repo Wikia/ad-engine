@@ -1,9 +1,4 @@
-import {
-	AdSlot,
-	communicationService,
-	displayMessageBoxEvent,
-	hideMessageBoxEvent,
-} from '@wikia/ad-engine';
+import { AdSlot, communicationService, messageBoxTrackingEvent } from '@wikia/ad-engine';
 
 export class MessageBox {
 	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
@@ -45,20 +40,20 @@ export class MessageBox {
 		window.open(url, '_blank').focus();
 	};
 
-	private sendClickTrackingEvent = (adSlot: AdSlot) => {
+	private sendClickTrackingEvent = (adSlot: AdSlot): void => {
 		communicationService.dispatch(
-			hideMessageBoxEvent({
+			messageBoxTrackingEvent({
 				adSlotName: adSlot.getSlotName(),
-				ad_status: 'clicked_collapse',
+				ad_status: 'cm_register_clicked',
 			}),
 		);
 	};
 
-	private sendImpressionEvent = (adSlot: AdSlot) => {
+	private sendImpressionEvent = (adSlot: AdSlot): void => {
 		communicationService.dispatch(
-			displayMessageBoxEvent({
+			messageBoxTrackingEvent({
 				adSlotName: adSlot.getSlotName(),
-				ad_status: 'collapse_message',
+				ad_status: 'cm_register_impression',
 			}),
 		);
 	};

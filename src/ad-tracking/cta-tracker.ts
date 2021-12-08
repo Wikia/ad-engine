@@ -9,13 +9,8 @@ interface AdClickContext {
 	};
 }
 
-export const displayMessageBoxEvent = globalAction(
-	'[AdEngine] MessageBox displayed',
-	props<{ adSlotName: string; ad_status: string }>(),
-);
-
-export const hideMessageBoxEvent = globalAction(
-	'[AdEngine] MessageBox hidden',
+export const messageBoxTrackingEvent = globalAction(
+	'[AdEngine] MessageBox event',
 	props<{ adSlotName: string; ad_status: string }>(),
 );
 
@@ -30,13 +25,7 @@ class CtaTracker {
 
 	register(callback: FuncPipelineStep<AdClickContext>): void {
 		communicationService.action$
-			.pipe(ofType(displayMessageBoxEvent))
-			.subscribe(async ({ adSlotName, ad_status }) => {
-				this.handleCtaTracking(callback, slotService.get(adSlotName), ad_status);
-			});
-
-		communicationService.action$
-			.pipe(ofType(hideMessageBoxEvent))
+			.pipe(ofType(messageBoxTrackingEvent))
 			.subscribe(async ({ adSlotName, ad_status }) => {
 				this.handleCtaTracking(callback, slotService.get(adSlotName), ad_status);
 			});
