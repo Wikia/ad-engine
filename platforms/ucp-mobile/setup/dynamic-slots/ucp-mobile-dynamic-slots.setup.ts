@@ -113,13 +113,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			slotsContext.addSlotSize('top_leaderboard', [2, 2]);
 
 			if (context.get('templates.stickyTlb.lineItemIds')) {
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+
 				utils.logger(
 					STICKY_SLOT_LOG_GROUP,
 					'Found sticky slot line-items IDs - enabling stickyTlb template for top_leaderboard slot',
 				);
-
-				context.set('templates.stickyTlb.enabled', true);
-				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 			} else {
 				utils.logger(
 					STICKY_SLOT_LOG_GROUP,
