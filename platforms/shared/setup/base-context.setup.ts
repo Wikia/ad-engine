@@ -24,7 +24,7 @@ export class BaseContextSetup implements DiProcess {
 		this.setOptionsContext();
 		this.setServicesContext();
 		this.setMiscContext();
-		this.setupStickySlotLineItemIds();
+		this.setupStickySlotContext();
 		setupNpaContext();
 		setupRdpContext();
 	}
@@ -173,10 +173,11 @@ export class BaseContextSetup implements DiProcess {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
-		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
 	}
 
-	private setupStickySlotLineItemIds(): void {
+	private setupStickySlotContext(): void {
+		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
+
 		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
 		if (stickySlotsLines && stickySlotsLines.length) {
 			context.set('templates.stickyTlb.lineItemIds', stickySlotsLines);
