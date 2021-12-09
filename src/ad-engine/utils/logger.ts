@@ -31,7 +31,7 @@ export function logger(logGroup: string, ...logValues: any[]): void {
 	}
 
 	if (debugGroup === '1' || groups.indexOf(logGroup) !== -1) {
-		window.console.info(logGroup, `\ttime: ${getTimeDelta()}s\t`, logValues);
+		window.console.info(`${getTimeDelta()}s\t\t ${logGroup}`, logValues);
 	}
 }
 
