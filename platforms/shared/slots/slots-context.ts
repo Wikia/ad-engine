@@ -10,7 +10,7 @@ import {
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
 		if (!context.get(`slots.${slotName}`)) {
-			return;
+			throw new Error('Requested ad slot is not defined in the ad context');
 		}
 
 		context.push(`slots.${slotName}.defaultSizes`, size);
@@ -26,7 +26,7 @@ class SlotsContext {
 
 	setSlotSize(slotName: string, size: [number, number]): void {
 		if (!context.get(`slots.${slotName}`)) {
-			return;
+			throw new Error('Requested ad slot is not defined in the ad context');
 		}
 
 		context.set(`slots.${slotName}.sizes`, []);
