@@ -9,6 +9,10 @@ import {
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
+		if (!context.get(`slots.${slotName}`)) {
+			return;
+		}
+
 		context.push(`slots.${slotName}.defaultSizes`, size);
 
 		const definedViewportSizes = context.get(`slots.${slotName}.sizes`);
@@ -21,6 +25,10 @@ class SlotsContext {
 	}
 
 	setSlotSize(slotName: string, size: [number, number]): void {
+		if (!context.get(`slots.${slotName}`)) {
+			return;
+		}
+
 		context.set(`slots.${slotName}.sizes`, []);
 		context.set(`slots.${slotName}.defaultSizes`, [size]);
 	}

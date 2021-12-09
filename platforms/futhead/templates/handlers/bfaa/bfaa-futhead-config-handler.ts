@@ -23,8 +23,10 @@ export class BfaaFutheadConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.cdm-zone-04.viewportConflicts', []);
 
-		slotsContext.addSlotSize('cdm-zone-02', [5, 5]);
-		slotsContext.setSlotSize('cdm-zone-04', [3, 3]);
+		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
+
+		slotsContext.addSlotSize('cdm-zone-02', additionalSizes.companionSize);
+		slotsContext.setSlotSize('cdm-zone-04', additionalSizes.bfaSize);
 	}
 
 	async onLeave(): Promise<void> {}

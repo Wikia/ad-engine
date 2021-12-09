@@ -23,8 +23,10 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.incontent_boxad_1.repeat', null);
 
-		slotsContext.addSlotSize('top_boxad', [4, 4]);
-		slotsContext.addSlotSize('mobile_prefooter', [4, 4]);
-		slotsContext.setSlotSize('bottom_leaderboard', [2, 2]);
+		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.mobile;
+
+		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
+		slotsContext.addSlotSize('mobile_prefooter', additionalSizes.companionSize);
+		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
 	}
 }

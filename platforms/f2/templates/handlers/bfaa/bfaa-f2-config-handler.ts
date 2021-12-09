@@ -27,14 +27,13 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
-		if (this.f2Env.siteType === 'app') {
-			slotsContext.addSlotSize('top_boxad', [4, 4]);
-			slotsContext.addSlotSize('incontent_boxad', [4, 4]);
-			slotsContext.setSlotSize('bottom_leaderboard', [2, 2]);
-		} else {
-			slotsContext.addSlotSize('top_boxad', [5, 5]);
-			slotsContext.addSlotSize('incontent_boxad', [5, 5]);
-			slotsContext.setSlotSize('bottom_leaderboard', [3, 3]);
-		}
+		const additionalSizes =
+			this.f2Env.siteType === 'app'
+				? universalAdPackage.UAP_ADDITIONAL_SIZES.mobile
+				: universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
+
+		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
+		slotsContext.addSlotSize('incontent_boxad', additionalSizes.companionSize);
+		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
 	}
 }
