@@ -2,12 +2,7 @@ import { communicationService, globalAction, ofType } from '@ad-engine/communica
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService } from '@ad-engine/core';
 import { props } from 'ts-action';
 
-type AdStatus = 'cm_register_impression'
-	| 'cm_register_clicked'
-	| 'cm_newsletter_impression'
-	| 'cm_newsletter_clicked'
-	| 'cm_fanlab_impression'
-	| 'cm_fanlab_clicked';
+type AdStatus =
 	| 'cm_register_impression'
 	| 'cm_register_clicked'
 	| 'cm_newsletter_impression'
