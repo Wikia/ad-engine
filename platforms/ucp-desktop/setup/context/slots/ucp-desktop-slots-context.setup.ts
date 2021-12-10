@@ -63,6 +63,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
+					pos: ['top_leaderboard', 'hivi_leaderboard'],
 					rv: 1,
 				},
 				placeholder: {
