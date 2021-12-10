@@ -114,7 +114,10 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (!action.isLoaded) {
+					if (
+						!action.isLoaded ||
+						(action.adProduct === 'ruap' && context.get('custom.hasFeaturedVideo'))
+					) {
 						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME));
 					}
 				});
