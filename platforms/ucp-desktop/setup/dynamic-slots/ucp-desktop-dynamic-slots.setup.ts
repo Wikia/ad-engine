@@ -170,6 +170,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		if (hiviLBEnabled) {
 			context.set('slots.top_leaderboard.firstCall', false);
+			context.set('slots.top_leaderboard.targeting.pos', ['hivi_leaderboard', 'top_leaderboard']);
 
 			slotService.on('hivi_leaderboard', AdSlot.STATUS_SUCCESS, () => {
 				slotService.setState(slotName, false);
