@@ -104,9 +104,23 @@ describe('Nativo service', () => {
 		expect(ntvCmdPushSpy.callCount).to.equal(0);
 	});
 
-	it('Nativo does not send request when Fan Takeover is on page', () => {
+	it('Nativo does not send request when Fan Takeover is on a regular page (FITO/SOV ad product)', () => {
 		nativo.requestAd(placeholder, { isLoaded: true });
 
 		expect(ntvCmdPushSpy.callCount).to.equal(0);
+	});
+
+	it('Nativo does not send request when Roadblock is on FV page (FITO/SOV ad product)', () => {
+		context.set('custom.hasFeaturedVideo', true);
+
+		nativo.requestAd(placeholder, { isLoaded: false, adProduct: 'ruap' });
+
+		expect(ntvCmdPushSpy.callCount).to.equal(0);
+	});
+
+	it('Nativo sends request when Roadblock is on a regular page', () => {
+		nativo.requestAd(placeholder, { isLoaded: false, adProduct: 'ruap' });
+
+		expect(ntvCmdPushSpy.callCount).to.equal(1);
 	});
 });
