@@ -28,7 +28,7 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
 		const additionalSizes =
-			this.f2Env.siteType === 'app'
+			this.f2Env.siteType === 'app' || this.f2Env.skinName === 'fandom_mobile'
 				? universalAdPackage.UAP_ADDITIONAL_SIZES.mobile
 				: universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
 
