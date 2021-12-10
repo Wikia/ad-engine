@@ -642,17 +642,6 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "f2",
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
                 "XX"
             ],
             "value": true
@@ -2238,7 +2227,11 @@
                 "5845670042",
                 "5845666283",
                 "5845669919",
-                "5845670627"
+                "5845670627",
+                "5847739886",
+                "5851395765",
+                "5847739898",
+                "5852465928"
             ]
         }
     ],
@@ -2748,7 +2741,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.4.0/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.4.1/tracking-opt-in.min.js"
         }
     ],
     "icLiveRampATSAnalytics": [
