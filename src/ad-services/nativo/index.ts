@@ -57,6 +57,15 @@ export class Nativo {
 			return;
 		}
 
+		if (
+			uapLoadStatusAction?.isLoaded === false &&
+			uapLoadStatusAction?.adProduct === 'ruap' &&
+			context.get('custom.hasFeaturedVideo')
+		) {
+			utils.logger(logGroup, '"Fan Takeover" on the featured page');
+			return;
+		}
+
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
