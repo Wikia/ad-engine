@@ -103,4 +103,10 @@ describe('Nativo service', () => {
 
 		expect(ntvCmdPushSpy.callCount).to.equal(0);
 	});
+
+	it('Nativo does not send request when Fan Takeover is on page', () => {
+		nativo.requestAd(placeholder, { isLoaded: true });
+
+		expect(ntvCmdPushSpy.callCount).to.equal(0);
+	});
 });

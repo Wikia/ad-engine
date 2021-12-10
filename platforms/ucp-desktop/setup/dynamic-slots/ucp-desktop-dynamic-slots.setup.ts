@@ -88,14 +88,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		anchor.before(container);
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (
-				action.isLoaded ||
-				(action.adProduct === 'ruap' && context.get('custom.hasFeaturedVideo'))
-			) {
-				return;
-			}
-
-			nativo.requestAd(container);
+			nativo.requestAd(container, action);
 		});
 	}
 

@@ -35,7 +35,7 @@ export class Nativo {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
-	requestAd(placeholder: HTMLElement | null): void {
+	requestAd(placeholder: HTMLElement | null, uapLoadStatusAction: any = {}): void {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'Nativo is disabled');
 			return;
@@ -49,6 +49,11 @@ export class Nativo {
 
 		if (!placeholder) {
 			utils.logger(logGroup, 'Placeholder does not exist');
+			return;
+		}
+
+		if (uapLoadStatusAction?.isLoaded === true) {
+			utils.logger(logGroup, 'Fan Takeover on the page');
 			return;
 		}
 
