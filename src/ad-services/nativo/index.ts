@@ -52,17 +52,7 @@ export class Nativo {
 			return;
 		}
 
-		if (uapLoadStatusAction?.isLoaded === true) {
-			utils.logger(logGroup, 'Fan Takeover on the page');
-			return;
-		}
-
-		if (
-			uapLoadStatusAction?.isLoaded === false &&
-			uapLoadStatusAction?.adProduct === 'ruap' &&
-			context.get('custom.hasFeaturedVideo')
-		) {
-			utils.logger(logGroup, '"Fan Takeover" on the featured page');
+		if (this.isSponsoredProductOnPage(uapLoadStatusAction)) {
 			return;
 		}
 
@@ -72,19 +62,40 @@ export class Nativo {
 		});
 	}
 
-	replaceAndShowSponsoredFanAd(): void {
+	replaceAndShowSponsoredFanAd(uapLoadStatusAction: any = {}): void {
 		const nativoFeedAdSlotElement = document.getElementById(Nativo.FEED_AD_SLOT_NAME);
 		const recirculationSponsoredElement = document.querySelector(
 			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored.can-nativo-replace',
 		);
 
 		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
-			recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
-			nativoFeedAdSlotElement.classList.remove('hide');
-			this.requestAd(nativoFeedAdSlotElement);
+			if (!this.isSponsoredProductOnPage(uapLoadStatusAction)) {
+				recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
+				nativoFeedAdSlotElement.classList.remove('hide');
+			}
+
+			this.requestAd(nativoFeedAdSlotElement, uapLoadStatusAction);
 		} else {
 			utils.logger(logGroup, 'Could not replace sponsored element with Nativo feed ad');
 		}
+	}
+
+	private isSponsoredProductOnPage(uapLoadStatusAction): boolean {
+		if (uapLoadStatusAction?.isLoaded === true) {
+			utils.logger(logGroup, 'Fan Takeover on the page');
+			return true;
+		}
+
+		if (
+			uapLoadStatusAction?.isLoaded === false &&
+			uapLoadStatusAction?.adProduct === 'ruap' &&
+			context.get('custom.hasFeaturedVideo')
+		) {
+			utils.logger(logGroup, '"Fan Takeover" on the featured page');
+			return true;
+		}
+
+		return false;
 	}
 
 	private sendEvent(): void {
