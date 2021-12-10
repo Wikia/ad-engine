@@ -15,14 +15,14 @@ export class MessageBox {
 
 	createMessage = (): HTMLElement => {
 		const message = document.createElement('h3');
-		message.className = 'cta-message';
+		message.className = 'cm-message';
 		message.innerHTML = this.messageText;
 		return message;
 	};
 
 	createButton = (): HTMLButtonElement => {
 		const button = document.createElement('button');
-		button.classList.add('cta-button', 'wds-button');
+		button.classList.add('cm-button', 'wds-button');
 		button.innerHTML = this.buttonText;
 
 		return button;
