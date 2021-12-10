@@ -189,6 +189,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 					this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
 				}
 			});
+		} else {
+			context.set('slots.top_leaderboard.targeting.pos', ['hivi_leaderboard', 'top_leaderboard']);
 		}
 
 		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {
