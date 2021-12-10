@@ -10,6 +10,7 @@ import {
 	Binder,
 	communicationService,
 	context,
+	ctaTracker,
 	Dictionary,
 	eventService,
 	FuncPipelineStep,
@@ -84,6 +85,7 @@ export class TrackingSetup {
 		this.atsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
+		this.ctaTracker();
 	}
 
 	private porvataTracker(): void {
@@ -123,6 +125,20 @@ export class TrackingSetup {
 
 				return data;
 			});
+	}
+
+	private ctaTracker(): void {
+		if (this.slotTrackingMiddlewares.length === 0) {
+			return;
+		}
+		const dataWarehouseTracker = new DataWarehouseTracker();
+
+		ctaTracker.add(...this.slotTrackingMiddlewares);
+		ctaTracker.register(({ data }: Dictionary) => {
+			dataWarehouseTracker.track(data, slotTrackingUrl);
+
+			return data;
+		});
 	}
 
 	private adClickTracker(): void {
