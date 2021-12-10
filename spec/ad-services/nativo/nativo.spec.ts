@@ -119,6 +119,8 @@ describe('Nativo service', () => {
 	});
 
 	it('Nativo sends request when Roadblock is on a regular page', () => {
+		context.set('custom.hasFeaturedVideo', false);
+
 		nativo.requestAd(placeholder, { isLoaded: false, adProduct: 'ruap' });
 
 		expect(ntvCmdPushSpy.callCount).to.equal(1);
