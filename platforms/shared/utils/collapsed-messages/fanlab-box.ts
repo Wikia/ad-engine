@@ -4,8 +4,18 @@ export class FanLabBox extends MessageBox {
 	constructor() {
 		super();
 		this.type = 'FANLAB';
-		this.redirectUrl = 'https://www.fandom.com/fanlab/';
-		this.buttonText = 'Sign Up';
-		this.messageText = 'Join our Fan Lab community.';
+		this.redirectUrl = this.buildUrl();
+		this.buttonText = 'Join';
+		this.messageText = `Join Fan Lab,<br/>an exclusive online community of fans`;
 	}
+
+	private buildUrl = (): string => {
+		const basicUrl = 'https://www.fandom.com/fanlab/';
+		const utm_source = 'fandom';
+		const utm_medium = 'ctr';
+		const utm_campaign = 'collapse_message_fan_lab';
+		const utm_content = 'button';
+
+		return `${basicUrl}?utm_source=${utm_source}&utm_medium=${utm_medium}&utm_campaign=${utm_campaign}&utm_content=${utm_content}`;
+	};
 }

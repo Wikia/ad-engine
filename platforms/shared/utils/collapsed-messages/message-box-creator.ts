@@ -1,4 +1,4 @@
-import { FanlabBox } from './fanlab-box';
+import { FanLabBox } from './fanlab-box';
 import { MessageBox } from './message-box';
 import { MessageBoxType } from './message-box-service';
 import { NewsletterBox } from './newsletter-box';
@@ -10,7 +10,7 @@ export class MessageBoxCreator {
 			case 'REGISTER':
 				return new RegisterBox();
 			case 'FANLAB':
-				return new FanlabBox();
+				return new FanLabBox();
 			case 'NEWSLETTER':
 				return new NewsletterBox();
 			default:
