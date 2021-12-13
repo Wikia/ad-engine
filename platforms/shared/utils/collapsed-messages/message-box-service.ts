@@ -48,7 +48,7 @@ export class MessageBoxService {
 		boxElement.append(message, button);
 		placeholder.appendChild(boxElement);
 
-		registerMessageBox.sendImpressionEvent(adSlot, status_impression);
+		registerMessageBox.sendTrackingEvent(adSlot, status_impression);
 	};
 
 	addNewsletterBox = (): void => {};

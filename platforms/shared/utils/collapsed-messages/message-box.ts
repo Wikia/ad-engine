@@ -40,13 +40,4 @@ export class MessageBox {
 			}),
 		);
 	};
-
-	sendImpressionEvent = (adSlot: AdSlot, ad_status: AdStatus): void => {
-		communicationService.dispatch(
-			messageBoxTrackingEvent({
-				ad_status,
-				adSlotName: adSlot.getSlotName(),
-			}),
-		);
-	};
 }
