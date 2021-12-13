@@ -205,13 +205,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			}
 
 			if (context.get('templates.stickyTlb.forced')) {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						return;
-					}
-					context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
-					context.push('slots.hivi_leaderboard.defaultTemplates', 'stickyTlb');
-				});
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+				context.push('slots.hivi_leaderboard.defaultTemplates', 'stickyTlb');
 			} else if (context.get('templates.stickyTlb.lineItemIds')) {
 				context.push(
 					`slots.${hiviLBEnabled ? 'hivi_leaderboard' : 'top_leaderboard'}.defaultTemplates`,
