@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot, AdStatus } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
 
 export type MessageBoxType = 'REGISTER' | 'NEWSLETTER' | 'FANLAB';
@@ -33,6 +33,8 @@ export class MessageBoxService {
 	};
 
 	addRegisterBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
+		const status_impression: AdStatus = 'cm_register_impression';
+		const status_clicked: AdStatus = 'cm_register_clicked';
 		const registerMessageBox = new MessageBoxCreator().createMessageBox('REGISTER');
 
 		const boxElement = registerMessageBox.createBoxWrapper();
@@ -40,11 +42,13 @@ export class MessageBoxService {
 		const button = registerMessageBox.createButton();
 		button.onclick = () => {
 			registerMessageBox.openInNewTab();
-			registerMessageBox.sendTrackingEvent(adSlot);
+			registerMessageBox.sendTrackingEvent(adSlot, status_clicked);
 		};
 
 		boxElement.append(message, button);
 		placeholder.appendChild(boxElement);
+
+		registerMessageBox.sendImpressionEvent(adSlot, status_impression);
 	};
 
 	addNewsletterBox = (): void => {};

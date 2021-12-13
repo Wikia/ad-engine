@@ -1,4 +1,4 @@
-import { AdSlot, communicationService, hideMessageBoxEvent } from '@wikia/ad-engine';
+import { AdSlot, AdStatus, communicationService, messageBoxTrackingEvent } from '@wikia/ad-engine';
 import { MessageBoxType } from './message-box-service';
 
 export class MessageBox {
@@ -32,9 +32,19 @@ export class MessageBox {
 		window.open(this.redirectUrl, '_blank').focus();
 	};
 
-	sendTrackingEvent = (adSlot: AdSlot) => {
+	sendTrackingEvent = (adSlot: AdSlot, ad_status: AdStatus) => {
 		communicationService.dispatch(
-			hideMessageBoxEvent({
+			messageBoxTrackingEvent({
+				ad_status,
+				adSlotName: adSlot.getSlotName(),
+			}),
+		);
+	};
+
+	sendImpressionEvent = (adSlot: AdSlot, ad_status: AdStatus): void => {
+		communicationService.dispatch(
+			messageBoxTrackingEvent({
+				ad_status,
 				adSlotName: adSlot.getSlotName(),
 			}),
 		);
