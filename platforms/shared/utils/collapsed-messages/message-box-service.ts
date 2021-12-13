@@ -1,4 +1,4 @@
-import { AdSlot, AdStatus } from '@wikia/ad-engine';
+import { AdSlot } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
 
 export type MessageBoxType = 'REGISTER' | 'NEWSLETTER' | 'FANLAB';
