@@ -12,6 +12,7 @@ import {
 describe('UniversalAdPackage', () => {
 	const UAP_ID = 666;
 	const UAP_CREATIVE_ID = 333;
+	const UAP_STANDARD_AD_PRODUCT = 'uap';
 	const sandbox: SinonSandbox = createSandbox();
 	let contextStub: SinonStubbedInstance<Context>;
 
@@ -75,6 +76,7 @@ describe('UniversalAdPackage', () => {
 			expect(dispatch.firstCall.args[0]).to.deep.equal(
 				uapLoadStatus({
 					isLoaded: isFanTakeoverLoaded,
+					adProduct: UAP_STANDARD_AD_PRODUCT,
 				}),
 			);
 		});
@@ -95,6 +97,7 @@ describe('UniversalAdPackage', () => {
 			expect(dispatch.firstCall.args[0]).to.deep.equal(
 				uapLoadStatus({
 					isLoaded: isFanTakeoverLoaded,
+					adProduct: UAP_STANDARD_AD_PRODUCT,
 				}),
 			);
 		});
@@ -115,6 +118,7 @@ describe('UniversalAdPackage', () => {
 			expect(dispatch.firstCall.args[0]).to.deep.equal(
 				uapLoadStatus({
 					isLoaded: isFanTakeoverLoaded,
+					adProduct: UAP_STANDARD_AD_PRODUCT,
 				}),
 			);
 		});
