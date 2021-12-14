@@ -7,6 +7,24 @@ export class MessageBox {
 	protected buttonText: string;
 	protected messageText: string;
 
+	createBox = (placeholder: HTMLElement, adSlot: AdSlot) => {
+		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
+		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
+
+		const wrapper = this.createBoxWrapper();
+		const message = this.createMessage();
+		const button = this.createButton();
+		button.onclick = () => {
+			this.openInNewTab();
+			this.sendTrackingEvent(adSlot, status_clicked);
+		};
+
+		wrapper.append(message, button);
+		placeholder.appendChild(wrapper);
+
+		this.sendTrackingEvent(adSlot, status_impression);
+	};
+
 	createBoxWrapper = (): HTMLElement => {
 		const box = document.createElement('div');
 		box.classList.add('message-box', `cm-${this.type.toLowerCase()}-box`);
