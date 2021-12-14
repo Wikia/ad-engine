@@ -26,9 +26,10 @@ describe('Message Box Service', () => {
 			sandbox.restore();
 		});
 
-		it('is added - when it was not added before, slot is collapsed and is not a top_leaderboard', () => {
+		it('is added - when it was not added before, slot is collapsed and is not a top/bottom leaderboard', () => {
 			sandbox.stub(messageBoxService, 'numOfMessageBoxesOnPage').returns(0);
-			sandbox.stub(messageBoxService, 'isItTlbOrBlb').returns(false);
+			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
 				true,
@@ -39,7 +40,8 @@ describe('Message Box Service', () => {
 			actionEventMock = 'success';
 
 			sandbox.stub(messageBoxService, 'numOfMessageBoxesOnPage').returns(0);
-			sandbox.stub(messageBoxService, 'isItTlbOrBlb').returns(false);
+			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
 				false,
@@ -48,7 +50,8 @@ describe('Message Box Service', () => {
 
 		it('is not added - when message box already exists on the page', () => {
 			sandbox.stub(messageBoxService, 'numOfMessageBoxesOnPage').returns(1);
-			sandbox.stub(messageBoxService, 'isItTlbOrBlb').returns(false);
+			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(false);
+			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
 				false,
@@ -57,7 +60,8 @@ describe('Message Box Service', () => {
 
 		it('is not added - when collapsed slot is top_leaderboard', () => {
 			sandbox.stub(messageBoxService, 'numOfMessageBoxesOnPage').returns(0);
-			sandbox.stub(messageBoxService, 'isItTlbOrBlb').returns(true);
+			sandbox.stub(messageBoxService, 'isTopLeaderboard').returns(true);
+			sandbox.stub(messageBoxService, 'isBottomLeaderoard').returns(false);
 
 			expect(messageBoxService.shouldAddMessageBox(actionEventMock, getMockElement(true))).to.equal(
 				false,
