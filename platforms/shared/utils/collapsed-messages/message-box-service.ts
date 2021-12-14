@@ -4,8 +4,8 @@ import { MessageBoxCreator } from './message-box-creator';
 export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER';
 
 export class MessageBoxService {
-	protected types: MessageBoxType[] = ['REGISTER', 'FANLAB'];
-	protected currentType = 0;
+	private types: MessageBoxType[] = ['REGISTER', 'FANLAB'];
+	private currentType = 0;
 
 	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
 		if (this.currentType >= this.types.length) {
