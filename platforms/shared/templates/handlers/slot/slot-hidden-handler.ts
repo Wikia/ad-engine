@@ -8,6 +8,7 @@ export class SlotHiddenHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		this.manipulator.element(this.adSlot.element).addClass(AdSlot.HIDDEN_CLASS);
+		document.body.classList.remove('has-sticky-tlb');
 		this.adSlot.emitEvent(AdSlot.HIDDEN_EVENT);
 	}
 }
