@@ -5,8 +5,8 @@ export class FanLabBox extends MessageBox {
 		super();
 		this.type = 'FANLAB';
 		this.redirectUrl = this.buildUrl();
-		this.buttonText = 'Join';
-		this.messageText = `Join Fan Lab,<br/>an exclusive online community of fans`;
+		this.buttonText = 'Join Fan Lab';
+		this.messageText = `Join Fan Lab,<br/>an exclusive online community of fans and superfans.`;
 	}
 
 	private buildUrl = (): string => {
