@@ -7,6 +7,10 @@ export class MessageBoxService {
 	private types: MessageBoxType[] = ['REGISTER', 'FANLAB'];
 	private currentType = 0;
 
+	getCurrentTypeIndex = (): number => {
+		return this.currentType;
+	};
+
 	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
 		if (this.currentType >= this.types.length) {
 			return;
