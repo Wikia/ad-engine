@@ -1,23 +1,19 @@
 import { AdSlot } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
 
-export type MessageBoxType = 'REGISTER' | 'NEWSLETTER' | 'FANLAB';
+export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER';
 
 export class MessageBoxService {
+	protected types: MessageBoxType[] = ['REGISTER', 'FANLAB'];
+	protected currentType = 0;
+
 	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
-		if (this.shouldAddBoxOfType('REGISTER')) {
-			this.addBoxOfType('REGISTER', placeholder, adSlot);
+		if (this.currentType >= this.types.length) {
 			return;
 		}
 
-		if (this.shouldAddBoxOfType('FANLAB')) {
-			this.addBoxOfType('FANLAB', placeholder, adSlot);
-			return;
-		}
-	};
-
-	shouldAddBoxOfType = (type: MessageBoxType): boolean => {
-		return !document.querySelector(`.cm-${type.toLowerCase()}-box`);
+		this.addBoxOfType(this.types[this.currentType], placeholder, adSlot);
+		this.currentType += 1;
 	};
 
 	addBoxOfType = (type: MessageBoxType, placeholder: HTMLElement, adSlot: AdSlot) => {
@@ -26,11 +22,7 @@ export class MessageBoxService {
 	};
 
 	shouldAddMessageBox = (actionEvent: string, placeholder: HTMLElement): boolean => {
-		if (
-			this.isTopLeaderboard(placeholder) ||
-			this.isBottomLeaderoard(placeholder) ||
-			this.numOfMessageBoxesOnPage() > 3
-		) {
+		if (this.isTopLeaderboard(placeholder) || this.isBottomLeaderoard(placeholder)) {
 			return false;
 		}
 
@@ -43,9 +35,5 @@ export class MessageBoxService {
 
 	isBottomLeaderoard = (placeholder: HTMLElement): boolean => {
 		return placeholder.classList.contains('bottom-leaderboard');
-	};
-
-	numOfMessageBoxesOnPage = (): number => {
-		return document.querySelectorAll('.message-box').length;
 	};
 }
