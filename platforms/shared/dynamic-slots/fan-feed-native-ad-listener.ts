@@ -4,10 +4,14 @@ import { map } from 'rxjs/operators';
 
 const fanFeedReady = globalAction('[FanFeed] Ready');
 
-export function fanFeedNativeAdListener(nativeAdInjector: () => void): void {
+export function fanFeedNativeAdListener(
+	nativeAdInjector: (uapLoadStatusAction: any) => void,
+): void {
 	const uap$ = communicationService.action$.pipe(
 		ofType(uapLoadStatus),
-		map(({ isLoaded }) => isLoaded),
+		map(({ isLoaded, adProduct }) => {
+			return { isLoaded, adProduct };
+		}),
 	);
 
 	const fanFeed$ = communicationService.action$.pipe(
@@ -16,10 +20,17 @@ export function fanFeedNativeAdListener(nativeAdInjector: () => void): void {
 	);
 
 	combineLatest([uap$, fanFeed$])
-		.pipe(map(([uapLoaded, fanFeedLoaded]) => !(uapLoaded && fanFeedLoaded)))
-		.subscribe((shouldRenderNativeAd) => {
-			if (shouldRenderNativeAd) {
-				nativeAdInjector();
+		.pipe(
+			map(([uapLoadStatusAction, fanFeedLoaded]) => {
+				return {
+					uapLoadStatusAction,
+					shouldRenderNativeAd: !(uapLoadStatusAction.isLoaded && fanFeedLoaded),
+				};
+			}),
+		)
+		.subscribe((result) => {
+			if (result.shouldRenderNativeAd) {
+				nativeAdInjector(result.uapLoadStatusAction);
 			}
 		});
 }
