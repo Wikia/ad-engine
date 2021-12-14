@@ -14,11 +14,6 @@ export class MessageBoxService {
 			this.addBoxOfType('FANLAB', placeholder, adSlot);
 			return;
 		}
-
-		if (this.shouldAddBoxOfType('NEWSLETTER')) {
-			this.addBoxOfType('NEWSLETTER', placeholder, adSlot);
-			return;
-		}
 	};
 
 	shouldAddBoxOfType = (type: MessageBoxType): boolean => {
