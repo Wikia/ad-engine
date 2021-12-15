@@ -126,7 +126,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
 				audio: false,
-				insertBeforeSelector: '.mw-parser-output > h2',
+				insertBeforeSelector: '.mw-parser-output > h2', // todo remove
 				parentContainerSelector: '.incontent-boxad',
 				disabled: true,
 				defaultClasses: ['hide'],
@@ -265,7 +265,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 				group: 'VIDEO',
-				lowerSlotName: 'featured',
 				targeting: {
 					uap: 'none',
 				},

@@ -1,7 +1,11 @@
 import { fanFeedNativeAdListener } from '@platforms/shared';
 import {
+	btRec,
 	communicationService,
 	context,
+	events,
+	FmrRotator,
+	globalAction,
 	InstantConfigService,
 	Nativo,
 	nativo,
@@ -14,6 +18,8 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
+
+const railReady = globalAction('[Rail] Ready');
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig?: SlotCreatorConfig;
@@ -37,7 +43,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
-			slotCreatorWrapperConfig: null,
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
 			},
@@ -58,9 +63,37 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
-			slotCreatorWrapperConfig: null,
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	getIncontentBoxadConfig(): SlotSetupDefinition {
+		if (!this.isRightRailApplicable()) {
+			return;
+		}
+
+		const slotName = 'incontent_boxad_1';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '#WikiaAdInContentPlaceHolder',
+				insertMethod: 'prepend',
+				classList: ['hide', 'ad-slot'],
+				// todo repeat config?
+			},
+			activator: () => {
+				communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
+					const slotNamePattern = context.get(`slots.${slotName}.repeat.slotNamePattern`);
+					const prefix = slotNamePattern.replace(slotNamePattern.match(/({.*})/g)[0], '');
+					const rotator = new FmrRotator(slotName, prefix, btRec);
+
+					utils.listener(events.AD_STACK_START, () => {
+						rotator.rotateSlot();
+					});
+				});
 			},
 		};
 	}
@@ -81,7 +114,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
 			},
-			slotCreatorWrapperConfig: null,
 			activator: () => {
 				context.push('events.pushOnScroll.ids', slotName);
 			},
