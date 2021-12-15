@@ -27,7 +27,7 @@
 			@include bfaa-slot(402, $global-navigation-width);
 			@include sticky-tlb-slot($global-navigation-width);
 
-			margin-left: $global-navigation-width;
+			margin-left: $global-navigation-width !important;
 		}
 
 		#bottom_leaderboard {
@@ -48,7 +48,8 @@
 		}
 	}
 
-	.uap-light {
+	.uap-light,
+	.has-sticky-tlb {
 		.fandom-sticky-header {
 			margin-top: unset;
 		}
