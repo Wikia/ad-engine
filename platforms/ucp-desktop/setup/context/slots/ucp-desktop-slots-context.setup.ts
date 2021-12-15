@@ -127,7 +127,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				parentContainerSelector: '.bottom-leaderboard',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -181,7 +180,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				disabled: true,
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.page',
 				options: {},
 				targeting: {
 					loc: 'footer',

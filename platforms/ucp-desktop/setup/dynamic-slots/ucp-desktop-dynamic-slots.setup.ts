@@ -16,8 +16,8 @@ import {
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
-	scrollListener,
 	SlotConfig,
+	SlotCreator,
 	slotInjector,
 	slotService,
 	uapLoadStatus,
@@ -26,23 +26,39 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 import { desktopFanFeedNativeAdListener } from './desktop-fan-feed-native-ad-listener';
+import {
+	SlotSetupDefinition,
+	UcpDesktopSlotsDefinitionRepository,
+} from './ucp-desktop-slots-definition-repository';
 
 const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
+	constructor(
+		private slotCreator: SlotCreator,
+		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,
+	) {}
+
 	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();
-		this.injectFloorAdhesion();
-		this.injectBottomLeaderboard();
 		this.injectNativeAdsPlaceholder();
 		this.injectNativeFanFeed();
 		this.configureTopLeaderboard();
+		this.configureBottomLeaderboard();
 		this.configureIncontentPlayerFiller();
+		this.registerFloorAdhesionCodePriority();
+		// ToDo: ticket na placeholdery po cleanupie HiViLB
 	}
 
 	private injectSlots(): void {
+		this.insertSlots([
+			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
+			// ToDo: merge HiViLB cleanup + TLB
+		]);
+
 		const slots: Dictionary<SlotConfig> = context.get('slots');
 		Object.keys(slots).forEach((slotName) => {
 			if (slots[slotName].insertBeforeSelector || slots[slotName].parentContainerSelector) {
@@ -51,6 +67,21 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		});
 
 		this.appendIncontentBoxad(slots['incontent_boxad_1']);
+	}
+
+	private insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
+		slotsToInsert
+			.filter((config) => !!config)
+			.forEach(({ slotCreatorConfig, slotCreatorWrapperConfig, activator }) => {
+				try {
+					this.slotCreator.createSlot(slotCreatorConfig, slotCreatorWrapperConfig);
+					if (activator) {
+						activator();
+					}
+				} catch (e) {
+					slotsContext.setState(slotCreatorConfig.slotName, false);
+				}
+			});
 	}
 
 	private appendIncontentBoxad(slotConfig: SlotConfig): void {
@@ -214,18 +245,24 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		}
 	}
 
-	private injectFloorAdhesion(): void {
-		const numberOfViewportsFromTopToPush: number =
-			context.get('options.floorAdhesionNumberOfViewportsFromTopToPush') || 0;
+	private configureBottomLeaderboard(): void {
+		const slotName = 'bottom_leaderboard';
 
-		if (numberOfViewportsFromTopToPush === -1) {
-			context.push('state.adStack', { id: 'floor_adhesion' });
-		} else {
-			const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-			scrollListener.addSlot('floor_adhesion', { distanceFromTop: distance });
-		}
+		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
+		});
 
-		this.registerFloorAdhesionCodePriority();
+		slotService.on(slotName, AdSlot.STATUS_BLOCKED, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_BLOCKED);
+		});
+
+		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
+		});
+
+		slotService.on(slotName, AdSlot.STATUS_FORCED_COLLAPSE, () => {
+			this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
+		});
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
@@ -244,28 +281,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
 			porvataClosedActive = false;
-		});
-	}
-
-	private injectBottomLeaderboard(): void {
-		const slotName = 'bottom_leaderboard';
-
-		context.push('events.pushOnScroll.ids', slotName);
-
-		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_BLOCKED, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_BLOCKED);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_FORCED_COLLAPSE, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
 		});
 	}
 

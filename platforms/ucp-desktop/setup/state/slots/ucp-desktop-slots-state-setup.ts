@@ -18,11 +18,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 		slotsContext.setState('hivi_leaderboard', !!context.get('options.hiviLeaderboard'));
 		slotsContext.setState('top_leaderboard', true);
 		slotsContext.setState('top_boxad', this.isRightRailApplicable());
-		slotsContext.setState('bottom_leaderboard', true);
-		slotsContext.setState(
-			'floor_adhesion',
-			this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo'),
-		);
 		slotsContext.setState(
 			'invisible_high_impact_2',
 			!this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo'),

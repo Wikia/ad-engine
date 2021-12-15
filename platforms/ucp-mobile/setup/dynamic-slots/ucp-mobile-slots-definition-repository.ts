@@ -324,12 +324,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
-				context.set(
-					'templates.floorAdhesion.showCloseButtonAfter',
-					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
-				);
-
 				const numberOfViewportsFromTopToPush: number =
 					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
@@ -362,7 +356,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set('slots.interstitial.disabled', false);
+				context.set(`slots.${slotName}.disabled`, false);
 				this.pushWaitingSlot(slotName);
 			},
 		};
