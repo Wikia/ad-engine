@@ -16,13 +16,10 @@ export class MessageBoxService {
 			return;
 		}
 
-		this.addBoxOfType(this.types[this.currentType], placeholder, adSlot);
-		this.currentType += 1;
-	};
+		const messageBox = new MessageBoxCreator().createMessageBox(this.types[this.currentType]);
+		messageBox.create(placeholder, adSlot);
 
-	addBoxOfType = (type: MessageBoxType, placeholder: HTMLElement, adSlot: AdSlot) => {
-		const messageBox = new MessageBoxCreator().createMessageBox(type);
-		messageBox.createBox(placeholder, adSlot);
+		this.currentType += 1;
 	};
 
 	shouldAddMessageBox = (actionEvent: string, placeholder: HTMLElement): boolean => {
