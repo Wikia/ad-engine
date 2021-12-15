@@ -88,6 +88,36 @@ export class UcpDesktopSlotsDefinitionRepository {
 		};
 	}
 
+	getIncontentPlayerConfig(): SlotSetupDefinition {
+		if (!this.isIncontentPlayerApplicable()) {
+			return;
+		}
+		const slotName = 'incontent_player';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: context.get(`slots.${slotName}.positionSelector`),
+				anchorPosition: 'belowFirstViewport',
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				if (context.get('services.distroScale.enabled')) {
+					context.push('state.adStack', { id: slotName });
+				} else {
+					// ToDo: dlaczego na requestly nie dziala?
+					context.set(`slots.${slotName}.disabled`, false);
+					context.push('events.pushOnScroll.ids', slotName);
+				}
+			},
+		};
+	}
+
+	private isIncontentPlayerApplicable(): boolean {
+		return context.get('custom.hasIncontentPlayer');
+	}
+
 	getFloorAdhesionConfig(): SlotSetupDefinition {
 		if (!this.isFloorAdhesionApplicable()) {
 			return;

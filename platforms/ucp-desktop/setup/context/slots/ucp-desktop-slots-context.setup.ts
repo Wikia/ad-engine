@@ -134,8 +134,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				autoplay: true,
 				audio: false,
 				isVideo: true,
-				insertBeforeSelector: '#mw-content-text > div > h2',
-				insertBelowFirstViewport: true,
+				positionSelector: '#mw-content-text > div > h2',
 				disabled: true,
 				slotNameSuffix: '',
 				group: 'HiVi',
@@ -164,7 +163,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
-				insertBeforeSelector: '.page',
 				options: {},
 				outOfPage: true,
 				targeting: {

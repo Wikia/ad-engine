@@ -38,7 +38,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
-		this.injectIncontentPlayer();
 		this.configureTopLeaderboard();
 		this.configureBottomLeaderboard();
 		this.configureIncontentPlayerFiller();
@@ -53,10 +52,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
+			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
+		// ToDo: remove
 		const slots: Dictionary<SlotConfig> = context.get('slots');
 		Object.keys(slots).forEach((slotName) => {
 			if (slots[slotName].insertBeforeSelector || slots[slotName].parentContainerSelector) {
@@ -96,16 +97,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
 			}
 		});
-	}
-
-	private injectIncontentPlayer(): void {
-		if (context.get('custom.hasIncontentPlayer')) {
-			if (context.get('services.distroScale.enabled')) {
-				context.push('state.adStack', { id: 'incontent_player' });
-			} else {
-				context.push('events.pushOnScroll.ids', 'incontent_player');
-			}
-		}
 	}
 
 	private configureIncontentPlayerFiller(): void {

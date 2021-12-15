@@ -203,6 +203,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				});
 				// We need to reset it here, because otherwise ucp-targeting-setup throws an error in line:
 				// https://github.com/Wikia/ad-engine/blob/dev/platforms/shared/context/targeting/ucp-targeting.setup.ts#L101
+				// ToDo: cleanup
 				context.set('slots.incontent_player.insertBeforeSelector', '');
 			},
 		};

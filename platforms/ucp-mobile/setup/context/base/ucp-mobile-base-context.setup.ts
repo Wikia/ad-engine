@@ -13,17 +13,10 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 		);
 
 		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));
-		// FIXME: sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
-		// context.set(
-		// 	'userId',
-		// 	(window.mw as any).config.get('wgTrackID') || (window.mw as any).config.get('wgUserId'),
-		// );
 
 		context.set(
 			'events.pushOnScroll.threshold',
 			this.instantConfig.get('icPushOnScrollThreshold', 100),
 		);
-
-		context.set('events.pushAfterRendered.top_boxad', ['incontent_player']);
 	}
 }

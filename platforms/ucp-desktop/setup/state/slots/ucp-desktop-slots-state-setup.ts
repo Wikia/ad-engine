@@ -1,4 +1,3 @@
-import { slotsContext } from '@platforms/shared';
 import {
 	context,
 	DiProcess,
@@ -17,8 +16,6 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 
 		if (context.get('services.distroScale.enabled')) {
 			this.setupIncontentPlayerForDistroScale();
-		} else {
-			slotsContext.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
 		}
 	}
 
