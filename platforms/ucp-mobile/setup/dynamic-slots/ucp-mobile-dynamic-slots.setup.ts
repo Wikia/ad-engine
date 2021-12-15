@@ -1,4 +1,4 @@
-import { MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
+import { insertSlots, MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	btfBlockerService,
@@ -9,7 +9,6 @@ import {
 	eventService,
 	fillerService,
 	PorvataFiller,
-	SlotCreator,
 	slotService,
 	uapLoadStatus,
 	universalAdPackage,
@@ -17,10 +16,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { PlaceholderServiceHelper } from '../../../shared/utils/placeholder-service-helper';
-import {
-	SlotSetupDefinition,
-	UcpMobileSlotsDefinitionRepository,
-} from './ucp-mobile-slots-definition-repository';
+import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
@@ -30,10 +26,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		},
 	};
 
-	constructor(
-		private slotCreator: SlotCreator,
-		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
-	) {}
+	constructor(private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -47,7 +40,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private injectSlots(): void {
 		const topLeaderboardDefinition = this.slotsDefinitionRepository.getTopLeaderboardConfig();
 
-		this.insertSlots([
+		insertSlots([
 			topLeaderboardDefinition,
 			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
@@ -71,21 +64,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				);
 			});
 		}
-	}
-
-	private insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
-		slotsToInsert
-			.filter((config) => !!config)
-			.forEach(({ slotCreatorConfig, slotCreatorWrapperConfig, activator }) => {
-				try {
-					this.slotCreator.createSlot(slotCreatorConfig, slotCreatorWrapperConfig);
-					if (activator) {
-						activator();
-					}
-				} catch (e) {
-					slotsContext.setState(slotCreatorConfig.slotName, false);
-				}
-			});
 	}
 
 	private configureIncontentPlayer(): void {

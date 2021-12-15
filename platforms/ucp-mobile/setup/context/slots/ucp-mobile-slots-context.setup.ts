@@ -126,7 +126,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
 				audio: false,
-				insertBeforeSelector: '.mw-parser-output > h2', // todo remove
+				insertBeforeSelector: '.mw-parser-output > h2', // todo remove?
 				parentContainerSelector: '.incontent-boxad',
 				disabled: true,
 				defaultClasses: ['hide'],
@@ -145,7 +145,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'mobile_prefooter',
 				slotNameSuffix: '',
 				disabled: true,
-				disableManualInsert: true,
 				group: 'PF',
 				options: {},
 				slotShortcut: 'p',
@@ -165,8 +164,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			interstitial: {
 				adProduct: 'interstitial',
-				disabled: true,
-				disableManualInsert: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'IU',
@@ -180,8 +177,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				disabled: true,
-				disableManualInsert: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'PF',

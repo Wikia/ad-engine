@@ -24,6 +24,7 @@ export * from './services/no-ads-detector';
 export * from './utils/get-domain';
 export * from './utils/get-sports-page-type';
 export * from './utils/get-media-wiki-variable';
+export * from './utils/insert-slots';
 export * from './utils/instant-config-setup';
 export * from './utils/message-box';
 export * from './utils/placeholder-service';

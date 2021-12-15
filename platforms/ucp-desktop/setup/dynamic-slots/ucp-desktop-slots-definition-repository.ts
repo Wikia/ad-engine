@@ -1,4 +1,4 @@
-import { fanFeedNativeAdListener } from '@platforms/shared';
+import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
 import {
 	btRec,
 	communicationService,
@@ -11,8 +11,6 @@ import {
 	nativo,
 	ofType,
 	scrollListener,
-	SlotCreatorConfig,
-	SlotCreatorWrapperConfig,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
@@ -20,12 +18,6 @@ import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
 
 const railReady = globalAction('[Rail] Ready');
-
-export interface SlotSetupDefinition {
-	slotCreatorConfig?: SlotCreatorConfig;
-	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
-	activator?: () => void;
-}
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -138,8 +130,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				if (context.get('services.distroScale.enabled')) {
 					context.push('state.adStack', { id: slotName });
 				} else {
-					// ToDo: dlaczego na requestly nie dziala?
-					context.set(`slots.${slotName}.disabled`, false);
 					context.push('events.pushOnScroll.ids', slotName);
 				}
 			},
@@ -165,9 +155,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				// ToDo: dlaczego na requestly nie dziala?
-				context.set(`slots.${slotName}.disabled`, false);
-
 				const numberOfViewportsFromTopToPush: number =
 					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 

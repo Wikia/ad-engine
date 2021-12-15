@@ -134,7 +134,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				audio: false,
 				isVideo: true,
 				insertBeforeSelector: '#mw-content-text > div > h2',
-				disabled: true,
 				slotNameSuffix: '',
 				group: 'HiVi',
 				slotShortcut: 'i',
@@ -147,7 +146,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				disabled: true,
 				slotNameSuffix: '',
 				group: 'PF',
 				options: {},

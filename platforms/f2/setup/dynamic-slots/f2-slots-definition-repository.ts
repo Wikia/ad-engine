@@ -1,14 +1,9 @@
-import { context, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import { SlotSetupDefinition } from '@platforms/shared';
+import { context, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../setup-f2';
 import { F2State } from '../../utils/f2-state';
 import { F2_STATE } from '../../utils/f2-state-binder';
-
-export interface SlotSetupDefinition {
-	slotCreatorConfig: SlotCreatorConfig;
-	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
-	activator?: () => void;
-}
 
 @Injectable()
 export class F2SlotsDefinitionRepository {

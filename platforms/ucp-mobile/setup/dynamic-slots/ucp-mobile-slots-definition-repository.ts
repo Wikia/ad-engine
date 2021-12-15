@@ -1,4 +1,4 @@
-import { fanFeedNativeAdListener } from '@platforms/shared';
+import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -9,20 +9,12 @@ import {
 	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
-	SlotCreatorConfig,
-	SlotCreatorWrapperConfig,
 	slotPlaceholderInjector,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-
-export interface SlotSetupDefinition {
-	slotCreatorConfig: SlotCreatorConfig;
-	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
-	activator?: () => void;
-}
 
 interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
@@ -201,10 +193,6 @@ export class UcpMobileSlotsDefinitionRepository {
 						this.injectIncontentAdsPlaceholders();
 					}
 				});
-				// We need to reset it here, because otherwise ucp-targeting-setup throws an error in line:
-				// https://github.com/Wikia/ad-engine/blob/dev/platforms/shared/context/targeting/ucp-targeting.setup.ts#L101
-				// ToDo: cleanup
-				context.set('slots.incontent_player.insertBeforeSelector', '');
 			},
 		};
 	}
@@ -360,7 +348,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set(`slots.${slotName}.disabled`, false);
 				this.pushWaitingSlot(slotName);
 			},
 		};

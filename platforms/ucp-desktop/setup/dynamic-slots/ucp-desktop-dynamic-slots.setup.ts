@@ -1,4 +1,4 @@
-import { slotsContext } from '@platforms/shared';
+import { insertSlots, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -8,21 +8,14 @@ import {
 	fillerService,
 	PorvataFiller,
 	PorvataGamParams,
-	SlotCreator,
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import {
-	SlotSetupDefinition,
-	UcpDesktopSlotsDefinitionRepository,
-} from './ucp-desktop-slots-definition-repository';
+import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
-	constructor(
-		private slotCreator: SlotCreator,
-		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,
-	) {}
+	constructor(private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -35,7 +28,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private injectSlots(): void {
-		this.insertSlots([
+		insertSlots([
 			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
@@ -46,21 +39,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
-	}
-
-	private insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
-		slotsToInsert
-			.filter((config) => !!config)
-			.forEach(({ slotCreatorConfig, slotCreatorWrapperConfig, activator }) => {
-				try {
-					this.slotCreator.createSlot(slotCreatorConfig, slotCreatorWrapperConfig);
-					if (activator) {
-						activator();
-					}
-				} catch (e) {
-					slotsContext.setState(slotCreatorConfig.slotName, false);
-				}
-			});
 	}
 
 	private handleAdPlaceholders(slotName: string, slotStatus: string): void {

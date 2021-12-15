@@ -1,11 +1,6 @@
-import { context, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import { context } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-
-export interface SlotSetupDefinition {
-	slotCreatorConfig: SlotCreatorConfig;
-	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
-	activator?: () => void;
-}
+import { SlotSetupDefinition } from '../utils/insert-slots';
 
 @Injectable()
 export class CurseSlotsDefinitionRepository {
