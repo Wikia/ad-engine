@@ -1,3 +1,4 @@
+import { fanFeedNativeAdListener } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -16,7 +17,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { mobileFanFeedNativeAdListener } from './mobile-fan-feed-native-ad-listener';
 
 export interface SlotSetupDefinition {
 	slotCreatorConfig: SlotCreatorConfig;
@@ -133,7 +133,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
 			},
 			activator: () => {
-				mobileFanFeedNativeAdListener();
+				fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
+					nativo.replaceAndShowSponsoredFanAd(uapLoadStatusAction),
+				);
 			},
 		};
 	}
@@ -176,6 +178,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
+				// ToDo: duplicated
 				repeat: {
 					index: 1,
 					limit: 20,

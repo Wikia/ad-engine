@@ -11,8 +11,6 @@ import {
 	fillerService,
 	FmrRotator,
 	globalAction,
-	Nativo,
-	nativo,
 	ofType,
 	PorvataFiller,
 	PorvataGamParams,
@@ -20,12 +18,10 @@ import {
 	SlotCreator,
 	slotInjector,
 	slotService,
-	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { desktopFanFeedNativeAdListener } from './desktop-fan-feed-native-ad-listener';
 import {
 	SlotSetupDefinition,
 	UcpDesktopSlotsDefinitionRepository,
@@ -43,8 +39,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.injectIncontentPlayer();
-		this.injectNativeAdsPlaceholder();
-		this.injectNativeFanFeed();
 		this.configureTopLeaderboard();
 		this.configureBottomLeaderboard();
 		this.configureIncontentPlayerFiller();
@@ -54,6 +48,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(): void {
 		this.insertSlots([
+			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
+			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
@@ -100,37 +96,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				this.appendRotatingSlot(icbSlotName, slotConfig.repeat.slotNamePattern, parent);
 			}
 		});
-	}
-
-	private injectNativeAdsPlaceholder(): void {
-		if (!nativo.isEnabled()) {
-			return;
-		}
-
-		const pageHeaders = document.querySelectorAll('.mw-headline');
-		const anchor = pageHeaders[1];
-
-		if (!anchor) {
-			return;
-		}
-
-		const container = this.createNativeAdPlaceholder(
-			Nativo.INCONTENT_AD_SLOT_NAME,
-			Nativo.SLOT_CLASS_LIST,
-		);
-		anchor.before(container);
-
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			nativo.requestAd(container, action);
-		});
-	}
-
-	private createNativeAdPlaceholder(id: string, classList): HTMLElement {
-		const container = document.createElement('div');
-		container.setAttribute('id', id);
-		container.classList.add(...classList);
-
-		return container;
 	}
 
 	private injectIncontentPlayer(): void {
@@ -254,9 +219,5 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
 			porvataClosedActive = false;
 		});
-	}
-
-	private injectNativeFanFeed(): void {
-		desktopFanFeedNativeAdListener();
 	}
 }

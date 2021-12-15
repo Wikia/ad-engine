@@ -1,15 +1,22 @@
+import { fanFeedNativeAdListener } from '@platforms/shared';
 import {
+	communicationService,
 	context,
 	InstantConfigService,
+	Nativo,
+	nativo,
+	ofType,
 	scrollListener,
 	SlotCreatorConfig,
 	SlotCreatorWrapperConfig,
+	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 
 export interface SlotSetupDefinition {
-	slotCreatorConfig: SlotCreatorConfig;
+	slotCreatorConfig?: SlotCreatorConfig;
 	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
 	activator?: () => void;
 }
@@ -138,5 +145,39 @@ export class UcpDesktopSlotsDefinitionRepository {
 
 	private isInvisibleHighImpactApplicable(): boolean {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+	}
+
+	getNativoIncontentAdConfig(): SlotSetupDefinition {
+		if (!nativo.isEnabled()) {
+			return;
+		}
+
+		return {
+			slotCreatorConfig: {
+				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
+				anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
+				insertMethod: 'before',
+				classList: Nativo.SLOT_CLASS_LIST,
+			},
+			activator: () => {
+				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+					nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
+				});
+			},
+		};
+	}
+
+	getNativoFeedAdConfig(): SlotSetupDefinition {
+		if (!nativo.isEnabled()) {
+			return;
+		}
+
+		return {
+			activator: () => {
+				fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
+					nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME), uapLoadStatusAction),
+				);
+			},
+		};
 	}
 }

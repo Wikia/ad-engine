@@ -41,6 +41,10 @@ export class SlotCreator {
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
 	): HTMLElement {
+		if (!slotLooseConfig) {
+			return null;
+		}
+
 		logger(groupName, `Creating: ${slotLooseConfig.slotName}`, slotLooseConfig, wrapperLooseConfig);
 
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
