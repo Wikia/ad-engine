@@ -9,12 +9,6 @@ export class UcpDesktopA9ConfigSetup implements DiProcess {
 
 	getA9Context(): object {
 		return {
-			hivi_leaderboard: {
-				sizes: [
-					[728, 90],
-					[970, 250],
-				],
-			},
 			top_leaderboard: {
 				sizes: [
 					[728, 90],

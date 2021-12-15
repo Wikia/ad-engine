@@ -7,31 +7,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 
 	execute(): void {
 		const slots = {
-			hivi_leaderboard: {
-				aboveTheFold: true,
-				firstCall: true,
-				adProduct: 'hivi_leaderboard',
-				slotNameSuffix: '',
-				group: 'LB',
-				parentContainerSelector: '.top-leaderboard',
-				options: {},
-				slotShortcut: 'v',
-				sizes: [
-					{
-						viewportSize: [1024, 0],
-						sizes: [
-							[728, 90],
-							[970, 250],
-						],
-					},
-				],
-				defaultSizes: [[728, 90]],
-				defaultTemplates: [],
-				targeting: {
-					loc: 'top',
-					rv: 1,
-				},
-			},
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
