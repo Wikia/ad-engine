@@ -7,7 +7,7 @@ export class MessageBox {
 	protected buttonText: string;
 	protected messageText: string;
 
-	createBox = (placeholder: HTMLElement, adSlot: AdSlot) => {
+	create = (placeholder: HTMLElement, adSlot: AdSlot) => {
 		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 
