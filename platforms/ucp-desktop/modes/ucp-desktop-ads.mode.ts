@@ -45,7 +45,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 			startAdEngine(inhibitors);
 		});
 
-		this.setAdStack();
 		this.trackAdEngineStatus();
 		this.trackTabId();
 
@@ -116,11 +115,5 @@ export class UcpDesktopAdsMode implements DiProcess {
 		});
 
 		return inhibitors;
-	}
-
-	private setAdStack(): void {
-		context.push('state.adStack', { id: 'top_leaderboard' });
-		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('state.adStack', { id: 'invisible_high_impact_2' });
 	}
 }

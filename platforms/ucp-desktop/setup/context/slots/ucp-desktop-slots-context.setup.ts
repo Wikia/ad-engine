@@ -13,7 +13,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -50,8 +49,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				parentContainerSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
-				insertIntoParentContainerMethod: 'prepend',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [

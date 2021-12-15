@@ -54,9 +54,11 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private injectSlots(): void {
 		this.insertSlots([
+			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
+			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
-			// ToDo: merge HiViLB cleanup + TLB
+			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
 		const slots: Dictionary<SlotConfig> = context.get('slots');
