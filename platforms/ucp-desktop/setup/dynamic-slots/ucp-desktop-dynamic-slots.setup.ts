@@ -1,4 +1,10 @@
-import { insertSlots, slotsContext } from '@platforms/shared';
+import {
+	insertSlots,
+	MessageBox,
+	PlaceholderService,
+	PlaceholderServiceHelper,
+	slotsContext,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	context,
@@ -20,11 +26,10 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
-		this.configureBottomLeaderboard();
 		this.configureIncontentBoxad();
 		this.configureIncontentPlayerFiller();
 		this.configureFloorAdhesionCodePriority();
-		// ToDo: ticket na placeholdery po cleanupie HiViLB albo zrobic
+		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
@@ -41,36 +46,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		]);
 	}
 
-	private handleAdPlaceholders(slotName: string, slotStatus: string): void {
-		const statusesToHideLabel: string[] = [AdSlot.STATUS_BLOCKED, AdSlot.STATUS_COLLAPSE];
-		const statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS];
-		const statusesToCollapse: string[] = [AdSlot.STATUS_FORCED_COLLAPSE];
-		const adSlot = slotService.get(slotName);
-
-		const placeholder = adSlot.getPlaceholder();
-		const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
-
-		if (statusesToStopLoadingSlot.includes(slotStatus)) {
-			placeholder?.classList.remove('is-loading');
-		} else if (statusesToHideLabel.includes(slotStatus)) {
-			placeholder?.classList.remove('is-loading');
-			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
-		} else if (statusesToCollapse.includes(slotStatus)) {
-			placeholder?.classList.add('hide');
-			adSlot.getAdLabel(adLabelParent)?.classList.add('hide');
-		}
-	}
-
 	private configureTopLeaderboard(): void {
 		const slotName = 'top_leaderboard';
-
-		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
-		});
 
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
@@ -84,26 +61,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
 			}
 		}
-	}
-
-	private configureBottomLeaderboard(): void {
-		const slotName = 'bottom_leaderboard';
-
-		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_SUCCESS);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_BLOCKED, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_BLOCKED);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_COLLAPSE, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
-		});
-
-		slotService.on(slotName, AdSlot.STATUS_FORCED_COLLAPSE, () => {
-			this.handleAdPlaceholders(slotName, AdSlot.STATUS_FORCED_COLLAPSE);
-		});
 	}
 
 	private configureIncontentBoxad(): void {
@@ -143,5 +100,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
 			porvataClosedActive = false;
 		});
+	}
+
+	private registerAdPlaceholderService(): void {
+		const placeholderHelper = new PlaceholderServiceHelper();
+		const messageBox = new MessageBox();
+
+		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
+		placeholderService.init();
 	}
 }

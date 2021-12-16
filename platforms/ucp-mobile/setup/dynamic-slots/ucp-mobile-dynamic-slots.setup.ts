@@ -1,4 +1,10 @@
-import { insertSlots, MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
+import {
+	insertSlots,
+	MessageBox,
+	PlaceholderService,
+	PlaceholderServiceHelper,
+	slotsContext,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	btfBlockerService,
@@ -15,7 +21,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { PlaceholderServiceHelper } from '../../../shared/utils/placeholder-service-helper';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()

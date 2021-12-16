@@ -28,6 +28,7 @@ export * from './utils/insert-slots';
 export * from './utils/instant-config-setup';
 export * from './utils/message-box';
 export * from './utils/placeholder-service';
+export * from './utils/placeholder-service-helper';
 export * from './ensure-geo-cookie';
 export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';
