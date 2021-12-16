@@ -74,7 +74,18 @@ export class UcpDesktopSlotsDefinitionRepository {
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
 				insertMethod: 'prepend',
 				classList: ['hide', 'ad-slot'],
-				// todo repeat config?
+				repeat: {
+					additionalClasses: 'hide',
+					index: 1,
+					limit: 20,
+					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					updateProperties: {
+						adProduct: '{slotConfig.slotName}',
+						'targeting.rv': '{slotConfig.repeat.index}',
+					},
+					insertBelowScrollPosition: false,
+					disablePushOnScroll: true,
+				},
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {

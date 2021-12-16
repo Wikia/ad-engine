@@ -23,8 +23,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		this.configureBottomLeaderboard();
 		this.configureIncontentBoxad();
 		this.configureIncontentPlayerFiller();
-		this.registerFloorAdhesionCodePriority();
-		// ToDo: ticket na placeholdery po cleanupie HiViLB
+		this.configureFloorAdhesionCodePriority();
+		// ToDo: ticket na placeholdery po cleanupie HiViLB albo zrobic
 	}
 
 	private injectSlots(): void {
@@ -126,7 +126,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		fillerService.register(new PorvataFiller());
 	}
 
-	private registerFloorAdhesionCodePriority(): void {
+	private configureFloorAdhesionCodePriority(): void {
 		let porvataClosedActive = false;
 
 		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {

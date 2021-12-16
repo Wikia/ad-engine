@@ -117,6 +117,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
 					this.CODE_PRIORITY.floor_adhesion.active = false;
 					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
+					document.getElementById('floor_adhesion_anchor').classList.add('hide');
 				}
 			});
 
@@ -124,6 +125,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
 					this.CODE_PRIORITY.floor_adhesion.active = false;
 					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
+					document.getElementById('floor_adhesion_anchor').classList.add('hide');
 				}
 			});
 		});

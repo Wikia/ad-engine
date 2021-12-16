@@ -77,18 +77,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[300, 600],
 				],
-				repeat: {
-					additionalClasses: 'hide',
-					index: 1,
-					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-					},
-					insertBelowScrollPosition: false,
-					disablePushOnScroll: true,
-				},
 				targeting: {
 					loc: 'hivi',
 					rv: 1,

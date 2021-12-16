@@ -170,7 +170,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				],
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
-				// ToDo: duplicated
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -179,6 +178,7 @@ export class UcpMobileSlotsDefinitionRepository {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						'placeholder.createLabel': false,
 					},
 					insertBelowScrollPosition: true,
 				},

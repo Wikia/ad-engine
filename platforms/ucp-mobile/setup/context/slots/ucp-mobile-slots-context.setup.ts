@@ -81,20 +81,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '',
 				parentContainerSelector: '.incontent-boxad',
-				repeat: {
-					index: 1,
-					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-						'targeting.pos': ['incontent_boxad'],
-						'placeholder.createLabel': false,
-					},
-					insertBelowScrollPosition: true,
-				},
 				slotShortcut: 'f',
 				sizes: [
 					{
@@ -126,7 +113,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
 				audio: false,
-				insertBeforeSelector: '.mw-parser-output > h2', // todo remove?
+				insertBeforeSelector: '.mw-parser-output > h2',
 				parentContainerSelector: '.incontent-boxad',
 				disabled: true,
 				defaultClasses: ['hide'],
