@@ -10,12 +10,18 @@ export class FanLabBox extends MessageBox {
 	}
 
 	private buildUrl = (): string => {
-		const basicUrl = 'https://www.fandom.com/fanlab/';
+		const basicUrl = 'https://www.fandom.com/fanlab/?';
 		const utm_source = 'fandom';
 		const utm_medium = 'ctr';
 		const utm_campaign = 'collapse_message_fan_lab';
 		const utm_content = 'button';
+		const params = [
+			`utm_source=${utm_source}`,
+			`utm_medium=${utm_medium}`,
+			`utm_campaign=${utm_campaign}`,
+			`utm_content=${utm_content}`,
+		];
 
-		return `${basicUrl}?utm_source=${utm_source}&utm_medium=${utm_medium}&utm_campaign=${utm_campaign}&utm_content=${utm_content}`;
+		return basicUrl + params.join('&');
 	};
 }
