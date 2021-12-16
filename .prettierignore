@@ -8,9 +8,7 @@ src/ad-products/video/porvata4/plugins/moat/moat-video-tracker-script.ts
 src/ad-services/facebook-pixel/facebook-pixel-script.ts
 src/ad-services/nielsen/static-queue-script.ts
 src/ad-services/permutive/index.ts
-platforms/f2/fallback-config.json
-platforms/ucp-desktop/fallback-config.json
-platforms/ucp-mobile/fallback-config.json
+platforms/**/fallback-config.json
 
 config.js
 karma.conf.js
