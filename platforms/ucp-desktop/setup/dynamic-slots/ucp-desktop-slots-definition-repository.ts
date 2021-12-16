@@ -132,7 +132,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: context.get(`slots.${slotName}.positionSelector`),
+				anchorSelector: context.get(`slots.${slotName}.insertBeforeSelector`),
 				anchorPosition: 'belowFirstViewport',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
