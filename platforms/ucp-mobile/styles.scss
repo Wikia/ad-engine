@@ -266,14 +266,15 @@ body.bab-detected {
 	display: flex;
 	align-items: flex-start;
 	flex-direction: column;
-	padding: 30px;
+	max-height: 250px;
+	padding: 22px;
 	background-color: #520044;
 
 	.cm-message {
 		color: #ffc500;
-		font-size: 36px;
-		font-weight: 900;
-		line-height: 45px;
+		font-size: 30px;
+		font-weight: 500;
+		line-height: 40px;
 		margin: 0 0 12px;
 		text-transform: uppercase;
 	}
