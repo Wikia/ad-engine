@@ -291,3 +291,12 @@ body.bab-detected {
 		opacity: 1;
 	}
 }
+
+@media (max-width: 320px) {
+	.message-box {
+		.cm-message {
+			font-size: 25px;
+			line-height: 30px;
+		}
+	}
+}
