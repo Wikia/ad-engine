@@ -292,6 +292,15 @@ body.bab-detected {
 	}
 }
 
+@media (max-width: 412px) {
+	.message-box {
+		.cm-message {
+			font-size: 25px;
+			line-height: 40px;
+		}
+	}
+}
+
 @media (max-width: 320px) {
 	.message-box {
 		.cm-message {
