@@ -6,7 +6,7 @@ import {
 	uapLoadStatus,
 } from '@wikia/ad-engine';
 import { filter, take } from 'rxjs/operators';
-import { MessageBox } from './message-box';
+import { MessageBoxService } from './collapsed-messages/message-box-service';
 import { PlaceholderServiceHelper } from './placeholder-service-helper';
 
 export class PlaceholderService {
@@ -14,7 +14,7 @@ export class PlaceholderService {
 
 	constructor(
 		private placeholderHelper: PlaceholderServiceHelper,
-		private messageBox: MessageBox,
+		private messageBoxService: MessageBoxService,
 	) {}
 
 	init(): void {
@@ -51,8 +51,8 @@ export class PlaceholderService {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
-						if (this.placeholderHelper.shouldAddMessageBox(action['event'], placeholder)) {
-							this.messageBox.addMessageBox(placeholder, adSlot);
+						if (this.messageBoxService.shouldAddMessageBox(action['event'], placeholder)) {
+							this.messageBoxService.addMessageBox(placeholder, adSlot);
 						}
 					}
 				}
