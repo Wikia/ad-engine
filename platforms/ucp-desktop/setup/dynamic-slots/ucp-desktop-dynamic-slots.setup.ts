@@ -83,20 +83,22 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureFloorAdhesionCodePriority(): void {
+		const slotName = 'floor_adhesion';
+
 		let porvataClosedActive = false;
 
-		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
+		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
 			porvataClosedActive = true;
 
 			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
 				if (porvataClosedActive) {
 					porvataClosedActive = false;
-					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
+					slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
 				}
 			});
 		});
 
-		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
+		slotService.on(slotName, AdSlot.HIDDEN_EVENT, () => {
 			porvataClosedActive = false;
 		});
 	}
