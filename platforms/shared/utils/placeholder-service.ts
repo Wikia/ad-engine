@@ -14,7 +14,7 @@ export class PlaceholderService {
 
 	constructor(
 		private placeholderHelper: PlaceholderServiceHelper,
-		private messageBox: MessageBox,
+		private messageBox: MessageBox = null,
 	) {}
 
 	init(): void {
@@ -51,7 +51,10 @@ export class PlaceholderService {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
-						if (this.placeholderHelper.shouldAddMessageBox(action['event'], placeholder)) {
+						if (
+							this.messageBox &&
+							this.placeholderHelper.shouldAddMessageBox(action['event'], placeholder)
+						) {
 							this.messageBox.addMessageBox(placeholder, adSlot);
 						}
 					}

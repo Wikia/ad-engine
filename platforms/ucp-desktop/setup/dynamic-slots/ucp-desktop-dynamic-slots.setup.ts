@@ -1,6 +1,5 @@
 import {
 	insertSlots,
-	MessageBox,
 	PlaceholderService,
 	PlaceholderServiceHelper,
 	slotsContext,
@@ -104,9 +103,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private registerAdPlaceholderService(): void {
 		const placeholderHelper = new PlaceholderServiceHelper();
-		const messageBox = new MessageBox();
 
-		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
+		const placeholderService = new PlaceholderService(placeholderHelper);
 		placeholderService.init();
 	}
 }
