@@ -153,7 +153,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			return;
 		}
 
-		const slotName = 'incontent_boxad_1';
+		const slotNamePrefix = 'incontent_boxad_';
+		const slotName = `${slotNamePrefix}1`;
 		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
@@ -173,7 +174,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				repeat: {
 					index: 1,
 					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',

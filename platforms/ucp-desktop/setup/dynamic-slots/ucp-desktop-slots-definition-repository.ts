@@ -66,7 +66,8 @@ export class UcpDesktopSlotsDefinitionRepository {
 			return;
 		}
 
-		const slotName = 'incontent_boxad_1';
+		const slotNamePrefix = 'incontent_boxad_';
+		const slotName = `${slotNamePrefix}1`;
 
 		return {
 			slotCreatorConfig: {
@@ -78,7 +79,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 					additionalClasses: 'hide',
 					index: 1,
 					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
@@ -89,9 +90,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 			},
 			activator: () => {
 				communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
-					const slotNamePattern = context.get(`slots.${slotName}.repeat.slotNamePattern`);
-					const prefix = slotNamePattern.replace(slotNamePattern.match(/({.*})/g)[0], '');
-					const rotator = new FmrRotator(slotName, prefix, btRec);
+					const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
 
 					utils.listener(events.AD_STACK_START, () => {
 						rotator.rotateSlot();
