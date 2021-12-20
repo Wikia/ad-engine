@@ -2,13 +2,13 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { slotsContext } from '../slots/slots-context';
 import { insertSlots } from '../utils/insert-slots';
-import { CurseSlotsDefinitionRepository } from './curse-slots-definition-repository';
+import { SportsSlotsDefinitionRepository } from './sports-slots-definition-repository.service';
 
 @Injectable()
-export class CurseDynamicSlotsSetup implements DiProcess {
+export class SportsDynamicSlotsSetup implements DiProcess {
 	private uapFirstCallSlotName = 'cdm-zone-01';
 
-	constructor(private slotsDefinitionRepository: CurseSlotsDefinitionRepository) {}
+	constructor(private slotsDefinitionRepository: SportsSlotsDefinitionRepository) {}
 
 	execute(): void {
 		this.configureUap();

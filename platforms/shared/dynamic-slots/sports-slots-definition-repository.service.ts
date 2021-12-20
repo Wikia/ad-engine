@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { SlotSetupDefinition } from '../utils/insert-slots';
 
 @Injectable()
-export class CurseSlotsDefinitionRepository {
+export class SportsSlotsDefinitionRepository {
 	constructor() {}
 
 	getCdmZoneConfig(counter: number, lazyLoaded: boolean = false): SlotSetupDefinition {
