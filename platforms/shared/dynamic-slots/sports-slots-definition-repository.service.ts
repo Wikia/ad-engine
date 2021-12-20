@@ -7,10 +7,6 @@ export class SportsSlotsDefinitionRepository {
 	constructor() {}
 
 	getCdmZoneConfig(counter: number, lazyLoaded: boolean = false): SlotSetupDefinition {
-		if (counter === 4 && context.get('state.isMobile')) {
-			return;
-		}
-
 		const slotName = `cdm-zone-0${counter}`;
 
 		return {
