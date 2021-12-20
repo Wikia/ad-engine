@@ -1591,7 +1591,8 @@
                 "5859240385",
                 "5858533371",
                 "5849766142",
-                "5860257766"
+                "5860257766",
+                "5861948873"
             ]
         }
     ],
@@ -1713,7 +1714,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.4.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [
