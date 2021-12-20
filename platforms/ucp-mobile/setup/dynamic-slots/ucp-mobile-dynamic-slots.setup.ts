@@ -118,19 +118,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
 			this.CODE_PRIORITY.floor_adhesion.active = true;
 
+			const disableFloorAdhesionWithStatus = (status: string) => {
+				this.CODE_PRIORITY.floor_adhesion.active = false;
+				slotService.disable('floor_adhesion', status);
+				document.getElementById('floor_adhesion_anchor').classList.add('hide');
+			};
+
 			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
-					document.getElementById('floor_adhesion_anchor').classList.add('hide');
+					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 				}
 			});
 
 			eventService.on(events.INTERSTITIAL_DISPLAYED, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
-					document.getElementById('floor_adhesion_anchor').classList.add('hide');
+					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
 				}
 			});
 		});
