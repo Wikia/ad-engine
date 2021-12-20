@@ -100,8 +100,8 @@ export class UcpDesktopSlotsDefinitionRepository {
 		};
 	}
 
-	private isRightRailApplicable(): boolean {
-		return utils.getViewportWidth() >= 1024;
+	private isRightRailApplicable(rightRailBreakingPoint = 1024): boolean {
+		return utils.getViewportWidth() >= rightRailBreakingPoint;
 	}
 
 	getBottomLeaderboardConfig(): SlotSetupDefinition {
