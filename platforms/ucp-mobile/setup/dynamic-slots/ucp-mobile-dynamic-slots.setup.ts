@@ -1,6 +1,6 @@
 import {
 	insertSlots,
-	MessageBox,
+	MessageBoxService,
 	PlaceholderService,
 	PlaceholderServiceHelper,
 	slotsContext,
@@ -21,7 +21,10 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
+import {
+	SlotSetupDefinition,
+	UcpMobileSlotsDefinitionRepository,
+} from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
@@ -144,9 +147,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerAdPlaceholderService(): void {
 		const placeholderHelper = new PlaceholderServiceHelper();
-		const messageBox = new MessageBox();
-
-		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
+		const messageBoxService = new MessageBoxService();
+		const placeholderService = new PlaceholderService(placeholderHelper, messageBoxService);
 		placeholderService.init();
 	}
 }
