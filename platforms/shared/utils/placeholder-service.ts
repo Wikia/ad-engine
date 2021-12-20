@@ -51,7 +51,10 @@ export class PlaceholderService {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
-						if (this.messageBoxService.shouldAddMessageBox(action['event'], placeholder)) {
+						if (
+							this.messageBoxService &&
+							this.messageBoxService.shouldAddMessageBox(action['event'], placeholder)
+						) {
 							this.messageBoxService.addMessageBox(placeholder, adSlot);
 						}
 					}

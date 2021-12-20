@@ -103,7 +103,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private registerAdPlaceholderService(): void {
 		const placeholderHelper = new PlaceholderServiceHelper();
-
 		const placeholderService = new PlaceholderService(placeholderHelper);
 		placeholderService.init();
 	}

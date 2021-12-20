@@ -21,10 +21,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import {
-	SlotSetupDefinition,
-	UcpMobileSlotsDefinitionRepository,
-} from './ucp-mobile-slots-definition-repository';
+import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
