@@ -1,4 +1,4 @@
-import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig, utils } from '@wikia/ad-engine';
 import { slotsContext } from '../slots/slots-context';
 
 export interface SlotSetupDefinition {
@@ -7,6 +7,7 @@ export interface SlotSetupDefinition {
 	activator?: () => void;
 }
 
+const logGroup = 'insert-slot';
 const slotCreator = new SlotCreator();
 
 export function insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
@@ -19,6 +20,7 @@ export function insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
 					activator();
 				}
 			} catch (e) {
+				utils.logger(logGroup, e.message);
 				slotsContext.setState(slotCreatorConfig.slotName, false);
 			}
 		});
