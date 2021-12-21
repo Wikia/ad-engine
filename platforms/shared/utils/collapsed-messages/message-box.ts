@@ -58,4 +58,18 @@ export class MessageBox {
 			}),
 		);
 	};
+
+	protected buildUrl = (basicUrl: string, utm_campaign: string): string => {
+		const utm_source = 'fandom';
+		const utm_medium = 'ctr';
+		const utm_content = 'button';
+		const params = [
+			`utm_source=${utm_source}`,
+			`utm_medium=${utm_medium}`,
+			`utm_campaign=${utm_campaign}`,
+			`utm_content=${utm_content}`,
+		];
+
+		return basicUrl + params.join('&');
+	};
 }
