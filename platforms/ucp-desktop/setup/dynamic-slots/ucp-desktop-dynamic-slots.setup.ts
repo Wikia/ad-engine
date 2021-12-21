@@ -63,10 +63,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureIncontentBoxad(): void {
-		const icbSlotName = 'incontent_boxad_1';
-
 		if (context.get('custom.hasFeaturedVideo')) {
-			context.set(`slots.${icbSlotName}.defaultSizes`, [300, 250]);
+			context.set('slots.incontent_boxad_1.defaultSizes', [300, 250]);
 		}
 	}
 
