@@ -59,7 +59,7 @@ export class Nativo {
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
 
-		window.ntv.Events.PubSub.subscribe('noad', () => this.sendEvent(false));
+		window.ntv.Events?.PubSub?.subscribe('noad', () => this.sendEvent(false));
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});

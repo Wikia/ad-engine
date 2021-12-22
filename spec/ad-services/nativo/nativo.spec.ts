@@ -61,6 +61,16 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(false);
 	});
 
+	it('Nativo emits event on when disabled', async () => {
+		context.set('services.nativo.enabled', false);
+
+		await nativo.call();
+
+		expect(loadScriptSpy.called).to.equal(false);
+		expect(dispatchSpy.callCount).to.equal(1);
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({ isLoaded: false }));
+	});
+
 	it('Nativo emits event on successful load', async () => {
 		await nativo.call();
 
