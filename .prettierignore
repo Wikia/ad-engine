@@ -9,8 +9,8 @@ src/ad-services/facebook-pixel/facebook-pixel-script.ts
 src/ad-services/nielsen/static-queue-script.ts
 src/ad-services/permutive/index.ts
 platforms/*/fallback-config.json
-platforms/*/futhead-fallback-config.json
-platforms/*/muthead-fallback-config.json
+platforms/*/fallback-config-futhead.json
+platforms/*/fallback-config-muthead.json
 
 config.js
 karma.conf.js
