@@ -19,6 +19,7 @@ export class Nativo {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
+			this.sendEvent(false);
 
 			return Promise.resolve();
 		}
@@ -27,7 +28,7 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
-				this.sendEvent();
+				this.sendEvent(true);
 			});
 	}
 
@@ -57,7 +58,10 @@ export class Nativo {
 		}
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
+
+		window.ntv.Events.PubSub.subscribe('noad', () => this.sendEvent(false));
 		window.ntv.cmd.push(() => {
+			// @ts-ignore
 			window.PostRelease.Start();
 		});
 	}
@@ -98,8 +102,8 @@ export class Nativo {
 		return false;
 	}
 
-	private sendEvent(): void {
-		communicationService.dispatch(nativoLoadedEvent({ isLoaded: true }));
+	private sendEvent(isLoaded): void {
+		communicationService.dispatch(nativoLoadedEvent({ isLoaded }));
 	}
 
 	private displayTestAd(): void {
