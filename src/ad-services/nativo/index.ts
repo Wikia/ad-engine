@@ -61,7 +61,6 @@ export class Nativo {
 
 		window.ntv.Events.PubSub.subscribe('noad', () => this.sendEvent(false));
 		window.ntv.cmd.push(() => {
-			// @ts-ignore
 			window.PostRelease.Start();
 		});
 	}
