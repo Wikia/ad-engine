@@ -3,14 +3,12 @@
 lib/**/*
 node_modules/**/*
 jspm_packages/
+platforms/*/fallback-config*.json
 src/ad-products/video/player/porvata/moat/moat-video-tracker-script.ts
 src/ad-products/video/porvata4/plugins/moat/moat-video-tracker-script.ts
 src/ad-services/facebook-pixel/facebook-pixel-script.ts
 src/ad-services/nielsen/static-queue-script.ts
 src/ad-services/permutive/index.ts
-platforms/*/fallback-config.json
-platforms/*/fallback-config-futhead.json
-platforms/*/fallback-config-muthead.json
 
 config.js
 karma.conf.js

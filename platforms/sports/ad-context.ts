@@ -1,5 +1,6 @@
 import futheadFallbackInstantConfig from './fallback-config-futhead.json';
 import mutheadFallbackInstantConfig from './fallback-config-muthead.json';
+import { selectApplication } from './utils/application-helper';
 
 const basicContext = {
 	adUnitId:
@@ -88,14 +89,8 @@ const mutheadContext = {
 	},
 };
 
-export function getBasicContext(app): object {
-	if (app === 'futhead') {
-		Object.assign(basicContext, futheadContext);
-	}
-
-	if (app === 'muthead') {
-		Object.assign(basicContext, mutheadContext);
-	}
+export function getBasicContext(): object {
+	Object.assign(basicContext, selectApplication(futheadContext, mutheadContext));
 
 	return basicContext;
 }

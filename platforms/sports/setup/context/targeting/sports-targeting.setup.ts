@@ -1,6 +1,7 @@
 import { getDomain } from '@platforms/shared';
 import { context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { selectApplication } from '../../../utils/application-helper';
 
 @Injectable()
 export class SportsTargetingSetup implements DiProcess {
@@ -32,12 +33,9 @@ export class SportsTargetingSetup implements DiProcess {
 	}
 
 	private isSquadPage(): boolean {
-		if (context.get('application') === 'muthead') {
-			return false;
-		}
-
 		const squadPageRegex = /\/\d+\/squads\/\d+/;
-		return !!window.location.pathname.match(squadPageRegex);
+
+		return selectApplication(!!window.location.pathname.match(squadPageRegex), false);
 	}
 
 	private getSportsPageType(): string {
