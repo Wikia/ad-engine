@@ -6,7 +6,7 @@ import { logger } from '../../ad-engine/utils';
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
 export const nativoLoadedEvent = globalAction(
-	'[AdEngine] Nativo loaded',
+	'[AdEngine] Nativo load status',
 	props<{ isLoaded: boolean }>(),
 );
 
@@ -19,7 +19,7 @@ export class Nativo {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			this.sendEvent(false);
+			this.sendNativoLoadStatus(false);
 
 			return Promise.resolve();
 		}
@@ -28,7 +28,7 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
-				this.sendEvent(true);
+				this.sendNativoLoadStatus(true);
 			});
 	}
 
@@ -59,7 +59,7 @@ export class Nativo {
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
 
-		window.ntv.Events?.PubSub?.subscribe('noad', () => this.sendEvent(false));
+		window.ntv.Events?.PubSub?.subscribe('noad', () => this.sendNativoLoadStatus(false));
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
@@ -101,7 +101,7 @@ export class Nativo {
 		return false;
 	}
 
-	private sendEvent(isLoaded): void {
+	private sendNativoLoadStatus(isLoaded): void {
 		communicationService.dispatch(nativoLoadedEvent({ isLoaded }));
 	}
 
