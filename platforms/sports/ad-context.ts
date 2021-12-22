@@ -1,5 +1,5 @@
-import futheadFallbackInstantConfig from './futhead-fallback-config.json';
-import mutheadFallbackInstantConfig from './muthead-fallback-config.json';
+import futheadFallbackInstantConfig from './fallback-config-futhead.json';
+import mutheadFallbackInstantConfig from './fallback-config-muthead.json';
 
 const basicContext = {
 	adUnitId:
