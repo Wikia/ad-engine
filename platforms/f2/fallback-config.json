@@ -113,6 +113,7 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5858309166",
                 "5843854796",
                 "5821545299",
                 "5819692209",
@@ -1591,7 +1592,10 @@
                 "5859240385",
                 "5858533371",
                 "5849766142",
-                "5860257766"
+                "5860257766",
+                "5863252231",
+                "5861948873",
+                "5862671235"
             ]
         }
     ],
@@ -1713,7 +1717,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.4.1/tracking-opt-in.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icPostmessageTracking": [
