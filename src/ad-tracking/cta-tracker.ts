@@ -2,14 +2,6 @@ import { communicationService, globalAction, ofType } from '@ad-engine/communica
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService } from '@ad-engine/core';
 import { props } from 'ts-action';
 
-type AdStatus =
-	| 'cm_register_impression'
-	| 'cm_register_clicked'
-	| 'cm_newsletter_impression'
-	| 'cm_newsletter_clicked'
-	| 'cm_fanlab_impression'
-	| 'cm_fanlab_clicked';
-
 interface AdClickContext {
 	slot: AdSlot;
 	data: {
@@ -19,7 +11,7 @@ interface AdClickContext {
 
 export const messageBoxTrackingEvent = globalAction(
 	'[AdEngine] MessageBox event',
-	props<{ adSlotName: string; ad_status: AdStatus }>(),
+	props<{ adSlotName: string; ad_status: string }>(),
 );
 
 class CtaTracker {
