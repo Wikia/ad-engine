@@ -109,6 +109,18 @@
             "apps": [
                 "fandomdesktop"
             ],
+            "browsers": [
+                "Safari"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
             "regions": [
                 "CA"
             ],
