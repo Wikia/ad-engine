@@ -6,17 +6,23 @@ import {
 } from '@platforms/shared';
 import {
 	AdSlot,
+	communicationService,
 	context,
 	DiProcess,
 	events,
 	eventService,
 	fillerService,
+	globalAction,
+	ofType,
 	PorvataFiller,
 	PorvataGamParams,
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
+
+const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -36,13 +42,18 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
-			this.slotsDefinitionRepository.getTopBoxadConfig(),
-			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
+
+		communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
+			insertSlots([
+				this.slotsDefinitionRepository.getTopBoxadConfig(),
+				this.slotsDefinitionRepository.getIncontentBoxadConfig(),
+			]);
+		});
 	}
 
 	private configureTopLeaderboard(): void {

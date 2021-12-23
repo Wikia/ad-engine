@@ -5,7 +5,6 @@ import {
 	context,
 	events,
 	FmrRotator,
-	globalAction,
 	InstantConfigService,
 	Nativo,
 	nativo,
@@ -16,8 +15,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-
-const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -89,12 +86,10 @@ export class UcpDesktopSlotsDefinitionRepository {
 				},
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
-					const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
+				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
 
-					utils.listener(events.AD_STACK_START, () => {
-						rotator.rotateSlot();
-					});
+				utils.listener(events.AD_STACK_START, () => {
+					rotator.rotateSlot();
 				});
 			},
 		};
