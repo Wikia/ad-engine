@@ -19,6 +19,7 @@ import {
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { merge, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
@@ -48,12 +49,14 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
-		communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
-			insertSlots([
-				this.slotsDefinitionRepository.getTopBoxadConfig(),
-				this.slotsDefinitionRepository.getIncontentBoxadConfig(),
-			]);
-		});
+		merge([communicationService.action$.pipe(ofType(railReady)), timer(2000)])
+			.pipe(take(1))
+			.subscribe(() => {
+				insertSlots([
+					this.slotsDefinitionRepository.getTopBoxadConfig(),
+					this.slotsDefinitionRepository.getIncontentBoxadConfig(),
+				]);
+			});
 	}
 
 	private configureTopLeaderboard(): void {
