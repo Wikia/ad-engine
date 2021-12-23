@@ -47,7 +47,7 @@ export class PlaceholderService {
 				this.placeholderHelper.stopLoading(action['event'], placeholder);
 
 				if (this.placeholderHelper.statusesToCollapse.includes(action['event'])) {
-					if (this.isUapLoaded) {
+					if (this.isUapLoaded || this.placeholderHelper.statusToHide === action['event']) {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
