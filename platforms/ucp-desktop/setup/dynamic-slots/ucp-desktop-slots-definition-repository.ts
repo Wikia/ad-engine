@@ -109,7 +109,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['ad-slot'],
 			},
 			activator: () => {
 				context.push('events.pushOnScroll.ids', slotName);
