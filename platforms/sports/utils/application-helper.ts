@@ -19,5 +19,5 @@ export function selectApplication(futhead: any = null, muthead: any = null): any
 		return muthead;
 	}
 
-	return null;
+	throw new Error('Unknown Sports Application');
 }
