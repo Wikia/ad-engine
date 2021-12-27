@@ -1,4 +1,4 @@
-import { context, utils } from '@ad-engine/core';
+import { utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -39,7 +39,6 @@ export class AppnexusAst extends PrebidAdapter {
 						placementId: this.isDebugMode ? this.debugPlacementId : placementId,
 						keywords: {
 							...this.getTargeting(code),
-							p_standard: context.get('bidders.permutiveKeys.appnexus') || [],
 						},
 						video: {
 							skippable: false,
