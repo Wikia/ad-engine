@@ -54,7 +54,7 @@
 		"jsdom-global": "^3.0.2",
 		"json-loader": "0.5.7",
 		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
-		"lint-staged": "8.0.5",
+		"lint-staged": "12.1.4",
 		"mini-css-extract-plugin": "0.4.0",
 		"mocha": "4.1.0",
 		"mocha-jsdom": "^1.1.0",
@@ -140,21 +140,12 @@
 		}
 	},
 	"lint-staged": {
-		"linters": {
-			"*.ts": [
-				"prettier --write",
-				"tslint --project . --fix",
-				"git add"
-			],
-			"*.{js,json,css,scss,html}": [
-				"prettier --write",
-				"git add"
-			]
-		},
-		"ignore": [
-			"**/dist/**/*",
-			"maintenance/tslint-rules/tests/**/*",
-			"platforms/*/fallback-config.js"
+		"*.ts": [
+			"prettier --write",
+			"tslint --project . --fix"
+		],
+		"*.{js,json,css,scss,html}": [
+			"prettier --write"
 		]
 	}
 }
