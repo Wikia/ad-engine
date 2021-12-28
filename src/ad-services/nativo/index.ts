@@ -1,14 +1,9 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
-export const nativoLoadedEvent = globalAction(
-	'[AdEngine] Nativo loaded',
-	props<{ isLoaded: boolean }>(),
-);
 
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
@@ -99,7 +94,7 @@ export class Nativo {
 	}
 
 	private sendEvent(): void {
-		communicationService.dispatch(nativoLoadedEvent({ isLoaded: true }));
+		communicationService.communicate(eventsRepository.NATIVO_LOADED, { isLoaded: true });
 	}
 
 	private displayTestAd(): void {

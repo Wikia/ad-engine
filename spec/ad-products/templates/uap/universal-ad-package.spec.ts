@@ -1,11 +1,10 @@
-import { communicationService } from '@wikia/communication';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
-import { AdSlot, adSlotEvent, Context, context } from '../../../../src/ad-engine';
+import { AdSlot, Context, context } from '../../../../src/ad-engine';
 import {
 	registerUapListener,
-	uapLoadStatus,
 	universalAdPackage,
 } from '../../../../src/ad-products/templates/uap/universal-ad-package';
 
@@ -15,6 +14,9 @@ describe('UniversalAdPackage', () => {
 	const UAP_STANDARD_AD_PRODUCT = 'uap';
 	const sandbox: SinonSandbox = createSandbox();
 	let contextStub: SinonStubbedInstance<Context>;
+	const uapLoadStatus = communicationService.getGlobalAction(
+		eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+	);
 
 	afterEach(() => {
 		sandbox.restore();
@@ -63,7 +65,7 @@ describe('UniversalAdPackage', () => {
 		it('should emit event with load status if slot collapsed', () => {
 			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					adSlotEvent({
+					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
 						event: AdSlot.STATUS_COLLAPSE,
 					}),
@@ -84,7 +86,7 @@ describe('UniversalAdPackage', () => {
 		it('should emit event with load status if slot forcibly collapsed', () => {
 			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					adSlotEvent({
+					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
 						event: AdSlot.STATUS_FORCED_COLLAPSE,
 					}),
@@ -105,7 +107,7 @@ describe('UniversalAdPackage', () => {
 		it('should emit event with load status when templates are loaded', () => {
 			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					adSlotEvent({
+					communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 						adSlotName,
 						event: AdSlot.TEMPLATES_LOADED,
 					}),

@@ -1,17 +1,14 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import {
+	AdIntervention,
+	communicationService,
+	eventsRepository,
+	ofType,
+} from '@ad-engine/communication';
 import { tap } from 'rxjs/operators';
-import { props } from 'ts-action';
 import { AdSlot } from '../models';
 import { context, externalLogger, slotService } from '../services';
 import { logger } from '../utils';
 
-interface AdIntervention {
-	id: string;
-	message: string;
-	slotName: string;
-}
-
-const adIntervention = globalAction('[GAM iframe] Ad intervention', props<AdIntervention>());
 const heavyAdIntervention = 'HeavyAdIntervention';
 const logGroup = 'intervention-tracker';
 
@@ -24,7 +21,7 @@ class InterventionTracker {
 
 		communicationService.action$
 			.pipe(
-				ofType(adIntervention),
+				ofType(communicationService.getGlobalAction(eventsRepository.GAM_AD_INTERVENTION)),
 				tap((intervention: AdIntervention) => this.handleIntervention(intervention)),
 			)
 			.subscribe();

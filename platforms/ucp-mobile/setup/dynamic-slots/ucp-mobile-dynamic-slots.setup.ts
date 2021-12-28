@@ -13,10 +13,10 @@ import {
 	DiProcess,
 	events,
 	eventService,
+	eventsRepository,
 	fillerService,
 	PorvataFiller,
 	slotService,
-	uapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
@@ -59,14 +59,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			utils.listener(events.AD_STACK_START, () => {
+			communicationService.listen(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.dispatch(
-					uapLoadStatus({
-						isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-						adProduct: universalAdPackage.getType(),
-					}),
-				);
+				communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+					adProduct: universalAdPackage.getType(),
+				});
 			});
 		}
 	}

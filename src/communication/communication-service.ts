@@ -1,8 +1,10 @@
 // tslint:disable-next-line:import-blacklist
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
-import { filter, shareReplay } from 'rxjs/operators';
-import { isGlobalAction } from './global-action';
+import { filter, shareReplay, take } from 'rxjs/operators';
+import { EventOptions } from './event-types';
+import { globalAction, isGlobalAction } from './global-action';
+import { ofType } from './of-type';
 import { ReduxDevtoolsFactory } from './redux-devtools';
 
 interface PostQuecastSettings {
@@ -40,12 +42,34 @@ export class CommunicationService {
 		this.connectReduxDevtools(reduxDevtoolsName);
 	}
 
+	communicate(event: EventOptions, payload?: any): void {
+		this.dispatch(this.getGlobalAction(event)(payload));
+	}
+
+	listen(event: EventOptions, callback: (payload: any) => void, once: boolean = true): void {
+		if (once) {
+			this.action$.pipe(ofType(this.getGlobalAction(event), take(1))).subscribe(callback);
+		} else {
+			this.action$.pipe(ofType(this.getGlobalAction(event))).subscribe(callback);
+		}
+	}
+
 	dispatch(action: Action): void {
 		if (isGlobalAction(action)) {
 			this.communicator.dispatch(action);
 		} else {
 			this.subject.next(action);
 		}
+	}
+
+	getGlobalAction(event: EventOptions): Action {
+		if (!event.action) {
+			event.action = event.payload
+				? globalAction(`${event.category || '[AdEngine]'} ${event.name}`, event.payload)
+				: globalAction(`${event.category || '[AdEngine]'} ${event.name}`);
+		}
+
+		return event.action;
 	}
 
 	private getSettings(): PostQuecastSettings {

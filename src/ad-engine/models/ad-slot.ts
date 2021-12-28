@@ -1,6 +1,5 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import * as EventEmitter from 'eventemitter3';
-import { props } from 'ts-action';
 import {
 	AdStackPayload,
 	eventService,
@@ -74,18 +73,8 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-export const adSlotEvent = globalAction(
-	'[AdEngine] Ad Slot event',
-	props<{
-		event: string;
-		payload?: any;
-		adSlotName: string;
-	}>(),
-);
-
 export class AdSlot extends EventEmitter {
 	static CUSTOM_EVENT = 'customEvent';
-	static PROPERTY_CHANGED_EVENT = 'propertyChanged';
 	static SLOT_ADDED_EVENT = 'slotAdded';
 	static SLOT_REQUESTED_EVENT = 'slotRequested';
 	static SLOT_LOADED_EVENT = 'slotLoaded';
@@ -102,7 +91,6 @@ export class AdSlot extends EventEmitter {
 	static STATUS_BLOCKED = 'blocked';
 	static STATUS_COLLAPSE = 'collapse';
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
-	static STATUS_FORCE_UNSTICK = 'force-unstick';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_CLICKED = 'clicked';
@@ -442,14 +430,14 @@ export class AdSlot extends EventEmitter {
 
 		this.emit(AdSlot.TEMPLATES_LOADED, ...templateNames);
 
-		utils.communicator('Ad Slot loaded', {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
-		utils.communicator('Ad Slot loaded', {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_COLLAPSE,
 		});
@@ -602,14 +590,12 @@ export class AdSlot extends EventEmitter {
 		}
 	}
 
-	private emitPostQueueCast(event: string | symbol, payload: any[]) {
-		communicationService.dispatch(
-			adSlotEvent({
-				payload: JSON.parse(JSON.stringify(payload)),
-				event: event.toString(),
-				adSlotName: this.getSlotName(),
-			}),
-		);
+	private emitPostQueueCast(event: string | symbol, payload: any[]): void {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+			payload: JSON.parse(JSON.stringify(payload)),
+			event: event.toString(),
+			adSlotName: this.getSlotName(),
+		});
 	}
 
 	/**

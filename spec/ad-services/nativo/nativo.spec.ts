@@ -1,5 +1,5 @@
-import { libraryUrl, nativo, nativoLoadedEvent } from '@wikia/ad-services';
-import { communicationService } from '@wikia/communication';
+import { libraryUrl, nativo } from '@wikia/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
@@ -66,7 +66,9 @@ describe('Nativo service', () => {
 
 		expect(loadScriptSpy.called).to.equal(true);
 		expect(dispatchSpy.callCount).to.equal(1);
-		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({ isLoaded: true }));
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
+			communicationService.getGlobalAction(eventsRepository.NATIVO_LOADED)({ isLoaded: true }),
+		);
 	});
 
 	it('Nativo sends request - happy path scenario', () => {

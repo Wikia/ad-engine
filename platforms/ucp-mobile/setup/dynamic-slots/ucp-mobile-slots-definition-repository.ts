@@ -2,19 +2,18 @@ import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared'
 import {
 	communicationService,
 	context,
+	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
 	Nativo,
 	nativo,
-	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	slotPlaceholderInjector,
-	uapLoadStatus,
+	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 
 interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
@@ -105,9 +104,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-				});
+				communicationService.listen(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
+					},
+				);
 			},
 		};
 	}
@@ -188,12 +190,15 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					context.push('events.pushOnScroll.ids', slotName);
-					if (!action.isLoaded) {
-						this.injectIncontentAdsPlaceholders();
-					}
-				});
+				communicationService.listen(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						context.push('events.pushOnScroll.ids', slotName);
+						if (!action.isLoaded) {
+							this.injectIncontentAdsPlaceholders();
+						}
+					},
+				);
 			},
 		};
 	}
@@ -217,11 +222,14 @@ export class UcpMobileSlotsDefinitionRepository {
 			repeatLimit: 20,
 		};
 
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (!action.isLoaded) {
-				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-			}
-		});
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+			(action: UapLoadStatus) => {
+				if (!action.isLoaded) {
+					slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+				}
+			},
+		);
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
@@ -244,14 +252,17 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					if (action.isLoaded) {
-						this.pushWaitingSlot(slotName);
+				communicationService.listen(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (action.isLoaded) {
+							this.pushWaitingSlot(slotName);
 
-						const mobilePrefooter = document.querySelector('.mobile-prefooter');
-						mobilePrefooter.classList.remove('hide');
-					}
-				});
+							const mobilePrefooter = document.querySelector('.mobile-prefooter');
+							mobilePrefooter.classList.remove('hide');
+						}
+					},
+				);
 			},
 		};
 	}
@@ -383,12 +394,15 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private pushWaitingSlot(slotName: string): void {
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (action.isLoaded) {
-				context.push('events.pushOnScroll.ids', slotName);
-			} else {
-				context.push('state.adStack', { id: slotName });
-			}
-		});
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+			(action: UapLoadStatus) => {
+				if (action.isLoaded) {
+					context.push('events.pushOnScroll.ids', slotName);
+				} else {
+					context.push('state.adStack', { id: slotName });
+				}
+			},
+		);
 	}
 }

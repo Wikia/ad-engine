@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
@@ -14,7 +15,7 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { communicator, LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -108,7 +109,7 @@ export class AdEngine {
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
-				communicator(events.AD_STACK_START);
+				communicationService.communicate(eventsRepository.AD_ENGINE_STACK_START);
 
 				this.started = true;
 				this.adStack.start();

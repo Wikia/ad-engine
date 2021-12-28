@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { getAdStack, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
@@ -70,7 +71,7 @@ class SlotService {
 
 		slotTweaker.addDefaultClasses(adSlot);
 		eventService.emit(events.AD_SLOT_CREATED, adSlot);
-		utils.communicator('Ad Slot added', {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_ADDED, {
 			name: slotName,
 			state: AdSlot.SLOT_ADDED_EVENT,
 		});

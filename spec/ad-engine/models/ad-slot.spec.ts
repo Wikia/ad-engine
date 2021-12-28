@@ -1,5 +1,5 @@
-import { adSlotEvent, Dictionary, eventService } from '@wikia/ad-engine';
-import { communicationService } from '@wikia/communication';
+import { Dictionary, eventService } from '@wikia/ad-engine';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
@@ -270,7 +270,7 @@ describe('ad-slot', () => {
 
 			expect(dispatchSpy.callCount).to.equal(1);
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-				adSlotEvent({
+				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
 					event: AdSlot.TEMPLATES_LOADED,
 					adSlotName: slotName,
@@ -283,7 +283,7 @@ describe('ad-slot', () => {
 
 			expect(dispatchSpy.callCount).to.equal(1);
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-				adSlotEvent({
+				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
 					event: 'Symbol(My Symbol)',
 					adSlotName: slotName,

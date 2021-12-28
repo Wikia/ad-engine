@@ -4,13 +4,13 @@ import {
 	context,
 	Dictionary,
 	DiProcess,
+	eventsRepository,
 	ofType,
 	Targeting,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { shareReplay } from 'rxjs/operators';
-import { viewRendered } from '../../../setup-bingebot';
 
 const SKIN = Symbol('targeting skin');
 
@@ -30,7 +30,7 @@ export class BingeBotTargetingSetup implements DiProcess {
 
 		communicationService.action$
 			.pipe(
-				ofType(viewRendered),
+				ofType(communicationService.getGlobalAction(eventsRepository.BINGEBOT_VIEW_RENDERED)),
 				shareReplay(1), // take only the newest value
 			)
 			.subscribe((action) => {

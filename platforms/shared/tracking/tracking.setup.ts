@@ -2,10 +2,6 @@ import {
 	AdBidderContext,
 	adClickTracker,
 	AdInfoContext,
-	atsIdsLoadedEvent,
-	atsLoadedEvent,
-	atsNotLoadedForLoggedInUser,
-	audigentLoadedEvent,
 	bidderTracker,
 	Binder,
 	communicationService,
@@ -13,12 +9,11 @@ import {
 	ctaTracker,
 	Dictionary,
 	eventService,
+	eventsRepository,
 	FuncPipelineStep,
 	GAMOrigins,
 	InstantConfigCacheStorage,
 	interventionTracker,
-	liveRampPrebidIdsLoadedEvent,
-	ofType,
 	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
@@ -275,9 +270,13 @@ export class TrackingSetup {
 	}
 
 	private audigentTracker(): void {
-		communicationService.action$.pipe(ofType(audigentLoadedEvent)).subscribe(() => {
-			this.pageTracker.trackProp('audigent', 'loaded');
-		});
+		communicationService.listen(
+			eventsRepository.AUDIGENT_LOADED,
+			() => {
+				this.pageTracker.trackProp('audigent', 'loaded');
+			},
+			false,
+		);
 	}
 
 	private interventionTracker(): void {
@@ -285,22 +284,38 @@ export class TrackingSetup {
 	}
 
 	private liveRampTracker(): void {
-		communicationService.action$.pipe(ofType(liveRampPrebidIdsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
-		});
+		communicationService.listen(
+			eventsRepository.LIVERAMP_IDS_LOADED,
+			(props) => {
+				this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
+			},
+			false,
+		);
 	}
 
 	private atsTracker(): void {
-		communicationService.action$.pipe(ofType(atsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
-		});
+		communicationService.listen(
+			eventsRepository.ATS_JS_LOADED,
+			(props) => {
+				this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
+			},
+			false,
+		);
 
-		communicationService.action$.pipe(ofType(atsIdsLoadedEvent)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
-		});
+		communicationService.listen(
+			eventsRepository.ATS_IDS_LOADED,
+			(props) => {
+				this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
+			},
+			false,
+		);
 
-		communicationService.action$.pipe(ofType(atsNotLoadedForLoggedInUser)).subscribe((props) => {
-			this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
-		});
+		communicationService.listen(
+			eventsRepository.ATS_NOT_LOADED_LOGGED,
+			(props) => {
+				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
+			},
+			false,
+		);
 	}
 }

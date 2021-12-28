@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
@@ -135,9 +136,9 @@ class Bidders {
 		this.applyTargetingParams(slotName, bidderTargeting);
 
 		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
-		utils.communicator('Bidding done', {
-			name: slotName,
-			state: 'prebid',
+		communicationService.communicate(eventsRepository.BIDDERS_BIDDING_DONE, {
+			slotName,
+			provider: 'prebid',
 		});
 
 		return bidderTargeting;
