@@ -1,8 +1,8 @@
 import { FanLabBox } from './fanlab-box';
 import { MessageBox } from './message-box';
 import { MessageBoxType } from './message-box-service';
-import { NewsletterBox } from './newsletter-box';
 import { NewsletterFormBox } from './newsletter-form-box';
+import { NewsletterLinkBox } from './newsletter-link-box';
 import { RegisterBox } from './register-box';
 
 export class MessageBoxCreator {
@@ -12,8 +12,8 @@ export class MessageBoxCreator {
 				return new RegisterBox();
 			case 'FANLAB':
 				return new FanLabBox();
-			case 'NEWSLETTER':
-				return new NewsletterBox();
+			case 'NEWSLETTER_LINK':
+				return new NewsletterLinkBox();
 			case 'NEWSLETTER_FORM':
 				return new NewsletterFormBox();
 			default:

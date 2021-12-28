@@ -1,10 +1,10 @@
 import { AdSlot } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
 
-export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER' | 'NEWSLETTER_FORM';
+export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER_LINK' | 'NEWSLETTER_FORM';
 
 export class MessageBoxService {
-	private types: MessageBoxType[] = ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER'];
+	private types: MessageBoxType[] = ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK'];
 	private currentType = 0;
 
 	getCurrentTypeIndex = (): number => {
