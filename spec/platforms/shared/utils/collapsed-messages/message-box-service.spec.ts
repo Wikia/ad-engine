@@ -84,15 +84,21 @@ describe('Message Box Service', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
 		});
 
-		it('index changes to 3 - when Newsletter box is added', () => {
+		it('index changes to 3 - when Newsletter-Form box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
 			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
 		});
 
-		it('index equals 3 - no more message boxes can be added', () => {
-			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+		it('index changes to 4 - when Newsletter-Link box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
+			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(4);
+		});
+
+		it('index equals 4 - no more message boxes can be added', () => {
+			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(4);
 		});
 	});
 });
