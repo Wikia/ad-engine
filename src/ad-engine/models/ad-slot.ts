@@ -79,7 +79,7 @@ export const adSlotEvent = globalAction(
 	props<{
 		event: string;
 		payload?: any;
-		adSlotName: string;
+		adSlotName?: string;
 	}>(),
 );
 

@@ -54,9 +54,9 @@ export class Nativo {
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
 
-		window.ntv.Events?.PubSub?.subscribe('noad', () =>
-			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE),
-		);
+		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE, e);
+		});
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
@@ -98,8 +98,18 @@ export class Nativo {
 		return false;
 	}
 
-	private sendNativoLoadStatus(event): void {
-		communicationService.dispatch(adSlotEvent({ event, adSlotName: logGroup }));
+	private sendNativoLoadStatus(status: string, event?: any): void {
+		const adLocation = event?.data[0]?.adLocation || null;
+
+		communicationService.dispatch(
+			adSlotEvent({
+				event: status,
+				payload: {
+					adLocation,
+					provider: 'nativo',
+				},
+			}),
+		);
 	}
 
 	private displayTestAd(): void {

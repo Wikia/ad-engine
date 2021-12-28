@@ -7,7 +7,7 @@ import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
 
 describe('Nativo service', () => {
 	const sandbox = createSandbox();
-	const slotName = 'nativo';
+	const serviceName = 'nativo';
 
 	let loadScriptSpy: SinonSpy;
 	let dispatchSpy: SinonSpy;
@@ -70,7 +70,13 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(false);
 		expect(dispatchSpy.callCount).to.equal(1);
 		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-			adSlotEvent({ event: AdSlot.STATUS_COLLAPSE, adSlotName: slotName }),
+			adSlotEvent({
+				event: AdSlot.STATUS_COLLAPSE,
+				payload: {
+					adLocation: null,
+					provider: serviceName,
+				},
+			}),
 		);
 	});
 
@@ -80,7 +86,13 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(true);
 		expect(dispatchSpy.callCount).to.equal(1);
 		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-			adSlotEvent({ event: AdSlot.SLOT_ADDED_EVENT, adSlotName: slotName }),
+			adSlotEvent({
+				event: AdSlot.SLOT_ADDED_EVENT,
+				payload: {
+					adLocation: null,
+					provider: serviceName,
+				},
+			}),
 		);
 	});
 
