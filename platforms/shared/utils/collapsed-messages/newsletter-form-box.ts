@@ -15,6 +15,7 @@ export class NewsletterFormBox extends MessageBox {
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const form = this.createForm();
+		form.addEventListener('submit', (event) => this.doEmailSignUp(event, adSlot));
 		const formMessage = this.createFormMessage();
 
 		wrapper.append(message, form, formMessage);
@@ -28,19 +29,52 @@ export class NewsletterFormBox extends MessageBox {
 		form.className = 'newsletter-form';
 
 		form.innerHTML = `
-			<form class="newsletter-form">
-				<input class="newsletter-email" type="email" placeholder="Email Address"/>
-				<button class="newsletter-submit wds-button cm-button" type="submit">${this.buttonText}</button>
-			</form>
+			<input class="newsletter-email" type="email" placeholder="Email Address"/>
+			<button class="newsletter-submit wds-button cm-button" type="submit">${this.buttonText}</button>
 		`;
 
 		return form;
 	};
 
-	createFormMessage = (): HTMLElement => {
+	private createFormMessage = (): HTMLElement => {
 		const message = document.createElement('div');
 		message.className = 'newsletter-message';
 		message.innerHTML = '';
 		return message;
+	};
+
+	private showFormMessage = (text: string) => {
+		const messageArea = document.querySelector('.newsletter-message');
+		messageArea.innerHTML = text;
+	};
+
+	private doEmailSignUp = (event, adSlot: AdSlot) => {
+		event.preventDefault();
+
+		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
+		const emailInput: HTMLInputElement = document.querySelector('.newsletter-email');
+		const emailValue = emailInput.value;
+
+		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
+		submitBtn.disabled = true;
+
+		window.Sailthru.integration('userSignUp', {
+			email: emailValue,
+			vars: {
+				sign_up_date: new Date().toISOString(),
+				email: emailValue,
+			},
+			lists: { 'Fandom Account Registration - MASTERLIST': 1 },
+			source: 'homepage_hero_unit',
+			onSuccess: () => {
+				this.showFormMessage('Thanks for signing up!');
+				submitBtn.disabled = false;
+				this.sendTrackingEvent(adSlot, status_clicked);
+			},
+			onError: () => {
+				this.showFormMessage('An error occurred. Please try again later.');
+				submitBtn.disabled = false;
+			},
+		});
 	};
 }
