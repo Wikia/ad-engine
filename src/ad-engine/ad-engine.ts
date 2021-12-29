@@ -6,8 +6,6 @@ import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
-	events,
-	eventService,
 	messageBus,
 	registerCustomAdLoader,
 	slotRepeater,
@@ -38,13 +36,13 @@ export class AdEngine {
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
-			slotService.removeAll();
-		});
-		eventService.on(events.PAGE_CHANGE_EVENT, () => {
-			this.started = false;
-			this.setupAdStack();
-		});
+		communicationService.listen(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => {
+				slotService.removeAll();
+			},
+			false,
+		);
 	}
 
 	init(inhibitors: Promise<any>[] = []): void {

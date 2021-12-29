@@ -46,7 +46,7 @@ export class CommunicationService {
 		this.dispatch(this.getGlobalAction(event)(payload));
 	}
 
-	listen(event: EventOptions, callback: (payload: any) => void, once: boolean = true): void {
+	listen(event: EventOptions, callback: (payload?: any) => void, once: boolean = true): void {
 		if (once) {
 			this.action$.pipe(ofType(this.getGlobalAction(event), take(1))).subscribe(callback);
 		} else {

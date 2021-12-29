@@ -1,13 +1,10 @@
 import { LogoReplacementParams } from '@platforms/shared';
-import { AdSlot, events, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
-	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
-	) {}
+	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
 
 	async onEnter(): Promise<void> {
 		const fandomLogo = document.querySelector('.wds-global-navigation__logo');
@@ -46,8 +43,6 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 				if (fandomHeartParent && fandomHeart) {
 					fandomHeartParent.removeChild(fandomHeart);
 				}
-
-				this.adSlot.emitEvent(events.LOGO_REPLACED);
 			}, 1000);
 		}
 	}

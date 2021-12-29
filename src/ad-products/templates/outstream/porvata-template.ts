@@ -1,4 +1,4 @@
-import { AdSlot, context, events, eventService, slotTweaker, utils } from '@ad-engine/core';
+import { AdSlot, context, slotTweaker, utils } from '@ad-engine/core';
 import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
 import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
@@ -99,10 +99,6 @@ export class PorvataTemplate {
 		});
 
 		this.handleSlotStatus(player);
-
-		eventService.once(events.PAGE_CHANGE_EVENT, () => {
-			player.destroy();
-		});
 
 		videoUserInterface.setup(player, player.dom.getInterfaceContainer(), template, {
 			container: player.dom.getInterfaceContainer(),

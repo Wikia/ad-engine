@@ -1,4 +1,4 @@
-import { context, events, eventService } from '../services';
+import { context } from '../services';
 
 export function setupGptTargeting(): void {
 	const tag = window.googletag.pubads();
@@ -23,10 +23,6 @@ export function setupGptTargeting(): void {
 			setTargetingValue(key, targeting[key]);
 		});
 	}
-
-	eventService.on(events.PAGE_CHANGE_EVENT, () => {
-		setTargetingFromContext();
-	});
 
 	setTargetingFromContext();
 

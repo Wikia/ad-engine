@@ -1,4 +1,4 @@
-import { Dictionary } from '@ad-engine/core';
+import { AdSlot, Dictionary } from '@ad-engine/core';
 // tslint:disable-next-line:import-blacklist
 import { Action } from '@wikia/post-quecast';
 import { payload, props } from 'ts-action';
@@ -35,12 +35,23 @@ export interface LoadTemplatePayload {
 	type: string;
 }
 
+export interface TrackingBidDefinition {
+	bidderName: string;
+	buyerId?: string;
+	price: string;
+	responseTimestamp: number;
+	slotName: string;
+	size: string;
+	timeToRespond: number;
+}
+
 export interface UapLoadStatus {
 	isLoaded: boolean;
 	adProduct: string;
 }
 
 export const eventsRepository: Dictionary<EventOptions> = {
+	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
 		category: '[Ad Engine]',
 		name: 'BAB detection finished',
@@ -49,21 +60,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_CONFIGURED: {
 		name: 'Configured',
 	},
+	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
+		name: 'Interstitial displayed',
+	},
 	AD_ENGINE_MESSAGEBOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
-	},
-	AD_ENGINE_SLOT_ADDED: {
-		name: 'Ad Slot added',
-		payload: props<GeneralPayload>(),
-	},
-	AD_ENGINE_SLOT_EVENT: {
-		name: 'Ad Slot event',
-		payload: props<{ event: string; payload?: any; adSlotName: string }>(),
-	},
-	AD_ENGINE_SLOT_LOADED: {
-		name: 'Ad Slot loaded',
-		payload: props<GeneralPayload>(),
 	},
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
@@ -80,6 +82,24 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Video learn more displayed',
 		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
 	},
+	// Ad slot events //
+	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
+		name: 'Invalidate slot targeting',
+		payload: props<{ slot: AdSlot }>(),
+	},
+	AD_ENGINE_SLOT_ADDED: {
+		name: 'Ad Slot added',
+		payload: props<{ name: string; slot: AdSlot; state: string }>(),
+	},
+	AD_ENGINE_SLOT_EVENT: {
+		name: 'Ad Slot event',
+		payload: props<{ event: string; payload?: any; adSlotName: string }>(),
+	},
+	AD_ENGINE_SLOT_LOADED: {
+		name: 'Ad Slot loaded',
+		payload: props<GeneralPayload>(),
+	},
+	// Integrated partners events //
 	ADMARKETPLACE_INIT: {
 		category: '[Search suggestions]',
 		name: 'Initialized',
@@ -97,18 +117,22 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'ATS ids loaded',
 		payload: props<{ envelope: string }>(),
 	},
-	AUDIGENT_LOADED: {
-		name: 'ATS.js not loaded for logged in user',
-	},
 	ATS_NOT_LOADED_LOGGED: {
-		name: 'Audigent loaded',
+		name: 'ATS.js not loaded for logged in user',
 		payload: props<{ reason: string }>(),
 	},
-	BIDDERS_BIDDING_DONE: {
-		category: '[Prebid]',
-		name: 'Bidding done',
-		payload: props<{ provider: string; slotName: string }>(),
+	AUDIGENT_LOADED: {
+		name: 'Audigent loaded',
 	},
+	LIVERAMP_IDS_LOADED: {
+		name: 'LiveRamp Prebid ids loaded',
+		payload: props<{ userId: string }>(),
+	},
+	NATIVO_LOADED: {
+		name: 'Nativo loaded',
+		payload: props<{ isLoaded: boolean }>(),
+	},
+	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',
 		name: 'ad slot injected',
@@ -136,6 +160,37 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[FanFeed]',
 		name: 'Ready',
 	},
+	PLATFORM_BEFORE_PAGE_CHANGE: {
+		category: '[Platform]',
+		name: 'Before page change',
+	},
+	// Bidders events //
+	BIDDERS_BIDDING_DONE: {
+		category: '[Prebid]',
+		name: 'Bidding done',
+		payload: props<{ provider: string; slotName: string }>(),
+	},
+	BIDDERS_BIDS_REFRESH: {
+		category: '[Prebid]',
+		name: 'Bids refresh',
+		payload: props<{ refreshedSlotNames: string[] }>(),
+	},
+	BIDDERS_BIDS_RESPONSE: {
+		category: '[Prebid]',
+		name: 'Bids response',
+		payload: props<{ bidResponse: TrackingBidDefinition }>(),
+	},
+	BIDDERS_PREBID_LAZY_CALL: {
+		category: '[Prebid]',
+		name: 'Prebid lazy call',
+	},
+	// Video events //
+	VIDEO_EVENT: {
+		category: '[Video]',
+		name: 'Video event',
+		payload: props<{ videoEvent: object }>(),
+	},
+	// Google Ad Manager events //
 	GAM_AD_INTERVENTION: {
 		category: '[GAM iframe]',
 		name: 'Ad intervention',
@@ -145,13 +200,5 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[GAM iframe]',
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
-	},
-	LIVERAMP_IDS_LOADED: {
-		name: 'LiveRamp Prebid ids loaded',
-		payload: props<{ userId: string }>(),
-	},
-	NATIVO_LOADED: {
-		name: 'Nativo loaded',
-		payload: props<{ isLoaded: boolean }>(),
 	},
 };

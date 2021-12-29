@@ -3,7 +3,6 @@ import { getAdStack, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
-import { events, eventService } from './events';
 import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
@@ -37,12 +36,6 @@ function isSlotInTheSameViewport(
 	return distance < viewportHeight;
 }
 
-eventService.on(events.PAGE_CHANGE_EVENT, () => {
-	slotService.slotEvents = {};
-	slotService.slotStates = {};
-	slotService.slotStatuses = {};
-});
-
 class SlotService {
 	slotEvents: Dictionary<SlotEvent[]> = {};
 	slotStatuses: Dictionary<string> = {};
@@ -70,9 +63,9 @@ class SlotService {
 		}
 
 		slotTweaker.addDefaultClasses(adSlot);
-		eventService.emit(events.AD_SLOT_CREATED, adSlot);
 		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_ADDED, {
 			name: slotName,
+			slot: adSlot,
 			state: AdSlot.SLOT_ADDED_EVENT,
 		});
 	}

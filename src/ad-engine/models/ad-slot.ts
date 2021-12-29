@@ -81,10 +81,15 @@ export class AdSlot extends EventEmitter {
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static SLOT_RENDERED_EVENT = 'slotRendered';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
-	static VIDEO_VIEWED_EVENT = 'videoViewed';
 	static DESTROYED_EVENT = 'slotDestroyed';
 	static HIDDEN_EVENT = 'slotHidden';
 	static SHOWED_EVENT = 'slotShowed';
+
+	static VIDEO_VIEWED_EVENT = 'videoViewed';
+	static VIDEO_AD_REQUESTED = 'videoAdRequested';
+	static VIDEO_AD_ERROR = 'videoAdError';
+	static VIDEO_AD_IMPRESSION = 'videoAdImpression';
+	static VIDEO_AD_USED = 'videoAdUsed';
 
 	static LOG_GROUP = 'AdSlot';
 

@@ -1,7 +1,7 @@
-import { AdSlot, Dictionary } from '../models';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { Dictionary } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
-import { events, eventService } from './events';
 import { SessionCookie } from './session-cookie';
 
 type StatusType = 'loaded' | 'viewed';
@@ -34,7 +34,7 @@ export class ViewabilityCounter {
 
 		this.loaded = true;
 
-		eventService.on(events.AD_SLOT_CREATED, (slot: AdSlot) => {
+		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
 			const id = slot.getConfigProperty('viewabilityCounterId') || slot.getSlotName();
 
 			slot.loaded.then(() => {

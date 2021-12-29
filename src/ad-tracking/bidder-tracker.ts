@@ -1,5 +1,9 @@
-import { context, events, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
-import { TrackingBidDefinition } from './tracking-bid';
+import {
+	communicationService,
+	eventsRepository,
+	TrackingBidDefinition,
+} from '@ad-engine/communication';
+import { context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 
 export interface AdBidderContext {
 	bid: TrackingBidDefinition;
@@ -24,10 +28,10 @@ class BidderTracker {
 			return;
 		}
 
-		eventService.on(events.BIDS_RESPONSE, (bid: TrackingBidDefinition) => {
+		communicationService.listen(eventsRepository.BIDDERS_BIDS_RESPONSE, ({ bidResponse }) => {
 			this.pipeline.execute(
 				{
-					bid,
+					bid: bidResponse,
 					data: {},
 				},
 				callback,

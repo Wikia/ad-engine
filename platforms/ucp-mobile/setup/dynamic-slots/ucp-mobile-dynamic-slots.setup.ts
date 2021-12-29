@@ -11,7 +11,6 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	events,
 	eventService,
 	eventsRepository,
 	fillerService,
@@ -83,7 +82,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		const slotName = 'interstitial';
 
 		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
-			eventService.emit(events.INTERSTITIAL_DISPLAYED);
+			communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 		});
 	}
 
@@ -122,13 +121,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				document.getElementById('floor_adhesion_anchor').classList.add('hide');
 			};
 
-			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
+			eventService.on(AdSlot.VIDEO_AD_IMPRESSION, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
 					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 				}
 			});
 
-			eventService.on(events.INTERSTITIAL_DISPLAYED, () => {
+			communicationService.listen(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
 					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
 				}

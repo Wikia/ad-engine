@@ -1,16 +1,19 @@
 import {
+	communicationService,
+	eventsRepository,
+	TrackingBidDefinition,
+} from '@ad-engine/communication';
+import {
 	AdSlot,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
-	events,
 	eventService,
 	pbjsFactory,
 	Tcf,
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
@@ -27,8 +30,8 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-eventService.on(events.VIDEO_AD_IMPRESSION, markWinningVideoBidAsUsed);
-eventService.on(events.VIDEO_AD_ERROR, markWinningVideoBidAsUsed);
+eventService.on(AdSlot.VIDEO_AD_IMPRESSION, markWinningVideoBidAsUsed);
+eventService.on(AdSlot.VIDEO_AD_ERROR, markWinningVideoBidAsUsed);
 
 async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	// Mark ad as rendered
@@ -38,7 +41,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.markWinningBidAsUsed({ adId });
-		eventService.emit(events.VIDEO_AD_USED, adSlot);
+		eventService.emit(AdSlot.VIDEO_AD_USED, adSlot);
 	}
 }
 
@@ -186,9 +189,13 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		if (this.isLazyLoadingEnabled) {
-			eventService.on(events.PREBID_LAZY_CALL, () => {
-				this.lazyCall(bidsBackHandler);
-			});
+			communicationService.listen(
+				eventsRepository.BIDDERS_PREBID_LAZY_CALL,
+				() => {
+					this.lazyCall(bidsBackHandler);
+				},
+				false,
+			);
 		}
 	}
 
@@ -251,7 +258,10 @@ export class PrebidProvider extends BidderProvider {
 
 		const refreshUsedBid = (winningBid) => {
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-				eventService.emit(events.BIDS_REFRESH, [winningBid.adUnitCode]);
+				communicationService.communicate(eventsRepository.BIDDERS_BIDS_REFRESH, {
+					refreshedSlotNames: [winningBid.adUnitCode],
+				});
+
 				const adUnitsToRefresh = this.adUnits.filter(
 					(adUnit) =>
 						adUnit.code === winningBid.adUnitCode &&
@@ -259,27 +269,24 @@ export class PrebidProvider extends BidderProvider {
 						adUnit.bids[0] &&
 						adUnit.bids[0].bidder === winningBid.bidderCode,
 				);
+
 				this.requestBids(adUnitsToRefresh, this.bidsRefreshing.bidsBackHandler);
 			}
 		};
 
 		pbjs.onEvent('bidWon', refreshUsedBid);
-		eventService.once(events.PAGE_CHANGE_EVENT, () => {
-			pbjs.offEvent('bidWon', refreshUsedBid);
-		});
 	}
 
 	async registerBidsTracking(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const trackBid = (response) => {
-			eventService.emit(events.BIDS_RESPONSE, this.mapResponseToTrackingBidDefinition(response));
+			communicationService.communicate(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+				bidResponse: this.mapResponseToTrackingBidDefinition(response),
+			});
 		};
 
 		pbjs.onEvent('bidResponse', trackBid);
-		eventService.once(events.PAGE_CHANGE_EVENT, () => {
-			pbjs.offEvent('bidResponse', trackBid);
-		});
 	}
 
 	private mapResponseToTrackingBidDefinition(response: PrebidBidResponse): TrackingBidDefinition {

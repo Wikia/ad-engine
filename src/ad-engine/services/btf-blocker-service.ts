@@ -2,7 +2,7 @@ import { intersection } from 'lodash';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
-import { events, eventService } from './events';
+import { eventService } from './events';
 import { fillerService } from './filler-service';
 import { slotService } from './slot-service';
 
@@ -46,9 +46,6 @@ class BtfBlockerService {
 				this.finishFirstCall();
 			}
 		});
-		eventService.on(events.PAGE_CHANGE_EVENT, () => {
-			this.resetState();
-		});
 
 		const enabledFirstCallSlots = intersection(
 			slotService.getFirstCallSlotNames(),
@@ -67,7 +64,6 @@ class BtfBlockerService {
 
 	finishFirstCall(): void {
 		this.firstCallEnded = true;
-		eventService.emit(events.FIRST_CALL_ENDED);
 		logger(logGroup, 'first call queue finished');
 
 		if (window.ads.runtime.disableSecondCall) {

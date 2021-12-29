@@ -1,12 +1,5 @@
-import {
-	AdSlot,
-	context,
-	events,
-	eventService,
-	scrollListener,
-	slotService,
-	utils,
-} from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, context, scrollListener, slotService, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../templates/uap';
 
 export class FmrRotator {
@@ -36,7 +29,7 @@ export class FmrRotator {
 	}
 
 	private initializeStandardRotation(): void {
-		eventService.on(events.AD_SLOT_CREATED, (slot: AdSlot) => {
+		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
 			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
 				if (
 					universalAdPackage.isFanTakeoverLoaded() ||

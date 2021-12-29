@@ -1,12 +1,11 @@
 import { LogoReplacementParams } from '@platforms/shared';
-import { AdSlot, events, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../../setup-f2';
 
 @Injectable({ autobind: false })
 export class LogoReplacementF2Handler implements TemplateStateHandler {
 	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
 		@Inject(F2_ENV) private f2Env: F2Environment,
 	) {}
@@ -48,8 +47,6 @@ export class LogoReplacementF2Handler implements TemplateStateHandler {
 			}
 
 			customLogoAnchorElement.appendChild(customLogo);
-
-			this.adSlot.emitEvent(events.LOGO_REPLACED);
 		}
 	}
 }

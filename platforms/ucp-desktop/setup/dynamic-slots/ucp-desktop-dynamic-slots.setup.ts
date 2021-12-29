@@ -8,7 +8,6 @@ import {
 	AdSlot,
 	context,
 	DiProcess,
-	events,
 	eventService,
 	fillerService,
 	PorvataFiller,
@@ -88,7 +87,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
 			porvataClosedActive = true;
 
-			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
+			eventService.on(AdSlot.VIDEO_AD_IMPRESSION, () => {
 				if (porvataClosedActive) {
 					porvataClosedActive = false;
 					slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);

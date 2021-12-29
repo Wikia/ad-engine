@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	context,
-	events,
 	eventService,
 	SlotFiller,
 	slotService,
@@ -216,7 +215,7 @@ export class Porvata {
 
 			player.addEventListener('adCanPlay', () => {
 				player.dispatchEvent('wikiaAdStarted');
-				eventService.emit(events.VIDEO_AD_IMPRESSION, slotService.get(params.slotName));
+				eventService.emit(AdSlot.VIDEO_AD_IMPRESSION, slotService.get(params.slotName));
 			});
 			player.addEventListener('allAdsCompleted', () => {
 				if (player.isFullscreen()) {

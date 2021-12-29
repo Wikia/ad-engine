@@ -1,4 +1,4 @@
-import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
+import { communicationService, context, DiProcess, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -182,7 +182,7 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 		};
 
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
+		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
 			context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
 			context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
 				this.setupSlotParameters(slot),

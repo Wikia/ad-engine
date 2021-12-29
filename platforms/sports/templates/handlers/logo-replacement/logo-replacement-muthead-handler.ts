@@ -1,13 +1,10 @@
 import { LogoReplacementParams } from '@platforms/shared';
-import { AdSlot, context, events, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
+import { context, TEMPLATE, TemplateStateHandler } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
 export class LogoReplacementMutheadHandler implements TemplateStateHandler {
-	constructor(
-		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams,
-	) {}
+	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
 
 	async onEnter(): Promise<void> {
 		const parentElement = document.querySelector('.header__container');
@@ -32,8 +29,6 @@ export class LogoReplacementMutheadHandler implements TemplateStateHandler {
 				parentElement.appendChild(trackingPixel);
 				customLogoAnchorElement.appendChild(customLogo);
 			}
-
-			this.adSlot.emitEvent(events.LOGO_REPLACED);
 		}, 1000);
 	}
 

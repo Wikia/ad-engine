@@ -1,10 +1,10 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 // tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
-	events,
 	eventService,
 	slotDataParamsUpdater,
 	slotService,
@@ -126,7 +126,11 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.updateCorrelator());
+		communicationService.listen(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => this.updateCorrelator(),
+			false,
+		);
 		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
 			this.destroySlot(adSlot.getSlotName());
 		});

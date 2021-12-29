@@ -1,4 +1,4 @@
-import { events, eventService } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Injectable } from '@wikia/dependency-injection';
 
 interface EventAdInfo {
@@ -133,7 +133,7 @@ export class VideoTracker {
 	}
 
 	setupVideoAdTracking(): void {
-		eventService.on(events.VIDEO_EVENT, (videoEvent) => {
+		communicationService.listen(eventsRepository.VIDEO_EVENT, ({ videoEvent }) => {
 			const videoEventName = this.getEventName(videoEvent);
 
 			if (videoEventName) {

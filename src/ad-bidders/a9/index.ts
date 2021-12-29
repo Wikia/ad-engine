@@ -1,9 +1,13 @@
 import {
+	communicationService,
+	eventsRepository,
+	TrackingBidDefinition,
+} from '@ad-engine/communication';
+import {
 	AdSlot,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
-	events,
 	eventService,
 	SlotConfig,
 	slotService,
@@ -11,7 +15,6 @@ import {
 	usp,
 	utils,
 } from '@ad-engine/core';
-import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
@@ -72,10 +75,12 @@ export class A9Provider extends BidderProvider {
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
-				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
-				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
-				eventService.on(events.INVALIDATE_SLOT_TARGETING, (adSlot: AdSlot) =>
-					this.invalidateSlotTargeting(adSlot),
+				eventService.on(AdSlot.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
+				eventService.on(AdSlot.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
+				communicationService.listen(
+					eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING,
+					({ slot }) => this.invalidateSlotTargeting(slot),
+					false,
 				);
 			}
 
@@ -90,7 +95,7 @@ export class A9Provider extends BidderProvider {
 		delete this.bids[slotAlias];
 
 		if (adSlot.isVideo()) {
-			eventService.emit(events.VIDEO_AD_USED, adSlot);
+			eventService.emit(AdSlot.VIDEO_AD_USED, adSlot);
 		}
 	}
 
@@ -168,15 +173,14 @@ export class A9Provider extends BidderProvider {
 
 				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
-				eventService.emit(
-					events.BIDS_RESPONSE,
-					this.mapResponseToTrackingBidDefinition(
+				communicationService.communicate(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+					bidResponse: this.mapResponseToTrackingBidDefinition(
 						bid.slotID,
 						bidTargeting,
 						endTime,
 						endTime - startTime,
 					),
-				);
+				});
 			}),
 		);
 
@@ -185,7 +189,9 @@ export class A9Provider extends BidderProvider {
 		if (refresh) {
 			const refreshedSlotNames = slots.map((slot) => slot.slotName);
 
-			eventService.emit(events.BIDS_REFRESH, refreshedSlotNames);
+			communicationService.communicate(eventsRepository.BIDDERS_BIDS_REFRESH, {
+				refreshedSlotNames,
+			});
 		}
 	}
 
@@ -298,8 +304,8 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private registerVideoBidsRefreshing(): void {
-		eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => this.refreshVideoBids(adSlot));
-		eventService.on(events.VIDEO_AD_ERROR, (adSlot) => this.refreshVideoBids(adSlot));
+		eventService.on(AdSlot.VIDEO_AD_IMPRESSION, (adSlot) => this.refreshVideoBids(adSlot));
+		eventService.on(AdSlot.VIDEO_AD_ERROR, (adSlot) => this.refreshVideoBids(adSlot));
 	}
 
 	private refreshVideoBids(adSlot: AdSlot): void {

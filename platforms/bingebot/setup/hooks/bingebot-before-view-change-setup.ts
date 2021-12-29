@@ -1,8 +1,6 @@
 import {
 	communicationService,
 	DiProcess,
-	events,
-	eventService,
 	eventsRepository,
 	ofType,
 	onlyNew,
@@ -16,7 +14,7 @@ export class BingeBotBeforeViewChangeSetup implements DiProcess {
 				onlyNew(),
 			)
 			.subscribe(() => {
-				eventService.emit(events.BEFORE_PAGE_CHANGE_EVENT);
+				communicationService.communicate(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 			});
 	}
 }
