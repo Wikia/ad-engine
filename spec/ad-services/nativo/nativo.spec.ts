@@ -76,6 +76,7 @@ describe('Nativo service', () => {
 					adLocation: null,
 					provider: serviceName,
 				},
+				adSlotName: '',
 			}),
 		);
 	});
@@ -92,6 +93,7 @@ describe('Nativo service', () => {
 					adLocation: null,
 					provider: serviceName,
 				},
+				adSlotName: '',
 			}),
 		);
 	});

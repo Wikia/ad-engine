@@ -99,7 +99,7 @@ export class Nativo {
 	}
 
 	private sendNativoLoadStatus(status: string, event?: any): void {
-		const adLocation = event?.data[0]?.adLocation || null;
+		const adLocation = event?.data[0]?.adLocation || '';
 
 		communicationService.dispatch(
 			adSlotEvent({
@@ -108,6 +108,7 @@ export class Nativo {
 					adLocation,
 					provider: 'nativo',
 				},
+				adSlotName: adLocation,
 			}),
 		);
 	}
