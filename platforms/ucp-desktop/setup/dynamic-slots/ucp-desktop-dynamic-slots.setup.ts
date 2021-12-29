@@ -6,9 +6,9 @@ import {
 } from '@platforms/shared';
 import {
 	AdSlot,
+	communicationService,
 	context,
 	DiProcess,
-	eventService,
 	fillerService,
 	PorvataFiller,
 	PorvataGamParams,
@@ -84,20 +84,28 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		let porvataClosedActive = false;
 
-		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-			porvataClosedActive = true;
+		communicationService.listenSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				porvataClosedActive = true;
 
-			eventService.on(AdSlot.VIDEO_AD_IMPRESSION, () => {
-				if (porvataClosedActive) {
-					porvataClosedActive = false;
-					slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
-				}
-			});
-		});
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+					if (porvataClosedActive) {
+						porvataClosedActive = false;
+						slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
+					}
+				});
+			},
+			slotName,
+		);
 
-		slotService.on(slotName, AdSlot.HIDDEN_EVENT, () => {
-			porvataClosedActive = false;
-		});
+		communicationService.listenSlotEvent(
+			AdSlot.HIDDEN_EVENT,
+			() => {
+				porvataClosedActive = false;
+			},
+			slotName,
+		);
 	}
 
 	private registerAdPlaceholderService(): void {

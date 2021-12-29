@@ -3,13 +3,7 @@ import { decorate } from 'core-decorators';
 // tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import {
-	btfBlockerService,
-	eventService,
-	slotDataParamsUpdater,
-	slotService,
-	trackingOptIn,
-} from '../services';
+import { btfBlockerService, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
@@ -69,7 +63,7 @@ function configure() {
 			const adSlot = getAdSlotFromEvent(event);
 			const adType = getAdType(event, adSlot.getIframe());
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, event, adType);
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType });
 		});
 	});
 
@@ -131,8 +125,8 @@ export class GptProvider implements Provider {
 			() => this.updateCorrelator(),
 			false,
 		);
-		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
-			this.destroySlot(adSlot.getSlotName());
+		communicationService.listenSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+			this.destroySlot(slot.getSlotName());
 		});
 		initialized = true;
 	}

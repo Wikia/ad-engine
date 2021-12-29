@@ -1,12 +1,10 @@
 import { AdSlot } from '@wikia/ad-engine';
 import { SinonSandbox, SinonStub } from 'sinon';
-import { createEventEmitterStub } from './event-emitter.stub';
 
 export type AdSlotStub = { [key in keyof AdSlot]: SinonStub & AdSlot[key] };
 
 export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 	return {
-		...createEventEmitterStub(sandbox),
 		targeting: sandbox.stub() as any,
 		config: sandbox.stub() as any,
 		element: sandbox.stub() as any,
@@ -14,7 +12,6 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		isEmpty: sandbox.stub() as any,
 		pushTime: sandbox.stub() as any,
 		enabled: sandbox.stub() as any,
-		events: sandbox.stub() as any,
 		adUnit: sandbox.stub() as any,
 		advertiserId: sandbox.stub() as any,
 		orderId: sandbox.stub() as any,

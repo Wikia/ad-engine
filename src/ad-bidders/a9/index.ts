@@ -8,7 +8,6 @@ import {
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
-	eventService,
 	SlotConfig,
 	slotService,
 	Usp,
@@ -75,8 +74,12 @@ export class A9Provider extends BidderProvider {
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
-				eventService.on(AdSlot.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
-				eventService.on(AdSlot.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+					this.removeBids(slot),
+				);
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+					this.removeBids(slot),
+				);
 				communicationService.listen(
 					eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING,
 					({ slot }) => this.invalidateSlotTargeting(slot),
@@ -95,7 +98,7 @@ export class A9Provider extends BidderProvider {
 		delete this.bids[slotAlias];
 
 		if (adSlot.isVideo()) {
-			eventService.emit(AdSlot.VIDEO_AD_USED, adSlot);
+			adSlot.emit(AdSlot.VIDEO_AD_USED);
 		}
 	}
 
@@ -304,8 +307,12 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private registerVideoBidsRefreshing(): void {
-		eventService.on(AdSlot.VIDEO_AD_IMPRESSION, (adSlot) => this.refreshVideoBids(adSlot));
-		eventService.on(AdSlot.VIDEO_AD_ERROR, (adSlot) => this.refreshVideoBids(adSlot));
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+			this.refreshVideoBids(slot),
+		);
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+			this.refreshVideoBids(slot),
+		);
 	}
 
 	private refreshVideoBids(adSlot: AdSlot): void {

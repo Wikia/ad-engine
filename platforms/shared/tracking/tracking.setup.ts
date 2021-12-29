@@ -8,13 +8,11 @@ import {
 	context,
 	ctaTracker,
 	Dictionary,
-	eventService,
 	eventsRepository,
 	FuncPipelineStep,
 	GAMOrigins,
 	InstantConfigCacheStorage,
 	interventionTracker,
-	playerEvents,
 	porvataTracker,
 	PostmessageTracker,
 	ScrollSpeedCalculator,
@@ -86,9 +84,13 @@ export class TrackingSetup {
 	private porvataTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		eventService.on(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, (data) => {
-			dataWarehouseTracker.track(data, porvataUrl);
-		});
+		communicationService.listen(
+			eventsRepository.VIDEO_PLAYER_TRACKING,
+			({ eventInfo }) => {
+				dataWarehouseTracker.track(eventInfo, porvataUrl);
+			},
+			false,
+		);
 
 		porvataTracker.register();
 	}

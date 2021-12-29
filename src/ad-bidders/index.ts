@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, Dictionary, eventService, utils } from '@ad-engine/core';
+import { AdSlot, context, Dictionary, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -15,12 +15,11 @@ class Bidders {
 	private realSlotPrices = {};
 
 	constructor() {
-		eventService.on(AdSlot.VIDEO_AD_REQUESTED, (adSlot) => {
-			adSlot.updateWinningPbBidderDetails();
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
+			slot.updateWinningPbBidderDetails();
 		});
-
-		eventService.on(AdSlot.VIDEO_AD_USED, (adSlot) => {
-			this.updateSlotTargeting(adSlot.getSlotName());
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
+			this.updateSlotTargeting(slot.getSlotName());
 		});
 
 		communicationService.listen(

@@ -1,4 +1,4 @@
-import { Dictionary, eventService } from '@wikia/ad-engine';
+import { Dictionary } from '@wikia/ad-engine';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
@@ -237,7 +237,7 @@ describe('ad-slot', () => {
 
 		beforeEach(() => {
 			adSlot = createAdSlot(slotName);
-			emitSpy = sandbox.spy(eventService, 'emit');
+			emitSpy = sandbox.spy(adSlot, 'emit');
 			dispatchSpy = sandbox.spy(communicationService, 'dispatch');
 		});
 
@@ -246,7 +246,7 @@ describe('ad-slot', () => {
 		});
 
 		it('should call eventService.emit with string event', () => {
-			adSlot.emit(AdSlot.TEMPLATES_LOADED, 'foo', 'bar');
+			adSlot.emit(AdSlot.TEMPLATES_LOADED, ['foo', 'bar']);
 
 			expect(emitSpy.callCount).to.equal(1);
 			expect(emitSpy.firstCall.args[0]).to.equal(AdSlot.TEMPLATES_LOADED);
@@ -256,7 +256,7 @@ describe('ad-slot', () => {
 		});
 
 		it('should call eventService.emit with Symbol event', () => {
-			adSlot.emit(symbol, 'foo', 'bar');
+			adSlot.emit(symbol, ['foo', 'bar']);
 
 			expect(emitSpy.callCount).to.equal(1);
 			expect(emitSpy.firstCall.args[0]).to.equal(symbol);
@@ -266,7 +266,7 @@ describe('ad-slot', () => {
 		});
 
 		it('should call eventService.communicator.dispatch with string event', () => {
-			adSlot.emit(AdSlot.TEMPLATES_LOADED, 'foo', 'bar');
+			adSlot.emit(AdSlot.TEMPLATES_LOADED, ['foo', 'bar']);
 
 			expect(dispatchSpy.callCount).to.equal(1);
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
@@ -279,7 +279,7 @@ describe('ad-slot', () => {
 		});
 
 		it('should call eventService.communicator.dispatch with Symbol event', () => {
-			adSlot.emit(symbol, 'foo', 'bar');
+			adSlot.emit(symbol, ['foo', 'bar']);
 
 			expect(dispatchSpy.callCount).to.equal(1);
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(

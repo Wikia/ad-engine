@@ -2,7 +2,6 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, SlotConfig } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
-import { eventService } from './events';
 import { SlotCreator, SlotCreatorConfig } from './slot-creator';
 import { slotService } from './slot-service';
 
@@ -26,7 +25,7 @@ class SlotInjector {
 			});
 		});
 
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
 
 			slotsToInject.forEach((slotName: string) => {

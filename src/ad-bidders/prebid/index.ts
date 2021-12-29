@@ -8,7 +8,6 @@ import {
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
-	eventService,
 	pbjsFactory,
 	Tcf,
 	tcf,
@@ -30,8 +29,12 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-eventService.on(AdSlot.VIDEO_AD_IMPRESSION, markWinningVideoBidAsUsed);
-eventService.on(AdSlot.VIDEO_AD_ERROR, markWinningVideoBidAsUsed);
+communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+	markWinningVideoBidAsUsed(slot),
+);
+communicationService.listenSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+	markWinningVideoBidAsUsed(slot),
+);
 
 async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 	// Mark ad as rendered
@@ -41,7 +44,7 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		pbjs.markWinningBidAsUsed({ adId });
-		eventService.emit(AdSlot.VIDEO_AD_USED, adSlot);
+		adSlot.emit(AdSlot.VIDEO_AD_USED);
 	}
 }
 

@@ -1,4 +1,5 @@
-import { AdSlot, context, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { communicationService } from '@ad-engine/communication';
+import { AdSlot, context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 
 export interface AdInfoContext {
 	data: any;
@@ -40,7 +41,7 @@ class SlotTracker {
 			return;
 		}
 
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot: AdSlot) => {
+		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			const status = slot.getStatus();
 			const middlewareContext: AdInfoContext = {
 				slot,
@@ -57,7 +58,7 @@ class SlotTracker {
 			}
 		});
 
-		eventService.on(AdSlot.SLOT_STATUS_CHANGED, (slot: AdSlot) => {
+		communicationService.listenSlotEvent(AdSlot.SLOT_STATUS_CHANGED, ({ slot }) => {
 			const status = slot.getStatus();
 			const shouldSlotBeTracked =
 				slot.getConfigProperty('trackEachStatus') || slot.trackOnStatusChanged;
@@ -72,11 +73,11 @@ class SlotTracker {
 			}
 		});
 
-		eventService.on(AdSlot.CUSTOM_EVENT, (slot: AdSlot, { status }: { status: string }) => {
+		communicationService.listenSlotEvent(AdSlot.CUSTOM_EVENT, ({ slot, payload }) => {
 			const middlewareContext: AdInfoContext = {
 				slot,
 				data: {
-					ad_status: status,
+					ad_status: payload?.status,
 				},
 			};
 

@@ -1,8 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import * as EventEmitter from 'eventemitter3';
 import {
 	AdStackPayload,
-	eventService,
 	insertMethodType,
 	SlotPlaceholderContextConfig,
 	slotTweaker,
@@ -10,7 +8,7 @@ import {
 } from '../';
 import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
-import { AD_LABEL_CLASS, getTopOffset, LazyQueue, logger, stringBuilder } from '../utils';
+import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
 
 export interface Targeting {
@@ -73,7 +71,7 @@ export interface WinningBidderDetails {
 	price: number | string;
 }
 
-export class AdSlot extends EventEmitter {
+export class AdSlot {
 	static CUSTOM_EVENT = 'customEvent';
 	static SLOT_ADDED_EVENT = 'slotAdded';
 	static SLOT_REQUESTED_EVENT = 'slotRequested';
@@ -120,7 +118,6 @@ export class AdSlot extends EventEmitter {
 	isEmpty = true;
 	pushTime: number;
 	enabled: boolean;
-	events: LazyQueue;
 	adUnit: string;
 	advertiserId: null | string = null;
 	orderId: null | string | number = null;
@@ -131,47 +128,14 @@ export class AdSlot extends EventEmitter {
 	trackOnStatusChanged = false;
 	slotViewed = false;
 
-	requested = new Promise<void>((resolve) => {
-		this.once(AdSlot.SLOT_REQUESTED_EVENT, () => {
-			this.pushTime = new Date().getTime();
-
-			resolve();
-		});
-	});
-	loaded = new Promise<void>((resolve) => {
-		this.once(AdSlot.SLOT_LOADED_EVENT, () => {
-			slotTweaker.setDataParam(this, 'slotLoaded', true);
-
-			resolve();
-		});
-	});
-	rendered = new Promise<void>((resolve) => {
-		this.once(
-			AdSlot.SLOT_RENDERED_EVENT,
-			(event: googletag.events.SlotRenderEndedEvent, adType: string) => {
-				this.updateOnRenderEnd(event, adType);
-
-				resolve();
-			},
-		);
-	});
-	viewed = new Promise<void>((resolve) => {
-		this.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-			slotTweaker.setDataParam(this, 'slotViewed', true);
-
-			resolve();
-		});
-	});
+	requested = null;
+	loaded = null;
+	rendered = null;
+	viewed = null;
 
 	constructor(ad: AdStackPayload) {
-		super();
-
 		this.config = context.get(`slots.${ad.id}`) || {};
 		this.enabled = !this.config.disabled;
-		this.events = new LazyQueue();
-		this.events.onItemFlush((event) => {
-			this.on(event.name, event.callback);
-		});
 
 		if (!this.config.uid) {
 			context.set(`slots.${ad.id}.uid`, utils.generateUniqueId());
@@ -182,7 +146,59 @@ export class AdSlot extends EventEmitter {
 		this.config.targeting.src = this.config.targeting.src || context.get('src');
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
 
-		this.viewed.then(() => {
+		this.requested = new Promise<void>((resolve) => {
+			communicationService.listenSlotEvent(
+				AdSlot.SLOT_REQUESTED_EVENT,
+				() => {
+					this.pushTime = new Date().getTime();
+
+					resolve();
+				},
+				this.getSlotName(),
+				true,
+			);
+		});
+		this.loaded = new Promise<void>((resolve) => {
+			communicationService.listenSlotEvent(
+				AdSlot.SLOT_LOADED_EVENT,
+				() => {
+					slotTweaker.setDataParam(this, 'slotLoaded', true);
+
+					resolve();
+				},
+				this.getSlotName(),
+				true,
+			);
+		});
+		this.rendered = new Promise<void>((resolve) => {
+			communicationService.listenSlotEvent(
+				AdSlot.SLOT_RENDERED_EVENT,
+				({ payload }) => {
+					const {
+						event,
+						adType,
+					}: { event: googletag.events.SlotRenderEndedEvent; adType: string } = payload;
+
+					this.updateOnRenderEnd(event, adType);
+
+					resolve();
+				},
+				this.getSlotName(),
+				true,
+			);
+		});
+		this.viewed = new Promise<void>((resolve) => {
+			communicationService.listenSlotEvent(
+				AdSlot.SLOT_VIEWED_EVENT,
+				() => {
+					slotTweaker.setDataParam(this, 'slotViewed', true);
+
+					resolve();
+				},
+				this.getSlotName(),
+				true,
+			);
+		}).then(() => {
 			this.slotViewed = true;
 		});
 
@@ -190,7 +206,6 @@ export class AdSlot extends EventEmitter {
 		if (!this.enabled) {
 			this.hide();
 		}
-		this.events.flush();
 	}
 
 	private logger = (...args: any[]) => logger(AdSlot.LOG_GROUP, ...args);
@@ -433,7 +448,7 @@ export class AdSlot extends EventEmitter {
 			templateNames.forEach((templateName: string) => templateService.init(templateName, this));
 		}
 
-		this.emit(AdSlot.TEMPLATES_LOADED, ...templateNames);
+		this.emit(AdSlot.TEMPLATES_LOADED, templateNames);
 
 		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
@@ -576,31 +591,23 @@ export class AdSlot extends EventEmitter {
 	}
 
 	/**
-	 * Pass all events through eventService before emitting directly from slot.
+	 * Pass all events to Post-QueCast
 	 */
-	emit(event: string | symbol, ...args: any[]): boolean {
-		const result = super.emit(event, ...args);
+	emit(event: string | symbol, data: any = {}): void {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+			event: event.toString(),
+			slot: this,
+			adSlotName: this.getSlotName(),
+			payload: data,
+		});
 
-		eventService.emit(event, this, ...args);
-		this.emitPostQueueCast(event, args);
-
-		this.logger(this.getSlotName(), event, result, ...args);
-
-		return result;
+		this.logger(this.getSlotName(), event, data);
 	}
 
 	emitEvent(eventName: null | string = null): void {
 		if (eventName !== null) {
 			this.emit(AdSlot.CUSTOM_EVENT, { status: eventName });
 		}
-	}
-
-	private emitPostQueueCast(event: string | symbol, payload: any[]): void {
-		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
-			payload: JSON.parse(JSON.stringify(payload)),
-			event: event.toString(),
-			adSlotName: this.getSlotName(),
-		});
 	}
 
 	/**

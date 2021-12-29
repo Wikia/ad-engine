@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { context, eventService, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
+import { context, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
 import adSlotFake from '../ad-slot-fake';
 
 describe('slot-repeater', () => {
@@ -19,9 +19,6 @@ describe('slot-repeater', () => {
 		handleSlotRepeating = null;
 		sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
 		adSlot = { ...adSlotFake };
-		sandbox.stub(eventService, 'on').callsFake((key, callback) => {
-			handleSlotRepeating = callback;
-		});
 
 		context.set('events.pushOnScroll.ids', []);
 		context.set('slots.adStack', []);
@@ -31,8 +28,7 @@ describe('slot-repeater', () => {
 		slotRepeater.init();
 
 		adSlot.isEnabled = () => false;
-
-		eventService.emit('fake_render_event', adSlot);
+		adSlot.emit('fake_render_event');
 
 		expect(handleSlotRepeating(adSlot)).to.be.false;
 	});

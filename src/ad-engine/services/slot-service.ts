@@ -7,11 +7,6 @@ import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
 
-interface SlotEvent {
-	callback: (event?: any) => void;
-	name: string;
-}
-
 function isSlotInTheSameViewport(
 	slotHeight: number,
 	slotOffset: number,
@@ -37,7 +32,6 @@ function isSlotInTheSameViewport(
 }
 
 class SlotService {
-	slotEvents: Dictionary<SlotEvent[]> = {};
 	slotStatuses: Dictionary<string> = {};
 	slotStates: Dictionary<boolean> = {};
 	slots: Dictionary<AdSlot> = {};
@@ -49,11 +43,6 @@ class SlotService {
 		const slotName = adSlot.getSlotName();
 
 		this.slots[slotName] = adSlot;
-
-		if (this.slotEvents[slotName]) {
-			adSlot.events.push(...this.slotEvents[slotName]);
-			delete this.slotEvents[slotName];
-		}
 
 		if (this.slotStates[slotName] === false) {
 			adSlot.disable(this.slotStatuses[slotName]);
@@ -140,22 +129,6 @@ class SlotService {
 		Object.keys(this.slots).forEach((id) => {
 			callback(this.slots[id]);
 		});
-	}
-
-	on(slotName: string, eventName: string, callback: (payload?: any) => void): void {
-		const adSlot = this.get(slotName);
-		const event: SlotEvent = {
-			callback,
-			name: eventName,
-		};
-
-		this.slotEvents[slotName] = this.slotEvents[slotName] || [];
-
-		if (adSlot) {
-			adSlot.events.push(event);
-		} else {
-			this.slotEvents[slotName].push(event);
-		}
 	}
 
 	/**

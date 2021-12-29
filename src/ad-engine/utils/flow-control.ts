@@ -1,5 +1,3 @@
-import * as EventEmitter from 'eventemitter3';
-
 export const wait = (milliseconds = 0) =>
 	new Promise((resolve, reject) => {
 		if (typeof milliseconds !== 'number') {
@@ -24,23 +22,20 @@ export function defer<T>(fn: (...args: any) => T, ...args: any): Promise<T> {
 }
 
 export function once(
-	emitter: EventEmitter | HTMLElement | Window,
+	emitter: HTMLElement | Window,
 	eventName: string,
 	options = {},
 ): Promise<any | Event> {
 	const isObject: boolean = typeof emitter === 'object';
 	const hasAddEventListener: boolean =
 		isObject && typeof (emitter as HTMLElement).addEventListener === 'function';
-	const hasOnce: boolean = isObject && typeof (emitter as EventEmitter).once === 'function';
 
 	return new Promise((resolve, reject) => {
 		if (typeof options === 'boolean') {
 			options = { capture: options };
 		}
 
-		if (hasOnce) {
-			(emitter as EventEmitter).once(eventName, resolve);
-		} else if (hasAddEventListener) {
+		if (hasAddEventListener) {
 			(emitter as HTMLElement).addEventListener(eventName, resolve, { ...options, once: true });
 		} else {
 			reject(new Error('Emitter does not have `addEventListener` nor `once` method.'));

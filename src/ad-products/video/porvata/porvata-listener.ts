@@ -1,7 +1,6 @@
 import {
 	AdSlot,
 	context,
-	eventService,
 	slotService,
 	utils,
 	vastParser,
@@ -108,7 +107,7 @@ export class PorvataListener {
 		} else if (this.params.position && eventName === PorvataListener.EVENTS.wikiaXClick) {
 			const adSlot = slotService.get(this.params.position);
 
-			eventService.emit(PorvataListener.EVENTS.wikiaXClick, adSlot);
+			adSlot.emit(PorvataListener.EVENTS.wikiaXClick);
 		}
 	}
 

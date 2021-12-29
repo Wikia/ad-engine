@@ -2,7 +2,6 @@ export * from './bab-detection';
 export * from './btf-blocker-service';
 export * from './context-service';
 export * from './custom-ad-loader';
-export * from './events';
 export * from './external-logger';
 export * from './filler-service';
 export * from './instant-config-cache-storage';

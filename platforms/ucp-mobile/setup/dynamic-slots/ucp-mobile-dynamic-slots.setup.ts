@@ -11,7 +11,6 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	eventService,
 	eventsRepository,
 	fillerService,
 	PorvataFiller,
@@ -81,9 +80,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private configureInterstitial(): void {
 		const slotName = 'interstitial';
 
-		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
-			communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
-		});
+		communicationService.listenSlotEvent(
+			AdSlot.SLOT_VIEWED_EVENT,
+			() => {
+				communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+			},
+			slotName,
+		);
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
@@ -112,31 +115,41 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
-		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
-			this.CODE_PRIORITY.floor_adhesion.active = true;
+		const slotName = 'floor_adhesion';
 
-			const disableFloorAdhesionWithStatus = (status: string) => {
+		communicationService.listenSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				this.CODE_PRIORITY.floor_adhesion.active = true;
+
+				const disableFloorAdhesionWithStatus = (status: string) => {
+					this.CODE_PRIORITY.floor_adhesion.active = false;
+					slotService.disable(slotName, status);
+					document.getElementById('floor_adhesion_anchor').classList.add('hide');
+				};
+
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+					if (this.CODE_PRIORITY.floor_adhesion.active) {
+						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
+					}
+				});
+
+				communicationService.listen(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED, () => {
+					if (this.CODE_PRIORITY.floor_adhesion.active) {
+						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
+					}
+				});
+			},
+			slotName,
+		);
+
+		communicationService.listenSlotEvent(
+			AdSlot.HIDDEN_EVENT,
+			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = false;
-				slotService.disable('floor_adhesion', status);
-				document.getElementById('floor_adhesion_anchor').classList.add('hide');
-			};
-
-			eventService.on(AdSlot.VIDEO_AD_IMPRESSION, () => {
-				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
-				}
-			});
-
-			communicationService.listen(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED, () => {
-				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
-				}
-			});
-		});
-
-		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
-			this.CODE_PRIORITY.floor_adhesion.active = false;
-		});
+			},
+			slotName,
+		);
 	}
 
 	private registerAdPlaceholderService(): void {

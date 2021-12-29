@@ -1,4 +1,4 @@
-import { context, eventService } from '@wikia/ad-engine';
+import { context } from '@wikia/ad-engine';
 import { ScrollTracker } from '@wikia/ad-tracking';
 import { communicationService, eventsRepository } from '@wikia/communication/index';
 import { expect } from 'chai';
@@ -39,7 +39,6 @@ describe('ScrollTracker', () => {
 
 	afterEach(() => {
 		sandbox.restore();
-		eventService.removeAllListeners();
 	});
 
 	it('should call scrollSpeedCalculator.setAverageSessionScrollSpeed once timeouts complete', async () => {

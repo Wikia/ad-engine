@@ -35,28 +35,44 @@ export class FmrRotator {
 					universalAdPackage.isFanTakeoverLoaded() ||
 					context.get('state.provider') === 'prebidium'
 				) {
-					slot.once(AdSlot.STATUS_SUCCESS, () => {
-						this.swapRecirculation(false);
-					});
+					communicationService.listenSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						() => {
+							this.swapRecirculation(false);
+						},
+						slot.getSlotName(),
+					);
 
 					return;
 				}
 
-				slot.once(AdSlot.STATUS_SUCCESS, () => {
-					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
+				communicationService.listenSlotEvent(
+					AdSlot.STATUS_SUCCESS,
+					() => {
+						this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
 
-					slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-						const customDelays = context.get('options.rotatorDelay');
-						setTimeout(() => {
-							this.hideSlot();
-						}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
-					});
-				});
+						communicationService.listenSlotEvent(
+							AdSlot.SLOT_VIEWED_EVENT,
+							() => {
+								const customDelays = context.get('options.rotatorDelay');
+								setTimeout(() => {
+									this.hideSlot();
+								}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
+							},
+							slot.getSlotName(),
+						);
+					},
+					slot.getSlotName(),
+				);
 
-				slot.once(AdSlot.STATUS_COLLAPSE, () => {
-					this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
-					this.scheduleNextSlotPush();
-				});
+				communicationService.listenSlotEvent(
+					AdSlot.STATUS_COLLAPSE,
+					() => {
+						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+						this.scheduleNextSlotPush();
+					},
+					slot.getSlotName(),
+				);
 			}
 		});
 

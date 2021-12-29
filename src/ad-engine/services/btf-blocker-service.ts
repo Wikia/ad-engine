@@ -1,8 +1,8 @@
+import { communicationService } from '@ad-engine/communication';
 import { intersection } from 'lodash';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
-import { eventService } from './events';
 import { fillerService } from './filler-service';
 import { slotService } from './slot-service';
 
@@ -40,7 +40,7 @@ class BtfBlockerService {
 	}
 
 	init(): void {
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
 			if (!this.firstCallEnded && adSlot.isFirstCall() && !this.isSafeFanTakeover(adSlot)) {
 				this.finishFirstCall();

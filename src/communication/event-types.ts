@@ -60,6 +60,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_CONFIGURED: {
 		name: 'Configured',
 	},
+	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
+		name: 'Instant Config cache reset',
+	},
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
@@ -93,7 +96,13 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_SLOT_EVENT: {
 		name: 'Ad Slot event',
-		payload: props<{ event: string; payload?: any; adSlotName: string }>(),
+		payload: props<{
+			event: string;
+			slot: AdSlot;
+			adSlotName: string;
+			status: string;
+			payload?: any;
+		}>(),
 	},
 	AD_ENGINE_SLOT_LOADED: {
 		name: 'Ad Slot loaded',
@@ -189,6 +198,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[Video]',
 		name: 'Video event',
 		payload: props<{ videoEvent: object }>(),
+	},
+	VIDEO_PLAYER_TRACKING: {
+		category: '[Video]',
+		name: 'Video player tracking',
+		payload: props<{ eventInfo: object }>(),
 	},
 	// Google Ad Manager events //
 	GAM_AD_INTERVENTION: {

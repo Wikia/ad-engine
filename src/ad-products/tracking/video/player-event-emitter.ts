@@ -1,10 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, eventService, VideoEventData } from '@ad-engine/core';
-
-export const playerEvents = {
-	VIDEO_PLAYER_TRACKING_EVENT: Symbol('VIDEO_PLAYER_TRACKING_EVENT'),
-	PLAYER_X_CLICK: Symbol('PLAYER_X_CLICK'),
-};
+import { context, VideoEventData } from '@ad-engine/core';
 
 export default {
 	/**
@@ -19,7 +14,7 @@ export default {
 			return;
 		}
 
-		eventService.emit(playerEvents.VIDEO_PLAYER_TRACKING_EVENT, eventInfo);
+		communicationService.communicate(eventsRepository.VIDEO_PLAYER_TRACKING, { eventInfo });
 	},
 
 	emitVideoEvent(videoEvent): void {
