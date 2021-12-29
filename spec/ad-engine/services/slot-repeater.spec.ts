@@ -1,3 +1,5 @@
+import { AdSlot } from '@wikia/ad-engine/index';
+import { communicationService } from '@wikia/communication/index';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
@@ -18,6 +20,9 @@ describe('slot-repeater', () => {
 		injectedContainer = {};
 		handleSlotRepeating = null;
 		sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
+		sandbox.stub(communicationService, 'listenSlotEvent').callsFake((key, callback) => {
+			handleSlotRepeating = callback;
+		});
 		adSlot = { ...adSlotFake };
 
 		context.set('events.pushOnScroll.ids', []);
@@ -28,15 +33,15 @@ describe('slot-repeater', () => {
 		slotRepeater.init();
 
 		adSlot.isEnabled = () => false;
-		adSlot.emit('fake_render_event');
+		adSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
 
-		expect(handleSlotRepeating(adSlot)).to.be.false;
+		expect(handleSlotRepeating({ slot: adSlot })).to.be.false;
 	});
 
 	it('ad-slot is not repeated when it is not configured as repeatable', () => {
 		slotRepeater.init();
 
-		expect(handleSlotRepeating(adSlot)).to.be.false;
+		expect(handleSlotRepeating({ slot: adSlot })).to.be.false;
 	});
 
 	it('ad-slot is repeated when it is configured as repeatable', () => {
@@ -53,7 +58,7 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		expect(handleSlotRepeating(adSlot)).to.be.true;
+		expect(handleSlotRepeating({ slot: adSlot })).to.be.true;
 	});
 
 	it('ad-slot is not repeated when it is configured as repeatable but limit is reached', () => {
@@ -70,7 +75,7 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		expect(handleSlotRepeating(adSlot)).to.be.false;
+		expect(handleSlotRepeating({ slot: adSlot })).to.be.false;
 	});
 
 	it('ad-slot is not repeated when it is configured as repeatable and sibling is too close', () => {
@@ -88,7 +93,7 @@ describe('slot-repeater', () => {
 		};
 		injectedContainer = null;
 
-		expect(handleSlotRepeating(adSlot)).to.be.false;
+		expect(handleSlotRepeating({ slot: adSlot })).to.be.false;
 	});
 
 	it('ad-slot is repeated when it is configured as repeatable and sibling is far away', () => {
@@ -105,6 +110,6 @@ describe('slot-repeater', () => {
 			},
 		};
 
-		expect(handleSlotRepeating(adSlot)).to.be.true;
+		expect(handleSlotRepeating({ slot: adSlot })).to.be.true;
 	});
 });

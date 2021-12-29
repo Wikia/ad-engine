@@ -229,7 +229,6 @@ describe('ad-slot', () => {
 	});
 
 	describe('emit', () => {
-		let emitSpy: SinonSpy;
 		let dispatchSpy: SinonSpy;
 		let adSlot: AdSlot;
 		const symbol = Symbol('My Symbol');
@@ -237,7 +236,6 @@ describe('ad-slot', () => {
 
 		beforeEach(() => {
 			adSlot = createAdSlot(slotName);
-			emitSpy = sandbox.spy(adSlot, 'emit');
 			dispatchSpy = sandbox.spy(communicationService, 'dispatch');
 		});
 
@@ -245,35 +243,15 @@ describe('ad-slot', () => {
 			sandbox.restore();
 		});
 
-		it('should call eventService.emit with string event', () => {
-			adSlot.emit(AdSlot.TEMPLATES_LOADED, ['foo', 'bar']);
-
-			expect(emitSpy.callCount).to.equal(1);
-			expect(emitSpy.firstCall.args[0]).to.equal(AdSlot.TEMPLATES_LOADED);
-			expect(emitSpy.firstCall.args[1]).to.equal(adSlot);
-			expect(emitSpy.firstCall.args[2]).to.equal('foo');
-			expect(emitSpy.firstCall.args[3]).to.equal('bar');
-		});
-
-		it('should call eventService.emit with Symbol event', () => {
-			adSlot.emit(symbol, ['foo', 'bar']);
-
-			expect(emitSpy.callCount).to.equal(1);
-			expect(emitSpy.firstCall.args[0]).to.equal(symbol);
-			expect(emitSpy.firstCall.args[1]).to.equal(adSlot);
-			expect(emitSpy.firstCall.args[2]).to.equal('foo');
-			expect(emitSpy.firstCall.args[3]).to.equal('bar');
-		});
-
 		it('should call eventService.communicator.dispatch with string event', () => {
 			adSlot.emit(AdSlot.TEMPLATES_LOADED, ['foo', 'bar']);
 
-			expect(dispatchSpy.callCount).to.equal(1);
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
 				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
 					event: AdSlot.TEMPLATES_LOADED,
 					adSlotName: slotName,
+					slot: adSlot,
 				}),
 			);
 		});
@@ -281,12 +259,12 @@ describe('ad-slot', () => {
 		it('should call eventService.communicator.dispatch with Symbol event', () => {
 			adSlot.emit(symbol, ['foo', 'bar']);
 
-			expect(dispatchSpy.callCount).to.equal(1);
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
 				communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 					payload: ['foo', 'bar'],
 					event: 'Symbol(My Symbol)',
 					adSlotName: slotName,
+					slot: adSlot,
 				}),
 			);
 		});
