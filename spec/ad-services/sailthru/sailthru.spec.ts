@@ -9,6 +9,10 @@ describe('Sailthru', () => {
 	let sailthruInitStub;
 
 	beforeEach(() => {
+		window.Sailthru = {
+			init: () => {},
+		};
+
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
 			.returns(Promise.resolve({} as any));
@@ -18,13 +22,16 @@ describe('Sailthru', () => {
 
 	afterEach(() => {
 		sandbox.restore();
+		delete window.Sailthru;
 	});
 
 	it('Sailthru is called', async () => {
 		await sailthru.call();
 
-		expect(loadScriptStub.calledWith(packageUrl, 'text/javascript', true, 'first')).to.equal(true);
+		expect(await loadScriptStub.calledWith(packageUrl, 'text/javascript', true, 'first')).to.equal(
+			true,
+		);
 
-		expect(sailthruInitStub.called).to.be.true;
+		expect(await sailthruInitStub.called).to.be.true;
 	});
 });
