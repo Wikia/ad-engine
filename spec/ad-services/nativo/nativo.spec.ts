@@ -73,7 +73,7 @@ describe('Nativo service', () => {
 			adSlotEvent({
 				event: AdSlot.STATUS_COLLAPSE,
 				payload: {
-					adLocation: null,
+					adLocation: '',
 					provider: serviceName,
 				},
 				adSlotName: '',
@@ -90,7 +90,7 @@ describe('Nativo service', () => {
 			adSlotEvent({
 				event: AdSlot.SLOT_ADDED_EVENT,
 				payload: {
-					adLocation: null,
+					adLocation: '',
 					provider: serviceName,
 				},
 				adSlotName: '',
