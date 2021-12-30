@@ -1,7 +1,7 @@
 import { context, Dictionary, SlotConfig, slotService } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import adSlotFake from '../ad-slot-fake';
+import { adSlotFake } from '../ad-slot-fake';
 
 let adSlot;
 let elementProperties: any = {};

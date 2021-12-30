@@ -4,7 +4,7 @@ const dataset: any = {};
 
 let offsetTop = 1000;
 
-export default {
+export const adSlotFake = {
 	name: 'FAKE_AD',
 	config: {
 		targeting: {
