@@ -15,7 +15,7 @@ describe('Sailthru', () => {
 
 		loadScriptStub = sandbox
 			.stub(utils.scriptLoader, 'loadScript')
-			.returns(Promise.resolve({} as any));
+			.returns(Promise.resolve({}) as Promise<Event>);
 
 		sailthruInitStub = sandbox.stub(window.Sailthru, 'init').callsFake(() => Promise.resolve());
 	});
