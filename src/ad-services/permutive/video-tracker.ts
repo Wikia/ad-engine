@@ -133,12 +133,16 @@ export class VideoTracker {
 	}
 
 	setupVideoAdTracking(): void {
-		communicationService.listen(eventsRepository.VIDEO_EVENT, ({ videoEvent }) => {
-			const videoEventName = this.getEventName(videoEvent);
+		communicationService.listen(
+			eventsRepository.VIDEO_EVENT,
+			({ videoEvent }) => {
+				const videoEventName = this.getEventName(videoEvent);
 
-			if (videoEventName) {
-				window.permutive.track(videoEventName, this.getVideoEventSchema(videoEvent), {});
-			}
-		});
+				if (videoEventName) {
+					window.permutive.track(videoEventName, this.getVideoEventSchema(videoEvent), {});
+				}
+			},
+			false,
+		);
 	}
 }

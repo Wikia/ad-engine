@@ -49,8 +49,8 @@ describe('PrebidiumProvider', () => {
 			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
 					communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)({
-						name: mock.slotName,
-						state: 'prebid',
+						slotName: mock.slotName,
+						provider: 'prebid',
 					}),
 				),
 			);

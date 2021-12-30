@@ -28,15 +28,19 @@ class BidderTracker {
 			return;
 		}
 
-		communicationService.listen(eventsRepository.BIDDERS_BIDS_RESPONSE, ({ bidResponse }) => {
-			this.pipeline.execute(
-				{
-					bid: bidResponse,
-					data: {},
-				},
-				callback,
-			);
-		});
+		communicationService.listen(
+			eventsRepository.BIDDERS_BIDS_RESPONSE,
+			({ bidResponse }) => {
+				this.pipeline.execute(
+					{
+						bid: bidResponse,
+						data: {},
+					},
+					callback,
+				);
+			},
+			false,
+		);
 	}
 }
 

@@ -134,11 +134,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					}
 				});
 
-				communicationService.listen(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED, () => {
-					if (this.CODE_PRIORITY.floor_adhesion.active) {
-						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
-					}
-				});
+				communicationService.listen(
+					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
+					() => {
+						if (this.CODE_PRIORITY.floor_adhesion.active) {
+							disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
+						}
+					},
+					false,
+				);
 			},
 			slotName,
 		);

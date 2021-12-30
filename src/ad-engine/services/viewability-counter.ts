@@ -34,17 +34,21 @@ export class ViewabilityCounter {
 
 		this.loaded = true;
 
-		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
-			const id = slot.getConfigProperty('viewabilityCounterId') || slot.getSlotName();
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				const id = slot.getConfigProperty('viewabilityCounterId') || slot.getSlotName();
 
-			slot.loaded.then(() => {
-				this.incrementStatusCounter('loaded', id);
-			});
+				slot.loaded.then(() => {
+					this.incrementStatusCounter('loaded', id);
+				});
 
-			slot.viewed.then(() => {
-				this.incrementStatusCounter('viewed', id);
-			});
-		});
+				slot.viewed.then(() => {
+					this.incrementStatusCounter('viewed', id);
+				});
+			},
+			false,
+		);
 	}
 
 	incrementStatusCounter(type: StatusType, counterId: string): void {

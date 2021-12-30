@@ -29,52 +29,60 @@ export class FmrRotator {
 	}
 
 	private initializeStandardRotation(): void {
-		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
-			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-				if (
-					universalAdPackage.isFanTakeoverLoaded() ||
-					context.get('state.provider') === 'prebidium'
-				) {
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
+					if (
+						universalAdPackage.isFanTakeoverLoaded() ||
+						context.get('state.provider') === 'prebidium'
+					) {
+						communicationService.listenSlotEvent(
+							AdSlot.STATUS_SUCCESS,
+							() => {
+								this.swapRecirculation(false);
+							},
+							slot.getSlotName(),
+							true,
+						);
+
+						return;
+					}
+
 					communicationService.listenSlotEvent(
 						AdSlot.STATUS_SUCCESS,
 						() => {
-							this.swapRecirculation(false);
+							this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
+
+							communicationService.listenSlotEvent(
+								AdSlot.SLOT_VIEWED_EVENT,
+								() => {
+									const customDelays = context.get('options.rotatorDelay');
+									setTimeout(() => {
+										this.hideSlot();
+									}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
+								},
+								slot.getSlotName(),
+								true,
+							);
 						},
 						slot.getSlotName(),
+						true,
 					);
 
-					return;
+					communicationService.listenSlotEvent(
+						AdSlot.STATUS_COLLAPSE,
+						() => {
+							this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+							this.scheduleNextSlotPush();
+						},
+						slot.getSlotName(),
+						true,
+					);
 				}
-
-				communicationService.listenSlotEvent(
-					AdSlot.STATUS_SUCCESS,
-					() => {
-						this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-
-						communicationService.listenSlotEvent(
-							AdSlot.SLOT_VIEWED_EVENT,
-							() => {
-								const customDelays = context.get('options.rotatorDelay');
-								setTimeout(() => {
-									this.hideSlot();
-								}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
-							},
-							slot.getSlotName(),
-						);
-					},
-					slot.getSlotName(),
-				);
-
-				communicationService.listenSlotEvent(
-					AdSlot.STATUS_COLLAPSE,
-					() => {
-						this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
-						this.scheduleNextSlotPush();
-					},
-					slot.getSlotName(),
-				);
-			}
-		});
+			},
+			false,
+		);
 
 		setTimeout(() => {
 			this.refreshInfo.startPosition =

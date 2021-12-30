@@ -182,12 +182,16 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 		};
 
-		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
-			context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
-			context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
-				this.setupSlotParameters(slot),
-			);
-		});
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
+				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
+					this.setupSlotParameters(slot),
+				);
+			},
+			false,
+		);
 		context.set('slots', slots);
 	}
 

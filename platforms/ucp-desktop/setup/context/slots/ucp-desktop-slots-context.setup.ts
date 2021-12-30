@@ -169,12 +169,16 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 		};
 
-		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
-			context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
-			context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
-				this.setupSlotParameters(slot),
-			);
-		});
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
+				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
+					this.setupSlotParameters(slot),
+				);
+			},
+			false,
+		);
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));

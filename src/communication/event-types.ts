@@ -81,14 +81,14 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'UAP Load status',
 		payload: props<UapLoadStatus>(),
 	},
-	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
-		name: 'Video learn more displayed',
-		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
-	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
 		name: 'Invalidate slot targeting',
 		payload: props<{ slot: AdSlot }>(),
+	},
+	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
+		name: 'Video learn more displayed',
+		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
 	},
 	AD_ENGINE_SLOT_ADDED: {
 		name: 'Ad Slot added',

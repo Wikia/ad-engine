@@ -67,7 +67,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 					(action) =>
 						action.event === AdSlot.CUSTOM_EVENT &&
 						action.adSlotName === this.adSlot.getSlotName() &&
-						action.payload.status === universalAdPackage.SLOT_FORCE_UNSTICK,
+						action.payload?.status === universalAdPackage.SLOT_FORCE_UNSTICK,
 				),
 				tap(() => player.stop()),
 			),

@@ -14,9 +14,13 @@ export class AdEngineRunnerSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {
-		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot }) => {
-			utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
-			bidders.updateSlotTargeting(slot.getSlotName());
-		});
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
+				bidders.updateSlotTargeting(slot.getSlotName());
+			},
+			false,
+		);
 	}
 }

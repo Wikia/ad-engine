@@ -11,19 +11,23 @@ class SlotInjector {
 	private slotCreator = new SlotCreator();
 
 	constructor() {
-		communicationService.listen(eventsRepository.AD_ENGINE_SLOT_ADDED, ({ slot: adSlot }) => {
-			const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot: adSlot }) => {
+				const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
 
-			slotsToPush.forEach((slotName: string) => {
-				const slotElement = this.inject(slotName, true);
+				slotsToPush.forEach((slotName: string) => {
+					const slotElement = this.inject(slotName, true);
 
-				if (slotElement) {
-					slotService.pushSlot(slotElement);
-				} else {
-					logger(logGroup, `Could not push slot ${slotName}.`);
-				}
-			});
-		});
+					if (slotElement) {
+						slotService.pushSlot(slotElement);
+					} else {
+						logger(logGroup, `Could not push slot ${slotName}.`);
+					}
+				});
+			},
+			false,
+		);
 
 		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
