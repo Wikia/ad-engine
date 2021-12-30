@@ -39,13 +39,12 @@ export class NewsletterFormBox extends MessageBox {
 	private createFormMessage = (): HTMLElement => {
 		const message = document.createElement('div');
 		message.className = 'newsletter-message';
-		message.innerHTML = '';
 		return message;
 	};
 
 	private showFormMessage = (text: string) => {
-		const messageArea = document.querySelector('.newsletter-message');
-		messageArea.innerHTML = text;
+		const messageArea: HTMLDivElement = document.querySelector('.newsletter-message');
+		messageArea.innerText = text;
 	};
 
 	private doEmailSignUp = (event, adSlot: AdSlot) => {
