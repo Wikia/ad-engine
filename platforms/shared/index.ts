@@ -44,6 +44,7 @@ export * from './templates/handlers/navbar/navbar-offset-resolved-to-none-handle
 export * from './templates/handlers/slot/slot-decision-impact-to-resolved-handler';
 export * from './templates/handlers/slot/slot-decision-timeout-handler';
 export * from './templates/handlers/slot/slot-decision-on-viewability-handler';
+export * from './templates/handlers/slot/slot-height-clipping-handler';
 export * from './templates/handlers/slot/slot-hidden-handler';
 export * from './templates/handlers/slot/slot-offset-resolved-to-none-handler';
 export * from './templates/handlers/slot/slot-size-impact-handler';

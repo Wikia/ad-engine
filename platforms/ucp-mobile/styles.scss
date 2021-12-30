@@ -53,10 +53,6 @@
 			top: $fandom-navbar-height;
 			z-index: 202;
 		}
-
-		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
-			clip: rect(0, auto, auto, 0);
-		}
 	}
 
 	@include expanded-slot();
