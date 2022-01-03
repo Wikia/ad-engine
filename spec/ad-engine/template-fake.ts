@@ -1,9 +1,9 @@
-export default class TemplateFake {
-	static getName() {
+export class TemplateFake {
+	static getName(): string {
 		return 'fake';
 	}
 
-	init() {
+	init(): string {
 		return 'executed';
 	}
 }

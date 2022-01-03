@@ -1,6 +1,6 @@
+import { templateService } from '@wikia/ad-engine';
 import { expect } from 'chai';
-import { templateService } from '../../../src/ad-engine/services/template-service';
-import TemplateFake from '../template-fake';
+import { TemplateFake } from '../template-fake';
 
 describe('template-service', () => {
 	it('call not existing template', () => {
