@@ -1,8 +1,6 @@
+import { AdSlot, context, slotPropertiesTrackingMiddleware } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { AdSlot } from '../../../src/ad-engine/models';
-import { context } from '../../../src/ad-engine/services';
-import { slotPropertiesTrackingMiddleware } from '../../../src/ad-engine/tracking';
 
 describe('slot-properties-tracking-middleware', () => {
 	const sandbox = createSandbox();
@@ -29,7 +27,7 @@ describe('slot-properties-tracking-middleware', () => {
 	});
 
 	it('returns all info about slot for tracking', () => {
-		const context = {
+		const testContext = {
 			data: {
 				previous: 'value',
 			},
@@ -37,7 +35,7 @@ describe('slot-properties-tracking-middleware', () => {
 		};
 		const nextSpy = sandbox.spy();
 
-		slotPropertiesTrackingMiddleware(context, nextSpy);
+		slotPropertiesTrackingMiddleware(testContext, nextSpy);
 
 		expect(nextSpy.getCall(0).args[0].data).to.deep.equal({
 			ad_status: 'success',
@@ -56,7 +54,7 @@ describe('slot-properties-tracking-middleware', () => {
 	});
 
 	it('keeps ad_status if it was set before', () => {
-		const context = {
+		const testContext = {
 			data: {
 				ad_status: 'custom',
 			},
@@ -64,7 +62,7 @@ describe('slot-properties-tracking-middleware', () => {
 		};
 		const nextSpy = sandbox.spy();
 
-		slotPropertiesTrackingMiddleware(context, nextSpy);
+		slotPropertiesTrackingMiddleware(testContext, nextSpy);
 
 		expect(nextSpy.getCall(0).args[0].data.ad_status).to.equal('custom');
 	});
