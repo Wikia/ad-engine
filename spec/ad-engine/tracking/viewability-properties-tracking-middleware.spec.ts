@@ -1,7 +1,7 @@
+import { viewabilityPropertiesTrackingMiddleware } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { AdSlot, context } from '../../../src/ad-engine';
-import { viewabilityPropertiesTrackingMiddleware } from '../../../src/ad-engine/tracking';
 
 describe('viewability-properties-tracking-middleware', () => {
 	const sandbox = sinon.createSandbox();
@@ -24,7 +24,7 @@ describe('viewability-properties-tracking-middleware', () => {
 	});
 
 	it('returns all info about slot for tracking', () => {
-		const context = {
+		const testContext = {
 			data: {
 				previous: 'value',
 			},
@@ -32,7 +32,7 @@ describe('viewability-properties-tracking-middleware', () => {
 		};
 		const nextSpy = sinon.spy();
 
-		viewabilityPropertiesTrackingMiddleware(context, nextSpy);
+		viewabilityPropertiesTrackingMiddleware(testContext, nextSpy);
 
 		expect(nextSpy.getCall(0).args[0].data).to.deep.equal({
 			creative_id: 123,
