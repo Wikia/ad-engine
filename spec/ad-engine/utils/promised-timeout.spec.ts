@@ -46,8 +46,8 @@ describe('buildPromisedTimeout', () => {
 		const time = 1000;
 		const timeout: utils.PromisedTimeout<number> = utils.buildPromisedTimeout(time);
 
-		timeout.promise.then((time) => {
-			result = time;
+		timeout.promise.then((timeoutTime) => {
+			result = timeoutTime;
 		});
 
 		expect(result).to.be.undefined;
