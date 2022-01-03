@@ -3,10 +3,10 @@ import { PorvataListener } from '@wikia/ad-products/video/porvata/porvata-listen
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 
-function getListener() {
+function getListener(): any {
 	return {
 		dispatchedEvents: [],
-		onEvent(eventName, params, data) {
+		onEvent(eventName, params, data): void {
 			this.dispatchedEvents.push({
 				eventName,
 				data,
