@@ -10,7 +10,7 @@ export function buildPromisedTimeout(time: number): PromisedTimeout<number> {
 	});
 
 	return {
-		cancel() {
+		cancel(): void {
 			clearTimeout(timeoutId);
 		},
 		promise,
