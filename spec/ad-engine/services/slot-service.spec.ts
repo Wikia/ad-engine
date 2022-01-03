@@ -7,7 +7,7 @@ let adSlot;
 let elementProperties: any = {};
 let slotConfigs: Dictionary<Partial<SlotConfig>>;
 
-function clearSlotServiceState() {
+function clearSlotServiceState(): void {
 	this.slots = {};
 	this.slotStates = {};
 	this.slotStatuses = {};
