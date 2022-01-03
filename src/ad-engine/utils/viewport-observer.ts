@@ -1,6 +1,12 @@
 import { scrollListener } from '../listeners';
 import { isInViewport } from './dimensions';
 
+interface ListenerParams {
+	offsetTop: number;
+	offsetBottom: number;
+	areaThreshold: number;
+}
+
 interface Listener extends ListenerParams {
 	id?: string;
 	element: HTMLElement;
@@ -9,12 +15,6 @@ interface Listener extends ListenerParams {
 }
 
 type ListenerCallback = (inViewport: boolean) => void;
-
-interface ListenerParams {
-	offsetTop: number;
-	offsetBottom: number;
-	areaThreshold: number;
-}
 
 function updateInViewport(listener: Listener): void {
 	const newInViewport: boolean = isInViewport(listener.element, {
