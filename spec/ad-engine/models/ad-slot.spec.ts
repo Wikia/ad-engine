@@ -4,7 +4,7 @@ import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
 import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
 import { context } from '../../../src/ad-engine/services/context-service';
-import ConfigMock from '../config-mock';
+import { configMock } from '../config-mock';
 
 /**
  * Create empty slot with given id.
@@ -20,7 +20,7 @@ describe('ad-slot', () => {
 	const sandbox: SinonSandbox = createSandbox();
 
 	beforeEach(() => {
-		context.extend(ConfigMock);
+		context.extend(configMock);
 	});
 
 	afterEach(() => {
