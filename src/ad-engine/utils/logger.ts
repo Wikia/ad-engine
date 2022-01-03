@@ -8,7 +8,7 @@ if (debugGroup !== '') {
 }
 
 const BACKUP_ORIGIN_TIME = Date.now(); // fallback for timeorigin
-export function getTimeDelta() {
+export function getTimeDelta(): string {
 	const currentTimeStamp = Date.now();
 	const originTime = window.performance?.timeOrigin ?? BACKUP_ORIGIN_TIME;
 	const delta = currentTimeStamp - originTime;
