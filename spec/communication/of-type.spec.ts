@@ -19,8 +19,8 @@ describe('ofType', () => {
 	});
 
 	it('should pass local for local', () => {
-		action$.pipe(ofType(localExample)).subscribe((action) => {
-			results.push(action);
+		action$.pipe(ofType(localExample)).subscribe((act) => {
+			results.push(act);
 		});
 
 		expect(results).to.deep.equal([
@@ -30,8 +30,8 @@ describe('ofType', () => {
 	});
 
 	it('should pass global for global', () => {
-		action$.pipe(ofType(globalExample)).subscribe((action) => {
-			results.push(action);
+		action$.pipe(ofType(globalExample)).subscribe((act) => {
+			results.push(act);
 		});
 
 		expect(results).to.deep.equal([
@@ -41,8 +41,8 @@ describe('ofType', () => {
 	});
 
 	it('should pass for both', () => {
-		action$.pipe(ofType(localExample, globalExample)).subscribe((action) => {
-			results.push(action);
+		action$.pipe(ofType(localExample, globalExample)).subscribe((act) => {
+			results.push(act);
 		});
 
 		expect(results).to.deep.equal([
