@@ -1,9 +1,8 @@
+import { context, trackingOptIn } from '@wikia/ad-engine';
 import { expect } from 'chai';
-import { context } from '../../../src/ad-engine/services/context-service';
-import { trackingOptIn } from '../../../src/ad-engine/services/tracking-opt-in';
 
 describe('tracking-opt-in', () => {
-	function clearContext() {
+	function clearContext(): void {
 		context.remove('options.isSubjectToCcpa');
 		context.remove('options.trackingOptIn');
 		context.remove('options.optOutSale');
