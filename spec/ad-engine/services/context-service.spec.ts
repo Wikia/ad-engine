@@ -1,8 +1,8 @@
+import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context } from '../../../src/ad-engine/services/context-service';
 
-function baz() {}
+function baz(): void {}
 
 describe('context-service', () => {
 	const sandbox = createSandbox();
@@ -10,9 +10,9 @@ describe('context-service', () => {
 	beforeEach(() => {
 		context.extend({
 			foo: {
+				baz,
 				foo: 1,
 				bar: 15,
-				baz,
 			},
 			array: [],
 		});
@@ -37,7 +37,7 @@ describe('context-service', () => {
 	});
 
 	it('get parent object', () => {
-		expect(context.get('foo')).to.deep.equal({ foo: 1, bar: 15, baz });
+		expect(context.get('foo')).to.deep.equal({ baz, foo: 1, bar: 15 });
 	});
 
 	it('set leaf value', () => {
