@@ -4,7 +4,7 @@ const replayOverlayClass = 'replay-overlay';
 
 // @TODO Clean up this P1 ADEN-10294 hack
 // It forces Safari to repaint the thumbnail
-function forceRepaint(element) {
+function forceRepaint(element): number {
 	element.style.display = 'none';
 	const width = element.offsetWidth;
 	element.style.display = '';
@@ -44,8 +44,10 @@ function add(video, container, params): void {
 			});
 		}
 
-		container = video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
-		container.appendChild(overlay);
+		const newContainer =
+			video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
+		newContainer.appendChild(overlay);
+		forceRepaint(newContainer);
 	} else {
 		container.parentElement.insertBefore(overlay, container);
 	}
@@ -53,13 +55,14 @@ function add(video, container, params): void {
 	forceRepaint(container);
 }
 
-function showOverlay(overlay, params) {
+function showOverlay(overlay, params): void {
 	if (!params.container.classList.contains('theme-hivi')) {
 		overlay.style.width = overlay.style.width || getOverlayWidth(params);
 	}
 	// make overlay visible after ad finishes
 	overlay.style.display = 'block';
 }
+
 /**
  * Basing on video width and total ad width compute width (in %)
  * of overlay to make it responsive.
@@ -68,14 +71,14 @@ function showOverlay(overlay, params) {
  * @param params
  * @return string in form '55%'
  */
-function getOverlayWidth(params) {
+function getOverlayWidth(params): string {
 	const adWidth = params.container.offsetWidth;
 	const videoWidth = params.hideWhenPlaying.offsetWidth;
 
 	return `${(100 * videoWidth) / adWidth}%`;
 }
 
-function addReplayIcon(overlay) {
+function addReplayIcon(overlay): HTMLElement | null {
 	const replayIcon = createIcon(icons.REPLAY, ['replay-icon', 'overlay-icon']);
 
 	overlay.appendChild(replayIcon);
@@ -83,7 +86,7 @@ function addReplayIcon(overlay) {
 	return replayIcon;
 }
 
-function addPlayIcon(overlay) {
+function addPlayIcon(overlay): HTMLElement | null {
 	const playIcon = createIcon(icons.PLAY, ['play-icon', 'overlay-icon']);
 
 	overlay.appendChild(playIcon);
