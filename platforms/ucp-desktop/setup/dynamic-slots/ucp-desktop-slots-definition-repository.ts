@@ -129,7 +129,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				anchorSelector: context.get(`slots.${slotName}.insertBeforeSelector`),
 				anchorPosition: 'belowFirstViewport',
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
 				if (context.get('services.distroScale.enabled')) {
