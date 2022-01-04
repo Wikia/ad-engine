@@ -8,18 +8,18 @@ import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 import { JwpStatelessStream, ofJwpStatelessEvent } from './jwplayer-stream-stateless';
 
+interface VideoDepth {
+	depth: number;
+	correlator: number;
+	rv: number;
+}
+
 export interface JwpState extends VideoDepth {
 	vastParams: VastParams;
 	playlistItem: JWPlayerListItem;
 	config: JWPlayerConfig;
 	mute: boolean;
 	adInVideo: 'bootstrap' | 'none' | 'preroll' | 'midroll' | 'postroll';
-}
-
-interface VideoDepth {
-	depth: number;
-	correlator: number;
-	rv: number;
 }
 
 /**
