@@ -2733,21 +2733,6 @@
             "value": true
         }
     ],
-    "icPermutive": [
-        {
-            "apps": [
-                "f2",
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "GB",
-                "UK",
-                "US"
-            ],
-            "value": true
-        }
-    ],
     "icDurationMedia": [
         {
             "apps": [
