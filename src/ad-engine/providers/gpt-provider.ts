@@ -17,8 +17,8 @@ export const GAMOrigins: string[] = [
 	'https://googleads.g.doubleclick.net',
 ];
 
-export function postponeExecutionUntilGptLoads(method: () => void) {
-	return function (...args: any) {
+export function postponeExecutionUntilGptLoads(method: () => void): any {
+	return function (...args: any): void {
 		setTimeout(() => {
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
@@ -33,13 +33,13 @@ function getAdSlotFromEvent(
 		| googletag.events.ImpressionViewableEvent
 		| googletag.events.SlotOnloadEvent
 		| googletag.events.SlotRenderEndedEvent,
-) {
+): AdSlot | null {
 	const id = event.slot.getSlotElementId();
 
 	return slotService.get(id);
 }
 
-function configure() {
+function configure(): void {
 	const tag = window.googletag.pubads();
 
 	tag.disableInitialLoad();
@@ -175,7 +175,7 @@ export class GptProvider implements Provider {
 	}
 
 	/** @private */
-	createGptSlot(adSlot: AdSlot, sizeMap: GptSizeMap) {
+	createGptSlot(adSlot: AdSlot, sizeMap: GptSizeMap): googletag.Slot {
 		if (adSlot.isOutOfPage()) {
 			if (adSlot.getConfigProperty('outOfPageFormat')) {
 				return window.googletag.defineOutOfPageSlot(
@@ -193,15 +193,12 @@ export class GptProvider implements Provider {
 			.defineSizeMapping(sizeMap.build());
 	}
 
-	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting) {
+	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting): void {
 		Object.keys(targeting).forEach((key) => {
 			let value = targeting[key];
 
-			if (Array.isArray(value)) {
-				value = value.map((item) => item.toString());
-			} else {
-				value = value.toString();
-			}
+			value = Array.isArray(value) ? value.map((item) => item.toString()) : value.toString();
+
 			gptSlot.setTargeting(key, value);
 		});
 	}
