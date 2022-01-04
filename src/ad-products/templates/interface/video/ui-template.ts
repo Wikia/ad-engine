@@ -32,13 +32,7 @@ export const createBottomPanel = ({ fullscreenAllowed = true, theme = null }) =>
 };
 
 const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings) => {
-	let isAutoPlay: boolean;
-
-	if (videoSettings) {
-		isAutoPlay = videoSettings.isAutoPlay();
-	} else {
-		isAutoPlay = params.isAutoPlay;
-	}
+	const isAutoPlay: boolean = videoSettings ? videoSettings.isAutoPlay() : params.isAutoPlay;
 
 	return {
 		'auto-play': [ProgressBar, PauseOverlay, createBottomPanel(params), ToggleAnimation],
@@ -75,7 +69,7 @@ const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings
 export function selectTemplate(
 	videoSettings: PorvataSettings | UapVideoSettings,
 	params?: Partial<UapParams>,
-) {
+): any {
 	const videoParams = params || videoSettings.getParams();
 	const templates = getTemplates(videoParams, videoSettings);
 	let template = 'default';
