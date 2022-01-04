@@ -1,6 +1,7 @@
 **/dist/**/*
 **/allure-results/**/*
 lib/**/*
+maintenance/tslint-rules/tests/**/*
 node_modules/**/*
 jspm_packages/
 platforms/*/fallback-config*.json
