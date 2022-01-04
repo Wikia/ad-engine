@@ -8,7 +8,7 @@ const nlsnConfig: Dictionary = {};
 /**
  * Creates Nielsen Static Queue Snippet
  */
-function createInstance(nielsenKey) {
+function createInstance(nielsenKey): void {
 	utils.logger(logGroup, 'loading');
 
 	initNielsenStaticQueue();
