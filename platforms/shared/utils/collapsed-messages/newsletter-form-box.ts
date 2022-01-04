@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot, sailthru } from '@wikia/ad-engine';
 import { MessageBox } from './message-box';
 
 export class NewsletterFormBox extends MessageBox {
@@ -53,9 +53,14 @@ export class NewsletterFormBox extends MessageBox {
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 		const emailInput: HTMLInputElement = document.querySelector('.newsletter-email');
 		const emailValue = emailInput.value;
-
 		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
 		submitBtn.disabled = true;
+
+		if (!sailthru.isLoaded()) {
+			this.showFormMessage('An error occurred. Please try again later.');
+			submitBtn.disabled = false;
+			return;
+		}
 
 		window.Sailthru.integration('userSignUp', {
 			email: emailValue,

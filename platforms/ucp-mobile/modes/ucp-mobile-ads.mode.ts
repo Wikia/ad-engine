@@ -16,7 +16,6 @@ import {
 	nativo,
 	nielsen,
 	Runner,
-	sailthru,
 	silverSurferService,
 	stroer,
 	taxonomyService,
@@ -59,7 +58,6 @@ export class UcpMobileAdsMode implements DiProcess {
 		iasPublisherOptimization.call();
 		confiant.call();
 		stroer.call();
-		sailthru.call();
 		durationMedia.call();
 		nativo.call();
 		nielsen.call({
