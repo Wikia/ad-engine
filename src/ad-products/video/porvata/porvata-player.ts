@@ -134,7 +134,7 @@ export class PorvataPlayer {
 		this.settings.setAutoPlay(value);
 	}
 
-	setAdStatus(status: string, currentAd?: google.ima.Ad) {
+	setAdStatus(status: string, currentAd?: google.ima.Ad): void {
 		this.dom.setVastAttributes(this.adsRequest.adTagUrl, status, currentAd);
 	}
 
