@@ -1,0 +1,182 @@
+{
+	"icConfiant": [
+		{
+			"apps": ["muthead"],
+			"devices": ["smartphone"],
+			"regions": ["GB", "UK", "US"],
+			"value": true
+		}
+	],
+	"icPrebidRubiconDisplay": [
+		{
+			"apps": ["futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPlayerTracking": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icBTRec": [
+		{
+			"apps": ["futhead", "muthead"],
+			"devices": ["desktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icLABradorTest": [
+		{
+			"apps": ["f2", "fandomdesktop", "fandommobile", "futhead", "muthead"],
+			"regions": ["PL"],
+			"sampling": 35.0,
+			"samplingCache": true,
+			"value": true
+		}
+	],
+	"icPrebid": [
+		{
+			"apps": ["futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icSlotTracking": [
+		{
+			"apps": ["bingebot", "f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icLABradorGamKeyValues": [
+		{
+			"apps": ["f2", "fandomdesktop", "fandommobile", "futhead", "muthead"],
+			"regions": ["XX"],
+			"value": [
+				"icUAPNewBFAATemplate_A_50:new_uap_50_a",
+				"icUAPNewBFAATemplate_B_50:new_uap_50_b",
+				"icUAPJWPlayer_A_99:uap_jwp_99_a",
+				"icUAPJWPlayer_B_1:uap_jwp_1_b",
+				"icTrafficDivider_A_50:galactus_h2_a",
+				"icTrafficDivider_B_50:galactus_h2_b"
+			]
+		}
+	],
+	"icSafeFanTakeoverUnstickTimeout": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": 4000
+		}
+	],
+	"icAudigent": [
+		{
+			"apps": ["f2", "futhead", "muthead"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icViewabilityTracking": [
+		{
+			"apps": ["bingebot", "f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icBabDetection": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icTrackingOptInLibraryUrl": [
+		{
+			"apps": ["bingebot", "f2", "fandomdesktop", "fandommobile", "futhead", "muthead"],
+			"regions": ["XX"],
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
+		}
+	],
+	"icPostmessageTracking": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidSizePriceFloorRule": [
+		{
+			"apps": ["futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["US"],
+			"value": {
+				"300x600": 0.3
+			}
+		}
+	],
+	"icDurationMedia": [
+		{
+			"apps": ["futhead", "muthead"],
+			"regions": ["XX"],
+			"sampling": 100.0,
+			"value": true
+		}
+	],
+	"icSafeFanTakeoverLineItemIds": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": [
+				"5381590794",
+				"5393163252",
+				"5393163249",
+				"5441231927",
+				"5441231924",
+				"5492427980",
+				"5492807412",
+				"5493719719",
+				"5499901083",
+				"5500931404",
+				"5494026389"
+			]
+		}
+	],
+	"icBidsTracking": [
+		{
+			"apps": ["futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icPrebidVersion": [
+		{
+			"apps": ["fandomdesktop", "fandommobile", "futhead", "muthead"],
+			"regions": ["XX"],
+			"value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
+		}
+	],
+	"icIASPublisherOptimization": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["AU", "CA", "CH", "DE", "ES", "FR", "GB", "IT", "NZ", "PL", "SG", "UK", "US"],
+			"value": true
+		}
+	],
+	"icA9Bidder": [
+		{
+			"apps": ["futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": true
+		}
+	],
+	"icAdEngineDelay": [
+		{
+			"apps": ["f2", "futhead", "fandommobile", "muthead", "fandomdesktop"],
+			"regions": ["XX"],
+			"value": 2000
+		}
+	]
+}
