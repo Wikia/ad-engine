@@ -4,8 +4,6 @@ import {
 	BaseContextSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
-	CurseSlotsContextSetup,
-	CurseSlotsStateSetup,
 	ensureGeoCookie,
 	getDeviceMode,
 	InstantConfigSetup,
@@ -13,6 +11,8 @@ import {
 	NoAdsDetector,
 	SportsA9ConfigSetup,
 	SportsAdsMode,
+	SportsDynamicSlotsSetup,
+	SportsSlotsContextSetup,
 	TrackingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -27,7 +27,6 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { MutheadIocSetup } from './muthead-ioc-setup';
 import { MutheadPrebidConfigSetup } from './setup/context/prebid/muthead-prebid-config.setup';
-import { MutheadDynamicSlotsSetup } from './setup/dynamic-slots/muthead-dynamic-slots.setup';
 import { MutheadTargetingSetup } from './setup/targeting/muthead-targeting.setup';
 import { MutheadTemplatesSetup } from './templates/muthead-templates.setup';
 
@@ -45,12 +44,11 @@ export class MutheadPlatform {
 			WikiContextSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
 			BaseContextSetup,
-			CurseSlotsContextSetup,
+			SportsSlotsContextSetup,
 			MutheadTargetingSetup,
 			MutheadPrebidConfigSetup,
 			SportsA9ConfigSetup,
-			MutheadDynamicSlotsSetup,
-			CurseSlotsStateSetup,
+			SportsDynamicSlotsSetup,
 			BiddersStateSetup,
 			MutheadTemplatesSetup,
 			LabradorSetup,

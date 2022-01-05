@@ -81,20 +81,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '',
 				parentContainerSelector: '.incontent-boxad',
-				repeat: {
-					index: 1,
-					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-						'targeting.pos': ['incontent_boxad'],
-						'placeholder.createLabel': false,
-					},
-					insertBelowScrollPosition: true,
-				},
 				slotShortcut: 'f',
 				sizes: [
 					{
@@ -145,7 +132,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'mobile_prefooter',
 				slotNameSuffix: '',
 				disabled: true,
-				disableManualInsert: true,
 				group: 'PF',
 				options: {},
 				slotShortcut: 'p',
@@ -165,8 +151,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			interstitial: {
 				adProduct: 'interstitial',
-				disabled: true,
-				disableManualInsert: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'IU',
@@ -180,8 +164,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				disabled: true,
-				disableManualInsert: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'PF',
@@ -265,7 +247,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 				group: 'VIDEO',
-				lowerSlotName: 'featured',
 				targeting: {
 					uap: 'none',
 				},

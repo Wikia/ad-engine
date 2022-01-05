@@ -2,7 +2,7 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class CurseSlotsContextSetup implements DiProcess {
+export class SportsSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
 			'cdm-zone-01': {

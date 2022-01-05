@@ -4,8 +4,6 @@ import {
 	BaseContextSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
-	CurseSlotsContextSetup,
-	CurseSlotsStateSetup,
 	ensureGeoCookie,
 	getDeviceMode,
 	InstantConfigSetup,
@@ -13,6 +11,8 @@ import {
 	NoAdsDetector,
 	SportsA9ConfigSetup,
 	SportsAdsMode,
+	SportsDynamicSlotsSetup,
+	SportsSlotsContextSetup,
 	TrackingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -28,7 +28,6 @@ import { basicContext } from './ad-context';
 import { FutheadIocSetup } from './futhead-ioc-setup';
 import { FutheadPrebidConfigSetup } from './setup/context/prebid/futhead-prebid-config.setup';
 import { FutheadTargetingSetup } from './setup/context/targeting/futhead-targeting.setup';
-import { FutheadDynamicSlotsSetup } from './setup/dynamic-slots/futhead-dynamic-slots.setup';
 import { FutheadTemplatesSetup } from './templates/futhead-templates.setup';
 
 @Injectable()
@@ -45,12 +44,11 @@ export class FutheadPlatform {
 			WikiContextSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
 			BaseContextSetup,
-			CurseSlotsContextSetup,
+			SportsSlotsContextSetup,
 			FutheadTargetingSetup,
 			FutheadPrebidConfigSetup,
 			SportsA9ConfigSetup,
-			FutheadDynamicSlotsSetup,
-			CurseSlotsStateSetup,
+			SportsDynamicSlotsSetup,
 			BiddersStateSetup,
 			FutheadTemplatesSetup,
 			LabradorSetup,

@@ -1,4 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { RepeatConfig } from '../models/index';
 import {
 	AD_LABEL_CLASS,
 	getTopOffset,
@@ -7,6 +8,7 @@ import {
 	isInTheSameViewport,
 	logger,
 } from '../utils';
+import { context } from './context-service';
 export type insertMethodType = 'append' | 'prepend' | 'after' | 'before';
 
 export interface SlotCreatorConfig {
@@ -19,7 +21,7 @@ export interface SlotCreatorConfig {
 	anchorPosition?: number | 'firstViable' | 'belowFirstViewport' | 'belowScrollPosition';
 	avoidConflictWith?: string[];
 	classList?: string[];
-	repeat?: object;
+	repeat?: RepeatConfig;
 	placeholderConfig?: SlotPlaceholderContextConfig;
 }
 
@@ -41,6 +43,10 @@ export class SlotCreator {
 		slotLooseConfig: SlotCreatorConfig,
 		wrapperLooseConfig?: SlotCreatorWrapperConfig,
 	): HTMLElement {
+		if (!slotLooseConfig) {
+			return null;
+		}
+
 		logger(groupName, `Creating: ${slotLooseConfig.slotName}`, slotLooseConfig, wrapperLooseConfig);
 
 		const slotConfig = this.fillSlotConfig(slotLooseConfig);
@@ -54,6 +60,10 @@ export class SlotCreator {
 			this.addAdLabel(slot.parentElement, slotConfig.slotName);
 		}
 
+		if (slotConfig.repeat) {
+			context.set(`slots.${slotConfig.slotName}.repeat`, slotConfig.repeat);
+		}
+
 		return slot;
 	}
 
@@ -63,7 +73,7 @@ export class SlotCreator {
 			anchorPosition: slotLooseConfig.anchorPosition ?? 'firstViable',
 			avoidConflictWith: slotLooseConfig.avoidConflictWith || [],
 			classList: slotLooseConfig.classList || [],
-			repeat: slotLooseConfig.repeat || {},
+			repeat: slotLooseConfig.repeat,
 			placeholderConfig: slotLooseConfig.placeholderConfig,
 		};
 	}
