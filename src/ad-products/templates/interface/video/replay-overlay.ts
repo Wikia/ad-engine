@@ -12,49 +12,6 @@ function forceRepaint(element): number {
 	return width;
 }
 
-function add(video, container, params): void {
-	const overlay = document.createElement('div');
-
-	overlay.classList.add(replayOverlayClass);
-	overlay.addEventListener('click', () => video.play());
-
-	if (!params.autoPlay) {
-		showOverlay(overlay, params);
-	}
-
-	video.addEventListener('wikiaAdCompleted', () => {
-		showOverlay(overlay, params);
-		forceRepaint(container);
-	});
-
-	if (
-		(video.params && video.params.theme && video.params.theme === 'hivi') ||
-		(params.theme && params.theme === 'hivi')
-	) {
-		const replayIcon = addReplayIcon(overlay);
-
-		if (!params.autoPlay) {
-			const playIcon = addPlayIcon(overlay);
-
-			replayIcon.style.display = 'none';
-
-			video.addEventListener('start', () => {
-				replayIcon.style.display = '';
-				playIcon.style.display = 'none';
-			});
-		}
-
-		const newContainer =
-			video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
-		newContainer.appendChild(overlay);
-		forceRepaint(newContainer);
-	} else {
-		container.parentElement.insertBefore(overlay, container);
-	}
-
-	forceRepaint(container);
-}
-
 function showOverlay(overlay, params): void {
 	if (!params.container.classList.contains('theme-hivi')) {
 		overlay.style.width = overlay.style.width || getOverlayWidth(params);
@@ -94,6 +51,47 @@ function addPlayIcon(overlay): HTMLElement | null {
 	return playIcon;
 }
 
-export default {
-	add,
-};
+export class ReplayOverlay {
+	static add(video, container, params): void {
+		const overlay = document.createElement('div');
+
+		overlay.classList.add(replayOverlayClass);
+		overlay.addEventListener('click', () => video.play());
+
+		if (!params.autoPlay) {
+			showOverlay(overlay, params);
+		}
+
+		video.addEventListener('wikiaAdCompleted', () => {
+			showOverlay(overlay, params);
+			forceRepaint(container);
+		});
+
+		if (
+			(video.params && video.params.theme && video.params.theme === 'hivi') ||
+			(params.theme && params.theme === 'hivi')
+		) {
+			const replayIcon = addReplayIcon(overlay);
+
+			if (!params.autoPlay) {
+				const playIcon = addPlayIcon(overlay);
+
+				replayIcon.style.display = 'none';
+
+				video.addEventListener('start', () => {
+					replayIcon.style.display = '';
+					playIcon.style.display = 'none';
+				});
+			}
+
+			const newContainer =
+				video.params && video.params.thumbnail ? video.params.thumbnail : params.thumbnail;
+			newContainer.appendChild(overlay);
+			forceRepaint(newContainer);
+		} else {
+			container.parentElement.insertBefore(overlay, container);
+		}
+
+		forceRepaint(container);
+	}
+}
