@@ -8,9 +8,9 @@ function createVolumeControl(): HTMLDivElement {
 		'porvata-off-icon',
 	]);
 	const onIcon = createIcon(icons['HIVI_VOLUME_ON'], [
-		'volume-emit-icon',
+		'volume-on-icon',
 		'porvata-icon',
-		'porvata-emit-icon',
+		'porvata-on-icon',
 	]);
 
 	volume.className = 'volume-button porvata-switchable-icon';
@@ -22,9 +22,9 @@ function createVolumeControl(): HTMLDivElement {
 
 function updateCurrentState(video, volumeControl): void {
 	if (video.isMuted()) {
-		volumeControl.classList.add('is-emit');
+		volumeControl.classList.add('is-on');
 	} else {
-		volumeControl.classList.remove('is-emit');
+		volumeControl.classList.remove('is-on');
 	}
 }
 
