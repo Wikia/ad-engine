@@ -304,7 +304,7 @@ Name: **bfab**
   stickyUntilSlotViewed: true,
   bfaaSlotName: 'top_leaderboard',
   unstickInstantlyBelowPosition: 500,
-  topThreshold: 58,
+  topThreshold: 55,
   onInit: () => {},
 }
 ```
