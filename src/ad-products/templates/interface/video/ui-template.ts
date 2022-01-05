@@ -11,7 +11,7 @@ import { ProgressBar } from './progress-bar';
 import ReplayOverlay from './replay-overlay';
 import ToggleAnimation from './toggle-animation';
 import { ToggleFullscreen } from './toggle-fullscreen';
-import ToggleThumbnail from './toggle-thumbnail';
+import { ToggleThumbnail } from './toggle-thumbnail';
 import ToggleUI from './toggle-ui';
 import ToggleVideo from './toggle-video';
 import VolumeControl from './volume-control';
