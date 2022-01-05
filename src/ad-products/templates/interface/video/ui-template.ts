@@ -3,7 +3,7 @@ import { UapParams, UapVideoSettings } from '../../uap';
 import { CloseButton } from './close-button';
 import { DynamicReveal } from './dynamic-reveal';
 import { Floating } from './floating';
-import LearnMore from './learn-more';
+import { LearnMore } from './learn-more';
 import { Panel } from './panel';
 import PauseControl from './pause-control';
 import PauseOverlay from './pause-overlay';
