@@ -1,4 +1,4 @@
-import { AdSlot, sailthru } from '@wikia/ad-engine';
+import { AdSlot, sailthru, SailthruSource, UserSignupPayload } from '@wikia/ad-engine';
 import { MessageBox } from './message-box';
 
 export class NewsletterFormBox extends MessageBox {
@@ -43,6 +43,27 @@ export class NewsletterFormBox extends MessageBox {
 		return message;
 	};
 
+	private createPayload = (email: string, submitBtn: HTMLButtonElement): UserSignupPayload => {
+		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
+
+		const onSuccess = (): void => {
+			this.showFormMessage('Thanks for signing up!');
+			submitBtn.disabled = false;
+			this.sendTrackingEvent(status_clicked);
+		};
+
+		const onError = (): void => {
+			this.showFormMessage('An error occurred. Please try again later.');
+			submitBtn.disabled = false;
+		};
+
+		return {
+			email,
+			onSuccess,
+			onError,
+		};
+	};
+
 	private showFormMessage = (text: string) => {
 		const messageArea: HTMLDivElement = document.querySelector('.newsletter-message');
 		messageArea.innerText = text;
@@ -51,22 +72,10 @@ export class NewsletterFormBox extends MessageBox {
 	private doEmailSignUp = (event) => {
 		event.preventDefault();
 
-		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 		const emailInput: HTMLInputElement = document.querySelector('.newsletter-email');
 		const emailValue = emailInput.value;
 		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
 		submitBtn.disabled = true;
-
-		const onSuccess = () => {
-			this.showFormMessage('Thanks for signing up!');
-			submitBtn.disabled = false;
-			this.sendTrackingEvent(status_clicked);
-		};
-
-		const onError = () => {
-			this.showFormMessage('An error occurred. Please try again later.');
-			submitBtn.disabled = false;
-		};
 
 		if (!sailthru.isLoaded()) {
 			this.showFormMessage('An error occurred. Please try again later.');
@@ -74,6 +83,9 @@ export class NewsletterFormBox extends MessageBox {
 			return;
 		}
 
-		sailthru.signup(emailValue, onSuccess, onError);
+		const payload: UserSignupPayload = this.createPayload(emailValue, submitBtn);
+		const source: SailthruSource = 'adengine_in_content_ad';
+
+		sailthru.userSignup(payload, source);
 	};
 }
