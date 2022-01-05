@@ -71,7 +71,6 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
-		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
 		context.set('options.newBfaaTemplate', this.instantConfig.get('icUAPNewBFAATemplate'));
 		context.set(
 			'options.uapExtendedSrcTargeting',
