@@ -78,14 +78,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureInterstitial(): void {
-		const slotName = 'interstitial';
-
 		communicationService.listenSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
 				communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 			},
-			slotName,
+			'interstitial',
 		);
 	}
 

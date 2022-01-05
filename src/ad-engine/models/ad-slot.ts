@@ -64,6 +64,7 @@ export interface SlotConfig {
 	audio?: boolean;
 	autoplay?: boolean;
 	placeholder?: SlotPlaceholderContextConfig;
+	videoDepth?: number;
 }
 
 export interface WinningBidderDetails {
@@ -593,12 +594,12 @@ export class AdSlot {
 	/**
 	 * Pass all events to Post-QueCast
 	 */
-	emit(event: string | symbol, data: any = {}): void {
+	emit(event: string | symbol, data: any = {}, serialize: boolean = true): void {
 		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event: event.toString(),
 			slot: this,
 			adSlotName: this.getSlotName(),
-			payload: data,
+			payload: serialize ? JSON.parse(JSON.stringify(data)) : data,
 		});
 
 		this.logger(this.getSlotName(), event, data);

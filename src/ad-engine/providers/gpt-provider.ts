@@ -63,7 +63,7 @@ function configure() {
 			const adSlot = getAdSlotFromEvent(event);
 			const adType = getAdType(event, adSlot.getIframe());
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType });
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
 
