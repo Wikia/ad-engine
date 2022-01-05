@@ -1,8 +1,9 @@
+import { AdSlot } from '@wikia/ad-engine';
 import { MessageBox } from './message-box';
 
 export class NewsletterLinkBox extends MessageBox {
-	constructor() {
-		super();
+	constructor(adSlot: AdSlot) {
+		super(adSlot);
 		this.type = 'NEWSLETTER_LINK';
 		this.redirectUrl = this.buildUrl(
 			'http://linkst.fandom.com/join/6n2/fandomemailsign-uppage-wikibar?',

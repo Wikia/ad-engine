@@ -4,8 +4,13 @@ import { MessageBoxCreator } from './message-box-creator';
 export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER_LINK' | 'NEWSLETTER_FORM';
 
 export class MessageBoxService {
+	private messageBoxCreator: MessageBoxCreator;
 	private types: MessageBoxType[] = ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK'];
 	private currentType = 0;
+
+	constructor() {
+		this.messageBoxCreator = new MessageBoxCreator();
+	}
 
 	getCurrentTypeIndex = (): number => {
 		return this.currentType;
@@ -16,8 +21,11 @@ export class MessageBoxService {
 			return;
 		}
 
-		const messageBox = new MessageBoxCreator().createMessageBox(this.types[this.currentType]);
-		messageBox.create(placeholder, adSlot);
+		const messageBox = this.messageBoxCreator.createMessageBox(
+			this.types[this.currentType],
+			adSlot,
+		);
+		messageBox.create();
 
 		this.currentType += 1;
 	};

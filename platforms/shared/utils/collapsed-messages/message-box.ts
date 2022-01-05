@@ -3,26 +3,32 @@ import { MessageBoxType } from './message-box-service';
 
 export class MessageBox {
 	protected type: MessageBoxType;
+	protected adSlot: AdSlot;
 	protected redirectUrl: string;
 	protected buttonText: string;
 	protected messageText: string;
 
-	create = (placeholder: HTMLElement, adSlot: AdSlot) => {
+	constructor(adSlot: AdSlot) {
+		this.adSlot = adSlot;
+	}
+
+	create = () => {
 		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 
+		const placeholder = this.adSlot.getPlaceholder();
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const button = this.createButton();
 		button.onclick = () => {
 			this.openInNewTab();
-			this.sendTrackingEvent(adSlot.getSlotName(), status_clicked);
+			this.sendTrackingEvent(status_clicked);
 		};
 
 		wrapper.append(message, button);
 		placeholder.appendChild(wrapper);
 
-		this.sendTrackingEvent(adSlot.getSlotName(), status_impression);
+		this.sendTrackingEvent(status_impression);
 	};
 
 	createBoxWrapper = (): HTMLElement => {
@@ -50,11 +56,11 @@ export class MessageBox {
 		window.open(this.redirectUrl, '_blank').focus();
 	};
 
-	sendTrackingEvent = (adSlotName: string, ad_status: string) => {
+	sendTrackingEvent = (ad_status: string) => {
 		communicationService.dispatch(
 			messageBoxTrackingEvent({
 				ad_status,
-				adSlotName,
+				adSlotName: this.adSlot.getSlotName(),
 			}),
 		);
 	};

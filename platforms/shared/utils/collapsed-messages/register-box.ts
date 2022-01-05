@@ -1,8 +1,9 @@
+import { AdSlot } from '@wikia/ad-engine';
 import { MessageBox } from './message-box';
 
 export class RegisterBox extends MessageBox {
-	constructor() {
-		super();
+	constructor(adSlot: AdSlot) {
+		super(adSlot);
 		this.type = 'REGISTER';
 		this.redirectUrl = 'https://www.fandom.com/register';
 		this.buttonText = 'Register';
