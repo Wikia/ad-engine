@@ -1,5 +1,4 @@
-import { slotsContext } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
+import { communicationService, context, DiProcess, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 const BIG_VIEWPORT_SIZE = {
@@ -78,7 +77,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
 				viewabilityCounterId: 'incontent_boxad',
-				defaultClasses: ['hide', 'ad-slot'],
+				defaultClasses: ['hide', 'incontent-boxad', 'ad-slot'],
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
@@ -257,10 +256,29 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 		};
 
-		slotsContext.setupSlotVideoContext();
-
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
+				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
+					this.setupSlotParameters(slot),
+				);
+			},
+			false,
+		);
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
+		context.set('slots.incontent_boxad_1.defaultClasses', ['hide', 'ad-slot']);
+	}
+
+	private setupSlotParameters(slot): void {
+		const audioSuffix = slot.config.audio === true ? '-audio' : '';
+		const clickToPlaySuffix =
+			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
+
+		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
+		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
+		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }

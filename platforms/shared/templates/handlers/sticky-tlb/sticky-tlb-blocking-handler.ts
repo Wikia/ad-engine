@@ -63,7 +63,7 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 
 	private async isUAP(): Promise<boolean> {
 		return new Promise((resolve) => {
-			communicationService.on(
+			communicationService.listen(
 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					resolve(action.isLoaded);

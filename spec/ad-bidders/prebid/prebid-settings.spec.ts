@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe('prebid settings', () => {
 	describe('createAdapterSpecificSettings', () => {
-		it('returns settings rules based emit adapters list', () => {
+		it('returns settings rules based on adapters list', () => {
 			const adapterSettings = createAdapterSpecificSettings([
 				{
 					bidderName: 'foo',

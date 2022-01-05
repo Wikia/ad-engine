@@ -29,7 +29,7 @@ export class NativeFullscreen {
 				'onfullscreenchange',
 			]) || ''
 		)
-			.replace(/^emit/, '')
+			.replace(/^on/, '')
 			.replace('msfullscreenchange', 'MSFullscreenChange');
 
 		if (this.isSupported()) {

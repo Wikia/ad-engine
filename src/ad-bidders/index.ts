@@ -15,14 +15,14 @@ class Bidders {
 	private realSlotPrices = {};
 
 	constructor() {
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
 			this.updateSlotTargeting(slot.getSlotName());
 		});
 
-		communicationService.on(
+		communicationService.listen(
 			eventsRepository.BIDDERS_BIDS_REFRESH,
 			({ refreshedSlotNames }) => {
 				refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
@@ -139,7 +139,7 @@ class Bidders {
 		this.applyTargetingParams(slotName, bidderTargeting);
 
 		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
-		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, {
+		communicationService.communicate(eventsRepository.BIDDERS_BIDDING_DONE, {
 			slotName,
 			provider: 'prebid',
 		});

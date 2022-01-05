@@ -7,7 +7,7 @@ export class F2SrcAdapter {
 	constructor(@Inject(F2_ENV) private f2Env: F2Environment) {}
 
 	/**
-	 * Return src targeting parameter based emit current env
+	 * Return src targeting parameter based on current env
 	 */
 	getSrcBasedOnEnv(): string {
 		let src = 'ns';
@@ -26,7 +26,7 @@ export class F2SrcAdapter {
 	}
 
 	/**
-	 * Return src targeting parameter based emit current ad mirror
+	 * Return src targeting parameter based on current ad mirror
 	 */
 	private getAdMirrorSrc(hostname): string {
 		const adMirrorsSrc = {

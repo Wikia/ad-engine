@@ -64,7 +64,7 @@ describe('Live Ramp', () => {
 		expect(liveRamp.getConfig()).to.eql(liveRampDisabledConfig);
 	});
 
-	it('Live Ramp is disabled emit child-directed wiki', () => {
+	it('Live Ramp is disabled on child-directed wiki', () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		expect(liveRamp.getConfig()).to.eql(liveRampDisabledConfig);

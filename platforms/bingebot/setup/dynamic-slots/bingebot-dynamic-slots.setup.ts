@@ -13,7 +13,7 @@ export class BingeBotDynamicSlotsSetup implements DiProcess {
 	constructor(private templateRegistry: TemplateRegistry) {}
 
 	execute(): void {
-		communicationService.on(
+		communicationService.listen(
 			eventsRepository.BINGEBOT_AD_SLOT_INJECTED,
 			(action) => {
 				this.setAdStack(action.slotId);
@@ -21,7 +21,7 @@ export class BingeBotDynamicSlotsSetup implements DiProcess {
 			false,
 		);
 
-		communicationService.on(
+		communicationService.listen(
 			eventsRepository.BINGEBOT_DESTROY_AD_SLOT,
 			(action) => {
 				const adSlot = slotService.get(action.slotId);

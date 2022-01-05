@@ -74,7 +74,7 @@ describe('ScrollTracker', () => {
 		clock.tick(500);
 		await Promise.resolve();
 
-		communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+		communicationService.communicate(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 
 		clock.tick(700);
 		await Promise.resolve();

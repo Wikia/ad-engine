@@ -11,7 +11,7 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 		adEngineInstance = new AdEngine();
 		adEngineInstance.init(inhibitors);
 
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.removeClass('default-height');
 		});
 	} else {

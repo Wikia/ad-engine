@@ -20,7 +20,7 @@ describe('slot-repeater', () => {
 		injectedContainer = {};
 		handleSlotRepeating = null;
 		sandbox.stub(slotInjector, 'inject').callsFake(() => injectedContainer);
-		sandbox.stub(communicationService, 'onSlotEvent').callsFake((key, callback) => {
+		sandbox.stub(communicationService, 'listenSlotEvent').callsFake((key, callback) => {
 			handleSlotRepeating = callback;
 		});
 		adSlot = { ...adSlotFake };

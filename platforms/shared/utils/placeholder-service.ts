@@ -63,8 +63,11 @@ export class PlaceholderService {
 	}
 
 	private registerUapChecker(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			this.isUapLoaded = action.isLoaded;
-		});
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+			(action: UapLoadStatus) => {
+				this.isUapLoaded = action.isLoaded;
+			},
+		);
 	}
 }

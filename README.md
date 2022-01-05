@@ -8,7 +8,7 @@ npm install github:Wikia/ad-engine
 
 ## Platforms
 
-* `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Futhead, Muthead) emit port 9000
+* `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Futhead, Muthead) on port 9000
 * `npm run build:platforms` - to create production build of platforms ad-engine code
 
 ## Available packages
@@ -186,7 +186,7 @@ Request immediately:
 </div>
 ```
 
-or prepare emit scroll container (check above context configuration):
+or prepare on scroll container (check above context configuration):
 
 ```html
 <div id="bottom_leaderboard"></div>
@@ -243,11 +243,11 @@ Name: **bfaa**
 * handleNavbar - decides whether template should adjust navbar
 * autoPlayAllowed - decides whether video can be autoplayed
 * defaultStateAllowed - decides whether BFAA impact state is allowed
-* fullscreenAllowed - decides whether video can be displayed emit full screen
+* fullscreenAllowed - decides whether video can be displayed on full screen
 * stickinessAllowed - decides whether the slot can be sticky
 * stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
 * slotSibling - DOM sibling element next to BFAA slot
-* slotsToEnable - decides which slots should be enabled emit Fan Takeover load
+* slotsToEnable - decides which slots should be enabled on Fan Takeover load
 
 ##### Template parameters
 
@@ -312,7 +312,7 @@ Name: **bfab**
 
 * autoPlayAllowed - decides whether video can be autoplayed
 * defaultStateAllowed - decides whether BFAA impact state is allowed
-* fullscreenAllowed - decides whether video can be displayed emit full screen
+* fullscreenAllowed - decides whether video can be displayed on full screen
 * stickinessAllowed - decides whether the slot can be sticky
 * stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
 * bfaaSlotName - name of BFAA slot - if BFAA is sticky, BFAB can't stick

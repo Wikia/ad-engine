@@ -52,7 +52,7 @@ class SlotService {
 		}
 
 		slotTweaker.addDefaultClasses(adSlot);
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_ADDED, {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_ADDED, {
 			name: slotName,
 			slot: adSlot,
 			state: AdSlot.SLOT_ADDED_EVENT,

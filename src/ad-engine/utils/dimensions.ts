@@ -11,7 +11,7 @@ export function getHeight(element: HTMLElement): number {
 }
 
 /**
- * Returns element's offset of given element depending emit offset parameter name
+ * Returns element's offset of given element depending on offset parameter name
  */
 export function getElementOffset(element: HTMLElement): ElementOffset {
 	let hideAgain = false;

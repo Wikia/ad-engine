@@ -14,10 +14,10 @@ export default {
 			return;
 		}
 
-		communicationService.emit(eventsRepository.VIDEO_PLAYER_TRACKING, { eventInfo });
+		communicationService.communicate(eventsRepository.VIDEO_PLAYER_TRACKING, { eventInfo });
 	},
 
 	emitVideoEvent(videoEvent): void {
-		communicationService.emit(eventsRepository.VIDEO_EVENT, { videoEvent });
+		communicationService.communicate(eventsRepository.VIDEO_EVENT, { videoEvent });
 	},
 };

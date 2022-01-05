@@ -11,7 +11,7 @@ export class GoogleImaWrapper {
 		const iframe = videoContainer.querySelector<HTMLIFrameElement>('div > iframe');
 
 		if (slot) {
-			communicationService.onSlotEvent(
+			communicationService.listenSlotEvent(
 				AdSlot.DESTROYED_EVENT,
 				() => {
 					adDisplayContainer.destroy();

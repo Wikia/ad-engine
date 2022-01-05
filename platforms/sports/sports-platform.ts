@@ -55,7 +55,7 @@ export class SportsPlatform {
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
-			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
+			() => communicationService.communicate(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
 		// Run
