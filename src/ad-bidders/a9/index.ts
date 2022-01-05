@@ -194,7 +194,7 @@ export class A9Provider extends BidderProvider {
 				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
 				communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
-					bidResponse: this.mapResponseToTrackingBidDefinition(
+					bidResponse: A9Provider.mapResponseToTrackingBidDefinition(
 						bid.slotID,
 						bidTargeting,
 						endTime,
