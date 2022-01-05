@@ -204,7 +204,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Video player tracking',
 		payload: props<{ eventInfo: object }>(),
 	},
-	// Events related with Google Ad Manager creatives //
+	// Events emitted by Google Ad Manager creatives //
 	GAM_AD_INTERVENTION: {
 		category: '[GAM iframe]',
 		name: 'Ad intervention',

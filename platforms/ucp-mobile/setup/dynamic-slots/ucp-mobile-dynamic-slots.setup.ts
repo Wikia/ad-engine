@@ -114,17 +114,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
+		const disableFloorAdhesionWithStatus = (status: string) => {
+			this.CODE_PRIORITY.floor_adhesion.active = false;
+			slotService.disable(slotName, status);
+			document.getElementById('floor_adhesion_anchor').classList.add('hide');
+		};
 
 		communicationService.listenSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = true;
-
-				const disableFloorAdhesionWithStatus = (status: string) => {
-					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable(slotName, status);
-					document.getElementById('floor_adhesion_anchor').classList.add('hide');
-				};
 
 				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
 					if (this.CODE_PRIORITY.floor_adhesion.active) {
