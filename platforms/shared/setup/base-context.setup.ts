@@ -133,7 +133,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 
 		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
-			// if backend call is disabled let's call it emit frontend
+			// if backend call is disabled let's call it on frontend
 			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		}
 

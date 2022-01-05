@@ -4,7 +4,7 @@ set -e
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 if [ $CURRENT_BRANCH != "dev" ]; then
-	echo -e "\033[31mYou're not emit dev branch\033[0m ($CURRENT_BRANCH)"
+	echo -e "\033[31mYou're not on dev branch\033[0m ($CURRENT_BRANCH)"
 	exit 1
 fi
 

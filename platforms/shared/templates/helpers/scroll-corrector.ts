@@ -6,7 +6,7 @@ export class ScrollCorrector {
 	constructor(@Inject(FOOTER) private footer: HTMLElement) {}
 
 	/**
-	 * corrects scroll position based a emit scrollY value
+	 * corrects scroll position based a on scrollY value
 	 */
 	useScrollCorrection(): () => void {
 		const startValue = window.scrollY;
@@ -15,7 +15,7 @@ export class ScrollCorrector {
 	}
 
 	/**
-	 * corrects scroll position based emit a distance from the element of reference
+	 * corrects scroll position based on a distance from the element of reference
 	 */
 	usePositionCorrection(elementOfReference: HTMLElement = this.footer): () => void {
 		const startValue = elementOfReference.getBoundingClientRect().top;

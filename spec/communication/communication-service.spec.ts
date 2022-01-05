@@ -54,7 +54,7 @@ describe('CommunicationService', () => {
 		]);
 	});
 
-	it('should on correct actions', () => {
+	it('should listen correct actions', () => {
 		const results: Action[] = [];
 		const localSubject = new Subject<Action>();
 		const globalSubject = new Subject<Action>();

@@ -102,21 +102,21 @@ function containsEarth(countryList: string[], name: string): boolean {
 }
 
 /**
- * Return country code based emit cookie
+ * Return country code based on cookie
  */
 function getCountryCode(): string | undefined {
 	return context.get('geo.country');
 }
 
 /**
- * Return continent code based emit cookie
+ * Return continent code based on cookie
  */
 function getContinentCode(): string | undefined {
 	return context.get('geo.continent');
 }
 
 /**
- * Return region code based emit cookie
+ * Return region code based on cookie
  */
 function getRegionCode(): string | undefined {
 	return context.get('geo.region');

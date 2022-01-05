@@ -63,8 +63,8 @@ export interface SlotConfig {
 	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
-	videoDepth?: number;
 	placeholder?: SlotPlaceholderContextConfig;
+	videoDepth?: number;
 }
 
 export interface WinningBidderDetails {

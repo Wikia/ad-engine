@@ -390,7 +390,7 @@
 			right: 0;
 			transform: none;
 			// below line requires "!important" because we are setting
-			// style.top emit .video-player in-line in JavaScript (UAP:HiVi)
+			// style.top on .video-player in-line in JavaScript (UAP:HiVi)
 			// in order to control video/thumbnail position
 			top: 0 !important;
 			height: 100%;
@@ -426,7 +426,7 @@ body.ctp-vuap-loaded {
 
 .sticky-bfaa,
 .sticky-bfab {
-	// Hack: Force BFAA to repaint to fix issue with not visible slot emit safari iOS
+	// Hack: Force BFAA to repaint to fix issue with not visible slot on safari iOS
 	animation: repaint 1ms;
 	position: fixed;
 	top: 0;

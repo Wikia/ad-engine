@@ -60,7 +60,7 @@ describe('IAS Publisher Optimization', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('IAS Publisher Optimization is not called emit kid wikis', async () => {
+	it('IAS Publisher Optimization is not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		await iasPublisherOptimization.call();

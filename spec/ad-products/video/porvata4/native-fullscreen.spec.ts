@@ -21,7 +21,7 @@ describe('native-fullscreen', () => {
 		expect(testInstance.isSupported()).to.be.true;
 	});
 
-	it('should call correct function emit enter and exit', () => {
+	it('should call correct function on enter and exit', () => {
 		const testVideoMock = {
 			webkitRequestFullscreen: spy(),
 			webkitExitFullscreen: spy(),

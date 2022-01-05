@@ -61,7 +61,7 @@ describe('Permutive integration', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Permutive not called emit kid wikis', async () => {
+	it('Permutive not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		await permutive.call();

@@ -8,11 +8,7 @@ export class PauseControl {
 			'porvata-icon',
 			'porvata-off-icon',
 		]);
-		const playIcon = createIcon(icons.PLAY, [
-			'play-emit-icon',
-			'porvata-icon',
-			'porvata-emit-icon',
-		]);
+		const playIcon = createIcon(icons.PLAY, ['play-on-icon', 'porvata-icon', 'porvata-on-icon']);
 
 		pauseButton.appendChild(playIcon);
 		pauseButton.appendChild(pauseIcon);
@@ -26,13 +22,13 @@ export class PauseControl {
 			}
 		});
 		video.addEventListener('pause', () => {
-			pauseButton.classList.remove('is-emit');
+			pauseButton.classList.remove('is-on');
 		});
 		video.addEventListener('resume', () => {
-			pauseButton.classList.add('is-emit');
+			pauseButton.classList.add('is-on');
 		});
 		video.addEventListener('start', () => {
-			pauseButton.classList.add('is-emit');
+			pauseButton.classList.add('is-on');
 		});
 
 		container.appendChild(pauseButton);

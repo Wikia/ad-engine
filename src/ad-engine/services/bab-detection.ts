@@ -1,6 +1,6 @@
 // blockadblock doesn't export anything meaningful
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-// it sets blockAdBlock and BlockAdBlock properties emit window
+// it sets blockAdBlock and BlockAdBlock properties on window
 import 'blockadblock';
 import { utils } from '../';
 import { context } from '../services';

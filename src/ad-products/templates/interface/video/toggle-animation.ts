@@ -1,5 +1,5 @@
 const duration = 400;
-const onAnimationClassName = 'emit-animation';
+const onAnimationClassName = 'on-animation';
 
 function resizeContainer(container, finalAspectRatio): void {
 	container.style.height = `${container.offsetHeight}px`;
