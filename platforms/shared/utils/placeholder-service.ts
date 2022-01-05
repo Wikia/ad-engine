@@ -52,7 +52,7 @@ export class PlaceholderService {
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
 						if (this.messageBoxService.shouldAddMessageBox(action['event'], placeholder)) {
-							this.messageBoxService.addMessageBox(placeholder, adSlot);
+							this.messageBoxService.addMessageBox(adSlot);
 						}
 					}
 				}

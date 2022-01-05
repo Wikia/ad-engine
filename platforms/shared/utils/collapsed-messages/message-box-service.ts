@@ -16,7 +16,7 @@ export class MessageBoxService {
 		return this.currentType;
 	};
 
-	addMessageBox = (placeholder: HTMLElement, adSlot: AdSlot): void => {
+	addMessageBox = (adSlot: AdSlot): void => {
 		if (this.currentType >= this.types.length) {
 			return;
 		}
