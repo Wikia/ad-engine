@@ -7,7 +7,7 @@ import { LearnMore } from './learn-more';
 import { Panel } from './panel';
 import { PauseControl } from './pause-control';
 import { PauseOverlay } from './pause-overlay';
-import ProgressBar from './progress-bar';
+import { ProgressBar } from './progress-bar';
 import ReplayOverlay from './replay-overlay';
 import ToggleAnimation from './toggle-animation';
 import ToggleFullscreen from './toggle-fullscreen';

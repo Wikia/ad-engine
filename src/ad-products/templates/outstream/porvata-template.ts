@@ -5,7 +5,7 @@ import * as videoUserInterface from '../interface/video';
 
 import { DynamicReveal } from '../interface/video/dynamic-reveal';
 import { Floating } from '../interface/video/floating';
-import ProgressBar from '../interface/video/progress-bar';
+import { ProgressBar } from '../interface/video/progress-bar';
 import VolumeControl from '../interface/video/volume-control';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
