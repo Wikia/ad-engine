@@ -9,7 +9,6 @@ export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './nativo';
 export * from './nielsen';
-export * from './permutive';
 export * from './silver-surfer';
 export * from './stroer';
 export * from './taxonomy/taxonomy-service';

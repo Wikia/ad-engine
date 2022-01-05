@@ -15,7 +15,8 @@ npm install github:Wikia/ad-engine
 
 Import everything from `@wikia/ad-engine`. Dead code should be eliminated during webpack compilation.
 
-It is the one in `dist/index.es5.js`. It is compiled to es5 without polyfills and lodash plugin.
+After running `npm run buid:platforms` a set of packages for each platform will be available in `dist/platforms/`.
+
 To compile it in your desired application import `getAdEngineLoader` from `configs/webpack-app.config.js` and add to your webpack loaders array.
 
 ## Context
@@ -303,7 +304,7 @@ Name: **bfab**
   stickyUntilSlotViewed: true,
   bfaaSlotName: 'top_leaderboard',
   unstickInstantlyBelowPosition: 500,
-  topThreshold: 58,
+  topThreshold: 55,
   onInit: () => {},
 }
 ```
@@ -394,19 +395,6 @@ top.loadCustomAd && top.loadCustomAd({
 });
 </script>
 ```
-
-## Run build
-
-To build entire lib just use `npm run build` - it will create all three versions:
-* tree shakeable with single entry point
-  * can be built with `npm run build:rollup`
-  * can be watched with `npm run watch:rollup`
-* legacy with 4 different exports
-  * can be built with `npm run build:webpack`
-  * can be watched with `npm run build:webpack`
-* `global.bundle.js` to include everything to window.
-  * can be build with `npm run build:webpack`
-  * cannot be watched
 
 ### Debug mode
 

@@ -3,6 +3,7 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getRubiconFutheadContext } from '../../../bidders/prebid/rubicon-futhead';
 import { getRubiconMutheadContext } from '../../../bidders/prebid/rubicon-muthead';
+import { selectApplication } from '../../../utils/application-helper';
 
 @Injectable()
 export class SportsPrebidConfigSetup implements DiProcess {
@@ -11,9 +12,7 @@ export class SportsPrebidConfigSetup implements DiProcess {
 
 		context.set(
 			'bidders.prebid.rubicon_display',
-			context.get('application') === 'futhead'
-				? getRubiconFutheadContext(mode)
-				: getRubiconMutheadContext(mode),
+			selectApplication(getRubiconFutheadContext(mode), getRubiconMutheadContext(mode)),
 		);
 		context.set('bidders.prebid.wikia', getWikiaContext(mode));
 	}

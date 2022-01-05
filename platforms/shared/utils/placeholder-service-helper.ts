@@ -8,6 +8,7 @@ export class PlaceholderServiceHelper {
 		AdSlot.STATUS_COLLAPSE,
 		AdSlot.STATUS_FORCED_COLLAPSE,
 	];
+	statusToHide: string = AdSlot.STATUS_FORCED_COLLAPSE;
 	statusToUndoCollapse: string = AdSlot.SLOT_RENDERED_EVENT;
 
 	isLoadingOrCollapsed = (action: object): boolean => {

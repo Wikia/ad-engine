@@ -29,16 +29,17 @@ import { SportsTargetingSetup } from './setup/context/targeting/sports-targeting
 import { SportsDynamicSlotsSetup } from './setup/dynamic-slots/sports-dynamic-slots-setup.service';
 import { SportsIocSetup } from './sports-ioc-setup';
 import { SportsTemplatesSetup } from './templates/sports-templates.setup';
+import { selectApplication } from './utils/application-helper';
 
 @Injectable()
 export class SportsPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
-	execute(app): void {
+	execute(): void {
 		// Config
 		this.pipeline.add(
-			() => context.extend(getBasicContext(app)),
-			() => document.body.classList.add(`ae-${app}`),
+			() => context.extend(getBasicContext()),
+			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
 			() => ensureGeoCookie(),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			SportsIocSetup,
