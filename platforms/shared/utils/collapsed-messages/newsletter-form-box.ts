@@ -15,7 +15,7 @@ export class NewsletterFormBox extends MessageBox {
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const form = this.createForm();
-		form.addEventListener('submit', (event) => this.doEmailSignUp(event, adSlot));
+		form.addEventListener('submit', (event) => this.doEmailSignUp(event, adSlot.getSlotName()));
 		const formMessage = this.createFormMessage();
 
 		wrapper.append(message, form, formMessage);
@@ -47,7 +47,7 @@ export class NewsletterFormBox extends MessageBox {
 		messageArea.innerText = text;
 	};
 
-	private doEmailSignUp = (event, adSlot: AdSlot) => {
+	private doEmailSignUp = (event, adSlotName: string) => {
 		event.preventDefault();
 
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
@@ -56,29 +56,23 @@ export class NewsletterFormBox extends MessageBox {
 		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
 		submitBtn.disabled = true;
 
+		const onSuccess = () => {
+			this.showFormMessage('Thanks for signing up!');
+			submitBtn.disabled = false;
+			this.sendTrackingEvent(adSlotName, status_clicked);
+		};
+
+		const onError = () => {
+			this.showFormMessage('An error occurred. Please try again later.');
+			submitBtn.disabled = false;
+		};
+
 		if (!sailthru.isLoaded()) {
 			this.showFormMessage('An error occurred. Please try again later.');
 			submitBtn.disabled = false;
 			return;
 		}
 
-		window.Sailthru.integration('userSignUp', {
-			email: emailValue,
-			vars: {
-				sign_up_date: new Date().toISOString(),
-				email: emailValue,
-			},
-			lists: { 'Fandom Account Registration - MASTERLIST': 1 },
-			source: 'homepage_hero_unit',
-			onSuccess: () => {
-				this.showFormMessage('Thanks for signing up!');
-				submitBtn.disabled = false;
-				this.sendTrackingEvent(adSlot.getSlotName(), status_clicked);
-			},
-			onError: () => {
-				this.showFormMessage('An error occurred. Please try again later.');
-				submitBtn.disabled = false;
-			},
-		});
+		sailthru.signup(emailValue, onSuccess, onError);
 	};
 }
