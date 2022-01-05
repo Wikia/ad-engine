@@ -3,7 +3,7 @@ import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
 import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 
-import DynamicReveal from '../interface/video/dynamic-reveal';
+import { DynamicReveal } from '../interface/video/dynamic-reveal';
 import Floating from '../interface/video/floating';
 import ProgressBar from '../interface/video/progress-bar';
 import VolumeControl from '../interface/video/volume-control';
