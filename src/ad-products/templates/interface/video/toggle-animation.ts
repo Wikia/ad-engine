@@ -29,17 +29,14 @@ function showVideo(video, params): void {
 	toggle(video.container, params.image);
 }
 
-function add(video, container, params): void {
-	video.addEventListener('wikiaAdStarted', () => {
-		showVideo(video, params);
-	});
+export class ToggleAnimation {
+	static add(video, container, params): void {
+		video.addEventListener('wikiaAdStarted', () => {
+			showVideo(video, params);
+		});
 
-	video.addEventListener('wikiaAdCompleted', () => {
-		hideVideo(video, params);
-	});
+		video.addEventListener('wikiaAdCompleted', () => {
+			hideVideo(video, params);
+		});
+	}
 }
-
-export default {
-	add,
-	duration,
-};
