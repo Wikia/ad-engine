@@ -21,7 +21,7 @@ export class NewsletterFormBox extends MessageBox {
 		wrapper.append(message, form, formMessage);
 		placeholder.append(wrapper);
 
-		this.sendTrackingEvent(adSlot, status_impression);
+		this.sendTrackingEvent(adSlot.getSlotName(), status_impression);
 	};
 
 	private createForm = (): HTMLElement => {
@@ -73,7 +73,7 @@ export class NewsletterFormBox extends MessageBox {
 			onSuccess: () => {
 				this.showFormMessage('Thanks for signing up!');
 				submitBtn.disabled = false;
-				this.sendTrackingEvent(adSlot, status_clicked);
+				this.sendTrackingEvent(adSlot.getSlotName(), status_clicked);
 			},
 			onError: () => {
 				this.showFormMessage('An error occurred. Please try again later.');

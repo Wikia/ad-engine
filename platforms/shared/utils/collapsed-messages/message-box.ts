@@ -16,13 +16,13 @@ export class MessageBox {
 		const button = this.createButton();
 		button.onclick = () => {
 			this.openInNewTab();
-			this.sendTrackingEvent(adSlot, status_clicked);
+			this.sendTrackingEvent(adSlot.getSlotName(), status_clicked);
 		};
 
 		wrapper.append(message, button);
 		placeholder.appendChild(wrapper);
 
-		this.sendTrackingEvent(adSlot, status_impression);
+		this.sendTrackingEvent(adSlot.getSlotName(), status_impression);
 	};
 
 	createBoxWrapper = (): HTMLElement => {
@@ -50,11 +50,11 @@ export class MessageBox {
 		window.open(this.redirectUrl, '_blank').focus();
 	};
 
-	sendTrackingEvent = (adSlot: AdSlot, ad_status: string) => {
+	sendTrackingEvent = (adSlotName: string, ad_status: string) => {
 		communicationService.dispatch(
 			messageBoxTrackingEvent({
 				ad_status,
-				adSlotName: adSlot.getSlotName(),
+				adSlotName,
 			}),
 		);
 	};
