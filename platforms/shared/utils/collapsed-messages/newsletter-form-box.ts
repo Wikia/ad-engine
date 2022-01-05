@@ -13,6 +13,10 @@ export class NewsletterFormBox extends MessageBox {
 		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 
 		const placeholder = this.adSlot.getPlaceholder();
+		if (!placeholder) {
+			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
+		}
+
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const form = this.createForm();

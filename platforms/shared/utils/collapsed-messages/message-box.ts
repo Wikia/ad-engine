@@ -17,6 +17,10 @@ export class MessageBox {
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 
 		const placeholder = this.adSlot.getPlaceholder();
+		if (!placeholder) {
+			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
+		}
+
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const button = this.createButton();
