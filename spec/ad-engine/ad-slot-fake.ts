@@ -98,7 +98,7 @@ export default {
 		return [];
 	},
 	emit(event) {
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event,
 			slot: this,
 			adSlotName: this.getSlotName(),

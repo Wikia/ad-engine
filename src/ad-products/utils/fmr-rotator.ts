@@ -29,7 +29,7 @@ export class FmrRotator {
 	}
 
 	private initializeStandardRotation(): void {
-		communicationService.on(
+		communicationService.listen(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
@@ -37,7 +37,7 @@ export class FmrRotator {
 						universalAdPackage.isFanTakeoverLoaded() ||
 						context.get('state.provider') === 'prebidium'
 					) {
-						communicationService.onSlotEvent(
+						communicationService.listenSlotEvent(
 							AdSlot.STATUS_SUCCESS,
 							() => {
 								this.swapRecirculation(false);
@@ -49,12 +49,12 @@ export class FmrRotator {
 						return;
 					}
 
-					communicationService.onSlotEvent(
+					communicationService.listenSlotEvent(
 						AdSlot.STATUS_SUCCESS,
 						() => {
 							this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
 
-							communicationService.onSlotEvent(
+							communicationService.listenSlotEvent(
 								AdSlot.SLOT_VIEWED_EVENT,
 								() => {
 									const customDelays = context.get('options.rotatorDelay');
@@ -70,7 +70,7 @@ export class FmrRotator {
 						true,
 					);
 
-					communicationService.onSlotEvent(
+					communicationService.listenSlotEvent(
 						AdSlot.STATUS_COLLAPSE,
 						() => {
 							this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);

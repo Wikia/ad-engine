@@ -34,7 +34,7 @@ export class InstantConfigCacheStorage {
 	resetCache(): void {
 		this.sessionCookie.readSessionId();
 		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
-		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
+		communicationService.communicate(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 	}
 
 	get(id: string): CacheData {

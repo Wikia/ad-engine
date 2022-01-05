@@ -74,13 +74,13 @@ export class A9Provider extends BidderProvider {
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
 					this.removeBids(slot),
 				);
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
 					this.removeBids(slot),
 				);
-				communicationService.on(
+				communicationService.listen(
 					eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING,
 					({ slot }) => this.invalidateSlotTargeting(slot),
 					false,
@@ -176,7 +176,7 @@ export class A9Provider extends BidderProvider {
 
 				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
-				communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+				communicationService.communicate(eventsRepository.BIDDERS_BIDS_RESPONSE, {
 					bidResponse: this.mapResponseToTrackingBidDefinition(
 						bid.slotID,
 						bidTargeting,
@@ -192,7 +192,7 @@ export class A9Provider extends BidderProvider {
 		if (refresh) {
 			const refreshedSlotNames = slots.map((slot) => slot.slotName);
 
-			communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
+			communicationService.communicate(eventsRepository.BIDDERS_BIDS_REFRESH, {
 				refreshedSlotNames,
 			});
 		}
@@ -307,10 +307,10 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private registerVideoBidsRefreshing(): void {
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
 			this.refreshVideoBids(slot),
 		);
-		communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+		communicationService.listenSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
 			this.refreshVideoBids(slot),
 		);
 	}

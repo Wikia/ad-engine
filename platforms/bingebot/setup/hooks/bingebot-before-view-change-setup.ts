@@ -14,7 +14,7 @@ export class BingeBotBeforeViewChangeSetup implements DiProcess {
 				onlyNew(),
 			)
 			.subscribe(() => {
-				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+				communicationService.communicate(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
 			});
 	}
 }

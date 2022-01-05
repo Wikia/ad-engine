@@ -30,9 +30,9 @@ export class F2DynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.listen(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 					adProduct: universalAdPackage.getType(),
 				});

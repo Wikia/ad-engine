@@ -18,7 +18,7 @@ class SilverSurferService {
 	}
 
 	private setListenerForLazyLoadedSlots(): void {
-		communicationService.on(
+		communicationService.listen(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			async () => {
 				if (context.get('targeting.galactus_status') !== 'on_time') {

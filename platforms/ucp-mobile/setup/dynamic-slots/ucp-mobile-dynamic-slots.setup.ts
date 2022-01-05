@@ -57,9 +57,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.listen(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 					adProduct: universalAdPackage.getType(),
 				});
@@ -78,12 +78,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureInterstitial(): void {
-		communicationService.onSlotEvent(
+		const slotName = 'interstitial';
+
+		communicationService.listenSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
-				communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+				communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 			},
-			'interstitial',
+			slotName,
 		);
 	}
 
@@ -115,7 +117,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private registerFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
 
-		communicationService.onSlotEvent(
+		communicationService.listenSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = true;
@@ -126,13 +128,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 					document.getElementById('floor_adhesion_anchor').classList.add('hide');
 				};
 
-				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
 					if (this.CODE_PRIORITY.floor_adhesion.active) {
 						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 					}
 				});
 
-				communicationService.on(
+				communicationService.listen(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
 					() => {
 						if (this.CODE_PRIORITY.floor_adhesion.active) {
@@ -145,7 +147,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			slotName,
 		);
 
-		communicationService.onSlotEvent(
+		communicationService.listenSlotEvent(
 			AdSlot.HIDDEN_EVENT,
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = false;

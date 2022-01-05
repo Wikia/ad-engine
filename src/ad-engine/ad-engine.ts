@@ -36,7 +36,7 @@ export class AdEngine {
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
-		communicationService.on(
+		communicationService.listen(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => {
 				slotService.removeAll();
@@ -107,7 +107,7 @@ export class AdEngine {
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
-				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
+				communicationService.communicate(eventsRepository.AD_ENGINE_STACK_START);
 
 				this.started = true;
 				this.adStack.start();

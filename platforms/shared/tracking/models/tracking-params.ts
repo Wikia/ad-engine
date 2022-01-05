@@ -2,9 +2,9 @@ export interface TrackingParams {
 	a?: number;
 	action?: string;
 	beacon?: string;
-	// wiki id key emit UCP
+	// wiki id key on UCP
 	c?: number;
-	// wiki id key emit Gamepedia
+	// wiki id key on Gamepedia
 	ck?: string;
 	category?: string;
 	creative_id?: number;

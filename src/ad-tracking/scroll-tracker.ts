@@ -33,7 +33,7 @@ export class ScrollTracker {
 		if (this.isEnabled()) {
 			this.addTouchStartListener();
 
-			communicationService.on(
+			communicationService.listen(
 				eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 				() => {
 					this.finishScrollSpeedTracking();

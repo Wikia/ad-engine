@@ -53,7 +53,7 @@ class TemplateService {
 		}
 
 		// override params.slotName by splitting it by comma
-		// and picking first occurrence so we can rely emit it
+		// and picking first occurrence so we can rely on it
 		// in used creative templates
 		if (params && (typeof params.slotName === 'string' || params.slotName instanceof String)) {
 			params.slotName = params.slotName.split(',').shift();

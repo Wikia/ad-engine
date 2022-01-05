@@ -77,7 +77,7 @@ export class Nativo {
 
 	private isSponsoredProductOnPage(uapLoadStatusAction): boolean {
 		if (uapLoadStatusAction?.isLoaded === true) {
-			utils.logger(logGroup, 'Fan Takeover emit the page');
+			utils.logger(logGroup, 'Fan Takeover on the page');
 			return true;
 		}
 
@@ -86,7 +86,7 @@ export class Nativo {
 			uapLoadStatusAction?.adProduct === 'ruap' &&
 			context.get('custom.hasFeaturedVideo')
 		) {
-			utils.logger(logGroup, '"Fan Takeover" emit the featured page');
+			utils.logger(logGroup, '"Fan Takeover" on the featured page');
 			return true;
 		}
 
@@ -94,7 +94,7 @@ export class Nativo {
 	}
 
 	private sendEvent(): void {
-		communicationService.emit(eventsRepository.NATIVO_LOADED, { isLoaded: true });
+		communicationService.communicate(eventsRepository.NATIVO_LOADED, { isLoaded: true });
 	}
 
 	private displayTestAd(): void {

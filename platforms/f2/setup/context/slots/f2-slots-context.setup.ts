@@ -1,5 +1,4 @@
-import { slotsContext } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
+import { communicationService, context, DiProcess, eventsRepository } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -183,8 +182,26 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 		};
 
-		slotsContext.setupSlotVideoContext();
-
+		communicationService.listen(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
+				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
+					this.setupSlotParameters(slot),
+				);
+			},
+			false,
+		);
 		context.set('slots', slots);
+	}
+
+	private setupSlotParameters(slot): void {
+		const audioSuffix = slot.config.audio === true ? '-audio' : '';
+		const clickToPlaySuffix =
+			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
+
+		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
+		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
+		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }

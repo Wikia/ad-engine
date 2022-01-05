@@ -165,7 +165,7 @@ describe('Template Registry', () => {
 			assert(stateSharedSpy.constructor.notCalled);
 		});
 
-		it('should create all handlers emit init', () => {
+		it('should create all handlers on init', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
 			assert(stateASpy.constructor.calledOnce);
@@ -180,7 +180,7 @@ describe('Template Registry', () => {
 			assert(true, `Shouldn't throw`);
 		});
 
-		it('should create all handlers emit init for two templates', () => {
+		it('should create all handlers on init for two templates', () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 			instance.init(templateName2, templateSlot1, templateParams1);
 
@@ -190,7 +190,7 @@ describe('Template Registry', () => {
 			assert(stateSharedSpy.constructor.callCount === 4);
 		});
 
-		it('should destroy all machines emit destroy of given slotName', async () => {
+		it('should destroy all machines on destroy of given slotName', async () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 			instance.init(templateName1, templateSlot1, templateParams1);
 			instance.init(templateName2, templateSlot2, templateParams2);
@@ -204,7 +204,7 @@ describe('Template Registry', () => {
 			assert(stateSharedSpy.onDestroy.callCount === 4, 'stateSharedSpy.onDestroy.callCount === 4');
 		});
 
-		it('should destroy all machines emit destroyAll', async () => {
+		it('should destroy all machines on destroyAll', async () => {
 			instance.init(templateName1, templateSlot1, templateParams1);
 
 			await instance.destroyAll();

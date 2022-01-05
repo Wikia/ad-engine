@@ -40,7 +40,7 @@ describe('OnceProcess', () => {
 		assertResults(['func', 'end']);
 	});
 
-	it('works emit instance-level instead of step-level', async () => {
+	it('works on instance-level instead of step-level', async () => {
 		pipeline.add(funcProcess, once(executableOnceProcess), once(executableOnceProcess), () =>
 			stub('end'),
 		);

@@ -120,7 +120,7 @@ describe('Jwplayer Stream State', () => {
 	});
 
 	describe('Common', () => {
-		it('should update common properties emit every event', () => {
+		it('should update common properties on every event', () => {
 			jwpEvents.forEach((name, index) => {
 				jwplayerStub.getPlaylistItem.returns(`getPlaylistItem-${index}`);
 				jwplayerStub.getConfig.returns(`getConfig-${index}`);

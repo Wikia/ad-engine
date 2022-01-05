@@ -61,7 +61,7 @@ function showOverlay(overlay, params) {
 	overlay.style.display = 'block';
 }
 /**
- * Basing emit video width and total ad width compute width (in %)
+ * Basing on video width and total ad width compute width (in %)
  * of overlay to make it responsive.
  *
  * offsetWidth won't work in case video container is hidden.
