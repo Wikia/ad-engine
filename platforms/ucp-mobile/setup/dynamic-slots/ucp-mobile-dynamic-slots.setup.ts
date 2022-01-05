@@ -57,9 +57,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			communicationService.listen(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 					adProduct: universalAdPackage.getType(),
 				});
@@ -78,10 +78,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureInterstitial(): void {
-		communicationService.listenSlotEvent(
+		communicationService.onSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
-				communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+				communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 			},
 			'interstitial',
 		);
@@ -120,18 +120,18 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			document.getElementById('floor_adhesion_anchor').classList.add('hide');
 		};
 
-		communicationService.listenSlotEvent(
+		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = true;
 
-				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
 					if (this.CODE_PRIORITY.floor_adhesion.active) {
 						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 					}
 				});
 
-				communicationService.listen(
+				communicationService.on(
 					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
 					() => {
 						if (this.CODE_PRIORITY.floor_adhesion.active) {
@@ -144,7 +144,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			slotName,
 		);
 
-		communicationService.listenSlotEvent(
+		communicationService.onSlotEvent(
 			AdSlot.HIDDEN_EVENT,
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = false;

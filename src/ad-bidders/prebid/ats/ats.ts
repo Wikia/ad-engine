@@ -21,7 +21,7 @@ class Ats {
 			if (!userEmailHashes) {
 				if (context.get('state.isLogged')) {
 					const reason = 'no email';
-					communicationService.communicate(eventsRepository.ATS_NOT_LOADED_LOGGED, { reason });
+					communicationService.emit(eventsRepository.ATS_NOT_LOADED_LOGGED, { reason });
 				}
 
 				return Promise.resolve();
@@ -43,7 +43,7 @@ class Ats {
 					logging: 'error',
 				});
 
-				communicationService.communicate(eventsRepository.ATS_JS_LOADED, { loadTime });
+				communicationService.emit(eventsRepository.ATS_JS_LOADED, { loadTime });
 				this.registerAtsIdsLoadedHandler();
 				this.isLoaded = true;
 			});
@@ -63,7 +63,7 @@ class Ats {
 			const atsEnvelopeObj = atsEnvelope ? JSON.parse(atsEnvelope) : undefined;
 			const envelope = atsEnvelopeObj ? atsEnvelopeObj.envelope : 'undefined';
 
-			communicationService.communicate(eventsRepository.ATS_IDS_LOADED, { envelope });
+			communicationService.emit(eventsRepository.ATS_IDS_LOADED, { envelope });
 		});
 	}
 }

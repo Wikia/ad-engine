@@ -40,7 +40,7 @@ describe('CommunicationService', () => {
 		service.dispatch(globalExample({ bar: 'b' }));
 		service.dispatch(localExample({ foo: 'c' }));
 		service.dispatch(globalExample({ bar: 'd' }));
-		service.communicate(globalEvent, { bar: 'e' });
+		service.emit(globalEvent, { bar: 'e' });
 
 		expect(nextResults).to.deep.equal([
 			{ type: '[Example] Test', foo: 'a' },

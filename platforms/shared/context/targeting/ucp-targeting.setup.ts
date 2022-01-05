@@ -35,7 +35,7 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		if (context.get('options.uapExtendedSrcTargeting')) {
-			communicationService.listen(
+			communicationService.on(
 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					if (action.isLoaded) {

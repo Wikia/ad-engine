@@ -92,7 +92,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
 					const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
 
-					communicationService.listen(eventsRepository.AD_ENGINE_STACK_START, () => {
+					communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 						rotator.rotateSlot();
 					});
 				});
@@ -219,7 +219,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				communicationService.listen(
+				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);

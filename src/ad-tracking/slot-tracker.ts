@@ -41,7 +41,7 @@ class SlotTracker {
 			return;
 		}
 
-		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			const status = slot.getStatus();
 			const middlewareContext: AdInfoContext = {
 				slot,
@@ -58,7 +58,7 @@ class SlotTracker {
 			}
 		});
 
-		communicationService.listenSlotEvent(AdSlot.SLOT_STATUS_CHANGED, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_STATUS_CHANGED, ({ slot }) => {
 			const status = slot.getStatus();
 			const shouldSlotBeTracked =
 				slot.getConfigProperty('trackEachStatus') || slot.trackOnStatusChanged;
@@ -73,7 +73,7 @@ class SlotTracker {
 			}
 		});
 
-		communicationService.listenSlotEvent(AdSlot.CUSTOM_EVENT, ({ slot, payload }) => {
+		communicationService.onSlotEvent(AdSlot.CUSTOM_EVENT, ({ slot, payload }) => {
 			const middlewareContext: AdInfoContext = {
 				slot,
 				data: {

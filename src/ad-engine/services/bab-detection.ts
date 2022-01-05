@@ -93,7 +93,7 @@ class BabDetection {
 		document.dispatchEvent(event);
 
 		// Post-QueCast
-		communicationService.communicate(eventsRepository.AD_ENGINE_BAB_DETECTION, {
+		communicationService.emit(eventsRepository.AD_ENGINE_BAB_DETECTION, {
 			detected: isBabDetected,
 		});
 	}

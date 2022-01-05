@@ -20,7 +20,7 @@ class SlotsContext {
 	}
 
 	setupSlotVideoContext(): void {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));

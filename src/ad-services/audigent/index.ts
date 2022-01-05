@@ -32,7 +32,7 @@ class Audigent {
 				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					this.setup();
-					communicationService.communicate(eventsRepository.AUDIGENT_LOADED);
+					communicationService.emit(eventsRepository.AUDIGENT_LOADED);
 				});
 			this.isLoaded = true;
 		}

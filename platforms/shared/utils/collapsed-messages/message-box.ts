@@ -51,7 +51,7 @@ export class MessageBox {
 	};
 
 	sendTrackingEvent = (adSlot: AdSlot, ad_status: string) => {
-		communicationService.communicate(eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT, {
+		communicationService.emit(eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT, {
 			ad_status,
 			adSlotName: adSlot.getSlotName(),
 		});

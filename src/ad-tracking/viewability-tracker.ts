@@ -24,7 +24,7 @@ class ViewabilityTracker {
 			return;
 		}
 
-		communicationService.listenSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
 			this.pipeline.execute(
 				{
 					slot,

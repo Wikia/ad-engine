@@ -18,7 +18,7 @@ class CtaTracker {
 	}
 
 	register(callback: FuncPipelineStep<AdClickContext>): void {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT,
 			({ adSlotName, ad_status }) => {
 				this.handleCtaTracking(callback, slotService.get(adSlotName), ad_status);

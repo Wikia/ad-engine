@@ -271,7 +271,7 @@ export function registerUapListener(): void {
 			take(1),
 		)
 		.subscribe(() => {
-			communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
 				adProduct: universalAdPackage.getType(),
 			});

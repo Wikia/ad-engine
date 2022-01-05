@@ -29,10 +29,10 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
-communicationService.listenSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
 
@@ -192,7 +192,7 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		if (this.isLazyLoadingEnabled) {
-			communicationService.listen(
+			communicationService.on(
 				eventsRepository.BIDDERS_PREBID_LAZY_CALL,
 				() => {
 					this.lazyCall(bidsBackHandler);
@@ -261,7 +261,7 @@ export class PrebidProvider extends BidderProvider {
 
 		const refreshUsedBid = (winningBid) => {
 			if (this.bidsRefreshing.slots.indexOf(winningBid.adUnitCode) !== -1) {
-				communicationService.communicate(eventsRepository.BIDDERS_BIDS_REFRESH, {
+				communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
 					refreshedSlotNames: [winningBid.adUnitCode],
 				});
 
@@ -284,7 +284,7 @@ export class PrebidProvider extends BidderProvider {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		const trackBid = (response) => {
-			communicationService.communicate(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+			communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
 				bidResponse: this.mapResponseToTrackingBidDefinition(response),
 			});
 		};

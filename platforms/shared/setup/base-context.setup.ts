@@ -53,7 +53,7 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');
-			communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: false,
 				adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
 			});

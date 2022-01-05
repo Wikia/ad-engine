@@ -94,7 +94,7 @@ export class Nativo {
 	}
 
 	private sendEvent(): void {
-		communicationService.communicate(eventsRepository.NATIVO_LOADED, { isLoaded: true });
+		communicationService.emit(eventsRepository.NATIVO_LOADED, { isLoaded: true });
 	}
 
 	private displayTestAd(): void {
