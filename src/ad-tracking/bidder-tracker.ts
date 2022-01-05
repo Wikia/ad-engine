@@ -28,7 +28,7 @@ class BidderTracker {
 			return;
 		}
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.BIDDERS_BIDS_RESPONSE,
 			({ bidResponse }) => {
 				this.pipeline.execute(

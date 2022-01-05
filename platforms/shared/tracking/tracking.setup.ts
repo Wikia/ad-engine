@@ -84,7 +84,7 @@ export class TrackingSetup {
 	private porvataTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.VIDEO_PLAYER_TRACKING,
 			({ eventInfo }) => {
 				dataWarehouseTracker.track(eventInfo, porvataUrl);
@@ -272,7 +272,7 @@ export class TrackingSetup {
 	}
 
 	private audigentTracker(): void {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AUDIGENT_LOADED,
 			() => {
 				this.pageTracker.trackProp('audigent', 'loaded');
@@ -286,7 +286,7 @@ export class TrackingSetup {
 	}
 
 	private liveRampTracker(): void {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.LIVERAMP_IDS_LOADED,
 			(props) => {
 				this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
@@ -296,7 +296,7 @@ export class TrackingSetup {
 	}
 
 	private atsTracker(): void {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.ATS_JS_LOADED,
 			(props) => {
 				this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
@@ -304,7 +304,7 @@ export class TrackingSetup {
 			false,
 		);
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.ATS_IDS_LOADED,
 			(props) => {
 				this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
@@ -312,7 +312,7 @@ export class TrackingSetup {
 			false,
 		);
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.ATS_NOT_LOADED_LOGGED,
 			(props) => {
 				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);

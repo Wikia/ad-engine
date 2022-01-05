@@ -104,7 +104,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				communicationService.listen(
+				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
@@ -190,7 +190,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: wrapperClassList,
 			},
 			activator: () => {
-				communicationService.listen(
+				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						context.push('events.pushOnScroll.ids', slotName);
@@ -222,14 +222,11 @@ export class UcpMobileSlotsDefinitionRepository {
 			repeatLimit: 20,
 		};
 
-		communicationService.listen(
-			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-			(action: UapLoadStatus) => {
-				if (!action.isLoaded) {
-					slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
-				}
-			},
-		);
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+			if (!action.isLoaded) {
+				slotPlaceholderInjector.injectAndRepeat(icbPlaceholderConfig, adSlotCategory);
+			}
+		});
 	}
 
 	getMobilePrefooterConfig(): SlotSetupDefinition {
@@ -252,7 +249,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['ad-slot-placeholder', 'mobile-prefooter', 'is-loading', 'hide'],
 			},
 			activator: () => {
-				communicationService.listen(
+				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
 						if (action.isLoaded) {
@@ -394,15 +391,12 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private pushWaitingSlot(slotName: string): void {
-		communicationService.listen(
-			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-			(action: UapLoadStatus) => {
-				if (action.isLoaded) {
-					context.push('events.pushOnScroll.ids', slotName);
-				} else {
-					context.push('state.adStack', { id: slotName });
-				}
-			},
-		);
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
+			if (action.isLoaded) {
+				context.push('events.pushOnScroll.ids', slotName);
+			} else {
+				context.push('state.adStack', { id: slotName });
+			}
+		});
 	}
 }

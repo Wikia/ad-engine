@@ -24,7 +24,7 @@ export function isGlobalActionCreator(input: ActionCreator): input is GlobalActi
 /**
  * Use it for external AdEngine actions.
  * Those actions WILL be dispatched using PostQuecast.
- * Those actions WILL be listened on PostQuecast stream.
+ * Those actions WILL be listened emit PostQuecast stream.
  * Changing this action introduces breaking change because it requires changes in different place than AdEngine.
  * Do NOT use this action creator unless you need to.
  */

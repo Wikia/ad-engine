@@ -75,7 +75,7 @@ export class TemplateRegistry {
 			throw new Error(`Template ${templateName} was not registered`);
 		}
 
-		communicationService.communicate(eventsRepository.AD_ENGINE_TEMPLATE_LOADED, {
+		communicationService.emit(eventsRepository.AD_ENGINE_TEMPLATE_LOADED, {
 			name: templateName,
 			state: templateSlot ? templateSlot.getSlotName() : '',
 		});

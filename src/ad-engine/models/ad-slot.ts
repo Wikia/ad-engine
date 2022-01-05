@@ -63,6 +63,7 @@ export interface SlotConfig {
 	trackingKey?: string;
 	audio?: boolean;
 	autoplay?: boolean;
+	videoDepth?: number;
 	placeholder?: SlotPlaceholderContextConfig;
 }
 
@@ -147,7 +148,7 @@ export class AdSlot {
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
 
 		this.requested = new Promise<void>((resolve) => {
-			communicationService.listenSlotEvent(
+			communicationService.onSlotEvent(
 				AdSlot.SLOT_REQUESTED_EVENT,
 				() => {
 					this.pushTime = new Date().getTime();
@@ -159,7 +160,7 @@ export class AdSlot {
 			);
 		});
 		this.loaded = new Promise<void>((resolve) => {
-			communicationService.listenSlotEvent(
+			communicationService.onSlotEvent(
 				AdSlot.SLOT_LOADED_EVENT,
 				() => {
 					slotTweaker.setDataParam(this, 'slotLoaded', true);
@@ -171,7 +172,7 @@ export class AdSlot {
 			);
 		});
 		this.rendered = new Promise<void>((resolve) => {
-			communicationService.listenSlotEvent(
+			communicationService.onSlotEvent(
 				AdSlot.SLOT_RENDERED_EVENT,
 				({ payload }) => {
 					const {
@@ -188,7 +189,7 @@ export class AdSlot {
 			);
 		});
 		this.viewed = new Promise<void>((resolve) => {
-			communicationService.listenSlotEvent(
+			communicationService.onSlotEvent(
 				AdSlot.SLOT_VIEWED_EVENT,
 				() => {
 					slotTweaker.setDataParam(this, 'slotViewed', true);
@@ -450,14 +451,14 @@ export class AdSlot {
 
 		this.emit(AdSlot.TEMPLATES_LOADED, templateNames);
 
-		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_LOADED, {
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_SUCCESS,
 		});
 	}
 
 	collapse(status: string = AdSlot.STATUS_COLLAPSE): void {
-		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_LOADED, {
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_LOADED, {
 			name: this.getSlotName(),
 			state: AdSlot.STATUS_COLLAPSE,
 		});
@@ -593,12 +594,12 @@ export class AdSlot {
 	/**
 	 * Pass all events to Post-QueCast
 	 */
-	emit(event: string | symbol, data: any = {}): void {
-		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+	emit(event: string | symbol, data: any = {}, serialize: boolean = true): void {
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event: event.toString(),
 			slot: this,
 			adSlotName: this.getSlotName(),
-			payload: data,
+			payload: serialize ? JSON.parse(JSON.stringify(data)) : data,
 		});
 
 		this.logger(this.getSlotName(), event, data);

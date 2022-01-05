@@ -8,9 +8,9 @@ function add(video, container): void {
 		'porvata-off-icon',
 	]);
 	const onIcon = createIcon(icons.FULLSCREEN_ON, [
-		'fullscreen-on-icon',
+		'fullscreen-emit-icon',
 		'porvata-icon',
-		'porvata-on-icon',
+		'porvata-emit-icon',
 	]);
 
 	toggleFullscreenButton.appendChild(offIcon);
@@ -22,9 +22,9 @@ function add(video, container): void {
 	});
 	video.addEventListener('wikiaFullscreenChange', () => {
 		if (video.isFullscreen()) {
-			toggleFullscreenButton.classList.add('is-on');
+			toggleFullscreenButton.classList.add('is-emit');
 		} else {
-			toggleFullscreenButton.classList.remove('is-on');
+			toggleFullscreenButton.classList.remove('is-emit');
 		}
 	});
 	video.addEventListener('wikiaAdStop', () => {

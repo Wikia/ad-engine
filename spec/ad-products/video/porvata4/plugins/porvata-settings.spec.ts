@@ -72,7 +72,7 @@ describe('Porvata Settings wrapper', () => {
 		assert.isFalse(settings.isMoatTrackingEnabled());
 	});
 
-	it('disables moatTracking based on context when there is no value passed', () => {
+	it('disables moatTracking based emit context when there is no value passed', () => {
 		context.set('options.video.moatTracking.enabled', false);
 
 		const settings = new PorvataSettings({
@@ -106,7 +106,7 @@ describe('Porvata Settings wrapper', () => {
 		assert.isFalse(settings.isIasTrackingEnabled());
 	});
 
-	it('disables iasTracking based on context when there is no value passed', () => {
+	it('disables iasTracking based emit context when there is no value passed', () => {
 		context.set('options.video.iasTracking.enabled', false);
 
 		const settings = new PorvataSettings({

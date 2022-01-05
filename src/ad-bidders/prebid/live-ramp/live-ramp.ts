@@ -41,7 +41,7 @@ class LiveRamp {
 		if (!this.isDispatched) {
 			userId = userId ? userId : 'undefined';
 			utils.logger(logGroup, 'dispatching LiveRamp event, userId: ', userId);
-			communicationService.communicate(eventsRepository.LIVERAMP_IDS_LOADED, { userId });
+			communicationService.emit(eventsRepository.LIVERAMP_IDS_LOADED, { userId });
 			this.isDispatched = true;
 		}
 	}

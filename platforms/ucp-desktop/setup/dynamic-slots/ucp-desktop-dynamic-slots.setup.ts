@@ -84,12 +84,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		let porvataClosedActive = false;
 
-		communicationService.listenSlotEvent(
+		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				porvataClosedActive = true;
 
-				communicationService.listenSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
 					if (porvataClosedActive) {
 						porvataClosedActive = false;
 						slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
@@ -99,7 +99,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			slotName,
 		);
 
-		communicationService.listenSlotEvent(
+		communicationService.onSlotEvent(
 			AdSlot.HIDDEN_EVENT,
 			() => {
 				porvataClosedActive = false;

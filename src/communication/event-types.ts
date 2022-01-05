@@ -66,7 +66,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
-	AD_ENGINE_MESSAGEBOX_EVENT: {
+	AD_ENGINE_MESSAGE_BOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
@@ -204,7 +204,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Video player tracking',
 		payload: props<{ eventInfo: object }>(),
 	},
-	// Google Ad Manager events //
+	// Events emitted from Google Ad Manager //
 	GAM_AD_INTERVENTION: {
 		category: '[GAM iframe]',
 		name: 'Ad intervention',

@@ -50,7 +50,7 @@ describe('ATS', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('ATS is disabled on child-directed wiki', async () => {
+	it('ATS is disabled emit child-directed wiki', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		await ats.call();

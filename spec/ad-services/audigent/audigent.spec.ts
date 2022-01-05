@@ -51,7 +51,7 @@ describe('Audigent', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Audigent not called on kid wikis', async () => {
+	it('Audigent not called emit kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		await audigent.call();

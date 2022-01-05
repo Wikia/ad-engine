@@ -11,7 +11,7 @@ class SlotInjector {
 	private slotCreator = new SlotCreator();
 
 	constructor() {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot: adSlot }) => {
 				const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
@@ -29,7 +29,7 @@ class SlotInjector {
 			false,
 		);
 
-		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
 
 			slotsToInject.forEach((slotName: string) => {

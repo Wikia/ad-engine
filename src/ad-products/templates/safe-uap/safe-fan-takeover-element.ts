@@ -52,7 +52,7 @@ export class SafeFanTakeoverElement {
 
 		if (!SafeFanTakeoverElement.config) {
 			SafeFanTakeoverElement.config = params.config;
-			communicationService.listen(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () => {
+			communicationService.on(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () => {
 				SafeFanTakeoverElement.config = null;
 			});
 		}
