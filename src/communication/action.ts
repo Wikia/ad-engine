@@ -12,7 +12,7 @@ import {
 /**
  * Use it for internal AdEngine actions.
  * Those actions will NOT be dispatched using PostQuecast.
- * Those actions will NOT be listened on PostQuecast stream.
+ * Those actions will NOT be listened emit PostQuecast stream.
  */
 export function action<T extends string>(type: T): ActionCreator<T, () => Typed<{}, T>>;
 /**

@@ -62,7 +62,7 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 class SlotRepeater {
 	init(): void {
-		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			if (slot.isEnabled() && slot.isRepeatable()) {
 				return repeatSlot(slot);
 			}

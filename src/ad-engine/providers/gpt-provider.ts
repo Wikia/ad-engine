@@ -63,7 +63,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 			const adType = getAdType(event, adSlot.getIframe());
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType });
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
 
@@ -120,12 +120,12 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
 			false,
 		);
-		communicationService.listenSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
 			this.destroySlot(slot.getSlotName());
 		});
 		initialized = true;

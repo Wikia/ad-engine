@@ -254,6 +254,33 @@ function isFanTakeoverLoaded(): boolean {
 	);
 }
 
+export function registerUapListener(): void {
+	communicationService.action$
+		.pipe(
+			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+			filter((action) => {
+				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
+
+				return (
+					isFirstCallAdSlot &&
+					[AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
+						.map((status) => action.event === status)
+						.some((x) => !!x)
+				);
+			}),
+			take(1),
+		)
+		.subscribe(() => {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+				adProduct: universalAdPackage.getType(),
+			});
+		});
+}
+
+// Side effect
+registerUapListener();
+
 export const universalAdPackage = {
 	...constants,
 	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
@@ -290,30 +317,3 @@ export const universalAdPackage = {
 	setType,
 	updateSlotsTargeting,
 };
-
-export function registerUapListener(): void {
-	communicationService.action$
-		.pipe(
-			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-			filter((action) => {
-				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
-
-				return (
-					isFirstCallAdSlot &&
-					[AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
-						.map((status) => action.event === status)
-						.some((x) => !!x)
-				);
-			}),
-			take(1),
-		)
-		.subscribe(() => {
-			communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-				adProduct: universalAdPackage.getType(),
-			});
-		});
-}
-
-// Side effect
-registerUapListener();

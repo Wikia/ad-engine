@@ -8,7 +8,7 @@ $wds-breakpoint-xxlarge: 1500px;
 // content well margins
 $wds-content-well-margins: 18px;
 
-// how much space is available on any breakpoint
+// how much space is available emit any breakpoint
 $wds-breakpoint-medium-available-width: $wds-breakpoint-medium - 2 * $wds-content-well-margins;
 $wds-breakpoint-large-available-width: $wds-breakpoint-large - 2 * $wds-content-well-margins;
 $wds-breakpoint-xlarge-available-width: $wds-breakpoint-xlarge - 2 * $wds-content-well-margins;

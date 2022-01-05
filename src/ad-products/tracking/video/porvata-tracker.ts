@@ -8,7 +8,7 @@ import { VideoEventDataProvider } from './video-event-data-provider';
  */
 class PorvataTracker {
 	/**
-	 * Register event listeners on player
+	 * Register event listeners emit player
 	 */
 	register(): void {
 		const listener: PorvataEventListener = {

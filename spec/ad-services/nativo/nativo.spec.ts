@@ -61,7 +61,7 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(false);
 	});
 
-	it('Nativo emits event on successful load', async () => {
+	it('Nativo emits event emit successful load', async () => {
 		await nativo.call();
 
 		expect(loadScriptSpy.called).to.equal(true);
@@ -106,13 +106,13 @@ describe('Nativo service', () => {
 		expect(ntvCmdPushSpy.callCount).to.equal(0);
 	});
 
-	it('Nativo does not send request when Fan Takeover is on a regular page (FITO/SOV ad product)', () => {
+	it('Nativo does not send request when Fan Takeover is emit a regular page (FITO/SOV ad product)', () => {
 		nativo.requestAd(placeholder, { isLoaded: true });
 
 		expect(ntvCmdPushSpy.callCount).to.equal(0);
 	});
 
-	it('Nativo does not send request when Roadblock is on FV page (FITO/SOV ad product)', () => {
+	it('Nativo does not send request when Roadblock is emit FV page (FITO/SOV ad product)', () => {
 		context.set('custom.hasFeaturedVideo', true);
 
 		nativo.requestAd(placeholder, { isLoaded: false, adProduct: 'ruap' });
@@ -120,7 +120,7 @@ describe('Nativo service', () => {
 		expect(ntvCmdPushSpy.callCount).to.equal(0);
 	});
 
-	it('Nativo sends request when Roadblock is on a regular page', () => {
+	it('Nativo sends request when Roadblock is emit a regular page', () => {
 		context.set('custom.hasFeaturedVideo', false);
 
 		nativo.requestAd(placeholder, { isLoaded: false, adProduct: 'ruap' });

@@ -148,7 +148,7 @@ describe('Appnexus bidder adapter', () => {
 		]);
 	});
 
-	it('getPlacement on mobile returns correct placementId', () => {
+	it('getPlacement emit mobile returns correct placementId', () => {
 		const appnexus = new Appnexus({
 			enabled: true,
 			slots: {},

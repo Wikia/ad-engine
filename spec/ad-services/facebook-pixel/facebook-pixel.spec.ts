@@ -49,7 +49,7 @@ describe('Facebook pixel', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Facebook pixel not created on kid wikis', async () => {
+	it('Facebook pixel not created emit kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		await facebookPixel.call();

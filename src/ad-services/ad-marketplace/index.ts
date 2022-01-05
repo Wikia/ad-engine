@@ -60,7 +60,7 @@ class AdMarketplace {
 		);
 		instantSearchEndpointParameters.push('qt=');
 
-		communicationService.listen(eventsRepository.ADMARKETPLACE_INIT, () => {
+		communicationService.on(eventsRepository.ADMARKETPLACE_INIT, () => {
 			this.registerSearchEvents();
 		});
 

@@ -112,7 +112,7 @@ export const adSlotFake = {
 		return [];
 	},
 	emit(event): void {
-		communicationService.communicate(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event,
 			slot: this,
 			adSlotName: this.getSlotName(),

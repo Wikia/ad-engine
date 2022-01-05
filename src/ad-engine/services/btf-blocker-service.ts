@@ -40,7 +40,7 @@ class BtfBlockerService {
 	}
 
 	init(): void {
-		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			logger(logGroup, adSlot.getSlotName(), 'Slot rendered');
 			if (!this.firstCallEnded && adSlot.isFirstCall() && !this.isSafeFanTakeover(adSlot)) {
 				this.finishFirstCall();

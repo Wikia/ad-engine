@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { DomManipulator } from '../helpers/manipulators/dom-manipulator';
 
 /**
- * Resets DomManipulator on leave
+ * Resets DomManipulator emit leave
  */
 @Injectable({ autobind: false })
 export class DomCleanupHandler implements TemplateStateHandler {

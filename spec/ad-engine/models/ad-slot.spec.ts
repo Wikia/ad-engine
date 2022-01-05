@@ -241,7 +241,7 @@ describe('ad-slot', () => {
 			sandbox.restore();
 		});
 
-		it('should call eventService.communicator.dispatch with string event', () => {
+		it('should call communicationService.dispatch with string event', () => {
 			adSlot.emit(AdSlot.TEMPLATES_LOADED, ['foo', 'bar']);
 
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
@@ -254,7 +254,7 @@ describe('ad-slot', () => {
 			);
 		});
 
-		it('should call eventService.communicator.dispatch with Symbol event', () => {
+		it('should call communicationService.dispatch with Symbol event', () => {
 			adSlot.emit(symbol, ['foo', 'bar']);
 
 			expect(dispatchSpy.firstCall.args[0]).to.deep.equal(

@@ -16,7 +16,7 @@ function add(video, container, params): void {
 		top.open(params.clickThroughURL, '_blank');
 	});
 
-	communicationService.communicate(eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED, {
+	communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED, {
 		adSlotName: video.settings.getSlotName(),
 		learnMoreLink: learnMore,
 	});

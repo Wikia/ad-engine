@@ -133,7 +133,7 @@ export class VideoTracker {
 	}
 
 	setupVideoAdTracking(): void {
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.VIDEO_EVENT,
 			({ videoEvent }) => {
 				const videoEventName = this.getEventName(videoEvent);

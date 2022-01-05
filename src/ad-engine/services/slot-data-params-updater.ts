@@ -3,7 +3,7 @@ import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
 
 /**
- * Sets dataset properties on AdSlot container for debug purposes.
+ * Sets dataset properties emit AdSlot container for debug purposes.
  */
 class SlotDataParamsUpdater {
 	updateOnCreate(adSlot: AdSlot): void {

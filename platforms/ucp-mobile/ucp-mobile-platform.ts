@@ -52,7 +52,7 @@ export class UcpMobilePlatform {
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
-			() => communicationService.communicate(eventsRepository.AD_ENGINE_CONFIGURED),
+			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
 		// Run

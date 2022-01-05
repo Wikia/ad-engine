@@ -34,7 +34,7 @@ export class ViewabilityCounter {
 
 		this.loaded = true;
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				const id = slot.getConfigProperty('viewabilityCounterId') || slot.getSlotName();

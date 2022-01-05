@@ -29,7 +29,7 @@ export class InterstitialBootstrapHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
-		communicationService.communicate(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+		communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 		this.adSlot.show();
 
 		window.ads.runtime.interstitial.visible = true;

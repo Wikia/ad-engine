@@ -66,7 +66,7 @@ describe('IAS video tracker', () => {
 		assert.isFalse(iasVideoTracker.isEnabled(createVideoSettings(false)));
 	});
 
-	it('calls googleImaVansAdapter on init', async () => {
+	it('calls googleImaVansAdapter emit init', async () => {
 		const settings = createVideoSettings();
 
 		await iasVideoTracker.init(createPlayer(), settings);
