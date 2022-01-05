@@ -3,7 +3,7 @@ import { UapVideoSettings } from '@wikia/ad-products/templates/uap/uap-video-set
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { CloseButton } from '../../../../../src/ad-products/templates/interface/video/close-button';
-import ReplayOverlay from '../../../../../src/ad-products/templates/interface/video/replay-overlay';
+import { ReplayOverlay } from '../../../../../src/ad-products/templates/interface/video/replay-overlay';
 
 function getContainer(): HTMLDivElement {
 	return document.createElement('div');
