@@ -1,6 +1,8 @@
 import {
 	AdSlot,
+	communicationService,
 	context,
+	eventsRepository,
 	getAdProductInfo,
 	getAdUnitString,
 	PorvataParams,
@@ -15,6 +17,19 @@ class SlotsContext {
 		definedViewportSizes.forEach((sizeMap) => {
 			sizeMap.sizes.push(size);
 		});
+	}
+
+	setupSlotVideoContext(): void {
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
+				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
+					this.setupSlotParameters(slot),
+				);
+			},
+			false,
+		);
 	}
 
 	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void {
@@ -32,6 +47,16 @@ class SlotsContext {
 		const element = document.getElementById(slotName);
 
 		slotService.setState(slotName, !!element && state, status);
+	}
+
+	private setupSlotParameters(slot: AdSlot): void {
+		const audioSuffix = slot.config.audio === true ? '-audio' : '';
+		const clickToPlaySuffix =
+			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
+
+		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
+		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
+		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }
 

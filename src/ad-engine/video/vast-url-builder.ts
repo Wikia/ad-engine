@@ -36,7 +36,7 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		setTargetingValue(key, contextTargeting[key]);
 	});
 
-	communicationService.communicate(eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
+	communicationService.emit(eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
 
 	const params: Dictionary = {
 		...targeting,

@@ -84,7 +84,7 @@ describe('Instant Config Service', () => {
 			await InstantConfigService.init();
 			const numberOfCalls = getValuesStub.getCalls().length;
 
-			communicationService.communicate(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
+			communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 
 			expect(getValuesStub.getCalls().length).to.be.greaterThan(numberOfCalls);
 		});

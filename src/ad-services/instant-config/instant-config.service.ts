@@ -28,7 +28,7 @@ export class InstantConfigService {
 		this.repository = this.interpreter.getValues();
 		utils.logger(logGroup, 'instantiated with', this.repository);
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET,
 			() => {
 				this.repository = this.interpreter.getValues();

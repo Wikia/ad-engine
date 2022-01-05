@@ -53,7 +53,7 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');
-			communicationService.communicate(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
 				isLoaded: false,
 				adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
 			});
@@ -133,7 +133,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 
 		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
-			// if backend call is disabled let's call it on frontend
+			// if backend call is disabled let's call it emit frontend
 			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		}
 

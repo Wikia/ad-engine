@@ -1,4 +1,5 @@
-import { communicationService, context, DiProcess, eventsRepository } from '@wikia/ad-engine';
+import { slotsContext } from '@platforms/shared';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -169,28 +170,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 		};
 
-		communicationService.listen(
-			eventsRepository.AD_ENGINE_SLOT_ADDED,
-			({ slot }) => {
-				context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
-				context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
-					this.setupSlotParameters(slot),
-				);
-			},
-			false,
-		);
+		slotsContext.setupSlotVideoContext();
+
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
-	}
-
-	private setupSlotParameters(slot): void {
-		const audioSuffix = slot.config.audio === true ? '-audio' : '';
-		const clickToPlaySuffix =
-			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
-
-		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
-		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
-		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }

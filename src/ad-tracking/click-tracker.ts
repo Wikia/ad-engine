@@ -21,11 +21,11 @@ class AdClickTracker {
 	}
 
 	register(callback: FuncPipelineStep<AdClickContext>): void {
-		communicationService.listenSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 			this.addClickTrackingListeners(callback, adSlotName);
 		});
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED,
 			({ adSlotName, learnMoreLink }) => {
 				this.addClickVideoLearnMoreTrackingListeners(callback, adSlotName, learnMoreLink);

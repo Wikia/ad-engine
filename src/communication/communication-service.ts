@@ -42,17 +42,17 @@ export class CommunicationService {
 		this.connectReduxDevtools(reduxDevtoolsName);
 	}
 
-	communicate(event: EventOptions, payload?: object): void {
+	emit(event: EventOptions, payload?: object): void {
 		this.dispatch(this.getGlobalAction(event)(payload));
 	}
 
-	listen(event: EventOptions, callback: (payload?: any) => void, once: boolean = true): void {
+	on(event: EventOptions, callback: (payload?: any) => void, once: boolean = true): void {
 		this.action$
 			.pipe(ofType(this.getGlobalAction(event)), once ? take(1) : skip(0))
 			.subscribe(callback);
 	}
 
-	listenSlotEvent(
+	onSlotEvent(
 		eventName: string | symbol,
 		callback: (payload?: any) => void,
 		slotName: string = '',

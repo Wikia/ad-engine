@@ -105,7 +105,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 
 		adMarketplace.initialize();
 
-		communicationService.listen(
+		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 			({ isLoaded }: UapLoadStatus) => {
 				const incontentPlayer = slotService.get('incontent_player');
