@@ -4,7 +4,7 @@ import * as Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import playerEventEmitter from '../../../tracking/video/player-event-emitter';
-import videoEventDataProvider from '../../../tracking/video/video-event-data-provider';
+import { VideoEventDataProvider } from '../../../tracking/video/video-event-data-provider';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpEventKey } from '../streams/jwplayer-events';
 import { JwpEvent } from '../streams/jwplayer-stream';
@@ -52,7 +52,7 @@ export class JWPlayerTrackingHandler {
 
 	private track(event: JwpEvent<TrackingEvent>): void {
 		const videoData = this.getVideoData(event);
-		const eventInfo: VideoEventData = videoEventDataProvider.getEventData(videoData);
+		const eventInfo: VideoEventData = VideoEventDataProvider.getEventData(videoData);
 
 		playerEventEmitter.emit(eventInfo);
 		playerEventEmitter.emitVideoEvent(event);
