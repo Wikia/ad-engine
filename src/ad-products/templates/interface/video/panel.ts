@@ -16,5 +16,3 @@ export class Panel {
 		container.appendChild(this.panelContainer);
 	}
 }
-
-export default Panel;
