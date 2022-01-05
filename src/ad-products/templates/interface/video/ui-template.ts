@@ -14,7 +14,7 @@ import { ToggleFullscreen } from './toggle-fullscreen';
 import { ToggleThumbnail } from './toggle-thumbnail';
 import { ToggleUI } from './toggle-ui';
 import { ToggleVideo } from './toggle-video';
-import VolumeControl from './volume-control';
+import { VolumeControl } from './volume-control';
 
 export const createBottomPanel = ({ fullscreenAllowed = true, theme = null }) => {
 	const isHiVi = theme === 'hivi';
