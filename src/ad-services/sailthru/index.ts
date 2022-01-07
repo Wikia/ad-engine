@@ -4,16 +4,14 @@ export interface UserSignupPayload {
 	onError: () => void;
 }
 
-export type SailthruSource = 'adengine_in_content_ad';
+type SailthruSource = 'adengine_in_content_ad';
 
 class Sailthru {
 	isLoaded(): boolean {
 		return !!window.Sailthru;
 	}
 
-	userSignup(payload: UserSignupPayload, source: string): void {
-		const { email, onSuccess, onError } = payload;
-
+	userSignup({ email, onSuccess, onError }: UserSignupPayload, source: SailthruSource): void {
 		window.Sailthru.integration('userSignUp', {
 			email,
 			onSuccess,

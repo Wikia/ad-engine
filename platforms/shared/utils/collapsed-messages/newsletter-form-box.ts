@@ -1,4 +1,4 @@
-import { AdSlot, sailthru, SailthruSource, UserSignupPayload } from '@wikia/ad-engine';
+import { AdSlot, sailthru, UserSignupPayload } from '@wikia/ad-engine';
 import { MessageBox } from './message-box';
 
 export class NewsletterFormBox extends MessageBox {
@@ -87,8 +87,8 @@ export class NewsletterFormBox extends MessageBox {
 			return;
 		}
 
-		const payload: UserSignupPayload = this.createPayload(emailValue, submitBtn);
-		const source: SailthruSource = 'adengine_in_content_ad';
+		const payload = this.createPayload(emailValue, submitBtn);
+		const source = 'adengine_in_content_ad';
 
 		sailthru.userSignup(payload, source);
 	}
