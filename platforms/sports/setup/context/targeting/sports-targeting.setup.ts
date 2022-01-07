@@ -33,10 +33,6 @@ export class SportsTargetingSetup implements DiProcess {
 	}
 
 	private isSquadPage(): boolean {
-		if (context.get('application') === 'muthead') {
-			return false;
-		}
-
 		const squadPageRegex = /\/\d+\/squads\/\d+/;
 
 		return selectApplication(!!window.location.pathname.match(squadPageRegex), false);
