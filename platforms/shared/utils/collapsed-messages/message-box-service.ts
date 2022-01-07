@@ -12,11 +12,11 @@ export class MessageBoxService {
 		this.messageBoxCreator = new MessageBoxCreator();
 	}
 
-	getCurrentTypeIndex = (): number => {
+	getCurrentTypeIndex(): number {
 		return this.currentType;
-	};
+	}
 
-	addMessageBox = (adSlot: AdSlot): void => {
+	addMessageBox(adSlot: AdSlot): void {
 		if (this.currentType >= this.types.length) {
 			return;
 		}
@@ -28,21 +28,21 @@ export class MessageBoxService {
 		messageBox.create();
 
 		this.currentType += 1;
-	};
+	}
 
-	shouldAddMessageBox = (actionEvent: string, placeholder: HTMLElement): boolean => {
+	shouldAddMessageBox(actionEvent: string, placeholder: HTMLElement): boolean {
 		if (this.isTopLeaderboard(placeholder) || this.isBottomLeaderoard(placeholder)) {
 			return false;
 		}
 
 		return actionEvent === AdSlot.STATUS_COLLAPSE;
-	};
+	}
 
-	isTopLeaderboard = (placeholder: HTMLElement): boolean => {
+	isTopLeaderboard(placeholder: HTMLElement): boolean {
 		return placeholder.classList.contains('top-leaderboard');
-	};
+	}
 
-	isBottomLeaderoard = (placeholder: HTMLElement): boolean => {
+	isBottomLeaderoard(placeholder: HTMLElement): boolean {
 		return placeholder.classList.contains('bottom-leaderboard');
-	};
+	}
 }
