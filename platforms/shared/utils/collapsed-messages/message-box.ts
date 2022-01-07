@@ -12,7 +12,7 @@ export class MessageBox {
 		this.adSlot = adSlot;
 	}
 
-	create = () => {
+	create(): void {
 		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 
@@ -33,43 +33,43 @@ export class MessageBox {
 		placeholder.appendChild(wrapper);
 
 		this.sendTrackingEvent(status_impression);
-	};
+	}
 
-	createBoxWrapper = (): HTMLElement => {
+	createBoxWrapper(): HTMLElement {
 		const box = document.createElement('div');
 		box.classList.add('message-box', `cm-${this.type.toLowerCase()}-box`);
 		return box;
-	};
+	}
 
-	createMessage = (): HTMLElement => {
+	createMessage(): HTMLElement {
 		const message = document.createElement('h3');
 		message.className = 'cm-message';
 		message.innerHTML = this.messageText;
 		return message;
-	};
+	}
 
-	createButton = (): HTMLButtonElement => {
+	createButton(): HTMLButtonElement {
 		const button = document.createElement('button');
 		button.classList.add('cm-button', 'wds-button');
 		button.innerHTML = this.buttonText;
 
 		return button;
-	};
+	}
 
-	openInNewTab = (): void => {
+	openInNewTab(): void {
 		window.open(this.redirectUrl, '_blank').focus();
-	};
+	}
 
-	sendTrackingEvent = (ad_status: string) => {
+	sendTrackingEvent(ad_status: string): void {
 		communicationService.dispatch(
 			messageBoxTrackingEvent({
 				ad_status,
 				adSlotName: this.adSlot.getSlotName(),
 			}),
 		);
-	};
+	}
 
-	protected buildUrl = (basicUrl: string, utm_campaign: string): string => {
+	protected buildUrl(basicUrl: string, utm_campaign: string): string {
 		const utm_source = 'fandom';
 		const utm_medium = 'ctr';
 		const utm_content = 'button';
@@ -81,5 +81,5 @@ export class MessageBox {
 		];
 
 		return basicUrl + params.join('&');
-	};
+	}
 }
