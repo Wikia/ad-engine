@@ -1,6 +1,8 @@
 import { AdSlot, sailthru, UserSignupPayload } from '@wikia/ad-engine';
 import { MessageBox } from './message-box';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/i;
+
 export class NewsletterFormBox extends MessageBox {
 	constructor(adSlot: AdSlot) {
 		super(adSlot);
@@ -80,6 +82,11 @@ export class NewsletterFormBox extends MessageBox {
 		const emailValue = emailInput.value;
 		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
 		submitBtn.disabled = true;
+
+		if (!EMAIL_REGEX.test(emailValue)) {
+			this.showFormMessage('Please enter a valid email address.');
+			return;
+		}
 
 		if (!sailthru.isLoaded()) {
 			this.showFormMessage('An error occurred. Please try again later.');
