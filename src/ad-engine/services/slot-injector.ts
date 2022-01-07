@@ -39,10 +39,10 @@ class SlotInjector {
 		const config: SlotConfig = context.get(`slots.${slotName}`);
 		const slotConfig: SlotCreatorConfig = {
 			slotName,
-			anchorSelector: config.insertBeforeSelector || config.parentContainerSelector,
-			insertMethod: config.insertBeforeSelector
-				? 'before'
-				: config.insertIntoParentContainerMethod || 'append',
+			anchorSelector: config.parentContainerSelector || config.insertBeforeSelector,
+			insertMethod: config.parentContainerSelector
+				? config.insertIntoParentContainerMethod || 'append'
+				: 'before',
 			placeholderConfig: config.placeholder,
 		};
 

@@ -1,4 +1,5 @@
 import {
+	insertSlots,
 	MessageBoxService,
 	PlaceholderService,
 	PlaceholderServiceHelper,
@@ -14,17 +15,13 @@ import {
 	eventService,
 	fillerService,
 	PorvataFiller,
-	SlotCreator,
 	slotService,
 	uapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import {
-	SlotSetupDefinition,
-	UcpMobileSlotsDefinitionRepository,
-} from './ucp-mobile-slots-definition-repository';
+import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
@@ -34,10 +31,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		},
 	};
 
-	constructor(
-		private slotCreator: SlotCreator,
-		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
-	) {}
+	constructor(private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -51,16 +45,16 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private injectSlots(): void {
 		const topLeaderboardDefinition = this.slotsDefinitionRepository.getTopLeaderboardConfig();
 
-		this.insertSlots([
+		insertSlots([
 			topLeaderboardDefinition,
 			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
-			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
+			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
-			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
+			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 		]);
 
@@ -75,21 +69,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				);
 			});
 		}
-	}
-
-	private insertSlots(slotsToInsert: SlotSetupDefinition[]): void {
-		slotsToInsert
-			.filter((config) => !!config)
-			.forEach(({ slotCreatorConfig, slotCreatorWrapperConfig, activator }) => {
-				try {
-					this.slotCreator.createSlot(slotCreatorConfig, slotCreatorWrapperConfig);
-					if (activator) {
-						activator();
-					}
-				} catch (e) {
-					slotsContext.setState(slotCreatorConfig.slotName, false);
-				}
-			});
 	}
 
 	private configureIncontentPlayer(): void {
@@ -139,17 +118,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
 			this.CODE_PRIORITY.floor_adhesion.active = true;
 
+			const disableFloorAdhesionWithStatus = (status: string) => {
+				this.CODE_PRIORITY.floor_adhesion.active = false;
+				slotService.disable('floor_adhesion', status);
+				document.getElementById('floor_adhesion_anchor').classList.add('hide');
+			};
+
 			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_PORVATA);
+					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 				}
 			});
 
 			eventService.on(events.INTERSTITIAL_DISPLAYED, () => {
 				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					this.CODE_PRIORITY.floor_adhesion.active = false;
-					slotService.disable('floor_adhesion', AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
+					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
 				}
 			});
 		});

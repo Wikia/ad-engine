@@ -44,7 +44,6 @@ const contextObject: ContextObject = {
 				sampling: 1,
 			},
 		},
-		slotRepeater: false,
 		optOutSale: false,
 		trackingOptIn: false,
 		isSubjectToCcpa: false,

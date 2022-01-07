@@ -1,3 +1,4 @@
+import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -8,21 +9,12 @@ import {
 	ofType,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
-	SlotCreatorConfig,
-	SlotCreatorWrapperConfig,
 	slotPlaceholderInjector,
 	uapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { take } from 'rxjs/operators';
-import { mobileFanFeedNativeAdListener } from './mobile-fan-feed-native-ad-listener';
-
-export interface SlotSetupDefinition {
-	slotCreatorConfig: SlotCreatorConfig;
-	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
-	activator?: () => void;
-}
 
 interface SlotCreatorInsertionParamsType {
 	anchorSelector: string;
@@ -133,7 +125,9 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
 			},
 			activator: () => {
-				mobileFanFeedNativeAdListener();
+				fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
+					nativo.replaceAndShowSponsoredFanAd(uapLoadStatusAction),
+				);
 			},
 		};
 	}
@@ -159,7 +153,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			return;
 		}
 
-		const slotName = 'incontent_boxad_1';
+		const slotNamePrefix = 'incontent_boxad_';
+		const slotName = `${slotNamePrefix}1`;
 		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
@@ -179,11 +174,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				repeat: {
 					index: 1,
 					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
+					slotNamePattern: `${slotNamePrefix}{slotConfig.repeat.index}`,
 					updateProperties: {
 						adProduct: '{slotConfig.slotName}',
 						'targeting.rv': '{slotConfig.repeat.index}',
 						'targeting.pos': ['incontent_boxad'],
+						'placeholder.createLabel': false,
 					},
 					insertBelowScrollPosition: true,
 				},
@@ -198,9 +194,6 @@ export class UcpMobileSlotsDefinitionRepository {
 						this.injectIncontentAdsPlaceholders();
 					}
 				});
-				// We need to reset it here, because otherwise ucp-targeting-setup throws an error in line:
-				// https://github.com/Wikia/ad-engine/blob/dev/platforms/shared/context/targeting/ucp-targeting.setup.ts#L101
-				context.set('slots.incontent_player.insertBeforeSelector', '');
 			},
 		};
 	}
@@ -324,12 +317,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set('slots.floor_adhesion.disabled', !this.instantConfig.get('icFloorAdhesion'));
-				context.set(
-					'templates.floorAdhesion.showCloseButtonAfter',
-					this.instantConfig.get('icFloorAdhesionTimeToCloseButton', 0),
-				);
-
 				const numberOfViewportsFromTopToPush: number =
 					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
@@ -362,7 +349,6 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				context.set('slots.interstitial.disabled', false);
 				this.pushWaitingSlot(slotName);
 			},
 		};
