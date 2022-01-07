@@ -83,5 +83,16 @@ describe('Message Box Service', () => {
 			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
 		});
+
+		it('index changes to 3 - when Newsletter box is added', () => {
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
+			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
+		});
+
+		it('index equals 3 - no more message boxes can be added', () => {
+			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
+		});
 	});
 });

@@ -17,6 +17,7 @@ import { getOutstreamConfig } from './configs/outstream-config';
 import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
+import { registerStickyTlbOldTemplate } from './sticky-tlb-old-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
@@ -30,7 +31,9 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			? registerBfaaTemplate(this.registry)
 			: registerBfaaOldTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
-		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
+		const stickyTlb$ = context.get('templates.stickyTlb.forced')
+			? registerStickyTlbTemplate(this.registry)
+			: registerStickyTlbOldTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const interstitial$ = registerInterstitialTemplate(this.registry);

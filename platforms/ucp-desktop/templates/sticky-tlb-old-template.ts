@@ -5,14 +5,15 @@ import {
 	DebugTransitionHandler,
 	DomCleanupHandler,
 	DomManipulator,
+	NavbarOffsetResolvedHandler,
+	NavbarOffsetResolvedToNoneHandler,
 	PageOffsetResolvedHandler,
 	ScrollCorrector,
 	SlotDecisionTimeoutHandler,
-	SlotHeightClippingHandler,
 	SlotHiddenHandler,
-	SlotSizeResolvedWithPlaceholderHandler,
-	SlotStateStickedHandler,
-	SlotTransitionLightHandler,
+	SlotOffsetResolvedToNoneHandler,
+	SlotSizeResolvedHandler,
+	SlotTransitionHandler,
 	StickinessTimeout,
 	StickyTlbBlockingHandler,
 	StickyTlbBootstrapHandler,
@@ -24,7 +25,9 @@ import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-
 import { Observable } from 'rxjs';
 import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop-uap-dom-elements';
 
-export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+export function registerStickyTlbOldTemplate(
+	registry: TemplateRegistry,
+): Observable<TemplateAction> {
 	return registry.register(
 		'stickyTlb',
 		{
@@ -36,21 +39,25 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				DebugTransitionHandler,
 			],
 			sticky: [
-				SlotSizeResolvedWithPlaceholderHandler,
+				SlotSizeResolvedHandler,
+				PageOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToHiddenButtonHandler,
 				DomCleanupHandler,
-				SlotStateStickedHandler,
 			],
 			transition: [
-				SlotSizeResolvedWithPlaceholderHandler,
-				SlotTransitionLightHandler,
+				SlotSizeResolvedHandler,
+				PageOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
+				SlotTransitionHandler,
 				DomCleanupHandler,
-				SlotStateStickedHandler,
 			],
 			resolved: [
-				SlotSizeResolvedWithPlaceholderHandler,
-				SlotHeightClippingHandler,
+				SlotSizeResolvedHandler,
+				SlotOffsetResolvedToNoneHandler,
+				PageOffsetResolvedHandler,
+				NavbarOffsetResolvedToNoneHandler,
 				DomCleanupHandler,
 			],
 			hidden: [SlotHiddenHandler, PageOffsetResolvedHandler, DomCleanupHandler],

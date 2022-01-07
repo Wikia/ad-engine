@@ -4,7 +4,7 @@ import { MessageBoxCreator } from './message-box-creator';
 export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER';
 
 export class MessageBoxService {
-	private types: MessageBoxType[] = ['REGISTER', 'FANLAB'];
+	private types: MessageBoxType[] = ['REGISTER', 'FANLAB', 'NEWSLETTER'];
 	private currentType = 0;
 
 	getCurrentTypeIndex = (): number => {

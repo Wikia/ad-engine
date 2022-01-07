@@ -7,7 +7,6 @@ import {
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	nielsen,
-	permutive,
 	Runner,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -43,7 +42,6 @@ export class F2AdsMode implements DiProcess {
 
 		inhibitors.push(wadRunner.call());
 
-		permutive.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		nielsen.call({
