@@ -26,7 +26,7 @@ export interface Targeting {
 	[key: string]: googletag.NamedSize | number;
 }
 
-interface RepeatConfig {
+export interface RepeatConfig {
 	index: number;
 	slotNamePattern: string;
 	limit: number;

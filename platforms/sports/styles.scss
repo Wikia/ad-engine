@@ -1,0 +1,182 @@
+@import 'platforms/shared/styles/index';
+@import 'src/ad-products/styles/mixin';
+@import 'src/ad-products/styles/porvata';
+
+@include logo-replacement(40px, 0, 5px);
+
+.gdm__wrapper {
+	text-align: center;
+}
+
+.slideout-open {
+	#cdm-zone-01 {
+		display: none;
+	}
+}
+
+// Desktop disable ads
+html.disable-ads {
+	#pageWrapper {
+		#atflb,
+		#btflb {
+			display: none !important;
+		}
+	}
+
+	footer#curse-footer div.ad-placement {
+		display: none;
+	}
+}
+
+// Mobile disable ads
+.editor-overlay .gpt-ad {
+	display: none;
+}
+
+// Fix mobile navbar width
+.gpt-ad.bfaa-template.sticky-bfaa {
+	width: 100vw;
+}
+
+// Fix mobile navigation gray area
+.primary-navigation-enabled {
+	margin-top: 0 !important;
+}
+
+@mixin ucp-futhead-uap-styles() {
+	&.has-uap {
+		padding-top: 0;
+		#cdm-zone-01 {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+
+			&.is-mobile-layout .video-overlay {
+				transform: translateZ(0);
+			}
+		}
+
+		#cdm-zone-01,
+		#cdm-zone-04 {
+			@include uap-porvata();
+			@include uap-porvata-right-position();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+
+		#cdm-zone-04 {
+			@include bfab-slot();
+		}
+
+		.navbar.navbar-futhead {
+			@include uap-navbar();
+		}
+
+		.navbar-unfix-top {
+			margin-top: unset;
+		}
+
+		&.site-futhead {
+			&.with-mobile-nav {
+				.navbar.navbar-futhead.bfaa-pinned {
+					position: fixed;
+				}
+			}
+
+			&.fixed-page-nav {
+				.page-navigation {
+					position: unset;
+					box-shadow: unset;
+				}
+			}
+
+			.main-content.homepage,
+			.content-header,
+			.futhead-gdm {
+				position: unset;
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+@mixin ucp-muthead-uap-styles() {
+	&.has-uap {
+		#cdm-zone-01 {
+			@include bfaa-slot();
+			@include sticky-tlb-slot();
+
+			margin-top: 0;
+
+			.video-player,
+			.replay-overlay {
+				top: 0;
+			}
+		}
+
+		#cdm-zone-04 {
+			@include bfab-slot();
+		}
+
+		#cdm-zone-01,
+		#cdm-zone-04 {
+			@include uap-porvata();
+
+			@include uap-advertisement-label();
+			@include uap-button-close();
+
+			&.is-dark {
+				@include uap-dark-theme();
+			}
+		}
+
+		padding-top: 0 !important;
+
+		.header-container {
+			position: absolute;
+			width: 100vw;
+
+			&.bfaa-pinned {
+				position: absolute;
+				opacity: 1 !important;
+			}
+		}
+	}
+
+	@include expanded-slot();
+}
+
+.ae-futhead {
+	#cdm-zone-04 {
+		margin: 15px auto;
+	}
+
+	@include ucp-futhead-uap-styles();
+}
+
+.mobile .ae-futhead.has-uap {
+	#cdm-zone-04 {
+		.video-overlay {
+			transform: translateZ(0);
+		}
+	}
+}
+
+.ae-muthead {
+	@include ucp-muthead-uap-styles();
+}
+
+.desktop .ae-muthead.has-uap {
+	@include uap-porvata-right-position();
+
+	#cdm-zone-01 {
+		.video-player {
+			transform: translateX(0);
+		}
+	}
+}

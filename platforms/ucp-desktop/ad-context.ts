@@ -90,7 +90,6 @@ export const basicContext = {
 		iasPublisherOptimization: {
 			pubId: '930616',
 			slots: [
-				'hivi_leaderboard',
 				'top_leaderboard',
 				'top_boxad',
 				'incontent_boxad_1',
