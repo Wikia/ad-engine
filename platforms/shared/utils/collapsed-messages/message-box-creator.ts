@@ -7,7 +7,7 @@ import { NewsletterLinkBox } from './newsletter-link-box';
 import { RegisterBox } from './register-box';
 
 export class MessageBoxCreator {
-	createMessageBox = (type: MessageBoxType, adSlot: AdSlot): MessageBox => {
+	createMessageBox(type: MessageBoxType, adSlot: AdSlot): MessageBox {
 		switch (type) {
 			case 'REGISTER':
 				return new RegisterBox(adSlot);
@@ -20,5 +20,5 @@ export class MessageBoxCreator {
 			default:
 				throw new Error('Unknown Message Box type');
 		}
-	};
+	}
 }
