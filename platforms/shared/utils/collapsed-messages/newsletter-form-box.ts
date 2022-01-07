@@ -9,7 +9,7 @@ export class NewsletterFormBox extends MessageBox {
 		this.buttonText = 'Sign up';
 	}
 
-	create = () => {
+	create(): void {
 		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 
 		const placeholder = this.adSlot.getPlaceholder();
@@ -27,9 +27,9 @@ export class NewsletterFormBox extends MessageBox {
 		placeholder.append(wrapper);
 
 		this.sendTrackingEvent(status_impression);
-	};
+	}
 
-	private createForm = (): HTMLElement => {
+	private createForm(): HTMLElement {
 		const form = document.createElement('form');
 		form.className = 'newsletter-form';
 
@@ -39,15 +39,15 @@ export class NewsletterFormBox extends MessageBox {
 		`;
 
 		return form;
-	};
+	}
 
-	private createFormMessage = (): HTMLElement => {
+	private createFormMessage(): HTMLElement {
 		const message = document.createElement('div');
 		message.className = 'newsletter-message';
 		return message;
-	};
+	}
 
-	private createPayload = (email: string, submitBtn: HTMLButtonElement): UserSignupPayload => {
+	private createPayload(email: string, submitBtn: HTMLButtonElement): UserSignupPayload {
 		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
 
 		const onSuccess = (): void => {
@@ -66,14 +66,14 @@ export class NewsletterFormBox extends MessageBox {
 			onSuccess,
 			onError,
 		};
-	};
+	}
 
-	private showFormMessage = (text: string) => {
+	private showFormMessage(text: string): void {
 		const messageArea: HTMLDivElement = document.querySelector('.newsletter-message');
 		messageArea.innerText = text;
-	};
+	}
 
-	private doEmailSignUp = (event) => {
+	private doEmailSignUp(event): void {
 		event.preventDefault();
 
 		const emailInput: HTMLInputElement = document.querySelector('.newsletter-email');
@@ -91,5 +91,5 @@ export class NewsletterFormBox extends MessageBox {
 		const source: SailthruSource = 'adengine_in_content_ad';
 
 		sailthru.userSignup(payload, source);
-	};
+	}
 }
