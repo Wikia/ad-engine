@@ -31,8 +31,9 @@ import {
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { selectApplication } from '../utils/application-helper';
 import { registerFutheadUapDomElements } from './configs/register-futhead-uap-dom-elements';
 import { registerMutheadUapDomElements } from './configs/register-muthead-uap-dom-elements';
 import { BfaaSportsConfigHandler } from './handlers/bfaa/bfaa-sports-config-handler';
@@ -96,9 +97,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			VideoDomManager,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
-			context.get('application') === 'futhead'
-				? registerFutheadUapDomElements()
-				: registerMutheadUapDomElements(),
+			selectApplication(registerFutheadUapDomElements(), registerMutheadUapDomElements()),
 		],
 	);
 }

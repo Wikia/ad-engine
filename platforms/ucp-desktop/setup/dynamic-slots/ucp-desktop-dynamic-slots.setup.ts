@@ -1,7 +1,6 @@
 import {
 	insertSlots,
 	PlaceholderService,
-	PlaceholderServiceHelper,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -9,6 +8,7 @@ import {
 	communicationService,
 	context,
 	DiProcess,
+	eventsRepository,
 	fillerService,
 	PorvataFiller,
 	PorvataGamParams,
@@ -36,12 +36,15 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
-			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getIncontentPlayerConfig(),
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
+
+		communicationService.on(eventsRepository.RAIL_READY, () => {
+			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+		});
 	}
 
 	private configureTopLeaderboard(): void {
@@ -81,7 +84,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private configureFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
-
 		let porvataClosedActive = false;
 
 		communicationService.onSlotEvent(
@@ -109,8 +111,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerAdPlaceholderService(): void {
-		const placeholderHelper = new PlaceholderServiceHelper();
-		const placeholderService = new PlaceholderService(placeholderHelper);
+		const placeholderService = new PlaceholderService();
 		placeholderService.init();
 	}
 }

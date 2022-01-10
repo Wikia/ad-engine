@@ -14,7 +14,7 @@ export class InterstitialBootstrapHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
-		this.adSlot.hide();
+		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.addClass('interstitial');
 		this.adSlot.addClass('out-of-page-template');
 

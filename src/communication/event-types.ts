@@ -173,6 +173,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[Platform]',
 		name: 'Before page change',
 	},
+	RAIL_READY: {
+		category: '[Rail]',
+		name: 'Ready',
+	},
 	// Bidders events //
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',

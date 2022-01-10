@@ -34,6 +34,7 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 	private setupIncontentPlayerForDistroScale(): void {
 		const slotName = 'incontent_player';
 		this.setDistroscaleVarInRuntime(slotName);
+		context.set('slots.incontent_player.disabled', true);
 		context.set('slots.incontent_player.targeting.pos', ['incontent_video']);
 	}
 }

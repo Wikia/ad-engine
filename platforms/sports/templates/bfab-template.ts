@@ -16,8 +16,9 @@ import {
 	VideoSizeImpactHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { context, TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
+import { TemplateAction, TemplateRegistry } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
+import { selectApplication } from '../utils/application-helper';
 import { registerFutheadUapDomElements } from './configs/register-futhead-uap-dom-elements';
 import { registerMutheadUapDomElements } from './configs/register-muthead-uap-dom-elements';
 
@@ -47,9 +48,7 @@ export function registerBfabTemplate(registry: TemplateRegistry): Observable<Tem
 			UapDomReader,
 			VideoDomReader,
 			VideoDomManager,
-			context.get('application') === 'futhead'
-				? registerFutheadUapDomElements()
-				: registerMutheadUapDomElements(),
+			selectApplication(registerFutheadUapDomElements(), registerMutheadUapDomElements()),
 		],
 	);
 }

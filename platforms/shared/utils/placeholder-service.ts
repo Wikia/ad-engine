@@ -11,11 +11,13 @@ import { PlaceholderServiceHelper } from './placeholder-service-helper';
 
 export class PlaceholderService {
 	private isUapLoaded: boolean;
+	private placeholderHelper: PlaceholderServiceHelper;
 
 	constructor(
-		private placeholderHelper: PlaceholderServiceHelper,
 		private messageBoxService: MessageBoxService = null,
-	) {}
+	) {
+		this.placeholderHelper = new PlaceholderServiceHelper();
+	}
 
 	init(): void {
 		this.registerUapChecker();
@@ -46,7 +48,9 @@ export class PlaceholderService {
 
 				this.placeholderHelper.stopLoading(action['event'], placeholder);
 
-				if (this.placeholderHelper.statusesToCollapse.includes(action['event'])) {
+				if (this.placeholderHelper.statusToHide === action['event']) {
+					this.placeholderHelper.hidePlaceholder(placeholder);
+				} else if (this.placeholderHelper.statusesToCollapse.includes(action['event'])) {
 					if (this.isUapLoaded) {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {

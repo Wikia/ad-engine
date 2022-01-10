@@ -5,19 +5,14 @@ import {
 	context,
 	eventsRepository,
 	FmrRotator,
-	globalAction,
 	InstantConfigService,
 	Nativo,
 	nativo,
-	ofType,
 	scrollListener,
 	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
-
-const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -89,12 +84,10 @@ export class UcpDesktopSlotsDefinitionRepository {
 				},
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
-					const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
+				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
 
-					communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-						rotator.rotateSlot();
-					});
+				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+					rotator.rotateSlot();
 				});
 			},
 		};
@@ -114,7 +107,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 				placeholderConfig,
 				anchorSelector: '.bottom-leaderboard',
 				insertMethod: 'prepend',
-				classList: ['hide', 'ad-slot'],
+				classList: ['ad-slot'],
 			},
 			activator: () => {
 				context.push('events.pushOnScroll.ids', slotName);
@@ -134,7 +127,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 				anchorSelector: context.get(`slots.${slotName}.insertBeforeSelector`),
 				anchorPosition: 'belowFirstViewport',
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
 				if (context.get('services.distroScale.enabled')) {

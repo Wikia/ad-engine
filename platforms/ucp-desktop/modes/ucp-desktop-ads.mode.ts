@@ -17,7 +17,6 @@ import {
 	jwpSetup,
 	nativo,
 	nielsen,
-	permutive,
 	Runner,
 	silverSurferService,
 	slotDataParamsUpdater,
@@ -82,8 +81,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
-
-		permutive.call();
 
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
