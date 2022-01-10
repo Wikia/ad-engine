@@ -20,7 +20,7 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		lineItemId: sandbox.stub() as any,
 		slotViewed: sandbox.stub() as any,
 		winningBidderDetails: sandbox.stub() as any,
-		trackOnStatusChanged: sandbox.stub() as any,
+		trackStatusAfterRendered: sandbox.stub() as any,
 		requested: sandbox.stub().resolves() as any,
 		loaded: sandbox.stub().resolves() as any,
 		rendered: sandbox.stub().resolves() as any,
