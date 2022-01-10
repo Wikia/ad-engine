@@ -85,6 +85,7 @@ export class NewsletterFormBox extends MessageBox {
 
 		if (!EMAIL_REGEX.test(emailValue)) {
 			this.showFormMessage('Please enter a valid email address.');
+			submitBtn.disabled = false;
 			return;
 		}
 
