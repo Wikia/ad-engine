@@ -1,5 +1,7 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { SessionCookie } from '../services/session-cookie';
+import { communicationService, eventsRepository, globalAction, ofType } from '@ad-engine/communication';
+import { take } from 'rxjs/operators';
+import { props } from 'ts-action';
+import { SessionCookie } from './session-cookie';
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -12,6 +14,11 @@ export interface CacheData {
 	result: boolean;
 	withCookie: boolean;
 }
+
+const setOptIn = globalAction(
+	'[AdEngine OptIn] set opt in',
+	props<any>(),
+);
 
 export class InstantConfigCacheStorage {
 	private static instance: InstantConfigCacheStorage;
@@ -45,7 +52,11 @@ export class InstantConfigCacheStorage {
 		this.cacheStorage[data.name] = data;
 
 		if (data.withCookie) {
-			this.synchronizeCookie();
+			communicationService.action$.pipe(ofType(setOptIn), take(1)).subscribe((action) => {
+				if (action.gdprConsent) {
+					this.synchronizeCookie();
+				}
+			})
 		}
 	}
 
