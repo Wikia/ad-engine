@@ -1,14 +1,9 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
+import { communicationService } from '@ad-engine/communication';
+import { AdSlot, adSlotEvent, context, utils } from '@ad-engine/core';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
-export const nativoLoadedEvent = globalAction(
-	'[AdEngine] Nativo loaded',
-	props<{ isLoaded: boolean }>(),
-);
 
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
@@ -19,6 +14,7 @@ export class Nativo {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE);
 
 			return Promise.resolve();
 		}
@@ -27,7 +23,7 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
-				this.sendEvent();
+				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
@@ -57,6 +53,10 @@ export class Nativo {
 		}
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
+
+		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE, e);
+		});
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
@@ -98,8 +98,19 @@ export class Nativo {
 		return false;
 	}
 
-	private sendEvent(): void {
-		communicationService.dispatch(nativoLoadedEvent({ isLoaded: true }));
+	private sendNativoLoadStatus(status: string, event?: any): void {
+		const adLocation = event?.data[0]?.adLocation || '';
+
+		communicationService.dispatch(
+			adSlotEvent({
+				event: status,
+				payload: {
+					adLocation,
+					provider: 'nativo',
+				},
+				adSlotName: adLocation,
+			}),
+		);
 	}
 
 	private displayTestAd(): void {
