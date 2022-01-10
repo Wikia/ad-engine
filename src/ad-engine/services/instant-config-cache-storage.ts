@@ -1,6 +1,7 @@
 import { communicationService, eventsRepository, globalAction, ofType } from '@ad-engine/communication';
 import { take } from 'rxjs/operators';
 import { props } from 'ts-action';
+import { CcpaSignalPayload, GdprConsentPayload } from '../../../platforms/shared/consent/tracking-opt-in-wrapper';
 import { SessionCookie } from './session-cookie';
 
 export interface CacheDictionary {
@@ -17,7 +18,7 @@ export interface CacheData {
 
 const setOptIn = globalAction(
 	'[AdEngine OptIn] set opt in',
-	props<any>(),
+	props<GdprConsentPayload & CcpaSignalPayload>(),
 );
 
 export class InstantConfigCacheStorage {
@@ -52,8 +53,8 @@ export class InstantConfigCacheStorage {
 		this.cacheStorage[data.name] = data;
 
 		if (data.withCookie) {
-			communicationService.action$.pipe(ofType(setOptIn), take(1)).subscribe((action) => {
-				if (action.gdprConsent) {
+			communicationService.action$.pipe(ofType(setOptIn), take(1)).subscribe(({ gdprConsent }) => {
+				if (gdprConsent) {
 					this.synchronizeCookie();
 				}
 			})

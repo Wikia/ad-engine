@@ -15,12 +15,12 @@ interface OptInInstances {
 	ccpa: any;
 }
 
-interface GdprConsentPayload {
+export interface GdprConsentPayload {
 	gdprConsent: boolean;
 	geoRequiresConsent: boolean;
 }
 
-interface CcpaSignalPayload {
+export interface CcpaSignalPayload {
 	ccpaSignal: boolean;
 	geoRequiresSignal: boolean;
 }
