@@ -1,4 +1,4 @@
-import { utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 
 export interface UserSignupPayload {
 	email: string;
@@ -14,6 +14,12 @@ const ACCT_ID = 'c9322e218da57e71a4965ae18fecbefa';
 
 class Sailthru {
 	init(): Promise<void> {
+		if (!context.get('services.sailthru.enabled')) {
+			utils.logger(logGroup, 'disabled');
+
+			return Promise.resolve();
+		}
+
 		if (!window.Sailthru) {
 			utils.logger(logGroup, 'loading');
 
