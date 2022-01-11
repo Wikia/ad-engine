@@ -39,25 +39,23 @@ export class PlaceholderService {
 
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
-				if (
-					this.placeholderHelper.shouldDisplayPlaceholder(action['event'], action['payload'][1])
-				) {
+				this.placeholderHelper.stopLoading(action.event, placeholder);
+
+				if (this.placeholderHelper.shouldKeepPlaceholder(action.event, action.payload?.adType)) {
 					this.placeholderHelper.displayPlaceholder(placeholder);
 					return;
 				}
 
-				this.placeholderHelper.stopLoading(action['event'], placeholder);
-
-				if (this.placeholderHelper.statusToHide === action['event']) {
+				if (this.placeholderHelper.statusToHide === action.payload?.adType) {
 					this.placeholderHelper.hidePlaceholder(placeholder);
-				} else if (this.placeholderHelper.statusesToCollapse.includes(action['event'])) {
+				} else if (this.placeholderHelper.statusesToCollapse.includes(action.event)) {
 					if (this.isUapLoaded) {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
 						if (
 							this.messageBoxService &&
-							this.messageBoxService.shouldAddMessageBox(action['event'], placeholder)
+							this.messageBoxService.shouldAddMessageBox(action.event, placeholder)
 						) {
 							this.messageBoxService.addMessageBox(placeholder, adSlot);
 						}
