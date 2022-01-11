@@ -29,12 +29,10 @@ export function once(
 	const isObject: boolean = typeof emitter === 'object';
 	const hasAddEventListener: boolean =
 		isObject && typeof (emitter as HTMLElement).addEventListener === 'function';
-	let testOptions = { ...options };
+
+	const testOptions = typeof options === 'boolean' ? { capture: options } : { ...options };
 
 	return new Promise((resolve, reject) => {
-		if (typeof options === 'boolean') {
-			testOptions = { capture: options };
-		}
 		if (hasAddEventListener) {
 			(emitter as HTMLElement).addEventListener(eventName, resolve, { ...testOptions, once: true });
 		} else {
