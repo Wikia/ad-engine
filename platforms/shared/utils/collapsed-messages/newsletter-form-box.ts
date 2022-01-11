@@ -95,7 +95,7 @@ export class NewsletterFormBox extends MessageBox {
 			return;
 		}
 
-		if (!sailthru.isLoaded() || !sailthru.isEnabled()) {
+		if (!sailthru.isEnabled() || !sailthru.isLoaded()) {
 			this.showFormMessage('An error occurred. Please try again later.');
 			submitBtn.disabled = false;
 			return;
