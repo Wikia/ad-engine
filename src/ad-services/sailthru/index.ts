@@ -13,14 +13,22 @@ const packageUrl = 'https://ak.sail-horizon.com/spm/spm.v1.min.js';
 const ACCT_ID = 'c9322e218da57e71a4965ae18fecbefa';
 
 class Sailthru {
+	isLoaded(): boolean {
+		return !!window.Sailthru;
+	}
+
+	isEnabled(): boolean {
+		return context.get('services.sailthru.enabled');
+	}
+
 	init(): Promise<void> {
-		if (!context.get('services.sailthru.enabled')) {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 
-		if (!window.Sailthru) {
+		if (!this.isLoaded()) {
 			utils.logger(logGroup, 'loading');
 
 			return utils.scriptLoader.loadScript(packageUrl).then(() => {
