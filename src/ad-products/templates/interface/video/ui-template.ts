@@ -69,7 +69,7 @@ const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings
 export function selectTemplate(
 	videoSettings: PorvataSettings | UapVideoSettings,
 	params?: Partial<UapParams>,
-): any {
+): [] {
 	const videoParams = params || videoSettings.getParams();
 	const templates = getTemplates(videoParams, videoSettings);
 	let template = 'default';
