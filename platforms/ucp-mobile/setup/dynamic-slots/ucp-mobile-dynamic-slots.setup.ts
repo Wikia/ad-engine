@@ -2,7 +2,6 @@ import {
 	insertSlots,
 	MessageBoxService,
 	PlaceholderService,
-	PlaceholderServiceHelper,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -11,12 +10,10 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	events,
-	eventService,
+	eventsRepository,
 	fillerService,
 	PorvataFiller,
 	slotService,
-	uapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
@@ -59,14 +56,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			utils.listener(events.AD_STACK_START, () => {
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.dispatch(
-					uapLoadStatus({
-						isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-						adProduct: universalAdPackage.getType(),
-					}),
-				);
+				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+					adProduct: universalAdPackage.getType(),
+				});
 			});
 		}
 	}
@@ -82,11 +77,13 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureInterstitial(): void {
-		const slotName = 'interstitial';
-
-		slotService.on(slotName, AdSlot.SLOT_VIEWED_EVENT, () => {
-			eventService.emit(events.INTERSTITIAL_DISPLAYED);
-		});
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_VIEWED_EVENT,
+			() => {
+				communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+			},
+			'interstitial',
+		);
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
@@ -115,37 +112,49 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
-		slotService.on('floor_adhesion', AdSlot.STATUS_SUCCESS, () => {
-			this.CODE_PRIORITY.floor_adhesion.active = true;
-
-			const disableFloorAdhesionWithStatus = (status: string) => {
-				this.CODE_PRIORITY.floor_adhesion.active = false;
-				slotService.disable('floor_adhesion', status);
-				document.getElementById('floor_adhesion_anchor').classList.add('hide');
-			};
-
-			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
-				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
-				}
-			});
-
-			eventService.on(events.INTERSTITIAL_DISPLAYED, () => {
-				if (this.CODE_PRIORITY.floor_adhesion.active) {
-					disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
-				}
-			});
-		});
-
-		slotService.on('floor_adhesion', AdSlot.HIDDEN_EVENT, () => {
+		const slotName = 'floor_adhesion';
+		const disableFloorAdhesionWithStatus = (status: string) => {
 			this.CODE_PRIORITY.floor_adhesion.active = false;
-		});
+			slotService.disable(slotName, status);
+			document.getElementById('floor_adhesion_anchor').classList.add('hide');
+		};
+
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				this.CODE_PRIORITY.floor_adhesion.active = true;
+
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+					if (this.CODE_PRIORITY.floor_adhesion.active) {
+						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
+					}
+				});
+
+				communicationService.on(
+					eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED,
+					() => {
+						if (this.CODE_PRIORITY.floor_adhesion.active) {
+							disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_INTERSTITIAL);
+						}
+					},
+					false,
+				);
+			},
+			slotName,
+		);
+
+		communicationService.onSlotEvent(
+			AdSlot.HIDDEN_EVENT,
+			() => {
+				this.CODE_PRIORITY.floor_adhesion.active = false;
+			},
+			slotName,
+		);
 	}
 
 	private registerAdPlaceholderService(): void {
-		const placeholderHelper = new PlaceholderServiceHelper();
 		const messageBoxService = new MessageBoxService();
-		const placeholderService = new PlaceholderService(placeholderHelper, messageBoxService);
+		const placeholderService = new PlaceholderService(messageBoxService);
 		placeholderService.init();
 	}
 }

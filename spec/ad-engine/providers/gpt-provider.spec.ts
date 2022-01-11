@@ -26,6 +26,7 @@ describe('gpt-provider', () => {
 			enableSingleRequest: spy(),
 			setPrivacySettings: spy(),
 			setTargeting: spy(),
+			updateCorrelator: spy(),
 		};
 
 		window.googletag = {

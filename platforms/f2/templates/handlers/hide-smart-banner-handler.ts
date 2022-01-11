@@ -1,11 +1,9 @@
-import { communicationService, globalAction, TemplateStateHandler } from '@wikia/ad-engine';
+import { communicationService, eventsRepository, TemplateStateHandler } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-
-const hideSmartBanner = globalAction('[AdEngine F2 Templates] hide smart banner');
 
 @Injectable({ autobind: false })
 export class HideSmartBannerHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
-		communicationService.dispatch(hideSmartBanner());
+		communicationService.emit(eventsRepository.F2_HIDE_SMART_BANNER);
 	}
 }

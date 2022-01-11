@@ -1,5 +1,6 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { context, events, eventService, slotService, trackingOptIn } from '../services';
+import { context, slotService, trackingOptIn } from '../services';
 
 export interface VastOptions {
 	correlator: number;
@@ -35,7 +36,7 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 		setTargetingValue(key, contextTargeting[key]);
 	});
 
-	eventService.emit(events.INVALIDATE_SLOT_TARGETING, slot);
+	communicationService.emit(eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING, { slot });
 
 	const params: Dictionary = {
 		...targeting,

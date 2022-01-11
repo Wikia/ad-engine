@@ -9,11 +9,20 @@ import { Action, props } from 'ts-action';
 
 describe('CommunicationService', () => {
 	const sandbox = createSandbox();
-	const localExample = action('[Example]', props<{ foo: string }>());
-	const globalExample = globalAction('[Example]', props<{ bar: string }>());
+	const localExample = action('[Example] Test', props<{ foo: string }>());
+	const globalExample = globalAction('[Example] Test', props<{ bar: string }>());
+	const globalEvent = { category: '[Example]', name: 'Test', payload: props<{ bar: string }>() };
 
 	afterEach(() => {
 		sandbox.restore();
+	});
+
+	it('should return a correct global action', () => {
+		const service = new CommunicationService();
+
+		expect(service.getGlobalAction(globalEvent)({ bar: 'test' })).to.deep.equal(
+			globalExample({ bar: 'test' }),
+		);
 	});
 
 	it('should dispatch correct action', () => {
@@ -31,15 +40,17 @@ describe('CommunicationService', () => {
 		service.dispatch(globalExample({ bar: 'b' }));
 		service.dispatch(localExample({ foo: 'c' }));
 		service.dispatch(globalExample({ bar: 'd' }));
+		service.emit(globalEvent, { bar: 'e' });
 
 		expect(nextResults).to.deep.equal([
-			{ type: '[Example]', foo: 'a' },
-			{ type: '[Example]', foo: 'c' },
+			{ type: '[Example] Test', foo: 'a' },
+			{ type: '[Example] Test', foo: 'c' },
 		]);
 
 		expect(dispatchResults).to.deep.equal([
-			{ type: '[Example]', bar: 'b', __global: true },
-			{ type: '[Example]', bar: 'd', __global: true },
+			{ type: '[Example] Test', bar: 'b', __global: true },
+			{ type: '[Example] Test', bar: 'd', __global: true },
+			{ type: '[Example] Test', bar: 'e', __global: true },
 		]);
 	});
 
@@ -63,8 +74,8 @@ describe('CommunicationService', () => {
 		globalSubject.next(globalExample({ bar: 'globalSubject - d' }));
 
 		expect(results).to.deep.equal([
-			{ type: '[Example]', foo: 'localSubject - a' },
-			{ type: '[Example]', bar: 'globalSubject - d', __global: true },
+			{ type: '[Example] Test', foo: 'localSubject - a' },
+			{ type: '[Example] Test', bar: 'globalSubject - d', __global: true },
 		]);
 	});
 });

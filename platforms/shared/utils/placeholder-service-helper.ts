@@ -1,12 +1,15 @@
 import { AdSlot } from '@wikia/ad-engine';
 
 export class PlaceholderServiceHelper {
-	statusesToStopLoadingSlot: string[] = [AdSlot.STATUS_SUCCESS, AdSlot.HIDDEN_EVENT];
+	statusesToStopLoadingSlot: string[] = [
+		AdSlot.SLOT_RENDERED_EVENT,
+		AdSlot.STATUS_SUCCESS,
+		AdSlot.HIDDEN_EVENT,
+	];
 	statusesToCollapse: string[] = [
 		AdSlot.HIDDEN_EVENT,
 		AdSlot.STATUS_BLOCKED,
 		AdSlot.STATUS_COLLAPSE,
-		AdSlot.STATUS_FORCED_COLLAPSE,
 	];
 	statusToHide: string = AdSlot.STATUS_FORCED_COLLAPSE;
 	statusToUndoCollapse: string = AdSlot.SLOT_RENDERED_EVENT;
@@ -23,8 +26,8 @@ export class PlaceholderServiceHelper {
 		placeholder.classList.remove('hide');
 	};
 
-	shouldDisplayPlaceholder = (actionEvent: string, actionPayload: string): boolean => {
-		return actionEvent === this.statusToUndoCollapse && actionPayload === 'forced_success';
+	shouldKeepPlaceholder = (eventName: string, slotStatus: string): boolean => {
+		return eventName === this.statusToUndoCollapse && slotStatus === AdSlot.STATUS_FORCED_SUCCESS;
 	};
 
 	stopLoading = (actionEvent: string, placeholder: HTMLElement): void => {

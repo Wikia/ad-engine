@@ -1,6 +1,5 @@
-import { communicationService } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { utils } from '@ad-engine/core';
-import { videoLearnMoreDisplayedEvent } from '@ad-engine/tracking';
 import { createIcon, icons } from '../icons';
 
 function add(video, container, params): void {
@@ -17,12 +16,10 @@ function add(video, container, params): void {
 		top.open(params.clickThroughURL, '_blank');
 	});
 
-	communicationService.dispatch(
-		videoLearnMoreDisplayedEvent({
-			adSlotName: video.settings.getSlotName(),
-			learnMoreLink: learnMore,
-		}),
-	);
+	communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED, {
+		adSlotName: video.settings.getSlotName(),
+		learnMoreLink: learnMore,
+	});
 
 	container.appendChild(learnMore);
 }

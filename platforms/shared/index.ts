@@ -78,7 +78,6 @@ export * from './templates/helpers/video-dom-manager';
 export * from './templates/helpers/video-dom-reader';
 export * from './templates/helpers/manipulators/dom-manipulator';
 export * from './templates/helpers/manipulators/element-manipulator';
-export * from './utils/ad-engine-configured';
 export * from './utils/collapsed-messages/message-box-service';
 export * from './utils/collapsed-messages/message-box-creator';
 export * from './utils/get-domain';

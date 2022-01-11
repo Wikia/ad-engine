@@ -1,15 +1,7 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
-import {
-	AdSlot,
-	adSlotEvent,
-	btfBlockerService,
-	context,
-	slotService,
-	utils,
-} from '@ad-engine/core';
+import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
+import { AdSlot, btfBlockerService, context, slotService, utils } from '@ad-engine/core';
 import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
-import { props } from 'ts-action';
 import { Porvata } from '../../video/porvata/porvata';
 import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
@@ -99,11 +91,6 @@ export interface UapParams {
 	height: number;
 	width: number;
 }
-
-export const uapLoadStatus = globalAction(
-	'[AdEngine] UAP Load status',
-	props<{ isLoaded: boolean; adProduct: string }>(),
-);
 
 function getVideoSize(
 	slot: HTMLElement,
@@ -270,7 +257,7 @@ function isFanTakeoverLoaded(): boolean {
 export function registerUapListener(): void {
 	communicationService.action$
 		.pipe(
-			ofType(adSlotEvent),
+			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 			filter((action) => {
 				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
 
@@ -284,12 +271,10 @@ export function registerUapListener(): void {
 			take(1),
 		)
 		.subscribe(() => {
-			communicationService.dispatch(
-				uapLoadStatus({
-					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-					adProduct: universalAdPackage.getType(),
-				}),
-			);
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+				adProduct: universalAdPackage.getType(),
+			});
 		});
 }
 
@@ -331,5 +316,4 @@ export const universalAdPackage = {
 	reset,
 	setType,
 	updateSlotsTargeting,
-	uapLoadStatus,
 };

@@ -1,4 +1,5 @@
-import { AdSlot, events, eventService, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, utils } from '@ad-engine/core';
 import { SafeBigFancyAdProxy } from './safe-big-fancy-ad-proxy';
 
 interface SafeFanTakeoverElementConfig {
@@ -51,7 +52,7 @@ export class SafeFanTakeoverElement {
 
 		if (!SafeFanTakeoverElement.config) {
 			SafeFanTakeoverElement.config = params.config;
-			eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => {
+			communicationService.on(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () => {
 				SafeFanTakeoverElement.config = null;
 			});
 		}

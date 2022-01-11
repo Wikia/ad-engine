@@ -1,7 +1,10 @@
 import {
 	AdSlot,
+	communicationService,
 	createBottomPanel,
+	eventsRepository,
 	LearnMore,
+	ofType,
 	PorvataPlayer,
 	PorvataTemplateParams,
 	ProgressBar,
@@ -58,9 +61,13 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 				tap(() => player.reload()),
 			),
 
-			fromEvent(this.adSlot, AdSlot.CUSTOM_EVENT).pipe(
+			communicationService.action$.pipe(
+				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 				filter(
-					(event: { status: string }) => event.status === universalAdPackage.SLOT_FORCE_UNSTICK,
+					(action) =>
+						action.event === AdSlot.CUSTOM_EVENT &&
+						action.adSlotName === this.adSlot.getSlotName() &&
+						action.payload?.status === universalAdPackage.SLOT_FORCE_UNSTICK,
 				),
 				tap(() => player.stop()),
 			),

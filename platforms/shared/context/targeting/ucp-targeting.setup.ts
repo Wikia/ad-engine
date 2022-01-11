@@ -3,14 +3,13 @@ import {
 	communicationService,
 	context,
 	DiProcess,
+	eventsRepository,
 	InstantConfigService,
-	ofType,
 	Targeting,
-	uapLoadStatus,
+	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 import { getDomain } from '../../utils/get-domain';
 
 const SKIN = Symbol('targeting skin');
@@ -36,11 +35,14 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		if (context.get('options.uapExtendedSrcTargeting')) {
-			communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-				if (action.isLoaded) {
-					context.push('src', 'uap');
-				}
-			});
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				(action: UapLoadStatus) => {
+					if (action.isLoaded) {
+						context.push('src', 'uap');
+					}
+				},
+			);
 		}
 
 		if (context.get('wiki.targeting.wikiIsTop1000')) {
