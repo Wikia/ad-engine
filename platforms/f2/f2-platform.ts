@@ -1,5 +1,4 @@
 import {
-	adEngineConfigured,
 	AdEngineRunnerSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
@@ -12,6 +11,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	eventsRepository,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -46,7 +46,7 @@ export class F2Platform {
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
-			() => communicationService.dispatch(adEngineConfigured()),
+			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
 		// Run

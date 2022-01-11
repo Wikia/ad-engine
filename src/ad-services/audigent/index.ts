@@ -1,6 +1,5 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
 
 const logGroup = 'audigent';
 const audienceTagScriptUrl = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -33,7 +32,7 @@ class Audigent {
 				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					this.setup();
-					communicationService.dispatch(audigentLoadedEvent({}));
+					communicationService.emit(eventsRepository.AUDIGENT_LOADED);
 				});
 			this.isLoaded = true;
 		}
@@ -50,4 +49,3 @@ class Audigent {
 }
 
 export const audigent = new Audigent();
-export const audigentLoadedEvent = globalAction('[AdEngine] Audigent loaded', props<{}>());

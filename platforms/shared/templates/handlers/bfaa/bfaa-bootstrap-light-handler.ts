@@ -19,7 +19,6 @@ export class BfaaBootstrapLightHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'sticky' | 'impact'>): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);
-		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('bfaa-template');
 		this.adSlot.addClass('slot-responsive');

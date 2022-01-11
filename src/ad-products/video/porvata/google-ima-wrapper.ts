@@ -1,3 +1,4 @@
+import { communicationService } from '@ad-engine/communication';
 import { AdSlot, buildVastUrl, context } from '@ad-engine/core';
 import { PorvataSettings } from './porvata-settings';
 
@@ -10,9 +11,13 @@ export class GoogleImaWrapper {
 		const iframe = videoContainer.querySelector<HTMLIFrameElement>('div > iframe');
 
 		if (slot) {
-			slot.on(AdSlot.DESTROYED_EVENT, () => {
-				adDisplayContainer.destroy();
-			});
+			communicationService.onSlotEvent(
+				AdSlot.DESTROYED_EVENT,
+				() => {
+					adDisplayContainer.destroy();
+				},
+				slot.getSlotName(),
+			);
 		}
 
 		GoogleImaWrapper.reloadIframeOnNavigation(iframe);

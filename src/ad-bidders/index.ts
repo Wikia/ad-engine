@@ -1,4 +1,5 @@
-import { context, Dictionary, events, eventService, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, context, Dictionary, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -14,17 +15,20 @@ class Bidders {
 	private realSlotPrices = {};
 
 	constructor() {
-		eventService.on(events.VIDEO_AD_REQUESTED, (adSlot) => {
-			adSlot.updateWinningPbBidderDetails();
+		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
+			slot.updateWinningPbBidderDetails();
+		});
+		communicationService.onSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
+			this.updateSlotTargeting(slot.getSlotName());
 		});
 
-		eventService.on(events.VIDEO_AD_USED, (adSlot) => {
-			this.updateSlotTargeting(adSlot.getSlotName());
-		});
-
-		eventService.on(events.BIDS_REFRESH, (refreshedSlotNames: string[]) => {
-			refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
-		});
+		communicationService.on(
+			eventsRepository.BIDDERS_BIDS_REFRESH,
+			({ refreshedSlotNames }) => {
+				refreshedSlotNames.forEach((slotName) => this.updateSlotTargeting(slotName));
+			},
+			false,
+		);
 	}
 
 	getName(): string {
@@ -135,9 +139,9 @@ class Bidders {
 		this.applyTargetingParams(slotName, bidderTargeting);
 
 		utils.logger(logGroup, 'updateSlotTargeting', slotName, bidderTargeting);
-		utils.communicator('Bidding done', {
-			name: slotName,
-			state: 'prebid',
+		communicationService.emit(eventsRepository.BIDDERS_BIDDING_DONE, {
+			slotName,
+			provider: 'prebid',
 		});
 
 		return bidderTargeting;

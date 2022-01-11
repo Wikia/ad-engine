@@ -1,11 +1,4 @@
-import {
-	AdSlot,
-	btfBlockerService,
-	context,
-	Dictionary,
-	eventService,
-	SlotConfig,
-} from '@wikia/ad-engine';
+import { AdSlot, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 import adSlotFake from '../ad-slot-fake';
@@ -97,7 +90,7 @@ describe('btf-blocker-service', () => {
 		expect(firstCallFillInSpy.called).to.be.ok;
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		eventService.emit(AdSlot.SLOT_RENDERED_EVENT, firstCallSlot);
+		firstCallSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
 		expect(secondCallFillInSpy.called).to.be.ok;
 	});
 
@@ -118,7 +111,7 @@ describe('btf-blocker-service', () => {
 		expect(firstCallFillInSpy.called).to.be.ok;
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 
-		eventService.emit(AdSlot.SLOT_RENDERED_EVENT, firstCallSlot);
+		firstCallSlot.emit(AdSlot.SLOT_RENDERED_EVENT);
 		expect(secondCallFillInSpy.called).to.not.be.ok;
 	});
 

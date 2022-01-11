@@ -1,15 +1,9 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 // tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import {
-	btfBlockerService,
-	events,
-	eventService,
-	slotDataParamsUpdater,
-	slotService,
-	trackingOptIn,
-} from '../services';
+import { btfBlockerService, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
@@ -69,7 +63,7 @@ function configure() {
 			const adSlot = getAdSlotFromEvent(event);
 			const adType = getAdType(event, adSlot.getIframe());
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, event, adType);
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
 
@@ -126,9 +120,13 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.updateCorrelator());
-		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
-			this.destroySlot(adSlot.getSlotName());
+		communicationService.on(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => this.updateCorrelator(),
+			false,
+		);
+		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+			this.destroySlot(slot.getSlotName());
 		});
 		initialized = true;
 	}

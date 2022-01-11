@@ -1,7 +1,7 @@
 import {
 	AdSlot,
-	events,
-	eventService,
+	communicationService,
+	eventsRepository,
 	slotTweaker,
 	TEMPLATE,
 	TemplateStateHandler,
@@ -14,7 +14,7 @@ export class InterstitialBootstrapHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'display'>): Promise<void> {
-		this.adSlot.hide();
+		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.addClass('interstitial');
 		this.adSlot.addClass('out-of-page-template');
 
@@ -29,7 +29,7 @@ export class InterstitialBootstrapHandler implements TemplateStateHandler {
 	}
 
 	async onLeave(): Promise<void> {
-		eventService.emit(events.INTERSTITIAL_DISPLAYED);
+		communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
 		this.adSlot.show();
 
 		window.ads.runtime.interstitial.visible = true;

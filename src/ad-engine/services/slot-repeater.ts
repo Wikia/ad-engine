@@ -1,8 +1,8 @@
+import { communicationService } from '@ad-engine/communication';
 import { AdSlot } from '../models';
 import { generateUniqueId, logger } from '../utils';
 import { stringBuilder } from '../utils/string-builder';
 import { context } from './context-service';
-import { eventService } from './events';
 import { slotInjector } from './slot-injector';
 
 const logGroup = 'slot-repeater';
@@ -62,9 +62,9 @@ function repeatSlot(adSlot: AdSlot): boolean {
 
 class SlotRepeater {
 	init(): void {
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
-			if (adSlot.isEnabled() && adSlot.isRepeatable()) {
-				return repeatSlot(adSlot);
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+			if (slot.isEnabled() && slot.isRepeatable()) {
+				return repeatSlot(slot);
 			}
 
 			return false;

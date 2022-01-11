@@ -1,17 +1,20 @@
 import {
 	communicationService,
 	DiProcess,
-	events,
-	eventService,
+	eventsRepository,
 	ofType,
 	onlyNew,
 } from '@wikia/ad-engine';
-import { beforeViewChange } from '../../setup-bingebot';
 
 export class BingeBotBeforeViewChangeSetup implements DiProcess {
 	async execute(): Promise<void> {
-		communicationService.action$.pipe(ofType(beforeViewChange), onlyNew()).subscribe(() => {
-			eventService.emit(events.BEFORE_PAGE_CHANGE_EVENT);
-		});
+		communicationService.action$
+			.pipe(
+				ofType(communicationService.getGlobalAction(eventsRepository.BINGEBOT_BEFORE_VIEW_CHANGE)),
+				onlyNew(),
+			)
+			.subscribe(() => {
+				communicationService.emit(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE);
+			});
 	}
 }

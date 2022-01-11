@@ -1,5 +1,5 @@
-import { communicationService } from '@ad-engine/communication';
-import { AdSlot, adSlotEvent, context, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, context, utils } from '@ad-engine/core';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
@@ -102,7 +102,7 @@ export class Nativo {
 		const adLocation = event?.data[0]?.adLocation || '';
 
 		communicationService.dispatch(
-			adSlotEvent({
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 				event: status,
 				payload: {
 					adLocation,

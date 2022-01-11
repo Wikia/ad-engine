@@ -1,4 +1,10 @@
-import { bidders, DiProcess, events, eventService, utils } from '@wikia/ad-engine';
+import {
+	bidders,
+	communicationService,
+	DiProcess,
+	eventsRepository,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 const logGroup = 'ad-engine';
@@ -8,9 +14,13 @@ export class AdEngineRunnerSetup implements DiProcess {
 	constructor() {}
 
 	execute(): void {
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
-			utils.logger(logGroup, `Created ad slot ${slot.getSlotName()}`);
-			bidders.updateSlotTargeting(slot.getSlotName());
-		});
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				utils.logger(logGroup, `Added ad slot ${slot.getSlotName()}`);
+				bidders.updateSlotTargeting(slot.getSlotName());
+			},
+			false,
+		);
 	}
 }
