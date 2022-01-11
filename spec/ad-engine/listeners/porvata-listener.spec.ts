@@ -1,9 +1,17 @@
-import { context, slotService } from '@wikia/ad-engine';
-import { PorvataListener } from '@wikia/ad-products/video/porvata/porvata-listener';
+import { context, slotService, VideoData, VideoEventListener } from '@wikia/ad-engine';
+import {
+	PorvataListener,
+	PorvataListenerParams,
+} from '@wikia/ad-products/video/porvata/porvata-listener';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 
-function getListener(): any {
+interface PorvataEventTestListener extends VideoEventListener {
+	dispatchedEvents: [];
+	onEvent(eventName: string, params: PorvataListenerParams, data: VideoData): void;
+}
+
+function getListener(): PorvataEventTestListener {
 	return {
 		dispatchedEvents: [],
 		onEvent(eventName, params, data): void {
