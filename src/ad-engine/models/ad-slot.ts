@@ -158,7 +158,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		});
 		this.loaded = new Promise<void>((resolve) => {
@@ -170,7 +169,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		});
 		this.rendered = new Promise<void>((resolve) => {
@@ -187,7 +185,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		});
 		this.viewed = new Promise<void>((resolve) => {
@@ -199,7 +196,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		}).then(() => {
 			this.slotViewed = true;
