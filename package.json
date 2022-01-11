@@ -109,11 +109,7 @@
 		"preversion": "./maintenance/preversion.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
-		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
-		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
-		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
-		"rules:lintf": "tslint --project 'maintenance/tslint-rules/tsconfig.json' --fix"
+		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml"
 	},
 	"husky": {
 		"hooks": {
