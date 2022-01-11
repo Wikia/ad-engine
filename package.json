@@ -105,7 +105,7 @@
 		"ci-check": "npm run test && npm run lint",
 		"lint": "npx eslint . --ext .ts --max-warnings 0",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
-		"format": "npm run prettier && npm run lintf",
+		"format": "npm run prettier",
 		"preversion": "./maintenance/preversion.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
