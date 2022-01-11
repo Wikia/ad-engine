@@ -11,5 +11,6 @@ interface SailthruIntegrationData {
 }
 
 interface Sailthru {
+	init?: ({ customerId: string }) => void;
 	integration?: (name: string, data: SailthruIntegrationData) => void;
 }

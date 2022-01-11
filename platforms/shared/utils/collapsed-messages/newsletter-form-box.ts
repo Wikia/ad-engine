@@ -12,6 +12,8 @@ export class NewsletterFormBox extends MessageBox {
 	}
 
 	create(): void {
+		sailthru.init();
+
 		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 
 		const placeholder = this.adSlot.getPlaceholder();
@@ -75,6 +77,10 @@ export class NewsletterFormBox extends MessageBox {
 		messageArea.innerText = text;
 	}
 
+	private isEmailValid(email: string): boolean {
+		return EMAIL_REGEX.test(email);
+	}
+
 	private doEmailSignUp(event): void {
 		event.preventDefault();
 
@@ -83,14 +89,8 @@ export class NewsletterFormBox extends MessageBox {
 		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
 		submitBtn.disabled = true;
 
-		if (!EMAIL_REGEX.test(emailValue)) {
+		if (!this.isEmailValid(emailValue)) {
 			this.showFormMessage('Please enter a valid email address.');
-			submitBtn.disabled = false;
-			return;
-		}
-
-		if (!sailthru.isLoaded()) {
-			this.showFormMessage('An error occurred. Please try again later.');
 			submitBtn.disabled = false;
 			return;
 		}
