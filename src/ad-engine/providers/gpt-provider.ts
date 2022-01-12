@@ -1,15 +1,9 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 // tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import {
-	btfBlockerService,
-	events,
-	eventService,
-	slotDataParamsUpdater,
-	slotService,
-	trackingOptIn,
-} from '../services';
+import { btfBlockerService, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
@@ -23,8 +17,8 @@ export const GAMOrigins: string[] = [
 	'https://googleads.g.doubleclick.net',
 ];
 
-export function postponeExecutionUntilGptLoads(method: () => void) {
-	return function (...args: any) {
+export function postponeExecutionUntilGptLoads(method: () => void): any {
+	return function (...args: any): void {
 		setTimeout(() => {
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
@@ -39,13 +33,13 @@ function getAdSlotFromEvent(
 		| googletag.events.ImpressionViewableEvent
 		| googletag.events.SlotOnloadEvent
 		| googletag.events.SlotRenderEndedEvent,
-) {
+): AdSlot | null {
 	const id = event.slot.getSlotElementId();
 
 	return slotService.get(id);
 }
 
-function configure() {
+function configure(): void {
 	const tag = window.googletag.pubads();
 
 	tag.disableInitialLoad();
@@ -69,7 +63,7 @@ function configure() {
 			const adSlot = getAdSlotFromEvent(event);
 			const adType = getAdType(event, adSlot.getIframe());
 
-			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, event, adType);
+			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
 
@@ -126,9 +120,13 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => this.updateCorrelator());
-		eventService.on(AdSlot.DESTROYED_EVENT, (adSlot: AdSlot) => {
-			this.destroySlot(adSlot.getSlotName());
+		communicationService.on(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => this.updateCorrelator(),
+			false,
+		);
+		communicationService.onSlotEvent(AdSlot.DESTROYED_EVENT, ({ slot }) => {
+			this.destroySlot(slot.getSlotName());
 		});
 		initialized = true;
 	}
@@ -177,7 +175,7 @@ export class GptProvider implements Provider {
 	}
 
 	/** @private */
-	createGptSlot(adSlot: AdSlot, sizeMap: GptSizeMap) {
+	createGptSlot(adSlot: AdSlot, sizeMap: GptSizeMap): googletag.Slot {
 		if (adSlot.isOutOfPage()) {
 			if (adSlot.getConfigProperty('outOfPageFormat')) {
 				return window.googletag.defineOutOfPageSlot(
@@ -195,15 +193,12 @@ export class GptProvider implements Provider {
 			.defineSizeMapping(sizeMap.build());
 	}
 
-	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting) {
+	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting): void {
 		Object.keys(targeting).forEach((key) => {
 			let value = targeting[key];
 
-			if (Array.isArray(value)) {
-				value = value.map((item) => item.toString());
-			} else {
-				value = value.toString();
-			}
+			value = Array.isArray(value) ? value.map((item) => item.toString()) : value.toString();
+
 			gptSlot.setTargeting(key, value);
 		});
 	}

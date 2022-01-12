@@ -1,17 +1,19 @@
 import {
+	communicationService,
+	eventsRepository,
+	TrackingBidDefinition,
+} from '@ad-engine/communication';
+import {
 	AdSlot,
 	context,
 	DEFAULT_MAX_DELAY,
 	Dictionary,
-	events,
-	eventService,
 	SlotConfig,
 	slotService,
 	Usp,
 	usp,
 	utils,
 } from '@ad-engine/core';
-import { TrackingBidDefinition } from '@ad-engine/tracking';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { Apstag } from '../wrappers';
@@ -32,6 +34,35 @@ export class A9Provider extends BidderProvider {
 	static A9_CLASS = 'a9-ad';
 	static VIDEO_TTL = 10 * 60 * 1000; // 10 minutes for video bid to expire
 	private static isApstagConfigured = false;
+
+	private static getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
+		if (signalData && signalData.uspString) {
+			return {
+				params: {
+					us_privacy: signalData.uspString,
+				},
+			};
+		}
+
+		return {};
+	}
+
+	private static mapResponseToTrackingBidDefinition(
+		slotName: string,
+		bid: Dictionary,
+		responseTimestamp: number,
+		timeToRespond: number,
+	): TrackingBidDefinition {
+		return {
+			responseTimestamp,
+			timeToRespond,
+			bidderName: 'a9',
+			buyerId: bid.amznp,
+			price: bid.amznbid,
+			size: bid.amznsz,
+			slotName: getSlotNameByBidderAlias(slotName),
+		};
+	}
 
 	private loaded = false;
 
@@ -72,10 +103,16 @@ export class A9Provider extends BidderProvider {
 	private initIfNotLoaded(signalData: SignalData): void {
 		if (!this.loaded) {
 			if (context.get('custom.hasFeaturedVideo')) {
-				eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot: AdSlot) => this.removeBids(adSlot));
-				eventService.on(events.VIDEO_AD_ERROR, (adSlot: AdSlot) => this.removeBids(adSlot));
-				eventService.on(events.INVALIDATE_SLOT_TARGETING, (adSlot: AdSlot) =>
-					this.invalidateSlotTargeting(adSlot),
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+					this.removeBids(slot),
+				);
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+					this.removeBids(slot),
+				);
+				communicationService.on(
+					eventsRepository.AD_ENGINE_INVALIDATE_SLOT_TARGETING,
+					({ slot }) => this.invalidateSlotTargeting(slot),
+					false,
 				);
 			}
 
@@ -84,17 +121,17 @@ export class A9Provider extends BidderProvider {
 		}
 	}
 
-	private removeBids(adSlot: AdSlot) {
+	private removeBids(adSlot: AdSlot): void {
 		const slotAlias = this.getSlotAlias(adSlot.getSlotName());
 
 		delete this.bids[slotAlias];
 
 		if (adSlot.isVideo()) {
-			eventService.emit(events.VIDEO_AD_USED, adSlot);
+			adSlot.emit(AdSlot.VIDEO_AD_USED);
 		}
 	}
 
-	private invalidateSlotTargeting(adSlot: AdSlot) {
+	private invalidateSlotTargeting(adSlot: AdSlot): void {
 		const expirationDate = Date.parse(
 			context.get(`slots.${adSlot.getSlotName()}.targeting.amznExpirationDate`),
 		);
@@ -114,20 +151,8 @@ export class A9Provider extends BidderProvider {
 			pubID: this.amazonId,
 			videoAdServer: 'DFP',
 			deals: true,
-			...this.getCcpaIfApplicable(signalData),
+			...A9Provider.getCcpaIfApplicable(signalData),
 		};
-	}
-
-	private getCcpaIfApplicable(signalData: SignalData): Partial<A9CCPA> {
-		if (signalData && signalData.uspString) {
-			return {
-				params: {
-					us_privacy: signalData.uspString,
-				},
-			};
-		}
-
-		return {};
 	}
 
 	/**
@@ -168,15 +193,14 @@ export class A9Provider extends BidderProvider {
 
 				this.updateBidSlot(slotName, keys, bidTargeting, expirationDate);
 
-				eventService.emit(
-					events.BIDS_RESPONSE,
-					this.mapResponseToTrackingBidDefinition(
+				communicationService.emit(eventsRepository.BIDDERS_BIDS_RESPONSE, {
+					bidResponse: A9Provider.mapResponseToTrackingBidDefinition(
 						bid.slotID,
 						bidTargeting,
 						endTime,
 						endTime - startTime,
 					),
-				);
+				});
 			}),
 		);
 
@@ -185,25 +209,10 @@ export class A9Provider extends BidderProvider {
 		if (refresh) {
 			const refreshedSlotNames = slots.map((slot) => slot.slotName);
 
-			eventService.emit(events.BIDS_REFRESH, refreshedSlotNames);
+			communicationService.emit(eventsRepository.BIDDERS_BIDS_REFRESH, {
+				refreshedSlotNames,
+			});
 		}
-	}
-
-	private mapResponseToTrackingBidDefinition(
-		slotName: string,
-		bid: Dictionary,
-		responseTimestamp: number,
-		timeToRespond: number,
-	): TrackingBidDefinition {
-		return {
-			responseTimestamp,
-			timeToRespond,
-			bidderName: 'a9',
-			buyerId: bid.amznp,
-			price: bid.amznbid,
-			size: bid.amznsz,
-			slotName: getSlotNameByBidderAlias(slotName),
-		};
 	}
 
 	private configureApstagOnce(): void {
@@ -298,8 +307,12 @@ export class A9Provider extends BidderProvider {
 	}
 
 	private registerVideoBidsRefreshing(): void {
-		eventService.on(events.VIDEO_AD_IMPRESSION, (adSlot) => this.refreshVideoBids(adSlot));
-		eventService.on(events.VIDEO_AD_ERROR, (adSlot) => this.refreshVideoBids(adSlot));
+		communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
+			this.refreshVideoBids(slot),
+		);
+		communicationService.onSlotEvent(AdSlot.VIDEO_AD_ERROR, ({ slot }) =>
+			this.refreshVideoBids(slot),
+		);
 	}
 
 	private refreshVideoBids(adSlot: AdSlot): void {

@@ -1,16 +1,7 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
 
 const logGroup = 'ad-click-tracker';
-const adSlotLoadedEvent = globalAction(
-	'[AdEngine] Ad Slot event',
-	props<{ adSlotName: string; event: string }>(),
-);
-export const videoLearnMoreDisplayedEvent = globalAction(
-	'[AdEngine] Video learn more displayed',
-	props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
-);
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -30,19 +21,17 @@ class AdClickTracker {
 	}
 
 	register(callback: FuncPipelineStep<AdClickContext>): void {
-		communicationService.action$
-			.pipe(ofType(adSlotLoadedEvent))
-			.subscribe(async ({ event, adSlotName }) => {
-				if (event === AdSlot.SLOT_RENDERED_EVENT) {
-					this.addClickTrackingListeners(callback, adSlotName);
-				}
-			});
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
+			this.addClickTrackingListeners(callback, adSlotName);
+		});
 
-		communicationService.action$
-			.pipe(ofType(videoLearnMoreDisplayedEvent))
-			.subscribe(async ({ adSlotName, learnMoreLink }) => {
+		communicationService.on(
+			eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED,
+			({ adSlotName, learnMoreLink }) => {
 				this.addClickVideoLearnMoreTrackingListeners(callback, adSlotName, learnMoreLink);
-			});
+			},
+			false,
+		);
 	}
 
 	private addClickTrackingListeners(callback: FuncPipelineStep<AdClickContext>, slotName): void {

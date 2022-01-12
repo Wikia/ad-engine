@@ -1,7 +1,6 @@
 import {
 	insertSlots,
 	PlaceholderService,
-	PlaceholderServiceHelper,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -9,20 +8,14 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	events,
-	eventService,
+	eventsRepository,
 	fillerService,
-	globalAction,
-	ofType,
 	PorvataFiller,
 	PorvataGamParams,
 	slotService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
-
-const railReady = globalAction('[Rail] Ready');
 
 @Injectable()
 export class UcpDesktopDynamicSlotsSetup implements DiProcess {
@@ -49,7 +42,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 		]);
 
-		communicationService.action$.pipe(ofType(railReady), take(1)).subscribe(() => {
+		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
 		});
 	}
@@ -91,28 +84,34 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	private configureFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
-
 		let porvataClosedActive = false;
 
-		slotService.on(slotName, AdSlot.STATUS_SUCCESS, () => {
-			porvataClosedActive = true;
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				porvataClosedActive = true;
 
-			eventService.on(events.VIDEO_AD_IMPRESSION, () => {
-				if (porvataClosedActive) {
-					porvataClosedActive = false;
-					slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
-				}
-			});
-		});
+				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
+					if (porvataClosedActive) {
+						porvataClosedActive = false;
+						slotService.disable(slotName, AdSlot.STATUS_CLOSED_BY_PORVATA);
+					}
+				});
+			},
+			slotName,
+		);
 
-		slotService.on(slotName, AdSlot.HIDDEN_EVENT, () => {
-			porvataClosedActive = false;
-		});
+		communicationService.onSlotEvent(
+			AdSlot.HIDDEN_EVENT,
+			() => {
+				porvataClosedActive = false;
+			},
+			slotName,
+		);
 	}
 
 	private registerAdPlaceholderService(): void {
-		const placeholderHelper = new PlaceholderServiceHelper();
-		const placeholderService = new PlaceholderService(placeholderHelper);
+		const placeholderService = new PlaceholderService();
 		placeholderService.init();
 	}
 }

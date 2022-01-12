@@ -1,20 +1,20 @@
 import { PorvataSettings } from '../../../video/porvata/porvata-settings';
 import { UapParams, UapVideoSettings } from '../../uap';
-import CloseButton from './close-button';
-import DynamicReveal from './dynamic-reveal';
-import Floating from './floating';
-import LearnMore from './learn-more';
+import { CloseButton } from './close-button';
+import { DynamicReveal } from './dynamic-reveal';
+import { Floating } from './floating';
+import { LearnMore } from './learn-more';
 import { Panel } from './panel';
-import PauseControl from './pause-control';
-import PauseOverlay from './pause-overlay';
-import ProgressBar from './progress-bar';
-import ReplayOverlay from './replay-overlay';
-import ToggleAnimation from './toggle-animation';
-import ToggleFullscreen from './toggle-fullscreen';
-import ToggleThumbnail from './toggle-thumbnail';
-import ToggleUI from './toggle-ui';
-import ToggleVideo from './toggle-video';
-import VolumeControl from './volume-control';
+import { PauseControl } from './pause-control';
+import { PauseOverlay } from './pause-overlay';
+import { ProgressBar } from './progress-bar';
+import { ReplayOverlay } from './replay-overlay';
+import { ToggleAnimation } from './toggle-animation';
+import { ToggleFullscreen } from './toggle-fullscreen';
+import { ToggleThumbnail } from './toggle-thumbnail';
+import { ToggleUI } from './toggle-ui';
+import { ToggleVideo } from './toggle-video';
+import { VolumeControl } from './volume-control';
 
 export const createBottomPanel = ({ fullscreenAllowed = true, theme = null }) => {
 	const isHiVi = theme === 'hivi';
@@ -32,13 +32,7 @@ export const createBottomPanel = ({ fullscreenAllowed = true, theme = null }) =>
 };
 
 const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings) => {
-	let isAutoPlay: boolean;
-
-	if (videoSettings) {
-		isAutoPlay = videoSettings.isAutoPlay();
-	} else {
-		isAutoPlay = params.isAutoPlay;
-	}
+	const isAutoPlay: boolean = videoSettings ? videoSettings.isAutoPlay() : params.isAutoPlay;
 
 	return {
 		'auto-play': [ProgressBar, PauseOverlay, createBottomPanel(params), ToggleAnimation],
@@ -75,7 +69,7 @@ const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings
 export function selectTemplate(
 	videoSettings: PorvataSettings | UapVideoSettings,
 	params?: Partial<UapParams>,
-) {
+): [any] {
 	const videoParams = params || videoSettings.getParams();
 	const templates = getTemplates(videoParams, videoSettings);
 	let template = 'default';

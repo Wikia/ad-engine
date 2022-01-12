@@ -14,7 +14,6 @@ export class StickyTlbConfigHandler implements TemplateStateHandler {
 
 	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);
-		this.adSlot.hide();
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('sticky-tlb');
 

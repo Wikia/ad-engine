@@ -1,14 +1,9 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
 import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import { silverSurferServiceLoader } from './silver-surfer.loader';
 
 const logGroup = 'silver-surfer';
-const adSlotLoadedEvent = globalAction(
-	'[AdEngine] Ad Slot added',
-	props<{ name: string; status: string }>(),
-);
 
 class SilverSurferService {
 	async configureUserTargeting(): Promise<AdTags> {
@@ -23,11 +18,15 @@ class SilverSurferService {
 	}
 
 	private setListenerForLazyLoadedSlots(): void {
-		communicationService.action$.pipe(ofType(adSlotLoadedEvent)).subscribe(async () => {
-			if (context.get('targeting.galactus_status') !== 'on_time') {
-				await this.setUserProfileTargeting();
-			}
-		});
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			async () => {
+				if (context.get('targeting.galactus_status') !== 'on_time') {
+					await this.setUserProfileTargeting();
+				}
+			},
+			false,
+		);
 	}
 
 	private async setUserProfileTargeting(): Promise<AdTags> {

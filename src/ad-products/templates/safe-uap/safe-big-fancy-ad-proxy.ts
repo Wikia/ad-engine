@@ -116,6 +116,7 @@ export class SafeBigFancyAdProxy {
 
 			isMobile: context.get('state.isMobile'),
 			config: {
+				state,
 				aspectRatio: platformConfig.aspectRatio,
 				background: {
 					default: platformConfig.images.default,
@@ -124,7 +125,6 @@ export class SafeBigFancyAdProxy {
 				video: {
 					thumb: this.config.thumbnail,
 				},
-				state,
 			},
 
 			slotName: this.adSlot.getSlotName(),

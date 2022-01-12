@@ -1,5 +1,4 @@
 import {
-	adEngineConfigured,
 	AdEngineRunnerSetup,
 	BaseContextSetup,
 	BiddersStateSetup,
@@ -16,6 +15,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	eventsRepository,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -56,7 +56,7 @@ export class SportsPlatform {
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
-			() => communicationService.dispatch(adEngineConfigured()),
+			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
 		// Run

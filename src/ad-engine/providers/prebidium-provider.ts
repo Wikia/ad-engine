@@ -1,17 +1,11 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
 import { filter, take } from 'rxjs/operators';
-import { props } from 'ts-action';
 import { AdSlot } from '../models';
 import { context, pbjsFactory } from '../services';
 import { IframeBuilder, logger } from '../utils';
 import { Provider } from './provider';
 
 const logGroup = 'prebidium-provider';
-
-export const biddingDone = globalAction(
-	'[AdEngine] Bidding done',
-	props<{ name: string; state: string }>(),
-);
 
 export class PrebidiumProvider implements Provider {
 	private iframeBuilder = new IframeBuilder();
@@ -21,8 +15,10 @@ export class PrebidiumProvider implements Provider {
 
 		communicationService.action$
 			.pipe(
-				ofType(biddingDone),
-				filter((action) => action.state === 'prebid' && action.name === adSlot.getSlotName()),
+				ofType(communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)),
+				filter(
+					(action) => action.provider === 'prebid' && action.slotName === adSlot.getSlotName(),
+				),
 				take(1),
 			)
 			.subscribe(() => {

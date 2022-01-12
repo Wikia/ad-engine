@@ -1,4 +1,5 @@
-import { AdSlot, context, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { communicationService } from '@ad-engine/communication';
+import { AdSlot, context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 
 export interface AdInfoContext {
 	data: any;
@@ -9,11 +10,12 @@ class SlotTracker {
 	onRenderEndedStatusToTrack = [
 		AdSlot.STATUS_COLLAPSE,
 		AdSlot.STATUS_FORCED_COLLAPSE,
+		AdSlot.STATUS_MANUAL,
 		AdSlot.STATUS_SUCCESS,
-		AdSlot.STATUS_CLICKED,
 	];
 	onChangeStatusToTrack = [
 		AdSlot.STATUS_BLOCKED,
+		AdSlot.STATUS_CLICKED,
 		AdSlot.STATUS_ERROR,
 		AdSlot.STATUS_VIEWPORT_CONFLICT,
 		AdSlot.STATUS_HIVI_COLLAPSE,
@@ -40,43 +42,35 @@ class SlotTracker {
 			return;
 		}
 
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot: AdSlot) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
+			slot.trackStatusAfterRendered = true;
+		});
+
+		communicationService.onSlotEvent(AdSlot.SLOT_STATUS_CHANGED, ({ slot }) => {
 			const status = slot.getStatus();
 			const middlewareContext: AdInfoContext = {
 				slot,
 				data: {},
 			};
 
-			if (
-				this.onRenderEndedStatusToTrack.includes(status) ||
-				slot.getConfigProperty('trackEachStatus')
-			) {
+			if (slot.trackStatusAfterRendered) {
+				delete slot.trackStatusAfterRendered;
+				if (this.onRenderEndedStatusToTrack.includes(status) || slot.getConfigProperty('trackEachStatus')) {
+					this.pipeline.execute(middlewareContext, callback);
+					return;
+				}
+			}
+
+			if (this.onChangeStatusToTrack.includes(status) || slot.getConfigProperty('trackEachStatus')) {
 				this.pipeline.execute(middlewareContext, callback);
-			} else if (slot.getStatus() === 'manual') {
-				slot.trackOnStatusChanged = true;
 			}
 		});
 
-		eventService.on(AdSlot.SLOT_STATUS_CHANGED, (slot: AdSlot) => {
-			const status = slot.getStatus();
-			const shouldSlotBeTracked =
-				slot.getConfigProperty('trackEachStatus') || slot.trackOnStatusChanged;
-			const middlewareContext: AdInfoContext = {
-				slot,
-				data: {},
-			};
-
-			if (this.onChangeStatusToTrack.includes(status) || shouldSlotBeTracked) {
-				this.pipeline.execute(middlewareContext, callback);
-				delete slot.trackOnStatusChanged;
-			}
-		});
-
-		eventService.on(AdSlot.CUSTOM_EVENT, (slot: AdSlot, { status }: { status: string }) => {
+		communicationService.onSlotEvent(AdSlot.CUSTOM_EVENT, ({ slot, payload }) => {
 			const middlewareContext: AdInfoContext = {
 				slot,
 				data: {
-					ad_status: status,
+					ad_status: payload?.status,
 				},
 			};
 

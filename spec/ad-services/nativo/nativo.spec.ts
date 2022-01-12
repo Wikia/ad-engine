@@ -1,12 +1,13 @@
-import { libraryUrl, nativo, nativoLoadedEvent } from '@wikia/ad-services';
-import { communicationService } from '@wikia/communication';
+import { libraryUrl, nativo } from '@wikia/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { context, utils } from '../../../src/ad-engine';
+import { AdSlot, context, utils } from '../../../src/ad-engine';
 import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
 
 describe('Nativo service', () => {
 	const sandbox = createSandbox();
+	const serviceName = 'nativo';
 
 	let loadScriptSpy: SinonSpy;
 	let dispatchSpy: SinonSpy;
@@ -61,12 +62,40 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(false);
 	});
 
+	it('Nativo emits event on when disabled', async () => {
+		context.set('services.nativo.enabled', false);
+
+		await nativo.call();
+
+		expect(loadScriptSpy.called).to.equal(false);
+		expect(dispatchSpy.callCount).to.equal(1);
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+				payload: {
+					adLocation: '',
+					provider: serviceName,
+				},
+				event: AdSlot.STATUS_COLLAPSE,
+				adSlotName: '',
+			}),
+		);
+	});
+
 	it('Nativo emits event on successful load', async () => {
 		await nativo.call();
 
 		expect(loadScriptSpy.called).to.equal(true);
 		expect(dispatchSpy.callCount).to.equal(1);
-		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(nativoLoadedEvent({ isLoaded: true }));
+		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+				payload: {
+					adLocation: '',
+					provider: serviceName,
+				},
+				event: AdSlot.SLOT_ADDED_EVENT,
+				adSlotName: '',
+			}),
+		);
 	});
 
 	it('Nativo sends request - happy path scenario', () => {

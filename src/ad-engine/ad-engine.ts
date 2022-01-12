@@ -1,3 +1,4 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
 import { GptProvider, PrebidiumProvider, Provider } from './providers';
@@ -5,8 +6,6 @@ import { Runner } from './runner';
 import {
 	btfBlockerService,
 	context,
-	events,
-	eventService,
 	messageBus,
 	registerCustomAdLoader,
 	slotRepeater,
@@ -14,7 +13,7 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { communicator, LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -37,13 +36,13 @@ export class AdEngine {
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
-		eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
-			slotService.removeAll();
-		});
-		eventService.on(events.PAGE_CHANGE_EVENT, () => {
-			this.started = false;
-			this.setupAdStack();
-		});
+		communicationService.on(
+			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+			() => {
+				slotService.removeAll();
+			},
+			false,
+		);
 	}
 
 	init(inhibitors: Promise<any>[] = []): void {
@@ -108,7 +107,7 @@ export class AdEngine {
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
-				communicator(events.AD_STACK_START);
+				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
 
 				this.started = true;
 				this.adStack.start();

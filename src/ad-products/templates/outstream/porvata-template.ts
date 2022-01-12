@@ -1,12 +1,12 @@
-import { AdSlot, context, events, eventService, slotTweaker, utils } from '@ad-engine/core';
+import { AdSlot, context, slotTweaker, utils } from '@ad-engine/core';
 import { Porvata, PorvataTemplateParams, VpaidMode } from '../..';
 import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
 
-import DynamicReveal from '../interface/video/dynamic-reveal';
-import Floating from '../interface/video/floating';
-import ProgressBar from '../interface/video/progress-bar';
-import VolumeControl from '../interface/video/volume-control';
+import { DynamicReveal } from '../interface/video/dynamic-reveal';
+import { Floating } from '../interface/video/floating';
+import { ProgressBar } from '../interface/video/progress-bar';
+import { VolumeControl } from '../interface/video/volume-control';
 
 export const DEFAULT_VIDEO_ASPECT_RATIO = 640 / 360;
 export const FLOATING_VIDEO_ASPECT_RATIO = 640 / 480;
@@ -99,10 +99,6 @@ export class PorvataTemplate {
 		});
 
 		this.handleSlotStatus(player);
-
-		eventService.once(events.PAGE_CHANGE_EVENT, () => {
-			player.destroy();
-		});
 
 		videoUserInterface.setup(player, player.dom.getInterfaceContainer(), template, {
 			container: player.dom.getInterfaceContainer(),

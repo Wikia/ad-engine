@@ -1,6 +1,6 @@
-export { default as ProgressBar } from './progress-bar';
-export { default as ReplayOverlay } from './replay-overlay';
-export { default as ToggleThumbnail } from './toggle-thumbnail';
-export { default as ToggleUI } from './toggle-ui';
-export { default as ToggleVideo } from './toggle-video';
-export { default as LearnMore } from './learn-more';
+export { ProgressBar } from './progress-bar';
+export { ReplayOverlay } from './replay-overlay';
+export { ToggleThumbnail } from './toggle-thumbnail';
+export { ToggleUI } from './toggle-ui';
+export { ToggleVideo } from './toggle-video';
+export { LearnMore } from './learn-more';

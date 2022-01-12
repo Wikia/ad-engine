@@ -4,10 +4,8 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	events,
-	uapLoadStatus,
+	eventsRepository,
 	universalAdPackage,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { F2SlotsDefinitionRepository } from './f2-slots-definition-repository';
@@ -32,14 +30,12 @@ export class F2DynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (!topLeaderboardDefinition) {
-			utils.listener(events.AD_STACK_START, () => {
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
-				communicationService.dispatch(
-					uapLoadStatus({
-						isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-						adProduct: universalAdPackage.getType(),
-					}),
-				);
+				communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+					adProduct: universalAdPackage.getType(),
+				});
 			});
 		}
 	}
