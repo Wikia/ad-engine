@@ -85,7 +85,7 @@ class IasPublisherOptimization {
 			iasPETSlots.push(config);
 		});
 
-		// @ts-ignore
+		// @ts-ignore the __iasPET API is not under our control
 		window.__iasPET = window.__iasPET || {};
 		window.__iasPET.queue = window.__iasPET.queue || [];
 		window.__iasPET.pubId = context.get('services.iasPublisherOptimization.pubId');
