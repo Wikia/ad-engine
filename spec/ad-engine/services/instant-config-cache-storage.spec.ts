@@ -3,6 +3,7 @@ import {
 	InstantConfigCacheStorage,
 } from '@wikia/ad-engine/services/instant-config-cache-storage';
 import { SessionCookie } from '@wikia/ad-engine/services/session-cookie';
+import { communicationService, eventsRepository } from '@wikia/communication/index';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy, SinonStub } from 'sinon';
 
@@ -66,6 +67,8 @@ describe('Instant Config Cache Storage', () => {
 			withCookie: true,
 		};
 
+		communicationService.emit(eventsRepository.AD_ENGINE_CONSENT_READY, { gdprConsent: true });
+
 		it('should save data only to cache', () => {
 			cacheStorage.set(cacheData);
 
@@ -84,6 +87,7 @@ describe('Instant Config Cache Storage', () => {
 
 		it('should save some to cache and some to cache and cookie', () => {
 			cacheStorage.set({ ...cookieData, name: 'test1' });
+
 			expect(setItemStub.getCalls().length).to.equal(1);
 			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({
 				test1: { ...cookieData, name: 'test1' },
