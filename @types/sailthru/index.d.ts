@@ -4,7 +4,7 @@ interface SailthruIntegrationData {
 		sign_up_date: string;
 		email: string;
 	};
-	lists: { 'Fandom Account Registration - MASTERLIST': number };
+	lists: object;
 	source: string;
 	onSuccess: () => void;
 	onError: () => void;
