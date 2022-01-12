@@ -2,7 +2,6 @@ import { AdSlot, sailthru, UserSignupPayload } from '@wikia/ad-engine';
 import { isEmailValid } from '../email-validator';
 import { MessageBox } from './message-box';
 
-
 export class NewsletterFormBox extends MessageBox {
 	constructor(adSlot: AdSlot) {
 		super(adSlot);
