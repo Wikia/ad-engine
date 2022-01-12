@@ -29,10 +29,14 @@ class Sailthru {
 		if (!this.isLoaded()) {
 			utils.logger(logGroup, 'loading');
 
-			return utils.scriptLoader.loadScript(packageUrl).then(() => {
-				window.Sailthru.init({ customerId: ACCT_ID });
-				utils.logger(logGroup, 'ready');
-			});
+			return utils.scriptLoader.loadScript(packageUrl)
+				.then(() => {
+					window.Sailthru.init({ customerId: ACCT_ID });
+					utils.logger(logGroup, 'ready');
+				})
+				.catch(() => {
+					throw new Error('Error occurred while loading Sailthru.');
+				})
 		}
 	}
 

@@ -1,15 +1,22 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot, sailthru } from '@wikia/ad-engine';
 import { MessageBoxCreator } from './message-box-creator';
 
 export type MessageBoxType = 'REGISTER' | 'FANLAB' | 'NEWSLETTER_LINK' | 'NEWSLETTER_FORM';
 
 export class MessageBoxService {
 	private messageBoxCreator: MessageBoxCreator;
-	private types: MessageBoxType[] = ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK'];
+	private types: MessageBoxType[];
 	private currentType = 0;
 
 	constructor() {
 		this.messageBoxCreator = new MessageBoxCreator();
+		this.init();
+	}
+
+	init(): void {
+		this.types = sailthru.isEnabled()
+			? ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK']
+			: ['REGISTER', 'FANLAB', 'NEWSLETTER_LINK'];
 	}
 
 	getCurrentTypeIndex(): number {

@@ -89,12 +89,6 @@ export class NewsletterFormBox extends MessageBox {
 			return;
 		}
 
-		if (!sailthru.isEnabled() || !sailthru.isLoaded()) {
-			this.showFormMessage('An error occurred. Please try again later.');
-			submitBtn.disabled = false;
-			return;
-		}
-
 		const payload = this.createPayload(emailValue, submitBtn);
 		const source = 'adengine_in_content_ad';
 
