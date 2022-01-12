@@ -11,5 +11,7 @@ export class NewsletterLinkBox extends MessageBox {
 		);
 		this.buttonText = 'Sign up';
 		this.messageText = `Sign up today<br/>to receive weekly newsletters from Fandom`;
+		this.status_impression = 'cm_newsletter_link_impression';
+		this.status_clicked = 'cm_newsletter_link_clicked';
 	}
 }

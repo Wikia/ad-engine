@@ -8,5 +8,7 @@ export class RegisterBox extends MessageBox {
 		this.redirectUrl = 'https://www.fandom.com/register';
 		this.buttonText = 'Register';
 		this.messageText = 'Join a passionate community of people who love what you love.';
+		this.status_impression = 'cm_register_impression';
+		this.status_clicked = 'cm_register_clicked';
 	}
 }

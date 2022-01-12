@@ -1,21 +1,29 @@
 import { AdSlot, communicationService, messageBoxTrackingEvent } from '@wikia/ad-engine';
 import { MessageBoxType } from './message-box-service';
 
+type MessageBoxEvents = 'cm_register_impression'
+	| 'cm_register_clicked'
+	| 'cm_fanlab_impression'
+	| 'cm_fanlab_clicked'
+	| 'cm_newsletter_form_impression'
+	| 'cm_newsletter_form_clicked'
+	| 'cm_newsletter_link_impression'
+	| 'cm_newsletter_link_clicked'
+
 export class MessageBox {
 	protected type: MessageBoxType;
 	protected adSlot: AdSlot;
-	protected redirectUrl: string;
 	protected buttonText: string;
 	protected messageText: string;
+	protected status_impression: MessageBoxEvents;
+	protected status_clicked: MessageBoxEvents;
+	protected redirectUrl?: string;
 
 	constructor(adSlot: AdSlot) {
 		this.adSlot = adSlot;
 	}
 
 	create(): void {
-		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
-		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
-
 		const placeholder = this.adSlot.getPlaceholder();
 		if (!placeholder) {
 			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
@@ -26,13 +34,13 @@ export class MessageBox {
 		const button = this.createButton();
 		button.onclick = () => {
 			this.openInNewTab();
-			this.sendTrackingEvent(status_clicked);
+			this.sendTrackingEvent(this.status_clicked);
 		};
 
 		wrapper.append(message, button);
 		placeholder.appendChild(wrapper);
 
-		this.sendTrackingEvent(status_impression);
+		this.sendTrackingEvent(this.status_impression);
 	}
 
 	createBoxWrapper(): HTMLElement {

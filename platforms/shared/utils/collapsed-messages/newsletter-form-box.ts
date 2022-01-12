@@ -9,12 +9,12 @@ export class NewsletterFormBox extends MessageBox {
 		this.type = 'NEWSLETTER_FORM';
 		this.messageText = 'THE LATEST TRENDS, DELIVERED STRAIGHT TO YOUR INBOX.';
 		this.buttonText = 'Sign up';
+		this.status_impression = 'cm_newsletter_form_impression';
+		this.status_clicked = 'cm_newsletter_form_clicked';
 	}
 
 	create(): void {
 		sailthru.init();
-
-		const status_impression = `cm_${this.type.toLowerCase()}_impression`;
 
 		const placeholder = this.adSlot.getPlaceholder();
 		if (!placeholder) {
@@ -30,7 +30,7 @@ export class NewsletterFormBox extends MessageBox {
 		wrapper.append(message, form, formMessage);
 		placeholder.append(wrapper);
 
-		this.sendTrackingEvent(status_impression);
+		this.sendTrackingEvent(this.status_impression);
 	}
 
 	private createForm(): HTMLElement {
@@ -52,12 +52,10 @@ export class NewsletterFormBox extends MessageBox {
 	}
 
 	private createPayload(email: string, submitBtn: HTMLButtonElement): UserSignupPayload {
-		const status_clicked = `cm_${this.type.toLowerCase()}_clicked`;
-
 		const onSuccess = (): void => {
 			this.showFormMessage('Thanks for signing up!');
 			submitBtn.disabled = false;
-			this.sendTrackingEvent(status_clicked);
+			this.sendTrackingEvent(this.status_clicked);
 		};
 
 		const onError = (): void => {
