@@ -1,8 +1,8 @@
 import { libraryUrl, nativo } from '@wikia/ad-services';
-import { communicationService } from '@wikia/communication';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';
-import { AdSlot, adSlotEvent, context, utils } from '../../../src/ad-engine';
+import { AdSlot, context, utils } from '../../../src/ad-engine';
 import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
 
 describe('Nativo service', () => {
@@ -70,12 +70,12 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(false);
 		expect(dispatchSpy.callCount).to.equal(1);
 		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-			adSlotEvent({
-				event: AdSlot.STATUS_COLLAPSE,
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 				payload: {
 					adLocation: '',
 					provider: serviceName,
 				},
+				event: AdSlot.STATUS_COLLAPSE,
 				adSlotName: '',
 			}),
 		);
@@ -87,12 +87,12 @@ describe('Nativo service', () => {
 		expect(loadScriptSpy.called).to.equal(true);
 		expect(dispatchSpy.callCount).to.equal(1);
 		expect(dispatchSpy.firstCall.args[0]).to.deep.equal(
-			adSlotEvent({
-				event: AdSlot.SLOT_ADDED_EVENT,
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
 				payload: {
 					adLocation: '',
 					provider: serviceName,
 				},
+				event: AdSlot.SLOT_ADDED_EVENT,
 				adSlotName: '',
 			}),
 		);

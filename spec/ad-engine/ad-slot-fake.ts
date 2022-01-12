@@ -1,11 +1,10 @@
-import { LazyQueue } from '@wikia/ad-engine/utils';
+import { communicationService, eventsRepository } from '@wikia/communication/index';
 
 const dataset: any = {};
 
 let offsetTop = 1000;
 
 export default {
-	events: new LazyQueue(),
 	name: 'FAKE_AD',
 	config: {
 		targeting: {
@@ -97,5 +96,12 @@ export default {
 	},
 	getSlotsToInjectAfterRendered() {
 		return [];
+	},
+	emit(event) {
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
+			event,
+			slot: this,
+			adSlotName: this.getSlotName(),
+		});
 	},
 };

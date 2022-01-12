@@ -1,4 +1,4 @@
-import { AdSlot, buildVastUrl, context, events, vastDebugger, VastParams } from '@ad-engine/core';
+import { AdSlot, buildVastUrl, context, vastDebugger, VastParams } from '@ad-engine/core';
 import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
@@ -76,16 +76,16 @@ export class JWPlayerHelper {
 			this.adSlot.setStatus(AdSlot.STATUS_ERROR);
 		}
 
-		this.adSlot.emit(events.VIDEO_AD_ERROR);
+		this.adSlot.emit(AdSlot.VIDEO_AD_ERROR);
 	}
 
 	emitVideoAdRequest(): void {
-		this.adSlot.emit(events.VIDEO_AD_REQUESTED);
+		this.adSlot.emit(AdSlot.VIDEO_AD_REQUESTED);
 	}
 
 	emitVideoAdImpression(): void {
 		this.adSlot.setStatus(AdSlot.STATUS_SUCCESS);
-		this.adSlot.emit(events.VIDEO_AD_IMPRESSION);
+		this.adSlot.emit(AdSlot.VIDEO_AD_IMPRESSION);
 	}
 
 	updateVideoProperties(state: JwpState): void {

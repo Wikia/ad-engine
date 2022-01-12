@@ -1,6 +1,5 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
 
 const logGroup = 'ATS';
 
@@ -22,7 +21,7 @@ class Ats {
 			if (!userEmailHashes) {
 				if (context.get('state.isLogged')) {
 					const reason = 'no email';
-					communicationService.dispatch(atsNotLoadedForLoggedInUser({ reason }));
+					communicationService.emit(eventsRepository.ATS_NOT_LOADED_LOGGED, { reason });
 				}
 
 				return Promise.resolve();
@@ -44,7 +43,7 @@ class Ats {
 					logging: 'error',
 				});
 
-				communicationService.dispatch(atsLoadedEvent({ loadTime }));
+				communicationService.emit(eventsRepository.ATS_JS_LOADED, { loadTime });
 				this.registerAtsIdsLoadedHandler();
 				this.isLoaded = true;
 			});
@@ -64,24 +63,9 @@ class Ats {
 			const atsEnvelopeObj = atsEnvelope ? JSON.parse(atsEnvelope) : undefined;
 			const envelope = atsEnvelopeObj ? atsEnvelopeObj.envelope : 'undefined';
 
-			communicationService.dispatch(atsIdsLoadedEvent({ envelope }));
+			communicationService.emit(eventsRepository.ATS_IDS_LOADED, { envelope });
 		});
 	}
 }
-
-export const atsLoadedEvent = globalAction(
-	'[AdEngine] ATS.js loaded',
-	props<{ loadTime: number }>(),
-);
-
-export const atsIdsLoadedEvent = globalAction(
-	'[AdEngine] ATS ids loaded',
-	props<{ envelope: string }>(),
-);
-
-export const atsNotLoadedForLoggedInUser = globalAction(
-	'[AdEngine] ATS.js not loaded for logged in user',
-	props<{ reason: string }>(),
-);
 
 export const ats = new Ats();

@@ -3,18 +3,16 @@ import {
 	btRec,
 	communicationService,
 	context,
-	events,
+	eventsRepository,
 	FmrRotator,
 	InstantConfigService,
 	Nativo,
 	nativo,
-	ofType,
 	scrollListener,
-	uapLoadStatus,
+	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -88,7 +86,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 			activator: () => {
 				const rotator = new FmrRotator(slotName, slotNamePrefix, btRec);
 
-				utils.listener(events.AD_STACK_START, () => {
+				communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 					rotator.rotateSlot();
 				});
 			},
@@ -213,9 +211,12 @@ export class UcpDesktopSlotsDefinitionRepository {
 				classList: Nativo.SLOT_CLASS_LIST,
 			},
 			activator: () => {
-				communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-					nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-				});
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
+					},
+				);
 			},
 		};
 	}

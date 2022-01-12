@@ -1,8 +1,8 @@
-import { eventService, InstantConfigCacheStorage } from '@wikia/ad-engine';
 import { InstantConfigInterpreter } from '@wikia/ad-services/instant-config/instant-config.interpreter';
 import { instantConfigLoader } from '@wikia/ad-services/instant-config/instant-config.loader';
 import { InstantConfigOverrider } from '@wikia/ad-services/instant-config/instant-config.overrider';
 import { InstantConfigService } from '@wikia/ad-services/instant-config/instant-config.service';
+import { communicationService, eventsRepository } from '@wikia/communication/index';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -24,7 +24,6 @@ describe('Instant Config Service', () => {
 	afterEach(() => {
 		sandbox.restore();
 		InstantConfigService['instancePromise'] = undefined;
-		eventService.removeAllListeners(InstantConfigCacheStorage.CACHE_RESET_EVENT);
 	});
 
 	describe('static init', () => {
@@ -78,17 +77,16 @@ describe('Instant Config Service', () => {
 			expect(getConfigStub.getCalls().length).to.equal(1);
 		});
 
-		it('should call getValues twice after emitting reset event', async () => {
+		it('should call getValues again after emitting reset event', async () => {
 			getConfigStub.returns(Promise.resolve({}));
 			getValuesStub.returns({});
 
 			await InstantConfigService.init();
+			const numberOfCalls = getValuesStub.getCalls().length;
 
-			expect(getValuesStub.getCalls().length).to.equal(1);
+			communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 
-			eventService.emit(InstantConfigCacheStorage.CACHE_RESET_EVENT);
-
-			expect(getValuesStub.getCalls().length).to.equal(2);
+			expect(getValuesStub.getCalls().length).to.be.greaterThan(numberOfCalls);
 		});
 	});
 

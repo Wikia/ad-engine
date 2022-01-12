@@ -1,5 +1,4 @@
 import {
-	adEngineConfigured,
 	BaseContextSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
@@ -9,6 +8,7 @@ import {
 	communicationService,
 	conditional,
 	context,
+	eventsRepository,
 	parallel,
 	ProcessPipeline,
 } from '@wikia/ad-engine';
@@ -39,7 +39,7 @@ export class BingeBotPlatform {
 			BingeBotTemplatesSetup,
 			BingeBotTrackingSetup,
 			BingeBotBeforeViewChangeSetup,
-			() => communicationService.dispatch(adEngineConfigured()),
+			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
 		);
 
 		this.pipeline.add(

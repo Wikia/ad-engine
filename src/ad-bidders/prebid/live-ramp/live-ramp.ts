@@ -1,6 +1,5 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
 
 const logGroup = 'LiveRamp';
 
@@ -42,7 +41,7 @@ class LiveRamp {
 		if (!this.isDispatched) {
 			userId = userId ? userId : 'undefined';
 			utils.logger(logGroup, 'dispatching LiveRamp event, userId: ', userId);
-			communicationService.dispatch(liveRampPrebidIdsLoadedEvent({ userId }));
+			communicationService.emit(eventsRepository.LIVERAMP_IDS_LOADED, { userId });
 			this.isDispatched = true;
 		}
 	}
@@ -55,10 +54,5 @@ class LiveRamp {
 		);
 	}
 }
-
-export const liveRampPrebidIdsLoadedEvent = globalAction(
-	'[AdEngine] LiveRamp Prebid ids loaded',
-	props<{ userId: string }>(),
-);
 
 export const liveRamp = new LiveRamp();

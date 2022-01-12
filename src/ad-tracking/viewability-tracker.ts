@@ -1,4 +1,5 @@
-import { AdSlot, context, eventService, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { communicationService } from '@ad-engine/communication';
+import { AdSlot, context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
 
 export interface AdViewabilityContext {
 	data: any;
@@ -23,7 +24,7 @@ class ViewabilityTracker {
 			return;
 		}
 
-		eventService.on(AdSlot.SLOT_VIEWED_EVENT, (slot: AdSlot) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
 			this.pipeline.execute(
 				{
 					slot,
