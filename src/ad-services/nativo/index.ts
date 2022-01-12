@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { AdSlot, context, utils } from '@ad-engine/core';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
@@ -14,6 +14,7 @@ export class Nativo {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE);
 
 			return Promise.resolve();
 		}
@@ -22,7 +23,7 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
-				this.sendEvent();
+				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
@@ -52,6 +53,10 @@ export class Nativo {
 		}
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
+
+		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE, e);
+		});
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
@@ -93,8 +98,19 @@ export class Nativo {
 		return false;
 	}
 
-	private sendEvent(): void {
-		communicationService.emit(eventsRepository.NATIVO_LOADED, { isLoaded: true });
+	private sendNativoLoadStatus(status: string, event?: any): void {
+		const adLocation = event?.data[0]?.adLocation || '';
+
+		communicationService.dispatch(
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
+				event: status,
+				payload: {
+					adLocation,
+					provider: 'nativo',
+				},
+				adSlotName: adLocation,
+			}),
+		);
 	}
 
 	private displayTestAd(): void {

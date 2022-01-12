@@ -9,4 +9,5 @@ interface NativoConfiguration {
 
 interface NativoQueue {
 	cmd?: any[];
+	Events?: any;
 }

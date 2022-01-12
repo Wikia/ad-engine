@@ -95,6 +95,8 @@ export class AdSlot {
 	static STATUS_BLOCKED = 'blocked';
 	static STATUS_COLLAPSE = 'collapse';
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
+	static STATUS_FORCED_SUCCESS = 'forced_success';
+	static STATUS_MANUAL = 'manual';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_CLICKED = 'clicked';
@@ -126,7 +128,7 @@ export class AdSlot {
 	creativeSize: null | string | number[] = null;
 	lineItemId: null | string | number = null;
 	winningBidderDetails: null | WinningBidderDetails = null;
-	trackOnStatusChanged = false;
+	trackStatusAfterRendered = false;
 	slotViewed = false;
 
 	requested = null;
@@ -156,7 +158,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		});
 		this.loaded = new Promise<void>((resolve) => {
@@ -168,7 +169,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		});
 		this.rendered = new Promise<void>((resolve) => {
@@ -185,7 +185,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		});
 		this.viewed = new Promise<void>((resolve) => {
@@ -197,7 +196,6 @@ export class AdSlot {
 					resolve();
 				},
 				this.getSlotName(),
-				true,
 			);
 		}).then(() => {
 			this.slotViewed = true;
@@ -527,7 +525,7 @@ export class AdSlot {
 			case AdSlot.STATUS_FORCED_COLLAPSE:
 				this.collapse(adType);
 				break;
-			case 'manual':
+			case AdSlot.STATUS_MANUAL:
 				this.setStatus(adType);
 				break;
 			default:
