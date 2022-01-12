@@ -1,5 +1,5 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Dictionary } from '../';
-import { events, eventService } from '../services/events';
 import { slotService } from '../services/slot-service';
 import { getTopOffset, getViewportHeight } from '../utils/dimensions';
 import { logger } from '../utils/logger';
@@ -92,7 +92,9 @@ export class ScrollListener {
 
 		this.callbacks[id] = callback;
 
-		eventService.once(events.BEFORE_PAGE_CHANGE_EVENT, () => this.removeCallback(id));
+		communicationService.on(eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE, () =>
+			this.removeCallback(id),
+		);
 
 		return id;
 	}

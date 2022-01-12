@@ -11,7 +11,7 @@ export function getDebugGroup(): string {
 	return queryString.get('adengine_debug') || cookieStorage.getItem('adengine_debug');
 }
 
-export function setDebugMode(groups: string | null) {
+export function setDebugMode(groups: string | null): void {
 	groups !== null
 		? cookieStorage.setItem('adengine_debug', groups || '1')
 		: cookieStorage.removeItem('adengine_debug');

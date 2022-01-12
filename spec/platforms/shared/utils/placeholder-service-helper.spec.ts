@@ -25,7 +25,7 @@ describe('placeholder service helper', () => {
 			const actionPayloadMock = 'forced_success';
 
 			expect(
-				placeholderHelper.shouldDisplayPlaceholder(actionEventMock, actionPayloadMock),
+				placeholderHelper.shouldKeepPlaceholder(actionEventMock, actionPayloadMock),
 			).to.equal(true);
 		});
 
@@ -34,7 +34,7 @@ describe('placeholder service helper', () => {
 			const actionPayloadMock = 'success';
 
 			expect(
-				placeholderHelper.shouldDisplayPlaceholder(actionEventMock, actionPayloadMock),
+				placeholderHelper.shouldKeepPlaceholder(actionEventMock, actionPayloadMock),
 			).to.equal(false);
 		});
 

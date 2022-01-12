@@ -1,7 +1,7 @@
+import { Apstag } from '@wikia/ad-bidders';
+import { A9Provider } from '@wikia/ad-bidders/a9';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { A9Provider } from '../../../src/ad-bidders/a9/index';
-import { Apstag } from '../../../src/ad-bidders/wrappers';
 
 describe('A9Provider', () => {
 	const sandbox = createSandbox();

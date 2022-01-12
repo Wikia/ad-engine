@@ -1,6 +1,5 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService } from '@ad-engine/core';
-import { props } from 'ts-action';
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -8,11 +7,6 @@ interface AdClickContext {
 		ad_status: string;
 	};
 }
-
-export const messageBoxTrackingEvent = globalAction(
-	'[AdEngine] MessageBox event',
-	props<{ adSlotName: string; ad_status: string }>(),
-);
 
 class CtaTracker {
 	private pipeline = new FuncPipeline<AdClickContext>();
@@ -24,11 +18,13 @@ class CtaTracker {
 	}
 
 	register(callback: FuncPipelineStep<AdClickContext>): void {
-		communicationService.action$
-			.pipe(ofType(messageBoxTrackingEvent))
-			.subscribe(async ({ adSlotName, ad_status }) => {
+		communicationService.on(
+			eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT,
+			({ adSlotName, ad_status }) => {
 				this.handleCtaTracking(callback, slotService.get(adSlotName), ad_status);
-			});
+			},
+			false,
+		);
 	}
 
 	private handleCtaTracking(

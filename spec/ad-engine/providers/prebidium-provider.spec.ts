@@ -1,6 +1,6 @@
-import { biddingDone, context, PrebidiumProvider } from '@wikia/ad-engine';
+import { context, PrebidiumProvider } from '@wikia/ad-engine';
 import { IframeBuilder } from '@wikia/ad-engine/utils';
-import { communicationService } from '@wikia/communication';
+import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox } from 'sinon';
@@ -48,9 +48,9 @@ describe('PrebidiumProvider', () => {
 
 			sandbox.stub(communicationService, 'action$').value(
 				new BehaviorSubject(
-					biddingDone({
-						name: mock.slotName,
-						state: 'prebid',
+					communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)({
+						slotName: mock.slotName,
+						provider: 'prebid',
 					}),
 				),
 			);

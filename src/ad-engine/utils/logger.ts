@@ -1,22 +1,14 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
-import { take } from 'rxjs/operators';
-import { props } from 'ts-action';
 import { debug } from '../services/debug';
 
 const debugGroup = debug.getDebugGroup() || '';
 const groups = debugGroup.split(',');
-
-interface CommunicatorPayload {
-	name: string;
-	state: string;
-}
 
 if (debugGroup !== '') {
 	window.console.info('AdEngine debug mode - groups:', debugGroup === '1' ? 'all' : groups);
 }
 
 const BACKUP_ORIGIN_TIME = Date.now(); // fallback for timeorigin
-export function getTimeDelta() {
+export function getTimeDelta(): string {
 	const currentTimeStamp = Date.now();
 	const originTime = window.performance?.timeOrigin ?? BACKUP_ORIGIN_TIME;
 	const delta = currentTimeStamp - originTime;
@@ -42,34 +34,5 @@ export function warner(warnGroup: string, ...warnValues: any[]): void {
 
 	if (debugGroup === '1' || groups.indexOf(warnGroup) !== -1) {
 		window.console.warn(warnGroup, warnValues);
-	}
-}
-
-export function communicator(
-	communicatorEvent: string,
-	communicatorValues: CommunicatorPayload | {} = {},
-): void {
-	const aeCommunicatorEvent = globalAction(
-		`[AdEngine] ${communicatorEvent}`,
-		props<CommunicatorPayload | {}>(),
-	);
-
-	communicationService.dispatch(aeCommunicatorEvent(communicatorValues));
-}
-
-export function listener(
-	communicatorEvent: string,
-	callback: (action: CommunicatorPayload | {} | undefined) => void,
-	once: boolean = true,
-): void {
-	const aeCommunicatorEvent = globalAction(
-		`[AdEngine] ${communicatorEvent}`,
-		props<CommunicatorPayload | {}>(),
-	);
-
-	if (once) {
-		communicationService.action$.pipe(ofType(aeCommunicatorEvent), take(1)).subscribe(callback);
-	} else {
-		communicationService.action$.pipe(ofType(aeCommunicatorEvent)).subscribe(callback);
 	}
 }

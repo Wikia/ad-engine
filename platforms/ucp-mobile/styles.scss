@@ -96,6 +96,10 @@
 	}
 }
 
+.ad-slot-placeholder.hide {
+	display: none !important;
+}
+
 .ntv-ad {
 	@include nativo;
 }
@@ -216,7 +220,7 @@
 body.bab-detected {
 	.top-ads-container,
 	.ad-slot-placeholder {
-		display: none;
+		display: none !important;
 	}
 }
 

@@ -2,17 +2,16 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	ofType,
+	eventsRepository,
 	slotService,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
-	uapLoadStatus,
+	UapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 
 @Injectable({ autobind: false })
 export class StickyTlbBlockingHandler implements TemplateStateHandler {
@@ -64,9 +63,12 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 
 	private async isUAP(): Promise<boolean> {
 		return new Promise((resolve) => {
-			communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-				resolve(action.isLoaded);
-			});
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				(action: UapLoadStatus) => {
+					resolve(action.isLoaded);
+				},
+			);
 		});
 	}
 

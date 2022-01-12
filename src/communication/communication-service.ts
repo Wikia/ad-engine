@@ -1,8 +1,10 @@
 // tslint:disable-next-line:import-blacklist
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
-import { filter, shareReplay } from 'rxjs/operators';
-import { isGlobalAction } from './global-action';
+import { filter, shareReplay, skip, take } from 'rxjs/operators';
+import { EventOptions, eventsRepository } from './event-types';
+import { globalAction, isGlobalAction } from './global-action';
+import { ofType } from './of-type';
 import { ReduxDevtoolsFactory } from './redux-devtools';
 
 interface PostQuecastSettings {
@@ -40,12 +42,50 @@ export class CommunicationService {
 		this.connectReduxDevtools(reduxDevtoolsName);
 	}
 
+	emit(event: EventOptions, payload?: object): void {
+		this.dispatch(this.getGlobalAction(event)(payload));
+	}
+
+	on(event: EventOptions, callback: (payload?: any) => void, once: boolean = true): void {
+		this.action$
+			.pipe(ofType(this.getGlobalAction(event)), once ? take(1) : skip(0))
+			.subscribe(callback);
+	}
+
+	onSlotEvent(
+		eventName: string | symbol,
+		callback: (payload?: any) => void,
+		slotName: string = '',
+		once: boolean = false,
+	): void {
+		this.action$
+			.pipe(
+				ofType(this.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+				filter(
+					(action) =>
+						action.event === eventName.toString() && (!slotName || action.adSlotName === slotName),
+				),
+				once ? take(1) : skip(0),
+			)
+			.subscribe(callback);
+	}
+
 	dispatch(action: Action): void {
 		if (isGlobalAction(action)) {
 			this.communicator.dispatch(action);
 		} else {
 			this.subject.next(action);
 		}
+	}
+
+	getGlobalAction(event: EventOptions): Action {
+		if (!event.action) {
+			event.action = event.payload
+				? globalAction(`${event.category || '[AdEngine]'} ${event.name}`, event.payload)
+				: globalAction(`${event.category || '[AdEngine]'} ${event.name}`);
+		}
+
+		return event.action;
 	}
 
 	private getSettings(): PostQuecastSettings {

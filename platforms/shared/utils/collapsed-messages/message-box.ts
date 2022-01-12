@@ -1,4 +1,4 @@
-import { AdSlot, communicationService, messageBoxTrackingEvent } from '@wikia/ad-engine';
+import { AdSlot, communicationService, eventsRepository } from '@wikia/ad-engine';
 import { MessageBoxType } from './message-box-service';
 
 type MessageBoxEvents = 'cm_register_impression'
@@ -69,12 +69,10 @@ export class MessageBox {
 	}
 
 	sendTrackingEvent(ad_status: string): void {
-		communicationService.dispatch(
-			messageBoxTrackingEvent({
-				ad_status,
-				adSlotName: this.adSlot.getSlotName(),
-			}),
-		);
+		communicationService.emit(eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT, {
+			ad_status,
+			adSlotName: adSlot.getSlotName(),
+		});
 	}
 
 	protected buildUrl(basicUrl: string, utm_campaign: string): string {
