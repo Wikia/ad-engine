@@ -15,6 +15,17 @@ export interface GeoData {
 	continent?: string;
 }
 
+export const geoService = {
+	setUpGeoData,
+	isProperContinent,
+	isProperCountry,
+	isProperRegion,
+	getContinentCode,
+	getCountryCode,
+	getRegionCode,
+	isProperGeo,
+};
+
 function setUpGeoData(): GeoData {
 	const jsonData = decodeURIComponent(Cookies.get('Geo'));
 
@@ -42,7 +53,7 @@ function getSamplingLimits(value: string): number {
 
 	samplingValue = samplingValue.replace(cacheMarker, '');
 
-	return Math.round(parseFloat(samplingValue) * precision) | 0;
+	return Math.round(parseFloat(samplingValue) * precision) || 0;
 }
 
 function addResultToCache(
@@ -65,7 +76,7 @@ function addResultToCache(
 }
 
 function getResult(samplingLimits: number[], name: string, withCookie: boolean): boolean {
-	const randomValue: number = Math.round(Math.random() * (precision * 100)) | 0;
+	const randomValue: number = Math.round(Math.random() * (precision * 100)) || 0;
 	const result: boolean = samplingLimits.some((value) => randomValue < value);
 
 	if (name) {
@@ -185,14 +196,3 @@ function isProperGeo(countryList: string[] = [], name?: string): boolean {
 			geoService.isProperRegion(countryList, name))
 	);
 }
-
-export const geoService = {
-	setUpGeoData,
-	isProperContinent,
-	isProperCountry,
-	isProperRegion,
-	getContinentCode,
-	getCountryCode,
-	getRegionCode,
-	isProperGeo,
-};

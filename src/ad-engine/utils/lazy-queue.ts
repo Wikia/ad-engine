@@ -16,11 +16,11 @@ export function makeLazyQueue<T = any>(queue: T[], callback: (item: T) => void):
 	if (typeof callback !== 'function') {
 		throw new Error('LazyQueue used with callback not being a function');
 	} else if (queue instanceof Array) {
-		(queue as any).start = function () {
+		(queue as any).start = () => {
 			while (queue.length > 0) {
 				callback(queue.shift());
 			}
-			(queue as any).push = function (item: T) {
+			(queue as any).push = (item: T) => {
 				callback(item);
 			};
 		};

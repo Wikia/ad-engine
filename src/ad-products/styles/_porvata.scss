@@ -141,20 +141,20 @@ $vpaid-z-index: 10;
 				background: transparent;
 				border: none;
 				display: block;
-				height: 0;
+				height: 24px;
 				left: 0;
 				outline: none;
 				position: absolute;
 				top: 0;
-				width: 0;
+				width: 24px;
 				z-index: $controls-z-index;
 
 				& > svg {
-					height: 14px;
+					height: 24px;
 					left: 0;
 					padding: 6px;
 					top: 0;
-					width: 14px;
+					width: 24px;
 				}
 			}
 
@@ -163,7 +163,7 @@ $vpaid-z-index: 10;
 			}
 
 			.video-display-wrapper {
-				bottom: 20px;
+				bottom: 42px;
 				height: 240px;
 				position: fixed;
 				right: 20px;

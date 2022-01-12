@@ -1,10 +1,24 @@
 import { communicationService, eventsRepository } from '@wikia/communication/index';
 
-const dataset: any = {};
-
+const dataset = {};
 let offsetTop = 1000;
 
-export default {
+interface FakeElement {
+	dataset: any;
+	offsetTop: number;
+	classList: {
+		contains: () => void;
+	};
+	offsetHeight: number;
+	getBoundingClientRect: () => {
+		top: number;
+		left: number;
+	};
+	offsetParent: null;
+	ownerDocument: {};
+}
+
+export const adSlotFake = {
 	name: 'FAKE_AD',
 	config: {
 		targeting: {
@@ -15,7 +29,7 @@ export default {
 		firstCall: true,
 	},
 
-	get enabled() {
+	get enabled(): boolean {
 		return !this.config.disabled;
 	},
 
@@ -23,47 +37,47 @@ export default {
 		this.config.disabled = !value;
 	},
 
-	getSlotName() {
+	getSlotName(): string {
 		return this.name;
 	},
 
-	getViewportConflicts() {
+	getViewportConflicts(): [] {
 		return [];
 	},
 
-	getCopy() {
+	getCopy(): { targeting: { wsi: string; rv: number } } {
 		return JSON.parse(JSON.stringify(this.config));
 	},
 
-	hasDefinedViewportConflicts() {
+	hasDefinedViewportConflicts(): boolean {
 		return false;
 	},
 
-	disable() {
+	disable(): void {
 		this.enabled = false;
 	},
 
-	enable() {
+	enable(): void {
 		this.enabled = true;
 	},
 
-	isEnabled() {
+	isEnabled(): boolean {
 		return this.enabled;
 	},
 
-	isFirstCall() {
+	isFirstCall(): boolean {
 		return this.config.firstCall;
 	},
 
-	isRepeatable() {
+	isRepeatable(): boolean {
 		return false;
 	},
 
-	getStatus() {
+	getStatus(): null {
 		return null;
 	},
 
-	getConfigProperty(key) {
+	getConfigProperty(key): undefined | null {
 		if (key === 'targeting.pos') {
 			return this.config.targeting.pos;
 		}
@@ -71,14 +85,14 @@ export default {
 		return null;
 	},
 
-	getElement() {
+	getElement(): FakeElement {
 		return {
+			dataset,
+			offsetTop,
 			classList: {
 				contains: () => {},
 			},
-			dataset,
 			offsetHeight: 300,
-			offsetTop,
 			getBoundingClientRect: () => ({
 				top: offsetTop + 300,
 				left: 0,
@@ -88,16 +102,16 @@ export default {
 		};
 	},
 
-	setOffsetTop(offset) {
+	setOffsetTop(offset): void {
 		offsetTop = offset;
 	},
-	getSlotsToPushAfterCreated() {
+	getSlotsToPushAfterCreated(): [] {
 		return [];
 	},
-	getSlotsToInjectAfterRendered() {
+	getSlotsToInjectAfterRendered(): [] {
 		return [];
 	},
-	emit(event) {
+	emit(event): void {
 		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event,
 			slot: this,

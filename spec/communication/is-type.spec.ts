@@ -18,9 +18,9 @@ describe('isType', () => {
 	});
 
 	it('should pass local for local', () => {
-		actions.forEach((action) => {
-			if (isType(action, localExample)) {
-				results.push(action);
+		actions.forEach((act) => {
+			if (isType(act, localExample)) {
+				results.push(act);
 			}
 		});
 
@@ -31,9 +31,9 @@ describe('isType', () => {
 	});
 
 	it('should pass global for global', () => {
-		actions.forEach((action) => {
-			if (isType(action, globalExample)) {
-				results.push(action);
+		actions.forEach((act) => {
+			if (isType(act, globalExample)) {
+				results.push(act);
 			}
 		});
 
@@ -44,9 +44,9 @@ describe('isType', () => {
 	});
 
 	it('should pass for both', () => {
-		actions.forEach((action) => {
-			if (isType(action, localExample, globalExample)) {
-				results.push(action);
+		actions.forEach((act) => {
+			if (isType(act, localExample, globalExample)) {
+				results.push(act);
 			}
 		});
 

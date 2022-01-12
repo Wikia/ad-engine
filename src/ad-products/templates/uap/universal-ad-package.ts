@@ -157,11 +157,11 @@ async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlay
 	params.height = size.height;
 	videoSettings.updateParams(params);
 
-	function recalculateVideoSize(video): () => void {
+	function recalculateVideoSize(videoPlayer: PorvataPlayer): () => void {
 		return () => {
 			const currentSize = getVideoSize(params.container, params, videoSettings);
 
-			video.resize(currentSize.width, currentSize.height);
+			videoPlayer.resize(currentSize.width, currentSize.height);
 		};
 	}
 
@@ -254,6 +254,43 @@ function isFanTakeoverLoaded(): boolean {
 	);
 }
 
+export const universalAdPackage = {
+	...constants,
+	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
+		let adProduct = 'uap';
+
+		if (this.isVideoEnabled(params)) {
+			adProduct = 'vuap';
+		}
+
+		params.adProduct = params.adProduct || adProduct;
+
+		setIds(params.uap, params.creativeId);
+		disableSlots(slotsToDisable);
+		enableSlots(slotsToEnable);
+		setType(params.adProduct);
+
+		if (params.slotName) {
+			initSlot(params);
+		}
+	},
+	initSlot,
+	isFanTakeoverLoaded,
+	getCreativeId,
+	getType,
+	getUapId,
+	isVideoEnabled(params): boolean {
+		const triggersArrayIsNotEmpty =
+			Array.isArray(params.videoTriggers) && params.videoTriggers.length > 0;
+
+		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
+	},
+	loadVideoAd,
+	reset,
+	setType,
+	updateSlotsTargeting,
+};
+
 export function registerUapListener(): void {
 	communicationService.action$
 		.pipe(
@@ -280,40 +317,3 @@ export function registerUapListener(): void {
 
 // Side effect
 registerUapListener();
-
-export const universalAdPackage = {
-	...constants,
-	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
-		let adProduct = 'uap';
-
-		if (this.isVideoEnabled(params)) {
-			adProduct = 'vuap';
-		}
-
-		params.adProduct = params.adProduct || adProduct;
-
-		setIds(params.uap, params.creativeId);
-		disableSlots(slotsToDisable);
-		enableSlots(slotsToEnable);
-		setType(params.adProduct);
-
-		if (params.slotName) {
-			initSlot(params);
-		}
-	},
-	initSlot,
-	isFanTakeoverLoaded,
-	getCreativeId,
-	getType,
-	getUapId,
-	isVideoEnabled(params) {
-		const triggersArrayIsNotEmpty =
-			Array.isArray(params.videoTriggers) && params.videoTriggers.length > 0;
-
-		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
-	},
-	loadVideoAd,
-	reset,
-	setType,
-	updateSlotsTargeting,
-};

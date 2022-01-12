@@ -1,10 +1,8 @@
-import { Dictionary } from '@wikia/ad-engine';
+import { AdSlot, context, Dictionary } from '@wikia/ad-engine';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';
-import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
-import { context } from '../../../src/ad-engine/services/context-service';
-import ConfigMock from '../config-mock';
+import { configMock } from '../config-mock';
 
 /**
  * Create empty slot with given id.
@@ -12,7 +10,7 @@ import ConfigMock from '../config-mock';
  * @param {string} id Slot id
  * @returns {AdSlot}
  */
-function createAdSlot(id) {
+function createAdSlot(id): AdSlot {
 	return new AdSlot({ id });
 }
 
@@ -20,7 +18,7 @@ describe('ad-slot', () => {
 	const sandbox: SinonSandbox = createSandbox();
 
 	beforeEach(() => {
-		context.extend(ConfigMock);
+		context.extend(configMock);
 	});
 
 	afterEach(() => {

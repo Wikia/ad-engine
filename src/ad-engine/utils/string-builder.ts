@@ -3,6 +3,7 @@ import { context } from '../services';
 class StringBuilder {
 	build(string: string, parameters: any = {}): string {
 		const matches: RegExpMatchArray = string.match(/{(.+?)}/g);
+		let builtString = string;
 
 		if (matches) {
 			matches.forEach((match) => {
@@ -28,12 +29,12 @@ class StringBuilder {
 					value = fallbackValue;
 				}
 				if (typeof value !== 'undefined') {
-					string = string.replace(match, value);
+					builtString = builtString.replace(match, value);
 				}
 			});
 		}
 
-		return string;
+		return builtString;
 	}
 }
 
