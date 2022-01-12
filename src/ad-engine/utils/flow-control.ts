@@ -30,13 +30,11 @@ export function once(
 	const hasAddEventListener: boolean =
 		isObject && typeof (emitter as HTMLElement).addEventListener === 'function';
 
-	return new Promise((resolve, reject) => {
-		if (typeof options === 'boolean') {
-			options = { capture: options };
-		}
+	const testOptions = typeof options === 'boolean' ? { capture: options } : { ...options };
 
+	return new Promise((resolve, reject) => {
 		if (hasAddEventListener) {
-			(emitter as HTMLElement).addEventListener(eventName, resolve, { ...options, once: true });
+			(emitter as HTMLElement).addEventListener(eventName, resolve, { ...testOptions, once: true });
 		} else {
 			reject(new Error('Emitter does not have `addEventListener` nor `once` method.'));
 		}

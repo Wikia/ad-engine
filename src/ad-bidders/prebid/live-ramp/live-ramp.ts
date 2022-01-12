@@ -3,10 +3,16 @@ import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'LiveRamp';
 
+interface LiveRampConfig {
+	userSync?: {
+		userIds: object[];
+	};
+}
+
 class LiveRamp {
 	private isDispatched = false;
 
-	getConfig() {
+	getConfig(): LiveRampConfig {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return {};
@@ -39,9 +45,9 @@ class LiveRamp {
 		}
 
 		if (!this.isDispatched) {
-			userId = userId ? userId : 'undefined';
-			utils.logger(logGroup, 'dispatching LiveRamp event, userId: ', userId);
-			communicationService.emit(eventsRepository.LIVERAMP_IDS_LOADED, { userId });
+			const user = userId ? userId : 'undefined';
+			utils.logger(logGroup, 'dispatching LiveRamp event, userId: ', user);
+			communicationService.emit(eventsRepository.LIVERAMP_IDS_LOADED, { user });
 			this.isDispatched = true;
 		}
 	}

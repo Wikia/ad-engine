@@ -1,8 +1,24 @@
+import { resolvedState } from '@wikia/ad-products';
+import { resolvedStateSwitch } from '@wikia/ad-products/templates/uap/resolved-state-switch';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { utils } from '../../../../src/ad-engine';
-import { resolvedState } from '../../../../src/ad-products/templates/uap/resolved-state';
-import { resolvedStateSwitch } from '../../../../src/ad-products/templates/uap/resolved-state-switch';
+
+interface ImageParams {
+	element: {
+		addEventListener: (name: string, callback: () => void) => void;
+		src: string;
+	};
+	defaultStateSrc: string;
+	resolvedStateSrc: string;
+}
+
+interface Params {
+	aspectRatio: number;
+	resolvedStateAspectRatio: number;
+	image1: ImageParams;
+	image2?: ImageParams;
+}
 
 const ASPECT_RATIO = 1;
 const BIG_IMAGE = 'bigImage.png';
@@ -22,13 +38,10 @@ const addEventListener = (name, callback) => {
 
 const stubs = {
 	videoSettings: {
-		getParams() {
+		getParams(): {} {
 			return {};
 		},
-		updateParams() {
-			return {};
-		},
-		isResolvedState() {
+		isResolvedState(): {} {
 			return false;
 		},
 	},
@@ -37,14 +50,14 @@ const stubs = {
 const blockingUrlParams = [false, 'blocked', 'false', '0'];
 const forcingUrlParams = [true, 'true', '1'];
 
-function createCorrectParams() {
+function createCorrectParams(): Params {
 	return {
 		aspectRatio: ASPECT_RATIO,
 		resolvedStateAspectRatio: RESOLVED_STATE_ASPECT_RATIO,
 		image1: {
 			element: {
-				src: DEFAULT_IMAGE,
 				addEventListener,
+				src: DEFAULT_IMAGE,
 			},
 			defaultStateSrc: BIG_IMAGE,
 			resolvedStateSrc: RESOLVED_IMAGE,
@@ -52,14 +65,14 @@ function createCorrectParams() {
 	};
 }
 
-function createIncorrectParams() {
+function createIncorrectParams(): Params {
 	return {
 		aspectRatio: ASPECT_RATIO,
 		resolvedStateAspectRatio: 0,
 		image1: {
 			element: {
-				src: DEFAULT_IMAGE,
 				addEventListener,
+				src: DEFAULT_IMAGE,
 			},
 			defaultStateSrc: BIG_IMAGE,
 			resolvedStateSrc: '',
@@ -67,22 +80,22 @@ function createIncorrectParams() {
 	};
 }
 
-function createCorrectParamsWithTwoAssets() {
+function createCorrectParamsWithTwoAssets(): Params {
 	return {
 		aspectRatio: ASPECT_RATIO,
 		resolvedStateAspectRatio: RESOLVED_STATE_ASPECT_RATIO,
 		image1: {
 			element: {
-				src: DEFAULT_IMAGE,
 				addEventListener,
+				src: DEFAULT_IMAGE,
 			},
 			defaultStateSrc: BIG_IMAGE,
 			resolvedStateSrc: RESOLVED_IMAGE,
 		},
 		image2: {
 			element: {
-				src: DEFAULT_IMAGE,
 				addEventListener,
+				src: DEFAULT_IMAGE,
 			},
 			defaultStateSrc: BIG_IMAGE_2,
 			resolvedStateSrc: RESOLVED_IMAGE_2,
