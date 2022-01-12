@@ -30,6 +30,16 @@ export interface AdIntervention {
 	slotName: string;
 }
 
+export interface CcpaSignalPayload {
+	ccpaSignal: boolean;
+	geoRequiresSignal: boolean;
+}
+
+export interface GdprConsentPayload {
+	gdprConsent: boolean;
+	geoRequiresConsent: boolean;
+}
+
 export interface LoadTemplatePayload {
 	slotName: string;
 	type: string;
@@ -59,6 +69,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_CONFIGURED: {
 		name: 'Configured',
+	},
+	AD_ENGINE_CONSENT_READY: {
+		category: '[AdEngine OptIn]',
+		name: 'set opt in',
+		payload: props<GdprConsentPayload & CcpaSignalPayload>(),
 	},
 	AD_ENGINE_INSTANT_CONFIG_CACHE_RESET: {
 		name: 'Instant Config cache reset',

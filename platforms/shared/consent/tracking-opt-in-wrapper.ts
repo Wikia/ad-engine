@@ -1,21 +1,11 @@
-import { communicationService, context, globalAction, ofType, utils } from '@wikia/ad-engine';
-import { take } from 'rxjs/operators';
-import { props } from 'ts-action';
-
-interface GdprConsentPayload {
-	gdprConsent: boolean;
-	geoRequiresConsent: boolean;
-}
-
-interface CcpaSignalPayload {
-	ccpaSignal: boolean;
-	geoRequiresSignal: boolean;
-}
-
-const setOptIn = globalAction(
-	'[AdEngine OptIn] set opt in',
-	props<GdprConsentPayload & CcpaSignalPayload>(),
-);
+import {
+	CcpaSignalPayload,
+	communicationService,
+	context,
+	eventsRepository,
+	GdprConsentPayload,
+	utils
+} from '@wikia/ad-engine';
 
 const logGroup = 'tracking-opt-in-wrapper';
 
@@ -33,8 +23,8 @@ class TrackingOptInWrapper {
 		return new Promise(async (resolve) => {
 			utils.logger(logGroup, 'Waiting for consents');
 
-			communicationService.action$.pipe(ofType(setOptIn), take(1)).subscribe((action) => {
-				this.setConsents(action);
+			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
+				this.setConsents(payload);
 				resolve();
 			});
 		});
@@ -62,7 +52,7 @@ class TrackingOptInWrapper {
 				window.ads.consentQueue.push(callback);
 			});
 
-		communicationService.action$.pipe(ofType(setOptIn), take(1)).subscribe((consents) => {
+		communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (consents) => {
 			window.ads.consentQueue.onItemFlush((callback) => {
 				console.warn(
 					`[AdEngine] You are using deprecated API to get consent.\nPlease use PostQuecast action "[AdEngine OptIn] set opt in" instead.`,
