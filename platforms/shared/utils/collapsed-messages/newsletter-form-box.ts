@@ -3,6 +3,8 @@ import { isEmailValid } from '../email-validator';
 import { MessageBox } from './message-box';
 
 export class NewsletterFormBox extends MessageBox {
+	private submitButton: HTMLButtonElement;
+
 	constructor(adSlot: AdSlot) {
 		super(adSlot);
 		this.type = 'NEWSLETTER_FORM';
@@ -22,8 +24,8 @@ export class NewsletterFormBox extends MessageBox {
 		form.className = 'newsletter-form';
 
 		const input = this.createFormInput();
-		const submitBtn = this.createFormButton();
-		form.append(input, submitBtn);
+		this.submitButton = this.createFormButton();
+		form.append(input, this.submitButton);
 
 		form.addEventListener('submit', (event) => this.doEmailSignUp(event));
 
@@ -70,8 +72,7 @@ export class NewsletterFormBox extends MessageBox {
 		const messageArea: HTMLDivElement = document.querySelector('.newsletter-message');
 		messageArea.innerText = text;
 
-		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
-		submitBtn.disabled = false;
+		this.submitButton.disabled = false;
 	}
 
 	private doEmailSignUp(event): void {
@@ -79,12 +80,11 @@ export class NewsletterFormBox extends MessageBox {
 
 		const emailInput: HTMLInputElement = document.querySelector('.newsletter-email');
 		const emailValue = emailInput.value;
-		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
-		submitBtn.disabled = true;
+		this.submitButton.disabled = true;
 
 		if (!isEmailValid(emailValue)) {
 			this.showFormMessage('Please enter a valid email address.');
-			submitBtn.disabled = false;
+			this.submitButton.disabled = false;
 			return;
 		}
 
