@@ -10,8 +10,8 @@ export class NewsletterFormBox extends MessageBox {
 		this.type = 'NEWSLETTER_FORM';
 		this.messageText = 'THE LATEST TRENDS, DELIVERED STRAIGHT TO YOUR INBOX.';
 		this.buttonText = 'Sign up';
-		this.status_impression = 'cm_newsletter_form_impression';
-		this.status_clicked = 'cm_newsletter_form_clicked';
+		this.statusImpression = 'cm_newsletter_form_impression';
+		this.statusClicked = 'cm_newsletter_form_clicked';
 		sailthru.init();
 	}
 
@@ -48,7 +48,7 @@ export class NewsletterFormBox extends MessageBox {
 		button.innerText = this.buttonText;
 
 		button.addEventListener('click', () => {
-			this.sendTrackingEvent(this.status_clicked);
+			this.sendTrackingEvent(this.statusClicked);
 		});
 
 		return button;

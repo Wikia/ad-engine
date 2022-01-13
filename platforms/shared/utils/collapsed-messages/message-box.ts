@@ -16,8 +16,8 @@ export class MessageBox {
 	protected adSlot: AdSlot;
 	protected buttonText: string;
 	protected messageText: string;
-	protected status_impression: MessageBoxEvents;
-	protected status_clicked: MessageBoxEvents;
+	protected statusImpression: MessageBoxEvents;
+	protected statusClicked: MessageBoxEvents;
 	protected redirectUrl?: string;
 
 	constructor(adSlot: AdSlot) {
@@ -34,7 +34,7 @@ export class MessageBox {
 		elements?.map((element) => wrapper.append(element));
 
 		placeholder.appendChild(wrapper);
-		this.sendTrackingEvent(this.status_impression);
+		this.sendTrackingEvent(this.statusImpression);
 	}
 
 	getElementsToAppend(): HTMLElement[] {
@@ -70,7 +70,7 @@ export class MessageBox {
 
 		button.onclick = () => {
 			this.openInNewTab();
-			this.sendTrackingEvent(this.status_clicked);
+			this.sendTrackingEvent(this.statusClicked);
 		};
 
 		return button;
