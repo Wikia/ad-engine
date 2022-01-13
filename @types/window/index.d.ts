@@ -1,4 +1,4 @@
-import "../../node_modules/@alugha/ima/typings/ima";
+///<reference path="../../node_modules/@alugha/ima/typings/ima.d.ts"/>
 
 interface Window {
 	ga?: (
@@ -43,4 +43,4 @@ interface Window {
 	XMLHttpRequest?: any;
 }
 
-declare const NOLBUNDLE: any;
+declare var NOLBUNDLE: any;
