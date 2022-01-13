@@ -31,7 +31,7 @@ export class MessageBox {
 		const message = this.createMessage();
 		const elements = this.getElementsToAppend();
 		wrapper.append(message);
-		elements?.map(element => wrapper.append(element));
+		elements?.map((element) => wrapper.append(element));
 
 		placeholder.appendChild(wrapper);
 		this.sendTrackingEvent(this.status_impression);

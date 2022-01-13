@@ -16,10 +16,7 @@ export class NewsletterFormBox extends MessageBox {
 		sailthru.init();
 
 		const elements: HTMLElement[] = [];
-		elements.push(
-			this.createForm(),
-			this.createFormMessage()
-		);
+		elements.push(this.createForm(), this.createFormMessage());
 
 		return elements;
 	}

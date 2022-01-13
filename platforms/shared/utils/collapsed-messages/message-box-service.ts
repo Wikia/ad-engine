@@ -10,10 +10,6 @@ export class MessageBoxService {
 
 	constructor() {
 		this.messageBoxCreator = new MessageBoxCreator();
-		this.init();
-	}
-
-	init(): void {
 		this.types = sailthru.isEnabled()
 			? ['REGISTER', 'FANLAB', 'NEWSLETTER_FORM', 'NEWSLETTER_LINK']
 			: ['REGISTER', 'FANLAB', 'NEWSLETTER_LINK'];
