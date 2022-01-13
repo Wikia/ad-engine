@@ -84,7 +84,7 @@ export interface UapParams {
 	videoTriggers: any[];
 
 	// Video
-	vastTargeting: {};
+	vastTargeting: Record<string, unknown>;
 	videoTriggerElement: HTMLVideoElement;
 	type: string;
 

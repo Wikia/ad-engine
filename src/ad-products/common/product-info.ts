@@ -34,7 +34,7 @@ export function getAdProductInfo(slotName, loadedTemplate, loadedProduct): AdPro
 	};
 }
 
-export function getAdUnitString(adslotName: string, slotConfig: {}): string {
+export function getAdUnitString(adslotName: string, slotConfig: Record<string, unknown>): string {
 	return utils.stringBuilder.build(
 		context.get(`slots.${adslotName}.videoAdUnit`) || context.get('vast.adUnitId'),
 		{
