@@ -1,7 +1,7 @@
 import { context, VideoData, VideoEventData } from '@ad-engine/core';
 import { PorvataEventListener, PorvataListenerParams } from '../../video/porvata/porvata-listener';
-import playerEventEmitter from './player-event-emitter';
-import videoEventDataProvider from './video-event-data-provider';
+import { PlayerEventEmitter } from './player-event-emitter';
+import { VideoEventDataProvider } from './video-event-data-provider';
 
 /**
  * Ads tracker for Porvata
@@ -16,8 +16,8 @@ class PorvataTracker {
 			 * Porvata event callback
 			 */
 			onEvent(eventName: string, playerParams: PorvataListenerParams, data: VideoData): void {
-				const eventInfo: VideoEventData = videoEventDataProvider.getEventData(data);
-				playerEventEmitter.emit(eventInfo);
+				const eventInfo: VideoEventData = VideoEventDataProvider.getEventData(data);
+				PlayerEventEmitter.emit(eventInfo);
 			},
 		};
 

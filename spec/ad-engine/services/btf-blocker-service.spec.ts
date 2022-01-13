@@ -1,7 +1,7 @@
 import { AdSlot, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
-import adSlotFake from '../ad-slot-fake';
+import { adSlotFake } from '../ad-slot-fake';
 
 let firstCallSlot;
 let secondCallSlot;

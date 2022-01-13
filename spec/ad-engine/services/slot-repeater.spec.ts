@@ -3,7 +3,7 @@ import { communicationService } from '@wikia/communication/index';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context, slotInjector, slotRepeater } from '../../../src/ad-engine/services';
-import adSlotFake from '../ad-slot-fake';
+import { adSlotFake } from '../ad-slot-fake';
 
 describe('slot-repeater', () => {
 	let adSlot;
