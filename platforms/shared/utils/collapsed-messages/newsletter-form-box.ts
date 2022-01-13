@@ -15,10 +15,7 @@ export class NewsletterFormBox extends MessageBox {
 	create(): void {
 		sailthru.init();
 
-		const placeholder = this.adSlot.getPlaceholder();
-		if (!placeholder) {
-			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
-		}
+		const placeholder = this.createPlaceholder();
 
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();

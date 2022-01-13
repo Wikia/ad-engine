@@ -25,11 +25,7 @@ export class MessageBox {
 	}
 
 	create(): void {
-		const placeholder = this.adSlot.getPlaceholder();
-		if (!placeholder) {
-			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
-		}
-
+		const placeholder = this.createPlaceholder();
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const button = this.createButton();
@@ -42,6 +38,15 @@ export class MessageBox {
 		placeholder.appendChild(wrapper);
 
 		this.sendTrackingEvent(this.status_impression);
+	}
+
+	createPlaceholder(): HTMLElement {
+		const placeholder = this.adSlot.getPlaceholder();
+		if (!placeholder) {
+			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
+		}
+		
+		return placeholder;
 	}
 
 	createBoxWrapper(): HTMLElement {
