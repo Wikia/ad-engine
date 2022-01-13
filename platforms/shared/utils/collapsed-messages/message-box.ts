@@ -38,10 +38,7 @@ export class MessageBox {
 	}
 
 	getElementsToAppend(): HTMLElement[] {
-		const elements: HTMLElement[] = [];
-		elements.push(this.createButton());
-
-		return elements;
+		return [this.createButton()];
 	}
 
 	createPlaceholder(): HTMLElement {

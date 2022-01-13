@@ -14,10 +14,7 @@ export class NewsletterFormBox extends MessageBox {
 	}
 
 	getElementsToAppend(): HTMLElement[] {
-		const elements: HTMLElement[] = [];
-		elements.push(this.createForm(), this.createFormMessage());
-
-		return elements;
+		return [this.createForm(), this.createFormMessage()];
 	}
 
 	private createForm(): HTMLElement {
