@@ -45,7 +45,7 @@ export class MessageBox {
 		if (!placeholder) {
 			throw new Error(`No placeholder to insert '${this.type}' Message Box`);
 		}
-		
+
 		return placeholder;
 	}
 

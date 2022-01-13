@@ -20,12 +20,7 @@ export class NewsletterFormBox extends MessageBox {
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
 		const form = this.createForm();
-		form.addEventListener('submit', (event) => this.doEmailSignUp(event));
 		const formMessage = this.createFormMessage();
-		const submitBtn = form.querySelector('.newsletter-submit');
-		submitBtn.addEventListener('click', () => {
-			this.sendTrackingEvent(this.status_clicked);
-		});
 
 		wrapper.append(message, form, formMessage);
 		placeholder.append(wrapper);
@@ -41,6 +36,12 @@ export class NewsletterFormBox extends MessageBox {
 			<input class="newsletter-email" type="email" placeholder="Email Address"/>
 			<button class="newsletter-submit wds-button cm-button" type="submit">${this.buttonText}</button>
 		`;
+
+		form.addEventListener('submit', (event) => this.doEmailSignUp(event));
+		const submitBtn = form.querySelector('.newsletter-submit');
+		submitBtn.addEventListener('click', () => {
+			this.sendTrackingEvent(this.status_clicked);
+		});
 
 		return form;
 	}

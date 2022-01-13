@@ -32,6 +32,7 @@ export class MessageBoxService {
 			this.types[this.currentType],
 			adSlot,
 		);
+
 		messageBox.create();
 
 		this.currentType += 1;
