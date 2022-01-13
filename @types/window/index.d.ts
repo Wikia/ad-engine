@@ -1,5 +1,4 @@
-// tslint:disable-next-line:no-reference
-///<reference path="../../node_modules/@alugha/ima/typings/ima.d.ts"/>
+import "../../node_modules/@alugha/ima/typings/ima";
 
 interface Window {
 	ga?: (
@@ -44,4 +43,4 @@ interface Window {
 	XMLHttpRequest?: any;
 }
 
-declare var NOLBUNDLE: any;
+declare const NOLBUNDLE: any;

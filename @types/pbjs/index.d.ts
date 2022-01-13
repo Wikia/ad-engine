@@ -22,26 +22,52 @@ interface PrebidAdUnit {
 	labelAll?: string[];
 }
 
+interface PrebidNativeMediaType {
+	image: {
+		required: boolean,
+		sizes: Array<number>
+	};
+	title: {
+		required: boolean,
+		len: number
+	};
+	sponsoredBy: {
+		required: boolean,
+	};
+	clickUrl: {
+		required: boolean,
+	};
+	body: {
+		required: boolean,
+	};
+	icon: {
+		required: boolean,
+		sizes: Array<number>
+	};
+}
+
+interface PrebidVideoType {
+	context?: string;
+	playerSize: number[];
+	mimes?: string[];
+	api?: number[];
+	linearity?: number;
+	maxduration?: number;
+	protocols?: number[];
+	playbackmethod?: number[];
+}
+
 interface PrebidMediaTypes {
 	banner: {
 		sizes: [number, number][];
 	};
-	native: {};
-	video: {
-		context?: string;
-		playerSize: number[];
-		mimes?: string[];
-		api?: number[];
-		linearity?: number;
-		maxduration?: number;
-		protocols?: number[];
-		playbackmethod?: number[];
-	};
+	native: PrebidNativeMediaType;
+	video: PrebidVideoType;
 }
 
 interface PrebidBid {
 	bidder: string;
-	params: {};
+	params: unknown;
 	labelAny?: string[];
 	labelAll?: string[];
 }
@@ -114,7 +140,7 @@ interface Pbjs {
 
 	aliasBidder(bidderCode: string, alias: string): void;
 
-	registerBidAdapter(bidderAdaptor: () => {}, bidderCode: string): void;
+	registerBidAdapter(bidderAdaptor: unknown, bidderCode: string): void;
 
 	markWinningBidAsUsed(markBidRequest: PrebidMarkBidRequest): void;
 
@@ -124,9 +150,9 @@ interface Pbjs {
 
 	getUserIds(): object;
 
-	setConfig(config: {}): void;
+	setConfig(config: unknown): void;
 
-	enableAnalytics(config: {}): void;
+	enableAnalytics(config: unknown): void;
 
 	createBid(statusCode: number): PrebidBidResponse;
 
