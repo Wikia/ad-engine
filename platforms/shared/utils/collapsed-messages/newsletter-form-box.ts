@@ -10,11 +10,10 @@ export class NewsletterFormBox extends MessageBox {
 		this.buttonText = 'Sign up';
 		this.status_impression = 'cm_newsletter_form_impression';
 		this.status_clicked = 'cm_newsletter_form_clicked';
+		sailthru.init();
 	}
 
 	getElementsToAppend(): HTMLElement[] {
-		sailthru.init();
-
 		const elements: HTMLElement[] = [];
 		elements.push(this.createForm(), this.createFormMessage());
 
