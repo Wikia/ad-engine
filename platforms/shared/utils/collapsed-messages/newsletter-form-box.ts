@@ -25,6 +25,10 @@ export class NewsletterFormBox extends MessageBox {
 		const form = this.createForm();
 		form.addEventListener('submit', (event) => this.doEmailSignUp(event));
 		const formMessage = this.createFormMessage();
+		const submitBtn = form.querySelector('.newsletter-submit');
+		submitBtn.addEventListener('click', () => {
+			this.sendTrackingEvent(this.status_clicked);
+		})
 
 		wrapper.append(message, form, formMessage);
 		placeholder.append(wrapper);
@@ -54,7 +58,6 @@ export class NewsletterFormBox extends MessageBox {
 		const onSuccess = (): void => {
 			this.showFormMessage('Thanks for signing up!');
 			submitBtn.disabled = false;
-			this.sendTrackingEvent(this.status_clicked);
 		};
 
 		const onError = (): void => {
