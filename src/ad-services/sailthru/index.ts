@@ -23,7 +23,7 @@ class Sailthru {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 
-			return Promise.resolve();
+			return Promise.reject('Sailthru disabled');
 		}
 
 		if (!this.isLoaded()) {
@@ -39,6 +39,8 @@ class Sailthru {
 					throw new Error('Error occurred while loading Sailthru.');
 				});
 		}
+
+		return Promise.resolve();
 	}
 
 	userSignup({ email, onSuccess, onError }: UserSignupPayload, source: string): void {
