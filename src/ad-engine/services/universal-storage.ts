@@ -28,14 +28,16 @@ export class UniversalStorage {
 			let value = this.provider.getItem(key);
 			try {
 				value = JSON.parse(value);
-			} catch {}
+			} catch {
+				throw new Error('Invalid JSON');
+			}
 			return value as any;
 		} catch (e) {
 			return this.fallbackStorage[key];
 		}
 	}
 
-	setItem(key: string, input: {} | string): boolean {
+	setItem(key: string, input: Record<string, unknown> | string): boolean {
 		const value: string = input instanceof Object ? JSON.stringify(input) : input;
 		try {
 			this.provider.setItem(key, value);
