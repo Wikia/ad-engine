@@ -46,7 +46,7 @@ export class CommunicationService {
 		this.dispatch(this.getGlobalAction(event)(payload));
 	}
 
-	on(event: EventOptions, callback: (payload?: any) => void, once: boolean = true): void {
+	on(event: EventOptions, callback: (payload?: any) => void, once = true): void {
 		this.action$
 			.pipe(ofType(this.getGlobalAction(event)), once ? take(1) : skip(0))
 			.subscribe(callback);
@@ -55,8 +55,8 @@ export class CommunicationService {
 	onSlotEvent(
 		eventName: string | symbol,
 		callback: (payload?: any) => void,
-		slotName: string = '',
-		once: boolean = false,
+		slotName = '',
+		once = false,
 	): void {
 		this.action$
 			.pipe(

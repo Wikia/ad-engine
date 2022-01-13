@@ -28,7 +28,7 @@ export function isGlobalActionCreator(input: ActionCreator): input is GlobalActi
  * Changing this action introduces breaking change because it requires changes in different place than AdEngine.
  * Do NOT use this action creator unless you need to.
  */
-export function globalAction<T extends string>(type: T): ActionCreator<T, () => Typed<{}, T>>;
+export function globalAction<T extends string>(type: T): ActionCreator<T, () => Typed<unknown, T>>;
 /**
  * @see globalAction
  */
@@ -36,7 +36,7 @@ export function globalAction<T extends string>(
 	type: T,
 	// tslint:disable-next-line:unified-signatures
 	config: { _as: 'empty' },
-): ActionCreator<T, () => Typed<{}, T>>;
+): ActionCreator<T, () => Typed<unknown, T>>;
 /**
  * @see globalAction
  */
