@@ -12,38 +12,51 @@ export class NewsletterFormBox extends MessageBox {
 		this.status_clicked = 'cm_newsletter_form_clicked';
 	}
 
-	create(): void {
+	getElementsToAppend(): HTMLElement[] {
 		sailthru.init();
 
-		const placeholder = this.createPlaceholder();
+		const elements: HTMLElement[] = [];
+		elements.push(
+			this.createForm(),
+			this.createFormMessage()
+		);
 
-		const wrapper = this.createBoxWrapper();
-		const message = this.createMessage();
-		const form = this.createForm();
-		const formMessage = this.createFormMessage();
-
-		wrapper.append(message, form, formMessage);
-		placeholder.append(wrapper);
-
-		this.sendTrackingEvent(this.status_impression);
+		return elements;
 	}
 
 	private createForm(): HTMLElement {
 		const form = document.createElement('form');
 		form.className = 'newsletter-form';
 
-		form.innerHTML = `
-			<input class="newsletter-email" type="email" placeholder="Email Address"/>
-			<button class="newsletter-submit wds-button cm-button" type="submit">${this.buttonText}</button>
-		`;
+		const input = this.createFormInput();
+		const submitBtn = this.createFormButton();
+		form.append(input, submitBtn);
 
 		form.addEventListener('submit', (event) => this.doEmailSignUp(event));
-		const submitBtn = form.querySelector('.newsletter-submit');
-		submitBtn.addEventListener('click', () => {
+
+		return form;
+	}
+
+	private createFormInput(): HTMLInputElement {
+		const input = document.createElement('input');
+		input.className = 'newsletter-email';
+		input.type = 'email';
+		input.placeholder = 'Email Address';
+
+		return input;
+	}
+
+	private createFormButton(): HTMLButtonElement {
+		const button = document.createElement('button');
+		button.classList.add('newsletter-submit', 'wds-button', 'cm-button');
+		button.type = 'submit';
+		button.innerText = this.buttonText;
+
+		button.addEventListener('click', () => {
 			this.sendTrackingEvent(this.status_clicked);
 		});
 
-		return form;
+		return button;
 	}
 
 	private createFormMessage(): HTMLElement {

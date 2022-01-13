@@ -26,18 +26,22 @@ export class MessageBox {
 
 	create(): void {
 		const placeholder = this.createPlaceholder();
+
 		const wrapper = this.createBoxWrapper();
 		const message = this.createMessage();
-		const button = this.createButton();
-		button.onclick = () => {
-			this.openInNewTab();
-			this.sendTrackingEvent(this.status_clicked);
-		};
+		const elements = this.getElementsToAppend();
+		wrapper.append(message);
+		elements?.map(element => wrapper.append(element));
 
-		wrapper.append(message, button);
 		placeholder.appendChild(wrapper);
-
 		this.sendTrackingEvent(this.status_impression);
+	}
+
+	getElementsToAppend(): HTMLElement[] {
+		const elements: HTMLElement[] = [];
+		elements.push(this.createButton());
+
+		return elements;
 	}
 
 	createPlaceholder(): HTMLElement {
@@ -66,6 +70,11 @@ export class MessageBox {
 		const button = document.createElement('button');
 		button.classList.add('cm-button', 'wds-button');
 		button.innerHTML = this.buttonText;
+
+		button.onclick = () => {
+			this.openInNewTab();
+			this.sendTrackingEvent(this.status_clicked);
+		};
 
 		return button;
 	}
