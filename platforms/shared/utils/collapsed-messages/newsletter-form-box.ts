@@ -28,7 +28,7 @@ export class NewsletterFormBox extends MessageBox {
 		const submitBtn = form.querySelector('.newsletter-submit');
 		submitBtn.addEventListener('click', () => {
 			this.sendTrackingEvent(this.status_clicked);
-		})
+		});
 
 		wrapper.append(message, form, formMessage);
 		placeholder.append(wrapper);
@@ -54,27 +54,20 @@ export class NewsletterFormBox extends MessageBox {
 		return message;
 	}
 
-	private createPayload(email: string, submitBtn: HTMLButtonElement): UserSignupPayload {
-		const onSuccess = (): void => {
-			this.showFormMessage('Thanks for signing up!');
-			submitBtn.disabled = false;
-		};
-
-		const onError = (): void => {
-			this.showFormMessage('An error occurred. Please try again later.');
-			submitBtn.disabled = false;
-		};
-
+	private createPayload(email: string): UserSignupPayload {
 		return {
 			email,
-			onSuccess,
-			onError,
+			onSuccess: () => this.showFormMessage('Thanks for signing up!'),
+			onError: () => this.showFormMessage('An error occurred. Please try again later.'),
 		};
 	}
 
 	private showFormMessage(text: string): void {
 		const messageArea: HTMLDivElement = document.querySelector('.newsletter-message');
 		messageArea.innerText = text;
+
+		const submitBtn: HTMLButtonElement = document.querySelector('.newsletter-submit');
+		submitBtn.disabled = false;
 	}
 
 	private doEmailSignUp(event): void {
@@ -91,7 +84,7 @@ export class NewsletterFormBox extends MessageBox {
 			return;
 		}
 
-		const payload = this.createPayload(emailValue, submitBtn);
+		const payload = this.createPayload(emailValue);
 		const source = 'adengine_in_content_ad';
 
 		sailthru.userSignup(payload, source);
