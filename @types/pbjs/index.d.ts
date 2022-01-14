@@ -88,6 +88,7 @@ interface PrebidBidResponse {
 		| 'Bid available'
 		| 'Bid returned empty or error response'
 		| 'Bid timed out';
+	ad: string;
 	adId: string;
 	adUnitCode: string;
 	requestId: string;
@@ -99,6 +100,7 @@ interface PrebidBidResponse {
 	 */
 	getSize: () => string;
 	adserverTargeting: PrebidTargeting;
+	ttl?: number;
 }
 
 interface PrebidRequestOptions {
