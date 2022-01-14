@@ -42,7 +42,7 @@ export class SessionCookie {
 		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 
-	setItem(key: string, input: {} | string): void {
+	setItem(key: string, input: Record<string, unknown> | string): void {
 		this.storage.setItem(`${this.prefix}_${key}`, input);
 	}
 
