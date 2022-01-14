@@ -77,10 +77,8 @@ describe('targeting', () => {
 		expect(
 			targeting.getTargetingBundles({
 				bundle1: {
-					// @ts-ignore
 					s1: '_project43',
-					// @ts-ignore
-					esrb: true,
+					esrb: 'true',
 				},
 			}),
 		).to.deep.equal([]);
