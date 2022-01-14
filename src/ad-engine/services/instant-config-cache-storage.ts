@@ -55,7 +55,7 @@ export class InstantConfigCacheStorage {
 				key,
 				value: this.cacheStorage[key],
 			}))
-			.filter(({ key, value }) => value.withCookie)
+			.filter(({ value }) => value.withCookie)
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
 		this.sessionCookie.setItem('basset', cacheDictionaryWithCookie);
@@ -74,7 +74,7 @@ export class InstantConfigCacheStorage {
 		return keyVals
 			.map((keyVal: string) => keyVal.split(':'))
 			.filter(([lineId]: string[]) => labradorVariables.includes(lineId))
-			.map(([lineId, geo]: string[]) => geo);
+			.map(([, geo]: string[]) => geo);
 	}
 
 	getSamplingResults(): string[] {
