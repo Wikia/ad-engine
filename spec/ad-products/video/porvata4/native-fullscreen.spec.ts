@@ -12,9 +12,15 @@ describe('native-fullscreen', () => {
 
 	it('should be supported if the video is valid', () => {
 		const testVideoMock = {
-			webkitRequestFullscreen: () => {},
-			webkitExitFullscreen: () => {},
-			onwebkitfullscreenchange: () => {},
+			webkitRequestFullscreen: () => {
+				// noop for tests
+			},
+			webkitExitFullscreen: () => {
+				// noop for tests
+			},
+			onwebkitfullscreenchange: () => {
+				// noop for tests
+			},
 		} as any;
 		const testInstance = new NativeFullscreen(testVideoMock);
 

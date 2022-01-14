@@ -9,8 +9,8 @@ interface ImageParams {
 		addEventListener: (name: string, callback: () => void) => void;
 		src: string;
 	};
-	defaultStateSrc: string;
-	resolvedStateSrc: string;
+	defaultStateSrc?: string;
+	resolvedStateSrc?: string;
 }
 
 interface Params {
@@ -38,10 +38,21 @@ const addEventListener = (name, callback) => {
 
 const stubs = {
 	videoSettings: {
-		getParams(): {} {
-			return {};
+		getParams(): Params {
+			return {
+				aspectRatio: 123,
+				resolvedStateAspectRatio: 456,
+				image1: {
+					element: {
+						addEventListener: () => {
+							// noop for tests
+						},
+						src: 'test/image.jpg'
+					}
+				}
+			};
 		},
-		isResolvedState(): {} {
+		isResolvedState(): boolean {
 			return false;
 		},
 	},

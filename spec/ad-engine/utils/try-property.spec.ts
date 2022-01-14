@@ -10,7 +10,9 @@ describe('tryProperty', () => {
 	});
 
 	it('should return a function if the property is found', async () => {
-		const testObject = { a: () => {} };
+		const testObject = { a: () => {
+			// noop for tests
+		} };
 		expect(typeof tryProperty(testObject, testProperties) === 'function').to.be.true;
 	});
 
@@ -20,7 +22,9 @@ describe('tryProperty', () => {
 	});
 
 	it('should return undefined if property is found', async () => {
-		const testObject = { d: () => {} };
+		const testObject = { d: () => {
+			// noop for tests
+		} };
 		expect(tryProperty(testObject, testProperties)).to.be.undefined;
 	});
 });
@@ -32,7 +36,9 @@ describe('whichProperty', () => {
 	});
 
 	it('should return found property name', async () => {
-		const testObject = { a: () => {} };
+		const testObject = { a: () => {
+			// noop for tests
+		} };
 		expect(whichProperty(testObject, testProperties)).to.be.equal('a');
 	});
 });
