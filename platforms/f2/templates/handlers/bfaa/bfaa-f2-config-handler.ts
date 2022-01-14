@@ -1,3 +1,4 @@
+import { slotsContext } from '@platforms/shared';
 import {
 	context,
 	TEMPLATE,
@@ -25,10 +26,14 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 			),
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
-		context.set('slots.bottom_leaderboard.sizes', []);
-		context.set(
-			'slots.bottom_leaderboard.defaultSizes',
-			this.f2Env.siteType === 'app' ? [[2, 2]] : [[3, 3]],
-		);
+
+		const additionalSizes =
+			this.f2Env.siteType === 'app' || this.f2Env.skinName === 'fandom_mobile'
+				? universalAdPackage.UAP_ADDITIONAL_SIZES.mobile
+				: universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
+
+		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
+		slotsContext.addSlotSize('incontent_boxad', additionalSizes.companionSize);
+		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
 	}
 }
