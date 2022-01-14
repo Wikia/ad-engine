@@ -40,10 +40,10 @@ export class BaseContextSetup implements DiProcess {
 			const bottomLeaderboard = document.querySelector('.bottom-leaderboard');
 			bottomLeaderboard?.classList.remove('is-loading');
 		}
-		if (!!utils.queryString.get('noexternals')) {
+		if (!utils.queryString.get('noexternals')) {
 			this.noAdsDetector.addReason('noexternals_querystring');
 		}
-		if (!!utils.queryString.get('noads')) {
+		if (!utils.queryString.get('noads')) {
 			this.noAdsDetector.addReason('noads_querystring');
 		}
 
