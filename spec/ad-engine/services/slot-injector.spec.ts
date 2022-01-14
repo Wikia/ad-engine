@@ -24,7 +24,9 @@ describe('slot-injector', () => {
 		conflictingElement = {
 			getBoundingClientRect: () => ({ top: 0, left: 0 }),
 			classList: {
-				contains: () => {},
+				contains: () => {
+					// noop for tests
+				},
 			},
 			offsetHeight: 300,
 			offsetTop: 1400,
@@ -35,13 +37,17 @@ describe('slot-injector', () => {
 		placeholder = {
 			getBoundingClientRect: () => ({ top: 0, left: 0 }),
 			classList: {
-				contains: () => {},
+				contains: () => {
+					// noop for tests
+				},
 			},
 			offsetHeight: 300,
 			offsetTop: 1500,
 			offsetParent: elementProperties.offsetParent,
 			ownerDocument: {},
-			before: () => {},
+			before: () => {
+				// noop for tests
+			},
 		};
 
 		const querySelectorAll = sandbox.stub(document, 'querySelectorAll');

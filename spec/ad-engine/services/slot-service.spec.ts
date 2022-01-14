@@ -46,7 +46,9 @@ describe('slot-service', () => {
 			.withArgs('foo-container')
 			.returns({
 				classList: {
-					contains: () => {},
+					contains: () => {
+						// noop for tests
+					},
 				},
 				getBoundingClientRect: () => ({ top: 0, left: 0 } as any),
 				offsetHeight: 300,

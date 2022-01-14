@@ -2,7 +2,9 @@ import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-function baz(): void {}
+function baz(): void {
+	// noop for tests
+}
 
 describe('context-service', () => {
 	const sandbox = createSandbox();

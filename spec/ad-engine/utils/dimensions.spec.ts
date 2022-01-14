@@ -5,9 +5,13 @@ import { getTopOffset } from '../../../src/ad-engine/utils';
 function getMockElement(top: number, left = 0, hidden = false): HTMLElement {
 	return {
 		classList: {
-			add: () => {},
+			add: () => {
+				// noop for tests
+			},
 			contains: () => hidden,
-			remove: () => {},
+			remove: () => {
+				// noop for tests
+			},
 		},
 		style: {},
 		getBoundingClientRect: () => ({

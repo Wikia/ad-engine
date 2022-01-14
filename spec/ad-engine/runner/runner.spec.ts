@@ -31,7 +31,9 @@ describe('runner', () => {
 	});
 
 	it('resolves itself after timeout when there are no resolved inhibitors', async () => {
-		const runner = new Runner([new Promise(() => {})], defaultTimeout);
+		const runner = new Runner([new Promise(() => {
+			// noop for tests
+		})], defaultTimeout);
 		const runnerPromise = runner
 			.waitForInhibitors()
 			.then(() => (resolveTime = new Date().getTime()));

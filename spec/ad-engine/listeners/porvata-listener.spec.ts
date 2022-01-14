@@ -88,7 +88,9 @@ describe('porvata-listener', () => {
 	it('dispatch video viewed event on ad-slot', () => {
 		const listener = new PorvataListener({ adProduct: 'test-video', position: 'abcd' } as any);
 
-		const adSlotMock = { emit: spy(), getSlotName: () => {} };
+		const adSlotMock = { emit: spy(), getSlotName: () => {
+			// noop for tests
+		} };
 
 		sandbox.stub(slotService, 'get').returns(adSlotMock);
 

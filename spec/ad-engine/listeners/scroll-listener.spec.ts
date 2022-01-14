@@ -12,7 +12,9 @@ describe('ScrollListener', () => {
 		getElementByIdStub = sinon.stub(document, 'getElementById');
 		getElementByIdStub.callsFake(() => 'fakeNode');
 		addCallbackStub = sinon.stub(scrollListener, 'addCallback');
-		addCallbackStub.callsFake(() => {});
+		addCallbackStub.callsFake(() => {
+			// noop for tests
+		});
 	});
 
 	afterEach(() => {
