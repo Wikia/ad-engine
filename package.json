@@ -24,7 +24,7 @@
 		"rxjs": "6.5.5",
 		"ts-action": "^11.0.0",
 		"ts-action-operators": "^9.1.1",
-		"uuid": "7.0.3"
+		"uuid": "8.3.2"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
