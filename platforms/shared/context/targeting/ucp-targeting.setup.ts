@@ -38,7 +38,7 @@ export class UcpTargetingSetup implements DiProcess {
 			communicationService.on(
 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
-					if (action.isLoaded) {
+					if (action.isLoaded || action.adProduct === 'ruap') {
 						context.push('src', 'uap');
 					}
 				},
