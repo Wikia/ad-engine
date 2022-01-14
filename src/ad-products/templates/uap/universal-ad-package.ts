@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
-import { AdSlot, btfBlockerService, context, slotService, utils } from '@ad-engine/core';
+import { AdSlot, btfBlockerService, context, slotService, Targeting, utils } from '@ad-engine/core';
 import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
 import { Porvata } from '../../video/porvata/porvata';
@@ -84,7 +84,7 @@ export interface UapParams {
 	videoTriggers: any[];
 
 	// Video
-	vastTargeting: Record<string, unknown>;
+	vastTargeting: Targeting;
 	videoTriggerElement: HTMLVideoElement;
 	type: string;
 
