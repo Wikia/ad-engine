@@ -101,6 +101,8 @@ interface PrebidBidResponse {
 	getSize: () => string;
 	adserverTargeting: PrebidTargeting;
 	ttl?: number;
+	creativeId?: string;
+	vastUrl?: string;
 }
 
 interface PrebidRequestOptions {
