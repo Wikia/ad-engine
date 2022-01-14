@@ -30,7 +30,6 @@ export const basicContext = {
 	custom: {
 		dbNameForAdUnit: '_not_a_top1k_wiki',
 		dfpId: '5441',
-		rolloutTracking: 'ucp',
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '_not_a_top1k_wiki',
 	},
@@ -60,7 +59,7 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: ['ucp'],
+		rollout_tracking: [],
 		skin: 'ucp_mobile',
 		uap: 'none',
 		uap_c: 'none',
