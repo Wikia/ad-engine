@@ -307,6 +307,7 @@
                 "CA",
                 "CH",
                 "CK",
+                "CL",
                 "CR",
                 "CU",
                 "CW",
@@ -374,6 +375,7 @@
                 "NU",
                 "NZ",
                 "PA",
+                "PE",
                 "PF",
                 "PG",
                 "PH",
@@ -2513,6 +2515,9 @@
                 "fandommobile"
             ],
             "regions": [
+                "BE",
+                "BR",
+                "CA",
                 "CH",
                 "DE",
                 "ES",
