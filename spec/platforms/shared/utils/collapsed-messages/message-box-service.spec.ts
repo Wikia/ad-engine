@@ -7,9 +7,13 @@ describe('Message Box Service', () => {
 	function getMockElement(containsClass = false): HTMLElement {
 		return {
 			classList: {
-				add: () => {},
+				add: () => {
+					// noop for tests
+				},
 				contains: () => containsClass,
-				remove: () => {},
+				remove: () => {
+					// noop for tests
+				},
 			},
 		} as any;
 	}
