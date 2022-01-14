@@ -24,6 +24,4 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 		context.set('slots.cdm-zone-04.sizes', []);
 		context.set('slots.cdm-zone-04.defaultSizes', [[3, 3]]);
 	}
-
-	async onLeave(): Promise<void> {}
 }
