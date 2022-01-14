@@ -77,7 +77,13 @@ export class FmrRotator {
 
 	private initializeBTRotation(): void {
 		this.pushNextSlot();
-		this.swapRecirculation(false);
+
+		let recirculationVisible = false;
+
+		setInterval(() => {
+			this.swapRecirculation(recirculationVisible);
+			recirculationVisible = !recirculationVisible;
+		}, this.refreshInfo.refreshDelay + this.refreshInfo.recSlotViewed);
 	}
 
 	private startFirstRotation(): void {

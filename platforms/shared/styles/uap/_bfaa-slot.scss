@@ -6,7 +6,7 @@
 	left: 0;
 	top: 0;
 	position: fixed;
-	width: calc(100% - #{$uap-margin});
+	width: calc(100% - #{$uap-margin}) !important;
 	background-color: #000;
 
 	@include bfaa-bfab-overlay;

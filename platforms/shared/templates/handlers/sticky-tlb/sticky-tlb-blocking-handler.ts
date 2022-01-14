@@ -1,14 +1,18 @@
 import {
 	AdSlot,
+	communicationService,
 	context,
+	ofType,
 	slotService,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
+	uapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
+import { take } from 'rxjs/operators';
 
 @Injectable({ autobind: false })
 export class StickyTlbBlockingHandler implements TemplateStateHandler {
@@ -17,16 +21,27 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
 	async onEnter(transition: TemplateTransition<'initial'>): Promise<void> {
-		if (this.isStickyTlbForced() || this.isLineAndGeo()) {
-			this.logger('Disabling incontent_player');
-			slotService.disable('incontent_player', 'hivi-collapse');
-			transition('initial');
-		} else {
-			this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
-			this.logger(
-				`Template 'stickyTlb' could not be applied for Line item ID ${this.adSlot.lineItemId}`,
-			);
+		const isUap = await this.isUAP();
+		if (isUap) {
+			this.blockStickyTLB('UAP');
+			return;
 		}
+		if (!this.isStickyTlbForced() && !this.isLineAndGeo()) {
+			this.blockStickyTLB(`Line item ID ${this.adSlot.lineItemId}`);
+			return;
+		}
+		this.continueWithStickyTLB(transition);
+	}
+
+	private blockStickyTLB(reason: string): void {
+		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
+		this.logger(`Template 'stickyTlb' could not be applied for ${reason}`);
+	}
+
+	private continueWithStickyTLB(transition: TemplateTransition<'initial'>): void {
+		this.logger('Disabling incontent_player');
+		slotService.disable('incontent_player', 'hivi-collapse');
+		transition('initial');
 	}
 
 	private isLineAndGeo(): boolean {
@@ -45,6 +60,14 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 				});
 		}
 		return false;
+	}
+
+	private async isUAP(): Promise<boolean> {
+		return new Promise((resolve) => {
+			communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+				resolve(action.isLoaded);
+			});
+		});
 	}
 
 	private isStickyTlbForced(): boolean {

@@ -7,6 +7,7 @@ import {
 	setupNpaContext,
 	setupRdpContext,
 	uapLoadStatus,
+	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -52,7 +53,12 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');
-			communicationService.dispatch(uapLoadStatus({ isLoaded: false }));
+			communicationService.dispatch(
+				uapLoadStatus({
+					isLoaded: false,
+					adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
+				}),
+			);
 		}
 	}
 
@@ -148,7 +154,6 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.permutive.enabled', this.instantConfig.get('icPermutive'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 	}
 

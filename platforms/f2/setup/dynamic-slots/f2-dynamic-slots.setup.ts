@@ -39,7 +39,10 @@ export class F2DynamicSlotsSetup implements DiProcess {
 			utils.listener(events.AD_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.dispatch(
-					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
+					uapLoadStatus({
+						isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+						adProduct: universalAdPackage.getType(),
+					}),
 				);
 			});
 		}

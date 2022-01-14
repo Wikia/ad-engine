@@ -102,7 +102,7 @@ export interface UapParams {
 
 export const uapLoadStatus = globalAction(
 	'[AdEngine] UAP Load status',
-	props<{ isLoaded: boolean }>(),
+	props<{ isLoaded: boolean; adProduct: string }>(),
 );
 
 function getVideoSize(
@@ -285,7 +285,10 @@ export function registerUapListener(): void {
 		)
 		.subscribe(() => {
 			communicationService.dispatch(
-				uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
+				uapLoadStatus({
+					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+					adProduct: universalAdPackage.getType(),
+				}),
 			);
 		});
 }

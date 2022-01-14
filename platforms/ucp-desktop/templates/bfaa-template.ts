@@ -10,6 +10,7 @@ import {
 	ScrollCorrector,
 	SlotDecisionImpactToResolvedHandler,
 	SlotDecisionTimeoutHandler,
+	SlotHeightClippingHandler,
 	SlotSizeImpactWithPlaceholderHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
 	SlotStateStickedHandler,
@@ -47,6 +48,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			impact: [
 				SlotSizeImpactWithPlaceholderHandler,
 				SlotDecisionImpactToResolvedHandler,
+				SlotHeightClippingHandler,
 				VideoSizeImpactToResolvedHandler,
 				VideoCompletedHandler,
 				DomCleanupHandler,
@@ -68,6 +70,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			],
 			resolved: [
 				SlotSizeResolvedWithPlaceholderHandler,
+				SlotHeightClippingHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],

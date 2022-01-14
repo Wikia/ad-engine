@@ -88,11 +88,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		anchor.before(container);
 
 		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
-			if (action.isLoaded) {
-				return;
-			}
-
-			nativo.requestAd(container);
+			nativo.requestAd(container, action);
 		});
 	}
 
@@ -189,6 +185,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 					this.handleAdPlaceholders(slotName, AdSlot.STATUS_COLLAPSE);
 				}
 			});
+		} else {
+			context.set('slots.top_leaderboard.targeting.pos', ['top_leaderboard', 'hivi_leaderboard']);
 		}
 
 		slotService.on('top_leaderboard', AdSlot.STATUS_SUCCESS, () => {

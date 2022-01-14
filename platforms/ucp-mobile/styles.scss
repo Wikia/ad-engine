@@ -53,48 +53,6 @@
 			top: $fandom-navbar-height;
 			z-index: 202;
 		}
-
-		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
-			clip: rect(0, auto, auto, 0);
-		}
-	}
-
-	.has-new-uap {
-		.ad-slot-placeholder.top-leaderboard {
-			left: 0;
-			position: sticky;
-			width: 100vw;
-			z-index: $new-uap-bfaa-z-index;
-			// Highest expected BFAA size. CLS optimization.
-			min-height: 213px;
-
-			#top_leaderboard {
-				@include uap-porvata();
-				@include uap-porvata-learn-more();
-				@include uap-advertisement-label();
-				@include uap-button-close();
-				@include bfaa-sticky-big();
-				@include bfaa-sticky-small();
-				@include bfaa-embedded();
-				&.is-dark {
-					@include uap-dark-theme();
-				}
-			}
-		}
-
-		@include bfaa-with-infobox();
-
-		#bottom_leaderboard {
-			@include bfab-new-uap();
-			@include uap-porvata();
-			@include uap-porvata-learn-more();
-			@include uap-advertisement-label();
-			@include uap-button-close();
-
-			&.is-dark {
-				@include uap-dark-theme();
-			}
-		}
 	}
 
 	@include expanded-slot();
@@ -266,19 +224,20 @@ body.bab-detected {
 	display: flex;
 	align-items: flex-start;
 	flex-direction: column;
-	padding: 30px;
+	max-height: 250px;
+	padding: 22px;
 	background-color: #520044;
 
-	.cta-message {
+	.cm-message {
 		color: #ffc500;
-		font-size: 36px;
-		font-weight: 900;
-		line-height: 45px;
+		font-size: 30px;
+		font-weight: 500;
+		line-height: 40px;
 		margin: 0 0 12px;
 		text-transform: uppercase;
 	}
 
-	.register-btn {
+	.cm-button {
 		background-color: #ffc500;
 		color: #520044;
 		cursor: pointer;
@@ -288,5 +247,23 @@ body.bab-detected {
 @keyframes fade-in {
 	to {
 		opacity: 1;
+	}
+}
+
+@media (max-width: 412px) {
+	.message-box {
+		.cm-message {
+			font-size: 25px;
+			line-height: 40px;
+		}
+	}
+}
+
+@media (max-width: 320px) {
+	.message-box {
+		.cm-message {
+			font-size: 25px;
+			line-height: 30px;
+		}
 	}
 }

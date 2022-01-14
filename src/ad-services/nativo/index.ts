@@ -1,14 +1,9 @@
-import { communicationService, globalAction } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
-import { props } from 'ts-action';
+import { communicationService } from '@ad-engine/communication';
+import { AdSlot, adSlotEvent, context, utils } from '@ad-engine/core';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
-export const nativoLoadedEvent = globalAction(
-	'[AdEngine] Nativo loaded',
-	props<{ isLoaded: boolean }>(),
-);
 
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
@@ -19,6 +14,7 @@ export class Nativo {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE);
 
 			return Promise.resolve();
 		}
@@ -27,7 +23,7 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
-				this.sendEvent();
+				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
@@ -35,7 +31,7 @@ export class Nativo {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
 
-	requestAd(placeholder: HTMLElement | null): void {
+	requestAd(placeholder: HTMLElement | null, uapLoadStatusAction: any = {}): void {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'Nativo is disabled');
 			return;
@@ -52,29 +48,69 @@ export class Nativo {
 			return;
 		}
 
+		if (this.isSponsoredProductOnPage(uapLoadStatusAction)) {
+			return;
+		}
+
 		utils.logger(logGroup, 'Sending an ad request to Nativo');
+
+		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE, e);
+		});
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
 	}
 
-	replaceAndShowSponsoredFanAd(): void {
+	replaceAndShowSponsoredFanAd(uapLoadStatusAction: any = {}): void {
 		const nativoFeedAdSlotElement = document.getElementById(Nativo.FEED_AD_SLOT_NAME);
 		const recirculationSponsoredElement = document.querySelector(
 			'.recirculation-prefooter .recirculation-prefooter__item.is-sponsored.can-nativo-replace',
 		);
 
 		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
-			recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
-			nativoFeedAdSlotElement.classList.remove('hide');
-			this.requestAd(nativoFeedAdSlotElement);
+			if (!this.isSponsoredProductOnPage(uapLoadStatusAction)) {
+				recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
+				nativoFeedAdSlotElement.classList.remove('hide');
+			}
+
+			this.requestAd(nativoFeedAdSlotElement, uapLoadStatusAction);
 		} else {
 			utils.logger(logGroup, 'Could not replace sponsored element with Nativo feed ad');
 		}
 	}
 
-	private sendEvent(): void {
-		communicationService.dispatch(nativoLoadedEvent({ isLoaded: true }));
+	private isSponsoredProductOnPage(uapLoadStatusAction): boolean {
+		if (uapLoadStatusAction?.isLoaded === true) {
+			utils.logger(logGroup, 'Fan Takeover on the page');
+			return true;
+		}
+
+		if (
+			uapLoadStatusAction?.isLoaded === false &&
+			uapLoadStatusAction?.adProduct === 'ruap' &&
+			context.get('custom.hasFeaturedVideo')
+		) {
+			utils.logger(logGroup, '"Fan Takeover" on the featured page');
+			return true;
+		}
+
+		return false;
+	}
+
+	private sendNativoLoadStatus(status: string, event?: any): void {
+		const adLocation = event?.data[0]?.adLocation || '';
+
+		communicationService.dispatch(
+			adSlotEvent({
+				event: status,
+				payload: {
+					adLocation,
+					provider: 'nativo',
+				},
+				adSlotName: adLocation,
+			}),
+		);
 	}
 
 	private displayTestAd(): void {

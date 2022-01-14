@@ -28,7 +28,7 @@
 			@include bfaa-slot(402, $global-navigation-width);
 			@include sticky-tlb-slot($global-navigation-width);
 
-			margin-left: $global-navigation-width;
+			margin-left: $global-navigation-width !important;
 		}
 
 		#bottom_leaderboard {
@@ -50,7 +50,8 @@
 		}
 	}
 
-	.uap-light {
+	.uap-light,
+	.has-sticky-tlb {
 		.fandom-sticky-header {
 			margin-top: unset;
 		}
@@ -66,10 +67,6 @@
 				width: 100%;
 				height: 100%;
 			}
-		}
-
-		&:not(.uap-sticked) .ad-slot-placeholder.top-leaderboard {
-			clip: rect(0, auto, auto, 0);
 		}
 	}
 

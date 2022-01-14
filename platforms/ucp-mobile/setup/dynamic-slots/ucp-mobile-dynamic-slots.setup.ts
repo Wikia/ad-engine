@@ -1,4 +1,9 @@
-import { MessageBox, PlaceholderService, slotsContext } from '@platforms/shared';
+import {
+	MessageBoxService,
+	PlaceholderService,
+	PlaceholderServiceHelper,
+	slotsContext,
+} from '@platforms/shared';
 import {
 	AdSlot,
 	btfBlockerService,
@@ -16,7 +21,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { PlaceholderServiceHelper } from '../../../shared/utils/placeholder-service-helper';
 import {
 	SlotSetupDefinition,
 	UcpMobileSlotsDefinitionRepository,
@@ -64,7 +68,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			utils.listener(events.AD_STACK_START, () => {
 				btfBlockerService.finishFirstCall();
 				communicationService.dispatch(
-					uapLoadStatus({ isLoaded: universalAdPackage.isFanTakeoverLoaded() }),
+					uapLoadStatus({
+						isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+						adProduct: universalAdPackage.getType(),
+					}),
 				);
 			});
 		}
@@ -154,9 +161,8 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	private registerAdPlaceholderService(): void {
 		const placeholderHelper = new PlaceholderServiceHelper();
-		const messageBox = new MessageBox();
-
-		const placeholderService = new PlaceholderService(placeholderHelper, messageBox);
+		const messageBoxService = new MessageBoxService();
+		const placeholderService = new PlaceholderService(placeholderHelper, messageBoxService);
 		placeholderService.init();
 	}
 }
