@@ -180,7 +180,7 @@ export class GptProvider implements Provider {
 			if (adSlot.getConfigProperty('outOfPageFormat')) {
 				return window.googletag.defineOutOfPageSlot(
 					adSlot.getAdUnit(),
-					// @ts-ignore
+					// @ts-ignore for some reason our @types/doubleclick-gpt/index.d.ts don't have enums maybe after TS update
 					window.googletag.enums.OutOfPageFormat[adSlot.getConfigProperty('outOfPageFormat')],
 				);
 			}
