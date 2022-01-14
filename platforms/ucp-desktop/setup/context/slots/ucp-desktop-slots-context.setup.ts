@@ -4,8 +4,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsContextSetup implements DiProcess {
-	constructor() {}
-
 	execute(): void {
 		const slots = {
 			top_leaderboard: {
