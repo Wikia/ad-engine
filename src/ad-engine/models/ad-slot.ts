@@ -592,7 +592,7 @@ export class AdSlot {
 	/**
 	 * Pass all events to Post-QueCast
 	 */
-	emit(event: string | symbol, data: any = {}, serialize: true): void {
+	emit(event: string | symbol, data: any = {}, serialize = true): void {
 		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_EVENT, {
 			event: event.toString(),
 			slot: this,
