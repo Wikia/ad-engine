@@ -57,7 +57,7 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: ['ucp-desktop'],
+		rollout_tracking: [],
 		skin: 'ucp_desktop',
 		uap: 'none',
 		uap_c: 'none',
