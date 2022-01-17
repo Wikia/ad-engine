@@ -49,8 +49,8 @@ class QueryString {
 		}
 	}
 
-	stringify(params: any): string {
-		const queryParams = new URLSearchParams(params);
+	stringify(params: object): string {
+		const queryParams = new URLSearchParams(params as Record<string, string>);
 		queryParams.sort();
 
 		return queryParams.toString();
