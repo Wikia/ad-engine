@@ -48,6 +48,13 @@ class QueryString {
 			return value || null;
 		}
 	}
+
+	stringify(params: any): string {
+		const queryParams = new URLSearchParams(params);
+		queryParams.sort();
+
+		return queryParams.toString();
+	}
 }
 
 export const queryString = new QueryString();

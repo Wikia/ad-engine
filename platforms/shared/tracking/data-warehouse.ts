@@ -1,6 +1,5 @@
 import { context, trackingOptIn, utils } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import * as queryString from 'query-string';
 import { TrackingParams } from './models/tracking-params';
 
 const logGroup = 'data-warehouse-trackingParams';
@@ -11,6 +10,8 @@ export interface TimeBasedParams {
 	cb: number;
 	url: string;
 }
+
+type DataWarehouseParams = TrackingParams & TimeBasedParams;
 
 @Injectable()
 export class DataWarehouseTracker {
@@ -59,7 +60,7 @@ export class DataWarehouseTracker {
 	 * Send single get request to Data Warehouse using custom route name (defined in config)
 	 */
 	private sendCustomEvent(options: TrackingParams, trackingURL: string): void {
-		const params: TrackingParams & TimeBasedParams = {
+		const params: DataWarehouseParams = {
 			...options,
 			...this.getTimeBasedParams(),
 		};
@@ -72,7 +73,7 @@ export class DataWarehouseTracker {
 	 * Send the get request to  Data Warehouse
 	 */
 	private sendTrackEvent(options: TrackingParams, type = 'Event'): void {
-		const params: TrackingParams & TimeBasedParams = {
+		const params: DataWarehouseParams = {
 			...options,
 			...this.getTimeBasedParams(),
 		};
@@ -107,13 +108,13 @@ export class DataWarehouseTracker {
 	/**
 	 * Build a URL to send to Data Warehouse
 	 */
-	private buildDataWarehouseUrl(params: object, baseUrl: string): string {
+	private buildDataWarehouseUrl(params: DataWarehouseParams, baseUrl: string): string {
 		if (!baseUrl) {
 			const msg = `Error building DW tracking URL`;
 			utils.logger(logGroup, msg);
 			throw new Error(msg);
 		}
-		return `${baseUrl}?${queryString.stringify(params, { strict: false })}`;
+		return `${baseUrl}?${utils.queryString.stringify(params)}`;
 	}
 
 	/**
