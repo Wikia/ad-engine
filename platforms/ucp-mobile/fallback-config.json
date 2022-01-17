@@ -2268,8 +2268,22 @@
                 "5877787829",
                 "5875696557",
                 "5884643683",
+                "5882342335",
                 "5875695327"
             ]
+        }
+    ],
+    "icUAPNewBFAATemplate": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "DE"
+            ],
+            "sampling": 50.0,
+            "value": true
         }
     ],
     "icSailthru": [
