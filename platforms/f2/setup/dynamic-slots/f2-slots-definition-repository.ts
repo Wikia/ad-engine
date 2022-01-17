@@ -53,7 +53,7 @@ export class F2SlotsDefinitionRepository {
 				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.feed-section__ad',
+					anchorSelector: '.feed-section__ad,.feed-layout__right-rail',
 					insertMethod: 'prepend',
 					classList: ['hide'],
 				},
@@ -137,7 +137,7 @@ export class F2SlotsDefinitionRepository {
 				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.search-box-bottom-wrapper',
+					anchorSelector: '.search-box-bottom-wrapper,.wds-global-footer',
 					insertMethod: 'before',
 					classList: ['hide'],
 				},

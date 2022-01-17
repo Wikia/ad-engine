@@ -38,6 +38,7 @@ interface Window {
 	session_id?: string;
 	tabId?: string;
 	trackingOptIn?: any;
+	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
