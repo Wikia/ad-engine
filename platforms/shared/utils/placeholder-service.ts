@@ -57,7 +57,7 @@ export class PlaceholderService {
 							this.messageBoxService &&
 							this.messageBoxService.shouldAddMessageBox(action.event, placeholder)
 						) {
-							this.messageBoxService.addMessageBox(placeholder, adSlot);
+							this.messageBoxService.addMessageBox(adSlot);
 						}
 					}
 				}

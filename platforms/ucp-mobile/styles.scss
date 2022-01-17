@@ -225,8 +225,10 @@ body.bab-detected {
 }
 
 .message-box {
+	color: white;
 	display: flex;
 	align-items: flex-start;
+	font-size: 14px;
 	flex-direction: column;
 	max-height: 250px;
 	padding: 22px;
@@ -245,6 +247,31 @@ body.bab-detected {
 		background-color: #ffc500;
 		color: #520044;
 		cursor: pointer;
+	}
+
+	.newsletter-form {
+		display: flex;
+		width: 100%;
+		margin-top: 5px;
+
+		.newsletter-email {
+			flex: 4;
+			background-color: transparent;
+			color: white;
+			border: 1px solid #fff;
+			border-width: 0 0 1px 0;
+			margin-bottom: 16px;
+			outline: none;
+			margin-right: 2px;
+
+			&::placeholder {
+				color: white;
+			}
+		}
+
+		.newsletter-submit {
+			flex: 1;
+		}
 	}
 }
 
