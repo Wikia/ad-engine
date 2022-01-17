@@ -29,6 +29,7 @@ interface Window {
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
 	ntv?: NativoQueue;
+	NOLBUNDLE?: any;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
@@ -43,5 +44,3 @@ interface Window {
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
 }
-
-declare var NOLBUNDLE: any;
