@@ -120,7 +120,7 @@ export class DataWarehouseTracker {
 	/**
 	 * Send the get request
 	 */
-	private sendRequest(url: string, params: object, type = 'Event'): void {
+	private sendRequest(url: string, params: DataWarehouseParams, type = 'Event'): void {
 		const request = new XMLHttpRequest();
 
 		request.open('GET', url, true);

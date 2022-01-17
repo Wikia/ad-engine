@@ -50,7 +50,7 @@ class QueryString {
 	}
 
 	stringify(params: object): string {
-		const queryParams = new URLSearchParams(params as Record<string, string>);
+		const queryParams = new URLSearchParams(params as Dictionary<string>);
 		queryParams.sort();
 
 		return queryParams.toString();
