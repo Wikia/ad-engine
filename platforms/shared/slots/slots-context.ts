@@ -11,12 +11,28 @@ import {
 
 class SlotsContext {
 	addSlotSize(slotName: string, size: [number, number]): void {
-		const definedViewportSizes = context.get(`slots.${slotName}.sizes`);
+		if (!context.get(`slots.${slotName}`)) {
+			throw new Error('Requested ad slot is not defined in the ad context');
+		}
 
 		context.push(`slots.${slotName}.defaultSizes`, size);
-		definedViewportSizes.forEach((sizeMap) => {
-			sizeMap.sizes.push(size);
-		});
+
+		const definedViewportSizes = context.get(`slots.${slotName}.sizes`);
+
+		if (definedViewportSizes) {
+			definedViewportSizes.forEach((sizeMap) => {
+				sizeMap.sizes.push(size);
+			});
+		}
+	}
+
+	setSlotSize(slotName: string, size: [number, number]): void {
+		if (!context.get(`slots.${slotName}`)) {
+			throw new Error('Requested ad slot is not defined in the ad context');
+		}
+
+		context.set(`slots.${slotName}.sizes`, []);
+		context.set(`slots.${slotName}.defaultSizes`, [size]);
 	}
 
 	setupSlotVideoContext(): void {

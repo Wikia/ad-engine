@@ -45,7 +45,11 @@ export class InstantConfigCacheStorage {
 		this.cacheStorage[data.name] = data;
 
 		if (data.withCookie) {
-			this.synchronizeCookie();
+			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, ({ gdprConsent }) => {
+				if (gdprConsent) {
+					this.synchronizeCookie();
+				}
+			});
 		}
 	}
 

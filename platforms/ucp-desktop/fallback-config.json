@@ -2135,6 +2135,7 @@
                 "5863568100",
                 "5877787829",
                 "5875696557",
+                "5884643683",
                 "5875695327"
             ]
         }
@@ -2235,6 +2236,22 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icSequentialMessaging": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": {
+                "5854346762": {
+                    "length": "4"
+                }
+            }
         }
     ],
     "icSafeFanTakeoverLineItemIds": [
@@ -2358,6 +2375,9 @@
                 "fandommobile"
             ],
             "regions": [
+                "BE",
+                "BR",
+                "CA",
                 "CH",
                 "DE",
                 "ES",
