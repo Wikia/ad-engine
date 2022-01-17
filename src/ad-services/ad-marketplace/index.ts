@@ -1,7 +1,6 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
+import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
-import { map, take } from 'rxjs/operators';
-import { props } from 'ts-action';
+import { map } from 'rxjs/operators';
 
 interface AdMarketplaceConfiguration {
 	enabled: boolean;
@@ -28,12 +27,6 @@ interface InstantSearchResponse {
 }
 
 const logGroup = 'ad-marketplace';
-
-const adMarketplaceInitEvent = globalAction('[Search suggestions] Initialized');
-const adMarketplaceSearchEvent = globalAction(
-	'[Search suggestions] Called',
-	props<{ query: string }>(),
-);
 
 const instantSearchEndpoint = '//fandomcps.cps.ampfeed.com/suggestions?';
 const instantSearchEndpointParameters = [
@@ -67,11 +60,9 @@ class AdMarketplace {
 		);
 		instantSearchEndpointParameters.push('qt=');
 
-		communicationService.action$
-			.pipe(ofType(adMarketplaceInitEvent), take(1))
-			.subscribe(async () => {
-				this.registerSearchEvents();
-			});
+		communicationService.on(eventsRepository.ADMARKETPLACE_INIT, () => {
+			this.registerSearchEvents();
+		});
 
 		return Promise.resolve();
 	}
@@ -79,7 +70,7 @@ class AdMarketplace {
 	private registerSearchEvents(): void {
 		communicationService.action$
 			.pipe(
-				ofType(adMarketplaceSearchEvent),
+				ofType(communicationService.getGlobalAction(eventsRepository.ADMARKETPLACE_CALLED)),
 				map(({ query }) => {
 					return query;
 				}),

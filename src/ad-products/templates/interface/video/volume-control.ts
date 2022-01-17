@@ -28,25 +28,23 @@ function updateCurrentState(video, volumeControl): void {
 	}
 }
 
-function add(video, container): void {
-	const volumeControl = createVolumeControl();
+export class VolumeControl {
+	static add(video, container): void {
+		const volumeControl = createVolumeControl();
 
-	video.addEventListener('wikiaVolumeChange', () => {
-		updateCurrentState(video, volumeControl);
-	});
+		video.addEventListener('wikiaVolumeChange', () => {
+			updateCurrentState(video, volumeControl);
+		});
 
-	video.addEventListener('wikiaAdStarted', () => {
-		updateCurrentState(video, volumeControl);
-	});
+		video.addEventListener('wikiaAdStarted', () => {
+			updateCurrentState(video, volumeControl);
+		});
 
-	volumeControl.addEventListener('click', (e) => {
-		video.toggleVolume();
-		e.preventDefault();
-	});
+		volumeControl.addEventListener('click', (e) => {
+			video.toggleVolume();
+			e.preventDefault();
+		});
 
-	container.appendChild(volumeControl);
+		container.appendChild(volumeControl);
+	}
 }
-
-export default {
-	add,
-};

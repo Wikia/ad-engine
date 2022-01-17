@@ -1,4 +1,5 @@
-import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
+import { slotsContext } from '@platforms/shared';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 const BIG_VIEWPORT_SIZE = {
@@ -77,24 +78,11 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
 				viewabilityCounterId: 'incontent_boxad',
-				defaultClasses: ['hide', 'incontent-boxad', 'ad-slot'],
+				defaultClasses: ['hide', 'ad-slot'],
 				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
-				insertBeforeSelector: '',
 				parentContainerSelector: '.incontent-boxad',
-				repeat: {
-					index: 1,
-					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-						'targeting.pos': ['incontent_boxad'],
-						'placeholder.createLabel': false,
-					},
-					insertBelowScrollPosition: true,
-				},
 				slotShortcut: 'f',
 				sizes: [
 					{
@@ -145,7 +133,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'mobile_prefooter',
 				slotNameSuffix: '',
 				disabled: true,
-				disableManualInsert: true,
 				group: 'PF',
 				options: {},
 				slotShortcut: 'p',
@@ -165,8 +152,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			interstitial: {
 				adProduct: 'interstitial',
-				disabled: true,
-				disableManualInsert: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'IU',
@@ -180,8 +165,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				disabled: true,
-				disableManualInsert: true,
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
 				group: 'PF',
@@ -265,7 +248,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 				group: 'VIDEO',
-				lowerSlotName: 'featured',
 				targeting: {
 					uap: 'none',
 				},
@@ -275,25 +257,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 		};
 
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
-			context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
-			context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
-				this.setupSlotParameters(slot),
-			);
-		});
+		slotsContext.setupSlotVideoContext();
+
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
-		context.set('slots.incontent_boxad_1.defaultClasses', ['hide', 'ad-slot']);
-	}
-
-	private setupSlotParameters(slot): void {
-		const audioSuffix = slot.config.audio === true ? '-audio' : '';
-		const clickToPlaySuffix =
-			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
-
-		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
-		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
-		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }

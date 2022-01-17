@@ -2,28 +2,35 @@ import {
 	communicationService,
 	context,
 	DiProcess,
-	ofType,
+	eventsRepository,
 	slotService,
 	TemplateRegistry,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { adSlotInjected, destroyAdSlot } from '../../setup-bingebot';
 
 @Injectable()
 export class BingeBotDynamicSlotsSetup implements DiProcess {
 	constructor(private templateRegistry: TemplateRegistry) {}
 
 	execute(): void {
-		communicationService.action$.pipe(ofType(adSlotInjected)).subscribe((action) => {
-			this.setAdStack(action.slotId);
-		});
+		communicationService.on(
+			eventsRepository.BINGEBOT_AD_SLOT_INJECTED,
+			(action) => {
+				this.setAdStack(action.slotId);
+			},
+			false,
+		);
 
-		communicationService.action$.pipe(ofType(destroyAdSlot)).subscribe((action) => {
-			const adSlot = slotService.get(action.slotId);
+		communicationService.on(
+			eventsRepository.BINGEBOT_DESTROY_AD_SLOT,
+			(action) => {
+				const adSlot = slotService.get(action.slotId);
 
-			this.templateRegistry.destroy(action.slotId);
-			slotService.remove(adSlot);
-		});
+				this.templateRegistry.destroy(action.slotId);
+				slotService.remove(adSlot);
+			},
+			false,
+		);
 	}
 
 	private setAdStack(slotId): void {

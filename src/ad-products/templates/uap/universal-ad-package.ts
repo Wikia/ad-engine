@@ -1,15 +1,7 @@
-import { communicationService, globalAction, ofType } from '@ad-engine/communication';
-import {
-	AdSlot,
-	adSlotEvent,
-	btfBlockerService,
-	context,
-	slotService,
-	utils,
-} from '@ad-engine/core';
+import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
+import { AdSlot, btfBlockerService, context, slotService, utils } from '@ad-engine/core';
 import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
-import { props } from 'ts-action';
 import { Porvata } from '../../video/porvata/porvata';
 import { PorvataPlayer } from '../../video/porvata/porvata-player';
 import * as videoUserInterface from '../interface/video';
@@ -100,11 +92,6 @@ export interface UapParams {
 	width: number;
 }
 
-export const uapLoadStatus = globalAction(
-	'[AdEngine] UAP Load status',
-	props<{ isLoaded: boolean; adProduct: string }>(),
-);
-
 function getVideoSize(
 	slot: HTMLElement,
 	params: UapParams,
@@ -170,11 +157,11 @@ async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlay
 	params.height = size.height;
 	videoSettings.updateParams(params);
 
-	function recalculateVideoSize(video): () => void {
+	function recalculateVideoSize(videoPlayer: PorvataPlayer): () => void {
 		return () => {
 			const currentSize = getVideoSize(params.container, params, videoSettings);
 
-			video.resize(currentSize.width, currentSize.height);
+			videoPlayer.resize(currentSize.width, currentSize.height);
 		};
 	}
 
@@ -267,35 +254,6 @@ function isFanTakeoverLoaded(): boolean {
 	);
 }
 
-export function registerUapListener(): void {
-	communicationService.action$
-		.pipe(
-			ofType(adSlotEvent),
-			filter((action) => {
-				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
-
-				return (
-					isFirstCallAdSlot &&
-					[AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
-						.map((status) => action.event === status)
-						.some((x) => !!x)
-				);
-			}),
-			take(1),
-		)
-		.subscribe(() => {
-			communicationService.dispatch(
-				uapLoadStatus({
-					isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-					adProduct: universalAdPackage.getType(),
-				}),
-			);
-		});
-}
-
-// Side effect
-registerUapListener();
-
 export const universalAdPackage = {
 	...constants,
 	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
@@ -321,7 +279,7 @@ export const universalAdPackage = {
 	getCreativeId,
 	getType,
 	getUapId,
-	isVideoEnabled(params) {
+	isVideoEnabled(params): boolean {
 		const triggersArrayIsNotEmpty =
 			Array.isArray(params.videoTriggers) && params.videoTriggers.length > 0;
 
@@ -331,5 +289,31 @@ export const universalAdPackage = {
 	reset,
 	setType,
 	updateSlotsTargeting,
-	uapLoadStatus,
 };
+
+export function registerUapListener(): void {
+	communicationService.action$
+		.pipe(
+			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+			filter((action) => {
+				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
+
+				return (
+					isFirstCallAdSlot &&
+					[AdSlot.TEMPLATES_LOADED, AdSlot.STATUS_COLLAPSE, AdSlot.STATUS_FORCED_COLLAPSE]
+						.map((status) => action.event === status)
+						.some((x) => !!x)
+				);
+			}),
+			take(1),
+		)
+		.subscribe(() => {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+				adProduct: universalAdPackage.getType(),
+			});
+		});
+}
+
+// Side effect
+registerUapListener();

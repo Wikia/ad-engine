@@ -1,4 +1,4 @@
-import { AdEngine, AdSlot, eventService, utils } from '@wikia/ad-engine';
+import { AdEngine, AdSlot, communicationService, utils } from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
 
@@ -11,7 +11,7 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 		adEngineInstance = new AdEngine();
 		adEngineInstance.init(inhibitors);
 
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (slot) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.removeClass('default-height');
 		});
 	} else {

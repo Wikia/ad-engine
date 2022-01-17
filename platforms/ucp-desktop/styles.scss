@@ -21,8 +21,7 @@
 			z-index: 401;
 		}
 
-		#top_leaderboard,
-		#hivi_leaderboard {
+		#top_leaderboard {
 			$global-navigation-width: 66px;
 
 			@include bfaa-slot(402, $global-navigation-width);
@@ -36,7 +35,6 @@
 		}
 
 		#top_leaderboard,
-		#hivi_leaderboard,
 		#bottom_leaderboard {
 			@include uap-porvata();
 			@include uap-porvata-right-position();

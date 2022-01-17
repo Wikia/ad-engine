@@ -1,16 +1,11 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { getAdStack, utils } from '../';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { getTopOffset, logger } from '../utils';
 import { context } from './context-service';
-import { events, eventService } from './events';
 import { slotTweaker } from './slot-tweaker';
 
 const groupName = 'slot-service';
-
-interface SlotEvent {
-	callback: (event?: any) => void;
-	name: string;
-}
 
 function isSlotInTheSameViewport(
 	slotHeight: number,
@@ -36,14 +31,7 @@ function isSlotInTheSameViewport(
 	return distance < viewportHeight;
 }
 
-eventService.on(events.PAGE_CHANGE_EVENT, () => {
-	slotService.slotEvents = {};
-	slotService.slotStates = {};
-	slotService.slotStatuses = {};
-});
-
 class SlotService {
-	slotEvents: Dictionary<SlotEvent[]> = {};
 	slotStatuses: Dictionary<string> = {};
 	slotStates: Dictionary<boolean> = {};
 	slots: Dictionary<AdSlot> = {};
@@ -56,11 +44,6 @@ class SlotService {
 
 		this.slots[slotName] = adSlot;
 
-		if (this.slotEvents[slotName]) {
-			adSlot.events.push(...this.slotEvents[slotName]);
-			delete this.slotEvents[slotName];
-		}
-
 		if (this.slotStates[slotName] === false) {
 			adSlot.disable(this.slotStatuses[slotName]);
 		}
@@ -69,9 +52,9 @@ class SlotService {
 		}
 
 		slotTweaker.addDefaultClasses(adSlot);
-		eventService.emit(events.AD_SLOT_CREATED, adSlot);
-		utils.communicator('Ad Slot added', {
+		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_ADDED, {
 			name: slotName,
+			slot: adSlot,
 			state: AdSlot.SLOT_ADDED_EVENT,
 		});
 	}
@@ -146,22 +129,6 @@ class SlotService {
 		Object.keys(this.slots).forEach((id) => {
 			callback(this.slots[id]);
 		});
-	}
-
-	on(slotName: string, eventName: string, callback: (payload?: any) => void): void {
-		const adSlot = this.get(slotName);
-		const event: SlotEvent = {
-			callback,
-			name: eventName,
-		};
-
-		this.slotEvents[slotName] = this.slotEvents[slotName] || [];
-
-		if (adSlot) {
-			adSlot.events.push(event);
-		} else {
-			this.slotEvents[slotName].push(event);
-		}
 	}
 
 	/**

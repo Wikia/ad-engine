@@ -1,4 +1,4 @@
-import { eventService } from '../services/events';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { SessionCookie } from '../services/session-cookie';
 
 export interface CacheDictionary {
@@ -14,8 +14,6 @@ export interface CacheData {
 }
 
 export class InstantConfigCacheStorage {
-	static CACHE_RESET_EVENT = Symbol('INSTANT_CONFIG_CACHE_RESET_EVENT');
-
 	private static instance: InstantConfigCacheStorage;
 
 	static make(): InstantConfigCacheStorage {
@@ -36,7 +34,7 @@ export class InstantConfigCacheStorage {
 	resetCache(): void {
 		this.sessionCookie.readSessionId();
 		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
-		eventService.emit(InstantConfigCacheStorage.CACHE_RESET_EVENT);
+		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 	}
 
 	get(id: string): CacheData {
@@ -47,7 +45,11 @@ export class InstantConfigCacheStorage {
 		this.cacheStorage[data.name] = data;
 
 		if (data.withCookie) {
-			this.synchronizeCookie();
+			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, ({ gdprConsent }) => {
+				if (gdprConsent) {
+					this.synchronizeCookie();
+				}
+			});
 		}
 	}
 

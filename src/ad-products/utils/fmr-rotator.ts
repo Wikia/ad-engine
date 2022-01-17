@@ -1,12 +1,5 @@
-import {
-	AdSlot,
-	context,
-	events,
-	eventService,
-	scrollListener,
-	slotService,
-	utils,
-} from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { AdSlot, context, scrollListener, slotService, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../templates/uap';
 
 export class FmrRotator {
@@ -36,36 +29,60 @@ export class FmrRotator {
 	}
 
 	private initializeStandardRotation(): void {
-		eventService.on(events.AD_SLOT_CREATED, (slot: AdSlot) => {
-			if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
-				if (
-					universalAdPackage.isFanTakeoverLoaded() ||
-					context.get('state.provider') === 'prebidium'
-				) {
-					slot.once(AdSlot.STATUS_SUCCESS, () => {
-						this.swapRecirculation(false);
-					});
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot }) => {
+				if (slot.getSlotName().substring(0, this.fmrPrefix.length) === this.fmrPrefix) {
+					if (
+						universalAdPackage.isFanTakeoverLoaded() ||
+						context.get('state.provider') === 'prebidium'
+					) {
+						communicationService.onSlotEvent(
+							AdSlot.STATUS_SUCCESS,
+							() => {
+								this.swapRecirculation(false);
+							},
+							slot.getSlotName(),
+							true,
+						);
 
-					return;
+						return;
+					}
+
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						() => {
+							this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
+
+							communicationService.onSlotEvent(
+								AdSlot.SLOT_VIEWED_EVENT,
+								() => {
+									const customDelays = context.get('options.rotatorDelay');
+									setTimeout(() => {
+										this.hideSlot();
+									}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
+								},
+								slot.getSlotName(),
+								true,
+							);
+						},
+						slot.getSlotName(),
+						true,
+					);
+
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_COLLAPSE,
+						() => {
+							this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
+							this.scheduleNextSlotPush();
+						},
+						slot.getSlotName(),
+						true,
+					);
 				}
-
-				slot.once(AdSlot.STATUS_SUCCESS, () => {
-					this.slotStatusChanged(AdSlot.STATUS_SUCCESS);
-
-					slot.once(AdSlot.SLOT_VIEWED_EVENT, () => {
-						const customDelays = context.get('options.rotatorDelay');
-						setTimeout(() => {
-							this.hideSlot();
-						}, customDelays[slot.lineItemId] || this.refreshInfo.refreshDelay);
-					});
-				});
-
-				slot.once(AdSlot.STATUS_COLLAPSE, () => {
-					this.slotStatusChanged(AdSlot.STATUS_COLLAPSE);
-					this.scheduleNextSlotPush();
-				});
-			}
-		});
+			},
+			false,
+		);
 
 		setTimeout(() => {
 			this.refreshInfo.startPosition =

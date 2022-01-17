@@ -9,6 +9,7 @@ import {
 	DiProcess,
 	distroScale,
 	durationMedia,
+	eventsRepository,
 	facebookPixel,
 	iasPublisherOptimization,
 	jwPlayerInhibitor,
@@ -16,18 +17,16 @@ import {
 	jwpSetup,
 	nativo,
 	nielsen,
-	ofType,
 	Runner,
 	silverSurferService,
 	slotDataParamsUpdater,
 	slotService,
 	stroer,
 	taxonomyService,
-	uapLoadStatus,
+	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { take } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -44,7 +43,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 			startAdEngine(inhibitors);
 		});
 
-		this.setAdStack();
 		this.trackAdEngineStatus();
 		this.trackTabId();
 
@@ -104,21 +102,17 @@ export class UcpDesktopAdsMode implements DiProcess {
 
 		adMarketplace.initialize();
 
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe(({ isLoaded }) => {
-			const incontentPlayer = slotService.get('incontent_player');
-			if (!isLoaded && incontentPlayer) {
-				slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-				distroScale.call();
-			}
-		});
+		communicationService.on(
+			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+			({ isLoaded }: UapLoadStatus) => {
+				const incontentPlayer = slotService.get('incontent_player');
+				if (!isLoaded && incontentPlayer) {
+					slotDataParamsUpdater.updateOnCreate(incontentPlayer);
+					distroScale.call();
+				}
+			},
+		);
 
 		return inhibitors;
-	}
-
-	private setAdStack(): void {
-		context.push('state.adStack', { id: 'hivi_leaderboard' });
-		context.push('state.adStack', { id: 'top_leaderboard' });
-		context.push('state.adStack', { id: 'top_boxad' });
-		context.push('state.adStack', { id: 'invisible_high_impact_2' });
 	}
 }

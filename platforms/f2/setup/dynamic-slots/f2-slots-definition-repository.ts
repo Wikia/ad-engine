@@ -1,14 +1,9 @@
-import { context, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import { SlotSetupDefinition } from '@platforms/shared';
+import { context, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../setup-f2';
 import { F2State } from '../../utils/f2-state';
 import { F2_STATE } from '../../utils/f2-state-binder';
-
-export interface SlotSetupDefinition {
-	slotCreatorConfig: SlotCreatorConfig;
-	slotCreatorWrapperConfig?: SlotCreatorWrapperConfig;
-	activator?: () => void;
-}
 
 @Injectable()
 export class F2SlotsDefinitionRepository {
@@ -58,7 +53,7 @@ export class F2SlotsDefinitionRepository {
 				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.feed-section__ad',
+					anchorSelector: '.feed-section__ad,.feed-layout__right-rail',
 					insertMethod: 'prepend',
 					classList: ['hide'],
 				},
@@ -142,7 +137,7 @@ export class F2SlotsDefinitionRepository {
 				slotCreatorWrapperConfig,
 				slotCreatorConfig: {
 					slotName,
-					anchorSelector: '.search-box-bottom-wrapper',
+					anchorSelector: '.search-box-bottom-wrapper,.wds-global-footer',
 					insertMethod: 'before',
 					classList: ['hide'],
 				},

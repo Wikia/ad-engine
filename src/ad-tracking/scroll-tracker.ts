@@ -1,4 +1,5 @@
-import { context, events, eventService, ScrollSpeedCalculator, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, ScrollSpeedCalculator, utils } from '@ad-engine/core';
 
 interface SpeedMeasurement {
 	time: number;
@@ -32,9 +33,13 @@ export class ScrollTracker {
 		if (this.isEnabled()) {
 			this.addTouchStartListener();
 
-			eventService.on(events.BEFORE_PAGE_CHANGE_EVENT, () => {
-				this.finishScrollSpeedTracking();
-			});
+			communicationService.on(
+				eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
+				() => {
+					this.finishScrollSpeedTracking();
+				},
+				false,
+			);
 		}
 	}
 
@@ -53,7 +58,6 @@ export class ScrollTracker {
 						distance: this.distance,
 					};
 
-					eventService.emit(events.SCROLL_TRACKING_TIME_CHANGED, time, this.scrollY);
 					this.prevScrollY = this.scrollY;
 
 					return measurement;

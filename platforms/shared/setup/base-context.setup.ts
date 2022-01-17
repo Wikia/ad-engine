@@ -3,10 +3,10 @@ import {
 	context,
 	Dictionary,
 	DiProcess,
+	eventsRepository,
 	InstantConfigService,
 	setupNpaContext,
 	setupRdpContext,
-	uapLoadStatus,
 	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
@@ -53,12 +53,10 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icPrebidium')) {
 			context.set('state.provider', 'prebidium');
-			communicationService.dispatch(
-				uapLoadStatus({
-					isLoaded: false,
-					adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
-				}),
-			);
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				isLoaded: false,
+				adProduct: universalAdPackage.DEFAULT_UAP_TYPE,
+			});
 		}
 	}
 
@@ -71,7 +69,6 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
-		context.set('options.hiviLeaderboard', this.instantConfig.get('icHiViLeaderboardSlot'));
 		context.set('options.newBfaaTemplate', this.instantConfig.get('icUAPNewBFAATemplate'));
 		context.set(
 			'options.uapExtendedSrcTargeting',
@@ -154,6 +151,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
+		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 	}
 

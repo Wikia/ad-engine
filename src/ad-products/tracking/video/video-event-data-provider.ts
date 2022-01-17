@@ -1,10 +1,10 @@
 import { AdSlot, context, slotService, utils, VideoData, VideoEventData } from '@ad-engine/core';
 
-export default {
+export class VideoEventDataProvider {
 	/**
 	 * Prepares data object for video events tracking
 	 */
-	getEventData(videoData: VideoData): VideoEventData {
+	static getEventData(videoData: VideoData): VideoEventData {
 		const now: Date = new Date();
 		const slot: AdSlot = slotService.get(videoData.position);
 
@@ -35,5 +35,5 @@ export default {
 			video_id: videoData.video_id || '',
 			wsi: slot.targeting.wsi || '',
 		};
-	},
-};
+	}
+}

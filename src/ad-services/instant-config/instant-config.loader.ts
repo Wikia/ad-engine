@@ -31,7 +31,7 @@ class InstantConfigLoader {
 				resolve(fallbackConfig);
 				utils.logger(logGroup, 'errored');
 			});
-			request.onreadystatechange = function () {
+			request.onreadystatechange = function (): void {
 				if (this.readyState === 4) {
 					if (this.status === 200) {
 						utils.logger(logGroup, 'has response', this.response);

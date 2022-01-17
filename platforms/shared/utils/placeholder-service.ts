@@ -1,21 +1,23 @@
 import {
-	adSlotEvent,
 	communicationService,
+	eventsRepository,
 	ofType,
 	slotService,
-	uapLoadStatus,
+	UapLoadStatus,
 } from '@wikia/ad-engine';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { MessageBoxService } from './collapsed-messages/message-box-service';
 import { PlaceholderServiceHelper } from './placeholder-service-helper';
 
 export class PlaceholderService {
 	private isUapLoaded: boolean;
+	private placeholderHelper: PlaceholderServiceHelper;
 
 	constructor(
-		private placeholderHelper: PlaceholderServiceHelper,
-		private messageBoxService: MessageBoxService,
-	) {}
+		private messageBoxService: MessageBoxService = null,
+	) {
+		this.placeholderHelper = new PlaceholderServiceHelper();
+	}
 
 	init(): void {
 		this.registerUapChecker();
@@ -25,7 +27,7 @@ export class PlaceholderService {
 	private start(): void {
 		communicationService.action$
 			.pipe(
-				ofType(adSlotEvent),
+				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 				filter((action) => this.placeholderHelper.isLoadingOrCollapsed(action)),
 			)
 			.subscribe((action) => {
@@ -37,22 +39,25 @@ export class PlaceholderService {
 
 				const adLabelParent = adSlot.getConfigProperty('placeholder')?.adLabelParent;
 
-				if (
-					this.placeholderHelper.shouldDisplayPlaceholder(action['event'], action['payload'][1])
-				) {
+				this.placeholderHelper.stopLoading(action.event, placeholder);
+
+				if (this.placeholderHelper.shouldKeepPlaceholder(action.event, action.payload?.adType)) {
 					this.placeholderHelper.displayPlaceholder(placeholder);
 					return;
 				}
 
-				this.placeholderHelper.stopLoading(action['event'], placeholder);
-
-				if (this.placeholderHelper.statusesToCollapse.includes(action['event'])) {
+				if (this.placeholderHelper.statusToHide === action.payload?.adType) {
+					this.placeholderHelper.hidePlaceholder(placeholder);
+				} else if (this.placeholderHelper.statusesToCollapse.includes(action.event)) {
 					if (this.isUapLoaded) {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
 						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
-						if (this.messageBoxService.shouldAddMessageBox(action['event'], placeholder)) {
-							this.messageBoxService.addMessageBox(placeholder, adSlot);
+						if (
+							this.messageBoxService &&
+							this.messageBoxService.shouldAddMessageBox(action.event, placeholder)
+						) {
+							this.messageBoxService.addMessageBox(adSlot);
 						}
 					}
 				}
@@ -60,7 +65,7 @@ export class PlaceholderService {
 	}
 
 	private registerUapChecker(): void {
-		communicationService.action$.pipe(ofType(uapLoadStatus), take(1)).subscribe((action) => {
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
 			this.isUapLoaded = action.isLoaded;
 		});
 	}

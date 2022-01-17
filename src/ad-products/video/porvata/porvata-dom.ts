@@ -34,7 +34,7 @@ export class PorvataDom {
 		return this.videoElement;
 	}
 
-	setAttribute(key: string, value: string) {
+	setAttribute(key: string, value: string): void {
 		this.playerContainer.setAttribute(key, value);
 	}
 

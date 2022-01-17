@@ -12,14 +12,12 @@
 	},
 	"dependencies": {
 		"@babel/runtime-corejs2": "^7.3.1",
-		"@iabtcf/stub": "1.3.1",
 		"@wikia/dependency-injection": "2.2.2",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
 		"design-system": "git+https://github.com/Wikia/design-system.git#22.0.0",
-		"eventemitter3": "^3.0.1",
 		"js-cookie": "^2.2.0",
 		"lodash": "4.17.21",
 		"query-string": "^6.8.0",
@@ -30,9 +28,9 @@
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
-		"@babel/cli": "^7.0.0",
-		"@babel/core": "^7.0.0",
-		"@babel/plugin-transform-runtime": "^7.0.0",
+		"@babel/cli": "7.16.0",
+		"@babel/core": "7.16.5",
+		"@babel/plugin-transform-runtime": "7.16.5",
 		"@types/chai": "4.1.7",
 		"@types/doubleclick-gpt": "2019041801.0.2",
 		"@types/js-cookie": "2.2.1",
@@ -42,43 +40,35 @@
 		"@types/sinon": "7.0.7",
 		"allure-commandline": "2.7.0",
 		"awesome-typescript-loader": "5.2.1",
-		"babel-loader": "^8.0.0",
+		"babel-loader": "8.2.3",
 		"babel-plugin-lodash": "^3.3.2",
 		"chai": "^4.1.2",
 		"concat": "1.0.3",
 		"deepmerge": "2.2.1",
-		"express": "^4.16.2",
+		"express": "4.17.2",
 		"husky": "1.1.4",
 		"js-md5": "0.7.3",
 		"jsdom": "11.11.0",
 		"jsdom-global": "^3.0.2",
 		"json-loader": "0.5.7",
 		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
-		"lint-staged": "8.0.5",
+		"lint-staged": "12.1.4",
 		"mini-css-extract-plugin": "0.4.0",
 		"mocha": "4.1.0",
 		"mocha-jsdom": "^1.1.0",
-		"mocha-junit-reporter": "^1.15.0",
+		"mocha-junit-reporter": "2.0.2",
 		"mocha-webpack": "2.0.0-beta.0",
-		"node-sass": "4.13.1",
+		"node-sass": "7.0.1",
 		"nyc": "15.1.0",
 		"portfinder": "1.0.20",
 		"prettier": "1.19.1",
-		"rollup": "1.10.1",
-		"rollup-plugin-commonjs": "9.3.4",
-		"rollup-plugin-json": "4.0.0",
-		"rollup-plugin-node-resolve": "4.2.3",
-		"rollup-plugin-postcss": "4.0.0",
-		"rollup-plugin-sourcemaps": "0.4.2",
-		"rollup-plugin-typescript2": "0.21.0",
-		"rollup-plugin-uglify": "6.0.2",
 		"sass-loader": "^6.0.6",
 		"selenium-standalone": "6.16.0",
 		"sinon": "4.1.4",
 		"string-replace-webpack-plugin": "0.1.3",
 		"ts-node": "8.3.0",
 		"tsconfig-paths": "3.8.0",
-		"tscpaths": "github:wikia/tscpaths.git#release",
+		"tscpaths": "github:wikia/tscpaths#release",
 		"tslib": "1.10.0",
 		"tslint": "5.12.1",
 		"tslint-ban-snippets": "2.1.0",
@@ -100,13 +90,9 @@
 		".babelrc",
 		"package.json",
 		"webpack.config.js",
-		"rollup.config.js",
 		"tslint.json",
 		"tslint.app.json"
 	],
-	"main": "dist/index.es5.js",
-	"module": "dist/index.es5.js",
-	"types": "dist/types/index.d.ts",
 	"nyc": {
 		"report-dir": "./spec/build/",
 		"reporter": [
@@ -116,7 +102,6 @@
 	"scripts": {
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js -d",
 		"prebuild": "rm -rf dist",
-		"build": "rollup -c rollup.config.js",
 		"build:platforms": "webpack --config webpack.platforms.js -p",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "tslint --project . && npm run rules:lint",
@@ -124,7 +109,6 @@
 		"lintf:errors": "tslint --project . --fix --quiet && npm run rules:lintf",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"format": "npm run prettier && npm run lintf",
-		"prepare": "echo '🍷 Building Wikia/ad-engine' && npm run build --production",
 		"preversion": "./maintenance/preversion.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
@@ -140,21 +124,12 @@
 		}
 	},
 	"lint-staged": {
-		"linters": {
-			"*.ts": [
-				"prettier --write",
-				"tslint --project . --fix",
-				"git add"
-			],
-			"*.{js,json,css,scss,html}": [
-				"prettier --write",
-				"git add"
-			]
-		},
-		"ignore": [
-			"**/dist/**/*",
-			"maintenance/tslint-rules/tests/**/*",
-			"platforms/*/fallback-config.js"
+		"*.ts": [
+			"prettier --write",
+			"tslint --project . --fix"
+		],
+		"*.{js,json,css,scss,html}": [
+			"prettier --write"
 		]
 	}
 }

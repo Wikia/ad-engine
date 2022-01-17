@@ -1,4 +1,4 @@
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot, context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { MessageBoxService } from '../../../../../platforms/shared';
@@ -67,31 +67,78 @@ describe('Message Box Service', () => {
 		});
 	});
 
-	describe('Test if message box indexes are changed correctly', () => {
-		const placeholderMock: HTMLElement = document.createElement('div');
+	describe('Test if message box indexes are changed correctly (Sailthru enabled)', () => {
+		context.set('services.sailthru.enabled', true);
+		const parentElementMock: HTMLElement = document.createElement('div');
+		parentElementMock.classList.add(AdSlot.AD_SLOT_PLACEHOLDER_CLASS);
+		const elementMock: HTMLElement = document.createElement('div');
+		parentElementMock.append(elementMock);
+
 		const adSlotMock: AdSlot = new AdSlot({ id: 'top_leaderboard' });
-		const messageBoxService: MessageBoxService = new MessageBoxService();
+		adSlotMock.element = elementMock;
+		const messageBoxService = new MessageBoxService();
 
 		it('index changes to 1 - when Register box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(0);
-			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			messageBoxService.addMessageBox(adSlotMock);
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(1);
 		});
 
 		it('index changes to 2 - when Fan Lab box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(1);
-			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			messageBoxService.addMessageBox(adSlotMock);
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
 		});
 
-		it('index changes to 3 - when Newsletter box is added', () => {
+		it('index changes to 3 - when Newsletter-Form box is added', () => {
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
-			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			messageBoxService.addMessageBox(adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
+		});
+
+		it('index changes to 4 - when Newsletter-Link box is added', () => {
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
+			messageBoxService.addMessageBox(adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(4);
+		});
+
+		it('index equals 4 - no more message boxes can be added', () => {
+			messageBoxService.addMessageBox(adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(4);
+		});
+	});
+
+	describe('Test if message box indexes are changed correctly (Sailthru disabled)', () => {
+		context.set('services.sailthru.enabled', false);
+		const parentElementMock: HTMLElement = document.createElement('div');
+		parentElementMock.classList.add(AdSlot.AD_SLOT_PLACEHOLDER_CLASS);
+		const elementMock: HTMLElement = document.createElement('div');
+		parentElementMock.append(elementMock);
+
+		const adSlotMock: AdSlot = new AdSlot({ id: 'top_leaderboard' });
+		adSlotMock.element = elementMock;
+		const messageBoxService = new MessageBoxService();
+
+		it('index changes to 1 - when Register box is added', () => {
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(0);
+			messageBoxService.addMessageBox(adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(1);
+		});
+
+		it('index changes to 2 - when Fan Lab box is added', () => {
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(1);
+			messageBoxService.addMessageBox(adSlotMock);
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
+		});
+
+		it('index changes to 3 - when Newsletter-Link box is added', () => {
+			expect(messageBoxService.getCurrentTypeIndex()).to.equal(2);
+			messageBoxService.addMessageBox(adSlotMock);
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
 		});
 
 		it('index equals 3 - no more message boxes can be added', () => {
-			messageBoxService.addMessageBox(placeholderMock, adSlotMock);
+			messageBoxService.addMessageBox(adSlotMock);
 			expect(messageBoxService.getCurrentTypeIndex()).to.equal(3);
 		});
 	});

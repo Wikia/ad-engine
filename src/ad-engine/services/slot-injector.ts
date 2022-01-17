@@ -1,7 +1,7 @@
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, SlotConfig } from '../models';
 import { logger } from '../utils';
 import { context } from './context-service';
-import { events, eventService } from './events';
 import { SlotCreator, SlotCreatorConfig } from './slot-creator';
 import { slotService } from './slot-service';
 
@@ -11,21 +11,25 @@ class SlotInjector {
 	private slotCreator = new SlotCreator();
 
 	constructor() {
-		eventService.on(events.AD_SLOT_CREATED, (adSlot: AdSlot) => {
-			const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
+		communicationService.on(
+			eventsRepository.AD_ENGINE_SLOT_ADDED,
+			({ slot: adSlot }) => {
+				const slotsToPush: string[] = adSlot.getSlotsToPushAfterCreated();
 
-			slotsToPush.forEach((slotName: string) => {
-				const slotElement = this.inject(slotName, true);
+				slotsToPush.forEach((slotName: string) => {
+					const slotElement = this.inject(slotName, true);
 
-				if (slotElement) {
-					slotService.pushSlot(slotElement);
-				} else {
-					logger(logGroup, `Could not push slot ${slotName}.`);
-				}
-			});
-		});
+					if (slotElement) {
+						slotService.pushSlot(slotElement);
+					} else {
+						logger(logGroup, `Could not push slot ${slotName}.`);
+					}
+				});
+			},
+			false,
+		);
 
-		eventService.on(AdSlot.SLOT_RENDERED_EVENT, (adSlot: AdSlot) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
 			const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
 
 			slotsToInject.forEach((slotName: string) => {
@@ -39,10 +43,10 @@ class SlotInjector {
 		const config: SlotConfig = context.get(`slots.${slotName}`);
 		const slotConfig: SlotCreatorConfig = {
 			slotName,
-			anchorSelector: config.insertBeforeSelector || config.parentContainerSelector,
-			insertMethod: config.insertBeforeSelector
-				? 'before'
-				: config.insertIntoParentContainerMethod || 'append',
+			anchorSelector: config.parentContainerSelector || config.insertBeforeSelector,
+			insertMethod: config.parentContainerSelector
+				? config.insertIntoParentContainerMethod || 'append'
+				: 'before',
 			placeholderConfig: config.placeholder,
 		};
 

@@ -1,4 +1,5 @@
-import { context, DiProcess, events, eventService } from '@wikia/ad-engine';
+import { slotsContext } from '@platforms/shared';
+import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -7,38 +8,12 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 
 	execute(): void {
 		const slots = {
-			hivi_leaderboard: {
-				aboveTheFold: true,
-				firstCall: true,
-				adProduct: 'hivi_leaderboard',
-				slotNameSuffix: '',
-				group: 'LB',
-				parentContainerSelector: '.top-leaderboard',
-				options: {},
-				slotShortcut: 'v',
-				sizes: [
-					{
-						viewportSize: [1024, 0],
-						sizes: [
-							[728, 90],
-							[970, 250],
-						],
-					},
-				],
-				defaultSizes: [[728, 90]],
-				defaultTemplates: [],
-				targeting: {
-					loc: 'top',
-					rv: 1,
-				},
-			},
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
 				adProduct: 'top_leaderboard',
 				slotNameSuffix: '',
 				group: 'LB',
-				parentContainerSelector: '.top-leaderboard',
 				options: {},
 				slotShortcut: 'l',
 				sizes: [
@@ -63,6 +38,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				defaultTemplates: [],
 				targeting: {
 					loc: 'top',
+					pos: ['top_leaderboard', 'hivi_leaderboard'],
 					rv: 1,
 				},
 				placeholder: {
@@ -75,8 +51,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				slotNameSuffix: '',
 				group: 'MR',
-				parentContainerSelector: '.main-page-tag-rcs, #rail-boxad-wrapper',
-				insertIntoParentContainerMethod: 'prepend',
 				options: {},
 				slotShortcut: 'm',
 				defaultSizes: [
@@ -94,7 +68,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
 				group: 'HiVi',
-				parentContainerSelector: '#WikiaAdInContentPlaceHolder',
 				insertBeforeSelector: '#incontent_boxad_1',
 				recirculationElementSelector: '#recirculation-rail',
 				options: {},
@@ -106,18 +79,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 					[300, 250],
 					[300, 600],
 				],
-				repeat: {
-					additionalClasses: 'hide',
-					index: 1,
-					limit: 20,
-					slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
-					updateProperties: {
-						adProduct: '{slotConfig.slotName}',
-						'targeting.rv': '{slotConfig.repeat.index}',
-					},
-					insertBelowScrollPosition: false,
-					disablePushOnScroll: true,
-				},
 				targeting: {
 					loc: 'hivi',
 					rv: 1,
@@ -127,7 +88,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',
-				parentContainerSelector: '.bottom-leaderboard',
 				options: {},
 				slotShortcut: 'b',
 				sizes: [
@@ -164,8 +124,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				audio: false,
 				isVideo: true,
 				insertBeforeSelector: '#mw-content-text > div > h2',
-				insertBelowFirstViewport: true,
-				disabled: true,
 				slotNameSuffix: '',
 				group: 'HiVi',
 				slotShortcut: 'i',
@@ -178,10 +136,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				disabled: true,
 				slotNameSuffix: '',
 				group: 'PF',
-				insertBeforeSelector: '.page',
 				options: {},
 				targeting: {
 					loc: 'footer',
@@ -194,7 +150,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'invisible_high_impact_2',
 				slotNameSuffix: '',
 				group: 'PX',
-				insertBeforeSelector: '.page',
 				options: {},
 				outOfPage: true,
 				targeting: {
@@ -206,7 +161,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'featured',
 				slotNameSuffix: '',
 				group: 'VIDEO',
-				lowerSlotName: 'featured',
 				videoSizes: [[640, 480]],
 				targeting: {
 					rv: 1,
@@ -217,24 +171,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 		};
 
-		eventService.on(events.AD_SLOT_CREATED, (slot) => {
-			context.onChange(`slots.${slot.getSlotName()}.audio`, () => this.setupSlotParameters(slot));
-			context.onChange(`slots.${slot.getSlotName()}.videoDepth`, () =>
-				this.setupSlotParameters(slot),
-			);
-		});
+		slotsContext.setupSlotVideoContext();
+
 		context.set('slots', slots);
 		context.set('slots.featured.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
 		context.set('slots.incontent_player.videoAdUnit', context.get('vast.adUnitIdWithDbName'));
-	}
-
-	private setupSlotParameters(slot): void {
-		const audioSuffix = slot.config.audio === true ? '-audio' : '';
-		const clickToPlaySuffix =
-			slot.config.autoplay === true || slot.config.videoDepth > 1 ? '' : '-ctp';
-
-		slot.setConfigProperty('slotNameSuffix', clickToPlaySuffix || audioSuffix || '');
-		slot.setConfigProperty('targeting.audio', audioSuffix ? 'yes' : 'no');
-		slot.setConfigProperty('targeting.ctp', clickToPlaySuffix ? 'yes' : 'no');
 	}
 }
