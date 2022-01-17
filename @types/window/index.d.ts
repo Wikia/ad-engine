@@ -1,5 +1,3 @@
-///<reference path="../../node_modules/@alugha/ima/typings/ima.d.ts"/>
-
 interface Window {
 	ga?: (
 		command: string,
