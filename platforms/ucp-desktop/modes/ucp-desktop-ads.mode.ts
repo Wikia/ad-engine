@@ -15,6 +15,7 @@ import {
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	liverampPixel,
 	nativo,
 	nielsen,
 	Runner,
@@ -88,6 +89,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
+		liverampPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();

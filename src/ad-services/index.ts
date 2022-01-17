@@ -5,6 +5,7 @@ export * from './confiant';
 export * from './duration-media';
 export * from './distro-scale';
 export * from './facebook-pixel';
+export * from './liveramp-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './nativo';
