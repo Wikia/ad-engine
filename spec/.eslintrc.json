@@ -1,0 +1,7 @@
+{
+	"extends": ["./../.eslintrc.json"],
+	"rules": {
+		"no-console": "error"
+		//    "no-unused-expressions": "error"
+	}
+}

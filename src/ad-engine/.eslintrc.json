@@ -1,0 +1,18 @@
+{
+	"extends": ["../.eslintrc.json"],
+	"rules": {
+		"no-restricted-imports": [
+			"error",
+			{
+				"paths": [
+					"/ad-bidders",
+					"/ad-engine",
+					"@ad-engine/core",
+					"@ad-engine/services",
+					"/ad-products",
+					"/ad-services"
+				]
+			}
+		]
+	}
+}
