@@ -1,3 +1,5 @@
+import { Dictionary } from '@ad-engine/core';
+
 import { UniversalStorage } from './universal-storage';
 
 class LocalCache {
@@ -9,7 +11,7 @@ class LocalCache {
 
 	// @TODO: Should not return boolean if item expired
 	get(key: string): boolean | unknown {
-		const cacheItem: Record<string, unknown> = this.storage.getItem<Record<string, unknown>>(key);
+		const cacheItem: Dictionary = this.storage.getItem<Dictionary>(key);
 
 		if (cacheItem) {
 			// Check if item has expired
@@ -25,7 +27,7 @@ class LocalCache {
 		return false;
 	}
 
-	set(key: string, value: string | Record<string, unknown>, expires?: number): boolean {
+	set(key: string, value: string | Dictionary, expires?: number): boolean {
 		if (!this.isStorable(value)) {
 			return false;
 		}
@@ -52,7 +54,7 @@ class LocalCache {
 		return isStorableType && isNotNaN;
 	}
 
-	private isExpired(cacheItem: Record<string, unknown>): boolean {
+	private isExpired(cacheItem: Dictionary): boolean {
 		if (cacheItem.expires) {
 			return cacheItem.expires && Date.now() >= cacheItem.expires;
 		}

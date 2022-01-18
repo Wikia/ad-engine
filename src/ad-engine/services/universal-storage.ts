@@ -37,7 +37,7 @@ export class UniversalStorage {
 		}
 	}
 
-	setItem(key: string, input: Record<string, unknown> | string): boolean {
+	setItem(key: string, input: Dictionary | string): boolean {
 		const value: string = input instanceof Object ? JSON.stringify(input) : input;
 		try {
 			this.provider.setItem(key, value);

@@ -1,4 +1,6 @@
 import * as Cookies from 'js-cookie';
+import { Dictionary } from '@ad-engine/core';
+
 import { context } from './context-service';
 import { CookieStorageAdapter } from './cookie-storage-adapter';
 import { UniversalStorage } from './universal-storage';
@@ -42,7 +44,7 @@ export class SessionCookie {
 		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 
-	setItem(key: string, input: Record<string, unknown> | string): void {
+	setItem(key: string, input: Dictionary | string): void {
 		this.storage.setItem(`${this.prefix}_${key}`, input);
 	}
 
