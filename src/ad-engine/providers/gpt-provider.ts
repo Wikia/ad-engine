@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
-// tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import { btfBlockerService, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
@@ -18,7 +17,7 @@ export const GAMOrigins: string[] = [
 ];
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
-	return function (...args: any): void {
+	return function(...args: any): void {
 		setTimeout(() => {
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});

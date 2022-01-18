@@ -1,4 +1,3 @@
-// tslint:disable-next-line:import-blacklist
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
 import { filter, shareReplay, skip, take } from 'rxjs/operators';
@@ -106,7 +105,6 @@ export class CommunicationService {
 					// * https://medium.com/@zalmoxis/redux-devtools-without-redux-or-how-to-have-a-predictable-state-with-any-architecture-61c5f5a7716f
 					// * https://github.com/zalmoxisus/mobx-remotedev/blob/master/src/monitorActions.js
 					// * https://github.com/zalmoxisus/remotedev-utils/blob/98ca5b35d8dd042d35dbcdd2653e5e168a2022f5/src/index.js#L75-L78
-					// tslint:disable-next-line:function-constructor no-function-constructor-with-string-args
 					const action = new Function(`return ${message.payload}`)();
 
 					this.dispatch(action);

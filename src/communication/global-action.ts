@@ -1,4 +1,3 @@
-// tslint:disable-next-line:import-blacklist
 import {
 	Action,
 	action,
@@ -34,7 +33,6 @@ export function globalAction<T extends string>(type: T): ActionCreator<T, () => 
  */
 export function globalAction<T extends string>(
 	type: T,
-	// tslint:disable-next-line:unified-signatures
 	config: { _as: 'empty' },
 ): ActionCreator<T, () => Typed<unknown, T>>;
 /**
