@@ -24,25 +24,25 @@ interface PrebidAdUnit {
 
 interface PrebidNativeMediaType {
 	image: {
-		required: boolean,
-		sizes: Array<number>
+		required: boolean;
+		sizes: number[];
 	};
 	title: {
-		required: boolean,
-		len: number
+		required: boolean;
+		len: number;
 	};
 	sponsoredBy: {
-		required: boolean,
+		required: boolean;
 	};
 	clickUrl: {
-		required: boolean,
+		required: boolean;
 	};
 	body: {
-		required: boolean,
+		required: boolean;
 	};
 	icon: {
-		required: boolean,
-		sizes: Array<number>
+		required: boolean;
+		sizes: number[];
 	};
 }
 
