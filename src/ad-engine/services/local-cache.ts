@@ -2,6 +2,11 @@ import { Dictionary } from '@ad-engine/core';
 
 import { UniversalStorage } from './universal-storage';
 
+interface CacheItem<T = any> {
+	expires?: number;
+	data: T;
+}
+
 class LocalCache {
 	private storage = new UniversalStorage();
 
@@ -11,7 +16,7 @@ class LocalCache {
 
 	// @TODO: Should not return boolean if item expired
 	get(key: string): boolean | unknown {
-		const cacheItem: Dictionary<unknown> = this.storage.getItem<Dictionary<unknown>>(key);
+		const cacheItem: CacheItem<unknown> = this.storage.getItem(key);
 
 		if (cacheItem) {
 			// Check if item has expired
@@ -32,7 +37,7 @@ class LocalCache {
 			return false;
 		}
 
-		const cacheItem: Dictionary<unknown> = {
+		const cacheItem: CacheItem<unknown> = {
 			data: value,
 			expires: expires ? expires * 1000 + Date.now() : undefined,
 		};
@@ -54,7 +59,7 @@ class LocalCache {
 		return isStorableType && isNotNaN;
 	}
 
-	private isExpired(cacheItem: Dictionary<unknown>): boolean {
+	private isExpired(cacheItem: CacheItem<unknown>): boolean {
 		if (cacheItem.expires) {
 			return cacheItem.expires && Date.now() >= cacheItem.expires;
 		}
