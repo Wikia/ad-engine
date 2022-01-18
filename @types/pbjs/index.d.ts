@@ -1,5 +1,3 @@
-import { PrebidAdapter } from '../../src/ad-bidders/prebid/prebid-adapter';
-
 interface PrebidMarkBidRequest {
 	adId: string;
 	adUnitCode?: string;
@@ -146,7 +144,7 @@ interface Pbjs {
 
 	aliasBidder(bidderCode: string, alias: string): void;
 
-	registerBidAdapter(bidderAdapter: PrebidAdapter, bidderCode: string): void;
+	registerBidAdapter(bidderAdapter: () => void, bidderCode: string): void;
 
 	markWinningBidAsUsed(markBidRequest: PrebidMarkBidRequest): void;
 
