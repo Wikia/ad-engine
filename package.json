@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "100.0.0",
+	"version": "100.0.1",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -24,7 +24,7 @@
 		"rxjs": "6.5.5",
 		"ts-action": "^11.0.0",
 		"ts-action-operators": "^9.1.1",
-		"uuid": "7.0.3"
+		"uuid": "8.3.2"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
