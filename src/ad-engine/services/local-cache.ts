@@ -11,7 +11,7 @@ class LocalCache {
 
 	// @TODO: Should not return boolean if item expired
 	get(key: string): boolean | unknown {
-		const cacheItem: Dictionary = this.storage.getItem<Dictionary>(key);
+		const cacheItem: Dictionary<unknown> = this.storage.getItem<Dictionary<unknown>>(key);
 
 		if (cacheItem) {
 			// Check if item has expired
@@ -27,12 +27,12 @@ class LocalCache {
 		return false;
 	}
 
-	set(key: string, value: string | Dictionary, expires?: number): boolean {
+	set(key: string, value: string | Dictionary<unknown>, expires?: number): boolean {
 		if (!this.isStorable(value)) {
 			return false;
 		}
 
-		const cacheItem: Record<string, unknown> = {
+		const cacheItem: Dictionary<unknown> = {
 			data: value,
 			expires: expires ? expires * 1000 + Date.now() : undefined,
 		};
@@ -54,7 +54,7 @@ class LocalCache {
 		return isStorableType && isNotNaN;
 	}
 
-	private isExpired(cacheItem: Dictionary): boolean {
+	private isExpired(cacheItem: Dictionary<unknown>): boolean {
 		if (cacheItem.expires) {
 			return cacheItem.expires && Date.now() >= cacheItem.expires;
 		}
