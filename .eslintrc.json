@@ -4,15 +4,7 @@
 		"es2021": true
 	},
 	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-	"ignorePatterns": [
-		"dist/",
-		"lib/",
-		"node_modules/",
-		"jspm_packages/",
-		"src/**/*.js",
-		"moat-video-tracker-script.ts",
-		"facebook-pixel-script.ts"
-	],
+	"ignorePatterns": ["dist/", "lib/", "node_modules/", "jspm_packages/", "src/**/*.js"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 13,

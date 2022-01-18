@@ -1,7 +1,10 @@
-/* tslint:disable */
+/* eslint-disable */
 // Fixes for MOAT script incompatibility
+// @ts-ignore This is external code from a partner (MOAT)
 let eventMapping = {};
+// @ts-ignore This is external code from a partner (MOAT)
 let listeners = [];
+// @ts-ignore This is external code from a partner (MOAT)
 let moatapi = {};
 
 // MOAT CODE START
