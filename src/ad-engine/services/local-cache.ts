@@ -1,6 +1,5 @@
-import { Dictionary } from '@ad-engine/core';
-
 import { UniversalStorage } from './universal-storage';
+import { Dictionary } from '../models';
 
 interface CacheItem<T = any> {
 	expires?: number;
