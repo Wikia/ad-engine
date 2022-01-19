@@ -4,13 +4,12 @@
 		"no-restricted-imports": [
 			"error",
 			{
-				"paths": [
-					"/ad-bidders",
-					"/ad-engine",
-					"@ad-engine/core",
-					"@ad-engine/services",
-					"/ad-products",
-					"/ad-services"
+				"paths": ["@ad-engine/core", "@ad-engine/services"],
+				"patterns": [
+					"**/ad-bidders/**",
+					"**/ad-engine/**",
+					"**/ad-products/**",
+					"**/ad-services/**"
 				]
 			}
 		]

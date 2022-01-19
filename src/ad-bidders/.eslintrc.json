@@ -3,7 +3,10 @@
 	"rules": {
 		"no-restricted-imports": [
 			"error",
-			{ "paths": ["/ad-bidders", "/ad-products", "/ad-services", "@ad-engine/services"] }
+			{
+				"paths": ["@ad-engine/services"],
+				"patterns": ["**/ad-bidders/**", "**/ad-products/**", "**/ad-services/**"]
+			}
 		]
 	}
 }

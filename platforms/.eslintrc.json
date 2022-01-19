@@ -1,6 +1,11 @@
 {
 	"extends": ["../.eslintrc.json"],
 	"rules": {
-		"no-restricted-imports": ["error", { "paths": ["/src"] }]
+		"no-restricted-imports": [
+			"error",
+			{
+				"patterns": ["**/src/**"]
+			}
+		]
 	}
 }
