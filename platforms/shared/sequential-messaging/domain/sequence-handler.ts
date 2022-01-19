@@ -1,7 +1,7 @@
 import { InstantConfigServiceInterface } from '@wikia/ad-engine';
 import { IcSequentialMessaging } from './data-structures/ic-sequential-messaging';
 import { SequentialMessagingCookie } from './data-structures/sequential-messaging-cookie';
-import { DetectorFactory } from './detector-factory';
+import { DetectorFactory } from './factories/detector-factory';
 import { CookieJarInterface } from './interfaces/cookie-jar-interface';
 
 export class SequenceHandler {
@@ -15,11 +15,29 @@ export class SequenceHandler {
 			'icSequentialMessaging',
 		);
 
+		if (!this.validateInstantConfigInput(icSequentialMessaging)) {
+			return;
+		}
+
 		const sequenceDetector = new DetectorFactory(icSequentialMessaging).makeSequenceDetector();
 
 		if (sequenceDetector.isAdSequential(lineItemId.toString())) {
 			this.storeCookie(lineItemId, icSequentialMessaging);
 		}
+	}
+
+	private validateInstantConfigInput(icSequentialMessaging: IcSequentialMessaging): boolean {
+		if (typeof icSequentialMessaging !== 'object') {
+			return false;
+		}
+
+		for (const val of Object.values(icSequentialMessaging)) {
+			if (typeof val !== 'object') return false;
+			if (!('length' in val)) return false;
+			if (typeof val.length !== 'number') return false;
+		}
+
+		return true;
 	}
 
 	private storeCookie(lineItemId: string, icbmLineItems: IcSequentialMessaging): void {

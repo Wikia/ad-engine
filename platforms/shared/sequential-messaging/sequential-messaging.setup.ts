@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
-import { SequenceHandler } from './sequence-handler';
+import { SequenceHandler } from './domain/sequence-handler';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
