@@ -1,9 +1,6 @@
 {
-	"extends": ["./../.eslintrc.json"],
+	"extends": ["../.eslintrc.json"],
 	"rules": {
-		"no-restricted-imports": [
-			"error",
-			{ "paths": ["@wikia/ad-engine", "@platforms/shared", "@platforms/shared-sports"] }
-		]
+		"no-restricted-imports": ["error", { "paths": ["/src"] }]
 	}
 }
