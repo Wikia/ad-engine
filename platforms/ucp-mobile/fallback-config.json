@@ -2280,7 +2280,8 @@
                 "fandommobile"
             ],
             "regions": [
-                "DE"
+                "DE",
+                "PL"
             ],
             "sampling": 50.0,
             "value": true
@@ -2291,7 +2292,14 @@
             "apps": [
                 "fandommobile"
             ],
-            "value": false
+            "devices": [
+                "smartphone",
+                "tablet"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": true
         }
     ],
     "icLABradorGamKeyValues": [
