@@ -1,29 +1,8 @@
-import { InstantConfigServiceInterface } from '@wikia/ad-services';
-import { InstantConfigValue } from '@wikia/ad-services/instant-config/instant-config.models';
 import { expect } from 'chai';
-import { assert, createStubInstance, SinonStubbedInstance } from 'sinon';
-import {
-	CookieJar,
-	SequenceHandler,
-} from '../../../../../platforms/shared/sequential-messaging/sequence-handler';
-
-class InstantConfigServiceSpy implements InstantConfigServiceInterface {
-	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T {
-		return undefined;
-	}
-}
-
-class CookieJarSpy implements CookieJar {
-	set(string, IcSequentialMessaging): void {}
-}
-
-export function makeInstantConfigServiceSpy(): SinonStubbedInstance<InstantConfigServiceSpy> {
-	return createStubInstance(InstantConfigServiceSpy);
-}
-
-export function makeCookieJarSpy(): SinonStubbedInstance<CookieJarSpy> {
-	return createStubInstance(CookieJarSpy);
-}
+import { assert } from 'sinon';
+import { SequenceHandler } from '../../../../platforms/shared/sequential-messaging/sequence-handler';
+import { makeCookieJarSpy } from './test_doubles/cookie-jar.spy';
+import { makeInstantConfigServiceSpy } from './test_doubles/instant-config-service.spy';
 
 describe('Sequence Handler', () => {
 	it('Handle a proper Sequence', () => {

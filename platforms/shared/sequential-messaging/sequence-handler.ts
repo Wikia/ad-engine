@@ -2,13 +2,13 @@ import { InstantConfigServiceInterface } from '@wikia/ad-engine';
 import { IcSequentialMessaging } from './data-structures/ic-sequential-messaging';
 import { SequentialMessagingCookie } from './data-structures/sequential-messaging-cookie';
 import { DetectorFactory } from './detector-factory';
-
-export interface CookieJar {
-	set(name: string, value: SequentialMessagingCookie): void;
-}
+import { CookieJarInterface } from './interfaces/cookie-jar-interface';
 
 export class SequenceHandler {
-	constructor(private instantConfig: InstantConfigServiceInterface, private cookieJar: CookieJar) {}
+	constructor(
+		private instantConfig: InstantConfigServiceInterface,
+		private cookieJar: CookieJarInterface,
+	) {}
 
 	handleItem(lineItemId: string): void {
 		const icSequentialMessaging: IcSequentialMessaging = this.instantConfig.get(

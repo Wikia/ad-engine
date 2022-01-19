@@ -3,7 +3,7 @@ import { DetectorFactory } from '../../../../platforms/shared/sequential-messagi
 import { SequenceDetector } from '../../../../platforms/shared/sequential-messaging/domain/sequence-detector';
 
 describe('Detector Factory', () => {
-	it('Produce Sequence Detector - proper params', () => {
+	it('Create SequenceDetector', () => {
 		const icSequentialMessaging = {
 			5854346762: {
 				length: 4,
@@ -18,12 +18,8 @@ describe('Detector Factory', () => {
 		expect(sd.isAdSequential('0')).to.be.false;
 	});
 
-	it('Produce Sequence Detector - undefined input', () => {
-		const icSequentialMessaging = {
-			5854346762: {
-				length: 4,
-			},
-		};
+	it('Create SequenceDetector when instantConfig var is not set', () => {
+		const icSequentialMessaging = undefined;
 
 		const df = new DetectorFactory(icSequentialMessaging);
 		const sd = df.makeSequenceDetector();
