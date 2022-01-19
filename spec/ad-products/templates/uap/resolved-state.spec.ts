@@ -44,12 +44,10 @@ const stubs = {
 				resolvedStateAspectRatio: 456,
 				image1: {
 					element: {
-						addEventListener: () => {
-							// noop for tests
-						},
-						src: 'test/image.jpg'
-					}
-				}
+						addEventListener: () => {},
+						src: 'test/image.jpg',
+					},
+				},
 			};
 		},
 		isResolvedState(): boolean {

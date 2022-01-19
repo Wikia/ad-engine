@@ -1,5 +1,5 @@
 import * as Cookies from 'js-cookie';
-import { Dictionary } from '@ad-engine/core';
+import { Dictionary } from '../models';
 
 import { context } from './context-service';
 import { CookieStorageAdapter } from './cookie-storage-adapter';

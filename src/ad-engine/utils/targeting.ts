@@ -26,7 +26,7 @@ class Targeting {
 		return `_${wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	getTargetingBundles(bundles: Dictionary<Dictionary<string | string[]>>): string | string[] {
+	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string | string[] {
 		try {
 			const selectedBundles = [];
 
@@ -44,7 +44,7 @@ class Targeting {
 		return [];
 	}
 
-	private matchesTargetingBundle(bundle: Dictionary<string | string[]>): boolean {
+	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {
 		return !Object.keys(bundle).some((key) => {
 			const acceptedValues = context.get(`targeting.${key}`);
 

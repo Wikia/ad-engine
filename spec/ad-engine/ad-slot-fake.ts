@@ -90,9 +90,7 @@ export const adSlotFake = {
 			dataset,
 			offsetTop,
 			classList: {
-				contains: () => {
-					// noop for tests
-				},
+				contains: () => {},
 			},
 			offsetHeight: 300,
 			getBoundingClientRect: () => ({
