@@ -44,7 +44,7 @@ class Targeting {
 		return [];
 	}
 
-	private matchesTargetingBundle(bundle: Dictionary<string | string[]>): boolean {
+	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {
 		return !Object.keys(bundle).some((key) => {
 			const acceptedValues = context.get(`targeting.${key}`);
 
