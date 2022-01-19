@@ -7,7 +7,11 @@ import { InstantConfigOverrider } from './instant-config.overrider';
 
 const logGroup = 'instant-config-service';
 
-export class InstantConfigService {
+export interface InstantConfigServiceInterface {
+	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T;
+}
+
+export class InstantConfigService implements InstantConfigServiceInterface {
 	private static instancePromise: Promise<InstantConfigService>;
 
 	static async init(globals: Dictionary = {}): Promise<InstantConfigService> {
