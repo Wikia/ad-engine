@@ -28,17 +28,19 @@ export function makeCookieJarSpy(): SinonStubbedInstance<CookieJarSpy> {
 describe('Sequence Handler', () => {
 	it('Handle a proper Sequence', () => {
 		const cookieJar = makeCookieJarSpy();
-		const icbm = makeInstantConfigServiceSpy();
-		icbm.get.returns({
+		const instantConfig = makeInstantConfigServiceSpy();
+		instantConfig.get.returns({
 			1234567890: {
 				length: 4,
 			},
 		});
 
-		const sh = new SequenceHandler(icbm, cookieJar);
+		const sh = new SequenceHandler(instantConfig, cookieJar);
 		sh.handleItem('1234567890');
+		sh.handleItem('111');
 
 		expect(sh).to.be.instanceOf(SequenceHandler);
+		assert.calledOnce(cookieJar.set);
 		assert.calledWith(cookieJar.set, 'sequential_messaging', {
 			1234567890: {
 				length: 4,

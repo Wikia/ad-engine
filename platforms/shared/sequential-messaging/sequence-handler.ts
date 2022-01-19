@@ -11,12 +11,14 @@ export class SequenceHandler {
 	constructor(private instantConfig: InstantConfigServiceInterface, private cookieJar: CookieJar) {}
 
 	handleItem(lineItemId: string): void {
-		const icbmLineItems: IcSequentialMessaging = this.instantConfig.get('icSequentialMessaging');
+		const icSequentialMessaging: IcSequentialMessaging = this.instantConfig.get(
+			'icSequentialMessaging',
+		);
 
-		const sequenceDetector = new DetectorFactory(icbmLineItems).makeSequenceDetector();
+		const sequenceDetector = new DetectorFactory(icSequentialMessaging).makeSequenceDetector();
 
 		if (sequenceDetector.isAdSequential(lineItemId.toString())) {
-			this.storeCookie(lineItemId, icbmLineItems);
+			this.storeCookie(lineItemId, icSequentialMessaging);
 		}
 	}
 
