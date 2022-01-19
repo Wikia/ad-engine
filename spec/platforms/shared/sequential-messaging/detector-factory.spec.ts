@@ -2,16 +2,6 @@ import { expect } from 'chai';
 import { DetectorFactory } from '../../../../platforms/shared/sequential-messaging/detector-factory';
 import { SequenceDetector } from '../../../../platforms/shared/sequential-messaging/domain/sequence-detector';
 
-// class InstantConfigServiceSpy implements InstantConfigServiceInterface {
-// 	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T {
-// 		return undefined;
-// 	}
-// }
-//
-// export function makeInstantConfigServiceSpy(): SinonStubbedInstance<InstantConfigServiceSpy> {
-// 	return createStubInstance(InstantConfigServiceSpy);
-// }
-
 describe('Detector Factory', () => {
 	it('Produce Sequence Detector - proper params', () => {
 		const icSequentialMessaging = {

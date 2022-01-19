@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
-import { DetectorFactory } from './detector-factory';
+import { SequenceHandler } from './sequence-handler';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
@@ -27,24 +27,13 @@ export class SequentialMessagingSetup implements DiProcess {
 				take(1),
 			)
 			.subscribe((action) => {
-				// TODO extract and test this
-
 				const lineItemId = action.slot.lineItemId;
 				if (lineItemId == null) {
 					return;
 				}
 
-				const icbmLineItems: IcSequentialMessaging = this.instantConfig.get(
-					'icSequentialMessaging',
-				);
-				// TODO validate ICBM input
-				const sequenceDetector = new DetectorFactory(icbmLineItems).makeSequenceDetector();
-
-				if (sequenceDetector.isAdSequential(lineItemId.toString())) {
-					Cookies.set('sequential_messaging', {
-						lineItemId: { length: icbmLineItems[lineItemId].length },
-					});
-				}
+				const sequenceHandler = new SequenceHandler(this.instantConfig, Cookies);
+				sequenceHandler.handleItem(lineItemId);
 			});
 	}
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
+import { IcSequentialMessaging } from './data-structures/ic-sequential-messaging';
 import { SequenceDetector } from './domain/sequence-detector';
 
 @Injectable()
