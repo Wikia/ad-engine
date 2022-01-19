@@ -1,7 +1,7 @@
 {
 	"extends": ["./../.eslintrc.json"],
 	"rules": {
-		"no-console": "error"
-		//    "no-unused-expressions": "error"
+		"no-console": "error",
+		"@typescript-eslint/no-empty-function": "off"
 	}
 }

@@ -18,22 +18,16 @@ describe('IAS video tracker', () => {
 
 	function createPlayer(): PorvataPlayer {
 		return {
-			getAdsManager: () => {
-				// noop for tests
-			},
+			getAdsManager: () => {},
 			dom: {
-				getVideoContainer: () => {
-					// noop for tests
-				},
+				getVideoContainer: () => {},
 			},
 		} as PorvataPlayer;
 	}
 
 	beforeEach(() => {
 		window.googleImaVansAdapter = {
-			init: () => {
-				// noop for tests
-			},
+			init: () => {},
 		};
 
 		sandbox.stub(window.googleImaVansAdapter, 'init');
