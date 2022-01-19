@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "100.0.0",
+	"version": "100.1.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -20,11 +20,10 @@
 		"design-system": "git+https://github.com/Wikia/design-system.git#22.0.0",
 		"js-cookie": "^2.2.0",
 		"lodash": "4.17.21",
-		"query-string": "^6.8.0",
 		"rxjs": "6.5.5",
 		"ts-action": "^11.0.0",
 		"ts-action-operators": "^9.1.1",
-		"uuid": "7.0.3"
+		"uuid": "8.3.2"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
@@ -47,7 +46,6 @@
 		"deepmerge": "2.2.1",
 		"express": "4.17.2",
 		"husky": "1.1.4",
-		"instant-mocha": "1.4.1",
 		"js-md5": "0.7.3",
 		"jsdom": "11.11.0",
 		"jsdom-global": "^3.0.2",
@@ -55,7 +53,7 @@
 		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
 		"lint-staged": "12.1.4",
 		"mini-css-extract-plugin": "0.4.0",
-		"mocha": "^8.0.0",
+		"mocha": "4.1.0",
 		"mocha-jsdom": "^1.1.0",
 		"mocha-junit-reporter": "2.0.2",
 		"mocha-webpack": "2.0.0-beta.0",
@@ -132,8 +130,5 @@
 		"*.{js,json,css,scss,html}": [
 			"prettier --write"
 		]
-	},
-	"mocha": {
-		"timeout": "10000"
 	}
 }
