@@ -1,3 +1,3 @@
 export interface IcSequentialMessaging {
-	[lineItemId: number]: { length: number };
+	[lineItemId: string]: { length: number | string };
 }

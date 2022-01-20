@@ -3,12 +3,16 @@ import { SequenceDetector } from '../../../../../platforms/shared/sequential-mes
 
 describe('Sequence Detector', () => {
 	it('Is Ad Sequential Check', () => {
-		const line_item_id = '1234567890';
+		const icSequentialMessaging = {
+			'5854346762': {
+				length: '4',
+			},
+		};
 
-		const sd = new SequenceDetector([line_item_id]);
+		const sd = new SequenceDetector(icSequentialMessaging);
 
-		expect(sd).to.not.be.null;
-		expect(sd.isAdSequential(line_item_id)).to.be.true;
+		expect(sd).to.be.instanceof(SequenceDetector);
+		expect(sd.isAdSequential('5854346762')).to.be.true;
 		expect(sd.isAdSequential('0')).to.be.false;
 	});
 });
