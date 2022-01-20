@@ -73,6 +73,10 @@ export class F2SlotsContextSetup implements DiProcess {
 					uap: 'none',
 					rv: 1,
 				},
+				placeholder: {
+					createLabel: false,
+					adLabelParent: '.top-ads-container',
+				},
 			},
 			top_boxad: {
 				group: 'MR',
