@@ -1,8 +1,8 @@
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
-import { UserSequentialMessageStateStore } from '../../../../../platforms/shared/sequential-messaging/domain/interfaces/user-sequential-message-state-store';
+import { UserSequentialMessageStateStoreInterface } from '../../../../../platforms/shared/sequential-messaging/domain/interfaces/user-sequential-message-state-store.interface';
 
-class UserStateStoreSpy implements UserSequentialMessageStateStore {
-	set(string, userSequentialMessageState): void {}
+class UserStateStoreSpy implements UserSequentialMessageStateStoreInterface {
+	set(userSequentialMessageState): void {}
 }
 
 export function makeUserStateStoreSpy(): SinonStubbedInstance<UserStateStoreSpy> {

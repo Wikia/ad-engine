@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
 import { SequenceHandler } from './domain/sequence-handler';
 import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
+import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
@@ -35,7 +36,7 @@ export class SequentialMessagingSetup implements DiProcess {
 
 				const sequenceHandler = new SequenceHandler(
 					new SequentialMessagingConfigStore(this.instantConfig),
-					Cookies,
+					new UserSequentialMessageStateStore(Cookies),
 				);
 				sequenceHandler.handleItem(lineItemId);
 			});

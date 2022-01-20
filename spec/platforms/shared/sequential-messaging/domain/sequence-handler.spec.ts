@@ -20,7 +20,7 @@ describe('Sequence Handler', () => {
 
 		expect(sh).to.be.instanceOf(SequenceHandler);
 		assert.calledOnce(userStateStore.set);
-		assert.calledWith(userStateStore.set, 'sequential_messaging', {
+		assert.calledWith(userStateStore.set, {
 			1234567890: {
 				length: '4',
 			},
