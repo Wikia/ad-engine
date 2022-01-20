@@ -20,7 +20,11 @@ export class SequentialMessagingConfigStore implements SequentialMessagingConfig
 	private validateSequentialMessagingConfigInput(
 		sequentialMessagingConfig: SequentialMessagingConfig,
 	): boolean {
-		if (typeof sequentialMessagingConfig !== 'object') {
+		if (
+			typeof sequentialMessagingConfig !== 'object' ||
+			sequentialMessagingConfig instanceof Array ||
+			Object.keys(sequentialMessagingConfig).length === 0
+		) {
 			return false;
 		}
 
