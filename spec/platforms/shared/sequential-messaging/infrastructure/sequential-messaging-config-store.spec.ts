@@ -6,7 +6,6 @@ describe('Sequence Messaging Config Store', () => {
 	it('Handle a proper Sequence', () => {
 		it('Handle invalid config', () => {
 			const smConfigStore_invalidValueType = makeInstantConfigServiceSpy();
-			// @ts-ignore
 			smConfigStore_invalidValueType.get.returns([]);
 			const smConfigStore_emptyObject = makeInstantConfigServiceSpy();
 			smConfigStore_emptyObject.get.returns({});
@@ -15,7 +14,6 @@ describe('Sequence Messaging Config Store', () => {
 				1234567890: 'invalid value',
 			});
 			const smConfigStore_invalidLengthValue = makeInstantConfigServiceSpy();
-			// @ts-ignore
 			smConfigStore_invalidLengthValue.get.returns({ 1234567890: { length: [4] } });
 
 			const smcs1 = new SequentialMessagingConfigStore(smConfigStore_invalidValueType);
