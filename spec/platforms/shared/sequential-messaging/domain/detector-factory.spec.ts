@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { DetectorFactory } from '../../../../../platforms/shared/sequential-messaging/domain/factories/detector-factory';
+import { SequenceDetectorFactory } from '../../../../../platforms/shared/sequential-messaging/domain/factories/sequence-detector-factory.service';
 import { SequenceDetector } from '../../../../../platforms/shared/sequential-messaging/domain/sequence-detector';
 
-describe('Detector Factory', () => {
+describe('Sequence Detector Factory', () => {
 	it('Create SequenceDetector', () => {
 		const icSequentialMessaging = {
 			5854346762: {
@@ -10,7 +10,7 @@ describe('Detector Factory', () => {
 			},
 		};
 
-		const df = new DetectorFactory(icSequentialMessaging);
+		const df = new SequenceDetectorFactory(icSequentialMessaging);
 		const sd = df.makeSequenceDetector();
 
 		expect(sd).to.be.instanceof(SequenceDetector);

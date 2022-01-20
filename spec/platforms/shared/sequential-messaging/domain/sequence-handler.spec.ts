@@ -10,7 +10,7 @@ describe('Sequence Handler', () => {
 		const instantConfig = makeInstantConfigServiceSpy();
 		instantConfig.get.returns({
 			1234567890: {
-				length: 4,
+				length: '4',
 			},
 		});
 
@@ -22,7 +22,7 @@ describe('Sequence Handler', () => {
 		assert.calledOnce(cookieJar.set);
 		assert.calledWith(cookieJar.set, 'sequential_messaging', {
 			1234567890: {
-				length: 4,
+				length: '4',
 			},
 		});
 	});
@@ -53,7 +53,7 @@ describe('Sequence Handler', () => {
 		const instantConfig_invalidLengthValue = makeInstantConfigServiceSpy();
 		instantConfig_invalidLengthValue.get.returns({
 			1234567890: {
-				length: '4',
+				length: 4,
 			},
 		});
 

@@ -3,7 +3,7 @@ import { IcSequentialMessaging } from '../data-structures/ic-sequential-messagin
 import { SequenceDetector } from '../sequence-detector';
 
 @Injectable()
-export class DetectorFactory {
+export class SequenceDetectorFactory {
 	constructor(private icSequentialMessaging: IcSequentialMessaging) {}
 
 	makeSequenceDetector(): SequenceDetector {
