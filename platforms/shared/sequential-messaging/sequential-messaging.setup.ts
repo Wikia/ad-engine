@@ -9,6 +9,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
 import { SequenceHandler } from './domain/sequence-handler';
+import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
@@ -32,7 +33,10 @@ export class SequentialMessagingSetup implements DiProcess {
 					return;
 				}
 
-				const sequenceHandler = new SequenceHandler(this.instantConfig, Cookies);
+				const sequenceHandler = new SequenceHandler(
+					new SequentialMessagingConfigStore(this.instantConfig),
+					Cookies,
+				);
 				sequenceHandler.handleItem(lineItemId);
 			});
 	}

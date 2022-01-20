@@ -1,24 +1,19 @@
-import { SequentialMessagingConfigStoreInterface } from '@wikia/ad-engine';
 import { SequentialMessagingConfig } from './data-structures/sequential-messaging-config';
 import { UserSequentialMessageState } from './data-structures/user-sequential-message-state';
+import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential-messaging-config-store.interface';
 import { UserSequentialMessageStateStore } from './interfaces/user-sequential-message-state-store';
 import { SequenceDetector } from './sequence-detector';
 
 export class SequenceHandler {
 	constructor(
-		// TODO rename this to SequentialMessagingConfigStore, make an adapter, use ICBM underneath
-		private instantConfig: SequentialMessagingConfigStoreInterface,
+		private sequentialMessagingConfigStore: SequentialMessagingConfigStoreInterface,
 		private stateStore: UserSequentialMessageStateStore,
 	) {}
 
 	handleItem(sequentialAdId: string): void {
-		// TODO replace instantConfig with an adapter SequentialMessagingConfigStore
-		const sequentialMessagingConfig: SequentialMessagingConfig = this.instantConfig.get(
-			'sequentialMessagingConfig',
-		);
+		const sequentialMessagingConfig: SequentialMessagingConfig = this.sequentialMessagingConfigStore.get();
 
-		// TODO move this validation to the SequentialMessagingConfigStore
-		if (!this.validateSequentialMessagingConfigInput(sequentialMessagingConfig)) {
+		if (sequentialMessagingConfig == null) {
 			return;
 		}
 
@@ -28,22 +23,6 @@ export class SequenceHandler {
 		if (sequenceDetector.isAdSequential(sequentialAdId.toString())) {
 			this.storeState(sequentialAdId, sequentialMessagingConfig);
 		}
-	}
-
-	private validateSequentialMessagingConfigInput(
-		sequentialMessagingConfig: SequentialMessagingConfig,
-	): boolean {
-		if (typeof sequentialMessagingConfig !== 'object') {
-			return false;
-		}
-
-		for (const val of Object.values(sequentialMessagingConfig)) {
-			if (typeof val !== 'object') return false;
-			if (!('length' in val)) return false;
-			if (typeof val.length !== 'string' && typeof val.length !== 'number') return false;
-		}
-
-		return true;
 	}
 
 	private storeState(
