@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { assert } from 'sinon';
 import { SequenceHandler } from '../../../../../platforms/shared/sequential-messaging/domain/sequence-handler';
-import { makeSequentialMessagingConfigStoreSpy } from '../test_doubles/instant-config-service.spy';
+import { makeSequentialMessagingConfigStoreSpy } from '../test_doubles/sequential-messaging-config-store.spy';
 import { makeUserStateStoreSpy } from '../test_doubles/state-store.spy';
 
 describe('Sequence Handler', () => {
