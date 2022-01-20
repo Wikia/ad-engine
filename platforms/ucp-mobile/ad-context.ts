@@ -74,7 +74,7 @@ export const basicContext = {
 		adMarketplace: {
 			enabled: false,
 			insertMethod: 'after',
-			insertSelector: '.mobile-search-modal__content > form',
+			insertSelector: '.mobile-search-modal__content form',
 		},
 		confiant: {
 			enabled: false,
