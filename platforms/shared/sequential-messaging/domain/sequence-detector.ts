@@ -1,15 +1,15 @@
-import { IcSequentialMessaging } from './data-structures/ic-sequential-messaging';
+import { SequentialMessagingConfig } from './data-structures/sequential-messaging-config';
 
 export class SequenceDetector {
-	sequentialLineItemsIds: string[] = [];
+	sequentialAdsIds: string[] = [];
 
-	constructor(icSequentialMessaging: IcSequentialMessaging) {
-		for (const item of Object.keys(icSequentialMessaging)) {
-			this.sequentialLineItemsIds.push(item);
+	constructor(sequentialMessagingConfig: SequentialMessagingConfig) {
+		for (const item of Object.keys(sequentialMessagingConfig)) {
+			this.sequentialAdsIds.push(item);
 		}
 	}
 
-	isAdSequential(line_item_id: string): boolean {
-		return this.sequentialLineItemsIds.includes(line_item_id);
+	isAdSequential(sequentialAdId: string): boolean {
+		return this.sequentialAdsIds.includes(sequentialAdId);
 	}
 }

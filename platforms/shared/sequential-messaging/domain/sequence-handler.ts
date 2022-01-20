@@ -1,37 +1,43 @@
-import { InstantConfigServiceInterface } from '@wikia/ad-engine';
-import { IcSequentialMessaging } from './data-structures/ic-sequential-messaging';
-import { SequentialMessagingCookie } from './data-structures/sequential-messaging-cookie';
-import { CookieJarInterface } from './interfaces/cookie-jar-interface';
+import { SequentialMessagingConfigStoreInterface } from '@wikia/ad-engine';
+import { SequentialMessagingConfig } from './data-structures/sequential-messaging-config';
+import { UserSequentialMessageState } from './data-structures/user-sequential-message-state';
+import { UserSequentialMessageStateStore } from './interfaces/user-sequential-message-state-store';
 import { SequenceDetector } from './sequence-detector';
 
 export class SequenceHandler {
 	constructor(
-		private instantConfig: InstantConfigServiceInterface,
-		private cookieJar: CookieJarInterface,
+		// TODO rename this to SequentialMessagingConfigStore, make an adapter, use ICBM underneath
+		private instantConfig: SequentialMessagingConfigStoreInterface,
+		private stateStore: UserSequentialMessageStateStore,
 	) {}
 
-	handleItem(lineItemId: string): void {
-		const icSequentialMessaging: IcSequentialMessaging = this.instantConfig.get(
-			'icSequentialMessaging',
+	handleItem(sequentialAdId: string): void {
+		// TODO replace instantConfig with an adapter SequentialMessagingConfigStore
+		const sequentialMessagingConfig: SequentialMessagingConfig = this.instantConfig.get(
+			'sequentialMessagingConfig',
 		);
 
-		if (!this.validateInstantConfigInput(icSequentialMessaging)) {
+		// TODO move this validation to the SequentialMessagingConfigStore
+		if (!this.validateSequentialMessagingConfigInput(sequentialMessagingConfig)) {
 			return;
 		}
 
-		const sequenceDetector = new SequenceDetector(icSequentialMessaging);
+		// TODO this can probably be replace with a method
+		const sequenceDetector = new SequenceDetector(sequentialMessagingConfig);
 
-		if (sequenceDetector.isAdSequential(lineItemId.toString())) {
-			this.storeCookie(lineItemId, icSequentialMessaging);
+		if (sequenceDetector.isAdSequential(sequentialAdId.toString())) {
+			this.storeState(sequentialAdId, sequentialMessagingConfig);
 		}
 	}
 
-	private validateInstantConfigInput(icSequentialMessaging: IcSequentialMessaging): boolean {
-		if (typeof icSequentialMessaging !== 'object') {
+	private validateSequentialMessagingConfigInput(
+		sequentialMessagingConfig: SequentialMessagingConfig,
+	): boolean {
+		if (typeof sequentialMessagingConfig !== 'object') {
 			return false;
 		}
 
-		for (const val of Object.values(icSequentialMessaging)) {
+		for (const val of Object.values(sequentialMessagingConfig)) {
 			if (typeof val !== 'object') return false;
 			if (!('length' in val)) return false;
 			if (typeof val.length !== 'string' && typeof val.length !== 'number') return false;
@@ -40,10 +46,13 @@ export class SequenceHandler {
 		return true;
 	}
 
-	private storeCookie(lineItemId: string, icbmLineItems: IcSequentialMessaging): void {
-		const cookie: SequentialMessagingCookie = {};
-		cookie[lineItemId] = { length: icbmLineItems[lineItemId].length as number };
+	private storeState(
+		sequentialAdId: string,
+		sequentialMessagingConfig: SequentialMessagingConfig,
+	): void {
+		const state: UserSequentialMessageState = {};
+		state[sequentialAdId] = { length: sequentialMessagingConfig[sequentialAdId].length as number };
 
-		this.cookieJar.set('sequential_messaging', cookie);
+		this.stateStore.set('sequential_messaging', state);
 	}
 }
