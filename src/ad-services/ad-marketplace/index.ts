@@ -118,6 +118,7 @@ class AdMarketplace {
 			return;
 		}
 
+		utils.logger(logGroup, 'Injecting the instant search ad');
 		wrapper.innerHTML = this.getInstantSearchAdsContent(
 			response.paid_suggestions[0].brand_domain || response.paid_suggestions[0].term,
 			response.paid_suggestions[0].click_url,
@@ -132,6 +133,7 @@ class AdMarketplace {
 			const dropdownElement = document.querySelector(dropdownSelector);
 
 			if (!dropdownElement) {
+				utils.logger(logGroup, `No dropdownElement found, selector: ${dropdownSelector}`);
 				return null;
 			}
 
@@ -145,6 +147,8 @@ class AdMarketplace {
 			}
 
 			this.instantSearchSuggestionElement = suggestionElement;
+		} else {
+			utils.logger(logGroup, 'No instantSearchSuggestionElement');
 		}
 
 		return this.instantSearchSuggestionElement;
