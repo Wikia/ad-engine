@@ -17,6 +17,10 @@ export class SequentialMessagingSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute(): Promise<void> {
+		this.detectSequentialAd();
+	}
+
+	private detectSequentialAd(): void {
 		interface Action {
 			event: string;
 			slot: { lineItemId: string };
