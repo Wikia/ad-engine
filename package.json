@@ -17,7 +17,6 @@
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
-		"design-system": "git+https://github.com/Wikia/design-system.git#22.0.0",
 		"js-cookie": "^2.2.0",
 		"lodash": "4.17.21",
 		"rxjs": "6.5.5",
