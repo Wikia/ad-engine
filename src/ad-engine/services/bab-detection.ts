@@ -32,7 +32,14 @@ class BabDetection {
 		return isBabDetected;
 	}
 
-	private checkBlocking(enabled = () => {}, disabled = () => {}): Promise<boolean> {
+	private checkBlocking(
+		enabled = () => {
+			// feel free to overwrite
+		},
+		disabled = () => {
+			// feel free to overwrite
+		}
+	): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!isBabInitialised) {
 				if (typeof BlockAdBlock === 'undefined') {

@@ -1,4 +1,3 @@
-// tslint:disable-next-line:import-blacklist
 import {
 	action as tsAction,
 	ActionCreator,
@@ -14,15 +13,14 @@ import {
  * Those actions will NOT be dispatched using PostQuecast.
  * Those actions will NOT be listened on PostQuecast stream.
  */
-export function action<T extends string>(type: T): ActionCreator<T, () => Typed<{}, T>>;
+export function action<T extends string>(type: T): ActionCreator<T, () => Typed<unknown, T>>;
 /**
  * @see action
  */
 export function action<T extends string>(
 	type: T,
-	// tslint:disable-next-line:unified-signatures
 	config: { _as: 'empty' },
-): ActionCreator<T, () => Typed<{}, T>>;
+): ActionCreator<T, () => Typed<unknown, T>>;
 /**
  * @see action
  */

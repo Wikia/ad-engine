@@ -35,7 +35,7 @@ export class JWPlayerHandler {
 	private adRequest(): Observable<unknown> {
 		return this.stream$.pipe(
 			ofJwpEvent('adRequest'),
-			tap(({ state }) => {
+			tap(() => {
 				this.helper.emitVideoAdRequest();
 			}),
 		);

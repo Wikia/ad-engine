@@ -30,7 +30,6 @@ class Ats {
 			const performance = window.performance;
 			const loadStart = performance.now();
 
-			// tslint:disable-next-line:tsl-ban-snippets
 			return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
 				const loadEnd = performance.now();
 				const loadTime = loadEnd - loadStart;

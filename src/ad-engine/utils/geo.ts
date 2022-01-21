@@ -34,7 +34,9 @@ function setUpGeoData(): GeoData {
 		context.set('geo.region', geoData.region);
 		context.set('geo.country', geoData.country);
 		context.set('geo.continent', geoData.continent);
-	} catch (e) {}
+	} catch (e) {
+		throw new Error('Invalid JSON in the cookie');
+	}
 
 	return context.get('geo') || {};
 }

@@ -117,11 +117,9 @@ export class Wikia extends PrebidAdapter {
 				const [width, height] = bid.sizes[0];
 				const cpm = this.getPrice();
 
-				// @ts-ignore
 				bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
 				bidResponse.bidderCode = bidRequest.bidderCode;
 				bidResponse.cpm = cpm;
-				// @ts-ignore
 				bidResponse.ttl = 300;
 				bidResponse.mediaType = 'banner';
 				bidResponse.width = width;

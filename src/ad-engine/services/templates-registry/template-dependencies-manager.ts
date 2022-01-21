@@ -2,6 +2,7 @@ import { Container, Injectable } from '@wikia/dependency-injection';
 import { AdSlot, Dictionary } from '../../models/';
 import { TEMPLATE } from './template-symbols';
 
+/*eslint @typescript-eslint/no-unused-vars: "off"*/
 export type TemplateDependency<T = any> = Parameters<Container['bind']>[0];
 
 @Injectable()
