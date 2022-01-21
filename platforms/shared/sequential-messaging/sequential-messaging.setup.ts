@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
-import { SequenceHandler } from './domain/sequence-handler';
+import { SequenceStartHandler } from './domain/sequence-start-handler';
 import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
 
@@ -38,7 +38,7 @@ export class SequentialMessagingSetup implements DiProcess {
 					return;
 				}
 
-				const sequenceHandler = new SequenceHandler(
+				const sequenceHandler = new SequenceStartHandler(
 					new SequentialMessagingConfigStore(this.instantConfig),
 					new UserSequentialMessageStateStore(Cookies),
 				);
