@@ -121,7 +121,7 @@ class AdMarketplace {
 		}
 
 		const configuration =
-			this.getElement(this.configuration.insertSelector) !== null
+			document.querySelector(this.configuration.insertSelector) !== null
 				? this.configuration
 				: this.fallbackConfiguration;
 		const wrapper = this.getInstantSearchAdsWrapper(configuration);
@@ -139,22 +139,12 @@ class AdMarketplace {
 		);
 	}
 
-	private getElement(selector: string) {
-		const element = document.querySelector(selector);
-
-		if (!element) {
-			return null;
-		}
-
-		return element;
-	}
-
 	private getInstantSearchAdsWrapper(
 		configuration: AdMarketplaceConfiguration,
 	): HTMLElement | null {
 		if (!this.instantSearchSuggestionElement || !this.instantSearchSuggestionElement.isConnected) {
 			const dropdownElementSelector = configuration.insertSelector;
-			const dropdownElement = this.getElement(dropdownElementSelector);
+			const dropdownElement = document.querySelector(dropdownElementSelector);
 
 			if (!dropdownElement) {
 				utils.logger(logGroup, `No dropdownElement found, selector: ${dropdownElementSelector}`);
