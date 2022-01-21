@@ -114,7 +114,9 @@ export class PorvataPlayer {
 	 * intentionally empty for now - needed only to create a stream with RxJS `fromEvent`
 	 */
 	removeEventListener(
+		/*eslint @typescript-eslint/no-unused-vars: "off"*/
 		eventName: VideoEvent,
+		/*eslint @typescript-eslint/no-unused-vars: "off"*/
 		callback: (event: google.ima.AdEvent | google.ima.AdErrorEvent) => void,
 	): void {
 		// @TODO: Implement removeEventListener <- Let's really do this!
@@ -180,7 +182,7 @@ export class PorvataPlayer {
 			this.settings.setWidth(width);
 		}
 
-		if (!!this.adsManager) {
+		if (this.adsManager) {
 			if (this.isFullscreen()) {
 				this.adsManager.resize(window.innerWidth, window.innerHeight, viewMode.FULLSCREEN);
 			} else {

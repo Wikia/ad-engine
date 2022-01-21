@@ -1,4 +1,3 @@
-/* global NOLBUNDLE */
 import { context, Dictionary, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
 
@@ -13,7 +12,7 @@ function createInstance(nielsenKey): any {
 
 	initNielsenStaticQueue();
 
-	return NOLBUNDLE.nlsQ(nielsenKey, 'nlsnInstance', nlsnConfig);
+	return window.NOLBUNDLE.nlsQ(nielsenKey, 'nlsnInstance', nlsnConfig);
 }
 
 /**

@@ -26,7 +26,7 @@ class Targeting {
 		return `_${wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string[] {
+	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string | string[] {
 		try {
 			const selectedBundles = [];
 
@@ -53,6 +53,7 @@ class Targeting {
 			}
 
 			if (Array.isArray(acceptedValues)) {
+				// @ts-ignore we check if it's an array so using .some() is OK here
 				if (!bundle[key].some((find) => acceptedValues.includes(find))) {
 					return true;
 				}

@@ -40,7 +40,6 @@ export class TemplateState<T extends string> {
 
 			if (called && !allowMulticast) {
 				throw new Error(
-					// tslint:disable-next-line:prefer-template
 					`Error thrown while attempting to transition to "${targetStateKey}" state. ` +
 						`Attempting to call transition from "${this.name}" state a second time.\n` +
 						'This may be caused by:\n' +

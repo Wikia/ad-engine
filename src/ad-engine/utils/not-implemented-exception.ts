@@ -1,5 +1,5 @@
 export class NotImplementedException extends Error {
-	// @ts-ignore
+	// @ts-ignore The parameter passed here differ based on method that threw the exception
 	private parameters: object;
 
 	/**

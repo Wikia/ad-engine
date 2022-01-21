@@ -28,6 +28,4 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 		slotsContext.addSlotSize('cdm-zone-02', additionalSizes.companionSize);
 		slotsContext.setSlotSize('cdm-zone-04', additionalSizes.bfaSize);
 	}
-
-	async onLeave(): Promise<void> {}
 }

@@ -1,5 +1,4 @@
 import { RxJsOperator } from '@ad-engine/models';
-// tslint:disable-next-line:import-blacklist
 import { Action } from '@wikia/post-quecast';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';

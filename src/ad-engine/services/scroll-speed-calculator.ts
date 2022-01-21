@@ -13,8 +13,6 @@ export class ScrollSpeedCalculator {
 
 	private sessionCookie = SessionCookie.make();
 
-	private constructor() {}
-
 	/**
 	 * Takes average scroll speed from session, default: 0
 	 */
