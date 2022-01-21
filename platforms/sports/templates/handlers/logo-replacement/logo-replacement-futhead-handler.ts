@@ -34,6 +34,4 @@ export class LogoReplacementFutheadHandler implements TemplateStateHandler {
 			}
 		}, 1000);
 	}
-
-	async onLeave(): Promise<void> {}
 }

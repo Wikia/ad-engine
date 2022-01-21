@@ -69,7 +69,7 @@ export class ViewabilityCounter {
 		this.sessionCookie.setItem('viewabilityCountData', this.counters);
 	}
 
-	getViewability(counterId: string = ''): string {
+	getViewability(counterId = ''): string {
 		let viewability = 0.5;
 
 		this.readCounters();

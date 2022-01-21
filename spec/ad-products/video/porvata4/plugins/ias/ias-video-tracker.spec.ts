@@ -7,7 +7,7 @@ import { AdSlot, context, slotService, utils } from '../../../../../../src/ad-en
 describe('IAS video tracker', () => {
 	const sandbox = sinon.createSandbox();
 
-	function createVideoSettings(iasTracking: boolean = true): PorvataSettings {
+	function createVideoSettings(iasTracking = true): PorvataSettings {
 		return new PorvataSettings({
 			iasTracking,
 			container: document.createElement('div'),
@@ -39,7 +39,9 @@ describe('IAS video tracker', () => {
 				pos: 'foo_pos',
 				loc: 'foo_loc',
 			}),
-			getConfigProperty(key: string): any {},
+			getConfigProperty(key: string): string {
+				return key;
+			},
 		} as AdSlot);
 
 		context.set('options.video.iasTracking.config', {
