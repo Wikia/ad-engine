@@ -72,17 +72,4 @@ describe('targeting', () => {
 			}),
 		).to.deep.equal([]);
 	});
-
-	it('getTargetingBundles returns empty array for wrong entry data', () => {
-		expect(
-			targeting.getTargetingBundles({
-				bundle1: {
-					// @ts-ignore
-					s1: '_project43',
-					// @ts-ignore
-					esrb: true,
-				},
-			}),
-		).to.deep.equal([]);
-	});
 });

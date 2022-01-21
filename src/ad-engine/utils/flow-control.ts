@@ -54,6 +54,7 @@ export function createWithTimeout(func: (...args: any) => any, msToTimeout = 200
 	return Promise.race([new Promise(func), timeoutReject(msToTimeout)]);
 }
 
+/*eslint @typescript-eslint/no-unused-vars: "off"*/
 type PromiseExecutor<T> = ConstructorParameters<PromiseConstructor>[0];
 export type PromiseResolve<T> = Parameters<PromiseExecutor<T>>[0];
 export type PromiseReject = Parameters<PromiseExecutor<any>>[1];

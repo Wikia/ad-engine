@@ -18,7 +18,7 @@ describe('ScrollTracker', () => {
 
 	function buildFakeElement(): Partial<HTMLElement> {
 		return {
-			addEventListener: sandbox.stub().callsFake((eventName, cb, options) => {
+			addEventListener: sandbox.stub().callsFake((eventName, cb) => {
 				cb();
 			}),
 			removeEventListener: sandbox.stub(),
