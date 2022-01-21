@@ -4,7 +4,7 @@ import {
 	context,
 	eventsRepository,
 	GdprConsentPayload,
-	utils
+	utils,
 } from '@wikia/ad-engine';
 
 const logGroup = 'tracking-opt-in-wrapper';

@@ -39,7 +39,7 @@ class Client {
 		},
 		disabled = () => {
 			// feel free to overwrite
-		}
+		},
 	): Promise<boolean> {
 		return new Promise((resolve) => {
 			if (!isBabInitialised) {
