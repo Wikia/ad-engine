@@ -40,6 +40,7 @@ const instantSearchEndpointParameters = [
 
 class AdMarketplace {
 	private configuration: AdMarketplaceConfiguration;
+	private fallbackConfiguration: AdMarketplaceConfiguration;
 	private instantSearchSuggestionElement: HTMLElement | null = null;
 
 	initialize(): Promise<void> {
@@ -54,6 +55,13 @@ class AdMarketplace {
 
 			return Promise.resolve();
 		}
+
+		// TODO: Remove with references after SITE-2038 is completed
+		this.fallbackConfiguration = {
+			enabled: true,
+			insertSelector: '.wds-global-navigation__search-suggestions.wds-dropdown__content',
+			insertMethod: 'prepend',
+		};
 
 		instantSearchEndpointParameters.push(
 			`sub1=${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
@@ -112,7 +120,11 @@ class AdMarketplace {
 			return;
 		}
 
-		const wrapper = this.getInstantSearchAdsWrapper();
+		const configuration =
+			this.getElement(this.configuration.insertSelector) !== null
+				? this.configuration
+				: this.fallbackConfiguration;
+		const wrapper = this.getInstantSearchAdsWrapper(configuration);
 
 		if (!wrapper) {
 			return;
@@ -127,22 +139,34 @@ class AdMarketplace {
 		);
 	}
 
-	private getInstantSearchAdsWrapper(): HTMLElement | null {
+	private getElement(selector: string) {
+		const element = document.querySelector(selector);
+
+		if (!element) {
+			return null;
+		}
+
+		return element;
+	}
+
+	private getInstantSearchAdsWrapper(
+		configuration: AdMarketplaceConfiguration,
+	): HTMLElement | null {
 		if (!this.instantSearchSuggestionElement || !this.instantSearchSuggestionElement.isConnected) {
-			const dropdownSelector = this.configuration.insertSelector;
-			const dropdownElement = document.querySelector(dropdownSelector);
+			const dropdownElementSelector = configuration.insertSelector;
+			const dropdownElement = this.getElement(dropdownElementSelector);
 
 			if (!dropdownElement) {
-				utils.logger(logGroup, `No dropdownElement found, selector: ${dropdownSelector}`);
+				utils.logger(logGroup, `No dropdownElement found, selector: ${dropdownElementSelector}`);
 				return null;
 			}
 
 			const suggestionElement = document.createElement('p');
 			suggestionElement.className = 'instant-suggestion';
 
-			if (this.configuration.insertMethod === 'prepend') {
+			if (configuration.insertMethod === 'prepend') {
 				dropdownElement.prepend(suggestionElement);
-			} else if (this.configuration.insertMethod === 'after') {
+			} else if (configuration.insertMethod === 'after') {
 				dropdownElement.after(suggestionElement);
 			}
 
