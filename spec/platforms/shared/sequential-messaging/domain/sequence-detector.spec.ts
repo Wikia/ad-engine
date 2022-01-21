@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { SequenceDetector } from '../../../../../platforms/shared/sequential-messaging/domain/sequence-detector';
+import { NewSequenceDetector } from '../../../../../platforms/shared/sequential-messaging/domain/services/new-sequence-detector';
 
-describe('Sequence Detector', () => {
+describe('New Sequence Detector', () => {
 	it('Is Ad Sequential Check', () => {
 		const icSequentialMessaging = {
 			'5854346762': {
@@ -9,9 +9,9 @@ describe('Sequence Detector', () => {
 			},
 		};
 
-		const sd = new SequenceDetector(icSequentialMessaging);
+		const sd = new NewSequenceDetector(icSequentialMessaging);
 
-		expect(sd).to.be.instanceof(SequenceDetector);
+		expect(sd).to.be.instanceof(NewSequenceDetector);
 		expect(sd.isAdSequential('5854346762')).to.be.true;
 		expect(sd.isAdSequential('0')).to.be.false;
 	});

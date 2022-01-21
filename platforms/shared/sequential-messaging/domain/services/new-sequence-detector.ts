@@ -1,6 +1,6 @@
-import { SequentialMessagingConfig } from './data-structures/sequential-messaging-config';
+import { SequentialMessagingConfig } from '../data-structures/sequential-messaging-config';
 
-export class SequenceDetector {
+export class NewSequenceDetector {
 	sequentialAdsIds: string[] = [];
 
 	constructor(sequentialMessagingConfig: SequentialMessagingConfig) {

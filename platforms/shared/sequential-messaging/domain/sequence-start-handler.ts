@@ -2,7 +2,7 @@ import { SequentialMessagingConfig } from './data-structures/sequential-messagin
 import { UserSequentialMessageState } from './data-structures/user-sequential-message-state';
 import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential-messaging-config-store.interface';
 import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequential-message-state-store.interface';
-import { SequenceDetector } from './sequence-detector';
+import { NewSequenceDetector } from './services/new-sequence-detector';
 
 export class SequenceStartHandler {
 	private config: SequentialMessagingConfig;
@@ -23,7 +23,7 @@ export class SequenceStartHandler {
 		if (this.config == null) {
 			return false;
 		}
-		const sequenceDetector = new SequenceDetector(this.config);
+		const sequenceDetector = new NewSequenceDetector(this.config);
 
 		return sequenceDetector.isAdSequential(sequentialAdId.toString());
 	}
