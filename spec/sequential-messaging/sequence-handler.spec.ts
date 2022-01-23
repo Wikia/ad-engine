@@ -1,22 +1,21 @@
 import {
-	AdSlot,
 	SequentialMessageConfig,
 	SequentialMessageState,
-	SequentialMessagingStateStore,
+	SequentialMessageStateStore,
 	SlotSequenceSupplier,
 	TimestampSupplier,
 } from '@wikia/sequential-messaging/model';
 import { SequenceHandler } from '@wikia/sequential-messaging/sequence-handler';
 import { assert, expect } from 'chai';
-import { createSandbox, match, SinonStubbedInstance } from 'sinon';
+import { createSandbox, match } from 'sinon';
 
 class SlotSequenceSupplierStub implements SlotSequenceSupplier {
-	get(slot: AdSlot): SequentialMessageConfig {
+	get(slot: any): SequentialMessageConfig {
 		return undefined;
 	}
 }
 
-class SequentialMessagingUserStateStoreStub implements SequentialMessagingStateStore {
+class SequentialMessagingUserStateStoreStub implements SequentialMessageStateStore {
 	get(): SequentialMessageState {
 		return undefined;
 	}
@@ -63,11 +62,7 @@ describe('Sequence Handler', () => {
 	const stateStoreStub = sandbox.createStubInstance(SequentialMessagingUserStateStoreStub);
 	const currentTimeStub = sandbox.createStubInstance(CurrentTimeSupplierStub);
 	const handler = new SequenceHandler(supplierStub, stateStoreStub, currentTimeStub);
-	const slot: AdSlot = {
-		getSlotName(): string {
-			return '';
-		},
-	};
+	const slot = {};
 
 	beforeEach(() => {
 		sandbox.reset();

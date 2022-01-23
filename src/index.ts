@@ -5,3 +5,4 @@ export * from './ad-services';
 export * from './ad-tracking';
 export * from './platforms-shared';
 export * from './communication';
+export * from './sequential-messaging';

@@ -18,15 +18,11 @@ export interface TimestampSupplier {
 	get(): number;
 }
 
-export interface AdSlot {
-	getSlotName(): string;
-}
-
 export interface SlotSequenceSupplier {
-	get(slot: AdSlot): SequentialMessageConfig;
+	get(slotSequenceDef: any): SequentialMessageConfig;
 }
 
-export interface SequentialMessagingStateStore {
+export interface SequentialMessageStateStore {
 	get(): SequentialMessageState;
 	save(state: SequentialMessageState): void;
 }

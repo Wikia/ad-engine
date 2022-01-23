@@ -2,19 +2,28 @@ import {
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	InstantConfigService,
 	ofType,
+	SequenceHandler,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
-import { SequenceHandler } from './domain/sequence-handler';
-import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
-import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
+import { CookieSequentialMessageStateStore } from './infrastructure/cookie-sequential-message-state-store';
+import { SlotSequenceInstantConfigSupplier } from './infrastructure/slot-sequence-instant-config-supplier';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
-	constructor(private instantConfig: InstantConfigService) {}
+	private sequenceHandler: SequenceHandler;
+
+	constructor(
+		slotSequenceProvider: SlotSequenceInstantConfigSupplier,
+		stateStore: CookieSequentialMessageStateStore,
+	) {
+		this.sequenceHandler = new SequenceHandler(slotSequenceProvider, stateStore, {
+			get(): number {
+				return Date.now();
+			},
+		});
+	}
 
 	async execute(): Promise<void> {
 		interface Action {
@@ -33,12 +42,7 @@ export class SequentialMessagingSetup implements DiProcess {
 				if (lineItemId == null) {
 					return;
 				}
-
-				const sequenceHandler = new SequenceHandler(
-					new SequentialMessagingConfigStore(this.instantConfig),
-					new UserSequentialMessageStateStore(Cookies),
-				);
-				sequenceHandler.handleItem(lineItemId);
+				this.sequenceHandler.getSequenceForSlot(lineItemId);
 			});
 	}
 }

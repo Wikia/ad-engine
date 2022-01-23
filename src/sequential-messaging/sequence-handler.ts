@@ -1,9 +1,8 @@
 import {
-	AdSlot,
 	SequentialMessage,
 	SequentialMessageConfig,
 	SequentialMessageState,
-	SequentialMessagingStateStore,
+	SequentialMessageStateStore,
 	SlotSequenceSupplier,
 	TimestampSupplier,
 } from './model';
@@ -22,14 +21,14 @@ export class SequenceHandler {
 
 	constructor(
 		private sequenceSupplier: SlotSequenceSupplier,
-		private stateStore: SequentialMessagingStateStore,
+		private stateStore: SequentialMessageStateStore,
 		private timestampSupplier: TimestampSupplier,
 	) {}
 
-	getSequenceForSlot(slot: AdSlot): SequentialMessage {
-		if (!slot) return undefined;
+	getSequenceForSlot(slotSequenceDef: any): SequentialMessage {
+		if (!slotSequenceDef) return undefined;
 
-		const config: SequentialMessageConfig = this.sequenceSupplier.get(slot);
+		const config: SequentialMessageConfig = this.sequenceSupplier.get(slotSequenceDef);
 		if (!config) return undefined;
 
 		const timestamp = this.timestampSupplier.get();
