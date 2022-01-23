@@ -18,8 +18,8 @@ export interface TimestampSupplier {
 	get(): number;
 }
 
-export interface SlotSequenceSupplier {
-	get(slotSequenceDef: any): SequentialMessageConfig;
+export interface SlotSequenceSupplier<SlotSequenceDef> {
+	get(slotSequenceDef: SlotSequenceDef): SequentialMessageConfig;
 }
 
 export interface SequentialMessageStateStore {

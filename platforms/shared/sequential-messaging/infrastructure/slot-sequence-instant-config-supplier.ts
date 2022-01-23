@@ -5,17 +5,17 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 // tslint:disable-next-line:no-blacklisted-paths
-import { InstantConfigValue } from "../../../../src/ad-services/instant-config/instant-config.models";
+import { InstantConfigValue } from '../../../../src/ad-services/instant-config/instant-config.models';
 
 @Injectable()
-export class SlotSequenceInstantConfigSupplier implements SlotSequenceSupplier {
+export class SlotSequenceInstantConfigSupplier implements SlotSequenceSupplier<string> {
 	private config: Map<string, SequentialMessageConfig>;
 
 	constructor(instantConfig: InstantConfigServiceInterface) {
 		this.config = this.readConfig(instantConfig);
 	}
 
-	get(lineItemId: any): SequentialMessageConfig {
+	get(lineItemId: string): SequentialMessageConfig {
 		return this.config.get(lineItemId as string);
 	}
 

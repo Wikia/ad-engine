@@ -7,7 +7,7 @@ import {
 	TimestampSupplier,
 } from './model';
 
-export class SequenceHandler {
+export class SequenceHandler<SlotSequenceDef> {
 	private static isCappedInTime(
 		state: SequentialMessageState,
 		config: SequentialMessageConfig,
@@ -20,12 +20,12 @@ export class SequenceHandler {
 	}
 
 	constructor(
-		private sequenceSupplier: SlotSequenceSupplier,
+		private sequenceSupplier: SlotSequenceSupplier<SlotSequenceDef>,
 		private stateStore: SequentialMessageStateStore,
 		private timestampSupplier: TimestampSupplier,
 	) {}
 
-	getSequenceForSlot(slotSequenceDef: any): SequentialMessage {
+	getSequenceForSlot(slotSequenceDef: SlotSequenceDef): SequentialMessage {
 		if (!slotSequenceDef) return undefined;
 
 		const config: SequentialMessageConfig = this.sequenceSupplier.get(slotSequenceDef);

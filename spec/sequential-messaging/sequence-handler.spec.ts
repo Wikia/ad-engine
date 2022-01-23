@@ -9,7 +9,7 @@ import { SequenceHandler } from '@wikia/sequential-messaging/sequence-handler';
 import { assert, expect } from 'chai';
 import { createSandbox, match } from 'sinon';
 
-class SlotSequenceSupplierStub implements SlotSequenceSupplier {
+class SlotSequenceSupplierStub implements SlotSequenceSupplier<any> {
 	get(slot: any): SequentialMessageConfig {
 		return undefined;
 	}

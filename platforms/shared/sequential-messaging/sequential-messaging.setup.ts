@@ -12,7 +12,7 @@ import { SlotSequenceInstantConfigSupplier } from './infrastructure/slot-sequenc
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
-	private sequenceHandler: SequenceHandler;
+	private sequenceHandler: SequenceHandler<string>;
 
 	constructor(
 		slotSequenceProvider: SlotSequenceInstantConfigSupplier,
