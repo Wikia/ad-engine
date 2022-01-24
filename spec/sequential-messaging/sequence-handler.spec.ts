@@ -56,14 +56,14 @@ function createState(
 	};
 }
 
-describe('Sequence Handler', () => {
-	const sandbox = createSandbox();
-	const supplierStub = sandbox.createStubInstance(SlotSequenceSupplierStub);
-	const stateStoreStub = sandbox.createStubInstance(SequentialMessagingUserStateStoreStub);
-	const currentTimeStub = sandbox.createStubInstance(CurrentTimeSupplierStub);
-	const handler = new SequenceHandler(supplierStub, stateStoreStub, currentTimeStub);
-	const slot = {};
+const sandbox = createSandbox();
+const supplierStub = sandbox.createStubInstance(SlotSequenceSupplierStub);
+const stateStoreStub = sandbox.createStubInstance(SequentialMessagingUserStateStoreStub);
+const currentTimeStub = sandbox.createStubInstance(CurrentTimeSupplierStub);
+const handler = new SequenceHandler(supplierStub, stateStoreStub, currentTimeStub);
+const slot = {};
 
+describe('Sequence Handler', () => {
 	beforeEach(() => {
 		sandbox.reset();
 	});
