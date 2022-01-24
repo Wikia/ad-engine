@@ -108,7 +108,7 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 				event,
 				playlistItem: jwplayer.getPlaylistItem() || ({} as JWPlayerListItem),
 			})),
-			distinctUntilChanged((a, b) => a.playlistItem.mediaid === b.playlistItem.mediaid),
+			distinctUntilChanged((a: any, b: any) => a.playlistItem.mediaid === b.playlistItem.mediaid),
 			map(({ event }) => event),
 		);
 }
@@ -118,7 +118,7 @@ function ensureEventTag<T extends { payload: JWPlayerEvent }>(
 ): RxJsOperator<T, T> {
 	const base$ = merge(
 		of({ payload: { tag: null } }),
-		adRequest$.pipe(map((adRequest) => adRequest.payload)),
+		adRequest$.pipe(map((adRequest: any) => adRequest.payload)),
 	);
 
 	return (source: Observable<T>) =>
