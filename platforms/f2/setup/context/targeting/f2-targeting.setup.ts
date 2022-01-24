@@ -56,6 +56,10 @@ export class F2TargetingSetup implements DiProcess {
 			this.setTopicTargeting(targeting);
 		}
 
+		if (this.f2State.hasFeaturedVideo) {
+			context.set('custom.hasFeaturedVideo', true);
+		}
+
 		this.setCid(targeting);
 
 		return targeting;
