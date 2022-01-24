@@ -19,7 +19,7 @@
 		"current-device": "^0.7.8",
 		"js-cookie": "^2.2.0",
 		"lodash": "4.17.21",
-		"rxjs": "6.5.5",
+		"rxjs": "7.5.2",
 		"ts-action": "^11.0.0",
 		"ts-action-operators": "^9.1.1",
 		"uuid": "8.3.2"
