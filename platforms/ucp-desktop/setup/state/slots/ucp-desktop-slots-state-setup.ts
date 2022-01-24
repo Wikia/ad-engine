@@ -9,8 +9,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsStateSetup implements DiProcess {
-	constructor() {}
-
 	execute(): void {
 		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
 

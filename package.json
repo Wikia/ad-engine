@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "100.1.0",
+	"version": "101.1.1",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -17,7 +17,6 @@
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
-		"design-system": "git+https://github.com/Wikia/design-system.git#22.0.0",
 		"js-cookie": "^2.2.0",
 		"lodash": "4.17.21",
 		"rxjs": "6.5.5",
@@ -37,6 +36,8 @@
 		"@types/mocha": "5.2.6",
 		"@types/node": "8.10.54",
 		"@types/sinon": "7.0.7",
+		"@typescript-eslint/eslint-plugin": "5.9.1",
+		"@typescript-eslint/parser": "5.9.1",
 		"allure-commandline": "2.7.0",
 		"awesome-typescript-loader": "5.2.1",
 		"babel-loader": "8.2.3",
@@ -44,6 +45,7 @@
 		"chai": "^4.1.2",
 		"concat": "1.0.3",
 		"deepmerge": "2.2.1",
+		"eslint": "8.6.0",
 		"express": "4.17.2",
 		"husky": "1.1.4",
 		"js-md5": "0.7.3",
@@ -69,11 +71,6 @@
 		"tsconfig-paths": "3.8.0",
 		"tscpaths": "github:wikia/tscpaths#release",
 		"tslib": "1.10.0",
-		"tslint": "5.12.1",
-		"tslint-ban-snippets": "2.1.0",
-		"tslint-config-airbnb": "5.11.1",
-		"tslint-config-prettier": "1.18.0",
-		"tslint-eslint-rules": "5.4.0",
 		"typescript": "3.8.3",
 		"webpack": "4.5.0",
 		"webpack-cli": "2.0.14",
@@ -89,8 +86,7 @@
 		".babelrc",
 		"package.json",
 		"webpack.config.js",
-		"tslint.json",
-		"tslint.app.json"
+		".eslintrc.json"
 	],
 	"nyc": {
 		"report-dir": "./spec/build/",
@@ -103,19 +99,13 @@
 		"prebuild": "rm -rf dist",
 		"build:platforms": "webpack --config webpack.platforms.js -p",
 		"ci-check": "npm run test && npm run lint",
-		"lint": "tslint --project . && npm run rules:lint",
-		"lintf": "tslint --project . --fix && npm run rules:lintf",
-		"lintf:errors": "tslint --project . --fix --quiet && npm run rules:lintf",
+		"lint": "npx eslint . --ext .ts --max-warnings 0",
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
-		"format": "npm run prettier && npm run lintf",
+		"format": "npm run prettier",
 		"preversion": "./maintenance/preversion.sh",
 		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml",
-		"rules:build": "tsc --project 'maintenance/tslint-rules/tsconfig.json'",
-		"rules:test": "tslint --project 'maintenance/tslint-rules/tests/tsconfig.json'",
-		"rules:lint": "tslint --project 'maintenance/tslint-rules/tsconfig.json'",
-		"rules:lintf": "tslint --project 'maintenance/tslint-rules/tsconfig.json' --fix"
+		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml"
 	},
 	"husky": {
 		"hooks": {
@@ -125,7 +115,7 @@
 	"lint-staged": {
 		"*.ts": [
 			"prettier --write",
-			"tslint --project . --fix"
+			"npx eslint . --ext .ts --max-warnings 0 --fix"
 		],
 		"*.{js,json,css,scss,html}": [
 			"prettier --write"

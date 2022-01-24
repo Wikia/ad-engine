@@ -1,5 +1,4 @@
 import { AdSlot, Dictionary } from '@ad-engine/core';
-// tslint:disable-next-line:import-blacklist
 import { Action } from '@wikia/post-quecast';
 import { payload, props } from 'ts-action';
 

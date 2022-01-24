@@ -1,8 +1,3 @@
-declare module 'blockadblock' {
-	const loaded: {};
-	export default loaded;
-}
-
 declare class BlockAdBlock {
 	constructor(options?: BlockAdBlockOptions);
 

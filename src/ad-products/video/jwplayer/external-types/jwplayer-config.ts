@@ -131,7 +131,6 @@ interface WikiaSettings {
 	i18n: I18n;
 }
 
-// tslint:disable-next-line:interface-name
 interface I18n {
 	admessage: string;
 	autoplayVideos: string;

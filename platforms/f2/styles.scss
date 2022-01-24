@@ -1,15 +1,13 @@
 @import 'src/ad-products/styles/mixin';
 @import 'platforms/shared/styles/index';
 @import 'platforms/f2/styles/original/variables';
-@import '~design-system/dist/scss/wds-variables/index';
-@import '~design-system/dist/scss/wds-mixins/index';
 
 @mixin f2-styles() {
 	$advertisement-label-height: 24px;
 	$label-height: -24px;
 
 	#top_leaderboard {
-		background: $wds-fandom-color-black;
+		background: $fandom-color-black;
 		justify-content: center;
 		margin: 0 auto;
 		max-width: 100vw;
@@ -54,7 +52,7 @@
 	#top_boxad[data-slot-result='success']::after,
 	#incontent_boxad[data-slot-result='success']::after,
 	#bottom_leaderboard[data-slot-result='success']::after {
-		color: $wds-fandom-color-dark-gray;
+		color: $fandom-color-dark-gray;
 		content: 'Advertisement';
 		display: block;
 		font-size: 10px;

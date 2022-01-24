@@ -1,4 +1,3 @@
-// tslint:disable-next-line:import-blacklist
 import { Action, ActionCreator, ActionType, isType as tsIsType } from 'ts-action';
 import { isGlobalAction, isGlobalActionCreator } from './global-action';
 
