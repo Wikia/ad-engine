@@ -1,13 +1,16 @@
 import { SequentialMessageState, SequentialMessageStateStore } from '@wikia/ad-engine';
+import { Injectable } from "@wikia/dependency-injection";
 import Cookies from 'js-cookie';
 
-export const COOKIE_NAME = 'seqMsg';
 const SEPARATOR = '|';
 const RADIX = 36;
 
+@Injectable()
 export class CookieSequentialMessageStateStore implements SequentialMessageStateStore {
+	static COOKIE_NAME = 'seqMsg';
+
 	get(): SequentialMessageState {
-		const cookie = Cookies.get(COOKIE_NAME);
+		const cookie = Cookies.get(CookieSequentialMessageStateStore.COOKIE_NAME);
 		if (!cookie) return undefined;
 
 		const values = cookie.split(SEPARATOR);
@@ -28,6 +31,6 @@ export class CookieSequentialMessageStateStore implements SequentialMessageState
 			state.sequenceTimestamp ? state.sequenceTimestamp.toString(RADIX) : '0',
 			state.startedTimestamp ? state.startedTimestamp.toString(RADIX) : '0',
 		];
-		Cookies.set(COOKIE_NAME, values.join(SEPARATOR));
+		Cookies.set(CookieSequentialMessageStateStore.COOKIE_NAME, values.join(SEPARATOR));
 	}
 }

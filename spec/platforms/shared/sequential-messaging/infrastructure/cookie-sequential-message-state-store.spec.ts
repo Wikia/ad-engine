@@ -3,9 +3,8 @@ import { expect } from 'chai';
 import Cookies from 'js-cookie';
 import sinon, { assert } from 'sinon';
 import {
-	COOKIE_NAME,
 	CookieSequentialMessageStateStore,
-// tslint:disable-next-line:max-line-length
+	// tslint:disable-next-line:max-line-length
 } from '../../../../../platforms/shared/sequential-messaging/infrastructure/cookie-sequential-message-state-store';
 
 function state(id: string, no?: number, sqTs?: number, startTs?: number): SequentialMessageState {
@@ -42,7 +41,7 @@ describe('Cookie Sequential Message State Store', () => {
 		store.save(sampleState);
 
 		// then
-		assert.calledWith(saveSpy, COOKIE_NAME, 'id|1|2|f');
+		assert.calledWith(saveSpy, CookieSequentialMessageStateStore.COOKIE_NAME, 'id|1|2|f');
 	});
 
 	it('Should serialise full state', () => {
@@ -53,7 +52,7 @@ describe('Cookie Sequential Message State Store', () => {
 		store.save(sampleState);
 
 		// then
-		assert.calledWith(saveSpy, COOKIE_NAME, 'id|0|0|0');
+		assert.calledWith(saveSpy, CookieSequentialMessageStateStore.COOKIE_NAME, 'id|0|0|0');
 	});
 
 	it('Should deserialise full state', () => {
