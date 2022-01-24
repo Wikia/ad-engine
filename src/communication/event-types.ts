@@ -59,6 +59,19 @@ export interface UapLoadStatus {
 	adProduct: string;
 }
 
+export interface BiddersPayload {
+	provider: string;
+	slotName: string;
+}
+
+export interface AdSlotEventPayload {
+	event: string;
+	slot: AdSlot;
+	adSlotName: string;
+	status: string;
+	payload?: any;
+}
+
 export const eventsRepository: Dictionary<EventOptions> = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -110,13 +123,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_SLOT_EVENT: {
 		name: 'Ad Slot event',
-		payload: props<{
-			event: string;
-			slot: AdSlot;
-			adSlotName: string;
-			status: string;
-			payload?: any;
-		}>(),
+		payload: props<AdSlotEventPayload>(),
 	},
 	AD_ENGINE_SLOT_LOADED: {
 		name: 'Ad Slot loaded',
@@ -195,7 +202,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
 		name: 'Bidding done',
-		payload: props<{ provider: string; slotName: string }>(),
+		payload: props<BiddersPayload>(),
 	},
 	BIDDERS_BIDS_REFRESH: {
 		category: '[Prebid]',
