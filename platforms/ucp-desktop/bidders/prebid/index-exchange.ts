@@ -34,6 +34,15 @@ export function getIndexExchangeContext(): object {
 			featured: {
 				siteId: '437502',
 			},
+			interstitial: {
+				siteId: '749519',
+				sizes: [
+					[320, 480],
+					[480, 320],
+					[768, 1024],
+					[1024, 768],
+				],
+			},
 		},
 		recPlacements: {
 			top_leaderboard: '215807',

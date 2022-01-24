@@ -19,6 +19,15 @@ export function getVerizonContext(): object {
 				sizes: [[728, 90]],
 				pos: 'bottom_leaderboard',
 			},
+			interstitial: {
+				sizes: [
+					[320, 480],
+					[480, 320],
+					[768, 1024],
+					[1024, 768],
+				],
+				pos: 'interstitial',
+			},
 		},
 	};
 }

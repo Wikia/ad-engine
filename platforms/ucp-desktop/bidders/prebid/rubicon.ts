@@ -13,6 +13,11 @@ export function getRubiconContext(): object {
 				sizeId: '203',
 				zoneId: '260296',
 			},
+			interstitial: {
+				siteId: '23565',
+				sizeId: '203',
+				zoneId: '2229522',
+			},
 		},
 	};
 }
