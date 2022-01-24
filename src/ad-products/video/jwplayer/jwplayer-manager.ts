@@ -36,7 +36,7 @@ export class JWPlayerManager {
 				this.loadIasTrackerIfEnabled();
 			}),
 			map(({ options, targeting, playerKey }) => {
-				const jwplayer: any = window[playerKey];
+				const jwplayer: JWPlayer = window[playerKey] as any;
 				const adSlot = this.createAdSlot(options, jwplayer);
 				const stream$ = createJwpStream(jwplayer);
 
