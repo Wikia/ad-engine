@@ -45,6 +45,7 @@ export function getPubmaticContext(): object {
 				],
 			},
 			interstitial: {
+				ids: ['Fandom_Mobile_Interstitial'],
 				sizes: [
 					[320, 480],
 					[480, 320],
