@@ -44,7 +44,7 @@ describe('Cookie Sequential Message State Store', () => {
 		assert.calledWith(saveSpy, CookieSequentialMessageStateStore.COOKIE_NAME, 'id|1|2|f');
 	});
 
-	it('Should serialise full state', () => {
+	it('Should serialise partial state', () => {
 		// given
 		const sampleState = state('id');
 
@@ -64,6 +64,17 @@ describe('Cookie Sequential Message State Store', () => {
 
 		// then
 		expect(result).to.contains(state('id', 0, 1, 15));
+	});
+
+	it('Should not deserialise partial state', () => {
+		// given
+		getStub.returns('id|!@#| |');
+
+		// when
+		const result = store.get();
+
+		// then
+		expect(result).to.contains(state('id', 0, 0, 0));
 	});
 
 	it('Should not read invalid state', () => {

@@ -1,5 +1,5 @@
 import { SequentialMessageState, SequentialMessageStateStore } from '@wikia/ad-engine';
-import { Injectable } from "@wikia/dependency-injection";
+import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 
 const SEPARATOR = '|';
@@ -18,9 +18,9 @@ export class CookieSequentialMessageStateStore implements SequentialMessageState
 
 		return {
 			sequenceMessageId: values[0],
-			sequenceNo: parseInt(values[1], RADIX),
-			sequenceTimestamp: parseInt(values[2], RADIX),
-			startedTimestamp: parseInt(values[3], RADIX),
+			sequenceNo: parseInt(values[1], RADIX) || 0,
+			sequenceTimestamp: parseInt(values[2], RADIX) || 0,
+			startedTimestamp: parseInt(values[3], RADIX) || 0,
 		};
 	}
 
