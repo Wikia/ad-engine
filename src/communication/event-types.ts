@@ -59,7 +59,7 @@ export interface UapLoadStatus {
 	adProduct: string;
 }
 
-export interface BiddersPayload {
+export interface BiddersEventPayload {
 	provider: string;
 	slotName: string;
 }
@@ -202,7 +202,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	BIDDERS_BIDDING_DONE: {
 		category: '[Prebid]',
 		name: 'Bidding done',
-		payload: props<BiddersPayload>(),
+		payload: props<BiddersEventPayload>(),
 	},
 	BIDDERS_BIDS_REFRESH: {
 		category: '[Prebid]',

@@ -13,6 +13,7 @@ import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { JWPlayerEvent } from '../external-types/jwplayer-event';
 import { JWPlayerListItem } from '../external-types/jwplayer-list-item';
 import { JwpEventKey, JwpEventName, JwpNamedEvent } from './jwplayer-events';
+import { JwpState } from './jwplayer-stream-state';
 
 export type JwpStatelessStream<T extends JwpEventKey = JwpEventName> = Observable<
 	JwpStatelessEvent<T>
@@ -108,7 +109,9 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 				event,
 				playlistItem: jwplayer.getPlaylistItem() || ({} as JWPlayerListItem),
 			})),
-			distinctUntilChanged((a: any, b: any) => a.playlistItem.mediaid === b.playlistItem.mediaid),
+			distinctUntilChanged(
+				(a: JwpState, b: JwpState) => a.playlistItem.mediaid === b.playlistItem.mediaid,
+			),
 			map(({ event }) => event),
 		);
 }
@@ -118,7 +121,7 @@ function ensureEventTag<T extends { payload: JWPlayerEvent }>(
 ): RxJsOperator<T, T> {
 	const base$ = merge(
 		of({ payload: { tag: null } }),
-		adRequest$.pipe(map((adRequest: any) => adRequest.payload)),
+		adRequest$.pipe(map((adRequest: { payload: JWPlayerEvent }) => adRequest.payload)),
 	);
 
 	return (source: Observable<T>) =>

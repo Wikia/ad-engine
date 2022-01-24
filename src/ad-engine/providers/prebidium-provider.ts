@@ -1,5 +1,5 @@
 import {
-	BiddersPayload,
+	BiddersEventPayload,
 	communicationService,
 	eventsRepository,
 	ofType,
@@ -22,7 +22,7 @@ export class PrebidiumProvider implements Provider {
 			.pipe(
 				ofType(communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)),
 				filter(
-					(action: BiddersPayload) =>
+					(action: BiddersEventPayload) =>
 						action.provider === 'prebid' && action.slotName === adSlot.getSlotName(),
 				),
 				take(1),

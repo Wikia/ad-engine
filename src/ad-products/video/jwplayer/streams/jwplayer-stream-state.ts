@@ -111,7 +111,7 @@ function calculateRV(depth: number, capping: number): number {
 function createVastParams<T extends { payload: JWPlayerEvent }>(): RxJsOperator<T, VastParams> {
 	return (source: Observable<T>) =>
 		source.pipe(
-			map((event: any) =>
+			map((event: { payload: JWPlayerEvent }) =>
 				vastParser.parse(event.payload.tag, {
 					imaAd: event.payload.ima && event.payload.ima.ad,
 				}),
