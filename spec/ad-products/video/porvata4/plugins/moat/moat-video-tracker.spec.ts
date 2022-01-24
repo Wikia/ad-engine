@@ -7,7 +7,7 @@ import { context, slotService, utils } from '../../../../../../src/ad-engine';
 describe('MOAT video tracker', () => {
 	const sandbox = sinon.createSandbox();
 
-	function createVideoSettings(moatTracking: boolean = true): PorvataSettings {
+	function createVideoSettings(moatTracking = true): PorvataSettings {
 		return new PorvataSettings({
 			moatTracking,
 			container: document.createElement('div'),

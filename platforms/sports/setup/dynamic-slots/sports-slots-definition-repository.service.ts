@@ -4,9 +4,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SportsSlotsDefinitionRepository {
-	constructor() {}
-
-	getCdmZoneConfig(counter: number, lazyLoaded: boolean = false): SlotSetupDefinition {
+	getCdmZoneConfig(counter: number, lazyLoaded = false): SlotSetupDefinition {
 		const slotName = `cdm-zone-0${counter}`;
 
 		return {

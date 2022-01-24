@@ -3,8 +3,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class BingeBotSlotsContextSetup implements DiProcess {
-	constructor() {}
-
 	execute(): void {
 		const slots = {
 			sponsored_logo: {

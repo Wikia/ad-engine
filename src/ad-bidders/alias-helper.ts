@@ -16,6 +16,6 @@ export function getSlotNameByBidderAlias(id: string): string {
 
 function findSlotNamesForBidderAlias(alias: string): string[] {
 	return Object.entries(slotService.slotConfigsMap)
-		.filter(([name, config]) => config.bidderAlias === alias)
-		.map(([name, config]) => name);
+		.filter(([, config]) => config.bidderAlias === alias)
+		.map(([name]) => name);
 }

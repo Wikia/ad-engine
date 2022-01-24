@@ -24,18 +24,18 @@ describe('placeholder service helper', () => {
 			const actionEventMock = 'slotRendered';
 			const actionPayloadMock = 'forced_success';
 
-			expect(
-				placeholderHelper.shouldKeepPlaceholder(actionEventMock, actionPayloadMock),
-			).to.equal(true);
+			expect(placeholderHelper.shouldKeepPlaceholder(actionEventMock, actionPayloadMock)).to.equal(
+				true,
+			);
 		});
 
 		it('shouldDisplayPlaceholder returns false for rendered successfully slot', () => {
 			const actionEventMock = 'slotRendered';
 			const actionPayloadMock = 'success';
 
-			expect(
-				placeholderHelper.shouldKeepPlaceholder(actionEventMock, actionPayloadMock),
-			).to.equal(false);
+			expect(placeholderHelper.shouldKeepPlaceholder(actionEventMock, actionPayloadMock)).to.equal(
+				false,
+			);
 		});
 
 		it('shouldHidePlaceholder returns true when placeholder does not contain the right class', () => {

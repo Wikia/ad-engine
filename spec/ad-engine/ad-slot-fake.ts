@@ -15,7 +15,7 @@ interface FakeElement {
 		left: number;
 	};
 	offsetParent: null;
-	ownerDocument: {};
+	ownerDocument: Record<string, unknown>;
 }
 
 export const adSlotFake = {

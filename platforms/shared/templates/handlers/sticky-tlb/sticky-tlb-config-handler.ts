@@ -3,7 +3,6 @@ import {
 	context,
 	TEMPLATE,
 	TemplateStateHandler,
-	TemplateTransition,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -12,7 +11,7 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 export class StickyTlbConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.SLOT) private adSlot: AdSlot) {}
 
-	async onEnter(transition: TemplateTransition<'sticky'>): Promise<void> {
+	async onEnter(): Promise<void> {
 		this.adSlot.setConfigProperty('showManually', true);
 		this.adSlot.addClass('expanded-slot');
 		this.adSlot.addClass('sticky-tlb');
