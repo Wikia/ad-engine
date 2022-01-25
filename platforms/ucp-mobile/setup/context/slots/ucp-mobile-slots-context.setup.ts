@@ -9,8 +9,6 @@ const BIG_VIEWPORT_SIZE = {
 
 @Injectable()
 export class UcpMobileSlotsContextSetup implements DiProcess {
-	constructor() {}
-
 	execute(): void {
 		const slots = {
 			top_leaderboard: {

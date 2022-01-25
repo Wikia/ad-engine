@@ -9,6 +9,7 @@ export class DomListener {
 	readonly scroll$: Observable<Event> = this.createSource(document, 'scroll');
 	readonly resize$: Observable<Event> = this.createSource(window, 'resize');
 
+	/*eslint @typescript-eslint/no-unused-vars: "off"*/
 	private createSource<T>(target: FromEventTarget<T>, eventName: string): Observable<T> {
 		return fromEvent(target, eventName).pipe(
 			observeOn(animationFrameScheduler), // scheduler to ensure smooth animation

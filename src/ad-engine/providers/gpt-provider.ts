@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
-// tslint:disable-next-line:no-blacklisted-paths
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import { btfBlockerService, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
@@ -18,7 +17,7 @@ export const GAMOrigins: string[] = [
 ];
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
-	return function (...args: any): void {
+	return function(...args: any): void {
 		setTimeout(() => {
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
@@ -180,7 +179,7 @@ export class GptProvider implements Provider {
 			if (adSlot.getConfigProperty('outOfPageFormat')) {
 				return window.googletag.defineOutOfPageSlot(
 					adSlot.getAdUnit(),
-					// @ts-ignore
+					// @ts-ignore for some reason our @types/doubleclick-gpt/index.d.ts don't have enums maybe after TS update
 					window.googletag.enums.OutOfPageFormat[adSlot.getConfigProperty('outOfPageFormat')],
 				);
 			}

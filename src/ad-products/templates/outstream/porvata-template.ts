@@ -31,7 +31,9 @@ export class PorvataTemplate {
 			isFloatingEnabled: true,
 			inViewportOffsetTop: 0,
 			inViewportOffsetBottom: 0,
-			onInit: () => {},
+			onInit: () => {
+				// a hook to easy extend functionality of the template
+			},
 		};
 	}
 

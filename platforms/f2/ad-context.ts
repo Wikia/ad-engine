@@ -40,6 +40,9 @@ export const basicContext = {
 			},
 		},
 	},
+	templates: {
+		ignoreNavbarHeight: true,
+	},
 	services: {
 		iasPublisherOptimization: {
 			pubId: '930616',

@@ -15,7 +15,7 @@ function getMessageEvent(data: any, origin?: string): Partial<MessageEvent> {
 class MockWindow implements Pick<Window, 'addEventListener'> {
 	cb: (...any) => any;
 
-	addEventListener(type: string, cb: (...any) => any, any): void {
+	addEventListener(type: string, cb: (...any) => any): void {
 		this.cb = cb;
 	}
 

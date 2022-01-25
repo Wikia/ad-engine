@@ -87,14 +87,11 @@ export class WikiaVideo extends PrebidAdapter {
 
 				bidResponse.bidderCode = bidRequest.bidderCode;
 				bidResponse.cpm = this.getPrice();
-				// @ts-ignore
 				bidResponse.creativeId = 'foo123_wikiaVideoCreativeId';
-				// @ts-ignore
 				bidResponse.ttl = 300;
 				bidResponse.mediaType = 'video';
 				bidResponse.width = width;
 				bidResponse.height = height;
-				// @ts-ignore
 				bidResponse.vastUrl = WikiaVideo.getVastUrl(width, height, slotName);
 				bidResponse.videoCacheKey = '123foo_wikiaVideoCacheKey';
 

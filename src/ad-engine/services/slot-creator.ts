@@ -100,13 +100,16 @@ export class SlotCreator {
 		);
 
 		switch (slotConfig.anchorPosition) {
-			case 'belowFirstViewport':
+			case 'belowFirstViewport': {
 				return elements.filter((el) => getTopOffset(el) > getViewportHeight());
-			case 'belowScrollPosition':
+			}
+			case 'belowScrollPosition': {
 				return elements.filter((el) => getTopOffset(el) > window.scrollY);
-			case 'firstViable':
+			}
+			case 'firstViable': {
 				return elements;
-			default:
+			}
+			default: {
 				const element = elements[slotConfig.anchorPosition];
 
 				if (!element) {
@@ -114,6 +117,7 @@ export class SlotCreator {
 				}
 
 				return [element];
+			}
 		}
 	}
 

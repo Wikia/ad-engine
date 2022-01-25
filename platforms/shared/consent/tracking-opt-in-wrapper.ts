@@ -4,7 +4,7 @@ import {
 	context,
 	eventsRepository,
 	GdprConsentPayload,
-	utils
+	utils,
 } from '@wikia/ad-engine';
 
 const logGroup = 'tracking-opt-in-wrapper';
@@ -20,7 +20,7 @@ class TrackingOptInWrapper {
 	}
 
 	async init(): Promise<void> {
-		return new Promise(async (resolve) => {
+		return new Promise((resolve) => {
 			utils.logger(logGroup, 'Waiting for consents');
 
 			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {

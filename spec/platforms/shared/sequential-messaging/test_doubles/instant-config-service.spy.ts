@@ -3,7 +3,8 @@ import { InstantConfigValue } from '@wikia/ad-services/instant-config/instant-co
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
 
 class InstantConfigServiceSpy implements InstantConfigServiceInterface {
-	get<T extends InstantConfigValue>(key: string, defaultValue?: T): T {
+	/* eslint-disable @typescript-eslint/no-unused-vars */
+	get<T extends InstantConfigValue>(_key: string, _defaultValue?: T): T {
 		return undefined;
 	}
 }

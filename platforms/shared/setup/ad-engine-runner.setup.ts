@@ -11,8 +11,6 @@ const logGroup = 'ad-engine';
 
 @Injectable()
 export class AdEngineRunnerSetup implements DiProcess {
-	constructor() {}
-
 	execute(): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
