@@ -15,6 +15,7 @@ export function getRubiconContext(): object {
 			},
 			interstitial: {
 				siteId: '23565',
+				sizeId: '203',
 				zoneId: '2229522',
 			},
 		},
