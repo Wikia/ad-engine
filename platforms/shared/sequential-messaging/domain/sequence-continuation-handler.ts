@@ -15,7 +15,7 @@ export class SequenceContinuationHandler {
 		const userState: UserSequentialMessageState = this.userStateStore.get();
 		const fullConfig = this.configStore.get();
 
-		if (userState == null) {
+		if (userState == null || fullConfig == null) {
 			return false;
 		}
 

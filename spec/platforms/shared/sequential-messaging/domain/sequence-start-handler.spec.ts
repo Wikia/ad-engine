@@ -31,7 +31,7 @@ describe('Sequence Start Handler', () => {
 	it('Handle no line items configured', () => {
 		const userStateStore = makeUserStateStoreSpy();
 		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
-		configStoreSpy.get.returns(undefined);
+		configStoreSpy.get.returns(null);
 
 		const sh = new SequenceStartHandler(configStoreSpy, userStateStore);
 
