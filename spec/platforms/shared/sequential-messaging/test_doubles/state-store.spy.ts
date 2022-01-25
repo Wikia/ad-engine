@@ -4,6 +4,10 @@ import { UserSequentialMessageStateStoreInterface } from '../../../../../platfor
 class UserStateStoreSpy implements UserSequentialMessageStateStoreInterface {
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	set(userSequentialMessageState): void {}
+
+	get(): any {
+		return undefined;
+	}
 }
 
 export function makeUserStateStoreSpy(): SinonStubbedInstance<UserStateStoreSpy> {

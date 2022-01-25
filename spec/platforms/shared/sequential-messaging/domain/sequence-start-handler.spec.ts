@@ -9,20 +9,22 @@ describe('Sequence Start Handler', () => {
 		const userStateStore = makeUserStateStoreSpy();
 		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
 		configStoreSpy.get.returns({
-			1234567890: {
+			5854346762: {
 				length: '4',
+				targeting: { cid: 'sequential_messaging' },
 			},
 		});
 
 		const sh = new SequenceStartHandler(configStoreSpy, userStateStore);
-		sh.handleItem('1234567890');
+		sh.handleItem('5854346762');
 		sh.handleItem('111');
 
 		expect(sh).to.be.instanceOf(SequenceStartHandler);
 		assert.calledOnce(userStateStore.set);
 		assert.calledWith(userStateStore.set, {
-			1234567890: {
+			5854346762: {
 				length: '4',
+				targeting: { cid: 'sequential_messaging' },
 			},
 		});
 	});

@@ -10,4 +10,13 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 	set(userState: UserSequentialMessageState): void {
 		this.cookies.set(this.cookieName, userState);
 	}
+
+	get(): UserSequentialMessageState {
+		const cookieString = this.cookies.get(this.cookieName);
+		if (cookieString == null) {
+			return;
+		}
+
+		return JSON.parse(cookieString);
+	}
 }

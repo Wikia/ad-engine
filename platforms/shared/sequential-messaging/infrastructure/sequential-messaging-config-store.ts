@@ -31,7 +31,9 @@ export class SequentialMessagingConfigStore implements SequentialMessagingConfig
 		for (const val of Object.values(sequentialMessagingConfig)) {
 			if (typeof val !== 'object') return false;
 			if (!('length' in val)) return false;
+			if (!('targeting' in val)) return false;
 			if (typeof val.length !== 'string' && typeof val.length !== 'number') return false;
+			if (typeof val.targeting !== 'object' && typeof val.targeting !== 'object') return false;
 		}
 
 		return true;

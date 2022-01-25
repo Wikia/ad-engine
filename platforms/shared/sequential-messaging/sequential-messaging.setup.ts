@@ -8,6 +8,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
+import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
 import { SequenceStartHandler } from './domain/sequence-start-handler';
 import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
@@ -17,10 +18,14 @@ export class SequentialMessagingSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute(): Promise<void> {
-		this.detectSequentialAd();
+		console.log('HERE execute');
+		if (!this.handleOngoingSequence()) {
+			console.log('HERE no ongoing sequence!');
+			this.detectNewSequentialAd();
+		}
 	}
 
-	private detectSequentialAd(): void {
+	private detectNewSequentialAd(): void {
 		interface Action {
 			event: string;
 			slot: { lineItemId: string };
@@ -44,5 +49,14 @@ export class SequentialMessagingSetup implements DiProcess {
 				);
 				sequenceHandler.handleItem(lineItemId);
 			});
+	}
+
+	private handleOngoingSequence(): boolean {
+		const sequenceHandler = new SequenceContinuationHandler(
+			new SequentialMessagingConfigStore(this.instantConfig),
+			new UserSequentialMessageStateStore(Cookies),
+		);
+
+		return sequenceHandler.handleOngoingSequence();
 	}
 }

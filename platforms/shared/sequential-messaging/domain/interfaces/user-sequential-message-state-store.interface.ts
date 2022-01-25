@@ -2,4 +2,5 @@ import { UserSequentialMessageState } from '../data-structures/user-sequential-m
 
 export interface UserSequentialMessageStateStoreInterface {
 	set(userSequentialMessageState: UserSequentialMessageState): void;
+	get(): UserSequentialMessageState;
 }
