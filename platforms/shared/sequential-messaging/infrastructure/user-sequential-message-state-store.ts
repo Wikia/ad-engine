@@ -19,4 +19,8 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 
 		return JSON.parse(cookieString);
 	}
+
+	delete() {
+		this.cookies.remove(this.cookieName);
+	}
 }

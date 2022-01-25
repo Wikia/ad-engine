@@ -30,10 +30,7 @@ export class SequenceStartHandler {
 
 	private storeState(sequentialAdId: string): void {
 		const state: UserSequentialMessageState = {};
-		state[sequentialAdId] = {
-			length: this.config[sequentialAdId].length as number,
-			targeting: this.config[sequentialAdId].targeting,
-		};
+		state[sequentialAdId] = { step: 1 };
 
 		this.stateStore.set(state);
 	}

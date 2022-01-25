@@ -8,6 +8,8 @@ class UserStateStoreSpy implements UserSequentialMessageStateStoreInterface {
 	get(): any {
 		return undefined;
 	}
+
+	delete() {}
 }
 
 export function makeUserStateStoreSpy(): SinonStubbedInstance<UserStateStoreSpy> {

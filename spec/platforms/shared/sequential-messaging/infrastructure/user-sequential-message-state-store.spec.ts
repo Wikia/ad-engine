@@ -8,8 +8,7 @@ describe('User Sequential Message State Store', () => {
 		const store = new UserSequentialMessageStateStore(Cookies);
 		const sampleState = {
 			5854346762: {
-				length: 4,
-				targeting: { cid: 'sequential_messaging' },
+				step: 1,
 			},
 		};
 

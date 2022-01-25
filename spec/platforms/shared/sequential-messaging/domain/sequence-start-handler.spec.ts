@@ -23,8 +23,7 @@ describe('Sequence Start Handler', () => {
 		assert.calledOnce(userStateStore.set);
 		assert.calledWith(userStateStore.set, {
 			5854346762: {
-				length: '4',
-				targeting: { cid: 'sequential_messaging' },
+				step: 1,
 			},
 		});
 	});
