@@ -1,5 +1,6 @@
 import {
 	communicationService,
+	context,
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
@@ -12,6 +13,7 @@ import { SequenceContinuationHandler } from './domain/sequence-continuation-hand
 import { SequenceStartHandler } from './domain/sequence-start-handler';
 import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
+import { TargetingManager } from './infrastructure/targeting-manager';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
@@ -53,6 +55,7 @@ export class SequentialMessagingSetup implements DiProcess {
 		const sequenceHandler = new SequenceContinuationHandler(
 			new SequentialMessagingConfigStore(this.instantConfig),
 			new UserSequentialMessageStateStore(Cookies),
+			new TargetingManager(context),
 		);
 
 		return sequenceHandler.handleOngoingSequence();

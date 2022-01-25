@@ -1,7 +1,7 @@
-import { context } from '@wikia/ad-engine';
 import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequential-message-state-store.interface';
 import { UserSequentialMessageState } from './data-structures/user-sequential-message-state';
 import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential-messaging-config-store.interface';
+import { TargetingManagerInterface } from './interfaces/targeting-manager-interface';
 
 type adConfig = { length: number | string; targeting: Record<string, unknown> };
 
@@ -9,6 +9,7 @@ export class SequenceContinuationHandler {
 	constructor(
 		private configStore: SequentialMessagingConfigStoreInterface,
 		private userStateStore: UserSequentialMessageStateStoreInterface,
+		private targetingManager: TargetingManagerInterface,
 	) {}
 
 	handleOngoingSequence(): boolean {
@@ -23,7 +24,7 @@ export class SequenceContinuationHandler {
 			const adConfig = fullConfig[sequentialAdId];
 
 			this.setState(userState, sequentialAdId, adConfig);
-			this.setTargeting(adConfig);
+			this.targetingManager.setTargeting(adConfig.targeting);
 		}
 
 		return true;
@@ -43,11 +44,5 @@ export class SequenceContinuationHandler {
 		}
 
 		this.userStateStore.set(newUserState);
-	}
-
-	private setTargeting(adConfig: adConfig) {
-		for (const [tkey, tval] of Object.entries(adConfig.targeting)) {
-			context.set('targeting.' + tkey, tval);
-		}
 	}
 }
