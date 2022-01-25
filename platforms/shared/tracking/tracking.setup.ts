@@ -174,7 +174,7 @@ export class TrackingSetup {
 				const { target, payload } = message;
 
 				switch (target) {
-					case TrackingTarget.GoogleAnalytics:
+					case TrackingTarget.GoogleAnalytics: {
 						window.ga(
 							'tracker1.send',
 							'event',
@@ -184,10 +184,12 @@ export class TrackingSetup {
 							typeof payload.value === 'number' ? payload.value.toString() : payload.value,
 						);
 						break;
-					case TrackingTarget.DataWarehouse:
+					}
+					case TrackingTarget.DataWarehouse: {
 						const dataWarehouseTracker = new DataWarehouseTracker();
 						dataWarehouseTracker.track(payload);
 						break;
+					}
 					default:
 						break;
 				}

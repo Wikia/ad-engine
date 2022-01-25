@@ -1,5 +1,5 @@
-/* global Storage */
 import { UniversalStorage } from './universal-storage';
+import { Dictionary } from '../models';
 
 interface CacheItem<T = any> {
 	expires?: number;
@@ -14,29 +14,29 @@ class LocalCache {
 	}
 
 	// @TODO: Should not return boolean if item expired
-	get<T = any>(key: string): T {
-		const cacheItem: CacheItem = this.storage.getItem<CacheItem>(key);
+	get(key: string): boolean | unknown {
+		const cacheItem: CacheItem<unknown> = this.storage.getItem(key);
 
 		if (cacheItem) {
 			// Check if item has expired
 			if (this.isExpired(cacheItem)) {
 				this.delete(key);
 
-				return false as any;
+				return false;
 			}
 
 			return cacheItem.data;
 		}
 
-		return false as any;
+		return false;
 	}
 
-	set(key: string, value: any, expires?: number): boolean {
+	set(key: string, value: string | Dictionary<unknown>, expires?: number): boolean {
 		if (!this.isStorable(value)) {
 			return false;
 		}
 
-		const cacheItem: CacheItem = {
+		const cacheItem: CacheItem<unknown> = {
 			data: value,
 			expires: expires ? expires * 1000 + Date.now() : undefined,
 		};
@@ -58,7 +58,7 @@ class LocalCache {
 		return isStorableType && isNotNaN;
 	}
 
-	private isExpired(cacheItem: CacheItem): boolean {
+	private isExpired(cacheItem: CacheItem<unknown>): boolean {
 		if (cacheItem.expires) {
 			return cacheItem.expires && Date.now() >= cacheItem.expires;
 		}

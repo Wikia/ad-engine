@@ -1,0 +1,16 @@
+{
+	"extends": ["../.eslintrc.json"],
+	"rules": {
+		"no-restricted-imports": [
+			"error",
+			{
+				"patterns": [
+					"**/ad-bidders/**",
+					"**/ad-products/**",
+					"**/ad-services/**",
+					"**/ad-tracking/**"
+				]
+			}
+		]
+	}
+}

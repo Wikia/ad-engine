@@ -205,8 +205,8 @@ class SlotService {
 
 	getAtfSlotNames(): string[] {
 		return Object.entries<SlotConfig>(this.slotConfigsMap)
-			.filter(([name, config]) => !!config.aboveTheFold)
-			.map(([name, config]) => name);
+			.filter(([, config]) => !!config.aboveTheFold)
+			.map(([name]) => name);
 	}
 
 	/**
@@ -214,8 +214,8 @@ class SlotService {
 	 */
 	getFirstCallSlotNames(): string[] {
 		return Object.entries(this.slotConfigsMap)
-			.filter(([name, config]) => !!config.firstCall)
-			.map(([name, config]) => name);
+			.filter(([, config]) => !!config.firstCall)
+			.map(([name]) => name);
 	}
 
 	/**
@@ -223,8 +223,8 @@ class SlotService {
 	 */
 	getNonFirstCallSlotNames(): string[] {
 		return Object.entries(this.slotConfigsMap)
-			.filter(([name, config]) => !config.firstCall)
-			.map(([name, config]) => name);
+			.filter(([, config]) => !config.firstCall)
+			.map(([name]) => name);
 	}
 
 	/**
@@ -232,8 +232,8 @@ class SlotService {
 	 */
 	getEnabledSlotNames(): string[] {
 		return Object.entries(this.slotConfigsMap)
-			.filter(([name, config]) => !config.disabled)
-			.map(([name, config]) => name);
+			.filter(([, config]) => !config.disabled)
+			.map(([name]) => name);
 	}
 
 	pushSlot(node: HTMLElement): void {
