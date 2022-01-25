@@ -86,3 +86,4 @@ export * from './utils/insert-slots';
 export * from './utils/instant-config-setup';
 export * from './utils/placeholder-service';
 export * from './utils/placeholder-service-helper';
+export * from './sequential-messaging/sequential-messaging.setup';
