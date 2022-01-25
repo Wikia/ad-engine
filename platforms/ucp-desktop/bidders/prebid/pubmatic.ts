@@ -44,14 +44,6 @@ export function getPubmaticContext(): object {
 					'/5441/INCONTENT_BOXAD_1_300x600@300x600',
 				],
 			},
-			interstitial: {
-				sizes: [
-					[320, 480],
-					[480, 320],
-					[768, 1024],
-					[1024, 768],
-				],
-			},
 		},
 	};
 }
