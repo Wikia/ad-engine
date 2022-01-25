@@ -37,7 +37,7 @@ export class SequenceContinuationHandler {
 		const newUserState = userState;
 		newUserState[sequentialAdId].step++;
 
-		if (newUserState[sequentialAdId].step == adConfig.length) {
+		if (newUserState[sequentialAdId].step >= adConfig.length) {
 			this.userStateStore.delete();
 			return;
 		}

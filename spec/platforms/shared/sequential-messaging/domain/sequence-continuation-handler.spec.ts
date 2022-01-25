@@ -44,6 +44,20 @@ describe('Sequence Continuation Handler', () => {
 		assert.notCalled(userStateStore.set);
 	});
 
+	it('Handle abnormal Sequence on overstep', () => {
+		const userStateStore = makeUserStateStoreSpy();
+		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
+		userStateStore.get.returns({ 5854346762: { step: 5 } });
+		configStoreSpy.get.returns(configStoreSample);
+
+		const sh = new SequenceContinuationHandler(configStoreSpy, userStateStore);
+		sh.handleOngoingSequence();
+
+		expect(sh).to.be.instanceOf(SequenceContinuationHandler);
+		assert.calledOnce(userStateStore.delete);
+		assert.notCalled(userStateStore.set);
+	});
+
 	it('Handle no configuration set', () => {
 		const userStateStore = makeUserStateStoreSpy();
 		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
