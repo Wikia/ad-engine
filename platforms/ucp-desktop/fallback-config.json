@@ -110,10 +110,7 @@
                 "fandomdesktop"
             ],
             "regions": [
-                "CA",
-                "DE",
-                "IT",
-                "PL"
+                "XX"
             ],
             "value": true
         }
@@ -459,21 +456,9 @@
                 "fandomdesktop"
             ],
             "regions": [
-                "CA",
-                "DE",
-                "IT",
-                "PL"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
                 "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icDeHeartbeatTracking": [
@@ -525,6 +510,7 @@
     "icUAPJWPlayerDelay": [
         {
             "apps": [
+                "f2",
                 "fandomdesktop",
                 "fandommobile"
             ],
@@ -2131,6 +2117,7 @@
                 "5875696557",
                 "5884643683",
                 "5882342335",
+                "5895868542",
                 "5875695327"
             ]
         }
