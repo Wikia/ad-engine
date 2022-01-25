@@ -18,9 +18,7 @@ export class SequentialMessagingSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute(): Promise<void> {
-		console.log('HERE execute');
 		if (!this.handleOngoingSequence()) {
-			console.log('HERE no ongoing sequence!');
 			this.detectNewSequentialAd();
 		}
 	}
