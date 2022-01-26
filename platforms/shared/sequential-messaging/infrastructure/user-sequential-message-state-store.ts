@@ -17,11 +17,6 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 			return;
 		}
 
-		console.log(cookieString);
-		console.log(typeof cookieString);
-		console.log(JSON.parse(cookieString));
-		console.log(typeof JSON.parse(cookieString));
-
 		return JSON.parse(cookieString);
 	}
 
