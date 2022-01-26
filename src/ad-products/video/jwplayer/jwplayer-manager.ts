@@ -17,7 +17,7 @@ export class JWPlayerManager {
 	manage(): void {
 		this.onPlayerReady()
 			.pipe(
-				mergeMap((result) =>
+				mergeMap((result: PlayerReadyResult) =>
 					merge(
 						new JWPlayerHandler().handle(result),
 						new JWPlayerTrackingHandler().handle(result),
@@ -36,7 +36,7 @@ export class JWPlayerManager {
 				this.loadIasTrackerIfEnabled();
 			}),
 			map(({ options, targeting, playerKey }) => {
-				const jwplayer: JWPlayer = window[playerKey];
+				const jwplayer: JWPlayer = window[playerKey] as any;
 				const adSlot = this.createAdSlot(options, jwplayer);
 				const stream$ = createJwpStream(jwplayer);
 

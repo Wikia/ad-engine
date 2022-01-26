@@ -7,6 +7,6 @@ export function onlyNew<T>(): RxJsOperator<Action<T>, T> {
 	return (source: Observable<Action<T>>): Observable<Action<T>> => {
 		const timestamp = Date.now();
 
-		return source.pipe(filter((action) => action.timestamp > timestamp));
+		return source.pipe(filter((action: Action<T>) => action.timestamp > timestamp));
 	};
 }

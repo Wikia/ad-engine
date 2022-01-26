@@ -27,7 +27,7 @@ export class SlotDecisionTimeoutHandler implements TemplateStateHandler {
 		this.timeout
 			.isViewedAndDelayed()
 			.pipe(
-				filter((viewedAndDelayed) => viewedAndDelayed),
+				filter((viewedAndDelayed: boolean) => viewedAndDelayed),
 				switchMap(() => this.domListener.scroll$.pipe(take(1))),
 				tap(() => {
 					this.adSlot.emitEvent(universalAdPackage.SLOT_UNSTICKED_STATE);
