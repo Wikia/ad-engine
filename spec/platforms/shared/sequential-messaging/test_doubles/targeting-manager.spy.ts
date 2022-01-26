@@ -1,4 +1,4 @@
-import { TargetingManagerInterface } from '../../../../../platforms/shared/sequential-messaging/domain/interfaces/targeting-manager-interface';
+import { TargetingManagerInterface } from '../../../../../platforms/shared/sequential-messaging/domain/interfaces/targeting-manager.interface';
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
 
 class TargetingManagerSpy implements TargetingManagerInterface {

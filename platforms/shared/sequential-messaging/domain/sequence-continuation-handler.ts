@@ -1,9 +1,9 @@
 import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequential-message-state-store.interface';
 import { UserSequentialMessageState } from './data-structures/user-sequential-message-state';
 import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential-messaging-config-store.interface';
-import { TargetingManagerInterface } from './interfaces/targeting-manager-interface';
+import { TargetingManagerInterface } from './interfaces/targeting-manager.interface';
 
-type adConfig = { length: number | string; targeting: Record<string, unknown> };
+type AdConfig = { length: number | string; targeting: Record<string, unknown> };
 
 export class SequenceContinuationHandler {
 	constructor(
@@ -33,7 +33,7 @@ export class SequenceContinuationHandler {
 	private setState(
 		userState: UserSequentialMessageState,
 		sequentialAdId: string,
-		adConfig: adConfig,
+		adConfig: AdConfig,
 	) {
 		const newUserState = userState;
 		newUserState[sequentialAdId].step++;
