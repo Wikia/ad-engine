@@ -1,4 +1,9 @@
-import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
+import {
+	BiddersEventPayload,
+	communicationService,
+	eventsRepository,
+	ofType,
+} from '@ad-engine/communication';
 import { filter, take } from 'rxjs/operators';
 import { AdSlot } from '../models';
 import { context, pbjsFactory } from '../services';
@@ -17,7 +22,8 @@ export class PrebidiumProvider implements Provider {
 			.pipe(
 				ofType(communicationService.getGlobalAction(eventsRepository.BIDDERS_BIDDING_DONE)),
 				filter(
-					(action) => action.provider === 'prebid' && action.slotName === adSlot.getSlotName(),
+					(action: BiddersEventPayload) =>
+						action.provider === 'prebid' && action.slotName === adSlot.getSlotName(),
 				),
 				take(1),
 			)

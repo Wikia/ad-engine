@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import * as Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { PlayerEventEmitter } from '../../../tracking/video/player-event-emitter';
+import { PlayerEventEmitter } from '../../../tracking';
 import { VideoEventDataProvider } from '../../../tracking/video/video-event-data-provider';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpEventKey } from '../streams/jwplayer-events';
@@ -45,7 +45,7 @@ export class JWPlayerTrackingHandler {
 		this.adSlot = adSlot;
 
 		return stream$.pipe(
-			filter((event) => this.isTrackingEvent(event)),
+			filter((event: JwpEvent<JwpEventKey>) => this.isTrackingEvent(event)),
 			tap((event: JwpEvent<TrackingEvent>) => this.track(event)),
 		);
 	}

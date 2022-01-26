@@ -1,4 +1,9 @@
-import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
+import {
+	AdSlotEventPayload,
+	communicationService,
+	eventsRepository,
+	ofType,
+} from '@ad-engine/communication';
 import { AdSlot, btfBlockerService, context, slotService, Targeting, utils } from '@ad-engine/core';
 import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
@@ -295,7 +300,7 @@ export function registerUapListener(): void {
 	communicationService.action$
 		.pipe(
 			ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-			filter((action) => {
+			filter((action: AdSlotEventPayload) => {
 				const isFirstCallAdSlot = !!context.get(`slots.${action.adSlotName}.firstCall`);
 
 				return (
