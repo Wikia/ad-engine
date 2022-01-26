@@ -273,6 +273,17 @@
             ],
             "sampling": 1.0,
             "value": true
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
         }
     ],
     "icFloorAdhesion": [
@@ -2286,7 +2297,9 @@
             ],
             "regions": [
                 "DE",
-                "PL"
+                "GB",
+                "PL",
+                "UK"
             ],
             "sampling": 50.0,
             "value": true
@@ -2416,7 +2429,10 @@
             ],
             "value": {
                 "5854346762": {
-                    "length": 4
+                    "length": 4,
+                    "targeting": {
+                        "cid": "sequential_messaging"
+                    }
                 }
             }
         }
