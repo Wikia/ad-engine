@@ -5,6 +5,7 @@ import {
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
+	SequentialMessagingSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
 	UcpNoAdsMode,
@@ -39,6 +40,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			SequentialMessagingSetup,
 			UcpDesktopIocSetup,
 			WikiContextSetup,
 			() => context.set('state.isMobile', false),

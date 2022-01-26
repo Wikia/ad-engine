@@ -273,6 +273,17 @@
             ],
             "sampling": 1.0,
             "value": true
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
         }
     ],
     "icFloorAdhesion": [
@@ -652,6 +663,7 @@
     "icUAPJWPlayerDelay": [
         {
             "apps": [
+                "f2",
                 "fandomdesktop",
                 "fandommobile"
             ],
@@ -2272,6 +2284,7 @@
                 "5875696557",
                 "5884643683",
                 "5882342335",
+                "5895868542",
                 "5875695327"
             ]
         }
@@ -2284,7 +2297,9 @@
             ],
             "regions": [
                 "DE",
-                "PL"
+                "GB",
+                "PL",
+                "UK"
             ],
             "sampling": 50.0,
             "value": true
@@ -2414,7 +2429,10 @@
             ],
             "value": {
                 "5854346762": {
-                    "length": 4
+                    "length": 4,
+                    "targeting": {
+                        "cid": "sequential_messaging"
+                    }
                 }
             }
         }

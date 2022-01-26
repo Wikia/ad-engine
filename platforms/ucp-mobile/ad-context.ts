@@ -73,8 +73,8 @@ export const basicContext = {
 	services: {
 		adMarketplace: {
 			enabled: false,
-			insertMethod: 'prepend',
-			insertSelector: '.wds-global-navigation__search-suggestions.wds-dropdown__content',
+			insertMethod: 'after',
+			insertSelector: '.mobile-search-modal__content form',
 		},
 		confiant: {
 			enabled: false,
