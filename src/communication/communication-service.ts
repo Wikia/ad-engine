@@ -35,8 +35,8 @@ export class CommunicationService {
 		this.subject = new Subject<Action>();
 
 		this.action$ = merge(
-			actions$.pipe(filter((action) => isGlobalAction(action))),
-			this.subject.asObservable().pipe(filter((action) => !isGlobalAction(action))),
+			actions$.pipe(filter((action: Action<string>) => isGlobalAction(action))),
+			this.subject.asObservable().pipe(filter((action: Action<string>) => !isGlobalAction(action))),
 		);
 		this.connectReduxDevtools(reduxDevtoolsName);
 	}
@@ -61,7 +61,7 @@ export class CommunicationService {
 			.pipe(
 				ofType(this.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 				filter(
-					(action) =>
+					(action: Action) =>
 						action.event === eventName.toString() && (!slotName || action.adSlotName === slotName),
 				),
 				once ? take(1) : skip(0),

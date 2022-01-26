@@ -305,7 +305,8 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			!!document.querySelector('.wds-global-footer') &&
+			// TODO: Remove .wds-global-footer after SITE-2038 is completed
+			!!document.querySelector('.wds-global-footer,.global-footer') &&
 			context.get('wiki.opts.pageType') !== 'search'
 		);
 	}
