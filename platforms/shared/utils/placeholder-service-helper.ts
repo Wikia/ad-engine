@@ -54,7 +54,7 @@ export class PlaceholderServiceHelper {
 	};
 
 	hideAdLabel = (adLabel: HTMLElement): void => {
-		if (this.shouldHideAdLabel) {
+		if (adLabel && this.shouldHideAdLabel) {
 			adLabel.classList.add('hide');
 		}
 	};
