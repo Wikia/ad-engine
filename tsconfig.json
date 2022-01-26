@@ -11,6 +11,7 @@
 		"baseUrl": ".",
 		"noUnusedLocals": true,
 		"keyofStringsOnly": true,
+		"skipLibCheck": true,
 		"typeRoots": ["node_modules/@types", "@types"]
 	},
 	"include": ["src", "spec", "platforms"],
