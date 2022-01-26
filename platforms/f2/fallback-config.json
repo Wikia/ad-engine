@@ -49,15 +49,6 @@
             "value": true
         }
     ],
-    "icFeaturedVideoPostroll": [
-        {
-            "apps": [
-                "f2",
-                "fandommobile",
-                "fandomdesktop"
-            ]
-        }
-    ],
     "icLABradorTest": [
         {
             "apps": [
@@ -73,31 +64,6 @@
             "sampling": 35.0,
             "samplingCache": true,
             "value": true
-        }
-    ],
-    "icSlotTracking": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icFeaturedVideoMidroll": [
-        {
-            "apps": [
-                "f2",
-                "fandommobile",
-                "fandomdesktop"
-            ]
         }
     ],
     "icStickySlotLineItemIds": [
@@ -1627,6 +1593,20 @@
             ]
         }
     ],
+    "icForceStickyTlb": [
+        {
+            "apps": [
+                "f2"
+            ],
+            "devices": [
+                "desktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorGamKeyValues": [
         {
             "apps": [
@@ -1701,53 +1681,6 @@
             "value": 3
         }
     ],
-    "icViewabilityTracking": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icBabDetection": [
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "fandommobile",
-                "muthead",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
-        }
-    ],
     "icPostmessageTracking": [
         {
             "apps": [
@@ -1817,6 +1750,123 @@
             "value": true
         }
     ],
+    "icUAPJWPlayer": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
+        }
+    ],
+    "icIASVideoTracking": [
+        {
+            "apps": [
+                "f2",
+                "fandommobile",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "AU",
+                "CA",
+                "DE",
+                "GB",
+                "ID",
+                "MY",
+                "NZ",
+                "PH",
+                "SG",
+                "UK",
+                "US"
+            ],
+            "value": true
+        }
+    ],
+    "icFeaturedVideoPostroll": [
+        {
+            "apps": [
+                "f2",
+                "fandommobile",
+                "fandomdesktop"
+            ]
+        }
+    ],
+    "icSlotTracking": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icFeaturedVideoMidroll": [
+        {
+            "apps": [
+                "f2",
+                "fandommobile",
+                "fandomdesktop"
+            ]
+        }
+    ],
+    "icViewabilityTracking": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icBabDetection": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "fandommobile",
+                "muthead",
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icTrackingOptInLibraryUrl": [
+        {
+            "apps": [
+                "bingebot",
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
+        }
+    ],
     "icNielsen": [
         {
             "apps": [
@@ -1854,29 +1904,6 @@
             ],
             "regions": [
                 "XX"
-            ],
-            "value": true
-        }
-    ],
-    "icIASVideoTracking": [
-        {
-            "apps": [
-                "f2",
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "AU",
-                "CA",
-                "DE",
-                "GB",
-                "ID",
-                "MY",
-                "NZ",
-                "PH",
-                "SG",
-                "UK",
-                "US"
             ],
             "value": true
         }
