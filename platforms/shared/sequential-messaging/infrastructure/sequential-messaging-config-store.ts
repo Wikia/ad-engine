@@ -21,6 +21,7 @@ export class SequentialMessagingConfigStore implements SequentialMessagingConfig
 		sequentialMessagingConfig: SequentialMessagingConfig,
 	): boolean {
 		if (
+			sequentialMessagingConfig == null ||
 			typeof sequentialMessagingConfig !== 'object' ||
 			sequentialMessagingConfig instanceof Array ||
 			Object.keys(sequentialMessagingConfig).length === 0
