@@ -20,5 +20,5 @@ export function ofTemplateAction(
 	...types: TemplateAction['type'][]
 ): RxJsOperator<TemplateAction, TemplateAction> {
 	return (source: Observable<TemplateAction>) =>
-		source.pipe(filter((action) => types.includes(action.type)));
+		source.pipe(filter((action: TemplateAction) => types.includes(action.type)));
 }

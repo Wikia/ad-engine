@@ -13,9 +13,7 @@ export class PlaceholderService {
 	private isUapLoaded: boolean;
 	private placeholderHelper: PlaceholderServiceHelper;
 
-	constructor(
-		private messageBoxService: MessageBoxService = null,
-	) {
+	constructor(private messageBoxService: MessageBoxService = null) {
 		this.placeholderHelper = new PlaceholderServiceHelper();
 	}
 
@@ -28,7 +26,7 @@ export class PlaceholderService {
 		communicationService.action$
 			.pipe(
 				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action) => this.placeholderHelper.isLoadingOrCollapsed(action)),
+				filter((action: object) => this.placeholderHelper.isLoadingOrCollapsed(action)),
 			)
 			.subscribe((action) => {
 				const adSlot = slotService.get(action.adSlotName);
