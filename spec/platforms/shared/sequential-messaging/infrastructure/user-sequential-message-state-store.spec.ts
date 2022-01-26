@@ -14,7 +14,7 @@ describe('User Sequential Message State Store', () => {
 		const store = new UserSequentialMessageStateStore(Cookies);
 		store.set(sampleState);
 
-		sinon.assert.calledWith(cookieSpy, store.cookieName, sampleState);
+		sinon.assert.calledWith(cookieSpy, store.cookieName, JSON.stringify(sampleState));
 	});
 
 	it("Retrieve user's sequential message state from a cookie", () => {

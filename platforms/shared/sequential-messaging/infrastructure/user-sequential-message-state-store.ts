@@ -8,7 +8,7 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 	constructor(private cookies: Cookies.CookiesStatic) {}
 
 	set(userState: UserSequentialMessageState): void {
-		this.cookies.set(this.cookieName, userState);
+		this.cookies.set(this.cookieName, JSON.stringify(userState));
 	}
 
 	get(): UserSequentialMessageState {
