@@ -50,7 +50,12 @@ export class PlaceholderService {
 					if (this.isUapLoaded) {
 						this.placeholderHelper.hidePlaceholder(placeholder);
 					} else {
-						this.placeholderHelper.hideAdLabel(adSlot.getAdLabel(adLabelParent));
+						const adLabel = adSlot.getAdLabel(adLabelParent);
+
+						if (adLabel) {
+							this.placeholderHelper.hideAdLabel(adLabel);
+						}
+
 						if (
 							this.messageBoxService &&
 							this.messageBoxService.shouldAddMessageBox(action.event, placeholder)
