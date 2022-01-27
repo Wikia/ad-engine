@@ -25,6 +25,7 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 
 		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
 
+		slotsContext.setupSlotSizeOverwriting(additionalSizes);
 		slotsContext.addSlotSize('cdm-zone-02', additionalSizes.companionSize);
 		slotsContext.setSlotSize('cdm-zone-04', additionalSizes.bfaSize);
 	}
