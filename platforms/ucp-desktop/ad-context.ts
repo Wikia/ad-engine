@@ -116,7 +116,7 @@ export const basicContext = {
 	src: ['gpt'],
 	state: {
 		adStack: [],
-		isMobile: true,
+		isMobile: false,
 	},
 	options: {
 		customAdLoader: {

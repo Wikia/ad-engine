@@ -25,6 +25,7 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 
 		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.mobile;
 
+		slotsContext.setupSlotSizeOverwriting(additionalSizes);
 		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
 		slotsContext.addSlotSize('mobile_prefooter', additionalSizes.companionSize);
 		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);

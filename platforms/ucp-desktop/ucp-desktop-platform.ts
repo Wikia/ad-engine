@@ -42,7 +42,6 @@ export class UcpDesktopPlatform {
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpDesktopIocSetup,
 			WikiContextSetup,
-			() => context.set('state.isMobile', false),
 			UcpBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,

@@ -21,9 +21,11 @@ export const UAP_ADDITIONAL_SIZES: Dictionary<Dictionary<[number, number]>> = {
 	desktop: {
 		bfaSize: [3, 3],
 		companionSize: [5, 5],
+		companionOriginalSize: [300, 600],
 	},
 	mobile: {
 		bfaSize: [2, 2],
 		companionSize: [4, 4],
+		companionOriginalSize: [300, 250],
 	},
 };
