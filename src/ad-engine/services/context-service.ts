@@ -112,7 +112,23 @@ function segment(key: string, newValue?: any, remove = false): any {
 	return seg[lastKey];
 }
 
-export class Context {
+export interface ContextInterface {
+	extend(newContext: ContextObject): void;
+
+	set(key: string, value: any): void;
+
+	get(key: string): any;
+
+	remove(key: string): void;
+
+	push(key: string, value: any): void;
+
+	onChange(key: string, callback: ChangeCallback): void;
+
+	removeListeners(key: string): void;
+}
+
+export class Context implements ContextInterface {
 	constructor() {
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.adContext = debug.isDebugMode() ? contextObject : {};

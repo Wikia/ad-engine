@@ -40,12 +40,12 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
-			SequentialMessagingSetup,
 			UcpDesktopIocSetup,
 			WikiContextSetup,
 			UcpBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
+			SequentialMessagingSetup,
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,
