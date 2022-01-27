@@ -1,3 +1,3 @@
 export interface UserSequentialMessageState {
-	[sequentialAdId: number]: { length: number };
+	[sequentialAdId: number]: { step: number };
 }

@@ -1,5 +1,6 @@
 import {
 	communicationService,
+	context,
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
@@ -8,15 +9,23 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import Cookies from 'js-cookie';
 import { filter, take } from 'rxjs/operators';
-import { SequenceHandler } from './domain/sequence-handler';
+import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
+import { SequenceStartHandler } from './domain/sequence-start-handler';
 import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
+import { TargetingManager } from './infrastructure/targeting-manager';
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute(): Promise<void> {
+		if (!this.handleOngoingSequence()) {
+			this.detectNewSequentialAd();
+		}
+	}
+
+	private detectNewSequentialAd(): void {
 		interface Action {
 			event: string;
 			slot: { lineItemId: string };
@@ -34,11 +43,21 @@ export class SequentialMessagingSetup implements DiProcess {
 					return;
 				}
 
-				const sequenceHandler = new SequenceHandler(
+				const sequenceHandler = new SequenceStartHandler(
 					new SequentialMessagingConfigStore(this.instantConfig),
 					new UserSequentialMessageStateStore(Cookies),
 				);
 				sequenceHandler.handleItem(lineItemId);
 			});
+	}
+
+	private handleOngoingSequence(): boolean {
+		const sequenceHandler = new SequenceContinuationHandler(
+			new SequentialMessagingConfigStore(this.instantConfig),
+			new UserSequentialMessageStateStore(Cookies),
+			new TargetingManager(context),
+		);
+
+		return sequenceHandler.handleOngoingSequence();
 	}
 }
