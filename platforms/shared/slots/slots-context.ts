@@ -1,7 +1,7 @@
 import {
 	AdSlot,
 	communicationService,
-	context,
+	context, Dictionary,
 	eventsRepository,
 	getAdProductInfo,
 	getAdUnitString,
@@ -24,6 +24,10 @@ class SlotsContext {
 				sizeMap.sizes.push(size);
 			});
 		}
+	}
+
+	setupSlotSizeOverwriting(map: Dictionary<[number, number]>): void {
+		context.set('templates.sizeOverwritingMap', map);
 	}
 
 	setSlotSize(slotName: string, size: [number, number]): void {

@@ -42,7 +42,6 @@ export class UcpMobilePlatform {
 			SequentialMessagingSetup,
 			UcpMobileIocSetup,
 			WikiContextSetup,
-			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
 			UcpTargetingSetup,
