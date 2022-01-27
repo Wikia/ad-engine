@@ -1,7 +1,8 @@
 import {
 	AdSlot,
 	communicationService,
-	context, Dictionary,
+	context,
+	Dictionary,
 	eventsRepository,
 	getAdProductInfo,
 	getAdUnitString,
