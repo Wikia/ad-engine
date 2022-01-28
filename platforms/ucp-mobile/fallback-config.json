@@ -435,9 +435,8 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
+                "XX"
             ],
-            "sampling": 90.0,
             "value": true
         }
     ],
@@ -2316,7 +2315,8 @@
                 "tablet"
             ],
             "regions": [
-                "CA"
+                "CA",
+                "US"
             ],
             "value": true
         }
@@ -2430,6 +2430,12 @@
             ],
             "value": {
                 "5854346762": {
+                    "length": 4,
+                    "targeting": {
+                        "cid": "sequential_messaging"
+                    }
+                },
+                "5895677484": {
                     "length": 4,
                     "targeting": {
                         "cid": "sequential_messaging"
