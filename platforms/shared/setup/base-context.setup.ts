@@ -143,7 +143,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
-		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
@@ -153,6 +152,8 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+
+		this.setupOutstreamPlayers();
 	}
 
 	private setMiscContext(): void {
@@ -176,6 +177,19 @@ export class BaseContextSetup implements DiProcess {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
+	}
+
+	private setupOutstreamPlayers(): void {
+		const distroscalePlayerEnabled = this.instantConfig.get('icDistroScale');
+		const exCoPlayerEnabled = this.instantConfig.get('icExCoPlayer');
+
+		if (exCoPlayerEnabled === true) {
+			context.set('services.exco.enabled', exCoPlayerEnabled);
+			context.set('services.distroScale.enabled', false);
+		} else {
+			context.set('services.exco.enabled', false);
+			context.set('services.distroScale.enabled', distroscalePlayerEnabled);
+		}
 	}
 
 	private setupStickySlotContext(): void {
