@@ -2,7 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { btfBlockerService, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
+import { btfBlockerService, context, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
@@ -62,6 +62,8 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 			const adType = getAdType(event, adSlot.getIframe());
 
+			adjustIframeSize(adSlot);
+
 			return adSlot.emit(AdSlot.SLOT_RENDERED_EVENT, { event, adType }, false);
 		});
 	});
@@ -96,6 +98,21 @@ function getAdType(
 	}
 
 	return AdSlot.STATUS_SUCCESS;
+}
+
+function adjustIframeSize(adSlot: AdSlot): void {
+	const map: Dictionary<[number, number]> = context.get('templates.sizeOverwritingMap');
+
+	if (!map) {
+		return;
+	}
+
+	const iframe = adSlot.getIframe();
+
+	if (parseInt(iframe.width) === map.companionSize[0] && parseInt(iframe.height) === map.companionSize[1]) {
+		iframe.width = map.companionOriginalSize[0].toString();
+		iframe.height = map.companionOriginalSize[1].toString();
+	}
 }
 
 export class GptProvider implements Provider {
@@ -200,24 +217,6 @@ export class GptProvider implements Provider {
 
 			gptSlot.setTargeting(key, value);
 		});
-	}
-
-	parseTargetingParams(targetingParams: Dictionary): Targeting {
-		const result: Dictionary = {};
-
-		Object.keys(targetingParams).forEach((key) => {
-			let value = targetingParams[key];
-
-			if (typeof value === 'function') {
-				value = value();
-			}
-
-			if (value !== null) {
-				result[key] = value;
-			}
-		});
-
-		return result as Targeting;
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)

@@ -2262,6 +2262,12 @@
                     "targeting": {
                         "cid": "sequential_messaging"
                     }
+                },
+                "5895677484": {
+                    "length": 4,
+                    "targeting": {
+                        "cid": "sequential_messaging"
+                    }
                 }
             }
         }

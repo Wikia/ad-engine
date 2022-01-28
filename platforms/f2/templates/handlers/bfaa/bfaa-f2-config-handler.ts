@@ -32,6 +32,7 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 				? universalAdPackage.UAP_ADDITIONAL_SIZES.mobile
 				: universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
 
+		slotsContext.setupSlotSizeOverwriting(additionalSizes);
 		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
 		slotsContext.addSlotSize('incontent_boxad', additionalSizes.companionSize);
 		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
