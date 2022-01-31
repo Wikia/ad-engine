@@ -19,6 +19,7 @@ export function createAdapterSpecificSettings(adaptersList): PrebidSettings | un
 				},
 			],
 			suppressEmptyKeys: true,
+			allowZeroCpmBids: true,
 		};
 	});
 
