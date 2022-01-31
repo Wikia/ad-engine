@@ -31,6 +31,14 @@ export function getRubiconDisplayContext(): object {
 				siteId: '23565',
 				zoneId: '1422262',
 			},
+			interstitial: {
+				sizes: [
+					[320, 480],
+					[480, 320],
+				],
+				siteId: '23565',
+				zoneId: '2229522',
+			},
 		},
 	};
 }
