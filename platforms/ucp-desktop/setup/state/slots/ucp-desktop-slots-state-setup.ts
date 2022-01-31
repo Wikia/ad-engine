@@ -15,6 +15,10 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 		if (context.get('services.distroScale.enabled')) {
 			this.setupIncontentPlayerForDistroScale();
 		}
+
+		if (context.get('services.exco.enabled')) {
+			this.disableIncontentPlayerSlot();
+		}
 	}
 
 	private setDistroscaleVarInRuntime(slotName: string): void {
@@ -32,7 +36,11 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 	private setupIncontentPlayerForDistroScale(): void {
 		const slotName = 'incontent_player';
 		this.setDistroscaleVarInRuntime(slotName);
-		context.set('slots.incontent_player.disabled', true);
+		this.disableIncontentPlayerSlot();
 		context.set('slots.incontent_player.targeting.pos', ['incontent_video']);
+	}
+
+	private disableIncontentPlayerSlot(): void {
+		context.set('slots.incontent_player.disabled', true);
 	}
 }
