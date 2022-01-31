@@ -22,6 +22,13 @@ export function getAppnexusContext(): object {
 				],
 				placementId: '17062362',
 			},
+			interstitial: {
+				sizes: [
+					[320, 480],
+					[480, 320],
+				],
+				placementId: '23485904',
+			},
 		},
 		placements: {
 			ent: '9412992',

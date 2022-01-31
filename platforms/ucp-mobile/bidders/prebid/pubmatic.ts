@@ -11,6 +11,13 @@ export function getPubmaticContext(): object {
 				sizes: [[0, 0]],
 				ids: ['1636188@0x0'],
 			},
+			interstitial: {
+				sizes: [
+					[320, 480],
+					[480, 320],
+				],
+				ids: ['Fandom_Mobile_Interstitial'],
+			},
 			mobile_top_leaderboard: {
 				sizes: [[320, 50]],
 				ids: ['/5441/MOBILE_TOP_LEADERBOARD_320x50@320x50'],
