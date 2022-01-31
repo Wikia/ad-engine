@@ -47,6 +47,7 @@ export function getSettings(): PrebidSettings {
 				},
 			],
 			suppressEmptyKeys: true,
+			allowZeroCpmBids: true,
 		},
 		...createAdapterSpecificSettings(adaptersRegistry.getAdapters()),
 	};
