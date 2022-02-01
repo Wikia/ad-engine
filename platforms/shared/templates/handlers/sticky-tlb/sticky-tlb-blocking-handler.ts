@@ -3,7 +3,6 @@ import {
 	communicationService,
 	context,
 	eventsRepository,
-	slotService,
 	TEMPLATE,
 	TemplateStateHandler,
 	TemplateTransition,
@@ -29,18 +28,13 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 			this.blockStickyTLB(`Line item ID ${this.adSlot.lineItemId}`);
 			return;
 		}
-		this.continueWithStickyTLB(transition);
+
+		transition('initial');
 	}
 
 	private blockStickyTLB(reason: string): void {
 		this.adSlot.emitEvent(universalAdPackage.SLOT_STICKINESS_DISABLED);
 		this.logger(`Template 'stickyTlb' could not be applied for ${reason}`);
-	}
-
-	private continueWithStickyTLB(transition: TemplateTransition<'initial'>): void {
-		this.logger('Disabling incontent_player');
-		slotService.disable('incontent_player', 'hivi-collapse');
-		transition('initial');
 	}
 
 	private isLineAndGeo(): boolean {
