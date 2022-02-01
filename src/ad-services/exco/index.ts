@@ -3,18 +3,12 @@ import { context, utils } from '@ad-engine/core';
 const logGroup = 'exCo';
 
 class ExCo {
-	private readonly id: string;
-
-	constructor() {
-		this.id = 'f6c04939-d96e-4bc6-850e-d0e6e6cf9701';
-	}
-
-	getId(): string {
-		return this.id;
+	get id(): string {
+		return context.get('services.exCo.id');
 	}
 
 	isEnabled(): boolean {
-		return context.get('services.exCo.enabled');
+		return context.get('services.exCo.enabled') && !!this.id;
 	}
 
 	call(): Promise<void> {
@@ -29,7 +23,7 @@ class ExCo {
 	}
 
 	private loadPlayerAsset() {
-		const libraryUrl = `//stream.playbuzz.com/embed/sdk.js?embedId=${this.getId()}`;
+		const libraryUrl = `//stream.playbuzz.com/embed/sdk.js?embedId=${this.id}`;
 
 		utils.logger(logGroup, 'loading ExCo asset', libraryUrl);
 
@@ -42,7 +36,7 @@ class ExCo {
 		utils.logger(logGroup, 'inserting ExCo player to the page');
 
 		const exCoPlayerDiv = document.createElement('div');
-		exCoPlayerDiv.id = this.getId();
+		exCoPlayerDiv.id = this.id;
 
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 		incontentPlayerContainer.appendChild(exCoPlayerDiv);
