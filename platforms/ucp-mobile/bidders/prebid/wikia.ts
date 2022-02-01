@@ -14,6 +14,12 @@ export function getWikiaContext(): object {
 			floor_adhesion: {
 				sizes: [[320, 50]],
 			},
+			interstitial: {
+				sizes: [
+					[320, 480],
+					[480, 320],
+				],
+			},
 		},
 	};
 }

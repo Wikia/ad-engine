@@ -2328,8 +2328,7 @@
                 "tablet"
             ],
             "regions": [
-                "CA",
-                "US"
+                "XX"
             ],
             "value": true
         }
@@ -2447,21 +2446,21 @@
                     "targeting": {
                         "cid": "sequential_messaging"
                     },
-                    "lastCreativeId": "138374456688"
+                    "lastStepId": "138374456688"
                 },
                 "5895677484": {
                     "length": 4,
                     "targeting": {
                         "cid": "sequential_messaging"
                     },
-                    "lastCreativeId": "138378822185"
+                    "lastStepId": "138378822185"
                 },
                 "5901739367": {
                     "length": 4,
                     "targeting": {
                         "cid": "sequential_messaging_uap"
                     },
-                    "lastCreativeId": "138379703413"
+                    "lastStepId": "138379703413"
                 }
             }
         }
