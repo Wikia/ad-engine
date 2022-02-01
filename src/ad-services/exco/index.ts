@@ -1,6 +1,6 @@
 import { context, utils } from '@ad-engine/core';
 
-const logGroup = 'exco';
+const logGroup = 'exCo';
 
 class ExCo {
 	private readonly id: string;
@@ -14,7 +14,7 @@ class ExCo {
 	}
 
 	isEnabled(): boolean {
-		return context.get('services.exco.enabled');
+		return context.get('services.exCo.enabled');
 	}
 
 	call(): Promise<void> {
@@ -50,4 +50,4 @@ class ExCo {
 	}
 }
 
-export const exco = new ExCo();
+export const exCo = new ExCo();

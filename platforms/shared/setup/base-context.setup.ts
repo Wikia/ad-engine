@@ -181,11 +181,11 @@ export class BaseContextSetup implements DiProcess {
 
 	private setupOutstreamPlayers(): void {
 		if (this.instantConfig.get('icExCoPlayer')) {
-			context.set('services.exco.enabled', true);
+			context.set('services.exCo.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
 		}
-		
+
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 	}
 
