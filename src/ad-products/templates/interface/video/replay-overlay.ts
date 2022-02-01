@@ -1,4 +1,5 @@
 import { createIcon, icons } from '../icons';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const replayOverlayClass = 'replay-overlay';
 
@@ -35,7 +36,7 @@ function getOverlayWidth(params): string {
 	return `${(100 * videoWidth) / adWidth}%`;
 }
 
-function addReplayIcon(overlay): HTMLElement | null {
+function addReplayIcon(overlay: HTMLElement): HTMLElement | null {
 	const replayIcon = createIcon(icons.REPLAY, ['replay-icon', 'overlay-icon']);
 
 	overlay.appendChild(replayIcon);
@@ -72,6 +73,11 @@ export class ReplayOverlay {
 			(params.theme && params.theme === 'hivi')
 		) {
 			const replayIcon = addReplayIcon(overlay);
+
+			communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_DISPLAYED, {
+				adSlotName: video.settings.getSlotName(),
+				replayButton: replayIcon,
+			});
 
 			if (!params.autoPlay) {
 				const playIcon = addPlayIcon(overlay);

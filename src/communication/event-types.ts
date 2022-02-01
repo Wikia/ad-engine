@@ -113,6 +113,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Invalidate slot targeting',
 		payload: props<{ slot: AdSlot }>(),
 	},
+	AD_ENGINE_VIDEO_REPLAY_DISPLAYED: {
+		name: 'Video replay button displayed',
+		payload: props<{ adSlotName: string; replayButton: HTMLElement }>(),
+	},
 	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
 		name: 'Video learn more displayed',
 		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
