@@ -14,7 +14,6 @@ describe('Sequence Start Handler', () => {
 		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
 		configStoreSpy.get.returns({
 			5854346762: {
-				length: '4',
 				lastStepId: '123456789',
 				targeting: { cid: 'sequential_messaging' },
 			},

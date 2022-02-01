@@ -23,8 +23,8 @@ export class SequentialMessagingConfigStore implements SequentialMessagingConfig
 		if (
 			sequentialMessagingConfig == null ||
 			typeof sequentialMessagingConfig !== 'object' ||
-			sequentialMessagingConfig instanceof Array ||
-			Object.keys(sequentialMessagingConfig).length === 0
+			Object.keys(sequentialMessagingConfig).length === 0 ||
+			sequentialMessagingConfig instanceof Array
 		) {
 			return false;
 		}

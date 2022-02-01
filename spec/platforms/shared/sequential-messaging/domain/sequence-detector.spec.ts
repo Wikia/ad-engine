@@ -7,7 +7,6 @@ describe('New Sequence Detector', () => {
 	it('Is Ad Sequential Check', () => {
 		const config: SequentialMessagingConfig = {
 			'5854346762': {
-				length: '4',
 				lastStepId: '1234567890',
 				targeting: { cid: 'sequential_messaging' },
 			},
