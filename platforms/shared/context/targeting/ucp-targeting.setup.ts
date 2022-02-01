@@ -1,12 +1,10 @@
 import {
 	Binder,
 	communicationService,
-	context,
-	DiProcess,
+	context, DiProcess,
 	eventsRepository,
 	InstantConfigService,
-	Targeting,
-	UapLoadStatus,
+	Targeting, UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
