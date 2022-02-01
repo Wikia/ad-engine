@@ -180,16 +180,13 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setupOutstreamPlayers(): void {
-		const distroscalePlayerEnabled = this.instantConfig.get('icDistroScale');
-		const exCoPlayerEnabled = this.instantConfig.get('icExCoPlayer');
-
-		if (exCoPlayerEnabled === true) {
-			context.set('services.exco.enabled', exCoPlayerEnabled);
+		if (this.instantConfig.get('icExCoPlayer')) {
+			context.set('services.exco.enabled', true);
 			context.set('services.distroScale.enabled', false);
-		} else {
-			context.set('services.exco.enabled', false);
-			context.set('services.distroScale.enabled', distroscalePlayerEnabled);
+			return;
 		}
+		
+		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 	}
 
 	private setupStickySlotContext(): void {
