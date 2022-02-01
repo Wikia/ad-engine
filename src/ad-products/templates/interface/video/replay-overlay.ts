@@ -74,11 +74,6 @@ export class ReplayOverlay {
 		) {
 			const replayIcon = addReplayIcon(overlay);
 
-			communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_DISPLAYED, {
-				adSlotName: video.settings.getSlotName(),
-				replayButton: replayIcon,
-			});
-
 			if (!params.autoPlay) {
 				const playIcon = addPlayIcon(overlay);
 
@@ -97,6 +92,11 @@ export class ReplayOverlay {
 		} else {
 			container.parentElement.insertBefore(overlay, container);
 		}
+
+		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_DISPLAYED, {
+			adSlotName: video.settings.getSlotName(),
+			replayOverlay: overlay,
+		});
 
 		forceRepaint(container);
 	}
