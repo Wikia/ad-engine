@@ -27,9 +27,7 @@ describe('Sequence Start Handler', () => {
 		expect(sh).to.be.instanceOf(SequenceStartHandler);
 		assert.calledOnce(userStateStore.set);
 		assert.calledWith(userStateStore.set, {
-			5854346762: {
-				lastStepId: '123456789',
-			},
+			5854346762: {},
 		});
 	});
 

@@ -24,7 +24,7 @@ describe('Sequence Continuation Handler', () => {
 		const userStateStore = makeUserStateStoreSpy();
 		const targetingManager = makeTargetingManagerSpy();
 		configStoreSpy.get.returns(configStoreSample);
-		userStateStore.get.returns({ 5854346762: { lastStepId: 123456789 } });
+		userStateStore.get.returns({ 5854346762: {} });
 		const onSlotShowedEventSpy = sinon.spy((onEvent: SequenceEndStateHandler) => {
 			onEvent.handleState(sequenceBeforeLastStep);
 		});
@@ -48,7 +48,7 @@ describe('Sequence Continuation Handler', () => {
 		const userStateStore = makeUserStateStoreSpy();
 		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
 		configStoreSpy.get.returns(configStoreSample);
-		userStateStore.get.returns({ 5854346762: { lastStepId: 123456789 } });
+		userStateStore.get.returns({ 5854346762: {} });
 		const onSlotShowedEventSpy = sinon.spy((onEvent: SequenceEndStateHandler) => {
 			onEvent.handleState(sequenceLastStep);
 		});
@@ -71,7 +71,7 @@ describe('Sequence Continuation Handler', () => {
 		const targetingManager = makeTargetingManagerSpy();
 		const userStateStore = makeUserStateStoreSpy();
 		const configStoreSpy = makeSequentialMessagingConfigStoreSpy();
-		userStateStore.get.returns({ 5854346762: { lastStepId: 123456789 } });
+		userStateStore.get.returns({ 5854346762: {} });
 		configStoreSpy.get.returns(null);
 		const onSlotShowedEventSpy = sinon.spy((onEvent: SequenceEndStateHandler) => {
 			onEvent.handleState(sequenceBeforeLastStep);
