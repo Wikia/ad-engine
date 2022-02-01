@@ -47,7 +47,7 @@
 		"deepmerge": "2.2.1",
 		"eslint": "8.6.0",
 		"express": "4.17.2",
-		"husky": "7.0.4",
+		"husky": "4.3.8",
 		"js-md5": "0.7.3",
 		"jsdom": "11.11.0",
 		"jsdom-global": "^3.0.2",
@@ -95,9 +95,8 @@
 		]
 	},
 	"scripts": {
-		"prepare": "husky install",
-		"prebuild": "rm -rf dist",
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js -d",
+		"prebuild": "rm -rf dist",
 		"build:platforms": "webpack --config webpack.platforms.js -p",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "npx eslint . --ext .ts --max-warnings 0",
