@@ -94,6 +94,10 @@
 		}
 
 		#top_leaderboard {
+			height: 292px; // 250px height + 18px top padding + 24px bottom label
+			display: flex;
+			flex-direction: column;
+
 			@media #{$wds-breakpoint-medium-down} {
 				@include bfaa-slot();
 				@include sticky-tlb-slot();
