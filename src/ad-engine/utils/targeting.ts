@@ -1,6 +1,6 @@
 import { Dictionary } from '../models';
 import { context } from '../services/context-service';
-import { logger } from "./logger";
+import { logger } from './logger';
 import { CookieStorageAdapter } from "../services/";
 
 class Targeting {
