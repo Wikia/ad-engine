@@ -13,7 +13,7 @@ describe('Sequence Messaging Config Store', () => {
 			1234567890: 'invalid value',
 		});
 		const smConfigStore_invalidLengthValue = makeInstantConfigServiceSpy();
-		smConfigStore_invalidLengthValue.get.returns({ 1234567890: { length: [4] } });
+		smConfigStore_invalidLengthValue.get.returns({ 1234567890: { lastStepId: [4] } });
 		const smConfigStore_nullValue = makeInstantConfigServiceSpy();
 		smConfigStore_nullValue.get.returns(null);
 
