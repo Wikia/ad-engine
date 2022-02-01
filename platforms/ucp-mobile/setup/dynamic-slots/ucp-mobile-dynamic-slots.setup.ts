@@ -8,7 +8,7 @@ import {
 	AdSlot,
 	btfBlockerService,
 	communicationService,
-	context,
+	context, CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
 	fillerService,
@@ -77,13 +77,23 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureInterstitial(): void {
+		const setInterstitialCapping = () => {
+			const cookieAdapter = new CookieStorageAdapter();
+			cookieAdapter.setItem('_ae_intrsttl_imp', '1');
+		};
+
 		communicationService.onSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_INTERSTITIAL_DISPLAYED);
+				setInterstitialCapping();
 			},
 			'interstitial',
 		);
+
+		communicationService.on(eventsRepository.GAM_INTERSTITIAL_LOADED, () => {
+			setInterstitialCapping();
+		});
 	}
 
 	private registerTopLeaderboardCodePriority(): void {
