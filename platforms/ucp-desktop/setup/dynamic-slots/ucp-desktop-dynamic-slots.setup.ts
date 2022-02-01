@@ -1,8 +1,4 @@
-import {
-	insertSlots,
-	PlaceholderService,
-	slotsContext,
-} from '@platforms/shared';
+import { insertSlots, PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	AdSlot,
 	communicationService,

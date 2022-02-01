@@ -1,7 +1,8 @@
 import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
 import {
 	communicationService,
-	context, CookieStorageAdapter,
+	context,
+	CookieStorageAdapter,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,

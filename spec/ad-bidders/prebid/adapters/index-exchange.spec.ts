@@ -17,7 +17,10 @@ describe('IndexExchange bidder adapter', () => {
 			enabled: true,
 			slots: {
 				bottom_leaderboard: {
-					sizes: [[300, 250], [320, 50]],
+					sizes: [
+						[300, 250],
+						[320, 50],
+					],
 					siteId: '112233',
 				},
 			},
@@ -28,7 +31,10 @@ describe('IndexExchange bidder adapter', () => {
 				code: 'bottom_leaderboard',
 				mediaTypes: {
 					banner: {
-						sizes: [[300, 250], [320, 50]],
+						sizes: [
+							[300, 250],
+							[320, 50],
+						],
 					},
 				},
 				bids: [
