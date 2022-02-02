@@ -5,14 +5,14 @@ export class Openx extends PrebidAdapter {
 	static bidderName = 'openx';
 	delDomain: string;
 
-	get bidderName(): string {
-		return Openx.bidderName;
-	}
-
 	constructor(options) {
 		super(options);
 
 		this.delDomain = options.delDomain;
+	}
+
+	get bidderName(): string {
+		return Openx.bidderName;
 	}
 
 	prepareConfigForAdUnit(code, { sizes, unit }: PrebidAdSlotConfig): PrebidAdUnit {

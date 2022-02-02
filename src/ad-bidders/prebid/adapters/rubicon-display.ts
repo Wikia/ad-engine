@@ -4,16 +4,11 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class RubiconDisplay extends PrebidAdapter {
 	static bidderName = 'rubicon_display';
-
 	aliases = {
 		rubicon: [RubiconDisplay.bidderName],
 	};
 	accountId: number;
 	customTargeting: Dictionary;
-
-	get bidderName(): string {
-		return RubiconDisplay.bidderName;
-	}
 
 	constructor(options) {
 		super(options);
@@ -27,6 +22,10 @@ export class RubiconDisplay extends PrebidAdapter {
 			],
 			lang: [context.get('targeting.wikiLanguage') || context.get('targeting.lang') || 'en'],
 		};
+	}
+
+	get bidderName(): string {
+		return RubiconDisplay.bidderName;
 	}
 
 	prepareConfigForAdUnit(

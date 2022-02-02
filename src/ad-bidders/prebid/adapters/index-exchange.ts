@@ -9,6 +9,10 @@ export class IndexExchange extends PrebidAdapter {
 	};
 	maxCpm = EXTENDED_MAX_CPM;
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return IndexExchange.bidderName;
 	}
