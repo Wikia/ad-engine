@@ -20,7 +20,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
-import { filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import { slotsContext } from '../../../slots/slots-context';
 import { PlayerRegistry } from '../../helpers/player-registry';
 
@@ -59,6 +59,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 
 			fromEvent(player, 'wikiaAdStarted').pipe(
 				mergeMap(() => fromEvent(player, 'wikiaAdCompleted')),
+				debounceTime(10),
 				tap(() => player.reload()),
 			),
 
