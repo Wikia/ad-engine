@@ -26,6 +26,7 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 
 @Injectable({ autobind: false })
 export class VideoBootstrapHandler implements TemplateStateHandler {
+	static DEBOUNCE_TIME = 10;
 	private destroy$ = new Subject();
 
 	constructor(
@@ -59,7 +60,10 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 
 			fromEvent(player, 'wikiaAdStarted').pipe(
 				mergeMap(() => fromEvent(player, 'wikiaAdCompleted')),
-				debounceTime(10),
+				// after reload this handler registers again to wikiaAdCompleted event of the player
+				// causing multiple requests to GAM - debounce is a workaround to stop this madness
+				// as a quick P2 fix - more in ADEN-11546 and related tickets
+				debounceTime(VideoBootstrapHandler.DEBOUNCE_TIME),
 				tap(() => player.reload()),
 			),
 
