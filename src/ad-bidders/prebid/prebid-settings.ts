@@ -19,6 +19,7 @@ export function createAdapterSpecificSettings(adaptersList): PrebidSettings | un
 				},
 			],
 			suppressEmptyKeys: true,
+			allowZeroCpmBids: true,
 		};
 	});
 
@@ -47,6 +48,7 @@ export function getSettings(): PrebidSettings {
 				},
 			],
 			suppressEmptyKeys: true,
+			allowZeroCpmBids: true,
 		},
 		...createAdapterSpecificSettings(adaptersRegistry.getAdapters()),
 	};
