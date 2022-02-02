@@ -121,6 +121,7 @@ interface PrebidSettings {
 			val: (bidResponse: any) => string;
 		}[];
 		suppressEmptyKeys: boolean;
+		allowZeroCpmBids: boolean;
 	};
 }
 
