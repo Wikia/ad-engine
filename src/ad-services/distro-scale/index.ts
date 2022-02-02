@@ -3,16 +3,18 @@ import { context, utils } from '@ad-engine/core';
 const logGroup = 'distroScale';
 
 class DistroScale {
-	call(): Promise<void> {
-		const id: string = context.get('services.distroScale.id');
+	isEnabled(): boolean {
+		return context.get('services.distroScale.enabled') && context.get('services.distroScale.id');
+	}
 
-		if (!context.get('services.distroScale.enabled') || !id) {
+	call(): Promise<void> {
+		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 
 			return Promise.resolve();
 		}
 
-		const libraryUrl = `//c.jsrdn.com/s/cs.js?p=${id}`;
+		const libraryUrl = `//c.jsrdn.com/s/cs.js?p=${context.get('services.distroScale.id')}`;
 
 		utils.logger(logGroup, 'loading', libraryUrl);
 
