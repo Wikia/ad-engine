@@ -10,6 +10,7 @@ import {
 	distroScale,
 	durationMedia,
 	eventsRepository,
+	exCo,
 	facebookPixel,
 	iasPublisherOptimization,
 	jwPlayerInhibitor,
@@ -108,7 +109,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 				const incontentPlayer = slotService.get('incontent_player');
 				if (!isLoaded && incontentPlayer) {
 					slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-					distroScale.call();
+
+					if (distroScale.isEnabled()) {
+						distroScale.call();
+					} else if (exCo.isEnabled()) {
+						exCo.call();
+					}
 				}
 			},
 		);
