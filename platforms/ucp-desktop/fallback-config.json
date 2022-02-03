@@ -408,6 +408,41 @@
             "value": true
         }
     ],
+    "icPrebidTestBidder": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": {
+                "name": "ix",
+                "slots": {
+                    "featured": {
+                        "parameters": {
+                            "siteId": "437502"
+                        }
+                    },
+                    "top_boxad": {
+                        "sizes": [
+                            [
+                                300,
+                                250
+                            ],
+                            [
+                                300,
+                                600
+                            ]
+                        ],
+                        "parameters": {
+                            "siteId": "183567"
+                        }
+                    }
+                }
+            }
+        }
+    ],
     "icViewabilityTracking": [
         {
             "apps": [
