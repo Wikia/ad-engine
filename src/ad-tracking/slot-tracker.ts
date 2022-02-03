@@ -55,13 +55,19 @@ class SlotTracker {
 
 			if (slot.trackStatusAfterRendered) {
 				delete slot.trackStatusAfterRendered;
-				if (this.onRenderEndedStatusToTrack.includes(status) || slot.getConfigProperty('trackEachStatus')) {
+				if (
+					this.onRenderEndedStatusToTrack.includes(status) ||
+					slot.getConfigProperty('trackEachStatus')
+				) {
 					this.pipeline.execute(middlewareContext, callback);
 					return;
 				}
 			}
 
-			if (this.onChangeStatusToTrack.includes(status) || slot.getConfigProperty('trackEachStatus')) {
+			if (
+				this.onChangeStatusToTrack.includes(status) ||
+				slot.getConfigProperty('trackEachStatus')
+			) {
 				this.pipeline.execute(middlewareContext, callback);
 			}
 		});
