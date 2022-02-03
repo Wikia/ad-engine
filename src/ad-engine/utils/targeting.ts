@@ -1,6 +1,7 @@
 import { Dictionary } from '../models';
 import { context } from '../services/context-service';
 import { logger } from './logger';
+import { CookieStorageAdapter } from '../services/';
 
 class Targeting {
 	getHostnamePrefix(): string {
@@ -26,7 +27,9 @@ class Targeting {
 		return `_${wikiDbName || 'wikia'}`.replace('/[^0-9A-Z_a-z]/', '_');
 	}
 
-	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string | string[] {
+	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string[] {
+		let targetingBundles = [];
+
 		try {
 			const selectedBundles = [];
 
@@ -36,12 +39,22 @@ class Targeting {
 				}
 			});
 
-			return selectedBundles;
+			targetingBundles = selectedBundles;
 		} catch (e) {
 			logger('targeting-bundles', 'Invalid input data!');
 		}
 
-		return [];
+		return this.applyCodeLevelBundles(targetingBundles);
+	}
+
+	private applyCodeLevelBundles(bundles: string[]): string[] {
+		const cookieAdapter = new CookieStorageAdapter();
+
+		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
+			bundles.push('interstitial_disabled');
+		}
+
+		return bundles;
 	}
 
 	private matchesTargetingBundle(bundle: Dictionary<string[]>): boolean {

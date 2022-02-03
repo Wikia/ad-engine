@@ -235,6 +235,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad intervention',
 		payload: props<AdIntervention>(),
 	},
+	GAM_INTERSTITIAL_LOADED: {
+		category: '[GAM iframe]',
+		name: 'Interstitial loaded',
+	},
 	GAM_LOAD_TEMPLATE: {
 		category: '[GAM iframe]',
 		name: 'Load template',
