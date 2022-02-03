@@ -1,8 +1,7 @@
 import { SequentialMessagingConfig } from '../data-structures/sequential-messaging-config';
-import { SequenceStateHandlerInterface } from './sequence-state-handlers/sequence-state-handler-interface';
 import { Sequence } from '../data-structures/sequence';
 
-export class NewSequenceStateHandler implements SequenceStateHandlerInterface {
+export class NewSequenceDetector {
 	sequentialAdsIds: string[] = [];
 
 	constructor(sequentialMessagingConfig: SequentialMessagingConfig) {
@@ -11,7 +10,7 @@ export class NewSequenceStateHandler implements SequenceStateHandlerInterface {
 		}
 	}
 
-	handleState(sequence: Sequence): boolean {
+	analyzeSequenceState(sequence: Sequence): boolean {
 		return this.sequentialAdsIds.includes(sequence.id);
 	}
 }

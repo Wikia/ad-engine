@@ -12,21 +12,17 @@ describe('Sequence Messaging Config Store', () => {
 		smConfigStore_invalidLineItemValue.get.returns({
 			1234567890: 'invalid value',
 		});
-		const smConfigStore_invalidLengthValue = makeInstantConfigServiceSpy();
-		smConfigStore_invalidLengthValue.get.returns({ 1234567890: { lastStepId: [4] } });
 		const smConfigStore_nullValue = makeInstantConfigServiceSpy();
 		smConfigStore_nullValue.get.returns(null);
 
 		const smcs1 = new SequentialMessagingConfigStore(smConfigStore_invalidValueType);
 		const smcs2 = new SequentialMessagingConfigStore(smConfigStore_emptyObject);
 		const smcs3 = new SequentialMessagingConfigStore(smConfigStore_invalidLineItemValue);
-		const smcs4 = new SequentialMessagingConfigStore(smConfigStore_invalidLengthValue);
-		const smcs5 = new SequentialMessagingConfigStore(smConfigStore_nullValue);
+		const smcs4 = new SequentialMessagingConfigStore(smConfigStore_nullValue);
 
 		expect(smcs1.get()).to.be.null;
 		expect(smcs2.get()).to.be.null;
 		expect(smcs3.get()).to.be.null;
 		expect(smcs4.get()).to.be.null;
-		expect(smcs5.get()).to.be.null;
 	});
 });
