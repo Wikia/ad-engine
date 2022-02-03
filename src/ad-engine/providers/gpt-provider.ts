@@ -2,7 +2,13 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { btfBlockerService, context, slotDataParamsUpdater, slotService, trackingOptIn } from '../services';
+import {
+	btfBlockerService,
+	context,
+	slotDataParamsUpdater,
+	slotService,
+	trackingOptIn,
+} from '../services';
 import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
@@ -109,7 +115,10 @@ function adjustIframeSize(adSlot: AdSlot): void {
 
 	const iframe = adSlot.getIframe();
 
-	if (parseInt(iframe.width) === map.companionSize[0] && parseInt(iframe.height) === map.companionSize[1]) {
+	if (
+		parseInt(iframe.width) === map.companionSize[0] &&
+		parseInt(iframe.height) === map.companionSize[1]
+	) {
 		iframe.width = map.companionOriginalSize[0].toString();
 		iframe.height = map.companionOriginalSize[1].toString();
 	}

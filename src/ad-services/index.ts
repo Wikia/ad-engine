@@ -4,6 +4,7 @@ export * from './bt-rec';
 export * from './confiant';
 export * from './duration-media';
 export * from './distro-scale';
+export * from './exco';
 export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';
