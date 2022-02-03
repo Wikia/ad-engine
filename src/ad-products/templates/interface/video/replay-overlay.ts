@@ -1,4 +1,5 @@
 import { createIcon, icons } from '../icons';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const replayOverlayClass = 'replay-overlay';
 
@@ -35,7 +36,7 @@ function getOverlayWidth(params): string {
 	return `${(100 * videoWidth) / adWidth}%`;
 }
 
-function addReplayIcon(overlay): HTMLElement | null {
+function addReplayIcon(overlay: HTMLElement): HTMLElement | null {
 	const replayIcon = createIcon(icons.REPLAY, ['replay-icon', 'overlay-icon']);
 
 	overlay.appendChild(replayIcon);
@@ -91,6 +92,11 @@ export class ReplayOverlay {
 		} else {
 			container.parentElement.insertBefore(overlay, container);
 		}
+
+		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_DISPLAYED, {
+			adSlotName: video.settings.getSlotName(),
+			replayOverlay: overlay,
+		});
 
 		forceRepaint(container);
 	}
