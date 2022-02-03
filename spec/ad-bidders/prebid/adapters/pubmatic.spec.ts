@@ -17,7 +17,10 @@ describe('Pubmatic bidder adapter', () => {
 			publisherId: '112233',
 			slots: {
 				mobile_in_content: {
-					sizes: [[300, 250], [320, 480]],
+					sizes: [
+						[300, 250],
+						[320, 480],
+					],
 					ids: [
 						'/1234/MOBILE_IN_CONTENT_300x250@300x250',
 						'/1234/MOBILE_IN_CONTENT_320x480@320x480',
@@ -31,7 +34,10 @@ describe('Pubmatic bidder adapter', () => {
 				code: 'mobile_in_content',
 				mediaTypes: {
 					banner: {
-						sizes: [[300, 250], [320, 480]],
+						sizes: [
+							[300, 250],
+							[320, 480],
+						],
 					},
 				},
 				bids: [
