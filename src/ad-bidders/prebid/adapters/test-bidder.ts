@@ -4,12 +4,12 @@ import { context } from '@ad-engine/core';
 
 export class TestBidder extends PrebidAdapter {
 	static bidderName = 'testBidder';
-	aliases = {
-		appnexus: [TestBidder.bidderName],
-	};
+	aliases = {};
 
 	constructor(options) {
 		super(options);
+
+		this.aliases[context.get('bidders.prebid.testBidder.name')] = [TestBidder.bidderName];
 	}
 
 	get bidderName(): string {
