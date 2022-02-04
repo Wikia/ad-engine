@@ -59,11 +59,16 @@
 			background: #000;
 
 			.ad-slot-placeholder.top-leaderboard {
-				position: absolute;
-				top: 0;
-				left: 0;
+				position: fixed;
+				overflow: hidden;
 				width: 100%;
-				height: 100%;
+				height: fit-content;
+				z-index: 402;
+
+				#top_leaderboard {
+					position: relative;
+					margin-left: 0 !important;
+				}
 			}
 		}
 	}
