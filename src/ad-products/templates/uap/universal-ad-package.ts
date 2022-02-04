@@ -240,11 +240,17 @@ function initSlot(params: UapParams): void {
 	if (params.isDarkTheme) {
 		params.container.classList.add('is-dark');
 	}
+
 	if (params.isMobile) {
 		params.container.classList.add('is-mobile-layout');
 	}
+
 	if (utils.client.isSmartphone() || utils.client.isTablet()) {
 		params.container.classList.add('is-mobile-device');
+	}
+
+	if (params.useVideoSpecialAdUnit) {
+		adSlot.setConfigProperty('videoAdUnit', constants.SPECIAL_VIDEO_AD_UNIT);
 	}
 }
 
@@ -278,12 +284,6 @@ export const universalAdPackage = {
 
 		if (params.slotName) {
 			initSlot(params);
-		}
-
-		if (params.useVideoSpecialAdUnit) {
-			// ADEN-11567 force BFAA and BFAB video request to use special ad unit
-			context.set(`slots.top_leaderboard.videoAdUnit`, '/5441/uap');
-			context.set(`slots.bottom_leaderboard.videoAdUnit`, '/5441/uap');
 		}
 	},
 	initSlot,
