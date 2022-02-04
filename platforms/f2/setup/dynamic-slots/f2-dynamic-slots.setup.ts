@@ -1,4 +1,4 @@
-import { insertSlots } from '@platforms/shared';
+import { insertSlots, PlaceholderService } from '@platforms/shared';
 import {
 	btfBlockerService,
 	communicationService,
@@ -17,6 +17,7 @@ export class F2DynamicSlotsSetup implements DiProcess {
 	execute(): void {
 		this.injectSlots();
 		this.configureTopLeaderboard();
+		this.registerAdPlaceholderService();
 	}
 
 	private injectSlots(): void {
@@ -44,5 +45,10 @@ export class F2DynamicSlotsSetup implements DiProcess {
 		if (!context.get('custom.hasFeaturedVideo') && context.get('templates.stickyTlb.lineItemIds')) {
 			context.push(`slots.top_leaderboard.defaultTemplates`, 'stickyTlb');
 		}
+	}
+
+	private registerAdPlaceholderService(): void {
+		const placeholderService = new PlaceholderService();
+		placeholderService.init();
 	}
 }
