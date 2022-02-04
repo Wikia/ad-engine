@@ -93,8 +93,9 @@ export class ReplayOverlay {
 			container.parentElement.insertBefore(overlay, container);
 		}
 
-		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_DISPLAYED, {
+		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_ADDED, {
 			adSlotName: video.settings.getSlotName(),
+			videoPlayer: video,
 			replayOverlay: overlay,
 		});
 
