@@ -25,14 +25,13 @@ class ScriptLoader {
 		});
 
 		if (typeof node === 'string') {
-			const temp: ChildNode =
-				node === 'first'
-					? document.getElementsByTagName('script')[0]
-					: ((node as unknown) as ChildNode) || document.body.lastChild;
+			const temp: ChildNode = document.getElementsByTagName('script')[0];
 
 			temp.parentNode.insertBefore(script, temp);
 		} else {
-			node.appendChild(script);
+			const temp: ChildNode = node || document.body;
+
+			temp.appendChild(script);
 		}
 
 		return script;

@@ -28,6 +28,7 @@ class Anyclip {
 	private loadPlayerAsset() {
 		const libraryUrl = 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js';
 		const incontentPlayerContainer = document.getElementById('incontent_player');
+		incontentPlayerContainer.classList.remove('hide');
 
 		utils.logger(logGroup, 'loading Anyclip asset', libraryUrl);
 
