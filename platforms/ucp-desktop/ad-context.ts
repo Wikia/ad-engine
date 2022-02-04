@@ -76,6 +76,7 @@ export const basicContext = {
 			insertSelector: '.search-modal__content > form',
 		},
 		anyclip: {
+			enabled: false,
 			pubname: 'mavenio',
 			widgetname: '0011r00002K1iSW_1226',
 		},

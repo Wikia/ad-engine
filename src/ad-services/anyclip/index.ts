@@ -1,5 +1,4 @@
 import { context, utils } from '@ad-engine/core';
-import { isEmpty } from 'lodash';
 
 const logGroup = 'Anyclip';
 
@@ -12,7 +11,7 @@ class Anyclip {
 	}
 
 	isEnabled(): boolean {
-		return context.get('services.anyclip.enabled') || !isEmpty(this.params);
+		return context.get('services.anyclip.enabled');
 	}
 
 	call(): Promise<void> {
@@ -28,13 +27,13 @@ class Anyclip {
 	private loadPlayerAsset() {
 		const libraryUrl = 'https://player.anyclip.com/anyclip-widget/lre-widget/prod/v1/src/lre.js';
 		const incontentPlayerContainer = document.getElementById('incontent_player');
-		incontentPlayerContainer.classList.remove('hide');
 
 		utils.logger(logGroup, 'loading Anyclip asset', libraryUrl);
 
 		return utils.scriptLoader
 			.loadScript(libraryUrl, 'text/javascript', true, incontentPlayerContainer, this.params)
 			.then(() => {
+				incontentPlayerContainer.classList.remove('hide');
 				utils.logger(logGroup, 'ready');
 			});
 	}
