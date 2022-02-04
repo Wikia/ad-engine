@@ -2,6 +2,7 @@ import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared'
 import {
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
@@ -364,7 +365,9 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isInterstitialApplicable(): boolean {
-		return this.instantConfig.get('icInterstitial');
+		const cookieAdapter = new CookieStorageAdapter();
+
+		return this.instantConfig.get('icInterstitial') && !cookieAdapter.getItem('_ae_intrsttl_imp');
 	}
 
 	getInvisibleHighImpactConfig(): SlotSetupDefinition {

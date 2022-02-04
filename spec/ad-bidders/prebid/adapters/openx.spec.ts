@@ -16,7 +16,10 @@ describe('Openx bidder adapter', () => {
 			delDomain: 'wikia.com',
 			slots: {
 				mobile_in_content: {
-					sizes: [[300, 250], [320, 480]],
+					sizes: [
+						[300, 250],
+						[320, 480],
+					],
 					unit: 11223344,
 				},
 			},
@@ -27,7 +30,10 @@ describe('Openx bidder adapter', () => {
 				code: 'mobile_in_content',
 				mediaTypes: {
 					banner: {
-						sizes: [[300, 250], [320, 480]],
+						sizes: [
+							[300, 250],
+							[320, 480],
+						],
 					},
 				},
 				bids: [
