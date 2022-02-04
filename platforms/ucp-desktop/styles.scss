@@ -64,8 +64,20 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
+
+				#top_leaderboard {
+					overflow: hidden;
+
+					&.sticky-tlb {
+						padding: 0;
+						margin-top: 18px;
+					}
+				}
 			}
 		}
+	}
+
+	.has-sticky-tlb {
 	}
 
 	@include expanded-slot();

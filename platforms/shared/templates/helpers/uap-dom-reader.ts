@@ -84,15 +84,16 @@ export class UapDomReader {
 
 	getSlotHeightClipping(): number {
 		const scroll = window.scrollY;
+		const slotHeight = this.getSlotHeightResolved() || parseInt(this.adSlot.getIframe().height);
 
 		if (!scroll || scroll <= 0) {
+			return slotHeight;
+		}
+
+		if (scroll >= slotHeight) {
 			return 0;
 		}
 
-		if (scroll >= this.adSlot.element.offsetHeight) {
-			return this.adSlot.element.offsetHeight;
-		}
-
-		return scroll;
+		return slotHeight - scroll;
 	}
 }
