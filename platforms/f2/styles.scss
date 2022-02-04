@@ -2,8 +2,21 @@
 @import 'platforms/shared/styles/index';
 @import 'platforms/f2/styles/original/variables';
 
-@mixin f2-styles() {
+@mixin non-uap-advertisement-label() {
 	$advertisement-label-height: 24px;
+
+	color: $fandom-color-dark-gray;
+	content: 'Advertisement';
+	display: block;
+	font-size: 10px;
+	font-weight: $fandom-font-weight-medium;
+	line-height: $advertisement-label-height;
+	position: relative;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+@mixin f2-styles() {
 	$label-height: -24px;
 
 	#top_leaderboard {
@@ -48,18 +61,16 @@
 		}
 	}
 
+	@media #{$wds-breakpoint-small-only} {
+		#top_leaderboard[data-slot-result='success']::after {
+			@include non-uap-advertisement-label();
+		}
+	}
+
 	#top_boxad[data-slot-result='success']::after,
 	#incontent_boxad[data-slot-result='success']::after,
 	#bottom_leaderboard[data-slot-result='success']::after {
-		color: $fandom-color-dark-gray;
-		content: 'Advertisement';
-		display: block;
-		font-size: 10px;
-		font-weight: $fandom-font-weight-medium;
-		line-height: $advertisement-label-height;
-		position: relative;
-		text-align: center;
-		text-transform: uppercase;
+		@include non-uap-advertisement-label();
 	}
 
 	#top_boxad[data-slot-result='success']::after {
