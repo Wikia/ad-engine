@@ -148,7 +148,6 @@
 				@include uap-porvata-learn-more();
 			}
 
-			@include uap-advertisement-label();
 			@include uap-button-close();
 
 			&.is-dark {
@@ -171,6 +170,11 @@
 	}
 
 	@include expanded-slot();
+}
+
+#top_leaderboard,
+#bottom_leaderboard {
+	@include uap-advertisement-label();
 }
 
 @include f2-styles();
