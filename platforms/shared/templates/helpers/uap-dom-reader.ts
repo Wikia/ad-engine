@@ -82,17 +82,17 @@ export class UapDomReader {
 		return (1 / ratio) * this.adSlot.element.offsetWidth;
 	}
 
-	getSlotHeightClipping(): string {
+	getSlotHeightClipping(): number {
 		const scroll = window.scrollY;
 
 		if (!scroll || scroll <= 0) {
-			return 'fit-content';
+			return 0;
 		}
 
 		if (scroll >= this.adSlot.element.offsetHeight) {
-			return '0';
+			return this.adSlot.element.offsetHeight;
 		}
 
-		return `${this.adSlot.element.offsetHeight - scroll}px`;
+		return scroll;
 	}
 }

@@ -41,17 +41,17 @@
 			margin-top: $fandom-navbar-height;
 
 			.ad-slot-placeholder.top-leaderboard {
-				position: fixed;
-				overflow: hidden;
+				position: absolute;
+				top: 0;
+				left: 0;
 				width: 100%;
-				height: fit-content;
-				z-index: 202;
-				padding: 0;
-
-				#top_leaderboard {
-					position: relative;
-				}
+				height: 100%;
 			}
+		}
+
+		#top_leaderboard {
+			top: $fandom-navbar-height;
+			z-index: 202;
 		}
 	}
 

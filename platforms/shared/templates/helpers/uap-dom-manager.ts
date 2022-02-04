@@ -77,8 +77,8 @@ export class UapDomManager {
 
 	setSlotHeightClipping(): void {
 		this.manipulator
-			.element(this.adSlot.getPlaceholder())
-			.setProperty('height', this.reader.getSlotHeightClipping());
+			.element(this.adSlot.getElement())
+			.setProperty('clipPath', `inset(0 0 ${this.reader.getSlotHeightClipping()}px)`);
 	}
 
 	setPlaceholderHeightResolved(): void {
