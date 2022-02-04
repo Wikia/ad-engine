@@ -34,9 +34,17 @@ class AdClickTracker {
 		);
 
 		communicationService.on(
-			eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_ADDED,
-			({ adSlotName, videoPlayer, replayOverlay }) => {
-				this.addClickVideoReplayTrackingListeners(callback, adSlotName, videoPlayer, replayOverlay);
+			eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_CLICKED,
+			({ adSlotName }) => {
+				this.pipeline.execute(
+					{
+						slot: slotService.get(adSlotName),
+						data: {
+							ad_status: 'replay-click',
+						},
+					},
+					callback,
+				);
 			},
 			false,
 		);
@@ -76,28 +84,6 @@ class AdClickTracker {
 	): void {
 		learnMoreLink.addEventListener('click', () => {
 			this.handleClickEvent(callback, slotService.get(adSlotName));
-		});
-	}
-
-	private addClickVideoReplayTrackingListeners(
-		callback: FuncPipelineStep<AdClickContext>,
-		adSlotName: string,
-		videoPlayer,
-		replayOverlay: HTMLElement,
-	): void {
-		replayOverlay.addEventListener('click', () => {
-			if (videoPlayer.getPlayCounter() > 1) {
-				// send the event only if it's replay
-				this.pipeline.execute(
-					{
-						slot: slotService.get(adSlotName),
-						data: {
-							ad_status: 'replay-click',
-						},
-					},
-					callback,
-				);
-			}
 		});
 	}
 

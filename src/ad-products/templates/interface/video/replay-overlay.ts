@@ -57,7 +57,16 @@ export class ReplayOverlay {
 		const overlay = document.createElement('div');
 
 		overlay.classList.add(replayOverlayClass);
-		overlay.addEventListener('click', () => video.play());
+		overlay.addEventListener('click', () => {
+			video.play();
+
+			if (video.getPlayCounter() > 1) {
+				// emit the event only if it's a replay (not first on-click play)
+				communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_CLICKED, {
+					adSlotName: video.settings.getSlotName(),
+				});
+			}
+		});
 
 		if (!params.autoPlay) {
 			showOverlay(overlay, params);
@@ -92,12 +101,6 @@ export class ReplayOverlay {
 		} else {
 			container.parentElement.insertBefore(overlay, container);
 		}
-
-		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_ADDED, {
-			adSlotName: video.settings.getSlotName(),
-			videoPlayer: video,
-			replayOverlay: overlay,
-		});
 
 		forceRepaint(container);
 	}
