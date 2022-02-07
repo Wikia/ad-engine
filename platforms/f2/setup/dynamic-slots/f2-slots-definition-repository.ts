@@ -30,7 +30,7 @@ export class F2SlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: 'body',
+				anchorSelector: '.top-leaderboard',
 				insertMethod: 'prepend',
 				classList: ['hide'],
 			},

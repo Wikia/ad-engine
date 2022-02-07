@@ -74,7 +74,7 @@ export function getViewportHeight(): number {
 	return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 }
 
-/**f
+/**
  * Returns client's viewport width
  */
 export function getViewportWidth(): number {

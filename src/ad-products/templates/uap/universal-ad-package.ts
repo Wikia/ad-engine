@@ -92,6 +92,7 @@ export interface UapParams {
 	vastTargeting: Targeting;
 	videoTriggerElement: HTMLVideoElement;
 	type: string;
+	useVideoSpecialAdUnit: boolean;
 
 	height: number;
 	width: number;
@@ -277,6 +278,12 @@ export const universalAdPackage = {
 
 		if (params.slotName) {
 			initSlot(params);
+		}
+
+		if (params.useVideoSpecialAdUnit) {
+			// ADEN-11567 force BFAA and BFAB video request to use special ad unit
+			context.set(`slots.top_leaderboard.videoAdUnit`, '/5441/uap');
+			context.set(`slots.bottom_leaderboard.videoAdUnit`, '/5441/uap');
 		}
 	},
 	initSlot,
