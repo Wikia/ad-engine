@@ -2,12 +2,24 @@
 @import 'platforms/shared/styles/index';
 @import 'platforms/f2/styles/original/variables';
 
-@mixin f2-styles() {
+@mixin non-uap-advertisement-label() {
 	$advertisement-label-height: 24px;
+
+	color: $fandom-color-dark-gray;
+	content: 'Advertisement';
+	display: block;
+	font-size: 10px;
+	font-weight: $fandom-font-weight-medium;
+	line-height: $advertisement-label-height;
+	position: relative;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+@mixin f2-styles() {
 	$label-height: -24px;
 
 	#top_leaderboard {
-		background: $fandom-color-black;
 		justify-content: center;
 		margin: 0 auto;
 		max-width: 100vw;
@@ -49,19 +61,16 @@
 		}
 	}
 
-	#top_leaderboard[data-slot-result='success']::after,
+	@media #{$wds-breakpoint-small-only} {
+		#top_leaderboard[data-slot-result='success']::after {
+			@include non-uap-advertisement-label();
+		}
+	}
+
 	#top_boxad[data-slot-result='success']::after,
 	#incontent_boxad[data-slot-result='success']::after,
 	#bottom_leaderboard[data-slot-result='success']::after {
-		color: $fandom-color-dark-gray;
-		content: 'Advertisement';
-		display: block;
-		font-size: 10px;
-		font-weight: $fandom-font-weight-medium;
-		line-height: $advertisement-label-height;
-		position: relative;
-		text-align: center;
-		text-transform: uppercase;
+		@include non-uap-advertisement-label();
 	}
 
 	#top_boxad[data-slot-result='success']::after {
@@ -95,6 +104,10 @@
 		}
 
 		#top_leaderboard {
+			height: 292px; // 250px height + 18px top padding + 24px bottom label
+			display: flex;
+			flex-direction: column;
+
 			@media #{$wds-breakpoint-medium-down} {
 				@include bfaa-slot();
 				@include sticky-tlb-slot();
@@ -135,7 +148,6 @@
 				@include uap-porvata-learn-more();
 			}
 
-			@include uap-advertisement-label();
 			@include uap-button-close();
 
 			&.is-dark {
@@ -158,6 +170,11 @@
 	}
 
 	@include expanded-slot();
+}
+
+#top_leaderboard,
+#bottom_leaderboard {
+	@include uap-advertisement-label();
 }
 
 @include f2-styles();
