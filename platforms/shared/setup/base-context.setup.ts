@@ -186,6 +186,12 @@ export class BaseContextSetup implements DiProcess {
 			return;
 		}
 
+		if (this.instantConfig.get('icAnyclipPlayer')) {
+			context.set('services.anyclip.enabled', true);
+			context.set('services.distroScale.enabled', false);
+			return;
+		}
+
 		context.set('services.distroScale.enabled', this.instantConfig.get('icDistroScale'));
 	}
 

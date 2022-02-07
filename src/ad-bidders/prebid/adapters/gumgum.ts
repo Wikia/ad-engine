@@ -4,6 +4,10 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Gumgum extends PrebidAdapter {
 	static bidderName = 'gumgum';
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return Gumgum.bidderName;
 	}
