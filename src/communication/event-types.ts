@@ -113,6 +113,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Invalidate slot targeting',
 		payload: props<{ slot: AdSlot }>(),
 	},
+	AD_ENGINE_VIDEO_REPLAY_OVERLAY_DISPLAYED: {
+		name: 'Video replay overlay displayed',
+		payload: props<{ adSlotName: string; replayOverlay: HTMLElement }>(),
+	},
 	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
 		name: 'Video learn more displayed',
 		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
@@ -234,6 +238,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[GAM iframe]',
 		name: 'Ad intervention',
 		payload: props<AdIntervention>(),
+	},
+	GAM_INTERSTITIAL_LOADED: {
+		category: '[GAM iframe]',
+		name: 'Interstitial loaded',
 	},
 	GAM_LOAD_TEMPLATE: {
 		category: '[GAM iframe]',
