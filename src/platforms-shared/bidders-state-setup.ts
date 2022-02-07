@@ -45,6 +45,15 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			'custom.jwplayerDataProvider',
 			instantConfig.get('icPrebidMediaGrid') && hasFeaturedVideo,
 		);
+
+		const testBidderConfig: object = instantConfig.get('icPrebidTestBidder');
+		if (testBidderConfig) {
+			context.set('bidders.prebid.testBidder', {
+				enabled: true,
+				name: testBidderConfig['name'],
+				slots: testBidderConfig['slots'],
+			});
+		}
 	}
 
 	context.set(

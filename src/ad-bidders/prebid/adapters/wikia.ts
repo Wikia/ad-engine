@@ -9,6 +9,26 @@ const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
 export class Wikia extends PrebidAdapter {
 	static bidderName = 'wikia';
+	limit: number;
+	useRandomPrice: boolean;
+	timeout: number;
+	timeouts: number[] = [];
+	maxCpm = EXTENDED_MAX_CPM;
+
+	constructor(options) {
+		super(options);
+
+		if (timeout && timeout.indexOf(',')) {
+			this.timeouts = timeout.split(',').map((t) => parseInt(t, 10));
+		} else {
+			this.timeouts.push(parseInt(timeout, 10) || 100);
+		}
+
+		this.enabled = !!price;
+		this.limit = limit;
+		this.useRandomPrice = useRandomPrice;
+		this.isCustomBidAdapter = true;
+	}
 
 	static getCreative(size, cpm): string {
 		const creative = document.createElement('div');
@@ -37,29 +57,8 @@ export class Wikia extends PrebidAdapter {
 		return creative.outerHTML;
 	}
 
-	limit: number;
-	useRandomPrice: boolean;
-	timeout: number;
-	timeouts: number[] = [];
-	maxCpm = EXTENDED_MAX_CPM;
-
 	get bidderName(): string {
 		return Wikia.bidderName;
-	}
-
-	constructor(options) {
-		super(options);
-
-		if (timeout && timeout.indexOf(',')) {
-			this.timeouts = timeout.split(',').map((t) => parseInt(t, 10));
-		} else {
-			this.timeouts.push(parseInt(timeout, 10) || 100);
-		}
-
-		this.enabled = !!price;
-		this.limit = limit;
-		this.useRandomPrice = useRandomPrice;
-		this.isCustomBidAdapter = true;
 	}
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
