@@ -7,12 +7,12 @@ export class AppnexusGroupM extends PrebidAdapter {
 		appnexus: [AppnexusGroupM.bidderName],
 	};
 
-	get bidderName(): string {
-		return AppnexusGroupM.bidderName;
-	}
-
 	constructor(options) {
 		super(options);
+	}
+
+	get bidderName(): string {
+		return AppnexusGroupM.bidderName;
 	}
 
 	prepareConfigForAdUnit(code: string, { sizes, placementId }: PrebidAdSlotConfig): PrebidAdUnit {
