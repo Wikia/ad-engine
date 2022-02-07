@@ -7,28 +7,32 @@ class ScriptLoader {
 		type = 'text/javascript',
 		isAsync = true,
 		node: HTMLElement | string = null,
-		parameters: Partial<HTMLScriptElement> = {},
+		parameters: Record<string, string> = {},
 		datasets: Partial<DOMStringMap> = {},
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
-		const temp: ChildNode =
-			node === 'first'
-				? document.getElementsByTagName('script')[0]
-				: (node as ChildNode) || document.body.lastChild;
 
 		script.async = isAsync;
 		script.type = type;
 		script.src = src;
 
 		Object.keys(parameters).forEach((parameter) => {
-			script[parameter] = parameters[parameter];
+			script.setAttribute(parameter, parameters[parameter]);
 		});
 
 		Object.keys(datasets).forEach((dataset) => {
 			script.dataset[dataset] = datasets[dataset];
 		});
 
-		temp.parentNode.insertBefore(script, temp);
+		if (typeof node === 'string') {
+			const temp: ChildNode = document.getElementsByTagName('script')[0];
+
+			temp.parentNode.insertBefore(script, temp);
+		} else {
+			const temp: ChildNode = node || document.body;
+
+			temp.appendChild(script);
+		}
 
 		return script;
 	}
@@ -41,7 +45,7 @@ class ScriptLoader {
 		type = 'text/javascript',
 		isAsync = true,
 		node: HTMLElement | string = null,
-		parameters: Partial<HTMLScriptElement> = {},
+		parameters: Record<string, string> = {},
 		datasets: Partial<DOMStringMap> = {},
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
