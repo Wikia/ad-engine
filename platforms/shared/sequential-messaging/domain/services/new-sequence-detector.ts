@@ -10,7 +10,7 @@ export class NewSequenceDetector {
 		}
 	}
 
-	analyzeSequenceState(sequence: Sequence): boolean {
+	isAdSequential(sequence: Sequence): boolean {
 		return this.sequentialAdsIds.includes(sequence.id);
 	}
 }

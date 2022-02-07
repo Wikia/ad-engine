@@ -29,7 +29,7 @@ export class SequenceStartHandler {
 	private isAdSequential(): boolean {
 		const sequenceDetector = new NewSequenceDetector(this.config);
 
-		return sequenceDetector.analyzeSequenceState(this.sequence);
+		return sequenceDetector.isAdSequential(this.sequence);
 	}
 
 	private storeState(): void {

@@ -17,7 +17,7 @@ describe('New Sequence Detector', () => {
 		const sd = new NewSequenceDetector(config);
 
 		expect(sd).to.be.instanceof(NewSequenceDetector);
-		expect(sd.analyzeSequenceState(sequence)).to.be.true;
-		expect(sd.analyzeSequenceState(notSequence)).to.be.false;
+		expect(sd.isAdSequential(sequence)).to.be.true;
+		expect(sd.isAdSequential(notSequence)).to.be.false;
 	});
 });
