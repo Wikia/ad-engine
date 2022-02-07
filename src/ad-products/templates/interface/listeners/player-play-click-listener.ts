@@ -1,4 +1,4 @@
-export function onPlayClick(video, communicationService, eventToEmitOnPlay) {
+export function onVideoOverlayClick(video, communicationService, eventToEmitOnPlay) {
 	video.play();
 
 	if (video.getPlayCounter() > 1) {

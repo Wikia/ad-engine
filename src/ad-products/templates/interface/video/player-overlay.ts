@@ -1,5 +1,5 @@
 import { createIcon, icons } from '../icons';
-import { onPlayClick } from '../listeners/player-play-click-listener';
+import { onVideoOverlayClick } from '../listeners/player-play-click-listener';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 // @TODO Clean up this P1 ADEN-10294 hack
@@ -59,10 +59,10 @@ export class PlayerOverlay {
 		// TODO: remove below line once we update all creative templates in GAM or move the styles from GAM to AE
 		overlay.classList.add('replay-overlay');
 		overlay.addEventListener('click', () => {
-			onPlayClick(
+			onVideoOverlayClick(
 				video,
 				communicationService,
-				eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_CLICKED,
+				eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
 			);
 		});
 

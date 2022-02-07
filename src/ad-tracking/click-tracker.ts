@@ -34,7 +34,7 @@ class AdClickTracker {
 		);
 
 		communicationService.on(
-			eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_CLICKED,
+			eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
 			({ adSlotName }) => {
 				this.pipeline.execute(
 					{
