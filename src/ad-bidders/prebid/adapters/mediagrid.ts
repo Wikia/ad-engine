@@ -3,10 +3,13 @@ import { PrebidAdapter } from '../prebid-adapter';
 
 export class Mediagrid extends PrebidAdapter {
 	static bidderName = 'mediagrid';
-
 	aliases = {
 		grid: [Mediagrid.bidderName],
 	};
+
+	constructor(options) {
+		super(options);
+	}
 
 	get bidderName(): string {
 		return Mediagrid.bidderName;

@@ -4,14 +4,9 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 export class Rubicon extends PrebidAdapter {
 	static bidderName = 'rubicon';
-
 	accountId: number;
 	maxCpm = EXTENDED_MAX_CPM;
 	customTargeting: Dictionary;
-
-	get bidderName(): string {
-		return Rubicon.bidderName;
-	}
 
 	constructor(options) {
 		super(options);
@@ -25,6 +20,10 @@ export class Rubicon extends PrebidAdapter {
 			],
 			lang: [context.get('targeting.wikiLanguage') || context.get('targeting.lang') || 'en'],
 		};
+	}
+
+	get bidderName(): string {
+		return Rubicon.bidderName;
 	}
 
 	prepareConfigForAdUnit(

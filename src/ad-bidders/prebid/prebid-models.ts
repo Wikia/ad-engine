@@ -23,6 +23,7 @@ export interface PrebidAdSlotConfig {
 	inScreen?: string;
 	inventoryCodes?: string[];
 	networkId?: string;
+	parameters?: object;
 	placement?: string;
 	placementId?: string | number;
 	pos?: string;

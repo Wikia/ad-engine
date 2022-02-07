@@ -4,12 +4,12 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Telaria extends PrebidAdapter {
 	static bidderName = 'telaria';
 
-	get bidderName(): string {
-		return Telaria.bidderName;
-	}
-
 	constructor(options) {
 		super(options);
+	}
+
+	get bidderName(): string {
+		return Telaria.bidderName;
 	}
 
 	prepareConfigForAdUnit(code, { supplyCode, adCode }: PrebidAdSlotConfig): PrebidAdUnit {
