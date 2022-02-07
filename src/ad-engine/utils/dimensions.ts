@@ -74,7 +74,7 @@ export function getViewportHeight(): number {
 	return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 }
 
-/**
+/**f
  * Returns client's viewport width
  */
 export function getViewportWidth(): number {
@@ -121,7 +121,7 @@ export function isInTheSameViewport(
 ): boolean {
 	// According to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
 	// Hidden element does not have offsetParent
-	if (element.offsetParent === null) {
+	if (element.offsetParent === null && !isInHiddenSection(element)) {
 		return false;
 	}
 
@@ -147,4 +147,10 @@ export function isInTheSameViewport(
 
 		return distance < viewportHeight;
 	});
+
+	function isInHiddenSection(element: HTMLElement): boolean {
+		const section = document.querySelector('.mobile-hidden');
+		if (!section) return false;
+		return section.contains(element);
+	}
 }
