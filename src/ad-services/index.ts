@@ -3,6 +3,7 @@ export * from './audigent';
 export * from './ad-marketplace';
 export * from './bt-rec';
 export * from './confiant';
+export * from './connatix';
 export * from './duration-media';
 export * from './distro-scale';
 export * from './exco';

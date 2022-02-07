@@ -84,6 +84,10 @@ export const basicContext = {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
 		},
+		connatix: {
+			enabled: false,
+			dataPlayerId: 'TBD',
+		},
 		durationMedia: {
 			enabled: false,
 			libraryUrl: '//tag.durationmedia.net/sites/10651/dm.js',
