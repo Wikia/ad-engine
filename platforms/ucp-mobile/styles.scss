@@ -18,6 +18,13 @@
 			@include sticky-tlb-slot();
 		}
 
+		// ADEN-11573: Cleanup after UAP 4.x rollout
+		&:not(.uap-light) {
+			#top_leaderboard {
+				z-index: 601;
+			}
+		}
+
 		#bottom_leaderboard {
 			@include bfab-slot();
 		}

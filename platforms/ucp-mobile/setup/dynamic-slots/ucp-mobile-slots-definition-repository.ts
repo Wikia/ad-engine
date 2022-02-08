@@ -306,8 +306,8 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			// TODO: Remove .wds-global-footer after SITE-2038 is completed
-			!!document.querySelector('.wds-global-footer,.global-footer') &&
+			// ADEN-11573: Cleanup after switch
+			!!document.querySelector('.global-footer,.wds-global-footer') &&
 			context.get('wiki.opts.pageType') !== 'search'
 		);
 	}
