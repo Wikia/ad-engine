@@ -24,37 +24,22 @@ export class Nativo {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
-
-				window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
-					this.handleNativoNativeEvent(e, AdSlot.STATUS_COLLAPSE);
-				});
-
-				window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
-					this.handleNativoNativeEvent(e, AdSlot.STATUS_SUCCESS);
-				});
 			});
 	}
 
-	private handleNativoNativeEvent(e, adStatus: string) {
+	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
 		utils.logger(logGroup, 'Nativo native event fired', e, adStatus);
 
-		const slotName = e?.data[0]?.adLocation.replace('#', '');
-		if (!slotName) {
-			utils.logger(logGroup, 'Could not retrieve Nativo slot name');
-			return;
-		}
-
-		const slot = slotService.get(slotName);
 		if (slot) {
 			utils.logger(logGroup, 'Nativo native event handled', e, slot);
 
 			if (slot.getStatus() !== adStatus) {
 				slot.setStatus(adStatus);
 			} else {
-				utils.logger(logGroup, 'Slot status already tracked', slotName, adStatus);
+				utils.logger(logGroup, 'Slot status already tracked', slot.getSlotName(), adStatus);
 			}
 		} else {
-			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', slotName);
+			utils.logger(logGroup, 'Could not retrieve Nativo ad slot');
 		}
 	}
 
@@ -85,16 +70,31 @@ export class Nativo {
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo', placeholder.id);
 
-		const slot = new AdSlot({ id: placeholder.id });
+		this.createAdSlot(placeholder.id);
+		this.pushNativoQueue();
+	}
+
+	private createAdSlot(slotName: string): void {
+		const slot = new AdSlot({ id: slotName });
 		slotService.add(slot);
 
 		if (slot) {
 			slot.setStatus(AdSlot.SLOT_REQUESTED_EVENT);
 			slot.setConfigProperty('trackEachStatus', true);
-		} else {
-			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', placeholder.id);
-		}
 
+			window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+				this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE);
+			});
+
+			window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
+				this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
+			});
+		} else {
+			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', slotName);
+		}
+	}
+
+	private pushNativoQueue(): void {
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
