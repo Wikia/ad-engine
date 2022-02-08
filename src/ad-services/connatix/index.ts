@@ -7,6 +7,18 @@ class Connatix {
 		return context.get('services.connatix.dataPlayerId');
 	}
 
+	get playerWidth(): string {
+		return context.get('services.connatix.width');
+	}
+
+	get playerHeight(): string {
+		return context.get('services.connatix.height');
+	}
+
+	get playerLayout(): string {
+		return context.get('services.connatix.layout');
+	}
+
 	isEnabled(): boolean {
 		return context.get('services.connatix.enabled') && !!this.dataPlayerId;
 	}
@@ -18,8 +30,8 @@ class Connatix {
 			return Promise.resolve();
 		}
 
-		this.insertPlayerContainer();
 		this.loadPlayerAsset();
+		this.insertPlayerContainer();
 	}
 
 	private loadPlayerAsset() {
@@ -27,7 +39,7 @@ class Connatix {
 
 		utils.logger(logGroup, 'loading Connatix asset', libraryUrl);
 
-		return utils.scriptLoader.loadScript(libraryUrl, 'text/javascript', true).then(() => {
+		return utils.scriptLoader.loadScript(libraryUrl).then(() => {
 			utils.logger(logGroup, 'Connatix player is ready');
 		});
 	}
@@ -37,9 +49,9 @@ class Connatix {
 
 		const connatixPlayerTag = document.createElement('amp-connatix-player');
 		connatixPlayerTag.setAttribute('data-player-id', this.dataPlayerId);
-		connatixPlayerTag.setAttribute('layout', 'responsive');
-		connatixPlayerTag.setAttribute('width', '16');
-		connatixPlayerTag.setAttribute('height', '9');
+		connatixPlayerTag.setAttribute('layout', this.playerLayout);
+		connatixPlayerTag.setAttribute('width', this.playerWidth);
+		connatixPlayerTag.setAttribute('height', this.playerHeight);
 
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 		incontentPlayerContainer.appendChild(connatixPlayerTag);

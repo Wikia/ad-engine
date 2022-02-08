@@ -87,6 +87,9 @@ export const basicContext = {
 		connatix: {
 			enabled: false,
 			dataPlayerId: 'TBD',
+			layout: 'responsive',
+			width: '16',
+			height: '9',
 		},
 		durationMedia: {
 			enabled: false,
