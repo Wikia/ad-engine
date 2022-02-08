@@ -31,6 +31,10 @@
 			#top_leaderboard {
 				z-index: 601;
 			}
+
+			.mobile-global-navigation.is-modal-opened {
+				top: 0 !important;
+			}
 		}
 
 		#bottom_leaderboard {
