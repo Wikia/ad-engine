@@ -24,7 +24,38 @@ export class Nativo {
 			.then(() => {
 				utils.logger(logGroup, 'ready');
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
+
+				window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+					this.handleNativoNativeEvent(e, AdSlot.STATUS_COLLAPSE);
+				});
+
+				window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
+					this.handleNativoNativeEvent(e, AdSlot.STATUS_SUCCESS);
+				});
 			});
+	}
+
+	private handleNativoNativeEvent(e, adStatus: string) {
+		utils.logger(logGroup, 'Nativo native event fired', e, adStatus);
+
+		const slotName = e?.data[0]?.adLocation.replace('#', '');
+		if (!slotName) {
+			utils.logger(logGroup, 'Could not retrieve Nativo slot name');
+			return;
+		}
+
+		const slot = slotService.get(slotName);
+		if (slot) {
+			utils.logger(logGroup, 'Nativo native event handled', e, slot);
+
+			if (slot.getStatus() !== adStatus) {
+				slot.setStatus(adStatus);
+			} else {
+				utils.logger(logGroup, 'Slot status already tracked', slotName, adStatus);
+			}
+		} else {
+			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', slotName);
+		}
 	}
 
 	isEnabled(): boolean {
@@ -56,23 +87,10 @@ export class Nativo {
 
 		const slot = new AdSlot({ id: placeholder.id });
 		slotService.add(slot);
-		slot.setStatus(AdSlot.SLOT_REQUESTED_EVENT);
-		slot.setConfigProperty('trackEachStatus', true);
 
 		if (slot) {
-			window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
-				utils.logger(logGroup, 'Nativo noad event fired!', e, slot);
-
-				slot.setStatus(AdSlot.STATUS_COLLAPSE);
-				this.sendNativoLoadStatus(AdSlot.SLOT_STATUS_CHANGED, slot, e);
-			});
-
-			window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
-				utils.logger(logGroup, 'Nativo adRenderingComplete event fired!', e, slot);
-
-				slot.setStatus(AdSlot.STATUS_SUCCESS);
-				this.sendNativoLoadStatus(AdSlot.SLOT_STATUS_CHANGED, slot, e);
-			});
+			slot.setStatus(AdSlot.SLOT_REQUESTED_EVENT);
+			slot.setConfigProperty('trackEachStatus', true);
 		} else {
 			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', placeholder.id);
 		}
@@ -118,14 +136,14 @@ export class Nativo {
 		return false;
 	}
 
-	private sendNativoLoadStatus(status: string, slot?: AdSlot, event?: any): void {
+	private sendNativoLoadStatus(status: string, event?: any): void {
+		const adLocation = event?.data[0].adLocation || '';
 		const payload = {
 			event: status,
-			slot,
-			adSlotName: slot?.getSlotName() || '',
+			adSlotName: adLocation,
 			status,
 			payload: {
-				adLocation: slot?.getSlotName() || '',
+				adLocation: adLocation,
 				provider: 'nativo',
 			},
 		};
