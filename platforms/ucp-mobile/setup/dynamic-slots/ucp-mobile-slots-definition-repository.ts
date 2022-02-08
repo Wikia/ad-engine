@@ -242,7 +242,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				anchorSelector: '.wds-global-footer',
+				// ADEN-11573: Cleanup after switch
+				anchorSelector: '.global-footer,.wds-global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
