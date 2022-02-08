@@ -3,34 +3,38 @@ import { UserSequentialMessageState } from './data-structures/user-sequential-me
 import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential-messaging-config-store.interface';
 import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequential-message-state-store.interface';
 import { NewSequenceDetector } from './services/new-sequence-detector';
+import { Sequence } from './data-structures/sequence';
 
 export class SequenceStartHandler {
 	private config: SequentialMessagingConfig;
+	private sequence: Sequence;
 
 	constructor(
 		private configStore: SequentialMessagingConfigStoreInterface,
 		private stateStore: UserSequentialMessageStateStoreInterface,
 	) {}
 
-	handleItem(sequentialAdId: string): void {
-		if (this.isAdSequential(sequentialAdId)) {
-			this.storeState(sequentialAdId);
+	handleSequence(sequence: Sequence): void {
+		this.config = this.configStore.get();
+		this.sequence = sequence;
+		if (this.config == null) {
+			return;
+		}
+
+		if (this.isAdSequential()) {
+			this.storeState();
 		}
 	}
 
-	private isAdSequential(sequentialAdId: string): boolean {
-		this.config = this.configStore.get();
-		if (this.config == null) {
-			return false;
-		}
+	private isAdSequential(): boolean {
 		const sequenceDetector = new NewSequenceDetector(this.config);
 
-		return sequenceDetector.isAdSequential(sequentialAdId.toString());
+		return sequenceDetector.isAdSequential(this.sequence);
 	}
 
-	private storeState(sequentialAdId: string): void {
+	private storeState(): void {
 		const state: UserSequentialMessageState = {};
-		state[sequentialAdId] = { step: 1 };
+		state[this.sequence.id] = {};
 
 		this.stateStore.set(state);
 	}
