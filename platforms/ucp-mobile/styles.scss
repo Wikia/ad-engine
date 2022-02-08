@@ -13,6 +13,10 @@
 			min-height: 0;
 		}
 
+		.ad-slot-placeholder.top-leaderboard {
+			padding: 0;
+		}
+
 		#top_leaderboard {
 			@include bfaa-slot(400);
 			@include sticky-tlb-slot();
@@ -20,6 +24,10 @@
 
 		// ADEN-11573: Cleanup after UAP 4.x rollout
 		&:not(.uap-light) {
+			.mobile-global-navigation__wrapper {
+				min-height: 0;
+			}
+
 			#top_leaderboard {
 				z-index: 601;
 			}
@@ -45,7 +53,6 @@
 	.uap-light {
 		.top-ads-container {
 			position: relative;
-			margin-top: $fandom-navbar-height;
 
 			.ad-slot-placeholder.top-leaderboard {
 				position: absolute;
