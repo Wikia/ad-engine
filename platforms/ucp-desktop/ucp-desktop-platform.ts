@@ -5,10 +5,10 @@ import {
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
+	NoAdsMode,
 	SequentialMessagingSetup,
 	TrackingSetup,
 	UcpBaseContextSetup,
-	UcpNoAdsMode,
 	UcpTargetingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -62,7 +62,7 @@ export class UcpDesktopPlatform {
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpDesktopAdsMode,
-				no: UcpNoAdsMode,
+				no: NoAdsMode,
 			}),
 		);
 

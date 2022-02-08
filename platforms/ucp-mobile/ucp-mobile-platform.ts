@@ -7,7 +7,7 @@ import {
 	NoAdsDetector,
 	SequentialMessagingSetup,
 	TrackingSetup,
-	UcpNoAdsMode,
+	NoAdsMode,
 	UcpTargetingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -60,7 +60,7 @@ export class UcpMobilePlatform {
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpMobileAdsMode,
-				no: UcpNoAdsMode,
+				no: NoAdsMode,
 			}),
 		);
 
