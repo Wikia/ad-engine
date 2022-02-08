@@ -11,7 +11,6 @@ export interface VideoData {
 	line_item_id: string;
 	player: string;
 	position: string;
-	rv: string;
 	user_block_autoplay?: -1 | 0 | 1;
 	video_id?: string;
 }
@@ -26,6 +25,7 @@ export interface VideoEventData extends VideoData {
 	position: string;
 	price: '';
 	pv_number: number;
+	rv: string;
 	skin: string;
 	timestamp: number;
 	tz_offset: number;

@@ -83,7 +83,6 @@ export class JWPlayerTrackingHandler {
 			position: this.adSlot.config.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
 			video_id: event.state.playlistItem.mediaid || '',
-			rv: this.getVideoAdRv(event),
 		};
 	}
 
@@ -129,12 +128,5 @@ export class JWPlayerTrackingHandler {
 			default:
 				return -1;
 		}
-	}
-
-	private getVideoAdRv(event: JwpEvent<JwpEventKey>): string {
-		if (['videoStart', 'complete', 'error'].includes(event.name)) {
-			return '0';
-		}
-		return this.adSlot.getConfigProperty('targeting.rv');
 	}
 }
