@@ -76,22 +76,17 @@ export class Nativo {
 
 	private createAdSlot(slotName: string): void {
 		const slot = new AdSlot({ id: slotName });
+		slot.setConfigProperty('trackEachStatus', true);
+
 		slotService.add(slot);
 
-		if (slot) {
-			slot.setStatus(AdSlot.SLOT_REQUESTED_EVENT);
-			slot.setConfigProperty('trackEachStatus', true);
+		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE);
+		});
 
-			window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
-				this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE);
-			});
-
-			window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
-				this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
-			});
-		} else {
-			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', slotName);
-		}
+		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
+			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
+		});
 	}
 
 	private pushNativoQueue(): void {
