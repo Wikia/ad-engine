@@ -30,16 +30,12 @@ export class Nativo {
 	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
 		utils.logger(logGroup, 'Nativo native event fired', e, adStatus);
 
-		if (slot) {
-			utils.logger(logGroup, 'Nativo native event handled', e, slot);
+		utils.logger(logGroup, 'Nativo native event handled', e, slot);
 
-			if (slot.getStatus() !== adStatus) {
-				slot.setStatus(adStatus);
-			} else {
-				utils.logger(logGroup, 'Slot status already tracked', slot.getSlotName(), adStatus);
-			}
+		if (slot.getStatus() !== adStatus) {
+			slot.setStatus(adStatus);
 		} else {
-			utils.logger(logGroup, 'Could not retrieve Nativo ad slot');
+			utils.logger(logGroup, 'Slot status already tracked', slot.getSlotName(), adStatus);
 		}
 	}
 
@@ -136,7 +132,6 @@ export class Nativo {
 		const payload = {
 			event: status,
 			adSlotName: adLocation,
-			status,
 			payload: {
 				adLocation: adLocation,
 				provider: 'nativo',
