@@ -4,6 +4,10 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Across extends PrebidAdapter {
 	static bidderName = '33across';
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return Across.bidderName;
 	}
