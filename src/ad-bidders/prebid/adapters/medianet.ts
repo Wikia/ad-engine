@@ -4,6 +4,10 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Medianet extends PrebidAdapter {
 	static bidderName = 'medianet';
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return Medianet.bidderName;
 	}

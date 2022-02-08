@@ -1,6 +1,7 @@
 import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	adMarketplace,
+	anyclip,
 	audigent,
 	bidders,
 	communicationService,
@@ -114,6 +115,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 						distroScale.call();
 					} else if (exCo.isEnabled()) {
 						exCo.call();
+					} else if (anyclip.isEnabled()) {
+						anyclip.call();
 					}
 				}
 			},
