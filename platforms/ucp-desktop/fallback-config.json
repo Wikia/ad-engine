@@ -408,37 +408,6 @@
             "value": true
         }
     ],
-    "icPrebidTestBidder": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": {
-                "name": "ix",
-                "slots": {
-                    "featured": {
-                        "parameters": {
-                            "siteId": "437502"
-                        }
-                    },
-                    "top_boxad": {
-                        "sizes": [
-                            [
-                                300,
-                                250
-                            ]
-                        ],
-                        "parameters": {
-                            "siteId": "183567"
-                        }
-                    }
-                }
-            }
-        }
-    ],
     "icViewabilityTracking": [
         {
             "apps": [
@@ -2365,6 +2334,18 @@
         }
     ],
     "icPrebidVersion": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
+        },
         {
             "apps": [
                 "fandomdesktop",
