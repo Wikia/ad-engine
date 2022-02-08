@@ -25,6 +25,7 @@ export interface VideoEventData extends VideoData {
 	position: string;
 	price: '';
 	pv_number: number;
+	rv: string;
 	skin: string;
 	timestamp: number;
 	tz_offset: number;

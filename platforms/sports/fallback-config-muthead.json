@@ -291,11 +291,13 @@
     "icPrebidVersion": [
         {
             "apps": [
+                "fandomdesktop",
+                "fandommobile",
                 "futhead",
                 "muthead"
             ],
             "regions": [
-                "XX"
+                "PL"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
         },
