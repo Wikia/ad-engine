@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, utils } from '@ad-engine/core';
+import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
@@ -52,19 +52,30 @@ export class Nativo {
 			return;
 		}
 
-		utils.logger(logGroup, 'Sending an ad request to Nativo');
+		utils.logger(logGroup, 'Sending an ad request to Nativo', placeholder.id);
+
 		const slot = new AdSlot({ id: placeholder.id });
+		slotService.add(slot);
+		slot.setStatus(AdSlot.SLOT_REQUESTED_EVENT);
 		slot.setConfigProperty('trackEachStatus', true);
 
-		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
-			slot.setStatus(AdSlot.STATUS_COLLAPSE);
-			this.sendNativoLoadStatus(AdSlot.SLOT_STATUS_CHANGED, slot, e);
-		});
+		if (slot) {
+			window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+				utils.logger(logGroup, 'Nativo noad event fired!', e, slot);
 
-		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
-			slot.setStatus(AdSlot.STATUS_SUCCESS);
-			this.sendNativoLoadStatus(AdSlot.SLOT_STATUS_CHANGED, slot, e);
-		});
+				slot.setStatus(AdSlot.STATUS_COLLAPSE);
+				this.sendNativoLoadStatus(AdSlot.SLOT_STATUS_CHANGED, slot, e);
+			});
+
+			window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
+				utils.logger(logGroup, 'Nativo adRenderingComplete event fired!', e, slot);
+
+				slot.setStatus(AdSlot.STATUS_SUCCESS);
+				this.sendNativoLoadStatus(AdSlot.SLOT_STATUS_CHANGED, slot, e);
+			});
+		} else {
+			utils.logger(logGroup, 'Could not retrieve Nativo ad slot', placeholder.id);
+		}
 
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
@@ -111,10 +122,10 @@ export class Nativo {
 		const payload = {
 			event: status,
 			slot,
-			adSlotName: slot.getSlotName() || '',
+			adSlotName: slot?.getSlotName() || '',
 			status,
 			payload: {
-				adLocation: slot.getSlotName() || '',
+				adLocation: slot?.getSlotName() || '',
 				provider: 'nativo',
 			},
 		};
