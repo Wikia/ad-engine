@@ -27,7 +27,7 @@
 			@include bfaa-slot(402, $global-navigation-width);
 			@include sticky-tlb-slot($global-navigation-width);
 
-			margin-left: $global-navigation-width !important;
+			margin-left: $global-navigation-width;
 		}
 
 		#bottom_leaderboard {
