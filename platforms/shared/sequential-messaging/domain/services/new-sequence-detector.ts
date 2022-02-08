@@ -1,4 +1,5 @@
 import { SequentialMessagingConfig } from '../data-structures/sequential-messaging-config';
+import { Sequence } from '../data-structures/sequence';
 
 export class NewSequenceDetector {
 	sequentialAdsIds: string[] = [];
@@ -9,7 +10,7 @@ export class NewSequenceDetector {
 		}
 	}
 
-	isAdSequential(sequentialAdId: string): boolean {
-		return this.sequentialAdsIds.includes(sequentialAdId);
+	isAdSequential(sequence: Sequence): boolean {
+		return this.sequentialAdsIds.includes(sequence.id);
 	}
 }
