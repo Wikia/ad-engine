@@ -4,6 +4,10 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Nobid extends PrebidAdapter {
 	static bidderName = 'nobid';
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return Nobid.bidderName;
 	}

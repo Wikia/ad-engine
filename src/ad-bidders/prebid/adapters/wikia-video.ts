@@ -8,22 +8,10 @@ const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
 export class WikiaVideo extends PrebidAdapter {
 	static bidderName = 'wikiaVideo';
-
-	static getVastUrl(width, height, slotName): string {
-		return buildVastUrl(width / height, slotName, {
-			videoAdUnitId: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.videoAdUnitId`),
-			customParams: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.customParams`),
-		});
-	}
-
 	limit: number;
 	useRandomPrice: boolean;
 	timeout: number;
 	maxCpm = EXTENDED_MAX_CPM;
-
-	get bidderName(): string {
-		return WikiaVideo.bidderName;
-	}
 
 	constructor(options) {
 		super(options);
@@ -33,6 +21,17 @@ export class WikiaVideo extends PrebidAdapter {
 		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
 		this.isCustomBidAdapter = true;
+	}
+
+	static getVastUrl(width, height, slotName): string {
+		return buildVastUrl(width / height, slotName, {
+			videoAdUnitId: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.videoAdUnitId`),
+			customParams: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.customParams`),
+		});
+	}
+
+	get bidderName(): string {
+		return WikiaVideo.bidderName;
 	}
 
 	prepareConfigForAdUnit(code): PrebidAdUnit {

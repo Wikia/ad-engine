@@ -4,6 +4,10 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class Kargo extends PrebidAdapter {
 	static bidderName = 'kargo';
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return Kargo.bidderName;
 	}
