@@ -20,7 +20,11 @@ Making it a provider is a bit of a challenge as it means we need to rebuild the 
 
 We decide to change Nativo into an ad-provider, so:
 
-1. `src/ad-services/nativo` is removed  
+1. `src/ad-services/nativo` is removed
+2. `platform-slots-context.setup.ts` we have `ntv_ad` and `ntv_feed_ad` slots defined
+3. the new slots have `provider` property that points to the new Nativo provider
+4. `src/ad-engine/providers/nativo.ts` is created and is responsible for filling in the slots
+5. `setupAdStack()` in `src/ad-engine/ad-engine.ts` are changed in the way that if a slot has provider defined it uses it and fallbacks to GPT provider otherwise
 
 ## Consequences
 
