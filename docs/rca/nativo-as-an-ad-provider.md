@@ -1,0 +1,31 @@
+# Nativo as an ad provider
+
+Date: 2022-02-09
+
+## Status
+
+- proposed
+
+## Context
+
+In 2021 we weren't sure if we want to invest more into Nativo integration and we implemented the integration as an ad-service. Easy way to load a partner's script easily and code something quickly.
+
+The experiment was running for a bit more than a month and proved it was performing (in the business meaning) well enough that we decided not to try out other native ads integrations.
+
+However, within that month or so we learned how much additional logic is needed to keep it cooperating well with the regular slots, premium ad products and Pathfinder. We also planned to introduce internal tracking, lazy-loading of the Nativo's in-content slot and possibly more slots of this kind in future. The idea of changing Nativo into a regular ad provider started growing faster in our heads.  
+
+Making it a provider is a bit of a challenge as it means we need to rebuild the core AdEngine. However, changing how it works would help us prepare it for the performance (in the technical meaning) changes as well as for the ad layouts work we planned in this year.  
+
+## Decision
+
+We decide to change Nativo into an ad-provider, so:
+
+1. `src/ad-services/nativo` is removed  
+
+## Consequences
+
+This way it should be easier in the future to integrate/swap slots from regular filled by GPT provider and Nativo. Since Nativo slots are configured as a regular slots, they've got `AdSlot` representation and are registered in `slotService` it should be easier to add logic that allows/blocks them to be filled. The internal tracking should work out of the box.
+
+The challenge is the unknown that will stop working after changing AdEngine's core but we've got our automated e2e tests for help.
+
+We'll also still need to connect it with Pathfinder but here we'll base on the `communicationService` events.
