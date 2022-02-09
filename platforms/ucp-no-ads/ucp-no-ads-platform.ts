@@ -1,7 +1,6 @@
-import { bootstrapAndGetConsent, InstantConfigSetup } from '@platforms/shared';
+import { bootstrapAndGetConsent, InstantConfigSetup, NoAdsMode } from '@platforms/shared';
 import { context, parallel, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { NoAdsMode } from './no-ads-mode';
 import { UcpNoAdsWikiContextSetup } from './setup/wiki-context.setup';
 
 @Injectable()
