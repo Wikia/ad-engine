@@ -7,6 +7,7 @@ export const SLIDE_OUT_TIME = 600;
 export const DEFAULT_UAP_ID = 'none';
 export const DEFAULT_UAP_TYPE = 'none';
 export const FAN_TAKEOVER_TYPES = ['uap', 'vuap'];
+export const SPECIAL_VIDEO_AD_UNIT = '/5441/uap';
 
 export const BFAA_UNSTICK_DELAY = 3000;
 export const TLB_UNSTICK_DELAY = 2000;
