@@ -30,8 +30,6 @@ export class Nativo {
 	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
 		utils.logger(logGroup, 'Nativo native event fired', e, adStatus);
 
-		utils.logger(logGroup, 'Nativo native event handled', e, slot);
-
 		if (slot.getStatus() !== adStatus) {
 			slot.setStatus(adStatus);
 		} else {
