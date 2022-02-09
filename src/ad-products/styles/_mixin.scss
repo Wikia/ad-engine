@@ -20,7 +20,7 @@
 }
 
 @mixin bfaa-bfab-overlay() {
-	.replay-overlay,
+	.player-overlay,
 	.pause-overlay {
 		cursor: pointer;
 		height: 100%;
@@ -28,7 +28,7 @@
 		z-index: 1;
 	}
 
-	.replay-overlay {
+	.pause-overlay {
 		background: $uap-replay-overlay-color url($player-button-play) center/8% no-repeat;
 		display: none;
 	}

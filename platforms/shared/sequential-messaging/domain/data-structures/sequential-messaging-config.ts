@@ -1,3 +1,6 @@
 export interface SequentialMessagingConfig {
-	[sequentialAdId: string]: { length: number | string; targeting: Record<string, unknown> };
+	[sequentialAdId: string]: {
+		lastStepId: string;
+		targeting: Record<string, unknown>;
+	};
 }

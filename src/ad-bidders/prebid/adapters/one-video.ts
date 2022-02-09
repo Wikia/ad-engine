@@ -4,6 +4,10 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 export class OneVideo extends PrebidAdapter {
 	static bidderName = 'oneVideo';
 
+	constructor(options) {
+		super(options);
+	}
+
 	get bidderName(): string {
 		return OneVideo.bidderName;
 	}

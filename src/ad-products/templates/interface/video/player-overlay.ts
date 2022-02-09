@@ -1,7 +1,6 @@
 import { createIcon, icons } from '../icons';
+import { onVideoOverlayClick } from '../listeners/player-overlay-click-listener';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-
-const replayOverlayClass = 'replay-overlay';
 
 // @TODO Clean up this P1 ADEN-10294 hack
 // It forces Safari to repaint the thumbnail
@@ -52,12 +51,20 @@ function addPlayIcon(overlay): HTMLElement | null {
 	return playIcon;
 }
 
-export class ReplayOverlay {
+export class PlayerOverlay {
 	static add(video, container, params): void {
 		const overlay = document.createElement('div');
 
-		overlay.classList.add(replayOverlayClass);
-		overlay.addEventListener('click', () => video.play());
+		overlay.classList.add('player-overlay');
+		// TODO: remove below line once we update all creative templates in GAM or move the styles from GAM to AE
+		overlay.classList.add('replay-overlay');
+		overlay.addEventListener('click', () => {
+			onVideoOverlayClick(
+				video,
+				communicationService,
+				eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
+			);
+		});
 
 		if (!params.autoPlay) {
 			showOverlay(overlay, params);
@@ -92,11 +99,6 @@ export class ReplayOverlay {
 		} else {
 			container.parentElement.insertBefore(overlay, container);
 		}
-
-		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_REPLAY_OVERLAY_DISPLAYED, {
-			adSlotName: video.settings.getSlotName(),
-			replayOverlay: overlay,
-		});
 
 		forceRepaint(container);
 	}

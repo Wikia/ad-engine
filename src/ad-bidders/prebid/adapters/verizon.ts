@@ -4,14 +4,14 @@ export class Verizon extends PrebidAdapter {
 	static bidderName = 'verizon';
 	dcn: string;
 
-	get bidderName(): string {
-		return Verizon.bidderName;
-	}
-
 	constructor(options) {
 		super(options);
 
 		this.dcn = options.dcn;
+	}
+
+	get bidderName(): string {
+		return Verizon.bidderName;
 	}
 
 	prepareConfigForAdUnit(code, { sizes, pos }): PrebidAdUnit {
