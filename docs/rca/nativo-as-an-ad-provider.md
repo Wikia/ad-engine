@@ -29,3 +29,5 @@ This way it should be easier in the future to integrate/swap slots from regular 
 The challenge is the unknown that will stop working after changing AdEngine's core but we've got our automated e2e tests for help.
 
 We'll also still need to connect it with Pathfinder but here we'll base on the `communicationService` events.
+
+As a follow-up we'll need also to discuss and most likely change how the internal tracking works. Some of the columns we have in the `adengadinfo` just don't make sense for other providers. Most likely we'll also have a better understanding and come up with a plan of refactoring other existing pieces of the AdEngine like `AdSlot`, `slotService`, `slotInjector`, `placeholderService` the pipelines etc.
