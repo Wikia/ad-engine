@@ -380,7 +380,7 @@
 		}
 
 		.video-player,
-		.replay-overlay {
+		.player-overlay {
 			@include bfaa-bfab-hivi-right-position;
 			top: 4%;
 			height: 92%;
@@ -398,13 +398,13 @@
 	}
 
 	&.theme-split-right {
-		.replay-overlay {
+		.player-overlay {
 			right: 0;
 		}
 	}
 
 	&.theme-split-left {
-		.replay-overlay {
+		.player-overlay {
 			left: 0;
 		}
 	}
