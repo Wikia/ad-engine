@@ -297,6 +297,8 @@
                 "muthead"
             ],
             "regions": [
+                "CA",
+                "DE",
                 "PL"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"

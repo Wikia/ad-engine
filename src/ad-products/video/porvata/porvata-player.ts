@@ -24,6 +24,7 @@ export class PorvataPlayer {
 	isFloating = false;
 
 	private state: VideoState = null;
+	private playCounter: number;
 	private adsManager: google.ima.AdsManager = null;
 	private eventListeners: Dictionary<((...args: any[]) => void)[]> = {};
 	private fullscreenMuteProtect: boolean;
@@ -40,6 +41,7 @@ export class PorvataPlayer {
 	) {
 		const playerContainer = settings.getPlayerContainer();
 
+		this.playCounter = 0;
 		this.dom = new PorvataDom(playerContainer);
 		this.container = playerContainer;
 		const video = playerContainer.querySelector('video');
@@ -49,6 +51,7 @@ export class PorvataPlayer {
 
 		if (this.settings.isAutoPlay()) {
 			this.setAutoPlay(true);
+			this.updatePlayCounter();
 		}
 
 		this.destroyCallbacks.onItemFlush((callback: () => void) => callback());
@@ -164,6 +167,7 @@ export class PorvataPlayer {
 			window.google.ima.ViewMode.NORMAL,
 		);
 		this.adsManager.start();
+		this.updatePlayCounter();
 	}
 
 	reload(): void {
@@ -205,6 +209,14 @@ export class PorvataPlayer {
 
 	getState(): VideoState {
 		return this.state;
+	}
+
+	getPlayCounter(): number {
+		return this.playCounter;
+	}
+
+	private updatePlayCounter(): void {
+		this.playCounter++;
 	}
 
 	isPaused(): boolean {
