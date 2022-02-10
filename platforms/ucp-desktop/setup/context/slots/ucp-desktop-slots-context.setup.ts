@@ -167,6 +167,12 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				trackingKey: 'featured-video',
 				isVideo: true,
 			},
+			ntv_ad: {
+				trackEachStatus: true,
+			},
+			ntv_feed_ad: {
+				trackEachStatus: true,
+			},
 		};
 
 		slotsContext.setupSlotVideoContext();
