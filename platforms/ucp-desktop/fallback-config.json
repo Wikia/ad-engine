@@ -2139,19 +2139,6 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "browsers": [
-                "Safari"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
             "regions": [
                 "DE",
                 "GB",
@@ -2290,6 +2277,13 @@
                         "cid": "sequential_messaging_uap"
                     },
                     "lastStepId": "138379703413"
+                },
+                "5914317969": {
+                    "length": 4,
+                    "targeting": {
+                        "uap": "5914317969"
+                    },
+                    "lastStepId": "138380572088"
                 }
             }
         }
@@ -2333,6 +2327,18 @@
             "value": true
         }
     ],
+    "icBeaconBucketRegex": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "^K[a-zA-F].*"
+        }
+    ],
     "icPrebidVersion": [
         {
             "apps": [
@@ -2342,6 +2348,8 @@
                 "muthead"
             ],
             "regions": [
+                "CA",
+                "DE",
                 "PL"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
@@ -2585,6 +2593,18 @@
             }
         }
     ],
+    "icBeaconBucketAeApp": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "ucp-no-ads"
+        }
+    ],
     "icPrebidTelaria": [
         {
             "apps": [
@@ -2693,6 +2713,7 @@
                 "HK",
                 "HU",
                 "ID",
+                "IE",
                 "IL",
                 "IN",
                 "IT",
