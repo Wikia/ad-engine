@@ -1,4 +1,4 @@
-import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
+import { SlotSetupDefinition } from '@platforms/shared';
 import {
 	btRec,
 	communicationService,
@@ -6,10 +6,7 @@ import {
 	eventsRepository,
 	FmrRotator,
 	InstantConfigService,
-	Nativo,
-	nativo,
 	scrollListener,
-	UapLoadStatus,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -202,40 +199,40 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
 
-	getNativoIncontentAdConfig(): SlotSetupDefinition {
-		if (!nativo.isEnabled()) {
-			return;
-		}
+	// getNativoIncontentAdConfig(): SlotSetupDefinition {
+	// 	if (!nativo.isEnabled()) {
+	// 		return;
+	// 	}
+	//
+	// 	return {
+	// 		slotCreatorConfig: {
+	// 			slotName: Nativo.INCONTENT_AD_SLOT_NAME,
+	// 			anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
+	// 			insertMethod: 'before',
+	// 			classList: Nativo.SLOT_CLASS_LIST,
+	// 		},
+	// 		activator: () => {
+	// 			communicationService.on(
+	// 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+	// 				(action: UapLoadStatus) => {
+	// 					nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
+	// 				},
+	// 			);
+	// 		},
+	// 	};
+	// }
 
-		return {
-			slotCreatorConfig: {
-				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-				anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
-				insertMethod: 'before',
-				classList: Nativo.SLOT_CLASS_LIST,
-			},
-			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-					},
-				);
-			},
-		};
-	}
-
-	getNativoFeedAdConfig(): SlotSetupDefinition {
-		if (!nativo.isEnabled()) {
-			return;
-		}
-
-		return {
-			activator: () => {
-				fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
-					nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME), uapLoadStatusAction),
-				);
-			},
-		};
-	}
+	// getNativoFeedAdConfig(): SlotSetupDefinition {
+	// 	if (!nativo.isEnabled()) {
+	// 		return;
+	// 	}
+	//
+	// 	return {
+	// 		activator: () => {
+	// 			fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
+	// 				nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME), uapLoadStatusAction),
+	// 			);
+	// 		},
+	// 	};
+	// }
 }
