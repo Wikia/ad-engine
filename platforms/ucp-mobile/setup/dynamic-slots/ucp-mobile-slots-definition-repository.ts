@@ -1,4 +1,4 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
 import {
 	communicationService,
 	context,
@@ -90,48 +90,44 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-	// getNativoIncontentAdConfig(): SlotSetupDefinition {
-	// 	if (!nativo.isEnabled()) {
-	// 		return;
-	// 	}
-	//
-	// 	return {
-	// 		slotCreatorConfig: {
-	// 			slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-	// 			anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
-	// 			insertMethod: 'before',
-	// 			classList: Nativo.SLOT_CLASS_LIST,
-	// 		},
-	// 		activator: () => {
-	// 			communicationService.on(
-	// 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-	// 				(action: UapLoadStatus) => {
-	// 					nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-	// 				},
-	// 			);
-	// 		},
-	// 	};
-	// }
+	getNativoIncontentAdConfig(): SlotSetupDefinition {
+		const slotName = 'ntv_ad';
 
-	// getNativoFeedAdConfig(): SlotSetupDefinition {
-	// 	if (!nativo.isEnabled()) {
-	// 		return;
-	// 	}
-	//
-	// 	return {
-	// 		slotCreatorConfig: {
-	// 			slotName: Nativo.FEED_AD_SLOT_NAME,
-	// 			anchorSelector: '.recirculation-prefooter',
-	// 			insertMethod: 'before',
-	// 			classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
-	// 		},
-	// 		activator: () => {
-	// 			fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
-	// 				nativo.replaceAndShowSponsoredFanAd(uapLoadStatusAction),
-	// 			);
-	// 		},
-	// 	};
-	// }
+		return {
+			slotCreatorConfig: {
+				slotName: slotName,
+				anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
+				insertMethod: 'before',
+				classList: ['ntv-ad'],
+			},
+			activator: () => {
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (!action.isLoaded || action.adProduct !== 'ruap') {
+							context.push('events.pushOnScroll.ids', slotName);
+						}
+					},
+				);
+			},
+		};
+	}
+
+	getNativoFeedAdConfig(): SlotSetupDefinition {
+		const slotName = 'ntv_feed_ad';
+
+		return {
+			slotCreatorConfig: {
+				slotName: slotName,
+				anchorSelector: '.recirculation-prefooter',
+				insertMethod: 'before',
+				classList: ['ntv-ad', 'hide'],
+			},
+			activator: () => {
+				fanFeedNativeAdListener(() => context.push('state.adStack', { id: slotName }));
+			},
+		};
+	}
 
 	private slotCreatorInsertionParams(): SlotCreatorInsertionParamsType {
 		let params: SlotCreatorInsertionParamsType = {

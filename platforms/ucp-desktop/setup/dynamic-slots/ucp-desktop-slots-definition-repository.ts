@@ -1,4 +1,4 @@
-import { SlotSetupDefinition } from '@platforms/shared';
+import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
 import {
 	btRec,
 	communicationService,
@@ -8,6 +8,7 @@ import {
 	InstantConfigService,
 	scrollListener,
 	utils,
+	UapLoadStatus,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -199,40 +200,36 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
 
-	// getNativoIncontentAdConfig(): SlotSetupDefinition {
-	// 	if (!nativo.isEnabled()) {
-	// 		return;
-	// 	}
-	//
-	// 	return {
-	// 		slotCreatorConfig: {
-	// 			slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-	// 			anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
-	// 			insertMethod: 'before',
-	// 			classList: Nativo.SLOT_CLASS_LIST,
-	// 		},
-	// 		activator: () => {
-	// 			communicationService.on(
-	// 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-	// 				(action: UapLoadStatus) => {
-	// 					nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-	// 				},
-	// 			);
-	// 		},
-	// 	};
-	// }
+	getNativoIncontentAdConfig(): SlotSetupDefinition {
+		const slotName = 'ntv_ad';
 
-	// getNativoFeedAdConfig(): SlotSetupDefinition {
-	// 	if (!nativo.isEnabled()) {
-	// 		return;
-	// 	}
-	//
-	// 	return {
-	// 		activator: () => {
-	// 			fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
-	// 				nativo.requestAd(document.getElementById(Nativo.FEED_AD_SLOT_NAME), uapLoadStatusAction),
-	// 			);
-	// 		},
-	// 	};
-	// }
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
+				insertMethod: 'before',
+				classList: ['ntv-ad'],
+			},
+			activator: () => {
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (!action.isLoaded || action.adProduct !== 'ruap') {
+							context.push('events.pushOnScroll.ids', slotName);
+						}
+					},
+				);
+			},
+		};
+	}
+
+	getNativoFeedAdConfig(): SlotSetupDefinition {
+		const slotName = 'ntv_feed_ad';
+
+		return {
+			activator: () => {
+				fanFeedNativeAdListener(() => context.push('state.adStack', { id: slotName }));
+			},
+		};
+	}
 }
