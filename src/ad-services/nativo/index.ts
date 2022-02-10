@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, utils } from '@ad-engine/core';
+import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
@@ -27,6 +27,16 @@ export class Nativo {
 			});
 	}
 
+	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
+		utils.logger(logGroup, 'Nativo native event fired', e, adStatus);
+
+		if (slot.getStatus() !== adStatus) {
+			slot.setStatus(adStatus);
+		} else {
+			utils.logger(logGroup, 'Slot status already tracked', slot.getSlotName(), adStatus);
+		}
+	}
+
 	isEnabled(): boolean {
 		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
 	}
@@ -52,11 +62,28 @@ export class Nativo {
 			return;
 		}
 
-		utils.logger(logGroup, 'Sending an ad request to Nativo');
+		utils.logger(logGroup, 'Sending an ad request to Nativo', placeholder.id);
+
+		this.createAdSlot(placeholder.id);
+		this.pushNativoQueue();
+	}
+
+	private createAdSlot(slotName: string): void {
+		const slot = new AdSlot({ id: slotName });
+		slot.setConfigProperty('trackEachStatus', true);
+
+		slotService.add(slot);
 
 		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
-			this.sendNativoLoadStatus(AdSlot.STATUS_COLLAPSE, e);
+			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE);
 		});
+
+		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
+			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
+		});
+	}
+
+	private pushNativoQueue(): void {
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
@@ -99,17 +126,20 @@ export class Nativo {
 	}
 
 	private sendNativoLoadStatus(status: string, event?: any): void {
-		const adLocation = event?.data[0]?.adLocation || '';
+		const adLocation = event?.data[0].adLocation || '';
+		const payload = {
+			event: status,
+			adSlotName: adLocation,
+			payload: {
+				adLocation: adLocation,
+				provider: 'nativo',
+			},
+		};
+
+		utils.logger(logGroup, `Dispatching status event`, payload, event);
 
 		communicationService.dispatch(
-			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)({
-				event: status,
-				payload: {
-					adLocation,
-					provider: 'nativo',
-				},
-				adSlotName: adLocation,
-			}),
+			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)(payload),
 		);
 	}
 

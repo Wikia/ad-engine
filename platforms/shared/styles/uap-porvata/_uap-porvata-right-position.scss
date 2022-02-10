@@ -2,7 +2,7 @@
 
 @mixin uap-porvata-right-position() {
 	.video-overlay,
-	.replay-overlay {
+	.player-overlay {
 		@include bfaa-bfab-hivi-right-position;
 	}
 }

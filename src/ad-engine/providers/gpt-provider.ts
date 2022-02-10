@@ -116,6 +116,7 @@ function adjustIframeSize(adSlot: AdSlot): void {
 	const iframe = adSlot.getIframe();
 
 	if (
+		iframe &&
 		parseInt(iframe.width) === map.companionSize[0] &&
 		parseInt(iframe.height) === map.companionSize[1]
 	) {

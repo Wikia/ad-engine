@@ -9,7 +9,7 @@ import {
 	PorvataPlayer,
 	PorvataTemplateParams,
 	ProgressBar,
-	ReplayOverlay,
+	PlayerOverlay,
 	TEMPLATE,
 	TemplateStateHandler,
 	ToggleThumbnail,
@@ -90,7 +90,7 @@ export class VideoBootstrapHandler implements TemplateStateHandler {
 		ToggleUI.add(player, player.dom.getInterfaceContainer(), params);
 		ToggleVideo.add(player, params.container.parentElement);
 		ToggleThumbnail.add(player, undefined, params);
-		ReplayOverlay.add(player, player.dom.getPlayerContainer(), params);
+		PlayerOverlay.add(player, player.dom.getPlayerContainer(), params);
 		LearnMore.add(player, player.dom.getPlayerContainer(), params);
 	}
 
