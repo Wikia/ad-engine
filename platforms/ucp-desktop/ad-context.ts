@@ -86,10 +86,9 @@ export const basicContext = {
 		},
 		connatix: {
 			enabled: false,
-			dataPlayerId: 'TBD',
-			layout: 'responsive',
-			width: '16',
-			height: '9',
+			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
+			playerId: '039a9ead-fb3b-4afc-bcfb-ed241bbaa8d1',
+			renderId: 'da3ec3e41d7e41209e5963444de28591',
 		},
 		durationMedia: {
 			enabled: false,
