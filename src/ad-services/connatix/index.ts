@@ -43,6 +43,14 @@ class Connatix {
 	private insertPlayerContainer() {
 		utils.logger(logGroup, 'inserting Connatix player to the page');
 
+		const connatixPlayer = this.createPlayerTags();
+
+		const incontentPlayerContainer = document.getElementById('incontent_player');
+		incontentPlayerContainer.appendChild(connatixPlayer);
+		incontentPlayerContainer.classList.remove('hide');
+	}
+
+	private createPlayerTags(): HTMLElement {
 		const connatixPlayerTag = document.createElement('script');
 		connatixPlayerTag.setAttribute('id', this.renderId);
 
@@ -55,10 +63,9 @@ class Connatix {
 		connatixImageTag.innerHTML = window.cnx.cmd.push(() => {
 			window.cnx({ playerId: this.playerId }).render(this.renderId);
 		});
+		connatixPlayerTag.appendChild(connatixImageTag);
 
-		const incontentPlayerContainer = document.getElementById('incontent_player');
-		incontentPlayerContainer.appendChild(connatixPlayerTag);
-		incontentPlayerContainer.classList.remove('hide');
+		return connatixPlayerTag;
 	}
 }
 
