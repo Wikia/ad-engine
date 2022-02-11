@@ -44,7 +44,7 @@ class Connatix {
 		utils.logger(logGroup, 'inserting Connatix player to the page');
 
 		const connatixPlayerTag = document.createElement('script');
-		connatixPlayerTag.setAttribute('id', 'da3ec3e41d7e41209e5963444de28591');
+		connatixPlayerTag.setAttribute('id', this.renderId);
 
 		const connatixImageTag = document.createElement('img');
 		connatixImageTag.setAttribute(
