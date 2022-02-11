@@ -254,9 +254,11 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				isVideo: true,
 			},
 			ntv_ad: {
+				providers: ['nativo'],
 				trackEachStatus: true,
 			},
 			ntv_feed_ad: {
+				providers: ['nativo'],
 				trackEachStatus: true,
 			},
 		};

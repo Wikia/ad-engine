@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
-import { GptProvider, PrebidiumProvider, Provider } from './providers';
+import { GptProvider, NativoProvider, PrebidiumProvider, Provider } from './providers';
 import { Runner } from './runner';
 import {
 	btfBlockerService,
@@ -27,7 +27,7 @@ export const DEFAULT_MAX_DELAY = 2000;
 
 export class AdEngine {
 	started = false;
-	provider: Provider;
+	defaultProvider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
 
 	constructor(config = null) {
@@ -64,15 +64,7 @@ export class AdEngine {
 
 	private setupProviders(): void {
 		const providerName: string = context.get('state.provider');
-
-		switch (providerName) {
-			case 'prebidium':
-				this.provider = new PrebidiumProvider();
-				break;
-			case 'gpt':
-			default:
-				this.provider = new GptProvider();
-		}
+		this.defaultProvider = this.createProvider(providerName);
 	}
 
 	private setupAdStack(): void {
@@ -80,10 +72,42 @@ export class AdEngine {
 		if (!this.adStack.start) {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
-
 				slotService.add(adSlot);
-				this.provider.fillIn(adSlot);
+
+				if (context.get(`slots.${ad.id}.providers`)) {
+					this.fillWithProvidersChain(adSlot);
+				} else {
+					this.defaultProvider.fillIn(adSlot);
+				}
 			});
+		}
+	}
+
+	private fillWithProvidersChain(adSlot) {
+		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`);
+
+		while (providersChain.length > 0) {
+			const providerName = providersChain.shift();
+
+			const provider = this.createProvider(providerName);
+
+			if (provider.fillIn(adSlot)) {
+				break;
+			}
+		}
+	}
+
+	private createProvider(providerName: string) {
+		switch (providerName) {
+			case 'prebidium':
+				return new PrebidiumProvider();
+				break;
+			case 'nativo':
+				return new NativoProvider();
+				break;
+			case 'gpt':
+			default:
+				return new GptProvider();
 		}
 	}
 
