@@ -4,15 +4,15 @@ const logGroup = 'connatix';
 
 class Connatix {
 	get cid(): string {
-		return context.get('services.connatix.dataPlayerId');
+		return context.get('services.connatix.cid');
 	}
 
 	get playerId(): string {
-		return context.get('services.connatix.dataPlayerId');
+		return context.get('services.connatix.playerId');
 	}
 
 	get renderId(): string {
-		return context.get('services.connatix.dataPlayerId');
+		return context.get('services.connatix.renderId');
 	}
 
 	isEnabled(): boolean {
@@ -45,8 +45,16 @@ class Connatix {
 
 		const connatixPlayerTag = document.createElement('script');
 		connatixPlayerTag.setAttribute('id', 'da3ec3e41d7e41209e5963444de28591');
-		//@ts-ignore
-		connatixPlayerTag.innerHTML = (new Image()).src = `https://capi.connatix.com/tr/si?token=${this.playerId}&cid=${this.cid}`;  cnx.cmd.push(function() {    cnx({      playerId: "039a9ead-fb3b-4afc-bcfb-ed241bbaa8d1"    }).render("da3ec3e41d7e41209e5963444de28591");  })
+
+		const connatixImageTag = document.createElement('img');
+		connatixImageTag.setAttribute(
+			'src',
+			`https://capi.connatix.com/tr/si?token=${this.playerId}&cid=${this.cid}`,
+		);
+
+		connatixImageTag.innerHTML = window.cnx.cmd.push(() => {
+			window.cnx({ playerId: this.playerId }).render(this.renderId);
+		});
 
 		const incontentPlayerContainer = document.getElementById('incontent_player');
 		incontentPlayerContainer.appendChild(connatixPlayerTag);
