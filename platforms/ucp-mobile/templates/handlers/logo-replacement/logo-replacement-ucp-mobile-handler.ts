@@ -7,14 +7,24 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
 
 	async onEnter(): Promise<void> {
-		const fandomLogo = document.querySelector('.wds-global-navigation__logo');
-		const fandomLogoParent = document.querySelector('.wds-global-navigation__content-bar-left');
-		const fandomHeart = document.querySelector('.wds-global-navigation__logo-heart-link');
-		const fandomHeartParent = document.querySelector('.wds-global-navigation__community-bar');
-		const separator = document.querySelector('.wds-global-navigation__community-bar-separator');
-		const separatorParent = document.querySelector('.wds-global-navigation__community-bar');
+		// ADEN-11573: Cleanup after switch (L11-15)
+		const fandomLogo = document.querySelector(
+			'.mobile-global-navigation__logo,.wds-global-navigation__logo',
+		);
+		const fandomLogoParent = document.querySelector(
+			'.mobile-global-navigation__left,.wds-global-navigation__content-bar-left',
+		);
+		const fandomHeart = document.querySelector(
+			'.mobile-global-navigation__logomark,.wds-global-navigation__logo-heart-link',
+		);
+		const separator = document.querySelector(
+			'.mobile-global-navigation__community-bar-separator,.wds-global-navigation__community-bar-separator',
+		);
+		const fandomHeartSeparatorParent = document.querySelector(
+			'.mobile-global-navigation__community-bar,.wds-global-navigation__community-bar',
+		);
 
-		if (fandomLogoParent && fandomLogo && separatorParent && separator) {
+		if (fandomLogoParent && fandomLogo && fandomHeartSeparatorParent && separator) {
 			setTimeout(() => {
 				const customLogoAnchorElement = document.createElement('a');
 				customLogoAnchorElement.href = this.params.clickThroughUrl || 'https://www.fandom.com/';
@@ -27,7 +37,7 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 				trackingPixel.src = this.params.pixelUrl;
 				trackingPixel.classList.add('tracking-pixel');
 
-				separatorParent.insertBefore(customLogoAnchorElement, separator);
+				fandomHeartSeparatorParent.insertBefore(customLogoAnchorElement, separator);
 				fandomLogoParent.removeChild(fandomLogo);
 				fandomLogoParent.appendChild(trackingPixel);
 
@@ -40,8 +50,8 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 
 				customLogoAnchorElement.appendChild(customLogo);
 
-				if (fandomHeartParent && fandomHeart) {
-					fandomHeartParent.removeChild(fandomHeart);
+				if (fandomHeart) {
+					fandomHeartSeparatorParent.removeChild(fandomHeart);
 				}
 			}, 1000);
 		}

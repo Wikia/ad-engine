@@ -11,6 +11,7 @@ interface Window {
 	ads?: MediaWikiAds;
 	adsQueue?: any;
 	apstag?: Apstag;
+	au?: any;
 	au_seg?: any;
 	beaconId?: string;
 	beacon_id?: string;

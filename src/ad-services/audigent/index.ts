@@ -27,7 +27,20 @@ class Audigent {
 			utils.logger(logGroup, 'loading');
 			context.set('targeting.AU_SEG', '-1');
 
-			utils.scriptLoader.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first');
+			utils.scriptLoader
+				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
+				.then(() => {
+					if (context.get('wiki.targeting.adTagManagerTags.gnre')?.includes('3rdpersonshooter')) {
+						utils.logger(logGroup, 'manually pushing 3rdpersonshooter tag');
+						window.au.push({
+							category: 'tags',
+							data: ['GENRE > 3RDPERSONSHOOTER'],
+						});
+					} else {
+						utils.logger(logGroup, 'skips manual push of tags');
+					}
+				});
+
 			utils.scriptLoader
 				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
@@ -47,5 +60,7 @@ class Audigent {
 		}
 	}
 }
+
+window.au = window.au || [];
 
 export const audigent = new Audigent();

@@ -3,7 +3,7 @@ import { UapVideoSettings } from '@wikia/ad-products/templates/uap/uap-video-set
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { CloseButton } from '../../../../../src/ad-products/templates/interface/video/close-button';
-import { ReplayOverlay } from '../../../../../src/ad-products/templates/interface/video/replay-overlay';
+import { PlayerOverlay } from '../../../../../src/ad-products/templates/interface/video/player-overlay';
 
 function getContainer(): HTMLDivElement {
 	return document.createElement('div');
@@ -26,7 +26,7 @@ describe('UITemplate', () => {
 		sandbox.stub(videoSettings, 'isSplitLayout').returns(false);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(true);
-		expect(selectTemplate(videoSettings).includes(ReplayOverlay)).to.equal(false);
+		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(false);
 	});
 
 	it('Should hide close button element if there is autoplay for not split ad', () => {
@@ -36,7 +36,7 @@ describe('UITemplate', () => {
 		sandbox.stub(videoSettings, 'isSplitLayout').returns(false);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(false);
-		expect(selectTemplate(videoSettings).includes(ReplayOverlay)).to.equal(false);
+		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(false);
 	});
 
 	it('Should hide close button element if there is auto play for split ad', () => {
@@ -46,7 +46,7 @@ describe('UITemplate', () => {
 		sandbox.stub(videoSettings, 'isSplitLayout').returns(true);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(false);
-		expect(selectTemplate(videoSettings).includes(ReplayOverlay)).to.equal(true);
+		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(true);
 	});
 
 	it('Should show replay button and close for click to play and split', () => {
@@ -56,6 +56,6 @@ describe('UITemplate', () => {
 		sandbox.stub(videoSettings, 'isSplitLayout').returns(true);
 
 		expect(selectTemplate(videoSettings).includes(CloseButton)).to.equal(true);
-		expect(selectTemplate(videoSettings).includes(ReplayOverlay)).to.equal(true);
+		expect(selectTemplate(videoSettings).includes(PlayerOverlay)).to.equal(true);
 	});
 });

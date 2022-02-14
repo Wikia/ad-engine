@@ -236,7 +236,7 @@ export class AdSlot {
 	getPlaceholder(): HTMLElement | null {
 		const placeholder = this.getElement()?.parentElement;
 
-		return placeholder.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS) ? placeholder : null;
+		return placeholder?.classList.contains(AdSlot.AD_SLOT_PLACEHOLDER_CLASS) ? placeholder : null;
 	}
 
 	getAdLabel(adLabelParentSelector?: string): HTMLElement | null {

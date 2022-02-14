@@ -47,6 +47,32 @@ describe('UniversalAdPackage', () => {
 		expect(contextStub.set.callCount).to.equal(4);
 	});
 
+	it("should use slot's default video ad unit with default settings from GAM", () => {
+		universalAdPackage.init({
+			uap: UAP_ID,
+			creativeId: UAP_CREATIVE_ID,
+			slotName: 'top_leaderboard',
+			useVideoSpecialAdUnit: false,
+		} as any);
+
+		expect(
+			contextStub.set.calledWith('slots.top_leaderboard.videoAdUnit', 'special_ad_unit'),
+		).to.equal(false);
+	});
+
+	it('should use special ad video unit with the right settings from GAM', () => {
+		universalAdPackage.init({
+			uap: UAP_ID,
+			creativeId: UAP_CREATIVE_ID,
+			slotName: 'top_leaderboard',
+			useVideoSpecialAdUnit: true,
+		} as any);
+
+		expect(contextStub.set.calledWith('slots.top_leaderboard.videoAdUnit', '/5441/uap')).to.equal(
+			true,
+		);
+	});
+
 	describe('registerUapListener (UAP Load Status listener - side effect)', () => {
 		const isFanTakeoverLoaded = true;
 		const adSlotName = 'Slot1';

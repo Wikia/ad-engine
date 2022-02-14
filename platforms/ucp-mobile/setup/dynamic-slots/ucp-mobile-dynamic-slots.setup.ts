@@ -70,7 +70,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private configureIncontentPlayer(): void {
 		const icpSlotName = 'incontent_player';
 
-		slotService.setState('incontent_player', context.get('custom.hasIncontentPlayer'));
+		slotService.setState(
+			'incontent_player',
+			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home',
+		);
 		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
 		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
 

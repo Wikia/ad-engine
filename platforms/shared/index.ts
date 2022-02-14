@@ -12,7 +12,7 @@ export * from './setup/base-context.setup';
 export * from './bidders/bidders-state.setup';
 export * from './dynamic-slots/fan-feed-native-ad-listener';
 export * from './tracking/tracking.setup';
-export * from './modes/no-ads/ucp-no-ads.mode';
+export * from './modes/no-ads/no-ads.mode';
 export * from './modes/start-ad-engine';
 export * from './services/wad-runner';
 export * from './services/no-ads-detector';

@@ -5,13 +5,8 @@ import {
 	ofType,
 } from '@ad-engine/communication';
 import { AdSlot, btfBlockerService, context, slotService, Targeting, utils } from '@ad-engine/core';
-import { throttle } from 'lodash';
 import { filter, take } from 'rxjs/operators';
-import { Porvata } from '../../video/porvata/porvata';
-import { PorvataPlayer } from '../../video/porvata/porvata-player';
-import * as videoUserInterface from '../interface/video';
 import * as constants from './constants';
-import { UapVideoSettings } from './uap-video-settings';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
@@ -98,94 +93,6 @@ export interface UapParams {
 	width: number;
 }
 
-function getVideoSize(
-	slot: HTMLElement,
-	params: UapParams,
-	videoSettings: UapVideoSettings,
-): VideoSize {
-	const width: number = videoSettings.isSplitLayout()
-		? params.videoPlaceholderElement.offsetWidth
-		: slot.clientWidth;
-	const height = width / params.videoAspectRatio;
-
-	return {
-		width,
-		height,
-	};
-}
-
-function adjustVideoAdContainer(params: UapParams): void {
-	if (params.splitLayoutVideoPosition) {
-		const videoAdContainer = params.container.querySelector('.video-player');
-
-		videoAdContainer.classList.add(`video-player-${params.splitLayoutVideoPosition}`);
-	}
-}
-
-async function loadPorvata(videoSettings, slotContainer, imageContainer): Promise<PorvataPlayer> {
-	const params = videoSettings.getParams();
-	const template = videoUserInterface.selectTemplate(videoSettings);
-
-	params.autoPlay = videoSettings.isAutoPlay();
-	videoSettings.updateParams(params);
-
-	const video = await Porvata.inject(params);
-
-	video.container.style.position = 'relative';
-	videoUserInterface.setup(video, video.container, template, {
-		autoPlay: videoSettings.isAutoPlay(),
-		image: imageContainer,
-		container: slotContainer,
-		thumbnail: params.thumbnail,
-		clickThroughURL: params.clickThroughURL,
-		aspectRatio: params.aspectRatio,
-		videoAspectRatio: params.videoAspectRatio,
-		hideWhenPlaying: params.videoPlaceholderElement || params.image,
-		splitLayoutVideoPosition: params.splitLayoutVideoPosition,
-	});
-
-	video.addEventListener('wikiaAdCompleted', () => {
-		video.reload();
-	});
-
-	adjustVideoAdContainer(params);
-
-	return video;
-}
-
-async function loadVideoAd(videoSettings: UapVideoSettings): Promise<PorvataPlayer> {
-	const params = videoSettings.getParams();
-	const imageContainer: HTMLElement = params.container.querySelector('div:last-of-type');
-	const size: VideoSize = getVideoSize(params.container, params, videoSettings);
-
-	params.vastTargeting = {};
-	params.width = size.width;
-	params.height = size.height;
-	videoSettings.updateParams(params);
-
-	function recalculateVideoSize(videoPlayer: PorvataPlayer): () => void {
-		return () => {
-			const currentSize = getVideoSize(params.container, params, videoSettings);
-
-			videoPlayer.resize(currentSize.width, currentSize.height);
-		};
-	}
-
-	const video: PorvataPlayer = await loadPorvata(videoSettings, params.container, imageContainer);
-
-	window.addEventListener('resize', throttle(recalculateVideoSize(video), 250));
-
-	if (params.videoTriggerElement) {
-		params.videoTriggerElement.addEventListener('click', () => video.play());
-	} else if (params.videoTriggers) {
-		params.videoTriggers.forEach((trigger) => {
-			trigger.addEventListener('click', () => video.play());
-		});
-	}
-
-	return video;
-}
-
 function getUapId(): string {
 	return uapId;
 }
@@ -240,11 +147,17 @@ function initSlot(params: UapParams): void {
 	if (params.isDarkTheme) {
 		params.container.classList.add('is-dark');
 	}
+
 	if (params.isMobile) {
 		params.container.classList.add('is-mobile-layout');
 	}
+
 	if (utils.client.isSmartphone() || utils.client.isTablet()) {
 		params.container.classList.add('is-mobile-device');
+	}
+
+	if (params.useVideoSpecialAdUnit) {
+		adSlot.setConfigProperty('videoAdUnit', constants.SPECIAL_VIDEO_AD_UNIT);
 	}
 }
 
@@ -279,12 +192,6 @@ export const universalAdPackage = {
 		if (params.slotName) {
 			initSlot(params);
 		}
-
-		if (params.useVideoSpecialAdUnit) {
-			// ADEN-11567 force BFAA and BFAB video request to use special ad unit
-			context.set(`slots.top_leaderboard.videoAdUnit`, '/5441/uap');
-			context.set(`slots.bottom_leaderboard.videoAdUnit`, '/5441/uap');
-		}
 	},
 	initSlot,
 	isFanTakeoverLoaded,
@@ -297,7 +204,6 @@ export const universalAdPackage = {
 
 		return !!params.videoAspectRatio && (params.videoPlaceholderElement || triggersArrayIsNotEmpty);
 	},
-	loadVideoAd,
 	reset,
 	setType,
 	updateSlotsTargeting,
