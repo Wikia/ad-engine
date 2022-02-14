@@ -8,7 +8,7 @@ import { Panel } from './panel';
 import { PauseControl } from './pause-control';
 import { PauseOverlay } from './pause-overlay';
 import { ProgressBar } from './progress-bar';
-import { ReplayOverlay } from './replay-overlay';
+import { PlayerOverlay } from './player-overlay';
 import { ToggleAnimation } from './toggle-animation';
 import { ToggleFullscreen } from './toggle-fullscreen';
 import { ToggleThumbnail } from './toggle-thumbnail';
@@ -42,7 +42,7 @@ const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings
 			PauseOverlay,
 			createBottomPanel(params),
 			ToggleVideo,
-			ReplayOverlay,
+			PlayerOverlay,
 			!isAutoPlay ? CloseButton : null,
 		],
 		'split-right': [
@@ -50,7 +50,7 @@ const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings
 			PauseOverlay,
 			createBottomPanel(params),
 			ToggleVideo,
-			ReplayOverlay,
+			PlayerOverlay,
 			!isAutoPlay ? CloseButton : null,
 		],
 		hivi: [
@@ -60,7 +60,7 @@ const getTemplates = (params, videoSettings?: PorvataSettings | UapVideoSettings
 			ToggleThumbnail,
 			ToggleUI,
 			LearnMore,
-			params.videoPlaceholderElement ? ReplayOverlay : null,
+			params.videoPlaceholderElement ? PlayerOverlay : null,
 		],
 		'outstream-incontent': [DynamicReveal, Floating, ProgressBar, VolumeControl],
 	};

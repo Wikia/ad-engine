@@ -14,6 +14,13 @@ import { SequenceStartHandler } from './domain/sequence-start-handler';
 import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
 import { TargetingManager } from './infrastructure/targeting-manager';
+import { Sequence } from './domain/data-structures/sequence';
+import { SequenceStateHandlerInterface } from './domain/services/sequence-state-handlers/sequence-state-handler-interface';
+
+interface Action {
+	event: string;
+	slot: { lineItemId: string; creativeId: string };
+}
 
 @Injectable()
 export class SequentialMessagingSetup implements DiProcess {
@@ -26,28 +33,26 @@ export class SequentialMessagingSetup implements DiProcess {
 	}
 
 	private detectNewSequentialAd(): void {
-		interface Action {
-			event: string;
-			slot: { lineItemId: string };
-		}
-
 		communicationService.action$
 			.pipe(
 				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
 				filter((action: Action) => action.event === 'slotShowed'),
 				take(1),
 			)
-			.subscribe((action) => {
+			.subscribe((action: Action) => {
 				const lineItemId = action.slot.lineItemId;
+				const creativeId = action.slot.creativeId;
 				if (lineItemId == null) {
 					return;
 				}
+
+				const sequence: Sequence = { id: lineItemId.toString(), stepId: creativeId.toString() };
 
 				const sequenceHandler = new SequenceStartHandler(
 					new SequentialMessagingConfigStore(this.instantConfig),
 					new UserSequentialMessageStateStore(Cookies),
 				);
-				sequenceHandler.handleItem(lineItemId);
+				sequenceHandler.handleSequence(sequence);
 			});
 	}
 
@@ -56,8 +61,22 @@ export class SequentialMessagingSetup implements DiProcess {
 			new SequentialMessagingConfigStore(this.instantConfig),
 			new UserSequentialMessageStateStore(Cookies),
 			new TargetingManager(context),
+			this.handleSequenceStateOnSlotShowedEvent,
 		);
 
 		return sequenceHandler.handleOngoingSequence();
+	}
+
+	private handleSequenceStateOnSlotShowedEvent(onEvent: SequenceStateHandlerInterface) {
+		communicationService.action$
+			.pipe(
+				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+				filter((action: Action) => action.event === 'slotShowed'),
+				take(1),
+			)
+			.subscribe((action) => {
+				const sequence: Sequence = { id: action.slot.lineItemId, stepId: action.slot.creativeId };
+				onEvent.handleState(sequence);
+			});
 	}
 }
