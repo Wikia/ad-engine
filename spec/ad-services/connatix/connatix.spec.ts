@@ -40,12 +40,4 @@ describe('Connatix', () => {
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
-
-	it('Connatix is called', async () => {
-		context.set('services.connatix.enabled', true);
-
-		await connatix.call();
-
-		expect(loadScriptStub.called).to.equal(true);
-	});
 });
