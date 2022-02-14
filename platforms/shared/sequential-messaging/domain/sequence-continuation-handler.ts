@@ -2,14 +2,14 @@ import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequ
 import { UserSequentialMessageState } from './data-structures/user-sequential-message-state';
 import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential-messaging-config-store.interface';
 import { TargetingManagerInterface } from './interfaces/targeting-manager.interface';
-
-type AdConfig = { length: number | string; targeting: Record<string, unknown> };
+import { SequenceEndStateHandler } from './services/sequence-end-state-handler';
 
 export class SequenceContinuationHandler {
 	constructor(
 		private configStore: SequentialMessagingConfigStoreInterface,
 		private userStateStore: UserSequentialMessageStateStoreInterface,
 		private targetingManager: TargetingManagerInterface,
+		private onSlotShowedEvent: (onEvent: SequenceEndStateHandler) => void,
 	) {}
 
 	handleOngoingSequence(): boolean {
@@ -23,26 +23,13 @@ export class SequenceContinuationHandler {
 		for (const sequentialAdId of Object.keys(userState)) {
 			const adConfig = fullConfig[sequentialAdId];
 
-			this.setState(userState, sequentialAdId, adConfig);
 			this.targetingManager.setTargeting(adConfig.targeting);
+
+			this.onSlotShowedEvent(
+				new SequenceEndStateHandler(this.userStateStore, adConfig.lastStepId.toString()),
+			);
 		}
 
 		return true;
-	}
-
-	private setState(
-		userState: UserSequentialMessageState,
-		sequentialAdId: string,
-		adConfig: AdConfig,
-	) {
-		const newUserState = userState;
-		newUserState[sequentialAdId].step++;
-
-		if (newUserState[sequentialAdId].step >= adConfig.length) {
-			this.userStateStore.delete();
-			return;
-		}
-
-		this.userStateStore.set(newUserState);
 	}
 }

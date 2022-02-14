@@ -5,27 +5,11 @@ import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
 export class UapDomReader {
-	private adSlotInitialYPos;
-
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		@Inject(NAVBAR) private navbar: HTMLElement,
 	) {}
-
-	getAdSlotInitialYPos(): number {
-		return this.adSlotInitialYPos ? this.adSlotInitialYPos : 0;
-	}
-
-	setAdSlotInitialYPos(): void {
-		this.adSlotInitialYPos = window.scrollY + this.getAdSlotTopOffset();
-	}
-
-	private getAdSlotTopOffset(): number {
-		const rect = this.adSlot.element.getBoundingClientRect();
-
-		return rect.top;
-	}
 
 	getPageOffsetImpact(): number {
 		return (
@@ -98,17 +82,18 @@ export class UapDomReader {
 		return (1 / ratio) * this.adSlot.element.offsetWidth;
 	}
 
-	getSlotHeightClipping(): number {
+	getSlotHeightClipping(): string {
 		const scroll = window.scrollY;
 
 		if (!scroll || scroll <= 0) {
-			return 0;
+			return 'unset';
 		}
 
 		if (scroll >= this.adSlot.element.offsetHeight) {
-			return this.adSlot.element.offsetHeight;
+			return 'rect(0, 0, 0, 0)';
 		}
 
-		return scroll;
+		return `rect(0 ${this.adSlot.element.offsetWidth}px ${this.adSlot.element.offsetHeight -
+			scroll}px 0)`;
 	}
 }
