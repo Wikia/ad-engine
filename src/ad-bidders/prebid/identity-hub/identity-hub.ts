@@ -12,11 +12,14 @@ class IdentityHub {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
+			return;
 		}
 
 		utils.logger(logGroup, 'enabled');
 
 		if (!this.isLoaded) {
+			// PWT.jsLoaded() is part of Pubmatic script, it's called when IdentityHub is ready
+			// it needs to be defined before loading the script
 			window.PWT = {
 				jsLoaded: () => {
 					utils.logger(logGroup, 'scriptLoader.loadScript loaded');
