@@ -1,23 +1,23 @@
 import { context, utils } from '@ad-engine/core';
+import { ConnatixPlayer } from './connatix-player';
+import { PlayerInjector, PlayerInjectorInterface } from './player-injector';
+import { ScriptLoaderInterface } from '../../ad-engine/utils';
 
-const logGroup = 'connatix';
+export const logGroup = 'connatix';
 
-class Connatix {
+export class Connatix {
 	get cid(): string {
 		return context.get('services.connatix.cid');
-	}
-
-	get playerId(): string {
-		return context.get('services.connatix.playerId');
-	}
-
-	get renderId(): string {
-		return context.get('services.connatix.renderId');
 	}
 
 	isEnabled(): boolean {
 		return context.get('services.connatix.enabled');
 	}
+
+	constructor(
+		private scriptLoader: ScriptLoaderInterface,
+		private playerInjector: PlayerInjectorInterface,
+	) {}
 
 	async call(): Promise<void> {
 		if (!this.isEnabled()) {
@@ -27,46 +27,23 @@ class Connatix {
 		}
 
 		await this.loadPlayerAsset();
-		this.insertPlayerContainer();
+		this.playerInjector.insertPlayerContainer(this.cid);
 	}
 
-	private async loadPlayerAsset() {
+	private async loadPlayerAsset(): Promise<void> {
 		const libraryUrl = `//cd.connatix.com/connatix.player.js?cid=${this.cid}`;
 
 		utils.logger(logGroup, 'loading Connatix asset', libraryUrl);
 
-		return utils.scriptLoader.loadScript(libraryUrl).then(() => {
+		// TODO test if this would work if instead of .then we would use await
+		return this.scriptLoader.loadScript(libraryUrl).then(() => {
 			utils.logger(logGroup, 'Connatix player is ready');
 		});
 	}
-
-	private insertPlayerContainer() {
-		utils.logger(logGroup, 'inserting Connatix player to the page');
-
-		const connatixPlayer = this.createPlayerTags();
-
-		const incontentPlayerContainer = document.getElementById('incontent_player');
-		incontentPlayerContainer.appendChild(connatixPlayer);
-		incontentPlayerContainer.classList.remove('hide');
-	}
-
-	private createPlayerTags(): HTMLElement {
-		const connatixPlayerTag = document.createElement('script');
-		connatixPlayerTag.setAttribute('id', this.renderId);
-
-		const connatixImageTag = document.createElement('img');
-		connatixImageTag.setAttribute(
-			'src',
-			`https://capi.connatix.com/tr/si?token=${this.playerId}&cid=${this.cid}`,
-		);
-
-		connatixImageTag.innerHTML = window.cnx.cmd.push(() => {
-			window.cnx({ playerId: this.playerId }).render(this.renderId);
-		});
-		connatixPlayerTag.appendChild(connatixImageTag);
-
-		return connatixPlayerTag;
-	}
 }
 
-export const connatix = new Connatix();
+const cnxPlayer = new ConnatixPlayer();
+
+const playerInjector = new PlayerInjector(cnxPlayer);
+
+export const connatix = new Connatix(utils.scriptLoader, playerInjector);
