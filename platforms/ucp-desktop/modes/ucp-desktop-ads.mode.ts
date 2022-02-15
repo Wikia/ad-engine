@@ -14,6 +14,7 @@ import {
 	exCo,
 	facebookPixel,
 	iasPublisherOptimization,
+	identityHub,
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
@@ -103,6 +104,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		});
 
 		adMarketplace.initialize();
+		identityHub.call();
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
