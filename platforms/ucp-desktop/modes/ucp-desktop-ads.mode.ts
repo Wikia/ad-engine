@@ -85,6 +85,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
+		inhibitors.push(identityHub.call());
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
@@ -104,7 +105,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		});
 
 		adMarketplace.initialize();
-		identityHub.call();
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,

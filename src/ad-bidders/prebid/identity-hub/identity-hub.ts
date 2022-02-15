@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 
 const profileId = '2721';
@@ -13,14 +12,18 @@ class IdentityHub {
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			return Promise.resolve();
 		}
 
 		utils.logger(logGroup, 'enabled');
 
 		if (!this.isLoaded) {
+			window.PWT = {
+				jsLoaded: () => {
+					utils.logger(logGroup, 'scriptLoader.loadScript loaded');
+					return Promise.resolve();
+				},
+			};
 			return utils.scriptLoader.loadScript(this.identityHubScriptSrc).then(() => {
-				communicationService.emit(eventsRepository.IdentityHub_JS_LOADED);
 				this.isLoaded = true;
 			});
 		}
