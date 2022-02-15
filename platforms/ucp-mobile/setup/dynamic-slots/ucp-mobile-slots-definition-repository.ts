@@ -98,7 +98,7 @@ export class UcpMobileSlotsDefinitionRepository {
 				slotName: slotName,
 				anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
 				insertMethod: 'before',
-				classList: ['ntv-ad'],
+				classList: ['ntv-ad', 'ad-slot'],
 			},
 			activator: () => {
 				communicationService.on(

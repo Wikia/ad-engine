@@ -208,13 +208,17 @@ export class UcpDesktopSlotsDefinitionRepository {
 				slotName,
 				anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
 				insertMethod: 'before',
-				classList: ['ntv-ad'],
+				classList: ['ntv-ad', 'ad-slot'],
 			},
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) => {
-						if (!action.isLoaded || action.adProduct !== 'ruap') {
+						if (
+							!action.isLoaded ||
+							action.adProduct !== 'ruap' ||
+							!context.get('custom.hasFeaturedVideo')
+						) {
 							context.push('events.pushOnScroll.ids', slotName);
 						}
 					},
