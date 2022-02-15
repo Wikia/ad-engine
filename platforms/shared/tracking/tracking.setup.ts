@@ -73,6 +73,7 @@ export class TrackingSetup {
 		this.viewabilityCounterTracker();
 		this.scrollSpeedTracker();
 		this.connectionTracker();
+		this.loadTimeTracker();
 		this.audigentTracker();
 		this.liveRampTracker();
 		this.atsTracker();
@@ -270,6 +271,30 @@ export class TrackingSetup {
 			}
 
 			this.pageTracker.trackProp('connection', data.join(';'));
+		}
+	}
+
+	private loadTimeTracker(): void {
+		const trackerConfig = context.get('options.loadTimeTracking');
+
+		if (!trackerConfig || !trackerConfig.enabled) {
+			return;
+		}
+
+		(trackerConfig.timing || []).forEach((moment) => {
+			this.pageTracker.trackProp(`load_time_${moment}`, window.performance.timing[moment]);
+		});
+
+		if (trackerConfig?.custom?.includes('aeConfigured')) {
+			communicationService.on(eventsRepository.AD_ENGINE_CONFIGURED, () => {
+				this.pageTracker.trackProp('load_time_aeConfigured', Date.now().toString());
+			});
+		}
+
+		if (trackerConfig?.custom?.includes('aeStackStart')) {
+			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+				this.pageTracker.trackProp('load_time_aeStackStart', Date.now().toString());
+			});
 		}
 	}
 
