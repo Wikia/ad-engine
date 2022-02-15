@@ -90,7 +90,14 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
+    private isNativoEnabled() {
+        return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
+    }
+
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
+		if (!this.isNativoEnabled()) {
+			return;
+		}
 		const slotName = 'ntv_ad';
 
 		return {
@@ -114,6 +121,9 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativoFeedAdConfig(): SlotSetupDefinition {
+        if (!this.isNativoEnabled()) {
+            return;
+        }
 		const slotName = 'ntv_feed_ad';
 
 		return {

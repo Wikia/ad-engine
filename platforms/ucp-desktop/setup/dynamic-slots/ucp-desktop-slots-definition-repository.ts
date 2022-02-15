@@ -200,7 +200,14 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
 
+	private isNativoEnabled() {
+		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
+	}
+
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
+		if (!this.isNativoEnabled()) {
+			return;
+		}
 		const slotName = 'ntv_ad';
 
 		return {
@@ -228,6 +235,9 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	getNativoFeedAdConfig(): SlotSetupDefinition {
+		if (!this.isNativoEnabled()) {
+			return;
+		}
 		const slotName = 'ntv_feed_ad';
 
 		return {
