@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
 const platformsConfig = require('./platforms/platforms.json');
 const common = require('./webpack.common.js');
-const Visualizer = require('webpack-visualizer-plugin');
 
 const platforms = ({ entry }) => ({
 	entry,
@@ -13,7 +12,7 @@ const platforms = ({ entry }) => ({
 		path: path.resolve(__dirname, `dist/platforms`),
 	},
 
-	plugins: [new MiniCssExtractPlugin({ filename: '[name]/styles.css' }), new Visualizer()],
+	plugins: [new MiniCssExtractPlugin({ filename: '[name]/styles.css' })],
 
 	performance: {
 		maxAssetSize: 310000,

@@ -18,12 +18,10 @@
 		"core-decorators": "^0.20.0",
 		"current-device": "^0.7.8",
 		"js-cookie": "3.0.1",
-		"lodash": "4.17.21",
 		"rxjs": "7.5.2",
 		"ts-action": "^11.0.0",
 		"ts-action-operators": "^9.1.1",
-		"uuid": "8.3.2",
-		"webpack-visualizer-plugin": "0.1.11"
+		"uuid": "8.3.2"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
@@ -55,6 +53,7 @@
 		"json-loader": "0.5.7",
 		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
 		"lint-staged": "12.1.4",
+		"lodash": "4.17.21",
 		"mini-css-extract-plugin": "0.4.0",
 		"mocha": "4.1.0",
 		"mocha-jsdom": "^1.1.0",
