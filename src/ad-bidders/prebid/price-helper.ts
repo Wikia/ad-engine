@@ -1,5 +1,5 @@
 import { Dictionary } from '@ad-engine/core';
-import { mapValues } from 'lodash';
+import mapValues from 'lodash/mapValues';
 import { adaptersRegistry } from './adapters-registry';
 import { DEFAULT_MAX_CPM } from './prebid-adapter';
 import { getWinningBid } from './prebid-helper';

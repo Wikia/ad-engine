@@ -1,5 +1,5 @@
 import { communicationService } from '@ad-engine/communication';
-import { intersection } from 'lodash';
+import intersection from 'lodash/intersection';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';

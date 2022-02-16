@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { flattenDeep } from 'lodash';
+import flattenDeep from 'lodash/flattenDeep';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';

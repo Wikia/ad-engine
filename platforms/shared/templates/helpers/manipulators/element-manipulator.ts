@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { forIn } from 'lodash';
+import forIn from 'lodash/forIn';
 
 @Injectable({ autobind: false })
 export class ElementManipulator {
