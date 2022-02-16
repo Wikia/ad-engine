@@ -24,7 +24,7 @@ import { F2SlotsContextSetup } from './setup/context/slots/f2-slots-context.setu
 import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
 import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setup';
 import { F2BaseContextSetup } from './setup/f2-base-context.setup';
-import { F2TemplateSetup } from './templates/f2-template.setup';
+import { F2TemplatesSetup } from './templates/f2-templates.setup';
 
 @Injectable()
 export class F2Platform {
@@ -42,7 +42,7 @@ export class F2Platform {
 			F2SlotsContextSetup,
 			F2TargetingSetup,
 			F2DynamicSlotsSetup,
-			F2TemplateSetup,
+			F2TemplatesSetup,
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
