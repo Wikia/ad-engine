@@ -45,7 +45,6 @@ export class ElementManipulator {
 	}
 
 	restore(): void {
-		console.log('dupadupa styleBackups', this.stylesBackup);
 		for (const [key, value] of Object.entries(this.stylesBackup)) {
 			this.element.style[key] = value;
 		}

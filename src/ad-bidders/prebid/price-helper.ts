@@ -1,5 +1,4 @@
 import { Dictionary } from '@ad-engine/core';
-import mapValues from 'lodash/mapValues';
 import { adaptersRegistry } from './adapters-registry';
 import { DEFAULT_MAX_CPM } from './prebid-adapter';
 import { getWinningBid } from './prebid-helper';
@@ -37,19 +36,21 @@ export function transformPriceFromCpm(cpm: number, maxCpm: number = DEFAULT_MAX_
 }
 
 export async function getPrebidBestPrice(slotName: string): Promise<Dictionary<string>> {
-	const bestPrices: Dictionary<number> = {};
+	const bestPrices: Dictionary<string> = {};
 	const prebidAdapters = adaptersRegistry.getAdapters();
 
 	for (const adapter of Array.from(prebidAdapters.entries())) {
 		const winningBid = await getWinningBid(slotName, adapter[1].bidderName);
 		const { hb_pb } = winningBid;
 
-		bestPrices[adapter[1].bidderName] = hb_pb ? parseFloat(hb_pb) : 0;
+		bestPrices[adapter[1].bidderName] = parseWinningBid(hb_pb);
 	}
 
-	return mapValues(bestPrices, (price: number) => {
-		return price === 0 ? '' : price.toFixed(2);
-	});
+	return bestPrices;
+}
+
+function parseWinningBid(winningBid: string): string {
+	return winningBid ? parseFloat(winningBid).toFixed(2) : '';
 }
 
 export function transformPriceFromBid(bid): string {
