@@ -1,5 +1,4 @@
 import { communicationService } from '@ad-engine/communication';
-import intersection from 'lodash/intersection';
 import { AdSlot, Dictionary, SlotConfig } from '../models';
 import { LazyQueue, logger } from '../utils';
 import { context } from './context-service';
@@ -47,10 +46,10 @@ class BtfBlockerService {
 			}
 		});
 
-		const enabledFirstCallSlots = intersection(
-			slotService.getFirstCallSlotNames(),
-			slotService.getEnabledSlotNames(),
-		);
+		const enabledFirstCallSlots = slotService
+			.getFirstCallSlotNames()
+			.filter((slotName) => slotService.getEnabledSlotNames().includes(slotName));
+
 		if (enabledFirstCallSlots.length === 0) {
 			this.finishFirstCall();
 		}
