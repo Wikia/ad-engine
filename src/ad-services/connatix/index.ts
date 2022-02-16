@@ -35,7 +35,6 @@ export class Connatix {
 
 		utils.logger(logGroup, 'loading Connatix asset', libraryUrl);
 
-		// TODO test if this would work if instead of .then we would use await
 		return this.scriptLoader.loadScript(libraryUrl).then(() => {
 			utils.logger(logGroup, 'Connatix player is ready');
 		});
