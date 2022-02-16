@@ -1,4 +1,5 @@
 import {
+	context,
 	DiProcess,
 	FloatingRail,
 	logTemplates,
@@ -11,10 +12,11 @@ import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
+import { registerStickyTlbOldTemplate } from './sticky-tlb-old-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
-export class F2TemplateSetup implements DiProcess {
+export class F2TemplatesSetup implements DiProcess {
 	constructor(private registry: TemplateRegistry) {
 		templateService.setInitializer(this.registry);
 	}
@@ -22,7 +24,9 @@ export class F2TemplateSetup implements DiProcess {
 	execute(): void {
 		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
-		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
+		const stickyTlb$ = context.get('templates.stickyTlb.forced')
+			? registerStickyTlbTemplate(this.registry)
+			: registerStickyTlbOldTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
 		const logoReplacement$ = registerLogoReplacementTemplate(this.registry);
 
