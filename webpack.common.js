@@ -6,6 +6,7 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
+const Visualizer = require('webpack-visualizer-plugin');
 
 const include = [
 	path.resolve(__dirname, 'src'),
@@ -27,7 +28,7 @@ module.exports = () => ({
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ paths })],
+		plugins: [new TsConfigPathsPlugin({ paths }), new Visualizer()],
 	},
 
 	module: {
