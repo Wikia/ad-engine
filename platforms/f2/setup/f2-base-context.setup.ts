@@ -1,4 +1,4 @@
-import { BaseContextSetup, NoAdsDetector } from '@platforms/shared';
+import { BaseContextSetup, NoAdsDetector, OutstreamExperiment } from '@platforms/shared';
 import { context, InstantConfigService, utils } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2SrcAdapter } from '../utils/f2-src-adapter';
@@ -12,8 +12,9 @@ export class F2BaseContextSetup extends BaseContextSetup {
 		private srcAdapter: F2SrcAdapter,
 		instantConfig: InstantConfigService,
 		noAdsDetector: NoAdsDetector,
+		outstreamExperiment: OutstreamExperiment
 	) {
-		super(instantConfig, noAdsDetector);
+		super(instantConfig, noAdsDetector, outstreamExperiment);
 	}
 
 	execute(): void {
