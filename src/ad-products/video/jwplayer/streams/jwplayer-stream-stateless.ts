@@ -1,4 +1,5 @@
 import { RxJsOperator } from '@ad-engine/models';
+import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
 import {
 	distinctUntilChanged,
@@ -126,6 +127,6 @@ function ensureEventTag<T extends { payload: JWPlayerEvent }>(
 	return (source: Observable<T>) =>
 		source.pipe(
 			withLatestFrom(base$),
-			map(([jwplayerEvent, adRequestEvent]) => Object.assign(adRequestEvent, jwplayerEvent)),
+			map(([jwplayerEvent, adRequestEvent]) => _merge(adRequestEvent, jwplayerEvent)),
 		);
 }
