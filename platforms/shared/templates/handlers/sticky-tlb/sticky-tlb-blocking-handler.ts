@@ -1,5 +1,6 @@
 import {
 	AdSlot,
+	babDetection,
 	communicationService,
 	context,
 	eventsRepository,
@@ -26,6 +27,10 @@ export class StickyTlbBlockingHandler implements TemplateStateHandler {
 		}
 		if (!this.isStickyTlbForced() && !this.isLineAndGeo()) {
 			this.blockStickyTLB(`Line item ID ${this.adSlot.lineItemId}`);
+			return;
+		}
+		if (babDetection.isBlocking()) {
+			this.blockStickyTLB('AdBlock');
 			return;
 		}
 

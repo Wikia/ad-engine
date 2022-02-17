@@ -77,8 +77,8 @@ export const basicContext = {
 		},
 		anyclip: {
 			enabled: false,
-			pubname: 'mavenio',
-			widgetname: '0011r00002K1iSW_1226',
+			pubname: 'fandomcom',
+			widgetname: '001w000001Y8ud2_19593',
 		},
 		confiant: {
 			enabled: false,
