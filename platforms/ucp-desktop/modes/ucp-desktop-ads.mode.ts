@@ -6,6 +6,7 @@ import {
 	bidders,
 	communicationService,
 	confiant,
+	connatix,
 	context,
 	DiProcess,
 	distroScale,
@@ -119,6 +120,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 						exCo.call();
 					} else if (anyclip.isEnabled()) {
 						anyclip.call();
+					} else if (connatix.isEnabled()) {
+						connatix.call();
 					}
 				}
 			},
