@@ -1,6 +1,8 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, slotService, utils } from '@ad-engine/core';
-import { logger } from '../../ad-engine/utils';
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
+import { AdSlot, context, DomListener, slotService, utils } from '@ad-engine/core';
+import { getTopOffset, getViewportHeight, logger } from '../../ad-engine/utils';
+import { Observable } from 'rxjs/dist/types';
+import { filter, take, tap } from 'rxjs/operators';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
@@ -10,6 +12,11 @@ export class Nativo {
 	static FEED_AD_SLOT_NAME = 'ntv_feed_ad';
 	static SLOT_CLASS_LIST = ['ntv-ad', 'ad-slot'];
 	static TEST_QUERY_STRING = 'native_ads_test';
+	private readonly scrollThreshold: number;
+
+	constructor() {
+		this.scrollThreshold = context.get('events.pushOnScroll.nativoThreshold') || 200;
+	}
 
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
@@ -87,6 +94,27 @@ export class Nativo {
 		window.ntv.cmd.push(() => {
 			window.PostRelease.Start();
 		});
+	}
+
+	scrollTrigger(domListener: DomListener, action: UapLoadStatus) {
+		const scroll: Observable<Event> = domListener.scroll$;
+		scroll
+			.pipe(
+				filter(() => this.isThresholdExceeded()),
+				take(1),
+				tap(() => nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action)),
+			)
+			.subscribe();
+	}
+
+	private isThresholdExceeded(): boolean {
+		const scrollPosition =
+			window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+		const slotPosition: number = getTopOffset(
+			document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME),
+		);
+		const viewPortHeight: number = getViewportHeight();
+		return scrollPosition + viewPortHeight > slotPosition - this.scrollThreshold;
 	}
 
 	replaceAndShowSponsoredFanAd(uapLoadStatusAction: any = {}): void {

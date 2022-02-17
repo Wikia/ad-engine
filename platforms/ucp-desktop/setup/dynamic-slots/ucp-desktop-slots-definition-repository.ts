@@ -3,6 +3,7 @@ import {
 	btRec,
 	communicationService,
 	context,
+	DomListener,
 	eventsRepository,
 	FmrRotator,
 	InstantConfigService,
@@ -16,7 +17,7 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
@@ -218,9 +219,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-					},
+					(action: UapLoadStatus) => nativo.scrollTrigger(this.domListener, action),
 				);
 			},
 		};

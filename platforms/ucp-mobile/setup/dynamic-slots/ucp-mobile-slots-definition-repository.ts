@@ -3,6 +3,7 @@ import {
 	communicationService,
 	context,
 	CookieStorageAdapter,
+	DomListener,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
@@ -23,7 +24,7 @@ interface SlotCreatorInsertionParamsType {
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -107,9 +108,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-					},
+					(action: UapLoadStatus) => nativo.scrollTrigger(this.domListener, action),
 				);
 			},
 		};
