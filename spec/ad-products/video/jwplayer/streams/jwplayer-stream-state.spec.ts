@@ -6,8 +6,7 @@ import {
 } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-state';
 import { JwpStatelessEvent } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-stateless';
 import { expect } from 'chai';
-import uniq from 'lodash/uniq';
-import uniqBy from 'lodash/uniqBy';
+import { uniq, uniqBy } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { createSandbox } from 'sinon';
