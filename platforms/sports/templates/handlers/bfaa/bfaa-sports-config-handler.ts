@@ -23,10 +23,11 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.cdm-zone-04.viewportConflicts', []);
 
-		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
-
-		slotsContext.setupSlotSizeOverwriting(additionalSizes);
-		slotsContext.addSlotSize('cdm-zone-02', additionalSizes.companionSize);
-		slotsContext.setSlotSize('cdm-zone-04', additionalSizes.bfaSize);
+		slotsContext.setSlotSize(
+			'cdm-zone-04',
+			context.get('state.isMobile')
+				? universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile
+				: universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+		);
 	}
 }

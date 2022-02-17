@@ -177,6 +177,10 @@ export class BaseContextSetup implements DiProcess {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
+		context.set(
+			'templates.sizeOverwritingMap',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
+		);
 	}
 
 	private setupOutstreamPlayers(): void {

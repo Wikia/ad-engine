@@ -7,14 +7,10 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { F2_ENV, F2Environment } from '../../../setup-f2';
 
 @Injectable({ autobind: false })
 export class BfaaF2ConfigHandler implements TemplateStateHandler {
-	constructor(
-		@Inject(TEMPLATE.PARAMS) private params: UapParams,
-		@Inject(F2_ENV) private f2Env: F2Environment,
-	) {}
+	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad', 'bottom_leaderboard'];
@@ -27,14 +23,10 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
-		const additionalSizes =
-			this.f2Env.siteType === 'app' || this.f2Env.skinName === 'fandom_mobile'
-				? universalAdPackage.UAP_ADDITIONAL_SIZES.mobile
-				: universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
+		const bfaSize = context.get('state.isMobile')
+			? universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile
+			: universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop;
 
-		slotsContext.setupSlotSizeOverwriting(additionalSizes);
-		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
-		slotsContext.addSlotSize('incontent_boxad', additionalSizes.companionSize);
-		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
+		slotsContext.setSlotSize('bottom_leaderboard', bfaSize);
 	}
 }

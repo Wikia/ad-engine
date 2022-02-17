@@ -1,4 +1,4 @@
-import { insertSlots, PlaceholderService } from '@platforms/shared';
+import { insertSlots, PlaceholderService, slotsContext } from '@platforms/shared';
 import {
 	btfBlockerService,
 	communicationService,
@@ -16,7 +16,7 @@ export class F2DynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
-		this.configureTopLeaderboard();
+		this.configureTopLeaderboardAndCompanions();
 		this.registerAdPlaceholderService();
 	}
 
@@ -41,9 +41,37 @@ export class F2DynamicSlotsSetup implements DiProcess {
 		}
 	}
 
-	private configureTopLeaderboard(): void {
+	private configureTopLeaderboardAndCompanions(): void {
 		if (!context.get('custom.hasFeaturedVideo') && context.get('templates.stickyTlb.lineItemIds')) {
 			context.push(`slots.top_leaderboard.defaultTemplates`, 'stickyTlb');
+		}
+
+		if (context.get('state.isMobile')) {
+			slotsContext.addSlotSize(
+				'top_boxad',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			);
+			slotsContext.addSlotSize(
+				'incontent_boxad',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			);
+		} else {
+			slotsContext.addSlotSize(
+				'top_boxad',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+			);
+
+			if (context.get('custom.hasFeaturedVideo')) {
+				slotsContext.addSlotSize(
+					'incontent_boxad',
+					universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+				);
+			} else {
+				slotsContext.addSlotSize(
+					'incontent_boxad',
+					universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+				);
+			}
 		}
 	}
 

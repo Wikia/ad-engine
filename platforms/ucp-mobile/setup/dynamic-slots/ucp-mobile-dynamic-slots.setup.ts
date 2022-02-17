@@ -16,7 +16,6 @@ import {
 	PorvataFiller,
 	slotService,
 	universalAdPackage,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
@@ -33,9 +32,9 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
+		this.configureTopLeaderboardAndCompanions();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
-		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
 	}
@@ -65,6 +64,31 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				});
 			});
 		}
+	}
+
+	private configureTopLeaderboardAndCompanions(): void {
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			context.get('wiki.targeting.pageType') !== 'search'
+		) {
+			slotsContext.addSlotSize(
+				'top_leaderboard',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
+			);
+
+			if (context.get('templates.stickyTlb.lineItemIds')) {
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+			}
+		}
+
+		slotsContext.addSlotSize(
+			'top_boxad',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
+			'mobile_prefooter',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
 	}
 
 	private configureIncontentPlayer(): void {
@@ -98,31 +122,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		communicationService.on(eventsRepository.GAM_INTERSTITIAL_LOADED, () => {
 			setInterstitialCapping();
 		});
-	}
-
-	private registerTopLeaderboardCodePriority(): void {
-		const STICKY_SLOT_LOG_GROUP = 'sticky-tlb';
-
-		if (
-			!context.get('custom.hasFeaturedVideo') &&
-			context.get('wiki.targeting.pageType') !== 'search'
-		) {
-			slotsContext.addSlotSize('top_leaderboard', [2, 2]);
-
-			if (context.get('templates.stickyTlb.lineItemIds')) {
-				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
-
-				utils.logger(
-					STICKY_SLOT_LOG_GROUP,
-					'Found sticky slot line-items IDs - enabling stickyTlb template for top_leaderboard slot',
-				);
-			} else {
-				utils.logger(
-					STICKY_SLOT_LOG_GROUP,
-					'No sticky slot line-items IDs found - stickyTlb template disabled for top_leaderboard slot',
-				);
-			}
-		}
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
