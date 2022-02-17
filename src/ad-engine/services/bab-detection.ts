@@ -19,6 +19,10 @@ class BabDetection {
 		return context.get('options.wad.enabled');
 	}
 
+	isBlocking(): boolean {
+		return context.get('options.wad.blocking');
+	}
+
 	async run(): Promise<boolean> {
 		const isBabDetected: boolean = await this.checkBlocking();
 
