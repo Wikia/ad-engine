@@ -124,7 +124,11 @@
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
-                "icTrafficDivider_B_50:galactus_h2_b"
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icOutstreamExperiment_B_25:connatix",
+                "icOutstreamExperiment_B_33.3:exco",
+                "icOutstreamExperiment_B_50:anyclip",
+                "icOutstreamExperiment_B_100:distroscale"
             ]
         }
     ],
@@ -297,11 +301,9 @@
                 "muthead"
             ],
             "regions": [
-                "CA",
-                "DE",
-                "PL"
+                "US"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
         },
         {
             "apps": [
@@ -313,7 +315,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
         }
     ],
     "icIASPublisherOptimization": [

@@ -122,6 +122,11 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
+		loadTimeTracking: {
+			enabled: true,
+			timing: ['responseEnd', 'domContentLoadedEventStart'],
+			custom: ['aeConfigured', 'aeStackStart'],
+		},
 		scrollSpeedTracking: {
 			enabled: true,
 		},

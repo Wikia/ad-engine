@@ -2285,7 +2285,15 @@
                 "5884643683",
                 "5882342335",
                 "5895868542",
-                "5875695327"
+                "5917990455",
+                "5875695327",
+                "5925867764",
+                "5925268066",
+                "5925268069",
+                "5925868046",
+                "5925317194",
+                "5925315250",
+                "5925317188"
             ]
         }
     ],
@@ -2338,7 +2346,11 @@
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
-                "icTrafficDivider_B_50:galactus_h2_b"
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icOutstreamExperiment_B_25:connatix",
+                "icOutstreamExperiment_B_33.3:exco",
+                "icOutstreamExperiment_B_50:anyclip",
+                "icOutstreamExperiment_B_100:distroscale"
             ]
         }
     ],
@@ -2513,8 +2525,7 @@
             ],
             "regions": [
                 "XX"
-            ],
-            "value": "^K[a-zA-F].*"
+            ]
         }
     ],
     "icPrebidVersion": [
@@ -2526,11 +2537,9 @@
                 "muthead"
             ],
             "regions": [
-                "CA",
-                "DE",
-                "PL"
+                "US"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
         },
         {
             "apps": [
@@ -2542,7 +2551,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
         }
     ],
     "icA9Bidder": [
@@ -2785,8 +2794,7 @@
             ],
             "regions": [
                 "XX"
-            ],
-            "value": "ucp-no-ads"
+            ]
         }
     ],
     "icPrebidTelaria": [
