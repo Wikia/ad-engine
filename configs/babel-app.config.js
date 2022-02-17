@@ -9,6 +9,5 @@ module.exports = {
 				regenerator: true,
 			},
 		],
-		'lodash',
 	],
 };
