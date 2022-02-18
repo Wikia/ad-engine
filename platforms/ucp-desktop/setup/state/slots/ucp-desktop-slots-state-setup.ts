@@ -16,7 +16,11 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 			this.setupIncontentPlayerForDistroScale();
 		}
 
-		if (context.get('services.exCo.enabled') || context.get('services.anyclip.enabled')) {
+		if (
+			context.get('services.exCo.enabled') ||
+			context.get('services.anyclip.enabled') ||
+			context.get('services.connatix.enabled')
+		) {
 			this.disableIncontentPlayerSlot();
 		}
 	}

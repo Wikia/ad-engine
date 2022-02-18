@@ -1,4 +1,8 @@
-class ScriptLoader {
+export interface ScriptLoaderInterface {
+	loadScript(src: string): Promise<Event>;
+}
+
+class ScriptLoader implements ScriptLoaderInterface {
 	/**
 	 * Creates <script> tag
 	 */

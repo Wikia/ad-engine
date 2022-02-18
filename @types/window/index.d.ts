@@ -17,6 +17,7 @@ interface Window {
 	beaconId?: string;
 	beacon_id?: string;
 	canPlayVideo?: any;
+	cnx?: any;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
 	google: {

@@ -601,6 +601,20 @@
             "value": true
         }
     ],
+    "icPushOnScrollNativoThreshold": [
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "devices": [
+                "smartphone"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 200
+        }
+    ],
     "icNielsen": [
         {
             "apps": [
@@ -2347,10 +2361,10 @@
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icOutstreamExperiment_B_25:connatix",
-                "icOutstreamExperiment_B_33.3:exco",
-                "icOutstreamExperiment_B_50:anyclip",
-                "icOutstreamExperiment_B_100:distroscale"
+                "icOutstreamExperiment_B_25:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_33.333:outstream_experiment_exco",
+                "icOutstreamExperiment_B_50:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_100:outstream_experiment_distroscale"
             ]
         }
     ],
