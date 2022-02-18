@@ -1,5 +1,6 @@
 import {
 	communicationService,
+	context,
 	eventsRepository,
 	ofType,
 	slotService,
@@ -45,6 +46,9 @@ export class PlaceholderService {
 				}
 
 				if (this.placeholderHelper.statusToHide === action.payload?.adType) {
+					if (adSlot.isRepeatable()) {
+						context.set(`slots.${adSlot.getSlotName()}.repeat`, null);
+					}
 					this.placeholderHelper.hidePlaceholder(placeholder);
 				} else if (this.placeholderHelper.statusesToCollapse.includes(action.event)) {
 					if (this.isUapLoaded) {
