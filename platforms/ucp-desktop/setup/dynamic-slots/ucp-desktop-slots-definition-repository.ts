@@ -12,6 +12,7 @@ import {
 	scrollListener,
 	UapLoadStatus,
 	utils,
+	nativoLazyLoader,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -219,7 +220,10 @@ export class UcpDesktopSlotsDefinitionRepository {
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => nativo.scrollTrigger(this.domListener, action),
+					(action: UapLoadStatus) =>
+						nativoLazyLoader.scrollTrigger(this.domListener, () =>
+							nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action),
+						),
 				);
 			},
 		};
