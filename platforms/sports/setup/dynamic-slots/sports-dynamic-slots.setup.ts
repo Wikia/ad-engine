@@ -21,6 +21,15 @@ export class SportsDynamicSlotsSetup implements DiProcess {
 	}
 
 	configureUap(): void {
+		slotsContext.addSlotSize(
+			'cdm-zone-03',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
+			'cdm-zone-06',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+
 		if (context.get('state.isMobile')) {
 			slotsContext.addSlotSize(
 				this.uapFirstCallSlotName,
