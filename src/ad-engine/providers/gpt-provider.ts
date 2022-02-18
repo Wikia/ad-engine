@@ -107,18 +107,18 @@ function getAdType(
 }
 
 function adjustIframeSize(adSlot: AdSlot): void {
-	const map = context.get('templates.sizeOverwritingMap');
+	const sizeMap = context.get('templates.sizeOverwritingMap');
 	const iframe = adSlot.getIframe();
 
-	if (!map || !iframe) {
+	if (!sizeMap || !iframe) {
 		return;
 	}
 
 	const iframeSize = `${iframe.width}x${iframe.height}`;
 
-	if (map[iframeSize]) {
-		iframe.width = map[iframeSize].originalSize[0].toString();
-		iframe.height = map[iframeSize].originalSize[1].toString();
+	if (sizeMap[iframeSize]) {
+		iframe.width = sizeMap[iframeSize].originalSize[0].toString();
+		iframe.height = sizeMap[iframeSize].originalSize[1].toString();
 	}
 }
 
