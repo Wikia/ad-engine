@@ -6,7 +6,6 @@ export interface PlayerInjectorInterface {
 	insertPlayerContainer(cid: string): void;
 }
 
-// TODO test this thing! >=D
 export class PlayerInjector implements PlayerInjectorInterface {
 	get playerId(): string {
 		return context.get('services.connatix.playerId');

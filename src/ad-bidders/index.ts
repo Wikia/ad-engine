@@ -164,3 +164,4 @@ export * from './tracking';
 export * from './wrappers';
 export * from './prebid/ats';
 export * from './prebid/live-ramp';
+export * from './prebid/identity-hub';

@@ -5,13 +5,15 @@ import {
 	DebugTransitionHandler,
 	DomCleanupHandler,
 	DomManipulator,
+	NavbarOffsetResolvedHandler,
+	NavbarOffsetResolvedToNoneHandler,
+	PageOffsetResolvedHandler,
 	ScrollCorrector,
 	SlotDecisionTimeoutHandler,
-	SlotHeightClippingHandler,
 	SlotHiddenHandler,
-	SlotSizeResolvedWithPlaceholderHandler,
-	SlotStateStickedHandler,
-	SlotTransitionLightHandler,
+	SlotOffsetResolvedToNoneHandler,
+	SlotSizeResolvedHandler,
+	SlotTransitionHandler,
 	StickinessTimeout,
 	StickyTlbBlockingHandler,
 	StickyTlbBootstrapHandler,
@@ -21,9 +23,12 @@ import {
 } from '@platforms/shared';
 import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
-import { registerUcpDesktopUapDomElements } from './configs/register-ucp-desktop-uap-dom-elements';
+import { registerF2UapDomElements } from './configs/register-f2-uap-dom-elements';
+import { HideSmartBannerHandler } from './handlers/hide-smart-banner-handler';
 
-export function registerStickyTlbTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
+export function registerStickyTlbOldTemplate(
+	registry: TemplateRegistry,
+): Observable<TemplateAction> {
 	return registry.register(
 		'stickyTlb',
 		{
@@ -32,27 +37,32 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 				StickyTlbBootstrapHandler,
 				StickyTlbConfigHandler,
 				AdvertisementLabelHandler,
+				HideSmartBannerHandler,
 				DebugTransitionHandler,
 			],
 			sticky: [
-				SlotSizeResolvedWithPlaceholderHandler,
+				SlotSizeResolvedHandler,
+				PageOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
 				SlotDecisionTimeoutHandler,
 				CloseToHiddenButtonHandler,
 				DomCleanupHandler,
-				SlotStateStickedHandler,
 			],
 			transition: [
-				SlotSizeResolvedWithPlaceholderHandler,
-				SlotTransitionLightHandler,
+				SlotSizeResolvedHandler,
+				PageOffsetResolvedHandler,
+				NavbarOffsetResolvedHandler,
+				SlotTransitionHandler,
 				DomCleanupHandler,
-				SlotStateStickedHandler,
 			],
 			resolved: [
-				SlotSizeResolvedWithPlaceholderHandler,
-				SlotHeightClippingHandler,
+				SlotSizeResolvedHandler,
+				SlotOffsetResolvedToNoneHandler,
+				PageOffsetResolvedHandler,
+				NavbarOffsetResolvedToNoneHandler,
 				DomCleanupHandler,
 			],
-			hidden: [SlotHiddenHandler, DomCleanupHandler],
+			hidden: [SlotHiddenHandler, PageOffsetResolvedHandler, DomCleanupHandler],
 		},
 		'blocking',
 		[
@@ -62,7 +72,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			ScrollCorrector,
 			CloseButtonHelper,
 			StickinessTimeout.provide(universalAdPackage.TLB_UNSTICK_DELAY),
-			registerUcpDesktopUapDomElements(),
+			registerF2UapDomElements(),
 		],
 	);
 }
