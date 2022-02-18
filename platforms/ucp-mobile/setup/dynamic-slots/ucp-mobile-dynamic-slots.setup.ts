@@ -86,6 +86,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 		);
 		slotsContext.addSlotSize(
+			'incontent_boxad_1',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
 			'mobile_prefooter',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
 		);
