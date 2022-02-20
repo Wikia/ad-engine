@@ -1,5 +1,5 @@
 import { RxJsOperator } from '@ad-engine/models';
-import merge from 'lodash/merge';
+import merge from 'deepmerge';
 import { merge as mergeObservables, Observable, of } from 'rxjs';
 import {
 	distinctUntilChanged,
