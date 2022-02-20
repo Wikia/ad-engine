@@ -1,6 +1,6 @@
 import { RxJsOperator } from '@ad-engine/models';
-import merge from 'deepmerge';
-import { merge as _merge, Observable, of } from 'rxjs';
+import merge from 'lodash/merge';
+import { merge as mergeObservables, Observable, of } from 'rxjs';
 import {
 	distinctUntilChanged,
 	filter,
@@ -61,7 +61,7 @@ export function createJwpStatelessStream(jwplayer: JWPlayer): JwpStatelessStream
 	const videoStart$ = createJwpStream(jwplayer, 'videoStart');
 	const videoError$ = createJwpStream(jwplayer, 'error');
 
-	return _merge(
+	return mergeObservables(
 		init$,
 		lateReady$,
 		adError$,
@@ -119,7 +119,7 @@ function onlyOncePerVideo<T>(jwplayer: JWPlayer): RxJsOperator<T, T> {
 function ensureEventTag<T extends { payload: JWPlayerEvent }>(
 	adRequest$: JwpStatelessStream<'adRequest'>,
 ): RxJsOperator<T, T> {
-	const base$ = _merge(
+	const base$ = mergeObservables(
 		of({ payload: { tag: null } }),
 		adRequest$.pipe(map((adRequest: { payload: JWPlayerEvent }) => adRequest.payload)),
 	);
