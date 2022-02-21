@@ -25,11 +25,9 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
-		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
-
-		slotsContext.setupSlotSizeOverwriting(additionalSizes);
-		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
-		slotsContext.addSlotSize('incontent_boxad_1', additionalSizes.companionSize);
-		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
+		slotsContext.setSlotSize(
+			'bottom_leaderboard',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+		);
 	}
 }

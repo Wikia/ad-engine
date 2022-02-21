@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { AdSlot, Dictionary, Targeting } from '../models';
+import { AdSlot, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
@@ -107,21 +107,18 @@ function getAdType(
 }
 
 function adjustIframeSize(adSlot: AdSlot): void {
-	const map: Dictionary<[number, number]> = context.get('templates.sizeOverwritingMap');
+	const sizeMap = context.get('templates.sizeOverwritingMap');
+	const iframe = adSlot.getIframe();
 
-	if (!map) {
+	if (!sizeMap || !iframe) {
 		return;
 	}
 
-	const iframe = adSlot.getIframe();
+	const iframeSize = `${iframe.width}x${iframe.height}`;
 
-	if (
-		iframe &&
-		parseInt(iframe.width) === map.companionSize[0] &&
-		parseInt(iframe.height) === map.companionSize[1]
-	) {
-		iframe.width = map.companionOriginalSize[0].toString();
-		iframe.height = map.companionOriginalSize[1].toString();
+	if (sizeMap[iframeSize]) {
+		iframe.width = sizeMap[iframeSize].originalSize[0].toString();
+		iframe.height = sizeMap[iframeSize].originalSize[1].toString();
 	}
 }
 
