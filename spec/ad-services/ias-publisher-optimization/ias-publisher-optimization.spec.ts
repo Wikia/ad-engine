@@ -29,6 +29,8 @@ describe('IAS Publisher Optimization', () => {
 		context.set('options.optOutSale', false);
 		context.set('wiki.targeting.directedAtChildren', false);
 		context.remove('services.iasPublisherOptimization.slots');
+		window.googletag = window.googletag || ({} as googletag.Googletag);
+		window.googletag.cmd = window.googletag.cmd || [];
 	});
 
 	afterEach(() => {
@@ -84,6 +86,7 @@ describe('IAS Publisher Optimization', () => {
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
 		await iasPublisherOptimization.call();
 
+		window.__iasPET.queue = window.__iasPET.queue || [];
 		window.__iasPET.queue[0].dataHandler(iasData);
 
 		expect(context.get('targeting.fr')).to.equal('false');

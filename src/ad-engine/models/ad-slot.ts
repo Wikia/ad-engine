@@ -175,6 +175,8 @@ export class AdSlot {
 			communicationService.onSlotEvent(
 				AdSlot.SLOT_RENDERED_EVENT,
 				({ payload }) => {
+					if (!payload) return;
+
 					const {
 						event,
 						adType,

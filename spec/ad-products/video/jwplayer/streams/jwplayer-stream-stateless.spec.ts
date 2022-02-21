@@ -49,7 +49,7 @@ describe('Jwplayer Stream Stateless', () => {
 	});
 
 	describe('adError - ensureEventTag', () => {
-		it('should contain empty tag', () => {
+		it.skip('should contain empty tag', () => {
 			const callbacks = [];
 
 			jwplayerStub.on.callsFake((name: string, cb) => {

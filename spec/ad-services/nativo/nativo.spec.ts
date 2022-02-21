@@ -5,7 +5,7 @@ import { createSandbox, SinonSpy } from 'sinon';
 import { AdSlot, context, utils } from '../../../src/ad-engine';
 import { createHtmlElementStub } from '../../spec-utils/html-element.stub';
 
-describe.skip('Nativo service', () => {
+describe('Nativo service', () => {
 	const sandbox = createSandbox();
 	const serviceName = 'nativo';
 
