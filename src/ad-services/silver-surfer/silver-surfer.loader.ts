@@ -1,5 +1,4 @@
 import { utils } from '@ad-engine/core';
-import { isEmpty } from 'lodash';
 
 const logGroup = 'silver-surfer';
 
@@ -22,7 +21,7 @@ class SilverSurferServiceLoader {
 		return window.SilverSurferSDK.getUserProfile()
 			.then(
 				(response: UserProfile) => {
-					if (!isEmpty(response)) {
+					if (typeof response === 'object' && Object.keys(response).length !== 0) {
 						utils.logger(logGroup, 'successful response');
 
 						return response;
