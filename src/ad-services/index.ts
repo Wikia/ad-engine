@@ -11,6 +11,7 @@ export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './nativo';
+export * from './nativo/lazy-loader';
 export * from './nielsen';
 export * from './sailthru';
 export * from './silver-surfer';
