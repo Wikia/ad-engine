@@ -21,7 +21,11 @@ class SilverSurferServiceLoader {
 		return window.SilverSurferSDK.getUserProfile()
 			.then(
 				(response: UserProfile) => {
-					if (typeof response === 'object' && Object.keys(response).length !== 0) {
+					if (
+						typeof response === 'object' &&
+						response !== null &&
+						Object.keys(response).length !== 0
+					) {
 						utils.logger(logGroup, 'successful response');
 
 						return response;
