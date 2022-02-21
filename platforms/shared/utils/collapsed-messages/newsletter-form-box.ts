@@ -63,7 +63,10 @@ export class NewsletterFormBox extends MessageBox {
 	private createPayload(email: string): UserSignupPayload {
 		return {
 			email,
-			onSuccess: () => this.showFormMessage('Thanks for signing up!'),
+			onSuccess: () => {
+				this.showFormMessage('Thanks for signing up!');
+				this.sendTrackingEvent('cm_newsletter_form_submission');
+			},
 			onError: () => this.showFormMessage('An error occurred. Please try again later.'),
 		};
 	}
