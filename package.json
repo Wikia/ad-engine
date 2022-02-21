@@ -46,7 +46,6 @@
 		"express": "4.17.2",
 		"husky": "1.1.4",
 		"js-md5": "0.7.3",
-		"jsdom": "11.11.0",
 		"jsdom-global": "^3.0.2",
 		"json-loader": "0.5.7",
 		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
@@ -55,7 +54,7 @@
 		"mocha": "9.2.1",
 		"mocha-jsdom": "2.0.0",
 		"mocha-junit-reporter": "2.0.2",
-		"mocha-webpack": "1.1.0",
+		"mochapack": "2.1.4",
 		"node-sass": "7.0.1",
 		"nyc": "15.1.0",
 		"portfinder": "1.0.20",
@@ -100,9 +99,9 @@
 		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"format": "npm run prettier",
 		"preversion": "./maintenance/preversion.sh",
-		"test": "mocha-webpack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
+		"test": "mochapack --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc mocha-webpack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml"
+		"test-coverage": "nyc mochapack './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js --reporter mocha-junit-reporter --reporter-options mochaFile=./spec/build/tests.xml"
 	},
 	"husky": {
 		"hooks": {
