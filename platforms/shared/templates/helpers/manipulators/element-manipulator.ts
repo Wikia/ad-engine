@@ -1,5 +1,4 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { forIn } from 'lodash';
 
 @Injectable({ autobind: false })
 export class ElementManipulator {
@@ -46,9 +45,9 @@ export class ElementManipulator {
 	}
 
 	restore(): void {
-		forIn(this.stylesBackup, (value, key) => {
+		for (const [key, value] of Object.entries(this.stylesBackup)) {
 			this.element.style[key] = value;
-		});
+		}
 
 		if (this.classesBackup) {
 			this.element.classList.value = this.classesBackup;
