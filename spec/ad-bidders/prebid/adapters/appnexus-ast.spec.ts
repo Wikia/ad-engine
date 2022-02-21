@@ -3,6 +3,10 @@ import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
 describe('AppnexusAst bidder adapter', () => {
+	beforeEach(() => {
+		context.remove('targeting');
+	});
+
 	afterEach(() => {
 		context.remove('slots.mobile_in_content');
 	});
@@ -41,7 +45,7 @@ describe('AppnexusAst bidder adapter', () => {
 							placementId: '11223344',
 							keywords: {
 								pos: ['mobile_in_content'],
-								src: ['gpt'],
+								src: 'test',
 							},
 							video: {
 								skippable: false,

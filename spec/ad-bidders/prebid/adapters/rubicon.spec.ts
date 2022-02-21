@@ -53,7 +53,7 @@ describe('Rubicon bidder adapter', () => {
 								mappedVerticalName: ['gaming'],
 								pos: ['mobile_in_content'],
 								s1: ['not a top1k wiki'],
-								src: ['gpt'],
+								src: 'test',
 								testKeyval: ['yes'],
 							},
 							video: {
@@ -111,7 +111,7 @@ describe('Rubicon bidder adapter', () => {
 								mappedVerticalName: ['gaming'],
 								pos: ['mobile_in_content'],
 								s1: ['not a top1k wiki'],
-								src: ['gpt'],
+								src: 'test',
 								testKeyval: ['yes'],
 							},
 							video: {
@@ -171,7 +171,7 @@ describe('Rubicon bidder adapter', () => {
 								mappedVerticalName: ['gaming'],
 								pos: ['mobile_in_content'],
 								s1: ['not a top1k wiki'],
-								src: ['gpt'],
+								src: 'test',
 								testKeyval: ['yes'],
 							},
 							video: {

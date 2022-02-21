@@ -48,7 +48,7 @@ describe('Appnexus bidder adapter', () => {
 							placementId: '99220044',
 							keywords: {
 								pos: ['bottom_leaderboard'],
-								src: ['gpt'],
+								src: 'test',
 							},
 						},
 					},
@@ -92,7 +92,7 @@ describe('Appnexus bidder adapter', () => {
 							placementId: '99220055',
 							keywords: {
 								pos: ['02_MR'],
-								src: ['gpt'],
+								src: 'test',
 							},
 						},
 					},
@@ -135,7 +135,7 @@ describe('Appnexus bidder adapter', () => {
 						params: {
 							placementId: '99220055',
 							keywords: {
-								src: ['gpt'],
+								src: 'test',
 								pos: ['02_MR'],
 							},
 						},
