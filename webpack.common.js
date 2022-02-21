@@ -1,5 +1,4 @@
 const path = require('path');
-const get = require('lodash/get');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StringReplacePlugin = require('string-replace-webpack-plugin');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
@@ -47,7 +46,7 @@ module.exports = () => ({
 					replacements: [
 						{
 							pattern: /<\?=[ \t]*PACKAGE\(([\w\-_.]*?)\)[ \t]*\?>/gi,
-							replacement: (match, p1) => get(pkg, p1),
+							replacement: () => pkg.version,
 						},
 					],
 				}),
