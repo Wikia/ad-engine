@@ -3,6 +3,7 @@ import {
 	communicationService,
 	context,
 	CookieStorageAdapter,
+	DomListener,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
@@ -13,6 +14,7 @@ import {
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
+	nativoLazyLoader,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -23,7 +25,7 @@ interface SlotCreatorInsertionParamsType {
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -107,9 +109,10 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-					},
+					(action: UapLoadStatus) =>
+						nativoLazyLoader.scrollTrigger(this.domListener, () =>
+							nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action),
+						),
 				);
 			},
 		};

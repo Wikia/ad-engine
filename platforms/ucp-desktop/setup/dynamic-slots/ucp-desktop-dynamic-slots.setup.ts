@@ -9,6 +9,7 @@ import {
 	PorvataFiller,
 	PorvataGamParams,
 	slotService,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
@@ -19,8 +20,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 	execute(): void {
 		this.injectSlots();
-		this.configureTopLeaderboard();
-		this.configureIncontentBoxad();
+		this.configureTopLeaderboardAndCompanions();
 		this.configureIncontentPlayerFiller();
 		this.configureFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
@@ -43,13 +43,23 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
-	private configureTopLeaderboard(): void {
+	private configureTopLeaderboardAndCompanions(): void {
 		const slotName = 'top_leaderboard';
+
+		slotsContext.addSlotSize(
+			'top_boxad',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+		);
 
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
-				slotsContext.addSlotSize(slotName, [3, 3]);
+				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
 			}
+
+			slotsContext.addSlotSize(
+				'incontent_boxad_1',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
+			);
 
 			if (
 				context.get('templates.stickyTlb.forced') ||
@@ -57,12 +67,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			) {
 				context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
 			}
-		}
-	}
-
-	private configureIncontentBoxad(): void {
-		if (context.get('custom.hasFeaturedVideo')) {
-			context.set('slots.incontent_boxad_1.defaultSizes', [300, 250]);
+		} else {
+			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
+			slotsContext.addSlotSize(
+				'incontent_boxad_1',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+			);
 		}
 	}
 

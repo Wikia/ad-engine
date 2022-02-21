@@ -17,7 +17,6 @@ export * from './modes/start-ad-engine';
 export * from './services/wad-runner';
 export * from './services/no-ads-detector';
 export * from './ensure-geo-cookie';
-export * from './context/base/ucp-base-context.setup';
 export * from './context/targeting/ucp-targeting.setup';
 export * from './templates/interstitial-template';
 export * from './templates/configs/uap-dom-elements';
