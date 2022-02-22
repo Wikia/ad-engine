@@ -2558,18 +2558,6 @@
                 "muthead"
             ],
             "regions": [
-                "US"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
                 "XX"
             ],
             "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220131.min.js"
