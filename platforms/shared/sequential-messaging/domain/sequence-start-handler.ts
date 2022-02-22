@@ -15,13 +15,18 @@ export class SequenceStartHandler {
 	) {}
 
 	handleSequence(sequence: Sequence): void {
+		console.log('HERE 4');
 		this.config = this.configStore.get();
 		this.sequence = sequence;
 		if (this.config == null) {
+			console.log('HERE 4 A');
 			return;
 		}
 
+		console.log('HERE 4 B');
+
 		if (this.isAdSequential()) {
+			console.log('HERE 4 C');
 			this.storeState();
 		}
 	}

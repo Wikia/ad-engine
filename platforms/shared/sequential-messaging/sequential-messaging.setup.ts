@@ -27,33 +27,32 @@ export class SequentialMessagingSetup implements DiProcess {
 	constructor(private instantConfig: InstantConfigService) {}
 
 	async execute(): Promise<void> {
+		console.log('HERE 1');
 		if (!this.handleOngoingSequence()) {
+			console.log('HERE 2');
 			this.detectNewSequentialAd();
 		}
 	}
 
 	private detectNewSequentialAd(): void {
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: Action) => action.event === 'slotShowed'),
-				take(1),
-			)
-			.subscribe((action: Action) => {
-				const lineItemId = action.slot.lineItemId;
-				const creativeId = action.slot.creativeId;
-				if (lineItemId == null) {
-					return;
-				}
+		communicationService.on(eventsRepository.GAM_SEQUENTIAL_MESSAGING_STARTED, (payload) => {
+			console.log('HERE 3');
+			console.log(payload);
+			const lineItemId = payload.lineItemId;
+			const creativeId = payload.creativeId;
+			if (lineItemId == null) {
+				console.log('HERE 3 A');
+				return;
+			}
+			console.log('HERE 3 B');
 
-				const sequence: Sequence = { id: lineItemId.toString(), stepId: creativeId.toString() };
-
-				const sequenceHandler = new SequenceStartHandler(
-					new SequentialMessagingConfigStore(this.instantConfig),
-					new UserSequentialMessageStateStore(Cookies),
-				);
-				sequenceHandler.handleSequence(sequence);
-			});
+			const sequence: Sequence = { id: lineItemId.toString(), stepId: creativeId.toString() };
+			const sequenceHandler = new SequenceStartHandler(
+				new SequentialMessagingConfigStore(this.instantConfig),
+				new UserSequentialMessageStateStore(Cookies),
+			);
+			sequenceHandler.handleSequence(sequence);
+		});
 	}
 
 	private handleOngoingSequence(): boolean {

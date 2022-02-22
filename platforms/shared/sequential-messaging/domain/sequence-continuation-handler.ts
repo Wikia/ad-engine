@@ -4,6 +4,8 @@ import { SequentialMessagingConfigStoreInterface } from './interfaces/sequential
 import { TargetingManagerInterface } from './interfaces/targeting-manager.interface';
 import { SequenceEndStateHandler } from './services/sequence-end-state-handler';
 
+import { context } from '@wikia/ad-engine';
+
 export class SequenceContinuationHandler {
 	constructor(
 		private configStore: SequentialMessagingConfigStoreInterface,
@@ -29,6 +31,8 @@ export class SequenceContinuationHandler {
 				new SequenceEndStateHandler(this.userStateStore, adConfig.lastStepId.toString()),
 			);
 		}
+		console.log('HERE TARGETING');
+		console.log(context.get('targeting'));
 
 		return true;
 	}

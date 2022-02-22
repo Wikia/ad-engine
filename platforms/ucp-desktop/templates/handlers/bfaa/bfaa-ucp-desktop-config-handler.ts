@@ -25,6 +25,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
+		// TODO SM set size here (option 1 of 2)
 		slotsContext.setSlotSize(
 			'bottom_leaderboard',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,

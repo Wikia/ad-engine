@@ -29,6 +29,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 							[1030, 65],
 							[1030, 130],
 							[1030, 250],
+							// TODO SM remove this if we will do sequential messaging only for direct ads
+							[10, 10],
 						],
 					},
 				],

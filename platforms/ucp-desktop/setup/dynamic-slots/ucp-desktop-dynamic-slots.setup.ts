@@ -46,6 +46,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	private configureTopLeaderboardAndCompanions(): void {
 		const slotName = 'top_leaderboard';
 
+		// TODO SM set slot size (option 2 of 2)
 		slotsContext.addSlotSize(
 			'top_boxad',
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
