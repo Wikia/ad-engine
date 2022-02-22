@@ -22,7 +22,7 @@
 			@include sticky-tlb-slot();
 		}
 
-		// ADEN-11573: Cleanup after UAP 4.x rollout
+		// ADEN-11183: Cleanup after UAP 4.x rollout
 		&:not(.uap-light) {
 			.mobile-global-navigation__wrapper {
 				min-height: 0;
