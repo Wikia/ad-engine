@@ -115,11 +115,8 @@ export class AdEngine {
 			const pushOnScrollQueue = new LazyQueue<string>(...pushOnScrollIds);
 
 			pushOnScrollQueue.onItemFlush((id: string) => {
-				const pushOnScrollThresholdKey = this.isNativo(id)
-					? 'events.pushOnScroll.nativoThreshold'
-					: 'events.pushOnScroll.threshold';
 				scrollListener.addSlot(id, {
-					threshold: context.get(pushOnScrollThresholdKey) || 0,
+					threshold: context.get('events.pushOnScroll.threshold') || 0,
 				});
 			});
 			context.set('events.pushOnScroll.ids', pushOnScrollQueue);
@@ -138,9 +135,5 @@ export class AdEngine {
 				this.adStack.start();
 			}
 		});
-	}
-
-	private isNativo(id: string): boolean {
-		return id == 'ntv_ad';
 	}
 }
