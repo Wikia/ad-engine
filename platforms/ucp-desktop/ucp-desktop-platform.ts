@@ -8,7 +8,6 @@ import {
 	NoAdsMode,
 	SequentialMessagingSetup,
 	TrackingSetup,
-	UcpBaseContextSetup,
 	UcpTargetingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -24,6 +23,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
+import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
@@ -42,7 +42,7 @@ export class UcpDesktopPlatform {
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpDesktopIocSetup,
 			WikiContextSetup,
-			UcpBaseContextSetup,
+			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
 			SequentialMessagingSetup,

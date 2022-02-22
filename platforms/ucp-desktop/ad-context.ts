@@ -78,12 +78,18 @@ export const basicContext = {
 		},
 		anyclip: {
 			enabled: false,
-			pubname: 'mavenio',
-			widgetname: '0011r00002K1iSW_1226',
+			pubname: 'fandomcom',
+			widgetname: '001w000001Y8ud2_19593',
 		},
 		confiant: {
 			enabled: false,
 			propertyId: 'd-aIf3ibf0cYxCLB1HTWfBQOFEA',
+		},
+		connatix: {
+			enabled: false,
+			cid: '016551d5-7095-47c0-a46b-fd0cb9bf4c72',
+			playerId: '039a9ead-fb3b-4afc-bcfb-ed241bbaa8d1',
+			renderId: 'da3ec3e41d7e41209e5963444de28591',
 		},
 		durationMedia: {
 			enabled: false,
@@ -131,6 +137,11 @@ export const basicContext = {
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
+		},
+		loadTimeTracking: {
+			enabled: true,
+			timing: ['responseEnd', 'domContentLoadedEventStart'],
+			custom: ['aeConfigured', 'aeStackStart'],
 		},
 		video: {
 			moatTracking: {

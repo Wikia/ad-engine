@@ -6,6 +6,7 @@ import {
 	bidders,
 	communicationService,
 	confiant,
+	connatix,
 	context,
 	DiProcess,
 	distroScale,
@@ -14,6 +15,7 @@ import {
 	exCo,
 	facebookPixel,
 	iasPublisherOptimization,
+	identityHub,
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
@@ -83,6 +85,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
+		inhibitors.push(identityHub.call());
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
@@ -115,6 +118,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 						exCo.call();
 					} else if (anyclip.isEnabled()) {
 						anyclip.call();
+					} else if (connatix.isEnabled()) {
+						connatix.call();
 					}
 				}
 			},

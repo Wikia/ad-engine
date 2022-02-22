@@ -3,6 +3,7 @@ import {
 	communicationService,
 	context,
 	CookieStorageAdapter,
+	DomListener,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
@@ -11,6 +12,7 @@ import {
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
+	nativoLazyLoader,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -21,7 +23,7 @@ interface SlotCreatorInsertionParamsType {
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -90,9 +92,9 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-    private isNativoEnabled() {
-        return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
-    }
+	private isNativoEnabled() {
+		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
+	}
 
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
 		if (!this.isNativoEnabled()) {
@@ -110,20 +112,21 @@ export class UcpMobileSlotsDefinitionRepository {
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						if (!action.isLoaded || action.adProduct !== 'ruap') {
-							context.push('events.pushOnScroll.ids', slotName);
-						}
-					},
+					(action: UapLoadStatus) =>
+						nativoLazyLoader.scrollTrigger(this.domListener, () => {
+							if (!action.isLoaded || action.adProduct !== 'ruap') {
+								context.push('state.adStack', slotName);
+							}
+						}),
 				);
 			},
 		};
 	}
 
 	getNativoFeedAdConfig(): SlotSetupDefinition {
-        if (!this.isNativoEnabled()) {
-            return;
-        }
+		if (!this.isNativoEnabled()) {
+			return;
+		}
 		const slotName = 'ntv_feed_ad';
 
 		return {
@@ -246,7 +249,8 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				anchorSelector: '.wds-global-footer',
+				// ADEN-11573: Cleanup after switch
+				anchorSelector: '.global-footer,.wds-global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -310,8 +314,8 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			// TODO: Remove .wds-global-footer after SITE-2038 is completed
-			!!document.querySelector('.wds-global-footer,.global-footer') &&
+			// ADEN-11573: Cleanup after switch
+			!!document.querySelector('.global-footer,.wds-global-footer') &&
 			context.get('wiki.opts.pageType') !== 'search'
 		);
 	}

@@ -7,8 +7,13 @@ export class LogoReplacementUcpDesktopHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
 
 	async onEnter(): Promise<void> {
-		const parentElement = document.querySelector('.wds-global-navigation__content-bar-left');
-		const fandomLogo = document.querySelector('.wds-global-navigation__logo');
+		// ADEN-11573: Cleanup after switch (L11-12)
+		const parentElement = document.querySelector(
+			'.global-navigation__nav,.wds-global-navigation__content-bar-left',
+		);
+		const fandomLogo = document.querySelector(
+			'.global-navigation__logo,.wds-global-navigation__logo',
+		);
 
 		setTimeout(() => {
 			if (parentElement && fandomLogo) {

@@ -10,6 +10,7 @@ import {
 	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
+	identityHub,
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
@@ -65,6 +66,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		});
 
 		adMarketplace.initialize();
+		identityHub.call();
 
 		return inhibitors;
 	}

@@ -3,18 +3,20 @@ import {
 	btRec,
 	communicationService,
 	context,
+	DomListener,
 	eventsRepository,
 	FmrRotator,
 	InstantConfigService,
 	scrollListener,
-	utils,
 	UapLoadStatus,
+	utils,
+	nativoLazyLoader,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService) {}
+	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
@@ -130,7 +132,8 @@ export class UcpDesktopSlotsDefinitionRepository {
 				if (
 					context.get('services.distroScale.enabled') ||
 					context.get('services.exCo.enabled') ||
-					context.get('services.anyclip.enabled')
+					context.get('services.anyclip.enabled') ||
+					context.get('services.connatix.enabled')
 				) {
 					context.push('state.adStack', { id: slotName });
 				} else {
@@ -220,15 +223,16 @@ export class UcpDesktopSlotsDefinitionRepository {
 			activator: () => {
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						if (
-							!action.isLoaded ||
-							action.adProduct !== 'ruap' ||
-							!context.get('custom.hasFeaturedVideo')
-						) {
-							context.push('events.pushOnScroll.ids', slotName);
-						}
-					},
+					(action: UapLoadStatus) =>
+						nativoLazyLoader.scrollTrigger(this.domListener, () => {
+							if (
+								!action.isLoaded ||
+								action.adProduct !== 'ruap' ||
+								!context.get('custom.hasFeaturedVideo')
+							) {
+								context.push('state.adStack', { id: slotName });
+							}
+						}),
 				);
 			},
 		};

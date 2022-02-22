@@ -161,7 +161,7 @@ export class BaseContextSetup implements DiProcess {
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);
-
+		context.set('pubmatic.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
 		context.set('bidders.liveRampId.enabled', this.instantConfig.get('icLiveRampId'));
 		context.set('bidders.liveRampATS.enabled', this.instantConfig.get('icLiveRampATS'));
 		context.set(
@@ -177,6 +177,10 @@ export class BaseContextSetup implements DiProcess {
 			'templates.safeFanTakeoverElement.unstickTimeout',
 			this.instantConfig.get('icSafeFanTakeoverUnstickTimeout'),
 		);
+		context.set(
+			'templates.sizeOverwritingMap',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes,
+		);
 	}
 
 	private setupOutstreamPlayers(): void {
@@ -188,6 +192,12 @@ export class BaseContextSetup implements DiProcess {
 
 		if (this.instantConfig.get('icAnyclipPlayer')) {
 			context.set('services.anyclip.enabled', true);
+			context.set('services.distroScale.enabled', false);
+			return;
+		}
+
+		if (this.instantConfig.get('icConnatixPlayer')) {
+			context.set('services.connatix.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
 		}

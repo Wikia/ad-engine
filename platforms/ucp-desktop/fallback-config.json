@@ -408,6 +408,48 @@
             "value": true
         }
     ],
+    "icOutstreamExperiment": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 25.0,
+            "value": "connatix"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 33.333,
+            "value": "exco"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 50.0,
+            "value": "anyclip"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 100.0,
+            "value": "distroscale"
+        }
+    ],
     "icViewabilityTracking": [
         {
             "apps": [
@@ -2129,7 +2171,22 @@
                 "5884643683",
                 "5882342335",
                 "5895868542",
-                "5875695327"
+                "5917990455",
+                "5875695327",
+                "5925867764",
+                "5925268066",
+                "5925268069",
+                "5925868046",
+                "5925317194",
+                "5925315250",
+                "5927703560",
+                "5927703551",
+                "5927703554",
+                "5927703557",
+                "5927701154",
+                "5927688638",
+                "5925317188",
+                "5927165474"
             ]
         }
     ],
@@ -2167,7 +2224,11 @@
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
-                "icTrafficDivider_B_50:galactus_h2_b"
+                "icTrafficDivider_B_50:galactus_h2_b",
+                "icOutstreamExperiment_B_25:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_33.333:outstream_experiment_exco",
+                "icOutstreamExperiment_B_50:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_100:outstream_experiment_distroscale"
             ]
         }
     ],
@@ -2346,18 +2407,6 @@
         }
     ],
     "icPrebidVersion": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "US"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
-        },
         {
             "apps": [
                 "fandomdesktop",
@@ -2806,6 +2855,17 @@
             ],
             "sampling": 100.0,
             "value": true
+        }
+    ],
+    "icOutstreamExperimentEnabled": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
         }
     ],
     "icBabDetection": [
