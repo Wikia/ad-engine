@@ -110,10 +110,12 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['ntv-ad', 'ad-slot'],
 			},
 			activator: () => {
+				const scrollThreshold = context.get('events.pushOnScroll.nativoThreshold') || 200;
+
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) =>
-						nativoLazyLoader.scrollTrigger(this.domListener, () => {
+						nativoLazyLoader.scrollTrigger(slotName, scrollThreshold, this.domListener, () => {
 							if (!action.isLoaded || action.adProduct !== 'ruap') {
 								context.push('state.adStack', slotName);
 							}

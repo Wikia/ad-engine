@@ -1,8 +1,8 @@
-import { AdSlot } from '../models';
-import { Provider } from './provider';
-import { logger } from '../utils';
+import { AdSlot } from '../../models';
+import { Provider } from '../provider';
+import { logger } from '../../utils';
 
-const logGroup = 'nativo-provider';
+const logGroup = 'nativo';
 
 export class NativoProvider implements Provider {
 	constructor() {
