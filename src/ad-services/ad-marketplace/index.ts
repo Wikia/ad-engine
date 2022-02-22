@@ -40,7 +40,6 @@ const instantSearchEndpointParameters = [
 
 class AdMarketplace {
 	private configuration: AdMarketplaceConfiguration;
-	private fallbackConfiguration: AdMarketplaceConfiguration;
 	private instantSearchSuggestionElement: HTMLElement | null = null;
 
 	initialize(): Promise<void> {
@@ -55,13 +54,6 @@ class AdMarketplace {
 
 			return Promise.resolve();
 		}
-
-		// TODO: Remove with references after SITE-2038 is completed
-		this.fallbackConfiguration = {
-			enabled: true,
-			insertSelector: '.wds-global-navigation__search-suggestions.wds-dropdown__content',
-			insertMethod: 'prepend',
-		};
 
 		instantSearchEndpointParameters.push(
 			`sub1=${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
@@ -120,11 +112,7 @@ class AdMarketplace {
 			return;
 		}
 
-		const configuration =
-			document.querySelector(this.configuration.insertSelector) !== null
-				? this.configuration
-				: this.fallbackConfiguration;
-		const wrapper = this.getInstantSearchAdsWrapper(configuration);
+		const wrapper = this.getInstantSearchAdsWrapper(this.configuration);
 
 		if (!wrapper) {
 			return;

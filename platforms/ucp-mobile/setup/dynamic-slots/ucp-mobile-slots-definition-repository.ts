@@ -249,8 +249,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				// ADEN-11573: Cleanup after switch
-				anchorSelector: '.global-footer,.wds-global-footer',
+				anchorSelector: '.global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -314,9 +313,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			// ADEN-11573: Cleanup after switch
-			!!document.querySelector('.global-footer,.wds-global-footer') &&
-			context.get('wiki.opts.pageType') !== 'search'
+			!!document.querySelector('.global-footer') && context.get('wiki.opts.pageType') !== 'search'
 		);
 	}
 
