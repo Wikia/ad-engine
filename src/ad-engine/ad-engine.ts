@@ -102,7 +102,7 @@ export class AdEngine {
 			case 'prebidium':
 				return new PrebidiumProvider();
 			case 'nativo':
-				return new NativoProvider();
+				return new NativoProvider(window.ntv);
 			case 'gpt':
 			default:
 				return new GptProvider();

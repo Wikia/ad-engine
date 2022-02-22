@@ -5,9 +5,11 @@ import { logger } from '../../utils';
 const logGroup = 'nativo';
 
 export class NativoProvider implements Provider {
-	constructor() {
-		window.ntv = window.ntv || {};
-		window.ntv.cmd = window.ntv.cmd || [];
+	private ntvSdk: NativoQueue;
+
+	constructor(ntvSdk) {
+		this.ntvSdk = ntvSdk || {};
+		this.ntvSdk.cmd = this.ntvSdk.cmd || [];
 	}
 
 	fillIn(slot: AdSlot): boolean {
@@ -35,7 +37,7 @@ export class NativoProvider implements Provider {
 	}
 
 	private pushQueue(): void {
-		window.ntv.cmd.push(() => {
+		this.ntvSdk.cmd.push(() => {
 			window.PostRelease.Start();
 		});
 	}
