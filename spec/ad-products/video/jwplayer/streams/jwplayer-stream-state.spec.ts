@@ -6,11 +6,14 @@ import {
 } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-state';
 import { JwpStatelessEvent } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-stream-stateless';
 import { expect } from 'chai';
-import { uniq, uniqBy } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { createSandbox } from 'sinon';
 import { createJwplayerStub, JwplayerStub } from '../jwplayer.stub';
+
+function uniq(array) {
+	return [...new Set(array)];
+}
 
 describe('Jwplayer Stream State', () => {
 	const sandbox = createSandbox();
@@ -40,17 +43,17 @@ describe('Jwplayer Stream State', () => {
 
 			subject$.next({ name: 'beforePlay', payload: undefined });
 			expect(uniq(results.map((value) => value.depth))).to.deep.equal([0, 1]);
-			expect(uniqBy(results, 'correlator').length).to.equal(2);
+			expect(uniq(results.map((value) => value.correlator)).length).to.equal(2);
 
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
 			subject$.next({ name: 'beforeComplete', payload: undefined });
 			expect(uniq(results.map((value) => value.depth))).to.deep.equal([0, 1]);
-			expect(uniqBy(results, 'correlator').length).to.equal(2);
+			expect(uniq(results.map((value) => value.correlator)).length).to.equal(2);
 
 			subject$.next({ name: 'beforePlay', payload: undefined });
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
 			expect(uniq(results.map((value) => value.depth))).to.deep.equal([0, 1, 2]);
-			expect(uniqBy(results, 'correlator').length).to.equal(3);
+			expect(uniq(results.map((value) => value.correlator)).length).to.equal(3);
 		});
 	});
 
@@ -128,9 +131,9 @@ describe('Jwplayer Stream State', () => {
 				subject$.next({ name, payload: { tag: 'a' } });
 			});
 
-			expect(uniqBy(results, 'playlistItem').length).to.equal(jwpEvents.length);
-			expect(uniqBy(results, 'config').length).to.equal(jwpEvents.length);
-			expect(uniqBy(results, 'mute').length).to.equal(jwpEvents.length);
+			expect(uniq(results.map((value) => value.playlistItem)).length).to.equal(jwpEvents.length);
+			expect(uniq(results.map((value) => value.config)).length).to.equal(jwpEvents.length);
+			expect(uniq(results.map((value) => value.mute)).length).to.equal(jwpEvents.length);
 		});
 	});
 });
