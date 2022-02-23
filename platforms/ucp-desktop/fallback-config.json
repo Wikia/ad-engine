@@ -661,6 +661,7 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5815863298",
                 "5894071571",
                 "5893510273",
                 "5893555158",
@@ -2352,6 +2353,14 @@
                         "uap": "5916984414"
                     },
                     "lastStepId": "138381285823"
+                },
+                "5928558921": {
+                    "targeting": {
+                        "loc": "top",
+                        "uap": "5928558921",
+                        "sequence_step": "2"
+                    },
+                    "lastStepId": "138381965874"
                 }
             }
         }
@@ -2881,22 +2890,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icLiveRampATSAnalytics": [
