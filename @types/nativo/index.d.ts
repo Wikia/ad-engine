@@ -7,7 +7,7 @@ interface NativoConfiguration {
 	infScrollReset?: boolean;
 }
 
-interface NativoQueue {
+interface NativoSdk {
 	cmd?: any[];
 	Events?: any;
 }

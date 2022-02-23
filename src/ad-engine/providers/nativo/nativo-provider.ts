@@ -1,11 +1,11 @@
-import { AdSlot } from '../../models';
+import { AdSlot, Dictionary } from '../../models';
 import { Provider } from '../provider';
 import { logger } from '../../utils';
 
 const logGroup = 'nativo';
 
 export class NativoProvider implements Provider {
-	private ntvSdk: NativoQueue;
+	private ntvSdk: NativoSdk;
 
 	constructor(ntvSdk) {
 		this.ntvSdk = ntvSdk || {};
@@ -13,17 +13,21 @@ export class NativoProvider implements Provider {
 	}
 
 	fillIn(slot: AdSlot): boolean {
-		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
+		this.ntvSdk.Events?.PubSub?.subscribe('noad', (e) => {
 			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE);
 		});
 
-		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
+		this.ntvSdk.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
 			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
 		});
 
-		this.pushQueue();
+		this.requestAds();
 
 		return true;
+	}
+
+	getQueue(): Array<Dictionary> {
+		return this.ntvSdk.cmd;
 	}
 
 	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
@@ -36,8 +40,8 @@ export class NativoProvider implements Provider {
 		}
 	}
 
-	private pushQueue(): void {
-		this.ntvSdk.cmd.push(() => {
+	private requestAds(): void {
+		this.getQueue().push(() => {
 			window.PostRelease.Start();
 		});
 	}
