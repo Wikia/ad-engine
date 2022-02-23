@@ -34,7 +34,7 @@ export class Nativo {
 			});
 	}
 
-	private handleNativoNativeEvent(e, slotName: string, adStatus: string) {
+	private handleNtvNativeEvent(e, slotName: string, adStatus: string) {
 		const slot = slotService.get(slotName);
 
 		utils.logger(logGroup, 'Nativo native event fired', e, adStatus, slotName, slot);
@@ -90,12 +90,12 @@ export class Nativo {
 	private watchNtvEvents(): void {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
-			this.handleNativoNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
+			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
 		});
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data.placement];
-			this.handleNativoNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
+			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
 		});
 	}
 
