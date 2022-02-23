@@ -7,7 +7,19 @@ interface NativoConfiguration {
 	infScrollReset?: boolean;
 }
 
+interface NativoCompleteEvent {
+	data: { id: number; placement: number };
+}
+
+interface NativoNoAdEvent {
+	data: { id: number }[];
+}
+
 interface NativoQueue {
 	cmd?: any[];
-	Events?: any;
+	Events?: {
+		PubSub: {
+			subscribe(status?: string, fn: (e: NativoNoAdEvent | NativoCompleteEvent) => void): void;
+		};
+	};
 }
