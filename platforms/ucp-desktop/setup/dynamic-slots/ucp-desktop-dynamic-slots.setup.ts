@@ -51,6 +51,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 		);
 
+		if (
+			(!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) &&
+			(context.get('templates.stickyTlb.forced') || context.get('templates.stickyTlb.lineItemIds'))
+		) {
+			context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
+		}
+
 		if (!context.get('custom.hasFeaturedVideo')) {
 			if (context.get('wiki.targeting.pageType') !== 'special') {
 				slotsContext.addSlotSize(slotName, universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop);
@@ -60,13 +67,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				'incontent_boxad_1',
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 			);
-
-			if (
-				context.get('templates.stickyTlb.forced') ||
-				context.get('templates.stickyTlb.lineItemIds')
-			) {
-				context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
-			}
 		} else {
 			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
 			slotsContext.addSlotSize(
