@@ -20,6 +20,30 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
 
+	getLayoutInitializerConfig(): SlotSetupDefinition {
+		if (!this.isLayoutInitializerApplicable()) {
+			return;
+		}
+
+		const slotName = 'layout_initializer';
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: '.page',
+				insertMethod: 'before',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	private isLayoutInitializerApplicable(): boolean {
+		return this.instantConfig.get('icLayoutInitializerSlot');
+	}
+
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);

@@ -6,6 +6,15 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
+			layout_initializer: {
+				initCall: true,
+				adProduct: 'layout_initializer',
+				group: 'LIS',
+				outOfPage: true,
+				targeting: {
+					loc: 'pre',
+				},
+			},
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
