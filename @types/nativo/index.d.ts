@@ -7,12 +7,17 @@ interface NativoConfiguration {
 	infScrollReset?: boolean;
 }
 
+interface NativoResponseEvent {
+	id: number;
+	placement: number;
+}
+
 interface NativoCompleteEvent {
-	data: { id: number; placement: number };
+	data: NativoResponseEvent;
 }
 
 interface NativoNoAdEvent {
-	data: { id: number }[];
+	data: Pick<NativoResponseEvent, 'id'>[];
 }
 
 interface NativoQueue {
