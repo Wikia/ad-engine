@@ -29,12 +29,17 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
+				this.watchNtvEvents();
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
-	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
-		utils.logger(logGroup, 'Nativo native event fired', e, adStatus, slot.getSlotName());
+	private handleNativoNativeEvent(e, slotName: string, adStatus: string) {
+		const slot = slotService.get(slotName);
+
+		utils.logger(logGroup, 'Nativo native event fired', e, adStatus, slotName, slot);
+
+		if (!slot || slot.getSlotName() !== slotName) return;
 
 		if (slot.getStatus() !== adStatus) {
 			slot.setStatus(adStatus);
@@ -70,8 +75,7 @@ export class Nativo {
 
 		utils.logger(logGroup, 'Sending an ad request to Nativo', placeholder.id);
 
-		const slot = this.createAdSlot(placeholder.id);
-		this.watchNtvEvents(slot);
+		this.createAdSlot(placeholder.id);
 		this.pushNativoQueue();
 	}
 
@@ -83,17 +87,15 @@ export class Nativo {
 		return slot;
 	}
 
-	private watchNtvEvents(slot: AdSlot): void {
+	private watchNtvEvents(): void {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
-			if (slot.getSlotName() !== slotName) return;
-			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE); // init or collapse
+			this.handleNativoNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
 		});
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data.placement];
-			if (slot.getSlotName() !== slotName) return;
-			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
+			this.handleNativoNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
 		});
 	}
 
