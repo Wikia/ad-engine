@@ -79,6 +79,7 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5815863298",
                 "5894071571",
                 "5893510273",
                 "5893555158",
@@ -1868,22 +1869,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icNielsen": [
