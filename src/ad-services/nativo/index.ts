@@ -14,6 +14,7 @@ export class Nativo {
 	private static AD_SLOT_MAP = {
 		1142863: Nativo.INCONTENT_AD_SLOT_NAME,
 		1142668: Nativo.FEED_AD_SLOT_NAME,
+		1142669: Nativo.FEED_AD_SLOT_NAME,
 	};
 
 	call(): Promise<void> {
