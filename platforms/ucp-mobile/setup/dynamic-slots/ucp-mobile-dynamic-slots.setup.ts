@@ -19,6 +19,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
+import { UcpMobileNativoSlotsDefinitionRepository } from './ucp-mobile-nativo-slots-definition-repository';
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
@@ -28,7 +29,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		},
 	};
 
-	constructor(private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository) {}
+	constructor(
+		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
+		private nativoSlotDefinitionRepository: UcpMobileNativoSlotsDefinitionRepository,
+	) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -44,7 +48,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		insertSlots([
 			topLeaderboardDefinition,
-			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
@@ -52,7 +56,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
-			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
 		]);
 
 		if (!topLeaderboardDefinition) {
