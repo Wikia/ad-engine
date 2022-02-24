@@ -11,12 +11,17 @@ import {
 	UapLoadStatus,
 	utils,
 	nativoLazyLoader,
+	Nativo,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected domListener: DomListener,
+		protected nativo: Nativo,
+	) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
@@ -203,12 +208,8 @@ export class UcpDesktopSlotsDefinitionRepository {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
 
-	private isNativoEnabled() {
-		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
-	}
-
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
-		if (!this.isNativoEnabled()) {
+		if (!this.nativo.isEnabled()) {
 			return;
 		}
 		const slotName = 'ntv_ad';
@@ -241,7 +242,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 	}
 
 	getNativoFeedAdConfig(): SlotSetupDefinition {
-		if (!this.isNativoEnabled()) {
+		if (!this.nativo.isEnabled()) {
 			return;
 		}
 		const slotName = 'ntv_feed_ad';

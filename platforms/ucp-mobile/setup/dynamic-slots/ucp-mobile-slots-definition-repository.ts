@@ -13,6 +13,7 @@ import {
 	UapLoadStatus,
 	utils,
 	nativoLazyLoader,
+	Nativo,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -23,7 +24,13 @@ interface SlotCreatorInsertionParamsType {
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
+	constructor(
+		protected instantConfig: InstantConfigService,
+		protected domListener: DomListener,
+		protected nativo: Nativo,
+	) {
+		this.nativo = new Nativo(context);
+	}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -92,12 +99,8 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-	private isNativoEnabled() {
-		return context.get('services.nativo.enabled') && context.get('wiki.opts.enableNativeAds');
-	}
-
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
-		if (!this.isNativoEnabled()) {
+		if (!this.nativo.isEnabled()) {
 			return;
 		}
 		const slotName = 'ntv_ad';
@@ -117,7 +120,7 @@ export class UcpMobileSlotsDefinitionRepository {
 					(action: UapLoadStatus) =>
 						nativoLazyLoader.scrollTrigger(slotName, scrollThreshold, this.domListener, () => {
 							if (!action.isLoaded || action.adProduct !== 'ruap') {
-								context.push('state.adStack', slotName);
+								context.push('state.adStack', { id: slotName });
 							}
 						}),
 				);
@@ -126,7 +129,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	getNativoFeedAdConfig(): SlotSetupDefinition {
-		if (!this.isNativoEnabled()) {
+		if (!this.nativo.isEnabled()) {
 			return;
 		}
 		const slotName = 'ntv_feed_ad';
