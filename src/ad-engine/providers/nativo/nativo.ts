@@ -7,6 +7,9 @@ import { scriptLoader, logger } from '../../utils';
 const logGroup = 'nativo';
 
 export class Nativo {
+	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
+	static FEED_AD_SLOT_NAME = 'ntv_feed_ad';
+
 	constructor(protected context: Context) {}
 
 	isEnabled() {

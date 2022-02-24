@@ -21,7 +21,7 @@ export class UcpMobileNativoSlotsDefinitionRepository {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
-		const slotName = 'ntv_ad';
+		const slotName = Nativo.INCONTENT_AD_SLOT_NAME;
 
 		return {
 			slotCreatorConfig: {
@@ -50,7 +50,7 @@ export class UcpMobileNativoSlotsDefinitionRepository {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
-		const slotName = 'ntv_feed_ad';
+		const slotName = Nativo.FEED_AD_SLOT_NAME;
 
 		return {
 			slotCreatorConfig: {
