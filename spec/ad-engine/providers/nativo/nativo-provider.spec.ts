@@ -24,6 +24,5 @@ describe('Nativo Provider', () => {
 		const nativo = new NativoProvider(window.ntv);
 		nativo.fillIn(adSlotFake as any);
 		expect(nativo.getQueue().length).to.equal(2);
-		expect(window.ntv.Events.PubSub.subscribe.callCount).to.equal(2);
 	});
 });

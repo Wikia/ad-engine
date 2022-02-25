@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 
 import { AdSlot } from '../../models';
-import { Context } from '../../services';
+import { Context, slotService } from '../../services';
 import { scriptLoader, logger } from '../../utils';
 
 const logGroup = 'nativo';
@@ -9,6 +9,12 @@ const logGroup = 'nativo';
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
 	static FEED_AD_SLOT_NAME = 'ntv_feed_ad';
+
+	private static AD_SLOT_MAP = {
+		1142863: Nativo.INCONTENT_AD_SLOT_NAME,
+		1142668: Nativo.FEED_AD_SLOT_NAME,
+		1142669: Nativo.FEED_AD_SLOT_NAME,
+	};
 
 	constructor(protected context: Context) {}
 
@@ -29,6 +35,7 @@ export class Nativo {
 			.loadScript(NATIVO_LIBRARY_URL, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				logger(logGroup, 'Nativo SDK loaded.');
+				this.watchNtvEvents();
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
@@ -55,5 +62,31 @@ export class Nativo {
 		communicationService.dispatch(
 			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)(payload),
 		);
+	}
+
+	private watchNtvEvents(): void {
+		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
+			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
+			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
+		});
+
+		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
+			const slotName = Nativo.AD_SLOT_MAP[e.data.placement];
+			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
+		});
+	}
+
+	private handleNtvNativeEvent(e, slotName: string, adStatus: string) {
+		const slot = slotService.get(slotName);
+
+		logger(logGroup, 'Nativo native event fired', e, adStatus, slotName, slot);
+
+		if (!slot || slot.getSlotName() !== slotName) return;
+
+		if (slot.getStatus() !== adStatus) {
+			slot.setStatus(adStatus);
+		} else {
+			logger(logGroup, 'Slot status already tracked', slot.getSlotName(), adStatus);
+		}
 	}
 }
