@@ -47,6 +47,7 @@ export class AdEngine {
 
 	init(inhibitors: Promise<any>[] = []): void {
 		this.setupProviders();
+		this.runInitStack();
 		this.setupAdStack();
 		btfBlockerService.init();
 
@@ -84,6 +85,15 @@ export class AdEngine {
 				slotService.add(adSlot);
 				this.provider.fillIn(adSlot);
 			});
+		}
+	}
+
+	private runInitStack(): void {
+		if (context.get('options.initCall')) {
+			const slotName = context.get('state.initSlot');
+			const adSlot = new AdSlot({ id: slotName });
+
+			slotService.add(adSlot);
 		}
 	}
 

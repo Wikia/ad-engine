@@ -89,6 +89,10 @@ class BtfBlockerService {
 	}
 
 	push(adSlot: AdSlot, fillInCallback: FillInCallback): void {
+		if (adSlot.isInitCall()) {
+			return;
+		}
+
 		if (!this.firstCallEnded && !adSlot.isFirstCall()) {
 			this.slotsQueue.push({
 				adSlot,

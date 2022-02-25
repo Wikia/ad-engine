@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { AdSlot } from '../../../src/ad-engine/models/ad-slot';
-import { context } from '../../../src/ad-engine/services/context-service';
-import { slotService } from '../../../src/ad-engine/services/slot-service';
-import { buildVastUrl } from '../../../src/ad-engine/video/vast-url-builder';
+import { AdSlot } from '@wikia/ad-engine/models/ad-slot';
+import { context } from '@wikia/ad-engine/services/context-service';
+import { slotService } from '@wikia/ad-engine/services/slot-service';
+import { buildVastUrl } from '@wikia/ad-engine/utils/tagless-request-url-builder';
 
-describe('vast-url-builder', () => {
+describe('tagless-request-url-builder', () => {
 	beforeEach(() => {
 		context.extend({
 			src: 'test',

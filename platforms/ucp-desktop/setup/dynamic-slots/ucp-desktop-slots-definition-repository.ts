@@ -28,20 +28,14 @@ export class UcpDesktopSlotsDefinitionRepository {
 		const slotName = 'layout_initializer';
 
 		return {
-			slotCreatorConfig: {
-				slotName,
-				anchorSelector: '.page',
-				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
-			},
 			activator: () => {
-				context.push('state.adStack', { id: slotName });
+				context.set('state.initSlot', slotName);
 			},
 		};
 	}
 
 	private isLayoutInitializerApplicable(): boolean {
-		return this.instantConfig.get('icLayoutInitializerSlot');
+		return context.get('options.initCall');
 	}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {

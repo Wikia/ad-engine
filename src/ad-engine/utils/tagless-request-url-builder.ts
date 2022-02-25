@@ -110,3 +110,7 @@ export function buildVastUrl(
 
 	return baseUrl + params.join('&');
 }
+
+export function buildTaglessRequestUrl() {
+	//aa
+}
