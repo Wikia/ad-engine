@@ -17,6 +17,12 @@ export class UcpDesktopNativoSlotsDefinitionRepository {
 		this.nativo = new Nativo(context);
 	}
 
+	private onAdEngineUapLoaded(action: UapLoadStatus, slotName: string, scrollThreshold: number) {
+		nativoLazyLoader.scrollTrigger(slotName, scrollThreshold, this.domListener, () =>
+			this.nativo.scrollTriggerCallback(action, slotName),
+		);
+	}
+
 	getNativoIncontentAdConfig(): SlotSetupDefinition {
 		if (!this.nativo.isEnabled()) {
 			return;
@@ -35,16 +41,7 @@ export class UcpDesktopNativoSlotsDefinitionRepository {
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) =>
-						nativoLazyLoader.scrollTrigger(slotName, scrollThreshold, this.domListener, () => {
-							if (
-								!action.isLoaded ||
-								action.adProduct !== 'ruap' ||
-								!context.get('custom.hasFeaturedVideo')
-							) {
-								context.push('state.adStack', { id: slotName });
-							}
-						}),
+					(action: UapLoadStatus) => this.onAdEngineUapLoaded(action, slotName, scrollThreshold),
 				);
 			},
 		};

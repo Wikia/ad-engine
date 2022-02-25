@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 
 import { AdSlot } from '../../models';
 import { Context } from '../../services';
@@ -31,6 +31,14 @@ export class Nativo {
 				logger(logGroup, 'Nativo SDK loaded.');
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
+	}
+
+	scrollTriggerCallback(action: UapLoadStatus, slotName: string) {
+		if (!action.isLoaded && action.adProduct !== 'ruap') {
+			this.context.push('state.adStack', { id: slotName });
+		} else {
+			logger(logGroup, "UAP or UAP:Roadblock on page - don't display Nativo");
+		}
 	}
 
 	sendNativoLoadStatus(status: string, event?: any): void {
