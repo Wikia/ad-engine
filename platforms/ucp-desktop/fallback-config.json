@@ -2550,6 +2550,48 @@
                 "XX"
             ],
             "value": {
+                "WOW_BUNDLE": {
+                    "s1": [
+                        "_wowpedia",
+                        "_wowwiki",
+                        "_ruwow",
+                        "_es_wowpedia",
+                        "_frwow",
+                        "_wow",
+                        "_vanillawow859",
+                        "_eswow",
+                        "_classicwowwiki",
+                        "_plwow",
+                        "_pl_wowpedia",
+                        "_fr_wowpedia",
+                        "_wowsb",
+                        "_twoworlds",
+                        "_wowtw",
+                        "_wowleveling",
+                        "_wowadventure",
+                        "_wowwowwubbzyintothecartoonuniverse",
+                        "_johndubucsandbradyforrestsminitwow",
+                        "_eswowloutakezaharan",
+                        "_ohwowowo",
+                        "_christiansminitwow",
+                        "_esanhoukswowrol",
+                        "_twowcontestant",
+                        "_wowsuchfanon",
+                        "_wowpfanfiction",
+                        "_rebelwow",
+                        "_eswow",
+                        "_plwow",
+                        "_etworldofwarcraft",
+                        "_hearthstone",
+                        "_ruwarcraftiii",
+                        "_minecraftmodworldofwarcraft",
+                        "_worldofwarcraftrpg",
+                        "_wowadventure",
+                        "_warcraftlore",
+                        "_warcraftknights",
+                        "_warcraftfairytail"
+                    ]
+                },
                 "dnd_bundle": {
                     "s1": [
                         "_dungeonsdragons",
