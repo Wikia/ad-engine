@@ -11,7 +11,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				adProduct: 'layout_initializer',
 				slotNameSuffix: '',
 				group: 'LIS',
-				outOfPage: true,
+				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'pre',
 				},

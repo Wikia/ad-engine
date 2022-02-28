@@ -13,7 +13,13 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import {
+	buildTaglessRequestUrl,
+	LazyQueue,
+	makeLazyQueue,
+	OldLazyQueue,
+	scriptLoader,
+} from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -45,9 +51,10 @@ export class AdEngine {
 		);
 	}
 
-	init(inhibitors: Promise<any>[] = []): void {
+	async init(inhibitors: Promise<any>[] = []): Promise<void> {
+		inhibitors = await this.runInitStack(inhibitors);
+
 		this.setupProviders();
-		this.runInitStack();
 		this.setupAdStack();
 		btfBlockerService.init();
 
@@ -88,13 +95,28 @@ export class AdEngine {
 		}
 	}
 
-	private runInitStack(): void {
+	private async runInitStack(inhibitors: Promise<any>[] = []): Promise<Promise<any>[]> {
 		if (context.get('options.initCall')) {
 			const slotName = context.get('state.initSlot');
 			const adSlot = new AdSlot({ id: slotName });
 
 			slotService.add(adSlot);
+
+			return await scriptLoader
+				.loadAsset(buildTaglessRequestUrl(adSlot), 'text')
+				.then((response) => {
+					if (!response) {
+						return Promise.resolve(inhibitors);
+					}
+
+					console.log('xxx', response);
+					// todo logika uap id
+
+					return Promise.resolve([]);
+				});
 		}
+		console.log('xxx aaa');
+		return inhibitors;
 	}
 
 	private setupPushOnScrollQueue(): void {

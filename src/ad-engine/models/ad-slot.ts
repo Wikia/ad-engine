@@ -340,7 +340,7 @@ export class AdSlot {
 		return result as Targeting;
 	}
 
-	getDefaultSizes(): string {
+	getDefaultSizes(): number[][] {
 		return this.config.defaultSizes;
 	}
 
