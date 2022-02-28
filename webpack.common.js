@@ -27,6 +27,9 @@ module.exports = () => ({
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
 		plugins: [new TsConfigPathsPlugin({ paths })],
+		fallback: {
+			util: require.resolve('util/'),
+		},
 	},
 
 	module: {
@@ -42,14 +45,18 @@ module.exports = () => ({
 			},
 			{
 				test: path.resolve(__dirname, 'src/ad-engine/log-version.ts'),
-				loader: StringReplacePlugin.replace({
-					replacements: [
-						{
-							pattern: /<\?=[ \t]*PACKAGE\(([\w\-_.]*?)\)[ \t]*\?>/gi,
-							replacement: () => pkg.version,
-						},
-					],
-				}),
+				use: [
+					{
+						loader: StringReplacePlugin.replace({
+							replacements: [
+								{
+									pattern: /<\?=[ \t]*PACKAGE\(([\w\-_.]*?)\)[ \t]*\?>/gi,
+									replacement: () => pkg.version,
+								},
+							],
+						}),
+					},
+				],
 			},
 		],
 	},

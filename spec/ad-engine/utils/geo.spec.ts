@@ -1,6 +1,6 @@
 import { geoService } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import * as sinon from 'sinon';
 import { context, InstantConfigCacheStorage, SessionCookie } from '../../../src/ad-engine/services';
 
