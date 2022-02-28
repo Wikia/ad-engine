@@ -70,7 +70,7 @@ class ScriptLoader implements ScriptLoaderInterface {
 	loadAsset(
 		url: string,
 		responseType: XMLHttpRequestResponseType = 'json',
-	): Promise<object | null> {
+	): Promise<string | null> {
 		const request = new XMLHttpRequest();
 
 		request.open('GET', url, true);

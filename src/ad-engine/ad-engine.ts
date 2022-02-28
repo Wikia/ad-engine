@@ -96,27 +96,33 @@ export class AdEngine {
 	}
 
 	private async runInitStack(inhibitors: Promise<any>[] = []): Promise<Promise<any>[]> {
-		if (context.get('options.initCall')) {
-			const slotName = context.get('state.initSlot');
-			const adSlot = new AdSlot({ id: slotName });
-
-			slotService.add(adSlot);
-
-			return await scriptLoader
-				.loadAsset(buildTaglessRequestUrl(adSlot), 'text')
-				.then((response) => {
-					if (!response) {
-						return Promise.resolve(inhibitors);
-					}
-
-					console.log('xxx', response);
-					// todo logika uap id
-
-					return Promise.resolve([]);
-				});
+		if (!context.get('options.initCall')) {
+			return inhibitors;
 		}
-		console.log('xxx aaa');
-		return inhibitors;
+
+		const slotName = context.get('state.initSlot');
+		const adSlot = new AdSlot({ id: slotName });
+
+		slotService.add(adSlot);
+
+		return await scriptLoader.loadAsset(buildTaglessRequestUrl(adSlot), 'text').then((response) => {
+			if (!response) {
+				return inhibitors;
+			}
+
+			try {
+				const layoutPayload = JSON.parse(response);
+
+				if (layoutPayload.layout === 'uap') {
+					context.set('targeting.uap', layoutPayload.data.lineItemId);
+					context.set('targeting.uap_c', layoutPayload.data.creativeId);
+				}
+			} catch (e) {
+				return inhibitors;
+			}
+
+			return [];
+		});
 	}
 
 	private setupPushOnScrollQueue(): void {
