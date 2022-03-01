@@ -29,6 +29,18 @@ export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return context.get('state.adStack');
 }
 
+type LayoutPayload = {
+	layout: string;
+	data: any;
+};
+
+interface FanTakeoverLayoutPayload extends LayoutPayload {
+	data: {
+		lineItemId: number;
+		creativeId: number;
+	};
+}
+
 export const DEFAULT_MAX_DELAY = 2000;
 
 export class AdEngine {
@@ -111,11 +123,14 @@ export class AdEngine {
 			}
 
 			try {
-				const layoutPayload = JSON.parse(response);
+				const layoutPayload: LayoutPayload = JSON.parse(response);
 
 				if (layoutPayload.layout === 'uap') {
-					context.set('targeting.uap', layoutPayload.data.lineItemId);
-					context.set('targeting.uap_c', layoutPayload.data.creativeId);
+					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
+					context.set(
+						'targeting.uap_c',
+						(layoutPayload as FanTakeoverLayoutPayload).data.creativeId,
+					);
 				}
 			} catch (e) {
 				return inhibitors;

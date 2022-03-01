@@ -2,19 +2,38 @@ import { expect } from 'chai';
 import { AdSlot } from '@wikia/ad-engine/models/ad-slot';
 import { context } from '@wikia/ad-engine/services/context-service';
 import { slotService } from '@wikia/ad-engine/services/slot-service';
-import { buildVastUrl } from '@wikia/ad-engine/utils/tagless-request-url-builder';
+import {
+	buildVastUrl,
+	buildTaglessRequestUrl,
+} from '@wikia/ad-engine/utils/tagless-request-url-builder';
 
 describe('tagless-request-url-builder', () => {
+	let lisAdSlot;
+
 	beforeEach(() => {
 		context.extend({
+			adUnitId:
+				'/{custom.dfpId}/{custom.serverPrefix}/{src}/{slotConfig.slotName}/{custom.wikiIdentifier}-{targeting.s0}',
+			custom: {
+				dfpId: '5441',
+				serverPrefix: 'wka.fandom',
+				wikiIdentifier: '_not_a_top1k_wiki',
+			},
 			src: 'test',
 			vast: {
-				adUnitId: '/5441/wka.fandom/{src}/{slotConfig.slotName}',
+				adUnitId: '/{custom.dfpId}/{custom.serverPrefix}/{src}/{slotConfig.slotName}',
 			},
 			slots: {
+				layout_initializer: {
+					adProduct: 'layout_initializer',
+					slotNameSuffix: '',
+					group: 'LIS',
+					defaultSizes: [[32, 32]],
+				},
 				top_leaderboard: {},
 			},
 			targeting: {
+				s0: '000',
 				uno: 'foo',
 				due: 15,
 				tre: ['bar', 'zero'],
@@ -25,16 +44,19 @@ describe('tagless-request-url-builder', () => {
 				trackingOptIn: false,
 			},
 		});
+
+		lisAdSlot = new AdSlot({ id: 'layout_initializer' });
 		slotService.add(new AdSlot({ id: 'top_leaderboard' }));
+		slotService.add(lisAdSlot);
 	});
 
-	it('build URL with DFP domain', () => {
+	it('build VAST URL with DFP domain', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		expect(vastUrl.match(/^https:\/\/pubads\.g\.doubleclick\.net\/gampad\/ads/g)).to.be.ok;
 	});
 
-	it('build URL with required DFP parameters', () => {
+	it('build VAST URL with required DFP parameters', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		expect(vastUrl.match(/output=vast&/g)).to.be.ok;
@@ -44,52 +66,55 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(/&unviewed_position_start=1&/g)).to.be.ok;
 	});
 
-	it('build URL with configured ad unit', () => {
+	it('build VAST URL with configured ad unit', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		expect(vastUrl.match(/&iu=\/5441\/wka\.fandom\/test\/top_leaderboard&/g)).to.be.ok;
 	});
 
-	it('build URL with horizontal ad size', () => {
+	it('build VAST URL with horizontal ad size', () => {
 		const vastUrl = buildVastUrl(1.5, 'top_leaderboard');
 
 		expect(vastUrl.match(/&sz=640x480&/g)).to.be.ok;
 	});
 
-	it('build URL with referrer', () => {
+	it('build VAST URL with referrer', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		expect(vastUrl.match(/&url=about%3Ablank/g)).to.be.ok;
 	});
 
-	it('build URL with description_url', () => {
+	it('build VAST URL with description_url', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		expect(vastUrl.match(/&description_url=about%3Ablank/g)).to.be.ok;
 	});
 
-	it('build URL with numeric correlator', () => {
+	it('build VAST URL with numeric correlator', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		expect(vastUrl.match(/&correlator=\d+&/g)).to.be.ok;
 	});
 
-	it('build URL with page level targeting anp default wsi param', () => {
+	it('build VAST URL with page level targeting anp default wsi param', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
-		expect(vastUrl.match(/&cust_params=uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx/g)).to
-			.be.ok;
+		expect(
+			vastUrl.match(
+				/&cust_params=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx/g,
+			),
+		).to.be.ok;
 	});
 
-	it('build URL with page, slotName level targeting and default wsi param', () => {
+	it('build VAST URL with page, slotName level targeting and default wsi param', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
-		const custParams = /&cust_params=uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dtop_leaderboard/;
+		const custParams = /&cust_params=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dtop_leaderboard/;
 
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
 
-	it('build URL with restricted number of ads', () => {
+	it('build VAST URL with restricted number of ads', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', { numberOfAds: 1 });
 
 		const custParams = /&pmad=1/;
@@ -97,7 +122,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
 
-	it('build URL with content source and video ids', () => {
+	it('build VAST URL with content source and video ids', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			contentSourceId: '123',
 			videoId: 'abc',
@@ -108,7 +133,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
 
-	it('build URL without content source and video ids when at least one is missing', () => {
+	it('build VAST URL without content source and video ids when at least one is missing', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			contentSourceId: '123',
 		});
@@ -118,7 +143,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.not.be.ok;
 	});
 
-	it('build URL without content source and video ids when at least one is missing', () => {
+	it('build VAST URL without content source and video ids when at least one is missing', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			videoId: 'abc',
 		});
@@ -128,7 +153,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.not.be.ok;
 	});
 
-	it('build URL with preroll video position', () => {
+	it('build VAST URL with preroll video position', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			vpos: 'preroll',
 		});
@@ -138,7 +163,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
 
-	it('build URL with midroll video position', () => {
+	it('build VAST URL with midroll video position', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			vpos: 'midroll',
 		});
@@ -148,7 +173,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
 
-	it('build URL with postroll video position', () => {
+	it('build VAST URL with postroll video position', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			vpos: 'postroll',
 		});
@@ -158,7 +183,7 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
 
-	it('build URL without video position', () => {
+	it('build VAST URL without video position', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard', {
 			vpos: 'invalid',
 		});
@@ -166,5 +191,48 @@ describe('tagless-request-url-builder', () => {
 		const custParams = /&vpos=/;
 
 		expect(vastUrl.match(custParams)).to.not.be.ok;
+	});
+
+	it('build tagless URL with DFP domain', () => {
+		const taglessUrl = buildTaglessRequestUrl(lisAdSlot);
+
+		expect(taglessUrl.match(/^https:\/\/securepubads\.g\.doubleclick\.net\/gampad\/adx/g)).to.be.ok;
+	});
+
+	it('build tagless URL with numeric correlator', () => {
+		const taglessUrl = buildTaglessRequestUrl(lisAdSlot);
+
+		expect(taglessUrl.match(/c=\d+&/g)).to.be.ok;
+	});
+
+	it('build tagless URL with required DFP parameters', () => {
+		const taglessUrl = buildTaglessRequestUrl(lisAdSlot);
+
+		expect(taglessUrl.match(/&tile=1&/g)).to.be.ok;
+		expect(taglessUrl.match(/&d_imp=0&/g)).to.be.ok;
+		expect(taglessUrl.match(/&rdp=0/g)).to.be.ok;
+	});
+
+	it('build tagless URL with configured ad unit', () => {
+		const taglessUrl = buildTaglessRequestUrl(lisAdSlot);
+
+		expect(
+			taglessUrl.match(
+				/&iu=\/5441\/wka\.fandom\/test\/layout_initializer\/_not_a_top1k_wiki-000&/g,
+			),
+		).to.be.ok;
+	});
+
+	it('build tagless URL with horizontal ad size', () => {
+		const taglessUrl = buildTaglessRequestUrl(lisAdSlot);
+
+		expect(taglessUrl.match(/&sz=32x32&/g)).to.be.ok;
+	});
+
+	it('build tagless URL with page, slotName level targeting and default wsi param', () => {
+		const taglessUrl = buildTaglessRequestUrl(lisAdSlot, { targeting: { extra: 'yes' } });
+		const custParams = /&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
+
+		expect(taglessUrl.match(custParams)).to.be.ok;
 	});
 });
