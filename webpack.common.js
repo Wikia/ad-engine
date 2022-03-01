@@ -18,7 +18,7 @@ const paths = mergeCompilerOptionsPaths([
 ]);
 
 module.exports = (mode) => ({
-	mode,
+	mode: mode,
 
 	context: __dirname,
 
