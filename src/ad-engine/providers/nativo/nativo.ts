@@ -41,11 +41,12 @@ export class Nativo {
 	}
 
 	scrollTriggerCallback(action: UapLoadStatus, slotName: string) {
-		if (!action.isLoaded && action.adProduct !== 'ruap') {
-			this.context.push('state.adStack', { id: slotName });
-		} else {
+		if (action.isLoaded || action.adProduct === 'ruap') {
 			logger(logGroup, "UAP or UAP:Roadblock on page - don't display Nativo");
+			return;
 		}
+			
+		this.context.push('state.adStack', { id: slotName });
 	}
 
 	sendNativoLoadStatus(status: string, event?: any): void {
