@@ -6,7 +6,7 @@ describe('Nativo Provider', () => {
 	beforeEach(() => {
 		window.ntv = {
 			cmd: ['mocked-element'],
-		} as NativoSdk;
+		} as NativoApi;
 	});
 
 	it('initialise and setup Nativo queue', () => {

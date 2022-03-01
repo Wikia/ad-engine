@@ -28,13 +28,13 @@ export class Nativo {
 	}
 
 	load() {
-		logger(logGroup, 'Loading Nativo SDK...');
+		logger(logGroup, 'Loading Nativo API...');
 		const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
 
 		scriptLoader
 			.loadScript(NATIVO_LIBRARY_URL, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
-				logger(logGroup, 'Nativo SDK loaded.');
+				logger(logGroup, 'Nativo API loaded.');
 				this.watchNtvEvents();
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});

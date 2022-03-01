@@ -1,15 +1,15 @@
-import { AdSlot, Dictionary } from '../../models';
+import { AdSlot } from '../../models';
 import { Provider } from '../provider';
 import { logger } from '../../utils';
 
 const logGroup = 'nativo';
 
 export class NativoProvider implements Provider {
-	private ntvSdk: NativoSdk;
+	private ntvApi: NativoApi;
 
-	constructor(ntvSdk) {
-		this.ntvSdk = ntvSdk || {};
-		this.ntvSdk.cmd = this.ntvSdk.cmd || [];
+	constructor(ntvApi) {
+		this.ntvApi = ntvApi || {};
+		this.ntvApi.cmd = this.ntvApi.cmd || [];
 	}
 
 	fillIn(slot: AdSlot): boolean {
@@ -22,7 +22,7 @@ export class NativoProvider implements Provider {
 		return true;
 	}
 
-	getQueue(): Array<Dictionary> {
-		return this.ntvSdk.cmd;
+	getQueue(): unknown[] {
+		return this.ntvApi.cmd;
 	}
 }
