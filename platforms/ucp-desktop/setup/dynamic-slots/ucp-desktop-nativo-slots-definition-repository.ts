@@ -27,21 +27,21 @@ export class UcpDesktopNativoSlotsDefinitionRepository {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
-		const slotName = Nativo.INCONTENT_AD_SLOT_NAME;
 
 		return {
 			slotCreatorConfig: {
-				slotName,
+				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
 				anchorSelector: '.mw-parser-output > h2:nth-of-type(2)',
 				insertMethod: 'before',
 				classList: ['ntv-ad', 'ad-slot'],
 			},
 			activator: () => {
-				const scrollThreshold = context.get('events.pushOnScroll.nativoThreshold') || 200;
+				const scrollThreshold = context.get('events.pushOnScroll.nativoThreshold');
 
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => this.onAdEngineUapLoaded(action, slotName, scrollThreshold),
+					(action: UapLoadStatus) =>
+						this.onAdEngineUapLoaded(action, Nativo.INCONTENT_AD_SLOT_NAME, scrollThreshold),
 				);
 			},
 		};
@@ -51,11 +51,12 @@ export class UcpDesktopNativoSlotsDefinitionRepository {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
-		const slotName = Nativo.FEED_AD_SLOT_NAME;
 
 		return {
 			activator: () => {
-				fanFeedNativeAdListener(() => context.push('state.adStack', { id: slotName }));
+				fanFeedNativeAdListener(() =>
+					context.push('state.adStack', { id: Nativo.FEED_AD_SLOT_NAME }),
+				);
 			},
 		};
 	}
