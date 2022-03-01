@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, context, slotService, utils } from '@ad-engine/core';
-import { logger } from '../../ad-engine/utils';
 
 const logGroup = 'nativo';
 export const libraryUrl = 'https://s.ntv.io/serve/load.js';
@@ -8,8 +7,15 @@ export const libraryUrl = 'https://s.ntv.io/serve/load.js';
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
 	static FEED_AD_SLOT_NAME = 'ntv_feed_ad';
+
 	static SLOT_CLASS_LIST = ['ntv-ad', 'ad-slot'];
 	static TEST_QUERY_STRING = 'native_ads_test';
+
+	private static AD_SLOT_MAP = {
+		1142863: Nativo.INCONTENT_AD_SLOT_NAME,
+		1142668: Nativo.FEED_AD_SLOT_NAME,
+		1142669: Nativo.FEED_AD_SLOT_NAME,
+	};
 
 	call(): Promise<void> {
 		if (!this.isEnabled()) {
@@ -23,12 +29,17 @@ export class Nativo {
 			.loadScript(libraryUrl, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
 				utils.logger(logGroup, 'ready');
+				this.watchNtvEvents();
 				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
-	private handleNativoNativeEvent(e, slot: AdSlot, adStatus: string) {
-		utils.logger(logGroup, 'Nativo native event fired', e, adStatus);
+	private handleNtvNativeEvent(e, slotName: string, adStatus: string) {
+		const slot = slotService.get(slotName);
+
+		utils.logger(logGroup, 'Nativo native event fired', e, adStatus, slotName, slot);
+
+		if (!slot || slot.getSlotName() !== slotName) return;
 
 		if (slot.getStatus() !== adStatus) {
 			slot.setStatus(adStatus);
@@ -68,18 +79,23 @@ export class Nativo {
 		this.pushNativoQueue();
 	}
 
-	private createAdSlot(slotName: string): void {
+	private createAdSlot(slotName: string): AdSlot {
 		const slot = new AdSlot({ id: slotName });
 		slot.setConfigProperty('trackEachStatus', true);
 
 		slotService.add(slot);
+		return slot;
+	}
 
-		window.ntv.Events?.PubSub?.subscribe('noad', (e) => {
-			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_COLLAPSE);
+	private watchNtvEvents(): void {
+		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
+			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
+			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
 		});
 
-		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e) => {
-			this.handleNativoNativeEvent(e, slot, AdSlot.STATUS_SUCCESS);
+		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
+			const slotName = Nativo.AD_SLOT_MAP[e.data.placement];
+			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
 		});
 	}
 
@@ -156,7 +172,7 @@ export class Nativo {
 		const nativeAdFeedPlaceholder = document.getElementById(Nativo.FEED_AD_SLOT_NAME);
 
 		if (!nativeAdFeedPlaceholder) {
-			logger(logGroup, `No anchor found: #${Nativo.FEED_AD_SLOT_NAME}`);
+			utils.logger(logGroup, `No anchor found: #${Nativo.FEED_AD_SLOT_NAME}`);
 			return;
 		}
 
@@ -171,7 +187,7 @@ export class Nativo {
 		const nativeAdIncontentPlaceholder = document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME);
 
 		if (!nativeAdIncontentPlaceholder) {
-			logger(logGroup, `No anchor found: #${Nativo.INCONTENT_AD_SLOT_NAME}`);
+			utils.logger(logGroup, `No anchor found: #${Nativo.INCONTENT_AD_SLOT_NAME}`);
 			return;
 		}
 
