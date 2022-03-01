@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
-import { GptProvider, NativoProvider, PrebidiumProvider, Provider } from './providers';
+import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
 import { Runner } from './runner';
 import {
 	btfBlockerService,
@@ -65,6 +65,11 @@ export class AdEngine {
 	private setupProviders(): void {
 		const providerName: string = context.get('state.provider');
 		this.defaultProvider = this.createProvider(providerName);
+
+		const nativo = new Nativo(context);
+		if (nativo.isEnabled()) {
+			nativo.load();
+		}
 	}
 
 	private setupAdStack(): void {

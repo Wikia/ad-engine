@@ -1,17 +1,12 @@
-import { AdEngine, AdSlot, context, communicationService, Nativo, utils } from '@wikia/ad-engine';
+import { AdEngine, AdSlot, communicationService, utils } from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
 
 export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 	if (!adEngineInstance) {
-		const nativo = new Nativo(context);
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
 		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
-
-		if (nativo.isEnabled()) {
-			nativo.load();
-		}
 
 		adEngineInstance = new AdEngine();
 		adEngineInstance.init(inhibitors);
