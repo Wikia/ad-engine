@@ -16,6 +16,7 @@ import {
 import {
 	buildTaglessRequestUrl,
 	LazyQueue,
+	logger,
 	makeLazyQueue,
 	OldLazyQueue,
 	scriptLoader,
@@ -42,6 +43,7 @@ interface FanTakeoverLayoutPayload extends LayoutPayload {
 }
 
 export const DEFAULT_MAX_DELAY = 2000;
+const logGroup = 'ad-engine';
 
 export class AdEngine {
 	started = false;
@@ -124,6 +126,8 @@ export class AdEngine {
 
 			try {
 				const layoutPayload: LayoutPayload = JSON.parse(response);
+
+				logger(logGroup, 'Layout payload received', layoutPayload);
 
 				if (layoutPayload.layout === 'uap') {
 					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
