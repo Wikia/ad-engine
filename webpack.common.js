@@ -17,8 +17,8 @@ const paths = mergeCompilerOptionsPaths([
 	path.resolve(__dirname, 'spec/tsconfig.json'),
 ]);
 
-module.exports = () => ({
-	mode: 'development',
+module.exports = (mode) => ({
+	mode,
 
 	context: __dirname,
 
