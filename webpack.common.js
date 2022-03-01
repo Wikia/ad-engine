@@ -44,11 +44,6 @@ module.exports = () => ({
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
 			},
 			{
-				test: /\.ts$/,
-				use: 'mocha-loader',
-				exclude: /node_modules/,
-			},
-			{
 				test: path.resolve(__dirname, 'src/ad-engine/log-version.ts'),
 				use: [
 					{
