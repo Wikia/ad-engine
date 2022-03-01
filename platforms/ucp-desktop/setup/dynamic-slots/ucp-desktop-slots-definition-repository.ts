@@ -70,7 +70,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
-				insertMethod: 'prepend',
+				insertMethod: btRec.isEnabled() ? 'append' : 'prepend',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
 					additionalClasses: 'hide',
