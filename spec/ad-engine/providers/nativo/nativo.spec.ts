@@ -1,10 +1,15 @@
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
-import { Context, Nativo, UapLoadStatus } from '../../../../src';
+import { Context, context, Nativo, UapLoadStatus } from '../../../../src';
 
 describe('Nativo', () => {
 	describe('module', () => {
+		after(() => {
+			context.remove('services.nativo.enabled');
+			context.remove('wiki.opts.enableNativeAds');
+		});
+
 		it('is enabled in instant-config and (by default) per wiki', () => {
 			const contextMock = new Context();
 			contextMock.set('services.nativo.enabled', true);

@@ -12,7 +12,7 @@ import {
 } from '@wikia/ad-engine';
 
 import { fanFeedNativeAdListener } from './fan-feed-native-ad-listener';
-import { SlotSetupDefinition } from './../utils/insert-slots';
+import { SlotSetupDefinition } from '../utils/insert-slots';
 
 @Injectable()
 export class NativoSlotsDefinitionRepository {
