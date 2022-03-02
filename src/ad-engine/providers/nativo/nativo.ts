@@ -76,7 +76,11 @@ export class Nativo {
 		});
 	}
 
-	private handleNtvNativeEvent(e, slotName: string, adStatus: string) {
+	private handleNtvNativeEvent(
+		e: NativoNoAdEvent | NativoCompleteEvent,
+		slotName: string,
+		adStatus: string,
+	) {
 		const slot = slotService.get(slotName);
 
 		logger(logGroup, 'Nativo native event fired', e, adStatus, slotName, slot);
