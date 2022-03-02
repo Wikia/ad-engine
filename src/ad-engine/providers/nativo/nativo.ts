@@ -87,6 +87,10 @@ export class Nativo {
 
 		if (!slot || slot.getSlotName() !== slotName) return;
 
+		if (adStatus === AdSlot.STATUS_COLLAPSE) {
+			slot.hide();
+		}
+
 		if (slot.getStatus() !== adStatus) {
 			slot.setStatus(adStatus);
 		} else {
