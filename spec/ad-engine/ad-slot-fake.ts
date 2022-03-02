@@ -65,6 +65,10 @@ export const adSlotFake = {
 		return this.enabled;
 	},
 
+	isInitCall(): boolean {
+		return this.config.initCall;
+	},
+
 	isFirstCall(): boolean {
 		return this.config.firstCall;
 	},

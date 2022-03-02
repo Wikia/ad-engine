@@ -2,6 +2,11 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, Dictionary, Targeting } from '../models';
 import { context, slotService, trackingOptIn } from '../services';
 
+export interface TaglessSlotOptions {
+	correlator: number;
+	targeting: Targeting;
+}
+
 export interface VastOptions {
 	correlator: number;
 	targeting: Targeting;
@@ -14,7 +19,8 @@ export interface VastOptions {
 }
 
 const availableVideoPositions: string[] = ['preroll', 'midroll', 'postroll'];
-const baseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
+const displayBaseUrl = 'https://securepubads.g.doubleclick.net/gampad/adx?';
+const vastBaseUrl = 'https://pubads.g.doubleclick.net/gampad/ads?';
 const correlator: number = Math.round(Math.random() * 10000000000);
 
 function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): string {
@@ -50,6 +56,16 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 			.map((key: string) => `${key}=${params[key]}`)
 			.join('&'),
 	);
+}
+
+function getSlotSizes(slot: AdSlot): string {
+	const sizes: number[][] = slot.getDefaultSizes();
+
+	if (sizes) {
+		return sizes.map((size: number[]) => size.join('x')).join('|');
+	}
+
+	return '1x1';
 }
 
 function getVideoSizes(slot: AdSlot): string {
@@ -108,5 +124,19 @@ export function buildVastUrl(
 
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
-	return baseUrl + params.join('&');
+	return vastBaseUrl + params.join('&');
+}
+
+export function buildTaglessRequestUrl(
+	adSlot: AdSlot,
+	options: Partial<TaglessSlotOptions> = {},
+): string {
+	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=0'];
+
+	params.push(`iu=${adSlot.getAdUnit()}`);
+	params.push(`sz=${getSlotSizes(adSlot)}`);
+	params.push(`t=${getCustomParameters(adSlot, options.targeting)}`);
+	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
+
+	return displayBaseUrl + params.join('&');
 }
