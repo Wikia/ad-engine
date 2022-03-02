@@ -3,10 +3,16 @@ import { adSlotFake } from '../../ad-slot-fake';
 import { NativoProvider } from '../../../../src/ad-engine/providers/nativo/nativo-provider';
 
 describe('Nativo Provider', () => {
+	const originalWindowNtv = window.ntv;
+
 	beforeEach(() => {
 		window.ntv = {
 			cmd: ['mocked-element'],
 		} as NativoApi;
+	});
+
+	afterEach(() => {
+		window.ntv = originalWindowNtv;
 	});
 
 	it('initialise and setup Nativo queue', () => {
