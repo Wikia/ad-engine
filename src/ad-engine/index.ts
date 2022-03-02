@@ -1,7 +1,4 @@
-import { logVersion } from './log-version';
 import * as utils from './utils';
-
-logVersion();
 
 export * from './ad-engine';
 export * from './listeners';

@@ -1,4 +1,4 @@
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import { context } from '../services/context-service';
 import { CacheData, InstantConfigCacheStorage } from '../services/instant-config-cache-storage';
 

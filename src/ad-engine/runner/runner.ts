@@ -1,3 +1,4 @@
+import { logVersion } from '../log-version';
 import { buildPromisedTimeout, logger } from '../utils';
 
 export class Runner {
@@ -10,6 +11,8 @@ export class Runner {
 	) {}
 
 	async waitForInhibitors(): Promise<void> {
+		logVersion();
+
 		await Promise.race([this.getInhibitorsPromise(), this.getTimeoutPromise()]);
 
 		logger(this.logGroup, 'Ready');
