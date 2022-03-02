@@ -13,7 +13,9 @@ import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared'
 
 @Injectable()
 export class UcpMobileNativoSlotsDefinitionRepository {
-	constructor(protected nativo: Nativo, protected domListener: DomListener) {
+	protected nativo: Nativo;
+
+	constructor(protected domListener: DomListener) {
 		this.nativo = new Nativo(context);
 	}
 
