@@ -607,6 +607,19 @@
             "value": true
         }
     ],
+    "icStickyTlbWithFV": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "CA",
+                "DE",
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icLABradorTest": [
         {
             "apps": [
