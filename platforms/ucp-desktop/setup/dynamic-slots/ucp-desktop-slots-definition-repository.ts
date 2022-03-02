@@ -88,7 +88,7 @@ export class UcpDesktopSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				anchorSelector: '#WikiaAdInContentPlaceHolder',
-				insertMethod: 'prepend',
+				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 				repeat: {
 					additionalClasses: 'hide',
