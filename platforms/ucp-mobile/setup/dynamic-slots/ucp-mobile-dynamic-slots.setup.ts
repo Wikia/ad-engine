@@ -14,6 +14,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	fillerService,
+	Nativo,
 	PorvataFiller,
 	slotService,
 	universalAdPackage,
@@ -56,7 +57,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
-			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
+				slotName: Nativo.FEED_AD_SLOT_NAME,
+				anchorSelector: '.recirculation-prefooter',
+				insertMethod: 'before',
+				classList: ['ntv-ad', 'hide'],
+			}),
 		]);
 
 		if (!topLeaderboardDefinition) {

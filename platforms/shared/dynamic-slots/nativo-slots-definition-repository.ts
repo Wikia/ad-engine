@@ -7,6 +7,7 @@ import {
 	eventsRepository,
 	Nativo,
 	nativoLazyLoader,
+	SlotCreatorConfig,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 
@@ -51,12 +52,13 @@ export class NativoSlotsDefinitionRepository {
 		};
 	}
 
-	getNativoFeedAdConfig(): SlotSetupDefinition {
+	getNativoFeedAdConfig(slotCreatorConfig: SlotCreatorConfig | null = null): SlotSetupDefinition {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
 
 		return {
+			slotCreatorConfig,
 			activator: () => {
 				fanFeedNativeAdListener(() =>
 					context.push('state.adStack', { id: Nativo.FEED_AD_SLOT_NAME }),
