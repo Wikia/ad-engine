@@ -77,28 +77,18 @@ export class AdEngine {
 		if (!this.adStack.start) {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
+				const providersChain = context.get(`slots.${ad.id}.providers`) || [];
 				slotService.add(adSlot);
 
-				if (context.get(`slots.${ad.id}.providers`)) {
-					this.fillWithProvidersChain(adSlot);
+				if (providersChain.length > 0) {
+					// TODO: this is PoC and most likely we'll extend it and move to the AdLayoutBuilder (ADEN-11388)
+					const providerName = providersChain.shift();
+					const provider = this.createProvider(providerName);
+					provider.fillIn(adSlot);
 				} else {
 					this.defaultProvider.fillIn(adSlot);
 				}
 			});
-		}
-	}
-
-	private fillWithProvidersChain(adSlot) {
-		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`);
-
-		while (providersChain.length > 0) {
-			const providerName = providersChain.shift();
-
-			const provider = this.createProvider(providerName);
-
-			if (provider.fillIn(adSlot)) {
-				break;
-			}
 		}
 	}
 
