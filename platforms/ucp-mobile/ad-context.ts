@@ -21,7 +21,6 @@ export const basicContext = {
 		},
 		prebid: {
 			enabled: false,
-			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				slots: ['mobile_in_content'],
 			},

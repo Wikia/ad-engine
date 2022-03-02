@@ -5,7 +5,6 @@ import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
 const bidderConfig = {
-	lazyLoadingEnabled: false,
 	enabled: false,
 };
 

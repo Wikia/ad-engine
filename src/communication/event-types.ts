@@ -218,10 +218,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Bids response',
 		payload: props<{ bidResponse: TrackingBidDefinition }>(),
 	},
-	BIDDERS_PREBID_LAZY_CALL: {
-		category: '[Prebid]',
-		name: 'Prebid lazy call',
-	},
 	// Video events //
 	VIDEO_EVENT: {
 		category: '[Video]',

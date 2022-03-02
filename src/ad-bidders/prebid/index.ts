@@ -25,7 +25,6 @@ import { getPrebidBestPrice } from './price-helper';
 const logGroup = 'prebid';
 
 interface PrebidConfig extends BidderConfig {
-	lazyLoadingEnabled?: boolean;
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
@@ -50,8 +49,6 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
-	isLazyLoadingEnabled: boolean;
-	lazyLoaded = false;
 	tcf: Tcf = tcf;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
@@ -61,8 +58,7 @@ export class PrebidProvider extends BidderProvider {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		this.adUnits = setupAdUnits();
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
 
@@ -165,7 +161,7 @@ export class PrebidProvider extends BidderProvider {
 		await pbjsFactory.init();
 
 		if (!this.adUnits) {
-			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+			this.adUnits = setupAdUnits();
 		}
 	}
 
@@ -183,38 +179,12 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+			this.adUnits = setupAdUnits();
 		}
 
 		if (this.adUnits.length > 0) {
 			this.applySettings();
 			this.requestBids(this.adUnits, bidsBackHandler, this.removeAdUnits);
-		}
-
-		if (this.isLazyLoadingEnabled) {
-			communicationService.on(
-				eventsRepository.BIDDERS_PREBID_LAZY_CALL,
-				() => {
-					this.lazyCall(bidsBackHandler);
-				},
-				false,
-			);
-		}
-	}
-
-	lazyCall(bidsBackHandler: (...args: any[]) => void): void {
-		if (this.lazyLoaded) {
-			return;
-		}
-
-		this.lazyLoaded = true;
-
-		const adUnitsLazy: PrebidAdUnit[] = setupAdUnits('post');
-
-		if (adUnitsLazy.length > 0) {
-			this.requestBids(adUnitsLazy, bidsBackHandler);
-
-			this.adUnits = this.adUnits.concat(adUnitsLazy);
 		}
 	}
 
