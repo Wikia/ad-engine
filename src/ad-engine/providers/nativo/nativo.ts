@@ -49,13 +49,12 @@ export class Nativo {
 		this.context.push('state.adStack', { id: slotName });
 	}
 
-	sendNativoLoadStatus(status: string, event?: any): void {
-		const adLocation = event?.data[0].adLocation || '';
+	private sendNativoLoadStatus(status: string): void {
 		const payload = {
 			event: status,
-			adSlotName: adLocation,
+			adSlotName: '',
 			payload: {
-				adLocation: adLocation,
+				adLocation: '',
 				provider: 'nativo',
 			},
 		};
