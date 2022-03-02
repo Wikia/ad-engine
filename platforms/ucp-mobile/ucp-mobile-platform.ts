@@ -41,6 +41,7 @@ export class UcpMobilePlatform {
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpMobileIocSetup,
 			WikiContextSetup,
+			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
 			UcpTargetingSetup,
