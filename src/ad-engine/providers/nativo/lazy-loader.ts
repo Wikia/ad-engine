@@ -23,7 +23,7 @@ class NativoLazyLoader {
 			.subscribe();
 	}
 
-	private isThresholdExceeded(slotName: string, threshold: number): boolean {
+	private isThresholdExceeded(slotName, threshold): boolean {
 		const scrollPosition =
 			window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
 		const slotPosition: number = getTopOffset(document.getElementById(slotName));
