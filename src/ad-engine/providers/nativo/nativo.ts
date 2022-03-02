@@ -5,6 +5,7 @@ import { Context, slotService } from '../../services';
 import { scriptLoader, logger } from '../../utils';
 
 const logGroup = 'nativo';
+const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
 
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
@@ -29,7 +30,6 @@ export class Nativo {
 
 	load() {
 		logger(logGroup, 'Loading Nativo API...');
-		const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
 
 		scriptLoader
 			.loadScript(NATIVO_LIBRARY_URL, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
@@ -45,7 +45,7 @@ export class Nativo {
 			logger(logGroup, "UAP or UAP:Roadblock on page - don't display Nativo");
 			return;
 		}
-			
+
 		this.context.push('state.adStack', { id: slotName });
 	}
 
