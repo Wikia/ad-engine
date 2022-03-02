@@ -15,6 +15,24 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopSlotsDefinitionRepository {
 	constructor(protected instantConfig: InstantConfigService) {}
 
+	getLayoutInitializerConfig(): SlotSetupDefinition {
+		if (!this.isLayoutInitializerApplicable()) {
+			return;
+		}
+
+		const slotName = 'layout_initializer';
+
+		return {
+			activator: () => {
+				context.set('state.initSlot', slotName);
+			},
+		};
+	}
+
+	private isLayoutInitializerApplicable(): boolean {
+		return context.get('options.initCall');
+	}
+
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		const slotName = 'top_leaderboard';
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);

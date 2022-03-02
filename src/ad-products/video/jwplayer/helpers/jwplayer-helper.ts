@@ -1,4 +1,4 @@
-import { AdSlot, buildVastUrl, context, vastDebugger, VastParams } from '@ad-engine/core';
+import { AdSlot, context, vastDebugger, VastParams, utils } from '@ad-engine/core';
 import { iasVideoTracker } from '../../porvata/plugins/ias/ias-video-tracker';
 import { JWPlayer, JWPlayerEventParams } from '../external-types/jwplayer';
 import { VideoTargeting } from '../jwplayer-actions';
@@ -136,7 +136,7 @@ export class JWPlayerHelper {
 	}
 
 	private getVastUrl(position: string, state: JwpState): string {
-		return buildVastUrl(16 / 9, this.adSlot.getSlotName(), {
+		return utils.buildVastUrl(16 / 9, this.adSlot.getSlotName(), {
 			correlator: state.correlator,
 			vpos: position,
 			targeting: {

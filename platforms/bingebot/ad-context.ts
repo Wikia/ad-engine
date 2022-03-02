@@ -15,9 +15,6 @@ export const basicContext = {
 	},
 	slots: {},
 	src: ['bingebot'],
-	state: {
-		adStack: [],
-	},
 	targeting: {
 		skin: 'bingebot',
 	},

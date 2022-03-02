@@ -36,10 +36,6 @@ const basicContext = {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['sports'],
-	state: {
-		adStack: [],
-		isMobile: false,
-	},
 	templates: {},
 	vast: {
 		adUnitId:
