@@ -9,10 +9,12 @@ import {
 	nativoLazyLoader,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
-import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
+
+import { fanFeedNativeAdListener } from './fan-feed-native-ad-listener';
+import { SlotSetupDefinition } from './../utils/insert-slots';
 
 @Injectable()
-export class UcpMobileNativoSlotsDefinitionRepository {
+export class NativoSlotsDefinitionRepository {
 	protected nativo: Nativo;
 
 	constructor(protected domListener: DomListener) {
@@ -25,7 +27,7 @@ export class UcpMobileNativoSlotsDefinitionRepository {
 		);
 	}
 
-	getNativoIncontentAdConfig(): SlotSetupDefinition {
+	getNativoIncontentAdConfig(headerPosition: number): SlotSetupDefinition {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
@@ -33,7 +35,7 @@ export class UcpMobileNativoSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-				anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
+				anchorSelector: `.mw-parser-output > h2:nth-of-type(${headerPosition})`,
 				insertMethod: 'before',
 				classList: ['ntv-ad', 'ad-slot'],
 			},
@@ -53,17 +55,12 @@ export class UcpMobileNativoSlotsDefinitionRepository {
 		if (!this.nativo.isEnabled()) {
 			return;
 		}
-		const slotName = Nativo.FEED_AD_SLOT_NAME;
 
 		return {
-			slotCreatorConfig: {
-				slotName: slotName,
-				anchorSelector: '.recirculation-prefooter',
-				insertMethod: 'before',
-				classList: ['ntv-ad', 'hide'],
-			},
 			activator: () => {
-				fanFeedNativeAdListener(() => context.push('state.adStack', { id: slotName }));
+				fanFeedNativeAdListener(() =>
+					context.push('state.adStack', { id: Nativo.FEED_AD_SLOT_NAME }),
+				);
 			},
 		};
 	}

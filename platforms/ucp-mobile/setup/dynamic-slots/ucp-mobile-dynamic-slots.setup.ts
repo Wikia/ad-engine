@@ -1,6 +1,7 @@
 import {
 	insertSlots,
 	MessageBoxService,
+	NativoSlotsDefinitionRepository,
 	PlaceholderService,
 	slotsContext,
 } from '@platforms/shared';
@@ -19,7 +20,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
-import { UcpMobileNativoSlotsDefinitionRepository } from './ucp-mobile-nativo-slots-definition-repository';
 
 @Injectable()
 export class UcpMobileDynamicSlotsSetup implements DiProcess {
@@ -31,7 +31,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 	constructor(
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
-		private nativoSlotDefinitionRepository: UcpMobileNativoSlotsDefinitionRepository,
+		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
 	) {}
 
 	execute(): void {
@@ -48,7 +48,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		insertSlots([
 			topLeaderboardDefinition,
-			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(4),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
