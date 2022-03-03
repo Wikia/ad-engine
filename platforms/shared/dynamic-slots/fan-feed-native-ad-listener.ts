@@ -28,7 +28,7 @@ export function fanFeedNativeAdListener(
 		)
 		.subscribe((result) => {
 			if (result.shouldRenderNativeAd) {
-				nativeAdInjector(this.uapLoadStatusAction);
+				nativeAdInjector(result.uapLoadStatusAction);
 			}
 		});
 }
