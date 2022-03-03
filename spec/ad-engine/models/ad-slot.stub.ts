@@ -48,6 +48,7 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		getPushTime: sandbox.stub(),
 		setStatus: sandbox.stub(),
 		isEnabled: sandbox.stub(),
+		isInitCall: sandbox.stub(),
 		isFirstCall: sandbox.stub(),
 		isViewed: sandbox.stub(),
 		isRepeatable: sandbox.stub(),

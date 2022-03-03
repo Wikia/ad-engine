@@ -1,6 +1,5 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const StringReplacePlugin = require('string-replace-webpack-plugin');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const { getTypeScriptLoader } = require('./configs/webpack-app.config');
 const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
@@ -27,6 +26,9 @@ module.exports = () => ({
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
 		plugins: [new TsConfigPathsPlugin({ paths })],
+		fallback: {
+			util: require.resolve('util/'),
+		},
 	},
 
 	module: {
@@ -42,14 +44,11 @@ module.exports = () => ({
 			},
 			{
 				test: path.resolve(__dirname, 'src/ad-engine/log-version.ts'),
-				loader: StringReplacePlugin.replace({
-					replacements: [
-						{
-							pattern: /<\?=[ \t]*PACKAGE\(([\w\-_.]*?)\)[ \t]*\?>/gi,
-							replacement: () => pkg.version,
-						},
-					],
-				}),
+				loader: 'string-replace-loader',
+				options: {
+					search: '<?= PACKAGE(version) ?>',
+					replace: pkg.version,
+				},
 			},
 		],
 	},

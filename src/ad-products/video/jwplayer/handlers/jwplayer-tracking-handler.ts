@@ -1,6 +1,6 @@
 import { AdSlot, VideoData, VideoEventData } from '@ad-engine/core';
 import { Injectable } from '@wikia/dependency-injection';
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { PlayerEventEmitter } from '../../../tracking';

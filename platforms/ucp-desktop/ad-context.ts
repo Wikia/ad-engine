@@ -128,10 +128,6 @@ export const basicContext = {
 		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['gpt'],
-	state: {
-		adStack: [],
-		isMobile: false,
-	},
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
