@@ -60,8 +60,8 @@ export class NativoSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig,
 			activator: () => {
-				fanFeedNativeAdListener(() =>
-					context.push('state.adStack', { id: Nativo.FEED_AD_SLOT_NAME }),
+				fanFeedNativeAdListener((action: UapLoadStatus) =>
+					this.nativo.scrollTriggerCallback(action, Nativo.FEED_AD_SLOT_NAME),
 				);
 			},
 		};
