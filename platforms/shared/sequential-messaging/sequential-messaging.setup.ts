@@ -10,12 +10,12 @@ import { sequenceEventsTypes } from './infrastructure/sequence-event-types';
 
 export class SequentialMessagingSetup {
 	async execute(): Promise<void> {
-		this.detectNewSequentialAd();
+		this.handleSequenceStart();
 		this.handleOngoingSequence();
-		this.detectSequentialAdEnd();
+		this.handleSequenceEnd();
 	}
 
-	private detectNewSequentialAd(): void {
+	private handleSequenceStart(): void {
 		communicationService.on(sequenceEventsTypes.GAM_SEQUENTIAL_MESSAGING_STARTED, (payload) => {
 			const lineItemId = payload.lineItemId;
 			if (lineItemId == null) {
@@ -38,7 +38,7 @@ export class SequentialMessagingSetup {
 		sequenceHandler.handleOngoingSequence();
 	}
 
-	private detectSequentialAdEnd(): void {
+	private handleSequenceEnd(): void {
 		communicationService.on(sequenceEventsTypes.GAM_SEQUENTIAL_MESSAGING_END, () => {
 			const sequenceHandler = new SequenceEndHandler(new UserSequentialMessageStateStore(Cookies));
 			sequenceHandler.endSequence();
