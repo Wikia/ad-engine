@@ -3,7 +3,7 @@ import { createStubInstance, SinonStubbedInstance } from 'sinon';
 
 class TargetingManagerSpy implements TargetingManagerInterface {
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	setTargeting(adTargeting): void {}
+	setTargeting(sequentialAdId: string, stepNo: number): void {}
 }
 
 export function makeTargetingManagerSpy(): SinonStubbedInstance<TargetingManagerSpy> {

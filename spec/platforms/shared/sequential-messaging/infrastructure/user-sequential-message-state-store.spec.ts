@@ -7,7 +7,7 @@ describe('User Sequential Message State Store', () => {
 		const cookieSpy = sinon.spy(Cookies, 'set');
 		const sampleState = {
 			5854346762: {
-				lastStepId: 123456789,
+				stepNo: 1,
 			},
 		};
 

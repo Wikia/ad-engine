@@ -1,3 +1,3 @@
 export interface UserSequentialMessageState {
-	[sequentialAdId: number]: Record<string, unknown>;
+	[sequenceId: number]: { stepNo: number };
 }

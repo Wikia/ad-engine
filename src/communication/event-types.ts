@@ -248,9 +248,4 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
 	},
-	GAM_SEQUENTIAL_MESSAGING_STARTED: {
-		category: '[GAM iframe]',
-		name: 'Sequential messaging started',
-		payload: props<any>(),
-	},
 };

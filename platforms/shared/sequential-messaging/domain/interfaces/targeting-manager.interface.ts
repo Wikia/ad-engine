@@ -1,3 +1,3 @@
 export interface TargetingManagerInterface {
-	setTargeting(adTargeting): void;
+	setTargeting(sequenceId: string, stepNo: number): void;
 }
