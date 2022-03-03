@@ -51,6 +51,7 @@ describe('Nativo', () => {
 
 		after(() => {
 			contextPushSpy.restore();
+			context.remove('custom.hasFeaturedVideo');
 		});
 
 		afterEach(() => {
@@ -68,21 +69,36 @@ describe('Nativo', () => {
 			expect(contextPushSpy.calledWith('state.adStack', { id: 'mocked_slot' })).to.be.true;
 		});
 
-		it('does not push slot when UAP is on the page', () => {
+		it('pushes slot when UAP:Roadblock is on the article page (implicit non-FV page)', () => {
+			const uapLoadStatusActionMock: UapLoadStatus = {
+				isLoaded: false,
+				adProduct: 'ruap',
+			};
+
+			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');
+
+			expect(contextPushSpy.calledWith('state.adStack', { id: 'mocked_slot' })).to.be.true;
+		});
+
+		it('does not push slot when UAP:Roadblock is on the FV page (explicit non-FV page)', () => {
 			const uapLoadStatusActionMock: UapLoadStatus = {
 				isLoaded: true,
 				adProduct: 'nothing important',
 			};
 
+			const contextMock = new Context();
+			contextMock.set('custom.hasFeaturedVideo', true);
+
+			nativo = new Nativo(contextMock);
 			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');
 
 			expect(contextPushSpy.calledWith('state.adStack', { id: 'mocked_slot' })).to.be.false;
 		});
 
-		it('does not push slot when UAP:Roadblock is on the page', () => {
+		it('does not push slot when UAP is on the page', () => {
 			const uapLoadStatusActionMock: UapLoadStatus = {
-				isLoaded: false,
-				adProduct: 'ruap',
+				isLoaded: true,
+				adProduct: 'nothing important',
 			};
 
 			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');

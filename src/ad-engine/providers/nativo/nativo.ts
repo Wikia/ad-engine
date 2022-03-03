@@ -41,8 +41,17 @@ export class Nativo {
 	}
 
 	scrollTriggerCallback(action: UapLoadStatus, slotName: string) {
-		if (action.isLoaded || action.adProduct === 'ruap') {
-			logger(logGroup, "UAP or UAP:Roadblock on page - don't display Nativo");
+		if (action.isLoaded) {
+			logger(logGroup, 'Fan Takeover on the page');
+			return;
+		}
+
+		if (
+			action.isLoaded === false &&
+			action.adProduct === 'ruap' &&
+			this.context.get('custom.hasFeaturedVideo')
+		) {
+			logger(logGroup, '"Fan Takeover" on the featured page');
 			return;
 		}
 
