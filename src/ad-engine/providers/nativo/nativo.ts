@@ -49,6 +49,20 @@ export class Nativo {
 		this.context.push('state.adStack', { id: slotName });
 	}
 
+	replaceAndShowSponsoredFanAd(): void {
+		const nativoFeedAdSlotElement = document.getElementById(Nativo.FEED_AD_SLOT_NAME);
+		const recirculationSponsoredElement = document.querySelector(
+			'.recirculation-prefooter__item.is-sponsored.can-nativo-replace',
+		);
+
+		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
+			recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
+			logger(logGroup, 'Replacing sponsored element with Nativo feed ad');
+		} else {
+			logger(logGroup, 'Could not replace sponsored element with Nativo feed ad');
+		}
+	}
+
 	private sendNativoLoadStatus(status: string): void {
 		const payload = {
 			event: status,
@@ -89,6 +103,10 @@ export class Nativo {
 
 		if (adStatus === AdSlot.STATUS_COLLAPSE) {
 			slot.hide();
+		}
+
+		if (adStatus === AdSlot.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {
+			this.replaceAndShowSponsoredFanAd();
 		}
 
 		if (slot.getStatus() !== adStatus) {
