@@ -131,7 +131,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_SLOT_LOADED: {
 		name: 'Ad Slot loaded',
-		payload: props<AdSlotEventPayload>(),
+		payload: props<GeneralPayload>(),
 	},
 	AD_ENGINE_AD_CLICKED: {
 		name: 'Ad clicked',
