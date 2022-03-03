@@ -11,6 +11,7 @@ import {
 	eventsRepository,
 	FuncPipelineStep,
 	GAMOrigins,
+	globalAction,
 	InstantConfigCacheStorage,
 	interventionTracker,
 	porvataTracker,
@@ -29,11 +30,14 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
 import { PageTracker } from './page-tracker';
+import { props } from 'ts-action';
 
 const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
+
+const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
 interface TrackingMiddlewares {
 	slotTrackingMiddlewares?: FuncPipelineStep<AdInfoContext>[];
@@ -147,8 +151,9 @@ export class TrackingSetup {
 
 		adClickTracker.add(...this.slotTrackingMiddlewares);
 		adClickTracker.register(({ data }: Dictionary) => {
+			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
+			communicationService.dispatch(adClickedAction(data));
 			dataWarehouseTracker.track(data, slotTrackingUrl);
-
 			return data;
 		});
 	}
