@@ -4,6 +4,8 @@ import { SlotsContextInterface } from '../../slots/slots-context';
 
 export class GamTargetingManager implements TargetingManagerInterface {
 	private baseSize = 10;
+	// If we could get original size through the starting event GAM_SEQUENTIAL_MESSAGING_STARTED
+	// then we could store it in a cookie and ger rid of this mapping all together :D
 	private topLeaderboardSizeMapping = {
 		'11x11': { originalSize: [970, 250] },
 		'12x12': { originalSize: [970, 250] },
