@@ -4,7 +4,7 @@ import { SlotsContextInterface } from '../../slots/slots-context';
 
 export class GamTargetingManager implements TargetingManagerInterface {
 	private baseSize = 10;
-	private sizeMapping = {
+	private topLeaderboardSizeMapping = {
 		'11x11': { originalSize: [970, 250] },
 		'12x12': { originalSize: [970, 250] },
 		'13x13': { originalSize: [970, 250] },
@@ -18,7 +18,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 
 		this.slotsContext.setSlotSize('top_leaderboard', [sizeSide, sizeSide]);
 
-		this.context.set('templates.sizeOverwritingMap', this.sizeMapping);
+		this.context.set('templates.sizeOverwritingMap', this.topLeaderboardSizeMapping);
 
 		this.context.set('targeting.uap', sequenceId);
 	}
