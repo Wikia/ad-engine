@@ -3,7 +3,7 @@ interface NativoPostRelease {
 }
 
 interface NativoConfiguration {
-	ptd?: any[];
+	ptd?: number[];
 	infScrollReset?: boolean;
 }
 
@@ -20,8 +20,8 @@ interface NativoNoAdEvent {
 	data: Pick<NativoResponseEvent, 'id'>[];
 }
 
-interface NativoQueue {
-	cmd?: any[];
+interface NativoApi {
+	cmd?: unknown[];
 	Events?: {
 		PubSub: {
 			subscribe(status?: string, fn: (e: NativoNoAdEvent | NativoCompleteEvent) => void): void;

@@ -1,6 +1,7 @@
 import {
 	insertSlots,
 	MessageBoxService,
+	NativoSlotsDefinitionRepository,
 	PlaceholderService,
 	slotsContext,
 } from '@platforms/shared';
@@ -13,6 +14,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	fillerService,
+	Nativo,
 	PorvataFiller,
 	slotService,
 	universalAdPackage,
@@ -28,7 +30,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		},
 	};
 
-	constructor(private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository) {}
+	constructor(
+		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
+		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+	) {}
 
 	execute(): void {
 		this.injectSlots();
@@ -44,7 +49,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		insertSlots([
 			topLeaderboardDefinition,
-			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(4),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
@@ -52,7 +57,12 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
-			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
+				slotName: Nativo.FEED_AD_SLOT_NAME,
+				anchorSelector: '.recirculation-prefooter',
+				insertMethod: 'before',
+				classList: ['ntv-ad', 'hide'],
+			}),
 		]);
 
 		if (!topLeaderboardDefinition) {
