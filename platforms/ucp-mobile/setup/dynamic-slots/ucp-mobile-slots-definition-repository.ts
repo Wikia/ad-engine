@@ -1,20 +1,16 @@
-import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
+import { SlotSetupDefinition } from '@platforms/shared';
 import {
 	communicationService,
 	context,
 	CookieStorageAdapter,
-	DomListener,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
-	Nativo,
-	nativo,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	slotPlaceholderInjector,
 	UapLoadStatus,
 	utils,
-	nativoLazyLoader,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -25,7 +21,7 @@ interface SlotCreatorInsertionParamsType {
 
 @Injectable()
 export class UcpMobileSlotsDefinitionRepository {
-	constructor(protected instantConfig: InstantConfigService, protected domListener: DomListener) {}
+	constructor(protected instantConfig: InstantConfigService) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
 		if (!this.isTopLeaderboardApplicable()) {
@@ -90,50 +86,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-			},
-		};
-	}
-
-	getNativoIncontentAdConfig(): SlotSetupDefinition {
-		if (!nativo.isEnabled()) {
-			return;
-		}
-
-		return {
-			slotCreatorConfig: {
-				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-				anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
-				insertMethod: 'before',
-				classList: Nativo.SLOT_CLASS_LIST,
-			},
-			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) =>
-						nativoLazyLoader.scrollTrigger(this.domListener, () =>
-							nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action),
-						),
-				);
-			},
-		};
-	}
-
-	getNativoFeedAdConfig(): SlotSetupDefinition {
-		if (!nativo.isEnabled()) {
-			return;
-		}
-
-		return {
-			slotCreatorConfig: {
-				slotName: Nativo.FEED_AD_SLOT_NAME,
-				anchorSelector: '.recirculation-prefooter',
-				insertMethod: 'before',
-				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
-			},
-			activator: () => {
-				fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
-					nativo.replaceAndShowSponsoredFanAd(uapLoadStatusAction),
-				);
 			},
 		};
 	}

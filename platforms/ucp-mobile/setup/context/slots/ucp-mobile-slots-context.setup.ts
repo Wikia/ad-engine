@@ -253,6 +253,14 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 				isVideo: true,
 			},
+			ntv_ad: {
+				providers: ['nativo'],
+				trackEachStatus: true,
+			},
+			ntv_feed_ad: {
+				providers: ['nativo'],
+				trackEachStatus: true,
+			},
 		};
 
 		slotsContext.setupSlotVideoContext();
