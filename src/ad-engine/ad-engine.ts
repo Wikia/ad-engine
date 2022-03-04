@@ -37,6 +37,7 @@ type LayoutPayload = {
 
 interface FanTakeoverLayoutPayload extends LayoutPayload {
 	data: {
+		impression: string;
 		lineItemId: number;
 		creativeId: number;
 	};
@@ -146,6 +147,23 @@ export class AdEngine {
 				logger(logGroup, 'Layout payload received', layoutPayload);
 
 				if (layoutPayload.layout === 'uap') {
+					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impression;
+					const impressionCallback = () => {
+						scriptLoader.loadAsset(pixel, 'blob');
+					};
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						impressionCallback,
+						'top_leaderboard',
+						true,
+					);
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						impressionCallback,
+						'top_boxad',
+						true,
+					);
+
 					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
 					context.set(
 						'targeting.uap_c',

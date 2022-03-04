@@ -6,5 +6,5 @@ export function logVersion(): void {
 	}
 
 	window.ads.adEngineVersion = 'v<?= PACKAGE(version) ?>';
-	logger('ad-engine', 'v<?= PACKAGE(version) ?>');
+	logger('ad-engine', window.ads.adEngineVersion);
 }
