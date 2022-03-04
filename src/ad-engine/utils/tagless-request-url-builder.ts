@@ -131,7 +131,7 @@ export function buildTaglessRequestUrl(
 	adSlot: AdSlot,
 	options: Partial<TaglessSlotOptions> = {},
 ): string {
-	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=0'];
+	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${adSlot.getAdUnit()}`);
 	params.push(`sz=${getSlotSizes(adSlot)}`);
