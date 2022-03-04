@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { flattenDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';
@@ -46,7 +45,7 @@ export class TemplateRegistry {
 			StateHandlerTypesDict,
 			initialStateKey,
 			emitter$,
-			templateDependencies: flattenDeep<TemplateDependency>(templateDependencies),
+			templateDependencies: templateDependencies.flat<TemplateDependency>(Infinity),
 		});
 
 		return emitter$.asObservable();

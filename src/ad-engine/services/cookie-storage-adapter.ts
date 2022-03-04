@@ -1,4 +1,4 @@
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import { StorageProvider } from './universal-storage';
 
 interface WikiaCookieAttributes extends Cookies.CookieAttributes {

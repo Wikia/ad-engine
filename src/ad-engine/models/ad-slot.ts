@@ -39,6 +39,7 @@ export interface SlotConfig {
 	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
+	initCall?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
@@ -339,7 +340,7 @@ export class AdSlot {
 		return result as Targeting;
 	}
 
-	getDefaultSizes(): string {
+	getDefaultSizes(): number[][] {
 		return this.config.defaultSizes;
 	}
 
@@ -375,6 +376,10 @@ export class AdSlot {
 
 	isEnabled(): boolean {
 		return this.enabled;
+	}
+
+	isInitCall(): boolean {
+		return !!this.config.initCall;
 	}
 
 	isFirstCall(): boolean {

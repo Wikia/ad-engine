@@ -1,7 +1,4 @@
-import { logVersion } from './log-version';
 import * as utils from './utils';
-
-logVersion();
 
 export * from './ad-engine';
 export * from './listeners';
@@ -25,4 +22,5 @@ export * from './pipeline/imps/process-pipeline/compound-processes/conditional-p
 export * from './pipeline/imps/process-pipeline/compound-processes/once-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/parallel-process';
 export * from './pipeline/imps/process-pipeline/compound-processes/sequential-process';
+export { logVersion } from './log-version';
 export { utils };

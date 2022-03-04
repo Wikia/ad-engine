@@ -1,4 +1,4 @@
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import { Dictionary } from '../models';
 
 import { context } from './context-service';

@@ -789,6 +789,8 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5931314289",
+                "5815863298",
                 "5894071571",
                 "5893510273",
                 "5893555158",
@@ -2314,7 +2316,13 @@
                 "5927701154",
                 "5927688638",
                 "5925317188",
-                "5927165474"
+                "5927165474",
+                "5937051333",
+                "5937051303",
+                "5937051306",
+                "5938352611",
+                "5938352620",
+                "5938352782"
             ]
         }
     ],
@@ -2366,6 +2374,8 @@
                 "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
+                "icLayoutInitializerSlot_A_50:lis_50_a",
+                "icLayoutInitializerSlot_B_50:lis_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
                 "icOutstreamExperiment_B_25:outstream_experiment_connatix",
@@ -2495,6 +2505,13 @@
                         "uap": "5916984414"
                     },
                     "lastStepId": "138381285823"
+                },
+                "5928558921": {
+                    "targeting": {
+                        "loc": "top",
+                        "uap": "5928558921"
+                    },
+                    "lastStepId": "138382005249"
                 }
             }
         }
@@ -2550,18 +2567,6 @@
         }
     ],
     "icPrebidVersion": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "US"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v5.18.0/20211119.min.js"
-        },
         {
             "apps": [
                 "fandomdesktop",
@@ -2702,6 +2707,48 @@
                 "XX"
             ],
             "value": {
+                "WOW_BUNDLE": {
+                    "s1": [
+                        "_wowpedia",
+                        "_wowwiki",
+                        "_ruwow",
+                        "_es_wowpedia",
+                        "_frwow",
+                        "_wow",
+                        "_vanillawow859",
+                        "_eswow",
+                        "_classicwowwiki",
+                        "_plwow",
+                        "_pl_wowpedia",
+                        "_fr_wowpedia",
+                        "_wowsb",
+                        "_twoworlds",
+                        "_wowtw",
+                        "_wowleveling",
+                        "_wowadventure",
+                        "_wowwowwubbzyintothecartoonuniverse",
+                        "_johndubucsandbradyforrestsminitwow",
+                        "_eswowloutakezaharan",
+                        "_ohwowowo",
+                        "_christiansminitwow",
+                        "_esanhoukswowrol",
+                        "_twowcontestant",
+                        "_wowsuchfanon",
+                        "_wowpfanfiction",
+                        "_rebelwow",
+                        "_eswow",
+                        "_plwow",
+                        "_etworldofwarcraft",
+                        "_hearthstone",
+                        "_ruwarcraftiii",
+                        "_minecraftmodworldofwarcraft",
+                        "_worldofwarcraftrpg",
+                        "_wowadventure",
+                        "_warcraftlore",
+                        "_warcraftknights",
+                        "_warcraftfairytail"
+                    ]
+                },
                 "dnd_bundle": {
                     "s1": [
                         "_dungeonsdragons",
@@ -2929,22 +2976,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icLiveRampATSAnalytics": [

@@ -79,6 +79,8 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5931314289",
+                "5815863298",
                 "5894071571",
                 "5893510273",
                 "5893555158",
@@ -1604,7 +1606,13 @@
                 "5927701154",
                 "5927688638",
                 "5925317188",
-                "5927165474"
+                "5927165474",
+                "5937051333",
+                "5937051303",
+                "5937051306",
+                "5938352611",
+                "5938352620",
+                "5938352782"
             ]
         }
     ],
@@ -1639,6 +1647,8 @@
                 "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
+                "icLayoutInitializerSlot_A_50:lis_50_a",
+                "icLayoutInitializerSlot_B_50:lis_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
                 "icOutstreamExperiment_B_25:outstream_experiment_connatix",
@@ -1868,22 +1878,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icNielsen": [
