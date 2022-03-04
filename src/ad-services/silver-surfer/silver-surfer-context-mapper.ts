@@ -27,6 +27,9 @@ export default class SilverSurferContextMapper {
 	}
 
 	private extendInteractions(values: string[], context: SilverSurferContext): string[] {
+		if (!context) {
+			return values;
+		}
 		if (values === undefined) {
 			values = [];
 		}
