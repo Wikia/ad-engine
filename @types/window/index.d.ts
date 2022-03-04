@@ -29,7 +29,7 @@ interface Window {
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
-	ntv?: NativoQueue;
+	ntv?: NativoApi;
 	NOLBUNDLE?: any;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
