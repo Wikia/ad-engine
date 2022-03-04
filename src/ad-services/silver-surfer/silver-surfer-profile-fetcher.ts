@@ -2,7 +2,7 @@ import { utils } from '@ad-engine/core';
 
 const logGroup = 'silver-surfer';
 
-class SilverSurferServiceLoader {
+export default class SilverSurferProfileFetcher {
 	userProfilePromise: Promise<UserProfile> = null;
 
 	async getUserProfile(): Promise<UserProfile> {
@@ -42,5 +42,3 @@ class SilverSurferServiceLoader {
 			});
 	}
 }
-
-export const silverSurferServiceLoader = new SilverSurferServiceLoader();

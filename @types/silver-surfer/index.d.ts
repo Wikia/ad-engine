@@ -1,7 +1,6 @@
 interface SilverSurferSDK {
 	isInitialized: () => boolean;
-	getRealtimeContext: () => RealtimeContext;
-	getLocalContext: () => Promise<LocalContext>;
+	getContext: () => SilverSurferContext;
 	getUserProfile: () => Promise<UserProfile>;
 	getGalactusUserProfile: (beacon?: string) => Promise<GalactusUserProfile>;
 	registerClient: (client: SilverSurferClient) => Promise<boolean>;
@@ -13,23 +12,13 @@ interface SilverSurferClient {
 
 type SlotStatus = 'loaded' | 'collapsed' | 'unknown';
 
-interface RealtimeContext {
-	slots: {
-		uap: SlotStatus;
-		floorAdhesion: SlotStatus;
-	};
-}
-
 type AdTagKey = 'age' | 'esrb' | 'gnre' | 'media' | 'pform' | 'pub' | 'sex' | 'theme' | 'tv';
 
 type AdTags = Partial<Record<AdTagKey, Record<string, number>>>;
+type FlatAdTags = Partial<Record<AdTagKey, Array<string>>>;
 
-interface Page {
-	id: number;
-	communityId: number;
-	vertical: string;
-	adTags: AdTags;
-}
+type ProductName = 'mw' | 'dis';
+type MwVariant = 'gamepedia' | 'mobile-wiki' | 'oasis';
 
 interface UserProfile {
 	beaconId: string;
@@ -37,28 +26,45 @@ interface UserProfile {
 	ageBrackets: string[];
 	adTags: AdTags;
 	time: number;
+	interactions?: string[];
 }
 
 interface Action {
 	label: string;
 }
 
-interface LocalContext {
-	communityId: number;
-	pageId: number;
-	vertical: string;
-	adTags: AdTags;
-	pages: Page[];
-	actions: Action[];
-	recentTVCommunities: RecentTVCommunity[];
+interface SilverSurferContext {
+	current: PageLevelContext;
+	pages: PageLevelContext[];
+	slots: {
+		uap: SlotStatus;
+		floorAdhesion: SlotStatus;
+		topLeaderboard: SlotStatus;
+		hiviLeaderboard: SlotStatus;
+		topBoxad: SlotStatus;
+	};
+	user?: UserLevelContext;
+}
+
+interface PageLevelContext {
+	product: ProductName;
+	productVariant?: MwVariant | string;
+	productCategory?: string;
+	productId: string;
+	page?: string;
+	pageId?: string;
+	pageLanguage?: string;
+	adTags?: FlatAdTags;
+	time: number;
+}
+
+interface UserLevelContext {
+	id: string;
+	lang?: string;
+	anon?: boolean;
 }
 
 interface GalactusUserProfile {
 	profileId: string;
 	adTags: AdTags;
-}
-
-interface RecentTVCommunity {
-	communityId: string;
-	pageViews: number;
 }
