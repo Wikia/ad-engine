@@ -84,7 +84,7 @@ class ScriptLoader implements ScriptLoaderInterface {
 				resolve(null);
 			});
 			request.onreadystatechange = function(): void {
-				if (this.readyState === 4) {
+				if (this.readyState === this.DONE) {
 					if (this.status === 200) {
 						resolve(this.response);
 					} else {
