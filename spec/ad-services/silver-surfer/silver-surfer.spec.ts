@@ -1,6 +1,6 @@
 import { context } from '@wikia/ad-engine';
-import SilverSurferProfileFetcher from '@wikia/ad-services/silver-surfer/silver-surfer-profile-fetcher';
-import SilverSurferProfileExtender from '@wikia/ad-services/silver-surfer/silver-surfer-profile-extender';
+import { SilverSurferProfileFetcher } from '@wikia/ad-services/silver-surfer/silver-surfer-profile-fetcher';
+import { SilverSurferProfileExtender } from '@wikia/ad-services/silver-surfer/silver-surfer-profile-extender';
 import { SilverSurferService } from '@wikia/ad-services';
 import { expect } from 'chai';
 import * as sinon from 'sinon';

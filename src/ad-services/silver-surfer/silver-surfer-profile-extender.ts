@@ -3,7 +3,7 @@ enum InteractionType {
 	DISCUSSIONS = 'discussions',
 }
 
-export default class SilverSurferProfileExtender {
+export class SilverSurferProfileExtender {
 	extend(profile: UserProfile): UserProfile {
 		profile.interactions = this.extendInteractions(profile.interactions ?? []);
 		return profile;
