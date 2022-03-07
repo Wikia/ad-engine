@@ -9,11 +9,8 @@ export class GamTargetingManager implements TargetingManagerInterface {
 
 	setTargeting(sequenceId: string, width: number, height: number, stepNo: number): void {
 		const sizeSide = this.baseSize + stepNo;
-
 		this.slotsContext.setSlotSize('top_leaderboard', [sizeSide, sizeSide]);
-
 		this.context.set('templates.sizeOverwritingMap', this.generateSizeMapping(width, height));
-
 		this.context.set('targeting.uap', sequenceId);
 	}
 
