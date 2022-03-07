@@ -14,7 +14,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
-		context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
 		context.set('bidders.prebid.33across.enabled', instantConfig.get('icPrebid33Across'));
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
