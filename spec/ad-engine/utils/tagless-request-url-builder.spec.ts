@@ -230,7 +230,7 @@ describe('tagless-request-url-builder', () => {
 	});
 
 	it('build tagless URL with page, slotName level targeting and default wsi param', () => {
-		const taglessUrl = buildTaglessRequestUrl(lisAdSlot, { targeting: { extra: 'yes' } });
+		const taglessUrl = buildTaglessRequestUrl({ targeting: { extra: 'yes' } });
 		const custParams = /&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
 
 		expect(taglessUrl.match(custParams)).to.be.ok;

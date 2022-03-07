@@ -13,14 +13,7 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import {
-	buildTaglessRequestUrl,
-	LazyQueue,
-	logger,
-	makeLazyQueue,
-	OldLazyQueue,
-	scriptLoader,
-} from './utils';
+import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
 
 export interface AdStackPayload {
 	id: string;
@@ -30,21 +23,7 @@ export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return context.get('state.adStack');
 }
 
-type LayoutPayload = {
-	layout: string;
-	data: any;
-};
-
-interface FanTakeoverLayoutPayload extends LayoutPayload {
-	data: {
-		impression: string;
-		lineItemId: number;
-		creativeId: number;
-	};
-}
-
 export const DEFAULT_MAX_DELAY = 2000;
-const logGroup = 'ad-engine';
 
 export class AdEngine {
 	started = false;
@@ -67,8 +46,6 @@ export class AdEngine {
 	}
 
 	async init(inhibitors: Promise<any>[] = []): Promise<void> {
-		inhibitors = await this.runInitStack(inhibitors);
-
 		this.setupProviders();
 		this.setupAdStack();
 		btfBlockerService.init();
@@ -124,58 +101,6 @@ export class AdEngine {
 			default:
 				return new GptProvider();
 		}
-	}
-
-	private async runInitStack(inhibitors: Promise<any>[] = []): Promise<Promise<any>[]> {
-		if (!context.get('options.initCall')) {
-			return inhibitors;
-		}
-
-		const slotName = context.get('state.initSlot');
-		const adSlot = new AdSlot({ id: slotName });
-
-		slotService.add(adSlot);
-
-		return await scriptLoader.loadAsset(buildTaglessRequestUrl(adSlot), 'text').then((response) => {
-			if (!response) {
-				return inhibitors;
-			}
-
-			try {
-				const layoutPayload: LayoutPayload = JSON.parse(response);
-
-				logger(logGroup, 'Layout payload received', layoutPayload);
-
-				if (layoutPayload.layout === 'uap') {
-					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impression;
-					const impressionCallback = () => {
-						scriptLoader.loadAsset(pixel, 'blob');
-					};
-					communicationService.onSlotEvent(
-						AdSlot.STATUS_SUCCESS,
-						impressionCallback,
-						'top_leaderboard',
-						true,
-					);
-					communicationService.onSlotEvent(
-						AdSlot.STATUS_SUCCESS,
-						impressionCallback,
-						'top_boxad',
-						true,
-					);
-
-					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
-					context.set(
-						'targeting.uap_c',
-						(layoutPayload as FanTakeoverLayoutPayload).data.creativeId,
-					);
-				}
-			} catch (e) {
-				return inhibitors;
-			}
-
-			return [];
-		});
 	}
 
 	private setupPushOnScrollQueue(): void {

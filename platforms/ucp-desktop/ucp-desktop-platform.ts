@@ -1,5 +1,6 @@
 import {
 	AdEngineRunnerSetup,
+	AdLayoutInitializerSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
@@ -45,6 +46,7 @@ export class UcpDesktopPlatform {
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
+			AdLayoutInitializerSetup,
 			SequentialMessagingSetup,
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
