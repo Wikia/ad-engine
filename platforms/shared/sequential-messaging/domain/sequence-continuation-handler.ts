@@ -17,12 +17,8 @@ export class SequenceContinuationHandler {
 
 		for (const sequenceId of Object.keys(userState)) {
 			userState[sequenceId].stepNo++;
-			this.targetingManager.setTargeting(
-				sequenceId,
-				userState[sequenceId].width,
-				userState[sequenceId].height,
-				userState[sequenceId].stepNo,
-			);
+			const sequenceState = userState[sequenceId];
+			this.targetingManager.setTargeting(sequenceId, sequenceState);
 			this.userStateStore.set(userState);
 		}
 	}

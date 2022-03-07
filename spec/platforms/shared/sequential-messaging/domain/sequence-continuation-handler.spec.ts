@@ -8,8 +8,9 @@ import { UserSequentialMessageState } from '../../../../../platforms/shared/sequ
 const sequenceId = '5928558921';
 const sampleWidth = 970;
 const sampleHeight = 250;
+const initialSequenceState = { stepNo: 2, width: sampleWidth, height: sampleHeight };
 const userInitialStateAfterSecondStep: UserSequentialMessageState = {
-	5928558921: { stepNo: 2, width: sampleWidth, height: sampleHeight },
+	5928558921: initialSequenceState,
 };
 
 describe('Sequence Continuation Handler', () => {
@@ -17,7 +18,11 @@ describe('Sequence Continuation Handler', () => {
 		const userStateStoreSpy = makeUserStateStoreSpy();
 		const targetingManagerSpy = makeTargetingManagerSpy();
 		userStateStoreSpy.get.returns(userInitialStateAfterSecondStep);
-		const expectedStepNoAfterStateUpdate = 3;
+		const expectedSequenceStateAfterStateUpdate = {
+			stepNo: 3,
+			width: sampleWidth,
+			height: sampleHeight,
+		};
 
 		const sh = new SequenceContinuationHandler(userStateStoreSpy, targetingManagerSpy);
 		sh.handleOngoingSequence();
@@ -27,9 +32,7 @@ describe('Sequence Continuation Handler', () => {
 		assert.calledWith(
 			targetingManagerSpy.setTargeting,
 			sequenceId,
-			sampleWidth,
-			sampleHeight,
-			expectedStepNoAfterStateUpdate,
+			expectedSequenceStateAfterStateUpdate,
 		);
 		assert.calledOnce(userStateStoreSpy.set);
 		assert.calledWith(userStateStoreSpy.set, userInitialStateAfterSecondStep);
