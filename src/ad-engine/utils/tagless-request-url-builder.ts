@@ -124,14 +124,17 @@ export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}
 
 	params.push(`iu=${options.adUnit}`);
 	params.push(`sz=${options.size}`);
-	params.push(
-		`t=${encodeURIComponent(
-			Object.keys(options.targeting)
-				.filter((key: string) => options.targeting[key])
-				.map((key: string) => `${key}=${options.targeting[key]}`)
-				.join('&'),
-		)}`,
-	);
+
+	if (options.targeting) {
+		params.push(
+			`t=${encodeURIComponent(
+				Object.keys(options.targeting)
+					.filter((key: string) => options.targeting[key])
+					.map((key: string) => `${key}=${options.targeting[key]}`)
+					.join('&'),
+			)}`,
+		);
+	}
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
 	return displayBaseUrl + params.join('&');

@@ -194,31 +194,19 @@ describe('tagless-request-url-builder', () => {
 	});
 
 	it('build tagless URL with DFP domain', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
-			size: '32x32',
-			targeting: {},
-		});
+		const taglessUrl = buildTaglessRequestUrl();
 
 		expect(taglessUrl.match(/^https:\/\/securepubads\.g\.doubleclick\.net\/gampad\/adx/g)).to.be.ok;
 	});
 
 	it('build tagless URL with numeric correlator', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
-			size: '32x32',
-			targeting: {},
-		});
+		const taglessUrl = buildTaglessRequestUrl();
 
 		expect(taglessUrl.match(/c=\d+&/g)).to.be.ok;
 	});
 
 	it('build tagless URL with required DFP parameters', () => {
-		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
-			size: '32x32',
-			targeting: {},
-		});
+		const taglessUrl = buildTaglessRequestUrl();
 
 		expect(taglessUrl.match(/&tile=1&/g)).to.be.ok;
 		expect(taglessUrl.match(/&d_imp=1&/g)).to.be.ok;
@@ -228,8 +216,6 @@ describe('tagless-request-url-builder', () => {
 	it('build tagless URL with configured ad unit', () => {
 		const taglessUrl = buildTaglessRequestUrl({
 			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
-			size: '32x32',
-			targeting: {},
 		});
 
 		expect(
@@ -241,9 +227,7 @@ describe('tagless-request-url-builder', () => {
 
 	it('build tagless URL with horizontal ad size', () => {
 		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
 			size: '32x32',
-			targeting: {},
 		});
 
 		expect(taglessUrl.match(/&sz=32x32&/g)).to.be.ok;
@@ -251,8 +235,6 @@ describe('tagless-request-url-builder', () => {
 
 	it('build tagless URL with page, slotName level targeting and default wsi param', () => {
 		const taglessUrl = buildTaglessRequestUrl({
-			adUnit: '/5441/wka.fandom/test/layout_initializer/_not_a_top1k_wiki-000',
-			size: '32x32',
 			targeting: {
 				s0: '000',
 				uno: 'foo',

@@ -22,10 +22,8 @@ export class AdLayoutInitializerSetup implements DiProcess {
 		'/5441/wka1b.LIS/layout_initializer/desktop/ucp_desktop-fandom-article-ic/_top1k_wiki-life';
 	private lisSize = '1x1';
 	private lisTargeting: Targeting = {
-		src: 'test',
 		loc: 'pre',
 		pos: 'layout_initializer',
-		cid: 'adeng-uap-lis',
 	};
 
 	async execute(): Promise<void> {
@@ -39,8 +37,8 @@ export class AdLayoutInitializerSetup implements DiProcess {
 			size: this.lisSize,
 			targeting: {
 				...context.get('targeting'),
-				...context.get('slot.top_leaderboard.targeting'),
 				...this.lisTargeting,
+				src: context.get('src'),
 			},
 		});
 
