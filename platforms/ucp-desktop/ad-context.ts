@@ -36,6 +36,7 @@ export const basicContext = {
 		pushOnScroll: {
 			ids: [],
 			threshold: 100,
+			nativoThreshold: 200,
 		},
 	},
 	slots: {},

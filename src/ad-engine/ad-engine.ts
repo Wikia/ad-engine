@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
-import { GptProvider, PrebidiumProvider, Provider } from './providers';
+import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
 import { Runner } from './runner';
 import {
 	btfBlockerService,
@@ -37,6 +37,7 @@ type LayoutPayload = {
 
 interface FanTakeoverLayoutPayload extends LayoutPayload {
 	data: {
+		impression: string;
 		lineItemId: number;
 		creativeId: number;
 	};
@@ -47,7 +48,7 @@ const logGroup = 'ad-engine';
 
 export class AdEngine {
 	started = false;
-	provider: Provider;
+	defaultProvider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
 
 	constructor(config = null) {
@@ -86,14 +87,11 @@ export class AdEngine {
 
 	private setupProviders(): void {
 		const providerName: string = context.get('state.provider');
+		this.defaultProvider = this.createProvider(providerName);
 
-		switch (providerName) {
-			case 'prebidium':
-				this.provider = new PrebidiumProvider();
-				break;
-			case 'gpt':
-			default:
-				this.provider = new GptProvider();
+		const nativo = new Nativo(context);
+		if (nativo.isEnabled()) {
+			nativo.load();
 		}
 	}
 
@@ -102,10 +100,29 @@ export class AdEngine {
 		if (!this.adStack.start) {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
-
+				const providersChain = context.get(`slots.${ad.id}.providers`) || [];
 				slotService.add(adSlot);
-				this.provider.fillIn(adSlot);
+
+				if (providersChain.length > 0) {
+					// TODO: this is PoC and most likely we'll extend it and move to the AdLayoutBuilder (ADEN-11388)
+					const providerName = providersChain.shift();
+					const provider = this.createProvider(providerName);
+					provider.fillIn(adSlot);
+				} else {
+					this.defaultProvider.fillIn(adSlot);
+				}
 			});
+		}
+	}
+
+	private createProvider(providerName: string) {
+		switch (providerName) {
+			case 'prebidium':
+				return new PrebidiumProvider();
+			case 'nativo':
+				return new NativoProvider(window.ntv);
+			default:
+				return new GptProvider();
 		}
 	}
 
@@ -130,6 +147,23 @@ export class AdEngine {
 				logger(logGroup, 'Layout payload received', layoutPayload);
 
 				if (layoutPayload.layout === 'uap') {
+					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impression;
+					const impressionCallback = () => {
+						scriptLoader.loadAsset(pixel, 'blob');
+					};
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						impressionCallback,
+						'top_leaderboard',
+						true,
+					);
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						impressionCallback,
+						'top_boxad',
+						true,
+					);
+
 					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
 					context.set(
 						'targeting.uap_c',

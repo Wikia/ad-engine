@@ -209,7 +209,7 @@ describe('tagless-request-url-builder', () => {
 		const taglessUrl = buildTaglessRequestUrl(lisAdSlot);
 
 		expect(taglessUrl.match(/&tile=1&/g)).to.be.ok;
-		expect(taglessUrl.match(/&d_imp=0&/g)).to.be.ok;
+		expect(taglessUrl.match(/&d_imp=1&/g)).to.be.ok;
 		expect(taglessUrl.match(/&rdp=0/g)).to.be.ok;
 	});
 
