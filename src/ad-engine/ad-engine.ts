@@ -157,12 +157,6 @@ export class AdEngine {
 						'top_leaderboard',
 						true,
 					);
-					communicationService.onSlotEvent(
-						AdSlot.STATUS_SUCCESS,
-						impressionCallback,
-						'top_boxad',
-						true,
-					);
 
 					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
 					context.set(

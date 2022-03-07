@@ -2,14 +2,8 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'audigent';
-const audienceTagScriptUrl =
-	'https://a.ad.gt/api/v1/u/matches/158?url=' +
-	encodeURIComponent(window.location.href) +
-	'&ref=' +
-	encodeURIComponent(document.referrer);
-const segmentsScriptUrl =
-	'https://seg.ad.gt/api/v1/segments.js?partner_id=158&url=' +
-	encodeURIComponent(window.location.href);
+const audienceTagScriptUrl = 'https://a.ad.gt/api/v1/u/matches/158';
+const segmentsScriptUrl = 'https://seg.ad.gt/api/v1/segments.js';
 
 class Audigent {
 	private isLoaded = false;
