@@ -18,14 +18,16 @@ export class SequentialMessagingSetup {
 	private handleSequenceStart(): void {
 		communicationService.on(sequenceEventsTypes.GAM_SEQUENTIAL_MESSAGING_STARTED, (payload) => {
 			const lineItemId = payload.lineItemId;
-			if (lineItemId == null) {
+			const width = payload.width;
+			const height = payload.height;
+			if (lineItemId == null || width == null || height == null) {
 				return;
 			}
 
 			const sequenceHandler = new SequenceStartHandler(
 				new UserSequentialMessageStateStore(Cookies),
 			);
-			sequenceHandler.startSequence(lineItemId);
+			sequenceHandler.startSequence(lineItemId, width, height);
 		});
 	}
 

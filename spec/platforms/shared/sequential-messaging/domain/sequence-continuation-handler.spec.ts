@@ -6,7 +6,11 @@ import { makeTargetingManagerSpy } from '../test_doubles/targeting-manager.spy';
 import { UserSequentialMessageState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 const sequenceId = '5928558921';
-const userInitialStateAfterSecondStep: UserSequentialMessageState = { 5928558921: { stepNo: 2 } };
+const sampleWidth = 970;
+const sampleHeight = 250;
+const userInitialStateAfterSecondStep: UserSequentialMessageState = {
+	5928558921: { stepNo: 2, width: sampleWidth, height: sampleHeight },
+};
 
 describe('Sequence Continuation Handler', () => {
 	it('Handle an ongoing Sequence', () => {
@@ -20,7 +24,13 @@ describe('Sequence Continuation Handler', () => {
 
 		expect(sh).to.be.instanceOf(SequenceContinuationHandler);
 		assert.calledOnce(targetingManagerSpy.setTargeting);
-		assert.calledWith(targetingManagerSpy.setTargeting, sequenceId, expectedStepNoAfterStateUpdate);
+		assert.calledWith(
+			targetingManagerSpy.setTargeting,
+			sequenceId,
+			sampleWidth,
+			sampleHeight,
+			expectedStepNoAfterStateUpdate,
+		);
 		assert.calledOnce(userStateStoreSpy.set);
 		assert.calledWith(userStateStoreSpy.set, userInitialStateAfterSecondStep);
 	});

@@ -4,11 +4,11 @@ import { UserSequentialMessageStateStoreInterface } from './interfaces/user-sequ
 export class SequenceStartHandler {
 	constructor(private stateStore: UserSequentialMessageStateStoreInterface) {}
 
-	startSequence(sequenceId: string): void {
+	startSequence(sequenceId: string, width: number, height: number): void {
 		// [Multi SM] To run multiple sequences in parallel we will have to extend this to first check for existing SM cookie
 		// and add the sequence to that cookie if exists
 		const state: UserSequentialMessageState = {};
-		state[sequenceId] = { stepNo: 1 };
+		state[sequenceId] = { stepNo: 1, width: width, height: height };
 
 		this.stateStore.set(state);
 	}
