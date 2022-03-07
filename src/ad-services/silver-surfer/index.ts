@@ -2,14 +2,14 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { context, utils } from '@ad-engine/core';
 import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import SilverSurferProfileFetcher from './silver-surfer-profile-fetcher';
-import SilverSurferContextMapper from './silver-surfer-context-mapper';
+import SilverSurferProfileExtender from './silver-surfer-profile-extender';
 
 const logGroup = 'silver-surfer';
 
 export class SilverSurferService {
 	constructor(
 		private profileFetcher: SilverSurferProfileFetcher,
-		private contextMapper: SilverSurferContextMapper,
+		private profileExtender: SilverSurferProfileExtender,
 	) {}
 
 	async configureUserTargeting(): Promise<AdTags> {
@@ -38,7 +38,10 @@ export class SilverSurferService {
 	private async setUserProfileTargeting(): Promise<AdTags> {
 		const targetingConfig = context.get('services.silverSurfer');
 		const userProfile = await this.profileFetcher.getUserProfile();
-		const userTargeting = this.mapTargetingResults(targetingConfig, userProfile);
+		const userTargeting = this.mapTargetingResults(
+			targetingConfig,
+			this.profileExtender.extend(userProfile),
+		);
 
 		context.set(`targeting.galactus_status`, userProfile ? 'on_time' : 'too_late');
 		Object.keys(userTargeting).forEach((key) => {
@@ -58,7 +61,7 @@ export class SilverSurferService {
 			.map(([configKeyVals, gamKeyVals]) => {
 				if (userProfile[configKeyVals]) {
 					return {
-						[gamKeyVals]: this.contextMapper.extend(configKeyVals, userProfile[configKeyVals]),
+						[gamKeyVals]: userProfile[configKeyVals],
 					};
 				}
 			});
@@ -73,5 +76,5 @@ export class SilverSurferService {
 
 export const silverSurferService = new SilverSurferService(
 	new SilverSurferProfileFetcher(),
-	new SilverSurferContextMapper(),
+	new SilverSurferProfileExtender(),
 );
