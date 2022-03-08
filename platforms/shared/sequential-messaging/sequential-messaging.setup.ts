@@ -6,7 +6,7 @@ import { UserSequentialMessageStateStore } from './infrastructure/user-sequentia
 import { GamTargetingManager } from './infrastructure/gam-targeting-manager';
 import { slotsContext } from '../slots/slots-context';
 import { SequenceEndHandler } from './domain/sequence-end-handler';
-import { sequenceEventsTypes } from './infrastructure/sequence-event-types';
+import { SequenceEventTypes } from './infrastructure/sequence-event-types';
 
 export class SequentialMessagingSetup {
 	async execute(): Promise<void> {
@@ -16,7 +16,7 @@ export class SequentialMessagingSetup {
 	}
 
 	private handleSequenceStart(): void {
-		communicationService.on(sequenceEventsTypes.GAM_SEQUENTIAL_MESSAGING_STARTED, (payload) => {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_STARTED, (payload) => {
 			const lineItemId = payload.lineItemId;
 			const width = payload.width;
 			const height = payload.height;
@@ -41,7 +41,7 @@ export class SequentialMessagingSetup {
 	}
 
 	private handleSequenceEnd(): void {
-		communicationService.on(sequenceEventsTypes.GAM_SEQUENTIAL_MESSAGING_END, () => {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_END, () => {
 			const sequenceHandler = new SequenceEndHandler(new UserSequentialMessageStateStore(Cookies));
 			sequenceHandler.endSequence();
 		});
