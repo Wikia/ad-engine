@@ -2219,7 +2219,9 @@
                 "5937051306",
                 "5938352611",
                 "5938352620",
-                "5938352782"
+                "5938352782",
+                "5942499064",
+                "5943444128"
             ]
         }
     ],
@@ -2977,6 +2979,28 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icPrebidConfiguration": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "multiple": true,
+                "timeouts": {
+                    "lazy": 2000,
+                    "main": 2000,
+                    "initial": 1500
+                },
+                "intervals": {
+                    "lazy": 500,
+                    "main": 0
+                }
+            }
         }
     ],
     "icDurationMedia": [
