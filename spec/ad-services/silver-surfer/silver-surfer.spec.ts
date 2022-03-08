@@ -21,13 +21,7 @@ describe('Silver Surfer service', () => {
 	};
 
 	const silverSurferContext: SilverSurferContext = {
-		pages: [
-			{ product: 'mw', productId: 'nw', time: 0 },
-			{ product: 'dis', productId: 'dis', time: 1 },
-			{ product: 'mw', productId: 'nw', time: 2 },
-		],
-		current: undefined,
-		slots: undefined,
+		pages: [{ product: 'mw' }, { product: 'dis' }, { product: 'mw' }],
 	};
 
 	const silverSurferConfig = [

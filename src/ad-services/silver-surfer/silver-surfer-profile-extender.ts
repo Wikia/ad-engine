@@ -3,6 +3,10 @@ enum InteractionType {
 	DISCUSSIONS = 'discussions',
 }
 
+const emptySilverSurferContext: SilverSurferContext = {
+	pages: [],
+};
+
 export class SilverSurferProfileExtender {
 	extend(profile: UserProfile): UserProfile {
 		profile.interactions = this.extendInteractions(profile.interactions ?? []);
@@ -12,7 +16,7 @@ export class SilverSurferProfileExtender {
 	getContext(): SilverSurferContext {
 		if (!window.SilverSurferSDK || !window.SilverSurferSDK.isInitialized()) {
 			console.warn('SilverSurfer SKD not available or not initialised!');
-			return { pages: [] } as SilverSurferContext;
+			return emptySilverSurferContext;
 		}
 		return window.SilverSurferSDK.getContext();
 	}
