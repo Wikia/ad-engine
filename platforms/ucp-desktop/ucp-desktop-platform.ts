@@ -33,6 +33,35 @@ import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setu
 import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 
 @Injectable()
+export class UAPScenario {
+	constructor(private pipeline: ProcessPipeline) {}
+
+	execute(): void {
+		this.pipeline.add(SequentialMessagingSetup);
+
+		this.pipeline.execute();
+	}
+}
+
+@Injectable()
+export class NoUAPScenario {
+	constructor(private pipeline: ProcessPipeline) {}
+
+	execute(): void {
+		this.pipeline.add(UcpDesktopPrebidConfigSetup);
+
+		this.pipeline.execute();
+	}
+}
+
+function isUAPdetected(): Promise<boolean> {
+	return new AdLayoutInitializerSetup()
+		.execute()
+		.then(() => true)
+		.catch(() => false);
+}
+
+@Injectable()
 export class UcpDesktopPlatform {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
@@ -46,9 +75,10 @@ export class UcpDesktopPlatform {
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
-			AdLayoutInitializerSetup,
-			SequentialMessagingSetup,
-			UcpDesktopPrebidConfigSetup,
+			conditional(isUAPdetected, {
+				yes: UAPScenario,
+				no: NoUAPScenario,
+			}),
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,
 			UcpDesktopSlotsStateSetup,

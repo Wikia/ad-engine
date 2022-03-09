@@ -29,7 +29,8 @@ export class AdLayoutInitializerSetup implements DiProcess {
 	async execute(): Promise<void> {
 		if (!context.get('options.initCall')) {
 			utils.logger(logGroup, 'LIS call disabled');
-			return Promise.resolve();
+
+			return Promise.reject();
 		}
 
 		const lisUrl = utils.buildTaglessRequestUrl({
