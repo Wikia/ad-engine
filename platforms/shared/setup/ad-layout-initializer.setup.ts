@@ -1,4 +1,11 @@
-import { context, DiProcess, Targeting, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	context,
+	DiProcess,
+	Targeting,
+	utils,
+} from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 type LayoutPayload = {
@@ -8,7 +15,7 @@ type LayoutPayload = {
 
 interface FanTakeoverLayoutPayload extends LayoutPayload {
 	data: {
-		impression: string;
+		impressionPixelUrl: string;
 		lineItemId: number;
 		creativeId: number;
 	};
@@ -18,8 +25,7 @@ const logGroup = 'layout-initializer';
 
 @Injectable()
 export class AdLayoutInitializerSetup implements DiProcess {
-	private lisAdUnit =
-		'/5441/wka1b.LIS/layout_initializer/desktop/ucp_desktop-fandom-article-ic/_top1k_wiki-life';
+	private lisAdUnit = '/5441/wka1b.LIS/layout_initializer/';
 	private lisSize = '1x1';
 	private lisTargeting: Targeting = {
 		loc: 'pre',
@@ -55,7 +61,25 @@ export class AdLayoutInitializerSetup implements DiProcess {
 
 				utils.logger(logGroup, 'Layout payload received', layoutPayload);
 
+				// TODO: move the logic below to UapAdLayout
 				if (layoutPayload.layout === 'uap') {
+					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impressionPixelUrl;
+					const impressionCallback = () => {
+						utils.scriptLoader.loadAsset(pixel, 'blob');
+					};
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						impressionCallback,
+						'top_leaderboard',
+						true,
+					);
+					communicationService.onSlotEvent(
+						AdSlot.STATUS_SUCCESS,
+						impressionCallback,
+						'top_boxad',
+						true,
+					);
+
 					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
 					context.set(
 						'targeting.uap_c',
