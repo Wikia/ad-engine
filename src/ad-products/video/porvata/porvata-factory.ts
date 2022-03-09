@@ -62,7 +62,7 @@ export class PorvataFactory {
 		if (!PorvataFactory.loadSdkPromise) {
 			PorvataFactory.loadSdkPromise = !(window.google && window.google.ima)
 				? utils.scriptLoader.loadScript('//imasdk.googleapis.com/js/sdkloader/ima3.js')
-				: new Promise((resolve) => resolve);
+				: new Promise((resolve) => resolve());
 		}
 
 		return PorvataFactory.loadSdkPromise;
