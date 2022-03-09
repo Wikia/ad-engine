@@ -9,7 +9,19 @@ import {
 	slotService,
 } from '@wikia/ad-engine';
 
-class SlotsContext {
+export interface SlotsContextInterface {
+	addSlotSize(slotName: string, size: [number, number]): void;
+
+	setSlotSize(slotName: string, size: [number, number]): void;
+
+	setupSlotVideoContext(): void;
+
+	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void;
+
+	setState(slotName: string, state: boolean, status?: string): void;
+}
+
+class SlotsContext implements SlotsContextInterface {
 	addSlotSize(slotName: string, size: [number, number]): void {
 		if (!context.get(`slots.${slotName}`)) {
 			throw new Error('Requested ad slot is not defined in the ad context');
