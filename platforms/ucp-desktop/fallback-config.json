@@ -2990,13 +2990,13 @@
                 "XX"
             ],
             "value": {
-                "multiple": true,
-                "timeouts": {
+                "multiAuction": true,
+                "stagesTimeouts": {
+                    "init": 1500,
                     "lazy": 2000,
-                    "main": 2000,
-                    "initial": 1500
+                    "main": 2000
                 },
-                "intervals": {
+                "stagesIntervals": {
                     "lazy": 500,
                     "main": 0
                 }
