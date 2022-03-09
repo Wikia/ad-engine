@@ -5,7 +5,7 @@ import {
 	BiddersStateSetup,
 	NoAdsDetector,
 	NoAdsMode,
-	// SequentialMessagingSetup
+	SequentialMessagingSetup,
 } from '@platforms/shared';
 import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
 import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
@@ -20,7 +20,7 @@ export class LegacySetup {
 
 	execute(): void {
 		this.pipeline.add(
-			// SequentialMessagingSetup,
+			SequentialMessagingSetup,
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,

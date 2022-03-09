@@ -29,6 +29,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 							[1030, 65],
 							[1030, 130],
 							[1030, 250],
+							[10, 10],
 						],
 					},
 				],
