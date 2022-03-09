@@ -1,82 +1,49 @@
-import {
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	InstantConfigService,
-	ofType,
-} from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { communicationService, context } from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
-import { filter, take } from 'rxjs/operators';
 import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
 import { SequenceStartHandler } from './domain/sequence-start-handler';
-import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
-import { TargetingManager } from './infrastructure/targeting-manager';
-import { Sequence } from './domain/data-structures/sequence';
-import { SequenceStateHandlerInterface } from './domain/services/sequence-state-handlers/sequence-state-handler-interface';
+import { GamTargetingManager } from './infrastructure/gam-targeting-manager';
+import { slotsContext } from '../slots/slots-context';
+import { SequenceEndHandler } from './domain/sequence-end-handler';
+import { SequenceEventTypes } from './infrastructure/sequence-event-types';
 
-interface Action {
-	event: string;
-	slot: { lineItemId: string; creativeId: string };
-}
-
-@Injectable()
-export class SequentialMessagingSetup implements DiProcess {
-	constructor(private instantConfig: InstantConfigService) {}
-
+export class SequentialMessagingSetup {
 	async execute(): Promise<void> {
-		if (!this.handleOngoingSequence()) {
-			this.detectNewSequentialAd();
-		}
+		this.handleSequenceStart();
+		this.handleOngoingSequence();
+		this.handleSequenceEnd();
 	}
 
-	private detectNewSequentialAd(): void {
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: Action) => action.event === 'slotShowed'),
-				take(1),
-			)
-			.subscribe((action: Action) => {
-				const lineItemId = action.slot.lineItemId;
-				const creativeId = action.slot.creativeId;
-				if (lineItemId == null) {
-					return;
-				}
+	private handleSequenceStart(): void {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_STARTED, (payload) => {
+			const lineItemId = payload.lineItemId;
+			const width = payload.width;
+			const height = payload.height;
+			if (lineItemId == null || width == null || height == null) {
+				return;
+			}
 
-				const sequence: Sequence = { id: lineItemId.toString(), stepId: creativeId.toString() };
-
-				const sequenceHandler = new SequenceStartHandler(
-					new SequentialMessagingConfigStore(this.instantConfig),
-					new UserSequentialMessageStateStore(Cookies),
-				);
-				sequenceHandler.handleSequence(sequence);
-			});
+			const sequenceHandler = new SequenceStartHandler(
+				new UserSequentialMessageStateStore(Cookies),
+			);
+			sequenceHandler.startSequence(lineItemId, width, height);
+		});
 	}
 
-	private handleOngoingSequence(): boolean {
+	private handleOngoingSequence(): void {
 		const sequenceHandler = new SequenceContinuationHandler(
-			new SequentialMessagingConfigStore(this.instantConfig),
 			new UserSequentialMessageStateStore(Cookies),
-			new TargetingManager(context),
-			this.handleSequenceStateOnSlotShowedEvent,
+			new GamTargetingManager(context, slotsContext),
 		);
 
-		return sequenceHandler.handleOngoingSequence();
+		sequenceHandler.handleOngoingSequence();
 	}
 
-	private handleSequenceStateOnSlotShowedEvent(onEvent: SequenceStateHandlerInterface) {
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: Action) => action.event === 'slotShowed'),
-				take(1),
-			)
-			.subscribe((action) => {
-				const sequence: Sequence = { id: action.slot.lineItemId, stepId: action.slot.creativeId };
-				onEvent.handleState(sequence);
-			});
+	private handleSequenceEnd(): void {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_END, () => {
+			const sequenceHandler = new SequenceEndHandler(new UserSequentialMessageStateStore(Cookies));
+			sequenceHandler.endSequence();
+		});
 	}
 }
