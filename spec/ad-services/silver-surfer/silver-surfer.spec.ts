@@ -9,7 +9,6 @@ describe('Silver Surfer service', () => {
 	const sandbox = sinon.createSandbox();
 	let getProfileStub;
 	let getContextStub;
-	let silverSurferService;
 
 	const userProfile: UserProfile = {
 		beaconId: 'test',
@@ -31,16 +30,16 @@ describe('Silver Surfer service', () => {
 		'interactions:g_interactions',
 	];
 
-	beforeEach(() => {
+	function mockSilverSurferService(context, profile) {
 		const fetcher = new SilverSurferProfileFetcher();
 		const extender = new SilverSurferProfileExtender();
 
 		getProfileStub = sandbox
 			.stub(fetcher, 'getUserProfile')
-			.callsFake(() => Promise.resolve(userProfile));
-		getContextStub = sandbox.stub(extender, 'getContext').callsFake(() => silverSurferContext);
-		silverSurferService = new SilverSurferService(fetcher, extender);
-	});
+			.callsFake(() => Promise.resolve(profile));
+		getContextStub = sandbox.stub(extender, 'getContext').callsFake(() => context);
+		return new SilverSurferService(fetcher, extender);
+	}
 
 	afterEach(() => {
 		context.remove('services.silverSurfer');
@@ -49,7 +48,10 @@ describe('Silver Surfer service', () => {
 
 	it('configures fetched user profile in context targeting', async () => {
 		context.set('services.silverSurfer', silverSurferConfig);
-		const configuredTargeting = await silverSurferService.configureUserTargeting();
+		const configuredTargeting = await mockSilverSurferService(
+			silverSurferContext,
+			userProfile,
+		).configureUserTargeting();
 
 		expect(getProfileStub.called).to.be.true;
 		expect(getContextStub.called).to.be.true;
@@ -65,9 +67,25 @@ describe('Silver Surfer service', () => {
 	});
 
 	it('does not fetch user profile when service is disabled', async () => {
-		const configuredTargeting = await silverSurferService.configureUserTargeting();
+		const configuredTargeting = await mockSilverSurferService(
+			silverSurferContext,
+			userProfile,
+		).configureUserTargeting();
 
 		expect(getProfileStub.called).to.be.false;
+		expect(getContextStub.called).to.be.false;
+		expect(configuredTargeting).to.deep.equal({});
+	});
+
+	it('should not fail when SilverSurfer profile is not available', async () => {
+		context.set('services.silverSurfer', silverSurferConfig);
+		const configuredTargeting = await mockSilverSurferService(
+			undefined,
+			undefined,
+		).configureUserTargeting();
+
+		expect(getProfileStub.called).to.be.true;
+		expect(getContextStub.called).to.be.false;
 		expect(configuredTargeting).to.deep.equal({});
 	});
 });
