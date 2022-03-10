@@ -2650,6 +2650,26 @@
                 "fandommobile"
             ],
             "regions": [
+                "PL"
+            ],
+            "value": [
+                "ageBrackets:g_age_bracket",
+                "gender:g_gender",
+                "affiliation:g_affiliation",
+                "language:g_language",
+                "interests:g_interests",
+                "country:g_country",
+                "consoles:g_console",
+                "streaming:g_streaming",
+                "interactions:g_interactions"
+            ]
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
                 "BE",
                 "BR",
                 "CA",
