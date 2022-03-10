@@ -412,3 +412,13 @@ npm run test
 ```bash
 npm run lint
 ```
+
+
+## Code Coverage
+
+To check code coverage run   
+```bash
+npm run code-coverage
+```
+
+This will return a text table in the command line as well as generate detailed coverage information in an HTML page in `/spec/build/index.html`

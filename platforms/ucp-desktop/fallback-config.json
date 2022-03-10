@@ -2219,7 +2219,9 @@
                 "5937051306",
                 "5938352611",
                 "5938352620",
-                "5938352782"
+                "5938352782",
+                "5942499064",
+                "5943444128"
             ]
         }
     ],
@@ -2524,6 +2526,26 @@
         }
     ],
     "icSilverSurfer": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": [
+                "ageBrackets:g_age_bracket",
+                "gender:g_gender",
+                "affiliation:g_affiliation",
+                "language:g_language",
+                "interests:g_interests",
+                "country:g_country",
+                "consoles:g_console",
+                "streaming:g_streaming",
+                "interactions:g_interactions"
+            ]
+        },
         {
             "apps": [
                 "fandomdesktop",
@@ -2977,6 +2999,28 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icPrebidConfiguration": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "multiAuction": true,
+                "stagesTimeouts": {
+                    "init": 1500,
+                    "lazy": 2000,
+                    "main": 2000
+                },
+                "stagesIntervals": {
+                    "lazy": 500,
+                    "main": 0
+                }
+            }
         }
     ],
     "icDurationMedia": [

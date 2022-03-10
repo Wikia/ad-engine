@@ -5,11 +5,7 @@ import { UserSequentialMessageStateStore } from '../../../../../platforms/shared
 describe('User Sequential Message State Store', () => {
 	it("Store user's sequential message state in a cookie", () => {
 		const cookieSpy = sinon.spy(Cookies, 'set');
-		const sampleState = {
-			5854346762: {
-				lastStepId: 123456789,
-			},
-		};
+		const sampleState = { 5928558921: { stepNo: 1, width: 970, height: 250 } };
 
 		const store = new UserSequentialMessageStateStore(Cookies);
 		store.set(sampleState);
