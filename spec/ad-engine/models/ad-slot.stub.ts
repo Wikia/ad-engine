@@ -50,6 +50,7 @@ export function createAdSlotStub(sandbox: SinonSandbox): AdSlotStub {
 		isEnabled: sandbox.stub(),
 		isInitCall: sandbox.stub(),
 		isFirstCall: sandbox.stub(),
+		isLazyCall: sandbox.stub(),
 		isViewed: sandbox.stub(),
 		isRepeatable: sandbox.stub(),
 		isOutOfPage: sandbox.stub(),
