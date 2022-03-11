@@ -16,7 +16,6 @@ import {
 	silverSurferService,
 	stroer,
 	taxonomyService,
-	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { v4 as uuid } from 'uuid';
@@ -37,8 +36,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 
 		this.trackAdEngineStatus();
 		this.trackTabId();
-
-		utils.translateLabels();
 	}
 
 	private trackAdEngineStatus(): void {
