@@ -6,19 +6,19 @@ Date: 2022-03-11
 
 What is the status, such as:
 
-- proposed
+- approved
 
 ## Context
 
-In [the proof of concept](https://github.com/Wikia/ad-engine/pull/1286) we implemented LIS (Layout Initializer Slot) and by doing this [we proved ad loading time decrease](https://fandom.atlassian.net/browse/ADEN-11434?focusedCommentId=565738) for the Fan Takeover campaigns served like that.
+In [the proof of concept](https://github.com/Wikia/ad-engine/pull/1286) we implemented LIS (Layout Initializer Slot) and by doing this [we proved ad loading time decreased](https://fandom.atlassian.net/browse/ADEN-11434?focusedCommentId=565738) for the Fan Takeover campaigns served this way. This is thanks to a tagless request we used in this approach. It's faster than a regular GPT call for an ad.
 
 In the follow-up code refactoring we keep using [the tagless request](https://support.google.com/admanager/answer/2623168?hl=en) but we decoupled LIS with a slot loosing with it full MEGA ad unit string and instead of `/5441/wka1b.LIS/layout_initializer/desktop/ucp_desktop-fandom-article-ic/_top1k_wiki-life` or `/5441/wka1b.LIS/layout_initializer/desktop/ucp_mobile-fandom-article-ic/_top1k_wiki-life` we now have `/5441/wka1b.LIS/layout_initializer/`.
 
 ## Decision
 
-I propose leave the hard-coded ad unit for LIS until we finish testing it and pass it to AdOps.
+I propose to leave the hard-coded ad unit for LIS until we finish testing it and pass it to AdOps.
 
-Ad units are mostly used for reporting about real slot performance whereas LIS is a a tagless request (Layout Initializer requeSt). Unless we get a clear requirement from RevOrg to make it's ad unit string more flexible I'd leave it as-is.
+Ad units are mostly used for reporting about a real slot's performance whereas LIS is a tagless request (Layout Initializer requeSt). Unless we get a clear requirement from RevOrg to make LIS ad unit string more flexible I'd leave it as-is.
 
 ## Consequences
 
