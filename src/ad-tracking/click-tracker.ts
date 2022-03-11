@@ -2,6 +2,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'ad-click-tracker';
+const celtraInterstitialBannerId = 'celtra-object-37';
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -32,6 +33,10 @@ class AdClickTracker {
 			},
 			false,
 		);
+
+		communicationService.on(eventsRepository.GAM_INTERSTITIAL_LOADED, () => {
+			this.addCeltraInterstitialClickTrackingListener(callback);
+		});
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
@@ -87,6 +92,29 @@ class AdClickTracker {
 		});
 	}
 
+	private addCeltraInterstitialClickTrackingListener(
+		callback: FuncPipelineStep<AdClickContext>,
+	): void {
+		const observer = new MutationObserver(() => {
+			const celtraIframe = document.querySelector('.notranslate > iframe') as HTMLIFrameElement;
+			if (celtraIframe) {
+				const celtraBanner = celtraIframe.contentWindow.document.getElementById(
+					celtraInterstitialBannerId,
+				);
+				if (celtraBanner) {
+					celtraBanner.addEventListener('click', (event) => {
+						this.handleClickEvent(callback, slotService.get('top_leaderboard'), event);
+					});
+					observer.disconnect();
+				}
+			}
+		});
+		observer.observe(document, {
+			childList: true,
+			subtree: true,
+		});
+	}
+
 	private handleClickEvent(
 		callback: FuncPipelineStep<AdClickContext>,
 		slot: AdSlot,
@@ -101,6 +129,9 @@ class AdClickTracker {
 				click: { x: event.clientX, y: event.clientY },
 				size: { x: target.offsetWidth, y: target.offsetHeight },
 			};
+			if (target.id == celtraInterstitialBannerId) {
+				clickData['click'] = { x: event.offsetX, y: event.offsetY };
+			}
 			data['click_position'] = JSON.stringify(clickData);
 		}
 		this.pipeline.execute(
