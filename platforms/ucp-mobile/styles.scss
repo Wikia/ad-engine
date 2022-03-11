@@ -52,6 +52,17 @@
 				@include uap-dark-theme();
 			}
 		}
+
+		&.has-sticky-tlb {
+			.top-ads-container {
+				margin-top: $fandom-navbar-height;
+
+				.ad-slot-placeholder.top-leaderboard #top_leaderboard {
+					top: $fandom-navbar-height;
+					z-index: 400;
+				}
+			}
+		}
 	}
 
 	.uap-light {
