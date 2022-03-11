@@ -15,7 +15,8 @@ type LayoutPayload = {
 
 interface FanTakeoverLayoutPayload extends LayoutPayload {
 	data: {
-		impressionPixelUrl: string;
+		// TODO: possibly change to impressionMacro in order to be consistent with GAM docs WARNING! changing it here requires changes in GAM templates for existing LIS campaigns
+		impression: string;
 		lineItemId: number;
 		creativeId: number;
 	};
@@ -63,7 +64,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 
 				// TODO: move the logic below to UapAdLayout
 				if (layoutPayload.layout === 'uap') {
-					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impressionPixelUrl;
+					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impression;
 					const impressionCallback = () => {
 						utils.scriptLoader.loadAsset(pixel, 'blob');
 					};
@@ -71,12 +72,6 @@ export class AdLayoutInitializerSetup implements DiProcess {
 						AdSlot.STATUS_SUCCESS,
 						impressionCallback,
 						'top_leaderboard',
-						true,
-					);
-					communicationService.onSlotEvent(
-						AdSlot.STATUS_SUCCESS,
-						impressionCallback,
-						'top_boxad',
 						true,
 					);
 
