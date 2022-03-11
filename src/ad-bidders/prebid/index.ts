@@ -229,14 +229,20 @@ export class PrebidProvider extends BidderProvider {
 	}
 
 	private registerStage(name: MultiAuctionStep, trigger: MultiAuctionStep): void {
-		communicationService.on(eventsRepository[`BIDDERS_${trigger.toUpperCase()}_STAGE_DONE`], () => {
+		const stagesEvents = {
+			init: eventsRepository.BIDDERS_INIT_STAGE_DONE,
+			main: eventsRepository.BIDDERS_MAIN_STAGE_DONE,
+			lazy: eventsRepository.BIDDERS_LAZY_STAGE_DONE,
+		};
+
+		communicationService.on(stagesEvents[trigger], () => {
 			utils.logger(logGroup, `multi auction ${trigger} stage - done`);
 
 			setTimeout(() => {
 				this.requestBids(
 					this.filterAdUnits(this.adUnits, name),
 					() => {
-						communicationService.emit(eventsRepository[`BIDDERS_${name.toUpperCase()}_STAGE_DONE`]);
+						communicationService.emit(stagesEvents[name]);
 					},
 					context.get(`bidders.prebid.stagesTimeouts.${name}`) || this.timeout,
 				);
