@@ -589,6 +589,19 @@
             "value": true
         }
     ],
+    "icPubmaticIdentityHub": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "sampling": 10.0,
+            "value": true
+        }
+    ],
     "icA9VideoBidder": [
         {
             "apps": [
@@ -2324,7 +2337,8 @@
                 "5938352620",
                 "5938352782",
                 "5942499064",
-                "5943444128"
+                "5943444128",
+                "5946030709"
             ]
         }
     ],
@@ -2461,61 +2475,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icSequentialMessaging": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": {
-                "5854346762": {
-                    "length": 4,
-                    "targeting": {
-                        "cid": "sequential_messaging"
-                    },
-                    "lastStepId": "138374456688"
-                },
-                "5895677484": {
-                    "length": 4,
-                    "targeting": {
-                        "cid": "sequential_messaging"
-                    },
-                    "lastStepId": "138378822185"
-                },
-                "5901739367": {
-                    "length": 4,
-                    "targeting": {
-                        "cid": "sequential_messaging_uap"
-                    },
-                    "lastStepId": "138379703413"
-                },
-                "5914317969": {
-                    "length": 4,
-                    "targeting": {
-                        "uap": "5914317969"
-                    },
-                    "lastStepId": "138380572088"
-                },
-                "5916984414": {
-                    "length": 4,
-                    "targeting": {
-                        "uap": "5916984414"
-                    },
-                    "lastStepId": "138381285823"
-                },
-                "5928558921": {
-                    "targeting": {
-                        "loc": "top",
-                        "uap": "5928558921"
-                    },
-                    "lastStepId": "138382005249"
-                }
-            }
         }
     ],
     "icSafeFanTakeoverLineItemIds": [
@@ -3010,6 +2969,29 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icPrebidConfiguration": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": {
+                "multiAuction": true,
+                "stagesTimeouts": {
+                    "init": 1500,
+                    "lazy": 2000,
+                    "main": 2000
+                },
+                "stagesIntervals": {
+                    "lazy": 500,
+                    "main": 0
+                }
+            }
         }
     ],
     "icDurationMedia": [
