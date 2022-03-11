@@ -10,7 +10,7 @@ What is the status, such as:
 
 ## Context
 
-In [the proof of concept](https://github.com/Wikia/ad-engine/pull/1286) we implemented LIS (Layout Initializer Slot) and by doing this [we proved ad loading time increase](https://fandom.atlassian.net/browse/ADEN-11434?focusedCommentId=565738) for the Fan Takeover campaigns served like that.
+In [the proof of concept](https://github.com/Wikia/ad-engine/pull/1286) we implemented LIS (Layout Initializer Slot) and by doing this [we proved ad loading time decrease](https://fandom.atlassian.net/browse/ADEN-11434?focusedCommentId=565738) for the Fan Takeover campaigns served like that.
 
 In the follow-up code refactoring we keep using [the tagless request](https://support.google.com/admanager/answer/2623168?hl=en) but we decoupled LIS with a slot loosing with it full MEGA ad unit string and instead of `/5441/wka1b.LIS/layout_initializer/desktop/ucp_desktop-fandom-article-ic/_top1k_wiki-life` or `/5441/wka1b.LIS/layout_initializer/desktop/ucp_mobile-fandom-article-ic/_top1k_wiki-life` we now have `/5441/wka1b.LIS/layout_initializer/`.
 
