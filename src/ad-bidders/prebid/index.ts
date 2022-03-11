@@ -189,29 +189,31 @@ export class PrebidProvider extends BidderProvider {
 		this.applySettings();
 		this.removeAdUnits();
 
+		let firstBidRequest: Promise<void>;
+
 		if (context.get('bidders.prebid.multiAuction')) {
 			utils.logger(logGroup, 'multi auction request enabled');
 
-			this.registerStages();
-			this.requestBids(
+			this.registerStage('main', 'init');
+			this.registerStage('lazy', 'main');
+
+			firstBidRequest = this.requestBids(
 				this.filterAdUnits(this.adUnits, 'init'),
 				() => {
 					bidsBackHandler();
 					communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
 				},
 				context.get('bidders.prebid.stagesTimeouts.init') || this.timeout,
-			).then(() => {
-				ats.call();
-			});
+			);
 		} else {
-			this.requestBids(this.adUnits, () => {
+			firstBidRequest = this.requestBids(this.adUnits, () => {
 				bidsBackHandler();
-				communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-				communicationService.emit(eventsRepository.BIDDERS_LAZY_STAGE_DONE);
-			}).then(() => {
-				ats.call();
 			});
 		}
+
+		firstBidRequest.then(() => {
+			ats.call();
+		});
 	}
 
 	private filterAdUnits(adUnits: PrebidAdUnit[], stage: MultiAuctionStep = 'init'): PrebidAdUnit[] {
@@ -226,33 +228,19 @@ export class PrebidProvider extends BidderProvider {
 		(pbjs.adUnits || []).forEach((adUnit) => pbjs.removeAdUnit(adUnit.code));
 	}
 
-	private registerStages(): void {
-		communicationService.on(eventsRepository.BIDDERS_INIT_STAGE_DONE, () => {
-			utils.logger(logGroup, 'multi auction init stage - done');
+	private registerStage(name: MultiAuctionStep, trigger: MultiAuctionStep): void {
+		communicationService.on(eventsRepository[`BIDDERS_${trigger.toUpperCase()}_STAGE_DONE`], () => {
+			utils.logger(logGroup, `multi auction ${trigger} stage - done`);
 
 			setTimeout(() => {
 				this.requestBids(
-					this.filterAdUnits(this.adUnits, 'main'),
+					this.filterAdUnits(this.adUnits, name),
 					() => {
-						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+						communicationService.emit(eventsRepository[`BIDDERS_${name.toUpperCase()}_STAGE_DONE`]);
 					},
-					context.get('bidders.prebid.stagesTimeouts.main') || this.timeout,
+					context.get(`bidders.prebid.stagesTimeouts.${name}`) || this.timeout,
 				);
-			}, context.get('bidders.prebid.stagesIntervals.main') || 0);
-		});
-
-		communicationService.on(eventsRepository.BIDDERS_MAIN_STAGE_DONE, () => {
-			utils.logger(logGroup, 'multi auction main stage - done');
-
-			setTimeout(() => {
-				this.requestBids(
-					this.filterAdUnits(this.adUnits, 'lazy'),
-					() => {
-						communicationService.emit(eventsRepository.BIDDERS_LAZY_STAGE_DONE);
-					},
-					context.get('bidders.prebid.stagesTimeouts.lazy') || this.timeout,
-				);
-			}, context.get('bidders.prebid.stagesIntervals.lazy') || 0);
+			}, context.get(`bidders.prebid.stagesIntervals.${name}`) || 0);
 		});
 	}
 

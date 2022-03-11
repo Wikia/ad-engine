@@ -102,14 +102,14 @@ export class AdEngine {
 				const adSlot = new AdSlot(ad);
 
 				if (adSlot.isFirstCall() || !context.get('bidders.prebid.multiAuction')) {
-					this.pushSlot(ad, adSlot);
+					this.pushSlot(adSlot);
 				} else {
 					communicationService.on(
 						adSlot.isLazyCall()
 							? eventsRepository.BIDDERS_LAZY_STAGE_DONE
 							: eventsRepository.BIDDERS_MAIN_STAGE_DONE,
 						() => {
-							this.pushSlot(ad, adSlot);
+							this.pushSlot(adSlot);
 						},
 					);
 				}
@@ -117,8 +117,8 @@ export class AdEngine {
 		}
 	}
 
-	private pushSlot(ad: AdStackPayload, adSlot: AdSlot): void {
-		const providersChain = context.get(`slots.${ad.id}.providers`) || [];
+	private pushSlot(adSlot: AdSlot): void {
+		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`) || [];
 		slotService.add(adSlot);
 
 		if (providersChain.length > 0) {
