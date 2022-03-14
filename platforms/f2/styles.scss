@@ -165,6 +165,10 @@
 
 					#top_leaderboard {
 						height: unset;
+
+						html.mobile & {
+							z-index: 5000102;
+						}
 					}
 				}
 			}
