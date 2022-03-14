@@ -1,5 +1,4 @@
-import { context } from '@ad-engine/core';
-import * as utils from '../../ad-engine/utils';
+import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'liveConnect';
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
@@ -24,7 +23,6 @@ class LiveConnect {
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
-			context.set('targeting.AU_SEG', '-1');
 
 			utils.scriptLoader
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
