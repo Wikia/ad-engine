@@ -3,7 +3,7 @@ import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
 import { audigent } from '../../../src/ad-services';
 
-describe('Audigent', () => {
+describe.only('Audigent', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
@@ -81,5 +81,33 @@ describe('Audigent', () => {
 		audigent.setup();
 
 		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
+	});
+
+	it('Audigent key-val length keeps the limit', async () => {
+		const mockedSegments = [
+			'AUG_SEG_TEST_1',
+			'AUG_SEG_TEST_2',
+			'AUG_SEG_TEST_3',
+			'AUG_SEG_TEST_4',
+			'AUG_SEG_TEST_5',
+			'AUG_AUD_TEST_1',
+			'AUG_AUD_TEST_2',
+			'AUG_AUD_TEST_3',
+			'AUG_AUD_TEST_4',
+			'AUG_AUD_TEST_5',
+		];
+		const expectedSegements = [
+			'AUG_SEG_TEST_1',
+			'AUG_SEG_TEST_2',
+			'AUG_SEG_TEST_3',
+			'AUG_SEG_TEST_4',
+			'AUG_SEG_TEST_5',
+			'AUG_AUD_TEST_1',
+		];
+		window['au_seg'] = { segments: mockedSegments };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal(expectedSegements);
 	});
 });
