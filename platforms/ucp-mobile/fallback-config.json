@@ -451,6 +451,14 @@
             "value": true
         }
     ],
+    "icLiveConnect": [
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
