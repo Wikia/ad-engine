@@ -19,6 +19,7 @@ describe('Audigent', () => {
 
 	afterEach(() => {
 		sandbox.restore();
+		window['au_seg'] = undefined;
 	});
 
 	it('Audigent is called', async () => {
@@ -57,5 +58,28 @@ describe('Audigent', () => {
 		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('Audigent key-val is set to -1 when API is too slow', async () => {
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal('-1');
+	});
+
+	it('Audigent key-val is set to no_segments when no segments from API', async () => {
+		window['au_seg'] = { segments: [] };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
+	});
+
+	it('Audigent key-val is set to given segments when API response with some', async () => {
+		const mockedSegments = ['AUG_SEG_TEST_1', 'AUG_AUD_TEST_1'];
+		window['au_seg'] = { segments: mockedSegments };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
 	});
 });
