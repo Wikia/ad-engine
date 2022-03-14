@@ -58,12 +58,16 @@ class Audigent {
 
 			let segments = au_segments.length ? au_segments : 'no_segments';
 
-			if (limit > 0 && typeof segments !== 'string' && limit <= segments.length + 1) {
+			if (this.shouldSliceSegments(segments, limit)) {
 				segments = segments.slice(0, limit);
 			}
 
 			context.set('targeting.AU_SEG', segments);
 		}
+	}
+
+	shouldSliceSegments(segments: string | [], limit: number): boolean {
+		return limit > 0 && typeof segments !== 'string';
 	}
 }
 
