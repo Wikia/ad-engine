@@ -54,7 +54,13 @@ class Audigent {
 	setup(): void {
 		if (typeof window['au_seg'] !== 'undefined') {
 			const au_segments = window['au_seg'].segments || [];
-			const segments = au_segments.length ? au_segments : 'no_segments';
+			const limit = context.get('services.audigent.segmentLimit') || 0;
+
+			let segments = au_segments.length ? au_segments : 'no_segments';
+
+			if (limit > 0 && typeof segments !== 'string' && limit <= segments.length + 1) {
+				segments = segments.slice(0, limit);
+			}
 
 			context.set('targeting.AU_SEG', segments);
 		}

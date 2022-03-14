@@ -3,7 +3,7 @@ import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
 import { audigent } from '../../../src/ad-services';
 
-describe.only('Audigent', () => {
+describe('Audigent', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
@@ -20,6 +20,12 @@ describe.only('Audigent', () => {
 	afterEach(() => {
 		sandbox.restore();
 		window['au_seg'] = undefined;
+
+		context.set('services.audigent.enabled', undefined);
+		context.set('options.trackingOptIn', undefined);
+		context.set('options.optOutSale', undefined);
+		context.set('wiki.targeting.directedAtChildren', undefined);
+		context.set('services.audigent.limit', undefined);
 	});
 
 	it('Audigent is called', async () => {
@@ -84,6 +90,7 @@ describe.only('Audigent', () => {
 	});
 
 	it('Audigent key-val length keeps the limit', async () => {
+		context.set('services.audigent.segmentLimit', 6);
 		const mockedSegments = [
 			'AUG_SEG_TEST_1',
 			'AUG_SEG_TEST_2',
@@ -108,6 +115,27 @@ describe.only('Audigent', () => {
 
 		audigent.setup();
 
-		expect(context.get('targeting.AU_SEG')).to.equal(expectedSegements);
+		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
+	});
+
+	it('Audigent key-val length ignores limit if it is higher than returned segments', async () => {
+		context.set('services.audigent.segmentLimit', 20);
+		const mockedSegments = [
+			'AUG_SEG_TEST_1',
+			'AUG_SEG_TEST_2',
+			'AUG_SEG_TEST_3',
+			'AUG_SEG_TEST_4',
+			'AUG_SEG_TEST_5',
+			'AUG_AUD_TEST_1',
+			'AUG_AUD_TEST_2',
+			'AUG_AUD_TEST_3',
+			'AUG_AUD_TEST_4',
+			'AUG_AUD_TEST_5',
+		];
+		window['au_seg'] = { segments: mockedSegments };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
 	});
 });
