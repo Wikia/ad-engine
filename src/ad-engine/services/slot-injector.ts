@@ -29,11 +29,13 @@ class SlotInjector {
 			false,
 		);
 
-		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
-			const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot: adSlot }) => {
+				const slotsToInject: string[] = adSlot.getSlotsToInjectAfterRendered();
 
-			slotsToInject.forEach((slotName: string) => {
-				this.inject(slotName);
+				slotsToInject.forEach((slotName: string) => {
+					this.inject(slotName);
+				});
 			});
 		});
 	}
