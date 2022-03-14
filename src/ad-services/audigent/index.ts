@@ -2,8 +2,8 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'audigent';
-const audienceTagScriptUrl = 'https://a.ad.gt/api/v1/u/matches/158';
-const segmentsScriptUrl = 'https://seg.ad.gt/api/v1/segments.js';
+const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 
 class Audigent {
 	private isLoaded = false;
@@ -22,6 +22,11 @@ class Audigent {
 			utils.logger(logGroup, 'disabled');
 			return;
 		}
+
+		const audienceTagScriptUrl =
+			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
+		const segmentsScriptUrl =
+			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
