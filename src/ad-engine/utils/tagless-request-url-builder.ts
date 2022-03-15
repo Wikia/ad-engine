@@ -5,6 +5,8 @@ import { context, slotService, trackingOptIn } from '../services';
 export interface TaglessSlotOptions {
 	correlator: number;
 	targeting: Targeting;
+	adUnit: string;
+	size: string;
 }
 
 export interface VastOptions {
@@ -56,16 +58,6 @@ function getCustomParameters(slot: AdSlot, extraTargeting: Dictionary = {}): str
 			.map((key: string) => `${key}=${params[key]}`)
 			.join('&'),
 	);
-}
-
-function getSlotSizes(slot: AdSlot): string {
-	const sizes: number[][] = slot.getDefaultSizes();
-
-	if (sizes) {
-		return sizes.map((size: number[]) => size.join('x')).join('|');
-	}
-
-	return '1x1';
 }
 
 function getVideoSizes(slot: AdSlot): string {
@@ -127,15 +119,22 @@ export function buildVastUrl(
 	return vastBaseUrl + params.join('&');
 }
 
-export function buildTaglessRequestUrl(
-	adSlot: AdSlot,
-	options: Partial<TaglessSlotOptions> = {},
-): string {
+export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
-	params.push(`iu=${adSlot.getAdUnit()}`);
-	params.push(`sz=${getSlotSizes(adSlot)}`);
-	params.push(`t=${getCustomParameters(adSlot, options.targeting)}`);
+	params.push(`iu=${options.adUnit}`);
+	params.push(`sz=${options.size}`);
+
+	if (options.targeting) {
+		params.push(
+			`t=${encodeURIComponent(
+				Object.keys(options.targeting)
+					.filter((key: string) => options.targeting[key])
+					.map((key: string) => `${key}=${options.targeting[key]}`)
+					.join('&'),
+			)}`,
+		);
+	}
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
 	return displayBaseUrl + params.join('&');
