@@ -51,7 +51,7 @@ class Audigent {
 
 			let segments = au_segments.length ? au_segments : 'no_segments';
 
-			if (this.shouldSliceSegments(segments, limit)) {
+			if (this.canSliceSegments(segments, limit)) {
 				segments = segments.slice(0, limit);
 			}
 
@@ -59,7 +59,7 @@ class Audigent {
 		}
 	}
 
-	shouldSliceSegments(segments: string | [], limit: number): boolean {
+	private canSliceSegments(segments: string | [], limit: number): boolean {
 		return limit > 0 && typeof segments !== 'string';
 	}
 }
