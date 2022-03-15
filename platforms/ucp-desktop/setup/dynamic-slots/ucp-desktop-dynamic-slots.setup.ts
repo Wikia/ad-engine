@@ -39,6 +39,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getLayoutInitializerConfig(),
 			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(2),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
+			this.slotsDefinitionRepository.getQuizAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),

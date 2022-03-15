@@ -198,13 +198,22 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[FanFeed]',
 		name: 'Ready',
 	},
+	QUIZ_READY: {
+		category: '[quizConsumption]',
+		name: 'quiz opened',
+	},
+	QUIZ_AD_INJECTED: {
+		category: '[quizConsumption]',
+		name: 'ad slot injected',
+		payload: props<any>(),
+	},
 	PLATFORM_BEFORE_PAGE_CHANGE: {
 		category: '[Platform]',
 		name: 'Before page change',
 	},
 	RAIL_READY: {
-		category: '[Rail]',
-		name: 'Ready',
+		category: '[Platform]',
+		name: 'Before page change',
 	},
 	// Bidders events //
 	BIDDERS_BIDDING_DONE: {

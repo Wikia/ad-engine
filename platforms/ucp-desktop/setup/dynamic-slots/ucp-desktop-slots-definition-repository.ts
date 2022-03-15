@@ -10,6 +10,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { quizAdListener } from '../../../shared/dynamic-slots/quiz-ad-listener';
 
 @Injectable()
 export class UcpDesktopSlotsDefinitionRepository {
@@ -210,6 +211,14 @@ export class UcpDesktopSlotsDefinitionRepository {
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	getQuizAdConfig(): SlotSetupDefinition {
+		return {
+			activator: () => {
+				quizAdListener();
 			},
 		};
 	}

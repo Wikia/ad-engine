@@ -253,6 +253,10 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 				isVideo: true,
 			},
+			quiz_leaderboard: {
+				adProduct: 'quiz_leaderboard',
+				defaultSizes: [[320, 50]],
+			},
 			ntv_ad: {
 				providers: ['nativo'],
 				trackEachStatus: true,
