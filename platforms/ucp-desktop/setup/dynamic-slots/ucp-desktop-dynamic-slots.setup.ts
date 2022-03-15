@@ -39,7 +39,6 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getLayoutInitializerConfig(),
 			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(2),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig(),
-			this.slotsDefinitionRepository.getQuizAdConfig(),
 			this.slotsDefinitionRepository.getTopLeaderboardConfig(),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
@@ -50,6 +49,9 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
+		});
+		communicationService.on(eventsRepository.QUIZ_READY, () => {
+			insertSlots([this.slotsDefinitionRepository.getQuizAdConfig()]);
 		});
 	}
 
