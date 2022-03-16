@@ -262,14 +262,14 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 			},
 			quiz_leaderboard_start: {
-				adProduct: 'quiz_leaderboard',
+				adProduct: 'quiz_leaderboard_start',
 				defaultSizes: [[320, 50]],
 				group: 'quiz',
 				options: {},
 				slotNameSuffix: '',
 			},
 			quiz_leaderboard_finish: {
-				adProduct: 'quiz_leaderboard',
+				adProduct: 'quiz_leaderboard_finish',
 				defaultSizes: [[320, 50]],
 				group: 'quiz',
 				options: {},

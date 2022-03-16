@@ -74,6 +74,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				});
 			});
 		}
+
+		communicationService.on(
+			eventsRepository.QUIZ_AD_INJECTED,
+			(payload) => {
+				insertSlots([this.slotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
+			},
+			false,
+		);
 	}
 
 	private configureTopLeaderboardAndCompanions(): void {

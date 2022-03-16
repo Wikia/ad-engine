@@ -198,10 +198,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[FanFeed]',
 		name: 'Ready',
 	},
-	QUIZ_READY: {
-		category: '[quizConsumption]',
-		name: 'quiz opened',
-	},
 	QUIZ_AD_INJECTED: {
 		category: '[quizConsumption]',
 		name: 'ad slot injected',
