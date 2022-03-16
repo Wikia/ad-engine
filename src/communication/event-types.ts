@@ -201,7 +201,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	QUIZ_AD_INJECTED: {
 		category: '[quizConsumption]',
 		name: 'ad slot injected',
-		payload: props<any>(),
+		payload: props<{ slotId: string }>(),
 	},
 	PLATFORM_BEFORE_PAGE_CHANGE: {
 		category: '[Platform]',
