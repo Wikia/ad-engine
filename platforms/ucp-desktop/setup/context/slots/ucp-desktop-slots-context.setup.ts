@@ -186,7 +186,14 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				providers: ['nativo'],
 				trackEachStatus: true,
 			},
-			quiz_leaderboard: {
+			quiz_leaderboard_start: {
+				adProduct: 'quiz_leaderboard',
+				defaultSizes: [[728, 90]],
+				group: 'quiz',
+				options: {},
+				slotNameSuffix: '',
+			},
+			quiz_leaderboard_finish: {
 				adProduct: 'quiz_leaderboard',
 				defaultSizes: [[728, 90]],
 				group: 'quiz',
