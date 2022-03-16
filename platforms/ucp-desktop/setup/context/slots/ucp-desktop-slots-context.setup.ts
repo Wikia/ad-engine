@@ -6,16 +6,6 @@ import { Injectable } from '@wikia/dependency-injection';
 export class UcpDesktopSlotsContextSetup implements DiProcess {
 	execute(): void {
 		const slots = {
-			layout_initializer: {
-				initCall: true,
-				adProduct: 'layout_initializer',
-				slotNameSuffix: '',
-				group: 'LIS',
-				defaultSizes: [[1, 1]],
-				targeting: {
-					loc: 'pre',
-				},
-			},
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
@@ -73,6 +63,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 			},
 			incontent_boxad_1: {
+				lazyCall: true,
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
 				slotNameSuffix: '',
@@ -94,6 +85,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 			},
 			bottom_leaderboard: {
+				lazyCall: true,
 				adProduct: 'bottom_leaderboard',
 				slotNameSuffix: '',
 				group: 'PF',

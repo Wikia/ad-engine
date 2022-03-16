@@ -139,7 +139,18 @@ export class BaseContextSetup implements DiProcess {
 
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
+
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
+		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
+		context.set(
+			'services.audigent.audienceTagScriptUrl',
+			this.instantConfig.get('icAudigentAudienceTagScriptUrl'),
+		);
+		context.set(
+			'services.audigent.segmentsScriptUrl',
+			this.instantConfig.get('icAudigentSegmentsScriptUrl'),
+		);
+
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
@@ -152,6 +163,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
 
 		this.setupOutstreamPlayers();
 	}

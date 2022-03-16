@@ -3,7 +3,6 @@ import { isObject } from 'util';
 import { adaptersRegistry } from './adapters-registry';
 import { PrebidAdapterConfig } from './prebid-models';
 
-const lazyLoadSlots = ['bottom_leaderboard'];
 const uuidKey = 'hb_uuid';
 const videoType = 'video';
 
@@ -17,25 +16,16 @@ function isUsedAsAlias(code): boolean {
 	});
 }
 
-function isSlotApplicable(code, lazyLoad): boolean {
-	const isSlotLazy = lazyLoadSlots.indexOf(code) !== -1;
-	const isSlotLazyIgnored =
-		lazyLoad !== 'off' &&
-		((lazyLoad === 'pre' && isSlotLazy) || (lazyLoad === 'post' && !isSlotLazy));
-
+function isSlotApplicable(code): boolean {
 	// This can be simplified once we get rid of uppercase slot names
-	const isSlotDisabled = context.get(`slots.${code}`)
-		? !slotService.getState(code)
-		: !isUsedAsAlias(code);
-
-	return !(isSlotDisabled || isSlotLazyIgnored);
+	return context.get(`slots.${code}`) ? slotService.getState(code) : isUsedAsAlias(code);
 }
 
 function isValidPrice(bid: PrebidBidResponse): boolean {
 	return bid.getStatusCode && bid.getStatusCode() === validResponseStatusCode;
 }
 
-export function setupAdUnits(lazyLoad = 'off'): PrebidAdUnit[] {
+export function setupAdUnits(): PrebidAdUnit[] {
 	const adUnits: PrebidAdUnit[] = [];
 
 	adaptersRegistry.getAdapters().forEach((adapter) => {
@@ -43,7 +33,7 @@ export function setupAdUnits(lazyLoad = 'off'): PrebidAdUnit[] {
 			const adapterAdUnits = adapter.prepareAdUnits();
 
 			adapterAdUnits.forEach((adUnit) => {
-				if (adUnit && isSlotApplicable(adUnit.code, lazyLoad)) {
+				if (adUnit && isSlotApplicable(adUnit.code)) {
 					adUnits.push(adUnit);
 				}
 			});
