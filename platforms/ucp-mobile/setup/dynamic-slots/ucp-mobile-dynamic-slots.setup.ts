@@ -20,6 +20,7 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+import { QuizSlotsDefinitionRepository } from '../../../shared/dynamic-slots/quiz-slots-definition-repository';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
@@ -33,6 +34,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 	) {}
 
 	execute(): void {
@@ -78,7 +80,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,
 			(payload) => {
-				insertSlots([this.slotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
+				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
 			},
 			false,
 		);

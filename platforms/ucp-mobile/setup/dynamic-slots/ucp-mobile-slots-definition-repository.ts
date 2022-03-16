@@ -343,14 +343,6 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
-	getQuizAdConfig(slotName): SlotSetupDefinition {
-		return {
-			activator: () => {
-				context.push('state.adStack', { id: slotName });
-			},
-		};
-	}
-
 	private isInvisibleHighImpactApplicable(): boolean {
 		return !this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
 	}
