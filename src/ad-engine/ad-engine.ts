@@ -77,18 +77,34 @@ export class AdEngine {
 		if (!this.adStack.start) {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
-				const providersChain = context.get(`slots.${ad.id}.providers`) || [];
-				slotService.add(adSlot);
 
-				if (providersChain.length > 0) {
-					// TODO: this is PoC and most likely we'll extend it and move to the AdLayoutBuilder (ADEN-11388)
-					const providerName = providersChain.shift();
-					const provider = this.createProvider(providerName);
-					provider.fillIn(adSlot);
+				if (adSlot.isFirstCall() || !context.get('bidders.prebid.multiAuction')) {
+					this.pushSlot(adSlot);
 				} else {
-					this.defaultProvider.fillIn(adSlot);
+					communicationService.on(
+						adSlot.isLazyCall()
+							? eventsRepository.BIDDERS_LAZY_STAGE_DONE
+							: eventsRepository.BIDDERS_MAIN_STAGE_DONE,
+						() => {
+							this.pushSlot(adSlot);
+						},
+					);
 				}
 			});
+		}
+	}
+
+	private pushSlot(adSlot: AdSlot): void {
+		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`) || [];
+		slotService.add(adSlot);
+
+		if (providersChain.length > 0) {
+			// TODO: this is PoC and most likely we'll extend it and move to the AdLayoutBuilder (ADEN-11388)
+			const providerName = providersChain.shift();
+			const provider = this.createProvider(providerName);
+			provider.fillIn(adSlot);
+		} else {
+			this.defaultProvider.fillIn(adSlot);
 		}
 	}
 

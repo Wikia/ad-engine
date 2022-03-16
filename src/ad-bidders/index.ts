@@ -21,7 +21,6 @@ class Bidders {
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
 			this.updateSlotTargeting(slot.getSlotName());
 		});
-
 		communicationService.on(
 			eventsRepository.BIDDERS_BIDS_REFRESH,
 			({ refreshedSlotNames }) => {

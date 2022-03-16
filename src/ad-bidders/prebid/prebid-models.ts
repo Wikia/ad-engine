@@ -2,7 +2,6 @@ import { Dictionary } from '@ad-engine/core';
 
 export type PrebidConfig = {
 	enabled: boolean;
-	lazyLoadingEnabled: boolean;
 	bidsRefreshing: {
 		slots: string[];
 	};

@@ -73,6 +73,10 @@ export const adSlotFake = {
 		return this.config.firstCall;
 	},
 
+	isLazyCall(): boolean {
+		return this.config.lazyCall;
+	},
+
 	isRepeatable(): boolean {
 		return false;
 	},
