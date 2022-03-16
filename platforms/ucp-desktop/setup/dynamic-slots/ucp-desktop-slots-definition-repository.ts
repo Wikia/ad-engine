@@ -216,12 +216,6 @@ export class UcpDesktopSlotsDefinitionRepository {
 
 	getQuizAdConfig(slotName): SlotSetupDefinition {
 		return {
-			// slotCreatorConfig: {
-			// 	slotName,
-			// 	anchorSelector: `#${slotName}`,
-			// 	insertMethod: 'prepend',
-			// 	classList: ['hide', 'ad-slot'],
-			// },
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
 			},
