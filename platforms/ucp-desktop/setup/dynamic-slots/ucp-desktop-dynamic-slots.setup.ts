@@ -54,8 +54,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		});
 		communicationService.on(
 			eventsRepository.QUIZ_AD_INJECTED,
-			(payload) => {
-				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
+			({ slotId }) => {
+				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(slotId)]);
 			},
 			false,
 		);
