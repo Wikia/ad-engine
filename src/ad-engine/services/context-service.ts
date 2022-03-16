@@ -22,7 +22,6 @@ const contextObject: ContextObject = {
 		},
 		prebid: {
 			enabled: false,
-			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				slots: [],
 			},

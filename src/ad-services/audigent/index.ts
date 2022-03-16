@@ -2,8 +2,8 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'audigent';
-const audienceTagScriptUrl = 'https://a.ad.gt/api/v1/u/matches/158';
-const segmentsScriptUrl = 'https://seg.ad.gt/api/v1/segments.js';
+const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 
 class Audigent {
 	private isLoaded = false;
@@ -23,23 +23,16 @@ class Audigent {
 			return;
 		}
 
+		const audienceTagScriptUrl =
+			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
+		const segmentsScriptUrl =
+			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
+
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
 			context.set('targeting.AU_SEG', '-1');
 
-			utils.scriptLoader
-				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					if (context.get('wiki.targeting.adTagManagerTags.gnre')?.includes('3rdpersonshooter')) {
-						utils.logger(logGroup, 'manually pushing 3rdpersonshooter tag');
-						window.au.push({
-							category: 'tags',
-							data: ['GENRE > 3RDPERSONSHOOTER'],
-						});
-					} else {
-						utils.logger(logGroup, 'skips manual push of tags');
-					}
-				});
+			utils.scriptLoader.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first');
 
 			utils.scriptLoader
 				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
@@ -54,10 +47,20 @@ class Audigent {
 	setup(): void {
 		if (typeof window['au_seg'] !== 'undefined') {
 			const au_segments = window['au_seg'].segments || [];
-			const segments = au_segments.length ? au_segments : 'no_segments';
+			const limit = context.get('services.audigent.segmentLimit') || 0;
+
+			let segments = au_segments.length ? au_segments : 'no_segments';
+
+			if (this.canSliceSegments(segments, limit)) {
+				segments = segments.slice(0, limit);
+			}
 
 			context.set('targeting.AU_SEG', segments);
 		}
+	}
+
+	private canSliceSegments(segments: string | [], limit: number): boolean {
+		return limit > 0 && typeof segments !== 'string';
 	}
 }
 

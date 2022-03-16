@@ -108,6 +108,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			incontent_player: {
+				lazyCall: true,
 				adProduct: 'incontent_player',
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
@@ -149,6 +150,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			interstitial: {
+				lazyCall: true,
 				adProduct: 'interstitial',
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',
@@ -162,6 +164,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			floor_adhesion: {
+				lazyCall: true,
 				adProduct: 'floor_adhesion',
 				defaultClasses: ['hide'],
 				slotNameSuffix: '',

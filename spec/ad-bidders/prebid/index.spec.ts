@@ -5,7 +5,6 @@ import { createSandbox } from 'sinon';
 import { stubPbjs } from '../../ad-engine/services/pbjs.stub';
 
 const bidderConfig = {
-	lazyLoadingEnabled: false,
 	enabled: false,
 };
 

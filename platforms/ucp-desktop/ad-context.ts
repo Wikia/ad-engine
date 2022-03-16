@@ -21,9 +21,13 @@ export const basicContext = {
 		},
 		prebid: {
 			enabled: false,
-			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				slots: ['incontent_boxad_1'],
+			},
+			stagesSlots: {
+				init: ['top_leaderboard', 'featured'],
+				main: ['top_boxad', 'incontent_player'],
+				lazy: ['incontent_boxad_1', 'bottom_leaderboard'],
 			},
 		},
 	},

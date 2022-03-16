@@ -19,6 +19,13 @@ describe('Audigent', () => {
 
 	afterEach(() => {
 		sandbox.restore();
+		window['au_seg'] = undefined;
+
+		context.set('services.audigent.enabled', undefined);
+		context.set('options.trackingOptIn', undefined);
+		context.set('options.optOutSale', undefined);
+		context.set('wiki.targeting.directedAtChildren', undefined);
+		context.set('services.audigent.limit', undefined);
 	});
 
 	it('Audigent is called', async () => {
@@ -57,5 +64,78 @@ describe('Audigent', () => {
 		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('Audigent key-val is set to -1 when API is too slow', async () => {
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal('-1');
+	});
+
+	it('Audigent key-val is set to no_segments when no segments from API', async () => {
+		window['au_seg'] = { segments: [] };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
+	});
+
+	it('Audigent key-val is set to given segments when API response with some', async () => {
+		const mockedSegments = ['AUG_SEG_TEST_1', 'AUG_AUD_TEST_1'];
+		window['au_seg'] = { segments: mockedSegments };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
+	});
+
+	it('Audigent key-val length keeps the limit', async () => {
+		context.set('services.audigent.segmentLimit', 6);
+		const mockedSegments = [
+			'AUG_SEG_TEST_1',
+			'AUG_SEG_TEST_2',
+			'AUG_SEG_TEST_3',
+			'AUG_SEG_TEST_4',
+			'AUG_SEG_TEST_5',
+			'AUG_AUD_TEST_1',
+			'AUG_AUD_TEST_2',
+			'AUG_AUD_TEST_3',
+			'AUG_AUD_TEST_4',
+			'AUG_AUD_TEST_5',
+		];
+		const expectedSegements = [
+			'AUG_SEG_TEST_1',
+			'AUG_SEG_TEST_2',
+			'AUG_SEG_TEST_3',
+			'AUG_SEG_TEST_4',
+			'AUG_SEG_TEST_5',
+			'AUG_AUD_TEST_1',
+		];
+		window['au_seg'] = { segments: mockedSegments };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
+	});
+
+	it('Audigent key-val length ignores limit if it is higher than returned segments', async () => {
+		context.set('services.audigent.segmentLimit', 20);
+		const mockedSegments = [
+			'AUG_SEG_TEST_1',
+			'AUG_SEG_TEST_2',
+			'AUG_SEG_TEST_3',
+			'AUG_SEG_TEST_4',
+			'AUG_SEG_TEST_5',
+			'AUG_AUD_TEST_1',
+			'AUG_AUD_TEST_2',
+			'AUG_AUD_TEST_3',
+			'AUG_AUD_TEST_4',
+			'AUG_AUD_TEST_5',
+		];
+		window['au_seg'] = { segments: mockedSegments };
+
+		audigent.setup();
+
+		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
 	});
 });
