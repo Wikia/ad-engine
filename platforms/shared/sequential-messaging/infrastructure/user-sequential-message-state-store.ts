@@ -8,7 +8,7 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 	constructor(private cookies: Cookies.CookiesStatic) {}
 
 	set(userState: UserSequentialMessageState): void {
-		this.cookies.set(this.cookieName, JSON.stringify(userState));
+		this.cookies.set(this.cookieName, JSON.stringify(userState), { domain: 'fandom.com' });
 	}
 
 	get(): UserSequentialMessageState {
@@ -21,6 +21,6 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 	}
 
 	delete() {
-		this.cookies.remove(this.cookieName);
+		this.cookies.remove(this.cookieName, { domain: 'fandom.com' });
 	}
 }

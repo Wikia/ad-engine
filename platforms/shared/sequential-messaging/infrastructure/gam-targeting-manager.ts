@@ -16,6 +16,8 @@ export class GamTargetingManager implements TargetingManagerInterface {
 			this.generateSizeMapping(userState.width, userState.height),
 		);
 		this.context.set('targeting.uap', sequenceId);
+		// This is needed for F2 / News & stories
+		this.context.set('slots.top_leaderboard.targeting.uap', sequenceId);
 	}
 
 	private generateSizeMapping(width: number, height: number) {

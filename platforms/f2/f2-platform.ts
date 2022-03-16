@@ -4,6 +4,7 @@ import {
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
+	SequentialMessagingSetup,
 	TrackingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -41,6 +42,7 @@ export class F2Platform {
 			F2BaseContextSetup,
 			F2SlotsContextSetup,
 			F2TargetingSetup,
+			SequentialMessagingSetup,
 			F2DynamicSlotsSetup,
 			F2TemplatesSetup,
 			LabradorSetup,
