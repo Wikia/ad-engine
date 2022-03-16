@@ -14,6 +14,7 @@ import {
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	liveConnect,
 	nielsen,
 	Runner,
 	silverSurferService,
@@ -67,6 +68,7 @@ export class UcpMobileAdsMode implements DiProcess {
 
 		adMarketplace.initialize();
 		identityHub.call();
+		liveConnect.call();
 
 		return inhibitors;
 	}
