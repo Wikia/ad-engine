@@ -1,9 +1,11 @@
 import {
 	communicationService,
+	context,
 	DiProcess,
 	globalAction,
 	InstantConfigCacheStorage,
 	InstantConfigService,
+	pbjsFactory,
 } from '@wikia/ad-engine';
 import { Container, Injectable } from '@wikia/dependency-injection';
 import { props } from 'ts-action';
@@ -23,5 +25,14 @@ export class InstantConfigSetup implements DiProcess {
 		this.container.bind(InstantConfigService).value(instantConfig);
 		this.container.bind(InstantConfigCacheStorage).value(InstantConfigCacheStorage.make());
 		communicationService.dispatch(setInstantConfig({ instantConfig }));
+
+		this.preloadLibraries(instantConfig);
+	}
+
+	private preloadLibraries(instantConfig: InstantConfigService) {
+		if (instantConfig.get('icPrebid')) {
+			context.set('bidders.prebid.libraryUrl', instantConfig.get('icPrebidVersion'));
+			pbjsFactory.init();
+		}
 	}
 }

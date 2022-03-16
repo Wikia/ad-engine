@@ -41,6 +41,7 @@ export interface SlotConfig {
 	disableExpandAnimation?: boolean;
 	initCall?: boolean;
 	firstCall?: boolean;
+	lazyCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
 	insertBeforeSelector?: string;
@@ -384,6 +385,10 @@ export class AdSlot {
 
 	isFirstCall(): boolean {
 		return !!this.config.firstCall;
+	}
+
+	isLazyCall(): boolean {
+		return !!this.config.lazyCall;
 	}
 
 	isViewed(): boolean {
