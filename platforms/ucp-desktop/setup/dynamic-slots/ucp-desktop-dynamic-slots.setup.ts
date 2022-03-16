@@ -50,9 +50,14 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
 		});
-		communicationService.on(eventsRepository.QUIZ_READY, () => {
-			insertSlots([this.slotsDefinitionRepository.getQuizAdConfig()]);
-		});
+		communicationService.on(
+			eventsRepository.QUIZ_AD_INJECTED,
+			(payload) => {
+				console.log('quiz dupadupa', payload);
+				insertSlots([this.slotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
+			},
+			false,
+		);
 	}
 
 	private configureTopLeaderboardAndCompanions(): void {
