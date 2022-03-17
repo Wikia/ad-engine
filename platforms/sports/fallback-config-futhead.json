@@ -333,6 +333,19 @@
             "value": true
         }
     ],
+    "icAudigentSegmentLimit": [
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 25
+        }
+    ],
     "icAdEngineDelay": [
         {
             "apps": [
