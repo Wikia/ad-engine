@@ -3,9 +3,18 @@ import { universalAdPackage } from '../../../templates';
 
 export class JWPlayerInhibitor {
 	private promise: utils.ExtendedPromise<void>;
+	private videoLines: Array<string>;
 
 	private isEnabled(): boolean {
-		return context.get('custom.hasFeaturedVideo') && context.get('options.video.isUAPJWPEnabled');
+		if (!this.videoLines) {
+			this.videoLines = context.get('options.video.uapJWPLineItemIds') || [];
+		}
+
+		return (
+			context.get('custom.hasFeaturedVideo') &&
+			context.get('options.video.isUAPJWPEnabled') &&
+			this.videoLines.length > 0
+		);
 	}
 
 	get(): Promise<void> {
@@ -21,7 +30,7 @@ export class JWPlayerInhibitor {
 			return;
 		}
 
-		if (lineItemId && creativeId) {
+		if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
 		}
 

@@ -25,6 +25,9 @@ export const GAMOrigins: string[] = [
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function(...args: any): void {
 		setTimeout(() => {
+			window.googletag = window.googletag || ({} as googletag.Googletag);
+			window.googletag.cmd = window.googletag.cmd || [];
+
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
 	};
@@ -124,9 +127,6 @@ function adjustIframeSize(adSlot: AdSlot): void {
 
 export class GptProvider implements Provider {
 	constructor() {
-		window.googletag = window.googletag || ({} as googletag.Googletag);
-		window.googletag.cmd = window.googletag.cmd || [];
-
 		this.init();
 	}
 
