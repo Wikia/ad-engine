@@ -606,7 +606,7 @@
             "regions": [
                 "CA"
             ],
-            "sampling": 10.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -2563,6 +2563,17 @@
             "value": true
         }
     ],
+    "icAudigentSegmentLimit": [
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 25
+        }
+    ],
     "icStroer": [
         {
             "apps": [
@@ -2977,29 +2988,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidConfiguration": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": {
-                "multiAuction": true,
-                "stagesTimeouts": {
-                    "init": 1500,
-                    "lazy": 2000,
-                    "main": 2000
-                },
-                "stagesIntervals": {
-                    "lazy": 500,
-                    "main": 0
-                }
-            }
         }
     ],
     "icDurationMedia": [
