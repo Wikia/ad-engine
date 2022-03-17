@@ -1,4 +1,4 @@
-import { context, handleUpdateCorrelator, slotService } from '@wikia/ad-engine';
+import { context, slotService } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 import { SlotSetupDefinition } from '../utils/insert-slots';
@@ -11,7 +11,6 @@ export class QuizSlotsDefinitionRepository {
 				const slot = slotService.get(slotName);
 				if (slot) {
 					slotService.remove(slot);
-					handleUpdateCorrelator();
 				}
 				context.push('state.adStack', { id: slotName });
 			},

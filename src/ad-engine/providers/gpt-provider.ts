@@ -122,10 +122,6 @@ function adjustIframeSize(adSlot: AdSlot): void {
 	}
 }
 
-export function handleUpdateCorrelator(): void {
-	window.googletag.pubads().updateCorrelator();
-}
-
 export class GptProvider implements Provider {
 	constructor() {
 		window.googletag = window.googletag || ({} as googletag.Googletag);
@@ -232,7 +228,7 @@ export class GptProvider implements Provider {
 
 	@decorate(postponeExecutionUntilGptLoads)
 	updateCorrelator(): void {
-		handleUpdateCorrelator();
+		window.googletag.pubads().updateCorrelator();
 	}
 
 	private flush(): void {

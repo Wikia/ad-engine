@@ -2,6 +2,7 @@ import {
 	insertSlots,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
+	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -17,7 +18,6 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { QuizSlotsDefinitionRepository } from '../../../shared/dynamic-slots/quiz-slots-definition-repository';
 import { UcpDesktopSlotsDefinitionRepository } from './ucp-desktop-slots-definition-repository';
 
 @Injectable()

@@ -3,6 +3,7 @@ import {
 	MessageBoxService,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
+	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -20,7 +21,6 @@ import {
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { QuizSlotsDefinitionRepository } from '../../../shared/dynamic-slots/quiz-slots-definition-repository';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
 
 @Injectable()
