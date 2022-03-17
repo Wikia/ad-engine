@@ -127,6 +127,9 @@ function adjustIframeSize(adSlot: AdSlot): void {
 
 export class GptProvider implements Provider {
 	constructor() {
+		window.googletag = window.googletag || ({} as googletag.Googletag);
+		window.googletag.cmd = window.googletag.cmd || [];
+
 		this.init();
 	}
 
