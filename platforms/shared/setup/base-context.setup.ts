@@ -99,6 +99,10 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isUAPJWPEnabled', this.instantConfig.get('icUAPJWPlayer'));
 		context.set(
+			'options.video.uapJWPLineItemIds',
+			this.instantConfig.get('icUAPJWPlayerLineItemIds'),
+		);
+		context.set(
 			'options.video.moatTracking.enabledForArticleVideos',
 			this.instantConfig.get('icFeaturedVideoMoatTracking'),
 		);
