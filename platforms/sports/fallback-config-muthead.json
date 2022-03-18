@@ -337,6 +337,19 @@
         {
             "apps": [
                 "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": 50
+        },
+        {
+            "apps": [
+                "f2",
                 "futhead",
                 "muthead"
             ],

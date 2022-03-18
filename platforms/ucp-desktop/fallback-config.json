@@ -143,6 +143,23 @@
             "value": 4000
         }
     ],
+    "icUAPJWPlayerLineItemIds": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "5772218156",
+                "5923551774",
+                "5901640938"
+            ]
+        }
+    ],
     "icAudigent": [
         {
             "apps": [
@@ -2223,7 +2240,8 @@
                 "5938352782",
                 "5942499064",
                 "5943444128",
-                "5946030709"
+                "5946030709",
+                "5951191590"
             ]
         }
     ],
@@ -2426,6 +2444,19 @@
         }
     ],
     "icAudigentSegmentLimit": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": 50
+        },
         {
             "apps": [
                 "fandomdesktop"
