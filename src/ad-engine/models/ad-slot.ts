@@ -44,6 +44,7 @@ export interface SlotConfig {
 	lazyCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
+	slotNameSuffix: string;
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
@@ -147,6 +148,7 @@ export class AdSlot {
 		}
 
 		this.config.slotName = this.config.slotName || ad.id;
+		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
 		this.config.targeting = this.config.targeting || ({} as Targeting);
 		this.config.targeting.src = this.config.targeting.src || context.get('src');
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
