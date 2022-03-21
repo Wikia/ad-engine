@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "110.1.0",
+	"version": "110.3.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -11,12 +11,12 @@
 		"url": "https://github.com/Wikia/AdEngine"
 	},
 	"dependencies": {
-		"@babel/runtime-corejs2": "^7.3.1",
+		"@babel/runtime-corejs2": "7.17.7",
 		"@wikia/dependency-injection": "2.2.3",
 		"@wikia/post-quecast": "2.0.1",
 		"blockadblock": "^3.2.1",
 		"core-decorators": "^0.20.0",
-		"current-device": "^0.7.8",
+		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
 		"rxjs": "7.5.2",
 		"ts-action": "^11.0.0",
@@ -69,7 +69,6 @@
 		"string-replace-loader": "3.1.0",
 		"ts-node": "8.3.0",
 		"tsconfig-paths": "3.8.0",
-		"tscpaths": "github:wikia/tscpaths#release",
 		"tslib": "1.10.0",
 		"typescript": "3.8.3",
 		"util": "0.12.4",

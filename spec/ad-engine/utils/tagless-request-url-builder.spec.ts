@@ -26,7 +26,6 @@ describe('tagless-request-url-builder', () => {
 			slots: {
 				layout_initializer: {
 					adProduct: 'layout_initializer',
-					slotNameSuffix: '',
 					group: 'LIS',
 					defaultSizes: [[32, 32]],
 				},

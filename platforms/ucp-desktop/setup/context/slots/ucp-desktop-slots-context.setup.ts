@@ -10,10 +10,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				aboveTheFold: true,
 				firstCall: true,
 				adProduct: 'top_leaderboard',
-				slotNameSuffix: '',
 				group: 'LB',
 				options: {},
-				slotShortcut: 'l',
 				sizes: [
 					{
 						viewportSize: [1024, 0],
@@ -48,10 +46,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			top_boxad: {
 				adProduct: 'top_boxad',
 				aboveTheFold: true,
-				slotNameSuffix: '',
 				group: 'MR',
 				options: {},
-				slotShortcut: 'm',
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
@@ -66,12 +62,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				lazyCall: true,
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
-				slotNameSuffix: '',
 				group: 'HiVi',
 				insertBeforeSelector: '#incontent_boxad_1',
 				recirculationElementSelector: '#recirculation-rail',
 				options: {},
-				slotShortcut: 'f',
 				sizes: [],
 				defaultSizes: [
 					[120, 600],
@@ -87,10 +81,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			bottom_leaderboard: {
 				lazyCall: true,
 				adProduct: 'bottom_leaderboard',
-				slotNameSuffix: '',
 				group: 'PF',
 				options: {},
-				slotShortcut: 'b',
 				sizes: [
 					{
 						viewportSize: [1024, 0],
@@ -125,9 +117,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				audio: false,
 				isVideo: true,
 				insertBeforeSelector: '#mw-content-text > div > h2',
-				slotNameSuffix: '',
 				group: 'HiVi',
-				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'middle',
@@ -137,7 +127,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				slotNameSuffix: '',
 				group: 'PF',
 				options: {},
 				targeting: {
@@ -149,7 +138,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			invisible_high_impact_2: {
 				adProduct: 'invisible_high_impact_2',
-				slotNameSuffix: '',
 				group: 'PX',
 				options: {},
 				outOfPage: true,
@@ -160,7 +148,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			featured: {
 				adProduct: 'featured',
-				slotNameSuffix: '',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
 				targeting: {
