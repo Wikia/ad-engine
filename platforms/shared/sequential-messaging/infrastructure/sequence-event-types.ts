@@ -14,6 +14,12 @@ export class SequenceEventTypes {
 		payload: props<any>(),
 	};
 	// This event is fired in a GAM template
+	static readonly SEQUENTIAL_MESSAGING_INTERMEDIATE: SequenceEventOptions = {
+		category: '[iframe]',
+		name: 'Sequential messaging intermediate step',
+		payload: props<any>(),
+	};
+	// This event is fired in a GAM template
 	static readonly SEQUENTIAL_MESSAGING_END: SequenceEventOptions = {
 		category: '[iframe]',
 		name: 'Sequential messaging end',

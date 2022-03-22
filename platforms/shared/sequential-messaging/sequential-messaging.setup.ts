@@ -35,6 +35,7 @@ export class SequentialMessagingSetup {
 		const sequenceHandler = new SequenceContinuationHandler(
 			new UserSequentialMessageStateStore(Cookies),
 			new GamTargetingManager(context, slotsContext),
+			this.onIntermediateStepLoaded,
 		);
 
 		sequenceHandler.handleOngoingSequence();
@@ -44,6 +45,12 @@ export class SequentialMessagingSetup {
 		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_END, () => {
 			const sequenceHandler = new SequenceEndHandler(new UserSequentialMessageStateStore(Cookies));
 			sequenceHandler.endSequence();
+		});
+	}
+
+	private onIntermediateStepLoaded(storeState: () => void) {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_INTERMEDIATE, () => {
+			storeState();
 		});
 	}
 }

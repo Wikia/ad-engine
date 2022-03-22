@@ -6,6 +6,7 @@ export class SequenceContinuationHandler {
 	constructor(
 		private userStateStore: UserSequentialMessageStateStoreInterface,
 		private targetingManager: TargetingManagerInterface,
+		private onIntermediateStepLoad: (stateStore: () => void) => void,
 	) {}
 
 	handleOngoingSequence(): void {
@@ -19,7 +20,7 @@ export class SequenceContinuationHandler {
 			userState[sequenceId].stepNo++;
 			const sequenceState = userState[sequenceId];
 			this.targetingManager.setTargeting(sequenceId, sequenceState);
-			this.userStateStore.set(userState);
+			this.onIntermediateStepLoad(() => this.userStateStore.set(userState));
 		}
 	}
 }

@@ -17,6 +17,9 @@ describe('Sequence Continuation Handler', () => {
 	it('Handle an ongoing Sequence', () => {
 		const userStateStoreSpy = makeUserStateStoreSpy();
 		const targetingManagerSpy = makeTargetingManagerSpy();
+		const onIntermediateStepLoadMock = (stateStore: () => void) => {
+			stateStore();
+		};
 		userStateStoreSpy.get.returns(userInitialStateAfterSecondStep);
 		const expectedSequenceStateAfterStateUpdate = {
 			stepNo: 3,
@@ -24,7 +27,11 @@ describe('Sequence Continuation Handler', () => {
 			height: sampleHeight,
 		};
 
-		const sh = new SequenceContinuationHandler(userStateStoreSpy, targetingManagerSpy);
+		const sh = new SequenceContinuationHandler(
+			userStateStoreSpy,
+			targetingManagerSpy,
+			onIntermediateStepLoadMock,
+		);
 		sh.handleOngoingSequence();
 
 		expect(sh).to.be.instanceOf(SequenceContinuationHandler);
