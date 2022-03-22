@@ -93,6 +93,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
+	AD_ENGINE_IN_IFRAME: {
+		category: '[Ad Engine]',
+		name: 'AdEngine in iframe',
+	},
 	AD_ENGINE_MESSAGE_BOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
