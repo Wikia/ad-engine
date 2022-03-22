@@ -343,8 +343,9 @@
                 "muthead"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
+            "sampling": 10.0,
             "value": 50
         },
         {
