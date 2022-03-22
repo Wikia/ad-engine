@@ -2,7 +2,8 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'ad-click-tracker';
-const celtraInterstitialBannerId = 'celtra-object-37';
+const celtraInterstitialBannerId = 'celtra-banner';
+const celtraInterstitialSelector = '#celtra-banner .celtra-screen-container';
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -95,17 +96,26 @@ class AdClickTracker {
 	private addCeltraInterstitialClickTrackingListener(
 		callback: FuncPipelineStep<AdClickContext>,
 	): void {
+		let alreadyHandled = false;
 		const observer = new MutationObserver(() => {
-			const celtraIframe = document.querySelector('.notranslate > iframe') as HTMLIFrameElement;
-			if (celtraIframe) {
-				const celtraBanner = celtraIframe.contentWindow.document.getElementById(
-					celtraInterstitialBannerId,
-				);
-				if (celtraBanner) {
-					celtraBanner.addEventListener('click', (event) => {
-						this.handleClickEvent(callback, slotService.get('top_leaderboard'), event);
-					});
-					observer.disconnect();
+			const celtraIframes = document.querySelectorAll('.notranslate > iframe') as any;
+
+			if (celtraIframes.length > 0) {
+				for (const key in celtraIframes) {
+					const celtraIframe = celtraIframes[key];
+					const celtraBanner = celtraIframe.contentDocument.querySelector(
+						celtraInterstitialSelector,
+					);
+
+					if (celtraBanner) {
+						celtraBanner.addEventListener('click', (event) => {
+							if (!alreadyHandled) {
+								alreadyHandled = true;
+								this.handleClickEvent(callback, slotService.get('top_leaderboard'), event);
+								observer.disconnect();
+							}
+						});
+					}
 				}
 			}
 		});
