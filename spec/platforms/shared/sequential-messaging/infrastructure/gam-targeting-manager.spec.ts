@@ -15,8 +15,11 @@ describe('Gam Targeting manager', () => {
 		tm.setTargeting(sequenceId, sequenceState);
 
 		sinon.assert.calledWith(slotsContextSpy.setSlotSize, 'top_leaderboard', [12, 12]);
-		sinon.assert.calledWith(contextSpy.set, 'targeting.uap', sequenceId);
-		sinon.assert.calledWith(contextSpy.set, 'slots.top_leaderboard.targeting.uap', sequenceId);
+		sinon.assert.calledWith(
+			contextSpy.set,
+			'slots.top_leaderboard.targeting.sequential',
+			sequenceId,
+		);
 		sinon.assert.calledWith(contextSpy.set, 'templates.sizeOverwritingMap', {
 			'12x12': { originalSize: [sequenceState.width, sequenceState.height] },
 			'13x13': { originalSize: [sequenceState.width, sequenceState.height] },

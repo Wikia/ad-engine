@@ -15,9 +15,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 			'templates.sizeOverwritingMap',
 			this.generateSizeMapping(userState.width, userState.height),
 		);
-		this.context.set('targeting.uap', sequenceId);
-		// This is needed for F2 / News & stories
-		this.context.set('slots.top_leaderboard.targeting.uap', sequenceId);
+		this.context.set('slots.top_leaderboard.targeting.sequential', sequenceId);
 	}
 
 	private generateSizeMapping(width: number, height: number) {
