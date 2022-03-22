@@ -8,7 +8,6 @@ export class BingeBotSlotsContextSetup implements DiProcess {
 			sponsored_logo: {
 				adProduct: 'sponsored-logo',
 				group: 'PX',
-				slotNameSuffix: '',
 				defaultSizes: [
 					[100, 46],
 					[120, 120],

@@ -333,6 +333,33 @@
             "value": true
         }
     ],
+    "icAudigentSegmentLimit": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 10.0,
+            "value": 50
+        },
+        {
+            "apps": [
+                "f2",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 25
+        }
+    ],
     "icAdEngineDelay": [
         {
             "apps": [

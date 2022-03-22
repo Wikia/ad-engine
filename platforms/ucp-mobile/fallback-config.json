@@ -146,6 +146,25 @@
             "value": 4000
         }
     ],
+    "icUAPJWPlayerLineItemIds": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "5772218156",
+                "5923551774",
+                "5901640938",
+                "314345172",
+                "5951743095"
+            ]
+        }
+    ],
     "icAudigent": [
         {
             "apps": [
@@ -456,7 +475,11 @@
             "apps": [
                 "fandommobile"
             ],
-            "value": false
+            "regions": [
+                "DE"
+            ],
+            "sampling": 50.0,
+            "value": true
         }
     ],
     "icPrebidPubmatic": [
@@ -606,7 +629,7 @@
             "regions": [
                 "CA"
             ],
-            "sampling": 10.0,
+            "sampling": 100.0,
             "value": true
         }
     ],
@@ -2346,7 +2369,8 @@
                 "5938352782",
                 "5942499064",
                 "5943444128",
-                "5946030709"
+                "5946030709",
+                "5951191590"
             ]
         }
     ],
@@ -2561,6 +2585,31 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icAudigentSegmentLimit": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 10.0,
+            "value": 50
+        },
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 25
         }
     ],
     "icStroer": [
@@ -2977,29 +3026,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidConfiguration": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": {
-                "multiAuction": true,
-                "stagesTimeouts": {
-                    "init": 1500,
-                    "lazy": 2000,
-                    "main": 2000
-                },
-                "stagesIntervals": {
-                    "lazy": 500,
-                    "main": 0
-                }
-            }
         }
     ],
     "icDurationMedia": [

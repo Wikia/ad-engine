@@ -99,6 +99,10 @@ export class BaseContextSetup implements DiProcess {
 		context.set('options.video.iasTracking.enabled', this.instantConfig.get('icIASVideoTracking'));
 		context.set('options.video.isUAPJWPEnabled', this.instantConfig.get('icUAPJWPlayer'));
 		context.set(
+			'options.video.uapJWPLineItemIds',
+			this.instantConfig.get('icUAPJWPlayerLineItemIds'),
+		);
+		context.set(
 			'options.video.moatTracking.enabledForArticleVideos',
 			this.instantConfig.get('icFeaturedVideoMoatTracking'),
 		);
@@ -163,6 +167,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
 
 		this.setupOutstreamPlayers();
 	}

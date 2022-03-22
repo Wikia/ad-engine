@@ -8,7 +8,6 @@ export class F2SlotsContextSetup implements DiProcess {
 		const slots = {
 			top_leaderboard: {
 				group: 'LB',
-				slotShortcut: 'l',
 				aboveTheFold: true,
 				firstCall: true,
 				sizes: [
@@ -65,7 +64,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				group: 'MR',
-				slotShortcut: 'm',
 				aboveTheFold: true,
 				sizes: [
 					{
@@ -102,7 +100,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			incontent_boxad: {
 				disabled: true,
 				group: 'HiVi',
-				slotShortcut: 'f',
 				sizes: [
 					{
 						viewportSize: [0, 0],
@@ -131,7 +128,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			bottom_leaderboard: {
 				disabled: true,
 				group: 'PF',
-				slotShortcut: 'b',
 				sizes: [
 					{
 						viewportSize: [840, 100],
@@ -151,7 +147,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
-				slotNameSuffix: '',
 				group: 'VIDEO',
 				targeting: {
 					uap: 'none',
@@ -161,7 +156,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				isVideo: true,
 			},
 			video: {
-				slotNameSuffix: '',
 				group: 'VIDEO',
 				targeting: {
 					uap: 'none',
