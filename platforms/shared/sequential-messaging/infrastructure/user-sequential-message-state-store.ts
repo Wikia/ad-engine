@@ -3,12 +3,17 @@ import { UserSequentialMessageState } from '../domain/data-structures/user-seque
 import { UserSequentialMessageStateStoreInterface } from '../domain/interfaces/user-sequential-message-state-store.interface';
 
 export class UserSequentialMessageStateStore implements UserSequentialMessageStateStoreInterface {
-	cookieName = 'sequential_messaging';
+	readonly cookieDaysToLive = 7;
+	readonly cookieName = 'sequential_messaging';
+	readonly cookieDomain = 'fandom.com';
 
 	constructor(private cookies: Cookies.CookiesStatic) {}
 
 	set(userState: UserSequentialMessageState): void {
-		this.cookies.set(this.cookieName, JSON.stringify(userState), { domain: 'fandom.com' });
+		this.cookies.set(this.cookieName, JSON.stringify(userState), {
+			domain: this.cookieDomain,
+			expires: this.cookieDaysToLive,
+		});
 	}
 
 	get(): UserSequentialMessageState {
@@ -21,6 +26,6 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 	}
 
 	delete() {
-		this.cookies.remove(this.cookieName, { domain: 'fandom.com' });
+		this.cookies.remove(this.cookieName, { domain: this.cookieDomain });
 	}
 }
