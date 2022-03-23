@@ -145,9 +145,10 @@ export class TrackingSetup {
 	}
 
 	private adEngineInIframeTracker(): void {
-		communicationService.on(eventsRepository.AD_ENGINE_IN_IFRAME, () => {
+		const elementFound = document.documentElement.classList.contains('in-iframe');
+		if (elementFound) {
 			this.pageTracker.trackProp('adengine_in_iframe', '1');
-		});
+		}
 	}
 
 	private adClickTracker(): void {
