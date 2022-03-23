@@ -137,6 +137,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad clicked',
 		payload: props<Dictionary>(),
 	},
+	AD_ENGINE_AD_BLOCK_DETECTED: {
+		name: 'Ad block detected',
+	},
 	// Integrated partners events //
 	ADMARKETPLACE_INIT: {
 		category: '[Search suggestions]',
