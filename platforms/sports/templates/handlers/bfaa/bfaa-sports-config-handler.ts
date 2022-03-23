@@ -1,6 +1,7 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	context,
+	slotService,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -17,7 +18,7 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
-			Object.keys(context.get('slots') || []).filter(
+			Object.keys(slotService.getAllowedSlots() || []).filter(
 				(slotName) => !enabledSlots.includes(slotName),
 			),
 		);
