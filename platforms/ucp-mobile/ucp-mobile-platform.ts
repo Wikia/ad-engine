@@ -50,7 +50,7 @@ export class UcpMobilePlatform {
 			UcpMobileDynamicSlotsSetup,
 			BiddersStateSetup,
 			UcpMobileTemplatesSetup,
-			SequentialMessagingSetup,
+			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,

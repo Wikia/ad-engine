@@ -26,7 +26,7 @@ export class LegacySetup {
 			UcpDesktopSlotsStateSetup,
 			BiddersStateSetup,
 			UcpDesktopTemplatesSetup,
-			SequentialMessagingSetup,
+			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
