@@ -67,8 +67,9 @@ class Audigent {
 
 	private trackWithExternalLoggerIfEnabled(segments: string | []) {
 		const sampling = context.get('services.audigent.tracking.sampling') || 0;
+		const randomNumber = Math.random() * 100;
 
-		if (Math.random() * 100 <= sampling && typeof segments !== 'string') {
+		if (sampling !== 0 && randomNumber <= sampling && typeof segments !== 'string') {
 			externalLogger.log('Audigent segments', {
 				segmentsNo: segments.length,
 				segments,

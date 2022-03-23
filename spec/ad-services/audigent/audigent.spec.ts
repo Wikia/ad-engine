@@ -3,7 +3,7 @@ import { createSandbox } from 'sinon';
 import { context, externalLogger, utils } from '../../../src/ad-engine';
 import { audigent } from '../../../src/ad-services';
 
-describe.only('Audigent', () => {
+describe('Audigent', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub, externalLoggerLogStub;
 
