@@ -4,12 +4,14 @@ import { SlotsContextInterface } from '../../slots/slots-context';
 import { SequenceState } from '../domain/data-structures/user-sequential-message-state';
 
 export class GamTargetingManager implements TargetingManagerInterface {
-	private baseSize = 10;
-
-	constructor(private context: ContextInterface, private slotsContext: SlotsContextInterface) {}
+	constructor(
+		private context: ContextInterface,
+		private slotsContext: SlotsContextInterface,
+		private baseTargetingSize: number,
+	) {}
 
 	setTargeting(sequenceId: string, userState: SequenceState): void {
-		const sizeSide = this.baseSize + userState.stepNo;
+		const sizeSide = this.baseTargetingSize + userState.stepNo;
 		this.slotsContext.setSlotSize('top_leaderboard', [sizeSide, sizeSide]);
 		this.context.set(
 			'templates.sizeOverwritingMap',
@@ -19,6 +21,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 	}
 
 	private generateSizeMapping(width: number, height: number) {
+		// TODO SM build this using 'computed keys'
 		return {
 			'12x12': { originalSize: [width, height] },
 			'13x13': { originalSize: [width, height] },

@@ -3,22 +3,28 @@ import { SequenceContinuationHandler } from '../../../../../platforms/shared/seq
 import { expect } from 'chai';
 import { assert } from 'sinon';
 import { makeTargetingManagerSpy } from '../test_doubles/targeting-manager.spy';
-import { UserSequentialMessageState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import {
+	SequenceState,
+	UserSequentialMessageState,
+} from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 const sequenceId = '5928558921';
 const sampleWidth = 970;
 const sampleHeight = 250;
-const initialSequenceState = { stepNo: 2, width: sampleWidth, height: sampleHeight };
-const userInitialStateAfterSecondStep: UserSequentialMessageState = {
-	5928558921: initialSequenceState,
-};
+let initialSequenceState: SequenceState;
+let userInitialStateAfterSecondStep: UserSequentialMessageState;
 
 describe('Sequence Continuation Handler', () => {
+	beforeEach(() => {
+		initialSequenceState = { stepNo: 2, width: sampleWidth, height: sampleHeight };
+		userInitialStateAfterSecondStep = { 5928558921: initialSequenceState };
+	});
+
 	it('Handle an ongoing Sequence', () => {
 		const userStateStoreSpy = makeUserStateStoreSpy();
 		const targetingManagerSpy = makeTargetingManagerSpy();
-		const onIntermediateStepLoadMock = (stateStore: () => void) => {
-			stateStore();
+		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
+			stateStore(3);
 		};
 		userStateStoreSpy.get.returns(userInitialStateAfterSecondStep);
 		const expectedSequenceStateAfterStateUpdate = {
@@ -43,5 +49,35 @@ describe('Sequence Continuation Handler', () => {
 		);
 		assert.calledOnce(userStateStoreSpy.set);
 		assert.calledWith(userStateStoreSpy.set, userInitialStateAfterSecondStep);
+	});
+
+	it('Handle invalid step loaded', () => {
+		const userStateStoreSpy = makeUserStateStoreSpy();
+		const targetingManagerSpy = makeTargetingManagerSpy();
+		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
+			stateStore(99);
+		};
+		userStateStoreSpy.get.returns(userInitialStateAfterSecondStep);
+		const expectedSequenceStateAfterStateUpdate = {
+			stepNo: 3,
+			width: sampleWidth,
+			height: sampleHeight,
+		};
+
+		const sh = new SequenceContinuationHandler(
+			userStateStoreSpy,
+			targetingManagerSpy,
+			onIntermediateStepLoadMock,
+		);
+		sh.handleOngoingSequence();
+
+		expect(sh).to.be.instanceOf(SequenceContinuationHandler);
+		assert.calledOnce(targetingManagerSpy.setTargeting);
+		assert.calledWith(
+			targetingManagerSpy.setTargeting,
+			sequenceId,
+			expectedSequenceStateAfterStateUpdate,
+		);
+		assert.notCalled(userStateStoreSpy.set);
 	});
 });

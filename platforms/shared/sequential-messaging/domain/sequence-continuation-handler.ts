@@ -6,7 +6,7 @@ export class SequenceContinuationHandler {
 	constructor(
 		private userStateStore: UserSequentialMessageStateStoreInterface,
 		private targetingManager: TargetingManagerInterface,
-		private onIntermediateStepLoad: (stateStore: () => void) => void,
+		private onIntermediateStepLoad: (storeState: (loadedStep: number) => void) => void,
 	) {}
 
 	handleOngoingSequence(): void {
@@ -20,7 +20,17 @@ export class SequenceContinuationHandler {
 			userState[sequenceId].stepNo++;
 			const sequenceState = userState[sequenceId];
 			this.targetingManager.setTargeting(sequenceId, sequenceState);
-			this.onIntermediateStepLoad(() => this.userStateStore.set(userState));
+			this.onIntermediateStepLoad((loadedStep: number) => {
+				// TODO SM this can be pulled out of domain
+				//  when userStateStore will be able to update each sequence independently
+				// TODO SM 2 attempts counter can be added for extra safety
+				if (loadedStep !== userState[sequenceId].stepNo) {
+					console.log('HERE Invalid step loaded by the Provider!');
+					return;
+				}
+
+				this.userStateStore.set(userState);
+			});
 		}
 	}
 }
