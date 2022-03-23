@@ -21,9 +21,7 @@ export class SequenceContinuationHandler {
 			const sequenceState = userState[sequenceId];
 			this.targetingManager.setTargeting(sequenceId, sequenceState);
 			this.onIntermediateStepLoad((loadedStep: number) => {
-				// TODO SM this can be pulled out of domain
-				//  when userStateStore will be able to update each sequence independently
-				// TODO SM 2 attempts counter can be added for extra safety
+				// TODO SM attempts counter can be added for extra safety
 				if (loadedStep !== userState[sequenceId].stepNo) {
 					console.log('[SM] Invalid step loaded by the Provider!');
 					return;

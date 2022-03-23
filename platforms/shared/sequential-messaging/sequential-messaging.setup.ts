@@ -20,7 +20,11 @@ export class SequentialMessagingSetup {
 	}
 
 	async execute(): Promise<void> {
-		this.handleSequenceStart();
+		// This will only work when we assume allowing one sequence at a time to be in progress
+		if (this.userStateStore.get() == null) {
+			this.handleSequenceStart();
+			return;
+		}
 		this.handleOngoingSequence();
 		this.handleSequenceEnd();
 	}
