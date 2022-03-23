@@ -25,7 +25,7 @@ export class SequenceContinuationHandler {
 				//  when userStateStore will be able to update each sequence independently
 				// TODO SM 2 attempts counter can be added for extra safety
 				if (loadedStep !== userState[sequenceId].stepNo) {
-					console.log('HERE Invalid step loaded by the Provider!');
+					console.log('[SM] Invalid step loaded by the Provider!');
 					return;
 				}
 

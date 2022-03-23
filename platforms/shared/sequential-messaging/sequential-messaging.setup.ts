@@ -61,7 +61,7 @@ export class SequentialMessagingSetup {
 			// TODO SM extract the 12 and 14 number to a shared parameters
 			//  to be ued here and in GamTargetingManager.generateSizeMapping
 			if (payload.height == null || 12 > payload.height || payload.height > 14) {
-				console.log('HERE Invalid Creative configuration');
+				console.log('[SM] Invalid Creative configuration');
 				return false;
 			}
 
