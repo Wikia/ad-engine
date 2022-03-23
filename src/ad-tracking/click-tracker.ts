@@ -96,26 +96,22 @@ class AdClickTracker {
 	private addCeltraInterstitialClickTrackingListener(
 		callback: FuncPipelineStep<AdClickContext>,
 	): void {
-		let alreadyHandled = false;
 		const observer = new MutationObserver(() => {
-			const celtraIframes = document.querySelectorAll('.notranslate > iframe') as any;
+			const celtraIframe = document.querySelector('.notranslate > iframe') as HTMLIFrameElement;
 
-			if (celtraIframes.length > 0) {
-				for (const key in celtraIframes) {
-					const celtraIframe = celtraIframes[key];
-					const celtraBanner = celtraIframe.contentDocument.querySelector(
-						celtraInterstitialSelector,
-					);
-
-					if (celtraBanner) {
-						celtraBanner.addEventListener('click', (event) => {
-							if (!alreadyHandled) {
-								alreadyHandled = true;
-								this.handleClickEvent(callback, slotService.get('top_leaderboard'), event);
-								observer.disconnect();
-							}
-						});
-					}
+			if (celtraIframe) {
+				const celtraBanner = celtraIframe.contentWindow.document.querySelector(
+					celtraInterstitialSelector,
+				);
+				if (celtraBanner) {
+					celtraBanner.addEventListener('click', (event) => {
+						this.handleClickEvent(
+							callback,
+							slotService.get('top_leaderboard'),
+							event as MouseEvent,
+						);
+					});
+					observer.disconnect();
 				}
 			}
 		});
