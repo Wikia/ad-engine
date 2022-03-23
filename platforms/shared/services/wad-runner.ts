@@ -7,7 +7,7 @@ import {
 } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
-const adClickedAction = globalAction('[AdEngine] Ad block detected');
+const adblockDetectedAction = globalAction('[AdEngine] Ad block detected');
 
 class WadRunner {
 	async call(): Promise<void> {
@@ -21,7 +21,7 @@ class WadRunner {
 
 		if (isBabDetected) {
 			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer/Pathfinder certain ad slots may not be present
-			communicationService.dispatch(adClickedAction());
+			communicationService.dispatch(adblockDetectedAction());
 			btfBlockerService.finishFirstCall();
 			btRec.run();
 		}
