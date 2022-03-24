@@ -49,7 +49,7 @@ class Audigent {
 			const au_segments = window['au_seg'].segments || [];
 			const limit = context.get('services.audigent.segmentLimit') || 0;
 
-			let segments = au_segments.length ? au_segments : ['test1', 'test2']; //'no_segments';
+			let segments = au_segments.length ? au_segments : 'no_segments';
 
 			if (this.canSliceSegments(segments, limit)) {
 				segments = segments.slice(0, limit);
