@@ -19,6 +19,7 @@ import {
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	liveConnect,
 	nielsen,
 	Runner,
 	silverSurferService,
@@ -102,6 +103,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+		liveConnect.call();
 
 		adMarketplace.initialize();
 
