@@ -2,6 +2,7 @@ import {
 	insertSlots,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
+	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -24,6 +25,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpDesktopSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 	) {}
 
 	execute(): void {
@@ -50,6 +52,13 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 		communicationService.on(eventsRepository.RAIL_READY, () => {
 			insertSlots([this.slotsDefinitionRepository.getIncontentBoxadConfig()]);
 		});
+		communicationService.on(
+			eventsRepository.QUIZ_AD_INJECTED,
+			({ slotId }) => {
+				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(slotId)]);
+			},
+			false,
+		);
 	}
 
 	private configureTopLeaderboardAndCompanions(): void {

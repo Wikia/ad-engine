@@ -1,6 +1,5 @@
 import { context, DiProcess } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { get33AccrossContext } from '../../../bidders/prebid/accross';
 import { getAppnexusContext } from '../../../bidders/prebid/appnexus';
 import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getAppnexusGroupMContext } from '../../../bidders/prebid/appnexus-group-m';
@@ -24,7 +23,6 @@ import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
 @Injectable()
 export class UcpMobilePrebidConfigSetup implements DiProcess {
 	execute(): void {
-		context.set('bidders.prebid.33across', get33AccrossContext());
 		context.set('bidders.prebid.appnexus', getAppnexusContext());
 		context.set('bidders.prebid.appnexusAst', getAppnexusAstContext());
 		context.set('bidders.prebid.appnexusGroupM', getAppnexusGroupMContext());
