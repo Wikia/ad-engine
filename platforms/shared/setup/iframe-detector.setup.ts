@@ -6,8 +6,8 @@ import { DataWarehouseTracker } from '../tracking/data-warehouse';
 @Injectable()
 export class IframeDetectorSetup implements DiProcess {
 	execute(): void {
-		const elementFound = document.documentElement.classList.contains('in-iframe');
-		if (elementFound) {
+		const pageInIframe = document.documentElement.classList.contains('in-iframe');
+		if (pageInIframe) {
 			const dataWarehouseTracker = new DataWarehouseTracker();
 
 			const pageTracker = new PageTracker(dataWarehouseTracker);

@@ -26,13 +26,7 @@ class TrackingOptInWrapper {
 			communicationService.on(eventsRepository.AD_ENGINE_CONSENT_READY, (payload) => {
 				this.setConsents(payload);
 				resolve();
-				return;
 			});
-
-			const pageInIframe = document.documentElement.classList.contains('in-iframe');
-			if (pageInIframe) {
-				resolve();
-			}
 		});
 	}
 
