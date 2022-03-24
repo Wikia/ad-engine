@@ -84,7 +84,6 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
-		this.adEngineInIframeTracker();
 	}
 
 	private porvataTracker(): void {
@@ -142,13 +141,6 @@ export class TrackingSetup {
 
 			return data;
 		});
-	}
-
-	private adEngineInIframeTracker(): void {
-		const elementFound = document.documentElement.classList.contains('in-iframe');
-		if (elementFound) {
-			this.pageTracker.trackProp('adengine_in_iframe', '1');
-		}
 	}
 
 	private adClickTracker(): void {
