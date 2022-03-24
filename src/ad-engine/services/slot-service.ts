@@ -206,11 +206,9 @@ class SlotService {
 	getAllowedSlots(): Dictionary<SlotConfig> {
 		const disabledSlots = context.get('icDisabledSlots') || [];
 		const allSlots = context.get('slots') || {};
-		const allowedSlots = Object.keys(allSlots)
-			.filter((slotName) => !disabledSlots.includes(slotName))
-			.reduce((res, key) => ((res[key] = allSlots[key]), res), {});
-		console.log('hello', disabledSlots, allowedSlots);
-		return allowedSlots || {};
+		disabledSlots.forEach((slotName) => (allSlots[slotName].disabled = true));
+
+		return allSlots;
 	}
 
 	getAtfSlotNames(): string[] {
