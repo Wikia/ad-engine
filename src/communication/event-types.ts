@@ -198,6 +198,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[FanFeed]',
 		name: 'Ready',
 	},
+	QUIZ_AD_INJECTED: {
+		category: '[quizConsumption]',
+		name: 'ad slot injected',
+		payload: props<{ slotId: string }>(),
+	},
 	PLATFORM_BEFORE_PAGE_CHANGE: {
 		category: '[Platform]',
 		name: 'Before page change',

@@ -3,6 +3,7 @@ import {
 	MessageBoxService,
 	NativoSlotsDefinitionRepository,
 	PlaceholderService,
+	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -33,6 +34,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	constructor(
 		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
 		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
 	) {}
 
 	execute(): void {
@@ -74,6 +76,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				});
 			});
 		}
+
+		communicationService.on(
+			eventsRepository.QUIZ_AD_INJECTED,
+			(payload) => {
+				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
+			},
+			false,
+		);
 	}
 
 	private configureTopLeaderboardAndCompanions(): void {

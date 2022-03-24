@@ -164,6 +164,24 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				providers: ['nativo'],
 				trackEachStatus: true,
 			},
+			quiz_leaderboard_start: {
+				adProduct: 'quiz_leaderboard_start',
+				defaultSizes: [[728, 90]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_leaderboard_finish: {
+				adProduct: 'quiz_leaderboard_finish',
+				defaultSizes: [[728, 90]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_incontent: {
+				adProduct: 'quiz_incontent',
+				defaultSizes: [[300, 250]],
+				group: 'quiz',
+				options: {},
+			},
 		};
 
 		slotsContext.setupSlotVideoContext();
