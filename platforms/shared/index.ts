@@ -10,6 +10,7 @@ export * from './setup/ad-engine-runner.setup';
 export * from './setup/ad-layout-initializer.setup';
 export * from './setup/wiki-context.setup';
 export * from './setup/base-context.setup';
+export * from './setup/iframe-detector.setup';
 export * from './bidders/bidders-state.setup';
 export * from './dynamic-slots/fan-feed-native-ad-listener';
 export * from './dynamic-slots/nativo-slots-definition-repository';
