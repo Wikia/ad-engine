@@ -2,6 +2,7 @@ import {
 	AdEngineRunnerSetup,
 	AdLayoutInitializerSetup,
 	bootstrapAndGetConsent,
+	IframeDetectorSetup,
 	InstantConfigSetup,
 	LabradorSetup,
 	TrackingSetup,
@@ -39,6 +40,7 @@ export class UcpDesktopPlatform {
 	execute(): void {
 		// Config
 		this.pipeline.add(
+			IframeDetectorSetup,
 			() => context.extend(basicContext),
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpDesktopIocSetup,
