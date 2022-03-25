@@ -26,6 +26,9 @@ module.exports = () => ({
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
 		plugins: [new TsConfigPathsPlugin({ paths })],
+		fallback: {
+			util: require.resolve('util/'),
+		},
 	},
 
 	module: {
