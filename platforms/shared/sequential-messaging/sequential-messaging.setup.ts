@@ -63,9 +63,9 @@ export class SequentialMessagingSetup {
 	private onIntermediateStepLoad(storeState: (loadedStep: number) => void) {
 		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_INTERMEDIATE, (payload) => {
 			// TODO SM extract the 12 and 14 number to a shared parameters
-			//  to be ued here and in GamTargetingManager.generateSizeMapping
+			//  to be used here and in GamTargetingManager.generateSizeMapping
 			if (payload.height == null || 12 > payload.height || payload.height > 14) {
-				console.log('[SM] Invalid Creative configuration');
+				console.log('[SM] Invalid Creative configuration. Creative size ot ouf bounds.');
 				return false;
 			}
 
