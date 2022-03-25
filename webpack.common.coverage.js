@@ -50,6 +50,17 @@ module.exports = () => ({
 					replace: pkg.version,
 				},
 			},
+			// This is only for establishing tests code coverage
+			{
+				test: /\.ts$/,
+				enforce: 'post', // needed if you're using Babel
+				include: [path.resolve(`src/`), path.resolve(`platforms/`)], // instrument only sources with Istanbul
+				exclude: [/node_modules/],
+				loader: 'istanbul-instrumenter-loader',
+				options: {
+					esModules: true, // needed if you're using Babel
+				},
+			},
 		],
 	},
 });
