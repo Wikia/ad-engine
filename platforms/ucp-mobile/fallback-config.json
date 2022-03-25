@@ -834,6 +834,8 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5961631391",
+                "5961631094",
                 "5931314289",
                 "5815863298",
                 "5894071571",
@@ -3020,30 +3022,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidConfiguration": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": {
-                "multiAuction": true,
-                "stagesTimeouts": {
-                    "init": 1300,
-                    "lazy": 2000,
-                    "main": 1300
-                },
-                "stagesIntervals": {
-                    "lazy": 500,
-                    "main": 0
-                }
-            }
         }
     ],
     "icDurationMedia": [
