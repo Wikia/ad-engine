@@ -8,12 +8,6 @@ const webpack = require('webpack');
 const platforms = ({ entry }) => ({
 	entry,
 
-	resolve: {
-		fallback: {
-			util: require.resolve('util/'),
-		},
-	},
-
 	output: {
 		filename: '[name]/main.bundle.js',
 		path: path.resolve(__dirname, `dist/platforms`),
