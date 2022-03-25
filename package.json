@@ -18,10 +18,10 @@
 		"core-decorators": "^0.20.0",
 		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
+		"nanoid": "3.3.1",
 		"rxjs": "7.5.2",
 		"ts-action": "^11.0.0",
-		"ts-action-operators": "^9.1.1",
-		"uuid": "8.3.2"
+		"ts-action-operators": "^9.1.1"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
