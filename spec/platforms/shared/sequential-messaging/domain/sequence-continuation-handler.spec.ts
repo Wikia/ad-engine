@@ -80,4 +80,24 @@ describe('Sequence Continuation Handler', () => {
 		);
 		assert.notCalled(userStateStoreSpy.set);
 	});
+
+	it('Handle no state', () => {
+		const userStateStoreSpy = makeUserStateStoreSpy();
+		const targetingManagerSpy = makeTargetingManagerSpy();
+		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
+			stateStore(3);
+		};
+		userStateStoreSpy.get.returns(null);
+
+		const sh = new SequenceContinuationHandler(
+			userStateStoreSpy,
+			targetingManagerSpy,
+			onIntermediateStepLoadMock,
+		);
+		sh.handleOngoingSequence();
+
+		assert.calledOnce(userStateStoreSpy.get);
+		assert.notCalled(targetingManagerSpy.setTargeting);
+		assert.notCalled(userStateStoreSpy.set);
+	});
 });
