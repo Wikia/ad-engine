@@ -3,7 +3,6 @@ import { GamTargetingManager } from '../../../../../platforms/shared/sequential-
 import { makeContextSpy } from '../test_doubles/context.spy';
 import { makeSlotsContextSpy } from '../test_doubles/slotContext.spy';
 import { SequenceState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
-import { SequentialMessagingSetup } from '../../../../../platforms/shared';
 
 describe('Gam Targeting manager', () => {
 	it('Set Targeting', () => {
@@ -11,12 +10,9 @@ describe('Gam Targeting manager', () => {
 		const slotsContextSpy = makeSlotsContextSpy();
 		const sequenceId = '5928558921';
 		const sequenceState: SequenceState = { stepNo: 2, width: 970, height: 250 };
+		const baseTargetingSize = 10;
 
-		const tm = new GamTargetingManager(
-			contextSpy,
-			slotsContextSpy,
-			SequentialMessagingSetup.baseTargetingSize,
-		);
+		const tm = new GamTargetingManager(contextSpy, slotsContextSpy, baseTargetingSize);
 		tm.setTargeting(sequenceId, sequenceState);
 
 		sinon.assert.calledWith(slotsContextSpy.setSlotSize, 'top_leaderboard', [12, 12]);
