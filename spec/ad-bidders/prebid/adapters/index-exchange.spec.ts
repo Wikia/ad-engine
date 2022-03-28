@@ -3,6 +3,15 @@ import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
 describe('IndexExchange bidder adapter', () => {
+	before(() => {
+		context.extend({
+			adUnitId: '/5441/something/_{custom.pageType}/{slotConfig.adProduct}',
+			custom: {
+				pageType: 'PB',
+			},
+		});
+	});
+
 	it('can be enabled', () => {
 		const indexExchange = new IndexExchange({
 			enabled: true,
@@ -35,6 +44,11 @@ describe('IndexExchange bidder adapter', () => {
 							[300, 250],
 							[320, 50],
 						],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/bottom_leaderboard',
 					},
 				},
 				bids: [
@@ -75,6 +89,11 @@ describe('IndexExchange bidder adapter', () => {
 					video: {
 						context: 'instream',
 						playerSize: [640, 480],
+					},
+				},
+				ortb2Imp: {
+					ext: {
+						gpid: '/5441/something/_PB/featured',
 					},
 				},
 				bids: [
