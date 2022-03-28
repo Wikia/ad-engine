@@ -20,6 +20,11 @@ interface PrebidAdUnit {
 	mediaTypes?: Partial<PrebidMediaTypes>;
 	labelAny?: string[];
 	labelAll?: string[];
+	ortb2Imp?: {
+		ext: {
+			gpid: string;
+		};
+	};
 }
 
 interface PrebidNativeMediaType {
