@@ -14,7 +14,8 @@
   ],
   "reporter": [
     "html",
-    "text"
+    "text",
+    "clover"
   ],
   "extension": [
     ".ts"

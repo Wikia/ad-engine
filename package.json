@@ -89,10 +89,7 @@
 		".eslintrc.json"
 	],
 	"nyc": {
-		"report-dir": "./spec/build/",
-		"reporter": [
-			"cobertura"
-		]
+		"report-dir": "./spec/build/"
 	},
 	"scripts": {
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
