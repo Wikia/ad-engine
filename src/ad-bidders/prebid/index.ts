@@ -158,10 +158,12 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
-	async configureAdUnits(): Promise<void> {
+	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {
 		await pbjsFactory.init();
 
-		if (!this.adUnits) {
+		if (adUnits.length) {
+			this.adUnits = adUnits;
+		} else if (!this.adUnits) {
 			this.adUnits = setupAdUnits();
 		}
 	}
