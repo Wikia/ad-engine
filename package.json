@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "111.0.1",
+	"version": "112.0.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -89,10 +89,7 @@
 		".eslintrc.json"
 	],
 	"nyc": {
-		"report-dir": "./spec/build/",
-		"reporter": [
-			"cobertura"
-		]
+		"report-dir": "./spec/build/"
 	},
 	"scripts": {
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
@@ -105,7 +102,7 @@
 		"preversion": "./maintenance/preversion.sh",
 		"test": "instant-mocha --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
-		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js"
+		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.coverage.js"
 	},
 	"husky": {
 		"hooks": {
