@@ -2,6 +2,7 @@ import {
 	communicationService,
 	eventsRepository,
 	TrackingBidDefinition,
+	UapLoadStatus,
 } from '@ad-engine/communication';
 import {
 	AdSlot,
@@ -196,6 +197,17 @@ export class PrebidProvider extends BidderProvider {
 
 			this.registerStage('main', 'init');
 			this.registerStage('lazy', 'main');
+
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				(action: UapLoadStatus) => {
+					if (action.isLoaded) {
+						communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
+						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+						communicationService.emit(eventsRepository.BIDDERS_LAZY_STAGE_DONE);
+					}
+				},
+			);
 
 			firstBidRequest = this.requestBids(
 				this.filterAdUnits(this.adUnits, 'init'),
