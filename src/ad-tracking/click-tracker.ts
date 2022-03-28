@@ -129,6 +129,7 @@ class AdClickTracker {
 		const data = {
 			ad_status: AdSlot.STATUS_CLICKED,
 		};
+
 		if (event) {
 			const target = event.target as HTMLElement;
 			const clickData = {
@@ -139,7 +140,13 @@ class AdClickTracker {
 				clickData['click'] = { x: event.offsetX, y: event.offsetY };
 			}
 			data['click_position'] = JSON.stringify(clickData);
+
+			if (target.classList.contains('celtra-close-button')) {
+				// quick-fix for iPhone in order not to track close button clicks
+				return;
+			}
 		}
+
 		this.pipeline.execute(
 			{
 				slot,
