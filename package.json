@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "111.1.0",
+	"version": "111.2.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -89,10 +89,7 @@
 		".eslintrc.json"
 	],
 	"nyc": {
-		"report-dir": "./spec/build/",
-		"reporter": [
-			"cobertura"
-		]
+		"report-dir": "./spec/build/"
 	},
 	"scripts": {
 		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
