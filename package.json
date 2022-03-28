@@ -35,7 +35,7 @@
 		"@types/node": "8.10.54",
 		"@types/sinon": "7.0.7",
 		"@typescript-eslint/eslint-plugin": "5.9.1",
-		"@typescript-eslint/parser": "5.9.1",
+		"@typescript-eslint/parser": "5.16.0",
 		"allure-commandline": "2.7.0",
 		"awesome-typescript-loader": "5.2.1",
 		"babel-loader": "8.2.3",
