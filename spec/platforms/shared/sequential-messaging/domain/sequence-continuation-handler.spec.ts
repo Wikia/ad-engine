@@ -13,16 +13,18 @@ const sampleWidth = 970;
 const sampleHeight = 250;
 let initialSequenceState: SequenceState;
 let userInitialStateAfterSecondStep: UserSequentialMessageState;
+let userStateStoreSpy;
+let targetingManagerSpy;
 
 describe('Sequence Continuation Handler', () => {
 	beforeEach(() => {
 		initialSequenceState = { stepNo: 2, width: sampleWidth, height: sampleHeight };
 		userInitialStateAfterSecondStep = { 5928558921: initialSequenceState };
+		userStateStoreSpy = makeUserStateStoreSpy();
+		targetingManagerSpy = makeTargetingManagerSpy();
 	});
 
 	it('Handle an ongoing Sequence', () => {
-		const userStateStoreSpy = makeUserStateStoreSpy();
-		const targetingManagerSpy = makeTargetingManagerSpy();
 		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
 			stateStore(3);
 		};
@@ -52,8 +54,6 @@ describe('Sequence Continuation Handler', () => {
 	});
 
 	it('Handle invalid step loaded', () => {
-		const userStateStoreSpy = makeUserStateStoreSpy();
-		const targetingManagerSpy = makeTargetingManagerSpy();
 		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
 			stateStore(99);
 		};
@@ -82,8 +82,6 @@ describe('Sequence Continuation Handler', () => {
 	});
 
 	it('Handle no state', () => {
-		const userStateStoreSpy = makeUserStateStoreSpy();
-		const targetingManagerSpy = makeTargetingManagerSpy();
 		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
 			stateStore(3);
 		};

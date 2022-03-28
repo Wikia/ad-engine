@@ -1,4 +1,4 @@
-import { communicationService, context } from '@wikia/ad-engine';
+import { communicationService, context, utils } from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
 import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
 import { SequenceStartHandler } from './domain/sequence-start-handler';
@@ -64,8 +64,8 @@ export class SequentialMessagingSetup {
 		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_INTERMEDIATE, (payload) => {
 			// TODO SM extract the 12 and 14 number to a shared parameters
 			//  to be used here and in GamTargetingManager.generateSizeMapping
-			if (payload.height == null || 12 > payload.height || payload.height > 14) {
-				console.log('[SM] Invalid Creative configuration. Creative size ot ouf bounds.');
+			if (!payload.height || 12 > payload.height || payload.height > 14) {
+				utils.logger('SM', 'Invalid Creative configuration. Creative size ot ouf bounds.');
 				return false;
 			}
 
