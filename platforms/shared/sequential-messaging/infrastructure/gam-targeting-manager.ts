@@ -8,6 +8,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 		private context: ContextInterface,
 		private slotsContext: SlotsContextInterface,
 		private baseTargetingSize: number,
+		private forceUapResolveState: () => void,
 	) {}
 
 	setTargeting(sequenceId: string, userState: SequenceState): void {
@@ -18,6 +19,14 @@ export class GamTargetingManager implements TargetingManagerInterface {
 			this.generateSizeMapping(userState.width, userState.height),
 		);
 		this.context.set('slots.top_leaderboard.targeting.sequential', sequenceId);
+
+		if (this.isUap(userState)) {
+			this.forceUapResolveState();
+		}
+	}
+
+	private isUap(userState: SequenceState) {
+		return userState.width === 2 || userState.width === 3;
 	}
 
 	private generateSizeMapping(width: number, height: number) {
