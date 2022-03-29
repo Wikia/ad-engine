@@ -2,7 +2,8 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'ad-click-tracker';
-const celtraInterstitialBannerId = 'celtra-object-37';
+const celtraInterstitialBannerId = 'celtra-banner';
+const celtraInterstitialSelector = '#celtra-banner .celtra-screen-container';
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -97,13 +98,18 @@ class AdClickTracker {
 	): void {
 		const observer = new MutationObserver(() => {
 			const celtraIframe = document.querySelector('.notranslate > iframe') as HTMLIFrameElement;
+
 			if (celtraIframe) {
-				const celtraBanner = celtraIframe.contentWindow.document.getElementById(
-					celtraInterstitialBannerId,
+				const celtraBanner = celtraIframe.contentWindow.document.querySelector(
+					celtraInterstitialSelector,
 				);
 				if (celtraBanner) {
 					celtraBanner.addEventListener('click', (event) => {
-						this.handleClickEvent(callback, slotService.get('top_leaderboard'), event);
+						this.handleClickEvent(
+							callback,
+							slotService.get('top_leaderboard'),
+							event as MouseEvent,
+						);
 					});
 					observer.disconnect();
 				}
@@ -123,6 +129,7 @@ class AdClickTracker {
 		const data = {
 			ad_status: AdSlot.STATUS_CLICKED,
 		};
+
 		if (event) {
 			const target = event.target as HTMLElement;
 			const clickData = {
@@ -133,7 +140,13 @@ class AdClickTracker {
 				clickData['click'] = { x: event.offsetX, y: event.offsetY };
 			}
 			data['click_position'] = JSON.stringify(clickData);
+
+			if (target.classList.contains('celtra-close-button')) {
+				// quick-fix for iPhone in order not to track close button clicks
+				return;
+			}
 		}
+
 		this.pipeline.execute(
 			{
 				slot,
