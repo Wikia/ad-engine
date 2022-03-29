@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { context, externalLogger } from '../../../src/ad-engine';
 
-describe.only('External logger', () => {
+describe('External logger', () => {
 	beforeEach(() => {
 		context.set('services.someService.sampling', 10);
 	});
