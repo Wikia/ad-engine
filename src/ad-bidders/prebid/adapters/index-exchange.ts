@@ -1,4 +1,4 @@
-import { context } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 
@@ -25,13 +25,28 @@ export class IndexExchange extends PrebidAdapter {
 		return this.getStandardConfig(code, { sizes, siteId });
 	}
 
-	getVideoConfig(code, siteId): PrebidAdUnit {
+	private getGPIDValue(code: string): string {
+		return utils.stringBuilder.build(context.get('adUnitId'), {
+			slotConfig: {
+				adProduct: code,
+				group: 'PB',
+				slotNameSuffix: '',
+			},
+		});
+	}
+
+	private getVideoConfig(code, siteId): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
 				video: {
 					context: 'instream',
 					playerSize: [640, 480],
+				},
+			},
+			ortb2Imp: {
+				ext: {
+					gpid: this.getGPIDValue(code),
 				},
 			},
 			bids: [
@@ -59,12 +74,17 @@ export class IndexExchange extends PrebidAdapter {
 		};
 	}
 
-	getStandardConfig(code, { sizes, siteId }): PrebidAdUnit {
+	private getStandardConfig(code, { sizes, siteId }): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
 				banner: {
 					sizes,
+				},
+			},
+			ortb2Imp: {
+				ext: {
+					gpid: this.getGPIDValue(code),
 				},
 			},
 			bids: sizes.map((size) => ({
