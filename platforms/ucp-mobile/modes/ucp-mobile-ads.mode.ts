@@ -23,7 +23,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
@@ -97,7 +97,9 @@ export class UcpMobileAdsMode implements DiProcess {
 			return;
 		}
 
-		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
+		window.tabId = sessionStorage.tab_id
+			? sessionStorage.tab_id
+			: (sessionStorage.tab_id = nanoid());
 
 		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
