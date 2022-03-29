@@ -31,6 +31,10 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
+		if (utils.pageInIframe()) {
+			this.noAdsDetector.addReason('in_iframe');
+		}
+
 		if (utils.client.isSteamPlatform()) {
 			this.noAdsDetector.addReason('steam_browser');
 
