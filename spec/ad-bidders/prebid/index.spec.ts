@@ -23,6 +23,24 @@ describe('PrebidProvider bidder', () => {
 		new PrebidProvider(bidderConfig);
 	});
 
+	it('reports as supported', async () => {
+		const prebid = new PrebidProvider(bidderConfig);
+
+		await prebid.configureAdUnits([
+			{
+				code: 'someslot',
+				bids: [
+					{
+						bidder: 'bidder',
+						params: {},
+					},
+				],
+			},
+		]);
+
+		expect(prebid.isSupported('someslot')).to.be.true;
+	});
+
 	describe('getTargetingKeys', () => {
 		it('returns all pbjs keys to reset', () => {
 			const prebid = new PrebidProvider(bidderConfig);
