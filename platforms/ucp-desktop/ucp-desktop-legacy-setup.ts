@@ -20,13 +20,13 @@ export class LegacySetup {
 
 	execute(): void {
 		this.pipeline.add(
-			SequentialMessagingSetup,
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,
 			UcpDesktopDynamicSlotsSetup,
 			UcpDesktopSlotsStateSetup,
 			BiddersStateSetup,
 			UcpDesktopTemplatesSetup,
+			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
