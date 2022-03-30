@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { context, utils, externalLogger } from '@ad-engine/core';
 
 const logGroup = 'audigent';
 const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -55,12 +55,28 @@ class Audigent {
 				segments = segments.slice(0, limit);
 			}
 
+			this.trackWithExternalLoggerIfEnabled(segments);
+
 			context.set('targeting.AU_SEG', segments);
 		}
 	}
 
 	private canSliceSegments(segments: string | [], limit: number): boolean {
 		return limit > 0 && typeof segments !== 'string';
+	}
+
+	private trackWithExternalLoggerIfEnabled(segments: string | []) {
+		const randomNumber = Math.random() * 100;
+
+		if (
+			externalLogger.isEnabled('services.audigent.tracking.sampling', randomNumber) &&
+			typeof segments !== 'string'
+		) {
+			externalLogger.log('Audigent segments', {
+				segmentsNo: segments.length,
+				segments,
+			});
+		}
 	}
 }
 
