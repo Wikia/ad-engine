@@ -38,11 +38,5 @@ export function getAppnexusContext(): object {
 			hivi: '11977016',
 			other: '11969927',
 		},
-		recPlacements: {
-			atf: '11823778',
-			btf: '11823724',
-			hivi: '11823799',
-			other: '11969927',
-		},
 	};
 }

@@ -5,7 +5,6 @@ import { getAppnexusAstContext } from '../../../bidders/prebid/appnexus-ast';
 import { getAppnexusGroupMContext } from '../../../bidders/prebid/appnexus-group-m';
 import { getBeachfrontContext } from '../../../bidders/prebid/beachfront';
 import { getIndexExchangeContext } from '../../../bidders/prebid/index-exchange';
-import { getKargoContext } from '../../../bidders/prebid/kargo';
 import { getMediagridContext } from '../../../bidders/prebid/mediagrid';
 import { getMedianetContext } from '../../../bidders/prebid/medianet';
 import { getNobidContext } from '../../../bidders/prebid/nobid';
@@ -28,7 +27,6 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.appnexusGroupM', getAppnexusGroupMContext());
 		context.set('bidders.prebid.beachfront', getBeachfrontContext());
 		context.set('bidders.prebid.indexExchange', getIndexExchangeContext());
-		context.set('bidders.prebid.kargo', getKargoContext());
 		context.set('bidders.prebid.mediagrid', getMediagridContext());
 		context.set('bidders.prebid.medianet', getMedianetContext());
 		context.set('bidders.prebid.nobid', getNobidContext());
