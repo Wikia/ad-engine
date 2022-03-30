@@ -6,7 +6,7 @@ Date: 2022-03-11
 
 What is the status, such as:
 
-- approved
+- accepted
 
 ## Context
 
