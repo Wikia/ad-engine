@@ -7,7 +7,7 @@ describe('No Ads Detector', () => {
 		noAdsDetector = new NoAdsDetector();
 	});
 
-	it('isAdsMode() return true when reasons array is empty', () => {
+	it('isAdsMode() returns true when reasons array is empty', () => {
 		expect(noAdsDetector.isAdsMode()).to.equal(true);
 	});
 
