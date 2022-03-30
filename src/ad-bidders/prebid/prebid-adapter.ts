@@ -1,5 +1,4 @@
 import { Aliases, context, Dictionary } from '@ad-engine/core';
-import { isArray } from 'util';
 import { PrebidAdapterConfig, PrebidAdSlotConfig } from './prebid-models';
 
 export const DEFAULT_MAX_CPM = 20;
@@ -23,7 +22,7 @@ export abstract class PrebidAdapter {
 		};
 
 		Object.keys(this.pageTargeting).forEach((key) => {
-			if (!isArray(this.pageTargeting[key])) {
+			if (!Array.isArray(this.pageTargeting[key])) {
 				this.pageTargeting[key] = [this.pageTargeting[key]];
 			}
 		});
