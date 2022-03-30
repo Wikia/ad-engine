@@ -11,7 +11,7 @@ describe('No Ads Detector', () => {
 		expect(noAdsDetector.isAdsMode()).to.equal(true);
 	});
 
-	it('isAdsMode() return false when reasons array is not empty', () => {
+	it('isAdsMode() returns false when reasons array is not empty', () => {
 		noAdsDetector.addReason('some_reason');
 		expect(noAdsDetector.getReasons().length).to.equal(1);
 
