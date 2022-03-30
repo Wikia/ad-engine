@@ -2,7 +2,6 @@ import { AdSlot, TEMPLATE, TemplateDependency, UapParams, utils } from '@wikia/a
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { from, merge, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isUndefined } from 'util';
 
 @Injectable({ autobind: false })
 export class StickinessTimeout {
@@ -26,9 +25,8 @@ export class StickinessTimeout {
 		@Inject(TEMPLATE.PARAMS) params: UapParams,
 		defaultTimeout: number,
 	) {
-		this.fallbackTimeout = !isUndefined(params.stickyAdditionalTime)
-			? params.stickyAdditionalTime
-			: defaultTimeout;
+		this.fallbackTimeout =
+			params.stickyAdditionalTime !== undefined ? params.stickyAdditionalTime : defaultTimeout;
 		this.shouldStickUntillSlotViewed = params.stickyUntilSlotViewed;
 	}
 

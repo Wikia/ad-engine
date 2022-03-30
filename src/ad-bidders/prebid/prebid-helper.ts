@@ -1,5 +1,4 @@
 import { context, Dictionary, pbjsFactory, slotService } from '@ad-engine/core';
-import { isObject } from 'util';
 import { adaptersRegistry } from './adapters-registry';
 import { PrebidAdapterConfig } from './prebid-models';
 
@@ -95,7 +94,7 @@ export async function getWinningBid(
 				// Do nothing if we filter by bidders
 			} else if (
 				priceFloor &&
-				isObject(priceFloor) &&
+				typeof priceFloor === 'object' &&
 				priceFloor[`${param.width}x${param.height}`] &&
 				param.cpm < parseFloat(priceFloor[`${param.width}x${param.height}`])
 			) {
