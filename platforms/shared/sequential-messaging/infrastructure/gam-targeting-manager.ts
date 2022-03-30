@@ -4,6 +4,9 @@ import { SlotsContextInterface } from '../../slots/slots-context';
 import { SequenceState } from '../domain/data-structures/user-sequential-message-state';
 
 export class GamTargetingManager implements TargetingManagerInterface {
+	readonly UAP_MOBILE_WIDTH = 2;
+	readonly UAP_DESKTOP_WIDTH = 3;
+
 	constructor(
 		private context: ContextInterface,
 		private slotsContext: SlotsContextInterface,
@@ -26,7 +29,7 @@ export class GamTargetingManager implements TargetingManagerInterface {
 	}
 
 	private isUap(userState: SequenceState) {
-		return userState.width === 2 || userState.width === 3;
+		return userState.width === this.UAP_MOBILE_WIDTH || userState.width === this.UAP_DESKTOP_WIDTH;
 	}
 
 	private generateSizeMapping(width: number, height: number) {
