@@ -346,6 +346,17 @@
                 "XX"
             ],
             "value": 50
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "sampling": 10.0,
+            "value": 100
         }
     ],
     "icAdEngineDelay": [
