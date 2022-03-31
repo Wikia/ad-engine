@@ -26,10 +26,7 @@ export function getIndexExchangeContext(): object {
 				siteId: '419027',
 			},
 			interstitial: {
-				sizes: [
-					[320, 480],
-					[480, 320],
-				],
+				sizes: [[320, 480]],
 				siteId: '749519',
 			},
 			featured: {

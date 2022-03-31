@@ -35,11 +35,5 @@ export function getIndexExchangeContext(): object {
 				siteId: '437502',
 			},
 		},
-		recPlacements: {
-			top_leaderboard: '215807',
-			top_boxad: '215808',
-			incontent_boxad_1: '215809',
-			bottom_leaderboard: '215810',
-		},
 	};
 }

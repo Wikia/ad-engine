@@ -15,10 +15,7 @@ export function getWikiaContext(): object {
 				sizes: [[320, 50]],
 			},
 			interstitial: {
-				sizes: [
-					[320, 480],
-					[480, 320],
-				],
+				sizes: [[320, 480]],
 			},
 		},
 	};
