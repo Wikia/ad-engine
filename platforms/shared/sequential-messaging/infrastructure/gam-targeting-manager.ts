@@ -4,10 +4,14 @@ import { SlotsContextInterface } from '../../slots/slots-context';
 import { SequenceState } from '../domain/data-structures/user-sequential-message-state';
 
 export class GamTargetingManager implements TargetingManagerInterface {
+	readonly UAP_MOBILE_WIDTH = 2;
+	readonly UAP_DESKTOP_WIDTH = 3;
+
 	constructor(
 		private context: ContextInterface,
 		private slotsContext: SlotsContextInterface,
 		private baseTargetingSize: number,
+		private forceUapResolveState: () => void,
 	) {}
 
 	setTargeting(sequenceId: string, userState: SequenceState): void {
@@ -18,6 +22,14 @@ export class GamTargetingManager implements TargetingManagerInterface {
 			this.generateSizeMapping(userState.width, userState.height),
 		);
 		this.context.set('slots.top_leaderboard.targeting.sequential', sequenceId);
+
+		if (this.isUap(userState)) {
+			this.forceUapResolveState();
+		}
+	}
+
+	private isUap(userState: SequenceState) {
+		return userState.width === this.UAP_MOBILE_WIDTH || userState.width === this.UAP_DESKTOP_WIDTH;
 	}
 
 	private generateSizeMapping(width: number, height: number) {
