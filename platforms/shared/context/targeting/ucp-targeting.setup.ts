@@ -7,10 +7,12 @@ import {
 	InstantConfigService,
 	Targeting,
 	UapLoadStatus,
+	CookieStorageAdapter,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getDomain } from '../../utils/get-domain';
+import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
 
 const SKIN = Symbol('targeting skin');
 
@@ -26,7 +28,11 @@ export class UcpTargetingSetup implements DiProcess {
 	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
-		context.set('targeting', { ...context.get('targeting'), ...this.getPageLevelTargeting() });
+		context.set('targeting', {
+			...context.get('targeting'),
+			...this.getPageLevelTargeting(),
+			...getCrossDomainTargeting(new CookieStorageAdapter()),
+		});
 
 		if (context.get('wiki.opts.isAdTestWiki') && context.get('wiki.targeting.testSrc')) {
 			context.set('src', [context.get('wiki.targeting.testSrc')]);
