@@ -1,13 +1,16 @@
 import { assert } from 'sinon';
 import { SequenceStartHandler } from '../../../../../platforms/shared/sequential-messaging/domain/sequence-start-handler';
 import { makeUserStateStoreSpy } from '../test_doubles/state-store.spy';
-import { UserSequentialMessageState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import {
+	SequenceState,
+	UserSequentialMessageState,
+} from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 
 const sequenceId = '5928558921';
 const sampleWidth = 970;
 const sampleHeight = 250;
 const userState: UserSequentialMessageState = {
-	5928558921: { stepNo: 1, width: sampleWidth, height: sampleHeight },
+	5928558921: new SequenceState(1, sampleWidth, sampleHeight),
 };
 
 describe('Sequence Start Handler', () => {

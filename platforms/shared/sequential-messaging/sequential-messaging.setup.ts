@@ -44,15 +44,18 @@ export class SequentialMessagingSetup {
 	}
 
 	private handleOngoingSequence(): void {
+		const targetingManager = new GamTargetingManager(
+			context,
+			slotsContext,
+			SequentialMessagingSetup.baseTargetingSize,
+			resolvedState.forceUapResolveState,
+		);
+
 		const sequenceHandler = new SequenceContinuationHandler(
 			this.userStateStore,
-			new GamTargetingManager(
-				context,
-				slotsContext,
-				SequentialMessagingSetup.baseTargetingSize,
-				resolvedState.forceUapResolveState,
-			),
+			targetingManager,
 			this.onIntermediateStepLoad,
+			context.get('wiki.targeting.hasFeaturedVideo'),
 		);
 
 		sequenceHandler.handleOngoingSequence();
