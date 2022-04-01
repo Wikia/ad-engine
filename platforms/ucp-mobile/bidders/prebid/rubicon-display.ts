@@ -32,10 +32,7 @@ export function getRubiconDisplayContext(): object {
 				zoneId: '1422262',
 			},
 			interstitial: {
-				sizes: [
-					[320, 480],
-					[480, 320],
-				],
+				sizes: [[320, 480]],
 				siteId: '23565',
 				zoneId: '2229522',
 			},

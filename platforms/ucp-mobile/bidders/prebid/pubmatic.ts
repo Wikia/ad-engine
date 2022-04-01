@@ -12,10 +12,7 @@ export function getPubmaticContext(): object {
 				ids: ['1636188@0x0'],
 			},
 			interstitial: {
-				sizes: [
-					[320, 480],
-					[480, 320],
-				],
+				sizes: [[320, 480]],
 				ids: ['Fandom_Mobile_Interstitial'],
 			},
 			mobile_top_leaderboard: {
@@ -24,7 +21,7 @@ export function getPubmaticContext(): object {
 			},
 			mobile_in_content: {
 				sizes: [[300, 250]],
-				ids: ['/5441/MOBILE_IN_CONTENT_300x250@300x250', '/5441/MOBILE_IN_CONTENT_320x480@320x480'],
+				ids: ['/5441/MOBILE_IN_CONTENT_300x250@300x250'],
 			},
 			bottom_leaderboard: {
 				sizes: [

@@ -163,7 +163,8 @@
                 "314345172",
                 "5951743095",
                 "5951743089",
-                "5929089588"
+                "5929089588",
+                "5929089315"
             ]
         }
     ],
@@ -567,7 +568,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 0
+            "value": 1
         }
     ],
     "icDeHeartbeatActivityTracking": [
@@ -2409,7 +2410,8 @@
                 "5965980402",
                 "5965655956",
                 "5968510558",
-                "5967056316"
+                "5967056316",
+                "5969626223"
             ]
         }
     ],
@@ -2631,15 +2633,6 @@
     "icAudigentSegmentLimit": [
         {
             "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 50
-        },
-        {
-            "apps": [
                 "f2",
                 "fandomdesktop",
                 "fandommobile",
@@ -2648,6 +2641,15 @@
             ],
             "sampling": 10.0,
             "value": 100
+        },
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 50
         }
     ],
     "icStroer": [
