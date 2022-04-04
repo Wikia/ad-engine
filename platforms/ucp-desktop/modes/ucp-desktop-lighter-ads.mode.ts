@@ -73,7 +73,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(identityHub.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(silverSurferService.configureUserTargeting());
 
@@ -87,6 +86,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+		identityHub.call();
 
 		return inhibitors;
 	}
