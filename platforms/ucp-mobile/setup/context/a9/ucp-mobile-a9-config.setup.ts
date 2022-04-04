@@ -29,10 +29,7 @@ export class UcpMobileA9ConfigSetup implements DiProcess {
 				],
 			},
 			interstitial: {
-				sizes: [
-					[320, 480],
-					[480, 320],
-				],
+				sizes: [[320, 480]],
 			},
 			featured: {
 				type: 'video',
