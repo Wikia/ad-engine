@@ -3,7 +3,7 @@ import { context, utils } from '@wikia/ad-engine';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 
-describe.only('Pubmatic IdentityHub', () => {
+describe('Pubmatic IdentityHub', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
