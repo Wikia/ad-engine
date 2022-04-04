@@ -98,4 +98,27 @@ describe('Sequence Continuation Handler', () => {
 		assert.notCalled(targetingManagerSpy.setTargeting);
 		assert.notCalled(userStateStoreSpy.set);
 	});
+
+	it('Handle UAP on FV', () => {
+		const onIntermediateStepLoadMock = (stateStore: (loadedStep: number) => void) => {
+			stateStore(3);
+		};
+
+		const initialUapSequenceStateMock = new SequenceState(initialStep, 2, 2);
+		const userInitialStateAfterSecondStepUapSm = { 5928558921: initialUapSequenceStateMock };
+
+		userStateStoreSpy.get.returns(userInitialStateAfterSecondStepUapSm);
+
+		const sh = new SequenceContinuationHandler(
+			userStateStoreSpy,
+			targetingManagerSpy,
+			onIntermediateStepLoadMock,
+			true,
+		);
+		sh.handleOngoingSequence();
+
+		assert.calledOnce(userStateStoreSpy.get);
+		assert.notCalled(targetingManagerSpy.setTargeting);
+		assert.notCalled(userStateStoreSpy.set);
+	});
 });
