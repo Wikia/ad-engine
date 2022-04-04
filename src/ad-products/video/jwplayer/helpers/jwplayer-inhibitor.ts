@@ -32,6 +32,7 @@ export class JWPlayerInhibitor {
 
 		if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
+			universalAdPackage.setType('jwuap');
 		}
 
 		this.getExtendedPromise().resolve();
