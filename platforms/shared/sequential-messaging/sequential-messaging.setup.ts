@@ -34,12 +34,13 @@ export class SequentialMessagingSetup {
 			const lineItemId = payload.lineItemId;
 			const width = payload.width;
 			const height = payload.height;
+			const uap = payload.uap === undefined ? false : payload.uap;
 			if (lineItemId == null || width == null || height == null) {
 				return;
 			}
 
 			const sequenceHandler = new SequenceStartHandler(this.userStateStore);
-			sequenceHandler.startSequence(lineItemId, width, height);
+			sequenceHandler.startSequence(lineItemId, width, height, uap);
 		});
 	}
 

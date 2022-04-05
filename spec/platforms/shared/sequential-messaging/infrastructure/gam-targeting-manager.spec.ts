@@ -34,7 +34,7 @@ describe('Gam Targeting manager', () => {
 
 	it('Set Targeting for UAP', () => {
 		const sequenceId = '5952729091';
-		const sequenceState: SequenceState = new SequenceState(2, 2, 2);
+		const sequenceState: SequenceState = new SequenceState(2, 2, 2, true);
 
 		const tm = new GamTargetingManager(
 			contextSpy,

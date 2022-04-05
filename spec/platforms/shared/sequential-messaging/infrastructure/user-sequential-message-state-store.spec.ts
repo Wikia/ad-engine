@@ -4,8 +4,8 @@ import { UserSequentialMessageStateStore } from '../../../../../platforms/shared
 import { SequenceState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
 import { expect } from 'chai';
 
-const sampleState = { 5928558921: new SequenceState(1, 970, 250) };
-const sampleCookie = { 5928558921: { stepNo: 1, width: 970, height: 250 } };
+const sampleState = { 5928558921: new SequenceState(1, 970, 250, true) };
+const sampleCookie = { 5928558921: { stepNo: 1, width: 970, height: 250, uap: true } };
 
 describe('User Sequential Message State Store', () => {
 	it("Store user's sequential message state in a cookie", () => {

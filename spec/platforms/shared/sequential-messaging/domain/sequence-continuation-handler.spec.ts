@@ -104,7 +104,7 @@ describe('Sequence Continuation Handler', () => {
 			stateStore(3);
 		};
 
-		const initialUapSequenceStateMock = new SequenceState(initialStep, 2, 2);
+		const initialUapSequenceStateMock = new SequenceState(initialStep, 2, 2, true);
 		const userInitialStateAfterSecondStepUapSm = { 5928558921: initialUapSequenceStateMock };
 
 		userStateStoreSpy.get.returns(userInitialStateAfterSecondStepUapSm);

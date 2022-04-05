@@ -19,6 +19,7 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 				stepNo: userState[sequenceId].stepNo,
 				width: userState[sequenceId].width,
 				height: userState[sequenceId].height,
+				uap: userState[sequenceId].uap,
 			};
 		}
 
@@ -42,6 +43,7 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 				cookie[sequenceId].stepNo,
 				cookie[sequenceId].width,
 				cookie[sequenceId].height,
+				cookie[sequenceId].uap,
 			);
 		}
 
