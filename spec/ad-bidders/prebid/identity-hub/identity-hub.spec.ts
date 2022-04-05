@@ -2,7 +2,7 @@ import { identityHub } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/ad-engine';
 import { assert, createSandbox, SinonSandbox } from 'sinon';
 
-describe.only('Pubmatic IdentityHub', () => {
+describe('Pubmatic IdentityHub', () => {
 	const sandbox: SinonSandbox = createSandbox();
 	let loadScriptSpy;
 	let contextStub;
