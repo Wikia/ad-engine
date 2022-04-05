@@ -5,6 +5,7 @@ import {
 	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
+import _ from 'lodash';
 import {
 	AdSlot,
 	communicationService,
@@ -135,6 +136,8 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 	}
 
 	private registerAdPlaceholderService(): void {
+		const xd = _.random();
+		console.log(xd);
 		const placeholderService = new PlaceholderService();
 		placeholderService.init();
 	}
