@@ -23,4 +23,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          display-size: gzip
           build-command: npm run build:platforms
+          hide-files: '*.{js,css}.map'
