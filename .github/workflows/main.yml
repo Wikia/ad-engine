@@ -7,5 +7,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: preactjs/compressed-size-action@v2
         with:
+         build-script: "build:platforms"
          pattern: "./dist/**/*.{js,css}"
          exclude: "{**/*.map,**/node_modules/**}"
