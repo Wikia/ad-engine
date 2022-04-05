@@ -1,13 +1,25 @@
-name: Compressed Size
+name: Package Size Report
 
-on: [pull_request]
+on:
+  pull_request:
+    branches: [ dev ]
 
 jobs:
-  build:
+  pkg-size-report:
+    name: Package Size Report
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: preactjs/compressed-size-action@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          build-script: "build:platforms"
+          node-version: '14'
+
+      - name: Package size report
+        uses: pkg-size/action@v1
+
+        with:
+          build-command: npm run prod-build # ⬅ Set a different build script here
