@@ -1,19 +1,19 @@
 import { identityHub } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/ad-engine';
-import { assert, createSandbox } from 'sinon';
+import { assert, createSandbox, SinonSandbox } from 'sinon';
 
-describe('Pubmatic IdentityHub', () => {
-	const sandbox = createSandbox();
+describe.only('Pubmatic IdentityHub', () => {
+	const sandbox: SinonSandbox = createSandbox();
 	let loadScriptSpy;
+	let contextStub;
 
 	beforeEach(() => {
 		loadScriptSpy = sandbox.stub(utils.scriptLoader, 'loadScript');
 		loadScriptSpy.resolvesThis();
-
-		context.set('pubmatic.identityHub.enabled', true);
-		context.set('options.optOutSale', false);
-		context.set('wiki.targeting.directedAtChildren', false);
-		context.set('state.isLogged', true);
+		contextStub = sandbox.stub(context);
+		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(true);
+		contextStub.get.withArgs('options.optOutSale').returns(false);
+		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(false);
 	});
 
 	afterEach(() => {
@@ -27,7 +27,7 @@ describe('Pubmatic IdentityHub', () => {
 	});
 
 	it('IdentityHub is disabled by feature flag', async () => {
-		context.set('pubmatic.identityHub.enabled', false);
+		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(false);
 
 		await identityHub.call();
 
@@ -35,7 +35,7 @@ describe('Pubmatic IdentityHub', () => {
 	});
 
 	it('IdentityHub is disabled if user has opted out sale', async () => {
-		context.set('options.optOutSale', true);
+		contextStub.get.withArgs('options.optOutSale').returns(true);
 
 		await identityHub.call();
 
@@ -43,7 +43,7 @@ describe('Pubmatic IdentityHub', () => {
 	});
 
 	it('IdentityHub is disabled on child-directed wiki', async () => {
-		context.set('wiki.targeting.directedAtChildren', true);
+		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(true);
 
 		await identityHub.call();
 
