@@ -1,20 +1,11 @@
-name: Package Size Report
+name: Compressed Size
 
-on:
-  pull_request:
-    branches: [ dev ] # ⬅ Add other branches you want size checks on
+on: [pull_request]
 
 jobs:
-  pkg-size-report:
-    name: Package Size Report
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-
-      - name: Package size report
-        uses: pkg-size/action@v1
+      - uses: actions/checkout@v2
+      - uses: preactjs/compressed-size-action@v2
