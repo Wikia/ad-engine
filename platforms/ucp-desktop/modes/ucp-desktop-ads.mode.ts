@@ -19,6 +19,7 @@ import {
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
+	liveConnect,
 	nielsen,
 	Runner,
 	silverSurferService,
@@ -30,7 +31,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
@@ -61,7 +62,9 @@ export class UcpDesktopAdsMode implements DiProcess {
 			return;
 		}
 
-		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
+		window.tabId = sessionStorage.tab_id
+			? sessionStorage.tab_id
+			: (sessionStorage.tab_id = nanoid());
 
 		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
@@ -85,7 +88,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(identityHub.call());
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
@@ -102,6 +104,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+		liveConnect.call();
+		identityHub.call();
 
 		adMarketplace.initialize();
 

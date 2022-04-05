@@ -31,6 +31,10 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setBaseState(): void {
+		if (utils.pageInIframe()) {
+			this.noAdsDetector.addReason('in_iframe');
+		}
+
 		if (utils.client.isSteamPlatform()) {
 			this.noAdsDetector.addReason('steam_browser');
 
@@ -146,6 +150,10 @@ export class BaseContextSetup implements DiProcess {
 
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
+		context.set(
+			'services.audigent.tracking.sampling',
+			this.instantConfig.get('icAudigentTrackingSampling'),
+		);
 		context.set(
 			'services.audigent.audienceTagScriptUrl',
 			this.instantConfig.get('icAudigentAudienceTagScriptUrl'),
