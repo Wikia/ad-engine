@@ -23,4 +23,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          build-command: npm run prod-build # ⬅ Set a different build script here
+          build-command: npm run build:platforms
