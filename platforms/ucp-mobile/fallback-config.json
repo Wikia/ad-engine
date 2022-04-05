@@ -631,19 +631,8 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
             "value": true
         }
     ],
@@ -2411,7 +2400,9 @@
                 "5965655956",
                 "5968510558",
                 "5967056316",
-                "5969626223"
+                "5969626223",
+                "5970648400",
+                "5974270234"
             ]
         }
     ],
@@ -2638,6 +2629,9 @@
                 "fandommobile",
                 "futhead",
                 "muthead"
+            ],
+            "regions": [
+                "XX"
             ],
             "sampling": 10.0,
             "value": 100
@@ -3066,6 +3060,30 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icPrebidConfiguration": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 50.0,
+            "value": {
+                "multiAuction": true,
+                "stagesTimeouts": {
+                    "init": 1300,
+                    "lazy": 2000,
+                    "main": 1300
+                },
+                "stagesIntervals": {
+                    "lazy": 500,
+                    "main": 0
+                }
+            }
         }
     ],
     "icDurationMedia": [
