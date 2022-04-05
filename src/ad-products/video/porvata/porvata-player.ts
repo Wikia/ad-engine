@@ -36,7 +36,7 @@ export class PorvataPlayer {
 	constructor(
 		private readonly adDisplayContainer: google.ima.AdDisplayContainer,
 		private readonly adsLoader: google.ima.AdsLoader,
-		private readonly adsRequest: google.ima.AdsRequest,
+		private adsRequest: google.ima.AdsRequest,
 		readonly settings: PorvataSettings,
 	) {
 		const playerContainer = settings.getPlayerContainer();
@@ -51,7 +51,6 @@ export class PorvataPlayer {
 
 		if (this.settings.isAutoPlay()) {
 			this.setAutoPlay(true);
-			this.updatePlayCounter();
 		}
 
 		this.destroyCallbacks.onItemFlush((callback: () => void) => callback());
@@ -158,7 +157,27 @@ export class PorvataPlayer {
 		}
 
 		this.dispatchEvent('wikiaAdPlayTriggered');
+		this.updatePlayCounter();
 
+		if (this.getPlayCounter() > 1) {
+			const runCallback = () => {
+				this.run();
+				this.adsLoader.removeEventListener(
+					window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+					runCallback,
+				);
+			};
+			this.adsLoader.addEventListener(
+				window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+				runCallback,
+			);
+			this.requestAds();
+		} else {
+			this.run();
+		}
+	}
+
+	run(): void {
 		// https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdDisplayContainer.initialize
 		this.adDisplayContainer.initialize();
 		this.adsManager.init(
@@ -167,15 +186,12 @@ export class PorvataPlayer {
 			window.google.ima.ViewMode.NORMAL,
 		);
 		this.adsManager.start();
-		this.updatePlayCounter();
 	}
 
 	reload(): void {
-		const adsRequest = GoogleImaWrapper.createAdsRequest(this.settings);
-
+		this.adsRequest = GoogleImaWrapper.createAdsRequest(this.settings);
 		this.adsManager.destroy();
 		this.adsLoader.contentComplete();
-		this.adsLoader.requestAds(adsRequest);
 	}
 
 	resize(width?: number, height?: number): void {
