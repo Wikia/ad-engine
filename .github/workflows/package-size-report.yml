@@ -25,4 +25,4 @@ jobs:
         with:
           display-size: gzip
           build-command: npm run build:platforms
-          hide-files: '*.{js,css}.map'
+          unchanged-files: hide
