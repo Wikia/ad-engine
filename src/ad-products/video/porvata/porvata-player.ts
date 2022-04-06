@@ -160,24 +160,24 @@ export class PorvataPlayer {
 		this.updatePlayCounter();
 
 		if (this.getPlayCounter() > 1) {
-			const runCallback = () => {
-				this.run();
+			const onAdsManagerLoaded = () => {
+				this.runVideoAd();
 				this.adsLoader.removeEventListener(
 					window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-					runCallback,
+					onAdsManagerLoaded,
 				);
 			};
 			this.adsLoader.addEventListener(
 				window.google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-				runCallback,
+				onAdsManagerLoaded,
 			);
 			this.requestAds();
 		} else {
-			this.run();
+			this.runVideoAd();
 		}
 	}
 
-	run(): void {
+	runVideoAd(): void {
 		// https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdDisplayContainer.initialize
 		this.adDisplayContainer.initialize();
 		this.adsManager.init(
