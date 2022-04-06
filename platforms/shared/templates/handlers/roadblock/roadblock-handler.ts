@@ -29,7 +29,7 @@ export class RoadblockHandler implements TemplateStateHandler {
 	) {}
 
 	async onEnter(): Promise<void> {
-		this.params.adProduct = 'ruap';
+		this.params.adProduct = this.params.adProduct || 'ruap';
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
 	}
 }
