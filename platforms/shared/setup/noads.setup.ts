@@ -2,15 +2,15 @@ import {
 	btfBlockerService,
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
 	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import Cookies from 'js-cookie';
 
-interface NoAdsConfig {
+export interface NoAdsConfig {
 	slotName: string;
 	beaconRegex: string;
 }
@@ -30,14 +30,19 @@ export class NoAdsSetup implements DiProcess {
 	constructor(protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
-		const configs: NoAdsConfig[] = [{ slotName: 'top_boxad', beaconRegex: '^v[a-l]' }];
-		const userBeacon: string = Cookies.get('wikia_beacon_id');
+		const cookieAdapter = new CookieStorageAdapter();
+
+		const configs: NoAdsConfig[] = [{ slotName: 'celtra-interstitial', beaconRegex: '^.' }];
+		const userBeacon: string = cookieAdapter.getItem('wikia_beacon_id');
 		const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
-		const slotName = config.slotName;
+		const slotName = config?.slotName;
 
 		switch (slotName) {
 			case 'uap':
 				context.set(`slots.top_leaderboard.disabled`, true);
+				return;
+			case 'celtra-interstitial':
+				cookieAdapter.setItem('_ae_intrsttl_imp', '1');
 				return;
 			case 'top_leaderboard':
 				skipBtfBlocker();
