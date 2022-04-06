@@ -4,8 +4,6 @@ import { logger } from '../utils';
 import { context } from './context-service';
 import { SlotCreator, SlotCreatorConfig } from './slot-creator';
 import { slotService } from './slot-service';
-import { btfBlockerService } from './btf-blocker-service';
-import { universalAdPackage } from '../../ad-products';
 
 const logGroup = 'slot-repeater';
 
@@ -43,15 +41,6 @@ class SlotInjector {
 	}
 
 	inject(slotName: string, disablePushOnScroll?: boolean): HTMLElement | null {
-		// @TODO: run only if top_leaderboard is disabled
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-			btfBlockerService.finishFirstCall();
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-				adProduct: universalAdPackage.getType(),
-			});
-		});
-
 		let container: HTMLElement;
 		const config: SlotConfig = context.get(`slots.${slotName}`);
 		const slotConfig: SlotCreatorConfig = {
