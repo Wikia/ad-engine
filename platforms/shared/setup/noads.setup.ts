@@ -10,7 +10,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
-export interface NoAdsConfig {
+interface NoAdsConfig {
 	slotName: string;
 	beaconRegex: string;
 }
