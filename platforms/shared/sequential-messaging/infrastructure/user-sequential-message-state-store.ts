@@ -1,5 +1,8 @@
 import Cookies from 'js-cookie';
-import { UserSequentialMessageState } from '../domain/data-structures/user-sequential-message-state';
+import {
+	SequenceState,
+	UserSequentialMessageState,
+} from '../domain/data-structures/user-sequential-message-state';
 import { UserSequentialMessageStateStoreInterface } from '../domain/interfaces/user-sequential-message-state-store.interface';
 
 export class UserSequentialMessageStateStore implements UserSequentialMessageStateStoreInterface {
@@ -10,7 +13,17 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 	constructor(private cookies: Cookies.CookiesStatic) {}
 
 	set(userState: UserSequentialMessageState): void {
-		this.cookies.set(UserSequentialMessageStateStore.cookieName, JSON.stringify(userState), {
+		const cookie = {};
+		for (const sequenceId of Object.keys(userState)) {
+			cookie[sequenceId] = {
+				stepNo: userState[sequenceId].stepNo,
+				width: userState[sequenceId].width,
+				height: userState[sequenceId].height,
+				uap: userState[sequenceId].uap,
+			};
+		}
+
+		this.cookies.set(UserSequentialMessageStateStore.cookieName, JSON.stringify(cookie), {
 			domain: UserSequentialMessageStateStore.cookieDomain,
 			expires: this.cookieDaysToLive,
 		});
@@ -22,7 +35,19 @@ export class UserSequentialMessageStateStore implements UserSequentialMessageSta
 			return;
 		}
 
-		return JSON.parse(cookieString);
+		const cookie = JSON.parse(cookieString);
+		const userState: UserSequentialMessageState = {};
+
+		for (const sequenceId of Object.keys(cookie)) {
+			userState[sequenceId] = new SequenceState(
+				cookie[sequenceId].stepNo,
+				cookie[sequenceId].width,
+				cookie[sequenceId].height,
+				cookie[sequenceId].uap,
+			);
+		}
+
+		return userState;
 	}
 
 	delete() {
