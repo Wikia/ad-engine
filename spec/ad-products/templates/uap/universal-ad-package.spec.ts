@@ -44,7 +44,8 @@ describe('UniversalAdPackage', () => {
 		expect(contextStub.set.calledWith('slots.top_boxad.targeting.uap_c', UAP_CREATIVE_ID)).to.equal(
 			true,
 		);
-		expect(contextStub.set.callCount).to.equal(4);
+		expect(contextStub.set.calledWith('state.uap.type', UAP_STANDARD_AD_PRODUCT)).to.equal(true);
+		expect(contextStub.set.callCount).to.equal(5);
 	});
 
 	it("should use slot's default video ad unit with default settings from GAM", () => {
