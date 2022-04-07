@@ -29,7 +29,7 @@ import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slo
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
 import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
-import { NoAdsSetup } from '../shared/setup/noads.setup';
+import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
 
 @Injectable()
 export class UcpMobilePlatform {
@@ -45,7 +45,7 @@ export class UcpMobilePlatform {
 			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
-			NoAdsSetup,
+			NoAdsExperimentSetup,
 			UcpTargetingSetup,
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,

@@ -96,6 +96,10 @@ export class AdEngine {
 
 	private pushSlot(adSlot: AdSlot): void {
 		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`) || [];
+		if (context.get(`slots.${adSlot.getSlotName()}.disabled`)) {
+			console.log(`hello, disabling ${adSlot.getSlotName()}`);
+			return;
+		}
 		slotService.add(adSlot);
 
 		if (providersChain.length > 0) {

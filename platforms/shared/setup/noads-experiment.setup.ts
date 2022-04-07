@@ -26,14 +26,15 @@ function skipBtfBlocker() {
 }
 
 @Injectable()
-export class NoAdsSetup implements DiProcess {
-	constructor(protected instantConfig: InstantConfigService) {}
+export class NoAdsExperimentSetup implements DiProcess {
+	constructor(
+		private instantConfig: InstantConfigService,
+		private cookieAdapter: CookieStorageAdapter,
+	) {}
 
 	execute(): void {
-		const cookieAdapter = new CookieStorageAdapter();
-
-		const configs: NoAdsConfig[] = [{ slotName: 'celtra-interstitial', beaconRegex: '^.' }];
-		const userBeacon: string = cookieAdapter.getItem('wikia_beacon_id');
+		const configs = this.instantConfig.get<object>('icNoAdsExperimentConfig', []) as NoAdsConfig[];
+		const userBeacon: string = this.cookieAdapter.getItem('wikia_beacon_id');
 		const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
 		const slotName = config?.slotName;
 
@@ -42,7 +43,7 @@ export class NoAdsSetup implements DiProcess {
 				context.set(`slots.top_leaderboard.disabled`, true);
 				return;
 			case 'celtra-interstitial':
-				cookieAdapter.setItem('_ae_intrsttl_imp', '1');
+				this.cookieAdapter.setItem('_ae_intrsttl_imp', '1');
 				return;
 			case 'top_leaderboard':
 				skipBtfBlocker();
