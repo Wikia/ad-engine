@@ -114,6 +114,7 @@ function getType(): string {
 
 function setType(type): void {
 	uapType = type;
+	context.set('state.uap.type', uapType);
 }
 
 function updateSlotsTargeting(lineItemId, creativeId): void {
