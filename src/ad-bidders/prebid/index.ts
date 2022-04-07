@@ -206,7 +206,7 @@ export class PrebidProvider extends BidderProvider {
 			);
 
 			firstBidRequest = this.requestBids(
-				this.filterAdUnits(this.adUnits, true),
+				this.filterAdUnits(this.adUnits, 'init'),
 				() => {
 					bidsBackHandler();
 					communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
@@ -217,7 +217,7 @@ export class PrebidProvider extends BidderProvider {
 
 			setTimeout(() => {
 				this.requestBids(
-					this.filterAdUnits(this.adUnits, false),
+					this.filterAdUnits(this.adUnits, 'main'),
 					() => {
 						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
 						utils.logger(logGroup, 'multi auction in main stage - done');
@@ -236,12 +236,18 @@ export class PrebidProvider extends BidderProvider {
 		});
 	}
 
-	private filterAdUnits(adUnits: PrebidAdUnit[], init = false): PrebidAdUnit[] {
+	private filterAdUnits(adUnits: PrebidAdUnit[], stage: string): PrebidAdUnit[] {
 		const initStageCodes = context.get('bidders.prebid.initStageSlots') || [];
 
-		return adUnits.filter((adUnit) =>
-			init ? initStageCodes.includes(adUnit.code) : !initStageCodes.includes(adUnit.code),
-		);
+		if (stage === 'init') {
+			return adUnits.filter((adUnit) => initStageCodes.includes(adUnit.code));
+		}
+
+		if (stage === 'main') {
+			return adUnits.filter((adUnit) => !initStageCodes.includes(adUnit.code));
+		}
+
+		return adUnits;
 	}
 
 	async removeAdUnits(): Promise<void> {
