@@ -1,26 +1,58 @@
 import Cookies from 'js-cookie';
-import { UserSequentialMessageState } from '../domain/data-structures/user-sequential-message-state';
+import {
+	SequenceState,
+	UserSequentialMessageState,
+} from '../domain/data-structures/user-sequential-message-state';
 import { UserSequentialMessageStateStoreInterface } from '../domain/interfaces/user-sequential-message-state-store.interface';
 
 export class UserSequentialMessageStateStore implements UserSequentialMessageStateStoreInterface {
-	cookieName = 'sequential_messaging';
+	static readonly cookieName = 'sequential_messaging';
+	static readonly cookieDomain = 'fandom.com';
+	readonly cookieDaysToLive = 7;
 
 	constructor(private cookies: Cookies.CookiesStatic) {}
 
 	set(userState: UserSequentialMessageState): void {
-		this.cookies.set(this.cookieName, JSON.stringify(userState));
+		const cookie = {};
+		for (const sequenceId of Object.keys(userState)) {
+			cookie[sequenceId] = {
+				stepNo: userState[sequenceId].stepNo,
+				width: userState[sequenceId].width,
+				height: userState[sequenceId].height,
+				uap: userState[sequenceId].uap,
+			};
+		}
+
+		this.cookies.set(UserSequentialMessageStateStore.cookieName, JSON.stringify(cookie), {
+			domain: UserSequentialMessageStateStore.cookieDomain,
+			expires: this.cookieDaysToLive,
+		});
 	}
 
 	get(): UserSequentialMessageState {
-		const cookieString = this.cookies.get(this.cookieName);
+		const cookieString = this.cookies.get(UserSequentialMessageStateStore.cookieName);
 		if (cookieString == null) {
 			return;
 		}
 
-		return JSON.parse(cookieString);
+		const cookie = JSON.parse(cookieString);
+		const userState: UserSequentialMessageState = {};
+
+		for (const sequenceId of Object.keys(cookie)) {
+			userState[sequenceId] = new SequenceState(
+				cookie[sequenceId].stepNo,
+				cookie[sequenceId].width,
+				cookie[sequenceId].height,
+				cookie[sequenceId].uap,
+			);
+		}
+
+		return userState;
 	}
 
 	delete() {
-		this.cookies.remove(this.cookieName);
+		this.cookies.remove(UserSequentialMessageStateStore.cookieName, {
+			domain: UserSequentialMessageStateStore.cookieDomain,
+		});
 	}
 }

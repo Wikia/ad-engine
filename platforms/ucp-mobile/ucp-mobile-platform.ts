@@ -47,12 +47,12 @@ export class UcpMobilePlatform {
 			UcpMobileSlotsContextSetup,
 			NoAdsSetup,
 			UcpTargetingSetup,
-			SequentialMessagingSetup,
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
 			BiddersStateSetup,
 			UcpMobileTemplatesSetup,
+			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,

@@ -18,7 +18,7 @@ import {
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {
@@ -47,7 +47,9 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 			return;
 		}
 
-		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
+		window.tabId = sessionStorage.tab_id
+			? sessionStorage.tab_id
+			: (sessionStorage.tab_id = nanoid());
 
 		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
@@ -71,7 +73,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(identityHub.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(silverSurferService.configureUserTargeting());
 
@@ -85,6 +86,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
+		identityHub.call();
 
 		return inhibitors;
 	}

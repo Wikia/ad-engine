@@ -4,6 +4,7 @@ import {
 	InstantConfigSetup,
 	LabradorSetup,
 	NoAdsDetector,
+	SequentialMessagingSetup,
 	TrackingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -43,6 +44,7 @@ export class F2Platform {
 			F2TargetingSetup,
 			F2DynamicSlotsSetup,
 			F2TemplatesSetup,
+			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,

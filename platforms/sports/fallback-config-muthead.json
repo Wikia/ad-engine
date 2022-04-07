@@ -348,7 +348,7 @@
                 "XX"
             ],
             "sampling": 50.0,
-            "value": 50
+            "value": 100
         },
         {
             "apps": [
@@ -359,7 +359,7 @@
             "regions": [
                 "XX"
             ],
-            "value": 25
+            "value": 50
         }
     ],
     "icAdEngineDelay": [
