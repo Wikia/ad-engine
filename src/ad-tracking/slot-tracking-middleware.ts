@@ -21,7 +21,7 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
 	const timestamp: number = now.getTime();
-	const uapType: AdProductType = context.get('state.uap.type');
+	const uapType: AdProductType = context.get('state.uap.type') || 'none';
 	let topOffset = slot.getTopOffset();
 
 	if (typeof topOffset === 'number') {
