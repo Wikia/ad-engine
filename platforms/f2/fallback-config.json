@@ -1862,7 +1862,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 10.0,
+            "sampling": 50.0,
             "value": 100
         },
         {
