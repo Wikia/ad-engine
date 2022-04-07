@@ -10,12 +10,14 @@ import * as constants from './constants';
 
 let uapCreativeId = constants.DEFAULT_UAP_ID;
 let uapId = constants.DEFAULT_UAP_ID;
-let uapType = constants.DEFAULT_UAP_TYPE;
+let uapType: AdProductType = constants.DEFAULT_UAP_TYPE;
 
 export interface UapState<T> {
 	default: T;
 	resolved: T;
 }
+
+export type AdProductType = 'uap' | 'vuap' | 'ruap' | 'jwuap' | 'livestream' | 'none';
 
 export type UapRatio = UapState<number>;
 
@@ -46,7 +48,7 @@ export interface VideoSize {
 
 export interface UapParams {
 	adContainer: HTMLElement;
-	adProduct: string;
+	adProduct: AdProductType;
 	aspectRatio: number;
 	autoPlay: boolean;
 	backgroundColor: string;
@@ -112,7 +114,7 @@ function getType(): string {
 	return uapType;
 }
 
-function setType(type): void {
+function setType(type: AdProductType): void {
 	uapType = type;
 	context.set('state.uap.type', uapType);
 }
@@ -177,7 +179,7 @@ function isFanTakeoverLoaded(): boolean {
 export const universalAdPackage = {
 	...constants,
 	init(params: UapParams, slotsToEnable: string[] = [], slotsToDisable: string[] = []): void {
-		let adProduct = 'uap';
+		let adProduct: AdProductType = 'uap';
 
 		if (this.isVideoEnabled(params)) {
 			adProduct = 'vuap';

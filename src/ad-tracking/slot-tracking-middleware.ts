@@ -1,5 +1,6 @@
 import { context, FuncPipelineStep, InstantConfigCacheStorage, utils } from '@ad-engine/core';
 import { AdInfoContext } from './slot-tracker';
+import { AdProductType } from '../ad-products';
 
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {
@@ -21,7 +22,7 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
 	const timestamp: number = now.getTime();
-	const uapType = context.get('state.uap.type');
+	const uapType: AdProductType = context.get('state.uap.type');
 	let topOffset = slot.getTopOffset();
 
 	if (typeof topOffset === 'number') {
