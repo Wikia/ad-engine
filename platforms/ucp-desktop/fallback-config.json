@@ -161,7 +161,8 @@
                 "5951743095",
                 "5951743089",
                 "5929089588",
-                "5929089315"
+                "5929089315",
+                "5976512561"
             ]
         }
     ],
@@ -484,6 +485,22 @@
             "value": "distroscale"
         }
     ],
+    "icPrebidStages": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": {
+                "initTimeout": 1300,
+                "mainDelayed": 100,
+                "mainTimeout": 2000
+            }
+        }
+    ],
     "icViewabilityTracking": [
         {
             "apps": [
@@ -673,7 +690,9 @@
             "regions": [
                 "CA",
                 "DE",
-                "PL"
+                "GB",
+                "PL",
+                "UK"
             ],
             "value": true
         }
@@ -2514,7 +2533,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 10.0,
+            "sampling": 50.0,
             "value": 100
         },
         {
@@ -3048,30 +3067,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidConfiguration": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": {
-                "multiAuction": true,
-                "stagesTimeouts": {
-                    "init": 1300,
-                    "lazy": 2000,
-                    "main": 1300
-                },
-                "stagesIntervals": {
-                    "lazy": 500,
-                    "main": 0
-                }
-            }
         }
     ],
     "icDurationMedia": [
