@@ -17,8 +17,6 @@ export interface UapState<T> {
 	resolved: T;
 }
 
-export type AdProductType = 'uap' | 'vuap' | 'ruap' | 'jwuap' | 'livestream' | 'none';
-
 export type UapRatio = UapState<number>;
 
 export interface UapConfig {

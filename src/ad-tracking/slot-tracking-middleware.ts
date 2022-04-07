@@ -1,6 +1,5 @@
 import { context, FuncPipelineStep, InstantConfigCacheStorage, utils } from '@ad-engine/core';
 import { AdInfoContext } from './slot-tracker';
-import { AdProductType } from '../ad-products';
 
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {

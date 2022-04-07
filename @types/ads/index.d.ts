@@ -88,3 +88,4 @@ interface VideoStatus {
 }
 
 type ManualAdType = 'collapse' | 'forced_collapse' | 'forced_success' | 'manual';
+type AdProductType = 'uap' | 'vuap' | 'ruap' | 'jwuap' | 'livestream' | 'none';
