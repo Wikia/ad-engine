@@ -235,10 +235,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[Prebid]',
 		name: 'Main stage done',
 	},
-	BIDDERS_LAZY_STAGE_DONE: {
-		category: '[Prebid]',
-		name: 'Lazy stage done',
-	},
 	// Video events //
 	VIDEO_EVENT: {
 		category: '[Video]',

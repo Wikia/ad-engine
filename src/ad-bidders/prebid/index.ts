@@ -29,8 +29,6 @@ interface PrebidConfig extends BidderConfig {
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
-type MultiAuctionStep = 'init' | 'main' | 'lazy';
-
 communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, ({ slot }) =>
 	markWinningVideoBidAsUsed(slot),
 );
@@ -197,28 +195,36 @@ export class PrebidProvider extends BidderProvider {
 		if (context.get('bidders.prebid.multiAuction')) {
 			utils.logger(logGroup, 'multi auction request enabled');
 
-			this.registerStage('main', 'init');
-			this.registerStage('lazy', 'main');
-
 			communicationService.on(
 				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 				(action: UapLoadStatus) => {
 					if (action.isLoaded) {
 						communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
 						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-						communicationService.emit(eventsRepository.BIDDERS_LAZY_STAGE_DONE);
 					}
 				},
 			);
 
 			firstBidRequest = this.requestBids(
-				this.filterAdUnits(this.adUnits, 'init'),
+				this.filterAdUnits(this.adUnits, true),
 				() => {
 					bidsBackHandler();
 					communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
+					utils.logger(logGroup, 'multi auction in init stage - done');
 				},
-				context.get('bidders.prebid.stagesTimeouts.init') || this.timeout,
+				context.get('bidders.prebid.initTimeout') || this.timeout,
 			);
+
+			setTimeout(() => {
+				this.requestBids(
+					this.filterAdUnits(this.adUnits, false),
+					() => {
+						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+						utils.logger(logGroup, 'multi auction in main stage - done');
+					},
+					context.get('bidders.prebid.mainTimeout') || this.timeout,
+				);
+			}, context.get('bidders.prebid.mainDelayed') || 0);
 		} else {
 			firstBidRequest = this.requestBids(this.adUnits, () => {
 				bidsBackHandler();
@@ -230,38 +236,18 @@ export class PrebidProvider extends BidderProvider {
 		});
 	}
 
-	private filterAdUnits(adUnits: PrebidAdUnit[], stage: MultiAuctionStep = 'init'): PrebidAdUnit[] {
-		const codes = context.get(`bidders.prebid.stagesSlots.${stage}`) || [];
+	private filterAdUnits(adUnits: PrebidAdUnit[], init = false): PrebidAdUnit[] {
+		const initStageCodes = context.get('bidders.prebid.initStageSlots') || [];
 
-		return adUnits.filter((adUnit) => codes.includes(adUnit.code));
+		return adUnits.filter((adUnit) =>
+			init ? initStageCodes.includes(adUnit.code) : !initStageCodes.includes(adUnit.code),
+		);
 	}
 
 	async removeAdUnits(): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
 		(pbjs.adUnits || []).forEach((adUnit) => pbjs.removeAdUnit(adUnit.code));
-	}
-
-	private registerStage(name: MultiAuctionStep, trigger: MultiAuctionStep): void {
-		const stagesEvents = {
-			init: eventsRepository.BIDDERS_INIT_STAGE_DONE,
-			main: eventsRepository.BIDDERS_MAIN_STAGE_DONE,
-			lazy: eventsRepository.BIDDERS_LAZY_STAGE_DONE,
-		};
-
-		communicationService.on(stagesEvents[trigger], () => {
-			utils.logger(logGroup, `multi auction ${trigger} stage - done`);
-
-			setTimeout(() => {
-				this.requestBids(
-					this.filterAdUnits(this.adUnits, name),
-					() => {
-						communicationService.emit(stagesEvents[name]);
-					},
-					context.get(`bidders.prebid.stagesTimeouts.${name}`) || this.timeout,
-				);
-			}, context.get(`bidders.prebid.stagesIntervals.${name}`) || 0);
-		});
 	}
 
 	getBestPrice(slotName: string): Promise<Dictionary<string>> {

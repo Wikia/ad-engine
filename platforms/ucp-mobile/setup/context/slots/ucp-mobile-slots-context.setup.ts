@@ -14,6 +14,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
+				initStage: true,
 				adProduct: 'top_leaderboard',
 				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
@@ -102,7 +103,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			incontent_player: {
-				lazyCall: true,
 				adProduct: 'incontent_player',
 				avoidConflictWith: '.ad-slot,#incontent_boxad_1',
 				autoplay: true,
@@ -140,7 +140,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			interstitial: {
-				lazyCall: true,
 				adProduct: 'interstitial',
 				defaultClasses: ['hide'],
 				group: 'IU',
@@ -153,7 +152,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			floor_adhesion: {
-				lazyCall: true,
 				adProduct: 'floor_adhesion',
 				defaultClasses: ['hide'],
 				group: 'PF',
