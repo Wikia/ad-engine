@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "114.4.0",
+	"version": "115.0.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [

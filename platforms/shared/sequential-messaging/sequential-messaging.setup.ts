@@ -34,25 +34,29 @@ export class SequentialMessagingSetup {
 			const lineItemId = payload.lineItemId;
 			const width = payload.width;
 			const height = payload.height;
+			const uap = payload.uap === undefined ? false : payload.uap;
 			if (lineItemId == null || width == null || height == null) {
 				return;
 			}
 
 			const sequenceHandler = new SequenceStartHandler(this.userStateStore);
-			sequenceHandler.startSequence(lineItemId, width, height);
+			sequenceHandler.startSequence(lineItemId, width, height, uap);
 		});
 	}
 
 	private handleOngoingSequence(): void {
+		const targetingManager = new GamTargetingManager(
+			context,
+			slotsContext,
+			SequentialMessagingSetup.baseTargetingSize,
+			resolvedState.forceUapResolveState,
+		);
+
 		const sequenceHandler = new SequenceContinuationHandler(
 			this.userStateStore,
-			new GamTargetingManager(
-				context,
-				slotsContext,
-				SequentialMessagingSetup.baseTargetingSize,
-				resolvedState.forceUapResolveState,
-			),
+			targetingManager,
 			this.onIntermediateStepLoad,
+			context.get('wiki.targeting.hasFeaturedVideo'),
 		);
 
 		sequenceHandler.handleOngoingSequence();

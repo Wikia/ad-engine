@@ -164,7 +164,8 @@
                 "5951743095",
                 "5951743089",
                 "5929089588",
-                "5929089315"
+                "5929089315",
+                "5976512561"
             ]
         }
     ],
@@ -583,6 +584,22 @@
             "value": true
         }
     ],
+    "icPrebidStages": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": {
+                "initTimeout": 1300,
+                "mainDelayed": 100,
+                "mainTimeout": 2000
+            }
+        }
+    ],
     "icViewabilityTracking": [
         {
             "apps": [
@@ -631,19 +648,8 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
-            ],
-            "value": false
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
             "value": true
         }
     ],
@@ -2411,7 +2417,9 @@
                 "5965655956",
                 "5968510558",
                 "5967056316",
-                "5969626223"
+                "5969626223",
+                "5970648400",
+                "5974270234"
             ]
         }
     ],
@@ -2639,7 +2647,10 @@
                 "futhead",
                 "muthead"
             ],
-            "sampling": 10.0,
+            "regions": [
+                "XX"
+            ],
+            "sampling": 50.0,
             "value": 100
         },
         {
