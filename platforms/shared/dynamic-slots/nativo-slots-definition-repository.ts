@@ -9,13 +9,10 @@ import {
 	nativoLazyLoader,
 	SlotCreatorConfig,
 	UapLoadStatus,
-	utils,
 } from '@wikia/ad-engine';
 
 import { fanFeedNativeAdListener } from './fan-feed-native-ad-listener';
 import { SlotSetupDefinition } from '../utils/insert-slots';
-
-const logGroup = 'nativo';
 
 @Injectable()
 export class NativoSlotsDefinitionRepository {
@@ -37,7 +34,7 @@ export class NativoSlotsDefinitionRepository {
 		}
 
 		if (context.get(`slots.${Nativo.INCONTENT_AD_SLOT_NAME}.disabled`) === true) {
-			utils.logger(logGroup, 'Slot disabled: ', Nativo.INCONTENT_AD_SLOT_NAME);
+			Nativo.log('Slot disabled: ', Nativo.INCONTENT_AD_SLOT_NAME);
 			return;
 		}
 
@@ -66,7 +63,7 @@ export class NativoSlotsDefinitionRepository {
 		}
 
 		if (context.get(`slots.${Nativo.FEED_AD_SLOT_NAME}.disabled`) === true) {
-			utils.logger(logGroup, 'Slot disabled: ', Nativo.FEED_AD_SLOT_NAME);
+			Nativo.log('Slot disabled: ', Nativo.FEED_AD_SLOT_NAME);
 			return;
 		}
 
