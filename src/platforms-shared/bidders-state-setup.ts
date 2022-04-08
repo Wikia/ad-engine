@@ -15,9 +15,10 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
 
-		const customPrebidConfig: object = instantConfig.get('icPrebidConfiguration');
-		if (customPrebidConfig) {
-			context.set('bidders.prebid', { ...context.get('bidders.prebid'), ...customPrebidConfig });
+		const stagesConfig: object = instantConfig.get('icPrebidStages');
+		if (stagesConfig) {
+			context.set('bidders.prebid.multiAuction', true);
+			context.set('bidders.prebid', { ...context.get('bidders.prebid'), ...stagesConfig });
 		}
 
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
