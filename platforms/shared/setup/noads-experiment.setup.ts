@@ -11,18 +11,8 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 interface NoAdsConfig {
-	slotName: string;
+	unitName: string;
 	beaconRegex: string;
-}
-
-function skipBtfBlocker() {
-	communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-		btfBlockerService.finishFirstCall();
-		communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-			isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-			adProduct: universalAdPackage.getType(),
-		});
-	});
 }
 
 @Injectable()
@@ -35,19 +25,37 @@ export class NoAdsExperimentSetup implements DiProcess {
 	execute(): void {
 		const configs = this.instantConfig.get<object>('icNoAdsExperimentConfig', []) as NoAdsConfig[];
 		const userBeacon: string = this.cookieAdapter.getItem('wikia_beacon_id');
-		const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
-		const slotName = config?.slotName;
+		const unitName = this.getUnitNameToDisable(configs, userBeacon);
+		this.disableUnit(unitName);
+	}
 
-		switch (slotName) {
+	skipBtfBlocker() {
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			btfBlockerService.finishFirstCall();
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+				adProduct: universalAdPackage.getType(),
+			});
+		});
+	}
+
+	disableUnit(unitName: string) {
+		switch (unitName) {
 			case 'uap':
 				context.set(`slots.top_leaderboard.disabled`, true);
 				return;
-			case 'celtra-interstitial':
+			case 'interstitial_celtra':
 				this.cookieAdapter.setItem('_ae_intrsttl_imp', '1');
 				return;
 			case 'top_leaderboard':
-				skipBtfBlocker();
+				this.skipBtfBlocker();
 		}
-		context.set(`slots.${slotName}.disabled`, true);
+		context.set(`slots.${unitName}.disabled`, true);
+	}
+
+	getUnitNameToDisable(configs: NoAdsConfig[], userBeacon): string {
+		const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
+
+		return config?.unitName;
 	}
 }
