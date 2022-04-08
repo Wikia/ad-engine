@@ -46,12 +46,12 @@ export class UcpDesktopPlatform {
 			WikiContextSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
-			NoAdsExperimentSetup,
 			UcpTargetingSetup,
 			conditional(shouldUseAdLayouts, {
 				yes: UcpDesktopAdLayoutSetup,
 				no: LegacySetup,
 			}),
+			NoAdsExperimentSetup,
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
