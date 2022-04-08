@@ -63,15 +63,16 @@ export class AdLayoutInitializerSetup implements DiProcess {
 				utils.logger(logGroup, 'Layout payload received', layoutPayload);
 
 				// TODO: move the logic below to UapAdLayout
-				if (layoutPayload.layout === 'uap') {
+				if (['uap', 'jwplayer'].includes(layoutPayload.layout)) {
 					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impression;
+					const impressionSlot = layoutPayload.layout === 'uap' ? 'top_leaderboard' : 'featured';
 					const impressionCallback = () => {
 						utils.scriptLoader.loadAsset(pixel, 'blob');
 					};
 					communicationService.onSlotEvent(
 						AdSlot.STATUS_SUCCESS,
 						impressionCallback,
-						'top_leaderboard',
+						impressionSlot,
 						true,
 					);
 
@@ -80,9 +81,11 @@ export class AdLayoutInitializerSetup implements DiProcess {
 						'targeting.uap_c',
 						(layoutPayload as FanTakeoverLayoutPayload).data.creativeId,
 					);
+
+					return Promise.resolve();
 				}
 
-				return Promise.resolve();
+				return Promise.reject();
 			} catch (e) {
 				return Promise.reject();
 			}
