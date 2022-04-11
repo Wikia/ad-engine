@@ -16,6 +16,28 @@ interface NoAdsConfig {
 	beaconRegex: string;
 }
 
+export function skipBtfBlocker() {
+	communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+		btfBlockerService.finishFirstCall();
+		communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
+			isLoaded: universalAdPackage.isFanTakeoverLoaded(),
+			adProduct: universalAdPackage.getType(),
+		});
+	});
+}
+
+export function blockUAP(): void {
+	const { desktop, mobile } = universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize;
+	slotsContext.removeSlotSize('top_leaderboard', desktop);
+	slotsContext.removeSlotSize('top_leaderboard', mobile);
+}
+
+export function getUnitNameToDisable(configs: NoAdsConfig[], userBeacon): string {
+	const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
+
+	return config?.unitName;
+}
+
 @Injectable()
 export class NoAdsExperimentSetup implements DiProcess {
 	constructor(
@@ -26,30 +48,14 @@ export class NoAdsExperimentSetup implements DiProcess {
 	execute(): void {
 		const configs = this.instantConfig.get<object>('icNoAdsExperimentConfig', []) as NoAdsConfig[];
 		const userBeacon: string = this.cookieAdapter.getItem('wikia_beacon_id');
-		const unitName = this.getUnitNameToDisable(configs, userBeacon);
+		const unitName = getUnitNameToDisable(configs, userBeacon);
 		this.disableUnit(unitName);
-	}
-
-	skipBtfBlocker() {
-		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-			btfBlockerService.finishFirstCall();
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, {
-				isLoaded: universalAdPackage.isFanTakeoverLoaded(),
-				adProduct: universalAdPackage.getType(),
-			});
-		});
-	}
-
-	blockUAP(): void {
-		const { desktop, mobile } = universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize;
-		slotsContext.removeSlotSize('top_leaderboard', desktop);
-		slotsContext.removeSlotSize('top_leaderboard', mobile);
 	}
 
 	disableUnit(unitName: string) {
 		switch (unitName) {
 			case 'uap':
-				this.blockUAP();
+				blockUAP();
 				return;
 			case 'interstitial_celtra':
 				this.cookieAdapter.setItem('_ae_intrsttl_imp', '1');
@@ -58,21 +64,15 @@ export class NoAdsExperimentSetup implements DiProcess {
 				context.set(`slots.interstitial.disabled`, true);
 				return;
 			case 'top_leaderboard':
-				this.skipBtfBlocker();
+				skipBtfBlocker();
 				context.set(`slots.top_leaderboard.disabled`, true);
 				return;
 			case 'top_boxad':
-				this.blockUAP();
+				blockUAP();
 				context.set(`slots.top_boxad.disabled`, true);
 				return;
 			default:
 				context.set(`slots.${unitName}.disabled`, true);
 		}
-	}
-
-	getUnitNameToDisable(configs: NoAdsConfig[], userBeacon): string {
-		const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
-
-		return config?.unitName;
 	}
 }
