@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "116.0.0",
+	"version": "116.1.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -38,7 +38,7 @@
 		"awesome-typescript-loader": "5.2.1",
 		"babel-loader": "8.2.3",
 		"chai": "^4.1.2",
-		"css-loader": "6.6.0",
+		"css-loader": "6.7.1",
 		"eslint": "8.6.0",
 		"express": "4.17.2",
 		"husky": "1.1.4",
