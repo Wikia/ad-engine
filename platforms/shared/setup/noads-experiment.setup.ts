@@ -40,12 +40,16 @@ export class NoAdsExperimentSetup implements DiProcess {
 		});
 	}
 
-	disableUnit(unitName: string) {
+	blockUAP(): void {
 		const { desktop, mobile } = universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize;
+		slotsContext.removeSlotSize('top_leaderboard', desktop);
+		slotsContext.removeSlotSize('top_leaderboard', mobile);
+	}
+
+	disableUnit(unitName: string) {
 		switch (unitName) {
 			case 'uap':
-				slotsContext.removeSlotSize('top_leaderboard', desktop);
-				slotsContext.removeSlotSize('top_leaderboard', mobile);
+				this.blockUAP();
 				return;
 			case 'interstitial_celtra':
 				this.cookieAdapter.setItem('_ae_intrsttl_imp', '1');
@@ -56,6 +60,10 @@ export class NoAdsExperimentSetup implements DiProcess {
 			case 'top_leaderboard':
 				this.skipBtfBlocker();
 				context.set(`slots.top_leaderboard.disabled`, true);
+				return;
+			case 'top_boxad':
+				this.blockUAP();
+				context.set(`slots.top_boxad.disabled`, true);
 				return;
 			default:
 				context.set(`slots.${unitName}.disabled`, true);
