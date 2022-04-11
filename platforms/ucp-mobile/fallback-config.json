@@ -592,12 +592,9 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "regions": [
-                "PL"
-            ],
             "value": {
                 "initTimeout": 1300,
-                "mainDelayed": 3000,
+                "mainDelayed": 100,
                 "mainTimeout": 2000
             }
         }

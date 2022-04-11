@@ -24,11 +24,7 @@ export const basicContext = {
 			bidsRefreshing: {
 				slots: ['mobile_in_content'],
 			},
-			stagesSlots: {
-				init: ['mobile_top_leaderboard', 'featured'],
-				main: ['mobile_in_content', 'bottom_leaderboard'],
-				lazy: ['floor_adhesion', 'incontent_player', 'interstitial'],
-			},
+			initStageSlots: ['mobile_top_leaderboard'],
 		},
 	},
 	custom: {
