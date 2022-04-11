@@ -7,7 +7,7 @@ import {
 import { assert as chaiAssert } from 'chai';
 import { slotsContext } from '../../../../platforms/shared';
 
-describe.only('NoAdsExperimentSetup', () => {
+describe('NoAdsExperimentSetup', () => {
 	const instantConfig = {
 		get: () => [],
 	} as any;
