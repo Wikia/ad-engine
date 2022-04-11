@@ -97,11 +97,6 @@
 		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.coverage.js",
 		"prepare": "husky install"
 	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
 	"lint-staged": {
 		"*.ts": [
 			"prettier --write",
