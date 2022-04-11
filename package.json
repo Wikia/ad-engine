@@ -44,7 +44,6 @@
 		"husky": "1.1.4",
 		"instant-mocha": "1.4.1",
 		"istanbul-instrumenter-loader": "3.0.1",
-		"jsdom": "11.11.0",
 		"jsdom-global": "^3.0.2",
 		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
 		"lint-staged": "12.3.7",
