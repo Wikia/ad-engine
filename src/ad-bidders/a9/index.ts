@@ -389,13 +389,11 @@ export class A9Provider extends BidderProvider {
 	 * Checks whether given A9 slot definition is used by alias
 	 */
 	private isSlotEnabled(slotID: string): boolean {
-		const someEnabledByAlias: boolean = Object.keys(slotService.getAllowedSlots()).some(
-			(slotName) => {
-				const bidderAlias: string = context.get(`slots.${slotName}.bidderAlias`);
+		const someEnabledByAlias: boolean = Object.keys(context.get('slots')).some((slotName) => {
+			const bidderAlias: string = context.get(`slots.${slotName}.bidderAlias`);
 
-				return bidderAlias === slotID && slotService.getState(slotName);
-			},
-		);
+			return bidderAlias === slotID && slotService.getState(slotName);
+		});
 
 		const slotConfig: SlotConfig = context.get(`slots.${slotID}`);
 
