@@ -26,10 +26,7 @@ export class CloseToHiddenButtonHandler implements TemplateStateHandler {
 			},
 		}).render();
 
-		this.helper
-			.appendOnScroll(this.button)
-			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe();
+		this.helper.appendOnScroll(this.button).pipe(takeUntil(this.unsubscribe$)).subscribe();
 	}
 
 	async onLeave(): Promise<void> {
