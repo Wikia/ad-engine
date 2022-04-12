@@ -18,8 +18,8 @@ describe('NoAdsExperimentSetup', () => {
 
 	const sandbox = sinon.createSandbox();
 
-	const configSpy = sandbox.spy(instantConfig, 'get');
-	const cookieSpy = sandbox.spy(cookieAdapter, 'getItem');
+	const configGetSpy = sandbox.spy(instantConfig, 'get');
+	const cookieGetSpy = sandbox.spy(cookieAdapter, 'getItem');
 
 	afterEach(function() {
 		sandbox.restore();
@@ -30,30 +30,8 @@ describe('NoAdsExperimentSetup', () => {
 
 		experimentSetup.execute();
 
-		assert.calledOnce(configSpy.withArgs('icNoAdsExperimentConfig', []));
-		assert.calledOnce(cookieSpy.withArgs('wikia_beacon_id'));
-	});
-
-	it('should pick correct unit to disable', () => {
-		const configs = [
-			{
-				unitName: 'wrong',
-				beaconRegex: '^123',
-			},
-			{
-				unitName: 'correct',
-				beaconRegex: '^abc',
-			},
-			{
-				unitName: 'wrong_again',
-				beaconRegex: '^.',
-			},
-		];
-		const beacon = 'abc123';
-
-		const unitNameToDisable = getUnitNameToDisable(configs, beacon);
-
-		chaiAssert(unitNameToDisable === 'correct');
+		assert.calledOnce(configGetSpy.withArgs('icNoAdsExperimentConfig', []));
+		assert.calledOnce(cookieGetSpy.withArgs('wikia_beacon_id'));
 	});
 
 	it('should remove UAP sizes from top_leaderboard slotContext', () => {
@@ -63,5 +41,52 @@ describe('NoAdsExperimentSetup', () => {
 
 		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [3, 3]));
 		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [2, 2]));
+	});
+
+	describe('getUnitNameToDisable', () => {
+		it('should pick correct unit to disable', () => {
+			const configs = [
+				{
+					unitName: 'wrong',
+					beaconRegex: '^123',
+				},
+				{
+					unitName: 'correct',
+					beaconRegex: '^abc',
+				},
+				{
+					unitName: 'wrong_again',
+					beaconRegex: '^.',
+				},
+			];
+			const beacon = 'abc123';
+
+			const unitNameToDisable = getUnitNameToDisable(configs, beacon);
+
+			chaiAssert(unitNameToDisable === 'correct');
+		});
+
+		it('should not return anything when there is no beacon', () => {
+			const configs = [
+				{
+					unitName: 'correct',
+					beaconRegex: '^abc',
+				},
+			];
+			const beacon = undefined;
+
+			const unitNameToDisable = getUnitNameToDisable(configs, beacon);
+
+			chaiAssert(unitNameToDisable === undefined);
+		});
+
+		it('should not return anything when there is no config', () => {
+			const configs = [];
+			const beacon = '123';
+
+			const unitNameToDisable = getUnitNameToDisable(configs, beacon);
+
+			chaiAssert(unitNameToDisable === undefined);
+		});
 	});
 });

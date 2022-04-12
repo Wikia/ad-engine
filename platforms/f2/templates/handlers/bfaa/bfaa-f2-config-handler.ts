@@ -1,7 +1,6 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	context,
-	slotService,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -18,7 +17,7 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
-			Object.keys(slotService.getAllowedSlots() || []).filter(
+			Object.keys(context.get('slots') || []).filter(
 				(slotName) => !enabledSlots.includes(slotName),
 			),
 		);

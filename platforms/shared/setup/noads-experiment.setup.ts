@@ -32,7 +32,7 @@ export function blockUAP(): void {
 	slotsContext.removeSlotSize('top_leaderboard', mobile);
 }
 
-export function getUnitNameToDisable(configs: NoAdsConfig[], userBeacon): string {
+export function getUnitNameToDisable(configs: NoAdsConfig[], userBeacon = ''): string {
 	const config = configs.find((conf) => userBeacon.match(conf.beaconRegex));
 
 	return config?.unitName;
@@ -48,11 +48,13 @@ export class NoAdsExperimentSetup implements DiProcess {
 	execute(): void {
 		const configs = this.instantConfig.get<object>('icNoAdsExperimentConfig', []) as NoAdsConfig[];
 		const userBeacon: string = this.cookieAdapter.getItem('wikia_beacon_id');
-		const unitName = getUnitNameToDisable(configs, userBeacon);
-		this.disableUnit(unitName);
+		this.disableUnit(getUnitNameToDisable(configs, userBeacon));
 	}
 
-	disableUnit(unitName: string) {
+	disableUnit(unitName?: string) {
+		if (!unitName) {
+			return;
+		}
 		switch (unitName) {
 			case 'uap':
 				blockUAP();

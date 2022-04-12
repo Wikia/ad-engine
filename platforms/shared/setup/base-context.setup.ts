@@ -185,7 +185,6 @@ export class BaseContextSetup implements DiProcess {
 
 		context.set('options.initCall', this.instantConfig.get('icLayoutInitializerSlot'));
 		context.set('pubmatic.identityHub.enabled', this.instantConfig.get('icPubmaticIdentityHub'));
-		context.set('icDisabledSlots', this.instantConfig.get('icDisabledSlots'));
 
 		const priceFloorRule = this.instantConfig.get<object>('icPrebidSizePriceFloorRule');
 		context.set('bidders.prebid.priceFloor', priceFloorRule || null);

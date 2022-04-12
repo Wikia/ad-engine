@@ -8,7 +8,7 @@ const videoType = 'video';
 export const validResponseStatusCode = 1;
 
 function isUsedAsAlias(code): boolean {
-	return Object.keys(slotService.getAllowedSlots()).some((slotName) => {
+	return Object.keys(context.get('slots')).some((slotName) => {
 		const bidderAlias = context.get(`slots.${slotName}.bidderAlias`);
 
 		return bidderAlias === code && slotService.getState(slotName);
