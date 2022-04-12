@@ -37,10 +37,11 @@ describe('NoAdsExperimentSetup', () => {
 	it('should remove UAP sizes from top_leaderboard slotContext', () => {
 		const slotsContextSub = sandbox.stub(slotsContext, 'removeSlotSize');
 
-		blockUAP();
-
-		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [3, 3]));
+		blockUAP(true);
 		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [2, 2]));
+
+		blockUAP(false);
+		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [3, 3]));
 	});
 
 	describe('getUnitNameToDisable', () => {

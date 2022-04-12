@@ -47,8 +47,9 @@ class SlotsContext implements SlotsContextInterface {
 			.get(`slots.${slotName}.defaultSizes`)
 			.filter((size) => size != sizeToRemove);
 
-		const sizes = context.get(`slots.${slotName}.sizes`);
-		sizes[0].sizes = sizes[0].sizes.filter((size) => size != sizeToRemove);
+		const sizes = context
+			.get(`slots.${slotName}.sizes`)
+			.map((size) => size.sizes.filter((size) => size != sizeToRemove));
 
 		context.set(`slots.${slotName}.defaultSizes`, defaultSizes);
 		context.set(`slots.${slotName}.sizes`, sizes);

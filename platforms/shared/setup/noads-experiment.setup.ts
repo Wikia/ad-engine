@@ -26,10 +26,13 @@ export function skipBtfBlocker() {
 	});
 }
 
-export function blockUAP(): void {
+export function blockUAP(isMobile: boolean): void {
 	const { desktop, mobile } = universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize;
-	slotsContext.removeSlotSize('top_leaderboard', desktop);
-	slotsContext.removeSlotSize('top_leaderboard', mobile);
+	if (isMobile) {
+		slotsContext.removeSlotSize('top_leaderboard', mobile);
+	} else {
+		slotsContext.removeSlotSize('top_leaderboard', desktop);
+	}
 }
 
 export function getUnitNameToDisable(configs: NoAdsConfig[], userBeacon = ''): string {
@@ -52,12 +55,13 @@ export class NoAdsExperimentSetup implements DiProcess {
 	}
 
 	disableUnit(unitName?: string) {
+		const isMobile = context.get('state.isMobile');
 		if (!unitName) {
 			return;
 		}
 		switch (unitName) {
 			case 'uap':
-				blockUAP();
+				blockUAP(isMobile);
 				return;
 			case 'interstitial_celtra':
 				this.cookieAdapter.setItem('_ae_intrsttl_imp', '1');
@@ -70,7 +74,7 @@ export class NoAdsExperimentSetup implements DiProcess {
 				context.set(`slots.top_leaderboard.disabled`, true);
 				return;
 			case 'top_boxad':
-				blockUAP();
+				blockUAP(isMobile);
 				context.set(`slots.top_boxad.disabled`, true);
 				return;
 			default:
