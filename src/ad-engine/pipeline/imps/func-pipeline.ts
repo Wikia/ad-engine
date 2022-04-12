@@ -7,7 +7,8 @@ export type FuncPipelineStep<TPayload> = (
 ) => Promise<TPayload>;
 
 class FuncPipelineAdapter<TPayload>
-	implements PipelineAdapter<FuncPipelineStep<TPayload>, TPayload> {
+	implements PipelineAdapter<FuncPipelineStep<TPayload>, TPayload>
+{
 	async execute(
 		step: FuncPipelineStep<TPayload>,
 		payload: TPayload,

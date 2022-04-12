@@ -24,7 +24,7 @@ export interface JwpStatelessEvent<TEvent extends JwpEventKey> extends JwpNamedE
 
 export function ofJwpStatelessEvent<
 	T extends JwpEventName[],
-	P extends JwpStatelessEvent<T[number]>
+	P extends JwpStatelessEvent<T[number]>,
 >(...names: T): RxJsOperator<JwpStatelessEvent<any>, P> {
 	return (source: Observable<any>) => source.pipe(filter(({ name }) => names.includes(name)));
 }
