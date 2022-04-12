@@ -493,9 +493,14 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
+            "regions": [
+                "CL",
+                "PL"
+            ],
+            "sampling": 50.0,
             "value": {
                 "initTimeout": 1300,
-                "mainDelayed": 100,
+                "mainDelayed": 10,
                 "mainTimeout": 2000
             }
         }
@@ -537,18 +542,6 @@
             "regions": [
                 "XX"
             ],
-            "value": true
-        }
-    ],
-    "icAnyclipPlayer": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "CA"
-            ],
-            "sampling": 5.0,
             "value": true
         }
     ],
@@ -693,6 +686,15 @@
                 "PL",
                 "UK",
                 "US"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
             ],
             "value": true
         }
@@ -2533,7 +2535,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 50.0,
             "value": 100
         },
         {
