@@ -200,15 +200,7 @@ class SlotService {
 	}
 
 	get slotConfigsMap(): Dictionary<SlotConfig> {
-		return slotService.getAllowedSlots() || {};
-	}
-
-	getAllowedSlots(): Dictionary<SlotConfig> {
-		const disabledSlots = context.get('icDisabledSlots') || [];
-		const allSlots = context.get('slots') || {};
-		disabledSlots.forEach((slotName) => (allSlots[slotName].disabled = true));
-
-		return allSlots;
+		return context.get('slots') || {};
 	}
 
 	getAtfSlotNames(): string[] {
