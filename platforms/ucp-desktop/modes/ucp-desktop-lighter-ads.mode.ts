@@ -5,7 +5,6 @@ import {
 	confiant,
 	context,
 	DiProcess,
-	exCo,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
@@ -31,7 +30,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 		startAdEngine(inhibitors);
 
 		this.trackAdEngineStatus();
-		exCo.call();
 		this.trackTabId();
 	}
 
