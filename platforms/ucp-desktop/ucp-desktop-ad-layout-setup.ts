@@ -1,4 +1,4 @@
-import { ProcessPipeline } from '@wikia/ad-engine';
+import { exCo, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
@@ -19,5 +19,6 @@ export class UcpDesktopAdLayoutSetup {
 		);
 
 		this.pipeline.execute();
+		exCo.call();
 	}
 }
