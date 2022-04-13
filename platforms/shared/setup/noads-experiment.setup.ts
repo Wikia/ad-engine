@@ -28,11 +28,8 @@ export function skipBtfBlocker() {
 
 export function blockUAP(isMobile: boolean): void {
 	const { desktop, mobile } = universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize;
-	if (isMobile) {
-		slotsContext.removeSlotSize('top_leaderboard', mobile);
-	} else {
-		slotsContext.removeSlotSize('top_leaderboard', desktop);
-	}
+
+	slotsContext.removeSlotSize('top_leaderboard', isMobile ? mobile : desktop);
 }
 
 export function getUnitNameToDisable(configs: NoAdsConfig[], userBeacon = ''): string {
