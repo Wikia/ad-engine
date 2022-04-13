@@ -39,9 +39,8 @@ export interface SlotConfig {
 	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
-	initCall?: boolean;
+	initStage?: boolean;
 	firstCall?: boolean;
-	lazyCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
 	slotNameSuffix: string;
@@ -381,16 +380,12 @@ export class AdSlot {
 		return this.enabled;
 	}
 
-	isInitCall(): boolean {
-		return !!this.config.initCall;
+	isInitStage(): boolean {
+		return !!this.config.initStage;
 	}
 
 	isFirstCall(): boolean {
 		return !!this.config.firstCall;
-	}
-
-	isLazyCall(): boolean {
-		return !!this.config.lazyCall;
 	}
 
 	isViewed(): boolean {

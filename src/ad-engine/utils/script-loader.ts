@@ -83,7 +83,7 @@ class ScriptLoader implements ScriptLoaderInterface {
 			request.addEventListener('error', () => {
 				resolve(null);
 			});
-			request.onreadystatechange = function(): void {
+			request.onreadystatechange = function (): void {
 				if (this.readyState === this.DONE) {
 					if (this.status === 200) {
 						resolve(this.response);

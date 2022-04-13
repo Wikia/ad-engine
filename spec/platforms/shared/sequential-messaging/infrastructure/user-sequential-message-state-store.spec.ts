@@ -1,8 +1,11 @@
 import Cookies from 'js-cookie';
 import sinon from 'sinon';
 import { UserSequentialMessageStateStore } from '../../../../../platforms/shared/sequential-messaging/infrastructure/user-sequential-message-state-store';
+import { SequenceState } from '../../../../../platforms/shared/sequential-messaging/domain/data-structures/user-sequential-message-state';
+import { expect } from 'chai';
 
-const sampleState = { 5928558921: { stepNo: 1, width: 970, height: 250 } };
+const sampleState = { 5928558921: new SequenceState(1, 970, 250, true) };
+const sampleCookie = { 5928558921: { stepNo: 1, width: 970, height: 250, uap: true } };
 
 describe('User Sequential Message State Store', () => {
 	it("Store user's sequential message state in a cookie", () => {
@@ -14,7 +17,7 @@ describe('User Sequential Message State Store', () => {
 		sinon.assert.calledWith(
 			cookieSpy,
 			UserSequentialMessageStateStore.cookieName,
-			JSON.stringify(sampleState),
+			JSON.stringify(sampleCookie),
 		);
 	});
 
@@ -23,20 +26,18 @@ describe('User Sequential Message State Store', () => {
 		cookieMock
 			.expects('get')
 			.withArgs(UserSequentialMessageStateStore.cookieName)
-			.returns(JSON.stringify(sampleState));
+			.returns(JSON.stringify(sampleCookie));
 
 		const store = new UserSequentialMessageStateStore(Cookies);
-		store.get();
+		const userState = store.get();
 
 		cookieMock.verify();
+		expect(userState).to.eql(sampleState);
 	});
 
 	it('Attempt to retrieve not existing cookie', () => {
 		const cookieMock = sinon.mock(Cookies);
-		cookieMock
-			.expects('get')
-			.withArgs(UserSequentialMessageStateStore.cookieName)
-			.returns(null);
+		cookieMock.expects('get').withArgs(UserSequentialMessageStateStore.cookieName).returns(null);
 
 		const store = new UserSequentialMessageStateStore(Cookies);
 		store.get();
