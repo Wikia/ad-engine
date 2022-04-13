@@ -69,6 +69,7 @@ export class NoAdsExperimentSetup implements DiProcess {
 			case 'top_leaderboard':
 				skipBtfBlocker();
 				context.set(`slots.top_leaderboard.disabled`, true);
+				document.querySelectorAll('.top-ads-container').forEach((el) => el.remove());
 				return;
 			case 'top_boxad':
 			case 'bottom_leaderboard':
