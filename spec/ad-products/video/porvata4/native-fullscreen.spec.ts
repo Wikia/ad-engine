@@ -4,7 +4,7 @@ import { spy } from 'sinon';
 
 describe('native-fullscreen', () => {
 	it('should not be supported if the video element is null', () => {
-		const testElementMock: HTMLElement = ({ querySelector: () => null } as unknown) as HTMLElement;
+		const testElementMock: HTMLElement = { querySelector: () => null } as unknown as HTMLElement;
 		const testInstance = new NativeFullscreen(testElementMock);
 
 		expect(testInstance.isSupported()).to.be.false;
