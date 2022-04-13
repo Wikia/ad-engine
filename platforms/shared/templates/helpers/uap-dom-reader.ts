@@ -92,7 +92,8 @@ export class UapDomReader {
 			return 'rect(0, 0, 0, 0)';
 		}
 
-		return `rect(0 ${this.adSlot.element.offsetWidth}px ${this.adSlot.element.offsetHeight -
-			scroll}px 0)`;
+		return `rect(0 ${this.adSlot.element.offsetWidth}px ${
+			this.adSlot.element.offsetHeight - scroll
+		}px 0)`;
 	}
 }

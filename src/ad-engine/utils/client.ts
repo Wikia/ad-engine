@@ -123,10 +123,7 @@ class Client {
 		if (matches[1] === 'Chrome') {
 			temp = userAgent.match(/\b(OPR|Edge)\/(\d+)/);
 			if (temp !== null) {
-				browser = temp
-					.slice(1)
-					.join(' ')
-					.replace('OPR', 'Opera');
+				browser = temp.slice(1).join(' ').replace('OPR', 'Opera');
 
 				return browser;
 			}
