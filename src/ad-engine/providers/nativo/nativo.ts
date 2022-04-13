@@ -10,7 +10,7 @@ const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
 export class Nativo {
 	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
 	static FEED_AD_SLOT_NAME = 'ntv_feed_ad';
-	static NATIVO_DISABLED_EVENT = 'nativo_disabled';
+	static NATIVO_STATUS_DISABLED = 'nativo_disabled';
 
 	private static AD_SLOT_MAP = {
 		1142863: Nativo.INCONTENT_AD_SLOT_NAME,
@@ -72,7 +72,7 @@ export class Nativo {
 		}
 	}
 
-	sendNativoLoadStatus(status: string): void {
+	sendNativoStatus(status: string): void {
 		const payload = {
 			event: status,
 			adSlotName: '',

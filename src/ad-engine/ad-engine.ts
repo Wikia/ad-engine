@@ -69,9 +69,8 @@ export class AdEngine {
 		const nativo = new Nativo(context);
 		if (nativo.isEnabled()) {
 			nativo.load();
-			nativo.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 		} else {
-			nativo.sendNativoLoadStatus(Nativo.NATIVO_DISABLED_EVENT);
+			nativo.sendNativoStatus(Nativo.NATIVO_STATUS_DISABLED);
 		}
 	}
 
