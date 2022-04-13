@@ -38,6 +38,23 @@ class SlotsContext implements SlotsContextInterface {
 		}
 	}
 
+	removeSlotSize(slotName: string, sizeToRemove: [number, number]): void {
+		if (!context.get(`slots.${slotName}`)) {
+			throw new Error('Requested ad slot is not defined in the ad context');
+		}
+
+		const defaultSizes = context
+			.get(`slots.${slotName}.defaultSizes`)
+			.filter((size) => size != sizeToRemove);
+
+		const sizes = context
+			.get(`slots.${slotName}.sizes`)
+			.map((size) => size.sizes.filter((size) => size != sizeToRemove));
+
+		context.set(`slots.${slotName}.defaultSizes`, defaultSizes);
+		context.set(`slots.${slotName}.sizes`, sizes);
+	}
+
 	setSlotSize(slotName: string, size: [number, number]): void {
 		if (!context.get(`slots.${slotName}`)) {
 			throw new Error('Requested ad slot is not defined in the ad context');
