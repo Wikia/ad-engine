@@ -1,16 +1,16 @@
 import { IframeBuilder } from '@wikia/ad-engine/utils';
 import { assert } from 'chai';
-import * as sinon from 'sinon';
+import { createSandbox, SinonSandbox } from 'sinon';
 
 describe('IFrameBuilder', () => {
-	let sandbox;
+	let sandbox: SinonSandbox;
 	let iframeBuilder;
 	const mock = {
 		div: undefined,
 	};
 
 	beforeEach(() => {
-		sandbox = sinon.sandbox.create();
+		sandbox = createSandbox();
 		iframeBuilder = new IframeBuilder();
 	});
 
