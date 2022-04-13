@@ -70,7 +70,7 @@ export class AdEngine {
 		if (nativo.isEnabled()) {
 			nativo.load();
 		} else {
-			nativo.sendNativoStatus(Nativo.NATIVO_STATUS_DISABLED);
+			nativo.sendNativoStatus(AdSlot.STATUS_DISABLED);
 		}
 	}
 
