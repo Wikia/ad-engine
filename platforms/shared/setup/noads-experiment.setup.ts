@@ -71,11 +71,13 @@ export class NoAdsExperimentSetup implements DiProcess {
 				context.set(`slots.top_leaderboard.disabled`, true);
 				return;
 			case 'top_boxad':
+			case 'bottom_leaderboard':
 				blockUAP(isMobile);
-				context.set(`slots.top_boxad.disabled`, true);
+				context.set(`slots.${unitName}.disabled`, true);
 				return;
 			default:
 				context.set(`slots.${unitName}.disabled`, true);
+				return;
 		}
 	}
 }
