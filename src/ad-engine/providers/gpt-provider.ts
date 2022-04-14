@@ -13,6 +13,7 @@ import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
+import { KibanaLogger } from '../../../platforms/shared/sequential-messaging/kibana-logger';
 
 const logGroup = 'gpt-provider';
 
@@ -125,6 +126,18 @@ function adjustIframeSize(adSlot: AdSlot): void {
 	}
 }
 
+function SmLogger(targeting: Targeting) {
+	const isTlb =
+		(targeting.pos.constructor == Array && targeting.pos[0] == 'top_leaderboard') ||
+		targeting.pos == 'top_leaderboard';
+	const smLoggerLoaded =
+		window['smTracking'] !== undefined && window['smTracking'] instanceof KibanaLogger;
+
+	if (isTlb && smLoggerLoaded) {
+		window['smTracking'].recordRequestTargeting(targeting);
+	}
+}
+
 export class GptProvider implements Provider {
 	constructor() {
 		window.googletag = window.googletag || ({} as googletag.Googletag);
@@ -220,6 +233,8 @@ export class GptProvider implements Provider {
 	}
 
 	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting): void {
+		SmLogger(targeting);
+
 		Object.keys(targeting).forEach((key) => {
 			let value = targeting[key];
 
