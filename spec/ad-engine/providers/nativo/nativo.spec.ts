@@ -102,5 +102,17 @@ describe('Nativo', () => {
 
 			expect(contextPushSpy.called).to.be.false;
 		});
+
+		it('does not push slot when slot is disabled', () => {
+			const uapLoadStatusActionMock: UapLoadStatus = {
+				isLoaded: false,
+				adProduct: 'nothing important',
+			};
+
+			context.set('slots.mocked_slot.disabled', true);
+			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');
+
+			expect(contextPushSpy.called).to.be.false;
+		});
 	});
 });

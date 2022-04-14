@@ -33,11 +33,6 @@ export class NativoSlotsDefinitionRepository {
 			return;
 		}
 
-		if (context.get(`slots.${Nativo.INCONTENT_AD_SLOT_NAME}.disabled`) === true) {
-			Nativo.log('Slot disabled: ', Nativo.INCONTENT_AD_SLOT_NAME);
-			return;
-		}
-
 		return {
 			slotCreatorConfig: {
 				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
@@ -59,11 +54,6 @@ export class NativoSlotsDefinitionRepository {
 
 	getNativoFeedAdConfig(slotCreatorConfig: SlotCreatorConfig | null = null): SlotSetupDefinition {
 		if (!this.nativo.isEnabled()) {
-			return;
-		}
-
-		if (context.get(`slots.${Nativo.FEED_AD_SLOT_NAME}.disabled`) === true) {
-			Nativo.log('Slot disabled: ', Nativo.FEED_AD_SLOT_NAME);
 			return;
 		}
 

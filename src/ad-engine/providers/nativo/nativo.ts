@@ -55,6 +55,11 @@ export class Nativo {
 			return;
 		}
 
+		if (this.context.get(`slots.${slotName}.disabled`) === true) {
+			Nativo.log(logGroup, `Slot disabled: ${slotName}`);
+			return;
+		}
+
 		this.context.push('state.adStack', { id: slotName });
 	}
 
