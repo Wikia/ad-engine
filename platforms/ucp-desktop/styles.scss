@@ -17,8 +17,11 @@
 		}
 
 		.fandom-sticky-header {
-			margin-top: -46px;
 			z-index: 401;
+		}
+
+		&.uap-old .fandom-sticky-header {
+			margin-top: -46px;
 		}
 
 		#top_leaderboard {
@@ -50,10 +53,6 @@
 
 	.uap-light,
 	.has-sticky-tlb {
-		.fandom-sticky-header {
-			margin-top: unset;
-		}
-
 		.top-ads-container {
 			position: relative;
 			background: #000;
