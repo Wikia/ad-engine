@@ -10,6 +10,14 @@ import { SequenceEventTypes } from './infrastructure/sequence-event-types';
 import { KibanaLogger } from './kibana-logger';
 
 function kibanaLogger() {
+
+	// This is to ensure Kibana logging will work on F2
+	if (!context.get('services.externalLogger.endpoint')) {
+		context.set(
+			'services.externalLogger.endpoint',
+			'https://www.community.fandom.com/wikia.php?controller=AdEngine&method=postLog');
+	}
+
 	window['smTracking'] = new KibanaLogger();
 }
 
