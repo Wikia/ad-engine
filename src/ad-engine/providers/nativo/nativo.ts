@@ -57,8 +57,15 @@ export class Nativo {
 
 		if (this.context.get(`slots.${slotName}.disabled`) === true) {
 			Nativo.log(logGroup, `Slot disabled: ${slotName}`);
+
 			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
-			document.getElementById(slotName).id = '';
+			if (this.context.get('targeting.skin') !== 'ucp_mobile') {
+				document.getElementById(slotName).id = '';
+			} else {
+				// on mobile the slots are injected before we know they're disabled, so we need to remove the node
+				document.getElementById(slotName).remove();
+			}
+
 			return;
 		}
 
