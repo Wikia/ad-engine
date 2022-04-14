@@ -14,7 +14,8 @@ export interface DiPipelineStep<TPayload> {
 
 @Injectable({ scope: 'Transient' })
 class UniversalPipelineAdapter<TPayload>
-	implements PipelineAdapter<UniversalPipelineStep<TPayload>, TPayload> {
+	implements PipelineAdapter<UniversalPipelineStep<TPayload>, TPayload>
+{
 	constructor(private container: Container) {}
 
 	execute(

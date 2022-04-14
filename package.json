@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "116.1.0",
+	"version": "116.3.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -14,14 +14,14 @@
 		"@babel/runtime-corejs2": "7.17.7",
 		"@wikia/dependency-injection": "2.2.3",
 		"@wikia/post-quecast": "2.0.1",
-		"blockadblock": "^3.2.1",
-		"core-decorators": "^0.20.0",
+		"blockadblock": "3.2.1",
+		"core-decorators": "0.20.0",
 		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
 		"nanoid": "3.3.1",
 		"rxjs": "7.5.2",
-		"ts-action": "^11.0.0",
-		"ts-action-operators": "^9.1.1"
+		"ts-action": "11.0.0",
+		"ts-action-operators": "9.1.2"
 	},
 	"devDependencies": {
 		"@alugha/ima": "1.1.2",
@@ -32,31 +32,29 @@
 		"@types/js-cookie": "2.2.1",
 		"@types/mocha": "5.2.6",
 		"@types/node": "8.10.54",
-		"@types/sinon": "7.0.7",
+		"@types/sinon": "10.0.11",
 		"@typescript-eslint/eslint-plugin": "5.9.1",
-		"@typescript-eslint/parser": "5.9.1",
+		"@typescript-eslint/parser": "5.18.0",
 		"awesome-typescript-loader": "5.2.1",
 		"babel-loader": "8.2.3",
-		"chai": "^4.1.2",
-		"css-loader": "6.6.0",
+		"chai": "4.3.6",
+		"css-loader": "6.7.1",
 		"eslint": "8.6.0",
-		"express": "4.17.2",
-		"husky": "1.1.4",
+		"eslint-plugin-no-only-tests": "2.6.0",
+		"husky": "7.0.4",
 		"instant-mocha": "1.4.1",
 		"istanbul-instrumenter-loader": "3.0.1",
-		"jsdom": "11.11.0",
-		"jsdom-global": "^3.0.2",
-		"jwplayer-fandom": "github:wikia/jwplayer-fandom#1.7.0",
-		"lint-staged": "12.1.4",
+		"jsdom-global": "3.0.2",
+		"lint-staged": "12.3.7",
 		"mini-css-extract-plugin": "2.5.3",
 		"mocha": "9.2.1",
-		"mocha-jsdom": "^1.1.0",
+		"mocha-jsdom": "2.0.0",
 		"mocha-junit-reporter": "2.0.2",
 		"node-sass": "7.0.1",
 		"nyc": "15.1.0",
-		"prettier": "1.19.1",
+		"prettier": "2.6.2",
 		"process": "0.11.10",
-		"sass-loader": "^6.0.6",
+		"sass-loader": "12.6.0",
 		"sinon": "4.1.4",
 		"string-replace-loader": "3.1.0",
 		"ts-node": "8.3.0",
@@ -70,36 +68,32 @@
 		"webpack-merge": "5.8.0"
 	},
 	"files": [
-		"dist/",
-		"lib/",
 		"configs/",
+		"dist/",
 		"maintenance/",
 		"src/",
 		".babelrc",
+		".eslintrc.json",
 		"package.json",
-		"webpack.config.js",
-		".eslintrc.json"
+		"webpack.config.js"
 	],
 	"nyc": {
 		"report-dir": "./spec/build/"
 	},
 	"scripts": {
-		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
-		"prebuild": "rm -rf dist",
+		"setup": "npm ci && npm run prepare",
 		"build:platforms": "webpack --config webpack.platforms.js --mode=production",
+		"dev:platforms": "webpack-dev-server --progress --config webpack.platforms.js --mode=development",
 		"ci-check": "npm run test && npm run lint",
 		"lint": "npx eslint . --ext .ts --max-warnings 0",
-		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
 		"format": "npm run prettier",
+		"prettier": "prettier --write '**/*.{ts,js,json,css,scss,html}'",
+		"prepare": "husky install",
+		"prebuild": "rm -rf dist",
 		"preversion": "./maintenance/preversion.sh",
 		"test": "instant-mocha --full-trace './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.js",
 		"test:watch": "npm run test -- -w",
 		"test-coverage": "nyc instant-mocha './spec/**/*.spec.ts' -r jsdom-global/register --webpack-config webpack.common.coverage.js"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
 	},
 	"lint-staged": {
 		"*.ts": [

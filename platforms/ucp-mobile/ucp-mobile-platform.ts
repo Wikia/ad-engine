@@ -29,6 +29,7 @@ import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slo
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
 import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
+import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
 
 @Injectable()
 export class UcpMobilePlatform {
@@ -48,6 +49,7 @@ export class UcpMobilePlatform {
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
+			NoAdsExperimentSetup,
 			BiddersStateSetup,
 			UcpMobileTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break

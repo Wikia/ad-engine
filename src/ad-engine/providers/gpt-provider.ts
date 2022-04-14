@@ -24,7 +24,7 @@ export const GAMOrigins: string[] = [
 ];
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
-	return function(...args: any): void {
+	return function (...args: any): void {
 		setTimeout(() => {
 			window.googletag = window.googletag || ({} as googletag.Googletag);
 			window.googletag.cmd = window.googletag.cmd || [];

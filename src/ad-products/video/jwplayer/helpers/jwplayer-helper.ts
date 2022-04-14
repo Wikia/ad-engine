@@ -108,7 +108,9 @@ export class JWPlayerHelper {
 	private canAdBePlayed(depth: number): boolean {
 		const isReplay = depth > 1;
 
-		return !isReplay || (isReplay && this.shouldPlayAdOnNextVideo(depth));
+		return (
+			this.adSlot.isEnabled() && (!isReplay || (isReplay && this.shouldPlayAdOnNextVideo(depth)))
+		);
 	}
 
 	private shouldPlayAdOnNextVideo(depth: number): boolean {

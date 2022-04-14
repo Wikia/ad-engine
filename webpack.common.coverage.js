@@ -20,8 +20,5 @@ const config = () => ({
 });
 
 module.exports = () => {
-	return merge(
-		common(),
-		config(),
-	);
+	return merge(common(), config());
 };
