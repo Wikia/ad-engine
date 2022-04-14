@@ -43,7 +43,7 @@ describe('Nativo', () => {
 		let contextPushSpy;
 		let nativo;
 
-		before(() => {
+		beforeEach(() => {
 			context = new Context();
 			contextPushSpy = spy(context, 'push');
 			nativo = new Nativo(context);
@@ -51,10 +51,10 @@ describe('Nativo', () => {
 
 		after(() => {
 			contextPushSpy.restore();
-			context.remove('custom.hasFeaturedVideo');
 		});
 
 		afterEach(() => {
+			context.remove('custom.hasFeaturedVideo');
 			contextPushSpy.resetHistory();
 		});
 
@@ -86,13 +86,10 @@ describe('Nativo', () => {
 				adProduct: 'nothing important',
 			};
 
-			const contextMock = new Context();
-			contextMock.set('custom.hasFeaturedVideo', true);
-
-			nativo = new Nativo(contextMock);
+			context.set('custom.hasFeaturedVideo', true);
 			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');
 
-			expect(contextPushSpy.calledWith('state.adStack', { id: 'mocked_slot' })).to.be.false;
+			expect(contextPushSpy.called).to.be.false;
 		});
 
 		it('does not push slot when UAP is on the page', () => {
@@ -103,7 +100,7 @@ describe('Nativo', () => {
 
 			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');
 
-			expect(contextPushSpy.calledWith('state.adStack', { id: 'mocked_slot' })).to.be.false;
+			expect(contextPushSpy.called).to.be.false;
 		});
 	});
 });
