@@ -60,9 +60,9 @@ describe('ScrollTracker', () => {
 		await Promise.resolve();
 		await Promise.resolve();
 
-		expect(
-			scrollSpeedCalculatorStub.setAverageSessionScrollSpeed.getCall(0).args[0],
-		).to.deep.equal([scrolls[1] - scrolls[0]]);
+		expect(scrollSpeedCalculatorStub.setAverageSessionScrollSpeed.getCall(0).args[0]).to.deep.equal(
+			[scrolls[1] - scrolls[0]],
+		);
 	});
 
 	it('should not call scrollSpeedCalculator.setAverageSessionScrollSpeed if one timer is cancelled', async () => {

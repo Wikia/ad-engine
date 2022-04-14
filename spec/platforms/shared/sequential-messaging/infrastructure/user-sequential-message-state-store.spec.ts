@@ -37,10 +37,7 @@ describe('User Sequential Message State Store', () => {
 
 	it('Attempt to retrieve not existing cookie', () => {
 		const cookieMock = sinon.mock(Cookies);
-		cookieMock
-			.expects('get')
-			.withArgs(UserSequentialMessageStateStore.cookieName)
-			.returns(null);
+		cookieMock.expects('get').withArgs(UserSequentialMessageStateStore.cookieName).returns(null);
 
 		const store = new UserSequentialMessageStateStore(Cookies);
 		store.get();

@@ -24,6 +24,7 @@ import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-s
 import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
 import { LegacySetup } from './ucp-desktop-legacy-setup';
+import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
 
 function shouldUseAdLayouts(): Promise<boolean> {
 	return new AdLayoutInitializerSetup()
@@ -50,6 +51,7 @@ export class UcpDesktopPlatform {
 				yes: UcpDesktopAdLayoutSetup,
 				no: LegacySetup,
 			}),
+			NoAdsExperimentSetup,
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,

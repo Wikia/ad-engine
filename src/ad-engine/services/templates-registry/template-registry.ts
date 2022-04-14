@@ -9,7 +9,7 @@ import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 
 interface TemplateMachinePayload<
-	T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]> = any
+	T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]> = any,
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
@@ -79,12 +79,8 @@ export class TemplateRegistry {
 			state: templateSlot ? templateSlot.getSlotName() : '',
 		});
 
-		const {
-			StateHandlerTypesDict,
-			initialStateKey,
-			emitter$,
-			templateDependencies,
-		} = this.settings.get(templateName);
+		const { StateHandlerTypesDict, initialStateKey, emitter$, templateDependencies } =
+			this.settings.get(templateName);
 
 		this.dependenciesManager.provideDependencies(
 			templateName,

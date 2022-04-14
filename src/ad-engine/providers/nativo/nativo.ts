@@ -23,25 +23,25 @@ export class Nativo {
 		const isEnabled =
 			this.context.get('services.nativo.enabled') && this.context.get('wiki.opts.enableNativeAds');
 
-		logger(logGroup, 'Is Nativo enabled?', isEnabled);
+		Nativo.log('Is Nativo enabled?', isEnabled);
 
 		return isEnabled;
 	}
 
 	load() {
-		logger(logGroup, 'Loading Nativo API...');
+		Nativo.log('Loading Nativo API...');
 
 		scriptLoader
 			.loadScript(NATIVO_LIBRARY_URL, 'text/javascript', true, null, {}, { ntvSetNoAutoStart: '' })
 			.then(() => {
-				logger(logGroup, 'Nativo API loaded.');
+				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();
 			});
 	}
 
 	scrollTriggerCallback(action: UapLoadStatus, slotName: string) {
 		if (action.isLoaded) {
-			logger(logGroup, 'Fan Takeover on the page');
+			Nativo.log(logGroup, 'Fan Takeover on the page');
 			return;
 		}
 
@@ -50,7 +50,7 @@ export class Nativo {
 			action.adProduct === 'ruap' &&
 			this.context.get('custom.hasFeaturedVideo')
 		) {
-			logger(logGroup, '"Fan Takeover" on the featured page');
+			Nativo.log(logGroup, '"Fan Takeover" on the featured page');
 			return;
 		}
 
@@ -65,10 +65,14 @@ export class Nativo {
 
 		if (nativoFeedAdSlotElement && recirculationSponsoredElement) {
 			recirculationSponsoredElement.replaceWith(nativoFeedAdSlotElement);
-			logger(logGroup, 'Replacing sponsored element with Nativo feed ad');
+			Nativo.log('Replacing sponsored element with Nativo feed ad');
 		} else {
-			logger(logGroup, 'Could not replace sponsored element with Nativo feed ad');
+			Nativo.log('Could not replace sponsored element with Nativo feed ad');
 		}
+	}
+	
+	static log(...logValues) {
+		logger(logGroup, ...logValues);
 	}
 
 	sendNativoStatus(status: string): void {
@@ -105,7 +109,7 @@ export class Nativo {
 	) {
 		const slot = slotService.get(slotName);
 
-		logger(logGroup, 'Nativo native event fired', e, adStatus, slotName, slot);
+		Nativo.log('Nativo native event fired', e, adStatus, slotName, slot);
 
 		if (!slot || slot.getSlotName() !== slotName) return;
 
@@ -120,7 +124,7 @@ export class Nativo {
 		if (slot.getStatus() !== adStatus) {
 			slot.setStatus(adStatus);
 		} else {
-			logger(logGroup, 'Slot status already tracked', slot.getSlotName(), adStatus);
+			Nativo.log('Slot status already tracked', slot.getSlotName(), adStatus);
 		}
 	}
 }
