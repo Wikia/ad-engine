@@ -57,6 +57,8 @@ export class Nativo {
 
 		if (this.context.get(`slots.${slotName}.disabled`) === true) {
 			Nativo.log(logGroup, `Slot disabled: ${slotName}`);
+			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
+			document.getElementById(slotName).id = '';
 			return;
 		}
 
