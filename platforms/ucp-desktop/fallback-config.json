@@ -488,25 +488,6 @@
             "value": "distroscale"
         }
     ],
-    "icPrebidStages": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "CL",
-                "DE",
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": {
-                "initTimeout": 1300,
-                "mainDelayed": 10,
-                "mainTimeout": 2000
-            }
-        }
-    ],
     "icViewabilityTracking": [
         {
             "apps": [

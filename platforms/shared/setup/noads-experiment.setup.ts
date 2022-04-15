@@ -53,9 +53,11 @@ export class NoAdsExperimentSetup implements DiProcess {
 
 	disableUnit(unitName?: string) {
 		const isMobile = context.get('state.isMobile');
+
 		if (!unitName) {
 			return;
 		}
+
 		switch (unitName) {
 			case 'uap':
 				blockUAP(isMobile);
@@ -75,6 +77,10 @@ export class NoAdsExperimentSetup implements DiProcess {
 			case 'bottom_leaderboard':
 				blockUAP(isMobile);
 				context.set(`slots.${unitName}.disabled`, true);
+				return;
+			case 'incontent_player':
+				context.set(`slots.${unitName}.disabled`, true);
+				context.set('services.distroScale.enabled', false);
 				return;
 			default:
 				context.set(`slots.${unitName}.disabled`, true);

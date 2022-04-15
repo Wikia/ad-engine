@@ -103,12 +103,6 @@ export class AdEngine {
 
 	private pushSlot(adSlot: AdSlot): void {
 		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`) || [];
-
-		if (adSlot.getConfigProperty('providers') && adSlot.getConfigProperty('providers').includes('nativo') && !adSlot.isEnabled()) {
-			logger(logGroup, `pushSlot(): ${adSlot.getSlotName()} disabled - aborting`);
-			return;
-		}
-
 		slotService.add(adSlot);
 
 		if (providersChain.length > 0) {
