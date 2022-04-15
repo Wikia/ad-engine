@@ -109,7 +109,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				audio: false,
 				insertBeforeSelector: '.mw-parser-output > h2',
 				parentContainerSelector: '.incontent-boxad',
-				disabled: true,
 				defaultClasses: ['hide'],
 				group: 'HiVi',
 				defaultSizes: [[1, 1]],
