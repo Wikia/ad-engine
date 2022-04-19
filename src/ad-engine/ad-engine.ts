@@ -13,14 +13,20 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import { LazyQueue, makeLazyQueue, OldLazyQueue, logger } from './utils';
+
+const logGroup = 'ad-engine';
 
 export interface AdStackPayload {
 	id: string;
 }
 
 export function getAdStack(): OldLazyQueue<AdStackPayload> {
-	return context.get('state.adStack');
+	const adStack = context.get('state.adStack');
+
+	logger(logGroup, 'getting adStack: ', ...adStack);
+
+	return adStack;
 }
 
 export const DEFAULT_MAX_DELAY = 2000;

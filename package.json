@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "116.2.1",
+	"version": "116.3.2",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -39,6 +39,7 @@
 		"chai": "4.3.6",
 		"css-loader": "6.7.1",
 		"eslint": "8.6.0",
+		"eslint-plugin-no-only-tests": "2.6.0",
 		"husky": "7.0.4",
 		"instant-mocha": "1.4.1",
 		"istanbul-instrumenter-loader": "3.0.1",

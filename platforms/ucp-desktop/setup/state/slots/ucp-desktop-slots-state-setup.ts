@@ -1,17 +1,9 @@
-import {
-	context,
-	DiProcess,
-	getAdUnitString,
-	globalRuntimeVariableSetter,
-	slotService,
-} from '@wikia/ad-engine';
+import { context, DiProcess, getAdUnitString, globalRuntimeVariableSetter } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopSlotsStateSetup implements DiProcess {
 	execute(): void {
-		slotService.setState('featured', context.get('custom.hasFeaturedVideo'));
-
 		if (context.get('services.distroScale.enabled')) {
 			this.setupIncontentPlayerForDistroScale();
 		}

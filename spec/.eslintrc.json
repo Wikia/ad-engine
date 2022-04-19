@@ -1,7 +1,9 @@
 {
 	"extends": ["./../.eslintrc.json"],
+	"plugins": ["no-only-tests"],
 	"rules": {
 		"no-console": "error",
-		"@typescript-eslint/no-empty-function": "off"
+		"@typescript-eslint/no-empty-function": "off",
+		"no-only-tests/no-only-tests": "error"
 	}
 }

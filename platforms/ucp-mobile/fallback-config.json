@@ -167,7 +167,8 @@
                 "5929089315",
                 "5976512561",
                 "5929089315",
-                "5947810307"
+                "5947810307",
+                "5743368233"
             ]
         }
     ],
@@ -584,24 +585,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icPrebidStages": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "CL",
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": {
-                "initTimeout": 1300,
-                "mainDelayed": 10,
-                "mainTimeout": 2000
-            }
         }
     ],
     "icViewabilityTracking": [
@@ -2437,7 +2420,8 @@
                 "DE",
                 "GB",
                 "PL",
-                "UK"
+                "UK",
+                "US"
             ],
             "sampling": 50.0,
             "value": true
@@ -2666,6 +2650,38 @@
             "value": 50
         }
     ],
+    "icNoAdsExperimentConfig": [
+        {
+            "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                {
+                    "unitName": "bottom_leaderboard",
+                    "beaconRegex": "^v[a-l]"
+                },
+                {
+                    "unitName": "featured",
+                    "beaconRegex": "^v[m-x]"
+                },
+                {
+                    "unitName": "floor_adhesion",
+                    "beaconRegex": "^v[y-zA-J]"
+                },
+                {
+                    "unitName": "top_boxad",
+                    "beaconRegex": "^v[K-W]"
+                },
+                {
+                    "unitName": "uap",
+                    "beaconRegex": "^v[X-Z0-8]"
+                }
+            ]
+        }
+    ],
     "icStroer": [
         {
             "apps": [
@@ -2759,7 +2775,8 @@
                 "interests:g_interests",
                 "country:g_country",
                 "consoles:g_console",
-                "streaming:g_streaming"
+                "streaming:g_streaming",
+                "interactions:g_interactions"
             ]
         }
     ],
