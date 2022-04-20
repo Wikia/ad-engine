@@ -1866,17 +1866,6 @@
                 "XX"
             ],
             "value": 100
-        },
-        {
-            "apps": [
-                "f2",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 50
         }
     ],
     "icIASVideoTracking": [
