@@ -55,8 +55,8 @@ export class Nativo {
 			return;
 		}
 
-		if (this.context.get(`slots.${slotName}.disabled`) === true) {
-			Nativo.log(logGroup, `Slot disabled: ${slotName}`);
+		if (this.isDisabledInNoAdsExperiment(slotName)) {
+			Nativo.log(logGroup, `Slot disabled due to the experiment: ${slotName}`);
 
 			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
 			if (
@@ -91,6 +91,12 @@ export class Nativo {
 
 	static log(...logValues) {
 		logger(logGroup, ...logValues);
+	}
+
+	private isDisabledInNoAdsExperiment(slotName): boolean {
+		const experimentUnit = this.context.get('state.noAdsExperiment.unitName');
+
+		return experimentUnit === slotName;
 	}
 
 	private sendNativoLoadStatus(status: string): void {

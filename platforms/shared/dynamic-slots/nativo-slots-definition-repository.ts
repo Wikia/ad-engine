@@ -1,7 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 
 import {
-	AdSlot,
 	communicationService,
 	context,
 	DomListener,
@@ -9,7 +8,6 @@ import {
 	Nativo,
 	nativoLazyLoader,
 	SlotCreatorConfig,
-	slotService,
 	UapLoadStatus,
 } from '@wikia/ad-engine';
 
@@ -44,8 +42,6 @@ export class NativoSlotsDefinitionRepository {
 			},
 			activator: () => {
 				const scrollThreshold = context.get('events.pushOnScroll.nativoThreshold');
-				slotService.add(new AdSlot({ id: Nativo.INCONTENT_AD_SLOT_NAME }));
-
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) =>
@@ -63,7 +59,6 @@ export class NativoSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig,
 			activator: () => {
-				slotService.add(new AdSlot({ id: Nativo.FEED_AD_SLOT_NAME }));
 				fanFeedNativeAdListener((action: UapLoadStatus) => {
 					this.nativo.scrollTriggerCallback(action, Nativo.FEED_AD_SLOT_NAME);
 				});

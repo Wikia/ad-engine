@@ -55,6 +55,7 @@ describe('Nativo', () => {
 
 		afterEach(() => {
 			context.remove('custom.hasFeaturedVideo');
+			context.remove('state.noAdsExperiment.unitName');
 			contextPushSpy.resetHistory();
 		});
 
@@ -103,13 +104,13 @@ describe('Nativo', () => {
 			expect(contextPushSpy.called).to.be.false;
 		});
 
-		it('does not push slot when slot is disabled', () => {
+		it('does not push slot when slot is disabled in experiment', () => {
 			const uapLoadStatusActionMock: UapLoadStatus = {
 				isLoaded: false,
 				adProduct: 'nothing important',
 			};
 
-			context.set('slots.mocked_slot.disabled', true);
+			context.set('state.noAdsExperiment.unitName', 'mocked_slot');
 			nativo.scrollTriggerCallback(uapLoadStatusActionMock, 'mocked_slot');
 
 			expect(contextPushSpy.called).to.be.false;
