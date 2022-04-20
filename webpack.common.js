@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
-const { getTypeScriptLoader } = require('./configs/webpack-app.config');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
 
@@ -23,9 +22,18 @@ module.exports = () => ({
 	context: __dirname,
 
 	resolve: {
+		alias: {
+			'@ad-engine/core': path.resolve(__dirname, 'src/ad-engine'),
+			'@ad-engine/services': path.resolve(__dirname, 'src/ad-services'),
+			'@ad-engine/tracking': path.resolve(__dirname, 'src/ad-tracking'),
+			'@ad-engine/communication': path.resolve(__dirname, 'src/communication'),
+			'@ad-engine/models': path.resolve(__dirname, 'src/models'),
+			'@wikia/ad-engine': path.resolve(__dirname, 'src/index.ts'),
+			'@platforms/shared': path.resolve(__dirname, 'platforms/shared/index.ts'),
+			'@wikia/*': path.resolve(__dirname, 'src/*'),
+		},
 		extensions: ['.ts', '.js', '.json'],
 		modules: [...include, 'node_modules'],
-		plugins: [new TsConfigPathsPlugin({ paths })],
 		fallback: {
 			util: require.resolve('util/'),
 		},
@@ -33,10 +41,15 @@ module.exports = () => ({
 
 	module: {
 		rules: [
-			getTypeScriptLoader({
-				include,
-				paths,
-			}),
+			{
+				test: /\.ts$/,
+				loader: 'ts-loader',
+				exclude: /node_modules/,
+				include: include,
+				options: {
+					transpileOnly: true,
+				},
+			},
 			{
 				test: /\.s?css$/,
 				include,
@@ -52,4 +65,5 @@ module.exports = () => ({
 			},
 		],
 	},
+	plugins: [new ForkTsCheckerWebpackPlugin()],
 });

@@ -13,7 +13,17 @@
 		"noUnusedLocals": true,
 		"keyofStringsOnly": true,
 		"skipLibCheck": true,
-		"typeRoots": ["node_modules/@types", "@types"]
+		"typeRoots": ["node_modules/@types", "@types"],
+		"paths": {
+			"@ad-engine/core": ["src/ad-engine"],
+			"@ad-engine/services": ["src/ad-services"],
+			"@ad-engine/tracking": ["src/ad-tracking"],
+			"@ad-engine/communication": ["src/communication"],
+			"@ad-engine/models": ["src/models"],
+			"@wikia/ad-engine": ["src/index.ts"],
+			"@platforms/shared": ["platforms/shared/index.ts"],
+			"@wikia/*": ["src/*"]
+		}
 	},
 	"include": ["src", "spec", "platforms"],
 	"exclude": ["**/dist/**/*"]

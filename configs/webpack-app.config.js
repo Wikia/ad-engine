@@ -16,28 +16,6 @@ module.exports.getPreLoaders = () => {
 	];
 };
 
-module.exports.getTypeScriptLoader = ({ include, ...options }) => {
-	return {
-		test: /\.(js|ts)$/,
-		include: include,
-		exclude: [/node_modules/],
-		use: [
-			{
-				loader: 'awesome-typescript-loader',
-				options: {
-					...options,
-					useBabel: true,
-					babelCore: '@babel/core',
-					babelOptions: {
-						babelrc: false /* Important line */,
-						...babelConfig,
-					},
-				},
-			},
-		],
-	};
-};
-
 module.exports.getAdEngineLoader = () => {
 	return {
 		test: /\.js$/,
