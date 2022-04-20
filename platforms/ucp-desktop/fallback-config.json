@@ -394,18 +394,6 @@
             "value": true
         }
     ],
-    "icAudigentTrackingSampling": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 1
-        }
-    ],
     "icRotatorDelay": [
         {
             "apps": [
@@ -486,25 +474,6 @@
             ],
             "sampling": 100.0,
             "value": "distroscale"
-        }
-    ],
-    "icPrebidStages": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "CL",
-                "DE",
-                "PL"
-            ],
-            "sampling": 50.0,
-            "value": {
-                "initTimeout": 1300,
-                "mainDelayed": 10,
-                "mainTimeout": 2000
-            }
         }
     ],
     "icViewabilityTracking": [
@@ -658,6 +627,19 @@
             ],
             "sampling": 50.0,
             "samplingCache": true,
+            "value": true
+        }
+    ],
+    "icLayoutInitializerSlot": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "DE",
+                "PL"
+            ],
+            "sampling": 15.0,
             "value": true
         }
     ],
@@ -2539,15 +2521,6 @@
                 "XX"
             ],
             "value": 100
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 50
         }
     ],
     "icNoAdsExperimentConfig": [

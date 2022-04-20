@@ -38,20 +38,6 @@ describe('Nativo slots definition repository', () => {
 		expect(nativoSlotDefinitionRepository.getNativoFeedAdConfig(null)).to.equal(undefined);
 	});
 
-	it('does not return slot definition for Nativo incontent slot when it is disabled', () => {
-		context.set('slots.ntv_ad.disabled', true);
-
-		expect(nativoSlotDefinitionRepository.getNativoIncontentAdConfig(1)).to.equal(undefined);
-		expect(nativoSlotDefinitionRepository.getNativoFeedAdConfig(null)).to.not.equal(undefined);
-	});
-
-	it('does not return slot definition for Nativo feed slot when it is disabled', () => {
-		context.set('slots.ntv_feed_ad.disabled', true);
-
-		expect(nativoSlotDefinitionRepository.getNativoIncontentAdConfig(1)).to.not.equal(undefined);
-		expect(nativoSlotDefinitionRepository.getNativoFeedAdConfig(null)).to.equal(undefined);
-	});
-
 	it('returns slots definition for Nativo - sunny scenario', () => {
 		expect(nativoSlotDefinitionRepository.getNativoIncontentAdConfig(1)).to.not.equal(undefined);
 		expect(nativoSlotDefinitionRepository.getNativoFeedAdConfig(null)).to.not.equal(undefined);
