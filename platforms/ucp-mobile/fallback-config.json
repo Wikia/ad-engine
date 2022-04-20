@@ -563,18 +563,6 @@
             "value": true
         }
     ],
-    "icAudigentTrackingSampling": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 1
-        }
-    ],
     "icDeHeartbeatActivityTracking": [
         {
             "apps": [
@@ -2639,15 +2627,6 @@
                 "XX"
             ],
             "value": 100
-        },
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 50
         }
     ],
     "icNoAdsExperimentConfig": [
