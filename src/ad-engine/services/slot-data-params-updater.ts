@@ -1,12 +1,11 @@
 import { AdSlot } from '../models';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
-import { KibanaLogger } from '../../../platforms/shared/sequential-messaging/kibana-logger';
 
 function logRenderedAd(adSlot: AdSlot) {
 	const isTlb = adSlot.getSlotName() == 'top_leaderboard';
 	const smLoggerLoaded =
-		window['smTracking'] !== undefined && window['smTracking'] instanceof KibanaLogger;
+		window['smTracking'] !== undefined && typeof window['smTracking'].recordRenderedAd === 'function';
 
 	if (isTlb && smLoggerLoaded) {
 		window['smTracking'].recordRenderedAd(adSlot);

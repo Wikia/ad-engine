@@ -15,13 +15,17 @@ function kibanaLogger() {
 	if (!context.get('services.externalLogger.endpoint')) {
 		context.set(
 			'services.externalLogger.endpoint',
-			'https://www.community.fandom.com/wikia.php?controller=AdEngine&method=postLog');
+			'https://community.fandom.com/wikia.php?controller=AdEngine&method=postLog');
 	}
 
 	window['smTracking'] = new KibanaLogger();
 }
 
 function recordGAMCreativePayload(payload) {
+	if (window['smTracking'] == undefined) {
+		kibanaLogger();
+	}
+
 	window['smTracking'].recordGAMCreativePayload(payload);
 }
 
@@ -42,7 +46,6 @@ export class SequentialMessagingSetup {
 			this.handleSequenceStart();
 			return;
 		}
-		kibanaLogger();
 		this.handleOngoingSequence();
 		this.handleSequenceEnd();
 	}
@@ -60,7 +63,6 @@ export class SequentialMessagingSetup {
 			const sequenceHandler = new SequenceStartHandler(this.userStateStore);
 			sequenceHandler.startSequence(lineItemId, width, height, uap);
 
-			kibanaLogger();
 			recordGAMCreativePayload(payload);
 		});
 	}
