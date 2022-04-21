@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "116.3.5",
+	"version": "116.4.0",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -57,7 +57,6 @@
 		"sass-loader": "12.6.0",
 		"sinon": "4.1.4",
 		"string-replace-loader": "3.1.0",
-		"ts-node": "8.3.0",
 		"tsconfig-paths": "3.8.0",
 		"tslib": "1.10.0",
 		"typescript": "3.8.3",
