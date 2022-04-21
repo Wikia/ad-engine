@@ -630,19 +630,6 @@
             "value": true
         }
     ],
-    "icLayoutInitializerSlot": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "DE",
-                "PL"
-            ],
-            "sampling": 15.0,
-            "value": true
-        }
-    ],
     "icPlayerTracking": [
         {
             "apps": [
@@ -2533,16 +2520,20 @@
             ],
             "value": [
                 {
-                    "unitName": "featured",
-                    "beaconRegex": "^v[m-x]"
+                    "unitName": "incontent_player",
+                    "beaconRegex": "^u[y-zA-J]"
                 },
                 {
-                    "unitName": "invisible_high_impact_2",
-                    "beaconRegex": "^v[a-l]"
+                    "unitName": "top_leaderboard",
+                    "beaconRegex": "^u[K-W]"
                 },
                 {
-                    "unitName": "uap",
-                    "beaconRegex": "^v[X-Z0-8]"
+                    "unitName": "ntv_ad",
+                    "beaconRegex": "^u[a-l]"
+                },
+                {
+                    "unitName": "ntv_feed_ad",
+                    "beaconRegex": "^u[m-x]"
                 }
             ]
         }
