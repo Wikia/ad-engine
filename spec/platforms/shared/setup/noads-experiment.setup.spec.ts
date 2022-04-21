@@ -4,8 +4,9 @@ import {
 	getUnitNameToDisable,
 	NoAdsExperimentSetup,
 } from '../../../../platforms/shared/setup/noads-experiment.setup';
-import { assert as chaiAssert } from 'chai';
+import { assert as chaiAssert, expect } from 'chai';
 import { slotsContext } from '../../../../platforms/shared';
+import { context } from '../../../../src';
 
 describe('NoAdsExperimentSetup', () => {
 	const instantConfig = {
@@ -21,8 +22,9 @@ describe('NoAdsExperimentSetup', () => {
 	const configGetSpy = sandbox.spy(instantConfig, 'get');
 	const cookieGetSpy = sandbox.spy(cookieAdapter, 'getItem');
 
-	afterEach(function() {
+	afterEach(function () {
 		sandbox.restore();
+		context.remove('state.noAdsExperiment.unitName');
 	});
 
 	it('should use correct cookie and ICBM variable', () => {
@@ -42,6 +44,22 @@ describe('NoAdsExperimentSetup', () => {
 
 		blockUAP(false);
 		assert.calledOnce(slotsContextSub.withArgs('top_leaderboard', [3, 3]));
+	});
+
+	it('should set blocked ad unit in the context', () => {
+		const experimentSetup = new NoAdsExperimentSetup(instantConfig, cookieAdapter);
+		const mockedAdUnit = 'block_me';
+
+		experimentSetup.disableUnit(mockedAdUnit);
+
+		expect(context.get('state.noAdsExperiment.unitName')).to.equal(mockedAdUnit);
+	});
+
+	it('should not set blocked ad unit in the context when it is empty', () => {
+		const experimentSetup = new NoAdsExperimentSetup(instantConfig, cookieAdapter);
+		experimentSetup.disableUnit();
+
+		expect(context.get('state.noAdsExperiment.unitName')).to.equal(undefined);
 	});
 
 	describe('getUnitNameToDisable', () => {
