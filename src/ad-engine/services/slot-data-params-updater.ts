@@ -2,6 +2,20 @@ import { AdSlot } from '../models';
 import { context } from './context-service';
 import { slotTweaker } from './slot-tweaker';
 
+function logRenderedAd(adSlot: AdSlot) {
+	const isTlb = adSlot.getSlotName() == 'top_leaderboard';
+	const smLoggerLoaded =
+		window['smTracking'] !== undefined && typeof window['smTracking'].recordRenderedAd === 'function';
+
+	if (isTlb && smLoggerLoaded) {
+		window['smTracking'].recordRenderedAd(adSlot);
+	}
+
+	// Loggers existence serves as a flag weather or not a sequence is in progress
+	// We need to remove it not to log TLBs reloaded by DurationMedia
+	delete window['smTracking'];
+}
+
 /**
  * Sets dataset properties on AdSlot container for debug purposes.
  */
@@ -12,6 +26,8 @@ class SlotDataParamsUpdater {
 	}
 
 	updateOnRenderEnd(adSlot: AdSlot): void {
+		logRenderedAd(adSlot);
+
 		slotTweaker.setDataParam(adSlot, 'gptAdvertiserId', adSlot.advertiserId);
 		slotTweaker.setDataParam(adSlot, 'gptOrderId', adSlot.orderId);
 		slotTweaker.setDataParam(adSlot, 'gptCreativeId', adSlot.creativeId);
