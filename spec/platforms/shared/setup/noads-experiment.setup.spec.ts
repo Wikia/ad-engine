@@ -4,7 +4,7 @@ import {
 	getUnitNameToDisable,
 	NoAdsExperimentSetup,
 } from '../../../../platforms/shared/setup/noads-experiment.setup';
-import { assert as chaiAssert, expect } from 'chai';
+import { expect } from 'chai';
 import { slotsContext } from '../../../../platforms/shared';
 import { context } from '../../../../src';
 
@@ -82,7 +82,7 @@ describe('NoAdsExperimentSetup', () => {
 
 			const unitNameToDisable = getUnitNameToDisable(configs, beacon);
 
-			chaiAssert(unitNameToDisable === 'correct');
+			expect(unitNameToDisable).to.equal('correct');
 		});
 
 		it('should not return anything when there is no beacon', () => {
@@ -96,7 +96,7 @@ describe('NoAdsExperimentSetup', () => {
 
 			const unitNameToDisable = getUnitNameToDisable(configs, beacon);
 
-			chaiAssert(unitNameToDisable === undefined);
+			expect(unitNameToDisable).to.equal(undefined);
 		});
 
 		it('should not return anything when there is no config', () => {
@@ -105,7 +105,7 @@ describe('NoAdsExperimentSetup', () => {
 
 			const unitNameToDisable = getUnitNameToDisable(configs, beacon);
 
-			chaiAssert(unitNameToDisable === undefined);
+			expect(unitNameToDisable).to.equal(undefined);
 		});
 	});
 });
