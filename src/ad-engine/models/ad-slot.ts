@@ -96,6 +96,7 @@ export class AdSlot {
 
 	static STATUS_BLOCKED = 'blocked';
 	static STATUS_COLLAPSE = 'collapse';
+	static STATUS_DISABLED = 'disabled';
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_FORCED_SUCCESS = 'forced_success';
 	static STATUS_MANUAL = 'manual';

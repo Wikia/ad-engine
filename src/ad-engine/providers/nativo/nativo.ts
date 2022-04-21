@@ -36,7 +36,6 @@ export class Nativo {
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();
-				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
@@ -88,12 +87,20 @@ export class Nativo {
 			Nativo.log('Could not replace sponsored element with Nativo feed ad');
 		}
 	}
-
+	
 	static log(...logValues) {
 		logger(logGroup, ...logValues);
 	}
 
-	private sendNativoLoadStatus(status: string): void {
+	/**
+	 * When Nativo is disabled or collapsed - load Affiliate Unit:
+	 * @link https://github.com/Wikia/silver-surfer/blob/master/src/pathfinder/modules/AffiliateUnitModule/hooks/useAdConflictListener.ts
+	 */
+	replaceWithAffiliateUnit(): void {
+		this.sendNativoStatus(AdSlot.STATUS_DISABLED);
+	}
+
+	sendNativoStatus(status: string): void {
 		const payload = {
 			event: status,
 			adSlotName: '',
@@ -133,6 +140,9 @@ export class Nativo {
 
 		if (adStatus === AdSlot.STATUS_COLLAPSE) {
 			slot.hide();
+			if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
+				this.replaceWithAffiliateUnit();
+			}
 		}
 
 		if (adStatus === AdSlot.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {
