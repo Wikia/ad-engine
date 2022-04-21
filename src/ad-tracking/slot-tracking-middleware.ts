@@ -17,6 +17,16 @@ function checkOptOutSale(): string {
 	return '';
 }
 
+function checkCortexVisitor(): string {
+	const cortexVisitorKeyVal = context.get('targeting.cortex-visitor');
+
+	if (cortexVisitorKeyVal) {
+		return `cortex-visitor=${cortexVisitorKeyVal}`;
+	}
+
+	return '';
+}
+
 export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, slot }, next) => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
@@ -39,7 +49,7 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 			device: utils.client.getDeviceType(),
 			document_visibility: utils.getDocumentVisibilityStatus(),
 			is_uap: isUap ? 1 : 0,
-			key_vals: '',
+			key_vals: [checkCortexVisitor()].join(';'),
 			kv_ah: window.document.body.scrollHeight,
 			kv_esrb: context.get('targeting.esrb') || '',
 			kv_lang: context.get('targeting.lang') || '',
