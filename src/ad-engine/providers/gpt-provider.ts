@@ -281,4 +281,11 @@ export class GptProvider implements Provider {
 			logger(logGroup, 'destroySlot', gptSlot, 'failed');
 		}
 	}
+
+	static refreshSlot(adSlot: AdSlot): void {
+		const activeSlots = window.googletag.pubads().getSlots();
+		const gptSlot = activeSlots.filter((slot) => slot.getSlotElementId() === adSlot.getSlotName());
+		logger(logGroup, `refreshing ${gptSlot.toString()}`);
+		window.googletag.pubads().refresh(gptSlot);
+	}
 }

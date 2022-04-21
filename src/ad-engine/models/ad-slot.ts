@@ -137,7 +137,7 @@ export class AdSlot {
 	requested = null;
 	loaded = null;
 	rendered = null;
-	viewed = null;
+	viewed: Promise<void> = null;
 
 	constructor(ad: AdStackPayload) {
 		this.config = context.get(`slots.${ad.id}`) || {};
