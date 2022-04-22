@@ -36,7 +36,6 @@ export class Nativo {
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();
-				this.sendNativoLoadStatus(AdSlot.SLOT_ADDED_EVENT);
 			});
 	}
 
@@ -55,8 +54,8 @@ export class Nativo {
 			return;
 		}
 
-		if (this.context.get(`slots.${slotName}.disabled`) === true) {
-			Nativo.log(logGroup, `Slot disabled: ${slotName}`);
+		if (this.isDisabledInNoAdsExperiment(slotName)) {
+			Nativo.log(logGroup, `Slot disabled due to the experiment: ${slotName}`);
 
 			// the Nativo ad server responses with a JS that searches for specific IDs that's why the removal here
 			if (
@@ -88,12 +87,20 @@ export class Nativo {
 			Nativo.log('Could not replace sponsored element with Nativo feed ad');
 		}
 	}
-
+	
 	static log(...logValues) {
 		logger(logGroup, ...logValues);
 	}
 
-	private sendNativoLoadStatus(status: string): void {
+	/**
+	 * When Nativo is disabled or collapsed - load Affiliate Unit:
+	 * @link https://github.com/Wikia/silver-surfer/blob/master/src/pathfinder/modules/AffiliateUnitModule/hooks/useAdConflictListener.ts
+	 */
+	replaceWithAffiliateUnit(): void {
+		this.sendNativoStatus(AdSlot.STATUS_DISABLED);
+	}
+
+	sendNativoStatus(status: string): void {
 		const payload = {
 			event: status,
 			adSlotName: '',
@@ -106,6 +113,12 @@ export class Nativo {
 		communicationService.dispatch(
 			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)(payload),
 		);
+	}
+  
+  private isDisabledInNoAdsExperiment(slotName): boolean {
+		const experimentUnit = this.context.get('state.noAdsExperiment.unitName');
+
+		return experimentUnit === slotName;
 	}
 
 	private watchNtvEvents(): void {
@@ -133,6 +146,9 @@ export class Nativo {
 
 		if (adStatus === AdSlot.STATUS_COLLAPSE) {
 			slot.hide();
+			if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
+				this.replaceWithAffiliateUnit();
+			}
 		}
 
 		if (adStatus === AdSlot.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {

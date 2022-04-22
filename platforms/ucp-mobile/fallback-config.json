@@ -563,18 +563,6 @@
             "value": true
         }
     ],
-    "icAudigentTrackingSampling": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 1
-        }
-    ],
     "icDeHeartbeatActivityTracking": [
         {
             "apps": [
@@ -2639,15 +2627,6 @@
                 "XX"
             ],
             "value": 100
-        },
-        {
-            "apps": [
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": 50
         }
     ],
     "icNoAdsExperimentConfig": [
@@ -2660,24 +2639,28 @@
             ],
             "value": [
                 {
-                    "unitName": "bottom_leaderboard",
-                    "beaconRegex": "^v[a-l]"
+                    "unitName": "interstitial_google",
+                    "beaconRegex": "^w[a-l]"
                 },
                 {
-                    "unitName": "featured",
-                    "beaconRegex": "^v[m-x]"
+                    "unitName": "incontent_player",
+                    "beaconRegex": "^u[y-zA-J]"
                 },
                 {
-                    "unitName": "floor_adhesion",
-                    "beaconRegex": "^v[y-zA-J]"
+                    "unitName": "top_leaderboard",
+                    "beaconRegex": "^u[K-W]"
                 },
                 {
-                    "unitName": "top_boxad",
-                    "beaconRegex": "^v[K-W]"
+                    "unitName": "ntv_ad",
+                    "beaconRegex": "^u[a-l]"
                 },
                 {
-                    "unitName": "uap",
-                    "beaconRegex": "^v[X-Z0-8]"
+                    "unitName": "ntv_feed_ad",
+                    "beaconRegex": "^u[m-x]"
+                },
+                {
+                    "unitName": "interstitial_celtra",
+                    "beaconRegex": "^u[X-Z0-8]"
                 }
             ]
         }

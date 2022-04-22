@@ -42,7 +42,6 @@ export class NativoSlotsDefinitionRepository {
 			},
 			activator: () => {
 				const scrollThreshold = context.get('events.pushOnScroll.nativoThreshold');
-
 				communicationService.on(
 					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 					(action: UapLoadStatus) =>
@@ -60,9 +59,9 @@ export class NativoSlotsDefinitionRepository {
 		return {
 			slotCreatorConfig,
 			activator: () => {
-				fanFeedNativeAdListener((action: UapLoadStatus) =>
-					this.nativo.scrollTriggerCallback(action, Nativo.FEED_AD_SLOT_NAME),
-				);
+				fanFeedNativeAdListener((action: UapLoadStatus) => {
+					this.nativo.scrollTriggerCallback(action, Nativo.FEED_AD_SLOT_NAME);
+				});
 			},
 		};
 	}
