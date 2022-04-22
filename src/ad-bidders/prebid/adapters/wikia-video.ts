@@ -72,10 +72,10 @@ export class WikiaVideo extends PrebidAdapter {
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		bidRequest.bids.forEach((bid) => {
-			setTimeout(async () => {
-				const pbjs: Pbjs = await pbjsFactory.init();
+		setTimeout(async () => {
+			const pbjs: Pbjs = await pbjsFactory.init();
 
+			bidRequest.bids.forEach((bid) => {
 				if (this.limit === 0) {
 					return;
 				}
@@ -96,11 +96,9 @@ export class WikiaVideo extends PrebidAdapter {
 
 				addBidResponse(bid.adUnitCode, bidResponse);
 				this.limit -= 1;
-			}, this.timeout);
-		});
+			});
 
-		setTimeout(async () => {
 			done();
-		}, this.timeout + 10);
+		}, this.timeout);
 	}
 }
