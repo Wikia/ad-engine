@@ -4,7 +4,7 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
-const timeout = utils.queryString.get('wikia_adapter_timeout');
+const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 100;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
 export class Wikia extends PrebidAdapter {
@@ -19,7 +19,7 @@ export class Wikia extends PrebidAdapter {
 
 		this.enabled = !!price;
 		this.limit = limit;
-		this.timeout = timeout ? parseInt(timeout, 10) || 100 : 100;
+		this.timeout = timeout;
 		this.useRandomPrice = useRandomPrice;
 		this.isCustomBidAdapter = true;
 	}
