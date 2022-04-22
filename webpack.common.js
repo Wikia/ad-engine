@@ -59,4 +59,7 @@ module.exports = () => ({
 		],
 	},
 	plugins: [new ForkTsCheckerWebpackPlugin()],
+	stats: {
+		warningsFilter: /export .* was not found in/,
+	},
 });
