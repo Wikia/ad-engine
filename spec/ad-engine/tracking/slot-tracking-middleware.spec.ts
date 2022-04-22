@@ -58,4 +58,16 @@ describe('slot-properties-tracking-middleware', () => {
 			key_vals: 'cortex-visitor=no',
 		});
 	});
+
+	it('returns info about GDPR and CCPA if geo requires it', () => {
+		const nextSpy = sandbox.spy();
+		context.set('options.geoRequiresSignal', true);
+
+		slotTrackingMiddleware({ data: {}, slot: adSlot }, nextSpy);
+
+		expect(nextSpy.getCall(0).args[0].data).not.to.deep.include({
+			opt_in: 'no',
+			opt_out_sale: 'no',
+		});
+	});
 });
