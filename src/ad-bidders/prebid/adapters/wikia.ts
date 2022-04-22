@@ -12,20 +12,14 @@ export class Wikia extends PrebidAdapter {
 	limit: number;
 	useRandomPrice: boolean;
 	timeout: number;
-	timeouts: number[] = [];
 	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);
 
-		if (timeout && timeout.indexOf(',')) {
-			this.timeouts = timeout.split(',').map((t) => parseInt(t, 10));
-		} else {
-			this.timeouts.push(parseInt(timeout, 10) || 100);
-		}
-
 		this.enabled = !!price;
 		this.limit = limit;
+		this.timeout = timeout ? parseInt(timeout, 10) || 100 : 100;
 		this.useRandomPrice = useRandomPrice;
 		this.isCustomBidAdapter = true;
 	}
@@ -98,13 +92,7 @@ export class Wikia extends PrebidAdapter {
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		const doneTimeout = Math.max(...this.timeouts);
-
 		bidRequest.bids.map((bid) => {
-			if (this.timeouts.length) {
-				this.timeout = this.timeouts.shift();
-			}
-
 			setTimeout(async () => {
 				const pbjs: Pbjs = await pbjsFactory.init();
 
@@ -131,6 +119,6 @@ export class Wikia extends PrebidAdapter {
 
 		setTimeout(async () => {
 			done();
-		}, doneTimeout);
+		}, this.timeout + 10);
 	}
 }

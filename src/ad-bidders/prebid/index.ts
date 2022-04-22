@@ -8,6 +8,7 @@ import {
 	AdSlot,
 	context,
 	DEFAULT_MAX_DELAY,
+	DEFAULT_MIN_DELAY,
 	Dictionary,
 	pbjsFactory,
 	Tcf,
@@ -216,15 +217,24 @@ export class PrebidProvider extends BidderProvider {
 			);
 
 			setTimeout(() => {
+				const mainStageTimeout = context.get('bidders.prebid.mainTimeout') || this.timeout;
+				const mainStageDonePromise = utils.createExtendedPromise();
+
 				this.requestBids(
 					this.filterAdUnits(this.adUnits, 'main'),
 					() => {
-						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-						utils.logger(logGroup, 'multi auction in main stage - done');
+						mainStageDonePromise.resolve();
 					},
-					context.get('bidders.prebid.mainTimeout') || this.timeout,
+					mainStageTimeout,
 				);
-			}, context.get('bidders.prebid.mainDelayed') || 0);
+				Promise.race([
+					mainStageDonePromise,
+					utils.buildPromisedTimeout(mainStageTimeout + DEFAULT_MIN_DELAY).promise,
+				]).then(() => {
+					communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+					utils.logger(logGroup, 'multi auction in main stage - done');
+				});
+			}, context.get('bidders.prebid.mainDelayed') || DEFAULT_MIN_DELAY);
 		} else {
 			firstBidRequest = this.requestBids(this.adUnits, () => {
 				bidsBackHandler();

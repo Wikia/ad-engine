@@ -146,6 +146,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
+				initStage: true,
 				adProduct: 'featured',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
