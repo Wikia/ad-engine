@@ -2657,6 +2657,10 @@
                 {
                     "unitName": "ntv_feed_ad",
                     "beaconRegex": "^u[m-x]"
+                },
+                {
+                    "unitName": "interstitial_celtra",
+                    "beaconRegex": "^u[X-Z0-8]"
                 }
             ]
         }
