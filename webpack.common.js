@@ -1,7 +1,6 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const { mergeCompilerOptionsPaths } = require('./configs/merge-compiler-options-paths');
 const pkg = require('./package.json');
 
 const include = [
@@ -9,12 +8,6 @@ const include = [
 	path.resolve(__dirname, 'platforms'),
 	path.resolve(__dirname, 'spec'),
 ];
-
-const paths = mergeCompilerOptionsPaths([
-	path.resolve(__dirname, 'src/tsconfig.json'),
-	path.resolve(__dirname, 'platforms/tsconfig.json'),
-	path.resolve(__dirname, 'spec/tsconfig.json'),
-]);
 
 module.exports = () => ({
 	mode: 'development',
