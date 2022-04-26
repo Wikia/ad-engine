@@ -216,25 +216,7 @@ export class PrebidProvider extends BidderProvider {
 				context.get('bidders.prebid.initTimeout') || this.timeout,
 			);
 
-			setTimeout(() => {
-				const mainStageTimeout = context.get('bidders.prebid.mainTimeout') || this.timeout;
-				const mainStageDonePromise = utils.createExtendedPromise();
-
-				this.requestBids(
-					this.filterAdUnits(this.adUnits, 'main'),
-					() => {
-						mainStageDonePromise.resolve();
-					},
-					mainStageTimeout,
-				);
-				Promise.race([
-					mainStageDonePromise,
-					utils.buildPromisedTimeout(mainStageTimeout + DEFAULT_MIN_DELAY).promise,
-				]).then(() => {
-					communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-					utils.logger(logGroup, 'multi auction in main stage - done');
-				});
-			}, context.get('bidders.prebid.mainDelayed') || DEFAULT_MIN_DELAY);
+			this.runSecondBidRequest();
 		} else {
 			firstBidRequest = this.requestBids(this.adUnits, () => {
 				bidsBackHandler();
@@ -244,6 +226,28 @@ export class PrebidProvider extends BidderProvider {
 		firstBidRequest.then(() => {
 			ats.call();
 		});
+	}
+
+	private runSecondBidRequest(): void {
+		setTimeout(() => {
+			const mainStageTimeout = context.get('bidders.prebid.mainTimeout') || this.timeout;
+			const mainStageDonePromise = utils.createExtendedPromise();
+
+			this.requestBids(
+				this.filterAdUnits(this.adUnits, 'main'),
+				() => {
+					mainStageDonePromise.resolve();
+				},
+				mainStageTimeout,
+			);
+			Promise.race([
+				mainStageDonePromise,
+				utils.buildPromisedTimeout(mainStageTimeout + DEFAULT_MIN_DELAY).promise,
+			]).then(() => {
+				communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+				utils.logger(logGroup, 'multi auction in main stage - done');
+			});
+		}, context.get('bidders.prebid.mainDelayed') || DEFAULT_MIN_DELAY);
 	}
 
 	private filterAdUnits(adUnits: PrebidAdUnit[], stage: string): PrebidAdUnit[] {
