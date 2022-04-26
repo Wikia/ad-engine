@@ -68,7 +68,7 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 					() => {
 						setTimeout(() => {
 							pageElement.classList.remove('uap-companion-stick');
-						}, 1000);
+						}, 500);
 					},
 					'top_boxad',
 					true,

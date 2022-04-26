@@ -14,6 +14,11 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'mobile_prefooter', 'bottom_leaderboard'];
+
+		if (this.params.newTakeoverConfig) {
+			enabledSlots.push('floor_adhesion');
+		}
+
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
