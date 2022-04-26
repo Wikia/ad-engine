@@ -24,6 +24,23 @@
 			margin-top: -46px;
 		}
 
+		.uap-companion-stick {
+			.main-page-tag-rcs,
+			#rail-boxad-wrapper {
+				position: sticky;
+				z-index: 100;
+			}
+		}
+
+		&:not(.uap-sticked) {
+			.uap-companion-stick {
+				.main-page-tag-rcs,
+				#rail-boxad-wrapper {
+					top: 36px !important;
+				}
+			}
+		}
+
 		#top_leaderboard {
 			$global-navigation-width: 66px;
 
