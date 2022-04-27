@@ -300,7 +300,13 @@ export class UcpMobileSlotsDefinitionRepository {
 							communicationService.onSlotEvent(
 								AdSlot.CUSTOM_EVENT,
 								({ payload }) => {
-									if (payload.status === universalAdPackage.SLOT_UNSTICKED_STATE) {
+									if (
+										[
+											universalAdPackage.SLOT_UNSTICKED_STATE,
+											universalAdPackage.SLOT_FORCE_UNSTICK,
+											universalAdPackage.SLOT_VIDEO_DONE,
+										].includes(payload.status)
+									) {
 										activateFloorAdhesion();
 									}
 								},
