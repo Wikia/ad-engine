@@ -1,5 +1,11 @@
-import { TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import {
+	AdSlot,
+	TEMPLATE,
+	TemplateStateHandler,
+	TemplateTransition,
+	universalAdPackage,
+} from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { fromEvent, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerRegistry } from '../../helpers/player-registry';
@@ -11,13 +17,19 @@ import { PlayerRegistry } from '../../helpers/player-registry';
 export class VideoCompletedHandler implements TemplateStateHandler {
 	private unsubscribe$ = new Subject<void>();
 
-	constructor(private playerRegistry: PlayerRegistry) {}
+	constructor(
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
+		private playerRegistry: PlayerRegistry,
+	) {}
 
 	async onEnter(transition: TemplateTransition<'resolved'>): Promise<void> {
 		this.playerRegistry.video$
 			.pipe(
 				switchMap(({ player }) => fromEvent(player, 'wikiaAdCompleted')),
-				tap(() => transition('resolved')),
+				tap(() => {
+					this.adSlot.emitEvent(universalAdPackage.SLOT_VIDEO_DONE);
+					transition('resolved');
+				}),
 				takeUntil(this.unsubscribe$),
 			)
 			.subscribe();
