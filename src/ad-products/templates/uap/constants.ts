@@ -14,6 +14,7 @@ export const SLOT_FORCE_UNSTICK = 'force-unstick';
 export const SLOT_UNSTICKED_STATE = 'unsticked';
 export const SLOT_STICKED_STATE = 'sticked';
 export const SLOT_STICKY_READY_STATE = 'sticky-ready';
+export const SLOT_STICKY_STATE_SKIPPED = 'sticky-skipped';
 export const SLOT_STICKINESS_DISABLED = 'stickiness-disabled';
 export const SLOT_VIDEO_DONE = 'video-done';
 

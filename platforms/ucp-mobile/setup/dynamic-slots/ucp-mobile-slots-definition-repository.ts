@@ -304,6 +304,7 @@ export class UcpMobileSlotsDefinitionRepository {
 										[
 											universalAdPackage.SLOT_UNSTICKED_STATE,
 											universalAdPackage.SLOT_FORCE_UNSTICK,
+											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
 											universalAdPackage.SLOT_VIDEO_DONE,
 										].includes(payload.status)
 									) {
