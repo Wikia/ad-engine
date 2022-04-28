@@ -21,6 +21,7 @@ import {
 	jwpSetup,
 	liveConnect,
 	nielsen,
+	optimera,
 	Runner,
 	silverSurferService,
 	slotDataParamsUpdater,
@@ -88,6 +89,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
+		inhibitors.push(optimera.call());
 		inhibitors.push(bidders.requestBids());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(wadRunner.call());
