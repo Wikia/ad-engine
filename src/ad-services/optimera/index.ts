@@ -7,7 +7,7 @@ const CLIENT_ID = '82';
 
 const oDevice: DeviceType = context.get('state.isMobile') ? 'mo' : 'de';
 const oDv = [CLIENT_ID, 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
-const oVa: any = {
+const oVa = {
 	top_leaderboard: ['NULL'],
 	top_boxad: ['NULL'],
 	bottom_leaderboard: ['NULL'],
