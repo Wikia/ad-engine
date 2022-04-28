@@ -176,6 +176,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
+		context.set('services.optimera.enabled', this.instantConfig.get('icOptimera'));
 
 		this.setupOutstreamPlayers();
 	}
