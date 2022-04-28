@@ -168,7 +168,8 @@
                 "5976512561",
                 "5929089315",
                 "5947810307",
-                "5743368233"
+                "5743368233",
+                "5996361595"
             ]
         }
     ],
@@ -2411,7 +2412,7 @@
                 "UK",
                 "US"
             ],
-            "sampling": 50.0,
+            "sampling": 100.0,
             "value": true
         }
     ],
@@ -2638,30 +2639,7 @@
                 "XX"
             ],
             "value": [
-                {
-                    "unitName": "interstitial_google",
-                    "beaconRegex": "^w[a-l]"
-                },
-                {
-                    "unitName": "incontent_player",
-                    "beaconRegex": "^u[y-zA-J]"
-                },
-                {
-                    "unitName": "top_leaderboard",
-                    "beaconRegex": "^u[K-W]"
-                },
-                {
-                    "unitName": "ntv_ad",
-                    "beaconRegex": "^u[a-l]"
-                },
-                {
-                    "unitName": "ntv_feed_ad",
-                    "beaconRegex": "^u[m-x]"
-                },
-                {
-                    "unitName": "interstitial_celtra",
-                    "beaconRegex": "^u[X-Z0-8]"
-                }
+                
             ]
         }
     ],
