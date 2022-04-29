@@ -63,7 +63,7 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'ABCD', 'VIDEO'],
+		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['ns'],
 	vast: {

@@ -65,6 +65,7 @@ export interface UapParams {
 	lineItemId: string;
 	loadMedrecFromBTF: boolean;
 	moatTracking: boolean;
+	newTakeoverConfig: boolean;
 	player: string;
 	resolvedStateAspectRatio: number;
 	resolvedStateAutoPlay: boolean;
@@ -126,11 +127,9 @@ function updateSlotsTargeting(lineItemId, creativeId): void {
 }
 
 function enableSlots(slotsToEnable): void {
-	if (getType() !== 'abcd') {
-		slotsToEnable.forEach((slotName) => {
-			btfBlockerService.unblock(slotName);
-		});
-	}
+	slotsToEnable.forEach((slotName) => {
+		btfBlockerService.unblock(slotName);
+	});
 }
 
 function disableSlots(slotsToDisable): void {

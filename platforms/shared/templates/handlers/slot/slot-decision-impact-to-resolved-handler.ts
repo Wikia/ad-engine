@@ -1,5 +1,12 @@
-import { DomListener, TemplateStateHandler, TemplateTransition } from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import {
+	AdSlot,
+	DomListener,
+	TEMPLATE,
+	TemplateStateHandler,
+	TemplateTransition,
+	universalAdPackage,
+} from '@wikia/ad-engine';
+import { Inject, Injectable } from '@wikia/dependency-injection';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
@@ -11,6 +18,7 @@ export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler
 	private unsubscribe$ = new Subject<void>();
 
 	constructor(
+		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
 		private domListener: DomListener,
 		private scrollCorrector: ScrollCorrector,
 		private reader: UapDomReader,
@@ -27,6 +35,7 @@ export class SlotDecisionImpactToResolvedHandler implements TemplateStateHandler
 					const correction = this.scrollCorrector.usePositionCorrection();
 
 					if (viewedAndDelayed) {
+						this.adSlot.emitEvent(universalAdPackage.SLOT_STICKY_STATE_SKIPPED);
 						transition('transition').then(correction);
 					} else {
 						transition('sticky').then(correction);
