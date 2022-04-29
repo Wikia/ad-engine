@@ -3,7 +3,7 @@ import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
-const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
+const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 100;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
 export class WikiaVideo extends PrebidAdapter {
@@ -18,8 +18,8 @@ export class WikiaVideo extends PrebidAdapter {
 
 		this.enabled = !!price;
 		this.limit = limit;
-		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
+		this.useRandomPrice = useRandomPrice;
 		this.isCustomBidAdapter = true;
 	}
 
