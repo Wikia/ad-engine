@@ -24,32 +24,40 @@ async function isUAP(): Promise<boolean> {
 }
 
 class SlotRefresher {
+	config: Config;
 	log(...logValues) {
 		logger(logGroup, ...logValues);
 	}
 
-	async init() {
-		const config: Config = {
+	refreshSlotIfPossible(slot: AdSlot) {
+		if (!this.config.slots.includes(slot.getSlotName())) return;
+
+		setTimeout(() => {
+			if (slot.isEnabled()) {
+				this.log(`refreshing ${slot.getSlotName()}.`);
+				GptProvider.refreshSlot(slot);
+			}
+		}, this.config.timeoutMS);
+	}
+
+	setupSlotRefresher(additionalConfig: Config, isUap: boolean, logger) {
+		this.config = {
 			...defaultConfig,
-			...(context.get('services.slotRefresher.config') as Config),
+			...additionalConfig,
 		};
-		const disabled = config.slots.length < 1;
-		if (disabled || (await isUAP())) {
-			this.log('disabled');
+		const disabled = this.config.slots.length < 1;
+		if (disabled || isUap) {
+			logger('disabled');
 			return;
 		}
+		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) =>
+			this.refreshSlotIfPossible(slot),
+		);
+		logger('enabled', this.config);
+	}
 
-		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
-			if (!config.slots.includes(slot.getSlotName())) return;
-			setTimeout(() => {
-				if (slot.isEnabled()) {
-					this.log(`refreshing ${slot.getSlotName()}.`);
-					GptProvider.refreshSlot(slot);
-				}
-			}, config.timeoutMS);
-		});
-
-		this.log('enabled', config);
+	async init() {
+		this.setupSlotRefresher(context.get('services.slotRefresher.config'), await isUAP(), this.log);
 	}
 }
 
