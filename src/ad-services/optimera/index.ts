@@ -27,14 +27,13 @@ class Optimera {
 		this.loadScript()
 			.then(() => {
 				utils.logger(logGroup, 'loaded');
+				this.setTargeting();
 				return Promise.resolve('Optimera loaded with success');
 			})
 			.catch(() => {
 				utils.logger(logGroup, 'loading failed.');
 				return Promise.reject('Optimera loading failed');
 			});
-
-		this.setTargeting();
 	}
 
 	getHardcodedScript(): HTMLScriptElement {
