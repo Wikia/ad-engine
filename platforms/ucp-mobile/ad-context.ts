@@ -108,7 +108,7 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['mobile'],
 	state: {
