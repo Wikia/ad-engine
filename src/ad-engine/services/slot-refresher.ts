@@ -24,8 +24,8 @@ async function isUAP(): Promise<boolean> {
 }
 
 class SlotRefresher {
-	log(message) {
-		logger(logGroup, message);
+	log(...logValues) {
+		logger(logGroup, ...logValues);
 	}
 
 	async init() {
@@ -33,8 +33,8 @@ class SlotRefresher {
 			...defaultConfig,
 			...(context.get('services.slotRefresher.config') as Config),
 		};
-		const enabled = config.slots.length > 0;
-		if (enabled && (await isUAP())) {
+		const disabled = config.slots.length < 1;
+		if (disabled || (await isUAP())) {
 			this.log('disabled');
 			return;
 		}
@@ -49,7 +49,7 @@ class SlotRefresher {
 			}, config.timeoutMS);
 		});
 
-		this.log('enabled');
+		this.log('enabled', config);
 	}
 }
 
