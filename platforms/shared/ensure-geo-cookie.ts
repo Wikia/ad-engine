@@ -4,12 +4,16 @@ interface GeoResponse {
 	continent_code: string;
 	country_code: string;
 	region: string;
+	city: string;
+	country_name: string;
 }
 
 interface GeoData {
 	continent: string;
 	country: string;
 	region: string;
+	city: string;
+	country_name: string
 }
 
 export async function ensureGeoCookie(): Promise<void> {
@@ -48,6 +52,8 @@ function getGeoData(): Promise<GeoData> {
 						continent: geoResponse.continent_code,
 						country: geoResponse.country_code,
 						region: geoResponse.region,
+						city: geoResponse.city,
+						country_name: geoResponse.country_name
 					});
 				}
 			};
