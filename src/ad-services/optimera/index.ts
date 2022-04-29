@@ -39,6 +39,7 @@ class Optimera {
 
 	getHardcodedScript(): HTMLScriptElement {
 		const script = document.createElement('script');
+		script.type = 'text/javascript';
 		script.innerHTML = `
 			var oDv = ${JSON.stringify(oDv)};
 			var oVa = ${JSON.stringify(oVa)};
