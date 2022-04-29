@@ -1,9 +1,10 @@
 import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engine/communication';
 import { AdSlot } from '../models';
 import { logger } from '../utils';
-import { context, GptProvider } from '@ad-engine/core';
+import { GptProvider } from '../providers';
+import { context } from '@wikia/ad-engine';
 
-const logGroup = 'slot-reloader';
+const logGroup = 'slot-refresher';
 
 interface Config {
 	timeoutMS?: number;
@@ -22,7 +23,7 @@ async function isUAP(): Promise<boolean> {
 	});
 }
 
-class SlotReloader {
+class SlotRefresher {
 	log(message) {
 		logger(logGroup, message);
 	}
@@ -30,9 +31,8 @@ class SlotReloader {
 	async init() {
 		const config: Config = {
 			...defaultConfig,
-			...context.get('services.slotRefresher.config') as Config,
+			...(context.get('services.slotRefresher.config') as Config),
 		};
-		debugger;
 		const enabled = config.slots.length > 0;
 		if (enabled && (await isUAP())) {
 			this.log('disabled');
@@ -53,4 +53,4 @@ class SlotReloader {
 	}
 }
 
-export const slotReloader = new SlotReloader();
+export const slotRefresher = new SlotRefresher();

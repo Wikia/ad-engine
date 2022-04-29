@@ -14,7 +14,7 @@ import {
 	templateService,
 } from './services';
 import { LazyQueue, makeLazyQueue, OldLazyQueue, logger } from './utils';
-import { slotReloader } from "./services/slot-reloader";
+import { slotRefresher } from './services/slot-refresher';
 
 const logGroup = 'ad-engine';
 
@@ -66,7 +66,7 @@ export class AdEngine {
 
 		scrollListener.init();
 		slotRepeater.init();
-		slotReloader.init();
+		slotRefresher.init();
 		this.setupPushOnScrollQueue();
 	}
 
