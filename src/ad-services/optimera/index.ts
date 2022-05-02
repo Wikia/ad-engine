@@ -7,7 +7,7 @@ const CLIENT_ID = '82';
 
 const oDevice: DeviceType = context.get('state.isMobile') ? 'mo' : 'de';
 const oDv = [CLIENT_ID, 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
-const oVa = {
+let oVa = {
 	top_leaderboard: ['NULL'],
 	top_boxad: ['NULL'],
 	bottom_leaderboard: ['NULL'],
@@ -18,22 +18,22 @@ class Optimera {
 		return context.get('services.optimera.enabled');
 	}
 
-	call(): Promise<void> {
+	async call(): Promise<string> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.reject('Optimera disabled');
 		}
 
-		this.loadScript()
-			.then(() => {
-				utils.logger(logGroup, 'loaded');
-				this.setTargeting();
-				return Promise.resolve('Optimera loaded with success');
-			})
-			.catch(() => {
-				utils.logger(logGroup, 'loading failed.');
-				return Promise.reject('Optimera loading failed');
-			});
+		try {
+			await this.loadScript();
+			utils.logger(logGroup, 'loaded');
+
+			this.setTargeting();
+			return Promise.resolve('Optimera loaded with success');
+		} catch (e) {
+			utils.logger(logGroup, 'loading failed.', e.message);
+			return Promise.reject('Optimera loading failed');
+		}
 	}
 
 	getHardcodedScript(): HTMLScriptElement {
@@ -82,9 +82,16 @@ class Optimera {
 	}
 
 	setTargeting(): void {
-		context.set('targeting.optimera', oVa['top_leaderboard']);
-		context.set('targeting.optimera', oVa['top_boxad']);
-		context.set('targeting.optimera', oVa['bottom_leaderboard']);
+		setTimeout(() => {
+			if (!window.oVa) {
+				throw new Error(`Optimera 'oVa' variable is not defined`);
+			}
+			oVa = window.oVa;
+
+			for (let i = 1; i < oDv.length; i++) {
+				context.set(`slots.${oDv[i]}.targeting.optimera`, oVa[oDv[i]]);
+			}
+		}, 400);
 	}
 }
 

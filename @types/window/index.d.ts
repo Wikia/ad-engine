@@ -44,4 +44,5 @@ interface Window {
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	oVa?: any; // Optimera variable
 }
