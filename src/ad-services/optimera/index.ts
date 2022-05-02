@@ -91,7 +91,7 @@ class Optimera {
 			for (let i = 1; i < oDv.length; i++) {
 				context.set(`slots.${oDv[i]}.targeting.optimera`, oVa[oDv[i]]);
 			}
-		}, 400);
+		}, 500);
 	}
 }
 
