@@ -4,7 +4,7 @@ import { PrebidAdSlotConfig } from '../prebid-models';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
-const timeout = utils.queryString.get('wikia_adapter_timeout');
+const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 100;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
 export class Wikia extends PrebidAdapter {
@@ -12,20 +12,14 @@ export class Wikia extends PrebidAdapter {
 	limit: number;
 	useRandomPrice: boolean;
 	timeout: number;
-	timeouts: number[] = [];
 	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);
 
-		if (timeout && timeout.indexOf(',')) {
-			this.timeouts = timeout.split(',').map((t) => parseInt(t, 10));
-		} else {
-			this.timeouts.push(parseInt(timeout, 10) || 100);
-		}
-
 		this.enabled = !!price;
 		this.limit = limit;
+		this.timeout = timeout;
 		this.useRandomPrice = useRandomPrice;
 		this.isCustomBidAdapter = true;
 	}
@@ -98,16 +92,10 @@ export class Wikia extends PrebidAdapter {
 	}
 
 	addBids(bidRequest, addBidResponse, done): void {
-		const doneTimeout = Math.max(...this.timeouts);
+		setTimeout(async () => {
+			const pbjs: Pbjs = await pbjsFactory.init();
 
-		bidRequest.bids.map((bid) => {
-			if (this.timeouts.length) {
-				this.timeout = this.timeouts.shift();
-			}
-
-			setTimeout(async () => {
-				const pbjs: Pbjs = await pbjsFactory.init();
-
+			bidRequest.bids.map((bid) => {
 				if (this.limit === 0) {
 					return;
 				}
@@ -126,11 +114,9 @@ export class Wikia extends PrebidAdapter {
 
 				addBidResponse(bid.adUnitCode, bidResponse);
 				this.limit -= 1;
-			}, this.timeout);
-		});
+			});
 
-		setTimeout(async () => {
 			done();
-		}, doneTimeout);
+		}, this.timeout);
 	}
 }
