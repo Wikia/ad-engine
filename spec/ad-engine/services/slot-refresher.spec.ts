@@ -8,6 +8,7 @@ describe('slot-refresher', () => {
 
 	const sandbox = sinon.createSandbox();
 	let clock;
+	let originalGoogletag;
 
 	const loggerSpy = sandbox.spy();
 	const refreshSpy = sandbox.spy();
@@ -16,12 +17,17 @@ describe('slot-refresher', () => {
 		clock = sinon.useFakeTimers({
 			toFake: ['setTimeout'],
 		});
+		originalGoogletag = window.googletag;
 		window.googletag = {
 			pubads: () => ({
 				getSlots: () => [fakeGPTSlot],
 				refresh: refreshSpy,
 			}),
 		} as any;
+	});
+
+	after(function () {
+		window.googletag = originalGoogletag;
 	});
 
 	afterEach(function () {
