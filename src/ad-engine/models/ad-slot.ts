@@ -134,9 +134,9 @@ export class AdSlot {
 	trackStatusAfterRendered = false;
 	slotViewed = false;
 
-	requested = null;
-	loaded = null;
-	rendered = null;
+	requested: Promise<void> = null;
+	loaded: Promise<void> = null;
+	rendered: Promise<void> = null;
 	viewed: Promise<void> = null;
 
 	constructor(ad: AdStackPayload) {

@@ -29,7 +29,7 @@ class SlotRefresher {
 		logger(logGroup, ...logValues);
 	}
 
-	refreshSlotIfPossible(slot: AdSlot) {
+	refreshSlot(slot: AdSlot) {
 		if (!this.config.slots.includes(slot.getSlotName())) return;
 
 		setTimeout(() => {
@@ -51,7 +51,7 @@ class SlotRefresher {
 			return;
 		}
 		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) =>
-			this.refreshSlotIfPossible(slot),
+			this.refreshSlot(slot),
 		);
 		logger('enabled', this.config);
 	}

@@ -59,7 +59,7 @@ describe('slot-refresher', () => {
 		} as AdSlot;
 
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlotIfPossible(fakeSlot);
+		slotRefresher.refreshSlot(fakeSlot);
 		clock.runAll();
 
 		assert.calledOnce(refreshSpy);
@@ -72,7 +72,7 @@ describe('slot-refresher', () => {
 		} as AdSlot;
 
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlotIfPossible(fakeSlot);
+		slotRefresher.refreshSlot(fakeSlot);
 		clock.runAll();
 
 		assert.notCalled(refreshSpy);
@@ -85,7 +85,7 @@ describe('slot-refresher', () => {
 		} as AdSlot;
 
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlotIfPossible(fakeSlot);
+		slotRefresher.refreshSlot(fakeSlot);
 		clock.runAll();
 
 		assert.notCalled(refreshSpy);
