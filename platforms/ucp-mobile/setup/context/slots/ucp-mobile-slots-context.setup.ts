@@ -228,6 +228,7 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
+				initStage: true,
 				adProduct: 'featured',
 				group: 'VIDEO',
 				targeting: {

@@ -24,7 +24,7 @@ export const basicContext = {
 			bidsRefreshing: {
 				slots: ['incontent_boxad_1'],
 			},
-			initStageSlots: ['top_leaderboard', 'top_boxad'],
+			initStageSlots: ['top_leaderboard', 'top_boxad', 'featured'],
 		},
 	},
 	custom: {
