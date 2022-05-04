@@ -65,7 +65,7 @@ describe('slot-refresher', () => {
 		assert.calledOnce(refreshSpy);
 	});
 
-	it('should not refresh refresh if slot is not enabled', () => {
+	it('should not refresh if slot is not enabled', () => {
 		const fakeSlot = {
 			isEnabled: () => false,
 			getSlotName: () => 'test_slot',
@@ -78,7 +78,7 @@ describe('slot-refresher', () => {
 		assert.notCalled(refreshSpy);
 	});
 
-	it('should not refresh refresh if slot is not registered in GPT', () => {
+	it('should not refresh if slot is not registered in GPT', () => {
 		const fakeSlot = {
 			isEnabled: () => true,
 			getSlotName: () => 'not_registered_slot',
