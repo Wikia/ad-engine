@@ -1,4 +1,5 @@
 import { context, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'Optimera';
 const CLIENT_ID = '82';
@@ -79,16 +80,13 @@ class Optimera {
 	}
 
 	setTargeting(): void {
-		setTimeout(() => {
-			if (!window.oVa) {
-				throw new Error(`Optimera 'oVa' variable is not defined`);
-			}
+		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 			oVa = window.oVa;
 
 			for (let i = 1; i < oDv.length; i++) {
 				context.set(`slots.${oDv[i]}.targeting.optimera`, oVa[oDv[i]]);
 			}
-		}, 500);
+		});
 	}
 }
 
