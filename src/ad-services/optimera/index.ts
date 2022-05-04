@@ -81,6 +81,10 @@ class Optimera {
 
 	setTargeting(): void {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
+			if (!window.oVa) {
+				throw new Error(`Optimera 'oVa' variable is not defined`);
+			}
+
 			oVa = window.oVa;
 
 			for (let i = 1; i < oDv.length; i++) {
