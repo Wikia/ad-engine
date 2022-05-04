@@ -1,11 +1,8 @@
 import { context, utils } from '@ad-engine/core';
 
-type DeviceType = 'mo' | 'de' | 'tb';
-
 const logGroup = 'Optimera';
 const CLIENT_ID = '82';
 
-const oDevice: DeviceType = context.get('state.isMobile') ? 'mo' : 'de';
 const oDv = [CLIENT_ID, 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
 let oVa = {
 	top_leaderboard: ['NULL'],
@@ -42,7 +39,7 @@ class Optimera {
 		script.innerHTML = `
 			var oDv = ${JSON.stringify(oDv)};
 			var oVa = ${JSON.stringify(oVa)};
-			var oDevice = ${JSON.stringify(oDevice)};
+			var oDevice = ${JSON.stringify(context.get('state.isMobile') ? 'mo' : 'de')};
 			
 			//Do not edit
 			(function() {
