@@ -17,7 +17,7 @@ describe('Optimera', () => {
 		sandbox.restore();
 	});
 
-	it('when enabled - loads optimera script', async () => {
+	it('loads optimera script when enabled', async () => {
 		contextStub.get.withArgs('services.optimera.enabled').returns(true);
 
 		await optimera.call();
@@ -25,7 +25,7 @@ describe('Optimera', () => {
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
-	it('when disabled - returns rejected promise', async () => {
+	it('returns rejected promise when disabled', async () => {
 		contextStub.get.withArgs('services.optimera.enabled').returns(false);
 
 		return await optimera.call().then(
@@ -34,7 +34,7 @@ describe('Optimera', () => {
 		);
 	});
 
-	it('when script is loaded - setTargeting is called', async () => {
+	it('setTargeting is called when script is laoded', async () => {
 		contextStub.get.withArgs('services.optimera.enabled').returns(true);
 
 		const setTargetingStub = sandbox.stub(optimera, 'setTargeting');
