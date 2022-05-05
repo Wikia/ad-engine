@@ -4,13 +4,6 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 const logGroup = 'Optimera';
 const CLIENT_ID = '82';
 
-const oDv = [CLIENT_ID, 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
-let oVa = {
-	top_leaderboard: ['NULL'],
-	top_boxad: ['NULL'],
-	bottom_leaderboard: ['NULL'],
-};
-
 class Optimera {
 	isEnabled(): boolean {
 		return context.get('services.optimera.enabled');
@@ -38,8 +31,8 @@ class Optimera {
 		const script = document.createElement('script');
 		script.type = 'text/javascript';
 		script.innerHTML = `
-			var oDv = ${JSON.stringify(oDv)};
-			var oVa = ${JSON.stringify(oVa)};
+			var oDv = ['${CLIENT_ID}', 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
+			var oVa = {'top_leaderboard':['NULL'],'top_boxad':['NULL'],'bottom_leaderboard':['NULL']};
 			var oDevice = ${JSON.stringify(context.get('state.isMobile') ? 'mo' : 'de')};
 			
 			//Do not edit
@@ -83,14 +76,21 @@ class Optimera {
 		communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
 			if (!window.oVa) {
 				throw new Error(`Optimera 'oVa' variable is not defined`);
+			} else if (!window.oDv) {
+				throw new Error(`Optimera 'oDv' variable is not defined`);
 			}
 
-			oVa = window.oVa;
+			const oVa = window.oVa;
+			const oDv = window.oDv;
 
 			for (let i = 1; i < oDv.length; i++) {
-				context.set(`slots.${oDv[i]}.targeting.optimera`, oVa[oDv[i]]);
+				this.setSlotTargeting(oDv[i], oVa[oDv[i]]);
 			}
 		});
+	}
+
+	setSlotTargeting(slotName: string, value: string): void {
+		context.set(`slots.${slotName}.targeting.optimera`, value);
 	}
 }
 
