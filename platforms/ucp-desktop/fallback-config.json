@@ -169,6 +169,7 @@
                 "5996361595",
                 "5955672672",
                 "5996341416",
+                "5998652572",
                 "5929089573"
             ]
         }
@@ -301,7 +302,7 @@
             ],
             "value": {
                 "slots": [
-                    "top_boxad"
+                    "top_leaderboard"
                 ],
                 "timeoutMS": 30000
             }
@@ -2376,11 +2377,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "DE",
-                "GB",
-                "PL",
-                "UK",
-                "US"
+                "XX"
             ],
             "sampling": 100.0,
             "value": true
