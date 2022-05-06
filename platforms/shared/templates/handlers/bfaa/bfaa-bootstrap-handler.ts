@@ -53,6 +53,7 @@ export class BfaaBootstrapHandler implements TemplateStateHandler {
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
 		document.body.classList.add('uap-old');
+		// todo remove uap classes
 	}
 
 	async onDestroy(): Promise<void> {
