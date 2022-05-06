@@ -1,7 +1,7 @@
 import { context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
-const logGroup = 'Optimera';
+const logGroup = 'optimera';
 const CLIENT_ID = '82';
 
 class Optimera {
