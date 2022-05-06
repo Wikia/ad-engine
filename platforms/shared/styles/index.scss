@@ -1,6 +1,5 @@
 @import 'uap/uap-advertisement-label';
 @import 'uap/uap-button-close';
-@import 'uap/uap-navbar';
 @import 'uap/bfaa-slot';
 @import 'uap/bfab-slot';
 @import 'uap/sticky-tlb-slot';
@@ -12,5 +11,5 @@
 @import 'out-of-page/out-of-page-template';
 @import 'out-of-page/floor-adhesion';
 @import 'out-of-page/interstitial';
-@import '../templates/handlers/sponsored-text-logo/sponsored-text-logo';
-@import '../templates/handlers/sponsored-logo/sponsored-logo';
+@import 'sponsored-logo/sponsored-text-logo';
+@import 'sponsored-logo/sponsored-logo';
