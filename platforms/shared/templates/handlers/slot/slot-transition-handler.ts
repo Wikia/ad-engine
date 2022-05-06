@@ -9,7 +9,6 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { from, Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { NAVBAR } from '../../configs/uap-dom-elements';
 import { DomManipulator } from '../../helpers/manipulators/dom-manipulator';
 import { ScrollCorrector } from '../../helpers/scroll-corrector';
 import { UapDomReader } from '../../helpers/uap-dom-reader';
@@ -20,7 +19,6 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 
 	constructor(
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(NAVBAR) private navbar: HTMLElement,
 		private scrollCorrector: ScrollCorrector,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
@@ -31,6 +29,7 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 			.pipe(
 				tap(() => {
 					const correction = this.scrollCorrector.useScrollCorrection();
+					this.adSlot.removeClass('uap-toc-pusher');
 
 					transition('resolved').then(correction);
 				}),
@@ -40,12 +39,7 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 	}
 
 	private animate(): Observable<unknown> {
-		const duration = this.calcAnimationDuration();
-
-		this.manipulator
-			.element(this.navbar)
-			.setProperty('transition', `top ${duration}ms ${universalAdPackage.CSS_TIMING_EASE_IN_CUBIC}`)
-			.setProperty('top', `${this.reader.getNavbarOffsetResolvedToNone()}px`);
+		const duration = universalAdPackage.SLIDE_OUT_TIME;
 
 		this.manipulator
 			.element(this.adSlot.getElement())
@@ -53,14 +47,6 @@ export class SlotTransitionHandler implements TemplateStateHandler {
 			.setProperty('top', `${this.reader.getSlotOffsetResolvedToNone()}px`);
 
 		return from(utils.wait(duration));
-	}
-
-	private calcAnimationDuration(): number {
-		const heightResolved = this.reader.getSlotHeightResolved();
-		const distance = this.reader.getNavbarOffsetResolvedToNone();
-		const distanceFraction = (heightResolved - distance) / heightResolved;
-
-		return distanceFraction * universalAdPackage.SLIDE_OUT_TIME;
 	}
 
 	async onLeave(): Promise<void> {
