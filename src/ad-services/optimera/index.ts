@@ -56,10 +56,6 @@ class Optimera {
 			optimeraOpsScript.type = 'text/javascript';
 			optimeraOpsScript.src="https://d15kdpgjg3unno.cloudfront.net/oPS.js?cid="+oDv[0];
 			document.head.appendChild(optimeraOpsScript);
-			
-			/*OPTIONAL TIMEOUT SCRIPT*/
-			var s = +new Date;
-			while (+new Date < s + 200) {/*Default 200ms Timeout*/};
 			})();
 		`;
 		return script;
