@@ -9,10 +9,10 @@ class Optimera {
 		return context.get('services.optimera.enabled');
 	}
 
-	async call(): Promise<string> {
+	async call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			return Promise.reject('Optimera disabled');
+			return Promise.resolve();
 		}
 
 		try {
@@ -20,10 +20,8 @@ class Optimera {
 			utils.logger(logGroup, 'loaded');
 
 			this.setTargeting();
-			return Promise.resolve('Optimera loaded with success');
 		} catch (e) {
 			utils.logger(logGroup, 'loading failed.', e.message);
-			return Promise.reject('Optimera loading failed');
 		}
 	}
 
