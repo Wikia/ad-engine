@@ -89,11 +89,11 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(optimera.call());
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(wadRunner.call());
 		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(wadRunner.call());
 
 		facebookPixel.call();
 		audigent.call();
