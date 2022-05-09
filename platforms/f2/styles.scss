@@ -96,7 +96,7 @@
 @mixin f2-uap-styles() {
 	.has-uap {
 		#top_leaderboard {
-			height: 292px; // 250px height + 18px top padding + 24px bottom label
+			height: 292px; // 250px slot height + 18px top padding + 24px bottom label
 			display: flex;
 			flex-direction: column;
 
