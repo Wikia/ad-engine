@@ -60,6 +60,10 @@ export class SequentialMessagingSetup {
 				return;
 			}
 
+			if (uap) {
+				resolvedState.forceUapResolveState();
+			}
+
 			const sequenceHandler = new SequenceStartHandler(this.userStateStore);
 			sequenceHandler.startSequence(lineItemId, width, height, uap);
 
