@@ -3,27 +3,11 @@
 @import 'src/ad-products/styles/porvata';
 
 @mixin ucp-desktop-uap-styles() {
-	.wds-global-navigation-wrapper {
-		@include uap-navbar();
-	}
-
-	#globalNavigation {
-		position: static;
-	}
-
 	.has-uap {
 		$sticky-navigation-width: 46px;
 
-		.WikiaSiteWrapper {
-			margin-top: 0;
-		}
-
 		.fandom-sticky-header {
 			z-index: 401;
-		}
-
-		&.uap-old .fandom-sticky-header {
-			margin-top: -$sticky-navigation-width;
 		}
 
 		.uap-companion-stick {
@@ -40,6 +24,19 @@
 				#rail-boxad-wrapper {
 					top: calc(#{$sticky-navigation-width} - 10px) !important;
 				}
+			}
+		}
+
+		.top-ads-container {
+			position: relative;
+			background: #000;
+
+			.ad-slot-placeholder.top-leaderboard {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
 			}
 		}
 
@@ -66,22 +63,6 @@
 
 			&.is-dark {
 				@include uap-dark-theme();
-			}
-		}
-	}
-
-	.uap-light,
-	.has-sticky-tlb {
-		.top-ads-container {
-			position: relative;
-			background: #000;
-
-			.ad-slot-placeholder.top-leaderboard {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
 			}
 		}
 	}

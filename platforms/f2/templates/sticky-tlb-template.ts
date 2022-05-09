@@ -11,7 +11,7 @@ import {
 	SlotHiddenHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
 	SlotStateStickedHandler,
-	SlotTransitionLightHandler,
+	SlotTransitionHandler,
 	StickinessTimeout,
 	StickyTlbBlockingHandler,
 	StickyTlbBootstrapHandler,
@@ -45,7 +45,7 @@ export function registerStickyTlbTemplate(registry: TemplateRegistry): Observabl
 			],
 			transition: [
 				SlotSizeResolvedWithPlaceholderHandler,
-				SlotTransitionLightHandler,
+				SlotTransitionHandler,
 				DomCleanupHandler,
 				SlotStateStickedHandler,
 			],

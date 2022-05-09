@@ -13,7 +13,7 @@ interface GeoData {
 	country: string;
 	region: string;
 	city: string;
-	country_name: string
+	country_name: string;
 }
 
 export async function ensureGeoCookie(): Promise<void> {
@@ -53,7 +53,7 @@ function getGeoData(): Promise<GeoData> {
 						country: geoResponse.country_code,
 						region: geoResponse.region,
 						city: geoResponse.city,
-						country_name: geoResponse.country_name
+						country_name: geoResponse.country_name,
 					});
 				}
 			};
