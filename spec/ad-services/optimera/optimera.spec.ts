@@ -1,7 +1,7 @@
+import { context, utils } from '@wikia/ad-engine';
 import { optimera } from '@wikia/ad-services';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, utils } from '../../../src/ad-engine/index';
 
 describe('Optimera', () => {
 	const sandbox = createSandbox();
