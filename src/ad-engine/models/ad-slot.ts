@@ -294,6 +294,15 @@ export class AdSlot {
 		return Array.isArray(this.creativeSize) ? this.creativeSize.join('x') : this.creativeSize;
 	}
 
+	getCreativeSizeAsArray(): [number, number] | null {
+		const size = Array.isArray(this.creativeSize)
+			? this.creativeSize
+			: this.creativeSize.split('x').map(Number);
+
+		// Type hack to make sure it will always return two element array
+		return [size[0], size[1]];
+	}
+
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
 		const { pos = '' } = this.targeting;

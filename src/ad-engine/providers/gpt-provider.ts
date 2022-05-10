@@ -284,7 +284,13 @@ export class GptProvider implements Provider {
 
 	static refreshSlot(adSlot: AdSlot): void {
 		const activeSlots = window.googletag.pubads().getSlots();
-		const gptSlot = activeSlots.filter((slot) => slot.getSlotElementId() === adSlot.getSlotName());
-		window.googletag.pubads().refresh(gptSlot);
+		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
+		gptSlot.clearTargeting();
+		const mapping = googletag
+			.sizeMapping()
+			.addSize([0, 0], adSlot.getCreativeSizeAsArray())
+			.build();
+		gptSlot.defineSizeMapping(mapping);
+		window.googletag.pubads().refresh([gptSlot]);
 	}
 }
