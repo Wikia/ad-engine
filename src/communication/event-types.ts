@@ -72,6 +72,11 @@ export interface AdSlotEventPayload {
 	payload?: any;
 }
 
+export interface IdentityDataPayload {
+	partnerName: string;
+	partnerIdentityId: string | null;
+}
+
 export const eventsRepository: Dictionary<EventOptions> = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -263,5 +268,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[GAM iframe]',
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
+	},
+	IDENTITY_PARTNER_DATA_OBTAINED: {
+		name: 'Identity partner data obtained',
+		payload: payload<IdentityDataPayload>(),
 	},
 };
