@@ -198,6 +198,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[FanFeed]',
 		name: 'Ready',
 	},
+	OPTIMERA_FINISHED: {
+		name: 'Optimera config overwritten',
+	},
 	QUIZ_AD_INJECTED: {
 		category: '[quizConsumption]',
 		name: 'ad slot injected',
@@ -260,8 +263,5 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[GAM iframe]',
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
-	},
-	OPTIMERA_FINISHED: {
-		name: 'Optimera config overwritten',
 	},
 };
