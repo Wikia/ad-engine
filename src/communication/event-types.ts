@@ -261,7 +261,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
 	},
-	OPTIMERA_LOADED: {
-		name: 'Optimera loaded',
+	OPTIMERA_FINISHED: {
+		name: 'Optimera config overwritten',
 	},
 };

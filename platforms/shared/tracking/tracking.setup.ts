@@ -356,9 +356,9 @@ export class TrackingSetup {
 
 	private optimeraTracker(): void {
 		communicationService.on(
-			eventsRepository.OPTIMERA_LOADED,
+			eventsRepository.OPTIMERA_FINISHED,
 			() => {
-				this.pageTracker.trackProp('optimera', 'loaded');
+				this.pageTracker.trackProp('optimera', '');
 			},
 			false,
 		);

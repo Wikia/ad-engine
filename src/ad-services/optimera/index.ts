@@ -26,8 +26,8 @@ class Optimera {
 		try {
 			this.loadGlobalVariablesScript();
 			await this.loadScoreFileScript();
-			this.sendTrackingEvent();
 			await this.updateOvaVariable();
+			this.sendTrackingEvent();
 			await this.loadOpsScript();
 			this.setTargeting();
 		} catch (e) {
@@ -60,7 +60,7 @@ class Optimera {
 	}
 
 	sendTrackingEvent(): void {
-		communicationService.emit(eventsRepository.OPTIMERA_LOADED);
+		communicationService.emit(eventsRepository.OPTIMERA_FINISHED);
 	}
 
 	// Variable 'oVa' needs to be updated as it gets overwritten after loading score file
