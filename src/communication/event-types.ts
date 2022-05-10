@@ -261,4 +261,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Load template',
 		payload: payload<LoadTemplatePayload>(),
 	},
+	OPTIMERA_LOADED: {
+		name: 'Optimera loaded',
+	},
 };

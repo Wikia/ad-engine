@@ -84,6 +84,7 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
+		this.optimeraTracker();
 	}
 
 	private porvataTracker(): void {
@@ -348,6 +349,16 @@ export class TrackingSetup {
 			eventsRepository.ATS_NOT_LOADED_LOGGED,
 			(props) => {
 				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
+			},
+			false,
+		);
+	}
+
+	private optimeraTracker(): void {
+		communicationService.on(
+			eventsRepository.OPTIMERA_LOADED,
+			() => {
+				this.pageTracker.trackProp('optimera', 'loaded');
 			},
 			false,
 		);

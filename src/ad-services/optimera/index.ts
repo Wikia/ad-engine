@@ -1,4 +1,5 @@
 import { context, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'optimera';
 const CLIENT_ID = '82';
@@ -25,6 +26,7 @@ class Optimera {
 		try {
 			this.loadGlobalVariablesScript();
 			await this.loadScoreFileScript();
+			this.sendTrackingEvent();
 			await this.updateOvaVariable();
 			await this.loadOpsScript();
 			this.setTargeting();
@@ -57,9 +59,13 @@ class Optimera {
 		utils.logger(logGroup, 'score file loaded');
 	}
 
+	sendTrackingEvent(): void {
+		communicationService.emit(eventsRepository.OPTIMERA_LOADED);
+	}
+
 	// Variable 'oVa' needs to be updated as it gets overwritten after loading score file
 	async updateOvaVariable(): Promise<void> {
-		const conditionMet = await new utils.WaitFor(this.getWaitingCondition, 3, 100).until();
+		const conditionMet = await new utils.WaitFor(this.isConfigUpdated, 3, 100).until();
 		if (!conditionMet) {
 			return Promise.reject(new Error('oVa variable not updated'));
 		}
@@ -96,7 +102,7 @@ class Optimera {
 		context.set(`slots.${slotName}.targeting.optimera`, value);
 	}
 
-	getWaitingCondition() {
+	isConfigUpdated(): boolean {
 		if (!window.oVa || !window.oDv) {
 			return false;
 		}
