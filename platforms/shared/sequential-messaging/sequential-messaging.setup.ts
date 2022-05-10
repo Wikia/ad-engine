@@ -10,12 +10,12 @@ import { SequenceEventTypes } from './infrastructure/sequence-event-types';
 import { KibanaLogger } from './kibana-logger';
 
 function kibanaLogger() {
-
 	// This is to ensure Kibana logging will work on F2
 	if (!context.get('services.externalLogger.endpoint')) {
 		context.set(
 			'services.externalLogger.endpoint',
-			'https://community.fandom.com/wikia.php?controller=AdEngine&method=postLog');
+			'https://community.fandom.com/wikia.php?controller=AdEngine&method=postLog',
+		);
 	}
 
 	window['smTracking'] = new KibanaLogger();
@@ -58,6 +58,10 @@ export class SequentialMessagingSetup {
 			const uap = payload.uap === undefined ? false : payload.uap;
 			if (lineItemId == null || width == null || height == null) {
 				return;
+			}
+
+			if (uap) {
+				resolvedState.forceUapResolveState();
 			}
 
 			const sequenceHandler = new SequenceStartHandler(this.userStateStore);

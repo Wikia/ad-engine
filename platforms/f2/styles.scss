@@ -95,17 +95,8 @@
 
 @mixin f2-uap-styles() {
 	.has-uap {
-		.global-navigation-mobile-wrapper,
-		.wds-global-navigation-wrapper {
-			@include uap-navbar();
-		}
-
-		&.is-menu-active .global-navigation-mobile-wrapper {
-			top: 0 !important;
-		}
-
 		#top_leaderboard {
-			height: 292px; // 250px height + 18px top padding + 24px bottom label
+			height: 292px; // 250px slot height + 18px top padding + 24px bottom label
 			display: flex;
 			flex-direction: column;
 
@@ -127,6 +118,22 @@
 
 		#bottom_leaderboard {
 			@include bfab-slot();
+		}
+
+		.top-ads-container {
+			padding: 0;
+
+			.ad-slot-placeholder.top-leaderboard {
+				min-height: unset;
+
+				#top_leaderboard {
+					height: unset;
+
+					html.mobile & {
+						z-index: 5000102;
+					}
+				}
+			}
 		}
 
 		#top_leaderboard,
@@ -153,24 +160,6 @@
 
 			&.is-dark {
 				@include uap-dark-theme();
-			}
-		}
-
-		&.has-sticky-tlb {
-			.top-ads-container {
-				padding: 0;
-
-				.ad-slot-placeholder.top-leaderboard {
-					min-height: unset;
-
-					#top_leaderboard {
-						height: unset;
-
-						html.mobile & {
-							z-index: 5000102;
-						}
-					}
-				}
 			}
 		}
 

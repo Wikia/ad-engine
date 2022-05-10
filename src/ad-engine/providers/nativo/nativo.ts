@@ -87,7 +87,7 @@ export class Nativo {
 			Nativo.log('Could not replace sponsored element with Nativo feed ad');
 		}
 	}
-	
+
 	static log(...logValues) {
 		logger(logGroup, ...logValues);
 	}
@@ -114,8 +114,8 @@ export class Nativo {
 			communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)(payload),
 		);
 	}
-  
-  private isDisabledInNoAdsExperiment(slotName): boolean {
+
+	private isDisabledInNoAdsExperiment(slotName): boolean {
 		const experimentUnit = this.context.get('state.noAdsExperiment.unitName');
 
 		return experimentUnit === slotName;
