@@ -3,6 +3,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 
 const logGroup = 'optimera';
 const CLIENT_ID = '82';
+const SCRIPT_URL_BASE = 'https://dyv1bugovvq1g.cloudfront.net';
 
 class Optimera {
 	private oDevice = context.get('state.isMobile') ? 'mo' : 'de';
@@ -31,7 +32,7 @@ class Optimera {
 			await this.loadOpsScript();
 			this.setTargeting();
 		} catch (e) {
-			utils.logger(logGroup, 'loading failed.', e.message);
+			utils.logger(logGroup, 'loading failed', e.message);
 		}
 	}
 
@@ -51,9 +52,7 @@ class Optimera {
 	async loadScoreFileScript(): Promise<void> {
 		const optimeraHost = window.location.host;
 		const optimeraPathName = window.location.pathname;
-		const url = `https://dyv1bugovvq1g.cloudfront.net/${CLIENT_ID}/${
-			optimeraHost + optimeraPathName
-		}.js`;
+		const url = `${SCRIPT_URL_BASE}/${CLIENT_ID}/${optimeraHost + optimeraPathName}.js`;
 
 		await utils.scriptLoader.loadScript(url);
 		utils.logger(logGroup, 'score file loaded');
@@ -61,6 +60,7 @@ class Optimera {
 
 	sendTrackingEvent(): void {
 		communicationService.emit(eventsRepository.OPTIMERA_FINISHED);
+		utils.logger(logGroup, 'tracking event sent');
 	}
 
 	// Variable 'oVa' needs to be updated as it gets overwritten after loading score file
