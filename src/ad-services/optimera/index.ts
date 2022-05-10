@@ -27,7 +27,12 @@ class Optimera {
 		try {
 			this.loadGlobalVariablesScript();
 			await this.loadScoreFileScript();
-			await this.updateOvaVariable();
+			const configUpdated = await this.checkOptimeraConfig();
+			if (!configUpdated) {
+				utils.logger(logGroup, 'config update failed');
+				return;
+			}
+
 			this.sendTrackingEvent();
 			await this.loadOpsScript();
 			this.setTargeting();
@@ -64,10 +69,10 @@ class Optimera {
 	}
 
 	// Variable 'oVa' needs to be updated as it gets overwritten after loading score file
-	async updateOvaVariable(): Promise<void> {
+	async checkOptimeraConfig(): Promise<boolean> {
 		const conditionMet = await new utils.WaitFor(this.isConfigUpdated, 3, 100).until();
 		if (!conditionMet) {
-			return Promise.reject(new Error('oVa variable not updated'));
+			return Promise.resolve(false);
 		}
 
 		if (
@@ -81,7 +86,7 @@ class Optimera {
 		}
 
 		utils.logger(logGroup, 'oVa variable updated');
-		return Promise.resolve();
+		return Promise.resolve(conditionMet);
 	}
 
 	async loadOpsScript(): Promise<void> {
