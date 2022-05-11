@@ -34,8 +34,6 @@ class LiveConnect {
 				});
 
 			this.isLoaded = true;
-		} else {
-			this.track();
 		}
 	}
 
