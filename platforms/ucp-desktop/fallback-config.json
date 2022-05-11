@@ -455,6 +455,33 @@
             "value": true
         }
     ],
+    "icPrebidTestBidder": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": {
+                "name": "medianet",
+                "slots": {
+                    "top_boxad": {
+                        "sizes": [
+                            [
+                                300,
+                                250
+                            ]
+                        ],
+                        "parameters": {
+                            "cid": "8CU5JOKX4",
+                            "crid": "307922149"
+                        }
+                    }
+                }
+            }
+        }
+    ],
     "icOutstreamExperiment": [
         {
             "apps": [
@@ -2366,7 +2393,9 @@
                 "5967056316",
                 "5969626223",
                 "5970648400",
-                "5974270234"
+                "5974270234",
+                "6006980301",
+                "6006980295"
             ]
         }
     ],
