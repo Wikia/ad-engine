@@ -84,6 +84,18 @@ function configure(): void {
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 	});
 
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage >= 50) {
+				logger('refresh', `emiting SLOT_BACK_TO_VIEWPORT for ${adSlot.getSlotName()}`);
+				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+			}
+		},
+	);
+
 	window.googletag.enableServices();
 }
 

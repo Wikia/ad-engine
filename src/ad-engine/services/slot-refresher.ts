@@ -2,7 +2,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { GptProvider } from '../providers';
-import { context } from '@wikia/ad-engine';
+// import { context } from '@wikia/ad-engine';
 
 const logGroup = 'slot-refresher';
 
@@ -23,19 +23,33 @@ async function isUAP(): Promise<boolean> {
 	});
 }
 
+function foobar(adSlot) {
+	return function foo(event) {
+		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
+			if (event.inViewPercentage > 50) {
+				logger(logGroup, `refreshing ${adSlot.getSlotName()}`, event);
+				GptProvider.refreshSlot(adSlot);
+				googletag.pubads().removeEventListener('slotVisibilityChanged', foo);
+			} else {
+				logger(logGroup, `${adSlot.getSlotName()} not visible ${event.inViewPercentage}`, event);
+			}
+		}
+	};
+}
+
 class SlotRefresher {
 	config: Config;
 	log(...logValues) {
 		logger(logGroup, ...logValues);
 	}
 
-	refreshSlot(slot: AdSlot) {
-		if (!this.config.slots.includes(slot.getSlotName())) return;
+	refreshSlot(adSlot: AdSlot) {
+		if (!this.config.slots.includes(adSlot.getSlotName())) return;
 
 		setTimeout(() => {
-			if (slot.isEnabled()) {
-				this.log(`refreshing ${slot.getSlotName()}.`);
-				GptProvider.refreshSlot(slot);
+			if (adSlot.isEnabled()) {
+				this.log(`${adSlot.getSlotName()} will be refreshed.`);
+				googletag.pubads().addEventListener('slotVisibilityChanged', foobar(adSlot));
 			}
 		}, this.config.timeoutMS);
 	}
@@ -50,14 +64,15 @@ class SlotRefresher {
 			logger('disabled');
 			return;
 		}
-		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) =>
-			this.refreshSlot(slot),
-		);
+		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
+			logger(`${slot.getSlotName()} viewed`);
+			this.refreshSlot(slot);
+		});
 		logger('enabled', this.config);
 	}
 
 	async init() {
-		this.setupSlotRefresher(context.get('services.slotRefresher.config'), await isUAP(), this.log);
+		this.setupSlotRefresher({ slots: ['top_boxad'], timeoutMS: 1000 }, await isUAP(), this.log);
 	}
 }
 
