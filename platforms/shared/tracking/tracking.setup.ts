@@ -36,7 +36,7 @@ const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/ade
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
-const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengidentity';
+const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -372,15 +372,10 @@ export class TrackingSetup {
 		communicationService.on(
 			eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
 			(eventInfo) => {
-				const now = new Date();
-
 				dataWarehouseTracker.track(
 					{
-						...eventInfo.payload,
-						pv_unique_id: context.get('wiki.pvUID'),
-						beacon: context.get('wiki.beaconId') || 'unknown',
-						timestamp: now.getTime(),
-						tz_offset: now.getTimezoneOffset(),
+						partner_name: eventInfo.payload.partnerName,
+						partner_identity_id: eventInfo.payload.partnerIdentityId,
 					},
 					identityTrackingUrl,
 				);
