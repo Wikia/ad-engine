@@ -40,17 +40,16 @@ class LiveConnect {
 	track(): void {
 		if (!window.liQ) {
 			console.warn(logGroup, 'window.liQ not available for tracking');
-			return;
-		}
+		} else {
+			window.liQ.resolve((nonId) => {
+				this.unifiedId = nonId['unifiedId'];
 
-		window.liQ.resolve((nonId) => {
-			this.unifiedId = nonId['unifiedId'];
-
-			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: logGroup,
-				partnerIdentityId: this.unifiedId,
+				communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+					partnerName: logGroup,
+					partnerIdentityId: this.unifiedId,
+				});
 			});
-		});
+		}
 	}
 }
 
