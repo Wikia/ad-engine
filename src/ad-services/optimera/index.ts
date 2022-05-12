@@ -26,15 +26,15 @@ class Optimera {
 
 		try {
 			this.loadGlobalVariablesScript();
-			await this.loadScoreFileScript();
+			await Promise.all([this.loadScoreFileScript(), this.loadOpsScript()]);
+			this.sendTrackingEvent();
+
 			const configUpdated = await this.checkOptimeraConfig();
 			if (!configUpdated) {
 				utils.logger(logGroup, 'config update failed');
 				return;
 			}
 
-			this.sendTrackingEvent();
-			await this.loadOpsScript();
 			this.setTargeting();
 		} catch (e) {
 			utils.logger(logGroup, 'loading failed', e.message);
