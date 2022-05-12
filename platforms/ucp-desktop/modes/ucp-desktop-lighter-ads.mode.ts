@@ -49,7 +49,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
 
-	private async setupJWPlayer(inhibitors = []): Promise<any> {
+	private setupJWPlayer(inhibitors = []): void {
 		new JWPlayerManager().manage();
 
 		const maxTimeout = context.get('options.maxDelayTimeout');

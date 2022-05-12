@@ -108,6 +108,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'UAP Load status',
 		payload: props<UapLoadStatus>(),
 	},
+	AD_ENGINE_UAP_NTC_LOADED: {
+		name: 'UAP NTC loaded',
+	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
 		name: 'Invalidate slot targeting',

@@ -28,6 +28,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private CODE_PRIORITY = {
 		floor_adhesion: {
 			active: false,
+			ignore: false,
 		},
 	};
 
@@ -66,6 +67,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				classList: ['ntv-ad', 'hide'],
 			}),
 		]);
+
+		if (context.get('custom.hasFeaturedVideo')) {
+			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+			});
+		} else {
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+		}
 
 		if (!topLeaderboardDefinition) {
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
@@ -164,8 +173,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = true;
 
+				communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+					this.CODE_PRIORITY.floor_adhesion.ignore = true;
+				});
+
 				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
-					if (this.CODE_PRIORITY.floor_adhesion.active) {
+					if (
+						!this.CODE_PRIORITY.floor_adhesion.ignore &&
+						this.CODE_PRIORITY.floor_adhesion.active
+					) {
 						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 					}
 				});
