@@ -38,7 +38,12 @@ class LiveConnect {
 	}
 
 	track(): void {
-		return window.liQ.resolve((nonId) => {
+		if (!window.liQ) {
+			console.warn(logGroup, 'window.liQ not available for tracking');
+			return;
+		}
+
+		window.liQ.resolve((nonId) => {
 			this.unifiedId = nonId['unifiedId'];
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
