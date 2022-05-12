@@ -201,6 +201,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[FanFeed]',
 		name: 'Ready',
 	},
+	OPTIMERA_FINISHED: {
+		name: 'Optimera config overwritten',
+	},
 	QUIZ_AD_INJECTED: {
 		category: '[quizConsumption]',
 		name: 'ad slot injected',
