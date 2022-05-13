@@ -2,7 +2,6 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { GptProvider } from '../providers';
-// import { context } from '@wikia/ad-engine';
 
 const logGroup = 'slot-refresher';
 
@@ -23,22 +22,6 @@ async function isUAP(): Promise<boolean> {
 	});
 }
 
-async function isOutOfTheViewport(slotName): Promise<boolean> {
-	return new Promise((resolve) => {
-		communicationService.onLast(
-			AdSlot.SLOT_VISIBILITY_CHANGED,
-			({ payload }) => {
-				console.log('refresh', payload);
-				if (payload.inViewPercentage < 100) {
-					resolve(true);
-				}
-				resolve(false);
-			},
-			slotName,
-		);
-	});
-}
-
 function refreshWhenBackToViewport(adSlot) {
 	function foo(event) {
 		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
@@ -56,6 +39,8 @@ function refreshWhenBackToViewport(adSlot) {
 
 class SlotRefresher {
 	config: Config;
+	slotsInTheViewport: Array<string> = [];
+
 	log(...logValues) {
 		logger(logGroup, ...logValues);
 	}
@@ -66,14 +51,15 @@ class SlotRefresher {
 		setTimeout(async () => {
 			if (adSlot.isEnabled()) {
 				this.log(`${adSlot.getSlotName()} will be refreshed.`);
-				const outOfTheViewport = await isOutOfTheViewport(adSlot.getSlotName());
-				if (outOfTheViewport) {
-					this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
-					refreshWhenBackToViewport(adSlot);
+
+				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
+					logger(logGroup, `refreshing right away ${adSlot.getSlotName()}`);
+					GptProvider.refreshSlot(adSlot);
 					return;
 				}
-				logger(logGroup, `refreshing right away ${adSlot.getSlotName()}`);
-				GptProvider.refreshSlot(adSlot);
+
+				this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
+				refreshWhenBackToViewport(adSlot);
 			}
 		}, this.config.timeoutMS);
 	}
@@ -84,14 +70,29 @@ class SlotRefresher {
 			...additionalConfig,
 		};
 		const disabled = this.config.slots.length < 1;
+
 		if (disabled || isUap) {
 			logger('disabled');
 			return;
 		}
-		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
-			logger(`${slot.getSlotName()} viewed`);
+
+		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ adSlotName, slot }) => {
+			logger(`${adSlotName} viewed`);
 			this.refreshSlot(slot);
 		});
+
+		communicationService.onSlotEvent(AdSlot.SLOT_BACK_TO_VIEWPORT, ({ adSlotName }) => {
+			logger(`${adSlotName} back in the viewport`);
+			this.slotsInTheViewport.push(adSlotName);
+		});
+
+		communicationService.onSlotEvent(AdSlot.SLOT_LEFT_VIEWPORT, ({ adSlotName }) => {
+			logger(`${adSlotName} left the viewport`);
+			this.slotsInTheViewport = this.slotsInTheViewport.filter(
+				(slotName) => slotName !== adSlotName,
+			);
+		});
+
 		logger('enabled', this.config);
 	}
 

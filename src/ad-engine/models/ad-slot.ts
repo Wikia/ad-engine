@@ -83,7 +83,7 @@ export class AdSlot {
 	static SLOT_RENDERED_EVENT = 'slotRendered';
 	static SLOT_VISIBILITY_CHANGED = 'slotVisibilityChanged';
 	static SLOT_BACK_TO_VIEWPORT = 'slotBackToViewport';
-	static SLOT_LEFT_TO_VIEWPORT = 'slotLeftToViewport';
+	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
 	static DESTROYED_EVENT = 'slotDestroyed';
 	static HIDDEN_EVENT = 'slotHidden';

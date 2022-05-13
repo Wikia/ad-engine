@@ -110,7 +110,7 @@ function configure(): void {
 			const adSlot = getAdSlotFromEvent(event);
 
 			if (event.inViewPercentage < 100) {
-				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+				return adSlot.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
 			}
 		},
 	);
