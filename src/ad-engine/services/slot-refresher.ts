@@ -23,8 +23,24 @@ async function isUAP(): Promise<boolean> {
 	});
 }
 
-function foobar(adSlot) {
-	return function foo(event) {
+async function isOutOfTheViewport(slotName): Promise<boolean> {
+	return new Promise((resolve) => {
+		communicationService.onLast(
+			AdSlot.SLOT_VISIBILITY_CHANGED,
+			({ payload }) => {
+				console.log('refresh', payload);
+				if (payload.inViewPercentage < 100) {
+					resolve(true);
+				}
+				resolve(false);
+			},
+			slotName,
+		);
+	});
+}
+
+function refreshWhenBackToViewport(adSlot) {
+	function foo(event) {
 		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
 			if (event.inViewPercentage > 50) {
 				logger(logGroup, `refreshing ${adSlot.getSlotName()}`, event);
@@ -34,7 +50,8 @@ function foobar(adSlot) {
 				logger(logGroup, `${adSlot.getSlotName()} not visible ${event.inViewPercentage}`, event);
 			}
 		}
-	};
+	}
+	googletag.pubads().addEventListener('slotVisibilityChanged', foo);
 }
 
 class SlotRefresher {
@@ -46,10 +63,17 @@ class SlotRefresher {
 	refreshSlot(adSlot: AdSlot) {
 		if (!this.config.slots.includes(adSlot.getSlotName())) return;
 
-		setTimeout(() => {
+		setTimeout(async () => {
 			if (adSlot.isEnabled()) {
 				this.log(`${adSlot.getSlotName()} will be refreshed.`);
-				googletag.pubads().addEventListener('slotVisibilityChanged', foobar(adSlot));
+				const outOfTheViewport = await isOutOfTheViewport(adSlot.getSlotName());
+				if (outOfTheViewport) {
+					this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
+					refreshWhenBackToViewport(adSlot);
+					return;
+				}
+				logger(logGroup, `refreshing right away ${adSlot.getSlotName()}`);
+				GptProvider.refreshSlot(adSlot);
 			}
 		}, this.config.timeoutMS);
 	}
@@ -72,7 +96,7 @@ class SlotRefresher {
 	}
 
 	async init() {
-		this.setupSlotRefresher({ slots: ['top_boxad'], timeoutMS: 1000 }, await isUAP(), this.log);
+		this.setupSlotRefresher({ slots: ['top_boxad'], timeoutMS: 5000 }, await isUAP(), this.log);
 	}
 }
 

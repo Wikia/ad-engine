@@ -89,8 +89,27 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			if (event.inViewPercentage >= 50) {
-				logger('refresh', `emiting SLOT_BACK_TO_VIEWPORT for ${adSlot.getSlotName()}`);
+			return adSlot.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
+		},
+	);
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage === 100) {
+				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+			}
+		},
+	);
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage < 100) {
 				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
 			}
 		},

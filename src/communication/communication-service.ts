@@ -1,6 +1,6 @@
 import { Action, Communicator, setupPostQuecast } from '@wikia/post-quecast';
 import { fromEventPattern, merge, Observable, Subject } from 'rxjs';
-import { filter, shareReplay, skip, take } from 'rxjs/operators';
+import { filter, last, shareReplay, skip, take } from 'rxjs/operators';
 import { EventOptions, eventsRepository } from './event-types';
 import { globalAction, isGlobalAction } from './global-action';
 import { ofType } from './of-type';
@@ -65,6 +65,19 @@ export class CommunicationService {
 						action.event === eventName.toString() && (!slotName || action.adSlotName === slotName),
 				),
 				once ? take(1) : skip(0),
+			)
+			.subscribe(callback);
+	}
+
+	onLast(eventName: string | symbol, callback: (payload?: any) => void, slotName = ''): void {
+		this.action$
+			.pipe(
+				ofType(this.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
+				filter(
+					(action: Action) =>
+						action.event === eventName.toString() && (!slotName || action.adSlotName === slotName),
+				),
+				last(),
 			)
 			.subscribe(callback);
 	}
