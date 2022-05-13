@@ -1,10 +1,12 @@
 import { context, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'liveConnect';
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
 class LiveConnect {
 	private isLoaded = false;
+	private unifiedId: string | null;
 
 	private isEnabled(): boolean {
 		return (
@@ -28,9 +30,25 @@ class LiveConnect {
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					utils.logger(logGroup, 'loaded');
+					this.track();
 				});
 
 			this.isLoaded = true;
+		}
+	}
+
+	track(): void {
+		if (!window.liQ) {
+			console.warn(logGroup, 'window.liQ not available for tracking');
+		} else {
+			window.liQ.resolve((nonId) => {
+				this.unifiedId = nonId['unifiedId'];
+
+				communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+					partnerName: logGroup,
+					partnerIdentityId: this.unifiedId,
+				});
+			});
 		}
 	}
 }

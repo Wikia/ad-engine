@@ -72,6 +72,11 @@ export interface AdSlotEventPayload {
 	payload?: any;
 }
 
+export interface IdentityDataPayload {
+	partnerName: string;
+	partnerIdentityId: string | null;
+}
+
 export const eventsRepository: Dictionary<EventOptions> = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -162,6 +167,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AUDIGENT_LOADED: {
 		name: 'Audigent loaded',
 	},
+	IDENTITY_PARTNER_DATA_OBTAINED: {
+		name: 'Identity partner data obtained',
+		payload: payload<IdentityDataPayload>(),
+	},
 	LIVERAMP_IDS_LOADED: {
 		name: 'LiveRamp Prebid ids loaded',
 		payload: props<{ userId: string }>(),
@@ -169,6 +178,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),
+	},
+	OPTIMERA_FINISHED: {
+		name: 'Optimera config overwritten',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
@@ -197,9 +209,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	FAN_FEED_READY: {
 		category: '[FanFeed]',
 		name: 'Ready',
-	},
-	OPTIMERA_FINISHED: {
-		name: 'Optimera config overwritten',
 	},
 	QUIZ_AD_INJECTED: {
 		category: '[quizConsumption]',
