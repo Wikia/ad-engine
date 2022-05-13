@@ -26,7 +26,8 @@ class Optimera {
 
 		try {
 			this.loadGlobalVariablesScript();
-			await this.loadScoreFileScript();
+			await Promise.all([this.loadScoreFileScript(), this.loadOpsScript()]);
+
 			const configUpdated = await this.checkOptimeraConfig();
 			if (!configUpdated) {
 				utils.logger(logGroup, 'config update failed');
@@ -34,7 +35,6 @@ class Optimera {
 			}
 
 			this.sendTrackingEvent();
-			await this.loadOpsScript();
 			this.setTargeting();
 		} catch (e) {
 			utils.logger(logGroup, 'loading failed', e.message);
@@ -59,13 +59,23 @@ class Optimera {
 		const optimeraPathName = window.location.pathname;
 		const url = `${SCRIPT_URL_BASE}/${CLIENT_ID}/${optimeraHost + optimeraPathName}.js`;
 
-		await utils.scriptLoader.loadScript(url);
-		utils.logger(logGroup, 'score file loaded');
+		try {
+			await utils.scriptLoader.loadScript(url);
+			utils.logger(logGroup, 'score file loaded');
+		} catch (e) {
+			utils.logger(logGroup, 'loading score file failed');
+		}
 	}
 
-	sendTrackingEvent(): void {
-		communicationService.emit(eventsRepository.OPTIMERA_FINISHED);
-		utils.logger(logGroup, 'tracking event sent');
+	async loadOpsScript(): Promise<void> {
+		const url = `https://d15kdpgjg3unno.cloudfront.net/oPS.js?cid=${CLIENT_ID}`;
+
+		try {
+			await utils.scriptLoader.loadScript(url);
+			utils.logger(logGroup, 'ops measurement file loaded');
+		} catch (e) {
+			utils.logger(logGroup, 'loading ops measurement file failed');
+		}
 	}
 
 	// Variable 'oVa' needs to be updated as it gets overwritten after loading score file
@@ -89,11 +99,23 @@ class Optimera {
 		return Promise.resolve(conditionMet);
 	}
 
-	async loadOpsScript(): Promise<void> {
-		const url = `https://d15kdpgjg3unno.cloudfront.net/oPS.js?cid=${CLIENT_ID}`;
+	isConfigUpdated(): boolean {
+		if (!window.oVa || !window.oDv) {
+			return false;
+		}
 
-		await utils.scriptLoader.loadScript(url);
-		utils.logger(logGroup, 'ops script loaded');
+		for (let i = 1; i < window.oDv.length; i++) {
+			if (!window.oVa[window.oDv[i]].includes('NULL')) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	sendTrackingEvent(): void {
+		communicationService.emit(eventsRepository.OPTIMERA_FINISHED);
+		utils.logger(logGroup, 'tracking event sent');
 	}
 
 	setTargeting(): void {
@@ -105,20 +127,6 @@ class Optimera {
 
 	setSlotTargeting(slotName: string, value: string): void {
 		context.set(`slots.${slotName}.targeting.optimera`, value);
-	}
-
-	isConfigUpdated(): boolean {
-		if (!window.oVa || !window.oDv) {
-			return false;
-		}
-
-		for (let i = 1; i < window.oDv.length; i++) {
-			if (window.oVa[window.oDv[i]] !== ['NULL']) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
 
