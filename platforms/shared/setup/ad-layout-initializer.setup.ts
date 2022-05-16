@@ -18,7 +18,7 @@ type LayoutPayload = {
 
 interface FanTakeoverLayoutPayload extends LayoutPayload {
 	data: {
-		// TODO: possibly change to impressionMacro in order to be consistent with GAM docs WARNING! changing it here requires changes in GAM templates for existing LIS campaigns
+		// ToDo: possibly change to impressionMacro in order to be consistent with GAM docs WARNING! changing it here requires changes in GAM templates for existing LIS campaigns
 		impression: string;
 		lineItemId: string;
 		creativeId: string;
@@ -71,6 +71,7 @@ export class AdLayoutInitializerSetup implements DiProcess {
 
 				utils.logger(logGroup, 'Layout payload received', layoutPayload);
 
+				// ToDo: move the logic below to UapAdLayout
 				if (['uap', 'jwplayer'].includes(layoutPayload.layout)) {
 					const ftlPayload = layoutPayload as FanTakeoverLayoutPayload;
 					const slotName = layoutPayload.layout === 'uap' ? 'top_leaderboard' : 'featured';

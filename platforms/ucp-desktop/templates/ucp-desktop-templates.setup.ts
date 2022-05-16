@@ -63,27 +63,34 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 
 				pageElement.classList.add('uap-companion-stick');
 
-				communicationService.onSlotEvent(
-					AdSlot.CUSTOM_EVENT,
-					({ payload }) => {
-						if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
-							const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
-							rightRailElement.style.top = `${tlbHeight}px`;
-						}
-					},
-					'top_leaderboard',
-				);
+				this.registerStickingCompanionStickedListener(rightRailElement);
+				this.registerStickingCompanionViewedListener(pageElement);
+			},
+			'top_boxad',
+			true,
+		);
+	}
 
-				communicationService.onSlotEvent(
-					AdSlot.SLOT_VIEWED_EVENT,
-					() => {
-						setTimeout(() => {
-							pageElement.classList.remove('uap-companion-stick');
-						}, 500);
-					},
-					'top_boxad',
-					true,
-				);
+	private registerStickingCompanionStickedListener(rightRailElement: HTMLElement): void {
+		communicationService.onSlotEvent(
+			AdSlot.CUSTOM_EVENT,
+			({ payload }) => {
+				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
+					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
+					rightRailElement.style.top = `${tlbHeight}px`;
+				}
+			},
+			'top_leaderboard',
+		);
+	}
+
+	private registerStickingCompanionViewedListener(pageElement: Element): void {
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_VIEWED_EVENT,
+			() => {
+				setTimeout(() => {
+					pageElement.classList.remove('uap-companion-stick');
+				}, 500);
 			},
 			'top_boxad',
 			true,

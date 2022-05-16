@@ -70,12 +70,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		if (context.get('custom.hasFeaturedVideo')) {
 			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+				const noTries = 2500;
+				const retryTimeout = 500;
+
 				new utils.WaitFor(
 					() =>
 						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
-					2500,
+					noTries,
 					0,
-					500,
+					retryTimeout,
 				)
 					.until()
 					.then(() => {
