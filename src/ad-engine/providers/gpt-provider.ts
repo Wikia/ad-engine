@@ -22,6 +22,7 @@ export const GAMOrigins: string[] = [
 	'https://tpc.googlesyndication.com',
 	'https://googleads.g.doubleclick.net',
 ];
+const AllViewportSizes = [0, 0];
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -319,7 +320,7 @@ export class GptProvider implements Provider {
 		gptSlot.clearTargeting();
 		const mapping = window.googletag
 			.sizeMapping()
-			.addSize([0, 0], adSlot.getCreativeSizeAsArray())
+			.addSize(AllViewportSizes, adSlot.getCreativeSizeAsArray())
 			.build();
 		gptSlot.defineSizeMapping(mapping);
 		window.googletag.pubads().refresh([gptSlot]);
