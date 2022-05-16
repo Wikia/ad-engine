@@ -298,6 +298,8 @@ export class AdSlot {
 	}
 
 	getCreativeSizeAsArray(): [number, number] | null {
+		if (!this.creativeSize) return null;
+
 		const size = Array.isArray(this.creativeSize)
 			? this.creativeSize
 			: this.creativeSize.split('x').map(Number);
