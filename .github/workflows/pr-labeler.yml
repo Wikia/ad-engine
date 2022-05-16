@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: TimonVS/pr-labeler-action@v3
+        if: !contains( github.event.pull_request.labels.*.name, 'Major change' || 'Minor change' || 'Patch change')
         with:
           configuration-path: .github/pr-labeler.yml
         env:
