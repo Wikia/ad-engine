@@ -26,6 +26,7 @@ interface Window {
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;
+	liQ?: any;
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
@@ -44,4 +45,6 @@ interface Window {
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	oVa?: any; // Optimera variable
+	oDv?: any; // Optimera variable
 }

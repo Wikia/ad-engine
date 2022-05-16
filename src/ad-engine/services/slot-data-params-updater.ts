@@ -5,7 +5,8 @@ import { slotTweaker } from './slot-tweaker';
 function logRenderedAd(adSlot: AdSlot) {
 	const isTlb = adSlot.getSlotName() == 'top_leaderboard';
 	const smLoggerLoaded =
-		window['smTracking'] !== undefined && typeof window['smTracking'].recordRenderedAd === 'function';
+		window['smTracking'] !== undefined &&
+		typeof window['smTracking'].recordRenderedAd === 'function';
 
 	if (isTlb && smLoggerLoaded) {
 		window['smTracking'].recordRenderedAd(adSlot);

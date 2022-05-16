@@ -17,6 +17,8 @@ export interface TrackingParams {
 	lc?: string;
 	line_item_id?: number;
 	n?: number;
+	partner_name?: string;
+	partner_identity_id?: string;
 	prop_name?: string;
 	prop_value?: string;
 	pv_number?: number;

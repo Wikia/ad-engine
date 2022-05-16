@@ -1,9 +1,0 @@
-@import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/uap-variables';
-
-@mixin bfab-new-uap() {
-	z-index: $new-uap-bfab-z-index;
-	position: relative;
-
-	@include bfaa-bfab-overlay;
-}
