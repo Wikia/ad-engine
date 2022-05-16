@@ -98,7 +98,7 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			if (event.inViewPercentage === 100) {
+			if (event.inViewPercentage > 50) {
 				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
 			}
 		},
@@ -109,7 +109,7 @@ function configure(): void {
 		function (event: googletag.events.SlotVisibilityChangedEvent) {
 			const adSlot = getAdSlotFromEvent(event);
 
-			if (event.inViewPercentage < 100) {
+			if (event.inViewPercentage < 50) {
 				return adSlot.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
 			}
 		},

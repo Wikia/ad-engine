@@ -2,6 +2,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import { AdSlot } from '../models';
 import { logger } from '../utils';
 import { GptProvider } from '../providers';
+import { context } from '@wikia/ad-engine';
 
 const logGroup = 'slot-refresher';
 
@@ -22,19 +23,15 @@ async function isUAP(): Promise<boolean> {
 	});
 }
 
-function refreshWhenBackToViewport(adSlot) {
-	function foo(event) {
+function refreshWhenBackInViewport(adSlot) {
+	function refresh(event) {
 		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
-			if (event.inViewPercentage > 50) {
-				logger(logGroup, `refreshing ${adSlot.getSlotName()}`, event);
-				GptProvider.refreshSlot(adSlot);
-				googletag.pubads().removeEventListener('slotVisibilityChanged', foo);
-			} else {
-				logger(logGroup, `${adSlot.getSlotName()} not visible ${event.inViewPercentage}`, event);
-			}
+			logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
+			GptProvider.refreshSlot(adSlot);
+			googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
 		}
 	}
-	googletag.pubads().addEventListener('slotVisibilityChanged', foo);
+	googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
 
 class SlotRefresher {
@@ -53,13 +50,13 @@ class SlotRefresher {
 				this.log(`${adSlot.getSlotName()} will be refreshed.`);
 
 				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
-					logger(logGroup, `refreshing right away ${adSlot.getSlotName()}`);
+					logger(logGroup, `refreshing ${adSlot.getSlotName()}`);
 					GptProvider.refreshSlot(adSlot);
 					return;
 				}
 
 				this.log(`${adSlot.getSlotName()} waiting for being in viewport.`);
-				refreshWhenBackToViewport(adSlot);
+				refreshWhenBackInViewport(adSlot);
 			}
 		}, this.config.timeoutMS);
 	}
@@ -82,12 +79,10 @@ class SlotRefresher {
 		});
 
 		communicationService.onSlotEvent(AdSlot.SLOT_BACK_TO_VIEWPORT, ({ adSlotName }) => {
-			logger(`${adSlotName} back in the viewport`);
 			this.slotsInTheViewport.push(adSlotName);
 		});
 
 		communicationService.onSlotEvent(AdSlot.SLOT_LEFT_VIEWPORT, ({ adSlotName }) => {
-			logger(`${adSlotName} left the viewport`);
 			this.slotsInTheViewport = this.slotsInTheViewport.filter(
 				(slotName) => slotName !== adSlotName,
 			);
@@ -97,7 +92,7 @@ class SlotRefresher {
 	}
 
 	async init() {
-		this.setupSlotRefresher({ slots: ['top_boxad'], timeoutMS: 5000 }, await isUAP(), this.log);
+		this.setupSlotRefresher(context.get('services.slotRefresher.config'), await isUAP(), this.log);
 	}
 }
 
