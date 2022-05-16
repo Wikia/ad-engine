@@ -52,26 +52,26 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
-				const pageElement = document.querySelector('.page');
-				const rightRailElement = document.querySelectorAll(
-					'.main-page-tag-rcs, #rail-boxad-wrapper',
-				)[0] as HTMLElement;
-
-				if (!pageElement || !rightRailElement) {
+				if (!this.registerStickingCompanionStickedListener()) {
 					return;
 				}
 
-				pageElement.classList.add('uap-companion-stick');
-
-				this.registerStickingCompanionStickedListener(rightRailElement);
-				this.registerStickingCompanionViewedListener(pageElement);
+				this.registerStickingCompanionViewedListener();
 			},
 			'top_boxad',
 			true,
 		);
 	}
 
-	private registerStickingCompanionStickedListener(rightRailElement: HTMLElement): void {
+	private registerStickingCompanionStickedListener(): boolean {
+		const rightRailElement = document.querySelectorAll(
+			'.main-page-tag-rcs, #rail-boxad-wrapper',
+		)[0] as HTMLElement;
+
+		if (!rightRailElement) {
+			return false;
+		}
+
 		communicationService.onSlotEvent(
 			AdSlot.CUSTOM_EVENT,
 			({ payload }) => {
@@ -82,9 +82,13 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			},
 			'top_leaderboard',
 		);
+
+		return true;
 	}
 
-	private registerStickingCompanionViewedListener(pageElement: Element): void {
+	private registerStickingCompanionViewedListener(): void {
+		const pageElement = document.querySelector('.page');
+
 		communicationService.onSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
@@ -95,5 +99,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			'top_boxad',
 			true,
 		);
+
+		pageElement.classList.add('uap-companion-stick');
 	}
 }
