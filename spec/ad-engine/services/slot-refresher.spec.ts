@@ -48,6 +48,7 @@ describe('slot-refresher', () => {
 
 	after(function () {
 		window.googletag = originalGoogletag;
+		clock.restore();
 	});
 
 	afterEach(function () {
