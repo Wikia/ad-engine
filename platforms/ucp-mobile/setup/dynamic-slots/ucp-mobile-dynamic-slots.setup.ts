@@ -19,6 +19,7 @@ import {
 	PorvataFiller,
 	slotService,
 	universalAdPackage,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
@@ -57,7 +58,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
-			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
@@ -70,7 +70,17 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		if (context.get('custom.hasFeaturedVideo')) {
 			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-				insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+				new utils.WaitFor(
+					() =>
+						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
+					2500,
+					0,
+					500,
+				)
+					.until()
+					.then(() => {
+						insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+					});
 			});
 		} else {
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
