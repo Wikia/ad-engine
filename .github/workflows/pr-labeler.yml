@@ -5,8 +5,8 @@ on:
 
 jobs:
   pr-labeler:
+#    if: ${{ !contains( github.event.pull_request.labels.*.name, 'Major change') }}
     runs-on: ubuntu-latest
-    if: ${{ !contains( github.event.pull_request.labels.*.name, 'Major change') }}
     steps:
       - uses: TimonVS/pr-labeler-action@v3
         with:
