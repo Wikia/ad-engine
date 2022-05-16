@@ -4,7 +4,16 @@ import { AdSlot } from '@wikia/ad-engine';
 
 describe('slot-refresher', () => {
 	const basicConfig = { slots: ['test_slot'] };
-	const fakeGPTSlot = { getSlotElementId: () => 'test_slot' };
+	const fakeGPTSlot = {
+		getSlotElementId: () => 'test_slot',
+		clearTargeting: sinon.spy(),
+		defineSizeMapping: sinon.spy(),
+	};
+	const fakeAdSlot = {
+		isEnabled: () => true,
+		getSlotName: () => 'test_slot',
+		getCreativeSizeAsArray: () => [0, 0],
+	};
 
 	const sandbox = sinon.createSandbox();
 	let clock;
@@ -12,6 +21,7 @@ describe('slot-refresher', () => {
 
 	const loggerSpy = sandbox.spy();
 	const refreshSpy = sandbox.spy();
+	const addEventListenerSpy = sandbox.spy();
 
 	before(function () {
 		clock = sinon.useFakeTimers({
@@ -19,11 +29,21 @@ describe('slot-refresher', () => {
 		});
 		originalGoogletag = window.googletag;
 		window.googletag = {
+			sizeMapping: () => ({
+				addSize: () => ({
+					build: sinon.spy(),
+				}),
+			}),
 			pubads: () => ({
 				getSlots: () => [fakeGPTSlot],
 				refresh: refreshSpy,
+				addEventListener: addEventListenerSpy,
 			}),
 		} as any;
+	});
+
+	beforeEach(() => {
+		slotRefresher.slotsInTheViewport = ['test_slot'];
 	});
 
 	after(function () {
@@ -53,13 +73,8 @@ describe('slot-refresher', () => {
 	});
 
 	it('should refresh', () => {
-		const fakeSlot = {
-			isEnabled: () => true,
-			getSlotName: () => 'test_slot',
-		} as AdSlot;
-
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
-		slotRefresher.refreshSlot(fakeSlot);
+		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
 		clock.runAll();
 
 		assert.calledOnce(refreshSpy);
@@ -67,8 +82,8 @@ describe('slot-refresher', () => {
 
 	it('should not refresh if slot is not enabled', () => {
 		const fakeSlot = {
+			...fakeAdSlot,
 			isEnabled: () => false,
-			getSlotName: () => 'test_slot',
 		} as AdSlot;
 
 		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
@@ -80,7 +95,7 @@ describe('slot-refresher', () => {
 
 	it('should not refresh if slot is not registered in GPT', () => {
 		const fakeSlot = {
-			isEnabled: () => true,
+			...fakeAdSlot,
 			getSlotName: () => 'not_registered_slot',
 		} as AdSlot;
 
@@ -89,5 +104,23 @@ describe('slot-refresher', () => {
 		clock.runAll();
 
 		assert.notCalled(refreshSpy);
+	});
+
+	it('should not refresh slot outside of the viewport', () => {
+		slotRefresher.slotsInTheViewport = [];
+		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
+		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
+		clock.runAll();
+
+		assert.notCalled(refreshSpy);
+	});
+
+	it('should start listening to GPT event on attempt of refresh slot outside the viewport', () => {
+		slotRefresher.slotsInTheViewport = [];
+		slotRefresher.setupSlotRefresher(basicConfig, false, loggerSpy);
+		slotRefresher.refreshSlot(fakeAdSlot as AdSlot);
+		clock.runAll();
+
+		assert.calledOnce(addEventListenerSpy);
 	});
 });

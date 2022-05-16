@@ -317,7 +317,7 @@ export class GptProvider implements Provider {
 		const activeSlots = window.googletag.pubads().getSlots();
 		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
 		gptSlot.clearTargeting();
-		const mapping = googletag
+		const mapping = window.googletag
 			.sizeMapping()
 			.addSize([0, 0], adSlot.getCreativeSizeAsArray())
 			.build();

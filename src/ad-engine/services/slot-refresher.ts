@@ -28,10 +28,10 @@ function refreshWhenBackInViewport(adSlot) {
 		if (event.slot.getSlotElementId() === adSlot.getSlotName()) {
 			logger(logGroup, `${adSlot.getSlotName()} back in the viewport, refreshing.`, event);
 			GptProvider.refreshSlot(adSlot);
-			googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
+			window.googletag.pubads().removeEventListener('slotVisibilityChanged', refresh);
 		}
 	}
-	googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
+	window.googletag.pubads().addEventListener('slotVisibilityChanged', refresh);
 }
 
 class SlotRefresher {
@@ -45,12 +45,12 @@ class SlotRefresher {
 	refreshSlot(adSlot: AdSlot) {
 		if (!this.config.slots.includes(adSlot.getSlotName())) return;
 
-		setTimeout(async () => {
+		setTimeout(() => {
 			if (adSlot.isEnabled()) {
 				this.log(`${adSlot.getSlotName()} will be refreshed.`);
 
 				if (this.slotsInTheViewport.includes(adSlot.getSlotName())) {
-					logger(logGroup, `refreshing ${adSlot.getSlotName()}`);
+					this.log(`refreshing ${adSlot.getSlotName()}`);
 					GptProvider.refreshSlot(adSlot);
 					return;
 				}
