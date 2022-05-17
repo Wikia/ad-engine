@@ -229,6 +229,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Bidding done',
 		payload: props<BiddersEventPayload>(),
 	},
+	BIDDERS_BIDS_CALLED: {
+		category: '[Prebid]',
+		name: 'Bids called',
+	},
 	BIDDERS_BIDS_REFRESH: {
 		category: '[Prebid]',
 		name: 'Bids refresh',

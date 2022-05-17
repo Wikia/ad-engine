@@ -173,6 +173,18 @@ export class TrackingSetup {
 
 			return data;
 		});
+
+		communicationService.on(eventsRepository.BIDDERS_BIDS_CALLED, () => {
+			this.pageTracker.trackProp('load_time_prebidAuctionStarted', Date.now().toString());
+		});
+
+		communicationService.on(eventsRepository.BIDDERS_INIT_STAGE_DONE, () => {
+			this.pageTracker.trackProp('load_time_prebidAuctionEnded', Date.now().toString());
+		});
+
+		communicationService.on(eventsRepository.BIDDERS_MAIN_STAGE_DONE, () => {
+			this.pageTracker.trackProp('load_time_prebidSecondAuctionEnded', Date.now().toString());
+		});
 	}
 
 	private postmessageTrackingTracker(): void {
