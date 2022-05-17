@@ -69,22 +69,10 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (context.get('custom.hasFeaturedVideo')) {
-			communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-				const noTries = 2500;
-				const retryTimeout = 500;
-
-				new utils.WaitFor(
-					() =>
-						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
-					noTries,
-					0,
-					retryTimeout,
-				)
-					.until()
-					.then(() => {
-						insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
-					});
-			});
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
+				this.waitForFloorAdhesionInjection.bind(this),
+			);
 		} else {
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 		}
@@ -171,6 +159,29 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		communicationService.on(eventsRepository.GAM_INTERSTITIAL_LOADED, () => {
 			setInterstitialCapping();
 		});
+	}
+
+	private waitForFloorAdhesionInjection(): void {
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				const noTries = 2500;
+				const retryTimeout = 500;
+				new utils.WaitFor(
+					() =>
+						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
+					noTries,
+					0,
+					retryTimeout,
+				)
+					.until()
+					.then(() => {
+						insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+					});
+			},
+			'featured',
+			true,
+		);
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
