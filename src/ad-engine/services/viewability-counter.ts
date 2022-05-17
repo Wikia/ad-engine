@@ -4,7 +4,7 @@ import { logger } from '../utils';
 import { context } from './context-service';
 import { SessionCookie } from './session-cookie';
 
-type StatusType = 'loaded' | 'viewed';
+type StatusType = 'loaded' | 'viewed' | 'test';
 
 const logGroup = 'viewability-counter';
 
