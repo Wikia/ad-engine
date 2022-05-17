@@ -323,7 +323,7 @@ export class UcpMobileSlotsDefinitionRepository {
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+		return this.instantConfig.get('icFloorAdhesion');
 	}
 
 	getInterstitialConfig(): SlotSetupDefinition {
