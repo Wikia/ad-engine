@@ -18,7 +18,8 @@ const defaultConfig: Config = {
 async function isUAP(): Promise<boolean> {
 	return new Promise((resolve) => {
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_LOAD_STATUS, (action: UapLoadStatus) => {
-			resolve(action.isLoaded);
+			const isUAP = action.isLoaded || action.adProduct === 'ruap';
+			resolve(isUAP);
 		});
 	});
 }
