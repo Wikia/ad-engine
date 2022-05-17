@@ -221,7 +221,6 @@ export class PrebidProvider extends BidderProvider {
 			firstBidRequest = this.requestBids(this.adUnits, () => {
 				bidsBackHandler();
 				communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
-				communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
 			});
 		}
 
