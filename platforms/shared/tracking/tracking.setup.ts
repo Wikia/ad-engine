@@ -360,7 +360,7 @@ export class TrackingSetup {
 		communicationService.on(
 			eventsRepository.OPTIMERA_FINISHED,
 			() => {
-				this.pageTracker.trackProp('optimera', '');
+				this.pageTracker.trackProp('optimera', 'finished');
 			},
 			false,
 		);

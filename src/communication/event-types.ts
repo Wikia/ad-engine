@@ -183,7 +183,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<{ isLoaded: boolean }>(),
 	},
 	OPTIMERA_FINISHED: {
-		name: 'Optimera config overwritten',
+		name: 'Optimera finished',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {

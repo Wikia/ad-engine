@@ -5,7 +5,7 @@ on:
 
 jobs:
   pr-labeler:
-    if: ${{ !contains( github.event.pull_request.labels.*.name, 'Major change' || 'Minor change' || 'Patch change') }}
+    if: ${{ (!contains( github.event.pull_request.labels.*.name, 'Major change')) && (!contains( github.event.pull_request.labels.*.name, 'Minor change')) && (!contains( github.event.pull_request.labels.*.name, 'Patch change')) }}
     runs-on: ubuntu-latest
     steps:
       - uses: TimonVS/pr-labeler-action@v3
