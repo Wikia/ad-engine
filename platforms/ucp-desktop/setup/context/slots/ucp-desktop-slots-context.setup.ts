@@ -159,7 +159,13 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			ntv_ad: {
 				providers: ['nativo'],
+				group: 'NTV',
+				adProduct: 'native-incontent',
 				trackEachStatus: true,
+				defaultSizes: ['fluid'],
+				targeting: {
+					loc: 'middle',
+				},
 			},
 			ntv_feed_ad: {
 				providers: ['nativo'],

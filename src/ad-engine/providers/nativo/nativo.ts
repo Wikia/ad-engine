@@ -3,6 +3,7 @@ import { communicationService, eventsRepository, UapLoadStatus } from '@ad-engin
 import { AdSlot } from '../../models';
 import { Context, slotService } from '../../services';
 import { scriptLoader, logger } from '../../utils';
+import { GptProvider } from '../gpt-provider';
 
 const logGroup = 'nativo';
 const NATIVO_LIBRARY_URL = '//s.ntv.io/serve/load.js';
@@ -145,10 +146,7 @@ export class Nativo {
 		if (!slot || slot.getSlotName() !== slotName) return;
 
 		if (adStatus === AdSlot.STATUS_COLLAPSE) {
-			slot.hide();
-			if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
-				this.replaceWithAffiliateUnit();
-			}
+			this.handleCollapse(slot, slotName);
 		}
 
 		if (adStatus === AdSlot.STATUS_SUCCESS && slotName === Nativo.FEED_AD_SLOT_NAME) {
@@ -159,6 +157,20 @@ export class Nativo {
 			slot.setStatus(adStatus);
 		} else {
 			Nativo.log('Slot status already tracked', slot.getSlotName(), adStatus);
+		}
+	}
+
+	private handleCollapse(slot: AdSlot, slotName: string) {
+		Nativo.log('Handling collapse event...', slotName, slot);
+
+		if (slotName === Nativo.INCONTENT_AD_SLOT_NAME) {
+			const gptProvider = new GptProvider();
+			gptProvider.fillIn(slot);
+
+			// this.replaceWithAffiliateUnit();
+			// slot.hide();
+		} else {
+			slot.hide();
 		}
 	}
 }
