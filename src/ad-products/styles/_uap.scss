@@ -177,6 +177,7 @@
 
 	.toggle-ui-overlay {
 		cursor: pointer;
+		pointer-events: none;
 		height: 100%;
 		position: absolute;
 		top: 0;
