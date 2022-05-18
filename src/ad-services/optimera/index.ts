@@ -34,8 +34,8 @@ class Optimera {
 				return;
 			}
 
-			this.sendTrackingEvent();
 			this.setTargeting();
+			this.sendTrackingEvent();
 		} catch (e) {
 			utils.logger(logGroup, 'loading failed', e.message);
 		}

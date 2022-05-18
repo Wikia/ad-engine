@@ -1,11 +1,15 @@
 import { registerInterstitialTemplate } from '@platforms/shared';
 import {
+	AdSlot,
+	communicationService,
 	DiProcess,
+	eventsRepository,
 	logTemplates,
 	PorvataTemplate,
 	SafeFanTakeoverElement,
 	TemplateRegistry,
 	templateService,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
@@ -38,5 +42,64 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 		templateService.register(SafeFanTakeoverElement);
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+			this.configureStickingCompanion();
+		});
+	}
+
+	private configureStickingCompanion(): void {
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				if (!this.registerStickingCompanionStickedListener()) {
+					return;
+				}
+
+				this.registerStickingCompanionViewedListener();
+			},
+			'top_boxad',
+			true,
+		);
+	}
+
+	private registerStickingCompanionStickedListener(): boolean {
+		const rightRailElement = document.querySelectorAll(
+			'.main-page-tag-rcs, #rail-boxad-wrapper',
+		)[0] as HTMLElement;
+
+		if (!rightRailElement) {
+			return false;
+		}
+
+		communicationService.onSlotEvent(
+			AdSlot.CUSTOM_EVENT,
+			({ payload }) => {
+				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
+					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
+					rightRailElement.style.top = `${tlbHeight}px`;
+				}
+			},
+			'top_leaderboard',
+		);
+
+		return true;
+	}
+
+	private registerStickingCompanionViewedListener(): void {
+		const pageElement = document.querySelector('.page');
+
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_VIEWED_EVENT,
+			() => {
+				setTimeout(() => {
+					pageElement.classList.remove('uap-companion-stick');
+				}, 500);
+			},
+			'top_boxad',
+			true,
+		);
+
+		pageElement.classList.add('uap-companion-stick');
 	}
 }

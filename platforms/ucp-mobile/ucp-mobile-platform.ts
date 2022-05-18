@@ -1,15 +1,12 @@
 import {
 	AdEngineRunnerSetup,
-	BiddersStateSetup,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
-	NoAdsDetector,
-	SequentialMessagingSetup,
 	TrackingSetup,
-	NoAdsMode,
 	UcpTargetingSetup,
 	WikiContextSetup,
+	shouldUseAdLayouts,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -21,19 +18,16 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { UcpMobileAdsMode } from './modes/ucp-mobile-ads.mode';
-import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobileBaseContextSetup } from './setup/context/base/ucp-mobile-base-context.setup';
-import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-prebid-config.setup';
 import { UcpMobileSlotsContextSetup } from './setup/context/slots/ucp-mobile-slots-context.setup';
-import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
-import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
 import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
 import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
+import { UcpMobileAdLayoutSetup } from './ucp-mobile-ad-layout-setup';
+import { UcpMobileLegacySetup } from './ucp-mobile-legacy-setup';
 
 @Injectable()
 export class UcpMobilePlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
 		// Config
@@ -46,25 +40,15 @@ export class UcpMobilePlatform {
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
 			UcpTargetingSetup,
-			UcpMobilePrebidConfigSetup,
-			UcpMobileA9ConfigSetup,
-			UcpMobileDynamicSlotsSetup,
+			conditional(shouldUseAdLayouts, {
+				yes: UcpMobileAdLayoutSetup,
+				no: UcpMobileLegacySetup,
+			}),
 			NoAdsExperimentSetup,
-			BiddersStateSetup,
-			UcpMobileTemplatesSetup,
-			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-		);
-
-		// Run
-		this.pipeline.add(
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpMobileAdsMode,
-				no: NoAdsMode,
-			}),
 		);
 
 		this.pipeline.execute();
