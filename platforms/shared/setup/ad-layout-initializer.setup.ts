@@ -3,10 +3,13 @@ import {
 	communicationService,
 	context,
 	DiProcess,
+	eventsRepository,
 	Targeting,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
+
+const logGroup = 'layout-initializer';
 
 type LayoutPayload = {
 	layout: string;
@@ -15,14 +18,20 @@ type LayoutPayload = {
 
 interface FanTakeoverLayoutPayload extends LayoutPayload {
 	data: {
-		// TODO: possibly change to impressionMacro in order to be consistent with GAM docs WARNING! changing it here requires changes in GAM templates for existing LIS campaigns
+		// ToDo: possibly change to impressionMacro in order to be consistent with GAM docs WARNING! changing it here requires changes in GAM templates for existing LIS campaigns
 		impression: string;
-		lineItemId: number;
-		creativeId: number;
+		lineItemId: string;
+		creativeId: string;
 	};
+	ntc?: boolean;
 }
 
-const logGroup = 'layout-initializer';
+export function shouldUseAdLayouts(): Promise<boolean> {
+	return new AdLayoutInitializerSetup()
+		.execute()
+		.then(() => true)
+		.catch(() => false);
+}
 
 @Injectable()
 export class AdLayoutInitializerSetup implements DiProcess {
@@ -62,25 +71,17 @@ export class AdLayoutInitializerSetup implements DiProcess {
 
 				utils.logger(logGroup, 'Layout payload received', layoutPayload);
 
-				// TODO: move the logic below to UapAdLayout
+				// ToDo: move the logic below to UapAdLayout
 				if (['uap', 'jwplayer'].includes(layoutPayload.layout)) {
-					const pixel = (layoutPayload as FanTakeoverLayoutPayload).data.impression;
-					const impressionSlot = layoutPayload.layout === 'uap' ? 'top_leaderboard' : 'featured';
-					const impressionCallback = () => {
-						utils.scriptLoader.loadAsset(pixel, 'blob');
-					};
-					communicationService.onSlotEvent(
-						AdSlot.STATUS_SUCCESS,
-						impressionCallback,
-						impressionSlot,
-						true,
-					);
+					const ftlPayload = layoutPayload as FanTakeoverLayoutPayload;
+					const slotName = layoutPayload.layout === 'uap' ? 'top_leaderboard' : 'featured';
 
-					context.set('targeting.uap', (layoutPayload as FanTakeoverLayoutPayload).data.lineItemId);
-					context.set(
-						'targeting.uap_c',
-						(layoutPayload as FanTakeoverLayoutPayload).data.creativeId,
-					);
+					this.setupImpressionTrigger(slotName, ftlPayload.data.impression);
+					this.setFanTakeoverTargeting(ftlPayload.data.lineItemId, ftlPayload.data.creativeId);
+
+					if (ftlPayload.ntc) {
+						communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+					}
 
 					return Promise.resolve();
 				}
@@ -90,5 +91,23 @@ export class AdLayoutInitializerSetup implements DiProcess {
 				return Promise.reject();
 			}
 		});
+	}
+
+	private setupImpressionTrigger(impressionSlot: string, pixel: string): void {
+		const impressionCallback = () => {
+			utils.scriptLoader.loadAsset(pixel, 'blob');
+		};
+
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			impressionCallback,
+			impressionSlot,
+			true,
+		);
+	}
+
+	private setFanTakeoverTargeting(lineItemId: string, creativeId: string): void {
+		context.set('targeting.uap', lineItemId);
+		context.set('targeting.uap_c', creativeId);
 	}
 }
