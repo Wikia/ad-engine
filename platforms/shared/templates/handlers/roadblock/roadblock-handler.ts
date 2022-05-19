@@ -1,4 +1,6 @@
 import {
+	communicationService,
+	eventsRepository,
 	TEMPLATE,
 	TemplateDependency,
 	TemplateStateHandler,
@@ -30,6 +32,11 @@ export class RoadblockHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		this.params.adProduct = 'ruap';
+
+		if (this.params.newTakeoverConfig) {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+		}
+
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
 	}
 }
