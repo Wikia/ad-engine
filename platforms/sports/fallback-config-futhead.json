@@ -129,8 +129,8 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icAnyclipPlayer_B_10:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_90:outstream_experiment_distroscale"
+                "icAnyclipPlayer_B_25:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_75:outstream_experiment_distroscale"
             ]
         }
     ],
