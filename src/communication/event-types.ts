@@ -182,6 +182,14 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),
 	},
+	NO_NATIVE_PREBID_AD: {
+		name: 'No native prebid ad',
+		payload: props<{ slotName: string }>(),
+	},
+	NO_NATIVO_AD: {
+		name: 'No nativo ad',
+		payload: props<{ slotName: string }>(),
+	},
 	OPTIMERA_FINISHED: {
 		name: 'Optimera finished',
 	},

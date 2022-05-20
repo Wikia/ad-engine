@@ -12,6 +12,7 @@ export class Nativo {
 	static FEED_AD_SLOT_NAME = 'ntv_feed_ad';
 
 	private static AD_SLOT_MAP = {
+		1139703: Nativo.INCONTENT_AD_SLOT_NAME,
 		1142863: Nativo.INCONTENT_AD_SLOT_NAME,
 		1142668: Nativo.FEED_AD_SLOT_NAME,
 		1142669: Nativo.FEED_AD_SLOT_NAME,
@@ -125,6 +126,9 @@ export class Nativo {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
+			communicationService.emit(eventsRepository.NO_NATIVO_AD, {
+				slotName: slotName,
+			});
 		});
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {

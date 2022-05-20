@@ -28,27 +28,36 @@ interface PrebidAdUnit {
 }
 
 interface PrebidNativeMediaType {
-	image: {
-		required: boolean;
-		sizes: number[];
-	};
 	title: {
 		required: boolean;
-		len: number;
+		len?: number;
 	};
-	sponsoredBy: {
+	body: {
 		required: boolean;
 	};
 	clickUrl: {
 		required: boolean;
 	};
-	body: {
+	icon: PrebidNativeImageType;
+	image?: PrebidNativeImageType;
+	sponsoredBy?: {
 		required: boolean;
 	};
-	icon: {
-		required: boolean;
-		sizes: number[];
-	};
+	sendTargetingKeys: boolean;
+	adTemplate: string;
+}
+
+interface PrebidNativeImageType {
+	required: boolean;
+	sizes?: number[];
+	aspect_ratios?: [
+		{
+			min_width?: number;
+			min_height?: number;
+			ratio_width: number;
+			ratio_height: number;
+		},
+	];
 }
 
 interface PrebidVideoType {
