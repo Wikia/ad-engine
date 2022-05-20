@@ -5,8 +5,6 @@ export class PrebidNativeProvider {
 	initialize() {
 		communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
 			const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode(payload.slotName);
-			console.log('prebid native', 'NO_NATIVO_AD payload', payload);
-			console.log('prebid native', 'NO_NATIVO_AD data', data);
 			if (data.native) {
 				this.renderPrebidNativeAd(payload.slotName, data.native);
 			}
