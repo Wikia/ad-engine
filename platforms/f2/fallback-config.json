@@ -1687,8 +1687,6 @@
                 "XX"
             ],
             "value": [
-                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icLayoutInitializerSlot_A_50:lis_50_a",
@@ -1747,7 +1745,9 @@
                 "6013244788",
                 "5929089573",
                 "6014420053",
-                "6014347435"
+                "6014347435",
+                "6020782558",
+                "5943764617"
             ]
         }
     ],
