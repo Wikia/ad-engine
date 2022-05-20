@@ -1,11 +1,8 @@
-import { IframeBuilder } from '../../../ad-engine/utils';
 import { AdSlot, slotService } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { PrebidNativeData } from './native-models';
 
 export class PrebidNativeProvider {
-	private iframeBuilder = new IframeBuilder();
-
 	initialize() {
 		communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
 			const adSlot = slotService.get(payload.slotName);
@@ -20,12 +17,8 @@ export class PrebidNativeProvider {
 	}
 
 	private renderPrebidNativeAd(adSlot: AdSlot, data: PrebidNativeData): void {
-		const iframe = this.getIframe(adSlot);
-		iframe.parentElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
-	}
-
-	private getIframe(adSlot: AdSlot): HTMLIFrameElement {
-		return this.iframeBuilder.create(adSlot.getElement());
+		const ntvAdSLot = document.getElementById(adSlot.getSlotName());
+		ntvAdSLot.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {
