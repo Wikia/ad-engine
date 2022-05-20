@@ -1,5 +1,6 @@
 import {
 	communicationService,
+	context,
 	eventsRepository,
 	TEMPLATE,
 	TemplateDependency,
@@ -34,6 +35,10 @@ export class RoadblockHandler implements TemplateStateHandler {
 		this.params.adProduct = 'ruap';
 
 		if (this.params.newTakeoverConfig) {
+			if (context.get('state.isMobile')) {
+				this.config.enabledSlots.push('floor_adhesion');
+			}
+
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 		}
 
