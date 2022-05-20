@@ -1,14 +1,12 @@
-import { AdSlot, slotService } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { PrebidNativeData } from './native-models';
 
 export class PrebidNativeProvider {
 	initialize() {
 		communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
-			const adSlot = slotService.get(payload.slotName);
 			const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode('ntv_ad');
 			if (data.native) {
-				this.renderPrebidNativeAd(adSlot, data.native);
+				this.renderPrebidNativeAd(payload.slotName, data.native);
 			}
 			communicationService.emit(eventsRepository.NO_NATIVE_PREBID_AD, {
 				slotName: payload.slotName,
@@ -16,8 +14,8 @@ export class PrebidNativeProvider {
 		});
 	}
 
-	private renderPrebidNativeAd(adSlot: AdSlot, data: PrebidNativeData): void {
-		const ntvAdSLot = document.getElementById(adSlot.getSlotName());
+	private renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
+		const ntvAdSLot = document.getElementById(adSlotName);
 		ntvAdSLot.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
 	}
 
