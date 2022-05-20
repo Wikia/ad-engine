@@ -93,13 +93,13 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
 				setTimeout(() => {
-					pageElement.classList.remove('uap-companion-stick');
+					pageElement.classList.remove('companion-stick');
 				}, 500);
 			},
 			'top_boxad',
 			true,
 		);
 
-		pageElement.classList.add('uap-companion-stick');
+		pageElement.classList.add('companion-stick');
 	}
 }
