@@ -4,7 +4,7 @@ import { PrebidNativeData } from './native-models';
 export class PrebidNativeProvider {
 	initialize() {
 		communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
-			const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode('ntv_ad');
+			const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode(payload.slotName);
 			if (data.native) {
 				this.renderPrebidNativeAd(payload.slotName, data.native);
 			}
