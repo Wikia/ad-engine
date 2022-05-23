@@ -13,7 +13,7 @@ class Eyeota {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 
-			return Promise.reject(`${logGroup} disabled`);
+			return Promise.resolve();
 		}
 
 		utils.logger(logGroup, 'loading');
