@@ -87,6 +87,9 @@ export const basicContext = {
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
 			fallback: fallbackInstantConfig,
