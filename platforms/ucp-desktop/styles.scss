@@ -2,29 +2,12 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/porvata';
 
+$sticky-navigation-height: 46px;
+
 @mixin ucp-desktop-uap-styles() {
 	.has-uap {
-		$sticky-navigation-width: 46px;
-
 		.fandom-sticky-header {
 			z-index: 401;
-		}
-
-		.uap-companion-stick {
-			.main-page-tag-rcs,
-			#rail-boxad-wrapper {
-				position: sticky;
-				z-index: 100;
-			}
-		}
-
-		&:not(.uap-sticked) {
-			.uap-companion-stick {
-				.main-page-tag-rcs,
-				#rail-boxad-wrapper {
-					top: calc(#{$sticky-navigation-width} - 10px) !important;
-				}
-			}
 		}
 
 		.top-ads-container {
@@ -104,6 +87,23 @@
 
 .ad-slot-placeholder.hide {
 	display: none !important;
+}
+
+.companion-stick {
+	.main-page-tag-rcs,
+	#rail-boxad-wrapper {
+		position: sticky;
+		z-index: 100;
+	}
+}
+
+body:not(.uap-sticked) {
+	.companion-stick {
+		.main-page-tag-rcs,
+		#rail-boxad-wrapper {
+			top: calc(#{$sticky-navigation-height} - 10px) !important;
+		}
+	}
 }
 
 .ntv-ad {
