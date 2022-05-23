@@ -7,7 +7,7 @@ const siteName = 'fandom';
 class Eyeota {
 	isEnabled(): boolean {
 		return context.get('services.eyeota.enabled');
-	};
+	}
 
 	async call(): Promise<void> {
 		if (!this.isEnabled()) {
