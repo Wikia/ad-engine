@@ -28,7 +28,7 @@ class Eyeota {
 	}
 
 	async createScriptSource(): Promise<string> {
-		const { tcString } = await tcf.getTCData(2);
+		const { tcString } = await tcf.getTCData();
 
 		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=aj`
 	}
