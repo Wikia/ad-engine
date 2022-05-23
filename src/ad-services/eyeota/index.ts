@@ -24,7 +24,6 @@ class Eyeota {
 			})
 			.catch(() => {
 				throw new Error(`Error occurred while loading ${logGroup}`);
-
 			})
 	}
 
