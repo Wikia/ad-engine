@@ -151,6 +151,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
@@ -165,7 +166,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.optimera.enabled', this.instantConfig.get('icOptimera'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
-		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
 		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));

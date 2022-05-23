@@ -52,12 +52,12 @@ export class UcpMobileAdsMode implements DiProcess {
 		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
-		inhibitors.push(eyeota.call());
 		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(silverSurferService.configureUserTargeting());
 		inhibitors.push(wadRunner.call());
 
+		eyeota.call()
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
