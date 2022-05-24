@@ -75,7 +75,7 @@ describe('IAS Publisher Optimization', () => {
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
-			loadScriptStub.calledWith({ src: '//cdn.adsafeprotected.com/iasPET.1.js', node: 'first' }),
+			loadScriptStub.calledWith('//cdn.adsafeprotected.com/iasPET.1.js', { node: 'first' }),
 		).to.equal(true);
 	});
 
