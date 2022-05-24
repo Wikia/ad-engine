@@ -23,7 +23,7 @@ describe('Eyeota', () => {
 		delete window.__tcfapi;
 	});
 
-	it('Eyeota is called', async () => {
+	it('is called when enabled in the context', async () => {
 		context.set('services.eyeota.enabled', true);
 
 		await eyeota.call();
@@ -31,7 +31,7 @@ describe('Eyeota', () => {
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
-	it('Eyeota is disabled', async () => {
+	it('is not called when disabled in the context', async () => {
 		context.set('services.eyeota.enabled', false);
 
 		await eyeota.call();
@@ -39,7 +39,7 @@ describe('Eyeota', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Construct proper src', async () => {
+	it('constructs proper src', async () => {
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal('https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=aj');
