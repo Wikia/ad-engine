@@ -1,5 +1,5 @@
-@import 'src/ad-products/styles/uap-variables';
-@import 'src/ad-products/styles/breakpoints';
+@import 'uap-variables';
+@import '../breakpoints';
 
 @mixin uap-button-close() {
 	.button-close {
