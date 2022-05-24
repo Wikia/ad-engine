@@ -32,10 +32,16 @@ class Audigent {
 			utils.logger(logGroup, 'loading');
 			context.set('targeting.AU_SEG', '-1');
 
-			utils.scriptLoader.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first');
+			utils.scriptLoader.loadScript({
+				src: audienceTagScriptUrl,
+				node: 'first'
+			});
 
 			utils.scriptLoader
-				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
+				.loadScript({
+					src: segmentsScriptUrl,
+					node: 'first'
+				})
 				.then(() => {
 					this.setup();
 					communicationService.emit(eventsRepository.AUDIGENT_LOADED);

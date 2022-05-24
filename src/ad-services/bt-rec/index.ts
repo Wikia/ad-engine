@@ -37,10 +37,9 @@ class BTRec {
 		const btLibraryUrl = '//btloader.com/tag?h=wikia-inc-com&upapi=true';
 
 		return utils.scriptLoader.loadScript(
-			btLibraryUrl,
-			'text/javascript',
-			true,
-			document.head.lastChild as HTMLElement,
+			{ src: btLibraryUrl,
+			node: document.head.lastChild as HTMLElement
+			}
 		);
 	}
 }

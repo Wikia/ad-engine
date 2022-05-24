@@ -1,9 +1,19 @@
-import { ScriptLoaderInterface } from '@wikia/ad-engine/utils';
+import { ScriptLoaderInterface, ScriptTagOptions } from '@wikia/ad-engine/utils';
 import sinon, { SinonStubbedInstance } from 'sinon';
 
 class ScriptLoaderSpy implements ScriptLoaderInterface {
 	/* eslint-disable @typescript-eslint/no-unused-vars */
 	loadScript(src: string): Promise<Event> {
+		return undefined;
+	}
+
+	/* eslint-disable @typescript-eslint/no-unused-vars */
+	createScript(options: ScriptTagOptions): HTMLScriptElement {
+		return undefined;
+	}
+
+	/* eslint-disable @typescript-eslint/no-unused-vars */
+	loadAsset(url: string, responseType: XMLHttpRequestResponseType): Promise<string | null> {
 		return undefined;
 	}
 }

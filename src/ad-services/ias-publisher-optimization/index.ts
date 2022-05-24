@@ -56,7 +56,7 @@ class IasPublisherOptimization {
 			utils.logger(logGroup, 'loading');
 			this.isLoaded = true;
 			return utils.scriptLoader
-				.loadScript(scriptUrl, 'text/javascript', true, 'first')
+				.loadScript({ src: scriptUrl, node: 'first' })
 				.then(() => this.setup());
 		}
 	}

@@ -31,7 +31,7 @@ class Anyclip {
 		utils.logger(logGroup, 'loading Anyclip asset', libraryUrl);
 
 		return utils.scriptLoader
-			.loadScript(libraryUrl, 'text/javascript', true, incontentPlayerContainer, this.params)
+			.loadScript({ src: libraryUrl, node: incontentPlayerContainer, parameters: this.params})
 			.then(() => {
 				incontentPlayerContainer.classList.remove('hide');
 				utils.logger(logGroup, 'ready');

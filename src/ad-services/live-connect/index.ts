@@ -27,7 +27,7 @@ class LiveConnect {
 			utils.logger(logGroup, 'loading');
 
 			utils.scriptLoader
-				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
+				.loadScript({ src: liveConnectScriptUrl, node: 'first' })
 				.then(() => {
 					utils.logger(logGroup, 'loaded');
 					this.track();

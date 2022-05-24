@@ -1,5 +1,16 @@
 export interface ScriptLoaderInterface {
+	createScript(options: ScriptTagOptions): HTMLScriptElement;
 	loadScript(src: string): Promise<Event>;
+	loadAsset(url: string, responseType: XMLHttpRequestResponseType): Promise<string | null>;
+}
+
+export interface ScriptTagOptions {
+	src: string;
+	type: 'text/javascript';
+	isAsync?: boolean;
+	node?: HTMLElement | string;
+	parameters?: Record<string, string>;
+	datasets?: Partial<DOMStringMap>;
 }
 
 class ScriptLoader implements ScriptLoaderInterface {
@@ -7,12 +18,9 @@ class ScriptLoader implements ScriptLoaderInterface {
 	 * Creates <script> tag
 	 */
 	createScript(
-		src: string,
-		type = 'text/javascript',
-		isAsync = true,
-		node: HTMLElement | string = null,
-		parameters: Record<string, string> = {},
-		datasets: Partial<DOMStringMap> = {},
+		{
+			src, type ='text/javascript' , isAsync = true, node = null, parameters = {}, datasets = {}
+		}: ScriptTagOptions
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');
 
@@ -44,23 +52,10 @@ class ScriptLoader implements ScriptLoaderInterface {
 	/**
 	 * Injects <script> tag
 	 */
-	loadScript(
-		src: string,
-		type = 'text/javascript',
-		isAsync = true,
-		node: HTMLElement | string = null,
-		parameters: Record<string, string> = {},
-		datasets: Partial<DOMStringMap> = {},
+	loadScript(options
 	): Promise<Event> {
 		return new Promise((resolve, reject) => {
-			const script: HTMLScriptElement = this.createScript(
-				src,
-				type,
-				isAsync,
-				node,
-				parameters,
-				datasets,
-			);
+			const script: HTMLScriptElement = this.createScript(options);
 
 			script.onload = resolve;
 			script.onerror = reject;
