@@ -8,6 +8,7 @@ import {
 	context,
 	DiProcess,
 	durationMedia,
+	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
@@ -56,6 +57,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		inhibitors.push(silverSurferService.configureUserTargeting());
 		inhibitors.push(wadRunner.call());
 
+		eyeota.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();

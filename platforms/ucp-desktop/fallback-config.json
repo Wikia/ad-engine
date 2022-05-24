@@ -540,10 +540,9 @@
                 "fandommobile"
             ],
             "regions": [
-                "DE",
-                "PL"
+                "XX"
             ],
-            "sampling": 50.0,
+            "sampling": 10.0,
             "value": true
         }
     ],
