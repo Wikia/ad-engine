@@ -103,6 +103,9 @@ export const basicContext = {
 			enabled: false,
 			id: 'f6c04939-d96e-4bc6-850e-d0e6e6cf9701',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		iasPublisherOptimization: {
 			pubId: '930616',
 			slots: [
