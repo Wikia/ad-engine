@@ -19,7 +19,11 @@ class ScriptLoader implements ScriptLoaderInterface {
 	createScript(
 		src,
 		{
-			type ='text/javascript' , isAsync = true, node = null, parameters = {}, datasets = {}
+			type ='text/javascript',
+			isAsync = true,
+			node = null,
+			parameters = {},
+			datasets = {}
 		}: ScriptTagOptions
 	): HTMLScriptElement {
 		const script: HTMLScriptElement = document.createElement('script');

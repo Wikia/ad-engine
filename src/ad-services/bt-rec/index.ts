@@ -38,9 +38,7 @@ class BTRec {
 
 		return utils.scriptLoader.loadScript(
 			btLibraryUrl,
-			{
-			node: document.head.lastChild as HTMLElement
-			}
+			{ node: document.head.lastChild as HTMLElement }
 		);
 	}
 }

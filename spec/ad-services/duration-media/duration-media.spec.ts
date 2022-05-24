@@ -43,9 +43,7 @@ describe('Duration media service', () => {
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
-			loadScriptStub.calledWith('//example.com/foo', { parameters: {
-				id: 'dm-script',
-			}}),
+			loadScriptStub.calledWith('//example.com/foo', { parameters: { id: 'dm-script' }}),
 		).to.equal(true);
 	});
 });
