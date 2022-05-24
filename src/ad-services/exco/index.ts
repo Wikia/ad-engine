@@ -27,7 +27,7 @@ class ExCo {
 
 		utils.logger(logGroup, 'loading ExCo asset', libraryUrl);
 
-		return utils.scriptLoader.loadScript({  src: libraryUrl }).then(() => {
+		return utils.scriptLoader.loadScript(libraryUrl).then(() => {
 			utils.logger(logGroup, 'ExCo player is ready');
 		});
 	}

@@ -3,12 +3,12 @@ import sinon, { SinonStubbedInstance } from 'sinon';
 
 class ScriptLoaderSpy implements ScriptLoaderInterface {
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	loadScript(src: string): Promise<Event> {
+	loadScript(src: string, options?: ScriptTagOptions): Promise<Event> {
 		return undefined;
 	}
 
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	createScript(options: ScriptTagOptions): HTMLScriptElement {
+	createScript(src: string, options?: ScriptTagOptions): HTMLScriptElement {
 		return undefined;
 	}
 

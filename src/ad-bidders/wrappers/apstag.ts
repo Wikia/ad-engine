@@ -23,10 +23,12 @@ export class Apstag {
 	}
 
 	private insertScript(): void {
-		this.script = this.utils.scriptLoader.loadScript({
-			src: '//c.amazon-adsystem.com/aax2/apstag.js',
-			node: 'first',
-		});
+		this.script = this.utils.scriptLoader.loadScript(
+			'//c.amazon-adsystem.com/aax2/apstag.js',
+			{
+				node: 'first',
+			}
+		);
 	}
 
 	private configure(): void {

@@ -15,7 +15,7 @@ class DurationMedia {
 		utils.logger(logGroup, 'loading', libraryUrl);
 
 		return utils.scriptLoader
-			.loadScript({ src: libraryUrl, parameters: {
+			.loadScript(libraryUrl, { parameters: {
 				id: 'dm-script',
 			}})
 			.then(() => {

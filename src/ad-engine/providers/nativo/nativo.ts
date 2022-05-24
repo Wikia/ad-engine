@@ -32,7 +32,7 @@ export class Nativo {
 		Nativo.log('Loading Nativo API...');
 
 		scriptLoader
-			.loadScript({ src: NATIVO_LIBRARY_URL,  datasets: { ntvSetNoAutoStart: '' }})
+			.loadScript(NATIVO_LIBRARY_URL, { datasets: { ntvSetNoAutoStart: '' }})
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();

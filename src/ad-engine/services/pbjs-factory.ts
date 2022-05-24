@@ -13,7 +13,7 @@ class PbjsFactory {
 		if (!this.instancePromise) {
 			const libraryUrl = context.get('bidders.prebid.libraryUrl');
 
-			scriptLoader.loadScript({  src: libraryUrl, node: 'first' });
+			scriptLoader.loadScript(libraryUrl, {  node: 'first' });
 
 			this.instancePromise = new Promise((resolve) =>
 				(window as any).pbjs.que.push(() => {

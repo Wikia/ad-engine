@@ -10,7 +10,7 @@ const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
 function loadScript(propertyId: string): Promise<Event> {
 	const confiantLibraryUrl = `//${scriptDomain}/${propertyId}/gpt_and_prebid/config.js`;
 
-	return utils.scriptLoader.loadScript({ src: confiantLibraryUrl, node: 'first' });
+	return utils.scriptLoader.loadScript(confiantLibraryUrl, { node: 'first' });
 }
 
 /**

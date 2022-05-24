@@ -32,14 +32,14 @@ class Audigent {
 			utils.logger(logGroup, 'loading');
 			context.set('targeting.AU_SEG', '-1');
 
-			utils.scriptLoader.loadScript({
-				src: audienceTagScriptUrl,
+			utils.scriptLoader.loadScript(
+				audienceTagScriptUrl,
+				{
 				node: 'first'
 			});
 
 			utils.scriptLoader
-				.loadScript({
-					src: segmentsScriptUrl,
+				.loadScript(segmentsScriptUrl, {
 					node: 'first'
 				})
 				.then(() => {
