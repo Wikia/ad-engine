@@ -1,5 +1,5 @@
-@import 'src/ad-products/styles/uap-variables';
-@import 'src/ad-products/styles/breakpoints';
+@import '../uap/uap-variables';
+@import '../breakpoints';
 
 @mixin uap-porvata-learn-more() {
 	.learn-more {
