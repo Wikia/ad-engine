@@ -117,7 +117,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 			({ isLoaded, adProduct }: UapLoadStatus) => {
 				const incontentPlayer = slotService.get('incontent_player');
-				if (!isLoaded && incontentPlayer && adProduct!='ruap') {
+				if (!isLoaded && incontentPlayer && adProduct !== 'ruap') {
 					slotDataParamsUpdater.updateOnCreate(incontentPlayer);
 
 					if (distroScale.isEnabled()) {
