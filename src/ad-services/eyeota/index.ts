@@ -24,13 +24,13 @@ class Eyeota {
 			})
 			.catch(() => {
 				throw new Error(`Error occurred while loading ${logGroup}`);
-			})
+			});
 	}
 
 	async createScriptSource(): Promise<string> {
 		const { tcString } = await tcf.getTCData();
 
-		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=aj`
+		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=aj`;
 	}
 }
 

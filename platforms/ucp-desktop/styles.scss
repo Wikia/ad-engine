@@ -50,6 +50,12 @@ $sticky-navigation-height: 46px;
 		}
 	}
 
+	.has-sticky-tlb #top_leaderboard div {
+		// important needed because some creatives contains inline CSS overriding this properties
+		display: block !important;
+		width: 100% !important;
+	}
+
 	@include expanded-slot();
 }
 

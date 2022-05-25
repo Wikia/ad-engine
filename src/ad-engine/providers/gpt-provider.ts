@@ -22,6 +22,7 @@ export const GAMOrigins: string[] = [
 	'https://tpc.googlesyndication.com',
 	'https://googleads.g.doubleclick.net',
 ];
+const AllViewportSizes = [0, 0];
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -83,6 +84,37 @@ function configure(): void {
 
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 	});
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			return adSlot.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
+		},
+	);
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage > 50) {
+				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+			}
+		},
+	);
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage < 50) {
+				return adSlot.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
+			}
+		},
+	);
 
 	window.googletag.enableServices();
 }
@@ -280,5 +312,17 @@ export class GptProvider implements Provider {
 		if (!success) {
 			logger(logGroup, 'destroySlot', gptSlot, 'failed');
 		}
+	}
+
+	static refreshSlot(adSlot: AdSlot): void {
+		const activeSlots = window.googletag.pubads().getSlots();
+		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
+		gptSlot.clearTargeting();
+		const mapping = window.googletag
+			.sizeMapping()
+			.addSize(AllViewportSizes, adSlot.getCreativeSizeAsArray())
+			.build();
+		gptSlot.defineSizeMapping(mapping);
+		window.googletag.pubads().refresh([gptSlot]);
 	}
 }
