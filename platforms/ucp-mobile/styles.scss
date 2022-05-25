@@ -1,7 +1,7 @@
+@import '../shared/styles/mixin';
 @import 'platforms/shared/styles/index';
-@import 'platforms/shared/styles/mixin';
-@import 'platforms/shared/styles/uap/uap-variables';
-@import 'platforms/shared/styles/uap-porvata/porvata';
+@import '../shared/styles/uap-porvata/porvata';
+@import '../shared/styles/uap/uap-variables';
 
 @mixin ucp-mobile-uap-styles() {
 	.has-uap {

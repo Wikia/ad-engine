@@ -1,6 +1,6 @@
+@import '../shared/styles/mixin';
 @import 'platforms/shared/styles/index';
-@import 'platforms/shared/styles/mixin';
-@import 'platforms/shared/styles/uap-porvata/porvata';
+@import '../shared/styles/uap-porvata/porvata';
 
 $sticky-navigation-height: 46px;
 

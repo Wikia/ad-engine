@@ -1,5 +1,5 @@
-@import 'platforms/shared/styles/breakpoints';
-@import 'platforms/shared/styles/uap/uap-variables';
+@import '../uap/uap-variables';
+@import '../breakpoints';
 
 @mixin bottom-panel() {
 	.bottom-panel {

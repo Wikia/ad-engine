@@ -1,6 +1,6 @@
-@import 'platforms/f2/styles/original/variables';
+@import '../shared/styles/mixin';
 @import 'platforms/shared/styles/index';
-@import 'platforms/shared/styles/mixin';
+@import 'platforms/f2/styles/original/variables';
 
 @mixin non-uap-advertisement-label() {
 	$advertisement-label-height: 24px;
