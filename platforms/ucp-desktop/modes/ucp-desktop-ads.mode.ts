@@ -13,6 +13,7 @@ import {
 	durationMedia,
 	eventsRepository,
 	exCo,
+	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
@@ -95,6 +96,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		inhibitors.push(silverSurferService.configureUserTargeting());
 		inhibitors.push(wadRunner.call());
 
+		eyeota.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();

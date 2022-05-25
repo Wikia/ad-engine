@@ -7,6 +7,7 @@ export * from './connatix';
 export * from './duration-media';
 export * from './distro-scale';
 export * from './exco';
+export * from './eyeota';
 export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';

@@ -151,6 +151,10 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		if (!this.instantConfig.get('icDurationMedia')) {
+			context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
+		}
+		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
