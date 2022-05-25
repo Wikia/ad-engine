@@ -1,6 +1,6 @@
 @import 'platforms/shared/styles/index';
-@import '../shared/styles/mixin';
-@import '../shared/styles/uap-porvata/porvata';
+@import 'platforms/shared/styles/mixin';
+@import 'platforms/shared/styles/uap-porvata/porvata';
 
 @include logo-replacement(40px, 0, 5px);
 
