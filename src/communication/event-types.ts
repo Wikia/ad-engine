@@ -125,6 +125,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Video overlay added',
 		payload: props<{ adSlotName: string }>(),
 	},
+	AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED: {
+		name: 'Video toggle ui overlay clicked',
+		payload: props<{ adSlotName: string }>(),
+	},
 	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
 		name: 'Video learn more displayed',
 		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),

@@ -48,6 +48,22 @@ class AdClickTracker {
 			},
 			false,
 		);
+
+		communicationService.on(
+			eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
+			({ adSlotName }) => {
+				this.pipeline.execute(
+					{
+						slot: slotService.get(adSlotName),
+						data: {
+							ad_status: 'video-click',
+						},
+					},
+					callback,
+				);
+			},
+			false,
+		);
 	}
 
 	private addClickTrackingListeners(callback: FuncPipelineStep<AdClickContext>, slotName): void {

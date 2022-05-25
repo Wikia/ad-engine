@@ -1,4 +1,5 @@
 import { utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const FADE_OUT_TIMEOUT = 3000;
 const FADE_OUT_ANIMATION_TIME = 1000;
@@ -62,6 +63,9 @@ export class ToggleUI {
 
 			overlay.addEventListener('click', () => {
 				top.open(params.clickThroughURL, '_blank');
+				communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED, {
+					adSlotName: video.settings.getSlotName(),
+				});
 			});
 		}
 
