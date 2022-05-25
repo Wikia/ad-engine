@@ -4,31 +4,35 @@ export class NativeFullscreen {
 	readonly enter: () => boolean | undefined;
 	readonly exit: () => boolean | undefined;
 
+	static enterEvents = [
+		'webkitRequestFullscreen',
+		'webkitEnterFullscreen',
+		'mozRequestFullScreen',
+		'msRequestFullscreen',
+		'requestFullscreen',
+	];
+	static exitEvents = [
+		'webkitExitFullscreen',
+		'mozCancelFullScreen',
+		'msExitFullscreen',
+		'exitFullscreen',
+	];
+	static changeEvents = [
+		'onwebkitfullscreenchange',
+		'onmozfullscreenchange',
+		'onmsfullscreenchange',
+		'onfullscreenchange',
+	];
+
 	private readonly fullscreenChangeEvent;
 	private fullscreen = false;
 
 	constructor(video: HTMLElement) {
-		this.enter = utils.tryProperty(video, [
-			'webkitRequestFullscreen',
-			'webkitEnterFullscreen',
-			'mozRequestFullScreen',
-			'msRequestFullscreen',
-			'requestFullscreen',
-		]);
-		this.exit = utils.tryProperty(video, [
-			'webkitExitFullscreen',
-			'mozCancelFullScreen',
-			'msExitFullscreen',
-			'exitFullscreen',
-		]);
-		this.fullscreenChangeEvent = (
-			utils.whichProperty(video, [
-				'onwebkitfullscreenchange',
-				'onmozfullscreenchange',
-				'onmsfullscreenchange',
-				'onfullscreenchange',
-			]) || ''
-		)
+		this.enter = utils.tryProperty(video, NativeFullscreen.enterEvents);
+		this.exit =
+			utils.tryProperty(video, NativeFullscreen.exitEvents) ||
+			utils.tryProperty(document, NativeFullscreen.exitEvents);
+		this.fullscreenChangeEvent = (utils.whichProperty(video, NativeFullscreen.changeEvents) || '')
 			.replace(/^on/, '')
 			.replace('msfullscreenchange', 'MSFullscreenChange');
 

@@ -81,6 +81,9 @@ export class AdSlot {
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static SLOT_RENDERED_EVENT = 'slotRendered';
+	static SLOT_VISIBILITY_CHANGED = 'slotVisibilityChanged';
+	static SLOT_BACK_TO_VIEWPORT = 'slotBackToViewport';
+	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
 	static DESTROYED_EVENT = 'slotDestroyed';
 	static HIDDEN_EVENT = 'slotHidden';
@@ -134,10 +137,10 @@ export class AdSlot {
 	trackStatusAfterRendered = false;
 	slotViewed = false;
 
-	requested = null;
-	loaded = null;
-	rendered = null;
-	viewed = null;
+	requested: Promise<void> = null;
+	loaded: Promise<void> = null;
+	rendered: Promise<void> = null;
+	viewed: Promise<void> = null;
 
 	constructor(ad: AdStackPayload) {
 		this.config = context.get(`slots.${ad.id}`) || {};
@@ -292,6 +295,17 @@ export class AdSlot {
 
 	getCreativeSize(): string | null {
 		return Array.isArray(this.creativeSize) ? this.creativeSize.join('x') : this.creativeSize;
+	}
+
+	getCreativeSizeAsArray(): [number, number] | null {
+		if (!this.creativeSize) return null;
+
+		const size = Array.isArray(this.creativeSize)
+			? this.creativeSize
+			: this.creativeSize.split('x').map(Number);
+
+		// Type hack to make sure it will always return two element array
+		return [size[0], size[1]];
 	}
 
 	// Main position is the first value defined in the "pos" key-value (targeting)

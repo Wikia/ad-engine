@@ -119,8 +119,6 @@
                 "XX"
             ],
             "value": [
-                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icLayoutInitializerSlot_A_50:lis_50_a",
@@ -129,8 +127,8 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icAnyclipPlayer_B_10:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_90:outstream_experiment_distroscale"
+                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
         }
     ],

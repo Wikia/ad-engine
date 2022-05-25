@@ -170,7 +170,14 @@
                 "5955672672",
                 "5996341416",
                 "5998652572",
-                "5929089573"
+                "6013244788",
+                "5929089573",
+                "6014420053",
+                "6014347435",
+                "6020782558",
+                "5943764617",
+                "6022822295",
+                "6020811777"
             ]
         }
     ],
@@ -290,22 +297,6 @@
                 "US"
             ],
             "value": true
-        }
-    ],
-    "icSlotRefresher": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": {
-                "slots": [
-                    "top_leaderboard"
-                ],
-                "timeoutMS": 10000
-            }
         }
     ],
     "icPrebidPubmatic": [
@@ -531,10 +522,9 @@
                 "fandommobile"
             ],
             "regions": [
-                "DE",
-                "PL"
+                "XX"
             ],
-            "sampling": 50.0,
+            "sampling": 10.0,
             "value": true
         }
     ],
@@ -629,7 +619,7 @@
                 "US",
                 "VN"
             ],
-            "sampling": 10.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -744,6 +734,19 @@
             ],
             "sampling": 50.0,
             "samplingCache": true,
+            "value": true
+        }
+    ],
+    "icLayoutInitializerSlot": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "sampling": 5.0,
             "value": true
         }
     ],
@@ -2448,8 +2451,6 @@
                 "XX"
             ],
             "value": [
-                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icLayoutInitializerSlot_A_50:lis_50_a",
@@ -2458,8 +2459,8 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icAnyclipPlayer_B_10:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_90:outstream_experiment_distroscale"
+                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
         }
     ],
