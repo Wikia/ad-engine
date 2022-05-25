@@ -65,6 +65,7 @@ export class ToggleUI {
 				top.open(params.clickThroughURL, '_blank');
 				communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED, {
 					adSlotName: video.settings.getSlotName(),
+					ad_status: 'video-click',
 				});
 			});
 		}
