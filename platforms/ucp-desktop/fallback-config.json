@@ -299,24 +299,6 @@
             "value": true
         }
     ],
-    "icSlotRefresher": [
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": {
-                "slots": [
-                    "top_leaderboard",
-                    "top_boxad",
-                    "bottom_leaderboard"
-                ],
-                "timeoutMS": 10000
-            }
-        }
-    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -637,7 +619,7 @@
                 "US",
                 "VN"
             ],
-            "sampling": 25.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -2477,8 +2459,8 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icAnyclipPlayer_B_25:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_75:outstream_experiment_distroscale"
+                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
         }
     ],
