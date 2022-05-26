@@ -294,10 +294,10 @@
         {
             "apps": [
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "AU",
@@ -307,10 +307,14 @@
                 "ES",
                 "FR",
                 "GB",
+                "ID",
                 "IT",
+                "MY",
                 "NZ",
+                "PH",
                 "PL",
                 "SG",
+                "TH",
                 "UK",
                 "US"
             ],
