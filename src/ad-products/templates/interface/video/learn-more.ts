@@ -15,11 +15,11 @@ export class LearnMore {
 		learnMore.classList.add('learn-more');
 		learnMore.addEventListener('click', () => {
 			top.open(params.clickThroughURL, '_blank');
-		});
 
-		communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED, {
-			adSlotName: video.settings.getSlotName(),
-			learnMoreLink: learnMore,
+			communicationService.emit(eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_CLICKED, {
+				adSlotName: video.settings.getSlotName(),
+				ad_status: 'learn-more-click',
+			});
 		});
 
 		container.appendChild(learnMore);
