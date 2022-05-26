@@ -1656,7 +1656,9 @@
                 "6015110590",
                 "6015110287",
                 "6015110575",
-                "6015354463"
+                "6015354463",
+                "6026641864",
+                "6027417530"
             ]
         }
     ],
@@ -1836,10 +1838,10 @@
         {
             "apps": [
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "AU",
@@ -1849,10 +1851,14 @@
                 "ES",
                 "FR",
                 "GB",
+                "ID",
                 "IT",
+                "MY",
                 "NZ",
+                "PH",
                 "PL",
                 "SG",
+                "TH",
                 "UK",
                 "US"
             ],
