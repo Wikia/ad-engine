@@ -73,7 +73,6 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
-		context.set('options.newBfaaTemplate', this.instantConfig.get('icUAPNewBFAATemplate'));
 		context.set(
 			'options.uapExtendedSrcTargeting',
 			this.instantConfig.get('icUAPExtendendSrcTargeting'),
@@ -135,47 +134,48 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set(
-			'services.interventionTracker.enabled',
-			this.instantConfig.get('icInterventionTracking'),
-		);
-
-		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
-			// if backend call is disabled let's call it on frontend
-			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
-		}
-
-		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
-
-		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
-		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
-		context.set(
-			'services.audigent.tracking.sampling',
-			this.instantConfig.get('icAudigentTrackingSampling'),
-		);
 		context.set(
 			'services.audigent.audienceTagScriptUrl',
 			this.instantConfig.get('icAudigentAudienceTagScriptUrl'),
 		);
+		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
+		context.set(
+			'services.audigent.tracking.sampling',
+			this.instantConfig.get('icAudigentTrackingSampling'),
+		);
+		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
 		context.set(
 			'services.audigent.segmentsScriptUrl',
 			this.instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
-
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
-		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		if (!this.instantConfig.get('icDurationMedia')) {
+			context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
+		}
+		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
 			this.instantConfig.get('icIASPublisherOptimization'),
 		);
-		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
-		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
-		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+		context.set(
+			'services.interventionTracker.enabled',
+			this.instantConfig.get('icInterventionTracking'),
+		);
 		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
+		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
+		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
+		context.set('services.optimera.enabled', this.instantConfig.get('icOptimera'));
+		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
+		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
+		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
+		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
+			// if backend call is disabled let's call it on frontend
+			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
+		}
 
 		this.setupOutstreamPlayers();
 	}

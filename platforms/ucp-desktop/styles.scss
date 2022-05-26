@@ -2,26 +2,25 @@
 @import 'platforms/shared/styles/index';
 @import 'src/ad-products/styles/porvata';
 
+$sticky-navigation-height: 46px;
+
 @mixin ucp-desktop-uap-styles() {
-	.wds-global-navigation-wrapper {
-		@include uap-navbar();
-	}
-
-	#globalNavigation {
-		position: static;
-	}
-
 	.has-uap {
-		.WikiaSiteWrapper {
-			margin-top: 0;
-		}
-
 		.fandom-sticky-header {
 			z-index: 401;
 		}
 
-		&.uap-old .fandom-sticky-header {
-			margin-top: -46px;
+		.top-ads-container {
+			position: relative;
+			background: #000;
+
+			.ad-slot-placeholder.top-leaderboard {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
 		}
 
 		#top_leaderboard {
@@ -51,20 +50,10 @@
 		}
 	}
 
-	.uap-light,
-	.has-sticky-tlb {
-		.top-ads-container {
-			position: relative;
-			background: #000;
-
-			.ad-slot-placeholder.top-leaderboard {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-			}
-		}
+	.has-sticky-tlb #top_leaderboard div {
+		// important needed because some creatives contains inline CSS overriding this properties
+		display: block !important;
+		width: 100% !important;
 	}
 
 	@include expanded-slot();
@@ -98,6 +87,23 @@
 
 .ad-slot-placeholder.hide {
 	display: none !important;
+}
+
+.companion-stick {
+	.main-page-tag-rcs,
+	#rail-boxad-wrapper {
+		position: sticky;
+		z-index: 100;
+	}
+}
+
+body:not(.uap-sticked) {
+	.companion-stick {
+		.main-page-tag-rcs,
+		#rail-boxad-wrapper {
+			top: calc(#{$sticky-navigation-height} - 10px) !important;
+		}
+	}
 }
 
 .ntv-ad {

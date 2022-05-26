@@ -1,4 +1,4 @@
-import { Context } from '@ad-engine/core';
+import { Context, DEFAULT_MAX_DELAY } from '@ad-engine/core';
 import { InstantConfigService } from '@ad-engine/services';
 
 export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
@@ -15,10 +15,22 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
 
-		const stagesConfig: object = instantConfig.get('icPrebidStages');
+		const stagesConfig: { initTimeout: string; mainDelayed: string; mainTimeout: string } =
+			instantConfig.get('icPrebidStages');
 		if (stagesConfig) {
 			context.set('bidders.prebid.multiAuction', true);
-			context.set('bidders.prebid', { ...context.get('bidders.prebid'), ...stagesConfig });
+			context.set(
+				'bidders.prebid.initTimeout',
+				parseInt(stagesConfig.initTimeout) || DEFAULT_MAX_DELAY,
+			);
+			context.set(
+				'bidders.prebid.mainDelayed',
+				parseInt(stagesConfig.mainDelayed) || DEFAULT_MAX_DELAY,
+			);
+			context.set(
+				'bidders.prebid.mainTimeout',
+				parseInt(stagesConfig.mainTimeout) || DEFAULT_MAX_DELAY,
+			);
 		}
 
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));

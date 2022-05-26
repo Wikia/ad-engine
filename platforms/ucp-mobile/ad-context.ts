@@ -24,7 +24,7 @@ export const basicContext = {
 			bidsRefreshing: {
 				slots: ['mobile_in_content'],
 			},
-			initStageSlots: ['mobile_top_leaderboard'],
+			initStageSlots: ['mobile_top_leaderboard', 'featured'],
 		},
 	},
 	custom: {
@@ -87,6 +87,9 @@ export const basicContext = {
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		instantConfig: {
 			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
 			fallback: fallbackInstantConfig,
@@ -108,7 +111,7 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['mobile'],
 	state: {

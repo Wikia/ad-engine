@@ -24,7 +24,7 @@ export const basicContext = {
 			bidsRefreshing: {
 				slots: ['incontent_boxad_1'],
 			},
-			initStageSlots: ['top_leaderboard', 'top_boxad'],
+			initStageSlots: ['top_leaderboard', 'top_boxad', 'featured'],
 		},
 	},
 	custom: {
@@ -103,6 +103,9 @@ export const basicContext = {
 			enabled: false,
 			id: 'f6c04939-d96e-4bc6-850e-d0e6e6cf9701',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		iasPublisherOptimization: {
 			pubId: '930616',
 			slots: [
@@ -127,7 +130,7 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['gpt'],
 	options: {

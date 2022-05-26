@@ -14,7 +14,7 @@ describe('WikiaVideo bidder adapter', () => {
 		sandbox.restore();
 	});
 
-	it('can be enabled', () => {
+	it('can be enabled only via query parameter', () => {
 		const wikiaVideo = new WikiaVideo({
 			enabled: true,
 		});

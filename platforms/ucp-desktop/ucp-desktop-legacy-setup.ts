@@ -1,6 +1,5 @@
 import { ProcessPipeline, conditional } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-
 import {
 	BiddersStateSetup,
 	NoAdsDetector,
@@ -15,7 +14,7 @@ import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
 
 @Injectable()
-export class LegacySetup {
+export class UcpDesktopLegacySetup {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {

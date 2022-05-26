@@ -13,6 +13,7 @@ import {
 	durationMedia,
 	eventsRepository,
 	exCo,
+	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
@@ -21,6 +22,7 @@ import {
 	jwpSetup,
 	liveConnect,
 	nielsen,
+	optimera,
 	Runner,
 	silverSurferService,
 	slotDataParamsUpdater,
@@ -69,7 +71,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
 
-	private async setupJWPlayer(inhibitors = []): Promise<any> {
+	private setupJWPlayer(inhibitors = []): void {
 		new JWPlayerManager().manage();
 
 		const maxTimeout = context.get('options.maxDelayTimeout');
@@ -89,10 +91,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(wadRunner.call());
 		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(wadRunner.call());
 
+		eyeota.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();

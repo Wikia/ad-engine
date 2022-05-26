@@ -8,6 +8,7 @@ import {
 	context,
 	DiProcess,
 	durationMedia,
+	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
@@ -16,6 +17,7 @@ import {
 	jwpSetup,
 	liveConnect,
 	nielsen,
+	optimera,
 	Runner,
 	silverSurferService,
 	stroer,
@@ -50,10 +52,12 @@ export class UcpMobileAdsMode implements DiProcess {
 		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(wadRunner.call());
 		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(wadRunner.call());
 
+		eyeota.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();

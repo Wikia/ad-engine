@@ -15,10 +15,6 @@ export class UapDomManager {
 		private reader: UapDomReader,
 	) {}
 
-	addClassToAdSlot(className: string): void {
-		this.manipulator.element(this.adSlot.element).addClass(className);
-	}
-
 	addClassToPage(className: string): void {
 		this.manipulator.element(this.page).addClass(className);
 	}
@@ -90,9 +86,13 @@ export class UapDomManager {
 	}
 
 	private setPlaceholderHeight(height: string): void {
-		this.manipulator
-			.element(this.adSlot.getElement().parentElement.parentElement)
-			.setProperty('height', height);
+		let placeholder = this.adSlot.getElement().parentElement;
+
+		if (placeholder.classList.contains('ad-slot-placeholder')) {
+			placeholder = placeholder.parentElement;
+		}
+
+		this.manipulator.element(placeholder).setProperty('height', height);
 	}
 
 	setResolvedImage(): void {

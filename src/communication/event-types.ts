@@ -72,6 +72,11 @@ export interface AdSlotEventPayload {
 	payload?: any;
 }
 
+export interface IdentityDataPayload {
+	partnerName: string;
+	partnerIdentityId: string | null;
+}
+
 export const eventsRepository: Dictionary<EventOptions> = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -108,6 +113,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'UAP Load status',
 		payload: props<UapLoadStatus>(),
 	},
+	AD_ENGINE_UAP_NTC_LOADED: {
+		name: 'UAP NTC loaded',
+	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
 		name: 'Invalidate slot targeting',
@@ -115,11 +123,15 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_VIDEO_OVERLAY_CLICKED: {
 		name: 'Video overlay added',
-		payload: props<{ adSlotName: string }>(),
+		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
-	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
+	AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED: {
+		name: 'Video toggle ui overlay clicked',
+		payload: props<{ adSlotName: string; ad_status: string }>(),
+	},
+	AD_ENGINE_VIDEO_LEARN_MORE_CLICKED: {
 		name: 'Video learn more displayed',
-		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
+		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
 	AD_ENGINE_SLOT_ADDED: {
 		name: 'Ad Slot added',
@@ -162,6 +174,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AUDIGENT_LOADED: {
 		name: 'Audigent loaded',
 	},
+	IDENTITY_PARTNER_DATA_OBTAINED: {
+		name: 'Identity partner data obtained',
+		payload: payload<IdentityDataPayload>(),
+	},
 	LIVERAMP_IDS_LOADED: {
 		name: 'LiveRamp Prebid ids loaded',
 		payload: props<{ userId: string }>(),
@@ -169,6 +185,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),
+	},
+	OPTIMERA_FINISHED: {
+		name: 'Optimera finished',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
@@ -216,6 +235,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[Prebid]',
 		name: 'Bidding done',
 		payload: props<BiddersEventPayload>(),
+	},
+	BIDDERS_BIDS_CALLED: {
+		category: '[Prebid]',
+		name: 'Bids called',
 	},
 	BIDDERS_BIDS_REFRESH: {
 		category: '[Prebid]',

@@ -14,6 +14,7 @@ import {
 	templateService,
 } from './services';
 import { LazyQueue, makeLazyQueue, OldLazyQueue, logger } from './utils';
+import { slotRefresher } from './services/slot-refresher';
 
 const logGroup = 'ad-engine';
 
@@ -29,6 +30,7 @@ export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return adStack;
 }
 
+export const DEFAULT_MIN_DELAY = 100;
 export const DEFAULT_MAX_DELAY = 2000;
 
 export class AdEngine {
@@ -65,6 +67,7 @@ export class AdEngine {
 
 		scrollListener.init();
 		slotRepeater.init();
+		slotRefresher.init();
 		this.setupPushOnScrollQueue();
 	}
 

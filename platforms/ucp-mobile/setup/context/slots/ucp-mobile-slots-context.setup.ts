@@ -228,13 +228,15 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
+				initStage: true,
 				adProduct: 'featured',
 				group: 'VIDEO',
+				videoSizes: [[640, 480]],
 				targeting: {
-					uap: 'none',
+					rv: 1,
 				},
-				trackingKey: 'featured-video',
 				trackEachStatus: true,
+				trackingKey: 'featured-video',
 				isVideo: true,
 			},
 			ntv_ad: {

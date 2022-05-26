@@ -1645,7 +1645,20 @@
                 "5967056316",
                 "5969626223",
                 "5970648400",
-                "5974270234"
+                "5974270234",
+                "6006980301",
+                "6006980295",
+                "6015110593",
+                "6015110284",
+                "6015110281",
+                "6015110158",
+                "6015110578",
+                "6015110590",
+                "6015110287",
+                "6015110575",
+                "6015354463",
+                "6026641864",
+                "6027417530"
             ]
         }
     ],
@@ -1676,8 +1689,6 @@
                 "XX"
             ],
             "value": [
-                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icLayoutInitializerSlot_A_50:lis_50_a",
@@ -1686,10 +1697,8 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icOutstreamExperiment_B_25:outstream_experiment_connatix",
-                "icOutstreamExperiment_B_33.333:outstream_experiment_exco",
-                "icOutstreamExperiment_B_50:outstream_experiment_anyclip",
-                "icOutstreamExperiment_B_100:outstream_experiment_distroscale"
+                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
         }
     ],
@@ -1730,7 +1739,19 @@
                 "5976512561",
                 "5929089315",
                 "5947810307",
-                "5743368233"
+                "5743368233",
+                "5996361595",
+                "5955672672",
+                "5996341416",
+                "5998652572",
+                "6013244788",
+                "5929089573",
+                "6014420053",
+                "6014347435",
+                "6020782558",
+                "5943764617",
+                "6022822295",
+                "6020811777"
             ]
         }
     ],
@@ -1817,10 +1838,10 @@
         {
             "apps": [
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "AU",
@@ -1830,10 +1851,14 @@
                 "ES",
                 "FR",
                 "GB",
+                "ID",
                 "IT",
+                "MY",
                 "NZ",
+                "PH",
                 "PL",
                 "SG",
+                "TH",
                 "UK",
                 "US"
             ],
