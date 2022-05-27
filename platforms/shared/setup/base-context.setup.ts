@@ -194,6 +194,7 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.liveRampATSAnalytics.enabled',
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
+		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 
 		context.set(
 			'templates.safeFanTakeoverElement.lineItemIds',

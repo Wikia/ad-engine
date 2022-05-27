@@ -17,12 +17,20 @@ export class Appnexus extends PrebidAdapter {
 		return Appnexus.bidderName;
 	}
 
+	isNativeModeOn(): boolean {
+		return context.get('bidders.prebid.appnexusNative.enabled');
+	}
+
 	prepareConfigForAdUnit(
 		code,
 		{ sizes, placementId, position = 'mobile' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
-			return this.prepareNativeConfig(code, { sizes, placementId, position });
+			const prebidNativeProvider = new PrebidNativeProvider();
+			if (prebidNativeProvider.isEnabled() && this.isNativeModeOn()) {
+				const template = prebidNativeProvider.getPrebidNativeTemplate();
+				return this.prepareNativeConfig(template, code, { sizes, placementId, position });
+			}
 		}
 
 		return this.prepareStandardConfig(code, { sizes, placementId, position });
@@ -40,15 +48,17 @@ export class Appnexus extends PrebidAdapter {
 		};
 	}
 
-	prepareNativeConfig(code, { sizes, placementId, position }: PrebidAdSlotConfig): PrebidAdUnit {
-		const prebidNativeProvider = new PrebidNativeProvider();
-
+	prepareNativeConfig(
+		template: string,
+		code,
+		{ sizes, placementId, position }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
 				native: {
 					sendTargetingKeys: false,
-					adTemplate: prebidNativeProvider.getPrebidNativeTemplate(),
+					adTemplate: template,
 					title: {
 						required: true,
 					},

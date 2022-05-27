@@ -1,8 +1,20 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { context, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 
+const logGroup = 'prebid-native-provider';
+
 export class PrebidNativeProvider {
+	isEnabled(): boolean {
+		return context.get('bidders.prebid.native.enabled');
+	}
+
 	initialize() {
+		if (!this.isEnabled()) {
+			utils.logger(logGroup, 'disabled');
+			return;
+		}
+
 		communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
 			const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode(payload.slotName);
 			if (data.native) {
