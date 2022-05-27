@@ -127,8 +127,8 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icAnyclipPlayer_B_25:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_75:outstream_experiment_distroscale"
+                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
         }
     ],
@@ -294,10 +294,10 @@
         {
             "apps": [
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "AU",
@@ -307,10 +307,14 @@
                 "ES",
                 "FR",
                 "GB",
+                "ID",
                 "IT",
+                "MY",
                 "NZ",
+                "PH",
                 "PL",
                 "SG",
+                "TH",
                 "UK",
                 "US"
             ],
