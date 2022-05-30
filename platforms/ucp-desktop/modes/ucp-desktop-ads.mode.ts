@@ -81,11 +81,22 @@ export class UcpDesktopAdsMode implements DiProcess {
 			this.dispatchJWPlayerSetupAction();
 		});
 	}
-
 	private dispatchJWPlayerSetupAction(): void {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
-
+	private initIncontentPlayer(incontentPlayer) {
+		if (!incontentPlayer) return;
+		slotDataParamsUpdater.updateOnCreate(incontentPlayer);
+		if (distroScale.isEnabled()) {
+			distroScale.call();
+		} else if (exCo.isEnabled()) {
+			exCo.call();
+		} else if (anyclip.isEnabled()) {
+			anyclip.call();
+		} else if (connatix.isEnabled()) {
+			connatix.call();
+		}
+	}
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
@@ -115,20 +126,9 @@ export class UcpDesktopAdsMode implements DiProcess {
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-			({ isLoaded }: UapLoadStatus) => {
-				const incontentPlayer = slotService.get('incontent_player');
-				if (!isLoaded && incontentPlayer) {
-					slotDataParamsUpdater.updateOnCreate(incontentPlayer);
-
-					if (distroScale.isEnabled()) {
-						distroScale.call();
-					} else if (exCo.isEnabled()) {
-						exCo.call();
-					} else if (anyclip.isEnabled()) {
-						anyclip.call();
-					} else if (connatix.isEnabled()) {
-						connatix.call();
-					}
+			({ isLoaded, adProduct }: UapLoadStatus) => {
+				if (!isLoaded && adProduct !== 'ruap') {
+					this.initIncontentPlayer(slotService.get('incontent_player'));
 				}
 			},
 		);
