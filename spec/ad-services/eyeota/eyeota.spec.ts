@@ -43,7 +43,7 @@ describe('Eyeota', () => {
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal(
-			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=aj',
+			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=ajs',
 		);
 	});
 });
