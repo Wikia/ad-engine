@@ -179,6 +179,7 @@
                 "6022822295",
                 "6014419390",
                 "5926127176",
+                "6017948817",
                 "6020811777"
             ]
         }
@@ -696,6 +697,40 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icGalactusInteraction": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "DE",
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "sampling": 33.333,
+            "samplingCache": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "DE",
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true
         }
     ],
     "icPauseJWPlayerAd": [
@@ -2474,6 +2509,9 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
+                "icGalactusInteraction_B_33.333:galactus_interaction_a",
+                "icGalactusInteraction_B_50:galactus_interaction_b",
+                "icGalactusInteraction_A_50:galactus_interaction_c",
                 "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
                 "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
