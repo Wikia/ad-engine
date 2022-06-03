@@ -27,7 +27,7 @@ export function getAppnexusContext(): object {
 				placementId: '23485904',
 			},
 			ntv_ad: {
-				placementId: '25450091',
+				placementId: '25599354',
 			},
 		},
 		placements: {
