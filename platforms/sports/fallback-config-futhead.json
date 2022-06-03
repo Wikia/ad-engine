@@ -127,6 +127,9 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
+                "icGalactusInteraction_B_33.333:galactus_interaction_a",
+                "icGalactusInteraction_B_50:galactus_interaction_b",
+                "icGalactusInteraction_A_50:galactus_interaction_c",
                 "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
                 "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]

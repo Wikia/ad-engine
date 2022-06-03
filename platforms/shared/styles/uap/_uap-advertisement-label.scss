@@ -1,5 +1,5 @@
-@import 'src/ad-products/styles/uap-variables';
-@import 'src/ad-products/styles/breakpoints';
+@import 'platforms/shared/styles/breakpoints';
+@import 'uap-variables';
 
 @mixin uap-advertisement-label() {
 	.advertisement-label {

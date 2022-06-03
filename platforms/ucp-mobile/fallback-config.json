@@ -180,6 +180,9 @@
                 "6020782558",
                 "5943764617",
                 "6022822295",
+                "6014419390",
+                "5926127176",
+                "6017948817",
                 "6020811777"
             ]
         }
@@ -615,7 +618,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 10.0,
+            "sampling": 25.0,
             "value": true
         }
     ],
@@ -742,6 +745,40 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icGalactusInteraction": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "DE",
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "sampling": 33.333,
+            "samplingCache": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "DE",
+                "GB",
+                "PL",
+                "UK",
+                "US"
+            ],
+            "sampling": 50.0,
+            "samplingCache": true
         }
     ],
     "icPauseJWPlayerAd": [
@@ -2464,7 +2501,14 @@
                 "6015110575",
                 "6015354463",
                 "6026641864",
-                "6027417530"
+                "6027417530",
+                "6027376982",
+                "6027376976",
+                "6026641885",
+                "6026641870",
+                "6026641864",
+                "6027738172",
+                "6027739849"
             ]
         }
     ],
@@ -2517,6 +2561,9 @@
                 "icPrebidStages_B_50:prebid_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
+                "icGalactusInteraction_B_33.333:galactus_interaction_a",
+                "icGalactusInteraction_B_50:galactus_interaction_b",
+                "icGalactusInteraction_A_50:galactus_interaction_c",
                 "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
                 "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
