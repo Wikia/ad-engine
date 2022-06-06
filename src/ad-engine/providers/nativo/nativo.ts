@@ -15,6 +15,7 @@ export class Nativo {
 		1142863: Nativo.INCONTENT_AD_SLOT_NAME,
 		1142668: Nativo.FEED_AD_SLOT_NAME,
 		1142669: Nativo.FEED_AD_SLOT_NAME,
+		456441: Nativo.FEED_AD_SLOT_NAME,
 	};
 
 	constructor(protected context: Context) {}
@@ -123,12 +124,14 @@ export class Nativo {
 
 	private watchNtvEvents(): void {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
-			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
+			const slotName = e.data[0].adLocation
+				? e.data[0].adLocation.substring(1)
+				: Nativo.AD_SLOT_MAP[e.data[0].id];
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
 		});
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
-			const slotName = Nativo.AD_SLOT_MAP[e.data.placement];
+			const slotName = e.data.placement ? e.data.placement : Nativo.AD_SLOT_MAP[e.data.id];
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
 		});
 	}
@@ -138,9 +141,12 @@ export class Nativo {
 		slotName: string,
 		adStatus: string,
 	) {
-		const slot = slotService.get(slotName);
+		Nativo.log('Nativo native event fired', e, slotName, adStatus);
 
-		Nativo.log('Nativo native event fired', e, adStatus, slotName, slot);
+		if (!slotName) return;
+
+		const slot = slotService.get(slotName);
+		Nativo.log('Handling Nativo native event', slotName, slot);
 
 		if (!slot || slot.getSlotName() !== slotName) return;
 
