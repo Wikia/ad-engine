@@ -124,16 +124,24 @@ export class Nativo {
 
 	private watchNtvEvents(): void {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
-			const slotName = e.data[0].adLocation
-				? e.data[0].adLocation.substring(1)
-				: Nativo.AD_SLOT_MAP[e.data[0].id];
+			const slotName = Nativo.extractSlotIdFromNativoNoAdEventData(e);
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE); // init or collapse
 		});
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
-			const slotName = e.data.placement ? e.data.placement : Nativo.AD_SLOT_MAP[e.data.id];
+			const slotName = Nativo.extractSlotIdFromNativoCompleteEventData(e);
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
 		});
+	}
+
+	static extractSlotIdFromNativoNoAdEventData(e: NativoNoAdEvent): string {
+		return e.data[0]?.adLocation
+			? e.data[0].adLocation.substring(1)
+			: Nativo.AD_SLOT_MAP[e.data[0].id];
+	}
+
+	static extractSlotIdFromNativoCompleteEventData(e: NativoCompleteEvent): string {
+		return e.data.placement ? Nativo.AD_SLOT_MAP[e.data.placement] : Nativo.AD_SLOT_MAP[e.data.id];
 	}
 
 	private handleNtvNativeEvent(
