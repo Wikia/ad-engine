@@ -272,8 +272,13 @@ export class UcpMobileSlotsDefinitionRepository {
 			return;
 		}
 
+		let slotPushed = false;
 		const slotName = 'floor_adhesion';
 		const activateFloorAdhesion = () => {
+			if (slotPushed) {
+				return;
+			}
+
 			const numberOfViewportsFromTopToPush: number =
 				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
 
@@ -283,6 +288,8 @@ export class UcpMobileSlotsDefinitionRepository {
 				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
 				scrollListener.addSlot(slotName, { distanceFromTop: distance });
 			}
+
+			slotPushed = true;
 		};
 
 		return {
