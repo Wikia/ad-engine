@@ -37,6 +37,7 @@ export class Nativo {
 			.then(() => {
 				Nativo.log('Nativo API loaded.');
 				this.watchNtvEvents();
+				this.watchPrebidNativeEvents();
 			});
 	}
 
@@ -136,6 +137,14 @@ export class Nativo {
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data.placement];
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_SUCCESS);
+		});
+	}
+
+	private watchPrebidNativeEvents(): void {
+		communicationService.on(eventsRepository.NO_NATIVE_PREBID_AD, (payload) => {
+			if (payload.slotName == Nativo.INCONTENT_AD_SLOT_NAME) {
+				this.replaceWithAffiliateUnit();
+			}
 		});
 	}
 
