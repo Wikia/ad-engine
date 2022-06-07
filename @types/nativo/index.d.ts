@@ -8,6 +8,7 @@ interface NativoConfiguration {
 }
 
 interface NativoResponseEvent {
+	adLocation: string;
 	id: number;
 	placement: number;
 }
@@ -17,7 +18,7 @@ interface NativoCompleteEvent {
 }
 
 interface NativoNoAdEvent {
-	data: Pick<NativoResponseEvent, 'id'>[];
+	data: Pick<NativoResponseEvent, 'id', 'adLocation'>[];
 }
 
 interface NativoApi {
