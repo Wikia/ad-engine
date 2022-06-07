@@ -116,4 +116,65 @@ describe('Nativo', () => {
 			expect(contextPushSpy.called).to.be.false;
 		});
 	});
+
+	describe('extractSlotIdFromNativoNoEventData', () => {
+		it('returns proper slot name from correct NoAdEvent data', () => {
+			const nativoNoAdEventDataMock = {
+				data: [
+					{
+						id: 1142863,
+						adLocation: '#ntv_ad',
+					},
+				],
+			};
+
+			expect(Nativo.extractSlotIdFromNativoNoAdEventData(nativoNoAdEventDataMock)).to.equal(
+				'ntv_ad',
+			);
+		});
+
+		it('returns fallback slot name from partially correct (only id) NoAdEvent data', () => {
+			const nativoNoAdEventDataMock = {
+				data: [
+					{
+						id: 1142863,
+					},
+				],
+			};
+
+			expect(Nativo.extractSlotIdFromNativoNoAdEventData(nativoNoAdEventDataMock)).to.equal(
+				'ntv_ad',
+			);
+		});
+	});
+
+	describe('extractSlotIdFromNativoCompleteEventData', () => {
+		it('returns proper slot name from correct NativoCompleteEvent data', () => {
+			const nativoCompleteEventDataMock = {
+				data: {
+					id: 1142863,
+					placement: 1142863,
+					adLocation: '#ntv_ad',
+				},
+			};
+
+			expect(Nativo.extractSlotIdFromNativoCompleteEventData(nativoCompleteEventDataMock)).to.equal(
+				'ntv_ad',
+			);
+		});
+
+		it('returns proper slot name from partially correct NativoCompleteEvent data', () => {
+			const nativoCompleteEventDataMock = {
+				data: {
+					id: 1142863,
+					placement: undefined,
+					adLocation: '#ntv_ad',
+				},
+			};
+
+			expect(Nativo.extractSlotIdFromNativoCompleteEventData(nativoCompleteEventDataMock)).to.equal(
+				'ntv_ad',
+			);
+		});
+	});
 });
