@@ -529,9 +529,9 @@
                 "fandommobile"
             ],
             "regions": [
-                "XX"
+                "US"
             ],
-            "sampling": 25.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
