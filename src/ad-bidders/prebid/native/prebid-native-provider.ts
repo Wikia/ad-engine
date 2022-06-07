@@ -12,8 +12,6 @@ const assetsMap = {
 };
 
 export class PrebidNativeProvider {
-	static INCONTENT_AD_SLOT_NAME = 'ntv_ad';
-
 	isEnabled(): boolean {
 		return context.get('bidders.prebid.native.enabled');
 	}
