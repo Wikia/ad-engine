@@ -25,10 +25,6 @@ export class PrebidNativeProvider {
 		}
 
 		communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
-			if (payload.slotName != PrebidNativeProvider.INCONTENT_AD_SLOT_NAME) {
-				return;
-			}
-
 			const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode(payload.slotName);
 			if (data.native) {
 				this.renderPrebidNativeAd(payload.slotName, data.native);
@@ -46,22 +42,18 @@ export class PrebidNativeProvider {
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {
-		let template = this.getPrebidNativeTemplate();
-		for (const assetName in data) {
-			template = this.replaceAssetPlaceholderWithData(assetName, data, template);
-		}
-		return template;
+		const template = this.getPrebidNativeTemplate();
+		return this.replaceAssetPlaceholdersWithData(template, data);
 	}
 
-	private replaceAssetPlaceholderWithData(
-		assetName: string,
-		data: PrebidNativeData,
-		template: string,
-	): string {
-		if (assetsMap[assetName]) {
-			const value = this.getAssetValue(assetName, data);
-			return template.replace('##' + assetsMap[assetName] + '##', value);
+	private replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
+		for (const assetName in data) {
+			if (assetsMap[assetName]) {
+				const value = this.getAssetValue(assetName, data);
+				template = template.replace('##' + assetsMap[assetName] + '##', value);
+			}
 		}
+		return template;
 	}
 
 	private getAssetValue(assetName: string, data: PrebidNativeData): string {

@@ -126,9 +126,11 @@ export class Nativo {
 		window.ntv.Events?.PubSub?.subscribe('noad', (e: NativoNoAdEvent) => {
 			const slotName = Nativo.AD_SLOT_MAP[e.data[0].id];
 			this.handleNtvNativeEvent(e, slotName, AdSlot.STATUS_COLLAPSE);
-			communicationService.emit(eventsRepository.NO_NATIVO_AD, {
-				slotName: slotName,
-			});
+			if (slotName == Nativo.INCONTENT_AD_SLOT_NAME) {
+				communicationService.emit(eventsRepository.NO_NATIVO_AD, {
+					slotName: slotName,
+				});
+			}
 		});
 
 		window.ntv.Events?.PubSub?.subscribe('adRenderingComplete', (e: NativoCompleteEvent) => {
