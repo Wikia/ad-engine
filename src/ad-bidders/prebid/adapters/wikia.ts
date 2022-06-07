@@ -1,6 +1,7 @@
-import { Dictionary, pbjsFactory, utils } from '@ad-engine/core';
+import { context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
+import { PrebidNativeProvider } from '../native';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
@@ -56,6 +57,53 @@ export class Wikia extends PrebidAdapter {
 	}
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
+		if (context.get(`slots.${code}.isNative`)) {
+			const prebidNativeProvider = new PrebidNativeProvider();
+			return this.prepareNativeConfig(prebidNativeProvider.getPrebidNativeTemplate(), code);
+		} else {
+			return this.prepareStandardConfig(code, { sizes });
+		}
+	}
+
+	private prepareNativeConfig(template: string, code): PrebidAdUnit {
+		return {
+			code,
+			mediaTypes: {
+				native: {
+					sendTargetingKeys: false,
+					adTemplate: template,
+					title: {
+						required: true,
+					},
+					body: {
+						required: true,
+					},
+					clickUrl: {
+						required: true,
+					},
+					icon: {
+						required: true,
+						aspect_ratios: [
+							{
+								min_width: 100,
+								min_height: 100,
+								ratio_width: 1,
+								ratio_height: 1,
+							},
+						],
+					},
+				},
+			},
+			bids: [
+				{
+					bidder: this.bidderName,
+					params: {},
+				},
+			],
+		};
+	}
+
+	private prepareStandardConfig(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -75,7 +123,7 @@ export class Wikia extends PrebidAdapter {
 	getSpec(): Dictionary<string | string[]> {
 		return {
 			code: this.bidderName,
-			supportedMediaTypes: ['banner'],
+			supportedMediaTypes: ['banner', 'native'],
 		};
 	}
 
@@ -100,23 +148,56 @@ export class Wikia extends PrebidAdapter {
 					return;
 				}
 
-				const bidResponse = pbjs.createBid(1);
-				const [width, height] = bid.sizes[0];
-				const cpm = this.getPrice();
+				addBidResponse(
+					bid.adUnitCode,
+					bid.mediaTypes.native
+						? this.createNativeBidResponse(pbjs, bid, bidRequest)
+						: this.createStandardBidResponse(pbjs, bid, bidRequest),
+				);
 
-				bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
-				bidResponse.bidderCode = bidRequest.bidderCode;
-				bidResponse.cpm = cpm;
-				bidResponse.ttl = 300;
-				bidResponse.mediaType = 'banner';
-				bidResponse.width = width;
-				bidResponse.height = height;
-
-				addBidResponse(bid.adUnitCode, bidResponse);
 				this.limit -= 1;
 			});
 
 			done();
 		}, this.timeout);
+	}
+
+	private createNativeBidResponse(pbjs, bid, bidRequest) {
+		const bidResponse = pbjs.createBid(1);
+		const cpm = this.getPrice();
+
+		bidResponse.bidderCode = bidRequest.bidderCode;
+		bidResponse.cpm = cpm;
+		bidResponse.ttl = 300;
+		bidResponse.mediaType = 'native';
+		bidResponse.native = {
+			body: "Wikia is an old name of Fandom. Haven't heard of Fandom?",
+			clickUrl: 'https://fandom.com',
+			url: 'https://fandom.com',
+			icon: {
+				url: 'https://placekitten.com/100/100',
+				height: 100,
+				width: 100,
+			},
+			title: 'Wikia Native Creative',
+		};
+
+		return bidResponse;
+	}
+
+	private createStandardBidResponse(pbjs, bid, bidRequest) {
+		const bidResponse = pbjs.createBid(1);
+		const [width, height] = bid.sizes[0];
+		const cpm = this.getPrice();
+
+		bidResponse.ad = Wikia.getCreative(bid.sizes[0], cpm);
+		bidResponse.bidderCode = bidRequest.bidderCode;
+		bidResponse.cpm = cpm;
+		bidResponse.ttl = 300;
+		bidResponse.mediaType = 'banner';
+		bidResponse.width = width;
+		bidResponse.height = height;
+
+		return bidResponse;
 	}
 }
