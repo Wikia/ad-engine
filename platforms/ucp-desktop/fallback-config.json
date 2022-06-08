@@ -872,6 +872,18 @@
             "value": true
         }
     ],
+    "icTlbSizeReduction": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 50.0,
+            "value": true
+        }
+    ],
     "icStickySlotLineItemIds": [
         {
             "apps": [
