@@ -32,6 +32,7 @@ interface Window {
 	mw?: MediaWiki;
 	ntv?: NativoApi;
 	NOLBUNDLE?: any;
+	pbjs?: any;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;

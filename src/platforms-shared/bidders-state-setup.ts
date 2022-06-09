@@ -36,6 +36,10 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
 		context.set(
+			'bidders.prebid.appnexusNative.enabled',
+			instantConfig.get('icPrebidAppNexusNative'),
+		);
+		context.set(
 			'bidders.prebid.appnexusGroupM.enabled',
 			instantConfig.get('icPrebidAppNexusGroupM'),
 		);

@@ -242,10 +242,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			ntv_ad: {
 				providers: ['nativo'],
 				trackEachStatus: true,
+				isNative: true,
 			},
 			ntv_feed_ad: {
 				providers: ['nativo'],
 				trackEachStatus: true,
+				isNative: true,
 			},
 			quiz_leaderboard_start: {
 				adProduct: 'quiz_leaderboard_start',

@@ -18,6 +18,7 @@ import {
 	liveConnect,
 	nielsen,
 	optimera,
+	prebidNativeProvider,
 	Runner,
 	silverSurferService,
 	stroer,
@@ -71,6 +72,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		});
 
 		adMarketplace.initialize();
+		prebidNativeProvider.initialize();
 		identityHub.call();
 		liveConnect.call();
 
