@@ -65,7 +65,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 
 	private registerStickingCompanionStickedListener(): boolean {
 		const rightRailElement = document.querySelectorAll(
-			'.main-page-tag-rcs, #rail-boxad-wrapper',
+			'.main-page-tag-rcs #top_boxad, #rail-boxad-wrapper',
 		)[0] as HTMLElement;
 
 		if (!rightRailElement) {

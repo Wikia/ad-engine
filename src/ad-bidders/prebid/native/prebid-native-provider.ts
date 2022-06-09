@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, slotService, utils } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 
 const logGroup = 'prebid-native-provider';
@@ -35,11 +35,8 @@ export class PrebidNativeProvider {
 	}
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
-		const nativeAdSlot = slotService.get(adSlotName);
 		const ntvAdSlot = document.getElementById(adSlotName);
-
 		ntvAdSlot.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
-		nativeAdSlot.setStatus(AdSlot.STATUS_SUCCESS);
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {
