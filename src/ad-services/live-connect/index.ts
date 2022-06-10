@@ -6,7 +6,7 @@ const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
 class LiveConnect {
 	private isLoaded = false;
-	private unifiedId: string | null;
+	private id: string | null;
 
 	private isEnabled(): boolean {
 		return (
@@ -39,16 +39,25 @@ class LiveConnect {
 
 	track(): void {
 		if (!window.liQ) {
-			console.warn(logGroup, 'window.liQ not available for tracking');
+			utils.warner(logGroup, 'window.liQ not available for tracking');
 		} else {
-			window.liQ.resolve((nonId) => {
-				this.unifiedId = nonId['unifiedId'];
+			window.liQ.resolve(
+				(nonId) => {
+					utils.logger(logGroup, `sha2: ${nonId['sha2']}`);
+					if (nonId['sha2']) {
+						this.id = nonId['sha2'];
 
-				communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-					partnerName: logGroup,
-					partnerIdentityId: this.unifiedId,
-				});
-			});
+						communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+							partnerName: logGroup,
+							partnerIdentityId: this.id,
+						});
+					}
+				},
+				(err) => {
+					utils.warner(logGroup, err);
+				},
+				{ qf: '0.3', resolve: 'sha2' },
+			);
 		}
 	}
 }
