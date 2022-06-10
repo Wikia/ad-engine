@@ -23,6 +23,7 @@ import {
 	liveConnect,
 	nielsen,
 	optimera,
+	prebidNativeProvider,
 	Runner,
 	silverSurferService,
 	slotDataParamsUpdater,
@@ -123,6 +124,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		identityHub.call();
 
 		adMarketplace.initialize();
+		prebidNativeProvider.initialize();
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,

@@ -194,6 +194,7 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.liveRampATSAnalytics.enabled',
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
+		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 
 		context.set(
 			'templates.safeFanTakeoverElement.lineItemIds',
@@ -233,6 +234,7 @@ export class BaseContextSetup implements DiProcess {
 
 	private setupStickySlotContext(): void {
 		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
+		context.set('templates.stickyTlb.sizeReduction', this.instantConfig.get('icTlbSizeReduction'));
 		context.set('templates.stickyTlb.withFV', this.instantConfig.get('icStickyTlbWithFV'));
 
 		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
