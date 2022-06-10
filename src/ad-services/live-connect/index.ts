@@ -58,18 +58,6 @@ class LiveConnect {
 				},
 				{ qf: '0.3', resolve: 'sha2' },
 			);
-			window.liQ.resolve((nonId) => {
-				utils.logger(logGroup, `[DEBUGGING] unifiedId: ${nonId['unifiedId']}`);
-			}); // TODO this one resolve is only for debugging and can be removed when ADEN-11824 is tested
-			window.liQ.resolve(
-				(nonId) => {
-					utils.logger(logGroup, `[DEBUGGING] sha2 with qf=0.1: ${nonId['sha2']}`);
-				},
-				(err) => {
-					utils.warner(logGroup, err);
-				},
-				{ qf: '0.1', resolve: 'sha2' },
-			); // TODO this one resolve is only for debugging and can be removed when ADEN-11824 is tested
 		}
 	}
 }
