@@ -64,6 +64,9 @@ describe('Wikia bidder adapter', () => {
 				{
 					adUnitCode: 'fake-ad-unit',
 					sizes: [[728, 90]],
+					mediaTypes: {
+						banner: {},
+					},
 				},
 			],
 		};

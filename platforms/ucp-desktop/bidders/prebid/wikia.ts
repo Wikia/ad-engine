@@ -14,6 +14,9 @@ export function getWikiaContext(): object {
 			bottom_leaderboard: {
 				sizes: [[728, 90]],
 			},
+			ntv_ad: {
+				position: 'native',
+			},
 		},
 	};
 }
