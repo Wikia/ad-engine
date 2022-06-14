@@ -43,7 +43,7 @@ class LiveConnect {
 		} else {
 			window.liQ.resolve(
 				(nonId) => {
-					utils.logger(logGroup, `unifiedId: ${nonId['unifiedId']}, sha2: ${nonId['sha2']}`);
+					utils.logger(logGroup, `sha2: ${nonId['sha2']}`);
 					if (nonId['sha2']) {
 						this.id = nonId['sha2'];
 
