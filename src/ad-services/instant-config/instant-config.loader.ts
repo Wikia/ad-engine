@@ -16,7 +16,9 @@ class InstantConfigLoader {
 
 	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
 		const request = new XMLHttpRequest();
-		const url = context.get('services.instantConfig.endpoint');
+		const url =
+			context.get('wiki.services_instantConfig_endpoint') ||
+			context.get('services.instantConfig.endpoint');
 		const fallbackConfig = context.get('services.instantConfig.fallback') || {};
 
 		request.open('GET', url, true);

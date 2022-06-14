@@ -110,8 +110,22 @@ describe('Instant Config Loader', () => {
 	it('should get endpoint from context', async () => {
 		instantConfigLoader.getConfig();
 
+		expect(contextGetStub.getCalls().length).to.equal(3);
+		expect(contextGetStub.firstCall.args[0]).to.equal('wiki.services_instantConfig_endpoint');
+		expect(contextGetStub.secondCall.args[0]).to.equal('services.instantConfig.endpoint');
+		expect(request.url).to.equal('http://endpoint.com');
+	});
+
+	it('should use platform provided endpoint', async () => {
+		contextRepo['wiki.services_instantConfig_endpoint'] = 'http://overriden-endpoint';
+
+		instantConfigLoader.getConfig();
+
 		expect(contextGetStub.getCalls().length).to.equal(2);
-		expect(contextGetStub.firstCall.args[0]).to.equal('services.instantConfig.endpoint');
+		expect(contextGetStub.firstCall.args[0]).to.equal('wiki.services_instantConfig_endpoint');
+		expect(request.url).to.equal('http://overriden-endpoint');
+
+		contextRepo['wiki.services_instantConfig_endpoint'] = undefined;
 	});
 
 	it('should get fallback from fallbackInstantConfig', async () => {

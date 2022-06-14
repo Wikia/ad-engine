@@ -9,7 +9,7 @@ import {
 	LabradorSetup,
 	NoAdsDetector,
 	TrackingSetup,
-	WikiContextSetup,
+	PlatformContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -30,6 +30,7 @@ import { SportsDynamicSlotsSetup } from './setup/dynamic-slots/sports-dynamic-sl
 import { SportsIocSetup } from './sports-ioc-setup';
 import { SportsTemplatesSetup } from './templates/sports-templates.setup';
 import { selectApplication } from './utils/application-helper';
+import { TrackingParametersSetup } from '../shared/setup/tracking-parameters.setup';
 
 @Injectable()
 export class SportsPlatform {
@@ -41,9 +42,10 @@ export class SportsPlatform {
 			() => context.extend(getBasicContext()),
 			() => document.body.classList.add(`ae-${selectApplication('futhead', 'muthead')}`),
 			() => ensureGeoCookie(),
+			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			SportsIocSetup,
-			WikiContextSetup,
+			TrackingParametersSetup,
 			() => context.set('state.isMobile', getDeviceMode() === 'mobile'),
 			BaseContextSetup,
 			SportsSlotsContextSetup,

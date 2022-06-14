@@ -6,7 +6,7 @@ import {
 	LabradorSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
-	WikiContextSetup,
+	PlatformContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -24,6 +24,7 @@ import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
 import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
+import { TrackingParametersSetup } from '../shared/setup/tracking-parameters.setup';
 
 @Injectable()
 export class UcpDesktopPlatform {
@@ -33,9 +34,10 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpDesktopIocSetup,
-			WikiContextSetup,
+			TrackingParametersSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
