@@ -121,7 +121,8 @@ export const basicContext = {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandomdesktop',
+			endpoint: 'https://services.fandom.com',
+			appName: 'fandomdesktop',
 			fallback: fallbackInstantConfig,
 		},
 		nielsen: {
