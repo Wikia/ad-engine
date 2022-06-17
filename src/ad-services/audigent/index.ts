@@ -32,12 +32,24 @@ class Audigent {
 			utils.logger(logGroup, 'loading');
 			context.set('targeting.AU_SEG', '-1');
 
-			utils.scriptLoader.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first');
+			utils.scriptLoader
+				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
+				.then(() => {
+					utils.logger(logGroup, 'audience tag script loaded');
+				});
 
 			utils.scriptLoader
 				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
-					this.setup();
+					utils.logger(logGroup, 'segment tag script loaded');
+
+					new utils.WaitFor(() => typeof window['au_seg'] !== 'undefined', 100, 100)
+						.until()
+						.then(() => {
+							utils.logger(logGroup, 'segment tag script loaded');
+							this.setup();
+						});
+
 					communicationService.emit(eventsRepository.AUDIGENT_LOADED);
 				});
 			this.isLoaded = true;
@@ -58,6 +70,8 @@ class Audigent {
 			this.trackWithExternalLoggerIfEnabled(segments);
 
 			context.set('targeting.AU_SEG', segments);
+		} else {
+			utils.logger(logGroup, 'window.au_seg still undefined');
 		}
 	}
 
