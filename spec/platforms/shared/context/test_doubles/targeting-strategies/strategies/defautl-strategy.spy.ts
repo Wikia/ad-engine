@@ -2,7 +2,7 @@ import { TargetingStrategy } from '../../../../../../../platforms/shared/context
 import { createStubInstance, SinonStubbedInstance } from 'sinon';
 
 class DefaultStrategySpy implements TargetingStrategy {
-	execute() {}
+	execute(): any {}
 }
 
 export function makeDefaultStrategySpy(): SinonStubbedInstance<DefaultStrategySpy> {

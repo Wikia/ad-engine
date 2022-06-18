@@ -1,12 +1,12 @@
 import { TargetingStrategy } from './targeting-strategies/interfaces/targeting-strategy';
-import { LegacyBuilder } from './targeting-strategies/builders/legacy-builder';
+import { LegacyStrategyBuilder } from './targeting-strategies/builders/legacy-strategy-builder';
 import { Targeting } from '@wikia/ad-engine';
-
-export type StrategyBuildersSet = { [index: string]: typeof LegacyBuilder };
+import { PageContextStrategyBuilder } from './targeting-strategies/builders/page-context-strategy-builder';
 
 export class TargetingStrategyExecutor {
-	public strategyBuilders: StrategyBuildersSet = {
-		default: LegacyBuilder,
+	public strategyBuilders = {
+		default: LegacyStrategyBuilder,
+		pageContext: PageContextStrategyBuilder,
 	};
 
 	execute(strategyName: string, skin: string): Partial<Targeting> {
