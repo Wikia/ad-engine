@@ -30,6 +30,8 @@ export class PageContextStrategy implements TargetingStrategy {
 			pform: this.context.page.tags.pform || [],
 			pub: this.context.page.tags.pub || [],
 			s0: this.context.site.vertical,
+			// TODO remove, but be careful. According to Sebastian S. this can be removed, but AdEng will fail to load ads without it.
+			s0v: wiki.targeting.wikiVertical,
 			s0c: this.context.site.categories,
 			s1: utils.targeting.getRawDbName(this.context.site.siteName),
 			s2: this.getAdLayout(this.context.page.pageType),

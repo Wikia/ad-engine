@@ -26,6 +26,8 @@ export class LegacyStrategy implements TargetingStrategy {
 			pform: wiki.targeting?.adTagManagerTags?.pform || [],
 			pub: wiki.targeting?.adTagManagerTags?.pub || [],
 			s0: wiki.targeting.mappedVerticalName,
+			// TODO remove, but be careful. According to Sebastian S. this can be removed, but AdEng will fail to load ads without it.
+			s0v: wiki.targeting.wikiVertical,
 			s0c: wiki.targeting.newWikiCategories,
 			s1: utils.targeting.getRawDbName(wiki.targeting.wikiDbName),
 			s2: this.getAdLayout(wiki.targeting),
