@@ -35,6 +35,11 @@ export function getTripleliftContext(): object {
 				],
 				inventoryCodes: ['Fandom_DT_BLB_728x90_hdx_prebid', 'Fandom_DT_BLB_970x250_hdx_prebid'],
 			},
+			ntv_ad: {
+				position: 'native',
+				sizes: [[728, 90]],
+				inventoryCodes: ['Fandom_DT_NativeIC_728x90'],
+			},
 		},
 	};
 }
