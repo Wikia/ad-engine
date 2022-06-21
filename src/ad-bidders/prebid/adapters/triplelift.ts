@@ -25,8 +25,8 @@ export class Triplelift extends PrebidAdapter {
 		if (context.get(`slots.${code}.isNative`)) {
 			const prebidNativeProvider = new PrebidNativeProvider();
 			if (prebidNativeProvider.isEnabled() && this.isNativeModeOn()) {
-				const template = prebidNativeProvider.getPrebidNativeTemplate();
-				return this.prepareNativeConfig(template, code, { inventoryCodes });
+				const nativeMediaTypes = prebidNativeProvider.getPrebidNativeConfigMediaTypes();
+				return this.prepareNativeConfig(nativeMediaTypes, code, { inventoryCodes });
 			}
 		}
 
@@ -51,37 +51,14 @@ export class Triplelift extends PrebidAdapter {
 	}
 
 	prepareNativeConfig(
-		template: string,
+		nativeMediaTypes: PrebidNativeMediaType,
 		code,
 		{ inventoryCodes }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
-				native: {
-					sendTargetingKeys: false,
-					adTemplate: template,
-					title: {
-						required: true,
-					},
-					body: {
-						required: true,
-					},
-					clickUrl: {
-						required: true,
-					},
-					icon: {
-						required: true,
-						aspect_ratios: [
-							{
-								min_width: 100,
-								min_height: 100,
-								ratio_width: 1,
-								ratio_height: 1,
-							},
-						],
-					},
-				},
+				native: nativeMediaTypes,
 			},
 			bids: [
 				{

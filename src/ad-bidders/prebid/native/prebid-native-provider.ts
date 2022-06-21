@@ -62,23 +62,50 @@ export class PrebidNativeProvider {
 	}
 
 	getPrebidNativeTemplate(): string {
-		return `<div id="native-prebid-ad" class="ntv-ad">
-					<div class="ntv-wrapper">
-						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
-							<img src="##hb_native_icon##" class="ntv-img">
+		return `<div id='native-prebid-ad' class='ntv-ad'>
+					<div class='ntv-wrapper'>
+						<a href='##hb_native_linkurl##' style='flex-shrink: 0;'>
+							<img src='##hb_native_icon##' class='ntv-img'>
 						</a>
-						<div class="ntv-content">
-							<p class="ntv-ad-label">Ad</p>
-							<a href="##hb_native_linkurl##">
-								<p class="ntv-ad-title ntv-headline">##hb_native_title##</p>
+						<div class='ntv-content'>
+							<p class='ntv-ad-label'>Ad</p>
+							<a href='##hb_native_linkurl##'>
+								<p class='ntv-ad-title ntv-headline'>##hb_native_title##</p>
 							</a>
-							<p class="ntv-ad-offer">##hb_native_body##</p>
-							<a href="##hb_native_linkurl##">
-								<button class="ntv-ad-button">Check!</button>
+							<p class='ntv-ad-offer'>##hb_native_body##</p>
+							<a href='##hb_native_linkurl##'>
+								<button class='ntv-ad-button'>Check!</button>
 							</a>
 						</div>
 					</div>
 				</div>`;
+	}
+
+	getPrebidNativeConfigMediaTypes(): PrebidNativeMediaType {
+		return {
+			sendTargetingKeys: false,
+			adTemplate: this.getPrebidNativeTemplate(),
+			title: {
+				required: true,
+			},
+			body: {
+				required: true,
+			},
+			clickUrl: {
+				required: true,
+			},
+			icon: {
+				required: true,
+				aspect_ratios: [
+					{
+						min_width: 100,
+						min_height: 100,
+						ratio_width: 1,
+						ratio_height: 1,
+					},
+				],
+			},
+		};
 	}
 }
 
