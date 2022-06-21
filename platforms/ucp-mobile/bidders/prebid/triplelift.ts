@@ -19,7 +19,6 @@ export function getTripleliftContext(): object {
 			},
 			ntv_ad: {
 				position: 'native',
-				sizes: [[320, 50]],
 				inventoryCodes: ['Fandom_Mobile_NativeIC_320x50'],
 			},
 		},
