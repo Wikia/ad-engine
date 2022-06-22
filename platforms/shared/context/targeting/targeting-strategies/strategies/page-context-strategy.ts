@@ -53,7 +53,7 @@ export class PageContextStrategy implements TargetingStrategy {
 			targeting.cid = cid;
 		}
 
-		if (wiki.targeting.wikiIsTop1000) {
+		if (this.context.site.top1000) {
 			targeting.top = '1k';
 		}
 

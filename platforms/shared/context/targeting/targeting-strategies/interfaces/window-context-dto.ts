@@ -1,18 +1,19 @@
 export interface WindowContextDto {
 	site: {
-		tags: any;
+		categories: [];
 		directedAtChildren: boolean;
 		esrbRating: string;
-		vertical: string;
-		categories: [];
 		siteName: string;
+		top1000: boolean | null;
+		tags: any;
+		vertical: string;
 	};
 	page: {
-		tags: any;
-		lang: string;
 		articleId: number;
+		lang: string;
+		pageId: number;
 		pageName: string;
 		pageType: string;
-		pageId: number;
+		tags: any;
 	};
 }
