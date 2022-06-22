@@ -173,15 +173,11 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				group: 'quiz',
 				options: {},
 			},
-			quiz_leaderboard_1: {
-				adProduct: 'quiz_leaderboard_1',
-				bidderAlias: 'quiz_in_content',
+			quiz_leaderboard_questions: {
+				adProduct: 'quiz_leaderboard_questions',
 				defaultSizes: [[728, 90], [728, 150]],
 				group: 'quiz',
 				options: {},
-				targeting: {
-					rv: 1,
-				},
 			},
 			quiz_leaderboard_finish: {
 				adProduct: 'quiz_leaderboard_finish',
