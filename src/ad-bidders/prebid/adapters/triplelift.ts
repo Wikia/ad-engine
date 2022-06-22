@@ -60,14 +60,12 @@ export class Triplelift extends PrebidAdapter {
 			mediaTypes: {
 				native: nativeMediaTypes,
 			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						inventoryCodes,
-					},
+			bids: inventoryCodes.map((inventoryCode) => ({
+				bidder: this.bidderName,
+				params: {
+					inventoryCode,
 				},
-			],
+			})),
 		};
 	}
 }
