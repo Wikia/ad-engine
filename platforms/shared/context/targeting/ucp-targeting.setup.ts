@@ -63,6 +63,8 @@ export class UcpTargetingSetup implements DiProcess {
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
-		return new TargetingStrategyExecutor().execute('pageContext', this.skin);
+		const targetingStrategy = this.instantConfig.get('icTargetingStrategy', 'default');
+
+		return new TargetingStrategyExecutor().execute(targetingStrategy, this.skin);
 	}
 }
