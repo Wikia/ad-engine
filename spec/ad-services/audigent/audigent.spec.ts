@@ -71,7 +71,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(context.get('targeting.AU_SEG')).to.equal('-1');
 	});
@@ -79,7 +79,7 @@ describe('Audigent', () => {
 	it('Audigent key-val is set to no_segments when no segments from API', () => {
 		window['au_seg'] = { segments: [] };
 
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
 	});
@@ -88,7 +88,7 @@ describe('Audigent', () => {
 		const mockedSegments = ['AUG_SEG_TEST_1', 'AUG_AUD_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
 
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
 	});
@@ -117,7 +117,7 @@ describe('Audigent', () => {
 		];
 		window['au_seg'] = { segments: mockedSegments };
 
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
 	});
@@ -138,13 +138,13 @@ describe('Audigent', () => {
 		];
 		window['au_seg'] = { segments: mockedSegments };
 
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
 	});
 
 	it('Audigent does not send data to Kibana when no segments', () => {
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(externalLoggerLogStub.called).to.equal(false);
 	});
@@ -154,7 +154,7 @@ describe('Audigent', () => {
 
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(externalLoggerLogStub.called).to.equal(false);
 	});
@@ -164,7 +164,7 @@ describe('Audigent', () => {
 
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
-		audigent.setup();
+		audigent.setupSegmentsListener();
 
 		expect(externalLoggerLogStub.called).to.equal(true);
 	});
