@@ -15,6 +15,7 @@ import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
 import { getTelariaContext } from '../../../bidders/prebid/telaria';
 import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
+import { getTripleliftNativeContext } from '../../../bidders/prebid/triplelift-native';
 import { getVerizonContext } from '../../../bidders/prebid/verizon';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
@@ -37,6 +38,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
 		context.set('bidders.prebid.telaria', getTelariaContext());
 		context.set('bidders.prebid.triplelift', getTripleliftContext());
+		context.set('bidders.prebid.triplelift_native', getTripleliftNativeContext());
 		context.set('bidders.prebid.verizon', getVerizonContext());
 		context.set('bidders.prebid.wikia', getWikiaContext());
 		context.set('bidders.prebid.wikiaVideo', getWikiaVideoContext());
