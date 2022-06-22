@@ -5,6 +5,7 @@ import { PrebidNativeProvider } from '../native';
 
 export class Triplelift extends PrebidAdapter {
 	static bidderName = 'triplelift';
+	static nativeBidderName = 'triplelift_native';
 
 	constructor(options) {
 		super(options);
@@ -61,7 +62,7 @@ export class Triplelift extends PrebidAdapter {
 				native: nativeMediaTypes,
 			},
 			bids: inventoryCodes.map((inventoryCode) => ({
-				bidder: this.bidderName,
+				bidder: Triplelift.nativeBidderName,
 				params: {
 					inventoryCode,
 				},
