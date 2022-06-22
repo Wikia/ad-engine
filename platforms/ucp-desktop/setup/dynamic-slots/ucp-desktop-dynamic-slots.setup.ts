@@ -94,15 +94,12 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 				universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 			);
 		} else {
-			if (context.get('templates.stickyTlb.sizeReduction')) {
-				context.set(`slots.${slotName}.sizes`, [
-					{
-						viewportSize: [1024, 0],
-						sizes: fvPageReducedSizes,
-					},
-				]);
-			}
-
+			context.set(`slots.${slotName}.sizes`, [
+				{
+					viewportSize: [1024, 0],
+					sizes: fvPageReducedSizes,
+				},
+			]);
 			context.set('slots.incontent_boxad_1.defaultSizes', [[300, 250]]);
 			slotsContext.addSlotSize(
 				'incontent_boxad_1',
