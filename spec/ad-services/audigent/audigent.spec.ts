@@ -6,6 +6,10 @@ import { audigent } from '../../../src/ad-services';
 describe('Audigent', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub, externalLoggerLogStub;
+	function executeMockedCustomEvent(segments) {
+		const auSegEvent = new CustomEvent('auSegReady', { detail: segments });
+		document.dispatchEvent(auSegEvent);
+	}
 
 	beforeEach(() => {
 		loadScriptStub = sandbox
@@ -80,6 +84,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: [] };
 
 		audigent.setupSegmentsListener();
+		executeMockedCustomEvent([]);
 
 		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
 	});
@@ -89,6 +94,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: mockedSegments };
 
 		audigent.setupSegmentsListener();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
 	});
@@ -118,6 +124,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: mockedSegments };
 
 		audigent.setupSegmentsListener();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
 	});
@@ -139,6 +146,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: mockedSegments };
 
 		audigent.setupSegmentsListener();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
 	});
@@ -165,6 +173,7 @@ describe('Audigent', () => {
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
 		audigent.setupSegmentsListener();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(externalLoggerLogStub.called).to.equal(true);
 	});
