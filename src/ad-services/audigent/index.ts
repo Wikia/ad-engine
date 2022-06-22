@@ -3,7 +3,6 @@ import { context, utils, externalLogger } from '@ad-engine/core';
 
 const logGroup = 'audigent';
 const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
-const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 
 class Audigent {
 	private isLoaded = false;
@@ -25,8 +24,6 @@ class Audigent {
 
 		const audienceTagScriptUrl =
 			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
-		const segmentsScriptUrl =
-			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
 
 		this.setupSegmentsListener();
 
@@ -38,21 +35,9 @@ class Audigent {
 				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					utils.logger(logGroup, 'audience tag script loaded');
-				});
-
-			utils.scriptLoader
-				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					utils.logger(logGroup, 'segment tag script loaded');
-
-					new utils.WaitFor(() => typeof window['au_seg'] !== 'undefined', 100, 100)
-						.until()
-						.then(() => {
-							utils.logger(logGroup, 'segment tag script loaded');
-						});
-
 					communicationService.emit(eventsRepository.AUDIGENT_LOADED);
 				});
+
 			this.isLoaded = true;
 		}
 	}
