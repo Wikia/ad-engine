@@ -622,7 +622,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 75.0,
+            "sampling": 100.0,
             "value": true
         }
     ],
