@@ -28,7 +28,7 @@ class Audigent {
 		this.setupSegmentsListener();
 
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading');
+			utils.logger(logGroup, 'loading...');
 			context.set('targeting.AU_SEG', '-1');
 
 			utils.scriptLoader
@@ -43,6 +43,8 @@ class Audigent {
 	}
 
 	setupSegmentsListener(): void {
+		utils.logger(logGroup, 'setting up auSegReady event listener');
+
 		document.addEventListener('auSegReady', function (e) {
 			utils.logger(logGroup, 'auSegReady event recieved', e);
 
