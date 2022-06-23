@@ -1,17 +1,17 @@
-import { fanFeedNativeAdListener, SlotSetupDefinition } from '@platforms/shared';
+import { SlotSetupDefinition } from '@platforms/shared';
 import {
+	AdSlot,
 	communicationService,
 	context,
 	CookieStorageAdapter,
 	eventsRepository,
 	insertMethodType,
 	InstantConfigService,
-	Nativo,
-	nativo,
 	RepeatableSlotPlaceholderConfig,
 	scrollListener,
 	slotPlaceholderInjector,
 	UapLoadStatus,
+	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -88,49 +88,6 @@ export class UcpMobileSlotsDefinitionRepository {
 			},
 			activator: () => {
 				this.pushWaitingSlot(slotName);
-			},
-		};
-	}
-
-	getNativoIncontentAdConfig(): SlotSetupDefinition {
-		if (!nativo.isEnabled()) {
-			return;
-		}
-
-		return {
-			slotCreatorConfig: {
-				slotName: Nativo.INCONTENT_AD_SLOT_NAME,
-				anchorSelector: '.mw-parser-output > h2:nth-of-type(4n)',
-				insertMethod: 'before',
-				classList: Nativo.SLOT_CLASS_LIST,
-			},
-			activator: () => {
-				communicationService.on(
-					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
-					(action: UapLoadStatus) => {
-						nativo.requestAd(document.getElementById(Nativo.INCONTENT_AD_SLOT_NAME), action);
-					},
-				);
-			},
-		};
-	}
-
-	getNativoFeedAdConfig(): SlotSetupDefinition {
-		if (!nativo.isEnabled()) {
-			return;
-		}
-
-		return {
-			slotCreatorConfig: {
-				slotName: Nativo.FEED_AD_SLOT_NAME,
-				anchorSelector: '.recirculation-prefooter',
-				insertMethod: 'before',
-				classList: [...Nativo.SLOT_CLASS_LIST, 'hide'],
-			},
-			activator: () => {
-				fanFeedNativeAdListener((uapLoadStatusAction: any = {}) =>
-					nativo.replaceAndShowSponsoredFanAd(uapLoadStatusAction),
-				);
 			},
 		};
 	}
@@ -242,8 +199,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			slotCreatorConfig: {
 				slotName,
 				placeholderConfig,
-				// ADEN-11573: Cleanup after switch
-				anchorSelector: '.global-footer,.wds-global-footer',
+				anchorSelector: '.global-footer',
 				insertMethod: 'before',
 				classList: ['hide', 'ad-slot'],
 			},
@@ -307,9 +263,7 @@ export class UcpMobileSlotsDefinitionRepository {
 
 	private isBottomLeaderboardApplicable(): boolean {
 		return (
-			// ADEN-11573: Cleanup after switch
-			!!document.querySelector('.global-footer,.wds-global-footer') &&
-			context.get('wiki.opts.pageType') !== 'search'
+			!!document.querySelector('.global-footer') && context.get('wiki.opts.pageType') !== 'search'
 		);
 	}
 
@@ -318,7 +272,25 @@ export class UcpMobileSlotsDefinitionRepository {
 			return;
 		}
 
+		let slotPushed = false;
 		const slotName = 'floor_adhesion';
+		const activateFloorAdhesion = () => {
+			if (slotPushed) {
+				return;
+			}
+
+			const numberOfViewportsFromTopToPush: number =
+				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+
+			if (numberOfViewportsFromTopToPush === -1) {
+				context.push('state.adStack', { id: slotName });
+			} else {
+				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+			}
+
+			slotPushed = true;
+		};
 
 		return {
 			slotCreatorConfig: {
@@ -328,21 +300,37 @@ export class UcpMobileSlotsDefinitionRepository {
 				classList: ['hide', 'ad-slot'],
 			},
 			activator: () => {
-				const numberOfViewportsFromTopToPush: number =
-					this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
-				if (numberOfViewportsFromTopToPush === -1) {
-					this.pushWaitingSlot(slotName);
-				} else {
-					const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
-					scrollListener.addSlot(slotName, { distanceFromTop: distance });
-				}
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (action.isLoaded) {
+							communicationService.onSlotEvent(
+								AdSlot.CUSTOM_EVENT,
+								({ payload }) => {
+									if (
+										[
+											universalAdPackage.SLOT_UNSTICKED_STATE,
+											universalAdPackage.SLOT_FORCE_UNSTICK,
+											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
+											universalAdPackage.SLOT_VIDEO_DONE,
+										].includes(payload.status)
+									) {
+										activateFloorAdhesion();
+									}
+								},
+								'top_leaderboard',
+							);
+						} else {
+							activateFloorAdhesion();
+						}
+					},
+				);
 			},
 		};
 	}
 
 	private isFloorAdhesionApplicable(): boolean {
-		return this.instantConfig.get('icFloorAdhesion') && !context.get('custom.hasFeaturedVideo');
+		return this.instantConfig.get('icFloorAdhesion');
 	}
 
 	getInterstitialConfig(): SlotSetupDefinition {

@@ -2,11 +2,13 @@ import {
 	communicationService,
 	eventsRepository,
 	TrackingBidDefinition,
+	UapLoadStatus,
 } from '@ad-engine/communication';
 import {
 	AdSlot,
 	context,
 	DEFAULT_MAX_DELAY,
+	DEFAULT_MIN_DELAY,
 	Dictionary,
 	pbjsFactory,
 	Tcf,
@@ -25,7 +27,6 @@ import { getPrebidBestPrice } from './price-helper';
 const logGroup = 'prebid';
 
 interface PrebidConfig extends BidderConfig {
-	lazyLoadingEnabled?: boolean;
 	[bidderName: string]: { enabled: boolean; slots: Dictionary } | boolean;
 }
 
@@ -50,8 +51,6 @@ async function markWinningVideoBidAsUsed(adSlot: AdSlot): Promise<void> {
 
 export class PrebidProvider extends BidderProvider {
 	adUnits: PrebidAdUnit[];
-	isLazyLoadingEnabled: boolean;
-	lazyLoaded = false;
 	tcf: Tcf = tcf;
 	prebidConfig: Dictionary;
 	bidsRefreshing: BidsRefreshing;
@@ -61,8 +60,7 @@ export class PrebidProvider extends BidderProvider {
 		super('prebid', bidderConfig, timeout);
 		adaptersRegistry.configureAdapters();
 
-		this.isLazyLoadingEnabled = this.bidderConfig.lazyLoadingEnabled;
-		this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		this.adUnits = setupAdUnits();
 		this.bidsRefreshing = context.get('bidders.prebid.bidsRefreshing') || {};
 		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
 
@@ -98,9 +96,7 @@ export class PrebidProvider extends BidderProvider {
 		};
 
 		this.applyConfig(this.prebidConfig);
-
 		this.configureAdUnits();
-
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
 		this.getLiveRampUserIds();
@@ -161,11 +157,13 @@ export class PrebidProvider extends BidderProvider {
 		};
 	}
 
-	async configureAdUnits(): Promise<void> {
+	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {
 		await pbjsFactory.init();
 
-		if (!this.adUnits) {
-			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+		if (adUnits.length) {
+			this.adUnits = adUnits;
+		} else if (!this.adUnits) {
+			this.adUnits = setupAdUnits();
 		}
 	}
 
@@ -183,39 +181,90 @@ export class PrebidProvider extends BidderProvider {
 
 	protected callBids(bidsBackHandler: (...args: any[]) => void): void {
 		if (!this.adUnits) {
-			this.adUnits = setupAdUnits(this.isLazyLoadingEnabled ? 'pre' : 'off');
+			this.adUnits = setupAdUnits();
 		}
 
-		if (this.adUnits.length > 0) {
-			this.applySettings();
-			this.requestBids(this.adUnits, bidsBackHandler, this.removeAdUnits);
-		}
-
-		if (this.isLazyLoadingEnabled) {
-			communicationService.on(
-				eventsRepository.BIDDERS_PREBID_LAZY_CALL,
-				() => {
-					this.lazyCall(bidsBackHandler);
-				},
-				false,
-			);
-		}
-	}
-
-	lazyCall(bidsBackHandler: (...args: any[]) => void): void {
-		if (this.lazyLoaded) {
+		if (this.adUnits.length === 0) {
 			return;
 		}
 
-		this.lazyLoaded = true;
+		this.applySettings();
+		this.removeAdUnits();
 
-		const adUnitsLazy: PrebidAdUnit[] = setupAdUnits('post');
+		let firstBidRequest: Promise<void>;
 
-		if (adUnitsLazy.length > 0) {
-			this.requestBids(adUnitsLazy, bidsBackHandler);
+		if (context.get('bidders.prebid.multiAuction')) {
+			utils.logger(logGroup, 'multi auction request enabled');
 
-			this.adUnits = this.adUnits.concat(adUnitsLazy);
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+				(action: UapLoadStatus) => {
+					if (action.isLoaded) {
+						communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
+						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+					}
+				},
+			);
+
+			firstBidRequest = this.requestBids(
+				this.filterAdUnits(this.adUnits, 'init'),
+				() => {
+					bidsBackHandler();
+					communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
+					utils.logger(logGroup, 'multi auction in init stage - done');
+				},
+				context.get('bidders.prebid.initTimeout') || this.timeout,
+			);
+
+			this.runSecondBidRequest();
+		} else {
+			firstBidRequest = this.requestBids(this.adUnits, () => {
+				bidsBackHandler();
+				communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
+			});
 		}
+
+		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
+
+		firstBidRequest.then(() => {
+			ats.call();
+		});
+	}
+
+	private runSecondBidRequest(): void {
+		setTimeout(() => {
+			const mainStageTimeout = context.get('bidders.prebid.mainTimeout') || this.timeout;
+			const mainStageDonePromise = utils.createExtendedPromise();
+
+			this.requestBids(
+				this.filterAdUnits(this.adUnits, 'main'),
+				() => {
+					mainStageDonePromise.resolve();
+				},
+				mainStageTimeout,
+			);
+			Promise.race([
+				mainStageDonePromise,
+				utils.buildPromisedTimeout(mainStageTimeout + DEFAULT_MIN_DELAY).promise,
+			]).then(() => {
+				communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+				utils.logger(logGroup, 'multi auction in main stage - done');
+			});
+		}, context.get('bidders.prebid.mainDelayed') || DEFAULT_MIN_DELAY);
+	}
+
+	private filterAdUnits(adUnits: PrebidAdUnit[], stage: string): PrebidAdUnit[] {
+		const initStageCodes = context.get('bidders.prebid.initStageSlots') || [];
+
+		if (stage === 'init') {
+			return adUnits.filter((adUnit) => initStageCodes.includes(adUnit.code));
+		}
+
+		if (stage === 'main') {
+			return adUnits.filter((adUnit) => !initStageCodes.includes(adUnit.code));
+		}
+
+		return adUnits;
 	}
 
 	async removeAdUnits(): Promise<void> {
@@ -306,18 +355,14 @@ export class PrebidProvider extends BidderProvider {
 	async requestBids(
 		adUnits: PrebidAdUnit[],
 		bidsBackHandler: (...args: any[]) => void,
-		withRemove?: () => void,
+		timeout: number = this.timeout,
 	): Promise<void> {
-		if (withRemove) {
-			withRemove();
-		}
-
 		const pbjs: Pbjs = await pbjsFactory.init();
-		ats.call();
 
 		pbjs.requestBids({
 			adUnits,
 			bidsBackHandler,
+			timeout,
 		});
 	}
 

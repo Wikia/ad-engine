@@ -1,10 +1,4 @@
-import {
-	AdSlot,
-	context,
-	TEMPLATE,
-	TemplateStateHandler,
-	universalAdPackage,
-} from '@wikia/ad-engine';
+import { AdSlot, TEMPLATE, TemplateStateHandler, universalAdPackage } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 
 @Injectable({ autobind: false })
@@ -25,17 +19,11 @@ export class StickyTlbConfigHandler implements TemplateStateHandler {
 	async onLeave(): Promise<void> {
 		this.adSlot.show();
 		document.body.classList.add('has-uap');
-
-		if (context.get('templates.stickyTlb.forced')) {
-			document.body.classList.add('has-sticky-tlb');
-		}
+		document.body.classList.add('has-sticky-tlb');
 	}
 
 	async onDestroy(): Promise<void> {
 		document.body.classList.remove('has-uap');
-
-		if (context.get('templates.stickyTlb.forced')) {
-			document.body.classList.remove('has-sticky-tlb');
-		}
+		document.body.classList.remove('has-sticky-tlb');
 	}
 }

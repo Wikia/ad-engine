@@ -18,8 +18,10 @@ const parser: DOMParser = new window.DOMParser();
 
 export function createIcon(iconName: string, classNames: string[] = []): HTMLElement | null {
 	if (svgs[iconName]) {
-		const element: HTMLElement = parser.parseFromString(svgs[iconName], 'image/svg+xml')
-			.documentElement;
+		const element: HTMLElement = parser.parseFromString(
+			svgs[iconName],
+			'image/svg+xml',
+		).documentElement;
 
 		// IE 11 doesn't support classList nor className on SVG elements
 		element.setAttribute('class', classNames.join(' '));

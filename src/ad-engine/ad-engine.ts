@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { scrollListener } from './listeners';
 import { AdSlot } from './models';
-import { GptProvider, PrebidiumProvider, Provider } from './providers';
+import { GptProvider, Nativo, NativoProvider, PrebidiumProvider, Provider } from './providers';
 import { Runner } from './runner';
 import {
 	btfBlockerService,
@@ -13,21 +13,29 @@ import {
 	slotTweaker,
 	templateService,
 } from './services';
-import { LazyQueue, makeLazyQueue, OldLazyQueue } from './utils';
+import { LazyQueue, makeLazyQueue, OldLazyQueue, logger } from './utils';
+import { slotRefresher } from './services/slot-refresher';
+
+const logGroup = 'ad-engine';
 
 export interface AdStackPayload {
 	id: string;
 }
 
 export function getAdStack(): OldLazyQueue<AdStackPayload> {
-	return context.get('state.adStack');
+	const adStack = context.get('state.adStack');
+
+	logger(logGroup, 'getting adStack: ', ...adStack);
+
+	return adStack;
 }
 
+export const DEFAULT_MIN_DELAY = 100;
 export const DEFAULT_MAX_DELAY = 2000;
 
 export class AdEngine {
 	started = false;
-	provider: Provider;
+	defaultProvider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
 
 	constructor(config = null) {
@@ -45,7 +53,7 @@ export class AdEngine {
 		);
 	}
 
-	init(inhibitors: Promise<any>[] = []): void {
+	async init(inhibitors: Promise<any>[] = []): Promise<void> {
 		this.setupProviders();
 		this.setupAdStack();
 		btfBlockerService.init();
@@ -59,19 +67,19 @@ export class AdEngine {
 
 		scrollListener.init();
 		slotRepeater.init();
+		slotRefresher.init();
 		this.setupPushOnScrollQueue();
 	}
 
 	private setupProviders(): void {
 		const providerName: string = context.get('state.provider');
+		this.defaultProvider = this.createProvider(providerName);
 
-		switch (providerName) {
-			case 'prebidium':
-				this.provider = new PrebidiumProvider();
-				break;
-			case 'gpt':
-			default:
-				this.provider = new GptProvider();
+		const nativo = new Nativo(context);
+		if (nativo.isEnabled()) {
+			nativo.load();
+		} else {
+			nativo.replaceWithAffiliateUnit();
 		}
 	}
 
@@ -81,9 +89,43 @@ export class AdEngine {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
 
-				slotService.add(adSlot);
-				this.provider.fillIn(adSlot);
+				if (
+					adSlot.isFirstCall() ||
+					adSlot.isInitStage() ||
+					!context.get('bidders.prebid.multiAuction')
+				) {
+					this.pushSlot(adSlot);
+				} else {
+					communicationService.on(eventsRepository.BIDDERS_MAIN_STAGE_DONE, () => {
+						this.pushSlot(adSlot);
+					});
+				}
 			});
+		}
+	}
+
+	private pushSlot(adSlot: AdSlot): void {
+		const providersChain = context.get(`slots.${adSlot.getSlotName()}.providers`) || [];
+		slotService.add(adSlot);
+
+		if (providersChain.length > 0) {
+			// TODO: this is PoC and most likely we'll extend it and move to the AdLayoutBuilder (ADEN-11388)
+			const providerName = providersChain.shift();
+			const provider = this.createProvider(providerName);
+			provider.fillIn(adSlot);
+		} else {
+			this.defaultProvider.fillIn(adSlot);
+		}
+	}
+
+	private createProvider(providerName: string) {
+		switch (providerName) {
+			case 'prebidium':
+				return new PrebidiumProvider();
+			case 'nativo':
+				return new NativoProvider(window.ntv);
+			default:
+				return new GptProvider();
 		}
 	}
 

@@ -1,4 +1,8 @@
-import { getDocumentVisibilityStatus, VISIBILITY_STATUS } from '@wikia/ad-engine/utils';
+import {
+	getDocumentVisibilityStatus,
+	VISIBILITY_STATUS,
+	pageInIframe,
+} from '@wikia/ad-engine/utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -29,5 +33,25 @@ describe('document utils', () => {
 		hidden = undefined;
 
 		expect(getDocumentVisibilityStatus()).to.equal(VISIBILITY_STATUS.notImplemented);
+	});
+
+	describe('pageInIframe', () => {
+		beforeEach(() => {
+			sandbox.stub(window, 'self').value('same_object');
+		});
+
+		afterEach(() => {
+			sandbox.restore();
+		});
+
+		it('returns true if page is loaded inside an iframe', () => {
+			sandbox.stub(window, 'top').value('different_object');
+			expect(pageInIframe()).to.equal(true);
+		});
+
+		it('returns false if page is not loaded inside an iframe', () => {
+			sandbox.stub(window, 'top').value('same_object');
+			expect(pageInIframe()).to.equal(false);
+		});
 	});
 });

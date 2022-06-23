@@ -1,6 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import {
+	communicationService,
 	context,
+	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -15,6 +17,10 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
 
+		if (this.params.newTakeoverConfig) {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+		}
+
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
@@ -25,11 +31,9 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
-		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.desktop;
-
-		slotsContext.setupSlotSizeOverwriting(additionalSizes);
-		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
-		slotsContext.addSlotSize('incontent_boxad_1', additionalSizes.companionSize);
-		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
+		slotsContext.setSlotSize(
+			'bottom_leaderboard',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
+		);
 	}
 }

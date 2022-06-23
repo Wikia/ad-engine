@@ -1,6 +1,7 @@
 import { context, Dictionary } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
+import { PrebidNativeProvider } from '../native';
 
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
@@ -16,10 +17,26 @@ export class Appnexus extends PrebidAdapter {
 		return Appnexus.bidderName;
 	}
 
+	isNativeModeOn(): boolean {
+		return context.get('bidders.prebid.appnexusNative.enabled');
+	}
+
 	prepareConfigForAdUnit(
 		code,
 		{ sizes, placementId, position = 'mobile' }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
+		if (context.get(`slots.${code}.isNative`)) {
+			const prebidNativeProvider = new PrebidNativeProvider();
+			if (prebidNativeProvider.isEnabled() && this.isNativeModeOn()) {
+				const template = prebidNativeProvider.getPrebidNativeTemplate();
+				return this.prepareNativeConfig(template, code, { sizes, placementId, position });
+			}
+		}
+
+		return this.prepareStandardConfig(code, { sizes, placementId, position });
+	}
+
+	prepareStandardConfig(code, { sizes, placementId, position }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
@@ -27,18 +44,59 @@ export class Appnexus extends PrebidAdapter {
 					sizes,
 				},
 			},
-			bids: [
-				{
-					bidder: this.bidderName,
-					params: {
-						placementId: placementId || this.getPlacement(position),
-						keywords: {
-							...this.getTargeting(code),
-						},
+			bids: this.getBids(code, { sizes, placementId, position }),
+		};
+	}
+
+	prepareNativeConfig(
+		template: string,
+		code,
+		{ sizes, placementId, position }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
+		return {
+			code,
+			mediaTypes: {
+				native: {
+					sendTargetingKeys: false,
+					adTemplate: template,
+					title: {
+						required: true,
+					},
+					body: {
+						required: true,
+					},
+					clickUrl: {
+						required: true,
+					},
+					icon: {
+						required: true,
+						aspect_ratios: [
+							{
+								min_width: 100,
+								min_height: 100,
+								ratio_width: 1,
+								ratio_height: 1,
+							},
+						],
 					},
 				},
-			],
+			},
+			bids: this.getBids(code, { sizes, placementId, position }),
 		};
+	}
+
+	getBids(code, { placementId, position = 'mobile' }: PrebidAdSlotConfig): PrebidBid[] {
+		return [
+			{
+				bidder: this.bidderName,
+				params: {
+					placementId: placementId || this.getPlacement(position),
+					keywords: {
+						...this.getTargeting(code),
+					},
+				},
+			},
+		];
 	}
 
 	getPlacement(position): string {

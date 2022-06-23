@@ -31,17 +31,15 @@ export function getAppnexusContext(): object {
 				],
 				position: 'hivi',
 			},
+			ntv_ad: {
+				position: 'native',
+			},
 		},
 		placements: {
 			atf: '11977073',
 			btf: '11977096',
 			hivi: '11977016',
-			other: '11969927',
-		},
-		recPlacements: {
-			atf: '11823778',
-			btf: '11823724',
-			hivi: '11823799',
+			native: '25450069',
 			other: '11969927',
 		},
 	};

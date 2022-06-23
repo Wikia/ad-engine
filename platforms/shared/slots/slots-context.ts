@@ -2,7 +2,6 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	Dictionary,
 	eventsRepository,
 	getAdProductInfo,
 	getAdUnitString,
@@ -10,7 +9,19 @@ import {
 	slotService,
 } from '@wikia/ad-engine';
 
-class SlotsContext {
+export interface SlotsContextInterface {
+	addSlotSize(slotName: string, size: [number, number]): void;
+
+	setSlotSize(slotName: string, size: [number, number]): void;
+
+	setupSlotVideoContext(): void;
+
+	setupSlotVideoAdUnit(adSlot: AdSlot, params: PorvataParams): void;
+
+	setState(slotName: string, state: boolean, status?: string): void;
+}
+
+class SlotsContext implements SlotsContextInterface {
 	addSlotSize(slotName: string, size: [number, number]): void {
 		if (!context.get(`slots.${slotName}`)) {
 			throw new Error('Requested ad slot is not defined in the ad context');
@@ -27,8 +38,21 @@ class SlotsContext {
 		}
 	}
 
-	setupSlotSizeOverwriting(map: Dictionary<[number, number]>): void {
-		context.set('templates.sizeOverwritingMap', map);
+	removeSlotSize(slotName: string, sizeToRemove: [number, number]): void {
+		if (!context.get(`slots.${slotName}`)) {
+			throw new Error('Requested ad slot is not defined in the ad context');
+		}
+
+		const defaultSizes = context
+			.get(`slots.${slotName}.defaultSizes`)
+			.filter((size) => size != sizeToRemove);
+
+		const sizes = context
+			.get(`slots.${slotName}.sizes`)
+			.map((size) => size.sizes.filter((size) => size != sizeToRemove));
+
+		context.set(`slots.${slotName}.defaultSizes`, defaultSizes);
+		context.set(`slots.${slotName}.sizes`, sizes);
 	}
 
 	setSlotSize(slotName: string, size: [number, number]): void {

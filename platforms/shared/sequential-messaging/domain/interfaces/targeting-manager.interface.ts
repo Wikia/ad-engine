@@ -1,3 +1,5 @@
+import { SequenceState } from '../data-structures/user-sequential-message-state';
+
 export interface TargetingManagerInterface {
-	setTargeting(adTargeting): void;
+	setTargeting(sequenceId: string, sequenceState: SequenceState): void;
 }

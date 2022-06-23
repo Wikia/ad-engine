@@ -39,9 +39,11 @@ export interface SlotConfig {
 	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
+	initStage?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
+	slotNameSuffix: string;
 	insertBeforeSelector?: string;
 	insertAfterSelector?: string;
 	parentContainerSelector?: string;
@@ -79,6 +81,9 @@ export class AdSlot {
 	static SLOT_LOADED_EVENT = 'slotLoaded';
 	static SLOT_VIEWED_EVENT = 'slotViewed';
 	static SLOT_RENDERED_EVENT = 'slotRendered';
+	static SLOT_VISIBILITY_CHANGED = 'slotVisibilityChanged';
+	static SLOT_BACK_TO_VIEWPORT = 'slotBackToViewport';
+	static SLOT_LEFT_VIEWPORT = 'slotLeftViewport';
 	static SLOT_STATUS_CHANGED = 'slotStatusChanged';
 	static DESTROYED_EVENT = 'slotDestroyed';
 	static HIDDEN_EVENT = 'slotHidden';
@@ -94,6 +99,7 @@ export class AdSlot {
 
 	static STATUS_BLOCKED = 'blocked';
 	static STATUS_COLLAPSE = 'collapse';
+	static STATUS_DISABLED = 'disabled';
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_FORCED_SUCCESS = 'forced_success';
 	static STATUS_MANUAL = 'manual';
@@ -131,10 +137,10 @@ export class AdSlot {
 	trackStatusAfterRendered = false;
 	slotViewed = false;
 
-	requested = null;
-	loaded = null;
-	rendered = null;
-	viewed = null;
+	requested: Promise<void> = null;
+	loaded: Promise<void> = null;
+	rendered: Promise<void> = null;
+	viewed: Promise<void> = null;
 
 	constructor(ad: AdStackPayload) {
 		this.config = context.get(`slots.${ad.id}`) || {};
@@ -145,6 +151,7 @@ export class AdSlot {
 		}
 
 		this.config.slotName = this.config.slotName || ad.id;
+		this.config.slotNameSuffix = this.config.slotNameSuffix || '';
 		this.config.targeting = this.config.targeting || ({} as Targeting);
 		this.config.targeting.src = this.config.targeting.src || context.get('src');
 		this.config.targeting.pos = this.config.targeting.pos || this.getSlotName();
@@ -290,6 +297,17 @@ export class AdSlot {
 		return Array.isArray(this.creativeSize) ? this.creativeSize.join('x') : this.creativeSize;
 	}
 
+	getCreativeSizeAsArray(): [number, number] | null {
+		if (!this.creativeSize) return null;
+
+		const size = Array.isArray(this.creativeSize)
+			? this.creativeSize
+			: this.creativeSize.split('x').map(Number);
+
+		// Type hack to make sure it will always return two element array
+		return [size[0], size[1]];
+	}
+
 	// Main position is the first value defined in the "pos" key-value (targeting)
 	getMainPositionName(): string {
 		const { pos = '' } = this.targeting;
@@ -339,7 +357,7 @@ export class AdSlot {
 		return result as Targeting;
 	}
 
-	getDefaultSizes(): string {
+	getDefaultSizes(): number[][] {
 		return this.config.defaultSizes;
 	}
 
@@ -375,6 +393,10 @@ export class AdSlot {
 
 	isEnabled(): boolean {
 		return this.enabled;
+	}
+
+	isInitStage(): boolean {
+		return !!this.config.initStage;
 	}
 
 	isFirstCall(): boolean {

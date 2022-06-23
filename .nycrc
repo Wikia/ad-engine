@@ -1,0 +1,27 @@
+{
+  "check-coverage": true,
+  "lines": 50,
+  "functions": 50,
+  "branches": 50,
+  "statements": 50,
+  "include": [
+    "src/**/*",
+    "platforms/**/*"
+  ],
+  "exclude": [
+    "build/",
+    "spec/**/*"
+  ],
+  "reporter": [
+    "html",
+    "text",
+    "clover"
+  ],
+  "extension": [
+    ".ts"
+  ],
+  "cache": true,
+  "all": true,
+  "sourceMap": false,
+  "instrument": false
+}

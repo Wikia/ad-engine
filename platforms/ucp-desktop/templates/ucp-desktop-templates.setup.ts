@@ -1,23 +1,24 @@
 import { registerInterstitialTemplate } from '@platforms/shared';
 import {
-	context,
+	AdSlot,
+	communicationService,
 	DiProcess,
+	eventsRepository,
 	logTemplates,
 	PorvataTemplate,
 	SafeFanTakeoverElement,
 	TemplateRegistry,
 	templateService,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
-import { registerBfaaOldTemplate } from './bfaa-old-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
 import { registerFloorAdhesionTemplate } from './floor-adhesion-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
-import { registerStickyTlbOldTemplate } from './sticky-tlb-old-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
@@ -27,13 +28,9 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 	}
 
 	execute(): void {
-		const bfaa$ = context.get('options.newBfaaTemplate')
-			? registerBfaaTemplate(this.registry)
-			: registerBfaaOldTemplate(this.registry);
+		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
-		const stickyTlb$ = context.get('templates.stickyTlb.forced')
-			? registerStickyTlbTemplate(this.registry)
-			: registerStickyTlbOldTemplate(this.registry);
+		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
 		const floorAdhesion$ = registerFloorAdhesionTemplate(this.registry);
 		const interstitial$ = registerInterstitialTemplate(this.registry);
@@ -45,5 +42,64 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 		templateService.register(SafeFanTakeoverElement);
+
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+			this.configureStickingCompanion();
+		});
+	}
+
+	private configureStickingCompanion(): void {
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				if (!this.registerStickingCompanionStickedListener()) {
+					return;
+				}
+
+				this.registerStickingCompanionViewedListener();
+			},
+			'top_boxad',
+			true,
+		);
+	}
+
+	private registerStickingCompanionStickedListener(): boolean {
+		const rightRailElement = document.querySelectorAll(
+			'.main-page-tag-rcs #top_boxad, #rail-boxad-wrapper',
+		)[0] as HTMLElement;
+
+		if (!rightRailElement) {
+			return false;
+		}
+
+		communicationService.onSlotEvent(
+			AdSlot.CUSTOM_EVENT,
+			({ payload }) => {
+				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
+					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
+					rightRailElement.style.top = `${tlbHeight}px`;
+				}
+			},
+			'top_leaderboard',
+		);
+
+		return true;
+	}
+
+	private registerStickingCompanionViewedListener(): void {
+		const pageElement = document.querySelector('.page');
+
+		communicationService.onSlotEvent(
+			AdSlot.SLOT_VIEWED_EVENT,
+			() => {
+				setTimeout(() => {
+					pageElement.classList.remove('companion-stick');
+				}, 500);
+			},
+			'top_boxad',
+			true,
+		);
+
+		pageElement.classList.add('companion-stick');
 	}
 }

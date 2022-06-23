@@ -5,7 +5,6 @@ import { createSandbox } from 'sinon';
 import { stubPbjs } from '../../ad-engine/services/pbjs.stub';
 
 const bidderConfig = {
-	lazyLoadingEnabled: false,
 	enabled: false,
 };
 
@@ -22,6 +21,24 @@ describe('PrebidProvider bidder', () => {
 
 	it('can be initialized', () => {
 		new PrebidProvider(bidderConfig);
+	});
+
+	it('reports as supported', async () => {
+		const prebid = new PrebidProvider(bidderConfig);
+
+		await prebid.configureAdUnits([
+			{
+				code: 'someslot',
+				bids: [
+					{
+						bidder: 'bidder',
+						params: {},
+					},
+				],
+			},
+		]);
+
+		expect(prebid.isSupported('someslot')).to.be.true;
 	});
 
 	describe('getTargetingKeys', () => {

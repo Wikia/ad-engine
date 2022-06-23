@@ -1,6 +1,5 @@
 import { AdSlot, context, TEMPLATE, UapParams } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { isUndefined } from 'util';
 import { NAVBAR } from '../configs/uap-dom-elements';
 
 @Injectable({ autobind: false })
@@ -63,7 +62,7 @@ export class UapDomReader {
 	}
 
 	getSlotHeightImpact(): number {
-		if (isUndefined(this.params?.config?.aspectRatio?.default)) {
+		if (this.params?.config?.aspectRatio?.default === undefined) {
 			return this.adSlot.element.offsetHeight;
 		}
 
@@ -71,7 +70,7 @@ export class UapDomReader {
 	}
 
 	getSlotHeightResolved(): number {
-		if (isUndefined(this.params?.config?.aspectRatio?.resolved)) {
+		if (this.params?.config?.aspectRatio?.resolved === undefined) {
 			return this.adSlot.element.offsetHeight;
 		}
 
@@ -93,7 +92,8 @@ export class UapDomReader {
 			return 'rect(0, 0, 0, 0)';
 		}
 
-		return `rect(0 ${this.adSlot.element.offsetWidth}px ${this.adSlot.element.offsetHeight -
-			scroll}px 0)`;
+		return `rect(0 ${this.adSlot.element.offsetWidth}px ${
+			this.adSlot.element.offsetHeight - scroll
+		}px 0)`;
 	}
 }

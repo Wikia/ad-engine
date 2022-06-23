@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { flattenDeep } from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { AdSlot, Dictionary, Type } from '../../models';
 import { TemplateAction } from './template-action';
@@ -10,7 +9,7 @@ import { TemplateState } from './template-state';
 import { TemplateStateHandler } from './template-state-handler';
 
 interface TemplateMachinePayload<
-	T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]> = any
+	T extends Dictionary<Type<TemplateStateHandler<keyof T>>[]> = any,
 > {
 	StateHandlerTypesDict: T;
 	initialStateKey: keyof T;
@@ -46,7 +45,7 @@ export class TemplateRegistry {
 			StateHandlerTypesDict,
 			initialStateKey,
 			emitter$,
-			templateDependencies: flattenDeep<TemplateDependency>(templateDependencies),
+			templateDependencies: templateDependencies.flat<TemplateDependency>(Infinity),
 		});
 
 		return emitter$.asObservable();
@@ -80,12 +79,8 @@ export class TemplateRegistry {
 			state: templateSlot ? templateSlot.getSlotName() : '',
 		});
 
-		const {
-			StateHandlerTypesDict,
-			initialStateKey,
-			emitter$,
-			templateDependencies,
-		} = this.settings.get(templateName);
+		const { StateHandlerTypesDict, initialStateKey, emitter$, templateDependencies } =
+			this.settings.get(templateName);
 
 		this.dependenciesManager.provideDependencies(
 			templateName,

@@ -79,6 +79,10 @@
             "sampling": 100.0,
             "samplingCache": true,
             "value": [
+                "5961631391",
+                "5961631094",
+                "5931314289",
+                "5815863298",
                 "5894071571",
                 "5893510273",
                 "5893555158",
@@ -1597,7 +1601,78 @@
                 "5925868046",
                 "5925317194",
                 "5925315250",
-                "5925317188"
+                "5927703560",
+                "5927703551",
+                "5927703554",
+                "5927703557",
+                "5927701154",
+                "5927688638",
+                "5925317188",
+                "5927165474",
+                "5937051333",
+                "5937051303",
+                "5937051306",
+                "5938352611",
+                "5938352620",
+                "5938352782",
+                "5942499064",
+                "5943444128",
+                "5946030709",
+                "5951191590",
+                "5958622771",
+                "5958623035",
+                "5960494496",
+                "5960494499",
+                "5957853519",
+                "5951191821",
+                "5957852610",
+                "5966168572",
+                "5966168575",
+                "5966713193",
+                "5966713196",
+                "5966719097",
+                "5966719100",
+                "5966719109",
+                "5966719115",
+                "5966719118",
+                "5941026674",
+                "5966719121",
+                "5964203430",
+                "5965980405",
+                "5965980402",
+                "5965655956",
+                "5968510558",
+                "5967056316",
+                "5969626223",
+                "5970648400",
+                "5974270234",
+                "6006980301",
+                "6006980295",
+                "6015110593",
+                "6015110284",
+                "6015110281",
+                "6015110158",
+                "6015110578",
+                "6015110590",
+                "6015110287",
+                "6015110575",
+                "6015354463",
+                "6026641864",
+                "6027417530",
+                "6027376982",
+                "6027376976",
+                "6026641885",
+                "6026641870",
+                "6026641864",
+                "6027738172",
+                "6027739849",
+                "6038048334",
+                "6038048820",
+                "6039946260",
+                "6039946254",
+                "6042001586",
+                "6041208700",
+                "6041208697"
             ]
         }
     ],
@@ -1628,16 +1703,19 @@
                 "XX"
             ],
             "value": [
-                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
+                "icLayoutInitializerSlot_A_50:lis_50_a",
+                "icLayoutInitializerSlot_B_50:lis_50_b",
+                "icTlbSizeReduction_A_50:sizes_reduced_50_a",
+                "icTlbSizeReduction_B_50:sizes_reduced_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icOutstreamExperiment_B_25:connatix",
-                "icOutstreamExperiment_B_33.3:exco",
-                "icOutstreamExperiment_B_50:anyclip",
-                "icOutstreamExperiment_B_100:distroscale"
+                "icGalactusInteraction_B_33.333:galactus_interaction_a",
+                "icGalactusInteraction_B_50:galactus_interaction_b",
+                "icGalactusInteraction_A_50:galactus_interaction_c",
+                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
+                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
             ]
         }
     ],
@@ -1654,6 +1732,51 @@
                 "XX"
             ],
             "value": 4000
+        }
+    ],
+    "icUAPJWPlayerLineItemIds": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": [
+                "5772218156",
+                "5923551774",
+                "5901640938",
+                "314345172",
+                "5951743095",
+                "6018566814",
+                "5951743089",
+                "5929089588",
+                "5929089315",
+                "5976512561",
+                "5929089315",
+                "5947810307",
+                "5743368233",
+                "5996361595",
+                "5955672672",
+                "5996341416",
+                "5998652572",
+                "6013244788",
+                "5929089573",
+                "6014420053",
+                "6014347435",
+                "6020782558",
+                "5943764617",
+                "6022822295",
+                "6014419390",
+                "5926127176",
+                "6017948817",
+                "6005712633",
+                "6013252078",
+                "6020811777",
+                "6047630064"
+            ]
         }
     ],
     "icFacebookPixel": [
@@ -1739,10 +1862,10 @@
         {
             "apps": [
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "AU",
@@ -1752,10 +1875,14 @@
                 "ES",
                 "FR",
                 "GB",
+                "ID",
                 "IT",
+                "MY",
                 "NZ",
+                "PH",
                 "PL",
                 "SG",
+                "TH",
                 "UK",
                 "US"
             ],
@@ -1773,6 +1900,21 @@
                 "US"
             ],
             "value": true
+        }
+    ],
+    "icAudigentSegmentLimit": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile",
+                "futhead",
+                "muthead"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": 100
         }
     ],
     "icIASVideoTracking": [
@@ -1794,6 +1936,20 @@
                 "SG",
                 "UK",
                 "US"
+            ],
+            "value": true
+        }
+    ],
+    "icBTRec": [
+        {
+            "apps": [
+                "f2"
+            ],
+            "devices": [
+                "desktop"
+            ],
+            "regions": [
+                "XX"
             ],
             "value": true
         }
@@ -1861,22 +2017,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icTrackingOptInLibraryUrl": [
-        {
-            "apps": [
-                "bingebot",
-                "f2",
-                "fandomdesktop",
-                "fandommobile",
-                "futhead",
-                "muthead"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/tracking-opt-in/v7.5.0/tracking-opt-in.min.js"
         }
     ],
     "icNielsen": [

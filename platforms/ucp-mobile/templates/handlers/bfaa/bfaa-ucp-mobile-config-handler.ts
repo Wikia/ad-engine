@@ -14,6 +14,11 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'mobile_prefooter', 'bottom_leaderboard'];
+
+		if (this.params.newTakeoverConfig) {
+			enabledSlots.push('floor_adhesion');
+		}
+
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
@@ -23,11 +28,9 @@ export class BfaaUcpMobileConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.incontent_boxad_1.repeat', null);
 
-		const additionalSizes = universalAdPackage.UAP_ADDITIONAL_SIZES.mobile;
-
-		slotsContext.setupSlotSizeOverwriting(additionalSizes);
-		slotsContext.addSlotSize('top_boxad', additionalSizes.companionSize);
-		slotsContext.addSlotSize('mobile_prefooter', additionalSizes.companionSize);
-		slotsContext.setSlotSize('bottom_leaderboard', additionalSizes.bfaSize);
+		slotsContext.setSlotSize(
+			'bottom_leaderboard',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
+		);
 	}
 }

@@ -1,7 +1,9 @@
 import {
 	insertSlots,
 	MessageBoxService,
+	NativoSlotsDefinitionRepository,
 	PlaceholderService,
+	QuizSlotsDefinitionRepository,
 	slotsContext,
 } from '@platforms/shared';
 import {
@@ -13,6 +15,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	fillerService,
+	Nativo,
 	PorvataFiller,
 	slotService,
 	universalAdPackage,
@@ -26,16 +29,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private CODE_PRIORITY = {
 		floor_adhesion: {
 			active: false,
+			ignore: false,
 		},
 	};
 
-	constructor(private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository) {}
+	constructor(
+		private slotsDefinitionRepository: UcpMobileSlotsDefinitionRepository,
+		private nativoSlotDefinitionRepository: NativoSlotsDefinitionRepository,
+		private quizSlotsDefinitionRepository: QuizSlotsDefinitionRepository,
+	) {}
 
 	execute(): void {
 		this.injectSlots();
+		this.configureTopLeaderboardAndCompanions();
 		this.configureIncontentPlayer();
 		this.configureInterstitial();
-		this.registerTopLeaderboardCodePriority();
 		this.registerFloorAdhesionCodePriority();
 		this.registerAdPlaceholderService();
 	}
@@ -45,16 +53,29 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 
 		insertSlots([
 			topLeaderboardDefinition,
-			this.slotsDefinitionRepository.getNativoIncontentAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoIncontentAdConfig(4),
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
-			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
-			this.slotsDefinitionRepository.getNativoFeedAdConfig(),
+			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
+				slotName: Nativo.FEED_AD_SLOT_NAME,
+				anchorSelector: '.recirculation-prefooter',
+				insertMethod: 'before',
+				classList: ['ntv-ad', 'hide'],
+			}),
 		]);
+
+		if (context.get('custom.hasFeaturedVideo')) {
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
+				this.waitForFloorAdhesionInjection.bind(this),
+			);
+		} else {
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+		}
 
 		if (!topLeaderboardDefinition) {
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
@@ -65,15 +86,55 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				});
 			});
 		}
+
+		communicationService.on(
+			eventsRepository.QUIZ_AD_INJECTED,
+			(payload) => {
+				insertSlots([this.quizSlotsDefinitionRepository.getQuizAdConfig(payload.slotId)]);
+			},
+			false,
+		);
+	}
+
+	private configureTopLeaderboardAndCompanions(): void {
+		if (
+			!context.get('custom.hasFeaturedVideo') &&
+			context.get('wiki.targeting.pageType') !== 'search'
+		) {
+			slotsContext.addSlotSize(
+				'top_leaderboard',
+				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
+			);
+
+			if (context.get('templates.stickyTlb.lineItemIds')) {
+				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
+			}
+		}
+
+		slotsContext.addSlotSize(
+			'top_boxad',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
+			'incontent_boxad_1',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
+		slotsContext.addSlotSize(
+			'mobile_prefooter',
+			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['4x4'].size,
+		);
 	}
 
 	private configureIncontentPlayer(): void {
 		const icpSlotName = 'incontent_player';
 
-		slotService.setState(
-			'incontent_player',
-			context.get('custom.hasIncontentPlayer') && context.get('wiki.targeting.pageType') !== 'home',
-		);
+		if (
+			!context.get('custom.hasIncontentPlayer') ||
+			context.get('wiki.targeting.pageType') === 'home'
+		) {
+			context.set(`slots.${icpSlotName}.disabled`, true);
+		}
+
 		context.set(`slots.${icpSlotName}.customFiller`, 'porvata');
 		context.set(`slots.${icpSlotName}.customFillerOptions`, {});
 
@@ -100,29 +161,27 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
-	private registerTopLeaderboardCodePriority(): void {
-		const STICKY_SLOT_LOG_GROUP = 'sticky-tlb';
-
-		if (
-			!context.get('custom.hasFeaturedVideo') &&
-			context.get('wiki.targeting.pageType') !== 'search'
-		) {
-			slotsContext.addSlotSize('top_leaderboard', [2, 2]);
-
-			if (context.get('templates.stickyTlb.lineItemIds')) {
-				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
-
-				utils.logger(
-					STICKY_SLOT_LOG_GROUP,
-					'Found sticky slot line-items IDs - enabling stickyTlb template for top_leaderboard slot',
-				);
-			} else {
-				utils.logger(
-					STICKY_SLOT_LOG_GROUP,
-					'No sticky slot line-items IDs found - stickyTlb template disabled for top_leaderboard slot',
-				);
-			}
-		}
+	private waitForFloorAdhesionInjection(): void {
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				const noTries = 2500;
+				const retryTimeout = 500;
+				new utils.WaitFor(
+					() =>
+						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
+					noTries,
+					0,
+					retryTimeout,
+				)
+					.until()
+					.then(() => {
+						insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+					});
+			},
+			'featured',
+			true,
+		);
 	}
 
 	private registerFloorAdhesionCodePriority(): void {
@@ -138,8 +197,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = true;
 
+				communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+					this.CODE_PRIORITY.floor_adhesion.ignore = true;
+				});
+
 				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
-					if (this.CODE_PRIORITY.floor_adhesion.active) {
+					if (
+						!this.CODE_PRIORITY.floor_adhesion.ignore &&
+						this.CODE_PRIORITY.floor_adhesion.active
+					) {
 						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 					}
 				});

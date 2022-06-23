@@ -11,6 +11,7 @@ import {
 	eventsRepository,
 	FuncPipelineStep,
 	GAMOrigins,
+	globalAction,
 	InstantConfigCacheStorage,
 	interventionTracker,
 	porvataTracker,
@@ -29,11 +30,15 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
 import { PageTracker } from './page-tracker';
+import { props } from 'ts-action';
 
 const bidderTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengbidders';
 const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengadinfo';
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
+const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
+
+const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
 interface TrackingMiddlewares {
 	slotTrackingMiddlewares?: FuncPipelineStep<AdInfoContext>[];
@@ -80,6 +85,8 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
+		this.optimeraTracker();
+		this.identityTracker();
 	}
 
 	private porvataTracker(): void {
@@ -147,8 +154,9 @@ export class TrackingSetup {
 
 		adClickTracker.add(...this.slotTrackingMiddlewares);
 		adClickTracker.register(({ data }: Dictionary) => {
+			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
+			communicationService.dispatch(adClickedAction(data));
 			dataWarehouseTracker.track(data, slotTrackingUrl);
-
 			return data;
 		});
 	}
@@ -164,6 +172,14 @@ export class TrackingSetup {
 			dataWarehouseTracker.track(data, bidderTrackingUrl);
 
 			return data;
+		});
+
+		communicationService.on(eventsRepository.BIDDERS_BIDS_CALLED, () => {
+			this.pageTracker.trackProp('load_time_prebidAuctionStarted', Date.now().toString());
+		});
+
+		communicationService.on(eventsRepository.BIDDERS_INIT_STAGE_DONE, () => {
+			this.pageTracker.trackProp('load_time_prebidAuctionEnded', Date.now().toString());
 		});
 	}
 
@@ -343,6 +359,34 @@ export class TrackingSetup {
 			eventsRepository.ATS_NOT_LOADED_LOGGED,
 			(props) => {
 				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
+			},
+			false,
+		);
+	}
+
+	private optimeraTracker(): void {
+		communicationService.on(
+			eventsRepository.OPTIMERA_FINISHED,
+			() => {
+				this.pageTracker.trackProp('optimera', 'finished');
+			},
+			false,
+		);
+	}
+
+	private identityTracker(): void {
+		const dataWarehouseTracker = new DataWarehouseTracker();
+
+		communicationService.on(
+			eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
+			(eventInfo) => {
+				dataWarehouseTracker.track(
+					{
+						partner_name: eventInfo.payload.partnerName,
+						partner_identity_id: eventInfo.payload.partnerIdentityId,
+					},
+					identityTrackingUrl,
+				);
 			},
 			false,
 		);

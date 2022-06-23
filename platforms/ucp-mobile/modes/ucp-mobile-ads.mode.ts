@@ -8,14 +8,17 @@ import {
 	context,
 	DiProcess,
 	durationMedia,
+	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
 	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
-	nativo,
+	liveConnect,
 	nielsen,
+	optimera,
+	prebidNativeProvider,
 	Runner,
 	silverSurferService,
 	stroer,
@@ -23,7 +26,7 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
@@ -50,17 +53,18 @@ export class UcpMobileAdsMode implements DiProcess {
 		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.requestBids());
+		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(wadRunner.call());
 		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(wadRunner.call());
 
+		eyeota.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		stroer.call();
 		durationMedia.call();
-		nativo.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
@@ -68,7 +72,9 @@ export class UcpMobileAdsMode implements DiProcess {
 		});
 
 		adMarketplace.initialize();
+		prebidNativeProvider.initialize();
 		identityHub.call();
+		liveConnect.call();
 
 		return inhibitors;
 	}
@@ -97,7 +103,9 @@ export class UcpMobileAdsMode implements DiProcess {
 			return;
 		}
 
-		window.tabId = sessionStorage.tab_id ? sessionStorage.tab_id : (sessionStorage.tab_id = uuid());
+		window.tabId = sessionStorage.tab_id
+			? sessionStorage.tab_id
+			: (sessionStorage.tab_id = nanoid());
 
 		this.pageTracker.trackProp('tab_id', window.tabId);
 	}

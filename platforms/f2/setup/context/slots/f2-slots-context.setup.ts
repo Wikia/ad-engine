@@ -1,5 +1,5 @@
 import { slotsContext } from '@platforms/shared';
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, DiProcess, universalAdPackage } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
@@ -8,7 +8,6 @@ export class F2SlotsContextSetup implements DiProcess {
 		const slots = {
 			top_leaderboard: {
 				group: 'LB',
-				slotShortcut: 'l',
 				aboveTheFold: true,
 				firstCall: true,
 				sizes: [
@@ -19,7 +18,7 @@ export class F2SlotsContextSetup implements DiProcess {
 							[970, 250],
 							[1024, 416],
 							[1440, 585],
-							[3, 3],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 						],
 					},
 					{
@@ -28,31 +27,20 @@ export class F2SlotsContextSetup implements DiProcess {
 							[728, 90],
 							[970, 250],
 							[1024, 416],
-							[3, 3],
+							universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop,
 						],
 					},
 					{
 						viewportSize: [970, 200],
-						sizes: [
-							[728, 90],
-							[970, 250],
-							[3, 3],
-						],
+						sizes: [[728, 90], [970, 250], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 					},
 					{
 						viewportSize: [840, 200],
-						sizes: [
-							[728, 90],
-							[3, 3],
-						],
+						sizes: [[728, 90], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop],
 					},
 					{
 						viewportSize: [320, 200],
-						sizes: [
-							[320, 50],
-							[320, 480],
-							[2, 2],
-						],
+						sizes: [[320, 50], [320, 480], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 						mobileViewport: true,
 					},
 					{
@@ -76,7 +64,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			},
 			top_boxad: {
 				group: 'MR',
-				slotShortcut: 'm',
 				aboveTheFold: true,
 				sizes: [
 					{
@@ -113,7 +100,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			incontent_boxad: {
 				disabled: true,
 				group: 'HiVi',
-				slotShortcut: 'f',
 				sizes: [
 					{
 						viewportSize: [0, 0],
@@ -142,7 +128,6 @@ export class F2SlotsContextSetup implements DiProcess {
 			bottom_leaderboard: {
 				disabled: true,
 				group: 'PF',
-				slotShortcut: 'b',
 				sizes: [
 					{
 						viewportSize: [840, 100],
@@ -162,7 +147,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
-				slotNameSuffix: '',
 				group: 'VIDEO',
 				targeting: {
 					uap: 'none',
@@ -172,7 +156,6 @@ export class F2SlotsContextSetup implements DiProcess {
 				isVideo: true,
 			},
 			video: {
-				slotNameSuffix: '',
 				group: 'VIDEO',
 				targeting: {
 					uap: 'none',

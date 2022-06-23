@@ -66,6 +66,35 @@ class ScriptLoader implements ScriptLoaderInterface {
 			script.onerror = reject;
 		});
 	}
+
+	loadAsset(
+		url: string,
+		responseType: XMLHttpRequestResponseType = 'json',
+	): Promise<string | null> {
+		const request = new XMLHttpRequest();
+
+		request.open('GET', url, true);
+		request.responseType = responseType;
+
+		return new Promise((resolve) => {
+			request.addEventListener('timeout', () => {
+				resolve(null);
+			});
+			request.addEventListener('error', () => {
+				resolve(null);
+			});
+			request.onreadystatechange = function (): void {
+				if (this.readyState === this.DONE) {
+					if (this.status === 200) {
+						resolve(this.response);
+					} else {
+						resolve(null);
+					}
+				}
+			};
+			request.send();
+		});
+	}
 }
 
 export const scriptLoader = new ScriptLoader();

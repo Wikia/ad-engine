@@ -22,11 +22,12 @@ class IdentityHub {
 			// it needs to be defined before loading the script
 			window.PWT = {
 				jsLoaded: () => {
-					utils.logger(logGroup, 'scriptLoader.loadScript loaded');
+					utils.logger(logGroup, 'jsLoaded done');
 					return Promise.resolve();
 				},
 			};
 			return utils.scriptLoader.loadScript(this.identityHubScriptSrc).then(() => {
+				utils.logger(logGroup, 'script loaded');
 				this.isLoaded = true;
 			});
 		}

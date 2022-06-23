@@ -1,14 +1,10 @@
 import {
 	AdEngineRunnerSetup,
-	BiddersStateSetup,
+	shouldUseAdLayouts,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
-	NoAdsDetector,
-	NoAdsMode,
-	SequentialMessagingSetup,
 	TrackingSetup,
-	UcpBaseContextSetup,
 	UcpTargetingSetup,
 	WikiContextSetup,
 } from '@platforms/shared';
@@ -22,18 +18,16 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
-import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads.mode';
-import { UcpDesktopA9ConfigSetup } from './setup/context/a9/ucp-desktop-a9-config.setup';
-import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-prebid-config.setup';
+import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
-import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
-import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
+import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
+import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
+import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
 
 @Injectable()
 export class UcpDesktopPlatform {
-	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
+	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
 		// Config
@@ -42,28 +36,18 @@ export class UcpDesktopPlatform {
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			UcpDesktopIocSetup,
 			WikiContextSetup,
-			UcpBaseContextSetup,
+			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
-			SequentialMessagingSetup,
-			UcpDesktopPrebidConfigSetup,
-			UcpDesktopA9ConfigSetup,
-			UcpDesktopDynamicSlotsSetup,
-			UcpDesktopSlotsStateSetup,
-			BiddersStateSetup,
-			UcpDesktopTemplatesSetup,
+			conditional(shouldUseAdLayouts, {
+				yes: UcpDesktopAdLayoutSetup,
+				no: UcpDesktopLegacySetup,
+			}),
+			NoAdsExperimentSetup,
 			LabradorSetup,
 			TrackingSetup,
 			AdEngineRunnerSetup,
 			() => communicationService.emit(eventsRepository.AD_ENGINE_CONFIGURED),
-		);
-
-		// Run
-		this.pipeline.add(
-			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: UcpDesktopAdsMode,
-				no: NoAdsMode,
-			}),
 		);
 
 		this.pipeline.execute();

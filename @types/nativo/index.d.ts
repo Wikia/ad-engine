@@ -3,11 +3,29 @@ interface NativoPostRelease {
 }
 
 interface NativoConfiguration {
-	ptd?: any[];
+	ptd?: number[];
 	infScrollReset?: boolean;
 }
 
-interface NativoQueue {
-	cmd?: any[];
-	Events?: any;
+interface NativoResponseEvent {
+	adLocation: string;
+	id: number;
+	placement: number;
+}
+
+interface NativoCompleteEvent {
+	data: NativoResponseEvent;
+}
+
+interface NativoNoAdEvent {
+	data: Pick<NativoResponseEvent, 'id', 'adLocation'>[];
+}
+
+interface NativoApi {
+	cmd?: unknown[];
+	Events?: {
+		PubSub: {
+			subscribe(status?: string, fn: (e: NativoNoAdEvent | NativoCompleteEvent) => void): void;
+		};
+	};
 }

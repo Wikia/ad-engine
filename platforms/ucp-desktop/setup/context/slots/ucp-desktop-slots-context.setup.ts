@@ -9,11 +9,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
+				initStage: true,
 				adProduct: 'top_leaderboard',
-				slotNameSuffix: '',
 				group: 'LB',
 				options: {},
-				slotShortcut: 'l',
 				sizes: [
 					{
 						viewportSize: [1024, 0],
@@ -47,10 +46,9 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			top_boxad: {
 				adProduct: 'top_boxad',
 				aboveTheFold: true,
-				slotNameSuffix: '',
+				initStage: true,
 				group: 'MR',
 				options: {},
-				slotShortcut: 'm',
 				defaultSizes: [
 					[300, 250],
 					[300, 600],
@@ -64,12 +62,10 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			incontent_boxad_1: {
 				adProduct: 'incontent_boxad_1',
 				bidderAlias: 'incontent_boxad_1',
-				slotNameSuffix: '',
 				group: 'HiVi',
 				insertBeforeSelector: '#incontent_boxad_1',
 				recirculationElementSelector: '#recirculation-rail',
 				options: {},
-				slotShortcut: 'f',
 				sizes: [],
 				defaultSizes: [
 					[120, 600],
@@ -84,10 +80,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
-				slotNameSuffix: '',
 				group: 'PF',
 				options: {},
-				slotShortcut: 'b',
 				sizes: [
 					{
 						viewportSize: [1024, 0],
@@ -122,9 +116,7 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				audio: false,
 				isVideo: true,
 				insertBeforeSelector: '#mw-content-text > div > h2',
-				slotNameSuffix: '',
 				group: 'HiVi',
-				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'middle',
@@ -134,7 +126,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
-				slotNameSuffix: '',
 				group: 'PF',
 				options: {},
 				targeting: {
@@ -146,7 +137,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			},
 			invisible_high_impact_2: {
 				adProduct: 'invisible_high_impact_2',
-				slotNameSuffix: '',
 				group: 'PX',
 				options: {},
 				outOfPage: true,
@@ -156,8 +146,8 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
+				initStage: true,
 				adProduct: 'featured',
-				slotNameSuffix: '',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
 				targeting: {
@@ -166,6 +156,34 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				trackEachStatus: true,
 				trackingKey: 'featured-video',
 				isVideo: true,
+			},
+			ntv_ad: {
+				providers: ['nativo'],
+				trackEachStatus: true,
+				isNative: true,
+			},
+			ntv_feed_ad: {
+				providers: ['nativo'],
+				trackEachStatus: true,
+				isNative: true,
+			},
+			quiz_leaderboard_start: {
+				adProduct: 'quiz_leaderboard_start',
+				defaultSizes: [[728, 90]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_leaderboard_finish: {
+				adProduct: 'quiz_leaderboard_finish',
+				defaultSizes: [[728, 90]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_incontent: {
+				adProduct: 'quiz_incontent',
+				defaultSizes: [[300, 250]],
+				group: 'quiz',
+				options: {},
 			},
 		};
 

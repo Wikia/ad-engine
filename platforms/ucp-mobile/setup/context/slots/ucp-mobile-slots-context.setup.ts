@@ -14,12 +14,11 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
+				initStage: true,
 				adProduct: 'top_leaderboard',
-				slotNameSuffix: '',
 				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
 				options: {},
-				slotShortcut: 'l',
 				sizes: [],
 				defaultSizes: [
 					[320, 50],
@@ -41,10 +40,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'top_boxad',
 				avoidConflictWith: '.ad-slot,.ntv-ad',
 				bidderAlias: 'mobile_in_content',
-				slotNameSuffix: '',
 				group: 'MR',
 				options: {},
-				slotShortcut: 'm',
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -77,11 +74,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				bidderAlias: 'mobile_in_content',
 				viewabilityCounterId: 'incontent_boxad',
 				defaultClasses: ['hide', 'ad-slot'],
-				slotNameSuffix: '',
 				group: 'HiVi',
 				options: {},
 				parentContainerSelector: '.incontent-boxad',
-				slotShortcut: 'f',
 				sizes: [
 					{
 						viewportSize: [BIG_VIEWPORT_SIZE.width, BIG_VIEWPORT_SIZE.height],
@@ -114,11 +109,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				audio: false,
 				insertBeforeSelector: '.mw-parser-output > h2',
 				parentContainerSelector: '.incontent-boxad',
-				disabled: true,
 				defaultClasses: ['hide'],
-				slotNameSuffix: '',
 				group: 'HiVi',
-				slotShortcut: 'i',
 				defaultSizes: [[1, 1]],
 				targeting: {
 					loc: 'middle',
@@ -129,11 +121,9 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			mobile_prefooter: {
 				adProduct: 'mobile_prefooter',
-				slotNameSuffix: '',
 				disabled: true,
 				group: 'PF',
 				options: {},
-				slotShortcut: 'p',
 				sizes: [],
 				defaultSizes: [
 					[320, 50],
@@ -151,7 +141,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			interstitial: {
 				adProduct: 'interstitial',
 				defaultClasses: ['hide'],
-				slotNameSuffix: '',
 				group: 'IU',
 				options: {},
 				outOfPage: true,
@@ -164,7 +153,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			floor_adhesion: {
 				adProduct: 'floor_adhesion',
 				defaultClasses: ['hide'],
-				slotNameSuffix: '',
 				group: 'PF',
 				options: {},
 				outOfPage: false,
@@ -201,10 +189,8 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			bottom_leaderboard: {
 				adProduct: 'bottom_leaderboard',
-				slotNameSuffix: '',
 				group: 'PF',
 				options: {},
-				slotShortcut: 'b',
 				sizes: [
 					{
 						viewportSize: [375, 627],
@@ -232,7 +218,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			invisible_high_impact_2: {
 				adProduct: 'invisible_high_impact_2',
-				slotNameSuffix: '',
 				defaultClasses: ['hide'],
 				group: 'PX',
 				options: {},
@@ -243,15 +228,44 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
+				initStage: true,
 				adProduct: 'featured',
-				slotNameSuffix: '',
 				group: 'VIDEO',
+				videoSizes: [[640, 480]],
 				targeting: {
-					uap: 'none',
+					rv: 1,
 				},
-				trackingKey: 'featured-video',
 				trackEachStatus: true,
+				trackingKey: 'featured-video',
 				isVideo: true,
+			},
+			ntv_ad: {
+				providers: ['nativo'],
+				trackEachStatus: true,
+				isNative: true,
+			},
+			ntv_feed_ad: {
+				providers: ['nativo'],
+				trackEachStatus: true,
+				isNative: true,
+			},
+			quiz_leaderboard_start: {
+				adProduct: 'quiz_leaderboard_start',
+				defaultSizes: [[320, 50]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_leaderboard_finish: {
+				adProduct: 'quiz_leaderboard_finish',
+				defaultSizes: [[320, 50]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_incontent: {
+				adProduct: 'quiz_incontent',
+				defaultSizes: [[300, 250]],
+				group: 'quiz',
+				options: {},
 			},
 		};
 

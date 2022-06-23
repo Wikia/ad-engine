@@ -1,18 +1,30 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const platformsConfig = require('./platforms/platforms.json');
 const common = require('./webpack.common.js');
+const webpack = require('webpack');
 
 const platforms = ({ entry }) => ({
 	entry,
+
+	resolve: {
+		fallback: {
+			util: require.resolve('util/'),
+		},
+	},
 
 	output: {
 		filename: '[name]/main.bundle.js',
 		path: path.resolve(__dirname, `dist/platforms`),
 	},
 
-	plugins: [new MiniCssExtractPlugin({ filename: '[name]/styles.css' })],
+	plugins: [
+		new MiniCssExtractPlugin({ filename: '[name]/styles.css' }),
+		new webpack.ProvidePlugin({
+			process: 'process/browser',
+		}),
+	],
 
 	performance: {
 		maxAssetSize: 310000,
@@ -20,9 +32,8 @@ const platforms = ({ entry }) => ({
 	},
 
 	devServer: {
-		inline: false,
 		port: 9000,
-		contentBase: `dist/platforms`,
+		static: `dist/platforms`,
 	},
 
 	devtool: 'source-map',

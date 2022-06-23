@@ -1,5 +1,4 @@
 import { RxJsOperator } from '@ad-engine/models';
-import { merge as _merge } from 'lodash';
 import { merge, Observable, of } from 'rxjs';
 import {
 	distinctUntilChanged,
@@ -25,7 +24,7 @@ export interface JwpStatelessEvent<TEvent extends JwpEventKey> extends JwpNamedE
 
 export function ofJwpStatelessEvent<
 	T extends JwpEventName[],
-	P extends JwpStatelessEvent<T[number]>
+	P extends JwpStatelessEvent<T[number]>,
 >(...names: T): RxJsOperator<JwpStatelessEvent<any>, P> {
 	return (source: Observable<any>) => source.pipe(filter(({ name }) => names.includes(name)));
 }
@@ -124,9 +123,16 @@ function ensureEventTag<T extends { payload: JWPlayerEvent }>(
 		adRequest$.pipe(map((adRequest: { payload: JWPlayerEvent }) => adRequest.payload)),
 	);
 
+	const removeUndefinedKeys = (obj) => {
+		for (const key in obj) if (obj[key] === undefined) delete obj[key];
+		return obj;
+	};
+
 	return (source: Observable<T>) =>
 		source.pipe(
 			withLatestFrom(base$),
-			map(([jwplayerEvent, adRequestEvent]) => _merge(adRequestEvent, jwplayerEvent)),
+			map(([jwplayerEvent, adRequestEvent]) =>
+				Object.assign({}, adRequestEvent, removeUndefinedKeys(jwplayerEvent)),
+			),
 		);
 }

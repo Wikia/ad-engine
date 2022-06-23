@@ -26,11 +26,13 @@ interface Window {
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;
+	liQ?: any;
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
-	ntv?: NativoQueue;
+	ntv?: NativoApi;
 	NOLBUNDLE?: any;
+	pbjs?: any;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
@@ -44,4 +46,6 @@ interface Window {
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
+	oVa?: any; // Optimera variable
+	oDv?: any; // Optimera variable
 }

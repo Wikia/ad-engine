@@ -1,9 +1,9 @@
-import { buildVastUrl, context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
+import { context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 
 const price = utils.queryString.get('wikia_video_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
-const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 0;
+const timeout = parseInt(utils.queryString.get('wikia_adapter_timeout'), 10) || 100;
 const useRandomPrice = utils.queryString.get('wikia_adapter_random') === '1';
 
 export class WikiaVideo extends PrebidAdapter {
@@ -18,13 +18,13 @@ export class WikiaVideo extends PrebidAdapter {
 
 		this.enabled = !!price;
 		this.limit = limit;
-		this.useRandomPrice = useRandomPrice;
 		this.timeout = timeout;
+		this.useRandomPrice = useRandomPrice;
 		this.isCustomBidAdapter = true;
 	}
 
 	static getVastUrl(width, height, slotName): string {
-		return buildVastUrl(width / height, slotName, {
+		return utils.buildVastUrl(width / height, slotName, {
 			videoAdUnitId: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.videoAdUnitId`),
 			customParams: context.get(`bidders.prebid.wikiaVideo.slots.${slotName}.customParams`),
 		});

@@ -7,21 +7,12 @@ export class LogoReplacementUcpMobileHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: LogoReplacementParams) {}
 
 	async onEnter(): Promise<void> {
-		// ADEN-11573: Cleanup after switch (L11-15)
-		const fandomLogo = document.querySelector(
-			'.mobile-global-navigation__logo,.wds-global-navigation__logo',
-		);
-		const fandomLogoParent = document.querySelector(
-			'.mobile-global-navigation__left,.wds-global-navigation__content-bar-left',
-		);
-		const fandomHeart = document.querySelector(
-			'.mobile-global-navigation__logomark,.wds-global-navigation__logo-heart-link',
-		);
-		const separator = document.querySelector(
-			'.mobile-global-navigation__community-bar-separator,.wds-global-navigation__community-bar-separator',
-		);
+		const fandomLogo = document.querySelector('.mobile-global-navigation__logo');
+		const fandomLogoParent = document.querySelector('.mobile-global-navigation__left');
+		const fandomHeart = document.querySelector('.mobile-global-navigation__logomark');
+		const separator = document.querySelector('.mobile-global-navigation__community-bar-separator');
 		const fandomHeartSeparatorParent = document.querySelector(
-			'.mobile-global-navigation__community-bar,.wds-global-navigation__community-bar',
+			'.mobile-global-navigation__community-bar',
 		);
 
 		if (fandomLogoParent && fandomLogo && fandomHeartSeparatorParent && separator) {

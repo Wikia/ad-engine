@@ -1,82 +1,116 @@
-import {
-	communicationService,
-	context,
-	DiProcess,
-	eventsRepository,
-	InstantConfigService,
-	ofType,
-} from '@wikia/ad-engine';
-import { Injectable } from '@wikia/dependency-injection';
+import { communicationService, context, resolvedState, utils } from '@wikia/ad-engine';
 import Cookies from 'js-cookie';
-import { filter, take } from 'rxjs/operators';
 import { SequenceContinuationHandler } from './domain/sequence-continuation-handler';
 import { SequenceStartHandler } from './domain/sequence-start-handler';
-import { SequentialMessagingConfigStore } from './infrastructure/sequential-messaging-config-store';
 import { UserSequentialMessageStateStore } from './infrastructure/user-sequential-message-state-store';
-import { TargetingManager } from './infrastructure/targeting-manager';
-import { Sequence } from './domain/data-structures/sequence';
-import { SequenceStateHandlerInterface } from './domain/services/sequence-state-handlers/sequence-state-handler-interface';
+import { GamTargetingManager } from './infrastructure/gam-targeting-manager';
+import { slotsContext } from '../slots/slots-context';
+import { SequenceEndHandler } from './domain/sequence-end-handler';
+import { SequenceEventTypes } from './infrastructure/sequence-event-types';
+import { KibanaLogger } from './kibana-logger';
 
-interface Action {
-	event: string;
-	slot: { lineItemId: string; creativeId: string };
+function kibanaLogger() {
+	// This is to ensure Kibana logging will work on F2
+	if (!context.get('services.externalLogger.endpoint')) {
+		context.set(
+			'services.externalLogger.endpoint',
+			'https://community.fandom.com/wikia.php?controller=AdEngine&method=postLog',
+		);
+	}
+
+	window['smTracking'] = new KibanaLogger();
 }
 
-@Injectable()
-export class SequentialMessagingSetup implements DiProcess {
-	constructor(private instantConfig: InstantConfigService) {}
+function recordGAMCreativePayload(payload) {
+	if (window['smTracking'] == undefined) {
+		kibanaLogger();
+	}
+
+	window['smTracking'].recordGAMCreativePayload(payload);
+}
+
+export class SequentialMessagingSetup {
+	// Special targeting sizes are aligned with sequence steps e.g.
+	// step 2 is targeted using size 12x12
+	// step 3 is targeted using size 13x13
+	static readonly baseTargetingSize = 10;
+	private readonly userStateStore: UserSequentialMessageStateStore;
+
+	constructor() {
+		this.userStateStore = new UserSequentialMessageStateStore(Cookies);
+	}
 
 	async execute(): Promise<void> {
-		if (!this.handleOngoingSequence()) {
-			this.detectNewSequentialAd();
+		// This will only work when we assume allowing one sequence at a time to be in progress
+		if (this.userStateStore.get() == null) {
+			this.handleSequenceStart();
+			return;
 		}
+		this.handleOngoingSequence();
+		this.handleSequenceEnd();
 	}
 
-	private detectNewSequentialAd(): void {
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: Action) => action.event === 'slotShowed'),
-				take(1),
-			)
-			.subscribe((action: Action) => {
-				const lineItemId = action.slot.lineItemId;
-				const creativeId = action.slot.creativeId;
-				if (lineItemId == null) {
-					return;
-				}
+	private handleSequenceStart(): void {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_STARTED, (payload) => {
+			const lineItemId = payload.lineItemId;
+			const width = payload.width;
+			const height = payload.height;
+			const uap = payload.uap === undefined ? false : payload.uap;
+			if (lineItemId == null || width == null || height == null) {
+				return;
+			}
 
-				const sequence: Sequence = { id: lineItemId.toString(), stepId: creativeId.toString() };
+			if (uap) {
+				resolvedState.forceUapResolveState();
+			}
 
-				const sequenceHandler = new SequenceStartHandler(
-					new SequentialMessagingConfigStore(this.instantConfig),
-					new UserSequentialMessageStateStore(Cookies),
-				);
-				sequenceHandler.handleSequence(sequence);
-			});
+			const sequenceHandler = new SequenceStartHandler(this.userStateStore);
+			sequenceHandler.startSequence(lineItemId, width, height, uap);
+
+			recordGAMCreativePayload(payload);
+		});
 	}
 
-	private handleOngoingSequence(): boolean {
-		const sequenceHandler = new SequenceContinuationHandler(
-			new SequentialMessagingConfigStore(this.instantConfig),
-			new UserSequentialMessageStateStore(Cookies),
-			new TargetingManager(context),
-			this.handleSequenceStateOnSlotShowedEvent,
+	private handleOngoingSequence(): void {
+		const targetingManager = new GamTargetingManager(
+			context,
+			slotsContext,
+			SequentialMessagingSetup.baseTargetingSize,
+			resolvedState.forceUapResolveState,
 		);
 
-		return sequenceHandler.handleOngoingSequence();
+		const sequenceHandler = new SequenceContinuationHandler(
+			this.userStateStore,
+			targetingManager,
+			this.onIntermediateStepLoad,
+			context.get('wiki.targeting.hasFeaturedVideo'),
+		);
+
+		sequenceHandler.handleOngoingSequence();
 	}
 
-	private handleSequenceStateOnSlotShowedEvent(onEvent: SequenceStateHandlerInterface) {
-		communicationService.action$
-			.pipe(
-				ofType(communicationService.getGlobalAction(eventsRepository.AD_ENGINE_SLOT_EVENT)),
-				filter((action: Action) => action.event === 'slotShowed'),
-				take(1),
-			)
-			.subscribe((action) => {
-				const sequence: Sequence = { id: action.slot.lineItemId, stepId: action.slot.creativeId };
-				onEvent.handleState(sequence);
-			});
+	private handleSequenceEnd(): void {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_END, (payload) => {
+			const sequenceHandler = new SequenceEndHandler(this.userStateStore);
+			sequenceHandler.endSequence();
+
+			recordGAMCreativePayload(payload);
+		});
+	}
+
+	private onIntermediateStepLoad(storeState: (loadedStep: number) => void) {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_INTERMEDIATE, (payload) => {
+			// TODO SM extract the 12 and 14 number to a shared parameters
+			//  to be used here and in GamTargetingManager.generateSizeMapping
+			if (!payload.height || 12 > payload.height || payload.height > 14) {
+				utils.logger('SM', 'Invalid Creative configuration. Creative size ot ouf bounds.');
+				return false;
+			}
+
+			const loadedStep = payload.height - SequentialMessagingSetup.baseTargetingSize;
+			storeState(loadedStep);
+
+			recordGAMCreativePayload(payload);
+		});
 	}
 }

@@ -21,10 +21,10 @@ export const basicContext = {
 		},
 		prebid: {
 			enabled: false,
-			lazyLoadingEnabled: false,
 			bidsRefreshing: {
 				slots: ['incontent_boxad_1'],
 			},
+			initStageSlots: ['top_leaderboard', 'top_boxad', 'featured'],
 		},
 	},
 	custom: {
@@ -37,6 +37,7 @@ export const basicContext = {
 		pushOnScroll: {
 			ids: [],
 			threshold: 100,
+			nativoThreshold: 200,
 		},
 	},
 	slots: {},
@@ -102,6 +103,9 @@ export const basicContext = {
 			enabled: false,
 			id: 'f6c04939-d96e-4bc6-850e-d0e6e6cf9701',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		iasPublisherOptimization: {
 			pubId: '930616',
 			slots: [
@@ -126,13 +130,9 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['gpt'],
-	state: {
-		adStack: [],
-		isMobile: false,
-	},
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',

@@ -15,6 +15,8 @@ export * from './query-string';
 export * from './sampler';
 export * from './script-loader';
 export * from './string-builder';
+export * from './tagless-request-url-builder';
 export * from './targeting';
 export * from './try-property';
 export * from './viewport-observer';
+export * from './wait-for';

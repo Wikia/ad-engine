@@ -21,7 +21,6 @@ class Bidders {
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_USED, ({ slot }) => {
 			this.updateSlotTargeting(slot.getSlotName());
 		});
-
 		communicationService.on(
 			eventsRepository.BIDDERS_BIDS_REFRESH,
 			({ refreshedSlotNames }) => {
@@ -165,3 +164,4 @@ export * from './wrappers';
 export * from './prebid/ats';
 export * from './prebid/live-ramp';
 export * from './prebid/identity-hub';
+export * from './prebid/native';
