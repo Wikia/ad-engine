@@ -492,27 +492,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 25.0,
-            "value": "connatix"
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 33.333,
-            "value": "exco"
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 50.0,
+            "sampling": 90.0,
             "value": "anyclip"
         },
         {
@@ -523,6 +503,26 @@
                 "XX"
             ],
             "sampling": 100.0,
+            "value": "connatix"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 0.0,
+            "value": "exco"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 0.0,
             "value": "distroscale"
         }
     ],
