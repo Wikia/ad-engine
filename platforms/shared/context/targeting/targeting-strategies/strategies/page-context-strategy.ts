@@ -7,9 +7,6 @@ export class PageContextStrategy implements TargetingStrategy {
 	constructor(private skin: string, private context: WindowContextDto) {}
 
 	execute(): Partial<Targeting> {
-		// TODO TB remove
-		console.log('HERE Page Context');
-
 		const cid = utils.queryString.get('cid');
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 		const domain = getDomain();
