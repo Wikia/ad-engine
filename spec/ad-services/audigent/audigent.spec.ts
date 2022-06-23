@@ -12,28 +12,35 @@ describe('Audigent', () => {
 	}
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
-			.stub(utils.scriptLoader, 'loadScript')
-			.returns(Promise.resolve({} as any));
+		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
 
 		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
 
 		context.set('services.audigent.enabled', true);
 		context.set('services.audigent.tracking.sampling', 0);
+		context.set('services.audigent.newIntegrationEnabled', false);
+
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
+
 		context.set('wiki.targeting.directedAtChildren', false);
 	});
 
 	afterEach(() => {
 		sandbox.restore();
+		loadScriptStub.resetHistory();
+		audigent.resetLoadedState();
+
 		window['au_seg'] = undefined;
 
 		context.set('services.audigent.enabled', undefined);
+		context.set('services.audigent.tracking.sampling', undefined);
+		context.set('services.audigent.limit', undefined);
+
 		context.set('options.trackingOptIn', undefined);
 		context.set('options.optOutSale', undefined);
+
 		context.set('wiki.targeting.directedAtChildren', undefined);
-		context.set('services.audigent.limit', undefined);
 	});
 
 	it('Audigent is called', async () => {
@@ -72,6 +79,20 @@ describe('Audigent', () => {
 		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	it('Audigent requests for two assets when legacy integration enabled', async () => {
+		await audigent.call();
+
+		expect(loadScriptStub.callCount).to.equal(2);
+	});
+
+	it('Audigent requests only for one asset when new integration enabled', async () => {
+		context.set('services.audigent.newIntegrationEnabled', true);
+
+		await audigent.call();
+
+		expect(loadScriptStub.callCount).to.equal(1);
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {

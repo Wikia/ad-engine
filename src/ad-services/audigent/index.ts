@@ -3,6 +3,7 @@ import { context, utils, externalLogger } from '@ad-engine/core';
 
 const logGroup = 'audigent';
 const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 
 class Audigent {
 	private isLoaded = false;
@@ -22,10 +23,15 @@ class Audigent {
 			return;
 		}
 
+		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		const audienceTagScriptUrl =
 			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
+		const segmentsScriptUrl =
+			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
 
-		this.setupSegmentsListener();
+		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
+		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
@@ -35,8 +41,21 @@ class Audigent {
 				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					utils.logger(logGroup, 'audience tag script loaded');
-					communicationService.emit(eventsRepository.AUDIGENT_LOADED);
+
+					if (newIntegrationEnabled) {
+						communicationService.emit(eventsRepository.AUDIGENT_LOADED);
+					}
 				});
+
+			if (!newIntegrationEnabled) {
+				utils.scriptLoader
+					.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
+					.then(() => {
+						utils.logger(logGroup, 'segment tag script loaded');
+						this.legacySetup();
+						communicationService.emit(eventsRepository.AUDIGENT_LOADED);
+					});
+			}
 
 			this.isLoaded = true;
 		}
@@ -61,6 +80,27 @@ class Audigent {
 
 			context.set('targeting.AU_SEG', segments);
 		});
+	}
+
+	legacySetup(): void {
+		if (typeof window['au_seg'] !== 'undefined') {
+			const au_segments = window['au_seg'].segments || [];
+			const limit = context.get('services.audigent.segmentLimit') || 0;
+
+			let segments = au_segments.length ? au_segments : 'no_segments';
+
+			if (Audigent.canSliceSegments(segments, limit)) {
+				segments = segments.slice(0, limit);
+			}
+
+			Audigent.trackWithExternalLoggerIfEnabled(segments);
+
+			context.set('targeting.AU_SEG', segments);
+		}
+	}
+
+	resetLoadedState(): void {
+		this.isLoaded = false;
 	}
 
 	private static canSliceSegments(segments: string | [], limit: number): boolean {
