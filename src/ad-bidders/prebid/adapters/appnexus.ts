@@ -28,8 +28,8 @@ export class Appnexus extends PrebidAdapter {
 		if (context.get(`slots.${code}.isNative`)) {
 			const prebidNativeProvider = new PrebidNativeProvider();
 			if (prebidNativeProvider.isEnabled() && this.isNativeModeOn()) {
-				const template = prebidNativeProvider.getPrebidNativeTemplate();
-				return this.prepareNativeConfig(template, code, { sizes, placementId, position });
+				const nativeMediaTypes = prebidNativeProvider.getPrebidNativeMediaTypes(position);
+				return this.prepareNativeConfig(nativeMediaTypes, code, { sizes, placementId, position });
 			}
 		}
 
@@ -49,37 +49,14 @@ export class Appnexus extends PrebidAdapter {
 	}
 
 	prepareNativeConfig(
-		template: string,
+		nativeMediaTypes: PrebidNativeMediaType,
 		code,
 		{ sizes, placementId, position }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
-				native: {
-					sendTargetingKeys: false,
-					adTemplate: template,
-					title: {
-						required: true,
-					},
-					body: {
-						required: true,
-					},
-					clickUrl: {
-						required: true,
-					},
-					icon: {
-						required: true,
-						aspect_ratios: [
-							{
-								min_width: 100,
-								min_height: 100,
-								ratio_width: 1,
-								ratio_height: 1,
-							},
-						],
-					},
-				},
+				native: nativeMediaTypes,
 			},
 			bids: this.getBids(code, { sizes, placementId, position }),
 		};

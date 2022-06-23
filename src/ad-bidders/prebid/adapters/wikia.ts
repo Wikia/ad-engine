@@ -81,7 +81,10 @@ export class Wikia extends PrebidAdapter {
 					clickUrl: {
 						required: true,
 					},
-					icon: {
+					displayUrl: {
+						required: true,
+					},
+					image: {
 						required: true,
 						aspect_ratios: [
 							{
@@ -173,8 +176,9 @@ export class Wikia extends PrebidAdapter {
 		bidResponse.native = {
 			body: "Wikia is an old name of Fandom. Haven't heard of Fandom?",
 			clickUrl: 'https://fandom.com',
+			displayUrl: 'Read more',
 			url: 'https://fandom.com',
-			icon: {
+			image: {
 				url: 'https://placekitten.com/100/100',
 				height: 100,
 				width: 100,

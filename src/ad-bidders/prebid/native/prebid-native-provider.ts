@@ -9,6 +9,7 @@ const assetsMap = {
 	image: 'hb_native_image',
 	icon: 'hb_native_icon',
 	clickUrl: 'hb_native_linkurl',
+	displayUrl: 'hb_native_displayUrl',
 };
 
 export class PrebidNativeProvider {
@@ -61,11 +62,43 @@ export class PrebidNativeProvider {
 		return data[assetName];
 	}
 
+	getPrebidNativeMediaTypes(position: string): PrebidNativeMediaType {
+		return {
+			sendTargetingKeys: false,
+			adTemplate: this.getPrebidNativeTemplate(),
+			title: {
+				required: true,
+				len: this.getMaxTitleLength(position),
+			},
+			body: {
+				required: true,
+				len: this.getMaxBodyLength(position),
+			},
+			clickUrl: {
+				required: true,
+			},
+			displayUrl: {
+				required: true,
+			},
+			image: {
+				required: true,
+				aspect_ratios: [
+					{
+						min_width: this.getMinImageSize(position),
+						min_height: this.getMinImageSize(position),
+						ratio_width: 1,
+						ratio_height: 1,
+					},
+				],
+			},
+		};
+	}
+
 	getPrebidNativeTemplate(): string {
 		return `<div id="native-prebid-ad" class="ntv-ad">
 					<div class="ntv-wrapper">
 						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
-							<img src="##hb_native_icon##" class="ntv-img">
+							<img src="##hb_native_image##" class="ntv-img">
 						</a>
 						<div class="ntv-content">
 							<p class="ntv-ad-label">Ad</p>
@@ -74,11 +107,30 @@ export class PrebidNativeProvider {
 							</a>
 							<p class="ntv-ad-offer">##hb_native_body##</p>
 							<a href="##hb_native_linkurl##">
-								<button class="ntv-ad-button">Check!</button>
+								<button class="ntv-ad-button">##hb_native_displayUrl##</button>
 							</a>
 						</div>
 					</div>
 				</div>`;
+	}
+
+	getMinImageSize(position: string): number {
+		// NOTE: Values are based on Nativo image sizes to keep the consistency
+		if (position == 'mobile') {
+			if (utils.getViewportWidth() <= 320) {
+				return 90;
+			}
+			return 120;
+		}
+		return 126;
+	}
+
+	getMaxTitleLength(position: string): number {
+		return position == 'mobile' ? 40 : 60;
+	}
+
+	getMaxBodyLength(position: string): number {
+		return position == 'mobile' ? 30 : 120;
 	}
 }
 
