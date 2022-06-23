@@ -13,6 +13,8 @@ import {
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
 import { TargetingStrategyExecutor } from './targeting-strategy-executor';
+import { LegacyStrategyBuilder } from './targeting-strategies/builders/legacy-strategy-builder';
+import { PageContextStrategyBuilder } from './targeting-strategies/builders/page-context-strategy-builder';
 
 const SKIN = Symbol('targeting skin');
 
@@ -65,6 +67,11 @@ export class UcpTargetingSetup implements DiProcess {
 	private getPageLevelTargeting(): Partial<Targeting> {
 		const targetingStrategy = this.instantConfig.get('icTargetingStrategy', 'default');
 
-		return new TargetingStrategyExecutor().execute(targetingStrategy, this.skin);
+		const strategies = {
+			default: new LegacyStrategyBuilder().build(this.skin),
+			pageContext: new PageContextStrategyBuilder().build(this.skin),
+		};
+
+		return new TargetingStrategyExecutor(strategies).execute(targetingStrategy);
 	}
 }

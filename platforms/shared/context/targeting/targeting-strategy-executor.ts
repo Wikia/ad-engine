@@ -1,17 +1,13 @@
 import { TargetingStrategy } from './targeting-strategies/interfaces/targeting-strategy';
-import { LegacyStrategyBuilder } from './targeting-strategies/builders/legacy-strategy-builder';
 import { Targeting } from '@wikia/ad-engine';
-import { PageContextStrategyBuilder } from './targeting-strategies/builders/page-context-strategy-builder';
+
+type TargetingStrategies = { default: TargetingStrategy; [key: string]: TargetingStrategy };
 
 export class TargetingStrategyExecutor {
-	public strategyBuilders = {
-		default: LegacyStrategyBuilder,
-		pageContext: PageContextStrategyBuilder,
-	};
+	constructor(public readonly strategies: TargetingStrategies) {}
 
-	execute(strategyName: string, skin: string): Partial<Targeting> {
-		const strategy: TargetingStrategy = new (this.strategyBuilders[strategyName] ||
-			this.strategyBuilders.default)().build(skin);
+	execute(strategyName: string): Partial<Targeting> {
+		const strategy = this.strategies[strategyName] || this.strategies.default;
 
 		return strategy.execute();
 	}

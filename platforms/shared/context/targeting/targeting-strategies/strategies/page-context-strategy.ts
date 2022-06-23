@@ -1,10 +1,10 @@
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
-import { WindowContextDto } from '../interfaces/window-context-dto';
+import { Context } from '../interfaces/window-context-dto';
 
 export class PageContextStrategy implements TargetingStrategy {
-	constructor(private skin: string, private context: WindowContextDto) {}
+	constructor(private skin: string, private context: Context) {}
 
 	execute(): Partial<Targeting> {
 		const cid = utils.queryString.get('cid');
@@ -14,28 +14,28 @@ export class PageContextStrategy implements TargetingStrategy {
 		const targeting: Partial<Targeting> = {
 			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			age: this.context.page.tags.age || [],
+			age: this.context.page.tags?.age || [],
 			dmn: domain.base,
 			esrb: this.context.site.esrbRating,
 			geo: utils.geoService.getCountryCode() || 'none',
-			gnre: this.context.page.tags.gnre || [],
+			gnre: this.context.page.tags?.gnre || [],
 			hostpre: utils.targeting.getHostnamePrefix(),
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
-			media: this.context.page.tags.media || [],
+			media: this.context.page.tags?.media || [],
 			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
-			pform: this.context.page.tags.pform || [],
-			pub: this.context.page.tags.pub || [],
+			pform: this.context.page.tags?.pform || [],
+			pub: this.context.page.tags?.pub || [],
 			s0: this.context.site.vertical,
 			// TODO remove, but be careful. According to Sebastian S. this can be removed, but AdEng will fail to load ads without it.
 			s0v: wiki.targeting.wikiVertical,
 			s0c: this.context.site.categories,
 			s1: utils.targeting.getRawDbName(this.context.site.siteName),
 			s2: this.getAdLayout(this.context.page.pageType),
-			sex: this.context.page.tags.sex || [],
+			sex: this.context.page.tags?.sex || [],
 			skin: this.skin,
-			theme: this.context.page.tags.theme || [],
-			tv: this.context.page.tags.tv || [],
+			theme: this.context.page.tags?.theme || [],
+			tv: this.context.page.tags?.tv || [],
 			uap: 'none',
 			uap_c: 'none',
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
