@@ -72,14 +72,17 @@ interface Runtime {
 	};
 	disableBtf?: boolean;
 	disableSecondCall?: boolean;
+	distroscale?: {
+		adUnit?: string;
+	};
 	interstitial?: {
 		available?: boolean;
 		visible?: boolean;
 	};
-	distroscale?: {
+	unblockHighlyViewableSlots?: boolean;
+	video?: {
 		adUnit?: string;
 	};
-	unblockHighlyViewableSlots?: boolean;
 }
 
 interface VideoStatus {
