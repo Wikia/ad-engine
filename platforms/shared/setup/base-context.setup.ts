@@ -12,6 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
+import { OutstreamExperiment } from '../experiments/outstream-experiment';
 
 @Injectable()
 export class BaseContextSetup implements DiProcess {
@@ -211,19 +212,20 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setupOutstreamPlayers(): void {
-		if (this.instantConfig.get('icExCoPlayer')) {
+		const outstreamExperiment = new OutstreamExperiment(this.instantConfig);
+		if (this.instantConfig.get('icExCoPlayer') && outstreamExperiment.isExco()) {
 			context.set('services.exCo.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
 		}
 
-		if (this.instantConfig.get('icAnyclipPlayer')) {
+		if (this.instantConfig.get('icAnyclipPlayer') && outstreamExperiment.isAnyclip()) {
 			context.set('services.anyclip.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
 		}
 
-		if (this.instantConfig.get('icConnatixPlayer')) {
+		if (this.instantConfig.get('icConnatixPlayer') && outstreamExperiment.isConnatix()) {
 			context.set('services.connatix.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
