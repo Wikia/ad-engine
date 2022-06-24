@@ -56,15 +56,15 @@ export class UcpMobileAdsMode implements DiProcess {
 		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.configurePageLevelTargeting());
 		inhibitors.push(silverSurferService.configureUserTargeting());
-		inhibitors.push(wadRunner.call());
+		inhibitors.push(wadRunner.execute());
 
 		eyeota.call();
 		facebookPixel.call();
-		audigent.call();
-		iasPublisherOptimization.call();
-		confiant.call();
+		audigent.execute();
+		iasPublisherOptimization.execute();
+		confiant.execute();
 		stroer.call();
-		durationMedia.call();
+		durationMedia.execute();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,

@@ -1,9 +1,9 @@
-import { context, utils } from '@ad-engine/core';
+import { context, DiProcess, utils } from '@ad-engine/core';
 
 const logGroup = 'duration-media';
 
-class DurationMedia {
-	call(): Promise<void> {
+class DurationMedia implements DiProcess {
+	execute(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 
 		if (!context.get('services.durationMedia.enabled') || !libraryUrl) {

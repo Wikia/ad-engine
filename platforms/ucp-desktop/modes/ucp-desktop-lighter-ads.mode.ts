@@ -72,9 +72,9 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
-		audigent.call();
-		iasPublisherOptimization.call();
-		confiant.call();
+		audigent.execute();
+		iasPublisherOptimization.execute();
+		confiant.execute();
 		stroer.call();
 		nielsen.call({
 			type: 'static',

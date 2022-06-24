@@ -1,5 +1,6 @@
 import {
 	AdEngineRunnerSetup,
+	AdEngineStarter,
 	BaseContextSetup,
 	BiddersStateSetup,
 	bootstrapAndGetConsent,
@@ -9,19 +10,26 @@ import {
 	LabradorSetup,
 	NoAdsDetector,
 	TrackingSetup,
+	wadRunner,
 	WikiContextSetup,
 } from '@platforms/shared';
 import {
+	audigent,
+	bidders,
 	communicationService,
 	conditional,
+	confiant,
 	context,
+	durationMedia,
 	eventsRepository,
+	iasPublisherOptimization,
 	parallel,
 	ProcessPipeline,
+	ProcessStepUnion,
+	sequential,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { getBasicContext } from './ad-context';
-import { SportsAdsMode } from './modes/ads/sports-ads.mode';
 import { SportsA9ConfigSetup } from './setup/context/a9/sports-a9-config.setup';
 import { SportsPrebidConfigSetup } from './setup/context/prebid/sports-prebid-config.setup';
 import { SportsSlotsContextSetup } from './setup/context/slots/sports-slots-context.setup';
@@ -62,10 +70,17 @@ export class SportsPlatform {
 		// Run
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: SportsAdsMode,
+				yes: SportsPlatform.sportsAdsMode(),
 			}),
 		);
 
 		this.pipeline.execute();
+	}
+
+	private static sportsAdsMode(): ProcessStepUnion {
+		return sequential(
+			parallel(audigent, iasPublisherOptimization, confiant, durationMedia),
+			new AdEngineStarter(bidders, wadRunner),
+		);
 	}
 }

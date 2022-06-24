@@ -22,7 +22,7 @@ describe('Duration media service', () => {
 	it('duration-media is disabled when libraryUrl is not configured', async () => {
 		context.set('services.durationMedia.enabled', true);
 
-		await durationMedia.call();
+		await durationMedia.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -30,7 +30,7 @@ describe('Duration media service', () => {
 	it('duration-media can be disabled', async () => {
 		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
-		await durationMedia.call();
+		await durationMedia.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -39,7 +39,7 @@ describe('Duration media service', () => {
 		context.set('services.durationMedia.enabled', true);
 		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
-		await durationMedia.call();
+		await durationMedia.execute();
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(

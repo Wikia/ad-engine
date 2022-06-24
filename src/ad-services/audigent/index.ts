@@ -1,11 +1,11 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils, externalLogger } from '@ad-engine/core';
+import { context, utils, externalLogger, PipelineProcess } from '@ad-engine/core';
 
 const logGroup = 'audigent';
 const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 
-class Audigent {
+class Audigent implements PipelineProcess {
 	private isLoaded = false;
 
 	private isEnabled(): boolean {
@@ -17,7 +17,7 @@ class Audigent {
 		);
 	}
 
-	call(): void {
+	execute(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
@@ -42,6 +42,7 @@ class Audigent {
 				});
 			this.isLoaded = true;
 		}
+		return Promise.resolve();
 	}
 
 	setup(): void {

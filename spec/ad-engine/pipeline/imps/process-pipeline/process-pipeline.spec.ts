@@ -1,4 +1,11 @@
-import { conditional, DiProcess, parallel, ProcessPipeline, sequential } from '@wikia/ad-engine';
+import {
+	conditional,
+	DiProcess,
+	parallel,
+	PipelineProcess,
+	ProcessPipeline,
+	sequential,
+} from '@wikia/ad-engine';
 import { wait } from '@wikia/ad-engine/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
@@ -9,9 +16,16 @@ describe('ProcessPipeline', () => {
 	let spy: SinonSpy;
 	let clock: SinonFakeTimers;
 
-	class ClassProcess implements DiProcess {
+	class DiBuildProcess implements DiProcess {
 		execute(): void {
 			spy(0);
+		}
+	}
+
+	class InstanceProcess implements PipelineProcess {
+		execute(): Promise<void> {
+			spy(7);
+			return Promise.resolve();
 		}
 	}
 
@@ -31,7 +45,7 @@ describe('ProcessPipeline', () => {
 		const promise = pipeline
 			.add(
 				sequential(
-					ClassProcess,
+					DiBuildProcess,
 					() => spy(1),
 					async () => {
 						await wait(100);
@@ -50,6 +64,7 @@ describe('ProcessPipeline', () => {
 				),
 				() => spy(5),
 				conditional(() => true, { yes: () => spy(6) }),
+				new InstanceProcess(),
 			)
 			.execute();
 
@@ -61,9 +76,9 @@ describe('ProcessPipeline', () => {
 		await progress(100);
 		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3]);
 		await progress(100);
-		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
+		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7]);
 		await promise;
-		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
+		expect(getSpyValues()).to.deep.equal([0, 1, 2, 3, 4, 5, 6, 7]);
 	});
 
 	function getSpyValues(): number[] {

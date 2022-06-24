@@ -1,6 +1,7 @@
 import {
 	context,
 	Dictionary,
+	PipelineProcess,
 	postponeExecutionUntilGptLoads,
 	SlotConfig,
 	utils,
@@ -33,7 +34,7 @@ interface IasTargetingData {
 	slots?: IasTargetingSlotData[];
 }
 
-class IasPublisherOptimization {
+class IasPublisherOptimization implements PipelineProcess {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
@@ -46,7 +47,7 @@ class IasPublisherOptimization {
 		);
 	}
 
-	call(): Promise<void> {
+	execute(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return Promise.resolve();

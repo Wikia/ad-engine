@@ -1,9 +1,9 @@
-import { context, DiProcess } from '@wikia/ad-engine';
+import { context, PipelineProcess } from '@wikia/ad-engine';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 import Cookies from 'js-cookie';
 
-export class WikiContextSetup implements DiProcess {
-	execute(): void {
+export class WikiContextSetup implements PipelineProcess {
+	execute(): Promise<void> {
 		const cookies = Cookies.get();
 		const wikiContext = {
 			beaconId:
@@ -28,5 +28,6 @@ export class WikiContextSetup implements DiProcess {
 		};
 
 		context.set('wiki', wikiContext);
+		return Promise.resolve();
 	}
 }

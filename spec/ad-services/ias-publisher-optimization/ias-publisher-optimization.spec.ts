@@ -39,7 +39,7 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization can be disabled', async () => {
 		context.set('services.iasPublisherOptimization.enabled', false);
 
-		await iasPublisherOptimization.call();
+		await iasPublisherOptimization.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -47,7 +47,7 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization is not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
-		await iasPublisherOptimization.call();
+		await iasPublisherOptimization.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -55,7 +55,7 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization is not called when user has opted out sale', async () => {
 		context.set('options.optOutSale', true);
 
-		await iasPublisherOptimization.call();
+		await iasPublisherOptimization.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -63,7 +63,7 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization is not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
-		await iasPublisherOptimization.call();
+		await iasPublisherOptimization.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -71,7 +71,7 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization is called', async () => {
 		context.set('services.iasPublisherOptimization.enabled', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
-		await iasPublisherOptimization.call();
+		await iasPublisherOptimization.execute();
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(
@@ -82,7 +82,7 @@ describe('IAS Publisher Optimization', () => {
 	it('IAS Publisher Optimization properly updates a targeting', async () => {
 		context.set('services.iasPublisherOptimization.enabled', true);
 		context.set('services.iasPublisherOptimization.slots', ['top_leaderboard']);
-		await iasPublisherOptimization.call();
+		await iasPublisherOptimization.execute();
 
 		window.__iasPET.queue[0].dataHandler(iasData);
 

@@ -2,7 +2,11 @@ import { Type } from '../../../models/dictionary';
 
 export type ProcessStepUnion<T = any> = ProcessStep | CompoundProcessStep<T>;
 
-export type ProcessStep = Type<DiProcess> | FuncProcess;
+export type ProcessStep = Type<DiProcess> | PipelineProcess | FuncProcess;
+
+export interface PipelineProcess {
+	execute(): Promise<void>;
+}
 
 export interface DiProcess {
 	execute(): Promise<void> | void;

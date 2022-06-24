@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, Dictionary, utils } from '@ad-engine/core';
+import { AdSlot, context, Dictionary, PipelineProcess, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 
@@ -10,7 +10,7 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-class Bidders {
+class Bidders implements PipelineProcess {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
@@ -94,6 +94,10 @@ class Bidders {
 		});
 
 		utils.logger(logGroup, 'resetTargetingKeys', slotName);
+	}
+
+	execute(): Promise<void> {
+		return this.requestBids();
 	}
 
 	requestBids(): Promise<void> {

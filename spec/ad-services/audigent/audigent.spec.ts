@@ -33,7 +33,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent is called', async () => {
-		await audigent.call();
+		await audigent.execute();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -41,7 +41,7 @@ describe('Audigent', () => {
 	it('Audigent can be disabled', async () => {
 		context.set('services.audigent.enabled', false);
 
-		await audigent.call();
+		await audigent.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -49,7 +49,7 @@ describe('Audigent', () => {
 	it('Audigent not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
-		await audigent.call();
+		await audigent.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -57,7 +57,7 @@ describe('Audigent', () => {
 	it('Audigent not called when user has opted out sale', async () => {
 		context.set('options.optOutSale', true);
 
-		await audigent.call();
+		await audigent.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -65,7 +65,7 @@ describe('Audigent', () => {
 	it('Audigent not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
-		await audigent.call();
+		await audigent.execute();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});

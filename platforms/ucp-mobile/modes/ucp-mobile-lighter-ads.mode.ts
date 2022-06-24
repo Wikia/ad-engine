@@ -44,11 +44,11 @@ export class UcpMobileLighterAdsMode implements DiProcess {
 		inhibitors.push(silverSurferService.configureUserTargeting());
 
 		facebookPixel.call();
-		audigent.call();
-		iasPublisherOptimization.call();
-		confiant.call();
+		audigent.execute();
+		iasPublisherOptimization.execute();
+		confiant.execute();
 		stroer.call();
-		durationMedia.call();
+		durationMedia.execute();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,

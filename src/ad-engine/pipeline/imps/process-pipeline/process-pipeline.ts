@@ -5,6 +5,7 @@ import { PipelineAdapter, PipelineNext } from '../../pipeline-types';
 import {
 	CompoundProcessStep,
 	DiProcess,
+	PipelineProcess,
 	ProcessStep,
 	ProcessStepUnion,
 } from './process-pipeline-types';
@@ -14,23 +15,23 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 	constructor(private container: Container) {}
 
 	async execute(step: ProcessStepUnion, payload: void, next?: PipelineNext<void>): Promise<void> {
+		let stepPromise: Promise<void> | void;
+
 		if (this.isCompoundProcessStep(step)) {
 			const process = this.container.get(step.process);
 
-			await process.execute(step.payload);
-
-			return next();
-		}
-
-		if (this.isDiProcess(step)) {
+			stepPromise = process.execute(step.payload);
+		} else if (this.isPipelineProcess(step)) {
+			stepPromise = step.execute();
+		} else if (this.isDiProcess(step)) {
 			const instance = this.container.get(step);
 
-			await instance.execute();
-
-			return next();
+			stepPromise = instance.execute();
+		} else {
+			stepPromise = step();
 		}
 
-		await step();
+		await stepPromise;
 
 		return next();
 	}
@@ -44,7 +45,11 @@ class ProcessPipelineAdapter implements PipelineAdapter<ProcessStepUnion, void> 
 	}
 
 	private isDiProcess(step: ProcessStep): step is Type<DiProcess> {
-		return typeof step.prototype.execute === 'function';
+		return typeof step !== 'object' && typeof step.prototype.execute === 'function';
+	}
+
+	private isPipelineProcess(step: ProcessStep): step is PipelineProcess {
+		return typeof step === 'object' && 'execute' in step && typeof step.execute === 'function';
 	}
 }
 

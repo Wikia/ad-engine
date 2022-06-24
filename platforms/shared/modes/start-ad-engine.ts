@@ -1,6 +1,19 @@
-import { AdEngine, AdSlot, communicationService, utils } from '@wikia/ad-engine';
+import { AdEngine, AdSlot, communicationService, PipelineProcess, utils } from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
+
+export class AdEngineStarter implements PipelineProcess {
+	private readonly inhibitors: Promise<void>[];
+
+	constructor(...inhibitorProcesses: PipelineProcess[]) {
+		this.inhibitors = inhibitorProcesses.map((process) => process.execute());
+	}
+
+	execute(): Promise<void> {
+		startAdEngine(this.inhibitors);
+		return Promise.resolve();
+	}
+}
 
 export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 	if (!adEngineInstance) {

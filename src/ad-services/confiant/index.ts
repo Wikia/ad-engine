@@ -1,4 +1,4 @@
-import { context, slotService, utils } from '@ad-engine/core';
+import { context, PipelineProcess, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
@@ -30,12 +30,12 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 /**
  * Confiant service handler
  */
-class Confiant {
+class Confiant implements PipelineProcess {
 	/**
 	 * Requests service and injects script tag
 	 * @returns {Promise}
 	 */
-	call(): Promise<void> {
+	execute(): Promise<void> {
 		const propertyId: string = context.get('services.confiant.propertyId');
 
 		if (!context.get('services.confiant.enabled') || !propertyId) {

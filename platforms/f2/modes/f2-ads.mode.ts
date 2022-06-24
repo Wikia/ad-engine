@@ -40,10 +40,10 @@ export class F2AdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(wadRunner.call());
+		inhibitors.push(wadRunner.execute());
 
-		audigent.call();
-		iasPublisherOptimization.call();
+		audigent.execute();
+		iasPublisherOptimization.execute();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/news_and_stories/${targeting.s1}/${targeting.post_id}`,
