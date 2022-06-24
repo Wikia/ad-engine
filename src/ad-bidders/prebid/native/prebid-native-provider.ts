@@ -1,6 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
+import { PrebidNativeConfig } from './prebid-native-config';
 
 const logGroup = 'prebid-native-provider';
 const assetsMap = {
@@ -41,7 +42,7 @@ export class PrebidNativeProvider {
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {
-		const template = this.getPrebidNativeTemplate();
+		const template = PrebidNativeConfig.getPrebidNativeTemplate();
 		return this.replaceAssetPlaceholdersWithData(template, data);
 	}
 
@@ -60,77 +61,6 @@ export class PrebidNativeProvider {
 			return data[assetName]['url'];
 		}
 		return data[assetName];
-	}
-
-	getPrebidNativeMediaTypes(deviceType: string): PrebidNativeMediaType {
-		return {
-			sendTargetingKeys: false,
-			adTemplate: this.getPrebidNativeTemplate(),
-			title: {
-				required: true,
-				len: this.getMaxTitleLength(deviceType),
-			},
-			body: {
-				required: true,
-				len: this.getMaxBodyLength(deviceType),
-			},
-			clickUrl: {
-				required: true,
-			},
-			displayUrl: {
-				required: true,
-			},
-			image: {
-				required: true,
-				aspect_ratios: [
-					{
-						min_width: this.getMinImageSize(deviceType),
-						min_height: this.getMinImageSize(deviceType),
-						ratio_width: 1,
-						ratio_height: 1,
-					},
-				],
-			},
-		};
-	}
-
-	getPrebidNativeTemplate(): string {
-		return `<div id="native-prebid-ad" class="ntv-ad">
-					<div class="ntv-wrapper">
-						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
-							<img src="##hb_native_image##" class="ntv-img">
-						</a>
-						<div class="ntv-content">
-							<p class="ntv-ad-label">Ad</p>
-							<a href="##hb_native_linkurl##">
-								<p class="ntv-ad-title ntv-headline">##hb_native_title##</p>
-							</a>
-							<p class="ntv-ad-offer">##hb_native_body##</p>
-							<a href="##hb_native_linkurl##">
-								<button class="ntv-ad-button">##hb_native_displayUrl##</button>
-							</a>
-						</div>
-					</div>
-				</div>`;
-	}
-
-	getMinImageSize(deviceType: string): number {
-		// NOTE: Values are based on Nativo image sizes to keep the consistency
-		if (deviceType == 'mobile') {
-			if (utils.getViewportWidth() <= 320) {
-				return 90;
-			}
-			return 120;
-		}
-		return 126;
-	}
-
-	getMaxTitleLength(deviceType: string): number {
-		return deviceType == 'mobile' ? 40 : 60;
-	}
-
-	getMaxBodyLength(deviceType: string): number {
-		return deviceType == 'mobile' ? 30 : 120;
 	}
 }
 
