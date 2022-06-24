@@ -62,17 +62,17 @@ export class PrebidNativeProvider {
 		return data[assetName];
 	}
 
-	getPrebidNativeMediaTypes(position: string): PrebidNativeMediaType {
+	getPrebidNativeMediaTypes(deviceType: string): PrebidNativeMediaType {
 		return {
 			sendTargetingKeys: false,
 			adTemplate: this.getPrebidNativeTemplate(),
 			title: {
 				required: true,
-				len: this.getMaxTitleLength(position),
+				len: this.getMaxTitleLength(deviceType),
 			},
 			body: {
 				required: true,
-				len: this.getMaxBodyLength(position),
+				len: this.getMaxBodyLength(deviceType),
 			},
 			clickUrl: {
 				required: true,
@@ -84,8 +84,8 @@ export class PrebidNativeProvider {
 				required: true,
 				aspect_ratios: [
 					{
-						min_width: this.getMinImageSize(position),
-						min_height: this.getMinImageSize(position),
+						min_width: this.getMinImageSize(deviceType),
+						min_height: this.getMinImageSize(deviceType),
 						ratio_width: 1,
 						ratio_height: 1,
 					},
@@ -114,9 +114,9 @@ export class PrebidNativeProvider {
 				</div>`;
 	}
 
-	getMinImageSize(position: string): number {
+	getMinImageSize(deviceType: string): number {
 		// NOTE: Values are based on Nativo image sizes to keep the consistency
-		if (position == 'mobile') {
+		if (deviceType == 'mobile') {
 			if (utils.getViewportWidth() <= 320) {
 				return 90;
 			}
@@ -125,12 +125,12 @@ export class PrebidNativeProvider {
 		return 126;
 	}
 
-	getMaxTitleLength(position: string): number {
-		return position == 'mobile' ? 40 : 60;
+	getMaxTitleLength(deviceType: string): number {
+		return deviceType == 'mobile' ? 40 : 60;
 	}
 
-	getMaxBodyLength(position: string): number {
-		return position == 'mobile' ? 30 : 120;
+	getMaxBodyLength(deviceType: string): number {
+		return deviceType == 'mobile' ? 30 : 120;
 	}
 }
 
