@@ -4,7 +4,6 @@ export class PrebidNativeConfig {
 	static assetsMap = {
 		title: 'hb_native_title',
 		body: 'hb_native_body',
-		image: 'hb_native_image',
 		icon: 'hb_native_icon',
 		clickUrl: 'hb_native_linkurl',
 		displayUrl: 'hb_native_displayUrl',
@@ -28,7 +27,7 @@ export class PrebidNativeConfig {
 			displayUrl: {
 				required: true,
 			},
-			image: {
+			icon: {
 				required: true,
 				aspect_ratios: [
 					{
@@ -46,7 +45,7 @@ export class PrebidNativeConfig {
 		return `<div id="native-prebid-ad" class="ntv-ad">
 					<div class="ntv-wrapper">
 						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
-							<img src="##hb_native_image##" class="ntv-img">
+							<img src="##hb_native_icon##" class="ntv-img">
 						</a>
 						<div class="ntv-content">
 							<p class="ntv-ad-label">Ad</p>

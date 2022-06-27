@@ -26,7 +26,7 @@ describe('Prebid native provider', () => {
 		const data = {
 			adTemplate: `<div id="native-prebid-ad">
 								<a href="##hb_native_linkurl##">
-									<img src="##hb_native_image##">
+									<img src="##hb_native_icon##">
 								</a>
 							<a href="##hb_native_linkurl##">
 								<p>##hb_native_title##</p>
@@ -39,8 +39,8 @@ describe('Prebid native provider', () => {
 			body: 'Test body',
 			clickUrl: 'testurl.com',
 			displayUrl: 'Read more',
-			image: {
-				url: 'image.url.com',
+			icon: {
+				url: 'icon.url.com',
 				height: 100,
 				width: 100,
 			},
@@ -50,7 +50,7 @@ describe('Prebid native provider', () => {
 		const ad = prebidNativeProvider.replaceAssetPlaceholdersWithData(data.adTemplate, data);
 		expect(ad).to.equal(`<div id="native-prebid-ad">
 								<a href="testurl.com">
-									<img src="image.url.com">
+									<img src="icon.url.com">
 								</a>
 							<a href="testurl.com">
 								<p>Test title</p>
