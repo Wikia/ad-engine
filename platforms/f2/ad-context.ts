@@ -52,7 +52,8 @@ export const basicContext = {
 			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=f2',
+			endpoint: 'https://services.fandom.com',
+			appName: 'f2',
 			fallback: fallbackInstantConfig,
 		},
 		moatYi: {

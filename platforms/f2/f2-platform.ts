@@ -6,7 +6,7 @@ import {
 	NoAdsDetector,
 	SequentialMessagingSetup,
 	TrackingSetup,
-	WikiContextSetup,
+	PlatformContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -26,6 +26,7 @@ import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
 import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setup';
 import { F2BaseContextSetup } from './setup/context/base/f2-base-context.setup';
 import { F2TemplatesSetup } from './templates/f2-templates.setup';
+import { TrackingParametersSetup } from '../shared/setup/tracking-parameters.setup';
 
 @Injectable()
 export class F2Platform {
@@ -35,9 +36,10 @@ export class F2Platform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
 			F2IocSetup,
-			WikiContextSetup,
+			TrackingParametersSetup,
 			() => context.set('state.isMobile', f2env.isPageMobile),
 			F2BaseContextSetup,
 			F2SlotsContextSetup,
