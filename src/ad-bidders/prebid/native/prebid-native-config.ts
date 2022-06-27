@@ -1,6 +1,15 @@
 import { utils } from '@ad-engine/core';
 
 export class PrebidNativeConfig {
+	static assetsMap = {
+		title: 'hb_native_title',
+		body: 'hb_native_body',
+		image: 'hb_native_image',
+		icon: 'hb_native_icon',
+		clickUrl: 'hb_native_linkurl',
+		displayUrl: 'hb_native_displayUrl',
+	};
+
 	static getPrebidNativeMediaTypes(deviceType: string): PrebidNativeMediaType {
 		return {
 			sendTargetingKeys: false,
@@ -53,7 +62,7 @@ export class PrebidNativeConfig {
 				</div>`;
 	}
 
-	static getMinImageSize(deviceType: string): number {
+	private static getMinImageSize(deviceType: string): number {
 		// NOTE: Values are based on Nativo image sizes to keep the consistency
 		if (deviceType == 'mobile') {
 			if (utils.getViewportWidth() <= 320) {
@@ -64,11 +73,11 @@ export class PrebidNativeConfig {
 		return 126;
 	}
 
-	static getMaxTitleLength(deviceType: string): number {
+	private static getMaxTitleLength(deviceType: string): number {
 		return deviceType == 'mobile' ? 40 : 60;
 	}
 
-	static getMaxBodyLength(deviceType: string): number {
+	private static getMaxBodyLength(deviceType: string): number {
 		return deviceType == 'mobile' ? 30 : 120;
 	}
 }

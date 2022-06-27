@@ -2,7 +2,8 @@ export interface PrebidNativeData {
 	adTemplate: string;
 	body: string;
 	clickUrl: string;
-	icon: PrebidNativeImage;
+	displayUrl: string;
+	image: PrebidNativeImage;
 	title: string;
 }
 
