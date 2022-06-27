@@ -23,49 +23,91 @@ class Audigent {
 			return;
 		}
 
+		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		const audienceTagScriptUrl =
 			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
 		const segmentsScriptUrl =
 			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
 
+		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
+		}
+
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading');
+			utils.logger(logGroup, 'loading...');
 			context.set('targeting.AU_SEG', '-1');
 
-			utils.scriptLoader.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first');
-
 			utils.scriptLoader
-				.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
+				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
-					this.setup();
-					communicationService.emit(eventsRepository.AUDIGENT_LOADED);
+					utils.logger(logGroup, 'audience tag script loaded');
+
+					if (newIntegrationEnabled) {
+						communicationService.emit(eventsRepository.AUDIGENT_LOADED);
+					}
 				});
+
+			if (!newIntegrationEnabled) {
+				utils.scriptLoader
+					.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
+					.then(() => {
+						utils.logger(logGroup, 'segment tag script loaded');
+						this.legacySetup();
+						communicationService.emit(eventsRepository.AUDIGENT_LOADED);
+					});
+			}
+
 			this.isLoaded = true;
 		}
 	}
 
-	setup(): void {
+	setupSegmentsListener(): void {
+		utils.logger(logGroup, 'setting up auSegReady event listener');
+
+		document.addEventListener('auSegReady', function (e) {
+			utils.logger(logGroup, 'auSegReady event recieved', e);
+
+			const au_segments = window['au_seg'].segments || [];
+			const limit = context.get('services.audigent.segmentLimit') || 0;
+
+			let segments = au_segments.length ? au_segments : 'no_segments';
+
+			if (Audigent.canSliceSegments(segments, limit)) {
+				segments = segments.slice(0, limit);
+			}
+
+			Audigent.trackWithExternalLoggerIfEnabled(segments);
+
+			context.set('targeting.AU_SEG', segments);
+		});
+	}
+
+	legacySetup(): void {
 		if (typeof window['au_seg'] !== 'undefined') {
 			const au_segments = window['au_seg'].segments || [];
 			const limit = context.get('services.audigent.segmentLimit') || 0;
 
 			let segments = au_segments.length ? au_segments : 'no_segments';
 
-			if (this.canSliceSegments(segments, limit)) {
+			if (Audigent.canSliceSegments(segments, limit)) {
 				segments = segments.slice(0, limit);
 			}
 
-			this.trackWithExternalLoggerIfEnabled(segments);
+			Audigent.trackWithExternalLoggerIfEnabled(segments);
 
 			context.set('targeting.AU_SEG', segments);
 		}
 	}
 
-	private canSliceSegments(segments: string | [], limit: number): boolean {
+	resetLoadedState(): void {
+		this.isLoaded = false;
+	}
+
+	private static canSliceSegments(segments: string | [], limit: number): boolean {
 		return limit > 0 && typeof segments !== 'string';
 	}
 
-	private trackWithExternalLoggerIfEnabled(segments: string | []) {
+	private static trackWithExternalLoggerIfEnabled(segments: string | []) {
 		const randomNumber = Math.random() * 100;
 
 		if (

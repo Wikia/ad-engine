@@ -1,12 +1,13 @@
 import { context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
-const logGroup = 'liveConnect';
+const partnerName = 'liveConnect';
+const partnerNameUnifiedId = 'liveConnect-unifiedId';
+const logGroup = partnerName;
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
 class LiveConnect {
 	private isLoaded = false;
-	private id: string | null;
 
 	private isEnabled(): boolean {
 		return (
@@ -37,28 +38,32 @@ class LiveConnect {
 		}
 	}
 
+	resolveAndReportId(idName: string, partnerName: string, params: any = undefined) {
+		window.liQ.resolve(
+			(nonId) => {
+				const id = nonId[idName];
+				utils.logger(logGroup, `id ${idName}: ${id}`);
+				if (id) {
+					communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+						partnerName: partnerName,
+						partnerIdentityId: id,
+					});
+				}
+			},
+			(err) => {
+				utils.warner(logGroup, err);
+			},
+			params,
+		);
+	}
+
 	track(): void {
 		if (!window.liQ) {
 			utils.warner(logGroup, 'window.liQ not available for tracking');
-		} else {
-			window.liQ.resolve(
-				(nonId) => {
-					utils.logger(logGroup, `sha2: ${nonId['sha2']}`);
-					if (nonId['sha2']) {
-						this.id = nonId['sha2'];
-
-						communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-							partnerName: logGroup,
-							partnerIdentityId: this.id,
-						});
-					}
-				},
-				(err) => {
-					utils.warner(logGroup, err);
-				},
-				{ qf: '0.3', resolve: 'sha2' },
-			);
+			return;
 		}
+		this.resolveAndReportId('unifiedId', partnerNameUnifiedId);
+		this.resolveAndReportId('sha2', partnerName, { qf: '0.3', resolve: 'sha2' });
 	}
 }
 
