@@ -2,7 +2,7 @@ import { context, DiProcess } from '@wikia/ad-engine';
 import { getMediaWikiVariable } from '../utils/get-media-wiki-variable';
 import Cookies from 'js-cookie';
 
-export class WikiContextSetup implements DiProcess {
+export class TrackingParametersSetup implements DiProcess {
 	execute(): void {
 		const cookies = Cookies.get();
 		const wikiContext = {
@@ -22,11 +22,8 @@ export class WikiContextSetup implements DiProcess {
 				window.sessionId ||
 				window.session_id ||
 				cookies['tracking_session_id'],
-
-			...(window.mw && window.mw.config ? window.mw.config.values : {}),
-			...(window.ads ? window.ads.context : {}),
 		};
 
-		context.set('wiki', wikiContext);
+		context.set('wiki', Object.assign(wikiContext, context.get('wiki')));
 	}
 }

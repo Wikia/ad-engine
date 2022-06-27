@@ -6,8 +6,7 @@ export class UcpNoAdsWikiContextSetup implements DiProcess {
 			window.ads.context && window.ads.context.opts.platformName
 				? window.ads.context.opts.platformName
 				: '';
-		const endpoint = `https://services.fandom.com/icbm/api/config?app=${platformName}`;
-
-		context.set('services.instantConfig.endpoint', endpoint);
+		context.set('services.instantConfig.endpoint', 'https://services.fandom.com');
+		context.set('services.instantConfig.appName', platformName);
 	}
 }
