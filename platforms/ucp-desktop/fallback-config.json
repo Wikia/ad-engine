@@ -160,6 +160,7 @@
                 "314345172",
                 "5951743095",
                 "6018566814",
+                "6044083909",
                 "5951743089",
                 "5929089588",
                 "5929089315",
@@ -184,7 +185,8 @@
                 "6005712633",
                 "6013252078",
                 "6020811777",
-                "6047630064"
+                "6047630064",
+                "6050967117"
             ]
         }
     ],
@@ -492,27 +494,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 25.0,
-            "value": "connatix"
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 33.333,
-            "value": "exco"
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "sampling": 50.0,
+            "sampling": 90.0,
             "value": "anyclip"
         },
         {
@@ -523,6 +505,26 @@
                 "XX"
             ],
             "sampling": 100.0,
+            "value": "connatix"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 0.0,
+            "value": "exco"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 0.0,
             "value": "distroscale"
         }
     ],
@@ -630,7 +632,7 @@
                 "US",
                 "VN"
             ],
-            "sampling": 50.0,
+            "sampling": 100.0,
             "value": true
         }
     ],
@@ -2534,8 +2536,8 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
+                "icOutstreamExperiment_B_90:outstream_experiment_anyclip",
+                "icOutstreamExperiment_A_10:outstream_experiment_connatix"
             ]
         }
     ],
@@ -15570,7 +15572,7 @@
                 "VN"
             ],
             "sampling": 100.0,
-            "value": true
+            "value": false
         }
     ],
     "icAdMarketplace": [
@@ -15597,6 +15599,61 @@
             "regions": [
                 "XX"
             ],
+            "value": true
+        }
+    ],
+    "icConnatixPlayer": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "AE",
+                "AR",
+                "AT",
+                "AU",
+                "BE",
+                "BR",
+                "CA",
+                "CH",
+                "CL",
+                "CZ",
+                "DE",
+                "DK",
+                "ES",
+                "FI",
+                "FR",
+                "GB",
+                "GR",
+                "HK",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IN",
+                "IT",
+                "JP",
+                "KZ",
+                "MX",
+                "MY",
+                "NL",
+                "NO",
+                "NZ",
+                "PE",
+                "PH",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SE",
+                "SG",
+                "TR",
+                "TW",
+                "UK",
+                "US",
+                "VN"
+            ],
+            "sampling": 100.0,
             "value": true
         }
     ],
@@ -15642,9 +15699,52 @@
                 "fandomdesktop"
             ],
             "regions": [
-                "XX"
+                "AE",
+                "AR",
+                "AT",
+                "AU",
+                "BE",
+                "BR",
+                "CA",
+                "CH",
+                "CL",
+                "CZ",
+                "DE",
+                "DK",
+                "ES",
+                "FI",
+                "FR",
+                "GB",
+                "GR",
+                "HK",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IN",
+                "IT",
+                "JP",
+                "KZ",
+                "MX",
+                "MY",
+                "NL",
+                "NO",
+                "NZ",
+                "PE",
+                "PH",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SE",
+                "SG",
+                "TR",
+                "TW",
+                "UK",
+                "US",
+                "VN"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icBabDetection": [
