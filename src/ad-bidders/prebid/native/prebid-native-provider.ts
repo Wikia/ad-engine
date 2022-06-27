@@ -50,7 +50,7 @@ export class PrebidNativeProvider {
 		for (const assetName in data) {
 			if (assetsMap[assetName]) {
 				const value = this.getAssetValue(assetName, data);
-				template = template.replace('##' + assetsMap[assetName] + '##', value);
+				template = template.split('##' + assetsMap[assetName] + '##').join(value);
 			}
 		}
 		return template;
