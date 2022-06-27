@@ -4,14 +4,6 @@ import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 
 const logGroup = 'prebid-native-provider';
-const assetsMap = {
-	title: 'hb_native_title',
-	body: 'hb_native_body',
-	image: 'hb_native_image',
-	icon: 'hb_native_icon',
-	clickUrl: 'hb_native_linkurl',
-	displayUrl: 'hb_native_displayUrl',
-};
 
 export class PrebidNativeProvider {
 	isEnabled(): boolean {
@@ -46,11 +38,13 @@ export class PrebidNativeProvider {
 		return this.replaceAssetPlaceholdersWithData(template, data);
 	}
 
-	private replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
+	replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
 		for (const assetName in data) {
-			if (assetsMap[assetName]) {
+			if (PrebidNativeConfig.assetsMap[assetName]) {
 				const value = this.getAssetValue(assetName, data);
-				template = template.replace('##' + assetsMap[assetName] + '##', value);
+				template = template
+					.split('##' + PrebidNativeConfig.assetsMap[assetName] + '##')
+					.join(value);
 			}
 		}
 		return template;

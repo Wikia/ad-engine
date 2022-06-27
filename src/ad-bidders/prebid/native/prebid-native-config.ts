@@ -1,6 +1,15 @@
 import { utils } from '@ad-engine/core';
 
 export class PrebidNativeConfig {
+	static assetsMap = {
+		title: 'hb_native_title',
+		body: 'hb_native_body',
+		image: 'hb_native_image',
+		icon: 'hb_native_icon',
+		clickUrl: 'hb_native_linkurl',
+		displayUrl: 'hb_native_displayUrl',
+	};
+
 	static getPrebidNativeMediaTypes(deviceType: string): PrebidNativeMediaType {
 		return {
 			sendTargetingKeys: false,
