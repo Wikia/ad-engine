@@ -19,6 +19,7 @@ describe('Instant Config Loader', () => {
 	beforeEach(() => {
 		contextRepo = {
 			'services.instantConfig.endpoint': 'http://endpoint.com',
+			'services.instantConfig.appName': 'testApp',
 			'services.instantConfig.fallback': {},
 		};
 		contextGetStub = sandbox.stub(context, 'get');
@@ -53,7 +54,7 @@ describe('Instant Config Loader', () => {
 		expect(request.async).to.equal(true);
 		expect(request.status).to.equal(200);
 		expect(request.method).to.equal('GET');
-		expect(request.url).to.equal('http://endpoint.com');
+		expect(request.url).to.equal('http://endpoint.com/icbm/api/config?app=testApp');
 		expect(value).to.deep.equal({
 			foo: 'bar',
 		});
@@ -110,8 +111,22 @@ describe('Instant Config Loader', () => {
 	it('should get endpoint from context', async () => {
 		instantConfigLoader.getConfig();
 
-		expect(contextGetStub.getCalls().length).to.equal(2);
+		expect(contextGetStub.getCalls().length).to.equal(4);
 		expect(contextGetStub.firstCall.args[0]).to.equal('services.instantConfig.endpoint');
+		expect(contextGetStub.secondCall.args[0]).to.equal('wiki.services_instantConfig_variant');
+		expect(contextGetStub.thirdCall.args[0]).to.equal('services.instantConfig.appName');
+		expect(request.url).to.equal('http://endpoint.com/icbm/api/config?app=testApp');
+	});
+
+	it('should use variant path', async () => {
+		contextRepo['wiki.services_instantConfig_variant'] = 'test-variant';
+
+		instantConfigLoader.getConfig();
+
+		expect(contextGetStub.getCalls().length).to.equal(4);
+		expect(request.url).to.equal('http://endpoint.com/test-variant/api/config?app=testApp');
+
+		contextRepo['wiki.services_instantConfig_variant'] = undefined;
 	});
 
 	it('should get fallback from fallbackInstantConfig', async () => {

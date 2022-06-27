@@ -25,7 +25,8 @@ export const basicContext = {
 	},
 	services: {
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=bingebot',
+			endpoint: 'https://services.fandom.com',
+			appName: 'bingebot',
 			fallback: fallbackInstantConfig,
 		},
 	},
