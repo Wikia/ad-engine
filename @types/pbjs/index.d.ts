@@ -42,7 +42,7 @@ interface PrebidNativeMediaType {
 	displayUrl: {
 		required: boolean;
 	};
-	image: PrebidNativeImageType;
+	icon: PrebidNativeImageType;
 	sponsoredBy?: {
 		required: boolean;
 	};

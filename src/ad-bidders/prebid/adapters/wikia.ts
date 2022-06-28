@@ -83,7 +83,7 @@ export class Wikia extends PrebidAdapter {
 					displayUrl: {
 						required: true,
 					},
-					image: {
+					icon: {
 						required: true,
 						aspect_ratios: [
 							{
@@ -177,7 +177,7 @@ export class Wikia extends PrebidAdapter {
 			clickUrl: 'https://fandom.com',
 			displayUrl: 'Read more',
 			url: 'https://fandom.com',
-			image: {
+			icon: {
 				url: 'https://placekitten.com/100/100',
 				height: 100,
 				width: 100,
