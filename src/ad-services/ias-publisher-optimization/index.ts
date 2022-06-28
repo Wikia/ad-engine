@@ -140,34 +140,36 @@ class IasPublisherOptimization {
 	}
 
 	private static setBrandSafetyKeyValuesInTargeting(brandSafetyData): void {
-		if (brandSafetyData) {
-			let maxValue = '-1';
-
-			brandSafetyKeys.forEach((key) => {
-				if (brandSafetyData[key]) {
-					context.set(`targeting.${key}`, brandSafetyData[key]);
-
-					if (
-						maxValue === '-1' ||
-						brandSafetyValuesLevel[maxValue] < brandSafetyValuesLevel[brandSafetyData[key]]
-					) {
-						maxValue = brandSafetyData[key];
-					}
-				}
-			});
-
-			context.set('targeting.b_ias', maxValue);
-		} else {
+		if (!brandSafetyData) {
 			utils.logger(logGroup, 'no brand safety data');
+			return;
 		}
+
+		let maxValue = '-1';
+
+		brandSafetyKeys.forEach((key) => {
+			if (brandSafetyData[key]) {
+				context.set(`targeting.${key}`, brandSafetyData[key]);
+
+				if (
+					maxValue === '-1' ||
+					brandSafetyValuesLevel[maxValue] < brandSafetyValuesLevel[brandSafetyData[key]]
+				) {
+					maxValue = brandSafetyData[key];
+				}
+			}
+		});
+
+		context.set('targeting.b_ias', maxValue);
 	}
 
 	private static setCustomKeyValuesInTargeting(customData): void {
-		if (customData['ias-kw']) {
-			context.set('targeting.ias-kw', customData['ias-kw']);
-		} else {
+		if (!customData['ias-kw']) {
 			utils.logger(logGroup, 'no custom data');
+			return;
 		}
+
+		context.set('targeting.ias-kw', customData['ias-kw']);
 	}
 }
 
