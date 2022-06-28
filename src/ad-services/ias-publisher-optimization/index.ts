@@ -108,6 +108,7 @@ class IasPublisherOptimization {
 
 		context.set('targeting.fr', '-1');
 		context.set('targeting.b_ias', '-1');
+		context.set('targeting.ias-kw', '-1');
 
 		brandSafetyKeys.forEach((key) => {
 			context.set(`targeting.${key}`, '-1');
