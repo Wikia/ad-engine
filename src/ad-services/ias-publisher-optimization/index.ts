@@ -53,11 +53,12 @@ class IasPublisherOptimization {
 		}
 
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading');
+			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader
-				.loadScript(scriptUrl, 'text/javascript', true, 'first')
-				.then(() => this.setup());
+			return utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first').then(() => {
+				utils.logger(logGroup, 'asset loaded');
+				this.setup();
+			});
 		}
 	}
 
@@ -103,6 +104,8 @@ class IasPublisherOptimization {
 	}
 
 	private setInitialTargeting(): void {
+		utils.logger(logGroup, 'setting initial targeting...');
+
 		context.set('targeting.fr', '-1');
 		context.set('targeting.b_ias', '-1');
 
