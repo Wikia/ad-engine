@@ -14,6 +14,9 @@ describe('IAS Publisher Optimization', () => {
 		'"hat":"veryLow",' +
 		'"off":"medium",' +
 		'"vio":"veryLow"},' +
+		'"custom": {' +
+		'"ias-kw": ["IAS_12345", "IAS_67890"]' +
+		'},' +
 		'"fr":"false",' +
 		'"slots":{"top_leaderboard":{"id":"68f5088c-9c44-11eb-b40e","grm":["40"],"vw":"false"}}}';
 	let loadScriptStub;
@@ -95,7 +98,7 @@ describe('IAS Publisher Optimization', () => {
 		expect(context.get('targeting.off')).to.equal('medium');
 		expect(context.get('targeting.vio')).to.equal('veryLow');
 		expect(context.get('targeting.b_ias')).to.equal('high');
-		expect(context.get('targeting.ias-kw')).to.equal('-1');
+		expect(context.get('targeting.ias-kw')).to.equal(['IAS_12345', 'IAS_67890']);
 		expect(context.get('slots.top_leaderboard.targeting.vw')).to.equal('false');
 	});
 });
