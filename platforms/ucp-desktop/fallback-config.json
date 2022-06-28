@@ -312,6 +312,18 @@
             "value": true
         }
     ],
+    "icAudigentNewIntegrationEnabled": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
