@@ -27,8 +27,13 @@ interface IasTargetingSlotData {
 	vw_vv: string[];
 }
 
+interface IasCustomData {
+	'ias-kw': string[];
+}
+
 interface IasTargetingData {
 	brandSafety?: BrandSafetyData;
+	custom: IasCustomData;
 	fr?: string;
 	slots?: IasTargetingSlotData[];
 }
@@ -120,32 +125,48 @@ class IasPublisherOptimization {
 	}
 
 	private iasDataHandler(adSlotData: string): void {
+		utils.logger(logGroup, 'handling IAS response...');
+
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
 
 		context.set('targeting.fr', iasTargetingData.fr);
 
-		if (iasTargetingData.brandSafety) {
+		IasPublisherOptimization.setBrandSafetyKeyValuesInTargeting(iasTargetingData.brandSafety);
+		IasPublisherOptimization.setCustomKeyValuesInTargeting(iasTargetingData.custom);
+
+		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
+			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
+		}
+	}
+
+	private static setBrandSafetyKeyValuesInTargeting(brandSafetyData): void {
+		if (brandSafetyData) {
 			let maxValue = '-1';
 
 			brandSafetyKeys.forEach((key) => {
-				if (iasTargetingData.brandSafety[key]) {
-					context.set(`targeting.${key}`, iasTargetingData.brandSafety[key]);
+				if (brandSafetyData[key]) {
+					context.set(`targeting.${key}`, brandSafetyData[key]);
 
 					if (
 						maxValue === '-1' ||
-						brandSafetyValuesLevel[maxValue] <
-							brandSafetyValuesLevel[iasTargetingData.brandSafety[key]]
+						brandSafetyValuesLevel[maxValue] < brandSafetyValuesLevel[brandSafetyData[key]]
 					) {
-						maxValue = iasTargetingData.brandSafety[key];
+						maxValue = brandSafetyData[key];
 					}
 				}
 			});
 
 			context.set('targeting.b_ias', maxValue);
+		} else {
+			utils.logger(logGroup, 'no brand safety data');
 		}
+	}
 
-		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
-			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
+	private static setCustomKeyValuesInTargeting(customData): void {
+		if (customData['ias-kw']) {
+			context.set('targeting.ias-kw', customData['ias-kw']);
+		} else {
+			utils.logger(logGroup, 'no custom data');
 		}
 	}
 }

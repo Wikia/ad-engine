@@ -98,7 +98,7 @@ describe('IAS Publisher Optimization', () => {
 		expect(context.get('targeting.off')).to.equal('medium');
 		expect(context.get('targeting.vio')).to.equal('veryLow');
 		expect(context.get('targeting.b_ias')).to.equal('high');
-		expect(context.get('targeting.ias-kw')).to.equal(['IAS_12345', 'IAS_67890']);
+		expect(context.get('targeting.ias-kw')).to.deep.equal(['IAS_12345', 'IAS_67890']);
 		expect(context.get('slots.top_leaderboard.targeting.vw')).to.equal('false');
 	});
 });
