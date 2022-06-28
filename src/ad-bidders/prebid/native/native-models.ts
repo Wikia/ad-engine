@@ -3,7 +3,7 @@ export interface PrebidNativeData {
 	body: string;
 	clickUrl: string;
 	displayUrl: string;
-	image: PrebidNativeImage;
+	icon: PrebidNativeImage;
 	title: string;
 }
 

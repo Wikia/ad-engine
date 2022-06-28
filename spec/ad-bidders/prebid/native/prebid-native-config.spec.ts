@@ -25,7 +25,7 @@ describe('Prebid native config', () => {
 				'body',
 				'clickUrl',
 				'displayUrl',
-				'image',
+				'icon',
 			]);
 		});
 
@@ -35,8 +35,8 @@ describe('Prebid native config', () => {
 
 			expect(mobileNativeMediaTypes.title.len).to.equal(40);
 			expect(mobileNativeMediaTypes.body.len).to.equal(30);
-			expect(mobileNativeMediaTypes.image.aspect_ratios[0].min_width).to.equal(90);
-			expect(mobileNativeMediaTypes.image.aspect_ratios[0].min_height).to.equal(90);
+			expect(mobileNativeMediaTypes.icon.aspect_ratios[0].min_width).to.equal(90);
+			expect(mobileNativeMediaTypes.icon.aspect_ratios[0].min_height).to.equal(90);
 		});
 
 		it('returns proper values for mobile with wider screen width', () => {
@@ -45,8 +45,8 @@ describe('Prebid native config', () => {
 
 			expect(mobileNativeMediaTypes.title.len).to.equal(40);
 			expect(mobileNativeMediaTypes.body.len).to.equal(30);
-			expect(mobileNativeMediaTypes.image.aspect_ratios[0].min_width).to.equal(120);
-			expect(mobileNativeMediaTypes.image.aspect_ratios[0].min_height).to.equal(120);
+			expect(mobileNativeMediaTypes.icon.aspect_ratios[0].min_width).to.equal(120);
+			expect(mobileNativeMediaTypes.icon.aspect_ratios[0].min_height).to.equal(120);
 		});
 
 		it('returns proper values for destkop', () => {
@@ -54,8 +54,8 @@ describe('Prebid native config', () => {
 
 			expect(mobileNativeMediaTypes.title.len).to.equal(60);
 			expect(mobileNativeMediaTypes.body.len).to.equal(120);
-			expect(mobileNativeMediaTypes.image.aspect_ratios[0].min_width).to.equal(126);
-			expect(mobileNativeMediaTypes.image.aspect_ratios[0].min_height).to.equal(126);
+			expect(mobileNativeMediaTypes.icon.aspect_ratios[0].min_width).to.equal(126);
+			expect(mobileNativeMediaTypes.icon.aspect_ratios[0].min_height).to.equal(126);
 		});
 	});
 });
