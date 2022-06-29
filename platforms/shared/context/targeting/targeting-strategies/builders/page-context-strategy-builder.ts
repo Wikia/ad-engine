@@ -1,7 +1,8 @@
 import { StrategyBuilder } from '../interfaces/strategy-builder';
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
 import { PageContextStrategy } from '../strategies/page-context-strategy';
-import { Context, Page, Site, WindowContextDto } from '../interfaces/window-context-dto';
+import { WindowContextDto } from '../interfaces/window-context-dto';
+import { Context, Page, Site } from '../models/context';
 
 export class PageContextStrategyBuilder implements StrategyBuilder {
 	build(skin: string): TargetingStrategy {

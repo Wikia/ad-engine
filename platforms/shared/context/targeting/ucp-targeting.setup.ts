@@ -12,7 +12,11 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
-import { TargetingStrategyExecutor } from './targeting-strategy-executor';
+import {
+	DEFAULT_STRATEGY,
+	TargetingStrategies,
+	TargetingStrategyExecutor,
+} from './targeting-strategy-executor';
 import { LegacyStrategyBuilder } from './targeting-strategies/builders/legacy-strategy-builder';
 import { PageContextStrategyBuilder } from './targeting-strategies/builders/page-context-strategy-builder';
 
@@ -65,13 +69,18 @@ export class UcpTargetingSetup implements DiProcess {
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
-		const targetingStrategy = this.instantConfig.get('icTargetingStrategy', 'default');
+		const icbmStrategy: string = this.instantConfig.get('icTargetingStrategy', DEFAULT_STRATEGY);
 
-		const strategies = {
+		const availableStrategies: TargetingStrategies = {
 			default: new LegacyStrategyBuilder().build(this.skin),
 			pageContext: new PageContextStrategyBuilder().build(this.skin),
 		};
 
-		return new TargetingStrategyExecutor(strategies).execute(targetingStrategy);
+		// @ts-ignore because it does not recognize context correctly
+		const siteTags = window.context?.site?.tags;
+
+		return new TargetingStrategyExecutor(availableStrategies, siteTags, utils.logger).execute(
+			icbmStrategy,
+		);
 	}
 }

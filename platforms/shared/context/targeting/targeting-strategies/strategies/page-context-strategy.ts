@@ -1,7 +1,7 @@
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
 import { context, Targeting, utils } from '@wikia/ad-engine';
-import { Context } from '../interfaces/window-context-dto';
 import { CommonStrategy } from './common-strategy';
+import { Context } from '../models/context';
 
 export class PageContextStrategy extends CommonStrategy implements TargetingStrategy {
 	constructor(private skin: string, private context: Context) {
