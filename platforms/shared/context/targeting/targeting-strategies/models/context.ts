@@ -5,7 +5,7 @@ export class Context {
 export class Site {
 	public readonly categories: [];
 	public readonly directedAtChildren: boolean;
-	public readonly esrbRating: string;
+	public readonly esrbRating: string[];
 	public readonly siteName: string;
 	public readonly top1000: boolean;
 	public readonly tags: any;
@@ -22,7 +22,7 @@ export class Site {
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
 		this.directedAtChildren = typeof directedAtChildren === 'boolean' ? directedAtChildren : null;
-		this.esrbRating = typeof esrbRating === 'string' ? esrbRating : null;
+		this.esrbRating = typeof esrbRating === 'object' ? esrbRating : null;
 		this.siteName = typeof siteName === 'string' ? siteName : null;
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;
