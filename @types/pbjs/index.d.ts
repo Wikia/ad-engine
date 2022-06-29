@@ -34,12 +34,15 @@ interface PrebidNativeMediaType {
 	};
 	body: {
 		required: boolean;
+		len?: number;
 	};
 	clickUrl: {
 		required: boolean;
 	};
+	displayUrl: {
+		required: boolean;
+	};
 	icon: PrebidNativeImageType;
-	image?: PrebidNativeImageType;
 	sponsoredBy?: {
 		required: boolean;
 	};

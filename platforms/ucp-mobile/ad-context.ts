@@ -91,7 +91,8 @@ export const basicContext = {
 			enabled: false,
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
+			endpoint: 'https://services.fandom.com',
+			appName: 'fandommobile',
 			fallback: fallbackInstantConfig,
 		},
 		iasPublisherOptimization: {
