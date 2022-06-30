@@ -30,9 +30,12 @@ export class PrebidNativeProvider {
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
 		const ntvAdSlot = slotService.get('ntv_ad');
-		const ntvDomElement = ntvAdSlot.getElement();
 
+		const ntvDomElement = ntvAdSlot.getElement();
 		ntvDomElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
+
+		const currentRv = ntvAdSlot.getConfigProperty('targeting.rv') || 1;
+		ntvAdSlot.setConfigProperty('targeting.rv', currentRv + 1);
 		ntvAdSlot.setStatus(AdSlot.STATUS_SUCCESS);
 	}
 
