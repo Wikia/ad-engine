@@ -29,7 +29,7 @@ export class PrebidNativeProvider {
 	}
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
-		const ntvAdSlot = slotService.get('ntv_ad');
+		const ntvAdSlot = slotService.get(adSlotName);
 
 		const ntvDomElement = ntvAdSlot.getElement();
 		ntvDomElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
