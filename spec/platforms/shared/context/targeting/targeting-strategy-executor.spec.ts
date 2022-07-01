@@ -38,10 +38,10 @@ describe('Targeting pages without Site Level Tags', () => {
 		sinon.assert.calledOnce(loggerSpy);
 	});
 
-	it('Pick another known context strategy - should fall back to default because we have Site / Community Tags', function () {
+	it('Pick another known context strategy - should work and use selected strategy', function () {
 		const targeting = tse.execute('another');
 
-		expect(targeting).to.eql({ test: 'default' });
+		expect(targeting).to.eql({ test: 'another' });
 		sinon.assert.notCalled(loggerSpy);
 	});
 });
@@ -56,10 +56,10 @@ describe('Targeting pages with Site Level Tags', () => {
 		tse = new TargetingStrategyExecutor(mockStrategies, sampleSiteTags, loggerSpy);
 	});
 
-	it('Pick an existing strategy - should work and use selected strategy', function () {
+	it('Pick an existing strategy - should fall back to default because we have Site / Community Tags', function () {
 		const targeting = tse.execute('another');
 
-		expect(targeting).to.eql({ test: 'another' });
+		expect(targeting).to.eql({ test: 'default' });
 		sinon.assert.notCalled(loggerSpy);
 	});
 });

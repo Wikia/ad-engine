@@ -36,7 +36,7 @@ export class TargetingStrategyExecutor {
 			return DEFAULT_STRATEGY;
 		}
 
-		if (this.siteTags instanceof Object && Object.entries(this.siteTags).length === 0) {
+		if (this.siteTags instanceof Object && Object.entries(this.siteTags).length > 0) {
 			return DEFAULT_STRATEGY;
 		}
 
