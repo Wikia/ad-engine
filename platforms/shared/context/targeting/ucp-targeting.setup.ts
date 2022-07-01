@@ -2,23 +2,23 @@ import {
 	Binder,
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
 	Targeting,
 	UapLoadStatus,
-	CookieStorageAdapter,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
+import { TargetingStrategyExecutor } from './targeting-strategy-executor';
 import {
-	DEFAULT_STRATEGY,
-	TargetingStrategies,
-	TargetingStrategyExecutor,
-} from './targeting-strategy-executor';
-import { LegacyStrategyBuilder } from './targeting-strategies/builders/legacy-strategy-builder';
-import { PageContextStrategyBuilder } from './targeting-strategies/builders/page-context-strategy-builder';
+	DEFAULT_PRIORITY_STRATEGY,
+	TargetingStrategyPriorityService,
+} from './targeting-strategies/services/targeting-strategy-priority-service';
+import { targetingStrategiesBuilder } from './targeting-strategies/builders/targeting-strategies-builder';
+import { targetingStrategyPrioritiesBuilder } from './targeting-strategies/builders/targeting-strategy-priorities-builder';
 
 const SKIN = Symbol('targeting skin');
 
@@ -34,6 +34,9 @@ export class UcpTargetingSetup implements DiProcess {
 	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
+		// TODO TB remove after dev
+		console.log(context.get('targeting'));
+
 		context.set('targeting', {
 			...context.get('targeting'),
 			...this.getPageLevelTargeting(),
@@ -69,18 +72,28 @@ export class UcpTargetingSetup implements DiProcess {
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
-		const icbmStrategy: string = this.instantConfig.get('icTargetingStrategy', DEFAULT_STRATEGY);
-
-		const availableStrategies: TargetingStrategies = {
-			[DEFAULT_STRATEGY]: new LegacyStrategyBuilder().build(this.skin),
-			pageContext: new PageContextStrategyBuilder().build(this.skin),
-		};
+		const selectedStrategy: string = this.instantConfig.get(
+			'icTargetingStrategy',
+			DEFAULT_PRIORITY_STRATEGY,
+		);
 
 		// @ts-ignore because it does not recognize context correctly
 		const siteTags = window.context?.site?.tags;
+		// @ts-ignore because it does not recognize context correctly
+		const pageTags = window.context?.page?.tags;
 
-		return new TargetingStrategyExecutor(availableStrategies, siteTags, utils.logger).execute(
-			icbmStrategy,
+		const priorityService = new TargetingStrategyPriorityService(
+			targetingStrategyPrioritiesBuilder(siteTags, pageTags),
+			utils.logger,
 		);
+
+		// TODO WIP remove after dev
+		console.log(priorityService);
+
+		return new TargetingStrategyExecutor(
+			targetingStrategiesBuilder(this.skin),
+			siteTags,
+			utils.logger,
+		).execute(selectedStrategy);
 	}
 }

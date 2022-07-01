@@ -1,11 +1,16 @@
 import { TargetingStrategy } from './targeting-strategies/interfaces/targeting-strategy';
 import { Targeting } from '@wikia/ad-engine';
 
+// TODO Refactor this in to Enum
+export type TargetingStrategiesNames = 'default' | 'siteContext' | 'pageContext';
 export const DEFAULT_STRATEGY = 'default';
+export const SITE_CONTEXT_STRATEGY = 'siteContext';
+export const PAGE_CONTEXT_STRATEGY = 'pageContext';
 
 export type TargetingStrategies = {
 	[DEFAULT_STRATEGY]: TargetingStrategy;
-	[key: string]: TargetingStrategy;
+	[SITE_CONTEXT_STRATEGY]: TargetingStrategy;
+	[PAGE_CONTEXT_STRATEGY]: TargetingStrategy;
 };
 
 export class TargetingStrategyExecutor {
