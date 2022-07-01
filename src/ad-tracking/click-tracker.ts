@@ -66,7 +66,7 @@ class AdClickTracker {
 			return;
 		}
 
-		const iframeBody = iframeElement.contentWindow.document.body;
+		const iframeBody = iframeElement?.contentWindow?.document?.body;
 
 		if (iframeBody && slotElement) {
 			slotElement.firstElementChild.addEventListener('click', () => {
