@@ -7,7 +7,7 @@ export class DefaultStrategyBuilderMock implements StrategyBuilder {
 	build(skin: string): TargetingStrategy {
 		const strategyMock = makeDefaultStrategySpy();
 
-		strategyMock.execute.returns({ test: 'test' });
+		strategyMock.execute.returns({ test: 'default' });
 
 		return strategyMock;
 	}

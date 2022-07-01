@@ -72,7 +72,7 @@ export class UcpTargetingSetup implements DiProcess {
 		const icbmStrategy: string = this.instantConfig.get('icTargetingStrategy', DEFAULT_STRATEGY);
 
 		const availableStrategies: TargetingStrategies = {
-			default: new LegacyStrategyBuilder().build(this.skin),
+			[DEFAULT_STRATEGY]: new LegacyStrategyBuilder().build(this.skin),
 			pageContext: new PageContextStrategyBuilder().build(this.skin),
 		};
 

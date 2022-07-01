@@ -16,8 +16,7 @@ export class TargetingStrategyExecutor {
 	) {}
 
 	execute(selectedStrategy: string): Partial<Targeting> {
-		const strategy =
-			this.strategies[this.pickStrategy(selectedStrategy)] || this.strategies.default;
+		const strategy = this.strategies[this.pickStrategy(selectedStrategy)];
 
 		return strategy.execute();
 	}
@@ -37,7 +36,7 @@ export class TargetingStrategyExecutor {
 			return DEFAULT_STRATEGY;
 		}
 
-		if (this.siteTags instanceof Object && Object.entries(this.siteTags).length > 0) {
+		if (this.siteTags instanceof Object && Object.entries(this.siteTags).length === 0) {
 			return DEFAULT_STRATEGY;
 		}
 

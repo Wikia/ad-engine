@@ -11,7 +11,7 @@ const SKIN = 'skin';
 
 const mockStrategies = {
 	[DEFAULT_STRATEGY]: new DefaultStrategyBuilderMock().build(SKIN),
-	pageContext: new AnotherStrategyBuilderMock().build(SKIN),
+	another: new AnotherStrategyBuilderMock().build(SKIN),
 };
 
 describe('Targeting pages without Site Level Tags', () => {
@@ -27,21 +27,21 @@ describe('Targeting pages without Site Level Tags', () => {
 	it('Pick an existing strategy - should work', function () {
 		const targeting = tse.execute('default');
 
-		expect(targeting).to.eql({ test: 'test' });
+		expect(targeting).to.eql({ test: 'default' });
 		sinon.assert.notCalled(loggerSpy);
 	});
 
 	it('Pick an unknown strategy - should fall back to default', function () {
 		const targeting = tse.execute('unknown');
 
-		expect(targeting).to.eql({ test: 'test' });
+		expect(targeting).to.eql({ test: 'default' });
 		sinon.assert.calledOnce(loggerSpy);
 	});
 
-	it('Pick a page level context strategy - should fall back to default because we have Site / Community Tags', function () {
-		const targeting = tse.execute('pageContext');
+	it('Pick another known context strategy - should fall back to default because we have Site / Community Tags', function () {
+		const targeting = tse.execute('another');
 
-		expect(targeting).to.eql({ test: 'another' });
+		expect(targeting).to.eql({ test: 'default' });
 		sinon.assert.notCalled(loggerSpy);
 	});
 });
@@ -56,10 +56,10 @@ describe('Targeting pages with Site Level Tags', () => {
 		tse = new TargetingStrategyExecutor(mockStrategies, sampleSiteTags, loggerSpy);
 	});
 
-	it('Pick an existing strategy - should fallback to default because there are not page level tags', function () {
-		const targeting = tse.execute('default');
+	it('Pick an existing strategy - should work and use selected strategy', function () {
+		const targeting = tse.execute('another');
 
-		expect(targeting).to.eql({ test: 'test' });
+		expect(targeting).to.eql({ test: 'another' });
 		sinon.assert.notCalled(loggerSpy);
 	});
 });
