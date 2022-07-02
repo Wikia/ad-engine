@@ -25,6 +25,7 @@ import { targetingStrategyPrioritiesConfigurator } from './targeting-strategies/
 import { targetingStrategiesConfigurator } from './targeting-strategies/configurators/targeting-strategies-configurator';
 import { PageTracker } from '../../tracking/page-tracker';
 import { WindowContextDto } from './targeting-strategies/interfaces/window-context-dto';
+import { DataWarehouseTracker } from '../../tracking/data-warehouse';
 
 const SKIN = Symbol('targeting skin');
 
@@ -37,11 +38,7 @@ export class UcpTargetingSetup implements DiProcess {
 		};
 	}
 
-	constructor(
-		@Inject(SKIN) private skin: string,
-		protected instantConfig: InstantConfigService,
-		private pageTracker: PageTracker,
-	) {}
+	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
 
 	execute(): void {
 		context.set('targeting', {
@@ -107,9 +104,9 @@ export class UcpTargetingSetup implements DiProcess {
 		const pageName = windowContext?.page?.pageName;
 		const siteName = windowContext?.site?.siteName;
 
-		this.pageTracker.trackProp(
-			'PageContextStrategy',
-			`Page name: ${pageName} - Site Name: ${siteName}`,
-		);
+		// TODO this should be injectable, but it ends up undefined when submitted through DI. Fix this.
+		const pageTracker = new PageTracker(new DataWarehouseTracker());
+
+		pageTracker.trackProp('PageContextStrategy', `Page name: ${pageName} - Site Name: ${siteName}`);
 	}
 }
