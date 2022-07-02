@@ -158,6 +158,7 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6005712462",
                 "5951743095",
                 "6018566814",
                 "6044083909",
@@ -186,6 +187,7 @@
                 "6013252078",
                 "6020811777",
                 "6047630064",
+                "6044877574",
                 "6050967117"
             ]
         }
@@ -309,6 +311,56 @@
             "regions": [
                 "US"
             ],
+            "value": true
+        }
+    ],
+    "icLiveConnect": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "sampling": 0.1,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "GB",
+                "UK"
+            ],
+            "sampling": 0.01,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "MX"
+            ],
+            "sampling": 0.01,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "AU",
+                "DE",
+                "FR"
+            ],
+            "sampling": 0.01,
             "value": true
         }
     ],
