@@ -19,12 +19,12 @@ export class TargetingStrategyPriorityService {
 	) {}
 
 	pickQualifyingStrategy(): TargetingStrategiesNames {
-		if (!(this.selectedPriorityStrategy in this.priorityStrategies)) {
+		if (this.submittedStrategyWasNotDefined()) {
 			const undefinedStrategy: string =
 				typeof this.selectedPriorityStrategy === 'string'
 					? this.selectedPriorityStrategy
 					: 'Selected strategy is not a string';
-			this.logger('Targeting', 'Undefined priority strategy was selected: ' + undefinedStrategy);
+			this.logger('Targeting', 'Undefined priority strategy was submitted: ' + undefinedStrategy);
 
 			return DEFAULT_TARGETING_STRATEGY;
 		}
@@ -33,5 +33,9 @@ export class TargetingStrategyPriorityService {
 			this.priorityStrategies[this.selectedPriorityStrategy] || this.priorityStrategies.default;
 
 		return strategy.execute();
+	}
+
+	private submittedStrategyWasNotDefined() {
+		return !(this.selectedPriorityStrategy in this.priorityStrategies);
 	}
 }
