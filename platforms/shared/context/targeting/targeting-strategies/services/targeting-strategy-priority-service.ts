@@ -1,5 +1,8 @@
 import { PriorityStrategy } from '../interfaces/priority-strategy';
-import { DEFAULT_STRATEGY } from '../../targeting-strategy-executor';
+import {
+	DEFAULT_TARGETING_STRATEGY,
+	TargetingStrategiesNames,
+} from '../../targeting-strategy-executor';
 
 export const DEFAULT_PRIORITY_STRATEGY = 'default';
 
@@ -11,22 +14,23 @@ export type PriorityStrategies = {
 export class TargetingStrategyPriorityService {
 	constructor(
 		private priorityStrategies: PriorityStrategies,
+		private selectedPriorityStrategy: string,
 		private logger: (logGroup: string, ...logValues: any[]) => void,
 	) {}
 
-	pickQualifyingStrategy(selectedPriorityStrategy: string): string {
-		if (!(selectedPriorityStrategy in this.priorityStrategies)) {
+	pickQualifyingStrategy(): TargetingStrategiesNames {
+		if (!(this.selectedPriorityStrategy in this.priorityStrategies)) {
 			const undefinedStrategy: string =
-				typeof selectedPriorityStrategy === 'string'
-					? selectedPriorityStrategy
+				typeof this.selectedPriorityStrategy === 'string'
+					? this.selectedPriorityStrategy
 					: 'Selected strategy is not a string';
 			this.logger('Targeting', 'Undefined priority strategy was selected: ' + undefinedStrategy);
 
-			return DEFAULT_STRATEGY;
+			return DEFAULT_TARGETING_STRATEGY;
 		}
 
 		const strategy =
-			this.priorityStrategies[selectedPriorityStrategy] || this.priorityStrategies.default;
+			this.priorityStrategies[this.selectedPriorityStrategy] || this.priorityStrategies.default;
 
 		return strategy.execute();
 	}

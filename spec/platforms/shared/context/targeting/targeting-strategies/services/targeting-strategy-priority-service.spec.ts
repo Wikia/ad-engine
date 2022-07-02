@@ -1,5 +1,5 @@
 import {
-	DEFAULT_STRATEGY,
+	DEFAULT_TARGETING_STRATEGY,
 	TargetingStrategiesNames,
 } from '../../../../../../../platforms/shared/context/targeting/targeting-strategy-executor';
 import { expect } from 'chai';
@@ -26,30 +26,39 @@ const mockStrategies: PriorityStrategies = {
 };
 
 describe('Pick targeting priority', () => {
-	let tsps: TargetingStrategyPriorityService;
 	let loggerSpy;
 
 	beforeEach(() => {
 		loggerSpy = sinon.spy();
-		tsps = new TargetingStrategyPriorityService(mockStrategies, loggerSpy);
 	});
 
 	it('Pick an existing strategy - should work', function () {
-		const strategy = tsps.pickQualifyingStrategy(DEFAULT_PRIORITY_STRATEGY);
+		const tsps = new TargetingStrategyPriorityService(
+			mockStrategies,
+			DEFAULT_PRIORITY_STRATEGY,
+			loggerSpy,
+		);
+		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(DEFAULT_STRATEGY);
+		expect(strategy).to.eql(DEFAULT_TARGETING_STRATEGY);
 		sinon.assert.notCalled(loggerSpy);
 	});
 
 	it('Pick an unknown strategy - should fall back to default', function () {
-		const strategy = tsps.pickQualifyingStrategy('unknown');
+		const tsps = new TargetingStrategyPriorityService(mockStrategies, 'unknown', loggerSpy);
+		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(DEFAULT_STRATEGY);
+		expect(strategy).to.eql(DEFAULT_TARGETING_STRATEGY);
 		sinon.assert.calledOnce(loggerSpy);
 	});
 
 	it('Pick another known context strategy - should work and use selected strategy', function () {
-		const strategy = tsps.pickQualifyingStrategy(MOCK_PRIORITY_STRATEGY);
+		const tsps = new TargetingStrategyPriorityService(
+			mockStrategies,
+			MOCK_PRIORITY_STRATEGY,
+			loggerSpy,
+		);
+		const strategy = tsps.pickQualifyingStrategy();
 
 		expect(strategy).to.eql('siteContext');
 		sinon.assert.notCalled(loggerSpy);

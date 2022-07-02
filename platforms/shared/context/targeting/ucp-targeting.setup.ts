@@ -77,23 +77,15 @@ export class UcpTargetingSetup implements DiProcess {
 			DEFAULT_PRIORITY_STRATEGY,
 		);
 
-		// @ts-ignore because it does not recognize context correctly
-		const siteTags = window.context?.site?.tags;
-		// @ts-ignore because it does not recognize context correctly
-		const pageTags = window.context?.page?.tags;
-
 		const priorityService = new TargetingStrategyPriorityService(
-			targetingStrategyPrioritiesBuilder(siteTags, pageTags),
+			targetingStrategyPrioritiesBuilder(),
+			selectedStrategy,
 			utils.logger,
 		);
 
-		// TODO WIP remove after dev
-		console.log(priorityService);
-
 		return new TargetingStrategyExecutor(
 			targetingStrategiesBuilder(this.skin),
-			siteTags,
-			utils.logger,
-		).execute(selectedStrategy);
+			priorityService,
+		).execute();
 	}
 }

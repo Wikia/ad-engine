@@ -1,5 +1,5 @@
 import {
-	DEFAULT_STRATEGY,
+	DEFAULT_TARGETING_STRATEGY,
 	PAGE_CONTEXT_STRATEGY,
 	SITE_CONTEXT_STRATEGY,
 	TargetingStrategies,
@@ -9,7 +9,7 @@ import { PageContextStrategyBuilder } from './page-context-strategy-builder';
 
 export function targetingStrategiesBuilder(skin: string): TargetingStrategies {
 	return {
-		[DEFAULT_STRATEGY]: new LegacySiteContextStrategyBuilder().build(skin),
+		[DEFAULT_TARGETING_STRATEGY]: new LegacySiteContextStrategyBuilder().build(skin),
 		[SITE_CONTEXT_STRATEGY]: new LegacySiteContextStrategyBuilder().build(skin),
 		[PAGE_CONTEXT_STRATEGY]: new PageContextStrategyBuilder().build(skin),
 	};

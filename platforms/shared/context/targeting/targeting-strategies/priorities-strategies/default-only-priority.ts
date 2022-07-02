@@ -1,8 +1,11 @@
 import { PriorityStrategy } from '../interfaces/priority-strategy';
-import { DEFAULT_STRATEGY, TargetingStrategiesNames } from '../../targeting-strategy-executor';
+import {
+	DEFAULT_TARGETING_STRATEGY,
+	TargetingStrategiesNames,
+} from '../../targeting-strategy-executor';
 
 export class DefaultOnlyPriority implements PriorityStrategy {
 	execute(): TargetingStrategiesNames {
-		return DEFAULT_STRATEGY;
+		return DEFAULT_TARGETING_STRATEGY;
 	}
 }

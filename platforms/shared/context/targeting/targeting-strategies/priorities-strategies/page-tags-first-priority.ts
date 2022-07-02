@@ -9,10 +9,14 @@ export class PageTagsFirstPriority implements PriorityStrategy {
 	constructor(private pageTags: Record<string, unknown>) {}
 
 	execute(): TargetingStrategiesNames {
-		if (this.pageTags instanceof Object && Object.entries(this.pageTags).length > 0) {
+		if (this.doWeHaveAnyPageTags()) {
 			return PAGE_CONTEXT_STRATEGY;
 		}
 
 		return SITE_CONTEXT_STRATEGY;
+	}
+
+	private doWeHaveAnyPageTags() {
+		return this.pageTags instanceof Object && Object.entries(this.pageTags).length > 0;
 	}
 }

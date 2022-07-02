@@ -2,12 +2,14 @@ import { StrategyBuilder } from '../../../../../../../platforms/shared/context/t
 import { TargetingStrategy } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/interfaces/targeting-strategy';
 import { makeDefaultStrategySpy } from '../strategies/defautl-strategy.spy';
 
-export class AnotherStrategyBuilderMock implements StrategyBuilder {
+export class StrategyBuilderMock implements StrategyBuilder {
+	constructor(private returns: Record<string, string>) {}
+
 	/* eslint-disable @typescript-eslint/no-unused-vars */
-	build(skin: string): TargetingStrategy {
+	build(): TargetingStrategy {
 		const strategyMock = makeDefaultStrategySpy();
 
-		strategyMock.execute.returns({ test: 'another' });
+		strategyMock.execute.returns(this.returns);
 
 		return strategyMock;
 	}

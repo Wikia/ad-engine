@@ -9,10 +9,14 @@ export class SiteTagsFirstPriority implements PriorityStrategy {
 	constructor(private siteTags: Record<string, unknown>) {}
 
 	execute(): TargetingStrategiesNames {
-		if (this.siteTags instanceof Object && Object.entries(this.siteTags).length > 0) {
+		if (this.doWeHaveAnySiteTags()) {
 			return SITE_CONTEXT_STRATEGY;
 		}
 
 		return PAGE_CONTEXT_STRATEGY;
+	}
+
+	private doWeHaveAnySiteTags() {
+		return this.siteTags instanceof Object && Object.entries(this.siteTags).length > 0;
 	}
 }
