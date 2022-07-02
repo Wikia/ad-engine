@@ -28,10 +28,13 @@ class TargetingStrategyPriorityServiceMock extends TargetingStrategyPriorityServ
 	}
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+function strategyListenerDummy(_) {}
+
 describe('Targeting Strategy execution', () => {
 	it('Pick default strategy', function () {
 		const ps = new TargetingStrategyPriorityServiceMock(DEFAULT_PRIORITY_STRATEGY);
-		const tse = new TargetingStrategyExecutor(mockStrategies, ps);
+		const tse = new TargetingStrategyExecutor(mockStrategies, ps, strategyListenerDummy);
 		const targeting = tse.execute();
 
 		expect(targeting).to.eql({ test: 'default' });
@@ -39,7 +42,7 @@ describe('Targeting Strategy execution', () => {
 
 	it('Pick site context strategy', function () {
 		const ps = new TargetingStrategyPriorityServiceMock(SITE_CONTEXT_STRATEGY);
-		const tse = new TargetingStrategyExecutor(mockStrategies, ps);
+		const tse = new TargetingStrategyExecutor(mockStrategies, ps, strategyListenerDummy);
 		const targeting = tse.execute();
 
 		expect(targeting).to.eql({ test: 'site' });
@@ -47,7 +50,7 @@ describe('Targeting Strategy execution', () => {
 
 	it('Pick page context strategy', function () {
 		const ps = new TargetingStrategyPriorityServiceMock(PAGE_CONTEXT_STRATEGY);
-		const tse = new TargetingStrategyExecutor(mockStrategies, ps);
+		const tse = new TargetingStrategyExecutor(mockStrategies, ps, strategyListenerDummy);
 		const targeting = tse.execute();
 
 		expect(targeting).to.eql({ test: 'page' });

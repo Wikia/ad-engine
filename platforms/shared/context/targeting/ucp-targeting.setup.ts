@@ -12,13 +12,19 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
-import { TargetingStrategyExecutor } from './targeting-strategy-executor';
+import {
+	PAGE_CONTEXT_STRATEGY,
+	TargetingStrategiesNames,
+	TargetingStrategyExecutor,
+} from './targeting-strategy-executor';
 import {
 	DEFAULT_PRIORITY_STRATEGY,
 	TargetingStrategyPriorityService,
 } from './targeting-strategies/services/targeting-strategy-priority-service';
 import { targetingStrategyPrioritiesConfigurator } from './targeting-strategies/configurators/targeting-strategy-priorities-configurator';
 import { targetingStrategiesConfigurator } from './targeting-strategies/configurators/targeting-strategies-configurator';
+import { PageTracker } from '../../tracking/page-tracker';
+import { WindowContextDto } from './targeting-strategies/interfaces/window-context-dto';
 
 const SKIN = Symbol('targeting skin');
 
@@ -31,12 +37,13 @@ export class UcpTargetingSetup implements DiProcess {
 		};
 	}
 
-	constructor(@Inject(SKIN) private skin: string, protected instantConfig: InstantConfigService) {}
+	constructor(
+		@Inject(SKIN) private skin: string,
+		protected instantConfig: InstantConfigService,
+		private pageTracker: PageTracker,
+	) {}
 
 	execute(): void {
-		// TODO TB remove after dev
-		console.log(context.get('targeting'));
-
 		context.set('targeting', {
 			...context.get('targeting'),
 			...this.getPageLevelTargeting(),
@@ -86,6 +93,23 @@ export class UcpTargetingSetup implements DiProcess {
 		return new TargetingStrategyExecutor(
 			targetingStrategiesConfigurator(this.skin),
 			priorityService,
+			this.targetingStrategyListener,
 		).execute();
+	}
+
+	private targetingStrategyListener(usedStrategy: TargetingStrategiesNames): void {
+		if (usedStrategy !== PAGE_CONTEXT_STRATEGY) {
+			return;
+		}
+
+		// @ts-ignore because it does not recognize context correctly
+		const windowContext: WindowContextDto = window.context;
+		const pageName = windowContext?.page?.pageName;
+		const siteName = windowContext?.site?.siteName;
+
+		this.pageTracker.trackProp(
+			'PageContextStrategy',
+			`Page name: ${pageName} - Site Name: ${siteName}`,
+		);
 	}
 }

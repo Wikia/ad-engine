@@ -18,9 +18,12 @@ export class TargetingStrategyExecutor {
 	constructor(
 		private strategies: TargetingStrategies,
 		private priorityService: TargetingStrategyPriorityService,
+		private strategyListener: (usedStrategy: TargetingStrategiesNames) => void,
 	) {}
 
 	execute(): Partial<Targeting> {
-		return this.strategies[this.priorityService.pickQualifyingStrategy()].execute();
+		const strategyName = this.priorityService.pickQualifyingStrategy();
+		this.strategyListener(strategyName);
+		return this.strategies[strategyName].execute();
 	}
 }
