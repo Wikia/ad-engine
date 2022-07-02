@@ -17,8 +17,8 @@ import {
 	DEFAULT_PRIORITY_STRATEGY,
 	TargetingStrategyPriorityService,
 } from './targeting-strategies/services/targeting-strategy-priority-service';
-import { targetingStrategiesBuilder } from './targeting-strategies/builders/targeting-strategies-builder';
-import { targetingStrategyPrioritiesBuilder } from './targeting-strategies/builders/targeting-strategy-priorities-builder';
+import { targetingStrategyPrioritiesConfigurator } from './targeting-strategies/configurators/targeting-strategy-priorities-configurator';
+import { targetingStrategiesConfigurator } from './targeting-strategies/configurators/targeting-strategies-configurator';
 
 const SKIN = Symbol('targeting skin');
 
@@ -78,13 +78,13 @@ export class UcpTargetingSetup implements DiProcess {
 		);
 
 		const priorityService = new TargetingStrategyPriorityService(
-			targetingStrategyPrioritiesBuilder(),
+			targetingStrategyPrioritiesConfigurator(),
 			selectedStrategy,
 			utils.logger,
 		);
 
 		return new TargetingStrategyExecutor(
-			targetingStrategiesBuilder(this.skin),
+			targetingStrategiesConfigurator(this.skin),
 			priorityService,
 		).execute();
 	}
