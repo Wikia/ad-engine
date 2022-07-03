@@ -502,7 +502,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 0.1,
+            "sampling": 1.0,
             "value": true
         },
         {
@@ -514,7 +514,7 @@
                 "GB",
                 "UK"
             ],
-            "sampling": 0.01,
+            "sampling": 0.1,
             "value": true
         },
         {
@@ -526,7 +526,7 @@
                 "CA",
                 "MX"
             ],
-            "sampling": 0.01,
+            "sampling": 0.1,
             "value": true
         },
         {
@@ -539,7 +539,7 @@
                 "DE",
                 "FR"
             ],
-            "sampling": 0.01,
+            "sampling": 0.1,
             "value": true
         }
     ],
