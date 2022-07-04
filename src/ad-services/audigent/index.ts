@@ -29,20 +29,24 @@ class Audigent {
 		const segmentsScriptUrl =
 			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
 
+		context.set('targeting.AU_SEG', '-1');
+
 		if (newIntegrationEnabled) {
-			this.setupSegmentsListener();
 			await new utils.WaitFor(this.isAuSegGlobalSet, 5, 250).until().then((isGlobalSet) => {
 				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
 
-				const segments = Audigent.sliceSegments();
-				Audigent.trackWithExternalLoggerIfEnabled(segments);
-				Audigent.setSegmentsInTargeting(segments);
+				if (isGlobalSet) {
+					const segments = Audigent.sliceSegments();
+					Audigent.trackWithExternalLoggerIfEnabled(segments);
+					Audigent.setSegmentsInTargeting(segments);
+				} else {
+					this.setupSegmentsListener();
+				}
 			});
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
-			context.set('targeting.AU_SEG', '-1');
 
 			utils.scriptLoader
 				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
@@ -106,10 +110,13 @@ class Audigent {
 			segments = segments.slice(0, limit);
 		}
 
+		utils.logger(logGroup, 'Sliced segments', segments, limit, au_segments);
+
 		return segments;
 	}
 
 	private static setSegmentsInTargeting(segments) {
+		utils.logger(logGroup, 'Setting segments in the targeting', segments);
 		context.set('targeting.AU_SEG', segments);
 	}
 
