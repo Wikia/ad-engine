@@ -17,7 +17,7 @@ class Audigent {
 		);
 	}
 
-	call(): void {
+	async call(): Promise<void> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
@@ -31,6 +31,13 @@ class Audigent {
 
 		if (newIntegrationEnabled) {
 			this.setupSegmentsListener();
+			await new utils.WaitFor(this.isAuSegGlobalSet, 5, 250).until().then((isGlobalSet) => {
+				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+
+				const segments = Audigent.sliceSegments();
+				Audigent.trackWithExternalLoggerIfEnabled(segments);
+				Audigent.setSegmentsInTargeting(segments);
+			});
 		}
 
 		if (!this.isLoaded) {
@@ -67,40 +74,43 @@ class Audigent {
 		document.addEventListener('auSegReady', function (e) {
 			utils.logger(logGroup, 'auSegReady event recieved', e);
 
-			const au_segments = window['au_seg'].segments || [];
-			const limit = context.get('services.audigent.segmentLimit') || 0;
-
-			let segments = au_segments.length ? au_segments : 'no_segments';
-
-			if (Audigent.canSliceSegments(segments, limit)) {
-				segments = segments.slice(0, limit);
-			}
-
+			const segments = Audigent.sliceSegments();
 			Audigent.trackWithExternalLoggerIfEnabled(segments);
-
-			context.set('targeting.AU_SEG', segments);
+			Audigent.setSegmentsInTargeting(segments);
 		});
 	}
 
 	legacySetup(): void {
-		if (typeof window['au_seg'] !== 'undefined') {
-			const au_segments = window['au_seg'].segments || [];
-			const limit = context.get('services.audigent.segmentLimit') || 0;
-
-			let segments = au_segments.length ? au_segments : 'no_segments';
-
-			if (Audigent.canSliceSegments(segments, limit)) {
-				segments = segments.slice(0, limit);
-			}
-
+		if (this.isAuSegGlobalSet()) {
+			const segments = Audigent.sliceSegments();
 			Audigent.trackWithExternalLoggerIfEnabled(segments);
-
-			context.set('targeting.AU_SEG', segments);
+			Audigent.setSegmentsInTargeting(segments);
 		}
+	}
+
+	isAuSegGlobalSet(): boolean {
+		return typeof window['au_seg'] !== 'undefined';
 	}
 
 	resetLoadedState(): void {
 		this.isLoaded = false;
+	}
+
+	private static sliceSegments() {
+		const au_segments = window['au_seg'].segments || [];
+		const limit = context.get('services.audigent.segmentLimit') || 0;
+
+		let segments = au_segments.length ? au_segments : 'no_segments';
+
+		if (Audigent.canSliceSegments(segments, limit)) {
+			segments = segments.slice(0, limit);
+		}
+
+		return segments;
+	}
+
+	private static setSegmentsInTargeting(segments) {
+		context.set('targeting.AU_SEG', segments);
 	}
 
 	private static canSliceSegments(segments: string | [], limit: number): boolean {
