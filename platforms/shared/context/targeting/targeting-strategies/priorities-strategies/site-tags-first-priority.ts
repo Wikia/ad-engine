@@ -1,19 +1,15 @@
 import { PriorityStrategy } from '../interfaces/priority-strategy';
-import {
-	PAGE_CONTEXT_STRATEGY,
-	SITE_CONTEXT_STRATEGY,
-	TargetingStrategiesNames,
-} from '../../targeting-strategy-executor';
+import { TargetingStrategiesNames } from '../../targeting-strategy-executor';
 
 export class SiteTagsFirstPriority implements PriorityStrategy {
 	constructor(private siteTags: Record<string, unknown>) {}
 
 	execute(): TargetingStrategiesNames {
 		if (this.doWeHaveAnySiteTags()) {
-			return SITE_CONTEXT_STRATEGY;
+			return TargetingStrategiesNames.SITE_CONTEXT;
 		}
 
-		return PAGE_CONTEXT_STRATEGY;
+		return TargetingStrategiesNames.PAGE_CONTEXT;
 	}
 
 	private doWeHaveAnySiteTags() {

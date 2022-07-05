@@ -12,11 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
-import {
-	PAGE_CONTEXT_STRATEGY,
-	TargetingStrategiesNames,
-	TargetingStrategyExecutor,
-} from './targeting-strategy-executor';
+import { TargetingStrategiesNames, TargetingStrategyExecutor } from './targeting-strategy-executor';
 import {
 	DEFAULT_PRIORITY_STRATEGY,
 	TargetingStrategyPriorityService,
@@ -95,7 +91,7 @@ export class UcpTargetingSetup implements DiProcess {
 	}
 
 	private targetingStrategyListener(usedStrategy: TargetingStrategiesNames): void {
-		if (usedStrategy !== PAGE_CONTEXT_STRATEGY) {
+		if (usedStrategy !== TargetingStrategiesNames.PAGE_CONTEXT) {
 			return;
 		}
 

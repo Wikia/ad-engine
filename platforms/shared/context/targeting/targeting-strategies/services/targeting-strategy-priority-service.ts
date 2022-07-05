@@ -1,8 +1,5 @@
 import { PriorityStrategy } from '../interfaces/priority-strategy';
-import {
-	DEFAULT_TARGETING_STRATEGY,
-	TargetingStrategiesNames,
-} from '../../targeting-strategy-executor';
+import { TargetingStrategiesNames } from '../../targeting-strategy-executor';
 
 export const DEFAULT_PRIORITY_STRATEGY = 'default';
 
@@ -26,7 +23,7 @@ export class TargetingStrategyPriorityService {
 					: 'Selected strategy is not a string';
 			this.logger('Targeting', 'Undefined priority strategy was submitted: ' + undefinedStrategy);
 
-			return DEFAULT_TARGETING_STRATEGY;
+			return TargetingStrategiesNames.DEFAULT;
 		}
 
 		const strategy =

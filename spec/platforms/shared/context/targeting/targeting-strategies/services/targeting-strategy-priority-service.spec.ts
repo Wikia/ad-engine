@@ -1,9 +1,4 @@
-import {
-	DEFAULT_TARGETING_STRATEGY,
-	PAGE_CONTEXT_STRATEGY,
-	SITE_CONTEXT_STRATEGY,
-	TargetingStrategiesNames,
-} from '../../../../../../../platforms/shared/context/targeting/targeting-strategy-executor';
+import { TargetingStrategiesNames } from '../../../../../../../platforms/shared/context/targeting/targeting-strategy-executor';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import {
@@ -21,7 +16,7 @@ const MOCK_PRIORITY_STRATEGY = 'mockPriorityStrategy';
 
 class MockPriority implements PriorityStrategy {
 	execute(): TargetingStrategiesNames {
-		return 'siteContext';
+		return TargetingStrategiesNames.SITE_CONTEXT;
 	}
 }
 
@@ -50,7 +45,7 @@ describe('Pick targeting priority', () => {
 		);
 		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(DEFAULT_TARGETING_STRATEGY);
+		expect(strategy).to.eql(TargetingStrategiesNames.DEFAULT);
 		sinon.assert.notCalled(loggerSpy);
 	});
 
@@ -58,7 +53,7 @@ describe('Pick targeting priority', () => {
 		const tsps = new TargetingStrategyPriorityService(mockStrategies, 'unknown', loggerSpy);
 		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(DEFAULT_TARGETING_STRATEGY);
+		expect(strategy).to.eql(TargetingStrategiesNames.DEFAULT);
 		sinon.assert.calledOnce(loggerSpy);
 	});
 
@@ -82,7 +77,7 @@ describe('Pick targeting priority', () => {
 		);
 		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(SITE_CONTEXT_STRATEGY);
+		expect(strategy).to.eql(TargetingStrategiesNames.SITE_CONTEXT);
 		sinon.assert.notCalled(loggerSpy);
 	});
 
@@ -94,7 +89,7 @@ describe('Pick targeting priority', () => {
 		);
 		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(PAGE_CONTEXT_STRATEGY);
+		expect(strategy).to.eql(TargetingStrategiesNames.PAGE_CONTEXT);
 		sinon.assert.notCalled(loggerSpy);
 	});
 
@@ -106,7 +101,7 @@ describe('Pick targeting priority', () => {
 		);
 		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(PAGE_CONTEXT_STRATEGY);
+		expect(strategy).to.eql(TargetingStrategiesNames.PAGE_CONTEXT);
 		sinon.assert.notCalled(loggerSpy);
 	});
 
@@ -118,7 +113,7 @@ describe('Pick targeting priority', () => {
 		);
 		const strategy = tsps.pickQualifyingStrategy();
 
-		expect(strategy).to.eql(SITE_CONTEXT_STRATEGY);
+		expect(strategy).to.eql(TargetingStrategiesNames.SITE_CONTEXT);
 		sinon.assert.notCalled(loggerSpy);
 	});
 });
