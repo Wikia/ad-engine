@@ -49,25 +49,25 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 	}
 
 	private configureStickingCompanion(): void {
+		const rightRailElement: HTMLElement = document.querySelector(
+			'.right-rail-wrapper, .main-page-tag-rcs',
+		);
+
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
-				if (!this.registerStickingCompanionStickedListener()) {
+				if (!this.registerStickingCompanionStickedListener(rightRailElement)) {
 					return;
 				}
 
-				this.registerStickingCompanionViewedListener();
+				this.registerStickingCompanionViewedListener(rightRailElement);
 			},
 			'top_boxad',
 			true,
 		);
 	}
 
-	private registerStickingCompanionStickedListener(): boolean {
-		const rightRailElement = document.querySelectorAll(
-			'.main-page-tag-rcs #top_boxad, #rail-boxad-wrapper',
-		)[0] as HTMLElement;
-
+	private registerStickingCompanionStickedListener(rightRailElement: HTMLElement): boolean {
 		if (!rightRailElement) {
 			return false;
 		}
@@ -78,6 +78,9 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
 					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
 					rightRailElement.style.top = `${tlbHeight}px`;
+					if (rightRailElement.className.includes('right-rail-wrapper')) {
+						rightRailElement.style.height = `${this.getRightRailElementsTotalHeight()}px`;
+					}
 				}
 			},
 			'top_leaderboard',
@@ -86,7 +89,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		return true;
 	}
 
-	private registerStickingCompanionViewedListener(): void {
+	private registerStickingCompanionViewedListener(rightRailElement: HTMLElement): void {
 		const pageElement = document.querySelector('.page');
 
 		communicationService.onSlotEvent(
@@ -94,6 +97,9 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			() => {
 				setTimeout(() => {
 					pageElement.classList.remove('companion-stick');
+					if (rightRailElement.className.includes('right-rail-wrapper')) {
+						rightRailElement.style.height = '100%';
+					}
 				}, 500);
 			},
 			'top_boxad',
@@ -101,5 +107,18 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		);
 
 		pageElement.classList.add('companion-stick');
+	}
+
+	private getRightRailElementsTotalHeight() {
+		const divsInsideRightRail: NodeListOf<HTMLElement> =
+			document.querySelectorAll(`.right-rail-wrapper > div`);
+
+		let totalHeight = 0;
+
+		for (let i = 0; i < divsInsideRightRail.length; i++) {
+			totalHeight += divsInsideRightRail[i].offsetHeight;
+		}
+
+		return totalHeight;
 	}
 }
