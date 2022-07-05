@@ -79,7 +79,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
 					rightRailElement.style.top = `${tlbHeight}px`;
 					if (rightRailElement.className.includes('right-rail-wrapper')) {
-						rightRailElement.style.height = `${this.getRightRailElementsTotalHeight()}px`;
+						this.reduceRightRailWrapperHeight(rightRailElement);
 					}
 				}
 			},
@@ -98,7 +98,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 				setTimeout(() => {
 					pageElement.classList.remove('companion-stick');
 					if (rightRailElement.className.includes('right-rail-wrapper')) {
-						rightRailElement.style.height = '100%';
+						this.expandRightRailWrapperHeight(rightRailElement);
 					}
 				}, 500);
 			},
@@ -107,6 +107,17 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		);
 
 		pageElement.classList.add('companion-stick');
+	}
+
+	private expandRightRailWrapperHeight(rightRailElement: HTMLElement) {
+		rightRailElement.style.height = '100%';
+	}
+
+	private reduceRightRailWrapperHeight(rightRailElement: HTMLElement) {
+		const reducedHeight = this.getRightRailElementsTotalHeight();
+		if (reducedHeight > 0) {
+			rightRailElement.style.height = `${reducedHeight}px`;
+		}
 	}
 
 	private getRightRailElementsTotalHeight() {
