@@ -108,15 +108,17 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 	}
 
 	private reduceRightRailWrapperHeight(rightRailElement: HTMLElement) {
-		const reducedHeight = this.getRightRailElementsTotalHeight();
+		const reducedHeight = this.getRightRailElementsTotalHeight(rightRailElement);
 		if (reducedHeight > 0) {
 			rightRailElement.style.height = `${reducedHeight}px`;
 		}
 	}
 
-	private getRightRailElementsTotalHeight() {
-		const divsInsideRightRail: NodeListOf<HTMLElement> =
-			document.querySelectorAll(`.right-rail-wrapper > div`);
+	private getRightRailElementsTotalHeight(rightRailElement: HTMLElement) {
+		const rightRailCssSelector = `.${rightRailElement.className.replace(' ', '.')}`;
+		const divsInsideRightRail: NodeListOf<HTMLElement> = document.querySelectorAll(
+			`${rightRailCssSelector} > div`,
+		);
 
 		let totalHeight = 0;
 
