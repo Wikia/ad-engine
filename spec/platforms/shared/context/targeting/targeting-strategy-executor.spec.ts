@@ -1,65 +1,52 @@
 import {
-	DEFAULT_STRATEGY,
+	TargetingStrategies,
+	TargetingStrategiesNames,
 	TargetingStrategyExecutor,
 } from '../../../../../platforms/shared/context/targeting/targeting-strategy-executor';
-import { DefaultStrategyBuilderMock } from '../test_doubles/targeting-strategies/builders/default-strategy-builder.mock';
-import { AnotherStrategyBuilderMock } from '../test_doubles/targeting-strategies/builders/another-strategy-builder.mock';
+import { StrategyBuilderMock } from '../test_doubles/targeting-strategies/builders/strategy-builder.mock';
 import { expect } from 'chai';
-import sinon from 'sinon';
+import { TargetingStrategyPriorityService } from '../../../../../platforms/shared/context/targeting/targeting-strategies/services/targeting-strategy-priority-service';
 
-const SKIN = 'skin';
-
-const mockStrategies = {
-	[DEFAULT_STRATEGY]: new DefaultStrategyBuilderMock().build(SKIN),
-	another: new AnotherStrategyBuilderMock().build(SKIN),
+const mockStrategies: TargetingStrategies = {
+	[TargetingStrategiesNames.DEFAULT]: new StrategyBuilderMock({ test: 'default' }).build(),
+	[TargetingStrategiesNames.SITE_CONTEXT]: new StrategyBuilderMock({ test: 'site' }).build(),
+	[TargetingStrategiesNames.PAGE_CONTEXT]: new StrategyBuilderMock({ test: 'page' }).build(),
 };
 
-describe('Targeting pages without Site Level Tags', () => {
-	let tse: TargetingStrategyExecutor;
-	let loggerSpy;
+class TargetingStrategyPriorityServiceMock extends TargetingStrategyPriorityService {
+	// @ts-ignore in this mock the constructor takes in what the pick pickQualifyingStrategy will return
+	constructor(private returnsPriorityStrategy: TargetingStrategiesNames) {}
 
-	beforeEach(() => {
-		const sampleSiteTags = {};
-		loggerSpy = sinon.spy();
-		tse = new TargetingStrategyExecutor(mockStrategies, sampleSiteTags, loggerSpy);
-	});
+	pickQualifyingStrategy(): TargetingStrategiesNames {
+		return this.returnsPriorityStrategy;
+	}
+}
 
-	it('Pick an existing strategy - should work', function () {
-		const targeting = tse.execute('default');
+/* eslint-disable @typescript-eslint/no-unused-vars */
+function strategyListenerDummy(_) {}
 
-		expect(targeting).to.eql({ test: 'default' });
-		sinon.assert.notCalled(loggerSpy);
-	});
-
-	it('Pick an unknown strategy - should fall back to default', function () {
-		const targeting = tse.execute('unknown');
+describe('Targeting Strategy execution', () => {
+	it('Pick default strategy', function () {
+		const ps = new TargetingStrategyPriorityServiceMock(TargetingStrategiesNames.DEFAULT);
+		const tse = new TargetingStrategyExecutor(mockStrategies, ps, strategyListenerDummy);
+		const targeting = tse.execute();
 
 		expect(targeting).to.eql({ test: 'default' });
-		sinon.assert.calledOnce(loggerSpy);
 	});
 
-	it('Pick another known context strategy - should work and use selected strategy', function () {
-		const targeting = tse.execute('another');
+	it('Pick site context strategy', function () {
+		const ps = new TargetingStrategyPriorityServiceMock(TargetingStrategiesNames.SITE_CONTEXT);
+		const tse = new TargetingStrategyExecutor(mockStrategies, ps, strategyListenerDummy);
+		const targeting = tse.execute();
 
-		expect(targeting).to.eql({ test: 'another' });
-		sinon.assert.notCalled(loggerSpy);
-	});
-});
-
-describe('Targeting pages with Site Level Tags', () => {
-	let tse: TargetingStrategyExecutor;
-	let loggerSpy;
-
-	beforeEach(() => {
-		const sampleSiteTags = { some: 'tag' };
-		loggerSpy = sinon.spy();
-		tse = new TargetingStrategyExecutor(mockStrategies, sampleSiteTags, loggerSpy);
+		expect(targeting).to.eql({ test: 'site' });
 	});
 
-	it('Pick an existing strategy - should fall back to default because we have Site / Community Tags', function () {
-		const targeting = tse.execute('another');
+	it('Pick page context strategy', function () {
+		const ps = new TargetingStrategyPriorityServiceMock(TargetingStrategiesNames.PAGE_CONTEXT);
+		const tse = new TargetingStrategyExecutor(mockStrategies, ps, strategyListenerDummy);
+		const targeting = tse.execute();
 
-		expect(targeting).to.eql({ test: 'default' });
-		sinon.assert.notCalled(loggerSpy);
+		expect(targeting).to.eql({ test: 'page' });
 	});
 });

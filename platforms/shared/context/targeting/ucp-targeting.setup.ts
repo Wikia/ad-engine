@@ -2,23 +2,26 @@ import {
 	Binder,
 	communicationService,
 	context,
+	CookieStorageAdapter,
 	DiProcess,
 	eventsRepository,
 	InstantConfigService,
 	Targeting,
 	UapLoadStatus,
-	CookieStorageAdapter,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
+import { TargetingStrategiesNames, TargetingStrategyExecutor } from './targeting-strategy-executor';
 import {
-	DEFAULT_STRATEGY,
-	TargetingStrategies,
-	TargetingStrategyExecutor,
-} from './targeting-strategy-executor';
-import { LegacyStrategyBuilder } from './targeting-strategies/builders/legacy-strategy-builder';
-import { PageContextStrategyBuilder } from './targeting-strategies/builders/page-context-strategy-builder';
+	DEFAULT_PRIORITY_STRATEGY,
+	TargetingStrategyPriorityService,
+} from './targeting-strategies/services/targeting-strategy-priority-service';
+import { targetingStrategyPrioritiesConfigurator } from './targeting-strategies/configurators/targeting-strategy-priorities-configurator';
+import { targetingStrategiesConfigurator } from './targeting-strategies/configurators/targeting-strategies-configurator';
+import { PageTracker } from '../../tracking/page-tracker';
+import { WindowContextDto } from './targeting-strategies/interfaces/window-context-dto';
+import { DataWarehouseTracker } from '../../tracking/data-warehouse';
 
 const SKIN = Symbol('targeting skin');
 
@@ -69,18 +72,37 @@ export class UcpTargetingSetup implements DiProcess {
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
-		const icbmStrategy: string = this.instantConfig.get('icTargetingStrategy', DEFAULT_STRATEGY);
+		const selectedStrategy: string = this.instantConfig.get(
+			'icTargetingStrategy',
+			DEFAULT_PRIORITY_STRATEGY,
+		);
 
-		const availableStrategies: TargetingStrategies = {
-			[DEFAULT_STRATEGY]: new LegacyStrategyBuilder().build(this.skin),
-			pageContext: new PageContextStrategyBuilder().build(this.skin),
-		};
+		const priorityService = new TargetingStrategyPriorityService(
+			targetingStrategyPrioritiesConfigurator(),
+			selectedStrategy,
+			utils.logger,
+		);
+
+		return new TargetingStrategyExecutor(
+			targetingStrategiesConfigurator(this.skin),
+			priorityService,
+			this.targetingStrategyListener,
+		).execute();
+	}
+
+	private targetingStrategyListener(usedStrategy: TargetingStrategiesNames): void {
+		if (usedStrategy !== TargetingStrategiesNames.PAGE_CONTEXT) {
+			return;
+		}
 
 		// @ts-ignore because it does not recognize context correctly
-		const siteTags = window.context?.site?.tags;
+		const windowContext: WindowContextDto = window.context;
+		const pageName = windowContext?.page?.pageName;
+		const siteName = windowContext?.site?.siteName;
 
-		return new TargetingStrategyExecutor(availableStrategies, siteTags, utils.logger).execute(
-			icbmStrategy,
-		);
+		// TODO this should be injectable, but it ends up undefined when submitted through DI. Fix this.
+		const pageTracker = new PageTracker(new DataWarehouseTracker());
+
+		pageTracker.trackProp('PageContextStrategy', `Page name: ${pageName} - Site Name: ${siteName}`);
 	}
 }
