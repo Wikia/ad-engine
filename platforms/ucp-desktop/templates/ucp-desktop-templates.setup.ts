@@ -49,25 +49,25 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 	}
 
 	private configureStickingCompanion(): void {
-		const rightRailElement: HTMLElement = document.querySelector(
-			'.right-rail-wrapper, .main-page-tag-rcs',
-		);
-
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
-				if (!this.registerStickingCompanionStickedListener(rightRailElement)) {
+				if (!this.registerStickingCompanionStickedListener()) {
 					return;
 				}
 
-				this.registerStickingCompanionViewedListener(rightRailElement);
+				this.registerStickingCompanionViewedListener();
 			},
 			'top_boxad',
 			true,
 		);
 	}
 
-	private registerStickingCompanionStickedListener(rightRailElement: HTMLElement): boolean {
+	private registerStickingCompanionStickedListener(): boolean {
+		const rightRailElement: HTMLElement = document.querySelector(
+			'.right-rail-wrapper, .main-page-tag-rcs',
+		);
+
 		if (!rightRailElement) {
 			return false;
 		}
@@ -89,7 +89,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		return true;
 	}
 
-	private registerStickingCompanionViewedListener(rightRailElement: HTMLElement): void {
+	private registerStickingCompanionViewedListener(): void {
 		const pageElement = document.querySelector('.page');
 
 		communicationService.onSlotEvent(
@@ -97,9 +97,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			() => {
 				setTimeout(() => {
 					pageElement.classList.remove('companion-stick');
-					if (rightRailElement.className.includes('right-rail-wrapper')) {
-						this.expandRightRailWrapperHeight(rightRailElement);
-					}
+					pageElement.classList.add('companion-done');
 				}, 500);
 			},
 			'top_boxad',
@@ -107,10 +105,6 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		);
 
 		pageElement.classList.add('companion-stick');
-	}
-
-	private expandRightRailWrapperHeight(rightRailElement: HTMLElement) {
-		rightRailElement.style.height = '100%';
 	}
 
 	private reduceRightRailWrapperHeight(rightRailElement: HTMLElement) {

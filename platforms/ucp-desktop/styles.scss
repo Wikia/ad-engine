@@ -105,6 +105,12 @@ $sticky-navigation-height: 46px;
 	}
 }
 
+.companion-done {
+	.right-rail-wrapper {
+		height: 100% !important;
+	}
+}
+
 body:not(.uap-sticked) {
 	.companion-stick {
 		.main-page-tag-rcs,
