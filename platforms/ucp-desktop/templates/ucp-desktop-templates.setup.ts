@@ -52,10 +52,15 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
-				if (!this.registerStickingCompanionStickedListener()) {
+				const rightRailElement: HTMLElement = document.querySelector(
+					'.right-rail-wrapper, .main-page-tag-rcs',
+				);
+
+				if (!rightRailElement) {
 					return;
 				}
 
+				this.registerStickingCompanionStickedListener(rightRailElement);
 				this.registerStickingCompanionViewedListener();
 			},
 			'top_boxad',
@@ -63,15 +68,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		);
 	}
 
-	private registerStickingCompanionStickedListener(): boolean {
-		const rightRailElement: HTMLElement = document.querySelector(
-			'.right-rail-wrapper, .main-page-tag-rcs',
-		);
-
-		if (!rightRailElement) {
-			return false;
-		}
-
+	private registerStickingCompanionStickedListener(rightRailElement: HTMLElement): void {
 		communicationService.onSlotEvent(
 			AdSlot.CUSTOM_EVENT,
 			({ payload }) => {
@@ -83,8 +80,6 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			},
 			'top_leaderboard',
 		);
-
-		return true;
 	}
 
 	private registerStickingCompanionViewedListener(): void {
