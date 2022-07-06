@@ -35,6 +35,8 @@ describe('Audigent', () => {
 
 		context.set('services.audigent.enabled', undefined);
 		context.set('services.audigent.tracking.sampling', undefined);
+		context.set('services.audigent.newIntegrationEnabled', undefined);
+		context.set('services.audigent.numberOfTries', undefined);
 		context.set('services.audigent.limit', undefined);
 
 		context.set('options.trackingOptIn', undefined);
@@ -89,6 +91,7 @@ describe('Audigent', () => {
 
 	it('Audigent requests only for one asset when new integration enabled', async () => {
 		context.set('services.audigent.newIntegrationEnabled', true);
+		context.set('services.audigent.numberOfTries', 1);
 
 		await audigent.call();
 
