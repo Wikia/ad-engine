@@ -36,17 +36,12 @@ export class F2TemplatesSetup implements DiProcess {
 			enabled: false,
 		});
 
-		console.log('dupadupa execute');
-
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-			console.log('dupadupa AD_ENGINE_UAP_NTC_LOADED');
-
 			this.configureStickingCompanion();
 		});
 	}
 
 	private configureStickingCompanion(): void {
-		console.log('dupadupa configureStickingCompanion');
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
@@ -62,15 +57,15 @@ export class F2TemplatesSetup implements DiProcess {
 	}
 
 	private registerStickingCompanionStickedListener(): boolean {
-		console.log('dupadupa registerStickingCompanionStickedListener');
-
 		const rightRailElement = document.querySelectorAll(
-			'.article-layout__top-box-ad #top_boxad, .feed-layout__right-rail',
+			'.article-layout__top-box-ad, #top_boxad, .feed-layout__right-rail',
 		)[0] as HTMLElement;
 
 		if (!rightRailElement) {
 			return false;
 		}
+
+		rightRailElement.style.top = '0';
 
 		communicationService.onSlotEvent(
 			AdSlot.CUSTOM_EVENT,
@@ -87,14 +82,13 @@ export class F2TemplatesSetup implements DiProcess {
 	}
 
 	private registerStickingCompanionViewedListener(): void {
-		console.log('dupadupa registerStickingCompanionViewedListener');
 		const pageElement = document.querySelector('.article-layout-wrapper');
 
 		communicationService.onSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
 			() => {
 				setTimeout(() => {
-					// pageElement.classList.remove('companion-stick');
+					pageElement.classList.remove('companion-stick');
 				}, 500);
 			},
 			'top_boxad',
@@ -103,5 +97,4 @@ export class F2TemplatesSetup implements DiProcess {
 
 		pageElement.classList.add('companion-stick');
 	}
-
 }

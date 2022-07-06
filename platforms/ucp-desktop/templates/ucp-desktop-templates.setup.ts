@@ -43,11 +43,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 		templateService.register(SafeFanTakeoverElement);
 
-		console.log('dupadupa execute');
-
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-			console.log('dupadupa AD_ENGINE_UAP_NTC_LOADED');
-
 			this.configureStickingCompanion();
 		});
 	}

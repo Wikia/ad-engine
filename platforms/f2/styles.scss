@@ -52,25 +52,17 @@
 		}
 	}
 
-	.companion-stick {
-		#top_boxad .article-layout__top-box-ad {
-			position: sticky;
-			z-index: 100;
-			padding-top: 24px;
-		}
-
-		.feed-layout__right-rail {
-			position: sticky;
-			z-index: 100;
-		}
-	}
-
-	body:not(.uap-sticked) {
+	body {
 		.companion-stick {
 			#top_boxad,
 			.article-layout__top-box-ad,
 			.feed-layout__right-rail {
-				top: calc(#{$sticky-navigation-height} - 10px) !important;
+				position: sticky;
+				z-index: 100;
+			}
+
+			#top_boxad {
+				padding-top: 24px;
 			}
 		}
 	}
