@@ -324,7 +324,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 1.0,
+            "sampling": 10.0,
             "value": true
         },
         {
