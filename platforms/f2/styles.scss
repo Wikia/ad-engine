@@ -18,6 +18,7 @@
 
 @mixin f2-styles() {
 	$label-height: -24px;
+	$sticky-navigation-height: 46px;
 
 	#top_leaderboard {
 		justify-content: center;
@@ -48,6 +49,29 @@
 		& > div > iframe {
 			display: block;
 			margin: 0 auto;
+		}
+	}
+
+	.companion-stick {
+		#top_boxad .article-layout__top-box-ad {
+			position: sticky;
+			z-index: 100;
+			padding-top: 24px;
+		}
+
+		.feed-layout__right-rail {
+			position: sticky;
+			z-index: 100;
+		}
+	}
+
+	body:not(.uap-sticked) {
+		.companion-stick {
+			#top_boxad,
+			.article-layout__top-box-ad,
+			.feed-layout__right-rail {
+				top: calc(#{$sticky-navigation-height} - 10px) !important;
+			}
 		}
 	}
 
@@ -91,6 +115,11 @@
 	.article-layout__rail.has-incontent-ad {
 		margin-top: 29px;
 	}
+}
+
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
 }
 
 @mixin f2-uap-styles() {
@@ -185,6 +214,7 @@
 	@include uap-advertisement-label();
 }
 
+@include out-of-page-styles();
 @include f2-styles();
 @include f2-uap-styles();
 @include logo-replacement(56px, 0, 0, 93px, 27px);

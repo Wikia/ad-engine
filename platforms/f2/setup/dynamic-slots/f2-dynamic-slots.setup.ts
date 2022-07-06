@@ -26,6 +26,7 @@ export class F2DynamicSlotsSetup implements DiProcess {
 		insertSlots([
 			topLeaderboardDefinition,
 			this.slotsDefinitionRepository.getTopBoxadConfig(),
+			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 		]);
