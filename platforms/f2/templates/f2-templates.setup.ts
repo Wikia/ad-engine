@@ -58,7 +58,7 @@ export class F2TemplatesSetup implements DiProcess {
 
 	private registerStickingCompanionStickedListener(): boolean {
 		const rightRailElement = document.querySelectorAll(
-			'.article-layout__top-box-ad, #top_boxad, .feed-layout__right-rail',
+			'.feed-layout__right-rail, .article-layout__top-box-ad, #top_boxad',
 		)[0] as HTMLElement;
 
 		if (!rightRailElement) {
@@ -82,7 +82,7 @@ export class F2TemplatesSetup implements DiProcess {
 	}
 
 	private registerStickingCompanionViewedListener(): void {
-		const pageElement = document.querySelector('.article-layout-wrapper');
+		const pageElement = document.querySelectorAll('.article-layout-wrapper, .feed-layout')[0];
 
 		communicationService.onSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
