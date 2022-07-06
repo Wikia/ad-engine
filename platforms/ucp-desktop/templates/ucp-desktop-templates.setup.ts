@@ -78,9 +78,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
 					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
 					rightRailElement.style.top = `${tlbHeight}px`;
-					if (rightRailElement.className.includes('right-rail-wrapper')) {
-						this.reduceRightRailWrapperHeight(rightRailElement);
-					}
+					this.reduceRightRailWrapperHeightWhenApplies(rightRailElement);
 				}
 			},
 			'top_leaderboard',
@@ -107,18 +105,19 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 		pageElement.classList.add('companion-stick');
 	}
 
-	private reduceRightRailWrapperHeight(rightRailElement: HTMLElement) {
-		const reducedHeight = this.getRightRailElementsTotalHeight(rightRailElement);
-		if (reducedHeight > 0) {
-			rightRailElement.style.height = `${reducedHeight}px`;
+	private reduceRightRailWrapperHeightWhenApplies(rightRailElement: HTMLElement) {
+		if (rightRailElement.className.includes('right-rail-wrapper')) {
+			const reducedHeight = this.getRightRailElementsTotalHeight(rightRailElement);
+
+			if (reducedHeight > 0) {
+				rightRailElement.style.height = `${reducedHeight}px`;
+			}
 		}
 	}
 
 	private getRightRailElementsTotalHeight(rightRailElement: HTMLElement) {
-		const rightRailCssSelector = `.${rightRailElement.className.replace(' ', '.')}`;
-		const divsInsideRightRail: NodeListOf<HTMLElement> = document.querySelectorAll(
-			`${rightRailCssSelector} > div`,
-		);
+		const divsInsideRightRail: NodeListOf<HTMLElement> =
+			rightRailElement.querySelectorAll(':scope > div');
 
 		let totalHeight = 0;
 
