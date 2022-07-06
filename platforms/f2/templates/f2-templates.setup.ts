@@ -1,6 +1,6 @@
 import {
 	AdSlot,
-	communicationService,
+	communicationService, context,
 	DiProcess, eventsRepository,
 	FloatingRail,
 	logTemplates,
@@ -37,7 +37,9 @@ export class F2TemplatesSetup implements DiProcess {
 		});
 
 		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-			this.configureStickingCompanion();
+			if (!context.get('state.isMobile')) {
+				this.configureStickingCompanion();
+			}
 		});
 	}
 
