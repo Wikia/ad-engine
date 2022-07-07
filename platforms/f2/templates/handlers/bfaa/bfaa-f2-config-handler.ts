@@ -15,14 +15,14 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad', 'bottom_leaderboard'];
-		if (this.params.newTakeoverConfig) {
-			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
-		}
-
 		const isMobile = context.get('state.isMobile');
 
-		if (isMobile) {
-			enabledSlots.push('floor_adhesion');
+		if (this.params.newTakeoverConfig) {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+
+			if (isMobile) {
+				enabledSlots.push('floor_adhesion');
+			}
 		}
 
 		universalAdPackage.init(

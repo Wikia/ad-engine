@@ -1,11 +1,14 @@
 import {
 	AdSlot,
-	communicationService, context,
-	DiProcess, eventsRepository,
+	communicationService,
+	context,
+	DiProcess,
+	eventsRepository,
 	FloatingRail,
 	logTemplates,
 	TemplateRegistry,
-	templateService, universalAdPackage,
+	templateService,
+	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';

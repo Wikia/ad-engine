@@ -52,11 +52,11 @@ export class F2SlotsDefinitionRepository {
 	}
 
 	getFloorAdhesionConfig(): SlotSetupDefinition {
-		const slotName = 'floor_adhesion';
-
 		if (!context.get('state.isMobile')) {
-			return
+			return;
 		}
+
+		const slotName = 'floor_adhesion';
 
 		const activateFloorAdhesion = () => {
 			const numberOfViewportsFromTopToPush: number =
