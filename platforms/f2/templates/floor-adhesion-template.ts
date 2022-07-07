@@ -3,7 +3,6 @@ import {
 	DebugTransitionHandler,
 	DomCleanupHandler,
 	DomManipulator,
-	SlotDecisionOnViewabilityHandler,
 	SlotHiddenHandler,
 	SlotTransitionIhiHandler,
 } from '@platforms/shared';
@@ -18,7 +17,7 @@ export function registerFloorAdhesionTemplate(
 		'floorAdhesion',
 		{
 			initial: [FloorAdhesionBootstrapHandler, DebugTransitionHandler],
-			display: [SlotDecisionOnViewabilityHandler, CloseToHiddenIhiButtonHandler, DomCleanupHandler],
+			display: [CloseToHiddenIhiButtonHandler, DomCleanupHandler],
 			transition: [SlotTransitionIhiHandler, DomCleanupHandler],
 			hidden: [SlotHiddenHandler, DomCleanupHandler],
 		},

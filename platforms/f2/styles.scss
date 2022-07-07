@@ -54,7 +54,6 @@
 
 	body {
 		.companion-stick {
-			#top_boxad,
 			.article-layout__top-box-ad,
 			.feed-layout__right-rail {
 				position: sticky;
@@ -106,6 +105,28 @@
 
 	.article-layout__rail.has-incontent-ad {
 		margin-top: 29px;
+	}
+
+	#floor_adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		left: 0;
+		padding: 20px 0;
+
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			top: -20px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
+		}
 	}
 }
 
@@ -206,7 +227,7 @@
 	@include uap-advertisement-label();
 }
 
-@include out-of-page-styles();
 @include f2-styles();
 @include f2-uap-styles();
 @include logo-replacement(56px, 0, 0, 93px, 27px);
+@include out-of-page-styles();

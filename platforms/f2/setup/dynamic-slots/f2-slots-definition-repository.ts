@@ -3,9 +3,12 @@ import {
 	AdSlot,
 	communicationService,
 	context,
-	eventsRepository, InstantConfigService, scrollListener,
+	eventsRepository,
+	InstantConfigService,
+	scrollListener,
 	SlotCreatorWrapperConfig,
-	UapLoadStatus, universalAdPackage, utils,
+	UapLoadStatus, universalAdPackage,
+	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../setup-f2';
@@ -58,7 +61,6 @@ export class F2SlotsDefinitionRepository {
 		const activateFloorAdhesion = () => {
 			const numberOfViewportsFromTopToPush: number =
 				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
-
 			if (numberOfViewportsFromTopToPush === -1) {
 				context.push('state.adStack', { id: slotName });
 			} else {
@@ -70,7 +72,7 @@ export class F2SlotsDefinitionRepository {
 		return {
 			slotCreatorConfig: {
 				slotName,
-				anchorSelector: '.feed-layout__wrapper ',
+				anchorSelector: 'body',
 				insertMethod: 'append',
 				classList: ['hide', 'ad-slot'],
 			},

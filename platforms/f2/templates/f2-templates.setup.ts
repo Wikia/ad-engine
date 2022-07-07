@@ -60,7 +60,7 @@ export class F2TemplatesSetup implements DiProcess {
 
 	private registerStickingCompanionStickedListener(): boolean {
 		const rightRailElement = document.querySelectorAll(
-			'.feed-layout__right-rail, .article-layout__top-box-ad, #top_boxad',
+			'.feed-layout__right-rail, .article-layout__top-box-ad',
 		)[0] as HTMLElement;
 
 		if (!rightRailElement) {
