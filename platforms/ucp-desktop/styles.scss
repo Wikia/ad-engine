@@ -94,8 +94,9 @@ $sticky-navigation-height: 46px;
 		overflow-x: unset;
 	}
 
-	.main-page-tag-rcs {
+	.main-page-tag-rcs #top_boxad {
 		position: sticky;
+		z-index: 100;
 		padding-top: 24px;
 	}
 
@@ -113,7 +114,7 @@ $sticky-navigation-height: 46px;
 
 body:not(.uap-sticked) {
 	.companion-stick {
-		.main-page-tag-rcs,
+		.main-page-tag-rcs #top_boxad,
 		.right-rail-wrapper {
 			top: calc(#{$sticky-navigation-height} - 10px) !important;
 		}

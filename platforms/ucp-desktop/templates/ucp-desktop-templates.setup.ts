@@ -53,7 +53,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				const rightRailElement: HTMLElement = document.querySelector(
-					'.right-rail-wrapper, .main-page-tag-rcs',
+					'.right-rail-wrapper, .main-page-tag-rcs #top_boxad',
 				);
 
 				if (!rightRailElement) {
