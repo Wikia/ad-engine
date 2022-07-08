@@ -39,28 +39,6 @@ export function setupAdUnits(): PrebidAdUnit[] {
 		}
 	});
 
-	// ToDo: remove
-	adUnits.push({
-		code: 'top_boxad',
-		mediaTypes: {
-			banner: {
-				sizes: [[300, 250]],
-			},
-		},
-		bids: [
-			{
-				bidder: 'pgRubicon',
-				params: {
-					accountId: '7450',
-					siteId: '403054',
-					zoneId: '2256142',
-					pgdealsonly: true,
-				},
-			},
-		],
-	});
-	console.log(adUnits);
-
 	return adUnits;
 }
 

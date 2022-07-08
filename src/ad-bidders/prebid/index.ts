@@ -72,22 +72,6 @@ export class PrebidProvider extends BidderProvider {
 			},
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
 			enableSendAllBids: true,
-			s2sConfig: {
-				accountId: '7450',
-				bidders: ['pgRubicon'],
-				coopSync: true,
-				defaultVendor: 'rubicon',
-				enabled: true,
-				extPrebid: {
-					aliases: {
-						pgRubicon: 'rubicon',
-					},
-					aliasgvlids: { pgRubicon: 52 },
-					trace: 1, // during dev only: extra PG debug info
-				},
-				timeout: Math.round(this.timeout * 0.75),
-				userSyncLimit: 1,
-			},
 			sendBidsControl: {
 				dealPrioritization: true,
 			},
@@ -106,6 +90,24 @@ export class PrebidProvider extends BidderProvider {
 				syncDelay: 6000,
 			},
 		};
+
+		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
+			this.prebidConfig.s2sConfig = {
+				accountId: '7450',
+				bidders: ['pgRubicon'],
+				coopSync: true,
+				defaultVendor: 'rubicon',
+				enabled: true,
+				extPrebid: {
+					aliases: {
+						pgRubicon: 'rubicon',
+					},
+					aliasgvlids: { pgRubicon: 52 },
+				},
+				timeout: Math.round(this.timeout * 0.75),
+				userSyncLimit: 1,
+			};
+		}
 
 		this.prebidConfig = {
 			...this.prebidConfig,
@@ -189,23 +191,7 @@ export class PrebidProvider extends BidderProvider {
 	async applyConfig(config: Dictionary): Promise<void> {
 		const pbjs: Pbjs = await pbjsFactory.init();
 
-		pbjs.setConfig(config);
-		// ToDo: remove or refactor
-		pbjs.setBidderConfig({
-			bidders: ['pgRubicon'],
-			config: {
-				ortb2: {
-					site: {
-						ext: {
-							data: {
-								debugtargeting: 'debug',
-							},
-						},
-					},
-				},
-			},
-		});
-		// return pbjs.setConfig(config);
+		return pbjs.setConfig(config);
 	}
 
 	async applySettings(): Promise<void> {
