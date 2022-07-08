@@ -149,6 +149,11 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad clicked',
 		payload: props<Dictionary>(),
 	},
+	// Silver Surfer events //
+	SILVER_SURFER_PPID_UPDATED: {
+		name: 'PPID Updated',
+		payload: props<string>(),
+	},
 	// Integrated partners events //
 	ADMARKETPLACE_INIT: {
 		category: '[Search suggestions]',
