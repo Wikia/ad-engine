@@ -53,7 +53,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			AdSlot.STATUS_SUCCESS,
 			() => {
 				const rightRailElement: HTMLElement = document.querySelector(
-					'.right-rail-wrapper, .main-page-tag-rcs #top_boxad',
+					'.right-rail-wrapper,.main-page-tag-rcs #top_boxad,.unified-search__layout__right-rail',
 				);
 
 				if (!rightRailElement) {
@@ -101,7 +101,10 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 	}
 
 	private reduceRightRailWrapperHeightWhenApplies(rightRailElement: HTMLElement) {
-		if (rightRailElement.className.includes('right-rail-wrapper')) {
+		if (
+			rightRailElement.className.includes('right-rail-wrapper') ||
+			rightRailElement.className.includes('unified-search__layout__right-rail')
+		) {
 			const reducedHeight = this.getRightRailElementsTotalHeight(rightRailElement);
 
 			if (reducedHeight > 0) {

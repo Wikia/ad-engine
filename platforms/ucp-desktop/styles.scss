@@ -100,14 +100,16 @@ $sticky-navigation-height: 46px;
 		padding-top: 24px;
 	}
 
-	.right-rail-wrapper {
+	.right-rail-wrapper,
+	.unified-search__layout__right-rail {
 		position: sticky;
 		top: calc(#{$sticky-navigation-height} - 10px);
 	}
 }
 
 .companion-viewed {
-	.right-rail-wrapper {
+	.right-rail-wrapper,
+	.unified-search__layout__right-rail {
 		height: 100% !important;
 	}
 }
@@ -115,7 +117,8 @@ $sticky-navigation-height: 46px;
 body:not(.uap-sticked) {
 	.companion-stick {
 		.main-page-tag-rcs #top_boxad,
-		.right-rail-wrapper {
+		.right-rail-wrapper,
+		.unified-search__layout__right-rail {
 			top: calc(#{$sticky-navigation-height} - 10px) !important;
 		}
 	}
