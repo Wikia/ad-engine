@@ -1,15 +1,9 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
+import { PrebidNativeConfig } from './prebid-native-config';
 
 const logGroup = 'prebid-native-provider';
-const assetsMap = {
-	title: 'hb_native_title',
-	body: 'hb_native_body',
-	image: 'hb_native_image',
-	icon: 'hb_native_icon',
-	clickUrl: 'hb_native_linkurl',
-};
 
 export class PrebidNativeProvider {
 	isEnabled(): boolean {
@@ -35,20 +29,28 @@ export class PrebidNativeProvider {
 	}
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
-		const ntvAdSlot = document.getElementById(adSlotName);
-		ntvAdSlot.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
+		const ntvAdSlot = slotService.get(adSlotName);
+
+		const ntvDomElement = ntvAdSlot.getElement();
+		ntvDomElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
+
+		const currentRv = ntvAdSlot.getConfigProperty('targeting.rv') || 1;
+		ntvAdSlot.setConfigProperty('targeting.rv', currentRv + 1);
+		ntvAdSlot.setStatus(AdSlot.STATUS_SUCCESS);
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {
-		const template = this.getPrebidNativeTemplate();
+		const template = PrebidNativeConfig.getPrebidNativeTemplate();
 		return this.replaceAssetPlaceholdersWithData(template, data);
 	}
 
-	private replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
+	replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
 		for (const assetName in data) {
-			if (assetsMap[assetName]) {
+			if (PrebidNativeConfig.assetsMap[assetName]) {
 				const value = this.getAssetValue(assetName, data);
-				template = template.replace('##' + assetsMap[assetName] + '##', value);
+				template = template
+					.split('##' + PrebidNativeConfig.assetsMap[assetName] + '##')
+					.join(value);
 			}
 		}
 		return template;
@@ -59,26 +61,6 @@ export class PrebidNativeProvider {
 			return data[assetName]['url'];
 		}
 		return data[assetName];
-	}
-
-	getPrebidNativeTemplate(): string {
-		return `<div id="native-prebid-ad" class="ntv-ad">
-					<div class="ntv-wrapper">
-						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
-							<img src="##hb_native_icon##" class="ntv-img">
-						</a>
-						<div class="ntv-content">
-							<p class="ntv-ad-label">Ad</p>
-							<a href="##hb_native_linkurl##">
-								<p class="ntv-ad-title ntv-headline">##hb_native_title##</p>
-							</a>
-							<p class="ntv-ad-offer">##hb_native_body##</p>
-							<a href="##hb_native_linkurl##">
-								<button class="ntv-ad-button">Check!</button>
-							</a>
-						</div>
-					</div>
-				</div>`;
 	}
 }
 

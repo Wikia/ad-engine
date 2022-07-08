@@ -158,8 +158,11 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6054175908",
+                "6005712462",
                 "5951743095",
                 "6018566814",
+                "6044083909",
                 "5951743089",
                 "5929089588",
                 "5929089315",
@@ -184,7 +187,10 @@
                 "6005712633",
                 "6013252078",
                 "6020811777",
-                "6047630064"
+                "6047630064",
+                "6044877574",
+                "6059438816",
+                "6050967117"
             ]
         }
     ],
@@ -306,6 +312,67 @@
             ],
             "regions": [
                 "US"
+            ],
+            "value": true
+        }
+    ],
+    "icLiveConnect": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "GB",
+                "UK"
+            ],
+            "sampling": 0.1,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "MX"
+            ],
+            "sampling": 0.1,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "AU",
+                "DE",
+                "FR"
+            ],
+            "sampling": 0.1,
+            "value": true
+        }
+    ],
+    "icAudigentNewIntegrationEnabled": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
             ],
             "value": true
         }
@@ -463,7 +530,7 @@
                 "fandomdesktop"
             ],
             "regions": [
-                "CA"
+                "XX"
             ],
             "value": {
                 "name": "medianet",
@@ -492,7 +559,7 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 90.0,
+            "sampling": 50.0,
             "value": "anyclip"
         },
         {
@@ -630,7 +697,7 @@
                 "US",
                 "VN"
             ],
-            "sampling": 50.0,
+            "sampling": 100.0,
             "value": true
         }
     ],
@@ -2493,7 +2560,9 @@
                 "6039946254",
                 "6042001586",
                 "6041208700",
-                "6041208697"
+                "6041208697",
+                "6060165811",
+                "6060918136"
             ]
         }
     ],
@@ -2534,8 +2603,8 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
+                "icOutstreamExperiment_B_50:outstream_experiment_anyclip",
+                "icOutstreamExperiment_A_50:outstream_experiment_connatix"
             ]
         }
     ],
@@ -2572,6 +2641,18 @@
             ],
             "regions": [
                 "US"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidAppNexusNative": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US-CA"
             ],
             "value": true
         }
@@ -15570,7 +15651,7 @@
                 "VN"
             ],
             "sampling": 100.0,
-            "value": true
+            "value": false
         }
     ],
     "icAdMarketplace": [
@@ -15597,6 +15678,61 @@
             "regions": [
                 "XX"
             ],
+            "value": true
+        }
+    ],
+    "icConnatixPlayer": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "AE",
+                "AR",
+                "AT",
+                "AU",
+                "BE",
+                "BR",
+                "CA",
+                "CH",
+                "CL",
+                "CZ",
+                "DE",
+                "DK",
+                "ES",
+                "FI",
+                "FR",
+                "GB",
+                "GR",
+                "HK",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IN",
+                "IT",
+                "JP",
+                "KZ",
+                "MX",
+                "MY",
+                "NL",
+                "NO",
+                "NZ",
+                "PE",
+                "PH",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SE",
+                "SG",
+                "TR",
+                "TW",
+                "UK",
+                "US",
+                "VN"
+            ],
+            "sampling": 100.0,
             "value": true
         }
     ],
@@ -15642,9 +15778,52 @@
                 "fandomdesktop"
             ],
             "regions": [
-                "XX"
+                "AE",
+                "AR",
+                "AT",
+                "AU",
+                "BE",
+                "BR",
+                "CA",
+                "CH",
+                "CL",
+                "CZ",
+                "DE",
+                "DK",
+                "ES",
+                "FI",
+                "FR",
+                "GB",
+                "GR",
+                "HK",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IN",
+                "IT",
+                "JP",
+                "KZ",
+                "MX",
+                "MY",
+                "NL",
+                "NO",
+                "NZ",
+                "PE",
+                "PH",
+                "PL",
+                "PT",
+                "RO",
+                "RU",
+                "SE",
+                "SG",
+                "TR",
+                "TW",
+                "UK",
+                "US",
+                "VN"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icBabDetection": [
@@ -15682,6 +15861,18 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidNative": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US-CA"
             ],
             "value": true
         }
