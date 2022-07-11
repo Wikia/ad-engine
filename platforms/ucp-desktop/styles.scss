@@ -111,6 +111,10 @@ $sticky-navigation-height: 46px;
 		& ~ div {
 			opacity: 0;
 		}
+
+		& #top_boxad {
+			border-bottom: none;
+		}
 	}
 }
 
