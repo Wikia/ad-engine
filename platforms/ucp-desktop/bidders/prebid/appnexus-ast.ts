@@ -3,12 +3,12 @@ export function getAppnexusAstContext(): object {
 		enabled: false,
 		debugPlacementId: '5768085',
 		slots: {
-			featured: {
-				placementId: '13684967',
-			},
-			incontent_player: {
-				placementId: '11543172',
-			},
+			// featured: {
+			// 	placementId: '13684967',
+			// },
+			// incontent_player: {
+			// 	placementId: '11543172',
+			// },
 		},
 	};
 }
