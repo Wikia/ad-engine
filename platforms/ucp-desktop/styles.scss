@@ -98,11 +98,29 @@ $sticky-navigation-height: 46px;
 		position: sticky;
 		z-index: 100;
 		padding-top: 24px;
+
+		& ~ div {
+			opacity: 0;
+		}
 	}
 
 	#rail-boxad-wrapper {
 		position: sticky;
 		z-index: 100;
+
+		& ~ div {
+			opacity: 0;
+		}
+	}
+}
+
+.companion-viewed {
+	#rail-boxad-wrapper,
+	.main-page-tag-rcs {
+		& ~ div {
+			opacity: 1;
+			transition: opacity 1s;
+		}
 	}
 }
 

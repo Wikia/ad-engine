@@ -94,6 +94,7 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 			() => {
 				setTimeout(() => {
 					pageElement.classList.remove('companion-stick');
+					pageElement.classList.add('companion-viewed');
 				}, 500);
 			},
 			'top_boxad',
