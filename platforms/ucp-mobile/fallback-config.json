@@ -161,6 +161,7 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6054175908",
                 "6005712462",
                 "5951743095",
                 "6018566814",
@@ -192,7 +193,9 @@
                 "6047630064",
                 "6044877574",
                 "6059438816",
-                "6050967117"
+                "6050967117",
+                "6061761271",
+                "6054458844"
             ]
         }
     ],
@@ -503,7 +506,6 @@
             "regions": [
                 "US"
             ],
-            "sampling": 10.0,
             "value": true
         },
         {
@@ -2586,7 +2588,9 @@
                 "6039946254",
                 "6042001586",
                 "6041208700",
-                "6041208697"
+                "6041208697",
+                "6060165811",
+                "6060918136"
             ]
         }
     ],
@@ -2642,8 +2646,8 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icOutstreamExperiment_B_75:outstream_experiment_anyclip",
-                "icOutstreamExperiment_A_25:outstream_experiment_connatix"
+                "icOutstreamExperiment_B_50:outstream_experiment_anyclip",
+                "icOutstreamExperiment_A_50:outstream_experiment_connatix"
             ]
         }
     ],
@@ -15800,6 +15804,15 @@
                     }
                 ]
             }
+        }
+    ],
+    "icPrebidRubiconPG": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "value": false
         }
     ]
 }
