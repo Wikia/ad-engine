@@ -35,6 +35,7 @@ class Audigent {
 		context.set('targeting.AU_SEG', '-1');
 
 		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
 			await new utils.WaitFor(this.isAuSegGlobalSet, numberOfTriesWhenWaiting, 250)
 				.until()
 				.then((isGlobalSet) => {
@@ -44,8 +45,6 @@ class Audigent {
 						const segments = Audigent.sliceSegments();
 						Audigent.trackWithExternalLoggerIfEnabled(segments);
 						Audigent.setSegmentsInTargeting(segments);
-					} else {
-						this.setupSegmentsListener();
 					}
 				});
 		}
