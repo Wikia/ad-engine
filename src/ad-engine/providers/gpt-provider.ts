@@ -211,8 +211,12 @@ export class GptProvider implements Provider {
 		});
 	}
 
+	checkSilverSurferAvailability() {
+		return window.SilverSurferSDK && window.SilverSurferSDK.isInitialized();
+	}
+
 	setupPPID(): void {
-		if (context.get('services.ppid.enabled')) {
+		if (this.checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
 			window.SilverSurferSDK.requestUserPPID();
 
 			communicationService.on(eventsRepository.SILVER_SURFER_PPID_UPDATED, ({ ppid }) => {
