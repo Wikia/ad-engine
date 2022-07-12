@@ -97,8 +97,6 @@ export class F2SlotsDefinitionRepository {
 								},
 								'top_leaderboard',
 							);
-						} else {
-							activateFloorAdhesion();
 						}
 					},
 				);

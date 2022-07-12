@@ -18,6 +18,7 @@
 
 @mixin f2-styles() {
 	$label-height: -24px;
+	$space-between-uap-components: 24px;
 
 	#top_leaderboard {
 		justify-content: center;
@@ -60,7 +61,7 @@
 			}
 
 			#top_boxad {
-				padding-top: 24px;
+				padding-top: $space-between-uap-components;
 			}
 		}
 	}
