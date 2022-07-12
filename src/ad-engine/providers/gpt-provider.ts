@@ -212,7 +212,11 @@ export class GptProvider implements Provider {
 	}
 
 	checkSilverSurferAvailability() {
-		return window.SilverSurferSDK && window.SilverSurferSDK.isInitialized();
+		return (
+			window.SilverSurferSDK &&
+			window.SilverSurferSDK.isInitialized() &&
+			window.SilverSurferSDK.requestUserPPID
+		);
 	}
 
 	setupPPID(): void {
