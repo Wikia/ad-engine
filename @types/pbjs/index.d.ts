@@ -174,6 +174,8 @@ interface Pbjs {
 
 	setConfig(config: unknown): void;
 
+	setBidderConfig(config: unknown): void;
+
 	enableAnalytics(config: unknown): void;
 
 	createBid(statusCode: number): PrebidBidResponse;
