@@ -149,8 +149,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad clicked',
 		payload: props<Dictionary>(),
 	},
-	// Silver Surfer events //
-	SILVER_SURFER_PPID_UPDATED: {
+	// Identity resolution events //
+	IDENTITY_RESOLUTION_PPID_UPDATED: {
+		category: '[Identity resolution]',
 		name: 'PPID Updated',
 		payload: props<string>(),
 	},
