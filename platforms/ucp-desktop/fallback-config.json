@@ -13547,6 +13547,18 @@
             "value": 4000
         }
     ],
+    "icPpid": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
+    ],
     "icComscoreJwpTracking": [
         {
             "apps": [
