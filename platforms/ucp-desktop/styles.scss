@@ -98,11 +98,40 @@ $sticky-navigation-height: 46px;
 		position: sticky;
 		z-index: 100;
 		padding-top: 24px;
+
+		& ~ * {
+			opacity: 0;
+			z-index: -1;
+		}
 	}
 
 	#rail-boxad-wrapper {
 		position: sticky;
 		z-index: 100;
+
+		& ~ * {
+			opacity: 0;
+			z-index: -1;
+		}
+
+		& #top_boxad {
+			border-bottom: none;
+		}
+	}
+
+	.unified-search__layout__right-rail #top_boxad {
+		padding-top: 24px;
+	}
+}
+
+.companion-viewed {
+	#rail-boxad-wrapper,
+	.main-page-tag-rcs #top_boxad {
+		& ~ * {
+			opacity: 1;
+			transition: opacity 1s;
+			z-index: 1;
+		}
 	}
 }
 
