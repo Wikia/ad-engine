@@ -65,12 +65,15 @@ export class PrebidProvider extends BidderProvider {
 		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
 
 		this.prebidConfig = {
-			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
+			},
+			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
+			enableSendAllBids: true,
+			sendBidsControl: {
+				dealPrioritization: true,
 			},
 			userSync: {
 				filterSettings: {
@@ -87,6 +90,24 @@ export class PrebidProvider extends BidderProvider {
 				syncDelay: 6000,
 			},
 		};
+
+		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
+			this.prebidConfig.s2sConfig = {
+				accountId: '7450',
+				bidders: ['pgRubicon'],
+				coopSync: true,
+				defaultVendor: 'rubicon',
+				enabled: true,
+				extPrebid: {
+					aliases: {
+						pgRubicon: 'rubicon',
+					},
+					aliasgvlids: { pgRubicon: 52 },
+				},
+				timeout: Math.round(this.timeout * 0.75),
+				userSyncLimit: 1,
+			};
+		}
 
 		this.prebidConfig = {
 			...this.prebidConfig,
