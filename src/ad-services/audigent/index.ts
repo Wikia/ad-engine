@@ -34,6 +34,10 @@ class Audigent {
 
 		context.set('targeting.AU_SEG', '-1');
 
+		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
+		}
+
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 
@@ -61,7 +65,6 @@ class Audigent {
 		}
 
 		if (newIntegrationEnabled) {
-			this.setupSegmentsListener();
 			await new utils.WaitFor(this.isAuSegGlobalSet, numberOfTriesWhenWaiting, 250)
 				.until()
 				.then((isGlobalSet) => {
