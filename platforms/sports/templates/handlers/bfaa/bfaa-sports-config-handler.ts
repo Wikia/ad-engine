@@ -1,6 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import {
+	communicationService,
 	context,
+	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -13,6 +15,22 @@ export class BfaaSportsConfigHandler implements TemplateStateHandler {
 	constructor(@Inject(TEMPLATE.PARAMS) private params: UapParams) {}
 
 	async onEnter(): Promise<void> {
+		if (context.get('application') === 'futhead' && context.get('state.isMobile')) {
+			const header: HTMLElement = document.querySelector('.site-header .content-header .container');
+
+			if (header) {
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_DOM_CHANGED,
+					({ element, size }) => {
+						if (element === 'placeholder') {
+							header.style.paddingTop = size;
+						}
+					},
+					false,
+				);
+			}
+		}
+
 		const enabledSlots: string[] = ['cdm-zone-02', 'cdm-zone-04'];
 		universalAdPackage.init(
 			this.params,

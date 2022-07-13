@@ -109,6 +109,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Template loaded',
 		payload: props<GeneralPayload>(),
 	},
+	AD_ENGINE_UAP_DOM_CHANGED: {
+		name: 'UAP DOM changed',
+		payload: props<{ element: string; size: number }>(),
+	},
 	AD_ENGINE_UAP_LOAD_STATUS: {
 		name: 'UAP Load status',
 		payload: props<UapLoadStatus>(),
