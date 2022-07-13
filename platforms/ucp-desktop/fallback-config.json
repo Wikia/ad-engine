@@ -209,7 +209,6 @@
                 "GB",
                 "UK"
             ],
-            "sampling": 0.1,
             "value": true
         },
         {
@@ -13545,6 +13544,18 @@
                 "XX"
             ],
             "value": 4000
+        }
+    ],
+    "icPpid": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
         }
     ],
     "icComscoreJwpTracking": [

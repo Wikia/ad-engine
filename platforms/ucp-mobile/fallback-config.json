@@ -210,6 +210,18 @@
             "value": true
         }
     ],
+    "icPpid": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
+    ],
     "icComscoreJwpTracking": [
         {
             "apps": [
@@ -517,7 +529,6 @@
                 "GB",
                 "UK"
             ],
-            "sampling": 0.1,
             "value": true
         },
         {
