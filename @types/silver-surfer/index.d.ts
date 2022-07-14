@@ -2,6 +2,7 @@ interface SilverSurferSDK {
 	isInitialized: () => boolean;
 	getContext: () => SilverSurferContext;
 	getUserProfile: () => Promise<UserProfile>;
+	requestUserPPID: () => Promise<void>;
 	getGalactusUserProfile: (beacon?: string) => Promise<GalactusUserProfile>;
 	registerClient: (client: SilverSurferClient) => Promise<boolean>;
 }

@@ -181,6 +181,7 @@ export class BaseContextSetup implements DiProcess {
 			// if backend call is disabled let's call it on frontend
 			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		}
+		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 
 		this.setupOutstreamPlayers();
 	}
