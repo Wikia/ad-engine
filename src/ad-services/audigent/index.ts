@@ -36,17 +36,6 @@ class Audigent {
 
 		if (newIntegrationEnabled) {
 			this.setupSegmentsListener();
-			await new utils.WaitFor(this.isAuSegGlobalSet, numberOfTriesWhenWaiting, 250)
-				.until()
-				.then((isGlobalSet) => {
-					utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
-
-					if (isGlobalSet) {
-						const segments = Audigent.sliceSegments();
-						Audigent.trackWithExternalLoggerIfEnabled(segments);
-						Audigent.setSegmentsInTargeting(segments);
-					}
-				});
 		}
 
 		if (!this.isLoaded) {
@@ -73,6 +62,20 @@ class Audigent {
 			}
 
 			this.isLoaded = true;
+		}
+
+		if (newIntegrationEnabled) {
+			await new utils.WaitFor(this.isAuSegGlobalSet, numberOfTriesWhenWaiting, 250)
+				.until()
+				.then((isGlobalSet) => {
+					utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+
+					if (isGlobalSet) {
+						const segments = Audigent.sliceSegments();
+						Audigent.trackWithExternalLoggerIfEnabled(segments);
+						Audigent.setSegmentsInTargeting(segments);
+					}
+				});
 		}
 	}
 
