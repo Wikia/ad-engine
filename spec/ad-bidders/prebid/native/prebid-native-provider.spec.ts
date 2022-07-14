@@ -37,6 +37,7 @@ describe('Prebid native provider', () => {
 							</a>
 						</div>`,
 			body: 'Test body',
+			clickTrackers: ['track-click.url'],
 			clickUrl: 'testurl.com',
 			displayUrl: 'Read more',
 			icon: {
@@ -44,6 +45,7 @@ describe('Prebid native provider', () => {
 				height: 100,
 				width: 100,
 			},
+			impressionTrackers: ['track-impression.url'],
 			title: 'Test title',
 		};
 

@@ -44,16 +44,16 @@ export class PrebidNativeConfig {
 	static getPrebidNativeTemplate(): string {
 		return `<div id="native-prebid-ad" class="ntv-ad">
 					<div class="ntv-wrapper">
-						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
+						<a href="##hb_native_linkurl##" class="ntv-link" style="flex-shrink: 0;">
 							<img src="##hb_native_icon##" class="ntv-img">
 						</a>
 						<div class="ntv-content">
 							<p class="ntv-ad-label">Ad</p>
-							<a href="##hb_native_linkurl##">
+							<a href="##hb_native_linkurl##" class="ntv-link">
 								<p class="ntv-ad-title ntv-headline">##hb_native_title##</p>
 							</a>
 							<p class="ntv-ad-offer">##hb_native_body##</p>
-							<a href="##hb_native_linkurl##">
+							<a href="##hb_native_linkurl##" class="ntv-link">
 								<button class="ntv-ad-button">##hb_native_displayUrl##</button>
 							</a>
 						</div>
