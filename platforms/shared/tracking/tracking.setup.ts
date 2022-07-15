@@ -80,8 +80,6 @@ export class TrackingSetup {
 		this.connectionTracker();
 		this.loadTimeTracker();
 		this.audigentTracker();
-		this.liveRampTracker();
-		this.atsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
@@ -326,42 +324,6 @@ export class TrackingSetup {
 
 	private interventionTracker(): void {
 		interventionTracker.register();
-	}
-
-	private liveRampTracker(): void {
-		communicationService.on(
-			eventsRepository.LIVERAMP_IDS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
-			},
-			false,
-		);
-	}
-
-	private atsTracker(): void {
-		communicationService.on(
-			eventsRepository.ATS_JS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.ATS_IDS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.ATS_NOT_LOADED_LOGGED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
-			},
-			false,
-		);
 	}
 
 	private optimeraTracker(): void {
