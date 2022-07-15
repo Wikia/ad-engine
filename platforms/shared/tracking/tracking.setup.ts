@@ -79,7 +79,6 @@ export class TrackingSetup {
 		this.scrollSpeedTracker();
 		this.connectionTracker();
 		this.loadTimeTracker();
-		this.audigentTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
@@ -309,16 +308,6 @@ export class TrackingSetup {
 				this.pageTracker.trackProp('load_time_aeStackStart', Date.now().toString());
 			});
 		}
-	}
-
-	private audigentTracker(): void {
-		communicationService.on(
-			eventsRepository.AUDIGENT_LOADED,
-			() => {
-				this.pageTracker.trackProp('audigent', 'loaded');
-			},
-			false,
-		);
 	}
 
 	private interventionTracker(): void {
