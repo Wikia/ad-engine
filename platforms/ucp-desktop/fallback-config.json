@@ -632,6 +632,16 @@
         {
             "apps": [
                 "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220623.min.js"
+        },
+        {
+            "apps": [
+                "fandomdesktop",
                 "fandommobile",
                 "futhead",
                 "muthead"
@@ -13553,7 +13563,8 @@
                 "fandommobile"
             ],
             "regions": [
-                "XX"
+                "BY",
+                "RU"
             ],
             "value": true
         }
@@ -15976,7 +15987,11 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "value": false
+            "regions": [
+                "US"
+            ],
+            "sampling": 1.0,
+            "value": true
         }
     ]
 }

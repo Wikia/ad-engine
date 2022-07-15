@@ -217,7 +217,8 @@
                 "fandommobile"
             ],
             "regions": [
-                "XX"
+                "BY",
+                "RU"
             ],
             "value": true
         }
@@ -2801,6 +2802,16 @@
         }
     ],
     "icPrebidVersion": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220623.min.js"
+        },
         {
             "apps": [
                 "fandomdesktop",
@@ -15823,7 +15834,11 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "value": false
+            "regions": [
+                "US"
+            ],
+            "sampling": 1.0,
+            "value": true
         }
     ]
 }
