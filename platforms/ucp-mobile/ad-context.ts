@@ -120,9 +120,6 @@ export const basicContext = {
 		isMobile: true,
 	},
 	options: {
-		connectionTracking: {
-			enabled: true,
-		},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},

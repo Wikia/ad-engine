@@ -77,7 +77,6 @@ export class TrackingSetup {
 		this.labradorTracker();
 		this.viewabilityCounterTracker();
 		this.scrollSpeedTracker();
-		this.connectionTracker();
 		this.loadTimeTracker();
 		this.interventionTracker();
 		this.adClickTracker();
@@ -255,35 +254,6 @@ export class TrackingSetup {
 		const scrollSpeed = scrollSpeedCalculator.getAverageSessionScrollSpeed();
 
 		this.pageTracker.trackProp('session_scroll_speed', scrollSpeed.toString());
-	}
-
-	private connectionTracker(): void {
-		if (!context.get('options.connectionTracking.enabled')) {
-			return;
-		}
-
-		const connection =
-			window.navigator['connection'] ||
-			window.navigator['mozConnection'] ||
-			window.navigator['webkitConnection'];
-
-		if (connection) {
-			const data = [];
-			if (connection.downlink) {
-				data.push(`downlink=${connection.downlink.toFixed(1)}`);
-			}
-			if (connection.effectiveType) {
-				data.push(`effectiveType=${connection.effectiveType}`);
-			}
-			if (connection.rtt) {
-				data.push(`rtt=${connection.rtt.toFixed(0)}`);
-			}
-			if (typeof connection.saveData === 'boolean') {
-				data.push(`saveData=${+connection.saveData}`);
-			}
-
-			this.pageTracker.trackProp('connection', data.join(';'));
-		}
 	}
 
 	private loadTimeTracker(): void {
