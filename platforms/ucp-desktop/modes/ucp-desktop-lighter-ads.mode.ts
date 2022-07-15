@@ -1,4 +1,4 @@
-import { PageTracker, startAdEngine } from '@platforms/shared';
+import { startAdEngine } from '@platforms/shared';
 import {
 	audigent,
 	communicationService,
@@ -20,19 +20,11 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {
-	constructor(private pageTracker: PageTracker) {}
-
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
 
 		startAdEngine(inhibitors);
-
-		this.trackAdEngineStatus();
-	}
-
-	private trackAdEngineStatus(): void {
-		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
 	private setupJWPlayer(inhibitors = []): void {

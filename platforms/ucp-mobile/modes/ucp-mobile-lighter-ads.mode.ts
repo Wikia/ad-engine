@@ -1,4 +1,4 @@
-import { PageTracker, startAdEngine } from '@platforms/shared';
+import { startAdEngine } from '@platforms/shared';
 import {
 	adMarketplace,
 	audigent,
@@ -23,15 +23,11 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpMobileLighterAdsMode implements DiProcess {
-	constructor(private pageTracker: PageTracker) {}
-
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
 
 		startAdEngine(inhibitors);
-
-		this.trackAdEngineStatus();
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -73,9 +69,5 @@ export class UcpMobileLighterAdsMode implements DiProcess {
 
 	private dispatchJWPlayerSetupAction(): void {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
-	}
-
-	private trackAdEngineStatus(): void {
-		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 }

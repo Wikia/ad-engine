@@ -1,4 +1,4 @@
-import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	adMarketplace,
 	anyclip,
@@ -37,8 +37,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
-	constructor(private pageTracker: PageTracker) {}
-
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
@@ -49,13 +47,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			startAdEngine(inhibitors);
 		});
 
-		this.trackAdEngineStatus();
-
 		utils.translateLabels();
-	}
-
-	private trackAdEngineStatus(): void {
-		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
 	private setupJWPlayer(inhibitors = []): void {
