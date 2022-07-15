@@ -11,7 +11,6 @@ export class UcpDesktopBaseContextSetup extends BaseContextSetup {
 			'options.floatingMedrecDestroyable',
 			this.instantConfig.get('icFloatingMedrecDestroyable'),
 		);
-		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));
 		// sourced from front/scripts/shared/tracking/Tracker.js getUserIdForInternalTracking()
 		context.set(
 			'userId',

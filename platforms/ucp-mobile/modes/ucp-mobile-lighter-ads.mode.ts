@@ -20,7 +20,6 @@ import {
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UcpMobileLighterAdsMode implements DiProcess {
@@ -33,7 +32,6 @@ export class UcpMobileLighterAdsMode implements DiProcess {
 		startAdEngine(inhibitors);
 
 		this.trackAdEngineStatus();
-		this.trackTabId();
 	}
 
 	private callExternals(): Promise<any>[] {
@@ -79,17 +77,5 @@ export class UcpMobileLighterAdsMode implements DiProcess {
 
 	private trackAdEngineStatus(): void {
 		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
-	}
-
-	private trackTabId(): void {
-		if (!context.get('options.tracking.tabId')) {
-			return;
-		}
-
-		window.tabId = sessionStorage.tab_id
-			? sessionStorage.tab_id
-			: (sessionStorage.tab_id = nanoid());
-
-		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
 }

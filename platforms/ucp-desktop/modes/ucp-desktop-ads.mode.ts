@@ -34,7 +34,6 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-import { nanoid } from 'nanoid';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
@@ -51,25 +50,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 		});
 
 		this.trackAdEngineStatus();
-		this.trackTabId();
 
 		utils.translateLabels();
 	}
 
 	private trackAdEngineStatus(): void {
 		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
-	}
-
-	private trackTabId(): void {
-		if (!context.get('options.tracking.tabId')) {
-			return;
-		}
-
-		window.tabId = sessionStorage.tab_id
-			? sessionStorage.tab_id
-			: (sessionStorage.tab_id = nanoid());
-
-		this.pageTracker.trackProp('tab_id', window.tabId);
 	}
 
 	private setupJWPlayer(inhibitors = []): void {
