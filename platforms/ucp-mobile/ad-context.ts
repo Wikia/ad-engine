@@ -128,9 +128,6 @@ export const basicContext = {
 			timing: ['responseEnd', 'domContentLoadedEventStart'],
 			custom: ['aeConfigured', 'aeStackStart'],
 		},
-		scrollSpeedTracking: {
-			enabled: true,
-		},
 		video: {
 			moatTracking: {
 				articleVideosPartnerCode: 'wikiajwint101173217941',

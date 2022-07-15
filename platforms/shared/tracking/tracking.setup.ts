@@ -16,8 +16,6 @@ import {
 	interventionTracker,
 	porvataTracker,
 	PostmessageTracker,
-	ScrollSpeedCalculator,
-	ScrollTracker,
 	slotTracker,
 	TrackingMessage,
 	trackingPayloadValidationMiddleware,
@@ -74,7 +72,6 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
-		this.scrollSpeedTracker();
 		this.loadTimeTracker();
 		this.interventionTracker();
 		this.adClickTracker();
@@ -217,21 +214,6 @@ export class TrackingSetup {
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
 		}
-	}
-
-	private scrollSpeedTracker(): void {
-		if (!context.get('options.scrollSpeedTracking.enabled')) {
-			return;
-		}
-
-		const scrollTracker = new ScrollTracker([0, 2000, 4000], 'mediawiki');
-
-		scrollTracker.initScrollSpeedTracking();
-
-		const scrollSpeedCalculator = ScrollSpeedCalculator.make();
-		const scrollSpeed = scrollSpeedCalculator.getAverageSessionScrollSpeed();
-
-		this.pageTracker.trackProp('session_scroll_speed', scrollSpeed.toString());
 	}
 
 	private loadTimeTracker(): void {
