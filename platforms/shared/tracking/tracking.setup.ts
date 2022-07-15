@@ -22,7 +22,6 @@ import {
 	TrackingMessage,
 	trackingPayloadValidationMiddleware,
 	TrackingTarget,
-	ViewabilityCounter,
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
@@ -75,7 +74,6 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
-		this.viewabilityCounterTracker();
 		this.scrollSpeedTracker();
 		this.loadTimeTracker();
 		this.interventionTracker();
@@ -219,26 +217,6 @@ export class TrackingSetup {
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
 		}
-	}
-
-	private viewabilityCounterTracker(): void {
-		if (!context.get('options.viewabilityCounter.enabled')) {
-			return;
-		}
-
-		const viewabilityCounter = ViewabilityCounter.make();
-
-		this.pageTracker.trackProp('session_viewability_all', viewabilityCounter.getViewability());
-		this.pageTracker.trackProp(
-			'session_viewability_tb',
-			viewabilityCounter.getViewability('top_boxad'),
-		);
-		this.pageTracker.trackProp(
-			'session_viewability_icb',
-			viewabilityCounter.getViewability('incontent_boxad'),
-		);
-
-		viewabilityCounter.init();
 	}
 
 	private scrollSpeedTracker(): void {

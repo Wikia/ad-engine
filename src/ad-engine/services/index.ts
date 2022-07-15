@@ -18,7 +18,6 @@ export * from './slot-service';
 export * from './slot-tweaker';
 export * from './template-service';
 export * from './tracking-opt-in';
-export * from './viewability-counter';
 export * from './templates-registry/template-registry';
 export { TemplateDependency } from './templates-registry/template-dependencies-manager';
 export * from './templates-registry/template-state-transition';

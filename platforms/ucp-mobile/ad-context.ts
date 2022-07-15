@@ -147,9 +147,5 @@ export const basicContext = {
 				},
 			},
 		},
-		viewabilityCounter: {
-			enabled: true,
-			ignoredSlots: ['featured', 'incontent_player'],
-		},
 	},
 };
