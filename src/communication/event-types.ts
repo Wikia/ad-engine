@@ -188,9 +188,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
 	},
-	OPTIMERA_FINISHED: {
-		name: 'Optimera finished',
-	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',

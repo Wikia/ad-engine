@@ -83,7 +83,6 @@ export class TrackingSetup {
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
-		this.optimeraTracker();
 		this.identityTracker();
 	}
 
@@ -324,16 +323,6 @@ export class TrackingSetup {
 
 	private interventionTracker(): void {
 		interventionTracker.register();
-	}
-
-	private optimeraTracker(): void {
-		communicationService.on(
-			eventsRepository.OPTIMERA_FINISHED,
-			() => {
-				this.pageTracker.trackProp('optimera', 'finished');
-			},
-			false,
-		);
 	}
 
 	private identityTracker(): void {
