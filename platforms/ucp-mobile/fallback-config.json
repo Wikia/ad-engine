@@ -195,7 +195,8 @@
                 "6059438816",
                 "6050967117",
                 "6061761271",
-                "6054458844"
+                "6054458844",
+                "6066314281"
             ]
         }
     ],
@@ -217,9 +218,21 @@
                 "fandommobile"
             ],
             "regions": [
-                "BY",
-                "RU"
+                "PL"
             ],
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "GB",
+                "UK",
+                "US"
+            ],
+            "sampling": 1.0,
             "value": true
         }
     ],
@@ -733,18 +746,6 @@
             ],
             "sampling": 50.0,
             "samplingCache": true,
-            "value": true
-        }
-    ],
-    "icTabIdTracking": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
             "value": true
         }
     ],
@@ -2802,16 +2803,6 @@
         }
     ],
     "icPrebidVersion": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "US"
-            ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220623.min.js"
-        },
         {
             "apps": [
                 "fandomdesktop",
@@ -15826,19 +15817,6 @@
                     }
                 ]
             }
-        }
-    ],
-    "icPrebidRubiconPG": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "US"
-            ],
-            "sampling": 1.0,
-            "value": true
         }
     ]
 }
