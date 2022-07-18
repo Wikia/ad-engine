@@ -5,6 +5,7 @@ export class PrebidNativeHelper {
 			PrebidNativeHelper.waitForElementToLoad(img, timeout).then(done);
 		}
 		img.src = url;
+		document.body.appendChild(img);
 	}
 
 	private static isFunction(object) {

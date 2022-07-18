@@ -174,7 +174,7 @@ export class Wikia extends PrebidAdapter {
 		bidResponse.mediaType = 'native';
 		bidResponse.native = {
 			body: "Wikia is an old name of Fandom. Haven't heard of Fandom?",
-			clickTrackers: ['track-click.url'],
+			clickTrackers: ['https://track-click.url'],
 			clickUrl: 'https://fandom.com',
 			displayUrl: 'Read more',
 			url: 'https://fandom.com',
@@ -183,7 +183,7 @@ export class Wikia extends PrebidAdapter {
 				height: 100,
 				width: 100,
 			},
-			impressionTrackers: ['track-impression.url'],
+			impressionTrackers: ['https://track-impression.url'],
 			title: 'Wikia Native Creative',
 		};
 
