@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils, externalLogger } from '@ad-engine/core';
 
 const logGroup = 'audigent';
@@ -45,10 +44,6 @@ class Audigent {
 				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
 				.then(() => {
 					utils.logger(logGroup, 'audience tag script loaded');
-
-					if (newIntegrationEnabled) {
-						communicationService.emit(eventsRepository.AUDIGENT_LOADED);
-					}
 				});
 
 			if (!newIntegrationEnabled) {
@@ -57,7 +52,6 @@ class Audigent {
 					.then(() => {
 						utils.logger(logGroup, 'segment tag script loaded');
 						this.legacySetup();
-						communicationService.emit(eventsRepository.AUDIGENT_LOADED);
 					});
 			}
 

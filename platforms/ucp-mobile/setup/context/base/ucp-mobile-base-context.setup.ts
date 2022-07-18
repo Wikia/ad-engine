@@ -12,8 +12,6 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			utils.geoService.isProperCountry(['AU', 'NZ']) ? 'vm1b' : 'wka1b',
 		);
 
-		context.set('options.tracking.tabId', this.instantConfig.get('icTabIdTracking'));
-
 		context.set(
 			'events.pushOnScroll.threshold',
 			this.instantConfig.get('icPushOnScrollThreshold', 100),

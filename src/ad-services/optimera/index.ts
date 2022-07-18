@@ -1,5 +1,4 @@
 import { context, utils } from '@ad-engine/core';
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'optimera';
 const CLIENT_ID = '82';
@@ -35,7 +34,6 @@ class Optimera {
 			}
 
 			this.setTargeting();
-			this.sendTrackingEvent();
 		} catch (e) {
 			utils.logger(logGroup, 'loading failed', e.message);
 		}
@@ -111,11 +109,6 @@ class Optimera {
 		}
 
 		return false;
-	}
-
-	sendTrackingEvent(): void {
-		communicationService.emit(eventsRepository.OPTIMERA_FINISHED);
-		utils.logger(logGroup, 'tracking event sent');
 	}
 
 	setTargeting(): void {
