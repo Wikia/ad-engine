@@ -191,6 +191,7 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
+		this.setupPPID();
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
@@ -208,6 +209,26 @@ export class GptProvider implements Provider {
 		tag.setPrivacySettings({
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		});
+	}
+
+	checkSilverSurferAvailability() {
+		return window.SilverSurferSDK?.isInitialized() && window.SilverSurferSDK?.requestUserPPID;
+	}
+
+	setupPPID(): void {
+		if (this.checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
+			window.SilverSurferSDK.requestUserPPID();
+
+			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
+				this.setPPID(ppid);
+			});
+		}
+	}
+
+	setPPID(ppid: string) {
+		const tag = window.googletag.pubads();
+		tag.setPublisherProvidedId(ppid);
+		context.set('targeting.ppid', ppid);
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
