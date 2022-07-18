@@ -195,7 +195,8 @@
                 "6059438816",
                 "6050967117",
                 "6061761271",
-                "6054458844"
+                "6054458844",
+                "6066314281"
             ]
         }
     ],
@@ -217,7 +218,19 @@
                 "fandommobile"
             ],
             "regions": [
-                "XX"
+                "PL"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "GB",
+                "UK",
+                "US"
             ],
             "value": true
         }
@@ -732,18 +745,6 @@
             ],
             "sampling": 50.0,
             "samplingCache": true,
-            "value": true
-        }
-    ],
-    "icTabIdTracking": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
             "value": true
         }
     ],
@@ -15815,15 +15816,6 @@
                     }
                 ]
             }
-        }
-    ],
-    "icPrebidRubiconPG": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "value": false
         }
     ]
 }
