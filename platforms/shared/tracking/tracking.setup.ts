@@ -34,6 +34,7 @@ const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adeng
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
+const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimeinfo';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -77,6 +78,7 @@ export class TrackingSetup {
 		this.adClickTracker();
 		this.ctaTracker();
 		this.identityTracker();
+		this.loadTimesTracker();
 	}
 
 	private porvataTracker(): void {
@@ -256,6 +258,25 @@ export class TrackingSetup {
 						partner_identity_id: eventInfo.payload.partnerIdentityId,
 					},
 					identityTrackingUrl,
+				);
+			},
+			false,
+		);
+	}
+
+	private loadTimesTracker(): void {
+		const dataWarehouseTracker = new DataWarehouseTracker();
+
+		communicationService.on(
+			eventsRepository.TIMESTAMP_EVENT,
+			(eventInfo) => {
+				dataWarehouseTracker.track(
+					{
+						event_name: eventInfo.eventName,
+						timestamp: eventInfo.timestamp,
+						load_time: eventInfo.timestamp, // TODO calculate as starting point - timestamp
+					},
+					loadTimeTrackingUrl,
 				);
 			},
 			false,

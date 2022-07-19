@@ -185,6 +185,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
 	},
+	TIMESTAMP_EVENT: {
+		name: 'Service started',
+		payload: props<{ eventName: string; timestamp: number }>(),
+	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
 		category: '[BingeBot]',

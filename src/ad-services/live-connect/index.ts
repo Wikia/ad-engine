@@ -25,7 +25,13 @@ class LiveConnect {
 		}
 
 		if (!this.isLoaded) {
+			const now = new Date();
+
 			utils.logger(logGroup, 'loading');
+			communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
+				eventName: 'liveConnect_started',
+				timestamp: now.getTime(),
+			});
 
 			utils.scriptLoader
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
@@ -42,7 +48,14 @@ class LiveConnect {
 		window.liQ.resolve(
 			(nonId) => {
 				const id = nonId[idName];
+				const now = new Date();
+
+				communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
+					eventName: `liveConnect_responded_${idName}`,
+					timestamp: now.getTime(),
+				});
 				utils.logger(logGroup, `id ${idName}: ${id}`);
+
 				if (id) {
 					communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 						partnerName: partnerName,
