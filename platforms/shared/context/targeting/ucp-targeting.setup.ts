@@ -102,7 +102,7 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		// @ts-ignore because it does not recognize context correctly
-		const windowContext: WindowContextDto = window.context;
+		const windowContext: WindowContextDto = window.fandomContext;
 		const pageName = windowContext?.page?.pageName;
 		const siteName = windowContext?.site?.siteName;
 

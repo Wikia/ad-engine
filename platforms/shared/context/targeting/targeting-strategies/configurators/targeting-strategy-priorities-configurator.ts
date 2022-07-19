@@ -9,9 +9,9 @@ import { PageTagsFirstPriority } from '../priorities-strategies/page-tags-first-
 
 export function targetingStrategyPrioritiesConfigurator(): PriorityStrategies {
 	// @ts-ignore because it does not recognize context correctly
-	const siteTags = window.context?.site?.tags;
+	const siteTags = window.fandomContext?.site?.tags;
 	// @ts-ignore because it does not recognize context correctly
-	const pageTags = window.context?.page?.tags;
+	const pageTags = window.fandomContext?.page?.tags;
 
 	return {
 		[DEFAULT_PRIORITY_STRATEGY]: new DefaultOnlyPriority(),
