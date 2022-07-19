@@ -21,12 +21,10 @@ export class VideoEventDataProvider {
 			country: utils.geoService.getCountryCode() || '',
 			creative_id: videoData.creative_id || '',
 			ctp: videoData.ctp ? 1 : 0,
-			document_visibility: utils.getDocumentVisibilityStatus(),
 			event_name: videoData.event_name,
 			line_item_id: videoData.line_item_id || '',
 			player: videoData.player,
 			position: slot.getSlotName().toLowerCase(),
-			price: '',
 			pv_number: context.get('options.pvNumber') || window.pvNumber || -1,
 			rv: slot.getConfigProperty('targeting.rv') || '',
 			skin: context.get('targeting.skin') || '',
@@ -34,7 +32,6 @@ export class VideoEventDataProvider {
 			tz_offset: now.getTimezoneOffset(),
 			user_block_autoplay: videoData.user_block_autoplay,
 			video_id: videoData.video_id || '',
-			wsi: slot.targeting.wsi || '',
 		};
 	}
 }

@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, utils } from '@ad-engine/core';
 
 const logGroup = 'LiveRamp';
@@ -10,8 +9,6 @@ interface LiveRampConfig {
 }
 
 class LiveRamp {
-	private isDispatched = false;
-
 	getConfig(): LiveRampConfig {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
@@ -36,20 +33,6 @@ class LiveRamp {
 				],
 			},
 		};
-	}
-
-	dispatchLiveRampPrebidIdsLoadedEvent(userId): void {
-		if (!this.isEnabled()) {
-			utils.logger(logGroup, 'disabled');
-			return;
-		}
-
-		if (!this.isDispatched) {
-			const user = userId ? userId : 'undefined';
-			utils.logger(logGroup, 'dispatching LiveRamp event, userId: ', user);
-			communicationService.emit(eventsRepository.LIVERAMP_IDS_LOADED, { user });
-			this.isDispatched = true;
-		}
 	}
 
 	private isEnabled(): boolean {

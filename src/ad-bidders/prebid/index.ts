@@ -120,7 +120,6 @@ export class PrebidProvider extends BidderProvider {
 		this.configureAdUnits();
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
-		this.getLiveRampUserIds();
 		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
@@ -385,18 +384,6 @@ export class PrebidProvider extends BidderProvider {
 			bidsBackHandler,
 			timeout,
 		});
-	}
-
-	async getLiveRampUserIds(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		if (pbjs.getUserIds) {
-			const userId = pbjs.getUserIds()['idl_env'];
-
-			utils.logger(logGroup, 'calling LiveRamp dispatch method');
-
-			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
-		}
 	}
 
 	private enableATSAnalytics(): void {
