@@ -119,9 +119,6 @@ export const basicContext = {
 		isMobile: true,
 	},
 	options: {
-		connectionTracking: {
-			enabled: true,
-		},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
@@ -129,9 +126,6 @@ export const basicContext = {
 			enabled: true,
 			timing: ['responseEnd', 'domContentLoadedEventStart'],
 			custom: ['aeConfigured', 'aeStackStart'],
-		},
-		scrollSpeedTracking: {
-			enabled: true,
 		},
 		video: {
 			moatTracking: {
@@ -148,10 +142,6 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
-		},
-		viewabilityCounter: {
-			enabled: true,
-			ignoredSlots: ['featured', 'incontent_player'],
 		},
 	},
 };

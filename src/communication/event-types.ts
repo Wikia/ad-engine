@@ -169,28 +169,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Called',
 		payload: props<{ query: string }>(),
 	},
-	ATS_JS_LOADED: {
-		name: 'ATS.js loaded',
-		payload: props<{ loadTime: number }>(),
-	},
-	ATS_IDS_LOADED: {
-		name: 'ATS ids loaded',
-		payload: props<{ envelope: string }>(),
-	},
-	ATS_NOT_LOADED_LOGGED: {
-		name: 'ATS.js not loaded for logged in user',
-		payload: props<{ reason: string }>(),
-	},
-	AUDIGENT_LOADED: {
-		name: 'Audigent loaded',
-	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
-	},
-	LIVERAMP_IDS_LOADED: {
-		name: 'LiveRamp Prebid ids loaded',
-		payload: props<{ userId: string }>(),
 	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
@@ -203,9 +184,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	NO_NATIVO_AD: {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
-	},
-	OPTIMERA_FINISHED: {
-		name: 'Optimera finished',
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {

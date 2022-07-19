@@ -16,13 +16,10 @@ import {
 	interventionTracker,
 	porvataTracker,
 	PostmessageTracker,
-	ScrollSpeedCalculator,
-	ScrollTracker,
 	slotTracker,
 	TrackingMessage,
 	trackingPayloadValidationMiddleware,
 	TrackingTarget,
-	ViewabilityCounter,
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
@@ -75,17 +72,10 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
-		this.viewabilityCounterTracker();
-		this.scrollSpeedTracker();
-		this.connectionTracker();
 		this.loadTimeTracker();
-		this.audigentTracker();
-		this.liveRampTracker();
-		this.atsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
-		this.optimeraTracker();
 		this.identityTracker();
 	}
 
@@ -226,70 +216,6 @@ export class TrackingSetup {
 		}
 	}
 
-	private viewabilityCounterTracker(): void {
-		if (!context.get('options.viewabilityCounter.enabled')) {
-			return;
-		}
-
-		const viewabilityCounter = ViewabilityCounter.make();
-
-		this.pageTracker.trackProp('session_viewability_all', viewabilityCounter.getViewability());
-		this.pageTracker.trackProp(
-			'session_viewability_tb',
-			viewabilityCounter.getViewability('top_boxad'),
-		);
-		this.pageTracker.trackProp(
-			'session_viewability_icb',
-			viewabilityCounter.getViewability('incontent_boxad'),
-		);
-
-		viewabilityCounter.init();
-	}
-
-	private scrollSpeedTracker(): void {
-		if (!context.get('options.scrollSpeedTracking.enabled')) {
-			return;
-		}
-
-		const scrollTracker = new ScrollTracker([0, 2000, 4000], 'mediawiki');
-
-		scrollTracker.initScrollSpeedTracking();
-
-		const scrollSpeedCalculator = ScrollSpeedCalculator.make();
-		const scrollSpeed = scrollSpeedCalculator.getAverageSessionScrollSpeed();
-
-		this.pageTracker.trackProp('session_scroll_speed', scrollSpeed.toString());
-	}
-
-	private connectionTracker(): void {
-		if (!context.get('options.connectionTracking.enabled')) {
-			return;
-		}
-
-		const connection =
-			window.navigator['connection'] ||
-			window.navigator['mozConnection'] ||
-			window.navigator['webkitConnection'];
-
-		if (connection) {
-			const data = [];
-			if (connection.downlink) {
-				data.push(`downlink=${connection.downlink.toFixed(1)}`);
-			}
-			if (connection.effectiveType) {
-				data.push(`effectiveType=${connection.effectiveType}`);
-			}
-			if (connection.rtt) {
-				data.push(`rtt=${connection.rtt.toFixed(0)}`);
-			}
-			if (typeof connection.saveData === 'boolean') {
-				data.push(`saveData=${+connection.saveData}`);
-			}
-
-			this.pageTracker.trackProp('connection', data.join(';'));
-		}
-	}
-
 	private loadTimeTracker(): void {
 		const trackerConfig = context.get('options.loadTimeTracking');
 
@@ -314,64 +240,8 @@ export class TrackingSetup {
 		}
 	}
 
-	private audigentTracker(): void {
-		communicationService.on(
-			eventsRepository.AUDIGENT_LOADED,
-			() => {
-				this.pageTracker.trackProp('audigent', 'loaded');
-			},
-			false,
-		);
-	}
-
 	private interventionTracker(): void {
 		interventionTracker.register();
-	}
-
-	private liveRampTracker(): void {
-		communicationService.on(
-			eventsRepository.LIVERAMP_IDS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
-			},
-			false,
-		);
-	}
-
-	private atsTracker(): void {
-		communicationService.on(
-			eventsRepository.ATS_JS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.ATS_IDS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.ATS_NOT_LOADED_LOGGED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
-			},
-			false,
-		);
-	}
-
-	private optimeraTracker(): void {
-		communicationService.on(
-			eventsRepository.OPTIMERA_FINISHED,
-			() => {
-				this.pageTracker.trackProp('optimera', 'finished');
-			},
-			false,
-		);
 	}
 
 	private identityTracker(): void {
