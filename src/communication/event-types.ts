@@ -186,7 +186,7 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		payload: props<{ slotName: string }>(),
 	},
 	TIMESTAMP_EVENT: {
-		name: 'Service started',
+		name: 'Timestamp event',
 		payload: props<{ eventName: string; timestamp: number }>(),
 	},
 	// Platforms events //
