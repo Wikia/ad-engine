@@ -22,41 +22,7 @@ describe('slot-properties-tracking-middleware', () => {
 	afterEach(() => {
 		sandbox.restore();
 
-		context.remove('targeting.cortex-visitor');
 		context.remove('options.geoRequiresSignal');
-	});
-
-	it('returns info about cortex-visitor (yes) if set in targeting', () => {
-		const nextSpy = sandbox.spy();
-		context.set('targeting.cortex-visitor', 'yes');
-
-		slotTrackingMiddleware({ data: {}, slot: adSlot }, nextSpy);
-
-		expect(nextSpy.getCall(0).args[0].data).to.deep.include({
-			key_vals: 'cortex-visitor=yes',
-		});
-	});
-
-	it('returns info about cortex-visitor (no) if set in targeting', () => {
-		const nextSpy = sandbox.spy();
-		context.set('targeting.cortex-visitor', 'no');
-
-		slotTrackingMiddleware({ data: {}, slot: adSlot }, nextSpy);
-
-		expect(nextSpy.getCall(0).args[0].data).to.deep.include({
-			key_vals: 'cortex-visitor=no',
-		});
-	});
-
-	it('does not return info about cortex-visitor if not set in targeting', () => {
-		const nextSpy = sandbox.spy();
-		context.remove('targeting.cortex-visitor');
-
-		slotTrackingMiddleware({ data: {}, slot: adSlot }, nextSpy);
-
-		expect(nextSpy.getCall(0).args[0].data).not.to.deep.include({
-			key_vals: 'cortex-visitor=no',
-		});
 	});
 
 	it('returns info about GDPR and CCPA if geo requires it', () => {
