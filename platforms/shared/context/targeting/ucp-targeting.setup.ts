@@ -77,12 +77,6 @@ export class UcpTargetingSetup implements DiProcess {
 			DEFAULT_PRIORITY_STRATEGY,
 		);
 
-		// 7/15 P1 hotfix - set domFingerprint on window.context
-		if (window.context) {
-			// @ts-ignore it needs to be fixed correctly
-			window.context.domFingerprint = window.context.domFingerprint || '';
-		}
-
 		const priorityService = new TargetingStrategyPriorityService(
 			targetingStrategyPrioritiesConfigurator(),
 			selectedStrategy,
@@ -102,7 +96,7 @@ export class UcpTargetingSetup implements DiProcess {
 		}
 
 		// @ts-ignore because it does not recognize context correctly
-		const windowContext: WindowContextDto = window.context;
+		const windowContext: WindowContextDto = window.fandomContext;
 		const pageName = windowContext?.page?.pageName;
 		const siteName = windowContext?.site?.siteName;
 

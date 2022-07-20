@@ -32,6 +32,7 @@ describe('vast-parser', () => {
 				due: 15,
 				tre: ['bar', 'zero'],
 				quattro: null,
+				wsi: 'xxxx',
 			},
 		});
 	});
