@@ -6,6 +6,7 @@ const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/a
 export class LoadTimesService {
 	private static instance: LoadTimesService;
 	private startTime: number;
+	private tzOffset: number;
 
 	private constructor() {
 		this.initStartTime();
@@ -24,6 +25,7 @@ export class LoadTimesService {
 		const now = new Date();
 		if (!this.startTime) {
 			this.startTime = now.getTime();
+			this.tzOffset = now.getTimezoneOffset();
 		}
 		communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
 			eventName: 'load_time_init',
@@ -33,6 +35,10 @@ export class LoadTimesService {
 
 	getStartTime(): number {
 		return this.startTime;
+	}
+
+	getTimezoneOffset(): number {
+		return this.tzOffset;
 	}
 
 	initLoadTimesTracker(): void {
@@ -46,6 +52,7 @@ export class LoadTimesService {
 						event_name: eventInfo.eventName,
 						timestamp: eventInfo.timestamp,
 						load_time: eventInfo.timestamp - this.getStartTime(),
+						tz_offset: this.getTimezoneOffset(),
 					},
 					loadTimeTrackingUrl,
 				);
