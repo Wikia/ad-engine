@@ -2,10 +2,14 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 import { AdSlot, context, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
+import { PrebidNativeHelper } from './prebid-native-helper';
 
 const logGroup = 'prebid-native-provider';
 
 export class PrebidNativeProvider {
+	static ACTION_CLICK = 'click';
+	static ACTION_IMPRESSION = 'impression';
+
 	isEnabled(): boolean {
 		return context.get('bidders.prebid.native.enabled');
 	}
@@ -33,6 +37,8 @@ export class PrebidNativeProvider {
 
 		const ntvDomElement = ntvAdSlot.getElement();
 		ntvDomElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
+		this.fireNativeTrackers(PrebidNativeProvider.ACTION_IMPRESSION, data);
+		this.addClickTrackers(data);
 
 		const currentRv = ntvAdSlot.getConfigProperty('targeting.rv') || 1;
 		ntvAdSlot.setConfigProperty('targeting.rv', currentRv + 1);
@@ -61,6 +67,29 @@ export class PrebidNativeProvider {
 			return data[assetName]['url'];
 		}
 		return data[assetName];
+	}
+
+	private fireNativeTrackers(action: string, adObject: PrebidNativeData): void {
+		let trackers;
+		if (action === PrebidNativeProvider.ACTION_CLICK) {
+			trackers = adObject && adObject.clickTrackers;
+		}
+		if (action === PrebidNativeProvider.ACTION_IMPRESSION) {
+			trackers = adObject && adObject.impressionTrackers;
+		}
+
+		(trackers || []).forEach(PrebidNativeHelper.triggerPixel);
+	}
+
+	private addClickTrackers(adObject: PrebidNativeData): void {
+		const nativeAdElement = document.getElementById('native-prebid-ad');
+		const linkElements = nativeAdElement.getElementsByClassName('ntv-link');
+
+		[].slice.call(linkElements).forEach((element) => {
+			element.addEventListener('click', () => {
+				this.fireNativeTrackers(PrebidNativeProvider.ACTION_CLICK, adObject);
+			});
+		});
 	}
 }
 
