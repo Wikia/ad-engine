@@ -37,6 +37,7 @@ describe('tagless-request-url-builder', () => {
 				due: 15,
 				tre: ['bar', 'zero'],
 				quattro: null,
+				wsi: 'xxxx',
 			},
 			options: {
 				trackingOptIn: false,
@@ -94,18 +95,21 @@ describe('tagless-request-url-builder', () => {
 		expect(vastUrl.match(/&correlator=\d+&/g)).to.be.ok;
 	});
 
-	it('build VAST URL with page level targeting', () => {
+	it('build VAST URL with page level targeting anp default wsi param', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
-		expect(vastUrl.match(/&cust_params=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero/g)).to.be
-			.ok;
+		expect(
+			vastUrl.match(
+				/&cust_params=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx/g,
+			),
+		).to.be.ok;
 	});
 
-	it('build VAST URL with page and slotName level targeting', () => {
+	it('build VAST URL with page, slotName level targeting and default wsi param', () => {
 		const vastUrl = buildVastUrl(1, 'top_leaderboard');
 
 		const custParams =
-			/&cust_params=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26src%3Dtest%26pos%3Dtop_leaderboard/;
+			/&cust_params=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dtop_leaderboard/;
 
 		expect(vastUrl.match(custParams)).to.be.ok;
 	});
@@ -229,7 +233,7 @@ describe('tagless-request-url-builder', () => {
 		expect(taglessUrl.match(/&sz=32x32&/g)).to.be.ok;
 	});
 
-	it('build tagless URL with page and slotName level targeting', () => {
+	it('build tagless URL with page, slotName level targeting and default wsi param', () => {
 		const taglessUrl = buildTaglessRequestUrl({
 			targeting: {
 				s0: '000',
@@ -237,13 +241,14 @@ describe('tagless-request-url-builder', () => {
 				due: 15,
 				tre: ['bar', 'zero'],
 				quattro: null,
+				wsi: 'xxxx',
 				src: 'test',
 				pos: 'layout_initializer',
 				extra: 'yes',
 			},
 		});
 		const custParams =
-			/&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
+			/&t=s0%3D000%26uno%3Dfoo%26due%3D15%26tre%3Dbar%2Czero%26wsi%3Dxxxx%26src%3Dtest%26pos%3Dlayout_initializer%26extra%3Dyes/;
 
 		expect(taglessUrl.match(custParams)).to.be.ok;
 	});

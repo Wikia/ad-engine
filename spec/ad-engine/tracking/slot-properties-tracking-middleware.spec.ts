@@ -9,6 +9,7 @@ describe('slot-properties-tracking-middleware', () => {
 	beforeEach(() => {
 		context.set('slots.foo.targeting', {
 			rv: 5,
+			wsi: 'ola1',
 		});
 		adSlot = new AdSlot({ id: 'foo' });
 		adSlot.advertiserId = '567';
@@ -40,8 +41,10 @@ describe('slot-properties-tracking-middleware', () => {
 			ad_status: 'success',
 			advertiser_id: '567',
 			creative_id: 123,
+			creative_size: '728x90',
 			kv_pos: 'foo',
 			kv_rv: 5,
+			kv_wsi: 'ola1',
 			order_id: 3,
 			previous: 'value',
 			product_lineitem_id: 789,
