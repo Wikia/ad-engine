@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { DataWarehouseTracker } from '../../../platforms/shared';
 
-const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimesinfo';
+const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimes';
 
 export class LoadTimesService {
 	private static instance: LoadTimesService;
