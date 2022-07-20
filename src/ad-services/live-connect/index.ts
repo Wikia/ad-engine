@@ -50,10 +50,12 @@ class LiveConnect {
 				const id = nonId[idName];
 				const now = new Date();
 
-				communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
-					eventName: `liveConnect_responded_${idName}`,
-					timestamp: now.getTime(),
-				});
+				if (idName === 'unifiedId') {
+					communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
+						eventName: `liveConnect_responded_${idName}`,
+						timestamp: now.getTime(),
+					});
+				}
 				utils.logger(logGroup, `id ${idName}: ${id}`);
 
 				if (id) {
