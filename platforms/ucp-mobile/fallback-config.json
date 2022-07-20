@@ -235,6 +235,18 @@
             "value": true
         }
     ],
+    "icPpidAdmsStorage": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
+    ],
     "icComscoreJwpTracking": [
         {
             "apps": [
