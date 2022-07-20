@@ -21,13 +21,16 @@ export interface VideoEventData extends VideoData {
 	content_type: string;
 	country: string;
 	ctp: 0 | 1;
+	document_visibility: string;
 	position: string;
+	price: '';
 	pv_number: number;
 	rv: string;
 	skin: string;
 	timestamp: number;
 	tz_offset: number;
 	video_id: string;
+	wsi: string;
 }
 
 export interface VideoEventListener {
