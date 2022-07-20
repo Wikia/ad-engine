@@ -22,6 +22,7 @@ export const adSlotFake = {
 	name: 'FAKE_AD',
 	config: {
 		targeting: {
+			wsi: 'yyyy',
 			rv: 1,
 		},
 		disabled: false,
@@ -44,7 +45,7 @@ export const adSlotFake = {
 		return [];
 	},
 
-	getCopy(): { targeting: { rv: number } } {
+	getCopy(): { targeting: { wsi: string; rv: number } } {
 		return JSON.parse(JSON.stringify(this.config));
 	},
 

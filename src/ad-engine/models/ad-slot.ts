@@ -18,6 +18,7 @@ export interface Targeting {
 	src?: string;
 	pos?: string;
 	loc?: string;
+	wsi?: string;
 	rv?: number;
 	[key: string]: googletag.NamedSize | number;
 }
