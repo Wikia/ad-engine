@@ -15,6 +15,7 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
+import { getMediaWikiVariable } from '../../../platforms/shared';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
@@ -163,9 +164,11 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('wiki.targeting.featuredVideo.mediaId')) {
+		const mediaId = getMediaWikiVariable('wgArticleFeaturedVideo').mediaId;
+
+		if (mediaId) {
 			jwplayerDataProvider.params.mediaIDs.push(
-				context.get('wiki.targeting.featuredVideo.mediaId'),
+				mediaId
 			);
 		}
 

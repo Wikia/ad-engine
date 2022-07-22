@@ -32,6 +32,7 @@ export class Site {
 
 export class Page {
 	public readonly articleId: number;
+	public readonly hasFeaturedVideo: boolean;
 	public readonly lang: string;
 	public readonly pageId: number;
 	public readonly pageName: string;
@@ -40,6 +41,7 @@ export class Page {
 
 	constructor(
 		articleId: number,
+		hasFeaturedVideo: boolean,
 		lang: string,
 		pageId: number,
 		pageName: string,
@@ -47,6 +49,7 @@ export class Page {
 		tags: object,
 	) {
 		this.articleId = typeof articleId === 'number' ? articleId : null;
+		this.hasFeaturedVideo = typeof hasFeaturedVideo === 'boolean' ? hasFeaturedVideo : null;
 		this.lang = typeof lang === 'string' ? lang : null;
 		this.pageId = typeof pageId === 'number' ? pageId : null;
 		this.pageName = typeof pageName === 'string' ? pageName : null;
