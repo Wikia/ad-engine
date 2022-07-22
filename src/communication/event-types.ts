@@ -98,6 +98,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
+	AD_ENGINE_LOAD_TIME_INIT: {
+		name: 'Ad engine load time init',
+	},
 	AD_ENGINE_MESSAGE_BOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
@@ -172,6 +175,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
+	},
+	LIVE_CONNECT_STARTED: {
+		name: 'LiveConnect started',
+	},
+	LIVE_CONNECT_RESPONDED_UUID: {
+		name: 'LiveConnect responded with UUID',
 	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
