@@ -1,6 +1,33 @@
-import { AdEngine, AdSlot, communicationService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	AdSlot,
+	communicationService,
+	context,
+	eventsRepository,
+	utils,
+} from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
+
+function checkSilverSurferAvailability() {
+	return window.SilverSurferSDK?.isInitialized() && window.SilverSurferSDK?.requestUserPPID;
+}
+
+function setupPPID(): void {
+	if (checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
+		window.SilverSurferSDK.requestUserPPID();
+
+		communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
+			setPPID(ppid);
+		});
+	}
+}
+
+function setPPID(ppid: string) {
+	const tag = window.googletag.pubads();
+	tag.setPublisherProvidedId(ppid);
+	context.set('targeting.ppid', ppid);
+}
 
 export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 	if (!adEngineInstance) {
@@ -8,6 +35,7 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 
 		utils.logger('gpt-provider', 'loading GPT...');
 		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
+		setupPPID();
 
 		adEngineInstance = new AdEngine();
 		adEngineInstance.init(inhibitors);
