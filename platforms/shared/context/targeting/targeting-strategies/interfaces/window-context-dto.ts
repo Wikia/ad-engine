@@ -10,7 +10,6 @@ export interface WindowContextDto {
 	};
 	page: {
 		articleId: number;
-		hasFeaturedVideo: boolean;
 		lang: string;
 		pageId: number;
 		pageName: string;

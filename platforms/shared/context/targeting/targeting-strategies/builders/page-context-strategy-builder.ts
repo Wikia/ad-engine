@@ -27,7 +27,6 @@ export class PageContextStrategyBuilder implements StrategyBuilder {
 			),
 			new Page(
 				windowContext?.page?.articleId,
-				windowContext?.page?.hasFeaturedVideo,
 				windowContext?.page?.lang,
 				windowContext?.page?.pageId,
 				windowContext?.page?.pageName,
