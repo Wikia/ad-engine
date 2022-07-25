@@ -154,6 +154,10 @@ export class BaseContextSetup implements DiProcess {
 			'services.audigent.newIntegrationEnabled',
 			this.instantConfig.get('icAudigentNewIntegrationEnabled'),
 		);
+		context.set(
+			'services.audigent.gamDirectTestEnabled',
+			this.instantConfig.get('icAudigentGamDirectTestEnabled'),
+		);
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		if (!this.instantConfig.get('icDurationMedia')) {
