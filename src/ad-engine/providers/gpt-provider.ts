@@ -23,6 +23,7 @@ export const GAMOrigins: string[] = [
 	'https://googleads.g.doubleclick.net',
 ];
 const AllViewportSizes = [0, 0];
+const SilverSurferAwaitTime = 100;
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -42,7 +43,7 @@ function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
 				clearInterval(interval);
 				return method.call(this, args);
 			}
-		}, 50);
+		}, SilverSurferAwaitTime);
 	};
 }
 
@@ -222,13 +223,9 @@ export class GptProvider implements Provider {
 		});
 	}
 
-	checkSilverSurferAvailability() {
-		return window.SilverSurferSDK?.isInitialized() && window.SilverSurferSDK?.requestUserPPID;
-	}
-
 	@decorate(postponeExecutionUntilSilverSurferLoads)
 	setupPPID(): void {
-		if (this.checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
+		if (window.SilverSurferSDK?.requestUserPPID && context.get('services.ppid.enabled')) {
 			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
 				this.setPPID(ppid);
 			});
