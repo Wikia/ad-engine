@@ -23,6 +23,7 @@ import {
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
+	waitForAuSegGlobalSet,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
@@ -265,14 +266,16 @@ export class TrackingSetup {
 	}
 
 	private keyvalsTracker(): void {
-		console.log('hello its tracing setup');
 		const dataWarehouseTracker = new DataWarehouseTracker();
-		const keyvals = context.get('targeting');
-		dataWarehouseTracker.track(
-			{
-				keyvals: JSON.stringify(keyvals),
-			},
-			trackingKeyvalsUrl,
-		);
+
+		waitForAuSegGlobalSet().then(() => {
+			const keyvals = { ...context.get('targeting'), AU_SEG: window['au_seg'].segments };
+			dataWarehouseTracker.track(
+				{
+					keyvals: JSON.stringify(keyvals),
+				},
+				trackingKeyvalsUrl,
+			);
+		});
 	}
 }
