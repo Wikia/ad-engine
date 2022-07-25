@@ -23,6 +23,7 @@ class Audigent {
 			return;
 		}
 
+		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		const audienceTagScriptUrl =
 			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
@@ -32,6 +33,10 @@ class Audigent {
 			context.get('services.audigent.numberOfTries') || DEFAULT_NUMBER_OF_TRIES;
 
 		context.set('targeting.AU_SEG', '-1');
+
+		if (gamDirectTestEnabled) {
+			window['au_gam_direct_test'] = true;
+		}
 
 		if (newIntegrationEnabled) {
 			this.setupSegmentsListener();
