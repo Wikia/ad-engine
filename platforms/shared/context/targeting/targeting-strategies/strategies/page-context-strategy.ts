@@ -12,23 +12,25 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		const targeting: Partial<Targeting> = {
-			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			age: this.context.page.tags?.age || [],
+			artid: this.getValueWithPagePrefix(this.context.page.articleId) || '',
+			age: this.getValueWithPagePrefix(this.context.page.tags?.age) || [],
 			esrb: this.context.site.esrbRating,
-			gnre: this.context.page.tags?.gnre || [],
+			gnre: this.getValueWithPagePrefix(this.context.page.tags?.gnre) || [],
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
-			lang: this.context.page.lang || 'unknown',
-			media: this.context.page.tags?.media || [],
-			pform: this.context.page.tags?.pform || [],
-			pub: this.context.page.tags?.pub || [],
+			lang: this.getValueWithPagePrefix(this.context.page.lang) || 'unknown',
+			media: this.getValueWithPagePrefix(this.context.page.tags?.media) || [],
+			pform: this.getValueWithPagePrefix(this.context.page.tags?.pform) || [],
+			pub: this.getValueWithPagePrefix(this.context.page.tags?.pub) || [],
 			s0: this.context.site.vertical,
 			s0c: this.context.site.categories,
 			s1: utils.targeting.getRawDbName(this.context.site.siteName),
 			s2: this.getAdLayout(this.context.page.pageType || 'article'),
-			sex: this.context.page.tags?.sex || [],
-			theme: this.context.page.tags?.theme || [],
-			tv: this.context.page.tags?.tv || [],
-			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
+			sex: this.getValueWithPagePrefix(this.context.page.tags?.sex) || [],
+			theme: this.getValueWithPagePrefix(this.context.page.tags?.theme) || [],
+			tv: this.getValueWithPagePrefix(this.context.page.tags?.tv) || [],
+			wpage:
+				this.context.page.pageName &&
+				this.getValueWithPagePrefix(this.context.page.pageName).toString().toLowerCase(),
 		};
 
 		if (this.context.site.top1000) {
@@ -36,5 +38,19 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 		}
 
 		return this.addCommonParams(targeting, wiki, this.skin);
+	}
+
+	getValueWithPagePrefix(value) {
+		if (!value) {
+			return;
+		}
+
+		if (Array.isArray(value)) {
+			if (value.length > 0) {
+				return value.map((val) => 'p_' + val);
+			}
+		} else {
+			return 'p_' + value;
+		}
 	}
 }
