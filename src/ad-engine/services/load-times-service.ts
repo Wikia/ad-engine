@@ -1,7 +1,16 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { DataWarehouseTracker } from '../../../platforms/shared';
+import { DataWarehouseTracker } from '@platforms/shared';
+import { context } from './context-service';
 
 const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimes';
+const eventsToTrack = {
+	ad_engine_configured: eventsRepository.AD_ENGINE_CONFIGURED,
+	ad_engine_stack_start: eventsRepository.AD_ENGINE_STACK_START,
+	prebid_auction_started: eventsRepository.BIDDERS_BIDS_CALLED,
+	prebid_auction_ended: eventsRepository.BIDDERS_INIT_STAGE_DONE,
+	live_connect_started: eventsRepository.LIVE_CONNECT_STARTED,
+	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
+};
 
 export class LoadTimesService {
 	private static instance: LoadTimesService;
@@ -27,8 +36,7 @@ export class LoadTimesService {
 			this.startTime = now.getTime();
 			this.tzOffset = now.getTimezoneOffset();
 		}
-		communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
-			eventName: 'load_time_init',
+		communicationService.emit(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, {
 			timestamp: this.startTime,
 		});
 	}
@@ -42,22 +50,40 @@ export class LoadTimesService {
 	}
 
 	initLoadTimesTracker(): void {
+		const trackerConfig = context.get('options.loadTimeTracking');
+
+		if (!trackerConfig || !trackerConfig.enabled) {
+			return;
+		}
+
+		communicationService.on(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, (payload) => {
+			this.trackLoadTime('load_time_init', payload.timestamp);
+		});
+
+		Object.keys(eventsToTrack).forEach((eventName) => {
+			communicationService.on(eventsToTrack[eventName], () => {
+				this.trackLoadTime(eventName, Date.now());
+			});
+		});
+
+		communicationService.on(eventsRepository.AD_ENGINE_SLOT_LOADED, (payload) => {
+			if (payload.name == 'top_leaderboard') {
+				this.trackLoadTime('top_leaderboard_loaded', Date.now());
+			}
+		});
+	}
+
+	private trackLoadTime(eventName: string, timestamp: number): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		communicationService.on(
-			eventsRepository.TIMESTAMP_EVENT,
-			(eventInfo) => {
-				dataWarehouseTracker.track(
-					{
-						event_name: eventInfo.eventName,
-						timestamp: eventInfo.timestamp,
-						load_time: eventInfo.timestamp - this.getStartTime(),
-						tz_offset: this.getTimezoneOffset(),
-					},
-					loadTimeTrackingUrl,
-				);
+		dataWarehouseTracker.track(
+			{
+				event_name: eventName,
+				browser_ts: timestamp,
+				load_time: timestamp - this.getStartTime(),
+				tz_offset: this.getTimezoneOffset(),
 			},
-			false,
+			loadTimeTrackingUrl,
 		);
 	}
 }

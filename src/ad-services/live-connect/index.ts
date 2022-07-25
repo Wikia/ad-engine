@@ -25,13 +25,8 @@ class LiveConnect {
 		}
 
 		if (!this.isLoaded) {
-			const now = new Date();
-
 			utils.logger(logGroup, 'loading');
-			communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
-				eventName: 'liveConnect_started',
-				timestamp: now.getTime(),
-			});
+			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
 			utils.scriptLoader
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
@@ -48,13 +43,9 @@ class LiveConnect {
 		window.liQ.resolve(
 			(nonId) => {
 				const id = nonId[idName];
-				const now = new Date();
 
 				if (idName === 'unifiedId') {
-					communicationService.emit(eventsRepository.TIMESTAMP_EVENT, {
-						eventName: `liveConnect_responded_${idName}`,
-						timestamp: now.getTime(),
-					});
+					communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
 				}
 				utils.logger(logGroup, `id ${idName}: ${id}`);
 
