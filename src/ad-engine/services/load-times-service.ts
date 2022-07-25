@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { DataWarehouseTracker } from '../../../platforms/shared';
+import { DataWarehouseTracker } from '@platforms/shared';
 import { context } from './context-service';
 
 const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimes';
@@ -79,7 +79,7 @@ export class LoadTimesService {
 		dataWarehouseTracker.track(
 			{
 				event_name: eventName,
-				timestamp: timestamp,
+				browser_ts: timestamp,
 				load_time: timestamp - this.getStartTime(),
 				tz_offset: this.getTimezoneOffset(),
 			},
