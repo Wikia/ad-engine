@@ -36,6 +36,13 @@ class Audigent {
 
 		if (gamDirectTestEnabled) {
 			window['au_gam_direct_test'] = true;
+
+			utils.scriptLoader
+				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
+				.then(() => {
+					utils.logger(logGroup, 'audience tag script loaded');
+				});
+			return;
 		}
 
 		if (newIntegrationEnabled) {
