@@ -30,14 +30,14 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		this.addPagePrefixToValues(pageContextTags);
-
 		const siteContextTags = {
 			esrb: this.context.site.esrbRating,
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			s0: this.context.site.vertical,
 			s0c: this.context.site.categories,
 		};
+
+		this.addPagePrefixToValues(pageContextTags);
 
 		targeting = { ...targeting, ...pageContextTags, ...siteContextTags };
 
