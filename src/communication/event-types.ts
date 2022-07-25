@@ -173,6 +173,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
 	},
+	TRACKING_KEYVALS: {
+		name: 'Tracking key-vals',
+		payload: payload<{ keyvals: string }>(),
+	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),

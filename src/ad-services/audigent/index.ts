@@ -130,6 +130,7 @@ class Audigent {
 
 	private static setSegmentsInTargeting(segments) {
 		utils.logger(logGroup, 'Setting segments in the targeting', segments);
+		console.log('hello its audigent');
 		context.set('targeting.AU_SEG', segments);
 	}
 
