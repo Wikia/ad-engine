@@ -41,7 +41,7 @@ export class Mediagrid extends PrebidAdapter {
 					data: {
 						jwTargeting: {
 							playerID: 'featured-video__player',
-							mediaID: getMediaWikiVariable('wgArticleFeaturedVideo').mediaId,
+							mediaID: getMediaWikiVariable('wgArticleFeaturedVideo')?.mediaId,
 						},
 					},
 				},
