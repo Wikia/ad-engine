@@ -196,7 +196,9 @@
                 "6050967117",
                 "6061761271",
                 "6054458844",
-                "6066314281"
+                "6066314281",
+                "6063743454",
+                "6029699462"
             ]
         }
     ],
@@ -369,6 +371,7 @@
                 "AI",
                 "AL",
                 "AN",
+                "AR",
                 "AS",
                 "AS",
                 "AT",
@@ -390,6 +393,7 @@
                 "CH",
                 "CK",
                 "CL",
+                "CO",
                 "CR",
                 "CU",
                 "CW",
@@ -2801,6 +2805,18 @@
             "regions": [
                 "XX"
             ]
+        }
+    ],
+    "icPpidAdmsStorage": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
         }
     ],
     "icPrebidVersion": [
