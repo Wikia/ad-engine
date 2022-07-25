@@ -5,6 +5,7 @@ export * from './custom-ad-loader';
 export * from './external-logger';
 export * from './filler-service';
 export * from './instant-config-cache-storage';
+export * from './identity-service';
 export * from './pbjs-factory';
 export * from './local-cache';
 export * from './message-bus';

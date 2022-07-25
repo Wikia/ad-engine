@@ -1,16 +1,11 @@
-import {
-	AdEngine,
-	AdSlot,
-	communicationService,
-	utils,
-} from '@wikia/ad-engine';
-import {IdentityService} from "../../../src/ad-engine/services/identity-service";
+import { AdEngine, AdSlot, communicationService, utils, IdentityService } from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
 
 export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 	if (!adEngineInstance) {
-		console.time('DJ: PPID Process')
+		console.log('DJ: PPID PROCESS START!');
+		console.time('DJ: PPID Process');
 		IdentityService.getInstance().setupPPID();
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
