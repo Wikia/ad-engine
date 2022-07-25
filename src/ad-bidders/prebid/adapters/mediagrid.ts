@@ -1,5 +1,5 @@
 import { context } from '@ad-engine/core';
-import { getMediaWikiVariable } from '../../../../platforms/shared';
+import { getMediaWikiVariable } from '@platforms/shared';
 import { PrebidAdapter } from '../prebid-adapter';
 
 export class Mediagrid extends PrebidAdapter {

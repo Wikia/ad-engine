@@ -60,10 +60,11 @@ export abstract class CommonStrategy {
 	}
 
 	private getVideoStatus(): VideoStatus {
-		if (getMediaWikiVariable('wgArticleFeaturedVideo')) {
+		const featuredVideoData = getMediaWikiVariable('wgArticleFeaturedVideo');
+		if (featuredVideoData) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
 			const isDedicatedForArticle =
-				getMediaWikiVariable('wgArticleFeaturedVideo').isDedicatedForArticle !== false;
+				featuredVideoData.isDedicatedForArticle !== false;
 			const bridgeVideoPlayed =
 				!isDedicatedForArticle && window.canPlayVideo && window.canPlayVideo();
 
