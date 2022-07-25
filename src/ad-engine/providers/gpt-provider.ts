@@ -35,6 +35,17 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 	};
 }
 
+function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
+	return function (...args: any): void {
+		const interval = setInterval(() => {
+			if (window.SilverSurferSDK.isInitialized()) {
+				clearInterval(interval);
+				return method.call(this, args);
+			}
+		}, 50);
+	};
+}
+
 let definedSlots: googletag.Slot[] = [];
 let initialized = false;
 
@@ -191,6 +202,7 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
+		this.setupPPID();
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
@@ -208,6 +220,27 @@ export class GptProvider implements Provider {
 		tag.setPrivacySettings({
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		});
+	}
+
+	checkSilverSurferAvailability() {
+		return window.SilverSurferSDK?.isInitialized() && window.SilverSurferSDK?.requestUserPPID;
+	}
+
+	@decorate(postponeExecutionUntilSilverSurferLoads)
+	setupPPID(): void {
+		if (this.checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
+			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
+				this.setPPID(ppid);
+			});
+
+			window.SilverSurferSDK.requestUserPPID();
+		}
+	}
+
+	setPPID(ppid: string) {
+		const tag = window.googletag.pubads();
+		tag.setPublisherProvidedId(ppid);
+		context.set('targeting.ppid', ppid);
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
