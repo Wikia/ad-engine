@@ -35,6 +35,17 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 	};
 }
 
+function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
+	return function (...args: any): void {
+		const interval = setInterval(() => {
+			if (window.SilverSurferSDK.isInitialized()) {
+				clearInterval(interval);
+				return method.call(this, args);
+			}
+		}, 50);
+	};
+}
+
 let definedSlots: googletag.Slot[] = [];
 let initialized = false;
 
@@ -215,13 +226,14 @@ export class GptProvider implements Provider {
 		return window.SilverSurferSDK?.isInitialized() && window.SilverSurferSDK?.requestUserPPID;
 	}
 
+	@decorate(postponeExecutionUntilSilverSurferLoads)
 	setupPPID(): void {
 		if (this.checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
-			window.SilverSurferSDK.requestUserPPID();
-
 			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
 				this.setPPID(ppid);
 			});
+
+			window.SilverSurferSDK.requestUserPPID();
 		}
 	}
 
