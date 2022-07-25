@@ -217,7 +217,7 @@ export class GptProvider implements Provider {
 
 	setupPPID(): void {
 		if (this.checkSilverSurferAvailability() && context.get('services.ppid.enabled')) {
-			window.SilverSurferSDK.requestUserPPID();
+			window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
 
 			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
 				this.setPPID(ppid);
