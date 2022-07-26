@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { DataWarehouseTracker } from '@platforms/shared';
-import { context } from './context-service';
 
 const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimes';
 const eventsToTrack = {
@@ -50,12 +49,6 @@ export class LoadTimesService {
 	}
 
 	initLoadTimesTracker(): void {
-		const trackerConfig = context.get('options.loadTimeTracking');
-
-		if (!trackerConfig || !trackerConfig.enabled) {
-			return;
-		}
-
 		communicationService.on(eventsRepository.AD_ENGINE_LOAD_TIME_INIT, (payload) => {
 			this.trackLoadTime('load_time_init', payload.timestamp);
 		});
