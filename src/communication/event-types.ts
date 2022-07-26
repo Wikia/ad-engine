@@ -98,6 +98,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
+	AD_ENGINE_LOAD_TIME_INIT: {
+		name: 'Ad engine load time init',
+	},
 	AD_ENGINE_MESSAGE_BOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
@@ -173,6 +176,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
 	},
+	LIVE_CONNECT_STARTED: {
+		name: 'LiveConnect started',
+	},
+	LIVE_CONNECT_RESPONDED_UUID: {
+		name: 'LiveConnect responded with UUID',
+	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),
@@ -184,6 +193,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	NO_NATIVO_AD: {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
+	},
+	TIMESTAMP_EVENT: {
+		name: 'Timestamp event',
+		payload: props<{ eventName: string; timestamp: number }>(),
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
