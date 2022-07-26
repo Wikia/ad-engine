@@ -154,6 +154,10 @@ export class BaseContextSetup implements DiProcess {
 			'services.audigent.newIntegrationEnabled',
 			this.instantConfig.get('icAudigentNewIntegrationEnabled'),
 		);
+		context.set(
+			'services.audigent.gamDirectTestEnabled',
+			this.instantConfig.get('icAudigentGamDirectTestEnabled'),
+		);
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		if (!this.instantConfig.get('icDurationMedia')) {
@@ -182,6 +186,7 @@ export class BaseContextSetup implements DiProcess {
 			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		}
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
+		context.set('services.ppidAdmsStorage.enabled', this.instantConfig.get('icPpidAdmsStorage'));
 
 		this.setupOutstreamPlayers();
 	}
