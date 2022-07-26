@@ -43,7 +43,7 @@ function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
 		let silverSurferAvailabilityCheckCount = 0;
 		const interval = setInterval(() => {
 			silverSurferAvailabilityCheckCount++;
-			if (window.SilverSurferSDK.isInitialized()) {
+			if (window.SilverSurferSDK && window.SilverSurferSDK.isInitialized()) {
 				clearInterval(interval);
 				return method.call(this, args);
 			} else if (silverSurferAvailabilityCheckCount === SilverSurferAvailabilityTries) {
