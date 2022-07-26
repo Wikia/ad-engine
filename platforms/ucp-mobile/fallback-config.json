@@ -580,10 +580,7 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "regions": [
-                "PL"
-            ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebidPubmatic": [
@@ -870,6 +867,18 @@
             "samplingCache": true
         }
     ],
+    "icAudigentGamDirectTestEnabled": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        }
+    ],
     "icPauseJWPlayerAd": [
         {
             "apps": [
@@ -1008,8 +1017,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",
@@ -2816,7 +2823,7 @@
             "regions": [
                 "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebidVersion": [
