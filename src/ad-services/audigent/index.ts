@@ -6,9 +6,8 @@ const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
-export function waitForAuSegGlobalSet(): Promise<boolean> {
-	const numberOfTriesWhenWaiting =
-		context.get('services.audigent.numberOfTries') || DEFAULT_NUMBER_OF_TRIES;
+export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): Promise<boolean> {
+	const numberOfTriesWhenWaiting = context.get('services.audigent.numberOfTries') || numberOfTries;
 
 	return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 }

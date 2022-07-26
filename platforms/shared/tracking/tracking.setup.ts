@@ -35,7 +35,7 @@ const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adeng
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
-const trackingKeyvalsUrl = 'https://beacon.wikia-services.com/__track/special/keyvals';
+const trackingKeyValsUrl = 'https://beacon.wikia-services.com/__track/special/keyvals';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -79,7 +79,7 @@ export class TrackingSetup {
 		this.adClickTracker();
 		this.ctaTracker();
 		this.identityTracker();
-		this.keyvalsTracker();
+		this.keyValsTracker();
 	}
 
 	private porvataTracker(): void {
@@ -265,16 +265,16 @@ export class TrackingSetup {
 		);
 	}
 
-	private keyvalsTracker(): void {
+	private keyValsTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		waitForAuSegGlobalSet().then(() => {
-			const keyvals = { ...context.get('targeting'), AU_SEG: window['au_seg'].segments };
+		waitForAuSegGlobalSet(2).then(() => {
+			const keyVals = { ...context.get('targeting'), AU_SEG: window['au_seg']?.segments };
 			dataWarehouseTracker.track(
 				{
-					keyvals: JSON.stringify(keyvals),
+					keyvals: JSON.stringify(keyVals),
 				},
-				trackingKeyvalsUrl,
+				trackingKeyValsUrl,
 			);
 		});
 	}
