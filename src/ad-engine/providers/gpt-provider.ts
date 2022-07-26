@@ -5,6 +5,7 @@ import { AdSlot, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
+	externalLogger,
 	slotDataParamsUpdater,
 	slotService,
 	trackingOptIn,
@@ -24,6 +25,7 @@ export const GAMOrigins: string[] = [
 ];
 const AllViewportSizes = [0, 0];
 const SilverSurferAwaitTime = 100;
+const SilverSurferAvailabilityTries = 3;
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -38,10 +40,15 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 
 function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
 	return function (...args: any): void {
+		let silverSurferAvailabilityCheckCount = 0;
 		const interval = setInterval(() => {
+			silverSurferAvailabilityCheckCount++;
 			if (window.SilverSurferSDK.isInitialized()) {
 				clearInterval(interval);
 				return method.call(this, args);
+			} else if (silverSurferAvailabilityCheckCount === SilverSurferAvailabilityTries) {
+				clearInterval(interval);
+				externalLogger.log('SilverSurfer loading failed');
 			}
 		}, SilverSurferAwaitTime);
 	};
