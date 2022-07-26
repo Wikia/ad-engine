@@ -268,6 +268,9 @@ export class TrackingSetup {
 	private keyValsTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
+		// Waiting for segments, there is a high probability it's not enough time
+		// for Audigent to respond, but we are OK with that because there is a risk
+		// that no data will be sent if we wait too long
 		waitForAuSegGlobalSet(2).then(() => {
 			const keyVals = { ...context.get('targeting'), AU_SEG: window['au_seg']?.segments };
 			dataWarehouseTracker.track(
