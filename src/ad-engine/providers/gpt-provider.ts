@@ -233,7 +233,7 @@ export class GptProvider implements Provider {
 				this.setPPID(ppid);
 			});
 
-			window.SilverSurferSDK.requestUserPPID();
+			window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
 		}
 	}
 
