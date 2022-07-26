@@ -30,5 +30,16 @@
             ],
             "value": true
         }
+    ],
+    "maciejTest": [
+        {
+            "apps": [
+                "bingebot"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
     ]
 }

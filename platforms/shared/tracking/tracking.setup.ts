@@ -23,6 +23,7 @@ import {
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
+	waitForAuSegGlobalSet,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
@@ -34,6 +35,7 @@ const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adeng
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
+const trackingKeyValsUrl = 'https://beacon.wikia-services.com/__track/special/keyvals';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -77,6 +79,7 @@ export class TrackingSetup {
 		this.adClickTracker();
 		this.ctaTracker();
 		this.identityTracker();
+		this.keyValsTracker();
 	}
 
 	private porvataTracker(): void {
@@ -260,5 +263,22 @@ export class TrackingSetup {
 			},
 			false,
 		);
+	}
+
+	private keyValsTracker(): void {
+		const dataWarehouseTracker = new DataWarehouseTracker();
+
+		// Waiting for segments, there is a high probability it's not enough time
+		// for Audigent to respond, but we are OK with that because there is a risk
+		// that no data will be sent if we wait too long
+		waitForAuSegGlobalSet(2).then(() => {
+			const keyVals = { ...context.get('targeting'), AU_SEG: window['au_seg']?.segments };
+			dataWarehouseTracker.track(
+				{
+					keyvals: JSON.stringify(keyVals),
+				},
+				trackingKeyValsUrl,
+			);
+		});
 	}
 }

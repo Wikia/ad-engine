@@ -15,6 +15,7 @@ export interface TrackingParams {
 	ga_category?: string;
 	ga_label?: string;
 	ga_value?: any;
+	keyvals?: string;
 	label?: string;
 	lc?: string;
 	line_item_id?: number;
