@@ -4,6 +4,13 @@ const logGroup = 'audigent';
 const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
+const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
+
+export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): Promise<boolean> {
+	const numberOfTriesWhenWaiting = context.get('services.audigent.numberOfTries') || numberOfTries;
+
+	return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
+}
 
 class Audigent {
 	private isLoaded = false;
@@ -29,8 +36,6 @@ class Audigent {
 			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
 		const segmentsScriptUrl =
 			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
-		const numberOfTriesWhenWaiting =
-			context.get('services.audigent.numberOfTries') || DEFAULT_NUMBER_OF_TRIES;
 
 		context.set('targeting.AU_SEG', '-1');
 
@@ -71,17 +76,15 @@ class Audigent {
 		}
 
 		if (newIntegrationEnabled) {
-			await new utils.WaitFor(this.isAuSegGlobalSet, numberOfTriesWhenWaiting, 250)
-				.until()
-				.then((isGlobalSet) => {
-					utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+			await waitForAuSegGlobalSet().then((isGlobalSet) => {
+				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
 
-					if (isGlobalSet) {
-						const segments = Audigent.sliceSegments();
-						Audigent.trackWithExternalLoggerIfEnabled(segments);
-						Audigent.setSegmentsInTargeting(segments);
-					}
-				});
+				if (isGlobalSet) {
+					const segments = Audigent.sliceSegments();
+					Audigent.trackWithExternalLoggerIfEnabled(segments);
+					Audigent.setSegmentsInTargeting(segments);
+				}
+			});
 		}
 	}
 
@@ -98,15 +101,11 @@ class Audigent {
 	}
 
 	legacySetup(): void {
-		if (this.isAuSegGlobalSet()) {
+		if (isAuSegGlobalSet()) {
 			const segments = Audigent.sliceSegments();
 			Audigent.trackWithExternalLoggerIfEnabled(segments);
 			Audigent.setSegmentsInTargeting(segments);
 		}
-	}
-
-	isAuSegGlobalSet(): boolean {
-		return typeof window['au_seg'] !== 'undefined';
 	}
 
 	resetLoadedState(): void {
