@@ -76,8 +76,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",

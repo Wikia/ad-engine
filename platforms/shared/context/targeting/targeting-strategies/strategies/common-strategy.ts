@@ -1,5 +1,6 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
+import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 
 export abstract class CommonStrategy {
 	protected addCommonParams(
@@ -59,10 +60,11 @@ export abstract class CommonStrategy {
 	}
 
 	private getVideoStatus(): VideoStatus {
-		if (context.get('wiki.targeting.hasFeaturedVideo')) {
+		const featuredVideoData = getMediaWikiVariable('wgArticleFeaturedVideo');
+		if (featuredVideoData) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
 			const isDedicatedForArticle =
-				context.get('wiki.targeting.featuredVideo.isDedicatedForArticle') !== false;
+				featuredVideoData.isDedicatedForArticle !== false;
 			const bridgeVideoPlayed =
 				!isDedicatedForArticle && window.canPlayVideo && window.canPlayVideo();
 
