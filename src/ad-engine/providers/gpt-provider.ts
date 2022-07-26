@@ -10,7 +10,7 @@ import {
 	slotService,
 	trackingOptIn,
 } from '../services';
-import { defer, logger } from '../utils';
+import { defer, logger, WaitFor } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -24,8 +24,6 @@ export const GAMOrigins: string[] = [
 	'https://googleads.g.doubleclick.net',
 ];
 const AllViewportSizes = [0, 0];
-const SilverSurferAwaitTime = 100;
-const SilverSurferAvailabilityTries = 3;
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -39,18 +37,24 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 }
 
 function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
+	const SilverSurferAwaitTime = 100;
+	const SilverSurferAvailabilityTries = 3;
+
 	return function (...args: any): void {
-		let silverSurferAvailabilityCheckCount = 0;
-		const interval = setInterval(() => {
-			silverSurferAvailabilityCheckCount++;
-			if (window.SilverSurferSDK && window.SilverSurferSDK.isInitialized()) {
-				clearInterval(interval);
-				return method.call(this, args);
-			} else if (silverSurferAvailabilityCheckCount === SilverSurferAvailabilityTries) {
-				clearInterval(interval);
-				externalLogger.log('SilverSurfer loading failed');
-			}
-		}, SilverSurferAwaitTime);
+		new WaitFor(
+			() => window.SilverSurferSDK && window.SilverSurferSDK.isInitialized(),
+			SilverSurferAvailabilityTries,
+			0,
+			SilverSurferAwaitTime,
+		)
+			.until()
+			.then((isSilverSurferLoaded) => {
+				if (isSilverSurferLoaded) {
+					method.call(this, args);
+				} else {
+					externalLogger.log('SilverSurfer loading failed');
+				}
+			});
 	};
 }
 
