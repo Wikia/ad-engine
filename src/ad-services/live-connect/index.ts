@@ -26,6 +26,7 @@ class LiveConnect {
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
+			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
 			utils.scriptLoader
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
@@ -42,7 +43,12 @@ class LiveConnect {
 		window.liQ.resolve(
 			(nonId) => {
 				const id = nonId[idName];
+
+				if (idName === 'unifiedId') {
+					communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
+				}
 				utils.logger(logGroup, `id ${idName}: ${id}`);
+
 				if (id) {
 					communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 						partnerName: partnerName,
