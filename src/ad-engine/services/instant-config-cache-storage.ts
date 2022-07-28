@@ -62,7 +62,8 @@ export class InstantConfigCacheStorage {
 			.filter(({ value }) => value.withCookie)
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
-		this.sessionCookie.setItem('basset', cacheDictionaryWithCookie);
+		const timeToLive = 60 * 86400000; // 60 days in milliseconds
+		this.sessionCookie.setItem('basset', cacheDictionaryWithCookie, timeToLive);
 	}
 
 	/**

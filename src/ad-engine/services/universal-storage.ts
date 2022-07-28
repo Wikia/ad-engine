@@ -2,7 +2,7 @@ import { Dictionary } from '../models';
 
 export interface StorageProvider {
 	getItem(key: string): string;
-	setItem(key: string, input: string): void;
+	setItem(key: string, input: string, timeToLiveMs?: number): void;
 	removeItem(key: string): void;
 	clear(): void;
 }
@@ -37,10 +37,10 @@ export class UniversalStorage {
 		}
 	}
 
-	setItem(key: string, input: Dictionary | string): boolean {
+	setItem(key: string, input: Dictionary | string, timeToLiveMs?: number): boolean {
 		const value: string = input instanceof Object ? JSON.stringify(input) : input;
 		try {
-			this.provider.setItem(key, value);
+			this.provider.setItem(key, value, timeToLiveMs);
 		} catch (e) {
 			console.warn(`Item ${key} wasn't set in the storage`, e);
 			this.fallbackStorage[key] = value;
