@@ -17,14 +17,7 @@ class Audigent {
 	private audienceTagScriptLoader: Promise<Event>;
 	private segmentsScriptLoader: Promise<Event>;
 
-	private isEnabled(ignoreConsent = false): boolean {
-		if (ignoreConsent) {
-			return (
-				context.get('services.audigent.enabled') &&
-				!context.get('wiki.targeting.directedAtChildren')
-			);
-		}
-
+	private isEnabled(): boolean {
 		return (
 			context.get('services.audigent.enabled') &&
 			context.get('options.trackingOptIn') &&
@@ -34,11 +27,6 @@ class Audigent {
 	}
 
 	preloadLibraries(): void {
-		if (!this.isEnabled(true)) {
-			utils.logger(logGroup, 'preload disabled');
-			return;
-		}
-
 		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
 			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL,
 			'text/javascript',
@@ -60,6 +48,10 @@ class Audigent {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
+		}
+
+		if (!this.audienceTagScriptLoader) {
+			this.preloadLibraries();
 		}
 
 		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
