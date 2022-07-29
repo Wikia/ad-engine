@@ -40,7 +40,6 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	tabId?: string;
 	trackingOptIn?: any;
 	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;

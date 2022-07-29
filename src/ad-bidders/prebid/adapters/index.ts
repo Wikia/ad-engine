@@ -14,6 +14,7 @@ export * from './pubmatic';
 export * from './roundel';
 export * from './rubicon';
 export * from './rubicon-display';
+export * from './rubicon-pg';
 export * from './telaria';
 export * from './test-bidder';
 export * from './triplelift';

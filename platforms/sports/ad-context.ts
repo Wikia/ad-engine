@@ -60,7 +60,8 @@ const futheadContext = {
 			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=futhead',
+			endpoint: 'https://services.fandom.com',
+			appName: 'futhead',
 			fallback: futheadFallbackInstantConfig,
 		},
 	},
@@ -82,7 +83,8 @@ const mutheadContext = {
 			slots: ['cdm-zone-01', 'cdm-zone-02', 'cdm-zone-03', 'cdm-zone-04', 'cdm-zone-06'],
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=muthead',
+			endpoint: 'https://services.fandom.com',
+			appName: 'muthead',
 			fallback: mutheadFallbackInstantConfig,
 		},
 	},

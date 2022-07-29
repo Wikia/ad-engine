@@ -83,7 +83,7 @@ export class SequentialMessagingSetup {
 			this.userStateStore,
 			targetingManager,
 			this.onIntermediateStepLoad,
-			context.get('wiki.targeting.hasFeaturedVideo'),
+			context.get('custom.hasFeaturedVideo'),
 		);
 
 		sequenceHandler.handleOngoingSequence();

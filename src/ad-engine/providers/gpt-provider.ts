@@ -5,11 +5,12 @@ import { AdSlot, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
+	externalLogger,
 	slotDataParamsUpdater,
 	slotService,
 	trackingOptIn,
 } from '../services';
-import { defer, logger } from '../utils';
+import { defer, logger, WaitFor } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -32,6 +33,28 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
+	};
+}
+
+function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
+	const SilverSurferAwaitTime = 100;
+	const SilverSurferAvailabilityTries = 3;
+
+	return function (...args: any): void {
+		new WaitFor(
+			() => window.SilverSurferSDK && window.SilverSurferSDK.isInitialized(),
+			SilverSurferAvailabilityTries,
+			0,
+			SilverSurferAwaitTime,
+		)
+			.until()
+			.then((isSilverSurferLoaded) => {
+				if (isSilverSurferLoaded) {
+					method.call(this, args);
+				} else {
+					externalLogger.log('SilverSurfer loading failed');
+				}
+			});
 	};
 }
 
@@ -191,6 +214,7 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
+		this.setupPPID();
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
@@ -208,6 +232,23 @@ export class GptProvider implements Provider {
 		tag.setPrivacySettings({
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		});
+	}
+
+	@decorate(postponeExecutionUntilSilverSurferLoads)
+	setupPPID(): void {
+		if (window.SilverSurferSDK?.requestUserPPID && context.get('services.ppid.enabled')) {
+			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
+				this.setPPID(ppid);
+			});
+
+			window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
+		}
+	}
+
+	setPPID(ppid: string) {
+		const tag = window.googletag.pubads();
+		tag.setPublisherProvidedId(ppid);
+		context.set('targeting.ppid', ppid);
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)

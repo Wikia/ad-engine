@@ -15,6 +15,7 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
+import { getMediaWikiVariable } from '@platforms/shared';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
@@ -65,12 +66,15 @@ export class PrebidProvider extends BidderProvider {
 		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
 
 		this.prebidConfig = {
-			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
+			},
+			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
+			enableSendAllBids: true,
+			sendBidsControl: {
+				dealPrioritization: true,
 			},
 			userSync: {
 				filterSettings: {
@@ -88,6 +92,24 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
+		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
+			this.prebidConfig.s2sConfig = {
+				accountId: '7450',
+				bidders: ['pgRubicon'],
+				coopSync: true,
+				defaultVendor: 'rubicon',
+				enabled: true,
+				extPrebid: {
+					aliases: {
+						pgRubicon: 'rubicon',
+					},
+					aliasgvlids: { pgRubicon: 52 },
+				},
+				timeout: Math.round(this.timeout * 0.75),
+				userSyncLimit: 1,
+			};
+		}
+
 		this.prebidConfig = {
 			...this.prebidConfig,
 			...this.configureLiveRamp(),
@@ -99,7 +121,6 @@ export class PrebidProvider extends BidderProvider {
 		this.configureAdUnits();
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
-		this.getLiveRampUserIds();
 		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
@@ -143,9 +164,11 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('wiki.targeting.featuredVideo.mediaId')) {
+		const mediaId = getMediaWikiVariable('wgArticleFeaturedVideo')?.mediaId;
+
+		if (mediaId) {
 			jwplayerDataProvider.params.mediaIDs.push(
-				context.get('wiki.targeting.featuredVideo.mediaId'),
+				mediaId
 			);
 		}
 
@@ -364,18 +387,6 @@ export class PrebidProvider extends BidderProvider {
 			bidsBackHandler,
 			timeout,
 		});
-	}
-
-	async getLiveRampUserIds(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		if (pbjs.getUserIds) {
-			const userId = pbjs.getUserIds()['idl_env'];
-
-			utils.logger(logGroup, 'calling LiveRamp dispatch method');
-
-			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
-		}
 	}
 
 	private enableATSAnalytics(): void {

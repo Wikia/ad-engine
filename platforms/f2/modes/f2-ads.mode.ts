@@ -1,4 +1,4 @@
-import { PageTracker, startAdEngine, wadRunner } from '@platforms/shared';
+import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	context,
@@ -13,8 +13,6 @@ import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
-	constructor(private pageTracker: PageTracker) {}
-
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer();
@@ -24,12 +22,6 @@ export class F2AdsMode implements DiProcess {
 		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);
 		});
-
-		this.trackAdEngineStatus();
-	}
-
-	private trackAdEngineStatus(): void {
-		this.pageTracker.trackProp('adengine', `on_${window.ads.adEngineVersion}`);
 	}
 
 	private async setupJWPlayer(): Promise<any> {

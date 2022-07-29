@@ -98,6 +98,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
+	AD_ENGINE_LOAD_TIME_INIT: {
+		name: 'Ad engine load time init',
+	},
 	AD_ENGINE_MESSAGE_BOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
@@ -108,6 +111,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_TEMPLATE_LOADED: {
 		name: 'Template loaded',
 		payload: props<GeneralPayload>(),
+	},
+	AD_ENGINE_UAP_DOM_CHANGED: {
+		name: 'UAP DOM changed',
+		payload: props<{ element: string; size: number }>(),
 	},
 	AD_ENGINE_UAP_LOAD_STATUS: {
 		name: 'UAP Load status',
@@ -149,6 +156,12 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad clicked',
 		payload: props<Dictionary>(),
 	},
+	// Identity resolution events //
+	IDENTITY_RESOLUTION_PPID_UPDATED: {
+		category: '[Identity resolution]',
+		name: 'PPID Updated',
+		payload: props<string>(),
+	},
 	// Integrated partners events //
 	ADMARKETPLACE_INIT: {
 		category: '[Search suggestions]',
@@ -159,28 +172,15 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Called',
 		payload: props<{ query: string }>(),
 	},
-	ATS_JS_LOADED: {
-		name: 'ATS.js loaded',
-		payload: props<{ loadTime: number }>(),
-	},
-	ATS_IDS_LOADED: {
-		name: 'ATS ids loaded',
-		payload: props<{ envelope: string }>(),
-	},
-	ATS_NOT_LOADED_LOGGED: {
-		name: 'ATS.js not loaded for logged in user',
-		payload: props<{ reason: string }>(),
-	},
-	AUDIGENT_LOADED: {
-		name: 'Audigent loaded',
-	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
 	},
-	LIVERAMP_IDS_LOADED: {
-		name: 'LiveRamp Prebid ids loaded',
-		payload: props<{ userId: string }>(),
+	LIVE_CONNECT_STARTED: {
+		name: 'LiveConnect started',
+	},
+	LIVE_CONNECT_RESPONDED_UUID: {
+		name: 'LiveConnect responded with UUID',
 	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
@@ -194,8 +194,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'No nativo ad',
 		payload: props<{ slotName: string }>(),
 	},
-	OPTIMERA_FINISHED: {
-		name: 'Optimera finished',
+	TIMESTAMP_EVENT: {
+		name: 'Timestamp event',
+		payload: props<{ eventName: string; timestamp: number }>(),
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {

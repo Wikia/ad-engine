@@ -5,8 +5,9 @@ import {
 	LabradorSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
-	WikiContextSetup,
+	PlatformContextSetup,
 	shouldUseAdLayouts,
+	LoadTimesSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -24,6 +25,7 @@ import { UcpMobileIocSetup } from './ucp-mobile-ioc-setup';
 import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
 import { UcpMobileAdLayoutSetup } from './ucp-mobile-ad-layout-setup';
 import { UcpMobileLegacySetup } from './ucp-mobile-legacy-setup';
+import { TrackingParametersSetup } from '../shared/setup/tracking-parameters.setup';
 
 @Injectable()
 export class UcpMobilePlatform {
@@ -33,9 +35,11 @@ export class UcpMobilePlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			TrackingParametersSetup,
+			LoadTimesSetup,
 			UcpMobileIocSetup,
-			WikiContextSetup,
 			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,

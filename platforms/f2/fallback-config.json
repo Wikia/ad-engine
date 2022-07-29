@@ -76,8 +76,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",
@@ -1672,7 +1670,10 @@
                 "6039946254",
                 "6042001586",
                 "6041208700",
-                "6041208697"
+                "6041208697",
+                "6060165811",
+                "6060918136",
+                "6069654166"
             ]
         }
     ],
@@ -1714,8 +1715,9 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
+                "icOutstreamExperiment_B_40:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_66.667:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_100:outstream_experiment_exco"
             ]
         }
     ],
@@ -1749,7 +1751,11 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6054175908",
+                "6005712462",
                 "5951743095",
+                "6018566814",
+                "6044083909",
                 "5951743089",
                 "5929089588",
                 "5929089315",
@@ -1771,7 +1777,18 @@
                 "6014419390",
                 "5926127176",
                 "6017948817",
-                "6020811777"
+                "6005712633",
+                "6013252078",
+                "6020811777",
+                "6047630064",
+                "6044877574",
+                "6059438816",
+                "6050967117",
+                "6061761271",
+                "6054458844",
+                "6066314281",
+                "6063743454",
+                "6029699462"
             ]
         }
     ],

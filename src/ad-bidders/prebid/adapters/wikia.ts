@@ -1,7 +1,7 @@
 import { context, Dictionary, pbjsFactory, utils } from '@ad-engine/core';
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { PrebidNativeProvider } from '../native';
+import { PrebidNativeConfig } from '../native';
 
 const price = utils.queryString.get('wikia_adapter');
 const limit = parseInt(utils.queryString.get('wikia_adapter_limit'), 10) || 99;
@@ -58,8 +58,7 @@ export class Wikia extends PrebidAdapter {
 
 	prepareConfigForAdUnit(code, { sizes }: PrebidAdSlotConfig): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
-			const prebidNativeProvider = new PrebidNativeProvider();
-			return this.prepareNativeConfig(prebidNativeProvider.getPrebidNativeTemplate(), code);
+			return this.prepareNativeConfig(PrebidNativeConfig.getPrebidNativeTemplate(), code);
 		} else {
 			return this.prepareStandardConfig(code, { sizes });
 		}
@@ -79,6 +78,9 @@ export class Wikia extends PrebidAdapter {
 						required: true,
 					},
 					clickUrl: {
+						required: true,
+					},
+					displayUrl: {
 						required: true,
 					},
 					icon: {
@@ -172,13 +174,16 @@ export class Wikia extends PrebidAdapter {
 		bidResponse.mediaType = 'native';
 		bidResponse.native = {
 			body: "Wikia is an old name of Fandom. Haven't heard of Fandom?",
+			clickTrackers: ['https://track-click.url'],
 			clickUrl: 'https://fandom.com',
+			displayUrl: 'Read more',
 			url: 'https://fandom.com',
 			icon: {
 				url: 'https://placekitten.com/100/100',
 				height: 100,
 				width: 100,
 			},
+			impressionTrackers: ['https://track-impression.url'],
 			title: 'Wikia Native Creative',
 		};
 

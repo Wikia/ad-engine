@@ -45,7 +45,10 @@ html.disable-ads {
 
 @mixin ucp-futhead-uap-styles() {
 	&.has-uap {
-		padding-top: 0;
+		.homepage-content {
+			padding-top: 0;
+		}
+
 		#cdm-zone-01 {
 			@include bfaa-slot();
 			@include sticky-tlb-slot();
@@ -89,6 +92,10 @@ html.disable-ads {
 				.page-navigation {
 					position: unset;
 					box-shadow: unset;
+				}
+
+				.site-header {
+					margin-bottom: 0;
 				}
 			}
 
@@ -151,7 +158,31 @@ html.disable-ads {
 	@include ucp-futhead-uap-styles();
 }
 
+.desktop .ae-futhead.has-uap {
+	.site-header .content-header {
+		.container {
+			display: flex;
+			flex-direction: column;
+
+			.content-header-left {
+				order: 2;
+			}
+
+			.content-header-right {
+				order: 1;
+				padding: 0;
+			}
+		}
+	}
+}
+
 .mobile .ae-futhead.has-uap {
+	.futhead-gdm.headliner {
+		height: 0 !important;
+		min-height: 0;
+		padding: 0;
+	}
+
 	#cdm-zone-04 {
 		.video-overlay {
 			transform: translateZ(0);

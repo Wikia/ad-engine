@@ -30,12 +30,6 @@ class AdClickTracker {
 			this.addClickTrackingListeners(callback, adSlotName);
 		});
 
-		window.addEventListener('message', (event) => {
-			if (event.data.name === '[GAM iframe] Ad click') {
-				this.handleClickEvent(callback, slotService.get('interstitial'), event.data);
-			}
-		})
-
 		this.eventsToRegister.map((event) => this.addToTracking(event, callback));
 	}
 
@@ -72,7 +66,7 @@ class AdClickTracker {
 			return;
 		}
 
-		const iframeBody = iframeElement.contentWindow.document.body;
+		const iframeBody = iframeElement?.contentWindow?.document?.body;
 
 		if (iframeBody && slotElement) {
 			slotElement.firstElementChild.addEventListener('click', () => {

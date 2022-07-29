@@ -18,6 +18,7 @@
 
 @mixin f2-styles() {
 	$label-height: -24px;
+	$space-between-uap-components: 24px;
 
 	#top_leaderboard {
 		justify-content: center;
@@ -48,6 +49,20 @@
 		& > div > iframe {
 			display: block;
 			margin: 0 auto;
+		}
+	}
+
+	body {
+		.companion-stick {
+			.article-layout__top-box-ad,
+			.feed-layout__right-rail {
+				position: sticky;
+				z-index: 100;
+			}
+
+			#top_boxad {
+				padding-top: $space-between-uap-components;
+			}
 		}
 	}
 
@@ -91,6 +106,33 @@
 	.article-layout__rail.has-incontent-ad {
 		margin-top: 29px;
 	}
+
+	#floor_adhesion {
+		background: rgba(0, 0, 0, 0.8);
+		bottom: 0;
+		left: 0;
+		padding: 20px 0;
+
+		.button-close {
+			border: 2px solid white;
+			border-radius: 50%;
+			width: 40px;
+			height: 40px;
+			top: -20px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				width: 45px;
+				height: 45px;
+			}
+		}
+	}
+}
+
+@mixin out-of-page-styles() {
+	@include out-of-page-template();
+	@include floor-adhesion();
 }
 
 @mixin f2-uap-styles() {
@@ -188,3 +230,4 @@
 @include f2-styles();
 @include f2-uap-styles();
 @include logo-replacement(56px, 0, 0, 93px, 27px);
+@include out-of-page-styles();
