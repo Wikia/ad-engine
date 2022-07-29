@@ -61,7 +61,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		});
 	}
 	private dispatchJWPlayerSetupAction(): void {
-		console.timeEnd('DJ:legacy init');
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 	private initIncontentPlayer(incontentPlayer) {
@@ -78,7 +77,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 		}
 	}
 	private callExternals(): Promise<any>[] {
-		console.time('DJ:legacy init');
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 

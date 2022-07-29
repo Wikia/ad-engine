@@ -37,10 +37,8 @@ export class AdEngine {
 	started = false;
 	defaultProvider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
-
 	constructor(config = null) {
 		context.extend(config);
-
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
@@ -63,7 +61,11 @@ export class AdEngine {
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener();
 
-		this.runAdQueue(inhibitors);
+		if (!inhibitors.length) {
+			this.runAdQueueNew();
+		} else {
+			this.runAdQueue(inhibitors);
+		}
 
 		scrollListener.init();
 		slotRepeater.init();
@@ -144,12 +146,25 @@ export class AdEngine {
 		}
 	}
 
+	runAdQueueNew() {
+		communicationService.on({ name: 'Partners ready' }, () => {
+			if (!this.started) {
+				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
+				console.timeEnd('DJ:init');
+
+				this.started = true;
+				this.adStack.start();
+			}
+		});
+	}
+
 	runAdQueue(inhibitors: Promise<any>[] = []): void {
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
 				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
+				console.timeEnd('DJ:legacy init');
 
 				this.started = true;
 				this.adStack.start();

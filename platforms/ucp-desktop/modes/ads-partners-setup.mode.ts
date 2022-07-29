@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { context, DiProcess, PartnerPipeline } from '@wikia/ad-engine';
+import { communicationService, context, DiProcess, PartnerPipeline } from '@wikia/ad-engine';
 import {
 	silverSurferSetup,
 	biddersSetup,
@@ -24,13 +24,10 @@ import {
 
 @Injectable()
 export class AdsPartnersSetup implements DiProcess {
-	initialized = false;
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		const targeting = context.get('targeting');
-
-		console.time('DJ:init');
 		this.pipeline
 			.add(
 				biddersSetup,
@@ -64,22 +61,14 @@ export class AdsPartnersSetup implements DiProcess {
 					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
-					dependencies: [
-						biddersSetup.initialized,
-						optimeraSetup.initialized,
-						taxonomySetup.initialized,
-						silverSurferSetup.initialized,
-						wadRunnerSetup.initialized,
-					],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
-				}),
+				gptSetup,
 			)
 			.execute([])
 			.then((servicesStatus) => Promise.all(servicesStatus))
 			.then(() => {
-				console.timeEnd('DJ:init');
-				this.initialized = true;
+				communicationService.emit({
+					name: 'Partners ready',
+				});
 			});
 	}
 }
