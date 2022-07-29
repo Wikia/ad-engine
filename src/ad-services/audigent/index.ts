@@ -59,9 +59,10 @@ class Audigent {
 			this.preloadLibraries();
 		}
 
-		if (gamDirectTestEnabled) {
+		if (!this.isLoaded && gamDirectTestEnabled) {
 			this.audienceTagScriptLoader.then(() => {
 				utils.logger(logGroup, 'audience tag script loaded');
+				this.isLoaded = true;
 			});
 			return;
 		}
