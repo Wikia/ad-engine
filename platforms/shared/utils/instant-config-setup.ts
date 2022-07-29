@@ -56,7 +56,7 @@ export class InstantConfigSetup implements DiProcess {
 				window['au_gam_direct_test'] = true;
 			}
 
-			if (newIntegrationEnabled) {
+			if (gamDirectTestEnabled || newIntegrationEnabled) {
 				audigent.preloadLibraries();
 			}
 		}
