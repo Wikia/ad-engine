@@ -1,11 +1,16 @@
 import { context, utils } from '@ad-engine/core';
 
+enum DeviceType {
+	DESKTOP = 'de',
+	MOBILE = 'mo',
+}
+
 const logGroup = 'optimera';
 const CLIENT_ID = '82';
 const SCRIPT_URL_BASE = 'https://dyv1bugovvq1g.cloudfront.net';
 
 class Optimera {
-	private oDevice = context.get('state.isMobile') ? 'mo' : 'de';
+	private oDevice: DeviceType;
 	private oDv = [CLIENT_ID, 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
 	private oVa: any = {
 		top_leaderboard: ['NULL'],
@@ -24,6 +29,7 @@ class Optimera {
 		}
 
 		try {
+			this.oDevice = context.get('state.isMobile') ? DeviceType.MOBILE : DeviceType.DESKTOP;
 			this.loadGlobalVariablesScript();
 			await Promise.all([this.loadScoreFileScript(), this.loadOpsScript()]);
 

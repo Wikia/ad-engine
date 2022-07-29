@@ -76,8 +76,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",
@@ -1717,8 +1715,8 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icOutstreamExperiment_B_49:outstream_experiment_anyclip",
-                "icOutstreamExperiment_B_96.078:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_40:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_66.667:outstream_experiment_connatix",
                 "icOutstreamExperiment_B_100:outstream_experiment_exco"
             ]
         }
@@ -1788,7 +1786,9 @@
                 "6050967117",
                 "6061761271",
                 "6054458844",
-                "6066314281"
+                "6066314281",
+                "6063743454",
+                "6029699462"
             ]
         }
     ],

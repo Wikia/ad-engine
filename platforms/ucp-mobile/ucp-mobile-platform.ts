@@ -7,6 +7,7 @@ import {
 	UcpTargetingSetup,
 	PlatformContextSetup,
 	shouldUseAdLayouts,
+	LoadTimesSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -36,8 +37,9 @@ export class UcpMobilePlatform {
 			() => context.extend(basicContext),
 			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
-			UcpMobileIocSetup,
 			TrackingParametersSetup,
+			LoadTimesSetup,
+			UcpMobileIocSetup,
 			() => context.set('state.isMobile', true),
 			UcpMobileBaseContextSetup,
 			UcpMobileSlotsContextSetup,
