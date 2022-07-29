@@ -9,12 +9,30 @@ export function getRoundelContext(): object {
 				],
 				placementId: '824040',
 			},
+			top_boxad: {
+				sizes: [
+					[300, 250],
+					[300, 600],
+				],
+				placementId: '820933',
+			},
+			incontent_boxad_1: {
+				sizes: [
+					[160, 600],
+					[300, 600],
+					[300, 250],
+				],
+				placementId: '820933',
+			},
+			bottom_leaderboard: {
+				sizes: [
+					[728, 90],
+					[970, 250],
+				],
+				placementId: '824040',
+			},
 			featured: {
 				placementId: '820935',
-			},
-			floor_adhesion: {
-				sizes: [[320, 50]],
-				placementId: '_t6KTOnCSj5',
 			},
 			incontent_player: {
 				placementId: '820935',
