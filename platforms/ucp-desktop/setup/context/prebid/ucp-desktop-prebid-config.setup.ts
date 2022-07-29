@@ -19,6 +19,7 @@ import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 import { getVerizonContext } from '../../../bidders/prebid/verizon';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
+import { getRoundelContext } from '../../../bidders/prebid/roundel';
 
 @Injectable()
 export class UcpDesktopPrebidConfigSetup implements DiProcess {
@@ -34,6 +35,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.openx', getOpenXContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());
+		context.set('bidders.prebid.roundel', getRoundelContext());
 		context.set('bidders.prebid.rubicon', getRubiconContext());
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
 		context.set('bidders.prebid.rubicon_pg', getRubiconPGContext());
