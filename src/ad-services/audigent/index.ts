@@ -14,14 +14,46 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 
 class Audigent {
 	private isLoaded = false;
+	private audienceTagScriptLoader: Promise<Event>;
+	private segmentsScriptLoader: Promise<Event>;
 
-	private isEnabled(): boolean {
+	private isEnabled(ignoreConsent = false): boolean {
+		if (ignoreConsent) {
+			return (
+				context.get('services.audigent.enabled') &&
+				!context.get('wiki.targeting.directedAtChildren')
+			);
+		}
+
 		return (
 			context.get('services.audigent.enabled') &&
 			context.get('options.trackingOptIn') &&
 			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
 		);
+	}
+
+	preloadLibraries(): void {
+		if (!this.isEnabled(true)) {
+			utils.logger(logGroup, 'preload disabled');
+			return;
+		}
+
+		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
+			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL,
+			'text/javascript',
+			true,
+			'first',
+		);
+
+		if (!context.get('services.audigent.newIntegrationEnabled')) {
+			this.segmentsScriptLoader = utils.scriptLoader.loadScript(
+				context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
+				'text/javascript',
+				true,
+				'first',
+			);
+		}
 	}
 
 	async call(): Promise<void> {
@@ -32,21 +64,15 @@ class Audigent {
 
 		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
-		const audienceTagScriptUrl =
-			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL;
-		const segmentsScriptUrl =
-			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL;
 
 		context.set('targeting.AU_SEG', '-1');
 
 		if (gamDirectTestEnabled) {
 			window['au_gam_direct_test'] = true;
 
-			utils.scriptLoader
-				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					utils.logger(logGroup, 'audience tag script loaded');
-				});
+			this.audienceTagScriptLoader.then(() => {
+				utils.logger(logGroup, 'audience tag script loaded');
+			});
 			return;
 		}
 
@@ -57,19 +83,15 @@ class Audigent {
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 
-			utils.scriptLoader
-				.loadScript(audienceTagScriptUrl, 'text/javascript', true, 'first')
-				.then(() => {
-					utils.logger(logGroup, 'audience tag script loaded');
-				});
+			this.audienceTagScriptLoader.then(() => {
+				utils.logger(logGroup, 'audience tag script loaded');
+			});
 
 			if (!newIntegrationEnabled) {
-				utils.scriptLoader
-					.loadScript(segmentsScriptUrl, 'text/javascript', true, 'first')
-					.then(() => {
-						utils.logger(logGroup, 'segment tag script loaded');
-						this.legacySetup();
-					});
+				this.segmentsScriptLoader.then(() => {
+					utils.logger(logGroup, 'segment tag script loaded');
+					this.legacySetup();
+				});
 			}
 
 			this.isLoaded = true;
