@@ -52,11 +52,11 @@ export class InstantConfigSetup implements DiProcess {
 			context.set('services.audigent.gamDirectTestEnabled', gamDirectTestEnabled);
 			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
 
-			if (newIntegrationEnabled) {
-				if (gamDirectTestEnabled) {
-					window['au_gam_direct_test'] = true;
-				}
+			if (gamDirectTestEnabled) {
+				window['au_gam_direct_test'] = true;
+			}
 
+			if (newIntegrationEnabled) {
 				audigent.preloadLibraries();
 			}
 		}

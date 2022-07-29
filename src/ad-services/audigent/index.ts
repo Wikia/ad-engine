@@ -50,18 +50,16 @@ class Audigent {
 			return;
 		}
 
-		if (!this.audienceTagScriptLoader) {
-			this.preloadLibraries();
-		}
-
 		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 
 		context.set('targeting.AU_SEG', '-1');
 
-		if (gamDirectTestEnabled) {
-			window['au_gam_direct_test'] = true;
+		if (!this.audienceTagScriptLoader) {
+			this.preloadLibraries();
+		}
 
+		if (gamDirectTestEnabled) {
 			this.audienceTagScriptLoader.then(() => {
 				utils.logger(logGroup, 'audience tag script loaded');
 			});
