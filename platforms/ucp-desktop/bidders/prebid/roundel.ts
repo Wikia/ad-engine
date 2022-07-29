@@ -9,9 +9,15 @@ export function getRoundelContext(): object {
 				],
 				placementId: '824040',
 			},
+			featured: {
+				placementId: '820935',
+			},
 			floor_adhesion: {
 				sizes: [[320, 50]],
 				placementId: '_t6KTOnCSj5',
+			},
+			incontent_player: {
+				placementId: '820935',
 			},
 		},
 	};
