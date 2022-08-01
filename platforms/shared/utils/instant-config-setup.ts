@@ -37,28 +37,7 @@ export class InstantConfigSetup implements DiProcess {
 		}
 
 		if (instantConfig.get('icAudigent')) {
-			context.set(
-				'services.audigent.audienceTagScriptUrl',
-				instantConfig.get('icAudigentAudienceTagScriptUrl'),
-			);
-			context.set(
-				'services.audigent.segmentsScriptUrl',
-				instantConfig.get('icAudigentSegmentsScriptUrl'),
-			);
-
-			const gamDirectTestEnabled = instantConfig.get('icAudigentGamDirectTestEnabled');
-			const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
-
-			context.set('services.audigent.gamDirectTestEnabled', gamDirectTestEnabled);
-			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
-
-			if (gamDirectTestEnabled) {
-				window['au_gam_direct_test'] = true;
-			}
-
-			if (gamDirectTestEnabled || newIntegrationEnabled) {
-				audigent.preloadLibraries();
-			}
+			audigent.init(instantConfig);
 		}
 	}
 }

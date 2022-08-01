@@ -1,4 +1,5 @@
 import { context, utils, externalLogger } from '@ad-engine/core';
+import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
 const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -24,6 +25,31 @@ class Audigent {
 			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
 		);
+	}
+
+	init(instantConfig: InstantConfigService): void {
+		context.set(
+			'services.audigent.audienceTagScriptUrl',
+			instantConfig.get('icAudigentAudienceTagScriptUrl'),
+		);
+		context.set(
+			'services.audigent.segmentsScriptUrl',
+			instantConfig.get('icAudigentSegmentsScriptUrl'),
+		);
+
+		const gamDirectTestEnabled = instantConfig.get('icAudigentGamDirectTestEnabled');
+		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
+
+		context.set('services.audigent.gamDirectTestEnabled', gamDirectTestEnabled);
+		context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
+
+		if (gamDirectTestEnabled) {
+			window['au_gam_direct_test'] = true;
+		}
+
+		if (gamDirectTestEnabled || newIntegrationEnabled) {
+			this.preloadLibraries();
+		}
 	}
 
 	preloadLibraries(): void {
