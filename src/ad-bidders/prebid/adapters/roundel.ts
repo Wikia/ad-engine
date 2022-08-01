@@ -1,4 +1,4 @@
-import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
+import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 import { context } from '@ad-engine/core';
 
@@ -7,7 +7,6 @@ export class Roundel extends PrebidAdapter {
 	aliases = {
 		ix: [Roundel.bidderName],
 	};
-	maxCpm = EXTENDED_MAX_CPM;
 
 	constructor(options) {
 		super(options);

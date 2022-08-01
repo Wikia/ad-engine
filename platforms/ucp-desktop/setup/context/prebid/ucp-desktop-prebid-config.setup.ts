@@ -11,6 +11,7 @@ import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
+import { getRoundelContext } from '../../../bidders/prebid/roundel';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
 import { getRubiconPGContext } from '../../../bidders/prebid/rubicon-pg';
@@ -19,7 +20,6 @@ import { getTripleliftContext } from '../../../bidders/prebid/triplelift';
 import { getVerizonContext } from '../../../bidders/prebid/verizon';
 import { getWikiaContext } from '../../../bidders/prebid/wikia';
 import { getWikiaVideoContext } from '../../../bidders/prebid/wikia-video';
-import { getRoundelContext } from '../../../bidders/prebid/roundel';
 
 @Injectable()
 export class UcpDesktopPrebidConfigSetup implements DiProcess {
