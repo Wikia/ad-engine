@@ -27,7 +27,6 @@ class PrebidNativeProviderSetup extends BaseServiceSetup {
 	initialize() {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
-			this.res();
 		} else {
 			communicationService.on(eventsRepository.NO_NATIVO_AD, (payload) => {
 				const data = window.pbjs.getHighestUnusedBidResponseForAdUnitCode(payload.slotName);
@@ -38,9 +37,9 @@ class PrebidNativeProviderSetup extends BaseServiceSetup {
 						slotName: payload.slotName,
 					});
 				}
-				this.res();
 			});
 		}
+		this.res();
 	}
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
