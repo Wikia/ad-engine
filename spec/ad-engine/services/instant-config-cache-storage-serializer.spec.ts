@@ -26,7 +26,7 @@ describe('serialize/deserialize cache object', () => {
 
 		const result = serializeCache(testObject);
 
-		const expectedResult = 'icUAPJWPlayer-0:false|icOutstreamExperiment-0:true';
+		const expectedResult = 'icUAPJWPlayer-0_A_99:false|icOutstreamExperiment-0_B_40:true';
 		expect(result).to.equal(expectedResult);
 	});
 
@@ -40,16 +40,20 @@ describe('serialize/deserialize cache object', () => {
 	});
 
 	it('should deserialize the object', () => {
-		const testObject = 'icUAPJWPlayer-0:false|icOutstreamExperiment-0:true';
+		const testObject = 'icUAPJWPlayer-0_A_99.99:false|icOutstreamExperiment-0_B_01:true';
 
 		const result = deserializeCache(testObject);
 
 		const expectedResult = {
 			'icUAPJWPlayer-0': {
+				group: 'A',
+				limit: 99.99,
 				name: 'icUAPJWPlayer-0',
 				result: false,
 			},
 			'icOutstreamExperiment-0': {
+				group: 'B',
+				limit: 1,
 				name: 'icOutstreamExperiment-0',
 				result: true,
 			},

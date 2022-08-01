@@ -86,19 +86,9 @@ export class InstantConfigCacheStorage {
 	}
 
 	getSamplingResults(): string[] {
-		return Object.keys(this.cacheStorage).map((id) => this.getResultLog(id));
-	}
-
-	private getResultLog(id: string): string {
-		const entry: CacheData = this.cacheStorage[id];
-		const name: string = this.removeIndexSuffix(entry.name);
-
-		return `${name}_${entry.group}_${entry.limit}`;
-	}
-
-	private removeIndexSuffix(name: string): string {
-		const nameHyphenIndex: number = name.lastIndexOf('-');
-
-		return nameHyphenIndex !== -1 ? name.substring(0, nameHyphenIndex) : name;
+		if (Object.keys(this.cacheStorage).length === 0) return [];
+		return serializeCache(this.cacheStorage)
+			.replace(/:(true|false)/gi, '')
+			.split('|');
 	}
 }

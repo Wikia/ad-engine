@@ -3,20 +3,32 @@ import { CacheDictionary } from './instant-config-cache-storage';
 const KEY_SEPARATOR = '|';
 const VALUE_SEPARATOR = ':';
 
+function mapCacheKeys(cache) {
+	return (key) => {
+		const { name, group, limit, result } = cache[key];
+		return `${name}_${group}_${limit}:${result}`;
+	};
+}
+
+function parseCacheDictionary(cache): CacheDictionary {
+	const [key, value] = cache.split(VALUE_SEPARATOR);
+	const result = value === 'true';
+	const [name, group, limit_string] = key.split('_');
+	const limit = parseFloat(limit_string) || undefined;
+
+	return { [name]: { name, group, limit, result } };
+}
+
 function serializeCache(cache: CacheDictionary): string {
-	return Object.keys(cache)
-		.map((key) => `${key}:${cache[key]['result']}`)
-		.join(KEY_SEPARATOR);
+	return Object.keys(cache).map(mapCacheKeys(cache)).join(KEY_SEPARATOR);
 }
 
 function deserializeCache(cache: string): CacheDictionary {
 	if (cache === '') return {};
 
-	return cache.split(KEY_SEPARATOR).reduce((serialized, obj) => {
-		const [name, value] = obj.split(VALUE_SEPARATOR);
-		const result = value === 'true';
-		return { ...serialized, [name]: { name, result } };
-	}, {}) as CacheDictionary;
+	return cache
+		.split(KEY_SEPARATOR)
+		.reduce((serialized, obj) => ({ ...serialized, ...parseCacheDictionary(obj) }), {});
 }
 
 export { serializeCache, deserializeCache };
