@@ -5,7 +5,7 @@ import { context } from '@ad-engine/core';
 export class Roundel extends PrebidAdapter {
 	static bidderName = 'roundel';
 	aliases = {
-		indexExchange: [Roundel.bidderName],
+		ix: [Roundel.bidderName],
 	};
 	maxCpm = EXTENDED_MAX_CPM;
 
