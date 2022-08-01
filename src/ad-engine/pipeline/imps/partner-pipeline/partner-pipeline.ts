@@ -1,5 +1,4 @@
 import { Container, Injectable } from '@wikia/dependency-injection';
-import { Pipeline } from '../../pipeline';
 import { PipelineAdapter, PipelineNext } from '../../pipeline-types';
 import { PartnerStepUnion } from './partner-pipeline-types';
 
@@ -24,8 +23,29 @@ class PartnerPipelineAdapter implements PipelineAdapter<PartnerStepUnion, Promis
 }
 
 @Injectable({ scope: 'Transient' })
-export class PartnerPipeline extends Pipeline<PartnerStepUnion, Promise<any>[]> {
+export class PartnerPipeline {
+	steps: PartnerStepUnion[] = [];
 	constructor(container: Container) {
-		super(container.get(PartnerPipelineAdapter));
+		container.get(PartnerPipelineAdapter);
+	}
+
+	add(...steps: PartnerStepUnion[]): this {
+		this.steps = steps;
+
+		return this;
+	}
+
+	execute(payload: Promise<any>[]): Promise<Promise<any>[]> {
+		this.steps.forEach((step) => {
+			if (typeof step === 'function') {
+				const instance = step({});
+				instance.execute();
+				payload.push(instance.initialized);
+			} else {
+				step.execute();
+				payload.push(step.initialized);
+			}
+		});
+		return Promise.resolve(payload);
 	}
 }
