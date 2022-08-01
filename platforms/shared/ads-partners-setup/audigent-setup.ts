@@ -80,6 +80,7 @@ class AudigentSetup extends BaseServiceSetup {
 						utils.logger(logGroup, 'audience tag script loaded');
 					});
 				this.res();
+				return;
 			}
 
 			if (newIntegrationEnabled) {

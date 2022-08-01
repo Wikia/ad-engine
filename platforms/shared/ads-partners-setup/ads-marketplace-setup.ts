@@ -57,8 +57,6 @@ class AdsMarketplaceSetup extends BaseServiceSetup {
 			context.get('state.isLogged')
 		) {
 			utils.logger(logGroup, 'disabled');
-
-			this.res();
 		} else {
 			instantSearchEndpointParameters.push(
 				`sub1=${context.get('state.isMobile') ? 'mobile' : 'desktop'}`,
@@ -68,9 +66,8 @@ class AdsMarketplaceSetup extends BaseServiceSetup {
 			communicationService.on(eventsRepository.ADMARKETPLACE_INIT, () => {
 				this.registerSearchEvents();
 			});
-
-			this.res();
 		}
+		this.res();
 	}
 
 	private registerSearchEvents(): void {

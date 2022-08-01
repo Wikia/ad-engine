@@ -3,9 +3,7 @@ import { BaseServiceSetup, btRec, babDetection, btfBlockerService } from '@wikia
 
 class WadRunnerSetup extends BaseServiceSetup {
 	async initialize() {
-		if (!babDetection.isEnabled()) {
-			this.res();
-		} else {
+		if (babDetection.isEnabled()) {
 			const isBabDetected = await babDetection.run();
 
 			trackBab(isBabDetected);
@@ -14,8 +12,8 @@ class WadRunnerSetup extends BaseServiceSetup {
 				btfBlockerService.finishFirstCall();
 				btRec.run();
 			}
-			this.res();
 		}
+		this.res();
 	}
 }
 

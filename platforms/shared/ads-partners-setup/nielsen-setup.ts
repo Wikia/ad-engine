@@ -27,7 +27,6 @@ class NielsenSetup extends BaseServiceSetup {
 		const nielsenKey = context.get('services.nielsen.appId');
 		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
 			utils.logger(logGroup, 'disabled');
-			this.res();
 		} else {
 			if (!this.nlsnInstance) {
 				this.nlsnInstance = createInstance(nielsenKey);
@@ -37,8 +36,8 @@ class NielsenSetup extends BaseServiceSetup {
 				utils.logger(logGroup, 'called', this.metadata);
 				return this.nlsnInstance;
 			}
-			this.res();
 		}
+		this.res();
 	}
 }
 
