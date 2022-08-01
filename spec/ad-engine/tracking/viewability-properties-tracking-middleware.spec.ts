@@ -10,7 +10,6 @@ describe('viewability-properties-tracking-middleware', () => {
 	beforeEach(() => {
 		context.set('slots.foo.targeting', {
 			rv: 5,
-			wsi: 'ola1',
 		});
 		adSlot = new AdSlot({ id: 'foo' });
 		adSlot.creativeId = 123;
@@ -40,7 +39,6 @@ describe('viewability-properties-tracking-middleware', () => {
 			previous: 'value',
 			rv: 5,
 			slot_id: 'a2b01b9f-69df-4481-9daf-9e27bf26502b',
-			wsi: 'ola1',
 		});
 	});
 });

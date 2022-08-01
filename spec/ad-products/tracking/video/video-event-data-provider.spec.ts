@@ -11,7 +11,6 @@ describe('Video event data provider', () => {
 		sandbox.stub(document, 'hidden').get(() => undefined);
 		context.extend(configMock);
 		context.set('targeting.skin', 'ae3');
-		context.set('slots.incontent_player.targeting.wsi', 'xxx1');
 		slotService.add(new AdSlot({ id: 'incontent_player' }));
 		window.pvNumber = 5;
 	});
@@ -46,17 +45,14 @@ describe('Video event data provider', () => {
 		assert.equal(data.country, 'PL');
 		assert.equal(data.creative_id, 123 as any);
 		assert.equal(data.ctp, 0);
-		assert.equal(data.document_visibility, 'not_implemented');
 		assert.equal(data.event_name, 'start');
 		assert.equal(data.line_item_id, 987 as any);
 		assert.equal(data.player, 'player-name');
 		assert.equal(data.position, 'incontent_player');
 		assert.equal(data.pv_number, 5);
-		assert.equal(data.price, '');
 		assert.equal(data.skin, 'ae3');
 		assert.equal(typeof data.timestamp, 'number');
 		assert.equal(data.user_block_autoplay, -1);
 		assert.equal(data.video_id, 'bar');
-		assert.equal(data.wsi, 'xxx1');
 	});
 });
