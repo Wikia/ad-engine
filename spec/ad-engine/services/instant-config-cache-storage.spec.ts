@@ -45,7 +45,7 @@ describe('Instant Config Cache Storage', () => {
 		});
 
 		it('should return value', () => {
-			getItemStub.returns({ testId: { name: 'testId', result: true } });
+			getItemStub.returns('testId:true');
 			cacheStorage.resetCache();
 			expect(cacheStorage.get('testId')).to.deep.equal({
 				name: 'testId',
@@ -82,26 +82,21 @@ describe('Instant Config Cache Storage', () => {
 			expect(cacheStorage.get('testId')).to.equal(cookieData);
 			expect(setItemStub.getCalls().length).to.equal(1);
 			expect(setItemStub.getCalls()[0].args[0]).to.equal('basset');
-			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({ testId: cookieData });
+			expect(setItemStub.getCalls()[0].args[1]).to.equal(`${cookieData.name}:${cookieData.result}`);
 		});
 
 		it('should save some to cache and some to cache and cookie', () => {
 			cacheStorage.set({ ...cookieData, name: 'test1' });
 
 			expect(setItemStub.getCalls().length).to.equal(1);
-			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({
-				test1: { ...cookieData, name: 'test1' },
-			});
+			expect(setItemStub.getCalls()[0].args[1]).to.equal('test1:true');
 
 			cacheStorage.set({ ...cacheData, name: 'test2' });
 			expect(setItemStub.getCalls().length).to.equal(1);
 
 			cacheStorage.set({ ...cookieData, name: 'test2' });
 			expect(setItemStub.getCalls().length).to.equal(2);
-			expect(setItemStub.getCalls()[1].args[1]).to.deep.equal({
-				test1: { ...cookieData, name: 'test1' },
-				test2: { ...cookieData, name: 'test2' },
-			});
+			expect(setItemStub.getCalls()[1].args[1]).to.deep.equal('test1:true|test2:true');
 		});
 	});
 
