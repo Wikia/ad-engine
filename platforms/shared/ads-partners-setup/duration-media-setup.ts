@@ -1,26 +1,9 @@
-import { BaseServiceSetup, context, utils } from '@wikia/ad-engine';
-
-const logGroup = 'duration-media';
+import { BaseServiceSetup, durationMedia } from '@wikia/ad-engine';
 
 class DurationMediaSetup extends BaseServiceSetup {
-	initialize() {
-		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
-
-		if (!context.get('services.durationMedia.enabled') || !libraryUrl) {
-			utils.logger(logGroup, 'disabled');
-			this.res();
-		} else {
-			utils.logger(logGroup, 'loading', libraryUrl);
-
-			return utils.scriptLoader
-				.loadScript(libraryUrl, 'text/javascript', true, null, {
-					id: 'dm-script',
-				})
-				.then(() => {
-					utils.logger(logGroup, 'ready');
-					this.res();
-				});
-		}
+	async initialize() {
+		await durationMedia.call();
+		this.res();
 	}
 }
 

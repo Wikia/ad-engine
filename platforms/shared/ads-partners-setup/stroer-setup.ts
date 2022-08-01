@@ -1,22 +1,9 @@
-import { BaseServiceSetup, context, utils } from '@wikia/ad-engine';
-
-const logGroup = 'stroer';
+import { BaseServiceSetup, stroer } from '@wikia/ad-engine';
 
 class StroerSetup extends BaseServiceSetup {
-	initialize() {
-		if (!context.get('services.stroer.enabled')) {
-			utils.logger(logGroup, 'disabled');
-			this.res();
-		} else {
-			const libraryUrl = `//js.adscale.de/map.js`;
-
-			utils.logger(logGroup, 'loading', libraryUrl);
-
-			return utils.scriptLoader.loadScript(libraryUrl).then(() => {
-				utils.logger(logGroup, 'ready');
-				this.res();
-			});
-		}
+	async initialize() {
+		await stroer.call();
+		this.res();
 	}
 }
 

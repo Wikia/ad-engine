@@ -1,18 +1,9 @@
-import { trackBab } from '../index';
-import { BaseServiceSetup, btRec, babDetection, btfBlockerService } from '@wikia/ad-engine';
+import { wadRunner } from '../index';
+import { BaseServiceSetup } from '@wikia/ad-engine';
 
 class WadRunnerSetup extends BaseServiceSetup {
 	async initialize() {
-		if (babDetection.isEnabled()) {
-			const isBabDetected = await babDetection.run();
-
-			trackBab(isBabDetected);
-
-			if (isBabDetected) {
-				btfBlockerService.finishFirstCall();
-				btRec.run();
-			}
-		}
+		await wadRunner.call();
 		this.res();
 	}
 }
