@@ -1,6 +1,6 @@
 import { EXTENDED_MAX_CPM, PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { context, utils } from '@ad-engine/core';
+import { context } from '@ad-engine/core';
 
 export class Roundel extends PrebidAdapter {
 	static bidderName = 'roundel';
@@ -25,16 +25,6 @@ export class Roundel extends PrebidAdapter {
 		return this.getStandardConfig(code, { sizes, siteId });
 	}
 
-	private getGPIDValue(code: string): string {
-		return utils.stringBuilder.build(context.get('adUnitId'), {
-			slotConfig: {
-				adProduct: code,
-				group: 'PB',
-				slotNameSuffix: '',
-			},
-		});
-	}
-
 	private getVideoConfig(code, siteId): PrebidAdUnit {
 		return {
 			code,
@@ -42,11 +32,6 @@ export class Roundel extends PrebidAdapter {
 				video: {
 					context: 'instream',
 					playerSize: [640, 480],
-				},
-			},
-			ortb2Imp: {
-				ext: {
-					gpid: this.getGPIDValue(code),
 				},
 			},
 			bids: [
@@ -80,11 +65,6 @@ export class Roundel extends PrebidAdapter {
 			mediaTypes: {
 				banner: {
 					sizes,
-				},
-			},
-			ortb2Imp: {
-				ext: {
-					gpid: this.getGPIDValue(code),
 				},
 			},
 			bids: sizes.map((size) => ({
