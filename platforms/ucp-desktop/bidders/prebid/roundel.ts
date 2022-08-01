@@ -7,14 +7,14 @@ export function getRoundelContext(): object {
 					[728, 90],
 					[970, 250],
 				],
-				placementId: '824040',
+				siteId: '824040',
 			},
 			top_boxad: {
 				sizes: [
 					[300, 250],
 					[300, 600],
 				],
-				placementId: '820933',
+				siteId: '820933',
 			},
 			incontent_boxad_1: {
 				sizes: [
@@ -22,20 +22,20 @@ export function getRoundelContext(): object {
 					[300, 600],
 					[300, 250],
 				],
-				placementId: '820933',
+				siteId: '820933',
 			},
 			bottom_leaderboard: {
 				sizes: [
 					[728, 90],
 					[970, 250],
 				],
-				placementId: '824040',
+				siteId: '824040',
 			},
 			featured: {
-				placementId: '820935',
+				siteId: '820935',
 			},
 			incontent_player: {
-				placementId: '820935',
+				siteId: '820935',
 			},
 		},
 	};
