@@ -36,7 +36,7 @@ class PlayerExperimentSetup extends BaseServiceSetup {
 			},
 		);
 
-		this.res();
+		this.setInitialized();
 	}
 }
 

@@ -3,7 +3,7 @@ import { BaseServiceSetup, prebidNativeProvider } from '@wikia/ad-engine';
 class PrebidNativeProviderSetup extends BaseServiceSetup {
 	initialize() {
 		prebidNativeProvider.initialize();
-		this.res();
+		this.setInitialized();
 	}
 }
 

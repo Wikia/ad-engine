@@ -19,7 +19,7 @@ class GptSetup extends BaseServiceSetup {
 		} else {
 			adEngineInstance.runAdQueue();
 		}
-		this.res();
+		this.setInitialized();
 	}
 }
 

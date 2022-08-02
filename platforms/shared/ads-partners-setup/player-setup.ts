@@ -23,7 +23,7 @@ class PlayerSetup extends BaseServiceSetup {
 
 	initialize() {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
-		this.res();
+		this.setInitialized();
 	}
 }
 
