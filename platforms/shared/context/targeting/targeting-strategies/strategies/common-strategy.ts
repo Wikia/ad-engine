@@ -81,12 +81,15 @@ export abstract class CommonStrategy {
 	}
 
 	private extendWithPageviewCounters(targeting) {
-		if (context.get('wiki.pvNumber')) {
-			targeting.pv = context.get('wiki.pvNumber').toString();
-		}
+		const counterKeyValMap = {
+			pv: context.get('wiki.pvNumber'),
+			pvg: context.get('wiki.pvNumberGlobal'),
+		};
 
-		if (context.get('wiki.pvNumberGlobal')) {
-			targeting.pvg = context.get('wiki.pvNumberGlobal').toString();
-		}
+		Object.keys(counterKeyValMap).forEach((key) => {
+			if (counterKeyValMap[key]) {
+				targeting[key] = counterKeyValMap[key].toString();
+			}
+		});
 	}
 }
