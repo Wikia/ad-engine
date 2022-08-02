@@ -4,8 +4,8 @@ const KEY_SEPARATOR = '|';
 const VALUE_SEPARATOR = ':';
 const CACHE_LENGTH_LIMIT = 5;
 
-function mapCacheKeys(cache) {
-	return (key) => {
+function mapCacheKeys(cache: CacheDictionary) {
+	return (key: string) => {
 		const { name, group, limit, result } = cache[key];
 		return `${name}_${group}_${limit}:${result}`;
 	};
