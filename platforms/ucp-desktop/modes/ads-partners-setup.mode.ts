@@ -21,6 +21,7 @@ import {
 	playerSetup,
 	gptSetup,
 } from '../../shared/ads-partners-setup';
+import { playerExperimentSetup } from '../../shared/ads-partners-setup/player-experiment-setup';
 
 @Injectable()
 export class AdsPartnersSetup implements DiProcess {
@@ -30,6 +31,7 @@ export class AdsPartnersSetup implements DiProcess {
 		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
+				playerExperimentSetup,
 				biddersSetup,
 				liveConnectSetup,
 				facebookPixelSetup,
