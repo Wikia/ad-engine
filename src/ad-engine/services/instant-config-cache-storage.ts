@@ -8,8 +8,8 @@ export interface CacheDictionary {
 
 export interface CacheData {
 	name: string;
-	group?: 'A' | 'B';
-	limit?: number;
+	group: 'A' | 'B';
+	limit: number;
 	result: boolean;
 	withCookie?: boolean;
 }

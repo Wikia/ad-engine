@@ -2,6 +2,7 @@ import { CacheDictionary } from './instant-config-cache-storage';
 
 const KEY_SEPARATOR = '|';
 const VALUE_SEPARATOR = ':';
+const CACHE_LENGTH_LIMIT = 5;
 
 function mapCacheKeys(cache) {
 	return (key) => {
@@ -20,7 +21,10 @@ function parseCacheDictionary(cache): CacheDictionary {
 }
 
 function serializeCache(cache: CacheDictionary): string {
-	return Object.keys(cache).map(mapCacheKeys(cache)).join(KEY_SEPARATOR);
+	return Object.keys(cache)
+		.slice(0, CACHE_LENGTH_LIMIT)
+		.map(mapCacheKeys(cache))
+		.join(KEY_SEPARATOR);
 }
 
 function deserializeCache(cache: string): CacheDictionary {

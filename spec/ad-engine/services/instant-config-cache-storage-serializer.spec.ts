@@ -69,4 +69,55 @@ describe('serialize/deserialize cache object', () => {
 		const expectedResult = {};
 		expect(result).to.deep.equal(expectedResult);
 	});
+
+	it('should drop objects above length limit', () => {
+		const testObject = {
+			'one-0': {
+				name: 'one-0',
+				result: false,
+				withCookie: true,
+				group: 'A',
+				limit: 99,
+			},
+			'two-0': {
+				name: 'two-0',
+				result: false,
+				withCookie: true,
+				group: 'A',
+				limit: 99,
+			},
+			'three-0': {
+				name: 'three-0',
+				result: false,
+				withCookie: true,
+				group: 'A',
+				limit: 99,
+			},
+			'four-0': {
+				name: 'four-0',
+				result: false,
+				withCookie: true,
+				group: 'A',
+				limit: 99,
+			},
+			'five-0': {
+				name: 'five-0',
+				result: false,
+				withCookie: true,
+				group: 'A',
+				limit: 99,
+			},
+			'six-0': {
+				name: 'six-0',
+				result: false,
+				withCookie: true,
+				group: 'A',
+				limit: 99,
+			},
+		} as CacheDictionary;
+
+		const result = serializeCache(testObject);
+
+		expect(result).to.not.contain('six');
+	});
 });
