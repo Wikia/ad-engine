@@ -136,28 +136,12 @@ export class BaseContextSetup implements DiProcess {
 
 	private setServicesContext(): void {
 		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
-		context.set(
-			'services.audigent.audienceTagScriptUrl',
-			this.instantConfig.get('icAudigentAudienceTagScriptUrl'),
-		);
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set(
 			'services.audigent.tracking.sampling',
 			this.instantConfig.get('icAudigentTrackingSampling'),
 		);
 		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
-		context.set(
-			'services.audigent.segmentsScriptUrl',
-			this.instantConfig.get('icAudigentSegmentsScriptUrl'),
-		);
-		context.set(
-			'services.audigent.newIntegrationEnabled',
-			this.instantConfig.get('icAudigentNewIntegrationEnabled'),
-		);
-		context.set(
-			'services.audigent.gamDirectTestEnabled',
-			this.instantConfig.get('icAudigentGamDirectTestEnabled'),
-		);
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
 		if (!this.instantConfig.get('icDurationMedia')) {
