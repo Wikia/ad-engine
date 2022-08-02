@@ -8,7 +8,6 @@ export abstract class CommonStrategy {
 		wiki: MediaWikiAdsContext,
 		skin: string,
 	): Partial<Targeting> {
-		const cid = utils.queryString.get('cid');
 		const domain = getDomain();
 
 		targeting.ar = window.innerWidth > window.innerHeight ? '4:3' : '3:4';
@@ -23,12 +22,7 @@ export abstract class CommonStrategy {
 		targeting.uap_c = 'none';
 		targeting.is_mobile = utils.client.isMobileSkin(skin) ? '1' : '0';
 
-		if (cid !== undefined) {
-			targeting.cid = cid;
-		}
-
-		this.extendWithPageviewCounters(targeting);
-
+		this.extendWithOptionalKeyVals(targeting);
 		return targeting;
 	}
 
@@ -80,15 +74,16 @@ export abstract class CommonStrategy {
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
-	private extendWithPageviewCounters(targeting) {
-		const counterKeyValMap = {
+	private extendWithOptionalKeyVals(targeting) {
+		const keyValsMap = {
+			cid: utils.queryString.get('cid'),
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};
 
-		Object.keys(counterKeyValMap).forEach((key) => {
-			if (counterKeyValMap[key]) {
-				targeting[key] = counterKeyValMap[key].toString();
+		Object.keys(keyValsMap).forEach((key) => {
+			if (keyValsMap[key]) {
+				targeting[key] = keyValsMap[key].toString();
 			}
 		});
 	}
