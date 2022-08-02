@@ -21,7 +21,7 @@ import {
 } from '../../shared/ads-partners-setup';
 
 @Injectable()
-export class LighterAdsPartnersSetup implements DiProcess {
+export class UcpDesktopLighterAdsPartnersMode implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {

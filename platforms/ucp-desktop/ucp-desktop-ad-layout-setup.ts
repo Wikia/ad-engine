@@ -3,9 +3,9 @@ import { Injectable } from '@wikia/dependency-injection';
 
 import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
-import { UcpDesktopLighterAdsMode } from './modes/ucp-desktop-lighter-ads.mode';
+import { UcpDesktopLighterLegacyAdsMode } from './modes/ucp-desktop-lighter-legacy-ads-mode.service';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
-import { LighterAdsPartnersSetup } from './modes/lighter-ads-partners-setup.mode';
+import { UcpDesktopLighterAdsPartnersMode } from './modes/ucp-desktop-lighter-ads-partners.mode';
 
 @Injectable()
 export class UcpDesktopAdLayoutSetup {
@@ -17,8 +17,8 @@ export class UcpDesktopAdLayoutSetup {
 			UcpDesktopSlotsStateSetup,
 			UcpDesktopTemplatesSetup,
 			conditional(() => context.get('system.ads_initialize_v2'), {
-				yes: LighterAdsPartnersSetup,
-				no: UcpDesktopLighterAdsMode,
+				yes: UcpDesktopLighterAdsPartnersMode,
+				no: UcpDesktopLighterLegacyAdsMode,
 			}),
 		);
 

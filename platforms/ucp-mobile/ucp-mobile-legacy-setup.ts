@@ -10,8 +10,8 @@ import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-pr
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
-import { UcpMobileAdsMode } from './modes/ucp-mobile-ads.mode';
-import { LighterMobileAdsPartnersSetup } from './modes/lighter-mobile-ads-partners-setup.mode';
+import { UcpMobileLegacyAdsMode } from './modes/ucp-mobile-legacy-ads-mode.service';
+import { UcpMobileLighterAdsPartners } from './modes/ucp-mobile-lighter-ads-partners.mode';
 
 @Injectable()
 export class UcpMobileLegacySetup {
@@ -27,8 +27,8 @@ export class UcpMobileLegacySetup {
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: conditional(() => context.get('system.ads_initialize_v2'), {
-					yes: LighterMobileAdsPartnersSetup,
-					no: UcpMobileAdsMode,
+					yes: UcpMobileLighterAdsPartners,
+					no: UcpMobileLegacyAdsMode,
 				}),
 				no: NoAdsMode,
 			}),
