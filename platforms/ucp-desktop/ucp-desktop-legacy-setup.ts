@@ -32,12 +32,12 @@ export class UcpDesktopLegacySetup {
 			BiddersStateSetup,
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
-			conditional(() => context.get('system.ads_initialize_v2'), {
-				yes: AdsPartnersSetup,
-				no: conditional(() => this.noAdsDetector.isAdsMode(), {
-					yes: UcpDesktopAdsMode,
-					no: NoAdsMode,
+			conditional(() => this.noAdsDetector.isAdsMode(), {
+				yes: conditional(() => context.get('system.ads_initialize_v2'), {
+					yes: AdsPartnersSetup,
+					no: UcpDesktopAdsMode,
 				}),
+				no: NoAdsMode,
 			}),
 		);
 
