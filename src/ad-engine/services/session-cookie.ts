@@ -40,7 +40,7 @@ export class SessionCookie {
 		context.set('options.session.id', sid);
 	}
 
-	getItem<T>(key: string): T {
+	getItem<T>(key: string): T | string {
 		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 

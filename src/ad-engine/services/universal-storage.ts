@@ -23,13 +23,13 @@ export class UniversalStorage {
 		}
 	}
 
-	getItem<T>(key: string): T {
+	getItem<T>(key: string): T | string {
 		try {
 			let value = this.provider.getItem(key);
 			try {
 				value = JSON.parse(value);
 			} catch {
-				throw new Error('Invalid JSON');
+				return value;
 			}
 			return value as any;
 		} catch (e) {
