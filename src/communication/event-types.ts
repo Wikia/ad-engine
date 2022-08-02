@@ -123,6 +123,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_UAP_NTC_LOADED: {
 		name: 'UAP NTC loaded',
 	},
+	AD_ENGINE_PARTNERS_READY: {
+		name: 'Ad Partners Ready',
+	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
 		name: 'Invalidate slot targeting',

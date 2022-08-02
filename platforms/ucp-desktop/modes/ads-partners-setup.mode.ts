@@ -1,5 +1,11 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { communicationService, context, DiProcess, PartnerPipeline } from '@wikia/ad-engine';
+import {
+	communicationService,
+	context,
+	DiProcess,
+	eventsRepository,
+	PartnerPipeline,
+} from '@wikia/ad-engine';
 import {
 	silverSurferSetup,
 	biddersSetup,
@@ -68,9 +74,7 @@ export class AdsPartnersSetup implements DiProcess {
 			.execute([])
 			.then((servicesStatus) => Promise.all(servicesStatus))
 			.then(() => {
-				communicationService.emit({
-					name: 'Partners ready',
-				});
+				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}
 }

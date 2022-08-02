@@ -19,11 +19,6 @@ export class UcpDesktopLegacySetup {
 	constructor(private pipeline: ProcessPipeline, private noAdsDetector: NoAdsDetector) {}
 
 	execute(): void {
-		if (context.get('system.ads_initialize_v2')) {
-			console.time('DJ:init');
-		} else {
-			console.time('DJ:legacy init');
-		}
 		this.pipeline.add(
 			UcpDesktopPrebidConfigSetup,
 			UcpDesktopA9ConfigSetup,

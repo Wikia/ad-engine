@@ -147,10 +147,9 @@ export class AdEngine {
 	}
 
 	runAdQueueNew() {
-		communicationService.on({ name: 'Partners ready' }, () => {
+		communicationService.on(eventsRepository.AD_ENGINE_PARTNERS_READY, () => {
 			if (!this.started) {
 				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
-				console.timeEnd('DJ:init');
 
 				this.started = true;
 				this.adStack.start();
@@ -164,7 +163,6 @@ export class AdEngine {
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {
 			if (!this.started) {
 				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
-				console.timeEnd('DJ:legacy init');
 
 				this.started = true;
 				this.adStack.start();
