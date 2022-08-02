@@ -8,66 +8,48 @@ import {
 } from '@wikia/ad-engine';
 import {
 	silverSurferSetup,
-	biddersSetup,
-	liveConnectSetup,
 	facebookPixelSetup,
 	taxonomySetup,
-	optimeraSetup,
-	wadRunnerSetup,
 	audigentSetup,
-	eyeotaSetup,
 	iasPublisherOptimizationSetup,
 	confiantSetup,
-	durationMediaSetup,
 	stroerSetup,
 	identityHubSetup,
 	nielsenSetup,
-	adsMarketplaceSetup,
-	prebidNativeProviderSetup,
-	playerSetup,
 	gptSetup,
-	playerExperimentSetup,
+	playerSetup,
+	liveConnectSetup,
+	adsMarketplaceSetup,
+	durationMediaSetup,
 } from '../../shared/ads-partners-setup';
 
 @Injectable()
-export class AdsPartnersSetup implements DiProcess {
+export class LighterMobileAdsPartnersSetup implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
-				playerExperimentSetup,
-				biddersSetup,
-				liveConnectSetup,
-				facebookPixelSetup,
 				taxonomySetup,
-				optimeraSetup,
 				silverSurferSetup,
-				wadRunnerSetup,
+				facebookPixelSetup,
 				audigentSetup,
-				eyeotaSetup,
 				iasPublisherOptimizationSetup,
 				confiantSetup,
-				durationMediaSetup,
 				stroerSetup,
-				identityHubSetup,
+				liveConnectSetup,
+				adsMarketplaceSetup,
+				durationMediaSetup,
 				nielsenSetup.setMetadata({
 					type: 'static',
 					assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 					section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 				}),
-				adsMarketplaceSetup,
-				prebidNativeProviderSetup,
+				identityHubSetup,
 				playerSetup.setOptions({
-					dependencies: [
-						biddersSetup.initialized,
-						optimeraSetup.initialized,
-						taxonomySetup.initialized,
-						silverSurferSetup.initialized,
-						wadRunnerSetup.initialized,
-					],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
+					dependencies: [taxonomySetup.initialized, silverSurferSetup.initialized],
+					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup,
 			)

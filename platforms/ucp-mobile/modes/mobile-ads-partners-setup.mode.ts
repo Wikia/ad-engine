@@ -26,18 +26,16 @@ import {
 	prebidNativeProviderSetup,
 	playerSetup,
 	gptSetup,
-	playerExperimentSetup,
 } from '../../shared/ads-partners-setup';
 
 @Injectable()
-export class AdsPartnersSetup implements DiProcess {
+export class MobileAdsPartnersSetup implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
-				playerExperimentSetup,
 				biddersSetup,
 				liveConnectSetup,
 				facebookPixelSetup,

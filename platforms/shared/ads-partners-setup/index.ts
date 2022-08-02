@@ -18,3 +18,4 @@ export * from './ads-marketplace-setup';
 export * from './prebid-native-provider-setup';
 export * from './player-setup';
 export * from './gpt-setup';
+export * from './player-experiment-setup';
