@@ -27,6 +27,10 @@ export abstract class CommonStrategy {
 			targeting.pv = context.get('wiki.pvNumber').toString();
 		}
 
+		if (context.get('wiki.pvNumberGlobal')) {
+			targeting.pvg = context.get('wiki.pvNumberGlobal').toString();
+		}
+
 		if (cid !== undefined) {
 			targeting.cid = cid;
 		}
@@ -63,8 +67,7 @@ export abstract class CommonStrategy {
 		const featuredVideoData = getMediaWikiVariable('wgArticleFeaturedVideo');
 		if (featuredVideoData) {
 			// Comparing with false in order to make sure that API already responds with "isDedicatedForArticle" flag
-			const isDedicatedForArticle =
-				featuredVideoData.isDedicatedForArticle !== false;
+			const isDedicatedForArticle = featuredVideoData.isDedicatedForArticle !== false;
 			const bridgeVideoPlayed =
 				!isDedicatedForArticle && window.canPlayVideo && window.canPlayVideo();
 
