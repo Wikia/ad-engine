@@ -35,7 +35,7 @@ export class PartnerPipeline {
 		return this;
 	}
 
-	execute(payload: Promise<any>[]): Promise<Promise<any>[]> {
+	execute(payload: Promise<any>[] = []): Promise<any> {
 		this.steps.forEach((step) => {
 			if (typeof step === 'function') {
 				const instance = step({});
@@ -46,6 +46,7 @@ export class PartnerPipeline {
 				payload.push(step.initialized);
 			}
 		});
-		return Promise.resolve(payload);
+
+		return Promise.all(payload);
 	}
 }

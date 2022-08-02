@@ -71,8 +71,7 @@ export class AdsPartnersSetup implements DiProcess {
 				}),
 				gptSetup,
 			)
-			.execute([])
-			.then((servicesStatus) => Promise.all(servicesStatus))
+			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});

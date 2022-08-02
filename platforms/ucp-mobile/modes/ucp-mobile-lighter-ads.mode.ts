@@ -1,18 +1,15 @@
 import { startAdEngine } from '@platforms/shared';
 import {
-	adMarketplace,
 	audigent,
 	communicationService,
 	confiant,
 	context,
 	DiProcess,
-	durationMedia,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
 	JWPlayerManager,
 	jwpSetup,
-	liveConnect,
 	nielsen,
 	Runner,
 	silverSurferService,
@@ -42,16 +39,13 @@ export class UcpMobileLighterAdsMode implements DiProcess {
 		iasPublisherOptimization.call();
 		confiant.call();
 		stroer.call();
-		durationMedia.call();
 		nielsen.call({
 			type: 'static',
 			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 		});
 
-		adMarketplace.initialize();
 		identityHub.call();
-		liveConnect.call();
 
 		return inhibitors;
 	}

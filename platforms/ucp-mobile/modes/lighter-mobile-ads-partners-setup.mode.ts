@@ -18,9 +18,6 @@ import {
 	nielsenSetup,
 	gptSetup,
 	playerSetup,
-	liveConnectSetup,
-	adsMarketplaceSetup,
-	durationMediaSetup,
 } from '../../shared/ads-partners-setup';
 
 @Injectable()
@@ -38,9 +35,6 @@ export class LighterMobileAdsPartnersSetup implements DiProcess {
 				iasPublisherOptimizationSetup,
 				confiantSetup,
 				stroerSetup,
-				liveConnectSetup,
-				adsMarketplaceSetup,
-				durationMediaSetup,
 				nielsenSetup.setMetadata({
 					type: 'static',
 					assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
@@ -53,8 +47,7 @@ export class LighterMobileAdsPartnersSetup implements DiProcess {
 				}),
 				gptSetup,
 			)
-			.execute([])
-			.then((servicesStatus) => Promise.all(servicesStatus))
+			.execute()
 			.then(() => {
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
