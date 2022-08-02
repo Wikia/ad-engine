@@ -23,17 +23,11 @@ export abstract class CommonStrategy {
 		targeting.uap_c = 'none';
 		targeting.is_mobile = utils.client.isMobileSkin(skin) ? '1' : '0';
 
-		if (context.get('wiki.pvNumber')) {
-			targeting.pv = context.get('wiki.pvNumber').toString();
-		}
-
-		if (context.get('wiki.pvNumberGlobal')) {
-			targeting.pvg = context.get('wiki.pvNumberGlobal').toString();
-		}
-
 		if (cid !== undefined) {
 			targeting.cid = cid;
 		}
+
+		this.extendWithPageviewCounters(targeting);
 
 		return targeting;
 	}
@@ -84,5 +78,15 @@ export abstract class CommonStrategy {
 	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
 		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
+	}
+
+	private extendWithPageviewCounters(targeting) {
+		if (context.get('wiki.pvNumber')) {
+			targeting.pv = context.get('wiki.pvNumber').toString();
+		}
+
+		if (context.get('wiki.pvNumberGlobal')) {
+			targeting.pvg = context.get('wiki.pvNumberGlobal').toString();
+		}
 	}
 }
