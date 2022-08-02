@@ -23,6 +23,7 @@ describe('PartnerPipeline', () => {
 	class ExampleServiceSetup extends BaseServiceSetup {
 		async initialize() {
 			await wait(200);
+
 			spy(1);
 			this.setInitialized();
 		}
@@ -52,6 +53,7 @@ describe('PartnerPipeline', () => {
 			.execute()
 			.then(async () => {
 				await wait(200);
+
 				spy(2);
 			});
 
