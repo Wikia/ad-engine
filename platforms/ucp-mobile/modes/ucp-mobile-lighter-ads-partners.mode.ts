@@ -15,7 +15,7 @@ import {
 	stroer,
 	taxonomyService,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '../../shared/ads-partners-setup';
+import { gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileLighterAdsPartners implements DiProcess {

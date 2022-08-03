@@ -28,7 +28,7 @@ export class UcpDesktopLegacySetup {
 			UcpDesktopTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: conditional(() => context.get('system.ads_initialize_v2'), {
+				yes: conditional(() => context.get('options.adsInitializeV2'), {
 					yes: UcpDesktopAdsPartnersMode,
 					no: UcpDesktopLegacyAdsMode,
 				}),

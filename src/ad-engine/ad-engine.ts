@@ -61,7 +61,7 @@ export class AdEngine {
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener();
 
-		if (context.get('system.ads_initialize_v2')) {
+		if (context.get('options.adsInitializeV2')) {
 			this.runAdQueueNew();
 		} else {
 			this.runAdQueue(inhibitors);

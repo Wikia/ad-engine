@@ -15,7 +15,7 @@ import {
 	audigent,
 	confiant,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '../../shared/ads-partners-setup';
+import { gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpDesktopLighterAdsPartnersMode implements DiProcess {

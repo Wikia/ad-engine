@@ -13,7 +13,7 @@ export class UcpMobileAdLayoutSetup {
 		this.pipeline.add(
 			UcpMobileDynamicSlotsSetup,
 			UcpMobileTemplatesSetup,
-			conditional(() => context.get('system.ads_initialize_v2'), {
+			conditional(() => context.get('options.adsInitializeV2'), {
 				yes: UcpMobileLighterAdsPartners,
 				no: UcpMobileLighterLegacyAdsMode,
 			}),

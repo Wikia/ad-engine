@@ -22,8 +22,7 @@ import {
 	taxonomyService,
 	adMarketplace,
 } from '@wikia/ad-engine';
-import { playerSetup, gptSetup } from '../../shared/ads-partners-setup';
-import { wadRunner } from '@platforms/shared';
+import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileAdsPartners implements DiProcess {

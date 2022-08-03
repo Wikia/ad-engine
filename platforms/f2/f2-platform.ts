@@ -57,7 +57,7 @@ export class F2Platform {
 		// Run
 		this.pipeline.add(
 			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: conditional(() => context.get('system.ads_initialize_v2'), {
+				yes: conditional(() => context.get('options.adsInitializeV2'), {
 					yes: F2AdsMode,
 					no: F2LegacyAdsMode,
 				}),

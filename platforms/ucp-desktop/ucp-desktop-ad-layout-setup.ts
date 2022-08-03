@@ -16,7 +16,7 @@ export class UcpDesktopAdLayoutSetup {
 			UcpDesktopDynamicSlotsSetup,
 			UcpDesktopSlotsStateSetup,
 			UcpDesktopTemplatesSetup,
-			conditional(() => context.get('system.ads_initialize_v2'), {
+			conditional(() => context.get('options.adsInitializeV2'), {
 				yes: UcpDesktopLighterAdsPartnersMode,
 				no: UcpDesktopLighterLegacyAdsMode,
 			}),

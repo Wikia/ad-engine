@@ -119,6 +119,7 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.adsInitializeV2', this.instantConfig.get('icAdsInitializeV2'));
 
 		this.setWadContext();
 	}
@@ -170,7 +171,6 @@ export class BaseContextSetup implements DiProcess {
 			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
 		}
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
-		context.set('system.ads_initialize_v2', this.instantConfig.get('icAdsInitializeV2'));
 		context.set('services.ppidAdmsStorage.enabled', this.instantConfig.get('icPpidAdmsStorage'));
 
 		this.setupOutstreamPlayers();
