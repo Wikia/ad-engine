@@ -10,6 +10,8 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 	}
 
 	execute(): Partial<Targeting> {
+		utils.logger('Targeting', 'Executing PageContextStrategy...');
+
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		let targeting: Partial<Targeting> = {

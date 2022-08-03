@@ -11,6 +11,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 	}
 
 	execute(): Partial<Targeting> {
+		utils.logger('Targeting', 'Executing CombinedStrategy...');
+
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		let targeting: Partial<Targeting> = {
