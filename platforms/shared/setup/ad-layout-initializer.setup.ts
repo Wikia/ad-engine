@@ -74,9 +74,8 @@ export class AdLayoutInitializerSetup implements DiProcess {
 				// ToDo: move the logic below to UapAdLayout
 				if (['uap', 'jwplayer'].includes(layoutPayload.layout)) {
 					const ftlPayload = layoutPayload as FanTakeoverLayoutPayload;
-					const slotName = layoutPayload.layout === 'uap' ? 'top_leaderboard' : 'featured';
 
-					this.setupImpressionTrigger(slotName, ftlPayload.data.impression);
+					this.setupImpressionTrigger(ftlPayload.data.impression);
 					this.setFanTakeoverTargeting(ftlPayload.data.lineItemId, ftlPayload.data.creativeId);
 
 					if (ftlPayload.ntc) {
@@ -93,17 +92,18 @@ export class AdLayoutInitializerSetup implements DiProcess {
 		});
 	}
 
-	private setupImpressionTrigger(impressionSlot: string, pixel: string): void {
+	private setupImpressionTrigger(pixel: string): void {
 		const impressionCallback = () => {
-			utils.scriptLoader.loadAsset(pixel, 'blob');
+			const cachebuster = Math.floor(Math.random() * 999999);
+			const multitriggerPixel = pixel
+				.replace('&uach_m=[UACH]', `&uach_m=${cachebuster}`)
+				.replace('&urlfix=1', '&urlfix=0')
+				.replace('adurl=', `adurl=${cachebuster}`);
+
+			utils.scriptLoader.loadAsset(multitriggerPixel, 'blob');
 		};
 
-		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
-			impressionCallback,
-			impressionSlot,
-			true,
-		);
+		communicationService.onSlotEvent(AdSlot.STATUS_SUCCESS, impressionCallback);
 	}
 
 	private setFanTakeoverTargeting(lineItemId: string, creativeId: string): void {
