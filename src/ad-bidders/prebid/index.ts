@@ -73,6 +73,9 @@ export class PrebidProvider extends BidderProvider {
 			},
 			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
 			enableSendAllBids: true,
+			rubicon: {
+				singleRequest: true,
+			},
 			sendBidsControl: {
 				dealPrioritization: true,
 			},
@@ -167,9 +170,7 @@ export class PrebidProvider extends BidderProvider {
 		const mediaId = getMediaWikiVariable('wgArticleFeaturedVideo')?.mediaId;
 
 		if (mediaId) {
-			jwplayerDataProvider.params.mediaIDs.push(
-				mediaId
-			);
+			jwplayerDataProvider.params.mediaIDs.push(mediaId);
 		}
 
 		return {
