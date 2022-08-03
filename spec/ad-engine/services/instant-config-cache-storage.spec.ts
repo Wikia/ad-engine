@@ -45,9 +45,11 @@ describe('Instant Config Cache Storage', () => {
 		});
 
 		it('should return value', () => {
-			getItemStub.returns({ testId: { name: 'testId', result: true } });
+			getItemStub.returns('testId_A_11:true');
 			cacheStorage.resetCache();
 			expect(cacheStorage.get('testId')).to.deep.equal({
+				group: 'A',
+				limit: 11,
 				name: 'testId',
 				result: true,
 			});
@@ -82,26 +84,21 @@ describe('Instant Config Cache Storage', () => {
 			expect(cacheStorage.get('testId')).to.equal(cookieData);
 			expect(setItemStub.getCalls().length).to.equal(1);
 			expect(setItemStub.getCalls()[0].args[0]).to.equal('basset');
-			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({ testId: cookieData });
+			expect(setItemStub.getCalls()[0].args[1]).to.equal('testId_B_30:true');
 		});
 
 		it('should save some to cache and some to cache and cookie', () => {
 			cacheStorage.set({ ...cookieData, name: 'test1' });
 
 			expect(setItemStub.getCalls().length).to.equal(1);
-			expect(setItemStub.getCalls()[0].args[1]).to.deep.equal({
-				test1: { ...cookieData, name: 'test1' },
-			});
+			expect(setItemStub.getCalls()[0].args[1]).to.equal('test1_B_30:true');
 
 			cacheStorage.set({ ...cacheData, name: 'test2' });
 			expect(setItemStub.getCalls().length).to.equal(1);
 
 			cacheStorage.set({ ...cookieData, name: 'test2' });
 			expect(setItemStub.getCalls().length).to.equal(2);
-			expect(setItemStub.getCalls()[1].args[1]).to.deep.equal({
-				test1: { ...cookieData, name: 'test1' },
-				test2: { ...cookieData, name: 'test2' },
-			});
+			expect(setItemStub.getCalls()[1].args[1]).to.deep.equal('test1_B_30:true|test2_B_30:true');
 		});
 	});
 
@@ -111,23 +108,7 @@ describe('Instant Config Cache Storage', () => {
 		});
 
 		it('should return array', () => {
-			getItemStub.returns({
-				first: {
-					name: 'first-1',
-					limit: 45,
-					group: 'B',
-				},
-				second: {
-					name: 'second-2',
-					limit: 90.09,
-					group: 'A',
-				},
-				third: {
-					name: 'third',
-					limit: 10,
-					group: 'A',
-				},
-			});
+			getItemStub.returns('first_B_45:true|second_A_90.09:true|third_A_10:true');
 			cacheStorage.resetCache();
 
 			expect(cacheStorage.getSamplingResults()).to.deep.equal([
