@@ -46,19 +46,21 @@ export class UcpDesktopLighterLegacyAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(taxonomyService.call());
+		inhibitors.push(silverSurferService.call());
 
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		stroer.call();
-		nielsen.call({
-			type: 'static',
-			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-		});
+		nielsen
+			.setMetadata({
+				type: 'static',
+				assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
+				section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
+			})
+			.call();
 		identityHub.call();
 
 		return inhibitors;

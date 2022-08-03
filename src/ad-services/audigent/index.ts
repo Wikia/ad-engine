@@ -1,4 +1,4 @@
-import { context, utils, externalLogger } from '@ad-engine/core';
+import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
@@ -13,7 +13,7 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 	return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 }
 
-class Audigent {
+class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private audienceTagScriptLoader: Promise<Event>;
 	private segmentsScriptLoader: Promise<Event>;

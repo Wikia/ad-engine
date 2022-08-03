@@ -26,7 +26,7 @@ class PlayerExperimentSetup extends BaseServiceSetup {
 		}
 	}
 
-	initialize() {
+	call() {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
 			({ isLoaded, adProduct }: UapLoadStatus) => {
@@ -35,8 +35,6 @@ class PlayerExperimentSetup extends BaseServiceSetup {
 				}
 			},
 		);
-
-		this.setInitialized();
 	}
 }
 

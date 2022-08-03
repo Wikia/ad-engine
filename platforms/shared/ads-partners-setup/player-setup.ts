@@ -13,17 +13,18 @@ class PlayerSetup extends BaseServiceSetup {
 			Promise.race([
 				new Promise((res) => setTimeout(res, this.options.timeout)),
 				Promise.all(this.options.dependencies),
-			]).then(() => {
-				this.initialize();
+			]).then(async () => {
+				await this.call();
+				this.setInitialized();
 			});
 		} else {
-			this.initialize();
+			await this.call();
+			this.setInitialized();
 		}
 	}
 
-	initialize() {
+	call() {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
-		this.setInitialized();
 	}
 }
 

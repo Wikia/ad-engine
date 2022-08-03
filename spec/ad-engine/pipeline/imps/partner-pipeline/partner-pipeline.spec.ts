@@ -21,20 +21,16 @@ describe('PartnerPipeline', () => {
 	});
 
 	class ExampleServiceSetup extends BaseServiceSetup {
-		async initialize() {
+		async call() {
 			await wait(200);
-
 			spy(1);
-			this.setInitialized();
 		}
 	}
 
 	class ExampleSlowServiceSetup extends BaseServiceSetup {
-		async initialize() {
+		async call() {
 			await wait(400);
-
 			spy(0);
-			this.setInitialized();
 		}
 	}
 
@@ -57,6 +53,7 @@ describe('PartnerPipeline', () => {
 				spy(2);
 			});
 
+		await progress(400);
 		await progress(400);
 		expect(getSpyValues()).to.deep.equal([0]);
 		await progress(200);

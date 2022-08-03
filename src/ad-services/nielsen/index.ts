@@ -1,4 +1,4 @@
-import { context, Dictionary, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
 
 const logGroup = 'nielsen-dcr';
@@ -18,13 +18,14 @@ function createInstance(nielsenKey): any {
 /**
  * Nielsen service handler
  */
-class Nielsen {
+class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
 	/**
 	 * Class constructor
 	 */
 
 	constructor() {
+		super();
 		if (utils.queryString.get('nielsen-dcr-debug') === '1') {
 			nlsnConfig.nol_sdkDebug = 'debug';
 		}
@@ -35,7 +36,7 @@ class Nielsen {
 	 * @param {Object} nielsenMetadata
 	 * @returns {Object}
 	 */
-	call(nielsenMetadata): void {
+	call(): void {
 		const nielsenKey = context.get('services.nielsen.appId');
 
 		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
@@ -50,9 +51,9 @@ class Nielsen {
 
 		utils.logger(logGroup, 'ready');
 
-		this.nlsnInstance.ggPM('staticstart', nielsenMetadata);
+		this.nlsnInstance.ggPM('staticstart', this.metadata);
 
-		utils.logger(logGroup, 'called', nielsenMetadata);
+		utils.logger(logGroup, 'called', this.metadata);
 
 		return this.nlsnInstance;
 	}

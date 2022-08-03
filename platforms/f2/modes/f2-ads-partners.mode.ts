@@ -1,67 +1,35 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
-	bidders,
 	communicationService,
-	confiant,
 	context,
 	DiProcess,
-	durationMedia,
 	eventsRepository,
-	eyeota,
-	facebookPixel,
 	iasPublisherOptimization,
-	identityHub,
-	liveConnect,
 	nielsen,
-	optimera,
 	PartnerPipeline,
-	prebidNativeProvider,
-	silverSurferService,
-	stroer,
-	taxonomyService,
-	adMarketplace,
 } from '@wikia/ad-engine';
 import { playerSetup, gptSetup } from '../../shared/ads-partners-setup';
 import { wadRunner } from '@platforms/shared';
 
 @Injectable()
-export class UcpMobileAdsPartners implements DiProcess {
+export class F2AdsMode implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
-				bidders,
-				liveConnect,
-				facebookPixel,
-				taxonomyService,
-				optimera,
-				silverSurferService,
-				wadRunner,
 				audigent,
-				eyeota,
 				iasPublisherOptimization,
-				confiant,
-				durationMedia,
-				stroer,
-				identityHub,
 				nielsen.setMetadata({
 					type: 'static',
-					assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-					section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
+					assetid: `fandom.com/news_and_stories/${targeting.s1}/${targeting.post_id}`,
+					section: `FANDOM NEWS AND STORIES NETWORK`,
 				}),
-				adMarketplace,
-				prebidNativeProvider,
+				wadRunner,
 				playerSetup.setOptions({
-					dependencies: [
-						bidders.initialized,
-						optimera.initialized,
-						taxonomyService.initialized,
-						silverSurferService.initialized,
-						wadRunner.initialized,
-					],
+					dependencies: [wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup,

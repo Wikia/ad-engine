@@ -9,8 +9,7 @@ export interface PartnerInitializationProcess {
 	execute(): Promise<void> | void;
 	initialized: Promise<void>;
 	setOptions: (opt: PartnerInitializationProcessOptions) => PartnerInitializationProcess;
-	res: () => void;
-	initialize: () => void;
+	resolve: () => void;
 }
 
 export type FuncProcess = (

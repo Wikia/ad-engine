@@ -12,7 +12,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class F2AdsMode implements DiProcess {
+export class F2LegacyAdsMode implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer();
@@ -36,11 +36,13 @@ export class F2AdsMode implements DiProcess {
 
 		audigent.call();
 		iasPublisherOptimization.call();
-		nielsen.call({
-			type: 'static',
-			assetid: `fandom.com/news_and_stories/${targeting.s1}/${targeting.post_id}`,
-			section: `FANDOM NEWS AND STORIES NETWORK`,
-		});
+		nielsen
+			.setMetadata({
+				type: 'static',
+				assetid: `fandom.com/news_and_stories/${targeting.s1}/${targeting.post_id}`,
+				section: `FANDOM NEWS AND STORIES NETWORK`,
+			})
+			.call();
 
 		return inhibitors;
 	}

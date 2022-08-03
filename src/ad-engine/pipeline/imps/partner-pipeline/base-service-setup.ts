@@ -8,27 +8,28 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
 	metadata: any;
 	initializationTimeout;
+	resolve: () => void;
+	initialized: Promise<void> = new Promise<void>((resolve) => {
+		this.resolve = resolve;
+	});
 
-	setMetadata(metadata: any) {
+	setMetadata(metadata: any): this {
 		this.metadata = metadata;
 		return this;
 	}
 
-	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {
+	setOptions(opt: PartnerInitializationProcessOptions): this {
 		this.options = opt;
 		return this;
 	}
 
-	res: () => void;
-
-	setInitialized() {
-		this.res();
+	setInitialized(): void {
+		this.resolve();
 		clearTimeout(this.initializationTimeout);
 	}
 
-	initialized = new Promise<void>((resolve) => {
-		this.res = resolve;
-	});
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	call(): void | Promise<any> {}
 
 	async execute(): Promise<void> {
 		const maxInitializationTime = this.options?.timeout || context.get('options.maxDelayTimeout');
@@ -36,15 +37,16 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 			Promise.race([
 				new Promise((res) => setTimeout(res, maxInitializationTime)),
 				Promise.all(this.options.dependencies),
-			]).then(() => {
-				this.initialize();
+			]).then(async () => {
+				await this.call();
+				this.setInitialized();
 			});
 		} else {
-			this.initialize();
-			this.initializationTimeout = setTimeout(this.setInitialized, maxInitializationTime);
+			this.initializationTimeout = setTimeout(() => {
+				this.setInitialized();
+			}, maxInitializationTime);
+			await this.call();
+			this.setInitialized();
 		}
 	}
-
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	initialize() {}
 }

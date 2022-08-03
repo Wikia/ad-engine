@@ -46,10 +46,10 @@ export class UcpMobileLegacyAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 		const targeting = context.get('targeting');
 
-		inhibitors.push(bidders.requestBids());
+		inhibitors.push(bidders.call());
 		inhibitors.push(optimera.call());
-		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(taxonomyService.call());
+		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
 
 		eyeota.call();
@@ -59,14 +59,16 @@ export class UcpMobileLegacyAdsMode implements DiProcess {
 		confiant.call();
 		stroer.call();
 		durationMedia.call();
-		nielsen.call({
-			type: 'static',
-			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-		});
+		nielsen
+			.setMetadata({
+				type: 'static',
+				assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
+				section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
+			})
+			.call();
 
-		adMarketplace.initialize();
-		prebidNativeProvider.initialize();
+		adMarketplace.call();
+		prebidNativeProvider.call();
 		identityHub.call();
 		liveConnect.call();
 

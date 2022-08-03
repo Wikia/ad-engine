@@ -1,24 +1,21 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
+	audigent,
 	communicationService,
+	confiant,
 	context,
 	DiProcess,
 	eventsRepository,
+	facebookPixel,
+	iasPublisherOptimization,
+	identityHub,
+	nielsen,
 	PartnerPipeline,
+	silverSurferService,
+	stroer,
+	taxonomyService,
 } from '@wikia/ad-engine';
-import {
-	silverSurferSetup,
-	facebookPixelSetup,
-	taxonomySetup,
-	audigentSetup,
-	iasPublisherOptimizationSetup,
-	confiantSetup,
-	stroerSetup,
-	identityHubSetup,
-	nielsenSetup,
-	gptSetup,
-	playerSetup,
-} from '../../shared/ads-partners-setup';
+import { gptSetup, playerSetup } from '../../shared/ads-partners-setup';
 
 @Injectable()
 export class UcpMobileLighterAdsPartners implements DiProcess {
@@ -28,21 +25,21 @@ export class UcpMobileLighterAdsPartners implements DiProcess {
 		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
-				taxonomySetup,
-				silverSurferSetup,
-				facebookPixelSetup,
-				audigentSetup,
-				iasPublisherOptimizationSetup,
-				confiantSetup,
-				stroerSetup,
-				nielsenSetup.setMetadata({
+				taxonomyService,
+				silverSurferService,
+				facebookPixel,
+				audigent,
+				iasPublisherOptimization,
+				confiant,
+				stroer,
+				nielsen.setMetadata({
 					type: 'static',
 					assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
 					section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
 				}),
-				identityHubSetup,
+				identityHub,
 				playerSetup.setOptions({
-					dependencies: [taxonomySetup.initialized, silverSurferSetup.initialized],
+					dependencies: [taxonomyService.initialized, silverSurferService.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup,
