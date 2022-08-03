@@ -36,18 +36,18 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			tv: this.context.page.tags?.tv || [],
 		};
 
-		const legacySiteLevelTags = {
-			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
-			media: wiki.targeting?.adTagManagerTags?.media || [],
-			pform: wiki.targeting?.adTagManagerTags?.pform || [],
-			pub: wiki.targeting?.adTagManagerTags?.pub || [],
-			theme: wiki.targeting?.adTagManagerTags?.theme || [],
-			tv: wiki.targeting?.adTagManagerTags?.tv || [],
+		const siteLevelTags = {
+			gnre: this.context.site.tags?.gnre || [],
+			media: this.context.site.tags?.media || [],
+			pform: this.context.site.tags?.pform || [],
+			pub: this.context.site.tags?.pub || [],
+			theme: this.context.site.tags?.theme || [],
+			tv: this.context.site.tags?.tv || [],
 		};
 
 		targeting = {
 			...targeting,
-			...this.combineSiteAndPageTags(legacySiteLevelTags, pageLevelTags),
+			...this.combineSiteAndPageTags(siteLevelTags, pageLevelTags),
 		};
 
 		if (this.context.site.top1000) {
