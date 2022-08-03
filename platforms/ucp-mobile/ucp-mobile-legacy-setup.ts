@@ -10,8 +10,8 @@ import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-pr
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
-import { UcpMobileLegacyAdsMode } from './modes/ucp-mobile-legacy-ads-mode.service';
-import { UcpMobileLighterAdsPartners } from './modes/ucp-mobile-lighter-ads-partners.mode';
+import { UcpMobileLegacyAdsMode } from './modes/ucp-mobile-ads-mode-deprecated.service';
+import { UcpMobileLighterAdsPartners } from './modes/ucp-mobile-lighter-ads-partners-mode.service';
 
 @Injectable()
 export class UcpMobileLegacySetup {

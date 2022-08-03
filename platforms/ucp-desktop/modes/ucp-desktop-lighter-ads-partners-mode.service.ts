@@ -18,7 +18,7 @@ import {
 import { gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
-export class UcpDesktopLighterAdsPartnersMode implements DiProcess {
+export class UcpDesktopLighterAdsPartnersModeService implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {

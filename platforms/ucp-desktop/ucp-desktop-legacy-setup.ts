@@ -11,8 +11,8 @@ import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
-import { UcpDesktopLegacyAdsMode } from './modes/ucp-desktop-legacy-ads-mode.service';
-import { UcpDesktopAdsPartnersMode } from './modes/ucp-desktop-ads-partners.mode';
+import { UcpDesktopAdsModeDeprecated } from './modes/ucp-desktop-ads-mode-deprecated.service';
+import { UcpDesktopAdsPartnersModeService } from './modes/ucp-desktop-ads-partners-mode.service';
 
 @Injectable()
 export class UcpDesktopLegacySetup {
@@ -29,8 +29,8 @@ export class UcpDesktopLegacySetup {
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: conditional(() => context.get('options.adsInitializeV2'), {
-					yes: UcpDesktopAdsPartnersMode,
-					no: UcpDesktopLegacyAdsMode,
+					yes: UcpDesktopAdsPartnersModeService,
+					no: UcpDesktopAdsModeDeprecated,
 				}),
 				no: NoAdsMode,
 			}),

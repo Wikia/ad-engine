@@ -2,8 +2,8 @@ import { conditional, context, ProcessPipeline } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
-import { UcpMobileLighterLegacyAdsMode } from './modes/ucp-mobile-lighter-legacy-ads-mode.service';
-import { UcpMobileLighterAdsPartners } from './modes/ucp-mobile-lighter-ads-partners.mode';
+import { UcpMobileLighterLegacyAdsMode } from './modes/ucp-mobile-lighter-ads-mode-deprecated.service';
+import { UcpMobileLighterAdsPartners } from './modes/ucp-mobile-lighter-ads-partners-mode.service';
 
 @Injectable()
 export class UcpMobileAdLayoutSetup {

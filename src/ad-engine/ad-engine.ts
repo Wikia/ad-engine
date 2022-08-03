@@ -62,9 +62,9 @@ export class AdEngine {
 		slotTweaker.registerMessageListener();
 
 		if (context.get('options.adsInitializeV2')) {
-			this.runAdQueueNew();
+			this.runAdQueue();
 		} else {
-			this.runAdQueue(inhibitors);
+			this.runAdQueueDeprecated(inhibitors);
 		}
 
 		scrollListener.init();
@@ -146,7 +146,7 @@ export class AdEngine {
 		}
 	}
 
-	runAdQueueNew() {
+	runAdQueue() {
 		communicationService.on(eventsRepository.AD_ENGINE_PARTNERS_READY, () => {
 			if (!this.started) {
 				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
@@ -157,7 +157,7 @@ export class AdEngine {
 		});
 	}
 
-	runAdQueue(inhibitors: Promise<any>[] = []): void {
+	runAdQueueDeprecated(inhibitors: Promise<any>[] = []): void {
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {

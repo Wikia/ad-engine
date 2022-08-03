@@ -25,7 +25,7 @@ import {
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
 @Injectable()
-export class UcpDesktopAdsPartnersMode implements DiProcess {
+export class UcpDesktopAdsPartnersModeService implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
