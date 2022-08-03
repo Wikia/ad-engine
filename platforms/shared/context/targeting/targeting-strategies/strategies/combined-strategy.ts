@@ -61,6 +61,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 		for (const [key, value] of Object.entries(siteTags)) {
 			if (Array.isArray(value) && value.length > 0) {
 				siteTags[key] = siteTags[key].concat(pageTags[key]);
+			} else if (Array.isArray(value) && value.length === 0) {
+				siteTags[key] = pageTags[key];
 			}
 		}
 

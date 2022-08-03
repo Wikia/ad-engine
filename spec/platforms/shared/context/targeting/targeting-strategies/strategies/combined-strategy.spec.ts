@@ -62,4 +62,18 @@ describe('CombinedStrategy execution', () => {
 
 		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
 	});
+
+	it('Returns tags when site tags are empty and page tags are not empty', function () {
+		const mockedPageTags = {
+			gnre: ['test1', 'drama', 'comedy', 'horror'],
+			theme: ['test2', 'superheroes'],
+		};
+		const mockedContext: Context = new Context(
+			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
+			new Page(666, 'pl', 666, 'test', 'all_ads', mockedPageTags),
+		);
+		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedPageTags };
+
+		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+	});
 });
