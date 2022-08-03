@@ -1,41 +1,62 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
+	audigent,
+	bidders,
 	communicationService,
+	confiant,
 	context,
 	DiProcess,
-	PartnerPipeline,
+	durationMedia,
 	eventsRepository,
+	eyeota,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
+	liveConnect,
 	nielsen,
+	optimera,
+	PartnerPipeline,
+	prebidNativeProvider,
 	silverSurferService,
 	stroer,
 	taxonomyService,
-	audigent,
-	confiant,
+	adMarketplace,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
 
 @Injectable()
-export class UcpDesktopLighterAdsPartnersModeService implements DiProcess {
+export class UcpMobileAdsMode implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
-				taxonomyService,
-				silverSurferService,
+				bidders,
+				liveConnect,
 				facebookPixel,
+				taxonomyService,
+				optimera,
+				silverSurferService,
+				wadRunner,
 				audigent,
+				eyeota,
 				iasPublisherOptimization,
 				confiant,
+				durationMedia,
 				stroer,
-				nielsen,
 				identityHub,
+				nielsen,
+				adMarketplace,
+				prebidNativeProvider,
 				playerSetup.setOptions({
-					dependencies: [taxonomyService.initialized, silverSurferService.initialized],
-					timeout: context.get('options.maxDelayTimeout'),
+					dependencies: [
+						bidders.initialized,
+						optimera.initialized,
+						taxonomyService.initialized,
+						silverSurferService.initialized,
+						wadRunner.initialized,
+					],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup,
 			)

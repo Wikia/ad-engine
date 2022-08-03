@@ -27,7 +27,7 @@ import { F2DynamicSlotsSetup } from './setup/dynamic-slots/f2-dynamic-slots.setu
 import { F2BaseContextSetup } from './setup/context/base/f2-base-context.setup';
 import { F2TemplatesSetup } from './templates/f2-templates.setup';
 import { TrackingParametersSetup } from '../shared/setup/tracking-parameters.setup';
-import { F2AdsMode } from './modes/f2-ads-partners-mode.service';
+import { F2AdsMode } from './modes/f2-ads-mode.service';
 
 @Injectable()
 export class F2Platform {

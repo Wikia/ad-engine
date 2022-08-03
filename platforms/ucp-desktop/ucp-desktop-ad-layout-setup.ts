@@ -5,7 +5,7 @@ import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
 import { UcpDesktopLighterAdsModeDeprecated } from './modes/ucp-desktop-lighter-ads-mode-deprecated.service';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
-import { UcpDesktopLighterAdsPartnersModeService } from './modes/ucp-desktop-lighter-ads-partners-mode.service';
+import { UcpDesktopLighterAdsMode } from './modes/ucp-desktop-lighter-ads-mode.service';
 
 @Injectable()
 export class UcpDesktopAdLayoutSetup {
@@ -17,7 +17,7 @@ export class UcpDesktopAdLayoutSetup {
 			UcpDesktopSlotsStateSetup,
 			UcpDesktopTemplatesSetup,
 			conditional(() => context.get('options.adsInitializeV2'), {
-				yes: UcpDesktopLighterAdsPartnersModeService,
+				yes: UcpDesktopLighterAdsMode,
 				no: UcpDesktopLighterAdsModeDeprecated,
 			}),
 		);
