@@ -14,23 +14,17 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		let targeting: Partial<Targeting> = {
-			artid: wiki.targeting.pageArticleId ? wiki.targeting.pageArticleId.toString() : '',
-			age: wiki.targeting?.adTagManagerTags?.age || [],
-			esrb: wiki.targeting.esrbRating,
-			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
-			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
-			lang: wiki.targeting.wikiLanguage || 'unknown',
-			media: wiki.targeting?.adTagManagerTags?.media || [],
-			pform: wiki.targeting?.adTagManagerTags?.pform || [],
-			pub: wiki.targeting?.adTagManagerTags?.pub || [],
-			s0: wiki.targeting.mappedVerticalName,
-			s0c: wiki.targeting.newWikiCategories,
+			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
+			age: this.context.site.tags?.age || [],
+			esrb: this.context.site.esrbRating || [],
+			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
+			lang: this.context.page.lang || 'unknown',
+			s0: this.context.site.vertical,
+			s0c: this.context.site.categories,
 			s1: utils.targeting.getRawDbName(wiki.targeting.wikiDbName),
 			s2: this.getAdLayout(wiki.targeting.pageType || 'article'),
-			sex: wiki.targeting?.adTagManagerTags?.sex || [],
-			theme: wiki.targeting?.adTagManagerTags?.theme || [],
-			tv: wiki.targeting?.adTagManagerTags?.tv || [],
-			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
+			sex: this.context.page.tags?.sex || [],
+			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
 		const pageLevelTags: PageLevelTags = {
@@ -42,7 +36,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			tv: this.context.page.tags?.tv || [],
 		};
 
-		const siteLevelTags = {
+		const legacySiteLevelTags = {
 			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
 			media: wiki.targeting?.adTagManagerTags?.media || [],
 			pform: wiki.targeting?.adTagManagerTags?.pform || [],
@@ -51,7 +45,10 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			tv: wiki.targeting?.adTagManagerTags?.tv || [],
 		};
 
-		targeting = { ...targeting, ...this.combineSiteAndPageTags(siteLevelTags, pageLevelTags) };
+		targeting = {
+			...targeting,
+			...this.combineSiteAndPageTags(legacySiteLevelTags, pageLevelTags),
+		};
 
 		if (this.context.site.top1000) {
 			targeting.top = '1k';

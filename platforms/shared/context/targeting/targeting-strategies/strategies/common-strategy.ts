@@ -15,8 +15,6 @@ export abstract class CommonStrategy {
 		targeting.geo = utils.geoService.getCountryCode() || 'none';
 		targeting.hostpre = utils.targeting.getHostnamePrefix();
 		targeting.original_host = wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom';
-		// TODO remove, but be careful. According to Sebastian S. this can be removed, but AdEng will fail to load ads without it.
-		targeting.s0v = wiki.targeting.wikiVertical;
 		targeting.skin = skin;
 		targeting.uap = 'none';
 		targeting.uap_c = 'none';
