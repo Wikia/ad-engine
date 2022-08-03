@@ -72,6 +72,7 @@ describe('slot-tracking-middleware', () => {
 			'opt_in',
 			'opt_out_sale',
 			'page_width',
+			'ppid',
 			'pv',
 			'pv_unique_id',
 			'scroll_y',
