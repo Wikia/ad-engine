@@ -70,6 +70,16 @@ describe('serialize/deserialize cache object', () => {
 		expect(result).to.deep.equal(expectedResult);
 	});
 
+	it('should not deserialize invalid object', () => {
+		const testObject = {};
+
+		// @ts-ignore old Basset cookie is an object, which breaks the new implementation
+		const result = deserializeCache(testObject);
+
+		const expectedResult = {};
+		expect(result).to.deep.equal(expectedResult);
+	});
+
 	it('should drop objects above length limit', () => {
 		const testObject = {
 			'one-0': {
