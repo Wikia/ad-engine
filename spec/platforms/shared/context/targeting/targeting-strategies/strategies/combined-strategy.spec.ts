@@ -38,7 +38,7 @@ describe('CombinedStrategy execution', () => {
 		wpage: 'test',
 	};
 
-	it('Returns empty tags when site and page are empty', function () {
+	it('Returns empty tags when site and page tags are empty', function () {
 		const mockedContext: Context = new Context(
 			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'all_ads', {}),
@@ -73,6 +73,28 @@ describe('CombinedStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'all_ads', mockedPageTags),
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedPageTags };
+
+		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+	});
+
+	it('Returns combined tags when site and page tags are not empty', function () {
+		const mockedSiteTags = {
+			gnre: ['test1', 'drama', 'comedy', 'horror'],
+			theme: ['test3', 'superheroes'],
+		};
+		const mockedPageTags = {
+			gnre: ['test2', 'drama', 'comedy', 'horror'],
+			theme: ['test4', 'superheroes'],
+		};
+		const mockedContext: Context = new Context(
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
+			new Page(666, 'pl', 666, 'test', 'all_ads', mockedPageTags),
+		);
+		const expectedTargeting = {
+			...defaultExpectedTargeting,
+			...{ gnre: ['test1', 'drama', 'comedy', 'horror', 'test2', 'drama', 'comedy', 'horror'] },
+			...{ theme: ['test3', 'superheroes', 'test4', 'superheroes'] },
+		};
 
 		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
 	});
