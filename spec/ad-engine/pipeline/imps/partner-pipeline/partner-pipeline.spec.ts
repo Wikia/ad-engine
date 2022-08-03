@@ -54,7 +54,6 @@ describe('PartnerPipeline', () => {
 			});
 
 		await progress(400);
-		await progress(400);
 		expect(getSpyValues()).to.deep.equal([0]);
 		await progress(200);
 		expect(getSpyValues()).to.deep.equal([0, 1]);
