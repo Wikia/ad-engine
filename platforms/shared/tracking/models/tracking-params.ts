@@ -8,6 +8,7 @@ export interface TrackingParams {
 	// wiki id key on Gamepedia
 	ck?: string;
 	category?: string;
+	country?: string;
 	creative_id?: number;
 	eventName?: string;
 	event_name?: string;

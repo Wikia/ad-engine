@@ -84,6 +84,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent requests for two assets when legacy integration enabled', async () => {
+		audigent.preloadLibraries();
 		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(2);
@@ -93,6 +94,7 @@ describe('Audigent', () => {
 		context.set('services.audigent.newIntegrationEnabled', true);
 		context.set('services.audigent.numberOfTries', 1);
 
+		audigent.preloadLibraries();
 		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(1);
