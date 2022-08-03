@@ -13751,7 +13751,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 100.0,
+            "sampling": 75.0,
             "value": true
         }
     ],
@@ -16034,7 +16034,6 @@
             "regions": [
                 "PL"
             ],
-            "sampling": 10.0,
             "value": "siteTagsFirst"
         }
     ],
