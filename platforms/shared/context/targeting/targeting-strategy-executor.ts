@@ -6,6 +6,7 @@ export enum TargetingStrategiesNames {
 	DEFAULT = 'default',
 	SITE_CONTEXT = 'siteContext',
 	PAGE_CONTEXT = 'pageContext',
+	COMBINED = 'combined',
 }
 
 export type TargetingStrategies = {
