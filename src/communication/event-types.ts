@@ -105,6 +105,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
+	AD_ENGINE_PARTNERS_READY: {
+		name: 'Partners Ready',
+	},
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
 	},
@@ -122,9 +125,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_UAP_NTC_LOADED: {
 		name: 'UAP NTC loaded',
-	},
-	AD_ENGINE_PARTNERS_READY: {
-		name: 'Ad Partners Ready',
 	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {

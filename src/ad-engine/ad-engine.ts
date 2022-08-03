@@ -37,6 +37,7 @@ export class AdEngine {
 	started = false;
 	defaultProvider: Provider;
 	adStack: OldLazyQueue<AdStackPayload>;
+
 	constructor(config = null) {
 		context.extend(config);
 		window.ads = window.ads || ({} as MediaWikiAds);
