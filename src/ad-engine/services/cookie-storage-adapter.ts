@@ -13,10 +13,9 @@ export class CookieStorageAdapter implements StorageProvider {
 		return Cookies.get(key);
 	}
 
-	setItem(key: string, input: string, timeToLiveMs?: number): void {
-		const cacheAge = timeToLiveMs || this.cacheMaxAge;
+	setItem(key: string, input: string): void {
 		const cookieAttributes: WikiaCookieAttributes = {
-			expires: new Date(new Date().getTime() + cacheAge),
+			expires: new Date(new Date().getTime() + this.cacheMaxAge),
 			path: '/',
 			domain: this.getCookieDomain(),
 			overwrite: true,

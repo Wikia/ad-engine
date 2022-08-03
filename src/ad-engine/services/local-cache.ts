@@ -15,9 +15,9 @@ class LocalCache {
 
 	// @TODO: Should not return boolean if item expired
 	get(key: string): boolean | unknown {
-		const cacheItem: CacheItem<unknown> | string = this.storage.getItem(key);
+		const cacheItem: CacheItem<unknown> = this.storage.getItem(key);
 
-		if (cacheItem && typeof cacheItem !== 'string') {
+		if (cacheItem) {
 			// Check if item has expired
 			if (this.isExpired(cacheItem)) {
 				this.delete(key);

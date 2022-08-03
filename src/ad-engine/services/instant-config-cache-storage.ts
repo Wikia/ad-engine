@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { SessionCookie } from '../services/session-cookie';
-import { deserializeCache, serializeCache } from './instant-config-cache-storage-serializer';
 
 export interface CacheDictionary {
 	[key: string]: CacheData;
@@ -11,7 +10,7 @@ export interface CacheData {
 	group: 'A' | 'B';
 	limit: number;
 	result: boolean;
-	withCookie?: boolean;
+	withCookie: boolean;
 }
 
 export class InstantConfigCacheStorage {
@@ -34,8 +33,7 @@ export class InstantConfigCacheStorage {
 
 	resetCache(): void {
 		this.sessionCookie.readSessionId();
-		const serializedCache = this.sessionCookie.getItem<string>('basset') || '';
-		this.cacheStorage = deserializeCache(serializedCache);
+		this.cacheStorage = this.sessionCookie.getItem('basset') || {};
 		communicationService.emit(eventsRepository.AD_ENGINE_INSTANT_CONFIG_CACHE_RESET);
 	}
 
@@ -64,9 +62,7 @@ export class InstantConfigCacheStorage {
 			.filter(({ value }) => value.withCookie)
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
-		const cacheToSave = serializeCache(cacheDictionaryWithCookie);
-		const timeToLive = 60 * 86400000; // 60 days in milliseconds
-		this.sessionCookie.setItem('basset', cacheToSave, timeToLive);
+		this.sessionCookie.setItem('basset', cacheDictionaryWithCookie);
 	}
 
 	/**

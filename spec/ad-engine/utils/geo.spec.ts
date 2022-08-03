@@ -404,7 +404,17 @@ describe('Geo', () => {
 	});
 
 	it('returns proper cached basset variables', () => {
-		cookiesGetStub.returns('basset_B_50:true');
+		cookiesGetStub.returns(
+			JSON.stringify({
+				basset: {
+					name: 'basset',
+					group: 'B',
+					limit: 50,
+					result: true,
+					withCookie: true,
+				},
+			}),
+		);
 
 		sessionCookie.setSessionId('test');
 		cacheStorage.resetCache();
