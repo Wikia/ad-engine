@@ -45,14 +45,4 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 
 		return this.addCommonParams(targeting, wiki, this.skin);
 	}
-
-	addPagePrefixToValues(tags: PageLevelTags): PageLevelTags {
-		for (const [key, value] of Object.entries(tags)) {
-			if (Array.isArray(value) && value.length > 0) {
-				tags[key] = value.map((val) => 'p_' + val);
-			}
-		}
-
-		return tags;
-	}
 }

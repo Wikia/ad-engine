@@ -72,7 +72,11 @@ describe('CombinedStrategy execution', () => {
 			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'all_ads', mockedPageTags),
 		);
-		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedPageTags };
+		const expectedTargeting = {
+			...defaultExpectedTargeting,
+			...{ gnre: ['p_test1', 'p_drama', 'p_comedy', 'p_horror'] },
+			...{ theme: ['p_test2', 'p_superheroes'] },
+		};
 
 		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
 	});
@@ -92,8 +96,10 @@ describe('CombinedStrategy execution', () => {
 		);
 		const expectedTargeting = {
 			...defaultExpectedTargeting,
-			...{ gnre: ['test1', 'drama', 'comedy', 'horror', 'test2', 'drama', 'comedy', 'horror'] },
-			...{ theme: ['test3', 'superheroes', 'test4', 'superheroes'] },
+			...{
+				gnre: ['test1', 'drama', 'comedy', 'horror', 'p_test2', 'p_drama', 'p_comedy', 'p_horror'],
+			},
+			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
 		};
 
 		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);

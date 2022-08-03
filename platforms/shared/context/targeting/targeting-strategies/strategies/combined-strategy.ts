@@ -45,6 +45,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			tv: this.context.site.tags?.tv || [],
 		};
 
+		this.addPagePrefixToValues(pageLevelTags);
+
 		targeting = {
 			...targeting,
 			...this.combineSiteAndPageTags(siteLevelTags, pageLevelTags),
