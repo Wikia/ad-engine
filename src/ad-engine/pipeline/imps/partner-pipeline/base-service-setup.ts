@@ -6,17 +6,11 @@ import { context } from '../../../services';
 
 export class BaseServiceSetup implements PartnerInitializationProcess {
 	options: PartnerInitializationProcessOptions;
-	metadata: any;
 	initializationTimeout;
 	resolve: () => void;
 	initialized: Promise<void> = new Promise<void>((resolve) => {
 		this.resolve = resolve;
 	});
-
-	setMetadata(metadata: any): this {
-		this.metadata = metadata;
-		return this;
-	}
 
 	setOptions(opt: PartnerInitializationProcessOptions): this {
 		this.options = opt;
