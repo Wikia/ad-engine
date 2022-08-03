@@ -6,13 +6,13 @@ describe('Nielsen service', () => {
 	it('is disabled if context variable is set to false', () => {
 		context.set('services.nielsen.enabled', false);
 
-		expect(nielsen.setMetadata({}).call()).to.equal(null);
+		expect(nielsen.call()).to.equal(null);
 		expect(window.NOLBUNDLE).to.equal(undefined);
 
 		context.set('services.nielsen.enabled', true);
 		context.set('services.nielsen.appId', '');
 
-		expect(nielsen.setMetadata({}).call()).to.equal(null);
+		expect(nielsen.call()).to.equal(null);
 		expect(window.NOLBUNDLE).to.equal(undefined);
 	});
 });
