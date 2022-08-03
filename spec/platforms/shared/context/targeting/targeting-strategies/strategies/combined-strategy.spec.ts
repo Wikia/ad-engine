@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import { context } from '../../../../../../../src/ad-engine';
 import {
 	Context,
 	Site,
@@ -8,6 +9,16 @@ import {
 import { CombinedStrategy } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy';
 
 describe('CombinedStrategy execution', () => {
+	beforeEach(() => {
+		context.set('geo.country', 'PL');
+		context.set('wiki.targeting.wikiDbName', 'test');
+	});
+
+	afterEach(() => {
+		context.set('geo.country', undefined);
+		context.set('wiki.targeting.wikiDbName', undefined);
+	});
+
 	const mockedSkin = 'test';
 	const defaultExpectedTargeting = {
 		age: [],
@@ -27,7 +38,7 @@ describe('CombinedStrategy execution', () => {
 		pub: [],
 		s0: 'lifestyle',
 		s0c: [],
-		s1: '_wikia',
+		s1: '_test',
 		s2: 'article',
 		sex: [],
 		skin: 'test',
