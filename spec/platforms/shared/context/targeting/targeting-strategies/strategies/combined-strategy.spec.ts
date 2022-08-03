@@ -12,11 +12,13 @@ describe('CombinedStrategy execution', () => {
 	beforeEach(() => {
 		context.set('geo.country', 'PL');
 		context.set('wiki.targeting.wikiDbName', 'test');
+		context.set('wiki.targeting.wikiVertical', 'test');
 	});
 
 	afterEach(() => {
 		context.set('geo.country', undefined);
 		context.set('wiki.targeting.wikiDbName', undefined);
+		context.set('wiki.targeting.wikiVertical', undefined);
 	});
 
 	const mockedSkin = 'test';
@@ -38,6 +40,7 @@ describe('CombinedStrategy execution', () => {
 		pub: [],
 		s0: 'lifestyle',
 		s0c: [],
+		s0v: 'test',
 		s1: '_test',
 		s2: 'article',
 		sex: [],
