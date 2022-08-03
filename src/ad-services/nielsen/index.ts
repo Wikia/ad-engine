@@ -1,6 +1,5 @@
 import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
-
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
 
@@ -33,11 +32,13 @@ class Nielsen extends BaseServiceSetup {
 
 	/**
 	 * Create Nielsen Static Queue and make a call
-	 * @param {Object} nielsenMetadata
 	 * @returns {Object}
 	 */
 	call(): void {
 		const nielsenKey = context.get('services.nielsen.appId');
+		const targeting = context.get('targeting');
+		const section = targeting.section || targeting.s0v;
+		const articleId = targeting.post_id || targeting.artid;
 
 		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
 			utils.logger(logGroup, 'disabled');
@@ -51,9 +52,14 @@ class Nielsen extends BaseServiceSetup {
 
 		utils.logger(logGroup, 'ready');
 
-		this.nlsnInstance.ggPM('staticstart', this.metadata);
+		const metadata = {
+			type: 'static',
+			assetid: `fandom.com/${section}/${targeting.s1}/${articleId}`,
+			section: `FANDOM ${section.replaceAll('_', ' ').toUpperCase()} NETWORK`,
+		};
 
-		utils.logger(logGroup, 'called', this.metadata);
+		this.nlsnInstance.ggPM('static', metadata);
+		utils.logger(logGroup, 'called', metadata);
 
 		return this.nlsnInstance;
 	}

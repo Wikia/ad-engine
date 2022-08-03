@@ -78,7 +78,6 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 	}
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
-		const targeting = context.get('targeting');
 
 		inhibitors.push(bidders.call());
 		inhibitors.push(optimera.call());
@@ -93,13 +92,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		confiant.call();
 		stroer.call();
 		durationMedia.call();
-		nielsen
-			.setMetadata({
-				type: 'static',
-				assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-				section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-			})
-			.call();
+		nielsen.call();
 		liveConnect.call();
 		identityHub.call();
 

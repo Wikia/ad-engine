@@ -22,7 +22,6 @@ export class UcpMobileLighterAdsPartners implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
-		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
 				taxonomyService,
@@ -32,11 +31,7 @@ export class UcpMobileLighterAdsPartners implements DiProcess {
 				iasPublisherOptimization,
 				confiant,
 				stroer,
-				nielsen.setMetadata({
-					type: 'static',
-					assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-					section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-				}),
+				nielsen,
 				identityHub,
 				playerSetup.setOptions({
 					dependencies: [taxonomyService.initialized, silverSurferService.initialized],

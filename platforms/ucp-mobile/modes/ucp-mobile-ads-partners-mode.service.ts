@@ -29,7 +29,6 @@ export class UcpMobileAdsPartners implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
-		const targeting = context.get('targeting');
 		this.pipeline
 			.add(
 				bidders,
@@ -46,11 +45,7 @@ export class UcpMobileAdsPartners implements DiProcess {
 				durationMedia,
 				stroer,
 				identityHub,
-				nielsen.setMetadata({
-					type: 'static',
-					assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-					section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-				}),
+				nielsen,
 				adMarketplace,
 				prebidNativeProvider,
 				playerSetup.setOptions({

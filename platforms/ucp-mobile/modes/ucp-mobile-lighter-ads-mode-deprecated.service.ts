@@ -29,7 +29,6 @@ export class UcpMobileLighterLegacyAdsMode implements DiProcess {
 
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
-		const targeting = context.get('targeting');
 
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
@@ -39,13 +38,7 @@ export class UcpMobileLighterLegacyAdsMode implements DiProcess {
 		iasPublisherOptimization.call();
 		confiant.call();
 		stroer.call();
-		nielsen
-			.setMetadata({
-				type: 'static',
-				assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-				section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-			})
-			.call();
+		nielsen.call();
 
 		identityHub.call();
 

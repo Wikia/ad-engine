@@ -30,19 +30,12 @@ export class F2LegacyAdsMode implements DiProcess {
 
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
-		const targeting = context.get('targeting');
 
 		inhibitors.push(wadRunner.call());
 
 		audigent.call();
 		iasPublisherOptimization.call();
-		nielsen
-			.setMetadata({
-				type: 'static',
-				assetid: `fandom.com/news_and_stories/${targeting.s1}/${targeting.post_id}`,
-				section: `FANDOM NEWS AND STORIES NETWORK`,
-			})
-			.call();
+		nielsen.call();
 
 		return inhibitors;
 	}
