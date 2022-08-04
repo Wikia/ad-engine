@@ -24,6 +24,7 @@ describe('slot-tracking-middleware', () => {
 		context.set('targeting', {
 			esrb: 'kids',
 			lang: 'de',
+			ppid: '05f9faxf-d3cf-49c8-b6d3-195b448ce5f5',
 			s0: 'life',
 			s0v: 'lifestyle',
 			s1: '_project43',
@@ -72,6 +73,7 @@ describe('slot-tracking-middleware', () => {
 			'opt_in',
 			'opt_out_sale',
 			'page_width',
+			'ppid',
 			'pv',
 			'pv_unique_id',
 			'scroll_y',
@@ -96,6 +98,7 @@ describe('slot-tracking-middleware', () => {
 		expect(data['labrador']).to.equal('FOO_A_1;BAR_B_99');
 		expect(data['opt_in']).to.equal('');
 		expect(data['opt_out_sale']).to.equal('');
+		expect(data['ppid']).to.equal('05f9faxf-d3cf-49c8-b6d3-195b448ce5f5');
 		expect(data['pv']).to.equal(5);
 		expect(data['scroll_y']).to.equal(0);
 	});
