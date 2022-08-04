@@ -43,6 +43,7 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 			opt_out_sale: checkOptOutSale(),
 			page_width:
 				(window.document.body.scrollWidth && window.document.body.scrollWidth.toString()) || '',
+			ppid: context.get('targeting.ppid'),
 			pv: context.get('wiki.pvNumber') || window.pvNumber || '',
 			pv_unique_id: context.get('wiki.pvUID') || window.pvUID || '',
 			scroll_y: window.scrollY || window.pageYOffset,
