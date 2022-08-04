@@ -1715,8 +1715,8 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icOutstreamExperiment_B_40:outstream_experiment_anyclip",
-                "icOutstreamExperiment_B_66.667:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_50:outstream_experiment_connatix",
                 "icOutstreamExperiment_B_100:outstream_experiment_exco"
             ]
         }
@@ -2071,6 +2071,24 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icAdsInitializeV2": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "devices": [
+                "desktop",
+                "smartphone",
+                "tablet"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
         }
     ],
     "icUAPJWPlayerDelay": [
