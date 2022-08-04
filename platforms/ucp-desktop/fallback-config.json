@@ -246,6 +246,9 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
+            "regions": [
+                "XX"
+            ],
             "value": false
         }
     ],
@@ -491,7 +494,7 @@
             "regions": [
                 "PL"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icStickyTlbWithFV": [
@@ -13632,19 +13635,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "PL"
-            ],
-            "value": true
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "GB",
-                "UK",
-                "US"
+                "XX"
             ],
             "value": true
         }
@@ -13760,7 +13751,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 100.0,
+            "sampling": 75.0,
             "value": true
         }
     ],
@@ -16032,6 +16023,18 @@
                 "VN"
             ],
             "value": true
+        }
+    ],
+    "icTargetingStrategy": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "siteTagsFirst"
         }
     ],
     "icAdEngineDelay": [
