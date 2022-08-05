@@ -12,16 +12,8 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
-import { TargetingStrategiesNames, TargetingStrategyExecutor } from './targeting-strategy-executor';
-import {
-	DEFAULT_PRIORITY_STRATEGY,
-	TargetingStrategyPriorityService,
-} from './targeting-strategies/services/targeting-strategy-priority-service';
-import { targetingStrategyPrioritiesConfigurator } from './targeting-strategies/configurators/targeting-strategy-priorities-configurator';
+import { TargetingStrategyExecutor } from './targeting-strategy-executor';
 import { targetingStrategiesConfigurator } from './targeting-strategies/configurators/targeting-strategies-configurator';
-import { PageTracker } from '../../tracking/page-tracker';
-import { WindowContextDto } from './targeting-strategies/interfaces/window-context-dto';
-import { DataWarehouseTracker } from '../../tracking/data-warehouse';
 
 const SKIN = Symbol('targeting skin');
 
@@ -72,39 +64,13 @@ export class UcpTargetingSetup implements DiProcess {
 	}
 
 	private getPageLevelTargeting(): Partial<Targeting> {
-		const selectedStrategy: string = this.instantConfig.get(
-			'icTargetingStrategy',
-			DEFAULT_PRIORITY_STRATEGY,
-		);
+		const selectedStrategy: string = this.instantConfig.get('icTargetingStrategy');
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		const priorityService = new TargetingStrategyPriorityService(
-			targetingStrategyPrioritiesConfigurator(),
-			selectedStrategy,
-			utils.logger,
-		);
-
 		return new TargetingStrategyExecutor(
 			targetingStrategiesConfigurator(this.skin),
-			priorityService,
-			this.targetingStrategyListener,
+			selectedStrategy,
 		).execute();
-	}
-
-	private targetingStrategyListener(usedStrategy: TargetingStrategiesNames): void {
-		if (usedStrategy !== TargetingStrategiesNames.PAGE_CONTEXT) {
-			return;
-		}
-
-		// @ts-ignore because it does not recognize context correctly
-		const windowContext: WindowContextDto = window.fandomContext;
-		const pageName = windowContext?.page?.pageName;
-		const siteName = windowContext?.site?.siteName;
-
-		// TODO this should be injectable, but it ends up undefined when submitted through DI. Fix this.
-		const pageTracker = new PageTracker(new DataWarehouseTracker());
-
-		pageTracker.trackProp('PageContextStrategy', `Page name: ${pageName} - Site Name: ${siteName}`);
 	}
 }

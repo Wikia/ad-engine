@@ -1,6 +1,5 @@
 import { TargetingStrategy } from './targeting-strategies/interfaces/targeting-strategy';
-import { Targeting } from '@wikia/ad-engine';
-import { TargetingStrategyPriorityService } from './targeting-strategies/services/targeting-strategy-priority-service';
+import { Targeting, utils } from '@wikia/ad-engine';
 
 export enum TargetingStrategiesNames {
 	DEFAULT = 'default',
@@ -14,15 +13,14 @@ export type TargetingStrategies = {
 };
 
 export class TargetingStrategyExecutor {
-	constructor(
-		private strategies: TargetingStrategies,
-		private priorityService: TargetingStrategyPriorityService,
-		private strategyListener: (usedStrategy: TargetingStrategiesNames) => void,
-	) {}
+	constructor(private strategies: TargetingStrategies, private selectedStrategy: string) {}
 
 	execute(): Partial<Targeting> {
-		const strategyName = this.priorityService.pickQualifyingStrategy();
-		this.strategyListener(strategyName);
-		return this.strategies[strategyName].execute();
+		if (this.strategies[this.selectedStrategy]) {
+			return this.strategies[this.selectedStrategy].execute();
+		}
+
+		utils.logger('Targeting', 'Unrecognized strategy, falling back to default');
+		return this.strategies[TargetingStrategiesNames.DEFAULT].execute();
 	}
 }
