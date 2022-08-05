@@ -25,7 +25,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			s0c: this.context.site.categories,
 			s1: utils.targeting.getRawDbName(wiki.targeting.wikiDbName),
 			s2: this.getAdLayout(wiki.targeting.pageType || 'article'),
-			sex: this.context.page.tags?.sex || [],
+			sex: this.context.site.tags?.sex || [],
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
