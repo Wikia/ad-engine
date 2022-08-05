@@ -118,6 +118,18 @@
             }
         }
     ],
+    "icAudigentSegmentsScriptUrl": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "https://seg.ad.gt/api/v1/s/158"
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -707,7 +719,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 75.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -15744,7 +15756,17 @@
                 "fandommobile"
             ],
             "regions": [
-                "PL"
+                "US"
+            ],
+            "value": "default"
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
             ],
             "value": "siteTagsFirst"
         }
