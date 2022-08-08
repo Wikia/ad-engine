@@ -19,7 +19,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpMobileLighterLegacyAdsMode implements DiProcess {
+export class UcpMobileLighterDeprecatedAdsMode implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);

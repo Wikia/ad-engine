@@ -12,7 +12,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class F2LegacyAdsMode implements DiProcess {
+export class F2DeprecatedAdsMode implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer();

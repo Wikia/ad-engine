@@ -19,7 +19,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 import { basicContext } from './ad-context';
 import { F2IocSetup } from './f2-ioc-setup';
-import { F2LegacyAdsMode } from './modes/f2-ads-mode-deprecated.service';
+import { F2DeprecatedAdsMode } from './modes/f2-ads-mode-deprecated.service';
 import { F2Environment } from './setup-f2';
 import { F2SlotsContextSetup } from './setup/context/slots/f2-slots-context.setup';
 import { F2TargetingSetup } from './setup/context/targeting/f2-targeting.setup';
@@ -59,7 +59,7 @@ export class F2Platform {
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: conditional(() => context.get('options.adsInitializeV2'), {
 					yes: F2AdsMode,
-					no: F2LegacyAdsMode,
+					no: F2DeprecatedAdsMode,
 				}),
 			}),
 		);

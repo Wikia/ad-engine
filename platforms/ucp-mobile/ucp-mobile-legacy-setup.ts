@@ -10,7 +10,7 @@ import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-pr
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
-import { UcpMobileLegacyAdsMode } from './modes/ucp-mobile-ads-mode-deprecated.service';
+import { UcpMobileDeprecatedAdsMode } from './modes/ucp-mobile-ads-mode-deprecated.service';
 import { UcpMobileLighterAds } from './modes/ucp-mobile-lighter-ads-mode.service';
 
 @Injectable()
@@ -28,7 +28,7 @@ export class UcpMobileLegacySetup {
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: conditional(() => context.get('options.adsInitializeV2'), {
 					yes: UcpMobileLighterAds,
-					no: UcpMobileLegacyAdsMode,
+					no: UcpMobileDeprecatedAdsMode,
 				}),
 				no: NoAdsMode,
 			}),
