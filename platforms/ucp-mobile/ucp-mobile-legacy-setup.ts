@@ -22,9 +22,9 @@ export class UcpMobileLegacySetup {
 			UcpMobilePrebidConfigSetup,
 			UcpMobileA9ConfigSetup,
 			UcpMobileDynamicSlotsSetup,
-			BiddersStateSetup,
 			UcpMobileTemplatesSetup,
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
+			BiddersStateSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
 				yes: conditional(() => context.get('options.adsInitializeV2'), {
 					yes: UcpMobileLighterAds,
