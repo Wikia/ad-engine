@@ -45,7 +45,7 @@ export class SessionCookie {
 	}
 
 	setItem(key: string, input: Dictionary<unknown> | string, timeToLiveMs?: number): void {
-		this.storage.setItem(`${this.prefix}_${key}`, input, timeToLiveMs);
+		this.storage.setItem(key, input, timeToLiveMs);
 	}
 
 	removeItem(key: string): void {
