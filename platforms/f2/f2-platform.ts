@@ -42,7 +42,6 @@ export class F2Platform {
 			F2IocSetup,
 			TrackingParametersSetup,
 			() => context.set('state.isMobile', f2env.isPageMobile),
-			() => context.set('services.nielsen.customSection', 'news_and_stories'),
 			F2BaseContextSetup,
 			F2SlotsContextSetup,
 			F2TargetingSetup,
