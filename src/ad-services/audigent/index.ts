@@ -37,17 +37,11 @@ class Audigent {
 			instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
 
-		const gamDirectTestEnabled = instantConfig.get('icAudigentGamDirectTestEnabled');
 		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
 
-		context.set('services.audigent.gamDirectTestEnabled', gamDirectTestEnabled);
 		context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
 
-		if (gamDirectTestEnabled) {
-			window['au_gam_direct_test'] = true;
-		}
-
-		if (gamDirectTestEnabled || newIntegrationEnabled) {
+		if (newIntegrationEnabled) {
 			this.preloadLibraries();
 		}
 	}
@@ -76,21 +70,12 @@ class Audigent {
 			return;
 		}
 
-		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 
 		context.set('targeting.AU_SEG', '-1');
 
 		if (!this.audienceTagScriptLoader) {
 			this.preloadLibraries();
-		}
-
-		if (!this.isLoaded && gamDirectTestEnabled) {
-			this.audienceTagScriptLoader.then(() => {
-				utils.logger(logGroup, 'audience tag script loaded');
-				this.isLoaded = true;
-			});
-			return;
 		}
 
 		if (newIntegrationEnabled) {
