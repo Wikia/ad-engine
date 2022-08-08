@@ -16063,16 +16063,6 @@
                 "fandommobile"
             ],
             "regions": [
-                "US"
-            ],
-            "value": "default"
-        },
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
                 "XX"
             ],
             "value": "siteTagsFirst"
