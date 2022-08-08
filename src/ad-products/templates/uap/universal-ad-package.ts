@@ -71,6 +71,7 @@ export interface UapParams {
 	resolvedStateAutoPlay: boolean;
 	resolvedStateForced?: boolean;
 	restartOnUnmute: boolean;
+	sequentialUapConfig: boolean;
 	slotName: string;
 	splitLayoutVideoPosition: string;
 	src: string;

@@ -6,6 +6,7 @@ import { DefaultOnlyPriority } from '../priorities-strategies/default-only-prior
 import { SiteTagsOnlyPriority } from '../priorities-strategies/site-tags-only-priority';
 import { SiteTagsFirstPriority } from '../priorities-strategies/site-tags-first-priority';
 import { PageTagsFirstPriority } from '../priorities-strategies/page-tags-first-priority';
+import { CombinedTagsPriority } from '../priorities-strategies/combined-tags-priority';
 
 export function targetingStrategyPrioritiesConfigurator(): PriorityStrategies {
 	// @ts-ignore because it does not recognize context correctly
@@ -18,5 +19,6 @@ export function targetingStrategyPrioritiesConfigurator(): PriorityStrategies {
 		siteTagsOnly: new SiteTagsOnlyPriority(),
 		siteTagsFirst: new SiteTagsFirstPriority(siteTags),
 		pageTagsFirst: new PageTagsFirstPriority(pageTags),
+		combined: new CombinedTagsPriority(),
 	};
 }
