@@ -11,6 +11,7 @@ const mockStrategies: TargetingStrategies = {
 	[TargetingStrategiesNames.DEFAULT]: new StrategyBuilderMock({ test: 'default' }).build(),
 	[TargetingStrategiesNames.SITE_CONTEXT]: new StrategyBuilderMock({ test: 'site' }).build(),
 	[TargetingStrategiesNames.PAGE_CONTEXT]: new StrategyBuilderMock({ test: 'page' }).build(),
+	[TargetingStrategiesNames.COMBINED]: new StrategyBuilderMock({ test: 'site' }).build(),
 };
 
 class TargetingStrategyPriorityServiceMock extends TargetingStrategyPriorityService {

@@ -1,6 +1,7 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
+import { PageLevelTags } from '../interfaces/page-level-tags';
 
 export abstract class CommonStrategy {
 	protected addCommonParams(
@@ -15,7 +16,7 @@ export abstract class CommonStrategy {
 		targeting.geo = utils.geoService.getCountryCode() || 'none';
 		targeting.hostpre = utils.targeting.getHostnamePrefix();
 		targeting.original_host = wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom';
-		// TODO remove, but be careful. According to Sebastian S. this can be removed, but AdEng will fail to load ads without it.
+		// TODO remove, but be careful. According to Sebastian S. this can be removed, but AdEngine will fail to load ads without it.
 		targeting.s0v = wiki.targeting.wikiVertical;
 		targeting.skin = skin;
 		targeting.uap = 'none';
@@ -49,6 +50,16 @@ export abstract class CommonStrategy {
 		}
 
 		return pageType;
+	}
+
+	protected addPagePrefixToValues(tags: PageLevelTags): PageLevelTags {
+		for (const [key, value] of Object.entries(tags)) {
+			if (Array.isArray(value) && value.length > 0) {
+				tags[key] = value.map((val) => 'p_' + val);
+			}
+		}
+
+		return tags;
 	}
 
 	private getVideoStatus(): VideoStatus {
