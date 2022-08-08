@@ -68,6 +68,7 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6080673321",
                 "6054175908",
                 "6005712462",
                 "5951743095",
@@ -13600,6 +13601,18 @@
             "value": true
         }
     ],
+    "icAudigentSegmentsScriptUrl": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "https://seg.ad.gt/api/v1/s/158"
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -13751,7 +13764,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 75.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -16050,7 +16063,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": "siteTagsFirst"
         }
