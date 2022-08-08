@@ -62,7 +62,6 @@ export const basicContext = {
 		skin: 'ucp_mobile',
 		uap: 'none',
 		uap_c: 'none',
-		section: '',
 	},
 	templates: {
 		safeFanTakeoverElement: {

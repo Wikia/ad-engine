@@ -37,7 +37,7 @@ class Nielsen extends BaseServiceSetup {
 	call(): void {
 		const nielsenKey = context.get('services.nielsen.appId');
 		const targeting = context.get('targeting');
-		const section = targeting.section || targeting.s0v;
+		const section = context.get('services.nielsen.customSection') || targeting.s0v;
 		const articleId = targeting.post_id || targeting.artid;
 
 		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
@@ -57,6 +57,7 @@ class Nielsen extends BaseServiceSetup {
 			assetid: `fandom.com/${section}/${targeting.s1}/${articleId}`,
 			section: `FANDOM ${section.replaceAll('_', ' ').toUpperCase()} NETWORK`,
 		};
+		console.log('DJ: ', metadata);
 
 		this.nlsnInstance.ggPM('static', metadata);
 		utils.logger(logGroup, 'called', metadata);

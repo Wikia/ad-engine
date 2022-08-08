@@ -12,7 +12,7 @@ export class BaseServiceSetup implements PartnerInitializationProcess {
 		this.resolve = resolve;
 	});
 
-	setOptions(opt: PartnerInitializationProcessOptions): this {
+	setOptions(opt: PartnerInitializationProcessOptions): PartnerInitializationProcess {
 		this.options = opt;
 		return this;
 	}

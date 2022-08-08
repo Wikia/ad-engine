@@ -22,5 +22,4 @@ export interface Targeting {
 	pv: string;
 	cid: string;
 	top: '1k';
-	section: string;
 }

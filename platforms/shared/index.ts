@@ -12,7 +12,6 @@ export * from './setup/ad-layout-initializer.setup';
 export * from './setup/platform-context.setup';
 export * from './setup/base-context.setup';
 export * from './setup/gpt.setup';
-export * from './setup/gpt.setup';
 export * from './setup/player-experiment.setup';
 export * from './setup/player.setup';
 export * from './bidders/bidders-state.setup';
