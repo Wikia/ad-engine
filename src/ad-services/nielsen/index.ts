@@ -57,7 +57,6 @@ class Nielsen extends BaseServiceSetup {
 			assetid: `fandom.com/${section}/${targeting.s1}/${articleId}`,
 			section: `FANDOM ${section.replaceAll('_', ' ').toUpperCase()} NETWORK`,
 		};
-		console.log('DJ: ', metadata);
 
 		this.nlsnInstance.ggPM('static', metadata);
 		utils.logger(logGroup, 'called', metadata);
