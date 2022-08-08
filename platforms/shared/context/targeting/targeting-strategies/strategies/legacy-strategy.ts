@@ -8,6 +8,8 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategy 
 	}
 
 	execute(): Partial<Targeting> {
+		utils.logger('Targeting', 'Executing LegacyStrategy...');
+
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		const targeting: Partial<Targeting> = {

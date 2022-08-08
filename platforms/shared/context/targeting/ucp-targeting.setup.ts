@@ -77,6 +77,8 @@ export class UcpTargetingSetup implements DiProcess {
 			DEFAULT_PRIORITY_STRATEGY,
 		);
 
+		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
+
 		const priorityService = new TargetingStrategyPriorityService(
 			targetingStrategyPrioritiesConfigurator(),
 			selectedStrategy,
