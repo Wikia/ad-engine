@@ -32,6 +32,7 @@ class Audigent {
 			'services.audigent.segmentsScriptUrl',
 			instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
+		this.setupSegmentsListener();
 	}
 
 	preloadLibraries(): void {
@@ -80,10 +81,23 @@ class Audigent {
 
 	setup(): void {
 		if (isAuSegGlobalSet()) {
-			const segments = Audigent.sliceSegments();
-			Audigent.trackWithExternalLoggerIfEnabled(segments);
-			Audigent.setSegmentsInTargeting(segments);
+			Audigent.sliceAndSetSegmentsInTargeting();
 		}
+	}
+
+	setupSegmentsListener(): void {
+		utils.logger(logGroup, 'setting up auSegReady event listener');
+
+		document.addEventListener('auSegReady', function (e) {
+			utils.logger(logGroup, 'auSegReady event recieved', e);
+			Audigent.sliceAndSetSegmentsInTargeting();
+		});
+	}
+
+	private static sliceAndSetSegmentsInTargeting(): void {
+		const segments = Audigent.sliceSegments();
+		Audigent.trackWithExternalLoggerIfEnabled(segments);
+		Audigent.setSegmentsInTargeting(segments);
 	}
 
 	resetLoadedState(): void {
