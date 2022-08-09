@@ -61,7 +61,7 @@ export const basicContext = {
 		},
 		nielsen: {
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
-			customSection: 'news_and_stories'
+			customSection: 'news_and_stories',
 		},
 	},
 	slotGroups: {
