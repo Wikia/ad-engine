@@ -241,18 +241,6 @@
             "value": true
         }
     ],
-    "icAudigentNewIntegrationEnabled": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
-        }
-    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -484,18 +472,6 @@
                 "XX"
             ],
             "value": true
-        }
-    ],
-    "icAudigentGamDirectTestEnabled": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": false
         }
     ],
     "icStickyTlbWithFV": [
