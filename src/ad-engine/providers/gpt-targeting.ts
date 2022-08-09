@@ -18,15 +18,8 @@ export function setupGptTargeting(): void {
 
 	function setTargetingFromContext(): void {
 		const targeting = context.get('targeting') || {};
-		const audigentTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
 
 		Object.keys(targeting).forEach((key) => {
-			if (key === 'AU_SEG' && audigentTestEnabled) {
-				if (tag.getTargeting(key).length === 0) {
-					setTargetingValue(key, '-1');
-				}
-				return;
-			}
 			setTargetingValue(key, targeting[key]);
 		});
 	}

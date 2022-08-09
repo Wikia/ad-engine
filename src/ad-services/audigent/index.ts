@@ -2,7 +2,7 @@ import { context, utils, externalLogger } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
-const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
@@ -29,45 +29,26 @@ class Audigent {
 
 	init(instantConfig: InstantConfigService): void {
 		context.set(
-			'services.audigent.audienceTagScriptUrl',
-			instantConfig.get('icAudigentAudienceTagScriptUrl'),
-		);
-		context.set(
 			'services.audigent.segmentsScriptUrl',
 			instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
-
-		const gamDirectTestEnabled = instantConfig.get('icAudigentGamDirectTestEnabled');
-		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
-
-		context.set('services.audigent.gamDirectTestEnabled', gamDirectTestEnabled);
-		context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
-
-		if (gamDirectTestEnabled) {
-			window['au_gam_direct_test'] = true;
-		}
-
-		if (gamDirectTestEnabled || newIntegrationEnabled) {
-			this.preloadLibraries();
-		}
+		this.setupSegmentsListener();
 	}
 
 	preloadLibraries(): void {
 		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
-			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL,
+			AUDIENCE_TAG_SCRIPT_URL,
 			'text/javascript',
 			true,
 			'first',
 		);
 
-		if (!context.get('services.audigent.newIntegrationEnabled')) {
-			this.segmentsScriptLoader = utils.scriptLoader.loadScript(
-				context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
-				'text/javascript',
-				true,
-				'first',
-			);
-		}
+		this.segmentsScriptLoader = utils.scriptLoader.loadScript(
+			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
+			'text/javascript',
+			true,
+			'first',
+		);
 	}
 
 	async call(): Promise<void> {
@@ -76,25 +57,10 @@ class Audigent {
 			return;
 		}
 
-		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
-		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
-
 		context.set('targeting.AU_SEG', '-1');
 
 		if (!this.audienceTagScriptLoader) {
 			this.preloadLibraries();
-		}
-
-		if (!this.isLoaded && gamDirectTestEnabled) {
-			this.audienceTagScriptLoader.then(() => {
-				utils.logger(logGroup, 'audience tag script loaded');
-				this.isLoaded = true;
-			});
-			return;
-		}
-
-		if (newIntegrationEnabled) {
-			this.setupSegmentsListener();
 		}
 
 		if (!this.isLoaded) {
@@ -104,26 +70,18 @@ class Audigent {
 				utils.logger(logGroup, 'audience tag script loaded');
 			});
 
-			if (!newIntegrationEnabled) {
-				this.segmentsScriptLoader.then(() => {
-					utils.logger(logGroup, 'segment tag script loaded');
-					this.legacySetup();
-				});
-			}
+			this.segmentsScriptLoader.then(() => {
+				utils.logger(logGroup, 'segment tag script loaded');
+				this.setup();
+			});
 
 			this.isLoaded = true;
 		}
+	}
 
-		if (newIntegrationEnabled) {
-			await waitForAuSegGlobalSet().then((isGlobalSet) => {
-				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
-
-				if (isGlobalSet) {
-					const segments = Audigent.sliceSegments();
-					Audigent.trackWithExternalLoggerIfEnabled(segments);
-					Audigent.setSegmentsInTargeting(segments);
-				}
-			});
+	setup(): void {
+		if (isAuSegGlobalSet()) {
+			Audigent.sliceAndSetSegmentsInTargeting();
 		}
 	}
 
@@ -132,19 +90,14 @@ class Audigent {
 
 		document.addEventListener('auSegReady', function (e) {
 			utils.logger(logGroup, 'auSegReady event recieved', e);
-
-			const segments = Audigent.sliceSegments();
-			Audigent.trackWithExternalLoggerIfEnabled(segments);
-			Audigent.setSegmentsInTargeting(segments);
+			Audigent.sliceAndSetSegmentsInTargeting();
 		});
 	}
 
-	legacySetup(): void {
-		if (isAuSegGlobalSet()) {
-			const segments = Audigent.sliceSegments();
-			Audigent.trackWithExternalLoggerIfEnabled(segments);
-			Audigent.setSegmentsInTargeting(segments);
-		}
+	private static sliceAndSetSegmentsInTargeting(): void {
+		const segments = Audigent.sliceSegments();
+		Audigent.trackWithExternalLoggerIfEnabled(segments);
+		Audigent.setSegmentsInTargeting(segments);
 	}
 
 	resetLoadedState(): void {
