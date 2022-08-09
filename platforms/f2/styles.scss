@@ -66,6 +66,15 @@
 		}
 	}
 
+	body:not(.uap-sticked) {
+		.companion-stick {
+			.article-layout__top-box-ad,
+			.feed-layout__right-rail {
+				top: 0 !important;
+			}
+		}
+	}
+
 	.feed-item .gpt-ad {
 		padding: 24px 24px 30px;
 		position: sticky;
