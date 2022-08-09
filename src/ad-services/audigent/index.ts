@@ -2,7 +2,7 @@ import { context, utils, externalLogger } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
-const DEFAULT_AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
@@ -29,10 +29,6 @@ class Audigent {
 
 	init(instantConfig: InstantConfigService): void {
 		context.set(
-			'services.audigent.audienceTagScriptUrl',
-			instantConfig.get('icAudigentAudienceTagScriptUrl'),
-		);
-		context.set(
 			'services.audigent.segmentsScriptUrl',
 			instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
@@ -40,7 +36,7 @@ class Audigent {
 
 	preloadLibraries(): void {
 		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
-			context.get('services.audigent.audienceTagScriptUrl') || DEFAULT_AUDIENCE_TAG_SCRIPT_URL,
+			AUDIENCE_TAG_SCRIPT_URL,
 			'text/javascript',
 			true,
 			'first',
