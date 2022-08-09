@@ -36,14 +36,6 @@ class Audigent {
 			'services.audigent.segmentsScriptUrl',
 			instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
-
-		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
-
-		context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
-
-		if (newIntegrationEnabled) {
-			this.preloadLibraries();
-		}
 	}
 
 	preloadLibraries(): void {
@@ -54,14 +46,12 @@ class Audigent {
 			'first',
 		);
 
-		if (!context.get('services.audigent.newIntegrationEnabled')) {
-			this.segmentsScriptLoader = utils.scriptLoader.loadScript(
-				context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
-				'text/javascript',
-				true,
-				'first',
-			);
-		}
+		this.segmentsScriptLoader = utils.scriptLoader.loadScript(
+			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
+			'text/javascript',
+			true,
+			'first',
+		);
 	}
 
 	async call(): Promise<void> {
@@ -70,16 +60,10 @@ class Audigent {
 			return;
 		}
 
-		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
-
 		context.set('targeting.AU_SEG', '-1');
 
 		if (!this.audienceTagScriptLoader) {
 			this.preloadLibraries();
-		}
-
-		if (newIntegrationEnabled) {
-			this.setupSegmentsListener();
 		}
 
 		if (!this.isLoaded) {
@@ -89,42 +73,16 @@ class Audigent {
 				utils.logger(logGroup, 'audience tag script loaded');
 			});
 
-			if (!newIntegrationEnabled) {
-				this.segmentsScriptLoader.then(() => {
-					utils.logger(logGroup, 'segment tag script loaded');
-					this.legacySetup();
-				});
-			}
+			this.segmentsScriptLoader.then(() => {
+				utils.logger(logGroup, 'segment tag script loaded');
+				this.setup();
+			});
 
 			this.isLoaded = true;
 		}
-
-		if (newIntegrationEnabled) {
-			await waitForAuSegGlobalSet().then((isGlobalSet) => {
-				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
-
-				if (isGlobalSet) {
-					const segments = Audigent.sliceSegments();
-					Audigent.trackWithExternalLoggerIfEnabled(segments);
-					Audigent.setSegmentsInTargeting(segments);
-				}
-			});
-		}
 	}
 
-	setupSegmentsListener(): void {
-		utils.logger(logGroup, 'setting up auSegReady event listener');
-
-		document.addEventListener('auSegReady', function (e) {
-			utils.logger(logGroup, 'auSegReady event recieved', e);
-
-			const segments = Audigent.sliceSegments();
-			Audigent.trackWithExternalLoggerIfEnabled(segments);
-			Audigent.setSegmentsInTargeting(segments);
-		});
-	}
-
-	legacySetup(): void {
+	setup(): void {
 		if (isAuSegGlobalSet()) {
 			const segments = Audigent.sliceSegments();
 			Audigent.trackWithExternalLoggerIfEnabled(segments);
