@@ -11,6 +11,7 @@ import { getNobidContext } from '../../../bidders/prebid/nobid';
 import { getOneVideoContext } from '../../../bidders/prebid/one-video';
 import { getOpenXContext } from '../../../bidders/prebid/openx';
 import { getPubmaticContext } from '../../../bidders/prebid/pubmatic';
+import { getRoundelContext } from '../../../bidders/prebid/roundel';
 import { getRubiconContext } from '../../../bidders/prebid/rubicon';
 import { getRubiconDisplayContext } from '../../../bidders/prebid/rubicon-display';
 import { getRubiconPGContext } from '../../../bidders/prebid/rubicon-pg';
@@ -34,6 +35,7 @@ export class UcpDesktopPrebidConfigSetup implements DiProcess {
 		context.set('bidders.prebid.onevideo', getOneVideoContext());
 		context.set('bidders.prebid.openx', getOpenXContext());
 		context.set('bidders.prebid.pubmatic', getPubmaticContext());
+		context.set('bidders.prebid.roundel', getRoundelContext());
 		context.set('bidders.prebid.rubicon', getRubiconContext());
 		context.set('bidders.prebid.rubicon_display', getRubiconDisplayContext());
 		context.set('bidders.prebid.rubicon_pg', getRubiconPGContext());
