@@ -28,7 +28,7 @@ function serializeCache(cache: CacheDictionary): string {
 }
 
 function deserializeCache(cache: string): CacheDictionary {
-	if (cache === '') return {};
+	if (cache === '' || typeof cache !== 'string') return {};
 
 	return cache
 		.split(KEY_SEPARATOR)
