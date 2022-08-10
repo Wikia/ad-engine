@@ -1,10 +1,12 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
+	bidders,
 	communicationService,
 	confiant,
 	context,
 	DiProcess,
+	durationMedia,
 	eventsRepository,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -30,11 +32,17 @@ export class UcpMobileLighterAds implements DiProcess {
 				audigent,
 				iasPublisherOptimization,
 				confiant,
+				durationMedia,
 				stroer,
+				bidders,
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [taxonomyService.initialized, silverSurferService.initialized],
+					dependencies: [
+						bidders.initialized,
+						taxonomyService.initialized,
+						silverSurferService.initialized,
+					],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup,
