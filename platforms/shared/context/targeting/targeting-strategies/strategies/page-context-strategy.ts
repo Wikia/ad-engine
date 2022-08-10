@@ -30,7 +30,7 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: TaxonomyTags = createTaxonomyTags(this.context.page);
+		const pageLevelTags: TaxonomyTags = createTaxonomyTags(this.context.page.tags);
 
 		this.addPagePrefixToValues(pageLevelTags);
 
