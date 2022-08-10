@@ -51,7 +51,7 @@ describe('Silver Surfer service', () => {
 		const configuredTargeting = await mockSilverSurferService(
 			silverSurferContext,
 			userProfile,
-		).configureUserTargeting();
+		).call();
 
 		expect(getProfileStub.called).to.be.true;
 		expect(getContextStub.called).to.be.true;
@@ -70,7 +70,7 @@ describe('Silver Surfer service', () => {
 		const configuredTargeting = await mockSilverSurferService(
 			silverSurferContext,
 			userProfile,
-		).configureUserTargeting();
+		).call();
 
 		expect(getProfileStub.called).to.be.false;
 		expect(getContextStub.called).to.be.false;
@@ -79,10 +79,7 @@ describe('Silver Surfer service', () => {
 
 	it('should not fail when SilverSurfer profile is not available', async () => {
 		context.set('services.silverSurfer', silverSurferConfig);
-		const configuredTargeting = await mockSilverSurferService(
-			undefined,
-			undefined,
-		).configureUserTargeting();
+		const configuredTargeting = await mockSilverSurferService(undefined, undefined).call();
 
 		expect(getProfileStub.called).to.be.true;
 		expect(getContextStub.called).to.be.false;

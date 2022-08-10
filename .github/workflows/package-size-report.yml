@@ -2,7 +2,7 @@ name: Package Size Report
 
 on:
   pull_request:
-    branches: [ dev ]
+    branches: [dev]
 
 jobs:
   pkg-size-report:

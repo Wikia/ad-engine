@@ -1,12 +1,12 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, slotService, utils } from '@ad-engine/core';
+import { AdSlot, BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
 
 const logGroup = 'prebid-native-provider';
 
-export class PrebidNativeProvider {
+export class PrebidNativeProvider extends BaseServiceSetup {
 	static ACTION_CLICK = 'click';
 	static ACTION_IMPRESSION = 'impression';
 
@@ -14,7 +14,7 @@ export class PrebidNativeProvider {
 		return context.get('bidders.prebid.native.enabled');
 	}
 
-	initialize() {
+	call() {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
