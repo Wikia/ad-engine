@@ -12,7 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
-import { createSelectedStrategy } from './targeting-strategies/create-selected-strategy';
+import { createSelectedStrategy } from './targeting-strategies/factories/create-selected-strategy';
 
 const SKIN = Symbol('targeting skin');
 

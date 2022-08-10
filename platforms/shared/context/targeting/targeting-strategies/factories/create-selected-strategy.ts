@@ -1,10 +1,11 @@
-import { TargetingStrategy } from './interfaces/targeting-strategy';
-import { WindowContextDto } from './interfaces/window-context-dto';
-import { LegacyStrategy } from './strategies/legacy-strategy';
-import { PageContextStrategy } from './strategies/page-context-strategy';
-import { CombinedStrategy } from './strategies/combined-strategy';
-import { Context, Page, Site } from './models/context';
 import { utils } from '@wikia/ad-engine';
+
+import { Context, Page, Site } from '../models/context';
+import { TargetingStrategy } from '../interfaces/targeting-strategy';
+import { WindowContextDto } from '../interfaces/window-context-dto';
+import { LegacyStrategy } from '../strategies/legacy-strategy';
+import { PageContextStrategy } from '../strategies/page-context-strategy';
+import { CombinedStrategy } from '../strategies/combined-strategy';
 
 export enum TargetingStrategiesNames {
 	DEFAULT = 'default',

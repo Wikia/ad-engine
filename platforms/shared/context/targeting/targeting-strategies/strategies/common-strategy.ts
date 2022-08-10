@@ -1,8 +1,8 @@
 import { context as adContext, Targeting, utils } from '@wikia/ad-engine';
+
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
-import { Page, Site } from '../models/context';
-import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
 export abstract class CommonStrategy {
 	protected addCommonParams(
@@ -61,17 +61,6 @@ export abstract class CommonStrategy {
 		}
 
 		return tags;
-	}
-
-	protected createTaxonomyTags(contextTags: Site['tags'] | Page['tags']): TaxonomyTags {
-		return {
-			gnre: contextTags?.gnre || [],
-			media: contextTags?.media || [],
-			pform: contextTags?.pform || [],
-			pub: contextTags?.pub || [],
-			theme: contextTags?.theme || [],
-			tv: contextTags?.tv || [],
-		};
 	}
 
 	private getVideoStatus(): VideoStatus {

@@ -1,9 +1,10 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 
 import { CommonStrategy } from './common-strategy';
-import { Context } from '../models/context';
+import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
+import { Context } from '../models/context';
 
 export class CombinedStrategy extends CommonStrategy implements TargetingStrategy {
 	constructor(private skin: string, private context: Context) {
@@ -29,8 +30,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: TaxonomyTags = this.createTaxonomyTags(this.context.page.tags);
-		const siteLevelTags: TaxonomyTags = this.createTaxonomyTags(this.context.site.tags);
+		const pageLevelTags: TaxonomyTags = createTaxonomyTags(this.context.page.tags);
+		const siteLevelTags: TaxonomyTags = createTaxonomyTags(this.context.site.tags);
 
 		this.addPagePrefixToValues(pageLevelTags);
 
