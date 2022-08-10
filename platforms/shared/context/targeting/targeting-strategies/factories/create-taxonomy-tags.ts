@@ -1,4 +1,4 @@
-import { Page, Site } from '../models/context';
+import { Page, Site } from '../models/fandom-context';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
 export function createTaxonomyTags(contextTags: Site['tags'] | Page['tags']): TaxonomyTags {

@@ -2,10 +2,10 @@ import { expect } from 'chai';
 
 import { context } from '../../../../../../../src/ad-engine';
 import {
-	Context,
+	FandomContext,
 	Site,
 	Page,
-} from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/models/context';
+} from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
 import { CombinedStrategy } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy';
 
 describe('CombinedStrategy execution', () => {
@@ -53,7 +53,7 @@ describe('CombinedStrategy execution', () => {
 	};
 
 	it('Returns empty tags when site and page tags are empty', function () {
-		const mockedContext: Context = new Context(
+		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'all_ads', {}),
 		);
@@ -68,7 +68,7 @@ describe('CombinedStrategy execution', () => {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test2', 'superheroes'],
 		};
-		const mockedContext: Context = new Context(
+		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'all_ads', {}),
 		);
@@ -82,7 +82,7 @@ describe('CombinedStrategy execution', () => {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test2', 'superheroes'],
 		};
-		const mockedContext: Context = new Context(
+		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'all_ads', mockedPageTags),
 		);
@@ -104,7 +104,7 @@ describe('CombinedStrategy execution', () => {
 			gnre: ['test2', 'drama', 'comedy', 'horror'],
 			theme: ['test4', 'superheroes'],
 		};
-		const mockedContext: Context = new Context(
+		const mockedContext: FandomContext = new FandomContext(
 			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'all_ads', mockedPageTags),
 		);

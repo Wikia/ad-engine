@@ -4,10 +4,10 @@ import { CommonStrategy } from './common-strategy';
 import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
-import { Context } from '../models/context';
+import { FandomContext } from '../models/fandom-context';
 
 export class CombinedStrategy extends CommonStrategy implements TargetingStrategy {
-	constructor(private skin: string, private context: Context) {
+	constructor(private skin: string, private context: FandomContext) {
 		super();
 	}
 
