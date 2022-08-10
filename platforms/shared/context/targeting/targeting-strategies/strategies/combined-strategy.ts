@@ -29,23 +29,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: TaxonomyTags = {
-			gnre: this.context.page.tags?.gnre || [],
-			media: this.context.page.tags?.media || [],
-			pform: this.context.page.tags?.pform || [],
-			pub: this.context.page.tags?.pub || [],
-			theme: this.context.page.tags?.theme || [],
-			tv: this.context.page.tags?.tv || [],
-		};
-
-		const siteLevelTags: TaxonomyTags = {
-			gnre: this.context.site.tags?.gnre || [],
-			media: this.context.site.tags?.media || [],
-			pform: this.context.site.tags?.pform || [],
-			pub: this.context.site.tags?.pub || [],
-			theme: this.context.site.tags?.theme || [],
-			tv: this.context.site.tags?.tv || [],
-		};
+		const pageLevelTags: TaxonomyTags = this.createTaxonomyTags(this.context.page.tags);
+		const siteLevelTags: TaxonomyTags = this.createTaxonomyTags(this.context.site.tags);
 
 		this.addPagePrefixToValues(pageLevelTags);
 

@@ -28,14 +28,7 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: TaxonomyTags = {
-			gnre: this.context.page.tags?.gnre || [],
-			media: this.context.page.tags?.media || [],
-			pform: this.context.page.tags?.pform || [],
-			pub: this.context.page.tags?.pub || [],
-			theme: this.context.page.tags?.theme || [],
-			tv: this.context.page.tags?.tv || [],
-		};
+		const pageLevelTags: TaxonomyTags = this.createTaxonomyTags(this.context.page);
 
 		this.addPagePrefixToValues(pageLevelTags);
 
