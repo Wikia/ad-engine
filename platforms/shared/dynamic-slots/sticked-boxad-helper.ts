@@ -34,18 +34,22 @@ export class StickedBoxadHelper {
 			return;
 		}
 
+		this.enableSticking();
+	}
+
+	private enableSticking(): void {
 		if (context.get('options.stickyTbExperiment')) {
-			this.enableSticking();
+			this.registerSuccessListener();
 			return;
 		}
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
-			this.enableSticking.bind(this),
+			this.registerSuccessListener.bind(this),
 		);
 	}
 
-	private enableSticking(): void {
+	private registerSuccessListener(): void {
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
@@ -73,6 +77,10 @@ export class StickedBoxadHelper {
 
 	private registerViewedListener(): void {
 		const pageElement = document.querySelector(this.configuration.pageSelector);
+
+		if (!pageElement) {
+			return;
+		}
 
 		communicationService.onSlotEvent(
 			AdSlot.SLOT_VIEWED_EVENT,
