@@ -1,4 +1,4 @@
-import { context, Targeting, utils } from '@wikia/ad-engine';
+import { context as adContext, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { Page, Site } from '../models/context';
@@ -33,7 +33,7 @@ export abstract class CommonStrategy {
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
 			!hasFeaturedVideo &&
-			!!document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
+			!!document.querySelector(adContext.get('slots.incontent_player.insertBeforeSelector'));
 
 		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
 
@@ -93,15 +93,15 @@ export abstract class CommonStrategy {
 
 	// @TODO: This should not be here. It is a side effect that is unpredictable.
 	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
-		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
-		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
+		adContext.set('custom.hasFeaturedVideo', hasFeaturedVideo);
+		adContext.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
 	private extendWithOptionalKeyVals(targeting) {
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
-			pv: context.get('wiki.pvNumber'),
-			pvg: context.get('wiki.pvNumberGlobal'),
+			pv: adContext.get('wiki.pvNumber'),
+			pvg: adContext.get('wiki.pvNumberGlobal'),
 		};
 
 		Object.keys(keyValsMap).forEach((key) => {

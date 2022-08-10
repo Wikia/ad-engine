@@ -12,8 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { getCrossDomainTargeting } from '../../utils/get-cross-domain-targeting';
-import { TargetingStrategyExecutor } from './targeting-strategy-executor';
-import { targetingStrategiesConfigurator } from './targeting-strategies/configurators/targeting-strategies-configurator';
+import { createSelectedStrategy } from './targeting-strategies/create-selected-strategy';
 
 const SKIN = Symbol('targeting skin');
 
@@ -68,9 +67,6 @@ export class UcpTargetingSetup implements DiProcess {
 
 		utils.logger('Targeting', `Selected targeting priority strategy: ${selectedStrategy}`);
 
-		return new TargetingStrategyExecutor(
-			targetingStrategiesConfigurator(this.skin),
-			selectedStrategy,
-		).execute();
+		return createSelectedStrategy(selectedStrategy, this.skin).execute();
 	}
 }
