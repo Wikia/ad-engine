@@ -211,7 +211,8 @@
                 "6054458844",
                 "6066314281",
                 "6063743454",
-                "6029699462"
+                "6029699462",
+                "6084098863"
             ]
         }
     ],
@@ -2835,7 +2836,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220322.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220809.min.js"
         }
     ],
     "icA9Bidder": [
