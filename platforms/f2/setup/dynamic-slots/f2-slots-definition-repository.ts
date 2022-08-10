@@ -7,7 +7,8 @@ import {
 	InstantConfigService,
 	scrollListener,
 	SlotCreatorWrapperConfig,
-	UapLoadStatus, universalAdPackage,
+	UapLoadStatus,
+	universalAdPackage,
 	utils,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
@@ -24,7 +25,7 @@ export class F2SlotsDefinitionRepository {
 	constructor(
 		@Inject(F2_STATE) private f2State: F2State,
 		@Inject(F2_ENV) private f2Env: F2Environment,
-		protected instantConfig: InstantConfigService
+		protected instantConfig: InstantConfigService,
 	) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
@@ -101,7 +102,7 @@ export class F2SlotsDefinitionRepository {
 					},
 				);
 			},
-		}
+		};
 	}
 
 	getTopBoxadConfig(): SlotSetupDefinition {

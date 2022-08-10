@@ -1,4 +1,5 @@
 import {
+	BaseServiceSetup,
 	context,
 	Dictionary,
 	postponeExecutionUntilGptLoads,
@@ -38,7 +39,7 @@ interface IasTargetingData {
 	slots?: IasTargetingSlotData[];
 }
 
-class IasPublisherOptimization {
+class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];
 

@@ -12,9 +12,9 @@ Nativo is our partner that offers us a native ad solution to be integrated with 
 
 In 2021 we weren't sure if we wanted to invest more into Nativo integration and we implemented the integration as an ad-service: basically one class that loads the SDK, keeps the business logic and connects it with the AdEngine parts. The experiment was running for a bit more than a month and proved it was performing well enough (in the business meaning) that we decided not to try out other native ads integrations.
 
-However, within that month or so we learned how much additional logic is needed to keep it cooperating well with the regular slots, premium ad products and Pathfinder. We also planned to introduce internal tracking, lazy-loading of the Nativo's in-content slot and possibly adding more slots of this kind in future. The idea of changing Nativo into a regular ad provider started growing faster in our heads.  
+However, within that month or so we learned how much additional logic is needed to keep it cooperating well with the regular slots, premium ad products and Pathfinder. We also planned to introduce internal tracking, lazy-loading of the Nativo's in-content slot and possibly adding more slots of this kind in future. The idea of changing Nativo into a regular ad provider started growing faster in our heads.
 
-Making it a provider is a bit of a challenge as it means we need to rebuild the core AdEngine. However, changing how it works would help us prepare it for the performance (in the technical meaning) changes as well as for the ad layouts work we planned in this year.  
+Making it a provider is a bit of a challenge as it means we need to rebuild the core AdEngine. However, changing how it works would help us prepare it for the performance (in the technical meaning) changes as well as for the ad layouts work we planned in this year.
 
 ## Decision
 

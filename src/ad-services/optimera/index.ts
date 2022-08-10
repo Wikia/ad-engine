@@ -1,4 +1,4 @@
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 enum DeviceType {
 	DESKTOP = 'de',
@@ -9,7 +9,7 @@ const logGroup = 'optimera';
 const CLIENT_ID = '82';
 const SCRIPT_URL_BASE = 'https://dyv1bugovvq1g.cloudfront.net';
 
-class Optimera {
+class Optimera extends BaseServiceSetup {
 	private oDevice: DeviceType;
 	private oDv = [CLIENT_ID, 'top_leaderboard', 'top_boxad', 'bottom_leaderboard'];
 	private oVa: any = {

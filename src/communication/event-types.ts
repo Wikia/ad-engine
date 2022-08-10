@@ -105,6 +105,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
+	AD_ENGINE_PARTNERS_READY: {
+		name: 'Partners Ready',
+	},
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
 	},

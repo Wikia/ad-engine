@@ -30,9 +30,8 @@ export class F2DynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 		]);
 
-		communicationService.on(
-			eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
-			insertSlots([ this.slotsDefinitionRepository.getFloorAdhesionConfig() ])
+		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () =>
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]),
 		);
 
 		if (!topLeaderboardDefinition) {

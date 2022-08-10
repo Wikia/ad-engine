@@ -19,7 +19,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpDesktopLighterAdsMode implements DiProcess {
+export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
@@ -44,21 +44,16 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
-		const targeting = context.get('targeting');
 
-		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(taxonomyService.call());
+		inhibitors.push(silverSurferService.call());
 
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		stroer.call();
-		nielsen.call({
-			type: 'static',
-			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-		});
+		nielsen.call();
 		identityHub.call();
 
 		return inhibitors;
