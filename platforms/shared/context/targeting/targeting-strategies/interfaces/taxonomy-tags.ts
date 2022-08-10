@@ -1,4 +1,4 @@
-export interface SharedTaxonomyTags {
+export interface TaxonomyTags {
 	gnre?: string[];
 	media?: string[];
 	pform?: string[];

@@ -1,7 +1,7 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
-import { SharedTaxonomyTags } from '../interfaces/shared-taxonomy-tags';
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 
 export abstract class CommonStrategy {
 	protected addCommonParams(
@@ -52,7 +52,7 @@ export abstract class CommonStrategy {
 		return pageType;
 	}
 
-	protected addPagePrefixToValues(tags: SharedTaxonomyTags): SharedTaxonomyTags {
+	protected addPagePrefixToValues(tags: TaxonomyTags): TaxonomyTags {
 		for (const [key, value] of Object.entries(tags)) {
 			if (Array.isArray(value) && value.length > 0) {
 				tags[key] = value.map((val) => 'p_' + val);

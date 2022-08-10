@@ -2,7 +2,7 @@ import { context, Targeting, utils } from '@wikia/ad-engine';
 
 import { CommonStrategy } from './common-strategy';
 import { Context } from '../models/context';
-import { SharedTaxonomyTags } from '../interfaces/shared-taxonomy-tags';
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategy } from '../interfaces/targeting-strategy';
 
 export class CombinedStrategy extends CommonStrategy implements TargetingStrategy {
@@ -29,7 +29,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: SharedTaxonomyTags = {
+		const pageLevelTags: TaxonomyTags = {
 			gnre: this.context.page.tags?.gnre || [],
 			media: this.context.page.tags?.media || [],
 			pform: this.context.page.tags?.pform || [],
@@ -38,7 +38,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 			tv: this.context.page.tags?.tv || [],
 		};
 
-		const siteLevelTags: SharedTaxonomyTags = {
+		const siteLevelTags: TaxonomyTags = {
 			gnre: this.context.site.tags?.gnre || [],
 			media: this.context.site.tags?.media || [],
 			pform: this.context.site.tags?.pform || [],
@@ -61,11 +61,8 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 		return this.addCommonParams(targeting, wiki, this.skin);
 	}
 
-	combineSiteAndPageTags(
-		siteTags: SharedTaxonomyTags,
-		pageTags: SharedTaxonomyTags,
-	): SharedTaxonomyTags {
-		const combinedTags: SharedTaxonomyTags = {};
+	combineSiteAndPageTags(siteTags: TaxonomyTags, pageTags: TaxonomyTags): TaxonomyTags {
+		const combinedTags: TaxonomyTags = {};
 
 		for (const [key, value] of Object.entries(siteTags)) {
 			if (Array.isArray(value) && value.length > 0) {
