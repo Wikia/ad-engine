@@ -36,7 +36,7 @@ import {
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class UcpDesktopAdsMode implements DiProcess {
+export class UcpDesktopAdsModeDeprecated implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
@@ -78,12 +78,11 @@ export class UcpDesktopAdsMode implements DiProcess {
 	}
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
-		const targeting = context.get('targeting');
 
-		inhibitors.push(bidders.requestBids());
+		inhibitors.push(bidders.call());
 		inhibitors.push(optimera.call());
-		inhibitors.push(taxonomyService.configurePageLevelTargeting());
-		inhibitors.push(silverSurferService.configureUserTargeting());
+		inhibitors.push(taxonomyService.call());
+		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
 
 		eyeota.call();
@@ -93,16 +92,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 		confiant.call();
 		stroer.call();
 		durationMedia.call();
-		nielsen.call({
-			type: 'static',
-			assetid: `fandom.com/${targeting.s0v}/${targeting.s1}/${targeting.artid}`,
-			section: `FANDOM ${targeting.s0v.toUpperCase()} NETWORK`,
-		});
+		nielsen.call();
 		liveConnect.call();
 		identityHub.call();
 
-		adMarketplace.initialize();
-		prebidNativeProvider.initialize();
+		adMarketplace.call();
+		prebidNativeProvider.call();
 
 		communicationService.on(
 			eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,

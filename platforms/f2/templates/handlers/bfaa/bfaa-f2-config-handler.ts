@@ -1,7 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import {
 	communicationService,
-	context, eventsRepository,
+	context,
+	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,

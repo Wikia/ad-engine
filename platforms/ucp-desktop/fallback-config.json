@@ -68,6 +68,7 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6080673321",
                 "6054175908",
                 "6005712462",
                 "5951743095",
@@ -105,7 +106,8 @@
                 "6054458844",
                 "6066314281",
                 "6063743454",
-                "6029699462"
+                "6029699462",
+                "6084098863"
             ]
         }
     ],
@@ -238,18 +240,6 @@
             ],
             "sampling": 0.1,
             "value": true
-        }
-    ],
-    "icAudigentNewIntegrationEnabled": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "XX"
-            ],
-            "value": false
         }
     ],
     "icPrebidPubmatic": [
@@ -485,18 +475,6 @@
             "value": true
         }
     ],
-    "icAudigentGamDirectTestEnabled": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "PL"
-            ],
-            "value": false
-        }
-    ],
     "icStickyTlbWithFV": [
         {
             "apps": [
@@ -666,7 +644,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220322.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220809.min.js"
         }
     ],
     "icAudigentSegmentLimit": [
@@ -13600,6 +13578,18 @@
             "value": true
         }
     ],
+    "icAudigentSegmentsScriptUrl": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": "https://seg.ad.gt/api/v1/s/158"
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -13751,7 +13741,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 75.0,
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -16031,7 +16021,6 @@
                 "PL",
                 "PT",
                 "RO",
-                "RU",
                 "SE",
                 "SG",
                 "TR",
@@ -16050,7 +16039,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "PL"
+                "XX"
             ],
             "value": "siteTagsFirst"
         }

@@ -65,8 +65,7 @@ export class InstantConfigCacheStorage {
 			.reduce((result, { key, value }) => ({ ...result, [key]: value }), {});
 
 		const cacheToSave = serializeCache(cacheDictionaryWithCookie);
-		const timeToLive = 60 * 86400000; // 60 days in milliseconds
-		this.sessionCookie.setItem('basset', cacheToSave, timeToLive);
+		this.sessionCookie.setItem('basset', cacheToSave);
 	}
 
 	/**

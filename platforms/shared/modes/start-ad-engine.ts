@@ -16,6 +16,6 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 			slot.removeClass('default-height');
 		});
 	} else {
-		adEngineInstance.runAdQueue(inhibitors);
+		adEngineInstance.runAdQueueDeprecated(inhibitors);
 	}
 }

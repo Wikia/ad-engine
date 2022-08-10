@@ -1,4 +1,4 @@
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const partnerName = 'liveConnect';
@@ -6,7 +6,7 @@ const partnerNameUnifiedId = 'liveConnect-unifiedId';
 const logGroup = partnerName;
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
-class LiveConnect {
+class LiveConnect extends BaseServiceSetup {
 	private isLoaded = false;
 
 	private isEnabled(): boolean {

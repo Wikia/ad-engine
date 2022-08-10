@@ -1,10 +1,10 @@
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
 
 const logGroup = 'taxonomy-service';
 
-export class TaxonomyService {
-	async configurePageLevelTargeting(): Promise<AdTags> {
+export class TaxonomyService extends BaseServiceSetup {
+	async call(): Promise<AdTags> {
 		if (!this.isEnabled()) {
 			return {};
 		}
