@@ -1,5 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
+	adMarketplace,
 	audigent,
 	bidders,
 	communicationService,
@@ -11,6 +12,7 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
+	liveConnect,
 	nielsen,
 	PartnerPipeline,
 	silverSurferService,
@@ -33,6 +35,8 @@ export class UcpMobileLighterAds implements DiProcess {
 				iasPublisherOptimization,
 				confiant,
 				durationMedia,
+				liveConnect,
+				adMarketplace,
 				stroer,
 				bidders,
 				nielsen,
