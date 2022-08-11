@@ -1,13 +1,11 @@
-import { WindowContextDto } from '../interfaces/window-context-dto';
 import { FandomContext, Page, Site } from '../models/fandom-context';
 
 export function createFandomContext() {
-	// @ts-ignore because it does not recognize context correctly
-	const windowContext: WindowContextDto = window.fandomContext;
+	const windowContext: WindowFandomContext = window.fandomContext;
 	return validateFandomContext(windowContext);
 }
 
-function validateFandomContext(windowContext: WindowContextDto): FandomContext {
+function validateFandomContext(windowContext: WindowFandomContext): FandomContext {
 	return new FandomContext(
 		new Site(
 			windowContext?.site?.categories,
