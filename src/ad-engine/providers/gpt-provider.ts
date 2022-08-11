@@ -214,6 +214,7 @@ export class GptProvider implements Provider {
 	setPPID() {
 		const ppid = context.get('targeting.ppid');
 		const tag = window.googletag.pubads();
+		console.timeEnd('DJ: testing performance');
 		tag.setPublisherProvidedId(ppid);
 	}
 
