@@ -4,19 +4,16 @@ import { WaitFor } from '../../ad-engine/utils';
 
 class AdIdentity extends BaseServiceSetup {
 	async setupPPID(): Promise<void> {
-		console.log('DJ: Awaiting for SS SDK');
-		const SilverSurferAwaitTime = 25;
-		const SilverSurferAvailabilityTries = 100;
+		const SilverSurferAwaitTime = 50;
+		const SilverSurferAvailabilityTries = 3;
 		await new WaitFor(
 			() => window.SilverSurferSDK && window.SilverSurferSDK.isInitialized(),
 			SilverSurferAvailabilityTries,
 			0,
 			SilverSurferAwaitTime,
 		);
-		console.log('DJ: SS SDK ready');
 		if (window.SilverSurferSDK?.requestUserPPID) {
 			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
-				console.log('DJ: Got PPID', ppid);
 				context.set('targeting.ppid', ppid);
 			});
 
