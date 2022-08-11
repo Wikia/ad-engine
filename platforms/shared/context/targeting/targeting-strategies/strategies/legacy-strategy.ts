@@ -1,8 +1,8 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
-import { TargetingStrategy } from '../interfaces/targeting-strategy';
+import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { CommonStrategy } from './common-strategy';
 
-export class LegacyStrategy extends CommonStrategy implements TargetingStrategy {
+export class LegacyStrategy extends CommonStrategy implements TargetingStrategyInterface {
 	constructor(private skin: string) {
 		super();
 	}

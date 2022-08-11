@@ -4,9 +4,9 @@ import { CommonStrategy } from './common-strategy';
 import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
 import { FandomContext } from '../models/fandom-context';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
-import { TargetingStrategy } from '../interfaces/targeting-strategy';
+import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 
-export class PageContextStrategy extends CommonStrategy implements TargetingStrategy {
+export class PageContextStrategy extends CommonStrategy implements TargetingStrategyInterface {
 	constructor(private skin: string, private context: FandomContext) {
 		super();
 	}

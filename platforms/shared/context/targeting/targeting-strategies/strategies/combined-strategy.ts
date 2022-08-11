@@ -3,10 +3,10 @@ import { context, Targeting, utils } from '@wikia/ad-engine';
 import { CommonStrategy } from './common-strategy';
 import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
-import { TargetingStrategy } from '../interfaces/targeting-strategy';
+import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { FandomContext } from '../models/fandom-context';
 
-export class CombinedStrategy extends CommonStrategy implements TargetingStrategy {
+export class CombinedStrategy extends CommonStrategy implements TargetingStrategyInterface {
 	constructor(private skin: string, private context: FandomContext) {
 		super();
 	}
