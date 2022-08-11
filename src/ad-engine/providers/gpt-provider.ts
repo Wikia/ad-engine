@@ -37,8 +37,8 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 }
 
 function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
-	const SilverSurferAwaitTime = 100;
-	const SilverSurferAvailabilityTries = 3;
+	const SilverSurferAwaitTime = 25;
+	const SilverSurferAvailabilityTries = 5;
 
 	return function (...args: any): void {
 		new WaitFor(
