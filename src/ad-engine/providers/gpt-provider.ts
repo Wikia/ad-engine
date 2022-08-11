@@ -213,7 +213,6 @@ export class GptProvider implements Provider {
 
 	setPPID() {
 		const ppid = context.get('targeting.ppid');
-		console.log('DJ: Setting up PPID to GPT : ', ppid);
 		const tag = window.googletag.pubads();
 		tag.setPublisherProvidedId(ppid);
 	}
