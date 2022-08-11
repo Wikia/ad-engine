@@ -21,6 +21,7 @@ import {
 	stroer,
 	taxonomyService,
 	adMarketplace,
+	adIdentity,
 } from '@wikia/ad-engine';
 import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
 
@@ -31,6 +32,7 @@ export class UcpMobileAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				adIdentity,
 				bidders,
 				liveConnect,
 				facebookPixel,

@@ -18,6 +18,7 @@ import {
 	silverSurferService,
 	stroer,
 	taxonomyService,
+	adIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
 
@@ -28,6 +29,7 @@ export class UcpMobileLighterAds implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				adIdentity,
 				taxonomyService,
 				silverSurferService,
 				facebookPixel,

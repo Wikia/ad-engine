@@ -14,6 +14,7 @@ import {
 	taxonomyService,
 	audigent,
 	confiant,
+	adIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
 
@@ -24,6 +25,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				adIdentity,
 				taxonomyService,
 				silverSurferService,
 				facebookPixel,

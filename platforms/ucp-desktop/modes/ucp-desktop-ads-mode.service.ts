@@ -21,6 +21,7 @@ import {
 	stroer,
 	taxonomyService,
 	adMarketplace,
+	adIdentity,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
@@ -31,6 +32,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				adIdentity,
 				playerExperimentSetup,
 				bidders,
 				liveConnect,

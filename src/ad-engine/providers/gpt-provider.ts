@@ -5,12 +5,11 @@ import { AdSlot, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
-	externalLogger,
 	slotDataParamsUpdater,
 	slotService,
 	trackingOptIn,
 } from '../services';
-import { defer, logger, WaitFor } from '../utils';
+import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
@@ -33,29 +32,6 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 
 			return window.googletag.cmd.push(() => method.apply(this, args));
 		});
-	};
-}
-
-function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
-	const SilverSurferAwaitTime = 25;
-	const SilverSurferAvailabilityTries = 1000;
-	console.log('DJ : Waiting for SilverSurferSDK');
-	return function (...args: any): void {
-		new WaitFor(
-			() => window.SilverSurferSDK && window.SilverSurferSDK.isInitialized(),
-			SilverSurferAvailabilityTries,
-			0,
-			SilverSurferAwaitTime,
-		)
-			.until()
-			.then((isSilverSurferLoaded) => {
-				console.log('DJ : SilverSurferSDK is ready');
-				if (isSilverSurferLoaded) {
-					method.call(this, args);
-				} else {
-					externalLogger.log('SilverSurfer loading failed');
-				}
-			});
 	};
 }
 
@@ -216,7 +192,6 @@ export class GptProvider implements Provider {
 		configure();
 		this.setupRestrictDataProcessing();
 		this.setPPID();
-		this.setupPPID();
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
@@ -236,22 +211,11 @@ export class GptProvider implements Provider {
 		});
 	}
 
-	@decorate(postponeExecutionUntilSilverSurferLoads)
-	setupPPID(): void {
-		if (window.SilverSurferSDK?.requestUserPPID && context.get('services.ppid.enabled')) {
-			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
-				this.setPPID(ppid);
-			});
-
-			window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
-		}
-	}
-
-	setPPID(ppid = '2c737caf-e58a-43b9-b0dd-1ff7b8dbd6b1') {
-		console.log('DJ : Set up a PPID : ', ppid);
+	setPPID() {
+		const ppid = context.get('targeting.ppid');
+		console.log('DJ: Setting up PPID to GPT : ', ppid);
 		const tag = window.googletag.pubads();
 		tag.setPublisherProvidedId(ppid);
-		context.set('targeting.ppid', ppid);
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
