@@ -709,7 +709,7 @@
             "regions": [
                 "US"
             ],
-            "sampling": 50.0,
+            "sampling": 25.0,
             "value": true
         }
     ],
@@ -880,15 +880,22 @@
                 "fandomdesktop",
                 "fandommobile"
             ],
-            "devices": [
-                "desktop",
-                "smartphone",
-                "tablet"
-            ],
             "regions": [
                 "XX"
             ],
             "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "AL",
+                "MC"
+            ],
+            "value": true
         }
     ],
     "icUAPJWPlayerDelay": [
