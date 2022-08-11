@@ -1,5 +1,6 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
+	adIdentity,
 	adMarketplace,
 	audigent,
 	bidders,
@@ -51,6 +52,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
 
+		adIdentity.call();
 		eyeota.call();
 		facebookPixel.call();
 		audigent.call();

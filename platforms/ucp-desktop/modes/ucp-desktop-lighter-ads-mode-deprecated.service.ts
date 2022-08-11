@@ -1,5 +1,6 @@
 import { startAdEngine } from '@platforms/shared';
 import {
+	adIdentity,
 	audigent,
 	communicationService,
 	confiant,
@@ -48,6 +49,7 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
 
+		adIdentity.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
