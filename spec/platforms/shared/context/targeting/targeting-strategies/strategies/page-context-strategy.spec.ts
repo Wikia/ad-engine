@@ -72,10 +72,9 @@ describe('PageContextStrategy execution', () => {
 			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
-		const expectedTargeting = { ...defaultExpectedTargeting };
 
 		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
-			expectedTargeting,
+			defaultExpectedTargeting,
 		);
 	});
 
