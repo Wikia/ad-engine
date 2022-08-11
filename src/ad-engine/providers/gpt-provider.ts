@@ -38,8 +38,8 @@ export function postponeExecutionUntilGptLoads(method: () => void): any {
 
 function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
 	const SilverSurferAwaitTime = 25;
-	const SilverSurferAvailabilityTries = 5;
-
+	const SilverSurferAvailabilityTries = 1000;
+	console.log('DJ : Waiting for SilverSurferSDK');
 	return function (...args: any): void {
 		new WaitFor(
 			() => window.SilverSurferSDK && window.SilverSurferSDK.isInitialized(),
@@ -49,6 +49,7 @@ function postponeExecutionUntilSilverSurferLoads(method: () => void): any {
 		)
 			.until()
 			.then((isSilverSurferLoaded) => {
+				console.log('DJ : SilverSurferSDK is ready');
 				if (isSilverSurferLoaded) {
 					method.call(this, args);
 				} else {
