@@ -1,10 +1,11 @@
 import { BaseServiceSetup, context } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { WaitFor } from '../../ad-engine/utils';
+import { logger, WaitFor } from '../../ad-engine/utils';
 
 class AdIdentity extends BaseServiceSetup {
+	logGroup = 'AdIdentity';
 	async setupPPID(): Promise<void> {
-		console.log('DJ: Awaiting for SS SDK');
+		logger(this.logGroup, 'Awaiting for SS SDK');
 		const SilverSurferAwaitTime = 50;
 		const SilverSurferAvailabilityTries = 100;
 		await new WaitFor(
@@ -13,10 +14,10 @@ class AdIdentity extends BaseServiceSetup {
 			0,
 			SilverSurferAwaitTime,
 		);
-		console.log('DJ: SS SDK ready');
+		logger(this.logGroup, 'SS SDK ready');
 		if (window.SilverSurferSDK?.requestUserPPID) {
 			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
-				console.log('DJ: Got PPID', ppid);
+				logger(this.logGroup, 'Got PPID' + ppid);
 				context.set('targeting.ppid', ppid);
 			});
 
