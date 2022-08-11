@@ -1,4 +1,4 @@
-import { context as adContext, Targeting, utils } from '@wikia/ad-engine';
+import { context, Targeting, utils } from '@wikia/ad-engine';
 
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
@@ -33,7 +33,7 @@ export abstract class CommonStrategy {
 		const hasFeaturedVideo = !!videoStatus.hasVideoOnPage;
 		const hasIncontentPlayer =
 			!hasFeaturedVideo &&
-			!!document.querySelector(adContext.get('slots.incontent_player.insertBeforeSelector'));
+			!!document.querySelector(context.get('slots.incontent_player.insertBeforeSelector'));
 
 		this.updateVideoContext(hasFeaturedVideo, hasIncontentPlayer);
 
@@ -82,15 +82,15 @@ export abstract class CommonStrategy {
 
 	// @TODO: This should not be here. It is a side effect that is unpredictable.
 	private updateVideoContext(hasFeaturedVideo, hasIncontentPlayer): void {
-		adContext.set('custom.hasFeaturedVideo', hasFeaturedVideo);
-		adContext.set('custom.hasIncontentPlayer', hasIncontentPlayer);
+		context.set('custom.hasFeaturedVideo', hasFeaturedVideo);
+		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
 	private extendWithOptionalKeyVals(targeting) {
 		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
-			pv: adContext.get('wiki.pvNumber'),
-			pvg: adContext.get('wiki.pvNumberGlobal'),
+			pv: context.get('wiki.pvNumber'),
+			pvg: context.get('wiki.pvNumberGlobal'),
 		};
 
 		Object.keys(keyValsMap).forEach((key) => {
