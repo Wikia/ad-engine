@@ -19,7 +19,7 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 		let targeting: Partial<Targeting> = {
 			age: this.context.page.tags?.age || [],
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			esrb: this.context.site.esrbRating,
+			esrb: this.context.site.esrbRating || [],
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
 			sex: this.context.page.tags?.sex || [],

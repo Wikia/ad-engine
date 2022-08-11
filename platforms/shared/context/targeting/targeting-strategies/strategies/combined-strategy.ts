@@ -17,16 +17,16 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		let targeting: Partial<Targeting> = {
-			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
 			age: this.context.site.tags?.age || [],
+			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
 			esrb: this.context.site.esrbRating || [],
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
+			sex: this.context.site.tags?.sex || [],
 			s0: this.context.site.vertical,
 			s0c: this.context.site.categories,
-			s1: utils.targeting.getRawDbName(wiki.targeting.wikiDbName),
-			s2: this.getAdLayout(wiki.targeting.pageType || 'article'),
-			sex: this.context.site.tags?.sex || [],
+			s1: utils.targeting.getRawDbName(this.context.site.siteName),
+			s2: this.getAdLayout(this.context.page.pageType || 'article'),
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
