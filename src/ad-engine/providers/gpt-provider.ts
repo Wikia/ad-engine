@@ -212,11 +212,14 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		const ppid = context.get('targeting.ppid');
-		const tag = window.googletag.pubads();
-		logger('AdIdentity', 'Setting PPID' + ppid);
-		console.timeEnd('DJ: testing performance');
-		tag.setPublisherProvidedId(ppid);
+		communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
+			const tag = window.googletag.pubads();
+			console.timeEnd('DJ: testing performance');
+			tag.setPublisherProvidedId(ppid);
+
+			logger('AdIdentity', 'Got PPID' + ppid);
+			context.set('targeting.ppid', ppid);
+		});
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)

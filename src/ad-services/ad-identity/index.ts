@@ -1,5 +1,4 @@
 import { BaseServiceSetup, context } from '@ad-engine/core';
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { logger, WaitFor } from '../../ad-engine/utils';
 
 class AdIdentity extends BaseServiceSetup {
@@ -16,11 +15,6 @@ class AdIdentity extends BaseServiceSetup {
 		);
 		logger(this.logGroup, 'SS SDK ready');
 		if (window.SilverSurferSDK?.requestUserPPID) {
-			communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
-				logger(this.logGroup, 'Got PPID' + ppid);
-				context.set('targeting.ppid', ppid);
-			});
-
 			window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
 		}
 	}
