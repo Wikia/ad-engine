@@ -32,7 +32,6 @@ export class UcpMobilePlatform {
 	constructor(private pipeline: ProcessPipeline) {}
 
 	execute(): void {
-		console.time('DJ: testing performance');
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),

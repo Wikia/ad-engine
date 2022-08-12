@@ -6,11 +6,11 @@ class AdIdentity extends BaseServiceSetup {
 	async setupPPID(): Promise<void> {
 		logger(this.logGroup, 'Awaiting for SS SDK');
 		const SilverSurferAwaitTime = 50;
-		const SilverSurferAvailabilityTries = 100;
+		const SilverSurferAvailabilityTries = 10;
 		await new WaitFor(
 			() => window.SilverSurferSDK && window.SilverSurferSDK.isInitialized(),
 			SilverSurferAvailabilityTries,
-			0,
+			25,
 			SilverSurferAwaitTime,
 		);
 		logger(this.logGroup, 'SS SDK ready');

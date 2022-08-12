@@ -33,7 +33,6 @@ export class UcpDesktopPlatform {
 
 	execute(): void {
 		// Config
-		console.time('DJ: testing performance');
 		this.pipeline.add(
 			() => context.extend(basicContext),
 			PlatformContextSetup,
