@@ -66,9 +66,19 @@ export class StickedBoxadHelper {
 			AdSlot.CUSTOM_EVENT,
 			({ payload }) => {
 				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
+
 					const tlbHeight =
 						document.getElementById(this.configuration.pusherSlotName)?.offsetHeight || PADDING_TOP;
 					this.railElement.style.top = `${tlbHeight}px`;
+				}
+			},
+			this.configuration.pusherSlotName,
+		);
+		communicationService.onSlotEvent(
+			AdSlot.CUSTOM_EVENT,
+			({ payload }) => {
+				if (payload.status === universalAdPackage.SLOT_UNSTICKED_STATE || universalAdPackage.SLOT_FORCE_UNSTICK) {
+					this.railElement.style.top = '0';
 				}
 			},
 			this.configuration.pusherSlotName,
