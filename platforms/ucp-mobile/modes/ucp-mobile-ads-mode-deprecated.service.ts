@@ -51,8 +51,8 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
+		inhibitors.push(adIdentity.call());
 
-		adIdentity.call();
 		eyeota.call();
 		facebookPixel.call();
 		audigent.call();

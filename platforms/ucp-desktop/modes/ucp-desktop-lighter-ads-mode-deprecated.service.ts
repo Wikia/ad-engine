@@ -48,8 +48,8 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
+		inhibitors.push(adIdentity.call());
 
-		adIdentity.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
