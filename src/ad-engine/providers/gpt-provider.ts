@@ -217,7 +217,12 @@ export class GptProvider implements Provider {
 			console.timeEnd('DJ: testing performance');
 			tag.setPublisherProvidedId(ppid);
 
-			logger('AdIdentity', 'Got PPID' + ppid);
+			logger(
+				'AdIdentity',
+				`Set PPID (Branch: ADEN-12057-ppid_fixes, initType: ${context.get(
+					'options.adsInitializeV2',
+				)})` + ppid,
+			);
 			context.set('targeting.ppid', ppid);
 		});
 	}
