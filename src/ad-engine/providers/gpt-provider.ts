@@ -222,7 +222,6 @@ export class GptProvider implements Provider {
 					'options.adsInitializeV2',
 				)})` + ppid,
 			);
-			context.set('targeting.ppid', ppid);
 		});
 	}
 

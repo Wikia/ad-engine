@@ -61,7 +61,9 @@ export class UcpDesktopAdsMode implements DiProcess {
 					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup,
+				gptSetup.setOptions({
+					dependencies: [adIdentity.initialized],
+				}),
 			)
 			.execute()
 			.then(() => {
