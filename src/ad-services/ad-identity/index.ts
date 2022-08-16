@@ -4,10 +4,9 @@ import { logger } from '../../ad-engine/utils';
 class AdIdentity extends BaseServiceSetup {
 	logGroup = 'AdIdentity';
 	async setupPPID(): Promise<void> {
-		logger(this.logGroup, 'Awaiting for SS SDK');
-		logger(this.logGroup, 'SS SDK ready');
+		logger(this.logGroup, 'Calling PPID in SS');
 		if (window.SilverSurferSDK?.requestUserPPID) {
-			window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
+			await window.SilverSurferSDK.requestUserPPID(context.get('services.ppidAdmsStorage.enabled'));
 		}
 	}
 
