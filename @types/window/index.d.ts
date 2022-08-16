@@ -20,6 +20,7 @@ interface Window {
 	cnx?: any;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
+	fandomContext: WindowFandomContext;
 	google: {
 		ima: typeof google.ima;
 	};
