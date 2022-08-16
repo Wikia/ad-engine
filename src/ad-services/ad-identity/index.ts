@@ -9,6 +9,7 @@ class AdIdentity extends BaseServiceSetup {
 			const ppid = await window.SilverSurferSDK.requestUserPPID(
 				context.get('services.ppidAdmsStorage.enabled'),
 			);
+			logger(this.logGroup, 'Setting PPID from SS');
 			context.set('targeting.ppid', ppid);
 		}
 	}
@@ -16,6 +17,7 @@ class AdIdentity extends BaseServiceSetup {
 	async call(): Promise<void> {
 		if (context.get('services.ppid.enabled')) {
 			await this.setupPPID();
+			logger(this.logGroup, 'PPID Set up ');
 		}
 	}
 }
