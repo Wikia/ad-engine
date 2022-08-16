@@ -60,9 +60,7 @@ export class UcpMobileAdsMode implements DiProcess {
 					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
-					dependencies: [adIdentity.initialized],
-				}),
+				gptSetup,
 			)
 			.execute()
 			.then(() => {
