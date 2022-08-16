@@ -1,4 +1,4 @@
-export interface WindowContextDto {
+interface WindowFandomContext {
 	site: {
 		categories: [];
 		directedAtChildren: boolean;
