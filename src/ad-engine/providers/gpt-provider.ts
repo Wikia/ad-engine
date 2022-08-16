@@ -213,19 +213,9 @@ export class GptProvider implements Provider {
 
 	setPPID() {
 		const ppid = context.get('targeting.ppid');
-		logger('AdIdentity', 'Checking PPID');
 		if (ppid) {
 			const tag = window.googletag.pubads();
 			tag.setPublisherProvidedId(ppid);
-
-			logger(
-				'AdIdentity',
-				`Set PPID (Branch: ADEN-12057-ppid_fixes, initType: ${context.get(
-					'options.adsInitializeV2',
-				)})` + ppid,
-			);
-		} else {
-			logger('AdIdentity', 'PPID is not available');
 		}
 	}
 
