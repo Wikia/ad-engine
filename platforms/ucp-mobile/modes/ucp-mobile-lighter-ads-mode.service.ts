@@ -51,7 +51,9 @@ export class UcpMobileLighterAds implements DiProcess {
 					],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup,
+				gptSetup.setOptions({
+					dependencies: [adIdentity.initialized],
+				}),
 			)
 			.execute()
 			.then(() => {
