@@ -25,7 +25,11 @@ export class UcpMobileLighterDeprecatedAdsMode implements DiProcess {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
 
-		startAdEngine(inhibitors);
+		const requiredInhibitors = [adIdentity.initialized];
+		const maxTimeout = context.get('options.maxDelayTimeout');
+		new Runner(requiredInhibitors, maxTimeout).waitForInhibitors().then(() => {
+			startAdEngine(inhibitors);
+		});
 	}
 
 	private callExternals(): Promise<any>[] {
