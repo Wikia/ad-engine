@@ -212,17 +212,16 @@ export class GptProvider implements Provider {
 	}
 
 	setPPID() {
-		communicationService.on(eventsRepository.IDENTITY_RESOLUTION_PPID_UPDATED, ({ ppid }) => {
-			const tag = window.googletag.pubads();
-			tag.setPublisherProvidedId(ppid);
+		const tag = window.googletag.pubads();
+		const ppid = context.get('targeting.ppid');
+		tag.setPublisherProvidedId(ppid);
 
-			logger(
-				'AdIdentity',
-				`Set PPID (Branch: ADEN-12057-ppid_fixes, initType: ${context.get(
-					'options.adsInitializeV2',
-				)})` + ppid,
-			);
-		});
+		logger(
+			'AdIdentity',
+			`Set PPID (Branch: ADEN-12057-ppid_fixes, initType: ${context.get(
+				'options.adsInitializeV2',
+			)})` + ppid,
+		);
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
