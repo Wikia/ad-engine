@@ -159,12 +159,6 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Ad clicked',
 		payload: props<Dictionary>(),
 	},
-	// Identity resolution events //
-	IDENTITY_RESOLUTION_PPID_UPDATED: {
-		category: '[Identity resolution]',
-		name: 'PPID Updated',
-		payload: props<string>(),
-	},
 	// Integrated partners events //
 	ADMARKETPLACE_INIT: {
 		category: '[Search suggestions]',
