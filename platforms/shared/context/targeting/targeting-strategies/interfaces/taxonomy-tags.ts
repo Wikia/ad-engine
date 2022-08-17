@@ -1,4 +1,4 @@
-export interface PageLevelTags {
+export interface TaxonomyTags {
 	gnre?: string[];
 	media?: string[];
 	pform?: string[];

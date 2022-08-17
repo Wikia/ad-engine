@@ -1,11 +1,13 @@
-import { TargetingStrategy } from '../interfaces/targeting-strategy';
 import { context, Targeting, utils } from '@wikia/ad-engine';
-import { CommonStrategy } from './common-strategy';
-import { Context } from '../models/context';
-import { PageLevelTags } from '../interfaces/page-level-tags';
 
-export class PageContextStrategy extends CommonStrategy implements TargetingStrategy {
-	constructor(private skin: string, private context: Context) {
+import { CommonStrategy } from './common-strategy';
+import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
+import { FandomContext } from '../models/fandom-context';
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
+import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
+
+export class PageContextStrategy extends CommonStrategy implements TargetingStrategyInterface {
+	constructor(private skin: string, private context: FandomContext) {
 		super();
 	}
 
@@ -17,7 +19,7 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 		let targeting: Partial<Targeting> = {
 			age: this.context.page.tags?.age || [],
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			esrb: this.context.site.esrbRating,
+			esrb: this.context.site.esrbRating || [],
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
 			sex: this.context.page.tags?.sex || [],
@@ -28,14 +30,7 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: PageLevelTags = {
-			gnre: this.context.page.tags?.gnre || [],
-			media: this.context.page.tags?.media || [],
-			pform: this.context.page.tags?.pform || [],
-			pub: this.context.page.tags?.pub || [],
-			theme: this.context.page.tags?.theme || [],
-			tv: this.context.page.tags?.tv || [],
-		};
+		const pageLevelTags: TaxonomyTags = createTaxonomyTags(this.context.page.tags);
 
 		this.addPagePrefixToValues(pageLevelTags);
 
