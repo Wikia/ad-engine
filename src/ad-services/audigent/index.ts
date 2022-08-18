@@ -3,7 +3,6 @@ import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
 const MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
-const STANDALONE_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
@@ -17,7 +16,6 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<Event>;
-	private standaloneScriptLoader: Promise<Event>;
 	private segmentsScriptLoader: Promise<Event>;
 
 	private isEnabled(): boolean {
@@ -47,15 +45,6 @@ class Audigent extends BaseServiceSetup {
 		);
 	}
 
-	loadStandaloneLibrary(): void {
-		this.standaloneScriptLoader = utils.scriptLoader.loadScript(
-			STANDALONE_SCRIPT_URL,
-			'text/javascript',
-			true,
-			'first',
-		);
-	}
-
 	init(instantConfig: InstantConfigService): void {
 		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
 
@@ -66,6 +55,8 @@ class Audigent extends BaseServiceSetup {
 			);
 			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
 			this.loadSegmentLibrary();
+		} else {
+			this.setupSegmentsListener();
 		}
 	}
 
@@ -79,28 +70,20 @@ class Audigent extends BaseServiceSetup {
 
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 
+		!this.segmentsScriptLoader && this.loadSegmentLibrary();
+		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
 		if (newIntegrationEnabled) {
-			!this.segmentsScriptLoader && this.loadSegmentLibrary();
-			!this.matchesTagScriptLoader && this.loadMatchesLibrary();
 			this.setupSegmentsListener();
-		} else {
-			!this.standaloneScriptLoader && this.loadStandaloneLibrary();
-			!this.matchesTagScriptLoader && this.loadMatchesLibrary();
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
-
-			if (!newIntegrationEnabled) {
-				this.standaloneScriptLoader.then(() => {
-					utils.logger(logGroup, 'segment tag script loaded');
-					this.setup();
-				});
-			} else {
-				this.matchesTagScriptLoader.then(() => {
-					utils.logger(logGroup, 'audience tag script loaded');
-				});
-			}
+			this.matchesTagScriptLoader.then(() => {
+				utils.logger(logGroup, 'audience tag script loaded');
+			});
+			this.segmentsScriptLoader.then(() => {
+				utils.logger(logGroup, 'segment tag script loaded');
+			});
 			this.isLoaded = true;
 		}
 	}
