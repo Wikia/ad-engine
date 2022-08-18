@@ -3,7 +3,7 @@ import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
 const AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
-const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
@@ -32,17 +32,16 @@ class Audigent extends BaseServiceSetup {
 			'services.audigent.segmentsScriptUrl',
 			instantConfig.get('icAudigentSegmentsScriptUrl'),
 		);
-		this.setupSegmentsListener();
+		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
+
+		context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
+
+		if (newIntegrationEnabled) {
+			this.preloadSegmentLibrary();
+		}
 	}
 
-	preloadLibraries(): void {
-		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
-			AUDIENCE_TAG_SCRIPT_URL,
-			'text/javascript',
-			true,
-			'first',
-		);
-
+	preloadSegmentLibrary(): void {
 		this.segmentsScriptLoader = utils.scriptLoader.loadScript(
 			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
 			'text/javascript',
@@ -59,8 +58,30 @@ class Audigent extends BaseServiceSetup {
 
 		context.set('targeting.AU_SEG', '-1');
 
-		if (!this.audienceTagScriptLoader) {
-			this.preloadLibraries();
+		if (!this.segmentsScriptLoader) {
+			this.preloadSegmentLibrary();
+		}
+		if (context.get('services.audigent.newIntegrationEnabled')) {
+			this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
+				context.get('services.audigent.audienceTagScriptUrl') || AUDIENCE_TAG_SCRIPT_URL,
+				'text/javascript',
+				true,
+				'first',
+			);
+		}
+		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
+		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
+
+		if (!this.isLoaded && gamDirectTestEnabled) {
+			this.audienceTagScriptLoader.then(() => {
+				utils.logger(logGroup, 'audience tag script loaded');
+				this.isLoaded = true;
+			});
+			return;
+		}
+
+		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
 		}
 
 		if (!this.isLoaded) {
@@ -70,11 +91,12 @@ class Audigent extends BaseServiceSetup {
 				utils.logger(logGroup, 'audience tag script loaded');
 			});
 
-			this.segmentsScriptLoader.then(() => {
-				utils.logger(logGroup, 'segment tag script loaded');
-				this.setup();
-			});
-
+			if (!newIntegrationEnabled) {
+				this.segmentsScriptLoader.then(() => {
+					utils.logger(logGroup, 'segment tag script loaded');
+					this.setup();
+				});
+			}
 			this.isLoaded = true;
 		}
 	}

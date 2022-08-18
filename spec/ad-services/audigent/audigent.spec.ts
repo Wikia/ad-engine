@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, externalLogger, utils } from '../../../src/ad-engine';
-import { audigent } from '../../../src/ad-services';
+import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
@@ -18,6 +18,7 @@ describe('Audigent', () => {
 
 		context.set('services.audigent.enabled', true);
 		context.set('services.audigent.tracking.sampling', 0);
+		context.set('services.audigent.newIntegrationEnabled', false);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -34,6 +35,7 @@ describe('Audigent', () => {
 
 		context.set('services.audigent.enabled', undefined);
 		context.set('services.audigent.tracking.sampling', undefined);
+		context.set('services.audigent.newIntegrationEnabled', undefined);
 		context.set('services.audigent.numberOfTries', undefined);
 		context.set('services.audigent.limit', undefined);
 
@@ -81,11 +83,21 @@ describe('Audigent', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Audigent requests for two assets when integration is enabled', async () => {
+	it('Audigent requests for two assets when legacy integration enabled', async () => {
 		audigent.preloadLibraries();
 		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(2);
+	});
+
+	it('Audigent requests only for one asset when new integration enabled', async () => {
+		context.set('services.audigent.newIntegrationEnabled', true);
+		context.set('services.audigent.numberOfTries', 1);
+
+		audigent.preloadLibraries();
+		await audigent.call();
+
+		expect(loadScriptStub.callCount).to.equal(1);
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
