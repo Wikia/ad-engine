@@ -2,7 +2,7 @@ import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/cor
 import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
-const AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
 const STANDALONE_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
 const DEFAULT_NUMBER_OF_TRIES = 5;
@@ -16,7 +16,7 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 
 class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
-	private audienceTagScriptLoader: Promise<Event>;
+	private matchesTagScriptLoader: Promise<Event>;
 	private standaloneScriptLoader: Promise<Event>;
 	private segmentsScriptLoader: Promise<Event>;
 
@@ -38,9 +38,9 @@ class Audigent extends BaseServiceSetup {
 		);
 	}
 
-	loadAudienceLibrary(): void {
-		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
-			AUDIENCE_TAG_SCRIPT_URL,
+	loadMatchesLibrary(): void {
+		this.matchesTagScriptLoader = utils.scriptLoader.loadScript(
+			MATCHES_SCRIPT_URL,
 			'text/javascript',
 			true,
 			'first',
@@ -80,15 +80,12 @@ class Audigent extends BaseServiceSetup {
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 
 		if (newIntegrationEnabled) {
-			if (!this.segmentsScriptLoader) {
-				this.loadSegmentLibrary();
-			}
-			if (!this.audienceTagScriptLoader) {
-				this.loadAudienceLibrary();
-			}
+			!this.segmentsScriptLoader && this.loadSegmentLibrary();
+			!this.matchesTagScriptLoader && this.loadMatchesLibrary();
 			this.setupSegmentsListener();
 		} else {
-			this.loadStandaloneLibrary();
+			!this.standaloneScriptLoader && this.loadStandaloneLibrary();
+			!this.matchesTagScriptLoader && this.loadMatchesLibrary();
 		}
 
 		if (!this.isLoaded) {
@@ -100,7 +97,7 @@ class Audigent extends BaseServiceSetup {
 					this.setup();
 				});
 			} else {
-				this.audienceTagScriptLoader.then(() => {
+				this.matchesTagScriptLoader.then(() => {
 					utils.logger(logGroup, 'audience tag script loaded');
 				});
 			}
