@@ -69,7 +69,6 @@ class Audigent extends BaseServiceSetup {
 		context.set('targeting.AU_SEG', '-1');
 
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
-
 		!this.segmentsScriptLoader && this.loadSegmentLibrary();
 		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
 		if (newIntegrationEnabled) {
@@ -111,6 +110,8 @@ class Audigent extends BaseServiceSetup {
 
 	resetLoadedState(): void {
 		this.isLoaded = false;
+		this.segmentsScriptLoader = null;
+		this.matchesTagScriptLoader = null;
 	}
 
 	private static sliceSegments() {
