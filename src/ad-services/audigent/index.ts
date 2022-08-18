@@ -131,8 +131,6 @@ class Audigent extends BaseServiceSetup {
 
 	resetLoadedState(): void {
 		this.isLoaded = false;
-		this.segmentsScriptLoader = null;
-		this.audienceTagScriptLoader = null;
 	}
 
 	private static sliceSegments() {
