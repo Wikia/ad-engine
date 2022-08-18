@@ -14,7 +14,6 @@ import {
 	identityHub,
 	liveConnect,
 	nielsen,
-	optimera,
 	PartnerPipeline,
 	prebidNativeProvider,
 	silverSurferService,
@@ -35,7 +34,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				liveConnect,
 				facebookPixel,
 				taxonomyService,
-				optimera,
 				silverSurferService,
 				wadRunner,
 				audigent,
@@ -51,7 +49,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				playerSetup.setOptions({
 					dependencies: [
 						bidders.initialized,
-						optimera.initialized,
 						taxonomyService.initialized,
 						silverSurferService.initialized,
 						wadRunner.initialized,

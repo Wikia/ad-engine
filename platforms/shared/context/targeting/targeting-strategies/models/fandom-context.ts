@@ -1,4 +1,4 @@
-export class Context {
+export class FandomContext {
 	constructor(public readonly site: Site, public readonly page: Page) {}
 }
 

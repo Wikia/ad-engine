@@ -6,16 +6,18 @@ import {
 	Site,
 	Page,
 } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { CombinedStrategy } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy';
+import { PageContextStrategy } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/page-context-strategy';
 
-describe('CombinedStrategy execution', () => {
+describe('PageContextStrategy execution', () => {
 	beforeEach(() => {
 		context.set('geo.country', 'PL');
+		context.set('wiki.targeting.wikiDbName', 'test');
 		context.set('wiki.targeting.wikiVertical', 'test');
 	});
 
 	afterEach(() => {
 		context.set('geo.country', undefined);
+		context.set('wiki.targeting.wikiDbName', undefined);
 		context.set('wiki.targeting.wikiVertical', undefined);
 	});
 
@@ -56,12 +58,12 @@ describe('CombinedStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
+		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
 			defaultExpectedTargeting,
 		);
 	});
 
-	it('Returns tags when site tags are not empty and page tags are empty', function () {
+	it('Returns empty tags when site tags are not empty and page tags are empty', function () {
 		const mockedSiteTags = {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test2', 'superheroes'],
@@ -70,9 +72,10 @@ describe('CombinedStrategy execution', () => {
 			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
-		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
+			defaultExpectedTargeting,
+		);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -90,10 +93,12 @@ describe('CombinedStrategy execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
+			expectedTargeting,
+		);
 	});
 
-	it('Returns combined tags when site and page tags are not empty', function () {
+	it('Returns correct tags when site and page tags are not empty', function () {
 		const mockedSiteTags = {
 			gnre: ['test1', 'drama', 'comedy', 'horror'],
 			theme: ['test3', 'superheroes'],
@@ -109,11 +114,13 @@ describe('CombinedStrategy execution', () => {
 		const expectedTargeting = {
 			...defaultExpectedTargeting,
 			...{
-				gnre: ['test1', 'drama', 'comedy', 'horror', 'p_test2', 'p_drama', 'p_comedy', 'p_horror'],
+				gnre: ['p_test2', 'p_drama', 'p_comedy', 'p_horror'],
 			},
-			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
+			...{ theme: ['p_test4', 'p_superheroes'] },
 		};
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+		expect(new PageContextStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
+			expectedTargeting,
+		);
 	});
 });
