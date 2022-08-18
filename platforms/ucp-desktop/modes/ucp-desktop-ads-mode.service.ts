@@ -21,7 +21,7 @@ import {
 	stroer,
 	taxonomyService,
 	adMarketplace,
-	adIdentity,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
@@ -32,7 +32,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				adIdentity,
+				userIdentity,
 				playerExperimentSetup,
 				bidders,
 				liveConnect,
@@ -62,7 +62,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
-					dependencies: [adIdentity.initialized],
+					dependencies: [userIdentity.initialized],
 				}),
 			)
 			.execute()

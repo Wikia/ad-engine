@@ -1,6 +1,6 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
-	adIdentity,
+	userIdentity,
 	adMarketplace,
 	anyclip,
 	audigent,
@@ -42,7 +42,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
 
-		const requiredInhibitors = [jwPlayerInhibitor.get(), adIdentity.initialized];
+		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
 		const maxTimeout = context.get('options.maxDelayTimeout');
 		new Runner(requiredInhibitors, maxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);
@@ -85,7 +85,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
-		inhibitors.push(adIdentity.call());
+		inhibitors.push(userIdentity.call());
 
 		eyeota.call();
 		facebookPixel.call();
