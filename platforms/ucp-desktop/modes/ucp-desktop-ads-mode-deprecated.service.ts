@@ -23,7 +23,6 @@ import {
 	jwpSetup,
 	liveConnect,
 	nielsen,
-	optimera,
 	prebidNativeProvider,
 	Runner,
 	silverSurferService,
@@ -81,7 +80,6 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(bidders.call());
-		inhibitors.push(optimera.call());
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
