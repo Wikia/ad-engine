@@ -1,5 +1,6 @@
 import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'audigent';
 const MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -15,8 +16,8 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 
 class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
-	private matchesTagScriptLoader: Promise<Event>;
-	private segmentsScriptLoader: Promise<Event>;
+	private matchesTagScriptLoader: Promise<void>;
+	private segmentsScriptLoader: Promise<void>;
 
 	private isEnabled(): boolean {
 		return (
@@ -28,21 +29,24 @@ class Audigent extends BaseServiceSetup {
 	}
 
 	loadSegmentLibrary(): void {
-		this.segmentsScriptLoader = utils.scriptLoader.loadScript(
-			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
-			'text/javascript',
-			true,
-			'first',
-		);
+		this.segmentsScriptLoader = utils.scriptLoader
+			.loadScript(
+				context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
+				'text/javascript',
+				true,
+				'first',
+			)
+			.then(() => {
+				communicationService.emit(eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED);
+			});
 	}
 
 	loadMatchesLibrary(): void {
-		this.matchesTagScriptLoader = utils.scriptLoader.loadScript(
-			MATCHES_SCRIPT_URL,
-			'text/javascript',
-			true,
-			'first',
-		);
+		this.matchesTagScriptLoader = utils.scriptLoader
+			.loadScript(MATCHES_SCRIPT_URL, 'text/javascript', true, 'first')
+			.then(() => {
+				communicationService.emit(eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED);
+			});
 	}
 
 	init(instantConfig: InstantConfigService): void {
