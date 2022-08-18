@@ -3,6 +3,7 @@ import { InstantConfigService } from '../instant-config';
 
 const logGroup = 'audigent';
 const AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const STANDALONE_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
@@ -16,6 +17,7 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private audienceTagScriptLoader: Promise<Event>;
+	private standaloneScriptLoader: Promise<Event>;
 	private segmentsScriptLoader: Promise<Event>;
 
 	private isEnabled(): boolean {
@@ -45,6 +47,15 @@ class Audigent extends BaseServiceSetup {
 		);
 	}
 
+	loadStandaloneLibrary(): void {
+		this.standaloneScriptLoader = utils.scriptLoader.loadScript(
+			STANDALONE_SCRIPT_URL,
+			'text/javascript',
+			true,
+			'first',
+		);
+	}
+
 	init(instantConfig: InstantConfigService): void {
 		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
 
@@ -66,29 +77,31 @@ class Audigent extends BaseServiceSetup {
 
 		context.set('targeting.AU_SEG', '-1');
 
-		if (!this.segmentsScriptLoader) {
-			this.loadSegmentLibrary();
-		}
-		if (!this.audienceTagScriptLoader) {
-			this.loadAudienceLibrary();
-		}
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 
 		if (newIntegrationEnabled) {
+			if (!this.segmentsScriptLoader) {
+				this.loadSegmentLibrary();
+			}
+			if (!this.audienceTagScriptLoader) {
+				this.loadAudienceLibrary();
+			}
 			this.setupSegmentsListener();
+		} else {
+			this.loadStandaloneLibrary();
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
 
-			this.audienceTagScriptLoader.then(() => {
-				utils.logger(logGroup, 'audience tag script loaded');
-			});
-
 			if (!newIntegrationEnabled) {
-				this.segmentsScriptLoader.then(() => {
+				this.standaloneScriptLoader.then(() => {
 					utils.logger(logGroup, 'segment tag script loaded');
 					this.setup();
+				});
+			} else {
+				this.audienceTagScriptLoader.then(() => {
+					utils.logger(logGroup, 'audience tag script loaded');
 				});
 			}
 			this.isLoaded = true;
