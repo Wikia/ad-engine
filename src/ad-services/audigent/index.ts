@@ -102,6 +102,7 @@ class Audigent extends BaseServiceSetup {
 
 		document.addEventListener('auSegReady', function (e) {
 			utils.logger(logGroup, 'auSegReady event recieved', e);
+			communicationService.emit(eventsRepository.AUDIGENT_SEGMENTS_READY);
 			Audigent.sliceAndSetSegmentsInTargeting();
 		});
 	}

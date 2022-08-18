@@ -12,6 +12,7 @@ const eventsToTrack = {
 	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
 	audigent_matches_library_loaded: eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED,
 	audigent_segment_library_loaded: eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED,
+	audigent_segments_ready: eventsRepository.AUDIGENT_SEGMENTS_READY,
 };
 
 export class LoadTimesService {
