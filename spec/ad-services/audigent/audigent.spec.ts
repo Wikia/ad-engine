@@ -83,21 +83,11 @@ describe('Audigent', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Audigent requests for two assets when legacy integration enabled', async () => {
-		audigent.preloadLibraries();
+	it('Audigent requests for two assets when integration is enabled', async () => {
+		audigent.loadSegmentLibrary();
 		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(2);
-	});
-
-	it('Audigent requests only for one asset when new integration enabled', async () => {
-		context.set('services.audigent.newIntegrationEnabled', true);
-		context.set('services.audigent.numberOfTries', 1);
-
-		audigent.preloadLibraries();
-		await audigent.call();
-
-		expect(loadScriptStub.callCount).to.equal(1);
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {

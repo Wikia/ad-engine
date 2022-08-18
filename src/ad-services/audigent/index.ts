@@ -27,27 +27,35 @@ class Audigent extends BaseServiceSetup {
 		);
 	}
 
-	init(instantConfig: InstantConfigService): void {
-		context.set(
-			'services.audigent.segmentsScriptUrl',
-			instantConfig.get('icAudigentSegmentsScriptUrl'),
-		);
-		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
-
-		context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
-
-		if (newIntegrationEnabled) {
-			this.preloadSegmentLibrary();
-		}
-	}
-
-	preloadSegmentLibrary(): void {
+	loadSegmentLibrary(): void {
 		this.segmentsScriptLoader = utils.scriptLoader.loadScript(
 			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
 			'text/javascript',
 			true,
 			'first',
 		);
+	}
+
+	loadAudienceLibrary(): void {
+		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
+			AUDIENCE_TAG_SCRIPT_URL,
+			'text/javascript',
+			true,
+			'first',
+		);
+	}
+
+	init(instantConfig: InstantConfigService): void {
+		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
+
+		if (newIntegrationEnabled) {
+			context.set(
+				'services.audigent.segmentsScriptUrl',
+				instantConfig.get('icAudigentSegmentsScriptUrl'),
+			);
+			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
+			this.loadSegmentLibrary();
+		}
 	}
 
 	async call(): Promise<void> {
@@ -59,26 +67,12 @@ class Audigent extends BaseServiceSetup {
 		context.set('targeting.AU_SEG', '-1');
 
 		if (!this.segmentsScriptLoader) {
-			this.preloadSegmentLibrary();
+			this.loadSegmentLibrary();
 		}
-		if (context.get('services.audigent.newIntegrationEnabled')) {
-			this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
-				context.get('services.audigent.audienceTagScriptUrl') || AUDIENCE_TAG_SCRIPT_URL,
-				'text/javascript',
-				true,
-				'first',
-			);
+		if (!this.audienceTagScriptLoader) {
+			this.loadAudienceLibrary();
 		}
-		const gamDirectTestEnabled = context.get('services.audigent.gamDirectTestEnabled');
 		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
-
-		if (!this.isLoaded && gamDirectTestEnabled) {
-			this.audienceTagScriptLoader.then(() => {
-				utils.logger(logGroup, 'audience tag script loaded');
-				this.isLoaded = true;
-			});
-			return;
-		}
 
 		if (newIntegrationEnabled) {
 			this.setupSegmentsListener();
@@ -124,6 +118,8 @@ class Audigent extends BaseServiceSetup {
 
 	resetLoadedState(): void {
 		this.isLoaded = false;
+		this.segmentsScriptLoader = null;
+		this.audienceTagScriptLoader = null;
 	}
 
 	private static sliceSegments() {
