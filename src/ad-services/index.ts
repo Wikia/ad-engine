@@ -1,6 +1,7 @@
 export * from './anyclip';
 export * from './audigent';
 export * from './ad-marketplace';
+export * from './user-identity';
 export * from './bt-rec';
 export * from './confiant';
 export * from './connatix';
