@@ -248,6 +248,18 @@
             "value": true
         }
     ],
+    "icAudigentNewIntegrationEnabled": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -367,18 +379,8 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 33.333,
-            "value": "anyclip"
-        },
-        {
-            "apps": [
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
             "sampling": 50.0,
-            "value": "connatix"
+            "value": "anyclip"
         },
         {
             "apps": [
@@ -389,6 +391,16 @@
             ],
             "sampling": 100.0,
             "value": "exco"
+        },
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 50.0,
+            "value": "connatix"
         },
         {
             "apps": [
@@ -13877,6 +13889,7 @@
             ],
             "regions": [
                 "AL",
+                "DE",
                 "MC"
             ],
             "value": true
