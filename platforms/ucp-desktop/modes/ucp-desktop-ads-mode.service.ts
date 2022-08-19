@@ -31,13 +31,13 @@ export class UcpDesktopAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				playerExperimentSetup,
+				audigent,
 				bidders,
 				liveConnect,
 				facebookPixel,
 				taxonomyService,
 				silverSurferService,
 				wadRunner,
-				audigent,
 				eyeota,
 				iasPublisherOptimization,
 				confiant,
