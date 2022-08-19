@@ -86,6 +86,7 @@ class Audigent extends BaseServiceSetup {
 			});
 			this.segmentsScriptLoader.then(() => {
 				utils.logger(logGroup, 'segment tag script loaded');
+				this.setup();
 			});
 			this.isLoaded = true;
 		}
