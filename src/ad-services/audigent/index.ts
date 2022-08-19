@@ -4,7 +4,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
-const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
