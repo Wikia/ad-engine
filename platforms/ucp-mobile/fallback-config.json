@@ -582,6 +582,18 @@
             "value": true
         }
     ],
+    "icAudigentNewIntegrationEnabled": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -886,6 +898,7 @@
             ],
             "regions": [
                 "AL",
+                "DE",
                 "MC"
             ],
             "value": true
