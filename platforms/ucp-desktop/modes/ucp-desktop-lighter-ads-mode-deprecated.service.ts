@@ -1,5 +1,6 @@
 import { startAdEngine } from '@platforms/shared';
 import {
+	userIdentity,
 	audigent,
 	communicationService,
 	confiant,
@@ -24,7 +25,11 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
 
-		startAdEngine(inhibitors);
+		const requiredInhibitors = [userIdentity.initialized];
+		const maxTimeout = context.get('options.maxDelayTimeout');
+		new Runner(requiredInhibitors, maxTimeout).waitForInhibitors().then(() => {
+			startAdEngine(inhibitors);
+		});
 	}
 
 	private setupJWPlayer(inhibitors = []): void {
@@ -47,6 +52,7 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 
 		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
+		inhibitors.push(userIdentity.call());
 
 		facebookPixel.call();
 		audigent.call();
