@@ -51,6 +51,7 @@ class Audigent extends BaseServiceSetup {
 
 	init(instantConfig: InstantConfigService): void {
 		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
+		this.setupSegmentsListener();
 
 		if (newIntegrationEnabled) {
 			context.set(
@@ -59,8 +60,6 @@ class Audigent extends BaseServiceSetup {
 			);
 			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
 			this.loadSegmentLibrary();
-		} else {
-			this.setupSegmentsListener();
 		}
 	}
 
@@ -72,12 +71,8 @@ class Audigent extends BaseServiceSetup {
 
 		context.set('targeting.AU_SEG', '-1');
 
-		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		!this.segmentsScriptLoader && this.loadSegmentLibrary();
 		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
-		if (newIntegrationEnabled) {
-			this.setupSegmentsListener();
-		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
