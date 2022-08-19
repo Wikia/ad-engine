@@ -4,7 +4,7 @@ import { communicationService, eventsRepository } from '@ad-engine/communication
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
-const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
+const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/s/158';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
@@ -51,7 +51,6 @@ class Audigent extends BaseServiceSetup {
 
 	init(instantConfig: InstantConfigService): void {
 		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
-		this.setupSegmentsListener();
 
 		if (newIntegrationEnabled) {
 			context.set(
@@ -60,6 +59,8 @@ class Audigent extends BaseServiceSetup {
 			);
 			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
 			this.loadSegmentLibrary();
+		} else {
+			this.setupSegmentsListener();
 		}
 	}
 
@@ -71,8 +72,12 @@ class Audigent extends BaseServiceSetup {
 
 		context.set('targeting.AU_SEG', '-1');
 
+		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
 		!this.segmentsScriptLoader && this.loadSegmentLibrary();
 		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
+		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
+		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
@@ -83,6 +88,13 @@ class Audigent extends BaseServiceSetup {
 				utils.logger(logGroup, 'segment tag script loaded');
 			});
 			this.isLoaded = true;
+		}
+
+		if (newIntegrationEnabled) {
+			await waitForAuSegGlobalSet().then((isGlobalSet) => {
+				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+				this.setup();
+			});
 		}
 	}
 
