@@ -8,11 +8,6 @@ export const basicContext = {
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '',
 	},
-	options: {
-		loadTimeTracking: {
-			enabled: false,
-		},
-	},
 	slots: {},
 	src: ['bingebot'],
 	targeting: {

@@ -74,7 +74,6 @@ export class TrackingSetup {
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
 		this.labradorTracker();
-		this.loadTimeTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
@@ -216,30 +215,6 @@ export class TrackingSetup {
 
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
-		}
-	}
-
-	private loadTimeTracker(): void {
-		const trackerConfig = context.get('options.loadTimeTracking');
-
-		if (!trackerConfig || !trackerConfig.enabled) {
-			return;
-		}
-
-		(trackerConfig.timing || []).forEach((moment) => {
-			this.pageTracker.trackProp(`load_time_${moment}`, window.performance.timing[moment]);
-		});
-
-		if (trackerConfig?.custom?.includes('aeConfigured')) {
-			communicationService.on(eventsRepository.AD_ENGINE_CONFIGURED, () => {
-				this.pageTracker.trackProp('load_time_aeConfigured', Date.now().toString());
-			});
-		}
-
-		if (trackerConfig?.custom?.includes('aeStackStart')) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-				this.pageTracker.trackProp('load_time_aeStackStart', Date.now().toString());
-			});
 		}
 	}
 

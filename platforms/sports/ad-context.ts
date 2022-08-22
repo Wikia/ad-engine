@@ -19,9 +19,6 @@ const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
-		loadTimeTracking: {
-			enabled: false,
-		},
 		maxDelayTimeout: 2000,
 		wad: {
 			enabled: false,
