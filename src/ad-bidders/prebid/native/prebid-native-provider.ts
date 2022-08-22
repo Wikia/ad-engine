@@ -60,10 +60,10 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 			}
 		}
 
-		if (template.indexOf('##hb_native_image##')) {
+		if (template.includes('##hb_native_image##')) {
 			template = this.removeImgFromTemplate(template);
 		}
-		if (template.indexOf('##hb_native_displayUrl##')) {
+		if (template.includes('##hb_native_displayUrl##')) {
 			template = this.replaceDisplayUrlWithDefaultText(template);
 		}
 
