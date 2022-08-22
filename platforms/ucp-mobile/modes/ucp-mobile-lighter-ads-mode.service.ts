@@ -18,6 +18,7 @@ import {
 	silverSurferService,
 	stroer,
 	taxonomyService,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
 
@@ -28,6 +29,7 @@ export class UcpMobileLighterAds implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				userIdentity,
 				taxonomyService,
 				silverSurferService,
 				facebookPixel,
@@ -49,7 +51,9 @@ export class UcpMobileLighterAds implements DiProcess {
 					],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup,
+				gptSetup.setOptions({
+					dependencies: [userIdentity.initialized],
+				}),
 			)
 			.execute()
 			.then(() => {

@@ -18,7 +18,7 @@
 
 @mixin f2-styles() {
 	$label-height: -24px;
-	$space-between-uap-components: 24px;
+	$space-between-uap-components: 30px;
 
 	#top_leaderboard {
 		justify-content: center;
@@ -54,14 +54,24 @@
 
 	body {
 		.companion-stick {
+			.article-layout__rail {
+				margin-top: 0;
+			}
+
 			.article-layout__top-box-ad,
 			.feed-layout__right-rail {
 				position: sticky;
 				z-index: 100;
-			}
-
-			#top_boxad {
 				padding-top: $space-between-uap-components;
+			}
+		}
+	}
+
+	body:not(.uap-sticked) {
+		.companion-stick {
+			.article-layout__top-box-ad,
+			.feed-layout__right-rail {
+				top: 0 !important;
 			}
 		}
 	}
