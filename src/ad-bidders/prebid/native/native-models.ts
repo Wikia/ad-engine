@@ -3,8 +3,8 @@ export interface PrebidNativeData {
 	body: string;
 	clickTrackers: any[];
 	clickUrl: string;
-	displayUrl: string;
-	icon: PrebidNativeImage;
+	displayUrl?: string;
+	image?: PrebidNativeImage;
 	impressionTrackers: any[];
 	title: string;
 }

@@ -34,8 +34,8 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
 		const ntvAdSlot = slotService.get(adSlotName);
-
 		const ntvDomElement = ntvAdSlot.getElement();
+
 		ntvDomElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
 		this.fireNativeTrackers(PrebidNativeProvider.ACTION_IMPRESSION, data);
 		this.addClickTrackers(data);
@@ -59,7 +59,24 @@ export class PrebidNativeProvider extends BaseServiceSetup {
 					.join(value);
 			}
 		}
+
+		if (template.indexOf('##hb_native_image##')) {
+			template = this.removeImgFromTemplate(template);
+		}
+		if (template.indexOf('##hb_native_displayUrl##')) {
+			template = this.replaceDisplayUrlWithDefaultText(template);
+		}
+
 		return template;
+	}
+
+	private removeImgFromTemplate(template: string): string {
+		const emptyImgTag = /<img [^>]*src="##hb_native_image##"[^>]*>/gm;
+		return template.split(emptyImgTag).join('');
+	}
+
+	private replaceDisplayUrlWithDefaultText(template: string): string {
+		return template.split('##hb_native_displayUrl##').join('See more');
 	}
 
 	private getAssetValue(assetName: string, data: PrebidNativeData): string {
