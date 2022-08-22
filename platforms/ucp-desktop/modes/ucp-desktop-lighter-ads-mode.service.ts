@@ -14,6 +14,7 @@ import {
 	taxonomyService,
 	audigent,
 	confiant,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
 
@@ -24,6 +25,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				userIdentity,
 				taxonomyService,
 				silverSurferService,
 				facebookPixel,
@@ -37,7 +39,9 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 					dependencies: [taxonomyService.initialized, silverSurferService.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup,
+				gptSetup.setOptions({
+					dependencies: [userIdentity.initialized],
+				}),
 			)
 			.execute()
 			.then(() => {
