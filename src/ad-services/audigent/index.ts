@@ -1,8 +1,9 @@
 import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'audigent';
-const AUDIENCE_TAG_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
+const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
 const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
@@ -15,8 +16,8 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 
 class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
-	private audienceTagScriptLoader: Promise<Event>;
-	private segmentsScriptLoader: Promise<Event>;
+	private matchesTagScriptLoader: Promise<void>;
+	private segmentsScriptLoader: Promise<void>;
 
 	private isEnabled(): boolean {
 		return (
@@ -27,28 +28,40 @@ class Audigent extends BaseServiceSetup {
 		);
 	}
 
-	init(instantConfig: InstantConfigService): void {
-		context.set(
-			'services.audigent.segmentsScriptUrl',
-			instantConfig.get('icAudigentSegmentsScriptUrl'),
-		);
-		this.setupSegmentsListener();
+	loadSegmentLibrary(): void {
+		this.segmentsScriptLoader = utils.scriptLoader
+			.loadScript(
+				context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
+				'text/javascript',
+				true,
+				'first',
+			)
+			.then(() => {
+				communicationService.emit(eventsRepository.AUDIGENT_SEGMENT_LIBRARY_LOADED);
+			});
 	}
 
-	preloadLibraries(): void {
-		this.audienceTagScriptLoader = utils.scriptLoader.loadScript(
-			AUDIENCE_TAG_SCRIPT_URL,
-			'text/javascript',
-			true,
-			'first',
-		);
+	loadMatchesLibrary(): void {
+		this.matchesTagScriptLoader = utils.scriptLoader
+			.loadScript(DEFAULT_MATCHES_SCRIPT_URL, 'text/javascript', true, 'first')
+			.then(() => {
+				communicationService.emit(eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED);
+			});
+	}
 
-		this.segmentsScriptLoader = utils.scriptLoader.loadScript(
-			context.get('services.audigent.segmentsScriptUrl') || DEFAULT_SEGMENTS_SCRIPT_URL,
-			'text/javascript',
-			true,
-			'first',
-		);
+	init(instantConfig: InstantConfigService): void {
+		const newIntegrationEnabled = instantConfig.get('icAudigentNewIntegrationEnabled');
+
+		if (newIntegrationEnabled) {
+			context.set(
+				'services.audigent.segmentsScriptUrl',
+				instantConfig.get('icAudigentSegmentsScriptUrl'),
+			);
+			context.set('services.audigent.newIntegrationEnabled', newIntegrationEnabled);
+			this.loadSegmentLibrary();
+		} else {
+			this.setupSegmentsListener();
+		}
 	}
 
 	async call(): Promise<void> {
@@ -59,23 +72,30 @@ class Audigent extends BaseServiceSetup {
 
 		context.set('targeting.AU_SEG', '-1');
 
-		if (!this.audienceTagScriptLoader) {
-			this.preloadLibraries();
+		const newIntegrationEnabled = context.get('services.audigent.newIntegrationEnabled');
+		!this.segmentsScriptLoader && this.loadSegmentLibrary();
+		!this.matchesTagScriptLoader && this.loadMatchesLibrary();
+		if (newIntegrationEnabled) {
+			this.setupSegmentsListener();
 		}
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading...');
-
-			this.audienceTagScriptLoader.then(() => {
+			this.matchesTagScriptLoader.then(() => {
 				utils.logger(logGroup, 'audience tag script loaded');
 			});
-
 			this.segmentsScriptLoader.then(() => {
 				utils.logger(logGroup, 'segment tag script loaded');
 				this.setup();
 			});
-
 			this.isLoaded = true;
+		}
+
+		if (newIntegrationEnabled) {
+			await waitForAuSegGlobalSet().then((isGlobalSet) => {
+				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
+				this.setup();
+			});
 		}
 	}
 
@@ -90,6 +110,7 @@ class Audigent extends BaseServiceSetup {
 
 		document.addEventListener('auSegReady', function (e) {
 			utils.logger(logGroup, 'auSegReady event recieved', e);
+			communicationService.emit(eventsRepository.AUDIGENT_SEGMENTS_READY);
 			Audigent.sliceAndSetSegmentsInTargeting();
 		});
 	}
@@ -102,6 +123,8 @@ class Audigent extends BaseServiceSetup {
 
 	resetLoadedState(): void {
 		this.isLoaded = false;
+		this.segmentsScriptLoader = null;
+		this.matchesTagScriptLoader = null;
 	}
 
 	private static sliceSegments() {
