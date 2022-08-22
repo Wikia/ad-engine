@@ -95,6 +95,10 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
+		if (context.get('options.coppaPrebid') && context.get('targeting.kid_wiki') === '1') {
+			this.prebidConfig.coppa = true;
+		}
+
 		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
 			this.prebidConfig.s2sConfig = {
 				accountId: '7450',

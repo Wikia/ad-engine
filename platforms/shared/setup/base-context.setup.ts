@@ -121,6 +121,8 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
 		context.set('options.adsInitializeV2', this.instantConfig.get('icAdsInitializeV2'));
+		context.set('options.coppaGam', this.instantConfig.get('icCoppaGam'));
+		context.set('options.coppaPrebid', this.instantConfig.get('icCoppaPrebid'));
 
 		this.setWadContext();
 	}

@@ -91,6 +91,11 @@ export function buildVastUrl(
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
 	}
+
+	if (context.get('options.coppaGam') && context.get('targeting.kid_wiki') === '1') {
+		params.push('tfcd=1');
+	}
+
 	if (slot) {
 		params.push(`iu=${slot.getVideoAdUnit()}`);
 
@@ -126,12 +131,18 @@ export function buildVastUrl(
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
 	const ppid = context.get('targeting.ppid');
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
+
 	params.push(`iu=${options.adUnit}`);
 	params.push(`sz=${options.size}`);
 
 	if (ppid) {
 		params.push(`ppid=${ppid}`);
 	}
+
+	if (context.get('options.coppaGam') && context.get('targeting.kid_wiki') === '1') {
+		params.push('tfcd=1');
+	}
+
 	if (options.targeting) {
 		params.push(
 			`t=${encodeURIComponent(
@@ -142,6 +153,7 @@ export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}
 			)}`,
 		);
 	}
+
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
 	return displayBaseUrl + params.join('&');

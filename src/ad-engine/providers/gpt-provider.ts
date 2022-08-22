@@ -1,7 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { AdSlot, Targeting } from '../models';
+import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
 	context,
@@ -205,10 +205,15 @@ export class GptProvider implements Provider {
 
 	setupRestrictDataProcessing(): void {
 		const tag = window.googletag.pubads();
-
-		tag.setPrivacySettings({
+		const settings: Dictionary = {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
-		});
+		};
+
+		if (context.get('options.coppaGam') && context.get('targeting.kid_wiki') === '1') {
+			settings.childDirectedTreatment = true;
+		}
+
+		tag.setPrivacySettings(settings);
 	}
 
 	setPPID() {
