@@ -16,6 +16,7 @@ import {
 	silverSurferService,
 	stroer,
 	taxonomyService,
+	ats,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -54,6 +55,7 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 		inhibitors.push(silverSurferService.call());
 		inhibitors.push(userIdentity.call());
 
+		ats.call();
 		facebookPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
