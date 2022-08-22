@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, externalLogger, utils } from '../../../src/ad-engine';
-import { audigent } from '../../../src/ad-services';
+import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
@@ -18,6 +18,7 @@ describe('Audigent', () => {
 
 		context.set('services.audigent.enabled', true);
 		context.set('services.audigent.tracking.sampling', 0);
+		context.set('services.audigent.newIntegrationEnabled', false);
 
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -34,6 +35,7 @@ describe('Audigent', () => {
 
 		context.set('services.audigent.enabled', undefined);
 		context.set('services.audigent.tracking.sampling', undefined);
+		context.set('services.audigent.newIntegrationEnabled', undefined);
 		context.set('services.audigent.numberOfTries', undefined);
 		context.set('services.audigent.limit', undefined);
 
@@ -82,7 +84,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent requests for two assets when integration is enabled', async () => {
-		audigent.preloadLibraries();
+		audigent.loadSegmentLibrary();
 		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(2);
