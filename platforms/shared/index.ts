@@ -18,6 +18,7 @@ export * from './bidders/bidders-state.setup';
 export * from './dynamic-slots/fan-feed-native-ad-listener';
 export * from './dynamic-slots/nativo-slots-definition-repository';
 export * from './dynamic-slots/quiz-slots-definition-repository';
+export * from './dynamic-slots/sticked-boxad-helper';
 export * from './tracking/tracking.setup';
 export * from './modes/no-ads/no-ads.mode';
 export * from './modes/start-ad-engine';

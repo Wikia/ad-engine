@@ -1,14 +1,10 @@
 import {
-	AdSlot,
-	communicationService,
 	context,
 	DiProcess,
-	eventsRepository,
 	FloatingRail,
 	logTemplates,
 	TemplateRegistry,
 	templateService,
-	universalAdPackage,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
@@ -18,10 +14,11 @@ import { registerBfabTemplate } from './bfab-template';
 import { registerLogoReplacementTemplate } from './logo-replacement-template';
 import { registerRoadblockTemplate } from './roadblock-template';
 import { registerStickyTlbTemplate } from './sticky-tlb-template';
+import { StickedBoxadHelper } from '@platforms/shared';
 
 @Injectable()
 export class F2TemplatesSetup implements DiProcess {
-	constructor(private registry: TemplateRegistry) {
+	constructor(private registry: TemplateRegistry, private stickedBoxadHelper: StickedBoxadHelper) {
 		templateService.setInitializer(this.registry);
 	}
 
@@ -39,67 +36,13 @@ export class F2TemplatesSetup implements DiProcess {
 			enabled: false,
 		});
 
-		communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
-			if (!context.get('state.isMobile')) {
-				this.configureStickingCompanion();
-			}
-		});
-	}
-
-	private configureStickingCompanion(): void {
-		communicationService.onSlotEvent(
-			AdSlot.STATUS_SUCCESS,
-			() => {
-				if (!this.registerStickingCompanionStickedListener()) {
-					return;
-				}
-
-				this.registerStickingCompanionViewedListener();
-			},
-			'top_boxad',
-			true,
-		);
-	}
-
-	private registerStickingCompanionStickedListener(): boolean {
-		const rightRailElement = document.querySelectorAll(
-			'.feed-layout__right-rail, .article-layout__top-box-ad',
-		)[0] as HTMLElement;
-
-		if (!rightRailElement) {
-			return false;
+		if (!context.get('state.isMobile')) {
+			this.stickedBoxadHelper.initialize({
+				slotName: 'top_boxad',
+				pusherSlotName: 'top_leaderboard',
+				pageSelector: '.article-layout-wrapper, .feed-layout',
+				railSelector: '.feed-layout__right-rail, .article-layout__top-box-ad',
+			});
 		}
-
-		rightRailElement.style.top = '0';
-
-		communicationService.onSlotEvent(
-			AdSlot.CUSTOM_EVENT,
-			({ payload }) => {
-				if (payload.status === universalAdPackage.SLOT_STICKED_STATE) {
-					const tlbHeight = document.getElementById('top_leaderboard')?.offsetHeight || 36;
-					rightRailElement.style.top = `${tlbHeight}px`;
-				}
-			},
-			'top_leaderboard',
-		);
-
-		return true;
-	}
-
-	private registerStickingCompanionViewedListener(): void {
-		const pageElement = document.querySelectorAll('.article-layout-wrapper, .feed-layout')[0];
-
-		communicationService.onSlotEvent(
-			AdSlot.SLOT_VIEWED_EVENT,
-			() => {
-				setTimeout(() => {
-					pageElement.classList.remove('companion-stick');
-				}, 500);
-			},
-			'top_boxad',
-			true,
-		);
-
-		pageElement.classList.add('companion-stick');
 	}
 }
