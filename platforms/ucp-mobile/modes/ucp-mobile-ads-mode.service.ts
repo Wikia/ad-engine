@@ -32,13 +32,13 @@ export class UcpMobileAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				audigent,
 				bidders,
 				liveConnect,
 				facebookPixel,
 				taxonomyService,
 				silverSurferService,
 				wadRunner,
-				audigent,
 				eyeota,
 				iasPublisherOptimization,
 				confiant,

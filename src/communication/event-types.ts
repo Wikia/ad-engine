@@ -169,6 +169,15 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Called',
 		payload: props<{ query: string }>(),
 	},
+	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
+		name: 'Audigent segment library loaded',
+	},
+	AUDIGENT_MATCHES_LIBRARY_LOADED: {
+		name: 'Audigent matches library loaded',
+	},
+	AUDIGENT_SEGMENTS_READY: {
+		name: 'Audigent segments ready',
+	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
