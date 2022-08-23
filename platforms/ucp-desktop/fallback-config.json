@@ -315,6 +315,17 @@
             ]
         }
     ],
+    "icStickyTbExperiment": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": true
+        }
+    ],
     "icSlotTracking": [
         {
             "apps": [
