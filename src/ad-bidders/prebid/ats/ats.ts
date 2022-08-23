@@ -16,12 +16,13 @@ class Ats extends BaseServiceSetup {
 
 		if (!this.isLoaded) {
 			const userEmailHashes = context.get('wiki.opts.userEmailHashes');
+			const atsScript = utils.scriptLoader.loadScript(this.atsScriptSrc);
 
 			if (!userEmailHashes) {
 				return Promise.resolve();
 			}
 
-			return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
+			return atsScript.then(() => {
 				(window as any).ats.start({
 					placementID: '2161',
 					emailHashes: userEmailHashes,
