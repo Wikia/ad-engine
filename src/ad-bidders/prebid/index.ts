@@ -6,6 +6,7 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	config,
 	context,
 	DEFAULT_MAX_DELAY,
 	DEFAULT_MIN_DELAY,
@@ -95,7 +96,7 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('options.coppaPrebid') && context.get('targeting.kid_wiki') === '1') {
+		if (config.rollout.coppaFlag().prebid && utils.targeting.isWikiDirectedAtChildren()) {
 			this.prebidConfig.coppa = true;
 		}
 

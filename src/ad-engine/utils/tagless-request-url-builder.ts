@@ -1,6 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { context, slotService, trackingOptIn } from '../services';
+import { config, context, slotService, trackingOptIn } from '../services';
+import { targeting } from './targeting';
 
 export interface TaglessSlotOptions {
 	correlator: number;
@@ -92,7 +93,7 @@ export function buildVastUrl(
 		params.push(`ppid=${ppid}`);
 	}
 
-	if (context.get('options.coppaGam') && context.get('targeting.kid_wiki') === '1') {
+	if (config.rollout.coppaFlag().gam && targeting.isWikiDirectedAtChildren()) {
 		params.push('tfcd=1');
 	}
 
@@ -139,7 +140,7 @@ export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}
 		params.push(`ppid=${ppid}`);
 	}
 
-	if (context.get('options.coppaGam') && context.get('targeting.kid_wiki') === '1') {
+	if (config.rollout.coppaFlag().gam && targeting.isWikiDirectedAtChildren()) {
 		params.push('tfcd=1');
 	}
 

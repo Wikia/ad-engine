@@ -4,6 +4,7 @@ import { getAdStack } from '../ad-engine';
 import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
+	config,
 	context,
 	slotDataParamsUpdater,
 	slotService,
@@ -14,6 +15,7 @@ import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
 import { KibanaLogger } from '../../../platforms/shared/sequential-messaging/kibana-logger';
+import { utils } from '../index';
 
 const logGroup = 'gpt-provider';
 
@@ -209,7 +211,7 @@ export class GptProvider implements Provider {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
 		};
 
-		if (context.get('options.coppaGam') && context.get('targeting.kid_wiki') === '1') {
+		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
 			settings.childDirectedTreatment = true;
 		}
 
