@@ -17,9 +17,6 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
-		loadTimeTracking: {
-			enabled: false,
-		},
 		porvata: {
 			audio: {
 				exposeToSlot: 'true',
