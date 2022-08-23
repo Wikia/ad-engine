@@ -137,11 +137,6 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
-		loadTimeTracking: {
-			enabled: true,
-			timing: ['responseEnd', 'domContentLoadedEventStart'],
-			custom: ['aeConfigured', 'aeStackStart'],
-		},
 		video: {
 			moatTracking: {
 				articleVideosPartnerCode: 'wikiajwint101173217941',
