@@ -81,10 +81,10 @@ export class Wikia extends PrebidAdapter {
 						required: true,
 					},
 					displayUrl: {
-						required: true,
+						required: false,
 					},
-					icon: {
-						required: true,
+					image: {
+						required: false,
 						aspect_ratios: [
 							{
 								min_width: 100,
@@ -176,9 +176,8 @@ export class Wikia extends PrebidAdapter {
 			body: "Wikia is an old name of Fandom. Haven't heard of Fandom?",
 			clickTrackers: ['https://track-click.url'],
 			clickUrl: 'https://fandom.com',
-			displayUrl: 'Read more',
 			url: 'https://fandom.com',
-			icon: {
+			image: {
 				url: 'https://placekitten.com/100/100',
 				height: 100,
 				width: 100,
