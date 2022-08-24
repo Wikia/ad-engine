@@ -1,6 +1,7 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	adMarketplace,
+	ats,
 	audigent,
 	bidders,
 	communicationService,
@@ -30,6 +31,7 @@ export class UcpMobileLighterAds implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				ats,
 				taxonomyService,
 				silverSurferService,
 				facebookPixel,
