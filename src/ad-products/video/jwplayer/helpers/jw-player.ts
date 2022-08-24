@@ -1,7 +1,7 @@
 import { context, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
-export class JWPlayerInhibitor {
+export class JWPlayer {
 	private promise: utils.ExtendedPromise<void>;
 	private videoLines: Array<string>;
 
@@ -46,4 +46,4 @@ export class JWPlayerInhibitor {
 	}
 }
 
-export const jwPlayerInhibitor = new JWPlayerInhibitor();
+export const jwPlayer = new JWPlayer();

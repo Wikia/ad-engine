@@ -1,5 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
-import { conditional, context, ProcessPipeline } from '@wikia/ad-engine';
+import { conditional, ProcessPipeline } from '@wikia/ad-engine';
 import {
 	BiddersStateSetup,
 	NoAdsDetector,
@@ -10,7 +10,6 @@ import { UcpMobilePrebidConfigSetup } from './setup/context/prebid/ucp-mobile-pr
 import { UcpMobileA9ConfigSetup } from './setup/context/a9/ucp-mobile-a9-config.setup';
 import { UcpMobileDynamicSlotsSetup } from './setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
 import { UcpMobileTemplatesSetup } from './templates/ucp-mobile-templates.setup';
-import { UcpMobileDeprecatedAdsMode } from './modes/ucp-mobile-ads-mode-deprecated.service';
 import { UcpMobileLighterAds } from './modes/ucp-mobile-lighter-ads-mode.service';
 
 @Injectable()
@@ -26,10 +25,7 @@ export class UcpMobileLegacySetup {
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM will break
 			BiddersStateSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: conditional(() => context.get('options.adsInitializeV2'), {
-					yes: UcpMobileLighterAds,
-					no: UcpMobileDeprecatedAdsMode,
-				}),
+				yes: UcpMobileLighterAds,
 				no: NoAdsMode,
 			}),
 		);
