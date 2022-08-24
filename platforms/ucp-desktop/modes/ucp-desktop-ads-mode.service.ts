@@ -21,6 +21,7 @@ import {
 	taxonomyService,
 	adMarketplace,
 	userIdentity,
+	ats,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
@@ -33,6 +34,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				playerExperimentSetup,
+				ats,
 				audigent,
 				bidders,
 				liveConnect,

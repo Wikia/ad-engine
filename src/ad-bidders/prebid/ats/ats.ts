@@ -1,8 +1,8 @@
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'ATS';
 
-class Ats {
+class Ats extends BaseServiceSetup {
 	private isLoaded = false;
 	private atsScriptSrc = 'https://ats.rlcdn.com/ats.js';
 
@@ -16,12 +16,13 @@ class Ats {
 
 		if (!this.isLoaded) {
 			const userEmailHashes = context.get('wiki.opts.userEmailHashes');
+			const atsScript = utils.scriptLoader.loadScript(this.atsScriptSrc);
 
 			if (!userEmailHashes) {
 				return Promise.resolve();
 			}
 
-			return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
+			return atsScript.then(() => {
 				(window as any).ats.start({
 					placementID: '2161',
 					emailHashes: userEmailHashes,
