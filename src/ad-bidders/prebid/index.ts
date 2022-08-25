@@ -20,7 +20,6 @@ import { getMediaWikiVariable } from '@platforms/shared';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
-import { ats } from './ats';
 import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -220,8 +219,6 @@ export class PrebidProvider extends BidderProvider {
 		this.applySettings();
 		this.removeAdUnits();
 
-		let firstBidRequest: Promise<void>;
-
 		if (context.get('bidders.prebid.multiAuction')) {
 			utils.logger(logGroup, 'multi auction request enabled');
 
@@ -235,7 +232,7 @@ export class PrebidProvider extends BidderProvider {
 				},
 			);
 
-			firstBidRequest = this.requestBids(
+			this.requestBids(
 				this.filterAdUnits(this.adUnits, 'init'),
 				() => {
 					bidsBackHandler();
@@ -247,17 +244,13 @@ export class PrebidProvider extends BidderProvider {
 
 			this.runSecondBidRequest();
 		} else {
-			firstBidRequest = this.requestBids(this.adUnits, () => {
+			this.requestBids(this.adUnits, () => {
 				bidsBackHandler();
 				communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
 			});
 		}
 
 		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
-
-		firstBidRequest.then(() => {
-			ats.call();
-		});
 	}
 
 	private runSecondBidRequest(): void {
