@@ -200,6 +200,17 @@
             "value": true
         }
     ],
+    "icPrebidRoundel": [
+        {
+            "apps": [
+                "fandomdesktop"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
+        }
+    ],
     "icLiveConnect": [
         {
             "apps": [
@@ -257,7 +268,7 @@
             "regions": [
                 "PL"
             ],
-            "value": false
+            "value": true
         }
     ],
     "icPrebidPubmatic": [
@@ -13900,7 +13911,9 @@
             ],
             "regions": [
                 "AL",
+                "BR",
                 "DE",
+                "FR",
                 "MC"
             ],
             "value": true

@@ -24,6 +24,7 @@ import {
 	stroer,
 	taxonomyService,
 	utils,
+	ats,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -51,6 +52,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
 
+		ats.call();
 		eyeota.call();
 		facebookPixel.call();
 		audigent.call();
