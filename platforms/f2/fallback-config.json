@@ -2103,7 +2103,9 @@
             ],
             "regions": [
                 "AL",
+                "BR",
                 "DE",
+                "FR",
                 "MC"
             ],
             "value": true
