@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { context } from '../../../src/ad-engine';
-import { taxonomyService } from '../../../src/ad-services/taxonomy/taxonomy-service';
+import { taxonomyServiceDeprecated } from '@wikia/ad-services/taxonomy-deprecated/taxonomy-service-deprecated';
 import {
 	AdTags,
 	taxonomyServiceLoader,
-} from '../../../src/ad-services/taxonomy/taxonomy-service.loader';
+} from '../../../src/ad-services/taxonomy-deprecated/taxonomy-service.loader';
 
 describe('Taxonomy service', () => {
 	const sandbox = sinon.createSandbox();
@@ -28,7 +28,7 @@ describe('Taxonomy service', () => {
 	});
 
 	it('configures fetched ad tags in context targeting', async () => {
-		const fetchedAdTags = await taxonomyService.call();
+		const fetchedAdTags = await taxonomyServiceDeprecated.call();
 
 		expect(getAdTagsStub.called).to.be.true;
 
@@ -42,13 +42,13 @@ describe('Taxonomy service', () => {
 	it('does not fetch ad tags when service is disabled', async () => {
 		context.set('services.taxonomy.enabled', false);
 
-		const fetchedAdTags = await taxonomyService.call();
+		const fetchedAdTags = await taxonomyServiceDeprecated.call();
 
 		expect(getAdTagsStub.called).to.be.false;
 		expect(fetchedAdTags).to.deep.equal({});
 	});
 
 	it('is named delay module', async () => {
-		expect(taxonomyService.getName()).to.equal('taxonomy-service');
+		expect(taxonomyServiceDeprecated.getName()).to.equal('taxonomy-service');
 	});
 });

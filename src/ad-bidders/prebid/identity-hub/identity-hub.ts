@@ -1,11 +1,16 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const profileId = '2721';
 const pubId = '156260';
 
 const logGroup = 'IdentityHub';
 
-class IdentityHub extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class IdentityHub {
 	private isLoaded = false;
 	private identityHubScriptSrc = `https://ads.pubmatic.com/AdServer/js/pwt/${pubId}/${profileId}/pwt.js`;
 

@@ -120,6 +120,7 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.adsInitializeV2', this.instantConfig.get('icAdsInitializeV2'));
 
 		this.setWadContext();
 	}

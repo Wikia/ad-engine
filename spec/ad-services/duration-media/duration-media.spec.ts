@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
-import { durationMedia } from '../../../src/ad-services';
+import { durationMediaDeprecated } from '../../../src/ad-services';
 
 describe('Duration media service', () => {
 	const sandbox = createSandbox();
@@ -22,7 +22,7 @@ describe('Duration media service', () => {
 	it('duration-media is disabled when libraryUrl is not configured', async () => {
 		context.set('services.durationMedia.enabled', true);
 
-		await durationMedia.call();
+		await durationMediaDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -30,7 +30,7 @@ describe('Duration media service', () => {
 	it('duration-media can be disabled', async () => {
 		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
-		await durationMedia.call();
+		await durationMediaDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -39,7 +39,7 @@ describe('Duration media service', () => {
 		context.set('services.durationMedia.enabled', true);
 		context.set('services.durationMedia.libraryUrl', '//example.com/foo');
 
-		await durationMedia.call();
+		await durationMediaDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 		expect(

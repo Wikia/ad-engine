@@ -1,6 +1,8 @@
 import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
 import { map } from 'rxjs/operators';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 interface AdMarketplaceConfiguration {
 	enabled: boolean;
@@ -38,7 +40,10 @@ const instantSearchEndpointParameters = [
 	'results-os=0',
 ];
 
-class AdMarketplace extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class AdMarketplace {
 	private configuration: AdMarketplaceConfiguration;
 	private instantSearchSuggestionElement: HTMLElement | null = null;
 

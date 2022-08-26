@@ -1,8 +1,13 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'ATS';
 
-class Ats extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class Ats {
 	private isLoaded = false;
 	private atsScriptSrc = 'https://ats.rlcdn.com/ats.js';
 

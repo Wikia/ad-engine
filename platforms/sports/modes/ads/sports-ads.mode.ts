@@ -1,17 +1,17 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	audigent,
+	audigentDeprecated,
 	bidders,
 	communicationService,
-	confiant,
+	confiantDeprecated,
 	DiProcess,
-	durationMedia,
+	durationMediaDeprecated,
 	eventsRepository,
-	iasPublisherOptimization,
+	iasPublisherOptimizationDeprecated,
 	PartnerPipeline,
-	userIdentity,
+	userIdentityDeprecated,
 } from '@wikia/ad-engine';
-import { wadRunner, gptSetup } from '@platforms/shared';
+import { wadRunnerDeprecated, gptDeprecatedSetup } from '@platforms/shared';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {
@@ -20,14 +20,14 @@ export class SportsAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
+				userIdentityDeprecated,
 				bidders,
-				wadRunner,
-				audigent,
-				iasPublisherOptimization,
-				confiant,
-				durationMedia,
-				gptSetup,
+				wadRunnerDeprecated,
+				audigentDeprecated,
+				iasPublisherOptimizationDeprecated,
+				confiantDeprecated,
+				durationMediaDeprecated,
+				gptDeprecatedSetup,
 			)
 			.execute()
 			.then(() => {

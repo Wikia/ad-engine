@@ -1,15 +1,15 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	audigent,
+	audigentDeprecated,
 	communicationService,
 	context,
 	DiProcess,
 	eventsRepository,
-	iasPublisherOptimization,
-	nielsen,
+	iasPublisherOptimizationDeprecated,
+	nielsenDeprecated,
 	PartnerPipeline,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
+import { wadRunnerDeprecated, playerDeprecatedSetup, gptDeprecatedSetup } from '@platforms/shared';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
@@ -18,15 +18,15 @@ export class F2AdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				audigent,
-				iasPublisherOptimization,
-				nielsen,
-				wadRunner,
-				playerSetup.setOptions({
-					dependencies: [wadRunner.initialized],
+				audigentDeprecated,
+				iasPublisherOptimizationDeprecated,
+				nielsenDeprecated,
+				wadRunnerDeprecated,
+				playerDeprecatedSetup.setOptions({
+					dependencies: [wadRunnerDeprecated.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup,
+				gptDeprecatedSetup,
 			)
 			.execute()
 			.then(() => {

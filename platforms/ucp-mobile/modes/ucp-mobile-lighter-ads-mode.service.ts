@@ -1,27 +1,27 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	adMarketplace,
-	ats,
-	audigent,
-	bidders,
+	adMarketplaceDeprecated,
+	atsDeprecated,
+	audigentDeprecated,
+	biddersDeprecated,
 	communicationService,
-	confiant,
+	confiantDeprecated,
 	context,
 	DiProcess,
-	durationMedia,
+	durationMediaDeprecated,
 	eventsRepository,
-	facebookPixel,
-	iasPublisherOptimization,
-	identityHub,
-	liveConnect,
-	nielsen,
+	facebookPixelDeprecated,
+	iasPublisherOptimizationDeprecated,
+	identityHubDeprecated,
+	liveConnectDeprecated,
+	nielsenDeprecated,
 	PartnerPipeline,
-	silverSurferService,
-	stroer,
-	taxonomyService,
-	userIdentity,
+	silverSurferServiceDeprecated,
+	stroerDeprecated,
+	taxonomyServiceDeprecated,
+	userIdentityDeprecated,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { gptDeprecatedSetup, playerDeprecatedSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
@@ -30,31 +30,31 @@ export class UcpMobileLighterAds implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				ats,
-				taxonomyService,
-				silverSurferService,
-				facebookPixel,
-				audigent,
-				iasPublisherOptimization,
-				confiant,
-				durationMedia,
-				liveConnect,
-				adMarketplace,
-				stroer,
-				bidders,
-				nielsen,
-				identityHub,
-				playerSetup.setOptions({
+				userIdentityDeprecated,
+				atsDeprecated,
+				taxonomyServiceDeprecated,
+				silverSurferServiceDeprecated,
+				facebookPixelDeprecated,
+				audigentDeprecated,
+				iasPublisherOptimizationDeprecated,
+				confiantDeprecated,
+				durationMediaDeprecated,
+				liveConnectDeprecated,
+				adMarketplaceDeprecated,
+				stroerDeprecated,
+				biddersDeprecated,
+				nielsenDeprecated,
+				identityHubDeprecated,
+				playerDeprecatedSetup.setOptions({
 					dependencies: [
-						bidders.initialized,
-						taxonomyService.initialized,
-						silverSurferService.initialized,
+						biddersDeprecated.initialized,
+						taxonomyServiceDeprecated.initialized,
+						silverSurferServiceDeprecated.initialized,
 					],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+				gptDeprecatedSetup.setOptions({
+					dependencies: [userIdentityDeprecated.initialized],
 				}),
 			)
 			.execute()

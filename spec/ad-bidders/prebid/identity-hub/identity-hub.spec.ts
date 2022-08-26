@@ -1,4 +1,4 @@
-import { identityHub } from '@wikia/ad-bidders';
+import { identityHubDeprecated } from '@wikia/ad-bidders';
 import { context, utils } from '@wikia/ad-engine';
 import { assert, createSandbox, SinonSandbox } from 'sinon';
 
@@ -21,7 +21,7 @@ describe('Pubmatic IdentityHub', () => {
 	});
 
 	it('pwt.js is called', async () => {
-		await identityHub.call();
+		await identityHubDeprecated.call();
 
 		assert.calledOnce(loadScriptSpy);
 	});
@@ -29,7 +29,7 @@ describe('Pubmatic IdentityHub', () => {
 	it('IdentityHub is disabled by feature flag', async () => {
 		contextStub.get.withArgs('pubmatic.identityHub.enabled').returns(false);
 
-		await identityHub.call();
+		await identityHubDeprecated.call();
 
 		assert.notCalled(loadScriptSpy);
 	});
@@ -37,7 +37,7 @@ describe('Pubmatic IdentityHub', () => {
 	it('IdentityHub is disabled if user has opted out sale', async () => {
 		contextStub.get.withArgs('options.optOutSale').returns(true);
 
-		await identityHub.call();
+		await identityHubDeprecated.call();
 
 		assert.notCalled(loadScriptSpy);
 	});
@@ -45,7 +45,7 @@ describe('Pubmatic IdentityHub', () => {
 	it('IdentityHub is disabled on child-directed wiki', async () => {
 		contextStub.get.withArgs('wiki.targeting.directedAtChildren').returns(true);
 
-		await identityHub.call();
+		await identityHubDeprecated.call();
 
 		assert.notCalled(loadScriptSpy);
 	});

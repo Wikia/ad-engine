@@ -1,6 +1,11 @@
-import { BaseServiceSetup, context } from '@ad-engine/core';
+import { context, PartnerServiceStage } from '@ad-engine/core';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
-class UserIdentity extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.baseSetup,
+})
+class UserIdentity {
 	async setupPPID(): Promise<void> {
 		if (window.SilverSurferSDK?.requestUserPPID) {
 			const ppid = await window.SilverSurferSDK.requestUserPPID(

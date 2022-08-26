@@ -1,29 +1,23 @@
 import {
-	BaseServiceSetup,
-	jwpSetup,
+	bidders,
 	communicationService,
 	JWPlayerManager,
+	jwpSetup,
+	PartnerServiceStage,
+	Service,
+	silverSurferService,
+	taxonomyServiceDeprecated,
 } from '@wikia/ad-engine';
+import { wadRunnerDeprecated } from '../services/wad-runner-deprecated';
 
-class PlayerSetup extends BaseServiceSetup {
-	async execute(): Promise<void> {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+	dependencies: [bidders, taxonomyServiceDeprecated, silverSurferService, wadRunnerDeprecated],
+})
+class PlayerSetup {
+	call() {
 		new JWPlayerManager().manage();
 
-		if (this.options) {
-			Promise.race([
-				new Promise((res) => setTimeout(res, this.options.timeout)),
-				Promise.all(this.options.dependencies),
-			]).then(async () => {
-				await this.call();
-				this.setInitialized();
-			});
-		} else {
-			await this.call();
-			this.setInitialized();
-		}
-	}
-
-	call() {
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 }

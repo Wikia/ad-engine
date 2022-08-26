@@ -1,8 +1,18 @@
-import { AdEngine, AdSlot, BaseServiceSetup, communicationService, utils } from '@wikia/ad-engine';
+import {
+	AdEngine,
+	AdSlot,
+	communicationService,
+	PartnerServiceStage,
+	Service,
+	utils,
+} from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
 
-class GptSetup extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.provider,
+})
+class GptSetup {
 	call() {
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 

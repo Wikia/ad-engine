@@ -1,8 +1,13 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'stroer';
 
-class Stroer extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class Stroer {
 	call(): Promise<void> {
 		if (!context.get('services.stroer.enabled')) {
 			utils.logger(logGroup, 'disabled');

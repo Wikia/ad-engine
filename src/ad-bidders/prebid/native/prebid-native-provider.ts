@@ -1,11 +1,23 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
+import {
+	AdSlot,
+	BaseServiceSetup,
+	context,
+	PartnerServiceStage,
+	slotService,
+	utils,
+} from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'prebid-native-provider';
 
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
 export class PrebidNativeProvider extends BaseServiceSetup {
 	static ACTION_CLICK = 'click';
 	static ACTION_IMPRESSION = 'impression';

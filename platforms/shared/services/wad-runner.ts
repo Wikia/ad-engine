@@ -1,7 +1,16 @@
-import { babDetection, BaseServiceSetup, btfBlockerService, btRec } from '@wikia/ad-engine';
+import {
+	babDetection,
+	btfBlockerService,
+	btRec,
+	PartnerServiceStage,
+	Service,
+} from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
-class WadRunner extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class WadRunner {
 	async call(): Promise<void> {
 		if (!babDetection.isEnabled()) {
 			return Promise.resolve();

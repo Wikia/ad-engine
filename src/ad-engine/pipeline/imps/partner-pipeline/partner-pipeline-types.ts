@@ -2,7 +2,6 @@ export enum PartnerServiceStage {
 	'baseSetup',
 	'preProvider',
 	'provider',
-	'afterProvider',
 }
 export type PartnerStepUnion = PartnerInitializationProcess | FuncProcess | any;
 

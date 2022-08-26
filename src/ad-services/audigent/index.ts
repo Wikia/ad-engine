@@ -1,6 +1,8 @@
-import { context, utils, externalLogger, BaseServiceSetup } from '@ad-engine/core';
+import { context, externalLogger, PartnerServiceStage, utils } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';
@@ -14,7 +16,10 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 	return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 }
 
-class Audigent extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class Audigent {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<void>;
 	private segmentsScriptLoader: Promise<void>;

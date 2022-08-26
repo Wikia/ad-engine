@@ -17,34 +17,37 @@ import {
 	prebidNativeProvider,
 	silverSurferService,
 	stroer,
-	taxonomyService,
 	adMarketplace,
-	userIdentity,
 	ats,
+	utils,
+	userIdentity,
+	taxonomyService,
 	testService,
 	preTestService,
-	utils,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
+import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
+import { playerExperimentSetup } from '../../shared/setup/player-experiment.setup';
 
 @Injectable()
 export class UcpDesktopAdsMode implements DiProcess {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
+		utils.logger('DJ', 'Init v2');
 		this.pipeline
 			.add(
 				testService,
 				preTestService,
 				userIdentity,
 				playerExperimentSetup,
+				playerSetup,
+				silverSurferService,
 				ats,
 				audigent,
 				bidders,
 				liveConnect,
 				facebookPixel,
 				taxonomyService,
-				silverSurferService,
 				wadRunner,
 				eyeota,
 				iasPublisherOptimization,
@@ -55,7 +58,6 @@ export class UcpDesktopAdsMode implements DiProcess {
 				nielsen,
 				adMarketplace,
 				prebidNativeProvider,
-				playerSetup,
 				gptSetup,
 			)
 			.execute()

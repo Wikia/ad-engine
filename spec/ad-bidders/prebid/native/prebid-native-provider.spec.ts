@@ -1,11 +1,11 @@
-import { PrebidNativeProvider } from '@wikia/ad-bidders';
+import { PrebidNativeProviderDeprecated } from '@wikia/ad-bidders';
 import { createSandbox } from 'sinon';
 import { context } from '@wikia/ad-engine';
 import { expect } from 'chai';
 
 describe('Prebid native provider', () => {
 	const sandbox = createSandbox();
-	const prebidNativeProvider = new PrebidNativeProvider();
+	const prebidNativeProvider = new PrebidNativeProviderDeprecated();
 	let contextStub;
 
 	beforeEach(() => {

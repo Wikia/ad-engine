@@ -1,12 +1,14 @@
 import {
-	BaseServiceSetup,
 	context,
 	Dictionary,
+	PartnerServiceStage,
 	postponeExecutionUntilGptLoads,
 	SlotConfig,
 	utils,
 } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';
@@ -39,7 +41,10 @@ interface IasTargetingData {
 	slots?: IasTargetingSlotData[];
 }
 
-class IasPublisherOptimization extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class IasPublisherOptimization {
 	private isLoaded = false;
 	private slotList: string[] = [];
 

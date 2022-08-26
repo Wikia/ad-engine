@@ -1,10 +1,10 @@
 import { PartnerServiceStage, utils } from '@ad-engine/core';
 import { Service } from './partner-service-decorator';
 import { preTestService } from '../test-service-2';
-import { audigent } from '../audigent';
+import { audigentDeprecated } from '../audigent-deprecated';
 
 @Service({
-	dependencies: [preTestService, audigent],
+	dependencies: [preTestService, audigentDeprecated],
 	stage: PartnerServiceStage.provider,
 	timeout: 2000,
 })

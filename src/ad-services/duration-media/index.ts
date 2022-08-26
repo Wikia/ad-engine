@@ -1,8 +1,13 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'duration-media';
 
-class DurationMedia extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class DurationMedia {
 	call(): Promise<void> {
 		const libraryUrl: string = context.get('services.durationMedia.libraryUrl');
 

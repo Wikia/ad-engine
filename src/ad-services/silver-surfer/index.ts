@@ -1,18 +1,20 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import { AdTags } from '../taxonomy/taxonomy-service.loader';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+import { AdTags } from '../taxonomy-deprecated/taxonomy-service.loader';
 import { SilverSurferProfileFetcher } from './silver-surfer-profile-fetcher';
 import { SilverSurferProfileExtender } from './silver-surfer-profile-extender';
+import { Service } from '../test-service/partner-service-decorator';
 
 const logGroup = 'silver-surfer';
 
-export class SilverSurferService extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.baseSetup,
+})
+export class SilverSurferService {
 	constructor(
 		private profileFetcher: SilverSurferProfileFetcher,
 		private profileExtender: SilverSurferProfileExtender,
-	) {
-		super();
-	}
+	) {}
 
 	async call(): Promise<AdTags> {
 		if (!this.isEnabled()) {

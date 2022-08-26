@@ -1,10 +1,12 @@
-import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, slotService, utils } from '@ad-engine/core';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
 
 /**
- * Injects Confiant script
+ * Injects ConfiantDeprecated script
  * @returns {Promise}
  */
 function loadScript(propertyId: string): Promise<Event> {
@@ -14,7 +16,7 @@ function loadScript(propertyId: string): Promise<Event> {
 }
 
 /**
- * Confiant blocking callback tracking parameters to DW
+ * ConfiantDeprecated blocking callback tracking parameters to DW
  */
 function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impressionData): void {
 	if (impressionData && impressionData.dfp) {
@@ -28,9 +30,12 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 }
 
 /**
- * Confiant service handler
+ * ConfiantDeprecated service handler
  */
-class Confiant extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class Confiant {
 	/**
 	 * Requests service and injects script tag
 	 * @returns {Promise}

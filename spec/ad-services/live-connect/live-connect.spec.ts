@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
-import { liveConnect } from '../../../src/ad-services';
+import { liveConnectDeprecated } from '../../../src/ad-services';
 
 describe('LiveConnect', () => {
 	const sandbox = createSandbox();
@@ -22,7 +22,7 @@ describe('LiveConnect', () => {
 	});
 
 	it('Live Connect is called', async () => {
-		await liveConnect.call();
+		await liveConnectDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -30,7 +30,7 @@ describe('LiveConnect', () => {
 	it('Live Connect can be disabled', async () => {
 		context.set('services.liveConnect.enabled', false);
 
-		await liveConnect.call();
+		await liveConnectDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -38,7 +38,7 @@ describe('LiveConnect', () => {
 	it('Live Connect not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
-		await liveConnect.call();
+		await liveConnectDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -46,7 +46,7 @@ describe('LiveConnect', () => {
 	it('Live Connect not called when user has opted out sale', async () => {
 		context.set('options.optOutSale', true);
 
-		await liveConnect.call();
+		await liveConnectDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -54,7 +54,7 @@ describe('LiveConnect', () => {
 	it('Live Connect not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
-		await liveConnect.call();
+		await liveConnectDeprecated.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});

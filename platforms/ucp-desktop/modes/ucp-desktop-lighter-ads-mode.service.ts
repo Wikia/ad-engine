@@ -5,19 +5,19 @@ import {
 	DiProcess,
 	PartnerPipeline,
 	eventsRepository,
-	facebookPixel,
-	iasPublisherOptimization,
-	identityHub,
-	nielsen,
-	silverSurferService,
-	stroer,
-	taxonomyService,
-	audigent,
-	confiant,
-	userIdentity,
-	ats,
+	facebookPixelDeprecated,
+	iasPublisherOptimizationDeprecated,
+	identityHubDeprecated,
+	nielsenDeprecated,
+	silverSurferServiceDeprecated,
+	stroerDeprecated,
+	taxonomyServiceDeprecated,
+	audigentDeprecated,
+	confiantDeprecated,
+	userIdentityDeprecated,
+	atsDeprecated,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { gptDeprecatedSetup, playerDeprecatedSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {
@@ -26,23 +26,26 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentity,
-				ats,
-				taxonomyService,
-				silverSurferService,
-				facebookPixel,
-				audigent,
-				iasPublisherOptimization,
-				confiant,
-				stroer,
-				nielsen,
-				identityHub,
-				playerSetup.setOptions({
-					dependencies: [taxonomyService.initialized, silverSurferService.initialized],
+				userIdentityDeprecated,
+				atsDeprecated,
+				taxonomyServiceDeprecated,
+				silverSurferServiceDeprecated,
+				facebookPixelDeprecated,
+				audigentDeprecated,
+				iasPublisherOptimizationDeprecated,
+				confiantDeprecated,
+				stroerDeprecated,
+				nielsenDeprecated,
+				identityHubDeprecated,
+				playerDeprecatedSetup.setOptions({
+					dependencies: [
+						taxonomyServiceDeprecated.initialized,
+						silverSurferServiceDeprecated.initialized,
+					],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
-				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+				gptDeprecatedSetup.setOptions({
+					dependencies: [userIdentityDeprecated.initialized],
 				}),
 			)
 			.execute()

@@ -1,12 +1,17 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { context, PartnerServiceStage, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 const partnerName = 'liveConnect';
 const partnerNameUnifiedId = 'liveConnect-unifiedId';
 const logGroup = partnerName;
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
-class LiveConnect extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class LiveConnect {
 	private isLoaded = false;
 
 	private isEnabled(): boolean {

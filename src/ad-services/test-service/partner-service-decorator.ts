@@ -4,7 +4,7 @@ interface Constructor<T> {
 	new (...args): T;
 }
 
-abstract class ServiceDecoredClass {
+interface ServiceDecoredClass {
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	call?: Function;
 	options: PartnerServiceOptions;
@@ -22,7 +22,7 @@ export enum PartnerServicePlatforms {
 }
 
 interface PartnerServiceOptions {
-	stage?: PartnerServiceStage;
+	stage: PartnerServiceStage;
 	dependencies?: any[];
 	platforms?: PartnerServicePlatforms[];
 	timeout?: number;
@@ -42,7 +42,6 @@ function isDecoratedService(p) {
 
 function DecoratorFunction<T>(baseClass: T) {
 	class Injectable extends (<Constructor<ServiceDecoredClass>>(<unknown>baseClass)) {
-		options: PartnerServiceOptions;
 		initializationTimeout;
 		resolve: () => void;
 		initialized: Promise<void> = new Promise<void>((resolve) => {
@@ -55,9 +54,8 @@ function DecoratorFunction<T>(baseClass: T) {
 		}
 
 		async execute(): Promise<void> {
-			console.log('DJ : Executing!');
 			const maxInitializationTime = this.options?.timeout || context.get('options.maxDelayTimeout');
-			if (this.options) {
+			if (this.options.dependencies) {
 				const deps = this.options.dependencies
 					.map((dep) => (isPromise(dep) ? dep : isDecoratedService(dep) ? dep.initialized : null))
 					.filter((dep) => dep);
@@ -79,6 +77,5 @@ function DecoratorFunction<T>(baseClass: T) {
 	}
 
 	Injectable.prototype.options = this;
-	console.log('DJ: test launch');
 	return (<Constructor<T>>(<unknown>Injectable)) as unknown as T;
 }

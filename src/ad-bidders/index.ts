@@ -1,7 +1,9 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
+import { AdSlot, context, Dictionary, PartnerServiceStage, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
+// eslint-disable-next-line no-restricted-imports
+import { Service } from '@ad-engine/services';
 
 interface BiddersProviders {
 	a9?: A9Provider;
@@ -10,12 +12,14 @@ interface BiddersProviders {
 
 const logGroup = 'bidders';
 
-class Bidders extends BaseServiceSetup {
+@Service({
+	stage: PartnerServiceStage.preProvider,
+})
+class Bidders {
 	private biddersProviders: BiddersProviders = {};
 	private realSlotPrices = {};
 
 	constructor() {
-		super();
 		communicationService.onSlotEvent(AdSlot.VIDEO_AD_REQUESTED, ({ slot }) => {
 			slot.updateWinningPbBidderDetails();
 		});
@@ -162,7 +166,10 @@ export const bidders = new Bidders();
 
 export * from './tracking';
 export * from './wrappers';
+export * from './bidders-deprecated';
+export * from './prebid/ats-deprecated';
 export * from './prebid/ats';
 export * from './prebid/live-ramp';
 export * from './prebid/identity-hub';
+export * from './prebid/identity-hub-deprecated';
 export * from './prebid/native';
