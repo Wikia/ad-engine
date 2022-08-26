@@ -40,10 +40,13 @@ describe('Eyeota', () => {
 	});
 
 	it('constructs proper src', async () => {
+		context.set('targeting.s0v', 'lifestyle');
 		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal(
-			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=ajs',
+			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=ajs&s0v=lifestyle',
 		);
+
+		context.set('targeting.s0v', undefined);
 	});
 });
