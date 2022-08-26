@@ -8,12 +8,6 @@ const DEFAULT_SEGMENTS_SCRIPT_URL = 'https://seg.ad.gt/api/v1/segments.js';
 const DEFAULT_NUMBER_OF_TRIES = 5;
 const isAuSegGlobalSet = () => typeof window['au_seg'] !== 'undefined';
 
-export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): Promise<boolean> {
-	const numberOfTriesWhenWaiting = context.get('services.audigent.numberOfTries') || numberOfTries;
-
-	return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
-}
-
 class Audigent extends BaseServiceSetup {
 	private isLoaded = false;
 	private matchesTagScriptLoader: Promise<void>;
@@ -92,7 +86,7 @@ class Audigent extends BaseServiceSetup {
 		}
 
 		if (newIntegrationEnabled) {
-			await waitForAuSegGlobalSet().then((isGlobalSet) => {
+			await this.waitForAuSegGlobalSet().then((isGlobalSet) => {
 				utils.logger(logGroup, 'Audigent global variable set', isGlobalSet, window['au_seg']);
 				this.setup();
 			});
@@ -163,6 +157,13 @@ class Audigent extends BaseServiceSetup {
 				segments,
 			});
 		}
+	}
+
+	private waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): Promise<boolean> {
+		const numberOfTriesWhenWaiting =
+			context.get('services.audigent.numberOfTries') || numberOfTries;
+
+		return new utils.WaitFor(isAuSegGlobalSet, numberOfTriesWhenWaiting, 250).until();
 	}
 }
 

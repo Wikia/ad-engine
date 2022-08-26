@@ -23,7 +23,6 @@ import {
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
-	waitForAuSegGlobalSet,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
@@ -234,18 +233,16 @@ export class TrackingSetup {
 
 	private keyValsTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
+		const keyVals = { ...context.get('targeting') };
 
-		// Waiting for segments, there is a high probability it's not enough time
-		// for Audigent to respond, but we are OK with that because there is a risk
-		// that no data will be sent if we wait too long
-		waitForAuSegGlobalSet(2).then(() => {
-			const keyVals = { ...context.get('targeting'), AU_SEG: window['au_seg']?.segments };
-			dataWarehouseTracker.track(
-				{
-					keyvals: JSON.stringify(keyVals),
-				},
-				trackingKeyValsUrl,
-			);
-		});
+		// Remove Audigent segments
+		delete keyVals.AU_SEG;
+
+		dataWarehouseTracker.track(
+			{
+				keyvals: JSON.stringify(keyVals),
+			},
+			trackingKeyValsUrl,
+		);
 	}
 }
