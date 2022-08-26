@@ -29,8 +29,9 @@ class Eyeota extends BaseServiceSetup {
 
 	async createScriptSource(): Promise<string> {
 		const { tcString } = await tcf.getTCData();
+		const s0v = context.get('targeting.s0v');
 
-		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=ajs`;
+		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=ajs&s0v=${s0v}`;
 	}
 }
 
