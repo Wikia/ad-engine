@@ -4,7 +4,6 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	context,
 	DiProcess,
 	durationMedia,
 	eventsRepository,
@@ -22,6 +21,9 @@ import {
 	adMarketplace,
 	userIdentity,
 	ats,
+	testService,
+	preTestService,
+	utils,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
@@ -32,6 +34,8 @@ export class UcpDesktopAdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				testService,
+				preTestService,
 				userIdentity,
 				playerExperimentSetup,
 				ats,
@@ -51,21 +55,12 @@ export class UcpDesktopAdsMode implements DiProcess {
 				nielsen,
 				adMarketplace,
 				prebidNativeProvider,
-				playerSetup.setOptions({
-					dependencies: [
-						bidders.initialized,
-						taxonomyService.initialized,
-						silverSurferService.initialized,
-						wadRunner.initialized,
-					],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
-				}),
-				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
-				}),
+				playerSetup,
+				gptSetup,
 			)
 			.execute()
 			.then(() => {
+				utils.logger('DJ', 'Pipeline completed');
 				communicationService.emit(eventsRepository.AD_ENGINE_PARTNERS_READY);
 			});
 	}

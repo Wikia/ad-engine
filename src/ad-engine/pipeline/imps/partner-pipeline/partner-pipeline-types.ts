@@ -1,8 +1,15 @@
-export type PartnerStepUnion = PartnerInitializationProcess | FuncProcess;
+export enum PartnerServiceStage {
+	'baseSetup',
+	'preProvider',
+	'provider',
+	'afterProvider',
+}
+export type PartnerStepUnion = PartnerInitializationProcess | FuncProcess | any;
 
 export interface PartnerInitializationProcessOptions {
-	dependencies?: Promise<any>[];
+	dependencies?: any;
 	timeout?: number;
+	stage?: PartnerServiceStage;
 }
 
 export interface PartnerInitializationProcess {
