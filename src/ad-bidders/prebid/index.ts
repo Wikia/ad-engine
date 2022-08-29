@@ -6,6 +6,7 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	config,
 	context,
 	DEFAULT_MAX_DELAY,
 	DEFAULT_MIN_DELAY,
@@ -93,6 +94,10 @@ export class PrebidProvider extends BidderProvider {
 				syncDelay: 6000,
 			},
 		};
+
+		if (config.rollout.coppaFlag().prebid && utils.targeting.isWikiDirectedAtChildren()) {
+			this.prebidConfig.coppa = true;
+		}
 
 		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
 			this.prebidConfig.s2sConfig = {

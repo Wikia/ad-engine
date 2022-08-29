@@ -1,5 +1,6 @@
 export * from './bab-detection';
 export * from './btf-blocker-service';
+export * from './config-service';
 export * from './context-service';
 export * from './custom-ad-loader';
 export * from './external-logger';

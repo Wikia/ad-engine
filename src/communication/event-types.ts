@@ -178,6 +178,9 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AUDIGENT_SEGMENTS_READY: {
 		name: 'Audigent segments ready',
 	},
+	EYEOTA_STARTED: {
+		name: 'Eyeota started',
+	},
 	IDENTITY_PARTNER_DATA_OBTAINED: {
 		name: 'Identity partner data obtained',
 		payload: payload<IdentityDataPayload>(),
