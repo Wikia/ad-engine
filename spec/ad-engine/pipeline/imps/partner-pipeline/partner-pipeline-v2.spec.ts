@@ -24,35 +24,30 @@ describe('PartnerPipelineV2', () => {
 	@Service({
 		stage: PartnerServiceStage.baseSetup,
 	})
-	class ExampleServiceSetup {
-		async call() {
-			await wait(200);
-			spy(1);
-		}
-	}
-
-	@Service({
-		stage: PartnerServiceStage.baseSetup,
-	})
 	class ExampleSlowServiceSetup {
 		async call() {
 			await wait(400);
 			spy(0);
 		}
 	}
+	const exampleSlowServiceSetup = new ExampleSlowServiceSetup();
+
+	@Service({
+		stage: PartnerServiceStage.baseSetup,
+		dependencies: [exampleSlowServiceSetup],
+		timeout: 1000,
+	})
+	class ExampleServiceSetup {
+		async call() {
+			await wait(200);
+			spy(1);
+		}
+	}
+	const exampleServiceSetup = new ExampleServiceSetup();
 
 	it('should work', async () => {
-		const exampleSlowServiceSetup = new ExampleSlowServiceSetup();
-		const exampleServiceSetup = new ExampleServiceSetup();
-
 		pipeline
-			.add(
-				exampleServiceSetup.setOptions({
-					dependencies: [exampleSlowServiceSetup.initialized],
-					timeout: 1000,
-				}),
-				exampleSlowServiceSetup,
-			)
+			.add(exampleSlowServiceSetup, exampleServiceSetup)
 			.execute()
 			.then(async () => {
 				await wait(200);
