@@ -22,8 +22,7 @@ import {
 	adMarketplace,
 	prebidNativeProvider,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
-import { adEngineSetup } from '../../shared/setup/ad-engine.setup';
+import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {

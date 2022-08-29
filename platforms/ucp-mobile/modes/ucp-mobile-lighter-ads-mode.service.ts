@@ -20,8 +20,7 @@ import {
 	taxonomyService,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
-import { adEngineSetup } from '../../shared/setup/ad-engine.setup';
+import { gptSetup, playerSetup, wadRunner, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
@@ -48,6 +47,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				playerSetup,
 				gptSetup,
 				adEngineSetup,
+				wadRunner,
 			)
 			.execute()
 			.then(() => {

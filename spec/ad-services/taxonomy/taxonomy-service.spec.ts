@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { context } from '../../../src/ad-engine';
+import { context } from '@wikia/ad-engine';
 import { taxonomyService } from '@wikia/ad-services/taxonomy/taxonomy-service';
 import { AdTags, taxonomyServiceLoader } from '@wikia/ad-services/taxonomy/taxonomy-service.loader';
 

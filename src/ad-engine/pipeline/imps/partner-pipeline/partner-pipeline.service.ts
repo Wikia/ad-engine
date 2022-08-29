@@ -35,13 +35,14 @@ export class PartnerPipeline {
 			.forEach((step) => {
 				if (typeof step === 'function') {
 					const instance = step({});
-					const stage = instance.options?.step || PartnerServiceStage.provider;
+					const stage = instance.options?.stage;
 					groupedSteps[stage].push(step);
 				} else {
-					const stage = step.options?.step || PartnerServiceStage.provider;
+					const stage = step.options?.stage;
 					groupedSteps[stage].push(step);
 				}
 			});
+
 		await this.executeStage(groupedSteps[PartnerServiceStage.baseSetup] || []);
 		await this.executeStage(groupedSteps[PartnerServiceStage.preProvider] || []);
 		await this.executeStage(groupedSteps[PartnerServiceStage.provider] || []);

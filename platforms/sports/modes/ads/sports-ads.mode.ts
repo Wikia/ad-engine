@@ -11,8 +11,7 @@ import {
 	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { wadRunner, gptSetup } from '@platforms/shared';
-import { adEngineSetup } from '../../../shared/setup/ad-engine.setup';
+import { wadRunner, gptSetup, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {

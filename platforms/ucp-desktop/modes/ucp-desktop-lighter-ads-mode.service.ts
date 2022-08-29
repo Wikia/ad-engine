@@ -16,8 +16,7 @@ import {
 	nielsen,
 	identityHub,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
-import { adEngineSetup } from '../../shared/setup/ad-engine.setup';
+import { gptSetup, playerSetup, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {
