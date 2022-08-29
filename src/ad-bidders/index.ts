@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, Dictionary, PartnerServiceStage, utils } from '@ad-engine/core';
+import { AdSlot, context, Dictionary, ServiceStage, utils } from '@ad-engine/core';
 import { A9Provider } from './a9';
 import { PrebidProvider } from './prebid';
 // eslint-disable-next-line no-restricted-imports
@@ -13,7 +13,7 @@ interface BiddersProviders {
 const logGroup = 'bidders';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class Bidders {
 	private biddersProviders: BiddersProviders = {};

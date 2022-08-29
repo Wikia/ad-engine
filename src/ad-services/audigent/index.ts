@@ -1,4 +1,4 @@
-import { context, externalLogger, PartnerServiceStage, utils } from '@ad-engine/core';
+import { context, externalLogger, ServiceStage, utils } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 // eslint-disable-next-line no-restricted-imports
@@ -17,7 +17,7 @@ export function waitForAuSegGlobalSet(numberOfTries = DEFAULT_NUMBER_OF_TRIES): 
 }
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class Audigent {
 	private isLoaded = false;

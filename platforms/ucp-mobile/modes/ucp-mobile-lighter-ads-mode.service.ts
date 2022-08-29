@@ -14,7 +14,7 @@ import {
 	identityHub,
 	liveConnect,
 	nielsen,
-	PartnerPipeline,
+	ServicePipeline,
 	silverSurferService,
 	stroer,
 	taxonomyService,
@@ -24,7 +24,7 @@ import { gptSetup, playerSetup, wadRunner, adEngineSetup } from '@platforms/shar
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline

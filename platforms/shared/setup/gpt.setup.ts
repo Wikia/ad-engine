@@ -1,13 +1,7 @@
-import {
-	AdSlot,
-	communicationService,
-	PartnerServiceStage,
-	Service,
-	utils,
-} from '@wikia/ad-engine';
+import { AdSlot, communicationService, ServiceStage, Service, utils } from '@wikia/ad-engine';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class GptSetup {
 	call() {

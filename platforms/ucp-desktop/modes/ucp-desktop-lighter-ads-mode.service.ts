@@ -3,7 +3,7 @@ import {
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	PartnerPipeline,
+	ServicePipeline,
 	userIdentity,
 	ats,
 	taxonomyService,
@@ -20,7 +20,7 @@ import { gptSetup, playerSetup, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class UcpDesktopLighterAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline

@@ -1,4 +1,4 @@
-import { context, Dictionary, PartnerServiceStage, utils } from '@ad-engine/core';
+import { context, Dictionary, ServiceStage, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
@@ -21,7 +21,7 @@ function createInstance(nielsenKey): any {
  * Nielsen service handler
  */
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class Nielsen {
 	nlsnInstance: any = null;

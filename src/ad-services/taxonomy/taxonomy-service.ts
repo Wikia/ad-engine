@@ -1,4 +1,4 @@
-import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
@@ -6,7 +6,7 @@ import { Service } from '@ad-engine/services';
 const logGroup = 'taxonomy-service';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 export class TaxonomyService {
 	async call(): Promise<AdTags> {

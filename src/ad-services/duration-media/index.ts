@@ -1,11 +1,11 @@
-import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils } from '@ad-engine/core';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
 
 const logGroup = 'duration-media';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class DurationMedia {
 	call(): Promise<void> {

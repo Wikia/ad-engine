@@ -1,9 +1,9 @@
-import { AdEngine, PartnerServiceStage, Service } from '@wikia/ad-engine';
+import { AdEngine, ServiceStage, Service } from '@wikia/ad-engine';
 
 let adEngineInstance: AdEngine;
 
 @Service({
-	stage: PartnerServiceStage.provider,
+	stage: ServiceStage.provider,
 })
 class AdEngineSetup {
 	call() {

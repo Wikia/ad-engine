@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
-import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils } from '@ad-engine/core';
 import { map } from 'rxjs/operators';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
@@ -41,7 +41,7 @@ const instantSearchEndpointParameters = [
 ];
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class AdMarketplace {
 	private configuration: AdMarketplaceConfiguration;

@@ -1,4 +1,4 @@
-import { context, PartnerServiceStage, slotService, utils } from '@ad-engine/core';
+import { context, ServiceStage, slotService, utils } from '@ad-engine/core';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
 
@@ -33,7 +33,7 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
  * Confiant service handler
  */
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class Confiant {
 	/**

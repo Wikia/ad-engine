@@ -1,9 +1,9 @@
-import { context, PartnerServiceStage } from '@ad-engine/core';
+import { context, ServiceStage } from '@ad-engine/core';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
 
 @Service({
-	stage: PartnerServiceStage.baseSetup,
+	stage: ServiceStage.baseSetup,
 })
 class UserIdentity {
 	async setupPPID(): Promise<void> {

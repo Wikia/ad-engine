@@ -8,14 +8,14 @@ import {
 	durationMedia,
 	eventsRepository,
 	iasPublisherOptimization,
-	PartnerPipeline,
+	ServicePipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { wadRunner, gptSetup, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline

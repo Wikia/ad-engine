@@ -1,7 +1,7 @@
 import {
 	context,
 	Dictionary,
-	PartnerServiceStage,
+	ServiceStage,
 	postponeExecutionUntilGptLoads,
 	SlotConfig,
 	utils,
@@ -42,7 +42,7 @@ interface IasTargetingData {
 }
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class IasPublisherOptimization {
 	private isLoaded = false;

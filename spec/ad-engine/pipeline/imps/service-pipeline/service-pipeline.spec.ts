@@ -1,16 +1,16 @@
 import { Container } from '@wikia/dependency-injection';
-import { PartnerPipeline, PartnerServiceStage } from '@wikia/ad-engine';
+import { ServicePipeline, ServiceStage } from '@wikia/ad-engine';
 import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
 import { expect } from 'chai';
 import { wait } from '@wikia/ad-engine/utils';
 import { Service } from '@wikia/ad-services';
 
-describe('PartnerPipelineV2', () => {
+describe('ServicePipeline', () => {
 	const sandbox = createSandbox();
 	let spy: SinonSpy;
 	let clock: SinonFakeTimers;
 	const container = new Container();
-	const pipeline = container.get(PartnerPipeline);
+	const pipeline = container.get(ServicePipeline);
 
 	beforeEach(() => {
 		spy = sandbox.spy();
@@ -22,7 +22,7 @@ describe('PartnerPipelineV2', () => {
 	});
 
 	@Service({
-		stage: PartnerServiceStage.baseSetup,
+		stage: ServiceStage.baseSetup,
 	})
 	class ExampleSlowServiceSetup {
 		async call() {
@@ -33,7 +33,7 @@ describe('PartnerPipelineV2', () => {
 	const exampleSlowServiceSetup = new ExampleSlowServiceSetup();
 
 	@Service({
-		stage: PartnerServiceStage.baseSetup,
+		stage: ServiceStage.baseSetup,
 		dependencies: [exampleSlowServiceSetup],
 		timeout: 1000,
 	})

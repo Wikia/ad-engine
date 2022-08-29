@@ -1,11 +1,11 @@
-import { context, PartnerServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils } from '@ad-engine/core';
 import { insertFacebookPixel } from './facebook-pixel-script';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
 
 const logGroup = 'facebook-pixel';
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class FacebookPixel {
 	isSetUp = false;

@@ -19,7 +19,7 @@ import {
 	ats,
 	userIdentity,
 	taxonomyService,
-	PartnerPipeline,
+	ServicePipeline,
 } from '@wikia/ad-engine';
 import {
 	wadRunner,
@@ -31,7 +31,7 @@ import {
 
 @Injectable()
 export class UcpDesktopAdsMode {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline

@@ -4,14 +4,14 @@ import {
 	context,
 	JWPlayerManager,
 	jwpSetup,
-	PartnerServiceStage,
+	ServiceStage,
 	Service,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { wadRunner } from '../services/wad-runner';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 	dependencies: [bidders, taxonomyService, wadRunner],
 	timeout: context.get('options.jwpMaxDelayTimeout'),
 })

@@ -1,4 +1,4 @@
-import { context, PartnerServiceStage, tcf, utils } from '@ad-engine/core';
+import { context, ServiceStage, tcf, utils } from '@ad-engine/core';
 // eslint-disable-next-line no-restricted-imports
 import { Service } from '@ad-engine/services';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
@@ -8,7 +8,7 @@ const pid = 'r8rcb20';
 const siteName = 'fandom';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class Eyeota {
 	isEnabled(): boolean {

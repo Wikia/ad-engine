@@ -1,21 +1,21 @@
-import { context, PartnerServiceStage } from '@ad-engine/core';
+import { context, ServiceStage } from '@ad-engine/core';
 
 interface Constructor<T> {
 	new (...args): T;
 }
 
-export interface InjectableDecoredService {
+export interface PipelineDecoredService {
 	call?: () => Promise<void> | void;
-	options?: PartnerServiceOptions;
+	options?: PipelineServiceOptions;
 }
 
-interface PartnerServiceOptions {
-	stage: PartnerServiceStage;
+interface PipelineServiceOptions {
+	stage: ServiceStage;
 	dependencies?: any[];
 	timeout?: number;
 }
 
-export function Service(options: PartnerServiceOptions) {
+export function Service(options: PipelineServiceOptions) {
 	return DecoratorFunction.bind(options);
 }
 
@@ -28,7 +28,7 @@ function isDecoratedService(p) {
 }
 
 function DecoratorFunction<T>(baseClass: T) {
-	class Injectable extends (<Constructor<InjectableDecoredService>>(<unknown>baseClass)) {
+	class Injectable extends (<Constructor<PipelineDecoredService>>(<unknown>baseClass)) {
 		initializationTimeout;
 		resolve: () => void;
 		initialized: Promise<void> = new Promise<void>((resolve) => {

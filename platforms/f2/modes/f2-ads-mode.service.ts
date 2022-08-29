@@ -7,14 +7,14 @@ import {
 	eventsRepository,
 	iasPublisherOptimization,
 	nielsen,
-	PartnerPipeline,
+	ServicePipeline,
 	taxonomyService,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline

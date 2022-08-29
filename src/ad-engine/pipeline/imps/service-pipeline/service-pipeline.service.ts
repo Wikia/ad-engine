@@ -1,20 +1,20 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	PartnerInitializationProcess,
-	PartnerServiceStage,
-	PartnerStepUnion,
-} from './partner-pipeline-types';
+	ServiceInitializationProcess,
+	ServiceStage,
+	ServiceStepUnion,
+} from './service-pipeline-types';
 
 @Injectable({ scope: 'Singleton' })
-export class PartnerPipeline {
-	steps: PartnerStepUnion[] = [];
-	add(...steps: PartnerStepUnion[]): this {
+export class ServicePipeline {
+	steps: ServiceStepUnion[] = [];
+	add(...steps: ServiceStepUnion[]): this {
 		this.steps = steps;
 
 		return this;
 	}
 
-	async executeStage(steps: PartnerInitializationProcess[]): Promise<void> {
+	async executeStage(steps: ServiceInitializationProcess[]): Promise<void> {
 		await Promise.all(
 			steps.map((step) => {
 				step.execute();
@@ -25,9 +25,9 @@ export class PartnerPipeline {
 
 	async execute(): Promise<void> {
 		const groupedSteps = {
-			[PartnerServiceStage.baseSetup]: [],
-			[PartnerServiceStage.preProvider]: [],
-			[PartnerServiceStage.provider]: [],
+			[ServiceStage.baseSetup]: [],
+			[ServiceStage.preProvider]: [],
+			[ServiceStage.provider]: [],
 		};
 
 		this.steps
@@ -43,8 +43,8 @@ export class PartnerPipeline {
 				}
 			});
 
-		await this.executeStage(groupedSteps[PartnerServiceStage.baseSetup] || []);
-		await this.executeStage(groupedSteps[PartnerServiceStage.preProvider] || []);
-		await this.executeStage(groupedSteps[PartnerServiceStage.provider] || []);
+		await this.executeStage(groupedSteps[ServiceStage.baseSetup] || []);
+		await this.executeStage(groupedSteps[ServiceStage.preProvider] || []);
+		await this.executeStage(groupedSteps[ServiceStage.provider] || []);
 	}
 }

@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, context, PartnerServiceStage, slotService, utils } from '@ad-engine/core';
+import { AdSlot, context, ServiceStage, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
 import { PrebidNativeConfig } from './prebid-native-config';
 import { PrebidNativeHelper } from './prebid-native-helper';
@@ -9,7 +9,7 @@ import { Service } from '@ad-engine/services';
 const logGroup = 'prebid-native-provider';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 export class PrebidNativeProvider {
 	static ACTION_CLICK = 'click';

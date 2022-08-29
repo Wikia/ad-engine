@@ -3,7 +3,7 @@ import {
 	communicationService,
 	DiProcess,
 	eventsRepository,
-	PartnerPipeline,
+	ServicePipeline,
 	userIdentity,
 	ats,
 	audigent,
@@ -26,7 +26,7 @@ import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shar
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline

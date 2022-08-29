@@ -5,7 +5,7 @@ import {
 	distroScale,
 	eventsRepository,
 	exCo,
-	PartnerServiceStage,
+	ServiceStage,
 	Service,
 	slotDataParamsUpdater,
 	slotService,
@@ -13,7 +13,7 @@ import {
 } from '@wikia/ad-engine';
 
 @Service({
-	stage: PartnerServiceStage.baseSetup,
+	stage: ServiceStage.baseSetup,
 })
 class PlayerExperimentSetup {
 	private initIncontentPlayer(incontentPlayer) {

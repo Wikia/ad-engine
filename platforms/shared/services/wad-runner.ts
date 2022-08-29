@@ -1,14 +1,8 @@
-import {
-	babDetection,
-	btfBlockerService,
-	btRec,
-	PartnerServiceStage,
-	Service,
-} from '@wikia/ad-engine';
+import { babDetection, btfBlockerService, btRec, ServiceStage, Service } from '@wikia/ad-engine';
 import { trackBab } from '../tracking/bab-tracker';
 
 @Service({
-	stage: PartnerServiceStage.preProvider,
+	stage: ServiceStage.preProvider,
 })
 class WadRunner {
 	async call(): Promise<void> {
