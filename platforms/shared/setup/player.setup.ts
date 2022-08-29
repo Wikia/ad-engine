@@ -7,13 +7,13 @@ import {
 	PartnerServiceStage,
 	Service,
 	silverSurferService,
-	taxonomyServiceDeprecated,
+	taxonomyService,
 } from '@wikia/ad-engine';
-import { wadRunnerDeprecated } from '../services/wad-runner-deprecated';
+import { wadRunner } from '../services/wad-runner';
 
 @Service({
 	stage: PartnerServiceStage.preProvider,
-	dependencies: [bidders, taxonomyServiceDeprecated, silverSurferService, wadRunnerDeprecated],
+	dependencies: [bidders, taxonomyService, silverSurferService, wadRunner],
 	timeout: context.get('options.jwpMaxDelayTimeout'),
 })
 class PlayerSetup {

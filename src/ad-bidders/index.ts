@@ -166,10 +166,7 @@ export const bidders = new Bidders();
 
 export * from './tracking';
 export * from './wrappers';
-export * from './bidders-deprecated';
-export * from './prebid/ats-deprecated';
 export * from './prebid/ats';
 export * from './prebid/live-ramp';
 export * from './prebid/identity-hub';
-export * from './prebid/identity-hub-deprecated';
 export * from './prebid/native';
