@@ -1,9 +1,8 @@
 import { Container } from '@wikia/dependency-injection';
-import { ServicePipeline, ServiceStage } from '@wikia/ad-engine';
+import { Service, ServicePipeline, ServiceStage } from '@wikia/ad-engine';
 import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
 import { expect } from 'chai';
 import { wait } from '@wikia/ad-engine/utils';
-import { Service } from '@wikia/ad-services';
 
 describe('ServicePipeline', () => {
 	const sandbox = createSandbox();

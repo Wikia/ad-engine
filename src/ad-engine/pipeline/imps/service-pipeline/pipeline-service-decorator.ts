@@ -20,11 +20,11 @@ export function Service(options: PipelineServiceOptions) {
 	return DecoratorFunction.bind(options);
 }
 
-function isPromise(p) {
+function isPromise(p): boolean {
 	return typeof p === 'object' && typeof p.then === 'function';
 }
 
-function isDecoratedService(p) {
+function isDecoratedService(p): boolean {
 	return typeof p === 'object' && isPromise(p.initialized);
 }
 
