@@ -4,7 +4,6 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	DiProcess,
 	durationMedia,
 	eventsRepository,
 	eyeota,
@@ -31,7 +30,7 @@ import {
 } from '@platforms/shared';
 
 @Injectable()
-export class UcpDesktopAdsMode implements DiProcess {
+export class UcpDesktopAdsMode {
 	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
