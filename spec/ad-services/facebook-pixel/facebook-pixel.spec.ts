@@ -1,14 +1,14 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context } from '../../../src/ad-engine';
-import { facebookPixelDeprecated } from '../../../src/ad-services';
+import { facebookPixel } from '../../../src/ad-services';
 
 describe('Facebook pixel', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
 	beforeEach(() => {
-		loadScriptStub = sandbox.stub(facebookPixelDeprecated, 'setup');
+		loadScriptStub = sandbox.stub(facebookPixel, 'setup');
 		context.set('services.facebookPixel.enabled', true);
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
@@ -20,7 +20,7 @@ describe('Facebook pixel', () => {
 	});
 
 	it('Facebook pixel is created', async () => {
-		await facebookPixelDeprecated.call();
+		await facebookPixel.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -28,7 +28,7 @@ describe('Facebook pixel', () => {
 	it('Facebook pixel can be disabled', async () => {
 		context.set('services.facebookPixel.enabled', false);
 
-		await facebookPixelDeprecated.call();
+		await facebookPixel.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -36,7 +36,7 @@ describe('Facebook pixel', () => {
 	it('Facebook pixel not created when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
-		await facebookPixelDeprecated.call();
+		await facebookPixel.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -44,7 +44,7 @@ describe('Facebook pixel', () => {
 	it('Facebook pixel not created when user has opted out sale', async () => {
 		context.set('options.optOutSale', true);
 
-		await facebookPixelDeprecated.call();
+		await facebookPixel.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -52,7 +52,7 @@ describe('Facebook pixel', () => {
 	it('Facebook pixel not created on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
-		await facebookPixelDeprecated.call();
+		await facebookPixel.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});

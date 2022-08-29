@@ -1,6 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { context, PartnerServiceStage, utils } from '@ad-engine/core';
-import { AdTags } from '../taxonomy-deprecated/taxonomy-service.loader';
+import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import { SilverSurferProfileFetcher } from './silver-surfer-profile-fetcher';
 import { SilverSurferProfileExtender } from './silver-surfer-profile-extender';
 import { Service } from '../partner-service-decorator/partner-service-decorator';

@@ -1,5 +1,5 @@
 import {
-	biddersDeprecated,
+	bidders,
 	communicationService,
 	DiProcess,
 	eventsRepository,
@@ -16,7 +16,7 @@ export class AdEngineRunnerSetup implements DiProcess {
 			eventsRepository.AD_ENGINE_SLOT_ADDED,
 			({ slot }) => {
 				utils.logger(logGroup, `Added ad slot ${slot.getSlotName()}`);
-				biddersDeprecated.updateSlotTargeting(slot.getSlotName());
+				bidders.updateSlotTargeting(slot.getSlotName());
 			},
 			false,
 		);

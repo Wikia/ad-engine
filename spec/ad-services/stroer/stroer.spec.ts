@@ -1,4 +1,4 @@
-import { stroerDeprecated } from '@wikia/ad-services';
+import { stroer } from '@wikia/ad-services';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, utils } from '../../../src/ad-engine/index';
@@ -19,7 +19,7 @@ describe('Stroer', () => {
 
 	it('Stroer is created', async () => {
 		context.set('services.stroer.enabled', true);
-		await stroerDeprecated.call();
+		await stroer.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -27,7 +27,7 @@ describe('Stroer', () => {
 	it('Stroer is disabled', async () => {
 		context.set('services.stroer.enabled', false);
 
-		await stroerDeprecated.call();
+		await stroer.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});

@@ -1,5 +1,5 @@
 import {
-	audigentDeprecated,
+	audigent,
 	communicationService,
 	context,
 	DiProcess,
@@ -37,7 +37,7 @@ export class InstantConfigSetup implements DiProcess {
 		}
 
 		if (instantConfig.get('icAudigent')) {
-			audigentDeprecated.init(instantConfig);
+			audigent.init(instantConfig);
 		}
 	}
 }

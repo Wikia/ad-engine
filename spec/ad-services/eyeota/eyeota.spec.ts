@@ -1,4 +1,4 @@
-import { eyeotaDeprecated } from '@wikia/ad-services';
+import { eyeota } from '@wikia/ad-services';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, tcf, utils } from '../../../src/ad-engine/index';
@@ -26,7 +26,7 @@ describe('Eyeota', () => {
 	it('is called when enabled in the context', async () => {
 		context.set('services.eyeota.enabled', true);
 
-		await eyeotaDeprecated.call();
+		await eyeota.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -34,13 +34,13 @@ describe('Eyeota', () => {
 	it('is not called when disabled in the context', async () => {
 		context.set('services.eyeota.enabled', false);
 
-		await eyeotaDeprecated.call();
+		await eyeota.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
 	it('constructs proper src', async () => {
-		const src = await eyeotaDeprecated.createScriptSource();
+		const src = await eyeota.createScriptSource();
 
 		expect(src).to.equal(
 			'https://ps.eyeota.net/pixel?pid=r8rcb20&sid=fandom&gdpr=1&gdpr_consent=test&t=ajs',

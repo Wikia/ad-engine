@@ -1,7 +1,7 @@
 import { context } from '@wikia/ad-engine';
-import { SilverSurferProfileFetcher } from '@wikia/ad-services/silver-surfer-deprecated/silver-surfer-profile-fetcher';
-import { SilverSurferProfileExtender } from '@wikia/ad-services/silver-surfer-deprecated/silver-surfer-profile-extender';
-import { SilverSurferServiceDeprecated } from '@wikia/ad-services';
+import { SilverSurferProfileFetcher } from '@wikia/ad-services/silver-surfer/silver-surfer-profile-fetcher';
+import { SilverSurferProfileExtender } from '@wikia/ad-services/silver-surfer/silver-surfer-profile-extender';
+import { SilverSurferService } from '@wikia/ad-services';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -38,7 +38,7 @@ describe('Silver Surfer service', () => {
 			.stub(fetcher, 'getUserProfile')
 			.callsFake(() => Promise.resolve(profile));
 		getContextStub = sandbox.stub(extender, 'getContext').callsFake(() => context);
-		return new SilverSurferServiceDeprecated(fetcher, extender);
+		return new SilverSurferService(fetcher, extender);
 	}
 
 	afterEach(() => {

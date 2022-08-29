@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, externalLogger, utils } from '../../../src/ad-engine';
-import { audigentDeprecated } from '@wikia/ad-services';
+import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
@@ -29,7 +29,7 @@ describe('Audigent', () => {
 	afterEach(() => {
 		sandbox.restore();
 		loadScriptStub.resetHistory();
-		audigentDeprecated.resetLoadedState();
+		audigent.resetLoadedState();
 
 		window['au_seg'] = undefined;
 
@@ -46,7 +46,7 @@ describe('Audigent', () => {
 	});
 
 	it('Audigent is called', async () => {
-		await audigentDeprecated.call();
+		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
@@ -54,7 +54,7 @@ describe('Audigent', () => {
 	it('Audigent can be disabled', async () => {
 		context.set('services.audigent.enabled', false);
 
-		await audigentDeprecated.call();
+		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -62,7 +62,7 @@ describe('Audigent', () => {
 	it('Audigent not called when user is not opted in', async () => {
 		context.set('options.trackingOptIn', false);
 
-		await audigentDeprecated.call();
+		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -70,7 +70,7 @@ describe('Audigent', () => {
 	it('Audigent not called when user has opted out sale', async () => {
 		context.set('options.optOutSale', true);
 
-		await audigentDeprecated.call();
+		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
@@ -78,20 +78,20 @@ describe('Audigent', () => {
 	it('Audigent not called on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
-		await audigentDeprecated.call();
+		await audigent.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
 	it('Audigent requests for two assets when integration is enabled', async () => {
-		audigentDeprecated.loadSegmentLibrary();
-		await audigentDeprecated.call();
+		audigent.loadSegmentLibrary();
+		await audigent.call();
 
 		expect(loadScriptStub.callCount).to.equal(2);
 	});
 
 	it('Audigent key-val is set to -1 when API is too slow', () => {
-		audigentDeprecated.setup();
+		audigent.setup();
 
 		expect(context.get('targeting.AU_SEG')).to.equal('-1');
 	});
@@ -99,7 +99,7 @@ describe('Audigent', () => {
 	it('Audigent key-val is set to no_segments when no segments from API', () => {
 		window['au_seg'] = { segments: [] };
 
-		audigentDeprecated.setup();
+		audigent.setup();
 		executeMockedCustomEvent([]);
 
 		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
@@ -109,7 +109,7 @@ describe('Audigent', () => {
 		const mockedSegments = ['AUG_SEG_TEST_1', 'AUG_AUD_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
 
-		audigentDeprecated.setup();
+		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
@@ -139,7 +139,7 @@ describe('Audigent', () => {
 		];
 		window['au_seg'] = { segments: mockedSegments };
 
-		audigentDeprecated.setup();
+		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
@@ -161,14 +161,14 @@ describe('Audigent', () => {
 		];
 		window['au_seg'] = { segments: mockedSegments };
 
-		audigentDeprecated.setup();
+		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
 	});
 
 	it('Audigent does not send data to Kibana when no segments', () => {
-		audigentDeprecated.setup();
+		audigent.setup();
 
 		expect(externalLoggerLogStub.called).to.equal(false);
 	});
@@ -178,7 +178,7 @@ describe('Audigent', () => {
 
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
-		audigentDeprecated.setup();
+		audigent.setup();
 
 		expect(externalLoggerLogStub.called).to.equal(false);
 	});
@@ -188,7 +188,7 @@ describe('Audigent', () => {
 
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
-		audigentDeprecated.setup();
+		audigent.setup();
 		executeMockedCustomEvent(mockedSegments);
 
 		expect(externalLoggerLogStub.called).to.equal(true);

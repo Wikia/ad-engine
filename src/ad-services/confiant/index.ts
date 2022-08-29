@@ -6,7 +6,7 @@ const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
 
 /**
- * Injects ConfiantDeprecated script
+ * Injects Confiant script
  * @returns {Promise}
  */
 function loadScript(propertyId: string): Promise<Event> {
@@ -16,7 +16,7 @@ function loadScript(propertyId: string): Promise<Event> {
 }
 
 /**
- * ConfiantDeprecated blocking callback tracking parameters to DW
+ * Confiant blocking callback tracking parameters to DW
  */
 function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impressionData): void {
 	if (impressionData && impressionData.dfp) {
@@ -30,7 +30,7 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 }
 
 /**
- * ConfiantDeprecated service handler
+ * Confiant service handler
  */
 @Service({
 	stage: PartnerServiceStage.preProvider,
