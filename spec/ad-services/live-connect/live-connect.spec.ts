@@ -67,6 +67,8 @@ describe('LiveConnect', () => {
 			emitSpy = sandbox.spy(communicationService, 'emit');
 		});
 
+		afterEach(() => sandbox.restore());
+
 		it('resolve valid id', async () => {
 			liveConnect.resolveId('md5', 'liveconnect-md5')({ md5: '123' });
 
