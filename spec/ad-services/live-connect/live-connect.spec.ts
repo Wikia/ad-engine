@@ -69,7 +69,7 @@ describe('LiveConnect', () => {
 
 		afterEach(() => sandbox.restore());
 
-		it('resolve valid id', async () => {
+		it('valid id is resolved', async () => {
 			liveConnect.resolveId('md5', 'liveconnect-md5')({ md5: '123' });
 
 			expect(
@@ -80,7 +80,7 @@ describe('LiveConnect', () => {
 			).to.be.true;
 		});
 
-		it('resolve unifiedId', async () => {
+		it('unifiedId is resolved', async () => {
 			liveConnect.resolveId('unifiedId', 'liveconnect-unifiedId')({ unifiedId: '123' });
 
 			expect(emitSpy.calledWith(eventsRepository.LIVE_CONNECT_RESPONDED_UUID)).to.be.true;
@@ -92,7 +92,7 @@ describe('LiveConnect', () => {
 			).to.be.true;
 		});
 
-		it('resolve no or wrong id', async () => {
+		it('missing or wrong id is not resolved', async () => {
 			liveConnect.resolveId('test', 'liveconnect-test')({});
 			liveConnect.resolveId('test', 'liveconnect-test')({ wrong: '123' });
 
