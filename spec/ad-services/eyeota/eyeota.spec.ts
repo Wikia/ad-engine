@@ -27,10 +27,10 @@ describe('Eyeota', () => {
 		context.remove('services.eyeota.enabled');
 		delete window.__tcfapi;
 
-		context.set('services.eyeota.enabled', undefined);
-		context.set('options.trackingOptIn', undefined);
-		context.set('options.optOutSale', undefined);
-		context.set('wiki.targeting.directedAtChildren', undefined);
+		context.remove('services.eyeota.enabled');
+		context.remove('options.trackingOptIn');
+		context.remove('options.optOutSale');
+		context.remove('wiki.targeting.directedAtChildren');
 	});
 
 	it('is called when all requirements are met', async () => {
