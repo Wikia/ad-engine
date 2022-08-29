@@ -1,5 +1,4 @@
 import {
-	AdEngine,
 	AdSlot,
 	communicationService,
 	PartnerServiceStage,
@@ -7,10 +6,8 @@ import {
 	utils,
 } from '@wikia/ad-engine';
 
-let adEngineInstance: AdEngine;
-
 @Service({
-	stage: PartnerServiceStage.provider,
+	stage: PartnerServiceStage.preProvider,
 })
 class GptSetup {
 	call() {
@@ -18,9 +15,6 @@ class GptSetup {
 
 		utils.logger('gpt-provider', 'loading GPT...');
 		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
-
-		adEngineInstance = new AdEngine();
-		adEngineInstance.init();
 
 		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ slot }) => {
 			slot.removeClass('default-height');

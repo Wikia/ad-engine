@@ -4,27 +4,14 @@ interface Constructor<T> {
 	new (...args): T;
 }
 
-interface ServiceDecoredClass {
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	call?: Function;
-	options: PartnerServiceOptions;
-}
-
-export enum PartnerServicePlatforms {
-	'ucpDesktopLight',
-	'ucpDesktop',
-	'ucpMobile',
-	'ucpMobileLight',
-	'sport',
-	'bingebot',
-	'f2',
-	'noAds',
+export interface InjectableDecoredService {
+	call?: () => Promise<void> | void;
+	options?: PartnerServiceOptions;
 }
 
 interface PartnerServiceOptions {
 	stage: PartnerServiceStage;
 	dependencies?: any[];
-	platforms?: PartnerServicePlatforms[];
 	timeout?: number;
 }
 
@@ -41,7 +28,7 @@ function isDecoratedService(p) {
 }
 
 function DecoratorFunction<T>(baseClass: T) {
-	class Injectable extends (<Constructor<ServiceDecoredClass>>(<unknown>baseClass)) {
+	class Injectable extends (<Constructor<InjectableDecoredService>>(<unknown>baseClass)) {
 		initializationTimeout;
 		resolve: () => void;
 		initialized: Promise<void> = new Promise<void>((resolve) => {

@@ -5,7 +5,7 @@ import {
 	PartnerStepUnion,
 } from './partner-pipeline-types';
 
-@Injectable({ scope: 'Transient' })
+@Injectable({ scope: 'Singleton' })
 export class PartnerPipeline {
 	steps: PartnerStepUnion[] = [];
 	add(...steps: PartnerStepUnion[]): this {

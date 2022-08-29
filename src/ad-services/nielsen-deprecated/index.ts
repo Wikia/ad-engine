@@ -1,5 +1,5 @@
 import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
-import { initNielsenStaticQueue } from './static-queue-script';
+import { initNielsenStaticQueue } from '../nielsen/static-queue-script';
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
 

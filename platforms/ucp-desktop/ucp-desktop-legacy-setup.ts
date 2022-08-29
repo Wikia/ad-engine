@@ -1,4 +1,4 @@
-import { ProcessPipeline, conditional, context } from '@wikia/ad-engine';
+import { ProcessPipeline, conditional } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	BiddersStateSetup,
@@ -11,7 +11,6 @@ import { UcpDesktopPrebidConfigSetup } from './setup/context/prebid/ucp-desktop-
 import { UcpDesktopDynamicSlotsSetup } from './setup/dynamic-slots/ucp-desktop-dynamic-slots.setup';
 import { UcpDesktopTemplatesSetup } from './templates/ucp-desktop-templates.setup';
 import { UcpDesktopSlotsStateSetup } from './setup/state/slots/ucp-desktop-slots-state-setup';
-import { UcpDesktopAdsDeprecatedMode } from './modes/ucp-desktop-ads-deprecated-mode.service';
 import { UcpDesktopAdsMode } from './modes/ucp-desktop-ads-mode.service';
 
 @Injectable()
@@ -28,10 +27,7 @@ export class UcpDesktopLegacySetup {
 			SequentialMessagingSetup, // SequentialMessagingSetup needs to be after *TemplatesSetup or UAP SM might break
 			BiddersStateSetup,
 			conditional(() => this.noAdsDetector.isAdsMode(), {
-				yes: conditional(() => context.get(''), {
-					yes: UcpDesktopAdsDeprecatedMode,
-					no: UcpDesktopAdsMode,
-				}),
+				yes: UcpDesktopAdsMode,
 				no: NoAdsMode,
 			}),
 		);

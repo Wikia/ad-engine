@@ -1,5 +1,5 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import { insertFacebookPixel } from './facebook-pixel-script';
+import { insertFacebookPixel } from '../facebook-pixel/facebook-pixel-script';
 
 const logGroup = 'facebook-pixel';
 class FacebookPixelDeprecated extends BaseServiceSetup {

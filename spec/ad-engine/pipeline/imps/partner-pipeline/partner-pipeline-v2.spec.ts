@@ -4,7 +4,7 @@ import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
 import { expect } from 'chai';
 import { wait } from '@wikia/ad-engine/utils';
 
-describe('PartnerPipeline', () => {
+describe('PartnerPipelineV2', () => {
 	const sandbox = createSandbox();
 	let spy: SinonSpy;
 	let clock: SinonFakeTimers;

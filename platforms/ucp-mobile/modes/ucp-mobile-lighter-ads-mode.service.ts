@@ -1,27 +1,27 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	adMarketplaceDeprecated,
-	atsDeprecated,
-	audigentDeprecated,
-	biddersDeprecated,
+	adMarketplace,
+	ats,
+	audigent,
+	bidders,
 	communicationService,
-	confiantDeprecated,
-	context,
+	confiant,
 	DiProcess,
-	durationMediaDeprecated,
+	durationMedia,
 	eventsRepository,
-	facebookPixelDeprecated,
-	iasPublisherOptimizationDeprecated,
-	identityHubDeprecated,
-	liveConnectDeprecated,
-	nielsenDeprecated,
+	facebookPixel,
+	iasPublisherOptimization,
+	identityHub,
+	liveConnect,
+	nielsen,
 	PartnerPipeline,
-	silverSurferServiceDeprecated,
-	stroerDeprecated,
-	taxonomyServiceDeprecated,
-	userIdentityDeprecated,
+	silverSurferService,
+	stroer,
+	taxonomyService,
+	userIdentity,
 } from '@wikia/ad-engine';
-import { gptDeprecatedSetup, playerDeprecatedSetup } from '@platforms/shared';
+import { gptSetup, playerSetup } from '@platforms/shared';
+import { adEngineSetup } from '../../shared/setup/ad-engine.setup';
 
 @Injectable()
 export class UcpMobileLighterAds implements DiProcess {
@@ -30,32 +30,24 @@ export class UcpMobileLighterAds implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
-				userIdentityDeprecated,
-				atsDeprecated,
-				taxonomyServiceDeprecated,
-				silverSurferServiceDeprecated,
-				facebookPixelDeprecated,
-				audigentDeprecated,
-				iasPublisherOptimizationDeprecated,
-				confiantDeprecated,
-				durationMediaDeprecated,
-				liveConnectDeprecated,
-				adMarketplaceDeprecated,
-				stroerDeprecated,
-				biddersDeprecated,
-				nielsenDeprecated,
-				identityHubDeprecated,
-				playerDeprecatedSetup.setOptions({
-					dependencies: [
-						biddersDeprecated.initialized,
-						taxonomyServiceDeprecated.initialized,
-						silverSurferServiceDeprecated.initialized,
-					],
-					timeout: context.get('options.maxDelayTimeout'),
-				}),
-				gptDeprecatedSetup.setOptions({
-					dependencies: [userIdentityDeprecated.initialized],
-				}),
+				userIdentity,
+				ats,
+				taxonomyService,
+				silverSurferService,
+				facebookPixel,
+				audigent,
+				iasPublisherOptimization,
+				confiant,
+				durationMedia,
+				liveConnect,
+				adMarketplace,
+				stroer,
+				bidders,
+				nielsen,
+				identityHub,
+				playerSetup,
+				gptSetup,
+				adEngineSetup,
 			)
 			.execute()
 			.then(() => {

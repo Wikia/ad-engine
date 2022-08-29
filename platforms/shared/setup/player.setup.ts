@@ -1,6 +1,7 @@
 import {
 	bidders,
 	communicationService,
+	context,
 	JWPlayerManager,
 	jwpSetup,
 	PartnerServiceStage,
@@ -13,6 +14,7 @@ import { wadRunnerDeprecated } from '../services/wad-runner-deprecated';
 @Service({
 	stage: PartnerServiceStage.preProvider,
 	dependencies: [bidders, taxonomyServiceDeprecated, silverSurferService, wadRunnerDeprecated],
+	timeout: context.get('options.jwpMaxDelayTimeout'),
 })
 class PlayerSetup {
 	call() {
