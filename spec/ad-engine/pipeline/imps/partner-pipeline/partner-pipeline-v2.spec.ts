@@ -1,8 +1,9 @@
 import { Container } from '@wikia/dependency-injection';
-import { BaseServiceSetup, PartnerPipeline } from '@wikia/ad-engine';
+import { PartnerPipeline, PartnerServiceStage } from '@wikia/ad-engine';
 import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';
 import { expect } from 'chai';
 import { wait } from '@wikia/ad-engine/utils';
+import { Service } from '@wikia/ad-services';
 
 describe('PartnerPipelineV2', () => {
 	const sandbox = createSandbox();
@@ -20,14 +21,20 @@ describe('PartnerPipelineV2', () => {
 		sandbox.restore();
 	});
 
-	class ExampleServiceSetup extends BaseServiceSetup {
+	@Service({
+		stage: PartnerServiceStage.baseSetup,
+	})
+	class ExampleServiceSetup {
 		async call() {
 			await wait(200);
 			spy(1);
 		}
 	}
 
-	class ExampleSlowServiceSetup extends BaseServiceSetup {
+	@Service({
+		stage: PartnerServiceStage.baseSetup,
+	})
+	class ExampleSlowServiceSetup {
 		async call() {
 			await wait(400);
 			spy(0);
