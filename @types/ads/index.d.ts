@@ -6,7 +6,6 @@ interface MediaWikiAds {
 	debug: (groups: string | null) => void;
 	pushToConsentQueue: (callback: any) => void;
 	runtime: Runtime;
-	services: any[];
 }
 
 interface MediaWikiAdsContext {
