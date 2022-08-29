@@ -120,6 +120,8 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.coppaGam', this.instantConfig.get('icCoppaGam'));
+		context.set('options.coppaPrebid', this.instantConfig.get('icCoppaPrebid'));
 
 		this.setWadContext();
 	}
