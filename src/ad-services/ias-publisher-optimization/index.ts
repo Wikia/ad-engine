@@ -5,10 +5,9 @@ import {
 	postponeExecutionUntilGptLoads,
 	SlotConfig,
 	utils,
+	Service,
 } from '@ad-engine/core';
 import { decorate } from 'core-decorators';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
 
 const logGroup = 'ias-publisher-optimization';
 const scriptUrl = '//cdn.adsafeprotected.com/iasPET.1.js';

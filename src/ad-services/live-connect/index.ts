@@ -1,7 +1,5 @@
-import { context, ServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
 
 const partnerName = 'liveConnect';
 const partnerNameUnifiedId = 'liveConnect-unifiedId';

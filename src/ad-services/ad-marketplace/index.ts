@@ -1,8 +1,6 @@
 import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
-import { context, ServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 import { map } from 'rxjs/operators';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
 
 interface AdMarketplaceConfiguration {
 	enabled: boolean;

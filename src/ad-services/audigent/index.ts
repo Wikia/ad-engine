@@ -1,8 +1,6 @@
-import { context, externalLogger, ServiceStage, utils } from '@ad-engine/core';
+import { context, externalLogger, ServiceStage, utils, Service } from '@ad-engine/core';
 import { InstantConfigService } from '../instant-config';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
 
 const logGroup = 'audigent';
 const DEFAULT_MATCHES_SCRIPT_URL = 'https://a.ad.gt/api/v1/u/matches/158';

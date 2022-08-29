@@ -1,6 +1,4 @@
-import { context, ServiceStage, slotService, utils } from '@ad-engine/core';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
+import { context, ServiceStage, slotService, utils, Service } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';

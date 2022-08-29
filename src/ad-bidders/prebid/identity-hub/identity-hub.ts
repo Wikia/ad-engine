@@ -1,6 +1,4 @@
-import { context, ServiceStage, utils } from '@ad-engine/core';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 
 const profileId = '2721';
 const pubId = '156260';

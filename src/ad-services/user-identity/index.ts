@@ -1,6 +1,4 @@
-import { context, ServiceStage } from '@ad-engine/core';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
+import { context, ServiceStage, Service } from '@ad-engine/core';
 
 @Service({
 	stage: ServiceStage.baseSetup,

@@ -1,7 +1,5 @@
-import { context, ServiceStage, utils } from '@ad-engine/core';
+import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 import { AdTags, taxonomyServiceLoader } from './taxonomy-service.loader';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
 
 const logGroup = 'taxonomy-service';
 

@@ -3,7 +3,7 @@ import { context, ServiceStage, utils } from '@ad-engine/core';
 import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import { SilverSurferProfileFetcher } from './silver-surfer-profile-fetcher';
 import { SilverSurferProfileExtender } from './silver-surfer-profile-extender';
-import { Service } from '../pipeline-service-decorator/pipeline-service-decorator';
+import { Service } from '../../ad-engine/pipeline/imps/service-pipeline/pipeline-service-decorator';
 
 const logGroup = 'silver-surfer';
 

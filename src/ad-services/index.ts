@@ -18,5 +18,4 @@ export * from './nielsen';
 export * from './sailthru';
 export * from './silver-surfer';
 export * from './stroer';
-export * from './pipeline-service-decorator/pipeline-service-decorator';
 export * from './taxonomy/taxonomy-service';

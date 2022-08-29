@@ -1,4 +1,5 @@
-import { context, ServiceStage } from '@ad-engine/core';
+import { ServiceStage } from './service-pipeline-types';
+import { context } from '../../../services';
 
 interface Constructor<T> {
 	new (...args): T;

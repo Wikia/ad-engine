@@ -1,7 +1,5 @@
-import { context, Dictionary, ServiceStage, utils } from '@ad-engine/core';
+import { context, Dictionary, ServiceStage, utils, Service } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
 
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};

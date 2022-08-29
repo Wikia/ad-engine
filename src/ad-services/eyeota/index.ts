@@ -1,6 +1,4 @@
-import { context, ServiceStage, tcf, utils } from '@ad-engine/core';
-// eslint-disable-next-line no-restricted-imports
-import { Service } from '@ad-engine/services';
+import { context, ServiceStage, tcf, utils, Service } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'eyeota';
