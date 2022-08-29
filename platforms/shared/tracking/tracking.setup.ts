@@ -26,6 +26,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
+import { LabradorTracker } from './labrador-tracker';
 import { PageTracker } from './page-tracker';
 import { props } from 'ts-action';
 
@@ -60,6 +61,7 @@ export class TrackingSetup {
 
 	constructor(
 		private pageTracker: PageTracker,
+		private labradorTracker: LabradorTracker,
 		@Inject('slotTrackingMiddlewares')
 		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
 		@Inject('bidderTrackingMiddlewares')
@@ -72,7 +74,7 @@ export class TrackingSetup {
 		this.viewabilityTracker();
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
-		this.labradorTracker();
+		this.experimentGroupsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
@@ -200,12 +202,13 @@ export class TrackingSetup {
 		);
 	}
 
-	private labradorTracker(): void {
+	private experimentGroupsTracker(): void {
 		const cacheStorage = InstantConfigCacheStorage.make();
 		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
 
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
+			this.labradorTracker.track(labradorPropValue);
 		}
 	}
 
