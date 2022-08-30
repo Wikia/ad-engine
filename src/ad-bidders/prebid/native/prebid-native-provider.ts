@@ -1,22 +1,20 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { AdSlot, BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 import { PrebidNativeData } from './native-models';
+import { PrebidNativeConfig } from './prebid-native-config';
+import { PrebidNativeHelper } from './prebid-native-helper';
 
 const logGroup = 'prebid-native-provider';
-const assetsMap = {
-	title: 'hb_native_title',
-	body: 'hb_native_body',
-	image: 'hb_native_image',
-	icon: 'hb_native_icon',
-	clickUrl: 'hb_native_linkurl',
-};
 
-export class PrebidNativeProvider {
+export class PrebidNativeProvider extends BaseServiceSetup {
+	static ACTION_CLICK = 'click';
+	static ACTION_IMPRESSION = 'impression';
+
 	isEnabled(): boolean {
 		return context.get('bidders.prebid.native.enabled');
 	}
 
-	initialize() {
+	call() {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return;
@@ -35,23 +33,50 @@ export class PrebidNativeProvider {
 	}
 
 	renderPrebidNativeAd(adSlotName: string, data: PrebidNativeData): void {
-		const ntvAdSlot = document.getElementById(adSlotName);
-		ntvAdSlot.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
+		const ntvAdSlot = slotService.get(adSlotName);
+		const ntvDomElement = ntvAdSlot.getElement();
+
+		ntvDomElement.insertAdjacentHTML('afterend', this.getNativeAdTemplate(data));
+		this.fireNativeTrackers(PrebidNativeProvider.ACTION_IMPRESSION, data);
+		this.addClickTrackers(data);
+
+		const currentRv = ntvAdSlot.getConfigProperty('targeting.rv') || 1;
+		ntvAdSlot.setConfigProperty('targeting.rv', currentRv + 1);
+		ntvAdSlot.setStatus(AdSlot.STATUS_SUCCESS);
 	}
 
 	private getNativeAdTemplate(data: PrebidNativeData): string {
-		const template = this.getPrebidNativeTemplate();
+		const template = PrebidNativeConfig.getPrebidNativeTemplate();
 		return this.replaceAssetPlaceholdersWithData(template, data);
 	}
 
-	private replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
+	replaceAssetPlaceholdersWithData(template: string, data: PrebidNativeData): string {
 		for (const assetName in data) {
-			if (assetsMap[assetName]) {
+			if (PrebidNativeConfig.assetsMap[assetName]) {
 				const value = this.getAssetValue(assetName, data);
-				template = template.replace('##' + assetsMap[assetName] + '##', value);
+				template = template
+					.split('##' + PrebidNativeConfig.assetsMap[assetName] + '##')
+					.join(value);
 			}
 		}
+
+		if (template.includes('##hb_native_image##')) {
+			template = this.removeImgFromTemplate(template);
+		}
+		if (template.includes('##hb_native_displayUrl##')) {
+			template = this.replaceDisplayUrlWithDefaultText(template);
+		}
+
 		return template;
+	}
+
+	private removeImgFromTemplate(template: string): string {
+		const emptyImgTag = /<img [^>]*src="##hb_native_image##"[^>]*>/gm;
+		return template.split(emptyImgTag).join('');
+	}
+
+	private replaceDisplayUrlWithDefaultText(template: string): string {
+		return template.split('##hb_native_displayUrl##').join('See more');
 	}
 
 	private getAssetValue(assetName: string, data: PrebidNativeData): string {
@@ -61,51 +86,27 @@ export class PrebidNativeProvider {
 		return data[assetName];
 	}
 
-	getPrebidNativeTemplate(): string {
-		return `<div id="native-prebid-ad" class="ntv-ad">
-					<div class="ntv-wrapper">
-						<a href="##hb_native_linkurl##" style="flex-shrink: 0;">
-							<img src="##hb_native_icon##" class="ntv-img">
-						</a>
-						<div class="ntv-content">
-							<p class="ntv-ad-label">Ad</p>
-							<a href="##hb_native_linkurl##">
-								<p class="ntv-ad-title ntv-headline">##hb_native_title##</p>
-							</a>
-							<p class="ntv-ad-offer">##hb_native_body##</p>
-							<a href="##hb_native_linkurl##">
-								<button class="ntv-ad-button">Check!</button>
-							</a>
-						</div>
-					</div>
-				</div>`;
+	private fireNativeTrackers(action: string, adObject: PrebidNativeData): void {
+		let trackers;
+		if (action === PrebidNativeProvider.ACTION_CLICK) {
+			trackers = adObject && adObject.clickTrackers;
+		}
+		if (action === PrebidNativeProvider.ACTION_IMPRESSION) {
+			trackers = adObject && adObject.impressionTrackers;
+		}
+
+		(trackers || []).forEach(PrebidNativeHelper.triggerPixel);
 	}
 
-	getPrebidNativeConfigMediaTypes(): PrebidNativeMediaType {
-		return {
-			sendTargetingKeys: false,
-			adTemplate: this.getPrebidNativeTemplate(),
-			title: {
-				required: true,
-			},
-			body: {
-				required: true,
-			},
-			clickUrl: {
-				required: true,
-			},
-			icon: {
-				required: true,
-				aspect_ratios: [
-					{
-						min_width: 100,
-						min_height: 100,
-						ratio_width: 1,
-						ratio_height: 1,
-					},
-				],
-			},
-		};
+	private addClickTrackers(adObject: PrebidNativeData): void {
+		const nativeAdElement = document.getElementById('native-prebid-ad');
+		const linkElements = nativeAdElement.getElementsByClassName('ntv-link');
+
+		[].slice.call(linkElements).forEach((element) => {
+			element.addEventListener('click', () => {
+				this.fireNativeTrackers(PrebidNativeProvider.ACTION_CLICK, adObject);
+			});
+		});
 	}
 }
 

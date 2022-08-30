@@ -1,7 +1,7 @@
 import { context, Dictionary } from '@ad-engine/core';
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
-import { PrebidNativeProvider } from '../native';
+import { PrebidNativeProvider, PrebidNativeConfig } from '../native';
 
 export class Appnexus extends PrebidAdapter {
 	static bidderName = 'appnexus';
@@ -28,8 +28,7 @@ export class Appnexus extends PrebidAdapter {
 		if (context.get(`slots.${code}.isNative`)) {
 			const prebidNativeProvider = new PrebidNativeProvider();
 			if (prebidNativeProvider.isEnabled() && this.isNativeModeOn()) {
-				const nativeMediaTypes = prebidNativeProvider.getPrebidNativeConfigMediaTypes();
-				return this.prepareNativeConfig(nativeMediaTypes, code, { sizes, placementId, position });
+				return this.prepareNativeConfig(code, { sizes, placementId, position });
 			}
 		}
 
@@ -48,15 +47,11 @@ export class Appnexus extends PrebidAdapter {
 		};
 	}
 
-	prepareNativeConfig(
-		nativeMediaTypes: PrebidNativeMediaType,
-		code,
-		{ sizes, placementId, position }: PrebidAdSlotConfig,
-	): PrebidAdUnit {
+	prepareNativeConfig(code, { sizes, placementId, position }: PrebidAdSlotConfig): PrebidAdUnit {
 		return {
 			code,
 			mediaTypes: {
-				native: nativeMediaTypes,
+				native: PrebidNativeConfig.getPrebidNativeMediaTypes(position),
 			},
 			bids: this.getBids(code, { sizes, placementId, position }),
 		};

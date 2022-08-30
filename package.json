@@ -1,6 +1,6 @@
 {
 	"name": "@wikia/ad-engine",
-	"version": "118.5.1",
+	"version": "120.13.2",
 	"description": "Wikia AdEngine",
 	"license": "Apache-2.0",
 	"sideEffects": [
@@ -18,7 +18,6 @@
 		"core-decorators": "0.20.0",
 		"current-device": "0.10.2",
 		"js-cookie": "3.0.1",
-		"nanoid": "3.3.3",
 		"rxjs": "7.5.2",
 		"ts-action": "11.0.0",
 		"ts-action-operators": "9.1.2"

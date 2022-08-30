@@ -34,11 +34,14 @@ interface PrebidNativeMediaType {
 	};
 	body: {
 		required: boolean;
+		len?: number;
 	};
 	clickUrl: {
 		required: boolean;
 	};
-	icon: PrebidNativeImageType;
+	displayUrl: {
+		required: boolean;
+	};
 	image?: PrebidNativeImageType;
 	sponsoredBy?: {
 		required: boolean;
@@ -170,6 +173,8 @@ interface Pbjs {
 	getUserIds(): object;
 
 	setConfig(config: unknown): void;
+
+	setBidderConfig(config: unknown): void;
 
 	enableAnalytics(config: unknown): void;
 

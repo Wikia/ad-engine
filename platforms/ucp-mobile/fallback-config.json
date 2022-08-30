@@ -118,6 +118,18 @@
             }
         }
     ],
+    "icAudigentSegmentsScriptUrl": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "https://seg.ad.gt/api/v1/s/158"
+        }
+    ],
     "icPrebidOneVideo": [
         {
             "apps": [
@@ -161,13 +173,19 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6080673321",
+                "6054175908",
+                "6005712462",
                 "5951743095",
                 "6018566814",
+                "6097628093",
+                "6044083909",
                 "5951743089",
                 "5929089588",
                 "5929089315",
                 "5976512561",
                 "5929089315",
+                "6088270928",
                 "5947810307",
                 "5743368233",
                 "5996361595",
@@ -187,13 +205,41 @@
                 "6005712633",
                 "6013252078",
                 "6020811777",
-                "6047630064"
+                "6047630064",
+                "6044877574",
+                "6059438816",
+                "6050967117",
+                "6061761271",
+                "6054458844",
+                "6066314281",
+                "6063743454",
+                "6029699462",
+                "6084098863",
+                "6083338698",
+                "6069001375",
+                "6089745548",
+                "6090447580",
+                "6096031330",
+                "6096031336",
+                "6094842636"
             ]
         }
     ],
     "icAudigent": [
         {
             "apps": [
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPpid": [
+        {
+            "apps": [
+                "fandomdesktop",
                 "fandommobile"
             ],
             "regions": [
@@ -319,6 +365,7 @@
                 "fandommobile"
             ],
             "regions": [
+                "CA",
                 "US"
             ],
             "value": true
@@ -336,6 +383,7 @@
                 "AI",
                 "AL",
                 "AN",
+                "AR",
                 "AS",
                 "AS",
                 "AT",
@@ -357,6 +405,7 @@
                 "CH",
                 "CK",
                 "CL",
+                "CO",
                 "CR",
                 "CU",
                 "CW",
@@ -489,6 +538,66 @@
             "value": true
         }
     ],
+    "icLiveConnect": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "GB",
+                "UK"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA",
+                "MX"
+            ],
+            "sampling": 0.1,
+            "value": true
+        },
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "AU",
+                "DE",
+                "FR"
+            ],
+            "sampling": 0.1,
+            "value": true
+        }
+    ],
+    "icAudigentNewIntegrationEnabled": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": true
+        }
+    ],
     "icPrebidPubmatic": [
         {
             "apps": [
@@ -592,7 +701,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "CA"
+                "XX"
             ],
             "value": {
                 "name": "medianet",
@@ -611,19 +720,6 @@
                     }
                 }
             }
-        }
-    ],
-    "icOptimera": [
-        {
-            "apps": [
-                "fandomdesktop",
-                "fandommobile"
-            ],
-            "regions": [
-                "US"
-            ],
-            "sampling": 75.0,
-            "value": true
         }
     ],
     "icViewabilityTracking": [
@@ -652,18 +748,6 @@
             ],
             "sampling": 50.0,
             "samplingCache": true,
-            "value": true
-        }
-    ],
-    "icTabIdTracking": [
-        {
-            "apps": [
-                "fandommobile",
-                "fandomdesktop"
-            ],
-            "regions": [
-                "XX"
-            ],
             "value": true
         }
     ],
@@ -798,6 +882,34 @@
             "value": true
         }
     ],
+    "icAdsInitializeV2": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "AL",
+                "BR",
+                "DE",
+                "FR",
+                "MC"
+            ],
+            "value": true
+        }
+    ],
     "icUAPJWPlayerDelay": [
         {
             "apps": [
@@ -923,8 +1035,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",
@@ -2519,7 +2629,13 @@
                 "6039946254",
                 "6042001586",
                 "6041208700",
-                "6041208697"
+                "6041208697",
+                "6060165811",
+                "6060918136",
+                "6069654166",
+                "6084794391",
+                "6053928187",
+                "6097535999"
             ]
         }
     ],
@@ -2575,21 +2691,22 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
+                "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_50:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_100:outstream_experiment_exco"
             ]
         }
     ],
     "icTaxonomyAdTags": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icPrebidIndexExchange": [
@@ -2613,6 +2730,18 @@
             ],
             "regions": [
                 "US"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidAppNexusNative": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US-CA"
             ],
             "value": true
         }
@@ -2706,6 +2835,18 @@
             ]
         }
     ],
+    "icPpidAdmsStorage": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        }
+    ],
     "icPrebidVersion": [
         {
             "apps": [
@@ -2717,7 +2858,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220322.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220809.min.js"
         }
     ],
     "icA9Bidder": [
@@ -15608,6 +15749,18 @@
             "value": true
         }
     ],
+    "icTargetingStrategy": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": "default"
+        }
+    ],
     "icDurationMedia": [
         {
             "apps": [
@@ -15616,6 +15769,18 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icPrebidNative": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US-CA"
             ],
             "value": true
         }
@@ -15709,6 +15874,18 @@
                     }
                 ]
             }
+        }
+    ],
+    "icEyeota": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": true
         }
     ]
 }

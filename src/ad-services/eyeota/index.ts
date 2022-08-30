@@ -1,12 +1,18 @@
-import { context, tcf, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, tcf, utils } from '@ad-engine/core';
+import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
 const siteName = 'fandom';
 
-class Eyeota {
+class Eyeota extends BaseServiceSetup {
 	isEnabled(): boolean {
-		return context.get('services.eyeota.enabled');
+		return (
+			context.get('services.eyeota.enabled') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
+			!context.get('wiki.targeting.directedAtChildren')
+		);
 	}
 
 	async call(): Promise<void> {
@@ -20,6 +26,7 @@ class Eyeota {
 		return utils.scriptLoader
 			.loadScript(await this.createScriptSource())
 			.then(() => {
+				communicationService.emit(eventsRepository.EYEOTA_STARTED);
 				utils.logger(logGroup, 'ready');
 			})
 			.catch(() => {
@@ -29,8 +36,9 @@ class Eyeota {
 
 	async createScriptSource(): Promise<string> {
 		const { tcString } = await tcf.getTCData();
+		const s0v = context.get('targeting.s0v');
 
-		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=ajs`;
+		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=ajs&s0v=${s0v}`;
 	}
 }
 

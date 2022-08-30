@@ -1,4 +1,4 @@
-import { context, slotService, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'confiant';
 const scriptDomain = 'confiant-integrations.global.ssl.fastly.net';
@@ -30,7 +30,7 @@ function trackBlock(blockingType, blockingId, isBlocked, wrapperId, tagId, impre
 /**
  * Confiant service handler
  */
-class Confiant {
+class Confiant extends BaseServiceSetup {
 	/**
 	 * Requests service and injects script tag
 	 * @returns {Promise}

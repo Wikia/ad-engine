@@ -1,7 +1,7 @@
 import { PrebidAdapter } from '../prebid-adapter';
 import { PrebidAdSlotConfig } from '../prebid-models';
 import { context } from '@ad-engine/core';
-import { PrebidNativeProvider } from '../native';
+import { PrebidNativeProvider, PrebidNativeConfig } from '../native';
 
 export class TripleliftNative extends PrebidAdapter {
 	static bidderName = 'triplelift_native';
@@ -15,11 +15,14 @@ export class TripleliftNative extends PrebidAdapter {
 		return TripleliftNative.bidderName;
 	}
 
-	prepareConfigForAdUnit(code: string, { inventoryCodes }: PrebidAdSlotConfig): PrebidAdUnit {
+	prepareConfigForAdUnit(
+		code: string,
+		{ inventoryCodes, position }: PrebidAdSlotConfig,
+	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
 			const prebidNativeProvider = new PrebidNativeProvider();
 			if (prebidNativeProvider.isEnabled() && this.enabled) {
-				const nativeMediaTypes = prebidNativeProvider.getPrebidNativeConfigMediaTypes();
+				const nativeMediaTypes = PrebidNativeConfig.getPrebidNativeMediaTypes(position);
 				return {
 					code,
 					mediaTypes: {

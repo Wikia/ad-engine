@@ -76,8 +76,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",
@@ -1672,7 +1670,13 @@
                 "6039946254",
                 "6042001586",
                 "6041208700",
-                "6041208697"
+                "6041208697",
+                "6060165811",
+                "6060918136",
+                "6069654166",
+                "6084794391",
+                "6053928187",
+                "6097535999"
             ]
         }
     ],
@@ -1714,8 +1718,9 @@
                 "icGalactusInteraction_B_33.333:galactus_interaction_a",
                 "icGalactusInteraction_B_50:galactus_interaction_b",
                 "icGalactusInteraction_A_50:galactus_interaction_c",
-                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
+                "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_50:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_100:outstream_experiment_exco"
             ]
         }
     ],
@@ -1749,13 +1754,19 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6080673321",
+                "6054175908",
+                "6005712462",
                 "5951743095",
                 "6018566814",
+                "6097628093",
+                "6044083909",
                 "5951743089",
                 "5929089588",
                 "5929089315",
                 "5976512561",
                 "5929089315",
+                "6088270928",
                 "5947810307",
                 "5743368233",
                 "5996361595",
@@ -1775,7 +1786,23 @@
                 "6005712633",
                 "6013252078",
                 "6020811777",
-                "6047630064"
+                "6047630064",
+                "6044877574",
+                "6059438816",
+                "6050967117",
+                "6061761271",
+                "6054458844",
+                "6066314281",
+                "6063743454",
+                "6029699462",
+                "6084098863",
+                "6083338698",
+                "6069001375",
+                "6089745548",
+                "6090447580",
+                "6096031330",
+                "6096031336",
+                "6094842636"
             ]
         }
     ],
@@ -1897,6 +1924,7 @@
                 "fandommobile"
             ],
             "regions": [
+                "CA",
                 "US"
             ],
             "value": true
@@ -2056,6 +2084,34 @@
             ],
             "regions": [
                 "XX"
+            ],
+            "value": true
+        }
+    ],
+    "icAdsInitializeV2": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "AL",
+                "BR",
+                "DE",
+                "FR",
+                "MC"
             ],
             "value": true
         }

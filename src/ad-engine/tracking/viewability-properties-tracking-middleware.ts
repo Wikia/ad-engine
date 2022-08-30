@@ -13,7 +13,6 @@ export const viewabilityPropertiesTrackingMiddleware: FuncPipelineStep<AdViewabi
 			line_item_id: slot.lineItemId || '',
 			rv: slot.getConfigProperty('targeting.rv') || '',
 			slot_id: slot.getUid() || '',
-			wsi: slot.getConfigProperty('targeting.wsi') || '',
 		},
 	});
 };

@@ -72,7 +72,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				adProduct: 'incontent_boxad_1',
 				avoidConflictWith: '.ad-slot,#incontent_player',
 				bidderAlias: 'mobile_in_content',
-				viewabilityCounterId: 'incontent_boxad',
 				defaultClasses: ['hide', 'ad-slot'],
 				group: 'HiVi',
 				options: {},
@@ -251,6 +250,12 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			},
 			quiz_leaderboard_start: {
 				adProduct: 'quiz_leaderboard_start',
+				defaultSizes: [[320, 50]],
+				group: 'quiz',
+				options: {},
+			},
+			quiz_leaderboard_questions: {
+				adProduct: 'quiz_leaderboard_questions',
 				defaultSizes: [[320, 50]],
 				group: 'quiz',
 				options: {},

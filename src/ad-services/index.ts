@@ -1,6 +1,7 @@
 export * from './anyclip';
 export * from './audigent';
 export * from './ad-marketplace';
+export * from './user-identity';
 export * from './bt-rec';
 export * from './confiant';
 export * from './connatix';
@@ -13,7 +14,6 @@ export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './live-connect';
 export * from './nielsen';
-export * from './optimera';
 export * from './sailthru';
 export * from './silver-surfer';
 export * from './stroer';

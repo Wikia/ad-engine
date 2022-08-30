@@ -10,8 +10,8 @@ npm install github:Wikia/ad-engine
 
 ## Platforms
 
-* `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Futhead, Muthead) on port 9000
-* `npm run build:platforms` - to create production build of platforms ad-engine code
+- `npm run dev:platforms` - to serve ad-engine platforms code (UCP, Futhead, Muthead) on port 9000
+- `npm run build:platforms` - to create production build of platforms ad-engine code
 
 ## Available packages
 
@@ -40,14 +40,12 @@ export default customContext = {
 	adUnitId: '/5441/name/_{custom.namespace}/{slotName}',
 	events: {
 		pushOnScroll: {
-			ids: [
-				'bottom_leaderboard'
-			],
-			threshold: 100
-		}
+			ids: ['bottom_leaderboard'],
+			threshold: 100,
+		},
 	},
 	listeners: {
-		porvata: []
+		porvata: [],
 	},
 	options: {
 		maxDelayTimeout: 2000,
@@ -55,19 +53,19 @@ export default customContext = {
 			audio: {
 				exposeToSlot: true,
 				segment: '-audio',
-				key: 'audio'
-			}
+				key: 'audio',
+			},
 		},
 		video: {
 			moatTracking: {
 				enabled: false,
 				partnerCode: 'foo',
-				sampling: 1
-			}
+				sampling: 1,
+			},
 		},
 		customAdLoader: {
-			globalMethodName: 'loadCustomAd'
-		}
+			globalMethodName: 'loadCustomAd',
+		},
 	},
 	slots: {
 		top_leaderboard: {
@@ -76,21 +74,27 @@ export default customContext = {
 			sizes: [
 				{
 					viewportSize: [970, 200],
-					sizes: [[728, 90], [970, 250]]
+					sizes: [
+						[728, 90],
+						[970, 250],
+					],
 				},
 				{
 					viewportSize: [728, 200],
-					sizes: [[728, 90]]
+					sizes: [[728, 90]],
 				},
 				{
 					viewportSize: [0, 0],
-					sizes: [[300, 250]]
-				}
+					sizes: [[300, 250]],
+				},
 			],
-			defaultSizes: [[728, 90], [970, 250]],
+			defaultSizes: [
+				[728, 90],
+				[970, 250],
+			],
 			targeting: {
-				loc: 'top'
-			}
+				loc: 'top',
+			},
 		},
 		incontent_boxad_1: {
 			defaultSizes: [[300, 250]],
@@ -101,42 +105,43 @@ export default customContext = {
 				limit: 5,
 				slotNamePattern: 'incontent_boxad_{slotConfig.repeat.index}',
 				updateProperties: {
-					'targeting.rv': '{slotConfig.repeat.index}'
-				}
+					'targeting.rv': '{slotConfig.repeat.index}',
+				},
 			},
 			sizes: [
 				{
 					viewportSize: [768, 0],
-					sizes: [[300, 250], [300, 600]]
-				}
+					sizes: [
+						[300, 250],
+						[300, 600],
+					],
+				},
 			],
 			targeting: {
 				loc: 'hivi',
 				pos: 'incontent_boxad',
-				rv: 1
-			}
+				rv: 1,
+			},
 		},
 		bottom_leaderboard: {
 			disabled: true,
 			sizes: [
 				{
 					viewportSize: [728, 100],
-					sizes: [[728, 90]]
+					sizes: [[728, 90]],
 				},
 				{
 					viewportSize: [320, 200],
-					sizes: [[320, 480]]
-				}
+					sizes: [[320, 480]],
+				},
 			],
 			defaultSizes: [],
 			targeting: {
-				loc: 'bottom'
+				loc: 'bottom',
 			},
-			viewportConflicts: [
-				'top_leaderboard'
-			]
-		}
-	}
+			viewportConflicts: ['top_leaderboard'],
+		},
+	},
 };
 ```
 
@@ -152,9 +157,8 @@ import customContext from './context';
 context.extend(customContext);
 
 templateService.register(FloatingRail, {
-	startOffset: -15
+	startOffset: -15,
 });
-
 
 // ...
 
@@ -183,7 +187,7 @@ Request immediately:
 <div id="top_leaderboard">
 	<script>
 		window.adsQueue.push({
-			id: 'top_leaderboard'
+			id: 'top_leaderboard',
 		});
 	</script>
 </div>
@@ -199,10 +203,11 @@ or prepare on scroll container (check above context configuration):
 
 ```html
 <script>
-top.loadCustomAd && top.loadCustomAd({
-	type: 'floatingRail',
-	// ...
-});
+	top.loadCustomAd &&
+		top.loadCustomAd({
+			type: 'floatingRail',
+			// ...
+		});
 </script>
 ```
 
@@ -240,56 +245,56 @@ Name: **bfaa**
 
 ##### Description:
 
-* desktopNavbarWrapperSelector - desktop navbar DOM selector
-* mobileNavbarWrapperSelector - mobile navbar DOM selector
-* mainContainer - main container DOM selector (default: `document.body`)
-* handleNavbar - decides whether template should adjust navbar
-* autoPlayAllowed - decides whether video can be autoplayed
-* defaultStateAllowed - decides whether BFAA impact state is allowed
-* fullscreenAllowed - decides whether video can be displayed on full screen
-* stickinessAllowed - decides whether the slot can be sticky
-* stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
-* slotSibling - DOM sibling element next to BFAA slot
-* slotsToEnable - decides which slots should be enabled on Fan Takeover load
+- desktopNavbarWrapperSelector - desktop navbar DOM selector
+- mobileNavbarWrapperSelector - mobile navbar DOM selector
+- mainContainer - main container DOM selector (default: `document.body`)
+- handleNavbar - decides whether template should adjust navbar
+- autoPlayAllowed - decides whether video can be autoplayed
+- defaultStateAllowed - decides whether BFAA impact state is allowed
+- fullscreenAllowed - decides whether video can be displayed on full screen
+- stickinessAllowed - decides whether the slot can be sticky
+- stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
+- slotSibling - DOM sibling element next to BFAA slot
+- slotsToEnable - decides which slots should be enabled on Fan Takeover load
 
 ##### Template parameters
 
-	adContainer: HTMLElement;
-	adProduct: string;
-	aspectRatio: number;
-	autoPlay: boolean;
-	backgroundColor: string;
-	blockOutOfViewportPausing: boolean;
-	clickThroughURL: string;
-	config: UapConfig;
-	container: HTMLElement;
-	creativeId: string;
-	fullscreenable: boolean;
-	fullscreenAllowed: boolean;
-	image1: UapImage;
-	image2?: UapImage;
-	isDarkTheme: boolean;
-	isMobile: boolean;
-	isSticky: boolean;
-	lineItemId: string;
-	loadMedrecFromBTF: boolean;
-	moatTracking: boolean;
-	player: HTMLElement;
-	resolvedStateAspectRatio: number;
-	resolvedStateAutoPlay: boolean;
-	resolvedStateForced?: boolean;
-	restartOnUnmute: boolean;
-	slotName: string;
-	splitLayoutVideoPosition: string;
-	src: string;
-	stickyAdditionalTime: number;
-	stickyUntilVideoViewed: boolean;
-	theme: string;
-	thumbnail: HTMLElement;
-	uap: string;
-	videoAspectRatio: number;
-	videoPlaceholderElement: HTMLElement;
-	videoTriggers: any[];
+    adContainer: HTMLElement;
+    adProduct: string;
+    aspectRatio: number;
+    autoPlay: boolean;
+    backgroundColor: string;
+    blockOutOfViewportPausing: boolean;
+    clickThroughURL: string;
+    config: UapConfig;
+    container: HTMLElement;
+    creativeId: string;
+    fullscreenable: boolean;
+    fullscreenAllowed: boolean;
+    image1: UapImage;
+    image2?: UapImage;
+    isDarkTheme: boolean;
+    isMobile: boolean;
+    isSticky: boolean;
+    lineItemId: string;
+    loadMedrecFromBTF: boolean;
+    moatTracking: boolean;
+    player: HTMLElement;
+    resolvedStateAspectRatio: number;
+    resolvedStateAutoPlay: boolean;
+    resolvedStateForced?: boolean;
+    restartOnUnmute: boolean;
+    slotName: string;
+    splitLayoutVideoPosition: string;
+    src: string;
+    stickyAdditionalTime: number;
+    stickyUntilVideoViewed: boolean;
+    theme: string;
+    thumbnail: HTMLElement;
+    uap: string;
+    videoAspectRatio: number;
+    videoPlaceholderElement: HTMLElement;
+    videoTriggers: any[];
 
 ### Big Fancy Ad Below
 
@@ -313,14 +318,14 @@ Name: **bfab**
 
 ##### Description:
 
-* autoPlayAllowed - decides whether video can be autoplayed
-* defaultStateAllowed - decides whether BFAA impact state is allowed
-* fullscreenAllowed - decides whether video can be displayed on full screen
-* stickinessAllowed - decides whether the slot can be sticky
-* stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
-* bfaaSlotName - name of BFAA slot - if BFAA is sticky, BFAB can't stick
-* unstickInstantlyBelowPosition - below given offset BFAB is always unsticked
-* topThreshold - number of pixels from the top edge of BFAA slot when it's sticky to the top edge of its nearest positioned ancestor
+- autoPlayAllowed - decides whether video can be autoplayed
+- defaultStateAllowed - decides whether BFAA impact state is allowed
+- fullscreenAllowed - decides whether video can be displayed on full screen
+- stickinessAllowed - decides whether the slot can be sticky
+- stickyUntilSlotViewed - decides whether the slot should be sticky untill viewability is counted
+- bfaaSlotName - name of BFAA slot - if BFAA is sticky, BFAB can't stick
+- unstickInstantlyBelowPosition - below given offset BFAB is always unsticked
+- topThreshold - number of pixels from the top edge of BFAA slot when it's sticky to the top edge of its nearest positioned ancestor
 
 ##### Template parameters
 
@@ -341,25 +346,25 @@ See: BFAA Template parameters.
 
 ##### Description:
 
-* isFloatingEnabled - decides whether Porvata slot can float
-* inViewportOffsetTop, inViewportOffsetBottom - below given thresholds Porvata slot is not considered being within a viewport
+- isFloatingEnabled - decides whether Porvata slot can float
+- inViewportOffsetTop, inViewportOffsetBottom - below given thresholds Porvata slot is not considered being within a viewport
 
 ##### Template parameters
 
-	vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
-	viewportHookElement?: HTMLElement;
-	container: HTMLElement;
-	enableInContentFloating: boolean;
-	slotName: string;
-	viewportOffsetTop?: number;
-	viewportOffsetBottom?: number;
-	adProduct: string;
-	src: string;
-	autoPlay: boolean;
-	vastTargeting: Targeting;
-	blockOutOfViewportPausing: boolean;
-	startInViewportOnly: boolean;
-	onReady: (player: PorvataPlayer) => void;
+    vpaidMode: google.ima.ImaSdkSettings.VpaidMode;
+    viewportHookElement?: HTMLElement;
+    container: HTMLElement;
+    enableInContentFloating: boolean;
+    slotName: string;
+    viewportOffsetTop?: number;
+    viewportOffsetBottom?: number;
+    adProduct: string;
+    src: string;
+    autoPlay: boolean;
+    vastTargeting: Targeting;
+    blockOutOfViewportPausing: boolean;
+    startInViewportOnly: boolean;
+    onReady: (player: PorvataPlayer) => void;
 
 ### Floating rail
 
@@ -378,23 +383,24 @@ Name: **floatingRail**
 
 ##### Description:
 
-* enabled - decides whether template is usable or not
-* railSelector - selector of element which is going to have `position: fixed`
-* wrapperSelector - rail wrapper DOM element selector
-* startOffset - decides when rail starts floating
+- enabled - decides whether template is usable or not
+- railSelector - selector of element which is going to have `position: fixed`
+- wrapperSelector - rail wrapper DOM element selector
+- startOffset - decides when rail starts floating
 
 ##### Template parameters:
 
-* offset - how long (in px) rail is going to be fixed
+- offset - how long (in px) rail is going to be fixed
 
 #### Creative usage:
 
 ```html
 <script>
-top.loadCustomAd && top.loadCustomAd({
-	type: 'floatingRail',
-	offset: 500
-});
+	top.loadCustomAd &&
+		top.loadCustomAd({
+			type: 'floatingRail',
+			offset: 500,
+		});
 </script>
 ```
 
@@ -415,10 +421,10 @@ npm run test
 npm run lint
 ```
 
-
 ## Code Coverage
 
-To check code coverage run   
+To check code coverage run
+
 ```bash
 npm run code-coverage
 ```

@@ -1,6 +1,12 @@
-import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	eventsRepository,
+	TEMPLATE,
+	UapParams,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { NAVBAR, PAGE } from '../configs/uap-dom-elements';
+import { PAGE } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
 
@@ -9,7 +15,6 @@ export class UapDomManager {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(NAVBAR) private navbar: HTMLElement,
 		@Inject(PAGE) private page: HTMLElement,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
@@ -23,28 +28,8 @@ export class UapDomManager {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}
 
-	setPageOffsetResolved(): void {
-		this.setPageOffset(this.reader.getPageOffsetResolved());
-	}
-
 	private setPageOffset(value: number): void {
 		this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
-	}
-
-	setNavbarOffsetImpactToResolved(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetImpactToResolved());
-	}
-
-	setNavbarOffsetResolvedToNone(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetResolvedToNone());
-	}
-
-	setNavbarOffsetResolved(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetResolved());
-	}
-
-	private setNavbarOffset(value: number): void {
-		this.manipulator.element(this.navbar).setProperty('top', `${value}px`);
 	}
 
 	setSlotOffsetResolvedToNone(): void {
@@ -93,6 +78,10 @@ export class UapDomManager {
 		}
 
 		this.manipulator.element(placeholder).setProperty('height', height);
+		communicationService.emit(eventsRepository.AD_ENGINE_UAP_DOM_CHANGED, {
+			element: 'placeholder',
+			size: height,
+		});
 	}
 
 	setResolvedImage(): void {

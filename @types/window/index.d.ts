@@ -20,6 +20,7 @@ interface Window {
 	cnx?: any;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
+	fandomContext: WindowFandomContext;
 	google: {
 		ima: typeof google.ima;
 	};
@@ -40,12 +41,9 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	tabId?: string;
 	trackingOptIn?: any;
 	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
-	oVa?: any; // Optimera variable
-	oDv?: any; // Optimera variable
 }

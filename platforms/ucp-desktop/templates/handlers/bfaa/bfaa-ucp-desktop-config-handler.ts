@@ -21,6 +21,10 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 		}
 
+		if (this.params.sequentialUapConfig) {
+			enabledSlots.push('incontent_player');
+		}
+
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,

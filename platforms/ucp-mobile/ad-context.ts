@@ -59,7 +59,6 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: [],
 		skin: 'ucp_mobile',
 		uap: 'none',
 		uap_c: 'none',
@@ -91,7 +90,8 @@ export const basicContext = {
 			enabled: false,
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
+			endpoint: 'https://services.fandom.com',
+			appName: 'fandommobile',
 			fallback: fallbackInstantConfig,
 		},
 		iasPublisherOptimization: {
@@ -119,19 +119,8 @@ export const basicContext = {
 		isMobile: true,
 	},
 	options: {
-		connectionTracking: {
-			enabled: true,
-		},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
-		},
-		loadTimeTracking: {
-			enabled: true,
-			timing: ['responseEnd', 'domContentLoadedEventStart'],
-			custom: ['aeConfigured', 'aeStackStart'],
-		},
-		scrollSpeedTracking: {
-			enabled: true,
 		},
 		video: {
 			moatTracking: {
@@ -148,10 +137,6 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
-		},
-		viewabilityCounter: {
-			enabled: true,
-			ignoredSlots: ['featured', 'incontent_player'],
 		},
 	},
 };
