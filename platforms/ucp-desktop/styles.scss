@@ -2,6 +2,7 @@
 @import 'platforms/shared/styles/mixin';
 @import 'platforms/shared/styles/uap-porvata/porvata';
 
+$global-navigation-width: 66px;
 $sticky-navigation-height: 46px;
 
 @mixin ucp-desktop-uap-styles() {
@@ -24,8 +25,6 @@ $sticky-navigation-height: 46px;
 		}
 
 		#top_leaderboard {
-			$global-navigation-width: 66px;
-
 			@include bfaa-slot(402, $global-navigation-width);
 			@include sticky-tlb-slot($global-navigation-width);
 
@@ -141,6 +140,32 @@ body:not(.uap-sticked) {
 		#rail-boxad-wrapper {
 			top: calc(#{$sticky-navigation-height} - 10px) !important;
 		}
+	}
+}
+
+$content-side-width: calc((100vw - 100% - #{$global-navigation-width} - 60px) / 2);
+
+.side-bt-container {
+	position: absolute;
+	width: $content-side-width;
+	height: 100%;
+
+	&.left {
+		left: calc((#{$content-side-width} + 10px) * -1);
+	}
+
+	&.right {
+		right: calc((#{$content-side-width} + 10px) * -1);
+	}
+
+	> div {
+		position: sticky;
+		top: $sticky-navigation-height;
+		width: fit-content;
+		height: fit-content;
+		min-width: 90px;
+		min-height: 728px;
+		margin: 0 auto;
 	}
 }
 

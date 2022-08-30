@@ -16,6 +16,8 @@ class BTRec {
 			return Promise.resolve();
 		}
 
+		this.insertSideUnits();
+
 		utils.logger(logGroup, 'loading');
 
 		await this.loadScript().then(() => {
@@ -42,6 +44,36 @@ class BTRec {
 			true,
 			document.head.lastChild as HTMLElement,
 		);
+	}
+
+	/**
+	 * Inserts BT side units
+	 */
+	private insertSideUnits(): void {
+		if (context.get('state.isMobile')) {
+			return;
+		}
+
+		const containerMaxWidth = 1236;
+		const resizableContainer = document.querySelector('.page.has-right-rail');
+
+		if (!resizableContainer || (window.document.body.scrollWidth || 0) < containerMaxWidth + 180) {
+			return;
+		}
+
+		const sideBTleft = document.createElement('div');
+		const sideBTright = document.createElement('div');
+
+		sideBTleft.className = 'side-bt-container left';
+		sideBTright.className = 'side-bt-container right';
+
+		resizableContainer.prepend(sideBTleft, sideBTright);
+
+		const wrapperLeft = document.createElement('div');
+		const wrapperRight = document.createElement('div');
+
+		sideBTleft.append(wrapperLeft);
+		sideBTright.append(wrapperRight);
 	}
 }
 
