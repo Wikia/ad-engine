@@ -15,13 +15,17 @@ export class TripleliftNative extends PrebidAdapter {
 		return TripleliftNative.bidderName;
 	}
 
+	isNativeModeOn(): boolean {
+		return context.get('bidders.prebid.tripleliftNative.enabled');
+	}
+
 	prepareConfigForAdUnit(
 		code: string,
 		{ inventoryCodes, position }: PrebidAdSlotConfig,
 	): PrebidAdUnit {
 		if (context.get(`slots.${code}.isNative`)) {
 			const prebidNativeProvider = new PrebidNativeProvider();
-			if (prebidNativeProvider.isEnabled() && this.enabled) {
+			if (prebidNativeProvider.isEnabled() && this.isNativeModeOn()) {
 				const nativeMediaTypes = PrebidNativeConfig.getPrebidNativeMediaTypes(position);
 				return {
 					code,

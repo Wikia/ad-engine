@@ -17,10 +17,6 @@ export function getTripleliftContext(): object {
 				],
 				inventoryCodes: ['Fandom_MW_PF_300x250_hdx_prebid', 'Fandom_MW_PF_320x50_hdx_prebid'],
 			},
-			ntv_ad: {
-				position: 'native',
-				inventoryCodes: ['Fandom_Mobile_NativeIC_320x50'],
-			},
 		},
 	};
 }
