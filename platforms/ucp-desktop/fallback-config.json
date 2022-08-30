@@ -270,9 +270,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "GB",
-                "PL",
-                "UK"
+                "XX"
             ],
             "value": true
         }
@@ -591,13 +589,13 @@
     "icTaxonomyAdTags": [
         {
             "apps": [
-                "fandommobile",
-                "fandomdesktop"
+                "fandomdesktop",
+                "fandommobile"
             ],
             "regions": [
                 "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icFacebookPixel": [
@@ -13631,9 +13629,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "GB",
-                "PL",
-                "UK"
+                "XX"
             ],
             "value": "https://seg.ad.gt/api/v1/s/158"
         }
@@ -16105,6 +16101,18 @@
                 "XX"
             ],
             "value": 2000
+        }
+    ],
+    "icEyeota": [
+        {
+            "apps": [
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "CA"
+            ],
+            "value": true
         }
     ]
 }
