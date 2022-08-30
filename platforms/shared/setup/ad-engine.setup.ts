@@ -1,14 +1,14 @@
 import { AdEngine, ServiceStage, Service } from '@wikia/ad-engine';
 
-let adEngineInstance: AdEngine;
-
 @Service({
 	stage: ServiceStage.provider,
 })
 class AdEngineSetup {
+	adEngineInstance: AdEngine;
+
 	call() {
-		adEngineInstance = new AdEngine();
-		adEngineInstance.init();
+		this.adEngineInstance = new AdEngine();
+		this.adEngineInstance.init();
 	}
 }
 
