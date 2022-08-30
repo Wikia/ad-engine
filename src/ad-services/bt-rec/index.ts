@@ -55,9 +55,13 @@ class BTRec {
 		}
 
 		const containerMaxWidth = 1236;
+		const sideContainersSpace = 2 * 90 + 66 + 60;
 		const resizableContainer = document.querySelector('.page.has-right-rail');
 
-		if (!resizableContainer || (window.document.body.scrollWidth || 0) < containerMaxWidth + 180) {
+		if (
+			!resizableContainer ||
+			(window.document.body.scrollWidth || 0) < containerMaxWidth + sideContainersSpace
+		) {
 			return;
 		}
 
