@@ -58,7 +58,7 @@ function configure(): void {
 
 	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
-
+		adSlot.setStatus(AdSlot.STATUS_REQUESTED);
 		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
 	});
 
@@ -221,8 +221,9 @@ export class GptProvider implements Provider {
 	setPPID() {
 		const ppid = context.get('targeting.ppid');
 		if (ppid) {
-			const tag = window.googletag.pubads();
-			tag.setPublisherProvidedId(ppid);
+			window.googletag.pubads().setPublisherProvidedId(ppid);
+
+			utils.logger('DJ', 'PPID set up');
 		}
 	}
 
