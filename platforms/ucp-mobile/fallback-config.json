@@ -907,6 +907,19 @@
                 "FR",
                 "MC"
             ],
+            "sampling": 100.0,
+            "value": true
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "US"
+            ],
+            "sampling": 50.0,
             "value": true
         }
     ],
@@ -2693,7 +2706,9 @@
                 "icGalactusInteraction_A_50:galactus_interaction_c",
                 "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
                 "icOutstreamExperiment_B_50:outstream_experiment_connatix",
-                "icOutstreamExperiment_B_100:outstream_experiment_exco"
+                "icOutstreamExperiment_B_100:outstream_experiment_exco",
+                "icAdsInitializeV2_A_50:old_initialize",
+                "icAdsInitializeV2_B_50:new_initialize"
             ]
         }
     ],
@@ -15883,7 +15898,7 @@
                 "fandommobile"
             ],
             "regions": [
-                "CA"
+                "AU"
             ],
             "value": true
         }
