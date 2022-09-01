@@ -15,7 +15,7 @@ export class SilverSurferProfileExtender {
 
 	getContext(): SilverSurferContext {
 		if (!window.SilverSurferSDK || !window.SilverSurferSDK.isInitialized()) {
-			console.warn('SilverSurfer SKD not available or not initialised!');
+			console.warn('SilverSurfer SDK not available or not initialised!');
 			return emptySilverSurferContext;
 		}
 		return window.SilverSurferSDK.getContext();
