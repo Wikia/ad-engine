@@ -1,5 +1,5 @@
 import { communicationService, eventsRepository, ofType } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { map } from 'rxjs/operators';
 
 interface AdMarketplaceConfiguration {
@@ -38,11 +38,11 @@ const instantSearchEndpointParameters = [
 	'results-os=0',
 ];
 
-class AdMarketplace {
+class AdMarketplace extends BaseServiceSetup {
 	private configuration: AdMarketplaceConfiguration;
 	private instantSearchSuggestionElement: HTMLElement | null = null;
 
-	initialize(): Promise<void> {
+	call(): Promise<void> {
 		this.configuration = context.get('services.adMarketplace');
 
 		if (

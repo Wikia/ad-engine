@@ -1,4 +1,5 @@
 import { context, Dictionary, utils } from '@ad-engine/core';
+import { FAN_TAKEOVER_TYPES } from '../templates/uap/constants';
 
 interface AdProductInfo {
 	adGroup: string;
@@ -20,9 +21,7 @@ function getGroup(product): string {
 export function getAdProductInfo(slotName, loadedTemplate, loadedProduct): AdProductInfo {
 	let product = slotName;
 
-	if (loadedProduct === 'abcd') {
-		product = 'ABCD';
-	} else if (loadedProduct === 'vuap') {
+	if (FAN_TAKEOVER_TYPES.includes(loadedProduct)) {
 		product = `UAP_${loadedTemplate.toUpperCase()}`;
 	} else if (loadedProduct === 'incontent_veles') {
 		product = 'OUTSTREAM';

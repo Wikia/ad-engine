@@ -26,6 +26,9 @@ export function getAppnexusContext(): object {
 				sizes: [[320, 480]],
 				placementId: '23485904',
 			},
+			ntv_ad: {
+				placementId: '25599354',
+			},
 		},
 		placements: {
 			ent: '9412992',

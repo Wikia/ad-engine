@@ -8,11 +8,6 @@ export const basicContext = {
 		serverPrefix: 'wka1b',
 		wikiIdentifier: '',
 	},
-	options: {
-		loadTimeTracking: {
-			enabled: false,
-		},
-	},
 	slots: {},
 	src: ['bingebot'],
 	targeting: {
@@ -25,7 +20,8 @@ export const basicContext = {
 	},
 	services: {
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=bingebot',
+			endpoint: 'https://services.fandom.com',
+			appName: 'bingebot',
 			fallback: fallbackInstantConfig,
 		},
 	},

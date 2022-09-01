@@ -1,9 +1,8 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 
 const logGroup = 'ATS';
 
-class Ats {
+class Ats extends BaseServiceSetup {
 	private isLoaded = false;
 	private atsScriptSrc = 'https://ats.rlcdn.com/ats.js';
 
@@ -17,23 +16,13 @@ class Ats {
 
 		if (!this.isLoaded) {
 			const userEmailHashes = context.get('wiki.opts.userEmailHashes');
+			const atsScript = utils.scriptLoader.loadScript(this.atsScriptSrc);
 
 			if (!userEmailHashes) {
-				if (context.get('state.isLogged')) {
-					const reason = 'no email';
-					communicationService.emit(eventsRepository.ATS_NOT_LOADED_LOGGED, { reason });
-				}
-
 				return Promise.resolve();
 			}
 
-			const performance = window.performance;
-			const loadStart = performance.now();
-
-			return utils.scriptLoader.loadScript(this.atsScriptSrc).then(() => {
-				const loadEnd = performance.now();
-				const loadTime = loadEnd - loadStart;
-
+			return atsScript.then(() => {
 				(window as any).ats.start({
 					placementID: '2161',
 					emailHashes: userEmailHashes,
@@ -42,8 +31,6 @@ class Ats {
 					logging: 'error',
 				});
 
-				communicationService.emit(eventsRepository.ATS_JS_LOADED, { loadTime });
-				this.registerAtsIdsLoadedHandler();
 				this.isLoaded = true;
 			});
 		}
@@ -55,15 +42,6 @@ class Ats {
 			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
 		);
-	}
-
-	private async registerAtsIdsLoadedHandler(): Promise<void> {
-		(window as any).ats.retrieveEnvelope().then((atsEnvelope) => {
-			const atsEnvelopeObj = atsEnvelope ? JSON.parse(atsEnvelope) : undefined;
-			const envelope = atsEnvelopeObj ? atsEnvelopeObj.envelope : 'undefined';
-
-			communicationService.emit(eventsRepository.ATS_IDS_LOADED, { envelope });
-		});
 	}
 }
 

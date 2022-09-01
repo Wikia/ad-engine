@@ -6,6 +6,7 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 	if (!adEngineInstance) {
 		const GPT_LIBRARY_URL = '//www.googletagservices.com/tag/js/gpt.js';
 
+		utils.logger('gpt-provider', 'loading GPT...');
 		utils.scriptLoader.loadScript(GPT_LIBRARY_URL);
 
 		adEngineInstance = new AdEngine();
@@ -15,6 +16,6 @@ export function startAdEngine(inhibitors: Promise<any>[] = []): void {
 			slot.removeClass('default-height');
 		});
 	} else {
-		adEngineInstance.runAdQueue(inhibitors);
+		adEngineInstance.runAdQueueDeprecated(inhibitors);
 	}
 }

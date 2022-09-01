@@ -1,6 +1,12 @@
-import { AdSlot, TEMPLATE, UapParams } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	eventsRepository,
+	TEMPLATE,
+	UapParams,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
-import { NAVBAR, PAGE } from '../configs/uap-dom-elements';
+import { PAGE } from '../configs/uap-dom-elements';
 import { DomManipulator } from './manipulators/dom-manipulator';
 import { UapDomReader } from './uap-dom-reader';
 
@@ -9,15 +15,10 @@ export class UapDomManager {
 	constructor(
 		@Inject(TEMPLATE.PARAMS) private params: UapParams,
 		@Inject(TEMPLATE.SLOT) private adSlot: AdSlot,
-		@Inject(NAVBAR) private navbar: HTMLElement,
 		@Inject(PAGE) private page: HTMLElement,
 		private manipulator: DomManipulator,
 		private reader: UapDomReader,
 	) {}
-
-	addClassToAdSlot(className: string): void {
-		this.manipulator.element(this.adSlot.element).addClass(className);
-	}
 
 	addClassToPage(className: string): void {
 		this.manipulator.element(this.page).addClass(className);
@@ -27,28 +28,8 @@ export class UapDomManager {
 		this.setPageOffset(this.reader.getPageOffsetImpact());
 	}
 
-	setPageOffsetResolved(): void {
-		this.setPageOffset(this.reader.getPageOffsetResolved());
-	}
-
 	private setPageOffset(value: number): void {
 		this.manipulator.element(this.page).setProperty('marginTop', `${value}px`);
-	}
-
-	setNavbarOffsetImpactToResolved(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetImpactToResolved());
-	}
-
-	setNavbarOffsetResolvedToNone(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetResolvedToNone());
-	}
-
-	setNavbarOffsetResolved(): void {
-		this.setNavbarOffset(this.reader.getNavbarOffsetResolved());
-	}
-
-	private setNavbarOffset(value: number): void {
-		this.manipulator.element(this.navbar).setProperty('top', `${value}px`);
 	}
 
 	setSlotOffsetResolvedToNone(): void {
@@ -90,9 +71,17 @@ export class UapDomManager {
 	}
 
 	private setPlaceholderHeight(height: string): void {
-		this.manipulator
-			.element(this.adSlot.getElement().parentElement.parentElement)
-			.setProperty('height', height);
+		let placeholder = this.adSlot.getElement().parentElement;
+
+		if (placeholder.classList.contains('ad-slot-placeholder')) {
+			placeholder = placeholder.parentElement;
+		}
+
+		this.manipulator.element(placeholder).setProperty('height', height);
+		communicationService.emit(eventsRepository.AD_ENGINE_UAP_DOM_CHANGED, {
+			element: 'placeholder',
+			size: height,
+		});
 	}
 
 	setResolvedImage(): void {

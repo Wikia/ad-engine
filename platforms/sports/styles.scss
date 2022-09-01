@@ -1,6 +1,6 @@
 @import 'platforms/shared/styles/index';
-@import 'src/ad-products/styles/mixin';
-@import 'src/ad-products/styles/porvata';
+@import 'platforms/shared/styles/mixin';
+@import 'platforms/shared/styles/uap-porvata/porvata';
 
 @include logo-replacement(40px, 0, 5px);
 
@@ -45,10 +45,15 @@ html.disable-ads {
 
 @mixin ucp-futhead-uap-styles() {
 	&.has-uap {
-		padding-top: 0;
+		.homepage-content {
+			padding-top: 0;
+		}
+
 		#cdm-zone-01 {
 			@include bfaa-slot();
 			@include sticky-tlb-slot();
+
+			top: 43px;
 
 			&.is-mobile-layout .video-overlay {
 				transform: translateZ(0);
@@ -72,10 +77,6 @@ html.disable-ads {
 			@include bfab-slot();
 		}
 
-		.navbar.navbar-futhead {
-			@include uap-navbar();
-		}
-
 		.navbar-unfix-top {
 			margin-top: unset;
 		}
@@ -92,6 +93,10 @@ html.disable-ads {
 					position: unset;
 					box-shadow: unset;
 				}
+
+				.site-header {
+					margin-bottom: 0;
+				}
 			}
 
 			.main-content.homepage,
@@ -107,11 +112,16 @@ html.disable-ads {
 
 @mixin ucp-muthead-uap-styles() {
 	&.has-uap {
+		.header {
+			z-index: 203;
+		}
+
 		#cdm-zone-01 {
 			@include bfaa-slot();
 			@include sticky-tlb-slot();
 
-			margin-top: 0;
+			top: 51px;
+			margin: 0;
 
 			.video-player,
 			.player-overlay {
@@ -134,18 +144,6 @@ html.disable-ads {
 				@include uap-dark-theme();
 			}
 		}
-
-		padding-top: 0 !important;
-
-		.header-container {
-			position: absolute;
-			width: 100vw;
-
-			&.bfaa-pinned {
-				position: absolute;
-				opacity: 1 !important;
-			}
-		}
 	}
 
 	@include expanded-slot();
@@ -160,7 +158,31 @@ html.disable-ads {
 	@include ucp-futhead-uap-styles();
 }
 
+.desktop .ae-futhead.has-uap {
+	.site-header .content-header {
+		.container {
+			display: flex;
+			flex-direction: column;
+
+			.content-header-left {
+				order: 2;
+			}
+
+			.content-header-right {
+				order: 1;
+				padding: 0;
+			}
+		}
+	}
+}
+
 .mobile .ae-futhead.has-uap {
+	.futhead-gdm.headliner {
+		height: 0 !important;
+		min-height: 0;
+		padding: 0;
+	}
+
 	#cdm-zone-04 {
 		.video-overlay {
 			transform: translateZ(0);
@@ -179,5 +201,11 @@ html.disable-ads {
 		.video-player {
 			transform: translateX(0);
 		}
+	}
+}
+
+.mobile .ae-muthead.has-uap {
+	#cdm-zone-01 {
+		top: 38px;
 	}
 }

@@ -20,7 +20,7 @@ export class SportsAdsMode implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
-		inhibitors.push(bidders.requestBids());
+		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
 
 		audigent.call();

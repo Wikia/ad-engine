@@ -56,7 +56,7 @@ describe('gpt-provider', () => {
 		setTimeout(() => {
 			expect(pubads.disableInitialLoad.called).to.be.true;
 			expect(pubads.enableSingleRequest.called).to.be.false;
-			expect(pubads.addEventListener.callCount).to.equal(4);
+			expect(pubads.addEventListener.callCount).to.equal(7);
 			done();
 		});
 	});

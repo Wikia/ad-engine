@@ -1,4 +1,4 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, FuncPipeline, FuncPipelineStep, slotService, utils } from '@ad-engine/core';
 
 const logGroup = 'ad-click-tracker';
@@ -13,6 +13,11 @@ interface AdClickContext {
 
 class AdClickTracker {
 	private pipeline = new FuncPipeline<AdClickContext>();
+	private eventsToRegister = [
+		eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_CLICKED,
+		eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
+		eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
+	];
 
 	add(...middlewares: FuncPipelineStep<AdClickContext>[]): this {
 		this.pipeline.add(...middlewares);
@@ -25,22 +30,18 @@ class AdClickTracker {
 			this.addClickTrackingListeners(callback, adSlotName);
 		});
 
-		communicationService.on(
-			eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED,
-			({ adSlotName, learnMoreLink }) => {
-				this.addClickVideoLearnMoreTrackingListeners(callback, adSlotName, learnMoreLink);
-			},
-			false,
-		);
+		this.eventsToRegister.map((event) => this.addToTracking(event, callback));
+	}
 
+	private addToTracking(event: EventOptions, callback: FuncPipelineStep<AdClickContext>): void {
 		communicationService.on(
-			eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
-			({ adSlotName }) => {
+			event,
+			({ adSlotName, ad_status }) => {
 				this.pipeline.execute(
 					{
 						slot: slotService.get(adSlotName),
 						data: {
-							ad_status: 'replay-click',
+							ad_status,
 						},
 					},
 					callback,
@@ -65,7 +66,7 @@ class AdClickTracker {
 			return;
 		}
 
-		const iframeBody = iframeElement.contentWindow.document.body;
+		const iframeBody = iframeElement?.contentWindow?.document?.body;
 
 		if (iframeBody && slotElement) {
 			slotElement.firstElementChild.addEventListener('click', () => {
@@ -75,16 +76,6 @@ class AdClickTracker {
 				this.handleClickEvent(callback, adSlot, e);
 			});
 		}
-	}
-
-	private addClickVideoLearnMoreTrackingListeners(
-		callback: FuncPipelineStep<AdClickContext>,
-		adSlotName: string,
-		learnMoreLink: HTMLElement,
-	): void {
-		learnMoreLink.addEventListener('click', () => {
-			this.handleClickEvent(callback, slotService.get(adSlotName));
-		});
 	}
 
 	private handleClickEvent(

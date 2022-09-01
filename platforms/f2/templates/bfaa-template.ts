@@ -6,18 +6,15 @@ import {
 	DebugTransitionHandler,
 	DomCleanupHandler,
 	DomManipulator,
-	NavbarOffsetImpactToResolvedHandler,
-	NavbarOffsetResolvedHandler,
-	NavbarOffsetResolvedToNoneHandler,
-	PageOffsetImpactHandler,
-	PageOffsetResolvedHandler,
 	PlayerRegistry,
 	ScrollCorrector,
 	SlotDecisionImpactToResolvedHandler,
 	SlotDecisionTimeoutHandler,
-	SlotOffsetResolvedToNoneHandler,
+	SlotHeightClippingHandler,
 	SlotSizeImpactToResolvedHandler,
-	SlotSizeResolvedHandler,
+	SlotSizeImpactWithPlaceholderHandler,
+	SlotSizeResolvedWithPlaceholderHandler,
+	SlotStateStickedHandler,
 	SlotTransitionHandler,
 	StickinessTimeout,
 	UapDomManager,
@@ -27,77 +24,84 @@ import {
 	VideoCtpHandler,
 	VideoDomManager,
 	VideoDomReader,
+	VideoLearnMoreHandler,
 	VideoRestartHandler,
 	VideoSizeImpactToResolvedHandler,
 	VideoSizeResolvedHandler,
 } from '@platforms/shared';
-import { TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
+import { context, TemplateAction, TemplateRegistry, universalAdPackage } from '@wikia/ad-engine';
 import { Observable } from 'rxjs';
 import { registerF2UapDomElements } from './configs/register-f2-uap-dom-elements';
 import { BfaaF2ConfigHandler } from './handlers/bfaa/bfaa-f2-config-handler';
 import { HideSmartBannerHandler } from './handlers/hide-smart-banner-handler';
 
 export function registerBfaaTemplate(registry: TemplateRegistry): Observable<TemplateAction> {
-	return registry.register(
-		'bfaa',
-		{
-			initial: [
-				BfaaF2ConfigHandler,
-				BfaaBootstrapHandler,
-				VideoBootstrapHandler,
-				VideoCtpHandler,
-				VideoRestartHandler,
-				AdvertisementLabelHandler,
-				HideSmartBannerHandler,
-				DebugTransitionHandler,
-			],
-			impact: [
-				SlotSizeImpactToResolvedHandler,
-				SlotDecisionImpactToResolvedHandler,
-				NavbarOffsetImpactToResolvedHandler,
-				PageOffsetImpactHandler,
-				VideoSizeImpactToResolvedHandler,
-				VideoCompletedHandler,
-				DomCleanupHandler,
-			],
-			sticky: [
-				SlotSizeResolvedHandler,
-				PageOffsetResolvedHandler,
-				NavbarOffsetResolvedHandler,
-				SlotDecisionTimeoutHandler,
-				CloseToTransitionButtonHandler,
-				VideoSizeResolvedHandler,
-				DomCleanupHandler,
-			],
-			transition: [
-				SlotSizeResolvedHandler,
-				PageOffsetResolvedHandler,
-				NavbarOffsetResolvedHandler,
-				SlotTransitionHandler,
-				VideoSizeResolvedHandler,
-				DomCleanupHandler,
-			],
-			resolved: [
-				SlotSizeResolvedHandler,
-				SlotOffsetResolvedToNoneHandler,
-				NavbarOffsetResolvedToNoneHandler,
-				PageOffsetResolvedHandler,
-				VideoSizeResolvedHandler,
-				DomCleanupHandler,
-			],
-		},
-		'initial',
-		[
-			ScrollCorrector,
-			PlayerRegistry,
-			DomManipulator,
-			UapDomManager,
-			UapDomReader,
-			VideoDomReader,
-			VideoDomManager,
-			CloseButtonHelper,
-			StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
-			registerF2UapDomElements(),
+	const templateStates = {
+		initial: [
+			BfaaF2ConfigHandler,
+			BfaaBootstrapHandler,
+			VideoBootstrapHandler,
+			VideoCtpHandler,
+			VideoRestartHandler,
+			AdvertisementLabelHandler,
+			HideSmartBannerHandler,
+			DebugTransitionHandler,
 		],
-	);
+		impact: [],
+		sticky: [
+			SlotSizeResolvedWithPlaceholderHandler,
+			SlotDecisionTimeoutHandler,
+			SlotStateStickedHandler,
+			CloseToTransitionButtonHandler,
+			VideoSizeResolvedHandler,
+			DomCleanupHandler,
+		],
+		transition: [
+			SlotSizeResolvedWithPlaceholderHandler,
+			SlotStateStickedHandler,
+			SlotTransitionHandler,
+			VideoSizeResolvedHandler,
+			DomCleanupHandler,
+		],
+		resolved: [
+			SlotSizeResolvedWithPlaceholderHandler,
+			SlotHeightClippingHandler,
+			VideoSizeResolvedHandler,
+			DomCleanupHandler,
+		],
+	};
+
+	if (context.get('state.isMobile')) {
+		templateStates.impact = [
+			SlotSizeImpactWithPlaceholderHandler,
+			SlotSizeImpactToResolvedHandler,
+			SlotDecisionImpactToResolvedHandler,
+			VideoSizeImpactToResolvedHandler,
+			VideoCompletedHandler,
+			VideoLearnMoreHandler,
+			DomCleanupHandler,
+		];
+	} else {
+		templateStates.impact = [
+			SlotSizeImpactWithPlaceholderHandler,
+			SlotDecisionImpactToResolvedHandler,
+			SlotHeightClippingHandler,
+			VideoSizeImpactToResolvedHandler,
+			VideoCompletedHandler,
+			DomCleanupHandler,
+		];
+	}
+
+	return registry.register('bfaa', templateStates, 'initial', [
+		ScrollCorrector,
+		PlayerRegistry,
+		DomManipulator,
+		UapDomManager,
+		UapDomReader,
+		VideoDomReader,
+		VideoDomManager,
+		CloseButtonHelper,
+		StickinessTimeout.provide(universalAdPackage.BFAA_UNSTICK_DELAY),
+		registerF2UapDomElements(),
+	]);
 }

@@ -28,7 +28,7 @@ describe('Taxonomy service', () => {
 	});
 
 	it('configures fetched ad tags in context targeting', async () => {
-		const fetchedAdTags = await taxonomyService.configurePageLevelTargeting();
+		const fetchedAdTags = await taxonomyService.call();
 
 		expect(getAdTagsStub.called).to.be.true;
 
@@ -42,7 +42,7 @@ describe('Taxonomy service', () => {
 	it('does not fetch ad tags when service is disabled', async () => {
 		context.set('services.taxonomy.enabled', false);
 
-		const fetchedAdTags = await taxonomyService.configurePageLevelTargeting();
+		const fetchedAdTags = await taxonomyService.call();
 
 		expect(getAdTagsStub.called).to.be.false;
 		expect(fetchedAdTags).to.deep.equal({});

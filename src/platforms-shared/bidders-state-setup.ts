@@ -1,4 +1,4 @@
-import { Context } from '@ad-engine/core';
+import { Context, DEFAULT_MAX_DELAY } from '@ad-engine/core';
 import { InstantConfigService } from '@ad-engine/services';
 
 export function setupBidders(context: Context, instantConfig: InstantConfigService): void {
@@ -15,14 +15,30 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 	if (instantConfig.get('icPrebid')) {
 		context.set('bidders.prebid.enabled', true);
 
-		const stagesConfig: object = instantConfig.get('icPrebidStages');
+		const stagesConfig: { initTimeout: string; mainDelayed: string; mainTimeout: string } =
+			instantConfig.get('icPrebidStages');
 		if (stagesConfig) {
 			context.set('bidders.prebid.multiAuction', true);
-			context.set('bidders.prebid', { ...context.get('bidders.prebid'), ...stagesConfig });
+			context.set(
+				'bidders.prebid.initTimeout',
+				parseInt(stagesConfig.initTimeout) || DEFAULT_MAX_DELAY,
+			);
+			context.set(
+				'bidders.prebid.mainDelayed',
+				parseInt(stagesConfig.mainDelayed) || DEFAULT_MAX_DELAY,
+			);
+			context.set(
+				'bidders.prebid.mainTimeout',
+				parseInt(stagesConfig.mainTimeout) || DEFAULT_MAX_DELAY,
+			);
 		}
 
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
+		context.set(
+			'bidders.prebid.appnexusNative.enabled',
+			instantConfig.get('icPrebidAppNexusNative'),
+		);
 		context.set(
 			'bidders.prebid.appnexusGroupM.enabled',
 			instantConfig.get('icPrebidAppNexusGroupM'),
@@ -41,6 +57,8 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			'bidders.prebid.rubicon_display.enabled',
 			instantConfig.get('icPrebidRubiconDisplay'),
 		);
+		context.set('bidders.prebid.roundel.enabled', instantConfig.get('icPrebidRoundel'));
+		context.set('bidders.prebid.rubicon_pg.enabled', instantConfig.get('icPrebidRubiconPG'));
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
 		context.set('bidders.prebid.telaria.enabled', instantConfig.get('icPrebidTelaria'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));

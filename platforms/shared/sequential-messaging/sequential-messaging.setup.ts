@@ -7,6 +7,27 @@ import { GamTargetingManager } from './infrastructure/gam-targeting-manager';
 import { slotsContext } from '../slots/slots-context';
 import { SequenceEndHandler } from './domain/sequence-end-handler';
 import { SequenceEventTypes } from './infrastructure/sequence-event-types';
+import { KibanaLogger } from './kibana-logger';
+
+function kibanaLogger() {
+	// This is to ensure Kibana logging will work on F2
+	if (!context.get('services.externalLogger.endpoint')) {
+		context.set(
+			'services.externalLogger.endpoint',
+			'https://community.fandom.com/wikia.php?controller=AdEngine&method=postLog',
+		);
+	}
+
+	window['smTracking'] = new KibanaLogger();
+}
+
+function recordGAMCreativePayload(payload) {
+	if (window['smTracking'] == undefined) {
+		kibanaLogger();
+	}
+
+	window['smTracking'].recordGAMCreativePayload(payload);
+}
 
 export class SequentialMessagingSetup {
 	// Special targeting sizes are aligned with sequence steps e.g.
@@ -39,8 +60,14 @@ export class SequentialMessagingSetup {
 				return;
 			}
 
+			if (uap) {
+				resolvedState.forceUapResolveState();
+			}
+
 			const sequenceHandler = new SequenceStartHandler(this.userStateStore);
 			sequenceHandler.startSequence(lineItemId, width, height, uap);
+
+			recordGAMCreativePayload(payload);
 		});
 	}
 
@@ -56,16 +83,18 @@ export class SequentialMessagingSetup {
 			this.userStateStore,
 			targetingManager,
 			this.onIntermediateStepLoad,
-			context.get('wiki.targeting.hasFeaturedVideo'),
+			context.get('custom.hasFeaturedVideo'),
 		);
 
 		sequenceHandler.handleOngoingSequence();
 	}
 
 	private handleSequenceEnd(): void {
-		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_END, () => {
+		communicationService.on(SequenceEventTypes.SEQUENTIAL_MESSAGING_END, (payload) => {
 			const sequenceHandler = new SequenceEndHandler(this.userStateStore);
 			sequenceHandler.endSequence();
+
+			recordGAMCreativePayload(payload);
 		});
 	}
 
@@ -80,6 +109,8 @@ export class SequentialMessagingSetup {
 
 			const loadedStep = payload.height - SequentialMessagingSetup.baseTargetingSize;
 			storeState(loadedStep);
+
+			recordGAMCreativePayload(payload);
 		});
 	}
 }

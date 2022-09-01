@@ -72,6 +72,11 @@ export interface AdSlotEventPayload {
 	payload?: any;
 }
 
+export interface IdentityDataPayload {
+	partnerName: string;
+	partnerIdentityId: string | null;
+}
+
 export const eventsRepository: Dictionary<EventOptions> = {
 	// AdEngine life cycle events //
 	AD_ENGINE_BAB_DETECTION: {
@@ -93,9 +98,15 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	AD_ENGINE_INTERSTITIAL_DISPLAYED: {
 		name: 'Interstitial displayed',
 	},
+	AD_ENGINE_LOAD_TIME_INIT: {
+		name: 'Ad engine load time init',
+	},
 	AD_ENGINE_MESSAGE_BOX_EVENT: {
 		name: 'MessageBox event',
 		payload: props<{ adSlotName: string; ad_status: string }>(),
+	},
+	AD_ENGINE_PARTNERS_READY: {
+		name: 'Partners Ready',
 	},
 	AD_ENGINE_STACK_START: {
 		name: 'Ad Stack started',
@@ -104,9 +115,16 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Template loaded',
 		payload: props<GeneralPayload>(),
 	},
+	AD_ENGINE_UAP_DOM_CHANGED: {
+		name: 'UAP DOM changed',
+		payload: props<{ element: string; size: number }>(),
+	},
 	AD_ENGINE_UAP_LOAD_STATUS: {
 		name: 'UAP Load status',
 		payload: props<UapLoadStatus>(),
+	},
+	AD_ENGINE_UAP_NTC_LOADED: {
+		name: 'UAP NTC loaded',
 	},
 	// Ad slot events //
 	AD_ENGINE_INVALIDATE_SLOT_TARGETING: {
@@ -115,11 +133,15 @@ export const eventsRepository: Dictionary<EventOptions> = {
 	},
 	AD_ENGINE_VIDEO_OVERLAY_CLICKED: {
 		name: 'Video overlay added',
-		payload: props<{ adSlotName: string }>(),
+		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
-	AD_ENGINE_VIDEO_LEARN_MORE_DISPLAYED: {
+	AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED: {
+		name: 'Video toggle ui overlay clicked',
+		payload: props<{ adSlotName: string; ad_status: string }>(),
+	},
+	AD_ENGINE_VIDEO_LEARN_MORE_CLICKED: {
 		name: 'Video learn more displayed',
-		payload: props<{ adSlotName: string; learnMoreLink: HTMLElement }>(),
+		payload: props<{ adSlotName: string; ad_status: string }>(),
 	},
 	AD_ENGINE_SLOT_ADDED: {
 		name: 'Ad Slot added',
@@ -147,28 +169,43 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		name: 'Called',
 		payload: props<{ query: string }>(),
 	},
-	ATS_JS_LOADED: {
-		name: 'ATS.js loaded',
-		payload: props<{ loadTime: number }>(),
+	AUDIGENT_SEGMENT_LIBRARY_LOADED: {
+		name: 'Audigent segment library loaded',
 	},
-	ATS_IDS_LOADED: {
-		name: 'ATS ids loaded',
-		payload: props<{ envelope: string }>(),
+	AUDIGENT_MATCHES_LIBRARY_LOADED: {
+		name: 'Audigent matches library loaded',
 	},
-	ATS_NOT_LOADED_LOGGED: {
-		name: 'ATS.js not loaded for logged in user',
-		payload: props<{ reason: string }>(),
+	AUDIGENT_SEGMENTS_READY: {
+		name: 'Audigent segments ready',
 	},
-	AUDIGENT_LOADED: {
-		name: 'Audigent loaded',
+	EYEOTA_STARTED: {
+		name: 'Eyeota started',
 	},
-	LIVERAMP_IDS_LOADED: {
-		name: 'LiveRamp Prebid ids loaded',
-		payload: props<{ userId: string }>(),
+	IDENTITY_PARTNER_DATA_OBTAINED: {
+		name: 'Identity partner data obtained',
+		payload: payload<IdentityDataPayload>(),
+	},
+	LIVE_CONNECT_STARTED: {
+		name: 'LiveConnect started',
+	},
+	LIVE_CONNECT_RESPONDED_UUID: {
+		name: 'LiveConnect responded with UUID',
 	},
 	NATIVO_LOADED: {
 		name: 'Nativo loaded',
 		payload: props<{ isLoaded: boolean }>(),
+	},
+	NO_NATIVE_PREBID_AD: {
+		name: 'No native prebid ad',
+		payload: props<{ slotName: string }>(),
+	},
+	NO_NATIVO_AD: {
+		name: 'No nativo ad',
+		payload: props<{ slotName: string }>(),
+	},
+	TIMESTAMP_EVENT: {
+		name: 'Timestamp event',
+		payload: props<{ eventName: string; timestamp: number }>(),
 	},
 	// Platforms events //
 	BINGEBOT_AD_SLOT_INJECTED: {
@@ -216,6 +253,10 @@ export const eventsRepository: Dictionary<EventOptions> = {
 		category: '[Prebid]',
 		name: 'Bidding done',
 		payload: props<BiddersEventPayload>(),
+	},
+	BIDDERS_BIDS_CALLED: {
+		category: '[Prebid]',
+		name: 'Bids called',
 	},
 	BIDDERS_BIDS_REFRESH: {
 		category: '[Prebid]',

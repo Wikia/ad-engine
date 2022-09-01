@@ -77,6 +77,18 @@ describe('ad-slot', () => {
 		});
 	});
 
+	it('getCreativeSizeAsArray', () => {
+		const adSlot = createAdSlot('top_boxad');
+
+		expect(adSlot.getCreativeSizeAsArray()).to.be.null;
+
+		adSlot.creativeSize = '1x1';
+		expect(adSlot.getCreativeSizeAsArray()).to.deep.equal([1, 1]);
+
+		adSlot.creativeSize = [1, 1];
+		expect(adSlot.getCreativeSizeAsArray()).to.deep.equal([1, 1]);
+	});
+
 	describe('updateWinningPbBidderDetails', () => {
 		/** @type {AdSlot} */
 		let adSlot;
