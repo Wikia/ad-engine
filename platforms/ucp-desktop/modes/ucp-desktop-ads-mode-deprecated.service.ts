@@ -29,7 +29,6 @@ import {
 	slotDataParamsUpdater,
 	slotService,
 	stroer,
-	taxonomyService,
 	UapLoadStatus,
 	utils,
 	ats,
@@ -81,7 +80,6 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(bidders.call());
-		inhibitors.push(taxonomyService.call());
 		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());

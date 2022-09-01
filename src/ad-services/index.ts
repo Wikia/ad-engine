@@ -17,5 +17,4 @@ export * from './nielsen';
 export * from './sailthru';
 export * from './silver-surfer';
 export * from './stroer';
-export * from './taxonomy/taxonomy-service';
 export * from './connatix/connatix-player';
