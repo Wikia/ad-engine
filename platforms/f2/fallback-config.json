@@ -1676,7 +1676,9 @@
                 "6069654166",
                 "6084794391",
                 "6053928187",
-                "6097535999"
+                "6097535999",
+                "6100612279",
+                "6100612276"
             ]
         }
     ],
@@ -1720,7 +1722,9 @@
                 "icGalactusInteraction_A_50:galactus_interaction_c",
                 "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
                 "icOutstreamExperiment_B_50:outstream_experiment_connatix",
-                "icOutstreamExperiment_B_100:outstream_experiment_exco"
+                "icOutstreamExperiment_B_100:outstream_experiment_exco",
+                "icAdsInitializeV2_A_50:old_initialize",
+                "icAdsInitializeV2_B_50:new_initialize"
             ]
         }
     ],
@@ -2096,8 +2100,20 @@
                 "fandommobile"
             ],
             "regions": [
+                "PL"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
                 "XX"
             ],
+            "sampling": 100.0,
             "value": false
         },
         {
@@ -2107,13 +2123,9 @@
                 "fandommobile"
             ],
             "regions": [
-                "AL",
-                "BR",
-                "DE",
-                "FR",
-                "MC"
+                "XX"
             ],
-            "value": true
+            "value": false
         }
     ],
     "icUAPJWPlayerDelay": [

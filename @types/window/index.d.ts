@@ -27,7 +27,7 @@ interface Window {
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;
-	liQ?: any;
+	liQ?: LiQ;
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
