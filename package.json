@@ -28,7 +28,7 @@
 		"@babel/plugin-transform-runtime": "7.16.5",
 		"@types/chai": "4.3.0",
 		"@types/doubleclick-gpt": "2019111201.0.2",
-		"@types/js-cookie": "3.0.1",
+		"@types/js-cookie": "3.0.2",
 		"@types/mocha": "5.2.6",
 		"@types/node": "8.10.54",
 		"@types/sinon": "10.0.11",
