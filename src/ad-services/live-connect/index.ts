@@ -1,12 +1,28 @@
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
-const logGroup = 'liveConnect';
+interface IdConfig {
+	id: string;
+	name: string;
+	params?: LiQParams;
+}
+
+const partnerName = 'liveConnect';
+const logGroup = partnerName;
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 
-class LiveConnect {
+const idConfigMapping: IdConfig[] = [
+	{ id: 'unifiedId', name: `${partnerName}-unifiedId` },
+	{ id: 'sha2', name: partnerName, params: { qf: '0.3', resolve: 'sha2' } },
+	{ id: 'sha256', name: `${partnerName}-sha256`, params: { qf: '0.3', resolve: 'sha256' } },
+	{ id: 'md5', name: `${partnerName}-md5`, params: { qf: '0.3', resolve: 'md5' } },
+	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
+	{ id: 'gender', name: `${partnerName}-gender`, params: { qf: '0.3', resolve: 'gender' } },
+	{ id: 'age', name: `${partnerName}-age`, params: { qf: '0.3', resolve: 'age' } },
+];
+
+class LiveConnect extends BaseServiceSetup {
 	private isLoaded = false;
-	private unifiedId: string | null;
 
 	private isEnabled(): boolean {
 		return (
@@ -25,6 +41,7 @@ class LiveConnect {
 
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
+			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
 			utils.scriptLoader
 				.loadScript(liveConnectScriptUrl, 'text/javascript', true, 'first')
@@ -37,19 +54,43 @@ class LiveConnect {
 		}
 	}
 
+	resolveId(idName, partnerName) {
+		return (nonId) => {
+			const partnerIdentityId = nonId[idName];
+
+			if (idName === 'unifiedId') {
+				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
+			}
+			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
+
+			if (!partnerIdentityId) {
+				return;
+			}
+			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+				partnerName,
+				partnerIdentityId,
+			});
+		};
+	}
+
+	resolveAndReportId(idName: string, partnerName: string, params?: LiQParams) {
+		window.liQ.resolve(
+			this.resolveId(idName, partnerName),
+			(err) => {
+				utils.warner(logGroup, err);
+			},
+			params,
+		);
+	}
+
 	track(): void {
 		if (!window.liQ) {
-			console.warn(logGroup, 'window.liQ not available for tracking');
-		} else {
-			window.liQ.resolve((nonId) => {
-				this.unifiedId = nonId['unifiedId'];
-
-				communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-					partnerName: logGroup,
-					partnerIdentityId: this.unifiedId,
-				});
-			});
+			utils.warner(logGroup, 'window.liQ not available for tracking');
+			return;
 		}
+		idConfigMapping.forEach(({ id, name, params }) => {
+			this.resolveAndReportId(id, name, params);
+		});
 	}
 }
 

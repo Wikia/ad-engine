@@ -1,6 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import {
+	communicationService,
 	context,
+	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -14,6 +16,16 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad', 'bottom_leaderboard'];
+		const isMobile = context.get('state.isMobile');
+
+		if (this.params.newTakeoverConfig) {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+
+			if (isMobile) {
+				enabledSlots.push('floor_adhesion');
+			}
+		}
+
 		universalAdPackage.init(
 			this.params,
 			enabledSlots,
@@ -23,7 +35,7 @@ export class BfaaF2ConfigHandler implements TemplateStateHandler {
 		);
 		context.set('slots.bottom_leaderboard.viewportConflicts', []);
 
-		const bfaSize = context.get('state.isMobile')
+		const bfaSize = isMobile
 			? universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile
 			: universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.desktop;
 

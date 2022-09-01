@@ -58,7 +58,6 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: [],
 		skin: 'ucp_desktop',
 		uap: 'none',
 		uap_c: 'none',
@@ -121,7 +120,8 @@ export const basicContext = {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandomdesktop',
+			endpoint: 'https://services.fandom.com',
+			appName: 'fandomdesktop',
 			fallback: fallbackInstantConfig,
 		},
 		nielsen: {
@@ -136,11 +136,6 @@ export const basicContext = {
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
-		},
-		loadTimeTracking: {
-			enabled: true,
-			timing: ['responseEnd', 'domContentLoadedEventStart'],
-			custom: ['aeConfigured', 'aeStackStart'],
 		},
 		video: {
 			moatTracking: {

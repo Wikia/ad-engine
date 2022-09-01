@@ -1,9 +1,10 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { AdSlot, Targeting } from '../models';
+import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
+	config,
 	context,
 	slotDataParamsUpdater,
 	slotService,
@@ -14,6 +15,7 @@ import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
 import { KibanaLogger } from '../../../platforms/shared/sequential-messaging/kibana-logger';
+import { utils } from '../index';
 
 const logGroup = 'gpt-provider';
 
@@ -191,6 +193,7 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
+		this.setPPID();
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
@@ -204,10 +207,23 @@ export class GptProvider implements Provider {
 
 	setupRestrictDataProcessing(): void {
 		const tag = window.googletag.pubads();
-
-		tag.setPrivacySettings({
+		const settings: Dictionary = {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
-		});
+		};
+
+		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
+			settings.childDirectedTreatment = true;
+		}
+
+		tag.setPrivacySettings(settings);
+	}
+
+	setPPID() {
+		const ppid = context.get('targeting.ppid');
+		if (ppid) {
+			const tag = window.googletag.pubads();
+			tag.setPublisherProvidedId(ppid);
+		}
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)

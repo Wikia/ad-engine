@@ -1,4 +1,5 @@
 import {
+	BaseServiceSetup,
 	context,
 	Dictionary,
 	postponeExecutionUntilGptLoads,
@@ -27,13 +28,18 @@ interface IasTargetingSlotData {
 	vw_vv: string[];
 }
 
+interface IasCustomData {
+	'ias-kw': string[];
+}
+
 interface IasTargetingData {
 	brandSafety?: BrandSafetyData;
+	custom: IasCustomData;
 	fr?: string;
 	slots?: IasTargetingSlotData[];
 }
 
-class IasPublisherOptimization {
+class IasPublisherOptimization extends BaseServiceSetup {
 	private isLoaded = false;
 	private slotList: string[] = [];
 
@@ -53,11 +59,12 @@ class IasPublisherOptimization {
 		}
 
 		if (!this.isLoaded) {
-			utils.logger(logGroup, 'loading');
+			utils.logger(logGroup, 'loading...');
 			this.isLoaded = true;
-			return utils.scriptLoader
-				.loadScript(scriptUrl, 'text/javascript', true, 'first')
-				.then(() => this.setup());
+			return utils.scriptLoader.loadScript(scriptUrl, 'text/javascript', true, 'first').then(() => {
+				utils.logger(logGroup, 'asset loaded');
+				this.setup();
+			});
 		}
 	}
 
@@ -103,8 +110,11 @@ class IasPublisherOptimization {
 	}
 
 	private setInitialTargeting(): void {
+		utils.logger(logGroup, 'setting initial targeting...');
+
 		context.set('targeting.fr', '-1');
 		context.set('targeting.b_ias', '-1');
+		context.set('targeting.ias-kw', '-1');
 
 		brandSafetyKeys.forEach((key) => {
 			context.set(`targeting.${key}`, '-1');
@@ -116,33 +126,51 @@ class IasPublisherOptimization {
 	}
 
 	private iasDataHandler(adSlotData: string): void {
+		utils.logger(logGroup, 'handling IAS response...');
+
 		const iasTargetingData: IasTargetingData = JSON.parse(adSlotData);
 
 		context.set('targeting.fr', iasTargetingData.fr);
 
-		if (iasTargetingData.brandSafety) {
-			let maxValue = '-1';
-
-			brandSafetyKeys.forEach((key) => {
-				if (iasTargetingData.brandSafety[key]) {
-					context.set(`targeting.${key}`, iasTargetingData.brandSafety[key]);
-
-					if (
-						maxValue === '-1' ||
-						brandSafetyValuesLevel[maxValue] <
-							brandSafetyValuesLevel[iasTargetingData.brandSafety[key]]
-					) {
-						maxValue = iasTargetingData.brandSafety[key];
-					}
-				}
-			});
-
-			context.set('targeting.b_ias', maxValue);
-		}
+		IasPublisherOptimization.setBrandSafetyKeyValuesInTargeting(iasTargetingData.brandSafety);
+		IasPublisherOptimization.setCustomKeyValuesInTargeting(iasTargetingData.custom);
 
 		for (const [slotName, slotTargeting] of Object.entries(iasTargetingData.slots)) {
 			context.set(`slots.${slotName}.targeting.vw`, slotTargeting.vw || slotTargeting.vw_vv);
 		}
+	}
+
+	private static setBrandSafetyKeyValuesInTargeting(brandSafetyData): void {
+		if (!brandSafetyData) {
+			utils.logger(logGroup, 'no brand safety data');
+			return;
+		}
+
+		let maxValue = '-1';
+
+		brandSafetyKeys.forEach((key) => {
+			if (brandSafetyData[key]) {
+				context.set(`targeting.${key}`, brandSafetyData[key]);
+
+				if (
+					maxValue === '-1' ||
+					brandSafetyValuesLevel[maxValue] < brandSafetyValuesLevel[brandSafetyData[key]]
+				) {
+					maxValue = brandSafetyData[key];
+				}
+			}
+		});
+
+		context.set('targeting.b_ias', maxValue);
+	}
+
+	private static setCustomKeyValuesInTargeting(customData): void {
+		if (!customData['ias-kw']) {
+			utils.logger(logGroup, 'no custom data');
+			return;
+		}
+
+		context.set('targeting.ias-kw', customData['ias-kw']);
 	}
 }
 

@@ -1,5 +1,16 @@
 import { SlotSetupDefinition } from '@platforms/shared';
-import { context, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	context,
+	eventsRepository,
+	InstantConfigService,
+	scrollListener,
+	SlotCreatorWrapperConfig,
+	UapLoadStatus,
+	universalAdPackage,
+	utils,
+} from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../setup-f2';
 import { F2State } from '../../utils/f2-state';
@@ -14,6 +25,7 @@ export class F2SlotsDefinitionRepository {
 	constructor(
 		@Inject(F2_STATE) private f2State: F2State,
 		@Inject(F2_ENV) private f2Env: F2Environment,
+		protected instantConfig: InstantConfigService,
 	) {}
 
 	getTopLeaderboardConfig(): SlotSetupDefinition {
@@ -36,6 +48,59 @@ export class F2SlotsDefinitionRepository {
 			},
 			activator: () => {
 				context.push('state.adStack', { id: slotName });
+			},
+		};
+	}
+
+	getFloorAdhesionConfig(): SlotSetupDefinition {
+		if (!context.get('state.isMobile')) {
+			return;
+		}
+
+		const slotName = 'floor_adhesion';
+
+		const activateFloorAdhesion = () => {
+			const numberOfViewportsFromTopToPush: number =
+				this.instantConfig.get('icFloorAdhesionViewportsToStart') || 0;
+			if (numberOfViewportsFromTopToPush === -1) {
+				context.push('state.adStack', { id: slotName });
+			} else {
+				const distance = numberOfViewportsFromTopToPush * utils.getViewportHeight();
+				scrollListener.addSlot(slotName, { distanceFromTop: distance });
+			}
+		};
+
+		return {
+			slotCreatorConfig: {
+				slotName,
+				anchorSelector: 'body',
+				insertMethod: 'append',
+				classList: ['hide', 'ad-slot'],
+			},
+			activator: () => {
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_LOAD_STATUS,
+					(action: UapLoadStatus) => {
+						if (action.isLoaded) {
+							communicationService.onSlotEvent(
+								AdSlot.CUSTOM_EVENT,
+								({ payload }) => {
+									if (
+										[
+											universalAdPackage.SLOT_UNSTICKED_STATE,
+											universalAdPackage.SLOT_FORCE_UNSTICK,
+											universalAdPackage.SLOT_STICKY_STATE_SKIPPED,
+											universalAdPackage.SLOT_VIDEO_DONE,
+										].includes(payload.status)
+									) {
+										activateFloorAdhesion();
+									}
+								},
+								'top_leaderboard',
+							);
+						}
+					},
+				);
 			},
 		};
 	}

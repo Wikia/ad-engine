@@ -14,6 +14,7 @@ import {
 	SlotSizeImpactToResolvedHandler,
 	SlotSizeImpactWithPlaceholderHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
+	SlotStateStickedHandler,
 	SlotTransitionHandler,
 	StickinessTimeout,
 	UapDomManager,
@@ -50,12 +51,14 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 		sticky: [
 			SlotSizeResolvedWithPlaceholderHandler,
 			SlotDecisionTimeoutHandler,
+			SlotStateStickedHandler,
 			CloseToTransitionButtonHandler,
 			VideoSizeResolvedHandler,
 			DomCleanupHandler,
 		],
 		transition: [
 			SlotSizeResolvedWithPlaceholderHandler,
+			SlotStateStickedHandler,
 			SlotTransitionHandler,
 			VideoSizeResolvedHandler,
 			DomCleanupHandler,

@@ -1,6 +1,7 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary, Targeting } from '../models';
-import { context, slotService, trackingOptIn } from '../services';
+import { config, context, slotService, trackingOptIn } from '../services';
+import { targeting } from './targeting';
 
 export interface TaglessSlotOptions {
 	correlator: number;
@@ -86,6 +87,15 @@ export function buildVastUrl(
 		`correlator=${correlator}`,
 	];
 	const slot: AdSlot = slotService.get(slotName);
+	const ppid = context.get('targeting.ppid');
+
+	if (ppid) {
+		params.push(`ppid=${ppid}`);
+	}
+
+	if (config.rollout.coppaFlag().gam && targeting.isWikiDirectedAtChildren()) {
+		params.push('tfcd=1');
+	}
 
 	if (slot) {
 		params.push(`iu=${slot.getVideoAdUnit()}`);
@@ -120,10 +130,19 @@ export function buildVastUrl(
 }
 
 export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}): string {
+	const ppid = context.get('targeting.ppid');
 	const params: string[] = [`c=${correlator}`, 'tile=1', 'd_imp=1'];
 
 	params.push(`iu=${options.adUnit}`);
 	params.push(`sz=${options.size}`);
+
+	if (ppid) {
+		params.push(`ppid=${ppid}`);
+	}
+
+	if (config.rollout.coppaFlag().gam && targeting.isWikiDirectedAtChildren()) {
+		params.push('tfcd=1');
+	}
 
 	if (options.targeting) {
 		params.push(
@@ -135,6 +154,7 @@ export function buildTaglessRequestUrl(options: Partial<TaglessSlotOptions> = {}
 			)}`,
 		);
 	}
+
 	params.push(`rdp=${trackingOptIn.isOptOutSale() ? 1 : 0}`);
 
 	return displayBaseUrl + params.join('&');

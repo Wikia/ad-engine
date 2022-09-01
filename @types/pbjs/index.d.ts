@@ -28,27 +28,39 @@ interface PrebidAdUnit {
 }
 
 interface PrebidNativeMediaType {
-	image: {
-		required: boolean;
-		sizes: number[];
-	};
 	title: {
 		required: boolean;
-		len: number;
+		len?: number;
 	};
-	sponsoredBy: {
+	body: {
 		required: boolean;
+		len?: number;
 	};
 	clickUrl: {
 		required: boolean;
 	};
-	body: {
+	displayUrl: {
 		required: boolean;
 	};
-	icon: {
+	image?: PrebidNativeImageType;
+	sponsoredBy?: {
 		required: boolean;
-		sizes: number[];
 	};
+	sendTargetingKeys: boolean;
+	adTemplate: string;
+}
+
+interface PrebidNativeImageType {
+	required: boolean;
+	sizes?: number[];
+	aspect_ratios?: [
+		{
+			min_width?: number;
+			min_height?: number;
+			ratio_width: number;
+			ratio_height: number;
+		},
+	];
 }
 
 interface PrebidVideoType {
@@ -161,6 +173,8 @@ interface Pbjs {
 	getUserIds(): object;
 
 	setConfig(config: unknown): void;
+
+	setBidderConfig(config: unknown): void;
 
 	enableAnalytics(config: unknown): void;
 

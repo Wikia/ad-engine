@@ -20,18 +20,20 @@ interface Window {
 	cnx?: any;
 	confiant?: Confiant;
 	DOMParser: typeof DOMParser;
+	fandomContext: WindowFandomContext;
 	google: {
 		ima: typeof google.ima;
 	};
 	googleImaVansAdapter?: any;
 	googletag: googletag.Googletag;
 	headertag?: any;
-	liQ?: any;
+	liQ?: LiQ;
 	moatjw?: MoatJW;
 	moatPrebidApi?: MoatPrebidApi;
 	mw?: MediaWiki;
 	ntv?: NativoApi;
 	NOLBUNDLE?: any;
+	pbjs?: any;
 	PostRelease?: NativoPostRelease;
 	pvNumber?: number;
 	pvNumberGlobal?: number;
@@ -39,12 +41,9 @@ interface Window {
 	RLQ?: any;
 	sessionId?: string;
 	session_id?: string;
-	tabId?: string;
 	trackingOptIn?: any;
 	Sailthru?: Sailthru;
 	SilverSurferSDK?: SilverSurferSDK;
 	wgCookiePath?: string;
 	XMLHttpRequest?: any;
-	oVa?: any; // Optimera variable
-	oDv?: any; // Optimera variable
 }

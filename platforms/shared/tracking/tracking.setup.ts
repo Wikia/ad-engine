@@ -16,19 +16,17 @@ import {
 	interventionTracker,
 	porvataTracker,
 	PostmessageTracker,
-	ScrollSpeedCalculator,
-	ScrollTracker,
 	slotTracker,
 	TrackingMessage,
 	trackingPayloadValidationMiddleware,
 	TrackingTarget,
-	ViewabilityCounter,
 	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
 	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
+import { LabradorTracker } from './labrador-tracker';
 import { PageTracker } from './page-tracker';
 import { props } from 'ts-action';
 
@@ -37,6 +35,7 @@ const slotTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adeng
 const viewabilityUrl = 'https://beacon.wikia-services.com/__track/special/adengviewability';
 const porvataUrl = 'https://beacon.wikia-services.com/__track/special/adengplayerinfo';
 const identityTrackingUrl = 'https://beacon.wikia-services.com/__track/special/identityinfo';
+const trackingKeyValsUrl = 'https://beacon.wikia-services.com/__track/special/keyvals';
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
@@ -62,6 +61,7 @@ export class TrackingSetup {
 
 	constructor(
 		private pageTracker: PageTracker,
+		private labradorTracker: LabradorTracker,
 		@Inject('slotTrackingMiddlewares')
 		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
 		@Inject('bidderTrackingMiddlewares')
@@ -74,19 +74,12 @@ export class TrackingSetup {
 		this.viewabilityTracker();
 		this.bidderTracker();
 		this.postmessageTrackingTracker();
-		this.labradorTracker();
-		this.viewabilityCounterTracker();
-		this.scrollSpeedTracker();
-		this.connectionTracker();
-		this.loadTimeTracker();
-		this.audigentTracker();
-		this.liveRampTracker();
-		this.atsTracker();
+		this.experimentGroupsTracker();
 		this.interventionTracker();
 		this.adClickTracker();
 		this.ctaTracker();
-		this.optimeraTracker();
 		this.identityTracker();
+		this.keyValsTracker();
 	}
 
 	private porvataTracker(): void {
@@ -173,14 +166,6 @@ export class TrackingSetup {
 
 			return data;
 		});
-
-		communicationService.on(eventsRepository.BIDDERS_BIDS_CALLED, () => {
-			this.pageTracker.trackProp('load_time_prebidAuctionStarted', Date.now().toString());
-		});
-
-		communicationService.on(eventsRepository.BIDDERS_INIT_STAGE_DONE, () => {
-			this.pageTracker.trackProp('load_time_prebidAuctionEnded', Date.now().toString());
-		});
 	}
 
 	private postmessageTrackingTracker(): void {
@@ -217,161 +202,18 @@ export class TrackingSetup {
 		);
 	}
 
-	private labradorTracker(): void {
+	private experimentGroupsTracker(): void {
 		const cacheStorage = InstantConfigCacheStorage.make();
 		const labradorPropValue = cacheStorage.getSamplingResults().join(';');
 
 		if (labradorPropValue) {
 			this.pageTracker.trackProp('labrador', labradorPropValue);
+			this.labradorTracker.track(labradorPropValue);
 		}
-	}
-
-	private viewabilityCounterTracker(): void {
-		if (!context.get('options.viewabilityCounter.enabled')) {
-			return;
-		}
-
-		const viewabilityCounter = ViewabilityCounter.make();
-
-		this.pageTracker.trackProp('session_viewability_all', viewabilityCounter.getViewability());
-		this.pageTracker.trackProp(
-			'session_viewability_tb',
-			viewabilityCounter.getViewability('top_boxad'),
-		);
-		this.pageTracker.trackProp(
-			'session_viewability_icb',
-			viewabilityCounter.getViewability('incontent_boxad'),
-		);
-
-		viewabilityCounter.init();
-	}
-
-	private scrollSpeedTracker(): void {
-		if (!context.get('options.scrollSpeedTracking.enabled')) {
-			return;
-		}
-
-		const scrollTracker = new ScrollTracker([0, 2000, 4000], 'mediawiki');
-
-		scrollTracker.initScrollSpeedTracking();
-
-		const scrollSpeedCalculator = ScrollSpeedCalculator.make();
-		const scrollSpeed = scrollSpeedCalculator.getAverageSessionScrollSpeed();
-
-		this.pageTracker.trackProp('session_scroll_speed', scrollSpeed.toString());
-	}
-
-	private connectionTracker(): void {
-		if (!context.get('options.connectionTracking.enabled')) {
-			return;
-		}
-
-		const connection =
-			window.navigator['connection'] ||
-			window.navigator['mozConnection'] ||
-			window.navigator['webkitConnection'];
-
-		if (connection) {
-			const data = [];
-			if (connection.downlink) {
-				data.push(`downlink=${connection.downlink.toFixed(1)}`);
-			}
-			if (connection.effectiveType) {
-				data.push(`effectiveType=${connection.effectiveType}`);
-			}
-			if (connection.rtt) {
-				data.push(`rtt=${connection.rtt.toFixed(0)}`);
-			}
-			if (typeof connection.saveData === 'boolean') {
-				data.push(`saveData=${+connection.saveData}`);
-			}
-
-			this.pageTracker.trackProp('connection', data.join(';'));
-		}
-	}
-
-	private loadTimeTracker(): void {
-		const trackerConfig = context.get('options.loadTimeTracking');
-
-		if (!trackerConfig || !trackerConfig.enabled) {
-			return;
-		}
-
-		(trackerConfig.timing || []).forEach((moment) => {
-			this.pageTracker.trackProp(`load_time_${moment}`, window.performance.timing[moment]);
-		});
-
-		if (trackerConfig?.custom?.includes('aeConfigured')) {
-			communicationService.on(eventsRepository.AD_ENGINE_CONFIGURED, () => {
-				this.pageTracker.trackProp('load_time_aeConfigured', Date.now().toString());
-			});
-		}
-
-		if (trackerConfig?.custom?.includes('aeStackStart')) {
-			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
-				this.pageTracker.trackProp('load_time_aeStackStart', Date.now().toString());
-			});
-		}
-	}
-
-	private audigentTracker(): void {
-		communicationService.on(
-			eventsRepository.AUDIGENT_LOADED,
-			() => {
-				this.pageTracker.trackProp('audigent', 'loaded');
-			},
-			false,
-		);
 	}
 
 	private interventionTracker(): void {
 		interventionTracker.register();
-	}
-
-	private liveRampTracker(): void {
-		communicationService.on(
-			eventsRepository.LIVERAMP_IDS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_prebid_ids', props.userId);
-			},
-			false,
-		);
-	}
-
-	private atsTracker(): void {
-		communicationService.on(
-			eventsRepository.ATS_JS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_loaded', props.loadTime.toString());
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.ATS_IDS_LOADED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_ids', props.envelope);
-			},
-			false,
-		);
-
-		communicationService.on(
-			eventsRepository.ATS_NOT_LOADED_LOGGED,
-			(props) => {
-				this.pageTracker.trackProp('live_ramp_ats_not_loaded', props.reason);
-			},
-			false,
-		);
-	}
-
-	private optimeraTracker(): void {
-		communicationService.on(
-			eventsRepository.OPTIMERA_FINISHED,
-			() => {
-				this.pageTracker.trackProp('optimera', 'finished');
-			},
-			false,
-		);
 	}
 
 	private identityTracker(): void {
@@ -389,6 +231,21 @@ export class TrackingSetup {
 				);
 			},
 			false,
+		);
+	}
+
+	private keyValsTracker(): void {
+		const dataWarehouseTracker = new DataWarehouseTracker();
+		const keyVals = { ...context.get('targeting') };
+
+		// Remove Audigent segments
+		delete keyVals.AU_SEG;
+
+		dataWarehouseTracker.track(
+			{
+				keyvals: JSON.stringify(keyVals),
+			},
+			trackingKeyValsUrl,
 		);
 	}
 }

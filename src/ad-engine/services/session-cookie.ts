@@ -40,12 +40,12 @@ export class SessionCookie {
 		context.set('options.session.id', sid);
 	}
 
-	getItem<T>(key: string): T {
+	getItem<T>(key: string): T | string {
 		return this.storage.getItem<T>(`${this.prefix}_${key}`);
 	}
 
-	setItem(key: string, input: Dictionary<unknown> | string): void {
-		this.storage.setItem(`${this.prefix}_${key}`, input);
+	setItem(key: string, input: Dictionary<unknown> | string, timeToLiveMs?: number): void {
+		this.storage.setItem(key, input, timeToLiveMs);
 	}
 
 	removeItem(key: string): void {

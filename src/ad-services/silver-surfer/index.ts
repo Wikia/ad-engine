@@ -1,18 +1,20 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import { SilverSurferProfileFetcher } from './silver-surfer-profile-fetcher';
 import { SilverSurferProfileExtender } from './silver-surfer-profile-extender';
 
 const logGroup = 'silver-surfer';
 
-export class SilverSurferService {
+export class SilverSurferService extends BaseServiceSetup {
 	constructor(
 		private profileFetcher: SilverSurferProfileFetcher,
 		private profileExtender: SilverSurferProfileExtender,
-	) {}
+	) {
+		super();
+	}
 
-	async configureUserTargeting(): Promise<AdTags> {
+	async call(): Promise<AdTags> {
 		if (!this.isEnabled()) {
 			utils.logger(logGroup, 'disabled');
 			return {};

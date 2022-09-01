@@ -123,12 +123,18 @@
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icLayoutInitializerSlot_A_50:lis_50_a",
                 "icLayoutInitializerSlot_B_50:lis_50_b",
-                "icPrebidStages_A_50:prebid_50_a",
-                "icPrebidStages_B_50:prebid_50_b",
+                "icTlbSizeReduction_A_50:sizes_reduced_50_a",
+                "icTlbSizeReduction_B_50:sizes_reduced_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icAnyclipPlayer_B_50:outstream_experiment_anyclip",
-                "icAnyclipPlayer_A_50:outstream_experiment_distroscale"
+                "icGalactusInteraction_B_33.333:galactus_interaction_a",
+                "icGalactusInteraction_B_50:galactus_interaction_b",
+                "icGalactusInteraction_A_50:galactus_interaction_c",
+                "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_50:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_100:outstream_experiment_exco",
+                "icAdsInitializeV2_A_50:old_initialize",
+                "icAdsInitializeV2_B_50:new_initialize"
             ]
         }
     ],
@@ -287,7 +293,7 @@
             "regions": [
                 "XX"
             ],
-            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220322.min.js"
+            "value": "//static.wikia.nocookie.net/fandom-ae-assets/prebid.js/v6.9.0/20220809.min.js"
         }
     ],
     "icIASPublisherOptimization": [

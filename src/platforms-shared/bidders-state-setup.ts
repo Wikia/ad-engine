@@ -36,6 +36,10 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.appnexus.enabled', instantConfig.get('icPrebidAppNexus'));
 		context.set('bidders.prebid.appnexusAst.enabled', instantConfig.get('icPrebidAppNexusAst'));
 		context.set(
+			'bidders.prebid.appnexusNative.enabled',
+			instantConfig.get('icPrebidAppNexusNative'),
+		);
+		context.set(
 			'bidders.prebid.appnexusGroupM.enabled',
 			instantConfig.get('icPrebidAppNexusGroupM'),
 		);
@@ -53,6 +57,8 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			'bidders.prebid.rubicon_display.enabled',
 			instantConfig.get('icPrebidRubiconDisplay'),
 		);
+		context.set('bidders.prebid.roundel.enabled', instantConfig.get('icPrebidRoundel'));
+		context.set('bidders.prebid.rubicon_pg.enabled', instantConfig.get('icPrebidRubiconPG'));
 		context.set('bidders.prebid.rubicon.enabled', instantConfig.get('icPrebidRubicon'));
 		context.set('bidders.prebid.telaria.enabled', instantConfig.get('icPrebidTelaria'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));

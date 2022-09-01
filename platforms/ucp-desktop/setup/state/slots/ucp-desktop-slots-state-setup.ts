@@ -15,23 +15,24 @@ export class UcpDesktopSlotsStateSetup implements DiProcess {
 		) {
 			this.disableIncontentPlayerSlot();
 		}
+
+		this.setCustomPlayerRuntimeAdUnit();
 	}
 
-	private setDistroscaleVarInRuntime(slotName: string): void {
+	private setCustomPlayerRuntimeAdUnit(slotName = 'incontent_player'): void {
 		const params = {
 			group: 'VIDEO',
 			adProduct: 'incontent_video',
 			slotNameSuffix: '',
 		};
+		const adUnit = getAdUnitString(slotName, params);
 
-		const distroscaleIU = getAdUnitString(slotName, params);
-
-		globalRuntimeVariableSetter.addNewVariableToRuntime('distroscale', { adUnit: distroscaleIU });
+		globalRuntimeVariableSetter.addNewVariableToRuntime('video', { adUnit });
+		// ToDo: Remove after switching Distroscale to a general variable
+		globalRuntimeVariableSetter.addNewVariableToRuntime('distroscale', { adUnit });
 	}
 
 	private setupIncontentPlayerForDistroScale(): void {
-		const slotName = 'incontent_player';
-		this.setDistroscaleVarInRuntime(slotName);
 		this.disableIncontentPlayerSlot();
 		context.set('slots.incontent_player.targeting.pos', ['incontent_video']);
 	}
