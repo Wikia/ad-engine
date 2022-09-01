@@ -1,6 +1,6 @@
 import {
 	AdvertisementLabelHandler,
-	BfaaBootstrapLightHandler,
+	BfaaBootstrapHandler,
 	CloseButtonHelper,
 	CloseToTransitionButtonHandler,
 	DebugTransitionHandler,
@@ -14,7 +14,7 @@ import {
 	SlotSizeImpactWithPlaceholderHandler,
 	SlotSizeResolvedWithPlaceholderHandler,
 	SlotStateStickedHandler,
-	SlotTransitionLightHandler,
+	SlotTransitionHandler,
 	StickinessTimeout,
 	UapDomManager,
 	UapDomReader,
@@ -38,7 +38,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 		{
 			initial: [
 				BfaaUcpDesktopConfigHandler,
-				BfaaBootstrapLightHandler,
+				BfaaBootstrapHandler,
 				VideoBootstrapHandler,
 				VideoCtpHandler,
 				VideoRestartHandler,
@@ -64,7 +64,7 @@ export function registerBfaaTemplate(registry: TemplateRegistry): Observable<Tem
 			transition: [
 				SlotSizeResolvedWithPlaceholderHandler,
 				SlotStateStickedHandler,
-				SlotTransitionLightHandler,
+				SlotTransitionHandler,
 				VideoSizeResolvedHandler,
 				DomCleanupHandler,
 			],

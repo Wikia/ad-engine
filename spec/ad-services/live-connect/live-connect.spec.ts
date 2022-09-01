@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import { createSandbox } from 'sinon';
+import { createSandbox, SinonSpy } from 'sinon';
 import { context, utils } from '../../../src/ad-engine';
 import { liveConnect } from '../../../src/ad-services';
+import { communicationService, eventsRepository } from '@wikia/communication';
 
 describe('LiveConnect', () => {
 	const sandbox = createSandbox();
@@ -57,5 +58,45 @@ describe('LiveConnect', () => {
 		await liveConnect.call();
 
 		expect(loadScriptStub.called).to.equal(false);
+	});
+
+	describe('LiveConnect ids resolution', () => {
+		let emitSpy: SinonSpy;
+
+		beforeEach(() => {
+			emitSpy = sandbox.spy(communicationService, 'emit');
+		});
+
+		afterEach(() => sandbox.restore());
+
+		it('valid id is resolved', async () => {
+			liveConnect.resolveId('md5', 'liveconnect-md5')({ md5: '123' });
+
+			expect(
+				emitSpy.calledWith(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+					partnerName: 'liveconnect-md5',
+					partnerIdentityId: '123',
+				}),
+			).to.be.true;
+		});
+
+		it('unifiedId is resolved', async () => {
+			liveConnect.resolveId('unifiedId', 'liveconnect-unifiedId')({ unifiedId: '123' });
+
+			expect(emitSpy.calledWith(eventsRepository.LIVE_CONNECT_RESPONDED_UUID)).to.be.true;
+			expect(
+				emitSpy.calledWith(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+					partnerName: 'liveconnect-unifiedId',
+					partnerIdentityId: '123',
+				}),
+			).to.be.true;
+		});
+
+		it('missing or wrong id is not resolved', async () => {
+			liveConnect.resolveId('test', 'liveconnect-test')({});
+			liveConnect.resolveId('test', 'liveconnect-test')({ wrong: '123' });
+
+			expect(emitSpy.notCalled).to.be.true;
+		});
 	});
 });

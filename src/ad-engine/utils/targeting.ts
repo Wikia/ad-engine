@@ -3,6 +3,10 @@ import { context } from '../services/context-service';
 import { logger } from './logger';
 import { CookieStorageAdapter } from '../services/';
 
+/*
+ *  ToDo: Development improvement refactor
+ *  This class is about to be expanded in ADEN-10310
+ */
 class Targeting {
 	getHostnamePrefix(): string {
 		const hostname = window.location.hostname.toLowerCase();
@@ -45,6 +49,10 @@ class Targeting {
 		}
 
 		return this.applyCodeLevelBundles(targetingBundles);
+	}
+
+	isWikiDirectedAtChildren(): boolean {
+		return context.get('wiki.targeting.directedAtChildren');
 	}
 
 	private applyCodeLevelBundles(bundles: string[]): string[] {

@@ -1,6 +1,8 @@
 import { slotsContext } from '@platforms/shared';
 import {
+	communicationService,
 	context,
+	eventsRepository,
 	TEMPLATE,
 	TemplateStateHandler,
 	UapParams,
@@ -14,6 +16,14 @@ export class BfaaUcpDesktopConfigHandler implements TemplateStateHandler {
 
 	async onEnter(): Promise<void> {
 		const enabledSlots: string[] = ['top_boxad', 'incontent_boxad_1', 'bottom_leaderboard'];
+
+		if (this.params.newTakeoverConfig) {
+			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
+		}
+
+		if (this.params.sequentialUapConfig) {
+			enabledSlots.push('incontent_player');
+		}
 
 		universalAdPackage.init(
 			this.params,

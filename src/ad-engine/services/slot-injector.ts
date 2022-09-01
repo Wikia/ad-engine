@@ -5,7 +5,7 @@ import { context } from './context-service';
 import { SlotCreator, SlotCreatorConfig } from './slot-creator';
 import { slotService } from './slot-service';
 
-const logGroup = 'slot-repeater';
+const logGroup = 'slot-injector';
 
 class SlotInjector {
 	private slotCreator = new SlotCreator();

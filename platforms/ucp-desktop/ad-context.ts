@@ -24,7 +24,7 @@ export const basicContext = {
 			bidsRefreshing: {
 				slots: ['incontent_boxad_1'],
 			},
-			initStageSlots: ['top_leaderboard', 'top_boxad'],
+			initStageSlots: ['top_leaderboard', 'top_boxad', 'featured'],
 		},
 	},
 	custom: {
@@ -58,7 +58,6 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: [],
 		skin: 'ucp_desktop',
 		uap: 'none',
 		uap_c: 'none',
@@ -103,6 +102,9 @@ export const basicContext = {
 			enabled: false,
 			id: 'f6c04939-d96e-4bc6-850e-d0e6e6cf9701',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		iasPublisherOptimization: {
 			pubId: '930616',
 			slots: [
@@ -118,7 +120,8 @@ export const basicContext = {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandomdesktop',
+			endpoint: 'https://services.fandom.com',
+			appName: 'fandomdesktop',
 			fallback: fallbackInstantConfig,
 		},
 		nielsen: {
@@ -127,17 +130,12 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['gpt'],
 	options: {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
-		},
-		loadTimeTracking: {
-			enabled: true,
-			timing: ['responseEnd', 'domContentLoadedEventStart'],
-			custom: ['aeConfigured', 'aeStackStart'],
 		},
 		video: {
 			moatTracking: {

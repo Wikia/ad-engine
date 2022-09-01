@@ -76,8 +76,6 @@
             "regions": [
                 "XX"
             ],
-            "sampling": 100.0,
-            "samplingCache": true,
             "value": [
                 "5961631391",
                 "5961631094",
@@ -1645,7 +1643,42 @@
                 "5967056316",
                 "5969626223",
                 "5970648400",
-                "5974270234"
+                "5974270234",
+                "6006980301",
+                "6006980295",
+                "6015110593",
+                "6015110284",
+                "6015110281",
+                "6015110158",
+                "6015110578",
+                "6015110590",
+                "6015110287",
+                "6015110575",
+                "6015354463",
+                "6026641864",
+                "6027417530",
+                "6027376982",
+                "6027376976",
+                "6026641885",
+                "6026641870",
+                "6026641864",
+                "6027738172",
+                "6027739849",
+                "6038048334",
+                "6038048820",
+                "6039946260",
+                "6039946254",
+                "6042001586",
+                "6041208700",
+                "6041208697",
+                "6060165811",
+                "6060918136",
+                "6069654166",
+                "6084794391",
+                "6053928187",
+                "6097535999",
+                "6100612279",
+                "6100612276"
             ]
         }
     ],
@@ -1676,20 +1709,22 @@
                 "XX"
             ],
             "value": [
-                "icUAPNewBFAATemplate_A_50:new_uap_50_a",
-                "icUAPNewBFAATemplate_B_50:new_uap_50_b",
                 "icUAPJWPlayer_A_99:uap_jwp_99_a",
                 "icUAPJWPlayer_B_1:uap_jwp_1_b",
                 "icLayoutInitializerSlot_A_50:lis_50_a",
                 "icLayoutInitializerSlot_B_50:lis_50_b",
-                "icPrebidStages_A_50:prebid_50_a",
-                "icPrebidStages_B_50:prebid_50_b",
+                "icTlbSizeReduction_A_50:sizes_reduced_50_a",
+                "icTlbSizeReduction_B_50:sizes_reduced_50_b",
                 "icTrafficDivider_A_50:galactus_h2_a",
                 "icTrafficDivider_B_50:galactus_h2_b",
-                "icOutstreamExperiment_B_25:outstream_experiment_connatix",
-                "icOutstreamExperiment_B_33.333:outstream_experiment_exco",
-                "icOutstreamExperiment_B_50:outstream_experiment_anyclip",
-                "icOutstreamExperiment_B_100:outstream_experiment_distroscale"
+                "icGalactusInteraction_B_33.333:galactus_interaction_a",
+                "icGalactusInteraction_B_50:galactus_interaction_b",
+                "icGalactusInteraction_A_50:galactus_interaction_c",
+                "icOutstreamExperiment_B_33.333:outstream_experiment_anyclip",
+                "icOutstreamExperiment_B_50:outstream_experiment_connatix",
+                "icOutstreamExperiment_B_100:outstream_experiment_exco",
+                "icAdsInitializeV2_A_50:old_initialize",
+                "icAdsInitializeV2_B_50:new_initialize"
             ]
         }
     ],
@@ -1723,14 +1758,55 @@
                 "5923551774",
                 "5901640938",
                 "314345172",
+                "6080673321",
+                "6054175908",
+                "6005712462",
                 "5951743095",
+                "6018566814",
+                "6097628093",
+                "6044083909",
                 "5951743089",
                 "5929089588",
                 "5929089315",
                 "5976512561",
                 "5929089315",
+                "6088270928",
                 "5947810307",
-                "5743368233"
+                "5743368233",
+                "5996361595",
+                "5955672672",
+                "5996341416",
+                "5998652572",
+                "6013244788",
+                "5929089573",
+                "6014420053",
+                "6014347435",
+                "6020782558",
+                "5943764617",
+                "6022822295",
+                "6014419390",
+                "5926127176",
+                "6017948817",
+                "6005712633",
+                "6013252078",
+                "6020811777",
+                "6047630064",
+                "6044877574",
+                "6059438816",
+                "6050967117",
+                "6061761271",
+                "6054458844",
+                "6066314281",
+                "6063743454",
+                "6029699462",
+                "6084098863",
+                "6083338698",
+                "6069001375",
+                "6089745548",
+                "6090447580",
+                "6096031330",
+                "6096031336",
+                "6094842636"
             ]
         }
     ],
@@ -1817,10 +1893,10 @@
         {
             "apps": [
                 "f2",
-                "futhead",
+                "fandomdesktop",
                 "fandommobile",
-                "muthead",
-                "fandomdesktop"
+                "futhead",
+                "muthead"
             ],
             "regions": [
                 "AU",
@@ -1830,10 +1906,14 @@
                 "ES",
                 "FR",
                 "GB",
+                "ID",
                 "IT",
+                "MY",
                 "NZ",
+                "PH",
                 "PL",
                 "SG",
+                "TH",
                 "UK",
                 "US"
             ],
@@ -1848,6 +1928,7 @@
                 "fandommobile"
             ],
             "regions": [
+                "CA",
                 "US"
             ],
             "value": true
@@ -2009,6 +2090,42 @@
                 "XX"
             ],
             "value": true
+        }
+    ],
+    "icAdsInitializeV2": [
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "PL"
+            ],
+            "value": true
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "sampling": 100.0,
+            "value": false
+        },
+        {
+            "apps": [
+                "f2",
+                "fandomdesktop",
+                "fandommobile"
+            ],
+            "regions": [
+                "XX"
+            ],
+            "value": false
         }
     ],
     "icUAPJWPlayerDelay": [

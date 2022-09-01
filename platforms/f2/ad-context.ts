@@ -17,9 +17,6 @@ export const basicContext = {
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
 		},
-		loadTimeTracking: {
-			enabled: false,
-		},
 		porvata: {
 			audio: {
 				exposeToSlot: 'true',
@@ -52,7 +49,8 @@ export const basicContext = {
 			slots: ['top_leaderboard', 'top_boxad', 'incontent_boxad', 'bottom_leaderboard', 'featured'],
 		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=f2',
+			endpoint: 'https://services.fandom.com',
+			appName: 'f2',
 			fallback: fallbackInstantConfig,
 		},
 		moatYi: {
@@ -60,10 +58,11 @@ export const basicContext = {
 		},
 		nielsen: {
 			appId: 'P26086A07-C7FB-4124-A679-8AC404198BA7',
+			customSection: 'news_and_stories',
 		},
 	},
 	slotGroups: {
-		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'ABCD', 'VIDEO'],
+		VIDEO: ['FEATURED', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['ns'],
 	vast: {

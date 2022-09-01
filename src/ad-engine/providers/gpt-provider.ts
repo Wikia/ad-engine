@@ -1,9 +1,10 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { decorate } from 'core-decorators';
 import { getAdStack } from '../ad-engine';
-import { AdSlot, Targeting } from '../models';
+import { AdSlot, Dictionary, Targeting } from '../models';
 import {
 	btfBlockerService,
+	config,
 	context,
 	slotDataParamsUpdater,
 	slotService,
@@ -13,6 +14,8 @@ import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
+import { KibanaLogger } from '../../../platforms/shared/sequential-messaging/kibana-logger';
+import { utils } from '../index';
 
 const logGroup = 'gpt-provider';
 
@@ -21,6 +24,7 @@ export const GAMOrigins: string[] = [
 	'https://tpc.googlesyndication.com',
 	'https://googleads.g.doubleclick.net',
 ];
+const AllViewportSizes = [0, 0];
 
 export function postponeExecutionUntilGptLoads(method: () => void): any {
 	return function (...args: any): void {
@@ -83,6 +87,37 @@ function configure(): void {
 		adSlot.emit(AdSlot.SLOT_VIEWED_EVENT);
 	});
 
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			return adSlot.emit(AdSlot.SLOT_VISIBILITY_CHANGED, event);
+		},
+	);
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage > 50) {
+				return adSlot.emit(AdSlot.SLOT_BACK_TO_VIEWPORT, event);
+			}
+		},
+	);
+
+	tag.addEventListener(
+		'slotVisibilityChanged',
+		function (event: googletag.events.SlotVisibilityChangedEvent) {
+			const adSlot = getAdSlotFromEvent(event);
+
+			if (event.inViewPercentage < 50) {
+				return adSlot.emit(AdSlot.SLOT_LEFT_VIEWPORT, event);
+			}
+		},
+	);
+
 	window.googletag.enableServices();
 }
 
@@ -125,6 +160,18 @@ function adjustIframeSize(adSlot: AdSlot): void {
 	}
 }
 
+function SmLogger(targeting: Targeting) {
+	const isTlb =
+		(targeting.pos.constructor == Array && targeting.pos[0] == 'top_leaderboard') ||
+		targeting.pos == 'top_leaderboard';
+	const smLoggerLoaded =
+		window['smTracking'] !== undefined && window['smTracking'] instanceof KibanaLogger;
+
+	if (isTlb && smLoggerLoaded) {
+		window['smTracking'].recordRequestTargeting(targeting);
+	}
+}
+
 export class GptProvider implements Provider {
 	constructor() {
 		window.googletag = window.googletag || ({} as googletag.Googletag);
@@ -146,6 +193,7 @@ export class GptProvider implements Provider {
 		setupGptTargeting();
 		configure();
 		this.setupRestrictDataProcessing();
+		this.setPPID();
 		communicationService.on(
 			eventsRepository.PLATFORM_BEFORE_PAGE_CHANGE,
 			() => this.updateCorrelator(),
@@ -159,10 +207,23 @@ export class GptProvider implements Provider {
 
 	setupRestrictDataProcessing(): void {
 		const tag = window.googletag.pubads();
-
-		tag.setPrivacySettings({
+		const settings: Dictionary = {
 			restrictDataProcessing: trackingOptIn.isOptOutSale(),
-		});
+		};
+
+		if (config.rollout.coppaFlag().gam && utils.targeting.isWikiDirectedAtChildren()) {
+			settings.childDirectedTreatment = true;
+		}
+
+		tag.setPrivacySettings(settings);
+	}
+
+	setPPID() {
+		const ppid = context.get('targeting.ppid');
+		if (ppid) {
+			const tag = window.googletag.pubads();
+			tag.setPublisherProvidedId(ppid);
+		}
 	}
 
 	@decorate(postponeExecutionUntilGptLoads)
@@ -220,6 +281,8 @@ export class GptProvider implements Provider {
 	}
 
 	applyTargetingParams(gptSlot: googletag.Slot, targeting: Targeting): void {
+		SmLogger(targeting);
+
 		Object.keys(targeting).forEach((key) => {
 			let value = targeting[key];
 
@@ -265,5 +328,17 @@ export class GptProvider implements Provider {
 		if (!success) {
 			logger(logGroup, 'destroySlot', gptSlot, 'failed');
 		}
+	}
+
+	static refreshSlot(adSlot: AdSlot): void {
+		const activeSlots = window.googletag.pubads().getSlots();
+		const gptSlot = activeSlots.find((slot) => slot.getSlotElementId() === adSlot.getSlotName());
+		gptSlot.clearTargeting();
+		const mapping = window.googletag
+			.sizeMapping()
+			.addSize(AllViewportSizes, adSlot.getCreativeSizeAsArray())
+			.build();
+		gptSlot.defineSizeMapping(mapping);
+		window.googletag.pubads().refresh([gptSlot]);
 	}
 }

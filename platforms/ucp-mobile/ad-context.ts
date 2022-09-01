@@ -24,7 +24,7 @@ export const basicContext = {
 			bidsRefreshing: {
 				slots: ['mobile_in_content'],
 			},
-			initStageSlots: ['mobile_top_leaderboard'],
+			initStageSlots: ['mobile_top_leaderboard', 'featured'],
 		},
 	},
 	custom: {
@@ -59,7 +59,6 @@ export const basicContext = {
 			'/{custom.dbNameForAdUnit}-{targeting.s0}',
 	},
 	targeting: {
-		rollout_tracking: [],
 		skin: 'ucp_mobile',
 		uap: 'none',
 		uap_c: 'none',
@@ -87,8 +86,12 @@ export const basicContext = {
 		externalLogger: {
 			endpoint: '/wikia.php?controller=AdEngine&method=postLog',
 		},
+		eyeota: {
+			enabled: false,
+		},
 		instantConfig: {
-			endpoint: 'https://services.fandom.com/icbm/api/config?app=fandommobile',
+			endpoint: 'https://services.fandom.com',
+			appName: 'fandommobile',
 			fallback: fallbackInstantConfig,
 		},
 		iasPublisherOptimization: {
@@ -108,7 +111,7 @@ export const basicContext = {
 		},
 	},
 	slotGroups: {
-		VIDEO: ['ABCD', 'FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
+		VIDEO: ['FEATURED', 'OUTSTREAM', 'UAP_BFAA', 'UAP_BFAB', 'VIDEO'],
 	},
 	src: ['mobile'],
 	state: {
@@ -116,19 +119,8 @@ export const basicContext = {
 		isMobile: true,
 	},
 	options: {
-		connectionTracking: {
-			enabled: true,
-		},
 		customAdLoader: {
 			globalMethodName: 'loadCustomAd',
-		},
-		loadTimeTracking: {
-			enabled: true,
-			timing: ['responseEnd', 'domContentLoadedEventStart'],
-			custom: ['aeConfigured', 'aeStackStart'],
-		},
-		scrollSpeedTracking: {
-			enabled: true,
 		},
 		video: {
 			moatTracking: {
@@ -145,10 +137,6 @@ export const basicContext = {
 					campId: '640x480',
 				},
 			},
-		},
-		viewabilityCounter: {
-			enabled: true,
-			ignoredSlots: ['featured', 'incontent_player'],
 		},
 	},
 };

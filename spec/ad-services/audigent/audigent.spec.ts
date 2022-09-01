@@ -1,35 +1,48 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { context, externalLogger, utils } from '../../../src/ad-engine';
-import { audigent } from '../../../src/ad-services';
+import { audigent } from '@wikia/ad-services';
 
 describe('Audigent', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub, externalLoggerLogStub;
+	function executeMockedCustomEvent(segments) {
+		const auSegEvent = new CustomEvent('auSegReady', { detail: segments });
+		document.dispatchEvent(auSegEvent);
+	}
 
 	beforeEach(() => {
-		loadScriptStub = sandbox
-			.stub(utils.scriptLoader, 'loadScript')
-			.returns(Promise.resolve({} as any));
+		loadScriptStub = sandbox.spy(utils.scriptLoader, 'loadScript');
 
 		externalLoggerLogStub = sandbox.stub(externalLogger, 'log').returns({} as any);
 
 		context.set('services.audigent.enabled', true);
 		context.set('services.audigent.tracking.sampling', 0);
+		context.set('services.audigent.newIntegrationEnabled', false);
+
 		context.set('options.trackingOptIn', true);
 		context.set('options.optOutSale', false);
+
 		context.set('wiki.targeting.directedAtChildren', false);
 	});
 
 	afterEach(() => {
 		sandbox.restore();
+		loadScriptStub.resetHistory();
+		audigent.resetLoadedState();
+
 		window['au_seg'] = undefined;
 
 		context.set('services.audigent.enabled', undefined);
+		context.set('services.audigent.tracking.sampling', undefined);
+		context.set('services.audigent.newIntegrationEnabled', undefined);
+		context.set('services.audigent.numberOfTries', undefined);
+		context.set('services.audigent.limit', undefined);
+
 		context.set('options.trackingOptIn', undefined);
 		context.set('options.optOutSale', undefined);
+
 		context.set('wiki.targeting.directedAtChildren', undefined);
-		context.set('services.audigent.limit', undefined);
 	});
 
 	it('Audigent is called', async () => {
@@ -70,6 +83,13 @@ describe('Audigent', () => {
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
+	it('Audigent requests for two assets when integration is enabled', async () => {
+		audigent.loadSegmentLibrary();
+		await audigent.call();
+
+		expect(loadScriptStub.callCount).to.equal(2);
+	});
+
 	it('Audigent key-val is set to -1 when API is too slow', () => {
 		audigent.setup();
 
@@ -80,6 +100,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: [] };
 
 		audigent.setup();
+		executeMockedCustomEvent([]);
 
 		expect(context.get('targeting.AU_SEG')).to.equal('no_segments');
 	});
@@ -89,6 +110,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: mockedSegments };
 
 		audigent.setup();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.equal(mockedSegments);
 	});
@@ -118,6 +140,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: mockedSegments };
 
 		audigent.setup();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(expectedSegements);
 	});
@@ -139,6 +162,7 @@ describe('Audigent', () => {
 		window['au_seg'] = { segments: mockedSegments };
 
 		audigent.setup();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(context.get('targeting.AU_SEG')).to.deep.equal(mockedSegments);
 	});
@@ -165,6 +189,7 @@ describe('Audigent', () => {
 		const mockedSegments = ['AUG_SEG_TEST_1'];
 		window['au_seg'] = { segments: mockedSegments };
 		audigent.setup();
+		executeMockedCustomEvent(mockedSegments);
 
 		expect(externalLoggerLogStub.called).to.equal(true);
 	});

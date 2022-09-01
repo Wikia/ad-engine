@@ -58,6 +58,8 @@ export class NoAdsExperimentSetup implements DiProcess {
 			return;
 		}
 
+		context.set('state.noAdsExperiment.unitName', unitName);
+
 		switch (unitName) {
 			case 'uap':
 				blockUAP(isMobile);

@@ -19,6 +19,7 @@ import {
 	PorvataFiller,
 	slotService,
 	universalAdPackage,
+	utils,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { UcpMobileSlotsDefinitionRepository } from './ucp-mobile-slots-definition-repository';
@@ -28,6 +29,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 	private CODE_PRIORITY = {
 		floor_adhesion: {
 			active: false,
+			ignore: false,
 		},
 	};
 
@@ -56,7 +58,6 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			this.slotsDefinitionRepository.getIncontentBoxadConfig(),
 			this.slotsDefinitionRepository.getBottomLeaderboardConfig(),
 			this.slotsDefinitionRepository.getMobilePrefooterConfig(),
-			this.slotsDefinitionRepository.getFloorAdhesionConfig(),
 			this.slotsDefinitionRepository.getInvisibleHighImpactConfig(),
 			this.slotsDefinitionRepository.getInterstitialConfig(),
 			this.nativoSlotDefinitionRepository.getNativoFeedAdConfig({
@@ -66,6 +67,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				classList: ['ntv-ad', 'hide'],
 			}),
 		]);
+
+		if (context.get('custom.hasFeaturedVideo')) {
+			communicationService.on(
+				eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
+				this.waitForFloorAdhesionInjection.bind(this),
+			);
+		} else {
+			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+		}
 
 		if (!topLeaderboardDefinition) {
 			communicationService.on(eventsRepository.AD_ENGINE_STACK_START, () => {
@@ -151,6 +161,29 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		});
 	}
 
+	private waitForFloorAdhesionInjection(): void {
+		communicationService.onSlotEvent(
+			AdSlot.STATUS_SUCCESS,
+			() => {
+				const noTries = 2500;
+				const retryTimeout = 500;
+				new utils.WaitFor(
+					() =>
+						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
+					noTries,
+					0,
+					retryTimeout,
+				)
+					.until()
+					.then(() => {
+						insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
+					});
+			},
+			'featured',
+			true,
+		);
+	}
+
 	private registerFloorAdhesionCodePriority(): void {
 		const slotName = 'floor_adhesion';
 		const disableFloorAdhesionWithStatus = (status: string) => {
@@ -164,8 +197,15 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 			() => {
 				this.CODE_PRIORITY.floor_adhesion.active = true;
 
+				communicationService.on(eventsRepository.AD_ENGINE_UAP_NTC_LOADED, () => {
+					this.CODE_PRIORITY.floor_adhesion.ignore = true;
+				});
+
 				communicationService.onSlotEvent(AdSlot.VIDEO_AD_IMPRESSION, () => {
-					if (this.CODE_PRIORITY.floor_adhesion.active) {
+					if (
+						!this.CODE_PRIORITY.floor_adhesion.ignore &&
+						this.CODE_PRIORITY.floor_adhesion.active
+					) {
 						disableFloorAdhesionWithStatus(AdSlot.STATUS_CLOSED_BY_PORVATA);
 					}
 				});

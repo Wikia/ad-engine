@@ -16,10 +16,12 @@ class InstantConfigLoader {
 
 	private async fetchInstantConfig(): Promise<InstantConfigResponse> {
 		const request = new XMLHttpRequest();
-		const url = context.get('services.instantConfig.endpoint');
+		const baseUrl = context.get('services.instantConfig.endpoint') || 'https://services.fandom.com';
+		const variant = context.get('wiki.services_instantConfig_variant') || 'icbm';
+		const appName = context.get('services.instantConfig.appName');
 		const fallbackConfig = context.get('services.instantConfig.fallback') || {};
 
-		request.open('GET', url, true);
+		request.open('GET', `${baseUrl}/${variant}/api/config?app=${appName}`, true);
 		request.responseType = 'json';
 
 		return new Promise((resolve) => {

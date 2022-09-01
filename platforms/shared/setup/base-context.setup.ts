@@ -12,6 +12,7 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { NoAdsDetector } from '../services/no-ads-detector';
+import { OutstreamExperiment } from '../experiments/outstream-experiment';
 
 @Injectable()
 export class BaseContextSetup implements DiProcess {
@@ -73,7 +74,7 @@ export class BaseContextSetup implements DiProcess {
 		);
 		context.set('options.tracking.slot.bidder', this.instantConfig.get('icBidsTracking'));
 		context.set('options.tracking.postmessage', this.instantConfig.get('icPostmessageTracking'));
-		context.set('options.newBfaaTemplate', this.instantConfig.get('icUAPNewBFAATemplate'));
+		context.set('options.stickyTbExperiment', this.instantConfig.get('icStickyTbExperiment'));
 		context.set(
 			'options.uapExtendedSrcTargeting',
 			this.instantConfig.get('icUAPExtendendSrcTargeting'),
@@ -119,6 +120,9 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.comscoreJwpTracking',
 			this.instantConfig.get('icComscoreJwpTracking'),
 		);
+		context.set('options.adsInitializeV2', this.instantConfig.get('icAdsInitializeV2'));
+		context.set('options.coppaGam', this.instantConfig.get('icCoppaGam'));
+		context.set('options.coppaPrebid', this.instantConfig.get('icCoppaPrebid'));
 
 		this.setWadContext();
 	}
@@ -135,47 +139,41 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set(
-			'services.interventionTracker.enabled',
-			this.instantConfig.get('icInterventionTracking'),
-		);
-
-		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
-			// if backend call is disabled let's call it on frontend
-			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
-		}
-
-		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
 		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
-
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
-		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
 		context.set(
 			'services.audigent.tracking.sampling',
 			this.instantConfig.get('icAudigentTrackingSampling'),
 		);
-		context.set(
-			'services.audigent.audienceTagScriptUrl',
-			this.instantConfig.get('icAudigentAudienceTagScriptUrl'),
-		);
-		context.set(
-			'services.audigent.segmentsScriptUrl',
-			this.instantConfig.get('icAudigentSegmentsScriptUrl'),
-		);
-
+		context.set('services.audigent.segmentLimit', this.instantConfig.get('icAudigentSegmentLimit'));
 		context.set('services.confiant.enabled', this.instantConfig.get('icConfiant'));
-		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.durationMedia.enabled', this.instantConfig.get('icDurationMedia'));
+		if (!this.instantConfig.get('icDurationMedia')) {
+			context.set('services.slotRefresher.config', this.instantConfig.get('icSlotRefresher'));
+		}
+		context.set('services.eyeota.enabled', this.instantConfig.get('icEyeota'));
 		context.set('services.facebookPixel.enabled', this.instantConfig.get('icFacebookPixel'));
 		context.set(
 			'services.iasPublisherOptimization.enabled',
 			this.instantConfig.get('icIASPublisherOptimization'),
 		);
-		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
-		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
-		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
-		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+		context.set(
+			'services.interventionTracker.enabled',
+			this.instantConfig.get('icInterventionTracking'),
+		);
 		context.set('services.liveConnect.enabled', this.instantConfig.get('icLiveConnect'));
+		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
+		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
+		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
+		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
+		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
+		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
+		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
+			// if backend call is disabled let's call it on frontend
+			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
+		}
+		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
+		context.set('services.ppidAdmsStorage.enabled', this.instantConfig.get('icPpidAdmsStorage'));
 
 		this.setupOutstreamPlayers();
 	}
@@ -194,6 +192,7 @@ export class BaseContextSetup implements DiProcess {
 			'bidders.liveRampATSAnalytics.enabled',
 			this.instantConfig.get('icLiveRampATSAnalytics'),
 		);
+		context.set('bidders.prebid.native.enabled', this.instantConfig.get('icPrebidNative'));
 
 		context.set(
 			'templates.safeFanTakeoverElement.lineItemIds',
@@ -210,19 +209,20 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setupOutstreamPlayers(): void {
-		if (this.instantConfig.get('icExCoPlayer')) {
+		const outstreamExperiment = new OutstreamExperiment(this.instantConfig);
+		if (this.instantConfig.get('icExCoPlayer') && outstreamExperiment.isExco()) {
 			context.set('services.exCo.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
 		}
 
-		if (this.instantConfig.get('icAnyclipPlayer')) {
+		if (this.instantConfig.get('icAnyclipPlayer') && outstreamExperiment.isAnyclip()) {
 			context.set('services.anyclip.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;
 		}
 
-		if (this.instantConfig.get('icConnatixPlayer')) {
+		if (this.instantConfig.get('icConnatixPlayer') && outstreamExperiment.isConnatix()) {
 			context.set('services.connatix.enabled', true);
 			context.set('services.distroScale.enabled', false);
 			return;

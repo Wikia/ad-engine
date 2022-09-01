@@ -1,6 +1,5 @@
-import { registerInterstitialTemplate } from '@platforms/shared';
+import { registerInterstitialTemplate, StickedBoxadHelper } from '@platforms/shared';
 import {
-	context,
 	DiProcess,
 	logTemplates,
 	PorvataTemplate,
@@ -10,7 +9,6 @@ import {
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 import { merge } from 'rxjs';
-import { registerBfaaOldTemplate } from './bfaa-old-template';
 import { registerBfaaTemplate } from './bfaa-template';
 import { registerBfabTemplate } from './bfab-template';
 import { getOutstreamConfig } from './configs/outstream-config';
@@ -21,14 +19,12 @@ import { registerStickyTlbTemplate } from './sticky-tlb-template';
 
 @Injectable()
 export class UcpDesktopTemplatesSetup implements DiProcess {
-	constructor(private registry: TemplateRegistry) {
+	constructor(private registry: TemplateRegistry, private stickedBoxadHelper: StickedBoxadHelper) {
 		templateService.setInitializer(this.registry);
 	}
 
 	execute(): void {
-		const bfaa$ = context.get('options.newBfaaTemplate')
-			? registerBfaaTemplate(this.registry)
-			: registerBfaaOldTemplate(this.registry);
+		const bfaa$ = registerBfaaTemplate(this.registry);
 		const bfab$ = registerBfabTemplate(this.registry);
 		const stickyTlb$ = registerStickyTlbTemplate(this.registry);
 		const roadblock$ = registerRoadblockTemplate(this.registry);
@@ -42,5 +38,12 @@ export class UcpDesktopTemplatesSetup implements DiProcess {
 
 		templateService.register(PorvataTemplate, getOutstreamConfig());
 		templateService.register(SafeFanTakeoverElement);
+
+		this.stickedBoxadHelper.initialize({
+			slotName: 'top_boxad',
+			pusherSlotName: 'top_leaderboard',
+			pageSelector: '.page',
+			railSelector: '.main-page-tag-rcs #top_boxad, #rail-boxad-wrapper',
+		});
 	}
 }

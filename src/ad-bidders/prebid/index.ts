@@ -6,18 +6,20 @@ import {
 } from '@ad-engine/communication';
 import {
 	AdSlot,
+	config,
 	context,
 	DEFAULT_MAX_DELAY,
+	DEFAULT_MIN_DELAY,
 	Dictionary,
 	pbjsFactory,
 	Tcf,
 	tcf,
 	utils,
 } from '@ad-engine/core';
+import { getMediaWikiVariable } from '@platforms/shared';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
-import { ats } from './ats';
 import { liveRamp } from './live-ramp';
 import { getWinningBid, setupAdUnits } from './prebid-helper';
 import { getSettings } from './prebid-settings';
@@ -64,12 +66,18 @@ export class PrebidProvider extends BidderProvider {
 		this.isATSAnalyticsEnabled = context.get('bidders.liveRampATSAnalytics.enabled');
 
 		this.prebidConfig = {
-			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
-			enableSendAllBids: true,
 			bidderSequence: 'random',
 			bidderTimeout: this.timeout,
 			cache: {
 				url: 'https://prebid.adnxs.com/pbc/v1/cache',
+			},
+			debug: ['1', 'true'].includes(utils.queryString.get('pbjs_debug')),
+			enableSendAllBids: true,
+			rubicon: {
+				singleRequest: true,
+			},
+			sendBidsControl: {
+				dealPrioritization: true,
 			},
 			userSync: {
 				filterSettings: {
@@ -87,6 +95,28 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
+		if (config.rollout.coppaFlag().prebid && utils.targeting.isWikiDirectedAtChildren()) {
+			this.prebidConfig.coppa = true;
+		}
+
+		if (context.get('bidders.prebid.rubicon_pg.enabled')) {
+			this.prebidConfig.s2sConfig = {
+				accountId: '7450',
+				bidders: ['pgRubicon'],
+				coopSync: true,
+				defaultVendor: 'rubicon',
+				enabled: true,
+				extPrebid: {
+					aliases: {
+						pgRubicon: 'rubicon',
+					},
+					aliasgvlids: { pgRubicon: 52 },
+				},
+				timeout: Math.round(this.timeout * 0.75),
+				userSyncLimit: 1,
+			};
+		}
+
 		this.prebidConfig = {
 			...this.prebidConfig,
 			...this.configureLiveRamp(),
@@ -98,7 +128,6 @@ export class PrebidProvider extends BidderProvider {
 		this.configureAdUnits();
 		this.registerBidsRefreshing();
 		this.registerBidsTracking();
-		this.getLiveRampUserIds();
 		this.enableATSAnalytics();
 
 		utils.logger(logGroup, 'prebid created', this.prebidConfig);
@@ -142,10 +171,10 @@ export class PrebidProvider extends BidderProvider {
 			},
 		};
 
-		if (context.get('wiki.targeting.featuredVideo.mediaId')) {
-			jwplayerDataProvider.params.mediaIDs.push(
-				context.get('wiki.targeting.featuredVideo.mediaId'),
-			);
+		const mediaId = getMediaWikiVariable('wgArticleFeaturedVideo')?.mediaId;
+
+		if (mediaId) {
+			jwplayerDataProvider.params.mediaIDs.push(mediaId);
 		}
 
 		return {
@@ -190,8 +219,6 @@ export class PrebidProvider extends BidderProvider {
 		this.applySettings();
 		this.removeAdUnits();
 
-		let firstBidRequest: Promise<void>;
-
 		if (context.get('bidders.prebid.multiAuction')) {
 			utils.logger(logGroup, 'multi auction request enabled');
 
@@ -205,7 +232,7 @@ export class PrebidProvider extends BidderProvider {
 				},
 			);
 
-			firstBidRequest = this.requestBids(
+			this.requestBids(
 				this.filterAdUnits(this.adUnits, 'init'),
 				() => {
 					bidsBackHandler();
@@ -215,25 +242,37 @@ export class PrebidProvider extends BidderProvider {
 				context.get('bidders.prebid.initTimeout') || this.timeout,
 			);
 
-			setTimeout(() => {
-				this.requestBids(
-					this.filterAdUnits(this.adUnits, 'main'),
-					() => {
-						communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
-						utils.logger(logGroup, 'multi auction in main stage - done');
-					},
-					context.get('bidders.prebid.mainTimeout') || this.timeout,
-				);
-			}, context.get('bidders.prebid.mainDelayed') || 0);
+			this.runSecondBidRequest();
 		} else {
-			firstBidRequest = this.requestBids(this.adUnits, () => {
+			this.requestBids(this.adUnits, () => {
 				bidsBackHandler();
+				communicationService.emit(eventsRepository.BIDDERS_INIT_STAGE_DONE);
 			});
 		}
 
-		firstBidRequest.then(() => {
-			ats.call();
-		});
+		communicationService.emit(eventsRepository.BIDDERS_BIDS_CALLED);
+	}
+
+	private runSecondBidRequest(): void {
+		setTimeout(() => {
+			const mainStageTimeout = context.get('bidders.prebid.mainTimeout') || this.timeout;
+			const mainStageDonePromise = utils.createExtendedPromise();
+
+			this.requestBids(
+				this.filterAdUnits(this.adUnits, 'main'),
+				() => {
+					mainStageDonePromise.resolve();
+				},
+				mainStageTimeout,
+			);
+			Promise.race([
+				mainStageDonePromise,
+				utils.buildPromisedTimeout(mainStageTimeout + DEFAULT_MIN_DELAY).promise,
+			]).then(() => {
+				communicationService.emit(eventsRepository.BIDDERS_MAIN_STAGE_DONE);
+				utils.logger(logGroup, 'multi auction in main stage - done');
+			});
+		}, context.get('bidders.prebid.mainDelayed') || DEFAULT_MIN_DELAY);
 	}
 
 	private filterAdUnits(adUnits: PrebidAdUnit[], stage: string): PrebidAdUnit[] {
@@ -347,18 +386,6 @@ export class PrebidProvider extends BidderProvider {
 			bidsBackHandler,
 			timeout,
 		});
-	}
-
-	async getLiveRampUserIds(): Promise<void> {
-		const pbjs: Pbjs = await pbjsFactory.init();
-
-		if (pbjs.getUserIds) {
-			const userId = pbjs.getUserIds()['idl_env'];
-
-			utils.logger(logGroup, 'calling LiveRamp dispatch method');
-
-			liveRamp.dispatchLiveRampPrebidIdsLoadedEvent(userId);
-		}
 	}
 
 	private enableATSAnalytics(): void {

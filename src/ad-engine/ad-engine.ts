@@ -14,6 +14,7 @@ import {
 	templateService,
 } from './services';
 import { LazyQueue, makeLazyQueue, OldLazyQueue, logger } from './utils';
+import { slotRefresher } from './services/slot-refresher';
 
 const logGroup = 'ad-engine';
 
@@ -29,6 +30,7 @@ export function getAdStack(): OldLazyQueue<AdStackPayload> {
 	return adStack;
 }
 
+export const DEFAULT_MIN_DELAY = 100;
 export const DEFAULT_MAX_DELAY = 2000;
 
 export class AdEngine {
@@ -38,7 +40,6 @@ export class AdEngine {
 
 	constructor(config = null) {
 		context.extend(config);
-
 		window.ads = window.ads || ({} as MediaWikiAds);
 		window.ads.runtime = window.ads.runtime || ({} as Runtime);
 
@@ -61,10 +62,15 @@ export class AdEngine {
 		templateService.subscribeCommunicator();
 		slotTweaker.registerMessageListener();
 
-		this.runAdQueue(inhibitors);
+		if (context.get('options.adsInitializeV2')) {
+			this.runAdQueue();
+		} else {
+			this.runAdQueueDeprecated(inhibitors);
+		}
 
 		scrollListener.init();
 		slotRepeater.init();
+		slotRefresher.init();
 		this.setupPushOnScrollQueue();
 	}
 
@@ -141,7 +147,18 @@ export class AdEngine {
 		}
 	}
 
-	runAdQueue(inhibitors: Promise<any>[] = []): void {
+	runAdQueue() {
+		communicationService.on(eventsRepository.AD_ENGINE_PARTNERS_READY, () => {
+			if (!this.started) {
+				communicationService.emit(eventsRepository.AD_ENGINE_STACK_START);
+
+				this.started = true;
+				this.adStack.start();
+			}
+		});
+	}
+
+	runAdQueueDeprecated(inhibitors: Promise<any>[] = []): void {
 		const maxTimeout: number = context.get('options.maxDelayTimeout');
 
 		new Runner(inhibitors, maxTimeout, 'ad-engine-runner').waitForInhibitors().then(() => {

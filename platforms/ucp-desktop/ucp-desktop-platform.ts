@@ -1,12 +1,13 @@
 import {
 	AdEngineRunnerSetup,
-	AdLayoutInitializerSetup,
+	shouldUseAdLayouts,
 	bootstrapAndGetConsent,
 	InstantConfigSetup,
 	LabradorSetup,
+	LoadTimesSetup,
 	TrackingSetup,
 	UcpTargetingSetup,
-	WikiContextSetup,
+	PlatformContextSetup,
 } from '@platforms/shared';
 import {
 	communicationService,
@@ -17,21 +18,14 @@ import {
 	ProcessPipeline,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
-
 import { basicContext } from './ad-context';
 import { UcpDesktopBaseContextSetup } from './setup/context/base/ucp-desktop-base-context.setup';
 import { UcpDesktopSlotsContextSetup } from './setup/context/slots/ucp-desktop-slots-context.setup';
 import { UcpDesktopIocSetup } from './ucp-desktop-ioc-setup';
 import { UcpDesktopAdLayoutSetup } from './ucp-desktop-ad-layout-setup';
-import { LegacySetup } from './ucp-desktop-legacy-setup';
+import { UcpDesktopLegacySetup } from './ucp-desktop-legacy-setup';
 import { NoAdsExperimentSetup } from '../shared/setup/noads-experiment.setup';
-
-function shouldUseAdLayouts(): Promise<boolean> {
-	return new AdLayoutInitializerSetup()
-		.execute()
-		.then(() => true)
-		.catch(() => false);
-}
+import { TrackingParametersSetup } from '../shared/setup/tracking-parameters.setup';
 
 @Injectable()
 export class UcpDesktopPlatform {
@@ -41,15 +35,17 @@ export class UcpDesktopPlatform {
 		// Config
 		this.pipeline.add(
 			() => context.extend(basicContext),
+			PlatformContextSetup,
 			parallel(InstantConfigSetup, () => bootstrapAndGetConsent()),
+			TrackingParametersSetup,
+			LoadTimesSetup,
 			UcpDesktopIocSetup,
-			WikiContextSetup,
 			UcpDesktopBaseContextSetup,
 			UcpDesktopSlotsContextSetup,
 			UcpTargetingSetup,
 			conditional(shouldUseAdLayouts, {
 				yes: UcpDesktopAdLayoutSetup,
-				no: LegacySetup,
+				no: UcpDesktopLegacySetup,
 			}),
 			NoAdsExperimentSetup,
 			LabradorSetup,

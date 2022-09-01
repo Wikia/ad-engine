@@ -1,6 +1,5 @@
-import { context, Dictionary, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, Dictionary, utils } from '@ad-engine/core';
 import { initNielsenStaticQueue } from './static-queue-script';
-
 const logGroup = 'nielsen-dcr';
 const nlsnConfig: Dictionary = {};
 
@@ -18,13 +17,14 @@ function createInstance(nielsenKey): any {
 /**
  * Nielsen service handler
  */
-class Nielsen {
+class Nielsen extends BaseServiceSetup {
 	nlsnInstance: any = null;
 	/**
 	 * Class constructor
 	 */
 
 	constructor() {
+		super();
 		if (utils.queryString.get('nielsen-dcr-debug') === '1') {
 			nlsnConfig.nol_sdkDebug = 'debug';
 		}
@@ -32,11 +32,13 @@ class Nielsen {
 
 	/**
 	 * Create Nielsen Static Queue and make a call
-	 * @param {Object} nielsenMetadata
 	 * @returns {Object}
 	 */
-	call(nielsenMetadata): void {
+	call(): void {
 		const nielsenKey = context.get('services.nielsen.appId');
+		const targeting = context.get('targeting');
+		const section = context.get('services.nielsen.customSection') || targeting.s0v;
+		const articleId = targeting.post_id || targeting.artid;
 
 		if (!context.get('services.nielsen.enabled') || !nielsenKey) {
 			utils.logger(logGroup, 'disabled');
@@ -50,9 +52,14 @@ class Nielsen {
 
 		utils.logger(logGroup, 'ready');
 
-		this.nlsnInstance.ggPM('staticstart', nielsenMetadata);
+		const metadata = {
+			type: 'static',
+			assetid: `fandom.com/${section}/${targeting.s1}/${articleId}`,
+			section: `FANDOM ${section.replaceAll('_', ' ').toUpperCase()} NETWORK`,
+		};
 
-		utils.logger(logGroup, 'called', nielsenMetadata);
+		this.nlsnInstance.ggPM('static', metadata);
+		utils.logger(logGroup, 'called', metadata);
 
 		return this.nlsnInstance;
 	}

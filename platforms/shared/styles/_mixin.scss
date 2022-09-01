@@ -1,0 +1,97 @@
+@import 'uap/uap-variables';
+
+@mixin absolute-fill() {
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+@mixin transition($property, $duration, $timing, $delay) {
+	transition-property: $property;
+	transition-duration: $duration;
+	transition-timing-function: $timing;
+	transition-delay: $delay;
+	-webkit-transition-property: $property;
+	-webkit-transition-duration: $duration;
+	-webkit-transition-timing-function: $timing;
+	-webkit-transition-delay: $delay;
+}
+
+@mixin bfaa-bfab-overlay() {
+	.player-overlay,
+	.pause-overlay {
+		cursor: pointer;
+		height: 100%;
+		position: absolute;
+		z-index: 1;
+	}
+
+	.pause-overlay {
+		background: $uap-replay-overlay-color url($player-button-play) center/8% no-repeat;
+		display: none;
+	}
+
+	.pause-overlay {
+		top: 0;
+		width: 100%;
+	}
+}
+
+@mixin bfaa-bfab-hivi-right-position() {
+	right: 23.2%;
+	transform: translateX(50%);
+}
+
+@mixin uap-dark-theme() {
+	.advertisement-label,
+	.button-control .icon {
+		color: $hivi-uap-dark-button-color;
+		fill: $hivi-uap-dark-button-color;
+	}
+}
+
+@keyframes fade-in {
+	to {
+		opacity: 1;
+	}
+}
+
+@mixin logo-replacement(
+	$max-height,
+	$margin-left: 0,
+	$margin-right: 0,
+	$custom-logo-max-width: 100%,
+	$small-logo-max-width: 100%
+) {
+	.custom-logo,
+	.small-custom-logo {
+		animation-duration: 3s;
+		animation-fill-mode: forwards;
+		animation-name: fade-in;
+		max-height: $max-height;
+		opacity: 0;
+	}
+
+	.custom-logo {
+		max-width: $custom-logo-max-width;
+		margin-right: $margin-right;
+	}
+
+	.small-custom-logo {
+		max-width: $small-logo-max-width;
+		margin-left: $margin-left;
+		margin-right: 5px;
+	}
+
+	.tracking-pixel {
+		display: none;
+	}
+
+	.wds-is-community-bar-in {
+		.custom-logo {
+			display: none;
+		}
+	}
+}
