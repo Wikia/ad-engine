@@ -13,7 +13,6 @@ import {
 	jwpSetup,
 	nielsen,
 	Runner,
-	silverSurferService,
 	stroer,
 	taxonomyService,
 	ats,
@@ -52,7 +51,6 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(taxonomyService.call());
-		inhibitors.push(silverSurferService.call());
 		inhibitors.push(userIdentity.call());
 
 		ats.call();

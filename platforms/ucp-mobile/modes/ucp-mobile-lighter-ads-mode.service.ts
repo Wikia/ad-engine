@@ -16,7 +16,6 @@ import {
 	liveConnect,
 	nielsen,
 	PartnerPipeline,
-	silverSurferService,
 	stroer,
 	taxonomyService,
 	userIdentity,
@@ -33,7 +32,6 @@ export class UcpMobileLighterAds implements DiProcess {
 				userIdentity,
 				ats,
 				taxonomyService,
-				silverSurferService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
@@ -46,11 +44,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [
-						bidders.initialized,
-						taxonomyService.initialized,
-						silverSurferService.initialized,
-					],
+					dependencies: [bidders.initialized, taxonomyService.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
