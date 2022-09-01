@@ -58,11 +58,8 @@ function configure(): void {
 
 	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
+		adSlot.setStatus(AdSlot.STATUS_REQUESTED);
 		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
-		communicationService.emit(eventsRepository.AD_ENGINE_SLOT_REQUESTED, {
-			name: this.getSlotName(),
-			state: AdSlot.STATUS_REQUESTED,
-		});
 	});
 
 	tag.addEventListener('slotOnload', (event: googletag.events.SlotOnloadEvent) => {
