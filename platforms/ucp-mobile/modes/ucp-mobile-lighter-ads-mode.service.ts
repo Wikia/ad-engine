@@ -17,7 +17,6 @@ import {
 	nielsen,
 	PartnerPipeline,
 	stroer,
-	taxonomyService,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
@@ -31,7 +30,6 @@ export class UcpMobileLighterAds implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				taxonomyService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
@@ -44,7 +42,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [bidders.initialized, taxonomyService.initialized],
+					dependencies: [bidders.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({

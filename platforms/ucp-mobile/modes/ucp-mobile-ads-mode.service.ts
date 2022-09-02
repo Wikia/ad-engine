@@ -17,7 +17,6 @@ import {
 	PartnerPipeline,
 	prebidNativeProvider,
 	stroer,
-	taxonomyService,
 	adMarketplace,
 	userIdentity,
 	ats,
@@ -37,7 +36,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				bidders,
 				liveConnect,
 				facebookPixel,
-				taxonomyService,
 				wadRunner,
 				eyeota,
 				iasPublisherOptimization,
@@ -49,7 +47,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				adMarketplace,
 				prebidNativeProvider,
 				playerSetup.setOptions({
-					dependencies: [bidders.initialized, taxonomyService.initialized, wadRunner.initialized],
+					dependencies: [bidders.initialized, wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({

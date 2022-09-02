@@ -10,7 +10,6 @@ import {
 	identityHub,
 	nielsen,
 	stroer,
-	taxonomyService,
 	audigent,
 	confiant,
 	userIdentity,
@@ -27,7 +26,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				taxonomyService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
@@ -36,7 +34,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [taxonomyService.initialized],
+					dependencies: [],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
