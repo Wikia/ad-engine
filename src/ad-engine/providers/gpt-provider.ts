@@ -58,7 +58,7 @@ function configure(): void {
 
 	tag.addEventListener('slotRequested', (event: googletag.events.SlotRequestedEvent) => {
 		const adSlot = getAdSlotFromEvent(event);
-
+		adSlot.setStatus(AdSlot.STATUS_REQUESTED);
 		adSlot.emit(AdSlot.SLOT_REQUESTED_EVENT);
 	});
 
