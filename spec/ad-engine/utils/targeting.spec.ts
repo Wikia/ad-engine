@@ -29,7 +29,7 @@ describe('targeting', () => {
 	it('getTargetingBundles returns filtered bundles', () => {
 		context.set('targeting.s1', '_harrypotter');
 		context.set('targeting.esrb', ['teen', 'adult']);
-		context.set('targeting.skin', 'ucp_desktop');
+		context.set('targeting.skin', 'fandom_desktop');
 
 		expect(
 			targeting.getTargetingBundles({
@@ -42,7 +42,7 @@ describe('targeting', () => {
 					esrb: ['teen'],
 				},
 				bundle3: {
-					skin: ['ucp_desktop'],
+					skin: ['fandom_desktop'],
 				},
 			}),
 		).to.deep.equal(['bundle2', 'bundle3']);
@@ -71,5 +71,22 @@ describe('targeting', () => {
 				},
 			}),
 		).to.deep.equal([]);
+	});
+
+	it('getTargetingBundles returns backend, frontent and code bundles', () => {
+		context.set('targeting.bundles', ['backend_bundle']);
+		context.set('targeting.s1', '_harrypotter');
+		context.set('targeting.skin', 'ucp_desktop');
+
+		expect(
+			targeting.getTargetingBundles({
+				bundle1: {
+					s1: ['_project34', '_harrypotter'],
+				},
+				bundle2: {
+					skin: ['ucp_desktop'],
+				},
+			}),
+		).to.deep.equal(['backend_bundle', 'bundle1', 'bundle2', 'VIDEO_TIER_3_BUNDLE']);
 	});
 });
