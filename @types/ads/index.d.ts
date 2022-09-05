@@ -21,7 +21,6 @@ interface MediaWikiAdsOpts {
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
-	enableAdTagManagerBackend?: boolean;
 }
 
 interface MediaWikiAdsTargeting {

@@ -11,7 +11,6 @@ import {
 	nielsen,
 	silverSurferService,
 	stroer,
-	taxonomyService,
 	audigent,
 	confiant,
 	userIdentity,
@@ -28,7 +27,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				taxonomyService,
 				silverSurferService,
 				facebookPixel,
 				audigent,
@@ -38,7 +36,7 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [taxonomyService.initialized, silverSurferService.initialized],
+					dependencies: [silverSurferService.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
