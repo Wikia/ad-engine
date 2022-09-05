@@ -16,7 +16,6 @@ import {
 	liveConnect,
 	nielsen,
 	PartnerPipeline,
-	silverSurferService,
 	stroer,
 	userIdentity,
 } from '@wikia/ad-engine';
@@ -31,7 +30,6 @@ export class UcpMobileLighterAds implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				silverSurferService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
@@ -44,7 +42,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [bidders.initialized, silverSurferService.initialized],
+					dependencies: [bidders.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({

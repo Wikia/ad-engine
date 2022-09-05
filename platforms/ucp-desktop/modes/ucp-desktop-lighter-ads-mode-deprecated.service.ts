@@ -13,7 +13,6 @@ import {
 	jwpSetup,
 	nielsen,
 	Runner,
-	silverSurferService,
 	stroer,
 	ats,
 } from '@wikia/ad-engine';
@@ -50,7 +49,6 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
-		inhibitors.push(silverSurferService.call());
 		inhibitors.push(userIdentity.call());
 
 		ats.call();
