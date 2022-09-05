@@ -1,6 +1,5 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import { AdTags } from '../taxonomy/taxonomy-service.loader';
 import { SilverSurferProfileFetcher } from './silver-surfer-profile-fetcher';
 import { SilverSurferProfileExtender } from './silver-surfer-profile-extender';
 

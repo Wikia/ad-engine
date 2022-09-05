@@ -167,11 +167,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
-		context.set('services.taxonomy.communityId', context.get('wiki.dsSiteKey'));
-		if (!context.get('wiki.opts.enableAdTagManagerBackend')) {
-			// if backend call is disabled let's call it on frontend
-			context.set('services.taxonomy.enabled', this.instantConfig.get('icTaxonomyAdTags'));
-		}
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidAdmsStorage.enabled', this.instantConfig.get('icPpidAdmsStorage'));
 
