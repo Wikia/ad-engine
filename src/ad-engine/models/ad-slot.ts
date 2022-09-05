@@ -102,6 +102,7 @@ export class AdSlot {
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_FORCED_SUCCESS = 'forced_success';
 	static STATUS_MANUAL = 'manual';
+	static STATUS_REQUESTED = 'requested';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_CLICKED = 'clicked';
