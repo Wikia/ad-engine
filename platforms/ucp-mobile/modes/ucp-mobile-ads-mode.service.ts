@@ -16,7 +16,6 @@ import {
 	nielsen,
 	PartnerPipeline,
 	prebidNativeProvider,
-	silverSurferService,
 	stroer,
 	adMarketplace,
 	userIdentity,
@@ -37,7 +36,6 @@ export class UcpMobileAdsMode implements DiProcess {
 				bidders,
 				liveConnect,
 				facebookPixel,
-				silverSurferService,
 				wadRunner,
 				eyeota,
 				iasPublisherOptimization,
@@ -49,11 +47,7 @@ export class UcpMobileAdsMode implements DiProcess {
 				adMarketplace,
 				prebidNativeProvider,
 				playerSetup.setOptions({
-					dependencies: [
-						bidders.initialized,
-						silverSurferService.initialized,
-						wadRunner.initialized,
-					],
+					dependencies: [bidders.initialized, wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({

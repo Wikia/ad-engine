@@ -165,7 +165,6 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.nativo.enabled', this.instantConfig.get('icNativo'));
 		context.set('services.nielsen.enabled', this.instantConfig.get('icNielsen'));
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
-		context.set('services.silverSurfer', this.instantConfig.get('icSilverSurfer'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
 		context.set('services.ppidAdmsStorage.enabled', this.instantConfig.get('icPpidAdmsStorage'));
