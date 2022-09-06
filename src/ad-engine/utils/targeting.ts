@@ -32,7 +32,7 @@ class Targeting {
 	}
 
 	getTargetingBundles(bundles: Dictionary<Dictionary<string[]>>): string[] {
-		let targetingBundles = [];
+		const targetingBundles = context.get('targeting.bundles') || [];
 
 		try {
 			const selectedBundles = [];
@@ -43,7 +43,7 @@ class Targeting {
 				}
 			});
 
-			targetingBundles = selectedBundles;
+			selectedBundles.forEach((bundle) => targetingBundles.push(bundle));
 		} catch (e) {
 			logger('targeting-bundles', 'Invalid input data!');
 		}
@@ -60,6 +60,13 @@ class Targeting {
 
 		if (cookieAdapter.getItem('_ae_intrsttl_imp')) {
 			bundles.push('interstitial_disabled');
+		}
+
+		if (
+			context.get('targeting.skin').includes('ucp_') &&
+			!bundles.includes('VIDEO_TIER_1_AND_2_BUNDLE')
+		) {
+			bundles.push('VIDEO_TIER_3_BUNDLE');
 		}
 
 		return bundles;

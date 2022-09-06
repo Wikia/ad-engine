@@ -1,5 +1,3 @@
-import fallbackInstantConfig from './fallback-config.json';
-
 export const basicContext = {
 	adUnitId:
 		'/{custom.dfpId}' +
@@ -92,7 +90,6 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'fandommobile',
-			fallback: fallbackInstantConfig,
 		},
 		iasPublisherOptimization: {
 			pubId: '930616',

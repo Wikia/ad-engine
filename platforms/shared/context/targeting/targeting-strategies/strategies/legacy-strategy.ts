@@ -15,6 +15,7 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 		const targeting: Partial<Targeting> = {
 			artid: wiki.targeting.pageArticleId ? wiki.targeting.pageArticleId.toString() : '',
 			age: wiki.targeting?.adTagManagerTags?.age || [],
+			bundles: wiki.targeting?.adTagManagerTags?.bundles || [],
 			esrb: wiki.targeting.esrbRating,
 			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
 			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
