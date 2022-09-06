@@ -26,6 +26,7 @@ import {
 } from '@wikia/ad-engine';
 import { Inject, Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
+import { AdSizeTracker } from './ad-size-tracker';
 import { LabradorTracker } from './labrador-tracker';
 import { PageTracker } from './page-tracker';
 import { props } from 'ts-action';
@@ -62,6 +63,7 @@ export class TrackingSetup {
 	constructor(
 		private pageTracker: PageTracker,
 		private labradorTracker: LabradorTracker,
+		private adSizeTracker: AdSizeTracker,
 		@Inject('slotTrackingMiddlewares')
 		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
 		@Inject('bidderTrackingMiddlewares')
@@ -80,6 +82,7 @@ export class TrackingSetup {
 		this.ctaTracker();
 		this.identityTracker();
 		this.keyValsTracker();
+		this.adSizeTracker.init();
 	}
 
 	private porvataTracker(): void {

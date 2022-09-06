@@ -10,6 +10,7 @@ import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
+import { ResizeObserver } from 'resize-observer';
 
 export interface Targeting {
 	amznbid?: string;
@@ -187,6 +188,7 @@ export class AdSlot {
 						adType,
 					}: { event: googletag.events.SlotRenderEndedEvent; adType: string } = payload;
 
+					this.setupSizesTracking(event, adType);
 					this.updateOnRenderEnd(event, adType);
 
 					resolve();
@@ -645,5 +647,25 @@ export class AdSlot {
 	 */
 	getSlotsToInjectAfterRendered(): string[] {
 		return context.get(`events.pushAfterRendered.${this.getSlotName()}`) || [];
+	}
+
+	setupSizesTracking(event: googletag.events.SlotRenderEndedEvent, adType: string): void {
+		const adSlotElement = document.getElementById(event.slot.getSlotElementId());
+		const adFrame = adSlotElement
+			.querySelectorAll('[id^=google_ads_iframe_]')[0]
+			.querySelectorAll('[id^=google_ads_iframe_]')[0];
+
+		if (adType.includes('success')) {
+			const resizeObserver = new ResizeObserver((entries) => {
+				for (const entry of entries) {
+					communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
+						slot: this,
+						sizes: entry.contentRect,
+					});
+					resizeObserver.unobserve(entry.target);
+				}
+			});
+			resizeObserver.observe(adFrame);
+		}
 	}
 }
