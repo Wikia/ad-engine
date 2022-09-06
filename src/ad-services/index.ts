@@ -15,6 +15,5 @@ export * from './instant-config';
 export * from './live-connect';
 export * from './nielsen';
 export * from './sailthru';
-export * from './silver-surfer';
 export * from './stroer';
 export * from './connatix/connatix-player';

@@ -25,7 +25,6 @@ import {
 	nielsen,
 	prebidNativeProvider,
 	Runner,
-	silverSurferService,
 	slotDataParamsUpdater,
 	slotService,
 	stroer,
@@ -80,7 +79,6 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(bidders.call());
-		inhibitors.push(silverSurferService.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
 
