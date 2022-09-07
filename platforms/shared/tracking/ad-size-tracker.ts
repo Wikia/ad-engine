@@ -34,6 +34,7 @@ export class AdSizeTracker {
 				line_item_id: slot.lineItemId || '',
 				rv: slot.getConfigProperty('targeting.rv') || '',
 				position: slot.getMainPositionName(),
+				slot_size: slot.getCreativeSize() || '',
 			},
 			trackingURL,
 		);

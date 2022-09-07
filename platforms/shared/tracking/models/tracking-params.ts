@@ -37,6 +37,7 @@ export interface TrackingParams {
 	s?: string;
 	session_id?: string;
 	slot_id?: string;
+	slot_size?: string;
 	t?: string;
 	timestamp?: number;
 	tz_offset?: number;
