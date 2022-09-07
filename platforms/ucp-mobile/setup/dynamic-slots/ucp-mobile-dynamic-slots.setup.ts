@@ -69,7 +69,14 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (context.get('custom.hasFeaturedVideo')) {
-			this.waitForFloorAdhesionInjection();
+			if (context.get('options.floorAdhesionAfterFV')) {
+				this.waitForFloorAdhesionInjection();
+			} else {
+				communicationService.on(
+					eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
+					this.waitForFloorAdhesionInjection.bind(this),
+				);
+			}
 		} else {
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 		}
