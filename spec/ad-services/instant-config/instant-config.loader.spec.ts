@@ -20,7 +20,6 @@ describe('Instant Config Loader', () => {
 		contextRepo = {
 			'services.instantConfig.endpoint': 'http://endpoint.com',
 			'services.instantConfig.appName': 'testApp',
-			'services.instantConfig.fallback': {},
 		};
 		contextGetStub = sandbox.stub(context, 'get');
 		contextGetStub.callsFake((key) => contextRepo[key]);
@@ -60,34 +59,14 @@ describe('Instant Config Loader', () => {
 		});
 	});
 
-	it('should return fallback if status !== 200', async () => {
-		contextRepo['services.instantConfig.fallback'] = { a: 'a' };
-
-		const promise = instantConfigLoader.getConfig();
-
-		request.setStatus(201);
-		request.setResponseHeaders({ 'Content-Type': 'application/json' });
-		request.setResponseBody(
-			JSON.stringify({
-				foo: 'bar',
-			}),
-		);
-
-		const value = await promise;
-
-		expect(value).to.deep.equal({ a: 'a' });
-	});
-
-	it('should return fallback if error', async () => {
-		contextRepo['services.instantConfig.fallback'] = { a: 'a' };
-
+	it('should return {} if error', async () => {
 		const promise = instantConfigLoader.getConfig();
 
 		request.error();
 
 		const value = await promise;
 
-		expect(value).to.deep.equal({ a: 'a' });
+		expect(value).to.deep.equal({});
 	});
 
 	it('should be called once', async () => {
@@ -111,7 +90,7 @@ describe('Instant Config Loader', () => {
 	it('should get endpoint from context', async () => {
 		instantConfigLoader.getConfig();
 
-		expect(contextGetStub.getCalls().length).to.equal(4);
+		expect(contextGetStub.getCalls().length).to.equal(3);
 		expect(contextGetStub.firstCall.args[0]).to.equal('services.instantConfig.endpoint');
 		expect(contextGetStub.secondCall.args[0]).to.equal('wiki.services_instantConfig_variant');
 		expect(contextGetStub.thirdCall.args[0]).to.equal('services.instantConfig.appName');
@@ -123,21 +102,9 @@ describe('Instant Config Loader', () => {
 
 		instantConfigLoader.getConfig();
 
-		expect(contextGetStub.getCalls().length).to.equal(4);
+		expect(contextGetStub.getCalls().length).to.equal(3);
 		expect(request.url).to.equal('http://endpoint.com/test-variant/api/config?app=testApp');
 
 		contextRepo['wiki.services_instantConfig_variant'] = undefined;
-	});
-
-	it('should get fallback from fallbackInstantConfig', async () => {
-		contextRepo['services.instantConfig.fallback'] = { b: 'b' };
-
-		const promise = instantConfigLoader.getConfig();
-
-		request.error();
-
-		const value = await promise;
-
-		expect(value).to.deep.equal({ b: 'b' });
 	});
 });
