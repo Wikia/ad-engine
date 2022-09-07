@@ -11,7 +11,7 @@ export interface TrackingParams {
 	ck?: string;
 	category?: string;
 	country?: string;
-	creative_id?: number;
+	creative_id?: number | string;
 	eventName?: string;
 	event_name?: string;
 	ga_action?: string;
@@ -21,7 +21,7 @@ export interface TrackingParams {
 	keyvals?: string;
 	label?: string;
 	lc?: string;
-	line_item_id?: number;
+	line_item_id?: number | string;
 	load_time?: number;
 	n?: number;
 	partner_name?: string;

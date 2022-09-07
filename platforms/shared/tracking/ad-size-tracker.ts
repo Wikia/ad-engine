@@ -30,6 +30,8 @@ export class AdSizeTracker {
 				ad_width: ad_width,
 				ad_height: ad_height,
 				slot_id: slot.getUid() || '',
+				creative_id: slot.creativeId || '',
+				line_item_id: slot.lineItemId || '',
 				rv: slot.getConfigProperty('targeting.rv') || '',
 				position: slot.getMainPositionName(),
 			},
