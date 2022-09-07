@@ -69,10 +69,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		]);
 
 		if (context.get('custom.hasFeaturedVideo')) {
-			communicationService.on(
-				eventsRepository.AD_ENGINE_UAP_NTC_LOADED,
-				this.waitForFloorAdhesionInjection.bind(this),
-			);
+			this.waitForFloorAdhesionInjection();
 		} else {
 			insertSlots([this.slotsDefinitionRepository.getFloorAdhesionConfig()]);
 		}
@@ -165,11 +162,21 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 		communicationService.onSlotEvent(
 			AdSlot.STATUS_SUCCESS,
 			() => {
+				const playerContainer = document.getElementById('featured-video__player-container');
+
+				if (!playerContainer) {
+					return;
+				}
+
 				const noTries = 2500;
 				const retryTimeout = 500;
+				const scrollInterval = 100;
+				const scrollBreakpoint = (playerContainer.offsetTop || 0) + scrollInterval;
+
 				new utils.WaitFor(
 					() =>
-						!document.querySelector('body').classList.contains('featured-video-on-scroll-enabled'),
+						window.scrollY > scrollBreakpoint &&
+						!playerContainer.querySelector('div.is-on-scroll-active'),
 					noTries,
 					0,
 					retryTimeout,
