@@ -658,11 +658,15 @@ export class AdSlot {
 		if (adType.includes('success')) {
 			const resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
-					communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
-						slot: this,
-						sizes: entry.contentRect,
-					});
-					resizeObserver.unobserve(entry.target);
+					const width = Math.floor(entry.target.clientWidth);
+					const height = Math.floor(entry.target.clientHeight);
+					if (width && height) {
+						communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
+							slot: this,
+							sizes: { width, height },
+						});
+						resizeObserver.unobserve(entry.target);
+					}
 				}
 			});
 			resizeObserver.observe(adFrame);

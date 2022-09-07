@@ -13,7 +13,7 @@ export class AdSizeTracker {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_AD_RESIZED,
 			({ slot, sizes }) => {
-				this.track(slot, Math.floor(sizes.width), Math.floor(sizes.height));
+				this.track(slot, sizes.width, sizes.height);
 			},
 			false,
 		);
