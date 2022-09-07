@@ -19,18 +19,17 @@ class InstantConfigLoader {
 		const baseUrl = context.get('services.instantConfig.endpoint') || 'https://services.fandom.com';
 		const variant = context.get('wiki.services_instantConfig_variant') || 'icbm';
 		const appName = context.get('services.instantConfig.appName');
-		const fallbackConfig = context.get('services.instantConfig.fallback') || {};
 
 		request.open('GET', `${baseUrl}/${variant}/api/config?app=${appName}`, true);
 		request.responseType = 'json';
 
 		return new Promise((resolve) => {
 			request.addEventListener('timeout', () => {
-				resolve(fallbackConfig);
+				resolve({});
 				utils.logger(logGroup, 'timed out');
 			});
 			request.addEventListener('error', () => {
-				resolve(fallbackConfig);
+				resolve({});
 				utils.logger(logGroup, 'errored');
 			});
 			request.onreadystatechange = function (): void {
@@ -40,7 +39,7 @@ class InstantConfigLoader {
 						resolve(this.response);
 					} else {
 						utils.logger(logGroup, 'did not respond successfully', this.response);
-						resolve(fallbackConfig);
+						resolve({});
 					}
 				}
 			};

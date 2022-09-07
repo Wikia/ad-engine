@@ -1,6 +1,5 @@
 import {
 	context,
-	CookieStorageAdapter,
 	DiProcess,
 	InstantConfigCacheStorage,
 	InstantConfigService,
@@ -12,7 +11,6 @@ import { Inject, Injectable } from '@wikia/dependency-injection';
 import { F2_ENV, F2Environment } from '../../../setup-f2';
 import { F2State } from '../../../utils/f2-state';
 import { F2_STATE } from '../../../utils/f2-state-binder';
-import { getCrossDomainTargeting } from '../../../../shared/utils/get-cross-domain-targeting';
 
 @Injectable()
 export class F2TargetingSetup implements DiProcess {
@@ -27,7 +25,6 @@ export class F2TargetingSetup implements DiProcess {
 		context.set('targeting', {
 			...context.get('targeting'),
 			...this.getPageLevelTargeting(),
-			...getCrossDomainTargeting(new CookieStorageAdapter()),
 		});
 	}
 

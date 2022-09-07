@@ -1,5 +1,3 @@
-import fallbackInstantConfig from './fallback-config.json';
-
 export const basicContext = {
 	adUnitId:
 		'/{custom.dfpId}/{custom.serverPrefix}.{slotConfig.group}/{slotConfig.adProduct}{slotConfig.slotNameSuffix}/{state.deviceType}/{targeting.skin}-{targeting.s2}/{custom.wikiIdentifier}-{targeting.s0}',
@@ -22,7 +20,6 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'bingebot',
-			fallback: fallbackInstantConfig,
 		},
 	},
 };

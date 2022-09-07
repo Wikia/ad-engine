@@ -13,9 +13,7 @@ import {
 	jwpSetup,
 	nielsen,
 	Runner,
-	silverSurferService,
 	stroer,
-	taxonomyService,
 	ats,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -51,8 +49,6 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
-		inhibitors.push(taxonomyService.call());
-		inhibitors.push(silverSurferService.call());
 		inhibitors.push(userIdentity.call());
 
 		ats.call();

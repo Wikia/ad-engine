@@ -1,5 +1,3 @@
-import fallbackInstantConfig from './fallback-config.json';
-
 export const basicContext = {
 	adUnitId:
 		`/{custom.dfpId}/{custom.serverPrefix}1b.{slotConfig.group}/{slotConfig.slotName}` +
@@ -51,7 +49,6 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'f2',
-			fallback: fallbackInstantConfig,
 		},
 		moatYi: {
 			partnerCode: 'wikiaprebidheader490634422386',

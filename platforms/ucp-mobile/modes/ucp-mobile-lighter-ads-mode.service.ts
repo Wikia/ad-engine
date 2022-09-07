@@ -16,9 +16,7 @@ import {
 	liveConnect,
 	nielsen,
 	PartnerPipeline,
-	silverSurferService,
 	stroer,
-	taxonomyService,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
@@ -32,8 +30,6 @@ export class UcpMobileLighterAds implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				taxonomyService,
-				silverSurferService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,
@@ -46,11 +42,7 @@ export class UcpMobileLighterAds implements DiProcess {
 				nielsen,
 				identityHub,
 				playerSetup.setOptions({
-					dependencies: [
-						bidders.initialized,
-						taxonomyService.initialized,
-						silverSurferService.initialized,
-					],
+					dependencies: [bidders.initialized],
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({

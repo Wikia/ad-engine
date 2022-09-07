@@ -1,5 +1,3 @@
-import futheadFallbackInstantConfig from './fallback-config-futhead.json';
-import mutheadFallbackInstantConfig from './fallback-config-muthead.json';
 import { selectApplication } from './utils/application-helper';
 
 const basicContext = {
@@ -59,7 +57,6 @@ const futheadContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'futhead',
-			fallback: futheadFallbackInstantConfig,
 		},
 	},
 };
@@ -82,7 +79,6 @@ const mutheadContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'muthead',
-			fallback: mutheadFallbackInstantConfig,
 		},
 	},
 };
