@@ -1,6 +1,6 @@
 import { BaseServiceSetup, context } from '@ad-engine/core';
 
-class UserIdentity extends BaseServiceSetup {
+export class UserIdentity extends BaseServiceSetup {
 	async setupPPID(): Promise<void> {
 		if (window.SilverSurferSDK?.requestUserPPID) {
 			const ppid = await window.SilverSurferSDK.requestUserPPID(
