@@ -9,7 +9,8 @@ export class Site {
 	public readonly siteName: string;
 	public readonly top1000: boolean;
 	public readonly tags: any;
-	public readonly vertical: string;
+	public readonly legacyVertical: string;
+	public readonly wikiVertical: string;
 
 	constructor(
 		categories: [],
@@ -18,7 +19,8 @@ export class Site {
 		siteName: string,
 		top1000: boolean,
 		tags: object,
-		vertical: string,
+		legacyVertical: string,
+		wikiVertical: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
 		this.directedAtChildren = typeof directedAtChildren === 'boolean' ? directedAtChildren : null;
@@ -26,7 +28,8 @@ export class Site {
 		this.siteName = typeof siteName === 'string' ? siteName : null;
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;
-		this.vertical = typeof vertical === 'string' ? vertical : null;
+		this.legacyVertical = typeof legacyVertical === 'string' ? legacyVertical : null;
+		this.wikiVertical = typeof wikiVertical === 'string' ? wikiVertical : null;
 	}
 }
 

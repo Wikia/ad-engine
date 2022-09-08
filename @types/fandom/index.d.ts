@@ -6,7 +6,8 @@ interface WindowFandomContext {
 		siteName: string;
 		top1000: boolean | null;
 		tags: any;
-		vertical: string;
+		legacyVertical: string;
+		wikiVertical: string;
 	};
 	page: {
 		articleId: number;
