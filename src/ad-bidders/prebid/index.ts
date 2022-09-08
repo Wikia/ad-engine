@@ -16,7 +16,6 @@ import {
 	tcf,
 	utils,
 } from '@ad-engine/core';
-import { getMediaWikiVariable } from '@platforms/shared';
 import { getSlotNameByBidderAlias } from '../alias-helper';
 import { BidderConfig, BidderProvider, BidsRefreshing } from '../bidder-provider';
 import { adaptersRegistry } from './adapters-registry';
@@ -121,7 +120,6 @@ export class PrebidProvider extends BidderProvider {
 			...this.prebidConfig,
 			...this.configureLiveRamp(),
 			...this.configureTCF(),
-			...this.configureJWPlayerDataProvider(),
 		};
 
 		this.applyConfig(this.prebidConfig);
@@ -156,33 +154,6 @@ export class PrebidProvider extends BidderProvider {
 		}
 
 		return {};
-	}
-
-	private configureJWPlayerDataProvider(): object {
-		if (!context.get('custom.jwplayerDataProvider')) {
-			return {};
-		}
-
-		const jwplayerDataProvider = {
-			name: 'jwplayer',
-			waitForIt: true,
-			params: {
-				mediaIDs: [],
-			},
-		};
-
-		const mediaId = getMediaWikiVariable('wgArticleFeaturedVideo')?.mediaId;
-
-		if (mediaId) {
-			jwplayerDataProvider.params.mediaIDs.push(mediaId);
-		}
-
-		return {
-			realTimeData: {
-				auctionDelay: 500,
-				dataProviders: [jwplayerDataProvider],
-			},
-		};
 	}
 
 	async configureAdUnits(adUnits: PrebidAdUnit[] = []): Promise<void> {
