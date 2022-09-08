@@ -5,16 +5,14 @@ import {
 	eventsRepository,
 	ServicePipeline,
 	userIdentity,
-	ats,
-	taxonomyService,
-	silverSurferService,
 	facebookPixel,
-	audigent,
 	iasPublisherOptimization,
-	confiant,
-	stroer,
-	nielsen,
 	identityHub,
+	nielsen,
+	stroer,
+	ats,
+	audigent,
+	confiant,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup, adEngineSetup } from '@platforms/shared';
 
@@ -27,8 +25,6 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				taxonomyService,
-				silverSurferService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,

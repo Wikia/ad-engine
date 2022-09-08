@@ -1,10 +1,25 @@
 import { context, ServiceStage, utils, Service } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
+interface IdConfig {
+	id: string;
+	name: string;
+	params?: LiQParams;
+}
+
 const partnerName = 'liveConnect';
-const partnerNameUnifiedId = 'liveConnect-unifiedId';
 const logGroup = partnerName;
 const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
+
+const idConfigMapping: IdConfig[] = [
+	{ id: 'unifiedId', name: `${partnerName}-unifiedId` },
+	{ id: 'sha2', name: partnerName, params: { qf: '0.3', resolve: 'sha2' } },
+	{ id: 'sha256', name: `${partnerName}-sha256`, params: { qf: '0.3', resolve: 'sha256' } },
+	{ id: 'md5', name: `${partnerName}-md5`, params: { qf: '0.3', resolve: 'md5' } },
+	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
+	{ id: 'gender', name: `${partnerName}-gender`, params: { qf: '0.3', resolve: 'gender' } },
+	{ id: 'age', name: `${partnerName}-age`, params: { qf: '0.3', resolve: 'age' } },
+];
 
 @Service({
 	stage: ServiceStage.preProvider,
@@ -42,23 +57,28 @@ class LiveConnect {
 		}
 	}
 
-	resolveAndReportId(idName: string, partnerName: string, params: any = undefined) {
+	resolveId(idName, partnerName) {
+		return (nonId) => {
+			const partnerIdentityId = nonId[idName];
+
+			if (idName === 'unifiedId') {
+				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
+			}
+			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
+
+			if (!partnerIdentityId) {
+				return;
+			}
+			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+				partnerName,
+				partnerIdentityId,
+			});
+		};
+	}
+
+	resolveAndReportId(idName: string, partnerName: string, params?: LiQParams) {
 		window.liQ.resolve(
-			(nonId) => {
-				const id = nonId[idName];
-
-				if (idName === 'unifiedId') {
-					communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
-				}
-				utils.logger(logGroup, `id ${idName}: ${id}`);
-
-				if (id) {
-					communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-						partnerName: partnerName,
-						partnerIdentityId: id,
-					});
-				}
-			},
+			this.resolveId(idName, partnerName),
 			(err) => {
 				utils.warner(logGroup, err);
 			},
@@ -71,8 +91,9 @@ class LiveConnect {
 			utils.warner(logGroup, 'window.liQ not available for tracking');
 			return;
 		}
-		this.resolveAndReportId('unifiedId', partnerNameUnifiedId);
-		this.resolveAndReportId('sha2', partnerName, { qf: '0.3', resolve: 'sha2' });
+		idConfigMapping.forEach(({ id, name, params }) => {
+			this.resolveAndReportId(id, name, params);
+		});
 	}
 }
 

@@ -15,6 +15,7 @@ class SlotTracker {
 	];
 	onChangeStatusToTrack = [
 		AdSlot.STATUS_BLOCKED,
+		AdSlot.STATUS_REQUESTED,
 		AdSlot.STATUS_CLICKED,
 		AdSlot.STATUS_ERROR,
 		AdSlot.STATUS_VIEWPORT_CONFLICT,

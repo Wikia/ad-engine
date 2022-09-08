@@ -15,9 +15,7 @@ import {
 	liveConnect,
 	nielsen,
 	ServicePipeline,
-	silverSurferService,
 	stroer,
-	taxonomyService,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup, wadRunner, adEngineSetup } from '@platforms/shared';
@@ -31,8 +29,6 @@ export class UcpMobileLighterAds implements DiProcess {
 			.add(
 				userIdentity,
 				ats,
-				taxonomyService,
-				silverSurferService,
 				facebookPixel,
 				audigent,
 				iasPublisherOptimization,

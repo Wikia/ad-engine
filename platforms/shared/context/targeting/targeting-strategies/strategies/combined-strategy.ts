@@ -19,6 +19,7 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 		let targeting: Partial<Targeting> = {
 			age: this.context.site.tags?.age || [],
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
+			bundles: this.context.site.tags?.bundles || [],
 			esrb: this.context.site.esrbRating || [],
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',

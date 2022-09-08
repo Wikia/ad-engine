@@ -8,7 +8,6 @@ import {
 	iasPublisherOptimization,
 	nielsen,
 	ServicePipeline,
-	taxonomyService,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shared';
 
@@ -25,7 +24,6 @@ export class F2AdsMode implements DiProcess {
 				wadRunner,
 				playerSetup,
 				bidders,
-				taxonomyService,
 				gptSetup,
 				adEngineSetup,
 			)

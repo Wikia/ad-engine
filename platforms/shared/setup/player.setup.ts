@@ -6,13 +6,12 @@ import {
 	jwpSetup,
 	ServiceStage,
 	Service,
-	taxonomyService,
 } from '@wikia/ad-engine';
 import { wadRunner } from '../services/wad-runner';
 
 @Service({
 	stage: ServiceStage.preProvider,
-	dependencies: [bidders, taxonomyService, wadRunner],
+	dependencies: [bidders, wadRunner],
 	timeout: context.get('options.jwpMaxDelayTimeout'),
 })
 class PlayerSetup {
