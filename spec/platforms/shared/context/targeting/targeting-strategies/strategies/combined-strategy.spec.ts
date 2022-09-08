@@ -11,12 +11,10 @@ import { CombinedStrategy } from '../../../../../../../platforms/shared/context/
 describe('CombinedStrategy execution', () => {
 	beforeEach(() => {
 		context.set('geo.country', 'PL');
-		context.set('wiki.targeting.wikiVertical', 'test');
 	});
 
 	afterEach(() => {
 		context.set('geo.country', undefined);
-		context.set('wiki.targeting.wikiVertical', undefined);
 	});
 
 	const mockedSkin = 'test';
@@ -37,9 +35,9 @@ describe('CombinedStrategy execution', () => {
 		original_host: 'fandom',
 		pform: [],
 		pub: [],
-		s0: 'lifestyle',
+		s0: 'life',
 		s0c: [],
-		s0v: 'test',
+		s0v: 'lifestyle',
 		s1: '_test',
 		s2: 'article-test',
 		sex: [],
@@ -53,7 +51,7 @@ describe('CombinedStrategy execution', () => {
 
 	it('Returns empty tags when site and page tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, {}, 'life', 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -68,7 +66,7 @@ describe('CombinedStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'life', 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
@@ -82,7 +80,7 @@ describe('CombinedStrategy execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, {}, 'life', 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
@@ -104,7 +102,7 @@ describe('CombinedStrategy execution', () => {
 			theme: ['test4', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'lifestyle'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'life', 'lifestyle'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
