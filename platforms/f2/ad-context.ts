@@ -49,7 +49,7 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'f2',
-			fallback: 'https://fandom-ae-assets.s3.amazonaws.com/icbm/icbm_state_prod_f2.json',
+			fallback: 'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/icbm_state_prod_f2.json',
 		},
 		moatYi: {
 			partnerCode: 'wikiaprebidheader490634422386',

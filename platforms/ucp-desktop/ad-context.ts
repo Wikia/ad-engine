@@ -120,7 +120,8 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'fandomdesktop',
-			fallback: 'https://fandom-ae-assets.s3.amazonaws.com/icbm/icbm_state_prod_fandomdesktop.json',
+			fallback:
+				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/icbm_state_prod_fandomdesktop.json',
 		},
 		nielsen: {
 			enabled: false,

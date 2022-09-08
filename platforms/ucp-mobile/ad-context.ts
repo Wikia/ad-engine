@@ -90,7 +90,8 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'fandommobile',
-			fallback: 'https://fandom-ae-assets.s3.amazonaws.com/icbm/icbm_state_prod_fandommobile.json',
+			fallback:
+				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/icbm_state_prod_fandommobile.json',
 		},
 		iasPublisherOptimization: {
 			pubId: '930616',
