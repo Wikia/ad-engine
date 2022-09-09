@@ -3,27 +3,50 @@ import { context, Targeting, utils } from '@wikia/ad-engine';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
+import { FandomContext, Page, Site } from '../models/fandom-context';
+import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 
 export abstract class CommonStrategy {
-	protected addCommonParams(
-		targeting: Partial<Targeting>,
+	protected getCommonParams(
+		fandomContext: FandomContext,
 		wiki: MediaWikiAdsContext,
 		skin: string,
 	): Partial<Targeting> {
 		const domain = getDomain();
 
-		targeting.ar = window.innerWidth > window.innerHeight ? '4:3' : '3:4';
-		targeting.dmn = domain.base;
-		targeting.geo = utils.geoService.getCountryCode() || 'none';
-		targeting.hostpre = utils.targeting.getHostnamePrefix();
-		targeting.original_host = wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom';
-		targeting.skin = skin;
-		targeting.uap = 'none';
-		targeting.uap_c = 'none';
-		targeting.is_mobile = utils.client.isMobileSkin(skin) ? '1' : '0';
+		const commonParams: Partial<Targeting> = {
+			ar: window.innerWidth > window.innerHeight ? '4:3' : '3:4',
+			dmn: domain.base,
+			geo: utils.geoService.getCountryCode() || 'none',
+			hostpre: utils.targeting.getHostnamePrefix(),
+			original_host: wiki.opts?.isGamepedia ? 'gamepedia' : 'fandom',
+			skin: skin,
+			uap: 'none',
+			uap_c: 'none',
+			is_mobile: utils.client.isMobileSkin(skin) ? '1' : '0',
+		};
 
-		this.extendWithOptionalKeyVals(targeting);
-		return targeting;
+		const commonContextParams: CommonStrategyParams = {
+			bundles: fandomContext.site.tags?.bundles || [],
+			esrb: fandomContext.site.esrbRating || '',
+			kid_wiki: fandomContext.site.directedAtChildren ? '1' : '0',
+			s0: fandomContext.site.legacyVertical,
+			s0c: fandomContext.site.categories,
+			s0v: fandomContext.site.wikiVertical,
+			s1: utils.targeting.getRawDbName(fandomContext.site.siteName),
+			s2: this.getAdLayout(fandomContext.page.pageType || 'article'),
+			wpage: fandomContext.page.pageName && fandomContext.page.pageName.toLowerCase(),
+		};
+
+		if (fandomContext.site.top1000) {
+			commonContextParams.top = '1k';
+		}
+
+		return {
+			...commonParams,
+			...commonContextParams,
+			...this.getOptionalKeyVals(),
+		};
 	}
 
 	protected getAdLayout(pageType: string): string {
@@ -61,6 +84,17 @@ export abstract class CommonStrategy {
 		return tags;
 	}
 
+	protected getTaxonomyTags(contextTags: Site['tags'] | Page['tags']): TaxonomyTags {
+		return {
+			gnre: contextTags?.gnre || [],
+			media: contextTags?.media || [],
+			pform: contextTags?.pform || [],
+			pub: contextTags?.pub || [],
+			theme: contextTags?.theme || [],
+			tv: contextTags?.tv || [],
+		};
+	}
+
 	private getVideoStatus(): VideoStatus {
 		const featuredVideoData = getMediaWikiVariable('wgArticleFeaturedVideo');
 		if (featuredVideoData) {
@@ -84,17 +118,11 @@ export abstract class CommonStrategy {
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
-	private extendWithOptionalKeyVals(targeting) {
-		const keyValsMap = {
+	private getOptionalKeyVals() {
+		return {
 			cid: utils.queryString.get('cid'),
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};
-
-		Object.keys(keyValsMap).forEach((key) => {
-			if (keyValsMap[key]) {
-				targeting[key] = keyValsMap[key].toString();
-			}
-		});
 	}
 }

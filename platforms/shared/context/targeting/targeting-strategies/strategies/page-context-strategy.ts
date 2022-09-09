@@ -1,7 +1,5 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
-
 import { CommonStrategy } from './common-strategy';
-import { createTaxonomyTags } from '../factories/create-taxonomy-tags';
 import { FandomContext } from '../models/fandom-context';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
@@ -16,32 +14,21 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
-		let targeting: Partial<Targeting> = {
+		const strategySpecificParams = {
 			age: this.context.page.tags?.age || [],
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			bundles: this.context.site.tags?.bundles || [],
-			esrb: this.context.site.esrbRating || [],
-			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
 			sex: this.context.page.tags?.sex || [],
-			s0: this.context.site.legacyVertical,
-			s0c: this.context.site.categories,
-			s0v: this.context.site.wikiVertical,
-			s1: utils.targeting.getRawDbName(this.context.site.siteName),
-			s2: this.getAdLayout(this.context.page.pageType || 'article'),
-			wpage: this.context.page.pageName && this.context.page.pageName.toLowerCase(),
 		};
 
-		const pageLevelTags: TaxonomyTags = createTaxonomyTags(this.context.page.tags);
+		const pageLevelTags: TaxonomyTags = this.getTaxonomyTags(this.context.page.tags);
 
 		this.addPagePrefixToValues(pageLevelTags);
 
-		targeting = { ...targeting, ...pageLevelTags };
-
-		if (this.context.site.top1000) {
-			targeting.top = '1k';
-		}
-
-		return this.addCommonParams(targeting, wiki, this.skin);
+		return {
+			...strategySpecificParams,
+			...pageLevelTags,
+			...this.getCommonParams(this.context, wiki, this.skin),
+		};
 	}
 }
