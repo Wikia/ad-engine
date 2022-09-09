@@ -3,7 +3,7 @@ import { utils } from '@wikia/ad-engine';
 import { createFandomContext } from './create-fandom-context';
 import { TargetingStrategyInterface, TargetingStrategy } from '../interfaces/targeting-strategy';
 import { PageContextStrategy } from '../strategies/page-context-strategy';
-import { CombinedStrategy } from '../strategies/combined-strategy';
+import { CombinedStrategySiteTagsBased } from '../strategies/combined-strategy-site-tags-based';
 import { SiteContextStrategy } from '../strategies/site-context-strategy';
 
 export function createSelectedStrategy(
@@ -18,6 +18,6 @@ export function createSelectedStrategy(
 		case TargetingStrategy.COMBINED:
 		default:
 			utils.logger('Targeting', 'Unrecognized strategy, falling back to default');
-			return new CombinedStrategy(skin, createFandomContext());
+			return new CombinedStrategySiteTagsBased(skin, createFandomContext());
 	}
 }

@@ -6,9 +6,9 @@ import {
 	Site,
 	Page,
 } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/models/fandom-context';
-import { CombinedStrategy } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy';
+import { CombinedStrategySiteTagsBased } from '../../../../../../../platforms/shared/context/targeting/targeting-strategies/strategies/combined-strategy-site-tags-based';
 
-describe('CombinedStrategy execution', () => {
+describe('CombinedStrategySiteTagsBased execution', () => {
 	beforeEach(() => {
 		context.set('geo.country', 'PL');
 	});
@@ -55,7 +55,7 @@ describe('CombinedStrategy execution', () => {
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(
+		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
 			defaultExpectedTargeting,
 		);
 	});
@@ -71,7 +71,9 @@ describe('CombinedStrategy execution', () => {
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
+			expectedTargeting,
+		);
 	});
 
 	it('Returns tags when site tags are empty and page tags are not empty', function () {
@@ -89,7 +91,9 @@ describe('CombinedStrategy execution', () => {
 			...{ theme: ['p_test2', 'p_superheroes'] },
 		};
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
+			expectedTargeting,
+		);
 	});
 
 	it('Returns combined tags when site and page tags are not empty', function () {
@@ -113,6 +117,8 @@ describe('CombinedStrategy execution', () => {
 			...{ theme: ['test3', 'superheroes', 'p_test4', 'p_superheroes'] },
 		};
 
-		expect(new CombinedStrategy(mockedSkin, mockedContext).execute()).to.deep.eq(expectedTargeting);
+		expect(new CombinedStrategySiteTagsBased(mockedSkin, mockedContext).execute()).to.deep.eq(
+			expectedTargeting,
+		);
 	});
 });

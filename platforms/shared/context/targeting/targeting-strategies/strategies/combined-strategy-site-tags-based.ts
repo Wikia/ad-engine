@@ -5,13 +5,16 @@ import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { FandomContext } from '../models/fandom-context';
 import { SpecificStrategyParams } from '../interfaces/specific-strategy-params';
 
-export class CombinedStrategy extends CommonStrategy implements TargetingStrategyInterface {
+export class CombinedStrategySiteTagsBased
+	extends CommonStrategy
+	implements TargetingStrategyInterface
+{
 	constructor(private skin: string, private context: FandomContext) {
 		super();
 	}
 
 	execute(): Partial<Targeting> {
-		utils.logger('Targeting', 'Executing CombinedStrategy...');
+		utils.logger('Targeting', 'Executing CombinedStrategySiteTagsBased...');
 
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
