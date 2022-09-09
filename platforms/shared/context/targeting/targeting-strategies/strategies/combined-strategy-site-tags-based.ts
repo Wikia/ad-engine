@@ -3,7 +3,6 @@ import { CommonStrategy } from './common-strategy';
 import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { FandomContext } from '../models/fandom-context';
-import { SpecificStrategyParams } from '../interfaces/specific-strategy-params';
 
 export class CombinedStrategySiteTagsBased
 	extends CommonStrategy
@@ -18,20 +17,18 @@ export class CombinedStrategySiteTagsBased
 
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
-		const strategySpecificParams: SpecificStrategyParams = {
-			age: this.context.site.tags?.age || [],
-			sex: this.context.site.tags?.sex || [],
-		};
+		// This Combined Strategy is based on Site Level Tags
+		const siteLevelTags = this.getStrategyLevelTags(this.context.site.tags);
 
-		const pageLevelTags: TaxonomyTags = this.getTaxonomyTags(this.context.page.tags);
-		const siteLevelTags: TaxonomyTags = this.getTaxonomyTags(this.context.site.tags);
+		const siteLevelTaxonomyTags: TaxonomyTags = this.getTaxonomyTags(this.context.site.tags);
+		const pageLevelTaxonomyTags: TaxonomyTags = this.getTaxonomyTags(this.context.page.tags);
 
-		this.addPagePrefixToValues(pageLevelTags);
+		this.addPagePrefixToValues(pageLevelTaxonomyTags);
 
 		return {
-			...strategySpecificParams,
+			...siteLevelTags,
 			...this.getCommonParams(this.context, wiki, this.skin),
-			...this.combineSiteAndPageTags(siteLevelTags, pageLevelTags),
+			...this.combineSiteAndPageTags(siteLevelTaxonomyTags, pageLevelTaxonomyTags),
 		};
 	}
 

@@ -6,6 +6,7 @@ import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable'
 import { FandomContext, Page, Site } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
+import { StrategyLevelTags } from '../interfaces/strategy-level-tags';
 
 export abstract class CommonStrategy {
 	protected getCommonParams(
@@ -91,6 +92,13 @@ export abstract class CommonStrategy {
 			pub: contextTags?.pub || [],
 			theme: contextTags?.theme || [],
 			tv: contextTags?.tv || [],
+		};
+	}
+
+	protected getStrategyLevelTags(contextTags: Site['tags'] | Page['tags']): StrategyLevelTags {
+		return {
+			age: contextTags?.age || [],
+			sex: contextTags?.sex || [],
 		};
 	}
 
