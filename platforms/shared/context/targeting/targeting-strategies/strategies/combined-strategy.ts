@@ -17,8 +17,6 @@ export class CombinedStrategy extends CommonStrategy implements TargetingStrateg
 
 		const strategySpecificParams: SpecificStrategyParams = {
 			age: this.context.site.tags?.age || [],
-			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
-			lang: this.context.page.lang || 'unknown',
 			sex: this.context.site.tags?.sex || [],
 		};
 

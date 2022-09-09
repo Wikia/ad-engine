@@ -5,28 +5,26 @@ import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { TargetingStrategyInterface } from '../interfaces/targeting-strategy';
 import { SpecificStrategyParams } from '../interfaces/specific-strategy-params';
 
-export class PageContextStrategy extends CommonStrategy implements TargetingStrategyInterface {
+export class SiteContextStrategy extends CommonStrategy implements TargetingStrategyInterface {
 	constructor(private skin: string, private context: FandomContext) {
 		super();
 	}
 
 	execute(): Partial<Targeting> {
-		utils.logger('Targeting', 'Executing PageContextStrategy...');
+		utils.logger('Targeting', 'Executing SiteContextStrategy...');
 
 		const wiki: MediaWikiAdsContext = context.get('wiki');
 
 		const strategySpecificParams: SpecificStrategyParams = {
-			age: this.context.page.tags?.age || [],
-			sex: this.context.page.tags?.sex || [],
+			age: this.context.site.tags?.age || [],
+			sex: this.context.site.tags?.sex || [],
 		};
 
-		const pageLevelTags: TaxonomyTags = this.getTaxonomyTags(this.context.page.tags);
-
-		this.addPagePrefixToValues(pageLevelTags);
+		const siteLevelTags: TaxonomyTags = this.getTaxonomyTags(this.context.site.tags);
 
 		return {
 			...strategySpecificParams,
-			...pageLevelTags,
+			...siteLevelTags,
 			...this.getCommonParams(this.context, wiki, this.skin),
 		};
 	}

@@ -28,9 +28,11 @@ export abstract class CommonStrategy {
 		};
 
 		const commonContextParams: CommonStrategyParams = {
+			artid: fandomContext.page.articleId ? fandomContext.page.articleId.toString() : '',
 			bundles: fandomContext.site.tags?.bundles || [],
 			esrb: fandomContext.site.esrbRating || '',
 			kid_wiki: fandomContext.site.directedAtChildren ? '1' : '0',
+			lang: fandomContext.page.lang || 'unknown',
 			s0: fandomContext.site.legacyVertical,
 			s0c: fandomContext.site.categories,
 			s0v: fandomContext.site.wikiVertical,
