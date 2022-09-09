@@ -10,7 +10,6 @@ import { ADX, GptSizeMapping } from '../providers';
 import { context, slotDataParamsUpdater, templateService } from '../services';
 import { AD_LABEL_CLASS, getTopOffset, logger, stringBuilder } from '../utils';
 import { Dictionary } from './dictionary';
-import { ResizeObserver } from 'resize-observer';
 
 export interface Targeting {
 	amznbid?: string;
@@ -655,20 +654,20 @@ export class AdSlot {
 			.querySelectorAll('[id^=google_ads_iframe_]')[0]
 			.querySelectorAll('[id^=google_ads_iframe_]')[0];
 
-		if (adType.includes('success')) {
+		if (adType.includes('success') && window['ResizeObserver']) {
+			//@ts-ignore ResizeObserver is a native module in most of the modern browsers
 			const resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const width = Math.floor(entry.target.clientWidth);
 					const height = Math.floor(entry.target.clientHeight);
-					if (width && height) {
-						communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
-							slot: this,
-							sizes: { width, height },
-						});
-						resizeObserver.unobserve(entry.target);
-					}
+					communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
+						slot: this,
+						sizes: { width, height },
+					});
+					resizeObserver.unobserve(entry.target);
 				}
 			});
+
 			resizeObserver.observe(adFrame);
 		}
 	}
