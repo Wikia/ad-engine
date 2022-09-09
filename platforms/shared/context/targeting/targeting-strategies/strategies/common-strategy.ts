@@ -5,6 +5,7 @@ import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { FandomContext, Page, Site } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
+import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
 
 export abstract class CommonStrategy {
 	protected getCommonParams(
@@ -38,14 +39,10 @@ export abstract class CommonStrategy {
 			wpage: fandomContext.page.pageName && fandomContext.page.pageName.toLowerCase(),
 		};
 
-		if (fandomContext.site.top1000) {
-			commonContextParams.top = '1k';
-		}
-
 		return {
 			...commonParams,
 			...commonContextParams,
-			...this.getOptionalKeyVals(),
+			...this.getOptionalKeyVals(fandomContext),
 		};
 	}
 
@@ -118,11 +115,25 @@ export abstract class CommonStrategy {
 		context.set('custom.hasIncontentPlayer', hasIncontentPlayer);
 	}
 
-	private getOptionalKeyVals() {
-		return {
+	private getOptionalKeyVals(fandomContext: FandomContext): OptionalStrategyParams {
+		const keyVals: OptionalStrategyParams = {};
+
+		const keyValsMap = {
 			cid: utils.queryString.get('cid'),
 			pv: context.get('wiki.pvNumber'),
 			pvg: context.get('wiki.pvNumberGlobal'),
 		};
+
+		Object.keys(keyValsMap).forEach((key) => {
+			if (keyValsMap[key]) {
+				keyVals[key] = keyValsMap[key].toString();
+			}
+		});
+
+		if (fandomContext.site.top1000) {
+			keyVals.top = '1k';
+		}
+
+		return keyVals;
 	}
 }

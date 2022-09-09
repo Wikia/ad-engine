@@ -7,6 +7,5 @@ export interface CommonStrategyParams {
 	s0v?: string;
 	s1?: string;
 	s2?: string;
-	top?: string;
 	wpage?: string;
 }
