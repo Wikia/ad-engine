@@ -1,14 +1,15 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 
-import { TaxonomyTags } from '../interfaces/taxonomy-tags';
+import { TaxonomyTags, PrefixableTaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { FandomContext, Page, Site } from '../models/fandom-context';
 import { CommonStrategyParams } from '../interfaces/common-strategy-params';
 import { OptionalStrategyParams } from '../interfaces/optional-strategy-params';
-import { StrategyLevelTags } from '../interfaces/strategy-level-tags';
 
 export abstract class CommonStrategy {
+	private prefixableKeys = ['gnre', 'media', 'pform', 'pub', 'theme', 'tv'];
+
 	protected getCommonParams(
 		fandomContext: FandomContext,
 		wiki: MediaWikiAdsContext,
@@ -30,7 +31,6 @@ export abstract class CommonStrategy {
 
 		const commonContextParams: CommonStrategyParams = {
 			artid: fandomContext.page.articleId ? fandomContext.page.articleId.toString() : '',
-			bundles: fandomContext.site.tags?.bundles || [],
 			esrb: fandomContext.site.esrbRating || '',
 			kid_wiki: fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: fandomContext.page.lang || 'unknown',
@@ -74,9 +74,23 @@ export abstract class CommonStrategy {
 		return pageType;
 	}
 
-	protected addPagePrefixToValues(tags: TaxonomyTags): TaxonomyTags {
+	protected getTaxonomyTags(contextTags: Site['tags'] | Page['tags']): TaxonomyTags {
+		return {
+			age: contextTags?.age || [],
+			bundles: contextTags?.tags?.bundles || [],
+			gnre: contextTags?.gnre || [],
+			media: contextTags?.media || [],
+			pform: contextTags?.pform || [],
+			pub: contextTags?.pub || [],
+			sex: contextTags?.sex || [],
+			theme: contextTags?.theme || [],
+			tv: contextTags?.tv || [],
+		};
+	}
+
+	protected addPagePrefixToValues(tags: TaxonomyTags): PrefixableTaxonomyTags {
 		for (const [key, value] of Object.entries(tags)) {
-			if (Array.isArray(value) && value.length > 0) {
+			if (this.prefixableKeys.includes(key) && Array.isArray(value) && value.length > 0) {
 				tags[key] = value.map((val) => 'p_' + val);
 			}
 		}
@@ -84,22 +98,23 @@ export abstract class CommonStrategy {
 		return tags;
 	}
 
-	protected getTaxonomyTags(contextTags: Site['tags'] | Page['tags']): TaxonomyTags {
-		return {
-			gnre: contextTags?.gnre || [],
-			media: contextTags?.media || [],
-			pform: contextTags?.pform || [],
-			pub: contextTags?.pub || [],
-			theme: contextTags?.theme || [],
-			tv: contextTags?.tv || [],
-		};
-	}
+	protected combinePrefixableTags(
+		siteTags: TaxonomyTags,
+		pageTags: PrefixableTaxonomyTags,
+	): PrefixableTaxonomyTags {
+		const combinedTags: TaxonomyTags = {};
 
-	protected getStrategyLevelTags(contextTags: Site['tags'] | Page['tags']): StrategyLevelTags {
-		return {
-			age: contextTags?.age || [],
-			sex: contextTags?.sex || [],
-		};
+		for (const [key, value] of Object.entries(siteTags)) {
+			if (this.prefixableKeys.includes(key) && Array.isArray(value)) {
+				if (value.length > 0) {
+					combinedTags[key] = siteTags[key].concat(pageTags[key]);
+				} else if (value.length === 0) {
+					combinedTags[key] = pageTags[key];
+				}
+			}
+		}
+
+		return combinedTags;
 	}
 
 	private getVideoStatus(): VideoStatus {

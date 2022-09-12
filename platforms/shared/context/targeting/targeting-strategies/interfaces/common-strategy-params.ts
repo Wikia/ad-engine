@@ -1,6 +1,5 @@
 export interface CommonStrategyParams {
 	artid?: string;
-	bundles?: string[];
 	esrb?: string;
 	kid_wiki?: '0' | '1';
 	lang?: string;
