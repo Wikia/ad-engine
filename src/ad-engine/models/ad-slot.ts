@@ -660,11 +660,13 @@ export class AdSlot {
 				for (const entry of entries) {
 					const width = Math.floor(entry.target.clientWidth);
 					const height = Math.floor(entry.target.clientHeight);
-					communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
-						slot: this,
-						sizes: { width, height },
-					});
-					resizeObserver.unobserve(entry.target);
+					if (width > 0 && height > 0) {
+						communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
+							slot: this,
+							sizes: { width, height },
+						});
+						resizeObserver.unobserve(entry.target);
+					}
 				}
 			});
 
