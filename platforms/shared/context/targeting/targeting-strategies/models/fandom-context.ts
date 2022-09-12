@@ -11,6 +11,8 @@ export class Site {
 	public readonly tags: any;
 	public readonly legacyVertical: string;
 	public readonly wikiVertical: string;
+	// 'vertical' should be removed after UCP release from ADEN-12194
+	public readonly vertical: string;
 
 	constructor(
 		categories: [],
@@ -21,6 +23,7 @@ export class Site {
 		tags: object,
 		legacyVertical: string,
 		wikiVertical: string,
+		vertical: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
 		this.directedAtChildren = typeof directedAtChildren === 'boolean' ? directedAtChildren : null;
@@ -30,6 +33,7 @@ export class Site {
 		this.tags = typeof tags === 'object' ? tags : null;
 		this.legacyVertical = typeof legacyVertical === 'string' ? legacyVertical : null;
 		this.wikiVertical = typeof wikiVertical === 'string' ? wikiVertical : null;
+		this.vertical = typeof vertical === 'string' ? vertical : null;
 	}
 }
 

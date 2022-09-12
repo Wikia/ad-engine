@@ -8,6 +8,8 @@ interface WindowFandomContext {
 		tags: any;
 		legacyVertical: string;
 		wikiVertical: string;
+		// 'vertical' should be removed after UCP release from ADEN-12194
+		vertical: string;
 	};
 	page: {
 		articleId: number;

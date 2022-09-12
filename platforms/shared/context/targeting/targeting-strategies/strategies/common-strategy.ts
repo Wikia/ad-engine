@@ -34,9 +34,11 @@ export abstract class CommonStrategy {
 			esrb: fandomContext.site.esrbRating || '',
 			kid_wiki: fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: fandomContext.page.lang || 'unknown',
-			s0: fandomContext.site.legacyVertical,
+			// 'fandomContext.site.vertical' should be removed after UCP release from ADEN-12194
+			s0: fandomContext.site.legacyVertical || fandomContext.site.vertical,
 			s0c: fandomContext.site.categories,
-			s0v: fandomContext.site.wikiVertical,
+			// 'wiki.targeting.wikiVertical' should be removed after UCP release from ADEN-12194
+			s0v: fandomContext.site.wikiVertical || wiki.targeting.wikiVertical,
 			s1: utils.targeting.getRawDbName(fandomContext.site.siteName),
 			s2: this.getAdLayout(fandomContext.page.pageType || 'article'),
 			wpage: fandomContext.page.pageName && fandomContext.page.pageName.toLowerCase(),
