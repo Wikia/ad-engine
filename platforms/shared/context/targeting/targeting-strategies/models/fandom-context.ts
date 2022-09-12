@@ -9,8 +9,7 @@ export class Site {
 	public readonly siteName: string;
 	public readonly top1000: boolean;
 	public readonly tags: any;
-	public readonly legacyVertical: string;
-	public readonly wikiVertical: string;
+	public readonly taxonomy: string[];
 	// 'vertical' should be removed after UCP release from ADEN-12194
 	public readonly vertical: string;
 
@@ -21,8 +20,7 @@ export class Site {
 		siteName: string,
 		top1000: boolean,
 		tags: object,
-		legacyVertical: string,
-		wikiVertical: string,
+		taxonomy: string[],
 		vertical: string,
 	) {
 		this.categories = typeof categories === 'object' ? categories : null;
@@ -31,8 +29,7 @@ export class Site {
 		this.siteName = typeof siteName === 'string' ? siteName : null;
 		this.top1000 = typeof top1000 === 'boolean' ? top1000 : null;
 		this.tags = typeof tags === 'object' ? tags : null;
-		this.legacyVertical = typeof legacyVertical === 'string' ? legacyVertical : null;
-		this.wikiVertical = typeof wikiVertical === 'string' ? wikiVertical : null;
+		this.taxonomy = Array.isArray(taxonomy) ? taxonomy : null;
 		this.vertical = typeof vertical === 'string' ? vertical : null;
 	}
 }

@@ -14,8 +14,7 @@ function validateFandomContext(windowContext: WindowFandomContext): FandomContex
 			windowContext?.site?.siteName,
 			windowContext?.site?.top1000,
 			windowContext?.site?.tags,
-			windowContext?.site?.legacyVertical,
-			windowContext?.site?.wikiVertical,
+			windowContext?.site?.taxonomy,
 			// 'vertical' should be removed after UCP release from ADEN-12194
 			windowContext?.site?.vertical,
 		),

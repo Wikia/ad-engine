@@ -1,14 +1,11 @@
-export interface PrefixableTaxonomyTags {
+export interface TaxonomyTags {
+	age?: string[];
+	bundles?: string[];
 	gnre?: string[];
 	media?: string[];
 	pform?: string[];
 	pub?: string[];
+	sex?: string[];
 	theme?: string[];
 	tv?: string[];
-}
-
-export interface TaxonomyTags extends PrefixableTaxonomyTags {
-	age?: string[];
-	bundles?: string[];
-	sex?: string[];
 }

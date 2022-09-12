@@ -1,6 +1,6 @@
 import { context, Targeting, utils } from '@wikia/ad-engine';
 
-import { TaxonomyTags, PrefixableTaxonomyTags } from '../interfaces/taxonomy-tags';
+import { TaxonomyTags } from '../interfaces/taxonomy-tags';
 import { getDomain } from '../../../../utils/get-domain';
 import { getMediaWikiVariable } from '../../../../utils/get-media-wiki-variable';
 import { FandomContext, Page, Site } from '../models/fandom-context';
@@ -35,10 +35,10 @@ export abstract class CommonStrategy {
 			kid_wiki: fandomContext.site.directedAtChildren ? '1' : '0',
 			lang: fandomContext.page.lang || 'unknown',
 			// 'fandomContext.site.vertical' should be removed after UCP release from ADEN-12194
-			s0: fandomContext.site.legacyVertical || fandomContext.site.vertical,
+			s0: fandomContext.site.taxonomy?.[0] || fandomContext.site.vertical,
 			s0c: fandomContext.site.categories,
 			// 'wiki.targeting.wikiVertical' should be removed after UCP release from ADEN-12194
-			s0v: fandomContext.site.wikiVertical || wiki.targeting.wikiVertical,
+			s0v: fandomContext.site.taxonomy?.[1] || wiki.targeting.wikiVertical,
 			s1: utils.targeting.getRawDbName(fandomContext.site.siteName),
 			s2: this.getAdLayout(fandomContext.page.pageType || 'article'),
 			wpage: fandomContext.page.pageName && fandomContext.page.pageName.toLowerCase(),
@@ -90,7 +90,7 @@ export abstract class CommonStrategy {
 		};
 	}
 
-	protected addPagePrefixToValues(tags: TaxonomyTags): PrefixableTaxonomyTags {
+	protected addPagePrefixToValues(tags: TaxonomyTags): TaxonomyTags {
 		for (const [key, value] of Object.entries(tags)) {
 			if (this.prefixableKeys.includes(key) && Array.isArray(value) && value.length > 0) {
 				tags[key] = value.map((val) => 'p_' + val);
@@ -100,10 +100,7 @@ export abstract class CommonStrategy {
 		return tags;
 	}
 
-	protected combinePrefixableTags(
-		siteTags: TaxonomyTags,
-		pageTags: PrefixableTaxonomyTags,
-	): PrefixableTaxonomyTags {
+	protected combinePrefixableTags(siteTags: TaxonomyTags, pageTags: TaxonomyTags): TaxonomyTags {
 		const combinedTags: TaxonomyTags = {};
 
 		for (const [key, value] of Object.entries(siteTags)) {
