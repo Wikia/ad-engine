@@ -3,10 +3,12 @@ import { ActionType } from './adms-actions';
 import { v4 as uuid } from 'uuid';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { StorageStrategyInterface } from '../storage-strategies';
+import { utils } from '@ad-engine/core';
 
 class AdmsStrategy implements StorageStrategyInterface {
 	async get(): Promise<string> {
 		const userData = await admsService.get();
+		utils.logger('DJ', userData);
 		let identity = userData.IDENTITY?.find((identity) => identity.identityType === 'ppid');
 		if (!identity) {
 			const newPpid = uuid();

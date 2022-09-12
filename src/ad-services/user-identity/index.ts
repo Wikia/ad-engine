@@ -1,16 +1,12 @@
-import { BaseServiceSetup, context } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { StorageStrategies, StorageStrategyInterface } from './storage-strategies';
 import { localStorageStrategy } from './local-strategy';
 import { admsStorageService } from './adms-strategy';
 
 export class UserIdentity extends BaseServiceSetup {
-	private get STRATEGY(): StorageStrategies {
-		const ppid = JSON.parse(context.get('services.ppid'));
-		return ppid.storageType;
-	}
-
-	private getPPID(): StorageStrategyInterface {
-		switch (this.STRATEGY) {
+	private getPPID(strategy: StorageStrategies): StorageStrategyInterface {
+		utils.logger('DJ', strategy);
+		switch (strategy) {
 			case StorageStrategies.ADMS:
 				return admsStorageService;
 			case StorageStrategies.LOCAL:
@@ -19,14 +15,14 @@ export class UserIdentity extends BaseServiceSetup {
 		}
 	}
 
-	async setupPPID(): Promise<void> {
-		context.set('targeting.ppid', await this.getPPID().get);
+	async setupPPID(strategy: StorageStrategies): Promise<void> {
+		context.set('targeting.ppid', await this.getPPID(strategy).get());
 	}
 
 	async call(): Promise<void> {
-		const ppid = JSON.parse(context.get('services.ppid'));
+		const ppid = context.get('services.ppid');
 		if (ppid.enabled) {
-			await this.setupPPID();
+			await this.setupPPID(ppid.strategy);
 		}
 	}
 }

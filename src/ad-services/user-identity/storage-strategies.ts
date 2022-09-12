@@ -1,6 +1,6 @@
 export enum StorageStrategies {
 	LOCAL = 'local',
-	ADMS = 'ADMS',
+	ADMS = 'adms',
 }
 
 export interface StorageStrategyInterface {

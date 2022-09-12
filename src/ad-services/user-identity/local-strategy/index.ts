@@ -5,7 +5,7 @@ import { StorageStrategyInterface } from '../storage-strategies';
 class LocalStorageStrategy implements StorageStrategyInterface {
 	private generatePPID() {
 		const ppid: string = uuid();
-		localStorage.setItem('ppid', uuid);
+		localStorage.setItem('ppid', ppid);
 		communicationService.dispatch({
 			type: eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
 			payload: {
