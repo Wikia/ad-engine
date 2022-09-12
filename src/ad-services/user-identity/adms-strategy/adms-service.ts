@@ -1,14 +1,5 @@
 import { admsClient } from './adms-client';
-import { ActionType } from './adms-actions';
-
-export interface ActiveData {
-	IDENTITY?: {
-		identityType: string;
-		identityToken: string;
-	}[];
-	QUIZ?: any;
-	HEALTH?: any;
-}
+import { ActionType, ActiveData } from './adms-actions';
 
 class AdmsService {
 	async get(): Promise<Partial<ActiveData>> {

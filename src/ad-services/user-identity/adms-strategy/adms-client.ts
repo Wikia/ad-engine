@@ -1,5 +1,4 @@
-import { ActiveData } from './adms-service';
-import { ActionType, Action } from './adms-actions';
+import { ActionType, Action, ActiveData } from './adms-actions';
 
 export function getServicesBaseURL() {
 	return window.location.hostname.includes('fandom.com')
@@ -13,11 +12,11 @@ class AdmsClient {
 	private ADMS = getServicesBaseURL() + 'active-data-management-service/';
 
 	fetchData(): Promise<ActiveData> {
-		return fetch(this.ADMS + 'profiles/', {
+		return fetch(this.ADMS + `profiles?cb=${Date.now()}`, {
 			mode: 'cors',
 			credentials: 'include',
 		}).then((response) => {
-			return response.body as ActiveData;
+			return response.json();
 		});
 	}
 
