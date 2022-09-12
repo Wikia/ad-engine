@@ -1,48 +1,31 @@
 import { BaseServiceSetup, context } from '@ad-engine/core';
-import { v4 as uuid } from 'uuid';
-import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { StorageStrategies, StorageStrategyInterface } from './storage-strategies';
+import { localStorageStrategy } from './local-strategy';
+import { admsStorageService } from './adms-strategy';
 
 export class UserIdentity extends BaseServiceSetup {
-	private get ADMS_AVAILABLE(): boolean {
-		return (
-			window.SilverSurferSDK?.requestUserPPID && context.get('services.ppidAdmsStorage.enabled')
-		);
+	private get STRATEGY(): StorageStrategies {
+		const ppid = JSON.parse(context.get('services.ppid'));
+		return ppid.storageType;
 	}
 
-	private generatePPID() {
-		const ppid: string = uuid();
-		localStorage.setItem('ppid', uuid);
-		communicationService.dispatch({
-			type: eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
-			payload: {
-				partnerName: 'Google',
-				partnerIdentityId: ppid,
-			},
-		});
-		if (this.ADMS_AVAILABLE) {
-			window.SilverSurferSDK.saveUserPPID(ppid);
+	private getPPID(): StorageStrategyInterface {
+		switch (this.STRATEGY) {
+			case StorageStrategies.ADMS:
+				return admsStorageService;
+			case StorageStrategies.LOCAL:
+			default:
+				return localStorageStrategy;
 		}
-
-		return ppid;
-	}
-
-	private async getPPID(): Promise<string> {
-		let ppid: string;
-		if (this.ADMS_AVAILABLE) {
-			ppid = await window.SilverSurferSDK.requestUserPPID();
-			if (ppid) {
-				return ppid;
-			}
-		}
-		return localStorage.getItem('ppid') || this.generatePPID();
 	}
 
 	async setupPPID(): Promise<void> {
-		context.set('targeting.ppid', await this.getPPID());
+		context.set('targeting.ppid', await this.getPPID().get);
 	}
 
 	async call(): Promise<void> {
-		if (context.get('services.ppid.enabled')) {
+		const ppid = JSON.parse(context.get('services.ppid'));
+		if (ppid.enabled) {
 			await this.setupPPID();
 		}
 	}
