@@ -187,7 +187,7 @@ export class AdSlot {
 						adType,
 					}: { event: googletag.events.SlotRenderEndedEvent; adType: string } = payload;
 
-					this.setupSizesTracking(event, adType);
+					this.setupSizesTracking(adType);
 					this.updateOnRenderEnd(event, adType);
 
 					resolve();
@@ -648,13 +648,13 @@ export class AdSlot {
 		return context.get(`events.pushAfterRendered.${this.getSlotName()}`) || [];
 	}
 
-	setupSizesTracking(event: googletag.events.SlotRenderEndedEvent, adType: string): void {
-		const adSlotElement = document.getElementById(event.slot.getSlotElementId());
-		const adFrame = adSlotElement
-			.querySelectorAll('[id^=google_ads_iframe_]')[0]
-			.querySelectorAll('[id^=google_ads_iframe_]')[0];
+	/**
+	 * Setup observer for changes of ad slot sizes
+	 */
+	private setupSizesTracking(adType: string): void {
+		const adFrame = this.getIframe();
 
-		if (adType.includes('success') && window['ResizeObserver']) {
+		if (adFrame && adType.includes('success') && window['ResizeObserver']) {
 			//@ts-ignore ResizeObserver is a native module in most of the modern browsers
 			const resizeObserver = new ResizeObserver((entries) => {
 				for (const entry of entries) {
