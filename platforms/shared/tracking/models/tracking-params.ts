@@ -1,6 +1,8 @@
 export interface TrackingParams {
 	a?: number;
 	action?: string;
+	ad_height?: number;
+	ad_width?: number;
 	beacon?: string;
 	browser_ts?: number;
 	// wiki id key on UCP
@@ -9,7 +11,7 @@ export interface TrackingParams {
 	ck?: string;
 	category?: string;
 	country?: string;
-	creative_id?: number;
+	creative_id?: number | string;
 	eventName?: string;
 	event_name?: string;
 	ga_action?: string;
@@ -19,11 +21,12 @@ export interface TrackingParams {
 	keyvals?: string;
 	label?: string;
 	lc?: string;
-	line_item_id?: number;
+	line_item_id?: number | string;
 	load_time?: number;
 	n?: number;
 	partner_name?: string;
 	partner_identity_id?: string;
+	position?: string;
 	prop_name?: string;
 	prop_value?: string;
 	pv_number?: number;
@@ -33,6 +36,8 @@ export interface TrackingParams {
 	rv?: number;
 	s?: string;
 	session_id?: string;
+	slot_id?: string;
+	slot_size?: string;
 	t?: string;
 	timestamp?: number;
 	tz_offset?: number;
