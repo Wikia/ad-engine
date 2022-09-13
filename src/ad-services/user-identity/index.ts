@@ -27,8 +27,7 @@ export class UserIdentity extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		const ppid = context.get('services.ppid.enabled');
-		if (ppid) {
+		if (context.get('services.ppid.enabled')) {
 			await this.setupPPID();
 		} else {
 			utils.logger(UserIdentity.logGroup, 'disabled');
