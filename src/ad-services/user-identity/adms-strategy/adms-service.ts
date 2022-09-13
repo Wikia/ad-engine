@@ -6,14 +6,16 @@ class AdmsService {
 		const localData = await admsClient.getLocalData();
 		if (!localData) {
 			const remoteData = await admsClient.fetchData();
-			admsClient.setLocalData(remoteData);
+			if (remoteData) {
+				admsClient.setLocalData(remoteData);
+			}
 			return remoteData;
 		}
 		return localData;
 	}
 
 	async set(actionType: ActionType, data: unknown): Promise<void> {
-		const localData = admsClient.getLocalData();
+		const localData = admsClient.getLocalData() || {};
 		const sectionData = localData[actionType.toUpperCase()] || [];
 		const mergedData = { ...localData, [actionType.toUpperCase()]: [...sectionData, data] };
 		admsClient.setLocalData(mergedData);

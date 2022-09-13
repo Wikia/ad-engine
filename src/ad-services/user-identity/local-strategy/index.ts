@@ -1,14 +1,13 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { v4 as uuid } from 'uuid';
 import { StorageStrategyInterface } from '../storage-strategies';
 import { utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
 
 class LocalStorageStrategy implements StorageStrategyInterface {
-	private generatePPID() {
+	private generatePPID(): string {
 		utils.logger(UserIdentity.logGroup, 'LocalStorage', 'did not found a PPID in LocalStorage');
-		const ppid: string = uuid();
-		localStorage.setItem('ppid', ppid);
+		const ppid: string = utils.uuid.v4();
+		utils.storage.set('ppid', ppid);
 		communicationService.dispatch({
 			type: eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
 			payload: {
@@ -21,7 +20,7 @@ class LocalStorageStrategy implements StorageStrategyInterface {
 	}
 
 	get(): Promise<string> {
-		return Promise.resolve(localStorage.getItem('ppid') || this.generatePPID());
+		return Promise.resolve(utils.storage.get('ppid') || this.generatePPID());
 	}
 }
 

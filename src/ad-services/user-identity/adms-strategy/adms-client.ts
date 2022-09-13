@@ -1,4 +1,6 @@
 import { ActionType, Action, ActiveData } from './adms-actions';
+import { utils } from '@ad-engine/core';
+import { UserIdentity } from '../index';
 
 export function getServicesBaseURL() {
 	return window.location.hostname.includes('fandom.com')
@@ -15,12 +17,18 @@ class AdmsClient {
 		return fetch(this.ADMS + `profiles?cb=${Date.now()}`, {
 			mode: 'cors',
 			credentials: 'include',
-		}).then((response) => {
-			return response.json();
-		});
+		})
+			.then((response) => {
+				if (response.status === 200) {
+					return response.json();
+				}
+			})
+			.catch((reason) => {
+				utils.logger(UserIdentity.logGroup, 'Loading ADMS data failed', reason);
+			});
 	}
 
-	postData(actionType: ActionType, data): Promise<Response> {
+	async postData(actionType: ActionType, data): Promise<void> {
 		const action: Action = {
 			time: Date.now(),
 			name: 'identity',
@@ -31,7 +39,7 @@ class AdmsClient {
 			},
 		};
 
-		return fetch(this.ADMS + 'validate/', {
+		await fetch(this.ADMS + 'validate/', {
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -43,11 +51,11 @@ class AdmsClient {
 	}
 
 	getLocalData(): ActiveData {
-		return JSON.parse(localStorage.getItem('silver-surfer-active-data-v2'));
+		return utils.storage.get('silver-surfer-active-data-v2');
 	}
 
 	setLocalData(data: Partial<ActiveData>): void {
-		localStorage.setItem('silver-surfer-active-data-v2', JSON.stringify(data));
+		utils.storage.set('silver-surfer-active-data-v2', data);
 	}
 }
 
