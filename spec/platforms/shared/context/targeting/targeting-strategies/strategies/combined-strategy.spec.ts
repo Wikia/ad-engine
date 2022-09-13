@@ -51,7 +51,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 
 	it('Returns empty tags when site and page tags are empty', function () {
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'life', 'lifestyle', 'life'),
+			new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 
@@ -66,7 +66,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'life', 'lifestyle', 'life'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, ['life', 'lifestyle'], 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', {}),
 		);
 		const expectedTargeting = { ...defaultExpectedTargeting, ...mockedSiteTags };
@@ -82,7 +82,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			theme: ['test2', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, {}, 'life', 'lifestyle', 'life'),
+			new Site([], true, 'ec', 'test', false, {}, ['life', 'lifestyle'], 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
@@ -106,7 +106,7 @@ describe('CombinedStrategySiteTagsBased execution', () => {
 			theme: ['test4', 'superheroes'],
 		};
 		const mockedContext: FandomContext = new FandomContext(
-			new Site([], true, 'ec', 'test', false, mockedSiteTags, 'life', 'lifestyle', 'life'),
+			new Site([], true, 'ec', 'test', false, mockedSiteTags, ['life', 'lifestyle'], 'life'),
 			new Page(666, 'pl', 666, 'test', 'article-test', mockedPageTags),
 		);
 		const expectedTargeting = {
