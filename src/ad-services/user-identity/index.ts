@@ -17,8 +17,9 @@ export class UserIdentity extends BaseServiceSetup {
 		}
 	}
 
-	async setupPPID(strategy: StorageStrategies): Promise<void> {
+	async setupPPID(): Promise<void> {
 		try {
+			const strategy = context.get('services.ppidStorageStrategy');
 			context.set('targeting.ppid', await this.getPPID(strategy).get());
 		} catch (e) {
 			utils.logger(UserIdentity.logGroup, 'Setting up PPID has failed!', e);
@@ -26,9 +27,9 @@ export class UserIdentity extends BaseServiceSetup {
 	}
 
 	async call(): Promise<void> {
-		const ppid = context.get('services.ppid');
-		if (ppid?.enabled) {
-			await this.setupPPID(ppid.strategy);
+		const ppid = context.get('services.ppid.enabled');
+		if (ppid) {
+			await this.setupPPID();
 		} else {
 			utils.logger(UserIdentity.logGroup, 'disabled');
 		}

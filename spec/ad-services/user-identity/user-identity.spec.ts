@@ -40,9 +40,7 @@ describe('User Identity', () => {
 	it('is disabled', async () => {
 		const setupSpy = spy(userIdentity, 'setupPPID');
 
-		context.set('services.ppid', {
-			enabled: false,
-		});
+		context.set('services.ppid', false);
 
 		await userIdentity.call();
 
@@ -50,10 +48,8 @@ describe('User Identity', () => {
 	});
 
 	it("use LocalStore strategy and don't have PPID stored", async () => {
-		context.set('services.ppid', {
-			enabled: true,
-			strategy: StorageStrategies.LOCAL,
-		});
+		context.set('services.ppid', true);
+		context.set('services.ppidStorageStrategy', StorageStrategies.LOCAL);
 
 		await userIdentity.call();
 
@@ -61,13 +57,11 @@ describe('User Identity', () => {
 	});
 
 	it('use LocalStore strategy and have PPID stored', async () => {
+		context.set('services.ppid', true);
+		context.set('services.ppidStorageStrategy', StorageStrategies.LOCAL);
 		localStore = {
 			ppid: '11111111-1111-1111-1111-111111111111',
 		};
-		context.set('services.ppid', {
-			enabled: true,
-			strategy: StorageStrategies.LOCAL,
-		});
 
 		await userIdentity.call();
 
@@ -75,10 +69,8 @@ describe('User Identity', () => {
 	});
 
 	it('use ADMS strategy and gets PPID from API', async () => {
-		context.set('services.ppid', {
-			enabled: true,
-			strategy: StorageStrategies.ADMS,
-		});
+		context.set('services.ppid', true);
+		context.set('services.ppidStorageStrategy', StorageStrategies.ADMS);
 		sandbox.stub(admsClient, 'fetchData').returns(
 			Promise.resolve({
 				IDENTITY: [
@@ -103,10 +95,8 @@ describe('User Identity', () => {
 	});
 
 	it("use ADMS strategy and don't have PPID in store or API", async () => {
-		context.set('services.ppid', {
-			enabled: true,
-			strategy: StorageStrategies.ADMS,
-		});
+		context.set('services.ppid', true);
+		context.set('services.ppidStorageStrategy', StorageStrategies.ADMS);
 		sandbox.stub(admsClient, 'fetchData').returns(Promise.resolve({}));
 
 		sandbox.stub(admsClient, 'postData').returns(Promise.resolve());
