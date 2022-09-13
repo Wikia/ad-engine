@@ -17,7 +17,7 @@ export class UserIdentity extends BaseServiceSetup {
 		}
 	}
 
-	private async setupPPID(): Promise<void> {
+	async setupPPID(): Promise<void> {
 		try {
 			const strategy = context.get('services.ppidRepository');
 			context.set('targeting.ppid', await this.getPPID(strategy).get());

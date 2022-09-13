@@ -14,8 +14,9 @@ export function getServicesBaseURL() {
 }
 
 class AdmsClient {
-	storage = new UniversalStorage();
+	private ADMSStorageKey = 'silver-surfer-active-data-v2';
 	private ADMS = getServicesBaseURL() + 'active-data-management-service/';
+	storage = new UniversalStorage();
 
 	fetchData(): Promise<ActiveData> {
 		return fetch(this.ADMS + `profiles?cb=${Date.now()}`, {
@@ -55,11 +56,11 @@ class AdmsClient {
 	}
 
 	getLocalData(): ActiveData {
-		return this.storage.getItem('silver-surfer-active-data-v2') as ActiveData;
+		return this.storage.getItem(this.ADMSStorageKey) as ActiveData;
 	}
 
 	setLocalData(data: Partial<ActiveData>): void {
-		this.storage.setItem('silver-surfer-active-data-v2', data);
+		this.storage.setItem(this.ADMSStorageKey, data);
 	}
 }
 
