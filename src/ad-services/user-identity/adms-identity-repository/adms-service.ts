@@ -1,5 +1,5 @@
 import { admsClient } from './adms-client';
-import { ActionType, ActiveData } from './adms-actions';
+import { Action, ActionType, ActiveData } from './adms-actions';
 
 class AdmsService {
 	async get(): Promise<Partial<ActiveData>> {
@@ -14,12 +14,12 @@ class AdmsService {
 		return localData;
 	}
 
-	async set(actionType: ActionType, data: unknown): Promise<void> {
+	async set(actionType: ActionType, data: Action): Promise<void> {
 		const localData = admsClient.getLocalData() || {};
 		const sectionData = localData[actionType.toUpperCase()] || [];
 		const mergedData = { ...localData, [actionType.toUpperCase()]: [...sectionData, data] };
 		admsClient.setLocalData(mergedData);
-		await admsClient.postData(actionType, data);
+		await admsClient.postData(actionType, data.payload);
 	}
 }
 

@@ -23,6 +23,8 @@ describe('User Identity', () => {
 	});
 	afterEach(() => {
 		sandbox.restore();
+		context.remove('services.ppid.enabled');
+		context.remove('services.ppidRepository');
 	});
 
 	it('is disabled', async () => {

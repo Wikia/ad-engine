@@ -35,7 +35,7 @@ class AdmsClient {
 	async postData(actionType: ActionType, data): Promise<void> {
 		const action: Action = {
 			time: Date.now(),
-			name: 'identity',
+			name: actionType.toLowerCase(),
 			type: actionType,
 			payload: {
 				...data,
