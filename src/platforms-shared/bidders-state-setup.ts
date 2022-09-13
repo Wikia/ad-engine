@@ -39,15 +39,9 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 			'bidders.prebid.appnexusNative.enabled',
 			instantConfig.get('icPrebidAppNexusNative'),
 		);
-		context.set(
-			'bidders.prebid.appnexusGroupM.enabled',
-			instantConfig.get('icPrebidAppNexusGroupM'),
-		);
-		context.set('bidders.prebid.beachfront.enabled', instantConfig.get('icPrebidBeachfront'));
 		context.set('bidders.prebid.gumgum.enabled', instantConfig.get('icPrebidGumGum'));
 		context.set('bidders.prebid.indexExchange.enabled', instantConfig.get('icPrebidIndexExchange'));
 		context.set('bidders.prebid.kargo.enabled', instantConfig.get('icPrebidKargo'));
-		context.set('bidders.prebid.mediagrid.enabled', instantConfig.get('icPrebidMediaGrid'));
 		context.set('bidders.prebid.medianet.enabled', instantConfig.get('icPrebidMedianet'));
 		context.set('bidders.prebid.nobid.enabled', instantConfig.get('icPrebidNobid'));
 		context.set('bidders.prebid.oneVideo.enabled', instantConfig.get('icPrebidOneVideo'));
@@ -63,11 +57,6 @@ export function setupBidders(context: Context, instantConfig: InstantConfigServi
 		context.set('bidders.prebid.telaria.enabled', instantConfig.get('icPrebidTelaria'));
 		context.set('bidders.prebid.triplelift.enabled', instantConfig.get('icPrebidTriplelift'));
 		context.set('bidders.prebid.verizon.enabled', instantConfig.get('icPrebidVerizon'));
-
-		context.set(
-			'custom.jwplayerDataProvider',
-			instantConfig.get('icPrebidMediaGrid') && hasFeaturedVideo,
-		);
 
 		const testBidderConfig: object = instantConfig.get('icPrebidTestBidder');
 		if (testBidderConfig) {
