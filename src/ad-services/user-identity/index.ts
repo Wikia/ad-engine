@@ -1,25 +1,25 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
-import { StorageStrategies, StorageStrategyInterface } from './storage-strategies';
-import { localStorageStrategy } from './local-strategy';
-import { admsStorageService } from './adms-strategy';
+import { IdentityRepositories, IdentityRepositoryInterface } from './identity-repositories';
+import { localStorageRepository } from './local-storage-repository';
+import { admsIdentityRepository } from './adms-identity-repository';
 
 export class UserIdentity extends BaseServiceSetup {
 	public static logGroup = 'user-identity';
 
-	private getPPID(strategy: StorageStrategies): StorageStrategyInterface {
+	private getPPID(strategy: IdentityRepositories): IdentityRepositoryInterface {
 		utils.logger(UserIdentity.logGroup, 'active strategy: ', strategy);
 		switch (strategy) {
-			case StorageStrategies.ADMS:
-				return admsStorageService;
-			case StorageStrategies.LOCAL:
+			case IdentityRepositories.ADMS:
+				return admsIdentityRepository;
+			case IdentityRepositories.LOCAL:
 			default:
-				return localStorageStrategy;
+				return localStorageRepository;
 		}
 	}
 
 	async setupPPID(): Promise<void> {
 		try {
-			const strategy = context.get('services.ppidStorageStrategy');
+			const strategy = context.get('services.ppidRepository');
 			context.set('targeting.ppid', await this.getPPID(strategy).get());
 		} catch (e) {
 			utils.logger(UserIdentity.logGroup, 'Setting up PPID has failed!', e);

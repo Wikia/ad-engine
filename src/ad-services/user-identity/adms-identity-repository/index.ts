@@ -1,11 +1,11 @@
 import { admsService } from './adms-service';
 import { ActionType, IdentityAction } from './adms-actions';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { StorageStrategyInterface } from '../storage-strategies';
+import { IdentityRepositoryInterface } from '../identity-repositories';
 import { utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
 
-class AdmsStrategy implements StorageStrategyInterface {
+class AdmsIdentityRepository implements IdentityRepositoryInterface {
 	async get(): Promise<string> {
 		const userData = await admsService.get();
 		utils.logger(UserIdentity.logGroup, userData);
@@ -37,4 +37,4 @@ class AdmsStrategy implements StorageStrategyInterface {
 	}
 }
 
-export const admsStorageService = new AdmsStrategy();
+export const admsIdentityRepository = new AdmsIdentityRepository();

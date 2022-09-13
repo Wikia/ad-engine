@@ -1,9 +1,12 @@
 import { ActionType, Action, ActiveData } from './adms-actions';
 import { utils } from '@ad-engine/core';
 import { UserIdentity } from '../index';
+import { UniversalStorage } from '../../../ad-engine/services/universal-storage';
 
 export function getServicesBaseURL() {
-	return window.location.hostname.includes('fandom.com')
+	const fandomDomains = ['fandom.com', 'muthead.com', 'futhead.com'];
+
+	return fandomDomains.find((domain) => window.location.hostname.includes(domain))
 		? 'https://services.fandom.com/'
 		: 'https://services.fandom-dev.' +
 				(location.hostname.match(/(?!\.)(pl|us)$/) || ['us'])[0] +
@@ -11,6 +14,7 @@ export function getServicesBaseURL() {
 }
 
 class AdmsClient {
+	storage = new UniversalStorage();
 	private ADMS = getServicesBaseURL() + 'active-data-management-service/';
 
 	fetchData(): Promise<ActiveData> {
@@ -51,11 +55,11 @@ class AdmsClient {
 	}
 
 	getLocalData(): ActiveData {
-		return utils.storage.get('silver-surfer-active-data-v2');
+		return this.storage.getItem('silver-surfer-active-data-v2') as ActiveData;
 	}
 
 	setLocalData(data: Partial<ActiveData>): void {
-		utils.storage.set('silver-surfer-active-data-v2', data);
+		this.storage.setItem('silver-surfer-active-data-v2', data);
 	}
 }
 

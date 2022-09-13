@@ -2,35 +2,23 @@ import { expect } from 'chai';
 import { context } from '@wikia/ad-engine';
 import { userIdentity } from '@wikia/ad-services';
 import { createSandbox, SinonStub, spy, stub } from 'sinon';
-import { StorageStrategies } from '@wikia/ad-services/user-identity/storage-strategies';
-import { admsClient } from '@wikia/ad-services/user-identity/adms-strategy/adms-client';
-import { ActionType } from '@wikia/ad-services/user-identity/adms-strategy/adms-actions';
-import { storage } from '@wikia/ad-engine/utils/storage';
+import { IdentityRepositories } from '@wikia/ad-services/user-identity/identity-repositories';
+import { admsClient } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-client';
+import { ActionType } from '@wikia/ad-services/user-identity/adms-identity-repository/adms-actions';
 import { uuid } from '@wikia/ad-engine/utils/uuid';
+import { localStorageRepository } from '@wikia/ad-services/user-identity/local-storage-repository';
 
 describe('User Identity', () => {
-	let getStub: SinonStub;
-	let setStub: SinonStub;
 	let v4Stub: SinonStub;
-	let localStore;
 	let sandbox;
 	const mockId = '00000000-0000-0000-0000-000000000000';
 
 	before(() => {
 		v4Stub = stub(uuid, 'v4');
 		v4Stub.returns(mockId);
-		setStub = stub(storage, 'set');
-		setStub.callsFake((key, value) => {
-			localStore[key] = value;
-		});
-		getStub = stub(storage, 'get');
-		getStub.callsFake((key) => {
-			return localStore[key];
-		});
 	});
 
 	beforeEach(() => {
-		localStore = {};
 		sandbox = createSandbox();
 	});
 	afterEach(() => {
@@ -49,8 +37,8 @@ describe('User Identity', () => {
 
 	it("use LocalStore strategy and don't have PPID stored", async () => {
 		context.set('services.ppid.enabled', true);
-		context.set('services.ppidStorageStrategy', StorageStrategies.LOCAL);
-
+		context.set('services.ppidRepository', IdentityRepositories.LOCAL);
+		sandbox.stub(localStorageRepository.storage, 'getItem').callsFake(() => null);
 		await userIdentity.call();
 
 		expect(context.get('targeting.ppid')).to.eq(mockId);
@@ -58,10 +46,10 @@ describe('User Identity', () => {
 
 	it('use LocalStore strategy and have PPID stored', async () => {
 		context.set('services.ppid.enabled', true);
-		context.set('services.ppidStorageStrategy', StorageStrategies.LOCAL);
-		localStore = {
-			ppid: '11111111-1111-1111-1111-111111111111',
-		};
+		context.set('services.ppidRepository', IdentityRepositories.LOCAL);
+		sandbox
+			.stub(localStorageRepository.storage, 'getItem')
+			.callsFake(() => '11111111-1111-1111-1111-111111111111');
 
 		await userIdentity.call();
 
@@ -70,7 +58,7 @@ describe('User Identity', () => {
 
 	it('use ADMS strategy and gets PPID from API', async () => {
 		context.set('services.ppid.enabled', true);
-		context.set('services.ppidStorageStrategy', StorageStrategies.ADMS);
+		context.set('services.ppidRepository', IdentityRepositories.ADMS);
 		sandbox.stub(admsClient, 'fetchData').returns(
 			Promise.resolve({
 				IDENTITY: [
@@ -96,7 +84,7 @@ describe('User Identity', () => {
 
 	it("use ADMS strategy and don't have PPID in store or API", async () => {
 		context.set('services.ppid.enabled', true);
-		context.set('services.ppidStorageStrategy', StorageStrategies.ADMS);
+		context.set('services.ppidRepository', IdentityRepositories.ADMS);
 		sandbox.stub(admsClient, 'fetchData').returns(Promise.resolve({}));
 
 		sandbox.stub(admsClient, 'postData').returns(Promise.resolve());
@@ -109,27 +97,24 @@ describe('User Identity', () => {
 	it('use ADMS strategy and gets PPID from storage', async () => {
 		context.set('services.ppid.enabled', {
 			enabled: true,
-			strategy: StorageStrategies.ADMS,
+			strategy: IdentityRepositories.ADMS,
 		});
-
-		localStore = {
-			'silver-surfer-active-data-v2': {
-				IDENTITY: [
-					{
-						name: 'identity',
-						type: 'IDENTITY',
-						time: 1662989288536,
-						payload: {
-							_type: 'identity',
-							id: 'noId',
-							subType: 'noSubtype',
-							identityToken: '11111111-1111-1111-1111-111111111111',
-							identityType: 'ppid',
-						},
+		sandbox.stub(admsClient.storage, 'getItem').callsFake(() => ({
+			IDENTITY: [
+				{
+					name: 'identity',
+					type: 'IDENTITY',
+					time: 1662989288536,
+					payload: {
+						_type: 'identity',
+						id: 'noId',
+						subType: 'noSubtype',
+						identityToken: '11111111-1111-1111-1111-111111111111',
+						identityType: 'ppid',
 					},
-				],
-			},
-		};
+				},
+			],
+		}));
 
 		await userIdentity.call();
 
