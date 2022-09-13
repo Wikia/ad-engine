@@ -168,7 +168,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
-		context.set('services.ppidRepository', this.instantConfig.get('icppidRepository'));
+		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 
 		this.setupOutstreamPlayers();
 	}
