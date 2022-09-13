@@ -97,10 +97,8 @@ describe('User Identity', () => {
 	});
 
 	it('use ADMS strategy and gets PPID from storage', async () => {
-		context.set('services.ppid.enabled', {
-			enabled: true,
-			strategy: IdentityRepositories.ADMS,
-		});
+		context.set('services.ppid.enabled', true);
+		context.set('services.ppidRepository', IdentityRepositories.ADMS);
 		sandbox.stub(admsClient.storage, 'getItem').callsFake(() => ({
 			IDENTITY: [
 				{
