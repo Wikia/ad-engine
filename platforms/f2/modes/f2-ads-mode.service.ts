@@ -1,5 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
+	userIdentity,
 	audigent,
 	communicationService,
 	context,
@@ -18,6 +19,7 @@ export class F2AdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				userIdentity,
 				audigent,
 				iasPublisherOptimization,
 				nielsen,
@@ -26,7 +28,9 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup,
+				gptSetup.setOptions({
+					dependencies: [userIdentity.initialized],
+				}),
 			)
 			.execute()
 			.then(() => {
