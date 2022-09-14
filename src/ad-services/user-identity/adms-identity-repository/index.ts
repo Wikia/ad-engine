@@ -12,6 +12,7 @@ class AdmsIdentityRepository implements IdentityRepositoryInterface {
 		let identity: IdentityAction = userData?.IDENTITY?.find(
 			(id) => id.payload.identityType === 'ppid',
 		);
+
 		if (!identity) {
 			utils.logger(UserIdentity.logGroup, 'ADMS', 'did not found Identity in ADMS Profile');
 			const newPpid = utils.uuid.v4();
@@ -31,11 +32,13 @@ class AdmsIdentityRepository implements IdentityRepositoryInterface {
 					partnerIdentityId: newPpid,
 				},
 			});
-			const setResult = await admsService.setRemote(ActionType.IDENTITY, identity);
-			if (setResult.ok) {
-				admsService.setLocally(ActionType.IDENTITY, identity);
-			}
+			admsService.setRemote(ActionType.IDENTITY, identity).then((result) => {
+				if (result.ok) {
+					admsService.setLocally(ActionType.IDENTITY, identity);
+				}
+			});
 		}
+
 		return identity.payload.identityToken;
 	}
 }
