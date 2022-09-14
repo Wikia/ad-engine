@@ -46,7 +46,14 @@ export class NoAdsExperimentSetup implements DiProcess {
 	) {}
 
 	execute(): void {
-		const configs = this.instantConfig.get<object>('icNoAdsExperimentConfig', []) as NoAdsConfig[];
+		let configs = this.instantConfig.get<object>('icNoAdsExperimentConfig', []) as NoAdsConfig[];
+		configs = [
+			{
+				unitName: 'incontent_player',
+				beaconRegex: '^o',
+			},
+		];
+
 		const userBeacon: string = this.cookieAdapter.getItem('wikia_beacon_id');
 		this.disableUnit(getUnitNameToDisable(configs, userBeacon));
 	}
