@@ -31,7 +31,10 @@ class AdmsIdentityRepository implements IdentityRepositoryInterface {
 					partnerIdentityId: newPpid,
 				},
 			});
-			admsService.set(ActionType.IDENTITY, identity);
+			const setResult = await admsService.setRemote(ActionType.IDENTITY, identity);
+			if (setResult.ok) {
+				admsService.setLocally(ActionType.IDENTITY, identity);
+			}
 		}
 		return identity.payload.identityToken;
 	}
