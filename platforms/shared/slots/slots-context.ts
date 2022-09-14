@@ -24,7 +24,7 @@ export interface SlotsContextInterface {
 class SlotsContext implements SlotsContextInterface {
 	addSlotSize(slotName: string, size: [number, number]): void {
 		if (!context.get(`slots.${slotName}`)) {
-			throw new Error('Requested ad slot is not defined in the ad context');
+			throw new Error(`Requested ad slot is not defined in the ad context (${slotName})`);
 		}
 
 		context.push(`slots.${slotName}.defaultSizes`, size);
