@@ -4,7 +4,6 @@ export * from './bidders/wikia-adapter';
 export * from './models/device-mode';
 export * from './tracking/bab-tracker';
 export * from './tracking/data-warehouse';
-export * from './tracking/page-tracker';
 export * from './setup/labrador.setup';
 export * from './setup/load-times.setup';
 export * from './setup/ad-engine-runner.setup';

@@ -21,7 +21,6 @@ interface MediaWikiAdsOpts {
 	pageType: string;
 	platformName?: string;
 	showAds: boolean;
-	enableAdTagManagerBackend?: boolean;
 }
 
 interface MediaWikiAdsTargeting {
@@ -56,6 +55,7 @@ interface MediaWikiFeaturedVideoInfo {
 
 interface AdTagManagerTags {
 	age?: string[];
+	bundles?: string[];
 	esrb?: string[];
 	gnre?: string[];
 	media?: string[];

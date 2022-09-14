@@ -102,6 +102,7 @@ export class AdSlot {
 	static STATUS_FORCED_COLLAPSE = 'forced_collapse';
 	static STATUS_FORCED_SUCCESS = 'forced_success';
 	static STATUS_MANUAL = 'manual';
+	static STATUS_REQUESTED = 'requested';
 	static STATUS_ERROR = 'error';
 	static STATUS_SUCCESS = 'success';
 	static STATUS_CLICKED = 'clicked';
@@ -186,6 +187,7 @@ export class AdSlot {
 						adType,
 					}: { event: googletag.events.SlotRenderEndedEvent; adType: string } = payload;
 
+					this.setupSizesTracking(adType);
 					this.updateOnRenderEnd(event, adType);
 
 					resolve();
@@ -644,5 +646,31 @@ export class AdSlot {
 	 */
 	getSlotsToInjectAfterRendered(): string[] {
 		return context.get(`events.pushAfterRendered.${this.getSlotName()}`) || [];
+	}
+
+	/**
+	 * Setup observer for changes of ad slot sizes
+	 */
+	private setupSizesTracking(adType: string): void {
+		const adFrame = this.getIframe();
+
+		if (adFrame && adType.includes('success') && window['ResizeObserver']) {
+			//@ts-ignore ResizeObserver is a native module in most of the modern browsers
+			const resizeObserver = new ResizeObserver((entries) => {
+				for (const entry of entries) {
+					const width = Math.floor(entry.target.clientWidth);
+					const height = Math.floor(entry.target.clientHeight);
+					if (width > 0 && height > 0) {
+						communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
+							slot: this,
+							sizes: { width, height },
+						});
+						resizeObserver.unobserve(entry.target);
+					}
+				}
+			});
+
+			resizeObserver.observe(adFrame);
+		}
 	}
 }

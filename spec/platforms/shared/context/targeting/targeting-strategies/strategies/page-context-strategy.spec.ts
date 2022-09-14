@@ -26,6 +26,7 @@ describe('PageContextStrategy execution', () => {
 		age: [],
 		ar: '4:3',
 		artid: '666',
+		bundles: [],
 		dmn: '',
 		esrb: 'ec',
 		geo: 'PL',
