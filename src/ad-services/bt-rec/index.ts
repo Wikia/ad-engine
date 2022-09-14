@@ -76,6 +76,9 @@ class BTRec {
 		const wrapperLeft = document.createElement('div');
 		const wrapperRight = document.createElement('div');
 
+		wrapperLeft.id = 'btbgleft';
+		wrapperRight.id = 'btbgright';
+
 		sideBTleft.append(wrapperLeft);
 		sideBTright.append(wrapperRight);
 	}
