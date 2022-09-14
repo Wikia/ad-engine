@@ -94,7 +94,6 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
 
-		context.set('options.floorAdhesionAfterFV', this.instantConfig.get('icFloorAdhesionAfterFV'));
 		context.set(
 			'options.floorAdhesionNumberOfViewportsFromTopToPush',
 			this.instantConfig.get('icFloorAdhesionViewportsToStart'),
