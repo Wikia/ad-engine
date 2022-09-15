@@ -1,43 +1,35 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	audigent,
-	context,
+	bidders,
+	confiant,
 	DiProcess,
+	durationMedia,
 	iasPublisherOptimization,
-	jwPlayerInhibitor,
-	JWPlayerManager,
-	nielsen,
-	Runner,
+	liveConnect,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
-export class F2DeprecatedAdsMode implements DiProcess {
+export class SportsAdsDeprecatedMode implements DiProcess {
 	execute(): void {
 		const inhibitors = this.callExternals();
-		this.setupJWPlayer();
 
-		const jwpInhibitor = [jwPlayerInhibitor.get()];
-		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
-		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
-			startAdEngine(inhibitors);
-		});
-	}
-
-	private async setupJWPlayer(): Promise<any> {
-		new JWPlayerManager().manage();
+		startAdEngine(inhibitors);
 	}
 
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
+		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
-
 		audigent.call();
+		liveConnect.call();
 		iasPublisherOptimization.call();
-		nielsen.call();
+		confiant.call();
+		durationMedia.call();
 
 		return inhibitors;
 	}
