@@ -8,6 +8,7 @@ import {
 	iasPublisherOptimization,
 	nielsen,
 	PartnerPipeline,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
 
@@ -18,6 +19,7 @@ export class F2AdsMode implements DiProcess {
 	execute(): void {
 		this.pipeline
 			.add(
+				userIdentity,
 				audigent,
 				iasPublisherOptimization,
 				nielsen,
@@ -26,7 +28,10 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [wadRunner.initialized],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
-				gptSetup,
+				gptSetup.setOptions({
+					dependencies: [userIdentity.initialized],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
+				}),
 			)
 			.execute()
 			.then(() => {
