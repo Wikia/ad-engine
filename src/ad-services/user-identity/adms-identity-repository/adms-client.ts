@@ -33,7 +33,7 @@ class AdmsClient {
 			});
 	}
 
-	async postData(actionType: ActionType, data): Promise<void> {
+	async postData(actionType: ActionType, data): Promise<Response> {
 		const action: Action = {
 			time: Date.now(),
 			name: actionType.toLowerCase(),
@@ -43,8 +43,7 @@ class AdmsClient {
 				_type: actionType,
 			},
 		};
-
-		await fetch(this.ADMS + 'validate/', {
+		return fetch(this.ADMS + 'validate/', {
 			headers: {
 				'Content-Type': 'application/json',
 			},

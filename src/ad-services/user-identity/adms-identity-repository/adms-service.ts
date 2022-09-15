@@ -14,12 +14,18 @@ class AdmsService {
 		return localData;
 	}
 
-	async set(actionType: ActionType, data: Action): Promise<void> {
+	async setRemote(actionType: ActionType, data: Action): Promise<Response> {
+		return admsClient.postData(actionType, data.payload);
+	}
+
+	setLocally(actionType: ActionType, data: Action): void {
 		const localData = admsClient.getLocalData() || {};
-		const sectionData = localData[actionType.toUpperCase()] || [];
-		const mergedData = { ...localData, [actionType.toUpperCase()]: [...sectionData, data] };
+		const sectionData = localData[ActionType.IDENTITY.toUpperCase()] || [];
+		const mergedData = {
+			...localData,
+			[ActionType.IDENTITY.toUpperCase()]: [...sectionData, data],
+		};
 		admsClient.setLocalData(mergedData);
-		await admsClient.postData(actionType, data.payload);
 	}
 }
 
