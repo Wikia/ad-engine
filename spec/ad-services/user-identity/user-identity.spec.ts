@@ -87,8 +87,8 @@ describe('User Identity', () => {
 	it("use ADMS strategy and don't have PPID in store or API", async () => {
 		context.set('services.ppid.enabled', true);
 		context.set('services.ppidRepository', IdentityRepositories.ADMS);
-
 		sandbox.stub(admsClient, 'fetchData').returns(Promise.resolve({}));
+
 		sandbox.stub(admsClient, 'postData').returns(Promise.resolve());
 
 		await userIdentity.call();

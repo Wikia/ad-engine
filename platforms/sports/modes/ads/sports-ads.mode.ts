@@ -8,6 +8,7 @@ import {
 	durationMedia,
 	eventsRepository,
 	iasPublisherOptimization,
+	liveConnect,
 	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
@@ -21,6 +22,7 @@ export class SportsAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveConnect,
 				bidders,
 				wadRunner,
 				audigent,
