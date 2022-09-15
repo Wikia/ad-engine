@@ -18,9 +18,9 @@ export class F2DeprecatedAdsMode implements DiProcess {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer();
 
-		const jwpInhibitor = [jwPlayerInhibitor.get()];
-		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
-		new Runner(jwpInhibitor, jwpMaxTimeout, 'jwplayer-inhibitor').waitForInhibitors().then(() => {
+		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
+		const maxTimeout = context.get('options.maxDelayTimeout');
+		new Runner(requiredInhibitors, maxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);
 		});
 	}
@@ -32,6 +32,7 @@ export class F2DeprecatedAdsMode implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
+		inhibitors.push(userIdentity.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
 
