@@ -6,6 +6,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	iasPublisherOptimization,
+	liveConnect,
 	nielsen,
 	PartnerPipeline,
 	userIdentity,
@@ -21,6 +22,7 @@ export class F2AdsMode implements DiProcess {
 			.add(
 				userIdentity,
 				audigent,
+				liveConnect,
 				iasPublisherOptimization,
 				nielsen,
 				wadRunner,

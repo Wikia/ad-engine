@@ -6,6 +6,7 @@ import {
 	iasPublisherOptimization,
 	jwPlayerInhibitor,
 	JWPlayerManager,
+	liveConnect,
 	nielsen,
 	Runner,
 	userIdentity,
@@ -37,6 +38,7 @@ export class F2DeprecatedAdsMode implements DiProcess {
 		inhibitors.push(userIdentity.call());
 
 		audigent.call();
+		liveConnect.call();
 		iasPublisherOptimization.call();
 		nielsen.call();
 
