@@ -9,6 +9,7 @@ import {
 	JWPlayerManager,
 	nielsen,
 	Runner,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -34,6 +35,7 @@ export class F2DeprecatedAdsMode implements DiProcess {
 
 		inhibitors.push(userIdentity.call());
 		inhibitors.push(wadRunner.call());
+		inhibitors.push(userIdentity.call());
 
 		audigent.call();
 		iasPublisherOptimization.call();

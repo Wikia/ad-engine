@@ -1,6 +1,5 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	userIdentity,
 	audigent,
 	communicationService,
 	context,
@@ -9,6 +8,7 @@ import {
 	iasPublisherOptimization,
 	nielsen,
 	PartnerPipeline,
+	userIdentity,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
 
@@ -30,6 +30,7 @@ export class F2AdsMode implements DiProcess {
 				}),
 				gptSetup.setOptions({
 					dependencies: [userIdentity.initialized],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 			)
 			.execute()
