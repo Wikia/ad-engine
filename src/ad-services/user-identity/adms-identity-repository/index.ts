@@ -1,6 +1,5 @@
 import { admsService } from './adms-service';
 import { ActionType, IdentityAction } from './adms-actions';
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { IdentityRepositoryInterface } from '../identity-repositories';
 import { utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
@@ -25,10 +24,6 @@ class AdmsIdentityRepository implements IdentityRepositoryInterface {
 				name: 'identity',
 				time: Date.now(),
 			};
-			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: 'Google',
-				partnerIdentityId: newPpid,
-			});
 			admsService.setRemote(ActionType.IDENTITY, identity).then((result) => {
 				if (result.ok) {
 					admsService.setLocally(ActionType.IDENTITY, identity);
