@@ -22,12 +22,9 @@ export class UserIdentity extends BaseServiceSetup {
 		try {
 			const strategy = context.get('services.ppidRepository');
 			const ppid = await this.getPPID(strategy).get();
-			communicationService.dispatch({
-				type: eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
-				payload: {
-					partnerName: 'Google',
-					partnerIdentityId: ppid,
-				},
+			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
+				partnerName: 'Google',
+				partnerIdentityId: ppid,
 			});
 			context.set('targeting.ppid', ppid);
 		} catch (e) {
