@@ -2,7 +2,6 @@ import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { IdentityRepositories, IdentityRepositoryInterface } from './identity-repositories';
 import { localStorageRepository } from './local-storage-repository';
 import { admsIdentityRepository } from './adms-identity-repository';
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 export class UserIdentity extends BaseServiceSetup {
 	public static logGroup = 'user-identity';
@@ -22,10 +21,6 @@ export class UserIdentity extends BaseServiceSetup {
 		try {
 			const strategy = context.get('services.ppidRepository');
 			const ppid = await this.getPPID(strategy).get();
-			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
-				partnerName: 'Google',
-				partnerIdentityId: ppid,
-			});
 			context.set('targeting.ppid', ppid);
 		} catch (e) {
 			utils.logger(UserIdentity.logGroup, 'Setting up PPID has failed!', e);
