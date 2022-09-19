@@ -14,7 +14,6 @@ const liveConnectScriptUrl = 'https://b-code.liadm.com/a-07ev.min.js';
 const idConfigMapping: IdConfig[] = [
 	{ id: 'unifiedId', name: `${partnerName}-unifiedId` },
 	{ id: 'sha2', name: partnerName, params: { qf: '0.3', resolve: 'sha2' } },
-	{ id: 'sha256', name: `${partnerName}-sha256`, params: { qf: '0.3', resolve: 'sha256' } },
 	{ id: 'md5', name: `${partnerName}-md5`, params: { qf: '0.3', resolve: 'md5' } },
 	{ id: 'sha1', name: `${partnerName}-sha1`, params: { qf: '0.3', resolve: 'sha1' } },
 ];
