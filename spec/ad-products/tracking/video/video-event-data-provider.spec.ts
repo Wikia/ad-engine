@@ -11,13 +11,14 @@ describe('Video event data provider', () => {
 		sandbox.stub(document, 'hidden').get(() => undefined);
 		context.extend(configMock);
 		context.set('targeting.skin', 'ae3');
+		context.set('wiki.pvNumber', 5);
 		slotService.add(new AdSlot({ id: 'incontent_player' }));
-		window.pvNumber = 5;
 	});
 
 	afterEach(() => {
 		sandbox.restore();
-		delete window['pvNumber'];
+		context.remove('targeting.skin');
+		context.remove('wiki.pvNumber');
 	});
 
 	it('returns list of values to track', () => {
