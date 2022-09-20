@@ -20,6 +20,8 @@ export const basicContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'bingebot',
+			fallback:
+				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_bingebot.json',
 		},
 	},
 };
