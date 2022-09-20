@@ -1,8 +1,7 @@
-import { context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
-export class JWPlayerInhibitor {
-	private promise: utils.ExtendedPromise<void>;
+export class JWPlayerInhibitor extends BaseServiceSetup {
 	private videoLines: Array<string>;
 
 	private isEnabled(): boolean {
@@ -17,32 +16,12 @@ export class JWPlayerInhibitor {
 		);
 	}
 
-	get(): Promise<void> {
-		if (!this.isEnabled()) {
-			return Promise.resolve();
+	async call(lineItemId: string | null = null, creativeId: string | null = null): Promise<void> {
+		if (this.isEnabled()) {
+			if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
+				universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
+			}
 		}
-
-		return this.getExtendedPromise();
-	}
-
-	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
-		if (!this.isEnabled()) {
-			return;
-		}
-
-		if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
-			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
-		}
-
-		this.getExtendedPromise().resolve();
-	}
-
-	private getExtendedPromise(): utils.ExtendedPromise<void> {
-		if (!this.promise) {
-			this.promise = utils.createExtendedPromise();
-		}
-
-		return this.promise;
 	}
 }
 

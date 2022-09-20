@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from '../helpers/jwplayer-helper';
-import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
+import { jwPlayerInhibitorDeprecated } from '../helpers/jwplayer-inhibitor-deprecated';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
@@ -48,7 +48,10 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('success', state.vastParams);
 				this.helper.emitVideoAdImpression();
-				jwPlayerInhibitor.resolve(state.vastParams.lineItemId, state.vastParams.creativeId);
+				jwPlayerInhibitorDeprecated.resolve(
+					state.vastParams.lineItemId,
+					state.vastParams.creativeId,
+				);
 			}),
 			filter(() => this.helper.isMoatTrackingEnabled()),
 			tap(({ payload }) => this.helper.trackMoat(payload)),
@@ -63,7 +66,7 @@ export class JWPlayerHandler {
 				this.helper.setSlotParams(state.vastParams);
 				this.helper.setSlotElementAttributes('error', state.vastParams);
 				this.helper.emitVideoAdError(payload.adErrorCode);
-				jwPlayerInhibitor.resolve();
+				jwPlayerInhibitorDeprecated.resolve();
 			}),
 		);
 	}

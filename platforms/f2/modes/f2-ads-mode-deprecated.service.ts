@@ -4,7 +4,7 @@ import {
 	context,
 	DiProcess,
 	iasPublisherOptimization,
-	jwPlayerInhibitor,
+	jwPlayerInhibitorDeprecated,
 	JWPlayerManager,
 	nielsen,
 	Runner,
@@ -18,7 +18,7 @@ export class F2DeprecatedAdsMode implements DiProcess {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer();
 
-		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
+		const requiredInhibitors = [jwPlayerInhibitorDeprecated.get(), userIdentity.initialized];
 		const maxTimeout = context.get('options.maxDelayTimeout');
 		new Runner(requiredInhibitors, maxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);

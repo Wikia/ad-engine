@@ -6,6 +6,7 @@ import {
 	DiProcess,
 	eventsRepository,
 	iasPublisherOptimization,
+	jwPlayerInhibitorDeprecated,
 	nielsen,
 	PartnerPipeline,
 	userIdentity,
@@ -29,7 +30,11 @@ export class F2AdsMode implements DiProcess {
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+					dependencies: [
+						userIdentity.initialized,
+						playerSetup.initialized,
+						jwPlayerInhibitorDeprecated.get(),
+					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 			)
