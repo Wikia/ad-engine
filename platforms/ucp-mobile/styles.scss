@@ -86,6 +86,11 @@
 	&.hide {
 		display: none !important;
 	}
+
+	&.sticky {
+		top: 80px;
+		position: sticky;
+	}
 }
 
 .ad-slot-placeholder.hide {
@@ -205,6 +210,11 @@
 	&.hide,
 	.hide {
 		display: none;
+	}
+
+	&.tall {
+		align-items: self-start;
+		height: 600px;
 	}
 }
 
