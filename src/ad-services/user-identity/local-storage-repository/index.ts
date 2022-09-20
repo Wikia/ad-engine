@@ -1,4 +1,3 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { IdentityRepositoryInterface } from '../identity-repositories';
 import { utils } from '@ad-engine/core';
 import { UserIdentity } from '../';
@@ -11,14 +10,6 @@ class LocalStorageRepository implements IdentityRepositoryInterface {
 		utils.logger(UserIdentity.logGroup, 'LocalStorage', 'did not found a PPID in LocalStorage');
 		const ppid: string = utils.uuid.v4();
 		this.storage.setItem('ppid', ppid);
-		communicationService.dispatch({
-			type: eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
-			payload: {
-				partnerName: 'Google',
-				partnerIdentityId: ppid,
-			},
-		});
-
 		return ppid;
 	}
 
