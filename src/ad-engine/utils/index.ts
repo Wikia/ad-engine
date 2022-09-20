@@ -20,3 +20,4 @@ export * from './targeting';
 export * from './try-property';
 export * from './viewport-observer';
 export * from './wait-for';
+export * from './uuid';
