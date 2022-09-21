@@ -8,7 +8,7 @@ import {
 
 class PlayerSetup extends BaseServiceSetup {
 	async execute(): Promise<void> {
-		if (!context.get('custom.hasFeaturedVideo')) {
+		if (!context.get('custom.hasFeaturedVideo') && !context.get('slots.video')) {
 			return;
 		}
 
