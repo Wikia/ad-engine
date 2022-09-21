@@ -1,5 +1,6 @@
 import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
+import { UniversalStorage } from '../../ad-engine/services/universal-storage';
 
 interface IdConfig {
 	id: string;
@@ -19,7 +20,13 @@ const idConfigMapping: IdConfig[] = [
 ];
 
 class LiveConnect extends BaseServiceSetup {
-	private isLoaded = false;
+	private isLoaded: boolean;
+	private storage: UniversalStorage;
+
+	constructor() {
+		super();
+		this.storage = new UniversalStorage();
+	}
 
 	private isEnabled(): boolean {
 		return (
@@ -36,6 +43,8 @@ class LiveConnect extends BaseServiceSetup {
 			return;
 		}
 
+		this.isLoaded = this.isAvailableInLocalStorage(`${partnerName}-unifiedId`);
+
 		if (!this.isLoaded) {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
@@ -48,6 +57,8 @@ class LiveConnect extends BaseServiceSetup {
 				});
 
 			this.isLoaded = true;
+		} else {
+			utils.logger(logGroup, 'already loaded and available in localStorage');
 		}
 	}
 
@@ -55,14 +66,17 @@ class LiveConnect extends BaseServiceSetup {
 		return (nonId) => {
 			const partnerIdentityId = nonId[idName];
 
+			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
+
 			if (idName === 'unifiedId') {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
+				this.saveToLocalStorage(partnerName, partnerIdentityId);
 			}
-			utils.logger(logGroup, `id ${idName}: ${partnerIdentityId}`);
 
 			if (!partnerIdentityId) {
 				return;
 			}
+
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 				partnerName,
 				partnerIdentityId,
@@ -88,6 +102,20 @@ class LiveConnect extends BaseServiceSetup {
 		idConfigMapping.forEach(({ id, name, params }) => {
 			this.resolveAndReportId(id, name, params);
 		});
+	}
+
+	isAvailableInLocalStorage(key: string): boolean {
+		return !!this.getLocalStorageData(key);
+	}
+
+	getLocalStorageData(key: string) {
+		return this.storage.getItem(key);
+	}
+
+	saveToLocalStorage(key: string, value: string) {
+		utils.logger(logGroup, `Saving to localStorage: ${key}`);
+
+		this.storage.setItem(key, value);
 	}
 }
 
