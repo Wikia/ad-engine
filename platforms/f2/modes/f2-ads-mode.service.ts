@@ -33,7 +33,7 @@ export class F2AdsMode implements DiProcess {
 					dependencies: [
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.get(),
+						jwPlayerInhibitor.initialized,
 					],
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
