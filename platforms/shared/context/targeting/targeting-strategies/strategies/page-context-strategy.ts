@@ -20,7 +20,6 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 			age: this.context.page.tags?.age || [],
 			artid: this.context.page.articleId ? this.context.page.articleId.toString() : '',
 			bundles: this.context.site.tags?.bundles || [],
-			esrb: this.context.site.esrbRating || [],
 			kid_wiki: this.context.site.directedAtChildren ? '1' : '0',
 			lang: this.context.page.lang || 'unknown',
 			sex: this.context.page.tags?.sex || [],
@@ -36,6 +35,10 @@ export class PageContextStrategy extends CommonStrategy implements TargetingStra
 		this.addPagePrefixToValues(pageLevelTags);
 
 		targeting = { ...targeting, ...pageLevelTags };
+
+		if (this.context.site.esrbRating) {
+			targeting.esrb = this.context.site.esrbRating;
+		}
 
 		if (this.context.site.top1000) {
 			targeting.top = '1k';
