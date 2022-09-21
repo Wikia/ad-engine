@@ -3,7 +3,7 @@ import { Injectable } from '@wikia/dependency-injection';
 import { merge, Observable } from 'rxjs';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { JWPlayerHelper } from '../helpers/jwplayer-helper';
-import { jwPlayerInhibitor } from '../helpers/j-w-player-inhibitor';
+import { jwPlayerInhibitor } from '../helpers/jwplayer-inhibitor';
 import { PlayerReadyResult } from '../helpers/player-ready-result';
 import { JwpStream, ofJwpEvent } from '../streams/jwplayer-stream';
 
