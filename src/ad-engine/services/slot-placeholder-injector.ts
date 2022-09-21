@@ -15,6 +15,7 @@ export interface SlotPlaceholderConfig {
 	anchorSelector: string;
 	insertMethod: 'append' | 'prepend' | 'after' | 'before';
 	avoidConflictWith?: string[];
+	tallSlotsIndexes?: string[];
 }
 
 export interface RepeatableSlotPlaceholderConfig extends SlotPlaceholderConfig {
@@ -34,7 +35,9 @@ class SlotPlaceholderInjector {
 		let repeat = placeholderConfig.repeatStart;
 
 		while (repeat <= placeholderConfig.repeatLimit) {
-			const placeholder = this.inject(placeholderConfig);
+			const placeholder = this.inject(
+				this.extendClassListIfIndexMatches(repeat, placeholderConfig),
+			);
 
 			if (!placeholder) {
 				return this.getLastPlaceholderNumber(repeat);
@@ -46,6 +49,18 @@ class SlotPlaceholderInjector {
 		}
 
 		return this.getLastPlaceholderNumber(repeat);
+	}
+
+	extendClassListIfIndexMatches(
+		repeat: number,
+		placeholderConfig: RepeatableSlotPlaceholderConfig,
+	): RepeatableSlotPlaceholderConfig {
+		// @ts-ignore we want to pass a number to includes!
+		if (placeholderConfig.tallSlotsIndexes.includes(repeat)) {
+			return { ...placeholderConfig, classList: [...placeholderConfig.classList, 'tall'] };
+		}
+
+		return placeholderConfig;
 	}
 
 	inject(placeholderConfig: SlotPlaceholderConfigType): HTMLElement | null {

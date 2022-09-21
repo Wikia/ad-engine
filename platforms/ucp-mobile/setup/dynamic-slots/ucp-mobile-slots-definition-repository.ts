@@ -114,8 +114,18 @@ export class UcpMobileSlotsDefinitionRepository {
 		}
 
 		const slotNamePrefix = 'incontent_boxad_';
-		const slotName = `${slotNamePrefix}1`;
-		const wrapperClassList = ['ad-slot-placeholder', 'incontent-boxad', 'is-loading'];
+		const slotIndex = 1;
+		const slotName = `${slotNamePrefix}${slotIndex}`;
+		const slotClassList = this.extendClassListIfIndexMatches(
+			slotIndex,
+			['hide', 'ad-slot'],
+			['sticky'],
+		);
+		const wrapperClassList = this.extendClassListIfIndexMatches(
+			slotIndex,
+			['ad-slot-placeholder', 'incontent-boxad', 'is-loading'],
+			['tall'],
+		);
 		const placeholderConfig = context.get(`slots.${slotName}.placeholder`);
 
 		return {
@@ -130,7 +140,7 @@ export class UcpMobileSlotsDefinitionRepository {
 					'#incontent_player',
 				],
 				insertMethod: 'before',
-				classList: ['hide', 'ad-slot'],
+				classList: slotClassList,
 				repeat: {
 					index: 1,
 					limit: 20,
@@ -161,6 +171,21 @@ export class UcpMobileSlotsDefinitionRepository {
 		};
 	}
 
+	private extendClassListIfIndexMatches(
+		slotIndex: number,
+		currentClassList: string[],
+		extendedClassList: string[],
+	): string[] {
+		const tallSlotsIndexes = context.get('options.tallSlotsIndexes');
+
+		// @ts-ignore we want to pass a number to includes!
+		if (tallSlotsIndexes.includes(slotIndex)) {
+			return [...currentClassList, ...extendedClassList];
+		}
+
+		return currentClassList;
+	}
+
 	private isInContentApplicable(): boolean {
 		if (context.get('wiki.opts.pageType') === 'home') {
 			return !!document.querySelector('.curated-content');
@@ -176,6 +201,7 @@ export class UcpMobileSlotsDefinitionRepository {
 			anchorSelector: '.mw-parser-output > h2',
 			insertMethod: 'before',
 			avoidConflictWith: ['.ad-slot', '.ad-slot-placeholder', 'incontent-boxad'],
+			tallSlotsIndexes: context.get('options.tallSlotsIndexes'),
 			repeatStart: 1,
 			repeatLimit: 20,
 		};

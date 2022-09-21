@@ -16,9 +16,15 @@ export class UcpMobileBaseContextSetup extends BaseContextSetup {
 			'events.pushOnScroll.threshold',
 			this.instantConfig.get('icPushOnScrollThreshold', 100),
 		);
+
 		context.set(
 			'events.pushOnScroll.nativoThreshold',
 			this.instantConfig.get('icPushOnScrollNativoThreshold', 200),
+		);
+
+		context.set(
+			'options.tallSlotsIndexes',
+			this.instantConfig.get('icIncontentTallSlotsIndexes', []),
 		);
 	}
 }
