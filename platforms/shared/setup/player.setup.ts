@@ -8,21 +8,23 @@ import {
 
 class PlayerSetup extends BaseServiceSetup {
 	async execute(): Promise<void> {
-		if (context.get('custom.hasFeaturedVideo')) {
-			new JWPlayerManager().manage();
+		if (!context.get('custom.hasFeaturedVideo')) {
+			return;
+		}
 
-			if (this.options) {
-				Promise.race([
-					new Promise((res) => setTimeout(res, this.options.timeout)),
-					Promise.all(this.options.dependencies),
-				]).then(async () => {
-					await this.call();
-					this.setInitialized();
-				});
-			} else {
+		new JWPlayerManager().manage();
+
+		if (this.options) {
+			Promise.race([
+				new Promise((res) => setTimeout(res, this.options.timeout)),
+				Promise.all(this.options.dependencies),
+			]).then(async () => {
 				await this.call();
 				this.setInitialized();
-			}
+			});
+		} else {
+			await this.call();
+			this.setInitialized();
 		}
 	}
 
