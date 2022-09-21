@@ -13,7 +13,7 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
-	jwPlayerInhibitorDeprecated,
+	jwPlayerInhibitor,
 	JWPlayerManager,
 	jwpSetup,
 	liveConnect,
@@ -32,7 +32,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		const inhibitors = this.callExternals();
 		this.setupJWPlayer(inhibitors);
 
-		const requiredInhibitors = [jwPlayerInhibitorDeprecated.get(), userIdentity.initialized];
+		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
 		const jwpMaxTimeout = context.get('options.maxDelayTimeout');
 		new Runner(requiredInhibitors, jwpMaxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);

@@ -53,9 +53,9 @@ export class UcpMobileAdsMode implements DiProcess {
 				}),
 				gptSetup.setOptions({
 					dependencies: [
+						jwPlayerInhibitor.initialized,
 						userIdentity.initialized,
 						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
 					],
 				}),
 			)

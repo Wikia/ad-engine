@@ -1,8 +1,10 @@
-import { BaseServiceSetup, context } from '@ad-engine/core';
+import { context, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
-export class JWPlayerInhibitor extends BaseServiceSetup {
+export class JwplayerInhibitor {
+	private logGroup = 'jwp-player-inhibitor';
 	private videoLines: Array<string>;
+	initialized: utils.ExtendedPromise<void>;
 
 	private isEnabled(): boolean {
 		if (!this.videoLines) {
@@ -16,13 +18,34 @@ export class JWPlayerInhibitor extends BaseServiceSetup {
 		);
 	}
 
-	async call(lineItemId: string | null = null, creativeId: string | null = null): Promise<void> {
-		if (this.isEnabled()) {
-			if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
-				universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
-			}
+	get(): Promise<void> {
+		if (!this.isEnabled()) {
+			return Promise.resolve();
 		}
+
+		return this.getExtendedPromise();
+	}
+
+	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
+		if (!this.isEnabled()) {
+			utils.logger(this.logGroup, 'isDisabled');
+			return;
+		}
+
+		if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
+			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
+		}
+
+		this.getExtendedPromise().resolve();
+	}
+
+	private getExtendedPromise(): utils.ExtendedPromise<void> {
+		if (!this.initialized) {
+			this.initialized = utils.createExtendedPromise();
+		}
+
+		return this.initialized;
 	}
 }
 
-export const jwPlayerInhibitor = new JWPlayerInhibitor();
+export const jwPlayerInhibitor = new JwplayerInhibitor();
