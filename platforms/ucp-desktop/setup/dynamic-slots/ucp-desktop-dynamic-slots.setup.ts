@@ -77,10 +77,7 @@ export class UcpDesktopDynamicSlotsSetup implements DiProcess {
 			universalAdPackage.UAP_ADDITIONAL_SIZES.companionSizes['5x5'].size,
 		);
 
-		if (
-			(!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) &&
-			(context.get('templates.stickyTlb.forced') || context.get('templates.stickyTlb.lineItemIds'))
-		) {
+		if (!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) {
 			context.push(`slots.${slotName}.defaultTemplates`, 'stickyTlb');
 		}
 

@@ -46,10 +46,7 @@ export class F2DynamicSlotsSetup implements DiProcess {
 	}
 
 	private configureTopLeaderboardAndCompanions(): void {
-		if (
-			(!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) &&
-			(context.get('templates.stickyTlb.forced') || context.get('templates.stickyTlb.lineItemIds'))
-		) {
+		if (!context.get('custom.hasFeaturedVideo') || context.get('templates.stickyTlb.withFV')) {
 			context.push(`slots.top_leaderboard.defaultTemplates`, 'stickyTlb');
 		}
 
