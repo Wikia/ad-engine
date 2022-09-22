@@ -13,6 +13,7 @@ export * from './facebook-pixel';
 export * from './ias-publisher-optimization';
 export * from './instant-config';
 export * from './live-connect';
+export * from './live-ramp';
 export * from './nielsen';
 export * from './sailthru';
 export * from './stroer';
