@@ -1,4 +1,4 @@
-import { Injectable } from '@wikia/dependency-injection';
+import { gptSetup, wadRunner } from '@platforms/shared';
 import {
 	audigent,
 	bidders,
@@ -8,27 +8,30 @@ import {
 	durationMedia,
 	eventsRepository,
 	iasPublisherOptimization,
-	ServicePipeline,
+	liveConnect,
+	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { wadRunner, gptSetup, adEngineSetup } from '@platforms/shared';
+import { Injectable } from '@wikia/dependency-injection';
 
 @Injectable()
 export class SportsAdsMode implements DiProcess {
-	constructor(private pipeline: ServicePipeline) {}
+	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveConnect,
 				bidders,
 				wadRunner,
 				audigent,
 				iasPublisherOptimization,
 				confiant,
 				durationMedia,
-				gptSetup,
-				adEngineSetup,
+				gptSetup.setOptions({
+					dependencies: [userIdentity.initialized],
+				}),
 			)
 			.execute()
 			.then(() => {

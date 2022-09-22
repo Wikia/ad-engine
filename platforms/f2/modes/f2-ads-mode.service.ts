@@ -1,31 +1,42 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	audigent,
-	bidders,
 	communicationService,
+	context,
 	DiProcess,
 	eventsRepository,
 	iasPublisherOptimization,
+	jwPlayerInhibitor,
 	nielsen,
-	ServicePipeline,
+	PartnerPipeline,
+	userIdentity,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shared';
+import { wadRunner, playerSetup, gptSetup } from '@platforms/shared';
 
 @Injectable()
 export class F2AdsMode implements DiProcess {
-	constructor(private pipeline: ServicePipeline) {}
+	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		this.pipeline
 			.add(
+				userIdentity,
 				audigent,
 				iasPublisherOptimization,
 				nielsen,
 				wadRunner,
-				playerSetup,
-				bidders,
-				gptSetup,
-				adEngineSetup,
+				playerSetup.setOptions({
+					dependencies: [wadRunner.initialized],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
+				}),
+				gptSetup.setOptions({
+					dependencies: [
+						userIdentity.initialized,
+						playerSetup.initialized,
+						jwPlayerInhibitor.initialized,
+					],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
+				}),
 			)
 			.execute()
 			.then(() => {

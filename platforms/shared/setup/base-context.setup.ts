@@ -94,7 +94,6 @@ export class BaseContextSetup implements DiProcess {
 			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
 
-		context.set('options.floorAdhesionAfterFV', this.instantConfig.get('icFloorAdhesionAfterFV'));
 		context.set(
 			'options.floorAdhesionNumberOfViewportsFromTopToPush',
 			this.instantConfig.get('icFloorAdhesionViewportsToStart'),
@@ -167,7 +166,7 @@ export class BaseContextSetup implements DiProcess {
 		context.set('services.sailthru.enabled', this.instantConfig.get('icSailthru'));
 		context.set('services.stroer.enabled', this.instantConfig.get('icStroer'));
 		context.set('services.ppid.enabled', this.instantConfig.get('icPpid'));
-		context.set('services.ppidAdmsStorage.enabled', this.instantConfig.get('icPpidAdmsStorage'));
+		context.set('services.ppidRepository', this.instantConfig.get('icPpidRepository'));
 
 		this.setupOutstreamPlayers();
 	}

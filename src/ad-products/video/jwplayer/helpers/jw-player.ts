@@ -1,9 +1,10 @@
 import { context, utils } from '@ad-engine/core';
 import { universalAdPackage } from '../../../templates';
 
-export class JWPlayer {
-	private promise: utils.ExtendedPromise<void>;
+export class JWPlayerInhibitor {
+	private logGroup = 'jwp-player-inhibitor';
 	private videoLines: Array<string>;
+	initialized: utils.ExtendedPromise<void>;
 
 	private isEnabled(): boolean {
 		if (!this.videoLines) {
@@ -27,6 +28,7 @@ export class JWPlayer {
 
 	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
 		if (!this.isEnabled()) {
+			utils.logger(this.logGroup, 'isDisabled');
 			return;
 		}
 
@@ -38,12 +40,12 @@ export class JWPlayer {
 	}
 
 	private getExtendedPromise(): utils.ExtendedPromise<void> {
-		if (!this.promise) {
-			this.promise = utils.createExtendedPromise();
+		if (!this.initialized) {
+			this.initialized = utils.createExtendedPromise();
 		}
 
-		return this.promise;
+		return this.initialized;
 	}
 }
 
-export const jwPlayer = new JWPlayer();
+export const jwPlayerInhibitor = new JWPlayerInhibitor();

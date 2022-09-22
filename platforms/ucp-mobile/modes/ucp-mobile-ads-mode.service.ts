@@ -1,30 +1,32 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
-	communicationService,
-	DiProcess,
-	eventsRepository,
-	ServicePipeline,
-	userIdentity,
-	ats,
 	audigent,
 	bidders,
-	liveConnect,
-	facebookPixel,
-	eyeota,
-	iasPublisherOptimization,
+	communicationService,
 	confiant,
+	context,
+	DiProcess,
 	durationMedia,
+	eventsRepository,
+	eyeota,
+	facebookPixel,
+	iasPublisherOptimization,
 	identityHub,
+	liveConnect,
 	nielsen,
+	PartnerPipeline,
+	prebidNativeProvider,
 	stroer,
 	adMarketplace,
-	prebidNativeProvider,
+	userIdentity,
+	ats,
+	jwPlayerInhibitor,
 } from '@wikia/ad-engine';
-import { wadRunner, playerSetup, gptSetup, adEngineSetup } from '@platforms/shared';
+import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
 
 @Injectable()
 export class UcpMobileAdsMode implements DiProcess {
-	constructor(private pipeline: ServicePipeline) {}
+	constructor(private pipeline: PartnerPipeline) {}
 
 	execute(): void {
 		this.pipeline
@@ -45,9 +47,17 @@ export class UcpMobileAdsMode implements DiProcess {
 				nielsen,
 				adMarketplace,
 				prebidNativeProvider,
-				playerSetup,
-				gptSetup,
-				adEngineSetup,
+				playerSetup.setOptions({
+					dependencies: [bidders.initialized, wadRunner.initialized],
+					timeout: context.get('options.jwpMaxDelayTimeout'),
+				}),
+				gptSetup.setOptions({
+					dependencies: [
+						jwPlayerInhibitor.initialized,
+						userIdentity.initialized,
+						playerSetup.initialized,
+					],
+				}),
 			)
 			.execute()
 			.then(() => {

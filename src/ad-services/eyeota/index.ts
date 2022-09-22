@@ -1,14 +1,11 @@
-import { context, ServiceStage, tcf, utils, Service } from '@ad-engine/core';
+import { BaseServiceSetup, context, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 
 const logGroup = 'eyeota';
 const pid = 'r8rcb20';
 const siteName = 'fandom';
 
-@Service({
-	stage: ServiceStage.preProvider,
-})
-class Eyeota {
+class Eyeota extends BaseServiceSetup {
 	isEnabled(): boolean {
 		return (
 			context.get('services.eyeota.enabled') &&
@@ -38,10 +35,9 @@ class Eyeota {
 	}
 
 	async createScriptSource(): Promise<string> {
-		const { tcString } = await tcf.getTCData();
 		const s0v = context.get('targeting.s0v');
 
-		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&gdpr=1&gdpr_consent=${tcString}&t=ajs&s0v=${s0v}`;
+		return `https://ps.eyeota.net/pixel?pid=${pid}&sid=${siteName}&t=ajs&s0v=${s0v}`;
 	}
 }
 

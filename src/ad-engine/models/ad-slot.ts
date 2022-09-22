@@ -660,7 +660,8 @@ export class AdSlot {
 				for (const entry of entries) {
 					const width = Math.floor(entry.target.clientWidth);
 					const height = Math.floor(entry.target.clientHeight);
-					if (width > 0 && height > 0) {
+					// excludes empty slots (0x0) and collapsinator (1x1)
+					if (width > 0 && height > 0 && (width != 1 || height != 1)) {
 						communicationService.emit(eventsRepository.AD_ENGINE_AD_RESIZED, {
 							slot: this,
 							sizes: { width, height },
