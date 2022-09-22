@@ -4,8 +4,6 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	context,
-	DiProcess,
 	durationMedia,
 	eventsRepository,
 	eyeota,
@@ -14,19 +12,18 @@ import {
 	identityHub,
 	liveConnect,
 	nielsen,
-	PartnerPipeline,
 	prebidNativeProvider,
 	stroer,
 	adMarketplace,
 	userIdentity,
 	ats,
-	jwPlayerInhibitor,
+	ServicePipeline,
 } from '@wikia/ad-engine';
-import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
+import { playerSetup, gptSetup, wadRunner, adEngineSetup } from '@platforms/shared';
 
 @Injectable()
-export class UcpMobileAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+export class UcpMobileAdsMode {
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline
@@ -47,17 +44,9 @@ export class UcpMobileAdsMode implements DiProcess {
 				nielsen,
 				adMarketplace,
 				prebidNativeProvider,
-				playerSetup.setOptions({
-					dependencies: [bidders.initialized, wadRunner.initialized],
-					timeout: context.get('options.jwpMaxDelayTimeout'),
-				}),
-				gptSetup.setOptions({
-					dependencies: [
-						jwPlayerInhibitor.initialized,
-						userIdentity.initialized,
-						playerSetup.initialized,
-					],
-				}),
+				playerSetup,
+				gptSetup,
+				adEngineSetup,
 			)
 			.execute()
 			.then(() => {

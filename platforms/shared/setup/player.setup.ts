@@ -1,35 +1,24 @@
 import {
-	BaseServiceSetup,
 	jwpSetup,
 	communicationService,
 	JWPlayerManager,
 	context,
+	Service,
+	ServiceStage,
+	bidders,
 } from '@wikia/ad-engine';
+import { wadRunner } from '../services/wad-runner';
 
-class PlayerSetup extends BaseServiceSetup {
-	async execute(): Promise<void> {
-		if (!context.get('custom.hasFeaturedVideo')) {
-			this.setInitialized();
-			return;
-		}
-
-		new JWPlayerManager().manage();
-
-		if (this.options) {
-			Promise.race([
-				new Promise((res) => setTimeout(res, this.options.timeout)),
-				Promise.all(this.options.dependencies),
-			]).then(async () => {
-				await this.call();
-				this.setInitialized();
-			});
-		} else {
-			await this.call();
-			this.setInitialized();
-		}
-	}
-
+@Service({
+	stage: ServiceStage.preProvider,
+	dependencies: [bidders, wadRunner],
+	timeout: context.get('options.jwpMaxDelayTimeout'),
+})
+class PlayerSetup {
 	call() {
+		if (context.get('custom.hasFeaturedVideo')) {
+			new JWPlayerManager().manage();
+		}
 		communicationService.dispatch(jwpSetup({ showAds: true, autoplayDisabled: false }));
 	}
 }

@@ -1,9 +1,6 @@
 import { Injectable } from '@wikia/dependency-injection';
 import {
 	communicationService,
-	context,
-	DiProcess,
-	PartnerPipeline,
 	eventsRepository,
 	facebookPixel,
 	iasPublisherOptimization,
@@ -14,13 +11,13 @@ import {
 	confiant,
 	userIdentity,
 	ats,
-	jwPlayerInhibitor,
+	ServicePipeline,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { adEngineSetup, gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
-export class UcpDesktopLighterAdsMode implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+export class UcpDesktopLighterAdsMode {
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline
@@ -34,17 +31,9 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 				stroer,
 				nielsen,
 				identityHub,
-				playerSetup.setOptions({
-					dependencies: [],
-					timeout: context.get('options.maxDelayTimeout'),
-				}),
-				gptSetup.setOptions({
-					dependencies: [
-						userIdentity.initialized,
-						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
-					],
-				}),
+				playerSetup,
+				gptSetup,
+				adEngineSetup,
 			)
 			.execute()
 			.then(() => {

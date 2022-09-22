@@ -6,25 +6,22 @@ import {
 	bidders,
 	communicationService,
 	confiant,
-	context,
-	DiProcess,
 	durationMedia,
 	eventsRepository,
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
-	jwPlayerInhibitor,
 	liveConnect,
 	nielsen,
-	PartnerPipeline,
+	ServicePipeline,
 	stroer,
 	userIdentity,
 } from '@wikia/ad-engine';
-import { gptSetup, playerSetup } from '@platforms/shared';
+import { adEngineSetup, gptSetup, playerSetup } from '@platforms/shared';
 
 @Injectable()
-export class UcpMobileLighterAds implements DiProcess {
-	constructor(private pipeline: PartnerPipeline) {}
+export class UcpMobileLighterAds {
+	constructor(private pipeline: ServicePipeline) {}
 
 	execute(): void {
 		this.pipeline
@@ -42,17 +39,9 @@ export class UcpMobileLighterAds implements DiProcess {
 				bidders,
 				nielsen,
 				identityHub,
-				playerSetup.setOptions({
-					dependencies: [bidders.initialized],
-					timeout: context.get('options.maxDelayTimeout'),
-				}),
-				gptSetup.setOptions({
-					dependencies: [
-						userIdentity.initialized,
-						playerSetup.initialized,
-						jwPlayerInhibitor.initialized,
-					],
-				}),
+				playerSetup,
+				gptSetup,
+				adEngineSetup,
 			)
 			.execute()
 			.then(() => {

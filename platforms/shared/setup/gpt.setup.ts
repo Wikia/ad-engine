@@ -1,7 +1,17 @@
-import { AdSlot, communicationService, ServiceStage, Service, utils } from '@wikia/ad-engine';
+import {
+	AdSlot,
+	communicationService,
+	ServiceStage,
+	Service,
+	utils,
+	userIdentity,
+	jwPlayerInhibitor,
+} from '@wikia/ad-engine';
+import { playerSetup } from './player.setup';
 
 @Service({
 	stage: ServiceStage.preProvider,
+	dependencies: [userIdentity, playerSetup, jwPlayerInhibitor],
 })
 class GptSetup {
 	call() {
