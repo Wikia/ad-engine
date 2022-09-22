@@ -13,6 +13,7 @@ import {
 	facebookPixel,
 	iasPublisherOptimization,
 	identityHub,
+	jwPlayerInhibitor,
 	liveConnect,
 	nielsen,
 	PartnerPipeline,
@@ -46,7 +47,11 @@ export class UcpMobileLighterAds implements DiProcess {
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+					dependencies: [
+						userIdentity.initialized,
+						playerSetup.initialized,
+						jwPlayerInhibitor.initialized,
+					],
 				}),
 			)
 			.execute()
