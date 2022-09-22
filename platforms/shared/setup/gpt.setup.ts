@@ -5,13 +5,13 @@ import {
 	Service,
 	utils,
 	userIdentity,
-	jwPlayerInhibitor,
+	jwPlayer,
 } from '@wikia/ad-engine';
 import { playerSetup } from './player.setup';
 
 @Service({
 	stage: ServiceStage.preProvider,
-	dependencies: [userIdentity, playerSetup, jwPlayerInhibitor],
+	dependencies: [userIdentity, playerSetup, jwPlayer],
 })
 class GptSetup {
 	call() {
