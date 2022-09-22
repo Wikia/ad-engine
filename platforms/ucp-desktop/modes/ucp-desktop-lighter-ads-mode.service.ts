@@ -14,6 +14,7 @@ import {
 	confiant,
 	userIdentity,
 	ats,
+	jwPlayerInhibitor,
 } from '@wikia/ad-engine';
 import { gptSetup, playerSetup } from '@platforms/shared';
 
@@ -38,7 +39,11 @@ export class UcpDesktopLighterAdsMode implements DiProcess {
 					timeout: context.get('options.maxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+					dependencies: [
+						userIdentity.initialized,
+						playerSetup.initialized,
+						jwPlayerInhibitor.initialized,
+					],
 				}),
 			)
 			.execute()
