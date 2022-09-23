@@ -1,4 +1,4 @@
-import { BaseServiceSetup, context, utils } from '@ad-engine/core';
+import { BaseServiceSetup, context, localCache, utils } from '@ad-engine/core';
 import { communicationService, eventsRepository } from '@ad-engine/communication';
 import { UniversalStorage } from '../../ad-engine/services/universal-storage';
 
@@ -6,6 +6,12 @@ interface IdConfig {
 	id: string;
 	name: string;
 	params?: LiQParams;
+}
+
+interface CachingStrategyConfig {
+	type: 'local' | 'session';
+	mandatoryParams: string[];
+	ttl?: number;
 }
 
 const partnerName = 'liveConnect';
@@ -20,13 +26,8 @@ const idConfigMapping: IdConfig[] = [
 ];
 
 class LiveConnect extends BaseServiceSetup {
-	private isLoaded: boolean;
-	private storage: UniversalStorage;
-
-	constructor() {
-		super();
-		this.storage = new UniversalStorage();
-	}
+	private storage;
+	private storageConfig: CachingStrategyConfig;
 
 	private isEnabled(): boolean {
 		return (
@@ -43,9 +44,9 @@ class LiveConnect extends BaseServiceSetup {
 			return;
 		}
 
-		this.isLoaded = this.isAvailableInLocalStorage(`${partnerName}-unifiedId`);
+		this.setupStorage();
 
-		if (!this.isLoaded) {
+		if (this.shouldLoadScript()) {
 			utils.logger(logGroup, 'loading');
 			communicationService.emit(eventsRepository.LIVE_CONNECT_STARTED);
 
@@ -55,10 +56,8 @@ class LiveConnect extends BaseServiceSetup {
 					utils.logger(logGroup, 'loaded');
 					this.track();
 				});
-
-			this.isLoaded = true;
 		} else {
-			utils.logger(logGroup, 'already loaded and available in localStorage');
+			utils.logger(logGroup, `already loaded and available in ${this.storageConfig.type}Storage`);
 		}
 	}
 
@@ -70,12 +69,13 @@ class LiveConnect extends BaseServiceSetup {
 
 			if (idName === 'unifiedId') {
 				communicationService.emit(eventsRepository.LIVE_CONNECT_RESPONDED_UUID);
-				this.saveToLocalStorage(partnerName, partnerIdentityId);
 			}
 
 			if (!partnerIdentityId) {
 				return;
 			}
+
+			this.saveToStorage(partnerName, partnerIdentityId);
 
 			communicationService.emit(eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED, {
 				partnerName,
@@ -104,18 +104,65 @@ class LiveConnect extends BaseServiceSetup {
 		});
 	}
 
-	isAvailableInLocalStorage(key: string): boolean {
-		return !!this.getLocalStorageData(key);
+	setupStorage(): void {
+		this.storageConfig = context.get('services.liveConnect.cachingStrategy');
+
+		if (this.storageConfig.type === 'local') {
+			this.storage = localCache;
+		} else {
+			this.storage = new UniversalStorage(window.sessionStorage);
+		}
 	}
 
-	getLocalStorageData(key: string) {
-		return this.storage.getItem(key);
+	shouldLoadScript(): boolean {
+		if (!this.storageConfig) {
+			return true;
+		}
+
+		let shouldLoadScript = false;
+
+		this.storageConfig.mandatoryParams.forEach((param) => {
+			const storageKey = this.getConfigName(param);
+			if (!this.isAvailableInStorage(storageKey)) {
+				shouldLoadScript = true;
+			}
+		});
+
+		return shouldLoadScript;
 	}
 
-	saveToLocalStorage(key: string, value: string) {
-		utils.logger(logGroup, `Saving to localStorage: ${key}`);
+	isAvailableInStorage(key: string): boolean {
+		return !!this.getStorageData(key);
+	}
 
-		this.storage.setItem(key, value);
+	getStorageData(key: string) {
+		if (this.storageConfig.type === 'local') {
+			return this.storage.get(key);
+		} else {
+			return this.storage.getItem(key);
+		}
+	}
+
+	saveToStorage(key: string, value: string) {
+		const idName = this.getConfigId(key);
+
+		if (!this.storageConfig.mandatoryParams.includes(idName)) {
+			return;
+		}
+
+		if (this.storageConfig.type === 'local') {
+			this.storage.set(key, value, this.storageConfig.ttl);
+		} else {
+			this.storage.setItem(key, value);
+		}
+	}
+
+	getConfigId(name: string) {
+		return idConfigMapping.find((config) => config.name === name).id;
+	}
+
+	getConfigName(id: string): string {
+		return idConfigMapping.find((config) => config.id === id).name;
 	}
 }
 
