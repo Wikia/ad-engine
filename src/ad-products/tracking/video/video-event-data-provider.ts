@@ -32,6 +32,7 @@ export class VideoEventDataProvider {
 			tz_offset: now.getTimezoneOffset(),
 			user_block_autoplay: videoData.user_block_autoplay,
 			video_id: videoData.video_id || '',
+			video_depth: videoData.video_depth || '',
 		};
 	}
 }
