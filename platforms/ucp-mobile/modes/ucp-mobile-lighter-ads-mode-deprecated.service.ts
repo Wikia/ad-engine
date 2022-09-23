@@ -15,6 +15,7 @@ import {
 	Runner,
 	stroer,
 	ats,
+	liveRampPixel,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -35,6 +36,7 @@ export class UcpMobileLighterDeprecatedAdsMode implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(userIdentity.call());
+		inhibitors.push(liveRampPixel.call());
 
 		ats.call();
 		facebookPixel.call();

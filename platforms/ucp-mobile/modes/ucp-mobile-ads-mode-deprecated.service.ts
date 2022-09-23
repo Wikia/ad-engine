@@ -23,6 +23,7 @@ import {
 	stroer,
 	utils,
 	ats,
+	liveRampPixel,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -47,6 +48,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
+		inhibitors.push(liveRampPixel.call());
 
 		ats.call();
 		eyeota.call();

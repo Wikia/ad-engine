@@ -9,6 +9,7 @@ import {
 	eventsRepository,
 	iasPublisherOptimization,
 	liveConnect,
+	liveRampPixel,
 	PartnerPipeline,
 	userIdentity,
 } from '@wikia/ad-engine';
@@ -22,6 +23,9 @@ export class SportsAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveRampPixel.setOptions({
+					dependencies: [userIdentity.initialized],
+				}),
 				liveConnect,
 				bidders,
 				wadRunner,
