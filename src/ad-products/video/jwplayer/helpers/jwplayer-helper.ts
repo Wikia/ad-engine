@@ -114,7 +114,9 @@ export class JWPlayerHelper {
 	}
 
 	private shouldPlayAdOnNextVideo(depth: number): boolean {
-		return context.get('options.video.playAdsOnNextVideo') && depth !== 2;
+		const SPONSORED_VIDEO_INDEX = 2;
+
+		return context.get('options.video.playAdsOnNextVideo') && depth !== SPONSORED_VIDEO_INDEX;
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
