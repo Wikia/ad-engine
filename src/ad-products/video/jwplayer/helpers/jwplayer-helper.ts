@@ -114,11 +114,7 @@ export class JWPlayerHelper {
 	}
 
 	private shouldPlayAdOnNextVideo(depth: number): boolean {
-		const capping = context.get('options.video.adsOnNextVideoFrequency');
-
-		return (
-			context.get('options.video.playAdsOnNextVideo') && capping > 0 && (depth - 1) % capping === 0
-		);
+		return context.get('options.video.playAdsOnNextVideo') && depth !== 2;
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
