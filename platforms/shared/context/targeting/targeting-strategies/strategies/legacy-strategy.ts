@@ -16,7 +16,6 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 			artid: wiki.targeting.pageArticleId ? wiki.targeting.pageArticleId.toString() : '',
 			age: wiki.targeting?.adTagManagerTags?.age || [],
 			bundles: wiki.targeting?.adTagManagerTags?.bundles || [],
-			esrb: wiki.targeting.esrbRating,
 			gnre: wiki.targeting?.adTagManagerTags?.gnre || [],
 			kid_wiki: wiki.targeting.directedAtChildren ? '1' : '0',
 			lang: wiki.targeting.wikiLanguage || 'unknown',
@@ -32,6 +31,10 @@ export class LegacyStrategy extends CommonStrategy implements TargetingStrategyI
 			tv: wiki.targeting?.adTagManagerTags?.tv || [],
 			wpage: wiki.targeting.pageName && wiki.targeting.pageName.toLowerCase(),
 		};
+
+		if (wiki.targeting.esrbRating) {
+			targeting.esrb = wiki.targeting.esrbRating;
+		}
 
 		if (wiki.targeting.wikiIsTop1000) {
 			targeting.top = '1k';

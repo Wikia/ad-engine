@@ -42,6 +42,10 @@ export class RoadblockHandler implements TemplateStateHandler {
 			communicationService.emit(eventsRepository.AD_ENGINE_UAP_NTC_LOADED);
 		}
 
+		if (this.params.stickedTlb) {
+			context.set('templates.stickyTlb.forced', true);
+		}
+
 		universalAdPackage.init(this.params as any, this.config.enabledSlots, this.config.disableSlots);
 	}
 }
