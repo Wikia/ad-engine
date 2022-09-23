@@ -82,11 +82,11 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
-		inhibitors.push(liveRampPixel.call());
 
 		ats.call();
 		eyeota.call();
 		facebookPixel.call();
+		liveRampPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();

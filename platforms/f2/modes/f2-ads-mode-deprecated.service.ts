@@ -36,8 +36,8 @@ export class F2DeprecatedAdsMode implements DiProcess {
 		inhibitors.push(userIdentity.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
-		inhibitors.push(liveRampPixel.call());
 
+		liveRampPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		nielsen.call();

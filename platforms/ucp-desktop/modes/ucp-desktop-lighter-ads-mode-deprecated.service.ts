@@ -51,10 +51,10 @@ export class UcpDesktopLighterAdsModeDeprecated implements DiProcess {
 		const inhibitors: Promise<any>[] = [];
 
 		inhibitors.push(userIdentity.call());
-		inhibitors.push(liveRampPixel.call());
 
 		ats.call();
 		facebookPixel.call();
+		liveRampPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();
