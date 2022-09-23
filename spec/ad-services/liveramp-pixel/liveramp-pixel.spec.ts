@@ -3,7 +3,7 @@ import { createSandbox } from 'sinon';
 import { context } from '@wikia/ad-engine';
 import { liveRampPixel } from '@wikia/ad-services';
 
-describe('Facebook pixel', () => {
+describe('LiveRamp pixel', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
 
@@ -17,21 +17,21 @@ describe('Facebook pixel', () => {
 		sandbox.restore();
 	});
 
-	it('Facebook pixel is created', async () => {
+	it('LiveRamp pixel is created', async () => {
 		await liveRampPixel.call();
 
 		expect(loadScriptStub.called).to.equal(true);
 	});
 
-	it('Facebook pixel can be disabled', async () => {
-		context.set('services.facebookPixel.enabled', false);
+	it('LiveRamp pixel can be disabled', async () => {
+		context.set('services.liveRampPixel.enabled', false);
 
 		await liveRampPixel.call();
 
 		expect(loadScriptStub.called).to.equal(false);
 	});
 
-	it('Facebook pixel not created on kid wikis', async () => {
+	it('LiveRamp pixel not created on kid wikis', async () => {
 		context.set('wiki.targeting.directedAtChildren', true);
 
 		await liveRampPixel.call();
