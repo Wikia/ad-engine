@@ -140,6 +140,7 @@ export class JWPlayerHelper {
 			targeting: {
 				rv: state.rv,
 				v1: state.playlistItem.mediaid || '',
+				videoDepth: state.depth,
 				...this.targeting,
 			},
 		});
