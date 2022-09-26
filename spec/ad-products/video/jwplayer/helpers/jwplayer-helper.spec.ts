@@ -4,6 +4,11 @@ import { createSandbox } from 'sinon';
 import { context } from '@wikia/ad-engine';
 import { JWPlayerHelper } from '@wikia/ad-products/video/jwplayer/helpers/jwplayer-helper';
 
+type shouldPrerollAppear = boolean;
+type shouldMidrollAppear = boolean;
+type shouldPostrollAppear = boolean;
+type videoTestRow = [shouldPrerollAppear, shouldMidrollAppear, shouldPostrollAppear];
+
 describe('JWPlayer helper', () => {
 	const sandbox = createSandbox();
 	let adSlotStub, helper;
@@ -58,7 +63,7 @@ describe('JWPlayer helper', () => {
 			]);
 		});
 
-		function simulatePlaysAndVerifyResults(testData): void {
+		function simulatePlaysAndVerifyResults(testData: videoTestRow[]): void {
 			testData.forEach((expectedResults, videoPlayIndex) => {
 				const videoNumber = videoPlayIndex + 1;
 				expect(helper.shouldPlayPreroll(videoNumber)).to.equal(expectedResults[0]);
