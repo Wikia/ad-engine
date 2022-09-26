@@ -93,6 +93,10 @@ export class BaseContextSetup implements DiProcess {
 			'options.video.isPostrollEnabled',
 			this.instantConfig.get('icFeaturedVideoPostroll'),
 		);
+		context.set(
+			'options.video.forceVideoAdsOnAllVideosExceptSecond',
+			this.instantConfig.get('icFeaturedVideoForceVideoAdsEverywhereExcept2ndVideo'),
+		);
 
 		context.set(
 			'options.floorAdhesionNumberOfViewportsFromTopToPush',
