@@ -1,15 +1,12 @@
 import {
-	AdBidderContext,
 	adClickTracker,
-	AdInfoContext,
+	bidders,
 	bidderTracker,
-	Binder,
 	communicationService,
 	context,
 	ctaTracker,
 	Dictionary,
 	eventsRepository,
-	FuncPipelineStep,
 	GAMOrigins,
 	globalAction,
 	InstantConfigCacheStorage,
@@ -18,13 +15,10 @@ import {
 	PostmessageTracker,
 	slotTracker,
 	TrackingMessage,
-	trackingPayloadValidationMiddleware,
 	TrackingTarget,
-	viewabilityPropertiesTrackingMiddleware,
 	viewabilityTracker,
-	viewabilityTrackingMiddleware,
 } from '@wikia/ad-engine';
-import { Inject, Injectable } from '@wikia/dependency-injection';
+import { Injectable } from '@wikia/dependency-injection';
 import { DataWarehouseTracker } from './data-warehouse';
 import { AdSizeTracker } from './ad-size-tracker';
 import { LabradorTracker } from './labrador-tracker';
@@ -39,34 +33,9 @@ const trackingKeyValsUrl = 'https://beacon.wikia-services.com/__track/special/ke
 
 const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>());
 
-interface TrackingMiddlewares {
-	slotTrackingMiddlewares?: FuncPipelineStep<AdInfoContext>[];
-	bidderTrackingMiddlewares?: FuncPipelineStep<AdBidderContext>[];
-}
-
 @Injectable()
 export class TrackingSetup {
-	static provideMiddlewares(trackingMiddlewares: TrackingMiddlewares): Binder[] {
-		return [
-			{
-				bind: 'slotTrackingMiddlewares',
-				value: trackingMiddlewares['slotTrackingMiddlewares'] ?? [],
-			},
-			{
-				bind: 'bidderTrackingMiddlewares',
-				value: trackingMiddlewares['bidderTrackingMiddlewares'] ?? [],
-			},
-		];
-	}
-
-	constructor(
-		private labradorTracker: LabradorTracker,
-		private adSizeTracker: AdSizeTracker,
-		@Inject('slotTrackingMiddlewares')
-		private slotTrackingMiddlewares: FuncPipelineStep<AdInfoContext>[],
-		@Inject('bidderTrackingMiddlewares')
-		private bidderTrackingMiddlewares: FuncPipelineStep<AdBidderContext>[],
-	) {}
+	constructor(private labradorTracker: LabradorTracker, private adSizeTracker: AdSizeTracker) {}
 
 	execute(): void {
 		this.porvataTracker();
@@ -98,81 +67,63 @@ export class TrackingSetup {
 	}
 
 	private slotTracker(): void {
-		if (this.slotTrackingMiddlewares.length === 0) {
-			return;
+		const dataWarehouseTracker = new DataWarehouseTracker();
+		let withBidders = null;
+
+		if (context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled')) {
+			withBidders = bidders;
 		}
 
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
-		slotTracker.add(...this.slotTrackingMiddlewares);
 		slotTracker.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
-
-			return data;
-		});
+		}, withBidders);
 	}
 
 	private viewabilityTracker(): void {
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		viewabilityTracker
-			.add(viewabilityTrackingMiddleware)
-			.add(viewabilityPropertiesTrackingMiddleware)
-			.register(({ data }: Dictionary) => {
-				dataWarehouseTracker.track(data, viewabilityUrl);
+		viewabilityTracker.register(({ data }: Dictionary) => {
+			dataWarehouseTracker.track(data, viewabilityUrl);
 
-				return data;
-			});
+			return data;
+		});
 	}
 
 	private ctaTracker(): void {
-		if (this.slotTrackingMiddlewares.length === 0) {
-			return;
-		}
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		ctaTracker.add(...this.slotTrackingMiddlewares);
 		ctaTracker.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, slotTrackingUrl);
-
-			return data;
 		});
 	}
 
 	private adClickTracker(): void {
-		if (this.slotTrackingMiddlewares.length === 0) {
-			return;
-		}
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		adClickTracker.add(...this.slotTrackingMiddlewares);
 		adClickTracker.register(({ data }: Dictionary) => {
 			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
 			communicationService.dispatch(adClickedAction(data));
 			dataWarehouseTracker.track(data, slotTrackingUrl);
-			return data;
 		});
 	}
 
 	private bidderTracker(): void {
-		if (this.bidderTrackingMiddlewares.length === 0) {
+		if (!context.get('bidders.prebid.enabled') && !context.get('bidders.a9.enabled')) {
 			return;
 		}
 
 		const dataWarehouseTracker = new DataWarehouseTracker();
 
-		bidderTracker.add(...this.bidderTrackingMiddlewares).register(({ data }: Dictionary) => {
+		bidderTracker.register(({ data }: Dictionary) => {
 			dataWarehouseTracker.track(data, bidderTrackingUrl);
-
-			return data;
 		});
 	}
 
 	private postmessageTrackingTracker(): void {
 		const postmessageTracker = new PostmessageTracker(['payload', 'target']);
 
-		postmessageTracker.add(trackingPayloadValidationMiddleware).register<TrackingMessage>(
+		postmessageTracker.register<TrackingMessage>(
 			async (message) => {
 				const { target, payload } = message;
 

@@ -3,7 +3,8 @@ import {
 	eventsRepository,
 	TrackingBidDefinition,
 } from '@ad-engine/communication';
-import { context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { context, Dictionary } from '@ad-engine/core';
+import { bidderTrackingCompiler } from './compilers/bidder-tracking-compiler';
 
 export interface AdBidderContext {
 	bid: TrackingBidDefinition;
@@ -11,19 +12,11 @@ export interface AdBidderContext {
 }
 
 class BidderTracker {
-	private pipeline = new FuncPipeline<AdBidderContext>();
-
-	add(...middlewares: FuncPipelineStep<AdBidderContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
-
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.bidder');
 	}
 
-	register(callback: FuncPipelineStep<AdBidderContext>): void {
+	register(callback: (data: Dictionary) => void): void {
 		if (!this.isEnabled()) {
 			return;
 		}
@@ -31,13 +24,12 @@ class BidderTracker {
 		communicationService.on(
 			eventsRepository.BIDDERS_BIDS_RESPONSE,
 			({ bidResponse }) => {
-				this.pipeline.execute(
-					{
-						bid: bidResponse,
-						data: {},
-					},
-					callback,
-				);
+				const trackingData: AdBidderContext = {
+					bid: bidResponse,
+					data: {},
+				};
+
+				callback(bidderTrackingCompiler(trackingData));
 			},
 			false,
 		);

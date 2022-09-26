@@ -1,5 +1,5 @@
-import { FuncPipelineStep, slotService } from '@ad-engine/core';
-import { AdBidderContext } from './bidder-tracker';
+import { slotService } from '@ad-engine/core';
+import { AdBidderContext } from '../bidder-tracker';
 
 function isBidOnTime(slotName: string, responseTime: number): boolean {
 	const slot = slotService.get(slotName);
@@ -11,10 +11,7 @@ function isBidOnTime(slotName: string, responseTime: number): boolean {
 	return slot.getPushTime() > responseTime;
 }
 
-export const bidderTrackingMiddleware: FuncPipelineStep<AdBidderContext> = (
-	{ bid, data },
-	next,
-) => {
+export const bidderTrackingCompiler = ({ bid, data }: AdBidderContext): AdBidderContext => {
 	const now = new Date();
 	const timestamp: number = now.getTime();
 	const slotId = slotService.getSlotId(bid.slotName);
@@ -24,7 +21,7 @@ export const bidderTrackingMiddleware: FuncPipelineStep<AdBidderContext> = (
 		additionalFlags.push(`buyer_id=${bid.buyerId}`);
 	}
 
-	return next({
+	return {
 		bid,
 		data: {
 			...data,
@@ -37,5 +34,5 @@ export const bidderTrackingMiddleware: FuncPipelineStep<AdBidderContext> = (
 			status: isBidOnTime(bid.slotName, bid.responseTimestamp) ? 'on_time' : 'too_late',
 			additional_flags: additionalFlags.join(';'),
 		},
-	});
+	};
 };

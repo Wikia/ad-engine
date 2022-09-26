@@ -1,5 +1,12 @@
-import { context, FuncPipelineStep, InstantConfigCacheStorage, utils } from '@ad-engine/core';
-import { AdInfoContext } from './slot-tracker';
+import { AdSlot, context, InstantConfigCacheStorage, utils } from '@ad-engine/core';
+import { AdInfoContext } from '../slot-tracker';
+
+interface AdClickContext {
+	slot: AdSlot;
+	data: {
+		ad_status: string;
+	};
+}
 
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {
@@ -17,14 +24,14 @@ function checkOptOutSale(): string {
 	return '';
 }
 
-export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, slot }, next) => {
+export const slotTrackingCompiler = ({ data, slot }: AdClickContext): AdInfoContext => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
 	const timestamp: number = now.getTime();
 	const isUap =
 		slot.getConfigProperty('targeting.uap') && slot.getConfigProperty('targeting.uap') !== 'none';
 
-	return next({
+	return {
 		slot,
 		data: {
 			...data,
@@ -50,5 +57,5 @@ export const slotTrackingMiddleware: FuncPipelineStep<AdInfoContext> = ({ data, 
 			tz_offset: now.getTimezoneOffset(),
 			viewport_height: window.innerHeight || 0,
 		},
-	});
+	};
 };

@@ -1,5 +1,8 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { AdSlot, context, Dictionary } from '@ad-engine/core';
+import { slotTrackingCompiler } from './compilers/slot-tracking-compiler';
+import { slotPropertiesTrackingCompiler } from './compilers/slot-properties-tracking-compiler';
+import { slotBiddersTrackingCompiler } from './compilers/slot-bidders-tracking-compiler';
 
 export interface AdInfoContext {
 	data: any;
@@ -26,19 +29,11 @@ class SlotTracker {
 		AdSlot.STATUS_UNKNOWN_INTERVENTION,
 	];
 
-	private pipeline = new FuncPipeline<AdInfoContext>();
-
-	add(...middlewares: FuncPipelineStep<AdInfoContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
-
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.status');
 	}
 
-	register(callback: FuncPipelineStep<AdInfoContext>): void {
+	register(callback: (data: Dictionary) => void, bidders): void {
 		if (!this.isEnabled()) {
 			return;
 		}
@@ -47,9 +42,9 @@ class SlotTracker {
 			slot.trackStatusAfterRendered = true;
 		});
 
-		communicationService.onSlotEvent(AdSlot.SLOT_STATUS_CHANGED, ({ slot }) => {
+		communicationService.onSlotEvent(AdSlot.SLOT_STATUS_CHANGED, async ({ slot }) => {
 			const status = slot.getStatus();
-			const middlewareContext: AdInfoContext = {
+			const trackingData: AdInfoContext = {
 				slot,
 				data: {},
 			};
@@ -60,7 +55,12 @@ class SlotTracker {
 					this.onRenderEndedStatusToTrack.includes(status) ||
 					slot.getConfigProperty('trackEachStatus')
 				) {
-					this.pipeline.execute(middlewareContext, callback);
+					callback(
+						await slotBiddersTrackingCompiler(
+							slotPropertiesTrackingCompiler(slotTrackingCompiler(trackingData)),
+							bidders,
+						),
+					);
 					return;
 				}
 			}
@@ -69,19 +69,29 @@ class SlotTracker {
 				this.onChangeStatusToTrack.includes(status) ||
 				slot.getConfigProperty('trackEachStatus')
 			) {
-				this.pipeline.execute(middlewareContext, callback);
+				callback(
+					await slotBiddersTrackingCompiler(
+						slotPropertiesTrackingCompiler(slotTrackingCompiler(trackingData)),
+						bidders,
+					),
+				);
 			}
 		});
 
-		communicationService.onSlotEvent(AdSlot.CUSTOM_EVENT, ({ slot, payload }) => {
-			const middlewareContext: AdInfoContext = {
+		communicationService.onSlotEvent(AdSlot.CUSTOM_EVENT, async ({ slot, payload }) => {
+			const trackingData: AdInfoContext = {
 				slot,
 				data: {
 					ad_status: payload?.status,
 				},
 			};
 
-			this.pipeline.execute(middlewareContext, callback);
+			callback(
+				await slotBiddersTrackingCompiler(
+					slotPropertiesTrackingCompiler(slotTrackingCompiler(trackingData)),
+					bidders,
+				),
+			);
 		});
 	}
 }

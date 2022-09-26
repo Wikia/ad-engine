@@ -1,11 +1,7 @@
-import { AdInfoContext } from '@ad-engine/tracking';
-import { FuncPipelineStep } from '../pipeline/imps/func-pipeline';
+import { AdInfoContext } from '../slot-tracker';
 
-export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> = (
-	{ data, slot },
-	next,
-) =>
-	next({
+export const slotPropertiesTrackingCompiler = ({ data, slot }: AdInfoContext): AdInfoContext => {
+	return {
 		slot,
 		data: {
 			...data,
@@ -19,4 +15,5 @@ export const slotPropertiesTrackingMiddleware: FuncPipelineStep<AdInfoContext> =
 			slot_id: slot.getUid() || '',
 			slot_size: slot.getCreativeSize() || '',
 		},
-	});
+	};
+};

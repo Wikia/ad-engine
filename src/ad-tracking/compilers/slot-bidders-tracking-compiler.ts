@@ -1,8 +1,7 @@
-import { Dictionary, FuncPipelineStep } from '@ad-engine/core';
-import { AdInfoContext } from '@ad-engine/tracking';
-import { bidders } from '../';
+import { Dictionary } from '@ad-engine/core';
+import { AdInfoContext } from '../slot-tracker';
 
-async function getBiddersPrices(slotName: string): Promise<Dictionary<string>> {
+async function getBiddersPrices(slotName: string, bidders): Promise<Dictionary<string>> {
 	const realSlotPrices: Dictionary<string> = bidders.getDfpSlotPrices(slotName);
 	const currentSlotPrices: Dictionary<string> = await bidders.getCurrentSlotPrices(slotName);
 
@@ -41,18 +40,18 @@ async function getBiddersPrices(slotName: string): Promise<Dictionary<string>> {
 	};
 }
 
-export const slotBiddersTrackingMiddleware: FuncPipelineStep<AdInfoContext> = async (
-	{ data, slot },
-	next,
-) => {
-	return next({
+export const slotBiddersTrackingCompiler = async ({ data, slot }: AdInfoContext, bidders) => {
+	if (!bidders) {
+		return { slot, data };
+	}
+
+	return {
 		slot,
 		data: {
 			...data,
-
 			bidder_won: slot.winningBidderDetails ? slot.winningBidderDetails.name : '',
 			bidder_won_price: slot.winningBidderDetails ? slot.winningBidderDetails.price : '',
-			...(await getBiddersPrices(slot.getSlotName())),
+			...(await getBiddersPrices(slot.getSlotName(), bidders)),
 		},
-	});
+	};
 };

@@ -1,5 +1,6 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, FuncPipeline, FuncPipelineStep, slotService } from '@ad-engine/core';
+import { AdSlot, Dictionary, slotService } from '@ad-engine/core';
+import { slotTrackingCompiler } from './compilers/slot-tracking-compiler';
 
 interface AdClickContext {
 	slot: AdSlot;
@@ -9,38 +10,20 @@ interface AdClickContext {
 }
 
 class CtaTracker {
-	private pipeline = new FuncPipeline<AdClickContext>();
-
-	add(...middlewares: FuncPipelineStep<AdClickContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
-
-	register(callback: FuncPipelineStep<AdClickContext>): void {
+	register(callback: (data: Dictionary) => void): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT,
 			({ adSlotName, ad_status }) => {
-				this.handleCtaTracking(callback, slotService.get(adSlotName), ad_status);
+				const trackingData: AdClickContext = {
+					slot: slotService.get(adSlotName),
+					data: {
+						ad_status,
+					},
+				};
+
+				callback(slotTrackingCompiler(trackingData));
 			},
 			false,
-		);
-	}
-
-	private handleCtaTracking(
-		callback: FuncPipelineStep<AdClickContext>,
-		slot: AdSlot,
-		ad_status: string,
-	): void {
-		const data = {
-			ad_status,
-		};
-		this.pipeline.execute(
-			{
-				slot,
-				data,
-			},
-			callback,
 		);
 	}
 }

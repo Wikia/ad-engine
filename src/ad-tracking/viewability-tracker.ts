@@ -1,5 +1,7 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context, FuncPipeline, FuncPipelineStep } from '@ad-engine/core';
+import { AdSlot, context, Dictionary } from '@ad-engine/core';
+import { viewabilityTrackingCompiler } from './compilers/viewability-tracking-compiler';
+import { viewabilityPropertiesTrackingCompiler } from './compilers/viewability-properties-tracking-compiler';
 
 export interface AdViewabilityContext {
 	data: any;
@@ -7,31 +9,22 @@ export interface AdViewabilityContext {
 }
 
 class ViewabilityTracker {
-	private pipeline = new FuncPipeline<AdViewabilityContext>();
-
-	add(...middlewares: FuncPipelineStep<AdViewabilityContext>[]): this {
-		this.pipeline.add(...middlewares);
-
-		return this;
-	}
-
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.viewability');
 	}
 
-	register(callback: FuncPipelineStep<AdViewabilityContext>): void {
+	register(callback: (data: Dictionary) => void): void {
 		if (!this.isEnabled()) {
 			return;
 		}
 
 		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
-			this.pipeline.execute(
-				{
-					slot,
-					data: {},
-				},
-				callback,
-			);
+			const trackingData: AdViewabilityContext = {
+				slot,
+				data: {},
+			};
+
+			callback(viewabilityTrackingCompiler(viewabilityPropertiesTrackingCompiler(trackingData)));
 		});
 	}
 }
