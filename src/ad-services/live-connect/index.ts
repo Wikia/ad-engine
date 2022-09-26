@@ -158,11 +158,11 @@ class LiveConnect extends BaseServiceSetup {
 	}
 
 	getConfigId(name: string) {
-		return idConfigMapping.find((config) => config.name === name).id;
+		return idConfigMapping.find((config) => config.name === name)?.id;
 	}
 
 	getConfigName(id: string): string {
-		return idConfigMapping.find((config) => config.id === id).name;
+		return idConfigMapping.find((config) => config.id === id)?.name;
 	}
 }
 
