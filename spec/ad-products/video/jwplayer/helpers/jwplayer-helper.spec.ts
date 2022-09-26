@@ -24,6 +24,7 @@ describe('JWPlayer helper', () => {
 			context.set('options.video.playAdsOnNextVideo', true);
 			context.set('options.video.isMidrollEnabled', false);
 			context.set('options.video.isPostrollEnabled', false);
+			context.set('options.video.forceVideoAdsOnAllVideosExceptSecond', true);
 		});
 
 		afterEach(() => {
@@ -32,6 +33,7 @@ describe('JWPlayer helper', () => {
 			context.remove('options.video.playAdsOnNextVideo');
 			context.remove('options.video.isMidrollEnabled');
 			context.remove('options.video.isPostrollEnabled');
+			context.remove('options.video.forceVideoAdsOnAllVideosExceptSecond');
 		});
 
 		it('works correctly for the default settings - no ad for the 2nd video, no midroll, no postroll', () => {
