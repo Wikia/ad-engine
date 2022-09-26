@@ -40,7 +40,7 @@ export class F2SlotsContextSetup implements DiProcess {
 					},
 					{
 						viewportSize: [320, 200],
-						sizes: [[320, 50], [320, 480], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
+						sizes: [[320, 50], [320, 100], [320, 480], universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile],
 						mobileViewport: true,
 					},
 					{
