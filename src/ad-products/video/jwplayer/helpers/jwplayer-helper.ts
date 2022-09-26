@@ -120,11 +120,23 @@ export class JWPlayerHelper {
 
 	private shouldPlayAdOnNextVideo(videoPlaylistOrderNumber: number): boolean {
 		const SPONSORED_VIDEO_INDEX = 2;
-
-		return (
-			context.get('options.video.playAdsOnNextVideo') &&
-			videoPlaylistOrderNumber !== SPONSORED_VIDEO_INDEX
+		const capping = context.get('options.video.adsOnNextVideoFrequency');
+		const videoAdsOnAllVideosExceptSecond = context.get(
+			'options.video.forceVideoAdsOnAllVideosExceptSecond',
 		);
+
+		if (videoAdsOnAllVideosExceptSecond) {
+			return (
+				context.get('options.video.playAdsOnNextVideo') &&
+				videoPlaylistOrderNumber !== SPONSORED_VIDEO_INDEX
+			);
+		} else {
+			return (
+				context.get('options.video.playAdsOnNextVideo') &&
+				capping > 0 &&
+				(videoPlaylistOrderNumber - 1) % capping === 0
+			);
+		}
 	}
 
 	playVideoAd(position: 'midroll' | 'postroll' | 'preroll', state: JwpState): void {
