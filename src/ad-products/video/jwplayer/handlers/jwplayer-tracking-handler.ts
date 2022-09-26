@@ -83,7 +83,7 @@ export class JWPlayerTrackingHandler {
 			position: this.adSlot.config.slotName,
 			user_block_autoplay: this.getUserBlockAutoplay(),
 			video_id: event.state.playlistItem.mediaid || '',
-			video_depth: event.state.depth || '',
+			video_number: event.state.depth || '',
 		};
 	}
 
