@@ -9,6 +9,8 @@ class LiveRampPixel extends BaseServiceSetup {
 	private isEnabled(): boolean {
 		return (
 			context.get('services.liveRampPixel.enabled') &&
+			context.get('options.trackingOptIn') &&
+			!context.get('options.optOutSale') &&
 			!context.get('wiki.targeting.directedAtChildren')
 		);
 	}
