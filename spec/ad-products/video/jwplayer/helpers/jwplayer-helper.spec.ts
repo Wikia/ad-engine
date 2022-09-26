@@ -65,6 +65,20 @@ describe('JWPlayer helper', () => {
 			]);
 		});
 
+		it('works correctly for the capping logic - ads before 1st and 3rd video, no midroll, no postroll', () => {
+			context.set('options.video.forceVideoAdsOnAllVideosExceptSecond', false);
+			context.set('options.video.adsOnNextVideoFrequency', 3);
+			context.set('options.video.isMidrollEnabled', false);
+			context.set('options.video.isPostrollEnabled', false);
+
+			simulatePlaysAndVerifyResults([
+				[true, false, false],
+				[false, false, false],
+				[false, false, false],
+				[true, false, false],
+			]);
+		});
+
 		function simulatePlaysAndVerifyResults(testData: videoTestRow[]): void {
 			testData.forEach((expectedResults, videoPlayIndex) => {
 				const videoNumber = videoPlayIndex + 1;
