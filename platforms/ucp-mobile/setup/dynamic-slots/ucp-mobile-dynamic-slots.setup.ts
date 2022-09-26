@@ -103,9 +103,7 @@ export class UcpMobileDynamicSlotsSetup implements DiProcess {
 				universalAdPackage.UAP_ADDITIONAL_SIZES.bfaSize.mobile,
 			);
 
-			if (context.get('templates.stickyTlb.lineItemIds')) {
-				context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
-			}
+			context.push('slots.top_leaderboard.defaultTemplates', 'stickyTlb');
 		}
 
 		slotsContext.addSlotSize(

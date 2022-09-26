@@ -57,6 +57,8 @@ const futheadContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'futhead',
+			fallback:
+				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_futhead.json',
 		},
 	},
 };
@@ -79,6 +81,8 @@ const mutheadContext = {
 		instantConfig: {
 			endpoint: 'https://services.fandom.com',
 			appName: 'muthead',
+			fallback:
+				'https://script.wikia.nocookie.net/fandom-ae-assets/icbm/prod/icbm_state_muthead.json',
 		},
 	},
 };

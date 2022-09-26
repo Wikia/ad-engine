@@ -1,9 +1,10 @@
 export interface RoadblockParams {
-	newTakeoverConfig: boolean;
-	type: 'roadblock';
-	uap: string;
 	/**
 	 * @default uap
 	 */
 	adProduct: string;
+	newTakeoverConfig?: boolean;
+	stickedTlb?: boolean;
+	type: 'roadblock';
+	uap: string;
 }

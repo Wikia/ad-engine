@@ -20,6 +20,7 @@ import {
 	adMarketplace,
 	userIdentity,
 	ats,
+	jwPlayerInhibitor,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
@@ -52,7 +53,11 @@ export class UcpDesktopAdsMode implements DiProcess {
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+					dependencies: [
+						userIdentity.initialized,
+						playerSetup.initialized,
+						jwPlayerInhibitor.initialized,
+					],
 				}),
 			)
 			.execute()
