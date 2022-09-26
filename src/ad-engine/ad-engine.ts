@@ -92,17 +92,7 @@ export class AdEngine {
 			makeLazyQueue<AdStackPayload>(this.adStack as any, (ad: AdStackPayload) => {
 				const adSlot = new AdSlot(ad);
 
-				if (
-					adSlot.isFirstCall() ||
-					adSlot.isInitStage() ||
-					!context.get('bidders.prebid.multiAuction')
-				) {
-					this.pushSlot(adSlot);
-				} else {
-					communicationService.on(eventsRepository.BIDDERS_MAIN_STAGE_DONE, () => {
-						this.pushSlot(adSlot);
-					});
-				}
+				this.pushSlot(adSlot);
 			});
 		}
 	}

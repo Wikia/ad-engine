@@ -38,7 +38,6 @@ export interface SlotConfig {
 	bidderAlias: string;
 	disabled?: boolean;
 	disableExpandAnimation?: boolean;
-	initStage?: boolean;
 	firstCall?: boolean;
 	aboveTheFold?: boolean;
 	slotName?: string;
@@ -394,10 +393,6 @@ export class AdSlot {
 
 	isEnabled(): boolean {
 		return this.enabled;
-	}
-
-	isInitStage(): boolean {
-		return !!this.config.initStage;
 	}
 
 	isFirstCall(): boolean {

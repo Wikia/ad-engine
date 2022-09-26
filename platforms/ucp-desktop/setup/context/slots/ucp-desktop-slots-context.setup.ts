@@ -9,7 +9,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
-				initStage: true,
 				adProduct: 'top_leaderboard',
 				group: 'LB',
 				options: {},
@@ -46,7 +45,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 			top_boxad: {
 				adProduct: 'top_boxad',
 				aboveTheFold: true,
-				initStage: true,
 				group: 'MR',
 				options: {},
 				defaultSizes: [
@@ -146,7 +144,6 @@ export class UcpDesktopSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
-				initStage: true,
 				adProduct: 'featured',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],

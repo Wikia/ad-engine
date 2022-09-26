@@ -7,7 +7,7 @@ const eventsToTrack = {
 	ad_engine_configured: eventsRepository.AD_ENGINE_CONFIGURED,
 	ad_engine_stack_start: eventsRepository.AD_ENGINE_STACK_START,
 	prebid_auction_started: eventsRepository.BIDDERS_BIDS_CALLED,
-	prebid_auction_ended: eventsRepository.BIDDERS_INIT_STAGE_DONE,
+	prebid_auction_ended: eventsRepository.BIDDERS_AUCTION_DONE,
 	live_connect_started: eventsRepository.LIVE_CONNECT_STARTED,
 	live_connect_responded_uuid: eventsRepository.LIVE_CONNECT_RESPONDED_UUID,
 	audigent_matches_library_loaded: eventsRepository.AUDIGENT_MATCHES_LIBRARY_LOADED,

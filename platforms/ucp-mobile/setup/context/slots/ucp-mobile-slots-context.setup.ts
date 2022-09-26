@@ -14,7 +14,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 			top_leaderboard: {
 				aboveTheFold: true,
 				firstCall: true,
-				initStage: true,
 				adProduct: 'top_leaderboard',
 				bidderAlias: 'mobile_top_leaderboard',
 				group: 'LB',
@@ -227,7 +226,6 @@ export class UcpMobileSlotsContextSetup implements DiProcess {
 				},
 			},
 			featured: {
-				initStage: true,
 				adProduct: 'featured',
 				group: 'VIDEO',
 				videoSizes: [[640, 480]],
