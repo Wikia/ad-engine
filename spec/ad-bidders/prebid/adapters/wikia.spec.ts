@@ -1,7 +1,7 @@
 import { Wikia } from '@wikia/ad-bidders/prebid/adapters/wikia';
 import { assert, expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { stubPbjs } from '../../../ad-engine/services/pbjs.stub';
+import { stubPbjs } from '../../../core/services/pbjs.stub';
 
 describe('Wikia bidder adapter', () => {
 	const sandbox = createSandbox();

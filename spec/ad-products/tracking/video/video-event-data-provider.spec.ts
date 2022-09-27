@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import * as sinon from 'sinon';
 import { AdSlot, context, slotService } from '../../../../src/core';
 import { VideoEventDataProvider } from '../../../../src/ad-products/tracking/video/video-event-data-provider';
-import { configMock } from '../../../ad-engine/config-mock';
+import { configMock } from '../../../core/config-mock';
 
 describe('Video event data provider', () => {
 	const sandbox = sinon.createSandbox();
