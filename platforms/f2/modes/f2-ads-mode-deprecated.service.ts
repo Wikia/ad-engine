@@ -32,7 +32,6 @@ export class F2DeprecatedAdsMode implements DiProcess {
 	private callExternals(): Promise<any>[] {
 		const inhibitors: Promise<any>[] = [];
 
-		inhibitors.push(userIdentity.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
 
