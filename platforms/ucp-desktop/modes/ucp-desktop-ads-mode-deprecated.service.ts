@@ -31,6 +31,7 @@ import {
 	UapLoadStatus,
 	utils,
 	ats,
+	liveRampPixel,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
 
@@ -85,6 +86,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		ats.call();
 		eyeota.call();
 		facebookPixel.call();
+		liveRampPixel.call();
 		audigent.call();
 		iasPublisherOptimization.call();
 		confiant.call();

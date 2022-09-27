@@ -21,6 +21,7 @@ import {
 	userIdentity,
 	ats,
 	jwPlayerInhibitor,
+	liveRampPixel,
 } from '@wikia/ad-engine';
 import { wadRunner, playerSetup, gptSetup, playerExperimentSetup } from '@platforms/shared';
 
@@ -32,6 +33,7 @@ export class UcpDesktopAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				playerExperimentSetup,
 				ats,
 				audigent,
