@@ -1,4 +1,4 @@
-import { vastParser } from '@wikia/ad-engine';
+import { context, vastParser } from '@wikia/ad-engine';
 import { jwpEvents } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-events';
 import {
 	createJwpStateStream,
@@ -33,6 +33,8 @@ describe('Jwplayer Stream State', () => {
 	afterEach(() => {
 		sandbox.restore();
 		subject$.complete();
+
+		context.remove('options.video.forceVideoAdsOnAllVideosExceptSecond');
 	});
 
 	describe('VideoDepth', () => {
@@ -54,6 +56,50 @@ describe('Jwplayer Stream State', () => {
 			subject$.next({ name: 'videoMidPoint', payload: undefined });
 			expect(uniq(results.map((value) => value.depth))).to.deep.equal([0, 1, 2]);
 			expect(uniq(results.map((value) => value.correlator)).length).to.equal(3);
+		});
+
+		it('should increase rv for every preroll in the same slot except 1st and 2nd', () => {
+			context.set('options.video.forceVideoAdsOnAllVideosExceptSecond', true);
+
+			// init
+			subject$.next({ name: 'adRequest', payload: { tag: 'tag' } });
+			expect(results[0].rv).to.equal(1);
+
+			// first video and preroll
+			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[3].rv).to.equal(1);
+
+			// midroll
+			subject$.next({ name: 'videoMidPoint', payload: undefined });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[6].rv).to.equal(1);
+
+			// postroll
+			subject$.next({ name: 'beforeComplete', payload: undefined });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[9].rv).to.equal(1);
+
+			subject$.next({ name: 'complete', payload: undefined });
+
+			// second video and preroll
+			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[15].rv).to.equal(1);
+
+			subject$.next({ name: 'complete', payload: undefined });
+
+			// third video and preroll
+			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[21].rv).to.equal(2);
+
+			subject$.next({ name: 'complete', payload: undefined });
+
+			// fourth video and preroll
+			subject$.next({ name: 'beforePlay', payload: undefined });
+			subject$.next({ name: 'adStarted', payload: undefined });
+			expect(results[27].rv).to.equal(3);
 		});
 	});
 
