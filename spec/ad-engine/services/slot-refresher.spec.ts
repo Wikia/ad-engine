@@ -1,6 +1,6 @@
-import { slotRefresher } from '@wikia/ad-engine/services/slot-refresher';
+import { slotRefresher } from '@wikia/core/services/slot-refresher';
 import sinon, { assert } from 'sinon';
-import { AdSlot } from '@wikia/ad-engine';
+import { AdSlot } from '@wikia/core';
 
 describe('slot-refresher', () => {
 	const basicConfig = { slots: ['test_slot'] };

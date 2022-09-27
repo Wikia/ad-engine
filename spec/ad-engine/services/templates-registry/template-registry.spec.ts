@@ -5,7 +5,7 @@ import {
 	TemplateRegistry,
 	TemplateStateHandler,
 	TemplateTransition,
-} from '@wikia/ad-engine';
+} from '@wikia/core';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';

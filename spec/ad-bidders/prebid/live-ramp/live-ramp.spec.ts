@@ -1,6 +1,6 @@
 import { liveRamp } from '@wikia/ad-bidders';
 import { PrebidProvider } from '@wikia/ad-bidders/prebid';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 

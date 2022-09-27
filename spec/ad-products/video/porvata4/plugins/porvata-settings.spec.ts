@@ -1,4 +1,4 @@
-import { context, slotService } from '@wikia/ad-engine';
+import { context, slotService } from '@wikia/core';
 import { PorvataSettings } from '@wikia/ad-products';
 import { assert } from 'chai';
 import * as sinon from 'sinon';

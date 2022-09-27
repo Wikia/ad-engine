@@ -1,5 +1,5 @@
-import { AdSlot, TEMPLATE } from '@wikia/ad-engine';
-import { TemplateDependenciesManager } from '@wikia/ad-engine/services/templates-registry/template-dependencies-manager';
+import { AdSlot, TEMPLATE } from '@wikia/core';
+import { TemplateDependenciesManager } from '@wikia/core/services/templates-registry/template-dependencies-manager';
 import { Container, Inject, Injectable } from '@wikia/dependency-injection';
 import { assert, expect } from 'chai';
 

@@ -1,4 +1,4 @@
-import { context, trackingOptIn } from '@wikia/ad-engine';
+import { context, trackingOptIn } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('tracking-opt-in', () => {

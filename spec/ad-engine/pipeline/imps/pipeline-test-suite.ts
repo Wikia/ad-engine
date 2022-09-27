@@ -1,4 +1,4 @@
-import { Pipeline } from '@wikia/ad-engine';
+import { Pipeline } from '@wikia/core';
 import { expect } from 'chai';
 import { SinonSandbox, SinonSpy } from 'sinon';
 

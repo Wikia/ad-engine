@@ -1,4 +1,4 @@
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 

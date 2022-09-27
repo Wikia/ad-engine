@@ -1,4 +1,4 @@
-import { vastDebugger } from '@wikia/ad-engine';
+import { vastDebugger } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('vast-debugger', () => {

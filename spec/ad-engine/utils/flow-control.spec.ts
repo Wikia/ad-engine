@@ -1,4 +1,4 @@
-import { once } from '@wikia/ad-engine/utils/flow-control';
+import { once } from '@wikia/core/utils/flow-control';
 import { expect } from 'chai';
 import { createSandbox, SinonSandbox } from 'sinon';
 

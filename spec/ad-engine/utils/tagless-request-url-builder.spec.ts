@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import { AdSlot } from '@wikia/ad-engine/models/ad-slot';
-import { context } from '@wikia/ad-engine/services/context-service';
-import { slotService } from '@wikia/ad-engine/services/slot-service';
+import { AdSlot } from '@wikia/core/models/ad-slot';
+import { context } from '@wikia/core/services/context-service';
+import { slotService } from '@wikia/core/services/slot-service';
 import {
 	buildVastUrl,
 	buildTaglessRequestUrl,
-} from '@wikia/ad-engine/utils/tagless-request-url-builder';
+} from '@wikia/core/utils/tagless-request-url-builder';
 
 describe('tagless-request-url-builder', () => {
 	let lisAdSlot;

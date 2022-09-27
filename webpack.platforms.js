@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { merge } = require('webpack-merge');
-const platformsConfig = require('./platforms/platforms.json');
+const platformsConfig = require('./src/platforms/platforms.json');
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
 
@@ -44,7 +44,9 @@ module.exports = (env, argv) => {
 		return merge(
 			common(),
 			platforms({
-				entry: { [env.platform]: path.resolve(__dirname, `platforms/${env.platform}/index.ts`) },
+				entry: {
+					[env.platform]: path.resolve(__dirname, `src/platforms/${env.platform}/index.ts`),
+				},
 			}),
 		);
 	}
@@ -54,7 +56,7 @@ module.exports = (env, argv) => {
 			merge(
 				common(),
 				platforms({
-					entry: { [platform]: path.resolve(__dirname, `platforms/${platform}/index.ts`) },
+					entry: { [platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`) },
 				}),
 			),
 		);
@@ -66,7 +68,7 @@ module.exports = (env, argv) => {
 			entry: platformsConfig.list.reduce(
 				(result, platform) => ({
 					...result,
-					[platform]: path.resolve(__dirname, `platforms/${platform}/index.ts`),
+					[platform]: path.resolve(__dirname, `src/platforms/${platform}/index.ts`),
 				}),
 				{},
 			),

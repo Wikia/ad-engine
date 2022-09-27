@@ -1,4 +1,4 @@
-import { TemplateStateHandler } from '@wikia/ad-engine';
+import { TemplateStateHandler } from '@wikia/core';
 import { SinonSandbox, SinonStub } from 'sinon';
 
 export interface MinimalTemplateStateHandlerStub {

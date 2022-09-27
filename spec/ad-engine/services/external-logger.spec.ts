@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { context, externalLogger } from '../../../src/ad-engine';
+import { context, externalLogger } from '../../../src/core';
 
 describe('External logger', () => {
 	beforeEach(() => {

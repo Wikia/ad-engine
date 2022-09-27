@@ -1,4 +1,4 @@
-import { ScrollListener } from '@wikia/ad-engine';
+import { ScrollListener } from '@wikia/core';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

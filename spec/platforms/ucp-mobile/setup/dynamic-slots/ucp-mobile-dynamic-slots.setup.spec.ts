@@ -1,11 +1,11 @@
 import sinon, { assert } from 'sinon';
-import { context, DomListener } from '@wikia/ad-engine';
-import { UcpMobileDynamicSlotsSetup } from '../../../../../platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
-import { UcpMobileSlotsDefinitionRepository } from '../../../../../platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
+import { context, DomListener } from '@wikia/core';
+import { UcpMobileDynamicSlotsSetup } from '../../../../../src/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-dynamic-slots.setup';
+import { UcpMobileSlotsDefinitionRepository } from '../../../../../src/platforms/ucp-mobile/setup/dynamic-slots/ucp-mobile-slots-definition-repository';
 import {
 	NativoSlotsDefinitionRepository,
 	QuizSlotsDefinitionRepository,
-} from '../../../../../platforms/shared';
+} from '../../../../../src/platforms/shared';
 
 describe('floor_adhesion on ucp-mobile', () => {
 	const sandbox = sinon.createSandbox();

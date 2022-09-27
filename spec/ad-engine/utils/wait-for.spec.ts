@@ -1,4 +1,4 @@
-import { utils } from '@wikia/ad-engine';
+import { utils } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 

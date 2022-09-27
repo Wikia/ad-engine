@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context } from '../../../src/ad-engine';
-import { targeting } from '../../../src/ad-engine/utils/targeting';
+import { context } from '../../../src/core';
+import { targeting } from '../../../src/core/utils/targeting';
 
 let sandbox;
 

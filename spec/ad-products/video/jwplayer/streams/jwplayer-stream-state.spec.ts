@@ -1,4 +1,4 @@
-import { vastParser } from '@wikia/ad-engine';
+import { vastParser } from '@wikia/core';
 import { jwpEvents } from '@wikia/ad-products/video/jwplayer/streams/jwplayer-events';
 import {
 	createJwpStateStream,

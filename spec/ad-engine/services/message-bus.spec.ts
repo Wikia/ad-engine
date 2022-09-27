@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStub } from 'sinon';
 
-import { MessageBus } from '@wikia/ad-engine';
+import { MessageBus } from '@wikia/core';
 
 const mockOrigin = 'https://example.com';
 

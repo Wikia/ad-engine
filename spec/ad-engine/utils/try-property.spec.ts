@@ -1,4 +1,4 @@
-import { tryProperty, whichProperty } from '@wikia/ad-engine/utils';
+import { tryProperty, whichProperty } from '@wikia/core/utils';
 import { expect } from 'chai';
 
 const testProperties = ['a', 'b', 'c'];

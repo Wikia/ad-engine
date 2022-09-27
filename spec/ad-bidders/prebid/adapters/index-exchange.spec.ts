@@ -1,5 +1,5 @@
 import { IndexExchange } from '@wikia/ad-bidders/prebid/adapters/index-exchange';
-import { context } from '@wikia/ad-engine';
+import { context } from '@wikia/core';
 import { expect } from 'chai';
 
 describe('IndexExchange bidder adapter', () => {

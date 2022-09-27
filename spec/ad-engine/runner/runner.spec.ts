@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { Runner, utils } from '../../../src/ad-engine';
+import { Runner, utils } from '../../../src/core';
 
 describe('runner', () => {
 	const defaultTimeout = 2000;

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, utils } from '../../../src/ad-engine';
+import { context, utils } from '../../../src/core';
 import { iasPublisherOptimization } from '../../../src/ad-services';
 
 describe('IAS Publisher Optimization', () => {

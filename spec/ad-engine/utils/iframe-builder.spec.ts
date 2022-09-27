@@ -1,4 +1,4 @@
-import { IframeBuilder } from '@wikia/ad-engine/utils';
+import { IframeBuilder } from '@wikia/core/utils';
 import { assert } from 'chai';
 import { createSandbox, SinonSandbox } from 'sinon';
 

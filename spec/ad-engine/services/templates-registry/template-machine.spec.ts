@@ -1,5 +1,5 @@
-import { TemplateAction } from '@wikia/ad-engine/services/templates-registry/template-action';
-import { TemplateMachine } from '@wikia/ad-engine/services/templates-registry/template-machine';
+import { TemplateAction } from '@wikia/core/services/templates-registry/template-action';
+import { TemplateMachine } from '@wikia/core/services/templates-registry/template-machine';
 import { assert, expect } from 'chai';
 import { Subject } from 'rxjs';
 import { createSandbox } from 'sinon';

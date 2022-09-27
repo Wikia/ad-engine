@@ -1,5 +1,4 @@
 import { context, DEFAULT_MAX_DELAY, Dictionary, utils } from '@ad-engine/core';
-import { LazyQueue } from '../ad-engine/utils';
 
 export interface BidderConfig {
 	enabled: boolean;
@@ -15,7 +14,7 @@ export abstract class BidderProvider {
 	called = false;
 	w;
 	response = false;
-	onResponseCallbacks: LazyQueue;
+	onResponseCallbacks: utils.LazyQueue;
 
 	protected constructor(
 		public name: string,

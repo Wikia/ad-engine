@@ -1,4 +1,4 @@
-import { context, slotService, VideoData, VideoEventListener } from '@wikia/ad-engine';
+import { context, slotService, VideoData, VideoEventListener } from '@wikia/core';
 import {
 	PorvataListener,
 	PorvataListenerParams,

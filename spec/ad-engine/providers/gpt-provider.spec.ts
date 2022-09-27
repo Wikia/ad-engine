@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { spy, stub } from 'sinon';
-import { GptProvider } from '../../../src/ad-engine/providers/gpt-provider';
-import { context } from '../../../src/ad-engine/services/context-service';
+import { GptProvider } from '../../../src/core/providers/gpt-provider';
+import { context } from '../../../src/core/services/context-service';
 
 let provider;
 let pubads;

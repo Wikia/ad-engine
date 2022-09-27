@@ -1,4 +1,4 @@
-import { pageInIframe } from '@wikia/ad-engine/utils';
+import { pageInIframe } from '@wikia/core/utils';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 

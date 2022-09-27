@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
-import { context, slotInjector } from '../../../src/ad-engine/services';
+import { context, slotInjector } from '../../../src/core/services';
 
 describe('slot-injector', () => {
 	const sandbox = createSandbox();

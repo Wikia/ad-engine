@@ -1,5 +1,5 @@
-import { TemplateTransition } from '@wikia/ad-engine';
-import { TemplateState } from '@wikia/ad-engine/services/templates-registry/template-state';
+import { TemplateTransition } from '@wikia/core';
+import { TemplateState } from '@wikia/core/services/templates-registry/template-state';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
 import {

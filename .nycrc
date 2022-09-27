@@ -6,7 +6,6 @@
   "statements": 50,
   "include": [
     "src/**/*",
-    "platforms/**/*"
   ],
   "exclude": [
     "build/",

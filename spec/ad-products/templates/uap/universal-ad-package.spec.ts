@@ -2,7 +2,7 @@ import { communicationService, eventsRepository } from '@wikia/communication';
 import { expect } from 'chai';
 import { BehaviorSubject } from 'rxjs';
 import { createSandbox, SinonSandbox, SinonSpy, SinonStubbedInstance } from 'sinon';
-import { AdSlot, Context, context } from '../../../../src/ad-engine';
+import { AdSlot, Context, context } from '../../../../src/core';
 import {
 	registerUapListener,
 	universalAdPackage,

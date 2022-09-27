@@ -2,7 +2,7 @@ import {
 	RepeatableSlotPlaceholderConfig,
 	SlotPlaceholderConfig,
 	slotPlaceholderInjector,
-} from '@wikia/ad-engine';
+} from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
 

@@ -1,5 +1,5 @@
-import { parallel, ProcessPipeline } from '@wikia/ad-engine';
-import { wait } from '@wikia/ad-engine/utils';
+import { parallel, ProcessPipeline } from '@wikia/core';
+import { wait } from '@wikia/core/utils';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { createSandbox, SinonFakeTimers, SinonSpy } from 'sinon';

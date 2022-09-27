@@ -1,4 +1,4 @@
-import { pbjsFactory } from '@wikia/ad-engine/services/pbjs-factory';
+import { pbjsFactory } from '@wikia/core/services/pbjs-factory';
 import { SinonSandbox, SinonStub } from 'sinon';
 
 export type PbjsStub = { [key in keyof Pbjs]: SinonStub & Pbjs[key] };

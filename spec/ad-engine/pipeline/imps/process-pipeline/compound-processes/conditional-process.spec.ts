@@ -1,4 +1,4 @@
-import { conditional, ProcessPipeline } from '@wikia/ad-engine';
+import { conditional, ProcessPipeline } from '@wikia/core';
 import { Container } from '@wikia/dependency-injection';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy } from 'sinon';

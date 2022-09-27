@@ -3,8 +3,8 @@ import {
 	FuncPipelineStep,
 	UniversalPipeline,
 	UniversalPipelineStep,
-} from '@wikia/ad-engine';
-import { PipelineNext } from '@wikia/ad-engine/pipeline/pipeline-types';
+} from '@wikia/core';
+import { PipelineNext } from '@wikia/core/pipeline/pipeline-types';
 import { Container } from '@wikia/dependency-injection';
 import { createSandbox } from 'sinon';
 import { PipelineTestSuite } from './pipeline-test-suite';

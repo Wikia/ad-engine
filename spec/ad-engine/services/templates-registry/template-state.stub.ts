@@ -1,4 +1,4 @@
-import { TemplateState } from '@wikia/ad-engine/services/templates-registry/template-state';
+import { TemplateState } from '@wikia/core/services/templates-registry/template-state';
 import { SinonSandbox, SinonStub } from 'sinon';
 
 export type TemplateStateStub = {

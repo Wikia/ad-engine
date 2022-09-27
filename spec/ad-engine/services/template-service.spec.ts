@@ -1,4 +1,4 @@
-import { templateService } from '@wikia/ad-engine';
+import { templateService } from '@wikia/core';
 import { expect } from 'chai';
 import { TemplateFake } from '../template-fake';
 

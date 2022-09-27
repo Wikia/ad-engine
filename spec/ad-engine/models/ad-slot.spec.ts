@@ -1,4 +1,4 @@
-import { AdSlot, context, Dictionary } from '@wikia/ad-engine';
+import { AdSlot, context, Dictionary } from '@wikia/core';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert, expect } from 'chai';
 import { createSandbox, SinonSandbox, SinonSpy } from 'sinon';

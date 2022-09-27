@@ -1,5 +1,5 @@
-import { context, PrebidiumProvider } from '@wikia/ad-engine';
-import { IframeBuilder } from '@wikia/ad-engine/utils';
+import { context, PrebidiumProvider } from '@wikia/core';
+import { IframeBuilder } from '@wikia/core/utils';
 import { communicationService, eventsRepository } from '@wikia/communication';
 import { assert } from 'chai';
 import { BehaviorSubject } from 'rxjs';

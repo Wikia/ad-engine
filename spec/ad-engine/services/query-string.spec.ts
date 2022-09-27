@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { queryString } from '../../../src/ad-engine/utils';
+import { queryString } from '../../../src/core/utils';
 
 describe('query-string', () => {
 	it('parse truthy boolean value from string', () => {

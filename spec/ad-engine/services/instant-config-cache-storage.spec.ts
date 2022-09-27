@@ -1,8 +1,8 @@
 import {
 	CacheData,
 	InstantConfigCacheStorage,
-} from '@wikia/ad-engine/services/instant-config-cache-storage';
-import { SessionCookie } from '@wikia/ad-engine/services/session-cookie';
+} from '@wikia/core/services/instant-config-cache-storage';
+import { SessionCookie } from '@wikia/core/services/session-cookie';
 import { communicationService, eventsRepository } from '@wikia/communication/index';
 import { expect } from 'chai';
 import { createSandbox, SinonSpy, SinonStub } from 'sinon';

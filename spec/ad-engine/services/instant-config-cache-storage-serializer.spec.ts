@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import {
 	deserializeCache,
 	serializeCache,
-} from '@wikia/ad-engine/services/instant-config-cache-storage-serializer';
-import { CacheDictionary } from '@wikia/ad-engine';
+} from '@wikia/core/services/instant-config-cache-storage-serializer';
+import { CacheDictionary } from '@wikia/core';
 
 describe('serialize/deserialize cache object', () => {
 	it('should serialize the object', () => {

@@ -1,4 +1,4 @@
-import { FuncPipeline, FuncPipelineStep } from '@wikia/ad-engine';
+import { FuncPipeline, FuncPipelineStep } from '@wikia/core';
 import { createSandbox } from 'sinon';
 import { PipelineTestSuite } from './pipeline-test-suite';
 

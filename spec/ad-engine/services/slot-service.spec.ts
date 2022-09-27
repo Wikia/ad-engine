@@ -1,4 +1,4 @@
-import { context, Dictionary, SlotConfig, slotService } from '@wikia/ad-engine';
+import { context, Dictionary, SlotConfig, slotService } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';

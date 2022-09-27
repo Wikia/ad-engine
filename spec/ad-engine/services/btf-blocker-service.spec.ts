@@ -1,4 +1,4 @@
-import { AdSlot, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/ad-engine';
+import { AdSlot, btfBlockerService, context, Dictionary, SlotConfig } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, spy } from 'sinon';
 import { adSlotFake } from '../ad-slot-fake';

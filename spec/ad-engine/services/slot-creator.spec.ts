@@ -1,4 +1,4 @@
-import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/ad-engine';
+import { SlotCreator, SlotCreatorConfig, SlotCreatorWrapperConfig } from '@wikia/core';
 import { expect } from 'chai';
 import { createSandbox, SinonStub } from 'sinon';
 

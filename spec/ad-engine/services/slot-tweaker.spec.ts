@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { SlotTweaker } from '../../../src/ad-engine/services/slot-tweaker';
+import { SlotTweaker } from '../../../src/core/services/slot-tweaker';
 import { adSlotFake } from '../ad-slot-fake';
 
 let slotTweaker: SlotTweaker;
