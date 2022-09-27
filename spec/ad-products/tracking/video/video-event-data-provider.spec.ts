@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import * as sinon from 'sinon';
-import { AdSlot, context, slotService } from '../../../../src/core';
-import { VideoEventDataProvider } from '../../../../src/ad-products/tracking/video/video-event-data-provider';
+import { AdSlot, context, slotService } from '@wikia/core';
+import { VideoEventDataProvider } from '@wikia/ad-products/tracking/video/video-event-data-provider';
 import { configMock } from '../../../core/config-mock';
 
 describe('Video event data provider', () => {
@@ -10,6 +10,7 @@ describe('Video event data provider', () => {
 	beforeEach(() => {
 		sandbox.stub(document, 'hidden').get(() => undefined);
 		context.extend(configMock);
+		context.set('geo.country', 'PL');
 		context.set('targeting.skin', 'ae3');
 		context.set('wiki.pvNumber', 5);
 		slotService.add(new AdSlot({ id: 'incontent_player' }));
