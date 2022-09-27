@@ -15,6 +15,7 @@ import {
 	identityHub,
 	jwPlayerInhibitor,
 	liveConnect,
+	liveRampPixel,
 	nielsen,
 	PartnerPipeline,
 	stroer,
@@ -30,6 +31,7 @@ export class UcpMobileLighterAds implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				ats,
 				facebookPixel,
 				audigent,
