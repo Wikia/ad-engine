@@ -1,6 +1,5 @@
-import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { DataWarehouseTracker } from '@platforms/shared';
-import { utils } from '@wikia/ad-engine';
+import { communicationService, eventsRepository, utils } from '@wikia/ad-engine';
+import { DataWarehouseTracker } from './data-warehouse';
 
 const loadTimeTrackingUrl = 'https://beacon.wikia-services.com/__track/special/adengloadtimes';
 const eventsToTrack = {
@@ -16,8 +15,8 @@ const eventsToTrack = {
 	eyeota_started: eventsRepository.EYEOTA_STARTED,
 };
 
-export class LoadTimesService {
-	private static instance: LoadTimesService;
+export class LoadTimesTracker {
+	private static instance: LoadTimesTracker;
 	private startTime: number;
 	private tzOffset: number;
 
@@ -26,12 +25,12 @@ export class LoadTimesService {
 		this.initLoadTimesTracker();
 	}
 
-	static make(): LoadTimesService {
-		if (!LoadTimesService.instance) {
-			LoadTimesService.instance = new LoadTimesService();
+	static make(): LoadTimesTracker {
+		if (!LoadTimesTracker.instance) {
+			LoadTimesTracker.instance = new LoadTimesTracker();
 		}
 
-		return LoadTimesService.instance;
+		return LoadTimesTracker.instance;
 	}
 
 	initStartTime(): void {

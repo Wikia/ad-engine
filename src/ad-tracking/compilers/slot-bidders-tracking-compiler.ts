@@ -1,5 +1,5 @@
 import { Dictionary } from '@ad-engine/core';
-import { AdInfoContext } from '../slot-tracker';
+import { CompilerPartial } from '../base-tracker';
 
 async function getBiddersPrices(slotName: string, bidders): Promise<Dictionary<string>> {
 	const realSlotPrices: Dictionary<string> = bidders.getDfpSlotPrices(slotName);
@@ -40,7 +40,10 @@ async function getBiddersPrices(slotName: string, bidders): Promise<Dictionary<s
 	};
 }
 
-export const slotBiddersTrackingCompiler = async ({ data, slot }: AdInfoContext, bidders) => {
+export const slotBiddersTrackingCompiler = async (
+	{ data, slot }: CompilerPartial,
+	bidders,
+): Promise<CompilerPartial> => {
 	if (!bidders) {
 		return { slot, data };
 	}

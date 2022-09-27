@@ -1,27 +1,18 @@
 import { communicationService, eventsRepository } from '@ad-engine/communication';
-import { AdSlot, Dictionary, slotService } from '@ad-engine/core';
-import { slotTrackingCompiler } from './compilers/slot-tracking-compiler';
+import { slotService } from '@ad-engine/core';
+import { slotTrackingCompiler } from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
-interface AdClickContext {
-	slot: AdSlot;
-	data: {
-		ad_status: string;
-	};
-}
+class CtaTracker extends BaseTracker implements BaseTrackerInterface {
+	compilers = [slotTrackingCompiler];
 
-class CtaTracker {
-	register(callback: (data: Dictionary) => void): void {
+	isEnabled = () => true;
+
+	register(callback): void {
 		communicationService.on(
 			eventsRepository.AD_ENGINE_MESSAGE_BOX_EVENT,
 			({ adSlotName, ad_status }) => {
-				const trackingData: AdClickContext = {
-					slot: slotService.get(adSlotName),
-					data: {
-						ad_status,
-					},
-				};
-
-				callback(slotTrackingCompiler(trackingData));
+				callback(this.compileData(slotService.get(adSlotName), null, { ad_status }));
 			},
 			false,
 		);

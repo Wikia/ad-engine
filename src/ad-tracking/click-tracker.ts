@@ -1,25 +1,21 @@
 import { communicationService, EventOptions, eventsRepository } from '@ad-engine/communication';
 import { AdSlot, Dictionary, slotService, utils } from '@ad-engine/core';
-import { slotTrackingCompiler } from './compilers/slot-tracking-compiler';
+import { slotTrackingCompiler } from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
 const logGroup = 'ad-click-tracker';
 
-interface AdClickContext {
-	slot: AdSlot;
-	data: {
-		ad_status: string;
-		click_position?: string;
-	};
-}
-
-class AdClickTracker {
+class AdClickTracker extends BaseTracker implements BaseTrackerInterface {
 	private eventsToRegister = [
 		eventsRepository.AD_ENGINE_VIDEO_LEARN_MORE_CLICKED,
 		eventsRepository.AD_ENGINE_VIDEO_OVERLAY_CLICKED,
 		eventsRepository.AD_ENGINE_VIDEO_TOGGLE_UI_OVERLAY_CLICKED,
 	];
+	compilers = [slotTrackingCompiler];
 
-	register(callback: (data: Dictionary) => void): void {
+	isEnabled = () => true;
+
+	register(callback): void {
 		communicationService.onSlotEvent(AdSlot.SLOT_RENDERED_EVENT, ({ adSlotName }) => {
 			this.addClickTrackingListeners(callback, adSlotName);
 		});
@@ -31,14 +27,7 @@ class AdClickTracker {
 		communicationService.on(
 			event,
 			({ adSlotName, ad_status }) => {
-				const trackingData: AdClickContext = {
-					slot: slotService.get(adSlotName),
-					data: {
-						ad_status,
-					},
-				};
-
-				callback(slotTrackingCompiler(trackingData));
+				callback(this.compileData(slotService.get(adSlotName), null, { ad_status }));
 			},
 			false,
 		);
@@ -88,12 +77,7 @@ class AdClickTracker {
 			data['click_position'] = JSON.stringify(clickData);
 		}
 
-		const trackingData: AdClickContext = {
-			slot,
-			data,
-		};
-
-		callback(slotTrackingCompiler(trackingData));
+		callback(this.compileData(slot, null, data));
 	}
 }
 

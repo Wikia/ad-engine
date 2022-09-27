@@ -7,7 +7,6 @@ export * from './external-logger';
 export * from './filler-service';
 export * from './instant-config-cache-storage';
 export * from './pbjs-factory';
-export * from './load-times-service';
 export * from './local-cache';
 export * from './message-bus';
 export * from './session-cookie';

@@ -1,30 +1,22 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context, Dictionary } from '@ad-engine/core';
-import { viewabilityTrackingCompiler } from './compilers/viewability-tracking-compiler';
-import { viewabilityPropertiesTrackingCompiler } from './compilers/viewability-properties-tracking-compiler';
+import { AdSlot, context } from '@ad-engine/core';
+import { viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler } from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
-export interface AdViewabilityContext {
-	data: any;
-	slot: AdSlot;
-}
+class ViewabilityTracker extends BaseTracker implements BaseTrackerInterface {
+	compilers = [viewabilityTrackingCompiler, viewabilityPropertiesTrackingCompiler];
 
-class ViewabilityTracker {
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.viewability');
 	}
 
-	register(callback: (data: Dictionary) => void): void {
+	register(callback): void {
 		if (!this.isEnabled()) {
 			return;
 		}
 
 		communicationService.onSlotEvent(AdSlot.SLOT_VIEWED_EVENT, ({ slot }) => {
-			const trackingData: AdViewabilityContext = {
-				slot,
-				data: {},
-			};
-
-			callback(viewabilityTrackingCompiler(viewabilityPropertiesTrackingCompiler(trackingData)));
+			callback(this.compileData(slot));
 		});
 	}
 }

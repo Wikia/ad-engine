@@ -1,9 +1,9 @@
-import { AdViewabilityContext } from '../viewability-tracker';
+import { CompilerPartial } from '../base-tracker';
 
 export const viewabilityPropertiesTrackingCompiler = ({
 	data,
 	slot,
-}: AdViewabilityContext): AdViewabilityContext => {
+}: CompilerPartial): CompilerPartial => {
 	return {
 		slot,
 		data: {

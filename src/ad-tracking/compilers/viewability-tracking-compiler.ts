@@ -1,9 +1,6 @@
-import { AdViewabilityContext } from '../viewability-tracker';
+import { CompilerPartial } from '../base-tracker';
 
-export const viewabilityTrackingCompiler = ({
-	data,
-	slot,
-}: AdViewabilityContext): AdViewabilityContext => {
+export const viewabilityTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
 	const now = new Date();
 
 	return {

@@ -1,12 +1,5 @@
-import { AdSlot, context, InstantConfigCacheStorage, utils } from '@ad-engine/core';
-import { AdInfoContext } from '../slot-tracker';
-
-interface AdClickContext {
-	slot: AdSlot;
-	data: {
-		ad_status: string;
-	};
-}
+import { context, InstantConfigCacheStorage, utils } from '@ad-engine/core';
+import { CompilerPartial } from '../base-tracker';
 
 function checkOptIn(): string {
 	if (context.get('options.geoRequiresConsent')) {
@@ -24,7 +17,7 @@ function checkOptOutSale(): string {
 	return '';
 }
 
-export const slotTrackingCompiler = ({ data, slot }: AdClickContext): AdInfoContext => {
+export const slotTrackingCompiler = ({ data, slot }: CompilerPartial): CompilerPartial => {
 	const cacheStorage = InstantConfigCacheStorage.make();
 	const now = new Date();
 	const timestamp: number = now.getTime();

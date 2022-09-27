@@ -14,7 +14,6 @@ import { defer, logger } from '../utils';
 import { GptSizeMap } from './gpt-size-map';
 import { setupGptTargeting } from './gpt-targeting';
 import { Provider } from './provider';
-import { KibanaLogger } from '../../platforms/shared/sequential-messaging/kibana-logger';
 import { utils } from '../index';
 
 const logGroup = 'gpt-provider';
@@ -165,7 +164,7 @@ function SmLogger(targeting: Targeting) {
 		(targeting.pos.constructor == Array && targeting.pos[0] == 'top_leaderboard') ||
 		targeting.pos == 'top_leaderboard';
 	const smLoggerLoaded =
-		window['smTracking'] !== undefined && window['smTracking'] instanceof KibanaLogger;
+		window['smTracking'] !== undefined && window['smTracking'].recordRequestTargeting;
 
 	if (isTlb && smLoggerLoaded) {
 		window['smTracking'].recordRequestTargeting(targeting);

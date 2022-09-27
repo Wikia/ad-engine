@@ -1,5 +1,5 @@
 import { slotService } from '@ad-engine/core';
-import { AdBidderContext } from '../bidder-tracker';
+import { CompilerPartial } from '../base-tracker';
 
 function isBidOnTime(slotName: string, responseTime: number): boolean {
 	const slot = slotService.get(slotName);
@@ -11,7 +11,7 @@ function isBidOnTime(slotName: string, responseTime: number): boolean {
 	return slot.getPushTime() > responseTime;
 }
 
-export const bidderTrackingCompiler = ({ bid, data }: AdBidderContext): AdBidderContext => {
+export const bidderTrackingCompiler = ({ bid, data }: CompilerPartial): CompilerPartial => {
 	const now = new Date();
 	const timestamp: number = now.getTime();
 	const slotId = slotService.getSlotId(bid.slotName);

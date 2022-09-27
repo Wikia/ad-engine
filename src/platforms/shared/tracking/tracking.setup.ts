@@ -35,7 +35,11 @@ const adClickedAction = globalAction('[AdEngine] Ad clicked', props<Dictionary>(
 
 @Injectable()
 export class TrackingSetup {
-	constructor(private labradorTracker: LabradorTracker, private adSizeTracker: AdSizeTracker) {}
+	constructor(
+		private labradorTracker: LabradorTracker,
+		private adSizeTracker: AdSizeTracker,
+		private dwTracker: DataWarehouseTracker,
+	) {}
 
 	execute(): void {
 		this.porvataTracker();
@@ -53,12 +57,10 @@ export class TrackingSetup {
 	}
 
 	private porvataTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		communicationService.on(
 			eventsRepository.VIDEO_PLAYER_TRACKING,
 			({ eventInfo }) => {
-				dataWarehouseTracker.track(eventInfo, porvataUrl);
+				this.dwTracker.track(eventInfo, porvataUrl);
 			},
 			false,
 		);
@@ -67,7 +69,6 @@ export class TrackingSetup {
 	}
 
 	private slotTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
 		let withBidders = null;
 
 		if (context.get('bidders.prebid.enabled') || context.get('bidders.a9.enabled')) {
@@ -75,36 +76,33 @@ export class TrackingSetup {
 		}
 
 		slotTracker.onChangeStatusToTrack.push('top-conflict');
-		slotTracker.register(({ data }: Dictionary) => {
-			dataWarehouseTracker.track(data, slotTrackingUrl);
-		}, withBidders);
+		slotTracker.register(
+			({ data }: Dictionary) => {
+				this.dwTracker.track(data, slotTrackingUrl);
+			},
+			{ bidders: withBidders },
+		);
 	}
 
 	private viewabilityTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		viewabilityTracker.register(({ data }: Dictionary) => {
-			dataWarehouseTracker.track(data, viewabilityUrl);
+			this.dwTracker.track(data, viewabilityUrl);
 
 			return data;
 		});
 	}
 
 	private ctaTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		ctaTracker.register(({ data }: Dictionary) => {
-			dataWarehouseTracker.track(data, slotTrackingUrl);
+			this.dwTracker.track(data, slotTrackingUrl);
 		});
 	}
 
 	private adClickTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		adClickTracker.register(({ data }: Dictionary) => {
 			// event listeners might be outside of AdEngine, f.e. in the SilverSurfer interactions module
 			communicationService.dispatch(adClickedAction(data));
-			dataWarehouseTracker.track(data, slotTrackingUrl);
+			this.dwTracker.track(data, slotTrackingUrl);
 		});
 	}
 
@@ -113,10 +111,8 @@ export class TrackingSetup {
 			return;
 		}
 
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		bidderTracker.register(({ data }: Dictionary) => {
-			dataWarehouseTracker.track(data, bidderTrackingUrl);
+			this.dwTracker.track(data, bidderTrackingUrl);
 		});
 	}
 
@@ -140,8 +136,7 @@ export class TrackingSetup {
 						break;
 					}
 					case TrackingTarget.DataWarehouse: {
-						const dataWarehouseTracker = new DataWarehouseTracker();
-						dataWarehouseTracker.track(payload);
+						this.dwTracker.track(payload);
 						break;
 					}
 					default:
@@ -168,12 +163,10 @@ export class TrackingSetup {
 	}
 
 	private identityTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
-
 		communicationService.on(
 			eventsRepository.IDENTITY_PARTNER_DATA_OBTAINED,
 			(eventInfo) => {
-				dataWarehouseTracker.track(
+				this.dwTracker.track(
 					{
 						partner_name: eventInfo.payload.partnerName,
 						partner_identity_id: eventInfo.payload.partnerIdentityId,
@@ -186,13 +179,12 @@ export class TrackingSetup {
 	}
 
 	private keyValsTracker(): void {
-		const dataWarehouseTracker = new DataWarehouseTracker();
 		const keyVals = { ...context.get('targeting') };
 
 		// Remove Audigent segments
 		delete keyVals.AU_SEG;
 
-		dataWarehouseTracker.track(
+		this.dwTracker.track(
 			{
 				keyvals: JSON.stringify(keyVals),
 			},

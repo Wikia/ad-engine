@@ -1,6 +1,9 @@
-import { AdInfoContext } from '../slot-tracker';
+import { CompilerPartial } from '../base-tracker';
 
-export const slotPropertiesTrackingCompiler = ({ data, slot }: AdInfoContext): AdInfoContext => {
+export const slotPropertiesTrackingCompiler = ({
+	data,
+	slot,
+}: CompilerPartial): CompilerPartial => {
 	return {
 		slot,
 		data: {

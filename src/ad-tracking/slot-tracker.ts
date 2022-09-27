@@ -1,15 +1,13 @@
 import { communicationService } from '@ad-engine/communication';
-import { AdSlot, context, Dictionary } from '@ad-engine/core';
-import { slotTrackingCompiler } from './compilers/slot-tracking-compiler';
-import { slotPropertiesTrackingCompiler } from './compilers/slot-properties-tracking-compiler';
-import { slotBiddersTrackingCompiler } from './compilers/slot-bidders-tracking-compiler';
+import { AdSlot, context } from '@ad-engine/core';
+import {
+	slotTrackingCompiler,
+	slotPropertiesTrackingCompiler,
+	slotBiddersTrackingCompiler,
+} from './compilers';
+import { BaseTracker, BaseTrackerInterface } from './base-tracker';
 
-export interface AdInfoContext {
-	data: any;
-	slot: AdSlot;
-}
-
-class SlotTracker {
+class SlotTracker extends BaseTracker implements BaseTrackerInterface {
 	onRenderEndedStatusToTrack = [
 		AdSlot.STATUS_COLLAPSE,
 		AdSlot.STATUS_FORCED_COLLAPSE,
@@ -28,12 +26,13 @@ class SlotTracker {
 		AdSlot.STATUS_HEAVY_AD_INTERVENTION,
 		AdSlot.STATUS_UNKNOWN_INTERVENTION,
 	];
+	compilers = [slotPropertiesTrackingCompiler, slotTrackingCompiler];
 
 	isEnabled(): boolean {
 		return context.get('options.tracking.slot.status');
 	}
 
-	register(callback: (data: Dictionary) => void, bidders): void {
+	register(callback, { bidders }): void {
 		if (!this.isEnabled()) {
 			return;
 		}
@@ -44,23 +43,15 @@ class SlotTracker {
 
 		communicationService.onSlotEvent(AdSlot.SLOT_STATUS_CHANGED, async ({ slot }) => {
 			const status = slot.getStatus();
-			const trackingData: AdInfoContext = {
-				slot,
-				data: {},
-			};
 
 			if (slot.trackStatusAfterRendered) {
 				delete slot.trackStatusAfterRendered;
+
 				if (
 					this.onRenderEndedStatusToTrack.includes(status) ||
 					slot.getConfigProperty('trackEachStatus')
 				) {
-					callback(
-						await slotBiddersTrackingCompiler(
-							slotPropertiesTrackingCompiler(slotTrackingCompiler(trackingData)),
-							bidders,
-						),
-					);
+					callback(await slotBiddersTrackingCompiler(this.compileData(slot), bidders));
 					return;
 				}
 			}
@@ -69,26 +60,14 @@ class SlotTracker {
 				this.onChangeStatusToTrack.includes(status) ||
 				slot.getConfigProperty('trackEachStatus')
 			) {
-				callback(
-					await slotBiddersTrackingCompiler(
-						slotPropertiesTrackingCompiler(slotTrackingCompiler(trackingData)),
-						bidders,
-					),
-				);
+				callback(await slotBiddersTrackingCompiler(this.compileData(slot), bidders));
 			}
 		});
 
 		communicationService.onSlotEvent(AdSlot.CUSTOM_EVENT, async ({ slot, payload }) => {
-			const trackingData: AdInfoContext = {
-				slot,
-				data: {
-					ad_status: payload?.status,
-				},
-			};
-
 			callback(
 				await slotBiddersTrackingCompiler(
-					slotPropertiesTrackingCompiler(slotTrackingCompiler(trackingData)),
+					this.compileData(slot, null, { ad_status: payload?.status }),
 					bidders,
 				),
 			);
