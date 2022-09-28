@@ -8,6 +8,7 @@ import {
 	iasPublisherOptimization,
 	liveConnect,
 	jwPlayerInhibitor,
+	liveRampPixel,
 	nielsen,
 	PartnerPipeline,
 	userIdentity,
@@ -22,6 +23,9 @@ export class F2AdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveRampPixel.setOptions({
+					dependencies: [userIdentity.initialized],
+				}),
 				audigent,
 				liveConnect,
 				iasPublisherOptimization,

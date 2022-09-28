@@ -7,6 +7,7 @@ import {
 	durationMedia,
 	iasPublisherOptimization,
 	liveConnect,
+	liveRampPixel,
 	userIdentity,
 } from '@wikia/ad-engine';
 import { Injectable } from '@wikia/dependency-injection';
@@ -25,11 +26,13 @@ export class SportsAdsDeprecatedMode implements DiProcess {
 		inhibitors.push(bidders.call());
 		inhibitors.push(wadRunner.call());
 		inhibitors.push(userIdentity.call());
+
 		audigent.call();
 		liveConnect.call();
 		iasPublisherOptimization.call();
 		confiant.call();
 		durationMedia.call();
+		liveRampPixel.call();
 
 		return inhibitors;
 	}
