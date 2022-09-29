@@ -135,6 +135,7 @@ export class BaseContextSetup implements DiProcess {
 
 		if (babEnabled && !context.get('state.isLogged') && context.get('state.showAds')) {
 			context.set('options.wad.btRec.enabled', this.instantConfig.get('icBTRec'));
+			context.set('options.wad.btRec.sideUnits', this.instantConfig.get('icBTRecSideUnits'));
 		}
 	}
 

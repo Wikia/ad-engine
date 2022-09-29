@@ -50,12 +50,16 @@ class BTRec {
 	 * Inserts BT side units
 	 */
 	private insertSideUnits(): void {
-		if (context.get('state.isMobile')) {
+		if (context.get('state.isMobile') || !context.get('options.wad.btRec.sideUnits')) {
 			return;
 		}
 
 		const containerMaxWidth = 1236;
-		const sideContainersSpace = 2 * 90 + 66 + 60;
+		const minSideAdWidth = 90;
+		const sideUnitsCalculatedPadding = 60;
+		const globalNavigationWidth = 66;
+		const sideContainersSpace =
+			2 * minSideAdWidth + globalNavigationWidth + sideUnitsCalculatedPadding;
 		const resizableContainer = document.querySelector('.page.has-right-rail');
 
 		if (

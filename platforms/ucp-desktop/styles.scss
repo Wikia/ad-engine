@@ -143,7 +143,11 @@ body:not(.uap-sticked) {
 	}
 }
 
-$content-side-width: calc((100vw - 100% - #{$global-navigation-width} - 60px) / 2);
+$side-bt-units-single-padding: 10px;
+$side-bt-units-calculated-padding: 60px;
+$content-side-width: calc(
+	(100vw - 100% - #{$global-navigation-width} - #{$side-bt-units-calculated-padding}) / 2
+);
 
 .side-bt-container {
 	position: absolute;
@@ -151,11 +155,11 @@ $content-side-width: calc((100vw - 100% - #{$global-navigation-width} - 60px) / 
 	height: 100%;
 
 	&.left {
-		left: calc((#{$content-side-width} + 10px) * -1);
+		left: calc((#{$content-side-width} + #{$side-bt-units-single-padding}) * -1);
 	}
 
 	&.right {
-		right: calc((#{$content-side-width} + 10px) * -1);
+		right: calc((#{$content-side-width} + #{$side-bt-units-single-padding}) * -1);
 	}
 
 	> div {
@@ -163,8 +167,8 @@ $content-side-width: calc((100vw - 100% - #{$global-navigation-width} - 60px) / 
 		top: $sticky-navigation-height;
 		width: fit-content;
 		height: fit-content;
-		min-width: 90px;
 		min-height: 728px;
+		min-width: 90px;
 		margin: 0 auto;
 	}
 }
