@@ -229,6 +229,7 @@ export class BaseContextSetup implements DiProcess {
 	private setupStickySlotContext(): void {
 		context.set('templates.stickyTlb.forced', this.instantConfig.get('icForceStickyTlb'));
 		context.set('templates.stickyTlb.withFV', this.instantConfig.get('icStickyTlbWithFV'));
+		context.set('templates.stickyIcb.enabled', this.instantConfig.get('icStickyIcbExperiment'));
 
 		const stickySlotsLines: Dictionary = this.instantConfig.get('icStickySlotLineItemIds');
 		if (stickySlotsLines && stickySlotsLines.length) {

@@ -206,6 +206,12 @@
 	.hide {
 		display: none;
 	}
+
+	.incontent-sticked {
+		position: fixed;
+		top: 65px;
+		z-index: 501;
+	}
 }
 
 body.bab-detected {
