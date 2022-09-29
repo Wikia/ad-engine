@@ -20,6 +20,8 @@ import {
 	adMarketplace,
 	userIdentity,
 	ats,
+	jwPlayerInhibitor,
+	liveRampPixel,
 } from '@wikia/ad-engine';
 import { playerSetup, gptSetup, wadRunner } from '@platforms/shared';
 
@@ -31,6 +33,7 @@ export class UcpMobileAdsMode implements DiProcess {
 		this.pipeline
 			.add(
 				userIdentity,
+				liveRampPixel.setOptions({ dependencies: [userIdentity.initialized] }),
 				ats,
 				audigent,
 				bidders,
@@ -51,7 +54,11 @@ export class UcpMobileAdsMode implements DiProcess {
 					timeout: context.get('options.jwpMaxDelayTimeout'),
 				}),
 				gptSetup.setOptions({
-					dependencies: [userIdentity.initialized],
+					dependencies: [
+						jwPlayerInhibitor.initialized,
+						userIdentity.initialized,
+						playerSetup.initialized,
+					],
 				}),
 			)
 			.execute()

@@ -25,7 +25,7 @@ export class VideoEventDataProvider {
 			line_item_id: videoData.line_item_id || '',
 			player: videoData.player,
 			position: slot.getSlotName().toLowerCase(),
-			pv_number: context.get('options.pvNumber') || window.pvNumber || -1,
+			pv_number: context.get('wiki.pvNumber'),
 			rv: slot.getConfigProperty('targeting.rv') || '',
 			skin: context.get('targeting.skin') || '',
 			timestamp: now.getTime(),
