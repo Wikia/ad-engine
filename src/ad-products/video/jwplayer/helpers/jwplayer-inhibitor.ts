@@ -4,16 +4,26 @@ import { universalAdPackage } from '../../../templates';
 export class JWPlayerInhibitor {
 	private logGroup = 'jwp-player-inhibitor';
 	private videoLines: Array<string>;
+	private maxDelayTimeoutInMs = 0;
 	initialized: utils.ExtendedPromise<void>;
+
+	constructor() {
+		this.initialized = utils.createExtendedPromise();
+	}
 
 	private isEnabled(): boolean {
 		if (!this.videoLines) {
 			this.videoLines = context.get('options.video.uapJWPLineItemIds') || [];
 		}
 
+		if (!this.maxDelayTimeoutInMs) {
+			this.maxDelayTimeoutInMs = context.get('options.jwpMaxDelayTimeout') || 0;
+		}
+
 		return (
 			context.get('custom.hasFeaturedVideo') &&
 			context.get('options.video.isUAPJWPEnabled') &&
+			this.maxDelayTimeoutInMs > 0 &&
 			this.videoLines.length > 0
 		);
 	}
@@ -23,28 +33,31 @@ export class JWPlayerInhibitor {
 			return Promise.resolve();
 		}
 
-		return this.getExtendedPromise();
+		return this.initialized;
+	}
+
+	getDelayTimeoutInMs(): number {
+		if (!this.isEnabled()) {
+			return 0;
+		}
+
+		return this.maxDelayTimeoutInMs;
 	}
 
 	resolve(lineItemId: string | null = null, creativeId: string | null = null): void {
 		if (!this.isEnabled()) {
-			utils.logger(this.logGroup, 'isDisabled');
+			utils.logger(this.logGroup, 'is disabled');
 			return;
 		}
 
 		if (lineItemId && creativeId && this.videoLines.includes(lineItemId)) {
 			universalAdPackage.updateSlotsTargeting(lineItemId, creativeId);
+			utils.logger(this.logGroup, 'video ad is from UAP:JWP campaign - updating key-vals');
+		} else {
+			utils.logger(this.logGroup, 'video ad is not from UAP:JWP campaign');
 		}
 
-		this.getExtendedPromise().resolve();
-	}
-
-	private getExtendedPromise(): utils.ExtendedPromise<void> {
-		if (!this.initialized) {
-			this.initialized = utils.createExtendedPromise();
-		}
-
-		return this.initialized;
+		this.initialized.resolve();
 	}
 }
 

@@ -16,10 +16,7 @@ class PlayerSetup extends BaseServiceSetup {
 		new JWPlayerManager().manage();
 
 		if (this.options) {
-			Promise.race([
-				new Promise((res) => setTimeout(res, this.options.timeout)),
-				Promise.all(this.options.dependencies),
-			]).then(async () => {
+			Promise.all(this.options.dependencies).then(async () => {
 				await this.call();
 				this.setInitialized();
 			});
