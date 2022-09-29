@@ -1,7 +1,6 @@
 import { startAdEngine, wadRunner } from '@platforms/shared';
 import {
 	userIdentity,
-	adMarketplace,
 	anyclip,
 	audigent,
 	bidders,
@@ -96,7 +95,6 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 		liveConnect.call();
 		identityHub.call();
 
-		adMarketplace.call();
 		prebidNativeProvider.call();
 
 		communicationService.on(

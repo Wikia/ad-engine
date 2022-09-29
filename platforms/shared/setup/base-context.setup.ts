@@ -139,7 +139,6 @@ export class BaseContextSetup implements DiProcess {
 	}
 
 	private setServicesContext(): void {
-		context.set('services.adMarketplace.enabled', this.instantConfig.get('icAdMarketplace'));
 		context.set('services.audigent.enabled', this.instantConfig.get('icAudigent'));
 		context.set(
 			'services.audigent.tracking.sampling',
