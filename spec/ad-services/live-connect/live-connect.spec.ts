@@ -4,19 +4,9 @@ import { context, utils } from '../../../src/core';
 import { liveConnect } from '../../../src/ad-services';
 import { communicationService, eventsRepository } from '@wikia/communication';
 
-const mockedStorageStrategyVariable = {
-	ttl: 300000,
-	type: 'session',
-	mandatoryParams: ['unifiedId'],
-};
-
 describe('LiveConnect', () => {
 	const sandbox = createSandbox();
 	let loadScriptStub;
-
-	before(() => {
-		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
-	});
 
 	beforeEach(() => {
 		loadScriptStub = sandbox
@@ -30,10 +20,6 @@ describe('LiveConnect', () => {
 
 	afterEach(() => {
 		sandbox.restore();
-	});
-
-	after(() => {
-		context.set('services.liveConnect.cachingStrategy', mockedStorageStrategyVariable);
 	});
 
 	it('Live Connect is called', async () => {
