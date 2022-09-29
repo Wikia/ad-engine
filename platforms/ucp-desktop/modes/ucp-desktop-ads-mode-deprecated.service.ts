@@ -53,7 +53,7 @@ export class UcpDesktopAdsModeDeprecated implements DiProcess {
 	private setupJWPlayer(inhibitors = []): void {
 		new JWPlayerManager().manage();
 
-		const maxTimeout = context.get('options.maxDelayTimeout');
+		const maxTimeout = context.get('options.jwpMaxDelayTimeout');
 		const runner = new Runner(inhibitors, maxTimeout, 'jwplayer-runner');
 
 		runner.waitForInhibitors().then(() => {

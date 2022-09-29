@@ -34,7 +34,7 @@ export class UcpMobileDeprecatedAdsMode implements DiProcess {
 		this.setupJWPlayer(inhibitors);
 
 		const requiredInhibitors = [jwPlayerInhibitor.get(), userIdentity.initialized];
-		const jwpMaxTimeout = context.get('options.maxDelayTimeout');
+		const jwpMaxTimeout = context.get('options.jwpMaxDelayTimeout');
 		new Runner(requiredInhibitors, jwpMaxTimeout).waitForInhibitors().then(() => {
 			startAdEngine(inhibitors);
 		});
